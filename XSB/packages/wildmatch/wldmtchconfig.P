@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wldmtchconfig.P,v 1.6 1999-11-29 03:02:57 kifer Exp $
+** $Id: wldmtchconfig.P,v 1.7 1999-12-04 03:10:13 kifer Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@ make_xsb_wildmatchH(CC, CC_opts, LoaderFlags) :-
     package_configuration(dir(wildmatch), WildMatchDir),
     fmt_write_string(LD_directives_file,
 		     '%s%scc%sxsb_wildmatch.H', f(WildMatchDir, Slash, Slash)),
+    telling(OldTell),
     tell(LD_directives_file),
     writeln('%% This file is generated on-the-fly by wldmtchconfig.P'),
     writeln('%% Do not edit--any changes will be written over.'),
@@ -47,7 +48,8 @@ make_xsb_wildmatchH(CC, CC_opts, LoaderFlags) :-
     write(':- ldoption('''),
     write(LoaderFlags),
     writeln(''').'),
-    told.
+    told,
+    tell(OldTell).
     
 
 :-  package_configuration(dir(wildmatch), WildMatchDir),

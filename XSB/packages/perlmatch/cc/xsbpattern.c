@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbpattern.c,v 1.4 1999-10-26 06:54:36 kifer Exp $
+** $Id: xsbpattern.c,v 1.5 1999-12-04 03:10:09 kifer Exp $
 ** 
 */
 
@@ -178,7 +178,6 @@ arguments:
 ----------------------------------------------------------------------------*/
 int perl_substitute__( void )
 {
-
   SV *text=newSV(0);    /* Perl representation for the string to be 
 			   modified by substitution */ 
   char *subst_cmd = ptoc_string(2);
