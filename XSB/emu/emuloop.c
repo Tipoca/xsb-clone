@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.50 1999-11-03 21:35:44 cbaoqiu Exp $
+** $Id: emuloop.c,v 1.51 1999-11-04 23:01:24 cbaoqiu Exp $
 ** 
 */
 
@@ -978,14 +978,13 @@ contcase:     /* the main loop */
     int new_indicator;
 
     pppad; pad64; op2word;
-    if (*asynint_ptr & ATTVINT_MARK) {
+    if (int_val(cell(interrupt_reg)) > 0) {
       cpreg = lpcreg;
       true_pair = insert("true", 0, global_mod, &new_indicator);
       bld_cs(reg + 2, hreg);	/* see subp.c: build_call() */
       new_heap_functor(hreg, pair_psc(true_pair));
       bld_copy(reg + 1, build_interrupt_chain());
       lpcreg = get_ep((Psc) flags[MYSIG_ATTV + 32]);
-      *asynint_ptr = 0;
     }
     goto contcase;
   }
