@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.16 1999-12-22 05:10:11 cbaoqiu Exp $
+** $Id: emudef.h,v 1.17 2000-01-06 03:03:41 cbaoqiu Exp $
 ** 
 */
 
@@ -246,6 +246,10 @@ int *asynint_ptr = &asynint_val;
     /* there is attv interrupt */					\
     synint_proc(PSC, MYSIG_ATTV, lpcreg-2*sizeof(Cell));		\
     lpcreg = pcreg;							\
+    /* Set PSC to verify_attributes/2, so that the later call of */	\
+    /* intercept(PSC) will set the return point, pcreg, to	 */	\
+    /* verify_attributes/2.					 */	\
+    PSC = (Psc) flags[MYSIG_ATTV+32];					\
   }									\
   else									\
     switch (get_type(PSC)) {						\
