@@ -12,7 +12,7 @@ file_list=*.flr
 
 exclude_list="abp.flr wives.flr"
 
-flora_options=[flora],flora_shell.
+flora_options=flora_shell.
 flora_command="chatterbox(off). test."
 
 # Test if element is a member of exclude list

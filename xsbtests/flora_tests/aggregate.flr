@@ -37,15 +37,15 @@ tst4 :- Z=count{Year| john.salary(Year) < mary.salary(Year)},
 tst5 :- Z= avg{X[Who]| Who[salary(Year)->X]}, writeln(Z)@prolog().
 
 tst6 :- Z= collectset{Year[Who]| Who[salary(Year) -> X], X < 60},
-	writeln(Z)@prolog().
+	writeln(Z)@flora(io).
 
-tst7 :- delete(mary[salary(Y)->unknown]), writeln(Z)@prolog().
+tst7 :- delete(mary[salary(Y)->unknown]), writeln(Y)@prolog().
 
 tst8 :- delete(john[salary(Y)->S1], mary[salary(Y)->S2]| S1<S2),
-	writeln(Z)@prolog().
+	writeln(Y)@prolog().
 
 tst9 :- delete(john[salary(Y)->S1] | mary[salary(Y)->S2], S1<S2),
-	writeln(Z)@prolog().
+	writeln(Y)@prolog().
 
 test :- tell(temp), tst1, tst2, tst3, tst4, tst5, tst6, tst7, tst8, tst9, told.
 

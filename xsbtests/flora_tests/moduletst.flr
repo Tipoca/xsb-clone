@@ -2,7 +2,8 @@
 ?- expand_filename('auxiliary', X)@prolog(machine),
 	assert(library_directory(X)).
 
-?- nl@prolog(),writeln('Loading marymodule ...')@prolog()@prolog(), [marymodule >> marymodule].
+?- nl@prolog(),
+	writeln('Loading marymodule ...')@prolog(), [marymodule >> marymodule].
 
 john:employee.
 
@@ -32,7 +33,7 @@ tst5 :- Z=count{Year|john.salary(Year) < mary.salary(Year) @ marymodule},
 	writeln(Z)@prolog().
 
 tst6 :- Z= avg{X[Who]|Who[salary(Year)->X]; Who[salary(Year)->X] @ marymodule},
-	write(Z)@prolog(), write('   ')@prolog(), writeln(Who)@prolog(), fail.
+	write(Z)@prolog(), write('   ')@prolog(), writeln(Who)@flora(io), fail.
 tst6.
 
 test :- tell(temp), tst1, tst2, tst3, tst4, tst5, tst6, told.

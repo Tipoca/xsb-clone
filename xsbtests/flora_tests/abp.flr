@@ -3,13 +3,17 @@
 0:stage1. % Initial state
 abp:ea.
 
-emptysmsg[bit->u;data->u].
+emptysmsg[bit->u, data->u].
 emptyamsg[bit->u].
 
-:- table int/1.
+:- firstorder
+	int/1.
+:- table 
+	int/1.
 
 int(1).
-int(N) :- int(M), M < 10, N = M + 1.
+int(N) :- 
+	int(M), M < 10, N = M + 1.
 
 sfile[N->N] :- int(N).
 
@@ -50,71 +54,70 @@ gzy1(X,T,Y) :- X.T.Y[].
 X.T[Y->Z] :- T:stage1, S=T - 1, X:ea.S[Y->Z], tnot(gzy1(X,T,Y)).
 
 :- table gzy2/4.
-gzy2(X,T,Y,T1) :- X.T.Y@(T1)[].
+gzy2(X,T,Y,T1) :- X.T.Y(T1)[].
 
-X.T[Y@(T1)->Z] :-  T:stage1, S=T - 1, X:ea.S[Y@(T1)->Z],
+X.T[Y(T1)->Z] :-  T:stage1, S=T - 1, X:ea.S[Y(T1)->Z],
                    tnot(gzy2(X,T,Y,T1)).
 
 :- table gzy3/1.
 gzy3(T) :- T.applyrules[].
 
-abp.T[sendmsg->smsg.T[bit->B;data->D];
-      retries->RR]
-    :- S.propagatevalues[], T=S + 1, %% tnot(gzy3(T)),
-       abp.S[sendmsg->emptysmsg;
-             ackmsg->emptyamsg;
-             sbit->B;
-             sno->N;
-             retries->R],
+abp.T[sendmsg->smsg.T[bit->B, data->D], retries->RR] :-
+	S.propagatevalues[], T=S + 1, % tnot(gzy3(T))
+	abp.S[sendmsg->emptysmsg,
+	      ackmsg->emptyamsg,
+	      sbit->B,
+	      sno->N,
+	      retries->R],
        sfile[N->D], RR= R + 1.
 
-abp.T[sendmsg->smsg.T[bit->C;data->D];
-      sno->M;
-      sbit->C;
-      ackmsg->emptyamsg;
+abp.T[sendmsg->smsg.T[bit->C, data->D], 
+      sno->M, 
+      sbit->C, 
+      ackmsg->emptyamsg, 
       retries->0]
     :- S.propagatevalues[], T=S + 1, %% tnot(gzy3(T)),
-       abp.S[ackmsg->AMSG[bit->B];
-             sbit->B;
-             sendmsg->emptysmsg;
+       abp.S[ackmsg->AMSG[bit->B], 
+             sbit->B, 
+             sendmsg->emptysmsg, 
              sno->N],
-       not loseack(S),
+       \+ loseack(S),
        sfile[M->D], B[flip->C], M = N + 1.
 
 :- table gzy4/1.
 gzy4(M) :- sfile.M[].
 
-abp.T[ackmsg->emptyamsg; sno->M]
+abp.T[ackmsg->emptyamsg,  sno->M]
     :- S.propagatevalues[], T=S + 1, %% tnot(gzy3(T)),
-       abp.S[ackmsg->AMSG[bit->B];
-             sbit->B;
-             sendmsg->emptysmsg;
+       abp.S[ackmsg->AMSG[bit->B], 
+             sbit->B, 
+             sendmsg->emptysmsg, 
              sno->N],
-       not loseack(S),
+       \+ loseack(S),
        M = N+1,
        tnot(gzy4(M)).
 
-abp.T[ackmsg->amsg.T[bit->B];
-      rno->M;
-      rfile@(N)->D;
-      rbit->C;
+abp.T[ackmsg->amsg.T[bit->B], 
+      rno->M, 
+      rfile(N)->D, 
+      rbit->C, 
       sendmsg->emptysmsg], S[x->>{b}]
     :- S.propagatevalues[], T=S + 1, %% tnot(gzy3(T)),
-       abp.S[sendmsg->SMSG[bit->B;data->D];
-             rbit->B;
-             rno->N;
+       abp.S[sendmsg->SMSG[bit->B, data->D], 
+             rbit->B, 
+             rno->N, 
              ackmsg->emptyamsg],
-       not losemsg(S),
+       \+ losemsg(S),
        B[flip->C], M = N + 1.
 
-abp.T[ackmsg->amsg.T[bit->B];
+abp.T[ackmsg->amsg.T[bit->B], 
       sendmsg->emptysmsg], S[x->>{a}]
     :- S.propagatevalues[], T=S + 1, %% tnot(gzy3(T)),
-       abp.S[sendmsg->SMSG[bit->B;data->D];
-             rbit->C;
-             rno->N;
+       abp.S[sendmsg->SMSG[bit->B, data->D], 
+             rbit->C, 
+             rno->N, 
              ackmsg->emptyamsg],
-       not losemsg(S),
+       \+ losemsg(S),
        C[flip->B],
        M = N + 1.
 
@@ -144,12 +147,12 @@ T.running[]:- T.applyrules[],
                X.T[Y->Z], tnot(gzy7(X,S,Y,Z)).
 
 :- table gzy8/5.
-gzy8(X,S,Y,T1,Z) :- X.S[Y@(T1)->Z].
+gzy8(X,S,Y,T1,Z) :- X.S[Y(T1)->Z].
 
 T.running[]:- T.applyrules[],
     	    	%%tnot(gzy6(T)),
 		X:ea, S=T - 1, S:state,
-               X.T[Y@(T1)->Z], tnot(gzy8(X,S,Y,T1,Z)).
+               X.T[Y(T1)->Z], tnot(gzy8(X,S,Y,T1,Z)).
 
 stage1::state[propagatevalues *-> true].
 stage2::state[applyrules *-> true].
@@ -159,15 +162,20 @@ T:stage1 :- S.applyrules[], S.running[], T= S + 1.
 
 
 /* QUERY */
-tst1 :-abp.S[sendmsg->Smsg[bit->B;data->D]],
-	write(S), write('  '), write(Smsg),
-	write('  '), write(B), write('  '), writeln(D), fail.
+tst1 :-abp.S[sendmsg->Smsg[bit->B, data->D]],
+	write(S)@flora(io), write('  ')@flora(io), write(Smsg)@flora(io),
+	write('  ')@flora(io), write(B)@flora(io),
+	write('  ')@flora(io), writeln(D)@flora(io),
+	fail.
 tst1.
 tst2 :-abp.S[ackmsg->Smsg[bit->B]], 
-	write(S), write('  '), write(Smsg), write('  '), writeln(B), fail.
+	write(S)@flora(io), write('  ')@flora(io), write(Smsg)@flora(io),
+	write('  ')@flora(io), writeln(B)@flora(io), fail.
 tst2.
-tst3 :-abp.S[rfile@(N)->D], not S.running[],
-	write(S), write('  '), write(N), write('  '), writeln(D), fail.
+tst3 :-abp.S[rfile(N)->D], \+ S.running[],
+	write(S)@flora(io), write('  ')@flora(io), write(N)@flora(io),
+	write('  ')@flora(io), writeln(D)@flora(io),
+	fail.
 tst3.
 
 test :- tell(temp), tst1, tst2, tst3, told.

@@ -11,7 +11,7 @@ o2[M->R] :-
 
 
 tst1 :- writeln('all objects, all method invocations:')@prolog(), X[M -> R],
-	fmt_write("%S %S %S\n",args(X,M,R))@prolog().
+	fmt_write("%S %S %S\n",args(X,M,R))@flora(io).
 
 test :- tell(temp), tst1, told.
 
