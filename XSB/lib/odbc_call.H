@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.14 2003-04-02 18:35:16 lfcastro Exp $
+** $Id: odbc_call.H,v 1.15 2003-04-14 19:52:13 lfcastro Exp $
 ** 
 */
 
@@ -51,7 +51,7 @@
 
 :- import call0/1, odbc_exec_query/6 from machine.
 :- import conset/2, conget/2, coninc/1 from gensym.
-:- import length/2, append/3, member/2, copy_term/2 from basics.
+:- import length/2, append/3, member/2, copy_term/2, memberchk/2 from basics.
 
 :- import (dynamic)/1, retractall/1, abolish/1, asserta/1, assert/1,
 	retract/1
