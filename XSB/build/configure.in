@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.32 1999-02-21 03:17:01 kifer Exp $
+## $Id: configure.in,v 1.33 1999-04-02 04:06:55 kifer Exp $
 ## 
 ##
 
@@ -1183,6 +1183,11 @@ fi
 if test "$canonical" = "x86-pc-windows" ; then
    echo "Copying Windows Makefiles to <emudir>"
    cp -f MS_VC_Mfile.mak ${emudir}
+fi
+
+/* phantom private_builtin.c file */
+if test ! -f ${emudir}/private_builtin.c ; then
+   cp ${build_dir}/private_builtin.in ${emudir}/private_builtin.c
 fi
 
 dnl Copying to the installation directory ($prefix) is done in the top
