@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.10 2004/05/07 17:41:07 tswift Exp $
+** $Id: error_handler.H,v 1.11 2004/05/07 20:42:19 vidrevich Exp $
 ** 
 */
 
@@ -46,5 +46,5 @@
 :- import close_open_tables/0, psc_data/2, psc_name/2, psc_arity/2,
              xsb_backtrace/1 from machine.
 :- import atom/1, messageln/2, throw/1 from standard.
-:- import concat_atom/2 from string.
+:- import concat_atom/2, term_to_atom/2 from string.
 
