@@ -1,4 +1,4 @@
-/*  $Id: charmap.c,v 1.1 2005-03-01 03:31:45 kifer Exp $
+/*  $Id: charmap.c,v 1.2 2005-03-07 20:31:24 kifer Exp $
 
     Part of SWI-Prolog
 

@@ -1,4 +1,4 @@
-/*  $Id: catalog.c,v 1.2 2005-03-03 17:23:07 kifer Exp $
+/*  $Id: catalog.c,v 1.3 2005-03-07 20:31:24 kifer Exp $
 
     Part of SWI-Prolog
 
@@ -618,4 +618,3 @@ find_in_catalogue(int kind,
 
   return item->replacement;
 }
-
