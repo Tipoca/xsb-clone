@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basicdefs.h,v 1.1 1999-12-10 07:47:23 kifer Exp $
+** $Id: basicdefs.h,v 1.2 2004-02-02 20:29:47 dwarren Exp $
 ** 
 */
 
@@ -68,11 +68,11 @@
 #define STANDARD_DCG   1    /* use standard DCG grammars */
 
 
-#ifndef max
-#define max(p1,p2) ((p1)>=(p2)?(p1):(p2))
+#ifndef xsb_max
+#define xsb_max(p1,p2) ((p1)>=(p2)?(p1):(p2))
 #endif
-#ifndef min
-#define min(p1,p2) ((p1)<=(p2)?(p1):(p2))
+#ifndef xsb_min
+#define xsb_min(p1,p2) ((p1)<=(p2)?(p1):(p2))
 #endif
 
 #define MOD %

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.13 2001-07-24 15:36:49 dwarren Exp $
+** $Id: varstring.c,v 1.14 2004-02-02 20:29:48 dwarren Exp $
 ** 
 */
 
@@ -167,7 +167,7 @@ static inline void vs_ensure_size(VarString *vstr, int minsize)
 {
   vs_init(vstr,0);
 
-  vs_adjust_size(vstr, max(vstr->length,minsize)+1);
+  vs_adjust_size(vstr, xsb_max(vstr->length,minsize)+1);
 }
 
 

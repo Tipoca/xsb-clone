@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.67 2004-01-14 20:27:12 dwarren Exp $
+** $Id: biassert.c,v 1.68 2004-02-02 20:29:48 dwarren Exp $
 ** 
 */
 
@@ -631,7 +631,7 @@ int assert_code_to_buff_p(prolog_term Clause)
   Loc = &Location;
   dbgen_instB_ppvw(test_heap,Arity,0);  /* size will be backpatched */
   Loc_size = *Loc - sizeof(Cell);
-  if (has_body) Reg = reg_init(max(Arity,(int)get_arity(get_str_psc(Body))));
+  if (has_body) Reg = reg_init(xsb_max(Arity,(int)get_arity(get_str_psc(Body))));
   else Reg = reg_init(Arity);
   for (Argno = 1; Argno <= Arity; Argno++) {
     db_gentopinst(p2p_arg(Head,Argno),Argno,Reg);
@@ -1417,7 +1417,7 @@ static int hash_resize( PrRef Pred, SOBRef SOBrec, unsigned int OldTabSize )
        }
        /*printf("Resizing HT to %d\n",ThisTabSize);*/
      }
-     return max(ThisTabSize, OldTabSize) ;
+     return xsb_max(ThisTabSize, OldTabSize) ;
    }
    else return OldTabSize ;
 }
