@@ -1,5 +1,5 @@
 /*  -*-c-*-  Make sure this file comes up in the C mode of emacs */ 
-/* File:      dynload.c
+/* File:      dynelf.i
 ** Author(s): Harald Schroepfer, Steve Dawson
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf.i,v 1.7 1999-10-18 20:37:22 luis Exp $
+** $Id: dynelf.i,v 1.8 1999-10-18 20:50:31 cbaoqiu Exp $
 ** 
 */
 
