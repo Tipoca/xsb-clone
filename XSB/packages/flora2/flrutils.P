@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.38 2001-06-12 01:48:05 kifer Exp $
+** $Id: flrutils.P,v 1.39 2001-06-12 15:50:30 gzyang Exp $
 **
 */
 
@@ -63,8 +63,8 @@ flora_compile_internal(File,Workspace) :-
 	( flora_locate_file(File,FLORA_FILE_EXT,FlrFile) ->
 	    flora_flcompile(FlrFile,Workspace)
 
-	; parse_filename(File,_,_,Ext), not member(Ext,['',FLORA_FILE_EXT]),
-	    path_sysop(exists,File)
+	; parse_filename(File,_,_,Ext), Ext \== '', Ext \== FLORA_FILE_EXT,
+          path_sysop(exists,File)
 	->
 	    flora_stderr_nl,
 	    flora_error_line("%s: Filename extension must be %s!",
