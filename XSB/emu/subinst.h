@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subinst.h,v 1.2 2001-06-21 19:07:59 tswift Exp $
+** $Id: subinst.h,v 1.3 2001-09-21 15:01:15 tswift Exp $
 ** 
 */
 
@@ -37,6 +37,8 @@ extern int max_subgoals;
 extern int max_completed;
 extern int max_consumers_in_ascc;
 extern int max_compl_susps_in_ascc;
+
+extern int trapped_prolog_cps;
 
 extern Cell subinst_table[256][2];
 

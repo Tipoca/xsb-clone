@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop_aux.h,v 1.2 2001-01-31 10:23:29 ejohnson Exp $
+** $Id: emuloop_aux.h,v 1.3 2001-09-21 15:01:15 tswift Exp $
 ** 
 */
 
@@ -47,7 +47,29 @@
 } 
 
 /*----------------------------------------------------------------------*/
-
+#ifdef PROFILE
+#define RESTORE_SUB                                                       \
+{                                                                         \
+  CPtr tbreg;                                                             \
+                                                                          \
+  tbreg = breg;                                                           \
+  /*  switch_envs(tbreg); */                                              \
+  undo_bindings(tbreg);                                                   \
+  ptcpreg = cp_ptcp(tbreg);                                               \
+  delayreg = cp_pdreg(tbreg);                                             \
+  restore_some_wamregs(tbreg, ereg);                                      \
+  restore_registers(tbreg, (int)op1, rreg);                               \
+  if (restore_type == 1) { /* trust */                                    \
+    if (breg > bfreg) {                                                   \
+      trapped_prolog_cps = trapped_prolog_cps                             \
+	            + sizeof(struct choice_point)                         \
+	            + ((int)op1 * sizeof(CPtr));}                         \
+    breg = cp_prevbreg(breg);                                             \
+    restore_trail_condition_registers(breg);                              \
+  }                                                                       \
+  XSB_Next_Instr();                                                       \
+} 
+#else
 #define RESTORE_SUB                                                       \
 {                                                                         \
   CPtr tbreg;                                                             \
@@ -65,7 +87,7 @@
   }                                                                       \
   XSB_Next_Instr();                                                       \
 } 
-
+#endif
 /*----------------------------------------------------------------------*/
 
 #define TABLE_RESTORE_SUB  {                                              \

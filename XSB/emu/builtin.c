@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.129 2001-08-13 04:31:35 kifer Exp $
+** $Id: builtin.c,v 1.130 2001-09-21 15:01:15 tswift Exp $
 ** 
 */
 
@@ -857,6 +857,8 @@ static void write_out_profile(void)
 	          max_compl_susps_in_ascc);
     rat1 = isum / tot;
     rat2 = ssum / tot;
+    fprintf(stdout,
+	    "trapped Prolog choice point memory (%d bytes).\n",trapped_prolog_cps);
     fprintf(stdout,
 	    "summary(total(%d),inst(%d),pct(%f),subinst(%d),pct(%f)).\n",
 	    tot,isum,rat1,ssum,rat2);
