@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: directry.P,v 1.16 2004-01-30 19:12:53 dwarren Exp $
+** $Id: directry.P,v 1.17 2004-06-07 12:31:04 dwarren Exp $
 ** 
 */
 
 
 :- export
 	 short_directory/2,
-	 find_file/1, find_file/2,
+	 find_file/1,
 	 get_file_name/2, get_file_date/2,
 	 is_directory/1,
 	 whats_new/3,
