@@ -18,23 +18,25 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.20 2001-08-08 15:05:32 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.21 2001-08-30 11:59:53 dwarren Exp $
 ** 
 */
 
 #include "xsb_config.h"
 #include "cell_xsb.h"
 
-#ifdef WIN_NT
-#include <windows.h>
-#include <sql.h>
-#include <sqlext.h>
-#include <string.h>
-#else
+#ifdef CYGWIN
 #define FAR
 #include "sql.h"
 #include "sqlext.h"
 #include "odbc_string.h"
+#else
+#ifdef WIN_NT
+#include <windows.h>
+#endif
+#include <sql.h>
+#include <sqlext.h>
+#include <string.h>
 #endif
 
 #include <stdio.h>
