@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.18 1999-10-15 02:54:16 cbaoqiu Exp $
+** $Id: tries.h,v 1.19 1999-10-16 03:00:57 cbaoqiu Exp $
 ** 
 */
 
@@ -305,7 +305,7 @@ extern void     variant_call_search(TabledCallInfo *, CallLookupResults *);
 extern BTNptr   one_term_chk_ins(CPtr, BTNptr, int *);
 extern BTNptr   whole_term_chk_ins(Cell, BTNptr *, int *);
 extern BTNptr	get_next_trie_solution(ALNptr *);
-extern BTNptr	variant_answer_search(int, CPtr, struct subgoal_frame *,
+extern BTNptr	variant_answer_search(int, int, CPtr, struct subgoal_frame *,
 				      bool *);
 extern BTNptr   delay_chk_insert(int, CPtr, CPtr *);
 extern void     undo_answer_bindings(void);

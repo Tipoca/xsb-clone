@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.3 1999-10-15 17:32:52 cbaoqiu Exp $
+** $Id: tables.c,v 1.4 1999-10-16 03:00:55 cbaoqiu Exp $
 ** 
 */
 
@@ -147,7 +147,7 @@ BTNptr table_answer_search(SGFrame producer, int size, int attv_num,
     ans_var_pos_reg = hreg++;	/* Leave a cell for functor ret/n */
 #endif /* IGNORE_DELAYVAR */
 
-    answer = variant_answer_search(size,template,attv_num,producer,&wasFound);
+    answer = variant_answer_search(size,attv_num,template,producer,&wasFound);
 
 #ifdef DEBUG_DELAYVAR
 #ifndef IGNORE_DELAYVAR
