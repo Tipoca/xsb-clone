@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.h,v 1.8 2000-05-22 05:48:07 kifer Exp $
+** $Id: timer_xsb.h,v 1.9 2000-06-19 07:05:32 ruim Exp $
 ** 
 */
 
@@ -44,7 +44,7 @@
 #define TIMED_OUT            1
 #define STILL_WAITING        0
 #else  /* UNIX */
-sigjmp_buf xsb_timer_env;
+extern sigjmp_buf xsb_timer_env;
 #endif
 
 typedef struct xsb_timeout xsbTimeout;
