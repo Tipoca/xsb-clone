@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_wildmatch.c,v 1.2 1999-05-01 22:39:41 kifer Exp $
+** $Id: xsb_wildmatch.c,v 1.3 1999-05-19 01:17:25 kifer Exp $
 ** 
 */
 
@@ -35,6 +35,13 @@
 #include "cell.h"
 #include "xsberror.h"
 #include "cinterf.h"
+
+/* Casefolding seems to be defined in some versions of gcc, but not in
+   others. So, it is really not that portable.
+*/
+#ifndef FNM_CASEFOLD
+#define FNM_CASEFOLD 0
+#endif
 
 extern char *p_charlist_to_c_string(prolog_term term, char *outstring,
 				    int outstring_size,
