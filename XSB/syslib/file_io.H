@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.3 1999/04/03 04:46:44 kifer Exp $
+** $Id: file_io.H,v 1.4 1999/04/04 03:51:26 kifer Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
     	file_stat/3, formatted_io/5, intern_string/2
       from machine.
 
-:- import abort/1, atom_chars/2,
+:- import abort/1, atom_codes/2,
 	  compound/1, callable/1
       from standard.
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.P,v 1.1.1.1 1998-11-05 17:00:09 sbprolog Exp $
+** $Id: modes.P,v 1.2 1999-04-27 14:39:23 kifer Exp $
 ** 
 */
 
@@ -437,13 +437,13 @@ ext2int('++', g) :- !.
 ext2int(_, _).
 
 get_new_negliteral_name(NewName) :-
-	atom_chars('_$neg_$', Prefix),
+	atom_codes('_$neg_$', Prefix),
 	conget('_$lastnegatedliteral', L),
 	Sno is L + 1,
 	conset('_$lastnegatedliteral', Sno),
 	name(Sno, Suffix),
 	append(Prefix, Suffix, Name),
-	atom_chars(NewName, Name).
+	atom_codes(NewName, Name).
 
 
 /** Now that all user predicates are wrapped with '_call_user', there

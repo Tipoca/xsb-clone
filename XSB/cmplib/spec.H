@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: spec.H,v 1.1.1.1 1998-11-05 17:00:14 sbprolog Exp $
+** $Id: spec.H,v 1.2 1999-04-27 14:39:30 kifer Exp $
 ** 
 */
 
 
 :- export spec/2.
 
-:- import name/2, atom_chars/2 from standard.
+:- import name/2, atom_codes/2 from standard.
 :- import append/3, conget/2, conset/2 from prof_sbp.
 :- import gensym_pred/2, have_hardcut/2 from preproc.
 :- import member1/2, warning/1, message/1, error/1, option/1 from auxlry.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsberror.c,v 1.8 1999-04-25 05:17:51 cbaoqiu Exp $
+** $Id: xsberror.c,v 1.9 1999-04-27 14:39:50 kifer Exp $
 ** 
 */
 
@@ -68,7 +68,7 @@ void xsb_abort(char *description, ...)
     pcreg = exception_handler(message);
 
     /* this allows xsb_abort to jump out even from nested loops */
-    longjmp(xsb_abort_fallback_environment, pcreg);
+    longjmp(xsb_abort_fallback_environment, (int) pcreg);
 }
 
 

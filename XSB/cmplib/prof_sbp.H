@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prof_sbp.H,v 1.2 1999-01-15 18:41:40 kostis Exp $
+** $Id: prof_sbp.H,v 1.3 1999-04-27 14:39:24 kifer Exp $
 ** 
 */
 
@@ -37,5 +37,5 @@
 	  term_arg/3
      from machine.
 :- import name/2, arg/3, functor/3, atomic/1, atom/1, told/0, tell/1, 
-	  integer/1, atom_chars/2
+	  integer/1, atom_codes/2
      from standard.

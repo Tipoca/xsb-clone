@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: singlton.H,v 1.1.1.1 1998-11-05 17:00:14 sbprolog Exp $
+** $Id: singlton.H,v 1.2 1999-04-27 14:39:27 kifer Exp $
 ** 
 */
 
@@ -29,6 +29,6 @@
 :- import warning/1 from auxlry.
 :- import numbervars/3 from num_vars.
 :- import ll_arg/3, append/3 from prof_sbp.
-:- import atom_chars/2, functor/3, hilog_functor/3, atomic/1, integer/1,
+:- import atom_codes/2, functor/3, hilog_functor/3, atomic/1, integer/1,
 	  arg/3, '=..'/2
      from standard.

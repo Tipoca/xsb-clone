@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.H,v 1.1.1.1 1998-11-05 17:00:09 sbprolog Exp $
+** $Id: modes.H,v 1.2 1999-04-27 14:39:21 kifer Exp $
 ** 
 */
 
@@ -35,7 +35,7 @@
 :- import assert/1, clause/2, (dynamic)/1, retractall/1 from assert.
 
 :- import 
-	abort/0, atom_chars/2, cputime/1, call/1, 
+	abort/0, atom_codes/2, cputime/1, call/1, 
 	expand_term/2, file_exists/1, functor/3,
 	(index)/3, name/2, nl/0, (not)/1, op/3, read/1, repeat/0,
 	statistics/0, see/1, seeing/1, seen/0, (table)/1, tell/1,

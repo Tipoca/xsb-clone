@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ora_call.P,v 1.4 1999-04-10 14:26:02 kostis Exp $
+** $Id: ora_call.P,v 1.5 1999-04-27 14:39:58 kifer Exp $
 ** 
 */
 
@@ -2069,7 +2069,7 @@ gensym(Root,Symbol):-
    var(Symbol),
    conget(Root,Counter),
    NewCounter is Counter + 1,
-   name(NewCounter,L), atom_chars(Atom,L),
+   name(NewCounter,L), atom_codes(Atom,L),
    str_cat(Root,Atom,Symbol),
    conset(Root,NewCounter).
    

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.7 1999-04-13 17:24:46 kostis Exp $
+** $Id: builtin.h,v 1.8 1999-04-27 14:39:42 kifer Exp $
 ** 
 */
 
@@ -184,10 +184,12 @@ extern void init_builtin_table(void);
 #define HiLog_ARG		204
 #define HiLog_UNIV		205
 
+#define ATOM_CODES		207
 #define ATOM_CHARS		208
 #define NUMBER_CHARS		209
 #define PUT			210
 #define TAB			211
+#define NUMBER_CODES		212
 
 #define SORT			220
 #define KEYSORT			221

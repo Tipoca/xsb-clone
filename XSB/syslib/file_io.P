@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.P,v 1.3 1999/04/03 04:46:45 kifer Exp $
+** $Id: file_io.P,v 1.4 1999/04/04 03:51:27 kifer Exp $
 ** 
 */
 
@@ -100,7 +100,7 @@ file_getbuf_atom(ByteCount, ToAtom, BytesRead) :-
 file_getbuf_list(FileDes, ByteCount, ToList, BytesRead) :-
 	(var(ToList), var(BytesRead) ->
 	    file_function(8, FileDes, ByteCount, TmpStr, BytesRead,_,_),
-	    atom_chars(TmpStr, ToList)
+	    atom_codes(TmpStr, ToList)
 	;
 	abort('Usage: file_getbuf_list([+FileDes,] +ByteCount, -ToList, -BytesRead)')).
 
@@ -108,7 +108,7 @@ file_getbuf_list(ByteCount, ToList, BytesRead) :-
 	stat_flag(10, FileDes),
 	(var(ToList), var(BytesRead) ->
 	    file_function(8, FileDes, ByteCount, TmpStr, BytesRead,_,_),
-	    atom_chars(TmpStr, ToList)
+	    atom_codes(TmpStr, ToList)
 	;
 	abort('Usage: file_getbuf_list([+FileDes,] +ByteCount, -ToList, -BytesRead)')).
 
@@ -154,7 +154,7 @@ file_read_line_atom(Str, IsFullLine) :-
 file_read_line_list(FileDes, CharLst, IsFullLine) :-
 	( var(Str), var(IsFullLine) ->
 	    file_function(10, FileDes, Str, IsFullLine, _, _,_),
-	    atom_chars(Str,CharLst)
+	    atom_codes(Str,CharLst)
 	    ;
 	    abort('Usage: file_read_line_list([+FileDes,] -InputStr, -IsFullLine)')
         ).

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.11 1999/04/09 12:18:00 kostis Exp $
+** $Id: standard.P,v 1.12 1999/04/16 19:19:31 kostis Exp $
 ** 
 */
 
@@ -445,8 +445,10 @@ hilog_arglist(X, [Y|Z], I, N) :- K is I - 1, J is N - K,
 %----------------------------%
 
 atom_chars(A, L) :- atom_chars(A, L).
+atom_codes(A, L) :- atom_codes(A, L).
 
 number_chars(T, L) :- number_chars(T, L).
+number_codes(T, L) :- number_codes(T, L).
 
 name(T, L) :-
 	term_type(T, Type),
@@ -459,7 +461,7 @@ name(T, L) :-
 		)
 	; Type =:= 2 -> int_name(T, [], L)	% integer
 	; Type =:= 6 -> real_name(T, [], L)	% real
-	; Type =:= 5 -> atom_chars(T, L)
+	; Type =:= 5 -> atom_codes(T, L)
 	; abort('Wrong type in argument 1 of name/2')
 	).
 
