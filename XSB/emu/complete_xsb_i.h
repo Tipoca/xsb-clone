@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.7 2000-07-31 20:27:55 ejohnson Exp $
+** $Id: complete_xsb_i.h,v 1.8 2001-01-26 23:56:08 lfcastro Exp $
 ** 
 */
 
@@ -28,11 +28,18 @@
 
 /*----------------------------------------------------------------------*/
 
-XSB_Start_Instr(check_complete,_check_complete); {
+XSB_Start_Instr(check_complete,_check_complete)
   CPtr    cs_ptr;
   CPtr    orig_breg = breg;
   xsbBool    leader = FALSE;
   VariantSF subgoal;
+#ifdef CHAT
+  CPtr xtemp1;
+#else
+#ifdef LOCAL_EVAL
+  Def1op
+#endif
+#endif
 #ifdef LOCAL_EVAL
   int     i;
 #endif
@@ -399,5 +406,5 @@ XSB_Start_Instr(check_complete,_check_complete); {
 #endif
   }
   Fail1;
-  XSB_Next_Instr();
-} /* end of check_complete */
+XSB_End_Instr()
+/* end of check_complete */

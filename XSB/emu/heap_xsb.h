@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.h,v 1.4 2000-04-29 21:53:54 kifer Exp $
+** $Id: heap_xsb.h,v 1.5 2001-01-26 23:56:09 lfcastro Exp $
 ** 
 */
 
@@ -34,10 +34,10 @@
 
 #define new_heap_nil(sh_reg) bld_nil(sh_reg); sh_reg++
 
-#define new_heap_num(sh_reg, val) bld_int(sh_reg, val); sh_reg++
+#define new_heap_num(sh_reg, val) bld_int_tagged(sh_reg, val); sh_reg++
 /* make a new num node on the heap, with value val */
 
-#define new_heap_float(sh_reg, val) bld_float(sh_reg, val); sh_reg++
+#define new_heap_float(sh_reg, val) bld_float_tagged(sh_reg, val); sh_reg++
 /* make a new float node on the heap, with value val */
 
 #define new_heap_functor(sh_reg, psc) bld_functor(sh_reg++, psc)

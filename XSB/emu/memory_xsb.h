@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.6 2000-10-04 01:46:35 ejohnson Exp $
+** $Id: memory_xsb.h,v 1.7 2001-01-26 23:56:09 lfcastro Exp $
 ** 
 */
 
@@ -180,7 +180,7 @@ extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
      if ((pb)top_of_localstk < (pb)top_of_heap) {			   \
        PCREG = exception_handler("\nFatal ERROR:  -- "			   \
 				 "Local Stack clobbered Heap --\n");	   \
-       todo_on_exception;						   \
+       {todo_on_exception;}						   \
      }									   \
      else {								   \
        fprintf(stdwarn, "\n++Warning: Heap / Local Stack overflow:   ");   \
@@ -193,7 +193,7 @@ extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
 	 fprintf(stdwarn, "Reallocation turned OFF!\n");		   \
 	 print_statistics(1);						   \
 	 local_global_exception(PCREG);					   \
-	 todo_on_exception;						   \
+	 {todo_on_exception;}						   \
        }								   \
      }									   \
    }
@@ -266,3 +266,5 @@ extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
    }
 
 #endif
+
+

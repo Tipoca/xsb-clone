@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.14 2000-06-22 19:40:31 ruim Exp $
+** $Id: init_xsb.c,v 1.15 2001-01-26 23:56:09 lfcastro Exp $
 ** 
 */
 
@@ -404,7 +404,8 @@ char *init_para(int argc, char *argv[])
       }
       break;
     case 's':
-      flags[TRACE_STA] = call_intercept = 1;
+      flags[TRACE_STA] = 1;
+      call_intercept = 1;
       break;
     case 'S':
       flags[TABLING_METHOD] = SUBSUMPTIVE_TEM;
@@ -415,11 +416,14 @@ char *init_para(int argc, char *argv[])
       xsb_mode = DISASSEMBLE;
       break;
     case 'T': 
-      flags[HITRACE] = call_intercept = 1; 
+      flags[HITRACE] = 1;
+      call_intercept = 1; 
       break;
     case 't': 
 #ifdef DEBUG
-      flags[PIL_TRACE] = flags[HITRACE] = call_intercept = 1;
+      flags[PIL_TRACE] = 1;
+      flags[HITRACE] = 1;
+      call_intercept = 1;
 #else
       xsb_exit("-t option unavailable for this executable (non-debug mode)");
 #endif

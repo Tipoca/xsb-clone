@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.7 2000-06-22 01:27:50 lfcastro Exp $
+** $Id: cut_xsb.h,v 1.8 2001-01-26 23:56:08 lfcastro Exp $
 ** 
 */
 
@@ -87,6 +87,7 @@
 #define cut_code(OP1)	                                        \
    { CPtr cut_breg;					        \
      byte inst_cut_over;                                        \
+     CPtr xtemp1, xtemp2;                                       \
 								\
      XSB_Deref(OP1);						\
      cut_breg = (CPtr)(tcpstack.high - int_val(OP1));		\
@@ -104,7 +105,7 @@
 	breg = cut_breg;					\
      }								\
      check_table_cut = TRUE;                                    \
-     XSB_Next_Instr();		       			\
+     XSB_Next_Instr();		       			        \
    }
 
 /*----------------------------------------------------------------------*/

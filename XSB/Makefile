@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.7 1999-03-30 16:25:07 kifer Exp $
+## $Id: Makefile,v 1.8 2001-01-26 23:56:08 lfcastro Exp $
 ## 
 ##
 
@@ -29,6 +29,9 @@ XSB=./bin/xsb
 all: $(SUBDIR)
 
 force: touch all
+
+etags:
+	etags -l c `find . -name *.[ch] | grep -v Base` -l prolog `find . -name *.[PH] | grep -v Base`
 
 touch::
 	touch cmplib/*.P lib/*.P syslib/*.P packages/*.P packages/*/*.P packages/*/*/*.P

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.112 2000-12-06 13:39:47 dwarren Exp $
+** $Id: builtin.c,v 1.113 2001-01-26 23:56:08 lfcastro Exp $
 ** 
 */
 
@@ -826,8 +826,8 @@ inline static void abolish_table_info(void)
 #ifdef PROFILE
 static void write_out_profile(void)
 { 
-  int i, isum, ssum, tot;
-  float rat1, rat2;
+  unsigned long i, isum, ssum, tot;
+  double rat1, rat2;
 
   isum = ssum = tot = 0;
   for (i = 0; i < BUILTIN_TBL_SZ; i++) {
@@ -840,26 +840,29 @@ static void write_out_profile(void)
   if (tot!=0) {
     rat1 = isum / tot;
     rat2 = ssum / tot;
-    fprintf(stdout,"total: %d inst: %d pct %f subinst: %d pct %f\n",
+    fprintf(stdout,
+	    "summary(total(%d),inst(%d),pct(%f),subinst(%d),pct(%f)).\n",
 	    tot,isum,rat1,ssum,rat2);
     for (i = 0; i < BUILTIN_TBL_SZ; i++) {
-      if (inst_table[i][0] != 0)
-        fprintf(stdout,"-- %s %x %d %.3f\n",(char *) inst_table[i][0],i,
+      if (inst_table[i][5] != 0)
+	fprintf(stdout,"instruction(%s,%x,%d,%.3f).\n",
+		(char *) inst_table[i][0],i,
 	        inst_table[i][5],(((float)inst_table[i][5])/(float)tot));
     }
-    fprintf(stdout,"_______________subinsts_______________\n");
+/*      fprintf(stdout,"_______________subinsts_______________\n"); */
     for (i = 0; i < BUILTIN_TBL_SZ; i++) {
       if (subinst_table[i][0] != 0) {
 	ssum = subinst_table[i][1];
 	rat1 = ssum/tot;
-	fprintf(stdout,"-- %s %x %d %g \n",(char *) subinst_table[i][0],i,
+	fprintf(stdout,"subinst(%s,%x,%d,%g).\n",
+		(char *) subinst_table[i][0],i,
 		subinst_table[i][1],rat1);
       }
     }
-    fprintf(stdout,"_______________builtins_______________\n");
+/*      fprintf(stdout,"_______________builtins_______________\n"); */
     for (i = 0; i < BUILTIN_TBL_SZ; i++)
       if (builtin_table[i][1] > 0 && builtin_table[i][0] != 0)
-	fprintf(stdout,"%s %d %d \n",
+	fprintf(stdout,"builtin(%s,%d,%d).\n",
 		BuiltinName(i), i, builtin_table[i][1]);
   }
   else 
@@ -1577,10 +1580,13 @@ int builtin_call(byte number)
 
 #ifdef PROFILE
   case ZERO_OUT_PROFILE:
-    for (i = 0 ; i <= BUILTIN_TBL_SZ ; i++) {
-      inst_table[i][5] = 0;
-      builtin_table[i][1] = 0;
-      subinst_table[i][1] = 0;
+    { 
+      int i;
+      for (i = 0 ; i <= BUILTIN_TBL_SZ ; i++) {
+	inst_table[i][5] = 0;
+	builtin_table[i][1] = 0;
+	subinst_table[i][1] = 0;
+      }
     }
     break;
   case WRITE_OUT_PROFILE:

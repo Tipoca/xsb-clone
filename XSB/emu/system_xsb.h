@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.h,v 1.8 2000-07-18 10:49:10 ruim Exp $
+** $Id: system_xsb.h,v 1.9 2001-01-26 23:56:09 lfcastro Exp $
 ** 
 */
 
@@ -36,6 +36,9 @@ extern FILE *fdopen(int fildes, const char *type);
 
 #ifndef WIN_NT
 extern int kill(pid_t pid, int sig);
+#endif
+#ifdef _cplusplus
+}
 #endif
 
 #ifdef WIN_NT
