@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrprettyprint.flr,v 1.4 1999-06-19 05:36:48 kifer Exp $
+** $Id: flrprettyprint.flr,v 1.5 1999-06-19 06:02:17 kifer Exp $
 **
 */
 
@@ -37,8 +37,6 @@
 
 
 %%:- export flora_prettyprint/1.
-
-_Obj : flora_pp_superclass.
 
 
 %% Methods to ignore during pretty printing
