@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.40 2003/01/29 18:42:22 lfcastro Exp $
+** $Id: tables.P,v 1.41 2003/03/04 18:01:56 dwarren Exp $
 ** 
 */
 
@@ -411,6 +411,8 @@ abolish_table_pred(Spec) :-
 
 abolish_table_predicate(Predicate) :- abolish_table_predicate(Predicate).
 
+abolish_module_tables(_Predicate) :-
+	'_$builtin'(ABOLISH_MODULE_TABLES).
 
 abolish_table_call(Call) :-
 	get_calls(Call,Handle,_Template),

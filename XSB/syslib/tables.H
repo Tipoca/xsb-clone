@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.28 2001/02/28 19:33:16 dwarren Exp $
+** $Id: tables.H,v 1.29 2002/11/08 19:57:25 lfcastro Exp $
 ** 
 */
 
@@ -27,6 +27,7 @@
       abolish_all_tables/0,
       abolish_table_call/1,
       abolish_table_pred/1,
+      abolish_module_tables/1,
       delete_return/2,
       force_truth_value/2,
       get_call/3,

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.51 2003-06-18 15:29:59 lfcastro Exp $
+** $Id: builtin.h,v 1.52 2003-06-18 16:51:15 lfcastro Exp $
 ** 
 */
 
@@ -164,6 +164,7 @@
 #define TRIE_GET_CALL		153	/* get_call/3 */
 #define BREG_RETSKEL		154
 #define TRIE_RETRACT_SAFE	155
+#define ABOLISH_MODULE_TABLES   156
 
 #define TRIMCORE		158
 #define NEWTRIE                 159
