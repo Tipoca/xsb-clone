@@ -19,11 +19,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.12 2001-01-26 14:41:58 tswift Exp $
+** $Id: auxlry.P,v 1.13 2001-03-01 15:13:57 tswift Exp $
 ** 
 */
 
-:- compiler_options([xpp_on]).
+:- compiler_options([xpp_on,optimize,sysmod]).
 #include "standard.h"
 
 
@@ -153,7 +153,9 @@ current_option(ciao_directives).
 set_ciao_opts:- 
 	op(500,yfx,#),
 	op(975, xfx,(=>)),
-	op(978, xfx,(::)).
+	op(978, xfx,(::)),
+	op(1100,fx,(document_export)),
+	op(1100,fx,(document_import)).
 
 
 /* options kept only for backwards compatibility;
