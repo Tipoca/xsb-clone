@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string.P,v 1.12 1999/08/18 12:40:29 kostis Exp $
+** $Id: string.P,v 1.13 1999/08/28 09:10:02 kostis Exp $
 ** 
 */
 
@@ -66,6 +66,9 @@ atom_to_charlist([Atom|Rest],Slist,[List,Slist|Lrest]):-
 	atom_codes(Atom,List),
 	atom_to_charlist(Rest,Slist,Lrest).
 
+substring(String,From,To,Subst) :- substring(String,From,To,Subst).
+string_substitute(String,SubstSpec,SubstList,ResultStr) :-
+	string_substitute(String,SubstSpec,SubstList,ResultStr).
 str_length(Str, Len) :- str_len(Str, Len).
 
 str_cat(S1, S2, S3) :- str_cat(S1, S2, S3).

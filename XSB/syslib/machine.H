@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.30 1999/08/28 09:49:10 kostis Exp $
+** $Id: machine.H,v 1.31 1999/08/30 16:40:54 kostis Exp $
 ** 
 */
 
@@ -71,9 +71,11 @@
 	psc_insertmod/3,
 	file_getbuf/4, 
 	file_putbuf/4,
+	substring/4,
 	str_len/2, 
 	str_cat/3, 
 	str_cmp/3, 
+	string_substitute/4,
 	unload_seg/1, 
 	load_obj/4, 
 	expand_filename/2,
