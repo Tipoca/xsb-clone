@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.73 2003/08/25 16:49:49 lfcastro Exp $
+** $Id: standard.P,v 1.74 2003/11/14 19:34:12 tswift Exp $
 ** 
 */
 
@@ -318,14 +318,14 @@ read_term(T,List):-
 	read_term_check(stream,List,read_term/3),
 	stat_flag(CURRENT_INPUT, File), 
 	file_read(File, T,Vlist),
-	process_variable_list(List,T,Vlist).
+	process_variable_list(List,T,Vlist),!.
 
 read_term(Istr,T,List):- 
 	read_term_check(Istr,List,read_term/3),
             seeing(Oldstr),see(Istr),stat_flag(CURRENT_INPUT, File), 
 	file_read(File, T,Vlist),
 	see(Oldstr),
-	process_variable_list(List,T,Vlist).
+	process_variable_list(List,T,Vlist),!.
 
 read_term_check(Istr,List,Predvers):- 
 	check_stream(Istr,Predvers,1),

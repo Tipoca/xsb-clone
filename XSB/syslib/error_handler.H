@@ -19,12 +19,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.4 2003/01/06 04:46:36 kifer Exp $
+** $Id: error_handler.H,v 1.5 2003/11/14 19:34:12 tswift Exp $
 ** 
 */
 
-:- export domain_error/4, type_error/4, instantiation_error/2,
-              check_stream/3, check_nonvar_list/3, check_nonvar/3, 
+:- export domain_error/4, permission_error/4,
+              instantiation_error/2, type_error/4, 
+              check_atom/3,
+              check_nonvar_list/3, check_nonvar/3, 
+              check_stream/3, 
               default_error_handler/1.
 
 :- import (dynamic)/1 from assert.
