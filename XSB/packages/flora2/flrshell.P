@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.35 2001-07-30 06:22:42 kifer Exp $
+** $Id: flrshell.P,v 1.36 2001-08-13 04:34:11 kifer Exp $
 **
 */
 
@@ -203,6 +203,9 @@ flNoTrace :- flora_notrace.
 flTraceLow :-
 	flora_trace,
 	flora_set_switch(low_level_trace).
+flNoTraceLow :-
+	flora_notrace,
+	retractall(flora_switch(low_level_trace)).
 
 
 

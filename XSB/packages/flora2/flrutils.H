@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.32 2001-08-06 19:33:20 gzyang Exp $
+** $Id: flrutils.H,v 1.33 2001-08-13 04:34:11 kifer Exp $
 **
 */
 
@@ -192,6 +192,8 @@
 	flora_reclaim_storage_space/0,
 	flora_commit_storage/0,
 	flora_load_dyn/2,
+	flora_read_canonical_and_insert/2,
 	flora_compile_system_module_by_ID/1,
 	flora_load_system_module_internal/1,
+	flora_measure_time/2,
 	flCompileInclude/1.

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: static_data.in,v 1.5 2001-08-08 07:32:26 kifer Exp $
+** $Id: static_data.in,v 1.6 2001-08-13 04:34:11 kifer Exp $
 ** 
 */
 
@@ -40,6 +40,7 @@ hide_this_hide(flora_write_goal,1).
 hide_this_hide(flTrace,0).
 hide_this_hide(flNoTrace,0).
 hide_this_hide(flTraceLow,0).
+hide_this_hide(flNoTraceLow,0).
 
 hide_this_hide(flOne,0).
 hide_this_hide(flAll,0).
