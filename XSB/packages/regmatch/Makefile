@@ -18,13 +18,13 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.6 1999-10-25 06:00:44 kifer Exp $
+## $Id: Makefile,v 1.7 1999-12-06 06:19:42 kifer Exp $
 ## 
 ##
 
 XSBDIR = ../..
 
-ALL = 	regmtchconfig.O regmtchshell.O
+ALL = 	regmtchconfig.O
 
 Option = [optimize]
 

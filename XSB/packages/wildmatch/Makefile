@@ -18,14 +18,14 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 1999-10-25 06:00:46 kifer Exp $
+## $Id: Makefile,v 1.6 1999-12-06 06:19:43 kifer Exp $
 ## 
 ##
 
 
 XSBDIR=../..
 
-ALL = 	wldmtchconfig.O wldmtchshell.O
+ALL = 	wldmtchconfig.O
 
 Option = [optimize]
 
