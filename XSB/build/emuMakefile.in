@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.32 2000-09-29 00:03:49 kifer Exp $
+## $Id: emuMakefile.in,v 1.33 2001-01-29 23:01:06 dwarren Exp $
 ## 
 
 
@@ -39,6 +39,8 @@ emuloopCFLAGS=@emuloopCFLAGS@
 trutilsCFLAGS=@trutilsCFLAGS@
 CPPFLAGS=@CPPFLAGS@
 LDFLAGS=@LDFLAGS@
+ODBCSRC=@ODBCSRC@
+ODBCOBJ=@ODBCOBJ@
 
 # This one is used for SGI only
 LINKFLAGS=@LINKFLAGS@
@@ -108,7 +110,7 @@ OBJS =	auxlry.o biassert.o builtin.o chat.o cinterf.o \
 	tst_insert.o tst_retrv.o tst_unify.o tst_utils.o varstring.o
 
 
-allOBJS = main_xsb.o ${OBJS}
+allOBJS = main_xsb.o ${OBJS} ${ODBCOBJ}
 
 ORAOBJS = $(OBJS) orastuff.o
 
@@ -145,7 +147,7 @@ xsboramod:: $(ORAOBJS)
 
 
 depend::
-	$(DEPEND) $(DEPENDFLAGS) -- -I$(arch_config_prefix) $(CFLAGS) -- $(SRCS)
+	$(DEPEND) $(DEPENDFLAGS) -- -I$(arch_config_prefix) $(CFLAGS) -- $(SRCS) $(ODBCSRC)
 
 
 #=======================================================================
