@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.10 1999-10-05 04:03:12 kifer Exp $
+## $Id: Makefile,v 1.11 1999-10-15 03:07:44 kifer Exp $
 ## 
 ##
 
@@ -26,7 +26,7 @@
 ALL = 	flora.O slx.O perlmatch.O gap.O regmatch.O wildmatch.O \
 	sModels.O libwww.O
 
-SUBDIR = flora slx perlmatch gap regmatch wildmatch libwww
+SUBDIR = flora slx perlmatch gap regmatch wildmatch libwww sModels
 
 Option = [optimize]
 
@@ -58,7 +58,7 @@ HDRMSG = "While compiling XSB/packages:"
 
 
 all:  init $(ALL) finish $(SUBDIR)
-	@touch cmd...
+	@../build/touch.sh cmd...
 	$(Prolog) < cmd...
 	@rm cmd...
 	@cat $(SVFILE)
@@ -79,6 +79,9 @@ perlmatch::
 	@echo ""
 	cd perlmatch; make
 
+#sModels::
+#	@echo ""
+#	cd sModels; make
 gap::
 	@echo ""
 	cd gap; make

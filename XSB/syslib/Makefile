@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.26 1999/10/10 05:05:03 kifer Exp $
+## $Id: Makefile,v 1.27 1999/10/10 22:44:51 cbaoqiu Exp $
 ## 
 ##
 
@@ -58,7 +58,7 @@ OBJFILESAVED = objfiles.saved
 .SUFFIXES: .P .H .O
 
 all: init $(ALL) finish
-	@touch cmd...
+	@../build/touch.sh cmd...
 	$(Prolog) < cmd...
 	@rm cmd...
 	@cat $(SVFILE)
@@ -69,12 +69,12 @@ all: init $(ALL) finish
 # The following is done because of brain damage in some make utilities
 # (notably Sun's), which don't take %.P %.H in the same dependency list
 %.P:   %.H
-	touch $@
+	../build/touch.sh $@
 
 # These targets are obsolete. They are here just in case some 
 # obscure make utility doesn't understand patterns
 .H.P:
-	touch $@
+	../build/touch.sh $@
 .P.O:
 	@cp -f $*.O $(OBJFILESAVED) || echo ""
 	echo 'mc($*, $(Option)).' >> cmd...

@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.7 1999-09-18 21:14:27 kifer Exp $
+## $Id: Makefile,v 1.8 1999-10-15 03:07:47 kifer Exp $
 ## 
 ##
 
@@ -56,7 +56,7 @@ HDRMSG = "While compiling XSB/packages/flora/syslib:"
 .SUFFIXES: .P .O .H
 
 all: init $(ALL) finish
-	@touch cmd...
+	@../../../touch.sh cmd...
 	$(Prolog) < cmd...
 	@rm cmd...
 	@cat $(SVFILE)
@@ -67,12 +67,12 @@ all: init $(ALL) finish
 # The following is done because of brain damage in some make utilities
 # (notably Sun's), which don't take %.P %.H in the same dependency list
 %.P:   %.H
-	touch $@
+	@../../../touch.sh $@
 
 # These targets are obsolete. They are here just in case some 
 # obscure make utility doesn't understand patterns
 .H.P:
-	touch $@
+	@../../../touch.sh $@
 .P.O:
 	echo 'mc($*, $(Option)).' >> cmd...
 

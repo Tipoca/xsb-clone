@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.21 1999-10-10 05:04:59 kifer Exp $
+## $Id: Makefile,v 1.22 1999-10-15 03:07:42 kifer Exp $
 ## 
 ##
 
@@ -55,7 +55,7 @@ HDRMSG = "While compiling XSB/lib:"
 .SUFFIXES: .P .O .H
 
 all: init $(ALL) finish
-	@touch cmd...
+	@../build/touch.sh cmd...
 	$(Prolog) < cmd...
 	/bin/rm -f cmd...
 	@cat $(SVFILE)
@@ -65,13 +65,13 @@ all: init $(ALL) finish
 # The following is done because of brain damage in some make utilities
 # (notably Sun's), which don't take %.P %.H in the same dependency list
 %.P:   %.H
-	touch $@
+	../build/touch.sh $@
 
 
 # These targets are obsolete. They are here just in case some 
 # obscure make utility doesn't understand patterns
 .H.P:
-	touch $@
+	../build/touch.sh $@
 .P.O:
 	echo 'mc($*, $(Option)).' >> cmd...
 

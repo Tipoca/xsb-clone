@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: smoMakefile.in,v 1.4 1999-08-31 21:08:00 warren Exp $
+## $Id: smoMakefile.in,v 1.5 1999-10-15 03:07:37 kifer Exp $
 ## 
 ##
 
@@ -54,14 +54,14 @@ Prolog = $(XSB)
 	echo 'mc($*,$(Option)).' >> cmd...
 
 all: $(ALL)
-	@touch cmd...
-	/bin/ln -s $(SMODELSOBJ) .
-	/bin/ln -s $(SMODELSHEADER) .
+	@../../build/touch.sh cmd...
+	ln -s $(SMODELSOBJ) .
+	ln -s $(SMODELSHEADER) .
 	$(Prolog) < cmd...
-	/bin/rm cmd...
+	@rm cmd...
 
 clean: 
-	/bin/rm *.o *.so *.O *.h
+	rm *.o *.so *.O *.h
 
 nope:
 
