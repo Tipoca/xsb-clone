@@ -5,7 +5,7 @@
 ;; Christian Schlepphorst (schlepph@informatik.uni-freiburg.de)
 ;; Michael Kifer (kifer@cs.sunysb.edu)
 
-;; $Id: flora.el,v 1.7 2001-07-07 22:56:26 kifer Exp $
+;; $Id: flora.el,v 1.8 2001-07-08 17:03:57 kifer Exp $
 
 ;;; Commentary:
 
@@ -352,7 +352,7 @@ This assumes that the point is inside a comment."
 	  (end-of-flora-clause)
 	  (or (bobp) (forward-char -1))
 	  (cond ((looking-at "[,(;]")
-		 (if (and more (looking-at "[^,]"))
+		 (if (and more (looking-at "[^,;]"))
 		     (+ ind flora-indent-width) ;More indentation
 		   (max tab-width ind))) ;Same indentation
 		((looking-at "-") tab-width) ;TAB
