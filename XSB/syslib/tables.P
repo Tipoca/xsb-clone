@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.20 1999/12/08 17:41:28 warren Exp $
+** $Id: tables.P,v 1.21 1999/12/14 20:37:55 ejohnson Exp $
 ** 
 */
 
@@ -155,8 +155,6 @@ get_calls_for_table(Skeleton, Call) :-
 
 
 /* inline builtin #152 */
-get_lastnode_cs_retskel(LastNode, SubgoalPtr, RetSkel) :-
-	get_lastnode_cs_retskel(_CallTerm, LastNode, SubgoalPtr, RetSkel).
 get_lastnode_cs_retskel(CallTerm, LastNode, SubgoalPtr, RetSkel) :-
 	get_lastnode_cs_retskel(CallTerm, LastNode, SubgoalPtr, RetSkel).
 
@@ -191,7 +189,7 @@ get_delay_lists(Leaf, DLs) :- get_delay_lists(Leaf, DLs).
 
 get_returns(CallStr, RetSkel, Rleaf) :-
 	get_returns(CallStr, RetSkel),
-	get_lastnode_cs_retskel(Rleaf, _, _).
+	get_lastnode_cs_retskel(_, Rleaf, _, _).
 
 /*----------------------------------------------------------------------*/
 /* delete_return(Cs,N) takes a call structure pointer in Cs (returned

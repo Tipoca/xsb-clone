@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.12 1999/10/19 20:11:57 ejohnson Exp $
+** $Id: tables.H,v 1.13 1999/12/08 17:41:26 warren Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 	  delete_return/2,
 	  get_call/3, get_calls/3, get_returns/2, get_returns/3,
 	  get_residual/2,
-	  get_lastnode_cs_retskel/3, /* because it is used in intern.P */
+	  get_lastnode_cs_retskel/4, /* because it is used in intern.P */
 	  force_truth_value/2.
 
 :- export (trie_dynamic)/1, trie_assert/1, trie_assert/2,
