@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.75 1999-11-02 01:20:20 cbaoqiu Exp $
+** $Id: builtin.c,v 1.76 1999-11-05 21:41:10 cbaoqiu Exp $
 ** 
 */
 
@@ -1826,12 +1826,13 @@ int builtin_call(byte number)
       /* ctop_tag(2, makenil); */ /* keep it as a free var */
       ctop_tag(3, makeint(0));
     }
-    else {
+    else if (isattv(attv)) {
       CPtr vector;
       vector = (CPtr)dec_addr(attv) + 1;
       ctop_tag(2, cell(vector));
       ctop_tag(3, cell(clref_val(cell(vector)) + 1));
     }
+    else xsb_abort("GET_ATTRIBUTES: Argument 1 is not an attributed variable");
     break;
   }
 
