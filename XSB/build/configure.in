@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.111 2001-06-14 21:15:57 kifer Exp $
+## $Id: configure.in,v 1.112 2001-06-29 21:03:29 kifer Exp $
 ## 
 ##
 
@@ -645,11 +645,11 @@ test "${have_errors}" = "yes" &&
 # Checks for header files
 
 dnl Note, under NT, we sould include time.h instead
-AC_CHECK_HEADERS(sys/time.h sys/resource.h, , have_errors=yes)
+AC_CHECK_HEADERS(sys/time.h)
+
+AC_CHECK_HEADERS(sys/resource.h, , have_errors=yes)
 test "${have_errors}" = "yes" &&
-    AC_MSG_ERROR([One of these header files is missing on your system:
-			sys/time.h
-			sys/resource.h])
+    AC_MSG_ERROR([sys/resource.h is missing on your system])
 
 AC_CHECK_FUNCS(malloc, have_malloc=yes,have_malloc=no)
 test "${have_malloc}" = "no" &&

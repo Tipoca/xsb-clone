@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.23 2001-03-27 22:59:31 dwarren Exp $
+** $Id: socket_xsb.c,v 1.24 2001-06-29 21:03:29 kifer Exp $
 ** 
 */
 
@@ -38,6 +38,8 @@
 /* wind2unix.h must be included after sys/stat.h */
 #include "wind2unix.h"
 
+#include "xsb_time.h"
+
 /* The socket material */
 #ifdef WIN_NT
 #include <windows.h>
@@ -50,7 +52,6 @@
 #include <winsock.h>
 #include "wsipx.h"
 #else /* UNIX */
-#include <sys/time.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
 #include <netdb.h>

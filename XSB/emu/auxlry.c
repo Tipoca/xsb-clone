@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.7 2001-02-15 16:15:44 lfcastro Exp $
+** $Id: auxlry.c,v 1.8 2001-06-29 21:03:29 kifer Exp $
 ** 
 */
 
@@ -27,12 +27,10 @@
 
 #include <stdio.h>
 
-#ifdef WIN_NT
-#include <time.h>
+/* take care of the time.h problems */
+#include "xsb_time.h"
 
-#else
-
-#include <sys/time.h>
+#ifndef WIN_NT
 #include <sys/resource.h>
 
 #ifdef SOLARIS
