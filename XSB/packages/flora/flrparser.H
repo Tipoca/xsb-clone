@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrparser.H,v 1.2 1999-06-22 18:24:29 kifer Exp $
+** $Id: flrparser.H,v 1.3 1999-08-23 04:10:52 kifer Exp $
 **
 */
 
@@ -31,11 +31,11 @@
 
 :- import append/3 from basics.
 
-:- import fmt_write_string/3 from file_io.
+%%:- import fmt_write_string/3 from file_io.
 
 :- import
 	flora_prefix/1, flora_word/2, terminate_list/1,
-	flora_member/2, displayln_errmsg/1, displayln/0
+	flora_member/2, flora_error_nl/2
    from flrutils.
 
 :- import

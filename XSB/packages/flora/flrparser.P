@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrparser.P,v 1.17 1999-07-25 01:05:37 guizyang Exp $
+** $Id: flrparser.P,v 1.18 1999-08-23 04:10:53 kifer Exp $
 **
 */
 
@@ -111,11 +111,7 @@ rule(null) --> white_space0, !.
 rule(_) -->
 	{ error(reserved_word),
 	  flora_prefix(P),
-	  fmt_write_string(Msg,
-			   'keywords that begin with `%s'' a reserved',
-			   f(P)),
-          displayln,
-          displayln_errmsg(Msg),
+          flora_error_nl('symbol prefix `%s'' is reserved', f(P)),
 	  fail
 	}.
 

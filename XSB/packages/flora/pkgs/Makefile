@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.2 1999-06-16 15:22:37 kifer Exp $
+## $Id: Makefile,v 1.3 1999-08-23 04:11:01 kifer Exp $
 ## 
 ##
 
@@ -34,8 +34,6 @@ Prolog = $(XSB) -i -s -m 2000 -c 2000 -e '[flora], bootstrap_flora.'
 #
 #-----------------------------------------------------------------------#
 
-# continue to the next when one error occurs
-.IGNORE:
 
 # suffix rules
 .SUFFIXES: .P .flr

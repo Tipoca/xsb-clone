@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.5 1999-08-19 00:44:30 kifer Exp $
+** $Id: flrshell.H,v 1.6 1999-08-23 04:10:53 kifer Exp $
 **
 */
 
@@ -37,6 +37,8 @@
 :- import slash/1 from machine.
 
 :- import fmt_write_string/3 from file_io.
+
+:- import file_write/2, file_nl/1 from xsb_writ.
 
 :- import current_predicate/1 from curr_sym.
 
@@ -56,11 +58,11 @@
 	flora_loadlist/1,
 	flora_dynloadlist/1,
 	flora_check_filename/1,
-	write_flora_warnheader/0,
 	flora_discard_tokens/1,
 	flcompile/1, flcompile/2, maxerr/1, flconsult/1, flconsult/2,
 	flload/1, dynload/1, dyncompile/1, dyncompile/2, dynconsult/1,
-	dynconsult/2, displayln_warning/1
+	dynconsult/2, flora_warning_nl/1, flora_warning_nl/2,
+	flora_display_msg/1, flora_display_msg/2
    from flrutils.
 
 :- import glob_directory/4 from wildmatch.
