@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.72 2000-02-18 16:03:34 kifer Exp $
+## $Id: configure.in,v 1.73 2000-02-24 18:18:12 lfcastro Exp $
 ## 
 ##
 
@@ -921,6 +921,19 @@ case "$canonical" in
 		   ;;
 	      esac
 	      ;;
+      *freebsd*)
+	AC_DEFINE(FREEBSD)
+	AC_DEFINE(FOREIGN_ELF)
+	if test "$CC" = "gcc" ; then
+		CFLAGS="-m486 ${CFLAGS}"
+	fi
+	if test "$__export_dynamic" = "yes" ; then
+	   	LDFLAGS="${LDFLAGS} -Wl,-export-dynamic"
+	fi
+	if test "${have_dl}" = yes ; then
+		LDFLAGS="${LDFLAGS} -ldl"
+	fi
+	;;
       *sgi*) 
 	     AC_DEFINE(FOREIGN_ELF)
 	     if test "${machine64bit}" = yes ; then
@@ -1376,3 +1389,4 @@ fi
 echo ""
 
 rm -f  buildxsb.lock
+    
