@@ -18,10 +18,11 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.1 1999-04-20 20:47:29 tswift Exp $
+## $Id: Makefile,v 1.2 2000-05-28 20:50:58 kifer Exp $
 ## 
 ##
 
+XSBDIR=../..
 
 ALL = 	gapmeta.O
 
@@ -31,10 +32,18 @@ Option = [optimize]
 #
 # Self-make: Version 1.4.1
 #
-XSB=../../bin/xsb
-Prolog = $(XSB)
+XSB=$(XSBDIR)/bin/xsb
+Prolog = $(XSB) -e 'segfault_handler(warn).'
 #
 #-----------------------------------------------------------------------#
+
+# Make sure warnings are saved in a file.
+SVFILE = '$(XSBDIR)/build/.gap_warn.tmp'
+STDWARN = 3
+STDERR = 2
+HDRMSG = "While compiling XSB/packages/gap:"
+
+
 
 # continue to the next when one error occurs
 .IGNORE:
@@ -44,15 +53,23 @@ Prolog = $(XSB)
 .P.O:
 	echo 'mc($*, $(Option)).' >> cmd...
 
-all: $(ALL)
-	@touch cmd...
+all: init $(ALL) finish
+	@$(XSBDIR)/build/touch.sh cmd...
 	$(Prolog) < cmd...
-	/bin/rm cmd...
+	@rm cmd...
 
 
+init:
+	/bin/rm -f $(SVFILE)
+	@echo "file_reopen($(SVFILE),w,$(STDWARN),_)." >> cmd...
+	@echo "file_clone($(STDWARN), $(STDERR),_)." >> cmd...
+	@echo 'fmt_write($(STDWARN),"-------------- Warnings/Errors --------------------\n",_).' >> cmd...
+	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
+	@echo "file_flush($(STDWARN), _)." >> cmd...
 
-# Unfortunately, this needs to be commented on the NeXT.
-# %.O:	%.H
+finish:
+	@echo 'fmt_write($(STDWARN),"-------------------- End --------------------------\n",_).' >> cmd...
+
 
 .DONE:
 	echo Done

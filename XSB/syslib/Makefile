@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.33 1999/12/01 18:30:17 kifer Exp $
+## $Id: Makefile,v 1.34 1999/12/12 06:47:28 kifer Exp $
 ## 
 ##
 
@@ -85,7 +85,7 @@ all: init $(ALL) finish
 init:
 	rm -f $(SVFILE)
 	@test -d $(OBJFILESAVED) || mkdir $(OBJFILESAVED)
-	@echo 'fmt_write($(STDWARN),"-------------- Warnings --------------------\n",_).' >> cmd...
+	@echo 'fmt_write($(STDWARN),"----------------- Warnings ------------------------\n",_).' >> cmd...
 	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
 	@echo 'file_flush($(STDWARN),_).' >> cmd...
 	@echo 'import file_reopen/4, fmt_write/3, file_flush/2 from file_io.' >> cmd...hdr
@@ -95,7 +95,7 @@ init:
 	@echo "assert(xpp_include_dir('../prolog_includes'))." >> cmd...hdr
 
 finish:
-	@echo 'fmt_write($(STDWARN),"%s\n",arg("--------------------------------------------")).' >> cmd...
+	@echo 'fmt_write($(STDWARN),"%s\n",arg("-------------------- End --------------------------")).' >> cmd...
 
 restore:
 	mv -f $(OBJFILESAVED)/*.O .

@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.16 1999-11-30 14:34:54 kifer Exp $
+## $Id: Makefile,v 1.17 2000-05-28 20:50:58 kifer Exp $
 ## 
 ##
 
@@ -92,7 +92,7 @@ init:
 	@echo "file_flush($(STDWARN), _)." >> cmd...
 
 finish:
-	@echo 'fmt_write($(STDWARN),"---------------------------------------------------\n",_).' >> cmd...
+	@echo 'fmt_write($(STDWARN),"-------------------- End --------------------------\n",_).' >> cmd...
 
 
 .DONE:
