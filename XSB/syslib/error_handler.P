@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.5 2003/11/14 19:34:12 tswift Exp $
+** $Id: error_handler.P,v 1.6 2003/11/29 03:10:32 tswift Exp $
 ** 
 */
 
@@ -103,7 +103,7 @@ type_error(Valid_type,Culprit,Predicate,Arg):-
 % These checks can be reused for various types of ISO compatability.
 
 %-------------
-% Checks that a term is not a variable
+% Checks that a term is an atom.
 check_atom(Term,Predicate,Arg) :- 
 	(atom(Term) -> 
 	    true
@@ -141,5 +141,5 @@ check_stream(Stream,Predicate,Arg) :-
 	(atom(Stream) -> 
 	    true
 	;
-	    instantiation_error(Predicate,Arg)).
+	    type_error(stream,Stream,Predicate,Arg)).
 
