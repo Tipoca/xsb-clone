@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_wind.in,v 1.12 1999-05-03 19:30:46 luis Exp $
+** $Id: def_config_wind.in,v 1.13 1999-06-04 17:54:07 luis Exp $
 ** 
 */
 
@@ -34,7 +34,8 @@
 /******* VARIABLES THAT MIGHT NEED TO BE SET MANUALLY ****************/
 
 
-/* If this is defined, winsock32.lib must also be included! */
+/* If this is defined, SOCKET_LIBRARY should be set to wsock32.lib */
+/* in MS_VC_Mfile.mak					           */
 #define HAVE_SOCKET 1
 
 /* Define as __inline__ if that's what the C compiler calls it.  */
