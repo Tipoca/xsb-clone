@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompileinclude.H,v 1.2 2001-06-11 07:07:03 kifer Exp $
+** $Id: flrcompileinclude.H,v 1.3 2001-06-12 16:00:04 gzyang Exp $
 **
 */
 
@@ -29,11 +29,14 @@
 	parse_filename/4,
 	stat_set_flag/2
    from machine.
+
 :- import 
 	storage_find_fact/2,
 	storage_insert_fact/3
    from storage.
+
 :- import ','/2 from standard.
+
 :- import
 	flora_set_xpp_options/0,
 	flora_clear_xpp_options/0,
@@ -41,17 +44,24 @@
 	flora_locate_file/3,
 	flora_FLH_filename/2
    from flrutils.
+
 :- import
 	flora_stderr_nl/0,
 	flora_error_line/2
    from flrprint.
+
 :- import member/2 from basics.
+
 :- import process_control/2 from shell.
+
 :- import xpp_process_file/3 from parse.
+
 :- import
 	fmt_write_string/3,
 	path_sysop/2
    from file_io.
+
+:- import bootstrap_flora/0 from flora2.
 
 :- export flCompileInclude/1.
 
