@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.10 2003-03-03 21:50:07 lfcastro Exp $
+** $Id: auxlry.c,v 1.11 2003-03-05 14:35:18 lfcastro Exp $
 ** 
 */
 
@@ -47,6 +47,9 @@ extern int syscall();
 
 #endif
 
+#ifdef WIN_NT
+#include "windows.h"
+#endif
 
 /*----------------------------------------------------------------------*/
 
@@ -55,8 +58,27 @@ double cpu_time(void)
   float time_sec;
 
 #if defined(WIN_NT)
+#if 0 /* code specific for win nt, 2000 & xp */
+      /* needs testing --lfcastro */
+  HANDLE thisproc;
+  FILETIME creation, exit, kernel, user;
+  long long lkernel, luser;
+
+  thisproc = GetCurrentProcess();
+  GetProcessTimes(thisproc,&creation,&exit,&kernel,&user);
+  /* unfinished -- how to convert kernel+user (two 64-bit unsigned
+     integers) into an appropriate float?              --lfcastro */
+  /* the code below assumes sizeof(long long) == 8 */
+  lkernel = (kernel.dwHighDateTime << 32) + kernel.dwLowDateTime;
+  luser = (kernel.dwHighDateTime << 32) + kernel.dwLowDateTime;
+  luser += lkernel;
+
+  time_sec = luser / 10000.0;
+
+#else /* this code is for Win98 */
 
   time_sec = ((float) clock() / CLOCKS_PER_SEC);
+#endif
 
 #else
   struct rusage usage;
@@ -71,8 +93,8 @@ double cpu_time(void)
 
 /*----------------------------------------------------------------------*/
 
-int get_date(unsigned *year, unsigned *month, unsigned *day,
-	     unsigned *hour, unsigned *minute)
+int get_date(int *year, int *month, int *day,
+	     int *hour, int *minute)
 {
 #ifdef WIN_NT
     SYSTEMTIME SystemTime;
@@ -84,7 +106,7 @@ int get_date(unsigned *year, unsigned *month, unsigned *day,
     *hour = SystemTime.wHour;
     *minute = SystemTime.wMinute;
     GetTimeZoneInformation(&tz);
-    *hour = *hour + tz.Bias / 60;
+    *hour = *hour + tz.Bias/60;
     *minute = *minute + tz.Bias % 60;
 #else
 #ifdef HAVE_GETTIMEOFDAY

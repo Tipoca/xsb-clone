@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.151 2003-03-03 20:54:58 lfcastro Exp $
+** $Id: builtin.c,v 1.152 2003-03-05 14:35:19 lfcastro Exp $
 ** 
 */
 
@@ -1241,7 +1241,7 @@ int builtin_call(byte number)
     break;
   }
   case GET_DATE: {
-    unsigned year=0, month=0, day=0, hour=0, minute=0;
+    int year=0, month=0, day=0, hour=0, minute=0;
     get_date(&year,&month,&day,&hour,&minute);
     ctop_int(1,year);
     ctop_int(2,month);
