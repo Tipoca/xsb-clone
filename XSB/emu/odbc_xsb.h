@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.h,v 1.3 2001-01-08 18:05:01 dwarren Exp $
+** $Id: odbc_xsb.h,v 1.4 2003-04-02 18:35:17 lfcastro Exp $
 ** 
 */
 
@@ -41,6 +41,7 @@ extern void ODBCTables();
 extern void ODBCUserTables();
 extern void ODBCDescribeSelect();
 extern void ODBCConnectOption();
+extern void ODBCDataSources();
 
 #define ODBC_CONNECT             1
 #define ODBC_PARSE               2
@@ -58,6 +59,7 @@ extern void ODBCConnectOption();
 #define ODBC_USER_TABLES        14
 #define ODBC_DESCRIBE_SELECT    15
 #define ODBC_CONNECT_OPTION     16
+#define ODBC_DATA_SOURCES       17
 
 #endif
 

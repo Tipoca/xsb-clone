@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.13 2003-02-27 20:41:02 dwarren Exp $
+** $Id: odbc_call.H,v 1.14 2003-04-02 18:35:16 lfcastro Exp $
 ** 
 */
 
@@ -38,7 +38,7 @@
 	odbc_user_tables/1, odbc_user_tables/2,
 	odbc_insert/2, odbc_insert/3,
 	odbc_delete/2, odbc_delete/3,
-	odbc_flag/3,
+	odbc_flag/3, odbc_data_sources/2,
 	odbc_attach/2, odbc_attach/3,
 	odbc_create_table/2, odbc_create_table/3,
 	odbc_create_index/3, odbc_create_index/4,
