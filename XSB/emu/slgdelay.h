@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.5 1999-01-28 09:08:10 cbaoqiu Exp $
+** $Id: slgdelay.h,v 1.6 1999-02-06 17:18:24 kostis Exp $
 ** 
 */
 
@@ -207,19 +207,6 @@ struct pos_neg_de_list {
 
 extern bool neg_delay;
 
-extern char *current_de_block, *current_dl_block, *current_pnde_block;
-
-extern DE released_des;
-extern DL released_dls;
-extern PNDE released_pndes;
-
-extern DE next_free_de;
-extern DL next_free_dl;
-extern PNDE next_free_pnde;
-
-extern DE current_de_block_top;
-extern DL current_dl_block_top;
-extern PNDE current_pnde_block_top;
 
 /*
  * Procedures used in other parts of the system.
