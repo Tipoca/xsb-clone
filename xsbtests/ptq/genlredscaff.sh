@@ -9,7 +9,8 @@ for suff in $suffixes ; do
 done
 
 $XEMU -m 4000 -c 2000 -i << EOF
-[ptqlred,tables].
+[ptqlred].
+import output_table/2 from tables.
 $1.
 output_table(s(_,_,_,_,_),$2_s).
 output_table(te1(_,_,_,_,_,_,_),$2_te1).
