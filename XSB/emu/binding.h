@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: binding.h,v 1.10 1999-12-10 07:47:25 kifer Exp $
+** $Id: binding.h,v 1.11 1999-12-14 21:03:52 ejohnson Exp $
 ** 
 */
 
@@ -237,13 +237,15 @@
 
 /* --- for building vals on the heap ---------------------------------- */
 
-#define nbldval(OP1)\
-    deref(OP1);\
-    if (isnonvar(OP1) ||\
-	(/*(CPtr)OP1 >= glstack.low &&*/ (CPtr)OP1 <= top_of_heap)) {\
-      new_heap_node(hreg, OP1);\
-    }\
-    else {	/* local stack vars point to heap vars and not vice-versa! */\
-      bind_ref((CPtr)(OP1), hreg);\
-      new_heap_free(hreg);\
-    }
+#define nbldval(OP1) {							  \
+   deref(OP1);								  \
+   if ( isnonvar(OP1) ||						  \
+	( /* (CPtr)(OP1) >= glstack.low && */				  \
+	  (CPtr)(OP1) <= top_of_heap ) ) {			 	  \
+     new_heap_node(hreg, OP1);						  \
+   }									  \
+   else {  /* local stack vars point to heap vars and not vice-versa! */  \
+     bind_ref((CPtr)(OP1), hreg);					  \
+     new_heap_free(hreg);						  \
+   }									  \
+}
