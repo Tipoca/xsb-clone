@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.13 1999/04/23 19:44:19 cbaoqiu Exp $
+** $Id: x_interp.P,v 1.14 1999/06/17 18:34:09 kostis Exp $
 ** 
 */
 
@@ -55,9 +55,8 @@ interpreter :-
             file_write(1, '| ?- '),
             file_write(1, CmdGoal), file_nl(1),
             file_open(CmdGoal, 3, FileDes),
-            file_read(FileDes, Goal),
+            eval_command_line_goal(FileDes),
             file_close(FileDes),
-            call((Goal,!)),
             file_nl(1)
         ),
         fail.
@@ -86,6 +85,17 @@ interpreter1 :-
 
 read_in_stop(halt) :- halt.     % quit entire system, regardless of break level
 read_in_stop(end_of_file).	% pop a break level, out if at top
+
+eval_command_line_goal(FileDes) :-
+	file_read(FileDes, Goal),
+	Goal \= end_of_file,
+	(call((Goal,!)) -> true
+	  ;
+	  true
+	),
+	eval_command_line_goal(FileDes).
+eval_command_line_goal(_).
+	
 
 process_query(X, Vars) :-
 	exclude__(Vars,PrintableVars), process_query1(X,PrintableVars).
