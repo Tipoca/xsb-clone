@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.29 2003-02-03 20:38:53 dwarren Exp $
+** $Id: system_xsb.c,v 1.30 2003-04-02 21:45:44 lfcastro Exp $
 ** 
 */
 
@@ -184,7 +184,7 @@ xsbBool sys_system(int callno)
   case IS_DIRECTORY:
   case STAT_FILE_TIME:
   case STAT_FILE_SIZE:
-    return file_stat(callno, ptoc_string(2));
+    return file_stat(callno, ptoc_longstring(2));
   case EXEC: {
 #ifdef HAVE_EXECVP
     /* execs a new process in place of XSB */
