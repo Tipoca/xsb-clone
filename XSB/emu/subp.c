@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.13 1999/07/22 15:24:12 warren Exp $
+** $Id: subp.c,v 1.14 1999/08/04 16:21:36 kifer Exp $
 ** 
 */
 
@@ -85,7 +85,7 @@ void (*xsb_default_segfault_handler)(int); /* where the previous value of the
 bool unify(Cell rop1, Cell rop2)
 { /* begin unify */
   register Cell op1, op2;
-  long arity, i;
+  long arity;
 
   op1 = rop1; op2 = rop2;
 
@@ -291,7 +291,7 @@ Float asfloat(Cell w)
   return float_conv.f;
 }
 
-static int sign(Float num)
+static inline int sign(Float num)
 {
   if (num==0.0) return 0;
   else if (num>0.0) return 1;
