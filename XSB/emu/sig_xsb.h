@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sig_xsb.h,v 1.1 1999-10-25 05:59:15 kifer Exp $
+** $Id: sig_xsb.h,v 1.2 2001-03-23 03:54:31 kifer Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 #define MYSIG_SPY      3		/* spy point */
 #define MYSIG_TRACE    4	       	/* trace point */
 #define MYSIG_ATTV     8		/* attributed var interrupt */
+#define MYSIG_PSC     14                /* new PSC creation interrupt */
 #define MYSIG_CLAUSE  16	       	/* clause interrupt */
 
 #define KEYINT_MARK 0x80		/* keyboard interrupt ^C */
