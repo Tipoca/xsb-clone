@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.7 1999-10-26 06:47:33 kifer Exp $
+** $Id: trie_internals.h,v 1.8 1999-10-27 16:13:00 ejohnson Exp $
 ** 
 */
 
@@ -470,13 +470,12 @@ extern Cell TrieVarBindings[];
 /*
  *  Hashing function for symbols
  */
-#define CELL_TAG_SIZE	4     /* should go into cell_xsb.h for each machine */
 #define TRIEVAR_BUCKET	0
 
 #define TrieHash(Symbol, HashSeed)			\
    ( IsTrieVar(Symbol)					\
       ? TRIEVAR_BUCKET					\
-      : ( ((Symbol) >> CELL_TAG_SIZE) & (HashSeed) )	\
+      : ( ((Symbol) >> CELL_TAG_NBITS) & (HashSeed) )	\
     )
 
 #define CalculateBucketForSymbol(pHT,Symbol)		\

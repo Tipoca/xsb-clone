@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.1 1999-10-26 06:46:48 kifer Exp $
+** $Id: cell_xsb.h,v 1.2 1999-10-27 16:12:58 ejohnson Exp $
 ** 
 */
 
@@ -69,8 +69,6 @@
 /* ==== types of cells =================================================*/
 
 #include "celltags_xsb.h"
-
-#define TrieVar 0x0
 
 /*======================================================================*/
 /* CELL: an element in the local stack or global stack (heap).		*/

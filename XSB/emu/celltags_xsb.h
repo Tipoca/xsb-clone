@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: celltags_xsb.h,v 1.1 1999-10-26 06:46:50 kifer Exp $
+** $Id: celltags_xsb.h,v 1.2 1999-10-27 16:12:59 ejohnson Exp $
 ** 
 */
 
@@ -35,3 +35,7 @@
 #define STRING  5	/* Non-Numeric Constant (Atom) */
 #define FLOAT	6	/* Floating point number */
 #define ATTV	7	/* Attributed variable */
+
+#define CELL_TAG_NBITS	3
+
+#define TrieVar FREE    /* Cell tag of a standardized variable in tries */
