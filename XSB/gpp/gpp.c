@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.32 2004-08-01 18:43:00 kifer Exp $
+** $Id: gpp.c,v 1.33 2004-11-30 19:25:08 kifer Exp $
 ** 
 */
 
@@ -1137,8 +1137,8 @@ void initthings(int argc, char **argv)
       add_comment(S,"css",strdup("\213/*"),strdup("*/"),0,0); /* \!o */
       add_comment(S,"cii",strdup("\\\n"),strdup(""),0,0);
       add_comment(S,"css",strdup("//"),strdup("\n"),0,0);
-      add_comment(S,"sss",strdup("\""),strdup("\""),0,'\n');
-      add_comment(S,"sss",strdup("\207'"),strdup("'"),0,'\n'); /* \!# */
+      add_comment(S,"sss",strdup("\""),strdup("\""),'\\','\n');
+      add_comment(S,"sss",strdup("\207'"),strdup("'"),'\\','\n'); /* \!# */
       break;
     case 'T':
       ishelp|=ismode|hasmeta|usrmode; ismode=1;
