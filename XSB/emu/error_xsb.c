@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.2 1999-10-26 06:46:59 kifer Exp $
+** $Id: error_xsb.c,v 1.3 1999-11-17 03:54:27 kifer Exp $
 ** 
 */
 
@@ -68,6 +68,26 @@ void xsb_abort(char *description, ...)
   va_start(args, description);
 
   strcpy(message, "++Error: ");
+  vsprintf(message+strlen(message), description, args);
+  if (message[strlen(message)-1] != '\n')
+    strcat(message, "\n");
+
+  va_end(args);
+  pcreg = exception_handler(message);
+
+  /* this allows xsb_abort to jump out even from nested loops */
+  longjmp(xsb_abort_fallback_environment, (int) pcreg);
+}
+
+
+void xsb_bug(char *description, ...)
+{
+  char message[MAXBUFSIZE];
+  va_list args;
+
+  va_start(args, description);
+
+  strcpy(message, "++XSB bug: ");
   vsprintf(message+strlen(message), description, args);
   if (message[strlen(message)-1] != '\n')
     strcat(message, "\n");

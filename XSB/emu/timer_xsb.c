@@ -18,9 +18,10 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.c,v 1.3 1999-11-16 20:39:15 kifer Exp $
+** $Id: timer_xsb.c,v 1.4 1999-11-17 03:54:35 kifer Exp $
 ** 
 */
+
 
 
 #include "configs/config.h"
@@ -30,16 +31,11 @@
 #include <winuser.h>
 #endif
 
-#include <signal.h>
-#include <setjmp.h>
-
+#include "setjmp_xsb.h" 
 
 
 /* To set a timeout, do this:
-#include <signal.h>
-#include <setjmp.h>
 #include "configs/config.h"
-#include "cell_xsb.h"
 #include "timer_xsb.h"
 
    if (CHECK_TIMER_SET) {

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.6 1999-11-16 19:05:56 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.7 1999-11-17 03:54:30 kifer Exp $
 ** 
 */
 
@@ -29,13 +29,13 @@
 #include <signal.h>
 #include <errno.h>
 #include <string.h>
-#include <setjmp.h>
 #include <stdlib.h>
 #ifndef WIN_NT
 #include <unistd.h> 
 #endif
 #include <sys/stat.h>
 
+#include "setjmp_xsb.h"
 #include "auxlry.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"

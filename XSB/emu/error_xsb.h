@@ -18,11 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.1 1999-10-25 05:58:10 kifer Exp $
+** $Id: error_xsb.h,v 1.2 1999-11-17 03:54:28 kifer Exp $
 ** 
 */
 
-#include <setjmp.h>
+#include "setjmp_xsb.h"
 
 /*----------------------------------------------------------------------*/
 /* The following is a list of errors as defined by the Prolog ISO	*/
@@ -54,6 +54,7 @@
 
 extern void xsb_exit(char *, ...);
 extern void xsb_abort(char *, ...);
+extern void xsb_bug(char *, ...);
 extern void xsb_warn(char *, ...);
 extern void xsb_mesg(char *, ...);
 extern void xsb_error(char *, ...);

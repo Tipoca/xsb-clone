@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.2 1999-10-27 16:12:58 ejohnson Exp $
+** $Id: cell_xsb.h,v 1.3 1999-11-17 03:54:23 kifer Exp $
 ** 
 */
 
@@ -261,3 +261,4 @@ extern Float getfloatval(Cell);
 			(isinteger(dcell) && int_val(dcell) >= 0 \
 					  && int_val(dcell) <= MAX_ARITY)
 
+#define CELL_DEFS_INCLUDED

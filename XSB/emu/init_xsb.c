@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.5 1999-11-16 19:05:55 kifer Exp $
+** $Id: init_xsb.c,v 1.6 1999-11-17 03:54:29 kifer Exp $
 ** 
 */
 
@@ -60,7 +60,7 @@
 #include "tr_utils.h"
 #include "export.h"
 #include "io_builtins_xsb.h"
-#include "timer_xsb.h"
+#include "timer_defs_xsb.h"
 
 /*-----------------------------------------------------------------------*/
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.3 1999-11-16 19:06:00 kifer Exp $
+** $Id: pathname_xsb.c,v 1.4 1999-11-17 03:54:32 kifer Exp $
 ** 
 */
 
@@ -35,7 +35,6 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
-#include <setjmp.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <sys/types.h>
@@ -48,6 +47,7 @@
 #include <pwd.h>
 #endif
 
+#include "setjmp_xsb.h"
 #include "auxlry.h"
 #include "psc_xsb.h"
 #include "cinterf.h"

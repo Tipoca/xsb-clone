@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.h,v 1.3 1999-11-16 20:39:15 kifer Exp $
+** $Id: timer_xsb.h,v 1.4 1999-11-17 03:54:36 kifer Exp $
 ** 
 */
 
@@ -27,6 +27,11 @@
 #error "File configs/config.h must be included before this file"
 #endif
 
+#include "setjmp_xsb.h" 
+
+#ifndef CELL_DEFS_INCLUDED
+#error "File cell_xsb.h must be included before this file"
+#endif
 
 #ifndef SYSTEM_FLAGS
 #include "flags_xsb.h"

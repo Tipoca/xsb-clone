@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.31 1999-11-16 23:12:30 warren Exp $
+** $Id: biassert.c,v 1.32 1999-11-17 03:54:21 kifer Exp $
 ** 
 */
 
@@ -33,9 +33,9 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
-#include <setjmp.h>
 #include <stdlib.h>
 
+#include "setjmp_xsb.h"
 #include "auxlry.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
