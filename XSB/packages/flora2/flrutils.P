@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.70 2001-11-26 19:12:16 gzyang Exp $
+** $Id: flrutils.P,v 1.71 2001-12-19 07:38:26 kifer Exp $
 **
 */
 
@@ -349,7 +349,7 @@ flora_flcompile(FlrFile,ModuleName) :-
 	  (
 	    %% Issue only important preprocessor warnings
 	    %% to avoid warnings when atoms or strings have \n in them
-	    flora_add_xpp_options('-warninglevel 0 '),
+	    flora_add_xpp_options('-warninglevel 1 '),
 	    %%compile(MPFile,[optimize,spec_repr,ti_all])
 	    compile(MPFile,[optimize,ti_all]) ->
 	      true
@@ -989,6 +989,8 @@ flora_load_dyn(InDBFile,ModuleName) :-
 	    cputime(T0),
 	    seeing(PreInFile),
 	    flora_set_xpp_options_for_compile(ModuleName),
+	    %% Don't issue irrelevant warnings
+	    flora_add_xpp_options('-warninglevel 1 '),
 	    xpp_process_file(DBFile,XPP_process,IOportFromProc),
 	    stat_set_flag(CURRENT_INPUT,IOportFromProc),
 	    flora_storage_name(ModuleName,StorageName),
