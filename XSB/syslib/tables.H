@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.20 2000/07/31 20:28:02 ejohnson Exp $
+** $Id: tables.H,v 1.21 2000/08/05 08:47:36 cbaoqiu Exp $
 ** 
 */
 
@@ -48,7 +48,7 @@
 :- import abolish_table_info/0, is_incomplete/4, get_ptcp/1, slg_not/1,
 	  get_subgoal_ptr/2, delete_attributes/1 from machine.
 :- import numbervars/3, unnumbervars/2 from num_vars.
-:- import (table)/1 from usermod.
+:- import (table)/1 from standard..
 
 /* ------------------- end of file tables.H --------------------------- */
 
