@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap.c,v 1.16 1999-04-16 16:14:33 unova Exp $
+** $Id: heap.c,v 1.17 1999-04-16 16:42:02 unova Exp $
 ** 
 */
 
@@ -1237,15 +1237,15 @@ void print_regs(int a,int add)
   fprintf(where,"ereg = %ld\n",(long)(ls_bot-ereg)) ;
 
 #if (!defined(CHAT))
-  fprintf(where,"trfreg = %ld\n",(long)(CPtr)(trfreg-tr_bot)) ;
+  fprintf(where,"trfreg = %ld\n",(long)((CPtr)trfreg-tr_bot)) ;
   fprintf(where,"bfreg = %ld\n",(long)(cp_bot-bfreg)) ;
   fprintf(where,"hfreg = %ld\n",(long)(hfreg-heap_bot)) ;
   fprintf(where,"efreg = %ld\n",(long)(ls_bot-efreg)) ;
 #endif
   fprintf(where,"ptcpreg = %ld\n",(Cell)ptcpreg) ;
 
-  fprintf(where,"ebreg = %d\n",ls_bot-ebreg) ;
-  fprintf(where,"hbreg = %d\n",hbreg-heap_bot) ;
+  fprintf(where,"ebreg = %ld\n",(long)(ls_bot-ebreg)) ;
+  fprintf(where,"hbreg = %ld\n",(long)(hbreg-heap_bot)) ;
 
   fprintf(where,"cpreg = %ld\n",(Cell)cpreg) ;
   fprintf(where,"pcreg = %ld\n",(Cell)pcreg) ;
