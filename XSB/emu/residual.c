@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.17 2000-06-28 16:54:52 ruim Exp $
+** $Id: residual.c,v 1.18 2002-01-23 17:08:10 dwarren Exp $
 ** 
 */
 
@@ -60,6 +60,8 @@ extern void print_subgoal(FILE *, VariantSF);
    printf("atom(%s/%d)",get_name((Psc)dec_addr(X)),get_arity((Psc)dec_addr(X)));\
  else if (isinteger(X)) \
    printf("atom(%d)",int_val(X));\
+ else if (isboxedinteger(X)) \
+   printf("atom(%d)",boxedint_val(X));\
  else if (islist(X))\
    printf("./2");\
  else\

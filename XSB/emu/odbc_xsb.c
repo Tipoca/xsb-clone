@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.21 2001-08-30 11:59:53 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.22 2002-01-23 17:08:09 dwarren Exp $
 ** 
 */
 
@@ -547,7 +547,7 @@ void SetBindVal()
 	  return;
 	}
       }
-      *((int *)cur->BindList[j]) = int_val(BindVal);
+      *((int *)cur->BindList[j]) = oint_val(BindVal);
     } else if (isfloat(BindVal)) {
       if (cur->BindTypes[j] != 1) { 
 	/*printf("ODBC: Changing Type: flt to %d\n",cur->BindTypes[j]);*/
@@ -585,7 +585,7 @@ void SetBindVal()
     cur->BindList[j] = (UCHAR *)malloc(sizeof(int));
     if (!cur->BindList[j])
       xsb_exit("Not enough memory for an int in SetBindVal!");
-    *((int *)cur->BindList[j]) = int_val(BindVal);
+    *((int *)cur->BindList[j]) = oint_val(BindVal);
   } else if (isfloat(BindVal)) {
     cur->BindTypes[j] = 1;
     cur->BindList[j] = (UCHAR *)malloc(sizeof(float));

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.56 2001/11/07 21:08:01 dwarren Exp $
+** $Id: subp.c,v 1.57 2001/11/08 21:35:25 dwarren Exp $
 ** 
 */
 
@@ -108,6 +108,7 @@ void add_interrupt(Cell op1, Cell op2) {
 #error "PRE_IMAGE_TRAIL has to be defined for add_interrupt() !"
 #else
   num = int_val(cell(interrupt_reg));
+  /**printf("interrupt count = %d\n",num);**/
   push_pre_image_trail(&(attv_interrupts[num][0]), op1);
   attv_interrupts[num][0] = op1;
   push_pre_image_trail(&(attv_interrupts[num][1]), op2);
@@ -538,6 +539,8 @@ int compare(const void * v1, const void * v2)
     if (isref(val2) || isfloat(val2) || isattv(val2)) return 1;
     else if (isinteger(val2)) 
       return int_val(val1) - int_val(val2);
+    else if (isboxedinteger(val2))
+      return int_val(val1) - boxedint_val(val2);
     else return -1;
   case XSB_STRING:
     if (isref(val2) || isfloat(val2) || isinteger(val2) || isattv(val2)) 
@@ -547,7 +550,14 @@ int compare(const void * v1, const void * v2)
     }
     else return -1;
   case XSB_STRUCT:
-    if (cell_tag(val2) != XSB_STRUCT && cell_tag(val2) != XSB_LIST) return 1;
+    if (isboxedinteger(val1)) {
+      if (isref(val2) || isfloat(val2) || isattv(val2)) return 1;
+      else if (isinteger(val2)) 
+	return boxedint_val(val1) - int_val(val2);
+      else if (isboxedinteger(val2))
+	return boxedint_val(val1) - boxedint_val(val2);
+      else return -1;
+    } else if (cell_tag(val2) != XSB_STRUCT && cell_tag(val2) != XSB_LIST) return 1;
     else {
       int arity1, arity2;
       Psc ptr1 = get_str_psc(val1);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.21 2001-12-13 21:13:35 lfcastro Exp $
+** $Id: init_xsb.c,v 1.22 2002-01-23 17:08:09 dwarren Exp $
 ** 
 */
 
@@ -757,6 +757,10 @@ void init_symbols(void)
   /* insert symbol ","/2 */
   temp = insert(",", 2, global_mod, &new_indicator);
   comma_psc = pair_psc(temp);
+
+  /* insert symbol "$BOX$"/3 */
+  temp = insert("$BOX$", 3, global_mod, &new_indicator);
+  box_psc = pair_psc(temp);
 
   /* insert symbol tnot/1 into module tables */
   tp = insert_module(0, "tables");		/* unloaded */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.13 2001-04-20 02:11:36 kifer Exp $
+** $Id: io_builtins_xsb_i.h,v 1.14 2002-01-23 17:08:09 dwarren Exp $
 ** 
 */
 
@@ -121,7 +121,7 @@ inline static xsbBool file_function(void)
     tmpstr = ptoc_string(2);
     pterm = reg_term(3);
     if (is_int(pterm))
-      mode = int_val(pterm);
+      mode = oint_val(pterm);
     else if (is_string(pterm)) {
       switch ((string_val(pterm))[0]) {
       case 'r': mode = OREAD; break;
@@ -299,7 +299,7 @@ inline static xsbBool file_function(void)
     tmpstr = ptoc_string(2);
     pterm = reg_term(3);
     if (is_int(pterm))
-      mode = int_val(pterm);
+      mode = oint_val(pterm);
     else if (is_string(pterm)) {
       switch ((string_val(pterm))[0]) {
       case 'r': mode = OREAD; break;

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.12 2001-07-27 13:27:02 dwarren Exp $
+** $Id: cell_xsb.h,v 1.13 2002-01-23 17:08:08 dwarren Exp $
 ** 
 */
 
@@ -268,3 +268,32 @@ extern Float getfloatval(Cell);
 					  && int_val(dcell) <= MAX_ARITY)
 
 #define CELL_DEFS_INCLUDED
+
+#define isboxedinteger(dcell) (isconstr(dcell) && (get_str_psc(dcell)==box_psc) && (int_val(cell(clref_val(dcell)+1)) == 1))
+
+#define boxedint_val(dcell) \
+       ((Integer)((((unsigned long)int_val(cell(clref_val(dcell)+2))<<24)   \
+                  | int_val(cell(clref_val(dcell)+3))))) 
+
+#define oint_val(dcell)      \
+    (isinteger(dcell)        \
+     ?int_val(dcell)         \
+     :(isboxedinteger(dcell) \
+       ?boxedint_val(dcell)  \
+       :0x80000000))
+
+#define int_overflow(value)                 \
+   (int_val(makeint(value)) != (value))
+
+#define bld_boxedint(addr, value)				\
+     {Cell binttemp = makecs(hreg);				\
+      new_heap_functor(hreg,box_psc);				\
+      bld_int(hreg,1); hreg++;					\
+      bld_int(hreg,(((unsigned)(value)) >> 24)); hreg++;	\
+      bld_int(hreg,((value) & 0xffffff)); hreg++;		\
+      cell(addr) = binttemp;}
+
+#define bld_oint(addr, value)					\
+    if (int_overflow(value)) {					\
+      bld_boxedint(addr, value);				\
+    } else {bld_int(addr,value);}

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.22 2001-07-06 18:19:42 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.23 2002-01-23 17:08:09 dwarren Exp $
 ** 
 */
 
@@ -226,7 +226,7 @@ xsbBool fmt_write(void)
     if (is_string(ValTerm))
       c2p_string(string_val(ValTerm), p2p_arg(TmpValTerm,1));
     else if (is_int(ValTerm))
-      c2p_int(int_val(ValTerm), p2p_arg(TmpValTerm,1));
+      c2p_int(oint_val(ValTerm), p2p_arg(TmpValTerm,1));
     else if (is_float(ValTerm))
       c2p_float(float_val(ValTerm), p2p_arg(TmpValTerm,1));
     else
@@ -285,7 +285,7 @@ xsbBool fmt_write(void)
       PRINT_ARG(str_arg);
     } else if (is_int(Arg)) {
       TYPE_ERROR_CHK('i', "FMT_WRITE");
-      int_arg = int_val(Arg);
+      int_arg = oint_val(Arg);
       PRINT_ARG(int_arg);
     } else if (is_float(Arg)) {
       TYPE_ERROR_CHK('f', "FMT_WRITE")
@@ -374,7 +374,7 @@ xsbBool fmt_write_string(void)
     if (is_string(ValTerm))
       c2p_string(string_val(ValTerm), p2p_arg(TmpValTerm,1));
     else if (is_int(ValTerm))
-      c2p_int(int_val(ValTerm), p2p_arg(TmpValTerm,1));
+      c2p_int(oint_val(ValTerm), p2p_arg(TmpValTerm,1));
     else if (is_float(ValTerm))
       c2p_float(float_val(ValTerm), p2p_arg(TmpValTerm,1));
     else
@@ -434,7 +434,7 @@ xsbBool fmt_write_string(void)
       SPRINT_ARG(str_arg);
     } else if (is_int(Arg)) {
       TYPE_ERROR_CHK('i', "FMT_WRITE_STRING");
-      int_arg = int_val(Arg);
+      int_arg = oint_val(Arg);
       SPRINT_ARG(int_arg);
     } else if (is_float(Arg)) {
       TYPE_ERROR_CHK('f', "FMT_WRITE_STRING");
@@ -592,7 +592,7 @@ xsbBool fmt_read(void)
       }
       if (is_var(Arg))
 	c2p_int(int_arg,Arg);
-      else if (int_arg != int_val(Arg)) return FALSE;
+      else if (int_arg != oint_val(Arg)) return FALSE;
       break;
     case 'f':
       curr_assignment = fscanf(fptr, aux_fmt.string,

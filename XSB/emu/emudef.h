@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.29 2001-11-08 21:35:25 dwarren Exp $
+** $Id: emudef.h,v 1.30 2002-01-23 17:08:08 dwarren Exp $
 ** 
 */
 
@@ -74,6 +74,7 @@ Pair list_str;
 
 Psc list_psc, comma_psc;
 Psc tnot_psc, delay_psc;
+Psc box_psc;
 
 /*
  * Ret PSC's are used to store substitution factors for subgoal calls
