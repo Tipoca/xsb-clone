@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chat.c,v 1.11 1999-10-05 04:01:19 kifer Exp $
+** $Id: chat.c,v 1.12 1999-10-22 20:57:30 ejohnson Exp $
 ** 
 */
 
@@ -514,6 +514,30 @@ void chat_restore_compl_susp_trail(chat_init_pheader pheader)
     chat_free_chat_area(pheader, SELECTIVE_MODE);
 
 } /* chat_restore_compl_susp_trail */
+
+/*----------------------------------------------------------------------*/
+
+CPtr restore_answer_template(chat_init_pheader pheader, CPtr **baseTR) {
+
+  CPtr consumer_cpf, answer_template;
+
+  *baseTR = tcp_trreg(breg);   /* base chosen by the following function */
+  chat_reinstall_all_oldbindings(chat_get_father(pheader));
+
+  answer_template = breg - 1 - chat_get_nrargs(pheader);
+  consumer_cpf = answer_template - NLCPSIZE;
+  chat_restore_init_area(consumer_cpf, CONSUMER_TYPE, pheader);
+  return answer_template;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+void undo_template_restoration(CPtr *baseTR) {
+
+  table_undo_bindings(baseTR);
+}
+
+/*----------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------*/
 /* Routines that save states in CHAT areas.                             */

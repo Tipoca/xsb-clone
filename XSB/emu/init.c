@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.37 1999-10-20 18:22:10 kifer Exp $
+** $Id: init.c,v 1.38 1999-10-22 20:57:31 ejohnson Exp $
 ** 
 */
 
@@ -374,14 +374,7 @@ char *init_para(int argc, char *argv[])
       flags[TRACE_STA] = call_intercept = 1;
       break;
     case 'S':
-#ifndef CHAT
       flags[TABLING_METHOD] = SUBSUMPTIVE_TEM;
-#else
-      {
-	void print_chat_sub_warning();
-	print_chat_sub_warning();
-      }
-#endif
       break;
     case 'd':
       if ( (xsb_mode != DEFAULT) && (xsb_mode != CUSTOM_BOOT_MODULE) )

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.4 1999-10-16 03:00:55 cbaoqiu Exp $
+** $Id: tables.c,v 1.5 1999-10-22 20:57:32 ejohnson Exp $
 ** 
 */
 
@@ -398,9 +398,3 @@ void release_all_tabling_resources() {
 }
 
 /*-------------------------------------------------------------------------*/
-
-#ifdef CHAT
-void print_chat_sub_warning() {
-  xsb_warn("Subsumption not currently supported under CHAT\n");
-}
-#endif

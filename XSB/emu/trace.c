@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace.c,v 1.12 1999-10-13 21:03:47 ejohnson Exp $
+** $Id: trace.c,v 1.13 1999-10-22 20:57:32 ejohnson Exp $
 ** 
 */
 
@@ -303,9 +303,7 @@ void total_stat(double elapstime) {
     printf("\n");
   }
 
-#ifndef CHAT
   print_subsumption_stats();
-#endif
 
   printf("\nVariant Operations:\n");
   printf("  %ld subgoal check/insert attempts", subg_chk_ins);

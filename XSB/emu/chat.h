@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chat.h,v 1.4 1999-02-04 20:31:00 kostis Exp $
+** $Id: chat.h,v 1.5 1999-10-22 20:57:30 ejohnson Exp $
 ** 
 */
 
@@ -128,5 +128,8 @@ extern chat_init_pheader save_a_consumer_for_generator(SGFrame);
 #endif
 
 extern chat_init_pheader chat_link_headers;
+
+extern CPtr restore_answer_template(chat_init_pheader,CPtr **);
+extern void undo_template_restoration(CPtr *);
 
 /*------------------------- end of file chat.h --------------------------*/
