@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.14 1999/04/27 20:03:27 kostis Exp $
+** $Id: standard.P,v 1.15 1999/05/04 17:44:46 warren Exp $
 ** 
 */
 
@@ -300,10 +300,6 @@ structure(X) :- compound(X).
 callable(X) :- callable(X).
 
 is_list(X) :- is_list(X).
-
-%% Check if  the argument is a string of characters
-is_string([]). 
-is_string([C|Cs]) :- C >= 0, C =< 255, is_string(Cs). 
 
 % A term X is a proper hilog term if it somewhere 
 % contains a subterm that is not a prolog term.

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.9 1999/04/09 12:17:58 kostis Exp $
+** $Id: standard.H,v 1.10 1999/04/27 14:40:04 kifer Exp $
 ** 
 */
 
@@ -40,7 +40,6 @@
 	(hilog)/1,	hilog_arg/3,	hilog_functor/3,
 	(index)/3,	(index)/2,      (table)/1,
 	integer/1,	is/2,		is_list/1,	proper_hilog/1,
-        is_string/1,
 	listing/0,	listing/1,	name/2,		nl/0, nl/1,
 	nofileerrors/0, nonvar/1,	(not)/1,	number/1,
 	number_chars/2, number_codes/2,
