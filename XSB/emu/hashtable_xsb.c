@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hashtable_xsb.c,v 1.4 2002-05-31 15:09:02 lfcastro Exp $
+** $Id: hashtable_xsb.c,v 1.5 2004-07-07 22:31:14 dwarren Exp $
 ** 
 */
 
@@ -28,6 +28,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "auxlry.h"
 #include "cell_xsb.h"

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.73 2004/01/29 18:44:09 dwarren Exp $
+** $Id: subp.c,v 1.74 2004/04/09 21:03:06 dwarren Exp $
 ** 
 */
 
@@ -32,6 +32,7 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <string.h>
 
 #ifdef WIN_NT
 #include <windows.h>
@@ -45,6 +46,7 @@
 #else
 #include <pthread.h>
 #include <sched.h>
+#include <unistd.h>
 #endif
 
 
