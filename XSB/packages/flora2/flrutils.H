@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.3 2001-02-19 19:01:04 gzyang Exp $
+** $Id: flrutils.H,v 1.4 2001-03-07 22:17:59 gzyang Exp $
 **
 */
 
@@ -113,6 +113,8 @@
 	flora_stderr_nl/0,
 	flora_stderr_string/1,
 	flora_stderr_string/2,
+	flora_stdwarn_string/1,
+	flora_stdwarn_string/2,
 	flora_stdmsg_nl/0,
 	flora_error_indentline/0,
 	flora_warning_indentline/0,
