@@ -54,6 +54,14 @@ options=$2
 # Test evaluable functions
 #------------------------------------
 ../gentest.sh "$XEMU $options" conv_fun "test."
+#------------------------------------
+# Test format library
+#------------------------------------
+../gentest.sh "$XEMU $options" format_test "test."
+#------------------------------------
+# Test write_term library
+#------------------------------------
+../gentest.sh "$XEMU $options" wttest "test."
 #------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
 #------------------------------------------------------------------------
