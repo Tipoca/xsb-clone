@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.18 2001-06-10 02:00:52 kifer Exp $
+** $Id: flrutils.H,v 1.19 2001-06-10 05:00:14 kifer Exp $
 **
 */
 
@@ -56,6 +56,7 @@
 	slash/1,
 	is_absolute_filename/1,
 	parse_filename/4,
+	stat_flag/2,
 	stat_set_flag/2
    from machine.
 
@@ -65,6 +66,7 @@
 	fmt_write/3,
 	file_close/1,
 	print_file_contents/1,
+	copyIOport/2,
 	path_sysop/2
    from file_io.
 
