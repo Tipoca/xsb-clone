@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.16 2000-12-04 17:10:45 ejohnson Exp $
+** $Id: trie_internals.h,v 1.17 2001-02-26 22:13:48 dwarren Exp $
 ** 
 */
 
@@ -773,7 +773,7 @@ extern Structure_Manager smTSIN;
  * 'prev' and 'next' links are left to the caller to set.
  */
 #define New_TSIN(TSIN, TSTN) {			\
-   void *t = TSIN ;				\
+   void *t ;					\
    SM_AllocateStruct(smTSIN,t);			\
    TSIN = (TSINptr)t ;				\
    TSIN_TSTNode(TSIN) = TSTN;			\
