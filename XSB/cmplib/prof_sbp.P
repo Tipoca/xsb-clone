@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prof_sbp.P,v 1.5 1999-11-20 06:51:14 kifer Exp $
+** $Id: prof_sbp.P,v 1.6 1999-12-09 23:40:13 kifer Exp $
 ** 
 */
 
@@ -75,7 +75,7 @@ gensym(R, C) :-
 
 copyterm(Term, NewTerm) :-
 	obsolete('copyterm/2 in module prof_sbp',
-		 'use copyterm/2 in module gensym'),
+		 'use copy_term/2 in module basics'),
 	copyterm(Term, NewTerm, _).
 
 copyterm(Term, NewTerm, VarDict) :- var(Term), !,
