@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.24 1999-08-04 14:41:58 ejohnson Exp $
+** $Id: init.c,v 1.25 1999-08-13 15:56:50 kifer Exp $
 ** 
 */
 
@@ -133,7 +133,7 @@ void static version_message(void)
 
   sprintf(licensemsg, "%s%cetc%ccopying.msg", install_dir, SLASH, SLASH);
   sprintf(configmsg, "%s%cbanner.msg", 
-	  strip_names_from_path(xsb_config_file, 1), SLASH);
+	  strip_names_from_path(xsb_config_file, 2), SLASH);
 
   display_file(configmsg);
   puts("");
