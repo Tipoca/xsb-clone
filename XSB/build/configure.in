@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.159 2003-09-29 08:26:51 kifer Exp $
+## $Id: configure.in,v 1.160 2003-09-29 14:58:19 kifer Exp $
 ## 
 ##
 
@@ -1756,7 +1756,7 @@ if test "$with_os" = wind ; then
   mv MSVC.dep ${arch_config_prefix}
 
   # copy the windows-specific odbc files to the wondows specific directory
-  cp odbc/* ${arch_config_prefix}
+  cp odbc/* ${arch_config_prefix} 2> /dev/null
 fi
 
 
