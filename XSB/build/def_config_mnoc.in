@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_mnoc.in,v 1.1 2001-03-27 22:59:26 dwarren Exp $
+** $Id: def_config_mnoc.in,v 1.2 2001-12-13 21:14:22 lfcastro Exp $
 ** 
 */
 
@@ -382,4 +382,7 @@
 /* On x86/linux/gcc, we use bp as the register that contains 
 the local program counter */
 #undef USE_BP_LPCREG
+
+/* GC on SLG-WAM! ;) */
+#undef SLG_GC
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.20 2001-11-08 21:35:25 dwarren Exp $
+** $Id: init_xsb.c,v 1.21 2001-12-13 21:13:35 lfcastro Exp $
 ** 
 */
 
@@ -109,6 +109,7 @@ DllExport extern char * call_conv strip_names_from_path(char*, int);
 
 Cell answer_return_inst;
 Cell resume_compl_suspension_inst;
+Cell resume_compl_suspension_inst2;
 Cell check_complete_inst;
 Cell hash_handle_inst;
 Cell fail_inst;
@@ -300,7 +301,7 @@ char *init_para(int argc, char *argv[])
 
   flags[STACK_REALLOC] = TRUE;
 #ifdef GC
-  flags[GARBAGE_COLLECT] = COPYING_GC;
+  flags[GARBAGE_COLLECT] = INDIRECTION_SLIDE_GC;
 #else
   flags[GARBAGE_COLLECT] = NO_GC;
 #endif
@@ -621,6 +622,7 @@ void init_machine(void)
   /* set special SLG_WAM instruction addresses */
   cell_opcode(&answer_return_inst) = answer_return;
   cell_opcode(&resume_compl_suspension_inst) = resume_compl_suspension;
+  cell_opcode(&resume_compl_suspension_inst2) = resume_compl_suspension;
   cell_opcode(&check_complete_inst) = check_complete;
   cell_opcode(&hash_handle_inst) = hash_handle;
   cell_opcode(&fail_inst) = fail;

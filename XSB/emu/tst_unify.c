@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_unify.c,v 1.11 2001-05-01 17:35:27 ejohnson Exp $
+** $Id: tst_unify.c,v 1.12 2001-12-13 21:13:35 lfcastro Exp $
 ** 
 */
 
@@ -123,7 +123,7 @@ static void consumption_error(char *string) {
     VariantSF pSF;
     CPtr pCPF;
 
-    pCPF = gAnsTmplt - gSizeTmplt - NLCPSIZE;
+    pCPF = gAnsTmplt - gSizeTmplt - NLCP_SIZE;
     pSF = (VariantSF)nlcp_subgoal_ptr(pCPF);
     printAnswerList(stderr,subg_answers(pSF));
   }

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chat.h,v 1.8 2000-05-29 04:23:34 ejohnson Exp $
+** $Id: chat.h,v 1.9 2001-12-13 21:13:36 lfcastro Exp $
 ** 
 */
 #ifndef __CHAT_H__
@@ -29,11 +29,6 @@
 
 typedef struct init_chat_header
 { struct consumer_choice_point consumer_tcp; /* only the fixed part */
-
-  short nrarguments; /* number of saved objects in consumer cp - short is enough */
-
-  CPtr *malloc_start;  /* the return from malloc */
-  CPtr *args_start ;   /* properly alligned */
 
   struct incr_chat_header *father_block_start;
 
@@ -59,23 +54,13 @@ typedef struct incr_chat_header
 typedef init_chat_header *chat_init_pheader;
 typedef incr_chat_header *chat_incr_pheader;
 
-#define chat_set_nrargs(phead,i)         (phead)->nrarguments = i
-#define chat_get_nrargs(phead)           (phead)->nrarguments
-
 #define chat_set_chain(phead,p)          (phead)->next_header = p
-
 #define chat_get_cons_start(phead)	 (phead)->consumer_tcp
-#define chat_get_cons_length(phead)      (phead)->cons_len
 
 #define chat_get_tr_start(phead)         (phead)->itr_start
 #define chat_get_tr_length(phead)        (phead)->itr_len
 
-#define chat_get_malloc_start(phead)     (phead)->malloc_start
 #define chat_get_imalloc_start(phead)    (phead)->imalloc_start
-
-#define chat_get_args_start(phead)       (phead)->args_start
-
-#define chat_set_malloc_start(phead,i)   (phead)->malloc_start = i
 #define chat_set_imalloc_start(phead,i)  (phead)->imalloc_start = i
 
 #define chat_get_father(phead)		(phead)->father_block_start

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.8 2001-01-26 23:56:08 lfcastro Exp $
+** $Id: cut_xsb.h,v 1.9 2001-12-13 21:13:35 lfcastro Exp $
 ** 
 */
 
@@ -120,7 +120,8 @@
 #define cut_restore_trail_condition_registers(CUTB) \
     if ((CPtr)  *CUTB >= (CPtr) pdl.low || \
 		*CUTB == (Cell) &answer_return_inst || \
-		*CUTB == (Cell) &resume_compl_suspension_inst) { \
+                *CUTB == (Cell) &resume_compl_suspension_inst ||\
+                *CUTB == (Cell) &resume_compl_suspension_inst2) { \
 	ebreg = cp_ebreg(CUTB); \
 	hbreg = cp_hreg(CUTB); \
     }

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.15 2001-10-05 19:26:49 tswift Exp $
+** $Id: complete_xsb_i.h,v 1.16 2001-12-13 21:13:36 lfcastro Exp $
 ** 
 */
 
@@ -63,17 +63,6 @@ XSB_Start_Instr(check_complete,_check_complete)
   }
   
 #if (!defined(CHAT))
-#ifdef LOCAL_EVAL
-  /* return answers to caller of generator subgoals that are not leaders */
-  if (tcp_tag(breg) == RETRY_GEN_ACTIVE_TAG) 
-    if (ScheduleNonLeaderGenerator(subgoal)) {
-      /* If there are answers scheduled, execute them.
-	 Non-leader generators should be turned into consumers, as in
-	 CHAT, so that this code becomes obsolete -- lfcastro */
-      lpcreg = cpreg;
-      XSB_Next_Instr();
-    }
-#endif /* LOCAL_EVAL, still !CHAT */
 /* 
  * This code is done regardless of whether breg is a leader.  The
  * thought was that as long as we're here, why not schedule answers
@@ -148,6 +137,11 @@ XSB_Start_Instr(check_complete,_check_complete)
     chat_incremental_copy(subgoal);
     /* let's cause some segmentation faults and fix exact completion in CHAT */
     subg_cp_ptr(subgoal) = NULL;	/* preserve invariants */
+#else
+#ifdef LOCAL_EVAL
+    makeConsumerFromGenerator(subgoal);
+/*     subg_cp_ptr(subgoal) = NULL; */
+#endif
 #endif
     breg = tcp_prevbreg(breg); 
     /* since the trail condition registers are not reset in

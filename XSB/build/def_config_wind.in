@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_wind.in,v 1.14 1999-10-20 18:22:05 kifer Exp $
+** $Id: def_config_wind.in,v 1.15 2001-12-13 21:14:22 lfcastro Exp $
 ** 
 */
 
@@ -122,4 +122,7 @@
 
 /* Define if you have the <string.h> header file.  */
 #define HAVE_STRING_H 1
+
+/* GC on SLG-WAM! ;) */
+#undef SLG_GC
 

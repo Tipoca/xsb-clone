@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop_aux.h,v 1.4 2001-10-05 19:11:40 tswift Exp $
+** $Id: emuloop_aux.h,v 1.5 2001-12-13 21:13:35 lfcastro Exp $
 ** 
 */
 
@@ -32,6 +32,23 @@
 /* lfcastro, 10102000                                                   */
 /*----------------------------------------------------------------------*/
 
+#ifdef SLG_GC
+#define SUBTRYME                                                          \
+{                                                                         \
+  CPtr cps_top;	                /* cps_top only needed for efficiency */  \
+  CPtr old_top;                                                           \
+                                                                          \
+  save_find_locx(ereg);		/* sets ebreg to the top of the E-stack	*/\
+  check_tcpstack_overflow;                                                \
+  old_top = cps_top = top_of_cpstack;                                     \
+  save_registers(cps_top, (Cell)op1, rreg);                               \
+  save_choicepoint(cps_top, ereg, (byte *)op2, breg);                     \
+  cp_prevtop(cps_top) = old_top;                                          \
+  breg = cps_top;                                                         \
+  hbreg = hreg;                                                           \
+  XSB_Next_Instr();                                                       \
+} 
+#else
 #define SUBTRYME                                                          \
 {                                                                         \
   CPtr cps_top;	                /* cps_top only needed for efficiency */  \
@@ -45,7 +62,7 @@
   hbreg = hreg;                                                           \
   XSB_Next_Instr();                                                       \
 } 
-
+#endif
 /*----------------------------------------------------------------------*/
 #ifdef PROFILE
 #if (!defined(CHAT))
