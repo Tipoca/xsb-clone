@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.14 2000-04-29 21:53:55 kifer Exp $
+** $Id: loader_xsb.c,v 1.15 2000-05-12 20:18:15 ejohnson Exp $
 ** 
 */
 
@@ -118,7 +118,7 @@ struct hrec {
 
 Psc global_mod;	/* points to "global", whose ep is globallist */
 
-TIFptr first_tip = NULL, last_tip = NULL;
+struct tif_list  tif_list = {NULL, NULL};
 
 /* === working variables ==============================================	*/
 
@@ -393,12 +393,8 @@ static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
 	break;
       case T:	  
 	*current_tab = 1;	/* flag for load index */
-	if (current_opcode == tabletry || current_opcode == tabletrysingle) {
+	if (current_opcode == tabletry || current_opcode == tabletrysingle)
 	  New_TIF(tab_info_ptr,NULL);
-	  if (first_tip == 0) first_tip = tab_info_ptr;
-	  else TIF_NextTIF(last_tip) = tab_info_ptr;
-	  last_tip = tab_info_ptr;
-	}
 	get_obj_word(&tab_config_hold);          /* space holder */
 	cell(inst_addr) = (Cell) tab_info_ptr;
 	inst_addr ++;

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.37 2000-04-29 21:53:49 kifer Exp $
+** $Id: biassert.c,v 1.38 2000-05-12 20:18:14 ejohnson Exp $
 ** 
 */
 
@@ -59,8 +59,6 @@
 
 extern Cell val_to_hash(Cell);
 
-extern TIFptr first_tip;
-extern TIFptr last_tip;
 
 /*======================================================================*/
 /* dbgen_inst: Generate an instruction in the buffer.			*/
@@ -2007,9 +2005,6 @@ xsbBool db_build_prref( /* PSC, Tabled?, -PrRef */ )
   if ( Tabled )
     {
       New_TIF(tip,psc);
-      if (first_tip == 0) first_tip = tip;
-      else TIF_NextTIF(last_tip) = tip;
-      last_tip = tip;
       tp  = (CPtr)mem_alloc(FIXED_BLOCK_SIZE_FOR_TABLED_PRED) ;
       Loc = 0 ;
       dbgen_inst_ppvww(tabletrysingle,Arity,(tp+3),tip,tp,&Loc) ;

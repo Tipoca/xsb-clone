@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.91 2000-04-29 21:53:50 kifer Exp $
+** $Id: builtin.c,v 1.92 2000-05-12 20:18:15 ejohnson Exp $
 ** 
 */
 
@@ -108,8 +108,6 @@
 #include "random_xsb.h"
 
 /*======================================================================*/
-
-extern TIFptr first_tip;
 
 extern int  sys_syscall(int);
 extern xsbBool sys_system(int);
@@ -625,7 +623,7 @@ void init_builtin_table(void)
   set_builtin_table(TABLE_STATUS, "table_status");
   set_builtin_table(GET_DELAY_LISTS, "get_delay_lists");
 
-  set_builtin_table(ABOLISH_TABLE_PREDICATE, "abolish_table_predicate");
+  set_builtin_table(ABOLISH_TABLE_PREDICATE, "abolish_table_pred");
   set_builtin_table(TRIE_ASSERT, "trie_assert");
   set_builtin_table(TRIE_RETRACT, "trie_retract");
   set_builtin_table(TRIE_RETRACT_SAFE, "trie_retract_safe");
@@ -715,14 +713,31 @@ void init_builtin_table(void)
 
 /*----------------------------------------------------------------------*/
 
+inline static xsbBool is_completed_table(TIFptr tif) {
+
+  SGFrame sf;
+
+  for ( sf = TIF_Subgoals(tif);  IsNonNULL(sf);  sf = subg_next_subgoal(sf) )
+    if ( ! is_completed(sf) )
+      return FALSE;
+  return TRUE;
+}
+
+/*----------------------------------------------------------------------*/
+
 inline static void abolish_table_info(void)
 {
+  CPtr csf;
   TIFptr pTIF;
 
-  pTIF = first_tip;
-  while (IsNonNULL(pTIF)) {
+  for ( csf = top_of_complstk;  csf != COMPLSTACKBOTTOM;
+	csf = csf + COMPLFRAMESIZE )
+    if ( ! is_completed(compl_subgoal_ptr(csf)) )
+      xsb_abort("Illegal table operation: Cannot abolish incomplete tables");
+
+  for ( pTIF = tif_list.first; IsNonNULL(pTIF); pTIF = TIF_NextTIF(pTIF) ) {
     TIF_CallTrie(pTIF) = NULL;
-    pTIF = TIF_NextTIF(pTIF);
+    TIF_Subgoals(pTIF) = NULL;
   }
   reset_freeze_registers;
   openreg = COMPLSTACKBOTTOM;
@@ -1503,6 +1518,7 @@ int builtin_call(byte number)
     if (xwammode) ctop_int(1,1);
     else ctop_int(1,0);
     break;
+
   case CLOSE_OPEN_TABLES:	/* No registers needed */
     remove_open_tables_reset_freezes();
     break;
@@ -1510,6 +1526,7 @@ int builtin_call(byte number)
   case ABOLISH_TABLE_INFO:
     abolish_table_info();
     break;
+
 #ifdef PROFILE
   case ZERO_OUT_PROFILE:
     for (i = 0 ; i <= BUILTIN_TBL_SZ ; i++) {
@@ -1712,18 +1729,21 @@ int builtin_call(byte number)
     term = ptoc_tag(regTerm);
     psc = term_psc(term);
     if ( IsNULL(psc) ) {
-      err_handle(TYPE, 1, "abolish_table_pred", 1,
-		 "predicate (specification)", term);
+      err_handle(TYPE, 1, (char *)builtin_table[ABOLISH_TABLE_PREDICATE][0],
+		 1, "Predicate specification", term);
       return FALSE;	/* fail */
     }
     tif = get_tip(psc);
-    if ( IsNULL(tif) ) {
-      xsb_abort("Table error: untabled predicate in argument 1 of %s/%d",
-		get_name(psc), get_arity(psc));
-    }
+    if ( IsNULL(tif) )
+      xsb_abort("Illegal table operation: Untabled predicate in argument 1"
+		" of %s/1", (char *)builtin_table[ABOLISH_TABLE_PREDICATE][0]);
+    if ( ! is_completed_table(tif) )
+      xsb_abort("Illegal table operation: Cannot abolish incomplete table"
+		" of predicate %s/%d", get_name(psc), get_arity(psc));
     delete_predicate_table(tif);
     return TRUE;
   }
+
   case TRIE_ASSERT:
     if (trie_assert())
       return TRUE;

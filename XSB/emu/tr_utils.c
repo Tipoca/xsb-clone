@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.36 2000/01/25 04:00:43 cbaoqiu Exp $
+** $Id: tr_utils.c,v 1.37 2000/04/29 21:54:00 kifer Exp $
 ** 
 */
 
@@ -861,6 +861,7 @@ void delete_predicate_table(TIFptr tif) {
   else
     delete_subsumptive_table(TIF_CallTrie(tif));
   TIF_CallTrie(tif) = NULL;
+  TIF_Subgoals(tif) = NULL;
 }
 
 /*----------------------------------------------------------------------*/
