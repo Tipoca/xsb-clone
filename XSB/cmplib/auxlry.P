@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.22 2004-03-06 21:55:13 tswift Exp $
+** $Id: auxlry.P,v 1.23 2004-09-02 00:22:05 dwarren Exp $
 ** 
 */
 
@@ -160,6 +160,7 @@ current_option(mi_foreign).
 current_option(profile).
 
 current_option(singleton_warnings_off).
+current_option(allow_redefinition).
 
 % TLS: taken out 11/03: these do not seem to be used.
 % current_option(init_var_off).
