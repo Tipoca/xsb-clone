@@ -6,7 +6,7 @@
 
 bench:- bench_leader, bench_sieve.
 
-bench_sieve:- [sieve4], comp, quick_bench([sieve4],a),quick_bench([sieve4],b).
+bench_sieve:- [sieve4], comp, quick_bench([sieve4,a],a),quick_bench([sieve4,b],b).
 
 bench_leader:- ['leader5.P'], comp, quick_bench([leader5],c).
 
@@ -25,26 +25,27 @@ bench(Type,X):-
 quick_bench(Type,X):-
 %	statistics(0),	% reset statistics
 	abolish_all_tables,
+	(test(X), fail; true),
+	abolish_all_tables,
 	cputime(T0),
 	(test(X), fail; true),
 	cputime(T1),
-	T is T1 - T0, write('Time: '), 
+	T is T1 - T0,
 	writeq(datum(Type,T)),writeln('.'),nl.
 
 test(a) :-
-	models(proc(sieve), form(ae_finish)), close_open_tables,
-		!, fail.
+	models(proc(sieve), form(ae_finish)).
 test(b) :-
-	models(proc(sieve), form(ee_fail)), close_open_tables, !, fail.
+	models(proc(sieve), form(ee_fail)).
 
 test(c) :-
-	models(proc(systemLeader), form(one_leader)), close_open_tables, !, fail.
+	models(proc(systemLeader), form(one_leader)).
 
-test(d):- tc(proc(sieve),_), fail.
+test(d):- tc(proc(sieve),_).
 
-test(e):- ttc(proc(sieve),_), fail.
+test(e):- ttc(proc(sieve),_).
 
-test(f):- ttc(proc(systemLeader),_), fail.
+test(f):- ttc(proc(systemLeader),_).
  
 tc(State,Stateout):- ttrans(State,_,Stateout).
 tc(State,Stateout):-
