@@ -1,4 +1,4 @@
-/* File:      auxlry.h
+/* File:      basictypes.h
 ** Author(s): kifer
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.7 1999-02-02 19:51:29 kostis Exp $
+** $Id: basictypes.h,v 1.8 1999-03-17 16:00:27 kifer Exp $
 ** 
 */
 
