@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.h,v 1.4 1999-01-13 18:19:13 kostis Exp $
+** $Id: inst.h,v 1.5 1999-01-19 18:50:57 kostis Exp $
 ** 
 */
 
@@ -427,15 +427,11 @@ extern Cell builtin_table[BUILTIN_TBL_SZ][2];
 #define FILE_WRITEQUOTED	61
 #define FAST_GROUND		62
 #define FILE_POS                64
-
 #define INTERN_STRING           65
-
 #define EXPAND_FILENAME 	66
 #define TILDE_EXPAND_FILENAME   67
 #define IS_ABSOLUTE_FILENAME    68
 #define PARSE_FILENAME        	69
-
-#define BUFF_ASSIGN_WORD 96
 
 #define PSC_ENV		100
 #define PSC_SPY		101
@@ -456,7 +452,7 @@ extern Cell builtin_table[BUILTIN_TBL_SZ][2];
 
 #define IS_XWAMMODE             117
 #define CLOSE_OPEN_TABLES       118
-#define CALL_HASH               119
+
 #define PRINT_PREDICATE_TABLE   120
 
 #define FILE_READ_LINE          123

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.c,v 1.4 1999-01-13 18:19:11 kostis Exp $
+** $Id: inst.c,v 1.5 1999-01-19 18:50:59 kostis Exp $
 ** 
 */
 
@@ -309,7 +309,6 @@ void init_builtin_table(void)
   set_builtin_table(IS_ABSOLUTE_FILENAME, "is_absolute_filename");
   set_builtin_table(PARSE_FILENAME, "parse_filename");
 
-  set_builtin_table(BUFF_ASSIGN_WORD, "buff_assign_word");
   set_builtin_table(PSC_ENV, "psc_env");
   set_builtin_table(PSC_SPY, "psc_spy");
   set_builtin_table(PSC_TABLED, "psc_tabled");
@@ -326,7 +325,6 @@ void init_builtin_table(void)
   set_builtin_table(SLG_NOT, "slg_not");
   set_builtin_table(IS_XWAMMODE, "is_xwammode");
   set_builtin_table(CLOSE_OPEN_TABLES, "close_open_tables");
-  set_builtin_table(CALL_HASH, "call_hash");
   set_builtin_table(PRINT_PREDICATE_TABLE, "print_predicate_table");
 
   set_builtin_table(ABOLISH_TABLE_INFO, "abolish_table_info");
