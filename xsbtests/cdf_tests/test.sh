@@ -19,3 +19,4 @@ options=$2
 ../gentest.sh "$XEMU $options" updateExt "testreturns."
 ../gentest.sh "$XEMU $options" updateInt "testreturns."
 ../gentest.sh "$XEMU $options" updateDL "testreturns."
+../gentest.sh "$XEMU $options" checks "testreturns."

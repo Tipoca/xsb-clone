@@ -93,7 +93,7 @@ allAttr_ext(cid(motherwithoutdaughter,fam),rid(hasChild,fam),cid(notWoman,fam)).
 % This cid has to be created as a special cid.
 necessCond_ext(cid(notWoman,fam),vid(not(cid(woman,fam)))).
 
-isa_ext(cid(wife,fam),rid(hasHusband,fam),cid(man,fam)).
+hasAttr_ext(cid(wife,fam),rid(hasHusband,fam),cid(man,fam)).
 
 %--------------------------------------------------------------------------------------------------
 
