@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: smoMakefile.in,v 1.12 2002-04-11 15:54:17 lfcastro Exp $
+## $Id: smoMakefile.in,v 1.13 2002-06-02 18:43:11 kifer Exp $
 ## 
 ##
 
@@ -59,8 +59,9 @@ Prolog = $(XSB)
 	echo 'mc($*,$(Option)).' >> cmd...
 
 all: $(ALL)
-	if [ "${SMODELS}nop" = "nop" ] ; then \
-		echo "SMODELS not configure"; \
+	@if [ "${SMODELS}nop" = "nop" ] ; then \
+		echo "SMODELS not configured"; \
+		rm -f cmd... ;\
 	else \
 		../../build/touch.sh cmd... ; \
 		$(Prolog) < cmd... ; \
