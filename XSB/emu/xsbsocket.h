@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbsocket.h,v 1.6 1999-07-21 23:09:00 kifer Exp $
+** $Id: xsbsocket.h,v 1.7 1999-07-24 23:33:30 kifer Exp $
 ** 
 */
 
@@ -65,6 +65,7 @@ SOCKADDR_IN socket_addr;
 FILE *sockptr;
 int rc, domain, portnum;
 char ch;
-SOCKET sockfd, sockfd_in;
+SOCKET sock_handle, sock_handle_in;
+int sockfd;
 char *sock_msg, ci, last[1];
 
