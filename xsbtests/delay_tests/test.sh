@@ -146,3 +146,7 @@ opts=$2
 # Tests of variables in delay list.
 #----------------------------------------------------------------------
 ../gentest.sh "$XEMU $opts" delay_var "test."
+#----------------------------------------------------------------------
+# Test of simplification and delete return
+#----------------------------------------------------------------------
+../gentest.sh "$XEMU $opts" dret_test "test."
