@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.18 1999/08/03 19:17:24 kifer Exp $
+** $Id: x_interp.P,v 1.19 1999/08/12 14:24:28 kostis Exp $
 ** 
 */
 
@@ -80,6 +80,7 @@ interpreter1 :-
 	print_debug_state,
 	prompt(Prompt,Prompt),
 	file_write(STDERR, Prompt),
+	file_flush(STDERR, _),
 	file_read(STDIN, X, Vars),
 	( nonvar(X), read_in_stop(X), halt, ! %% end of top loop; halt
 	; process_query(X, Vars)
@@ -116,6 +117,7 @@ process_query1(X, Vars) :-
 	; ( numbervars(Vars), print_answer(Vars), fail ; true )
 	),
 	file_write(STDERR, MorePrompt),
+	file_flush(STDERR, _),
 	no_more,
 	close_open_tables,
 	!,
@@ -173,6 +175,7 @@ readl_brklp1 :-
 	x_interp_repeat, 
 		conval('_$break_level', Blevel),
 		file_write(STDERR, Blevel), file_write(STDERR, ': ?- '),
+		file_flush(STDERR, _),
 		file_read(STDIN, X, Vars),
 		( nonvar(X), read_in_stop(X), !
 			%% end read loop; pop a break level, out if X=halt.
