@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.29 1999/10/17 00:14:00 kifer Exp $
+** $Id: standard.P,v 1.30 1999/10/26 06:47:55 kifer Exp $
 ** 
 */
 
@@ -906,8 +906,8 @@ pop_abort_cutpoint.
 abort :- 
 	conpsc('_$abort_cutpoint', Psc), 
 	psc_prop(Psc, Cp),
-	'_$cutto'(Cp), 
         close_open_tables, 
+	'_$cutto'(Cp), 
 	(conget(quit_on_error,1) 
 	->  sys_exit(1)
 	; fail
