@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.4 1999/08/16 07:25:02 kifer Exp $
+** $Id: curr_sym.P,v 1.5 1999/08/28 07:54:21 kostis Exp $
 ** 
 */
 
@@ -157,7 +157,7 @@ current_input(Stream) :-
 	psc_name(Curin, Name),
 	Name = Stream.
 
-current_input_fd(FileDes) :- stat_flag(CURRENT_INPUT, FileDes).
+current_input_port(FileDes) :- stat_flag(CURRENT_INPUT, FileDes).
 
 
 /* ===== current_op/3 ================================================= */
@@ -182,7 +182,7 @@ current_output(Stream) :-
 	psc_name(Curout, Name), 
 	Name = Stream.
 
-current_output_fd(FileDes) :- stat_flag(CURRENT_OUTPUT, FileDes).
+current_output_port(FileDes) :- stat_flag(CURRENT_OUTPUT, FileDes).
 
 
 /* ===== current_predicate/1 ========================================== */

@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.H,v 1.4 1999/08/16 07:25:00 kifer Exp $
+** $Id: curr_sym.H,v 1.5 1999/08/28 07:54:21 kostis Exp $
 ** 
 */
 
 
 :- export current_op/3, 
 	current_input/1, current_output/1,
-	current_input_fd/1, current_output_fd/1,
+	current_input_port/1, current_output_port/1,
 	current_module/1, current_module/2,
 	current_atom/1, current_atom/2, 
 	current_functor/1, current_functor/2, 
