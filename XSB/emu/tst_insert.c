@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_insert.c,v 1.5 1999-11-02 22:17:28 cbaoqiu Exp $
+** $Id: tst_insert.c,v 1.6 1999-12-22 18:07:12 warren Exp $
 ** 
 */
 
@@ -577,7 +577,7 @@ void tstCreateStructures(TSTNptr pTST) {
 
     /*** For each bucket in this hash table ... ***/
     for ( pBucket = TSTHT_BucketArray(ht), bucketNum = 0;
-	  bucketNum < TSTHT_NumBuckets(ht);
+	  (unsigned int)bucketNum < TSTHT_NumBuckets(ht);
 	  pBucket++, bucketNum++ )
 
       /*** For each TSTN in a bucket... ***/

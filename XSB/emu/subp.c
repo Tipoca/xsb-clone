@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.33 1999/11/05 03:52:11 cbaoqiu Exp $
+** $Id: subp.c,v 1.34 1999/11/16 20:28:48 cbaoqiu Exp $
 ** 
 */
 
@@ -350,7 +350,7 @@ void intercept(Psc psc) {
     if ( byte_size > tds.maxopenstack_count )
       tds.maxopenstack_count = byte_size;
 
-    if (level_num > tds.maxlevel_num)
+    if ((unsigned long)level_num > tds.maxlevel_num)
       tds.maxlevel_num = level_num;
   }
 }

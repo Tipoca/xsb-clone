@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.9 1999-12-10 07:47:37 kifer Exp $
+** $Id: socket_xsb.c,v 1.10 1999-12-22 18:07:07 warren Exp $
 ** 
 */
 
@@ -173,7 +173,8 @@ bool xsb_socket_request(void)
 {
   static int ecode = 0;                     /* error code for socket ops */
   static SOCKET sock_handle, sock_handle_in;
-  static int domain, portnum;
+  static int domain;
+  static unsigned short portnum;
   static SOCKADDR_IN socket_addr;
   static struct linger sock_linger_opt;
 

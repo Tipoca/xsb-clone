@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.3 1999-11-14 17:47:07 cbaoqiu Exp $
+** $Id: tr_code_xsb_i.h,v 1.4 1999-12-22 18:07:09 warren Exp $
 ** 
 */
 
@@ -63,7 +63,7 @@
  }
 
 #define find_next_nonempty_bucket(pBTHT, pTable, BucketNum) {	\
-   word TableSize = BTHT_NumBuckets(pBTHT);			\
+   long TableSize = BTHT_NumBuckets(pBTHT);			\
 								\
    while (TRUE) {						\
      BucketNum++;						\

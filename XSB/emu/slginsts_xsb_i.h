@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.1 1999/10/25 05:59:20 kifer Exp $
+** $Id: slginsts_xsb_i.h,v 1.2 1999/10/27 03:06:58 cbaoqiu Exp $
 ** 
 */
 
@@ -679,7 +679,7 @@ case resume_compl_suspension:
     switch_envs(breg);
     ptcpreg = csf_ptcp(breg);
     delayreg = csf_pdreg(breg);
-    neg_delay = csf_neg_loop(breg);
+    neg_delay = (csf_neg_loop(breg) != FALSE);
     restore_some_wamregs(breg, ereg); /* this also restores cpreg */
     chat_area = (chat_init_pheader)csf_chat_area(breg);
     chat_restore_compl_susp_trail(chat_area); /* the chat area is freed here */

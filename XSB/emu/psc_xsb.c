@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.1 1999-10-26 06:47:21 kifer Exp $
+** $Id: psc_xsb.c,v 1.2 1999-12-22 18:07:03 warren Exp $
 ** 
 */
 
@@ -202,7 +202,7 @@ static Pair search(int arity, char *name, Pair *search_ptr)
 
 /* === insert0: search/insert to a given chain ========================	*/
 
-static Pair insert0(char *name, char arity, Pair *search_ptr, int *is_new)
+static Pair insert0(char *name, byte arity, Pair *search_ptr, int *is_new)
 {
     Pair new_pair;
 
@@ -219,7 +219,7 @@ static Pair insert0(char *name, char arity, Pair *search_ptr, int *is_new)
 
 /* === insert: search/insert to a given module ========================	*/
 
-Pair insert(char *name, char arity, Psc mod_psc, int *is_new)
+Pair insert(char *name, byte arity, Psc mod_psc, int *is_new)
 {
     Pair *search_ptr, temp;
 
@@ -272,7 +272,7 @@ Pair link_sym(Psc psc, Psc mod_psc)
 {
     Pair *search_ptr, found_pair;
     char *name, message[120];
-    int arity, global_flag;
+    byte arity, global_flag;
 
     name = get_name(psc);
     arity = get_arity(psc);
@@ -315,7 +315,7 @@ Psc get_ret_psc(int n)
   int new_indicator;
 
   if (!ret_psc[n]) {
-    temp = (Pair) insert("ret", n, global_mod, &new_indicator);
+    temp = (Pair) insert("ret", (byte) n, global_mod, &new_indicator);
     ret_psc[n] = pair_psc(temp);
   }
   return ret_psc[n];
