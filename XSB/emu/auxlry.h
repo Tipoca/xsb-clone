@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.3 1999-04-04 04:22:18 kifer Exp $
+** $Id: auxlry.h,v 1.4 1999-06-23 21:26:01 kostis Exp $
 ** 
 */
 
@@ -49,9 +49,6 @@ extern struct trace_str tds;
 
 extern byte call_intercept;	/* hitrace or trace_sta for efficiency */
 
-#define arithmetic_exception(t_pcreg) \
- t_pcreg = exception_handler("! Arithmetic Exception\n")
-
 #define local_global_exception(t_pcreg) \
  t_pcreg = exception_handler("! Local/Global Stack Overflow Exception\n")
 
@@ -65,7 +62,7 @@ extern byte call_intercept;	/* hitrace or trace_sta for efficiency */
  t_pcreg = exception_handler("! Bitop Exception\n")
 
 #define complstack_exception(t_pcreg) \
- t_pcreg = exception_handler("! Opentable Stack Overflow Exception\n")
+ t_pcreg = exception_handler("! Completion Stack Overflow Exception\n")
 
 #define trail_cp_exception(t_pcreg) \
  t_pcreg = exception_handler("! Trail/CP Stack Overflow Exception\n")

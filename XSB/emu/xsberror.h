@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsberror.h,v 1.8 1999-04-23 19:42:00 cbaoqiu Exp $
+** $Id: xsberror.h,v 1.9 1999-06-23 21:26:02 kostis Exp $
 ** 
 */
 
@@ -54,6 +54,8 @@ extern void xsb_exit(char *, ...);
 extern void xsb_abort(char *, ...);
 extern void xsb_warn(char *, ...);
 extern void xsb_mesg(char *, ...);
+extern void arithmetic_abort(Cell, char *, Cell);
+extern void arithmetic_comp_abort(Cell, char *, int);
 extern void err_handle(int, int, char *, int, char *, Cell);
 
 #define err(d, a, f, ar)	err_handle(d, a, f, ar, NULL, (Cell)NULL)
