@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.12 2001-04-10 00:56:54 kifer Exp $
+## $Id: Makefile,v 1.13 2001-04-10 03:09:41 kifer Exp $
 ## 
 ##
 
@@ -184,6 +184,7 @@ clean:
 	/bin/rm -f headerinc/*~
 	/bin/rm -f syslibinc/*~
 	/bin/rm -f includes/*~
+	/bin/rm -f $(HOME)/.xsb/flora/*.P $(HOME)/.xsb/flora/*.O
 
 
 .DONE:

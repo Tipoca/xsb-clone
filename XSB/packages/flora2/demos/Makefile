@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.1 2001-04-10 00:56:54 kifer Exp $
+## $Id: Makefile,v 1.2 2001-04-10 03:09:41 kifer Exp $
 ## 
 ##
 
@@ -60,7 +60,7 @@ HDRMSG = "While compiling XSB/packages/flora2/lib:"
 
 all: init recompile
 
-recompile: clean $(ALL) finish
+recompile: $(ALL) finish
 	@touch cmd...
 	$(Prolog) < cmd...
 	@rm cmd...
