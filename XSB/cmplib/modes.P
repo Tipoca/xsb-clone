@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.P,v 1.2 1999-04-27 14:39:23 kifer Exp $
+** $Id: modes.P,v 1.3 1999-08-13 15:31:28 kostis Exp $
 ** 
 */
 
@@ -171,7 +171,7 @@ declare_undefineds :-
 
 undefined_pred(Pred, Arity) :-
 	'_$predprop'((used), (Pred/Arity)),
-	not ( '_$predprop'((local), (Pred/Arity));
+	\+ ( '_$predprop'((local), (Pred/Arity));
 	     '_$predprop'((import), (Pred/Arity))
 	).
 
