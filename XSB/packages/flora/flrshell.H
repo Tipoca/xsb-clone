@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.1 1999-06-16 01:32:53 kifer Exp $
+** $Id: flrshell.H,v 1.2 1999-07-02 08:10:28 kifer Exp $
 **
 */
 
@@ -62,5 +62,7 @@
    from flrutils.
 
 :- import glob_directory/4 from wildmatch.
+
+%%:- import '_$_$_flora_trace'/0, '_$_$_flora_notrace'/0 from flrdebugger.
 
 :- dynamic '_$_$_flora_switch'/1.
