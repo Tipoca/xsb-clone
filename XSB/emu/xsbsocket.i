@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbsocket.i,v 1.1 1999-04-22 06:54:39 kifer Exp $
+** $Id: xsbsocket.i,v 1.2 1999-04-22 07:37:35 kifer Exp $
 ** 
 */
 
@@ -32,18 +32,16 @@
 #endif
 
 #ifndef WIN_NT
-#if defined(HAVE_SOCKET) || defined(HAVE_GETHOSTBYNAME)
 #include <sys/socket.h>
 #include <sys/uio.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#endif /* HAVE_SOCKET */
 #endif /* WIN_NT */
 
 #include "xsbsocket.h"
 
-#if defined(HAVE_SOCKET) && defined(WIN_NT)
+#ifdef WIN_NT
 int readmsg(SOCKET sockfd, char *buff, int maxbuff)
 {
   int n, rc;
