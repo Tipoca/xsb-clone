@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.P,v 1.17 2001-01-24 21:08:47 dwarren Exp $
+** $Id: odbc_call.P,v 1.18 2001-01-26 14:31:49 dwarren Exp $
 ** 
 */
 
@@ -404,7 +404,11 @@ get_type(Type,TypeOut) :-
 	atom_codes(Type,TypeCodes),
 	(append("int",_,TypeCodes)
 	 ->	TypeOut = integer
+	(append("INT",_,TypeCodes)
+	 ->	TypeOut = integer
 	 ; append("num",_,TypeCodes)
+	 ->	TypeOut = number
+	 ; append("NUM",_,TypeCodes)
 	 ->	TypeOut = number
 	 ;	TypeOut = string
 	).
