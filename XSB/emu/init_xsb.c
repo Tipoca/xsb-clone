@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.25 2002-05-22 15:41:14 lfcastro Exp $
+** $Id: init_xsb.c,v 1.26 2002-09-02 20:30:54 kifer Exp $
 ** 
 */
 
@@ -530,7 +530,7 @@ char *init_para(int argc, char *argv[])
   flags[USER_HOME] = (Cell) malloc(strlen(user_home) + 1);
   strcpy( (char *)flags[USER_HOME], user_home );
 
-  /* install_dir is computed dynamically at system startup (in main_xsb.c).
+  /* install_dir is computed dynamically at system startup (in orient_xsb.c).
      Therefore, the entire directory tree can be moved --- only the relative
      positions count.
   */ 
