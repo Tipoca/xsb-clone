@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.99 2000-06-22 19:40:30 ruim Exp $
+** $Id: builtin.c,v 1.100 2000-06-23 20:54:07 ruim Exp $
 ** 
 */
 
@@ -718,7 +718,8 @@ inline static xsbBool is_completed_table(TIFptr tif) {
 
   VariantSF sf;
 
-  for ( sf = TIF_Subgoals(tif);  IsNonNULL(sf);  sf = subg_next_subgoal(sf) )
+  for ( sf = TIF_Subgoals(tif);  IsNonNULL(sf);  
+	sf = (VariantSF)subg_next_subgoal(sf) )
     if ( ! is_completed(sf) )
       return FALSE;
   return TRUE;
@@ -890,7 +891,7 @@ int builtin_call(byte number)
 {
   switch (number) {
   case PSC_NAME: {	/* R1: +PSC; R2: -String */
-    Psc psc = ptoc_addr(1);
+    Psc psc = (Psc)ptoc_addr(1);
     ctop_string(2, get_name(psc));
     break;
   }
@@ -959,7 +960,7 @@ int builtin_call(byte number)
     break;
   case TERM_NEW: {		/* R1: +PSC, R2: -term */
     int disp;
-    Psc psc = ptoc_addr(1);
+    Psc psc = (Psc)ptoc_addr(1);
     sreg = hreg;
     hreg += get_arity(psc) + 1;
     ctop_constr(2, (Pair)sreg);

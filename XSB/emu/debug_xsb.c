@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.8 2000-05-29 04:23:35 ejohnson Exp $
+** $Id: debug_xsb.c,v 1.9 2000-06-23 20:54:07 ruim Exp $
 ** 
 */
 
@@ -94,7 +94,7 @@ static int count_producer_subgoals(void)
   i = 0;
   for ( tif = tif_list.first;  IsNonNULL(tif);  tif = TIF_NextTIF(tif) )
     for ( temp_ptr = TIF_Subgoals(tif);  IsNonNULL(temp_ptr);
-	  temp_ptr = subg_next_subgoal(temp_ptr) )
+	  temp_ptr = (VariantSF)subg_next_subgoal(temp_ptr) )
       i ++;
   return(i);
 }

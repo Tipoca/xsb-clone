@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.17 2000-06-19 07:03:21 ruim Exp $
+** $Id: tables.c,v 1.18 2000-06-23 20:54:08 ruim Exp $
 ** 
 */
 
@@ -158,7 +158,7 @@ BTNptr table_answer_search(VariantSF producer, int size, int attv_num,
 #endif /* IGNORE_DELAYVAR */
 #endif /* DEBUG_DELAYVAR */
 
-    do_delay_stuff(answer, producer, wasFound);
+    do_delay_stuff((NODEptr)answer, producer, wasFound);
 
 #ifndef IGNORE_DELAYVAR
     undo_answer_bindings();
@@ -166,7 +166,7 @@ BTNptr table_answer_search(VariantSF producer, int size, int attv_num,
 
     *is_new = ! wasFound;
   }
-  return ( answer );
+  return (BTNptr)answer;
 }
 
 /*-------------------------------------------------------------------------*/

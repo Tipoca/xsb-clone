@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.6 2000-06-22 19:40:33 ruim Exp $
+** $Id: varstring.c,v 1.7 2000-06-23 20:54:10 ruim Exp $
 ** 
 */
 
@@ -118,7 +118,7 @@ static void vs_init(VarString *vstr, int increment)
   if (increment < 1)
     increment = DEFAULT_VARSTR_INCREMENT;
 
-  if (NULL == (vstr->string = calloc(1, increment))) {
+  if (NULL == (vstr->string = (char *)calloc(1, increment))) {
 #ifdef DEBUG_VARSTRING
     fprintf(stderr, "Cannot allocate memory for a variable-length string\n");
     return;

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.13 2000-05-30 14:11:08 ejohnson Exp $
+** $Id: table_stats.c,v 1.14 2000-06-23 20:54:08 ruim Exp $
 ** 
 */
 
@@ -83,7 +83,7 @@ HashStats hash_statistics(Structure_Manager *sm) {
   HashStats_TotalOccupancy(ht_stats) = 0;
   HashStats_NonEmptyBuckets(ht_stats) = 0;
   HashStats_BucketSize(ht_stats) = sizeof(void *);
-  pBTHT = SM_AllocList(*sm);
+  pBTHT = (BTHTptr)SM_AllocList(*sm);
   while ( IsNonNULL(pBTHT) ) {
 #ifdef DEBUG
     /* Counter for contents of current hash table
@@ -145,21 +145,21 @@ NodeStats subgoal_statistics(Structure_Manager *sm) {
     for ( tif = tif_list.first;  IsNonNULL(tif);  tif = TIF_NextTIF(tif) )
       if ( IsVariantPredicate(tif) )
 	for ( pProdSF = TIF_Subgoals(tif);  IsNonNULL(pProdSF);
-	      pProdSF = subg_next_subgoal(pProdSF) )
+	      pProdSF = (VariantSF)subg_next_subgoal(pProdSF) )
 	  nSubgoals++;
   }
   else if ( sm == &smProdSF ) {
     for ( tif = tif_list.first;  IsNonNULL(tif);  tif = TIF_NextTIF(tif) )
       if ( IsSubsumptivePredicate(tif) )
 	for ( pProdSF = TIF_Subgoals(tif);  IsNonNULL(pProdSF);
-	      pProdSF = subg_next_subgoal(pProdSF) )
+	      pProdSF = (VariantSF)subg_next_subgoal(pProdSF) )
 	  nSubgoals++;
   }
   else if ( sm == &smConsSF ) {
     for ( tif = tif_list.first;  IsNonNULL(tif);  tif = TIF_NextTIF(tif) )
       if ( IsSubsumptivePredicate(tif) )
 	for ( pProdSF = TIF_Subgoals(tif);  IsNonNULL(pProdSF);
-	      pProdSF = subg_next_subgoal(pProdSF) )
+	      pProdSF = (VariantSF)subg_next_subgoal(pProdSF) )
 	  for ( pConsSF = subg_consumers(pProdSF);  IsNonNULL(pConsSF); 
 		pConsSF = conssf_consumers(pConsSF) )
 	    nSubgoals++;

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.18 2000-06-06 03:13:55 kifer Exp $
+** $Id: socket_xsb.c,v 1.19 2000-06-23 20:54:08 ruim Exp $
 ** 
 */
 
@@ -167,7 +167,7 @@ static int readmsg(SOCKET sock_handle, char **msg_buff)
   memcpy((void *) &net_encoded_len, (void *) lenbuf, XSB_MSG_HEADER_LENGTH);
   msglen = ntohl(net_encoded_len);
 
-  if ((*msg_buff = calloc(msglen+1, sizeof(char))) == NULL) {
+  if ((*msg_buff = (char *)calloc(msglen+1, sizeof(char))) == NULL) {
     xsb_abort("SOCKET_RECV: Can't allocate memory for the message buffer");
   }
 
@@ -488,7 +488,7 @@ xsbBool xsb_socket_request(void)
     }
     
     if (pSock->sockdata != NULL) 
-      ctop_string(3,(char*)string_find(pSock->sockdata,1));
+      ctop_string(3,(char*)string_find((char *)pSock->sockdata,1));
     else  /* this happens at end of file */
       ctop_string(3,(char*)string_find("",1));
 
