@@ -1,4 +1,4 @@
-## File:      packages/flip/Makefile
+## File:      packages/flora/Makefile
 ## Author(s): kifer (adapted from lib/Makefile)
 ## Contact:   xsb-contact@cs.sunysb.edu
 ## 
@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.1 1999-04-19 21:39:31 guizyang Exp $
+## $Id: Makefile,v 1.2 1999-04-24 05:56:00 kifer Exp $
 ## 
 ##
 
