@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.10 1999/04/09 09:10:21 kostis Exp $
+** $Id: standard.P,v 1.11 1999/04/09 12:18:00 kostis Exp $
 ** 
 */
 
@@ -920,14 +920,13 @@ message((M1,M2)) :-
 	!,
 	message(M1),
 	message(M2).
-message(P/N) :-		% temp solution
+message(P/N) :-		% temp solution till we fix operators
 	!,
 	message(P),
 	file_put(2, 47),	% 0'/ = 47
 	file_write0(2, N).
 message(Message) :- 
-	conname(Message, String),
-	file_write0(2, String). % 2 denotes stderr
+	file_write0(2, Message). % 2 denotes stderr
 
 messageln(Message) :- 
 	message(Message),
