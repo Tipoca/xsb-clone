@@ -46,6 +46,10 @@ options=$2
 # Test multifile directive
 #------------------------------------
 ../gentest.sh "$XEMU $options" mf_test1 "test."
+#------------------------------------
+# Test reading constant characters
+#------------------------------------
+../gentest.sh "$XEMU $options" con_char "test."
 #------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
 #------------------------------------------------------------------------
