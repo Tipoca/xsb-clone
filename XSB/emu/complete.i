@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete.i,v 1.15 1999-10-12 20:08:03 ejohnson Exp $
+** $Id: complete.i,v 1.16 1999-10-13 13:59:22 ejohnson Exp $
 ** 
 */
 
@@ -293,8 +293,8 @@ case check_complete: {
 	delayreg = tcp_pdreg(orig_breg);
 	restore_some_wamregs(orig_breg, ereg);
 	/* restore_trail_condition_registers - because success path
-	   * will be followed
-	   */
+	 * will be followed
+	 */
 	ebreg = cp_ebreg(tcp_prevbreg(orig_breg));
 	hbreg = cp_hreg(tcp_prevbreg(orig_breg));
 #ifdef CHAT
