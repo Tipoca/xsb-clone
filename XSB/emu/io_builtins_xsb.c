@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.3 1999-10-27 04:12:05 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.4 1999-10-29 10:42:55 kostis Exp $
 ** 
 */
 
@@ -735,7 +735,6 @@ int read_canonical(void)
   int postopreq = FALSE, varfound = FALSE;
   long tempfp;
   prolog_term term;
-  void ctop_tag(int, Cell);
   
   tempfp = ptoc_int(1);
   if (tempfp == -1000) {
