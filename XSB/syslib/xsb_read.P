@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.P,v 1.2 1999/01/15 18:42:20 kostis Exp $
+** $Id: xsb_read.P,v 1.3 1999/03/24 15:46:27 kifer Exp $
 ** 
 */
 
@@ -681,17 +681,20 @@ read_record_error(List) :-
 
 read_syntax_error(List) :-
 	increase_syntax_errors,
-	file_write0(2, '*** syntax error ***'),
+	file_write0(2, '*** syntax error:'),
 	file_nl(2),
 	term_psc('_$synerr'(_), Psc), psc_prop(Psc, AfterError),
         l_length(List,Length),
         BeforeError is Length - AfterError,
+	file_write0(2, '                '),
         read_display_list(List, BeforeError, Rest),
 	file_nl(2),
-        file_write0(2, '*** maybe here? *** '),
+        file_write0(2, '*** maybe here? ^^^ '),
+	file_nl(2),
+        file_write0(2, '*** Discarding input ...  '),
 	file_nl(2),
         read_display_list(Rest, AfterError, _),
-	file_nl(2), 
+        file_write0(2, '|| ?- '),
 	!,
 	fail.	% Force the reader not to return until 
 		% it finds a term with no errors
