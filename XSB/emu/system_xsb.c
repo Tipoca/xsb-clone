@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.13 2001-03-26 04:59:02 kifer Exp $
+** $Id: system_xsb.c,v 1.14 2001-03-27 23:18:42 kifer Exp $
 ** 
 */
 
@@ -123,13 +123,13 @@ int sys_syscall(int callno)
   case SYS_access: {
     switch(*ptoc_string(4)) {
     case 'r': /* read permission */
-      result = access(ptoc_string(3), R_OK);
+      result = access(ptoc_string(3), R_OK_XSB);
       break;
     case 'w': /* write permission */
-      result = access(ptoc_string(3), W_OK);
+      result = access(ptoc_string(3), W_OK_XSB);
       break;
     case 'x': /* execute permission */
-      result = access(ptoc_string(3), X_OK);
+      result = access(ptoc_string(3), X_OK_XSB);
       break;
     default:
       result = -1;

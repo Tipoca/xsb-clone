@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wind2unix.h,v 1.2 2001-03-27 04:58:56 kifer Exp $
+** $Id: wind2unix.h,v 1.3 2001-03-27 23:18:42 kifer Exp $
 ** 
 */
 
@@ -32,14 +32,20 @@
 #endif
 
 #ifndef R_OK
-#define R_OK 4
+#define R_OK_XSB 4
+#else
+#define R_OK_XSB R_OK
 #endif
 #ifndef W_OK
-#define W_OK 2
+#define W_OK_XSB 2
+#else
+#define W_OK_XSB W_OK
 #endif
 /* On NT this just tests for existence rather than execution */
 #ifndef X_OK
-#define X_OK 0
+#define X_OK_XSB 0
+#else
+#define X_OK_XSB X_OK
 #endif
 
 #ifdef WIN_NT
