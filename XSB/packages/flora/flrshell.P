@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.25 1999-07-04 06:17:27 kifer Exp $
+** $Id: flrshell.P,v 1.26 1999-07-27 17:07:26 guizyang Exp $
 **
 */
 
@@ -286,6 +286,7 @@ flcompile_demo([]).
 :- dynamic '_$_$_flora_sub_dyn'/2.
 :- dynamic '_$_$_flora_fs_dyn'/3.
 :- dynamic '_$_$_flora_mvs_dyn'/3.
+:- dynamic '_$_$_flora_mvs_dyn'/2.
 :- dynamic '_$_$_flora_mvd_dyn'/2.
 :- dynamic '_$_$_flora_imvd_dyn'/2.
 :- dynamic '_$_$_flora_exists_dyn'/1.
