@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.10 2001-08-08 15:05:32 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.11 2001-08-13 20:12:31 dwarren Exp $
 ** 
 */
 
@@ -576,7 +576,6 @@ inline static xsbBool keysort(void)
   CPtr top = 0;
 
   list = ptoc_tag(1);
-  term = ptoc_tag(2);
   term2 = list; len = 0;
   do {
     XSB_Deref(term2);
@@ -598,6 +597,9 @@ inline static xsbBool keysort(void)
       return FALSE;	/* fail */
     }
   } while(1);
+  check_glstack_overflow(3, pcreg, (2*len)*sizeof(Cell), xsb_abort("")) ;
+  list = ptoc_tag(1);  /* reset in case moved */
+  term = ptoc_tag(2);
   if (len > 0) {
     term2 = list;
     cell_tbl = (Cell *)malloc(len * sizeof(Cell));
