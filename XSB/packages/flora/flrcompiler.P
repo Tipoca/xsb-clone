@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.8 1999-05-28 22:04:42 guizyang Exp $
+** $Id: flrcompiler.P,v 1.9 1999-05-31 04:31:24 kifer Exp $
 **
 */
 
@@ -569,7 +569,7 @@ flatten_retract_term(objspec(O,Spec),W,Ps) :-
 
 flatten_retract_term(spterm(Op,E1,E2),_,Ps) :-
 	displayln,
-	fmt_write_string(Msg,'%s is compiled as a condition for retracts.',f(Op)),
+	fmt_write_string(Msg,'%s is compiled as a condition for retract operator',f(Op)),
 	displayln_warning(Msg),
 	rhs_flatten(spterm(Op,E1,E2),_,Ps).
 
