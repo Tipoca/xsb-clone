@@ -2,7 +2,7 @@
 ** Author(s): Baoqiu Cui
 ** 
 ** This file contains some basic tests for attributed variables.
-** $Id: attv_test.P,v 1.2 1999-10-19 01:38:48 cbaoqiu Exp $
+** $Id: attv_test.P,v 1.3 1999-11-03 04:32:26 cbaoqiu Exp $
 */
 
 :- import put_attributes/2, get_attributes/3 from machine.
@@ -15,6 +15,7 @@ test :-
 	test_unify,
 	test_attv_interrupt,
 	test_implict_unify,
+	test_copy_term,
 	writeln('PASSED attv_test!').
 
 verify_attributes(Var, Value) :-
@@ -86,3 +87,13 @@ handle_interrupts([(Var,Value)|Ints]) :-
 	attv_unify(Var, Value),
 	handle_interrupts(Ints).
 
+test_copy_term :-
+	put_attributes(X, v(a)),
+	copy_term(f(X,g(X)), T),
+	T = f(Y,g(Z)),			% Y and Z are shared in T
+	put_attributes(Y, v(b)),	% so update Y will also update Z
+	get_attributes(Y, VY, _),
+	get_attributes(Z, VZ, _),
+	nonvar(VY), VY = v(b),
+	nonvar(VZ), VZ = v(b),
+	writeln('== test_copy_term OK').
