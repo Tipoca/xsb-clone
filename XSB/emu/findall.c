@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.22 2000-06-28 16:54:50 ruim Exp $
+** $Id: findall.c,v 1.23 2001-02-07 14:35:33 dwarren Exp $
 ** 
 */
 
@@ -136,7 +136,7 @@ int findall_init()
 void findall_free(int i)
 { CPtr to_free,p ;
 
-  p = (findall_solutions + i)->current_chunk ;
+  p = (findall_solutions + i)->first_chunk ;
   while (p != NULL)
 	{ to_free = p ; p = (CPtr)(*p) ; free(to_free) ; }
   (findall_solutions + i)->tail = 0 ;
