@@ -19,7 +19,9 @@ test :-
 	numbervars(Term,0,_),islist(Vars),
 	writeln([Term,Vars]),
 	fail.
-
+test :-
+	test_read_canonical,
+	fail.
 
 string_read(String,Term,Vars) :-
 	file_open(String,3,File),
@@ -35,3 +37,14 @@ string_call(String,Vars) :-
 
 islist([]) :- !.
 islist([_|L]) :- islist(L).
+
+test_read_canonical :-
+	see(readstrtest_data),
+	repeat,
+	read_canonical(X),
+	(X == end_of_file
+         ->    !,seen
+         ;     numbervars(X,0,_),
+	       writeln(X),
+	       fail
+	).
