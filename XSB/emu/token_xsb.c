@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.12 2002-02-23 04:05:00 kifer Exp $
+** $Id: token_xsb.c,v 1.13 2004-01-21 19:02:04 dwarren Exp $
 ** 
 */
 
@@ -348,6 +348,7 @@ static int read_character(register FILE *card,
  
         c = GetC(card,instr);
 BACK:   if (c < 0) {
+          if (c == EOF) /* to mostly handle cygwin stdio.h bug ... */
 ERROR:      if (q < 0) {
                 SyntaxError("end of file in character constant");
 		return -2;		/* encounters EOF */
@@ -357,6 +358,7 @@ ERROR:      if (q < 0) {
                 SyntaxError(message);
 		return -2;		/* encounters EOF */
             }
+          else c = c & 0xff;  /* in which getc returns "signed" char? */
         }
         if (c == q) {
             c = GetC(card,instr);
