@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.29 1999/10/25 06:00:54 kifer Exp $
+** $Id: x_interp.P,v 1.30 1999/10/26 06:47:59 kifer Exp $
 ** 
 */
 
@@ -54,7 +54,7 @@ interpreter :-
 	push_abort_cutpoint,         %% set abort cutpoint to this cp
         %% Execute command line goal passed to XSB with the -e option
         xsb_flag(goal, CmdGoal),
-        (CmdGoal == 'true.' ->
+        (CmdGoal == '' ->
             true
         ;   file_nl(STDMSG),
             file_write(STDMSG, 'Evaluating command line goal:  '),
