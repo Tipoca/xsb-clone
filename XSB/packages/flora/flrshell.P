@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.15 1999-06-11 18:30:33 kifer Exp $
+** $Id: flrshell.P,v 1.16 1999-06-11 23:42:52 guizyang Exp $
 **
 */
 
@@ -186,7 +186,7 @@ help :-
 	writeln('  flcompile(FILE.[flr],[...])  : flcompile(FILE) with options [...]'),
 	writeln('  flconsult(FILE.[flr])        : compile FILE.flr; consult FILE.P'),
 	writeln('  flconsult(FILE.[flr],[...])  : flconsult(FILE) with options [...]'),
-	writeln('  flload(FILE[.{P|O|flr}])    : consult FILE.flr, FILE.P or FILE.O'),
+	writeln('  flload(FILE[.{P|O|flr}])     : consult FILE.flr, FILE.P or FILE.O'),
 	writeln('  [FILE[.{P|O|flr}],...]       : consult a list of .flr, .P, or .O files'),
 	writeln('  dyncompile(FILE[.flr])       : compile FILE.flr to dynamic code'),
 	writeln('  dyncompile(FILE[.flr],[...]) : dyncompile(FILE) with options [...]'),
