@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.33 2001-08-13 04:34:11 kifer Exp $
+** $Id: flrutils.H,v 1.34 2001-08-23 14:12:12 gzyang Exp $
 **
 */
 
@@ -87,11 +87,13 @@
 
 :- import
 	flora_reset_lexer/0,
+	flora_reset_lexer/1,
 	flora_tokens/2,
 	flora_token_text/6,
 	flora_symbol_token_struct/6,
 	flora_rule_delimeter_struct/6,
-	flora_blank_line/1
+	flora_blank_line/1,
+	flora_current_compile_filename/1
    from flrlexer.
 
 :- import flora_compose/3 from flrcomposer.
@@ -155,7 +157,6 @@
 :- dynamic flora_xpp_extra_options/1.
 :- dynamic flora_module_registry/1.
 :- dynamic flora_storage_registry/1.
-:- dynamic flora_current_compile_file/1.
 
 :- index(flora_maxerr/1,trie).
 
