@@ -19,10 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred.i,v 1.9 1999-04-30 15:53:30 kifer Exp $
+** $Id: std_pred.i,v 1.10 1999-06-23 19:50:51 kostis Exp $
 ** 
 */
 
+
+/*----------------------------------------*/
+#include "sp_unify.i"
+/*----------------------------------------*/
 
 
 inline static bool functor_builtin(void)

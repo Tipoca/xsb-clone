@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.9 1999/04/04 05:20:19 kifer Exp $
+** $Id: subp.c,v 1.10 1999/04/23 19:41:58 cbaoqiu Exp $
 ** 
 */
 
@@ -95,10 +95,6 @@ bool unify(Cell rop1, Cell rop2)
 /*----------------------------------------*/
 
 }  /* end of unify */
-
-/*----------------------------------------*/
-#include "sp_unify.i"
-/*----------------------------------------*/
 
 /*======================================================================*/
 /*  Print statistics and measurements.					*/

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.h,v 1.2 1998-11-14 05:05:31 kifer Exp $
+** $Id: subp.h,v 1.3 1999-06-23 19:50:49 kostis Exp $
 ** 
 */
 
@@ -32,8 +32,6 @@ extern void print_op(FILE *, char *, int);
 extern void remove_open_tables_reset_freezes(void);
 
 extern bool unify(Cell, Cell);
-extern bool int_unify(Cell, Cell);
-extern bool atom_unify(Cell, Cell);
 
 /* don't use Cell declarations here, to avoid compiler warnings */
 extern int compare(/* Cell, Cell */);
