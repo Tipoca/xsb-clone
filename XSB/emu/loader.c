@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.c,v 1.12 1999-10-10 11:38:06 kostis Exp $
+** $Id: loader.c,v 1.13 1999-10-10 16:15:51 kifer Exp $
 ** 
 */
 
@@ -555,7 +555,7 @@ static bool load_one_sym(FILE *fd, Psc cur_mod, int count, int exp)
 
   get_obj_byte(&t_env);
   /* this simple check can avoid worse situations in case of compiler bugs */
-  if (t_env > T_GLOBAL) xsb_exit("Fatal: Object file loaded is corrupted");
+  if (t_env > T_GLOBAL) xsb_abort("The loaded object file is corrupted");
 
   get_obj_byte(&t_type);
   get_obj_byte(&t_arity);
