@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.13 2001-04-27 02:34:50 kifer Exp $
+** $Id: flrshell.H,v 1.14 2001-04-27 04:56:13 kifer Exp $
 **
 */
 
@@ -63,9 +63,7 @@
 :- import flora_undefined_predicate_hook/1 from flrundefhook.
 
 :- import
-	unstrap_flora/0,
-	(flLoad)/1,
-	(flCompile)/1
+	unstrap_flora/0
    from flora2.
 
 :- import flora_shreset_operator/0 from flroperator.
