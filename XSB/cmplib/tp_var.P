@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_var.P,v 1.7 2004-01-26 17:53:03 dwarren Exp $
+** $Id: tp_var.P,v 1.8 2004-02-19 20:35:47 dwarren Exp $
 ** 
 */
 
@@ -254,7 +254,7 @@ release_if_done(Vid,R,VPrag,HoldR,Tin,Tout) :-
 	    )
 	; release(R, Tin, Tout)		% T is one of: p, d, u, vh
 	).
-   %telling(X),tell(user),
+   %telling(X),tell(userout),
    %write('called to release register: '),write(R),
    %write('  Tin= '),write(Tin),write('  Tout= '),write(Tout),nl,told,tell(X).
 release_if_done(_,_,_,_,T,T).

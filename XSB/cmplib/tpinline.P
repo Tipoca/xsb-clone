@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tpinline.P,v 1.4 2002-04-13 05:01:48 lfcastro Exp $
+** $Id: tpinline.P,v 1.5 2004-02-19 20:35:47 dwarren Exp $
 ** 
 */
 
@@ -91,7 +91,7 @@ geninl_load_lhs(Term,R,Pil,Pilr,Tin,Tout,SaveR) :-
 	; getreg(Tin, R), hold(R, Tin, Tmid), SaveR = [],
 	  tputpar(Term, R, Pil, Pilr, Tmid, Tout,0)
 	).
-%   telling(X),tell(user),
+%   telling(X),tell(userout),
 %   write('called with term: '),write(Term),
 %   write('  Tin= '),write(Tin),write('  Tout= '),write(Tout),nl,
 %   write('  Pil= '),write(Pil), write(' Pilr= '),write(Pilr),nl,told,tell(X).
