@@ -16,3 +16,4 @@ options=$2
 ../gentest.sh "$XEMU $options" type0QueryExt "testreturns."
 ../gentest.sh "$XEMU $options" type0QueryInt "testreturns."
 ../gentest.sh "$XEMU $options" updateExt "testreturns."
+../gentest.sh "$XEMU $options" dlQuery "testreturns."

@@ -87,21 +87,18 @@ coversAttr_aux(cid(c2,test),rid(r3,test),cid(c12,test)).
 
 end_of_file.
 
-classHasAttr_int(X,cid(r_int,test),Y):- p(X,Y).
-classHasAttr_int(X,cid(r_int,testo1),Y):- q(X,Y).
-classHasAttr_int(cid(X,test),cid(r_int,test_int),cid(Y,test)):- r(X,Y).
-
-(cid(c13,test),component(test)) <= exists(ridr2,cid(c12,test)).
-
-
-auxiliary_cdf_rule(test,r(X,Y),fail).
-auxiliary_cdf_rule(test,p(X,Y),fail).
-auxiliary_cdf_rule(test,q(X,Y),fail).
-
-
 :- writeln('loading init file for test').
 
 r(_,_):- fail.
 p(_,_):- fail.
 q(_,_):- fail.
+
+classHasAttr_int(X,cid(r_int,test),Y):- p(X,Y).
+classHasAttr_int(X,cid(r_int,testo1),Y):- q(X,Y).
+classHasAttr_int(cid(X,test),cid(r_int,test_int),cid(Y,test)):- r(X,Y).
+
+auxiliary_cdf_rule(test,r(X,Y),fail).
+auxiliary_cdf_rule(test,p(X,Y),fail).
+auxiliary_cdf_rule(test,q(X,Y),fail).
+
 
