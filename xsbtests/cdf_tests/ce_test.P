@@ -2,17 +2,16 @@
 
 #include "standard.h"
 
+:- import messageln/2 from standard.
+
 :- [ce_values].
 :- [altcdf].
 :- [cdftp_chkCon].
 :- import load_extensional_facts/1 from cdf_io.
-:- import messageln/2 from standard.
 
 ?- load_extensional_facts(ce_testdir).
 
 %?- testall.
-
-messageln(Message) :- messageln(Message, STDMSG).
 
 testall:- 
 	testall1.
