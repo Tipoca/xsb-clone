@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.12 1999-01-14 20:57:10 kifer Exp $
+## $Id: testsuite.sh,v 1.13 1999-02-23 17:56:17 kostis Exp $
 ## 
 ##
 
@@ -38,12 +38,15 @@
 #    or in
 #    	 $1/config/architecture-$2/bin/xsb
 #    depending on whether the configuration tag was given on command line.
+# $3 is optional.  If specified, it is the file containing the commands
+#    to test specific subdirectories of the XSB testsuite.  If not
+#    specified it defaults to "testall".
 
-echo ==============================================================
+echo ==========================================================================
 
 
-if test $# -gt 2 -o $# = 0; then
-	echo "Usage: testsuite.csh <full path for XSB installation directory>"
+if test $# -gt 3 -o $# = 0; then
+	echo "Usage: testsuite.sh <full path for XSB installation directory>"
 	echo ""
 	exit
 fi
@@ -66,6 +69,12 @@ config=`$installdir/build/config.guess`
 canonical=`$installdir/build/config.sub $config`
 
 XEMU=$installdir/config/$canonical$config_tag/bin/xsb
+
+if test -z "$3" ; then
+    sh_testfile="./testall.sh"
+else
+    sh_testfile="$3"
+fi
 
 GREP="grep -i"
 MSG_FILE=/tmp/xsb_test_msg.$USER
@@ -117,7 +126,7 @@ else
 	NEXT_DATE=0
 fi
 
-./testall.sh $XEMU >> $LOG_FILE 2>&1
+$sh_testfile $XEMU >> $LOG_FILE 2>&1
 
 echo "-----------------------------------------"
 echo "The following core dumps occurred during this test run:"
