@@ -19,10 +19,9 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.10 2002-03-12 17:31:21 lfcastro Exp $
+** $Id: schedrev_xsb_i.h,v 1.11 2002-05-22 15:41:15 lfcastro Exp $
 ** 
 */
-
 
 /*-------------------------------------------------------------------------*/
 
@@ -56,10 +55,8 @@ static CPtr sched_answers(VariantSF producer_sf, CPtr producer_cpf,
 
   /**** The producer has answers and consuming calls ****/  
   if ( has_answers(producer_sf) && IsNonNULL(consumer_cpf) ) {
-#ifdef DEBUG_REV
-    xsb_dbgmsg("SchedAnswers: consumer_cpf=%d,producer_sf=%d",
+    xsb_dbgmsg(LOG_SCHED, "SchedAnswers: consumer_cpf=%d,producer_sf=%d",
 	       (int)consumer_cpf,(int)producer_sf);
-#endif
     /**** Check each consumer for unresolved answers ****/
     if ( IsSubsumptiveProducer(producer_sf) )
       while ( IsNonNULL(consumer_cpf) ) {
@@ -94,12 +91,10 @@ static CPtr sched_answers(VariantSF producer_sf, CPtr producer_cpf,
       nlcp_prevbreg(last_sched_cons) = breg;
   } /* if any answers and active nodes */
 
-#ifdef DEBUG_REV
-  xsb_dbgmsg("schedule active nodes: ccbreg=%d, breg=%d", 
+  xsb_dbgmsg(LOG_SCHED, "schedule active nodes: ccbreg=%d, breg=%d", 
 	     (int)producer_cpf,(int)breg);
-  xsb_dbgmsg("first active =%d, last=%d",
+  xsb_dbgmsg(LOG_SCHED, "first active =%d, last=%d",
 	     (int)first_sched_cons,(int)last_sched_cons);
-#endif
   return first_sched_cons;
 }
 

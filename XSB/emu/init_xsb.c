@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.24 2002-03-15 09:19:50 kifer Exp $
+** $Id: init_xsb.c,v 1.25 2002-05-22 15:41:14 lfcastro Exp $
 ** 
 */
 
@@ -429,7 +429,7 @@ char *init_para(int argc, char *argv[])
       asynint_val |= MSGINT_MARK; 
       break;
     case 't': 
-#ifdef DEBUG
+#ifdef DEBUG_VM
       flags[PIL_TRACE] = 1;
       flags[HITRACE] = 1;
       asynint_val |= MSGINT_MARK;

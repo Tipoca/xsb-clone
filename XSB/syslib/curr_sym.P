@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.16 2002/03/15 09:19:48 kifer Exp $
+** $Id: curr_sym.P,v 1.17 2002/03/15 11:08:21 kifer Exp $
 ** 
 */
 
@@ -465,6 +465,12 @@ xsb_flag(debugging, Debug) :-
 xsb_flag(tracing, Trace) :-
 	stat_flag(TRACE, Value), 
 	( Value =:= 0 -> Trace = off ; Trace = on ).
+xsb_flag(verboseness,Level) :-
+	var(Level),
+	stat_flag(VERBOSENESS_LEVEL,Level).
+xsb_flag(verboseness,Level) :-
+	number(Level),
+	stat_set_flag(VERBOSENESS_LEVEL,Level).
 %% Goal passed on cmd line
 xsb_flag(goal, Goal) :-
 	stat_flag(CMD_LINE_GOAL, GoalUninterned),

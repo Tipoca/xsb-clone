@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.15 2000-06-27 17:59:16 ejohnson Exp $
+** $Id: table_stats.c,v 1.16 2002-05-22 15:41:16 lfcastro Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
 #include "macro_xsb.h"
 #include "error_xsb.h"
 #include "flags_xsb.h"
-
+#include "debug_xsb.h"
 
 
 /*==========================================================================*/
@@ -85,7 +85,7 @@ HashStats hash_statistics(Structure_Manager *sm) {
   HashStats_BucketSize(ht_stats) = sizeof(void *);
   pBTHT = (BTHTptr)SM_AllocList(*sm);
   while ( IsNonNULL(pBTHT) ) {
-#ifdef DEBUG
+#ifdef DEBUG_ASSERTIONS
     /* Counter for contents of current hash table
        ------------------------------------------ */
     counter num_contents = 0;
@@ -97,7 +97,7 @@ HashStats hash_statistics(Structure_Manager *sm) {
 	  ppBTN < BTHT_BucketArray(pBTHT) + BTHT_NumBuckets(pBTHT);
 	  ppBTN++ )
       if ( IsNonNULL(*ppBTN) ) {
-#ifdef DEBUG
+#ifdef DEBUG_ASSERTIONS
 	/* Count the objects in each bucket
 	   -------------------------------- */
 	BTNptr pBTN = *ppBTN;
@@ -108,7 +108,7 @@ HashStats hash_statistics(Structure_Manager *sm) {
 #endif
 	HashStats_NonEmptyBuckets(ht_stats)++;
       }
-#ifdef DEBUG
+#ifdef DEBUG_ASSERTIONS
     /* Compare counter and header values
        --------------------------------- */
     if ( num_contents != BTHT_NumContents(pBTHT) )
@@ -165,7 +165,7 @@ NodeStats subgoal_statistics(Structure_Manager *sm) {
 	    nSubgoals++;
   }
   else {
-    xsb_dbgmsg("Incorrect use of subgoal_statistics()\n"
+    xsb_dbgmsg(LOG_DEBUG, "Incorrect use of subgoal_statistics()\n"
 	       "SM does not contain subgoal frames");
     return sg_stats;
   }

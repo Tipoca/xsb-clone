@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: demand.h,v 1.1 2002-03-14 22:13:57 lfcastro Exp $
+** $Id: demand.h,v 1.2 2002-05-22 15:41:12 lfcastro Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 #include "cut_xsb.h"
 
 /* debug-related macros */
-#ifdef DEBUG
+#ifdef DEBUG_VERBOSE
 #ifdef CP_DEBUG
 #define INSPECT_CP(Type,CP) \
     fprintf(stddbg,\

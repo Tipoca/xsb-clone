@@ -18,13 +18,8 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hashtable_xsb.c,v 1.2 2002-04-02 06:31:10 kifer Exp $
+** $Id: hashtable_xsb.c,v 1.3 2002-05-22 15:41:13 lfcastro Exp $
 ** 
-*/
-
-
-/*
-#define DEBUG_HASHTABLE
 */
 
 
@@ -44,6 +39,8 @@
 
 #include "hashtable_xsb.h"
 #include "tr_utils.h"
+#include "debug_xsb.h"
+#include "flags_xsb.h"
 
 /*
   A simple hashtable.
@@ -90,12 +87,12 @@ xsbBucket *search_bucket(Cell name,
 	    free(bucket);
 	  } else {
 	    mark_bucket_free(prev,table->bucket_size);
-#ifdef DEBUG_HASHTABLE
-	    printf("SEARCH_BUCKET: Destroying storage handle for %s\n",
-		   string_val(name));
-	    printf("SEARCH_BUCKET: Bucket nameptr is %p, next bucket %p\n",
-		   prev->name, prev->next);
-#endif
+	    xsb_dbgmsg(LOG_HASHTABLE,
+		       "SEARCH_BUCKET: Destroying storage handle for %s\n",
+		       string_val(name));
+	    xsb_dbgmsg(LOG_HASHTABLE, 
+		       "SEARCH_BUCKET: Bucket nameptr is %p, next bucket %p\n",
+		       prev->name, prev->next);
 	  }
 	} else {
 	  /* Not top bucket: rearrange pointers & free space */
@@ -159,12 +156,12 @@ void show_table_state(xsbHashTable *table)
   xsbBucket *bucket;
   int i;
 
-  xsb_dbgmsg("\nCell Status\tOverflow Count\n");
+  xsb_dbgmsg(LOG_DEBUG,"\nCell Status\tOverflow Count\n");
   for (i=0; i < table->length; i++) {
     bucket = get_top_bucket(table,i);
     if (is_free_bucket(bucket)) {
       /* free cell */
-      xsb_dbgmsg("   ---\t\t   ---");
+      xsb_dbgmsg(LOG_DEBUG, "   ---\t\t   ---");
     } else {
       int overflow_count=0;
 
@@ -174,7 +171,7 @@ void show_table_state(xsbHashTable *table)
 	overflow_count++;
 	bucket = bucket->next;
       }
-      xsb_dbgmsg("   %d", overflow_count);
+      xsb_dbgmsg(LOG_DEBUG,"   %d", overflow_count);
     }
   }
 }

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.12 2001-03-17 05:44:01 kifer Exp $
+** $Id: struct_manager.c,v 1.13 2002-05-22 15:41:16 lfcastro Exp $
 ** 
 */
 
@@ -33,7 +33,8 @@
 #include "struct_manager.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
-
+#include "debug_xsb.h"
+#include "flags_xsb.h"
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -71,9 +72,7 @@ void smAllocateBlock(Structure_Manager *pSM) {
 
   void *pNewBlock;
 
-#ifdef DEBUG_STRUCT_ALLOC
-  smPrint(*pSM,"before block allocation");
-#endif
+  dbg_smPrint(LOG_STRUCT_MANAGER, *pSM,"before block allocation");
   pNewBlock = malloc(SM_NewBlockSize(*pSM));
   if ( IsNULL(pNewBlock) )
     xsb_abort("[smAllocateBlock] Out of memory in allocation of %s block\n",
@@ -84,9 +83,7 @@ void smAllocateBlock(Structure_Manager *pSM) {
   SM_LastStruct(*pSM) = SMBlk_LastStruct(pNewBlock,
 					 SM_StructSize(*pSM),
 					 SM_StructsPerBlock(*pSM));
-#ifdef DEBUG_STRUCT_ALLOC
-  smPrint(*pSM,"after block allocation");
-#endif
+  dbg_smPrint(LOG_STRUCT_MANAGER, *pSM,"after block allocation");
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */

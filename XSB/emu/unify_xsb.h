@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify_xsb.h,v 1.2 2002-03-12 17:31:22 lfcastro Exp $
+** $Id: unify_xsb.h,v 1.3 2002-05-22 15:41:17 lfcastro Exp $
 ** 
 */
 
@@ -32,6 +32,8 @@
 
 #define COND1      (CPtr)(op1) < hreg ||  (CPtr)(op1) < hfreg 
 #define COND2      (CPtr)(op2) < hreg ||  (CPtr)(op2) < hfreg 
+
+#define attv_dbgmsg(String) xsb_dbgmsg(LOG_ATTV,String)
 
 #define unify_xsb(loc)                                       \
  loc##_tail_recursion:                                       \

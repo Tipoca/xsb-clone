@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.25 2002-03-15 09:19:50 kifer Exp $
+** $Id: loader_xsb.c,v 1.26 2002-05-22 15:41:14 lfcastro Exp $
 ** 
 */
 
@@ -58,6 +58,8 @@
 #ifdef FOREIGN
 #include "dynload.h"
 #endif
+
+#include "debug_xsb.h"
  
 /* === stuff used from elsewhere ======================================	*/
 
@@ -415,7 +417,7 @@ static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
     } /* for */
   }
   if (inst_addr != end_addr) {
-    xsb_dbgmsg("inst_addr %p, end_addr %p", inst_addr, end_addr);
+    xsb_dbgmsg(LOG_DEBUG, "inst_addr %p, end_addr %p", inst_addr, end_addr);
     return FALSE;
   }
   else return TRUE;

@@ -18,14 +18,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.19 2002-03-13 22:40:13 lfcastro Exp $
+** $Id: macro_xsb.h,v 1.20 2002-05-22 15:41:14 lfcastro Exp $
 ** 
 */
 
 
+#include "debug_xsb.h"
+
 /*----------------------------------------------------------------------*/
 
-typedef struct subgoal_frame *VariantSF;
+/* typedef struct subgoal_frame *VariantSF; */
 
 /*===========================================================================*/
 

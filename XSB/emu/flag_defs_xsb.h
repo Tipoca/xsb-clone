@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.8 2001-07-16 05:15:37 kifer Exp $
+** $Id: flag_defs_xsb.h,v 1.9 2002-05-22 15:41:13 lfcastro Exp $
 ** 
 */
 
@@ -48,6 +48,8 @@
 				   are displayed; passed to Prolog side.
 				   Check BANNER_CTL values at the end      */
 #define DCG_MODE        18      /* DGC mode: standard or xsb	           */
+
+#define VERBOSENESS_LEVEL 19    /* how verbose debug messages should be    */
 
 #define GARBAGE_COLLECT 20      /* type of garbage collection employed:    */
                                 /* 0 = none; 1 = sliding; 2 = copying.  NW */

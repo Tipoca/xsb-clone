@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.16 2000-09-27 22:09:06 lfcastro Exp $
+** $Id: slgdelay.h,v 1.17 2002-05-22 15:41:16 lfcastro Exp $
 ** 
 */
 
@@ -230,10 +230,5 @@ extern unsigned long allocated_dl_space(int * num_blocks);
 extern unsigned long unused_dl_space(void);
 extern void simplify_pos_unsupported(NODEptr);
 extern void release_all_dls(ASI);
-
-#ifdef DEBUG
-extern void print_subgoal(FILE *, VariantSF);
-extern void print_delay_list(FILE *, CPtr);
-#endif
 
 /*---------------------- end of file slgdelay.h ------------------------*/

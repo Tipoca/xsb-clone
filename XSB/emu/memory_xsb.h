@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.9 2002-03-12 17:31:21 lfcastro Exp $
+** $Id: memory_xsb.h,v 1.10 2002-05-22 15:41:14 lfcastro Exp $
 ** 
 */
 
@@ -138,7 +138,7 @@ extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
 /* Stack Overflow Checkers
    ----------------------- */
 
-#ifdef DEBUG
+#ifdef DEBUG_ASSERTIONS
 
 #define check_tcpstack_overflow {					\
 									\

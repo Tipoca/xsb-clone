@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.h,v 1.1 1999-10-25 05:58:18 kifer Exp $
+** $Id: hash_xsb.h,v 1.2 2002-05-22 15:41:13 lfcastro Exp $
 ** 
 */
 
@@ -47,7 +47,7 @@ extern Hash_Table string_table;
  *  Macros for hash table overflow checks.
  */
 
-#ifndef DEBUG
+#ifndef DEBUG_ASSERTIONS
 #define string_table_increment_and_check_for_overflow               \
   {                                                                 \
     string_table.contains++;                                        \

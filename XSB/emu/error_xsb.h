@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.5 2001-07-07 06:10:30 kifer Exp $
+** $Id: error_xsb.h,v 1.6 2002-05-22 15:41:13 lfcastro Exp $
 ** 
 */
 
@@ -70,7 +70,7 @@ DllExport extern void call_conv xsb_bug(char *, ...);
 DllExport extern void call_conv xsb_warn(char *, ...);
 DllExport extern void call_conv xsb_mesg(char *, ...);
 DllExport extern void call_conv xsb_error(char *, ...);
-DllExport extern void call_conv xsb_dbgmsg(char *, ...);
+DllExport extern void call_conv xsb_dbgmsg1(int, char *, ...);
 extern void arithmetic_abort1(char *, Cell);
 extern void arithmetic_abort(Cell, char *, Cell);
 extern void arithmetic_comp_abort(Cell, char *, int);

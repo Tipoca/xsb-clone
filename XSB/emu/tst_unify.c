@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_unify.c,v 1.12 2001-12-13 21:13:35 lfcastro Exp $
+** $Id: tst_unify.c,v 1.13 2002-05-22 15:41:17 lfcastro Exp $
 ** 
 */
 
@@ -107,7 +107,7 @@ static void consumption_error(char *string) {
   char *abort_string;
 
   fprintf(stderr,"\nAnswer Return ERROR:  Failed to unify answer\n\t");
-#ifdef DEBUG
+#ifdef DEBUG_VERBOSE
   printTriePath(stderr,gAnsLeaf,YES);
 #else
   printTriePath(stderr,gAnsLeaf,NO);
@@ -116,7 +116,7 @@ static void consumption_error(char *string) {
   printAnswerTemplate(stderr,gAnsTmplt,gSizeTmplt);
   fprintf(stderr,
 	  "(* Note: this template may be partially instantiated *)\n");
-#ifdef DEBUG
+#ifdef DEBUG_ASSERTIONS
   xsb_error(string);
   /* Get Consumer SF from the CPS, using the ptr to AnsTmplt */
   {

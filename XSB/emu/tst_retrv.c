@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_retrv.c,v 1.16 2001-04-28 20:15:38 ejohnson Exp $
+** $Id: tst_retrv.c,v 1.17 2002-05-22 15:41:17 lfcastro Exp $
 ** 
 */
 
@@ -46,8 +46,8 @@
 #include "macro_xsb.h"
 #include "tst_aux.h"
 #include "tst_utils.h"
-
-
+#include "debug_xsb.h"
+#include "flags_xsb.h"
 
 /*  Data Structures and Related Macros
     ==================================  */
@@ -898,15 +898,13 @@ ALNptr tst_collect_relevant_answers(TSTNptr tstRoot, TimeStamp ts,
   if ( ! IsLeafNode(parentTSTN) ) {
     xsb_warn("During collection of relevant answers for subsumed subgoal\n"
 	     "TermStack is empty but a leaf node was not reached");
-#ifdef DEBUG
-    fprintf(stderr, "Root ");
-    printTrieNode(stderr,(BTNptr)tstRoot);
-    fprintf(stderr, "Last ");
-    printTrieNode(stderr,(BTNptr)parentTSTN);
-    printAnswerTemplate(stderr,termsRev,numTerms);
-    fprintf(stderr,
+    xsb_dbgmsg(LOG_DEBUG, "Root ");
+    dbg_printTrieNode(LOG_DEBUG, stddbg, (BTNptr)tstRoot);
+    xsb_dbgmsg(LOG_DEBUG, "Last ");
+    dbg_printTrieNode(LOG_DEBUG, stddbg, (BTNptr)parentTSTN);
+    dbg_printAnswerTemplate(LOG_DEBUG, stddbg, termsRev,numTerms);
+    xsb_dbgmsg(LOG_DEBUG,
 	    "(* Note: this template may be partially instantiated *)\n");
-#endif
     fprintf(stdwarn, "Attempting to continue...\n");
   }
   else
