@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.147 2003-03-26 18:36:47 lfcastro Exp $
+## $Id: configure.in,v 1.148 2003-03-26 19:03:17 lfcastro Exp $
 ## 
 ##
 
@@ -1365,7 +1365,7 @@ if test "${do_debugging}" = "yes" ; then
    fi
 fi
 
-if test "${has_gcc}" = "yes"; then
+if test "${has_gcc}" = "yes" -a "${host_os}" != "windows" ; then
    dnl gcc is smarter when creating dynamic libraries in Unix
    LD=gcc 
 else
