@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.c,v 1.13 1999-10-10 16:15:51 kifer Exp $
+** $Id: loader.c,v 1.14 1999-10-18 20:11:02 luis Exp $
 ** 
 */
 
@@ -717,14 +717,18 @@ static byte *loader_foreign(char *filename, FILE *fd, int exp)
   Pair ptr;
 
   get_obj_byte(&name_len);
+  if (name_len > 64) {
+    xsb_error("name of foreign module too long");
+    return 0;
+  }
   get_obj_string(name, name_len);
   name[name_len] = 0;
   get_obj_byte(&ldoption_len);
-  get_obj_string(ldoption, ldoption_len);
   if (ldoption_len >= 255) {
     xsb_error("ldoption is too long for foreign module %s", name);
     return 0;
   }
+  get_obj_string(ldoption, ldoption_len);
   ldoption[ldoption_len] = 0;
   ptr = insert_module(T_MODU, name);
   cur_mod = ptr->psc_ptr;
