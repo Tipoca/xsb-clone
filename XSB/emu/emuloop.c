@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.71 2000-07-15 17:02:47 cbaoqiu Exp $
+** $Id: emuloop.c,v 1.72 2000-12-08 21:30:00 dwarren Exp $
 ** 
 */
 
@@ -1269,7 +1269,7 @@ contcase:     /* the main loop */
   Op1(get_xxa);
   ADVANCE_PC(size_xxx);
     pcreg=lpcreg; 
-    if (builtin_call((int)(op1))) {lpcreg=pcreg;}
+    if (builtin_call((byte)(op1))) {lpcreg=pcreg;}
     else Fail1;
     XSB_Next_Instr();
 
