@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.20 2000-09-27 02:25:02 kifer Exp $
+** $Id: socket_xsb.c,v 1.21 2000-12-01 07:29:14 kifer Exp $
 ** 
 */
 
@@ -636,7 +636,7 @@ xsbBool xsb_socket_request(void)
 
     /* check whether the same connection name exists */
     for (i=0;i<MAXCONNECT;i++) {
-      if ((connections[i].empty_flag==0) &&
+      if ((connections[i].empty_flag==FALSE) &&
 	  (strcmp(connection_name,connections[i].connection_name)==0)) 	
 	xsb_abort("SOCKET_SET_SELECT: Connection `%s' already exists!",
 		  connection_name);
@@ -646,7 +646,7 @@ xsbBool xsb_socket_request(void)
     if ((connection_count=checkslot())<MAXCONNECT) {
       if (connections[connection_count].connection_name == NULL) {
 	connections[connection_count].connection_name = connection_name;
- 	connections[connection_count].empty_flag = 0;
+ 	connections[connection_count].empty_flag = FALSE;
 
 	/* call the utility function separately to take the fds in */
 	list_sockfd(R_sockfd, &connections[connection_count].readset,
@@ -719,11 +719,11 @@ xsbBool xsb_socket_request(void)
     
     for (i=0; i < MAXCONNECT; i++) {
       /* find the matching connection_name to select */
-      if(connections[i].empty_flag==0) {
+      if(connections[i].empty_flag==FALSE) {
 	if (strcmp(connection_name, connections[i].connection_name) == 0) {
-	      connectname_found = TRUE;
-              count = i;
-	      break;
+	  connectname_found = TRUE;
+	  count = i;
+	  break;
 	} 
       }
     }
@@ -824,7 +824,7 @@ static void init_connections()
     for (i=0; i<MAXCONNECT; i++) {
       connections[i].connection_name = NULL; 
       connections[i].maximum_fd=0;
-      connections[i].empty_flag=1;
+      connections[i].empty_flag=TRUE;
       /*clear all FD_SET */
       FD_ZERO(&connections[i].readset);
       FD_ZERO(&connections[i].writeset);
@@ -921,7 +921,7 @@ static void select_destroy(char *connection_name)
   int connectname_found = FALSE;
 
   for (i=0; i < MAXCONNECT; i++) {
-    if(connections[i].empty_flag==0) {
+    if(connections[i].empty_flag==FALSE) {
       /* find the matching connection_name to destroy */
       if (strcmp(connection_name, connections[i].connection_name) == 0) {
         connectname_found = TRUE;
@@ -943,7 +943,7 @@ static void select_destroy(char *connection_name)
 	connections[i].sizew = 0 ;
 	connections[i].sizee = 0 ;
 
-	connections[i].empty_flag = 1; /* set the destroyed slot to empty */ 
+	connections[i].empty_flag = TRUE; /* set the destroyed slot to empty */
         break;
       }
     }
@@ -960,7 +960,7 @@ static void select_destroy(char *connection_name)
 static int checkslot (void) {
 	int i;
 	for (i=0; i<MAXCONNECT;i++) {
-		if (connections[i].empty_flag == 1) break;
+		if (connections[i].empty_flag == TRUE) break;
 	}
 	return i;
 }
