@@ -5,8 +5,7 @@
 :- [altcdf].
 :- [test_utils].
 
-:- import load_extensional_facts/1,
-	  load_intensional_rules/1 from cdf_io.
+:- import load_extensional_facts/1 from cdf_io.
 :- import update_all_components/2 from cdf_comps_noshare.
 :- import load_component/3 from cdf_comps_share.
 :- import retractallExtTerm/1,abolish_cdf_tables/0 from cdf_init_cdf.
@@ -16,7 +15,6 @@
 
 loadfacts:- 
 	load_extensional_facts('type0_testdir').
-%	load_intensional_rules('type0_testdir').
 
 testreturns:- 
 	loadfacts,
