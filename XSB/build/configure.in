@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.105 2001-04-21 22:52:49 kifer Exp $
+## $Id: configure.in,v 1.106 2001-05-17 00:44:31 kifer Exp $
 ## 
 ##
 
@@ -1126,9 +1126,9 @@ fi
 #fi
 
 # dnl ODBC library 
-if test "${with_odbc}" = yes ; then
-   LDFLAGS="-lodbc32${LDFLAGS}"
-fi
+#if test "${with_odbc}" = yes ; then
+#   LDFLAGS="-lodbc32 ${LDFLAGS}"
+#fi
 
 if test "${enable_no_cygwin+set}" = "set"; then
    CC="${CC} -mno-cygwin"

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.18 2001-04-03 19:41:53 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.19 2001-05-17 00:44:31 kifer Exp $
 ** 
 */
 
@@ -27,8 +27,8 @@
 
 #ifdef WIN_NT
 #include <windows.h>
-#include <SQL.H>
-#include <SQLEXT.H>
+#include <sql.h>
+#include <sqlext.h>
 #include <string.h>
 #else
 #define FAR
