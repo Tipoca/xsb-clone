@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.c,v 1.20 1999-04-16 13:29:55 unova Exp $
+** $Id: io_builtins.c,v 1.21 1999-04-22 15:39:56 kifer Exp $
 ** 
 */
 
@@ -1039,11 +1039,13 @@ char *p_charlist_to_c_string (prolog_term term, char *in_func, char *where)
     if (is_nil(list)) break;
     list_head = p2p_car(list);
     if (!is_int(list_head)) {
-      xsb_abort("%s: Non-ASCII character in %s", in_func, where);
+      xsb_abort("%s: A Prolog string (a character list) expected, %s",
+		in_func, where);
     }
     head_val = int_val(list_head);
     if (head_val < 0 || head_val > 255) {
-      xsb_abort("%s: Non-ASCII character in %s", in_func, where);
+      xsb_abort("%s: A Prolog string (a character list) expected, %s",
+		in_func, where);
     }
 
     head_val = (char) head_val;
