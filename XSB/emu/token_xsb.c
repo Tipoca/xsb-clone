@@ -19,16 +19,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.5 2000-06-22 19:40:32 ruim Exp $
+** $Id: token_xsb.c,v 1.6 2000-06-28 16:54:53 ruim Exp $
 ** 
 */
 
 
+#include "xsb_config.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-#include "xsb_config.h"
 
 #include "auxlry.h"
 #include "token_xsb.h"

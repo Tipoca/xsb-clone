@@ -19,16 +19,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.5 2000-05-20 06:56:05 kifer Exp $
+** $Id: psc_xsb.c,v 1.6 2000-06-28 16:54:51 ruim Exp $
 ** 
 */
 
 
-#include <stdio.h>
-#include <string.h>
-
 #include "xsb_config.h"
 #include "xsb_debug.h"
+
+#include <stdio.h>
+#include <string.h>
 
 #include "auxlry.h"
 #include "cell_xsb.h"

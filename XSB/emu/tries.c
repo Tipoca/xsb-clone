@@ -20,16 +20,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.53 2000-06-25 16:59:18 ejohnson Exp $
+** $Id: tries.c,v 1.54 2000-06-28 16:54:54 ruim Exp $
 ** 
 */
 
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "xsb_config.h"
 #include "xsb_debug.h"
+
+#include <stdio.h>
+#include <stdlib.h>
 
 /* Special debug includes */
 #include "debugs/debug_tries.h"

@@ -18,15 +18,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.8 2000-05-20 06:56:00 kifer Exp $
+** $Id: function.c,v 1.9 2000-06-28 16:54:50 ruim Exp $
 ** 
 */
 
 
-#include <math.h>
-
 #include "xsb_config.h"
 #include "xsb_debug.h"
+
+#include <math.h>
 
 #include "auxlry.h"
 #include "cell_xsb.h"

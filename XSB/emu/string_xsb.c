@@ -18,17 +18,17 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string_xsb.c,v 1.7 2000/04/29 21:53:59 kifer Exp $
+** $Id: string_xsb.c,v 1.8 2000/05/20 06:56:07 kifer Exp $
 ** 
 */
 
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "xsb_config.h"
-#include "xsb_debug.h"
 #include "auxlry.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"

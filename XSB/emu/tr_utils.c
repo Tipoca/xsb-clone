@@ -18,16 +18,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.48 2000/06/28 06:42:52 kifer Exp $
+** $Id: tr_utils.c,v 1.49 2000/06/28 14:27:46 ruim Exp $
 ** 
 */
 
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "xsb_config.h"
 #include "xsb_debug.h"
+
+#include <stdio.h>
+#include <stdlib.h>
 
 /* Special debug includes */
 #include "debugs/debug_tries.h"

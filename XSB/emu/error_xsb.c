@@ -18,18 +18,18 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.11 2000-06-19 07:07:24 ruim Exp $
+** $Id: error_xsb.c,v 1.12 2000-06-28 16:54:50 ruim Exp $
 ** 
 */
 
+
+#include "xsb_config.h"
 
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
 #include <signal.h>
 #include <stdlib.h>
-
-#include "xsb_config.h"
 
 #include "auxlry.h"
 #include "cell_xsb.h"

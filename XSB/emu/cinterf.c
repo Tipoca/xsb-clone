@@ -19,17 +19,17 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.33 2000-05-20 06:55:56 kifer Exp $
+** $Id: cinterf.c,v 1.34 2000-06-28 16:54:49 ruim Exp $
 ** 
 */
 
 
+#include "xsb_config.h"
+#include "xsb_debug.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-#include "xsb_config.h"
-#include "xsb_debug.h"
 
 #include "auxlry.h"
 #include "cell_xsb.h"

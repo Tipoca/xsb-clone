@@ -18,15 +18,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.16 2000-05-29 04:23:36 ejohnson Exp $
+** $Id: residual.c,v 1.17 2000-06-28 16:54:52 ruim Exp $
 ** 
 */
 
 
-#include <stdio.h>
-
 #include "xsb_config.h"
 #include "xsb_debug.h"
+
+#include <stdio.h>
 
 
 /* special debug includes */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.7 2000-06-23 20:54:10 ruim Exp $
+** $Id: varstring.c,v 1.8 2000-06-28 16:54:54 ruim Exp $
 ** 
 */
 
@@ -53,13 +53,13 @@
 #undef DEBUG_VARSTRING
 
 
+#include "xsb_config.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <string.h>
-
-#include "xsb_config.h"
 
 #include "wind2unix.h"
 

@@ -19,16 +19,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.30 2000/05/29 04:23:37 ejohnson Exp $
+** $Id: slgdelay.c,v 1.31 2000/05/29 18:08:28 cbaoqiu Exp $
 ** 
 */
 
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "xsb_config.h"
 #include "xsb_debug.h"
+
+#include <stdio.h>
+#include <stdlib.h>
 
 /* special debug includes */
 #include "debugs/debug_delay.h"

@@ -19,9 +19,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.8 2000-05-22 05:48:06 kifer Exp $
+** $Id: system_xsb.c,v 1.9 2000-06-28 16:54:53 ruim Exp $
 ** 
 */
+
+#include "xsb_config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +33,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-#include "xsb_config.h"
 
 #ifdef WIN_NT
 #include <windows.h>
