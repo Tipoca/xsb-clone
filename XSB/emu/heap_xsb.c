@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.36 2003-07-16 15:04:50 lfcastro Exp $
+** $Id: heap_xsb.c,v 1.37 2004-01-05 18:40:21 dwarren Exp $
 ** 
 */
 
@@ -513,6 +513,7 @@ int gc_heap(int arity)
       if (tr_marks)    { free(tr_marks); tr_marks = NULL; }
       if (ls_marks)    { free(ls_marks); ls_marks = NULL; }
       if (cp_marks)    { free(cp_marks); cp_marks = NULL; }
+      if (slide_buf)   { free(slide_buf); slide_buf = NULL; }
       goto end;
     }
     
@@ -616,6 +617,10 @@ int gc_heap(int arity)
       check_zero(cp_marks,(cp_bot - cp_top + 1),"cp") ;
       free(cp_marks) ;
       cp_marks = NULL ;
+    }
+    if (slide_buf)    {  
+      free(slide_buf) ;
+      slide_buf = NULL ;
     }
 #ifdef SAFE_GC
     p = hreg;
