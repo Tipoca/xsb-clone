@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: smoMakefile.in,v 1.16 2003-02-26 17:55:20 lfcastro Exp $
+## $Id: smoMakefile.in,v 1.17 2003-02-28 16:26:53 lfcastro Exp $
 ## 
 ##
 
@@ -36,7 +36,7 @@ LDFLAGS += @smoLDFLAGS@
 SMODELS=@with_smodels@
 SMOLIB=@smoLIB@
 
-ALL = xasppkg.xwam sm_clause_store.xwam sm_int.xwam
+ALL = xasppkg.xwam sm_clause_store.xwam sm_int.xwam xnmr.xwam xnmr_int.xwam
 
 Option = [sysmod,optimize]
 
