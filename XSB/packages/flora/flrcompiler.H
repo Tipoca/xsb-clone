@@ -19,16 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.9 1999-11-20 08:00:33 kifer Exp $
+** $Id: flrcompiler.H,v 1.10 1999-11-21 05:52:27 kifer Exp $
 **
 */
 
 :- compiler_options([xpp_on]).
 
-#mode save
-#mode nostring "\!#'"
-#define STD_FPREFIX(X)    '_$_$_flora_''X'
-#mode restore
+#include "flora_prefix.h"
 
 
 :- import

@@ -19,16 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.9 1999-09-22 07:30:18 kifer Exp $
+** $Id: flrutils.H,v 1.10 1999-11-21 05:52:30 kifer Exp $
 **
 */
 
 :- compiler_options([xpp_on]).
 
-#mode save
-#mode nostring "\!#'"
-#define STD_FPREFIX(X)    '_$_$_flora_''X'
-#mode restore
+#include "flora_prefix.h"
 
 
 :- import
@@ -85,5 +82,7 @@
 	flora_error_nl/1, flora_error_nl/2,
 	STD_FPREFIX(warning_nl)/1, STD_FPREFIX(warning_nl)/2,
 	flora_message_nl/1, flora_message_nl/2, flora_message/1,
-	flora_display_msg/1, flora_display_msg/2.
+	flora_display_msg/1, flora_display_msg/2,
+	STD_FPREFIX(tnot_all)/1,
+	STD_FPREFIX(then)/2, STD_FPREFIX(else)/2.
 

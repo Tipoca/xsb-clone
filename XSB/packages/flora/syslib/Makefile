@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.10 1999-10-26 06:47:43 kifer Exp $
+## $Id: Makefile,v 1.11 1999-11-21 05:52:37 kifer Exp $
 ## 
 ##
 
@@ -32,7 +32,8 @@ EMU_INCLUDES = $(XSBDIR)/emu/builtin.h \
 	$(XSBDIR)/emu/io_defs_xsb.h $(XSBDIR)/emu/syscall_xsb.h \
 	$(XSBDIR)/emu/system_defs_xsb.h $(XSBDIR)/emu/socket_xsb.h 
 PROLOG_INCLUDES = $(XSBDIR)/prolog_includes/char_defs.h \
-	$(XSBDIR)/prolog_includes/standard.h
+	$(XSBDIR)/prolog_includes/standard.h \
+	$(XSBDIR)/packages/flora/includes/flora_prefix.h
 
 
 Option = [optimize,quit_on_error]
@@ -81,6 +82,8 @@ all: init $(ALL) finish
 
 init:
 	/bin/rm -f $(SVFILE)
+	@echo "import bootstrap_flora/0 from flora." >> cmd...
+	@echo "bootstrap_flora." >> cmd...
 	@echo "file_reopen($(SVFILE),$(OWRITE),$(STDWARN),_)." >> cmd...
 	@echo "file_clone($(STDWARN), $(STDERR),_)." >> cmd...
 	@echo 'fmt_write($(STDWARN),"-------------- Warnings/Errors --------------------\n",_).' >> cmd...
