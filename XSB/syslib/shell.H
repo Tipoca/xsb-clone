@@ -19,13 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.H,v 1.1 1999/08/09 00:35:12 kifer Exp $
+** $Id: shell.H,v 1.2 1999/08/14 18:48:42 kifer Exp $
 ** 
 */
 
 
 :- export cd/1, ls/0, rename/2, rm/1, edit/1,
-	shell/5, shell/2, shell/1,
+	shell/5, shell/2, shell/1, sleep/1,
 	spawn_process/5, get_process_table/1, process_status/2, 
 	process_control/2.
 :- export sys_chdir/2, sys_access/3, sys_stat/3, sys_link/3, sys_exit/1.

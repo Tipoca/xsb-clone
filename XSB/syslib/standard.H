@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.15 1999/08/17 19:30:09 warren Exp $
+** $Id: standard.H,v 1.16 1999/09/25 16:34:26 kifer Exp $
 ** 
 */
 
@@ -73,6 +73,7 @@
 	message/1,      message/2,
         warning/1,	push_abort_cutpoint/0,  pop_abort_cutpoint/0,
         abort/1,	abort/0,
+	set_timer/1,
 	(import)/1,	(multifile)/1.
 
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: char_defs.h,v 1.2 1999-08-23 04:08:19 kifer Exp $
+** $Id: char_defs.h,v 1.3 1999-11-16 19:06:09 kifer Exp $
 ** 
 */
 
@@ -138,3 +138,5 @@
 
 #define CH_DELETE      	     127      /*  ^?	*/
 
+#define CH_EOF_C	     255      /* The C EOF character: (char) -1  */
+#define CH_EOF_P	     -1       /* The Prolog EOF character: -1    */

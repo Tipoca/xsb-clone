@@ -18,20 +18,27 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.1 1999-10-25 05:58:49 kifer Exp $
+** $Id: odbc_xsb.c,v 1.2 1999-11-16 19:05:58 kifer Exp $
 ** 
 */
 
 #include "configs/config.h"
+
+#ifdef WIN_NT
 #include <windows.h>
 #include <SQL.H>
 #include <SQLEXT.H>
 #include <odbcinst.h>
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+
 #include "cinterf.h"
+#include "cell_xsb.h"
+#include "error_xsb.h"
 #include "export.h"
 
 #define MAXCURSORNUM                    20

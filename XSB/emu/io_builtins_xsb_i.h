@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.1 1999-10-25 05:58:37 kifer Exp $
+** $Id: io_builtins_xsb_i.h,v 1.2 1999-11-16 19:05:56 kifer Exp $
 ** 
 */
 
@@ -433,13 +433,14 @@ inline static bool file_function(void)
     else if (fd_flags == O_WRONLY)
       mode = "wb";
     else {
-      /* can't determine the mode of the C fd -- return an invalid XSB fd */
-      ctop_int(3, -1);
-      break;
+      /* can't determine the mode of the C fd -- return "r+" */
+      mode = "r+";
     }
 #endif
 
     fptr = fdopen(pipe_fd, mode);
+
+    /* xsb_intern_file will return -1, if fdopen fails */
     ctop_int(3, xsb_intern_file(fptr, "FD2IOPORT"));
     break;
   }

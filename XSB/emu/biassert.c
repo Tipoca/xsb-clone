@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.29 1999-11-15 21:56:46 warren Exp $
+** $Id: biassert.c,v 1.30 1999-11-16 19:05:49 kifer Exp $
 ** 
 */
 
@@ -531,12 +531,6 @@ static void reg_release(int R0)
     }
 }
 
-#ifndef max
-#define max(p1,p2) ((p1)>=(p2)?(p1):(p2))
-#endif
-#ifndef min
-#define min(p1,p2) ((p1)<=(p2)?(p1):(p2))
-#endif
 
 static char *Buff = NULL;
 static int Buff_size = 512;

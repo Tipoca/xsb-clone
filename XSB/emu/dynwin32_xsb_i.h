@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32_xsb_i.h,v 1.3 1999-11-08 23:04:11 luis Exp $
+** $Id: dynwin32_xsb_i.h,v 1.4 1999-11-16 19:05:53 kifer Exp $
 ** 
 */
 
@@ -35,6 +35,7 @@
 #include "auxlry.h"
 #include "cell_xsb.h"
 #include "memory_xsb.h"
+#include "error_xsb.h"
 #include "inst_xsb.h"
 #include "psc_xsb.h"
 

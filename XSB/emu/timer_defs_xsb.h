@@ -1,7 +1,7 @@
-/* File:      system_defs_xsb.h
+/* File:      timer_defs_xsb.h
 ** Author(s): kifer
 ** Contact:   xsb-contact@cs.sunysb.edu
-** 
+**
 ** Copyright (C) The Research Foundation of SUNY, 1999
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
@@ -18,14 +18,9 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_defs_xsb.h,v 1.1 1999/10/25 05:59:37 kifer Exp $
+** $Id: timer_defs_xsb.h,v 1.1 1999-11-16 19:06:04 kifer Exp $
 ** 
 */
 
-#define PLAIN_SYSTEM_CALL    	 0
-#define SPAWN_PROCESS	         1
-#define SHELL		         2
-#define GET_PROCESS_TABLE    	 3
-#define PROCESS_STATUS    	 4
-#define PROCESS_CONTROL    	 5
-#define SLEEP_FOR_SECS	      	 6
+
+#define TIMEOUT_ERR -2    	       /* Timeout error code */

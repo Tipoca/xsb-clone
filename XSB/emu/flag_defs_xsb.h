@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.1 1999-10-26 06:47:02 kifer Exp $
+** $Id: flag_defs_xsb.h,v 1.2 1999-11-16 19:05:54 kifer Exp $
 ** 
 */
 
@@ -43,6 +43,7 @@
 #define CURRENT_MODULE	12	/* current module (0 = usermod)		YW */
 #define MOD_LIST	13	/* the list of module (Psc) entries	YR */
 
+#define SYS_TIMER       16      /* XSB Timer	    	    	    	MK */
 #define BANNER_CTL      17      /* Controls whether banner, "loaded" msgs
 				   are displayed; passed to Prolog side.
 				   Check BANNER_CTL values at the end      */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.21 1999-10-26 06:46:52 kifer Exp $
+** $Id: cinterf.c,v 1.22 1999-11-16 19:05:52 kifer Exp $
 ** 
 */
 
@@ -1045,7 +1045,7 @@ int clenpterm(prolog_term term)
 char tempstring[MAXBUFSIZE];
 
 /* print a prolog_term into a buffer.
-(Atoms are quoted if !toplevel and it's necessary for Prolog reading) */
+   Atoms are quoted if !toplevel -- necessary for Prolog reading */
 void print_pterm(prolog_term term, int toplevel, char *straddr, int *ind)
 {
   int i;

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.2 1999-10-26 06:47:17 kifer Exp $
+** $Id: pathname_xsb.c,v 1.3 1999-11-16 19:06:00 kifer Exp $
 ** 
 */
 
@@ -317,7 +317,7 @@ static char *rectify_pathname(char *inpath, char *outpath) {
   char *inptr1, *inptr2, *inpath_end;
   int length; /* length=inptr2-inptr1 */
   int i, outidx=0, nameidx=0; /* nameidx: 1st index to names */
-  bool leading_slash, trailing_slash;
+  bool leading_slash, leading_slash2, trailing_slash;
 
   tilde_expand_filename_norectify(inpath, expanded_inpath);
   
@@ -327,6 +327,12 @@ static char *rectify_pathname(char *inpath, char *outpath) {
 
   /* check if expanded inpath has trailing/leading slash */
   leading_slash = (*expanded_inpath == SLASH ? TRUE : FALSE);
+#ifdef WIN_NT
+  /* In windows, the leading \\foo means remote drive */
+  leading_slash2 = (*(expanded_inpath+1) == SLASH ? TRUE : FALSE);
+#else
+  leading_slash2 = FALSE;
+#endif
   trailing_slash = (*(inpath_end - 1) == SLASH ? TRUE : FALSE);
 
   while ( inptr2 < inpath_end ) {
@@ -386,6 +392,10 @@ static char *rectify_pathname(char *inpath, char *outpath) {
      So, we are ready to construct  the outpath. */
 
   if (leading_slash) {
+    outpath[outidx] = SLASH;
+    outidx++;
+  }
+  if (leading_slash2) {
     outpath[outidx] = SLASH;
     outidx++;
   }

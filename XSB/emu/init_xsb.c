@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.4 1999-11-04 23:01:25 cbaoqiu Exp $
+** $Id: init_xsb.c,v 1.5 1999-11-16 19:05:55 kifer Exp $
 ** 
 */
 
@@ -60,6 +60,7 @@
 #include "tr_utils.h"
 #include "export.h"
 #include "io_builtins_xsb.h"
+#include "timer_xsb.h"
 
 /*-----------------------------------------------------------------------*/
 
@@ -179,7 +180,9 @@ static void init_flags(void)
   int i;
 
   for (i=0; i<64; i++) flags[i] = 0;
-  flags[BANNER_CTL] = 1; /* this one is a product of prime numbers */
+  flags[SYS_TIMER]  = TIMEOUT_ERR; /* start with expired timer */
+  flags[BANNER_CTL] = 1;           /* a product of prime numbers; each prime
+				      determines which banner isn't shown */
 }
 
 /*==========================================================================*/

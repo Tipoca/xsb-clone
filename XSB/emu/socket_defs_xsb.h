@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_defs_xsb.h,v 1.2 1999-11-09 04:31:34 kifer Exp $
+** $Id: socket_defs_xsb.h,v 1.3 1999-11-16 19:06:01 kifer Exp $
 ** 
 */
 
@@ -42,5 +42,13 @@
 #define SOCKET_SET_SELECT     14
 #define SOCKET_SELECT         15
 #define SOCKET_SELECT_DESTROY 16
-#define SET_TIMEOUT           17	
 
+
+#define SOCK_NOLINGER -1     /* the no-linger socket option */
+
+/* Some typical error codes for socket ops.
+   Positive codes are used for socket failures. 
+   They are returned by errno.
+   The other typical error code is TIMEOUT_ERR */
+#define SOCK_OK       0      /* indicates sucessful return from socket      */
+#define SOCK_EOF     -1      /* end of file in socket_recv, socket_get0     */

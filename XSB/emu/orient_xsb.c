@@ -18,21 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.c,v 1.1 1999-10-25 05:58:58 kifer Exp $
+** $Id: orient_xsb.c,v 1.2 1999-11-16 19:05:59 kifer Exp $
 ** 
 */
 
 
 
 #include "configs/config.h"
-#include "basictypes.h"
-
-char executable[MAXPATHLEN] = {'\0'};	/* This is set to a real name below */
-
-char *install_dir; 			/* installation directory */
-char *xsb_config_file;     		/* XSB configuration file */
-char *user_home;     	     	     	/* the user $HOME dir or install dir,
-					   if $HOME is null */ 
 
 #ifdef WIN_NT
 #include <direct.h>
@@ -51,6 +43,15 @@ char *user_home;     	     	     	/* the user $HOME dir or install dir,
 /* special.h must be included after sys/stat.h */
 #include "configs/special.h"
 #include "export.h"
+#include "basictypes.h"
+
+char executable[MAXPATHLEN] = {'\0'};	/* This is set to a real name below */
+
+char *install_dir; 			/* installation directory */
+char *xsb_config_file;     		/* XSB configuration file */
+char *user_home;     	     	     	/* the user $HOME dir or install dir,
+					   if $HOME is null */ 
+
 
 extern bool is_absolute_filename(char *);
 DllExport extern char * call_conv strip_names_from_path(char*, int);

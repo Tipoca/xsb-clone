@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.12 1999-10-12 19:47:44 ejohnson Exp $
+** $Id: basictypes.h,v 1.13 1999-11-16 19:05:47 kifer Exp $
 ** 
 */
 
@@ -85,3 +85,11 @@ typedef unsigned long prolog_term;	/* opaque type definition */
 
 #define XSB_STYLE_DCG  0    /* use XSB style DCG grammars */
 #define STANDARD_DCG   1    /* use standard DCG grammars */
+
+
+#ifndef max
+#define max(p1,p2) ((p1)>=(p2)?(p1):(p2))
+#endif
+#ifndef min
+#define min(p1,p2) ((p1)<=(p2)?(p1):(p2))
+#endif
