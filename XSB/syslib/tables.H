@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.23 2000/09/08 21:09:41 dwarren Exp $
+** $Id: tables.H,v 1.24 2000/09/25 15:53:56 ejohnson Exp $
 ** 
 */
 
@@ -64,7 +64,7 @@
 :- import (=..)/2, abort/1, call/1, functor/3, is_attv/1, (table)/1, tcall/1
      from standard.  
 :- import abolish_table_info/0, delete_attributes/1, get_ptcp/1,
-	  get_subgoal_ptr/2, is_incomplete/4, slg_not/1
+	  get_producer_subgoal_frame/2, is_incomplete/2, slg_not/1
      from machine.
 :- import numbervars/3, unnumbervars/2
      from num_vars.

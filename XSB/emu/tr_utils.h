@@ -18,12 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.22 2000-06-28 06:42:52 kifer Exp $
+** $Id: tr_utils.h,v 1.23 2000-09-28 21:31:05 ejohnson Exp $
 ** 
 */
 
 
-extern VariantSF get_subgoal_ptr(Cell, TIFptr);
+extern VariantSF get_variant_sf(Cell, TIFptr);
+extern SubProdSF get_subsumer_sf(Cell, TIFptr);
 extern VariantSF get_call(Cell, Cell *);
 extern Cell build_ret_term(int, Cell[]);
 extern void construct_answer_template(Cell, SubProdSF, Cell[]);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.32 2000-08-05 07:59:23 cbaoqiu Exp $
+** $Id: builtin.h,v 1.33 2000-09-28 21:31:02 ejohnson Exp $
 ** 
 */
 
@@ -111,7 +111,7 @@
 #define IS_INCOMPLETE           104
 
 #define GET_PTCP	        107
-#define GET_SUBGOAL_PTR	        108
+#define GET_PRODUCER_SUBGOAL_FRAME  108
 #define DEREFERENCE_THE_BUCKET	109
 #define PAIR_PSC		110
 #define PAIR_NEXT		111

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.35 2000/02/22 14:54:15 tswift Exp $
+** $Id: machine.H,v 1.36 2000/03/01 16:23:25 dwarren Exp $
 ** 
 */
 
@@ -96,11 +96,11 @@
  	psc_env/2, 
 	psc_spy/2, 
 	psc_tabled/2, 
-	is_incomplete/4,
+	is_incomplete/2,
 	get_osp_breg/2,
 	cut_if_leader/3,
 	get_ptcp/1,
-	get_subgoal_ptr/2,
+	get_producer_subgoal_frame/2,
 	dereference_the_bucket/2,
 	pair_psc/2, 
 	pair_next/2, 
