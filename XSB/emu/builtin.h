@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.60 2004-08-19 22:15:24 tswift Exp $
+** $Id: builtin.h,v 1.61 2004-08-24 20:41:09 tswift Exp $
 ** 
 */
 
@@ -236,14 +236,18 @@
 #define UNWIND_STACK            233
 #define CLEAN_UP_BLOCK          234
 
-#define DUMMY                   235
+#define THREAD_REQUEST		235
+#define MT_RANDOM_REQUEST       236
 
-/* added by TLS to support clpqr */
-#define XSB_POW                 236
+/* TLS: took out DUMMY = 235 -- don't know why it was here */
+
 
 /* added by dsw to support profiling, and backtracing */
 #define XSB_PROFILE             237
 #define XSB_BACKTRACE		238
+
+/* added by TLS Power function */
+#define XSB_POW                 239
 
 /* added by Bart Demoen & Kostis Sagonas for debugging and convenience */
 #define PRINT_LS                240

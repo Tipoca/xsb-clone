@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.11 2004-05-18 13:42:47 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.12 2004-08-24 20:41:10 tswift Exp $
 ** 
 */
 
@@ -111,6 +111,9 @@ interrupt flag
 
 #define TABLING_METHOD	  61      /* Default method used to evaluate tabled
 				     calls:  variant or subsumptive */
+
+#define NUM_THREADS     62      /* always 1 in the sequential system     NW*/
+#define THREAD_RUN      63      /* PSC for the thread handler predicate  NN*/
 
 #define MAXTOINDEX 5              /* depth in term to go when using deep indexing */
 

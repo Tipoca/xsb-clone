@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.42 2004-03-05 00:58:22 dwarren Exp $
+** $Id: emudef.h,v 1.43 2004-08-24 20:41:09 tswift Exp $
 ** 
 */
 
@@ -294,3 +294,4 @@ int asynint_val = 0;
     /*                       lpcreg,OVERFLOW_MARGIN); */		\
   }									\
 }
+
