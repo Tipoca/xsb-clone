@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.P,v 1.15 2002/03/15 09:19:48 kifer Exp $
+** $Id: shell.P,v 1.16 2003/04/25 15:37:23 lfcastro Exp $
 ** 
 */
 
@@ -73,13 +73,21 @@ is_plain_file(File) :- sys_system(IS_PLAIN_FILE, File,_,_,_,_,_).
 is_directory(File) :- sys_system(IS_DIRECTORY, File,_,_,_,_,_).
 
 
-cd(Path) :- 
-	( atom(Path) -> 
-		expand_filename(Path, Dir), sys_chdir(Dir, Res), Res=:=0
-	; var(Path) ->
-		abort('Uninstantiated argument 1 of cd/1')
-	; abort('Wrong type in argument 1 of cd/1')
+cd(Path) :-
+	(   var(Path)
+	->  abort('Uninstantiated argument 1 of cd/1')
+	;   (   expand_filename(Path,Dir)
+	    ->	sys_chdir(Dir,Res),
+		Res =:= 0
+	    ;	abort('Wrong type in argument 1 of cd/1')
+	    )
 	).
+% 	( (atom(Path); is_list(Path)) -> 
+% 		expand_filename(Path, Dir), sys_chdir(Dir, Res), Res=:=0
+% 	; var(Path) ->
+% 		abort('Uninstantiated argument 1 of cd/1')
+% 	; abort('Wrong type in argument 1 of cd/1')
+% 	).
 
 rename(Old, New) :- sys_rename(Old, New, Res), Res =:= 0.
 
