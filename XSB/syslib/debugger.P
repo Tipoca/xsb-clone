@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.P,v 1.24 2002/03/13 10:17:46 kifer Exp $
+** $Id: debugger.P,v 1.25 2002/03/15 09:19:48 kifer Exp $
 ** 
 */
 
@@ -51,7 +51,14 @@ read_debugger_data :-
 	    	    	     ;  assert(T), fail
 	    ),
 	seen,
-	see(OldFile).
+	see(OldFile),
+	initialize_IO_streams.
+
+initialize_IO_streams :-
+	conset('_$_$_stdout_dbg',STDOUT),
+	conset('_$_$_stddbg_dbg',STDDBG),
+	conset('_$_$_stderr_dbg',STDERR),
+	conset('_$_$_stwarn_dbg',STDWARN).
 
 /* -- tracing flags setting  -------------------------------------- */
 
