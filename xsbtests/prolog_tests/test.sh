@@ -33,6 +33,7 @@ options=$2
 ../gentest.sh "$XEMU $options" inline "go."
 ../gentest.sh "$XEMU $options" unsafe1 "test."
 ../gentest.sh "$XEMU $options" unsafe2 "test."
+../gentest.sh "$XEMU $options" varcond "test."
 #-----------------------------------------------------------------------
 # the following two tests are used to test multifile directive
 #-----------------------------------------------------------------------

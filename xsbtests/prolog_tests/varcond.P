@@ -1,0 +1,10 @@
+test :- q(_,Y), writeln(res(Y)), fail.
+test :- shell('rm varcond.O'), writeln('varcond.O removed').
+
+q(A,B) :-
+   ((var(A); A==a) ->
+        B = b
+   ;
+        B = c
+   ).
+
