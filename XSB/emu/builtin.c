@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.89 2000-04-05 17:42:02 cbaoqiu Exp $
+** $Id: builtin.c,v 1.90 2000-04-06 11:19:15 cbaoqiu Exp $
 ** 
 */
 
@@ -1349,12 +1349,10 @@ int builtin_call(byte number)
   case WH_RANDOM:		/* R1: +Type of operation */
     switch (ptoc_int(1)) {
     case RET_RANDOM:		/* return a random float in [0.0, 1.0) */
-      if (ret_random() == -1)
-	return FALSE;
+      return ret_random();
       break;
     case GET_RAND:		/* getrand */
-      if (getrand() == -1)
-	return FALSE;
+      return getrand();
       break;
     case SET_RAND:		/* setrand */
       setrand();
