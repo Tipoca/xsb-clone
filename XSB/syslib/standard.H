@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.35 2003/03/05 19:59:55 lfcastro Exp $
+** $Id: standard.H,v 1.36 2003/04/02 19:42:37 lfcastro Exp $
 ** 
 */
 
@@ -59,7 +59,7 @@
 	skip/1,		statistics/1,	statistics/0,	structure/1,
 	tab/1,		tell/1,		telling/1,	told/0,
 	ttywrite/1,	ttywritenl/1,   ttywrite/2,	ttywritenl/2, 
-	true/0, 	var/1,		walltime/1,
+	var/1,		walltime/1,
 	write/1,	write/2,	write_prolog/1,	write_prolog/2,
 	writeln/1,	writeln/2,	writeq/1,	writeq/2,
 	write_canonical/1,  write_canonical/2,
