@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.21 1999-12-14 21:02:38 ejohnson Exp $
+** $Id: tries.h,v 1.22 2000-01-11 17:19:10 ejohnson Exp $
 ** 
 */
 
@@ -315,6 +315,7 @@ void	subsumptive_call_search(TabledCallInfo *, CallLookupResults *);
 TSTNptr	subsumptive_answer_search(int,CPtr,struct subgoal_frame *,bool *);
 void	consume_subsumptive_answer(BTNptr,int,CPtr);
 ALNptr	retrieve_unifying_answers(TSTNptr,TimeStamp,int,CPtr);
+void	delete_subsumptive_table(BTNptr);
 
 /*---------------------------------------------------------------------*/
 
