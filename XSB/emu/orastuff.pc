@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orastuff.pc,v 1.9 1999-12-20 17:52:55 warren Exp $
+** $Id: orastuff.pc,v 1.10 2000-03-16 21:24:16 dwarren Exp $
 ** 
 */
 
@@ -29,7 +29,7 @@
 #include <ctype.h>
 #include <stdarg.h>
 
-#include "configs/config.h"
+#include "configs/xsb_config.h"
 #include "cell_xsb.h"
 #include "flags_xsb.h"
 #include "error_xsb.h"
