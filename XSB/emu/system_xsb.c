@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.37 2004-03-30 14:04:59 dwarren Exp $
+** $Id: system_xsb.c,v 1.38 2004-08-01 18:42:15 kifer Exp $
 ** 
 */
 
@@ -808,7 +808,7 @@ static void split_command_arguments(char *string, char *params[], char *callname
   static char buffer[MAX_CMD_LEN];
 
   if (buflen > MAX_CMD_LEN - 1)
-    xsb_abort("[%s] Command string too long", callname);
+    xsb_abort("[%s] Command string too long, %s", callname, string);
 
   buf_ptr = buffer;
 
