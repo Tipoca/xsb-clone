@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.P,v 1.12 2000-03-09 16:54:19 dwarren Exp $
+** $Id: aggregs.P,v 1.13 2000-03-09 17:00:42 dwarren Exp $
 ** 
 */
 
@@ -147,8 +147,8 @@ bagReduce1(Templ,Call,Res,Op,Id) :-
 	excess_vars(Call,Templ,[],VarList),
 	copy_term(p(Call,VarList,Templ,Res,Skel),
 		  p(OCall,VarList,OTempl,ORes,Oskel)),
-	(atom(OP)
-	 ->	Test =.. [OP,Var1,OTempl,Res]
+	(atom(Op)
+	 ->	Test =.. [Op,Var1,OTempl,Res]
 	 ; Op = OpF/3
 	 ->	Test =.. [OpF,Var1,OTempl,Res]
 	 ; 	copy_term(Op,Test),
