@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.13 1999-08-16 07:24:51 kifer Exp $
+## $Id: Makefile,v 1.14 1999-08-17 06:28:18 kifer Exp $
 ## 
 ##
 
@@ -58,14 +58,18 @@ all: init $(ALL) finish
 	/bin/rm -f cmd...
 	@cat $(SVFILE)
 
-%.O:   %.P %.H  $(PROLOG_INCLUDES) $(EMU_INCLUDES)
+%.O:   %.P $(PROLOG_INCLUDES) $(EMU_INCLUDES)
 	echo 'mc($*, $(Option)).' >> cmd...
-%.O:   %.P  $(PROLOG_INCLUDES) $(EMU_INCLUDES)
-	echo 'mc($*, $(Option)).' >> cmd...
+# The following is done because of brain damage in some make utilities
+# (notably Sun's), which don't take %.P %.H in the same dependency list
+%.P:   %.H
+	touch $@
 
-# These targets are obsolete
-.H.O:
-	echo 'mc($*, $(Option)).' >> cmd...
+
+# These targets are obsolete. They are here just in case some 
+# obscure make utility doesn't understand patterns
+.H.P:
+	touch $@
 .P.O:
 	echo 'mc($*, $(Option)).' >> cmd...
 
