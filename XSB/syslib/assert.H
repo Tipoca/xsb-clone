@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.H,v 1.4 1999/04/09 12:18:04 kostis Exp $
+** $Id: assert.H,v 1.5 1999/04/10 13:56:04 kostis Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@
 :- export t_assert/2.
 
 
+:- import append/3 from basics.
 :- import (=..)/2, functor/3, integer/1, callable/1,
 	  goal_cut_trans/3, goal_cut_untrans/2, abort/1, arity_integer/1
      from standard.
