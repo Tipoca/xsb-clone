@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orastuff.h,v 1.2 1999-10-25 05:58:55 kifer Exp $
+** $Id: orastuff.h,v 1.3 1999-11-22 22:58:33 warren Exp $
 ** 
 */
 
@@ -58,12 +58,12 @@ EXEC SQL INCLUDE sqlca;
 
 
 /*
- *  Boolean data type and its values.
- */
+ *  Boolean data type and its values. is defined elsewhere
 typedef enum Boolean {
   FALSE = 0, TRUE = 1,
   NO = 0, YES = 1
 } bool;
+ */
 
 
 #define IsNULL(Ptr)      (Ptr == NULL)
@@ -76,14 +76,6 @@ typedef enum Boolean {
  *              X S B   F U N C T I O N   P R O T O T Y P E S
  *		=============================================
  */
-
-/* from builtin.c */
-int ptoc_int(int regnum);
-char *ptoc_string(int regnum);
-
-void ctop_int(int regnum, int value);
-void ctop_float(int regnum, float value);
-void ctop_string(int regnum, char *value);
 
 /* from psc.c */
 char* string_find(char *, int);
