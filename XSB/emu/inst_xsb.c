@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.c,v 1.2 1999-10-29 12:55:57 kostis Exp $
+** $Id: inst_xsb.c,v 1.3 1999-10-30 00:00:39 cbaoqiu Exp $
 ** 
 */
 
@@ -190,6 +190,7 @@ static void init_inst_table_3(void)
   set_inst(check_complete, "check_complete", PPP, X, X,X); 
   set_inst(resume_compl_suspension, "resume_compl_suspension", PPP, X, X,X); 
 
+  set_inst(check_interrupt, "check_interrupt",       PP, A, S,X);
   set_inst(new_answer_dealloc, "new_answer_dealloc", P, A, A, X);
   set_inst(term_comp, "term_comp",     R,  R, R,X);
   set_inst(movreg, "movreg",           P,  R, R,X);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.48 1999-10-29 16:01:11 tswift Exp $
+** $Id: emuloop.c,v 1.49 1999-10-30 00:00:37 cbaoqiu Exp $
 ** 
 */
 
@@ -967,6 +967,28 @@ contcase:     /* the main loop */
       new_heap_free(hreg);
     } 
     goto contcase;
+
+  /*
+   * Instruction `check_interrupt' is used before `new_answer_dealloc' to
+   * handle the pending attv interrupts.  It is similar to `call' but the
+   * second argument (S) is not used currently.
+   */
+  case check_interrupt: { /* PPA-S */
+    Pair true_pair;
+    int new_indicator;
+
+    pppad; pad64; op2word;
+    if (*asynint_ptr & ATTVINT_MARK) {
+      cpreg = lpcreg;
+      true_pair = insert("true", 0, global_mod, &new_indicator);
+      bld_cs(reg + 2, hreg);	/* see subp.c: build_call() */
+      new_heap_functor(hreg, pair_psc(true_pair));
+      bld_copy(reg + 1, build_interrupt_chain());
+      lpcreg = get_ep((Psc) flags[MYSIG_ATTV + 32]);
+      *asynint_ptr = 0;
+    }
+    goto contcase;
+  }
 
   case call: { /* PPA-S */
     Psc psc;

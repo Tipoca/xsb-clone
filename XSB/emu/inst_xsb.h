@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.2 1999-10-28 10:21:16 kostis Exp $
+** $Id: inst_xsb.h,v 1.3 1999-10-30 00:00:39 cbaoqiu Exp $
 ** 
 */
 
@@ -303,6 +303,7 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define answer_return		0xc7    /* c5 */
 #define resume_compl_suspension 0xc6    /* c6 */
 
+#define check_interrupt		0xce
 #define new_answer_dealloc	0xcf
 
 /* Term comparison inst */
