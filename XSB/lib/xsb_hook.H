@@ -1,4 +1,4 @@
-/* File:      obsolete.H -- externals for the obsolete stuff
+/* File:      xsb_hook.P -- mechanism for adding hooks to xsb
 ** Author(s): kifer
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -18,12 +18,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: obsolete.H,v 1.5 1999-10-10 04:25:21 kifer Exp $
+** $Id: xsb_hook.H,v 1.1 1999-10-10 04:25:22 kifer Exp $
 ** 
 */
 
+:- import '=..'/2, atom/1, call/1, warning/1, callable/1 from standard.
+:- import retract/1, assert/1, (dynamic)/1 from assert.
 
-:- import warning/1 from standard.
-:- import add_xsb_hook/1, xsb_exit_hook/1 from xsb_hook.
+:- export add_xsb_hook/1, remove_xsb_hook/1, call_xsb_hook/1.
 
-:- export obsolete/2.
+:- export
+	xsb_exit_hook/1,
+	xsb_before_prompt_hook/1.

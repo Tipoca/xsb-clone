@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.17 1999/08/12 14:24:27 kostis Exp $
+** $Id: x_interp.H,v 1.18 1999/08/12 22:03:33 warren Exp $
 ** 
 */
 
@@ -47,4 +47,5 @@
 :- import file_open/3, file_close/1, file_get/2, fmt_write_string/3,
 	  print_file_contents/2, file_flush/2
     from file_io.
+:- import call_xsb_hook/1, xsb_exit_hook/1 from xsb_hook.
 

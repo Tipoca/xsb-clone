@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.25 1999/09/06 17:33:01 kifer Exp $
+** $Id: x_interp.P,v 1.26 1999/10/08 07:32:24 kifer Exp $
 ** 
 */
 
@@ -101,8 +101,11 @@ interpreter1 :-
 	; process_query(X, Vars)
 	).
 
-read_in_stop(halt) :- halt.    %% quit entire system, regardless of break level
-read_in_stop(end_of_file).     %% pop a break level, out if at top
+read_in_stop(halt) :-          %% quit entire system, regardless of break level
+	call_xsb_hook(xsb_exit_hook(_)),
+	halt.
+read_in_stop(end_of_file) :-   %% pop a break level, out if at top
+	call_xsb_hook(xsb_exit_hook(_)).
 
 eval_command_line_goal(FileDes) :-
 	file_read(FileDes, Goal),
