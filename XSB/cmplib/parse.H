@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.16 2001-01-26 14:41:58 tswift Exp $
+** $Id: parse.H,v 1.17 2001-03-15 20:49:25 tswift Exp $
 ** 
 */
 
@@ -61,3 +61,6 @@
 
 :- import findall/3 from setof.
 :- import current_input_port/1 from curr_sym.
+
+:- import included_ciao_directive/1 from ciao_directives.
+

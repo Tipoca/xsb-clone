@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.35 2001-03-01 15:13:58 tswift Exp $
+** $Id: parse.P,v 1.36 2001-03-15 20:49:25 tswift Exp $
 ** 
 */
 
@@ -515,13 +515,6 @@ parse_directive(compiler_options(Options),_SymTab) :-
 parse_directive(Directive,_SymTab) :-
 	option(ciao_directives),
 	included_ciao_directive(Directive).
-
-included_ciao_directive(comment(_,_)).
-included_ciao_directive(pred(_)).
-included_ciao_directive(prop(_)).
-included_ciao_directive(regtype(_)).
-included_ciao_directive(document_export(_)).	% added for xsbdoc
-included_ciao_directive(document_import(_)).	% added for xsbdoc
 
 /*======================================================================*/
 /* process regular clauses --- collect them in List			*/
