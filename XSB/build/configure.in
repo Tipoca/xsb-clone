@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.65 1999-10-25 12:03:40 kostis Exp $
+## $Id: configure.in,v 1.66 1999-10-26 15:44:52 kostis Exp $
 ## 
 ##
 
@@ -41,6 +41,8 @@ if test -f buildxsb.lock ; then
 ***If this is a stale lock, remove ./buildxsb.lock and run configure again."
    exit 1
 fi
+
+SHELL=/bin/sh
 
 touch buildxsb.lock
 trap 'rm buildxsb.lock; exit 1' 1 2 15
