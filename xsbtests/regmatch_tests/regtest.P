@@ -11,24 +11,32 @@ t1 :- re_match('abc([^;,]*); (dd|ee)*;', '123abc&*^; ddeedd;poi', 0, _,L),
 %% Arg 4 = var means: case-sensitive/extended
 t2 :- re_match('ab(de)*', 'abcd',0,_,L), writeln(L).
 
+%% Tests 3&4 test the \1 backreference feature.
+%% We must use the basic mode here because some packages
+%% don't allow backreference in extended regular expressions
 %% [] means: flags=basic/case-sensitive
 t3 :- re_match("a\\(b*\\|e*\\)cd\\1",'abbbcdbbbbbo', 0, [], M), writeln(M).
-
 %% ignorecase/basic
-t4 :- re_match('a\(b*\|e*\)cd\1','aBBbcdbBbbboabbbcdbbbbbo',
-	       2,[ignorecase],M),
+t4 :- re_match('a\(b*\|e*\)cd\1','aBBbcdbBbbboabBBcdbbbbbo',2,[ignorecase],M),
       writeln(M).
 
-t5 :- re_match("a(b*)cd\\(",'abbbcd(bbo', 0, _, M), writeln(M).
+%% Tests 5&6 test the | (or) feature.
+%% We must use the extended mode, because some crippled packages don't allow 
+%% | in basic regexps.
+t5 :- re_match("a(bb|ee)+cd",'abbeebbcdbb', 0, [extended], M), writeln(M).
+t6 :- re_match('a..((be|eb)+)cd','acdbEeBeBbEcdo',0,[ignorecase,extended],M),
+      writeln(M).
+
+t7 :- re_match("a(b*)cd\\(",'abbbcd(bbo', 0, _, M), writeln(M).
 
 %% Arg 4=1 means flags=ignorecase/extended
-t6 :- re_match("a(b*)cd\\\\",'aBBbcd\bbo', 0, 1, M), writeln(M).
+t8 :- re_match("a(b*)cd\\\\",'aBBbcd\bbo', 0, 1, M), writeln(M).
 
-t7 :- re_bulkmatch('[^a-zA-Z0-9]+', '123&*-456 )7890% 123', 0, 1, X),
+t9 :- re_bulkmatch('[^a-zA-Z0-9]+', '123&*-456 )7890% 123', 0, 1, X),
 	writeln(X).
 
 
-t8 :- Str = 'abbbcd\bbo',
+t10 :- Str = 'abbbcd\bbo',
       re_match("a(b*)cd\\\\",'abbbcd\bbo',0,_,[match(X,Y), match(V,W)|L]),
       substring(Str,X,Y,UninternedMatch),
       intern_string(UninternedMatch,Match),
@@ -39,12 +47,12 @@ t8 :- Str = 'abbbcd\bbo',
       writeln(Match),
       writeln(Paren1).
 
-t9 :- re_charlist_to_string("abcdefg",L), writeln(L).
+t11 :- re_charlist_to_string("abcdefg",L), writeln(L).
 
-t10 :- substring("abcdefg", 4, -1, L), substring('abcdefg', 3, 5, LL),
+t12 :- substring("abcdefg", 4, -1, L), substring('abcdefg', 3, 5, LL),
 	write(L), write(' '), writeln(LL).
 
-t11 :- string_substitute('qaddf', [s(2,4)], ['123'] ,L1),
+t13 :- string_substitute('qaddf', [s(2,4)], ['123'] ,L1),
 	string_substitute('qaddf', [s(2,-1)], ['123'] ,L2),
 	string_substitute("abcdefg", [s(4,-1)], ["123"],L3),
 	string_substitute('1234567890123',[f(1,5),f(5,7),f(9,-2)],
@@ -56,4 +64,4 @@ t11 :- string_substitute('qaddf', [s(2,4)], ['123'] ,L1),
 	writeln([X1,' ',X2]),
 	writeln([X,Y]).
 
-test :- t1,t2,t3,t4,t5,t6,t7,t8, t9,t10,t11.
+test :- t1,t2,t3,t4,t5,t6,t7,t8, t9,t10,t11, t12,t13.
