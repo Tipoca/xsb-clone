@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.2 2001/04/20 20:57:53 sbprolog Exp $
+** $Id: curr_sym.P,v 1.13 2001/05/25 19:23:13 lfcastro Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@ current_atom(Module:Atom) :-
 	psc_prop(ModulePSC, First_PSC_Pair),	% get the first psc_pair 
 						% of this module
 	( First_PSC_Pair =:= 1 ->	% We are dealing with a global module!
-	    warning(('++Warning: Predicate current_atom/1 for module "',
+	    warning(('Predicate current_atom/1 for module "',
 		     ModuleName,
 		     '" is not yet implemented !')),
 	    fail

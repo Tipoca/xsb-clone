@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.13 2001-03-01 15:13:57 tswift Exp $
+** $Id: auxlry.P,v 1.14 2001-12-19 07:36:14 kifer Exp $
 ** 
 */
 
@@ -38,14 +38,14 @@ message(Message) :- ttywritenl(Message, STDMSG).
 
 warning(Message) :-
 	(current_compiled_module(Module), !; load_dyn_module(Module)),
-	ttywritenl(('++Warning: ', Module, ': ', Message), STDWARN).
+	ttywritenl(('++Warning[XSB]: [Compiler] ', Module, ': ', Message), STDWARN).
 
 error(Message) :- 
 	( conget('error occurred', 1)
 	->  true
 	;   conset('error occurred', 1)
 	),
-	ttywritenl(('++Error: ', Message), STDERR),
+	ttywritenl(('++Error[XSB]: [Compiler] ', Message), STDERR),
 	(conget(quit_on_error,1)
 	->  sys_exit(1)
 	;   true
