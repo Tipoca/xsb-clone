@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.8 1999-01-28 09:11:45 cbaoqiu Exp $
+** $Id: tries.c,v 1.9 1999-01-29 04:18:33 cbaoqiu Exp $
 ** 
 */
 
@@ -1609,7 +1609,7 @@ static void construct_ret(void)
 
     arity = global_num_vars + 1;
     if (arity == 0) {
-      ctop_string(3, string_find("ret",1));
+      ctop_string(3, (char *) ret_psc[0]);
     } else {
       term = ptoc_tag(3);
       sreg = hreg;

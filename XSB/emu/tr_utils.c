@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.5 1999/01/24 17:07:48 kostis Exp $
+** $Id: tr_utils.c,v 1.6 1999/01/27 19:46:01 kostis Exp $
 ** 
 */
 
@@ -267,7 +267,7 @@ void construct_ret_for_call(void)
 
     arity = cell(Temp_VarPosReg);
     if (arity == 0) {
-      ctop_string(3, string_find("ret",1));
+      ctop_string(3, (char *) ret_psc[0]);
     } else {
       term = ptoc_tag(1);
       sreg = hreg;
@@ -707,7 +707,7 @@ void breg_retskel(void)
     cptr = where + Nvars;
 #endif
     if (Nvars == 0) {
-      ctop_string(3, string_find("ret",1));
+      ctop_string(3, (char *) ret_psc[0]);
     } else {
       term = ptoc_tag(3);
       sreg = hreg;

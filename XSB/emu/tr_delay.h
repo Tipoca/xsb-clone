@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_delay.h,v 1.4 1999-01-28 09:09:42 cbaoqiu Exp $
+** $Id: tr_delay.h,v 1.5 1999-01-29 04:18:28 cbaoqiu Exp $
 ** 
 */
 
@@ -46,7 +46,6 @@
 #ifdef DEBUG_DELAY
 #define handle_conditional_answers {					\
     CPtr temp_hreg;							\
-    char *ret_str;							\
     if (is_conditional_answer(NodePtr)) {				\
       fprintf(stderr, "Trie-Code returning a conditional answer for ");	\
       SUBGOAL = (CPtr) asi_subgoal((ASI) Delay(NodePtr));		\
@@ -55,8 +54,8 @@
       fprintf(stderr, ">>>> (in handle_conditional_answers)\
 num_vars_in_var_regs = %d\n", num_vars_in_var_regs);			\
       if (num_vars_in_var_regs == -1) {					\
-	ret_str = string_find("ret", 1);				\
-	delay_positively(SUBGOAL, NodePtr, makestring(ret_str));	\
+	delay_positively(SUBGOAL, NodePtr,				\
+			 makestring((char *) ret_psc[0]));		\
       }									\
       else {								\
         /* create the answer subsf ret/n */				\
@@ -78,12 +77,11 @@ num_vars_in_var_regs = %d\n", num_vars_in_var_regs);			\
 #else
 #define handle_conditional_answers {					\
     CPtr temp_hreg;							\
-    char *ret_str;							\
     if (is_conditional_answer(NodePtr)) {				\
       SUBGOAL = (CPtr) asi_subgoal((ASI) Delay(NodePtr));		\
       if (num_vars_in_var_regs == -1) {					\
-	ret_str = string_find("ret", 1);				\
-	delay_positively(SUBGOAL, NodePtr, makestring(ret_str));	\
+	delay_positively(SUBGOAL, NodePtr,				\
+			 makestring((char *) ret_psc[0]));		\
       }									\
       else {								\
 	temp_hreg = hreg;						\

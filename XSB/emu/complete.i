@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete.i,v 1.7 1999-01-28 09:00:58 cbaoqiu Exp $
+** $Id: complete.i,v 1.8 1999-01-29 04:18:18 cbaoqiu Exp $
 ** 
 */
 
@@ -96,12 +96,10 @@ case check_complete: {
 	  {
 	    int i;
 	    CPtr temp_hreg;
-	    char *ret_str;
 	    
 	    if (num_heap_term_vars == 0) {
-	      ret_str = string_find("ret", 1);
 	      delay_positively(SUBGOAL, aln_answer_ptr(tcp_trie_return(breg)),
-			       makestring(ret_str));
+			       makestring((char *) ret_psc[0]));
 	    }
 	    else {
 	      temp_hreg = hreg;

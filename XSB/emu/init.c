@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.11 1999-01-19 16:45:09 kostis Exp $
+** $Id: init.c,v 1.12 1999-01-29 04:18:23 cbaoqiu Exp $
 ** 
 */
 
@@ -674,8 +674,12 @@ void init_symbols(void)
   temp = insert("DL", 3, global_mod, &new_indicator);
   delay_psc = pair_psc(temp);
 
-  /* Initialize ret PSCs */
-  for (i = 0; i < MAX_ARITY; i++) ret_psc[i] = NULL;
+  /*
+   * Initialize ret PSCs.  Notice that ret_psc[0] is set to a pointer
+   * to STRING "ret".
+   */
+  ret_psc[0] = (Psc) string_find("ret", 1);
+  for (i = 1; i < MAX_ARITY; i++) ret_psc[i] = NULL;
 
   /* make another reference to global module -- "usermod" */
   tp = insert_module(T_MODU, "usermod");	/* loaded */
