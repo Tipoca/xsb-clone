@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.c,v 1.21 1999-04-22 15:39:56 kifer Exp $
+** $Id: io_builtins.c,v 1.22 1999-04-23 19:24:12 luis Exp $
 ** 
 */
 
@@ -31,7 +31,9 @@
 #include <string.h>
 #include <setjmp.h>
 #include <stdlib.h>
+#ifndef WIN_NT
 #include <unistd.h> 
+#endif
 #include <sys/stat.h>
 
 #include "auxlry.h"
