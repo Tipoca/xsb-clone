@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.22 2005-02-04 16:56:14 dwarren Exp $
+** $Id: pathname_xsb.c,v 1.23 2005-03-08 22:21:57 tswift Exp $
 ** 
 */
 
@@ -540,6 +540,9 @@ char *existing_file_extension(char *basename)
 
   strcpy(filename, basename); strcat(filename, ".cpp");
   if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return "cpp";
+
+  strcpy(filename, basename); strcat(filename, ".pl");
+  if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return "pl";
 
   strcpy(filename, basename);
   if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return ""; /* no extension */

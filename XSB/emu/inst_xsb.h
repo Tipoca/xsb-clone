@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.15 2005-01-14 18:31:18 ruim Exp $
+** $Id: inst_xsb.h,v 1.16 2005-03-08 22:21:57 tswift Exp $
 ** 
 */
 
@@ -346,6 +346,10 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 
 #define putdval         0xe0
 #define putuval         0xe1
+
+/* Other Numeric instructions */
+#define minreg               0xe2
+#define maxreg               0xe3
 
 /* Procedure instructions */
 

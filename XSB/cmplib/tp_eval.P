@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_eval.P,v 1.5 2004-08-31 00:22:22 dwarren Exp $
+** $Id: tp_eval.P,v 1.6 2005-03-08 22:21:59 tswift Exp $
 ** 
 */
 
@@ -131,6 +131,8 @@ eval_binoptab('/\',R1,R2,and(R2,R1)).
 eval_binoptab('\/',R1,R2,or(R2,R1)).
 eval_binoptab('<<',R1,R2,logshiftl(R2,R1)).
 eval_binoptab('>>',R1,R2,logshiftr(R2,R1)).
+eval_binoptab(min,R1,R2,minreg(R2,R1)).
+eval_binoptab(max,R1,R2,maxreg(R2,R1)).
 
 eval_binop('+').
 eval_binop('-').
@@ -141,6 +143,8 @@ eval_binop('/\').
 eval_binop('\/').
 eval_binop('<<').
 eval_binop('>>').
+eval_binop(min).
+eval_binop(max).
 
 arithrelop('=:=').
 arithrelop('=\=').

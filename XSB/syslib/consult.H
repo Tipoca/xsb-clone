@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.32 2004/11/24 12:29:08 tswift Exp $
+** $Id: consult.H,v 1.33 2005/02/23 07:44:50 kifer Exp $
 ** 
 */
 
@@ -43,7 +43,7 @@
 :- import warning/1, time_message/2 from auxlry.
 :- import banner_control/1 from banner.
 :- import append/3, memberchk/2 from basics.
-:- import compile/4 from compile.
+:- import compile/5 from compile.
 :- import predicate_property/2, current_input_port/1 from curr_sym.
 :- import default_assert_size/1 from config.
 :- import file_time/2, file_close/1 from file_io.
