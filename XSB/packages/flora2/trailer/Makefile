@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.1 2001-02-19 19:19:46 gzyang Exp $
+## $Id: Makefile,v 1.2 2001-03-13 23:59:41 gzyang Exp $
 ## 
 ##
 
@@ -53,11 +53,11 @@ all: init $(ALLOBJS) finish
 	@cat $(SVFILE)
 
 
-stdtrailer.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flrtrailer.flh $(CLOSUREINC)/flrheader_inc.flh $(CLOSUREINC)/flrdbdyn_inc.flh $(CLOSUREINC)/flrtrailer_inc.flh
+stdtrailer.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flrtrailer.flh $(CLOSURE)/flrpatch.flh $(CLOSUREINC)/flrheader_inc.flh $(CLOSUREINC)/flrdbdyn_inc.flh $(CLOSUREINC)/flrtrailer_inc.flh $(CLOSUREINC)/flrdefinition_inc.flh
 	@echo 'flsetuptrailer(standard).' >> cmd...
 
 
-eqltrailer.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flreqltrailer.flh $(CLOSUREINC)/flrheader_inc.flh $(CLOSUREINC)/flrdbdyn_inc.flh $(CLOSUREINC)/flreqltrailer_inc.flh
+eqltrailer.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flreqltrailer.flh $(CLOSURE)/flrpatch.flh $(CLOSUREINC)/flrheader_inc.flh $(CLOSUREINC)/flrdbdyn_inc.flh $(CLOSUREINC)/flreqltrailer_inc.flh $(CLOSUREINC)/flrdefinition_inc.flh
 	@echo 'flsetuptrailer(equality).' >> cmd...
 
 
@@ -70,6 +70,10 @@ $(CLOSURE)/flrtrailer.flh : $(CLOSURE)/flrtrailer.fli
 
 
 $(CLOSURE)/flreqltrailer.flh : $(CLOSURE)/flreqltrailer.fli
+	@cd $(CLOSURE); make
+
+
+$(CLOSURE)/flrpatch.flh : $(CLOSURE)/flrpatch.fli
 	@cd $(CLOSURE); make
 
 
