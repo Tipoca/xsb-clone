@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.P,v 1.19 2003/08/04 16:34:41 lfcastro Exp $
+** $Id: shell.P,v 1.20 2003/12/09 23:32:25 tswift Exp $
 ** 
 */
 
@@ -150,9 +150,7 @@ sys_access(File, Mode, Res) :- 	sys_syscall(SYS_access, Res, File, Mode).
 sys_stat(Path, Buff, Res)   :-	sys_syscall(SYS_stat, Res, Path, Buff).
 sys_rename(Old, New, Res)   :-	
 	check_nonvar(Old,'sys_rename/3',1),
-	check_atom(Old,'sys_rename/3',1),
 	check_nonvar(New,'sys_rename/3',2),
-	check_atom(New,'sys_rename/3',2),
 	sys_syscall(SYS_rename, Res, Old, New).
 /* current working dir. Res is 0 on success, 1 on failure */
 sys_cwd(Name, Res)   	    :-	sys_syscall(SYS_cwd, Res, Name, _).
