@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.6 2001-04-02 21:51:38 gzyang Exp $
+## $Id: Makefile,v 1.7 2001-04-08 23:51:42 gzyang Exp $
 ## 
 ##
 
@@ -57,7 +57,7 @@ XSB_CHAR_DEFS = $(XSBDIR)/prolog_includes/char_defs.h
 XSB_STANDARD = $(XSBDIR)/prolog_includes/standard.h
 XSB_EMU_FLAG_DEFS = $(XSBDIR)/emu/flag_defs_xsb.h
 
-FLORA_INCLUDES_DIR = ../includes
+FLORA_INCLUDES_DIR = ../flrincludes
 
 FLORA_TERMS = $(FLORA_INCLUDES_DIR)/flora_terms.flh
 FLORA_ERRORS = $(FLORA_INCLUDES_DIR)/flora_errors.flh
