@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.P,v 1.22 2001-06-28 15:50:10 gzyang Exp $
+** $Id: flrcoder.P,v 1.23 2001-08-09 03:53:01 kifer Exp $
 **
 */
 
@@ -83,10 +83,12 @@ is_pratomlit(PRATOMLIT(A),A).
 is_prtermlit(PRTERMLIT(FObj,N,ObjList),FObj,N,ObjList).
 is_prworkspace(PRWORKSPACE(P,WS),P,WS).
 is_prfloralib(PRFLORALIB(WS),WS).
-is_prnewpred(PRNEWPRED(Name,N,Vars),Name,N,Vars).
 is_florasyslib(FLORASYSLIB(F,N,Args),F,N,Args).
 is_prologterm(PROLOGTERM(F,N,Args),F,N,Args).
 is_prologliblit(PROLOGLIBLIT(PROLOGTERM(F,N,Args)),F,N,Args).
+
+is_prnewpred(PRNEWPRED(Name,N,Vars),Name,N,Vars).
+is_prnewoid(PRNEWOID(Oid),Oid).
 
 is_flogic(PRISA(Obj1,Obj2),WRAP_ISA,2,[Obj1,Obj2]) :- !.
 is_flogic(PRSUB(Obj1,Obj2),WRAP_SUB,2,[Obj1,Obj2]) :- !.
@@ -361,6 +363,11 @@ flora_write_struct(Term,Prefix) :-
 	is_prnewpred(Term,F,N,Args),
 	!,
 	flora_write_newpred(F,N,Args,Prefix).
+
+flora_write_struct(Term,_Prefix) :-
+	is_prnewoid(Term,Oid),
+	!,
+	flora_write_newoid(Oid).
 
 flora_write_struct(Term,Prefix) :-
 	is_flogic(Term,F,N,Args),
@@ -790,6 +797,12 @@ flora_write_syslib(F,N,Args,Prefix) :-
 ****************************************************************************/
 flora_write_newpred(F,N,Args,Prefix) :-
 	flora_write_wsliteral(THISMODULE,_WS,F,N,Args,Prefix).
+
+/****************************************************************************
+  flora_write_newoid(+Oid)
+****************************************************************************/
+flora_write_newoid(Oid) :-
+	fmt_write('FLORA_SYMBOL(''%s'')', arg(Oid)).
 
 
 /****************************************************************************
