@@ -20,18 +20,18 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32.i,v 1.4 1999-05-25 13:31:18 luis Exp $
+** $Id: dynwin32.i,v 1.5 1999-08-09 18:56:06 warren Exp $
 ** 
 */
 
 
+#include <stdio.h>
 #include <windows.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 /* special.h must be included after sys/stat.h */
 #include "configs/special.h"
 #include <errno.h>
-#include <stdio.h>
 
 #include "auxlry.h"
 #include "cell.h"
