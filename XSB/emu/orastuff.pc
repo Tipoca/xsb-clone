@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orastuff.pc,v 1.3 1999-08-16 07:24:25 kifer Exp $
+** $Id: orastuff.pc,v 1.4 1999-10-20 13:37:16 warren Exp $
 ** 
 */
 
@@ -605,7 +605,7 @@ static int oracleCursor_fetch(CursorHandle cursorHandle) {
 
   SQLDA *sliDesc;
   EXEC SQL BEGIN DECLARE SECTION;
-    uint arrayLength;
+    unisgned int arrayLength;
   EXEC SQL END DECLARE SECTION;
 
 
