@@ -1,0 +1,14 @@
+
+:- export test/0.
+:- import (flImport)/1 from flora2.
+
+?- flImport hilog p/1 as pp(_) from 'auxiliary/flImportFloraMod' >>main.
+?- flImport hilog p/1 as ppp(_) from 'auxiliary/flImportFloraMod' >> testmod.
+?- flImport firstorder q/1 as qq(_) from main.
+?- flImport firstorder q/1 as qqq(_) from testmod.
+
+
+test :- pp(X), writeln(X),
+	qq(Y), writeln(Y),
+	ppp(XX), writeln(XX),
+	qqq(YY), writeln(YY).

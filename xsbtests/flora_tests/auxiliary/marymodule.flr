@@ -13,4 +13,4 @@ mary[salary(1996) -> 70].
 mary[salary(1997) -> 80].
 mary[salary(1998) -> 90].
 
-?- flThisModule(M), writeln(M)@prolog().
+?- writeln(_@)@prolog().

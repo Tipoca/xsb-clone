@@ -1,0 +1,5 @@
+
+
+?- consult('auxiliary/flImportPrologMod')@prolog().
+
+?- tell(temp)@prolog(), test@prolog(flImportPrologMod), told@prolog().
