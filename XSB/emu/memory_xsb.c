@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.9 2002-05-31 15:09:03 lfcastro Exp $
+** $Id: memory_xsb.c,v 1.10 2004-07-10 20:56:13 dwarren Exp $
 ** 
 */
 
@@ -46,6 +46,7 @@
 #include <string.h>
 
 #include "auxlry.h"
+#include "binding.h"
 #include "cell_xsb.h"
 #include "memory_xsb.h"
 #include "register.h"
@@ -169,10 +170,12 @@ void tcpstack_realloc(long new_size) {
    *  previous-link field of the Trail frames (i.e., the last field).
    */
   if (trail_offset != 0) {
-    for (trail_link = (CPtr *)new_trail;
-	 trail_link <= (CPtr *)(trail_top + trail_offset);
-	 trail_link = trail_link + 3)
+    for (trail_link = (CPtr *)(trail_top + trail_offset);
+	 trail_link > (CPtr *)new_trail;
+	 trail_link = trail_link - 3) {
       *trail_link = (CPtr)((byte *)*trail_link + trail_offset);
+      if ((Cell)*(trail_link-2) & PRE_IMAGE_MARK) trail_link--;
+    }
   }
 
   /* Update the pointers in the CP Stack
