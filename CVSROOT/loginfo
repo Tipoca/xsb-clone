@@ -28,16 +28,16 @@
 # 
 # DEFAULT		(echo ""; whoami; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
 
-CVSROOT $CVSROOT/CVSROOT/syncmail -u %{sVv} kifer@cs.stonybrook.edu luis@cs.stonybrook.edu
+CVSROOT mail -s "XSB commit: %{}" kifer@cs.stonybrook.edu luis@cs.stonybrook.edu
 
 XSB/emu $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net kostis@csd.uu.se tswift@cs.stonybrook.edu warren@cs.stonybrook.edu
 XSB/syslib $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net kostis@csd.uu.se tswift@cs.stonybrook.edu warren@cs.stonybrook.edu
 XSB/lib $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net kostis@csd.uu.se tswift@cs.stonybrook.edu warren@cs.stonybrook.edu
 XSB/cmplib $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net kostis@csd.uu.se tswift@cs.stonybrook.edu warren@cs.stonybrook.edu
-XSB/packages/flora2.* $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu guizyang@cs.stonybrook.edu changz@cs.stonybrook.edu bintang@cs.stonybrook.edu amit@cs.stonybrook.edu
-XSB/packages/flora.*  $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu guizyang@cs.stonybrook.edu
+XSB/packages/flora2.* mail -s "FLORA-2 commit: %{}" xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu guizyang@cs.stonybrook.edu changz@cs.stonybrook.edu bintang@cs.stonybrook.edu amit@cs.stonybrook.edu
+XSB/packages/flora.*  mail -s "FLORA-1 commit: %{}" xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu guizyang@cs.stonybrook.edu
 
-XSB/build  $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu luis@cs.stonybrook.edu
-XSB/admin  $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu luis@cs.stonybrook.edu
+XSB/build  mail -s "XSB commit: %{}" xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu luis@cs.stonybrook.edu
+XSB/admin  mail -s "XSB commit: %{}" xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu luis@cs.stonybrook.edu
 
 DEFAULT $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net
