@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.101 2000-06-25 16:59:14 ejohnson Exp $
+** $Id: builtin.c,v 1.102 2000-06-28 06:42:52 kifer Exp $
 ** 
 */
 
@@ -1798,13 +1798,13 @@ int builtin_call(byte number)
     trie_dispose();
     break;
   case TRIE_DISPOSE_NR:
-    safe_delete_branch((BTNptr)ptoc_int(1));
+    trie_dispose_nr();
     break;
   case TRIE_UNDISPOSE:
-    undelete_branch((BTNptr) ptoc_int(2));
+    trie_undispose(ptoc_int(1), (BTNptr) ptoc_int(2));
     break;
   case RECLAIM_UNINTERNED_NR:
-    reclaim_uninterned_nr((BTNptr) ptoc_int(1));
+    reclaim_uninterned_nr(ptoc_int(1));
     break;
   case BOTTOM_UP_UNIFY:
     return ( bottom_up_unify() );

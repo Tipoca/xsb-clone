@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.21 2000-06-25 16:59:17 ejohnson Exp $
+** $Id: tr_utils.h,v 1.22 2000-06-28 06:42:52 kifer Exp $
 ** 
 */
 
@@ -35,7 +35,7 @@ extern void init_newtrie(void);
 extern void delete_branch(BTNptr, BTNptr *);
 extern void safe_delete_branch(BTNptr);
 extern void undelete_branch(BTNptr);
-extern void reclaim_uninterned_nr(BTNptr root);
+extern void reclaim_uninterned_nr(long rootidx);
 extern void delete_trie(BTNptr);
 
 extern xsbBool has_unconditional_answers(VariantSF);
@@ -44,6 +44,23 @@ extern void newtrie(void);
 extern void trie_intern(void);
 extern int  trie_interned(void);
 extern void trie_dispose(void);
+extern void trie_dispose_nr(void);
 extern void delete_interned_trie(int);
-
+extern void trie_undispose(long, BTNptr);
 extern xsbBool check_table_cut;
+
+/* Prasad's changes */
+
+typedef struct InternGarbageLeafFrame *IGLptr;
+typedef struct InternGarbageRootFrame *IGRptr;
+
+typedef struct InternGarbageLeafFrame{
+  BTNptr leaf;
+  IGLptr next;  
+} InternGarbageLeaf;
+
+typedef struct InternGarbageRootFrame{
+  long root;
+  IGLptr leaves;
+  IGRptr next;
+} InternGarbageRoot;
