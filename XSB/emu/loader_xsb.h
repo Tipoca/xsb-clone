@@ -19,12 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.h,v 1.2 1999-11-03 21:35:47 cbaoqiu Exp $
+** $Id: loader_xsb.h,v 1.3 1999-11-30 05:03:16 kifer Exp $
 ** 
 */
 
 
-#define REL_TAB_SIZE    32768
+#define REL_TAB_SIZE      32768
+#define FOREIGN_NAMELEN   128
+#define SHORT_LDOPTIONLEN 254
 
 /* Data structures holding the compiled code */
 
