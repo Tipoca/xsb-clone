@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug.c,v 1.11 1999-08-16 07:24:08 kifer Exp $
+** $Id: debug.c,v 1.12 1999-08-16 12:47:20 kostis Exp $
 ** 
 */
 
@@ -347,16 +347,16 @@ static void monitor_register_watch(void)
 {
   if (reg_watch.heap_flag) 
     if (reg_watch.heap_val == hreg)
-     xsb_dbgmsgprintf("!!! hreg == %p, %d", hreg, xctr);
+     xsb_dbgmsg("!!! hreg == %p, %d", hreg, xctr);
   if (reg_watch.stack_flag) 
     if (reg_watch.stack_val == ereg)
       xsb_dbgmsg("!!! ereg == %p, %d", ereg, xctr);
   if (reg_watch.choice_flag) 
     if (reg_watch.choice_val == breg)
-     xsb_dbgmsgprintf("!!! breg == %p, %d", breg, xctr);
+     xsb_dbgmsg("!!! breg == %p, %d", breg, xctr);
   if (reg_watch.trail_flag) 
     if ((CPtr *) reg_watch.trail_val == trreg)
-     xsb_dbgmsgprintf("!!! trreg == %p, %d", trreg, xctr);
+     xsb_dbgmsg("!!! trreg == %p, %d", trreg, xctr);
 }
 
 /*----------------------------------------------------------------------*/
@@ -573,7 +573,7 @@ static void print_cell(char *addrtype, CPtr addr, Cell term, char *more_info)
 {
   switch (cell_tag(term)) {
   case REF: case REF1:
-    fprintf("%s %p: REF (tag=%ld), value=0x%p",
+    fprintf(stddbg, "%s %p: REF (tag=%ld), value=0x%p",
 	    addrtype, addr, cell_tag(term), ref_val(term));
     break;
   case CS: 
