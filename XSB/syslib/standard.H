@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.21 2000/08/05 07:59:24 cbaoqiu Exp $
+** $Id: standard.H,v 1.22 2001/03/16 14:53:00 tswift Exp $
 ** 
 */
 
@@ -46,7 +46,8 @@
 	number_chars/2, number_codes/2, number_digits/2,
 	once/1,		op/3,		open/3,		otherwise/0,
 	print/1,	proper_hilog/1,	
-        put/1,          put_char/1,     put_code/1,
+        put/1,          put_char/1,     put_char/2,     put_code/1,
+        put_code/2,
 	read/1,		read/2,         real/1,		repeat/0,
 	see/1,		seeing/1,	seen/0,
         set_input/1,    set_output/1,  
