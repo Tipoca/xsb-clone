@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.c,v 1.9 1999-03-30 16:25:19 kifer Exp $
+** $Id: io_builtins.c,v 1.10 1999-03-31 03:24:23 kifer Exp $
 ** 
 */
 
@@ -371,10 +371,12 @@ bool file_read_line(void)
   FILE *file=fileptr(filedes);
 
   /* MAXBUFSIZE-1, because fgets addts '\0' at the end */
-  if (fgets(buf, MAXBUFSIZE, file) == NULL)
+  if (fgets(buf, MAXBUFSIZE, file) == NULL) {
     return FALSE;
-  else {
-    ctop_string(2, buf);
+  } else {
+    /* the need to string-find(intern) the string was introduced only recently
+       by somebody */
+    ctop_string(2, string_find(buf,1));
     if (buf[(strlen(buf)-1)] == '\n')
       ctop_int(3, 1); /* full line */
     else ctop_int(3, 0); /* partial line */
