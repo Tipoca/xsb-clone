@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tpinline.P,v 1.7 2004-08-31 00:22:22 dwarren Exp $
+** $Id: tpinline.P,v 1.8 2004-09-04 17:50:27 dwarren Exp $
 ** 
 */
 
@@ -94,9 +94,9 @@ geninl_load_lhs(Term,R,Pil,Pilr,Tin,Tout,SaveR) :-
 		vprag_occ(Prag, Oc), vprag_loc(Prag, Loc),
 		(T = t
 		 ->	R = Loc, Tout = Tmid,
-			(memberchk(R,Tmid)
+			(Oc==l
 			 ->	SaveR = []
-			 ; (Oc=l; Oc=v)
+			 ; Oc==v
 			 ->	SaveR = []
 			 ;	SaveR = [R]
 			)
