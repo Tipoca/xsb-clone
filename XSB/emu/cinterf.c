@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.39 2002-01-23 17:08:08 dwarren Exp $
+** $Id: cinterf.c,v 1.40 2002-06-02 18:43:44 kifer Exp $
 ** 
 */
 
@@ -1068,6 +1068,9 @@ DllExport void call_conv print_pterm(prolog_term term, int toplevel, VarString *
 
   if (is_var(term)) {
     xsb_sprint_variable(tempstring, (CPtr) term);
+    XSB_StrAppend(straddr,tempstring);
+  } else if (is_attv(term)) {
+    xsb_sprint_variable(tempstring, (CPtr) dec_addr(term));
     XSB_StrAppend(straddr,tempstring);
   } else if (is_int(term)) {
     sprintf(tempstring,"%d", (int) p2c_int(term));
