@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.10 2001-05-24 17:54:52 lfcastro Exp $
+** $Id: psc_xsb.c,v 1.11 2002-08-15 17:00:26 lfcastro Exp $
 ** 
 */
 
@@ -45,7 +45,7 @@
 #include "register.h"
 
 
-extern Psc synint_proc(Psc, int, byte *);
+extern Psc synint_proc(Psc, int);
 
 /* === String Table manipulation ======================================	*/
 

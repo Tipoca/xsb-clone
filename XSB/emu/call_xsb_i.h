@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: call_xsb_i.h,v 1.4 2001-11-08 21:35:25 dwarren Exp $
+** $Id: call_xsb_i.h,v 1.5 2002-08-15 17:00:26 lfcastro Exp $
 ** 
 */
 
@@ -69,7 +69,7 @@ static inline int prolog_call0(Cell term)
       break;
     case T_UDEF:
     default:
-      psc = synint_proc(psc, MYSIG_UNDEF, NULL);
+      psc = synint_proc(psc, MYSIG_UNDEF);
       if (psc) pcreg = get_ep(psc);
       break;
 *****/
