@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.58 2003/05/01 18:52:52 dwarren Exp $
+** $Id: machine.P,v 1.59 2003/06/18 13:41:19 lfcastro Exp $
 ** 
 */
 
@@ -259,8 +259,5 @@ set_pil_on :- stat_set_flag(PIL_TRACE,1).
 set_pil_off :- stat_set_flag(PIL_TRACE,0).
 set_prof_off :- stat_set_flag(PROFFLAG,0).
 set_prof_on(Level) :- stat_set_flag(PROFFLAG,Level).
-
-predicate_module(_Name,_Arity,_Module) :-
-	'_$builtin'(PREDICATE_MODULE).
 
 /* --------------------- end of file machine.P ------------------------ */
