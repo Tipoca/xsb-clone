@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.3 1999-07-04 06:17:26 kifer Exp $
+** $Id: flrshell.H,v 1.4 1999-08-10 16:19:11 kifer Exp $
 **
 */
 
@@ -49,13 +49,13 @@
 :- import bootstrap_flora/0 from flora.
 
 :- import
-	'_$_$_flora_read_parse_compile'/6,
-	'_$_$_flora_flcompile'/5,
-	'_$_$_flora_loadlist'/1,
-	'_$_$_flora_dynloadlist'/1,
-	'_$_$_flora_check_filename'/1,
-	'_$_$_write_flora_warnheader'/0,
-	'_$_$_flora_discard_tokens'/1,
+	flora_read_parse_compile/6,
+	flora_flcompile/5,
+	flora_loadlist/1,
+	flora_dynloadlist/1,
+	flora_check_filename/1,
+	write_flora_warnheader/0,
+	flora_discard_tokens/1,
 	flcompile/1, flcompile/2, maxerr/1, flconsult/1, flconsult/2,
 	flload/1, dynload/1, dyncompile/1, dyncompile/2, dynconsult/1,
 	dynconsult/2, displayln_warning/1

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdisplay.P,v 1.10 1999-08-09 00:34:45 kifer Exp $
+** $Id: flrdisplay.P,v 1.11 1999-08-10 16:19:15 kifer Exp $
 ** 
 */
 
@@ -42,7 +42,7 @@
 
 :- import trie_assert/1, trie_retract_all/1 from tables.
 
-:- import '_$_$_write_flora_warnheader'/0 from flrutils.
+:- import write_flora_warnheader/0 from flrutils.
 
 :- dynamic '_$_$_flora_switch'/1.
 
@@ -149,7 +149,7 @@
 	    true
 
 	  ;
-	    nl, '_$_$_write_flora_warnheader',
+	    nl, write_flora_warnheader,
 	    write(F/N),
 	    writeln(' is undefined'),
 	    fail
@@ -161,7 +161,7 @@
 	    '_$_$_flora_check_predicates'(Gs)
 
 	  ;
-	    nl, '_$_$_write_flora_warnheader',
+	    nl, write_flora_warnheader,
 	    write(F/N),
 	    writeln(' undefined'),
 	    fail
