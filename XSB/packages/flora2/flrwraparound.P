@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompileinclude.P,v 1.1 2001-06-27 19:26:52 gzyang Exp $
+** $Id: flrwraparound.P,v 1.1 2001-06-29 22:58:36 kifer Exp $
 **
 */
 
@@ -31,23 +31,34 @@
 
   Predicates mentioned in the directives :-wrap predicate-list are 
   recorded and whenever they occur in other directives or rules
-  they are wrapped as FLORA_WORKSPACE(FLORA_VAR_WORKSPACE,predicate)
+  they are wrapped as FLORA_THIS_WORKSPACE(predicate)
+  or FLORA_FO_THIS_WORKSPACE(predicate)
   for further processing by the gpp preprocessor.
   The include(file) directive causes this wrapper to read the file and 
   process it similarly. When the file is finished, it resumes reading
   the current file.
+  The dump directive causes the argument to be dumped into the output as is.
 */
 
 
 #include "flag_defs_xsb.h"
 #include "flora_terms.flh"
 
-#define FLORA_INCLUDE_EXT	fli
-#define FLORA_HEADER_EXT	flh
+#define INFILE_EXT       	in
+#define DATFILE_EXT     	dat
+#define FLIFILE_EXT       	fli
+#define FLHFILE_EXT     	flh
 
+#define FL_DUMP	       	        dump
+#define FL_INDEX2	       	index2
+#define FL_STORAGE	       	storage
 
+:- dynamic wrap_arguments_directive/1.
 
-:- op(1100,fy,FL_WRAPAROUND).
+:- op(1100,fy,FL_FLOGICSTATIC).
+:- op(1100,fy,FL_DUMP).
+:- op(1100,fy,FL_STORAGE).
+
 :- op(1100,fx,FL_FIRSTORDER).
 :- op(1100,fx,FL_ARGUMENTS).
 :- op(1100,fx,FL_HILOGTABLE).
@@ -57,29 +68,24 @@
 :- bootstrap_flora.
 
 /*************************************************************************
-  flCompileInclude(+File)
+  flWrapAround(+File)
   This is used only in the closure/Makefile
   It takes a trailer template and wraps it with the workspace and 
   flora prefixes. This way the trailer is easier to maintain and understand.
 
 *************************************************************************/
-flCompileInclude(File) :-
+flWrapAround(File) :-
 	flora_check_filename(File),
-	( flora_locate_file(File,FLORA_INCLUDE_EXT,FLIFile) ->
-	    flora_FLH_filename(FLIFile,FLHFile),
-	    wrapWorkspace(FLIFile,FLHFile)
-
-	; parse_filename(File,_,_,Ext), not member(Ext,['',FLORA_INCLUDE_EXT]),
-	    path_sysop(exists,File)
+	( (flora_locate_file(File,INFILE_EXT,InFile), !
+	  ; flora_locate_file(File,FLIFILE_EXT,InFile)
+	  )
 	->
-	    flora_stderr_nl,
-	    flora_error_line("%s: Include filename extension must be %s!",
-			     args(File,FLORA_INCLUDE_EXT)),
-	    fail
+	    flora_out_filename(InFile,OutFile),
+	    wrapWorkspace(InFile,OutFile)
 	;
 	  flora_stderr_nl,
 	  flora_error_line("File %s[.%s] does not exist!",
-			   args(File,FLORA_INCLUDE_EXT)),
+			   args(File,INFILE_EXT)),
           fail
         ),
 	!.
@@ -120,15 +126,18 @@ process_fli_file :-
 process_fli_file.
 
 process_clause(X) :-
-	(is_directive(X,FL_WRAPAROUND,PredList)
-	-> intern_predicate_specs(PredList)
-	; is_directive(X,index2,[PredSpec,Type])
+	(is_directive(X,FL_FLOGICSTATIC,PredList)
+	-> intern_predicate_specs(PredList,FL_FLOGICSTATIC)
+	; is_directive(X,FL_INDEX2,[PredSpec,Type])
 	-> dump_index_directive(PredSpec,Type)
+	; is_directive(X,FL_DUMP,DumpString)
+	-> writeln(DumpString)
 	; is_directive(X,FL_FIRSTORDER,PredList)
-	-> intern_predicate_specs(PredList),
-	    dump_storage_rules(PredList)
-	; is_directive(X,Directive,PredList) ->
-	    dump_other_directive(Directive,PredList)
+	-> intern_predicate_specs(PredList,FL_FIRSTORDER)
+	; is_directive(X,FL_STORAGE,RuleList)
+	-> dump_storage_rules(RuleList)
+	; is_directive(X,Directive,PredList)
+	-> dump_other_directive(Directive,PredList)
 	; %% assume it is a rule -- no queries
 	    dump_rule(X)
 	),
@@ -136,20 +145,28 @@ process_clause(X) :-
 	fail.
 
 
+%% Which macro to use for which type of encoding
+wrapper_macro(FL_FIRSTORDER,'FLORA_FO_THIS_WORKSPACE').
+wrapper_macro(FL_FLOGICSTATIC,'FLORA_THIS_WORKSPACE').
+
+%% tells how to wrap a predicate spec
 wrapper(P/A, WrappedSpec, Changed) :- !,
-	(storage_find_fact(flora_compile_trie,P/A)
+	(storage_find_keypair(flora_compile_trie,P/A,EncodingType),
+	    wrapper_macro(EncodingType,WrapperMacroName)
 	-> fmt_write_string(WrappedP,
-			    'FLORA_WORKSPACE(FLORA_VAR_WORKSPACE,%S)',args(P)),
+			    '%s(%S)',
+			    args(WrapperMacroName,P)),
 	    WrappedSpec = WrappedP/A,
 	    Changed = wrapped
 	;  WrappedSpec = P/A, Changed = notwrapped
 	).
 wrapper(Spec, WrappedSpec, Changed) :-
 	Spec =.. [P|Args],
-	(storage_find_fact(flora_compile_trie,Spec)
+	(storage_find_keypair(flora_compile_trie,Spec,EncodingType),
+	    wrapper_macro(EncodingType,WrapperMacroName)
 	-> fmt_write_string(WP,
-			    'FLORA_WORKSPACE(FLORA_VAR_WORKSPACE,%S)',
-			    arg(P)),
+			    '%s(%S)',
+			    arg(WrapperMacroName,P)),
 	    WrappedSpec =.. [WP|Args], Changed = wrapped
 	;  WrappedSpec = Spec, Changed = notwrapped
 	).
@@ -158,36 +175,40 @@ spec2skeleton(P/A,Skeleton) :- !, functor(Skeleton,P,A).
 spec2skeleton(Skeleton,Skeleton).
 
 
-is_directive((:- FL_WRAPAROUND PredList),FL_WRAPAROUND,PredList) :- !.
-is_directive(':-'(index(PredSpec,Type)),index2,[PredSpec,Type]) :- !.
+is_directive((:- FL_FLOGICSTATIC PredList),FL_FLOGICSTATIC,PredList) :- !.
+is_directive(':-'(index(PredSpec,Type)),FL_INDEX2,[PredSpec,Type]) :- !.
+is_directive((:- FL_DUMP Atom),FL_DUMP,Atom) :- !.
+is_directive((:- FL_STORAGE RuleList),FL_STORAGE,RuleList) :- !.
 %% for now, only handle simple directives of the form :- Directive PredList.
 is_directive(':-'(DirectiveBody),Directive,PredList) :-
         DirectiveBody =.. [Directive,PredList], !.
 
-intern_predicate_specs(','(P,Ps)) :-
-	intern_predicate_spec(P),
-	intern_predicate_specs(Ps).
-intern_predicate_specs(P) :- intern_predicate_spec(P).
+intern_predicate_specs(','(P,Ps),EncodingType) :- !,
+	intern_predicate_spec(P,EncodingType),
+	intern_predicate_specs(Ps,EncodingType).
+intern_predicate_specs(P,EncodingType) :-
+	intern_predicate_spec(P,EncodingType).
 
-%% Insert both the p/a form and p(_,...,_)
+%% Insert both the p/a form and p(_,...,_) form
 %% Arity can also be a variable. In this case, it is treated specially and the
 %% predicate spec is dumped without the arity.
-intern_predicate_spec(P) :-
+intern_predicate_spec(P,EncodingType) :-
 	P = '/'(Name,Arity),
 	!,
-	storage_insert_fact(flora_compile_trie,P,_),
+	storage_insert_keypair(flora_compile_trie,P,EncodingType,_),
 	(var(Arity) -> true
 	;   functor(NewP,Name,Arity),
-	    storage_insert_fact(flora_compile_trie,NewP,_)
+	    storage_insert_keypair(flora_compile_trie,NewP,EncodingType,_)
 	).
 %% Spec of the form of the form name(_,...,_)
-intern_predicate_spec(P) :-
+intern_predicate_spec(P,EncodingType) :-
 	functor(P,Name,Arity), Arity >= 0,
 	!,
-	storage_insert_fact(flora_compile_trie,P,_),
-	storage_insert_fact(flora_compile_trie,Name/Arity,_).
-intern_predicate_spec(P) :-
-	flora_error_line('[flCompileInclude] Invalid predicate specification in a wraparound directive: %S', arg(P)).
+	storage_insert_keypair(flora_compile_trie,P,EncodingType,_),
+	storage_insert_keypair(flora_compile_trie,Name/Arity,EncodingType,_).
+intern_predicate_spec(P,EncodingType) :-
+	flora_error_line('[flWrapAround] Invalid predicate specification in a %s directive: %S', arg(EncodingType,P)).
+
 
 dump_other_directive(Directive, PredSpecs) :-
 	write(':- '), writeln(Directive),
@@ -196,23 +217,26 @@ dump_other_directive(Directive, PredSpecs) :-
 
 dump_index_directive(PredSpec,Type) :-
 	write(':- index('),
-	dump_pred_spec(PredSpec,0),
+	dump_simple_goal(PredSpec,0),
 	write(','), write(Type), writeln(').').
 
-dump_storage_rules(','(PredSpec,Rest)) :- !,
-	dump_storage_rule(PredSpec),
+dump_storage_rules(','(Rule,Rest)) :- !,
+	dump_storage_rule(Rule),
 	dump_storage_rules(Rest).
-dump_storage_rules(PredSpec) :- dump_storage_rule(PredSpec).
+dump_storage_rules(Rule) :- dump_storage_rule(Rule).
 
-dump_storage_rule(PredSpec) :-
-	spec2skeleton(PredSpec,Skeleton),
-	dump_pred_spec(Skeleton,0), writeln(' :-'),
+%% A storage rule looks like this: rule(head-predicate/arity,body-predicate)
+dump_storage_rule(rule(HeadSpec,TailPred)) :-
+	spec2skeleton(HeadSpec,HeadSkeleton),
+	dump_simple_goal(HeadSkeleton,0), writeln(' :-'),
 	indent(1),
-	write('storage_find_fact(FLORA_WSSTORAGE(FLORA_VAR_WORKSPACE),'),
-	dump_pred_spec(Skeleton,0), writeln(').').
+	write('storage_find_fact(FLORA_THIS_STORAGE,'),
+	%% attach tail's functor to Head's variables
+	HeadSkeleton =.. [_|HeadVars], BodySkeleton =.. [TailPred|HeadVars],
+	dump_simple_goal(BodySkeleton,0), writeln(').').
 	
 dump_rule((Head :- Body)) :- !,
-	dump_pred_spec(Head,0),
+	dump_simple_goal(Head,0),
 	writeln(' :-'),
 	dump_rule_body(Body,1),
 	writeln('.').
@@ -222,11 +246,11 @@ dump_rule((:- Body)) :- !,
 
 %% Facts
 dump_rule(Head) :-
-	dump_pred_spec(Head,0),
+	dump_literal(Head,0),
 	writeln('.').
 
 dump_rule_body(','(L,Rest),Indent) :-  !,
-	dump_pred_spec(L,Indent), writeln(','),
+	dump_literal(L,Indent), writeln(','),
 	dump_rule_body(Rest,Indent).
 dump_rule_body(';'(Front,Back),Indent) :-  !,
 	indent(Indent), writeln('('),
@@ -262,73 +286,67 @@ dump_rule_body(call(Body), Indent) :-  !,
 	Indent1 is Indent+1,
 	dump_rule_body(Body,Indent1),
 	nl, indent(Indent), write(')').
-dump_rule_body(hide_this_hide(Spec), Indent) :- !,
-	indent(Indent), write('hide_this_hide('),
-	dump_as_symbol(Spec,Indent),
-	(Spec = _Func/Arity, integer(Arity) -> write(','), write(Arity)
-	; true
-	),
-	write(')').
-dump_rule_body(L,Indent) :- dump_pred_spec(L,Indent).
+dump_rule_body(L,Indent) :- dump_literal(L,Indent).
 
 
-%% This trickery is needed because we don't want things like FLORA_WORKSPACE
+dump_literal(Spec,Indent) :-
+	( Spec = ','(F,B) -> dump_rule_body(Spec,Indent)
+	; Spec = ';'(F,B) -> dump_rule_body(Spec,Indent)
+	; Spec = '\+'(F) -> dump_rule_body(Spec,Indent)
+	; Spec = 'not'(F) -> dump_rule_body(Spec,Indent)
+	; Spec = 'tnot'(F) -> dump_rule_body(Spec,Indent)
+	; Spec = 'call'(F) -> dump_rule_body(Spec,Indent)
+	; Spec = '->'(F,B) -> dump_rule_body(Spec,Indent)
+	; dump_simple_goal(Spec, Indent)
+	).
+
+%% We don't want things like FLORA_WORKSPACE
 %% to appear in quote marks, as it would be with write_canonical/1
 %% Simple write/1 won't work either because strings that are arguments
 %% to predicates wil then be written without the quotes
-dump_pred_spec(Spec,Indent) :-
-	wrapper(Spec,WSpec,Changed),
-	( WSpec = ','(F,B) -> dump_rule_body(WSpec,Indent)
-	; WSpec = ';'(F,B) -> dump_rule_body(WSpec,Indent)
-	; WSpec = '\+'(F) -> dump_rule_body(WSpec,Indent)
-	; WSpec = 'not'(F) -> dump_rule_body(WSpec,Indent)
-	; WSpec = 'tnot'(F) -> dump_rule_body(WSpec,Indent)
-	; WSpec = 'call'(F) -> dump_rule_body(WSpec,Indent)
-	; WSpec = '->'(F,B) -> dump_rule_body(WSpec,Indent)
-	; WSpec = 'hide_this_hide'(F) -> dump_rule_body(WSpec,Indent)
-	; indent(Indent),
-	    (Changed=notwrapped
-	    ->  (WSpec = '/'(P,A) -> write_canonical(P), write(' / '), write(A)
-		; WSpec =.. [P|Args], Args \== [] ->
-		    write_canonical(P), write('('),
-		    write_args(Args),
-		    write(')')
-		; write_canonical(WSpec)
-		)
-	    ; %% Wrapped
-		(WSpec = '/'(P,A) -> write(P), write(' / '), write(A)
-		; WSpec =.. [P|Args], Args \== [] ->
-		    write(P), write('('),
-		    write_args(Args),
-		    write(')')
-		; write(WSpec)
-		)
-	    )
-	).
-
-%% This one accepts only symbol/arity or symbol
-dump_as_symbol(Spec,Indent) :-
+dump_simple_goal(Spec, Indent) :- 
 	wrapper(Spec,WSpec,Changed),
 	indent(Indent),
 	(Changed=notwrapped
-	->  (WSpec = '/'(P,A) -> write_canonical(P)
-	    ; atom(WSpec) -> write_canonical(WSpec)
-	    ; true
+	->  (WSpec = '/'(P,A) -> write_canonical(P), write('/'), write(A)
+	    ; WSpec =.. [P|Args], Args \== [] ->
+		write_canonical(P), write('('),
+		write_args(Args),
+		write(')')
+	    ; write_canonical(WSpec)
 	    )
 	; %% Wrapped
-	    (WSpec = '/'(P,A) -> write(P)
-	    ; atom(WSpec) -> write(WSpec)
-	    ; true
+	    (WSpec = '/'(P,A) -> write(P), write('/'), write(A)
+	    ; WSpec =.. [P|Args], Args \== [] ->
+		write(P), write('('),
+		write_args(Args),
+		write(')')
+	    ; write(WSpec)
 	    )
 	).
 
-write_args(ArgSpec) :- \+var(ArgSpec), ArgSpec=[First|Args], !,
-	write_canonical(First),
-	(Args==[] -> true
-	; write(','), write_args(Args)
+
+write_args(Args) :-
+	Args=[First|Rest], !,
+	((atomic(First); var(First))
+	-> write_canonical(First)
+	; dump_simple_goal(First,0)
+	),
+	(Rest==[] -> true
+	; write(','), write_args(Rest)
 	).
-write_args(ArgSpec) :- var(ArgSpec), write_canonical(ArgSpec).
+
 
 indent(0) :- !.
 indent(1) :- !, write('        ').
 indent(N) :- N>1, write('  '), N1 is N-1, indent(N1).
+
+flora_out_filename(File,OutFile) :-
+	parse_filename(File,Dir,Base,Ext),
+	in2out_extension(Ext,OutExt),
+	fmt_write_string(OutFile,'%s%s.%s',args(Dir,Base,OutExt)).
+
+in2out_extension(INFILE_EXT,DATFILE_EXT) :- !.
+in2out_extension(FLIFILE_EXT,FLHFILE_EXT) :- !.
+in2out_extension(Ext,_) :-
+	flora_error_line('[flWrapAround] Unknown extension, %s', Ext).

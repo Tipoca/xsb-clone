@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrimport.P,v 1.7 2001-06-07 08:46:09 kifer Exp $
+** $Id: flrimport.P,v 1.8 2001-06-29 22:58:35 kifer Exp $
 **
 */
 
@@ -73,7 +73,7 @@ flImportFloraPred(P,A,File,Module) :-
 	check_args(P,A,Module),
 	P = FuncP/ArityP,
 	%% attach the workspace
-	flora_wssymbol(FuncP,Module,WSFuncP),
+	flora_firstorder_module_predicate_symbol(FuncP,Module,WSFuncP),
 	duplicate(A,NewA,Args),
 	(import WSFuncP/ArityP from usermod), % import whatever P is bound to
 	functor(NewP, WSFuncP, ArityP),
@@ -87,7 +87,7 @@ flImportHiLog(P,A,File,Module) :-
 	check_args(P,A,Module),
 	P = FuncP/ArityP,
 	%% attach the workspace
-	flora_wshilog(Module,FloraHiLogWrap),
+	flora_hilog_module_predicate_symbol(Module,FloraHiLogWrap),
 	ArityP1 is ArityP + 1,
 	functor(NewP,FloraHiLogWrap,ArityP1),
 	arg(1,NewP,FuncP),

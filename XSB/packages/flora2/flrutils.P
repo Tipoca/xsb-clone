@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.49 2001-06-27 19:26:34 gzyang Exp $
+** $Id: flrutils.P,v 1.50 2001-06-29 22:58:36 kifer Exp $
 **
 */
 
@@ -812,8 +812,9 @@ flora_generate_Pfile(PFileName,FileOptionList,RuleList,FactList,DBFile,FileStatu
 	findall(LibOption,member(FLSYSLIB(LibOption),FileOptionList),SysLibOptionList),
 	findall(ModOption,member(FLSYSMOD(ModOption),FileOptionList),SysModOptionList),
 	append(SysLibOptionList,SysModOptionList,OptList),
-	%% FLLIBCONTROL (sylibinc) should be included by the compiler.
-	flora_include_file([FLHEADER,FLDEFINITION,FLPATCH,FLLIBCONTROL|OptList],
+	%% FLLIBCONTROL and FLLIBMETAOPS in (sylibinc) should be
+	%% included by the compiler.
+	flora_include_file([FLHEADER,FLDEFINITION,FLPATCH,FLLIBCONTROL,FLLIBMETAOPS|OptList],
                            HeaderStatus),
 	( HeaderStatus == FLORA_FAILURE ->
 	    FileStatus=FLORA_FAILURE

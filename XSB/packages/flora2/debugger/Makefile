@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.1 2001-06-26 21:22:00 kifer Exp $
+## $Id: Makefile,v 1.2 2001-06-29 22:58:36 kifer Exp $
 ## 
 ##
 
@@ -68,8 +68,6 @@ static_data.dat: static_data.in $(FLORA_TERMS)
 %.dat: %.in $(FLORA_TERMS)
 	@echo 'flWrapAround($*).' >> cmd...
 
-flrwraparound.O: flrwraparound.P $(FLORA_TERMS) $(XSB_STANDARD)
-	@echo 'mc(flrwraparound,$(OPTION)).' >> cmd...
 
 flrdebugger.O: flrdebugger.P $(FLORA_TERMS) $(XSB_STANDARD)
 	@echo 'mc(flrdebugger,$(OPTION)).' >> cmd...

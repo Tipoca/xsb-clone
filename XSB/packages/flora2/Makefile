@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.17 2001-06-27 19:26:34 gzyang Exp $
+## $Id: Makefile,v 1.18 2001-06-29 22:58:36 kifer Exp $
 ## 
 ##
 
@@ -43,6 +43,7 @@ ALLOBJS = flroperator.O \
 	  flrcoder.O \
 	  flrutils.O \
 	  flrwrapper.O \
+	  flrwraparound.O \
 	  flrundefhook.O \
 	  flrshell.O
 
@@ -83,6 +84,7 @@ all: init $(ALLOBJS) finish
 	cd syslib; $(MAKE)
 	cd trailer; $(MAKE)
 	cd lib; $(MAKE)
+	cd debugger; $(MAKE)
 	cd pkgs; $(MAKE)
 	cd demos; $(MAKE)
 	@cat $(XSBDIR)/build/.flora*.tmp
@@ -155,6 +157,9 @@ flrundefhook.O : flrundefhook.P flrundefhook.H $(FLORA_TERMS)
 flrshell.O : flrshell.P flrshell.H $(FLORA_TERMS)
 	@echo 'mc(flrshell,$(OPTION)).' >> cmd...
 
+flrwraparound.O : flrwraparound.P flrwraparound.H $(FLORA_TERMS) $(XSB_EMU_FLAG_DEFS)
+	@echo 'mc(flrwraparound,$(OPTION)).' >> cmd...
+
 
 init:
 	/bin/rm -f $(SVFILE)
@@ -177,6 +182,7 @@ clean:
 	cd genincludes; $(MAKE) clean
 	cd syslib; $(MAKE) clean
 	cd lib; $(MAKE) clean
+	cd debugger; $(MAKE) clean
 	cd p2h; $(MAKE) clean
 	cd trailer; $(MAKE) clean
 	cd demos; $(MAKE) clean

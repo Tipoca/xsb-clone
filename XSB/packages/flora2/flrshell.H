@@ -22,9 +22,10 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.17 2001-06-24 07:22:17 gzyang Exp $
+** $Id: flrshell.H,v 1.18 2001-06-29 22:58:36 kifer Exp $
 **
 */
+
 
 
 :- import
@@ -100,6 +101,10 @@
 	flora_end_of_input/1,
 	flora_check_filename/1
    from flrutils.
+
+:- import flora_trace/0,
+	flora_notrace/0
+   from flrdebugger.
 
 :- dynamic flora_switch(_).
 

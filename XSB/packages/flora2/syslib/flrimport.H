@@ -20,14 +20,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrimport.H,v 1.3 2001-06-05 07:49:13 kifer Exp $
+** $Id: flrimport.H,v 1.4 2001-06-29 22:58:35 kifer Exp $
 **
 */
 
 
 :- import term_new/2, term_psc/2 from machine.
 :- import flora_load_module_internal/2 from flrutils.
-:- import flora_wssymbol/3, flora_wshilog/2 from flrwrapper.
+:- import flora_firstorder_module_predicate_symbol/3,
+	flora_hilog_module_predicate_symbol/2
+    from flrwrapper.
 :- export
 	flImportFloraPred/4,
 	flImportHiLog/4.

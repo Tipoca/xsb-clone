@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrwraparound.H,v 1.1 2001-06-26 21:22:00 kifer Exp $
+** $Id: flrwraparound.H,v 1.1 2001-06-29 22:58:36 kifer Exp $
 **
 */
 
@@ -31,8 +31,10 @@
    from machine.
 
 :- import 
-	storage_find_fact/2,
-	storage_insert_fact/3
+	%%storage_find_fact/2,
+	%%storage_insert_fact/3,
+	storage_insert_keypair/4,
+	storage_find_keypair/3
    from storage.
 
 :- import ','/2 from standard.
