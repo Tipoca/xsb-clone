@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.P,v 1.21 2001-08-08 15:05:39 dwarren Exp $
+** $Id: odbc_call.P,v 1.22 2002-01-02 14:58:56 dwarren Exp $
 ** 
 */
 
@@ -1416,6 +1416,9 @@ split_in_out_l(['$bind$'(B)|ModeList],BindList,[X|InVars],
 	split_in_out_l(ModeList,BindList,InVars,InBinds,OutVars).
 split_in_out_l(['$var$'(_)|ModeList],BindList,[X|InVars],
 	       InBinds,[X|OutVars]) :-
+	split_in_out_l(ModeList,BindList,InVars,InBinds,OutVars).
+split_in_out_l(['$const$'(C)|ModeList],BindList,[_|InVars],
+	       InBinds, [C|OutVars]) :-
 	split_in_out_l(ModeList,BindList,InVars,InBinds,OutVars).
 
 bind_inbinds([],_B,_X,[]).
