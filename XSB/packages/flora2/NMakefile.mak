@@ -20,7 +20,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: NMakefile.mak,v 1.11 2003-06-18 07:01:37 kifer Exp $
+## $Id: NMakefile.mak,v 1.12 2003-06-18 08:20:30 kifer Exp $
 ## 
 ##
 
@@ -55,7 +55,9 @@ ALLOBJS = flrarguments$(OBJEXT) \
 
 OPTIONS = [optimize]
 
+!IF EXISTS (.prolog_path_wind) 
 !INCLUDE .prolog_path_wind
+!ENDIF
 
 .SUFFIXES: $(PROLOGEXT) $(OBJEXT)
 
