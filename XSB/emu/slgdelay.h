@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.11 1999-07-06 16:35:16 ejohnson Exp $
+** $Id: slgdelay.h,v 1.12 1999-10-12 20:24:03 ejohnson Exp $
 ** 
 */
 
@@ -156,6 +156,8 @@ struct pos_neg_de_list {
  */
 
 #define UNCONDITIONAL_MARK 0x3
+
+#define Delay(X) (ASI) ((word) (TN_Child(X)) & ~UNCONDITIONAL_MARK)
 
 #define is_conditional_answer(ANS) \
   (Child(ANS) && !((word) (Child(ANS)) & UNCONDITIONAL_MARK))
