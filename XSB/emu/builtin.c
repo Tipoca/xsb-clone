@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.170 2004-01-26 14:46:56 dwarren Exp $
+** $Id: builtin.c,v 1.171 2004-01-26 22:07:43 dwarren Exp $
 ** 
 */
 
@@ -1465,7 +1465,7 @@ int builtin_call(byte number)
       switch (token->type) {
         case TK_ATOM : case TK_FUNC : case TK_STR : case TK_LIST :
         case TK_VAR : case TK_VVAR : case TK_VARFUNC : case TK_VVARFUNC :
-	  ctop_string(4, token->value);
+	  ctop_string(4, token->value);  // NOT INTERNED, CALLER MUST DO SO SOON!!
 	  break;
         case TK_INT : case TK_INTFUNC :
 	  ctop_int(4, *(long *)(token->value));
