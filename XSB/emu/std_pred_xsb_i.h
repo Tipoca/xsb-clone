@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.2 1999-12-14 03:38:18 kifer Exp $
+** $Id: std_pred_xsb_i.h,v 1.3 1999-12-21 22:56:40 warren Exp $
 ** 
 */
 
@@ -70,7 +70,7 @@ inline static bool functor_builtin(void)
 	    new_heap_free(hreg);
 	  } else { 
 	    /* functor always creates a psc in the current module */
-	    sym = (Pair)insert(string_val(functor), value, 
+	    sym = (Pair)insert(string_val(functor), (char)value, 
 			       (Psc)flags[CURRENT_MODULE],
 			       &new_indicator);
 	    sreg = hreg;
@@ -210,7 +210,7 @@ inline static bool univ_builtin(void)
 	    if (isnil(list) && arity <= MAX_ARITY) {
 				/* '=..'/2 always creates a psc
 				 * in the current module */
-	      sym = (Pair)insert(name, arity,
+	      sym = (Pair)insert(name, (char)arity,
 				 (Psc)flags[CURRENT_MODULE],
 				 &new_indicator);
 	      new_heap_functor(hreg, sym->psc_ptr);
@@ -336,7 +336,7 @@ inline static bool atom_to_list(int call_type)
 	  atomnamelast = atomnameaddr + (atomnamelen - 1);
 	  /*printf("Allocated namebuf: %p, %d\n",atomnameaddr,atomnamelen);*/
 	}
-	*atomname++ = c;
+	*atomname++ = (char)c;
 	term2 = cell(clref_val(term2)+1);
       } else {
 	if (isref(term2)) err(INSTANTIATION, 2, call_name, 2);
@@ -444,7 +444,7 @@ inline static bool number_to_list(int call_type)
 	  err_handle(RANGE, 2, call_name, 2, "ASCII code", heap_addr);
 	  return FALSE;	/* fail */
 	}
-	*numberAsString++ = c;
+	*numberAsString++ = (char)c;
 	term2 = cell(clref_val(term2)+1);
       } else {
 	if (isref(term2))

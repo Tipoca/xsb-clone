@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.4 1999-11-29 00:30:12 kifer Exp $
+** $Id: cell_xsb.h,v 1.5 1999-12-21 22:56:33 warren Exp $
 ** 
 */
 
@@ -222,7 +222,7 @@ extern Float getfloatval(Cell);
 #define bld_nil(addr) cell(addr) = makenil
 #define bld_string(addr, str) cell(addr) = makestring(str)
 #define bld_int(addr, val) cell(addr) = makeint(val)
-#define bld_float(addr, val) cell(addr) = makefloat(val)
+#define bld_float(addr, val) cell(addr) = makefloat((float)val)
 #define bld_ref(addr, val) cell(addr) = (Cell)(val)
 #define bld_cs(addr, str) cell(addr) = makecs(str)
 #define bld_list(addr, list) cell(addr) = makelist(list)

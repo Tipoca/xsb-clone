@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.9 1999-10-26 06:46:56 kifer Exp $
+** $Id: dis.c,v 1.10 1999-12-21 22:56:38 warren Exp $
 ** 
 */
 
@@ -79,7 +79,7 @@ static void dis_data(void)
 	        fprintf(filedes, "/* module %s : LOADED. */\n\n", modname);
 	   else fprintf(filedes, "/* module %s : UNLOADED. */\n\n", modname);
 	   if (strcmp(modname,"global")==0)
-	   	for(i=0; i < symbol_table.size; i++) {
+	   	for(i=0; i < (int)symbol_table.size; i++) {
 		  if ( symbol_table.table[i] ) {
 		    fprintf(filedes, "... ... BUCKET NO. %d\n", i);
 		    dis_data_sub((Pair *)(symbol_table.table + i));

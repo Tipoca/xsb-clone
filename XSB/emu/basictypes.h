@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.14 1999-12-10 07:47:24 kifer Exp $
+** $Id: basictypes.h,v 1.15 1999-12-21 22:56:24 warren Exp $
 ** 
 */
 
@@ -51,7 +51,7 @@ typedef unsigned int counter;
 typedef unsigned long word;
 typedef byte *pb;
 typedef word *pw;
-typedef int (*PFI)();
+typedef int (*PFI)(void);
 typedef int *int_ptr;
 
 

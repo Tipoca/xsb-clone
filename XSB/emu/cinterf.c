@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.25 1999-12-10 07:47:29 kifer Exp $
+** $Id: cinterf.c,v 1.26 1999-12-21 22:56:35 warren Exp $
 ** 
 */
 
@@ -188,7 +188,7 @@ DllExport bool call_conv c2p_functor(char *functor, int arity, prolog_term var)
     Pair sym;
     int i;
     if (is_var(v)) {
-	sym = (Pair)insert(functor, arity, (Psc)flags[CURRENT_MODULE], &i);
+	sym = (Pair)insert(functor, (byte)arity, (Psc)flags[CURRENT_MODULE], &i);
 	sreg = hreg;
 	hreg += arity + 1;
 	bind_cs(vptr(v), sreg);
@@ -810,8 +810,8 @@ static char *ptoc_term0(char *ptr, char *c_dataptr,
 	case 'f':
 
 	if (!ignore) {
-	    if (is_float(variable)) *((float *)(c_dataptr)) =
-	       p2c_float(variable);
+	    if (is_float(variable)) 
+	      *((float *)(c_dataptr)) = (float)p2c_float(variable);
 	    else cppc_error(13);
 	}
 	c_dataptr_rest = c_dataptr + sizeof(float);
