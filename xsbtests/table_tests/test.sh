@@ -7,6 +7,9 @@ echo "-------------------------------------------------------"
 XEMU=$1
 options=$2
 
+# Force some files to be compiled before running the tests.  cycle.P
+# will always be compiled, because there was a bug on Linux in compiling
+# this file and we want to catch it.
 
 $XEMU $options << EOF
 
@@ -17,6 +20,8 @@ $XEMU $options << EOF
 [correct].
 
 [utils].
+
+compile(cycle).
 
 EOF
 
