@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.10 1999-06-11 18:30:34 kifer Exp $
+** $Id: flrutils.P,v 1.11 1999-06-14 07:03:24 kifer Exp $
 **
 */
 
@@ -74,10 +74,6 @@
 	flora_member/2, displayln_errmsg/1, displayln_warning/1,
 	displayln/0, displayln/1, flora_msgheader/0.
 
-
-/*********************************************************************
-  03/1999, modified by Guizhen Yang (guizyang@CS.SunySB.EDU)
-*********************************************************************/
 
 
 /********************************************************************/
@@ -505,8 +501,8 @@ unbound_warn(Form,L) :-
 	'_$_$_write_flora_warnheader',
 	write('unbound variable(s) '),
 	write_list(L),
-	write(' in `'),
-	write(Form), writeln('''').
+	write(' in a '),
+	writeln(Form).
 
 
 /********************************************************************/
@@ -715,7 +711,7 @@ compile_flrfile(MaxErr,ErrorCount,Status,OldOpts,NewOpts) :-
 		displayln, flora_warnheader, display('unbound variable(s) '),
 		telling(CurrStream), tell(userout),
 		write_list(L), tell(CurrStream),
-		display(' in `'), display(Form), displayln('''')
+		display(' in a '), displayln(Form)
 	      ;
 		true
 	    ),
