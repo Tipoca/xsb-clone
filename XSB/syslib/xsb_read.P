@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.P,v 1.1.1.1 1998/11/05 16:59:55 sbprolog Exp $
+** $Id: xsb_read.P,v 1.2 1999/01/15 18:42:20 kostis Exp $
 ** 
 */
 
@@ -688,7 +688,7 @@ read_syntax_error(List) :-
         BeforeError is Length - AfterError,
         read_display_list(List, BeforeError, Rest),
 	file_nl(2),
-        file_write0(2, '*** may be here? *** '),
+        file_write0(2, '*** maybe here? *** '),
 	file_nl(2),
         read_display_list(Rest, AfterError, _),
 	file_nl(2), 
