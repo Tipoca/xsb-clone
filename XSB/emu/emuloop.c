@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.43 1999-10-20 18:22:08 kifer Exp $
+** $Id: emuloop.c,v 1.44 1999-10-22 04:27:35 kifer Exp $
 ** 
 */
 
@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <string.h>
 
 #ifdef FOREIGN
 #ifndef SOLARIS
