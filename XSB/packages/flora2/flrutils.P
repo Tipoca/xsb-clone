@@ -21,7 +21,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.75 2002-03-09 07:56:53 kifer Exp $
+** $Id: flrutils.P,v 1.76 2002-03-10 05:24:09 kifer Exp $
 **
 */
 
@@ -1136,11 +1136,10 @@ flora_load_dyn_fld(InFLDFile,ModuleName) :-
 flora_read_canonical_and_insert(StorageName) :-
 	repeat,
 	read_canonical(Term),
-	( Term == end_of_file ->
-	    !
+	( Term == end_of_file, !
 	;
-	  storage_insert_fact(StorageName,Term,_Inserted),
-	  fail
+	    storage_insert_fact(StorageName,Term,_Inserted),
+	    fail
 	).
 
 /*************************************************************************
