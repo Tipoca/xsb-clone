@@ -10,7 +10,7 @@ XEMU=$1
 # tests involving standard predicates
 #------------------------------------
 ../gentest.sh $XEMU std1 "test."
-../gentest.sh $XEMU std2 "testcombo."
+../gentest.sh $XEMU std2 "test."
 #------------------------------------
 # Test reading from strings
 #------------------------------------
