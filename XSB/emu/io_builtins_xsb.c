@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.41 2004-09-03 18:39:05 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.42 2004-10-04 22:09:41 dwarren Exp $
 ** 
 */
 
@@ -1621,7 +1621,7 @@ void wcan_append_string_chk(char *string)
   }
 }
 
-void write_canonical_term(Cell prologterm)
+DllExport void write_canonical_term(Cell prologterm)
 {
   XSB_Deref(prologterm);
   switch (cell_tag(prologterm)) 
