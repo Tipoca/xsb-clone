@@ -18,14 +18,14 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 1999-04-28 18:30:25 kifer Exp $
+## $Id: Makefile,v 1.6 1999-04-30 15:49:54 kifer Exp $
 ## 
 ##
 
 
-ALL = 	flip.O slx.O perlmatch.O gap.O regmatch.O
+ALL = 	flip.O slx.O perlmatch.O gap.O regmatch.O wildmatch.O
 
-SUBDIR = flip slx perlmatch gap regmatch
+SUBDIR = flip slx perlmatch gap regmatch wildmatch
 
 Option = [optimize]
 
@@ -75,6 +75,10 @@ gap::
 regmatch::
 	@echo ""
 	cd regmatch; make
+
+wildmatch::
+	@echo ""
+	cd wildmatch; make
 
 
 # Unfortunately, this needs to be commented on the NeXT.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: regmatch.P,v 1.1 1999-04-28 18:30:26 kifer Exp $
+** $Id: regmatch.P,v 1.2 1999-04-30 15:49:55 kifer Exp $
 ** 
 */
 
@@ -41,6 +41,6 @@
      abort('Your system does not seem to have the POSIX pattern matching library installed.')
      ).
 
-regmatch(Regexp,Str,IsCaseSensitive,Match,Prematch,Postmatch,ParenMatches) :-
-	do_regmatch__(Regexp, Str, IsCaseSensitive,
+regmatch(Regexp,Str,IgnoreCase,Match,Prematch,Postmatch,ParenMatches) :-
+	do_regmatch__(Regexp, Str, IgnoreCase,
 	    	      Match, Prematch, Postmatch, ParenMatches).
