@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.40 2000-06-17 23:26:13 kifer Exp $
+** $Id: biassert.c,v 1.41 2000-06-19 07:13:06 ruim Exp $
 ** 
 */
 
@@ -1057,7 +1057,7 @@ static void db_genmvs(struct instruction *inst_queue, RegStat Reg)
 
 /* Predicate References */
 
-typedef struct PrRef
+typedef struct
 {	Cell	Instr ;
 	struct ClRefHdr *FirstClRef ;
 	struct ClRefHdr *LastClRef ;
