@@ -18,7 +18,7 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gui.H,v 1.1 2001-05-25 19:11:43 lfcastro Exp $
+** $Id: gui.H,v 1.2 2001-07-01 21:52:54 gmkp Exp $
 ** 
 */
 
@@ -29,5 +29,7 @@
 :- import typecheck/1 from typecheck.
 :- import comp_form/0 from formula.
 :- import xlcomp/0 from comp.
+%:- import models/2, rec_models/2 from mucalculus.
 
 :- import startstate/2, fdef/2 from usermod.
+%:- import start/2 from mucalculus.

@@ -1,5 +1,5 @@
-/* File:      util.H	-- general-purpose utilies
-** Author(s): Yifei Dong
+/* File:      tcl_interface.H  -- Code to manage interaction with TCL
+** Author(s): 
 ** Contact:   lmc@cs.sunysb.edu
 ** 
 ** Copyright (C) SUNY at Stony Brook, 1998-2000
@@ -18,19 +18,9 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: util.H,v 1.2 2001-07-01 21:52:54 gmkp Exp $
+** $Id: tcl_interface.H,v 1.1 2001-07-01 21:52:54 gmkp Exp $
 ** 
 */
 
-:- import append/3, length/2, ground/1 from basics.
-:- import absmerge/3, absmember/2 from listutil.
-
-:- export abs_intersect/3.
-:- export abs_exclude/3.
-:- export test_assert/1.
-:- export seq_list_term/2, seq_term/3.
-:- export same_length/2.
-:- export sandwich/4, sandwich/6.
-:- export pe_term/2.
-:- export test_assert/1.
-:- export get_expr_var/2.
+:- import prompt/3 from x_interp.
+:- import append/3 from basics.

@@ -18,7 +18,7 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: count.H,v 1.1 2001-05-25 19:11:43 lfcastro Exp $
+** $Id: count.H,v 1.2 2001-07-01 21:52:54 gmkp Exp $
 ** 
 */
 
@@ -29,5 +29,6 @@
 	checkit/1,
 	timeit/1, retimeit/1.
 
-:- import transition/3, start/1 from mucalculus.
+:- import transition/3 from mucalculus.
 :- import conget/2, conset/2 from gensym.
+:- import start/1 from usermod.

@@ -18,21 +18,24 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: quad.P,v 1.1 2001-05-25 19:11:43 lfcastro Exp $
+** $Id: quad.P,v 1.2 2001-07-01 21:52:54 gmkp Exp $
 ** 
 */
 
 :- dynamic quad/5.
 :- dynamic trans/3.
 
-rec_quad(PN, S1, A, S2, C) :-
-	copy_term(q(PN,S1,A,S2,C), q(ProcName,State1,Action,State2,Code)),
+rec_quad(PN, S1, A, S2, C, V) :-
+	copy_term(q(PN,S1,A,S2,C,V), q(ProcName,State1,Action,State2,Code,Vars)),
 	pe_term(Code, PeCode),
 	(PeCode == fail ->
-		true
+	    true
 	;
-		assert((trans(State1, Action, State2) :- PeCode)),
-		assert(quad(ProcName, State1, Action, State2, PeCode))
+	    (functor(State1, par, _) ->
+		true				% skip standard par trans
+	    ;	assert((trans(State1, Action, State2) :- PeCode))),
+	    assert(quad(ProcName, State1, Action, State2, PeCode)),
+	    assert(translookup(State1, Action, State2, PeCode, Vars))
 	).
 
 %% record a super transition rule

@@ -18,7 +18,7 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: comp.H,v 1.1 2001-05-25 19:11:43 lfcastro Exp $
+** $Id: comp.H,v 1.2 2001-07-01 21:52:54 gmkp Exp $
 ** 
 */
 
@@ -46,5 +46,5 @@
 	get_expr_var/2
 	from util.
 :- import
-	rec_quad/5
+	rec_quad/6
 	from quad.

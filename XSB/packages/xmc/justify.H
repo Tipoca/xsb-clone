@@ -18,7 +18,7 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: justify.H,v 1.1 2001-05-25 19:11:43 lfcastro Exp $
+** $Id: justify.H,v 1.2 2001-07-01 21:52:54 gmkp Exp $
 ** 
 */
 
@@ -34,4 +34,4 @@
 :- import variant/2 from subsumes.
 :- import close_open_tables/0 from machine.
 :- import trie_intern/4, trie_interned/4, trie_unintern/2, 
-		new_trie/1, trie_intern/5, delete_trie/1 from intern.
+		new_trie/1, delete_trie/1 from intern.

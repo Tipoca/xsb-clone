@@ -18,7 +18,7 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: mucalculus.P,v 1.1 2001-05-25 19:11:43 lfcastro Exp $
+** $Id: mucalculus.P,v 1.2 2001-07-01 21:52:54 gmkp Exp $
 ** 
 */
 
@@ -93,7 +93,7 @@ models(State_s, fBoxSetMinus(Set_a, X)) :-
 
 % Negation
 models(State_s, neg_form(X)) :-
-	't not'(rec_models(State_s, X)).
+	sk_not(rec_models(State_s, X)).
 
 % Recursion
 models(State_s, form(X)) :-

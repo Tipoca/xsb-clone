@@ -18,7 +18,7 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: quad.H,v 1.1 2001-05-25 19:11:43 lfcastro Exp $
+** $Id: quad.H,v 1.2 2001-07-01 21:52:54 gmkp Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 :- import quad/5, directcall/2 from usermod.
 
 :- export
-	rec_quad/5, %rec_par_quad/5,
+	rec_quad/6, %rec_par_quad/5,
 	rec_super_trans/3, rec_par_trans/5,
 	get_quad/5, get_quad_rest/6, get_quad_non_rest/6,
 	get_quad_relab/6, get_quad_relab_rest/7, get_quad_relab_non_rest/7,

@@ -1,8 +1,8 @@
-/* File:      util.H	-- general-purpose utilies
-** Author(s): Yifei Dong
+/* File:      simgui.P -- Prolog interface procedures for simulator
+** Author(s): Ping Yang
 ** Contact:   lmc@cs.sunysb.edu
 ** 
-** Copyright (C) SUNY at Stony Brook, 1998-2000
+** Copyright (C) SUNY at Stony Brook, 1998-2001
 ** 
 ** XMC is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -18,19 +18,12 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: util.H,v 1.2 2001-07-01 21:52:54 gmkp Exp $
+** $Id: simgui.H,v 1.1 2001-07-01 21:52:54 gmkp Exp $
 ** 
 */
 
-:- import append/3, length/2, ground/1 from basics.
-:- import absmerge/3, absmember/2 from listutil.
+:- import trie_intern/3, trie_interned/3 from intern. 
+:- import member/2, append/3, reverse/2 from basics.
+:- import conget/2, conset/2 from gensym.
+:- import startstate/2 from usermod.
 
-:- export abs_intersect/3.
-:- export abs_exclude/3.
-:- export test_assert/1.
-:- export seq_list_term/2, seq_term/3.
-:- export same_length/2.
-:- export sandwich/4, sandwich/6.
-:- export pe_term/2.
-:- export test_assert/1.
-:- export get_expr_var/2.

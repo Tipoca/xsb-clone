@@ -18,22 +18,25 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: typecheck.H,v 1.1 2001-05-25 19:11:43 lfcastro Exp $
+** $Id: typecheck.H,v 1.2 2001-07-01 21:52:54 gmkp Exp $
 ** 
 */
 
+:- op(1100, fx, datatype).
 
 :- export typecheck/1.
 :- export type/2.
 
-:- import apply/2, apply/4 from usermod.
+%:- import apply/2, apply/4 from usermod.
 :- import append/3 from basics.
 
 :- import pdef/3 from usermod.
-:- import qpdef/3 from usermod.
-:- import tc_error/4 from usermod.
+%:- import qpdef/3 from usermod.
+%:- import tc_error/4 from usermod.
 
-:- import get_returns/3, delete_return/2 from tables.
-:- import variant/2 from subsumes.
+%:- import get_returns/3, delete_return/2 from tables.
+%:- import variant/2 from subsumes.
 
 :- import atype/2 from usermod.
+
+:- import reverse/2, ground/1 from basics.
