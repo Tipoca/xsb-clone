@@ -1,4 +1,4 @@
-/* File:      builtin.c
+/* File:      call_xsb_i.h
 ** Author(s): Xu, Warren, Sagonas, Swift
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: call_xsb_i.h,v 1.1 2000-05-25 23:24:53 kifer Exp $
+** $Id: call_xsb_i.h,v 1.2 2000-05-25 23:37:25 cbaoqiu Exp $
 ** 
 */
 
