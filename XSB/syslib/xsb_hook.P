@@ -18,12 +18,18 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_hook.P,v 1.1 1999/10/10 04:25:23 kifer Exp $
+** $Id: xsb_hook.P,v 1.1 1999/10/10 05:05:06 kifer Exp $
 ** 
 */
 
 %% Hooks
 :- dynamic xsb_exit_hook(_), xsb_before_prompt_hook(_).
+
+%% A hook is of the form hookname(HookPredicate)
+%% hookname(_) just lists the callable hooks of the given kind.
+%% add_xsb_hook adds hooks to hookname(_) and remove_xsb_hook(_) removes them.
+%% call_xsb_hook(hookname(_)) goes over all the hooks stored in hookname(_) 
+%% and calls them.
 
 %% Hook handling
 add_xsb_hook(Hook) :-
