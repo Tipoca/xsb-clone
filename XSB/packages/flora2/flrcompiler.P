@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.26 2001-06-29 22:58:36 kifer Exp $
+** $Id: flrcompiler.P,v 1.27 2001-07-08 18:56:04 gzyang Exp $
 **
 */
 
@@ -226,7 +226,6 @@ workspaceobj_struct(P,WS,Object,Code) :-
 	  workspace_struct(P,WS,Object)
 	).
 
-prologterm_struct(FL_ASSIGN,2,Args,PROLOGTERM(FL_IS,2,Args)) :- !.
 prologterm_struct(F,N,Args,PROLOGTERM(F,N,Args)).
 
 prologliblit_struct(PrologTerm,PROLOGLIBLIT(PrologTerm)).
