@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.176 2004-04-09 21:03:05 dwarren Exp $
+** $Id: builtin.c,v 1.177 2004-04-12 13:08:00 dwarren Exp $
 ** 
 */
 
@@ -162,7 +162,7 @@ extern xsbBool is_absolute_filename(char *filename);
 extern void parse_filename(char *filenam, char **dir, char **base, char **ext);
 
 int print_xsb_backtrace();
-int build_xsb_backtrace();
+prolog_term build_xsb_backtrace();
 
 extern xsbBool xsb_socket_request(void);
 
@@ -2292,7 +2292,7 @@ int builtin_call(byte number)
       print_xsb_backtrace();
       break;
     case 2: 
-      build_xsb_backtrace();
+      return unify(ptoc_tag(2),build_xsb_backtrace());
       break;
     }
     break;
@@ -2676,11 +2676,11 @@ int print_xsb_backtrace() {
   return TRUE;
 }
 
-int build_xsb_backtrace() {
+prolog_term build_xsb_backtrace() {
   Psc tmp_psc, called_psc;
   byte *tmp_cpreg;
   CPtr tmp_ereg, tmp_breg, forward, backward;
-  Cell backtrace;
+  prolog_term backtrace;
 
   backtrace = makelist(hreg);
   forward = hreg++;
@@ -2733,7 +2733,7 @@ int build_xsb_backtrace() {
     follow(forward) = makenil;
     follow(backward) = makenil;
   }
-  return unify(ptoc_tag(2),backtrace);
+  return backtrace;
 }
 
 
