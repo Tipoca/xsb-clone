@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32.i,v 1.2 1999-04-22 06:49:16 kifer Exp $
+** $Id: dynwin32.i,v 1.3 1999-05-03 19:55:41 luis Exp $
 ** 
 */
 
@@ -54,6 +54,10 @@ bool dummy()
 static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
 {
   char	*name;
+#ifdef XSB_DLL
+  char tempname[128];
+  int  tempsize;
+#endif
   Pair	search_ptr;
   char	sofilename[128];
   int 	strl = strlen(pofilename);
@@ -85,7 +89,15 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   
   while (search_ptr) {
     name = get_name(search_ptr->psc_ptr);
-    
+#ifdef XSB_DLL
+    tempname = "__";
+    strcpy(tempname[2],name);
+    tempsize=strlen(tempname);
+    tempname[tempsize++] = '@';
+    tempname[tempsize++] = '1';
+    tempname[tempsize++] = '\0';
+    name = tempname;
+#endif
     if (get_type(search_ptr->psc_ptr) == T_FORN) {
       if ((funcep = (int (*)) GetProcAddress(handle, name)) == NULL) {
 	fprintf(stderr, "Cannot find function %s\n", name);
