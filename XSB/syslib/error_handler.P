@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.18 2004/05/18 19:19:44 vidrevich Exp $
+** $Id: error_handler.P,v 1.19 2004/06/24 19:25:36 tswift Exp $
 ** 
 */
 
@@ -43,7 +43,7 @@ default_error_handler(Error) :-
 default_error_handler(Error) :-
 	default_sys_error_handler(Error),
 	!,
-	messageln('Aborting...', STDFDBK),
+%	messageln('Aborting...', STDFDBK),
 	close_open_tables,
 	%%reset_undef_pred_handlers, 
 	fail.
