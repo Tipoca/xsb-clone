@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.56 2000/10/05 17:23:18 ejohnson Exp $
+** $Id: tr_utils.c,v 1.57 2000/12/04 17:10:43 ejohnson Exp $
 ** 
 */
 
@@ -765,7 +765,10 @@ void delete_return(BTNptr l, VariantSF sg_frame)
     if (is_conditional_answer(l)) {
       ASI asi = Delay(l);
       release_all_dls(asi);
-      if (l == subg_ans_root_ptr(sg_frame) &&
+      /* TLS 12/00 changed following line from 
+	 (l == subg_ans_root_ptr(sg_frame) && ..
+	 so that negation failure simplification is properly performed */
+      if (l == BTN_Child(subg_ans_root_ptr(sg_frame)) &&
 	  IsEscapeNode(l))
 	groundcall=TRUE; /* do it here, when l is still valid */
     }
