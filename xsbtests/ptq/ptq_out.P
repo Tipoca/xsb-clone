@@ -3,8 +3,9 @@
 :- import numbervars/3 from num_vars.
 :- import get_calls/3, get_returns/2 from tables.
 :- import stat_flag/2, term_psc/2, term_type/2, term_arg/3,
-	  psc_name/2, psc_arity/2, file_put/2, file_puttoken/3,
+	  psc_name/2, psc_arity/2, file_puttoken/3,
 	  file_writequoted/2 from machine.
+:- import file_put/2 from file_io.
 
 %==============================================================================
 

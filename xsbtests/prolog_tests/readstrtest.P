@@ -1,4 +1,5 @@
-:- import file_open/3,file_close/1,str_cat/3 from machine.
+:- import str_cat/3 from machine.
+:- import file_open/3,file_close/1 from file_io.
 :- import file_read/3 from xsb_read.
 :- import excess_vars/4 from setof.
 :- import numbervars/3 from num_vars.
