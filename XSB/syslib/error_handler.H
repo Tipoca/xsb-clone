@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.14 2004/08/19 22:15:26 tswift Exp $
+** $Id: error_handler.H,v 1.15 2004/08/29 22:57:04 tswift Exp $
 ** 
 */
 
@@ -29,7 +29,7 @@
               instantiation_error/3,
               permission_error/4, type_error/4, 
               misc_error/1,
-              check_atom/3,
+              check_atom/3, check_atom_list/3,
               check_ground/3,
               check_nonvar_list/3, check_nonvar/3, 
               check_number/3,
