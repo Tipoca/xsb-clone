@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.6 2000-06-28 16:54:51 ruim Exp $
+** $Id: psc_xsb.c,v 1.7 2000-06-30 19:34:04 dwarren Exp $
 ** 
 */
 
@@ -101,6 +101,7 @@ static Psc make_psc_rec(char *name, char arity) {
   set_spy(temp, 0);
   set_arity(temp, arity);
   set_length(temp, length);
+  set_data(temp, 0);
   set_ep(temp,(byte *)&(temp->load_inst));
   set_name(temp, string_find(name, 1));
   cell_opcode(&(temp->load_inst)) = load_pred;
@@ -251,7 +252,6 @@ Pair insert_module(int type, char *name)
     new_pair = insert0(name, 0, (Pair *)&flags[MOD_LIST], &is_new);
     if (is_new) {
 	set_type(new_pair->psc_ptr, type);
-	set_data(new_pair->psc_ptr, 0);
     } else {	/* set loading bit: T_MODU - loaded; 0 - unloaded */
       set_type(new_pair->psc_ptr, get_type(new_pair->psc_ptr) | type);
     }
