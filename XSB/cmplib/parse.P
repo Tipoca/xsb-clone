@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.47 2003-05-13 17:08:04 lfcastro Exp $
+** $Id: parse.P,v 1.48 2003-05-29 20:37:33 dwarren Exp $
 ** 
 */
 
@@ -480,17 +480,20 @@ all_anonymous([vv(VarName,_)|Vars]) :-
 /* parse_table_directive(+PAs, #QrList, #SymTab)			*/
 /*======================================================================*/
 
+parse_table_directive((PA, PAs), QrList, SymTab) :- !,
+	parse_table_directive(PA, QrList, SymTab),
+	parse_table_directive(PAs, QrList, SymTab).
 parse_table_directive(P/A, QrList, SymTab) :-
 	nonvar(P), integer(A),
 	!,
 	sym_insert(P, A, [tabled], SymTab, _),
 	add_table(P/A),
 	parse_query(table(P/A), QrList, SymTab).
-
-parse_table_directive((PA, PAs), QrList, SymTab) :- !,
-	parse_table_directive(PA, QrList, SymTab),
-	parse_table_directive(PAs, QrList, SymTab).
-	
+parse_table_directive(Skel, QrList, SymTab) :-
+	functor(Skel,P,A),
+	sym_insert(P, A, [tabled], SymTab, _),
+	add_table(P/A),
+	parse_query(table(P/A), QrList, SymTab).
 
 /*======================================================================*/
 /* parse_directive(+Directive, #Symbol_Table)				*/
