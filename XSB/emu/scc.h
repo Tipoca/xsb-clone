@@ -18,12 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: scc.h,v 1.1.1.1 1998-11-05 16:55:21 sbprolog Exp $
+** $Id: scc.h,v 1.2 1999-09-20 09:06:02 kostis Exp $
 ** 
 */
 
 
+#if (!defined(LOCAL_EVAL))
 extern ComplStackFrame DFS_DGT(ComplStackFrame);
 extern void find_independent_scc(ComplStackFrame);
+#endif
 
 /*----------------------------------------------------------------------*/
