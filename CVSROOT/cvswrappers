@@ -19,7 +19,6 @@
 #
 #  and value is a single-quote delimited value.
 #
-# For example:
 
 *.gif   -m 'COPY' -k 'b'
 *.tif   -m 'COPY' -k 'b'
@@ -40,4 +39,8 @@
 *.o     -m 'COPY' -k 'b'
 *.exe   -m 'COPY' -k 'b'
 *.so    -m 'COPY' -k 'b'
+*.obj    -m 'COPY' -k 'b'
+*.dll    -m 'COPY' -k 'b'
+*.lib    -m 'COPY' -k 'b'
+*.exp    -m 'COPY' -k 'b'
 
