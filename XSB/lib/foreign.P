@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.31 2001-08-06 06:10:14 kifer Exp $
+** $Id: foreign.P,v 1.32 2002-02-25 06:38:33 kifer Exp $
 ** 
 */
 
@@ -161,7 +161,7 @@ cc_options(CC_Name, Options, CC_Opts) :-
 	;   fmt_write_string(CC_Opts2, '-I%s -I%s', args(Emudir, ConfigDir))
 	),
 	(  str_sub(gcc,CC_Name) %% gcc, egcc, kgcc, and friends
-	-> str_cat(' -Wall ', CC_Opts2, CC_Opts)
+	-> str_cat(' -Wall -fPIC ', CC_Opts2, CC_Opts)
 	;  CC_Opts = CC_Opts2
 	).
 
