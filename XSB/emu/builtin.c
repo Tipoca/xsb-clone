@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.173 2004-03-05 00:58:22 dwarren Exp $
+** $Id: builtin.c,v 1.174 2004-03-10 13:37:51 dwarren Exp $
 ** 
 */
 
@@ -371,7 +371,7 @@ DllExport char* call_conv ptoc_longstring(int regnum)
  *  For decoding object pointers, like PSC, PSC-PAIR and Subgoal frames.
  */
 #define ptoc_addr(regnum)	(void *)ptoc_int(regnum)
-#define is_encoded_addr(term)	isinteger(term)
+#define is_encoded_addr(term)	(isinteger(term) || isboxedinteger(term))
 #define decode_addr(term)	(void *)oint_val(term)
 
 
