@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.20 2005-01-14 18:31:25 ruim Exp $
+** $Id: pathname_xsb.c,v 1.21 2005-01-24 14:58:04 dwarren Exp $
 ** 
 */
 
@@ -536,6 +536,9 @@ char *existing_file_extension(char *basename)
 
   strcpy(filename, basename); strcat(filename, ".c");
   if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return "c";
+
+  strcpy(filename, basename); strcat(filename, ".cpp");
+  if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return "cpp";
 
   strcpy(filename, basename);
   if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return ""; /* no extension */
