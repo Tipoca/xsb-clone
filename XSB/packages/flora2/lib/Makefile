@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 2001-06-24 07:22:55 gzyang Exp $
+## $Id: Makefile,v 1.6 2001-07-07 06:08:30 kifer Exp $
 ## 
 ##
 
@@ -86,4 +86,4 @@ finish:
 	echo Done
 
 clean:
-	/bin/rm -f *.P *.O *.flh *.fdb *~
+	/bin/rm -f *.P *.O *.fdb *~

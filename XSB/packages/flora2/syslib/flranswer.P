@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flranswer.P,v 1.8 2001-06-29 22:58:35 kifer Exp $
+** $Id: flranswer.P,v 1.9 2001-07-07 06:08:29 kifer Exp $
 ** 
 */
 
@@ -57,6 +57,8 @@
 	flora_stdfdbk_nl/0,
 	flora_stdfdbk_line/1
    from flrprint.
+
+:- import windows_os/0 from xsb_configuration.
 
 :- import flora_stdfdbk_write/1 from flrdisplay.
 
@@ -98,8 +100,12 @@ flora_print_all(Gs,NVs) :-
 	  ;
 	    flora_write_matches(L),
 	    ( flora_switch(chatter) ->
-		flora_stdfdbk_string("\n%d solution(s) in %S seconds on ",args(N,T)),
-	        shell(hostname,block,STDFDBK,block,_)
+		flora_stdfdbk_string("\n%d solution(s) in %S seconds",args(N,T)),
+	        (  windows_os, flora_stdfdbk_nl, !
+		;
+		   flora_stdfdbk_string(' on '),
+		   shell(hostname,block,STDFDBK,block,_)
+		)
 	    ;
 	      true
 	    ),

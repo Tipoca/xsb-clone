@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.2 2001-04-27 02:34:50 kifer Exp $
+## $Id: Makefile,v 1.3 2001-07-07 06:08:30 kifer Exp $
 ## 
 ##
 
@@ -56,7 +56,7 @@ HDRMSG = "While compiling XSB/packages/flora2/pkgs:"
 .SUFFIXES: .P .flr
 
 # We should have touch *.flr here when there will be packages
-all: init recompile
+all: clean init recompile
 
 recompile: $(ALL) finish
 	@touch cmd...
@@ -84,3 +84,6 @@ finish:
 
 .DONE:
 	echo Done
+
+clean:
+	/bin/rm -f *.P *.O *.fdb *~

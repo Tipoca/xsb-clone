@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.32 2001-06-29 22:58:36 kifer Exp $
+** $Id: flrshell.P,v 1.33 2001-07-07 06:08:31 kifer Exp $
 **
 */
 
@@ -46,7 +46,6 @@ flora_shell_loop :-
 	    flora_load_library(SysLibList),
 	    findall(SysModOp,member(FLSYSMOD(SysModOp),Options),SysModList),
 	    flora_load_system_module(SysModList),
-	    %writeln(Code),
 	    call(Code)
 	;
 	  true
