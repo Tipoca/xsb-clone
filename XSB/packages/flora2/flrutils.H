@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.5 2001-03-20 06:24:04 gzyang Exp $
+** $Id: flrutils.H,v 1.6 2001-03-22 16:13:26 gzyang Exp $
 **
 */
 
@@ -48,7 +48,7 @@
 
 :- import xpp_options/1 from parse.
 
-:- import current_output_port/1 from curr_sym.
+:- import current_output_port/1, current_predicate/1 from curr_sym.
 
 :- import package_configuration/2 from packaging.
 
@@ -128,6 +128,8 @@
 
 :- import flora_include/2 from flrlibman.
 
+:- import flora_wspredicate/4 from flrwrapper.
+
 :- dynamic flora_maxerr(_).
 
 :- index(flora_maxerr/1,trie).
@@ -143,6 +145,7 @@
 	flloadtrailer/1,
 	flloadtrailer/2,
 	flsetuptrailer/1,
+	flsetuppatch/0,
 	flora_end_of_input/1,
 	flora_not_end_of_input/1,
 	flora_shell_command_line/3,
