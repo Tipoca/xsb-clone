@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.h,v 1.6 2000-05-30 14:11:08 ejohnson Exp $
+** $Id: table_stats.h,v 1.7 2000-06-19 07:10:18 ruim Exp $
 ** 
 */
 
@@ -187,7 +187,7 @@ typedef struct {
     counter total;       /* - total number of call-check/insert ops */
     counter complete;    /* - calls which were satisfied by completed table */
     struct {
-      counter new;       /* - number of created producers */
+      counter n;         /* - number of created producers */
       counter vrnt;      /* - number of calls which are variants of an
 			   established producer */
     } producer;
@@ -210,7 +210,7 @@ extern NumSubOps numSubOps;
 
 #define NumSubOps_CallCheckInsert	   numSubOps.CallCI.total
 #define NumSubOps_CallToCompletedTable	   numSubOps.CallCI.complete
-#define NumSubOps_ProducerCall		   numSubOps.CallCI.producer.new
+#define NumSubOps_ProducerCall		   numSubOps.CallCI.producer.n
 #define NumSubOps_VariantCall		   numSubOps.CallCI.producer.vrnt
 #define NumSubOps_SubsumedCall		   numSubOps.CallCI.subsumed.total
 #define NumSubOps_SubsumedCallEntry	   numSubOps.CallCI.subsumed.entry
