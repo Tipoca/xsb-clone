@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.27 1999/08/18 12:34:06 kostis Exp $
+** $Id: machine.H,v 1.28 1999/08/19 15:08:35 kifer Exp $
 ** 
 */
 
@@ -79,6 +79,8 @@
         tilde_expand_filename/2,
         is_absolute_filename/1,
         parse_filename/4,
+	almost_search_module/5,
+	existing_file_extension/2,
 	getenv/2, 
 	sys_syscall/4,
 	sys_system/7, 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.17 1999-08-19 15:08:31 kifer Exp $
+** $Id: builtin.h,v 1.18 1999-08-28 07:54:17 kostis Exp $
 ** 
 */
 
@@ -94,6 +94,8 @@
 #define TILDE_EXPAND_FILENAME    67
 #define IS_ABSOLUTE_FILENAME     68
 #define PARSE_FILENAME        	 69
+#define ALMOST_SEARCH_MODULE     70
+#define EXISTING_FILE_EXTENSION  71
 
 #define PSC_ENV		        100
 #define PSC_SPY		        101

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.P,v 1.21 1999-08-18 12:29:11 kostis Exp $
+** $Id: builtin.P,v 1.22 1999-08-28 07:54:24 kostis Exp $
 ** 
 */
 
@@ -124,6 +124,8 @@ inline_builtin(expand_filename, 2, EXPAND_FILENAME).
 inline_builtin(tilde_expand_filename, 2, TILDE_EXPAND_FILENAME).
 inline_builtin(is_absolute_filename, 1, IS_ABSOLUTE_FILENAME).
 inline_builtin(parse_filename, 4, PARSE_FILENAME).
+inline_builtin(almost_search_module, 5, ALMOST_SEARCH_MODULE).
+inline_builtin(existing_file_extension, 2, EXISTING_FILE_EXTENSION).
 
 inline_builtin(psc_env, 2, PSC_ENV).
 inline_builtin(psc_spy, 2, PSC_SPY).

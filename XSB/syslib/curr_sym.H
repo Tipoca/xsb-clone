@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.H,v 1.3 1999/08/09 00:34:58 kifer Exp $
+** $Id: curr_sym.H,v 1.4 1999/08/16 07:25:00 kifer Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@
 :- import functor/3, warning/1 from standard.
 :- import standard_symbol/3 from std_xsb.
 :- import psc_name/2, psc_arity/2, psc_prop/2, psc_type/2, term_psc/2,
-	  term_type/2, stat_flag/2, machine_file_exists/1, getenv/2, 
+	  term_type/2, stat_flag/2, machine_file_exists/1, 
 	  psc_env/2, psc_spy/2, psc_tabled/2, dereference_the_bucket/2,
 	  pair_psc/2, pair_next/2, next_bucket/2, conpsc/2,
 	  str_cat/3, intern_string/2, slash/1
