@@ -18,15 +18,16 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.14 2000-05-28 20:50:58 kifer Exp $
+## $Id: Makefile,v 1.15 2000-06-09 14:20:02 cbaoqiu Exp $
 ## 
 ##
 
 
 ALL = 	flora.O slx.O perlmatch.O gap.O regmatch.O wildmatch.O \
-	sModels.O libwww.O
+	sModels.O libwww.O clpr.O
 
-SUBDIR = flora slx perlmatch gap regmatch wildmatch libwww sModels
+SUBDIR = flora slx perlmatch gap regmatch wildmatch libwww sModels \
+	clpqr
 
 Option = [optimize]
 
@@ -61,6 +62,10 @@ all:  init $(ALL) finish $(SUBDIR)
 	$(Prolog) < cmd...
 	@rm cmd...
 	@cat $(SVFILE)
+
+clpqr::
+	@echo ""
+	cd clpqr; make
 
 slx::
 	@echo ""
