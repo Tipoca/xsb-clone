@@ -18,9 +18,13 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 2002-02-28 04:25:25 kifer Exp $
+## $Id: Makefile,v 1.6 2002-03-14 10:14:26 kifer Exp $
 ## 
 ##
+
+
+
+OBJEXT=.O
 
 XSBDIR=../../..
 
@@ -86,4 +90,4 @@ finish:
 	echo Done
 
 clean:
-	/bin/rm -f *.P *.O *.fdb *.fld *.bak *~ .*~ .#*
+	/bin/rm -f *.P *${OBJEXT} *.fdb *.fld *.bak *~ .*~ .#*

@@ -21,14 +21,15 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.4 2002-02-28 04:25:26 kifer Exp $
+## $Id: Makefile,v 1.5 2002-03-14 10:14:27 kifer Exp $
 ## 
 ##
 
+OBJEXT=.O
 
 XSBDIR = ../../..
 
-ALLOBJS = flrdebugger.O dynamic_data.dat static_data.dat
+ALLOBJS = flrdebugger${OBJEXT} dynamic_data.dat static_data.dat
 
 XSB_STANDARD = $(XSBDIR)/prolog_includes/standard.h
 XSB_EMU_FLAG_DEFS = $(XSBDIR)/emu/flag_defs_xsb.h
@@ -40,7 +41,7 @@ FLORA_TERMS = $(FLORA_INCLUDES_DIR)/flora_terms.flh
 FLORA_ERRORS = $(FLORA_INCLUDES_DIR)/flora_errors.flh
 FLRHEADER = $(DYN_INCLUDES_DIR)/flrheader.flh
 
-.SUFFIXES:  .in .dat .P .H .O
+.SUFFIXES:  .in .dat .P .H ${OBJEXT}
 
 
 OPTION = [optimize]
@@ -69,7 +70,7 @@ static_data.dat: static_data.in $(FLORA_TERMS)
 	@echo 'flWrapAround($*).' >> cmd...
 
 
-flrdebugger.O: flrdebugger.P $(FLORA_TERMS) $(XSB_STANDARD)
+flrdebugger${OBJEXT}: flrdebugger.P $(FLORA_TERMS) $(XSB_STANDARD)
 	@echo 'mc(flrdebugger,$(OPTION)).' >> cmd...
 
 

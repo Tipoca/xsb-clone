@@ -19,7 +19,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrprettyprint.flr,v 1.14 2002-02-28 04:25:26 kifer Exp $
+** $Id: flrprettyprint.flr,v 1.15 2002-03-14 10:14:27 kifer Exp $
 **
 */
 
@@ -42,7 +42,7 @@
 
 :- table flora_in_between_isa/3, flora_in_between_sub/3.
 :- firstorder flora_in_between_isa/3, flora_in_between_sub/3.
-:- arguments flora_pp_write_comma_conditional(bform).
+:- arguments flora_pp_write_comma_conditional(meta).
 
 %% Methods to ignore during pretty printing
 flora_print_ignore('________') :- true.
