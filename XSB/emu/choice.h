@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.2 1998-12-21 01:08:04 cbaoqiu Exp $
+** $Id: choice.h,v 1.3 1999-01-17 14:56:18 kostis Exp $
 ** 
 */
 
@@ -398,6 +398,11 @@ typedef struct compl_susp_frame {
 #define csf_neg_loop(b)		((ComplSuspFrame)(b))->neg_loop
 #ifdef CHAT
 #define csf_chat_area(b)	((ComplSuspFrame)(b))->chat_area
+#endif
+
+#ifdef CHAT
+#define is_compl_susp_frame(b) \
+    (cp_pcreg(b) == (byte *) &resume_compl_suspension_inst)
 #endif
 
 #ifdef CHAT
