@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xpathname.c,v 1.5 1999-01-31 15:42:07 kostis Exp $
+** $Id: xpathname.c,v 1.6 1999-02-10 15:46:11 kifer Exp $
 ** 
 */
 
@@ -43,9 +43,6 @@
 /* special.h must be included after sys/stat.h */
 #include "configs/special.h"
 
-#ifndef NeXT
-#include <malloc.h>
-#endif
 
 #if (!defined(WIN_NT))
 #include <pwd.h>

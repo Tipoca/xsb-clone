@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap.c,v 1.8 1999-02-05 16:07:00 kostis Exp $
+** $Id: heap.c,v 1.9 1999-02-10 15:46:05 kifer Exp $
 ** 
 */
 
@@ -90,7 +90,6 @@ Todo:
 
 #include <string.h>
 #include <stdlib.h>
-#include <malloc.h>
 #include <sys/stat.h>
 
 #include "auxlry.h"

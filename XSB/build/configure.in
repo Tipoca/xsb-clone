@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.30 1999-02-09 01:09:11 kifer Exp $
+## $Id: configure.in,v 1.31 1999-02-10 15:45:35 kifer Exp $
 ## 
 ##
 
@@ -494,14 +494,6 @@ test "${have_errors}" = "yes" &&
     AC_MSG_ERROR([One of these header files is missing on your system:
 			sys/time.h
 			sys/resource.h])
-
-# autoconf fails to properly detect malloc.h under FreeBSD
-# so we test for malloc() instead
-dnl AC_MSG_CHECKING(for malloc.h)
-dnl AC_TRY_CPP([#include <malloc.h>],have_malloc=yes,have_malloc=no)
-dnl AC_MSG_RESULT($have_malloc)
-dnl test "${have_malloc}" = "no" &&
-dnl    AC_MSG_ERROR([malloc.h is missing on your system])
 
 AC_CHECK_FUNCS(malloc, have_malloc=yes,have_malloc=no)
 test "${have_malloc}" = "no" &&

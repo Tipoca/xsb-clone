@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory.c,v 1.5 1999-01-31 15:42:05 kostis Exp $
+** $Id: memory.c,v 1.6 1999-02-10 15:46:09 kifer Exp $
 ** 
 */
 
@@ -44,7 +44,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <malloc.h>
 
 #include "auxlry.h"
 #include "cell.h"      /* CPtr */
