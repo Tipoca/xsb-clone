@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.17 1999/05/19 19:48:56 warren Exp $
+** $Id: tr_utils.c,v 1.18 1999/05/20 12:41:36 warren Exp $
 ** 
 */
 
@@ -252,7 +252,6 @@ void construct_ret_for_call(void)
 {
     Pair sym;
     Cell var;
-    Cell term;
     int  arity, i, new;
 
     arity = cell(Temp_VarPosReg);
