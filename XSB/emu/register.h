@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: register.h,v 1.2 1998-12-21 01:08:42 cbaoqiu Exp $
+** $Id: register.h,v 1.3 1999-10-09 02:00:27 cbaoqiu Exp $
 ** 
 */
 
@@ -52,6 +52,7 @@ extern CPtr openreg;
 
 extern CPtr ptcpreg;	/* parent tabled CP (subgoal)	*/
 extern CPtr delayreg;
+extern CPtr interrupt_reg;
 
 /*---- other stuff added for the SLG-WAM -------------------------------*/
 

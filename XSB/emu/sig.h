@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sig.h,v 1.2 1999-08-12 14:24:25 kostis Exp $
+** $Id: sig.h,v 1.3 1999-10-09 02:00:27 cbaoqiu Exp $
 ** 
 */
 
@@ -35,8 +35,10 @@
 #define MYSIG_KEYB     1	       	/* keyboard interrupt (^C) */
 #define MYSIG_SPY      3		/* spy point */
 #define MYSIG_TRACE    4	       	/* trace point */
+#define MYSIG_ATTV     8		/* attributed var interrupt */
 #define MYSIG_CLAUSE  16	       	/* clause interrupt */
 
 #define KEYINT_MARK 0x80		/* keyboard interrupt ^C */
+#define ATTVINT_MARK 0x40		/* attributed var interrupt */
 
 #define MSGINT_MARK 0x20		/* software message interrupt */

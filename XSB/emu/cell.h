@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell.h,v 1.6 1999-08-09 00:34:15 kifer Exp $
+** $Id: cell.h,v 1.7 1999-10-09 02:00:21 cbaoqiu Exp $
 ** 
 */
 
@@ -208,6 +208,7 @@ extern Float getfloatval(Cell);
 #define makecs(str) (Cell)(enc_addr(str) | CS)
 #define clref_val(dcell) (CPtr)dec_addr(dcell)
 #define makelist(list) (Cell)(enc_addr(list) | LIST)
+#define makeattv(attv) (Cell)(enc_addr(attv) | ATTV)
 #define trievar_val(dcell) (Integer)dec_int(dcell)
 #define maketrievar(val) (Cell)(enc_int(val) | TrieVar)
 
@@ -226,6 +227,7 @@ extern Float getfloatval(Cell);
 #define bld_ref(addr, val) cell(addr) = (Cell)(val)
 #define bld_cs(addr, str) cell(addr) = makecs(str)
 #define bld_list(addr, list) cell(addr) = makelist(list)
+#define bld_attv(addr, attv) cell(addr) = makeattv(attv)
 #define bld_functor(addr, psc) cell(addr) = (word)psc
 #define bld_copy0(addr, val) cell(addr) = val
 #define bld_copy(addr, val) cell(addr) = val
@@ -236,6 +238,7 @@ extern Float getfloatval(Cell);
 #define isfloat(dcell) (cell_tag(dcell)==FLOAT)	/* dcell -> bool */
 #define isconstr(dcell) (cell_tag(dcell)==CS)	/* dcell -> bool */
 #define islist(dcell) (cell_tag(dcell)==LIST)	/* dcell -> bool */
+#define isattv(dcell) (cell_tag(dcell)==ATTV)	/* dcell -> bool */
 
 #define isstring(dcell) (cell_tag(dcell)==STRING)
 #define numequal(num1, num2) num1 == num2

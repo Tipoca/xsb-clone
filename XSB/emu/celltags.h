@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: celltags.h,v 1.1 1999-08-09 00:34:16 kifer Exp $
+** $Id: celltags.h,v 1.2 1999-10-09 02:00:22 cbaoqiu Exp $
 ** 
 */
 
@@ -34,5 +34,4 @@
 #define REF1	4	/* REF */
 #define STRING  5	/* Non-Numeric Constant (Atom) */
 #define FLOAT	6	/* Floating point number */
-/* Tag 7 is unused */
-
+#define ATTV	7	/* Attributed variable */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: deref.h,v 1.3 1999-07-04 10:39:18 kostis Exp $
+** $Id: deref.h,v 1.4 1999-10-09 02:00:23 cbaoqiu Exp $
 ** 
 */
 
@@ -28,15 +28,58 @@
 
 #define deref(op) deref2(op,break)
 
+/*
 #define deref2(op,stat) while (isref(op)) { \
                     if (op == follow(op)) \
                         stat; \
                     op = follow(op); }
+*/
 
+/* deref2 is changed to consider attributed variables */
+#define deref2(op, stat) {				\
+  while (isref(op)) {					\
+    if (op == follow(op))				\
+      stat;						\
+    op = follow(op);					\
+  }							\
+  while (isattv(op)) {					\
+    if (cell((CPtr) dec_addr(op)) == dec_addr(op)) 	\
+      break; /* end of an attv */			\
+    else {						\
+      op = cell((CPtr) dec_addr(op));			\
+      while (isref(op)) {				\
+	if (op == follow(op))				\
+          stat;						\
+	op = follow(op);				\
+      }							\
+    }							\
+  }							\
+}
+
+/*
 #define cptr_deref(op) while (isref(op)) { \
 			 if (op == (CPtr) cell(op)) \
   			     break; \
 			 op = (CPtr) cell(op); }
+*/
+
+#define cptr_deref(op) {				\
+  while (isref(op)) {					\
+    if (op == (CPtr) cell(op)) break;			\
+    op = (CPtr) cell(op);				\
+  }							\
+  while (isattv(op)) {					\
+    if (cell((CPtr) dec_addr(op)) == dec_addr(op))	\
+      break;						\
+    else {						\
+      op = (CPtr) cell((CPtr) dec_addr(op));		\
+      while (isref(op)) {				\
+	if (op == (CPtr) cell(op)) break;		\
+	op = (CPtr) cell(op);				\
+      }							\
+    }							\
+  }							\
+}
 
 #define printderef(op) while (isref(op) && op > 0) { \
 			 if (op==follow(op)) \

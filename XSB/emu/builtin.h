@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.22 1999-10-08 07:33:47 kifer Exp $
+** $Id: builtin.h,v 1.23 1999-10-09 02:00:21 cbaoqiu Exp $
 ** 
 */
 
@@ -162,6 +162,11 @@
 #define TRIE_UNDISPOSE          166
 
 #define SET_SUBSUMPTIVE_EVAL	170
+
+#define PUT_ATTRIBUTES		172
+#define GET_ATTRIBUTES		173
+#define DELETE_ATTRIBUTES	174
+#define ATTV_UNIFY		175
 
 /* This is the builtin where people should put their private, experimental
    builtin code. SEE THE EXAMPLE IN private_builtin.c to UNDERSTAND HOW TO DO

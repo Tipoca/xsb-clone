@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.5 1999-10-05 04:01:32 kifer Exp $
+** $Id: findall.c,v 1.6 1999-10-09 02:00:24 cbaoqiu Exp $
 ** 
 */
 
@@ -220,6 +220,9 @@ copy_again : /* for tail recursion optimisation */
 			if (on_glstack((CPtr)(from))) *to = from ;
 				else { *(CPtr)from = (Cell)to ; *to = (Cell)to ; }
 			return ;
+	case ATTV:
+	  xsb_abort("case ATTV in findall_copy_to_heap is not implemented yet");
+	  return;
 
       case LIST :
               {	CPtr pfirstel ;
@@ -340,6 +343,9 @@ copy_again : /* for tail recursion optimisation */
 				}
 			else *to = from ;
 			return(size) ;
+	case ATTV:
+	  xsb_abort("case ATTV in findall_copy_template_to_chunk is not implemented yet");
+	  return 0;
 
 	case LIST :
               {	CPtr pfirstel ;

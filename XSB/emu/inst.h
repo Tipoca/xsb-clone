@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.h,v 1.15 1999-07-06 16:35:12 ejohnson Exp $
+** $Id: inst.h,v 1.16 1999-10-09 02:00:27 cbaoqiu Exp $
 ** 
 */
 
@@ -202,6 +202,11 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define getlist_tvar_tvar	0x48
 
 /*----- Instructions for tries as code (Do NOT change the numbers) -----*/
+
+#define trie_no_cp_attv		0x50
+#define trie_trust_attv		0x51
+#define trie_try_attv		0x52
+#define trie_retry_attv		0x53
 
 #define trie_no_cp_str		0x60
 #define trie_trust_str		0x61

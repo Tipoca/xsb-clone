@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.31 1999-10-08 07:32:15 kifer Exp $
+** $Id: init.c,v 1.32 1999-10-09 02:00:26 cbaoqiu Exp $
 ** 
 */
 
@@ -639,7 +639,10 @@ void init_machine(void)
 
   pdlreg = (CPtr)(pdl.high) - 1;
 
-  hbreg = hreg = (CPtr)(glstack.low);
+  interrupt_reg = (CPtr)(glstack.low);
+  bld_int(interrupt_reg, 0);
+
+  hbreg = hreg = (CPtr)(glstack.low) + 1;
 
   ebreg = ereg = (CPtr)(glstack.high) - 1;
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.h,v 1.3 1999-06-23 19:50:49 kostis Exp $
+** $Id: subp.h,v 1.4 1999-10-09 02:00:28 cbaoqiu Exp $
 ** 
 */
 
@@ -40,4 +40,4 @@ extern int key_compare(/* Cell, Cell */);
 extern byte *exception_handler(char *);
 
 extern Psc synint_proc(Psc, int, byte *);
-
+extern void add_interrupt(Cell, Cell);
