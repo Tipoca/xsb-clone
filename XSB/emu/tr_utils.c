@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.71 2002/10/28 15:28:50 lfcastro Exp $
+** $Id: tr_utils.c,v 1.72 2004/01/14 20:27:13 dwarren Exp $
 ** 
 */
 
@@ -396,12 +396,14 @@ static void delete_variant_table(BTNptr x) {
 
 void delete_predicate_table(TIFptr tif) {
 
-  if ( IsVariantPredicate(tif) )
-    delete_variant_table(TIF_CallTrie(tif));
-  else
-    delete_subsumptive_table(tif);
-  TIF_CallTrie(tif) = NULL;
-  TIF_Subgoals(tif) = NULL;
+  if ( TIF_CallTrie(tif) != NULL ) {
+    if ( IsVariantPredicate(tif) )
+      delete_variant_table(TIF_CallTrie(tif));
+    else
+      delete_subsumptive_table(tif);
+    TIF_CallTrie(tif) = NULL;
+    TIF_Subgoals(tif) = NULL;
+  }
 }
 
 /*----------------------------------------------------------------------*/
