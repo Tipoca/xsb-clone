@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.c,v 1.11 1999-07-06 16:35:11 ejohnson Exp $
+** $Id: inst.c,v 1.12 1999-07-13 10:11:06 unova Exp $
 ** 
 */
 
@@ -119,6 +119,7 @@ static void init_inst_table_2(void)
   set_inst(bldnumcon, "bldnumcon",       PPP,N, X,X);
   set_inst(getlist_tvar_tvar, "getlist_tvar_tvar", R, R, R,X);
 
+  set_inst(trie_root, "trie_root", X, X, X,X);
   set_inst(trie_no_cp_str, "trie_no_cp_str", X, X, X,X);
   set_inst(trie_try_str, "trie_try_str", X, X, X,X);
   set_inst(trie_retry_str, "trie_retry_str", X,X,X,X);
