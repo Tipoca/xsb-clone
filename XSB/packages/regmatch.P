@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: regmatch.P,v 1.6 1999-08-09 00:34:38 kifer Exp $
+** $Id: regmatch.P,v 1.7 1999-10-08 07:35:05 kifer Exp $
 ** 
 */
 
@@ -32,8 +32,8 @@
 %% package_configuration(dir(PackageName), FullPackageDirname)
 %% some packages use it.
 
-:- export re_match/5, re_bulkmatch/5,
-	re_substitute/4, re_substring/4, re_charlist_to_string/2.
+:- export re_match/5, re_bulkmatch/5, re_substring/4,
+	re_substitute/4, re_charlist_to_string/2.
 :- import 
       do_regmatch__/5, do_bulkmatch__/5,
       do_regsubstitute__/4,

@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_configuration.in,v 1.13 1999-10-05 04:03:43 kifer Exp $
+** $Id: xsb_configuration.in,v 1.14 1999-10-08 07:35:04 kifer Exp $
 ** 
 */
 
@@ -65,7 +65,8 @@ xsb_configuration(libwww_ldflags, X) :-
 	fmt_write_string(Ldflags_file,
 	    	    	 '%s%slibwww_ldflags', args(ConfigDir, Slash)),
         file_open(Ldflags_file, r, IOport),
-	file_read_line_atom(IOport,X,_),
+	file_read_line_atom(IOport,Y,_),
+	substring(Y,0,-1,X), % chop off the \n char
 	file_close(IOport).
 
 /* Java compiler */

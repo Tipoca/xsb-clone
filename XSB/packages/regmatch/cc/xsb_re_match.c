@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_re_match.c,v 1.10 1999-09-18 21:14:30 kifer Exp $
+** $Id: xsb_re_match.c,v 1.11 1999-10-08 07:35:06 kifer Exp $
 ** 
 */
 
@@ -262,6 +262,7 @@ bool do_bulkmatch__(void)
 }
 
 
+/* should be removed when XSB gets garbage collector */
 /* XSB string substitution entry point: replace substrings specified in Arg2
    with strings in Arg3.
    In: 
@@ -401,6 +402,7 @@ bool do_regsubstitute__(void)
 }
 
 
+/* should be removed when XSB gets garbage collector */
 /* XSB string substitution entry point
    In: 
        Arg1: string
@@ -480,6 +482,7 @@ bool do_regsubstring__(void)
 }
 
 
+/* should be removed when XSB gets garbage collector */
 /* converts charlist to string, but doesn't intern */
 bool do_regcharlist_to_string__(void)
 {
