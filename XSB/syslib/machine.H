@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.40 2001/01/08 18:07:35 dwarren Exp $
+** $Id: machine.H,v 1.41 2001/03/28 08:56:34 kifer Exp $
 ** 
 */
 
@@ -67,7 +67,7 @@
 	code_load/3, 
 	file_gettoken/5,
 	stat_cputime/1, 
-        str_sub/3,
+	str_match/5,
         dirname_canonic/2,
 	psc_insert/4, 
 	psc_import/3, 

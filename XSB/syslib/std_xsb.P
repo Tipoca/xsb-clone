@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.52 2001/06/05 07:54:33 kifer Exp $
+** $Id: std_xsb.P,v 1.53 2001/06/22 17:36:10 tswift Exp $
 ** 
 */
 
@@ -235,6 +235,7 @@ standard_symbol(str_sub, 2, string).
 standard_symbol(str_length, 2, string).
 standard_symbol(substring, 4, string).
 standard_symbol(string_substitute, 4, string).
+standard_symbol(str_match, 5, string).
 
 standard_symbol((use_variant_tabling), 1, tables).
 standard_symbol((use_subsumptive_tabling), 1, tables).

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.12 2001/02/23 02:22:57 kifer Exp $
+** $Id: loader.H,v 1.13 2001/06/17 09:37:32 kifer Exp $
 ** 
 */
 
@@ -37,7 +37,8 @@
 :- import xsb_configuration/2 from xsb_configuration.
 :- import term_type/2, term_psc/2, psc_name/2, psc_arity/2, psc_env/2,
 	  psc_type/2, psc_set_type/2, psc_prop/2, psc_set_prop/2,
-	  psc_insert/4, psc_import/3, conpsc/2, str_cat/3, str_sub/3,
+	  psc_insert/4, psc_import/3, conpsc/2, str_cat/3,
+	  str_match/5,
 	  code_call/3, code_load/3, intern_string/2,
 	  stat_flag/2, stat_set_flag/2, expand_filename/2,
      	  tilde_expand_filename/2, is_absolute_filename/1,

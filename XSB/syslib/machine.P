@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.49 2001/03/26 01:38:15 kifer Exp $
+** $Id: machine.P,v 1.50 2001/03/28 08:56:34 kifer Exp $
 ** 
 */
 
@@ -95,8 +95,11 @@ buff_set_var(Buff, Disp, BuffSize, Var) :-
 buff_dealloc(Buff, OldSize, NewSize) :- buff_dealloc(Buff, OldSize, NewSize).
 buff_cell(Buff, Disp, Cell) :- buff_cell(Buff, Disp, Cell).
 buff_set_cell(Buff, Disp, Tag, Value) :- buff_set_cell(Buff, Disp, Tag, Value).
-/* check if Sub is a substring in Str */
-str_sub(Sub, Str, Pos) :- str_sub(Sub, Str, Pos).
+
+/* check if Sub is a substring in Str and return the matches.
+   Also does matching from the end */
+str_match(Sub,Str,Direction,Beg,End) :- str_match(Sub,Str,Direction,Beg,End).
+
 /* If file is a directory, add slash, if needed, or strip extra slashes */
 dirname_canonic(File, Canonic) :- dirname_canonic(File, Canonic).
 /* for efficiency reasons, the following predicates are also implemented */

@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string.H,v 1.10 1999/10/08 07:30:32 kifer Exp $
+** $Id: string.H,v 1.11 2001/05/31 18:00:31 dwarren Exp $
 ** 
 */
 
 
 :- export concat_atom/2, concat_atom/3.
 :- export str_cat/3, str_sub/2, str_sub/3, str_length/2, substring/4,
-	string_substitute/4.
+	str_match/5, string_substitute/4.
 
 :- import flatten/2 from basics.
 :- import str_len/2 from machine.

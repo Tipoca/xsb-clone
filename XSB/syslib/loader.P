@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.29 2001/03/23 03:48:18 kifer Exp $
+** $Id: loader.P,v 1.30 2001/06/17 09:37:32 kifer Exp $
 ** 
 */
 
@@ -55,10 +55,10 @@
 windows_os_loader :-  stat_flag(CONFIG_NAME, ConfigurationC),
 	%% convert C string to Prolog
 	intern_string(ConfigurationC, Configuration),
-	(   str_sub('win', Configuration, _)
-	;   str_sub('-nt', Configuration, _)
-	;   str_sub('w95', Configuration, _)
-	;   str_sub('wnt', Configuration, _) ).
+	(   str_match('win', Configuration, f, _, _)
+	;   str_match('-nt', Configuration, f, _, _)
+	;   str_match('w95', Configuration, f, _, _)
+	;   str_match('wnt', Configuration, f, _, _) ).
 
 %% we duplicate fmt_write_* here because they are used early on, in libpath()
 fmt_write_string(S,Fmt,A) :- formatted_io(FMT_WRITE_STRING, S,Fmt,A,_).

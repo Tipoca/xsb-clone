@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger_data.P,v 1.5 1999/08/25 21:22:00 kifer Exp $
+** $Id: debugger_data.P,v 1.6 2000/02/07 00:07:20 kifer Exp $
 ** 
 */
 
@@ -94,6 +94,7 @@ trace_this_enable_print_on_redo(call, 1).
 
 % call_c is eliminated, so what is called is traced.
 is_xpar_call(call_c, 1).
+
 
 
 '_$_debugger_data_loaded'.
