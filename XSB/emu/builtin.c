@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.115 2001-02-09 21:53:12 dwarren Exp $
+** $Id: builtin.c,v 1.116 2001-02-21 14:50:04 dwarren Exp $
 ** 
 */
 
@@ -1025,7 +1025,8 @@ int builtin_call(byte number)
 
   case TERM_PSC:		/* R1: +term; R2: -PSC */
     /* Assumes that `term' is a XSB_STRUCT-tagged Cell. */
-    ctop_addr(2, get_str_psc(ptoc_tag(1)));
+    /*    ctop_addr(2, get_str_psc(ptoc_tag(1))); */
+    ctop_addr(2, term_psc((Cell)(ptoc_tag(1))));
     break;
   case TERM_TYPE: {	/* R1: +term; R2: tag (-int)			  */
 			/* <0 - var, 1 - cs, 2 - int, 3 - list, 7 - ATTV> */
