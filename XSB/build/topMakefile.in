@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.24 1999-08-29 23:51:48 kifer Exp $
+## $Id: topMakefile.in,v 1.25 1999-08-30 20:13:59 luis Exp $
 ## 
 ##
 
@@ -176,7 +176,8 @@ smodels:
 	  echo "Compiling smodels interface"; \
 	  rm -f *.o Makefile *.h *.O *.so 2>/dev/null || echo ""; \
 	  ln ${src_config_prefix}/smoMakefile ./Makefile; \
-	  make @smodels_goal@ 2>&1 | tee -a ../../build/Installation_summary
+	  make XSB=$(src_scriptdir)/xsb$(config_tag) @smodels_goal@ 2>&1\
+		 | tee -a ../../build/Installation_summary
 
 # Goal for making an XSB load module to be linked with external
 # C-drivers that pass queries to XSB
