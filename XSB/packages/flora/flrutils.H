@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.11 2000-02-07 00:06:09 kifer Exp $
+** $Id: flrutils.H,v 1.12 2000-04-11 00:00:58 kifer Exp $
 **
 */
 
@@ -83,5 +83,6 @@
 	STD_FPREFIX(warning_nl)/1, STD_FPREFIX(warning_nl)/2,
 	flora_message_nl/1, flora_message_nl/2, flora_message/1,
 	flora_display_msg/1, flora_display_msg/2,
+	STD_FPREFIX(tnot_all)/1,
 	STD_FPREFIX(then)/2, STD_FPREFIX(else)/2.
 

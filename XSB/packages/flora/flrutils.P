@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.34 2000-02-07 00:06:09 kifer Exp $
+** $Id: flrutils.P,v 1.35 2000-04-11 00:00:58 kifer Exp $
 **
 */
 
@@ -44,6 +44,7 @@ flora_word(S,A) :- str_cat(STD_FPREFIX, S, A1), A1=A.
 (C STD_FPREFIX(then)  T STD_FPREFIX(else) _S) :- call(C), call(T).
 (C STD_FPREFIX(then) _T STD_FPREFIX(else)  S) :- sk_not(C), call(S).
 
+STD_FPREFIX(tnot_all)(Test) :- sk_not(Test).
 
 
 /********************************************************************/
