@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.11 1999/04/08 18:06:19 kostis Exp $
+** $Id: tables.P,v 1.12 1999/04/13 17:24:59 kostis Exp $
 ** 
 */
 
@@ -50,13 +50,12 @@ tfindall(T, Call, Result) :-
 	; Status =:= 3 ->
 	        get_ptcp(PTCP), get_subgoal_ptr(Call, SubgPtr),
 		is_incomplete(Call,SubgPtr,PTCP,_), findall(T,Call,Result)
-        ; abort(('Illegal (untabled?) subgoal to tfindall/3: ', Call))
+        ; abort(['Illegal (untabled?) subgoal to tfindall/3: ', Call])
 	).
 
 tnot(X) :-
 	( ground(X) -> 't not'(X)
-	; functor(X,F,A),
-	  abort(('FLOUNDERING: tnot/1 used with a non-ground subgoal of predicate ', F/A))
+	; abort(['FLOUNDERING: tnot/1 used with a non-ground subgoal: ', X])
 	).
 
 't not'(X) :-
