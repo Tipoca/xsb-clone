@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.12 2001-03-09 22:39:50 gzyang Exp $
+** $Id: flrshell.P,v 1.13 2001-03-09 23:06:55 gzyang Exp $
 **
 */
 
@@ -131,14 +131,14 @@ help :-
 	flora_stdmsg_line('    flush all tabled data'),
 	flora_stdmsg_line('o prolog Functor/Arity'),
 	flora_stdmsg_line('    define Functor/Arity as Prolog in shell mode'),
-	flora_stdmsg_line('o flpred Functor/Arity'),
+	flora_stdmsg_line('o florapred Functor/Arity'),
 	flora_stdmsg_line('    define Functor/Arity as non-HiLog flora predicate in shell mode'),
 	flora_stdmsg_line('o sign Functor({oid|form}[,{oid|form}]*)'),
 	flora_stdmsg_line('    define predicate signature in shell mode'),
 	flora_stdmsg_line('o op(Precedence,Associativity,Operator)'),
 	flora_stdmsg_line('    define an operator in shell mode'),
-	flora_stdmsg_line('o reset(prolog|flpred|sign|op)'),
-	flora_stdmsg_line('    clear all dynamic prolog/flpred/sign/op definitions in shell mode'),
+	flora_stdmsg_line('o reset(prolog|florapred|sign|op)'),
+	flora_stdmsg_line('    clear all dynamic prolog/florapred/sign/op definitions in shell mode'),
 	flora_stdmsg_line('o all'),
 	flora_stdmsg_line('    show all solutions (default)'),
 	flora_stdmsg_line('o one'),
