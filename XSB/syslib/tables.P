@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.37 2002/11/05 20:50:45 lfcastro Exp $
+** $Id: tables.P,v 1.38 2002/11/08 19:57:25 lfcastro Exp $
 ** 
 */
 
@@ -98,11 +98,12 @@ answer_set_status_code(INCOMPLETE_ANSWER_SET, incomplete).
 
 table_state(Call, State) :-
 	table_state(Call, PredType, _CallType, AnsSetStatus),
-	PredType == variant
-        -> ( AnsSetStatus == undefined
-	     -> State = no_call_yet
+	(PredType == variant
+         -> ( AnsSetStatus == undefined
+             -> State = no_call_yet
 	     ;  State = AnsSetStatus )
-	; PredType == undefined -> State = undef.
+	 ; PredType == undefined -> State = undef
+        ).
 
 /*----------------------------------------------------------------------*/
 
