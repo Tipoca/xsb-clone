@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_delete.c,v 1.6 2003-03-12 14:56:35 lfcastro Exp $
+** $Id: sub_delete.c,v 1.7 2004-05-03 21:56:46 dwarren Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 #include "macro_xsb.h"
 #include "error_xsb.h"
 
+extern BTHTptr hhadded;
 
 
 /* Freeing Individual Structures
@@ -159,26 +160,28 @@ void delete_call_index(BTNptr root) {
   BTHTptr hash_hdr;
   unsigned int i;
 
-
   if ( IsNULL(root) )
     return;
 
-  if ( IsHashHeader(BTN_Child(root)) ) {
-    hash_hdr = BTN_GetHashHdr(root);
-    for ( i = 0;  i < BTHT_NumBuckets(hash_hdr);  i++ )
-      for ( current = BTHT_BucketArray(hash_hdr)[i];
-	    IsNonNULL(current);  current = sibling ) {
+  if ( ! IsLeafNode(root) ) {
+    if ( IsHashHeader(BTN_Child(root)) ) {
+
+      hash_hdr = BTN_GetHashHdr(root);
+      for ( i = 0;  i < BTHT_NumBuckets(hash_hdr);  i++ )
+	for ( current = BTHT_BucketArray(hash_hdr)[i];
+	      IsNonNULL(current);  current = sibling ) {
+	  sibling = BTN_Sibling(current);
+	  delete_call_index(current);
+	}
+      delete_btht(hash_hdr);
+    }
+    else 
+      for ( current = BTN_Child(root);  IsNonNULL(current);
+	    current = sibling ) {
 	sibling = BTN_Sibling(current);
 	delete_call_index(current);
       }
-    delete_btht(hash_hdr);
   }
-  else if ( ! IsLeafNode(root) )
-    for ( current = BTN_Child(root);  IsNonNULL(current);
-	  current = sibling ) {
-      sibling = BTN_Sibling(current);
-      delete_call_index(current);
-    }
   free_btn(root);
 }
 
