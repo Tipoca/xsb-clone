@@ -1,0 +1,20 @@
+
+test:- 
+	(test(4.5),fail ; test(-6.5),fail ; true).
+
+test(X):- 
+	Y is abs(X),
+	writeln(p(1,Y)).
+test(X):- 
+	Y is round(X),
+	writeln(p(2,Y)).
+test(X):- 
+	Y is ceiling(X),
+	writeln(p(3,Y)).
+test(X):- 
+	Y is truncate(X),
+	writeln(p(4,Y)).
+test(X):- 
+	Y is truncate(abs(ceiling(round(X)))),
+	writeln(p(5,Y)).
+
