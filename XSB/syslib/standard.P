@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.67 2003/04/02 19:42:36 lfcastro Exp $
+** $Id: standard.P,v 1.68 2003/04/14 19:01:12 lfcastro Exp $
 ** 
 */
 
@@ -770,7 +770,10 @@ repeat :- true; repeat.
 
 fail_if(Term) :- fail_if(Term).
 
-not(Term) :-  (call(Term), !, fail) ; true.
+nop. % used to force attv interrupts before commiting the answer
+     % on not/1.
+
+not(Term) :-  (call(Term), nop, !, fail) ; true.
 
 \+ Term :- \+ Term.
 
