@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: benchall.sh,v 1.1 1999-10-23 21:22:37 tswift Exp $
+## $Id: benchall.sh,v 1.2 2000-02-10 17:49:05 unova Exp $
 ## 
 ##
 
@@ -86,6 +86,14 @@ else
     benchlist=$only_tests
 fi
 
+LOG_FILE=/tmp/xsb_bench_log.$USER
+NEW_LOG=$LOG_FILE-`date +"%y.%m.%d-%H:%M:%S"`
+
+if [ -f $LOG_FILE ]
+then mv $LOG_FILE $NEW_LOG
+fi
+
+
 # Run each test in $testlist except for the tests in $excluded_tests
 for bnch in $benchlist ; do
   if member "$bnch" "$excluded_benchess" ; then
@@ -95,7 +103,7 @@ for bnch in $benchlist ; do
     if test -f core ; then
 	rm -f core
     fi
-    ./test.sh "$XEMU" "-e segfault_handler(warn). $options"
+    ./test.sh "$XEMU -e segfault_handler(warn). $options" $LOG_FILE
     cd ..
   fi
 done
