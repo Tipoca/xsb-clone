@@ -1,5 +1,5 @@
 /* File:      singlton.H
-** Author(s): Debray, Sagonas
+** Author(s): Sagonas
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: singlton.H,v 1.8 2003-11-27 05:34:31 tswift Exp $
+** $Id: singlton.H,v 1.9 2003-11-29 03:07:48 tswift Exp $
 ** 
 */
 
