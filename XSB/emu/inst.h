@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.h,v 1.5 1999-01-19 18:50:57 kostis Exp $
+** $Id: inst.h,v 1.6 1999-02-03 11:14:15 workflow Exp $
 ** 
 */
 
@@ -500,6 +500,8 @@ extern Cell builtin_table[BUILTIN_TBL_SZ][2];
 #define TRIE_DISPOSE            162
 #define DELETE_TRIE             164
 #define BOTTOM_UP_UNIFY         163
+#define TRIE_DISPOSE_NR         165
+#define TRIE_UNDISPOSE          166
 
 #define VAR			190
 #define NONVAR			191

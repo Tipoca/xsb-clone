@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.5 1999-01-24 17:07:50 kostis Exp $
+** $Id: tr_utils.h,v 1.6 1999-02-03 11:14:21 workflow Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@ extern void variant_call_search_rdonly(int, CPtr, CPtr *, int *, byte *);
 extern void init_newtrie(void);
 extern void delete_branch(NODEptr, NODEptr *);
 extern void safe_delete_branch(NODEptr);
+extern void undelete_branch(NODEptr);
 
 extern bool has_unconditional_answers(SGFrame);
 
