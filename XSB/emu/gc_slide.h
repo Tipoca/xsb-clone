@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_slide.h,v 1.2 2002-01-28 16:47:56 lfcastro Exp $
+** $Id: gc_slide.h,v 1.3 2002-02-21 16:57:56 lfcastro Exp $
 ** 
 */
 
@@ -348,7 +348,7 @@ static void sort_buffer(unsigned long *indata, unsigned long insize)
 #ifdef GC_PROFILE
   if (verbose_gc) {
     end_sorting = cpu_time();
-    fprintf(stddbg,"{GC} Sorting took %f ms.\n", 
+    fprintf(stddbg,"{GC} Sorting took %f ms.\n", (double)
 	    (end_sorting - begin_sorting)*1000/CLOCKS_PER_SEC);
   }
 #endif

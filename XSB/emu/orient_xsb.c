@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.c,v 1.10 2001-03-07 17:22:05 dwarren Exp $
+** $Id: orient_xsb.c,v 1.11 2002-02-21 16:57:56 lfcastro Exp $
 ** 
 */
 
@@ -130,6 +130,7 @@ char *xsb_executable_full_path(char *myname)
 
 
 #ifndef WIN_NT
+#ifndef SIMPLESCALAR
   /* Unix */
   /* if we can read symlink, then it is a symlink */
   if ( (link_len = readlink(myname, myname_augmented, MAXPATHLEN)) > 0 ) {
@@ -138,6 +139,7 @@ char *xsb_executable_full_path(char *myname)
       *(myname_augmented+link_len+1) = '\0';
   } else
     strcpy(myname_augmented, myname);
+#endif
 #else
   /* Windows doesn't seem to have readlink() */
   strcpy(myname_augmented, myname);

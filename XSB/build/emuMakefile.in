@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.39 2002-02-18 03:51:57 tswift Exp $
+## $Id: emuMakefile.in,v 1.40 2002-02-21 16:57:50 lfcastro Exp $
 ## 
 
 
@@ -162,7 +162,7 @@ xsbmod:: $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
 	@echo ""; \
 	   echo "Making a C-callable XSB module $(arch_config_objlibdir)/xsb.o"; \
 	   echo ""
-	ld -o xsb.o $(LINKFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
+	@LD@ -o xsb.o $(LINKFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
 	@cp xsb.o $(arch_config_objlibdir) 2> /dev/null || echo ""
 
 # same as xsbmod, but with oracle support
@@ -170,7 +170,7 @@ xsboramod:: $(ORAOBJS)
 	@echo ""; \
 	   echo "Making a C-callable XSB module $(arch_config_objlibdir)/xsb.o with support for Oracle"; \
 	   echo ""
-	ld -o xsb.o $(LINKFLAGS) -r $(ORAOBJS)
+	@LD@ -o xsb.o $(LINKFLAGS) -r $(ORAOBJS)
 	@cp xsb.o $(arch_config_objlibdir) 2> /dev/null || echo ""
 
 

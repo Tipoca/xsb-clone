@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.12 2001-03-27 17:52:03 dwarren Exp $
+** $Id: pathname_xsb.c,v 1.13 2002-02-21 16:57:56 lfcastro Exp $
 ** 
 */
 
@@ -246,6 +246,33 @@ DllExport char * call_conv strip_names_from_path(char* path, int how_many)
   int i, abort_flag=FALSE;
   char *cutoff_ptr;
   char *buffer = (char *) malloc(MAXPATHLEN);
+
+#ifdef SIMPLESCALAR
+  if (!buffer)
+    printf("no space to allocate buffer in strip_names_from_path.\n");
+  printf("starting strip_names_from_path.\n");
+  
+/*   rectify_pathname(path,buffer); */
+  strcpy(buffer,path);
+
+  printf("after rectify_pathname, buffer = %s, path = %s\n",buffer,path);
+
+  cutoff_ptr = buffer + strlen(buffer);
+
+  while (cutoff_ptr != buffer && how_many > 0) {
+    if (*cutoff_ptr == SLASH) {
+      how_many--;
+      *cutoff_ptr = '\0';
+    }
+    cutoff_ptr--;
+  }
+
+  if (how_many > 0)
+      xsb_abort("[PATHNAME] There is no directory %d levels below %s",
+		how_many, path);
+  return buffer;
+
+#endif
 
   rectify_pathname(path,buffer);
 

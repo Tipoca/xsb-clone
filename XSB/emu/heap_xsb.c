@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.30 2002-01-28 20:44:31 lfcastro Exp $
+** $Id: heap_xsb.c,v 1.31 2002-02-21 16:57:56 lfcastro Exp $
 ** 
 */
 
@@ -226,7 +226,7 @@ static CPtr heap_bot,heap_top,
   if (ls_top < heap_top) xsb_exit("Heap and local stack are clobbered"); \
   heap_bot = (CPtr)glstack.low ; \
   ls_bot = (CPtr)glstack.high - 1 ; \
-  tr_top = (CPtr)(top_of_trail) - 1 ; \
+  tr_top = (CPtr)(top_of_trail) /*- 1*/ ; \
   tr_bot = (CPtr)tcpstack.low ; \
   cp_bot = (CPtr)tcpstack.high - 1 ; \
   cp_top = top_of_cpstack ; \

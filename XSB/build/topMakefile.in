@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.44 2001-06-29 22:50:49 kifer Exp $
+## $Id: topMakefile.in,v 1.45 2002-02-21 16:57:50 lfcastro Exp $
 ## 
 ##
 
@@ -182,7 +182,7 @@ smodels:
 	  echo "Compiling smodels interface"; \
 	  rm -f *.o Makefile *.h *.O *.so 2>/dev/null || echo ""; \
 	  ln -s ${src_config_prefix}/smoMakefile ./Makefile; \
-	  make XSB=$(src_scriptdir)/xsb$(config_tag) @smodels_goal@ 2>&1\
+	  make CROSS_SIMULATOR=@CROSS_SIMULATOR@ XSB=$(src_scriptdir)/xsb$(config_tag) @smodels_goal@ 2>&1\
 		 | tee -a ../../build/Installation_summary
 
 # Goal for making an XSB load module to be linked with external
