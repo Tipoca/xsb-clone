@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.10 1999-06-02 14:57:56 luis Exp $
+** $Id: cinterf.c,v 1.11 1999-06-04 16:43:44 kifer Exp $
 ** 
 */
 
@@ -52,6 +52,10 @@
 extern char *expand_filename(char *);
 
 
+char *p_charlist_to_c_string(prolog_term term, char *buf, int buf_size,
+			     char *in_func, char *where);
+void c_string_to_p_charlist(char *name, prolog_term list,
+			    char *in_func, char *where);
 
 /*======================================================================*/
 /* Low level C interface						*/
