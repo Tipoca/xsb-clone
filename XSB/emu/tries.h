@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.9 1999-02-22 16:56:58 workflow Exp $
+** $Id: tries.h,v 1.10 1999-02-27 21:58:48 cbaoqiu Exp $
 ** 
 */
 
@@ -65,7 +65,7 @@ struct NODE {
 #define NODE_TYPE_ANSWER_LEAF  ((byte)1)
 #define is_answer_leaf(x) (NodeType(x) == NODE_TYPE_ANSWER_LEAF)
 
-#define Delay(X)	Child(X)
+#define Delay(X) (ASI) ((word) (Child(X)) & ~UNCONDITIONAL_MARK)
 
 #define is_escape_node(X)	(Instr(X) == trie_proceed)
 
