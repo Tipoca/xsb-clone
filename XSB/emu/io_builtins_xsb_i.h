@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.14 2002-01-23 17:08:09 dwarren Exp $
+** $Id: io_builtins_xsb_i.h,v 1.15 2002-07-01 16:12:27 dwarren Exp $
 ** 
 */
 
@@ -118,7 +118,7 @@ inline static xsbBool file_function(void)
        when append, mode = 2, when opening a 
        string for read mode = 3 */
 
-    tmpstr = ptoc_string(2);
+    tmpstr = ptoc_longstring(2);
     pterm = reg_term(3);
     if (is_int(pterm))
       mode = oint_val(pterm);
