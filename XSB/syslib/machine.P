@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.66 2004/04/09 00:04:24 dwarren Exp $
+** $Id: machine.P,v 1.67 2004/04/09 21:05:43 dwarren Exp $
 ** 
 */
 
@@ -252,6 +252,7 @@ del_attr(Var,Mod) :-
               '$del_attr'(R,Mod,NR)
       ).
  
+:- dynamic verify_attribute_handler(_,_,_,_).
 install_verify_attribute_handler(Mod,Attr,Value,Handler) :-
       ( retract(verify_attribute_handler(Mod,_,_,_)) ->
               write('Warning: replacing previous verify_attribute_handler for module '),write(Mod),writeln('.')

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.34 2003/09/29 13:05:17 tschrijvers Exp $
+** $Id: x_interp.H,v 1.35 2003/10/03 00:08:40 dwarren Exp $
 ** 
 */
 
@@ -46,7 +46,7 @@
 	  slash/1, term_psc/2, trimcore/0
      from machine.
 :- import file_open/3, file_close/1, file_get/2, fmt_write_string/3,
-	  file_flush/2, ioport2iostream/2,
+          file_flush/2, /*ioport2iostream/2,*/
 	  fmt_write/3, file_getbuf_atom/4
     from file_io.
 :- import push_stdin/2, pop_stdin/1 from push_io.

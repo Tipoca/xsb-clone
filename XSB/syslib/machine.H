@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.60 2004/04/09 21:05:43 dwarren Exp $
+** $Id: machine.H,v 1.61 2004/06/04 19:49:26 dwarren Exp $
 ** 
 */
 
@@ -150,7 +150,7 @@
 	globalvar/1,
 	xsb_backtrace/0, xsb_backtrace/1.
 
-:- import assert/1, retract/1 from assert.
+:- import assert/1, retract/1, (dynamic)/1 from assert.
 :- import write/1, writeln/1, is_attv/1 from standard.
 
 :- export 

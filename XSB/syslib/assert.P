@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.P,v 1.24 2004/01/29 18:41:22 dwarren Exp $
+** $Id: assert.P,v 1.25 2004/03/15 14:13:02 dwarren Exp $
 ** 
 */
 
@@ -235,7 +235,7 @@ cut_transform(Head,Head). /* leave unchanged, Arity is one less */
 /*	If it is already a dynamic pred, simply return its Prref.	*/
 /*======================================================================*/
 
-dynamic((P1,P2)) :- dynamic(P1), dynamic(P2).
+dynamic((P1,P2)) :- !, dynamic(P1), dynamic(P2).
 dynamic(Spec) :- mpa_to_skel(Spec,Head), convert_to_dyna(Head,_).
 
 convert_to_dyna(PHead,Prref) :-
