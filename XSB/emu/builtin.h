@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.47 2002-11-05 20:50:37 lfcastro Exp $
+** $Id: builtin.h,v 1.48 2003-03-03 20:54:57 lfcastro Exp $
 ** 
 */
 
@@ -109,6 +109,8 @@
 #define CONSET_TERM	         76
 
 #define STORAGE_BUILTIN	       	 77
+
+#define GET_DATE                 80
 
 #define PSC_ENV		        100
 #define PSC_SPY		        101

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.63 2002/12/09 01:05:53 tswift Exp $
+** $Id: standard.P,v 1.64 2002/12/09 15:29:05 dwarren Exp $
 ** 
 */
 
@@ -907,6 +907,9 @@ cputime(X) :- stat_cputime(X0), X is X0/1000.
 statistics :- stat_sta(1).
 
 statistics(X) :- stat_sta(X).
+
+get_date(_Year,_Month,_Day,_Hour,_Minute) :-
+	'_$builtin'(GET_DATE).
 
 
 %-----------------------------------------------------------------------------%
