@@ -1,9 +1,10 @@
 #! /bin/sh
 
-# $1 is expected to have xsb ececutable + command line options
+# $1 is expected to have xsb executable + command line options
 EMU=$1
 COMP_CMD=$2
 CMD=$3
+FILE=$4
 
 DIR=`pwd`
 BASEDIR=`basename $DIR`
@@ -14,8 +15,15 @@ BASEDIR=`basename $DIR`
 
 $EMU << EOF
 $COMP_CMD
-
+tell(temp).
 $CMD
-
+told.
 EOF
 
+# accumulate results in FILE for later analysis.
+if test -f "$FILE" ; then
+    mv "$FILE" "$FILE"_tmp
+    cat "$FILE"_tmp temp > "$FILE"
+else
+    mv temp "$FILE"
+fi

@@ -1,21 +1,43 @@
 #! /bin/sh
 
-dir=$1
-test=$2
-emulator=$3
+DIR=$1
+TEST=$2
+EMULATOR=$3
+FILE=$4
 
-$emulator  << EOF
+$EMULATOR  << EOF
 
 halt.
 EOF
 
-cd $1
+cd $DIR
 
-x=0
+# start with fresh accumulator files.
+if test -f "$FILE" ; then
+    rm -f "$FILE"
+    rm -f "$FILE"_tmp
+fi
 
-while test $x -le 40
+
+x=96
+
+# Test with different memory configurations: keep results in FILE
+while test $x -le 136
 do
-    $test "$emulator --nobanner --quietload --noprompt -o $x"
+    $TEST "$EMULATOR  -o $x" $FILE
     x=`expr $x + 4`
 done
+
+# Summarize results to screen.
+
+$EMULATOR <<EOF
+ 
+['../get_variance.P'].
+
+['$FILE'].
+
+get_variance.
+
+EOF
+
 
