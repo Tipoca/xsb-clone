@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.7 2001-03-20 06:24:04 gzyang Exp $
+** $Id: flrshell.H,v 1.8 2001-03-23 18:53:49 gzyang Exp $
 **
 */
 
@@ -85,12 +85,12 @@
 
 :- import
 	maxerr/1,
-	flcompile/1,
-	flcompile/2,
-	flload/1,
-	flload/2,
-	flconsult/1,
-	flcompinc/1,
+	flCompile/1,
+	flCompile/2,
+	flLoad/1,
+	flLoad/2,
+	flConsult/1,
+	flCompileInclude/1,
 	flloadtrailer/1,
 	flloadtrailer/2,
 	flora_shell_command_line/3,
