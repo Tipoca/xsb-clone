@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsberror.h,v 1.1.1.1 1998-11-05 16:55:26 sbprolog Exp $
+** $Id: xsberror.h,v 1.2 1999-02-04 22:06:34 kostis Exp $
 ** 
 */
 
@@ -55,6 +55,7 @@ extern void err_handle(int, int, char *, int, char *, Cell);
 
 #define err(d, a, f, ar)	err_handle(d, a, f, ar, NULL, (Cell)NULL)
 
+#define xsb_mesg(message)       fprintf(stderr, "%s\n", message)
 #define xsb_warn(warning)	fprintf(stderr, "++Warning: %s\n", warning)
 
 /*----------------------------------------------------------------------*/
