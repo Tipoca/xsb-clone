@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: smodels.H,v 1.4 2001-06-05 19:18:08 lfcastro Exp $
+** $Id: smodels.H,v 1.5 2002-12-18 20:04:23 tswift Exp $
 ** 
 */
 
@@ -30,10 +30,17 @@
 :- foreign_pred smodelsInit from init(void):void.
 :- foreign_pred smodelsNumAtoms(+a) from numberAtoms(a:int):void.
 :- foreign_pred smodelsAtomName(+a) from atomName(a:string):void.
+
 :- foreign_pred smodelsBeginBasicRule from beginBasicRule(void):void.
+:- foreign_pred smodelsBeginChoiceRule from beginChoiceRule(void):void.
+:- foreign_pred smodelsBeginConstraintRule from beginConstraintRule(void):void.
+:- foreign_pred smodelsBeginWeightRule from beginWeightRule(void):void.
+
 :- foreign_pred smodelsAddHead(+a) from addHead(a:int):void.
 :- foreign_pred smodelsAddPosBody(+a) from addPosBody(a:int):void.
 :- foreign_pred smodelsAddNegBody(+a) from addNegBody(a:int):void.
+:- foreign_pred smodelsAddWPosBody(+a,+w) from addWPosBody(a:int,w:int):void.
+:- foreign_pred smodelsAddWNegBody(+a,+w) from addWNegBody(a:int,w:int):void.
 :- foreign_pred smodelsEndRule from endRule(void):void.
 :- foreign_pred smodelsCommitRules from commitRules(void):void.
 :- foreign_pred smodelsPrintProgram from printProgram(void):void.
@@ -48,6 +55,7 @@
 :- foreign_pred smodelsRemember from remember(void):void.
 :- foreign_pred smodelsForget from forget(void):void.
 :- foreign_pred smodelsSetBody(+a) from setBody(a:int):void.
+:- foreign_pred smodelsSetWeight(+a) from setWeight(a:int):void.
 :- foreign_pred smodelsSetHead(+a) from setHead(a:int):void.
 :- foreign_pred smodelsWellFounded from wellfounded(void):void.
 :- foreign_pred smodelsTestPos(+a,-retval) from testPos(a:int):int.
