@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.12 2000-05-29 04:23:42 ejohnson Exp $
+** $Id: tst_utils.c,v 1.13 2000-06-22 19:40:32 ruim Exp $
 ** 
 */
 
@@ -107,7 +107,7 @@ char *stringNodeType(byte fieldNodeType) {
     {
       char t[20], *s;
       sprintf(t, "unknown (%c)", fieldNodeType);
-      if ( IsNULL(s = malloc(strlen(t)+1)) )
+      if ( IsNULL(s = (char *)malloc(strlen(t)+1)) )
 	return("unknown");
       else {
 	strcpy(s,t);
@@ -137,7 +137,7 @@ char *stringTrieType(byte fieldTrieType) {
     {
       char t[20], *s;
       sprintf(t, "unknown (%c)", fieldTrieType);
-      if ( IsNULL(s = malloc(strlen(t)+1)) )
+      if ( IsNULL(s = (char *)malloc(strlen(t)+1)) )
 	return("unknown");
       else {
 	strcpy(s,t);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.13 2000-05-20 06:56:02 kifer Exp $
+** $Id: init_xsb.c,v 1.14 2000-06-22 19:40:31 ruim Exp $
 ** 
 */
 
@@ -713,8 +713,8 @@ void init_machine(void)
   realtime_count = real_time();
   inst_begin = 0;
 
-  symbol_table.table = calloc(symbol_table.size, sizeof(Pair));
-  string_table.table = calloc(string_table.size, sizeof(char *));
+  symbol_table.table = (void **)calloc(symbol_table.size, sizeof(Pair));
+  string_table.table = (void **)calloc(string_table.size, sizeof(char *));
 }
 
 /*==========================================================================*/

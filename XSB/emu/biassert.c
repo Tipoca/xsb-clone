@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.41 2000-06-19 07:13:06 ruim Exp $
+** $Id: biassert.c,v 1.42 2000-06-22 19:40:30 ruim Exp $
 ** 
 */
 
@@ -548,8 +548,8 @@ static char *buff_realloc(void)
 {
   /*  xsb_dbgmsg("Enter buff_realloc(%d) %X", Buff_size,Buff); */
   Buff_size = Buff_size + Buff_size;
-  if (Buff == NULL) Buff = malloc(Buff_size);
-  else Buff = realloc(Buff,Buff_size);
+  if (Buff == NULL) Buff = (char *)malloc(Buff_size);
+  else Buff = (char *)realloc(Buff,Buff_size);
   BLim = Buff_size-16;
   /*  xsb_dbgmsg("Leave buff_realloc(%d) %X", Buff_size,Buff); */
   return(Buff);

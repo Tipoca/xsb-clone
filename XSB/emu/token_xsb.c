@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.4 2000-05-20 06:56:11 kifer Exp $
+** $Id: token_xsb.c,v 1.5 2000-06-22 19:40:32 ruim Exp $
 ** 
 */
 
@@ -528,7 +528,7 @@ void realloc_strbuff(char **pstrbuff, char **ps, int *pn)
 { 
   char *newbuff;
 
-  newbuff = realloc(*pstrbuff, strbuff_len * 2);
+  newbuff = (char *)realloc(*pstrbuff, strbuff_len * 2);
   exit_if_null(newbuff);
   if (token_too_long_warning)
     {
@@ -558,7 +558,7 @@ struct token *GetToken(FILE *card, STRFILE *instr, int prevch)
 	if (strbuff == NULL)
 	  {
 	    /* First call for GetToken, so allocate a buffer */
-	    strbuff = malloc(strbuff_len);
+	    strbuff = (char *)malloc(strbuff_len);
 	    exit_if_null(strbuff);
 	  }
 	s = strbuff;

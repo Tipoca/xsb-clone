@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.16 2000-05-29 04:23:35 ejohnson Exp $
+** $Id: heap_xsb.c,v 1.17 2000-06-22 19:40:31 ruim Exp $
 ** 
 */
 
@@ -974,19 +974,19 @@ int mark_heap(int arity, int *marked_dregs)
 #ifdef CHAT
     avail_dreg_marks = MAX_DREG_MARKS;
     /* here allocate EXACT amount for completion stack: not upper bound */
-    compl_marks = calloc(compl_bot - top_of_complstk,1);
+    compl_marks = (char *)calloc(compl_bot - top_of_complstk,1);
     if (! compl_marks)
       xsb_exit("Not enough core to allocate chain bits for completion stack");
 #endif
     /* these areas are not used in a copying collector */
-    cp_marks = calloc(cp_bot - cp_top + 1,1);
-    tr_marks = calloc(tr_top - tr_bot + 1,1);
+    cp_marks = (char *)calloc(cp_bot - cp_top + 1,1);
+    tr_marks = (char *)calloc(tr_top - tr_bot + 1,1);
     if ((! cp_marks) || (! tr_marks))
       xsb_exit("Not enough core to perform garbage collection chaining phase");
   }
 
-  heap_marks = calloc(heap_top - heap_bot + 2 + avail_dreg_marks,1);
-  ls_marks   = calloc(ls_bot - ls_top + 1,1);
+  heap_marks = (char * )calloc(heap_top - heap_bot + 2 + avail_dreg_marks,1);
+  ls_marks   = (char * )calloc(ls_bot - ls_top + 1,1);
   if ((! heap_marks) || (! ls_marks))
     xsb_exit("Not enough core to perform garbage collection marking phase");
  

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.7 2000-06-19 07:48:08 ruim Exp $
+** $Id: std_pred_xsb_i.h,v 1.8 2000-06-22 19:40:31 ruim Exp $
 ** 
 */
 
@@ -302,7 +302,7 @@ inline static xsbBool atom_to_list(int call_type)
   list = ptoc_tag(2);
   if (!isnonvar(term)) {	/* use is: CODES/CHARS --> ATOM */
     if (atomnameaddr == NULL) {
-      atomnameaddr = malloc(INITIAL_NAMELEN);
+      atomnameaddr = (char *)malloc(INITIAL_NAMELEN);
       atomnamelen = INITIAL_NAMELEN;
       /* printf("Allocated namebuf: %p, %d\n",atomnameaddr,atomnamelen);*/
     }
