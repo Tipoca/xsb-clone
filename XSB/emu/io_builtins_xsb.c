@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.16 2000-05-20 06:56:02 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.17 2000-06-16 04:57:52 kifer Exp $
 ** 
 */
 
@@ -1300,6 +1300,8 @@ struct fmt_spec *next_format_substr(char *format, int initialize, int read_op)
 int xsb_intern_file(FILE *fptr, char *context)
 {
   int i;
+  if (!fptr) return -1;
+
   for (i=MIN_USR_OPEN_FILE; i < MAX_OPEN_FILES && open_files[i] != NULL; i++);
   if (i == MAX_OPEN_FILES) {
     xsb_warn("%s: Too many open files", context);
