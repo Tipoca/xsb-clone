@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.155 2003-04-18 15:07:37 lfcastro Exp $
+** $Id: builtin.c,v 1.156 2003-05-14 16:19:00 lfcastro Exp $
 ** 
 */
 
@@ -1420,7 +1420,7 @@ int builtin_call(byte number)
     break;
 
   case EXPAND_FILENAME:	       /* R1: +FileName, R2: -ExpandedFileName */
-    ctop_string(2, string_find(expand_filename(ptoc_string(1)), 1));
+    ctop_string(2, string_find(expand_filename(ptoc_longstring(1)), 1));
     break;
   case TILDE_EXPAND_FILENAME:  /* R1: +FileN, R2: -TildeExpanded FN */
     ctop_string(2, string_find(tilde_expand_filename(ptoc_string(1)), 1));
