@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: symtab.H,v 1.7 2004-01-26 17:53:03 dwarren Exp $
+** $Id: symtab.H,v 1.8 2004-01-28 18:39:37 dwarren Exp $
 ** 
 */
 
@@ -33,10 +33,10 @@
 
 :- import 'table #'/0 from compile.
 :- import memberchk/2, member/2 from basics.
+:- import log_ith/3 from basics.
 :- import error/1 from auxlry.
-:- import integer/1, functor/3 from standard.
+:- import integer/1 from standard.
 :- import membercheck/2, member2/2, closetail/1 from listutil.
-:- import ll_arg/3 from auxlry.
 :- import conget/2, conset/2 from gensym.
 :- import buff_alloc/2, buff_word/3, buff_set_word/3, term_hash/3,
 	  buff_dealloc/3, parsort/4
