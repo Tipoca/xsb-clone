@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.21 1999/08/25 13:51:58 kifer Exp $
+## $Id: Makefile,v 1.22 1999/08/28 07:16:52 kostis Exp $
 ## 
 ##
 
@@ -46,7 +46,7 @@ Prolog = $(XSB) -e "segfault_handler(warn)."
 #-------------------------------------------------------------------#
 
 # Make sure warnings are saved in a file.
-SVFILE = '/tmp/xsb_syslib_warn'
+SVFILE = '../build/.xsb_syslib_warn.tmp'
 OWRITE = 1
 STDWARN = 3
 HDRMSG = "While compiling XSB/syslib:"

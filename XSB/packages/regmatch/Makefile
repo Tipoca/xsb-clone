@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 1999-09-18 21:14:29 kifer Exp $
+## $Id: Makefile,v 1.4 1999-09-18 21:19:25 kifer Exp $
 ## 
 ##
 
@@ -42,7 +42,7 @@ Prolog = $(XSB) -i -s -m 2000 -c 2000
 #-----------------------------------------------------------------------#
 
 # Make sure warnings are saved in a file.
-SVFILE = '../../build/.regmatch_warn.top'
+SVFILE = '../../build/.regmatch_warn.tmp'
 OWRITE = 1
 STDWARN = 3
 STDERR = 2

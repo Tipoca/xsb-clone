@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_re_match.c,v 1.9 1999-08-09 16:04:32 kifer Exp $
+** $Id: xsb_re_match.c,v 1.10 1999-09-18 21:14:30 kifer Exp $
 ** 
 */
 
@@ -251,7 +251,10 @@ bool do_bulkmatch__(void)
     c2p_int(match_array[0].rm_eo+last_pos, p2p_arg(listHead,2));
 
     listTail = p2p_cdr(listTail);
-    last_pos = match_array[0].rm_eo+last_pos;
+    if (match_array[0].rm_eo > 0)
+      last_pos = match_array[0].rm_eo+last_pos;
+    else
+      last_pos++;
   }
 
   c2p_nil(listTail); /* bind tail to nil */
