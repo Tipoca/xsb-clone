@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf.i,v 1.6 1999-10-18 20:10:13 luis Exp $
+** $Id: dynelf.i,v 1.7 1999-10-18 20:37:22 luis Exp $
 ** 
 */
 
@@ -64,7 +64,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   void	*handle;
   void	*funcep;
   bool	dummy();
-  char  *ldp1,*ldp2;
+/*   char  *ldp1,*ldp2; */
   
   /* (1) create filename.so */
   
@@ -75,18 +75,18 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   
   /* (1.5) include necessary paths into LD_LIBRARY_PATH */
   
-  for (ldp1=ld_option; (*ldp1); ldp1++) {
-    if (*ldp1 == '-' && *(ldp1+1) == 'L') {
-      if (*(ldp1-1) == ' ') {
-	ldp2 = ++ldp1;
-	while(*ldp1 != ' ' && *ldp1 != '\0')
-	  ldp1++;
-	*ldp1 = '\0';
-	setenv("LD_LIBRARY_PATH",ldp2,1);
-	*ldp1 = ' ';
-      }
-    }
-  }
+/*   for (ldp1=ld_option; (*ldp1); ldp1++) { */
+/*     if (*ldp1 == '-' && *(ldp1+1) == 'L') { */
+/*       if (*(ldp1-1) == ' ') { */
+/* 	ldp2 = ++ldp1; */
+/* 	while(*ldp1 != ' ' && *ldp1 != '\0') */
+/* 	  ldp1++; */
+/* 	*ldp1 = '\0'; */
+/* 	setenv("LD_LIBRARY_PATH",ldp2,1); */
+/* 	*ldp1 = ' '; */
+/*       } */
+/*     } */
+/*   } */
   
   /* (2) open the needed object */
   
