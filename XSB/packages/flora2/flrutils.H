@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.11 2001-04-02 21:49:46 gzyang Exp $
+** $Id: flrutils.H,v 1.12 2001-04-08 20:11:56 gzyang Exp $
 **
 */
 
@@ -33,8 +33,6 @@
    from standard.
 
 :- import member/2 from basics.
-
-:- import shell/2 from shell.
 
 :- import assert/1, retractall/1 from assert.
 
