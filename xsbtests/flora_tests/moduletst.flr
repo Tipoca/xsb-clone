@@ -4,9 +4,6 @@
 ?- expand_filename('auxiliary', _X)@prolog(machine),
 	assert(library_directory(_X)@prolog())@prolog().
 
-?- nl@prolog(),
-	writeln('Loading marymodule ...')@prolog(), [marymodule >> marymodule].
-
 john:employee.
 
 john[salary(1990) -> 20].
@@ -38,9 +35,12 @@ tst6 :- Z= avg{X[Who]|Who[salary(Year)->X]; Who[salary(Year)->X] @ marymodule},
 	write(Z)@prolog(), write('   ')@prolog(), writeln(Who)@flora(io), fail.
 tst6 :- true.
 
-pretest :- tst1, tst2, tst3, tst4, tst5, tst6.
+tst7 :- flThisModule(M), (write('Module: '), writeln(M))@prolog().
+
+pretest :- tst1, tst2, tst3, tst4, tst5, tst6, tst7.
 
 test :- tell(temp)@prolog(),
+	[marymodule >> marymodule],
 	debug[#check_undefined(on)]@flora(sys),
 	pretest,
 	debug[#check_undefined(off)]@flora(sys),
