@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.2 1999-10-26 06:47:14 kifer Exp $
+** $Id: macro_xsb.h,v 1.3 1999-10-26 17:19:27 cbaoqiu Exp $
 ** 
 */
 
@@ -624,5 +624,11 @@ void tstCreateStructures(TSTNptr);
 #define remove_open_tables_loop(Endpoint) remove_open_tries(Endpoint)
 
 #define remove_open_tables() remove_open_tries(COMPLSTACKBOTTOM)
+
+/*----------------------------------------------------------------------*/
+
+#define get_var_and_attv_nums(var_num, attv_num, tmp_int)	\
+  var_num = tmp_int & 0xffff;					\
+  attv_num = tmp_int >> 16
 
 /*----------------------------------------------------------------------*/

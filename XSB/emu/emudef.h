@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.12 1999-10-15 02:54:13 cbaoqiu Exp $
+** $Id: emudef.h,v 1.13 1999-10-26 17:19:26 cbaoqiu Exp $
 ** 
 */
 
@@ -85,10 +85,6 @@ char *list_dot;
 
 int asynint_val = 0;
 int *asynint_ptr = &asynint_val;
-
-#define get_var_and_attv_nums(var_num, attv_num, tmp_int)	\
-  var_num = tmp_int & 0xffff;					\
-  attv_num = tmp_int >> 16
 
 /* Replacements for labelled code in emusubs.i */
 
