@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gensym.P,v 1.5 2001/03/28 08:56:34 kifer Exp $
+** $Id: gensym.P,v 1.6 2004/02/25 21:24:07 tswift Exp $
 ** 
 */
 
@@ -73,6 +73,10 @@ conget(Con, Val) :-
 */
 
 coninc(Con) :-
+	term_psc(Con, Psc), psc_prop(Psc, N),
+	NewN is N+1, psc_set_prop(Psc, NewN).
+
+coninc(Con,NewN) :-
 	term_psc(Con, Psc), psc_prop(Psc, N),
 	NewN is N+1, psc_set_prop(Psc, NewN).
 

@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gensym.H,v 1.7 2002/04/13 05:01:59 lfcastro Exp $
+** $Id: gensym.H,v 1.8 2004/02/25 21:24:07 tswift Exp $
 ** 
 */
 
 
 :- export gensym/2, gennum/1, gennum/2, prepare/0, prepare/1.
 
-:- export conlength/2, conset/2, conget/2, coninc/1.
+:- export conlength/2, conset/2, conget/2, coninc/1, coninc/2.
 :- export newcounter/1, inccounter/1, getcounter/1.
 
 :- import psc_set_prop/2, 
