@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.14 1999/08/16 07:25:09 kifer Exp $
+** $Id: standard.H,v 1.15 1999/08/17 19:30:09 warren Exp $
 ** 
 */
 
@@ -43,7 +43,7 @@
 	is_most_general_term/1,
 	listing/0,	listing/1,	name/2,		nl/0, nl/1,
 	nofileerrors/0, nonvar/1,	(not)/1,	number/1,
-	number_chars/2, number_codes/2,
+	number_chars/2, number_codes/2, number_digits/2,
 	once/1,		op/3,		open/3,          otherwise/0,
 	print/1,	put/1,
 	read/1,		read/2,         real/1,		repeat/0,

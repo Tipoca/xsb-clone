@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.62 1999-08-30 16:40:47 kostis Exp $
+** $Id: builtin.c,v 1.63 1999-09-25 16:34:22 kifer Exp $
 ** 
 */
 
@@ -670,6 +670,7 @@ void init_builtin_table(void)
   set_builtin_table(NUMBER_CHARS, "number_chars");
   set_builtin_table(NUMBER_CODES, "number_codes");
   set_builtin_table(IS_CHARLIST, "is_charlist");
+  set_builtin_table(NUMBER_DIGITS, "number_digits");
 
   set_builtin_table(PUT, "put");
   set_builtin_table(TAB, "tab");

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.25 1999/08/25 13:57:14 kifer Exp $
+** $Id: standard.P,v 1.26 1999/09/06 17:32:57 kifer Exp $
 ** 
 */
 
@@ -457,6 +457,7 @@ atom_codes(A, L) :- atom_codes(A, L).
 
 number_chars(T, L) :- number_chars(T, L).
 number_codes(T, L) :- number_codes(T, L).
+number_digits(T, L) :- number_digits(T, L).
 
 name(T, L) :-
 	term_type(T, Type),

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases.i,v 1.4 1999-08-17 19:30:06 warren Exp $
+** $Id: std_cases.i,v 1.5 1999-09-25 16:34:24 kifer Exp $
 ** 
 */
 
@@ -79,14 +79,19 @@
     
   /* atom_chars should be redefined to return char-atoms rather than ASCII
      codes */ 
-  case ATOM_CHARS:	/* r1: ?term; r2: ?character list	*/
-  case ATOM_CODES:	/* r1: ?term; r2: ?character list	*/
-    return atom_codes();
+  case ATOM_CHARS:	/* r1: ?term; r2: ?character symbol list	*/
+    return atom_to_list(ATOM_CHARS);
+  case ATOM_CODES:	/* r1: ?term; r2: ?character ascii code list	*/
+    return atom_to_list(ATOM_CODES);
     
   /* number_chars should be redefined to return digit-atoms */
-  case NUMBER_CHARS:	/* r1: ?term; r2: ?character list	*/
-  case NUMBER_CODES:	/* r1: ?term; r2: ?character list	*/
-    return number_codes();
+  case NUMBER_CHARS:	/* r1: ?term; r2: ?character symbol list	*/
+    return number_to_list(NUMBER_CHARS);
+  case NUMBER_CODES:	/* r1: ?term; r2: ?character code list	*/
+    return number_to_list(NUMBER_CODES);
+  case NUMBER_DIGITS:	/* r1: ?term; r2: ?digit list	*/
+    return number_to_list(NUMBER_DIGITS);
+    
     
   case PUT:	/* r1: +integer	*/
     term = ptoc_tag(1);

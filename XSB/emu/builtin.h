@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.20 1999-08-30 16:40:48 kostis Exp $
+** $Id: builtin.h,v 1.21 1999-09-25 16:34:24 kifer Exp $
 ** 
 */
 
@@ -194,6 +194,7 @@
 #define TAB			211
 #define NUMBER_CODES		212
 #define IS_CHARLIST		213
+#define NUMBER_DIGITS		214
 
 #define SORT			220
 #define KEYSORT			221
