@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.2 1999/04/01 05:05:15 kifer Exp $
+** $Id: file_io.H,v 1.3 1999/04/03 04:46:44 kifer Exp $
 ** 
 */
 
 
 :- import
-	stat_flag/2, file_function/5,
+	stat_flag/2, file_function/7,
     	file_stat/3, formatted_io/5, intern_string/2
       from machine.
 
@@ -37,7 +37,11 @@
 	  file_flush/2, file_seek/4, file_truncate/3,
 	  file_pos/2, file_size/2, file_time/2,
 	  file_open/3, file_close/1, file_get/2, file_put/2,
-	  file_getbuf/4, file_putbuf/4,
+	  file_getbuf/4,
+	  file_getbuf_atom/4, file_getbuf_atom/3,
+	  file_getbuf_list/4, file_getbuf_list/3,
+	  file_putbuf/5, file_putbuf/4,
+	  file_write_line/2, file_write_line/3,
       	  file_read_line/3,
 	  file_read_line_atom/2, file_read_line_atom/3,
 	  file_read_line_list/2, file_read_line_list/3.

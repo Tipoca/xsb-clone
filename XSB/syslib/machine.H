@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.12 1999/04/01 05:03:12 kifer Exp $
+** $Id: machine.H,v 1.13 1999/04/02 03:48:06 kifer Exp $
 ** 
 */
 
@@ -136,7 +136,7 @@
 	socket_request/6.
 
 :- export 
-	file_function/5,
+	file_function/7,
 	psc_insert/3, psc_set_env/2, conname/2, conpsc/2, 
 	machine_file_exists/1, backtrackable_buff_set_word/4,
   	is_backslashing_os/0, is_pcdos/0, slash/1.
