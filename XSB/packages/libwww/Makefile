@@ -18,11 +18,11 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.9 2002-03-14 09:55:02 kifer Exp $
+## $Id: Makefile,v 1.10 2002-03-15 08:09:39 kifer Exp $
 ## 
 ##
 
-OBJEXT=.O
+OBJEXT=.xwam
 
 XSBDIR = ../..
 
@@ -78,8 +78,8 @@ finish:
 
 
 clean:
-	rm -f *${OBJEXT} *~ .*~ *.bak
-	rm -f cc/*.H cc/*.so cc/*.o cc/*${OBJEXT} cc/*~ cc/.*~ cc/*.bak
+	rm -f core *${OBJEXT} *.O *~ .*~ *.bak
+	rm -f cc/*.H cc/*.so cc/*.[oO] cc/*${OBJEXT} cc/*~ cc/.*~ cc/*.bak
 
 
 .DONE:

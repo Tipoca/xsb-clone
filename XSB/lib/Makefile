@@ -19,11 +19,11 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.40 2002-03-14 09:55:02 kifer Exp $
+## $Id: Makefile,v 1.41 2002-03-15 08:09:42 kifer Exp $
 ## 
 ##
 
-OBJEXT=.O
+OBJEXT=.xwam
 
 ALL = 	aggregs${OBJEXT} array${OBJEXT} array1${OBJEXT} assoc_xsb${OBJEXT} \
 	basic_props${OBJEXT} \
@@ -92,7 +92,7 @@ finish:
 
 
 clean:
-	/bin/rm -f *${OBJEXT}
+	/bin/rm -f *${OBJEXT} *.O core *~ *.bak .#*
 
 
 .DONE:

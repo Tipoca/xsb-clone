@@ -18,21 +18,21 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_defs.h,v 1.2 2002-03-14 09:55:03 kifer Exp $
+** $Id: loader_defs.h,v 1.3 2002-03-15 08:09:43 kifer Exp $
 ** 
 */
 
 /* Info on the file extension used for XSB files */
 
-#define XSB_OBJ_EXTENSION_STRING  ".O"
-#define XSB_OBJ_EXTENSION_LENGTH  4
+#define XSB_OBJ_EXTENSION_STRING  ".xwam"
+#define XSB_OBJ_EXTENSION_LENGTH  5
 
 #define XSB_SRC_EXTENSION_STRING  ".P"
 
-#define XSB_OBJ_EXTENSION_ATOM    '.O'
+#define XSB_OBJ_EXTENSION_ATOM    '.xwam'
 #define XSB_SRC_EXTENSION_ATOM    '.P'
 #define XSB_HDR_EXTENSION_ATOM    '.H'
 
-#define XSB_OBJ_EXTENSION_ATOM_SANS_DOT    'O'
+#define XSB_OBJ_EXTENSION_ATOM_SANS_DOT    'xwam'
 #define XSB_SRC_EXTENSION_ATOM_SANS_DOT    'P'
 #define XSB_HDR_EXTENSION_ATOM_SANS_DOT    'H'

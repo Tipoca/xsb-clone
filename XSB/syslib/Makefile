@@ -19,11 +19,11 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.39 2002/03/13 10:17:46 kifer Exp $
+## $Id: Makefile,v 1.40 2002/03/14 09:55:01 kifer Exp $
 ## 
 ##
 
-OBJEXT=.O
+OBJEXT=.xwam
 
 ALL =	assert${OBJEXT} atts${OBJEXT} basics${OBJEXT} consult${OBJEXT} \
 	curr_sym${OBJEXT} dbclause${OBJEXT} \
@@ -109,6 +109,9 @@ finish:
 restore:
 	mv -f $(OBJFILESAVED)/*${OBJEXT} .
 
+clean:
+	rm -f core *~ *.bak .#*
+	rm -f objfiles.saved/*
 
 .DONE:
 	echo Done

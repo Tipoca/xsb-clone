@@ -1,4 +1,4 @@
-## File:      Makefile - recompiles all .O files in all directories
+## File:      Makefile - recompiles all object files in all directories
 ## Author(s): kifer
 ## Contact:   xsb-contact@cs.sunysb.edu
 ## 
@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.9 2002-03-13 22:28:59 lfcastro Exp $
+## $Id: Makefile,v 1.10 2002-03-15 08:09:44 kifer Exp $
 ## 
 ##
 
