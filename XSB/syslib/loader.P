@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.14 1999/08/28 15:28:42 kostis Exp $
+** $Id: loader.P,v 1.15 1999/08/28 20:38:49 kifer Exp $
 ** 
 */
 
@@ -270,11 +270,11 @@ load_pred1(PSC) :-
 		load(ModName)	% can fail here <--- MAY BE A BUG HERE 
 	    ),
 		( psc_type(PSC, NType),
-		  ( NType =:= 2; NType =:= 13; NType =:= 14; NType =:= 1 ), 
-		    %% module loaded, and pred/func/foreign-pred is there
+		  ( NType =:= 2; NType =:= 13; NType =:= 1 ), 
+		    %% module loaded, and pred/foreign-pred is there
 		    '_$cutto'(B)
-		    %% module loaded, but pred/func/foreign-pred is not there
-		; fmt_write(STDERR,
+		; %% module loaded, but pred/foreign-pred is not there
+		  fmt_write(STDERR,
 		   "! The predicate: %s/%d is not defined in the module %s\n",
 				arg(Name,Arity,ModName)),
 		  fmt_write(STDFDBK, "%s\n", arg('! Aborting...')),
