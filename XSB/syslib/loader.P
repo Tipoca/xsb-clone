@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.13 1999/08/25 13:57:13 kifer Exp $
+** $Id: loader.P,v 1.14 1999/08/28 15:28:42 kostis Exp $
 ** 
 */
 
@@ -308,7 +308,7 @@ load(ModName) :-
 	      ;	  true		% load foreign obj code succeeded
 	      )
 	  )
-	; fmt_write(STDERR, '! Cannot find the module: %s\n', arg(ModName)),
+	; fmt_write(STDERR, "! Cannot find the module: %s\n", arg(ModName)),
 	  fail
 	).
 
