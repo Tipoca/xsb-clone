@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 1999-10-20 06:50:26 kifer Exp $
+## $Id: Makefile,v 1.4 1999-10-22 03:51:48 kifer Exp $
 ## 
 
 ##################### You may need to edit some of these!
@@ -34,16 +34,15 @@ arch_dir=$(HOME)/XSB/XSB/config/$(ARCH)
 
 CC=gcc
 CFLAGS= -O4 -ansi -pedantic -Wall
+# for debug:
 #CFLAGS= -ansi -pedantic -Wall -g
 LDFLAGS= -lm -ldl -Wl,-export-dynamic
-# For Soraris use:
+# For Solaris use:
 #LDFLAGS=  -lsocket -lm -lnsl -ldl -Wl,-export-dynamic
 
 ## DON'T EDIT BELOW THIS LINE
 ############################################################################
 
-# Where to install XSB binaries
-bindir=$(arch_dir)/bin
 # where the object code goes
 arch_config_objlibdir=$(arch_dir)/saved.o
 
@@ -55,20 +54,20 @@ SHELL=/bin/sh
 
 
 test1: cmain.o
-	gcc -o $(bindir)/xsbtest1 $(xsbmodule) cmain.o $(LDFLAGS)
+	gcc -o mytest1 $(xsbmodule) cmain.o $(LDFLAGS)
 	@echo ""
 	@echo "***************************************************"
 	@echo "The executable is in:"
-	@echo "     $(bindir)/xsbtest1"
+	@echo "     ./mytest1"
 	@echo ""
 	@echo ""
 
 test2: cmain2.o
-	gcc -o $(bindir)/xsbtest2 $(xsbmodule) cmain2.o $(LDFLAGS)
+	gcc -o mytest2 $(xsbmodule) cmain2.o $(LDFLAGS)
 	@echo ""
 	@echo "***************************************************"
 	@echo "The executable is in:"
-	@echo "     $(bindir)/xsbtest2"
+	@echo "     ./mytest2"
 	@echo ""
 	@echo ""
 
