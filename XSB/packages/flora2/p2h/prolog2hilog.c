@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prolog2hilog.c,v 1.7 2001-07-12 00:22:33 kifer Exp $
+** $Id: prolog2hilog.c,v 1.8 2001-10-20 21:32:54 kifer Exp $
 ** 
 */
 
@@ -292,7 +292,7 @@ static char *pterm2string(prolog_term term)
   static VarString *StrArgBuf;
   prolog_term term2 = p2p_deref(term);
 
-  XSB_StrCreate(StrArgBuf);
+  XSB_StrCreate(&StrArgBuf);
   XSB_StrSet(StrArgBuf,"");
   print_pterm(term2, 1, StrArgBuf); 
   return StrArgBuf->string;
