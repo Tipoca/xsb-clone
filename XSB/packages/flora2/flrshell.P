@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.34 2001-07-08 17:07:15 kifer Exp $
+** $Id: flrshell.P,v 1.35 2001-07-30 06:22:42 kifer Exp $
 **
 */
 
@@ -190,18 +190,24 @@ flEnd :-
 
 
 /*********************************************************************/
+%% This is needed so we could designate this predicate as unprintable 
+%% by the debugger and avoid traicing inside 
+%% assert(flora_switch(low_level_trace))
+flora_set_switch(Switch) :-
+	assert(flora_switch(Switch)).
+/*********************************************************************/
 %% Enable Flora high-level debugging
 flTrace :- flora_trace.
 flNoTrace :- flora_notrace.
 %% Enables low-level XSB debugging
 flTraceLow :-
 	flora_trace,
-	assert(flora_switch(low_level_trace)).
+	flora_set_switch(low_level_trace).
 
 
 
 /*********************************************************************/
-flChatter :- assert(flora_switch(chatter)).
+flChatter :- flora_set_switch(chatter).
 flNoChatter :- retractall(flora_switch(chatter)).
 
 
