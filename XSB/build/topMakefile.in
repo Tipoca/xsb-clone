@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.13 1999-03-29 20:29:27 kifer Exp $
+## $Id: topMakefile.in,v 1.14 1999-04-16 21:36:48 kifer Exp $
 ## 
 ##
 
@@ -146,6 +146,8 @@ all: prepare emu configure_packages_src register emu_clean
 # Developer who just checked out or updated CVS copy
 devel: prepare emu remake_dot_O_files configure_packages_src emu_clean
 
+superdevel: prepare emu remake_dot_O_files_force configure_packages_src emu_clean
+
 # Developer who needs a quick re-make of the executable
 fast: prepare emu emu_clean
 
@@ -265,6 +267,9 @@ configure_packages_install:
 
 remake_dot_O_files:
 	cd $(srcdir); make XSB=$(src_scriptdir)/xsb$(config_tag)
+
+remake_dot_O_files_force:
+	cd $(srcdir); make force XSB=$(src_scriptdir)/xsb$(config_tag)
 
 # clean for this architecture only
 configclean::
