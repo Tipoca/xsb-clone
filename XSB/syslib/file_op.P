@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.P,v 1.19 2003/02/03 20:37:24 dwarren Exp $
+** $Id: file_op.P,v 1.20 2003/07/18 22:29:25 tswift Exp $
 ** 
 */
 
@@ -217,6 +217,7 @@ table to use. */
          ;      fail     % index1 doesn't exist yet, so it is empty
         ).
 
+:- dynamic '_$index1'(_,_,_).
 :- assert('_$index1'(dyn_op(_,_,_),3,17)),
    assert('_$index1'('_$index'(_,_,_),1,29)).
 
