@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.15 1999-11-30 14:34:49 kifer Exp $
+## $Id: Makefile,v 1.16 1999-12-12 06:47:24 kifer Exp $
 ## 
 ##
 
@@ -79,6 +79,10 @@ all: init  $(ALL) finish
 	@cp -f $*.O $(OBJFILESAVED) || echo ""
 	echo 'mc($*, $(Option)).' >> cmd...
 
+# Redirect warnings into a file so we would be able to display it later.
+# Assert the emu/prolog_includes into xpp_include_dir, to make sure that
+# the right include directories are used if we compile cmplib using an
+# older version of XSB
 init:
 	rm -f $(SVFILE)
 	@test -d $(OBJFILESAVED) || mkdir $(OBJFILESAVED)
@@ -87,6 +91,9 @@ init:
 	@echo 'fmt_write($(STDWARN),"-------------- Warnings --------------------\n",_).' >> cmd...
 	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
 	@echo 'file_flush($(STDWARN),_).' >> cmd...
+	@echo 'import xpp_include_dir/1 from parse.' >> cmd...
+	@echo "assert(xpp_include_dir('../emu'))." >> cmd...
+	@echo "assert(xpp_include_dir('../prolog_includes'))." >> cmd...
 
 finish:
 	@echo 'fmt_write($(STDWARN),"%s\n",arg("--------------------------------------------")).' >> cmd...
