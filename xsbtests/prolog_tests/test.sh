@@ -42,8 +42,9 @@ XEMU=$1
 # Test multifile directive
 #------------------------------------
 ../gentest.sh $XEMU mf_test1 "test."
-#------------------------------------
-# Test Prolog calling C
+#------------------------------------------------------------------------
+# Test Prolog calling C: the .so or .o file needs to be created each time
+rm -f xeddis.o xeddis.so xeddis.O
 ../gentest.sh $XEMU cinter1 "test."
-#------------------------------------
+#------------------------------------------------------------------------
 

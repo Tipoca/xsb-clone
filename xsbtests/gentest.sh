@@ -9,7 +9,7 @@ BASEDIR=`basename $DIR`
 
 echo "--------------------------------------------------------------------"
 echo "Testing $BASEDIR/$FILE"
-$EMU -m 3000 -i << EOF
+$EMU << EOF
 [$FILE].
 tell(temp).
 $CMD
