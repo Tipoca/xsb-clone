@@ -69,7 +69,7 @@ Related links:
 <?php include "../counter.php";    ?>
 <?php $number = CounterImage(); ?>
 <IMG SRC="<?php echo($number); ?>" ALIGN="left">
-visits since July 9, 2000.
+visits since August 10, 2001.
 <P>
 
 <hr>
@@ -80,7 +80,7 @@ Email:<a href="mailto:xsb-contact@cs.sunysb.edu">xsb-contact@cs.sunysb.edu</a>
 <hr>
 <p>
 <!--Don't touch! The date gets updated when you commit changes to this page-->
-$Date: 2001-07-16 05:13:25 $
+$Date: 2001-12-15 19:20:22 $
 
 </body>
 </html>
