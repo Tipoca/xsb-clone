@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrundefined.H,v 1.2 2002-03-08 09:07:55 kifer Exp $
+** $Id: flrundefined.H,v 1.3 2002-03-13 10:21:51 kifer Exp $
 **
 */
 
@@ -35,7 +35,16 @@
 
 :- import flora_prlgdef/2 from flrprolog.
 
-:- import flora_extern_code/2 from flrcoder.
+:- import
+	flora_extern_code/2,
+	is_prrule/3,
+	is_prfact/2,
+	is_pratom/3,
+	is_prvariable/3,
+	is_prterm/4,
+	is_pratomlit/3,
+	is_prtermlit/4
+   from flrcoder.
 
 :- import flora_decode_predicate/6 from flrwrapper.
 

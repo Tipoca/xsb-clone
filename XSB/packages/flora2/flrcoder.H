@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.H,v 1.12 2002-02-28 04:25:28 kifer Exp $
+** $Id: flrcoder.H,v 1.13 2002-03-13 10:21:51 kifer Exp $
 **
 */
 
@@ -59,3 +59,32 @@
 	flora_divide_program/3,
 	flora_extern_code/2,
 	flora_intern_code/4.
+
+:- export
+	is_prrule/3,
+	is_prfact/2,
+	is_prdirective/2,
+	is_prtable/3,
+	is_prhilogtable/2,
+	is_prthismodule/1,
+	is_prthisstorage/1,
+	is_pratom/3,
+	is_prnumber/3,
+	is_prvariable/3,
+	is_prstring/3,
+	is_prlist/4,
+	is_prstorage/3,
+	is_skolem/5,
+	is_prterm/4,
+	is_goallogic/4,
+	is_prcall/2,
+	is_pratomlit/3,
+	is_prtermlit/4,
+	is_prworkspace/3,
+	is_florasyslib/5,
+	is_prologterm/4,
+	is_prologliblit/4,
+	is_prnewpred/4,
+	is_prnewoid/3,
+	is_flogic/4,
+	is_fllibdb/1.
