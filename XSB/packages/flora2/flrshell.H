@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.11 2001-04-25 04:01:04 kifer Exp $
+** $Id: flrshell.H,v 1.12 2001-04-25 04:31:01 kifer Exp $
 **
 */
 
@@ -64,8 +64,7 @@
 
 :- import
 	unstrap_flora/0,
-	(flLoad)/1,
-	(flLoad)/2
+	(flLoad)/1
    from flora2.
 
 :- import flora_shreset_operator/0 from flroperator.
