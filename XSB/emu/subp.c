@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.70 2004/01/14 23:19:32 dwarren Exp $
+** $Id: subp.c,v 1.71 2004/01/14 23:25:00 dwarren Exp $
 ** 
 */
 
@@ -755,8 +755,7 @@ extern long prof_flag;
 extern long prof_unk_count;
 extern long prof_total;
 
-void setProfileBit(void *ptr) {
-  printf("Entered sleeper\n");
+void setProfileBit(void *place_holder) {
   while (TRUE) {
     if (if_profiling) asynint_val |= PROFINT_MARK;
 #ifdef WIN_NT
@@ -767,36 +766,31 @@ void setProfileBit(void *ptr) {
   }
 }
 
-
-#ifdef WIN_NT
 xsbBool startProfileThread()
 {
+#ifdef WIN_NT
   HANDLE Thread;
   if (!if_profiling) {
     Thread = (HANDLE)_beginthread(setProfileBit,0,NULL);
-    SetThreadPriority(Thread,THREAD_PRIORITY_ABOVE_NORMAL);
+    SetThreadPriority(Thread,THREAD_PRIORITY_HIGHEST/*_ABOVE_NORMAL*/);
     if_profiling = 1;
   }
-  prof_unk_count = 0;
-  prof_total = 0;
-  return TRUE;
-}
+#elif defined(SOLARIS)
+  printf("Profiling not supported\n");
 #else
-xsbBool startProfileThread()
-{
-  pthread_t Thread;
-  struct sched_param schedparam;
-  int err;
+  pthread_t         a_thread;
+  struct sched_param param;
 
   if (!if_profiling) {
-    err = pthread_create(&Thread,NULL,(void *)&setProfileBit,(void *)NULL);
-    printf("err=%d\n",err);
-    //  schedparam.sched_priority = 100; //sched_get_priority_max(SCHED_OTHER);
-    //    pthread_setschedparam(Thread,SCHED_OTHER,&schedparam);
+    int result = pthread_create( &a_thread, NULL, (void*)&setProfileBit, 
+               (void*)NULL);
+    param.sched_priority = sched_get_priority_max(SCHED_OTHER);
+    pthread_setschedparam(a_thread, SCHED_OTHER, &param);
+
     if_profiling = 1;
   }
+#endif
   prof_unk_count = 0;
   prof_total = 0;
   return TRUE;
 }
-#endif
