@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.c,v 1.3 1999-01-10 01:05:02 cbaoqiu Exp $
+** $Id: inst.c,v 1.4 1999-01-13 18:19:11 kostis Exp $
 ** 
 */
 
@@ -397,15 +397,14 @@ void init_builtin_table(void)
   set_builtin_table(ORACLE_QUERY, "oracle_query");
   set_builtin_table(ODBC_QUERY, "odbc_query");
 
-  set_builtin_table(PR_LS, "print_ls");
-  set_builtin_table(PR_TR, "print_tr");
-  set_builtin_table(PR_HEAP, "print_heap");
-  set_builtin_table(PR_CP, "print_cp");
-  set_builtin_table(PR_REGS, "print_regs");
-  set_builtin_table(PR_ALL, "print_all");
-  set_builtin_table(MARK_H, "mark_heap");
-  set_builtin_table(GC_H, "gc_heap");
-
+  set_builtin_table(PRINT_LS, "print_ls");
+  set_builtin_table(PRINT_TR, "print_tr");
+  set_builtin_table(PRINT_HEAP, "print_heap");
+  set_builtin_table(PRINT_CP, "print_cp");
+  set_builtin_table(PRINT_REGS, "print_regs");
+  set_builtin_table(PRINT_ALL_STACKS, "print_all_stacks");
+  set_builtin_table(MARK_HEAP, "mark_heap");
+  set_builtin_table(GC_HEAP, "gc_heap");
   set_builtin_table(FINDALL_INIT, "$$findall_init");
   set_builtin_table(FINDALL_ADD, "$$findall_add");
   set_builtin_table(FINDALL_GET_SOLS, "$$findall_get_solutions");

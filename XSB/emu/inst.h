@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.h,v 1.3 1999-01-10 01:05:04 cbaoqiu Exp $
+** $Id: inst.h,v 1.4 1999-01-13 18:19:13 kostis Exp $
 ** 
 */
 
@@ -538,15 +538,15 @@ extern Cell builtin_table[BUILTIN_TBL_SZ][2];
 #define ODBC_QUERY		239
 
 /* added by Bart Demoen & Kostis Sagonas for debugging and convenience */
-#define PR_LS                   240
-#define PR_TR                   241
-#define PR_HEAP                 242
-#define PR_CP                   243
-#define PR_REGS                 244
-#define PR_ALL                  245
-#define EXP_H                   246
-#define MARK_H                  247
-#define GC_H                    248
+#define PRINT_LS                240
+#define PRINT_TR                241
+#define PRINT_HEAP              242
+#define PRINT_CP                243
+#define PRINT_REGS              244
+#define PRINT_ALL_STACKS        245
+#define EXP_HEAP                246
+#define MARK_HEAP               247
+#define GC_HEAP                 248
 
 #define FINDALL_INIT		249
 #define FINDALL_ADD		250
