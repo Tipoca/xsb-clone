@@ -21,14 +21,14 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.10 2002-03-08 09:07:54 kifer Exp $
+## $Id: Makefile,v 1.11 2002-03-09 07:56:53 kifer Exp $
 ## 
 ##
 
 
 XSBDIR = ../../..
 
-ALLOBJS = flrpatch.flh flrpreddef.flh
+ALLOBJS = flrpatch.flh flrpreddef.flh flrindex_P.flh
 
 XSB = $(XSBDIR)/bin/xsb
 
@@ -56,6 +56,9 @@ all: clean init $(ALLOBJS) finish
 
 flrpreddef.flh: flrpreddef.fli $(FLORA_TERMS)
 	@echo 'flWrapAround(flrpreddef).' >> cmd...
+
+flrindex_P.flh: flrindex_P.fli $(FLORA_TERMS)
+	@echo 'flWrapAround(flrindex_P).' >> cmd...
 
 
 %.flh: %.fli $(FLORA_TERMS)
