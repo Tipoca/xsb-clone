@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.34 2003-09-18 18:43:52 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.35 2003-10-02 23:44:56 dwarren Exp $
 ** 
 */
 
@@ -1119,9 +1119,10 @@ int read_canonical_term(FILE *filep, STRFILE *instr, int return_location_code)
 	check_glstack_overflow(5, pcreg, (size+1)*sizeof(Cell)) ;
 	/* get return location again, in case it moved, whole reasong for r_c_r_v */
 	prologvar = read_canonical_return_var(return_location_code); 
-	/*gl_bot = (CPtr)glstack.low; gl_top = (CPtr)glstack.high; ??*/
+	gl_bot = (CPtr)glstack.low; gl_top = (CPtr)glstack.high;
 	bind_ref((CPtr)prologvar,hreg);  /* build a new var to trail binding */
 	new_heap_free(hreg);
+	gl_bot = (CPtr)glstack.low; gl_top = (CPtr)glstack.high; /* so findall_copy* finds vars */
 	findall_copy_to_heap(term,(CPtr)prologvar,&hreg) ; /* this can't fail */
 	free_term_buffer();
 
