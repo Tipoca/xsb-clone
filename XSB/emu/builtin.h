@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.34 2000-12-04 17:10:42 ejohnson Exp $
+** $Id: builtin.h,v 1.35 2000-12-08 17:26:46 ejohnson Exp $
 ** 
 */
 
@@ -118,6 +118,7 @@
 #define NEXT_BUCKET		112
 
 #define SLG_NOT			114
+#define LRD_SUCCESS		115
 
 #define IS_XWAMMODE             117
 #define CLOSE_OPEN_TABLES       118
