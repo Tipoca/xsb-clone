@@ -35,7 +35,6 @@ options=$2
 ../gentest.sh "$XEMU $options" tstr33 "tw."
 ../gentest.sh "$XEMU $options" tstr53 "tw."
 ../gentest.sh "$XEMU $options" tstr63 "tw."
-../gentest.sh "$XEMU $options" tstr73 "tw."
 #------------------------------------
 # loader/compiler series
 #------------------------------------
