@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.45 2000-01-07 08:52:02 kifer Exp $
+** $Id: tries.c,v 1.46 2000-01-11 17:10:53 ejohnson Exp $
 ** 
 */
 
@@ -1739,7 +1739,7 @@ Cell get_lastnode_cs_retskel(Cell callTerm) {
   vector = (Cell *)var_regs;
   if ( IsInCallTrie(Last_Nod_Sav) ) {
     SGFrame sf = CallTrieLeaf_GetSF(Last_Nod_Sav);
-    if ( ! SubgoalHasOwnAnswerSet(sf) ) {
+    if ( IsConsumerSF(sf) ) {
       construct_answer_template(callTerm, subg_producer(sf), (Cell *)var_regs);
       arity = (int)var_regs[0];
       vector = (Cell *)&var_regs[1];
