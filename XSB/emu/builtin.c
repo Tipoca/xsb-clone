@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.169 2004-01-14 20:27:12 dwarren Exp $
+** $Id: builtin.c,v 1.170 2004-01-26 14:46:56 dwarren Exp $
 ** 
 */
 
@@ -2002,13 +2002,11 @@ int builtin_call(byte number)
 
   case ABOLISH_TABLE_CALL: {
     VariantSF subgoal;
-    ComplStackFrame csf;
     TIFptr tif;
 
     subgoal = (VariantSF) ptoc_int(1);
-    csf = (ComplStackFrame) subgoal->compl_stack_ptr;
     tif = (TIFptr) subgoal->tif_ptr;
-    compl_subgoal_ptr(subg_compl_stack_ptr(subgoal)) = NULL;
+    //    compl_subgoal_ptr(subg_compl_stack_ptr(subgoal)) = NULL; (dsw?)
     reclaim_incomplete_table_structs(subgoal);
     delete_branch(subgoal->leaf_ptr, &tif->call_trie);
     return TRUE;
