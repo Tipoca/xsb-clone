@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.7 2002-11-04 18:09:01 dwarren Exp $
+** $Id: error_xsb.h,v 1.8 2004-04-09 21:03:06 dwarren Exp $
 ** 
 */
 
@@ -95,6 +95,8 @@ extern void (*xsb_default_segfault_handler)(int); /* where the previous value
 						     saved */ 
 extern jmp_buf xsb_abort_fallback_environment; /* Environment for abort
 						  longjump saved here */
+
+extern int print_xsb_backtrace();
 
 /* SIGSEGV handler that catches segfaults; used unless configured with DEBUG */
 extern void xsb_segfault_catcher (int);

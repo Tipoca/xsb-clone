@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.72 2004/01/15 18:04:49 dwarren Exp $
+** $Id: subp.c,v 1.73 2004/01/29 18:44:09 dwarren Exp $
 ** 
 */
 
@@ -713,6 +713,7 @@ void xsb_segfault_catcher(int err)
 
 void xsb_segfault_quitter(int err)
 {
+  print_xsb_backtrace();
   xsb_exit(xsb_segfault_message);
 }
 

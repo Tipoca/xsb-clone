@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.20 2002-11-04 18:09:01 dwarren Exp $
+** $Id: error_xsb.c,v 1.21 2004-04-09 21:03:05 dwarren Exp $
 ** 
 */
 
@@ -49,8 +49,6 @@
 #include "cut_xsb.h"
 #include "flags_xsb.h"
 #include "term_psc_xsb_i.h"
-
-extern void exit(int status);
 
 FILE *stdmsg;	     	     	  /* stream for XSB benign messages */
 FILE *stddbg;	     	     	  /* stream for XSB debug msgs */
@@ -117,6 +115,7 @@ void call_conv xsb_basic_abort(char *message)
   int isnew;
   Cell *tptr;
 
+  print_xsb_backtrace();
   if (!space_for_ball) {
     space_for_ball = (Cell *) malloc(2*sizeof(Cell)); /* 2 cells needed for term */
     if (!space_for_ball) xsb_exit("out of memory in xsb_basic_abort!");
