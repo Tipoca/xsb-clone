@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.12 1999-03-04 17:47:02 kostis Exp $
+** $Id: emuloop.c,v 1.13 1999-03-23 05:30:11 kifer Exp $
 ** 
 */
 
@@ -164,6 +164,10 @@ int     xctr;
 #include "wfs.i" 
 #endif 
 
+/* place for a meaningful message when segfault is detected */
+char *xsb_segfault_message;
+jmp_buf xsb_fall_back_environment;
+
 /*======================================================================*/
 /* the main emulator loop.						*/
 /*======================================================================*/
@@ -189,7 +193,10 @@ static int emuloop(byte *startaddr)
   ALPtr OldRetPtr;
   NODEptr TrieRetPtr;
   char  message[80];
-  
+  char *default_segfault_msg = "Memory violation occurred during evaluation";
+
+  xsb_segfault_message = default_segfault_msg;
+
   rreg = reg; /* for SUN */
   op1 = op2 = (Cell) NULL;
   lpcreg = startaddr;
@@ -1063,6 +1070,13 @@ contcase:     /* the main loop */
     goto contcase; 
 
   case fail:    /* PPP */
+    /* fallback point for segmentation faults */
+    if (setjmp(xsb_fall_back_environment)) {
+      char *tmp_message = xsb_segfault_message;
+      xsb_segfault_message = default_segfault_msg; /* restore default */
+      xsb_abort(tmp_message);
+    }
+  
     Fail1; 
     goto contcase;
 

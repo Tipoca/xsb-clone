@@ -18,10 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsberror.h,v 1.2 1999-02-04 22:06:34 kostis Exp $
+** $Id: xsberror.h,v 1.3 1999-03-23 05:30:16 kifer Exp $
 ** 
 */
 
+#include <setjmp.h>
 
 /*----------------------------------------------------------------------*/
 /* The following is a list of errors as defined by the Prolog ISO	*/
@@ -57,5 +58,9 @@ extern void err_handle(int, int, char *, int, char *, Cell);
 
 #define xsb_mesg(message)       fprintf(stderr, "%s\n", message)
 #define xsb_warn(warning)	fprintf(stderr, "++Warning: %s\n", warning)
+
+extern char *xsb_segfault_message;
+extern jmp_buf xsb_fall_back_environment;
+
 
 /*----------------------------------------------------------------------*/

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.2 1998/11/14 05:05:30 kifer Exp $
+** $Id: subp.c,v 1.3 1998/12/21 01:08:52 cbaoqiu Exp $
 ** 
 */
 
@@ -190,6 +190,11 @@ void keyint_proc(int sig)
   *asynint_ptr |= KEYINT_MARK;
 }
 
+void xsb_segfault_handler (int err)
+{
+  longjmp(xsb_fall_back_environment, 1);
+}
+
 void init_interrupt(void)
 {
 #if (defined(LINUX))
@@ -200,7 +205,9 @@ void init_interrupt(void)
 #else
   signal(SIGINT, keyint_proc); 
 #endif
+  signal(SIGSEGV, &xsb_segfault_handler);
 }
+
 
 void intercept(Psc psc)
 {
