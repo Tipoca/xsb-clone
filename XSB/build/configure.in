@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.45 1999-07-22 05:45:50 kifer Exp $
+## $Id: configure.in,v 1.46 1999-07-27 14:53:03 kifer Exp $
 ## 
 ##
 
@@ -653,7 +653,11 @@ fi
 AC_CHECK_PROG(perl_support, perl, "yes", "no")
 
 if test "${perl_support}" = "yes"; then
-   perl_archlib=`perl -MConfig -e 'print $Config{archlib}'`
+   #old versions of perl don't have Config module
+   # so we check for this as well
+   perl_archlib=`perl -MConfig -e 'print $Config{archlib}'` || perl_support=no
+fi
+if test "${perl_support}" = "yes"; then
    perl_cc_compiler=`perl -MConfig -e 'print $Config{cc}'`
    perl_ccflags=`perl -MConfig -e 'print $Config{ccflags}'`
    perl_libs=`perl -MConfig -e 'print $Config{libs}'`
