@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug.c,v 1.4 1999-01-19 15:36:22 kostis Exp $
+** $Id: debug.c,v 1.5 1999-01-28 09:03:03 cbaoqiu Exp $
 ** 
 */
 
@@ -474,31 +474,43 @@ void print_subgoal(FILE *fp, SGFrame subg)
 
 static void print_delay_element(FILE *fp, Cell del_elem)
 {
-    Psc  psc;
+    Psc  psc = 0;
     CPtr cptr;
     int arity, i;
     Cell tmp_cell;
+    char *name;
 
     if ((psc = get_str_psc(del_elem)) == delay_psc) {
       fprintf(fp, "%s(", get_name(psc));
       cptr = (CPtr)cs_val(del_elem);
       tmp_cell = cell(cptr + 1);
-      print_subgoal(fp, (SGFrame) string_val(tmp_cell)); fprintf(fp, ",");
+      print_subgoal(fp, (SGFrame) int_val(tmp_cell)); fprintf(fp, ",");
       tmp_cell = cell(cptr + 2);
-      fprintf(fp, "%p", (NODEptr) string_val(tmp_cell)); fprintf(fp, ",");
+      fprintf(fp, "%p", (NODEptr) int_val(tmp_cell)); fprintf(fp, ",");
       tmp_cell = cell(cptr + 3);
-      if (((CPtr) cs_val(tmp_cell)) == NEG_DELAY)
+      if (isinteger(tmp_cell)) {
 	fprintf(fp, "NEG");
+      }
       else {
-	psc = get_str_psc(cell(cptr + 3));
-	arity = get_arity(psc);
-	fprintf(fp, "%s/%d(", get_name(psc), arity);
-	cptr = (CPtr) cs_val(cell(cptr + 3));
- 	for (i = 0; i < arity; i++)
-	  printterm(cell(cptr + 1 + i), 1, 25);
+	if (isstring(tmp_cell)) {
+	  arity = 0;
+	  name = string_val(tmp_cell);
+	}
+	else {
+	  psc = get_str_psc(cell(cptr + 3));
+	  arity = get_arity(psc);
+	  name = get_name(psc);
+	}
+	fprintf(fp, "%s/%d(", name, arity);
+	if (arity > 0) {
+	  cptr = (CPtr) cs_val(cell(cptr + 3));
+	  for (i = 0; i < arity; i++)
+	    printterm(cell(cptr + 1 + i), 1, 25);
+	}
       }
       fprintf(fp, ")");
-    } else {
+    }
+    else {
       xsb_abort("Unknown delay list element in print_delay_element()");
     }
 }
