@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrsystem.flr,v 1.1 2001-07-24 01:54:49 kifer Exp $
+** $Id: flrsystem.flr,v 1.2 2001-08-06 06:12:06 kifer Exp $
 **
 */
 
@@ -51,3 +51,4 @@ libpath[#query(_Path)] :-
 
 tables[#abolish] :- abolish_all_tables@prolog().
 
+abort(X) :- flP2H(PX,X)@prolog(), abort(PX)@prolog().

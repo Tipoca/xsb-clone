@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdebugger.P,v 1.7 2001-07-30 06:22:42 kifer Exp $
+** $Id: flrdebugger.P,v 1.8 2001-08-06 06:12:06 kifer Exp $
 ** 
 */
 
@@ -542,6 +542,9 @@ write_hilog(Val) :-
 	;   print_item(Val)
 	).
 
+write_hilog(FLLIBMODLIT(Wrap,Args,Module)) :- !,
+	flora_write_goal(FLLIBMODLIT(Wrap,Args,Module)).
+
 write_hilog(Val) :-
 	is_commalist(Val),
 	!,
@@ -575,6 +578,7 @@ write_hilog(Val) :-
 	    ),
 	    (nonvar(WS) -> write_workspace(WS); true)
 	).
+
 write_hilog_args([]) :- true.
 write_hilog_args([Arg]) :- !, write_hilog(Arg).
 write_hilog_args([Arg|Rest]) :-
