@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.21 2001-04-02 22:41:48 gzyang Exp $
+** $Id: flrutils.P,v 1.22 2001-04-08 06:20:09 kifer Exp $
 **
 */
 
@@ -508,9 +508,10 @@ flora_check_workspace(Name) :-
 
 
 flora_copy_file(Source,Dest) :-
-	fmt_write_string(Cmd,"cp -f %s %s",args(Source,Dest)),
-	shell(Cmd,Res),
-	Res =:= 0.
+	path_sysop(copy,Source,Dest).
+	%%fmt_write_string(Cmd,"cp -f %s %s",args(Source,Dest)),
+	%%shell(Cmd,Res), %% shell is not portable
+	%%Res =:= 0.
 
 
 flora_set_xpp_options :- assert(xpp_options('-P -m -nostdinc')).
