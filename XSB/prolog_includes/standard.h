@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.h,v 1.1 1999-08-09 00:34:52 kifer Exp $
+** $Id: standard.h,v 1.2 1999-08-12 18:07:18 kifer Exp $
 ** 
 */
 
@@ -26,3 +26,8 @@
 #define STDIN	     0
 #define STDOUT	     1
 #define STDERR	     2
+
+#define OREAD	     0	  /* open for read        */
+#define OWRITE	     1	  /* open for write       */
+#define OAPPEND	     2	  /* open for append      */
+#define OSTRING	     3	  /* open for as a string */
