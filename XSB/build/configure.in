@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.141 2003-02-10 20:48:12 lfcastro Exp $
+## $Id: configure.in,v 1.142 2003-02-19 16:40:10 lfcastro Exp $
 ## 
 ##
 
@@ -1539,6 +1539,7 @@ AC_OUTPUT([ ${arch_config_prefix}/topMakefile:topMakefile.in
 	    ${arch_config_prefix}/modMakefile:modMakefile.in
 	    ${arch_config_prefix}/gppMakefile:gppMakefile.in
 	    ${arch_config_prefix}/smoMakefile:smoMakefile.in
+	    ${arch_config_prefix}/makedef.sh:makedef.sh.in
 	    ${arch_config_file}:${configuration_templ}
 	    makexsb:makexsb.in
 	    ${emudir}/extensions_xsb.h:extensions_xsb.in
