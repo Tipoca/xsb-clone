@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdebugger.P,v 1.8 2001-08-06 06:12:06 kifer Exp $
+** $Id: flrdebugger.P,v 1.9 2001-08-06 17:16:26 kifer Exp $
 ** 
 */
 
@@ -666,7 +666,10 @@ flora_read_debugger_data(WS,Datafile) :-
 	    (T = end_of_file -> true
 	    	    	     ;  assert(T), fail
 	    ),
-	process_control(CPP_process, wait),
+	process_control(CPP_process, wait(ExitStatus)),
+	(ExitStatus==0, !
+	; abort(('[Debugger] Error while preprocessing ', Datafile))
+	),
 	flora_clear_xpp_options,
 	file_close(IOportFromCPP),
 	conset(xpp_on,0),
