@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.66 2000-05-29 04:23:35 ejohnson Exp $
+** $Id: emuloop.c,v 1.67 2000-06-19 07:14:45 ruim Exp $
 ** 
 */
 
@@ -138,7 +138,7 @@ CPtr	ans_var_pos_reg;
 
 /*----------------------------------------------------------------------*/
 
-extern int  builtin_call(int), unifunc_call(int, CPtr);
+extern int  builtin_call(byte), unifunc_call(int, CPtr);
 extern Cell builtin_table[BUILTIN_TBL_SZ][2];
 extern Pair build_call(Psc);
 
@@ -1394,7 +1394,7 @@ DllExport int call_conv xsb(int flag, int argc, char *argv[])
    unsigned int magic_num;
    static double realtime;	/* To retain its value across invocations */
 
-   extern void dis(int);
+   extern void dis(xsbBool);
    extern char *init_para(int, char **);
    extern void init_machine(void), init_symbols(void);
 #ifdef FOREIGN
