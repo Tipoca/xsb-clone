@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.17 1999-08-20 05:46:17 kifer Exp $
+## $Id: testsuite.sh,v 1.18 1999-09-21 08:53:18 kostis Exp $
 ## 
 ##
 
@@ -234,9 +234,11 @@ if test -s $RES_FILE; then
 	rm -f $MSG_FILE
 else
 	echo "PASSED testsuite for $XEMU on $HOSTNAME"
+	rm -f $NEW_LOG
 fi
 
 rm -f $RES_FILE
+rm -f $LOG_FILE
 
 echo "Done"
 echo ==============================================================
