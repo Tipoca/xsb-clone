@@ -17,13 +17,13 @@
 #
 # For example:
 
-XSB/build           	mailx -s "XSB commit: %{}" kifer
-XSB/admin           	mailx -s "XSB commit: %{}" kifer
-XSB/packages/flora.*    mailx -s "XSB commit: %{}" kifer guizyang
+XSB/build           	mailx -s "XSB commit: %{}" kifer@cs.sunysb.edu
+XSB/admin           	mailx -s "XSB commit: %{}" kifer@cs.sunysb.edu
+XSB/packages/flora.*    mailx -s "XSB commit: %{}" kifer@cs.sunysb.edu guizyang@cs.sunysb.edu
 
-XSB/emu	       	        mailx -s "XSB commit: %{}" cbaoqiu kostis tswift luis
-XSB/syslib	        mailx -s "XSB commit: %{}" cbaoqiu kostis tswift luis
-XSB/lib	            	mailx -s "XSB commit: %{}" cbaoqiu kostis tswift luis
-XSB/cmplib	      	mailx -s "XSB commit: %{}" cbaoqiu kostis tswift luis
+XSB/emu	       	        mailx -s "XSB commit: %{}" cbaoqiu@cs.sunysb.edu kostis@csd.uu.se tswift@cs.sunysb.edu luis@cs.sunysb.edu
+XSB/syslib	        mailx -s "XSB commit: %{}" cbaoqiu@cs.sunysb.edu kostis@csd.uu.se tswift@cs.sunysb.edu luis@cs.sunysb.edu
+XSB/lib	            	mailx -s "XSB commit: %{}" cbaoqiu@cs.sunysb.edu kostis@csd.uu.se tswift@cs.sunysb.edu luis@cs.sunysb.edu
+XSB/cmplib	      	mailx -s "XSB commit: %{}" cbaoqiu@cs.sunysb.edu kostis@csd.uu.se tswift@cs.sunysb.edu luis@cs.sunysb.edu
 
 DEFAULT		(echo ""; whoami; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
