@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.98 2001-02-11 04:07:10 lfcastro Exp $
+## $Id: configure.in,v 1.99 2001-03-15 20:25:12 lfcastro Exp $
 ## 
 ##
 
@@ -831,8 +831,8 @@ if test "${CC}" = "gcc" -o "${with_gcc+set}" = "set"; then
    if test "${disable_jumptable}" != "yes"; then
      AC_DEFINE(JUMPTABLE_EMULOOP)
      jumptable=yes
-     CFLAGS=`echo ${CFLAGS} | sed "s/-ansi//" -`
-     CFLAGS=`echo ${CFLAGS} | sed "s/-pedantic//" -`
+     CFLAGS=`echo ${CFLAGS} | sed -e "s/-ansi//"`
+     CFLAGS=`echo ${CFLAGS} | sed -e "s/-pedantic//"`
    fi
 fi
 
