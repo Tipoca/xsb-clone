@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.29 2003-02-03 22:50:21 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.30 2003-02-07 15:26:56 lfcastro Exp $
 ** 
 */
 
@@ -593,7 +593,7 @@ xsbBool fmt_read(void)
       }
       if (isref(Arg))
 	c2p_int(int_arg,Arg);
-      else if (int_arg != oint_val(Arg)) return FALSE;
+      else if (int_arg != (Integer)oint_val(Arg)) return FALSE;
       break;
     case 'f':
       curr_assignment = fscanf(fptr, aux_fmt.string,
