@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.11 1999-02-27 21:49:45 cbaoqiu Exp $
+** $Id: emuloop.c,v 1.12 1999-03-04 17:47:02 kostis Exp $
 ** 
 */
 
@@ -591,7 +591,6 @@ contcase:     /* the main loop */
     pad64;
     op2 = *(pw)lpcreg; lpcreg+=4;
     pad64;
-#ifdef GC
 #ifdef GC_TEST
     if ((infcounter++ > GC_INFERENCES) || ((ereg - hreg) < op2))
       {
@@ -617,7 +616,6 @@ contcase:     /* the main loop */
 	}
 	/* are there any localy cached quantities that must be reinstalled ? */
       }
-#endif
     goto contcase;
 
   case switchonterm: /* PPR-L-L */
