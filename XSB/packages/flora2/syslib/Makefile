@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.2 2001-01-09 01:35:33 gzyang Exp $
+## $Id: Makefile,v 1.3 2001-03-13 17:26:41 gzyang Exp $
 ## 
 ##
 
@@ -39,6 +39,7 @@ ALLOBJS = flranswer.O \
 	  flraggmin.O \
 	  flraggsum.O \
 	  flrdbop.O \
+	  flrbtdbop.O \
 	  flrshdirect.O
 
 EMU_INCLUDES = $(XSBDIR)/emu/builtin.h \
@@ -119,6 +120,10 @@ flraggsum.O : flraggsum.P $(FLORA_TERMS)
 
 flrdbop.O : flrdbop.P $(FLORA_TERMS)
 	@echo 'mc(flrdbop,$(OPTION)).' >> cmd...
+
+
+flrbtdbop.O : flrbtdbop.P $(FLORA_TERMS)
+	@echo 'mc(flrbtdbop,$(OPTION)).' >> cmd...
 
 
 flrshdirect.O : flrshdirect.P $(FLORA_TERMS)
