@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap.h,v 1.4 1999-01-23 17:41:37 kostis Exp $
+** $Id: heap.h,v 1.5 1999-02-01 23:56:03 kostis Exp $
 ** 
 */
 
@@ -46,10 +46,16 @@
 #define new_heap_node(sh_reg, x) bld_copy(sh_reg++, x)
 /* make a new heap node with value x (one word type) */
 
+/*----- The following is for the type of garbage collection to be used -*/
+
+#define NO_GC      0
+#define SLIDING_GC 1
+#define COPYING_GC 2
+
 /*----- The following functions are used in other parts of the system --*/
 
 extern int  gc_heap(int);
-extern int  mark_heap(int,int,int);
+extern int  mark_heap(int,int *);
 extern void glstack_realloc(int,int);
 
 extern void print_cp(int);

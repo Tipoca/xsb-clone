@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.17 1999-01-29 20:06:44 kostis Exp $
+** $Id: builtin.c,v 1.18 1999-02-01 23:55:58 kostis Exp $
 ** 
 */
 
@@ -1106,7 +1106,7 @@ int builtin_call(byte number)
     /* +R2: a buffer (of length 16) for returned structure */
 #ifdef HAVE_GETHOSTBYNAME
     hostptr = gethostbyname(ptoc_string(1));
-    bcopy(hostptr->h_addr, ptoc_string(2), hostptr->h_length);
+    memmove(ptoc_string(2), hostptr->h_addr, hostptr->h_length);
 #else
     xsb_abort("sys_gethost is not available for this configuration");
 #endif
@@ -1540,7 +1540,7 @@ int builtin_call(byte number)
       }
     }
     else{
-      xsb_abort("Unknown Usage in intern:delete_trie/2\n");
+      xsb_abort("Unknown usage in intern:delete_trie/2\n");
     }
     break;
 	    
@@ -1551,7 +1551,7 @@ int builtin_call(byte number)
   case PRINT_REGS: print_regs(10,0) ; return TRUE ;
   case PRINT_ALL_STACKS: print_all_stacks() ; return TRUE ;
   case EXP_HEAP: glstack_realloc(glstack.size + 1,0) ; return TRUE ;
-  case MARK_HEAP: mark_heap(ptoc_int(1),0,0) ; return TRUE ;
+  case MARK_HEAP: mark_heap(ptoc_int(1),&tmpval) ; return TRUE ;
   case GC_HEAP: return(gc_heap(0)) ;
 
   case FINDALL_INIT: return(findall_init()) ;
