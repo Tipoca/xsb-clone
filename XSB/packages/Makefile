@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.29 2003-09-29 13:05:13 tschrijvers Exp $
+## $Id: Makefile,v 1.30 2004-09-22 02:41:05 kifer Exp $
 ## 
 ##
 
@@ -78,7 +78,7 @@ flora2::
 	@echo ""
 	@rm -f flora2.P flora2$(OBJEXT)
 	@ln -s flora2/flora2.P .
-	cd flora2; makeflora all $(XSB)
+	cd flora2; makeflora all ../$(XSB)
 
 #Add interprolog
 iprolog::
