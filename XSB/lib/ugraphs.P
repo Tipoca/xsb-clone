@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ugraphs.P,v 1.2 2000-06-18 00:05:16 cbaoqiu Exp $
+** $Id: ugraphs.P,v 1.3 2000-06-19 22:18:20 cbaoqiu Exp $
 **
 */
 
@@ -93,7 +93,7 @@
 :- import compare/3, abort/0, integer/1 from standard.
 :- import sort/2, keysort/2 from setof.
 :- import file_write/2, file_nl/1 from xsb_writ.
-:- import ord_list_to_assoc/2, get_assoc/3, get_assoc/5 from assoc.
+:- import ord_list_to_assoc/2, get_assoc/3, get_assoc/5 from assoc_xsb.
 :- import 'C'/3 from dcg.
 
 %:- import random/1 from random.
