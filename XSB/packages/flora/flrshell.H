@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.14 2000-05-19 03:55:26 kifer Exp $
+** $Id: flrshell.H,v 1.15 2000-12-27 00:32:12 kifer Exp $
 **
 */
 
@@ -71,6 +71,8 @@
 	STD_FPREFIX(warning_nl)/2,
 	flora_display_msg/1, flora_display_msg/2
    from flrutils.
+
+:- import pop_stdin/1 from push_io.
 
 :- import glob_directory/4 from wildmatch.
 
