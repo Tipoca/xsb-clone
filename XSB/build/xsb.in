@@ -22,7 +22,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: xsb.in,v 1.7 2001-04-21 22:52:49 kifer Exp $
+## $Id: xsb.in,v 1.8 2001-05-29 04:02:44 kifer Exp $
 ## 
 ##
 
@@ -91,7 +91,7 @@ do
 done
 
 if test -x "$executable" ; then
-   eval "$executable $xsb_cmd"
+   eval "exec $executable $xsb_cmd"
 else
    echo "${executable}: "
    echo "       file doesn't exist or is not executable"
