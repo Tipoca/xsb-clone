@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.H,v 1.16 2003-02-21 17:57:11 lfcastro Exp $
+** $Id: foreign.H,v 1.17 2004-01-21 20:03:26 dwarren Exp $
 ** 
 */
 
@@ -44,6 +44,8 @@
 :- import substring/4 from machine.
 :- import parse_filename/4 from machine.
 :- import message/1, warning/1, time_message/2 from auxlry.
+:- import assert/1, retractall/1 from assert.
+:- import current_compiled_module/1 from compile.
 :- import read/1, see/1, seen/0, write/1, put/1, tell/1, told/0, repeat/0,
 	  atom/1, file_exists/1, cputime/1, abort/1, seeing/1, telling/1
      from standard.
