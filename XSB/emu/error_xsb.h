@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.10 2004-08-10 22:37:08 tswift Exp $
+** $Id: error_xsb.h,v 1.11 2004-08-19 22:15:24 tswift Exp $
 ** 
 */
 
@@ -106,6 +106,7 @@ extern void xsb_segfault_quitter(int);
 int unwind_stack(void);
 
 void call_conv xsb_type_error(char *,Cell , char *,int, int) ;
+void call_conv xsb_instantiation_error(char *, int, int, char *) ;
 void call_conv xsb_basic_abort(char *);
 
 /* should include these from whereever they are.... split out from biassert **/

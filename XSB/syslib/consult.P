@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.43 2004/07/28 14:48:24 vidrevich Exp $
+** $Id: consult.P,v 1.44 2004/07/30 15:03:00 dwarren Exp $
 ** 
 */
 
@@ -300,7 +300,6 @@ load_dyn(File) :-
 %% TLS: changed behavior to throw error rather than fail to make
 %% compatable with other ISO type errors, e.g. open/[3,4].  
 load_dyn(File,Dir) :-
-	check_stream(File,'load_dyn/1',1),
 	get_fname(File,SExt,Base,Mod),
 	load_dyn0(SExt,Base,Mod,Dir).
 

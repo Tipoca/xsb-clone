@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.P,v 1.14 2004/01/28 18:31:05 dwarren Exp $
+** $Id: basics.P,v 1.15 2004/02/02 14:00:38 dwarren Exp $
 ** 
 */
 
@@ -259,7 +259,7 @@ member(X,[_|L]) :- member(X,L).
 memberchk(X,[X|_]) :- !.
 memberchk(X,[_|L]) :- memberchk(X,L).
 
-%---
+%---SW
 % subset
 subset([],_).
 subset([H|T],List) :-

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.59 2004-04-09 21:03:05 dwarren Exp $
+** $Id: builtin.h,v 1.60 2004-08-19 22:15:24 tswift Exp $
 ** 
 */
 
@@ -119,6 +119,7 @@
 #define PSC_SPY		        101
 #define PSC_TABLED	        102
 
+#define PRINTOFILES                103
 #define IS_INCOMPLETE           104
 
 #define GET_PTCP	        107

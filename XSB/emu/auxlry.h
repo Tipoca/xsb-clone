@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.18 2003-03-05 19:59:58 lfcastro Exp $
+** $Id: auxlry.h,v 1.19 2004-08-19 22:15:24 tswift Exp $
 ** 
 */
 
@@ -68,7 +68,7 @@ typedef enum XSB_Execution_Mode {
 
 extern Exec_Mode xsb_mode;
 
-#define fileptr(xsb_filedes)  open_files[xsb_filedes]
+#define fileptr(xsb_filedes)  open_files[xsb_filedes].file_ptr
 
 extern char *xsb_default_segfault_msg;
 extern char *xsb_segfault_message;
