@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.22 2002-03-02 07:25:20 kifer Exp $
+## $Id: Makefile,v 1.23 2002-03-04 09:25:54 kifer Exp $
 ## 
 ##
 
@@ -89,6 +89,7 @@ all: init $(ALLOBJS) finish
 	cd debugger; $(MAKE)
 	cd pkgs; $(MAKE)
 	cd demos; $(MAKE)
+	cd docs; $(MAKE)
 	@cat $(XSBDIR)/build/.flora*.tmp
 
 
