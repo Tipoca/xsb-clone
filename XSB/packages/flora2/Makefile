@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.14 2001-05-03 20:36:08 kifer Exp $
+## $Id: Makefile,v 1.15 2001-06-10 02:00:52 kifer Exp $
 ## 
 ##
 
@@ -43,6 +43,7 @@ ALLOBJS = flroperator.O \
 	  flrcoder.O \
 	  flrutils.O \
 	  flrwrapper.O \
+	  flrcompileinclude.O \
 	  flrundefhook.O \
 	  flrshell.O
 
@@ -155,6 +156,9 @@ flrundefhook.O : flrundefhook.P flrundefhook.H $(FLORA_TERMS)
 
 flrshell.O : flrshell.P flrshell.H $(FLORA_TERMS)
 	@echo 'mc(flrshell,$(OPTION)).' >> cmd...
+
+flrcompileinclude.O : flrcompileinclude.P flrcompileinclude.H $(FLORA_TERMS) $(XSB_EMU_FLAG_DEFS)
+	@echo 'mc(flrcompileinclude,$(OPTION)).' >> cmd...
 
 
 init:

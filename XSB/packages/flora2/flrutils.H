@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.17 2001-06-07 08:46:10 kifer Exp $
+** $Id: flrutils.H,v 1.18 2001-06-10 02:00:52 kifer Exp $
 **
 */
 
@@ -144,8 +144,9 @@
 	flora_compile_internal/2,
 	flora_load_module_internal/1,
 	flora_load_module_internal/2,
-	flCompileInclude/1,
 	flP2H/2,
+	flora_locate_file/3,
+	flora_FLH_filename/2,
 	flloadtrailer/1,
 	flloadtrailer/2,
 	flsetuptrailer/1,
@@ -158,5 +159,6 @@
 	flora_noop_command/1,
 	flora_check_filename/1,
 	flora_set_xpp_options/0,
+	flora_clear_xpp_options/0,
 	flora_list2conjunct/2,
 	flora_check_workspace/1.
