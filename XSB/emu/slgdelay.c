@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.11 1999/03/04 06:49:44 cbaoqiu Exp $
+** $Id: slgdelay.c,v 1.12 1999/03/06 03:34:53 cbaoqiu Exp $
 ** 
 */
 
@@ -507,7 +507,6 @@ static void handle_unsupported_answer_subst(NODEptr as_leaf)
   simplify_pos_unsupported(as_leaf);
   if (is_completed(unsup_subgoal)) {
     if (subgoal_fails(unsup_subgoal)) {
-      mark_subgoal_failed(unsup_subgoal);
       simplify_neg_fails(unsup_subgoal);
     }
   }
