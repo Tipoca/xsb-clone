@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop_aux.h,v 1.3 2001-09-21 15:01:15 tswift Exp $
+** $Id: emuloop_aux.h,v 1.4 2001-10-05 19:11:40 tswift Exp $
 ** 
 */
 
@@ -48,6 +48,12 @@
 
 /*----------------------------------------------------------------------*/
 #ifdef PROFILE
+#if (!defined(CHAT))
+#define SHARING_PROFILE
+#endif
+#endif
+
+#ifdef SHARING_PROFILE
 #define RESTORE_SUB                                                       \
 {                                                                         \
   CPtr tbreg;                                                             \
