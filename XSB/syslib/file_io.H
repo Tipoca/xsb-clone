@@ -18,18 +18,17 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.16 2000/12/27 00:28:24 kifer Exp $
+** $Id: file_io.H,v 1.17 2001/03/26 01:38:15 kifer Exp $
 ** 
 */
 
 
 :- import stat_flag/2, file_function/7,
-	%%intern_string/2,
-    	file_stat/3, formatted_io/5 
+	sys_system/7, formatted_io/5 
       from machine.
 :- import conpsc/2, psc_set_type/2, psc_set_prop/2 from machine.
 
-:- import abort/1, atom_codes/2
+:- import abort/1, atom_codes/2, '\='/2
       from standard.
 
 :- import gensym/2 from gensym.

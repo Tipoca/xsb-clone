@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.35 2000-12-08 17:26:46 ejohnson Exp $
+** $Id: builtin.h,v 1.36 2001-03-26 04:59:02 kifer Exp $
 ** 
 */
 
@@ -92,7 +92,6 @@
 #define SYS_GETHOST		 57
 #define SYS_ERRNO		 58
 
-#define FILE_STAT		 60
 #define FILE_WRITEQUOTED	 61
 #define GROUND  		 62
 

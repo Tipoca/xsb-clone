@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.P,v 1.40 2001-03-16 13:20:52 tswift Exp $
+** $Id: builtin.P,v 1.41 2001-03-26 04:59:03 kifer Exp $
 ** 
 */
 
@@ -120,7 +120,6 @@ inline_builtin(sys_system, 7, SYS_SYSTEM).
 inline_builtin(sys_gethost, 2, SYS_GETHOST).
 inline_builtin(sys_errno, 1, SYS_ERRNO).
 
-inline_builtin(file_stat, 3, FILE_STAT).
 inline_builtin(file_writequoted, 2, FILE_WRITEQUOTED).
 inline_builtin(ground, 1, GROUND).
 

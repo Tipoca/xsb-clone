@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.117 2001-03-17 05:44:02 kifer Exp $
+** $Id: builtin.c,v 1.118 2001-03-26 04:59:02 kifer Exp $
 ** 
 */
 
@@ -112,7 +112,6 @@
 extern int  sys_syscall(int);
 extern xsbBool sys_system(int);
 extern xsbBool formatted_io(void), read_canonical(void);
-extern xsbBool file_stat(void);
 extern xsbBool private_builtin(void);
 
 extern void xsb_segfault_quitter(int err);
@@ -646,7 +645,6 @@ void init_builtin_table(void)
   set_builtin_table(SYS_SYSTEM, "sys_system");
   set_builtin_table(SYS_GETHOST, "sys_gethost");
   set_builtin_table(SYS_ERRNO, "sys_errno");
-  set_builtin_table(FILE_STAT, "file_stat");
   set_builtin_table(FILE_WRITEQUOTED, "file_writequoted");
   set_builtin_table(GROUND, "ground");
 
@@ -1465,9 +1463,6 @@ int builtin_call(byte number)
   case SYS_ERRNO:			/* R1: -Int (errno) */
     ctop_int(1, errno);
     break;
-  case FILE_STAT: /* file_stat(+FileName, +StatFunction, -Result) 
-		     Used to obtain file mod time, size, etc., using stat() */
-    return file_stat();
   case FILE_WRITEQUOTED: {
     FILE* fptr;
     int   tmpval = ptoc_int(1);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_defs_xsb.h,v 1.2 1999/11/16 19:06:02 kifer Exp $
+** $Id: system_defs_xsb.h,v 1.3 2001/03/26 01:38:16 kifer Exp $
 ** 
 */
 
@@ -32,3 +32,6 @@
 
 #define IS_PLAIN_FILE	     	 7
 #define IS_DIRECTORY	     	 8
+
+#define STAT_FILE_TIME           9
+#define STAT_FILE_SIZE           10

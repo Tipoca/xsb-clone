@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_defs_xsb.h,v 1.3 2000-12-27 00:30:05 kifer Exp $
+** $Id: io_defs_xsb.h,v 1.4 2001-03-26 04:59:02 kifer Exp $
 ** 
 */
 
@@ -49,7 +49,3 @@
 #define FMT_WRITE_STRING   2
 #define FMT_READ       	   3
 
-
-/* OP numbers for file_stat */
-#define FILE_STAT_TIME	  0
-#define FILE_STAT_SIZE	  1
