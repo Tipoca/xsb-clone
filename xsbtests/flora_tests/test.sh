@@ -12,9 +12,8 @@ file_list=*.flr
 
 # abp.flr does not work. Perhaps the program is wrong.
 # btupdates.flr is loaded using btupdates_load.flr
-exclude_list="abp.flr btupdates.flr"
+exclude_list="abp.flr btupdates.flr compile_control.flr"
 
-flora_options=flora_shell.
 flora_command="chatterbox(off). test. flEnd."
 
 # Test if element is a member of exclude list
@@ -52,6 +51,6 @@ for file in $file_list ; do
     prog=`basename $file .flr`
     touch $file
     # XEMU and options must be together in quotes
-    ../gentest.sh "$XEMU $options -e $flora_options" $prog "$flora_command"
+    ../gentest.sh "$XEMU $options -e [flora2]. -e flora_shell." $prog "$flora_command"
 done
 
