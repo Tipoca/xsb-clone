@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.50 2000-05-29 04:23:40 ejohnson Exp $
+** $Id: tries.c,v 1.51 2000-06-17 23:26:13 kifer Exp $
 ** 
 */
 
@@ -1523,7 +1523,14 @@ BTNptr whole_term_chk_ins(Cell term, BTNptr *hook, int *flagptr)
     Last_Nod_Sav = Paren;
     simple_table_undo_bindings;
 
-    *flagptr = flag;
+    /* if node was deleted, then return 0 to indicate that the insertion took
+       place conceptually (even if not physically */
+    if (IsDeletedNode(Paren)) {
+      *flagptr = 0;
+      undelete_branch(Paren);
+    } else
+      *flagptr = flag;
+
     return(Paren);
 }
 
