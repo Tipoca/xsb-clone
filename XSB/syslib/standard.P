@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.38 2000/05/25 22:57:02 kifer Exp $
+** $Id: standard.P,v 1.39 2000/06/19 03:10:50 kifer Exp $
 ** 
 */
 
@@ -299,6 +299,8 @@ print(T) :-	% Not what is supposed 2 B
 %---------------------------------------------------------------%
 % Prolog Meta-Logical Predicates (now most of them are in C)	%
 %---------------------------------------------------------------%
+
+is_attv(X) :- is_attv(X).
 
 var(X) :- var(X).
 

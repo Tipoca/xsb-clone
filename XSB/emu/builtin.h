@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.31 2000-07-31 20:27:54 ejohnson Exp $
+** $Id: builtin.h,v 1.32 2000-08-05 07:59:23 cbaoqiu Exp $
 ** 
 */
 
@@ -181,6 +181,7 @@
 
 #define SEGFAULT_HANDLER	182
 
+#define IS_ATTV			189 /* similar to IS_LIST */
 #define VAR			190
 #define NONVAR			191
 #define ATOM			192

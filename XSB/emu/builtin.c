@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.105 2000-07-31 20:27:53 ejohnson Exp $
+** $Id: builtin.c,v 1.106 2000-08-05 07:59:23 cbaoqiu Exp $
 ** 
 */
 
@@ -658,6 +658,7 @@ void init_builtin_table(void)
   set_builtin_table(PRIVATE_BUILTIN, "private_builtin");
   set_builtin_table(SEGFAULT_HANDLER, "segfault_handler");
 
+  set_builtin_table(IS_ATTV, "is_attv");
   set_builtin_table(VAR, "var");
   set_builtin_table(NONVAR, "nonvar");
   set_builtin_table(ATOM, "atom");

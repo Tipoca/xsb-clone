@@ -18,11 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.2 1999-10-29 14:29:05 kostis Exp $
+** $Id: std_cases_xsb_i.h,v 1.3 2000-08-05 07:59:23 cbaoqiu Exp $
 ** 
 */
 
 
+  case IS_ATTV:	/* r1: ?term */
+    return isattv(ptoc_tag(1));
 
   case VAR:		/* r1: ?term */
     return isref(ptoc_tag(1));
