@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.19 2003/01/06 04:46:36 kifer Exp $
+** $Id: loader.H,v 1.20 2003/03/05 20:05:22 lfcastro Exp $
 ** 
 */
 
@@ -33,6 +33,7 @@
 :- import default_error_handler/1 from error_handler.
 :- import conset/2 from gensym.
 :- import reconsult/1 from consult.
+:- import compile/1 from consult.
 :- import standard_symbol/3 from std_xsb.
 :- import library_directory/1 from usermod.
 :- import xsb_configuration/2 from xsb_configuration.

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.38 2002/12/26 23:39:01 tswift Exp $
+** $Id: loader.P,v 1.39 2003/01/06 04:46:36 kifer Exp $
 ** 
 */
 
@@ -260,7 +260,7 @@ load_pred0(PSC) :-
 	stat_set_flag(HITRACE, Hitrace).  % resume hitrace status if successful
 
 load_pred1(PSC) :-
-	'_$savecp'(B),
+%%	'_$savecp'(B),
 	psc_name(PSC, Name),
 	psc_arity(PSC, Arity),
 	psc_env(PSC, Env), 
@@ -276,7 +276,8 @@ load_pred1(PSC) :-
 	    (	psc_type(PSC, NType),
 		(   NType =:= T_PRED; NType =:= T_FORN; NType =:= T_DYNA ), 
 		%% module loaded, and pred/foreign-pred is there
-		'_$cutto'(B)
+		%% '_$cutto'(B)
+		!
 		;
 		throw(error(undefined_predicate(Name,Arity,ModName),
 			    ['The predicate: ', Name, '/', Arity,
@@ -369,7 +370,8 @@ load(ModName) :-
 	%% then recompile the SRC file and load it.
 	;   (   search_file(ModName, FileName_P, XSB_SRC_EXTENSION_ATOM),
 		machine_file_exists(FileName_P)
-	    ->	reconsult(FileName_P)
+	    ->	compile(FileName_P),
+		load(ModName)
 	    )
 	;   tilde_expand_filename(ModName,ExpandedModName),
 	    throw(error(existence_error(module,ExpandedModName),
