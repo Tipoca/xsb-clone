@@ -1,0 +1,11 @@
+== test_attv_interrupt OK
+== test_deref OK
+== test_implict_unify OK
+== test_unify OK
+== test_update 1 OK
+== test_update 2 OK
+Attribute = v(11)
+Attribute = v(22)
+PASSED attv_test!
+Value = 5
+Var's attribute = v(1)
