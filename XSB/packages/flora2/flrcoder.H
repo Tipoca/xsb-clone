@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.H,v 1.6 2001-06-07 08:46:11 kifer Exp $
+** $Id: flrcoder.H,v 1.7 2001-06-13 15:18:56 gzyang Exp $
 **
 */
 
@@ -37,7 +37,11 @@
 
 :- import flora_prlgdef/2 from flrprolog.
 
-:- import flora_wspredicate/4, flora_storage_name/2 from flrwrapper.
+:- import
+	flora_wspredicate/4,
+	flora_storage_name/2,
+	flora_sysmod_predicate/4
+   from flrwrapper.
 
 :- export
 	flora_divide_program/3,

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.19 2001-06-10 05:00:14 kifer Exp $
+** $Id: flrutils.H,v 1.20 2001-06-13 15:18:56 gzyang Exp $
 **
 */
 
@@ -67,7 +67,8 @@
 	file_close/1,
 	print_file_contents/1,
 	copyIOport/2,
-	path_sysop/2
+	path_sysop/2,
+	path_sysop/3
    from file_io.
 
 :- import process_control/2 from shell.
