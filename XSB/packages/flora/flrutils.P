@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.23 1999-07-26 03:52:30 kifer Exp $
+** $Id: flrutils.P,v 1.24 1999-08-01 07:41:18 kifer Exp $
 **
 */
 
@@ -802,6 +802,27 @@ flora_locate_file(In,In) :-
 
 flora_locate_file(In,Out) :-
 	flora_library_directory(LibDir),
+	slash(S),
+	fmt_write_string(Out,'%s%s%s',f(LibDir,S,In)),
+	file_exists(Out),
+	!.
+
+flora_locate_file(In,Out) :-
+	xsb_configuration(libdir, LibDir),
+	slash(S),
+	fmt_write_string(Out,'%s%s%s',f(LibDir,S,In)),
+	file_exists(Out),
+	!.
+
+flora_locate_file(In,Out) :-
+	xsb_configuration(syslibdir, LibDir),
+	slash(S),
+	fmt_write_string(Out,'%s%s%s',f(LibDir,S,In)),
+	file_exists(Out),
+	!.
+
+flora_locate_file(In,Out) :-
+	xsb_configuration(cmplibdir, LibDir),
 	slash(S),
 	fmt_write_string(Out,'%s%s%s',f(LibDir,S,In)),
 	file_exists(Out),
