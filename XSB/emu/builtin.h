@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.41 2001-12-29 06:28:15 kifer Exp $
+** $Id: builtin.h,v 1.42 2002-01-03 23:57:48 tswift Exp $
 ** 
 */
 
@@ -242,3 +242,6 @@
 #define SOCKET_REQUEST          252
 #define JAVA_INTERRUPT          253
 #define FORCE_TRUTH_VALUE	254
+
+/* This hook is for Interprolog */
+#define INTERPROLOG_CALLBACK    255

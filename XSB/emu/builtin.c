@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.134 2001-12-29 06:28:15 kifer Exp $
+** $Id: builtin.c,v 1.135 2002-01-03 23:57:48 tswift Exp $
 ** 
 */
 
@@ -94,6 +94,10 @@
 
 #ifdef XSB_ODBC
 #include "odbc_xsb.h"
+#endif
+
+#ifdef XSB_INTERPROLOG
+#include "interprolog_xsb.h"
 #endif
 
 #ifdef PROFILE
@@ -799,6 +803,7 @@ void init_builtin_table(void)
 
   set_builtin_table(JAVA_INTERRUPT, "setupJavaInterrupt");
   set_builtin_table(FORCE_TRUTH_VALUE, "force_truth_value");
+  set_builtin_table(INTERPROLOG_CALLBACK, "interprolog_callback");
 }
 
 /*----------------------------------------------------------------------*/
@@ -1685,6 +1690,10 @@ int builtin_call(byte number)
     
 #ifdef XSB_ODBC
 #include "odbc_xsb_i.h"
+#endif
+
+#ifdef XSB_INTERPROLOG
+#include "interprolog_xsb_i.h"
 #endif
     
 /*----------------------------------------------------------------------*/
