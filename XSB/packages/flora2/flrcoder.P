@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.P,v 1.1 2001-01-08 20:54:45 gzyang Exp $
+** $Id: flrcoder.P,v 1.2 2001-01-09 01:33:55 gzyang Exp $
 **
 */
 
@@ -666,7 +666,20 @@ flora_build_code(Term,DWS,Code) :-
 
 	; is_prquery(Term,GoalTerm) ->
 	    flora_build_query(GoalTerm,DWS,Code)
+
+	; is_prdirective(Term,Direct) ->
+	    flora_build_directive(Direct,DWS,Code)
 	).
+
+
+/****************************************************************************
+  flora_build_directive(+Term,+DefaultWorkspace,-Code)
+
+  Note: For now, only import directive is supported. The import directive
+        of XSB is callable.
+****************************************************************************/
+flora_build_directive(Term,DWS,Code) :-
+	flora_build_struct(Term,DWS,FLBODYPREFIX,_VarList,Code).
 
 
 /****************************************************************************
