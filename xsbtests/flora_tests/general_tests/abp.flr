@@ -6,10 +6,7 @@ abp:ea.
 emptysmsg[bit->u, data->u].
 emptyamsg[bit->u].
 
-:- firstorder
-	int/1.
-:- table 
-	int/1.
+:- table int/1.
 :- equality flogic.
 
 int(1).

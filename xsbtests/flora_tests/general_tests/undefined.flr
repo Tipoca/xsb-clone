@@ -15,19 +15,17 @@ tst2 :- q(X)(_Y,_Z),
 	writeln(x=X)@flora(io).
 
 tst3 :- write('tst3 should cause an error: ')@flora(io),
-	push_abort_cutpoint@prolog(standard),
-	r(a)(_X,_Y),
+	catch(r(a)(_X,_Y),_,fail)@prolog(),
 	writeln('tst3: undefinedness check doesn''t work').
-tst3 :- pop_abort_cutpoint@prolog(standard).
+tst3 :- !.
 
 tst4 :- unless a[_Y->_Z] do
             writeln('tst4 failed, as expected: ')@flora(io).
 
 tst5 :- write('tst5 should cause an error: ')@flora(io),
-	push_abort_cutpoint@prolog(standard),
-	_X[c->_Y],
+	catch(_X[c->_Y], _, fail),
 	writeln('tst5: undefinedness check doesn''t work').
-tst5 :- pop_abort_cutpoint@prolog(standard).
+tst5 :- !.
 
 
 test :- tell(temp)@prolog(),

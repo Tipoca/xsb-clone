@@ -43,13 +43,14 @@ print_to_file(File,Goal) :-
 
 
 %% This also updates the histogram
-Stud[#weighted_average(AsgList,Val)] :-
+Stud[weighted_average(AsgList,Val)] :-
 	Stud:student@MODULE,
 	weighted_sum(Stud,AsgList,Result),
 	totals(AsgList,Stud.course@MODULE, Total),
 	Val1 is Result/Total,
 	round(Val1,Val),
-	updateHistogram(Stud.course@MODULE,averages,Val).
+	updateHistogram(Stud.course@MODULE,averages,Val),
+	!.
 
 Stud[grade(AsgList)->Val] :-
 	Stud:student@MODULE,
@@ -57,7 +58,7 @@ Stud[grade(AsgList)->Val] :-
 	Bounds = collectset{V| gradeMap(Stud.course)[_G->V]@MODULE},
 	%% but we need in descending order
 	reverse(Bounds,DescendingBounds)@prolog(basics),
-	Stud[#weighted_average(AsgList,AvgVal)],
+	Stud[weighted_average(AsgList,AvgVal)],
 	find_grade(Stud,AvgVal,DescendingBounds,Grade),
 	Val = Grade.
 
@@ -122,9 +123,10 @@ Stud[#print_id_scorelist_internal([Asg|AsgList])] :-
 
 Stud[#print_id_scorelist_grade(AsgList)] :-
 	Stud[#print_id_scorelist(AsgList)],
-	fmt_write('    %s', arg(Stud.grade(AsgList)@grade))@flora(io).
+	Stud.grade(AsgList) = Gr,
+	format('    ~w', [Gr])@prolog(format).
 
-%% Print ID with the first 2 digits stripped
+%% Print ID with last 2 digits stripped
 print_id(Stud) :-
 	%%substring(Stud,2,-1,StrippedID)@prolog(),
 	if str_sub('USB',Stud,0)@prolog()
@@ -138,10 +140,10 @@ print_id(Stud) :-
 Stud[#print_full(AsgList)] :-
 	Stud[#print_basic_info],
 	Stud[#print_scores(AsgList)],
-	Stud[#weighted_average(AsgList,AvgVal)],
-	fmt_write('    Average:    %d\n', arg(AvgVal))@flora(io),
-	fmt_write('    Grade:      %s\n',
-	          arg(Stud.grade(AsgList)@grade))@flora(io),
+	Stud[weighted_average(AsgList,AvgVal)],
+	format('    Average:    ~w~n', [AvgVal])@prolog(format),
+	Stud[grade(AsgList)->Gr],
+	format('    Grade:      ~w~n', [Gr])@prolog(format),
 	nl@prolog().
 
 Stud[#print_basic_info] :-

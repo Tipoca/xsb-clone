@@ -37,6 +37,7 @@ OBJEXT=.xwam
 # Remove the Prolog and object files to make sure we are using the 
 # latest compiled sources
 rm -f *.P *${OBJEXT} *.fld *.fdb
+rm -f programs/*.P programs/*${OBJEXT} programs/*.fld programs/*.fdb
 rm -f ../datafiles/*.P    ../datafiles/*${OBJEXT} \
           ../datafiles/*.fld  ../datafiles/*.fdb
 

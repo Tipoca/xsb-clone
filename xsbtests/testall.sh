@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.15 2002-07-12 07:06:46 kifer Exp $
+## $Id: testall.sh,v 1.16 2002-10-18 06:41:03 kifer Exp $
 ## 
 ##
 
@@ -96,7 +96,8 @@ if test -z "$only_tests"; then
 else
     testlist=$only_tests
 fi
-    echo $testlist
+
+echo $testlist
 
 # Run each test in $testlist except for the tests in $excluded_tests
 for tst in $testlist ; do
