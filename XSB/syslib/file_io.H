@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.7 1999/08/03 19:17:10 kifer Exp $
+** $Id: file_io.H,v 1.8 1999/08/16 07:25:04 kifer Exp $
 ** 
 */
 
@@ -28,8 +28,8 @@
     	file_stat/3, formatted_io/5, intern_string/2
       from machine.
 
-:- import abort/1, atom_codes/2,
-	compound/1, callable/1
+:- import
+	abort/1, atom_codes/2
       from standard.
 
 :- import file_write/2 from xsb_writ.
@@ -49,4 +49,5 @@
       	  file_read_line/3,
 	  file_read_line_atom/2, file_read_line_atom/3,
 	  file_read_line_list/2, file_read_line_list/3,
-	  file_reopen/4, file_clone/3.
+	  file_reopen/4, file_clone/3,
+	  pipe_open/2, pipe2file/2.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsberror.h,v 1.11 1999-08-16 07:24:49 kifer Exp $
+** $Id: xsberror.h,v 1.12 1999-08-17 06:34:17 kifer Exp $
 ** 
 */
 
@@ -41,13 +41,15 @@
 #define IO_END_OF_FILE	 6
 #define IO_FORMATTING	 7
 #define OPERATOR	 8
-#define OVERFLOW	 9
+#define XSBOVERFLOW	 9  /* renamed from OVERFLOW. This def isn't used, but
+			       OVERFLOW clashes with some C compilers */
 #define RANGE		10
 #define SYNTAX		11
 #define TYPE		12
 #define UNDEFINED_PRED	13
 #define UNDEFINED_VAL	14
-#define UNDERFLOW	15 
+#define XSBUNDERFLOW	15  /* renamed from UNDERFLOW. This def isn't used, but
+			       UNDERFLOW clashes with some C compilers */
 #define ZERO_DIVIDE	16 
 
 extern void xsb_exit(char *, ...);

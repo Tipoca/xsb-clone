@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.16 1999/08/12 14:24:25 kostis Exp $
+** $Id: subp.c,v 1.17 1999/08/16 07:24:32 kifer Exp $
 ** 
 */
 
@@ -540,7 +540,7 @@ void checkJavaInterrupt(void *info)
     /* Avoid those annoying lags? */
     fflush(stdout);
     fflush(stderr);
-    fflush(stdmgs);
+    fflush(stdmsg);
     fflush(stdwarn);
     fflush(stddbg);
     keyint_proc(SIGINT); /* Do XSB's "interrupt" thing */
