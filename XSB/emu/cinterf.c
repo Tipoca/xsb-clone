@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.13 1999-06-09 17:30:07 luis Exp $
+** $Id: cinterf.c,v 1.14 1999-06-17 07:50:58 kifer Exp $
 ** 
 */
 
@@ -390,11 +390,12 @@ void c_string_to_p_charlist(char *name, prolog_term list,
   } 
 }
 
+
 /* The following function checks if a given term is a prolog string.
    It also counts the size of the list.
    It deals with the same escape sequences as p_charlist_to_c_string */
 
-DllExport bool call_conv is_chars(prolog_term term, int *size)
+DllExport bool call_conv is_charlist(prolog_term term, int *size)
 {
   int escape_mode=FALSE, head_val;
   prolog_term list, head;

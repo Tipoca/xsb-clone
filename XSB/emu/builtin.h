@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.9 1999-05-06 16:01:19 unova Exp $
+** $Id: builtin.h,v 1.10 1999-06-17 07:50:58 kifer Exp $
 ** 
 */
 
@@ -191,6 +191,7 @@ extern void init_builtin_table(void);
 #define PUT			210
 #define TAB			211
 #define NUMBER_CODES		212
+#define IS_CHARLIST		213
 
 #define SORT			220
 #define KEYSORT			221

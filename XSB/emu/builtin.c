@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.40 1999-05-06 16:01:17 unova Exp $
+** $Id: builtin.c,v 1.41 1999-06-17 07:50:56 kifer Exp $
 ** 
 */
 
@@ -559,6 +559,7 @@ void init_builtin_table(void)
   set_builtin_table(ATOM_CHARS, "atom_chars");
   set_builtin_table(NUMBER_CHARS, "number_chars");
   set_builtin_table(NUMBER_CODES, "number_codes");
+  set_builtin_table(IS_CHARLIST, "is_charlist");
 
   set_builtin_table(PUT, "put");
   set_builtin_table(TAB, "tab");
@@ -1473,6 +1474,19 @@ int builtin_call(byte number)
        DO IT. Note: even though this is a single builtin, YOU CAN SIMULATE ANY
        NUMBER OF BUILTINS WITH IT.  */
   case PRIVATE_BUILTIN: return private_builtin();
+
+  case IS_CHARLIST: {
+    prolog_term size_var;
+    int size;
+    bool retcode;
+    size_var = reg_term(2);
+    if (! is_var(size_var)) {
+      xsb_abort("IS_CHARLIST: Arg 2 must be a variable");
+    }
+    retcode = is_charlist(reg_term(1), &size);
+    c2p_int(size,size_var);
+    return retcode;
+  }
 
   case FINDALL_INIT: return(findall_init()) ;
   case FINDALL_ADD: return(findall_add()) ;
