@@ -18,14 +18,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dcg.H,v 1.5 2000/06/02 20:05:46 dwarren Exp $
+** $Id: dcg.H,v 1.6 2000/07/07 20:52:22 dwarren Exp $
 ** 
 */
 
 
 :- export dcg/2, 'C'/3, phrase/2, phrase/3, set_dcg_style/1.
 :- export tphrase/2, tphrase/3, tphrase/1, reset_dcg_mode/0.
-:- export tphrase_set_string/1, tphrase_string_length/1.
+:- export tphrase_set_string/1, tphrase_string_length/1, tphrase_add_word/3,
+  tphrase_print_words/0.
 
 :- import abort/1, arg/3, call/1, is_list/1, functor/3,
 	write/1, writeln/1, warning/1, (index)/3
