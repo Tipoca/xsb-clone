@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.1.1.1 1998/11/05 16:59:50 sbprolog Exp $
+** $Id: loader.P,v 1.2 1999/01/15 18:42:00 kostis Exp $
 ** 
 */
 
@@ -388,15 +388,18 @@ libpath(P) :- libraries_loaded,
 	      library_directory(Dir), 
 	      expand_filename(Dir, P1),
 	      dirname_canonic(P1, P).
-libpath(P) :- stat_flag(23, InstallDir),  %% get the installation directory
+libpath(P) :- stat_flag(23, InstallDir1),  %% get the installation directory
+	      intern_string(InstallDir1, InstallDir),
 	      slash(Slash),
 	      %% <installdir>/lib/  (slash type depends on the OS)
 	      fmt_write_string(P, '%s%slib%s', f(InstallDir, Slash, Slash)).
-libpath(P) :- stat_flag(23, InstallDir),
+libpath(P) :- stat_flag(23, InstallDir1),
+	      intern_string(InstallDir1, InstallDir),
 	      slash(Slash),
 	      %% <installdir>/syslib/  (slash type depends on the OS)
 	      fmt_write_string(P, '%s%ssyslib%s', f(InstallDir, Slash, Slash)).
-libpath(P) :- stat_flag(23, InstallDir),
+libpath(P) :- stat_flag(23, InstallDir1),
+	      intern_string(InstallDir1, InstallDir),
 	      slash(Slash),
 	      %% <installdir>/cmplib/  (slash type depends on the OS)
 	      fmt_write_string(P, '%s%scmplib%s', f(InstallDir, Slash, Slash)).
