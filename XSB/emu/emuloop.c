@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.78 2001-03-23 03:51:42 kifer Exp $
+** $Id: emuloop.c,v 1.79 2001-04-28 20:15:37 ejohnson Exp $
 ** 
 */
 
@@ -272,7 +272,7 @@ extern void debug_inst(byte *, CPtr);
 extern void print_completion_stack(void);
 extern void print_subgoal(FILE *, VariantSF);
 extern void print_delay_list(FILE *, CPtr);
-extern void printterm(Cell, byte, int);
+extern void printterm(FILE *, Cell, int);
 #endif
 
 /**static int  (*dyn_pred)(); unused-remove soon**/

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.11 2000-12-08 17:26:46 ejohnson Exp $
+** $Id: bineg_xsb_i.h,v 1.12 2001-04-28 20:15:36 ejohnson Exp $
 ** 
 */
 
@@ -169,10 +169,10 @@ case IS_INCOMPLETE: {
 	int i;
 	for (i = 0; i <= global_num_vars; i++) {
 	  Cell x;
-	  fprintf(stddbg, ">>>> var_regs[%d] =",i);
+	  fprintf(stddbg, ">>>> var_regs[%d] =", i);
 	  x = (Cell)var_regs[i];
 	  XSB_Deref(x);
-	  printterm(x,1,25);
+	  printterm(stddbg, x, 25);
 	  fprintf(stddbg, "\n");
 	}
       }

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.h,v 1.5 2000-06-25 16:59:20 ejohnson Exp $
+** $Id: tst_utils.h,v 1.6 2001-04-28 20:15:38 ejohnson Exp $
 ** 
 */
 
@@ -31,11 +31,11 @@ extern void printTrieSymbol(FILE *, Cell);
 extern void printTrieNode(FILE *, BTNptr);
 extern void printTriePath(FILE *, BTNptr, xsbBool);
 
-extern void printAnswerTemplate(CPtr, int);
+extern void printAnswerTemplate(FILE *, CPtr, int);
 
 extern void sfPrintGoal(FILE *, VariantSF, xsbBool);
 extern void sfPrintConsGoals(FILE *, VariantSF);
 extern void printAnswerList(FILE *, ALNptr);
 
-extern void printTabledCall(TabledCallInfo *);
+extern void printTabledCall(FILE *, TabledCallInfo);
 extern void printTriePathType(FILE *, TriePathType, BTNptr);

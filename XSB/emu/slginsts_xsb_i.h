@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.16 2001/01/31 10:23:29 ejohnson Exp $
+** $Id: slginsts_xsb_i.h,v 1.17 2001/04/04 18:28:48 tswift Exp $
 ** 
 */
 
@@ -549,7 +549,7 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
     int i;
     for (i = 0; i < template_size; i++) {
       fprintf(stddbg, ">>>> answer_template[%d] = ", i);
-      printterm((Cell)(answer_template - i), 1, 25);
+      printterm(stddbg, (Cell)(answer_template - i), 25);
       fprintf(stddbg, "\n");
     }
   }

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.49 2001-03-17 05:44:02 kifer Exp $
+** $Id: biassert.c,v 1.50 2001-04-28 20:15:36 ejohnson Exp $
 ** 
 */
 
@@ -2173,7 +2173,7 @@ int trie_assert(void)
   fprintf(stddbg,"Prref bytes\n");
   print_bytes(Prref,-2,2);
   fprintf(stddbg,"Clause :");
-  printterm(Clause,1,24);
+  printterm(stddbg,Clause,24);
   fprintf(stddbg," Arity %d ", Arity);
   fprintf(stddbg," Psc   %d ",(int)psc);
   fprintf(stddbg," Prref %d ",(int)Prref);

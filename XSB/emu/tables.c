@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.22 2000-09-25 15:53:56 ejohnson Exp $
+** $Id: tables.c,v 1.23 2001-04-28 20:15:37 ejohnson Exp $
 ** 
 */
 
@@ -245,18 +245,21 @@ BTNptr table_answer_search(VariantSF producer, int size, int attv_num,
 void table_consume_answer(BTNptr answer, int size, int attv_num,
 			  CPtr templ, TIFptr predicate) {
 
-  if (size == 0) {
-    if ( ! IsEscapeNode(answer) )
-      xsb_abort("Size of answer template is 0 but producer contains an "
-		"answer\nwith a non-empty substitution!\n");
-  }
-  else {
+  if ( size > 0 ) {
     if ( IsSubsumptivePredicate(predicate) )
       consume_subsumptive_answer(answer,size,templ);
     else
       /* this also tracks variables created during unification */
       load_solution_trie(size,attv_num,templ,answer);
   }
+  else if ( size == 0 ) {
+    if ( ! IsEscapeNode(answer) )
+      xsb_abort("Size of answer template is 0 but producer contains an "
+		"answer\nwith a non-empty substitution!\n");
+  }
+  else
+    xsb_abort("table_consume_answer(): "
+	      "Answer template has negative size: %d\n", size);
 }
 
 /*=========================================================================*/

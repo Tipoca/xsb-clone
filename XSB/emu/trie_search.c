@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_search.c,v 1.3 2000-07-31 20:27:59 ejohnson Exp $
+** $Id: trie_search.c,v 1.4 2001-04-28 20:15:37 ejohnson Exp $
 ** 
 */
 
@@ -195,7 +195,7 @@ TSTNptr subsumptive_tst_search(TSTNptr tstRoot, int nTerms, CPtr termVector,
     xsb_dbgmsg("Entered subsumptive_tst_search() with the following terms:");
     for (i = 0; i < nTerms; i++) {
       fprintf(stddbg,"\t");
-      printterm((Cell)(termVector - i),1,25);
+      printterm(stddbg,(Cell)(termVector - i),25);
       fprintf(stddbg,"\n");
     }
   }

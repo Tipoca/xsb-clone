@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.3 2000-07-31 20:27:56 ejohnson Exp $
+** $Id: sub_tables_xsb_i.h,v 1.4 2001-04-28 20:15:37 ejohnson Exp $
 ** 
 */
 
@@ -290,7 +290,8 @@ inline static  void subsumptive_call_search(TabledCallInfo *callStruct,
 
 #ifdef DEBUG_CALL_CHK_INS
     if ( strcmp(targetGN,goal_name) == 0 )
-      printAnswerTemplate(answer_template + int_val(*answer_template),
+      printAnswerTemplate(stddbg,
+			  answer_template + int_val(*answer_template),
 			  int_val(*answer_template));
 #endif
     CallLUR_Subsumer(*results) = (VariantSF)sf_with_ans_set;

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_delay.h,v 1.12 2000-07-31 20:27:57 ejohnson Exp $
+** $Id: tr_delay.h,v 1.13 2001-04-28 20:15:37 ejohnson Exp $
 ** 
 */
 
@@ -70,7 +70,7 @@
 	  for (i = 0; i < num_vars_in_var_regs + 1; i++) {		\
 	    cell(hreg++) = (Cell) var_regs[i]; /* new */		\
 	    fprintf(stddbg, ">>>>     var_regs[%d] = ", i);		\
-	    printterm(cell(var_regs[i]), 1, 25);			\
+	    printterm(stddbg, cell(var_regs[i]), 25);			\
 	    fprintf(stddbg, "\n");					\
 	  }								\
 	}								\
