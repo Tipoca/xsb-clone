@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.14 2001-12-13 21:13:35 lfcastro Exp $
+** $Id: debug_xsb.c,v 1.15 2002-03-11 21:52:55 lfcastro Exp $
 ** 
 */
 
@@ -1568,12 +1568,7 @@ void print_cpf_pred(CPtr cpf)
   char *lcpreg;
   Psc psc;
   
-#if 0
-  lcpreg = cp_cpreg(cpf);
-  psc = *(CPtr)(lcpreg-4);
-#else
   psc = cp_psc(cpf);
-#endif
   if (psc) {
     switch(get_type(psc)) {
     case T_PRED:

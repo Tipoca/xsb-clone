@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.16 2001-12-19 07:36:14 kifer Exp $
+** $Id: error_xsb.c,v 1.17 2002-03-11 21:52:55 lfcastro Exp $
 ** 
 */
 
@@ -177,6 +177,9 @@ DllExport void call_conv xsb_error (char *description, ...)
   vfprintf(stderr, description, args);
   va_end(args);
   fprintf(stderr, "\n");
+#if defined(DEBUG) && defined(CP_DEBUG)
+  print_cp_backtrace();
+#endif
 }
 
 DllExport void call_conv xsb_warn(char *description, ...)
@@ -188,6 +191,9 @@ DllExport void call_conv xsb_warn(char *description, ...)
   vfprintf(stdwarn, description, args);
   va_end(args);
   fprintf(stdwarn, "\n");
+#if defined(DEBUG) && defined(CP_DEBUG)
+  print_cp_backtrace();
+#endif
 }
 
 DllExport void call_conv xsb_mesg(char *description, ...)
@@ -268,6 +274,9 @@ void err_handle(int description, int arg, char *f,
     break;
   }
   pcreg = exception_handler(message);
+#if defined(DEBUG) && defined(CP_DEBUG)
+  print_cp_backtrace();
+#endif
 }
 
 /*************************************************************************/
