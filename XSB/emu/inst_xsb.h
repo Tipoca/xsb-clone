@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.8 2000-06-22 01:27:51 lfcastro Exp $
+** $Id: inst_xsb.h,v 1.9 2001-02-06 16:56:36 lfcastro Exp $
 ** 
 */
 
@@ -51,6 +51,7 @@ extern void init_inst_table(void);
 #define T   15  /* tabletry */
 #define RRR 16  /* = R + R + R; for switchon3bound */
 #define F   17  /* floating point number */
+#define B   18  /* tagged (boxed) integer number */
 
 /************************************************************************/
 /*	Macros to fetch the instructions/operands.			*/

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.19 2001-01-26 23:56:08 lfcastro Exp $
+** $Id: heap_xsb.c,v 1.20 2001-02-06 16:56:36 lfcastro Exp $
 ** 
 */
 
@@ -1672,7 +1672,7 @@ xsbBool glstack_realloc(int new_size, int arity)
 
   if (new_size <= glstack.size) return 0;
 
-#ifdef DEBUG
+#ifdef REALLOC_DEBUG
   xsb_dbgmsg("Reallocating the Heap and Local Stack data area") ;
   if (glstack.size == glstack.init_size) {
     xsb_dbgmsg("\tBottom:\t\t%p\t\tInitial Size: %ldK",
@@ -1775,7 +1775,7 @@ xsbBool glstack_realloc(int new_size, int arity)
 
   expandtime = (long)(1000*cpu_time()) - expandtime;
 
-#ifdef DEBUG
+#ifdef REALLOC_DEBUG
   xsb_dbgmsg("\tNew Bottom:\t%p\t\tNew Size: %ldK",
 	     glstack.low, glstack.size) ;
   xsb_dbgmsg("\tNew Top:\t%p", glstack.high) ;

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.16 2001-01-26 23:56:08 lfcastro Exp $
+** $Id: dis.c,v 1.17 2001-02-06 16:56:36 lfcastro Exp $
 ** 
 */
 
@@ -182,20 +182,15 @@ CPtr print_inst(FILE *fd, CPtr inst_ptr)
 	   break;
 	 case I:
 	 case N:
-#ifdef TAG_ON_LOAD	   
+	   fprintf(fd, "\t%ld", cell(loc_pcreg++));
+	   break;
+	 case B:
 	   fprintf(fd, "\t%ld", (long) int_val(cell(loc_pcreg)));
 	   loc_pcreg++;
-#else
-	   fprintf(fd, "\t%ld", cell(loc_pcreg++));
-#endif
 	   break;
 	 case F:
-#ifdef TAG_ON_LOAD
 	   fprintf(fd, "\t%f", float_val(cell(loc_pcreg)));
 	   loc_pcreg++;
-#else
-	   fprintf(fd, "\t0x%lx", cell(loc_pcreg++));
-#endif
 	   break;
 	 case PP:
 	   a += 2;

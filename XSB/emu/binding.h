@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: binding.h,v 1.13 2001-01-26 23:56:08 lfcastro Exp $
+** $Id: binding.h,v 1.14 2001-02-06 16:56:36 lfcastro Exp $
 ** 
 */
 
@@ -171,21 +171,11 @@
 
 /* --- binding -------------------------------------------------------- */
 
-#ifdef TAG_ON_LOAD
 #define bind_int_tagged(addr, val)	pushtrail(addr, (Cell) val); \
    				        bld_int_tagged(addr, val)
 
 #define bind_float_tagged(addr, val)	pushtrail(addr, (Cell) val); \
 				        bld_float_tagged(addr, val)
-
-#else
-
-#define bind_int_tagged(addr, val)	pushtrail(addr, makeint(val));\
-				        bld_int(addr, val)
-
-#define bind_float_tagged(addr, val)   pushtrail(addr, (Cell) makefloat(val));\
-				       bld_float(addr, val)
-#endif
 
 #define bind_int(addr, val)	pushtrail(addr, makeint(val));\
 				bld_int(addr, val)
