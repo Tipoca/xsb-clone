@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.15 2002-03-15 09:19:50 kifer Exp $
+** $Id: pathname_xsb.c,v 1.16 2003-02-12 21:15:59 lfcastro Exp $
 ** 
 */
 
@@ -398,7 +398,7 @@ static char *rectify_pathname(char *inpath, char *outpath) {
 
     switch (length) {
     case 1:
-      if (*inptr1 == '.') {
+      if (*inptr1 == '.' && inptr1 != expanded_inpath) {
 	inptr1 = inptr2;
 	continue; /* the loop */
       }
@@ -441,7 +441,7 @@ static char *rectify_pathname(char *inpath, char *outpath) {
     outpath[outidx] = SLASH;
     outidx++;
   }
-  if (leading_slash2) {
+  if (leading_slash && leading_slash2) {
 #if defined(CYGWIN)
     strncpy(outpath+outidx,"cygdrive",8);
     outidx += 8;
