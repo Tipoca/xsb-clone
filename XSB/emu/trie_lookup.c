@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.4 2000-12-04 17:10:45 ejohnson Exp $
+** $Id: trie_lookup.c,v 1.5 2001-07-02 15:53:07 ejohnson Exp $
 ** 
 */
 
@@ -1522,9 +1522,11 @@ void *subsumptive_trie_lookup(void *trieRoot, int nTerms, CPtr termVector,
     TermStack_PushLowToHighVector(termVector,nTerms);
     leaf = rec_sub_trie_lookup(trieRoot, path_type);
     if ( IsNonNULL(leaf) && IsNonNULL(subtermArray) ) {
-      int i = 0;
-      while ( TrieVarBindings[i] != (Cell) (& TrieVarBindings[i]) )
-	subtermArray[i+1] = TrieVarBindings[i++];
+      int i;
+      for ( i = 0;
+	    TrieVarBindings[i] != (Cell) (& TrieVarBindings[i]);
+	    i++ )
+	subtermArray[i+1] = TrieVarBindings[i];
       subtermArray[0] = i;
     }
     Trail_Unwind_All;
