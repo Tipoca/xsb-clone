@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.16 1999-07-15 21:41:23 ejohnson Exp $
+** $Id: tries.c,v 1.17 1999-07-22 19:06:48 cbaoqiu Exp $
 ** 
 */
 
@@ -698,7 +698,7 @@ BTNptr variant_trie_search(int arity, CPtr cptr,
 
     ans_chk_ins++; /* Counter (answers checked & inserted) */
 
-    mini_trail_top = mini_trail - 1;
+    mini_trail_top = (CPtr *)(& mini_trail[0]) - 1;
     AnsVarCtr = 0;
     ctr = 0;
     if ( IsNULL(subg_ans_root_ptr(subgoal_ptr)) )
@@ -1341,7 +1341,7 @@ BTNptr whole_term_chk_ins(Cell term, BTNptr *hook, int *flagptr)
     cptr_deref(xtemp1);
     tag = cell_tag(xtemp1);
 
-    mini_trail_top = mini_trail - 1;
+    mini_trail_top = (CPtr *)(& mini_trail[0]) - 1;
     ctr = 0;
 
     switch (tag) {
@@ -1419,7 +1419,7 @@ BTNptr one_term_chk_ins(CPtr termptr, BTNptr root, int *flagptr)
     arity = get_arity(psc);
     cptr = (CPtr)cs_val(termptr);
 
-    mini_trail_top = mini_trail - 1;
+    mini_trail_top = (CPtr *)(& mini_trail[0]) - 1;
     ctr = 0;
     /*
      * The value of `Paren' effects the "body" of the trie: nodes which
