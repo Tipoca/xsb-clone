@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.92 2000-09-29 00:03:49 kifer Exp $
+## $Id: configure.in,v 1.93 2000-11-17 22:37:39 lfcastro Exp $
 ## 
 ##
 
@@ -421,7 +421,11 @@ if test -n "$with_gcc" ; then
 	emuloop_opt_level=-${optimization_level-"O4 -fomit-frame-pointer"}
 	trutils_opt_level=-${optimization_level-"O1 -fomit-frame-pointer"}
 	builtins_opt_level=-${optimization_level-"O1 -fomit-frame-pointer"}
-	c_inline_level="-finline-functions -Winline" 
+	if test -n "$optimization_level"; then
+	   c_inline_level=""
+	else
+	   c_inline_level="-finline-functions -Winline" 
+	fi
 	CFLAGS="-Wall -ansi -pedantic"
 else
  case $CC in
