@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: interprolog_xsb.h,v 1.1 2002-02-18 04:03:38 tswift Exp $
+** $Id: interprolog_xsb.h,v 1.2 2002-02-21 21:20:40 tswift Exp $
 ** 
 */
 
@@ -31,12 +31,14 @@
 
 #include "basictypes.h"
 
+/*
 xsbBool interprolog_callback() {
   printf("found interprolog_callback()\n");
   return TRUE;
 }
+*/
 
-/* extern xsbBool interprolog_callback();*/
+extern xsbBool interprolog_callback();
 
 #endif
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.57 2001/11/08 21:35:25 dwarren Exp $
+** $Id: subp.c,v 1.58 2002/01/23 17:08:10 dwarren Exp $
 ** 
 */
 
@@ -348,8 +348,10 @@ Psc synint_proc(Psc psc, int intcode, byte *cur_inst)
 }
 
 void init_interrupt(void);
-/* change from Jiyangs way of doing things. */
-inline static void keyint_proc(int sig)
+
+/* TLS: 2/02 removed "inline static" modifiers so that this function
+   can be called from interprolog_callback.c */
+void keyint_proc(int sig)
 {
 #ifndef LINUX
   init_interrupt();  /* reset interrupt, if using signal */
