@@ -36,9 +36,9 @@ options=$2
 #------------------------------------
 # Tests of I/O
 #------------------------------------
-./exttest.sh "$XEMU $options" ioExt "testreturns."
+./ioExt.sh "$XEMU $options" ioExt "testreturns."
 # inttest doesn't sort 
-./inttest.sh "$XEMU $options" ioInt "testreturns."
+./ioInt.sh "$XEMU $options" ioInt "testreturns."
 
 #------------------------------------
 # Component Tests
