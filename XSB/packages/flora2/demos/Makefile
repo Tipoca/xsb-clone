@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.4 2001-04-27 02:34:50 kifer Exp $
+## $Id: Makefile,v 1.5 2001-05-03 04:18:33 kifer Exp $
 ## 
 ##
 
@@ -49,10 +49,10 @@ Prolog = $(XSB) -i -s -m 2000 -c 2000 -e 'segfault_handler(warn).'
 #-----------------------------------------------------------------------#
 
 # Make sure warnings are saved in a file.
-SVFILE = '$(XSBDIR)/build/.flora_lib_warn.tmp'
+SVFILE = '$(XSBDIR)/build/.flora_demos_warn.tmp'
 STDWARN = 3
 STDERR = 2
-HDRMSG = "While compiling XSB/packages/flora2/lib:"
+HDRMSG = "While compiling XSB/packages/flora2/demos:"
 
 
 # suffix rules
@@ -67,7 +67,7 @@ recompile: $(ALL) finish
 	@cat $(SVFILE)
 
 .flr.P:
-	echo 'import flCompile/1 from flora2. flCompile($*).' >> cmd...
+	echo 'import (flCompile)/1 from flora2. flCompile($*).' >> cmd...
 
 init:
 	rm -f $(SVFILE)

@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.8 2001-04-24 04:49:25 kifer Exp $
+## $Id: Makefile,v 1.9 2001-05-03 04:18:33 kifer Exp $
 ## 
 ##
 
@@ -29,6 +29,7 @@
 XSBDIR = ../../..
 
 ALLOBJS = flranswer.O \
+	  flrcontrol.O \
 	  flrdisplay.O \
 	  flrload.O \
 	  flraggavg.O \
@@ -89,6 +90,9 @@ all: init $(ALLOBJS) finish
 flranswer.O : flranswer.P $(XSB_CHAR_DEFS) $(XSB_EMU_FLAG_DEFS) $(XSB_STANDARD) $(FLORA_TERMS)
 	@echo 'mc(flranswer,$(OPTION)).' >> cmd...
 
+
+flrcontrol.O : flrcontrol.P $(FLORA_TERMS) $(XSB_STANDARD)
+	@echo 'mc(flrcontrol,$(OPTION)).' >> cmd...
 
 flrdisplay.O : flrdisplay.P $(FLORA_TERMS) $(XSB_STANDARD)
 	@echo 'mc(flrdisplay,$(OPTION)).' >> cmd...

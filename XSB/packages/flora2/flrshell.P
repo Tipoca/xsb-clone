@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.22 2001-04-27 02:34:50 kifer Exp $
+** $Id: flrshell.P,v 1.23 2001-05-03 04:18:33 kifer Exp $
 **
 */
 
@@ -30,6 +30,8 @@
 :- compiler_options([xpp_on]).
 
 #include "flora_terms.flh"
+
+:- [flrcontrol].
 
 
 /*********************************************************************/
