@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.59 2002/01/03 22:49:28 kifer Exp $
+** $Id: std_xsb.P,v 1.60 2002/01/04 00:55:24 kifer Exp $
 ** 
 */
 
@@ -115,14 +115,6 @@ standard_symbol(float, 1, standard).
 
 standard_symbol(path_sysop,2,file_io).
 standard_symbol(path_sysop,3,file_io).
-
-
-%%%%%%% Flora %%%%%%%%
-standard_symbol(bootstrap_flora, 0, flora2).
-standard_symbol(flora_shell, 0, flora2).
-standard_symbol(unstrap_flora, 0, flora2).
-standard_symbol((flImport), 1, flora2).
-%%%%%%%%%%%%%%%%%%%%%%
 
 standard_symbol(fmt_read, 3, file_io).
 standard_symbol(fmt_read, 4, file_io).
