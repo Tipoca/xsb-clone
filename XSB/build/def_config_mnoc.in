@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_mnoc.in,v 1.4 2002-03-12 17:31:17 lfcastro Exp $
+** $Id: def_config_mnoc.in,v 1.5 2003-02-10 18:57:19 lfcastro Exp $
 ** 
 */
 
@@ -58,6 +58,7 @@
 #define CC "cl.exe"
 #define RELEASE_DATE @xsb_release_date@
 #define XSB_VERSION "@xsb_full_version_name@"
+#define XSB_DLL
 #if (defined(XSB_DLL) || defined(XSB_DLL_C))
 #define FOREIGN_WIN32
 #endif

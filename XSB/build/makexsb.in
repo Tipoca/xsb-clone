@@ -29,7 +29,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: makexsb.in,v 1.8 2003-01-29 19:02:42 lfcastro Exp $
+## $Id: makexsb.in,v 1.9 2003-02-10 18:57:20 lfcastro Exp $
 ## 
 ##
 
@@ -54,7 +54,7 @@ do
     case $option in
       --conf*=* ) suffix=`echo $option | sed -e 's/-.*=/-/'`
       ;;
-      fast|devel|superdevel|all|packages|module|dynmodule|smodels|install|clean|distclean|configclean)
+      fast|devel|superdevel|all|packages|module|dynmodule|smodels|install|clean|distclean|configclean|cygdll)
 	 force_devel=
 	 makeargs="$makeargs $option"
       ;;

@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.52 2003-01-29 19:02:42 lfcastro Exp $
+## $Id: topMakefile.in,v 1.53 2003-02-10 18:57:20 lfcastro Exp $
 ## 
 ##
 
@@ -216,6 +216,8 @@ module: prepare xsbmod do_cleaning inform_module
 
 dynmodule: prepare xsbdynmod 
 
+cygdll: prepare loccygdll do_cleaning inform_module
+
 # if supporting Oracle, then emumake_goal=xsbora; else emumake_goal=xsb
 # This invokes xsboramod and xsbmod goals in emuMakefile, respectively
 xsbmod: ${src_config_prefix}/xsb_config.h ${src_config_prefix}/xsb_debug.h
@@ -228,6 +230,9 @@ xsbdynmod: ${src_config_prefix}/xsb_config.h ${src_config_prefix}/xsb_debug.h
 
 xsbdll: ${src_config_prefix}/xsb_config.h ${src_config_prefix}/xsb_debug.h
 	cd ${src_emudir}; make dll
+
+loccygdll: ${src_config_prefix}/xsb_config.h ${src_config_prefix}/xsb_debug.h
+	cd ${src_emudir}; make cygdll
 
 emu_clean: do_cleaning inform_executable
 	chmod 644  $(src_config_libdir)/xsb_configuration$(xsb_obj_extension)
