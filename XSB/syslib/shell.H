@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.H,v 1.11 2003/06/09 16:38:16 lfcastro Exp $
+** $Id: shell.H,v 1.12 2003/08/04 16:34:41 lfcastro Exp $
 ** 
 */
 
@@ -35,10 +35,10 @@
 	sys_mkdir/2, sys_rmdir/2,
 	sys_unlink/2, sys_exit/1, sys_rename/3, sys_filecopy/3.
 
-:- import atom/1, abort/1, is_list/1 from standard.
+:- import ground/1, append/3 from basics.
+:- import check_nonvar/3, check_atom/3 from error_handler.
 :- import sys_system/7, expand_filename/2, sys_syscall/4
    from machine.
-
+:- import atom/1, abort/1, is_list/1 from standard.
 :- import xsb_configuration/2 from xsb_configuration.
 
-:- import ground/1, append/3 from basics.
