@@ -200,15 +200,15 @@ derived_mvd(O,'flora_@'(M,T),Q) :-
 
 :- table not_deleted/4.
 not_deleted(O,M,Q,S) :- tnot(delete(O,M,Q,S)).
-%% ?- derived_mvd(pps,'flora_@'(produces,2),passatC).
-%% ?- (derived_mvd(pps,'flora_@'(produces,2),passatC); get_residual(derived_mvd(pps,'flora_@'(produces,2),passatC),[])).
-%% ?- (derived_mvd(O,'flora_@'(M,S),Q), fail; get_residual(derived_mvd(O,'flora_@'(M,S),Q),[])), writeln(get_residual(derived_mvd(O,'flora_@'(M,S),Q),[])), fail.
-%% ?- mvd_rhs(pps,'flora_@'(produces,1),passatC).
-%% ?- tnot(delete(pps,produces,passatC,1)).
-%% ?- not_deleted(pps,produces,passatC,1).
-%% ?- (not_deleted(pps,produces,passatC,1); get_residual(not_deleted(pps,produces,passatC,1))).
-%% ?- (delete(O,M,Q,S), fail; get_residual(delete(O,M,Q,S),[]), writeln(delete(O,M,Q,S)),fail).
-%% ?- (delete(pps,produces,passatC,1), fail; get_residual(delete(pps,produces,passatC,1),[]), writeln(delete(pps,produces,passatC,1)),fail).
+ ?- derived_mvd(pps,'flora_@'(produces,2),passatC).
+ ?- (derived_mvd(pps,'flora_@'(produces,2),passatC); get_residual(derived_mvd(pps,'flora_@'(produces,2),passatC),[])).
+ ?- (derived_mvd(O,'flora_@'(M,S),Q), fail; get_residual(derived_mvd(O,'flora_@'(M,S),Q),[])), writeln(get_residual(derived_mvd(O,'flora_@'(M,S),Q),[])), fail.
+ ?- mvd_rhs(pps,'flora_@'(produces,1),passatC).
+ ?- tnot(delete(pps,produces,passatC,1)).
+ ?- not_deleted(pps,produces,passatC,1).
+ ?- (not_deleted(pps,produces,passatC,1); get_residual(not_deleted(pps,produces,passatC,1))).
+ ?- (delete(O,M,Q,S), fail; get_residual(delete(O,M,Q,S),[]), writeln(delete(O,M,Q,S)),fail).
+ ?- (delete(pps,produces,passatC,1), fail; get_residual(delete(pps,produces,passatC,1),[]), writeln(delete(pps,produces,passatC,1)),fail).
 
 
 derived_mvd(_h16393,'flora_@'(_h16411,_h16427),_h16449) :- 
