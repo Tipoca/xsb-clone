@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.39 2001/03/23 03:54:31 kifer Exp $
+** $Id: x_interp.P,v 1.40 2001/03/27 17:52:14 dwarren Exp $
 ** 
 */
 
@@ -256,6 +256,8 @@ version_message :-
 	->  GC_string = 'copy'
 	; GarbageType == SLIDING_GC
 	->  GC_string = 'slide'
+	; GarbageType == INDIRECTION_SLIDE_GC
+	->  GC_string = 'indirection'
 	; GC_string = 'none'
 	),
 	%% Read the banner file
