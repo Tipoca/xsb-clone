@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: load_seg.h,v 1.1.1.1 1998-11-05 16:55:18 sbprolog Exp $
+** $Id: load_seg.h,v 1.2 1999-07-20 18:54:41 kifer Exp $
 ** 
 */
 
@@ -27,5 +27,3 @@
 extern void unload_seg(pseg);
 extern pseg load_seg(int, int, int, FILE *);
 
-#define MAX_OPEN_FILES  50
-extern FILE *open_files[];      /* Table of file pointers for open files */

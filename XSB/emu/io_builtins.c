@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.c,v 1.29 1999-06-26 05:01:35 kifer Exp $
+** $Id: io_builtins.c,v 1.30 1999-07-20 18:54:38 kifer Exp $
 ** 
 */
 
@@ -55,6 +55,8 @@
 #include "io_builtins.h"
 #include "configs/special.h"
 #include "binding.h"
+
+FILE *open_files[MAX_OPEN_FILES]; /* open file table */
 
 extern void print_pterm(prolog_term term,
 			int toplevel, char *straddr, int *ind);
@@ -1044,5 +1046,20 @@ struct fmt_spec *next_format_substr(char *format, int initialize, int read_op)
   result.fmt = workspace+current_substr_start;
   current_substr_start = pos;
   return(&result);
+}
+
+
+/* Take a FILE pointer and return an XSB stream, an index into the XSB table of
+   open files */
+int xsb_intern_file(FILE *fptr, char *context)
+{
+  int i;
+  for (i=3; i < MAX_OPEN_FILES && open_files[i] != NULL; i++) ;
+  if (i == MAX_OPEN_FILES) {
+    xsb_warn("%s: Too many open files", context);
+    return FALSE;
+  } else 
+    open_files[i] = fptr;
+  return i;
 }
 

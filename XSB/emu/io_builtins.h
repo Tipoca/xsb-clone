@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.h,v 1.2 1999-04-04 03:54:49 kifer Exp $
+** $Id: io_builtins.h,v 1.3 1999-07-20 18:54:39 kifer Exp $
 ** 
 */
 
@@ -48,3 +48,7 @@
 #define FILE_STAT_TIME	  0
 #define FILE_STAT_SIZE	  1
 
+#define MAX_OPEN_FILES  50
+
+extern FILE *open_files[];      /* Table of file pointers for open files */
+extern int xsb_intern_file(FILE *f, char *c);

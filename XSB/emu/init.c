@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.21 1999-07-15 21:41:13 ejohnson Exp $
+** $Id: init.c,v 1.22 1999-07-20 18:54:37 kifer Exp $
 ** 
 */
 
@@ -48,6 +48,7 @@
 #include "xmacro.h"
 #include "tr_utils.h"
 #include "export.h"
+#include "io_builtins.h"
 
 /*-----------------------------------------------------------------------*/
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.3 1999-04-17 16:44:00 kostis Exp $
+** $Id: auxlry.c,v 1.4 1999-07-20 18:54:33 kifer Exp $
 ** 
 */
 
@@ -48,6 +48,7 @@ extern int syscall();
 #endif
 
 #endif
+
 
 /*----------------------------------------------------------------------*/
 

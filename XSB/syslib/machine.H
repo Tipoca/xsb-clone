@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.18 1999/05/06 16:01:26 unova Exp $
+** $Id: machine.H,v 1.19 1999/06/17 07:51:01 kifer Exp $
 ** 
 */
 
@@ -85,7 +85,7 @@
         parse_filename/4,
 	getenv/2, 
 	sys_syscall/4,
-	sys_system/2, 
+	sys_system/4, 
 	sys_gethost/2, 
 	sys_errno/1, 
 	file_stat/3,

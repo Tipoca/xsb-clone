@@ -19,15 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.i,v 1.13 1999-05-05 03:35:14 kifer Exp $
+** $Id: io_builtins.i,v 1.14 1999-07-20 18:54:40 kifer Exp $
 ** 
 */
 
 
 /* This file is separate from io_builtins.c because here we have the
    in-lined file_function (to speed up file_get/put). */
-
-#include "io_builtins.h"
 
 
 static struct stat stat_buff;
@@ -37,6 +35,7 @@ extern int    fileno(FILE *f);	        /* this is defined in POSIX */
 extern Cell   ptoc_tag(int i);
 extern char   *expand_filename(char *filename);
 extern char *p_charlist_to_c_string (prolog_term, char *, int, char *, char *);
+
 
 static FILE *stropen(char *str)
 {
@@ -173,18 +172,11 @@ inline static bool file_function(void)
       case 2: fptr = fopen(addr, "ab"); break; /* APPEND_MODE */
       }
       if (fptr) {
-	int i;
-	if (!stat(addr, &stat_buff) && !S_ISDIR(stat_buff.st_mode)) {
+	if (!stat(addr, &stat_buff) && !S_ISDIR(stat_buff.st_mode))
 	  /* file exists and isn't a dir */
-	  for (i=3; i < MAX_OPEN_FILES && open_files[i] != NULL; i++) ;
-	  if (i == MAX_OPEN_FILES) xsb_abort("Too many open files");
-	  else {
-	    open_files[i] = fptr;
-	    ctop_int(4, i);
-	  }
-	} else {
+	  ctop_int(4, xsb_intern_file(fptr, "FILE_OPEN"));
+	else
 	  xsb_abort("File %s is a directory, cannot open!", tmpstr);
-	}
       } else ctop_int(4, -1);
     } else if (file_des==3) {  /* open string! */
       if ((fptr = stropen(tmpstr))) ctop_int(4, (Integer)fptr);
