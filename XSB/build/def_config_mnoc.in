@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_mnoc.in,v 1.8 2005-02-06 02:15:05 tswift Exp $
+** $Id: def_config_mnoc.in,v 1.9 2005-02-11 01:51:34 vidrevich Exp $
 ** 
 */
 
@@ -266,6 +266,8 @@
 #undef GC
 
 #undef GC_TEST
+
+#undef MULTI_THREAD
 
 /* The number of bytes in a long.  */
 #undef SIZEOF_LONG
