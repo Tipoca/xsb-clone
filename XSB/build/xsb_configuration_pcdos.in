@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_configuration_pcdos.in,v 1.4 1998-11-16 00:46:37 kifer Exp $
+** $Id: xsb_configuration_pcdos.in,v 1.5 1999-04-01 05:01:04 kifer Exp $
 ** 
 */
 
@@ -36,8 +36,10 @@
 
 :- export xsb_configuration/2.
 
-:- import stat_flag/2, intern_string/2, fmt_write_string/3, slash/1
+:- import stat_flag/2, intern_string/2, slash/1
    from machine.
+:- import fmt_write_string/3
+   from file_io.
 
 
 %%% Set these appropriately for DOS
