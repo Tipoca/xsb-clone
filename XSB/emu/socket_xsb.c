@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.7 1999-12-02 17:24:02 kostis Exp $
+** $Id: socket_xsb.c,v 1.8 1999-12-06 06:20:23 kifer Exp $
 ** 
 */
 
@@ -521,7 +521,15 @@ bool xsb_socket_request(void)
 	xsb_warn("SOCKET_SET_OPTION: Cannot set socket linger time");
 	return FALSE;
       }
-    } else {
+    } else if (0 == strcmp(option_name, "reuseaddr")) {
+      const int addrreuse_on = TRUE;
+      /* setoption for bind to avoid error: address already in use */
+      if (setsockopt(sock_handle, SOL_SOCKET, SO_REUSEADDR,
+		     (void *) &addrreuse_on, sizeof(addrreuse_on)) < 0) {
+	xsb_warn("SOCKET_SET_OPTION: Cannot set RESUSE ADDRESS option");
+	return FALSE;
+        }
+     }else {
       xsb_warn("SOCKET_SET_OPTION: Invalid option, `%s'", option_name);
       return FALSE;
     }
@@ -654,7 +662,7 @@ bool xsb_socket_request(void)
 
   case SOCKET_SELECT_DESTROY:  { 
     /*socket_request(SOCKET_SELECT_DESTROY, +connection_name) */
-    char *connection_name = ptoc_string(2);
+    char *connection_name = (char *)ptoc_string(2);
     select_destroy(connection_name);
     return TRUE;
   }
