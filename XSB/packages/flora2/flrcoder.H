@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.H,v 1.16 2002-04-16 16:40:38 kifer Exp $
+** $Id: flrcoder.H,v 1.17 2002-04-17 06:10:29 kifer Exp $
 **
 */
 
@@ -31,14 +31,19 @@
 
 :- import eval/2 from eval.
 
-:- import str_cat/3 from string.
-
 :- import
 	flora_firstorderdef/2,
 	flora_flogicstaticdef/2
    from flrfirstorder.
 
 :- import flora_prlgdef/2 from flrprolog.
+
+:- import flora_write_quoted_atom/1,
+	flora_write_atom/1,
+	flora_get_counter/2,
+	flora_set_counter/2,
+	flora_concat_atoms/2
+   from flrporting.
 
 :- import
 	flora_user_module_predicate/4,
