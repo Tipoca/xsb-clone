@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger_data.P,v 1.4 1999/08/25 13:57:12 kifer Exp $
+** $Id: debugger_data.P,v 1.5 1999/08/25 21:22:00 kifer Exp $
 ** 
 */
 
@@ -63,6 +63,10 @@ hide_this_hide(nospy,1).
 hide_this_hide(consult,1).
 hide_this_hide(reconsult,1).
 hide_this_hide(compile,1).
+
+hide_this_hide(abolish_table_pred,1).
+hide_this_hide(abolish_table_call,1).
+hide_this_hide(abolish_all_tables,0).
 
 %% trace inside these standard predicates
 trace_standard_predicate(call,1).
