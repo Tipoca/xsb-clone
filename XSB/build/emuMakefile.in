@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.18 1999-10-10 11:39:28 kostis Exp $
+## $Id: emuMakefile.in,v 1.19 1999-10-10 14:47:13 kifer Exp $
 ## 
 
 
@@ -75,7 +75,7 @@ EXECUTABLE=xsb
 #=======================================================================
 #
 DEPEND = makedepend
-DEPENDFLAGS = -m
+#DEPENDFLAGS = -m
 #
 
 
