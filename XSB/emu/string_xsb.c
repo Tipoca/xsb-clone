@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string_xsb.c,v 1.1 1999/10/25 05:59:30 kifer Exp $
+** $Id: string_xsb.c,v 1.2 1999/10/26 06:47:26 kifer Exp $
 ** 
 */
 
@@ -59,7 +59,7 @@ static Cell term, term2;
 static char output_buffer[5*MAXBUFSIZE], input_buffer[4*MAXBUFSIZE];
 
 
-/* R1: +Substring; R2: +String; R3: -Pos
+/* R1: +Substring; R2: +String; R3: ?Pos
    Check if Arg1 is a substring of Arg2; unify pos of match with Arg3
 */
 bool str_sub(void)
