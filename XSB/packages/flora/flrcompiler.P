@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.15 1999-07-26 03:52:29 kifer Exp $
+** $Id: flrcompiler.P,v 1.16 1999-08-17 06:35:25 kifer Exp $
 **
 */
 
@@ -305,13 +305,14 @@ rhs_flatten(not(R),null,[not(Code)]) :-
 
 rhs_flatten(loadlist(L),null,Code) :-
 	!,
-	flora_word(loadlist,F),
+	F=flora_loadlist,
 	P =.. [F,L],
 	Code=[P].
 
 rhs_flatten(dynloadlist(L),null,Code) :-
 	!,
-	flora_word(dynloadlist,F),
+	%%flora_word(dynloadlist,F),
+	F=flora_dynloadlist,
 	P =.. [F,L],
 	Code=[P].
 
