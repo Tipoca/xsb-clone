@@ -1,3 +1,4 @@
+/*  -*-c-*-  Make sure this file comes up in the C mode of emacs */ 
 /* File:      bineg.i
 ** Author(s): Kostis Sagonas, Baoqiu Cui
 ** Contact:   xsb-contact@cs.sunysb.edu
@@ -18,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg.i,v 1.8 1999-04-04 03:54:44 kifer Exp $
+** $Id: bineg.i,v 1.9 1999-04-22 06:49:09 kifer Exp $
 ** 
 */
 

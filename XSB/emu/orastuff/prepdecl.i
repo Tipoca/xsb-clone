@@ -1,3 +1,4 @@
+/*  -*-c-*-  Make sure this file comes up in the C mode of emacs */ 
 /* File:      prepdecl.i
 ** Author(s): Ernie Johnson
 ** Contact:   xsb-contact@cs.sunysb.edu
@@ -18,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prepdecl.i,v 1.1 1998-11-13 02:51:12 kifer Exp $
+** $Id: prepdecl.i,v 1.2 1999-04-22 06:49:34 kifer Exp $
 ** 
 */
 

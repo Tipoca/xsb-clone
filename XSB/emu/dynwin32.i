@@ -1,3 +1,4 @@
+/*  -*-c-*-  Make sure this file comes up in the C mode of emacs */ 
 /* File:      dynwin32.i
 ** Author(s): Luis Castro
 ** Contact:   xsb-contact@cs.sunysb.edu
@@ -19,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32.i,v 1.1 1999-04-19 15:40:45 luis Exp $
+** $Id: dynwin32.i,v 1.2 1999-04-22 06:49:16 kifer Exp $
 ** 
 */
 

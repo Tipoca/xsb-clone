@@ -1,3 +1,4 @@
+/*  -*-c-*-  Make sure this file comes up in the C mode of emacs */ 
 /* File:      wfs.i
 ** Author(s): Kostis Sagonas
 ** Contact:   xsb-contact@cs.sunysb.edu
@@ -18,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wfs.i,v 1.6 1999-02-06 19:12:45 kostis Exp $
+** $Id: wfs.i,v 1.7 1999-04-22 06:49:27 kifer Exp $
 ** 
 */
 

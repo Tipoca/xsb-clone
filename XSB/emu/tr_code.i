@@ -1,3 +1,4 @@
+/*  -*-c-*-  Make sure this file comes up in the C mode of emacs */ 
 /* File:      tr_code.i
 ** Author(s): Prasad Rao, Kostis Sagonas
 ** Contact:   xsb-contact@cs.sunysb.edu
@@ -18,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code.i,v 1.3 1999-01-10 01:13:04 cbaoqiu Exp $
+** $Id: tr_code.i,v 1.4 1999-04-22 06:49:25 kifer Exp $
 ** 
 */
 

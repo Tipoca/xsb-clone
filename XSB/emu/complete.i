@@ -1,3 +1,4 @@
+/*  -*-c-*-  Make sure this file comes up in the C mode of emacs */ 
 /* File:      complete.i
 ** Author(s): Juliana Freire, Kostis Sagonas, Terry Swift
 ** Contact:   xsb-contact@cs.sunysb.edu
@@ -18,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete.i,v 1.10 1999-02-23 10:50:48 kostis Exp $
+** $Id: complete.i,v 1.11 1999-04-22 06:49:12 kifer Exp $
 ** 
 */
 

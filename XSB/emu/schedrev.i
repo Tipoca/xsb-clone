@@ -1,3 +1,4 @@
+/*  -*-c-*-  Make sure this file comes up in the C mode of emacs */ 
 /* File:      schedrev.i
 ** Author(s): Juliana Freire
 ** Contact:   xsb-contact@cs.sunysb.edu
@@ -19,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev.i,v 1.1.1.1 1998-11-05 16:55:21 sbprolog Exp $
+** $Id: schedrev.i,v 1.2 1999-04-22 06:49:18 kifer Exp $
 ** 
 */
 
