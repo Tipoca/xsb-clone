@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.25 1999/08/14 06:15:30 kifer Exp $
+** $Id: machine.H,v 1.26 1999/08/14 17:52:17 kostis Exp $
 ** 
 */
 
@@ -86,7 +86,6 @@
 	sys_errno/1, 
 	file_stat/3,
 	file_writequoted/2,
-	fast_ground/1,
         intern_string/2,
  	psc_env/2, 
 	psc_spy/2, 

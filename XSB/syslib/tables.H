@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.9 1999/04/13 17:25:00 kostis Exp $
+** $Id: tables.H,v 1.10 1999/08/04 14:50:06 ejohnson Exp $
 ** 
 */
 
@@ -26,7 +26,7 @@
 :- export abolish_all_tables/0, abolish_table_call/1, abolish_table_pred/1,
 	  subsumptive/1,
 	  get_calls_for_table/2, get_returns_for_call/2, table_state/2, 
-	  tfindall/3, tnot/1, 't not'/1, etnot/1,
+	  tfindall/3, tnot/1, 't not'/1,
 	  delete_return/2,
 	  get_call/3, get_calls/3, get_returns/2, get_returns/3,
 	  get_residual/2,
@@ -43,6 +43,6 @@
 	  (dynamic)/1, t_assert/2 from assert.
 :- import call/1, tcall/1, abort/1, functor/3 from standard.  
 :- import abolish_table_info/0, is_incomplete/4, get_ptcp/1, slg_not/1,
-	  get_subgoal_ptr/2, get_osp_breg/2, cut_if_leader/3 from machine.
+	  get_subgoal_ptr/2 from machine.
 
 /* ------------------- end of file tables.H --------------------------- */

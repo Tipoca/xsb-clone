@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.14 1999/08/04 14:50:08 ejohnson Exp $
+** $Id: tables.P,v 1.15 1999/08/14 06:15:34 kifer Exp $
 ** 
 */
 
@@ -30,7 +30,6 @@
 :- compiler_options([sysmod,cpp_on]).
 
 #include "builtin.h"
-
 
 /*----------------------------------------------------------------------*/
 
@@ -72,12 +71,6 @@ tnot(X) :-
 	get_ptcp(PTCP), get_subgoal_ptr(X, SubgPtr),
 	( SubgPtr =:= 0, tcall(X), fail
 	; is_incomplete(X, SubgPtr, PTCP, Subg), slg_not(Subg)
-	).
-
-etnot(X) :-
-	get_ptcp(PTCP), get_osp_breg(Os, Breg),
-	( call(X), cut_if_leader(X, Os, Breg), fail
-	; is_incomplete(X, 0, PTCP, Subg), slg_not(Subg)
 	).
 
 /*----------------------------------------------------------------------*/
