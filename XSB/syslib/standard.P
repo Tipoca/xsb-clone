@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.39 2000/06/19 03:10:50 kifer Exp $
+** $Id: standard.P,v 1.40 2000/08/05 07:59:24 cbaoqiu Exp $
 ** 
 */
 
@@ -600,8 +600,12 @@ index(Ps,Arg,S) :-
 	nonvar(Ps), nonvar(Arg), nonvar(S),
 	add_index(Ps,Arg,S).
 
-index(Ps,trie) :-
-	add_trie_index(Ps).
+index(Ps,Arg) :-
+	nonvar(Ps), nonvar(Arg),
+	(Arg == trie
+	 ->	add_trie_index(Ps)
+	 ;	add_index(Ps,Arg,0)
+	).
 
 /* add tabling declaration */
 table(Ps) :- 
