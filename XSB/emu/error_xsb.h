@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.9 2004-04-12 13:08:00 dwarren Exp $
+** $Id: error_xsb.h,v 1.10 2004-08-10 22:37:08 tswift Exp $
 ** 
 */
 
@@ -72,6 +72,7 @@ DllExport extern void call_conv xsb_warn(char *, ...);
 DllExport extern void call_conv xsb_mesg(char *, ...);
 DllExport extern void call_conv xsb_error(char *, ...);
 DllExport extern void call_conv xsb_dbgmsg1(int, char *, ...);
+
 extern void arithmetic_abort1(char *, Cell);
 extern void arithmetic_abort(Cell, char *, Cell);
 extern void arithmetic_comp_abort(Cell, char *, int);
@@ -104,6 +105,7 @@ extern void xsb_segfault_quitter(int);
 
 int unwind_stack(void);
 
+void call_conv xsb_type_error(char *,Cell , char *,int, int) ;
 void call_conv xsb_basic_abort(char *);
 
 /* should include these from whereever they are.... split out from biassert **/
