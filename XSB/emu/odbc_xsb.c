@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.12 2001-01-08 18:05:01 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.13 2001-01-29 14:37:17 dwarren Exp $
 ** 
 */
 
@@ -897,7 +897,14 @@ void ODBCDescribeSelect()
 void FetchNextRow()
 {
   struct Cursor *cur = (struct Cursor *)ptoc_int(2);
-  RETCODE rc = SQLFetch(cur->hstmt);
+  RETCODE rc;
+
+  if (!serverConnected || cur->Status == 0) {
+    ctop_int(3,2);
+    return;
+  }
+
+  rc = SQLFetch(cur->hstmt);
 
   if ((rc == SQL_SUCCESS) || (rc == SQL_SUCCESS_WITH_INFO)) 
     ctop_int(3,0);
