@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.93 2003-01-28 22:57:00 dwarren Exp $
+** $Id: emuloop.c,v 1.94 2003-01-31 15:04:58 dwarren Exp $
 ** 
 */
 
@@ -563,7 +563,6 @@ contcase:     /* the main loop */
     Def2ops
     Op1(get_xxr);
     Op2(get_xxxn);
-printf("float %x\n",op2);
     ADVANCE_PC(size_xxxX);
     bld_float_tagged((CPtr)op1, op2);
   XSB_End_Instr()
