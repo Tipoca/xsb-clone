@@ -3,7 +3,6 @@
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
-** Copyright (C) ECRC, Germany, 1990
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -19,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.5 2000-01-07 08:52:07 kifer Exp $
+** $Id: tst_utils.c,v 1.6 2000-01-11 17:08:29 ejohnson Exp $
 ** 
 */
 
@@ -417,7 +416,7 @@ void triePrintPath(BTNptr pLeaf, bool printLeafAddr) {
       if (! SymbolStack_IsEmpty)
 	printf(",");
     }
-    printf(")");
+    printf(")\n");
   }
 }
 
