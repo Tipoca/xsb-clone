@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modeinf.H,v 1.9 2002-04-13 05:01:48 lfcastro Exp $
+** $Id: modeinf.H,v 1.10 2003-07-22 17:15:32 lfcastro Exp $
 ** 
 */
 
@@ -75,3 +75,5 @@
 
 %:- export prop_iff/2, prop_iff/1, prop_iff_list/2.
 %:- export prop_if_list/2, prop_if/3, prop_if/2.
+
+:- import apply/2, (:-)/2, (:-)/1 from usermod.

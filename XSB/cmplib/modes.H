@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.H,v 1.8 2002-04-13 05:01:48 lfcastro Exp $
+** $Id: modes.H,v 1.9 2003-07-22 17:15:32 lfcastro Exp $
 ** 
 */
 
@@ -57,3 +57,5 @@
 :- import bagPO/3, bagPO1/3 from aggregs.
 :- import subsumes_chk/2 from subsumes.
 :- import get_maximal_calls/1 from usermod.
+
+:- import '_$local_calls'/1, apply/2, (:-)/2, (:-)/1 from usermod.
