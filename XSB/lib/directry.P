@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: directry.P,v 1.8 2003-05-14 16:21:09 lfcastro Exp $
+** $Id: directry.P,v 1.9 2003-05-27 18:15:16 lfcastro Exp $
 ** 
 */
 
@@ -113,7 +113,7 @@ directory(Argument,Dir):-
 
 short_directory(Arg,Out):-
 	(   xsb_configuration(host_os,windows)
-	->  ca(['dir /B ',Arg], command)
+	->  ca(['dir /B ',Arg], Command)
 	;   ca(['\ls',Arg],Command)
 	),
 	sysin(Command,List1),
