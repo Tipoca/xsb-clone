@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: scrptutl.H,v 1.6 2003-04-25 15:34:53 lfcastro Exp $
+** $Id: scrptutl.H,v 1.7 2003-04-25 17:44:52 lfcastro Exp $
 ** 
 */
 
@@ -29,7 +29,6 @@
 	   file_to_list/2,
 	   %% Obsolete
 	   fget_line/3, file_to_list/3,
-	   canonical_pathname/2,
 	   sysin/2.
 
 :- import retractall/1, assert/1, (dynamic)/1 from assert.
@@ -37,11 +36,10 @@
 
 :- import concat_atom/3 from string.
 :- import close/1, name/2, see/1, get0/1, open/3, atom/1, arg/3, functor/3,
-	repeat/0, seeing/1, throw/1
+	repeat/0, seeing/1
 	from standard.
 :- import reverse/2 from basics.
 :- import unix/1 from unix.
-:- import xsb_configuration/2 from xsb_configuration.
-:- import cwd/1, cd/1 from shell.
 :- import obsolete/2 from obsolete.
 :- import datime/1 from standard.
+:- import xsb_configuration/2 from xsb_configuration.
