@@ -72,7 +72,7 @@ tcount:-trie_assert(p(0)),
 	fail.
 tcount.
 
-:- import conget/2, conset/2 from prof_sbp.
+:- import conget/2, conset/2 from gensym.
 
 ccount(Term,_Count):- 
 	conset(numcalls, 0), 

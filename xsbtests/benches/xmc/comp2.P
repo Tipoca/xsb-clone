@@ -4,7 +4,7 @@
 :- op(750, xfx, ['@','\']).
 :- op(700, xfx, ':=').
 
-:- import conget/2, conset/2 from prof_sbp.
+:- import conget/2, conset/2 from gensym.
 
 comp :-
 	retractall(newdef(_,_)),
