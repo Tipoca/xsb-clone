@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb_i.h,v 1.2 2001-01-03 20:40:23 dwarren Exp $
+** $Id: odbc_xsb_i.h,v 1.3 2001-01-08 18:05:01 dwarren Exp $
 ** 
 */
 
@@ -36,8 +36,8 @@ switch (ptoc_int(1)) {
  case ODBC_SET_BIND_VAR_NUM:
    SetBindVarNum();
    break;
- case ODBC_FETCH_NEXT_COL:
-   FetchNextCol();
+ case ODBC_FETCH_NEXT_ROW:
+   FetchNextRow();
    break; 
  case ODBC_GET_COLUMN:
    return GetColumn();
@@ -70,6 +70,12 @@ switch (ptoc_int(1)) {
    break;
  case ODBC_USER_TABLES:
    ODBCUserTables();
+   break;
+ case ODBC_DESCRIBE_SELECT:
+   ODBCDescribeSelect();
+   break;
+ case ODBC_CONNECT_OPTION:
+   ODBCConnectOption();
    break;
  default:
    xsb_error("Unknown or unimplemented ODBC request type");
