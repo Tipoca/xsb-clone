@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random_xsb.c,v 1.2 2000-04-06 11:19:15 cbaoqiu Exp $
+** $Id: random_xsb.c,v 1.3 2000-04-07 18:37:17 cbaoqiu Exp $
 ** 
 */
 
@@ -48,16 +48,17 @@ static short IX = 6293;
 static short IY = 21877;
 static short IZ = 7943;
 
-static double TX = 1.0/30269.0;
-static double TY = 1.0/30307.0;
-static double TZ = 1.0/30323.0;
+static Float TX = 1.0/30269.0;
+static Float TY = 1.0/30307.0;
+static Float TZ = 1.0/30323.0;
 
 /*
  * Returns a float number within the range [0.0, 1.0) in reg 2.
  * ret_random() returns FALSE if there is an error, TRUE if everything is OK.
  */
 int ret_random() {
-  Float X, Y, Z, T;
+  long X, Y, Z;
+  Float T;
   Cell term;
 
   X = (IX*171) % 30269;
@@ -67,7 +68,7 @@ int ret_random() {
   IX = X;
   IY = Y;
   IZ = Z;
-  
+
   term = ptoc_tag(2);
   if (isref(term)) {
     ctop_float(2, T - (int)T);
