@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.H,v 1.2 1999/01/15 18:42:17 kostis Exp $
+** $Id: xsb_read.H,v 1.3 1999/03/24 15:46:24 kifer Exp $
 ** 
 */
 
@@ -32,7 +32,7 @@
 :- import '_$op'/3 from file_op.
 :- import str_tolist/2 from string.
 :- import file_write0/2, file_nl/1 from xsb_writ.
-:- import atom/1, repeat/0, abort/1, abort/0, callable/1, compound/1
+:- import atom/1, repeat/0, abort/1, callable/1, compound/1
     	  from standard.
 :- import '_$hilog_symbol'/1 from hilogsym.
 :- import file_put/2, term_new/2, term_set_arg/4, term_type/2, 
