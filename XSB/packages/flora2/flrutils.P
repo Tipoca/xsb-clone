@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.18 2001-03-26 17:50:16 gzyang Exp $
+** $Id: flrutils.P,v 1.19 2001-03-28 08:58:29 kifer Exp $
 **
 */
 
@@ -1146,4 +1146,4 @@ maxerr(X) :-
 	  assert(flora_maxerr(X))
 	).
 
-flP2H(PrologTerm,HiLogTerm) :- plg2hlg(PrologTerm,HiLogTerm,flapply).
+flP2H(PrologTerm,HiLogTerm) :- plg2hlg(PrologTerm,HiLogTerm,WRAP_HILOG).
