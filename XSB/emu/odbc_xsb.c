@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.25 2003-03-20 21:29:32 lfcastro Exp $
+** $Id: odbc_xsb.c,v 1.26 2003-03-24 20:23:01 lfcastro Exp $
 ** 
 */
 
@@ -652,7 +652,7 @@ void Parse()
   RETCODE rc;
 
   if (cur->Status == 2) { /* reusing opened cursor*/
-    rc = SQLCancel(cur->hstmt);
+    rc = SQLFreeStmt(cur->hstmt,SQL_CLOSE);
     if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO)) {
       ctop_int(3, PrintErrorMsg(cur));
       SetCursorClose(cur);
@@ -808,7 +808,16 @@ void ODBCTables()
      leaves cursors in an invalid state.                  -- lfcastro */
   static const char *dummy_string="THIS is NOT an SQL query";
   RETCODE rc;
-
+  
+  if (cur->Status == 2) { /* reusing opened cursor*/
+    rc = SQLFreeStmt(cur->hstmt,SQL_CLOSE);
+    if ((rc != SQL_SUCCESS) && (rc != SQL_SUCCESS_WITH_INFO)) {
+      ctop_int(3, PrintErrorMsg(cur));
+      SetCursorClose(cur);
+      return;
+    }
+  }
+  
   if (((rc=SQLTables(cur->hstmt,
 		     NULL, 0,
 		     NULL, 0,
@@ -816,9 +825,9 @@ void ODBCTables()
 		     NULL, 0)) == SQL_SUCCESS) ||
       (rc == SQL_SUCCESS_WITH_INFO)) {
     ctop_int(3,0);
-    free(cur->Sql);
-    cur->Sql = malloc(strlen(dummy_string)+1);
-    strcpy(cur->Sql, dummy_string);
+    /*     free(cur->Sql); */
+    /*     cur->Sql = malloc(strlen(dummy_string)+1); */
+    /*     strcpy(cur->Sql, dummy_string); */
   } else {
     ctop_int(3,PrintErrorMsg(cur));
     SetCursorClose(cur);
