@@ -1,0 +1,30 @@
+/* This test considers concurrent ts table creation and completion.
+Answers are returned through a suspension. Tests structures.  */
+
+:- import random_pause/1, for/3 from mttestutils.
+:- import ts_assert/1, ts_call/1 from thread.
+
+%:- table table_call_a/1.
+
+:- assert((concurr_initialize(tablewrite(N,_)):- 
+		retractall(num_is(_)),
+		assert(num_is(N)))).
+
+tablewrite(N,Str):-	
+	num_is(N),
+	table_loop(100,table_call_a(X)),
+	writeln(Str,X),
+	fail.
+tablewrite(_,_).
+
+table_call_a(X):- 
+	num_is(N),
+	random_pause(1000),
+	ts_firstcall(table_call_b(N,X)).
+
+table_call_b(_N,_X):- 
+	random_pause(1000),
+	ts_call(table_call_a(_)),
+	fail.
+table_call_b(N,f(f(f(f(f(f(X))))))):- 
+	for(X,1,N).

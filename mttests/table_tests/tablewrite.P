@@ -1,0 +1,18 @@
+
+/* This test considers concurrent table creation and completion for
+thread specific tables. */
+
+:- import random_pause/1 from mttestutils.
+:- import ts_assert/1, ts_call/1 from thread.
+
+test(Str):- 
+	ts_assert((tablecall(Str) :- tablecall(Str))),
+	ts_call(tablecall(Str)).
+
+tablecall(Str):- 
+	random_pause(1000),
+	writeln(Str,gotit),
+	fail.
+
+
+

@@ -1,0 +1,18 @@
+:-import ts_tnot/1, ts_abolish_tables/0, ts_call/1, ts_assert/1 from thread.
+/* */
+
+test(N,Str):- 
+	ts_assert((win(X,M):-win(X,M))),
+	ts_call(win(2,N)),
+	writeln(Str,won).
+
+win(A,N):- chain(A,B,N),ts_tnot(win(B,N)).
+
+chain(A,B,N):- 
+	integer(A),
+	A > 0,
+	A =< N,
+	B is A + 1.
+
+
+

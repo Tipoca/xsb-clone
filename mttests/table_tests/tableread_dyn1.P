@@ -1,0 +1,15 @@
+:- table tableread_table/1.
+
+tableread_table(X):- 
+	num_is(N),
+	for(X,1,N).
+
+tableread(N,Str):- 
+	for(_X,1,N),
+	tableread_table(_),
+	fail.	
+tableread(_,Str):- 
+	tableread_table(X),
+	writeln(Str,X),
+	fail.
+tableread(_,_).

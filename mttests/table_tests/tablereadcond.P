@@ -1,0 +1,50 @@
+
+/* A table is created sequentially, creating conditional answers.
+Then after the table is completed, threads read from the table
+concurrently N times. This tests concurrent reads as well as
+concurrent tabletry. Threads are sharing a table, but this shouldn't
+matter for now. */
+
+:- dynamic num_is/1.
+
+:- assert((concurr_initialize(tableread(N,_)):- 
+		retractall(num_is(_)),
+		assert(num_is(N)),
+		tableread_table(_))).
+
+:- table tableread_table/1.
+
+tableread_table(X):- 
+	num_is(N),
+	for(X,1,N),
+	p(X).
+
+:- table p/1.
+p(X):- tnot(p(X)).
+
+tableread(N,Str):- 
+	for(_X,1,N),
+	tableread_table(_),
+	fail.	
+tableread(_,Str):- 
+	tableread_table(X),
+	writeln(Str,X),
+	fail.
+tableread(_,_).
+	
+
+%%% for(?I,+B1,+B2) nondeterministically binds I to all integer values
+%%% from B1 to B2.  B1 and B2 must be integers, but either may be larger.
+for(I,B1,B2) :-
+	(B1 =< B2
+	 ->	forup(I,B1,B2)
+	 ;	fordown(I,B1,B2)
+	).
+
+forup(L,L,H) :- L =< H.
+forup(I,L,H) :- L < H, L1 is L+1, forup(I,L1,H).
+
+fordown(H,H,L) :- H >= L.
+fordown(I,H,L) :- H > L, H1 is H-1, fordown(I,H1,L).
+
+
