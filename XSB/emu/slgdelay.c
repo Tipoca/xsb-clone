@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.13 1999/03/11 18:13:43 kostis Exp $
+** $Id: slgdelay.c,v 1.14 1999/06/18 18:21:21 cbaoqiu Exp $
 ** 
 */
 
@@ -475,10 +475,9 @@ static bool remove_de_from_dl(DE de, DL dl)
   }
   if (prev_de == NULL)		/* to remove the first DE */
     dl_de_list(dl) = de_next(current);
-  else {
+  else
     de_next(prev_de) = de_next(current);
-    release_entry(current, released_des, de_next);
-  }
+  release_entry(current, released_des, de_next);
   return (NULL != dl_de_list(dl));
 }
 
