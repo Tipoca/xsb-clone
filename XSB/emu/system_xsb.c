@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.31 2003-06-09 16:38:16 lfcastro Exp $
+** $Id: system_xsb.c,v 1.32 2003-06-23 20:02:47 lfcastro Exp $
 ** 
 */
 
@@ -1003,7 +1003,7 @@ static int xsb_find_next_file(prolog_term handle,
   c2p_string(filedata.cFileName,file);
   return TRUE;
 #else
-  DIR *dirhandle = p2c_int(handle);
+  DIR *dirhandle = (DIR *) p2c_int(handle);
   struct dirent *dir_entry;
 
   dir_entry = readdir(dirhandle);
