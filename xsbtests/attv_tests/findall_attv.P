@@ -1,0 +1,31 @@
+/* File:      findall_attv.P
+** Author(s): Baoqiu Cui
+**
+** $Id: findall_attv.P,v 1.1 1999-11-05 21:51:22 cbaoqiu Exp $
+*/
+
+:- import put_attributes/2, get_attributes/3 from machine.
+:- import attv_unify/2 from machine.
+:- import numbervars/3 from num_vars.
+
+test :-
+	findall(f(X,X), p(X), L),
+	L = [f(X11,X12), f(X21,X22)],
+	get_attributes(X11, V11, _),
+	nonvar(V11), numbervars(V11, 0, _), write('V11 = '), writeq(V11), nl,
+	get_attributes(X21, V21, _),
+	nonvar(V21), numbervars(V21, 0, _), write('V21 = '), writeq(V21), nl,
+
+	% Now update the attribute of X11 and X21, the attributes of
+	% X12 and X22 should also be changed.
+	put_attributes(X11, v(1,2,3)),
+	put_attributes(X21, v(4,5,6)),
+	writeln('-- after update --'),
+	get_attributes(X12, V12, _),
+	nonvar(V12), numbervars(V12, 0, _), write('V12 = '), writeq(V12), nl,
+	get_attributes(X22, V22, _),
+	nonvar(V22), numbervars(V22, 0, _), write('V22 = '), writeq(V22), nl.
+	
+
+p(X) :- put_attributes(X, v(1,A,A)).
+p(X) :- put_attributes(X, v(2,A,A)).

@@ -1,0 +1,27 @@
+/* File:      copyterm_attv.P
+** Author(s): Baoqiu Cui
+**
+** $Id: copyterm_attv.P,v 1.1 1999-11-05 21:51:20 cbaoqiu Exp $
+*/
+
+:- import put_attributes/2, get_attributes/3 from machine.
+:- import attv_unify/2 from machine.
+
+test :-
+	put_attributes(X, v(a)),
+	copy_term(f(X,g(X)), T),
+	T = f(Y,g(Z)),			% Y and Z are shared in T
+	put_attributes(Y, v(b)),	% so update Y will also update Z
+	get_attributes(Y, VY, _),
+	get_attributes(Z, VZ, _),
+	nonvar(VY), VY = v(b),
+	nonvar(VZ), VZ = v(b),
+
+	put_attributes(A, v(123)),	% Test shared attvs in a functor
+	copy_term(f(A,A), G),
+	G = f(B,C),
+	put_attributes(B, v(456)),
+	get_attributes(C, VC, _),
+	nonvar(VC), VC = v(456),
+
+	writeln('== test_copy_term OK').

@@ -13,3 +13,5 @@ opts=$2
 ../gentest.sh "$XEMU $opts" interrupt1 "test."
 ../gentest.sh "$XEMU $opts" interrupt2 "test."
 ../gentest.sh "$XEMU $opts" pre_image "test."
+../gentest.sh "$XEMU $opts" copyterm_attv "test."
+../gentest.sh "$XEMU $opts" findall_attv "test."
