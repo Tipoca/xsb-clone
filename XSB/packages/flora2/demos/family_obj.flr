@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: family_obj.flr,v 1.4 2001-03-25 07:02:33 kifer Exp $
+** $Id: family_obj.flr,v 1.5 2001-06-04 21:39:42 kifer Exp $
 ** 
 */
 
@@ -82,8 +82,8 @@ X[parent->>{Y}] :- X[mother->Y].
 X[son->>{Y}]      :- Y[parent->>{X}], Y:male.
 X[daughter->>{Y}] :- Y[parent->>{X}], Y:female.
 
-X[brother->>{Y}] :- X..parent[son->>{Y}], not X=Y.
-X[sister->>{Y}]  :- X..parent[daughter->>{Y}], not X=Y.
+X[brother->>{Y}] :- X..parent[son->>{Y}], \+ X=Y.
+X[sister->>{Y}]  :- X..parent[daughter->>{Y}], \+ X=Y.
 
 X[brother_in_law->>{Y}] :- X..sister[spouse->Y].
 X[brother_in_law->>{Y}] :- X.spouse[brother->>{Y}].
