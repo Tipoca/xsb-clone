@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.16 1999-04-19 20:03:15 luis Exp $
+## $Id: testsuite.sh,v 1.17 1999-08-20 05:46:17 kifer Exp $
 ## 
 ##
 
@@ -175,8 +175,8 @@ if test -n "$coredumps" ; then
   ls -1 $coredumps >> $RES_FILE
   echo "End of the core dumps list" >> $RES_FILE
 fi
-# check for seg fault
-$GREP "fault" $LOG_FILE >> $RES_FILE
+# check for seg fault, but not for segfault_handler
+$GREP "fault" $LOG_FILE | grep -v "segfault_handler" >> $RES_FILE
 # core dumped
 $GREP "dumped" $LOG_FILE >> $RES_FILE
 # when no output file is generated

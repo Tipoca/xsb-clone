@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.5 1999-03-03 23:34:22 kifer Exp $
+## $Id: testall.sh,v 1.6 1999-08-20 05:46:16 kifer Exp $
 ## 
 ##
 
@@ -50,7 +50,7 @@ done
 
 if test -z "$1" -o $# -gt 1; then
   echo "Usage: testall.sh [-opts opts] [-exclude \"test_list\"] executable"
-  echo "where: opts       -- options to pass to XSBi executable"
+  echo "where: opts       -- options to pass to XSB executable"
   echo "       test_list  -- quoted, space-separated list of tests to NOT run"
   echo "       executable -- full path name of the XSB executable"
   exit
@@ -103,7 +103,7 @@ for tst in $testlist ; do
     if test -f core ; then
 	rm -f core
     fi
-    ./test.sh "$XEMU" "$options"
+    ./test.sh "$XEMU" "-e segfault_handler(warn). $options"
     cd ..
   fi
 done
