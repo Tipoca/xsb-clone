@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_util.h,v 1.3 2000-04-03 05:04:37 kifer Exp $
+** $Id: libwww_util.h,v 1.4 2000-04-04 00:33:42 kifer Exp $
 ** 
 */
 
@@ -52,8 +52,8 @@
 /* definitions and macros included in all files */
 
 
-#define LIBWWW_DEBUG
 /*
+#define LIBWWW_DEBUG
 #define LIBWWW_DEBUG_VERBOSE
 #define LIBWWW_DEBUG_TERSE
 */
