@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: supermake.sh,v 1.1 1999-04-09 21:54:51 cbaoqiu Exp $
+## $Id: supermake.sh,v 1.2 1999-06-22 17:56:36 cbaoqiu Exp $
 ## 
 ##
 
@@ -53,12 +53,12 @@ configure --config-tag=localsched --enable-local-scheduling
 echo "Making XSB with --enable-local-scheduling"
 makexsb --config-tag=localsched fast
 
-echo "Configuring XSB with --enable-chat"
-configure --config-tag=chat --enable-chat
-echo "Making XSB with --enable-chat"
-makexsb --config-tag=chat fast
+echo "Configuring XSB with --enable-slg-wam"
+configure --config-tag=slg-wam --enable-slg-wam
+echo "Making XSB with --enable-slg-wam"
+makexsb --config-tag=slg-wam fast
 
-echo "Configuring XSB with --enable-chat --enable-local-scheduling"
-configure --config-tag=localschedNchat --enable-chat --enable-local-scheduling
-echo "Making XSB with --enable-chat --enable-local-scheduling"
-makexsb --config-tag=localschedNchat fast
+echo "Configuring XSB with --enable-slg-wam --enable-local-scheduling"
+configure --config-tag=localschedNslg-wam --enable-slg-wam --enable-local-scheduling
+echo "Making XSB with --enable-slg-wam --enable-local-scheduling"
+makexsb --config-tag=localschedNslg-wam fast

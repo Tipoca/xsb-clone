@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: supertest.sh,v 1.7 1999-02-28 01:14:08 kifer Exp $
+## $Id: supertest.sh,v 1.8 1999-06-22 17:56:37 cbaoqiu Exp $
 ## 
 ##
 
@@ -68,20 +68,20 @@ cd $testdir
 ./testsuite.sh -tag localsched $xsbdir
 
 cd $xsbdir/build
-echo "Configuring XSB with --enable-chat"
-configure --config-tag=chat --enable-chat >> $logfile
-echo "Making XSB with --enable-chat"
-makexsb --config-tag=chat fast >> $logfile
+echo "Configuring XSB with --enable-slg-wam"
+configure --config-tag=slg-wam --enable-slg-wam >> $logfile
+echo "Making XSB with --enable-slg-wam"
+makexsb --config-tag=slg-wam fast >> $logfile
 cd $testdir
-./testsuite.sh -tag chat $xsbdir
+./testsuite.sh -tag slg-wam $xsbdir
 
 
 cd $xsbdir/build
-echo "Configuring XSB with --enable-chat --enable-local-scheduling"
-configure --config-tag=localschedNchat --enable-chat --enable-local-scheduling >> $logfile
-echo "Making XSB with --enable-chat --enable-local-scheduling"
-makexsb --config-tag=localschedNchat fast >> $logfile
+echo "Configuring XSB with --enable-slg-wam --enable-local-scheduling"
+configure --config-tag=localschedNslg-wam --enable-slg-wam --enable-local-scheduling >> $logfile
+echo "Making XSB with --enable-slg-wam --enable-local-scheduling"
+makexsb --config-tag=localschedNslg-wam fast >> $logfile
 cd $testdir
-./testsuite.sh -tag localschedNchat $xsbdir
+./testsuite.sh -tag localschedNslg-wam $xsbdir
 
 rm $testdir/$lockfile

@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: gctest.sh,v 1.2 1999-02-28 01:14:06 kifer Exp $
+## $Id: gctest.sh,v 1.3 1999-06-22 17:56:35 cbaoqiu Exp $
 ## 
 ##
 
@@ -54,9 +54,9 @@ fi
 #------------------------------------------------------------------
 
 cd $xsbdir/build
-echo "Configuring XSB with --enable-chat --enable-gc-test"
-configure --config-tag=chatgc --enable-chat --enable-gc-test >> $logfile
-echo "Making XSB with --enable-chat --enable-gc-test"
+echo "Configuring XSB with --enable-gc-test"
+configure --config-tag=chatgc --enable-gc-test >> $logfile
+echo "Making XSB with --enable-gc-test"
 makexsb --config-tag=chatgc fast >> $logfile
 cd $testdir
 ./testsuite.sh -tag chatgc -exclude "sem_tests"  $xsbdir
@@ -64,9 +64,9 @@ cd $testdir
 			   -exclude "sem_tests ai_tests"  $xsbdir
 
 cd $xsbdir/build
-echo "Configuring XSB with --enable-chat --enable-local-scheduling --enable-gc-test"
-configure --config-tag=chatlocalgc --enable-chat --enable-local-scheduling --enable-gc-test >> $logfile
-echo "Making XSB with --enable-chat --enable-local-scheduling --enable-gc-test"
+echo "Configuring XSB with --enable-local-scheduling --enable-gc-test"
+configure --config-tag=chatlocalgc --enable-local-scheduling --enable-gc-test >> $logfile
+echo "Making XSB with --enable-local-scheduling --enable-gc-test"
 makexsb --config-tag=chatlocalgc fast >> $logfile
 cd $testdir
 ./testsuite.sh -tag chatlocalgc -exclude "sem_tests"  $xsbdir
