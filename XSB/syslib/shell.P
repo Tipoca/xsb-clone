@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.P,v 1.14 2002/03/13 10:17:46 kifer Exp $
+** $Id: shell.P,v 1.15 2002/03/15 09:19:48 kifer Exp $
 ** 
 */
 
@@ -83,7 +83,12 @@ cd(Path) :-
 
 rename(Old, New) :- sys_rename(Old, New, Res), Res =:= 0.
 
-ls :- shell('ls -F', Res), Res =:= 0.
+ls :-
+	(   xsb_configuration(host_os,windows)
+	->  shell('dir', Res)
+	;   shell('ls -F',Res)
+	),
+	Res =:= 0.
 
 rm(Name) :- sys_unlink(Name, Res), Res =:= 0.
 
