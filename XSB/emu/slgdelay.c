@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.31 2000/05/29 18:08:28 cbaoqiu Exp $
+** $Id: slgdelay.c,v 1.32 2000/06/28 16:54:52 ruim Exp $
 ** 
 */
 
@@ -48,7 +48,7 @@
 #include "io_builtins_xsb.h"
 
 static void simplify_neg_succeeds(VariantSF);
-static void simplify_pos_unsupported(NODEptr);
+extern void simplify_pos_unsupported(NODEptr);
 static void simplify_pos_unconditional(NODEptr);
 
 /*
@@ -626,7 +626,7 @@ static void handle_unsupported_answer_subst(NODEptr as_leaf)
  * To release all the DLs (and their DEs) in the DelayInfo node `asi'.
  */
 
-static void release_all_dls(ASI asi)
+void release_all_dls(ASI asi)
 {
   ASI de_asi;
   DE de, tmp_de;
@@ -779,7 +779,7 @@ static void simplify_neg_succeeds(VariantSF subgoal)
  * pointing to that AnswerSubstitution.
  */
 
-static void simplify_pos_unsupported(NODEptr as_leaf)
+void simplify_pos_unsupported(NODEptr as_leaf)
 {
   ASI asi = Delay(as_leaf);
   PNDE pde;
