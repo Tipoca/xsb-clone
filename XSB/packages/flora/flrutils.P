@@ -21,19 +21,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.20 1999-07-02 22:52:50 kifer Exp $
+** $Id: flrutils.P,v 1.21 1999-07-05 14:37:24 kifer Exp $
 **
 */
 
 
 /********************************************************************/
-flora_prefix("_$_$_flora_").
 
-flora_word(S,A) :-
-	atom_codes(S,Str),
-	flora_prefix(P),
-	append(P,Str,L),
-	atom_codes(A,L).
+flora_prefix('_$_$_flora_').
+flora_word(S,A) :- flora_prefix(P), str_cat(P,S,A).
 
 
 /********************************************************************/
