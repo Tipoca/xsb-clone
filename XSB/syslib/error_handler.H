@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.8 2004/01/20 22:39:36 tswift Exp $
+** $Id: error_handler.H,v 1.9 2004/04/12 13:09:47 dwarren Exp $
 ** 
 */
 
@@ -40,7 +40,8 @@
 :- import (dynamic)/1 from assert.
 :- import ground/1 from basics.
 %%:- import reset_undef_pred_handlers/0 from loader.
-:- import close_open_tables/0, psc_data/2, psc_name/2, psc_arity/2 from machine.
+:- import close_open_tables/0, psc_data/2, psc_name/2, psc_arity/2,
+             xsb_backtrace/1 from machine.
 :- import atom/1, messageln/2, throw/1 from standard.
 :- import concat_atom/2 from string.
 
