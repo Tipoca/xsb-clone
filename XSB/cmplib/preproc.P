@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: preproc.P,v 1.2 1999-11-20 06:51:12 kifer Exp $
+** $Id: preproc.P,v 1.3 2004-03-08 13:58:25 dwarren Exp $
 ** 
 */
 
@@ -235,6 +235,7 @@ inline_test('=:=', 2).
 inline_test('=\=', 2).
 
 inline_test('==', 2).
+inline_test('@=', 2).
 inline_test('\==', 2).
 inline_test('@<', 2).
 inline_test('@=<', 2).

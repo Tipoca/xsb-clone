@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.59 2004-03-06 21:55:14 tswift Exp $
+** $Id: parse.P,v 1.60 2004-03-08 13:58:24 dwarren Exp $
 ** 
 */
 
@@ -760,8 +760,9 @@ trans_goals(T, Goal, SymTab, VidIn, VidOut) :-
 
 trans_goal(Term, Goal, SymTab, VidIn, VidOut) :-
 	functor(Term, P, A),
-	( inline_predicate(P, A), Goal = inlinegoal(P, A, ArgList)
-	; Goal = goal(Sym, ArgList), sym_insert(P, A, _Prop, SymTab, Sym)
+	(inline_predicate(P, A)
+	 ->	Goal = inlinegoal(P, A, ArgList)
+	 ;	Goal = goal(Sym, ArgList), sym_insert(P, A, _Prop, SymTab, Sym)
 	),
 	prolog_arglist(Term, RawArgs, A, A),
 	trans_args(RawArgs, ArgList, SymTab, VidIn, VidOut).

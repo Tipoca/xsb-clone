@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asm_inst.P,v 1.10 1999-11-15 09:28:41 kostis Exp $
+** $Id: asm_inst.P,v 1.11 2004-03-08 13:58:24 dwarren Exp $
 ** 
 */
 
@@ -111,6 +111,7 @@ asm_inst(divreg(R,R1),		4,	218,	[p, r(R), r(R1)]).
 asm_inst(idivreg(R,R1),		4,	219,	[p, r(R), r(R1)]).
 asm_inst(int_test_z(R,I,L),    12,	220,	[pp, r(R), n(I), l(L)]).
 asm_inst(int_test_nz(R,I,L),   12,	221,	[pp, r(R), n(I), l(L)]).
+asm_inst(fun_test_ne(R1,R2,L), 8,	222,	[p, r(R1), r(R2), l(L)]).
 
 asm_inst(putdval(V,R),		4,	224,	[p, v(V), r(R)]	).
 asm_inst(putuval(V,R),		4,	225,	[p, v(V), r(R)]	).
