@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.c,v 1.17 1999-04-04 03:56:18 kifer Exp $
+** $Id: io_builtins.c,v 1.18 1999-04-04 15:53:34 kifer Exp $
 ** 
 */
 
@@ -261,7 +261,7 @@ bool fmt_write(void)
       ValTerm: Term whose args are vars to receive values returned.
 ----------------------------------------------------------------------*/
 
-#define MAX_SPRINTF_STRING_SIZE MAXBUFSIZE*4
+#define MAX_SPRINTF_STRING_SIZE MAX_IO_BUFSIZE
 
 /* If no snprintf, we fill only half of OutString, to be on the safe side */
 #ifdef HAVE_SNPRINTF
