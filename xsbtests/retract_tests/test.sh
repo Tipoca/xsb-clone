@@ -5,11 +5,14 @@ echo "--- Running retract_tests/test.sh                   ---"
 echo "-------------------------------------------------------"
 
 XEMU=$1
+options=$2
+
 
 #---------------------------------------
 # Assert and retract tests.
 #---------------------------------------
-../gentest.sh $XEMU testretract "test."
+    # XEMU and options must be together in quotes
+../gentest.sh "$XEMU $options" testretract "test."
 #---------------------------------------
-../gentest.sh $XEMU boyer_assert "boyer."
+../gentest.sh "$XEMU $options" boyer_assert "boyer."
 #---------------------------------------

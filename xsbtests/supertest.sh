@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: supertest.sh,v 1.6 1999-01-14 21:55:21 kifer Exp $
+## $Id: supertest.sh,v 1.7 1999-02-28 01:14:08 kifer Exp $
 ## 
 ##
 
@@ -65,7 +65,7 @@ configure --config-tag=localsched --enable-local-scheduling >> $logfile
 echo "Making XSB with --enable-local-scheduling"
 makexsb --config-tag=localsched fast >> $logfile
 cd $testdir
-./testsuite.sh $xsbdir localsched
+./testsuite.sh -tag localsched $xsbdir
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-chat"
@@ -73,7 +73,7 @@ configure --config-tag=chat --enable-chat >> $logfile
 echo "Making XSB with --enable-chat"
 makexsb --config-tag=chat fast >> $logfile
 cd $testdir
-./testsuite.sh $xsbdir chat
+./testsuite.sh -tag chat $xsbdir
 
 
 cd $xsbdir/build
@@ -82,6 +82,6 @@ configure --config-tag=localschedNchat --enable-chat --enable-local-scheduling >
 echo "Making XSB with --enable-chat --enable-local-scheduling"
 makexsb --config-tag=localschedNchat fast >> $logfile
 cd $testdir
-./testsuite.sh $xsbdir localschedNchat
+./testsuite.sh -tag localschedNchat $xsbdir
 
 rm $testdir/$lockfile

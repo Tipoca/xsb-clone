@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.3 1999-01-14 20:57:07 kifer Exp $
+## $Id: testall.sh,v 1.4 1999-02-28 01:14:09 kifer Exp $
 ## 
 ##
 
@@ -29,8 +29,47 @@ echo "-------------------------------------------------------"
 echo "--- Running testall.sh                              ---"
 echo "-------------------------------------------------------"
 
+while test 1=1
+do
+    case "$1" in
+     *-opt*)
+	    shift
+	    options=$1
+	    shift
+	    ;;
+     *-exclud*)
+	    shift
+	    excluded_tests=$1
+	    shift
+	    ;;
+      *)
+	    break
+	    ;;
+    esac
+done
+
+if test -z "$1" -o $# -gt 1; then
+  echo "Usage: testall.sh [-opts opts] [-exclude \"test_list\"] executable"
+  echo "where: opts       -- options to pass to XSBi executable"
+  echo "       test_list  -- quoted, space-separated list of tests to NOT run"
+  echo "       executable -- full path name of the XSB executable"
+  exit
+fi
 
 XEMU=$1
+
+# Test if element is a member of exclude list
+# $1 - element
+# $2 - exclude list
+function member ()
+{
+    for elt in $2 ; do
+	if test "$1" = "$elt" ; then
+	    return 0
+	fi
+    done
+    return 1
+}
 
 lockfile=lock.test
 testdir=`pwd`
@@ -50,18 +89,23 @@ else
 fi
 
 
-# float_tests  omitted??? - mk
-dirlist="basic_tests prolog_tests retract_tests \
-	 table_tests ptq neg_tests sem_tests delay_tests \
-	 wfs_tests ai_tests"
+    # float_tests don't pass. --mk
+testlist="basic_tests prolog_tests retract_tests \
+	  table_tests ptq neg_tests sem_tests delay_tests \
+	  wfs_tests ai_tests"
 
-for dir in $dirlist ; do
-  cd $dir
-  if test -f core ; then
-     rm -f core
+# Run each test in $testlist except for the tests in $excluded_tests
+for tst in $testlist ; do
+  if member "$tst" "$excluded_tests" ; then
+    continue
+  else
+    cd $tst
+    if test -f core ; then
+	rm -f core
+    fi
+    ./test.sh "$XEMU" "$options"
+    cd ..
   fi
-  ./test.sh "$XEMU"
-  cd ..
 done
    
 rm -f $lockfile

@@ -5,31 +5,33 @@ echo "--- Running prolog_tests/test.sh                    ---"
 echo "-------------------------------------------------------"
 
 XEMU=$1
+options=$2
 
 #------------------------------------
 # tests involving standard predicates
 #------------------------------------
-../gentest.sh $XEMU std1 "test."
-../gentest.sh $XEMU std2 "test."
+    # XEMU and options must be together in quotes
+../gentest.sh "$XEMU $options" std1 "test."
+../gentest.sh "$XEMU $options" std2 "test."
 #------------------------------------
 # Test reading from strings
 #------------------------------------
-../gentest.sh $XEMU readstrtest "test."
+../gentest.sh "$XEMU $options" readstrtest "test."
 #------------------------------------
 # Test number_chars
 #------------------------------------
-../gentest.sh $XEMU n2c "test."
+../gentest.sh "$XEMU $options" n2c "test."
 #------------------------------------
 # keep the compiler honest
 #------------------------------------
-../gentest.sh $XEMU first "test."
-../gentest.sh $XEMU newfirst "test."
+../gentest.sh "$XEMU $options" first "test."
+../gentest.sh "$XEMU $options" newfirst "test."
 #-----------------------------------------------------------------------
 # the following make sure that the compiler will produce the right code
 #-----------------------------------------------------------------------
-../gentest.sh $XEMU inline "go."
-../gentest.sh $XEMU unsafe1 "test."
-../gentest.sh $XEMU unsafe2 "test."
+../gentest.sh "$XEMU $options" inline "go."
+../gentest.sh "$XEMU $options" unsafe1 "test."
+../gentest.sh "$XEMU $options" unsafe2 "test."
 #-----------------------------------------------------------------------
 # the following two tests are used to test multifile directive
 #-----------------------------------------------------------------------
@@ -37,17 +39,17 @@ XEMU=$1
 # Just to create some .O files that
 # will be used later in multifile test
 #------------------------------------
-../gentest.sh $XEMU mf_obj "do."
+../gentest.sh "$XEMU $options" mf_obj "do."
 #------------------------------------
 # Test multifile directive
 #------------------------------------
-../gentest.sh $XEMU mf_test1 "test."
+../gentest.sh "$XEMU $options" mf_test1 "test."
 #------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
 #------------------------------------------------------------------------
 rm -f xeddis.o xeddis.so xeddis.O
-../gentest.sh $XEMU cinter1 "test."
+../gentest.sh "$XEMU $options" cinter1 "test."
 #------------------------------------------------------------------------
 rm -f zero.o zero.so zero.O
-../gentest.sh $XEMU cinter2 "test."
+../gentest.sh "$XEMU $options" cinter2 "test."
 #------------------------------------------------------------------------

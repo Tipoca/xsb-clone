@@ -1,5 +1,6 @@
 #! /bin/sh
 
+# $1 is expected to have xsb ececutable + command line options
 EMU=$1
 CONSULT_FILE=$2
 TEST_FILE=$3
@@ -10,6 +11,8 @@ BASEDIR=`basename $DIR`
 
 echo "--------------------------------------------------------------------"
 echo "Testing $BASEDIR/$TEST_FILE"
+#echo "$EMU"     # debug check: verify that options have been passed to xsb
+
 $EMU << EOF
 [$CONSULT_FILE].
 tell(temp).

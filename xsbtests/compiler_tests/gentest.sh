@@ -1,5 +1,6 @@
 #! /bin/sh
 
+# $1 is expected to have xsb ececutable + command line options
 EMU=$1
 FILE=$2
 
@@ -9,6 +10,8 @@ BASEDIR=`basename $DIR`
 echo "--------------------------------------------------------------------"
 
 echo "Testing $BASEDIR/$FILE"
+#echo "$EMU"     # debug check: verify that options have been passed to xsb
+
 $EMU << EOF
 
 compile($FILE,[spec_dump,table_dump,ti_dump]).

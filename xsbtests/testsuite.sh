@@ -1,7 +1,7 @@
 #! /bin/sh
 
 ## File:      testsuite.sh
-## Author(s): Juliana Freire
+## Author(s): Juliana Freire (kifer responsible for all recent bugs)
 ## Contact:   xsb-contact@cs.sunysb.edu
 ## 
 ## Copyright (C) The Research Foundation of SUNY, 1996-1999
@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.13 1999-02-23 17:56:17 kostis Exp $
+## $Id: testsuite.sh,v 1.14 1999-02-28 01:14:09 kifer Exp $
 ## 
 ##
 
@@ -29,27 +29,22 @@
 # log for possible errors.
 #==================================================================
 
-# $1 is expected to be the path to XSB installation directory
-# $2 is optional. If specified, this is the tag to use to 
+# Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude test_list] path
+# where: opts      -- options to pass to XSB
+#        tag       -- the configuration tag to use
+#        test_list -- the list of tests to NOT run
+#        path      -- full path name of the XSB installation directory
+#    If tag specified, this is the tag to use to 
 #    locate the XSB executable (e.g., dbg, chat, etc.). 
 #    It is usually specified using the --config-tag option of 'configure'
 #    The XSB executable is either in
 #    	 $1/config/architecture/bin/xsb
 #    or in
-#    	 $1/config/architecture-$2/bin/xsb
+#    	 $1/config/architecture-tag/bin/xsb
 #    depending on whether the configuration tag was given on command line.
-# $3 is optional.  If specified, it is the file containing the commands
-#    to test specific subdirectories of the XSB testsuite.  If not
-#    specified it defaults to "testall".
 
 echo ==========================================================================
 
-
-if test $# -gt 3 -o $# = 0; then
-	echo "Usage: testsuite.sh <full path for XSB installation directory>"
-	echo ""
-	exit
-fi
 
 if test -n "$USER"; then
    USER=`whoami`
@@ -57,24 +52,57 @@ if test -n "$USER"; then
 fi
 
 
-installdir=$1
+while test 1=1
+do
+    case "$1" in
+     *-opt*)
+	    shift
+	    options=$1
+	    shift
+	    ;;
 
-if test -z "$2" ; then
-    config_tag=
-else
-    config_tag="-$2"
+     *-exclud*)
+	    shift
+	    excluded_tests=$1
+	    shift
+	    ;;
+	    
+     *-tag*)
+	    shift
+	    config_tag=$1
+	    shift
+	    ;;
+
+      *)
+	    break
+	    ;;
+    esac
+done
+
+
+# install dir argument
+if test -z "$1" -o $# -gt 1; then
+    echo "Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude \"test_list\"] path"
+    echo "where: opts      -- options to pass to XSB"
+    echo "       tag       -- the configuration tag to use"
+    echo "       test_list -- the list of tests to NOT run"
+    echo "       path      -- full path name of the XSB installation directory"
+    exit
 fi
 
+installdir=$1
+
+
+if test -n "$config_tag" ; then
+    config_tag="-$config_tag"
+fi
+
+
+# get canonical configuration name
 config=`$installdir/build/config.guess`
 canonical=`$installdir/build/config.sub $config`
 
 XEMU=$installdir/config/$canonical$config_tag/bin/xsb
-
-if test -z "$3" ; then
-    sh_testfile="./testall.sh"
-else
-    sh_testfile="$3"
-fi
 
 GREP="grep -i"
 MSG_FILE=/tmp/xsb_test_msg.$USER
@@ -117,7 +145,7 @@ fi
 echo "Testing $XEMU"
 echo "Results will be in  $LOG_FILE"
 
-echo "Log for  $XEMU" > $LOG_FILE
+echo "Log for  $XEMU $options" > $LOG_FILE
 (echo "Date-Time: `date +"%y%m%d-%H%M"`" >> $LOG_FILE) || status=failed
 if test -n "$status"; then
 	echo "Date-Time: no date for NeXT..." >> $LOG_FILE
@@ -126,7 +154,7 @@ else
 	NEXT_DATE=0
 fi
 
-$sh_testfile $XEMU >> $LOG_FILE 2>&1
+testall.sh -opts "$options" -exclude "$excluded_tests" $XEMU  >> $LOG_FILE 2>&1
 
 echo "-----------------------------------------"
 echo "The following core dumps occurred during this test run:"
