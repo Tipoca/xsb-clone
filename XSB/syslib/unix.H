@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unix.H,v 1.1 1998-11-15 05:44:24 kifer Exp $
+** $Id: unix.H,v 1.3 1999-04-10 14:09:10 kostis Exp $
 ** 
 */
 
