@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.h,v 1.12 1999-04-23 19:41:57 cbaoqiu Exp $
+** $Id: inst.h,v 1.13 1999-05-17 17:20:51 unova Exp $
 ** 
 */
 
@@ -37,7 +37,7 @@ extern void init_inst_table(void);
 #define C 5	/* constant symbol */
 #define L 6	/* label (address) */
 #define G 7	/* string */
-#define N 8	/* number (integer - rfm) */
+#define N 8	/* number (integer) */
 #define I 9	/* 2nd & 3rd arguments of switchonbound */
 #define P 10	/* pad */
 #define X 11	/* not present */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.21 1999-05-03 20:12:29 luis Exp $
+** $Id: emuloop.c,v 1.22 1999-05-17 17:20:53 unova Exp $
 ** 
 */
 
@@ -203,8 +203,8 @@ jmp_buf xsb_abort_fallback_environment;
  * 	V - variable offset
  * 	R - register number
  *
- * (Notice that on 64-bit machines the space taken by these one-byte
- * operands is doubled)
+ * (In 64-bit machines there are 4 bytes of extra padding space for each 
+ *  instruction)
  */
 
 static int emuloop(byte *startaddr)
@@ -228,13 +228,12 @@ static int emuloop(byte *startaddr)
   ALPtr OldRetPtr;
   NODEptr TrieRetPtr;
   char  message[80];
-  byte reset_inst = reset;  /* instruction to initialize abort handler */
 
   xsb_segfault_message = xsb_default_segfault_msg;
 
   rreg = reg; /* for SUN */
   op1 = op2 = (Cell) NULL;
-  lpcreg = &reset_inst;  /* start by initializing abort handler */
+  lpcreg = (pb)&reset_inst;  /* start by initializing abort handler */
 
 contcase:     /* the main loop */
 

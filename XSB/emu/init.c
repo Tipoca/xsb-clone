@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.18 1999-05-03 00:55:47 luis Exp $
+** $Id: init.c,v 1.19 1999-05-17 17:20:49 unova Exp $
 ** 
 */
 
@@ -93,6 +93,7 @@ Cell hash_handle_inst;
 Cell fail_inst;
 Cell halt_inst;
 Cell proceed_inst;
+Cell reset_inst;
 
 extern double realtime_count;
 extern pw reloc_table[];
@@ -475,6 +476,8 @@ void init_machine(void)
   cell_opcode(&fail_inst) = fail;
   cell_opcode(&halt_inst) = halt;
   cell_opcode(&proceed_inst) = proceed;         /* returned by load_obj */
+  cell_opcode(&reset_inst) = reset;
+				/* instruction to initialize abort handler */
 
   /* Allocate Stack Spaces and set Boundary Parameters
      ------------------------------------------------- */
