@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.4 2001-03-23 03:54:31 kifer Exp $
+** $Id: flag_defs_xsb.h,v 1.5 2001-03-27 17:52:03 dwarren Exp $
 ** 
 */
 
@@ -57,7 +57,6 @@
 #define INSTALL_DIR	23	/* set dynamically in orient_xsb.c         */
 
 #define CLAUSE_INT	24	/* for clause interrupt			YW */
-#define PSC_INT	   	25	/* for PSC interrupt			MK */
 
 #define CONFIG_FILE	26	/* Where xsb_configuration.P lives	   */
 /* loader uses CONFIG_NAME flag before xsb_configuration is loaded */

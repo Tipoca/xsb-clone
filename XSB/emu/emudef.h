@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.25 2001-03-26 01:38:16 kifer Exp $
+** $Id: emudef.h,v 1.26 2001-03-27 17:52:03 dwarren Exp $
 ** 
 */
 
@@ -232,7 +232,7 @@ int *asynint_ptr = &asynint_val;
 
 #define call_sub(PSC) {							\
   if ( (*asynint_ptr > 0) | call_intercept     	      	      	        \
-       | int_val(cell(interrupt_reg)) | flags[PSC_INT] ) {     	        \
+       | int_val(cell(interrupt_reg)) ) { 		    	        \
     if (*asynint_ptr > 0) { /* non-attv interrupt detected */		\
       if (*asynint_ptr == KEYINT_MARK) {				\
         synint_proc(PSC, MYSIG_KEYB, lpcreg-2*sizeof(Cell));		\
@@ -261,12 +261,6 @@ int *asynint_ptr = &asynint_val;
       intercept(PSC);							\
       lpcreg = pcreg;							\
     }									\
-    if (flags[PSC_INT]) {    	     	     	     	     	     	\
-      pcreg = lpcreg;							\
-      synint_proc(PSC, MYSIG_PSC, pcreg-2*sizeof(Cell));      	     	\
-      flags[PSC_INT] = (Cell)0; /* reset it only after synint_proc() */	\
-      lpcreg = pcreg;							\
-    }	     	     	     	     	     	     	     	     	\
   } else {								\
     lpcreg = (pb)get_ep(PSC);						\
     /* check_glstack_overflow(get_arity(PSC),	  */    		\

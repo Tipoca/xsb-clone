@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.11 2001-03-17 05:44:01 kifer Exp $
+** $Id: pathname_xsb.c,v 1.12 2001-03-27 17:52:03 dwarren Exp $
 ** 
 */
 
@@ -414,6 +414,10 @@ static char *rectify_pathname(char *inpath, char *outpath) {
     outidx++;
   }
   if (leading_slash2) {
+#if defined(CYGWIN)
+    strncpy(outpath+outidx,"cygdrive",8);
+    outidx += 8;
+#endif
     outpath[outidx] = SLASH;
     outidx++;
   }

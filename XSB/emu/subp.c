@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.50 2001/01/26 23:56:09 lfcastro Exp $
+** $Id: subp.c,v 1.51 2001/03/23 03:54:31 kifer Exp $
 ** 
 */
 
@@ -321,20 +321,6 @@ Psc synint_proc(Psc psc, int intcode, byte *cur_inst)
 	bld_cs(reg+1, build_call(psc));
       psc = (Psc)flags[intcode+INT_HANDLERS_FLAGS_START];
       bld_int(reg+2, intcode);
-      pcreg = get_ep(psc);
-      break;
-    case MYSIG_PSC:		/* 14 */
-      /*
-      if (psc)
-	bld_cs(reg+1, build_call(psc));
-      */
-      printf("a called psc=%s \n", get_name(psc));
-      printf("aa createdPSC=%s \n", get_name((Psc)flags[PSC_INT]));
-      psc = (Psc)flags[intcode+INT_HANDLERS_FLAGS_START];
-      printf("aaa inthandler=%s \n", get_name(psc));
-      /*
-      bld_int(reg+2, intcode);
-      */
       pcreg = get_ep(psc);
       break;
     case MYSIG_ATTV:		/*  8 */
@@ -745,7 +731,7 @@ void checkJavaInterrupt(void *info)
   }
 }
 
-boolean startInterruptThread(SOCKET intSocket)
+xsbBool startInterruptThread(SOCKET intSocket)
 {
   xsb_mesg("Beginning interrupt thread on socket %ld",(int)intSocket);
 #ifdef _MT

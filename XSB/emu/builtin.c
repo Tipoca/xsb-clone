@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.118 2001-03-26 04:59:02 kifer Exp $
+** $Id: builtin.c,v 1.119 2001-03-27 17:52:02 dwarren Exp $
 ** 
 */
 
@@ -117,7 +117,7 @@ extern xsbBool private_builtin(void);
 extern void xsb_segfault_quitter(int err);
 
 #ifdef WIN_NT
-extern boolean startInterruptThread(SOCKET intSocket);
+extern xsbBool startInterruptThread(SOCKET intSocket);
 #endif
 
 extern xsbBool assert_code_to_buff(void), assert_buff_to_clref(void);

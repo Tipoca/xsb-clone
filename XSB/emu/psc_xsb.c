@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.8 2001-03-23 03:54:31 kifer Exp $
+** $Id: psc_xsb.c,v 1.9 2001-03-27 17:52:03 dwarren Exp $
 ** 
 */
 
@@ -218,12 +218,6 @@ static Pair insert0(char *name, byte arity, Pair *search_ptr, int *is_new)
     if (pair==NULL) {
       *is_new = 1;
       pair = make_psc_pair(make_psc_rec(name,arity), search_ptr);
-      if (arity > 0 && flags[MYSIG_PSC+INT_HANDLERS_FLAGS_START]) {
-	/* save the newly created PSC and set the interrupt flag */
-	/*
-	flags[PSC_INT] = (Cell)pair_psc(pair); 
-	*/
-      }
     }
     else
       *is_new = 0;
