@@ -1,7 +1,7 @@
 /* File:      interrupt1.P
 ** Author(s): Baoqiu Cui
 ** 
-** $Id: interrupt1.P,v 1.1 1999-10-30 00:45:02 cbaoqiu Exp $
+** $Id: interrupt1.P,v 1.2 1999-11-14 17:50:41 cbaoqiu Exp $
 */
 
 :- import put_attributes/2, get_attributes/3 from machine.
@@ -9,11 +9,15 @@
 
 test :-	test1.
 
+% In LOCAL mode, verify_attributes/2 will be called twice: the first
+% time is when `X = 5' is evaluated, the second time is when the trie
+% code is executed to return an answer from the completed answer trie.
+
 verify_attributes(Var, Value) :-
-	get_attributes(Var, Atts, _),
-	writeln('In verify_attributes/2:'),
-	write('   Var''s attribute = '), writeln(Atts),
-	write('   Value = '), writeln(Value),
+% 	get_attributes(Var, Atts, _),
+% 	writeln('In verify_attributes/2:'),
+% 	write('   Var''s attribute = '), writeln(Atts),
+% 	write('   Value = '), writeln(Value),
 	attv_unify(Var, Value).
 
 test1 :-
