@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.64 2001-08-23 14:12:12 gzyang Exp $
+** $Id: flrutils.P,v 1.65 2001-08-23 23:03:24 gzyang Exp $
 **
 */
 
@@ -672,7 +672,7 @@ is_alphanumericL([Ch|Rest]) :-
   gpp control utilities
 *************************************************************************/
 %% standard gpp options used by Flora.
-flora_xpp_standard_options('-P -m -nostdinc -curdirinclast -includemarker 'FLORA_GPP_MARKUP'(%,''%'',''%'').').
+flora_xpp_standard_options('-P -m -nostdinc -curdirinclast -includemarker "'FLORA_GPP_MARKUP'. 'FLORA_GPP_MARKUP'(%,''%'',''%'')."').
 
 
 flora_set_xpp_options :-
