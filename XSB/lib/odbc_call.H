@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.8 2001-01-10 14:00:54 dwarren Exp $
+** $Id: odbc_call.H,v 1.9 2001-01-24 21:08:47 dwarren Exp $
 ** 
 */
 
@@ -28,6 +28,7 @@
 	odbc_shutdown/0,
 	odbc_sql/3, odbc_sql/4,
 	odbc_query/2, odbc_query/3,
+	odbc_deallocate_query/1, odbc_deallocate_query/2,
 	odbc_import/2, odbc_import/3,
 	odbc_transaction/1, odbc_transaction/2,
 	odbc_connect_option/5,
@@ -42,7 +43,8 @@
 	odbc_create_index/3, odbc_create_index/4,
 	odbc_delete_table/1, odbc_delete_table/2,
 	odbc_delete_view/1, odbc_delete_view/2,
-	odbc_delete_index/2, odbc_delete_index/3.
+	odbc_delete_index/2, odbc_delete_index/3,
+	odbc_current_cursor/1, odbc_deactivate_cursor/1.
 
 % import some necessary predicates from library.
 
