@@ -15,8 +15,8 @@
 :- import prand/1 from rand.
 
 bench_serialise(Type,N,Length):- 
-	cputime(T1),
 	create_random_list(Length,L),
+	cputime(T1),
 	main1(N,L),
 	cputime(T2),T is T2-T1,
 	writeq(datum(Type,T)),writeln('.'),nl.

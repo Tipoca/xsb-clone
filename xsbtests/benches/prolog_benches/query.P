@@ -10,8 +10,14 @@
 
 %:- option(analyze).
 
-main :- read(N), integer(N), repeat(N), query, fail.
-main.
+bench_query(Type,N):- 
+	cputime(T1),
+	main1(N),
+	cputime(T2),T is T2-T1,
+	writeq(datum(Type,T)),writeln('.'),nl.
+
+main1(N) :- repeat(N), query, fail.
+main1(_).
 
 repeat(N) :- N>=1.
 repeat(N) :- N>1, N1 is N-1, repeat(N1).

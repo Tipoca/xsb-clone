@@ -14,8 +14,8 @@
 :- import prand/1 from rand.
 
 bench_qsort(Type,N,Length):- 
-	cputime(T1),
 	create_random_list(Length,L),
+	cputime(T1),
 	main1(N,L),
 	cputime(T2),T is T2-T1,
 	writeq(datum(Type,T)),writeln('.'),nl.
@@ -45,4 +45,9 @@ partition([X|L],Y,[X|L1],L2) :-
 partition([X|L],Y,L1,[X|L2]) :-
 	partition(L,Y,L1,L2).
 partition([],_,[],[]).
+
+
+
+
+
 
