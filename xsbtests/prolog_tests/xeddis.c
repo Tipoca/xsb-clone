@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-
+#include "xsb_config.h"
 #include "cinterf.h"
 
 static int mymin(int a, int b, int c)
@@ -13,7 +13,7 @@ static int mymin(int a, int b, int c)
   }
 }
 
-int min_ed_dis(void)
+DllExport int call_conv min_ed_dis(void)
 {
   int len1,len2, i, j;
   int ins,del,rep;
