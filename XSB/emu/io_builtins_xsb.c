@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.46 2004-10-15 14:26:07 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.47 2005-01-03 22:32:57 dwarren Exp $
 ** 
 */
 
@@ -1635,7 +1635,8 @@ DllExport void write_canonical_term(Cell prologterm)
       wcan_append_string_chk(string_val(prologterm));
     break;
     case XSB_FLOAT:
-      sprintf(wcan_buff,"%2.4f",float_val(prologterm));
+      /*      sprintf(wcan_buff,"%2.4f",float_val(prologterm)); */
+      sprintf(wcan_buff,"%f",float_val(prologterm));
       wcan_append_string(wcan_buff);
       break;
     case XSB_REF:
