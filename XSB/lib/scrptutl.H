@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: scrptutl.H,v 1.1 1999-09-13 00:55:07 kifer Exp $
+** $Id: scrptutl.H,v 1.2 2001-02-02 19:57:40 dwarren Exp $
 ** 
 */
 
@@ -32,7 +32,7 @@
 	   sysin/2.
 
 :- import retractall/1, assert/1, (dynamic)/1 from assert.
-:- import file_read_line_list/3, file_close/1 from file_io.
+:- import file_read_line_list/2, file_close/1 from file_io.
 :- import shell/5 from shell.
 
 :- import concat_atom/3 from string.
