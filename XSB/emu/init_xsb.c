@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.11 2000-03-01 16:22:34 dwarren Exp $
+** $Id: init_xsb.c,v 1.12 2000-05-06 21:22:48 kifer Exp $
 ** 
 */
 
@@ -296,7 +296,7 @@ char *init_para(int argc, char *argv[])
 
   flags[STACK_REALLOC] = TRUE;
 #ifdef GC
-  flags[GARBAGE_COLLECT] = SLIDING_GC;
+  flags[GARBAGE_COLLECT] = COPYING_GC;
 #else
   flags[GARBAGE_COLLECT] = NO_GC;
 #endif
@@ -343,11 +343,14 @@ char *init_para(int argc, char *argv[])
       i++;
 #ifdef GC
       if (i < argc) {
-	if (!strcmp(argv[i],"sliding")) flags[GARBAGE_COLLECT] = SLIDING_GC;
+	if (strcmp(argv[i],"sliding")==0)
+	  flags[GARBAGE_COLLECT] = SLIDING_GC;
 	else
-	if (!strcmp(argv[i],"copying")) flags[GARBAGE_COLLECT] = COPYING_GC;
+	if (strcmp(argv[i],"copying")==0)
+	  flags[GARBAGE_COLLECT] = COPYING_GC;
 	else
-	if (!strcmp(argv[i],"none")) flags[GARBAGE_COLLECT] = NO_GC;
+	if (strcmp(argv[i],"none")==0)
+	  flags[GARBAGE_COLLECT] = NO_GC;
 	else
 	xsb_warn("Unrecognized garbage collection type");
       } else

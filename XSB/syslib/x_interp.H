@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.21 1999/12/06 06:18:31 kifer Exp $
+** $Id: x_interp.H,v 1.22 2000/02/22 14:54:15 tswift Exp $
 ** 
 */
 
@@ -46,7 +46,7 @@
 	  is_xwammode/1, close_open_tables/0, trimcore/0, slash/1
      from machine.
 :- import file_open/3, file_close/1, file_get/2, fmt_write_string/3,
-	  print_file_contents/2, file_flush/2
+	  file_flush/2
     from file_io.
 :- import retractall/1 from assert.
 :- import call_xsb_hook/1, xsb_exit_hook/1 from xsb_hook.
