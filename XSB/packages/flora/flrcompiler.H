@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.7 1999-09-22 07:30:15 kifer Exp $
+** $Id: flrcompiler.H,v 1.8 1999-11-20 07:02:11 kifer Exp $
 **
 */
 
@@ -42,9 +42,7 @@
 	  trie_retract_all/1
    from tables.
 
-:- import
-	conget/2, conset/2
-   from prof_sbp.
+:- import conget/2, conset/2 from gensym.
 
 :- import flora_set/1 from flrparser.
 
