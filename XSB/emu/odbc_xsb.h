@@ -18,32 +18,32 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.h,v 1.6 2005-01-17 20:39:24 dwarren Exp $
+** $Id: odbc_xsb.h,v 1.7 2005-02-11 01:54:27 vidrevich Exp $
 **
 */
 
 
 #ifdef XSB_ODBC
 
-extern void ODBCConnect();
-extern void ODBCDisconnect();
-extern void SetBindVarNum();
-extern void FindFreeCursor();
-extern void SetBindVal();
-extern void Parse();
-extern int  GetColumn();
+extern void ODBCConnect(CTXTdecl);
+extern void ODBCDisconnect(CTXTdecl);
+extern void SetBindVarNum(CTXTdecl);
+extern void FindFreeCursor(CTXTdecl);
+extern void SetBindVal(CTXTdecl);
+extern void Parse(CTXTdecl);
+extern int  GetColumn(CTXTdecl);
 extern void SetCursorClose(int);
-extern void FetchNextRow();
-extern void ODBCCommit();
-extern void ODBCRollback();
-extern void ODBCColumns();
-extern void ODBCTables();
-extern void ODBCUserTables();
-extern void ODBCDescribeSelect();
-extern void ODBCConnectOption();
-extern void ODBCDataSources();
-extern void ODBCGetInfo();
-extern void ODBCRowCount();
+extern void FetchNextRow(CTXTdecl);
+extern void ODBCCommit(CTXTdecl);
+extern void ODBCRollback(CTXTdecl);
+extern void ODBCColumns(CTXTdecl);
+extern void ODBCTables(CTXTdecl);
+extern void ODBCUserTables(CTXTdecl);
+extern void ODBCDescribeSelect(CTXTdecl);
+extern void ODBCConnectOption(CTXTdecl);
+extern void ODBCDataSources(CTXTdecl);
+extern void ODBCGetInfo(CTXTdecl);
+extern void ODBCRowCount(CTXTdecl);
 
 #define ODBC_CONNECT             1
 #define ODBC_PARSE               2
