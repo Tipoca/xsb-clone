@@ -8,7 +8,7 @@ echo "Testing $TEST"
 
 XEMU=$1
 
-$XEMU -i << EOF
+$XEMU << EOF
 
 [sem_lex].
 
@@ -20,7 +20,7 @@ $XEMU -i << EOF
 
 EOF
 
-$XEMU -i << EOF
+$XEMU << EOF
 
 [sem_parse].
 
@@ -61,7 +61,7 @@ echo "---------------------------------------------------------------------"
 TEST="sem2"
 echo "Testing $TEST"
 
-$XEMU -i << EOF
+$XEMU << EOF
 
 [sem_parse].
 
@@ -111,14 +111,14 @@ TEST=sem3
 echo "Testing $TEST"
 
 # needed to ensure .O files are there
-$XEMU -i << EOF
+$XEMU << EOF
 
 [sem_lex].
 
 EOF
 
 
-$XEMU -i << EOF
+$XEMU << EOF
 
 [sem_pe].
 
@@ -169,9 +169,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem4
 echo "Testing $TEST"
 
-#$XEMU -i -m 20000 << EOF
-
-$XEMU -i << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -216,7 +214,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem5
 echo "Testing $TEST"
 
-$XEMU -i -m 5000 -c 5000 << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -262,7 +260,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem6
 echo "Testing $TEST"
 
-$XEMU -i << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -307,7 +305,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem7
 echo "Testing $TEST"
 
-$XEMU -i << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -353,7 +351,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem8
 echo "Testing $TEST"
 
-$XEMU -i << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -400,7 +398,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem9
 echo "Testing $TEST"
 
-$XEMU -i << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -446,7 +444,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem10
 echo "Testing $TEST"
 
-$XEMU -i << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -498,7 +496,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem11
 echo "Testing $TEST"
 
-$XEMU -i -m 5000 -c 5000 << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -545,8 +543,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem12
 echo "Testing $TEST"
 
-#$XEMU -i -m 20000  << EOF
-$XEMU -i  << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -595,9 +592,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem13
 echo "Testing $TEST"
 
-#$XEMU -i -m 20000 << EOF
-
-$XEMU -i << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -643,7 +638,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem14
 echo "Testing $TEST"
 
-$XEMU -i << EOF
+$XEMU << EOF
 
 [sem_parse, sem_pe].
 
@@ -695,13 +690,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem15
 echo "Testing $TEST"
 
-#$XEMU -i -m 64000 << EOF
-
-$XEMU -i << EOF
-
-import sched_strat/1 from machine.
-
-% (sched_strat(local_sched) -> unix('cp tests/sem15_old temp'), halt; true).
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -747,7 +736,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem16
 echo "Testing $TEST"
 
-$XEMU -i << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -797,9 +786,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem17
 echo "Testing $TEST"
 
-#$XEMU -i -m 20000 << EOF
-
-$XEMU -i << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -849,9 +836,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem18
 echo "Testing $TEST"
 
-#$XEMU -i -m 20000 << EOF
-
-$XEMU -i << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -901,9 +886,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem19
 echo "Testing $TEST"
 
-#$XEMU -i -m 20000 << EOF
-
-$XEMU -i << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -953,9 +936,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem20
 echo "Testing $TEST"
 
-#$XEMU -i -m 25000 -c 5000 << EOF
-
-$XEMU -i -m 5000 -c 5000 << EOF
+$XEMU << EOF
 
 [semantica,sem_pe].
 
@@ -1019,9 +1000,7 @@ echo "---------------------------------------------------------------------"
 TEST=sem21
 echo "Testing $TEST"
 
-#$XEMU -i -m 20000 << EOF
-
-$XEMU -i << EOF
+$XEMU << EOF
 
 [semantica,sem_pe,basics].
 

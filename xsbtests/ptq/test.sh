@@ -6,7 +6,8 @@ echo "---   Running ptq/test.sh                           ---"
 echo "-------------------------------------------------------"
 
 #ensure parser.P is compiled
-$XEMU -m 4000 -c 2000 -i << EOF
+#---------------------------
+$XEMU << EOF
 [parser].
 halt.
 EOF

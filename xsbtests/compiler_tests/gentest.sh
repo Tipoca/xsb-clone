@@ -9,7 +9,7 @@ BASEDIR=`basename $DIR`
 echo "--------------------------------------------------------------------"
 
 echo "Testing $BASEDIR/$FILE"
-$EMU -m 6000 -i << EOF
+$EMU << EOF
 
 compile($FILE,[spec_dump,table_dump,ti_dump]).
 
