@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_insert.c,v 1.11 2000-05-25 00:32:05 ejohnson Exp $
+** $Id: tst_insert.c,v 1.12 2000-05-29 04:23:41 ejohnson Exp $
 ** 
 */
 
@@ -392,7 +392,7 @@ inline static void update_timestamps(TSTNptr leaf, TSTNptr root,
  */
 
 TSTNptr subsumptive_answer_search(int nTerms, CPtr termVector,
-				  SGFrame sfProducer, xsbBool *isNew) {
+				  SubProdSF sfProducer, xsbBool *isNew) {
 
   TSTNptr tstRoot;          /* The root node of the TST answer set */
 
@@ -431,7 +431,7 @@ TSTNptr subsumptive_answer_search(int nTerms, CPtr termVector,
   if ( IsNULL(subg_ans_root_ptr(sfProducer)) )
     subg_ans_root_ptr(sfProducer) = newAnswerTST(nTerms);
   tstRoot = (TSTNptr)subg_ans_root_ptr(sfProducer);
-  tsNewAnswer = subg_timestamp(sfProducer);
+  tsNewAnswer = TSTN_TimeStamp(tstRoot) + 1;
 
   if (nTerms == 0) {
     /* Create/Find an Escape Node
@@ -456,7 +456,7 @@ TSTNptr subsumptive_answer_search(int nTerms, CPtr termVector,
   /* Search the TST
      -------------- */
   pParentTSTN = tstRoot;
-  maintainTSI = ProducerHasConsumers(sfProducer);
+  maintainTSI = ProducerSubsumesSubgoals(sfProducer);
   *isNew = FALSE;
   std_var_num = 0;
   symbol = symbol_type = 0;     /* suppress compiler warning */

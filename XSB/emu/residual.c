@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.15 2000-05-20 06:56:06 kifer Exp $
+** $Id: residual.c,v 1.16 2000-05-29 04:23:36 ejohnson Exp $
 ** 
 */
 
@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------*/
 
 #ifdef DEBUG_RESIDUAL
-extern void print_subgoal(FILE *, SGFrame);
+extern void print_subgoal(FILE *, VariantSF);
 #endif
 
 /*----------------------------------------------------------------------*/
@@ -97,7 +97,7 @@ void build_delay_list(CPtr delay_list, DE de)
   Psc  psc;
   int  i, j, arity;
   CPtr head, tail;
-  SGFrame subg;
+  VariantSF subg;
   BTNptr ans_subst;
 #ifdef DEBUG_DELAYVAR
   BTNptr subs_factp;

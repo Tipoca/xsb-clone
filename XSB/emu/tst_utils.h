@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.h,v 1.3 2000-04-29 21:54:02 kifer Exp $
+** $Id: tst_utils.h,v 1.4 2000-05-29 04:23:42 ejohnson Exp $
 ** 
 */
 
@@ -36,14 +36,14 @@ CPtr decode_ptr(Cell);
 int decode_int(Cell);
 int decode_tag(Cell);
 
-SGFrame findSF_forAnswerRoot(TSTNptr);
-SGFrame findSF_forAnswerLeaf(TSTNptr);
-SGFrame findProdSF_for_ConsSF(SGFrame);
-int containsSF(SGFrame, SGFrame);
+VariantSF findSF_forAnswerRoot(TSTNptr);
+VariantSF findSF_forAnswerLeaf(TSTNptr);
+VariantSF findProdSF_for_ConsSF(VariantSF);
+int containsSF(VariantSF, VariantSF);
 
 void triePrintPath(BTNptr, xsbBool);
-void sfPrintGoal(SGFrame, xsbBool);
-void sfPrintConsGoals(SGFrame);
+void sfPrintGoal(VariantSF, xsbBool);
+void sfPrintConsGoals(VariantSF);
 
 void printAnswerTemplate(CPtr, int);
 void printAnswerList(ALNptr);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.10 2000-05-25 00:32:04 ejohnson Exp $
+** $Id: trie_internals.h,v 1.11 2000-05-29 04:23:40 ejohnson Exp $
 ** 
 */
 
@@ -557,7 +557,7 @@ extern void     hashify_children(BTNptr, int);
 /* For leaves of Call Tries
    ------------------------ */
 #define CallTrieLeaf_SetSF(pBTN,pSF)     BTN_Child(pBTN) = (BTNptr)(pSF)
-#define CallTrieLeaf_GetSF(pBTN)         ((SGFrame)BTN_Child(pBTN))
+#define CallTrieLeaf_GetSF(pBTN)         ((VariantSF)BTN_Child(pBTN))
 
 /* Allocating New BTNs
    ------------------- */

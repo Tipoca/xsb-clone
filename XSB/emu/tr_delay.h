@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_delay.h,v 1.10 1999-10-09 18:37:53 kostis Exp $
+** $Id: tr_delay.h,v 1.11 2000-05-29 04:23:39 ejohnson Exp $
 ** 
 */
 
@@ -47,7 +47,7 @@
 #ifdef DEBUG_DELAY
 #define handle_conditional_answers {					\
     CPtr temp_hreg;							\
-    SGFrame subgoal;                                                    \
+    VariantSF subgoal;                                                    \
                                                                         \
     if (is_conditional_answer(NodePtr)) {				\
       fprintf(stddbg, "Trie-Code returning a conditional answer for ");	\
@@ -81,7 +81,7 @@
 #else
 #define handle_conditional_answers {					\
     CPtr temp_hreg;							\
-    SGFrame subgoal;                                                    \
+    VariantSF subgoal;                                                    \
                                                                         \
     if (is_conditional_answer(NodePtr)) {				\
       subgoal = asi_subgoal(Delay(NodePtr));			        \
@@ -106,7 +106,7 @@
 #else  /* IGNORE_DELAYVAR */
 #define handle_conditional_answers {			\
   if (is_conditional_answer(NodePtr)) {			\
-    SGFrame subgoal = asi_subgoal(Delay(NodePtr));	\
+    VariantSF subgoal = asi_subgoal(Delay(NodePtr));	\
     delay_positively(subgoal, NodePtr,			\
 		     makestring((char *) ret_psc[0]));	\
   }							\

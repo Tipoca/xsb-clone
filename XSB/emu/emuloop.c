@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.65 2000-05-20 06:55:59 kifer Exp $
+** $Id: emuloop.c,v 1.66 2000-05-29 04:23:35 ejohnson Exp $
 ** 
 */
 
@@ -145,7 +145,7 @@ extern Pair build_call(Psc);
 #ifdef DEBUG
 extern void debug_inst(byte *, CPtr);
 extern void print_completion_stack(void);
-extern void print_subgoal(FILE *, SGFrame);
+extern void print_subgoal(FILE *, VariantSF);
 extern void print_delay_list(FILE *, CPtr);
 extern void printterm(Cell, byte, int);
 #endif

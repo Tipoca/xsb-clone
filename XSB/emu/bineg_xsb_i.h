@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.4 2000-04-29 21:53:50 kifer Exp $
+** $Id: bineg_xsb_i.h,v 1.5 2000-05-29 04:23:33 ejohnson Exp $
 ** 
 */
 
@@ -37,7 +37,7 @@
 	return TRUE;
       }
 
-      if (has_unconditional_answers((SGFrame)subgoal_ptr)) {
+      if (has_unconditional_answers((VariantSF)subgoal_ptr)) {
 	return FALSE;
       } else {
 	delay_negatively(subgoal_ptr);
@@ -50,7 +50,7 @@
     case IS_INCOMPLETE: { /* reg1: +term; reg2: +SubgoalPtr;	*/
 			  /* reg3: +PTCP; reg4: -SubgPtr        */
       Cell term = ptoc_tag(1);
-      SGFrame subgoal_ptr = (SGFrame) ptoc_int(2);
+      VariantSF subgoal_ptr = (VariantSF) ptoc_int(2);
       CPtr t_ptcp = (CPtr) ptoc_int(3);
       Psc  psc = term_psc(term);
       int  arity = get_arity(psc);
@@ -80,7 +80,7 @@
 	print_subgoal(stddbg, subgoal_ptr);
 	fprintf(stddbg, " in the body of ");
 	if (t_ptcp != NULL) {
-	  print_subgoal(stddbg, (SGFrame)t_ptcp);
+	  print_subgoal(stddbg, (VariantSF)t_ptcp);
 	} else fprintf(stddbg, "an UNTABLED predicate");
 	fprintf(stddbg, ")\n");
 #endif

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.h,v 1.4 2000-04-29 21:54:00 kifer Exp $
+** $Id: tables.h,v 1.5 2000-05-29 04:23:39 ejohnson Exp $
 ** 
 */
 
@@ -37,12 +37,12 @@
  */
 
 void	table_call_search(TabledCallInfo *, CallLookupResults *);
-BTNptr	table_answer_search(SGFrame, int, int, CPtr, xsbBool *);
+BTNptr	table_answer_search(VariantSF, int, int, CPtr, xsbBool *);
 void	table_consume_answer(BTNptr, int, int, CPtr, TIFptr);
-ALNptr	table_retrieve_answers(SGFrame, SGFrame, CPtr);
-void	table_complete_entry(SGFrame);
+ALNptr	table_retrieve_answers(SubProdSF, SubConsSF, CPtr);
+void	table_complete_entry(VariantSF);
 
-void	release_all_tabling_resources();
+void	release_all_tabling_resources(void);
 
 /*===========================================================================*/
 

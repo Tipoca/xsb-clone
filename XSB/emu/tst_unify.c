@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_unify.c,v 1.7 2000-05-20 06:56:14 kifer Exp $
+** $Id: tst_unify.c,v 1.8 2000-05-29 04:23:41 ejohnson Exp $
 ** 
 */
 
@@ -114,11 +114,11 @@ static void consumption_error(char *string) {
   xsb_abort(string);
   /* get consumer SF from the CPS, using the ptr to AnsTmplt */
 /*   { */
-/*     SGFrame pSF; */
+/*     VariantSF pSF; */
 /*     CPtr pCPF; */
 
 /*     pCPF = pAnsTmplt - sizeTmplt - NLCPSIZE; */
-/*     pSF = (SGFrame)nlcp_subgoal_ptr(pCPF); */
+/*     pSF = (VariantSF)nlcp_subgoal_ptr(pCPF); */
 /*     printAnswerList(subg_answers(pSF)); */
 /*     fprintf(stderr,"\n\n"); */
 /*     *(CPtr)0 = 0; */

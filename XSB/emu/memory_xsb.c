@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.4 2000-05-20 06:56:03 kifer Exp $
+** $Id: memory_xsb.c,v 1.5 2000-05-29 04:23:36 ejohnson Exp $
 ** 
 */
 
@@ -116,7 +116,7 @@ void tcpstack_realloc(long new_size) {
   /* Variables for Updating Incomplete Subgoal's SGFs
      ------------------------------------------------- */
   ComplStackFrame csf_ptr;    /* for stepping through the ComplStack */
-  SGFrame subg_ptr;           /* and altering the CP ptrs in the SGFs */
+  VariantSF subg_ptr;           /* and altering the CP ptrs in the SGFs */
 
 
   if (new_size == tcpstack.size)
@@ -216,7 +216,7 @@ void tcpstack_realloc(long new_size) {
   for (csf_ptr = (ComplStackFrame)openreg;
        csf_ptr < (ComplStackFrame)complstack.high;
 	 csf_ptr++) {
-    subg_ptr = (SGFrame)compl_subgoal_ptr(csf_ptr);
+    subg_ptr = (VariantSF)compl_subgoal_ptr(csf_ptr);
     /* Alter specific fields
        --------------------- */
 #if (!defined(CHAT))
@@ -281,7 +281,7 @@ void complstack_realloc (long new_size) {
   byte *cs_top;     /* ptr to topmost byte on the complstack */
 
   ComplStackFrame csf_ptr;
-  SGFrame subg_ptr;
+  VariantSF subg_ptr;
 
   
   if (new_size == complstack.size)

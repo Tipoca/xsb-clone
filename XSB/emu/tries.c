@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.49 2000-05-25 00:32:05 ejohnson Exp $
+** $Id: tries.c,v 1.50 2000-05-29 04:23:40 ejohnson Exp $
 ** 
 */
 
@@ -695,7 +695,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
  */
 
 BTNptr variant_answer_search(int arity, int attv_num, CPtr cptr,
-			     SGFrame subgoal_ptr, xsbBool *flagptr) {
+			     VariantSF subgoal_ptr, xsbBool *flagptr) {
 
   Psc   psc;
   CPtr  xtemp1;
@@ -1380,7 +1380,7 @@ void variant_call_search(TabledCallInfo *call_info, CallLookupResults *results)
 
 /*----------------------------------------------------------------------*/
 
-static void remove_calls_and_returns(SGFrame CallStrPtr)
+static void remove_calls_and_returns(VariantSF CallStrPtr)
 {
   ALNptr pALN;
 
@@ -1405,10 +1405,10 @@ static void remove_calls_and_returns(SGFrame CallStrPtr)
 void remove_open_tries(CPtr bottom_parameter)
 {
   xsbBool warned = FALSE;
-  SGFrame CallStrPtr;
+  VariantSF CallStrPtr;
 
   while (openreg < bottom_parameter) {
-    CallStrPtr = (SGFrame)compl_subgoal_ptr(openreg);
+    CallStrPtr = (VariantSF)compl_subgoal_ptr(openreg);
     if (!is_completed(CallStrPtr)) {
       if (warned == FALSE) {
 	xsb_warn("Removing incomplete tables...");
@@ -1644,7 +1644,7 @@ BTNptr one_term_chk_ins(CPtr termptr, BTNptr root, int *flagptr)
 
 byte * trie_get_returns_for_call(void)
 {
-  SGFrame call_str_ptr;
+  VariantSF call_str_ptr;
   CPtr retskel, term1;
   int i;
   Psc psc_ptr;
@@ -1656,9 +1656,9 @@ byte * trie_get_returns_for_call(void)
   xsb_dbgmsg(">>>> num_vars_in_var_regs = %d)", num_vars_in_var_regs);
 #endif
 
-  call_str_ptr = (SGFrame) ptoc_int(1);
+  call_str_ptr = (VariantSF) ptoc_int(1);
   if ( IsProperlySubsumed(call_str_ptr) )
-    ans_root_ptr = subg_ans_root_ptr(subg_producer(call_str_ptr));
+    ans_root_ptr = subg_ans_root_ptr(conssf_producer(call_str_ptr));
   else
     ans_root_ptr = subg_ans_root_ptr(call_str_ptr);
   if ( IsNULL(ans_root_ptr) )
@@ -1765,9 +1765,10 @@ Cell get_lastnode_cs_retskel(Cell callTerm) {
   arity = global_num_vars + 1;
   vector = (Cell *)var_regs;
   if ( IsInCallTrie(Last_Nod_Sav) ) {
-    SGFrame sf = CallTrieLeaf_GetSF(Last_Nod_Sav);
+    VariantSF sf = CallTrieLeaf_GetSF(Last_Nod_Sav);
     if ( IsProperlySubsumed(sf) ) {
-      construct_answer_template(callTerm, subg_producer(sf), (Cell *)var_regs);
+      construct_answer_template(callTerm, conssf_producer(sf),
+				(Cell *)var_regs);
       arity = (int)var_regs[0];
       vector = (Cell *)&var_regs[1];
     }

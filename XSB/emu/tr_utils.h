@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.18 2000-05-25 00:32:03 ejohnson Exp $
+** $Id: tr_utils.h,v 1.19 2000-05-29 04:23:39 ejohnson Exp $
 ** 
 */
 
@@ -30,21 +30,21 @@ typedef enum Trie_Path_Type {
 BTNptr variant_trie_lookup(int, CPtr, BTNptr, Cell[]);
 BTNptr subsumptive_trie_lookup(int, CPtr, BTNptr, TriePathType *);
 
-extern SGFrame get_subgoal_ptr(Cell, TIFptr);
-extern SGFrame get_call(Cell, Cell *);
+extern VariantSF get_subgoal_ptr(Cell, TIFptr);
+extern VariantSF get_call(Cell, Cell *);
 extern Cell build_ret_term(int, Cell[]);
-extern void construct_answer_template(Cell, SubsumptiveSF, Cell[]);
+extern void construct_answer_template(Cell, SubProdSF, Cell[]);
 extern void breg_retskel(void);
 extern void delete_predicate_table(TIFptr);
-extern void reclaim_del_ret_list(SGFrame);
-extern void delete_return(BTNptr, SGFrame);
+extern void reclaim_del_ret_list(VariantSF);
+extern void delete_return(BTNptr, VariantSF);
 extern void init_newtrie(void);
 extern void delete_branch(BTNptr, BTNptr *);
 extern void safe_delete_branch(BTNptr);
 extern void undelete_branch(BTNptr);
 extern void delete_trie(BTNptr);
 
-extern xsbBool has_unconditional_answers(SGFrame);
+extern xsbBool has_unconditional_answers(VariantSF);
 
 extern void newtrie(void);
 extern void trie_intern(void);
