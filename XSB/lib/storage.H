@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage.H,v 1.4 2001-05-05 18:23:02 kifer Exp $
+** $Id: storage.H,v 1.5 2001-07-16 05:18:34 kifer Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 	storage_delete_all/1,
 	storage_find_fact/2,
 	storage_reclaim_space/1,
-	storage_reclaim_space/0,
+	storage_commit/1,
 	storage_insert_keypair_bt/4, storage_delete_keypair_bt/3,
 	storage_insert_keypair/4, storage_delete_keypair/3,
 	storage_find_keypair/3.
@@ -39,8 +39,8 @@
 	trie_reclaim_uninterned_nr/1
    from intern.
 
-:- import assert/1, (dynamic)/1 from assert.
+:- import assert/1, retract/1, (dynamic)/1 from assert.
 
 :- import conget/2, conset/2 from gensym.
 
-:- import abort/1  from standard.
+:- import abort/1 from standard.
