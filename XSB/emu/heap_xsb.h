@@ -1,5 +1,5 @@
 /* File:      heap_xsb.h
-** Author(s): David S. Warren, Jiyang Xu
+** Author(s): David S. Warren, Jiyang Xu, Kostis Sagonas
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.h,v 1.1 1999-10-25 05:58:25 kifer Exp $
+** $Id: heap_xsb.h,v 1.2 1999-12-19 15:33:04 kostis Exp $
 ** 
 */
 
@@ -46,11 +46,9 @@
 #define new_heap_node(sh_reg, x) bld_copy(sh_reg++, x)
 /* make a new heap node with value x (one word type) */
 
-/*----- The following is for the type of garbage collection to be used -*/
+/*----------------------------------------------------------------------*/
 
-#define NO_GC      0
-#define SLIDING_GC 1
-#define COPYING_GC 2
+#include "heap_defs_xsb.h"
 
 /*----- The following functions are used in other parts of the system --*/
 
