@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.23 2001-05-24 19:20:08 lfcastro Exp $
+** $Id: heap_xsb.c,v 1.24 2001-05-24 20:37:06 lfcastro Exp $
 ** 
 */
 
@@ -148,7 +148,7 @@ void print_cpf_pred(CPtr cpf);
 
 #endif /* GC_PROFILE */
 
-#define REALLOC_DEBUG
+/* #define REALLOC_DEBUG */
 
 /*=========================================================================*/
 
