@@ -18,12 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.18 2001/03/26 04:59:02 kifer Exp $
+** $Id: file_io.H,v 1.19 2001/04/08 06:17:04 kifer Exp $
 ** 
 */
 
 
 :- import stat_flag/2, file_function/7,
+	parse_filename/4, is_absolute_filename/1,
+	expand_filename/2,
 	sys_system/7, formatted_io/5 
       from machine.
 :- import conpsc/2, psc_set_type/2, psc_set_prop/2 from machine.
