@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_configuration.in,v 1.18 2001-06-05 19:17:54 lfcastro Exp $
+** $Id: xsb_configuration.in,v 1.19 2001-07-05 03:44:47 kifer Exp $
 ** 
 */
 
@@ -52,12 +52,6 @@ xsb_configuration(perl_archlib, '@perl_archlib@').
 xsb_configuration(perl_cc_compiler, '@perl_cc_compiler@').
 xsb_configuration(perl_ccflags, '@perl_ccflags@').
 xsb_configuration(perl_libs, '@perl_libs@').
-
-%% Stuff to be included with -I and -L options in .H files
-xsb_configuration(libwww_support, '@libwww_support@').
-xsb_configuration(libwww_ccflags, '@libwww_ccflags@').
-xsb_configuration(libwww_ldflags, '@libwww_ldflags@').
-xsb_configuration(libwww_libdir,  '@libwww_libdir@').
 
 /* Java compiler */
 xsb_configuration(javac, '@javac@').
