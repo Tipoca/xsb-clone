@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.7 2001-06-11 01:28:09 kifer Exp $
+## $Id: Makefile,v 1.8 2001-06-17 17:49:50 kifer Exp $
 ## 
 ##
 
@@ -77,7 +77,6 @@ init:
 	@echo "bootstrap_flora." >> cmd...hdr
 	@echo "file_reopen($(SVFILE),a,$(STDWARN),_)." >> cmd...hdr
 	@echo "file_clone($(STDWARN), $(STDERR),_)." >> cmd...hdr
-	@echo "[flora2],bootstrap_flora." >> cmd...hdr
 
 finish:
 	@echo 'fmt_write($(STDWARN),"-------------------- End --------------------------\n",_).' >> cmd...

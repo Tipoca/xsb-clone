@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.P,v 1.18 2001-06-16 23:06:47 gzyang Exp $
+** $Id: flrcoder.P,v 1.19 2001-06-17 17:49:50 kifer Exp $
 **
 */
 
@@ -113,6 +113,9 @@ is_fllibdb(FLLIBBTDELETE) :- !.
 is_fllibdb(FLLIBBTDELETEALL) :- !.
 is_fllibdb(FLLIBBTERASE) :- !.
 is_fllibdb(FLLIBBTERASEALL) :- !.
+
+is_fllibdb(FLSERVPP) :- !.
+is_fllibdb(FLSERVIO) :- !.
 
 
 /****************************************************************************
@@ -1106,7 +1109,7 @@ flora_build_wsliteral(F,_N,Args,WS,DWS,Prefix,VarList,Code) :-
 ****************************************************************************/
 flora_build_floralib_wsliteral(F,_N,Args,WS,DWS,Prefix,VarList,Code) :-
 	flora_build_structlist(Args,DWS,Prefix,VarList,ACode),
-	flora_sysmod_predicate(F,ACode,WS,Code).
+	flora_service_lib_predicate(F,ACode,WS,Code).
 
 
 /****************************************************************************

@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.16 2001-06-16 23:06:58 gzyang Exp $
+## $Id: Makefile,v 1.17 2001-06-17 17:49:50 kifer Exp $
 ## 
 ##
 
@@ -40,7 +40,7 @@ PROLOG = $(XSB) -s -m 2000 -c 2000 -e 'set_dcg_style(standard),segfault_handler(
 FLORA_PRED_DEF = includes/flrpred.fli
 
 # Make sure warnings are saved in a file.
-SVFILE = '$(XSBDIR)/build/.flora_top_warn.tmp'
+SVFILE = '$(XSBDIR)/build/.flora_closure_warn.tmp'
 STDWARN = 3
 STDERR = 2
 HDRMSG = "While compiling XSB/packages/flora2/closure:"

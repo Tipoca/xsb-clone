@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 2001-06-10 02:00:52 kifer Exp $
+## $Id: Makefile,v 1.4 2001-06-17 17:49:49 kifer Exp $
 ## 
 ##
 
@@ -39,7 +39,7 @@ FLORA_INCLUDES_DIR = ../flrincludes
 FLORA_TERMS = $(FLORA_INCLUDES_DIR)/flora_terms.flh
 
 # Make sure warnings are saved in a file.
-SVFILE = '$(XSBDIR)/build/.flora_top_warn.tmp'
+SVFILE = '$(XSBDIR)/build/.flora_genincl_warn.tmp'
 STDWARN = 3
 STDERR = 2
 HDRMSG = "While compiling XSB/packages/flora2/genincludes:"

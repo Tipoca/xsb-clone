@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrload.P,v 1.7 2001-04-25 04:01:04 kifer Exp $
+** $Id: flrload.P,v 1.8 2001-06-17 17:49:49 kifer Exp $
 ** 
 */
 
@@ -29,8 +29,6 @@
 
 #include "flora_terms.flh"
 
-
-:- import flora_register_syslib/1 from flrlibman.
 
 :- import
 	flora_stderr_nl/0,
@@ -46,11 +44,6 @@
 
 :- import flora_stderr_write/1 from flrdisplay.
 
-
-/*********************************************************************
-  system library registration
-*********************************************************************/
-?- flora_register_syslib(FLLIBLOAD).
 
 
 /********************************************************************/

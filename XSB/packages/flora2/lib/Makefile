@@ -18,13 +18,13 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 2001-04-27 02:34:50 kifer Exp $
+## $Id: Makefile,v 1.4 2001-06-17 17:49:49 kifer Exp $
 ## 
 ##
 
 XSBDIR=../../..
 
-ALL = 	flrprettyprint.P
+ALL = 	flrprettyprint.P flrio.P
 
 EMU_INCLUDES = $(XSBDIR)/emu/builtin.h \
 	$(XSBDIR)/emu/flag_defs_xsb.h \
@@ -65,7 +65,7 @@ recompile: $(ALL) finish
 	@cat $(SVFILE)
 
 .flr.P:
-	echo 'import (flCompile)/1 from flora2. flCompile($*).' >> cmd...
+	echo 'import (flora_compile_service)/1 from flrutils. flora_compile_service($*).' >> cmd...
 
 init:
 	rm -f $(SVFILE)

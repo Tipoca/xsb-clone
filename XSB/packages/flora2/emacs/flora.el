@@ -5,7 +5,7 @@
 ;; Christian Schlepphorst (schlepph@informatik.uni-freiburg.de)
 ;; Michael Kifer (kifer@cs.sunysb.edu)
 
-;; $Id: flora.el,v 1.4 2001-06-07 08:46:09 kifer Exp $
+;; $Id: flora.el,v 1.5 2001-06-17 17:49:49 kifer Exp $
 
 ;;; Commentary:
 
@@ -114,7 +114,7 @@
     ;; for objects
     '("\\([A-Za-z0-9_][A-Za-z0-9_!.]*\\) *\\["
       1 'font-lock-variable-name-face)
-    '("\\b\\(\\\+\\|tnot\\|avg\\|max\\|min\\|sum\\|count\\|collectset\\|collectbag\\|insert\\|delete\\|btinsert\\|btdelete\\|insertall\\|deleteall\\|erase\\|eraseall\\|bterase\\|bteraseall\||fl[A-Z][a-zA-Z]*\\)\\b"
+    '("\\b\\(\\\+\\|tnot\\|avg\\|max\\|min\\|sum\\|count\\|collectset\\|collectbag\\|insert\\|delete\\|btinsert\\|btdelete\\|insertall\\|deleteall\\|erase\\|eraseall\\|bterase\\|bteraseall\\|if\\|then\\|else\\|while\\|fl[A-Z][a-zA-Z]*\\)\\b"
       1 'font-lock-keyword-face)
     '("\\(:\\||\\)" 
       1 'font-lock-type-face)
