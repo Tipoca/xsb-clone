@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.7 1999-10-11 21:13:46 warren Exp $
+** $Id: findall.c,v 1.8 1999-10-12 16:18:48 warren Exp $
 ** 
 */
 
@@ -47,6 +47,10 @@
 
 findall_solution_list *findall_solutions = NULL;
 findall_solution_list *current_findall;
+
+static int MAX_FINDALLS = 250 ;	/* make it larger if you want */
+
+static int nextfree ; /* nextfree index in findall array */
 
 CPtr gl_bot, gl_top ;
 #define on_glstack(p) ((gl_bot <= p) && (p < gl_top))

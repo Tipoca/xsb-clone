@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.h,v 1.1 1999-10-11 21:13:49 warren Exp $
+** $Id: findall.h,v 1.2 1999-10-12 16:18:51 warren Exp $
 ** 
 */
 
@@ -53,9 +53,6 @@ findall_clean should be called at the start of every toplevel.
 */
 
 #define FINDALL_CHUNCK_SIZE 4000 /* anything > MAX_ARITY+2 is good */
-static int MAX_FINDALLS = 250 ;	/* make it larger if you want */
-
-static int nextfree ; /* nextfree index in findall array */
 
 /*
 one invocation of findall is associated with one entry in the findall_solutions
