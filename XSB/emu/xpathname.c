@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xpathname.c,v 1.8 1999-05-03 00:55:53 luis Exp $
+** $Id: xpathname.c,v 1.9 1999-08-18 12:31:31 kostis Exp $
 ** 
 */
 
@@ -257,7 +257,7 @@ DllExport char * call_conv strip_names_from_path(char* path, int how_many)
 /* Get the base name of PATH, e.g., basename of a/b/c is c if path is a/b/c/
    then basename is "". This op preserves extension, i.e., basename of a/b.c 
    is b.c */
-char *get_file_basename(char *path) {
+static char *get_file_basename(char *path) {
   char *ptr;
   ptr = strrchr(path, SLASH);
   if (ptr == NULL)
@@ -274,7 +274,7 @@ char *get_file_basename(char *path) {
 
    Expects a string storage as 2nd arg, returns second arg.
 */
-char *get_file_dirname(char *path, char *dir) {
+static char *get_file_dirname(char *path, char *dir) {
   char *ptr;
   ptr = strrchr(rectify_pathname(path,dir), SLASH);
   if (ptr == NULL)
@@ -293,7 +293,7 @@ char *get_file_dirname(char *path, char *dir) {
 /* Get file extension, i.e., "c" in abc.c, etc. If the file name is of the form
    ".abc", where none of a,b,c is a '.', then the extension is empty string. */
 
-char *get_file_extension(char *path) {
+static char *get_file_extension(char *path) {
   char *ptr, *base=get_file_basename(path);
   ptr = strrchr(base, '.');
   if ((ptr==base) || (ptr==NULL))
