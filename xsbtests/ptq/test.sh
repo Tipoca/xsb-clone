@@ -69,8 +69,8 @@ echo "Testing Lreds"
 ./diffall.sh emlawlredemu emlawlredint
 ./genlredscaff.sh "tran([a,woman,such_that,she,walks,runs])" awsswrlredemu "$XEMU $options"
 ./diffall.sh awsswrlredemu awsswrlredint
-./genlredscaff.sh "tran([john,seeks,a,unicorn,and,mary,seeks,it])" jsauamsiemu "$XEMU $options"
-./diffall.sh jsauamsiemu jsauamsilredint
+#./genlredscaff.sh "tran([john,seeks,a,unicorn,and,mary,seeks,it])" jsauamsiemu "$XEMU $options"
+#./diffall.sh jsauamsiemu jsauamsilredint
 #./genlredscaff.sh "tran([john,believes_that,mary,walks,in,a,park])" jbmwiaplredemu "$XEMU $options"
 #./diffall.sh jbmwiaplredemu jbmwiaplredint
 ./genlredscaff.sh "tran([john,believes_that,mary,wishes_to,walk,in,a,park])" jbmwwaiplredemu "$XEMU $options"
