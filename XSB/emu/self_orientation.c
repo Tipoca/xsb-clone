@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: self_orientation.c,v 1.17 1999-07-22 21:58:22 kifer Exp $
+** $Id: self_orientation.c,v 1.18 1999-07-26 22:51:53 kifer Exp $
 ** 
 */
 
@@ -154,10 +154,10 @@ char *xsb_executable_full_path(char *myname)
   /* Windows doesn't seem to have readlink() */
   strcpy(myname_augmented, myname);
   /* if executable doesn't end with .exe, then add it */
-  if ( *(strlen(myname) - 4) != '.'
-       || tolower(*(strlen(myname) - 3)) != 'e'
-       || tolower(*(strlen(myname) - 2)) != 'x'
-       || tolower(*(strlen(myname) - 1)) != 'e' )
+  if ( *(myname_augmented + strlen(myname) - 4) != '.'
+       || tolower(*(myname_augmented + strlen(myname) - 3)) != 'e'
+       || tolower(*(myname_augmented + strlen(myname) - 2)) != 'x'
+       || tolower(*(myname_augmented + strlen(myname) - 1)) != 'e' )
     sprintf(myname_augmented, "%s.exe", myname);
 #endif
 
