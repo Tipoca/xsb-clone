@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.1 2001-09-24 17:23:52 lfcastro Exp $
+** $Id: complete_local.h,v 1.2 2001-10-01 19:48:29 lfcastro Exp $
 ** 
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -89,8 +89,6 @@ static inline int  ScheduleNonLeaderGenerator(VariantSF subgoal)
 	}
       }
       return 1;
-/*       lpcreg = cpreg; */
-/*       XSB_Next_Instr(); */
     } 
     else { 
       tcp_tag(breg) = CHECK_COMPLETE_TAG;      
@@ -175,14 +173,26 @@ static inline int  ScheduleNonLeaderGenerator(VariantSF subgoal)
         csf_prevcsf(nsf)
 #define ResumeCSFs() \
 { \
-/* this code is reminiscent of single-stack scheduling; should */ \
-/* be updated to create a chain of CSFs     -- lfcastro */ \
-  CPtr Bmin; \
-  set_min(Bmin, breg, bfreg); \
-  save_compl_susp_cp(Bmin, cc_tbreg, nsf); \
+  CPtr nsftmp; \
+  if (!cur_breg) { \
+    cur_breg = cc_tbreg = nsf; \
+  } else { \
+    csf_prevcsf(cur_breg) = nsf; \
+    cur_breg = nsf; \
+  } \
+  for (nsftmp = cur_breg; csf_prevcsf(nsftmp); nsftmp = csf_prevcsf(nsftmp)) {\
+    cs_pcreg(nsftmp) = (pb) &resume_compl_suspension_inst; \
+    cs_hreg(nsftmp) = hreg; \
+    cs_ebreg(nsftmp) = ebreg; \
+  } \
+  cs_pcreg(nsftmp) = (pb) &resume_compl_suspension_inst; \
+  cs_hreg(nsftmp) = hreg; \
+  cs_ebreg(nsftmp) = ebreg; \
+  csf_prevcsf(nsftmp) = breg; \
+  cur_breg = nsftmp; \
   subg_compl_susp_ptr(compl_subg) = NULL; \
-  breg = cc_tbreg = Bmin; \
 }
+  
 #endif
 
 static inline CPtr ProcessSuspensionFrames(CPtr cc_tbreg_in, CPtr cs_ptr)
@@ -190,6 +200,9 @@ static inline CPtr ProcessSuspensionFrames(CPtr cc_tbreg_in, CPtr cs_ptr)
   CPtr ComplStkFrame = cs_ptr;
   VariantSF compl_subg;
   CPtr cc_tbreg = cc_tbreg_in;
+#ifndef CHAT
+  CPtr cur_breg = NULL; /* tail of chain of nsf's; used in ResumeCSFs */
+#endif
 
   /* check from leader up to the youngest subgoal */
   while (ComplStkFrame >= openreg) {
