@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: family_rel.flr,v 1.2 2001-01-09 01:35:04 gzyang Exp $
+** $Id: family_rel.flr,v 1.3 2001-03-25 05:09:14 gzyang Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
 
 
 :- auto_table.
-:- prologall.
+:- flPrologAll.
 
 %%% Ladies first:
 female(rita). 
