@@ -19,13 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred.i,v 1.8 1999-04-28 18:30:24 kifer Exp $
+** $Id: std_pred.i,v 1.9 1999-04-30 15:53:30 kifer Exp $
 ** 
 */
 
 
 
-static bool functor_builtin(void)
+inline static bool functor_builtin(void)
 {
   /* r1: ?term; r2: ?functor; r3: ?arity (int)	*/
   int  new_indicator, arity, value, disp;

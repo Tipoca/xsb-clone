@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.38 1999-04-27 14:39:39 kifer Exp $
+** $Id: builtin.c,v 1.39 1999-04-30 15:53:27 kifer Exp $
 ** 
 */
 
@@ -831,8 +831,12 @@ int builtin_call(byte number)
     case T_FORN:
 #ifdef FOREIGN
       proc_ptr = (PFI) get_ep(psc);
-      proc_ptr();
-      pcreg = cpreg;  /* always "proceed" -- unless somebody aborts/exits */
+      /* A foreign function must return an int!
+	 If it returns non-0 then proceed; 0 - fail */
+      if (proc_ptr())
+	pcreg = cpreg;      	 /* proceed */
+      else
+	pcreg = (pb)&fail_inst;	 /* fail    */
 #else
       xsb_exit("Foreign call in configuration that does not support it !");
 #endif
