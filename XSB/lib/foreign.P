@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.37 2003-03-03 17:35:22 lfcastro Exp $
+** $Id: foreign.P,v 1.38 2003-03-10 18:36:59 lfcastro Exp $
 ** 
 */
 
@@ -170,9 +170,7 @@ compile_c(Modname, Base, Options, Dir, LdOption, CompComm, TempFile) :-
 		       ' -Wl,--out-implib=',Base,'.a ',
 		       LD_Options,' -shared -s -o ',
 		       Base,'.dll ',Base,'.def ',
-		       Obj,' ',TempObj,' -lxsb']),
-		message(shell(['cp ',Base,'.dll ',ConfigDir,'/bin'])),
-		shell(['cp ',Base,'.dll ',ConfigDir,'/bin'])
+		       Obj,' ',TempObj,' -lxsb'])
 	    ;	str_sub('windows', Configuration)
 	    ->	warning(('You must create the ', Modname,'.dll'))
 	    ;	shell([CC_Name, ' -c ', Base, '.c ', TempFile, ' ', CC_Opts]),
