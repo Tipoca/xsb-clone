@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.59 2000-04-04 16:31:45 kifer Exp $
+** $Id: emuloop.c,v 1.60 2000-04-05 05:10:35 kifer Exp $
 ** 
 */
 
@@ -175,8 +175,7 @@ int  xctr;
 
 /* place for a meaningful message when segfault is detected */
 char *xsb_default_segfault_msg =
-     "\n++Memory violation occurred during evaluation.\n++When reporting this
- XSB bug to xsb-development@lists.sourceforge.net,\n++please supply the steps necessary to reproduce the bug.\n";
+     "\n++Memory violation occurred during evaluation.\n++When reporting this XSB bug to xsb-development@lists.sourceforge.net,\n++please supply the steps necessary to reproduce the bug.\n";
 char *xsb_segfault_message;
 jmp_buf xsb_abort_fallback_environment;
 
