@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.7 1999-05-26 04:18:50 guizyang Exp $
+** $Id: flrcompiler.P,v 1.8 1999-05-28 22:04:42 guizyang Exp $
 **
 */
 
@@ -964,6 +964,10 @@ extract_vars([var(_,V)|NVs],[V|Vs]) :-
 
 /**************************************************************************/
 flora_vars(var(N,V),Vs) :-
+	!,
+	flora_member(var(N,V),Vs).
+
+flora_vars(meta_meth(N,V),Vs) :-
 	!,
 	flora_member(var(N,V),Vs).
 

@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrparser.P,v 1.6 1999-05-28 06:03:11 guizyang Exp $
+** $Id: flrparser.P,v 1.7 1999-05-28 22:04:44 guizyang Exp $
 **
 */
 
@@ -769,11 +769,14 @@ aggregate(aggregt(Op,var(Name,Var),G,B),V) -->
 	[atom('$}')],
 	!.
 
-aggregate_operator(min)   --> atom_name(min), !.
-aggregate_operator(max)   --> atom_name(max), !.
-aggregate_operator(sum)   --> atom_name(sum), !.
-aggregate_operator(avg)   --> atom_name(avg), !.
-aggregate_operator(count) --> atom_name(count), !.
+aggregate_operator(min)        --> atom_name(min), !.
+aggregate_operator(max)        --> atom_name(max), !.
+aggregate_operator(sum)        --> atom_name(sum), !.
+aggregate_operator(avg)        --> atom_name(avg), !.
+aggregate_operator(count)      --> atom_name(count), !.
+aggregate_operator(collectset) --> atom_name(collectset), !.
+aggregate_operator(collectbag) --> atom_name(collectbag), !.
+
 
 grouping_variables(L,V) -->
 	white_space0,
