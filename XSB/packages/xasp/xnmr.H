@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xnmr.H,v 1.2 2003-02-28 15:25:42 lfcastro Exp $
+** $Id: xnmr.H,v 1.3 2003-07-22 19:33:30 lfcastro Exp $
 ** 
 */
 
@@ -59,3 +59,4 @@
         from xnmr_int.
 
 :- import retractall/1 from assert.
+:- import '$$exception_ball'/1 from usermod.
