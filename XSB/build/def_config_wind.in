@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_wind.in,v 1.13 1999-06-04 17:54:07 luis Exp $
+** $Id: def_config_wind.in,v 1.14 1999-10-20 18:22:05 kifer Exp $
 ** 
 */
 
@@ -77,8 +77,7 @@
 /* Define if XSB is built with support for ODBC */
 #undef XSB_ODBC
 
-#if (defined(FOREIGN_AOUT) || defined(FOREIGN_ELF) || defined(FOREIGN_COFF) \
-	|| defined(FOREIGN_WIN32))
+#if (defined(FOREIGN_AOUT) || defined(FOREIGN_ELF) || defined(FOREIGN_WIN32))
 #define FOREIGN
 #endif
 

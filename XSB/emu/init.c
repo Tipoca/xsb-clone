@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.36 1999-10-19 20:11:47 ejohnson Exp $
+** $Id: init.c,v 1.37 1999-10-20 18:22:10 kifer Exp $
 ** 
 */
 
@@ -276,8 +276,6 @@ char *init_para(int argc, char *argv[])
      ------------------------- */
 #ifdef WIN_NT
   boot_module = "\\syslib\\loader.O";
-#elif DJGPP
-  boot_module = "/syslib/loader.OX";
 #else
   boot_module = "/syslib/loader.O";
 #endif

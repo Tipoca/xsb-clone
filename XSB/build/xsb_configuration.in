@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_configuration.in,v 1.14 1999-10-08 07:35:04 kifer Exp $
+** $Id: xsb_configuration.in,v 1.15 1999-10-20 18:22:06 kifer Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 %% extensive information on how XSB was built.
 %%
 
-:- export xsb_configuration/2, windows_os/0, dos_os/0.
+:- export xsb_configuration/2, windows_os/0.
 
 :- import stat_flag/2, intern_string/2, slash/1
    from machine.
@@ -38,7 +38,6 @@
    from file_io.
 
 windows_os :- fail.
-dos_os :- fail.
 
 xsb_configuration(compiler, '@CC@').
 %% xsb_configuration(cpp, '@xsbCPP@').

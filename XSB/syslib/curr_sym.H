@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.H,v 1.5 1999/08/28 07:54:21 kostis Exp $
+** $Id: curr_sym.H,v 1.6 1999/08/28 19:18:26 kifer Exp $
 ** 
 */
 
@@ -47,9 +47,6 @@
      from machine.
 :- import xsb_configuration/2 from xsb_configuration.
 :- import fmt_write_string/3 from file_io.
-
-%% don't support dos any more
-%%:- import dos_os/2 from xsb_configuration.
 
 
 /* ----------------- end of file current_sym.H -------------------- */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.42 1999-10-12 20:28:02 kostis Exp $
+** $Id: emuloop.c,v 1.43 1999-10-20 18:22:08 kifer Exp $
 ** 
 */
 
@@ -1366,7 +1366,9 @@ DllExport int call_conv xsb(int flag, int argc, char *argv[])
      init_symbols();		/* preset a few symbols in PSC table */
      init_interrupt();		/* catch ^C interrupt signal */
 
-     fd = fopen(startup_file, "rb");   /* "b" needed for DOS. -smd */
+     /* "b" does nothing, but POSIX allows it */
+     fd = fopen(startup_file, "rb");
+
      if (!fd) {
        char message[256];
        sprintf(message, "The startup file, %s, could not be found!",

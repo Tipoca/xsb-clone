@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.13 1999-10-09 02:39:02 kifer Exp $
+** $Id: foreign.P,v 1.14 1999-10-20 18:22:13 kifer Exp $
 ** 
 */
 
@@ -62,12 +62,9 @@ compile_c(Modname, Base, Options, Dir, LdOption, CompComm, TempFile) :-
 	        /* The following is here because C compilers usually put 
 	           the object file in the current directory
 	           and not in the source one. */
-	        (	Dir == './'
+	        (   Dir == './'
 		->  true
-		;   ( str_sub('msdos', Configuration)
-		    ->	shell(['ren ', Modname, '.o', Dir])
-		    ;	shell(['mv ', Modname, '.o ', Dir])
-		    )
+		;   shell(['mv ', Modname, '.o ', Dir])
 		)
 	    )
         ;   shell([CompComm])
