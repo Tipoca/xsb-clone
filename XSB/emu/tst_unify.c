@@ -19,13 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_unify.c,v 1.3 1999-10-26 06:47:38 kifer Exp $
+** $Id: tst_unify.c,v 1.4 2000-01-07 08:52:06 kifer Exp $
 ** 
 */
 
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "configs/xsb_config.h"
+#include "debugs/xsb_debug.h"
 
 #include <stdio.h>
 

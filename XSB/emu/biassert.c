@@ -19,13 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.35 1999-12-22 05:10:09 cbaoqiu Exp $
+** $Id: biassert.c,v 1.36 2000-01-07 08:51:15 kifer Exp $
 ** 
 */
 
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "configs/xsb_config.h"
+#include "debugs/xsb_debug.h"
 
 /* Special debug includes */
 #include "debugs/debug_biassert.h"

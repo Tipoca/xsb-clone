@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.10 1999-12-21 22:56:38 warren Exp $
+** $Id: dis.c,v 1.11 2000-01-07 08:51:24 kifer Exp $
 ** 
 */
 
@@ -27,8 +27,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "configs/xsb_config.h"
+#include "debugs/xsb_debug.h"
 
 #include "auxlry.h"
 #include "psc_xsb.h"

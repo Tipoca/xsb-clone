@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.2 1999-12-02 07:07:02 kifer Exp $
+** $Id: varstring.c,v 1.3 2000-01-07 08:52:08 kifer Exp $
 ** 
 */
 
@@ -59,7 +59,8 @@
 #include <sys/types.h>
 #include <string.h>
 
-#include "configs/config.h"
+#include "configs/xsb_config.h"
+
 #include "configs/special.h"
 
 #include "auxlry.h"

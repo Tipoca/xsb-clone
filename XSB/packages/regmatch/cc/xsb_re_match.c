@@ -18,13 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_re_match.c,v 1.16 1999-12-10 07:37:03 kifer Exp $
+** $Id: xsb_re_match.c,v 1.17 2000-01-07 08:52:09 kifer Exp $
 ** 
 */
 
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "xsb_config.h"
 
 #include <stdio.h>
 #include <string.h>

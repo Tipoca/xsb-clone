@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.6 1999-11-17 17:41:58 ejohnson Exp $
+** $Id: struct_manager.c,v 1.7 2000-01-07 08:51:51 kifer Exp $
 ** 
 */
 
 
-/* config.h must be the first #include.  Please don't move it. */
-#include "configs/config.h"
-#include "debugs/debug.h"
+/* xsb_config.h must be the first #include.  Please don't move it. */
+#include "configs/xsb_config.h"
+#include "debugs/xsb_debug.h"
 
 #include <stdio.h>
 #include <stdlib.h>

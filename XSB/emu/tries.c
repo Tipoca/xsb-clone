@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.44 2000-01-06 18:16:10 cbaoqiu Exp $
+** $Id: tries.c,v 1.45 2000-01-07 08:52:02 kifer Exp $
 ** 
 */
 
@@ -28,8 +28,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "configs/xsb_config.h"
+#include "debugs/xsb_debug.h"
 
 /* Special debug includes */
 #include "debugs/debug_tries.h"

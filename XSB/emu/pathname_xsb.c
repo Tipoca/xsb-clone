@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.5 1999-11-29 00:30:19 kifer Exp $
+** $Id: pathname_xsb.c,v 1.6 2000-01-07 08:51:43 kifer Exp $
 ** 
 */
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "configs/xsb_config.h"
+#include "debugs/xsb_debug.h"
 
 #ifdef WIN_NT
 #include <direct.h>

@@ -18,15 +18,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chat.c,v 1.15 1999-10-27 02:46:19 cbaoqiu Exp $
+** $Id: chat.c,v 1.16 2000-01-07 08:51:20 kifer Exp $
 ** 
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "configs/xsb_config.h"
+#include "debugs/xsb_debug.h"
 
 #ifdef CHAT	/* have this here so that gcc is silent with -ansi */
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.9 1999-12-22 18:07:00 warren Exp $
+** $Id: loader_xsb.c,v 1.10 2000-01-07 08:51:38 kifer Exp $
 ** 
 */
 
@@ -35,8 +35,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "configs/xsb_config.h"
+#include "debugs/xsb_debug.h"
 
 #include "auxlry.h"
 #include "psc_xsb.h"

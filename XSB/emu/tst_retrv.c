@@ -19,13 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_retrv.c,v 1.5 1999-11-17 22:10:46 ejohnson Exp $
+** $Id: tst_retrv.c,v 1.6 2000-01-07 08:52:05 kifer Exp $
 ** 
 */
 
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "configs/xsb_config.h"
+#include "debugs/xsb_debug.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -18,13 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_wildmatch.c,v 1.9 1999-12-10 07:37:04 kifer Exp $
+** $Id: xsb_wildmatch.c,v 1.10 2000-01-07 08:52:10 kifer Exp $
 ** 
 */
 
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "xsb_config.h"
 
 #include <stdio.h>
 #include <stdlib.h>

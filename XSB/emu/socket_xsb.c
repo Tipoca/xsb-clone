@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.10 1999-12-22 18:07:07 warren Exp $
+** $Id: socket_xsb.c,v 1.11 2000-01-07 08:51:50 kifer Exp $
 ** 
 */
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "configs/xsb_config.h"
+#include "debugs/xsb_debug.h"
 
 #include <errno.h>
 #include <stdio.h>

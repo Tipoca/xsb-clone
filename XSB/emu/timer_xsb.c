@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.c,v 1.4 1999-11-17 03:54:35 kifer Exp $
+** $Id: timer_xsb.c,v 1.5 2000-01-07 08:51:57 kifer Exp $
 ** 
 */
 
 
 
-#include "configs/config.h"
+#include "configs/xsb_config.h"
 
 #ifdef WIN_NT
 #include <windows.h>
@@ -35,7 +35,7 @@
 
 
 /* To set a timeout, do this:
-#include "configs/config.h"
+#include "configs/xsb_config.h"
 #include "timer_xsb.h"
 
    if (CHECK_TIMER_SET) {

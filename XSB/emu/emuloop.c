@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.53 1999-12-22 18:06:55 warren Exp $
+** $Id: emuloop.c,v 1.54 2000-01-07 08:51:27 kifer Exp $
 ** 
 */
 
@@ -37,8 +37,8 @@
 #endif
 #endif
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "configs/xsb_config.h"
+#include "debugs/xsb_debug.h"
 
 #include "auxlry.h"
 #include "cell_xsb.h"

@@ -19,12 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.84 1999-12-21 22:56:30 warren Exp $
+** $Id: builtin.c,v 1.85 2000-01-07 08:51:17 kifer Exp $
 ** 
 */
 
-#include "configs/config.h"
-#include "debugs/debug.h"
+#include "configs/xsb_config.h"
+#include "debugs/xsb_debug.h"
 /* Private debugs */
 #include "debugs/debug_delay.h"
 
