@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.4 2001-02-19 19:01:04 gzyang Exp $
+** $Id: flrcompiler.P,v 1.5 2001-02-23 16:53:45 gzyang Exp $
 **
 */
 
@@ -191,6 +191,8 @@ strobj_struct(String,PRSTRING(String)).
 list_struct(List,Term,PRLIST(List,Term)).
 workspace_struct(P,WS,PRWORKSPACE(P,WS)).
 newpredicate_struct(Name,N,Args,PRNEWPRED(Name,N,Args)).
+
+prologterm_struct(FL_ASSIGN,2,Args,PROLOGTERM(FL_IS,2,Args)) :- !.
 prologterm_struct(F,N,Args,PROLOGTERM(F,N,Args)).
 
 florasyslib_struct(F,N,Args,FLORASYSLIB(F,N,Args)) :- report_option(FLSYSLIB(F)).
