@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.30 1999-11-16 19:05:49 kifer Exp $
+** $Id: biassert.c,v 1.31 1999-11-16 23:12:30 warren Exp $
 ** 
 */
 
@@ -1944,7 +1944,8 @@ bool db_build_prref( /* PSC, Tabled?, -PrRef */ )
       dbgen_inst_ppvww(tabletrysingle,Arity,(tp+3),tip,tp,&Loc) ;
       dbgen_inst_pvv(allocate_gc,3,3,tp,&Loc) ;
       dbgen_inst_ppv(getVn,2,tp,&Loc) ;  /* was getpbreg */
-      dbgen_inst_ppvw(calld,3,p,tp,&Loc) ;
+      printf("storing %p at %d\n",p,Loc);
+      dbgen_inst_ppvw(calld,3,p,tp,&Loc) ; /* p is *(tp+6), see remove_prref*/
       dbgen_inst_pvv(new_answer_dealloc,Arity,2,tp,&Loc) ;
       set_ep(psc, (pb)tp);
     }
@@ -1964,8 +1965,12 @@ bool db_remove_prref( /* PrRef */ )
 
   if ( *(pb)p == tabletrysingle )
     {
-      mem_dealloc((pb)p, FIXED_BLOCK_SIZE_FOR_TABLED_PRED) ;
+      /* free prref, from calld instr set in db_build_prref */
+      printf("freeing %p from %p\n",*(p+6),p);
+      mem_dealloc((pb)(*(p+6)), 4*sizeof(Cell)); 
+      mem_dealloc((pb)p, FIXED_BLOCK_SIZE_FOR_TABLED_PRED) ; /*free table hdr*/
     }
+  else mem_dealloc((pb)p, 4*sizeof(Cell)); /* free prref */
   return TRUE ;
 }
 
