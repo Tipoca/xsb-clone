@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.17 2001-06-10 04:57:28 kifer Exp $
+** $Id: system_xsb.c,v 1.18 2001-07-02 19:40:19 kifer Exp $
 ** 
 */
 
@@ -614,17 +614,21 @@ static int xsb_spawn (char *progname, char *argv[], int callno,
   /* duplicate saved copies of stdio fds back into main process stdio */
   if (dup2(stdin_saved, fileno(stdin)) < 0) {
     perror("SPAWN_PROCESS");
+    close(stdin_saved); close(stdout_saved); close(stderr_saved);
     return PIPE_TO_PROC_FAILED;
   }
   if (dup2(stdout_saved, fileno(stdout)) < 0) {
     perror("SPAWN_PROCESS");
+    close(stdin_saved); close(stdout_saved); close(stderr_saved);
     return PIPE_TO_PROC_FAILED;
   }
   if (dup2(stderr_saved, fileno(stderr)) < 0) {
     perror("SPAWN_PROCESS");
+    close(stdin_saved); close(stdout_saved); close(stderr_saved);
     return PIPE_TO_PROC_FAILED;
   }
 
+  close(stdin_saved); close(stdout_saved); close(stderr_saved);
   return pid;
 }
 
