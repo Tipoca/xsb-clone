@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.H,v 1.5 1999-08-16 07:23:52 kifer Exp $
+** $Id: compile.H,v 1.6 1999-11-16 18:24:04 kifer Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 
 :- import spec/2 from spec.
 :- import cp_opt/2 from cp_opt.
-:- import str_cat/3 from machine.
+:- import str_cat/3, stat_flag/2 from machine.
 :- import useinfer/3 from useinfer.
 :- import db_optimize/4 from db_opt.
 :- import build_graph/1 from cutcheck.

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.25 1999-10-26 06:46:41 kifer Exp $
+** $Id: parse.P,v 1.26 1999-11-16 18:24:10 kifer Exp $
 ** 
 */
 
@@ -129,7 +129,12 @@ xpp_process_file(FileName, XPP_process, IOportFromProc) :-
 #else
 	fmt_write_string(XPP_command_msg, '[Preprocessing %s]', FileName),
 #endif
-	message(XPP_command_msg),
+        %% If --quietload, don't print Preprocessing messages
+	stat_flag(BANNER_CTL,BannerCtl),
+	(   KeepQuiet is BannerCtl mod QUIETLOAD, KeepQuiet =:= 0
+	->  true
+	;   message(XPP_command_msg)
+	),
 	%% Redirect cpp's stderr to XSB's STDWARN
 	spawn_process(FullXPP_command, block, IOportFromProc, 3, XPP_process),
 	!,
