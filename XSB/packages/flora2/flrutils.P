@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.20 2001-04-02 21:49:46 gzyang Exp $
+** $Id: flrutils.P,v 1.21 2001-04-02 22:41:48 gzyang Exp $
 **
 */
 
@@ -639,7 +639,11 @@ flora_generate_file(CompiledRuleList,FileOptionList,PFile,DBFile,FileStatus) :-
 	( PFileStatus == FLORA_FAILURE ->
 	    FileStatus=FLORA_FAILURE
 	;
-	  flora_generate_DBfile(DBFile,FlogicFactList,FileStatus)
+	  ( FlogicFactList == [] ->
+	      FileStatus=FLORA_SUCCESS
+	  ;
+	    flora_generate_DBfile(DBFile,FlogicFactList,FileStatus)
+	  )
         ),
 	!.
 
