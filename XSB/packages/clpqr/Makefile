@@ -19,9 +19,11 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.2 2000-06-09 14:21:04 cbaoqiu Exp $
+## $Id: Makefile,v 1.3 2000-06-18 00:28:32 kifer Exp $
 ## 
 ##
+
+XSBDIR=../..
 
 ALL = 	arith.O arith_r.O bv.O class.O clpr.O ineq.O itf3.O \
 	fourmotz.O nf.O ordering.O project.O redund.O store.O \
@@ -35,10 +37,18 @@ Option = [spec_off]
 #
 # Self-make: Version 1.9 or higher
 #
-XSB=../bin/xsb
+XSB=$(XSBDIR)/bin/xsb
 Prolog = $(XSB)
 #
 #-----------------------------------------------------------------------#
+
+# Make sure warnings are saved in a file.
+SVFILE = '$(XSBDIR)/build/.clpqr.tmp'
+OWRITE = 1
+STDWARN = 3
+STDERR = 2
+HDRMSG = "While compiling XSB/packages/clpqr:"
+
 
 # continue to the next when one error occurs
 .IGNORE:
@@ -46,19 +56,27 @@ Prolog = $(XSB)
 # suffix rules
 .SUFFIXES: .P .O .H
 
-.H.P:
-	echo 'mc($*, $(Option)).' >> cmd...
+all: init $(ALL) finish
+	@touch cmd...
+	$(Prolog) < cmd...
+	@rm cmd...
+	@cat $(SVFILE)
 
 .P.O:
 	echo 'mc($*, $(Option)).' >> cmd...
 
-all: $(ALL)
-	@touch cmd...
-	$(Prolog) < cmd...
-	/bin/rm cmd...
+init:
+	/bin/rm -f $(SVFILE)
+	@echo "file_reopen($(SVFILE),$(OWRITE),$(STDWARN),_)." >> cmd...
+	@echo "file_clone($(STDWARN), $(STDERR),_)." >> cmd...
+	@echo 'fmt_write($(STDWARN),"-------------- Warnings/Errors --------------------\n",_).' >> cmd...
+	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
+	@echo "file_flush($(STDWARN), _)." >> cmd...
 
-# Unfortunately, this needs to be commented on the NeXT.
-# %.O:	%.H
+finish:
+	@echo 'fmt_write($(STDWARN),"-------------------- End --------------------------\n",_).' >> cmd...
+
 
 .DONE:
 	echo Done
+
