@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.P,v 1.7 1999-08-16 07:23:53 kifer Exp $
+** $Id: compile.P,v 1.8 1999-10-09 16:31:21 kostis Exp $
 ** 
 */
 
@@ -213,8 +213,11 @@ compile_predicate(PredDef, GenAsm, AFile, OFile, TIFile, IsModule, SymTab) :-
 	; true
 	),
 	preprocess(PredDef, PredBlks, SymTab),
+	!,	% needed to cut unnecessary choice points... (bmd & kostis)
 	ti_transform(PredBlks, TIPredBlks, TIFile, SymTab),
+	!,	% needed to cut unnecessary choice points... (bmd & kostis)
 	compile_pred_block(TIPredBlks, PilCode-[], 0, NC),
+	!,	% needed to cut unnecessary choice points... (bmd & kostis)
 	compile_peephole_opt(PilCode, PilCode1),
 	( GenAsm =:= 0 -> true; tell(AFile), write_asm_instructions(PilCode1) ),
 	tell(OFile), asm_PIL(Sym, PilCode1, NC, IsModule),

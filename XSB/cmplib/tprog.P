@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tprog.P,v 1.8 1999-08-09 15:07:17 kostis Exp $
+** $Id: tprog.P,v 1.9 1999-10-09 16:31:23 kostis Exp $
 ** 
 */
 
@@ -40,6 +40,7 @@
 compile_clause(Sym, Clause, PilCode, PilCodeR, NC) :-
 	flatten(Clause, FlatClause),
 	inprog(Sym, FlatClause, InClause),
+	!,	% needed to cut unnecessary choice points... (bmd & kostis)
 	tclause(Sym, InClause, PilCode, PilCodeR, NC).
 
 tclause(Sym, clause(Args,Body,crec(ARSize,Label)),
