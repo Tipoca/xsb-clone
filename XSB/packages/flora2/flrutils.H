@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.37 2002-02-28 04:25:27 kifer Exp $
+** $Id: flrutils.H,v 1.38 2002-03-02 07:25:20 kifer Exp $
 **
 */
 
@@ -155,6 +155,8 @@
 	flora_include/2,
 	flora_sysmod_file/3
    from flrlibman.
+
+:- import prettyprint_stdin/0 from flrprettyprint.
 
 :- import
 	flora_user_module_predicate_symbol/3,

@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.21 2002-02-28 04:25:28 kifer Exp $
+## $Id: Makefile,v 1.22 2002-03-02 07:25:20 kifer Exp $
 ## 
 ##
 
@@ -45,6 +45,7 @@ ALLOBJS = flroperator.O \
 	  flrutils.O \
 	  flrwrapper.O \
 	  flrwraparound.O \
+	  flrprettyprint.O \
 	  flrundefhook.O \
 	  flrshell.O
 
@@ -164,6 +165,9 @@ flrshell.O : flrshell.P flrshell.H $(FLORA_TERMS)
 
 flrwraparound.O : flrwraparound.P flrwraparound.H $(FLORA_TERMS) $(XSB_EMU_FLAG_DEFS)
 	@echo 'mc(flrwraparound,$(OPTION)).' >> cmd...
+
+flrprettyprint.O : flrprettyprint.P $(FLORA_TERMS)
+	@echo 'mc(flrprettyprint,$(OPTION)).' >> cmd...
 
 
 init:
