@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dcg.H,v 1.4 1999/11/10 15:57:27 warren Exp $
+** $Id: dcg.H,v 1.5 2000/06/02 20:05:46 dwarren Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 :- export tphrase_set_string/1, tphrase_string_length/1.
 
 :- import abort/1, arg/3, call/1, is_list/1, functor/3,
-	write/1, writeln/1, warning/1
+	write/1, writeln/1, warning/1, (index)/3
    from standard.
 :- import xsb_flag/2 from curr_sym.
 :- import stat_set_flag/2 from machine.
