@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.9 2001-07-07 06:08:30 kifer Exp $
+## $Id: Makefile,v 1.10 2002-02-23 04:04:34 kifer Exp $
 ## 
 ##
 
@@ -70,8 +70,8 @@ recompile: $(ALL) finish
 init:
 	rm -f $(SVFILE)
 	echo Initializing...
-	@echo 'fmt_write($(STDWARN),"-------------- Warnings/Errors --------------------\n",_).' >> cmd...
-	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
+	@echo "file_write($(STDWARN),'-------------- Warnings/Errors --------------------'), file_nl($(STDWARN))." >> cmd...
+	@echo "file_write($(STDWARN),'$(HDRMSG)'), file_nl($(STDWARN))." >> cmd...
 	@echo "file_flush($(STDWARN), _)." >> cmd...
 	@echo "import bootstrap_flora/0 from flora2." >> cmd...hdr
 	@echo "bootstrap_flora." >> cmd...hdr
@@ -79,7 +79,7 @@ init:
 	@echo "file_clone($(STDWARN), $(STDERR),_)." >> cmd...hdr
 
 finish:
-	@echo 'fmt_write($(STDWARN),"-------------------- End --------------------------\n",_).' >> cmd...
+	@echo "file_write($(STDWARN),'-------------------- End --------------------------'), file_nl($(STDWARN))." >> cmd...
 
 
 .DONE:

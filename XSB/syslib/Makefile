@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.36 2000/12/27 00:28:24 kifer Exp $
+## $Id: Makefile,v 1.37 2001/06/11 01:28:09 kifer Exp $
 ## 
 ##
 
@@ -86,17 +86,17 @@ all: init $(ALL) finish
 init:
 	rm -f $(SVFILE)
 	@test -d $(OBJFILESAVED) || mkdir $(OBJFILESAVED)
-	@echo 'fmt_write($(STDWARN),"----------------- Warnings ------------------------\n",_).' >> cmd...
-	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
-	@echo 'file_flush($(STDWARN),_).' >> cmd...
-	@echo 'import file_reopen/4, fmt_write/3, file_flush/2 from file_io.' >> cmd...hdr
+	@echo "file_write($(STDWARN),'----------------- Warnings ------------------------'), file_nl($(STDWARN))." >> cmd...
+	@echo "file_write($(STDWARN),'$(HDRMSG)'), file_nl($(STDWARN))." >> cmd...
+	@echo "file_flush($(STDWARN),_)." >> cmd...
+	@echo "import file_reopen/4, file_flush/2 from file_io." >> cmd...hdr
 	@echo "file_reopen($(SVFILE),a,$(STDWARN),_)." >> cmd...hdr
-	@echo 'import xpp_include_dir/1 from parse.' >> cmd...hdr
+	@echo "import xpp_include_dir/1 from parse." >> cmd...hdr
 	@echo "assert(xpp_include_dir('../emu'))." >> cmd...hdr
 	@echo "assert(xpp_include_dir('../prolog_includes'))." >> cmd...hdr
 
 finish:
-	@echo 'fmt_write($(STDWARN),"%s\n",arg("-------------------- End --------------------------\n")).' >> cmd...
+	@echo "file_write($(STDWARN),'-------------------- End --------------------------'), file_nl($(STDWARN)), file_nl($(STDWARN))." >> cmd...
 
 restore:
 	mv -f $(OBJFILESAVED)/*.O .

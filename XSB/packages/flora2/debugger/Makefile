@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.2 2001-06-29 22:58:36 kifer Exp $
+## $Id: Makefile,v 1.3 2002-02-23 04:04:34 kifer Exp $
 ## 
 ##
 
@@ -47,7 +47,7 @@ OPTION = [optimize]
 
 XSB = $(XSBDIR)/bin/xsb
 
-PROLOG = $(XSB) -s -m 2000 -c 2000 -e 'set_dcg_style(standard),segfault_handler(warn).'
+PROLOG = $(XSB) -s -m 2000 -c 2000 -e 'segfault_handler(warn).'
 
 # Make sure warnings are saved in a file.
 SVFILE = '$(XSBDIR)/build/.flora_debug_warn.tmp'
@@ -80,13 +80,13 @@ init:
 	@echo "[flrwraparound]." >> cmd...
 	@echo "file_reopen($(SVFILE),a,$(STDWARN),_)." >> cmd...
 	@echo "file_clone($(STDWARN),$(STDERR),_)." >> cmd...
-	@echo 'fmt_write($(STDWARN),"-------------- Warnings/Errors --------------------\n",_).' >> cmd...
-	@echo 'fmt_write($(STDWARN),"%s\n",args($(HDRMSG))).' >> cmd...
+	@echo "file_write($(STDWARN),'-------------- Warnings/Errors --------------------'), file_nl($(STDWARN))." >> cmd...
+	@echo "file_write($(STDWARN),'$(HDRMSG)'), file_nl($(STDWARN))." >> cmd...
 	@echo "file_flush($(STDWARN),_)." >> cmd...
 
 
 finish:
-	@echo 'fmt_write($(STDWARN),"-------------------- End --------------------------\n",_).' >> cmd...
+	@echo "file_write($(STDWARN),'-------------------- End --------------------------'), file_nl($(STDWARN))." >> cmd...
 
 
 clean:
