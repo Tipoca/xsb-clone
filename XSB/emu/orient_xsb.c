@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.c,v 1.4 2000-01-07 08:51:42 kifer Exp $
+** $Id: orient_xsb.c,v 1.5 2000-04-04 16:31:45 kifer Exp $
 ** 
 */
 
@@ -224,7 +224,7 @@ char *xsb_executable_full_path(char *myname)
   fprintf(stderr, 
 	  "PANIC!!! Can't determine the full name of the XSB executable!\n");
   fprintf(stderr, 
-	  "         Please report this bug to xsb-contact@cs.sunysb.edu\n");
+	  "Please report this bug to xsb-development@lists.sourceforge.net\n");
   fprintf(stderr,
 	  "*************************************************************\n");
   exit(1);
