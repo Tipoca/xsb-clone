@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.55 2003/09/29 13:05:17 tschrijvers Exp $
+** $Id: machine.H,v 1.56 2003/10/03 00:08:40 dwarren Exp $
 ** 
 */
 
@@ -115,6 +115,7 @@
 	assert_buff_to_clref/6,
         formatted_io/5,
 	file_read_canonical/3,
+	db_get_last_clause/4,
 	gen_retract_all/1,
 	db_get_clause/11,
 	db_retract0/2,
