@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.22 2001-12-28 07:24:47 ejohnson Exp $
+** $Id: tst_utils.c,v 1.23 2002-11-05 20:50:38 lfcastro Exp $
 ** 
 */
 
@@ -132,7 +132,7 @@ char *stringTrieType(byte fieldTrieType) {
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 char *NodeTypeStrings[] = {
-  "Interrior", "Indexed Interrior", "Leaf", "Indexed Leaf",
+  "Interior", "Indexed Interior", "Leaf", "Indexed Leaf",
   "Index Header", "--", "--", "--", "Root",
 };
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: call_xsb_i.h,v 1.5 2002-08-15 17:00:26 lfcastro Exp $
+** $Id: call_xsb_i.h,v 1.6 2002-11-05 20:50:37 lfcastro Exp $
 ** 
 */
 
@@ -48,6 +48,9 @@ static inline int prolog_call0(Cell term)
       pcreg = (pb)&fail_inst;
       return FALSE;
     }
+#ifdef CP_DEBUG
+    pscreg = psc;
+#endif
     switch (get_type(psc)) {
     case T_PRED:
     case T_DYNA:

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.46 2002-08-19 15:40:24 tswift Exp $
+** $Id: builtin.h,v 1.47 2002-11-05 20:50:37 lfcastro Exp $
 ** 
 */
 
@@ -150,7 +150,7 @@
 #define FORMATTED_IO            142
 #define TABLE_STATUS            143
 #define GET_DELAY_LISTS		144
-
+#define ABOLISH_TABLE_CALL      145
 #define ABOLISH_TABLE_PREDICATE 146
 #define TRIE_ASSERT		147
 #define TRIE_RETRACT		148

@@ -18,15 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.h,v 1.7 2001-01-31 10:23:29 ejohnson Exp $
+** $Id: tables.h,v 1.8 2002-11-05 20:50:37 lfcastro Exp $
 ** 
 */
 
 
-#ifndef TABLE_DEFS
+#ifndef __TABLES_H__
 
-
-#define TABLE_DEFS
+#define __TABLES_H__
 
 
 /*===========================================================================*/
