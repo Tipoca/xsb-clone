@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace.c,v 1.4 1999-01-13 20:28:27 kostis Exp $
+** $Id: trace.c,v 1.5 1999-01-13 20:54:36 kostis Exp $
 ** 
 */
 
@@ -82,7 +82,7 @@ void perproc_stat(void)
 
 void total_stat(double elapstime)
 {
-  unsigned long lstktop, trie_alloc, trie_used,
+  unsigned long lstktop, trie_alloc, trie_used, chat_alloc, chat_used,
                 total_alloc, total_used, gl_avail, tc_avail;
   unsigned long subg_count, subg_space, trie_hash_alloc;
 
@@ -94,15 +94,21 @@ void total_stat(double elapstime)
   trie_used = trie_alloc - free_trie_size();
   subg_space = sizeof(Cell)*CALLSTRUCTSIZE*subg_count;
 
-  total_alloc = pspacesize + trie_alloc + subg_space +
+#ifdef CHAT
+  chat_alloc = chat_max_alloc();
+  chat_used = chat_now_used();
+#else
+  chat_alloc = chat_used = 0;
+#endif
+
+  total_alloc = pspacesize + trie_alloc + subg_space + chat_alloc +
 		(pdl.size + glstack.size + tcpstack.size + complstack.size) * K;
 
   gl_avail    = lstktop-(unsigned long)hreg;
   tc_avail    = (unsigned long)breg-(unsigned long)trreg;
 
-  total_used  = pspacesize + trie_used + subg_space +
-                (glstack.size * K - gl_avail) +
-                (tcpstack.size * K - tc_avail);
+  total_used  = pspacesize + trie_used + subg_space + chat_used +
+                (glstack.size * K - gl_avail) + (tcpstack.size * K - tc_avail);
 
   printf("\n");
   printf("memory (total)    %12ld bytes: %12ld in use, %12ld free\n",
