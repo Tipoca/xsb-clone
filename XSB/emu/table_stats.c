@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.6 2000-01-07 08:51:55 kifer Exp $
+** $Id: table_stats.c,v 1.7 2000-01-11 16:53:16 ejohnson Exp $
 ** 
 */
 
@@ -35,6 +35,7 @@
 #include "trie_internals.h"
 #include "macro_xsb.h"
 #include "error_xsb.h"
+#include "flags_xsb.h"
 
 
 
@@ -335,7 +336,7 @@ void print_detailed_tablespace_stats() {
 	 "    Subgoal Frames (%u blocks):\n"
 	 "      Allocated:     %10u  (%8u bytes)\n"
 	 "      Used:          %10u  (%8u bytes)\n"
-	 "        Generators:  %8u    (%6u bytes)\n"
+	 "        Producers:   %8u    (%6u bytes)\n"
 	 "        Consumers:   %8u    (%6u bytes)\n"
 	 "      Free:          %10u  (%8u bytes)\n",
 	 SubgStats_NumBlocks(sf),

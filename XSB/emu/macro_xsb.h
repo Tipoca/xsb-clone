@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.5 1999-12-14 21:05:45 ejohnson Exp $
+** $Id: macro_xsb.h,v 1.6 2000-01-11 16:53:16 ejohnson Exp $
 ** 
 */
 
@@ -33,7 +33,7 @@
  *  allowing access to its calls and their associated answers.
  */
 
-#include "flags_xsb.h"
+#include "table_status_defs.h"
 
 typedef enum Tabled_Evaluation_Method {
   VARIANT_TEM      = VARIANT_EVAL_METHOD,
@@ -293,11 +293,13 @@ struct subgoal_frame {
 #define subg_structs_are_reclaimed(b)	((SGFrame)(b))->reclaimed_structs
 
 /* beginning of REAL answers in the answer list */
-#define subg_answers(subg) aln_next_aln(subg_ans_list_ptr(subg))
+#define subg_answers(subg)	aln_next_aln(subg_ans_list_ptr(subg))
 
-#define ConsumerIsProducerVariant(pSF)	( subg_producer(pSF) == pSF )
-#define SubgoalHasOwnAnswerSet(pSF)	( subg_producer(pSF) == pSF )
-#define ConsumerIsProperlySubsumed(pSF)	( subg_producer(pSF) != pSF )
+#define IsProducerSF(pSF)		( subg_producer(pSF) == pSF )
+#define IsConsumerSF(pSF)		( subg_producer(pSF) != pSF )
+
+#define ConsumerIsProducerVariant(pSF)	  IsProducerSF(pSF)
+#define ConsumerIsProperlySubsumed(pSF)	  IsConsumerSF(pSF)
 
 #define ProducerHasConsumers(pSF)	IsNonNULL(subg_consumers(pSF))
 

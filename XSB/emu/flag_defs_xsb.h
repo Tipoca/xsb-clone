@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.2 1999-11-16 19:05:54 kifer Exp $
+** $Id: flag_defs_xsb.h,v 1.3 2000-01-11 16:53:15 ejohnson Exp $
 ** 
 */
 
@@ -107,13 +107,3 @@ As best as I can tell, only the following exist/are used:
 #define QUIETLOAD    	  3   /* don't display "module loaded" msgs */
 #define NOPROMPT    	  5   /* display no prompt--useful in spawned
 				 subprocesses */
-
-/*
- * Defines tag values for indicating the type of tabled evaluation to
- * use on a given predicate.  These values are shared with Prolog
- * builtins which allow users to select and change the evaluation
- * method.
- */
-
-#define VARIANT_EVAL_METHOD	  0
-#define SUBSUMPTIVE_EVAL_METHOD	  1
