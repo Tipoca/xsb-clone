@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flraggmax.P,v 1.8 2003-06-18 07:01:21 kifer Exp $
+** $Id: flraggmax.P,v 1.9 2004-06-20 08:33:31 kifer Exp $
 ** 
 */
 
@@ -36,20 +36,20 @@
 /*********************************************************************
   fllibmax(+Var,+VarList,+Goal,-Max)
 *********************************************************************/
-fllibmax(Var,[],Goal,Max) :-
+FLLIBMAX(Var,[],Goal,Max) :-
 	!,
 	findall(Var,Goal,Matches),
 	Matches=[H|L],
 	flora_maxaux(L,H,Max).
 
-fllibmax(Var,VarList,Goal,Max) :-
+FLLIBMAX(Var,VarList,Goal,Max) :-
 	ground(VarList),
 	!,
 	findall(Var,Goal,Matches),
 	Matches=[H|L],
 	flora_maxaux(L,H,Max).
 
-fllibmax(Var,VarList,Goal,Max) :-
+FLLIBMAX(Var,VarList,Goal,Max) :-
 	!,
 	findall(flora_result(Var,VarList),Goal,Matches),
 	findall(Grp,member(flora_result(_,Grp),Matches),GL),

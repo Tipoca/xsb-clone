@@ -20,14 +20,19 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrimport.H,v 1.11 2003-06-18 07:01:20 kifer Exp $
+** $Id: flrimport.H,v 1.12 2004-06-20 08:33:31 kifer Exp $
 **
 */
 
 
-:- import copy_term/2 from basics.
+:- import
+	append/3,
+	copy_term/2
+   from basics.
 :- import flora_load_module_internal/2 from flrutils.
-:- import flora_hilog_module_predicate_symbol/2
+:- import 
+        flora_hilog_module_predicate_symbol/2,
+        flora_tabled_hilog_module_predicate_symbol/2
     from flrwrapper.
 :- import flora_error_line/1, flora_error_line/2 from flrprint.
 

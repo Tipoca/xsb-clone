@@ -18,7 +18,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: default.flr,v 1.12 2003-06-18 07:01:32 kifer Exp $
+** $Id: default.flr,v 1.13 2004-06-20 08:33:33 kifer Exp $
 ** 
 */
 
@@ -26,15 +26,14 @@
 %%% ===========================================================================
 %%% SOME SIMPLE EXAMPLES SHOWING SEVERAL F-LOGIC FEATURES 
 %%% ===========================================================================
+:- ignore_depchk #e(_,_).
 
-:- table tc/2.
-
-times_flies_like_an_arrow.		% a 0-ary PREDICATE (proposition)
+#times_flies_like_an_arrow.		% a 0-ary PREDICATE (proposition)
 fruit_flies_like_an_apple[].		% an OBJECT with empty specification []
 
-e(a,b). e(b,a). e(b,c).			% a binary PREDICATE (graph)
+#e(a,b). #e(b,a). #e(b,c).		% a binary PREDICATE (graph)
 
-tc(X,Y) :- e(X,Y).			% a RULE and ...
+tc(X,Y) :- #e(X,Y).			% a RULE and ...
 tc(X,Y) :- tc(X,Z), tc(Z,Y).		% ... a (doubly) RECURSIVE RULE
 
 john:employee.				% INSTANCE : CLASS 
@@ -65,7 +64,7 @@ person[instances ->> {X}] :- X:person.  % NON-INHERITABLE mvd method of person
 %%% now ask some QUERIES here (or INTERACTIVELY from the FLORA SHELL)
 %%% ===========================================================================
 
-?- times_flies_like_an_arrow.	% ==> `yes'
+?- #times_flies_like_an_arrow.	% ==> `yes'
 
 ?- fruit_flies_like_an_apple[].	% ==> `yes'
 

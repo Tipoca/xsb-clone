@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.18 2003-06-18 07:01:29 kifer Exp $
+## $Id: Makefile,v 1.19 2004-06-20 08:33:32 kifer Exp $
 ## 
 ##
 
@@ -31,7 +31,7 @@ FLORADIR = ..
 ALLOBJS = flrpatch.flh flrpreddef.flh flrindex_P.flh \
 	  flrdyna.flh flrdynz.flh \
 	  flrtable.flh flrhilogtable.flh \
-	  flrrefreshtable.flh
+	  flrrefreshtable.flh flrexportcheck.flh
 
 PROLOG = none
 
@@ -59,12 +59,13 @@ all: clean init $(ALLOBJS) finish
 
 
 %.flh: %.fli $(FLORA_TERMS) $(FLORA_WSPREDICATES)
-	@echo 'flWrapAround($*).' >> cmd...
+	echo 'flWrapAround($*).' >> cmd...
 
 
 init:
 	/bin/rm -f $(SVFILE)
-	@echo "['../flora2devel']." >> cmd...
+	@echo "asserta(library_directory('..'))." >> cmd...
+	@echo "['../flora2']." >> cmd...
 	@echo "import bootstrap_flora/0 from flora2." >> cmd...
 	@echo "bootstrap_flora." >> cmd...
 	@echo "[flrutils]." >> cmd...

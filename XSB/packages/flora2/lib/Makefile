@@ -18,7 +18,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.17 2003-06-18 07:01:27 kifer Exp $
+## $Id: Makefile,v 1.18 2004-06-20 08:33:32 kifer Exp $
 ## 
 ##
 
@@ -38,7 +38,7 @@ Option = [optimize]
 # Self-make: Version 1.4.1
 #
 PROLOG = none
-PROLOG_COMMAND = $(PROLOG) -i -s -m 2000 -c 2000 -e 'segfault_handler(warn).'
+PROLOG_COMMAND = $(PROLOG) -i -s -m 40000 -c 4000 -e 'segfault_handler(warn).'
 #
 #-----------------------------------------------------------------------#
 
@@ -65,7 +65,8 @@ recompile: $(ALL) finish
 
 init:
 	rm -f $(SVFILE)
-	@echo "['../flora2devel']." >> cmd...
+	@echo "asserta(library_directory('..'))." >> cmd...
+	@echo "['../flora2']." >> cmd...
 	@echo "import bootstrap_flora/0 from flora2." >> cmd...
 	@echo "bootstrap_flora." >> cmd...
 	@echo "import flora_compile_system_module/1 from flrutils." >> cmd...

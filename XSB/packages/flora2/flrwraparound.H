@@ -1,4 +1,4 @@
-/* File:      flrcompileinclude.P -- Workspace wrapper for .fli files
+/* File:      flrwraparound.P -- Workspace wrapper for .fli files
 **
 ** Author(s): kifer
 **
@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrwraparound.H,v 1.7 2003-06-18 07:01:34 kifer Exp $
+** $Id: flrwraparound.H,v 1.8 2004-06-20 08:33:34 kifer Exp $
 **
 */
 

@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.23 2003-06-18 07:01:22 kifer Exp $
+## $Id: Makefile,v 1.24 2004-06-20 08:33:31 kifer Exp $
 ## 
 ##
 
@@ -51,7 +51,7 @@ ALLOBJS = flranswer$(OBJEXT) \
 	  flrshdirect$(OBJEXT) \
 	  flrdynmod$(OBJEXT) \
 	  flrdynrule$(OBJEXT) \
-	  flrequality$(OBJEXT) \
+	  flrsemantics$(OBJEXT) \
 	  flrnegation$(OBJEXT) \
 	  flrtables$(OBJEXT) \
 	  flrimportedcalls$(OBJEXT) \
@@ -59,6 +59,8 @@ ALLOBJS = flranswer$(OBJEXT) \
 	  flrdecode$(OBJEXT)  \
 	  flrcanon$(OBJEXT)  \
 	  flrmetaops$(OBJEXT)  \
+	  flrtrim${OBJEXT} \
+	  flrexport${OBJEXT} \
 	  flrimport$(OBJEXT)
 
 FLORA_INCLUDES_DIR = ../flrincludes
@@ -90,7 +92,7 @@ all: init $(ALLOBJS) finish
 	@echo 'mc($*,$(OPTION)).' >> cmd...
 
 %$(PROLOGEXT) : %$(PROLOGHEADEREXT)
-	./touch.sh $@
+	../touch.sh $@
 
 flrcontrol$(OBJEXT) : flrcontrol$(PROLOGEXT) $(FLORA_TERMS) $(XSB_STANDARD)
 	@echo 'mc(flrcontrol,$(OPTION)).' >> cmd...
@@ -107,7 +109,8 @@ init:
 	@echo "file_write($(STDWARN),'-------------- Warnings/Errors --------------------'), file_nl($(STDWARN))." >> cmd...
 	@echo "file_write($(STDWARN),'$(HDRMSG)'), file_nl($(STDWARN))." >> cmd...
 	@echo "file_flush($(STDWARN),_)." >> cmd...
-	@echo "['../flora2devel']." >> cmd...hdr
+	@echo "asserta(library_directory('..'))." >> cmd...hdr
+	@echo "['../flora2']." >> cmd...hdr
 	@echo "import bootstrap_flora/0 from flora2." >> cmd...hdr
 	@echo "bootstrap_flora." >> cmd...hdr
 	@echo "file_reopen($(SVFILE),a,$(STDWARN),_)." >> cmd...hdr

@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.H,v 1.21 2003-06-18 07:01:37 kifer Exp $
+** $Id: flrcoder.H,v 1.22 2004-06-20 08:33:35 kifer Exp $
 **
 */
 
@@ -28,12 +28,6 @@
 :- import format/2 from format.
 
 :- import append/3 from basics.
-
-:- import eval/2 from eval.
-
-:- import
-	flora_hilogtable/2
-   from flrhilogtable.
 
 :- import flora_prlgdef/2 from flrprolog.
 
@@ -48,6 +42,7 @@
 	flora_user_module_predicate/4,
 	flora_system_module_predicate/4,
 	flora_user_fdb_storage_name/2,
+	flora_system_fdb_storage_name/2,
 	%% Storage for skeletons of defined predicates
 	flora_user_fld_storage_name/2
    from flrwrapper.
@@ -64,7 +59,7 @@
 	is_prrule/3,
 	is_prfact/2,
 	is_prdirective/2,
-	is_prtable/3,
+        is_prignoredep/2,
 	is_prthismodule/1,
 	is_prthisfdbstorage/1,
 	is_pratom/3,
@@ -88,7 +83,5 @@
 	is_prreify/2,
 	is_flogic/4,
 	is_fllibdb/1,
-	get_fingerprint/6,
-	check_tabled/2,
 	flora_write_struct/2,
 	flora_build_struct/6.

@@ -22,7 +22,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.28 2003-06-18 07:01:36 kifer Exp $
+** $Id: flrshell.H,v 1.29 2004-06-20 08:33:34 kifer Exp $
 **
 */
 
@@ -58,6 +58,8 @@
 	xsb_undefined_predicate_hook/1
    from xsb_hook.
 
+:- import close_open_tables/0 from machine.
+
 :- import flora_undefined_predicate_hook/3 from flrundefhook.
 
 :- import
@@ -91,7 +93,7 @@
 :- import
 	flMaxerr/1,
 	flHalt/0,
-	flloadtrailer/1,
+	flloadtrailer/2,
 	flora_shell_command_line/3,
 	flora_load_module_internal/1,
 	flora_good_command/1,

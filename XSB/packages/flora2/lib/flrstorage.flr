@@ -19,21 +19,25 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrstorage.flr,v 1.5 2003-06-18 07:01:27 kifer Exp $
+** $Id: flrstorage.flr,v 1.6 2004-06-20 08:33:32 kifer Exp $
 **
 */
 
 #include "standard.h"
 
+:- export
+        #commit,
+	#commit(_),
+	#purgedb(_).
 
-commit :- flora_commit_storage@prolog(flrutils).
+#commit :- flora_commit_storage@prolog(flrutils).
 
 %% This commit is only for user modules
-commit(Module) :-
+#commit(Module) :-
 	flora_user_storage_name(Module,StorageName)@prolog(flrwrapper),
 	storage_commit(StorageName)@prolog(storage),
 	storage_reclaim_space(StorageName)@prolog(storage).
 
-purgedb(Module) :-
+#purgedb(Module) :-
 	flora_user_storage_name(Module,StorageName)@prolog(flrwrapper),
 	storage_delete_all(StorageName)@prolog(storage).

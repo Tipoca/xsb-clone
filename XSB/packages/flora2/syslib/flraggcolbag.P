@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flraggcolbag.P,v 1.8 2003-06-18 07:01:22 kifer Exp $
+** $Id: flraggcolbag.P,v 1.9 2004-06-20 08:33:31 kifer Exp $
 ** 
 */
 
@@ -36,16 +36,16 @@
 /*********************************************************************
   fllibcollectbag(+Var,+VarList,+Goal,-Bag)
 *********************************************************************/
-fllibcollectbag(Var,[],Goal,Bag) :-
+FLLIBCOLLECTBAG(Var,[],Goal,Bag) :-
 	!,
 	findall(Var,Goal,Bag).
 
-fllibcollectbag(Var,VarList,Goal,Bag) :-
+FLLIBCOLLECTBAG(Var,VarList,Goal,Bag) :-
 	ground(VarList),
 	!,
 	findall(Var,Goal,Bag).
 
-fllibcollectbag(Var,VarList,Goal,Bag) :-
+FLLIBCOLLECTBAG(Var,VarList,Goal,Bag) :-
 	!,
 	findall(flora_result(Var,VarList),Goal,Matches),
 	findall(Grp,member(flora_result(_,Grp),Matches),GL),
