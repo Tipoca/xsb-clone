@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.4 1999-02-28 01:14:09 kifer Exp $
+## $Id: testall.sh,v 1.5 1999-03-03 23:34:22 kifer Exp $
 ## 
 ##
 
@@ -61,7 +61,7 @@ XEMU=$1
 # Test if element is a member of exclude list
 # $1 - element
 # $2 - exclude list
-function member ()
+member ()
 {
     for elt in $2 ; do
 	if test "$1" = "$elt" ; then
