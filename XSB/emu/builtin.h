@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.53 2003-07-01 14:34:14 lfcastro Exp $
+** $Id: builtin.h,v 1.54 2003-07-30 17:44:22 dwarren Exp $
 ** 
 */
 
@@ -38,6 +38,7 @@
 #define PSC_EP   	 8
 #define PSC_SET_EP	 9
 
+#define TERM_NEW_MOD    10
 #define TERM_PSC	11
 #define TERM_TYPE	12
 #define TERM_COMPARE	13

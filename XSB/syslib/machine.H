@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.52 2003/06/18 15:29:59 lfcastro Exp $
+** $Id: machine.H,v 1.53 2003/07/01 14:34:14 lfcastro Exp $
 ** 
 */
 
@@ -40,6 +40,7 @@
 	psc_set_spy/2,
 	psc_ep/2,
 	psc_set_ep/2,
+	term_new_mod/3,
 	term_psc/2, 
 	term_type/2, 
 	term_compare/3, 
