@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id:$
+** $Id: slginsts_xsb_i.h,v 1.1 1999/10/25 05:59:20 kifer Exp $
 ** 
 */
 
@@ -201,7 +201,7 @@ case tabletrysingle: {
 	  if (isattv(cell(cptr)))
 	    var_regs[++num_vars_in_var_regs] = (CPtr) cell(cptr);
 	}
-	/* now num_vars_in_var_regs should be CallNumAttv - 1 */
+	/* now num_vars_in_var_regs should be attv_num - 1 */
       }
 
       reg_arrayptr = reg_array-1;
