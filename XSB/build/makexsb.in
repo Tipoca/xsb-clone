@@ -29,10 +29,19 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: makexsb.in,v 1.5 1999-10-20 06:50:25 kifer Exp $
+## $Id: makexsb.in,v 1.6 1999-10-23 20:30:48 kifer Exp $
 ## 
 ##
 
+if test -f buildxsb.lock ; then
+   echo "***Build lock exists: another configure/makexsb is probably running.
+***Wait until the previous build is complete.
+***If this is a stale lock, remove ./buildxsb.lock and run configure again."
+   exit 1
+fi
+
+touch buildxsb.lock
+trap 'rm buildxsb.lock; exit 1' 1 2 15
 
 makeargs=
 force_devel=
@@ -73,3 +82,5 @@ else
    echo "Have you configured XSB for this architecture?"
    echo ""
 fi
+
+rm -f  buildxsb.lock
