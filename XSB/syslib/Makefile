@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.14 1999/05/20 03:53:22 kifer Exp $
+## $Id: Makefile,v 1.15 1999/08/09 00:34:54 kifer Exp $
 ## 
 ##
 
@@ -28,8 +28,7 @@ ALL =	assert.O basics.O consult.O curr_sym.O dbclause.O dbcmpl.O \
 	file_op.O hilogsym.O loader.O \
 	machine.O num_vars.O shell.O standard.O std_xsb.O \
 	string.O subsumes.O sysinitrc.O tables.O term_exp.O \
-	unix.O \
-	x_interp.O xsb_read.O xsb_tok.O xsb_writ.O xcallxsb.O
+	unix.O x_interp.O xsb_read.O xsb_writ.O xcallxsb.O
 
 
 # The following file(s) are not used any more do not make them!
