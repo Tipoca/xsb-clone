@@ -1,10 +1,10 @@
 This is a set of tests for the XSB system.  To run all the tests:
 
-testsuite.sh <xsb-executable>
+testsuite.sh XSB-INSTALL-DIR [CONFIGURATION-TAG]
 
-where EXECUTABLE is the full path for the XSB executable to be
-tested. It must be given by an absolute filename, since the testsuite
-script changes directories.
+where XSB-INSTALL-DIR is the full path for the XSB installation directory.
+The CONFIGURATION-TAG is optional. It is what the user might specify using
+--config-tag 
 
 The testsuite script creates a file in the /tmp dir
 (/tmp/xsb_test_log.$USER) with the log of the run. In case any test
@@ -14,4 +14,4 @@ Another test script is supertest.sh. It configures XSB with several
 different parameters and then runs the test suite using each.
 This is done as follows:
 
-supertest.sh <xsb-executable> <xsb-root-directory>
+supertest.sh XSB-INSTALL-DIR
