@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring_xsb.h,v 1.4 2001-07-07 06:10:29 kifer Exp $
+** $Id: varstring_xsb.h,v 1.5 2001-07-24 15:36:49 dwarren Exp $
 ** 
 */
 
@@ -71,7 +71,7 @@ struct varstr {
 
 
 extern DllExport void call_conv varstring_init(VarString *vstr);
-extern DllExport void call_conv varstring_create(VarString *vstr);
+extern DllExport void call_conv varstring_create(VarString **vstr);
 extern DllExport struct varstr_ops VarStrOps;
 
 /* calling sequence shortcuts; all expect a VarString pointer */

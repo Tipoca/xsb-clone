@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.127 2001-07-07 06:10:30 kifer Exp $
+** $Id: builtin.c,v 1.128 2001-07-24 15:36:49 dwarren Exp $
 ** 
 */
 
@@ -304,8 +304,9 @@ DllExport char* call_conv ptoc_longstring(int regnum)
   }
   XSB_StrShrink(LSBuff[regnum],100);
   */
-  if (LSBuff[regnum]==NULL)
-    XSB_StrCreate(LSBuff[regnum]);
+  if (LSBuff[regnum]==NULL) {
+    XSB_StrCreate(&LSBuff[regnum]);
+  }
   XSB_StrSet(LSBuff[regnum],"");
   constructString(addr,regnum);
   return(LSBuff[regnum]->string);

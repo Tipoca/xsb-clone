@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.12 2001-07-07 06:10:30 kifer Exp $
+** $Id: varstring.c,v 1.13 2001-07-24 15:36:49 dwarren Exp $
 ** 
 */
 
@@ -115,10 +115,10 @@ DllExport void call_conv varstring_init(VarString *vstr)
   vstr->op = &VarStrOps;
 }
 
-DllExport void call_conv varstring_create(VarString *vstr)
+DllExport void call_conv varstring_create(VarString **vstr)
 {
-  vstr = (VarString *) malloc(sizeof(VarString));
-  varstring_init(vstr);
+  *vstr = (VarString *) malloc(sizeof(VarString));
+  varstring_init(*vstr);
 }
 
 
