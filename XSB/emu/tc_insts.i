@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts.i,v 1.7 1999-10-12 20:10:23 kostis Exp $
+** $Id: tc_insts.i,v 1.8 1999-10-19 02:48:56 cbaoqiu Exp $
 ** 
 */
 
@@ -690,3 +690,34 @@ case trie_assert_inst:
     lpcreg = (byte *) &fail_inst;
   goto contcase;
 }	
+
+case trie_no_cp_attv:
+{
+#ifdef PVR_DEBUG_TC_INSTS
+  xsb_dbgmsg("trie_no_cp_attv");
+#endif
+  NodePtr = (BTNptr) (lpcreg - 1);
+  unify_with_trie_attv;
+  next_lpcreg
+  goto contcase;
+}
+
+case trie_try_attv:
+{
+  CPtr tbreg;
+#ifdef PVR_DEBUG_TC_INSTS
+  xsb_dbgmsg("trie_try_attv");
+#endif
+  NodePtr = (BTNptr) (lpcreg - 1);
+  save_find_locx(ereg);
+  tbreg = top_of_cpstack;
+  save_trie_registers(tbreg);
+  save_choicepoint(tbreg,ereg,(byte *)opfail,breg);
+  breg = tbreg;
+  hbreg = hreg;
+  unify_with_trie_attv;
+  next_lpcreg;
+  goto contcase;
+}
+
+/*----------------------------------------------------------------------*/
