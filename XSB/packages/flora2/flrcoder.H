@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.H,v 1.19 2002-10-18 06:40:18 kifer Exp $
+** $Id: flrcoder.H,v 1.20 2003-02-01 07:36:55 kifer Exp $
 **
 */
 
@@ -47,8 +47,6 @@
 :- import
 	flora_user_module_predicate/4,
 	flora_system_module_predicate/4,
-	flora_dyna_hilog_user_module_predicate_symbol/2,
-	flora_dynz_hilog_user_module_predicate_symbol/2,
 	flora_user_fdb_storage_name/2,
 	%% Storage for skeletons of defined predicates
 	flora_user_fld_storage_name/2
@@ -91,5 +89,6 @@
 	is_flogic/4,
 	is_fllibdb/1,
 	get_fingerprint/6,
+	check_tabled/2,
 	flora_write_struct/2,
 	flora_build_struct/6.

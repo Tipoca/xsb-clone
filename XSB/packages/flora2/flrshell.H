@@ -22,7 +22,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.26 2002-10-18 06:40:18 kifer Exp $
+** $Id: flrshell.H,v 1.27 2003-02-01 07:36:55 kifer Exp $
 **
 */
 
@@ -61,7 +61,7 @@
 	xsb_undefined_predicate_hook/1
    from xsb_hook.
 
-:- import flora_undefined_predicate_hook/1 from flrundefhook.
+:- import flora_undefined_predicate_hook/3 from flrundefhook.
 
 :- import
 	unstrap_flora/0
@@ -84,7 +84,10 @@
 	flora_stdmsg_string/2,
 	flora_stdfdbk_line/0,
 	flora_stdfdbk_string/1,
-	flora_error_line/1
+	flora_stderr_string/1,
+	flora_stderr_nl/0,
+	flora_error_line/1,
+	flora_error_line/2
    from flrprint.
 
 :- import

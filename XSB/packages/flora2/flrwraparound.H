@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrwraparound.H,v 1.5 2002-08-17 19:03:08 kifer Exp $
+** $Id: flrwraparound.H,v 1.6 2003-02-01 07:36:55 kifer Exp $
 **
 */
 
@@ -33,11 +33,6 @@
 	parse_filename/4,
 	stat_set_flag/2
    from machine.
-
-:- import 
-	FLORA_DB_INSERT_KEYPAIR_PREDICATE/4,
-	FLORA_DB_FIND_KEYPAIR_PREDICATE/3
-   from storage.
 
 :- import ','/2 from standard.
 

@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.19 2002-08-17 19:02:56 kifer Exp $
+## $Id: Makefile,v 1.20 2003-02-01 07:36:52 kifer Exp $
 ## 
 ##
 
@@ -91,19 +91,19 @@ patch$(PROLOGEXT) : $(GENINCLUDES)/flrpatch.flh $(GENINCLUDES)/flrpreddef.flh \
 	@echo 'flsetuppatch.' >> cmd...
 
 
-$(CLOSURE)/flrcommon.flh : $(CLOSURE)/flrcommon.fli $(CLOSURE)/includes/flrpred.fli
+$(CLOSURE)/flrcommon.flh : $(CLOSURE)/flrcommon.fli $(FLORA_INCLUDES_DIR)/flora_wspredicates.flh
 	@cd $(CLOSURE); make
 
 
-$(CLOSURE)/flrtrailer.flh : $(CLOSURE)/flrtrailer.fli $(CLOSURE)/includes/flrpred.fli
+$(CLOSURE)/flrtrailer.flh : $(CLOSURE)/flrtrailer.fli $(FLORA_INCLUDES_DIR)/flora_wspredicates.flh
 	@cd $(CLOSURE); make
 
 
-$(CLOSURE)/flreqltrailer.flh : $(CLOSURE)/flreqltrailer.fli $(CLOSURE)/includes/flrpred.fli
+$(CLOSURE)/flreqltrailer.flh : $(CLOSURE)/flreqltrailer.fli $(FLORA_INCLUDES_DIR)/flora_wspredicates.flh
 	@cd $(CLOSURE); make
 
 
-$(CLOSURE)/flrscalareql.flh : $(CLOSURE)/flrscalareql.fli $(CLOSURE)/includes/flrpred.fli
+$(CLOSURE)/flrscalareql.flh : $(CLOSURE)/flrscalareql.fli $(FLORA_INCLUDES_DIR)/flora_wspredicates.flh
 	@cd $(CLOSURE); make
 
 

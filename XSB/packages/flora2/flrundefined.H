@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrundefined.H,v 1.10 2002-10-18 06:40:18 kifer Exp $
+** $Id: flrundefined.H,v 1.11 2003-02-01 07:36:55 kifer Exp $
 **
 */
 
@@ -65,4 +65,5 @@
 
 :- export
 	flora_debug_code/2,
+	flora_define_predicate/1,
 	flora_error_undefined/1.

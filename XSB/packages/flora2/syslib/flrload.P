@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrload.P,v 1.11 2002-08-17 19:02:57 kifer Exp $
+** $Id: flrload.P,v 1.12 2003-02-01 07:36:53 kifer Exp $
 ** 
 */
 
@@ -29,6 +29,7 @@
 
 #include "flora_terms.flh"
 #include "flora_extensions.flh"
+#include "flora_exceptions.flh"
 
 
 :- import
@@ -147,6 +148,6 @@ flora_check__module_overriding(LoadFile,Workspace,HostFile,HostMod,[Line,Char]) 
 	flora_file_op(basename,HostFile,HostFileBasename),
 	flora_error_line('~w.flr: Literal [~w >> ~w] near line(~w)/char(~w) overrides the program in which it occurs',
 			 [HostFileBasename,LoadFile,HostMod,Line,Char]),
-	abort.
+	throw(FLORA_ABORT).
 
 flora_check__module_overriding(_LoadFile,_Workspace,_HostFile,_HostMod,_Location).

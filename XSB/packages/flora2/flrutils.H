@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.48 2002-10-18 06:40:18 kifer Exp $
+** $Id: flrutils.H,v 1.49 2003-02-01 07:36:55 kifer Exp $
 **
 */
 
@@ -212,4 +212,6 @@
 	flora_compile_system_module_by_ID/1,
 	flora_load_system_module_internal/1,
 	flora_measure_time/2,
-	flCompileInclude/1.
+	flCompileInclude/1,
+
+	flora_patch_full_filename/1.

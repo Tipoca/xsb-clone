@@ -19,7 +19,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.18 2002-10-18 06:40:17 kifer Exp $
+## $Id: Makefile,v 1.19 2003-02-01 07:36:54 kifer Exp $
 ## 
 ##
 
@@ -32,9 +32,9 @@ ALL = 	aggregate${PROLOGEXT} benchmark${PROLOGEXT} \
 	clpdemo${PROLOGEXT} default${PROLOGEXT} family_obj${PROLOGEXT} \
 	family_rel${PROLOGEXT} flogic_basics${PROLOGEXT}\
 	metavar${PROLOGEXT} mix${PROLOGEXT} module1${PROLOGEXT}\
-	mod1${PROLOGEXT} clpdemo${PROLOGEXT} \
+	mod1${PROLOGEXT} \
 	mono_inherit${PROLOGEXT} rel_ops${PROLOGEXT}\
-	tree_traversal${PROLOGEXT} \
+	tree_traversal${PROLOGEXT} diamond${PROLOGEXT}\
 	btupdates${PROLOGEXT} pretty${PROLOGEXT}
 
 Option = [optimize]
@@ -45,7 +45,7 @@ Option = [optimize]
 # Self-make: Version 1.4.1
 #
 PROLOG = none
-PROLOG_COMMAND = $(PROLOG) -i -s -m 2000 -c 2000 -e 'segfault_handler(warn).'
+PROLOG_COMMAND = $(PROLOG) -i -s -m 40000 -c 2000 -e 'segfault_handler(warn).'
 #
 #-----------------------------------------------------------------------#
 
@@ -70,7 +70,7 @@ recompile: $(ALL) finish
 
 init:
 	rm -f $(SVFILE)
-	echo Initializing...
+	@echo Initializing...
 	@echo "file_write($(STDWARN),'-------------- Warnings/Errors --------------------'), file_nl($(STDWARN))." >> cmd...
 	@echo "file_write($(STDWARN),'$(HDRMSG)'), file_nl($(STDWARN))." >> cmd...
 	@echo "file_flush($(STDWARN), _)." >> cmd...

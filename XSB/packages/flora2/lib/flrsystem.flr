@@ -19,11 +19,12 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrsystem.flr,v 1.15 2002-10-18 06:40:16 kifer Exp $
+** $Id: flrsystem.flr,v 1.16 2003-02-01 07:36:53 kifer Exp $
 **
 */
 
 #include "standard.h"
+#include "flora_exceptions.flh"
 
 libpath[#add(Path)] :-
 	flora_file_op(expand,Path,ExpandedPath)@prolog(flrporting),
@@ -56,7 +57,7 @@ abort(X) :-
 	flora_stderr_string('[Runtime] ')@prolog(flrprint),
 	message(PX,STDERR)@prolog(standard),
 	flora_stderr_nl@prolog(flrprint),
-	abort@prolog().
+	throw(FLORA_ABORT).
 
 warning(X) :-
 	flP2H(PX,X)@prolog(),
