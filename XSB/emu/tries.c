@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.19 1999-08-16 07:24:41 kifer Exp $
+** $Id: tries.c,v 1.20 1999-09-03 04:18:22 cbaoqiu Exp $
 ** 
 */
 
@@ -1066,11 +1066,11 @@ bool bottom_up_unify(void)
  */
 void load_solution_trie(int arity, CPtr cptr, BTNptr TriePtr)
 {
-   if (arity > 0) {
-     num_heap_term_vars = 0;
-     follow_par_chain(TriePtr);
-     load_solution_from_trie(arity,cptr);
-   }
+  num_heap_term_vars = 0;
+  if (arity > 0) {
+    follow_par_chain(TriePtr);
+    load_solution_from_trie(arity,cptr);
+  }
 }
 
 /*----------------------------------------------------------------------*/
