@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap.h,v 1.6 1999-02-05 16:07:03 kostis Exp $
+** $Id: heap.h,v 1.7 1999-04-13 14:03:26 kostis Exp $
 ** 
 */
 
@@ -61,6 +61,7 @@ extern bool glstack_realloc(int,int);
 extern void print_cp(int);
 extern void print_tr(int);
 extern void print_ls(int);
+extern void print_chat(int);
 extern void print_all_stacks(void);
 extern void print_regs(int,int);
 extern void print_heap(int,int,int);
