@@ -1,5 +1,5 @@
 ## File:      packages/Makefile
-## Author(s): kifer (adapted from lib/Makefile)
+## Author(s): kifer
 ## Contact:   xsb-contact@cs.sunysb.edu
 ## 
 ## Copyright (C) The Research Foundation of SUNY, 1998
@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.8 1999-08-25 17:25:29 luis Exp $
+## $Id: Makefile,v 1.9 1999-09-22 07:36:34 kifer Exp $
 ## 
 ##
 
