@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.77 1999-11-17 15:06:49 warren Exp $
+** $Id: builtin.c,v 1.78 1999-11-17 17:41:55 ejohnson Exp $
 ** 
 */
 
@@ -1693,7 +1693,7 @@ int builtin_call(byte number)
     tif = get_tip(psc);
     if ( IsNonNULL(tif) ) {
       if ( IsNULL(TIF_CallTrie(tif)) ) {
-	TIF_EvalMethod(tif) = ptoc_int(2);
+	TIF_EvalMethod(tif) = (TabledEvalMethod)ptoc_int(2);
 	return TRUE;
       }
       else {

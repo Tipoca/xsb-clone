@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.8 1999-10-26 17:25:07 cbaoqiu Exp $
+** $Id: tables.c,v 1.9 1999-11-17 17:42:01 ejohnson Exp $
 ** 
 */
 
@@ -81,15 +81,13 @@ void table_call_search(TabledCallInfo *call_info, CallLookupResults *results) {
      * size of the vector is now at the high end, but the components
      * are still arranged from high mem (first) to low (last).
      */
-    CPtr tmplt_component, ls_top, ls_bot, tmplt_var_addr, h_addr;
+    CPtr tmplt_component, tmplt_var_addr, h_addr;
     int size, j, attv_num, tmp;
 
     tmplt_component = CallLUR_VarVector(*results);
     tmp = int_val(*tmplt_component);
     get_var_and_attv_nums(size, attv_num, tmp);
 
-    ls_top = top_of_localstk;
-    ls_bot = (CPtr)glstack.high - 1;
     for ( j = size - 1, tmplt_component = tmplt_component + size;
 	  j >= 0;
 	  j--, tmplt_component-- ) {

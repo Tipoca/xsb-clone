@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.3 1999-10-26 17:19:27 cbaoqiu Exp $
+** $Id: macro_xsb.h,v 1.4 1999-11-17 17:41:57 ejohnson Exp $
 ** 
 */
 
@@ -60,14 +60,14 @@ typedef struct Table_Info_Frame {
    ( TIF_EvalMethod(pTIF) == SUBSUMPTIVE_TEM )
 
 
-#define New_TIF(pTIF,pPSC) {					     \
-   pTIF = malloc(sizeof(TableInfoFrame));			     \
-   if ( IsNULL(pTIF) )						     \
-     xsb_abort("Ran out of memory in allocation of TableInfoFrame"); \
-   TIF_NextTIF(pTIF) = NULL;					     \
-   TIF_CallTrie(pTIF) = NULL;					     \
-   TIF_PSC(pTIF) = pPSC;					     \
-   TIF_EvalMethod(pTIF) = flags[TABLING_METHOD];		     \
+#define New_TIF(pTIF,pPSC) {						\
+   pTIF = malloc(sizeof(TableInfoFrame));				\
+   if ( IsNULL(pTIF) )							\
+     xsb_abort("Ran out of memory in allocation of TableInfoFrame");	\
+   TIF_NextTIF(pTIF) = NULL;						\
+   TIF_CallTrie(pTIF) = NULL;						\
+   TIF_PSC(pTIF) = pPSC;						\
+   TIF_EvalMethod(pTIF) = (TabledEvalMethod)flags[TABLING_METHOD];	\
  }
 
 /*===========================================================================*/

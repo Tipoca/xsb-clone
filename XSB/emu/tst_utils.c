@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.3 1999-10-26 06:47:38 kifer Exp $
+** $Id: tst_utils.c,v 1.4 1999-11-17 17:42:04 ejohnson Exp $
 ** 
 */
 
@@ -47,6 +47,12 @@
 /* ======================================================================= */
 
 extern void printterm(Cell, byte, int);
+
+#ifdef BITS64
+#define IntegerFormatString	"%ld"
+#else
+#define IntegerFormatString	"%d"
+#endif
 
 /* ====================================================================== */
 
@@ -146,7 +152,7 @@ void printTrieSymbol(Cell symbol) {
   else {
     switch(TrieSymbolType(symbol)) {
     case INT:
-      printf("%d", int_val(symbol));
+      printf(IntegerFormatString, int_val(symbol));
       break;
     case FLOAT:
       printf("%f", float_val(symbol));
@@ -155,7 +161,7 @@ void printTrieSymbol(Cell symbol) {
       printf("%s", string_val(symbol));
       break;
     case TrieVar:
-      printf("V%d", DecodeTrieVar(symbol));
+      printf("V" IntegerFormatString, DecodeTrieVar(symbol));
       break;
     case CS:
       {
@@ -314,7 +320,7 @@ static void symstkPrintNextTerm() {
 
   switch(TrieSymbolType(symbol)) {
   case INT:
-    printf("%d", int_val(symbol));
+    printf(IntegerFormatString, int_val(symbol));
     break;
   case FLOAT:
     printf("%f", float_val(symbol));
@@ -323,7 +329,7 @@ static void symstkPrintNextTerm() {
     printf("%s", string_val(symbol));
     break;
   case TrieVar:
-    printf("V%d", DecodeTrieVar(symbol));
+    printf("V" IntegerFormatString, DecodeTrieVar(symbol));
     break;
   case CS:
     {

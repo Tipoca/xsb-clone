@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.5 1999-10-26 06:47:26 kifer Exp $
+** $Id: struct_manager.c,v 1.6 1999-11-17 17:41:58 ejohnson Exp $
 ** 
 */
 
@@ -45,7 +45,7 @@ void smPrint(Structure_Manager smRecord, char *string) {
 	  "\tBlock:   0x%p\t\tFree List:  0x%p\n"
 	  "\tNextStr: 0x%p\t\tAlloc List: 0x%p\n"
 	  "\tLastStr: 0x%p\n"
-	  "\tStructs per block:  %d\tStruct size: %d bytes\n",
+	  "\tStructs per block:  %u\tStruct size: %u bytes\n",
 	  SM_StructName(smRecord),	string,
 	  SM_CurBlock(smRecord),	SM_FreeList(smRecord),
 	  SM_NextStruct(smRecord),	SM_AllocList(smRecord),
