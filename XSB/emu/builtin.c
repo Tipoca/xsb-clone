@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.137 2002-01-28 16:47:55 lfcastro Exp $
+** $Id: builtin.c,v 1.138 2002-02-15 15:24:53 dwarren Exp $
 ** 
 */
 
@@ -1233,8 +1233,7 @@ int builtin_call(byte number)
     break;
   }
   case COPY_TERM: /* R1: +term to copy; R2: -variant */
-    copy_term();
-    break;
+    return copy_term();
     
   case CALL0: {			/* R1: +Term, the call to be made */
     /* Note: this procedure does not save cpreg, hence is more like */
