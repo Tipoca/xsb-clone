@@ -14,7 +14,7 @@
 :- import prand/1 from rand.
 
 bench_qsort(Type,N,Length):- 
-	create_random_list(Length,L),
+	create_reverse_list(Length,L),
 	cputime(T1),
 	main1(N,L),
 	cputime(T2),T is T2-T1,
@@ -32,6 +32,12 @@ create_random_list(N,[R|T]):-
 	prand(R),
 	N1 is N - 1,
 	create_random_list(N1,T).
+
+create_reverse_list(1,[1]):- !.
+create_reverse_list(N,[N|T]):- 
+	N > 1,
+	N1 is N - 1,
+	create_reverse_list(N1,T).
 
 qsort([X|L],R,R0) :-
 	partition(L,X,L1,L2),

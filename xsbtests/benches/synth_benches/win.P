@@ -19,16 +19,24 @@
 :- import 't not'/1 from tables.
 
 cycle_win_bench:- 
-	bigbench(win2k(1),[win,cycle(2048),its(1)],1).
+	bigbench(win2k(1),[win,cycle(2048),its(100)],100),
+	bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(100)],100).
 
 chain_win_bench:- 
-	bigbench(win2k(1),[win,chain(2048),its(100)],100).
-
+	bigbench(win2k(1),[win,chain(2048),its(100)],100),
+	bigbench(unsafe_win(1),[unsafe_win,chain(2048),its(100)],100),
+	bigbench(sldnf1_win(1),[sldnf1_win,chain(2048),its(100)],100),
+	bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(100)],100).
 
 :- table win2k/1.
 win2k(X):- move2k(X,Y),tnot(win2k(Y)).
 
-sldnf_win(X):- move2k(X,Y),my_not(sldnf_win(Y)).
+:- table unsafe_win/1.
+unsafe_win(X):- move2k(X,Y),'t not'(unsafe_win(Y)).
+
+sldnf1_win(X):- move2k(X,Y),my_not(sldnf1_win(Y)).
+
+sldnf2_win(X):- move2k(X,Y),\+ sldnf2_win(Y).
 
 :- table dual_win/1,neg_win/1.
 dual_win(X):- move2k(X,Y),neg_win(Y).

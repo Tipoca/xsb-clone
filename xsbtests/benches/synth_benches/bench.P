@@ -1,5 +1,25 @@
 :- import str_cat/3 from string.
 :- import abolish_table_info/0 from machine.
+:- import tcall/1 from standard.
+
+chain(Length,From,To):- 
+	From < Length,
+	To is From + 1.
+
+cycle(Length,From,To):- 
+	From < Length -> To is From + 1
+	 ; (From = Length -> To = From).
+
+genchain(Length):- 
+	genchain_1(1,Length).
+
+genchain_1(Length,Length):- !.
+genchain_1(L,Length):- 
+	L1 is L + 1,
+	write(move(L,L1)),writeln('.'),
+	genchain_1(L1,Length).
+	
+	
 
 dual_time2048:-
 	writeln('--------------------------------------------------------'),
@@ -171,7 +191,7 @@ bigbench(Call,Type,Its):-
 
 bigbench(0,_):-!.
 bigbench(N,Call):-
-	(call(Call),fail; true),
+	(tcall(Call),fail; true),
 	abolish_all_tables,
 	N1 is N - 1,
 	bigbench(N1,Call).
