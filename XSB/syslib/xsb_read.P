@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.P,v 1.15 1999/10/26 06:48:00 kifer Exp $
+** $Id: xsb_read.P,v 1.16 2000/10/30 13:52:24 dwarren Exp $
 ** 
 */
 
@@ -602,7 +602,14 @@ read_syntax_error(List) :-
 	file_nl(STDERR),
         file_write0(STDERR, '*** Discarding input ...  '),
 	file_nl(STDERR),
-        file_write0(STDERR, '|| ?- '),
+	stat_flag(BANNER_CTL,BannerCtl),
+	%% Don't print prompt, if --noprompt specified on cmd line
+	%% Useful when spawning xsb subprocesses, 
+	%% so they won't send junk back to the parent.
+	(	HidePrompt is BannerCtl mod NOPROMPT, HidePrompt =:= 0
+	 ->	true
+	 ;	file_write0(STDFDBK, '| ?- ')
+	),
 	!,
 	fail.	% Force the reader not to return until 
 		% it finds a term with no errors
