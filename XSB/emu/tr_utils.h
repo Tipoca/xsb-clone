@@ -18,17 +18,10 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.20 2000-06-14 21:16:05 kifer Exp $
+** $Id: tr_utils.h,v 1.21 2000-06-25 16:59:17 ejohnson Exp $
 ** 
 */
 
-
-typedef enum Trie_Path_Type {
-  NO_PATH, VARIANT_PATH, SUBSUMPTIVE_PATH
-} TriePathType;
-
-BTNptr variant_trie_lookup(int, CPtr, BTNptr, Cell[]);
-BTNptr subsumptive_trie_lookup(int, CPtr, BTNptr, TriePathType *);
 
 extern VariantSF get_subgoal_ptr(Cell, TIFptr);
 extern VariantSF get_call(Cell, Cell *);

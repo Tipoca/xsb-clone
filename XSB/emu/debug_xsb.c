@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.9 2000-06-23 20:54:07 ruim Exp $
+** $Id: debug_xsb.c,v 1.10 2000-06-25 16:59:15 ejohnson Exp $
 ** 
 */
 
@@ -110,6 +110,22 @@ static void debug_interact(void);
 /*  The following are possibly used both for tracing and by XSB		*/
 /*  developers during debugging.					*/
 /*======================================================================*/
+
+CPtr decode_ptr(Cell cell) {
+  return ( clref_val(cell) );
+}
+
+
+int decode_int(Cell cell) {
+  return ( int_val(cell) );
+}
+
+
+int decode_tag(Cell cell) {
+  return ( cell_tag(cell) );
+}
+
+/*----------------------------------------------------------------------*/
 
 void printterm(Cell term, byte car, int level)
 {

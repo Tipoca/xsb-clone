@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.12 2000-06-23 20:54:08 ruim Exp $
+** $Id: macro_xsb.h,v 1.13 2000-06-25 16:59:15 ejohnson Exp $
 ** 
 */
 
@@ -499,7 +499,7 @@ extern struct Structure_Manager smConsSF;
  *  structures.
  */
 
-void tstCreateStructures(TSTNptr);
+void tstCreateTSIs(TSTNptr);
 
 #define NewSubConsSF(SF,Leaf,TableInfo,Producer) {		\
 								\
@@ -513,7 +513,7 @@ void tstCreateStructures(TSTNptr);
    CallTrieLeaf_SetSF(Leaf,pNewSF);				\
    conssf_producer(pNewSF) = (SubProdSF)Producer;		\
    if ( ! ProducerSubsumesSubgoals(Producer) )			\
-     tstCreateStructures((TSTNptr)subg_ans_root_ptr(Producer));	\
+     tstCreateTSIs((TSTNptr)subg_ans_root_ptr(Producer));	\
    subg_ans_list_ptr(pNewSF) = empty_return();			\
    conssf_timestamp(pNewSF) = CONSUMER_SF_INITIAL_TS;		\
    conssf_consumers(pNewSF) = subg_consumers(Producer);		\

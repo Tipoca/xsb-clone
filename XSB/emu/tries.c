@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.52 2000-06-23 20:54:09 ruim Exp $
+** $Id: tries.c,v 1.53 2000-06-25 16:59:18 ejohnson Exp $
 ** 
 */
 
@@ -292,7 +292,8 @@ BTNptr newBasicTrie(Psc predicate, int trie_type) {
  *
  *  Prepare for the next insertion/lookup by changing the `hook' to
  *  that of the child pointer field of the node which contains the
- *  just-processed symbol.  */
+ *  just-processed symbol.
+ */
 
 #define one_node_chk_ins(Found,item,TrieType) {				\
 									\
@@ -877,9 +878,9 @@ BTNptr variant_answer_search(int arity, int attv_num, CPtr cptr,
   }
 
   /*
-     *  If an insertion was performed, do some maintenance on the new leaf,
-     *  and place the answer handle onto the answer list.
-     */
+   *  If an insertion was performed, do some maintenance on the new leaf,
+   *  and place the answer handle onto the answer list.
+   */
   if ( flag == 0 ) {
     MakeLeafNode(Paren);
     TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
@@ -1245,21 +1246,18 @@ void load_delay_trie(int arity, CPtr cptr, BTNptr TriePtr)
  * the treatment of "cptr" as these terms are inspected.
  */
 
-void variant_call_search(TabledCallInfo *call_info, CallLookupResults *results)
+void variant_call_search(TabledCallInfo *call_info,
+			 CallLookupResults *results)
 {
   Psc  psc;
   CPtr call_arg;
   int  arity, i, j, flag = 1;
   Cell tag = XSB_FREE, item;
   CPtr cptr, VarPosReg, tVarPosReg;
-  TIFptr pTIF;
 
 
   subg_chk_ins++;
-  pTIF = CallInfo_TableInfo(*call_info);
-  if ( IsNULL(TIF_CallTrie(pTIF)) )
-    TIF_CallTrie(pTIF) = newBasicTrie(TIF_PSC(pTIF),CALL_TRIE_TT);
-  Paren = TIF_CallTrie(pTIF);
+  Paren = TIF_CallTrie(CallInfo_TableInfo(*call_info));
   GNodePtrPtr = &BTN_Child(Paren);
   arity = CallInfo_CallArity(*call_info);
   cptr = CallInfo_Arguments(*call_info);

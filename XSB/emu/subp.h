@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.h,v 1.9 2000-06-19 07:48:09 ruim Exp $
+** $Id: subp.h,v 1.10 2000-06-25 16:59:16 ejohnson Exp $
 ** 
 */
 
@@ -32,6 +32,7 @@ extern void print_op(FILE *, char *, int);
 extern void remove_open_tables_reset_freezes(void);
 
 extern xsbBool unify(Cell, Cell);
+extern xsbBool are_identical_terms(Cell, Cell);
 
 /* don't use Cell declarations here, to avoid gcc compiler warnings;
    However, this causes warnings under Windows */

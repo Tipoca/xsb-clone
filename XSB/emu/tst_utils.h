@@ -18,32 +18,24 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.h,v 1.4 2000-05-29 04:23:42 ejohnson Exp $
+** $Id: tst_utils.h,v 1.5 2000-06-25 16:59:20 ejohnson Exp $
 ** 
 */
 
 
 /* Debugging Routines
    ------------------ */
-void printNodeType(byte);
-void printTrieType(byte);
-void printTrieSymbol(Cell);
-void tnSymbolicPrint(BTNptr);
-void thtPrintSymbols(BTHTptr);
+extern char *stringNodeType(byte);
+extern char *stringTrieType(byte);
+extern void printTrieSymbol(FILE *, Cell);
+extern void printTrieNode(FILE *, BTNptr);
+extern void printTriePath(FILE *, BTNptr, xsbBool);
 
-void printCall(TabledCallInfo *);
-CPtr decode_ptr(Cell);
-int decode_int(Cell);
-int decode_tag(Cell);
+extern void printAnswerTemplate(CPtr, int);
 
-VariantSF findSF_forAnswerRoot(TSTNptr);
-VariantSF findSF_forAnswerLeaf(TSTNptr);
-VariantSF findProdSF_for_ConsSF(VariantSF);
-int containsSF(VariantSF, VariantSF);
+extern void sfPrintGoal(FILE *, VariantSF, xsbBool);
+extern void sfPrintConsGoals(FILE *, VariantSF);
+extern void printAnswerList(FILE *, ALNptr);
 
-void triePrintPath(BTNptr, xsbBool);
-void sfPrintGoal(VariantSF, xsbBool);
-void sfPrintConsGoals(VariantSF);
-
-void printAnswerTemplate(CPtr, int);
-void printAnswerList(ALNptr);
+extern void printTabledCall(TabledCallInfo *);
+extern void printTriePathType(FILE *, TriePathType, BTNptr);
