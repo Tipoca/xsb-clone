@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_re_match.c,v 1.20 2002-08-07 16:16:11 lfcastro Exp $
+** $Id: xsb_re_match.c,v 1.21 2005-02-22 06:22:01 kifer Exp $
 ** 
 */
 
@@ -59,7 +59,7 @@ struct regexp_tbl_entry {
   regex_t compiled;	    	    	/* the compiled regexp */
 };
 
-struct regexp_tbl_entry regexp_tbl[REGEXP_TBL_SIZE];
+static struct regexp_tbl_entry regexp_tbl[REGEXP_TBL_SIZE];
 
 static int xsb_re_match(char *regexp_ptr, char* match_str, int match_flags,
 			 regmatch_t **match_array, int *paren_number,

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_util.h,v 1.11 2003-12-31 01:04:51 kifer Exp $
+** $Id: libwww_util.h,v 1.12 2005-02-22 06:22:02 kifer Exp $
 ** 
 */
 
@@ -52,8 +52,8 @@
 
 /* definitions and macros included in all files */
 
-int total_number_of_requests;
-int event_loop_runnung;
+extern int total_number_of_requests;
+extern int event_loop_runnung;
 HTList *XML_converter=NULL, *RDF_converter=NULL, *HTML_converter=NULL;
 
 /*

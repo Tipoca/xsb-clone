@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_request.c,v 1.15 2003-12-31 01:04:51 kifer Exp $
+** $Id: libwww_request.c,v 1.16 2005-02-22 06:22:02 kifer Exp $
 ** 
 */
 
@@ -26,6 +26,7 @@
 #include "libwww_util.h"
 #include "libwww_req.h"
 #include "deref.h"
+#include "cinterf.h"
 
 
 /* Calling sequence:
@@ -52,7 +53,7 @@
 		    f(chosen-tag-list,_,...) means: parse only inside the
 		    chosen tags. 
 */
-void do_libwww_request___()
+DllExport int call_conv do_libwww_request___(void)
 {
   prolog_term request_term_list = reg_term(1), request_list_tail;
   int request_id=0;
@@ -137,7 +138,7 @@ void do_libwww_request___()
   /* free all registered callbacks and global preferences, so that this won't
      interfere with other applications */
   HTProfile_delete();
-  return;
+  return TRUE;
 }
 
 

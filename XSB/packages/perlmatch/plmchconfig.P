@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: plmchconfig.P,v 1.15 2002-07-12 04:56:49 kifer Exp $
+** $Id: plmchconfig.P,v 1.16 2005-02-22 06:22:02 kifer Exp $
 ** 
 */
 
@@ -100,7 +100,14 @@ make_xsbpatternH(CC, CC_opts) :-
 	rename(Objfile, LibObjFile),
 	%% Note: the .so ending is heavily Unix-centered. I dunno what this
 	%% corresponds to in windows. - mk
+	(
+	(xsb_configuration(architecture,A),str_sub(darwin,A))
+	->
+	str_cat(Module, '.dylib', SharedLib),
+	fmt_write_string(LibMod, '%s%s%s.dylib', a(ConfigLibdir,Slash,Basename))
+	;
 	str_cat(Module, '.so', SharedLib),
-	fmt_write_string(LibMod, '%s%s%s.so', a(ConfigLibdir,Slash,Basename)),
+	fmt_write_string(LibMod, '%s%s%s.so', a(ConfigLibdir,Slash,Basename))
+	),
 	rename(SharedLib,LibMod)
      ).
