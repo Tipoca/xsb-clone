@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring_xsb.h,v 1.3 2001-07-06 18:19:42 kifer Exp $
+** $Id: varstring_xsb.h,v 1.4 2001-07-07 06:10:29 kifer Exp $
 ** 
 */
 
@@ -70,7 +70,9 @@ struct varstr {
 };
 
 
-DllExport extern struct varstr_ops VarStrOps;
+extern DllExport void call_conv varstring_init(VarString *vstr);
+extern DllExport void call_conv varstring_create(VarString *vstr);
+extern DllExport struct varstr_ops VarStrOps;
 
 /* calling sequence shortcuts; all expect a VarString pointer */
 #define XSB_StrSet(vstr,str)           (vstr)->op->set(vstr,str)
@@ -90,7 +92,15 @@ DllExport extern struct varstr_ops VarStrOps;
 #define XSB_StrDestroy(vstr)           (vstr)->op->destroy(vstr)
 
 
+/* XSB_StrDefine doesn't work in a DLL under Windows for some reason.
+   Can't resolve VarStrOps. So, then use XSB_StrCreate() and XSB_StrInit()
+*/
 #define XSB_StrDefine(vstr)          VarString vstr = {0,0,0,NULL,&VarStrOps}
+/* Allocates space vor VarString, assigns the pointer to vstr, then initializes
+   the VarString */
+#define XSB_StrCreate(vstr)    	     varstring_create(vstr)
+/* Assumes vstr points to an uninitialized VarString. Initializes it. */
+#define XSB_StrInit(vstr)    	     varstring_Init(vstr)
 
 
 #define VARSTRING_INCLUDED

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.11 2001-07-06 18:19:42 kifer Exp $
+** $Id: varstring.c,v 1.12 2001-07-07 06:10:30 kifer Exp $
 ** 
 */
 
@@ -105,6 +105,21 @@ DllExport struct varstr_ops VarStrOps = {vs_set,vs_setv,
 					 vs_ensure_size,
 					 vs_shrink,vs_destroy};
 
+
+DllExport void call_conv varstring_init(VarString *vstr)
+{
+  vstr->size = 0;
+  vstr->increment = 0;
+  vstr->length =0;
+  vstr->string = NULL;
+  vstr->op = &VarStrOps;
+}
+
+DllExport void call_conv varstring_create(VarString *vstr)
+{
+  vstr = (VarString *) malloc(sizeof(VarString));
+  varstring_init(vstr);
+}
 
 
 /* initialize a var string. This is the only function that isn't a member of

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.126 2001-07-02 16:20:47 lfcastro Exp $
+** $Id: builtin.c,v 1.127 2001-07-07 06:10:30 kifer Exp $
 ** 
 */
 
@@ -234,8 +234,11 @@ DllExport char* call_conv ptoc_string(int regnum)
 }
 
 #define MAXSBUFFS 30
+static VarString *LSBuff[MAXSBUFFS] = {NULL};
+/*
 VarString **LSBuff;
 int LSBuffInitted = 0;
+*/
 /*static XSB_StrDefine(lsbuff);*/
 
 /* construct a long string from prolog... concatenates atoms,
@@ -288,6 +291,7 @@ DllExport char* call_conv ptoc_longstring(int regnum)
   XSB_Deref(addr);
   if (isstring(addr)) return string_val(addr);
   
+  /*
   if (!LSBuffInitted) 
     LSBuff = calloc(MAXSBUFFS,4);
   if (!LSBuff[regnum]) {
@@ -299,6 +303,9 @@ DllExport char* call_conv ptoc_longstring(int regnum)
     LSBuff[regnum]->op = &VarStrOps;
   }
   XSB_StrShrink(LSBuff[regnum],100);
+  */
+  if (LSBuff[regnum]==NULL)
+    XSB_StrCreate(LSBuff[regnum]);
   XSB_StrSet(LSBuff[regnum],"");
   constructString(addr,regnum);
   return(LSBuff[regnum]->string);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.14 2001-06-05 19:17:58 lfcastro Exp $
+** $Id: error_xsb.c,v 1.15 2001-07-07 06:10:30 kifer Exp $
 ** 
 */
 
@@ -75,7 +75,7 @@ static char *err_msg[] = {
 extern void print_cp_backtrace();
 #endif
 
-void xsb_abort(char *description, ...)
+DllExport void call_conv xsb_abort(char *description, ...)
 {
   char message[MAXBUFSIZE];
   va_list args;
@@ -98,7 +98,7 @@ void xsb_abort(char *description, ...)
 }
 
 
-void xsb_bug(char *description, ...)
+DllExport void call_conv xsb_bug(char *description, ...)
 {
   char message[MAXBUFSIZE];
   va_list args;
@@ -168,7 +168,7 @@ void arithmetic_comp_abort(Cell op1, char *OP, int op2)
 
 /* this is a soft type of error msg compared to xsb_abort. It doesn't abort the
    computation, but sends stuff to stderr */
-void xsb_error (char *description, ...)
+DllExport void call_conv xsb_error (char *description, ...)
 {
   va_list args;
 
@@ -179,7 +179,7 @@ void xsb_error (char *description, ...)
   fprintf(stderr, "\n");
 }
 
-void xsb_warn(char *description, ...)
+DllExport void call_conv xsb_warn(char *description, ...)
 {
   va_list args;
 
@@ -190,7 +190,7 @@ void xsb_warn(char *description, ...)
   fprintf(stdwarn, "\n");
 }
 
-void xsb_mesg(char *description, ...)
+DllExport void call_conv xsb_mesg(char *description, ...)
 {
   va_list args;
 
@@ -200,7 +200,7 @@ void xsb_mesg(char *description, ...)
   fprintf(stdmsg, "\n");
 }
 
-void xsb_dbgmsg(char *description, ...)
+DllExport void call_conv xsb_dbgmsg(char *description, ...)
 {
   va_list args;
 
@@ -212,7 +212,7 @@ void xsb_dbgmsg(char *description, ...)
 
 /*----------------------------------------------------------------------*/
 
-void xsb_exit(char *description, ...)
+DllExport void call_conv xsb_exit(char *description, ...)
 {
   va_list args;
 
