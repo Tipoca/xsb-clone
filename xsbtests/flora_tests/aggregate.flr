@@ -22,7 +22,7 @@ mary[salary(1996) -> 70].
 mary[salary(1997) -> 80].
 mary[salary(1998) -> unknown].
 
-tst1 :- Z = max {X| john[salary(Year)->X] }, writeln(Z)@prolog().
+tst1 :- Z = max {X| john[salary(_Year)->X] }, writeln(Z)@prolog().
 
 tst2 :- Z = max{X|john[salary(Year) ->X], Year < 1996},
 	writeln(Z)@prolog().
@@ -34,18 +34,20 @@ tst3 :- Z=count{Year|john.salary(Year) <
 tst4 :- Z=count{Year| john.salary(Year) < mary.salary(Year)},
 	writeln(Z)@prolog().
 
-tst5 :- Z= avg{X[Who]| Who[salary(Year)->X]}, writeln(Z)@prolog().
+tst5 :- Z= avg{X[Who]| Who[salary(_Year)->X]}, writeln(Z)@prolog().
 
 tst6 :- Z= collectset{Year[Who]| Who[salary(Year) -> X], X < 60},
 	writeln(Z)@flora(io).
 
-tst7 :- delete(mary[salary(Y)->unknown]), writeln(Y)@prolog().
+tst7 :- delete{mary[salary(Y)->unknown]}, writeln(Y)@prolog().
 
-tst8 :- delete(john[salary(Y)->S1], mary[salary(Y)->S2]| S1<S2),
+tst8 :- delete{john[salary(Y)->S1], mary[salary(Y)->S2]| S1<S2},
 	writeln(Y)@prolog().
 
-tst9 :- delete(john[salary(Y)->S1] | mary[salary(Y)->S2], S1<S2),
+tst9 :- delete{john[salary(Y)->S1] | mary[salary(Y)->S2], S1<S2},
 	writeln(Y)@prolog().
 
-test :- tell(temp), tst1, tst2, tst3, tst4, tst5, tst6, tst7, tst8, tst9, told.
+test :- tell(temp)@prolog(),
+	tst1, tst2, tst3, tst4, tst5, tst6, tst7, tst8, tst9,
+	told@prolog().
 

@@ -156,7 +156,7 @@ write_answers :-
 	writeln(C)@flora(io),
 	conset(ans_count,0)@prolog(gensym).
 
-?- tell(temp), query, told.
+test :- tell(temp)@prolog(), query, told@prolog().
 
 // answers
 /*

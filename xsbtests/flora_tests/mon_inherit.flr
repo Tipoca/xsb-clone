@@ -1,22 +1,22 @@
 /* This demo shows various cases of monotonic inheritance */
 
-    a[b => c; bs=>>e].
-    a[b1 => c1; bs1 =>> e1].
-    aa[b=>d; bs1=>>d2].
+    a[b => c, bs=>>e].
+    a[b1 => c1, bs1 =>> e1].
+    aa[b=>d, bs1=>>d2].
 
     aaa::a.
     aa:aaa.
 
     tst1 :- aa[T=>X],
 	write(T)@prolog(), write('  ')@prolog(), writeln(X)@prolog(), fail.
-    tst1.
+    tst1 :- true.
 
     tst2 :- aaa[U=>Y],
 	write(U)@prolog(), write('  ')@prolog(), writeln(Y)@prolog(), fail.
-    tst2.
+    tst2 :- true.
 
     tst3 :- aa[SM=>>V],
 	write(SM)@prolog(), write('  ')@prolog(), writeln(V)@prolog(), fail.
-    tst3.
+    tst3 :- true.
 
-test :- tell(temp), tst1, tst2, tst3, told.
+test :- tell(temp)@prolog(), tst1, tst2, tst3, told@prolog().

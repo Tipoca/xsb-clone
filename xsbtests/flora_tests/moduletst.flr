@@ -1,6 +1,6 @@
 
-?- expand_filename('auxiliary', X)@prolog(machine),
-	assert(library_directory(X)).
+?- expand_filename('auxiliary', _X)@prolog(machine),
+	assert(library_directory(_X)@prolog())@prolog().
 
 ?- nl@prolog(),
 	writeln('Loading marymodule ...')@prolog(), [marymodule >> marymodule].
@@ -18,13 +18,13 @@ john[salary(1997) -> 50].
 john[salary(1998) -> 80].
 
 
-tst1 :- Z = max{X|john[salary(Year)->X]}
+tst1 :- Z = max{X|john[salary(_Year)->X]},
 	writeln(Z)@prolog().
 
 tst2 :- Z = max{X|john[salary(Year) ->X], Year < 1996},
 	writeln(Z)@prolog().
 
-tst3 :- Z = max{X|mary[salary(Year)->X] @ marymodule}, writeln(Z)@prolog().
+tst3 :- Z = max{X|mary[salary(_Year)->X] @ marymodule}, writeln(Z)@prolog().
 
 tst4 :- Z=count{Year|john.salary(Year) < max{X|john[salary(Y2)->X], Y2<Year} },
     	writeln(Z)@prolog().
@@ -34,7 +34,7 @@ tst5 :- Z=count{Year|john.salary(Year) < mary.salary(Year) @ marymodule},
 
 tst6 :- Z= avg{X[Who]|Who[salary(Year)->X]; Who[salary(Year)->X] @ marymodule},
 	write(Z)@prolog(), write('   ')@prolog(), writeln(Who)@flora(io), fail.
-tst6.
+tst6 :- true.
 
-test :- tell(temp), tst1, tst2, tst3, tst4, tst5, tst6, told.
+test :- tell(temp)@prolog(), tst1, tst2, tst3, tst4, tst5, tst6, told@prolog().
 

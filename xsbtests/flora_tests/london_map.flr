@@ -141,8 +141,8 @@ d(X,Y):direct[(from)->X,to->Y,l->>{L}] :-
 	Y:station[l->>{L}], \+ X=Y.
 
 
-test :- tell(temp), X:direct[from->F],
+test :- tell(temp)@prolog(), X:direct[from->F],
 	write(X)@flora(io), write('  ')@prolog(), writeln(F)@flora(io), fail.
-test :- told.
+test :- told@prolog().
 
 

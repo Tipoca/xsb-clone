@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flogic_basics.flr,v 1.4 2001-07-07 23:10:25 kifer Exp $
+** $Id: flogic_basics.flr,v 1.5 2001-08-23 18:25:38 kifer Exp $
 ** 
 */
 
@@ -79,17 +79,17 @@ tst2 :- fruit_flies_like_a_banana[].	% ==> `yes'
 
 tst3 :- tc(X,Y),
 	write(X)@flora(io), write('  ')@prolog(), writeln(Y)@flora(io), fail.
-tst3.
+tst3 :- true.
 
 tst4 :- X:person, writeln(X)@flora(io), fail.
-tst4.
+tst4 :- true.
 
 tst5 :- person[instances ->> {X}], writeln(X)@flora(io), fail.
-tst5.
+tst5 :- true.
 
 tst6 :- X[believes_in ->> {Y}],
 	write(X)@flora(io), write('  ')@prolog(),  writeln(Y)@flora(io), fail.
-tst6.
+tst6 :- true.
 
 tst7 :- X..kids[		
 		   self -> K;	
@@ -97,8 +97,10 @@ tst7 :- X..kids[
 	       ],
 	write(X)@flora(io), write('  ')@prolog(), write(K)@flora(io),
 	write('  ')@prolog(), writeln(H)@flora(io), fail. 
-tst7.
+tst7 :- true.
 
-test :- tell(temp), tst1, tst2, tst3, tst4, tst5, tst6, tst7, told.
+test :- tell(temp)@prolog(),
+	tst1, tst2, tst3, tst4, tst5, tst6, tst7,
+	told@prolog().
 
 

@@ -7,19 +7,19 @@ q.q[].
     aa[b->d].
 
     tst1 :- aa[b->X], writeln(X)@prolog(), fail.      % X=d
-    tst1.
+    tst1 :- true.
 
     aaa::a.
     tst2 :- aaa[U*->Y],
 	write(U)@prolog(), write('  ')@prolog(), writeln(Y)@prolog(), fail.
-    tst2.
+    tst2 :- true.
 
     a1[b *-> d].
     aaaa:a1.
     aaaa:a.
     tst3 :- aaaa[U->Y],
 	write(U)@prolog(), write('  ')@prolog(), writeln(Y)@prolog(), fail.
-    tst3.
+    tst3 :- true.
 
 %%------------------
 
@@ -31,18 +31,18 @@ q.q[].
     abb[b ->> tt].
     tst4 :- abb[M ->> K],
 	write(M)@prolog(), write('  ')@prolog(), writeln(K)@prolog(), fail.
-    tst4.
+    tst4 :- true.
 
     aabb:ab.
     tst5 :- aabb[M ->> K],
 	write(M)@prolog(), write('  ')@prolog(), writeln(K)@prolog(), fail.
-    tst5.
+    tst5 :- true.
 
     abbb::ab.
     abbb[b *->> e].
     tst6 :- abbb[M *->> K],
 	write(M)@prolog(), write('  ')@prolog(), writeln(K)@prolog(), fail.
-    tst6.
+    tst6 :- true.
 
     ab1[b *->> ttt].
     ab1::ab.
@@ -52,6 +52,8 @@ q.q[].
 
     tst7 :- aabb1[M ->> K],
 	write(M)@prolog(),write('  ')@prolog(),writeln(K)@prolog(),fail.
-    tst7.
+    tst7 :- true.
 
-    test :- tell(temp), tst1, tst2, tst3, tst4, tst5, tst6, tst7, told.
+    test :- tell(temp)@prolog(),
+	tst1, tst2, tst3, tst4, tst5, tst6, tst7,
+	told@prolog().

@@ -9,6 +9,6 @@ rose[father->carter].
 tst1 :- X[Y->Z],
 	write(X)@flora(io), write(' ')@flora(io), write(Y)@flora(io),
 	write(' ')@flora(io), writeln(Z)@flora(io), fail.
-tst1.
+tst1 :- true.
 
-test :- tell(temp), tst1, told.
+test :- tell(temp)@prolog(), tst1, told@prolog().
