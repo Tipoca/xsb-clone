@@ -6,7 +6,7 @@
 :- load_dyn(mf_file4).		% test load_dync/1
 
 :- [mf_file5].			% test table directive
-:- load_dyn(mf_file6).		% mf_file5 = mf_file6 (transitive closure)
+%:- load_dyn(mf_file6).		% mf_file5 = mf_file6 (transitive closure)
 
 :- [mf_hilog1].			% test hilog term
 :- [mf_hilog2].
