@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.30 2001-04-25 04:01:04 kifer Exp $
+** $Id: flrutils.P,v 1.31 2001-04-27 02:34:50 kifer Exp $
 **
 */
 
@@ -48,15 +48,16 @@
 
 
 /*************************************************************************
-  flCompile(+File)
+  flora_compile_internal(+File)
 *************************************************************************/
-flCompile(File) :- flCompile(File,FLORA_DEFAULT_WORKSPACE).
+flora_compile_internal(File) :-
+	flora_compile_internal(File,FLORA_DEFAULT_WORKSPACE).
 
 
 /*************************************************************************
-  flCompile(+File,+Workspace)
+  flora_compile_internal(+File,+Workspace)
 *************************************************************************/
-flCompile(File,Workspace) :-
+flora_compile_internal(File,Workspace) :-
 	flora_check_filename(File),
 	flora_check_workspace(Workspace),
 	( flora_locate_file(File,FLORA_FILE_EXT,FlrFile) ->
@@ -77,11 +78,6 @@ flCompile(File,Workspace) :-
         ),
 	!.
 
-
-/*************************************************************************
-  flConsult(+File)
-*************************************************************************/
-flConsult(File) :- flora_load_module_internal(File).
 
 
 /**********************************************************************

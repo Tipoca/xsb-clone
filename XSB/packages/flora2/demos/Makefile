@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 2001-04-17 04:26:04 kifer Exp $
+## $Id: Makefile,v 1.4 2001-04-27 02:34:50 kifer Exp $
 ## 
 ##
 
@@ -67,7 +67,7 @@ recompile: $(ALL) finish
 	@cat $(SVFILE)
 
 .flr.P:
-	echo 'import flCompile/1 from flrutils. flCompile($*).' >> cmd...
+	echo 'import flCompile/1 from flora2. flCompile($*).' >> cmd...
 
 init:
 	rm -f $(SVFILE)

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flora2.Ph,v 1.1 2001-04-25 04:01:04 kifer Exp $
+** $Id: flora2.Ph,v 1.2 2001-04-27 02:34:50 kifer Exp $
 ** 
 */
 
@@ -28,5 +28,6 @@
 :- import 
 	(flImport)/1,
 	(flLoad)/1,
-	(flModule)/1
+	(flCompile)/1,
+	flModule/1,
    from flora2.

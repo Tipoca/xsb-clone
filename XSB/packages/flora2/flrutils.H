@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.14 2001-04-25 04:01:04 kifer Exp $
+** $Id: flrutils.H,v 1.15 2001-04-27 02:34:50 kifer Exp $
 **
 */
 
@@ -139,11 +139,10 @@
 
 :- export
 	maxerr/1,
-	flCompile/1,
-	flCompile/2,
+	flora_compile_internal/1,
+	flora_compile_internal/2,
 	flora_load_module_internal/1,
 	flora_load_module_internal/2,
-	flConsult/1,
 	flCompileInclude/1,
 	flP2H/2,
 	flloadtrailer/1,
