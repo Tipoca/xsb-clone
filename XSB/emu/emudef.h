@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.6 1999-01-29 04:18:21 cbaoqiu Exp $
+** $Id: emudef.h,v 1.7 1999-02-02 19:56:25 kostis Exp $
 ** 
 */
 
@@ -188,7 +188,7 @@ int *asynint_ptr = &asynint_val;
     case T_FUNC: \
     case T_DYNA: \
       lpcreg = (pb)get_ep(PSC); \
-      check_glstack_overflow(get_arity(PSC),lpcreg,OVERFLOW_MARGIN); \
+      /*check_glstack_overflow(get_arity(PSC),lpcreg,OVERFLOW_MARGIN);*/ \
       break; \
     case T_FORN: \
       obtain_ep(PSC);\
