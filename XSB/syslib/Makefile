@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.35 2000/05/28 20:50:58 kifer Exp $
+## $Id: Makefile,v 1.36 2000/12/27 00:28:24 kifer Exp $
 ## 
 ##
 
@@ -96,7 +96,7 @@ init:
 	@echo "assert(xpp_include_dir('../prolog_includes'))." >> cmd...hdr
 
 finish:
-	@echo 'fmt_write($(STDWARN),"%s\n",arg("-------------------- End --------------------------")).' >> cmd...
+	@echo 'fmt_write($(STDWARN),"%s\n",arg("-------------------- End --------------------------\n")).' >> cmd...
 
 restore:
 	mv -f $(OBJFILESAVED)/*.O .

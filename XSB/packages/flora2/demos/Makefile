@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.6 2001-05-04 00:38:24 kifer Exp $
+## $Id: Makefile,v 1.7 2001-06-11 01:28:09 kifer Exp $
 ## 
 ##
 
@@ -69,14 +69,15 @@ recompile: $(ALL) finish
 
 init:
 	rm -f $(SVFILE)
-	@echo "import bootstrap_flora/0 from flora2." >> cmd...hdr
-	@echo "bootstrap_flora." >> cmd...hdr
-	@echo "file_reopen($(SVFILE),w,$(STDWARN),_)." >> cmd...hdr
-	@echo "file_clone($(STDWARN), $(STDERR),_)." >> cmd...hdr
+	echo Initializing...
 	@echo 'fmt_write($(STDWARN),"-------------- Warnings/Errors --------------------\n",_).' >> cmd...
 	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
 	@echo "file_flush($(STDWARN), _)." >> cmd...
-	@echo "[flora2],bootstrap_flora." >> cmd...
+	@echo "import bootstrap_flora/0 from flora2." >> cmd...hdr
+	@echo "bootstrap_flora." >> cmd...hdr
+	@echo "file_reopen($(SVFILE),a,$(STDWARN),_)." >> cmd...hdr
+	@echo "file_clone($(STDWARN), $(STDERR),_)." >> cmd...hdr
+	@echo "[flora2],bootstrap_flora." >> cmd...hdr
 
 finish:
 	@echo 'fmt_write($(STDWARN),"-------------------- End --------------------------\n",_).' >> cmd...
