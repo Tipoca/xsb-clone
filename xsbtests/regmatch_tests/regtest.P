@@ -1,0 +1,50 @@
+
+:- import re_match/5 , re_bulkmatch/5, re_charlist_to_string/2 from regmatch.
+:- import intern_string/2 from machine.
+
+t1 :- re_match('abc([^;,]*); (dd|ee)*;', '123abc&*^; ddeedd;poi', 0, _,L),
+	writeln(L).
+
+t2 :- re_match('ab(de)*', 'abcd',0,_,L), writeln(L).
+
+t3 :- re_match("a(b*|e*)cd\\1",'abbbcdbbbbbo', 0, _, M), writeln(M).
+
+t4 :- re_match("a(b*|e*)cd\\1",'abbbcdbbbbboabbbcdbbbbbo',2,_,M), writeln(M).
+
+t5 :- re_match("a(b*)cd\\(",'abbbcd(bbo', 0, _, M), writeln(M).
+
+t6 :- re_match("a(b*)cd\\\\",'abbbcd\bbo', 0, _, M), writeln(M).
+
+t7 :- re_bulkmatch('[^a-zA-Z0-9]+', '123&*-456 )7890% 123', 0, 1, X),
+	writeln(X).
+
+
+t8 :- Str = 'abbbcd\bbo',
+      re_match("a(b*)cd\\\\",'abbbcd\bbo',0,_,[match(X,Y), match(V,W)|L]),
+      substring(Str,X,Y,UninternedMatch),
+      intern_string(UninternedMatch,Match),
+      substring(Str,V,W,UninternedParen1),
+      atom_codes(UninternedParen1,Paren1),
+      writeln(Str),
+      writeln([X,' ',Y,' ',V,' ',W,' ',L]),
+      writeln(Match),
+      writeln(Paren1).
+
+t9 :- re_charlist_to_string("abcdefg",L), writeln(L).
+
+t10 :- substring("abcdefg", 4, -1, L), substring('abcdefg', 3, 5, LL),
+	write(L), write(' '), writeln(LL).
+
+t11 :- string_substitute('qaddf', [s(2,4)], ['123'] ,L1),
+	string_substitute('qaddf', [s(2,-1)], ['123'] ,L2),
+	string_substitute("abcdefg", [s(4,-1)], ["123"],L3),
+	string_substitute('1234567890123',[f(1,5),f(5,7),f(9,-2)],
+			  ["pppp", lll],X1),
+	string_substitute('1234567890123',[f(1,5),f(6,7),f(9,-2)], ['---'],X2),
+	re_bulkmatch('[^a-zA-Z0-9]+', '123&*-456 )7890| 123', 0, _, X),
+	string_substitute('123&*-456 )7890| 123', X, ['+++'], Y),
+	writeln([L1,' ',L2,' ',L3]),
+	writeln([X1,' ',X2]),
+	writeln([X,Y]).
+
+test :- t1,t2,t3,t4,t5,t6,t7,t8, t9,t10,t11.
