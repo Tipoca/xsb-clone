@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrcontrol.P,v 1.6 2001-07-16 05:29:37 kifer Exp $
+** $Id: flrcontrol.P,v 1.7 2001-07-30 06:22:06 kifer Exp $
 ** 
 */
 
@@ -50,7 +50,7 @@ FL_WHILE(FL_DO(Cond,Action)) :-
 	      quitLoop, % catcher
 	      fail).    % fail, if condition was thrown
 
-%% Fails only is Action becomes false before Cond becomes true
+%% Fails only if Action becomes false before Cond becomes true
 FL_DO(FL_UNTIL(Action,Cond)) :-
 	call(Action),
 	flora_commit_storage,
