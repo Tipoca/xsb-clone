@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: supertest.sh,v 1.13 1999-10-26 15:11:08 kifer Exp $
+## $Id: supertest.sh,v 1.14 1999-12-04 03:20:00 kifer Exp $
 ## 
 ##
 
@@ -67,8 +67,7 @@ echo "Making XSB with default options"
 makexsb fast >> $logfile
 makexsb module >> $logfile
 cd $testdir
-# we test regmatch_tests only once, for this build
-./testsuite.sh -add regmatch_tests $xsbdir
+./testsuite.sh $xsbdir
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-local-scheduling"

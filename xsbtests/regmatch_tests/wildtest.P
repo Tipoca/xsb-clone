@@ -1,3 +1,6 @@
+
+%% Make sure the package is recompiled
+:- [wildmatch].
 :- import wildmatch/3, convert_string/3 from wildmatch.
 
 t1 :- (wildmatch('abc*cde', aBCdecde,_) ->

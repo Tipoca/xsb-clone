@@ -1,4 +1,6 @@
 
+%% Make sure the package is recompiled
+:- [perlmatch].
 :- import bulk_match/3, get_match_result/2, try_match/2,
 	  next_match/0, perl_substitute/3 from perlmatch.
 
