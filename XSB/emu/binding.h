@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: binding.h,v 1.3 1999-02-18 13:02:19 kostis Exp $
+** $Id: binding.h,v 1.4 1999-04-29 12:04:18 kostis Exp $
 ** 
 */
 
@@ -52,7 +52,8 @@
 
 #define pushtrail0(addr,val)  \
    if (trfreg > trreg) {\
-     if ((char *)trfreg > ((char *)(top_of_cpstack) - 10)) {\
+     if ((char *)trfreg > \
+	 ((char *)(top_of_cpstack) - (TRAIL_FRAME_SIZE*sizeof(CPtr)))) {\
        handle_tcpstack_overflow();\
      }\
      *(trfreg+3) = (CPtr) trreg;\
@@ -61,7 +62,8 @@
      *(trreg-2) = addr;\
    }\
    else {\
-     if ((char *)trreg > ((char *)(top_of_cpstack) - 10)) {\
+     if ((char *)trreg > \
+	 ((char *)(top_of_cpstack) - (TRAIL_FRAME_SIZE*sizeof(CPtr)))) {\
        handle_tcpstack_overflow();\
      }\
      trreg = trreg+3;\
