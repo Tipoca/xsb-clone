@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.14 2004-03-29 18:56:42 dwarren Exp $
+** $Id: intern.P,v 1.15 2004-03-29 21:05:09 dwarren Exp $
 ** 
 */
 
@@ -81,11 +81,13 @@ Leaf Parameters are incorrect)
 
 trie_interned(Term,Root,Leaf,Skel) :-
 	(var(Leaf)
-	 ->	i_trie_interned(Term,Root,Leaf)
-	 ;	bottom_up_unify(Term1,Root,Leaf),
-		Term1 = Term
+	 ->	i_trie_interned(Term,Root,Leaf),
+		get_lastnode_cs_retskel(_,Leaf,_,Skel1)
+	 ;	integer(Leaf),
+		bottom_up_unify(Term1,Root,Leaf),
+		Term1 = Term,
+		get_lastnode_cs_retskel(_,_,_,Skel1)
 	),
-	get_lastnode_cs_retskel(_,Leaf,_,Skel1),
 	Skel1 = Skel.
 
 /* --------------------------------------------------
