@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.14 1999-02-28 01:14:09 kifer Exp $
+## $Id: testsuite.sh,v 1.15 1999-03-13 17:50:45 kifer Exp $
 ## 
 ##
 
@@ -156,12 +156,16 @@ fi
 
 testall.sh -opts "$options" -exclude "$excluded_tests" $XEMU  >> $LOG_FILE 2>&1
 
-echo "-----------------------------------------"
-echo "The following core dumps occurred during this test run:"
-find . -name core -print
-echo "End of the core dumps list"
+touch $RES_FILE
+coredumps=`find . -name core -print`
+
+if test -n "$coredumps" ; then
+  echo "The following coredumps occurred during this test run:" >> $RES_FILE
+  ls -1 $coredumps >> $RES_FILE
+  echo "End of the core dumps list" >> $RES_FILE
+fi
 # check for seg fault
-$GREP "fault" $LOG_FILE > $RES_FILE
+$GREP "fault" $LOG_FILE >> $RES_FILE
 # core dumped
 $GREP "dumped" $LOG_FILE >> $RES_FILE
 # when no output file is generated
@@ -212,7 +216,8 @@ if test -s $RES_FILE; then
         echo "***FAILED testsuite for $XEMU on $HOSTNAME" > $MSG_FILE
 	echo "Check the log file $NEW_LOG" >> $MSG_FILE
 	echo "" >> $MSG_FILE
-	echo "The following is a summary of the problems:" >> $MSG_FILE
+	echo "    Summary of the problems:" >> $MSG_FILE
+	echo "" >> $MSG_FILE
 	cat $RES_FILE >> $MSG_FILE
 	mail $USER < $MSG_FILE
 	rm -f $MSG_FILE
