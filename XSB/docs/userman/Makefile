@@ -1,6 +1,8 @@
 # File: XSB/docs/userman/Makefile
 #
-# $Id: Makefile,v 1.2 2000-04-04 04:03:53 cbaoqiu Exp $
+# $Id: Makefile,v 1.3 2000-08-05 03:51:56 cbaoqiu Exp $
+
+.PHONY: all manual1 manual2
 
 all: manual1 manual2
 
