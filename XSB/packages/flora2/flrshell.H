@@ -22,7 +22,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.23 2002-04-10 05:16:12 kifer Exp $
+** $Id: flrshell.H,v 1.24 2002-05-04 22:16:20 kifer Exp $
 **
 */
 
@@ -38,7 +38,7 @@
 
 :- import cwd/1, cd/1 from shell.
 
-:- import package_configuration/2 from packaging.
+:- import flora_configuration/2 from flrregistry.
 
 :- import
 	flora_slash/1,

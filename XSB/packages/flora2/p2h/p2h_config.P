@@ -18,7 +18,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: p2h_config.P,v 1.7 2002-04-07 23:09:12 kifer Exp $
+** $Id: p2h_config.P,v 1.8 2002-05-04 22:16:18 kifer Exp $
 ** 
 */
 
@@ -35,10 +35,11 @@
 :- import search_module/6 from consult.
 :- import xsb_configuration/2, windows_os/0 from xsb_configuration.
 :- import str_cat/3, str_sub/2 from string.
+:- import flora_configuration/2 from flrregistry.
 
 is_cygwin :- xsb_configuration(architecture,A), str_sub(cygwin,A).
 
-?-  package_configuration(dir(flora), FloraDir),
+?-  flora_configuration(installdir, FloraDir),
     slash(Slash),
     Basename = prolog2hilog,
     fmt_write_string(Module,
