@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.38 2001-06-29 22:50:48 kifer Exp $
+** $Id: builtin.h,v 1.39 2001-08-13 04:31:35 kifer Exp $
 ** 
 */
 
@@ -106,6 +106,8 @@
 /* for efficiency, implemented these in C */
 #define CONGET_TERM	         75
 #define CONSET_TERM	         76
+
+#define STORAGE_BUILTIN	       	 77
 
 #define PSC_ENV		        100
 #define PSC_SPY		        101
