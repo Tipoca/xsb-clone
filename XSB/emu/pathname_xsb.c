@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.18 2004-02-16 17:16:39 dwarren Exp $
+** $Id: pathname_xsb.c,v 1.19 2004-02-27 00:49:48 kostis Exp $
 ** 
 */
 
@@ -519,7 +519,11 @@ void transform_cygwin_pathname(char *filename)
 }
 
 /*=========================================================================*/
+#ifdef WIN_NT
 #define not_a_dir(fileinfo) !(fileinfo.st_mode & _S_IFDIR)
+#else
+#define not_a_dir(fileinfo) !(fileinfo.st_mode & S_IFDIR)
+#endif
 
 char *existing_file_extension(char *basename)
 {
