@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: writeasm.P,v 1.1.1.1 1998-11-05 17:00:24 sbprolog Exp $
+** $Id: writeasm.P,v 1.2 2004-01-19 22:06:42 dwarren Exp $
 ** 
 */
 
@@ -73,6 +73,9 @@ write_asm_inst(label(T,L)) :-
 write_asm_inst(call(Sym,A)) :- 
 	!,
 	tab, write(call), sp, write_sym(Sym), sp, writeln(A).
+write_asm_inst(check_interrupt(Sym,A)) :- 
+	!,
+	tab, write(check_interrupt), sp, write_sym(Sym), sp, writeln(A).
 write_asm_inst(switchonbound(Narg,Lab,NCls)) :- 
 	!,
 	tab, write(switchonbound), sp,
