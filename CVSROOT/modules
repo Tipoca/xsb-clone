@@ -35,15 +35,15 @@ xsbcmplib    -d cmplib     XSB/cmplib
 xsbpackages  -d packages   XSB/packages
 
 xsbdocs	     -d docs       XSB/docs
-xsbtests     -d tests      XSB/tests
+xsbtests     -d tests      xsbtests
 xsbexamples  -d examples   XSB/examples
 xsbadmin     -d admin      XSB/admin
 
-# Everything but admin, tests, examples, docs. Note: negated part comes first!
-xsbcore	     -a !XSB/tests !XSB/admin !XSB/examples !XSB/docs XSB
+# Everything but admin, examples, docs. Note: negated part comes first!
+xsbcore	     -a !XSB/admin !XSB/examples !XSB/docs XSB
 
-# What developers need, sans XSB/tests, because of the size of XSB/tests
-xsbdevel     -a !XSB/tests XSB
+# What developers need, sans tests, because of the size of the testsuite
+xsbdevel     -a XSB
 
 # This is how we'll be making releases
-xsbrelease   -a !XSB/tests !XSB/admin !XSB/docs XSB
+xsbrelease   -a !XSB/admin !XSB/docs XSB
