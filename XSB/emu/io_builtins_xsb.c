@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.2 1999-10-26 06:47:13 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.3 1999-10-27 04:12:05 kifer Exp $
 ** 
 */
 
@@ -619,9 +619,15 @@ bool fmt_read(void)
     strcat(aux_fmt,"%n");
   }
 
+  /* if there are format specifiers beyond what corresponds to the last
+     variable then we make use of %* (suppression) and of non-format
+     strings. The leftover format specifiers are ignored. */
   /* last format substr without conversion spec */
   if (current_fmt_spec->type == '.')
     curr_assignment = fscanf(fptr, current_fmt_spec->fmt);
+  /* last format substr with assignment suppression (spec size=0) */
+  if (current_fmt_spec->size == 0)
+    fscanf(fptr, aux_fmt, &curr_chars_consumed);
 
   /* check for end of file */
   if ((number_of_successes == 0) && (curr_assignment < 0))
