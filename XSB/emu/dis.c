@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.2 1999-01-25 18:36:59 kostis Exp $
+** $Id: dis.c,v 1.3 1999-03-17 18:34:46 kostis Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 #include "loader.h"
 #include "cell.h"
 #include "inst.h"
+#include "builtin.h"
 #include "memory.h"
 #include "flags.h"
 #include "tries.h"
