@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrprettyprint.flr,v 1.4 2001-06-04 06:52:40 kifer Exp $
+** $Id: flrprettyprint.flr,v 1.5 2001-06-04 16:39:07 gzyang Exp $
 **
 */
 
@@ -191,7 +191,9 @@ flora_pp_subclasses_isa(Class,_) :-
 	(Sub :: Class)@Module,
 	Sub \= Class,
 	tnot(flora_in_between_sub(Sub,Class,Module)),
-	flora_pp_isa(Sub),
+	%% (Guizhen) The following call is dangling.
+        %% When commented out, the compiling warning goes away.
+        %flora_pp_isa(Sub),
 	fail.
 flora_pp_subclasses_isa(_,_).
 
