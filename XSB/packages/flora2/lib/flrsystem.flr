@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrsystem.flr,v 1.2 2001-08-06 06:12:06 kifer Exp $
+** $Id: flrsystem.flr,v 1.3 2001-12-19 07:37:36 kifer Exp $
 **
 */
 
@@ -46,9 +46,13 @@ libpath[#query(Path)] :-
 	!,
 	library_directory(Path)@prolog().
 libpath[#query(_Path)] :-
-	abort('libpath[#query(Path)]@flora(sys): Argument must be an atom or a variable')@prolog().
+	abort('libpath[#query(Path)]@flora(sys): Argument must be an atom or a variable')@flora(sys).
 
 
 tables[#abolish] :- abolish_all_tables@prolog().
 
-abort(X) :- flP2H(PX,X)@prolog(), abort(PX)@prolog().
+abort(X) :-
+	flP2H(PX,X)@prolog(),
+	str_cat('[Runtime] ', PX, Str)@prolog(string),
+	flora_error_line(Str)@prolog(flrprint),
+	abort@prolog().
