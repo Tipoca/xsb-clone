@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.29 1999-09-21 11:10:30 kostis Exp $
+** $Id: init.c,v 1.30 1999-10-05 04:01:39 kifer Exp $
 ** 
 */
 
@@ -50,7 +50,7 @@
 #include "psc.h"
 #include "hash.h"
 #include "heap.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "register.h"
 #include "tries.h"
 #include "choice.h"

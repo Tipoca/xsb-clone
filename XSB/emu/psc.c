@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc.c,v 1.6 1999-08-04 14:42:03 ejohnson Exp $
+** $Id: psc.c,v 1.7 1999-10-05 04:01:50 kifer Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@
 #include "loader.h"
 #include "flags.h"
 #include "inst.h"
-#include "memory.h"
+#include "xsb_memory.h"
 
 
 /* === String Table manipulation ======================================	*/

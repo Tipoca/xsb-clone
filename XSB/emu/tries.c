@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.21 1999-09-18 04:39:49 cbaoqiu Exp $
+** $Id: tries.c,v 1.22 1999-10-05 04:02:01 kifer Exp $
 ** 
 */
 
@@ -41,7 +41,7 @@
 #include "heap.h"
 #include "flags.h"
 #include "deref.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "register.h"
 #include "binding.h"
 #include "trie_internals.h"

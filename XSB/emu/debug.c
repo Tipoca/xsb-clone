@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug.c,v 1.13 1999-09-17 22:20:58 cbaoqiu Exp $
+** $Id: debug.c,v 1.14 1999-10-05 04:01:22 kifer Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
 #include "xsberror.h"
 #include "binding.h"
 #include "psc.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "flags.h"
 #include "register.h"
 #include "deref.h"

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.63 1999-09-25 16:34:22 kifer Exp $
+** $Id: builtin.c,v 1.64 1999-10-05 04:01:16 kifer Exp $
 ** 
 */
 
@@ -64,7 +64,7 @@
 #include "tries.h"
 #include "choice.h"
 #include "deref.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "heap.h"
 #include "register.h"
 #include "flags.h"

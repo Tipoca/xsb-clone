@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.8 1999-09-18 04:39:43 cbaoqiu Exp $
+** $Id: residual.c,v 1.9 1999-10-05 04:01:51 kifer Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
 
 #include "auxlry.h"
 #include "cell.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "psc.h"
 #include "register.h"
 #include "heap.h"

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf.i,v 1.4 1999-08-16 07:24:12 kifer Exp $
+** $Id: dynelf.i,v 1.5 1999-10-05 04:01:28 kifer Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
 
 #include "auxlry.h"
 #include "cell.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "inst.h"
 #include "psc.h"
 #include "xsberror.h"

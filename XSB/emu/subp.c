@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.19 1999/08/19 15:08:32 kifer Exp $
+** $Id: subp.c,v 1.20 1999/09/26 06:05:53 kifer Exp $
 ** 
 */
 
@@ -45,7 +45,7 @@
 #include "cell.h"
 #include "xsberror.h"
 #include "psc.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "register.h"
 #include "heap.h"
 #include "deref.h"

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap.c,v 1.24 1999-09-23 14:10:26 kostis Exp $
+** $Id: heap.c,v 1.25 1999-10-05 04:01:36 kifer Exp $
 ** 
 */
 
@@ -31,7 +31,7 @@
 	-----------------------------------------
 	Function glstack_realloc(new_size,arity)
 		originally written by E. Johnson in file
-		memory.c, but completely redone by Bart Demoen
+		xsb_memory.c, but completely redone by Bart Demoen
 
 	heap garbage collection
 	-----------------------
@@ -97,7 +97,7 @@ Todo:
 
 #include "auxlry.h"
 #include "cell.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "inst.h"
 
 /* For Reallocation Routines

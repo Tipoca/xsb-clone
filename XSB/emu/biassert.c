@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.20 1999-08-30 16:40:49 kostis Exp $
+** $Id: biassert.c,v 1.21 1999-10-05 04:01:13 kifer Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@
 #include "cell.h"
 #include "xsberror.h"
 #include "cinterf.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "psc.h"
 #include "heap.h"
 #include "register.h"

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: load_seg.c,v 1.5 1999-08-16 07:24:21 kifer Exp $
+** $Id: load_seg.c,v 1.6 1999-10-05 04:01:42 kifer Exp $
 ** 
 */
 
@@ -33,7 +33,7 @@
 #include "auxlry.h"
 #include "cell.h"
 #include "inst.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "register.h"
 #include "psc.h"
 #include "loader.h"

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.2 1999-08-13 03:16:24 kifer Exp $
+** $Id: function.c,v 1.3 1999-10-05 04:01:34 kifer Exp $
 ** 
 */
 
@@ -31,7 +31,7 @@
 #include "auxlry.h"
 #include "cell.h"
 #include "register.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "deref.h"
 
 #define FUN_PLUS   1

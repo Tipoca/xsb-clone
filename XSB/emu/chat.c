@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chat.c,v 1.10 1999-08-16 07:24:05 kifer Exp $
+** $Id: chat.c,v 1.11 1999-10-05 04:01:19 kifer Exp $
 ** 
 */
 
@@ -37,7 +37,7 @@
 #include "tries.h"
 #include "choice.h"
 #include "xmacro.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "xsberror.h"
 #include "chat.h"
 #include "sw_envs.h"

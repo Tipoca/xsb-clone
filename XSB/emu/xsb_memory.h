@@ -1,4 +1,4 @@
-/* File:      memory.h
+/* File:      xsb_memory.h
 ** Author(s): Ernie Johnson
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory.h,v 1.8 1999-08-16 07:24:23 kifer Exp $
+** $Id: xsb_memory.h,v 1.1 1999-10-05 04:02:05 kifer Exp $
 ** 
 */
 

@@ -1,4 +1,4 @@
-/* File:      memory.c
+/* File:      xsb_memory.c
 ** Author(s): Ernie Johnson, Swift, Xu, Sagonas
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory.c,v 1.11 1999-09-08 13:56:09 warren Exp $
+** $Id: xsb_memory.c,v 1.1 1999-10-05 04:02:04 kifer Exp $
 ** 
 */
 
@@ -47,7 +47,7 @@
 
 #include "auxlry.h"
 #include "cell.h"      /* CPtr */
-#include "memory.h"
+#include "xsb_memory.h"
 #include "register.h"  /* breg, trreg */
 #include "psc.h"       /* needed by "tries.h" and "xmacro.h" */
 #include "tries.h"     /* needed by "choice.h" */

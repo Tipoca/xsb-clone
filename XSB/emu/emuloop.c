@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.37 1999-09-26 06:05:52 kifer Exp $
+** $Id: emuloop.c,v 1.38 1999-10-05 04:01:30 kifer Exp $
 ** 
 */
 
@@ -46,7 +46,7 @@
 #include "inst.h"
 #include "psc.h"
 #include "deref.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "heap.h"
 #include "sig.h"
 #include "emudef.h"

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.17 1999/08/16 07:24:29 kifer Exp $
+** $Id: slgdelay.c,v 1.18 1999/09/18 04:39:44 cbaoqiu Exp $
 ** 
 */
 
@@ -38,7 +38,7 @@
 #include "psc.h"
 #include "register.h"
 #include "trie_internals.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "choice.h"
 #include "xmacro.h"
 #include "tr_utils.h"

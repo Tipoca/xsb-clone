@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace.c,v 1.9 1999-07-06 16:35:21 ejohnson Exp $
+** $Id: trace.c,v 1.10 1999-10-05 04:01:59 kifer Exp $
 ** 
 */
 
@@ -32,7 +32,7 @@
 #include "auxlry.h"
 #include "cell.h"
 #include "inst.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "register.h"
 #include "psc.h"
 #include "tries.h"

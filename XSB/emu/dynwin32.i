@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32.i,v 1.6 1999-08-16 07:24:13 kifer Exp $
+** $Id: dynwin32.i,v 1.7 1999-10-05 04:01:29 kifer Exp $
 ** 
 */
 
@@ -35,7 +35,7 @@
 
 #include "auxlry.h"
 #include "cell.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "inst.h"
 #include "psc.h"
 

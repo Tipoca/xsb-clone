@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: private_builtin.in,v 1.1 1999/04/02 04:06:56 kifer Exp $
+** $Id: private_builtin.c,v 1.3 1999/06/04 17:54:56 luis Exp $
 ** 
 */
 
@@ -48,7 +48,7 @@
 #include "cell.h"
 #include "xsberror.h"
 #include "cinterf.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "psc.h"
 #include "heap.h"
 #include "register.h"

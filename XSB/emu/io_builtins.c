@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.c,v 1.36 1999-09-17 21:38:34 warren Exp $
+** $Id: io_builtins.c,v 1.37 1999-10-05 04:01:41 kifer Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@
 #include "cell.h"
 #include "xsberror.h"
 #include "cinterf.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "psc.h"
 #include "heap.h"
 #include "register.h"

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.22 1999/08/04 14:42:09 ejohnson Exp $
+** $Id: tr_utils.c,v 1.23 1999/08/16 07:24:38 kifer Exp $
 ** 
 */
 
@@ -39,7 +39,7 @@
 #include "binding.h"
 #include "psc.h"
 #include "heap.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "register.h"
 #include "deref.h"
 #include "flags.h"

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.18 1999-09-18 21:14:20 kifer Exp $
+** $Id: cinterf.c,v 1.19 1999-10-05 04:01:20 kifer Exp $
 ** 
 */
 
@@ -33,7 +33,7 @@
 
 #include "auxlry.h"
 #include "cell.h"
-#include "memory.h"
+#include "xsb_memory.h"
 #include "register.h"
 #include "psc.h"
 #include "flags.h"
