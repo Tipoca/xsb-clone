@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdebugger.P,v 1.11 2001-08-13 04:34:11 kifer Exp $
+** $Id: flrdebugger.P,v 1.12 2001-08-16 05:30:27 kifer Exp $
 ** 
 */
 
@@ -680,11 +680,9 @@ print_items(Item) :- print_item(Item).
 
 flora_trace :-
 	assert(flora_switch(trace)),
-	%%retractall(flora_switch(low_level_trace)),
 	flora_handle_trace.
 flora_notrace :-
 	retractall(flora_switch(trace)),
-	%%retractall(flora_switch(low_level_trace)),
 	flora_handle_notrace.
 /*********************************************************************/
 

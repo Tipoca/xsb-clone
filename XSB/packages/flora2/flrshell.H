@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.19 2001-06-29 23:31:29 kifer Exp $
+** $Id: flrshell.H,v 1.20 2001-08-16 05:30:27 kifer Exp $
 **
 */
 
@@ -107,5 +107,4 @@
    from flrdebugger.
 
 :- dynamic flora_switch(_).
-
 :- index(flora_switch/1,trie).
