@@ -32,7 +32,7 @@ configure > $logfile
 echo "Making XSB with default options"
 makexsb fast >> $logfile
 cd $testdir
-./testsuite.sh $2/bin/xsb
+./testsuite.sh $xsbdir/bin/xsb
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-local-scheduling"
@@ -40,7 +40,7 @@ configure --config-tag=localsched --enable-local-scheduling >> $logfile
 echo "Making XSB with --enable-local-scheduling"
 makexsb --config-tag=localsched fast >> $logfile
 cd $testdir
-./testsuite.sh $2/bin/xsb-localsched
+./testsuite.sh $xsbdir/bin/xsb-localsched
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-chat"
@@ -48,7 +48,7 @@ configure --config-tag=chat --enable-chat >> $logfile
 echo "Making XSB with --enable-chat"
 makexsb --config-tag=chat fast >> $logfile
 cd $testdir
-./testsuite.sh $2/bin/xsb-chat
+./testsuite.sh $xsbdir/bin/xsb-chat
 
 
 cd $xsbdir/build
@@ -57,6 +57,6 @@ configure --config-tag=localschedNchat --enable-chat --enable-local-scheduling >
 echo "Making XSB with --enable-chat --enable-local-scheduling"
 makexsb --config-tag=localschedNchat fast >> $logfile
 cd $testdir
-./testsuite.sh $2/bin/xsb-localschedNchat
+./testsuite.sh $xsbdir/bin/xsb-localschedNchat
 
 rm $testdir/$lockfile
