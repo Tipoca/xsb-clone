@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.9 1999/08/09 00:35:21 kifer Exp $
+** $Id: std_xsb.P,v 1.10 1999/08/14 18:17:52 kostis Exp $
 ** 
 */
 
@@ -200,6 +200,7 @@ standard_symbol(shell, 1, shell).
 standard_symbol(shell, 2, shell).
 standard_symbol(shell, 5, shell).
 standard_symbol(spawn_process, 5, shell).
+standard_symbol(sys_exit, 1, shell).
 standard_symbol(var, 1, standard).
 standard_symbol(write, 1, standard).
 standard_symbol(write, 2, standard).

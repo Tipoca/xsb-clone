@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.P,v 1.1 1999/08/09 00:35:15 kifer Exp $
+** $Id: shell.P,v 1.2 1999/08/11 20:29:18 kifer Exp $
 ** 
 */
 
@@ -94,6 +94,9 @@ edit(File) :-
 	expand_filename(File, FileName), 
 	shell(['$EDITOR ', '$EDITOR_OPTIONS ', FileName, '.P']).
 
+
+%% sys_exit(-ExitCode) exit subprocess unconditionally with ExitCode
+sys_exit(ExitCode) :- sys_syscall(SYS_exit,_,ExitCode,_).
 
 %% NEW
 sys_link(Source, Dest, Res) :-	sys_syscall(SYS_link, Res, Source, Dest).

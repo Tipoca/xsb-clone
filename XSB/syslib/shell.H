@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id:$
+** $Id: shell.H,v 1.1 1999/08/09 00:35:12 kifer Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 	shell/5, shell/2, shell/1,
 	spawn_process/5, get_process_table/1, process_status/2, 
 	process_control/2.
-:- export sys_chdir/2, sys_access/3, sys_stat/3, sys_link/3.
+:- export sys_chdir/2, sys_access/3, sys_stat/3, sys_link/3, sys_exit/1.
 
 :- import atom/1, abort/1 from standard.
 :- import sys_system/7, expand_filename/2, sys_syscall/4
