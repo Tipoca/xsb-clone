@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.P,v 1.5 1999/08/03 19:17:26 kifer Exp $
+** $Id: xcallxsb.P,v 1.6 1999/10/20 06:58:01 kifer Exp $
 ** 
 */
 
@@ -74,6 +74,6 @@ do_pcall(Call,VarTerm) :-
 	call_expose(X).
 
 string_to_term(Atom,Goal) :-
-	file_open(Atom,OSTRING,Fp),
+	file_open(Atom,sr,Fp),
 	file_read_foe(Fp,Goal,_),
 	file_close(Fp).

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.11 1999/08/25 13:57:56 kifer Exp $
+** $Id: file_io.H,v 1.12 1999/09/03 19:43:02 warren Exp $
 ** 
 */
 
@@ -52,4 +52,4 @@
 	  file_read_line_list/2, file_read_line_list/3,
 	  file_reopen/4, file_clone/3,
 	  pipe_open/2, fd2ioport/2,
-	  file_clearerr/1.
+	  file_clearerr/1, tmpfile_open/1.

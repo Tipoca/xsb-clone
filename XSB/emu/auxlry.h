@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.7 1999-10-12 19:47:43 ejohnson Exp $
+** $Id: auxlry.h,v 1.8 1999-11-23 04:06:42 kifer Exp $
 ** 
 */
 
@@ -95,5 +95,5 @@ extern char *xsb_segfault_message;
     if (xsb_filedes < 0 || xsb_filedes >= MAX_OPEN_FILES) \
 	xsb_abort("Invalid file descriptor %d in I/O predicate", xsb_filedes);\
     stream = fileptr(xsb_filedes); \
-    if (stream==NULL) \
+    if ((stream==NULL) && (xsb_filedes != 0)) \
 	xsb_abort("Invalid file descriptor %d in I/O predicate", xsb_filedes);
