@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.H,v 1.8 2002/04/10 23:33:22 tswift Exp $
+** $Id: shell.H,v 1.9 2002/04/13 05:01:59 lfcastro Exp $
 ** 
 */
 
@@ -39,3 +39,4 @@
 :- import sys_system/7, expand_filename/2, sys_syscall/4
    from machine.
 
+:- import xsb_configuration/2 from xsb_configuration.
