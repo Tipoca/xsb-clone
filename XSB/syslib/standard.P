@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.92 2004/09/10 17:29:46 tswift Exp $
+** $Id: standard.P,v 1.93 2004/09/16 22:08:06 dwarren Exp $
 ** 
 */
 
@@ -127,9 +127,8 @@ open(atom(Atom),Mode,Stream):- !,
 	    true
 	 ;  domain_error(read,Mode,open/3,2) ),
 	 file_open(Atom, sr, Stream),
-	 writeln(stream(Stream)),
-	 (Stream < -1000 -> 
-	    permission_error(open,file,Atom,open/3)
+	 (Stream = -1000 -> 
+	    permission_error(open,file,atom/1,open/3)
 	 ;  true).
 open(file(File),Mode,Stream):- !,
 	open(File,Mode,Stream).

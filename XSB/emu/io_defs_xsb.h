@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_defs_xsb.h,v 1.9 2004-09-10 17:29:44 tswift Exp $
+** $Id: io_defs_xsb.h,v 1.10 2004-09-28 17:24:46 tswift Exp $
 ** 
 */
 
@@ -59,6 +59,9 @@
 #define STREAM_POSITION                 4
 #define STREAM_END_OF_STREAM    5
 #define STREAM_REPOSITIONABLE    6
+#define STREAM_CLASS                      7
+#define STREAM_TYPE                        8
+#define STREAM_EOF_ACTION            9
 
 /* Need in here for stream_property/2 */
 #define MAX_OPEN_FILES    55

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.29 2004/09/02 19:48:49 tswift Exp $
+** $Id: file_io.H,v 1.30 2004/09/10 17:29:45 tswift Exp $
 ** 
 */
 
@@ -46,7 +46,8 @@
 
 :- import file_write/2 from xsb_writ.
 
-:- import domain_error/4,existence_error/4, 
+:- import check_integer/3,
+             domain_error/4,existence_error/4, 
              permission_error/4 from error_handler.
 
 :- export fmt_write_string/3, fmt_write/2, fmt_read/3,
