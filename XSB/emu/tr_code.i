@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code.i,v 1.8 1999-10-12 20:28:04 kostis Exp $
+** $Id: tr_code.i,v 1.9 1999-10-13 14:04:05 ejohnson Exp $
 ** 
 */
 
@@ -60,7 +60,7 @@
      xsb_exit("In instruction hash_handle");			\
      break;							\
    }								\
-   BucketNum = TrieHash(symbol,BTHT_GetHashMask(pBTHT));	\
+   BucketNum = TrieHash(symbol,BTHT_GetHashSeed(pBTHT));	\
  }
 
 #define find_next_nonempty_bucket(pBTHT, pTable, BucketNum) {	\
