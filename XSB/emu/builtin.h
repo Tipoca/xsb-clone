@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.54 2003-07-30 17:44:22 dwarren Exp $
+** $Id: builtin.h,v 1.55 2003-10-17 21:23:21 dwarren Exp $
 ** 
 */
 
@@ -145,6 +145,7 @@
 #define FILE_READ_CANONICAL	133
 #define GEN_RETRACT_ALL		134
 
+#define DB_GET_LAST_CLAUSE	135
 #define DB_RETRACT0		136
 #define DB_GET_CLAUSE		137
 #define DB_BUILD_PRREF		138
