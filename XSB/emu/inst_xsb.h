@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.11 2001-06-21 19:07:59 tswift Exp $
+** $Id: inst_xsb.h,v 1.12 2002-10-28 15:29:48 lfcastro Exp $
 ** 
 */
 
@@ -369,7 +369,6 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define halt            0xfa
 #define builtin         0xfb
 #define unifunc		0xfc
-#define reset           0xfe
 #define endfile         0xff
    /* virtual instruction, used for disassembler to link different segs */
 

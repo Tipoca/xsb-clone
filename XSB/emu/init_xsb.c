@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.26 2002-09-02 20:30:54 kifer Exp $
+** $Id: init_xsb.c,v 1.27 2002-10-28 15:29:48 lfcastro Exp $
 ** 
 */
 
@@ -116,7 +116,6 @@ Cell hash_handle_inst;
 Cell fail_inst;
 Cell halt_inst;
 Cell proceed_inst;
-Cell reset_inst;
 
 extern double realtime_count;
 
@@ -634,8 +633,6 @@ void init_machine(void)
   cell_opcode(&fail_inst) = fail;
   cell_opcode(&halt_inst) = halt;
   cell_opcode(&proceed_inst) = proceed;         /* returned by load_obj */
-  cell_opcode(&reset_inst) = reset;
-				/* instruction to initialize abort handler */
 
   /* Allocate Stack Spaces and set Boundary Parameters
      ------------------------------------------------- */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.10 2002-05-22 15:41:14 lfcastro Exp $
+** $Id: memory_xsb.h,v 1.11 2002-10-28 15:29:48 lfcastro Exp $
 ** 
 */
 
@@ -131,8 +131,7 @@ extern byte *inst_begin;       /* ptr to beginning of instruction array. */
 
 extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
 	    resume_compl_suspension_inst, fail_inst, halt_inst, proceed_inst,
-  resume_compl_suspension_inst2,
-	    reset_inst;
+  resume_compl_suspension_inst2;
 
 
 /* Stack Overflow Checkers
