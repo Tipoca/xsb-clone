@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.27 2004/09/03 22:19:49 tswift Exp $
+** $Id: error_handler.P,v 1.28 2004/09/28 17:24:42 tswift Exp $
 ** 
 */
 
@@ -222,6 +222,8 @@ misc_error(Message):-
 
 %--------------------------------
 % These checks can be reused for various types of ISO compatability.
+% atom, number, integer, non-negative integer, nonvar, nonvar_list, 
+% atom_list.
 
 %-------------
 % Checks that a term is an atom.
@@ -240,7 +242,13 @@ check_number(Term,Predicate,Arg) :-
 check_integer(Term,Predicate,Arg) :- 
 	(integer(Term) -> 
 	    true
-	 ;  type_error(number,Term,Predicate,Arg) ).
+	 ;  type_error(integer,Term,Predicate,Arg) ).
+
+%-------------
+check_nonneg_integer(Term,Predicate,Arg) :- 
+	(integer(Term), Term >= 0 -> 
+	    true
+	 ;  type_error(nonNegativeInteger,Term,Predicate,Arg) ).
 
 %-------------
 % Checks that a term is ground

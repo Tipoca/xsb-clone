@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.H,v 1.6 2004/03/15 14:13:02 dwarren Exp $
+** $Id: file_op.H,v 1.7 2004/09/28 17:24:43 tswift Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 :- import assert/1, assertai/2, retract/1, retractall/1, (dynamic)/1 from assert.
 
 :- import conpsc/2, psc_type/2, term_new/2, psc_insert/4 from machine.
+:- import instantiation_error/2 from error_handler.
 
 :- index '_$op1'/3-3.
 

@@ -20,12 +20,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.P,v 1.18 2002/09/20 06:00:01 kifer Exp $
+** $Id: xsb_read.P,v 1.19 2003/11/25 12:44:03 tswift Exp $
 ** 
 */
 
 
-:- compiler_options([xpp_on]).
+:- compiler_options([xpp_on,sysmod,optimize]).
 #include "standard.h"
 #include "char_defs.h"
 #include "flag_defs_xsb.h"
