@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string.H,v 1.9 1999/08/28 09:10:03 kostis Exp $
+** $Id: string.H,v 1.10 1999/10/08 07:30:32 kifer Exp $
 ** 
 */
 
@@ -30,6 +30,6 @@
 
 :- import flatten/2 from basics.
 :- import str_len/2 from machine.
-:- import atom/1, atom_codes/2 from standard.
+:- import atom/1, atom_codes/2, number/1, number_codes/2 from standard.
 
 /* ---------------------- end of file string.H ------------------------ */
