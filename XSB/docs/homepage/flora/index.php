@@ -39,9 +39,10 @@ Applications of FLORA-2 include Intelligent Agents, Semantic Web,
 and Ontology management.
 
 <p>
-We are happy to announce the release of an alpha version of FLORA-2.
-Note: FLORA-2 is <b>not</b> syntactically compatible with the earlier
-prototype, called FLORA. 
+March 11, 2002: We are happy to announce the release of a "late alpha"
+version of FLORA-2. This version has significantly improved stability and
+several important new features. See 
+<a href="../rel_notes.html#flora">release notes</a> for the details.
 <p>
 Here is the manual:
 	<ul>
@@ -80,7 +81,7 @@ Email:<a href="mailto:xsb-contact@cs.sunysb.edu">xsb-contact@cs.sunysb.edu</a>
 <hr>
 <p>
 <!--Don't touch! The date gets updated when you commit changes to this page-->
-$Date: 2001-12-15 19:20:22 $
+$Date: 2002-03-12 07:59:22 $
 
 </body>
 </html>
