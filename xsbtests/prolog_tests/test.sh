@@ -79,7 +79,8 @@ options=$2
 
 OBJEXT=.xwam
 os_type=`uname -s`
-if test "$os_type" = "HP-UX" ; then
+echo "config tag is $config_tag"
+if test "$os_type" = "HP-UX" || test "$config_tag" = "-mt"; then
 	echo "Foreign language interface tests bypassed"
 else
 #------------------------------------------------------------------------

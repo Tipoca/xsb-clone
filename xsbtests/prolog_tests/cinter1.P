@@ -1,4 +1,4 @@
-:- xsb_configuration(compiler, CC), consult(xeddis, [CC]).
+:- xsb_configuration(compiler, CC), consult(xeddis, [cc(CC)]).
 
 :- import min_ed_dis/3 from xeddis.
 

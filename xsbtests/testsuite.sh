@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.25 2004-05-18 00:17:28 tswift Exp $
+## $Id: testsuite.sh,v 1.26 2005-01-17 17:48:26 tswift Exp $
 ## 
 ##
 
@@ -51,6 +51,7 @@
 
 echo ==========================================================================
 
+export config_tag
 
 if test -n "$USER"; then
    USER=`whoami`
