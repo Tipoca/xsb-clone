@@ -18,17 +18,19 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.14 1999-10-26 20:31:34 warren Exp $
+** $Id: tr_utils.h,v 1.15 1999-12-14 20:57:34 ejohnson Exp $
 ** 
 */
 
 
+extern SGFrame get_subgoal_ptr(Cell, TIFptr);
+extern SGFrame get_call(Cell, Cell *);
+extern Cell build_ret_term(int, Cell[]);
+extern void construct_answer_template(Cell, SGFrame, Cell[]);
 extern void breg_retskel(void);
-extern void construct_ret_for_call(void);
 extern void delete_predicate_table(BTNptr);
 extern void reclaim_del_ret_list(SGFrame);
 extern void delete_return(BTNptr, SGFrame);
-extern CPtr get_subgoal_ptr(Cell, TIFptr);
 extern void init_newtrie(void);
 extern void delete_branch(BTNptr, BTNptr *);
 extern void safe_delete_branch(BTNptr);
