@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrimport.H,v 1.2 2001-04-25 04:01:04 kifer Exp $
+** $Id: flrimport.H,v 1.3 2001-06-05 07:49:13 kifer Exp $
 **
 */
 
@@ -30,7 +30,6 @@
 :- import flora_wssymbol/3, flora_wshilog/2 from flrwrapper.
 :- export
 	flImportFloraPred/4,
-	flImportProlog/4,
 	flImportHiLog/4.
 
 

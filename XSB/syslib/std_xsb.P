@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.49 2001/05/22 17:37:31 tswift Exp $
+** $Id: std_xsb.P,v 1.50 2001/05/31 16:33:50 lfcastro Exp $
 ** 
 */
 
@@ -115,6 +115,9 @@ standard_symbol(float, 1, standard).
 standard_symbol(bootstrap_flora, 0, flora2).
 standard_symbol(flora_shell, 0, flora2).
 standard_symbol(unstrap_flora, 0, flora2).
+standard_symbol((flImport), 1, flora2).
+standard_symbol((flCompile), 1, flora2).
+standard_symbol((flLoad), 1, flora2).
 %%%%%%%%%%%%%%%%%%%%%%
 
 standard_symbol(fmt_read, 3, file_io).
