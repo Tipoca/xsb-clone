@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.18 2003-11-11 20:55:07 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.19 2004-03-18 16:26:01 dwarren Exp $
 ** 
 */
 
@@ -203,8 +203,10 @@ inline static xsbBool univ_builtin(void)
 	  if (list_construction) { /* no errors can occur */
 	    bind_list((CPtr)term, hreg);
 	    list = cell(head+1);
+	    XSB_Deref(list);
 	    bld_copy(hreg, cell(clref_val(list))); hreg++;
 	    list = cell(clref_val(list)+1);
+	    XSB_Deref(list);
 	    bld_copy(hreg, cell(clref_val(list))); hreg++;
 	  } else { /* compound term construction */
 	    sreg = hreg;
