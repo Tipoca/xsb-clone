@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.1 1999-11-29 00:30:20 kifer Exp $
+** $Id: varstring.c,v 1.2 1999-12-02 07:07:02 kifer Exp $
 ** 
 */
 
@@ -149,12 +149,9 @@ static inline void vs_shrink(VarString *vstr, int increment)
 /* ensure that the VarString has room for minsize bytes */
 static inline void vs_ensure_size(VarString *vstr, int minsize)
 {
-  if (vstr->string == NULL)
-    vs_init(vstr,0);
-  else { /* already initialized */
-    /* make sure we don't clobber existing stuff */
-    vs_adjust_size(vstr, max(vstr->length,minsize)+1);
-  }
+  vs_init(vstr,0);
+
+  vs_adjust_size(vstr, max(vstr->length,minsize)+1);
 }
 
 
