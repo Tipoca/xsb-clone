@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.38 2001-05-24 15:39:27 lfcastro Exp $
+** $Id: parse.P,v 1.39 2001-06-08 12:59:18 dwarren Exp $
 ** 
 */
 
@@ -647,7 +647,8 @@ trans_goals('$$var'(Vid), goal(Sym,[varocc(Vid)]), SymTab, VidIn, VidOut) :- !,
 	).
 %% hack to eliminate true goals at end of clauses, so that
 %% the compiler may consider TCO --lfcastro, 050801
-trans_goals((A, true), Goal,SymTab,VidIn,VidOut) :-
+trans_goals((A, True), Goal,SymTab,VidIn,VidOut) :-
+	True == true,  %% can't be a variable!
 	!,
 	trans_goal(A,Goal,SymTab,VidIn,VidOut).
 trans_goals((A, B), and(Goal1, Goal2), SymTab, VidIn, VidOut) :- !,
