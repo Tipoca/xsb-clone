@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.62 2002-11-05 20:50:38 lfcastro Exp $
+** $Id: tries.c,v 1.63 2004-12-20 17:43:07 tswift Exp $
 ** 
 */
 
@@ -51,6 +51,7 @@
 #include "error_xsb.h"
 #include "tr_utils.h"
 #include "debug_xsb.h"
+#include "subp.h"
 
 /*----------------------------------------------------------------------*/
 
@@ -1060,6 +1061,7 @@ static void load_solution_from_trie(int arity, CPtr cptr)
        }
        else {			/* an XSB_ATTV */
 	 /* Bind the variable part of xtemp1 to returned_val */
+	 add_interrupt(cell(((CPtr)dec_addr(xtemp1) + 1)), returned_val); 
 	 dbind_ref((CPtr) dec_addr(xtemp1), returned_val);
        }
      }
