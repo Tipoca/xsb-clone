@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.31 1999-10-25 05:59:55 kifer Exp $
+** $Id: tries.c,v 1.32 1999-10-26 06:47:33 kifer Exp $
 ** 
 */
 
@@ -35,11 +35,11 @@
 #include "debugs/debug_tries.h"
 
 #include "auxlry.h"
-#include "cell.h"
-#include "inst.h"
-#include "psc.h"
+#include "cell_xsb.h"
+#include "inst_xsb.h"
+#include "psc_xsb.h"
 #include "heap_xsb.h"
-#include "flags.h"
+#include "flags_xsb.h"
 #include "deref.h"
 #include "memory_xsb.h"
 #include "register.h"

@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: num_vars.P,v 1.2 1998/11/15 01:22:25 kifer Exp $
+** $Id: num_vars.P,v 1.3 1999/10/10 22:44:54 cbaoqiu Exp $
 ** 
 */
 
 :- compiler_options([xpp_on]).
 
-#include "celltags.h"
+#include "celltags_xsb.h"
 
 %   numbervars(+Term, +FirstN, ?LastN) 
 %   Each variable in the HiLog Term is instantiated to a term of the form 

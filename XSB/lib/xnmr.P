@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xnmr.P,v 1.9 1999-10-25 06:00:40 kifer Exp $
+** $Id: xnmr.P,v 1.10 1999-10-26 06:47:40 kifer Exp $
 ** 
 */
 
@@ -26,7 +26,7 @@
 :- compiler_options([xpp_on]).
 
 #include "sig_xsb.h"
-#include "flag_defs.h"
+#include "flag_defs_xsb.h"
 #include "standard.h"
 #include "char_defs.h"
 

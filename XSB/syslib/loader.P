@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.19 1999/10/20 18:22:17 kifer Exp $
+** $Id: loader.P,v 1.20 1999/10/25 06:00:51 kifer Exp $
 ** 
 */
 
@@ -40,9 +40,9 @@
 
 #include "standard.h"
 #include "char_defs.h"
-#include "flag_defs.h"
+#include "flag_defs_xsb.h"
 #include "io_defs_xsb.h"
-#include "celltags.h"
+#include "celltags_xsb.h"
 
 
 %% Provide tests for the respective OS.

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.37 1999/10/10 22:44:53 cbaoqiu Exp $
+** $Id: machine.P,v 1.38 1999/10/25 06:00:52 kifer Exp $
 ** 
 */
 
@@ -31,8 +31,8 @@
 :- compiler_options([sysmod,xpp_on]).
 
 #include "builtin.h"
-#include "celltags.h"
-#include "flag_defs.h"
+#include "celltags_xsb.h"
+#include "flag_defs_xsb.h"
 #include "syscall_xsb.h"
 
 /*======================================================================*/

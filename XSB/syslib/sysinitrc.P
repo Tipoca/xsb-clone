@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sysinitrc.P,v 1.8 1999/08/11 20:29:19 kifer Exp $
+** $Id: sysinitrc.P,v 1.9 1999/09/06 17:32:58 kifer Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 
 :- compiler_options([xpp_on]).
 
-#include "flag_defs.h"
+#include "flag_defs_xsb.h"
 
 
 :- import stat_set_flag/2 from machine.

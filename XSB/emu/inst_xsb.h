@@ -1,4 +1,4 @@
-/* File:      inst.h
+/* File:      inst_xsb.h
 ** Author(s): Warren, Swift, Xu, Sagonas, Freire, Johnson, Rao
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.h,v 1.17 1999-10-12 20:21:05 ejohnson Exp $
+** $Id: inst_xsb.h,v 1.1 1999-10-26 06:47:12 kifer Exp $
 ** 
 */
 

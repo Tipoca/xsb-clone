@@ -1,4 +1,4 @@
-/* File:      flag_defs.h
+/* File:      flag_defs_xsb.h
 ** Author(s): Jiyang Xu, Kostis Sagonas, Ernie Johnson
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs.h,v 1.7 1999-10-25 05:58:12 kifer Exp $
+** $Id: flag_defs_xsb.h,v 1.1 1999-10-26 06:47:02 kifer Exp $
 ** 
 */
 

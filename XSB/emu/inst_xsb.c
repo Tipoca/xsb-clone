@@ -1,4 +1,4 @@
-/* File:      inst.c
+/* File:      inst_xsb.c
 ** Author(s): Warren, Swift, Xu, Sagonas, Freire, Johnson
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.c,v 1.13 1999-08-09 00:34:23 kifer Exp $
+** $Id: inst_xsb.c,v 1.1 1999-10-26 06:47:11 kifer Exp $
 ** 
 */
 
@@ -28,8 +28,8 @@
 #include "debugs/debug.h"
 
 #include "auxlry.h"
-#include "cell.h"
-#include "inst.h"
+#include "cell_xsb.h"
+#include "inst_xsb.h"
 #include "subinst.h"
 
 extern void init_builtin_table(void);

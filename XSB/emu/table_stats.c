@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.3 1999-10-25 05:59:39 kifer Exp $
+** $Id: table_stats.c,v 1.4 1999-10-26 06:47:29 kifer Exp $
 ** 
 */
 
@@ -29,8 +29,8 @@
 #include <stdio.h>
 
 #include "auxlry.h"
-#include "cell.h"
-#include "psc.h"
+#include "cell_xsb.h"
+#include "psc_xsb.h"
 #include "table_stats.h"
 #include "trie_internals.h"
 #include "macro_xsb.h"

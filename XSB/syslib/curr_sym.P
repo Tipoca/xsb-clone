@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.7 1999/09/06 17:32:50 kifer Exp $
+** $Id: curr_sym.P,v 1.8 1999/09/20 16:15:38 kostis Exp $
 ** 
 */
 
 
 :- compiler_options([xpp_on]).
-#include "flag_defs.h"
+#include "flag_defs_xsb.h"
 #include "standard.h"
 
 /* ===== current_atom/1 =============================================== */

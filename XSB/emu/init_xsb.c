@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.1 1999-10-25 05:58:29 kifer Exp $
+** $Id: init_xsb.c,v 1.2 1999-10-26 06:47:07 kifer Exp $
 ** 
 */
 
@@ -44,17 +44,17 @@
 #endif
 
 #include "auxlry.h"
-#include "cell.h"
+#include "cell_xsb.h"
 #include "error_xsb.h"
-#include "inst.h"
-#include "psc.h"
+#include "inst_xsb.h"
+#include "psc_xsb.h"
 #include "hash_xsb.h"
 #include "heap_xsb.h"
 #include "memory_xsb.h"
 #include "register.h"
 #include "tries.h"
 #include "choice.h"
-#include "flags.h"
+#include "flags_xsb.h"
 #include "loader_xsb.h"
 #include "macro_xsb.h"
 #include "tr_utils.h"

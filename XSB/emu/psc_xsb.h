@@ -1,4 +1,4 @@
-/* File:      psc.h
+/* File:      psc_xsb.h
 ** Author(s): Jiyang Xu, Terry Swift, Kostis Sagonas
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc.h,v 1.8 1999-10-23 21:19:26 kifer Exp $
+** $Id: psc_xsb.h,v 1.1 1999-10-26 06:47:22 kifer Exp $
 ** 
 */
 

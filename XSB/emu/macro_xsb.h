@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.1 1999-10-25 05:58:45 kifer Exp $
+** $Id: macro_xsb.h,v 1.2 1999-10-26 06:47:14 kifer Exp $
 ** 
 */
 
@@ -33,7 +33,7 @@
  *  allowing access to its calls and their associated answers.
  */
 
-#include "flags.h"
+#include "flags_xsb.h"
 
 typedef enum Tabled_Evaluation_Method {
   VARIANT_TEM      = VARIANT_EVAL_METHOD,

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.4 1999-10-25 05:58:12 kifer Exp $
+** $Id: function.c,v 1.5 1999-10-26 06:47:05 kifer Exp $
 ** 
 */
 
@@ -29,7 +29,7 @@
 #include "debugs/debug.h"
 
 #include "auxlry.h"
-#include "cell.h"
+#include "cell_xsb.h"
 #include "register.h"
 #include "memory_xsb.h"
 #include "deref.h"

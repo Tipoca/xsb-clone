@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.24 1999/10/12 20:34:44 ejohnson Exp $
+** $Id: subp.c,v 1.25 1999/10/25 05:59:32 kifer Exp $
 ** 
 */
 
@@ -42,21 +42,21 @@
 #endif
 
 #include "auxlry.h"
-#include "cell.h"
+#include "cell_xsb.h"
 #include "error_xsb.h"
-#include "psc.h"
+#include "psc_xsb.h"
 #include "memory_xsb.h"
 #include "register.h"
 #include "heap_xsb.h"
 #include "deref.h"
-#include "flags.h"
+#include "flags_xsb.h"
 #include "binding.h"
 #include "trie_internals.h"
 #include "trassert.h"
 #include "choice.h"
 #include "token_xsb.h"
 #include "sig_xsb.h"
-#include "inst.h"
+#include "inst_xsb.h"
 #include "macro_xsb.h"
 
 /*======================================================================*/

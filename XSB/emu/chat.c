@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chat.c,v 1.13 1999-10-25 05:57:29 kifer Exp $
+** $Id: chat.c,v 1.14 1999-10-26 06:46:51 kifer Exp $
 ** 
 */
 
@@ -31,9 +31,9 @@
 #ifdef CHAT	/* have this here so that gcc is silent with -ansi */
 
 #include "auxlry.h"
-#include "cell.h"
+#include "cell_xsb.h"
 #include "register.h"
-#include "psc.h"
+#include "psc_xsb.h"
 #include "tries.h"
 #include "choice.h"
 #include "macro_xsb.h"
@@ -43,7 +43,7 @@
 #include "sw_envs.h"
 #include "binding.h"
 #include "realloc.h"
-#include "inst.h"
+#include "inst_xsb.h"
 #include "io_builtins_xsb.h"
 
 static unsigned long chat_total_malloced = 0;

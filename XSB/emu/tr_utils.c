@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.27 1999/10/25 05:59:51 kifer Exp $
+** $Id: tr_utils.c,v 1.28 1999/10/25 12:02:30 kostis Exp $
 ** 
 */
 
@@ -34,23 +34,23 @@
 
 
 #include "auxlry.h"
-#include "cell.h"
+#include "cell_xsb.h"
 #include "cinterf.h"
 #include "binding.h"
-#include "psc.h"
+#include "psc_xsb.h"
 #include "heap_xsb.h"
 #include "memory_xsb.h"
 #include "register.h"
 #include "deref.h"
-#include "flags.h"
+#include "flags_xsb.h"
 #include "trie_internals.h"
 #if (!defined(WAM_TRAIL))
-#include "cut.h"
+#include "cut_xsb.h"
 #endif
 #include "macro_xsb.h"
 #include "sw_envs.h"
 #include "choice.h"
-#include "inst.h"
+#include "inst_xsb.h"
 #include "error_xsb.h"
 #include "io_builtins_xsb.h"
 #include "trassert.h"

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.28 1999/10/10 22:44:56 cbaoqiu Exp $
+** $Id: standard.P,v 1.29 1999/10/17 00:14:00 kifer Exp $
 ** 
 */
 
@@ -30,8 +30,8 @@
 
 :- compiler_options([sysmod, xpp_on]).
 
-#include "celltags.h"
-#include "flag_defs.h"
+#include "celltags_xsb.h"
+#include "flag_defs_xsb.h"
 #include "standard.h"
 #include "char_defs.h"
 

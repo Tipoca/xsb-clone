@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.19 1999-10-16 03:00:57 cbaoqiu Exp $
+** $Id: tries.h,v 1.20 1999-10-26 06:47:36 kifer Exp $
 ** 
 */
 
@@ -98,7 +98,7 @@
  *  Each of the two main components of a trie contain this field: trie
  *  nodes and hash table headers.
  *
- *  For valid trie-embedded instruction values, see file "inst.h".  */
+ *  For valid trie-embedded instruction values, see file "inst_xsb.h".  */
 
 typedef struct InstructionPlusTypeFrame {
   byte instr;		/* contains compiled trie code */

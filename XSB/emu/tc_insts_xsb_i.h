@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.1 1999-10-25 05:59:42 kifer Exp $
+** $Id: tc_insts_xsb_i.h,v 1.2 1999-10-26 06:47:30 kifer Exp $
 ** 
 */
 
@@ -486,8 +486,8 @@ case trie_retry_fail: {
 /* The first and third of these fields are predefined integers and are	*/
 /* now encoded as such.  The second field contains a malloc-ed address	*/
 /* which is encoded as a STRING (that's how addresses are encoded in	*/
-/* XSB -- see file cell.h) to prevent garbage collection from treating	*/
-/* it as a reference either to a WAM stack or to a CHAT area.		*/
+/* XSB -- see file cell_xsb.h) to prevent garbage collection from       */
+/* treating it as a reference either to a WAM stack or to a CHAT area.	*/
 /*----------------------------------------------------------------------*/
 
 /* Structure of the CPF created by hash_opcode:

@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.19 1999/09/24 21:15:57 warren Exp $
+** $Id: consult.P,v 1.20 1999/10/08 07:32:22 kifer Exp $
 ** 
 */
 
 :- compiler_options([xpp_on]).
 #include "standard.h"
 #include "char_defs.h"
-#include "flag_defs.h"
+#include "flag_defs_xsb.h"
 
 compile(Path) :- compile(Path, []).	% compile with no options
 

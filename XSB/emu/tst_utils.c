@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.2 1999-10-25 05:59:59 kifer Exp $
+** $Id: tst_utils.c,v 1.3 1999-10-26 06:47:38 kifer Exp $
 ** 
 */
 
@@ -31,16 +31,16 @@
 #include "debugs/debug.h"
 
 #include "auxlry.h"
-#include "cell.h"
+#include "cell_xsb.h"
 #include "binding.h"
-#include "psc.h"
+#include "psc_xsb.h"
 #include "register.h"
 #include "deref.h"
 #include "trie_internals.h"
 #include "tst_aux.h"
 #include "macro_xsb.h"
 #include "choice.h"
-#include "inst.h"
+#include "inst_xsb.h"
 #include "error_xsb.h"
 
 

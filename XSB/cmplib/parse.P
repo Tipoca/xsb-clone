@@ -19,13 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.24 1999-10-01 04:11:14 kifer Exp $
+** $Id: parse.P,v 1.25 1999-10-26 06:46:41 kifer Exp $
 ** 
 */
 
 
 :- compiler_options([sysmod, xpp_on]).
-#include "flag_defs.h"
+#include "flag_defs_xsb.h"
 
 
 

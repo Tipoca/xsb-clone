@@ -1,4 +1,4 @@
-/* File:      cut.h
+/* File:      cut_xsb.h
 ** Author(s): Kostis Sagonas
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut.h,v 1.4 1999-08-16 07:24:07 kifer Exp $
+** $Id: cut_xsb.h,v 1.1 1999-10-26 06:46:55 kifer Exp $
 ** 
 */
 

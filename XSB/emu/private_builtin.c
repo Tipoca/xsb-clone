@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: private_builtin.c,v 1.4 1999/10/05 04:01:49 kifer Exp $
+** $Id: private_builtin.c,v 1.5 1999/10/25 05:59:00 kifer Exp $
 ** 
 */
 
@@ -45,14 +45,14 @@
 #include <sys/stat.h>
 
 #include "auxlry.h"
-#include "cell.h"
+#include "cell_xsb.h"
 #include "error_xsb.h"
 #include "cinterf.h"
 #include "memory_xsb.h"
-#include "psc.h"
+#include "psc_xsb.h"
 #include "heap_xsb.h"
 #include "register.h"
-#include "flags.h"
+#include "flags_xsb.h"
 
 /* The folowing function must be defined. What's inside doesn't matter */
 bool private_builtin(void)

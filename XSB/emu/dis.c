@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.8 1999-10-25 05:57:47 kifer Exp $
+** $Id: dis.c,v 1.9 1999-10-26 06:46:56 kifer Exp $
 ** 
 */
 
@@ -31,14 +31,14 @@
 #include "debugs/debug.h"
 
 #include "auxlry.h"
-#include "psc.h"
+#include "psc_xsb.h"
 #include "hash_xsb.h"
 #include "loader_xsb.h"
-#include "cell.h"
-#include "inst.h"
+#include "cell_xsb.h"
+#include "inst_xsb.h"
 #include "builtin.h"
 #include "memory_xsb.h"
-#include "flags.h"
+#include "flags_xsb.h"
 #include "tries.h"
 #include "macro_xsb.h"
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.20 1999/10/12 20:25:09 ejohnson Exp $
+** $Id: slgdelay.c,v 1.21 1999/10/25 05:59:16 kifer Exp $
 ** 
 */
 
@@ -34,15 +34,15 @@
 #include "debugs/debug_delay.h"
 
 #include "auxlry.h"
-#include "cell.h"
-#include "psc.h"
+#include "cell_xsb.h"
+#include "psc_xsb.h"
 #include "register.h"
 #include "trie_internals.h"
 #include "memory_xsb.h"
 #include "choice.h"
 #include "macro_xsb.h"
 #include "tr_utils.h"
-#include "inst.h"
+#include "inst_xsb.h"
 #include "chat.h"
 #include "error_xsb.h"
 #include "io_builtins_xsb.h"

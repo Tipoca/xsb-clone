@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_insert.c,v 1.3 1999-10-25 05:59:57 kifer Exp $
+** $Id: tst_insert.c,v 1.4 1999-10-26 06:47:37 kifer Exp $
 ** 
 */
 
@@ -31,11 +31,11 @@
 #include <stdlib.h>
 
 #include "auxlry.h"
-#include "cell.h"
-#include "inst.h"
+#include "cell_xsb.h"
+#include "inst_xsb.h"
 #include "register.h"
 #include "error_xsb.h"
-#include "psc.h"
+#include "psc_xsb.h"
 #include "deref.h"
 #include "table_stats.h"
 #include "trie_internals.h"

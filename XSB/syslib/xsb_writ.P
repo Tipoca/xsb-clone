@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.P,v 1.9 1999/09/11 20:41:54 warren Exp $
+** $Id: xsb_writ.P,v 1.10 1999/10/10 21:58:11 cbaoqiu Exp $
 ** 
 */
 
 
 :- compiler_options([xpp_on]).
 
-#include "celltags.h"
+#include "celltags_xsb.h"
 #include "char_defs.h"
 
 

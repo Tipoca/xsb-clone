@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynaout_xsb_i.h,v 1.1 1999-10-25 05:57:53 kifer Exp $
+** $Id: dynaout_xsb_i.h,v 1.2 1999-10-26 06:46:57 kifer Exp $
 ** 
 */
 
@@ -34,11 +34,11 @@
 #include <stdio.h>
 
 #include "auxlry.h"
-#include "cell.h"
+#include "cell_xsb.h"
 #include "memory_xsb.h"
-#include "inst.h"
-#include "psc.h"
-#include "flags.h"
+#include "inst_xsb.h"
+#include "psc_xsb.h"
+#include "flags_xsb.h"
 #include "error_xsb.h"
 #include "io_builtins_xsb.h"
 

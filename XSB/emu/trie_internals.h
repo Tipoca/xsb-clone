@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.6 1999-10-18 21:50:13 cbaoqiu Exp $
+** $Id: trie_internals.h,v 1.7 1999-10-26 06:47:33 kifer Exp $
 ** 
 */
 
@@ -35,7 +35,7 @@
  * components which simply use tries through normal channels.
  */
 
-#include "inst.h"
+#include "inst_xsb.h"
 #include "struct_manager.h"
 #include "tries.h"
 
@@ -470,7 +470,7 @@ extern Cell TrieVarBindings[];
 /*
  *  Hashing function for symbols
  */
-#define CELL_TAG_SIZE	4	/* should go into cell.h for each machine */
+#define CELL_TAG_SIZE	4     /* should go into cell_xsb.h for each machine */
 #define TRIEVAR_BUCKET	0
 
 #define TrieHash(Symbol, HashSeed)			\
