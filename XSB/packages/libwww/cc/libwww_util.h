@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_util.h,v 1.10 2000-05-20 06:56:17 kifer Exp $
+** $Id: libwww_util.h,v 1.11 2003-12-31 01:04:51 kifer Exp $
 ** 
 */
 
@@ -60,6 +60,7 @@ HTList *XML_converter=NULL, *RDF_converter=NULL, *HTML_converter=NULL;
 #define LIBWWW_DEBUG_VERBOSE
 #define LIBWWW_DEBUG
 #define LIBWWW_DEBUG_TERSE
+#include "debug_xsb.h"
 */
 #ifdef LIBWWW_DEBUG_VERBOSE
 #define LIBWWW_DEBUG
