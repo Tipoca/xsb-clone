@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.17 2001-04-02 21:49:46 gzyang Exp $
+** $Id: flrcompiler.P,v 1.18 2001-06-03 18:32:51 kifer Exp $
 **
 */
 
@@ -1186,7 +1186,7 @@ compile_signpathexplist([T|L],[FL_OID|SignList],[TObj|LObj],Code,Status) :-
 	  Status=S
         ).
 
-compile_signpathexplist([T|L],[FL_BODYFORMULAR|SignList],[TCode|LObj],Code,Status) :-
+compile_signpathexplist([T|L],[FL_BODYFORMULA|SignList],[TCode|LObj],Code,Status) :-
 	!,
 	compile_body(T,TCode,S),
 	( S == [] ->
@@ -1959,7 +1959,7 @@ compile_wsflsignpathexplist([T|L],[FL_OID|SignList],WS,[TObj|LObj],Code,Status) 
 	  Status=S
         ).
 
-compile_wsflsignpathexplist([T|L],[FL_BODYFORMULAR|SignList],WS,[TCode|LObj],Code,Status) :-
+compile_wsflsignpathexplist([T|L],[FL_BODYFORMULA|SignList],WS,[TCode|LObj],Code,Status) :-
 	!,
 	%% workspace not distributive over nested "form"
 	compile_body(T,TCode,S),
