@@ -10,6 +10,7 @@ test :- xsb_configuration(config_bindir, Bindir), slash(S),
 	spawn_process([Cmd, '--nobanner', '--quietload', '--noprompt',
 		       '-e', '[''auxiliary/streamServer''].'],
 		      ToServer, FromServer, ServErr, Servproc),
+	%% Get rid of STDMSG output
 	fmt_write(ToServer,
 		  "file_reopen('/dev/null', w, 4, _), file_reopen('/dev/null', w, 6, _).\n", _),
 	file_flush(ToServer,_),
@@ -17,6 +18,7 @@ test :- xsb_configuration(config_bindir, Bindir), slash(S),
 	spawn_process([Cmd, '--nobanner', '--quietload', '--noprompt',
 		       '-e', '[''auxiliary/streamClient''].'],
 		      ToClient, FromClient, ClientErr, ClientProc),
+	%% Get rid of STDMSG output
 	fmt_write(ToClient,
 		  "file_reopen('/dev/null', w, 4, _), file_reopen('/dev/null', w, 6, _).\n", _),
 	file_flush(ToClient,_),
@@ -48,5 +50,6 @@ test :- xsb_configuration(config_bindir, Bindir), slash(S),
 	file_close(ClientErr),
 	process_control(Servproc,wait),
 	process_control(ClientProc,wait),
+	%% flush stdout
 	file_flush(1,_).
 

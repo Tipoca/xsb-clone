@@ -39,6 +39,11 @@ Please enter goal: g(X). or h(X).  Type e. to finish. Goal:
 Please enter goal: g(X). or h(X).  Type e. to finish. Goal: 
 Please enter goal: g(X). or h(X).  Type e. to finish. Goal: 
 Please enter goal: g(X). or h(X).  Type e. to finish. Goal: 
+Success: sock_connect1(sockfd0,6022,localhost,0)
+Success: socket_accept(sockfd0,sockfd0_out2,0)
+Success: socket_accept1(sockfd0,sockfd0_out1,0)
+Success: socket_bind(sockfd0,6022,0)
+Success: socket_connect(sockfd1,6022,localhost,0)
 Timeout or EOF: -1
 Timeout or EOF: -2
 Timeout or EOF: -2
@@ -60,10 +65,5 @@ serverloop2
 serverloop2
 serverloop2
 socket(sockfd0,0)
-socket_accept(sockfd0,sockfd0_out2,0)
-socket_accept1(sockfd0,sockfd0_out1,0)
-socket_bind(sockfd0,6022,0)
-socket_connect(sockfd1,6022,localhost,0)
-socket_connect1(sockfd0,6022,localhost,0)
 socket_listen(sockfd0,10,0)
 started client...
