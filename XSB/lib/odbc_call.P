@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.P,v 1.28 2004-01-27 15:19:24 harpreet_singh Exp $
+** $Id: odbc_call.P,v 1.29 2004-06-12 22:32:38 dwarren Exp $
 **
 */
 
@@ -1438,14 +1438,11 @@ set_def_bindvar_table(BindVals,Cursor) :-
 	set_def_bindvar_table(BindVals,Cursor,0).
 set_def_bindvar_table([],_Cursor,_I).
 set_def_bindvar_table([Val|BindVals],Cursor,I) :-
-	(Val = 'NULL'(_)
-	 ->	set_bind(Cursor,I,'NULL')
-	 ;	(structure(Val)
-		 ->	\+ (numbervars(Val),
-			    set_bind(Cursor,I,Val),
-			    fail)
-		 ;	set_bind(Cursor,I,Val)
-		)
+	(structure(Val)
+	 ->	\+ (numbervars(Val),
+		    set_bind(Cursor,I,Val),
+		    fail)
+	 ;	set_bind(Cursor,I,Val)
 	),
         I1 is I + 1,
 	set_def_bindvar_table(BindVals,Cursor,I1).
