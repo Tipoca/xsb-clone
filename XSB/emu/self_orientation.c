@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: self_orientation.c,v 1.11 1999-05-03 00:55:49 luis Exp $
+** $Id: self_orientation.c,v 1.12 1999-05-10 13:26:49 unova Exp $
 ** 
 */
 
@@ -265,7 +265,7 @@ DllExport void call_conv set_config_file() {
 
   /* Check if configuration.P exists and is readable */
   retcode = stat(xsb_config_file, &fileinfo);
-  if ( (retcode != 0) || !(S_IREAD & fileinfo.st_mode) ) {
+  if ( (retcode != 0) || !(S_IRUSR & fileinfo.st_mode) ) {
     fprintf(stderr,
 	    "*************************************************************\n");
     fprintf(stderr, "PANIC! XSB configuration file %s\n", xsb_config_file);
