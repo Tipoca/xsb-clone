@@ -1,10 +1,10 @@
-/* File:      flroperator.H
+/* File:      flrundefined.H
 **
-** Author(s): Guizhen Yang
+** Author(s): Chang Zhao
 **
 ** Contact:   xsb-contact@cs.sunysb.edu
 **
-** Copyright (C) The Research Foundation of SUNY, 1999-2001
+** Copyright (C) The Research Foundation of SUNY, 2002
 **
 ** FLORA-2 is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -15,33 +15,36 @@
 ** WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 ** FOR A PARTICULAR PURPOSE.  See the GNU Library General Public License for
 ** more details.
-**
+** 
 ** You should have received a copy of the GNU Library General Public License
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
+** $Id: flrundefined.H,v 1.1 2002-02-28 04:25:27 kifer Exp $
 **
 */
 
+:- dynamic term_seen(_).
 
-:- dynamic flora_dynop(_,_,_).
+:- import 
+	storage_find_fact/2, 
+	storage_insert_fact/3
+   from storage.
 
-:- dynamic flora_shop(_,_,_).
+:- import str_cat/3 from string.
 
-:- index(flora_dynop/3,trie).
+:- import flora_prlgdef/2 from flrprolog.
 
-:- index(flora_shop/3,trie).
+:- import flora_extern_code/2 from flrcoder.
 
-:- index flora_op/3-3.
+:- import flora_decode_predicate/6 from flrwrapper.
 
-:- import assert/1, retractall/1 from assert.
+:- import flora_error_line/2 from flrprint.
 
-:- import conget/2 from gensym.
+:- import flora_debug_module_registry/1 from flrutils.
 
 :- export
-	flora_opdef/3,
-	flora_conflict_operator/3,
-	flora_reset_operator/0,
-	flora_define_operator/3,
-	flora_shreset_operator/0,
-	flora_shdefine_operator/3.
+	flora_debug_code/2,
+	flora_error_undefined/1,
+	flora_insert_skeleton/1,
+	flora_build_skeleton/2.

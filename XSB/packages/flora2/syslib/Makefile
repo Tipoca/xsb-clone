@@ -7,21 +7,21 @@
 ## 
 ## Copyright (C) The Research Foundation of SUNY, 1999-2001
 ## 
-## XSB is free software; you can redistribute it and/or modify it under the
+## FLORA-2 is free software; you can redistribute it and/or modify it under the
 ## terms of the GNU Library General Public License as published by the Free
 ## Software Foundation; either version 2 of the License, or (at your option)
 ## any later version.
 ## 
-## XSB is distributed in the hope that it will be useful, but WITHOUT ANY
+## FLORA-2 is distributed in the hope that it will be useful, but WITHOUT ANY
 ## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 ## FOR A PARTICULAR PURPOSE.  See the GNU Library General Public License for
 ## more details.
 ## 
 ## You should have received a copy of the GNU Library General Public License
-## along with XSB; if not, write to the Free Software Foundation,
+## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.13 2002-02-23 04:04:33 kifer Exp $
+## $Id: Makefile,v 1.14 2002-02-28 04:25:25 kifer Exp $
 ## 
 ##
 
@@ -175,7 +175,7 @@ finish:
 
 
 clean:
-	/bin/rm -f *~ *O
+	/bin/rm -f *~ .*~ *O *.bak .#*
 
 
 .DONE:
