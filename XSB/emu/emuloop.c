@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.61 2000-04-11 22:30:27 kifer Exp $
+** $Id: emuloop.c,v 1.62 2000-04-25 15:22:56 kostis Exp $
 ** 
 */
 
@@ -939,7 +939,7 @@ contcase:     /* the main loop */
     }
     else {
       ADVANCE_PC;
-      arithmetic_comp_abort(op1, "=/=", op2);
+      arithmetic_comp_abort(op1, "=\\=", op2);
     }
     goto contcase;
 
