@@ -33,6 +33,7 @@ for file in $file_list ; do
 	continue
     fi
     prog=`basename $file .flr`
+    touch $file
     # XEMU and options must be together in quotes
     ../gentest.sh "$XEMU $options -e $flora_options" $prog "$flora_command"
 done
