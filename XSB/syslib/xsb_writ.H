@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.H,v 1.5 1999/08/09 00:35:30 kifer Exp $
+** $Id: xsb_writ.H,v 1.6 1999/11/20 06:52:10 kifer Exp $
 ** 
 */
 
@@ -27,6 +27,7 @@
 	file_write_quoted/2, file_write_canonical/2,
 	file_nl/1.
 :- export write_int/1, write_float/1.
+:- export write_canonical_lettervar/1.
 
 :- import '_$op'/3 from file_op.
 :- import file_put/2 from file_io.
