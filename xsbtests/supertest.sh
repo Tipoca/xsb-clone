@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: supertest.sh,v 1.15 2000-02-15 07:45:09 bartkul Exp $
+## $Id: supertest.sh,v 1.16 2000-04-29 20:16:22 kifer Exp $
 ## 
 ##
 
@@ -37,9 +37,11 @@ lockfile=lock.super
 GREP="grep -i"
 
 if test -z "$xsbdir" ; then
-   echo "Arg 1 must be a path to the XSB installation directory"
-   exit 1
-elif test ! -d "$xsbdir" ; then
+   echo "***XSB root directory hasn't been specified."
+   xsbdir=$testdir/../XSB
+   echo "***Assuming $xsbdir"
+fi
+if test ! -d "$xsbdir" ; then
    echo "$xsbdir: XSB root directory doesn't exist or has wrong permissions"
    exit 1
 fi

@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.23 2000-02-15 07:45:09 bartkul Exp $
+## $Id: testsuite.sh,v 1.24 2000-04-29 20:16:22 kifer Exp $
 ## 
 ##
 
@@ -103,9 +103,20 @@ do
     esac
 done
 
+installdir=$1
+testdir=`pwd`
+if test -z "$installdir" ; then
+   echo "***XSB root directory hasn't been specified."
+   installdir=$testdir/../XSB
+   echo "***Assuming $installdir"
+fi
+if test ! -d "$installdir" ; then
+   echo "$installdir: XSB root directory doesn't exist or has wrong permissions"
+   exit 1
+fi
 
 # install dir argument
-if test -z "$1" -o $# -gt 1; then
+if test $# -gt 1; then
     echo "Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude \"excl_list\"] [-add \"add_list\"] [-only \"test_list\"] [-mswin] path"
     echo "where: opts      -- options to pass to XSB"
     echo "       tag       -- the configuration tag to use"
@@ -115,8 +126,6 @@ if test -z "$1" -o $# -gt 1; then
     echo "       path      -- full path name of the XSB installation directory"
     exit
 fi
-
-installdir=$1
 
 
 if test -n "$config_tag" ; then
