@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.48 2005-01-14 18:30:53 ruim Exp $
+** $Id: cinterf.c,v 1.49 2005-03-05 07:49:51 kifer Exp $
 ** 
 */
 
@@ -490,7 +490,7 @@ DllExport char *call_conv p2c_chars(CTXTdeclc prolog_term term, char *buf, int b
 
   p_charlist_to_c_string(CTXTc term, &bufvar, "p2c_chars", "list -> char*");
   
-  if (strlen(bufvar.string) > bsize) {
+  if (strlen(bufvar.string) > (size_t) bsize) {
     xsb_abort("Buffer overflow in p2c_chars");
   }
 

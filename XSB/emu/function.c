@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.13 2005-01-14 18:31:16 ruim Exp $
+** $Id: function.c,v 1.14 2005-03-05 07:49:51 kifer Exp $
 ** 
 */
 
@@ -87,7 +87,7 @@ int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
     break;
   case FUN_floor:
     set_fvalue_from_value;
-    ivalue = floor(fvalue);
+    ivalue = (prolog_int) floor(fvalue);
     bld_oint(regaddr, ivalue);
     break;
   case FUN_PLUS:

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.7 2005-01-14 18:31:16 ruim Exp $
+** $Id: gc_mark.h,v 1.8 2005-03-05 07:49:50 kifer Exp $
 ** 
 */
 
@@ -701,7 +701,7 @@ int mark_heap(CTXTdeclc int arity, int *marked_dregs)
   if (slide) {
 #ifdef INDIRECTION_SLIDE
     /* space for keeping pointers to live data */
-    slide_buf_size = (hreg+1-(CPtr)glstack.low)*0.2;
+    slide_buf_size = (unsigned long) ((hreg+1-(CPtr)glstack.low)*0.2);
     slide_buf = (CPtr *) calloc(slide_buf_size+1, sizeof(CPtr));
     if (!slide_buf)
       xsb_exit("Not enough space to allocate slide_buf");

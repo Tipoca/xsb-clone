@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.18 2005-01-14 18:31:33 ruim Exp $
+** $Id: table_stats.c,v 1.19 2005-03-05 07:49:50 kifer Exp $
 ** 
 */
 
@@ -170,7 +170,7 @@ NodeStats subgoal_statistics(Structure_Manager *sm) {
     return sg_stats;
   }
 
-  if ( NodeStats_NumUsedNodes(sg_stats) != nSubgoals )
+  if ( NodeStats_NumUsedNodes(sg_stats) != (counter) nSubgoals )
     xsb_warn("Inconsistent Subgoal Frame Usage Calculations:\n"
 	     "\tSubgoal Frame count mismatch");
 

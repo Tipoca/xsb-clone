@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.41 2005-02-04 16:56:13 dwarren Exp $
+** $Id: init_xsb.c,v 1.42 2005-03-05 07:49:50 kifer Exp $
 ** 
 */
 
@@ -846,7 +846,7 @@ Psc make_code_psc_rec(char *name, int arity, Psc mod_psc) {
   Pair temp;
   int new;
   Psc new_psc;
-  temp = insert(name, arity, mod_psc, &new);
+  temp = (Pair)insert(name, (byte) arity, mod_psc, &new);
   new_psc = pair_psc(temp);
   set_data(new_psc, mod_psc);
   set_env(new_psc, T_UNLOADED);
@@ -876,7 +876,7 @@ void init_symbols(void)
   global_mod = pair_psc(tp);
 
   /* insert "."/2 into global list */
-  temp = insert(".", 2, global_mod, &new_indicator);
+  temp = (Pair)insert(".", 2, global_mod, &new_indicator);
   list_str = temp;
   list_psc = pair_psc(temp);
   list_dot = get_name(list_psc);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.103 2005-01-14 18:30:56 ruim Exp $
+** $Id: emuloop.c,v 1.104 2005-03-05 07:49:51 kifer Exp $
 ** 
 */
 
@@ -1296,7 +1296,7 @@ contcase:     /* the main loop */
         Float temp = (Float)int_val(op2) / (Float)boxedint_val(op1);
         bld_float(op3, temp); }
       else if (isboxedinteger(op2)) {
-        Integer temp = (Float)boxedint_val(op2) / (Float)boxedint_val(op1);
+        Integer temp = (Integer) ((Float)boxedint_val(op2) / (Float)boxedint_val(op1));
         bld_float(op3, temp); }
       else if (isfloat(op2)) {
         Float temp = (Float)float_val(op2) / (Float)boxedint_val(op1);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.5 2005-01-14 18:31:33 ruim Exp $
+** $Id: sub_tables_xsb_i.h,v 1.6 2005-03-05 07:49:50 kifer Exp $
 ** 
 */
 
@@ -119,7 +119,7 @@ inline static  CPtr extract_template_from_insertion(CTXTdeclc CPtr ans_tmplt) {
   int i;
 
   i = 0;
-  while ( i < Trail_NumBindings )
+  while ( i < (int) Trail_NumBindings )
     *ans_tmplt-- = (Cell)Trail_Base[i++];
   *ans_tmplt = makeint(i);
   return ans_tmplt;
