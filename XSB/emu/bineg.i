@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg.i,v 1.9 1999-04-22 06:49:09 kifer Exp $
+** $Id: bineg.i,v 1.10 1999-06-14 00:32:07 cbaoqiu Exp $
 ** 
 */
 
@@ -183,10 +183,10 @@
 	  }
 	}
 	bind_nil(dls_tail);
+	free(copy_of_var_addr);
       } else {
 	bind_nil((CPtr)delay_lists);
       }
-      free(copy_of_var_addr);
       break;
 
 /*----------------------------------------------------------------------*/
