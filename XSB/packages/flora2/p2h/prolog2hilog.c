@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prolog2hilog.c,v 1.8 2001-10-20 21:32:54 kifer Exp $
+** $Id: prolog2hilog.c,v 1.9 2002-02-26 10:29:20 kifer Exp $
 ** 
 */
 
@@ -56,7 +56,6 @@ inline static int is_hilog(prolog_term term, char *apply_funct);
 inline static int is_commalist(prolog_term term);
 static prolog_term map_commalist(prolog_term (*func)(), prolog_term term, char *apply);
 static prolog_term map_list(prolog_term func(), prolog_term term, char *apply);
-
 
 
 /*
@@ -301,7 +300,17 @@ static char *pterm2string(prolog_term term)
 
 inline static int is_hilog(prolog_term term, char *apply_funct)
 {
-  return (strcmp(apply_funct, p2c_functor(term))==0);
+  size_t length_diff;
+  char *func = p2c_functor(term); /* term functor */
+  
+  length_diff = strlen(func) - strlen(apply_funct);
+  
+  if (0 > length_diff) return FALSE;
+
+  /* Match apply_funct to the end of the term functor.
+     HiLog terms have functor=apply_functor.
+     HiLog predicates have complex functor, whose tail matches flapply */
+  return (strcmp(apply_funct, func+length_diff)==0);
 }
 
 
@@ -310,6 +319,8 @@ inline static int is_commalist(prolog_term term)
   if (is_scalar(term) || is_list(term)) return FALSE;
   return (strcmp(",", p2c_functor(term))==0);
 }
+
+
 
 /* 
    plg2hlg(a(qq,b(c,4),b(c,5,d(X,U))),X,aaa).
