@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.h,v 1.10 1999-03-17 18:34:45 kostis Exp $
+** $Id: inst.h,v 1.11 1999-03-18 01:23:28 cbaoqiu Exp $
 ** 
 */
 
@@ -293,7 +293,14 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define check_complete		0xc9
 #define resume_compl_suspension 0xca
 
-#define new_answer_dealloc	0xce
+/*
+ * Rename the original instruction `new_answer_dealloc' (0xce) to
+ * `old_new_answer_dealloc', and use a new number (0xcf) for
+ * `new_answer_dealloc' (this is done in XSB 2.0 to make the system
+ * backward compatible).
+ */
+#define old_new_answer_dealloc	0xce
+#define new_answer_dealloc	0xcf
 
 #define term_comp		0xd0
 
