@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory.c,v 1.10 1999-09-08 13:45:29 warren Exp $
+** $Id: memory.c,v 1.11 1999-09-08 13:56:09 warren Exp $
 ** 
 */
 
@@ -98,8 +98,10 @@ void tcpstack_realloc(long new_size) {
   long trail_offset,      /* byte offsets between the old and new */
        cps_offset;        /*    stack bottoms */
 
-  CPtr *trail_link,    /* for stepping thru Trail and altering dyn links */
-       *cell_ptr;      /* for stepping thru CPStack and altering cell values */
+#ifndef CHAT
+  CPtr *trail_link;    /* for stepping thru Trail and altering dyn links */
+#endif
+  CPtr *cell_ptr;      /* for stepping thru CPStack and altering cell values */
   byte *cell_val;      /* consider each cell to contain a ptr value */
 
   /*
