@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.24 1999/10/05 04:01:57 kifer Exp $
+** $Id: tr_utils.c,v 1.25 1999/10/13 14:11:29 ejohnson Exp $
 ** 
 */
 
@@ -61,7 +61,7 @@
 
 /*----------------------------------------------------------------------*/
 
-#define dbind_ref_nth_var(addr,n) dbind_ref(addr,CallVarEnum[n])
+#define dbind_ref_nth_var(addr,n) dbind_ref(addr,VarEnumerator[n])
 
 #define MAX_VAR_SIZE	200
 
@@ -157,7 +157,7 @@ static BTNptr  *GNodePtrPtr;
        }								      \
        else								      \
 	 one_node_chk(flag,						      \
-		      EncodeTrieVar(IndexOfStandardizedVariable(xtemp1)));    \
+		      EncodeTrieVar(IndexOfStdVar(xtemp1)));		      \
        break;								      \
      case STRING:							      \
      case INT:								      \
@@ -224,7 +224,7 @@ static BTNptr variant_call_lookup(int arity, CPtr argVector, BTNptr callTrie) {
 	    one_node_chk(flag,EncodeNewTrieVar(ctr));           
 	    ctr++;
 	  } else {
-	    one_node_chk(flag,EncodeTrieVar(IndexOfStandardizedVariable(xtemp1)));
+	    one_node_chk(flag,EncodeTrieVar(IndexOfStdVar(xtemp1)));
 	  }
 	  break;
 	case STRING: case INT: case FLOAT:            

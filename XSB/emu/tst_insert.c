@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_insert.c,v 1.1 1999-10-12 19:23:10 ejohnson Exp $
+** $Id: tst_insert.c,v 1.2 1999-10-18 21:50:15 cbaoqiu Exp $
 ** 
 */
 
@@ -486,7 +486,7 @@ TSTNptr subsumptive_answer_search(int nTerms, CPtr termVector,
 	std_var_num++;
       }
       else
-	symbol = EncodeTrieVar(IndexOfStandardizedVariable(subterm));
+	symbol = EncodeTrieVar(IndexOfStdVar(subterm));
       break;
 
     case STRING: case INT: case FLOAT:
