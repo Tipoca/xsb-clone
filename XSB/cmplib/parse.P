@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.28 1999-11-21 05:46:28 kifer Exp $
+** $Id: parse.P,v 1.29 1999-11-29 08:07:57 kifer Exp $
 ** 
 */
 
@@ -76,7 +76,7 @@ parse1(Modname, File, Module) :-
 	;   true
 	),
 	(
-	    XPP_process = none, ! 
+	    XPP_process == none, ! 
 	;   %% Wait, if cpp was spawned so as to not leave zombies
 	    process_control(XPP_process, wait),
 	    %% Also, release the file descriptor used to read from cpp
