@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: scrptutl.P,v 1.12 2003-04-25 17:44:52 lfcastro Exp $
+** $Id: scrptutl.P,v 1.13 2003-06-06 18:38:28 lfcastro Exp $
 ** 
 */
 
@@ -103,13 +103,19 @@ date(date(Y,Mon,D,H,Min,S)):-
 
 % Crude but effective.  Returns stdout of a unix command as a list of
 % tokens. Obsolete!
-sysin(Command,List):-
-%	obsolete('sysin/1', 'shell/5'),
-	ca([Command,'> /tmp/XSBdir'],Com1),
-	unix(Com1),
-	open('/tmp/XSBdir',read,Str),
-	file_to_list(Str,0,List),
-	close(Str).
+% sysin(Command,List):-
+% %	obsolete('sysin/1', 'shell/5'),
+% 	ca([Command,'> /tmp/XSBdir'],Com1),
+% 	unix(Com1),
+% 	open('/tmp/XSBdir',read,Str),
+% 	file_to_list(Str,0,List),
+% 	close(Str).
+
+sysin(Command,List) :-
+	spawn_process(Command,_,Output,_,_),
+	file_to_list(Output,List).
+
+
 
 %% Obsolete
 file_to_list(_Str,-1,[]):-
