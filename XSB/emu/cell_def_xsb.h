@@ -18,13 +18,17 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_def_xsb.h,v 1.2 1999-12-10 07:47:28 kifer Exp $
+** $Id: cell_def_xsb.h,v 1.3 2001-12-30 05:57:25 kifer Exp $
 ** 
 */
 
+
+#ifndef CELL_DEF_XSB_INCL 
+#define CELL_DEF_XSB_INCL 
 
 /* CELL and PROLOG_TERM are defined identically.
    However, CELL is used to refer to elements of (slg-)WAM stacks, while
    PROLOG_TERM is used in the interface to point to a cell containing 
    the outer functor of a prolog term. */
 typedef unsigned long Cell;
+#endif
