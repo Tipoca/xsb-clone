@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.27 2004/08/29 22:57:04 tswift Exp $
+** $Id: file_io.H,v 1.28 2004/08/31 15:14:12 tswift Exp $
 ** 
 */
 
@@ -72,7 +72,8 @@
 	  file_clearerr/1, tmpfile_open/1,
   print_openfiles/0, check_enumerate_stream_or_alias/4, 
   check_stream_or_alias/4, check_open_stream_or_alias/5, add_alias/2,
-  is_valid_stream/2.
+  is_valid_stream/2, peek_code/1, peek_code/2, peek_char/1, peek_char/2,
+  at_end_of_stream/1, at_end_of_stream/0, set_stream_position/2.
 
 % ISO predicates (sometimes rewrites of earlier predicates w. more checking).
 :- export stream_property/2, flush_output/1, flush_output/0.

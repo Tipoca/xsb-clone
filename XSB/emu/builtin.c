@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.184 2004-08-24 20:41:06 tswift Exp $
+** $Id: builtin.c,v 1.185 2004-09-02 19:48:50 tswift Exp $
 ** 
 */
 
@@ -1695,18 +1695,6 @@ int builtin_call(byte number)
   case PSC_TABLED: {	/* reg 1: +PSC; reg 2: -int */
     Psc psc = (Psc)ptoc_addr(1);
     ctop_int(2, (Integer)get_tip(psc));
-    break;
-  }
-  case PRINTOFILES: { /* no args */
-    int i; 
-    for (i= 0 ; i < MAX_OPEN_FILES ; i++) {
-      if ((int) open_files[i].file_name == 0) {
-	printf("i: %d File Ptr %p \n",i,open_files[i].file_ptr);
-      } else {
-	printf("i; %d File Ptr %p Name %s Mode %c \n",i,
-	       open_files[i].file_ptr, open_files[i].file_name,open_files[i].io_mode);
-      }
-    }
     break;
   }
 /*----------------------------------------------------------------------*/

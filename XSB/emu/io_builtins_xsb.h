@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.h,v 1.6 2004-08-29 22:57:04 tswift Exp $
+** $Id: io_builtins_xsb.h,v 1.7 2004-09-02 19:48:51 tswift Exp $
 ** 
 */
 
@@ -50,7 +50,7 @@ typedef struct  {
 
 extern stream_record open_files[];      /* Table of file pointers for open files */
 
-extern int old_xsb_intern_file(FILE *file,char *c);
+extern int xsb_intern_fileptr(FILE *file,char *c,char *c2,char *c3);
 extern int xsb_intern_file(char *c1,char *c2,int *i,char *strmode);
 
 extern void write_quotedname(FILE *file, char *string);
