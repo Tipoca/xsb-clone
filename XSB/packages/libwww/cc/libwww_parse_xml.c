@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse_xml.c,v 1.6 2000-04-03 05:04:37 kifer Exp $
+** $Id: libwww_parse_xml.c,v 1.7 2000-04-04 00:45:58 kifer Exp $
 ** 
 */
 
@@ -528,8 +528,6 @@ PRIVATE int xml_externalEntityRef (XML_Parser     parser,
   HTChunk   *chunk = NULL;
   char      *cwd = HTGetCurrentDirectoryURL();
 
-  /* make it a blocking request, so that we get the result right away */
-  HTRequest_setPreemptive(request, YES);
   /* put the same context on this request */
   HTRequest_setContext(request, (void *)context);
 
@@ -541,6 +539,8 @@ PRIVATE int xml_externalEntityRef (XML_Parser     parser,
 #endif
 
   HTRequest_setOutputFormat(request, WWW_SOURCE);
+  /* make it a blocking request, so that we get the result right away */
+  HTRequest_setPreemptive(request, YES);
   /*
     HTRequest_addConnection(request, "close", "");
   */
