@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.7 2001-02-20 19:05:02 gzyang Exp $
+** $Id: flrshell.P,v 1.8 2001-02-20 19:37:58 gzyang Exp $
 **
 */
 
@@ -141,15 +141,15 @@ help :-
 	flora_stdmsg_line('o one'),
 	flora_stdmsg_line('    show solutions one by one'),
 	flora_stdmsg_line('o maxerr(all|N)'),
-	flora_stdmsg_line('    set/show the error reporting threshold'),
+	flora_stdmsg_line('    set/show the maximum number of errors FLORA reports'),
 	flora_stdmsg_line('o fltrace/flrnotrace'),
 	flora_stdmsg_line('    turn on/off FLORA trace'),
 	flora_stdmsg_line('o chatter/nochatter'),
 	flora_stdmsg_line('    turn on/off FLORA chatter'),
 	flora_stdmsg_line('o end'),
-	flora_stdmsg_line('    Ciao to FLORA'),
+	flora_stdmsg_line('    say Ciao to FLORA'),
 	flora_stdmsg_line('o halt'),
-	flora_stdmsg_line('    Ciao both to FLORA and XSB').
+	flora_stdmsg_line('    quit both FLORA and XSB').
 
 
 /*********************************************************************/
