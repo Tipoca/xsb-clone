@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.21 1999-10-26 15:11:10 kifer Exp $
+## $Id: testsuite.sh,v 1.22 1999-11-30 04:35:07 kifer Exp $
 ## 
 ##
 
@@ -93,9 +93,9 @@ do
 
       *-mswin*)
 	    shift
-		windows=true
-		echo "Running tests under Windows"
-		;;
+	    windows=true
+	    echo "Running tests under Windows"
+	    ;;
 
       *)
 	    break

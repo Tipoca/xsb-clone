@@ -20,21 +20,53 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: socktest.sh,v 1.1 1999-11-15 00:12:57 kifer Exp $
+## $Id: socktest.sh,v 1.2 1999-11-30 04:35:06 kifer Exp $
 ## 
 ##
 
 # THIS SCRIPT EXPECTS TO BE RUN FROM THE TESTSUITE DIRECTORY
 
-# $1 must be the path to the XSB installation directory
 
 
+while test 1=1
+do
+    case "$1" in
+     *-opt*)
+	    shift
+	    options="-opts $1"
+	    shift
+	    ;;
+	    
+     *-tag*)
+	    shift
+	    config_opt="-tag $1"
+	    shift
+	    ;;
+
+      *-mswin*)
+	    shift
+	    windows_opt=-mswin
+	    echo "Running tests under Windows"
+		;;
+
+      *)
+	    break
+	    ;;
+    esac
+done
+
+
+# install dir argument
 if test -z "$1" -o $# -gt 1; then
-    echo "Usage: socktest.sh <path>"
-    echo "where: "
+    echo "Usage: socktest.sh [-opts opts] [-tag tag] [-mswin] <path>"
+    echo "where: opts      -- options to pass to XSB"
+    echo "       tag       -- the configuration tag to use"
     echo "       path      -- full path name of the XSB installation directory"
     echo ""
     exit
 fi
 
-testsuite.sh -only socket_tests  $1
+installdir=$1
+
+testsuite.sh -only socket_tests  $config_opt $options \
+	    $windows_opt $installdir
