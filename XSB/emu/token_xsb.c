@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.9 2001-03-23 03:51:41 kifer Exp $
+** $Id: token_xsb.c,v 1.10 2001-12-24 18:45:35 dwarren Exp $
 ** 
 */
 
@@ -255,8 +255,8 @@ static void SyntaxError(char *description)
 void unGetC(int d, FILE *card, STRFILE *instr)
 {
   if (instr) {
-    ++(instr)->strcnt;
-    *(--(instr)->strptr) = d;
+    (instr)->strcnt++;
+    (instr)->strptr--;
   }
   else ungetc(d, card);
 }
@@ -715,7 +715,7 @@ DECIMAL:                *s++ = '.';
 				token->type = TK_REAL;
                         return token;
                     } else {
-                        unGetC(d, card, instr);
+		        unGetC(d, card, instr);
                         /* c has not changed */
                     }
 		}
