@@ -18,17 +18,19 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_defs_xsb.h,v 1.6 2004-08-29 22:57:04 tswift Exp $
+** $Id: io_defs_xsb.h,v 1.7 2004-08-31 15:14:11 tswift Exp $
 ** 
 */
 
+/* TLS: redefined FILE_OPEN to XSB_FILE_OPEN to avoid conflict with
+   win32api/windef.h */
 
 /* OP numbers for file_function */
 #define FILE_FLUSH         0
 #define FILE_SEEK          1
 #define FILE_TRUNCATE      2
 #define FILE_POS      	   3
-#define FILE_OPEN      	   4
+#define XSB_FILE_OPEN      	   4
 #define FILE_CLOSE     	   5
 #define FILE_GET     	   6
 #define FILE_PUT     	   7
@@ -69,3 +71,6 @@
 #define READ_MODE 0
 #define WRITE_MODE 1
 #define APPEND_MODE 2
+
+#define FORCE_FILE_CLOSE     0 
+#define NOFORCE_FILE_CLOSE     1

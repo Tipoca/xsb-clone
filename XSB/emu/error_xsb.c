@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.26 2004-08-19 22:15:24 tswift Exp $
+** $Id: error_xsb.c,v 1.27 2004-08-31 15:14:11 tswift Exp $
 ** 
 */
 
@@ -139,6 +139,42 @@ void call_conv xsb_type_error(char *valid_type,Cell culprit, char *predicate,int
   bld_string(tptr,string_find(valid_type,1));
   tptr++;
   bld_ref(tptr,culprit);
+
+  xsb_throw(ball_to_throw);
+
+}
+
+/*****************/
+void call_conv xsb_permission_error(char *operation,char *object,int rtrn,
+				    char *predicate,int arity) 
+{
+  prolog_term ball_to_throw;
+  int isnew;
+  Cell *tptr; char message[255];
+
+  sprintf(message,"(return %d) in predicate %s/%d)",rtrn,predicate,arity);
+
+  if (!space_for_iso_ball) {
+    space_for_iso_ball = (Cell *) malloc(8*sizeof(Cell)); /* cells needed for term */
+    if (!space_for_iso_ball) xsb_exit("out of memory in xsb_type_error!");
+  }
+  tptr = space_for_iso_ball;
+  ball_to_throw = makecs(tptr);
+  bld_functor(tptr, pair_psc(insert("error",3,
+				    (Psc)flags[CURRENT_MODULE],&isnew)));
+  tptr++;
+  bld_cs(tptr,(Cell) (tptr+3));
+  tptr++;
+  bld_string(tptr,string_find(message,1));
+  tptr++;
+  bld_copy(tptr,build_xsb_backtrace());
+  tptr++;
+  bld_functor(tptr, pair_psc(insert("permission_error",2,
+				    (Psc)flags[CURRENT_MODULE],&isnew)));
+  tptr++;
+  bld_string(tptr,string_find(operation,1));
+  tptr++;
+  bld_string(tptr,string_find(object,1));
 
   xsb_throw(ball_to_throw);
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: push_io.P,v 1.1 2000/12/27 00:28:24 kifer Exp $
+** $Id: push_io.P,v 1.2 2001/03/23 03:48:18 kifer Exp $
 ** 
 */
 
@@ -44,7 +44,6 @@ push_stdin(Stack,Stream) :-
 	; L = []
 	),
 	assert(input_streams(Stack,[Input|L])).
-
 
 %% fails if the IO stack is empty
 %% Pops up the previously saved stream from the stack and "see's" it.
