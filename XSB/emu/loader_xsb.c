@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.32 2004-01-14 20:27:12 dwarren Exp $
+** $Id: loader_xsb.c,v 1.33 2004-03-08 13:56:28 dwarren Exp $
 ** 
 */
 
@@ -352,6 +352,7 @@ static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
       case PP:
       case PPP:
       case PPR:
+      case PRR:
       case RRR:
 	break;
       case S:

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.98 2004-01-28 20:28:07 dwarren Exp $
+** $Id: emuloop.c,v 1.99 2004-03-08 13:56:25 dwarren Exp $
 ** 
 */
 
@@ -1358,6 +1358,22 @@ contcase:     /* the main loop */
     else {
       arithmetic_comp_abort(op1, "=:=", op2);
     }
+  XSB_End_Instr()
+
+  XSB_Start_Instr(fun_test_ne,_fun_test_ne)   /* PRR-L */
+    Def3ops
+    Op1(Register(get_xrx));
+    Op2(Register(get_xxr));
+    Op3(get_xxxl);
+    ADVANCE_PC(size_xxxX);
+    XSB_Deref(op1);
+    XSB_Deref(op2);
+    if (isconstr(op1)) {
+      if (!isconstr(op2) || get_str_psc(op1) != get_str_psc(op2)) 
+        lpcreg = (byte *) op3;
+    } else if (islist(op1)) {
+      if (!islist(op2)) lpcreg = (byte *) op3;
+    } else if (op1 != op2) lpcreg = (byte *) op3;
   XSB_End_Instr()
 
   XSB_Start_Instr(putdval,_putdval) /* PVR */
