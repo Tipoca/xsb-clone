@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: smodels.H,v 1.2 1999-09-06 17:32:45 kifer Exp $
+** $Id: smodels.H,v 1.3 1999-11-23 23:43:56 luis Exp $
 ** 
 */
 
@@ -27,11 +27,7 @@
 
 #include "configs/config.h"
 
-#ifdef LINUX
-:- compile_command 'egcc -c xsb_wrap_smodels.c; g++ -s -o smodels.so -shared smodels.c xsb_wrap_smodels.o  smodels.o stack.o dcl.o atomrule.o read.o queue.o timer.o list.o improve.o program.o api.o stable.o tree.o denant.o'.
-#else
 :- compile_command 'gcc -c xsb_wrap_smodels.c; g++ -s -o smodels.so -shared smodels.c xsb_wrap_smodels.o  smodels.o stack.o dcl.o atomrule.o read.o queue.o timer.o list.o improve.o program.o api.o stable.o tree.o denant.o'.
-#endif
 
 :- foreign_pred smodelsInit from init(void):void.
 :- foreign_pred smodelsNumAtoms(+a) from numberAtoms(a:int):void.
