@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.5 1999/03/23 22:45:18 kifer Exp $
+** $Id: subp.c,v 1.6 1999/03/25 02:47:13 kifer Exp $
 ** 
 */
 
@@ -196,7 +196,7 @@ void keyint_proc(int sig)
 /* SIGSEGV handler that catches segfaults; used unless configured with DEBUG */
 void xsb_segfault_catcher (int err)
 {
-  longjmp(xsb_fall_back_environment, 1);
+  longjmp(xsb_segfault_fallback_environment, 1);
 }
 
 void init_interrupt(void)
