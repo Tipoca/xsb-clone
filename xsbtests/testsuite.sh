@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.19 1999-10-16 23:01:56 kifer Exp $
+## $Id: testsuite.sh,v 1.20 1999-10-26 07:51:32 kifer Exp $
 ## 
 ##
 
@@ -214,7 +214,7 @@ $GREP "fault" $LOG_FILE | grep -v "segfault_handler" >> $RES_FILE
 # core dumped
 $GREP "dumped" $LOG_FILE >> $RES_FILE
 # when no output file is generated
-$GREP "match" $LOG_FILE >> $RES_FILE
+$GREP "no match" $LOG_FILE >> $RES_FILE
 # for bus error
 $GREP "bus" $LOG_FILE >> $RES_FILE
 # for really bad outcomes
