@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.33 1999-10-26 17:25:07 cbaoqiu Exp $
+** $Id: tries.c,v 1.34 1999-10-26 20:31:35 warren Exp $
 ** 
 */
 
@@ -74,6 +74,8 @@ CPtr *var_addr;
 int  var_addr_arraysz = DEFAULT_ARRAYSIZ;
 Cell VarEnumerator[NUM_TRIEVARS];
 Cell TrieVarBindings[NUM_TRIEVARS];
+bool check_table_cut = TRUE;  /* flag for close_open_tables to turn off
+				 cut-over-table check */
 
 /*
  * global_num_vars is a new variable to save the value of variable
@@ -1388,6 +1390,7 @@ void remove_open_tries(CPtr bottom_parameter)
     if (!is_completed(CallStrPtr)) {
       if (warned == FALSE) {
 	xsb_warn("Removing incomplete tables...");
+	check_table_cut = FALSE;  /* permit cuts over tables */
 	warned = TRUE;
       }
       remove_calls_and_returns(CallStrPtr);
