@@ -21,11 +21,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrtokens.P,v 1.9 1999-08-28 20:08:52 kifer Exp $
+** $Id: flrtokens.P,v 1.10 1999-09-06 17:32:33 kifer Exp $
 **
 */
 
-:- compiler_options([cpp_on]).
+:- compiler_options([xpp_on]).
 #include "char_defs.h"
 
 

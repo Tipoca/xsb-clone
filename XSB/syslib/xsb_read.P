@@ -20,12 +20,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.P,v 1.12 1999/08/09 17:41:44 kostis Exp $
+** $Id: xsb_read.P,v 1.13 1999/08/14 06:15:35 kifer Exp $
 ** 
 */
 
 
-:- compiler_options([cpp_on]).
+:- compiler_options([xpp_on]).
 #include "standard.h"
 #include "char_defs.h"
 #include "flag_defs.h"
@@ -585,7 +585,7 @@ read_syntax_error(List) :-
         BeforeError is Length - AfterError,
 	file_write0(STDERR, '>>>   '),
         read_display_list(List, BeforeError, Rest),
-        file_write0(STDERR, ' <--- here? '),
+        file_write0(STDERR, ' <--- HERE? ************ '),
 	file_nl(STDERR),
         file_write0(STDERR, '>>>   '),
         read_display_list(Rest, AfterError, _),

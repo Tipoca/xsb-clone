@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.15 1999/08/28 20:38:49 kifer Exp $
+** $Id: loader.P,v 1.16 1999/08/30 13:57:28 kostis Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
  *  _$abort_cutpoint.
  */
 
-:- compiler_options([sysmod,cpp_on]).
+:- compiler_options([sysmod,xpp_on]).
 
 #include "standard.h"
 #include "char_defs.h"

@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dbclause.P,v 1.8 1999/08/16 07:25:03 kifer Exp $
+** $Id: dbclause.P,v 1.9 1999/08/28 10:33:22 kostis Exp $
 ** 
 */
 
 
-:- compiler_options([cpp_on]).
+:- compiler_options([xpp_on]).
 #include "builtin.h"
 #include "sig.h"
 

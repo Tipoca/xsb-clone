@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.P,v 1.12 1999/08/25 13:57:57 kifer Exp $
+** $Id: file_io.P,v 1.13 1999/09/03 19:43:04 warren Exp $
 ** 
 */
 
 
-:- compiler_options([cpp_on]).
+:- compiler_options([xpp_on]).
 #include "io_defs.h"
 #include "standard.h"
 #include "flag_defs.h"

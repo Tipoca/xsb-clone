@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.P,v 1.12 1999/08/25 19:21:03 kifer Exp $
+** $Id: debugger.P,v 1.13 1999/08/28 09:49:11 kostis Exp $
 ** 
 */
 
 
-:- compiler_options([cpp_on]).
+:- compiler_options([xpp_on]).
 #include "flag_defs.h"
 #include "celltags.h"
 #include "char_defs.h"

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.24 1999/08/20 19:34:15 warren Exp $
+** $Id: standard.P,v 1.25 1999/08/25 13:57:14 kifer Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 /* NOTE: This file HAS TO be compiled with the "sysmod" option.		*/
 /*----------------------------------------------------------------------*/
 
-:- compiler_options([sysmod, cpp_on]).
+:- compiler_options([sysmod, xpp_on]).
 
 #include "flag_defs.h"
 #include "standard.h"

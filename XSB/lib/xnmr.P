@@ -2,8 +2,7 @@
 ** Author(s): David Warren
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
-** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1999
-** Copyright (C) ECRC, Germany, 1990
+** Copyright (C) The Research Foundation of SUNY, 1999
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -19,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xnmr.P,v 1.4 1999-09-03 19:45:49 warren Exp $
+** $Id: xnmr.P,v 1.5 1999-09-06 17:32:29 kifer Exp $
 ** 
 */
 
 
-:- compiler_options([cpp_on]).
+:- compiler_options([xpp_on]).
 
 #include "sig.h"
 #include "flag_defs.h"

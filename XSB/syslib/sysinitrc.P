@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sysinitrc.P,v 1.7 1999/08/09 00:35:22 kifer Exp $
+** $Id: sysinitrc.P,v 1.8 1999/08/11 20:29:19 kifer Exp $
 ** 
 */
 
 
 %% This file is consulted from loader.P
 
-:- compiler_options([cpp_on]).
+:- compiler_options([xpp_on]).
 
 #include "flag_defs.h"
 

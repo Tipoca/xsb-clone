@@ -19,11 +19,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: smodels.H,v 1.1 1999-08-23 22:11:28 luis Exp $
+** $Id: smodels.H,v 1.2 1999-09-06 17:32:45 kifer Exp $
 ** 
 */
 
-:- compiler_options([cpp_on]).
+:- compiler_options([xpp_on]).
 
 #include "configs/config.h"
 
