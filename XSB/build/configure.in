@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.21 1999-01-16 01:25:48 kifer Exp $
+## $Id: configure.in,v 1.22 1999-01-16 04:54:06 kifer Exp $
 ## 
 ##
 
@@ -383,7 +383,7 @@ case $CC in
 	else
 	   # c_low_opt_level is the optimization level for emuloop.c
     	   # Using xO4 would take SunPro more than an hour, hence xO2.
-	   c_low_opt_level=-${optimization_level-"xO4"}
+	   c_low_opt_level=-${optimization_level-"xO2"}
         fi
 	CFLAGS=""
 	;;
