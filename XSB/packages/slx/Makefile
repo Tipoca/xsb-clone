@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 1998-11-15 04:00:42 kifer Exp $
+## $Id: Makefile,v 1.4 2002-03-03 04:15:39 kifer Exp $
 ## 
 ##
 
@@ -50,9 +50,11 @@ all: $(ALL)
 	/bin/rm cmd...
 
 
+.PHONY: clean
 
-# Unfortunately, this needs to be commented on the NeXT.
-# %.O:	%.H
+clean:
+	/bin/rm -f *.O *~ .*~ *.bak
+
 
 .DONE:
 	echo Done

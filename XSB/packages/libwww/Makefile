@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.7 2002-02-23 04:04:33 kifer Exp $
+## $Id: Makefile,v 1.8 2002-03-03 04:15:39 kifer Exp $
 ## 
 ##
 
@@ -76,7 +76,8 @@ finish:
 
 
 clean:
-	rm -f *.O cc/*.H
+	rm -f *.O *~ .*~ *.bak
+	rm -f cc/*.H cc/*.so cc/*.o cc/*.O cc/*~ cc/.*~ cc/*.bak
 
 
 .DONE:

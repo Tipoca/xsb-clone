@@ -2,7 +2,7 @@
 ## Author(s): Yifei Dong
 ## Contact:   lmc@cs.sunysb.edu
 ##
-## $Id: Makefile,v 1.2 2001-05-31 16:33:47 lfcastro Exp $
+## $Id: Makefile,v 1.3 2002-03-03 04:15:39 kifer Exp $
 
 
 ALL = comp.O count.O formula.O mucalculus.O quad.O  \
@@ -85,13 +85,15 @@ lex.yy.c: xl.l
 .PHONY : clean
 
 clean:
-	-echo "Removing all object files!"
-	-rm -f parse *.o xlparse.O
-	-echo "Removing all libraries!"
-	-rm -f libxlp.a xlparse.so
-	-echo "Removing intermediate C files!"
-	-rm -f xl.tab.c lex.yy.c
-	-echo "Removing all Prolog bytecode files!"
+	@echo "Removing all C object files..."
+	-rm -f parse *.o
+	@echo "Removing all Prolog bytecode files..."
 	-rm -f $(ALL)
+	@echo "Removing all libraries!"
+	-rm -f libxlp.a xlparse.so
+	@echo "Removing intermediate C files..."
+	-rm -f xl.tab.c lex.yy.c
+	@echo "Removing junk..."
+	-rm -f *~ .*~ *.so
 .DONE:
 	@echo Done

@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 2000-06-18 00:28:32 kifer Exp $
+## $Id: Makefile,v 1.4 2002-03-03 04:15:40 kifer Exp $
 ## 
 ##
 
@@ -76,6 +76,10 @@ init:
 finish:
 	@echo 'fmt_write($(STDWARN),"-------------------- End --------------------------\n",_).' >> cmd...
 
+.PHONY: clean
+
+clean:
+	/bin/rm -f *.O *~ .*~ *.bak
 
 .DONE:
 	echo Done

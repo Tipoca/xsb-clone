@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: clean_pkgs.sh,v 1.1 1999-10-30 19:14:42 kifer Exp $
+## $Id: clean_pkgs.sh,v 1.2 2002-03-03 04:15:40 kifer Exp $
 ## 
 ##
 
@@ -42,9 +42,10 @@ member ()
 cur_dir=`pwd`
 files=`ls`
 
-rm -f *.O  # clean out .O in the top directory
-
 subdir_exclude_list="CVS objfiles.saved"
+
+# clean the packages/ dir itself
+make clean
 
 for f in $files ; do
   if test -d "$f" ; then
@@ -53,7 +54,7 @@ for f in $files ; do
     else
        echo "Cleaning up $cur_dir/$f"
        cd $f
-       rm -f *.O *.o *.so */*.O */*.o */*.so > /dev/null || echo ""
+       make clean
        cd ..
     fi
   fi
