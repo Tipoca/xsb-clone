@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.14 1999/08/17 19:30:14 warren Exp $
+** $Id: std_xsb.P,v 1.15 1999/08/19 15:08:40 kifer Exp $
 ** 
 */
 
@@ -199,6 +199,7 @@ standard_symbol(tnot, 1, tables).
 standard_symbol(told, 0, standard).
 standard_symbol(true, 0, standard).
 standard_symbol(trace, 0, debugger).
+standard_symbol(trace_autopilot, 1, debugger).
 standard_symbol(tsetof, 3, setof).
 standard_symbol(ttywrite, 1, standard).
 standard_symbol(ttywritenl, 1, standard).

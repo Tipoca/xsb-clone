@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: char_defs.h,v 1.1 1999-08-09 00:34:51 kifer Exp $
+** $Id: char_defs.h,v 1.2 1999-08-23 04:08:19 kifer Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 #define CH_BACKSPACE         8	      /*  \b	 */
 #define CH_TAB               9	      /*  \t     */
 #define CH_NEWLINE           10       /*  \n     */
-
+#define CH_VERTAB            11	      /*  \v     */
 #define CH_FORMFEED          12       /*  \f     */
 #define CH_RETURN            13       /*  \r     */
 
@@ -136,5 +136,5 @@
 #define CH_RBRACE    	     125      /*  }     */
 #define CH_TILDE     	     126      /*  ~     */
 
-#define DELETE       	     127      /*  ^?	*/
+#define CH_DELETE      	     127      /*  ^?	*/
 

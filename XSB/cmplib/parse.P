@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.16 1999-08-18 22:05:21 warren Exp $
+** $Id: parse.P,v 1.17 1999-08-23 04:08:16 kifer Exp $
 ** 
 */
 
@@ -65,7 +65,10 @@ parse1(Modname, File, Module) :-
 	open_or_cpp_file(File,CPP_process),
 	(parse_clauses(Modname, Module), ! 
 	%% check if must restart
-	->  (conget(needs_restart,1) -> seen, see(OldFile), fail ; true)
+	->  (conget(needs_restart,1)
+	    ->	seen, see(OldFile), fail
+	    ;	true
+	    )
 	;   true
 	),
 	(
@@ -73,7 +76,9 @@ parse1(Modname, File, Module) :-
 	;   %% Wait, if cpp was spawned so as to not leave zombies
 	    process_control(CPP_process, wait),
 	    %% Also, release the file descriptor used to read from cpp
-	    stat_flag(10, FromPort), file_close(FromPort)
+	    current_input_fd(FromPort), file_close(FromPort),
+	    %% and reset cpp_on
+	    conset(cpp_on,0)
 	),
 	multifile_query(Modname, Module),
 	('_$apply_arity'(_)

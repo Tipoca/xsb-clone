@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.H,v 1.7 1999/08/09 00:35:01 kifer Exp $
+** $Id: debugger.H,v 1.8 1999/08/18 21:00:13 warren Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 
 :- export debug/0, nodebug/0, dump/0, trace_stack_max/0, notrace_stack_max/0,
 	  (spy)/1, (nospy)/1, trace/0, notrace/0, piltrace/0, hitrace/0,
-	  nosimtrace/0, debugging/0.
+	  nosimtrace/0, debugging/0, trace_autopilot/1.
 :- export '_$deb_trace'/1, '_$deb_spy'/1, '_b_SPY_condition'/1,
 	show/1, leash/1.
 
@@ -70,6 +70,7 @@
 	trace_this_enable_print_on_redo(_,_),
 	'_$_deb_print_hidden'/0.
 
+:- import conget/2, conset/2 from prof_sbp.
 
 
 /* --------------------- end of file debugger.H ----------------------- */

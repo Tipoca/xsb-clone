@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger_data.P,v 1.1 1999/07/02 08:06:30 kifer Exp $
+** $Id: debugger_data.P,v 1.2 1999/07/04 06:18:24 kifer Exp $
 ** 
 */
 
@@ -72,6 +72,8 @@ trace_this_noprint(goal_cut_trans, 3).
 trace_standard_predicate(findall,3).
 %% but control the prompts that are actualy printed
 trace_this_noprint(findall, 4). %% this is an auxiliary pred for findall
+
+trace_standard_predicate(once,1).
 
 trace_this_enable_print_on_redo(call, 1).
 
