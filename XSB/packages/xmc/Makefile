@@ -2,12 +2,13 @@
 ## Author(s): Yifei Dong
 ## Contact:   lmc@cs.sunysb.edu
 ##
-## $Id: Makefile,v 1.4 2002-03-03 18:24:20 kifer Exp $
+## $Id: Makefile,v 1.5 2002-03-03 18:41:28 kifer Exp $
 
 
+# Note: xlparse.O must NOT be on the list below
 ALL = comp.O count.O formula.O mucalculus.O quad.O  \
 	typecheck.O util.O xmc.O \
-	justify.O navigate.O gui.O xlparse.O
+	justify.O navigate.O gui.O
 
 Option = [optimize]
 
@@ -88,11 +89,11 @@ clean:
 	@echo "Removing all C object files..."
 	-rm -f parse *.o
 	@echo "Removing all Prolog bytecode files..."
-	-rm -f $(ALL)
+	-rm -f $(ALL) xlparse.O
 	@echo "Removing all libraries!"
 	-rm -f libxlp.a xlparse.so
 	@echo "Removing intermediate C files..."
-	-rm -f xl.tab.c lex.yy.c
+	-rm -f xl.tab.c xl.tab.h lex.yy.c
 	@echo "Removing junk..."
 	-rm -f *~ .*~ *.so
 .DONE:
