@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.29 2002-01-28 16:47:56 lfcastro Exp $
+** $Id: heap_xsb.c,v 1.30 2002-01-28 20:44:31 lfcastro Exp $
 ** 
 */
 
@@ -192,7 +192,7 @@ static int num_gc = 0 ;
 #ifdef DEBUG
 static int print_at = 0 ; /* at the print_at-th gc, the stacks are printed */
 static int print_after = 0 ; /* if non zero, print all after this numgc */
-static int print_anyway = 1 ;
+static int print_anyway = 0 ;
 
 #define print_on_gc \
         ((print_at == num_gc) \
