@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_eval.H,v 1.1.1.1 1998-11-05 17:00:19 sbprolog Exp $
+** $Id: tp_eval.H,v 1.2 2002-04-10 23:33:24 tswift Exp $
 ** 
 */
 
@@ -34,3 +34,4 @@
 :- import release/3, hold/3, release_if_done0/5, getreg/2, alloc_reg/3,
 	  putvarinst/5
      from tp_var.
+:- import '=:='/2 from standard.

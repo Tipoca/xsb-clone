@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asmpass2.H,v 1.3 1999-11-20 06:50:44 kifer Exp $
+** $Id: asmpass2.H,v 1.4 2002-04-10 23:33:23 tswift Exp $
 ** 
 */
 
@@ -31,7 +31,8 @@
 :- import asm_inst/4 from asm_inst.
 :- import membercheck/2 from listutil.
 :- import term_hash/3, str_len/2 from machine.
-:- import write/1, put/1, integer/1 from standard.
+:- import write/1, put/1, integer/1, '=\='/2, is/2, '=:='/2, 
+      '<'/2, '>='/2 from standard.
 :- import write_int/1, write_float/1 from xsb_writ.
 :- import member/2 from basics.
 :- import sym_offset/2, sym_env/2, sym_category/2, sym_name/3 from symtab.

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_index.H,v 1.3 1999-11-20 06:51:31 kifer Exp $
+** $Id: tp_index.H,v 1.4 2002-04-10 23:33:24 tswift Exp $
 ** 
 */
 
@@ -30,4 +30,4 @@
 :- import gennum/1 from gensym.
 :- import member/2 from basics.
 :- import length/2, nthmember/3 from listutil.
-
+:- import '=:='/2 from standard.

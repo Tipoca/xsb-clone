@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.H,v 1.2 1999/04/08 18:06:36 kostis Exp $
+** $Id: file_op.H,v 1.3 1999/05/04 17:44:38 warren Exp $
 ** 
 */
 
@@ -31,7 +31,9 @@
 :- export force_file_op_loaded/0.
 
 :- import default_assert_size/1 from config.
-:- import integer/1, functor/3 from standard.
+:- import integer/1, functor/3, 
+         '=:='/2, '<'/2, '>'/2, '>='/2, '=<'/2, '=\='/2, is/2
+                                          from standard.
 :- import assert/1, assertai/2, retract/1, retractall/1, (dynamic)/1 from assert.
 
 :- import conpsc/2, psc_type/2 from machine.

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ordsets.P,v 1.4 1999-12-30 03:46:22 cbaoqiu Exp $
+** $Id: ordsets.P,v 1.5 2002-04-10 23:33:23 tswift Exp $
 ** 
 */
 
@@ -69,7 +69,7 @@
 
 :- import sort/2 from setof.
 :- import length/2 from basics.
-:- import compare/3 from standard.
+:- import compare/3,is/2, '>'/2 from standard.
 
 % :- mode
 % 	list_to_ord_set(+, ?),

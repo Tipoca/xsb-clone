@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string.H,v 1.13 2001/10/19 21:38:25 dwarren Exp $
+** $Id: string.H,v 1.14 2002/02/15 13:53:55 dwarren Exp $
 ** 
 */
 
@@ -32,6 +32,8 @@
 :- import flatten/2, append/3, memberchk/2, copy_term/2 from basics.
 :- import str_len/2 from machine.
 :- import atom/1, atom_codes/2, number/1, integer/1, structure/1, '=..'/2,
-        is_list/1, number_codes/2 from standard.
+  is_list/1, number_codes/2,
+  '=:='/2, '>='/2, '=<'/2, is/2
+                         from standard.
 
 /* ---------------------- end of file string.H ------------------------ */

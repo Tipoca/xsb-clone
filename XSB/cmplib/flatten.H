@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flatten.H,v 1.2 1999-11-20 06:50:53 kifer Exp $
+** $Id: flatten.H,v 1.3 2002-04-10 23:33:23 tswift Exp $
 ** 
 */
 
@@ -29,4 +29,4 @@
 
 :- import gennum/1 from gensym.
 :- import arithrelop/1 from tp_eval.
-
+:- import is/2, '=\='/2, '=:='/2, '>'/2, '=<'/2 from standard.

@@ -19,13 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inprog.H,v 1.4 1999-11-20 06:50:55 kifer Exp $
+** $Id: inprog.H,v 1.5 2002-04-10 23:33:23 tswift Exp $
 ** 
 */
 
 
 :- export force_inprog_loaded/0, inprog/3.
 
+:- import is/2, '>'/2, '=<'/2 from standard.
 :- import memberchk/2 from basics.
 :- import gennum/1 from gensym.
 :- import sym_name/3, sym_type/2 from symtab.

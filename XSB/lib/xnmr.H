@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xnmr.H,v 1.9 2000-01-18 15:42:06 ejohnson Exp $
+** $Id: xnmr.H,v 1.10 2002-04-10 23:33:23 tswift Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
 :- import call_expose/1, goal_cut_trans/3,
           push_abort_cutpoint/0, pop_abort_cutpoint/0,
 	  is_most_general_term/1, (table)/1, repeat/0,
-	  (import)/1 
+          (import)/1 , '>'/2, '=:='/2
      from standard.
 :- import conpsc/2, psc_set_type/2, psc_prop/2, psc_set_prop/2,
           term_psc/2, conname/2, stat_flag/2, stat_set_flag/2, 

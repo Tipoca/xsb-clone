@@ -19,17 +19,18 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.40 2002/03/14 09:55:01 kifer Exp $
+## $Id: Makefile,v 1.41 2002/03/15 08:09:38 kifer Exp $
 ## 
 ##
 
 OBJEXT=.xwam
 
-ALL =	assert${OBJEXT} atts${OBJEXT} basics${OBJEXT} consult${OBJEXT} \
+ALL =	file_op${OBJEXT} assert${OBJEXT} atts${OBJEXT} basics${OBJEXT} \
+	consult${OBJEXT} \
 	curr_sym${OBJEXT} dbclause${OBJEXT} \
 	dcg${OBJEXT} debugger${OBJEXT} domain${OBJEXT} eval${OBJEXT}  \
 	file_io${OBJEXT} \
-	file_op${OBJEXT} gensym${OBJEXT} hilogsym${OBJEXT} loader${OBJEXT}  \
+        gensym${OBJEXT} hilogsym${OBJEXT} loader${OBJEXT}  \
 	machine${OBJEXT} num_vars${OBJEXT} \
 	push_io${OBJEXT} \
 	setof${OBJEXT} shell${OBJEXT} standard${OBJEXT} std_xsb${OBJEXT} \

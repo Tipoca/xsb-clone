@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varproc.H,v 1.3 1999-11-20 06:51:41 kifer Exp $
+** $Id: varproc.H,v 1.4 2002-04-10 23:33:24 tswift Exp $
 ** 
 */
 
@@ -32,4 +32,4 @@
 
 :- import member/2, append/3, memberchk/2 from basics.
 :- import closetail/1, length/2, member2/2 from listutil.
-
+:- import '<'/2, '>'/2, '=<'/2, '>='/2, '=:='/2, is/2 from standard.

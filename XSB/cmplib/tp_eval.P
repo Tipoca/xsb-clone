@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_eval.P,v 1.2 2002-01-15 00:43:01 tswift Exp $
+** $Id: tp_eval.P,v 1.3 2002-04-10 23:33:24 tswift Exp $
 ** 
 */
 
@@ -148,6 +148,13 @@ arithrelop('=<').
 arithrelop('>').
 arithrelop('>=').
 
+arithrelop('=:=_inl').
+arithrelop('=\=_inl').
+arithrelop('<_inl').
+arithrelop('=<_inl').
+arithrelop('>_inl').
+arithrelop('>=_inl').
+
 eval_arithreloptab(=:=, R, Label, jumpnz(R,Label)).
 eval_arithreloptab(=\=, R, Label, jumpz(R,Label)).
 eval_arithreloptab(<,   R, Label, jumpge(R,Label)).
@@ -157,6 +164,16 @@ eval_arithreloptab(>=,  R, Label, jumplt(R,Label)).
 
 eval_arithreloptab(=:=, R, N, Label, int_test_nz(R,N,Label)).
 eval_arithreloptab(=\=, R, N, Label, int_test_z(R,N,Label)).
+
+eval_arithreloptab('=:=_inl', R, Label, jumpnz(R,Label)).
+eval_arithreloptab('=\=_inl', R, Label, jumpz(R,Label)).
+eval_arithreloptab('<_inl',   R, Label, jumpge(R,Label)).
+eval_arithreloptab('=<_inl',  R, Label, jumpgt(R,Label)).
+eval_arithreloptab('>_inl',   R, Label, jumple(R,Label)).
+eval_arithreloptab('>=_inl',  R, Label, jumplt(R,Label)).
+
+eval_arithreloptab('=:=_inl', R, N, Label, int_test_nz(R,N,Label)).
+eval_arithreloptab('=\=_inl', R, N, Label, int_test_z(R,N,Label)).
 
 eval_var(Prag,R,Pil,Pilr,Tin,Tout,PredSym,NC) :-
     alloc_reg(Prag,Tin,Tmid),

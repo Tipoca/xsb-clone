@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modeinf.H,v 1.7 2002-03-15 09:19:53 kifer Exp $
+** $Id: modeinf.H,v 1.8 2002-04-10 23:33:23 tswift Exp $
 ** 
 */
 
@@ -41,7 +41,8 @@
 	abort/0, atom_codes/2, cputime/1, call/1, file_exists/1, functor/3,
 	(index)/3, name/2, nl/0, read/1, repeat/0, statistics/0,
 	see/1, seeing/1, seen/0, (table)/1, tell/1, telling/1, told/0,
-	write/1, writeln/1, writeq/1, write_canonical/1, ('=..')/2
+        write/1, writeln/1, writeq/1, write_canonical/1, ('=..')/2,
+        '=<'/2, '=:='/2, is/2
    from standard.
 
 :- import file_time/2 from machine.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.H,v 1.6 2000-01-18 15:41:53 ejohnson Exp $
+** $Id: modes.H,v 1.7 2002-04-10 23:33:24 tswift Exp $
 ** 
 */
 
@@ -41,7 +41,7 @@
 	(index)/3, name/2, nl/0, (not)/1, op/3, read/1, repeat/0,
 	statistics/0, see/1, seeing/1, seen/0, (table)/1, tell/1,
 	telling/1, told/0, write/1, writeln/1, write_canonical/1,
-	writeq/1, ('=..')/2
+        writeq/1, ('=..')/2, '=<'/2, '=:='/2, is/2
    from standard.
 
 :- import message/1, time_message/2 from auxlry.

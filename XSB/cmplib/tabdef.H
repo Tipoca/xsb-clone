@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tabdef.H,v 1.2 1999-11-20 06:51:26 kifer Exp $
+** $Id: tabdef.H,v 1.3 2002-04-10 23:33:24 tswift Exp $
 ** 
 */
 
@@ -29,5 +29,6 @@
 :- import ll_arg/3 from auxlry.
 :- import message/1, error/1 from auxlry.
 :- import sym_prop/2, sym_propin/2, sym_gen/2, sym_name/3 from symtab.
+:- import is/2, '<'/2, '>'/2, '=:='/2 from standard.
 
 /* ----------------------- end of file tabdef.H ----------------------- */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prof_sbp.H,v 1.5 1999-11-20 06:51:13 kifer Exp $
+** $Id: prof_sbp.H,v 1.6 2002-04-10 23:33:24 tswift Exp $
 ** 
 */
 
@@ -37,6 +37,6 @@
  	  stat_flag/2, file_puttoken/3, psc_set_type/2
      from machine.
 :- import name/2, arg/3, functor/3, atomic/1, 
-	  integer/1, atom_codes/2
+  integer/1, atom_codes/2, is/2
      from standard.
 :- import obsolete/2 from obsolete.

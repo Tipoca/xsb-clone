@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: peephole.H,v 1.2 1999-11-20 06:51:07 kifer Exp $
+** $Id: peephole.H,v 1.3 2002-04-10 23:33:24 tswift Exp $
 ** 
 */
 
@@ -29,3 +29,4 @@
 
 :- import memberchk/2 from basics.
 :- import sym_name/3 from symtab.
+:- import '=:='/2, '=\='/2 from standard.
