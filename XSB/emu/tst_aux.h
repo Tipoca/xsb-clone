@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_aux.h,v 1.2 1999-12-14 21:07:06 ejohnson Exp $
+** $Id: tst_aux.h,v 1.3 2000-01-11 17:07:48 ejohnson Exp $
 ** 
 */
 
@@ -275,13 +275,16 @@ extern struct tstTrail    tstTrail;
    *tstTrail.top++ = (CPtr)(Addr);      \
  }
 
+#define Trail_PopAndReset {		\
+   tstTrail.top--;			\
+   bld_free(*tstTrail.top);		\
+ }
+
 #define Trail_Unwind_All   Trail_Unwind(tstTrail.base)
 
-#define Trail_Unwind(UnwindBase)     		\
-   while(tstTrail.top > UnwindBase) {		\
-     tstTrail.top--;                 		\
-     bld_free(*tstTrail.top);        		\
-   }
+#define Trail_Unwind(UnwindBase)	\
+   while(tstTrail.top > UnwindBase)	\
+     Trail_PopAndReset
 
 #define Trail_OverflowCheck        \
    if (Trail_IsFull)               \
