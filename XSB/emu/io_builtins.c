@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.c,v 1.37 1999-10-05 04:01:41 kifer Exp $
+** $Id: io_builtins.c,v 1.38 1999-10-08 07:32:16 kifer Exp $
 ** 
 */
 
@@ -312,6 +312,7 @@ bool fmt_write(void)
 /* If no snprintf, we fill only half of OutString, to be on the safe side */
 #ifdef HAVE_SNPRINTF
 #define SAFE_OUT_SIZE MAX_SPRINTF_STRING_SIZE
+int sprintf(char *s, const char *format, /* args */ ...);
 #else
 #define SAFE_OUT_SIZE MAX_SPRINTF_STRING_SIZE/2
 #endif
