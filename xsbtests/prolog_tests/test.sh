@@ -58,4 +58,6 @@ else
 	rm -f zero.o zero.so zero.O
 	../gentest.sh "$XEMU $options" cinter2 "test."
 #------------------------------------------------------------------------
+	rm -f c_calls_xsb.o c_calls_xsb.O c_calls_xsb_make.O
+	../gentest.sh "$XEMU $options" c_calls_xsb_make "test."
 fi
