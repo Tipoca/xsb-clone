@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.9 2000-05-16 19:07:32 lfcastro Exp $
+** $Id: error_xsb.c,v 1.10 2000-05-20 06:55:59 kifer Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 #include <string.h>
 #include <signal.h>
 
-#include "configs/xsb_config.h"
+#include "xsb_config.h"
 
 #include "auxlry.h"
 #include "cell_xsb.h"

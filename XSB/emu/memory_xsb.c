@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.3 2000-01-07 08:51:40 kifer Exp $
+** $Id: memory_xsb.c,v 1.4 2000-05-20 06:56:03 kifer Exp $
 ** 
 */
 
@@ -37,8 +37,8 @@
 /*======================================================================*/
 
 /* xsb_config.h must be the first #include.  Please don't move it. */
-#include "configs/xsb_config.h"    /* needed by "cell_xsb.h" */
-#include "debugs/xsb_debug.h"
+#include "xsb_config.h"    /* needed by "cell_xsb.h" */
+#include "xsb_debug.h"
 
 
 #include <stdio.h>

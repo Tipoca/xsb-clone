@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.20 2000-04-29 21:53:53 kifer Exp $
+** $Id: findall.c,v 1.21 2000-05-20 06:56:00 kifer Exp $
 ** 
 */
 
@@ -27,8 +27,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "configs/xsb_config.h"
-#include "debugs/xsb_debug.h"
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include "auxlry.h"
 #include "cell_xsb.h"  	     /* cell_xsb.h must be included before deref.h */

@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: export.h,v 1.2 2000-01-07 08:51:29 kifer Exp $
+** $Id: export.h,v 1.3 2000-05-20 06:56:00 kifer Exp $
 ** 
 */
 
 #ifndef __EXPORT_H__
 #define __EXPORT_H__
 
-#include "configs/xsb_config.h"
+#include "xsb_config.h"
 
 #ifdef XSB_DLL
 #define DllExport __declspec(dllexport)

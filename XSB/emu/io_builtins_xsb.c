@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.15 2000-04-29 21:53:54 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.16 2000-05-20 06:56:02 kifer Exp $
 ** 
 */
 
-#include "configs/xsb_config.h"
-#include "debugs/xsb_debug.h"
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include <stdio.h>
 #include <signal.h>
@@ -53,7 +53,7 @@
 #include "choice.h"
 #include "macro_xsb.h"
 #include "io_builtins_xsb.h"
-#include "configs/special.h"
+#include "wind2unix.h"
 #include "binding.h"
 #include "deref.h"
 #include "findall.h"

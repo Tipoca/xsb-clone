@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf_xsb_i.h,v 1.15 2000-05-01 06:16:44 kifer Exp $
+** $Id: dynelf_xsb_i.h,v 1.16 2000-05-20 06:55:58 kifer Exp $
 ** 
 */
 
@@ -28,13 +28,13 @@
 #include <sys/file.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-/* special.h must be included after sys/stat.h */
-#include "configs/special.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/* wind2unix.h must be included after sys/stat.h */
+#include "wind2unix.h"
 #include "auxlry.h"
 #include "cell_xsb.h"
 #include "memory_xsb.h"

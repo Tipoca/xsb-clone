@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.8 2000-04-29 21:53:50 kifer Exp $
+** $Id: cell_xsb.h,v 1.9 2000-05-20 06:55:56 kifer Exp $
 ** 
 */
 
 
 #ifndef CONFIG_INCLUDED
-#error "File configs/xsb_config.h must be included before this file"
+#error "File xsb_config.h must be included before this file"
 #endif
 
 /*======================================================================*/

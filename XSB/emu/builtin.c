@@ -19,12 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.92 2000-05-12 20:18:15 ejohnson Exp $
+** $Id: builtin.c,v 1.93 2000-05-20 06:55:55 kifer Exp $
 ** 
 */
 
-#include "configs/xsb_config.h"
-#include "debugs/xsb_debug.h"
+#include "xsb_config.h"
+#include "xsb_debug.h"
 /* Private debugs */
 #include "debugs/debug_delay.h"
 
@@ -102,8 +102,8 @@
 
 #include "io_builtins_xsb.h"
 
-/* special.h must be included after sys/stat.h */
-#include "configs/special.h"
+/* wind2unix.h must be included after sys/stat.h */
+#include "wind2unix.h"
 #include "system_xsb.h"
 #include "random_xsb.h"
 

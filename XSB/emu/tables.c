@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.13 2000-04-29 21:53:59 kifer Exp $
+** $Id: tables.c,v 1.14 2000-05-20 06:56:10 kifer Exp $
 ** 
 */
 
 
-#include "configs/xsb_config.h"
-#include "debugs/xsb_debug.h"
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include "debugs/debug_tables.h"
 #include "debugs/debug_delay.h"

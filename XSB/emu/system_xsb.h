@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.h,v 1.1 1999-10-25 05:59:39 kifer Exp $
+** $Id: system_xsb.h,v 1.2 2000-05-20 06:56:09 kifer Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 extern int    fileno(FILE *f);	        /* this is defined in POSIX */
 #endif
 
-/* In WIN_NT, this gets redefined into _fdopen by configs/special.h */
+/* In WIN_NT, this gets redefined into _fdopen by wind2unix.h */
 extern FILE *fdopen(int fildes, const char *type);
 
 #ifndef WIN_NT

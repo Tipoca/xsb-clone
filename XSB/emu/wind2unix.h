@@ -1,4 +1,4 @@
-/* File:      configs/special.h -- auxiliary defs that might not be everywhere
+/* File:      wind2unix.h -- some definitions for Unix/Windows compatibility
 ** Author(s): kifer
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: special.h,v 1.9 2000-03-14 17:44:15 kifer Exp $
+** $Id: wind2unix.h,v 1.1 2000-05-20 06:56:15 kifer Exp $
 ** 
 */
 

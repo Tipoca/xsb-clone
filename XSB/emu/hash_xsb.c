@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.3 2000-01-07 08:51:32 kifer Exp $
+** $Id: hash_xsb.c,v 1.4 2000-05-20 06:56:01 kifer Exp $
 ** 
 */
 
@@ -26,8 +26,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "configs/xsb_config.h"
-#include "debugs/xsb_debug.h"
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include "auxlry.h"
 #include "cell_xsb.h"

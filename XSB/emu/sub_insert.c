@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_insert.c,v 1.9 2000-05-19 04:58:33 kifer Exp $
+** $Id: sub_insert.c,v 1.10 2000-05-20 06:56:08 kifer Exp $
 ** 
 */
 
 
-#include "configs/xsb_config.h"
-#include "debugs/xsb_debug.h"
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynaout_xsb_i.h,v 1.5 2000-04-29 21:53:52 kifer Exp $
+** $Id: dynaout_xsb_i.h,v 1.6 2000-05-20 06:55:58 kifer Exp $
 ** 
 */
 
@@ -28,8 +28,8 @@
 #include <sys/file.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-/* special.h must be included after sys/stat.h */
-#include "configs/special.h"
+/* wind2unix.h must be included after sys/stat.h */
+#include "wind2unix.h"
 #include <errno.h>
 #include <stdio.h>
 

@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.42 2000/05/19 04:58:34 kifer Exp $
+** $Id: subp.c,v 1.43 2000/05/19 22:55:39 kifer Exp $
 ** 
 */
 
 
-/* configs/xsb_config.h must be the first #include.  Pls don't move it! */
-#include "configs/xsb_config.h"
-#include "debugs/xsb_debug.h"
+/* xsb_config.h must be the first #include.  Pls don't move it! */
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include "debugs/debug_attv.h"
 

@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.7 2000-04-29 21:53:56 kifer Exp $
+** $Id: pathname_xsb.c,v 1.8 2000-05-20 06:56:05 kifer Exp $
 ** 
 */
 
-#include "configs/xsb_config.h"
-#include "debugs/xsb_debug.h"
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #ifdef WIN_NT
 #include <direct.h>
@@ -39,8 +39,8 @@
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-/* special.h must be included after sys/stat.h */
-#include "configs/special.h"
+/* wind2unix.h must be included after sys/stat.h */
+#include "wind2unix.h"
 #include "export.h"
 
 #if (!defined(WIN_NT))

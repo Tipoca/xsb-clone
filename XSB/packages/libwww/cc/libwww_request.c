@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_request.c,v 1.12 2000-05-01 06:18:54 kifer Exp $
+** $Id: libwww_request.c,v 1.13 2000-05-20 06:56:17 kifer Exp $
 ** 
 */
 
 
 #include "libwww_util.h"
-#include "libwww_request.h"
+#include "libwww_req.h"
 #include "deref.h"
 
 

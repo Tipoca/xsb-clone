@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.12 2000-04-29 21:53:58 kifer Exp $
+** $Id: socket_xsb.c,v 1.13 2000-05-20 06:56:07 kifer Exp $
 ** 
 */
 
-#include "configs/xsb_config.h"
-#include "debugs/xsb_debug.h"
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include <errno.h>
 #include <stdio.h>
@@ -33,8 +33,8 @@
 #include <sys/stat.h>
 #include <signal.h>
 
-/* special.h must be included after sys/stat.h */
-#include "configs/special.h"
+/* wind2unix.h must be included after sys/stat.h */
+#include "wind2unix.h"
 
 /* The socket material */
 
@@ -65,7 +65,7 @@
 #include "timer_xsb.h"
 
 
-/* In WIN_NT, this gets redefined into _fdopen by configs/special.h */
+/* In WIN_NT, this gets redefined into _fdopen by wind2unix.h */
 extern FILE *fdopen(int fildes, const char *type);
 
 int retcode; /* return code from socket operation */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: private_builtin.c,v 1.7 2000/01/07 08:51:44 kifer Exp $
+** $Id: private_builtin.c,v 1.8 2000/04/29 21:53:56 kifer Exp $
 ** 
 */
 
@@ -30,8 +30,8 @@
    Note: even though this is a single builtin, YOU CAN SIMULATE ANY
    NUMBER OF BUILTINS WITH IT.  */
 
-#include "configs/xsb_config.h"
-#include "debugs/xsb_debug.h"
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include <stdio.h>
 #include <signal.h>

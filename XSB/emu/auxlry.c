@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.5 2000-01-07 08:51:13 kifer Exp $
+** $Id: auxlry.c,v 1.6 2000-05-20 06:55:55 kifer Exp $
 ** 
 */
 
 
-#include "configs/xsb_config.h"
+#include "xsb_config.h"
 
 #include <stdio.h>
 

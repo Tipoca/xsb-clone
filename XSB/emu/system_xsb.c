@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.6 2000-04-29 21:53:59 kifer Exp $
+** $Id: system_xsb.c,v 1.7 2000-05-20 06:56:09 kifer Exp $
 ** 
 */
 
@@ -31,7 +31,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-#include "configs/xsb_config.h"
+#include "xsb_config.h"
 
 #ifdef WIN_NT
 #include <windows.h>
@@ -53,8 +53,8 @@
 #include "cinterf.h"
 #include "syscall_xsb.h"
 #include "io_builtins_xsb.h"
-/* special.h must be included after sys/stat.h */
-#include "configs/special.h"
+/* wind2unix.h must be included after sys/stat.h */
+#include "wind2unix.h"
 #include "system_xsb.h"
 #include "system_defs_xsb.h"
 

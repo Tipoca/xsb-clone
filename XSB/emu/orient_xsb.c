@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.c,v 1.7 2000-05-17 23:12:47 kifer Exp $
+** $Id: orient_xsb.c,v 1.8 2000-05-20 06:56:04 kifer Exp $
 ** 
 */
 
 
 
-#include "configs/xsb_config.h"
+#include "xsb_config.h"
 
 #ifdef WIN_NT
 #include <direct.h>
@@ -40,8 +40,8 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-/* special.h must be included after sys/stat.h */
-#include "configs/special.h"
+/* wind2unix.h must be included after sys/stat.h */
+#include "wind2unix.h"
 #include "export.h"
 #include "basicdefs.h"
 #include "basictypes.h"

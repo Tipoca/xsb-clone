@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynload.c,v 1.6 2000-01-07 08:51:25 kifer Exp $
+** $Id: dynload.c,v 1.7 2000-05-20 06:55:58 kifer Exp $
 ** 
 */
 
 
-#include "configs/xsb_config.h"	/* This should appear BEFORE the ifdef!	*/
+#include "xsb_config.h"  /* This should appear BEFORE the ifdef! */
 
-extern char executable[];        /* from orient_xsb.c */
+extern char executable[];         /* from orient_xsb.c */
 
 #ifdef FOREIGN
 

@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: main_xsb.c,v 1.4 2000-01-07 08:51:40 kifer Exp $
+** $Id: main_xsb.c,v 1.5 2000-05-20 06:56:03 kifer Exp $
 ** 
 */
 
 
-#include "configs/xsb_config.h"
+#include "xsb_config.h"
 
 
 #ifdef WIN_NT
@@ -39,8 +39,8 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-/* special.h must be included after sys/stat.h */
-#include "configs/special.h"
+/* wind2unix.h must be included after sys/stat.h */
+#include "wind2unix.h"
 
 #include "emuloop.h"
 

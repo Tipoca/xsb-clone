@@ -19,13 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.4 2000/01/07 08:52:01 kifer Exp $
+** $Id: trace_xsb.c,v 1.5 2000/04/25 23:18:56 ejohnson Exp $
 ** 
 */
 
 
-#include "configs/xsb_config.h"
-#include "debugs/xsb_debug.h"
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include <stdio.h>
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_util.h,v 1.9 2000-05-01 06:18:54 kifer Exp $
+** $Id: libwww_util.h,v 1.10 2000-05-20 06:56:17 kifer Exp $
 ** 
 */
 
@@ -38,8 +38,8 @@
 #include "basictypes.h"
 #include "basicdefs.h"
 #include "auxlry.h"
-#include "configs/xsb_config.h"
-#include "configs/special.h"
+#include "xsb_config.h"
+#include "wind2unix.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
 #include "cinterf.h"

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.14 2000-04-29 21:53:54 kifer Exp $
+** $Id: heap_xsb.c,v 1.15 2000-05-20 06:56:01 kifer Exp $
 ** 
 */
 
@@ -87,9 +87,9 @@ Todo:
 
 ****************************************************************************/
 
-/* configs/xsb_config.h must be the first #include. Pls don't move it. */
-#include "configs/xsb_config.h"
-#include "debugs/xsb_debug.h"
+/* xsb_config.h must be the first #include. Pls don't move it. */
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include <string.h>
 #include <stdlib.h>

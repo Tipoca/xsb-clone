@@ -1,4 +1,4 @@
-/* File:      libwww_request.h
+/* File:      libwww_req.h
 ** Author(s): kifer
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -18,11 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_request.h,v 1.5 2000-04-11 22:06:42 kifer Exp $
+** $Id: libwww_req.h,v 1.1 2000-05-20 06:56:17 kifer Exp $
 ** 
 */
 
 /* included defs for libwww_request.c only */
+/* this file is named libwww_req.h instead of libwww_request.h to avoid
+   conflict with libwww_request.H on windows, which is case-blind */
 
 
 
