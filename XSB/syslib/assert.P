@@ -18,9 +18,10 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.P,v 1.6 1999/04/10 14:56:49 kostis Exp $
+** $Id: assert.P,v 1.7 1999/05/04 17:44:31 warren Exp $
 ** 
 */
+
 
 
 /*======================================================================*/
