@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.8 2001-12-13 21:13:35 lfcastro Exp $
+** $Id: memory_xsb.h,v 1.9 2002-03-12 17:31:21 lfcastro Exp $
 ** 
 */
 
@@ -71,13 +71,6 @@ extern System_Stack pdl,            /* PDL                        */
  *    topmost USED cell on their respective stack.
  */
 #define top_of_heap      (hreg - 1)
-#ifdef CHAT
-#define top_of_localstk	 ( (ereg < ebreg) \
-			      ? ereg - *(cpreg - 2*sizeof(Cell)+3) + 1 \
-			      : ebreg )
-#define top_of_trail	 trreg
-#define top_of_cpstack	 breg
-#else
 #define top_of_localstk  ( ((efreg < ebreg) && (efreg < ereg)) \
                            ? efreg  \
 			   : ( (ereg < ebreg) \
@@ -85,7 +78,6 @@ extern System_Stack pdl,            /* PDL                        */
 			       : ebreg ) )
 #define top_of_trail     ((trreg > trfreg) ? trreg : trfreg)
 #define top_of_cpstack   ((breg < bfreg) ? breg : bfreg)
-#endif
 
 #define top_of_complstk  openreg
 

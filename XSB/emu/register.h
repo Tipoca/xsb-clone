@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: register.h,v 1.4 2001-05-24 17:54:52 lfcastro Exp $
+** $Id: register.h,v 1.5 2002-03-12 17:31:21 lfcastro Exp $
 ** 
 */
 
@@ -45,12 +45,10 @@ extern Psc pscreg;
 #endif
 /*---- registers added for the SLG-WAM ---------------------------------*/
 
-#if (!defined(CHAT))
 extern CPtr efreg;
 extern CPtr bfreg;
 extern CPtr hfreg;
 extern CPtr *trfreg;
-#endif
 extern CPtr pdlreg;
 extern CPtr openreg;
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.42 2002-01-03 23:57:48 tswift Exp $
+** $Id: builtin.h,v 1.43 2002-03-12 17:31:21 lfcastro Exp $
 ** 
 */
 
@@ -226,7 +226,6 @@
 #define CLEAN_UP_BLOCK          234
 
 /* added by Bart Demoen & Kostis Sagonas for debugging and convenience */
-#define PRINT_CHAT              239
 #define PRINT_LS                240
 #define PRINT_TR                241
 #define PRINT_HEAP              242

@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.40 2002-02-21 16:57:50 lfcastro Exp $
+## $Id: emuMakefile.in,v 1.41 2002-03-12 17:31:17 lfcastro Exp $
 ## 
 
 
@@ -107,7 +107,7 @@ DEPEND = makedepend
 #
 
 
-SRCS =	auxlry.c biassert.c builtin.c chat.c cinterf.c \
+SRCS =	auxlry.c biassert.c builtin.c cinterf.c \
 	debug_xsb.c dis.c dynload.c dynamic_stack.c \
 	emuloop.c error_xsb.c findall.c function.c \
 	hash_xsb.c heap_xsb.c init_xsb.c inst_xsb.c io_builtins_xsb.c \
@@ -124,7 +124,7 @@ SRCS =	auxlry.c biassert.c builtin.c chat.c cinterf.c \
 ORASRCS = $(SRCS) orastuff.c
 
 
-OBJS =	auxlry.o biassert.o builtin.o chat.o cinterf.o \
+OBJS =	auxlry.o biassert.o builtin.o cinterf.o \
 	debug_xsb.o dis.o dynload.o dynamic_stack.o \
 	emuloop.o error_xsb.o findall.o function.o \
 	hash_xsb.o heap_xsb.o init_xsb.o inst_xsb.o io_builtins_xsb.o \

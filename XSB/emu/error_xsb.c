@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.17 2002-03-11 21:52:55 lfcastro Exp $
+** $Id: error_xsb.c,v 1.18 2002-03-12 17:31:21 lfcastro Exp $
 ** 
 */
 
@@ -46,9 +46,6 @@
 #include "macro_xsb.h"
 #include "tr_utils.h"
 #include "cut_xsb.h"
-#ifdef CHAT
-#include "chat.h"
-#endif
 
 extern void exit(int status);
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.15 2001-12-13 21:13:36 lfcastro Exp $
+** $Id: bineg_xsb_i.h,v 1.16 2002-03-12 17:31:21 lfcastro Exp $
 ** 
 */
 
@@ -131,10 +131,6 @@ case IS_INCOMPLETE: {
 #endif
     adjust_level(subg_compl_stack_ptr(producerSF));
     save_find_locx(ereg);
-#ifdef CHAT
-    subg_compl_susp_ptr(producerSF) = (CPtr)
-      save_a_chat_compl_susp(producerSF, t_ptcp, cpreg);
-#else
     efreg = ebreg;
     if (trreg > trfreg) trfreg = trreg;
     if (hfreg < hreg) hfreg = hreg;
@@ -148,7 +144,6 @@ case IS_INCOMPLETE: {
     csf_prevtop(bfreg) = old_cptop;
 #endif
     subg_compl_susp_ptr(producerSF) = bfreg;
-#endif
     return FALSE;
   }
 }

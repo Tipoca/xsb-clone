@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify_xsb.h,v 1.1 2001-01-27 00:02:18 lfcastro Exp $
+** $Id: unify_xsb.h,v 1.2 2002-03-12 17:31:22 lfcastro Exp $
 ** 
 */
 
@@ -30,17 +30,8 @@
 #define IFTHEN_FAILED	Fail1 ; XSB_Next_Instr();
 
 
-#ifdef CHAT
-#define COND1      (CPtr)(op1) < hreg 
-#else
 #define COND1      (CPtr)(op1) < hreg ||  (CPtr)(op1) < hfreg 
-#endif
-
-#ifdef CHAT
-#define COND2      (CPtr)(op2) < hreg 
-#else
 #define COND2      (CPtr)(op2) < hreg ||  (CPtr)(op2) < hfreg 
-#endif
 
 #define unify_xsb(loc)                                       \
  loc##_tail_recursion:                                       \

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop_aux.h,v 1.5 2001-12-13 21:13:35 lfcastro Exp $
+** $Id: emuloop_aux.h,v 1.6 2002-03-12 17:31:21 lfcastro Exp $
 ** 
 */
 
@@ -65,9 +65,7 @@
 #endif
 /*----------------------------------------------------------------------*/
 #ifdef PROFILE
-#if (!defined(CHAT))
 #define SHARING_PROFILE
-#endif
 #endif
 
 #ifdef SHARING_PROFILE

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.30 2002-01-23 17:08:08 dwarren Exp $
+** $Id: emudef.h,v 1.31 2002-03-12 17:31:21 lfcastro Exp $
 ** 
 */
 
@@ -45,12 +45,11 @@ CPtr ebreg;		/* breg into environment stack	*/
 Psc pscreg;
 #endif
 
-#if (!defined(CHAT))
 CPtr efreg;
 CPtr bfreg;
 CPtr hfreg;
 CPtr *trfreg;
-#endif
+
 CPtr pdlreg;
 CPtr openreg;
 CPtr root_address;
