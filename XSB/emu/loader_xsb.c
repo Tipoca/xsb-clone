@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.11 2000-01-27 23:07:14 unova Exp $
+** $Id: loader_xsb.c,v 1.12 2000-01-31 20:01:25 unova Exp $
 ** 
 */
 
@@ -213,7 +213,7 @@ static int get_index_tab(FILE *fd, int clause_no)
   for (j = 0; j < clause_no; j++) {
     get_obj_byte(&type);
     switch (type) {
-    case 'i': get_obj_word_bb(&ival);
+    case 'i': get_obj_word_bbsig(&ival);
       val = (Cell) ival ;
       count += 9;
       break;
