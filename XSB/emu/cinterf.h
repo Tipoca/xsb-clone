@@ -19,10 +19,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.17 2001-07-12 00:21:13 kifer Exp $
+** $Id: cinterf.h,v 1.18 2002-08-08 17:58:21 lfcastro Exp $
 ** 
 */
 
+#ifndef __XSB_CINTERF_H__
+#define __XSB_CINTERF_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifndef CELL_DEFS_INCLUDED
 #include "cell_def_xsb.h"
@@ -277,3 +283,8 @@ the lower-level ctop_* routines directly. */
 /* return float argument i of answer term */
 #define xsb_var_float(i) (p2c_float(p2p_arg(reg_term(2),i)))
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __XSB_CINTERF_H__ */
