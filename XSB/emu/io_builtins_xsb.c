@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.28 2003-01-28 22:57:01 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.29 2003-02-03 22:50:21 dwarren Exp $
 ** 
 */
 
@@ -698,7 +698,7 @@ static int read_can_error(FILE *filep, STRFILE *instr, int prevchar, Cell prolog
     case TK_INTFUNC	: fprintf(stderr,"%d ", *(int *)ptr); break;
     case TK_REALFUNC	: fprintf(stderr,"%f ", *(double *)ptr); break;
     }
-    token = GetToken(filep,NULL,prevchar);
+    token = GetToken(filep,instr,prevchar);
     prevchar = token-> nextch;
   }
   if (token->type == TK_EOC)
@@ -1053,8 +1053,9 @@ int read_canonical_term(FILE *filep, STRFILE *instr, Cell prologvar)
     if (funtop == 0) {  /* term is finished */
       token = GetToken(filep,instr,prevchar);
       /* print_token(token->type,token->value); */
-      prevchar = token->nextch;
-      if (token->type != TK_EOC) return read_can_error(filep,instr,prevchar,prologvar);
+      prevchar = token->nextch; /* accept EOF as end_of_clause */
+      if (token->type != TK_EOF && token->type != TK_EOC) 
+	return read_can_error(filep,instr,prevchar,prologvar);
 
       if (opstk[0].typ != TK_VAR) {  /* if a variable, then a noop */
 	term = opstk[0].op;
