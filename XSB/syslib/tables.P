@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.9 1999/02/16 17:03:04 kostis Exp $
+** $Id: tables.P,v 1.10 1999/03/06 03:35:00 cbaoqiu Exp $
 ** 
 */
 
@@ -76,16 +76,16 @@ etnot(X) :-
 /*----------------------------------------------------------------------*/
 
 set_prof_on(Level) :-
-	stat_set_flag(52,Level,1).
+	stat_set_flag(52,Level).
 
 set_prof_off :-
-	stat_set_flag(52,0,1).
+	stat_set_flag(52,0).
 
 set_pil_on :-
-	stat_set_flag(0,1,1).
+	stat_set_flag(0,1).
 
 set_pil_off :-
-	stat_set_flag(0,0,1).
+	stat_set_flag(0,0).
 
 /*----------------------------------------------------------------------*/
 

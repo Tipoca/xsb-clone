@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id$
+** $Id: file_op.P,v 1.1.1.1 1998/11/05 16:59:49 sbprolog Exp $
 ** 
 */
 
@@ -186,8 +186,6 @@ op_type(xfy,inf).
 op_type(yfx,inf).
 op_type(fx,pre).
 op_type(fy,pre).
-op_type(hx,pre).
-op_type(hy,pre).
 op_type(xf,pos).
 op_type(yf,pos).
 

@@ -1,5 +1,5 @@
 /* File:      dbclause.H
-** Author(s): Kostis F. Sagonas, David S. Warren
+** Author(s): Kostis Sagonas, David S. Warren
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dbclause.H,v 1.1 1998/11/15 00:47:42 kifer Exp $
+** $Id: dbclause.H,v 1.2 1999/01/15 12:29:46 kostis Exp $
 ** 
 */
 
@@ -31,7 +31,7 @@
 :- import asserti/2 from assert.
 :- import abort/1, atom/1, call/1, repeat/0 from standard.
 :- import set_inthandler/2, '_$load_undef'/1 from loader.
-:- import stat_set_flag/3, code_call/3, conname/2,
+:- import stat_set_flag/2, code_call/3, conname/2,
           conpsc/2, term_arg/3, psc_arity/2, gen_retract_all/1,
 	  buff_set_byte/3, buff_set_cell/4, buff_set_var/4, buff_byte/3, 
 	  buff_word/3, buff_cell/3, buff_alloc/2, 

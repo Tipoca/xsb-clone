@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.6 1999/01/19 00:25:09 kostis Exp $
+** $Id: tables.H,v 1.7 1999/03/06 03:34:58 cbaoqiu Exp $
 ** 
 */
 
@@ -44,7 +44,7 @@
 :- import abolish_table_info/0, buff_set_word/3, buff_word/3, conpsc/2,
 	  cut_if_leader/3, slg_not/1, buff_byte/3, buff_set_byte/3, 
 	  is_incomplete/4, get_osp_breg/2, get_ptcp/1, get_subgoal_ptr/2,
-          psc_tabled/2, stat_set_flag/3, tip_prop/4, get_emu_dependent_const/2,
+          psc_tabled/2, stat_set_flag/2, tip_prop/4, get_emu_dependent_const/2,
 	  zero_out_profile/0, write_out_profile/0
 	from machine.
 

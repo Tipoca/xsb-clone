@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.8 1999/04/01 05:05:21 kifer Exp $
+** $Id: x_interp.H,v 1.9 1999/04/03 04:46:46 kifer Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 :- export break/0, prompt/2, prompt/3.
 
 
-:- import [] / 0 from usermod.	       % just to make usermod typed "module"
+:- import [] / 0 from usermod.	% just to make usermod typed "module"
 :- import xsb_flag/2 from curr_sym.
 :- import numbervars/1 from num_vars.
 :- import set_inthandler/2 from loader.
@@ -39,11 +39,9 @@
      from standard.
 :- import conpsc/2, psc_type/2, psc_set_type/2, psc_prop/2, psc_set_prop/2,
           psc_arity/2, term_psc/2, term_arg/3, term_new/2, term_type/2,
-	  conname/2, stat_flag/2, stat_set_flag/3, str_insert/2,
-	  is_xwammode/1, close_open_tables/0, trimcore/0, 
-	  slash/1
+	  conname/2, stat_flag/2, stat_set_flag/2, str_insert/2,
+	  is_xwammode/1, close_open_tables/0, trimcore/0, slash/1
      from machine.
-
 :- import file_read_line/3, file_open/3, file_close/1, file_get/2,
 	fmt_write_string/3
     from file_io.

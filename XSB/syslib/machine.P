@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.14 1999/04/02 03:48:08 kifer Exp $
+** $Id: machine.P,v 1.15 1999/04/04 03:51:30 kifer Exp $
 ** 
 */
 
@@ -43,7 +43,7 @@ term_new(_PSC, _Term) :- '_$builtin'(14).
 term_arg(_Term, _Index, _Arg) :- '_$builtin'(15).
 term_set_arg(_Term, _Index, _Arg, _Perm) :- '_$builtin'(16).
 stat_flag(_Flag, _Value) :- '_$builtin'(17).
-stat_set_flag(_Flag, _Value, _Perm) :- '_$builtin'(18).
+stat_set_flag(_Flag, _Value) :- '_$builtin'(18).
 buff_alloc(_Size, _Buffer) :- '_$builtin'(19).
 buff_word(_Buffer, _Disp, _Value) :- '_$builtin'(20).
 buff_set_word(_Buffer, _Disp, _Value) :- '_$builtin'(21).

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ora_call.H,v 1.2 1998-11-15 06:07:45 kifer Exp $
+** $Id: ora_call.H,v 1.3 1999-04-08 18:05:59 kostis Exp $
 ** 
 */
 
@@ -43,4 +43,3 @@
 :- import findall/3, bagof/3 from setof.
 :- import copy_term/2 from basics.
 :- import (not)/1 from standard.
-:- import stat_flag/2, stat_set_flag/3 from machine.
