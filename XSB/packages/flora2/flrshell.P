@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.10 2001-02-26 20:11:04 gzyang Exp $
+** $Id: flrshell.P,v 1.11 2001-03-07 16:18:06 gzyang Exp $
 **
 */
 
@@ -58,6 +58,8 @@ flora_shell_loop :-
 
 /*********************************************************************/
 flora_init_shell :-
+	consult(flrundefhook),
+	add_xsb_hook(xsb_undefined_predicate_hook(flora_undefined_predicate_hook(_))),
 	consult(flrutils),
 	flora_load_library(FLLIBSHELLANS),
 	flora_load_library(FLLIBLOAD),
@@ -65,7 +67,8 @@ flora_init_shell :-
 	flora_welcome_msg,
 	all,
 	chatter,
-	conset(flora_shell_loaded,1).
+	conset(flora_shell_loaded,1),
+	!.
 
 
 /*********************************************************************/
@@ -184,6 +187,7 @@ one :-
 
 /*********************************************************************/
 end :-
+	remove_xsb_hook(xsb_undefined_predicate_hook(flora_undefined_predicate_hook(_))),
 	unstrap_flora,
 	flora_stdmsg_line("\n\nCiao!"),
 	pop_abort_cutpoint,

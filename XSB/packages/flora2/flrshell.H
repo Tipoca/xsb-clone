@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.5 2001-02-20 22:55:49 gzyang Exp $
+** $Id: flrshell.H,v 1.6 2001-03-07 16:18:06 gzyang Exp $
 **
 */
 
@@ -53,6 +53,14 @@
 :- import conset/2 from gensym.
 
 :- import pop_stdin/1 from push_io.
+
+:- import
+	add_xsb_hook/1,
+	remove_xsb_hook/1,
+	xsb_undefined_predicate_hook/1
+   from xsb_hook.
+
+:- import flora_undefined_predicate_hook/1 from flrundefhook.
 
 :- import unstrap_flora/0 from flora2.
 

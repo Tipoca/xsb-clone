@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 2001-02-19 19:01:39 gzyang Exp $
+## $Id: Makefile,v 1.4 2001-03-07 16:18:09 gzyang Exp $
 ## 
 ##
 
@@ -35,6 +35,8 @@ ALLOBJS = flrtrailer.flh \
 XSB = $(XSBDIR)/bin/xsb
 
 PROLOG = $(XSB) -s -m 2000 -c 2000 -e 'set_dcg_style(standard),segfault_handler(warn).'
+
+FLORA_TERMS = ../includes/flora_terms.flh
 
 # Make sure warnings are saved in a file.
 SVFILE = '$(XSBDIR)/build/.flora_top_warn.tmp'
@@ -50,11 +52,11 @@ all: init $(ALLOBJS) finish
 	@cat $(SVFILE)
 
 
-flrtrailer.flh : flrtrailer.fli
+flrtrailer.flh : flrtrailer.fli $(FLORA_TERMS)
 	@echo 'flcompinc(flrtrailer).' >> cmd...
 
 
-flreqltrailer.flh : flreqltrailer.fli
+flreqltrailer.flh : flreqltrailer.fli $(FLORA_TERMS)
 	@echo 'flcompinc(flreqltrailer).' >> cmd...
 
 

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.5 2001-02-20 19:05:02 gzyang Exp $
+** $Id: flrutils.P,v 1.6 2001-03-07 16:18:06 gzyang Exp $
 **
 */
 
@@ -41,9 +41,6 @@
 #define FLORA_ALL		all
 #define FLORA_FILE		file
 #define FLORA_COMMANDLINE	commandline
-
-#define STDTRAILER		standard
-#define EQLTRAILER		equality
 
 #include "char_defs.h"
 #include "flag_defs_xsb.h"
