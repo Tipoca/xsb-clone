@@ -18,12 +18,13 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.2 1999-06-16 01:29:56 kifer Exp $
+## $Id: Makefile,v 1.3 1999-07-02 08:08:00 kifer Exp $
 ## 
 ##
 
 
-ALL = 	flrdisplay.O flrassert.O flrassert_dyn.O flraggregate.O flraggregate_dyn.O
+ALL = 	flrdisplay.O flrassert.O flrassert_dyn.O flraggregate.O \
+	flraggregate_dyn.O flrdebugger.O
 
 Option = [optimize]
 
