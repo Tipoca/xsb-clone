@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.15 2004-01-28 16:41:40 dwarren Exp $
+** $Id: psc_xsb.c,v 1.16 2004-01-29 18:44:09 dwarren Exp $
 ** 
 */
 
@@ -105,7 +105,6 @@ static Psc make_psc_rec(char *name, char arity) {
   set_spy(temp, 0);
   set_arity(temp, arity);
   set_length(temp, length);
-  temp->prof_ct = 0;  /* here is the main overhead for Prolog profiling... */
   set_data(temp, 0);
   set_ep(temp,(byte *)&(temp->load_inst));
   set_name(temp, string_find(name, 1));

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.71 2004/01/14 23:25:00 dwarren Exp $
+** $Id: subp.c,v 1.72 2004/01/15 18:04:49 dwarren Exp $
 ** 
 */
 
@@ -752,12 +752,12 @@ xsbBool startInterruptThread(SOCKET intSocket)
 
 extern long if_profiling;
 extern long prof_flag;
-extern long prof_unk_count;
-extern long prof_total;
 
 void setProfileBit(void *place_holder) {
   while (TRUE) {
-    if (if_profiling) asynint_val |= PROFINT_MARK;
+    if (if_profiling) {
+      asynint_val |= PROFINT_MARK;
+    }
 #ifdef WIN_NT
     Sleep(10);
 #else
@@ -790,7 +790,5 @@ xsbBool startProfileThread()
     if_profiling = 1;
   }
 #endif
-  prof_unk_count = 0;
-  prof_total = 0;
   return TRUE;
 }

@@ -29,6 +29,9 @@
  * -------------------------------------------------------------------------- **
  *
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  2004/01/14 20:27:14  dwarren
+ * XSB Prolog Profiling as command line option -p
+ *
  * Revision 4.10  2000/06/06 20:38:40  crh
  * In the ReplaceNode() function, the old node header was being copied
  * to the new node header using a byte-by-byte copy.  This was causing
@@ -349,6 +352,7 @@ typedef struct ubi_btNodeStruct {
   unsigned char *          code_begin;
   unsigned char *          code_end;
   Psc                      code_psc;
+  int			   i_count;
   } ubi_btNode;
 
 typedef ubi_btNode *ubi_btNodePtr;     /* Pointer to an ubi_btNode structure. */
