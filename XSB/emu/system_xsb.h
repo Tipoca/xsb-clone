@@ -18,10 +18,21 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.h,v 1.4 2000-06-26 19:09:26 ruim Exp $
+** $Id: system_xsb.h,v 1.5 2000-06-28 06:40:43 kifer Exp $
 ** 
 */
 
+
+#ifndef fileno                          /* fileno may be a  macro */
+extern int    fileno(FILE *f);          /* this is defined in POSIX */
+#endif
+
+/* In WIN_NT, this gets redefined into _fdopen by wind2unix.h */
+extern FILE *fdopen(int fildes, const char *type);
+
+#ifndef WIN_NT
+extern int kill(pid_t pid, int sig);
+#endif
 
 #ifdef WIN_NT
 #define PIPE(filedes_array)  _pipe(filedes_array, 5*MAXBUFSIZE, _O_TEXT)
