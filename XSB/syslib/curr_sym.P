@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.23 2004/09/28 17:24:42 tswift Exp $
+** $Id: curr_sym.P,v 1.24 2004/09/30 21:08:20 tswift Exp $
 ** 
 */
 
@@ -165,15 +165,21 @@ each byte.  Unlike simple * indices, the l.s. byte is not set to 0.
 
 */
 
-current_index(F/N,Index):-
+current_index(Term,Index):-
+	check_nonvar(Term,current_index/2,1),
+	current_index_1(Term,Index).
+	
+
+current_index_1(F/N,Index):-
+	nonvar(F),nonvar(N),
 	functor(Term,F,N),!,
-	current_index(Term,Index).
-current_index(Term,Index):- 
+	current_index_1(Term,Index).
+current_index_1(Term,Index):- 
 	'_$index'(Term,Ind,_Size),!,
 	decode_index(Ind,Index).
-current_index(Term,trie):- 
+current_index_1(Term,trie):- 
 	'_$trie_asserted'(Term),!.
-current_index(_Term,1).
+current_index_1(_Term,1).
 
 decode_index([],[]):-!.
 decode_index([Ind|Rest],[Index|R]):- !,
