@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_html_parse.c,v 1.1 2000-03-14 17:44:49 kifer Exp $
+** $Id: libwww_html_parse.c,v 1.2 2000-03-14 21:58:48 kifer Exp $
 ** 
 */
 
@@ -49,7 +49,21 @@
 int total_number_of_requests;
 
 
-/* BOOL, PRIVATE, PUBLIC, etc., are defined in a header in libwww */
+/* BOOL, PRIVATE, PUBLIC, etc., are defined in a Libwww header */
+
+/* Calling sequence:
+       libwww_html_parse([req1,req2,...])
+
+   Each req: f(URL, FORM-Params, SELECTED-Tags, PARSED-Result, ERROR-Code)
+   SELECTED-Tags:
+       	     _ (all tags),
+	     f(chosen-tag-list,ignore-tag-list) means: parse only inside the
+	     	    tags on the chosen tag list. Stop parsing if an ignored tag
+		    is found. Resume if a chosen tag is found, etc.
+	     f(_,ignore-tag-list) means: parse all tags except those in the
+		    ignore list.
+	     f(chosen-tag-list,_) means: parse only inside the chosen tags.
+ */
 BOOL  libwww_html_parse(void)
 {
   prolog_term request_term_list = reg_term(1), request_list_tail;
