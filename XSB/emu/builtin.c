@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.102 2000-06-28 06:42:52 kifer Exp $
+** $Id: builtin.c,v 1.103 2000-06-29 06:25:27 kifer Exp $
 ** 
 */
 
@@ -1808,7 +1808,6 @@ int builtin_call(byte number)
     break;
   case BOTTOM_UP_UNIFY:
     return ( bottom_up_unify() );
-    break;
   case DELETE_TRIE:
     if (strcmp(ptoc_string(2),"intern") == 0){
       int tmpval = ptoc_int(1);
