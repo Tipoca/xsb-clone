@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.24 1999-10-19 20:11:46 ejohnson Exp $
+** $Id: builtin.h,v 1.25 1999-12-12 03:27:36 kifer Exp $
 ** 
 */
 
@@ -66,7 +66,7 @@
 #define BUFF_DEALLOC	36
 #define BUFF_CELL	37
 #define BUFF_SET_CELL	38
-#define COPY_TERM0	39
+#define COPY_TERM	39
 /* check for substring */
 #define STR_SUB	        40
 #define DIRNAME_CANONIC 41

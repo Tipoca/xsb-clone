@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.H,v 1.5 1999/11/02 22:54:29 warren Exp $
+** $Id: basics.H,v 1.6 1999/12/07 21:13:37 warren Exp $
 ** 
 */
 
@@ -27,5 +27,5 @@
 	  member/2, memberchk/2, subset/2, reverse/2, select/3.
 :- export log_ith/3, log_ith_bound/3.
 
-:- import copy_term0/2, term_type/2 from machine.
+:- import term_type/2 from machine.
 :- import integer/1, is_list/1 from standard.

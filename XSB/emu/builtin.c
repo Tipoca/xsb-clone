@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.80 1999-12-10 07:47:26 kifer Exp $
+** $Id: builtin.c,v 1.81 1999-12-12 03:27:33 kifer Exp $
 ** 
 */
 
@@ -522,7 +522,7 @@ void init_builtin_table(void)
   set_builtin_table(BUFF_DEALLOC, "buff_dealloc");
   set_builtin_table(BUFF_CELL, "buff_cell");
   set_builtin_table(BUFF_SET_CELL, "buff_set_cell");
-  set_builtin_table(COPY_TERM0,"copy_term0");
+  set_builtin_table(COPY_TERM,"copy_term");
 
   set_builtin_table(STR_SUB, "str_sub");
   set_builtin_table(DIRNAME_CANONIC, "dirname_canonic");
@@ -1043,7 +1043,7 @@ int builtin_call(byte number)
     }
     break;
   }
-  case COPY_TERM0: /* R1: +term to copy; R2: -variant */
+  case COPY_TERM: /* R1: +term to copy; R2: -variant */
     copy_term();
     break;
     
