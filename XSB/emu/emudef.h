@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.24 2001-03-23 03:54:31 kifer Exp $
+** $Id: emudef.h,v 1.25 2001-03-26 01:38:16 kifer Exp $
 ** 
 */
 
@@ -264,7 +264,7 @@ int *asynint_ptr = &asynint_val;
     if (flags[PSC_INT]) {    	     	     	     	     	     	\
       pcreg = lpcreg;							\
       synint_proc(PSC, MYSIG_PSC, pcreg-2*sizeof(Cell));      	     	\
-      flags[PSC_INT] = NULL; /* reset it only after synint_proc() */   	\
+      flags[PSC_INT] = (Cell)0; /* reset it only after synint_proc() */	\
       lpcreg = pcreg;							\
     }	     	     	     	     	     	     	     	     	\
   } else {								\

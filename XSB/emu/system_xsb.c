@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.11 2001-03-17 05:44:01 kifer Exp $
+** $Id: system_xsb.c,v 1.12 2001-03-26 01:38:16 kifer Exp $
 ** 
 */
 
@@ -100,9 +100,41 @@ int sys_syscall(int callno)
   case SYS_getpid : result = getpid(); break; 
   case SYS_link  : result = link(ptoc_string(3), ptoc_string(4)); break;
 #endif
+  case SYS_mkdir: {
+#ifndef WIN_NT
+    /* create using mode 700 */
+    result = mkdir(ptoc_string(3), 0700); 
+#else
+    result = _mkdir(ptoc_string(3)); 
+#endif
+    break;
+  }
+  case SYS_rmdir: {
+#ifndef WIN_NT
+    result = rmdir(ptoc_string(3)); 
+#else
+    result = _rmdir(ptoc_string(3)); 
+#endif
+    break;
+  }
   case SYS_unlink: result = unlink(ptoc_string(3)); break;
   case SYS_chdir : result = chdir(ptoc_string(3)); break;
-  case SYS_access: result = access(ptoc_string(3), ptoc_int(4)); break;
+  case SYS_access: {
+    switch(*ptoc_string(4)) {
+    case 'r': /* read permission */
+      result = access(ptoc_string(3), R_OK);
+      break;
+    case 'w': /* write permission */
+      result = access(ptoc_string(3), W_OK);
+      break;
+    case 'x': /* execute permission */
+      result = access(ptoc_string(3), X_OK);
+      break;
+    default:
+      result = -1;
+    }
+    break;
+  }
   case SYS_stat  : {
     /* Who put this in??? What did s/he expect to get out of this call?
        stat_buff is never returned (and what do you do with it in Prolog?)!!!
@@ -140,6 +172,20 @@ xsbBool sys_system(int callno)
     sleep(ptoc_int(2));
 #endif
     return TRUE;
+  case IS_PLAIN_FILE: {
+    struct stat stat_buff;
+    int retcode = stat(ptoc_string(2), &stat_buff);
+    if (retcode == 0 && S_ISREG(stat_buff.st_mode)) 
+      return TRUE;
+    else return FALSE;
+  }
+  case IS_DIRECTORY: {
+    struct stat stat_buff;
+    int retcode = stat(ptoc_string(2), &stat_buff);
+    if (retcode == 0 && S_ISDIR(stat_buff.st_mode)) 
+      return TRUE;
+    else return FALSE;
+  }
   case SHELL: /* smart system call: like SPAWN_PROCESS, but returns error code
 		 instead of PID. Uses system() rather than execvp.
 		 Advantage: can pass arbitrary shell command. */
