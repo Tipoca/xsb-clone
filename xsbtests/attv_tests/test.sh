@@ -16,3 +16,4 @@ opts=$2
 ../gentest.sh "$XEMU $opts" copyterm_attv "test."
 ../gentest.sh "$XEMU $opts" findall_attv "test."
 ../gentest.sh "$XEMU $opts" trie_intern_attv "test."
+../gentest.sh "$XEMU $opts" trie_assert_attv "test."
