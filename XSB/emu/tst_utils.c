@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.17 2000-06-27 17:59:20 ejohnson Exp $
+** $Id: tst_utils.c,v 1.18 2000-07-31 20:28:01 ejohnson Exp $
 ** 
 */
 
@@ -323,9 +323,12 @@ void printTriePath(FILE *fp, BTNptr pLeaf, xsbBool printLeafAddr) {
   else {
     SymbolStack_ResetTOS;
     SymbolStack_PushPathRoot(pLeaf,pRoot);
-    pscPred = DecodeTrieFunctor(TN_Symbol(pRoot));
-    if ( IsNonNULL(pscPred) )
+    if ( IsTrieFunctor(TN_Symbol(pRoot)) ) {
+      pscPred = DecodeTrieFunctor(TN_Symbol(pRoot));
       fprintf(fp, "%s", get_name(pscPred));
+    }
+    else if ( IsTrieString(TN_Symbol(pRoot)) )
+      fprintf(fp, "%s", DecodeTrieString(TN_Symbol(pRoot)));
     fprintf(fp, "(");
     symstkPrintNextTerm(fp);
     while (! SymbolStack_IsEmpty) {

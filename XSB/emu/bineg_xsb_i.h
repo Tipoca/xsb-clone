@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.6 2000-06-24 13:55:04 ruim Exp $
+** $Id: bineg_xsb_i.h,v 1.7 2000-07-31 20:27:52 ejohnson Exp $
 ** 
 */
 
@@ -115,7 +115,7 @@
        * When GET_DELAY_LISTS is called, we can assume that the
        * corresponding tabled subgoal call has been completed and so trie
        * code will be used to return the answer (see
-       * trie_get_returns_for_call()).  After the execution of trie code,
+       * trie_get_returns()).  After the execution of trie code,
        * var_regs[] contains the substitution factor of the _answer_ to
        * the call.
        */
@@ -148,7 +148,7 @@
 	bind_list((CPtr)delay_lists, hreg);
 	{ /*
 	   * Make copy of var_regs & global_num_vars (after get_returns,
-	   * which calls trie_get_returns_for_call).  (global_num_vars +
+	   * which calls trie_get_returns).  (global_num_vars +
 	   * 1) is the number of variables left in the answer
 	   * (substitution factor of the answer)
 	   *

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.2 2000-06-26 15:53:29 ejohnson Exp $
+** $Id: sub_tables_xsb_i.h,v 1.3 2000-07-31 20:27:56 ejohnson Exp $
 ** 
 */
 
@@ -333,9 +333,13 @@ inline static  void subsumptive_call_search(TabledCallInfo *callStruct,
 inline static  void *newAnswerSet(int n) {
 
   TSTNptr root;
+  Cell symbol;
 
-  New_TSTN( root, TS_ANSWER_TRIE_TT, TRIE_ROOT_NT,
-	    EncodeTriePSC(get_ret_psc(n)), NULL, NULL );
+  if ( n > 0 )
+    symbol = EncodeTriePSC(get_ret_psc(n));
+  else
+    symbol = EncodeTrieConstant(makestring(get_ret_string()));
+  New_TSTN( root, TS_ANSWER_TRIE_TT, TRIE_ROOT_NT, symbol, NULL, NULL );
   TSTN_TimeStamp(root) = EMPTY_TST_TIMESTAMP;
   return root;
 }

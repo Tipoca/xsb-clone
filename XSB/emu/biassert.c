@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.42 2000-06-22 19:40:30 ruim Exp $
+** $Id: biassert.c,v 1.43 2000-07-31 20:27:52 ejohnson Exp $
 ** 
 */
 
@@ -2210,7 +2210,7 @@ int trie_assert(void)
     *(Trie_Asserted_Clref-2) = 6*sizeof(Cell)+2; /* store size, encode type */
     *(byte *)(Trie_Asserted_Clref +2) = jump;
 
-    inst_node_ptr = newBasicTrie(psc,ASSERT_TRIE_TT);
+    inst_node_ptr = newBasicTrie(EncodeTriePSC(psc),ASSERT_TRIE_TT);
     Instr(inst_node_ptr) = trie_assert_inst;
 
     *(Trie_Asserted_Clref +3) = (Cell)inst_node_ptr;

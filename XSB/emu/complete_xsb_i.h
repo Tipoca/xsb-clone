@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.6 2000-06-22 01:27:50 lfcastro Exp $
+** $Id: complete_xsb_i.h,v 1.7 2000-07-31 20:27:55 ejohnson Exp $
 ** 
 */
 
@@ -109,7 +109,7 @@ XSB_Start_Instr(check_complete,_check_complete); {
 	  {
 	    if (num_heap_term_vars == 0) {
 	      delay_positively(subgoal, ALN_Answer(tcp_trie_return(breg)),
-			       makestring((char *) ret_psc[0]));
+			       makestring(get_ret_string()));
 	    }
 	    else {
 #ifndef IGNORE_DELAYVAR
@@ -121,7 +121,7 @@ XSB_Start_Instr(check_complete,_check_complete); {
 			       makecs(temp_hreg));
 #else
 	      delay_positively(subgoal, ALN_Answer(tcp_trie_return(breg)),
-			       makestring((char *) ret_psc[0]));
+			       makestring(get_ret_string()));
 #endif /* IGNORE_DELAYVAR */
 	    }
 	  }

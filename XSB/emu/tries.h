@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.27 2000-06-27 17:59:19 ejohnson Exp $
+** $Id: tries.h,v 1.28 2000-07-31 20:28:00 ejohnson Exp $
 ** 
 */
 
@@ -288,10 +288,10 @@ typedef struct Call_Check_Insert_Results {
 
 /*-- exported trie functions ------------------------------------------*/
 
-extern BTNptr   newBasicTrie(Psc,int);
+extern BTNptr   newBasicTrie(Cell,int);
 extern byte *	trie_get_calls(void);
 extern Cell	get_lastnode_cs_retskel(Cell);
-extern byte *	trie_get_returns_for_call(void);
+extern byte *	trie_get_returns(struct subgoal_frame *, Cell);
 extern void	remove_open_tries(CPtr);
 extern void     init_trie_aux_areas(void);
 extern void     load_solution_trie(int, int, CPtr, BTNptr);
