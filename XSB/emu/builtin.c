@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.154 2003-04-02 19:42:42 lfcastro Exp $
+** $Id: builtin.c,v 1.155 2003-04-18 15:07:37 lfcastro Exp $
 ** 
 */
 
@@ -1671,6 +1671,10 @@ int builtin_call(byte number)
     
 #ifdef XSB_ODBC
 #include "odbc_xsb_i.h"
+#else
+  case ODBC_EXEC_QUERY: {
+    xsb_exit("XSB not compiled with ODBC support.\nRecompile using the option --with-odbc.\n");
+  }
 #endif
 
 #ifdef XSB_INTERPROLOG
