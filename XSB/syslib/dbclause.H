@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dbclause.H,v 1.8 2002/04/10 23:33:22 tswift Exp $
+** $Id: dbclause.H,v 1.9 2002/04/13 05:01:59 lfcastro Exp $
 ** 
 */
 
@@ -33,6 +33,6 @@
 :- import stat_set_flag/2, code_call/3, conname/2,
           gen_retract_all/1, buff_word/3, buff_cell/3, buff_alloc/2, 
 	  buff_set_byte/3, buff_set_cell/4, buff_set_var/4, buff_byte/3,
-          db_get_clause/9, db_retract0/2, db_remove_prref/1, db_reclaim0/2
+          db_get_clause/11, db_retract0/2, db_remove_prref/1, db_reclaim0/2
      from machine.
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.48 2002/11/05 20:50:45 lfcastro Exp $
+** $Id: machine.H,v 1.49 2003/04/02 19:42:40 lfcastro Exp $
 ** 
 */
 
@@ -115,7 +115,7 @@
         formatted_io/5,
 	file_read_canonical/3,
 	gen_retract_all/1,
-	db_get_clause/9,
+	db_get_clause/11,
 	db_retract0/2,
 	db_build_prref/3,
 	db_remove_prref/1,
