@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.43 2004/01/28 23:00:11 tswift Exp $
+** $Id: standard.H,v 1.44 2004/03/05 01:02:11 dwarren Exp $
 ** 
 */
 
@@ -67,7 +67,7 @@
 	write_canonical/1,  write_canonical/2,
 	('\+')/1,	'=:='/2,	'=\='/2,	'<'/2,
 	'>'/2,		'=<'/2,		'>='/2,		'='/2,
-	'\='/2,		'=..'/2,	'^=..'/2,	'=='/2,
+	'\='/2,		'=..'/2,	'^=..'/2,	'=='/2, 	'@='/2,
 	'\=='/2,	'@<'/2,		'@>'/2,		'@=<'/2,
 	'@>='/2,	';'/2,		','/2,		'->'/2,
 	':'/2,		'_$cutto'/1,	'_$savecp'/1.	
