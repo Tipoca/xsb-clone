@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.91 2004/09/03 22:19:49 tswift Exp $
+** $Id: standard.P,v 1.92 2004/09/10 17:29:46 tswift Exp $
 ** 
 */
 
@@ -398,7 +398,9 @@ writeln(S_or_A,Term):-
 writeln(T) :- stat_flag(CURRENT_OUTPUT,File),file_write(File,T),file_nl(File).
 
 % yes, according to the manual this is what it should do.
-display(T) :- telling(F), tell(user_out), write(T), nl, told, tell(F).	
+display(T) :- telling(F), tell(user_out), write(T), told, tell(F).	
+
+displayln(T) :- telling(F), tell(user_out), write(T), nl, told, tell(F).	
 
 write_prolog(S_or_A,Term):- 
 	check_open_stream_or_alias(S_or_A,write_prolog/2,1,output,Ostr),
