@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete.i,v 1.4 1998-12-22 09:17:59 kostis Exp $
+** $Id: complete.i,v 1.5 1999-01-12 23:14:14 cbaoqiu Exp $
 ** 
 */
 
@@ -47,6 +47,12 @@ case check_complete: {
   ptcpreg = tcp_ptcp(breg);	/* this CP has exhausted program resolution */
 
   SUBGOAL = tcp_subgoal_ptr(breg);	/* get the subgoal that is checked */
+
+#ifdef DEBUG_DELAY
+  xcurcall = SUBGOAL;
+  fprintf(stderr, ">>>> check_complete is called.  The checked subgoal is: ");
+  print_subgoal(stderr, (SGFrame) xcurcall); fprintf(stderr, "\n");
+#endif
 
   CC_CSPTR = subg_compl_stack_ptr(SUBGOAL);
 
@@ -292,6 +298,7 @@ case check_complete: {
 	lpcreg = (byte *)subg_ans_root_ptr(SUBGOAL);
 	/* backtrack to prev tabled subgoal after returning answers */
 	breg =  tcp_prevbreg(orig_breg); /* orig_???*/ 
+	delay_it = 1;
 	goto contcase;
       } /* if there are answers */   
       else { /* no answers to return */
