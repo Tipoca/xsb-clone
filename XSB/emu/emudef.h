@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.32 2002-03-13 22:40:13 lfcastro Exp $
+** $Id: emudef.h,v 1.33 2002-05-20 17:47:09 tswift Exp $
 ** 
 */
 
@@ -54,7 +54,7 @@ CPtr pdlreg;
 CPtr openreg;
 CPtr root_address;
 
-CPtr ptcpreg;
+CPtr ptcpreg = NULL;
 CPtr delayreg;
 
 #ifdef DEMAND

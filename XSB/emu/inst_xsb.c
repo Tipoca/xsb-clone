@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.c,v 1.13 2001-09-21 15:01:15 tswift Exp $
+** $Id: inst_xsb.c,v 1.14 2002-05-20 17:47:09 tswift Exp $
 ** 
 */
 
@@ -35,16 +35,20 @@
 extern void init_builtin_table(void);
 
 #ifdef PROFILE
+
+/* Initialize this stuff for profiling.  In profiling, the number of
+   occurrences of each instruction can be counted, as well as
+   operations that happen within instructions, such as switch_envs,
+   and others.  Thus the instruction tables have an added field, to
+   keep the count.  In addition, statistics on SCCs can be derived and
+   the SDGs themselves printed out, if you like. */
+
 Cell inst_table[BUILTIN_TBL_SZ][6];
+
 unsigned long num_switch_envs;
 unsigned long num_switch_envs_iter;
 
 Cell subinst_table[BUILTIN_TBL_SZ][2];
-int max_subgoals = 0;
-int max_completed = 0;
-int max_consumers_in_ascc = 0;
-int max_compl_susps_in_ascc = 0;
-int trapped_prolog_cps = 0;
 
 #define XSB_INST(inum, inst, label, op1type, op2type, op3type, op4type) \
         inst_table[inst][0] = (Cell)( #inst ); \
@@ -60,6 +64,18 @@ int trapped_prolog_cps = 0;
 #define set_subinst_table(inst,instr) \
         subinst_table[inst][0] = (Cell)(instr); \
 	subinst_table[inst][1] = 0
+
+/* ProfileLeader */
+int max_subgoals = 0;
+int max_completed = 0;
+int max_consumers_in_ascc = 0;
+int max_compl_susps_in_ascc = 0;
+int trapped_prolog_cps = 0;
+
+/* SpitOutGraph */
+int sdg_sample_rate = 2000;
+int sdg_check_num = 0;
+
 #else
 Cell inst_table[BUILTIN_TBL_SZ][5];
 

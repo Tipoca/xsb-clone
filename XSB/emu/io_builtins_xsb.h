@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.h,v 1.1 1999-10-25 05:58:36 kifer Exp $
+** $Id: io_builtins_xsb.h,v 1.2 2002-05-20 17:47:10 tswift Exp $
 ** 
 */
 
@@ -32,3 +32,7 @@
 extern FILE *open_files[];      /* Table of file pointers for open files */
 
 extern int xsb_intern_file(FILE *f, char *c);
+
+extern void write_quotedname(FILE *file, char *string);
+extern void double_quotes(char *string, char *new_string);
+extern xsbBool no_quotes_needed(char *string);

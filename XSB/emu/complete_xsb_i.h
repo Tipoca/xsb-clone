@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.18 2002-03-12 17:31:21 lfcastro Exp $
+** $Id: complete_xsb_i.h,v 1.19 2002-05-20 17:47:09 tswift Exp $
 ** 
 */
 
@@ -73,8 +73,8 @@ XSB_Start_Instr(check_complete,_check_complete)
     /* The following code is only done in profile mode; it keeps track
      * of characteristics of SCCs */
 
-    ProfileLeader;
-
+    /* ProfileLeader; */
+    /* SpitOutGraph(cs_ptr); */
     /* check if fixpoint has been reached, otherwise schedule any
      * unresolved answers */
     FailIfAnswersFound(check_fixpoint(subgoal,breg));
@@ -91,8 +91,6 @@ XSB_Start_Instr(check_complete,_check_complete)
       
       CompleteSimplifyAndReclaim(cs_ptr);
 
-      remove_unfounded_set(cs_ptr);
-      
       /* leader has non-returned answers? */
       if (has_answer_code(subgoal) && (subg_answers(subgoal) > COND_ANSWERS)) {
 	reclaim_incomplete_table_structs(subgoal);

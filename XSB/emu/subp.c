@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.59 2002/02/21 21:20:40 tswift Exp $
+** $Id: subp.c,v 1.60 2002/03/12 15:13:38 lfcastro Exp $
 ** 
 */
 
@@ -311,6 +311,8 @@ Pair build_call(Psc psc)
 /* set interrupt code in reg 2 and return ep of interrupt handler.	*/
 /* the returned value is normally assigned to pcreg, so this is like	*/
 /* raising a trap.							*/
+/* Note that the interrupt handlers referred to by flags array values   */
+/* are set up on the Prolog side via set_inthandler/2                   */
 /*======================================================================*/
 
 Psc synint_proc(Psc psc, int intcode, byte *cur_inst)
