@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prolog2hilog.c,v 1.4 2001-06-11 07:07:49 kifer Exp $
+** $Id: prolog2hilog.c,v 1.5 2001-07-06 02:48:18 kifer Exp $
 ** 
 */
 
@@ -94,7 +94,7 @@ static prolog_term map_list(prolog_term func(), prolog_term term, char *apply);
       plg2hlg(X, cde(f,a,cde(g,b,X))),Z)
   Will loop and eventually crash because X occurs in Pterm and in Hterm.
  */
-xsbBool plg2hlg () {
+DllExport xsbBool call_conv plg2hlg () {
   prolog_term pterm = reg_term(1);
   prolog_term hterm = reg_term(2);
   prolog_term apply_t = reg_term(3);
