@@ -1,11 +1,10 @@
 /* File:      copyterm_attv.P
 ** Author(s): Baoqiu Cui
 **
-** $Id: copyterm_attv.P,v 1.2 2000-02-13 09:27:27 cbaoqiu Exp $
+** $Id: copyterm_attv.P,v 1.3 2004-11-17 21:43:37 tswift Exp $
 */
 
-:- import put_attributes/2, get_attributes/3 from machine.
-:- import attv_unify/2 from machine.
+:- import put_attr/3, get_attr/3 from machine.
 
 test :-
 	test_sharing,
@@ -13,31 +12,30 @@ test :-
 	writeln('Passed copyterm_attv test!').
 
 test_sharing :-
-	put_attributes(X, v(a)),
+	put_attr(X, ct, v(a)),
 	copy_term(f(X,g(X)), T),
 	T = f(Y,g(Z)),			% Y and Z are shared in T
-	put_attributes(Y, v(b)),	% so update Y will also update Z
-	get_attributes(Y, VY, _),
-	get_attributes(Z, VZ, _),
+	put_attr(Y, ct, v(b)),	% so update Y will also update Z
+	get_attr(Y, ct, VY),
+	get_attr(Z, ct, VZ),
 	nonvar(VY), VY = v(b),
 	nonvar(VZ), VZ = v(b),
-
-	put_attributes(A, v(123)),	% Test shared attvs in a functor
+	put_attr(A, ct, v(123)),	% Test shared attvs in a functor
 	copy_term(f(A,A), G),
 	G = f(B,C),
-	put_attributes(B, v(456)),
-	get_attributes(C, VC, _),
+	put_attr(B, ct, v(456)),
+	get_attr(C, ct, VC),
 	nonvar(VC), VC = v(456),
 	writeln('== test_sharing is OK').
 
 test_cyclic_term :-
-	put_attributes(X, v(Y,a)),
-	put_attributes(Y, v(X,b)),
+	put_attr(X, ct, v(Y,a)),
+	put_attr(Y, ct, v(X,b)),
 	copy_term(f(X,X), f(NewX1, NewX2)),
 	NewX1 == NewX2,
-	get_attributes(NewX2, VX, _),
+	get_attr(NewX2, ct, VX),
 	nonvar(VX), VX = v(NewY, a),
-	get_attributes(NewY, VY, _),
+	get_attr(NewY, ct,  VY),
 	nonvar(VY), VY = v(XinY, b),
 	XinY == NewX1,
 	writeln('== test_cyclic_term is OK').

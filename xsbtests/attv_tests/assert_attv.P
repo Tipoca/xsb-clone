@@ -1,15 +1,18 @@
 /* File:      assert_attv.P
 ** Author(s): Baoqiu Cui
 **
-** $Id: assert_attv.P,v 1.1 1999-12-22 05:13:42 cbaoqiu Exp $
+** $Id: assert_attv.P,v 1.2 2004-11-17 21:43:37 tswift Exp $
 */
 
-:- import put_attributes/2, get_attributes/3 from machine.
+:- import put_attr/3, get_attr/3, install_verify_attribute_handler/4 from machine.
 :- import attv_unify/2 from machine.
 
-verify_attributes(Var, Value) :-
-	% write('== verify: '), writeln(Var-Value),
-	attv_unify(Var, Value).
+:- install_verify_attribute_handler(as,AttrVal,Targ,dummy_handler(Targ,AttrVal)).
+
+dummy_handler(Value, Target) :-
+	(var(Target) -> 
+	    attv_unify(Target,Value)
+	 ;  true).
 
 test :-
 	test_fact1,
@@ -21,7 +24,7 @@ test :-
 
 test_fact1 :-
 	writeln('First time of test_fact1'),
-  	put_attributes(X, v(a)),
+  	put_attr(X, as, v(a)),
 	assert(p(X,X)),
 	fail.
 
@@ -35,22 +38,22 @@ test_fact1 :-
 	X2 == abc,
 	writeln('p(X2, abc) is OK'),
 
-	put_attributes(X3, v(b)),
+	put_attr(X3, as, v(b)),
 	p(X3, Y3), call(true),
-	get_attributes(Y3, VY3, _),
+	get_attr(Y3, as,  VY3),
 	nonvar(VY3), VY3 = v(b),
 	writeln('p(X3, Y3) is OK'),
 
-	put_attributes(X4, v(234)),
+	put_attr(X4, as, v(234)),
 	p(X4,X4), call(true),
-	get_attributes(X4, VX4, _),
+	get_attr(X4, as,  VX4),
 	nonvar(VX4), VX4 = v(234),
 	writeln('p(X4, X4) is OK'),
 
-	put_attributes(X5, v(a)),
+	put_attr(X5, as, v(a)),
 	retract(p(X5,X5)),
 	((p(555, X5))
-	 ->	get_attributes(X5, VX5),
+	 ->	get_attr(X5, as, VX5),
 		writeln(VX5),
 		writeln('Error!')
 	 ;	writeln('retract is OK')
@@ -59,8 +62,8 @@ test_fact1 :-
 
 test_fact2 :-
 	writeln('First time of test_fact2'),
-	put_attributes(X, v(a)),
-	put_attributes(Y, v(b)),
+	put_attr(X, as, v(a)),
+	put_attr(Y, as, v(b)),
  	assert(q(f(X,X), X)),
 	assert(q(f(X,Y), g(Y,X), X, Y)),
 	fail.
@@ -78,16 +81,16 @@ test_fact2 :-
 	writeln('Passed test_fact2').
 
 test_sharing :-
-        put_attributes(X, v(1)),
+        put_attr(X, as, v(1)),
         assert(p0(X,X)),
         fail.
 test_sharing :-
         p0(X,Y),
-        get_attributes(X, VX, _),
+        get_attr(X, as, VX),
         nonvar(VX), VX = v(1), writeln(VX),
         % update the attribute of X (== Y)
-        put_attributes(X, v(11)),
-        get_attributes(Y, VY, _),
+        put_attr(X, as, v(11)),
+        get_attr(Y,as,  VY),
         nonvar(VY), VY = v(11),
         writeln('Passed test_sharing!').
 
@@ -96,7 +99,7 @@ test_sharing :-
 % =====================================
 test_clause1 :-
 	writeln('First time of test_clause1'),
-	put_attributes(X, v(a)),
+	put_attr(X, as, v(a)),
 	assert((p1(X) :- q1(f(X), 1), r1(g(2,X)))),
 	assert(q1(f(5),1)),
 	assert(r1(_)),
@@ -111,7 +114,7 @@ test_clause1 :-
 % =====================================
 test_clause2 :-
 	writeln('First time of test_clause2'),
-	put_attributes(X, v(a)),
+	put_attr(X, as, v(a)),
 	assert((p2(Y) :- q2(X), call(true), Y is X+1)),
 	assert((q2(Z) :- Z = 5)),
 	fail.
@@ -155,7 +158,7 @@ end_of_file.
 	execute - - - 0x37d980
 	Now add clref to chain:
 
-2) put_attributes(X, v(a)),
+2) put_attr(X, v(a)),
    assert((p1(X) :- q1(1,X))),
    assert(q1(1,X)).
 
@@ -169,7 +172,7 @@ end_of_file.
 	execute - - - 0x81eb170
 	Now add clref to chain:
 
-3) put_attributes(X, v(a)),
+3) put_attr(X, v(a)),
    assert((p1(X) :- q1(f(X), 1), r1(g(2,X)))).
 
 	test_heap - - 2 0
@@ -195,7 +198,7 @@ end_of_file.
 	execute - - - 0x81ae180
 	Now add clref to chain:
 
-4) put_attributes(X, v(a)),
+4) put_attr(X, v(a)),
    assert((p2(Y):- q2(X))).
 
 	test_heap - - 2 0
@@ -206,7 +209,7 @@ end_of_file.
 	movreg - 3 1
 	execute - - - 0x81eb5c0
 
-5) put_attributes(X, v(a)),
+5) put_attr(X, v(a)),
    assert((p2(Y) :- q2(X), writeln([1,X]))),
 
 	test_heap - - 2 0
