@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.27 2003/12/08 22:33:43 tswift Exp $
+** $Id: consult.H,v 1.28 2004/01/21 18:59:47 dwarren Exp $
 ** 
 */
 
@@ -27,6 +27,7 @@
 	  compile/1, compile/2, search_module/6,
 	  add_lib_dir/1,
 	  load_dyn/1, load_dyn/2, 
+	  load_dyn_module/1,
 	  load_dync/1, load_dync/2, read_canonical/1,
 	  current_loaded_file/1,
 	  ensure_dyn_loaded/1, ensure_dync_loaded/1,
