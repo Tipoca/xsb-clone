@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.47 2002/08/19 15:44:29 tswift Exp $
+** $Id: machine.H,v 1.48 2002/11/05 20:50:45 lfcastro Exp $
 ** 
 */
 
@@ -66,7 +66,8 @@
 	call0/1,
 	code_load/3, 
 	file_gettoken/5,
-	stat_cputime/1, 
+	stat_cputime/1,
+	stat_walltime/1,
 	str_match/5,
         dirname_canonic/2,
 	psc_insert/4, 

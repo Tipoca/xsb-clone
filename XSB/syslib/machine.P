@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.54 2002/04/13 05:01:59 lfcastro Exp $
+** $Id: machine.P,v 1.55 2002/08/19 15:44:29 tswift Exp $
 ** 
 */
 
@@ -88,6 +88,7 @@ string_substitute(_String, _SubstSpec, _SubstList, _Result) :-
 call0(Term) :- call0(Term).
 stat_sta(X) :- stat_sta(X).
 stat_cputime(X) :- stat_cputime(X).
+stat_walltime(X) :- stat_walltime(X).
 code_load(ByteCodeFileName, InitAddr, Exp) :-
 	code_load(ByteCodeFileName, InitAddr, Exp).
 buff_set_var(Buff, Disp, BuffSize, Var) :-

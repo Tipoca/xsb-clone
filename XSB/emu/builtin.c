@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.153 2003-03-05 19:59:56 lfcastro Exp $
+** $Id: builtin.c,v 1.154 2003-04-02 19:42:42 lfcastro Exp $
 ** 
 */
 
@@ -157,6 +157,8 @@ extern void force_answer_false(BTNptr);
 extern int set_scope_marker();
 extern int unwind_stack();
 extern int clean_up_block();
+
+extern double realtime_count; /* from subp.c */
 
 /* ------- variables also used in other parts of the system -----------	*/
 
@@ -706,6 +708,7 @@ void init_builtin_table(void)
   set_builtin_table(DO_ONCE, "do_once");
 
   set_builtin_table(GET_DATE, "get_date");
+  set_builtin_table(STAT_WALLTIME, "stat_walltime");
 
   set_builtin_table(PSC_ENV, "psc_env");
   set_builtin_table(PSC_SPY, "psc_spy");
@@ -1249,6 +1252,12 @@ int builtin_call(byte number)
     ctop_int(4,hour);
     ctop_int(5,minute);
     ctop_int(6,second);
+    break;
+  }
+  case STAT_WALLTIME: {
+    int value;
+    value = (int) ((real_time() - realtime_count) * 1000);
+    ctop_int(1, value);
     break;
   }
   case CODE_LOAD:		/* R1: +FileName, bytecode file to be loaded */
