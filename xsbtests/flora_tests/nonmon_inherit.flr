@@ -6,17 +6,17 @@ q.q[].
     aa:a.
     aa[b->d].
 
-    tst1 :- aa[b->X], writeln(X), fail.      % X=d
+    tst1 :- aa[b->X], writeln(X)@prolog(), fail.      % X=d
     tst1.
 
     aaa::a.
-    tst2 :- aaa[@U*->Y], @U=..UUU, write(UUU), write('  '), writeln(Y), fail.
+    tst2 :- aaa[U*->Y], write(U)@prolog(), write('  ')@prolog(), writeln(Y)@prolog(), fail.
     tst2.
 
     a1[b *-> d].
     aaaa:a1.
     aaaa:a.
-    tst3 :- aaaa[@U->Y], @U=..UUU, write(UUU), write('  '), writeln(Y), fail.
+    tst3 :- aaaa[U->Y], write(U)@prolog(), write('  ')@prolog(), writeln(Y)@prolog(), fail.
     tst3.
 
 %%------------------
@@ -27,16 +27,16 @@ q.q[].
 
     abb:ab.
     abb[b ->> tt].
-    tst4 :- abb[@M ->> K], @M=..MM, write(MM), write('  '), writeln(K), fail.
+    tst4 :- abb[M ->> K], write(M)@prolog(), write('  ')@prolog(), writeln(K)@prolog(), fail.
     tst4.
 
     aabb:ab.
-    tst5 :- aabb[@M ->> K], @M=..MM, write(MM), write('  '), writeln(K), fail.
+    tst5 :- aabb[M ->> K], write(M)@prolog(), write('  ')@prolog(), writeln(K)@prolog(), fail.
     tst5.
 
     abbb::ab.
     abbb[b *->> e].
-    tst6 :- abbb[@M *->> K], @M=..MM, write(MM), write('  '), writeln(K), fail.
+    tst6 :- abbb[M *->> K], write(M)@prolog(), write('  ')@prolog(), writeln(K)@prolog(), fail.
     tst6.
 
     ab1[b *->> ttt].
@@ -45,7 +45,7 @@ q.q[].
     aabb1:bbb.
     aabb1:ab1.
 
-    tst7 :- aabb1[@M ->> K], @M=..MM,write(MM),write('  '),writeln(K),fail.
+    tst7 :- aabb1[M ->> K], write(M)@prolog(),write('  ')@prolog(),writeln(K)@prolog(),fail.
     tst7.
 
     test :- tell(temp), tst1, tst2, tst3, tst4, tst5, tst6, tst7, told.

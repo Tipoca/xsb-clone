@@ -7,13 +7,13 @@
     aaa::a.
     aa:aaa.
 
-    tst1 :- aa[@T=>X], @T=..TT, write(TT), write('  '), writeln(X), fail.
+    tst1 :- aa[T=>X], write(T)@prolog(), write('  ')@prolog(), writeln(X)@prolog(), fail.
     tst1.
 
-    tst2 :- aaa[@U=>Y], @U=..UUU, write(UUU), write('  '), writeln(Y), fail.
+    tst2 :- aaa[U=>Y], write(U)@prolog(), write('  ')@prolog(), writeln(Y)@prolog(), fail.
     tst2.
 
-    tst3 :- aa[@SM=>>V], @SM=..SMM, write(SMM), write('  '), writeln(V), fail.
+    tst3 :- aa[SM=>>V], write(SM)@prolog(), write('  ')@prolog(), writeln(V)@prolog(), fail.
     tst3.
 
 test :- tell(temp), tst1, tst2, tst3, told.

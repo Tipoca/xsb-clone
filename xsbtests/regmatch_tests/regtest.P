@@ -49,7 +49,7 @@ t10 :- Str = 'abbbcd\bbo',
 
 t11 :- re_charlist_to_string("abcdefg",L), writeln(L).
 
-t12 :- substring("abcdefg", 4, -1, L), substring('abcdefg', 3, 5, LL),
+t12 :- substring("abcdefg", 4, -2, L), substring('abcdefg', 3, 5, LL),
 	write(L), write(' '), writeln(LL).
 
 t13 :- string_substitute('qaddf', [s(2,4)], ['123'] ,L1),

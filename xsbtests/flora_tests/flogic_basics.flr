@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flogic_basics.flr,v 1.2 1999-10-16 23:04:44 kifer Exp $
+** $Id: flogic_basics.flr,v 1.3 2001-07-07 18:24:48 kifer Exp $
 ** 
 */
 
@@ -29,24 +29,29 @@
 time_flies_like_an_arrow.		% a 0-ary PREDICATE (proposition)
 fruit_flies_like_an_apple[].		% an OBJECT with empty specification []
 
+:- firstorder e/2, tc/2.
+:- table tc/2.
+
 e(a,b). e(b,a). e(b,c).			% a binary PREDICATE (graph)
 e(b,d).
-
-:- table tc/2.
 
 tc(X,Y) :- e(X,Y).			% a RULE and ...
 tc(X,Y) :- tc(X,Z), tc(Z,Y).		% ... a (doubly) RECURSIVE RULE
  
+person :: object.
+dangerous_hobby :: object.
 john:employee.				% INSTANCE : CLASS 
 employee::person.			% SUBCLASS :: SUPERCLASS
-bill:person.
+bob:person.
+tim:person.
+betty:employee.
 
-person[age=>integer; kids=>>person].    % some (optional) SIGNATURE information
+person[age=>integer, kids=>>person].    % some (optional) SIGNATURE information
 
 mary:employee[				% a more complex MOLECULE involving
-	age->29;			% ... a SINGLE-VALUED (svd) method
-	kids ->> {tim,leo,betty};	% ... a MULTI-VALUED (mvd) method
-	salary@(1998) -> a_lot		% ... a PARAMETERIZED (and svd) method
+	age->29,			% ... a SINGLE-VALUED (svd) method
+	kids ->> {tim,leo,betty},	% ... a MULTI-VALUED (mvd) method
+	salary(1998) -> a_lot		% ... a PARAMETERIZED (and svd) method
 ].
 
 tim[hobbies ->> {stamps, snowboard}].	% somebodies hobbies
@@ -55,7 +60,7 @@ betty[hobbies->>{fishing,diving}].
 snowboard:dangerous_hobby.		% isn't it??
 diving:dangerous_hobby.
 
-X[self->X].				% define self
+_X[self->_X].				% define self
 
 
 person[believes_in *->>			% INHERITABLE mvd method
@@ -72,23 +77,23 @@ tst1 :- time_flies_like_an_arrow.	% ==> `yes'
 
 tst2 :- fruit_flies_like_a_banana[].	% ==> `yes'
 
-tst3 :- tc(X,Y), write(X), write('  '), writeln(Y), fail.
+tst3 :- tc(X,Y), write(X)@prolog(), write('  ')@prolog(), writeln(Y)@prolog(), fail.
 tst3.
 
-tst4 :- X:person, writeln(X), fail.
+tst4 :- X:person, writeln(X)@prolog(), fail.
 tst4.
 
-tst5 :- person[instances ->> {X}], writeln(X), fail.
+tst5 :- person[instances ->> {X}], writeln(X)@prolog(), fail.
 tst5.
 
-tst6 :- X[believes_in ->> {Y}], write(X), write('  '),  writeln(Y), fail.
+tst6 :- X[believes_in ->> {Y}], write(X)@prolog(), write('  ')@prolog(),  writeln(Y)@prolog(), fail.
 tst6.
 
 tst7 :- X..kids[		
 		   self -> K;	
 		   hobbies ->> {H:dangerous_hobby}
 	       ],
-	write(X), write('  '), write(K), write('  '), writeln(H), fail. 
+	write(X)@prolog(), write('  ')@prolog(), write(K)@prolog(), write('  ')@prolog(), writeln(H)@prolog(), fail. 
 tst7.
 
 test :- tell(temp), tst1, tst2, tst3, tst4, tst5, tst6, tst7, told.
