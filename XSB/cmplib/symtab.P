@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: symtab.P,v 1.1.1.1 1998-11-05 17:00:16 sbprolog Exp $
+** $Id: symtab.P,v 1.2 1999-01-15 12:30:24 kostis Exp $
 ** 
 */
 
@@ -67,7 +67,7 @@
 
 sym_insert(Name, Arity, Prop, sym_tab(Buff,_Completed,HashTab), Sym) :-
 	( var(HashTab) ->	% SymTab does not exist yet (is empty).
-		buff_alloc(8, Buff, 1),
+		buff_alloc(8, Buff),
                 buff_set_word(Buff, 4, 0),
 		functor(HashTab, hash_tab, 101)
 	; true
@@ -89,7 +89,7 @@ sym_inserti(Name, Arity, Prop, [Sym|_], Sym, Index) :-
 sym_inserti(Name, Arity, Prop, [_|SymTab], Sym, Index) :-
 	sym_inserti(Name, Arity, Prop, SymTab, Sym, Index).
 
-dispose_symtab( sym_tab(Buff,_,_) ) :- buff_dealloc( Buff, 8, 0, 1 ).
+dispose_symtab( sym_tab(Buff,_,_) ) :- buff_dealloc(Buff, 8, 0).
 
 /*======================================================================*/
 /*  sym_complete(#SymTab)						*/

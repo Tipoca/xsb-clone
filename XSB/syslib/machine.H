@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.2 1998/12/21 01:09:55 cbaoqiu Exp $
+** $Id: machine.H,v 1.3 1999/01/13 18:19:15 kostis Exp $
 ** 
 */
 
@@ -51,10 +51,10 @@
 	stat_flag/2, 
 	stat_set_flag/3, 
 	stat_sta/1,
-	buff_alloc/3, 
+	buff_alloc/2, 
 	buff_word/3, 
 	buff_set_word/3,
-	buff_dealloc/4, 
+	buff_dealloc/3, 
 	buff_cell/3, 
 	buff_set_cell/4, 
 	buff_set_var/4,
