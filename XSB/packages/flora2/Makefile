@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.33 2002-05-04 22:16:20 kifer Exp $
+## $Id: Makefile,v 1.34 2002-05-05 00:37:27 kifer Exp $
 ## 
 ##
 
@@ -84,6 +84,7 @@ base: core showerrors
 
 showerrors:
 	@cat $(FLORADIR)/.flora*.tmp
+	@rm $(FLORADIR)/.flora*.tmp
 
 top: init $(ALLOBJS) finish
 	./CompileChangedFiles.sh $(PROLOG_COMMAND)
