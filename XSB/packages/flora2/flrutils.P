@@ -21,7 +21,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.97 2002-04-24 02:19:33 kifer Exp $
+** $Id: flrutils.P,v 1.98 2002-04-30 04:22:56 gzyang Exp $
 **
 */
 
@@ -949,14 +949,23 @@ flora_generate_Pfile(PFileName,FileOptionList,RuleList,FactList,DBFile,FLDFile,F
 	  flora_extern_code(RuleList,CoderStatus),
 	  ( CoderStatus == [] ->
 	      ( member(FLEQLFLOGIC,FileOptionList) ->
+		  %% A directive in the program specifies the full equality trailer.
+		  %% This option adds FLSCALAREQL, which handles the equality
+		  %% implied by single-valued methods.
 		  flora_message_line('Including full F-logic equality maintenance'),
-		  flora_include_file([FLEQLTRAILER,FLSCALAREQL], FileStatus)
-
+		  flora_include_file([FLEQLTRAILER,FLSCALAREQL],FileStatus)
 
 	      ; member(FLEQLBASIC,FileOptionList) ->
+		  %% The basic equality trailer does not include the equality
+		  %% specified by the equailty rules (a:=:b).
 	          flora_message_line('Including basic equality maintenance'),
 		  flora_include_file([FLEQLTRAILER],FileStatus)
+
+	      ; member(FLOBJEQLDEF,FileOptionList) ->
+		  flora_message_line('Including basic equality maintenance'),
+		  flora_include_file([FLEQLTRAILER],FileStatus)
 	      ;
+	        %% By default no equality is included.
 	        flora_include_file([FLTRAILER],FileStatus)
 	      ),
 	      flora_include_file([FLPREDDEF],FileStatus)
