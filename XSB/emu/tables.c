@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.25 2002-01-28 16:47:56 lfcastro Exp $
+** $Id: tables.c,v 1.26 2002-02-22 21:59:46 lfcastro Exp $
 ** 
 */
 
@@ -135,8 +135,10 @@ void table_call_search(TabledCallInfo *call_info,
     size = int_val(*tmplt_component) & 0xffff;
 
     /* expand heap if there's not enough space */
-    check_glstack_overflow(call_info->call_arity, dummy, size, 
-			   xsb_exit("Heap/Local overflow\n"));
+    if ((pb)top_of_localstk < (pb)top_of_heap + size +
+	OVERFLOW_MARGIN) {
+      xsb_abort("{table_call_search} Heap overflow copying answer template");
+    }
 
     for ( j = size - 1, tmplt_component = tmplt_component + size;
 	  j >= 0;
