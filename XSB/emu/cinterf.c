@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.29 2000-02-22 22:38:03 dwarren Exp $
+** $Id: cinterf.c,v 1.30 2000-02-23 18:24:00 dwarren Exp $
 ** 
 */
 
@@ -1344,7 +1344,7 @@ int call_conv xsb_query_string_string_b(
   if (last_answer.length < buflen) {
     strcpy(buff,last_answer.string);
     return rc;
-  } else return 1;
+  } else return 3;
 }
 
 /************************************************************************/
@@ -1360,7 +1360,7 @@ DllExport int call_conv
     strcpy(buff,last_answer.string);
     return 0;
   } else 
-    return 1;    
+    return 3;
 }    
 
 /************************************************************************/
