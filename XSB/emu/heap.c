@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap.c,v 1.23 1999-09-21 11:11:41 kostis Exp $
+** $Id: heap.c,v 1.24 1999-09-23 14:10:26 kostis Exp $
 ** 
 */
 
@@ -1474,8 +1474,8 @@ static void chat_relocate_all(CPtr heap_bot, int heap_offset,
   while (initial_pheader != chat_link_headers);
   }
 
-  /* now relocate the SF heap pointers */
-
+  /* now relocate pointers to the heap from the completion
+   * stack: the SF and Dreg fields for generators */
   { CPtr compl_fr;
     CPtr *p;
 
@@ -1483,6 +1483,9 @@ static void chat_relocate_all(CPtr heap_bot, int heap_offset,
     while (compl_fr != COMPLSTACKBOTTOM)
       { /* substitution factor is now in the heap for generators */
 	p = (CPtr *)(&compl_hreg(compl_fr));
+	reallocate_heap_or_ls_pointer(p);
+	/* relocate Dreg field too: if non-null, it points to the heap */
+	p = (CPtr *)(&compl_pdreg(compl_fr));
 	reallocate_heap_or_ls_pointer(p);
 	compl_fr = prev_compl_frame(compl_fr);
       }
