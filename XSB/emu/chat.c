@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chat.c,v 1.14 1999-10-26 06:46:51 kifer Exp $
+** $Id: chat.c,v 1.15 1999-10-27 02:46:19 cbaoqiu Exp $
 ** 
 */
 
@@ -830,7 +830,7 @@ chat_init_pheader save_a_consumer_copy(SGFrame subg_ptr, int incremental)
 chat_init_pheader save_a_consumer_for_generator(SGFrame subg_ptr)
 {
     TChoice prev_tcp;
-    int     subst_fact_var_num;
+    int     subst_fact_var_num, attv_num, tmp;
     CPtr    consumer, *cptr, compl_fr;
     chat_incr_pheader ip;
     chat_init_pheader pheader;
@@ -853,7 +853,8 @@ chat_init_pheader save_a_consumer_for_generator(SGFrame subg_ptr)
     compl_fr = subg_compl_stack_ptr(subg_ptr);
   /* only one choicepoint needs to be saved: 		*/
   /* the generator and the substitution factor for it	*/
-    subst_fact_var_num = int_val(cell(compl_hreg(compl_fr)));
+    tmp = int_val(cell(compl_hreg(compl_fr)));
+    get_var_and_attv_nums(subst_fact_var_num, attv_num, tmp);
     size_cons = NLCPSIZE + subst_fact_var_num + 1;
 
 #ifdef Chat_DEBUG
