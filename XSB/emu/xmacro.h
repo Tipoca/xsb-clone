@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xmacro.h,v 1.10 1999-09-21 11:11:40 kostis Exp $
+** $Id: xmacro.h,v 1.11 1999-10-09 16:34:40 kostis Exp $
 ** 
 */
 
@@ -378,17 +378,17 @@ extern ALNptr empty_return();
           /* ideally the completion stack should be compacted */ \
           /* and completed subgoals should be removed instead */ \
           compl_pdreg(subg_compl_stack_ptr(SUBG_PTR)) = NULL; \
-          reclaim_del_ret_list((SGFrame)SUBG_PTR); \
+          reclaim_del_ret_list(SUBG_PTR); \
         } 
 #else
 #define mark_as_completed(SUBG_PTR) {\
           subg_compl_flag(SUBG_PTR) = (CPtr) -1;  \
-          reclaim_del_ret_list((SGFrame)SUBG_PTR); \
+          reclaim_del_ret_list(SUBG_PTR); \
         } 
 #endif
 
 #define subgoal_space_has_been_reclaimed(SUBG_PTR,CS_FRAME) \
-        ((SGFrame)SUBGOAL != compl_subgoal_ptr(CS_FRAME))
+        (SUBG_PTR != compl_subgoal_ptr(CS_FRAME))
 
 #define mark_delayed(csf1, csf2, susp) { \
 	  compl_visited(csf1) = DELAYED; \
