@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_pcdos.in,v 1.7 1999-01-18 11:41:38 kostis Exp $
+** $Id: def_config_pcdos.in,v 1.8 1999-01-18 16:31:18 kostis Exp $
 ** 
 */
 
@@ -92,8 +92,6 @@
 #undef CHAT
 
 #undef WAM_TRAIL
-
-#undef PTCP_IN_CP
 
 #undef GC
 

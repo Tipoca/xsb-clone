@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.26 1999-01-18 11:41:41 kostis Exp $
+## $Id: configure.in,v 1.27 1999-01-18 16:31:20 kostis Exp $
 ## 
 ##
 
@@ -683,8 +683,6 @@ if test "${enable_chat}" = "yes" ; then
    AC_DEFINE(GC)
    AC_DEFINE(WAM_TRAIL)
    engine_mode=chat
-else
-   AC_DEFINE(PTCP_IN_CP)
 fi
 
 
