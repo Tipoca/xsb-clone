@@ -50,6 +50,10 @@ options=$2
 # Test reading constant characters
 #------------------------------------
 ../gentest.sh "$XEMU $options" con_char "test."
+#------------------------------------
+# Test evaluable functions
+#------------------------------------
+../gentest.sh "$XEMU $options" conv_fun "test."
 #------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
 #------------------------------------------------------------------------
