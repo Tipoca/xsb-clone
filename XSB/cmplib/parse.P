@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.21 1999-09-06 17:32:12 kifer Exp $
+** $Id: parse.P,v 1.22 1999-09-07 17:19:00 warren Exp $
 ** 
 */
 
@@ -399,6 +399,15 @@ transform_directive(dynamic(P/A),dynamic(Skel)) :-
 	atom(P),integer(A),!,
 	functor(Skel,P,A).
 transform_directive(table(P/A),table(Skel)) :-
+	atom(P),integer(A),!,
+	functor(Skel,P,A).
+transform_directive(index(P/A),index(Skel)) :-
+	atom(P),integer(A),!,
+	functor(Skel,P,A).
+transform_directive(index(P/A,X),index(Skel,X)) :-
+	atom(P),integer(A),!,
+	functor(Skel,P,A).
+transform_directive(index(P/A,X,Y),index(Skel,X,Y)) :-
 	atom(P),integer(A),!,
 	functor(Skel,P,A).
 transform_directive(Directive,Directive).
