@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.6 2002-03-27 06:47:32 kifer Exp $
+** $Id: hash_xsb.c,v 1.7 2002-08-28 19:25:47 lfcastro Exp $
 ** 
 */
 
@@ -87,25 +87,50 @@ unsigned long next_prime(unsigned long some_int) {
 unsigned long hash(char *obj_name, byte arity, unsigned long hash_table_size) {
 
   unsigned long hashval, temp;
-  int i, j;
+  int i, j, k;
 
   hashval = 0;
   if (*obj_name != '\0')
-    for (i = 4; i >= 0; i--) {
-      temp = 0;
-      for (j = 0; j < 5; j++) {
-	temp = (temp << i) + *obj_name;
-	obj_name++;
-	if (*obj_name == '\0') {
-	  hashval = hashval + temp;
-	  goto Done;
+    for (k=0; k<10; k++) {
+      for (i = 4; i >= 0; i--) {
+	temp = 0;
+	for (j = 0; j < 5; j++) {
+	  temp = (temp << i) + *obj_name;
+	  obj_name++;
+	  if (*obj_name == '\0') {
+	    hashval = hashval + temp;
+	    goto Done;
+	  }
 	}
+	hashval = hashval + temp;
       }
-      hashval = hashval + temp;
     }
  Done:
   return ((hashval + arity) MOD hash_table_size);
 }
+
+/* unsigned long hash(char *obj_name, byte arity, unsigned long hash_table_size) { */
+
+/*   unsigned long hashval, temp; */
+/*   int i, j; */
+
+/*   hashval = 0; */
+/*   if (*obj_name != '\0') */
+/*     for (i = 4; i >= 0; i--) { */
+/*       temp = 0; */
+/*       for (j = 0; j < 5; j++) { */
+/* 	temp = (temp << i) + *obj_name; */
+/* 	obj_name++; */
+/* 	if (*obj_name == '\0') { */
+/* 	  hashval = hashval + temp; */
+/* 	  goto Done; */
+/* 	} */
+/*       } */
+/*       hashval = hashval + temp; */
+/*     } */
+/*  Done: */
+/*   return ((hashval + arity) MOD hash_table_size); */
+/* } */
 
 
 /*
