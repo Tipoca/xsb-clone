@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: copysubdirs.sh,v 1.3 1999-10-22 03:44:28 kifer Exp $
+## $Id: copysubdirs.sh,v 1.4 2001-04-21 22:52:49 kifer Exp $
 ## 
 ##
 
@@ -65,6 +65,10 @@ for f in $files ; do
     else
        echo "Copying $1/$f to $2"
        cp -rpf $1/$f  $2
+       /bin/rm -rf $2/*/CVS $2/*/*/CVS $2/*/.cvsignore $2/*/*/.cvsignore
+       /bin/rm -rf $2/*/*/*/CVS $2/*/*/*/.cvsignore
+       /bin/rm -rf $2/*/*~ $2/*/*/*~ $2/*/#*# $2/*/*/#*#
+       /bin/rm -rf $2/*/*/*/*~ $2/*/*/*/#*#
     fi
   fi
 done

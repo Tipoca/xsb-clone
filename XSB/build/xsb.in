@@ -22,7 +22,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: xsb.in,v 1.6 1999-05-06 16:56:16 kifer Exp $
+## $Id: xsb.in,v 1.7 2001-04-21 22:52:49 kifer Exp $
 ## 
 ##
 
@@ -110,4 +110,5 @@ else
    echo "immediately after it was created."
    echo ""
    echo "Please contact your system administrator, if you can't rebuild XSB."
+   exit 1
 fi
