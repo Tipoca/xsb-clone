@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.23 1999/11/12 14:41:33 warren Exp $
+** $Id: consult.P,v 1.24 1999/12/04 03:06:37 kifer Exp $
 ** 
 */
 
@@ -259,7 +259,8 @@ load_dyn(File) :-
 load_dyn(File,Dir) :-
 	(atom(File)
 	 ->	true
-	 ;	warning('Wrong type in argument 1 of load_dyn/1'),fail
+	;	file_write0(STDERR, 'Wrong type in argument 1 of load_dyn/1'),
+		fail
 	),
 	get_fname(File,SExt,Base,Mod),
 	load_dyn0(SExt,Base,Mod,Dir).
@@ -407,7 +408,8 @@ load_dync(File) :- load_dync(File,1).  % assertz
 load_dync(File,Dir) :-
 	(atom(File)
 	 ->	true
-	 ;	warning('Wrong type in argument 1 of load_dync/1'),fail
+	 ;	file_write0(STDERR, 'Wrong type in argument 1 of load_dync/1'),
+		fail
 	),
 	get_fname(File,SExt,Base,Mod),
 	load_dync0(SExt,Base,Mod,Dir).
