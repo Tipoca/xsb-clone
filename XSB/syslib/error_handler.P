@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.22 2004/08/20 18:16:31 dwarren Exp $
+** $Id: error_handler.P,v 1.23 2004/08/29 22:57:04 tswift Exp $
 ** 
 */
 
@@ -149,6 +149,7 @@ get_mod_pred_arity_list([Psc|Pscs], [ModPred|ModPreds]) :-
 list pair, with car=forward continuation, cdr=backward continuation.
 backward is [] if xsb not started with -p option */
 
+print_backtrace([[]]) :- !.  % if empty, don't print anything
 print_backtrace([For|Back]) :-
 	messageln('Forward Continuation...',STDERR),
 	print_mod_pred_arity_list(For),
