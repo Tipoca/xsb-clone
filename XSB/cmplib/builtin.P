@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.P,v 1.39 2000-12-08 17:26:46 ejohnson Exp $
+** $Id: builtin.P,v 1.40 2001-03-16 13:20:52 tswift Exp $
 ** 
 */
 
@@ -247,3 +247,7 @@ builtin_function(sqrt, 1, 18).
 builtin_function(asin, 1, 19).
 builtin_function(acos, 1, 20).
 builtin_function(atan, 1, 21).
+builtin_function(abs, 1, 22).
+builtin_function(truncate, 1, 23).
+builtin_function(round, 1, 24).
+builtin_function(ceiling, 1, 25).
