@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xnmr.P,v 1.1 1999-08-25 21:56:57 warren Exp $
+** $Id: xnmr.P,v 1.2 1999-08-26 13:30:47 warren Exp $
 ** 
 */
 
@@ -202,6 +202,7 @@ all_distinct1([vv(_Name,Var)|Rest]) :-
 	all_distinct1(Rest).
 
 process_stable_models(Query) :-
+	prompt(MorePrompt,MorePrompt,'_$more_prompt'(_)),
 	(Query = {tnot(Q)}
          ->     true
          ;      Q = Query
@@ -213,9 +214,17 @@ process_stable_models(Query) :-
 	file_nl(STDFDBK),
 	file_write(STDFDBK,'  '),
 	print_current_stable_model,
+	file_write(STDFDBK, MorePrompt),
+	file_flush(STDFDBK, _),
+	no_more(Cmd),
+	(Cmd =:= 10
+         ->     !,
+	        file_write(STDFDBK, '  yes'), 
+		file_nl(STDFDBK)
+	 ; true
+        ),
 	fail.
-process_stable_models(_) :- 
-	file_nl(STDFDBK).
+process_stable_models(_).
 
 process_answerset_semantics(Query) :-
 	(Query = {tnot(Q)}
