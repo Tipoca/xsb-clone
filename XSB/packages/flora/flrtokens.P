@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrtokens.P,v 1.3 1999-05-07 01:41:24 kifer Exp $
+** $Id: flrtokens.P,v 1.4 1999-05-23 22:15:40 guizyang Exp $
 **
 */
 
@@ -356,8 +356,7 @@ read_string(0'\,Quote,Chars,Tokens,Status) :-
 	    )
 
 	  ; 
-	    (escape_char(C1,V) -> true ; V=C1),
-	    Chars=[V|Chs],
+	    (escape_char(C1,V) -> Chars=[V|Chs] ; Chars=[0'\,C1|Chs]),
 	    get0(C2),
 	    read_string(C2,Quote,Chs,Tokens,Status)
 	).
@@ -397,6 +396,7 @@ hex_symbol(Ch,Value) :-
 /****************************************************************************
   This table is for ASCII.
 ****************************************************************************/
+escape_char(0'\, 92).
 escape_char(0'n, 10).		% \n = NewLine
 escape_char(0'N, 10).		% \N = NewLine
 escape_char(0't,  9).		% \t = Tab
