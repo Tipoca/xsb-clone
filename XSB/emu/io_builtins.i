@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.i,v 1.1 1999-04-03 04:46:41 kifer Exp $
+** $Id: io_builtins.i,v 1.2 1999-04-03 04:55:35 kifer Exp $
 ** 
 */
 
@@ -30,8 +30,9 @@
 
 
 static struct stat stat_buff;
-extern Cell ptoc_tag(int);
-extern char *expand_filename(char *filename);
+extern int    fileno(FILE *);	        /* this is defined in POSIX */
+extern Cell   ptoc_tag(int);
+extern char   *expand_filename(char *filename);
 
 static FILE *stropen(char *str)
 {
