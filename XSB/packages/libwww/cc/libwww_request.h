@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_request.h,v 1.3 2000-04-03 05:04:37 kifer Exp $
+** $Id: libwww_request.h,v 1.4 2000-04-03 13:54:27 kifer Exp $
 ** 
 */
 
@@ -69,6 +69,7 @@ PRIVATE void handle_subrequest_termination(HTRequest *req, int status);
 PRIVATE void libwww_abort_all(char *msg, ...);
 PRIVATE void setup_callbacks(REQUEST_TYPE type);
 PRIVATE void extract_request_headers(HTRequest *request);
+PRIVATE int timer_cbf(HTTimer *timer, void *param, HTEventType type);
 
 typedef struct userdata USERDATA;
 struct userdata {
