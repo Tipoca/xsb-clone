@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.P,v 1.5 1999/03/24 19:35:49 kifer Exp $
+** $Id: xsb_read.P,v 1.6 1999/03/24 21:11:08 warren Exp $
 ** 
 */
 
@@ -68,12 +68,12 @@ file_read(File, Answer, Variables) :-
 	/*****************************************/
 	/*  fmt_read, read_line                  */
 	/*****************************************/
-fmt_read(Fmt,Types,Result,Status) :-
+fmt_read(Fmt,Result,Status) :-
         stat_flag(10, File),
-	( atom(Fmt), callable(Types), compound(Result), var(Status)
-		     -> fmt_read(File,Fmt,Types,Result,Status)
+	( compound(Result), var(Status)
+		     -> fmt_read(File,Fmt,Result,Status)
 	    ;
-	    abort('Usage: fmt_read(+FmtString, types(+T1,+T2,...), result(-R1,-R2,...), -RetCode)')
+	    abort('Usage: fmt_read(+FmtString, result(-R1,-R2,...), -RetCode)')
     	).
 
 read_line(Str, IsFullLine) :-

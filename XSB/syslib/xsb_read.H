@@ -19,26 +19,26 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.H,v 1.3 1999/03/24 15:46:24 kifer Exp $
+** $Id: xsb_read.H,v 1.4 1999/03/24 21:11:05 warren Exp $
 ** 
 */
 
 
 :- export file_read/2, file_read/3, string_as/1, vv/2, 'syntax errors'/0.
 :- export file_read_foe/3.
-:- export fmt_read/4, read_line/2.
+:- export fmt_read/3, read_line/2.
 
 
 :- import '_$op'/3 from file_op.
 :- import str_tolist/2 from string.
 :- import file_write0/2, file_nl/1 from xsb_writ.
-:- import atom/1, repeat/0, abort/1, callable/1, compound/1
+:- import atom/1, repeat/0, abort/1, compound/1
     	  from standard.
 :- import '_$hilog_symbol'/1 from hilogsym.
 :- import file_put/2, term_new/2, term_set_arg/4, term_type/2, 
 	  file_gettoken/5, psc_insert/4, stat_set_flag/3, conname/2, 
 	  conpsc/2, str_insert/2, term_psc/2, psc_set_prop/2, psc_prop/2,
-     	  stat_flag/2, fmt_read/5, file_read_line/3
+     	  stat_flag/2, fmt_read/4, file_read_line/3
      from machine.
 
 

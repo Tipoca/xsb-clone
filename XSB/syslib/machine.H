@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.8 1999/02/10 16:20:18 warren Exp $
+** $Id: machine.H,v 1.9 1999/03/27 09:33:36 workflow Exp $
 ** 
 */
 
@@ -123,7 +123,7 @@
 	assert_buff_to_clref/7,
 	fmt_write/3,
 	fmt_write_string/3,
-	fmt_read/5,
+	fmt_read/4,
         file_read_line/3,
         file_read_line/2,
 	file_read_canonical/3,

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.9 1999/02/10 16:20:21 warren Exp $
+** $Id: machine.P,v 1.10 1999/03/27 09:33:38 workflow Exp $
 ** 
 */
 
@@ -143,7 +143,7 @@ assert_code_to_buff(_Clause,_Size) :- '_$builtin'(129).
 assert_buff_to_clref(_Head,_NAri,_Prref,_AZ,_RInd,_HashTabSize,_Clref) :-
 	'_$builtin'(130).
 fmt_write(_File,_Format,_ValsList) :- '_$builtin'(131).
-fmt_read(_File,_Format,_TypeList,_ValsListVar,_Ret) :- '_$builtin'(132).
+fmt_read(_File,_Format,_ValsListVar,_Ret) :- '_$builtin'(132).
 file_read_canonical(_File,_Var,_Ret) :- '_$builtin'(133).
 gen_retract_all(_Buff) :- '_$builtin'(134).
 compiled_to_dynamic(_PSC,_NewPred) :- '_$builtin'(135).
@@ -186,9 +186,9 @@ file_seek(File, Offset, Place, Ret) :-
 file_truncate(File, Length, Ret) :- file_function(2, File, Length, Ret, _E).
 
 
-fmt_read(Format, TypeList, ValsListVar, Ret) :-
+fmt_read(Format, ValsListVar, Ret) :-
 	stat_flag(10, FileDescriptor),
-	fmt_read(FileDescriptor, Format, TypeList, ValsListVar, Ret).
+	fmt_read(FileDescriptor, Format, ValsListVar, Ret).
 fmt_write(Format, ValsListVar) :-
 	stat_flag(11, FileDescriptor),
 	fmt_write(FileDescriptor, Format, ValsListVar).

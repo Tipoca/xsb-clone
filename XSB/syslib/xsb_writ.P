@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.P,v 1.1.1.1 1998/11/05 16:59:56 sbprolog Exp $
+** $Id: xsb_writ.P,v 1.2 1999/01/16 16:34:40 kostis Exp $
 ** 
 */
 
@@ -45,13 +45,13 @@ file_write0(_, _).
 	       /********************************/
 fmt_write(Fmt, Args) :-
        stat_flag(11, File), 
-       ( atom(Fmt), callable(Args) -> fmt_write(File, Fmt, Args)
+       ( callable(Args) -> fmt_write(File, Fmt, Args)
          ;
 	 abort('Usage: fmt_write(+FmtString, args(+A1,+A2,...))')
        ).
 
 fmt_write_string(Str, Fmt, Args) :-
-   ( var(Str), atom(Fmt), callable(Args) -> fmt_write_string(Str, Fmt, Args)
+   ( var(Str), callable(Args) -> fmt_write_string(Str, Fmt, Args)
      ;
      abort('Usage: fmt_write(-OutputString, +FmtString, args(+A1,+A2,...))')
    ).
