@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.20 2004-06-20 08:38:58 kifer Exp $
+## $Id: Makefile,v 1.21 2004-08-24 17:47:00 kifer Exp $
 ## 
 ##
 
@@ -30,8 +30,9 @@ FLORADIR = ..
 
 ALLOBJS = flrpatch.flh flrpreddef.flh flrindex_P.flh \
 	  flrdyna.flh flrdynz.flh \
+	  flrexportcheck.flh \
 	  flrtable.flh flrhilogtable.flh \
-	  flrrefreshtable.flh flrexportcheck.flh
+	  flrrefreshtable.flh
 
 PROLOG = none
 

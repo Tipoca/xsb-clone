@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrarguments.H,v 1.7 2004-06-20 08:38:59 kifer Exp $
+** $Id: flrarguments.H,v 1.8 2004-08-24 17:47:16 kifer Exp $
 **
 */
 

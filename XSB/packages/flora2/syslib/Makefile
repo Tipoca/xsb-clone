@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.25 2004-06-20 08:38:57 kifer Exp $
+## $Id: Makefile,v 1.26 2004-08-24 17:46:54 kifer Exp $
 ## 
 ##
 
@@ -35,6 +35,7 @@ FLORADIR = ..
 
 ALLOBJS = flranswer$(OBJEXT) \
 	  flrcontrol$(OBJEXT) \
+	  flrclause$(OBJEXT) \
 	  flrdisplay$(OBJEXT) \
 	  flrload$(OBJEXT) \
 	  flraggavg$(OBJEXT) \
@@ -59,8 +60,8 @@ ALLOBJS = flranswer$(OBJEXT) \
 	  flrdecode$(OBJEXT)  \
 	  flrcanon$(OBJEXT)  \
 	  flrmetaops$(OBJEXT)  \
-	  flrtrim${OBJEXT} \
-	  flrexport${OBJEXT} \
+	  flrtrim$(OBJEXT) \
+	  flrexport$(OBJEXT) \
 	  flrimport$(OBJEXT)
 
 FLORA_INCLUDES_DIR = ../flrincludes

@@ -19,7 +19,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdebugger.P,v 1.24 2004-06-20 08:38:59 kifer Exp $
+** $Id: flrdebugger.P,v 1.25 2004-08-24 17:47:05 kifer Exp $
 ** 
 */
 
@@ -31,7 +31,7 @@
 
 
 
-:- import file_close/1, ioport2iostream/2 from file_io.
+:- import file_close/1 from file_io.
 :- import debug_display_call_hook/1, flora_switch/1 from usermod.
 :- import flora_configuration/2 from flrregistry.
 :- import process_control/2 from shell.
@@ -112,7 +112,7 @@
 %% Get the debugging output stream
 :- dynamic flora_dbg_stream/1.
 ?- (flora_dbg_stream(Stream) -> close(Stream), retractall(flora_dbg_stream(_))
-   ; ioport2iostream(STDDBG,Stream), assert(flora_dbg_stream(Stream))
+   ; assert(flora_dbg_stream(STDDBG))
    ).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% flora_write_debug_call %%%%%%%%%%%%%%%%%%%%%%%%%

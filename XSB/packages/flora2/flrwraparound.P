@@ -21,7 +21,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrwraparound.P,v 1.15 2004-06-20 08:38:59 kifer Exp $
+** $Id: flrwraparound.P,v 1.16 2004-08-24 17:47:09 kifer Exp $
 **
 */
 
@@ -56,7 +56,6 @@
 */
 
 
-#include "flag_defs_xsb.h"
 #include "flora_terms.flh"
 #include "flora_porting.flh"
 #include "flora_wrap.flh"
@@ -112,7 +111,7 @@ wrapWorkspace(InFile) :-
 	seeing(PreInFile),
 	flora_set_xpp_options_for_read,
 	xpp_process_file(InFile,XPP_process,IOportFromProc),
-	stat_set_flag(CURRENT_INPUT,IOportFromProc),
+	see(IOportFromProc),
 	process_fli_file,
 	%% Wait, not to leave zombies.
 	process_control(XPP_process,wait(ExitStatus)),
@@ -120,7 +119,8 @@ wrapWorkspace(InFile) :-
 	; flora_error_line('Error while preprocessing ~w', [InFile])
 	),
 	%% Release the file descriptor used to read from cpp.
-	file_close(IOportFromProc),
+	%%file_close(IOportFromProc),
+	seen,
 	flora_clear_xpp_options,
 	see(PreInFile).
 wrapWorkspace(_).

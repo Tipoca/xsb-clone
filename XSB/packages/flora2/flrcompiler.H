@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.16 2004-06-20 08:38:59 kifer Exp $
+** $Id: flrcompiler.H,v 1.17 2004-08-24 17:47:16 kifer Exp $
 **
 */
 
@@ -66,6 +66,11 @@
 
 :- import flora_error_line/2 from flrprint.
 
+:- dynamic compile_with_var_module(_).
+
+:- dynamic dynrule_warnings(_).
+
 :- export 
+	flora_compile_add/4,
 	flora_reset_compiler/0, 
 	flora_compile/4.

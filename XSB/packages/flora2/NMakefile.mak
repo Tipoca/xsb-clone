@@ -20,7 +20,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: NMakefile.mak,v 1.14 2004-06-20 08:38:59 kifer Exp $
+## $Id: NMakefile.mak,v 1.15 2004-08-24 17:47:16 kifer Exp $
 ## 
 ##
 
@@ -59,7 +59,7 @@ OPTIONS = [optimize]
 
 .SUFFIXES: $(PROLOGEXT) $(OBJEXT)
 
-## p2h is handled specially, but makeflora
+## p2h is handled specially, buy makeflora
 ALL:: $(ALLOBJS)
 	cd closure
 	nmake /f NMakefile.mak
@@ -92,6 +92,8 @@ CLEAN :
 	cd ..\syslib
 	nmake /f NMakefile.mak clean
 	cd ..\debugger
+	nmake /f NMakefile.mak clean
+	cd ..\lib
 	nmake /f NMakefile.mak clean
 	cd ..\pkgs
 	nmake /f NMakefile.mak clean

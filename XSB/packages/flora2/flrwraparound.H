@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrwraparound.H,v 1.9 2004-06-20 08:38:59 kifer Exp $
+** $Id: flrwraparound.H,v 1.10 2004-08-24 17:47:10 kifer Exp $
 **
 */
 
@@ -30,8 +30,7 @@
 #include "flora_porting.flh"
 
 :- import
-	parse_filename/4,
-	stat_set_flag/2
+	parse_filename/4
    from machine.
 
 :- import ','/2 from standard.
