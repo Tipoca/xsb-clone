@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chat.h,v 1.2 1999-01-13 20:54:34 kostis Exp $
+** $Id: chat.h,v 1.3 1999-01-29 20:06:41 kostis Exp $
 ** 
 */
 
@@ -116,7 +116,7 @@ extern CPtr chat_restore_compl_susp(chat_init_pheader,CPtr,CPtr);
 extern void chat_update_compl_susp(chat_init_pheader);
 extern void chat_restore_compl_susp_trail(chat_init_pheader);
 extern chat_init_pheader save_a_consumer_copy(SGFrame,int);
-extern chat_init_pheader save_a_chat_compl_susp(int,CPtr,SGFrame,CPtr,byte *);
+extern chat_init_pheader save_a_chat_compl_susp(SGFrame,CPtr,byte *);
 
 extern void chat_set_chained(CPtr);
 extern void chat_set_unchained(CPtr);
