@@ -31,8 +31,16 @@ tst6 :- if w:=:www
 
 test :- tell(temp)@prolog(),
 	tst1, tst2,
+	debug[#check_undefined(on)]@flora(sys),
+	tst1, tst2,
+	debug[#check_undefined(off)]@flora(sys),
 	(equality basic),
 	tst3,tst4,
+	debug[#check_undefined(on)]@flora(sys),
+	tst3,tst4,
+	debug[#check_undefined(off)]@flora(sys),
 	(equality flogic),
+	tst5,tst6,
+	debug[#check_undefined(on)]@flora(sys),
 	tst5,tst6,
 	told@prolog().
