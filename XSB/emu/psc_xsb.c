@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.9 2001-03-27 17:52:03 dwarren Exp $
+** $Id: psc_xsb.c,v 1.10 2001-05-24 17:54:52 lfcastro Exp $
 ** 
 */
 
@@ -341,3 +341,4 @@ Psc get_intern_psc() {
   intern_handle = insert("intern", 1, global_mod, &new_indicator);
   return (pair_psc(intern_handle));
 }
+

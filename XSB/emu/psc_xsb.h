@@ -18,10 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.6 2000-07-31 20:27:55 ejohnson Exp $
+** $Id: psc_xsb.h,v 1.7 2001-05-24 17:54:52 lfcastro Exp $
 ** 
 */
 
+#ifndef __PSC_XSB_H__
+#define __PSC_XSB_H__
 
 #ifndef SYMBOL_TABLE_DEFS
 
@@ -121,6 +123,9 @@ extern Psc get_intern_psc();
 
 extern struct Table_Info_Frame *get_tip(Psc);
 
+extern void print_symbol_table();
+extern Psc get_psc_from_ep(void *);
+
 /*======================================================================*/
 /*  HiLog related macros.						*/
 /*======================================================================*/
@@ -135,3 +140,5 @@ extern struct Table_Info_Frame *get_tip(Psc);
 /*----------------------------------------------------------------------*/
 
 #endif
+
+#endif /* __PSC_XSB_H__ */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.26 2001-03-27 17:52:03 dwarren Exp $
+** $Id: emudef.h,v 1.27 2001-05-24 17:54:51 lfcastro Exp $
 ** 
 */
 
@@ -41,6 +41,9 @@ CPtr sreg;		/* current build or unify field */
 byte *cpreg;		/* return point register        */
 byte *pcreg;		/* program counter              */
 CPtr ebreg;		/* breg into environment stack	*/
+#ifdef CP_DEBUG
+Psc pscreg;
+#endif
 
 #if (!defined(CHAT))
 CPtr efreg;

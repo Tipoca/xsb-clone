@@ -18,10 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: register.h,v 1.3 1999-10-09 02:00:27 cbaoqiu Exp $
+** $Id: register.h,v 1.4 2001-05-24 17:54:52 lfcastro Exp $
 ** 
 */
 
+#include "psc_xsb.h"
 
 /* Argument Registers
    ------------------ */
@@ -39,6 +40,9 @@ extern CPtr sreg;	/* current build or unify field */
 extern byte *cpreg;	/* return point register        */
 extern byte *pcreg;	/* program counter              */
 
+#ifdef CP_DEBUG
+extern Psc pscreg;
+#endif
 /*---- registers added for the SLG-WAM ---------------------------------*/
 
 #if (!defined(CHAT))

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.52 2001/03/27 17:52:03 dwarren Exp $
+** $Id: subp.c,v 1.53 2001/03/27 22:59:31 dwarren Exp $
 ** 
 */
 
@@ -248,9 +248,11 @@ void print_statistics(int amount) {
     print_detailed_subsumption_stats();
     break;
   case 5:
-    dis(0); break;		/* output memory image; for debugging */
+    dis(0); 
+    break;		/* output memory image; for debugging */
   case 6:
-    dis(1); break;		/* output memory image; for debugging */
+    dis(1); 
+    break;		/* output memory image; for debugging */
   }
 }
 

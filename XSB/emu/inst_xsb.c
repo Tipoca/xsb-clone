@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.c,v 1.10 2000-06-22 01:27:50 lfcastro Exp $
+** $Id: inst_xsb.c,v 1.11 2001-05-24 17:54:52 lfcastro Exp $
 ** 
 */
 
@@ -38,6 +38,7 @@ Cell subinst_table[BUILTIN_TBL_SZ][2];
 
 #ifdef PROFILE
 Cell inst_table[BUILTIN_TBL_SZ][6];
+unsigned long num_switch_envs;
 
 #define XSB_INST(inum, inst, label, op1type, op2type, op3type, op4type) \
         inst_table[inst][0] = (Cell)( #inst ); \
@@ -96,6 +97,7 @@ void init_subinst_table(void)
   set_subinst_table(NEW_ANSWER_SIMPL_POS_UNC,"new_answer_simpl_pos_unc");
   set_subinst_table(NEW_ANSWER_SIMPL_NEG_FAIL,"new_answer_simpl_neg_fail");
   set_subinst_table(NEW_ANSWER_SIMPL_NEG_SUC,"new_answer_simpl_neg_succ");
+  num_switch_envs=0;
 }
 #endif
 

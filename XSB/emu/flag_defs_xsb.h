@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.6 2001-03-28 04:17:25 kifer Exp $
+** $Id: flag_defs_xsb.h,v 1.7 2001-05-24 17:54:51 lfcastro Exp $
 ** 
 */
 
@@ -62,6 +62,11 @@
 /* loader uses CONFIG_NAME flag before xsb_configuration is loaded */
 #define CONFIG_NAME	28	/* this looks like this: cpu-vendor-os	   */
 
+/* the following three flags are only in effect when
+   the system is compiled with --enable-debug         --lfcastro           */
+#define VERBOSE_GC      29      /* be verbose on garbage collection        */
+#define COUNT_CHAINS    30      /* count size of chains on GC              */
+#define EXAMINE_DATA    31      /* examine data on GC                      */
 
 /*
  *  Flags 32-48 are reserved for Interrupt Handler PSCs.

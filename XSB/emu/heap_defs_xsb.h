@@ -18,15 +18,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_defs_xsb.h,v 1.1 1999-12-19 15:33:04 kostis Exp $
+** $Id: heap_defs_xsb.h,v 1.2 2001-05-24 17:54:51 lfcastro Exp $
 ** 
 */
 
 
 /*--- The following is for the type of garbage collection to be used ---*/
 
-#define NO_GC      0
-#define SLIDING_GC 1
-#define COPYING_GC 2
+#define NO_GC           0
+#define SLIDING_GC      1
+#define COPYING_GC      2
+#define INDIRECTION_SLIDE_GC   3
 
 /*----------------------------------------------------------------------*/

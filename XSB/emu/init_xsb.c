@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.16 2001-04-20 15:30:51 dwarren Exp $
+** $Id: init_xsb.c,v 1.17 2001-05-24 17:54:52 lfcastro Exp $
 ** 
 */
 
@@ -352,6 +352,9 @@ char *init_para(int argc, char *argv[])
 	if (strcmp(argv[i],"copying")==0)
 	  flags[GARBAGE_COLLECT] = COPYING_GC;
 	else
+        if (strcmp(argv[i],"indirection")==0)
+          flags[GARBAGE_COLLECT] = INDIRECTION_SLIDE_GC;
+        else
 	if (strcmp(argv[i],"none")==0)
 	  flags[GARBAGE_COLLECT] = NO_GC;
 	else
