@@ -28,5 +28,5 @@ XSB/packages/flora.*    mail -s "XSB commit: %{}" kifer@cs.sunysb.edu guizyang@c
 # 
 # DEFAULT		(echo ""; whoami; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
 
-CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} kifer@cs.sunysb.edu luis@cs.sunysb.edu
-DEFAULT $CVSROOT/CVSROOT/syncmail %{sVv} xsb-commits@lists.sourceforge.net
+CVSROOT $CVSROOT/CVSROOT/syncmail -u %{sVv} kifer@cs.sunysb.edu luis@cs.sunysb.edu
+DEFAULT $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net
