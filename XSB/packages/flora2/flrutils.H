@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.45 2002-05-04 22:16:20 kifer Exp $
+** $Id: flrutils.H,v 1.46 2002-05-08 06:32:49 kifer Exp $
 **
 */
 
@@ -197,9 +197,7 @@
 
 	flora_reclaim_storage_space/0,
 	flora_commit_storage/0,
-	flora_load_dyn_fdb/2,
-
-	flora_load_dyn_fld/2,
+	flora_load_dyn_data/3,
 
 	flora_read_canonical_and_insert/2,
 	flora_compile_system_module_by_ID/1,
