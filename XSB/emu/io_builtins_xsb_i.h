@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.4 1999-12-10 07:47:34 kifer Exp $
+** $Id: io_builtins_xsb_i.h,v 1.5 2000-04-29 01:16:46 kifer Exp $
 ** 
 */
 
@@ -203,7 +203,7 @@ inline static bool file_function(void)
       ctop_int(4, -1000);
       return TRUE;
     default:
-      xsb_warn("FILE_OPEN: Invalid open file mode, %d", mode);
+      xsb_warn("FILE_OPEN: Invalid open file mode");
       ctop_int(4, -1000);
       return TRUE;
     }
@@ -367,7 +367,7 @@ inline static bool file_function(void)
       ctop_int(5, -1000);
       return TRUE;
     default:
-      xsb_warn("FILE_REOPEN: Invalid open file mode, %d", mode);
+      xsb_warn("FILE_REOPEN: Invalid open file mode");
       ctop_int(5, -1000);
       return TRUE;
     }
