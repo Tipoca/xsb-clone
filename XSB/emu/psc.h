@@ -18,11 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc.h,v 1.6 1999-08-30 13:57:24 kostis Exp $
+** $Id: psc.h,v 1.7 1999-10-12 20:21:48 ejohnson Exp $
 ** 
 */
 
 
+#ifndef SYMBOL_TABLE_DEFS
+
+#define SYMBOL_TABLE_DEFS
 
 /* The abstract module for the symbol table (PSC table) */
 
@@ -130,3 +133,5 @@ extern Psc get_intern_psc();
 		((cell_tag(term) == CS) && (hilog_psc(get_str_psc(term))))
 
 /*----------------------------------------------------------------------*/
+
+#endif
