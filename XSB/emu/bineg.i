@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg.i,v 1.4 1999-01-10 01:02:50 cbaoqiu Exp $
+** $Id: bineg.i,v 1.5 1999-01-18 17:59:30 kostis Exp $
 ** 
 */
 
@@ -26,8 +26,6 @@
 /* special debug includes */
 #include "debugs/debug_delay.h"
 #include "debugs/debug_kostis.h"
-
-
 
 /*----------------------------------------------------------------------*/
 /* Contains builtin predicates for SLG negation (and tfindall/3).	*/
@@ -53,12 +51,7 @@
 			 /* reg3: +PTCP; reg4: -SubgPtr         */
 	term = ptoc_tag(1);
 	subgoal_ptr = (CPtr) ptoc_int(2);
-#ifdef PTCP_IN_CP
-	t_ptcp = (CPtr)((pb)tcpstack.high - ptoc_int(3));
-	if (t_ptcp == (CPtr)tcpstack.high) t_ptcp = NULL;
-#else
 	t_ptcp = (CPtr) ptoc_int(3);
-#endif
 	psc = term_psc(term);
 	arity = get_arity(psc);
 	if (subgoal_ptr == NULL) {
@@ -83,19 +76,12 @@
 	  return TRUE;	/* succeed */
 	}
 	else {	/* subgoal is not completed; save a completion suspension */
-#ifdef CHAT_DEBUG
-	  fprintf(stderr, "! Predicate is_incomplete is needed\n");
-#endif
 #ifdef DEBUG_DELAY
 	  fprintf(stderr, "... Saving a completion suspension (~");
 	  print_subgoal(stderr, (SGFrame)subgoal_ptr);
 	  fprintf(stderr, " in the body of ");
 	  if (t_ptcp != NULL) {
-#ifdef PTCP_IN_CP
-	    print_subgoal(stderr, (SGFrame)tcp_subgoal_ptr(t_ptcp));
-#else
 	    print_subgoal(stderr, (SGFrame)t_ptcp);
-#endif
 	  } else fprintf(stderr, "an UNTABLED predicate");
 	  fprintf(stderr, ")\n");
 #endif
@@ -122,19 +108,12 @@
 /*----------------------------------------------------------------------*/
 
     case GET_PTCP:
-#ifdef PTCP_IN_CP
-	if (ptcpreg != NULL)
-	  ctop_int(1, (pb)tcpstack.high-(pb)ptcpreg);
-	else ctop_int(1, (Integer)0);
-#else
 	ctop_int(1, (Integer)ptcpreg);
-#endif
 	break;
 
 /*----------------------------------------------------------------------*/
 
     case GET_DELAY_LISTS:
-
       /*
        * When GET_DELAY_LISTS is called, we can assume that the
        * corresponding tabled subgoal call has been completed and so trie

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory.c,v 1.3 1999-01-13 16:58:11 kostis Exp $
+** $Id: memory.c,v 1.4 1999-01-18 17:59:33 kostis Exp $
 ** 
 */
 
@@ -240,10 +240,6 @@ void tcpstack_realloc(long new_size) {
 #if (!defined(CHAT))
   trfreg = (CPtr *)((byte *)trfreg + trail_offset);
   bfreg = (CPtr)((byte *)bfreg + cps_offset);
-#endif
-#ifdef PTCP_IN_CP
-  if (ptcpreg != NULL)
-    ptcpreg = (CPtr)((byte *)ptcpreg + cps_offset);
 #endif
   if (root_address != NULL)
     root_address = (CPtr)((byte *)root_address + cps_offset);

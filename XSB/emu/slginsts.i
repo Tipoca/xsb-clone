@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts.i,v 1.5 1999-01-10 01:07:57 cbaoqiu Exp $
+** $Id: slginsts.i,v 1.6 1999-01-18 17:59:36 kostis Exp $
 ** 
 */
 
@@ -102,12 +102,8 @@ case tabletry:		/* cur_label arity label xcurcall	*/
       save_generator_choicepoint(VarPosReg, ereg, xcurcall, breg, ARITY);
 #endif
       push_completion_frame((SGFrame)xcurcall);
-#ifdef PTCP_IN_CP
-      subg_cp_ptr(xcurcall) = ptcpreg = breg = VarPosReg;
-#else
       ptcpreg = xcurcall;
       subg_cp_ptr(xcurcall) = breg = VarPosReg;
-#endif
       delayreg = NULL;
       if (root_address == 0) root_address = breg;
       hbreg = hreg;
@@ -379,12 +375,8 @@ case tabletrysingle:
       save_singleclause_choicepoint(VarPosReg, ereg, xcurcall, breg, ARITY);
 #endif
       push_completion_frame((SGFrame) xcurcall);
-#ifdef PTCP_IN_CP
-      subg_cp_ptr(xcurcall) = ptcpreg = breg = VarPosReg;
-#else
       ptcpreg = xcurcall;
       subg_cp_ptr(xcurcall) = breg = VarPosReg;
-#endif
       delayreg = NULL;
       if (root_address == 0) root_address = breg;
       hbreg = hreg;
