@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.1 2002-05-22 15:41:12 lfcastro Exp $
+** $Id: debug_xsb.h,v 1.2 2002-05-31 15:09:02 lfcastro Exp $
 ** 
 */
 
@@ -81,8 +81,8 @@ typedef struct subgoal_frame *VariantSF;
 /* dbg_* macros */
 #ifdef DEBUG_VERBOSE
 /* in error_xsb.c */
-#define xsb_dbgmsg(...)                               \
-      xsb_dbgmsg1(__VA_ARGS__)
+#define xsb_dbgmsg(a)                               \
+      xsb_dbgmsg1 a
 /* in debug_xsb.c */
 #define dbg_print_subgoal(LOG_LEVEL,FP,SUBG)          \
    if (LOG_LEVEL <= cur_log_level)                    \
@@ -122,7 +122,7 @@ extern void print_subgoal(FILE *, VariantSF);
 extern void print_delay_list(FILE *, CPtr);
 extern void printterm(FILE *, Cell, int);
 #else
-#define xsb_dbgmsg(...)
+#define xsb_dbgmsg(a)
 #define dbg_print_subgoal(L,F,S)
 #define dbg_printterm(L,F,T,D)
 #define dbg_print_completion_stack(L)

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_search.c,v 1.5 2002-05-22 15:41:17 lfcastro Exp $
+** $Id: trie_search.c,v 1.6 2002-05-31 15:09:03 lfcastro Exp $
 ** 
 */
 
@@ -192,12 +192,12 @@ TSTNptr subsumptive_tst_search(TSTNptr tstRoot, int nTerms, CPtr termVector,
 #ifdef DEBUG_VERBOSE
   if (LOG_INTERN <= cur_log_level) {
     int i;
-    xsb_dbgmsg(LOG_INTERN, 
-	       "Entered subsumptive_tst_search() with the following terms:");
+    xsb_dbgmsg((LOG_INTERN, 
+	       "Entered subsumptive_tst_search() with the following terms:"));
     for (i = 0; i < nTerms; i++) {
-      xsb_dbgmsg(LOG_INTERN,"\t");
+      xsb_dbgmsg((LOG_INTERN,"\t"));
       dbg_printterm(LOG_INTERN,stddbg, (Cell)(termVector - i),25);
-      xsb_dbgmsg(LOG_INTERN,"\n");
+      xsb_dbgmsg((LOG_INTERN,"\n"));
     }
   }
 #endif

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.61 2002/05/20 17:47:10 tswift Exp $
+** $Id: subp.c,v 1.62 2002/05/22 15:41:16 lfcastro Exp $
 ** 
 */
 
@@ -738,7 +738,7 @@ void checkJavaInterrupt(void *info)
 {
   char ch;
   SOCKET intSocket = (SOCKET)info;
-  xsb_dbgmsg(LOG_DEBUG, "Thread started on socket %ld",(int)intSocket);
+  xsb_dbgmsg((LOG_DEBUG, "Thread started on socket %ld",(int)intSocket));
   while(1){
     if (1!=recv(intSocket,&ch,1,0)) {
       xsb_warn("Problem handling interrupt from Java");

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_profile.h,v 1.3 2002-05-22 15:41:13 lfcastro Exp $
+** $Id: gc_profile.h,v 1.4 2002-05-31 15:09:02 lfcastro Exp $
 ** 
 */
 
@@ -114,23 +114,23 @@ do { \
 #define GC_PROFILE_START_SUMMARY \
 do { \
     if (verbose_gc) { \
-      xsb_dbgmsg(LOG_GC,"{GC} Heap gc - arity = %d - used = %d - left = %d - #gc = %d\n", \
-		 arity,hreg+1-(CPtr)glstack.low,ereg-hreg,num_gc) ; \
+      xsb_dbgmsg((LOG_GC,"{GC} Heap gc - arity = %d - used = %d - left = %d - #gc = %d\n", \
+		 arity,hreg+1-(CPtr)glstack.low,ereg-hreg,num_gc)); \
     } \
 } while(0)
 
 #define GC_PROFILE_MARK_SUMMARY \
 do { \
     if (verbose_gc) { \
-      xsb_dbgmsg(LOG_GC, "{GC} Heap gc - marking finished - #marked = %d - start compact\n", \
-		 marked); \
+      xsb_dbgmsg((LOG_GC, "{GC} Heap gc - marking finished - #marked = %d - start compact\n", \
+		 marked)); \
     }  \
 } while (0)
 
 #define GC_PROFILE_QUIT_MSG \
 do { \
 	if (verbose_gc) { \
-	  xsb_dbgmsg(LOG_GC, "{GC} Heap gc - marked too much - quitting gc\n") ; \
+	  xsb_dbgmsg((LOG_GC, "{GC} Heap gc - marked too much - quitting gc\n")); \
 	} \
 } while (0)
 
@@ -139,10 +139,10 @@ do { \
 #define GC_PROFILE_SLIDE_FINAL_SUMMARY \
 do { \
 	if (verbose_gc) { \
-	  xsb_dbgmsg(LOG_GC, "{GC} Heap gc end - mark time = %f; slide time = %f; total = %f\n", \
+	  xsb_dbgmsg((LOG_GC, "{GC} Heap gc end - mark time = %f; slide time = %f; total = %f\n", \
 	  (double)(end_marktime - begin_marktime)*1000/CLOCKS_PER_SEC, \
 	  (double)(end_slidetime - begin_slidetime)*1000/CLOCKS_PER_SEC, \
-	  total_time_gc) ; \
+	  total_time_gc)) ; \
 	} \
 } while(0)
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_insert.c,v 1.14 2002-05-22 15:41:17 lfcastro Exp $
+** $Id: tst_insert.c,v 1.15 2002-05-31 15:09:04 lfcastro Exp $
 ** 
 */
 
@@ -415,10 +415,10 @@ TSTNptr tsthtInsertSymbol(TSTNptr parent, Cell symbol, int trieType,
   }
 
 #ifdef SHOW_HASHTABLE_ADDITIONS
-  xsb_dbgmsg(LOG_DEBUG,"Hash Table size is %lu and now contains %lu elements.",
-	     TSTHT_NumBuckets(ht), TSTHT_NumContents(ht));
-  xsb_dbgmsg(LOG_DEBUG,"Addition being made to bucket %lu; now has length %d.",
-	     TrieHash(symbol, TrieHT_GetHashSeed(ht)), chain_length);
+  xsb_dbgmsg((LOG_DEBUG,"Hash Table size is %lu and now contains %lu elements.",
+	     TSTHT_NumBuckets(ht), TSTHT_NumContents(ht)));
+  xsb_dbgmsg((LOG_DEBUG,"Addition being made to bucket %lu; now has length %d.",
+	     TrieHash(symbol, TrieHT_GetHashSeed(ht)), chain_length));
 #endif
 
   TrieHT_ExpansionCheck(ht,chain_length);
@@ -448,10 +448,10 @@ inline static  BTNptr bthtInsertSymbol(BTNptr parent, Cell symbol,
   }
 
 #ifdef SHOW_HASHTABLE_ADDITIONS
-  xsb_dbgmsg(LOG_DEBUG,"Hash Table size is %lu and now contains %lu elements.",
-	     BTHT_NumBuckets(ht), BTHT_NumContents(ht));
-  xsb_dbgmsg(LOG_DEBUG,"Addition being made to bucket %lu; now has length %d.",
-	     TrieHash(symbol, TrieHT_GetHashSeed(ht)), chain_length);
+  xsb_dbgmsg((LOG_DEBUG,"Hash Table size is %lu and now contains %lu elements.",
+	     BTHT_NumBuckets(ht), BTHT_NumContents(ht)));
+  xsb_dbgmsg((LOG_DEBUG,"Addition being made to bucket %lu; now has length %d.",
+	     TrieHash(symbol, TrieHT_GetHashSeed(ht)), chain_length));
 #endif
 
   TrieHT_ExpansionCheck(ht,chain_length);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_print.h,v 1.5 2002-05-22 15:41:13 lfcastro Exp $
+** $Id: gc_print.h,v 1.6 2002-05-31 15:09:02 lfcastro Exp $
 ** 
 */
 
@@ -154,7 +154,7 @@ void print_heap(int start, int end, int add)
   printnum += add ;
   where = fopen(buf,"w") ;
   if (! where)
-    { xsb_dbgmsg(LOG_GC,"could not open HEAP%d",printnum);
+    { xsb_dbgmsg((LOG_GC,"could not open HEAP%d",printnum));
       return;
     }
   stack_boundaries ;
@@ -184,7 +184,7 @@ void print_ls(int add)
   printnum += add ;
   where = fopen(buf,"w") ;
   if (! where)
-    { xsb_dbgmsg(LOG_GC,"could not open LS%d", printnum);
+    { xsb_dbgmsg((LOG_GC,"could not open LS%d", printnum));
       return;
     }
   stack_boundaries ;
@@ -213,7 +213,7 @@ void print_cp(int add)
   printnum += add ;
   where = fopen(buf,"w") ;
   if (! where)
-    { xsb_dbgmsg(LOG_GC, "could not open CP%d", printnum);
+    { xsb_dbgmsg((LOG_GC, "could not open CP%d", printnum));
       return;
     }
   stack_boundaries ;
@@ -243,7 +243,7 @@ void print_tr(int add)
   printnum += add ;
   where = fopen(buf,"w") ;
   if (! where)
-    { xsb_dbgmsg(LOG_GC, "could not open TRAIL%d",printnum);
+    { xsb_dbgmsg((LOG_GC, "could not open TRAIL%d",printnum));
       return;
     }
   stack_boundaries ;
@@ -295,7 +295,7 @@ void print_regs(int a, int add)
   printnum += add ;
   where = fopen(buf,"w") ;
   if (! where)
-    { xsb_dbgmsg(LOG_GC, "could not open REGS%d",printnum);
+    { xsb_dbgmsg((LOG_GC, "could not open REGS%d",printnum));
       return;
     }
   stack_boundaries ;      

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.16 2002-05-22 15:41:16 lfcastro Exp $
+** $Id: table_stats.c,v 1.17 2002-05-31 15:09:03 lfcastro Exp $
 ** 
 */
 
@@ -165,8 +165,8 @@ NodeStats subgoal_statistics(Structure_Manager *sm) {
 	    nSubgoals++;
   }
   else {
-    xsb_dbgmsg(LOG_DEBUG, "Incorrect use of subgoal_statistics()\n"
-	       "SM does not contain subgoal frames");
+    xsb_dbgmsg((LOG_DEBUG, "Incorrect use of subgoal_statistics()\n"
+	       "SM does not contain subgoal frames"));
     return sg_stats;
   }
 

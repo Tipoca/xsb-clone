@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.8 2002-05-22 15:41:14 lfcastro Exp $
+** $Id: memory_xsb.c,v 1.9 2002-05-31 15:09:03 lfcastro Exp $
 ** 
 */
 
@@ -114,16 +114,16 @@ void tcpstack_realloc(long new_size) {
   cps_top = (byte *)top_of_cpstack;
   trail_top = (byte *)top_of_trail;
 
-  xsb_dbgmsg(LOG_DEBUG,
-	     "Reallocating the Trail and Choice Point Stack data area");
+  xsb_dbgmsg((LOG_DEBUG,
+	     "Reallocating the Trail and Choice Point Stack data area"));
 
   /* Expand the Trail / Choice Point Stack Area
      ------------------------------------------ */
   if (new_size > tcpstack.size) {
     if (tcpstack.size == tcpstack.init_size) {
-      xsb_dbgmsg(LOG_DEBUG, "\tBottom:\t\t%p\t\tInitial Size: %ldK",
-		 tcpstack.low, tcpstack.size);
-      xsb_dbgmsg(LOG_DEBUG, "\tTop:\t\t%p", tcpstack.high);
+      xsb_dbgmsg((LOG_DEBUG, "\tBottom:\t\t%p\t\tInitial Size: %ldK",
+		 tcpstack.low, tcpstack.size));
+      xsb_dbgmsg((LOG_DEBUG, "\tTop:\t\t%p", tcpstack.high));
     }
     /*
      * Increase the size of the data area and push the Choice Point Stack
@@ -240,9 +240,9 @@ void tcpstack_realloc(long new_size) {
   if ( IsNonNULL(root_address) )
     root_address = (CPtr)((byte *)root_address + cps_offset);
 
-  xsb_dbgmsg(LOG_DEBUG, "\tNew Bottom:\t%p\t\tNew Size: %ldK",
-	     tcpstack.low, tcpstack.size);
-  xsb_dbgmsg(LOG_DEBUG, "\tNew Top:\t%p\n", tcpstack.high);
+  xsb_dbgmsg((LOG_DEBUG, "\tNew Bottom:\t%p\t\tNew Size: %ldK",
+	     tcpstack.low, tcpstack.size));
+  xsb_dbgmsg((LOG_DEBUG, "\tNew Top:\t%p\n", tcpstack.high));
 }
 
 /* ------------------------------------------------------------------------- */
@@ -284,15 +284,15 @@ void complstack_realloc (long new_size) {
   
   cs_top = (byte *)top_of_complstk;
   
-  xsb_dbgmsg(LOG_DEBUG, "Reallocating the Completion Stack");
+  xsb_dbgmsg((LOG_DEBUG, "Reallocating the Completion Stack"));
 
   /* Expand the Completion Stack
      --------------------------- */
   if (new_size > complstack.size) {
     if (complstack.size == complstack.init_size) { 
-      xsb_dbgmsg(LOG_DEBUG, "\tBottom:\t\t%p\t\tInitial Size: %ldK",
-		 complstack.low, complstack.size);
-      xsb_dbgmsg(LOG_DEBUG, "\tTop:\t\t%p", complstack.high);
+      xsb_dbgmsg((LOG_DEBUG, "\tBottom:\t\t%p\t\tInitial Size: %ldK",
+		 complstack.low, complstack.size));
+      xsb_dbgmsg((LOG_DEBUG, "\tTop:\t\t%p", complstack.high));
     }
 
     /*
@@ -345,7 +345,7 @@ void complstack_realloc (long new_size) {
   
   openreg = (CPtr)((byte *)openreg + bottom_offset);
 
-  xsb_dbgmsg(LOG_DEBUG, "\tNew Bottom:\t%p\t\tNew Size: %ldK",
-	     complstack.low, complstack.size);
-  xsb_dbgmsg(LOG_DEBUG, "\tNew Top:\t%p\n", complstack.high);
+  xsb_dbgmsg((LOG_DEBUG, "\tNew Bottom:\t%p\t\tNew Size: %ldK",
+	     complstack.low, complstack.size));
+  xsb_dbgmsg((LOG_DEBUG, "\tNew Top:\t%p\n", complstack.high));
 }

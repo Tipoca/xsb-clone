@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_retrv.c,v 1.17 2002-05-22 15:41:17 lfcastro Exp $
+** $Id: tst_retrv.c,v 1.18 2002-05-31 15:09:04 lfcastro Exp $
 ** 
 */
 
@@ -898,13 +898,13 @@ ALNptr tst_collect_relevant_answers(TSTNptr tstRoot, TimeStamp ts,
   if ( ! IsLeafNode(parentTSTN) ) {
     xsb_warn("During collection of relevant answers for subsumed subgoal\n"
 	     "TermStack is empty but a leaf node was not reached");
-    xsb_dbgmsg(LOG_DEBUG, "Root ");
+    xsb_dbgmsg((LOG_DEBUG, "Root "));
     dbg_printTrieNode(LOG_DEBUG, stddbg, (BTNptr)tstRoot);
-    xsb_dbgmsg(LOG_DEBUG, "Last ");
+    xsb_dbgmsg((LOG_DEBUG, "Last "));
     dbg_printTrieNode(LOG_DEBUG, stddbg, (BTNptr)parentTSTN);
     dbg_printAnswerTemplate(LOG_DEBUG, stddbg, termsRev,numTerms);
-    xsb_dbgmsg(LOG_DEBUG,
-	    "(* Note: this template may be partially instantiated *)\n");
+    xsb_dbgmsg((LOG_DEBUG,
+	    "(* Note: this template may be partially instantiated *)\n"));
     fprintf(stdwarn, "Attempting to continue...\n");
   }
   else
