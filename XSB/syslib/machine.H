@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.38 2000/11/22 20:06:13 ejohnson Exp $
+** $Id: machine.H,v 1.39 2000/12/04 17:10:47 ejohnson Exp $
 ** 
 */
 
@@ -118,7 +118,7 @@
 	db_remove_prref/1,
 	db_reclaim0/2,
 	oracle_query/7,
-	odbc_exec_query/5,
+	odbc_exec_query/6,
 	private_builtin/11,
 	segfault_handler/1,
 	is_charlist/2,
