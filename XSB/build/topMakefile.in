@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.35 1999-10-22 03:44:29 kifer Exp $
+## $Id: topMakefile.in,v 1.36 1999-10-30 19:14:42 kifer Exp $
 ## 
 ##
 
@@ -322,8 +322,11 @@ distclean:
 
 # clean only the object code for this architecture
 clean:
-	rm -f ${src_config_objlibdir}/*
-	rm -f ${src_emudir}/*.o
+	@echo "Cleaning up ${src_config_objlibdir}"
+	@rm -f ${src_config_objlibdir}/*
+	@echo "Cleaning up ${src_emudir}"
+	@rm -f ${src_emudir}/*.o
+	@cd ../packages; ../build/clean_pkgs.sh
 
 # recreate the makefiles
 again: Makefile.in emuMakefile.in config.status ${src_config_prefix}/config.cache
