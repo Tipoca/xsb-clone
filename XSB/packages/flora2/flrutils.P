@@ -21,7 +21,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.100 2002-05-04 22:16:20 kifer Exp $
+** $Id: flrutils.P,v 1.101 2002-05-06 04:01:24 gzyang Exp $
 **
 */
 
@@ -960,6 +960,11 @@ flora_generate_Pfile(PFileName,FileOptionList,RuleList,FactList,DBFile,FLDFile,F
 		  %% implied by single-valued methods.
 	          flora_message_line('Including basic equality maintenance'),
 		  flora_include_file([FLEQLTRAILER],FileStatus)
+
+	      ; member(FLEQLNONE,FileOptionList) ->
+		  %% Explicit directive takes precedence over any default.
+	          flora_message_line('Excluding equality maintenance'),
+		  flora_include_file([FLTRAILER],FileStatus)
 
 	      ; member(FLOBJEQLDEF,FileOptionList) ->
 		  flora_message_line('Including basic equality maintenance'),

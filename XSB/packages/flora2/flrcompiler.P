@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.50 2002-04-28 23:11:20 kifer Exp $
+** $Id: flrcompiler.P,v 1.51 2002-05-06 04:01:16 gzyang Exp $
 **
 */
 
@@ -1123,8 +1123,9 @@ compile_direct(DirectTerm,CodeList,[]) :-
 
 	    ; A == FLOGIC ->
 	        report_option(FLEQLFLOGIC)
-	    ;
-	      true
+
+	    ; A == NONE ->
+	        report_option(FLEQLNONE)
 	    ),
 	    CodeList=[]
 
@@ -3900,6 +3901,23 @@ compile_fldelete_list([H|T],[VarCode|TCodeList],Status) :-
 	!,
 	compile_flvar(VarName,Index,VarCode),
 	compile_fldelete_list(T,TCodeList,Status).
+
+compile_fldelete_list([H|T],CodeList,Status) :-
+	%% When delete list contains an object equality definition, the compiler
+	%% will prepare to load the basic equality trailer, unless it is overridden
+	%% by an explicity directive.
+	is_flobjeql(H,O1,O2),
+	!,
+	compile_flobjeql(O1,O2,OidCode,SpecCode,S),
+	conjunct_code([OidCode,SpecCode],HCode),
+	report_option(FLOBJEQLDEF),
+	( S == [] ->
+	    compile_conjunct2list(HCode,HCodeList),
+	    compile_fldelete_list(T,TCodeList,Status),
+	    (Status == [] -> append(HCodeList,TCodeList,CodeList); true)
+	;
+	  Status=S
+        ).
 
 compile_fldelete_list([H|T],CodeList,Status) :-
 	%% Call compile_body_literal because path expressions should be
