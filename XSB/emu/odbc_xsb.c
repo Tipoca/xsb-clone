@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.38 2004-08-04 13:24:15 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.39 2005-01-03 22:34:32 dwarren Exp $
 **
 */
 
@@ -60,7 +60,7 @@
 #include "heap_xsb.h"
 
 #define MAXCURSORNUM                    25
-#define MAXVARSTRLEN                    2000
+#define MAXVARSTRLEN                    200000
 #define MAXI(a,b)                       ((a)>(b)?(a):(b))
 
 static Psc     nullFctPsc;
@@ -1147,7 +1147,9 @@ UDWORD DisplayColSize(SWORD coltype, UDWORD collen, UCHAR *colname)
   case SQL_C_CHAR: {
     UDWORD tmp = MAXI(collen+1, strlen((char *) colname));
     if (tmp < MAXVARSTRLEN) return tmp;
-    else return MAXVARSTRLEN;
+    else {
+      return MAXVARSTRLEN;
+    }
   }
   case SQL_C_BINARY: {
     return MAXVARSTRLEN;
@@ -1485,6 +1487,8 @@ int GetColumn()
 	STRFILE strfile;
 	
 	strfile.strcnt = strlen(cur->Data[ColCurNum]);
+	if (strfile.strcnt >= MAXVARSTRLEN-1)
+	  xsb_warn("[ODBC] Likely overflow of data in column of PROLOG_TERM type\N");
 	strfile.strptr = strfile.strbase = cur->Data[ColCurNum];
 	read_canonical_term(NULL,&strfile,2); /* terminating '.'? */
 	return TRUE;
