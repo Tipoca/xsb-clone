@@ -18,15 +18,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: self_orientation.h,v 1.2 1999-05-03 00:55:51 luis Exp $
+** $Id: self_orientation.h,v 1.3 1999-05-24 16:01:20 luis Exp $
 ** 
 */
 #include "export.h"
 
-DllExport extern void call_conv set_xsbinfo_dir (void);
-DllExport extern void call_conv set_install_dir(void);
-DllExport extern void call_conv set_config_file(void);
-DllExport extern void call_conv set_user_home(void);
-DllExport extern char * call_conv xsb_executable_full_path(char *);
-extern char executable[];
+extern void  set_xsbinfo_dir (void);
+extern void  set_install_dir(void);
+extern void  set_config_file(void);
+extern void  set_user_home(void);
+extern char *xsb_executable_full_path(char *);
+extern char  executable[];
 

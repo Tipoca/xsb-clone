@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.23 1999-05-18 16:09:05 warren Exp $
+** $Id: emuloop.c,v 1.24 1999-05-24 16:00:57 luis Exp $
 ** 
 */
 
@@ -1328,6 +1328,14 @@ DllExport int call_conv xsb(int flag, int argc, char *argv[])
 #endif
 
    if (flag == 0) {  /* initialize xsb */
+     /* set the name of the executable to the real name */
+     xsb_executable_full_path(argv[0]);
+
+     /* set install_dir, xsb_config_file and user_home */
+     set_install_dir();
+     set_config_file();
+     set_user_home();
+
      realtime = real_time();
      setbuf(stdout, NULL);
      init_flags();
@@ -1361,6 +1369,11 @@ DllExport int call_conv xsb(int flag, int argc, char *argv[])
        dis(1);
        exit(0);
      }
+
+     /* do it after initialization, so that typing 
+	xsb -v or xsb -h won't create .xsb directory */
+     
+     set_xsbinfo_dir();
 
      return(0);
 
