@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.94 2003-01-31 15:04:58 dwarren Exp $
+** $Id: emuloop.c,v 1.95 2003-03-14 18:54:29 dwarren Exp $
 ** 
 */
 
@@ -1378,16 +1378,13 @@ contcase:     /* the main loop */
    */
   XSB_Start_Instr(check_interrupt,_check_interrupt)  /* PPA-S */
     Def1op
-    Pair true_pair;
-    int new_indicator;
     
     Op1(get_xxxs);
     ADVANCE_PC(size_xxxX);
     if (int_val(cell(interrupt_reg)) > 0) {
       cpreg = lpcreg;
-      true_pair = insert("true", 0, global_mod, &new_indicator);
       bld_cs(reg + 2, hreg);	/* see subp.c: build_call() */
-      new_heap_functor(hreg, pair_psc(true_pair));
+      new_heap_functor(hreg, true_psc);
       bld_copy(reg + 1, build_interrupt_chain());
       lpcreg = get_ep((Psc) flags[MYSIG_ATTV + INT_HANDLERS_FLAGS_START]);
     }

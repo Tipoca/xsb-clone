@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.27 2002-10-28 15:29:48 lfcastro Exp $
+** $Id: init_xsb.c,v 1.28 2003-03-14 18:54:29 dwarren Exp $
 ** 
 */
 
@@ -756,6 +756,13 @@ void init_symbols(void)
   list_str = temp;
   list_psc = pair_psc(temp);
   list_dot = get_name(list_psc);
+
+  temp = insert("true", 0, global_mod, &new_indicator);
+  true_psc = pair_psc(temp);
+  true_sym = get_name(true_psc);
+
+  temp = insert(":-", 2, global_mod, &new_indicator);
+  if_psc = pair_psc(temp);
 
   /* insert symbol ","/2 */
   temp = insert(",", 2, global_mod, &new_indicator);

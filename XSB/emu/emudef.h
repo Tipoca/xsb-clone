@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.37 2002-08-15 17:00:26 lfcastro Exp $
+** $Id: emudef.h,v 1.38 2003-03-14 18:54:28 dwarren Exp $
 ** 
 */
 
@@ -77,10 +77,11 @@ CPtr interrupt_reg = &interrupt_counter;
  */ 
 byte *inst_begin;
 
-char *nil_sym;
+char *nil_sym, *true_sym;
+
 Pair list_str;
 
-Psc list_psc, comma_psc;
+Psc list_psc, comma_psc, true_psc, if_psc;
 Psc tnot_psc, delay_psc;
 Psc box_psc;
 

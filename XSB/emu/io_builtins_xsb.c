@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.32 2003-02-27 20:36:53 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.33 2003-03-14 18:54:29 dwarren Exp $
 ** 
 */
 
@@ -1074,7 +1074,7 @@ int read_canonical_term(FILE *filep, STRFILE *instr, Cell prologvar)
 	    isfloat(term) || 
 	    isstring(term) ||
 	    varfound || 
-	    (isconstr(term) && !strcmp(":-",get_name(get_str_psc(term))))) {
+	    (isconstr(term) && get_str_psc(term) != if_psc)) {
 	  retpscptr = 0;
 	  prevpsc = 0;
 	}
