@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrparser.P,v 1.12 1999-06-22 16:50:09 kifer Exp $
+** $Id: flrparser.P,v 1.13 1999-06-23 03:49:04 kifer Exp $
 **
 */
 
@@ -599,6 +599,8 @@ set_arrow(A)	   --> [atom('$-'),atom('$>>')], {flora_word(mvd,A)}, !.
 set_arrow(A)       --> [atom('$*'),atom('$-'),atom('$>>')], {flora_word(imvd,A)}, !.
 signature_arrow(A) --> [atom('$=>')], {flora_word(fs,A)}, !.
 signature_arrow(A) --> [atom('$=>>')], {flora_word(mvs,A)}, !.
+signature_arrow(A) --> [atom('$*=>')], {flora_word(ifs,A)}, !.
+signature_arrow(A) --> [atom('$*=>>')], {flora_word(imvs,A)}, !.
 
 
 /**************************************************************/
