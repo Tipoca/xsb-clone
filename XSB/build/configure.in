@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.110 2001-06-05 19:17:54 lfcastro Exp $
+## $Id: configure.in,v 1.111 2001-06-14 21:15:57 kifer Exp $
 ## 
 ##
 
@@ -217,6 +217,7 @@ dnl Allow some slack in how local scheduling is specified
 if test "${enable_local_sched}" = "yes" || \
    test "${enable_local_schedule}" = "yes" || \
    test "${enable_local}" = "yes" || \
+   test "${with_local_scheduling}" = "yes" || \
    test "${with_local_schedule}" = "yes" || \
    test "${with_local_sched}" = "yes" || \
    test "${with_local}" = "yes" ; then
