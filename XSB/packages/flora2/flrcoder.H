@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.H,v 1.17 2002-04-17 06:10:29 kifer Exp $
+** $Id: flrcoder.H,v 1.18 2002-08-17 19:03:11 kifer Exp $
 **
 */
 
@@ -91,5 +91,6 @@
 	is_prologliblit/4,
 	is_prnewpred/4,
 	is_prnewoid/3,
+	is_prreify/2,
 	is_flogic/4,
 	is_fllibdb/1.

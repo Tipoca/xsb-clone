@@ -5,7 +5,7 @@
 ;; Christian Schlepphorst (schlepph@informatik.uni-freiburg.de)
 ;; Michael Kifer (kifer@cs.sunysb.edu)
 
-;; $Id: flora.el,v 1.13 2002-04-07 23:09:13 kifer Exp $
+;; $Id: flora.el,v 1.14 2002-08-17 19:03:01 kifer Exp $
 
 ;;; Commentary:
 

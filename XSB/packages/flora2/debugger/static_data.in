@@ -19,7 +19,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: static_data.in,v 1.9 2002-04-07 23:09:14 kifer Exp $
+** $Id: static_data.in,v 1.10 2002-08-17 19:03:07 kifer Exp $
 ** 
 */
 
@@ -109,6 +109,9 @@ flora_show_this_hide(FLLIBDELETEALL/2).
 flora_show_this_hide(FLLIBDELETEALL/1).
 flora_show_this_hide(FLLIBDELETE/2).
 flora_show_this_hide(FLLIBDELETE/1).
+
+%% A ~ B
+flora_show_this_hide(FLLIBUNIVEQFORM/2).
 
 %% Dynamic module spec wrappers
 flora_show_this_hide(FLLIBMODLIT/3).

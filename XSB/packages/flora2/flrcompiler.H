@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.11 2002-04-28 23:11:20 kifer Exp $
+** $Id: flrcompiler.H,v 1.12 2002-08-17 19:03:11 kifer Exp $
 **
 */
 
@@ -54,9 +54,21 @@
 	flora_define_flogicstatic/2
    from flrfirstorder.
 
+:- import
+	flora_token_text/6
+    from flrlexer.
+
+:- import
+	flora_nth_token/2
+   from flrcomposer.
+
 :- import 
 	flora_is_dynamic_flogic_base/2
    from flrwrapper.
+
+:- import
+	flora_compiler_environment/2
+   from flrutils.
 
 :- export 
 	flora_reset_compiler/0, 

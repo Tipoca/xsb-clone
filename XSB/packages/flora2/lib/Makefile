@@ -18,15 +18,17 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.15 2002-05-18 17:15:32 kifer Exp $
+## $Id: Makefile,v 1.16 2002-08-17 19:03:00 kifer Exp $
 ## 
 ##
 
 OBJEXT=.xwam
+PROLOGEXT=.P
 
 FLORADIR=..
 
-ALL = 	flrprettyprint.P flrio.P flrstorage.P flrsystem.P
+ALL = 	flrprettyprint${PROLOGEXT} flrio${PROLOGEXT} \
+	flrstorage${PROLOGEXT} flrsystem${PROLOGEXT}
 
 Option = [optimize]
 
@@ -48,7 +50,7 @@ HDRMSG = "While compiling .../flora2/lib:"
 
 
 # suffix rules
-.SUFFIXES: .P .flr
+.SUFFIXES: ${PROLOGEXT} .flr
 
 all: clean init recompile
 
@@ -58,7 +60,7 @@ recompile: $(ALL) finish
 	@rm cmd...
 	@cat $(SVFILE)
 
-.flr.P:
+.flr${PROLOGEXT}:
 	echo 'flora_compile_system_module($*).' >> cmd...
 
 init:
@@ -81,4 +83,4 @@ finish:
 	echo Done
 
 clean:
-	/bin/rm -f *.P *$(OBJEXT) *.O *.fdb *~ .*~ *.fld *.bak .#*
+	/bin/rm -f *${PROLOGEXT} *$(OBJEXT) *.O *.fdb *~ .*~ *.fld *.bak .#*

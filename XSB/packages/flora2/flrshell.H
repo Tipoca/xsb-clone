@@ -22,7 +22,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.24 2002-05-04 22:16:20 kifer Exp $
+** $Id: flrshell.H,v 1.25 2002-08-17 19:03:09 kifer Exp $
 **
 */
 
@@ -48,6 +48,9 @@
 	flora_module_path_add/1,
 	flora_module_path_remove/1
    from flrporting.
+
+:- import flora_plg2hlg/4 from prolog2hilog.
+:- import flora_post_p2h_conversion/2 from flrutils.
 
 :- import pop_stdin/1 from push_io.
 

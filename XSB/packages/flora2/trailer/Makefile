@@ -21,13 +21,14 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.18 2002-05-18 17:15:31 kifer Exp $
+## $Id: Makefile,v 1.19 2002-08-17 19:02:56 kifer Exp $
 ## 
 ##
 
 
 
 OBJEXT=.xwam
+PROLOGEXT = .P
 
 FLORADIR = ..
 
@@ -37,10 +38,10 @@ HEADERINC = ../headerinc
 
 GENINCLUDES = ../genincludes
 
-ALLOBJS = standard.P \
-	  eqlbasic.P \
-          eqlflogic.P \
-          patch.P
+ALLOBJS = standard$(PROLOGEXT) \
+	  eqlbasic$(PROLOGEXT) \
+          eqlflogic$(PROLOGEXT) \
+          patch$(PROLOGEXT)
 
 PROLOG = none
 
@@ -64,26 +65,26 @@ all: init $(ALLOBJS) finish
 	@cat $(SVFILE)
 
 
-standard.P : $(CLOSURE)/flrcommon.flh \
+standard$(PROLOGEXT) : $(CLOSURE)/flrcommon.flh \
              $(CLOSURE)/flrtrailer.flh $(HEADERINC)/flrheader_inc.flh \
              $(HEADERINC)/flrtrailer_inc.flh
 	@echo 'flsetuptrailer(none).' >> cmd...
 
 
-eqlbasic.P : $(CLOSURE)/flrcommon.flh \
+eqlbasic$(PROLOGEXT) : $(CLOSURE)/flrcommon.flh \
              $(CLOSURE)/flreqltrailer.flh $(HEADERINC)/flrheader_inc.flh \
              $(HEADERINC)/flreqltrailer_inc.flh
 	@echo 'flsetuptrailer(basic).' >> cmd...
 
 
-eqlflogic.P : $(CLOSURE)/flrcommon.flh \
+eqlflogic$(PROLOGEXT) : $(CLOSURE)/flrcommon.flh \
               $(CLOSURE)/flreqltrailer.flh $(CLOSURE)/flrscalareql.flh \
               $(HEADERINC)/flrheader_inc.flh \
               $(HEADERINC)/flreqltrailer_inc.flh $(HEADERINC)/flrscalareql_inc.flh
 	@echo 'flsetuptrailer(flogic).' >> cmd...
 
 
-patch.P : $(GENINCLUDES)/flrpatch.flh $(GENINCLUDES)/flrpreddef.flh \
+patch$(PROLOGEXT) : $(GENINCLUDES)/flrpatch.flh $(GENINCLUDES)/flrpreddef.flh \
 	  $(HEADERINC)/flrheader_inc.flh \
           $(HEADERINC)/flrdefinition_inc.flh \
           $(HEADERINC)/flrpreddef_inc.flh 
@@ -134,7 +135,7 @@ finish:
 
 
 clean:
-	/bin/rm -f *~ .*~ *.P *$(OBJEXT) *.O *.flh *.bak .#*
+	/bin/rm -f *~ .*~ *$(PROLOGEXT) *$(OBJEXT) *.O *.flh *.bak .#*
 
 
 .DONE:
