@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.27 2001-07-08 18:56:04 gzyang Exp $
+** $Id: flrcompiler.P,v 1.28 2001-08-06 15:41:46 gzyang Exp $
 **
 */
 
@@ -2319,7 +2319,7 @@ compile_wsflspecbody(Object,SpecTerm,WS,Code,Status) :-
 	!,
 	compile_wsflspecbody(Object,L,WS,LCode,S),
 	( S == [] ->
-	    compile_wsflspecbody(Object,WS,R,RCode,Status),
+	    compile_wsflspecbody(Object,R,WS,RCode,Status),
 	    (Status == [] -> disjunct_struct(LCode,RCode,Code); true)
 	;
 	  Status=S
