@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inprog.P,v 1.6 1999-11-20 06:50:57 kifer Exp $
+** $Id: inprog.P,v 1.7 2004-08-20 18:13:45 dwarren Exp $
 ** 
 */
 
@@ -55,6 +55,10 @@ inprog(Sym, clause(Args,Body,CPrag), clause(NArgs,NBody,CPrag)) :-
     ( (need_alloc(Body) ; sym_type(Sym,tabled(_,_))) -> 
 	ARSize is PvarCount + 2		/* tls changed for XWAM */
     ; ARSize = 0
+    ),
+    (ARSize < 256
+     ->	    true
+     ;	    error('Too many local variables! ... aborting compilation'), abort
     ).
 
 

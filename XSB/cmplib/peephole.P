@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: peephole.P,v 1.6 2003-10-13 13:16:22 dwarren Exp $
+** $Id: peephole.P,v 1.7 2004-08-20 18:13:45 dwarren Exp $
 ** 
 */
 
@@ -120,6 +120,8 @@ compile_popt1a1(unipvar(X), PilRest, [bldpvar(X)|OptPilRest]) :-
 compile_popt1a1(unipval(X), PilRest, [bldpval(X)|OptPilRest]) :-
 	compile_popt1a(PilRest, OptPilRest).
 compile_popt1a1(unitvar(X), PilRest, [bldtvar(X)|OptPilRest]) :-
+	compile_popt1a(PilRest, OptPilRest).
+compile_popt1a1(uniavar, PilRest, [bldavar|OptPilRest]) :-
 	compile_popt1a(PilRest, OptPilRest).
 compile_popt1a1(unitval(X), PilRest, [bldtval(X)|OptPilRest]) :-
 	compile_popt1a(PilRest, OptPilRest).

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inprog.H,v 1.6 2002-04-13 05:01:48 lfcastro Exp $
+** $Id: inprog.H,v 1.7 2004-08-20 18:13:45 dwarren Exp $
 ** 
 */
 
@@ -32,4 +32,6 @@
 :- import varproc/3, vprag_common/2, vprag_argno/2, vprag_level/2,
 	  vprag_context/2
      from varproc.
+:- import error/1 from auxlry.
+:- import abort/0 from standard.
 
