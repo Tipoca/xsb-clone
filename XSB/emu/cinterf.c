@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.44 2003-04-26 18:01:03 kifer Exp $
+** $Id: cinterf.c,v 1.45 2003-04-28 18:04:18 kifer Exp $
 ** 
 */
 
@@ -331,7 +331,8 @@ char *p_charlist_to_c_string(prolog_term term, VarString *buf,
 		in_func, where);
     }
     head_val = int_val(list_head);
-    if (head_val < 0 || head_val > 255) {
+    /* ' ' is the lowest printable ascii and '~' is the highest */
+    if (head_val < (int)' ' || head_val > (int)'~') {
       xsb_abort("[%s] A Prolog string (a character list) expected, %s",
 		in_func, where);
     }
