@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: gctest.sh,v 1.4 1999-10-22 12:59:03 kostis Exp $
+## $Id: gctest.sh,v 1.5 1999-10-22 16:10:52 kostis Exp $
 ## 
 ##
 
@@ -58,6 +58,7 @@ echo "Configuring XSB with --enable-gc-test"
 configure --config-tag=chatgc --enable-gc-test >> $logfile
 echo "Making XSB with --enable-gc-test"
 makexsb --config-tag=chatgc fast >> $logfile
+makexsb --config-tag=chatgc module >> $logfile
 cd $testdir
 ./testsuite.sh -tag chatgc -exclude "sem_tests attv_tests sub_tests"  $xsbdir
 ./testsuite.sh -tag chatgc -opts "-g copying" \
@@ -68,6 +69,7 @@ echo "Configuring XSB with --enable-local-scheduling --enable-gc-test"
 configure --config-tag=chatlocalgc --enable-local-scheduling --enable-gc-test >> $logfile
 echo "Making XSB with --enable-local-scheduling --enable-gc-test"
 makexsb --config-tag=chatlocalgc fast >> $logfile
+makexsb --config-tag=chatlocalgc module >> $logfile
 cd $testdir
 ./testsuite.sh -tag chatlocalgc -exclude "sem_tests attv_tests sub_tests"  $xsbdir
 ./testsuite.sh -tag chatlocalgc -opts "-g copying" \
