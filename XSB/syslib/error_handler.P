@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.8 2003/12/29 17:48:07 tswift Exp $
+** $Id: error_handler.P,v 1.9 2004/01/20 22:39:36 tswift Exp $
 ** 
 */
 
@@ -110,7 +110,7 @@ type_error(Valid_type,Culprit,Predicate,Arg):-
 % Misc Errors
 
 misc_error(Message):- 
-	throw(error(misc_error,Message).
+	throw(error(misc_error,Message)).
 
 %--------------------------------
 % These checks can be reused for various types of ISO compatability.
