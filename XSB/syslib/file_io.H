@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id:$
+** $Id: file_io.H,v 1.1 1999/03/30 16:28:08 kifer Exp $
 ** 
 */
 
 
 :- import
 	stat_flag/2, file_function/5,
-    	file_stat/3
+    	file_stat/3, formatted_io/5
       from machine.
 
 :- import abort/1, 

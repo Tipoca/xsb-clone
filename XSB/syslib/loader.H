@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.2 1999/01/15 18:41:57 kostis Exp $
+** $Id: loader.H,v 1.3 1999/03/30 16:25:33 kifer Exp $
 ** 
 */
 
@@ -36,11 +36,10 @@
 	  stat_flag/2, stat_set_flag/3, expand_filename/2,
      	  tilde_expand_filename/2, is_absolute_filename/1,
 	  unload_seg/1, machine_file_exists/1, call0/1, str_insert/2,
-     	  slash/1, dirname_canonic/2, intern_string/2
+	  formatted_io/5, slash/1, dirname_canonic/2,
+	  intern_string/2, str_sub/3
    from machine.
 
-:- import str_sub/3, fmt_write_string/3
-     from machine.
 
 :- import conset/2 from prof_sbp.
 :- import standard_symbol/3 from std_sbp.
@@ -53,5 +52,6 @@
 
 :- import abort/0 from standard.
 
-:- import file_put/2 from file_io.
+:- import file_put/2
+   from file_io.
 
