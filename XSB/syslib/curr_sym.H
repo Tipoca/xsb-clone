@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.H,v 1.7 1999/10/20 18:22:16 kifer Exp $
+** $Id: curr_sym.H,v 1.8 1999/12/19 15:32:59 kostis Exp $
 ** 
 */
 
@@ -37,7 +37,7 @@
 :- import '_$op'/3 from file_op.
 :- import '_$hilog_symbol'/1 from hilogsym.
 :- import libpath/1 from loader.
-:- import functor/3, warning/1 from standard.
+:- import functor/3, warning/1, abort/1 from standard.
 :- import standard_symbol/3 from std_xsb.
 :- import psc_name/2, psc_arity/2, psc_prop/2, psc_type/2, term_psc/2,
 	  term_type/2, stat_flag/2, stat_set_flag/2, machine_file_exists/1, 

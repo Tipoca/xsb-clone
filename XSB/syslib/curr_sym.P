@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.9 1999/10/26 06:47:47 kifer Exp $
+** $Id: curr_sym.P,v 1.10 1999/12/19 15:33:01 kostis Exp $
 ** 
 */
 
@@ -480,9 +480,13 @@ xsb_flag(garbage_collection, GCmode) :-
 
 /* ==================================================================== */
 
-garbage_collection(none) :- stat_set_flag(GARBAGE_COLLECT, NO_GC).
-garbage_collection(sliding) :- stat_set_flag(GARBAGE_COLLECT, SLIDING_GC).
-garbage_collection(copying) :- stat_set_flag(GARBAGE_COLLECT, COPYING_GC).
+garbage_collection(GC) :- var(GC), !,
+	abort('Uninstantiated argument 1 of garbage_collection/1').
+garbage_collection(none) :- !, stat_set_flag(GARBAGE_COLLECT, NO_GC).
+garbage_collection(sliding) :- !, stat_set_flag(GARBAGE_COLLECT, SLIDING_GC).
+garbage_collection(copying) :- !, stat_set_flag(GARBAGE_COLLECT, COPYING_GC).
+garbage_collection(_) :-
+	abort('Wrong type in argument 1 of garbage_collection/1').
 
 /* ==================================================================== */
 
