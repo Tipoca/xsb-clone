@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.193 2005-01-17 20:31:57 dwarren Exp $
+** $Id: builtin.c,v 1.194 2005-02-23 20:52:16 dwarren Exp $
 ** 
 */
 
@@ -2741,7 +2741,9 @@ prolog_term build_xsb_backtrace(CTXTdecl) {
   backward = hreg++;
   if (xsb_profiling_enabled) {
     tmp_psc = psc_from_code_addr(pcreg);
+    follow(forward) = makelist(hreg);
     threg = hreg++;
+    forward = hreg++;
     bld_oint(threg,tmp_psc);
     tmp_ereg = ereg;
     tmp_cpreg = cpreg;
@@ -2753,8 +2755,8 @@ prolog_term build_xsb_backtrace(CTXTdecl) {
 	if (called_psc != tmp_psc) {
 	  follow(forward) = makelist(hreg);
 	  threg = hreg++;
-	  bld_oint(threg,called_psc);
 	  forward = hreg++;
+	  bld_oint(threg,called_psc);
 	}
       }
       tmp_psc = psc_from_code_addr(tmp_cpreg);
