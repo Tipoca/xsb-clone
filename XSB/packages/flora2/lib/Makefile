@@ -18,7 +18,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.14 2002-05-04 22:16:18 kifer Exp $
+## $Id: Makefile,v 1.15 2002-05-18 17:15:32 kifer Exp $
 ## 
 ##
 
@@ -35,7 +35,7 @@ Option = [optimize]
 #
 # Self-make: Version 1.4.1
 #
-PROLOG = ../../../bin/xsb
+PROLOG = none
 PROLOG_COMMAND = $(PROLOG) -i -s -m 2000 -c 2000 -e 'segfault_handler(warn).'
 #
 #-----------------------------------------------------------------------#

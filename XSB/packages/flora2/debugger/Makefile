@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.8 2002-05-04 22:16:20 kifer Exp $
+## $Id: Makefile,v 1.9 2002-05-18 17:15:32 kifer Exp $
 ## 
 ##
 
@@ -43,7 +43,7 @@ FLRHEADER = $(DYN_INCLUDES_DIR)/flrheader.flh
 
 OPTION = [optimize]
 
-PROLOG = ../../../bin/xsb
+PROLOG = none
 
 PROLOG_COMMAND = $(PROLOG) -s -m 2000 -c 2000 -e 'segfault_handler(warn).'
 

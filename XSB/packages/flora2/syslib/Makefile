@@ -21,14 +21,14 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.19 2002-05-04 22:16:16 kifer Exp $
+## $Id: Makefile,v 1.20 2002-05-18 17:15:32 kifer Exp $
 ## 
 ##
 
 
 OBJEXT=.xwam
 
-PROLOG = ../../../bin/xsb
+PROLOG = none
 FLORADIR = ..
 
 ALLOBJS = flranswer${OBJEXT} \
