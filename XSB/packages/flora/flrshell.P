@@ -21,20 +21,18 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.27 1999-08-10 16:19:11 kifer Exp $
+** $Id: flrshell.P,v 1.28 1999-08-19 00:44:30 kifer Exp $
 **
 */
 
 
 /*********************************************************************/
 '_$_$_flora_shell' :-
-	( package_configuration(loaded(flora), yes) -> true
-	  ;
-	    bootstrap_flora
-	),
+	bootstrap_flora,
 	'_$_$_flora_welcome_msg',
 	all,
 	push_abort_cutpoint,
+	conset(flora_shell_loaded, 1),
 	'_$_$_flora_shell_loop'.
 
 
@@ -226,6 +224,7 @@ flora_notrace :- ('_$_$_flora_debugger_data_loaded'
 /*********************************************************************/
 end :-
 	unload_package(flora),
+	conset(flora_shell_loaded,0),
 	nl, writeln('Ciao!'), nl,
 	pop_abort_cutpoint,
 	abort.
