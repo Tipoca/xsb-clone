@@ -19,13 +19,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.11 2001/02/22 09:15:18 kifer Exp $
+** $Id: loader.H,v 1.12 2001/02/23 02:22:57 kifer Exp $
 ** 
 */
 
 
-:- export load_pred/1, load/1, libpath/1, set_inthandler/2, '_$load_undef'/1,
-	  windows_os_loader/0.
+:- export load_pred/1, load/1, libpath/1, set_inthandler/2,
+	'_$load_undef'/1,
+	reset_undef_pred_handlers/0,
+	windows_os_loader/0.
 
 :- import abort/1 from standard.
 :- import conset/2 from gensym.

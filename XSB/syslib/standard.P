@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.44 2001/03/17 22:42:30 tswift Exp $
+** $Id: standard.P,v 1.45 2001/05/22 17:37:31 tswift Exp $
 ** 
 */
 
@@ -952,6 +952,7 @@ abort :-
 	psc_prop(Psc, Cp),
         close_open_tables, 
 	'_$cutto'(Cp), 
+	reset_undef_pred_handlers,
 	fail.
 
 

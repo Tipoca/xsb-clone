@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.22 2001/03/16 14:53:00 tswift Exp $
+** $Id: standard.H,v 1.23 2001/05/22 17:37:31 tswift Exp $
 ** 
 */
 
@@ -84,7 +84,9 @@
 
 /* The following predicates are directly imported from other modules */
 
-:- import '_$load_undef'/1 from loader.
+:- import '_$load_undef'/1,
+	reset_undef_pred_handlers/0
+   from loader.
 :- import psc_set_prop/2, psc_name/2, psc_arity/2, psc_prop/2, psc_type/2,
 	  term_psc/2, term_new/2, term_type/2, stat_set_flag/2, 
 	  stat_flag/2, psc_set_type/2, term_compare/3,
