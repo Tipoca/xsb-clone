@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.45 1999-10-25 05:58:07 kifer Exp $
+** $Id: emuloop.c,v 1.46 1999-10-25 19:03:40 warren Exp $
 ** 
 */
 
@@ -1361,8 +1361,8 @@ DllExport int call_conv xsb(int flag, int argc, char *argv[])
 
      realtime = real_time();
      setbuf(stdout, NULL);
-     init_machine();		/* init space, regs, stacks */
      startup_file = init_para(argc, argv);	/* init parameters */
+     init_machine();		/* init space, regs, stacks */
      init_inst_table();		/* init table of instruction types */
      init_symbols();		/* preset a few symbols in PSC table */
      init_interrupt();		/* catch ^C interrupt signal */
