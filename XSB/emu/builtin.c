@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.74 1999-10-29 14:29:03 kostis Exp $
+** $Id: builtin.c,v 1.75 1999-11-02 01:20:20 cbaoqiu Exp $
 ** 
 */
 
@@ -1845,10 +1845,10 @@ int builtin_call(byte number)
   }
 
   /*
-   * attv_unify/1 is a internal builtin for binding an attv to a value
+   * attv_unify/1 is an internal builtin for binding an attv to a value
    * (it could be another attv or a nonvar term).  The users can call
    * this builtin in verify_attributes/2 to bind an attributed var
-   * without trigger the attv interrupt.
+   * without triggering attv interrupt.
    */
   case ATTV_UNIFY: { /* R1: +Var; R2: +Value */
     Cell attv = ptoc_tag(1);

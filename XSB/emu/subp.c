@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.28 1999/10/29 10:41:36 kostis Exp $
+** $Id: subp.c,v 1.29 1999/10/30 00:02:11 cbaoqiu Exp $
 ** 
 */
 
@@ -252,8 +252,9 @@ Psc synint_proc(Psc psc, int intcode, byte *cur_inst)
       if (psc) bld_cs(reg + 2, build_call(psc));
       psc = (Psc)flags[intcode+32];
       /*
-       * Pass the interrupt chain to reg 1, and then reset interrupt_reg
-       * to 0 (note: this has to be trailed using pre-image trail).
+       * Pass the interrupt chain to reg 1.  The counter of attv
+       * interrupts (stored in interrupt_reg) will be reset to 0 in
+       * build_interrupt_chain()).
        */
       bld_copy(reg + 1, build_interrupt_chain());
       /* bld_int(reg + 3, intcode); */	/* Not really needed */
