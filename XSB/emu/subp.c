@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.62 2002/05/22 15:41:16 lfcastro Exp $
+** $Id: subp.c,v 1.63 2002/05/31 15:09:03 lfcastro Exp $
 ** 
 */
 
@@ -63,6 +63,7 @@
 #include "table_stats.h"
 #include "unify_xsb.h"
 #include "debug_xsb.h"
+#include "hash_xsb.h"
 
 /*======================================================================*/
 /*======================================================================*/
@@ -256,6 +257,10 @@ void print_statistics(int amount) {
     print_cp_backtrace();
     break;
 #endif
+  case 8:
+    symbol_table_stats();
+    string_table_stats();
+    break;
   }
 }
 
