@@ -18,16 +18,16 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.15 2000-06-09 14:20:02 cbaoqiu Exp $
+## $Id: Makefile,v 1.16 2001-05-25 00:42:45 tswift Exp $
 ## 
 ##
 
 
 ALL = 	flora.O slx.O perlmatch.O gap.O regmatch.O wildmatch.O \
-	sModels.O libwww.O clpr.O
+	sModels.O libwww.O clpr.O xsbdoc.O
 
 SUBDIR = flora slx perlmatch gap regmatch wildmatch libwww sModels \
-	clpqr
+	clpqr xsbdoc
 
 Option = [optimize]
 
