@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc.h,v 1.3 1999-01-19 14:45:45 cbaoqiu Exp $
+** $Id: psc.h,v 1.4 1999-01-19 16:45:07 kostis Exp $
 ** 
 */
 
@@ -119,7 +119,7 @@ extern char *nil_sym;
 extern Pair list_str;
 extern char *list_dot;
 
-extern Psc ret_psc[255];
+extern Psc ret_psc[];
 extern Psc get_ret_psc(int);
 
 /*======================================================================*/
