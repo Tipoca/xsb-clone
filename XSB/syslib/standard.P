@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.17 1999/08/03 19:17:20 kifer Exp $
+** $Id: standard.P,v 1.18 1999/08/09 00:35:19 kifer Exp $
 ** 
 */
 
@@ -242,6 +242,10 @@ nl :- (windows_os
 
 
 get(C) :- get0(C0), ( char_blank(C0), !, get(C) ; C = C0 ).
+
+%% charcters ignored (treat as blanks)
+char_blank(Ch) :- Ch >= 0, Ch =< 9.
+char_blank(Ch) :- Ch >= 11, Ch =< 32.
 
 %% NEW
 %%get0(C) :- stat_flag(10, File),	file_get(File, C0), C = C0.
@@ -490,7 +494,7 @@ name(T, L) :-
 	( Type =:= 0 -> 
 		( var(L) -> abort('Uninstantiated argument 2 of name/2')
 		; ( ascii_list(L) -> 
-			( int_fromlist(L, T) -> true ; str_fromlist(T, L) )
+			( int_fromlist(L, T) -> true ; atom_codes(T, L) )
 		  ; abort('Wrong type in argument 2 of name/2')
 		  )
 		)
