@@ -1,0 +1,27 @@
+
+?- ['auxiliary/module1'].
+
+:- import expand_filename/2 from machine.
+?- expand_filename('auxiliary', X), assert(library_directory(X)).
+
+tst1 :- Z := max {X; john[salary@(Year)->X] },
+	writeln(Z).
+
+tst2 :- Z := max{X ; john[salary@(Year) ->X], Year < 1996},
+	writeln(Z).
+
+tst3 :- Z := max {X; mary[salary@(Year)->X] }, writeln(Z).
+
+tst4 :- Z=count{Year; john.salary@(Year) <
+    	    	    max{X;john[salary@(Y2)->X],Y2<Year}},
+    	writeln(Z).
+
+tst5 :- Z=count{Year; john.salary@(Year) < mary.salary@(Year)},
+	writeln(Z).
+
+tst6 :- Z= avg{X [Who]; Who[salary@(Year)->X]},
+	write(Z), write('   '), writeln(Who), fail.
+tst6.
+
+test :- tst1, tst2, tst3, tst4, tst5, tst6.
+

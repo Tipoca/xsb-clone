@@ -1,0 +1,7 @@
+
+?- ['auxiliary/static'].
+?- <'auxiliary/dynamic'>.
+
+test :- D:department[coursesOffered ->> C], 
+	write(D), write('  '), writeln(C), fail.
+test.

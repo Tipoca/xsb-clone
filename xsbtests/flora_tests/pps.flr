@@ -1,0 +1,76 @@
+/* pps.flr -- parts production system */
+/* FACTS */
+
+0:stage1.
+pps[produces@(0)->> {golfC,golfCL,passatC,passatCL,motor14,motor18,wheel145,
+                     part1,part2,part3}].
+golfC[hasConfig@(0)->newConfig(golfC,0)].
+golfCL[hasConfig@(0)->newConfig(golfCL,0)].
+passatC[hasConfig@(0)->newConfig(passatC,0)].
+passatCL[hasConfig@(0)->newConfig(passatCL,0)].
+motor14[hasConfig@(0)->newConfig(motor14,0)].
+newConfig(golfC,0)[needsPart->>{motor14,wheel145}].
+newConfig(golfCL,0)[needsPart->>{motor18,wheel145}].
+newConfig(passatC,0)[needsPart->>{motor14,wheel145}].
+newConfig(passatCL,0)[needsPart->>{motor18,wheel145}].
+newConfig(motor14,0)[needsPart->>{part1,part2,part3}].
+
+removeFrom(passatC,motor14,0).
+addTo(passatC,motor18,0).
+start(wheel155,0).
+0.ready_user[].
+stop(part1,1).
+removeFrom(golfCL,wheel145,1).
+addTo(golfCL,wheel155,1).
+1.ready_user[].
+
+/* RULES */
+O[M@(T) -> Q] :- T:stage1, apply(O,M):edbscalar,
+              O[M@(S) -> Q], T = S + 1, not O.change@(S,M)[].
+
+O[M@(T) -> Q] :- T:stage1, apply(O,M):edbscalar,
+              O[change@(S,M) ->  Q], T = S + 1.
+
+O[M@(T)->>Q] :- T:stage1, apply(O,M):edbmultivalued,
+             O[M@(S)->>Q], T = S + 1, not delete(O,M,Q,S).
+
+O[M@(T)->>Q] :- T:stage1, apply(O,M):edbmultivalued,
+             insert(O,M,Q,S), T = S + 1.
+
+apply(pps,produces):edbmultivalued.
+apply(P,hasConfig):edbscalar :- pps[produces@(S)->>P], S:state.
+insert(pps,produces,P,S) :- start(P,S), S:stage4.
+delete(pps,produces,P,S) :- stop(P,S), S:stage4.
+stop(P,S) :- P.hasConfig@(S)[needsPart->>Q], stop(Q,S), S:stage4.
+change(O,S,hasConfig) :- addTo(O,P,S), S:stage4.
+change(O,S,hasConfig) :- removeFrom(O,P,S), S:stage4.
+O[change@(S,hasConfig)  ->  newConfig(O,T)] :-
+    change(O,S,hasConfig), T= S + 1, S:stage4.
+
+newConfig(O,T)[needsPart->>P] :-
+     change(O,S,hasConfig), T= S + 1,
+     O.hasConfig@(S)[needsPart->>P], not removeFrom(O,P,S),
+     S:stage4.
+
+newConfig(O,T)[needsPart->>P] :-
+     change(O,S,hasConfig), T= S + 1, addTo(O,P,S), S:stage4.
+
+stage1::state[ready_edb *-> true].
+stage2::state[ready_idb *-> true].
+stage3::state.
+stage4::state[ready_changes *-> true].
+S:stage2 :- S.ready_edb[].
+S:stage3 :- S.ready_idb[].
+S:stage4 :- S:stage3, S.ready_user[].
+T:stage1 :- S.ready_changes[], T= S + 1.
+
+/* QUERY */
+tst1 :- pps[produces@(S)->>P], 
+	write(S), write('  '), writeln(P), fail.
+tst1.
+tst2 :- P.hasConfig@(S)[needsPart->>Q], 
+	write(P), write(S), write('  '), writeln(Q), fail.
+tst2.
+
+test :- tst1, tst2.
+
