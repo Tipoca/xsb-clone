@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: call_xsb_i.h,v 1.2 2000-05-25 23:37:25 cbaoqiu Exp $
+** $Id: call_xsb_i.h,v 1.3 2001-11-07 21:08:00 dwarren Exp $
 ** 
 */
 
@@ -74,7 +74,7 @@ static inline int prolog_call0(Cell term)
       break;
 *****/
     }
-    if (call_intercept) intercept(psc);
+    if (*asynint_ptr) intercept(psc);
 
     return TRUE;
 }

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.9 1999-12-10 07:47:22 kifer Exp $
+** $Id: auxlry.h,v 1.10 2001-11-07 21:08:00 dwarren Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@ struct trace_str {		/* for tracing purpose below */
 
 extern struct trace_str tds;
 
-extern byte call_intercept;	/* hitrace or trace_sta for efficiency */
+extern int *asynint_ptr;
 
 #define local_global_exception(t_pcreg) \
  t_pcreg = exception_handler("! Local/Global Stack Overflow Exception\n")
