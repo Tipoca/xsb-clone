@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flogic_basics.flr,v 1.5 1999-06-17 05:45:34 kifer Exp $
+** $Id: flogic_basics.flr,v 1.6 1999-06-19 05:37:58 kifer Exp $
 ** 
 */
 
@@ -37,8 +37,13 @@ e(b,d).
 tc(X,Y) :- e(X,Y).			% a RULE and ...
 tc(X,Y) :- tc(X,Z), tc(Z,Y).		% ... a (doubly) RECURSIVE RULE
  
+person :: object.
+dangerous_hobby :: object.
 john:employee.				% INSTANCE : CLASS 
 employee::person.			% SUBCLASS :: SUPERCLASS
+bob:person.
+tim:person.
+betty:employee.
 
 person[age=>integer; kids=>>person].    % some (optional) SIGNATURE information
 
