@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.11 2004-01-29 18:44:09 dwarren Exp $
+** $Id: psc_xsb.h,v 1.12 2004-03-05 00:58:22 dwarren Exp $
 ** 
 */
 
@@ -113,6 +113,7 @@ extern Psc list_psc;
 extern Psc comma_psc;
 extern Psc box_psc;
 extern Psc tnot_psc;
+extern Psc colon_psc;
 extern Psc delay_psc;
 extern char *nil_sym;
 extern char *true_sym;
