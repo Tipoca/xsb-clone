@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.13 1999-06-22 16:50:08 kifer Exp $
+** $Id: flrcompiler.P,v 1.14 1999-06-23 07:00:46 kifer Exp $
 **
 */
 
@@ -138,6 +138,9 @@ compile_flogic(query(Body,BodyVars),[query(BodyCode,NVs)],Opts) :-
 compile_flogic(table_directive(X),[table_directive(X)],Opts) :-
 	retract_options(Opts),
 	!.
+%%compile_flogic(dynamic_directive(X),[dynamic_directive(X)],Opts) :-
+%%	retract_options(Opts),
+%%	!.
 
 /***************************************************************************/
 compile_flogic(export_directive(_,_),[],Opts) :-

@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrparser.P,v 1.13 1999-06-23 03:49:04 kifer Exp $
+** $Id: flrparser.P,v 1.14 1999-06-23 07:00:47 kifer Exp $
 **
 */
 
@@ -78,6 +78,15 @@ rule(table_directive(PAs)) -->
 	white_space0,
 	atom_name(Table),
 	{atom_codes(Table,"table")},
+	predicate_arity_list(PAs),
+	rule_delimeter,
+	!.
+
+rule(dynamic_directive(PAs)) -->
+	imply_symbol,
+	white_space0,
+	atom_name(Dynamic),
+	{atom_codes(Dynamic,"dynamic")},
 	predicate_arity_list(PAs),
 	rule_delimeter,
 	!.
