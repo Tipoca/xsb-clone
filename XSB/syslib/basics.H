@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.H,v 1.6 1999/12/07 21:13:37 warren Exp $
+** $Id: basics.H,v 1.7 1999/12/12 03:27:38 kifer Exp $
 ** 
 */
 
 
 :- export append/3, copy_term/2, flatten/2, ground/1, ith/3, length/2, 
-	  member/2, memberchk/2, subset/2, reverse/2, select/3.
+	  member/2, memberchk/2, subset/2, reverse/2, select/3, for/3.
 :- export log_ith/3, log_ith_bound/3.
 
 :- import term_type/2 from machine.
