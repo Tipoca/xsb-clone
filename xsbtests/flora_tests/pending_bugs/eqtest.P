@@ -1,0 +1,14 @@
+
+:- import trie_interned/4, trie_intern/5 from intern.
+
+eql(c,b1).
+eql(g,h).
+eql(aa,bbb).
+eql(cc,bb).
+eql(ff,hh).
+
+eql(X,Y) :- writeln(before), trie_interned(eql(X,Y),0,_,_), writeln(after).
+eql_true(X,Y) :- eql(X,Y), trie_intern(eql(Y,X),0,_,Z,_), writeln(Z).
+
+%% Query goes into infinite loop
+?- eql_true(X,Y), fail.
