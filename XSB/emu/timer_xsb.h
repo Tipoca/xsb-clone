@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.h,v 1.2 1999-11-16 20:21:03 kifer Exp $
+** $Id: timer_xsb.h,v 1.3 1999-11-16 20:39:15 kifer Exp $
 ** 
 */
 
@@ -28,10 +28,10 @@
 #endif
 
 
-#include <signal.h>
-#include <setjmp.h>
-
+#ifndef SYSTEM_FLAGS
 #include "flags_xsb.h"
+#endif
+
 #include "timer_defs_xsb.h"
 
 #ifdef WIN_NT

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.4 1999-11-16 19:06:01 kifer Exp $
+** $Id: socket_xsb.c,v 1.5 1999-11-16 20:39:14 kifer Exp $
 ** 
 */
 
@@ -31,6 +31,9 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <signal.h>
+#include <setjmp.h>
+
 
 /* special.h must be included after sys/stat.h */
 #include "configs/special.h"
