@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.7 1999-08-12 15:39:53 kifer Exp $
+** $Id: parse.H,v 1.8 1999-08-17 19:29:56 warren Exp $
 ** 
 */
 
@@ -44,7 +44,7 @@
      from symtab.
 :- import functor/3, seen/0, file_exists/1, '=..'/2, atom/1, integer/1, 
 	  op/3, (index)/3, real/1, see/1, expand_term/2, prolog_arglist/4,
-	  name/2, seeing/1
+	  name/2, seeing/1, is_most_general_term/1
      from standard.
 :- import retract/1, retractall/1, assert/1, (dynamic)/1 from assert.
 :- import add_table/1, '_$index'/3 from file_op.

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases.i,v 1.3 1999-04-28 18:30:23 kifer Exp $
+** $Id: std_cases.i,v 1.4 1999-08-17 19:30:06 warren Exp $
 ** 
 */
 
@@ -59,6 +59,9 @@
   case IS_LIST:	/* r1: ?term */
     return is_proper_list(ptoc_tag(1));
     
+  case IS_MOST_GENERAL_TERM: /* r1: ?term */
+    return is_most_general_term(ptoc_tag(1)); 
+
   case FUNCTOR:	/* r1: ?term; r2: ?functor; r3: ?arity (int)	*/
     return functor_builtin();
     

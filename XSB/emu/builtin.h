@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.14 1999-08-14 16:41:43 kostis Exp $
+** $Id: builtin.h,v 1.15 1999-08-17 19:30:06 warren Exp $
 ** 
 */
 
@@ -178,6 +178,7 @@
 #define FUNCTOR			200
 #define ARG			201
 #define UNIV			202
+#define IS_MOST_GENERAL_TERM    203
 
 #define HiLog_ARG		204
 #define HiLog_UNIV		205
