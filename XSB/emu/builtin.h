@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.55 2003-10-17 21:23:21 dwarren Exp $
+** $Id: builtin.h,v 1.56 2003-11-11 19:40:25 dwarren Exp $
 ** 
 */
 
@@ -225,6 +225,7 @@
 
 #define SORT			220
 #define KEYSORT			221
+#define PARSORT			222
 
 #define ORACLE_QUERY		230
 #define ODBC_EXEC_QUERY		231

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.167 2003-10-28 13:51:06 dwarren Exp $
+** $Id: builtin.c,v 1.168 2003-11-11 19:40:25 dwarren Exp $
 ** 
 */
 
@@ -818,6 +818,7 @@ void init_builtin_table(void)
   set_builtin_table(TAB, "tab");
   set_builtin_table(SORT, "sort");
   set_builtin_table(KEYSORT, "keysort");
+  set_builtin_table(PARSORT, "parsort");
 
   set_builtin_table(ORACLE_QUERY, "oracle_query");
   set_builtin_table(ODBC_EXEC_QUERY, "odbc_exec_query");

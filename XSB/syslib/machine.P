@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.63 2003/09/29 13:05:17 tschrijvers Exp $
+** $Id: machine.P,v 1.64 2003/10/17 21:25:18 dwarren Exp $
 ** 
 */
 
@@ -86,6 +86,9 @@ str_cat(Str1, Str2, Str3) :- str_cat(Str1, Str2, Str3).
 str_cmp(Str1, Str2, Res) :- str_cmp(Str1, Str2, Res).
 string_substitute(_String, _SubstSpec, _SubstList, _Result) :-
 	'_$builtin'(STRING_SUBSTITUTE).
+
+parsort(_InList,_ParSpec,_ElimDupls,_OutList) :-
+	'_$builtin'(PARSORT).
 
 call0(Term) :- call0(Term).
 stat_sta(X) :- stat_sta(X).

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.6 2002-10-07 15:20:45 dwarren Exp $
+** $Id: std_cases_xsb_i.h,v 1.7 2003-11-11 19:40:25 dwarren Exp $
 ** 
 */
 
@@ -129,3 +129,8 @@
   case KEYSORT:	/* r1: +list of terms of the form Key-Value;	*/
     /* r2: ?sorted list of terms			*/
    return keysort();
+
+  case PARSORT:	/* r1: +list of terms of the form Key-Value;	*/
+    /* r2: +list of sort paramater specs			*/
+    /* r3: ?sorted list of terms			*/
+   return parsort();

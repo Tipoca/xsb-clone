@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.56 2003/10/03 00:08:40 dwarren Exp $
+** $Id: machine.H,v 1.57 2003/10/17 21:25:18 dwarren Exp $
 ** 
 */
 
@@ -124,6 +124,7 @@
 	db_reclaim0/2,
 	oracle_query/7,
 	odbc_exec_query/6,
+        parsort/4,
 	private_builtin/11,
 	segfault_handler/1,
 	is_charlist/2,
