@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.58 2002/01/23 17:08:10 dwarren Exp $
+** $Id: subp.c,v 1.59 2002/02/21 21:20:40 tswift Exp $
 ** 
 */
 
@@ -255,6 +255,11 @@ void print_statistics(int amount) {
   case 6:
     dis(1); 
     break;		/* output memory image; for debugging */
+#ifdef CP_DEBUG
+  case 7:
+    print_cp_backtrace();
+    break;
+#endif
   }
 }
 

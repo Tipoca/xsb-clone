@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.17 2002-03-11 21:52:55 lfcastro Exp $
+** $Id: choice.h,v 1.18 2002-03-12 15:13:38 lfcastro Exp $
 ** 
 */
 #ifndef __CHOICE_H__
@@ -425,7 +425,7 @@ typedef struct compl_susp_frame {
     csf_neg_loop(t_breg) = FALSE; \
     csf_prevcsf(t_breg) = subg_compl_susp_ptr(subg); \
     csf_ptcp(t_breg) = t_ptcp; \
-    SAVE_CSFPSC(WHERE); \
+    SAVE_CSFPSC(t_breg); \
     csf_pdreg(t_breg) = delayreg; \
     csf_subgoal_ptr(t_breg) = subg; \
     csf_ereg(t_breg) = t_ereg; \
