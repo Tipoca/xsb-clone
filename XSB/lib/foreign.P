@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.19 1999-12-01 17:57:49 kifer Exp $
+** $Id: foreign.P,v 1.20 1999-12-01 18:13:55 kifer Exp $
 ** 
 */
 
@@ -28,7 +28,6 @@
 #include "flag_defs_xsb.h"
 #include "psc_defs.h"
 
-:- import trace/0 from debugger.
 compile_cH(Modname, Base, Options, ExList, Dir) :-
 	/* ldoption is needed at compile time for ELF systems,
 	   so compile_H is now done first. */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf_xsb_i.h,v 1.9 1999-12-01 17:55:42 kifer Exp $
+** $Id: dynelf_xsb_i.h,v 1.10 1999-12-01 18:13:53 kifer Exp $
 ** 
 */
 
@@ -68,9 +68,9 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   char	sofilename[MAXPATHLEN];
   void	*handle;
   void	*funcep;
-  char  ldtemp; 
 
 #ifndef RUNTIME_LD_PATH
+  char  ldtemp; 
   char  *ldp1,*ldp2;
   static vstrDEFINE(ldstring_oldenv);
   static vstrDEFINE(ldstring_newenv);
