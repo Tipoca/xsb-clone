@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.30 2001-06-18 18:26:23 kifer Exp $
+** $Id: flrshell.P,v 1.31 2001-06-24 07:22:17 gzyang Exp $
 **
 */
 
@@ -42,8 +42,11 @@ flora_shell_loop :-
 	flora_shell_prompt,
 	flora_shell_command_line(Code,Options,Status),
 	( flora_good_command(Status) ->
-	    findall(Op,member(FLSYSLIB(Op),Options),OpList),
-	    flora_load_library(OpList),
+	    findall(SysLibOp,member(FLSYSLIB(SysLibOp),Options),SysLibList),
+	    flora_load_library(SysLibList),
+	    findall(SysModOp,member(FLSYSMOD(SysModOp),Options),SysModList),
+	    flora_load_system_module(SysModList),
+	    %writeln(Code),
 	    call(Code)
 	;
 	  true
@@ -195,7 +198,7 @@ flNoTrace :- ensure_debugger_loaded, flora_notrace.
 flLowTrace :- assert(flora_switch(low_level_trace)), trace.
 
 ensure_debugger_loaded :-
-	( FLORA_SYMBOL(debugger_loaded)
+	( FLORA_SYMBOL('debugger_loaded')
 	-> true
 	;  consult(flrdebugger)
 	).
