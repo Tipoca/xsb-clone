@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: self_orientation.c,v 1.13 1999-05-24 16:01:11 luis Exp $
+** $Id: self_orientation.c,v 1.14 1999-05-25 13:39:29 luis Exp $
 ** 
 */
 
@@ -265,7 +265,11 @@ void set_config_file() {
 
   /* Check if configuration.P exists and is readable */
   retcode = stat(xsb_config_file, &fileinfo);
+#ifdef WIN_NT
+  if ( (retcode != 0) || !(S_IREAD & fileinfo.st_mode) ) {
+#else
   if ( (retcode != 0) || !(S_IRUSR & fileinfo.st_mode) ) {
+#endif
     fprintf(stderr,
 	    "*************************************************************\n");
     fprintf(stderr, "PANIC! XSB configuration file %s\n", xsb_config_file);
