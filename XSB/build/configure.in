@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.137 2002-09-05 05:10:47 kifer Exp $
+## $Id: configure.in,v 1.138 2003-01-27 18:26:14 lfcastro Exp $
 ## 
 ##
 
@@ -1069,11 +1069,14 @@ AC_SUBST(javac)
 AC_SUBST(java_support)
 
 AC_PATH_PROG(java_path,javac,no)
-java_path=`echo $java_path | sed 's,bin/javac,include,' `
+java_path=`dirname $java_path`
+java_path=`dirname $java_path`
+java_path=$java_path/include
+#java_path=`echo $java_path | sed 's,bin/javac,include,' `
 
 if test "${with_interprolog}" = "yes"; then
   if test "${java_support}" != "yes"; then
-    echo "Interpolog not supported due to failure to find Java"
+    echo "Interprolog not supported due to failure to find Java"
     with_interprolog=""    
     JAVA_HEADER_PATH=""
     JAVA_PLATFORM_HEADER_PATH=""
