@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.125 2001-06-29 22:50:48 kifer Exp $
+** $Id: builtin.c,v 1.126 2001-07-02 16:20:47 lfcastro Exp $
 ** 
 */
 
@@ -843,8 +843,7 @@ static void write_out_profile(void)
     tot = isum + ssum;
   if (tot!=0) {
     fprintf(stdout,
-	    "max subgoals %u max completed %u max consumers in ascc %u
-             max compl_susps in ascc %u\n",
+	    "max subgoals %u max completed %u max consumers in ascc %u max compl_susps in ascc %u\n",
 	          max_subgoals,max_completed,max_consumers_in_ascc,
 	          max_compl_susps_in_ascc);
     rat1 = isum / tot;
