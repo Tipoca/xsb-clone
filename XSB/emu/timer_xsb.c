@@ -18,11 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.c,v 1.9 2000-06-19 07:05:30 ruim Exp $
+** $Id: timer_xsb.c,v 1.10 2000-09-27 02:25:03 kifer Exp $
 ** 
 */
 
 
+
+#undef __STRICT_ANSI__
 
 #include "xsb_config.h"
 

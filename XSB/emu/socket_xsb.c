@@ -18,9 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.19 2000-06-23 20:54:08 ruim Exp $
+** $Id: socket_xsb.c,v 1.20 2000-09-27 02:25:02 kifer Exp $
 ** 
 */
+
+#undef __STRICT_ANSI__
 
 #include "xsb_config.h"
 #include "xsb_debug.h"
@@ -776,8 +778,9 @@ xsbBool xsb_socket_request(void)
     return FALSE;
   }
 
-  xsb_bug("SOCKET_REQUEST case %d has no return clause",
-	  ptoc_int(1));
+  /* This trick would report a bug, if a newly added case
+     doesn't have a return clause */
+  xsb_bug("SOCKET_REQUEST case %d has no return clause", ptoc_int(1));
 }
 
 
