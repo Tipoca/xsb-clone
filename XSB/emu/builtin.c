@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.97 2000-06-14 21:16:04 kifer Exp $
+** $Id: builtin.c,v 1.98 2000-06-19 07:48:07 ruim Exp $
 ** 
 */
 
@@ -955,7 +955,7 @@ int builtin_call(byte number)
     break;
   }
   case TERM_COMPARE:	/* R1, R2: +term; R3: res (-int) */
-    ctop_int(3, compare(ptoc_tag(1), ptoc_tag(2)));
+    ctop_int(3, compare((void *)ptoc_tag(1), (void *)ptoc_tag(2)));
     break;
   case TERM_NEW: {		/* R1: +PSC, R2: -term */
     int disp;

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.67 2000-06-19 07:14:45 ruim Exp $
+** $Id: emuloop.c,v 1.68 2000-06-19 07:48:08 ruim Exp $
 ** 
 */
 
@@ -820,7 +820,7 @@ contcase:     /* the main loop */
   case term_comp: /* RRR */
     op1 = (Cell)*(opregaddr);
     op2 = (Cell)*(opregaddr);
-    bld_int(opregaddr, compare(op1, op2));
+    bld_int(opregaddr, compare((void*)op1, (void*)op2));
     pad64;
     goto contcase;
 
