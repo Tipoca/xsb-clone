@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.10 2002-10-28 14:45:07 dwarren Exp $
+** $Id: flag_defs_xsb.h,v 1.11 2004-05-18 13:42:47 tswift Exp $
 ** 
 */
 
@@ -59,6 +59,8 @@
 #define INSTALL_DIR	23	/* set dynamically in orient_xsb.c         */
 
 #define CLAUSE_INT	24	/* for clause interrupt			YW */
+
+#define BACKTRACE	25	/* for backtracing on error      Y/N              */
 
 #define CONFIG_FILE	26	/* Where xsb_configuration.P lives	   */
 /* loader uses CONFIG_NAME flag before xsb_configuration is loaded */
