@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrsystem.flr,v 1.4 2001-12-24 00:56:46 kifer Exp $
+** $Id: flrsystem.flr,v 1.5 2002-02-12 06:29:08 kifer Exp $
 **
 */
 
@@ -58,3 +58,16 @@ abort(X) :-
 	message(PX,STDERR)@prolog(standard),
 	flora_stderr_nl@prolog(flrprint),
 	abort@prolog().
+
+warning(X) :-
+	flP2H(PX,X)@prolog(),
+	flora_warning_heading@prolog(flrprint),
+	flora_stderr_string('[Runtime] ')@prolog(flrprint),
+	message(PX,STDERR)@prolog(standard),
+	flora_stderr_nl@prolog(flrprint).
+
+%% Put a message on stderr
+message(X) :-
+	flP2H(PX,X)@prolog(),
+	message(PX,STDERR)@prolog(standard),
+	flora_stderr_nl@prolog(flrprint).
