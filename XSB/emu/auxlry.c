@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.9 2003-03-03 20:55:00 lfcastro Exp $
+** $Id: auxlry.c,v 1.10 2003-03-03 21:50:07 lfcastro Exp $
 ** 
 */
 
@@ -84,7 +84,8 @@ int get_date(unsigned *year, unsigned *month, unsigned *day,
     *hour = SystemTime.wHour;
     *minute = SystemTime.wMinute;
     GetTimeZoneInformation(&tz);
-    *hour = hour + tz.Bias;
+    *hour = *hour + tz.Bias / 60;
+    *minute = *minute + tz.Bias % 60;
 #else
 #ifdef HAVE_GETTIMEOFDAY
     struct timeval tv;
@@ -93,7 +94,9 @@ int get_date(unsigned *year, unsigned *month, unsigned *day,
     gettimeofday(&tv,NULL);
     tm = gmtime(&tv.tv_sec);
     *year = tm->tm_year;
-    *month = tm->tm_mon;
+    if (*year < 1900)
+      *year += 1900;
+    *month = tm->tm_mon + 1;
     *day = tm->tm_mday;
     *hour = tm->tm_hour;
     *minute = tm->tm_min;
