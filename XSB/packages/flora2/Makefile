@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.24 2002-03-08 09:07:55 kifer Exp $
+## $Id: Makefile,v 1.25 2002-03-12 23:56:08 gzyang Exp $
 ## 
 ##
 
@@ -192,7 +192,7 @@ finish:
 
 
 clean:
-	/bin/rm -f *~.*~ *.O .#* *.bak ../flora2.O
+	/bin/rm -f *~ .*~ *.O .#* *.bak ../flora2.O
 	cd closure; $(MAKE) clean
 	cd genincludes; $(MAKE) clean
 	cd syslib; $(MAKE) clean
