@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.i,v 1.14 1999-07-20 18:54:40 kifer Exp $
+** $Id: io_builtins.i,v 1.15 1999-07-22 19:09:19 kifer Exp $
 ** 
 */
 
@@ -186,7 +186,7 @@ inline static bool file_function(void)
       ctop_int(4, -1000);
     }
     break;
-  case FILE_CLOSE: /* file_function(5, +FileName) */
+  case FILE_CLOSE: /* file_function(5, +FileDes) */
     file_des = ptoc_int(2);
     if (file_des < 0) strclose(file_des);
     else {

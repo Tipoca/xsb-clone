@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.22 1999-07-20 18:54:37 kifer Exp $
+** $Id: init.c,v 1.23 1999-07-22 19:09:18 kifer Exp $
 ** 
 */
 
@@ -161,7 +161,7 @@ static void help_message(void)
 char *init_para(int argc, char *argv[])
 {
   int i;
-  char c, warning[80];
+  char warning[80];
   /* Boot module is usually the loader that loads the Prolog code of XSB.
   ** Or it can be a code to disassemble.
   ** Cmd loop driver is usually the XSB interpreter (x_interp.P).
@@ -218,7 +218,7 @@ char *init_para(int argc, char *argv[])
 
     /* Otherwise, get command-line switch (and arg).
        Will dump core if the accompanying argument is omitted. */
-    switch((c = argv[i][1])) {
+    switch((argv[i][1])) {
     case 'r':
       flags[STACK_REALLOC] = FALSE;
       break;

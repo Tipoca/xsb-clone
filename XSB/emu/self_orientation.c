@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: self_orientation.c,v 1.15 1999-07-20 02:12:55 kifer Exp $
+** $Id: self_orientation.c,v 1.16 1999-07-22 19:09:21 kifer Exp $
 ** 
 */
 
@@ -223,6 +223,8 @@ char *xsb_executable_full_path(char *myname)
   fprintf(stderr,
 	  "*************************************************************\n");
   exit(1);
+  /* This return is needed just to pacify the compiler */
+  return FALSE;
 }
 
 void set_install_dir() {
