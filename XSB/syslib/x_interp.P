@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.34 2000/02/22 14:54:15 tswift Exp $
+** $Id: x_interp.P,v 1.35 2000/05/06 21:22:48 kifer Exp $
 ** 
 */
 
@@ -260,7 +260,8 @@ version_message :-
 	file_getbuf_atom(Handle, 500, Str, _),
 	file_close(Handle),
 	%% Print the banner
-	fmt_write(STDMSG, Str, GC_string), file_nl(STDMSG).
+	fmt_write(STDMSG, Str, GC_string),
+	file_nl(STDMSG).
 
 /* === utilities ======================================================= */
 

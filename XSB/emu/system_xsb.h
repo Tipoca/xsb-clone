@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.h,v 1.2 2000-05-20 06:56:09 kifer Exp $
+** $Id: system_xsb.h,v 1.3 2000-06-17 23:28:53 kifer Exp $
 ** 
 */
 
@@ -64,8 +64,3 @@ extern int kill(pid_t pid, int sig);
 #define ABORTED	       4
 #define INVALID	       5
 #define UNKNOWN	       6
-
-extern char *p_charlist_to_c_string(prolog_term term, char *outstring, 
-				    int outstring_size,
-				    char *in_func, char *where);
-

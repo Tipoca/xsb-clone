@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.13 2000-04-29 21:53:51 kifer Exp $
+** $Id: cinterf.h,v 1.14 2000-06-17 23:28:52 kifer Exp $
 ** 
 */
 
@@ -246,6 +246,8 @@ DllExport extern int call_conv xsb_close_query();
 DllExport extern int call_conv xsb_close();
 
 extern void print_pterm(Cell, int, VarString*);
+extern char *p_charlist_to_c_string(prolog_term term, VarString *buf,
+				    char *in_func, char *where);
 
 /* macros for constructing answer terms and setting and retrieving atomic
 values in them. To pass or retrieve complex arguments, you must use
