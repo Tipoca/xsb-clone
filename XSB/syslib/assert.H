@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.H,v 1.3 1999/02/10 16:20:11 warren Exp $
+** $Id: assert.H,v 1.4 1999/04/09 12:18:04 kostis Exp $
 ** 
 */
 
@@ -47,6 +47,6 @@
 	  db_build_prref/3
      from machine.
 :- import '_$table'/1 from file_op.
-:- import standard_symbol/3 from std_sbp.
+:- import standard_symbol/3 from std_xsb.
 :- import default_assert_size/1 from config.
 :- import '_$multifile_retract'/3 from parse.

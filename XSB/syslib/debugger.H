@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.H,v 1.2 1999/03/30 16:25:31 kifer Exp $
+** $Id: debugger.H,v 1.3 1999/04/08 18:06:05 kostis Exp $
 ** 
 */
 
@@ -45,7 +45,7 @@
      from machine.
 :- import file_get/2, file_put/2
      from file_io.
-:- import standard_symbol/3 from std_sbp.
+:- import standard_symbol/3 from std_xsb.
 :- import predicate_property/2, current_predicate/1 from curr_sym.
 :- import findall/3 from setof.
 
