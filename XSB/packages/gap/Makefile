@@ -18,13 +18,15 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 2002-03-03 04:15:39 kifer Exp $
+## $Id: Makefile,v 1.4 2002-03-14 10:05:00 kifer Exp $
 ## 
 ##
 
+OBJEXT=.O
+
 XSBDIR=../..
 
-ALL = 	gapmeta.O
+ALL = 	gapmeta${OBJEXT}
 
 Option = [optimize]
 
@@ -49,8 +51,8 @@ HDRMSG = "While compiling XSB/packages/gap:"
 .IGNORE:
 
 # suffix rules
-.SUFFIXES: .P .O .H
-.P.O:
+.SUFFIXES: .P ${OBJEXT} .H
+.P${OBJEXT}:
 	echo 'mc($*, $(Option)).' >> cmd...
 
 all: init $(ALL) finish
@@ -73,7 +75,7 @@ finish:
 .PHONY: clean
 
 clean:
-	/bin/rm -f *.O *~ .*~ *.bak
+	/bin/rm -f *${OBJEXT} *~ .*~ *.bak
 
 
 .DONE:
