@@ -1,6 +1,5 @@
 %% pps.flr -- a parts production system
 
-%%:- debug.
 /*
   Following are the steps to get the results:
   1. start flora2 shell.
@@ -158,7 +157,12 @@ write_answers :-
 	writeln(C)@flora(io),
 	conset(ans_count,0)@prolog(gensym).
 
-test :- tell(temp)@prolog(), query, told@prolog().
+test :- tell(temp)@prolog(), 
+	debug[#check_undefined(on)]@flora(sys),
+	query,
+	debug[#check_undefined(off)]@flora(sys),
+	query,
+	told@prolog().
 
 // answers
 /*

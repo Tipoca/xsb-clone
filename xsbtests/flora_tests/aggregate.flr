@@ -61,9 +61,14 @@ tst9 :- delete{john[salary(Y)->S1] | mary[salary(Y)->S2],
 	(write('tst9: '), writeln(Y))@prolog().
 */
 
-test :- tell(temp)@prolog(),
-	tst1, tst2, tst3, tst4, tst5, tst6, tst7,
+pretest :- tst1, tst2, tst3, tst4, tst5, tst6, tst7.
 	%% Put back these when clause reordering works
 	%% tst8, tst9,
+
+test :- tell(temp)@prolog(),
+	debug[#check_undefined(on)]@flora(sys),
+	pretest,
+	debug[#check_undefined(off)]@flora(sys),
+	pretest,
 	told@prolog().
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flogic_basics.flr,v 1.7 2002-02-28 04:30:01 kifer Exp $
+** $Id: flogic_basics.flr,v 1.8 2002-03-12 19:18:28 kifer Exp $
 ** 
 */
 
@@ -100,8 +100,13 @@ tst7 :- X..kids[
 	write('  ')@prolog(), writeln(H)@flora(io), fail. 
 tst7 :- true.
 
+pretest :- tst1, tst2, tst3, tst4, tst5, tst6, tst7.
+
 test :- tell(temp)@prolog(),
-	tst1, tst2, tst3, tst4, tst5, tst6, tst7,
+	debug[#check_undefined(on)]@flora(sys),
+	pretest,
+	debug[#check_undefined(off)]@flora(sys),
+	pretest,
 	told@prolog().
 
 

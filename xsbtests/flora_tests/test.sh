@@ -10,8 +10,8 @@ options=$2
 
 file_list=*.flr
 
-%% abp.flr does not work. Perhaps the program is wrong.
-%% btupdates.flr is loaded using btupdates_load.flr
+# abp.flr does not work. Perhaps the program is wrong.
+# btupdates.flr is loaded using btupdates_load.flr
 exclude_list="abp.flr btupdates.flr"
 
 flora_options=flora_shell.

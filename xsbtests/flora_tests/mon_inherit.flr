@@ -25,4 +25,11 @@
 	write(SM)@prolog(), write('  ')@prolog(), writeln(V)@prolog(), fail.
     tst3 :- true.
 
-test :- tell(temp)@prolog(), tst1, tst2, tst3, told@prolog().
+pretest :- tst1, tst2, tst3.
+
+test :- tell(temp)@prolog(),
+	debug[#check_undefined(on)]@flora(sys),
+	pretest,
+	debug[#check_undefined(off)]@flora(sys),
+	pretest,
+	told@prolog().

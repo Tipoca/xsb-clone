@@ -38,5 +38,12 @@ tst6 :- Z= avg{X[Who]|Who[salary(Year)->X]; Who[salary(Year)->X] @ marymodule},
 	write(Z)@prolog(), write('   ')@prolog(), writeln(Who)@flora(io), fail.
 tst6 :- true.
 
-test :- tell(temp)@prolog(), tst1, tst2, tst3, tst4, tst5, tst6, told@prolog().
+pretest :- tst1, tst2, tst3, tst4, tst5, tst6.
+
+test :- tell(temp)@prolog(),
+	debug[#check_undefined(on)]@flora(sys),
+	pretest,
+	debug[#check_undefined(off)]@flora(sys),
+	pretest,
+	told@prolog().
 

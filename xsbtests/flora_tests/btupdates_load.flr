@@ -1,2 +1,8 @@
 
-test :- tell(temp)@prolog(), [btupdates], told@prolog().
+pretest :- [btupdates].
+test :- tell(temp)@prolog(), 
+	debug[#check_undefined(on)]@flora(sys),
+	pretest,
+	debug[#check_undefined(off)]@flora(sys),
+	pretest,
+	told@prolog().
