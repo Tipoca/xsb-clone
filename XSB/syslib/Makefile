@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.23 1999/09/18 21:14:32 kifer Exp $
+## $Id: Makefile,v 1.24 1999/10/08 07:27:53 kifer Exp $
 ## 
 ##
 
@@ -64,7 +64,7 @@ all: init $(ALL) finish
 	@cat $(SVFILE)
 
 %.O:   %.P  $(PROLOG_INCLUDES) $(EMU_INCLUDES)
-	@cp -f $*.O $(OBJFILESAVED)
+	@cp -f $*.O $(OBJFILESAVED) || echo ""
 	echo 'mc($*, $(Option)).' >> cmd...
 # The following is done because of brain damage in some make utilities
 # (notably Sun's), which don't take %.P %.H in the same dependency list
@@ -76,7 +76,7 @@ all: init $(ALL) finish
 .H.P:
 	touch $@
 .P.O:
-	@cp -f $*.O $(OBJFILESAVED)
+	@cp -f $*.O $(OBJFILESAVED) || echo ""
 	echo 'mc($*, $(Option)).' >> cmd...
 
 init:
