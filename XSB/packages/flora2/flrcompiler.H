@@ -4,7 +4,7 @@
 **
 ** Contact:   xsb-contact@cs.sunysb.edu
 **
-** Copyright (C) The Research Foundation of SUNY, 1999-2000
+** Copyright (C) The Research Foundation of SUNY, 1999-2001
 **
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.2 2001-01-09 01:33:55 gzyang Exp $
+** $Id: flrcompiler.H,v 1.3 2001-03-20 06:24:04 gzyang Exp $
 **
 */
 
@@ -39,7 +39,7 @@
 
 :- import flora_signdef/3, flora_define_signature/3 from flrsignature.
 
-:- import flora_prlgdef/2, flora_define_prolog/2 from flrprolog.
+:- import flora_define_prolog/2 from flrprolog.
 
 :- import flora_define_nohilog/2 from flrnohilog.
 

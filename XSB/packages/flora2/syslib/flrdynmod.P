@@ -1,4 +1,4 @@
-/* File:      flraggmax.P
+/* File:      flrdynmod.P
 **
 ** Author(s): Guizhen Yang 
 **
@@ -20,7 +20,6 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flraggmax.P,v 1.3 2001-03-20 06:26:47 gzyang Exp $
 ** 
 */
 
@@ -29,55 +28,41 @@
 
 #include "flora_terms.flh"
 
-:- import ground/1, member/2 from basics.
-
-:- import findall/3, sort/2 from setof.
 
 :- import flora_register_syslib/1 from flrlibman.
+
+:- import flora_wspredicate/4 from flrwrapper.
+
+
+/*********************************************************************
+  This file is for the following dynamic module references:
+  FLLIBMODLIT and FLLIBMODOBJ.
+*********************************************************************/
+?- flora_register_syslib(FLLIBDYNMOD).
 
 
 /*********************************************************************
   system library registration
 *********************************************************************/
-?- flora_register_syslib(FLLIBMAX).
+?- flora_register_syslib(FLLIBMODLIT).
 
 
 /*********************************************************************
-  fllibmax(+Var,+VarList,+Goal,-Max)
+  fllibmodlit(+Functor,+Args,+Workspace)
 *********************************************************************/
-fllibmax(Var,[],Goal,Max) :-
-	!,
-	findall(Var,Goal,Matches),
-	Matches=[H|L],
-	flora_maxaux(L,H,Max).
-
-fllibmax(Var,VarList,Goal,Max) :-
-	ground(VarList),
-	!,
-	findall(Var,Goal,Matches),
-	Matches=[H|L],
-	flora_maxaux(L,H,Max).
-
-fllibmax(Var,VarList,Goal,Max) :-
-	!,
-	findall(flora_result(Var,VarList),Goal,Matches),
-	findall(Grp,member(flora_result(_,Grp),Matches),GL),
-	sort(GL,Groups),
-	member(VarList,Groups),
-	findall(D,member(flora_result(D,VarList),Matches),DL),
-	DL=[H|L],
-	flora_maxaux(L,H,Max).
+fllibmodlit(F,Args,WS) :-
+	flora_wspredicate(F,Args,WS,P),
+	call(P).
 
 
-/********************************************************************
-  flora_maxaux(+List,+CurrMax,-Max)
-********************************************************************/
-flora_maxaux([],X,X) :- !.
+/*********************************************************************
+  system library registration
+*********************************************************************/
+?- flora_register_syslib(FLLIBMODOBJ).
 
-flora_maxaux([H|L],X,Max) :-
-	!,
-	( H @> X ->
-	    flora_maxaux(L,H,Max)
-	;
-	  flora_maxaux(L,X,Max)
-	).
+
+/*********************************************************************
+  fllibmodobj(+Functor,+Args,+Workspace,-Predicate)
+*********************************************************************/
+fllibmodobj(F,Args,WS,P) :-
+	flora_wspredicate(F,Args,WS,P).

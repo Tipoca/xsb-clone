@@ -4,7 +4,7 @@
 **
 ** Contact:   xsb-contact@cs.sunysb.edu
 **
-** Copyright (C) The Research Foundation of SUNY, 1999-2000
+** Copyright (C) The Research Foundation of SUNY, 1999-2001
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.9 2001-03-09 20:50:52 gzyang Exp $
+** $Id: flrutils.P,v 1.10 2001-03-20 06:24:04 gzyang Exp $
 **
 */
 
@@ -997,6 +997,17 @@ flora_coder_error([error(Msg)|L]) :-
 	!,
 	flora_error_line("[Coder] %s",args(Msg)),
 	flora_coder_error(L).
+
+
+/*****************************************************************************
+  flora_list2conjunct(+List,-Goal)
+*****************************************************************************/
+flora_list2conjunct([G],G) :- !.
+
+flora_list2conjunct([G|L],Goal) :-
+	!,
+	flora_list2conjunct(L,LG),
+	Goal =.. [',',G,LG].
 
 
 /*************************************************************************

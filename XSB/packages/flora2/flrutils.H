@@ -4,7 +4,7 @@
 **
 ** Contact:   xsb-contact@cs.sunysb.edu
 **
-** Copyright (C) The Research Foundation of SUNY, 1999-2000
+** Copyright (C) The Research Foundation of SUNY, 1999-2001
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.4 2001-03-07 22:17:59 gzyang Exp $
+** $Id: flrutils.H,v 1.5 2001-03-20 06:24:04 gzyang Exp $
 **
 */
 
@@ -150,4 +150,5 @@
 	flora_bad_command/1,
 	flora_noop_command/1,
 	flora_check_filename/1,
-	flora_set_xpp_options/0.
+	flora_set_xpp_options/0,
+	flora_list2conjunct/2.

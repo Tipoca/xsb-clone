@@ -5,7 +5,7 @@
 ##
 ## Contact:   xsb-contact@cs.sunysb.edu
 ## 
-## Copyright (C) The Research Foundation of SUNY, 1999-2000
+## Copyright (C) The Research Foundation of SUNY, 1999-2001
 ## 
 ## XSB is free software; you can redistribute it and/or modify it under the
 ## terms of the GNU Library General Public License as published by the Free
@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 2001-03-07 16:18:05 gzyang Exp $
+## $Id: Makefile,v 1.6 2001-03-20 06:24:04 gzyang Exp $
 ## 
 ##
 
@@ -141,7 +141,7 @@ flrutils.O : flrutils.P flrutils.H $(XSB_CHAR_DEFS) $(FLORA_TERMS) $(XSB_EMU_FLA
 	@echo 'mc(flrutils,$(OPTION)).' >> cmd...
 
 
-flrwrapper.O : flrwrapper.P flrwrapper.H $(FLORA_TERMS)
+flrwrapper.O : flrwrapper.P flrwrapper.H $(XSB_STANDARD) $(FLORA_TERMS)
 	@echo 'mc(flrwrapper,$(OPTION)).' >> cmd...
 
 
