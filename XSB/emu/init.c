@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.9 1999-01-19 13:40:14 kostis Exp $
+** $Id: init.c,v 1.10 1999-01-19 14:45:41 cbaoqiu Exp $
 ** 
 */
 
@@ -675,7 +675,7 @@ void init_symbols(void)
   delay_psc = pair_psc(temp);
 
   /* Initialize ret PSCs */
-  for (i = 0; i < 255; i++) ret_psc_exists[i] = 0;
+  for (i = 0; i < 255; i++) ret_psc[i] = NULL;
 
   /* make another reference to global module -- "usermod" */
   tp = (Pair)insert_module(T_MODU, "usermod");	/* loaded */

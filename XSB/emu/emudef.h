@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.3 1998-12-21 01:08:14 cbaoqiu Exp $
+** $Id: emudef.h,v 1.4 1999-01-19 14:45:39 cbaoqiu Exp $
 ** 
 */
 
@@ -70,10 +70,8 @@ Psc tnot_psc, delay_psc;
 
 /*
  * Ret PSC's are used to store substitution factors for subgoal calls or
- * answers.  A psc with a new arity will be created when needed.  Array
- * ret_psc_exists[] is used to record all existed ret Psc's.
+ * answers.  A psc with a new arity will be created when needed.
  */
-byte ret_psc_exists[255];
 Psc ret_psc[255];
 
 char *list_dot;
