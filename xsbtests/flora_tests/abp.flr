@@ -49,22 +49,13 @@ losemsg(20).
 
 
 /* RULES */
-:- table gzy1/3.
-gzy1(X,T,Y) :- X.T.Y[].
 
-X.T[Y->Z] :- T:stage1, S is T - 1, X:ea.S[Y->Z], tnot(gzy1(X,T,Y)).
+X.T[Y->Z] :- T:stage1, S is T - 1, X:ea.S[Y->Z], tnot X.T.Y[].
 
-:- table gzy2/4.
-gzy2(X,T,Y,T1) :- X.T.Y(T1)[].
-
-X.T[Y(T1)->Z] :-  T:stage1, S is T - 1, X:ea.S[Y(T1)->Z],
-                   tnot(gzy2(X,T,Y,T1)).
-
-:- table gzy3/1.
-gzy3(T) :- T.applyrules[].
+X.T[Y(T1)->Z] :-  T:stage1, S is T - 1, X:ea.S[Y(T1)->Z], tnot X.T.Y(T1)[].
 
 abp.T[sendmsg->smsg.T[bit->B, data->D], retries->RR] :-
-	S.propagatevalues[], T is S + 1, % tnot(gzy3(T))
+	S.propagatevalues[], T is S + 1, % tnot T.applyrules[],
 	abp.S[sendmsg->emptysmsg,
 	      ackmsg->emptyamsg,
 	      sbit->B,
@@ -77,7 +68,7 @@ abp.T[sendmsg->smsg.T[bit->C, data->D],
       sbit->C, 
       ackmsg->emptyamsg, 
       retries->0]
-    :- S.propagatevalues[], T  is S + 1, %% tnot(gzy3(T)),
+    :- S.propagatevalues[], T  is S + 1, %% tnot T.applyrules[],
        abp.S[ackmsg->_AMSG[bit->B], 
              sbit->B, 
              sendmsg->emptysmsg, 
@@ -85,21 +76,18 @@ abp.T[sendmsg->smsg.T[bit->C, data->D],
        \+ loseack(S),
        sfile[M->D], B[flip->C], M  is  N + 1.
 
-:- table gzy4/1.
-gzy4(M) :- sfile.M[].
-
 abp.T[ackmsg->emptyamsg,  sno->M]
-    :- S.propagatevalues[], T is S + 1, %% tnot(gzy3(T)),
+    :- S.propagatevalues[], T is S + 1, %% tnot T.applyrules[],
        abp.S[ackmsg->_AMSG[bit->B], 
              sbit->B, 
              sendmsg->emptysmsg, 
              sno->N],
        \+ loseack(S),
        M  is  N+1,
-       tnot(gzy4(M)).
+       tnot sfile.M[].
 
 abp.T[ackmsg->amsg.T[bit->B], rno->M, rfile(_N)->D, rbit->C, sendmsg->emptysmsg], S[x->>{b}]
-    :- S.propagatevalues[], T is S + 1, %% tnot(gzy3(T)),
+    :- S.propagatevalues[], T is S + 1, %% tnot T.applyrules[],
        abp.S[sendmsg->_SMSG[bit->B, data->D], 
              rbit->B, 
              rno->_N, 
@@ -108,7 +96,7 @@ abp.T[ackmsg->amsg.T[bit->B], rno->M, rfile(_N)->D, rbit->C, sendmsg->emptysmsg]
        B[flip->C], M  is  _N + 1.
 
 abp.T[ackmsg->amsg.T[bit->B], sendmsg->emptysmsg], S[x->>{a}] :-
-	S.propagatevalues[], T is S + 1, %% tnot(gzy3(T)),
+	S.propagatevalues[], T is S + 1, %% tnot T.applyrules[],
         abp.S[sendmsg->_SMSG[bit->B, data->_D], 
               rbit->C, 
 	      rno->_N, 
@@ -116,38 +104,28 @@ abp.T[ackmsg->amsg.T[bit->B], sendmsg->emptysmsg], S[x->>{a}] :-
        \+ losemsg(S),
        C[flip->B].
 
-:- table gzy5/1.
-gzy5(S) :- abp.S[sendmsg->emptysmsg].
-
 abp.T[sendmsg->emptysmsg]
-    :- S.propagatevalues[], T is S + 1, %% tnot(gzy3(T)),
+    :- S.propagatevalues[], T is S + 1, %% tnot T.applyrules[],
        losemsg(S),
-       tnot(gzy5(S)).
+       tnot abp.S[sendmsg->emptysmsg].
 
 abp.T[ackmsg->emptyamsg]
-    :- S.propagatevalues[], T is S + 1, %% tnot(gzy3(T)),
+    :- S.propagatevalues[], T is S + 1, %% tnot T.applyrules[],
        loseack(S),
-       tnot(gzy5(S)).
+       tnot abp.S[sendmsg->emptysmsg].
 
-:- table gzy6/1.
-gzy6(T) :- T:complete.
-
-:- table gzy7/4.
-gzy7(X,S,Y,Z) :- X.S[Y->Z].
 
 0.running[].
 T.running[]:- T.applyrules[],
-    	      %%tnot(gzy6(T)),
+    	      %%tnot T:complete,
 	      X:ea, S is T - 1, S:state,
-               X.T[Y->Z], tnot(gzy7(X,S,Y,Z)).
+               X.T[Y->Z], tnot X.S[Y->Z].
 
-:- table gzy8/5.
-gzy8(X,S,Y,T1,Z) :- X.S[Y(T1)->Z].
 
 T.running[]:- T.applyrules[],
-    	    	%%tnot(gzy6(T)),
+    	    	%%tnot T:complete,
 		X:ea, S is T - 1, S:state,
-               X.T[Y(T1)->Z], tnot(gzy8(X,S,Y,T1,Z)).
+               X.T[Y(T1)->Z], tnot X.S[Y(T1)->Z].
 
 stage1::state[propagatevalues *-> true].
 stage2::state[applyrules *-> true].

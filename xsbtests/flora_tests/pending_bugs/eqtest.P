@@ -7,8 +7,15 @@ eql(aa,bbb).
 eql(cc,bb).
 eql(ff,hh).
 
-eql(X,Y) :- writeln(before), trie_interned(eql(X,Y),0,_,_), writeln(after).
-eql_true(X,Y) :- eql(X,Y), trie_intern(eql(Y,X),0,_,Z,_), writeln(Z).
+eql(X,Y) :-
+	writeln(before),
+	trie_interned(eql(X,Y),0,_,_),
+	writeln(eql(X,Y)), writeln(after).
+eql_true(X,Y) :-
+	eql(X,Y), trie_intern(eql(Y,X),0,_,Z,_), writeln((eql(X,Y),Z)).
 
 %% Query goes into infinite loop
+%% First it interns the above facts (after switching X,Y)
+%% Then it checks what was interned. It goes into a loop before
+%% reaching the last interned fact, eql(b1,c)
 ?- eql_true(X,Y), fail.
