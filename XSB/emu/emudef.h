@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.15 1999-11-05 03:52:10 cbaoqiu Exp $
+** $Id: emudef.h,v 1.16 1999-12-22 05:10:11 cbaoqiu Exp $
 ** 
 */
 
@@ -208,6 +208,25 @@ int *asynint_ptr = &asynint_val;
     flag = WRITE;							\
   }									\
   else Fail1;
+
+/*======================================================================*/
+
+/*
+ * In getattv, the flag will always be WRITE.  The unification will be
+ * done by the attv unification handlers.
+ */
+#define nunify_with_attv(OP1) {					\
+  deref(OP1);							\
+  if (isref(OP1)) {						\
+    bind_attv((CPtr)(OP1), hreg);				\
+  }								\
+  else {							\
+    attv_dbgmsg(">>>> nunify_with_attv, interrupt needed\n");	\
+    add_interrupt(makeattv(hreg), OP1);				\
+  }								\
+  new_heap_free(hreg);		/* the VAR part of the attv */	\
+  flag = WRITE;							\
+}
 
 /*======================================================================*/
 

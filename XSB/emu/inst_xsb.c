@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.c,v 1.3 1999-10-30 00:00:39 cbaoqiu Exp $
+** $Id: inst_xsb.c,v 1.4 1999-12-22 05:10:13 cbaoqiu Exp $
 ** 
 */
 
@@ -118,6 +118,8 @@ static void init_inst_table_2(void)
   set_inst(bldnil, "bldnil",             PPP,X, X,X);
   set_inst(uninumcon, "uninumcon",       PPP,N, X,X);
   set_inst(bldnumcon, "bldnumcon",       PPP,N, X,X);
+  set_inst(getattv, "getattv",           PP, R, X,X);
+  set_inst(getattv, "putattv",           PP, R, X,X);
   set_inst(getlist_tvar_tvar, "getlist_tvar_tvar", R, R, R,X);
 
   /* the following are generated dynamically */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.26 1999-12-21 22:56:35 warren Exp $
+** $Id: cinterf.c,v 1.27 1999-12-22 05:10:10 cbaoqiu Exp $
 ** 
 */
 
@@ -102,6 +102,12 @@ DllExport bool call_conv is_functor(prolog_term term)
 {
     Cell t = (Cell)term;
     return isconstr(t);
+}
+
+DllExport bool call_conv is_attv(prolog_term term)
+{
+    Cell t = (Cell)term;
+    return isattv(t);
 }
 
 DllExport prolog_term call_conv reg_term(reg_num regnum)

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.51 1999-11-04 23:01:24 cbaoqiu Exp $
+** $Id: emuloop.c,v 1.52 1999-12-22 05:10:12 cbaoqiu Exp $
 ** 
 */
 
@@ -296,6 +296,12 @@ contcase:     /* the main loop */
     nunify_with_list_sym(op1);
     goto contcase;
 
+  case getattv: /* PPR */
+    ppad; op1 = opreg;
+    pad64;
+    nunify_with_attv(op1);
+    goto contcase;
+
 /* tls 12/8/92 */
   case unipvar: /* PPV */
     ppad; op1 = (Cell)(opvaraddr);
@@ -449,6 +455,13 @@ contcase:     /* the main loop */
     ppad; op1 = (Cell)(opregaddr);
     pad64;
     bld_list((CPtr)op1, hreg);
+    goto contcase;
+
+  case putattv: /* PPR */
+    ppad; op1 = (Cell)(opregaddr);
+    pad64;
+    bld_attv((CPtr)op1, hreg);
+    new_heap_free(hreg);
     goto contcase;
 
   case bldpvar: /* PPV */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.4 1999-11-03 21:35:46 cbaoqiu Exp $
+** $Id: inst_xsb.h,v 1.5 1999-12-22 05:10:13 cbaoqiu Exp $
 ** 
 */
 
@@ -202,6 +202,9 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define bldnil          0x1d
 #define uninumcon	0x1e
 #define bldnumcon	0x1f
+
+#define getattv		0x30
+#define putattv		0x31
 
 #define getlist_tvar_tvar	0x48
 
