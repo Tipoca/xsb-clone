@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.15 2002/04/10 23:33:22 tswift Exp $
+** $Id: loader.H,v 1.16 2002/04/13 05:01:59 lfcastro Exp $
 ** 
 */
 
@@ -29,7 +29,8 @@
 	reset_undef_pred_handlers/0,
 	windows_os_loader/0.
 
-:- import abort/1 from standard.
+:- import abort/1, catch/3 from standard.
+:- import default_error_handler/1 from error_handler.
 :- import conset/2 from gensym.
 :- import reconsult/1 from consult.
 :- import standard_symbol/3 from std_xsb.

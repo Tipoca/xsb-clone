@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.65 2002/08/15 17:00:26 lfcastro Exp $
+** $Id: subp.c,v 1.66 2002/10/30 18:07:17 dwarren Exp $
 ** 
 */
 
@@ -694,42 +694,14 @@ void remove_open_tables_reset_freezes(void)
 
 /* ----- C level exception handlers ----------------------------------- */
 
-/*
- * Returns the Breg offset stored in the Psc record of "_$abort_cutpoint"
- */
-static Cell abort_cp_offset(void)
-{
-  int  is_new;
-  Pair abort_pair;
-
-  abort_pair = insert("_$abort_cutpoint", 0, global_mod, &is_new);
-  if (is_new) {
-    xsb_exit("Abort cut point could not be found");
-    return 0;
-  }
-  else
-    return (Cell) get_data(pair_psc(abort_pair));
-}
-
-byte *exception_handler(char *string)
-{
-  fprintf(stdfdbk, "%s! Aborting...\n", string);
-  breg = (CPtr)(tcpstack.high - abort_cp_offset());
-  hbreg = cp_hreg(breg);
-  ebreg = cp_ebreg(breg);
-  switch_from_trie_assert;	/* ensure table-trie space is default */
-  remove_open_tables_reset_freezes();
-  return cp_pcreg(breg); 
-}
-
 /* SIGSEGV/SIGBUS handler that catches segfaults; used unless 
    configured with DEBUG */ 
 void xsb_segfault_catcher(int err)
 {
   char *tmp_message = xsb_segfault_message;
   xsb_segfault_message = xsb_default_segfault_msg; /* restore default */
-  longjmp(xsb_abort_fallback_environment,
-	  (Integer) exception_handler(tmp_message));
+  printf("segfault!!\n");
+  xsb_basic_abort(tmp_message);
 }
 
 void xsb_segfault_quitter(int err)

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.14 2002-10-04 20:42:00 lfcastro Exp $
+** $Id: auxlry.h,v 1.15 2002-11-04 18:09:00 dwarren Exp $
 ** 
 */
 
@@ -44,21 +44,11 @@ extern struct trace_str tds;
 
 extern int asynint_val;
 
-#define local_global_exception(t_pcreg) \
- t_pcreg = exception_handler("! Local/Global Stack Overflow Exception\n")
+#define local_global_exception "! Local/Global Stack Overflow Exception\n"
 
-#define float_unification_exception(t_pcreg) \
- t_pcreg = exception_handler("! Float Unification Exception\n")
+#define complstack_exception "! Completion Stack Overflow Exception\n"
 
-#define unify_float_unification_exception \
-  exception_handler("! Float Unification Exception\n")
-
-#define complstack_exception(t_pcreg) \
- t_pcreg = exception_handler("! Completion Stack Overflow Exception\n")
-
-#define trail_cp_exception(t_pcreg) \
- t_pcreg = exception_handler("! Trail/CP Stack Overflow Exception\n")
-
+#define trail_cp_exception "! Trail/CP Stack Overflow Exception\n"
 
 /*
  *  Mode in which XSB is run.

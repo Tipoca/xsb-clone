@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.29 2002-05-31 15:09:03 lfcastro Exp $
+** $Id: tables.c,v 1.30 2002-11-04 18:09:03 dwarren Exp $
 ** 
 */
 
@@ -46,7 +46,7 @@
 #include "flags_xsb.h"
 #include "tst_utils.h"
 #include "loader_xsb.h" /* for ZOOM_FACTOR, used in stack expansion */
-#include "subp.h" /* for exception_handler, used in stack expansion */
+/*#include "subp.h"  for exception_handler, used in stack expansion */
 
 #include "sub_tables_xsb_i.h"
 #include "debug_xsb.h"

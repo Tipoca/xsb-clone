@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.58 2002-10-28 19:05:34 dwarren Exp $
+** $Id: biassert.c,v 1.59 2002-11-04 18:09:00 dwarren Exp $
 ** 
 */
 
@@ -639,6 +639,7 @@ int assert_code_to_buff_p(prolog_term Clause)
   } else dbgen_instB_ppp(proceed);
   Size = *Loc;
   write_word(Buff,&Loc_size,(Size/sizeof(Cell)));  /* backpatch max heap needed*/
+
   return TRUE;
 }
 
@@ -1061,23 +1062,9 @@ static void db_genmvs(struct instruction *inst_queue, RegStat Reg)
 /*									*/
 /*======================================================================*/
 
-/* Predicate References */
-
-typedef struct
-{	Cell	Instr ;
-	struct ClRefHdr *FirstClRef ;
-	struct ClRefHdr *LastClRef ;
-}	*PrRef, PrRefData ;
+/* Predicate References and Clause References defined in xsb_error.h   */
 
 #define PredOpCode(P)		(cell_opcode(&(P)->Instr))
-
-/* Clause References */
-
-typedef struct ClRefHdr
-{	unsigned long buflen ;
-	struct ClRefHdr *prev ;
-/*	Cell Data[];	*/
-}	*ClRef, ClRefData, ClRefHdr ;
 
 typedef ClRef SOBRef ;
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.26 2002-09-20 13:42:29 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.27 2002-11-04 18:09:02 dwarren Exp $
 ** 
 */
 
@@ -1050,7 +1050,7 @@ int read_canonical(void)
 
       if (opstk[0].typ != TK_VAR) {  /* if a variable, then a noop */
 	term = opstk[0].op;
-	check_glstack_overflow(3, pcreg, (size+1)*sizeof(Cell), goto contcase) ;
+	check_glstack_overflow(3, pcreg, (size+1)*sizeof(Cell)) ;
 	arg2 = ptoc_tag(2);
 	if (isnonvar(arg2)) 
 	  xsb_abort("[READ_CANONICAL] Argument must be a variable");
@@ -1080,7 +1080,7 @@ int read_canonical(void)
 	ctop_int(3,0);
 	prevpsc = 0;
       }
-  contcase:
+
       if (opstk_size > MAX_INIT_STK_SIZE) {
 	free(opstk); opstk = NULL;
 	free(funstk); funstk = NULL;

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.1 2002/08/27 20:11:20 tswift Exp $
+** $Id: error_handler.H,v 1.2 2002/09/27 22:47:05 tswift Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 
 :- import (dynamic)/1 from assert.
 :- import reset_undef_pred_handlers/0 from loader.
-:- import close_open_tables/0, conpsc/2, psc_prop/2 from machine.
+:- import close_open_tables/0 from machine.
 :- import messageln/2 from standard.
 
 
