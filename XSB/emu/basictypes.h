@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.11 1999-07-15 21:41:09 ejohnson Exp $
+** $Id: basictypes.h,v 1.12 1999-10-12 19:47:44 ejohnson Exp $
 ** 
 */
 
@@ -48,9 +48,12 @@ typedef unsigned long prolog_term;	/* opaque type definition */
 #define TRUE  (!FALSE)
 #endif
 
-
-#define IsNULL(ptr)      ( (ptr) == NULL )
-#define IsNonNULL(ptr)   ( (ptr) != NULL )
+#ifndef NO
+#define NO  FALSE
+#endif
+#ifndef YES
+#define YES  TRUE
+#endif
 
 
 #ifdef WIN_NT

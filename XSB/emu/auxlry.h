@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.6 1999-08-05 07:57:25 kifer Exp $
+** $Id: auxlry.h,v 1.7 1999-10-12 19:47:43 ejohnson Exp $
 ** 
 */
 
@@ -27,7 +27,11 @@
 
 #define MOD %
 
+#define IsNULL(ptr)      ( (ptr) == NULL )
+#define IsNonNULL(ptr)   ( (ptr) != NULL )
+
 typedef unsigned char byte;
+typedef unsigned int counter;
 typedef unsigned long word;
 typedef byte *pb;
 typedef word *pw;
