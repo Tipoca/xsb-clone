@@ -18,13 +18,13 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.24 2002-05-05 00:31:55 kifer Exp $
+## $Id: Makefile,v 1.25 2002-05-08 22:47:19 kifer Exp $
 ## 
 ##
 
 OBJEXT=.xwam
 
-ALL = 	flora2${OBJEXT} slx${OBJEXT} perlmatch${OBJEXT} gap${OBJEXT} \
+ALL = 	slx${OBJEXT} perlmatch${OBJEXT} gap${OBJEXT} \
 	regmatch${OBJEXT} wildmatch${OBJEXT} \
 	sModels${OBJEXT} libwww${OBJEXT} clpr${OBJEXT} xsbdoc${OBJEXT} \
 	xmc${OBJEXT}
@@ -76,8 +76,9 @@ slx::
 
 flora2::
 	@echo ""
-	ln -s flora2/flora2.P .
-	cd flora2; makeflora all ../$(PROLOG)
+	@rm -f flora2.P flora2$(OBJEXT)
+	@ln -s flora2/flora2.P .
+	cd flora2; makeflora all $(XSB)
 
 libwww::
 	@echo ""

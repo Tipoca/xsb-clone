@@ -22,7 +22,7 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **
-** $Id: flora2.P,v 1.1 2002-05-04 22:16:20 kifer Exp $
+** $Id: flora2.P,v 1.2 2002-05-08 22:47:19 kifer Exp $
 ** 
 */
 
@@ -76,7 +76,7 @@
 	flora_shell/0.
 
 
-#define FLORA_VERSION               '0.84 of March 2002'
+#define FLORA_VERSION               '0.85 of May 2002'
 /*****************************************************************************/
 
 
