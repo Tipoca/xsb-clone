@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chatsched.i,v 1.1 1998-12-21 01:08:02 cbaoqiu Exp $
+** $Id: chatsched.i,v 1.2 1999-01-18 10:13:43 kostis Exp $
 ** 
 */
 
@@ -107,7 +107,7 @@ static CPtr chat_fixpoint(SGFrame subg_ptr, TChoice leader_tcp)
 
 /*----------------------------------------------------------------------*/
 /* Makes an incremental CHAT copy area and links it to all consumer	*/
-/* areas that need it -- it works only for CHAT_TREE_COPY.		*/
+/* areas that need it -- in effect, chat areas have a tree form.       	*/
 /*----------------------------------------------------------------------*/
 
 static void chat_incremental_copy(SGFrame subg_ptr)
