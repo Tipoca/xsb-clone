@@ -1,4 +1,4 @@
-/* File:      flrtokens.P
+/* File:      flrtokens.P  -- The Flora tokenizer
 **
 ** Author(s): Guizhen Yang       (Flora)
 **    	      Bertram Ludaescher (Flip, the Flora precursor)
@@ -21,17 +21,9 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrtokens.P,v 1.4 1999-05-23 22:15:40 guizyang Exp $
+** $Id: flrtokens.P,v 1.5 1999-06-16 01:32:55 kifer Exp $
 **
 */
-
-
-
-:- import repeat/0, get0/1 from standard.
-
-:- import append/3 from basics.
-
-:- export read_tokens/2.
 
 
 /****************************************************************************

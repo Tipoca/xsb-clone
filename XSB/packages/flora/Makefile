@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 1999-06-15 20:26:02 kifer Exp $
+## $Id: Makefile,v 1.6 1999-06-16 01:32:50 kifer Exp $
 ## 
 ##
 
@@ -49,6 +49,8 @@ all: $(ALL)
 	$(Prolog) < cmd...
 	/bin/rm cmd...
 	cd syslib; make
+	cd lib; make
+	cd pkgs; make
 
 
 .DONE:
