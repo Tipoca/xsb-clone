@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.40 2000/04/05 00:49:20 cbaoqiu Exp $
+** $Id: subp.c,v 1.41 2000/04/29 21:53:59 kifer Exp $
 ** 
 */
 
@@ -227,7 +227,7 @@ Pair build_call(Psc psc)
 
   callstr = (Pair)hreg;	/* save addr of new structure rec */
   new_heap_functor(hreg, psc); /* set str psc ptr */
-  for (i=1; i <= get_arity(psc); i++) {
+  for (i=1; i <= (int)get_arity(psc); i++) {
     arg = cell(reg+i);
     nbldval(arg);
   }

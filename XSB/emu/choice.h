@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.11 1999-12-22 18:06:53 warren Exp $
+** $Id: choice.h,v 1.12 2000-05-19 04:58:33 kifer Exp $
 ** 
 */
 
@@ -406,7 +406,8 @@ typedef struct compl_susp_choice_point {
  */
 #define save_registers(t_breg, arity, regbase) {\
     byte ii;\
-    for (ii = 1; ii <= arity; ii++) bld_copy(--t_breg, cell(regbase+ii));\
+    for (ii = 1; ((int)ii) <= arity; ii++) \
+        bld_copy(--t_breg, cell(regbase+ii));\
   }
 
 #define restore_registers(t_breg, arity, regbase) {\

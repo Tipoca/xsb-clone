@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.8 2000-05-12 20:18:16 ejohnson Exp $
+** $Id: tst_utils.c,v 1.9 2000-05-19 04:58:34 kifer Exp $
 ** 
 */
 
@@ -292,7 +292,7 @@ static void symstkPrintNextTerm() {
 
       psc = DecodeTrieFunctor(symbol);
       printf("%s(", get_name(psc));
-      for (i = 1; i < get_arity(psc); i++) {
+      for (i = 1; i < (int)get_arity(psc); i++) {
 	symstkPrintNextTerm();
 	printf(",");
       }

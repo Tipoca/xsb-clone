@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_insert.c,v 1.8 2000-04-29 21:53:59 kifer Exp $
+** $Id: sub_insert.c,v 1.9 2000-05-19 04:58:33 kifer Exp $
 ** 
 */
 
@@ -747,7 +747,7 @@ xsbBool are_identical_subterms(Cell term1, Cell term2) {
     if ( psc1 != (Psc)*cptr2 )
       return FALSE;
 
-    for ( cptr1++, cptr2++, i = 0;  i < get_arity(psc1);  i++ )
+    for ( cptr1++, cptr2++, i = 0;  i < (int)get_arity(psc1);  i++ )
       if ( ! are_identical_subterms(*cptr1,*cptr2) ) 
 	return FALSE;
 
