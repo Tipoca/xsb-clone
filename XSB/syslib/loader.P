@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.6 1999/04/08 18:06:11 kostis Exp $
+** $Id: loader.P,v 1.7 1999/04/10 13:56:01 kostis Exp $
 ** 
 */
 
@@ -427,8 +427,8 @@ libraries_loaded :-
 /*
  *  Print a new line
  */
-ll_nl :- ( is_backslashing_os -> file_put(1, 13), file_put(1, 10)
-			           ; file_put(1, 10) ).
+ll_nl :- ( is_backslashing_os -> file_put(2, 13), file_put(2, 10)
+			           ; file_put(2, 10) ).
 
 /*
  *  Print a string.
@@ -443,13 +443,13 @@ ll_prompt(N, String) :-
 	),						% eg, from stat_flag
 	buff_byte(String0, N, Char),
 	( Char =:= 0 -> true
-	; file_put(1, Char), N1 is N+1, ll_prompt(N1, String0)
+	; file_put(2, Char), N1 is N+1, ll_prompt(N1, String0)
 	).
 
 /*
  *  Print a small integer
  */
 ll_writearity(Int) :- 
-	( Int < 10 -> Char is Int + 48, file_put(1, Char)
-	; file_put(1, 42)	% when arity > 9, write an asterisk *
+	( Int < 10 -> Char is Int + 48, file_put(2, Char)
+	; file_put(2, 42)	% when arity > 9, write an asterisk *
 	).	

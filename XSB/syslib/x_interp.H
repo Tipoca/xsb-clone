@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.13 1999/06/22 18:23:22 kifer Exp $
+** $Id: x_interp.H,v 1.14 1999/07/27 14:55:32 kifer Exp $
 ** 
 */
 
@@ -46,6 +46,6 @@
 	  is_xwammode/1, close_open_tables/0, trimcore/0, slash/1
      from machine.
 :- import file_open/3, file_close/1, file_get/2, fmt_write_string/3,
-	  print_file_contents/1
+	  print_file_contents/2
     from file_io.
 

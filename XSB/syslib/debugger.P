@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.P,v 1.6 1999/07/04 06:18:23 kifer Exp $
+** $Id: debugger.P,v 1.7 1999/07/04 18:47:40 kifer Exp $
 ** 
 */
 
@@ -473,9 +473,8 @@ basic_call(I,PSC,Call) :-
 % nec since code_call must be last call in clause.
 code_call_h(Code,Call,Nt) :- code_call(Code,Call,Nt).
 
-ll_write(X) :- file_write(1, X).
-
-ll_nl :- file_put(1, 10).
+ll_write(X) :- file_write(2, X).  % 2 means stderr
+ll_nl :- file_put(2, 10).
 
 /* NOTE: psc_spy/2 now is builtin in machine.P */
 psc_spy(PSC, Spy) :- buff_byte(PSC, 0, Val), Spy is Val /\ 192.
