@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.31 1999/11/20 06:51:53 kifer Exp $
+## $Id: Makefile,v 1.32 1999/11/30 14:38:33 kifer Exp $
 ## 
 ##
 
@@ -76,13 +76,14 @@ all: init $(ALL) finish
 	@cp -f $*.O $(OBJFILESAVED) || echo ""
 	echo 'mc($*, $(Option)).' >> cmd...
 
+# The header cmd...hdr is prepended before each split cmd...xx file
+# so that the output will be redirected into the appropriate cmd...?? file.
 init:
 	rm -f $(SVFILE)
 	@test -d $(OBJFILESAVED) || mkdir $(OBJFILESAVED)
 	@echo 'fmt_write($(STDWARN),"-------------- Warnings --------------------\n",_).' >> cmd...
 	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
 	@echo 'file_flush($(STDWARN),_).' >> cmd...
-	# This header is prepended before each split cmd...xx file
 	@echo 'import file_reopen/4, fmt_write/3, file_flush/2 from file_io.' >> cmd...hdr
 	@echo "file_reopen($(SVFILE),a,$(STDWARN),_)." >> cmd...hdr
 
