@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf_xsb_i.h,v 1.11 1999-12-02 07:07:00 kifer Exp $
+** $Id: dynelf_xsb_i.h,v 1.12 2000-02-22 18:42:34 kostis Exp $
 ** 
 */
 
@@ -46,7 +46,7 @@
 
 #define BUFFEXTRA 1024
 
-#ifdef SOLARIS
+#if (defined(SOLARIS) && defined(__GNUC__))
 /* just to supress stupid gcc warning */
 extern int putenv(const char *);
 #endif
