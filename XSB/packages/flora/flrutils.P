@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.36 2000-05-19 03:55:26 kifer Exp $
+** $Id: flrutils.P,v 1.37 2001-06-29 22:52:33 kifer Exp $
 **
 */
 
@@ -571,7 +571,7 @@ internal_option(skolem)       :- !.
 
 /********************************************************************/
 copy_flrfile(Dir,File,Status) :-
-	bootstrap_flora,
+	bootstrap_flora1,
 	package_configuration(dir(flora),FloraDir),
 	slash(S),
 	fmt_write_string(FullName,'%s%s%s%s%s',f(FloraDir,S,Dir,S,File)),

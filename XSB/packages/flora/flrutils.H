@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.13 2000-05-19 03:55:26 kifer Exp $
+** $Id: flrutils.H,v 1.14 2001-06-29 22:52:33 kifer Exp $
 **
 */
 
@@ -44,7 +44,7 @@
 
 :- import package_configuration/2 from packaging.
 
-:- import bootstrap_flora/0 from flora.
+:- import bootstrap_flora1/0 from flora.
 
 :- import library_directory/1 from usermod.
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.15 2000-12-27 00:32:12 kifer Exp $
+** $Id: flrshell.H,v 1.16 2001-06-29 22:52:33 kifer Exp $
 **
 */
 
@@ -56,7 +56,7 @@
 
 :- import xpp_include_dir/1 from parse.
 
-:- import bootstrap_flora/0 from flora.
+:- import bootstrap_flora1/0 from flora.
 
 :- import
 	flora_read_parse_compile/6,

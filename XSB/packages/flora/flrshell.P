@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.40 2000-12-27 00:32:12 kifer Exp $
+** $Id: flrshell.P,v 1.41 2001-06-29 22:52:33 kifer Exp $
 **
 */
 
@@ -35,7 +35,7 @@
 
 /*********************************************************************/
 STD_FPREFIX(shell) :-
-	bootstrap_flora,
+	bootstrap_flora1,
 	STD_FPREFIX(welcome_msg),
 	all,
 	push_abort_cutpoint,

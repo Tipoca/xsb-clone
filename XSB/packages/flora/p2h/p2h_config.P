@@ -18,11 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: p2h_config.P,v 1.1 2000-05-28 20:52:50 kifer Exp $
+** $Id: p2h_config.P,v 1.2 2001-06-29 22:52:32 kifer Exp $
 ** 
 */
 
-%% bootstrap_flora/0 adds this directory to the library search path.
+%% bootstrap_flora1/0 adds this directory to the library search path.
 %% Loading p2h_config.P ensures that the module prolog2hilog is compiled 
 %% and loaded.
 
