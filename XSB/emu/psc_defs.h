@@ -18,17 +18,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_defs.h,v 1.1 1999-10-23 21:19:27 kifer Exp $
+** $Id: psc_defs.h,v 1.2 1999-11-03 21:35:48 cbaoqiu Exp $
 ** 
 */
-
 
 
 #define T_VISIBLE	0
 #define T_HIDDEN	1
 #define T_UNLOADED	2
 
-/* === type definition: (entry_type) ===============================*/
+/* === type definition: (entry_type) ============================== */
 
 #define T_ORDI  0	/* constant-type: no ep definition, may be set later */
 #define T_DYNA	1	/* constant-type: dynamic, code in buffer */
@@ -39,3 +38,11 @@
 
 #define T_UDEF 12	/* unloaded T_PRED */
 #define T_FORN 13	/* predicate in foreign language */
+
+/* === loader definitions (module information) ==================== */
+
+#define T_EXPORTED 0
+#define T_LOCAL    1
+#define T_IMPORTED 2
+#define T_GLOBAL   4
+

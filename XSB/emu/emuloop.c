@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.49 1999-10-30 00:00:37 cbaoqiu Exp $
+** $Id: emuloop.c,v 1.50 1999-11-03 21:35:44 cbaoqiu Exp $
 ** 
 */
 
@@ -1355,7 +1355,7 @@ DllExport int call_conv xsb(int flag, int argc, char *argv[])
 { 
    char *startup_file;
    FILE *fd;
-   Cell magic;
+   unsigned int magic_num;
    static double realtime;	/* To retain its value across invocations */
 
    extern void dis(int);
@@ -1399,13 +1399,9 @@ DllExport int call_conv xsb(int flag, int argc, char *argv[])
 	       startup_file);
        xsb_exit(message);
      }
-     get_obj_word_bb(&magic);
+     magic_num = read_magic(fd);
      fclose(fd);
-#ifdef V2_OBJECT_FORMAT
-     if (magic == 0x11121305)
-#else
-     if (magic == 0x11121304 || magic == 0x11121305)
-#endif
+     if (magic_num == 0x11121307 || magic_num == 0x11121305)
        inst_begin = loader(startup_file,0);
      else
        xsb_exit("Incorrect startup file format");
