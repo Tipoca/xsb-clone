@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.4 1999-11-17 17:41:57 ejohnson Exp $
+** $Id: macro_xsb.h,v 1.5 1999-12-14 21:05:45 ejohnson Exp $
 ** 
 */
 
@@ -296,6 +296,7 @@ struct subgoal_frame {
 #define subg_answers(subg) aln_next_aln(subg_ans_list_ptr(subg))
 
 #define ConsumerIsProducerVariant(pSF)	( subg_producer(pSF) == pSF )
+#define SubgoalHasOwnAnswerSet(pSF)	( subg_producer(pSF) == pSF )
 #define ConsumerIsProperlySubsumed(pSF)	( subg_producer(pSF) != pSF )
 
 #define ProducerHasConsumers(pSF)	IsNonNULL(subg_consumers(pSF))
