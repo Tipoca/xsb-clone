@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.9 1999-05-31 04:31:24 kifer Exp $
+** $Id: flrcompiler.P,v 1.10 1999-06-15 03:56:38 kifer Exp $
 **
 */
 
@@ -521,7 +521,8 @@ rhs_flatten(string(Chars),Chars,[]) :- !.
 
 rhs_flatten(number(N),N,[]) :- !.
 
-%% rhs_flatten(cut,null,['!']) :- !.
+/*  Cuts are allowed, but be careful to not cut accross tables */
+rhs_flatten(cut,null,['!']) :- !.
 
 
 /***************************************************************************/
