@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.7 2000-01-25 03:54:39 cbaoqiu Exp $
+** $Id: heap_xsb.c,v 1.8 2000-02-15 08:09:44 bartkul Exp $
 ** 
 */
 
@@ -2539,8 +2539,12 @@ int gc_heap(int arity)
 
    /* An attempt to add some gc/expansion policy;
        ideally this should be user-controlled */
+
+    /* The following test is temporarily put to FALSE
+       until chat imark bits have been turned off
+    */
 #if (! defined(GC_TEST))
-     if (marked > ((hreg+1-(CPtr)glstack.low)*mark_threshold))
+     if (0 && (marked > ((hreg+1-(CPtr)glstack.low)*mark_threshold)))
       {
 #ifdef VERBOSE_GC
         xsb_dbgmsg("Heap gc - marked too much - quitting gc") ;
