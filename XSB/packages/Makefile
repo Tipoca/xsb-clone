@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.21 2002-03-15 08:09:42 kifer Exp $
+## $Id: Makefile,v 1.22 2002-04-11 15:54:20 lfcastro Exp $
 ## 
 ##
 
@@ -86,9 +86,9 @@ perlmatch::
 	@echo ""
 	cd perlmatch; make
 
-#sModels::
-#	@echo ""
-#	cd sModels; make
+sModels::
+	@echo ""
+	cd sModels; make
 
 gap::
 	@echo ""

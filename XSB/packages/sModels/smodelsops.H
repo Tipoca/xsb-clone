@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: smodelsops.H,v 1.1 1999-08-23 22:11:29 luis Exp $
+** $Id: smodelsops.H,v 1.2 2002-04-11 15:54:24 lfcastro Exp $
 ** 
 */
 
@@ -36,3 +36,4 @@
 :- export smReturnModel/2, smEnd/0.
 :- export smInit/1, smAddRule/3, smGetModel/2.
 
+:- import is/2, '=\='/2	from standard.
