@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.9 2002-05-22 15:41:13 lfcastro Exp $
+** $Id: flag_defs_xsb.h,v 1.10 2002-10-28 14:45:07 dwarren Exp $
 ** 
 */
 
@@ -109,6 +109,8 @@ interrupt flag
 
 #define TABLING_METHOD	  61      /* Default method used to evaluate tabled
 				     calls:  variant or subsumptive */
+
+#define MAXTOINDEX 5              /* depth in term to go when using deep indexing */
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
