@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.61 2001/04/28 20:15:37 ejohnson Exp $
+** $Id: tr_utils.c,v 1.62 2001/05/05 18:23:02 kifer Exp $
 ** 
 */
 
@@ -588,9 +588,14 @@ void undelete_branch(BTNptr lowest_node_in_branch) {
 
    if( IsDeletedNode(lowest_node_in_branch) ){
      choicepttype = 0x3 &  BTN_Instr(lowest_node_in_branch);
+     /* Status contains the original instruction that was in that trie node.
+	here we extract the original instruction and the next statement
+	makes it into the instruction associated with that node. */
      typeofinstr = (~0x3) & BTN_Status(lowest_node_in_branch);
 
      BTN_Instr(lowest_node_in_branch) = choicepttype | typeofinstr;
+     /* This only sets the status field. It is also necessary to set the
+	instruction field correctly, which is done above. */
      MakeStatusValid(lowest_node_in_branch);
    }
    else

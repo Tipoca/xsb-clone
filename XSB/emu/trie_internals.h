@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.17 2001-02-26 22:13:48 dwarren Exp $
+** $Id: trie_internals.h,v 1.18 2001-05-07 02:17:29 kifer Exp $
 ** 
 */
 
@@ -191,11 +191,18 @@
 #define IsValidNode(pTSC)	( TSC_Status(pTSC) == VALID_NODE_STATUS )
 #define IsDeletedNode(pTSC)	( TSC_Status(pTSC) != VALID_NODE_STATUS )
 
+/* This just sets the status. To make a node valid, the instruction field must
+   also be set. */
 #define MakeStatusValid(pTSC)	  TSC_Status(pTSC) = VALID_NODE_STATUS
 
 /* The following definition depends upon the instruction field having
-   already been set to a valid trie instruction code. */
-
+   already been set to a valid trie instruction code.
+   When a node is soft-deleted, its instruction field is set to 
+   trie_no_cp_fail and the status field keeps the original instruction (to be
+   restored if the node is undeleted).
+   The macro, below, only sets the status. The instruction field is set
+   separately.
+*/
 #define MakeStatusDeleted(pTSC)	  TSC_Status(pTSC) = TSC_Instr(pTSC)
 
 /*---------------------------------------------------------------------------*/
