@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.2 1999-05-24 22:24:51 kifer Exp $
+## $Id: Makefile,v 1.3 1999-05-27 16:04:22 kifer Exp $
 ## 
 ##
 
@@ -32,7 +32,7 @@ Option = [optimize]
 # Self-make: Version 1.4.1
 #
 XSB=../../../bin/xsb
-Prolog = $(XSB) -i -s -m 2000 -c 2000
+Prolog = $(XSB) -i -s -m 2000 -c 2000 -e 'set_dcg_style(standard).'
 #
 #-----------------------------------------------------------------------#
 
