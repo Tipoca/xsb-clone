@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_insert.c,v 1.4 1999-10-26 06:47:37 kifer Exp $
+** $Id: tst_insert.c,v 1.5 1999-11-02 22:17:28 cbaoqiu Exp $
 ** 
 */
 
@@ -129,6 +129,7 @@ inline static EntryPtr tsiOrderedInsert(TSTHTptr ht, TSTNptr tstn) {
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#ifdef COMMENT	/* tsiRemoveEntry is not used anywhere now */
 /*
  *  Remove a tsi_Entry from a tsi and place it on the global TSI free
  *  list for later reuse.
@@ -151,6 +152,7 @@ static void tsiRemoveEntry(TSTHTptr ht, EntryPtr entry) {
      ------------------------------- */
   SM_DeallocateStruct(smEntry,entry);
 }
+#endif /* COMMENT */
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
