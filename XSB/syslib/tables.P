@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.36 2001/02/28 19:33:17 dwarren Exp $
+** $Id: tables.P,v 1.37 2002/11/05 20:50:45 lfcastro Exp $
 ** 
 */
 
@@ -392,7 +392,13 @@ abolish_table_predicate(Predicate) :- abolish_table_predicate(Predicate).
 
 abolish_table_call(Call) :-
 	get_calls(Call,Handle,_Template),
-	abolish_table_call_bi(Handle).
+	table_state(Handle,PredType,_CallType,_AnsSetStatus),
+	(   PredType = subsumptive
+	->  throw(error(table_error(abolishing_subsumptive_call)))
+	;   abolish_table_call_bi(Handle)
+	),
+	fail.
+abolish_table_call(_Call).
 
 abolish_table_call_bi(_Handle) :-
 	'_$builtin'(ABOLISH_TABLE_CALL).
