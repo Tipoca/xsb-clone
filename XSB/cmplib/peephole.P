@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: peephole.P,v 1.5 2000-02-07 16:38:58 kostis Exp $
+** $Id: peephole.P,v 1.6 2003-10-13 13:16:22 dwarren Exp $
 ** 
 */
 
@@ -83,6 +83,13 @@ compile_popt11(jump(Addr), [Instr|PRest], OptCode) :-
 	    compile_popt1(PRest,OptPRest)
 	;   
 	    compile_popt11(jump(Addr), PRest, OptCode)
+	).
+compile_popt11(fail, [Instr|PRest], OptCode) :-
+	( Instr = label(_,_) ->
+	    OptCode = [fail,Instr|OptPRest], % label stays
+	    compile_popt1(PRest,OptPRest)
+	;   
+	    compile_popt11(fail, PRest, OptCode)
 	).
 compile_popt11(jumpz(_,L), [label(T,L)|PRest], [label(T,L)|OptPRest]) :-
 	compile_popt1(PRest,OptPRest).
