@@ -1,5 +1,9 @@
+:- compiler_options([xpp_on]).
+#include "loader_defs.h"
+
 test :- q(_,Y), writeln(res(Y)), fail.
-test :- shell('rm varcond.O'), writeln('varcond.O removed').
+test :- shell(['rm varcond', XSB_OBJ_EXTENSION_ATOM]),
+	fmt_write('varcond%s removed', arg(XSB_OBJ_EXTENSION_ATOM)).
 
 q(A,B) :-
    ((var(A); A==a) ->

@@ -38,7 +38,7 @@ options=$2
 # the following two tests are used to test multifile directive
 #-----------------------------------------------------------------------
 #------------------------------------
-# Just to create some .O files that
+# Just to create some OBJ files that
 # will be used later in multifile test
 #------------------------------------
 ../gentest.sh "$XEMU $options" mf_obj "do."
@@ -65,17 +65,19 @@ options=$2
 #------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
 #------------------------------------------------------------------------
+
+OBJEXT=.xwam
 os_type=`uname -s`
 if test "$os_type" = "HP-UX" ; then
 	echo "Foreign language interface tests bypassed"
 else
 #------------------------------------------------------------------------
-	rm -f xeddis.o xeddis.so xeddis.O
+	rm -f xeddis.o xeddis.so xeddis$OBJEXT
 	../gentest.sh "$XEMU $options" cinter1 "test."
 #------------------------------------------------------------------------
-	rm -f zero.o zero.so zero.O
+	rm -f zero.o zero.so zero$OBJEXT
 	../gentest.sh "$XEMU $options" cinter2 "test."
 #------------------------------------------------------------------------
-	rm -f c_calls_xsb.o c_calls_xsb.O c_calls_xsb_make.O
+	rm -f c_calls_xsb.o c_calls_xsb$OBJEXT c_calls_xsb_make$OBJEXT
 	../gentest.sh "$XEMU $options" c_calls_xsb_make "test."
 fi

@@ -7,6 +7,8 @@ FILE=$2
 DIR=`pwd`
 BASEDIR=`basename $DIR`
 
+OBJEXT=.O
+
 echo "--------------------------------------------------------------------"
 
 echo "Testing $BASEDIR/$FILE"
@@ -18,13 +20,13 @@ compile($FILE,[spec_dump,table_dump,ti_dump]).
 
 EOF
 
-d=`diff ${FILE}.O ${FILE}.O.old`
+d=`diff ${FILE}$OBJEXT ${FILE}${OBJEXT}.old`
 if test -z "$d"; then 
-	echo "$BASEDIR/$FILE.O tested"
-	rm -f ${FILE}.O
+	echo "$BASEDIR/$FILE${OBJEXT} tested"
+	rm -f ${FILE}${OBJEXT}
 else
 	echo "$BASEDIR/$FILE differ!!!"
-	diff ${FILE}.O ${FILE}.O.old
+	diff ${FILE}${OBJEXT} ${FILE}${OBJEXT}.old
 fi
 
 d=`diff ${FILE}.spec ${FILE}.spec.old`

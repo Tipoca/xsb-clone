@@ -1,6 +1,6 @@
 
 %% This is needed to compile several files, 
-%% so that their .O files will be available when needed.
+%% so that their OBJ files will be available when needed.
 
 :- [utils].
 :- [correct].

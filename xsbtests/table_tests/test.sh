@@ -11,7 +11,7 @@ options=$2
 # Force some files to be compiled before running the tests.  cycle.P
 # will always be compiled, because there was a bug on Linux in compiling
 # this file and we want to catch it.  Since this step is performed only
-# so that the corresponding .O files exist, it is not included as part
+# so that the corresponding object files exist, it is not included as part
 # of the garbage collection test.
 
 $XEMU -m 4000 -c 4000 -g none << EOF

@@ -30,16 +30,17 @@ member ()
     return 1
 }
 
+OBJEXT=.xwam
 
-# Remove the .P and .O files to make sure we are using the 
+# Remove the Prolog and object files to make sure we are using the 
 # latest compiled sources
-# Precautionary measure: rm *.[PO] only if we are certain 
+# Precautionary measure: rm  only if we are certain 
 # that this is flora_tests directory
 dir=`pwd`
 dir=`basename $dir`
 if test "flora_tests"="$dir" ; then
-    rm -f *.[PO] *.fld *.fdb
-    rm -f auxiliary/*.[PO] auxiliary/*.fld auxiliary/*.fdb
+    rm -f *.P *${OBJEXT} *.fld *.fdb
+    rm -f auxiliary/*.P auxiliary/*${OBJEXT} auxiliary/*.fld auxiliary/*.fdb
 fi
 
 
