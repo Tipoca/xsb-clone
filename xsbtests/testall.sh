@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.7 1999-10-14 00:44:58 cbaoqiu Exp $
+## $Id: testall.sh,v 1.8 1999-10-16 23:01:54 kifer Exp $
 ## 
 ##
 
@@ -40,6 +40,11 @@ do
      *-exclud*)
 	    shift
 	    excluded_tests=$1
+	    shift
+	    ;;
+     *-only*)
+	    shift
+	    only_tests=$1
 	    shift
 	    ;;
       *)
@@ -71,28 +76,17 @@ member ()
     return 1
 }
 
-lockfile=lock.test
-testdir=`pwd`
 
-trap 'rm -f $testdir/$lockfile; exit 1' 1 2 15
-
-if test -f $testdir/$lockfile; then
-   echo "************************************************************"
-   echo ./$lockfile exists
-   echo Probably testsuite is already running...
-   echo If not, remove ./$lockfile
-   echo and continue
-   echo "************************************************************"
-   exit
-else
-   echo $$ > $lockfile
-fi
-
-
-    # float_tests don't pass. --mk
-testlist="basic_tests prolog_tests retract_tests \
+# float_tests: don't pass. --mk
+default_testlist="basic_tests prolog_tests retract_tests \
 	  table_tests ptq neg_tests sem_tests delay_tests \
 	  wfs_tests ai_tests attv_tests"
+
+if test -z "$only_tests"; then
+    testlist=$default_testlist
+else
+    testlist=$only_tests
+fi
 
 # Run each test in $testlist except for the tests in $excluded_tests
 for tst in $testlist ; do
@@ -108,4 +102,3 @@ for tst in $testlist ; do
   fi
 done
    
-rm -f $lockfile

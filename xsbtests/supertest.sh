@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: supertest.sh,v 1.8 1999-06-22 17:56:37 cbaoqiu Exp $
+## $Id: supertest.sh,v 1.9 1999-10-16 23:01:53 kifer Exp $
 ## 
 ##
 
@@ -31,7 +31,10 @@
 xsbdir=$1
 testdir=`pwd`
 logfile=/tmp/xsb_super_log.`whoami`
+msg_file=/tmp/xsb_supertest_msg.$USER
+res_file=/tmp/xsb_supertest_res.$USER
 lockfile=lock.super
+GREP="grep -i"
 
 if test -z "$xsbdir" ; then
    echo "Arg 1 must be a path to the XSB installation directory"
@@ -85,3 +88,21 @@ cd $testdir
 ./testsuite.sh -tag localschedNslg-wam $xsbdir
 
 rm $testdir/$lockfile
+
+$GREP "Error:" $logfile >> $res_file
+
+# -s tests if size > 0
+if test -s $res_file; then
+	cat $res_file
+	echo "-----------------------------------------"
+	echo "***FAILED supertest for $XEMU on $HOSTNAME"
+        echo "***FAILED supertest for $XEMU on $HOSTNAME" > $msg_file
+	echo "" >> $msg_file
+	echo "    Summary of the problems:" >> $msg_file
+	echo "" >> $msg_file
+	cat $res_file >> $msg_file
+	mail $USER < $msg_file
+	rm -f $msg_file
+fi
+
+rm -f $res_file

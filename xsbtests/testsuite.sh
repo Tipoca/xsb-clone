@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.18 1999-09-21 08:53:18 kostis Exp $
+## $Id: testsuite.sh,v 1.19 1999-10-16 23:01:56 kifer Exp $
 ## 
 ##
 
@@ -29,11 +29,15 @@
 # log for possible errors.
 #==================================================================
 
-#Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude test_list] [-mswin] path
-# where: opts      -- options to pass to XSB
-#        tag       -- the configuration tag to use
-#        test_list -- the list of tests to NOT run
-#        path      -- full path name of the XSB installation directory
+#Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude exclude_list] \
+#    	     	     [-only test_list] [-mswin] path
+# where: opts         -- options to pass to XSB
+#        tag          -- the configuration tag to use
+#        exclude_list -- the list of tests to NOT run
+#        test_list    -- the list of tests TO run; replaces default,
+#    	     	     	 both -exclude and -only can be specified at once
+#        path         -- full path name of the XSB installation directory
+#    The -mswin option says to run tests under MS Windows
 #    If tag specified, this is the tag to use to 
 #    locate the XSB executable (e.g., dbg, chat, etc.). 
 #    It is usually specified using the --config-tag option of 'configure'
@@ -64,6 +68,12 @@ do
      *-exclud*)
 	    shift
 	    excluded_tests=$1
+	    shift
+	    ;;
+
+     *-only*)
+	    shift
+	    only_tests=$1
 	    shift
 	    ;;
 	    
@@ -118,7 +128,6 @@ XEMU=$installdir/config/$canonical$config_tag/bin/xsb
 GREP="grep -i"
 MSG_FILE=/tmp/xsb_test_msg.$USER
 LOG_FILE=/tmp/xsb_test_log.$USER
-LOG_FILE_LOCAL=xsb_test_log.$USER
 RES_FILE=/tmp/xsb_test_res.$USER
 
 if test ! -x "$XEMU"; then
@@ -133,6 +142,29 @@ if test ! -x "$XEMU"; then
     rm -f $MSG_FILE
     exit
 fi
+
+lockfile=lock.test
+testdir=`pwd`
+
+trap 'rm -f $testdir/$lockfile; exit 1' 1 2 15
+
+if test -f $testdir/$lockfile; then
+    cat <<EOF
+
+************************************************************
+The lock file ./$lockfile exists.
+Probably testsuite is already running...
+If not, remove
+        ./$lockfile
+and continue
+************************************************************
+
+EOF
+   exit
+else
+   echo $$ > $lockfile
+fi
+
 
 if test -f "$RES_FILE"; then
   echo "There was an old $RES_FILE"
@@ -154,18 +186,20 @@ fi
 # and then this script can also be used in buildtest
 
 echo "Testing $XEMU"
-echo "Results will be in  $LOG_FILE"
+echo "The log will be left in  $LOG_FILE"
 
 echo "Log for  $XEMU $options" > $LOG_FILE
 (echo "Date-Time: `date +"%y%m%d-%H%M"`" >> $LOG_FILE) || status=failed
 if test -n "$status"; then
 	echo "Date-Time: no date for NeXT..." >> $LOG_FILE
-	NEXT_DATE=1
+	NeXT_DATE=1
 else
-	NEXT_DATE=0
+	NeXT_DATE=0
 fi
 
-testall.sh -opts "$options" -exclude "$excluded_tests" $XEMU  >> $LOG_FILE 2>&1
+testall.sh -opts "$options" -exclude "$excluded_tests" -only "$only_tests" \
+		    $XEMU  >> $LOG_FILE 2>&1
+
 
 touch $RES_FILE
 coredumps=`find . -name core -print`
@@ -208,12 +242,11 @@ $GREP "syntax error" $LOG_FILE >> $RES_FILE
 $GREP "cannot find" $LOG_FILE >> $RES_FILE
 echo "-----------------------------------------"
 
-
-if test "$NEXT_DATE" = 1; then
-	NEW_LOG=$LOG_FILE.$NEXT_DATE
+if test "$NeXT_DATE" = 1; then
+	NEW_LOG=$LOG_FILE.$NeXT_DATE
 	cp $LOG_FILE $NEW_LOG
 else
-	NEW_LOG=$LOG_FILE.`date +"%y%m%d-%H%M"`
+	NEW_LOG=$LOG_FILE-`date +"%y.%m.%d-%H:%M:%S"`
 	cp $LOG_FILE $NEW_LOG
 fi
 
@@ -238,7 +271,7 @@ else
 fi
 
 rm -f $RES_FILE
-rm -f $LOG_FILE
+rm -f $lockfile
 
 echo "Done"
 echo ==============================================================
