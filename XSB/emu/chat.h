@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chat.h,v 1.3 1999-01-29 20:06:41 kostis Exp $
+** $Id: chat.h,v 1.4 1999-02-04 20:31:00 kostis Exp $
 ** 
 */
 
@@ -123,6 +123,7 @@ extern void chat_set_unchained(CPtr);
 extern int  chat_is_chained(CPtr);
 
 #ifdef LOCAL_EVAL
+extern CPtr chat_free_compl_susp_chat_area(chat_init_pheader);
 extern chat_init_pheader save_a_consumer_for_generator(SGFrame);
 #endif
 
