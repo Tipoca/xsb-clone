@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.10 2000-06-14 21:16:06 kifer Exp $
+** $Id: intern.P,v 1.11 2000-06-17 23:24:24 kifer Exp $
 ** 
 */
 
@@ -121,7 +121,7 @@ trie_unintern_nr(Root,Leaf) :-
 	integer(Root),
 	integer(Leaf),
 	!,
-	 trie_dispose_nr(Leaf).
+	trie_dispose_nr(Leaf).
 
 /*--------------------------------------------------
 unmark_uninterned_nr(+Root, +Leaf)
@@ -130,7 +130,7 @@ unmark_uninterned_nr(Root,Leaf) :-
 	integer(Root),
 	integer(Leaf),
 	!,
-	 trie_undispose(Root,Leaf).
+	trie_undispose(Root,Leaf).
 
 
 /*--------------------------------------------------

@@ -19,14 +19,14 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.32 2000-06-09 14:16:59 cbaoqiu Exp $
+## $Id: Makefile,v 1.33 2000-06-17 23:24:24 kifer Exp $
 ## 
 ##
 
 
-ALL = 	aggregs.O array.O array1.O assoc.O directry.O foreign.O \
-	intern.O obsolete.O \
-	odbc_call.O ordsets.O ora_call.O \
+ALL = 	aggregs.O array.O array1.O assoc.O \
+	back_assert.O directry.O foreign.O \
+	intern.O obsolete.O odbc_call.O ordsets.O ora_call.O \
 	packaging.O random.O scrptutl.O socket.O ugraphs.O wrapping.O \
 	xnmr.O
 
