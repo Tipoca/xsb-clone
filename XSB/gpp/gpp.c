@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.11 2001-06-07 08:41:07 kifer Exp $
+** $Id: gpp.c,v 1.12 2001-06-17 02:57:47 kifer Exp $
 ** 
 */
 
@@ -40,7 +40,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <malloc.h>
 #include <ctype.h>
 
 #define STACKDEPTH 50
