@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.5 1998/12/21 01:08:44 cbaoqiu Exp $
+** $Id: slgdelay.c,v 1.6 1999/01/05 19:37:07 cbaoqiu Exp $
 ** 
 */
 
@@ -467,7 +467,7 @@ static void handle_unsupported_answer_subst(NODEptr as_leaf)
   fprintf(stderr, ">>>> start handle_unsupported_answer_subst()\n");
 #endif
 
-  delete_branch(as_leaf, (CPtr)&subg_ans_root_ptr(unsup_subgoal));
+  delete_branch(as_leaf, &subg_ans_root_ptr(unsup_subgoal));
   simplify_pos_unsupported(as_leaf);
   if (is_completed(unsup_subgoal)) {
     if (subgoal_fails(unsup_subgoal)) {

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.4 1999-01-19 16:45:11 kostis Exp $
+** $Id: biassert.c,v 1.5 1999-01-24 17:07:45 kostis Exp $
 ** 
 */
 
@@ -2251,7 +2251,7 @@ int trie_retract(void)
     printf(" Deleting from Instrn Node %p\n",  inst_node_ptr );
     printf(" Before: Child of Instrn Node %p\n", Child(inst_node_ptr));
 #endif
-    delete_branch(Last_Nod_Sav,(CPtr)&(Child(inst_node_ptr)));
+    delete_branch(Last_Nod_Sav, &(Child(inst_node_ptr)));
 #ifdef DEBUG_T
     printf(" After : Child of Instrn Node %p\n", Child(inst_node_ptr));
 #endif
