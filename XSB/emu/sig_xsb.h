@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sig_xsb.h,v 1.3 2001-11-08 21:35:25 dwarren Exp $
+** $Id: sig_xsb.h,v 1.4 2004-01-14 20:27:13 dwarren Exp $
 ** 
 */
 
@@ -43,3 +43,4 @@
 #define ATTVINT_MARK 0x40		/* attributed var interrupt */
 
 #define MSGINT_MARK 0x20		/* software message interrupt */
+#define PROFINT_MARK 0x10		/* XSB Profiling interrupt */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32_xsb_i.h,v 1.10 2003-02-21 16:45:25 lfcastro Exp $
+** $Id: dynwin32_xsb_i.h,v 1.11 2004-01-14 20:27:12 dwarren Exp $
 ** 
 */
 
@@ -61,7 +61,6 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
 #endif
   Pair	search_ptr;
   char	sofilename[128];
-  int 	strl = strlen(pofilename);
   HMODULE handle;
   void	*funcep;
   char  *file_extension_ptr;

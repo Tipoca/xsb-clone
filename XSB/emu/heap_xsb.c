@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.37 2004-01-05 18:40:21 dwarren Exp $
+** $Id: heap_xsb.c,v 1.38 2004-01-14 20:27:12 dwarren Exp $
 ** 
 */
 
@@ -397,8 +397,8 @@ xsbBool glstack_realloc(int new_size, int arity)
     int size = int_val(cell(interrupt_reg));
     int i;
     for (i=0; i<size; i++) {
-      reallocate_heap_or_ls_pointer(&(attv_interrupts[i][0]));
-      reallocate_heap_or_ls_pointer(&(attv_interrupts[i][1]));
+      reallocate_heap_or_ls_pointer(((CPtr *)&(attv_interrupts[i][0])));
+      reallocate_heap_or_ls_pointer(((CPtr *)&(attv_interrupts[i][1])));
     }
   }
 
@@ -618,9 +618,9 @@ int gc_heap(int arity)
       free(cp_marks) ;
       cp_marks = NULL ;
     }
-    if (slide_buf)    {  
-      free(slide_buf) ;
-      slide_buf = NULL ;
+    if (slide_buf)   { 
+      free(slide_buf); 
+      slide_buf = NULL; 
     }
 #ifdef SAFE_GC
     p = hreg;

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.9 2003-03-14 18:54:29 dwarren Exp $
+** $Id: psc_xsb.h,v 1.10 2004-01-14 20:27:13 dwarren Exp $
 ** 
 */
 
@@ -41,6 +41,7 @@ struct psc_rec {
   byte arity;
   byte length;
   char *nameptr;
+  long prof_ct;			/* for profiling: count of times interrupted in this pred */
   struct psc_rec *data;      /* psc of module, if pred; otw data */
   byte *ep;                     /* entry point (initted to next word) */
   word load_inst;               /* byte-code load_pred, or call_forn */

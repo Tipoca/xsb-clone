@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.32 2003-07-01 14:34:14 lfcastro Exp $
+** $Id: init_xsb.c,v 1.33 2004-01-14 20:27:12 dwarren Exp $
 ** 
 */
 
@@ -102,6 +102,8 @@ pdl = {NULL, NULL, 0,
 		    COMPLSTACK_DEFAULT_SIZE};   /* Completion Stack  */
 
 Exec_Mode xsb_mode;     /* How XSB is run: interp, disassem, user spec, etc. */
+
+int xsb_profiling_enabled = 0;
 
 DllExport extern char * call_conv strip_names_from_path(char*, int);
 
@@ -326,7 +328,6 @@ char *init_para(int argc, char *argv[])
   xsb_mode = DEFAULT;
   flags[TABLING_METHOD] = VARIANT_TEM;
 
-
   /* Modify Parameters Using Command Line Options
      -------------------------------------------- */
   for (i=1; i<argc; i++) {
@@ -515,6 +516,9 @@ char *init_para(int argc, char *argv[])
       break;
     case '-': /* this was a long option of the form --optionname */
       process_long_option(argv[i]+2);
+      break;
+    case 'p':
+      xsb_profiling_enabled = 1;
       break;
     case 'q':
       break;

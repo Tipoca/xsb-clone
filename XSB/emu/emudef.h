@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.39 2003-09-29 13:05:12 tschrijvers Exp $
+** $Id: emudef.h,v 1.40 2004-01-14 20:27:12 dwarren Exp $
 ** 
 */
 
@@ -255,7 +255,7 @@ int asynint_val = 0;
     xsb_dbgmsg((LOG_ATTV,">>>> nunify_with_attv, interrupt needed\n"));	\
     /* add_interrupt(makeattv(hreg), OP1); */			\
     *hreg = OP1; hreg++;						\
-    add_interrupt(hreg, OP1);					\
+    add_interrupt((Integer)hreg, OP1);				\
   }								\
   flag = WRITE;							\
 }
@@ -264,7 +264,11 @@ int asynint_val = 0;
 
 #define call_sub(PSC) {							\
   if ( (asynint_val) | int_val(cell(interrupt_reg)) ) {   	        \
-     if (asynint_val & KEYINT_MARK) {                                   \
+     if (asynint_val & PROFINT_MARK) {					\
+       asynint_val = asynint_val & ~PROFINT_MARK;			\
+       log_prog_ctr(lpcreg);						\
+       lpcreg = (byte *)get_ep(PSC);					\
+     } else if (asynint_val & KEYINT_MARK) {                            \
         synint_proc(PSC, MYSIG_KEYB);	                           	\
         lpcreg = pcreg;							\
         asynint_val = asynint_val & ~KEYINT_MARK;			\

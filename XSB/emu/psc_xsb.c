@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.13 2003-09-08 16:51:00 dwarren Exp $
+** $Id: psc_xsb.c,v 1.14 2004-01-14 20:27:13 dwarren Exp $
 ** 
 */
 
@@ -105,6 +105,7 @@ static Psc make_psc_rec(char *name, char arity) {
   set_spy(temp, 0);
   set_arity(temp, arity);
   set_length(temp, length);
+  temp->prof_ct = 0;  /* here is the main overhead for Prolog profiling... */
   set_data(temp, 0);
   set_ep(temp,(byte *)&(temp->load_inst));
   set_name(temp, string_find(name, 1));
@@ -195,13 +196,23 @@ static int is_globalmod(Psc mod_psc)
 static Pair search(int arity, char *name, Pair *search_ptr)
 {
     Psc psc_ptr;
+    Pair *init_search_ptr = search_ptr;
+    Pair found_pair;
 
     while (*search_ptr) {
       psc_ptr = (*search_ptr)->psc_ptr;
       if (strcmp(name, get_name(psc_ptr)) == 0
 	  && arity == get_arity(psc_ptr) )
-	return (*search_ptr);
-      else
+	if (search_ptr == init_search_ptr)
+	  return (*search_ptr);
+	else {
+	  found_pair = *search_ptr;
+	  *search_ptr = found_pair->next;
+	  found_pair->next = *init_search_ptr;
+	  *init_search_ptr = found_pair;
+	  return found_pair;
+	}	  
+      else 
 	search_ptr  = &((*search_ptr)->next);
     }
     return NULL;

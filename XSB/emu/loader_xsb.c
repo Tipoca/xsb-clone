@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.31 2003-06-20 15:58:44 lfcastro Exp $
+** $Id: loader_xsb.c,v 1.32 2004-01-14 20:27:12 dwarren Exp $
 ** 
 */
 
@@ -64,6 +64,10 @@
 /* === stuff used from elsewhere ======================================	*/
 
 extern TIFptr get_tip(Psc);
+
+extern int xsb_profiling_enabled;
+extern void add_prog_seg(Psc, byte *, long);
+extern void remove_prog_seg(byte *);
 
 /* === macros =========================================================	*/
 
@@ -678,7 +682,6 @@ static xsbBool load_syms(FILE *fd, int psc_count, int count, Psc cur_mod, int ex
 }
 
 /************************************************************************/
-
 static byte *loader1(FILE *fd, int exp)
 {
   char name[FOREIGN_NAMELEN], arity;
@@ -738,6 +741,8 @@ static byte *loader1(FILE *fd, int exp)
       if (strcmp(name, "_$main")!=0) {
 	set_type(ptr->psc_ptr, T_PRED);
 	set_ep(ptr->psc_ptr, (pb)seg_first_inst);
+	if (xsb_profiling_enabled)
+	  add_prog_seg(ptr->psc_ptr, (pb)seg_first_inst, text_bytes);
       }
       if ((tip = get_tip(ptr->psc_ptr)) != NULL) {
 	TIF_PSC(tip) = (ptr->psc_ptr);
@@ -745,8 +750,12 @@ static byte *loader1(FILE *fd, int exp)
       break;
     case T_PRED:
       if (strcmp(name, "_$main")!=0) {
+	if (xsb_profiling_enabled)
+	  remove_prog_seg((pb)get_ep(ptr->psc_ptr));
 	unload_seg((pseg)get_ep(ptr->psc_ptr));
 	set_ep(ptr->psc_ptr, (pb)seg_first_inst);
+	if (xsb_profiling_enabled)
+	  add_prog_seg(ptr->psc_ptr, (pb)seg_first_inst, text_bytes);
       }
       if ((tip = get_tip(ptr->psc_ptr)) != NULL) {
 	TIF_PSC(tip) = (ptr->psc_ptr);
