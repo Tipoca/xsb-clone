@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.15 2003-03-12 19:02:31 lfcastro Exp $
+** $Id: auxlry.c,v 1.16 2003-03-19 18:16:32 lfcastro Exp $
 ** 
 */
 
@@ -81,10 +81,7 @@ double cpu_time(void)
 
     thisproc = GetCurrentProcess();
     GetProcessTimes(thisproc,&creation,&exit,&kernel,&user);
-    /* unfinished -- how to convert kernel+user (two 64-bit unsigned
-       integers) into an appropriate float?              --lfcastro */
-    /* the code below assumes sizeof(long long) == 8 */
-    
+
     lkernel = ((ULONGLONG) kernel.dwHighDateTime << 32) + 
       kernel.dwLowDateTime;
     luser = ((ULONGLONG) kernel.dwHighDateTime << 32) + 
