@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.45 1999-07-20 18:54:35 kifer Exp $
+** $Id: builtin.c,v 1.46 1999-07-27 14:55:23 kifer Exp $
 ** 
 */
 
@@ -461,7 +461,6 @@ void init_builtin_table(void)
   set_builtin_table(STR_CAT, "str_cat");
   set_builtin_table(STR_CMP, "str_cmp");
   set_builtin_table(STR_HSH, "str_hsh");
-  set_builtin_table(STR_INSERT, "str_insert");
   set_builtin_table(STR_SUB, "str_sub");
   set_builtin_table(DIRNAME_CANONIC, "dirname_canonic");
   set_builtin_table(CALL0, "call0");
@@ -907,9 +906,6 @@ int builtin_call(byte number)
 			   R3: +HashSize: R4: -Value */
     value = hash(ptoc_string(1), ptoc_int(2), ptoc_int(3));
     ctop_int(4, value);
-    break;
-  case STR_INSERT:	/* R1: +Substring; R2: -OutString */
-    ctop_string(2, string_find(ptoc_string(1), 1));
     break;
   case STR_SUB:   /* R1: +Substring; R2: +String; R3: -Pos */
     { 

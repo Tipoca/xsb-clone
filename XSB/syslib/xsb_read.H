@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.H,v 1.7 1999/04/08 18:06:23 kostis Exp $
+** $Id: xsb_read.H,v 1.8 1999/04/27 14:40:13 kifer Exp $
 ** 
 */
 
@@ -38,7 +38,7 @@
 :- import '_$hilog_symbol'/1 from hilogsym.
 :- import term_new/2, term_set_arg/4, term_type/2,
 	  file_gettoken/5, psc_insert/4, stat_set_flag/2, conname/2, 
-	  conpsc/2, str_insert/2, term_psc/2, psc_set_prop/2, psc_prop/2
+	  conpsc/2, intern_string/2, term_psc/2, psc_set_prop/2, psc_prop/2
      from machine.
 
 /* -------------------- end of file file_read.H ----------------------- */

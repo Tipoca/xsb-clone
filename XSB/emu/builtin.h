@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.10 1999-06-17 07:50:58 kifer Exp $
+** $Id: builtin.h,v 1.11 1999-07-27 14:55:24 kifer Exp $
 ** 
 */
 
@@ -58,7 +58,6 @@ extern void init_builtin_table(void);
 #define STR_CAT		27
 #define STR_CMP		28
 #define STR_HSH		29
-#define STR_INSERT	30
 #define CALL0		31
 /* some other builtins that might need hard implementation */
 #define STAT_STA	32

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.P,v 1.9 1999/04/08 18:06:25 kostis Exp $
+** $Id: xsb_read.P,v 1.10 1999/04/27 14:40:16 kifer Exp $
 ** 
 */
 
@@ -735,8 +735,8 @@ read_lookup([_|T], X) :-
 
 read_getcon(String, Con) :-
 	term_type(test, T),
-	( T =:= 2 -> str_insert(String, Con)	% in buffer
-	; T =:= 5 -> str_insert(String, Con)
+	( T =:= 2 -> intern_string(String, Con)	% in buffer
+	; T =:= 5 -> intern_string(String, Con)
 	; T =:= 1 -> psc_insert(String, 0, Psc, 0), term_new(Psc, Con)
 	).
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string.H,v 1.4 1999/07/15 19:24:12 tswift Exp $
+** $Id: string.H,v 1.5 1999/07/21 14:20:34 tswift Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 
 :- import atom/1,atom_codes/2 from standard.
 :- import buff_set_byte/3, buff_alloc/2, buff_byte/3, buff_dealloc/3,
-	  str_insert/2, str_len/2 from machine.
+	  intern_string/2, str_len/2 from machine.
 :- import flatten/2 from basics.
 
 /* ---------------------- end of file string.H ------------------------ */
