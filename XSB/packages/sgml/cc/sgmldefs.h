@@ -1,4 +1,4 @@
-/*  $Id: sgmldefs.h,v 1.1 2005-03-01 03:31:44 kifer Exp $
+/*  $Id: sgmldefs.h,v 1.2 2005-03-03 17:23:07 kifer Exp $
 
     Part of SWI-Prolog
 
@@ -28,7 +28,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #else
-#ifdef WIN32
+#ifdef WIN_NT
 #define HAVE_MALLOC_H 1
 #define HAVE_IO_H 1
 #endif
