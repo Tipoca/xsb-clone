@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.139 2003-01-28 22:02:16 dwarren Exp $
+## $Id: configure.in,v 1.140 2003-01-28 22:13:11 dwarren Exp $
 ## 
 ##
 
@@ -1329,7 +1329,7 @@ case "$canonical" in
 		;;
       *-cygwin*) AC_DEFINE(CYGWIN)
 		 builtins_opt_level=-${optimization_level-"O1 -fomit-frame-pointer"}
-		 loader_opt_level=-${optimization_level-"O1 -fomit-frame-pointer"}
+		 loader_opt_level=-${optimization_level-"O2 -fomit-frame-pointer"}
 		;;
 esac
 
