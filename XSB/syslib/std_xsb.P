@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.43 2001/03/16 14:53:01 tswift Exp $
+** $Id: std_xsb.P,v 1.44 2001/03/17 22:42:30 tswift Exp $
 ** 
 */
 
@@ -183,6 +183,8 @@ standard_symbol(file_read_line_list, 1, file_io).
 standard_symbol(file_read_line_list, 2, file_io).
 standard_symbol(file_read_line_atom, 1, file_io).
 standard_symbol(file_read_line_atom, 2, file_io).
+standard_symbol(path_sysop, 2, file_io).
+standard_symbol(path_sysop, 3, file_io).
 
 standard_symbol(real, 1, standard).
 standard_symbol(reconsult, 1, consult).
