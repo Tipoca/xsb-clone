@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.P,v 1.23 2004/03/30 16:47:21 dwarren Exp $
+** $Id: shell.P,v 1.24 2004/08/10 22:32:48 tswift Exp $
 ** 
 */
 
@@ -159,7 +159,7 @@ edit(File) :-
 expand_filename_no_prepend(In,Out):- 
 	tilde_expand_filename(In,Out).
 
-%% sys_exit(-ExitCode) exit subprocess unconditionally with ExitCode
+%% sys_exit(+ExitCode) exit subprocess unconditionally with ExitCode
 sys_exit(ExitCode) :- sys_syscall(SYS_exit,_,ExitCode,_).
 
 %% TLS: adding error checking as I get hit.  Shouldn't add perceptable

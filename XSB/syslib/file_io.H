@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.28 2004/08/31 15:14:12 tswift Exp $
+** $Id: file_io.H,v 1.29 2004/09/02 19:48:49 tswift Exp $
 ** 
 */
 
@@ -68,7 +68,7 @@
 	  file_read_line_atom/1, file_read_line_atom/2,
 	  file_read_line_list/1, file_read_line_list/2,
 	  file_reopen/4, file_clone/3,
-	  pipe_open/2, fd2ioport/2, 
+	  pipe_open/2, fd2ioport/2, fd2iostream/3, 
 	  file_clearerr/1, tmpfile_open/1,
   print_openfiles/0, check_enumerate_stream_or_alias/4, 
   check_stream_or_alias/4, check_open_stream_or_alias/5, add_alias/2,
