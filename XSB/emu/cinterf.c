@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.37 2001-07-06 18:19:42 kifer Exp $
+** $Id: cinterf.c,v 1.38 2001-07-12 00:21:13 kifer Exp $
 ** 
 */
 
@@ -84,6 +84,12 @@ DllExport xsbBool call_conv is_string(prolog_term term)
 {
     Cell t = (Cell)term;
     return isstring(t);
+}
+
+DllExport xsbBool call_conv is_atom(prolog_term term)
+{
+    Cell t = (Cell)term;
+    return isatom(t);
 }
 
 DllExport xsbBool call_conv is_list(prolog_term term)

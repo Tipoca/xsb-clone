@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.16 2001-07-06 18:19:42 kifer Exp $
+** $Id: cinterf.h,v 1.17 2001-07-12 00:21:13 kifer Exp $
 ** 
 */
 
@@ -209,6 +209,7 @@ DllExport extern xsbBool call_conv is_var(prolog_term);
 DllExport extern xsbBool call_conv is_int(prolog_term);
 DllExport extern xsbBool call_conv is_float(prolog_term);
 DllExport extern xsbBool call_conv is_string(prolog_term);
+DllExport extern xsbBool call_conv is_atom(prolog_term);
 DllExport extern xsbBool call_conv is_list(prolog_term);
 DllExport extern xsbBool call_conv is_nil(prolog_term);
 DllExport extern xsbBool call_conv is_functor(prolog_term);
