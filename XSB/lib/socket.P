@@ -18,11 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket.P,v 1.4 1999-08-14 06:10:57 kifer Exp $
+** $Id: socket.P,v 1.5 1999-08-18 08:36:21 kifer Exp $
 ** 
 */
 
-:- compiler_options([cpp_on]).
+:- compiler_options([cpp_on,sysmod]).
 #include "io_defs.h"
 #include "standard.h"
 #include "xsbsocket.h"

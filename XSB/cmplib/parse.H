@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.9 1999-08-18 03:23:09 kifer Exp $
+** $Id: parse.H,v 1.10 1999-08-18 08:36:13 kifer Exp $
 ** 
 */
 
@@ -52,7 +52,7 @@
 :- import spawn_process/5, process_control/2 from shell.
 :- import xsb_configuration/2 from xsb_configuration.
 
-:- import fmt_write_string/3 from file_io.
+:- import fmt_write_string/3, file_close/1 from file_io.
 :- import windows_os_loader/0 from loader.
 
 :- import findall/3 from setof.

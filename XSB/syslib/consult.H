@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.6 1999/08/11 20:29:13 kifer Exp $
+** $Id: consult.H,v 1.7 1999/08/18 03:23:13 kifer Exp $
 ** 
 */
 
@@ -57,8 +57,8 @@
 	  psc_prop/2, psc_tabled/2, psc_type/2, psc_name/2,
 	  psc_arity/2, slash/1
      from machine.
-:- import file_time/2
-     from file_io.
+
+:- import file_time/2, file_close/1 from file_io.
 
 :- import asserta/1, (dynamic)/1, retractall/1, assert/1, retract/1, t_assert/2
 	 from assert.
