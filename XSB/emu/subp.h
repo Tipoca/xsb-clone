@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.h,v 1.7 2000-04-29 21:53:59 kifer Exp $
+** $Id: subp.h,v 1.8 2000-06-19 07:18:39 ruim Exp $
 ** 
 */
 
@@ -35,8 +35,8 @@ extern xsbBool unify(Cell, Cell);
 
 /* don't use Cell declarations here, to avoid gcc compiler warnings;
    However, this causes warnings under Windows */
-extern int compare(/* Cell, Cell */);
-extern int key_compare(/* Cell, Cell */);
+extern int compare( void *, void * );
+extern int key_compare( void *, void * );
 
 extern byte *exception_handler(char *);
 
