@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.H,v 1.4 1999-11-20 06:51:01 kifer Exp $
+** $Id: modes.H,v 1.5 2000-01-11 16:39:18 ejohnson Exp $
 ** 
 */
 
@@ -26,7 +26,8 @@
 :- export ma/2.
 :- mode ma(++,++).
 
-:- import 
+:- import
+	variant/1,
 	trie_assert/1, trie_retract/1,
 	trie_retract_all/1, trie_dynamic/1,
 	abolish_table_pred/1, get_calls/3, get_returns/2

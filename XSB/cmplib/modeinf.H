@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modeinf.H,v 1.3 1999-11-20 06:50:59 kifer Exp $
+** $Id: modeinf.H,v 1.4 2000-01-11 16:39:15 ejohnson Exp $
 ** 
 */
 
@@ -28,7 +28,8 @@
 
 :- export mode_subsumes_chk/2.
 
-:- import 
+:- import
+	variant/1,
 	trie_assert/1, trie_retract/1,
 	trie_retract_all/1, trie_dynamic/1,
 	abolish_table_pred/1, get_calls/3, get_returns/2

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.P,v 1.4 1999-08-28 09:06:14 kostis Exp $
+** $Id: modes.P,v 1.5 2000-01-11 16:39:20 ejohnson Exp $
 ** 
 */
 
@@ -78,7 +78,7 @@ analyze(Goal) :-
 	true.
 
 :- table call_user/1.
-
+:- variant([call_user(_)]).
 
 call_user(Goal) :- '_$call_user'(Goal).
 
