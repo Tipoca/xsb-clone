@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.2 1999-10-27 02:46:20 cbaoqiu Exp $
+** $Id: complete_xsb_i.h,v 1.3 1999-10-27 14:17:54 kostis Exp $
 ** 
 */
 
@@ -33,7 +33,9 @@ case check_complete: {
   CPtr    orig_breg = breg;
   bool    leader = FALSE;
   SGFrame subgoal;
-  int	  i;
+#ifdef LOCAL_EVAL
+  int     i;
+#endif
 
   /* this CP has exhausted program resolution -- backtracking occurs */
   switch_envs(breg);    /* in CHAT: undo_bindings() */
