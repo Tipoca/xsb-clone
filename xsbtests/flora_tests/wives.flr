@@ -1,0 +1,12 @@
+
+tom.father.father[wife->mary].
+tom[father->john].
+john[father->smith].
+tom[wife->rose] :- smith[wife->mary].
+tom.wife.father[wife->joan].
+rose[father->carter].
+
+tst1 :- X[Y->Z], write(X), write(' '), write(Y), write(' '), writeln(Z), fail.
+tst1.
+
+test :- tell(temp), tst1, told.

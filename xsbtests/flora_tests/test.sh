@@ -10,7 +10,7 @@ options=$2
 
 file_list=*.flr
 
-exclude_list="abp.flr"
+exclude_list="abp.flr wives.flr"
 
 flora_options=[flora],flora_shell.
 flora_command="chatterbox(off). test."
@@ -38,7 +38,9 @@ for file in $file_list ; do
     ../gentest.sh "$XEMU $options -e $flora_options" $prog "$flora_command"
 done
 
-# precautionary measure: rm *.[PO] only is we are certain 
+../gentest.sh "$XEMU $options -e $flora_options" compileWives.P "$flora_command"
+
+# precautionary measure: rm *.[PO] only if we are certain 
 # that this is flora_tests directory
 #dir=`pwd`
 #dir=`basename $dir`
