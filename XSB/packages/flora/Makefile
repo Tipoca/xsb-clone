@@ -1,5 +1,5 @@
 ## File:      packages/flora/Makefile
-## Author(s): kifer (adapted from lib/Makefile)
+## Author(s): kifer
 ## Contact:   xsb-contact@cs.sunysb.edu
 ## 
 ## Copyright (C) The Research Foundation of SUNY, 1998
@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.4 1999-05-27 16:04:21 kifer Exp $
+## $Id: Makefile,v 1.5 1999-06-15 20:26:02 kifer Exp $
 ## 
 ##
 
@@ -48,7 +48,7 @@ all: $(ALL)
 	@touch cmd...
 	$(Prolog) < cmd...
 	/bin/rm cmd...
-	cd lib; make
+	cd syslib; make
 
 
 .DONE:
