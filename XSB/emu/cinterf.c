@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.15 1999-06-22 03:20:06 kifer Exp $
+** $Id: cinterf.c,v 1.16 1999-06-27 04:58:31 kifer Exp $
 ** 
 */
 
@@ -403,6 +403,10 @@ DllExport bool call_conv is_charlist(prolog_term term, int *size)
   list = term;
   *size = 0;
   
+  /* apparently, is_nil can be true and is_list false?? */
+  if(is_nil(list))
+    return TRUE;
+
   if (!is_list(list)) 
     return FALSE;
 
