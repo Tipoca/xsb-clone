@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.5 2002-10-04 20:42:02 lfcastro Exp $
+** $Id: std_cases_xsb_i.h,v 1.6 2002-10-07 15:20:45 dwarren Exp $
 ** 
 */
 
@@ -43,18 +43,19 @@
   case REAL:		/* r1: ?term */
     return isfloat(ptoc_tag(1));
     
-  case NUMBER:	/* r1: ?term */
-    return isnumber(ptoc_tag(1));
-    
+  case NUMBER:	/* r1: ?term */ {
+      int tag = ptoc_tag(1);
+      return (isnumber(tag) || isboxedinteger(tag));
+  }
   case ATOMIC: {	/* r1: ?term */
     Cell term = ptoc_tag(1);
-    return isatomic(term);
+    return (isatomic(term) || isboxedinteger(term));
   }
 
   case COMPOUND: {	/* r1: ?term */
     Cell term = ptoc_tag(1);
-    return ((isconstr(term) && get_arity(get_str_psc(term))) ||
-	    (islist(term)));
+    return (((isconstr(term) && get_arity(get_str_psc(term))) ||
+	    (islist(term))) && !isboxedinteger(term));
   }
 
   case CALLABLE: {	/* r1: ?term */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.14 2002-10-04 20:42:00 lfcastro Exp $
+** $Id: cell_xsb.h,v 1.15 2002-10-07 15:20:44 dwarren Exp $
 ** 
 */
 
@@ -174,7 +174,7 @@ extern Float getfloatval(Cell);
 /* BIG_MEM allows Solaris/Sun machines to use 1 gig of memory */
 
 #define enc_int(val)  (((Integer)(val) << 3))
-#define dec_int(val)  ((Integer)(val) >> 3) 
+#define dec_int(val)  ((Integer)(val) >> 3)
 
 #define enc_addr(addr) ((Cell)(addr) << 1)
 #define dec_addr(dcell) (((Cell)(dcell) >> 1) & 0x7ffffffc)
