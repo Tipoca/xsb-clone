@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.8 1999-03-04 06:49:45 cbaoqiu Exp $
+** $Id: slgdelay.h,v 1.9 1999-03-27 09:33:07 workflow Exp $
 ** 
 */
 
@@ -179,7 +179,7 @@ struct pos_neg_de_list {
 #define is_failing_delay_element(SUBG, ANS)				\
     ((ANS == NULL) ? (is_completed(SUBG) && has_answer_code(SUBG) &&	\
 		      subgoal_unconditionally_succeeds(SUBG))		\
-		   : (DelFlag(ANS) == 1))
+		   : (is_deleted(ANS)))
 
 /*
  * mark_conditional_answer(ANS, SUBG, NEW_DL) will add a new delay list,

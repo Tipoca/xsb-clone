@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.11 1999/02/22 16:56:55 workflow Exp $
+** $Id: tr_utils.c,v 1.12 1999/02/23 10:50:43 kostis Exp $
 ** 
 */
 
@@ -569,7 +569,7 @@ void undelete_branch(NODEptr lowest_node_in_branch){
    byte choicepttype; 
    byte typeofinstr;
  
-   if(DelFlag(lowest_node_in_branch) != 0){
+   if(is_deleted(lowest_node_in_branch)){
      choicepttype = 0x3 &  Instr(lowest_node_in_branch);
      typeofinstr = (~0x3) & DelFlag(lowest_node_in_branch);
 

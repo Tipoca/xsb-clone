@@ -18,15 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.10 1999-02-27 21:58:48 cbaoqiu Exp $
+** $Id: tries.h,v 1.11 1999-03-27 09:33:11 workflow Exp $
 ** 
 */
 
 
 /* mark node as deleted */
 #define mark_leaf_node_del(X)  DelFlag(X) = Instr(X)
-#define is_del_ret_node(X)     DelFlag(aln_answer_ptr(X)) == 1 
-
+#define is_deleted(X)     DelFlag(X) != 0 
 #define is_not_deleted(X)      DelFlag(X) == 0
 
 struct HASHhdr {
