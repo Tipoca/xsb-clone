@@ -1,5 +1,5 @@
 /*  -*-c-*-  Make sure this file comes up in the C mode of emacs */ 
-/* File:      std_pred_cases.i
+/* File:      std_cases.i
 ** Author(s): Kostis F. Sagonas
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases.i,v 1.1 1999-04-27 14:39:49 kifer Exp $
+** $Id: std_cases.i,v 1.2 1999-04-27 17:20:53 cbaoqiu Exp $
 ** 
 */
 
