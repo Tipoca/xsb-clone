@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.H,v 1.17 2002/04/10 23:33:22 tswift Exp $
+** $Id: debugger.H,v 1.18 2002/04/13 05:01:59 lfcastro Exp $
 ** 
 */
 
@@ -80,5 +80,6 @@
 
 :- import conset/2, conget/2 from gensym.
 
+:- import (:-)/2 from usermod.
 
 /* --------------------- end of file debugger.H ----------------------- */
