@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.14 1999/04/13 17:24:49 kostis Exp $
+** $Id: tr_utils.c,v 1.15 1999/04/16 04:10:43 kifer Exp $
 ** 
 */
 
@@ -681,7 +681,13 @@ void reclaim_ans_list_nodes(SGFrame sg_frame)
   }
 }
 
-/*----------------------------------------------------------------------*/
+/*
+**   Used in aggregs.P to implement aggregates.
+**   Takes:   breg (the place where choice point is saved) and arity.  
+**   Returns: subgoal skeleton (i.e., ret(X,Y,Z), where X,Y,Z are all the 
+**    	      	                distinct variables in the subgoal);
+**   	      Pointer to the subgoal.
+*/
 
 void breg_retskel(void)
 {
