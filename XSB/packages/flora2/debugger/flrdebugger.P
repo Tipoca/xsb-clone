@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdebugger.P,v 1.13 2001-08-29 08:32:59 kifer Exp $
+** $Id: flrdebugger.P,v 1.14 2002-02-12 06:29:57 kifer Exp $
 ** 
 */
 
@@ -220,6 +220,10 @@ flora_write_goal(catch(Call,Catcher,Handler)) :-
 flora_write_goal(FL_IF(IfCall)) :-
 	!,
 	flora_print_if_statement(IfCall).
+
+flora_write_goal(FL_UNLESS(FL_DO(Cond,Action))) :-
+	!,
+	flora_print_unless(Cond,Action).
 
 flora_write_goal(FL_WHILE(FL_DO(Cond,Action))) :-
 	!,
@@ -435,6 +439,16 @@ write_if_body(Then) :-
 	print_item(') THEN ('),
 	flora_write_goal(Then),
 	print_item(')').
+
+%%%%%%%%%%%%%%%%%%%%%% UNLESS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+flora_print_unless(Cond,Action) :-
+	print_item('UNLESS ('),
+	flora_write_goal(Cond),
+	print_items((') ', 'DO', ' (')),
+	flora_write_goal(Action),
+	print_item(')').
+
 
 %%%%%%%%%%%%%%%%%%%%%% WHILE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
