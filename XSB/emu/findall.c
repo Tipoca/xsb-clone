@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.10 1999-10-26 06:47:00 kifer Exp $
+** $Id: findall.c,v 1.11 1999-11-03 04:31:22 cbaoqiu Exp $
 ** 
 */
 
@@ -491,6 +491,12 @@ recur:
                         term = *++pfirstel ; deref(term) ;
                         goto recur;
                 }
+		case ATTV:
+		{
+			size += 2;
+			term = cell(clref_val(term) + 1);
+			goto recur;
+		}	
                 default:
                         sprintf(message,
                         "Term type (tag = %ld) not handled by term_size.",
@@ -552,6 +558,28 @@ copy_again : /* for tail recursion optimisation */
                 from = *(++pfirstel) ; deref(from) ; to++ ;
                 goto copy_again ;
              }
+	case ATTV: {
+	  CPtr var;
+
+	  var = clref_val(from); /* the VAR part of the attv  */
+	  from = cell(var + 1);	 /* from -> the ATTR part of the attv */
+	  if (var < hreg) {	 /* has not been copied before */
+	    *to = makeattv(*h);
+	    to = (*h);
+	    (*h) += 2;		 /* skip two cells */
+	    /*
+	     * Trail and bind the VAR part of the attv to the new attv
+	     * just created in the `to area', so that attributed variables
+	     * are shared in the `to area'.
+	     */
+	    findall_trail(var);
+	    bld_attv(var, to);
+	    cell(to) = (Cell) to++;
+	    goto copy_again;
+	  }
+	  else			 /* is a new attv in the `to area' */
+	    bld_attv(to, var);
+	} /* case ATTV */
    }
 }
 
