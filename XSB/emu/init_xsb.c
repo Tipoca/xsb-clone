@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.8 2000-01-07 08:51:35 kifer Exp $
+** $Id: init_xsb.c,v 1.9 2000-02-04 03:50:04 kifer Exp $
 ** 
 */
 
@@ -219,14 +219,12 @@ static void init_open_files(void)
   stdfdbk = fdopen(fdbk_fd, "w");
   open_files[6] = stdfdbk;
 
-#ifdef WIN_NT
   /* NT doesn't seem to think that dup should preserve the buffering mode of
-     the source file. Here we make all new descriptors unbuffered -- dunno if
-     this is good or bad. Line-buffering _IOLBF is the most that can be
-     allowed. Otherwise one won't see anything on the screen. -mk */
+     the original file. So we make all new descriptors unbuffered -- dunno if
+     this is good or bad. Line-buffering _IOLBF is the coarsest that can be
+     allowed. Without the buffering NT users won't see anything on the
+     screen. -mk */
   setvbuf(stdmsg, NULL, _IONBF, 0);
-#endif
-  /* for these, unbuffered I/O might be a good idea -- NT or not */
   setvbuf(stdwarn, NULL, _IONBF, 0);
   setvbuf(stddbg, NULL, _IONBF, 0);
   setvbuf(stdfdbk, NULL, _IONBF, 0);
