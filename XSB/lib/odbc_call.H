@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.4 1999-11-20 06:51:50 kifer Exp $
+** $Id: odbc_call.H,v 1.5 2000-11-13 21:39:24 dwarren Exp $
 ** 
 */
 
 
 % import some necessary predicates from library.
 
-:- import str_cat/3 from string.
-:- import odbc_exec_query/5 from machine.
-:- import conset/2, conget/2 from gensym.
+:- import str_cat/3, concat_atom/2 from string.
+:- import call0/1, odbc_exec_query/5 from machine.
+:- import conset/2, conget/2, coninc/1 from gensym.
 :- import length/2, append/3, member/2 from basics.
