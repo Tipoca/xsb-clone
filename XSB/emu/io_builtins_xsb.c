@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.18 2000-06-17 23:28:52 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.19 2000-06-29 06:23:46 kifer Exp $
 ** 
 */
 
@@ -272,6 +272,7 @@ xsbBool fmt_write(void)
 
     if (current_fmt_spec->type == 'S') {
       /* Any type: print as a string */
+      XSB_StrSet(&StrArgBuf,"");
       print_pterm(Arg, TRUE, &StrArgBuf);
       PRINT_ARG(StrArgBuf.string);
     } else if (is_string(Arg)) {
@@ -419,6 +420,7 @@ xsbBool fmt_write_string(void)
 
     if (current_fmt_spec->type == 'S') {
       /* Any type: print as a string */
+      XSB_StrSet(&StrArgBuf,"");
       print_pterm(Arg, TRUE, &StrArgBuf);
       SPRINT_ARG(StrArgBuf.string);
     } else if (is_string(Arg)) {
