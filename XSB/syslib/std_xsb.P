@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.40 2000/08/05 07:59:24 cbaoqiu Exp $
+** $Id: std_xsb.P,v 1.41 2000/09/08 21:09:41 dwarren Exp $
 ** 
 */
 
@@ -110,6 +110,7 @@ standard_symbol(garbage_collection, 1, curr_sym).
 standard_symbol(get, 1, standard).
 standard_symbol(get0, 1, standard).
 standard_symbol(get_call, 3, tables).
+standard_symbol(get_producer_call, 3, tables).
 standard_symbol(get_calls, 3, tables).
 standard_symbol(get_calls_for_table, 2, tables).
 standard_symbol(get_residual, 2, tables).

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.28 2000-07-31 20:28:00 ejohnson Exp $
+** $Id: tries.h,v 1.29 2000-12-04 17:10:45 ejohnson Exp $
 ** 
 */
 
@@ -322,7 +322,8 @@ typedef enum Trie_Path_Type {
   NO_PATH, VARIANT_PATH, SUBSUMPTIVE_PATH
 } TriePathType;
 
-extern void *subsumptive_trie_lookup(void *root, int, CPtr, TriePathType *);
+extern void *subsumptive_trie_lookup(void *root, int, CPtr,
+				     TriePathType *, Cell[]);
 extern void *variant_trie_lookup(void *root, int, CPtr, Cell[]);
 
 /*---------------------------------------------------------------------*/

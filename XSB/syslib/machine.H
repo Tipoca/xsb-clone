@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.37 2000/09/28 21:31:06 ejohnson Exp $
+** $Id: machine.H,v 1.38 2000/11/22 20:06:13 ejohnson Exp $
 ** 
 */
 
@@ -96,16 +96,12 @@
  	psc_env/2, 
 	psc_spy/2, 
 	psc_tabled/2, 
-	is_incomplete/2,
 	get_osp_breg/2,
 	cut_if_leader/3,
-	get_ptcp/1,
-	get_producer_subgoal_frame/3,
 	dereference_the_bucket/2,
 	pair_psc/2, 
 	pair_next/2, 
 	next_bucket/2,
-	slg_not/1,
 	is_xwammode/1, 
 	close_open_tables/0, 
 	abolish_table_info/0,

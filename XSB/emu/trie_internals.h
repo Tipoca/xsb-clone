@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.15 2000-07-31 20:27:58 ejohnson Exp $
+** $Id: trie_internals.h,v 1.16 2000-12-04 17:10:45 ejohnson Exp $
 ** 
 */
 
@@ -846,7 +846,7 @@ extern Structure_Manager smALN;
    void *p ;					\
 						\
    SM_AllocateStruct(smALN,p);			\
-   pALN = (ALNptr)p ;					\
+   pALN = (ALNptr)p;				\
    ALN_Answer(pALN) = (BTNptr)pTN;		\
    ALN_Next(pALN) = (ALNptr)pNext;		\
  }

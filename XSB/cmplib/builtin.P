@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.P,v 1.37 2000-11-22 20:06:12 ejohnson Exp $
+** $Id: builtin.P,v 1.38 2000-12-04 17:10:42 ejohnson Exp $
 ** 
 */
 
@@ -139,14 +139,13 @@ inline_builtin(psc_tabled, 2, PSC_TABLED).
 % Should not be inlined -- Kostis !!
 % inline_builtin(is_incomplete, 2, IS_INCOMPLETE).
 inline_builtin(get_ptcp, 1, GET_PTCP).
-inline_builtin(get_producer_subgoal_frame, 3, GET_PRODUCER_SUBGOAL_FRAME).
+inline_builtin(get_producer_call, 3, GET_PRODUCER_CALL).
+inline_builtin(slg_not, 3, SLG_NOT).
 
 inline_builtin(dereference_the_bucket, 2, DEREFERENCE_THE_BUCKET).
 inline_builtin(pair_psc, 2, PAIR_PSC).
 inline_builtin(pair_next, 2, PAIR_NEXT).
 inline_builtin(next_bucket, 2, NEXT_BUCKET).
-
-inline_builtin(slg_not, 1, SLG_NOT).
 
 inline_builtin(is_xwammode, 1, IS_XWAMMODE).
 inline_builtin(close_open_tables, 0, CLOSE_OPEN_TABLES).
