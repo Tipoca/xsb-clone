@@ -1,5 +1,5 @@
 /* File:      sw_envs.h
-** Author(s): Kostis Sagonas
+** Author(s): Terry Swift, Rui Marques, Kostis Sagonas
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1998
@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sw_envs.h,v 1.2 1999-01-18 18:38:48 kostis Exp $
+** $Id: sw_envs.h,v 1.3 1999-04-29 09:56:01 kostis Exp $
 ** 
 */
 
