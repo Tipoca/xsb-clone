@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.16 2003-03-19 18:16:32 lfcastro Exp $
+** $Id: auxlry.c,v 1.17 2003-03-20 18:40:08 lfcastro Exp $
 ** 
 */
 
@@ -84,8 +84,8 @@ double cpu_time(void)
 
     lkernel = ((ULONGLONG) kernel.dwHighDateTime << 32) + 
       kernel.dwLowDateTime;
-    luser = ((ULONGLONG) kernel.dwHighDateTime << 32) + 
-      kernel.dwLowDateTime;
+    luser = ((ULONGLONG) user.dwHighDateTime << 32) + 
+      user.dwLowDateTime;
 
     stime = lkernel / 1.0e7;
     utime = luser / 1.0e7;
