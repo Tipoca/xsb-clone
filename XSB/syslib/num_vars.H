@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: num_vars.H,v 1.1 1998/11/15 00:47:46 kifer Exp $
+** $Id: num_vars.H,v 1.2 1999/12/07 21:13:40 warren Exp $
 ** 
 */
 
 
 :- export numbervars/1, numbervars/3.
-:- export unnumbervars/2.
+:- export unnumbervars/2, unnumbervars/3.
 
 :- import term_psc/2, term_type/2, psc_arity/2, term_arg/3, term_new/2
         from machine.
