@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prolog2hilog.c,v 1.3 2001-06-10 22:46:30 kifer Exp $
+** $Id: prolog2hilog.c,v 1.4 2001-06-11 07:07:49 kifer Exp $
 ** 
 */
 
@@ -165,9 +165,12 @@ static prolog_term hilog2prolog(prolog_term hterm, char *apply)
 
   pfunctor = p2p_arg(hterm,1);
   if (!is_string(pfunctor))
-    xsb_abort("PLG2HLG: HiLog term `%s' not convertable to Prolog.",
+    xsb_abort("PLG2HLG: HiLog term `%s' not convertible to Prolog.",
 	      pterm2string(hterm));
-  c2p_functor(string_val(pfunctor), arity-1, pterm);
+  if (arity > 1)
+    c2p_functor(string_val(pfunctor), arity-1, pterm);
+  else
+    return pfunctor;
 
 #ifdef P2HDEBUG_VERBOSE
   xsb_dbgmsg("h2p start: Pterm=%s", pterm2string(pterm));
