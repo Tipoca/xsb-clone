@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.76 2003/12/08 22:33:44 tswift Exp $
+** $Id: standard.P,v 1.77 2004/01/20 17:19:23 dwarren Exp $
 ** 
 */
 
@@ -1083,6 +1083,11 @@ abort :- throw('_$abort_ball').
 %  abort/1
 abort(Msg) :- throw('_$abort_ball'(Msg)).
 
+error_write(X):- 
+	message(X,STDERR).
+error_writeln(X):- 
+	messageln(X,STDERR).
+
 %  warning/1
 warning(Message) :- 
 	message('++Warning[XSB]: [Runtime/P] ', STDWARN),
@@ -1122,7 +1127,7 @@ messageln(Message, File) :-
 	file_nl(File).
 
 
-/* === expose a goal for tracing ====================================== */
+/* === expose a goal for tracing ================================= */
  
 call_expose(Goal) :-
 	stat_flag(HIDE_STATE,N),
