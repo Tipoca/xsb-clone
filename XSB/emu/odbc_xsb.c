@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.37 2004-07-21 17:05:10 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.38 2004-08-04 13:24:15 dwarren Exp $
 **
 */
 
@@ -118,7 +118,7 @@ SWORD ODBCToXSBType(SWORD odbcType)
   case SQL_BINARY:
   case SQL_VARBINARY:
   case SQL_LONGVARBINARY:
-    return SQL_BINARY;
+    return SQL_C_BINARY;
   case SQL_DATE:
   case SQL_TIME:
   case SQL_TIMESTAMP:
@@ -1309,8 +1309,8 @@ void ODBCDescribeSelect()
       if (cur->ColTypes[j] == -9) cur->ColTypes[j] = SQL_VARCHAR;
       colnamelen = (colnamelen > 49) ? 49 : colnamelen;
       colname[colnamelen] = '\0';
-      if (!(cur->ColLen[j] =
-	    DisplayColSize(cur->ColTypes[j],collen,colname))) {
+      cur->ColLen[j] = DisplayColSize(cur->ColTypes[j],collen,colname);
+      if (!(cur->ColLen[j])) {
 	/* let SetCursorClose function correctly free all the memory allocated*/
 	/* for Data storage: cur->Data[j]'s*/
 	cur->NumCols = j; /* set so close frees memory allocated thus far*/
