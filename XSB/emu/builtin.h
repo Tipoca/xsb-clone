@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.18 1999-08-28 07:54:17 kostis Exp $
+** $Id: builtin.h,v 1.19 1999-08-28 09:49:06 kostis Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@
 #define PSC_PROP	 4
 #define PSC_SET_TYPE	 5
 #define PSC_SET_PROP	 6
+#define PSC_SET_SPY      7
 
 #define TERM_PSC	11
 #define TERM_TYPE	12
