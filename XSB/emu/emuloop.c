@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.90 2002-10-28 15:29:46 lfcastro Exp $
+** $Id: emuloop.c,v 1.91 2002-10-29 21:19:06 lfcastro Exp $
 ** 
 */
 
@@ -344,26 +344,8 @@ static int emuloop(byte *startaddr)
         instr_addr[INum] = && Label
 #include "xsb_inst_list.h"
 
-#else
-
-contcase:     /* the main loop */
-
 #endif
 
-#ifdef DEBUG_VM
-  if (flags[PIL_TRACE]) debug_inst(lpcreg, ereg);
-  xctr++;
-#endif
-#ifdef PROFILE
-  if (flags[PROFFLAG]) {
-    inst_table[(int) *(lpcreg)][sizeof(Cell)+1]
-      = inst_table[(int) *(lpcreg)][sizeof(Cell)+1] + 1;
-    if (flags[PROFFLAG] > 1 && (int) *lpcreg == builtin) 
-      builtin_table[(int) *(lpcreg+3)][1] = 
-	builtin_table[(int) *(lpcreg+3)][1] + 1;
-  }
-#endif
-  
   if ((lpcreg = (byte *) setjmp(xsb_abort_fallback_environment))) {
     /*
     * Short circuit untrailing to avoid possible seg faults in
@@ -379,6 +361,22 @@ contcase:     /* the main loop */
   XSB_Next_Instr();
 #else
 
+contcase:     /* the main loop */
+
+#ifdef DEBUG_VM
+  if (flags[PIL_TRACE]) debug_inst(lpcreg, ereg);
+  xctr++;
+#endif
+#ifdef PROFILE
+  if (flags[PROFFLAG]) {
+    inst_table[(int) *(lpcreg)][sizeof(Cell)+1]
+      = inst_table[(int) *(lpcreg)][sizeof(Cell)+1] + 1;
+    if (flags[PROFFLAG] > 1 && (int) *lpcreg == builtin) 
+      builtin_table[(int) *(lpcreg+3)][1] = 
+	builtin_table[(int) *(lpcreg+3)][1] + 1;
+  }
+#endif
+  
   switch (*lpcreg) {
 #endif
     
