@@ -19,9 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.4 1999-08-23 04:10:51 kifer Exp $
+** $Id: flrcompiler.H,v 1.5 1999-08-28 20:08:49 kifer Exp $
 **
 */
+
+:- compiler_options([cpp_on]).
+#define STD_FPREFIX(X)    '_$_$_flora_' ## X
 
 
 :- import
@@ -43,7 +46,8 @@
 
 :- import
 	flora_member/2, flora_word/2, terminate_list/1, 
-	flora_error_nl/1, flora_warning_nl/1, flora_warning_nl/2
+	flora_error_nl/1, STD_FPREFIX('warning_nl'/1),
+	STD_FPREFIX('warning_nl'/2)
    from flrutils.
 
 :- dynamic compiler_options(_).

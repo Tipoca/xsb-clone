@@ -19,9 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.6 1999-08-23 04:10:55 kifer Exp $
+** $Id: flrutils.H,v 1.7 1999-08-28 20:08:53 kifer Exp $
 **
 */
+
+:- compiler_options([cpp_on]).
+#define STD_FPREFIX(X)    '_$_$_flora_' ## X
 
 
 :- import
@@ -67,8 +70,8 @@
 :- export 
 	flora_flcompile/5,
 	flora_read_parse_compile/6,
-	flora_loadlist/1,
-	flora_dynloadlist/1,
+	STD_FPREFIX('loadlist'/1),
+	STD_FPREFIX('dynloadlist'/1),
 	flora_check_filename/1,
 	flora_discard_tokens/1,
 	flcompile/1, flcompile/2, flconsult/1, flconsult/2, dyncompile/1,
@@ -76,7 +79,7 @@
 	maxerr/1, flora_prefix/1, flora_word/2, terminate_list/1,
 	flora_member/2,
 	flora_error_nl/1, flora_error_nl/2,
-	flora_warning_nl/1, flora_warning_nl/2,
+	STD_FPREFIX('warning_nl'/1), STD_FPREFIX('warning_nl'/2),
 	flora_message_nl/1, flora_message_nl/2, flora_message/1,
 	flora_display_msg/1, flora_display_msg/2.
 

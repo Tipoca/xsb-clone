@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 1999-08-25 13:51:57 kifer Exp $
+## $Id: Makefile,v 1.6 1999-08-28 20:09:03 kifer Exp $
 ## 
 ##
 
@@ -48,6 +48,7 @@ Prolog = $(XSB) -s -m 2000 -c 2000 -e 'set_dcg_style(standard),segfault_handler(
 SVFILE = '/tmp/flora_syslib_warn'
 OWRITE = 1
 STDWARN = 3
+STDERR = 2
 HDRMSG = "While compiling XSB/packages/flora/syslib:"
 
 
@@ -77,14 +78,14 @@ all: init $(ALL) finish
 
 init:
 	/bin/rm -f $(SVFILE)
-	@echo 'import file_reopen/4, fmt_write/3, file_flush/2 from file_io.' >> cmd...
 	@echo "file_reopen($(SVFILE),$(OWRITE),$(STDWARN),_)." >> cmd...
-	@echo 'fmt_write($(STDWARN),"-------------- Warnings --------------------\n",_).' >> cmd...
+	@echo "file_clone($(STDWARN), $(STDERR),_)." >> cmd...
+	@echo 'fmt_write($(STDWARN),"-------------- Warnings/Errors --------------------\n",_).' >> cmd...
 	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
-	@echo 'file_flush($(STDWARN),_).' >> cmd...
+	@echo "file_flush($(STDWARN), _)." >> cmd...
 
 finish:
-	@echo 'fmt_write($(STDWARN),"%s\n",arg("--------------------------------------------")).' >> cmd...
+	@echo 'fmt_write($(STDWARN),"---------------------------------------------------\n",_).' >> cmd...
 
 
 
