@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.166 2003-10-17 21:23:20 dwarren Exp $
+** $Id: builtin.c,v 1.167 2003-10-28 13:51:06 dwarren Exp $
 ** 
 */
 
@@ -1070,15 +1070,22 @@ int builtin_call(byte number)
   case PSC_PROP: {	/* R1: +PSC; R2: -term */
 			/* prop: as a buffer pointer */
     Psc psc = (Psc)ptoc_addr(1);
-    if (get_type(psc) == T_PRED || get_type(psc) == T_DYNA)
-      xsb_abort("[psc_prop/2] Cannot get property of predicate.\n");
+    if (get_type(psc) == T_PRED || get_type(psc) == T_DYNA) {
+      char str[100];
+      sprintf(str,"[psc_prop/2] Cannot get property of predicate: %s/%d\n",
+	      get_name(psc),get_arity(psc));
+      xsb_warn(str);
+      return FALSE;
+    }
     ctop_int(2, (Integer)get_data(psc));
     break;
   }
   case PSC_SET_PROP: {	       /* R1: +PSC; R2: +int */
     Psc psc = (Psc)ptoc_addr(1);
-    if (get_type(psc) == T_PRED)
-      xsb_abort("[psc_set_prop/2] Cannot set property of predicate.\n");
+    if (get_type(psc) == T_PRED) {
+      xsb_warn("[psc_set_prop/2] Cannot set property of predicate.\n");
+      return FALSE;
+    }
     set_data(psc, (Psc)ptoc_int(2));
     break;
   }
