@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.11 1999/03/30 16:25:37 kifer Exp $
+** $Id: machine.H,v 1.12 1999/04/01 05:03:12 kifer Exp $
 ** 
 */
 
@@ -126,6 +126,7 @@
 	get_emu_dependent_const/2,
 	oracle_query/7,
 	odbc_exec_query/5,
+	private_builtin/11,
 	trimcore/0,
 	print_ls/0, print_tr/0, print_heap/2, print_cp/0, print_regs/0,
 	print_all_stacks/0, expand_heap/0, mark_heap/1, gc_heap/0,

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.c,v 1.12 1999-04-01 05:03:09 kifer Exp $
+** $Id: io_builtins.c,v 1.13 1999-04-02 03:48:03 kifer Exp $
 ** 
 */
 
@@ -52,6 +52,8 @@
 #include "xmacro.h"
 #include "io_builtins.h"
 #include "configs/special.h"
+
+extern int      fileno(FILE *);	        /* this is defined in POSIX */
 
 static FILE *fptr;			/* working variable */
     

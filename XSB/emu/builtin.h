@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.4 1999-04-01 05:03:09 kifer Exp $
+** $Id: builtin.h,v 1.5 1999-04-02 03:48:03 kifer Exp $
 ** 
 */
 
@@ -168,6 +168,12 @@ extern void init_builtin_table(void);
 #define BOTTOM_UP_UNIFY         163
 #define TRIE_DISPOSE_NR         165
 #define TRIE_UNDISPOSE          166
+
+/* This is the builtin where people should put their private, experimental
+   builtin code. SEE THE EXAMPLE IN private_builtin.c to UNDERSTAND HOW TO DO
+   IT. Note: even though this is a single builtin, YOU CAN SIMULATE ANY NUMBER
+   OF BUILTINS WITH IT.  */
+#define PRIVATE_BUILTIN	        180
 
 #define VAR			190
 #define NONVAR			191
