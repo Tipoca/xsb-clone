@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.6 2001-02-20 18:45:23 gzyang Exp $
+** $Id: flrshell.P,v 1.7 2001-02-20 19:05:02 gzyang Exp $
 **
 */
 
@@ -103,7 +103,7 @@ help :-
 	flora_stdmsg_line('o help'),
 	flora_stdmsg_line('    show this info'),
 	flora_stdmsg_line('o compile(FILE[.P])'),
-	flora_stdmsg_line('    compile FILE.P'),
+	flora_stdmsg_line('    compile FILE.P; create FILE.O'),
 	flora_stdmsg_line('o flcompile(FILE[.flr])'),
 	flora_stdmsg_line('    compile FILE.flr for the default module `main'''),
 	flora_stdmsg_line('o flcompile(FILE[.flr],Module)'),

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrload.P,v 1.2 2001-01-09 01:35:33 gzyang Exp $
+** $Id: flrload.P,v 1.3 2001-02-20 19:05:05 gzyang Exp $
 ** 
 */
 
@@ -82,6 +82,7 @@ flora_load_file(T) :-
 	fail.
 
 flora_load_file(FL_RIGHTTO(FileName,Workspace)) :-
+	!,
 	( atom(FileName) ->
 	    ( atom(Workspace) ->
 		flload(FileName,Workspace)
@@ -108,8 +109,7 @@ flora_load_file(FL_RIGHTTO(FileName,Workspace)) :-
 	  flora_stderr_nl,
 	  !,
 	  fail
-        ),
-	!.
+        ).
 
 flora_load_file(X) :-
 	flora_stderr_nl,
