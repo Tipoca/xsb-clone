@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.161 2003-06-18 16:51:15 lfcastro Exp $
+** $Id: builtin.c,v 1.162 2003-07-01 14:34:14 lfcastro Exp $
 ** 
 */
 
@@ -775,6 +775,8 @@ void init_builtin_table(void)
   set_builtin_table(TRIE_DISPOSE_NR, "trie_dispose_nr");
   set_builtin_table(TRIE_UNDISPOSE, "trie_undispose");
   set_builtin_table(RECLAIM_UNINTERNED_NR, "reclaim_uninterned_nr");
+  set_builtin_table(GLOBALVAR, "globalvar");
+
 
   set_builtin_table(SET_TABLED_EVAL, "set_tabled_eval_method");
   set_builtin_table(PUT_ATTRIBUTES, "put_attributes");
@@ -2129,6 +2131,9 @@ int builtin_call(byte number)
     break;
   case RECLAIM_UNINTERNED_NR:
     reclaim_uninterned_nr(ptoc_int(1));
+    break;
+  case GLOBALVAR:
+    ctop_tag(1, ((CPtr)glstack.low));
     break;
 
   case STORAGE_BUILTIN: {

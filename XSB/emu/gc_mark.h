@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.4 2002-03-12 17:31:21 lfcastro Exp $
+** $Id: gc_mark.h,v 1.5 2003-07-01 14:34:14 lfcastro Exp $
 ** 
 */
 
@@ -733,6 +733,8 @@ int mark_heap(int arity, int *marked_dregs)
   if (delayreg != NULL) {
     marked += mark_root((Cell)delayreg);
   }
+  /* Heap[0] is a global variable */
+  marked += mark_root((Cell)glstack.low);
   
   if (slide)
     { 

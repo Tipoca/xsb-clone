@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.52 2003-06-18 16:51:15 lfcastro Exp $
+** $Id: builtin.h,v 1.53 2003-07-01 14:34:14 lfcastro Exp $
 ** 
 */
 
@@ -176,6 +176,7 @@
 #define TRIE_DISPOSE_NR         165
 #define TRIE_UNDISPOSE          166
 #define RECLAIM_UNINTERNED_NR   167
+#define GLOBALVAR               168
 
 #define SET_TABLED_EVAL		170
 

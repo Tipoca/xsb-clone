@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.31 2003-06-18 16:32:09 lfcastro Exp $
+** $Id: init_xsb.c,v 1.32 2003-07-01 14:34:14 lfcastro Exp $
 ** 
 */
 
@@ -699,6 +699,11 @@ void init_machine(void)
   bld_int(interrupt_reg, 0);
 
   hbreg = hreg = (CPtr)(glstack.low);
+  
+  /* Use first word in the heap as the global variable, exported to
+     Prolog via the 'globalvar/1' builtin */
+  bld_free(hreg);
+  hreg++;
 
   ebreg = ereg = (CPtr)(glstack.high) - 1;
 
