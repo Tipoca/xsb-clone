@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chatsched.i,v 1.4 1999-08-16 07:24:06 kifer Exp $
+** $Id: chatsched.i,v 1.5 1999-10-12 19:54:11 ejohnson Exp $
 ** 
 */
 
@@ -48,6 +48,27 @@ static CPtr schedule_subgoal(SGFrame subg_ptr, CPtr compl_fr)
   if ((has_answers(subg_ptr)) &&
       (chat_ptr = (chat_init_pheader)compl_cons_copy_list(compl_fr))) {
     consumer = (CPtr)(&chat_get_cons_start(chat_ptr));
+    /*--------------------------------------------------------
+    while ( IsNonNULL(chat_ptr) ) {
+      consumer_sf = (SGFrame)nlcp_subgoal_ptr(consumer);
+      answer_set = ALN_Next(nlcp_trie_return(consumer));
+      if ( IsNULL(answer_set) &&
+	   ConsumerCacheNeedsUpdating(consumer_sf,producer_sf) ) {
+        ** restoring the state may not be as straight forward under CHAT **
+	switch_envs(consumer_cpf);
+	answer_set =
+	  table_retrieve_answers(producer_sf,consumer_sf,
+	                         consumer_cpf + NLCPSIZE);
+      }
+      if ( IsNonNULL(answer_set) )
+	break;
+      else {
+	chat_ptr = (chat_init_pheader)nlcp_prevlookup(consumer);
+	if ( IsNonNULL(chat_ptr) )
+	  consumer = (CPtr)(&chat_get_cons_start(chat_ptr));
+      }
+    }
+    ---------------------------------------------------------*/
     /* find the first consumer with unresolved answers, if any */
     while ((chat_ptr != NULL) && (nlcp_trie_return(consumer) != NULL) &&
 	   (aln_next_aln(nlcp_trie_return(consumer)) == NULL)) {
