@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse_utils.h,v 1.2 2000-03-22 07:32:07 kifer Exp $
+** $Id: libwww_parse_utils.h,v 1.3 2000-03-22 07:33:54 kifer Exp $
 ** 
 */
 
 
-/*
 #define LIBWWW_DEBUG_VERBOSE
+/*
 #define LIBWWW_DEBUG
 #define LIBWWW_DEBUG_TERSE
 */
@@ -121,9 +121,10 @@ PRIVATE int add_to_htable(HKEY item, HASH_TABLE *htable);
 PRIVATE void free_htable(HASH_TABLE *htable);
 PRIVATE int is_in_htable(const HKEY item, HASH_TABLE *htable);
 
-
-PRIVATE int general_parse_abort_handler (HTRequest  *request,
-					 HTResponse *response,
-					 void 	    *param,
-					 int 	    status);
-
+PRIVATE void libwww_abort_request(HTRequest *request,
+				  int       status,
+				  char      *description, ...);
+PRIVATE int parse_termination_handler(HTRequest    *request,
+				      HTResponse   *response,
+				      void 	   *param,
+				      int          status);
