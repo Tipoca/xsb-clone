@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.22 1999-05-17 17:20:53 unova Exp $
+** $Id: emuloop.c,v 1.23 1999-05-18 16:09:05 warren Exp $
 ** 
 */
 
@@ -1152,7 +1152,7 @@ contcase:     /* the main loop */
     lpcreg = *(pb *)lpcreg;
     goto contcase;
 
-  case lshiftr:  /* PRR */
+  case logshiftr:  /* PRR */
     pad;
     op1 = opreg;
     op3 = opregaddr;
@@ -1164,7 +1164,7 @@ contcase:     /* the main loop */
     else { bld_int(op3, int_val(op2) >> int_val(op1)); }
     goto contcase; 
 
-  case lshiftl:   /* PRR */
+  case logshiftl:   /* PRR */
     pad;
     op1 = opreg;
     op3 = opregaddr;

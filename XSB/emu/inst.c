@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.c,v 1.9 1999-04-23 19:41:56 cbaoqiu Exp $
+** $Id: inst.c,v 1.10 1999-05-18 16:09:08 warren Exp $
 ** 
 */
 
@@ -192,8 +192,8 @@ static void init_inst_table_3(void)
   set_inst(negate, "negate",           PP, R, X,X);
   set_inst(and, "and",                 P,  R, R,X);
   set_inst(or, "or",                   P,  R, R,X);
-  set_inst(lshiftl, "lshiftl",         P,  R, R,X);
-  set_inst(lshiftr, "lshiftr",         P,  R, R,X);
+  set_inst(logshiftl, "logshiftl",     P,  R, R,X);
+  set_inst(logshiftr, "logshiftr",     P,  R, R,X);
   set_inst(addreg, "addreg",           P,  R, R,X);
   set_inst(subreg, "subreg",           P,  R, R,X);
   set_inst(mulreg, "mulreg",           P,  R, R,X);
