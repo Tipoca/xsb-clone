@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbsocket.i,v 1.5 1999-07-20 18:54:43 kifer Exp $
+** $Id: xsbsocket.i,v 1.6 1999-07-21 21:33:35 kifer Exp $
 ** 
 */
 
@@ -40,6 +40,28 @@
 #endif /* WIN_NT */
 
 #include "xsbsocket.h"
+
+char *get_host_IP(char *host_name_or_IP) {
+  struct hostent *host_struct;
+  struct in_addr *ptr;
+
+  char **listptr;
+
+  /* if host_name_or_IP is an IP addr, then just return; 
+     else use gethostbyname */
+  if (IS_IP_ADDR(host_name_or_IP))
+    return(host_name_or_IP);
+  host_struct = gethostbyname(host_name_or_IP);
+  
+  listptr = host_struct->h_addr_list;
+
+  if ((ptr = (struct in_addr *) *listptr++) != NULL) {
+	  fprintf(stderr," Int. address: %s \n", inet_ntoa(*ptr));
+	  return(inet_ntoa(*ptr));
+  }
+  return NULL;
+}
+
 
 int readmsg(SOCKET sockfd, char *buff, int maxbuff)
 {
@@ -166,7 +188,7 @@ inline static bool xsb_socket_request(void)
     FillWithZeros(socket_addr);
     socket_addr.sin_port = htons(portnum);
     socket_addr.sin_family = AF_INET;
-    socket_addr.sin_addr.s_addr = inet_addr(ptoc_string(5));
+    socket_addr.sin_addr.s_addr = inet_addr(get_host_IP(ptoc_string(5)));
     
 #ifdef WIN_NT
     retcode = connect(sockfd, (PSOCKADDR) &socket_addr, sizeof(socket_addr));

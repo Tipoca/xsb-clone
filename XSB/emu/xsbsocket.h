@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbsocket.h,v 1.4 1999-07-15 20:46:01 warren Exp $
+** $Id: xsbsocket.h,v 1.5 1999-07-21 21:33:34 kifer Exp $
 ** 
 */
 
@@ -41,6 +41,7 @@
 #define IPPROTO_TCP                0  /* defined in Unix, but not Windows */
 #define BAD_SOCKET(sockfd)         sockfd==INVALID_SOCKET
 #define SOCKET_OP_FAILED(sockfd)   sockfd==SOCKET_ERROR
+#define IS_IP_ADDR(string)    	   inet_addr(string) != INADDR_NONE
 #else
 #define SOCKET 	        int
 #define SOCKADDR_IN 	struct sockaddr_in /* in windows, but not Unix */
@@ -49,6 +50,7 @@
 #define WSAGetLastError()      	   1       /* in windows; use 1 in Unix */
 #define BAD_SOCKET(sockfd)         sockfd<0
 #define SOCKET_OP_FAILED(sockfd)   sockfd<0
+#define IS_IP_ADDR(string)    	   inet_addr(string) != (in_addr_t) -1
 #endif
 
 #ifdef WIN_NT
