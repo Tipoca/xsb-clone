@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random.H,v 1.2 2000-04-10 22:59:16 kifer Exp $
+** $Id: random.H,v 1.3 2000-04-20 16:30:39 cbaoqiu Exp $
 ** 
 */
 
@@ -31,3 +31,4 @@
 	  setrand/1.
 
 :- import abort/1, integer/1 from standard.
+:- import keysort/2 from setof.
