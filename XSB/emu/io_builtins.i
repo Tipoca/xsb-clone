@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.i,v 1.5 1999-04-14 03:03:09 kifer Exp $
+** $Id: io_builtins.i,v 1.6 1999-04-15 14:30:30 unova Exp $
 ** 
 */
 
@@ -30,7 +30,9 @@
 
 
 static struct stat stat_buff;
+#ifndef fileno				/* fileno may be a  macro */
 extern int    fileno(FILE *);	        /* this is defined in POSIX */
+#endif
 extern Cell   ptoc_tag(int);
 extern char   *expand_filename(char *filename);
 extern char *p_charlist_to_c_string (prolog_term, char *, char *);
