@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.22 1999/08/28 07:16:52 kostis Exp $
+## $Id: Makefile,v 1.23 1999/09/18 21:14:32 kifer Exp $
 ## 
 ##
 
@@ -51,6 +51,8 @@ OWRITE = 1
 STDWARN = 3
 HDRMSG = "While compiling XSB/syslib:"
 
+OBJFILESAVED = objfiles.saved
+
 
 # suffix rules
 .SUFFIXES: .P .H .O
@@ -62,6 +64,7 @@ all: init $(ALL) finish
 	@cat $(SVFILE)
 
 %.O:   %.P  $(PROLOG_INCLUDES) $(EMU_INCLUDES)
+	@cp -f $*.O $(OBJFILESAVED)
 	echo 'mc($*, $(Option)).' >> cmd...
 # The following is done because of brain damage in some make utilities
 # (notably Sun's), which don't take %.P %.H in the same dependency list
@@ -73,10 +76,12 @@ all: init $(ALL) finish
 .H.P:
 	touch $@
 .P.O:
+	@cp -f $*.O $(OBJFILESAVED)
 	echo 'mc($*, $(Option)).' >> cmd...
 
 init:
-	/bin/rm -f $(SVFILE)
+	rm -f $(SVFILE)
+	@test -d $(OBJFILESAVED) || mkdir $(OBJFILESAVED)
 	@echo 'import file_reopen/4, fmt_write/3, file_flush/2 from file_io.' >> cmd...
 	@echo "file_reopen($(SVFILE),$(OWRITE),$(STDWARN),_)." >> cmd...
 	@echo 'fmt_write($(STDWARN),"-------------- Warnings --------------------\n",_).' >> cmd...
@@ -86,6 +91,8 @@ init:
 finish:
 	@echo 'fmt_write($(STDWARN),"%s\n",arg("--------------------------------------------")).' >> cmd...
 
+restore:
+	mv -f $(OBJFILESAVED)/*.O .
 
 
 .DONE:
