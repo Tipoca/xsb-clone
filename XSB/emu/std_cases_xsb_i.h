@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.4 2001-03-23 03:51:41 kifer Exp $
+** $Id: std_cases_xsb_i.h,v 1.5 2002-10-04 20:42:02 lfcastro Exp $
 ** 
 */
 
@@ -35,8 +35,10 @@
   case ATOM:		/* r1: ?term */
     return isatom(ptoc_tag(1));
     
-  case INTEGER:	/* r1: ?term */
-    return isinteger(ptoc_tag(1));
+  case INTEGER:	/* r1: ?term */ {
+      int tag = ptoc_tag(1);
+      return (isinteger(tag) || isboxedinteger(tag));
+  }
     
   case REAL:		/* r1: ?term */
     return isfloat(ptoc_tag(1));

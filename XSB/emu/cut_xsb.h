@@ -18,10 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.11 2002-03-12 17:31:21 lfcastro Exp $
+** $Id: cut_xsb.h,v 1.12 2002-10-04 20:42:00 lfcastro Exp $
 ** 
 */
 
+#ifndef __CUT_XSB_H__
+#define __CUT_XSB_H__
 
 /*----------------------------------------------------------------------*/
 /* This file contains code for cuts.  It was written in December 1997	*/
@@ -140,3 +142,4 @@
   }
 
 
+#endif /* __CUT_XSB_H__ */

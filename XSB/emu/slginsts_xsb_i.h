@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.24 2002/05/22 15:41:16 lfcastro Exp $
+** $Id: slginsts_xsb_i.h,v 1.25 2002/05/31 15:09:03 lfcastro Exp $
 ** 
 */
 
@@ -138,27 +138,6 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   else 
     continuation = (pb) &check_complete_inst;
 
-/*    if ((pb)top_of_localstk < (pb)top_of_heap + OVERFLOW_MARGIN + OVERFLOW_MARGIN) {   */
-/*      if ((pb)top_of_localstk < (pb)top_of_heap) {			    */
-/*        lpcreg = exception_handler("\nFatal ERROR:  -- "			    */
-/* 				 "Local Stack clobbered Heap --\n");	    */
-/*        {XSB_Next_Instr();}						    */
-/*      }									    */
-/*      else {								    */
-/*        fprintf(stdwarn, "\n++Warning: Heap / Local Stack overflow:   ");    */
-/*        if (flags[STACK_REALLOC]) {					    */
-/* 	 fprintf(stdwarn, "Expanding ...\n");				    */
-/* 	 glstack_realloc(resize_stack(glstack.size,OVERFLOW_MARGIN+OVERFLOW_MARGIN),  */
-/* 			 MAX_ARITY);					    */
-/*        }								    */
-/*        else {								    */
-/* 	 fprintf(stdwarn, "Reallocation turned OFF!\n");		    */
-/* 	 print_statistics(1);						    */
-/* 	 local_global_exception(lpcreg);					    */
-/* 	 {XSB_Next_Instr();}						    */
-/*        }								    */
-/*      }									    */
-/*    } */
   check_glstack_overflow(MAX_ARITY,lpcreg,OVERFLOW_MARGIN, XSB_Next_Instr());
 
   /*

@@ -19,10 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: deref.h,v 1.5 2000-04-29 21:53:52 kifer Exp $
+** $Id: deref.h,v 1.6 2002-10-04 20:42:01 lfcastro Exp $
 ** 
 */
 
+#ifndef __DEREF_H__
+#define __DEREF_H__
 
 /* deref expects argument of type Cell */
 
@@ -85,3 +87,4 @@
 			 if (op==follow(op)) \
   			    break; \
 			 op=follow(op); }
+#endif /* __DEREF_H__ */

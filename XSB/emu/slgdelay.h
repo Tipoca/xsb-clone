@@ -19,10 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.17 2002-05-22 15:41:16 lfcastro Exp $
+** $Id: slgdelay.h,v 1.18 2002-10-04 20:42:01 lfcastro Exp $
 ** 
 */
 
+#ifndef __SLGDELAY_H__
+#define __SLGDELAY_H__
 
 /* special debug includes */
 #include "debugs/debug_delay.h"
@@ -232,3 +234,5 @@ extern void simplify_pos_unsupported(NODEptr);
 extern void release_all_dls(ASI);
 
 /*---------------------- end of file slgdelay.h ------------------------*/
+
+#endif /* __SLGDELAY_H__ */

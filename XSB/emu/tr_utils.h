@@ -18,10 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.26 2001-08-13 04:31:35 kifer Exp $
+** $Id: tr_utils.h,v 1.27 2002-10-04 20:42:02 lfcastro Exp $
 ** 
 */
 
+#ifndef __TR_UTILS_H__
+#define __TR_UTILS_H__
 
 extern VariantSF get_variant_sf(Cell, TIFptr, Cell *);
 extern SubProdSF get_subsumer_sf(Cell, TIFptr, Cell *);
@@ -66,3 +68,5 @@ typedef struct InternGarbageRootFrame{
   IGLptr leaves;
   IGRptr next;
 } InternGarbageRoot;
+
+#endif /* __TR_UTILS_H__ */

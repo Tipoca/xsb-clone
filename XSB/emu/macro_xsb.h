@@ -18,10 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.20 2002-05-22 15:41:14 lfcastro Exp $
+** $Id: macro_xsb.h,v 1.21 2002-10-04 20:42:01 lfcastro Exp $
 ** 
 */
 
+#ifndef __MACRO_XSB_H__
+#define __MACRO_XSB_H__
 
 #include "debug_xsb.h"
 
@@ -617,3 +619,5 @@ void tstCreateTSIs(TSTNptr);
   attv_num = tmp_int >> 16
 
 /*----------------------------------------------------------------------*/
+
+#endif /* __MACRO_XSB_H__ */
