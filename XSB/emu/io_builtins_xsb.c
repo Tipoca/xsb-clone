@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.40 2004-09-02 19:48:51 tswift Exp $
+** $Id: io_builtins_xsb.c,v 1.41 2004-09-03 18:39:05 dwarren Exp $
 ** 
 */
 
@@ -1384,7 +1384,7 @@ int xsb_intern_fileptr(FILE *fptr, char *context,char* name,char *strmode)
   int i;
   char mode = '\0';
 
-  printf("xsb_intern_fileptr %x %s %s %s\n",fptr,context,name,strmode);
+  /*printf("xsb_intern_fileptr %x %s %s %s\n",fptr,context,name,strmode);*/
 
   if (!fptr) return -1;
 
