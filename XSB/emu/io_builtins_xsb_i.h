@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.21 2004-08-29 22:57:04 tswift Exp $
+** $Id: io_builtins_xsb_i.h,v 1.22 2004-08-31 00:19:14 dwarren Exp $
 ** 
 */
 
@@ -615,7 +615,10 @@ inline static xsbBool file_function(void)
       sfptr = strfileptr(stream);
       if (sfptr == NULL)
 	return FALSE;
-      else return TRUE;
+      else {
+	ctop_int(3,READ_MODE);
+	return TRUE;
+      }
     }
     if (stream < -MAXIOSTRS)
       return FALSE;

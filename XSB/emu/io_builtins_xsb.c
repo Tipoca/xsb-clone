@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.38 2004-08-19 22:15:25 tswift Exp $
+** $Id: io_builtins_xsb.c,v 1.39 2004-08-31 00:19:13 dwarren Exp $
 ** 
 */
 
@@ -1441,7 +1441,7 @@ int xsb_intern_file(char *context,char *addr, int *ioport,char *strmode)
   if (stream_found < 0 && first_null < 0) {
   for (i=MIN_USR_OPEN_FILE; 
        i < MAX_OPEN_FILES ;
-       i++) printf("File Ptr %x Name %s\n",open_files[i].file_ptr, open_files[i].file_name);
+       i++) printf("File Ptr %p Name %s\n",open_files[i].file_ptr, open_files[i].file_name);
 
     xsb_warn("[%s] Too many open files", context);
     *ioport = 0;
