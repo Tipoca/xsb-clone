@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.14 1999-03-25 02:47:10 kifer Exp $
+** $Id: emuloop.c,v 1.15 1999-03-29 20:34:30 kifer Exp $
 ** 
 */
 
@@ -168,7 +168,8 @@ int     xctr;
 /* place for a meaningful message when segfault is detected */
 char *xsb_default_segfault_msg = "Memory violation occurred during evaluation";
 char *xsb_segfault_message;
-jmp_buf xsb_fall_back_environment;
+jmp_buf xsb_segfault_fallback_environment;
+jmp_buf xsb_abort_fallback_environment;
 
 /*======================================================================*/
 /* the main emulator loop.						*/
@@ -1072,12 +1073,14 @@ contcase:     /* the main loop */
 
   case fail:    /* PPP */
     /* fallback point for segmentation faults */
-    if (setjmp(xsb_fall_back_environment)) {
+    if (setjmp(xsb_segfault_fallback_environment)) {
       char *tmp_message = xsb_segfault_message;
       xsb_segfault_message = xsb_default_segfault_msg; /* restore default */
       /* Restore the default signal handling */
       signal(SIGSEGV, xsb_default_segfault_handler);
       xsb_abort(tmp_message);
+    }
+    if (setjmp(xsb_abort_fallback_environment)) {
     }
   
     Fail1; 
