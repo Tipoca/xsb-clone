@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.7 2001-03-20 06:25:23 gzyang Exp $
+## $Id: Makefile,v 1.8 2001-03-21 16:24:34 gzyang Exp $
 ## 
 ##
 
@@ -30,6 +30,7 @@ XSBDIR = ../../..
 
 ALLOBJS = flrtrailer.flh \
 	  flreqltrailer.flh \
+          flrscalareql.flh \
           flrdbdyn.flh \
           flrpatch.flh
 
@@ -53,12 +54,16 @@ all: init $(ALLOBJS) finish
 	@cat $(SVFILE)
 
 
-flrtrailer.flh : flrtrailer.fli $(FLORA_TERMS)
+flrtrailer.flh : flrtrailer.fli
 	@echo 'flcompinc(flrtrailer).' >> cmd...
 
 
-flreqltrailer.flh : flreqltrailer.fli $(FLORA_TERMS)
+flreqltrailer.flh : flreqltrailer.fli
 	@echo 'flcompinc(flreqltrailer).' >> cmd...
+
+
+flrscalareql.flh : flrscalareql.fli
+	@echo 'flcompinc(flrscalareql).' >> cmd...
 
 
 flrdbdyn.flh : flrdbdyn.fli

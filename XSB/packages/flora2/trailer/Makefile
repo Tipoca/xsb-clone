@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 2001-03-20 06:27:13 gzyang Exp $
+## $Id: Makefile,v 1.4 2001-03-21 16:24:39 gzyang Exp $
 ## 
 ##
 
@@ -32,8 +32,9 @@ CLOSURE = ../closure
 
 CLOSUREINC = ../closureinc
 
-ALLOBJS = stdtrailer.P \
-	  eqltrailer.P
+ALLOBJS = standard.P \
+	  eqlbasic.P \
+          eqlflogic.P
 
 XSB = $(XSBDIR)/bin/xsb
 
@@ -53,12 +54,25 @@ all: init $(ALLOBJS) finish
 	@cat $(SVFILE)
 
 
-stdtrailer.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flrtrailer.flh $(CLOSURE)/flrpatch.flh $(CLOSUREINC)/flrheader_inc.flh $(CLOSUREINC)/flrdbdyn_inc.flh $(CLOSUREINC)/flrtrailer_inc.flh $(CLOSUREINC)/flrdefinition_inc.flh
-	@echo 'flsetuptrailer(standard).' >> cmd...
+standard.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flrtrailer.flh $(CLOSURE)/flrpatch.flh \
+             $(CLOSUREINC)/flrheader_inc.flh $(CLOSUREINC)/flrdbdyn_inc.flh \
+             $(CLOSUREINC)/flrtrailer_inc.flh $(CLOSUREINC)/flrdefinition_inc.flh
+	@echo 'flsetuptrailer(none).' >> cmd...
 
 
-eqltrailer.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flreqltrailer.flh $(CLOSURE)/flrpatch.flh $(CLOSUREINC)/flrheader_inc.flh $(CLOSUREINC)/flrdbdyn_inc.flh $(CLOSUREINC)/flreqltrailer_inc.flh $(CLOSUREINC)/flrdefinition_inc.flh
-	@echo 'flsetuptrailer(equality).' >> cmd...
+eqlbasic.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flreqltrailer.flh \
+             $(CLOSURE)/flrpatch.flh $(CLOSUREINC)/flrheader_inc.flh \
+             $(CLOSUREINC)/flrdbdyn_inc.flh $(CLOSUREINC)/flreqltrailer_inc.flh \
+             $(CLOSUREINC)/flrdefinition_inc.flh
+	@echo 'flsetuptrailer(basic).' >> cmd...
+
+
+eqlflogic.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flreqltrailer.flh \
+              $(CLOSURE)/flrscalareql.flh $(CLOSURE)/flrpatch.flh \
+              $(CLOSUREINC)/flrheader_inc.flh $(CLOSUREINC)/flrdbdyn_inc.flh \
+              $(CLOSUREINC)/flreqltrailer_inc.flh $(CLOSUREINC)/flrscalareql_inc.flh \
+              $(CLOSUREINC)/flrdefinition_inc.flh
+	@echo 'flsetuptrailer(flogic).' >> cmd...
 
 
 $(CLOSURE)/flrdbdyn.flh : $(CLOSURE)/flrdbdyn.fli
@@ -70,6 +84,10 @@ $(CLOSURE)/flrtrailer.flh : $(CLOSURE)/flrtrailer.fli
 
 
 $(CLOSURE)/flreqltrailer.flh : $(CLOSURE)/flreqltrailer.fli
+	@cd $(CLOSURE); make
+
+
+$(CLOSURE)/flrscalareql.flh : $(CLOSURE)/flrscalareql.fli
 	@cd $(CLOSURE); make
 
 

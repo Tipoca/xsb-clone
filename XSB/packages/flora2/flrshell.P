@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.15 2001-03-20 06:40:24 gzyang Exp $
+** $Id: flrshell.P,v 1.16 2001-03-21 16:24:31 gzyang Exp $
 **
 */
 
@@ -64,6 +64,7 @@ flora_init_shell :-
 	flora_load_library(FLLIBSHELLANS),
 	flora_load_library(FLLIBLOAD),
 	flora_load_library(FLLIBDISPLAY),
+	FL_EQUALITY(NONE),
 	flora_welcome_msg,
 	all,
 	chatter,
@@ -235,3 +236,7 @@ rundemo(File) :-
 	cd(CurrWorkingDir),
 	retractall(library_directory(DemoDir)).
 
+
+/*********************************************************************/
+FL_EQUALITY(X) :- flloadtrailer(X).
+FL_EQUALITY(X,Y) :- flloadtrailer(X,Y).
