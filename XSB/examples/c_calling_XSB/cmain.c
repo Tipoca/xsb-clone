@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cmain.c,v 1.4 1999-10-22 03:51:48 kifer Exp $
+** $Id: cmain.c,v 1.5 2000-01-11 22:31:32 warren Exp $
 ** 
 */
 
@@ -43,6 +43,11 @@
  *    	      <xsb install dir>/config/<your architecture>/bin/
  *
  */
+
+/* on Windows, be sure to set the cinterf.h include file path
+correctly, and also myargv[0].  When compiling this file, be sure to
+include the XSB_DLL or XSB_DLL_C flag as was included when the xsb.dll
+was compiled.  */
 
 #include <stdio.h>
 
