@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_re_match.c,v 1.19 2001-03-17 05:44:01 kifer Exp $
+** $Id: xsb_re_match.c,v 1.20 2002-08-07 16:16:11 lfcastro Exp $
 ** 
 */
 
@@ -230,13 +230,13 @@ int do_bulkmatch__(void)
   /* returned result */
   listTail = output_term;
   while (last_pos < input_len) {
-    c2p_list(listTail); /* make it into a list */
-    listHead = p2p_car(listTail); /* get head of the list */
-
     return_code = xsb_re_match(regexp_ptr, input_string+last_pos, match_flags,
 			       &match_array, &paren_number, "RE_BULKMATCH");
     /* exit on no match */
     if (! return_code) break;
+
+    c2p_list(listTail); /* make it into a list */
+    listHead = p2p_car(listTail); /* get head of the list */
 
     /* bind i-th match to listHead as match(beg,end) */
     c2p_functor("match", 2, listHead);
@@ -580,7 +580,7 @@ void initialize_regexp_tbl()
 {
   int i;
   first_call = FALSE;
-  for (i=0; i<NMATCH; i++) {
+  for (i=0; i<REGEXP_TBL_SIZE; i++) {
     regexp_tbl[i].original = NULL;
     regexp_tbl[i].flags = 0;
   }
