@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.5 1999-06-24 14:13:49 kostis Exp $
+** $Id: auxlry.h,v 1.6 1999-08-05 07:57:25 kifer Exp $
 ** 
 */
 
@@ -81,15 +81,15 @@ typedef enum XSB_Execution_Mode {
 
 extern Exec_Mode xsb_mode;
 
-#define fileptr(fileno)  open_files[fileno]
+#define fileptr(xsb_filedes)  open_files[xsb_filedes]
 
 extern char *xsb_default_segfault_msg;
 extern char *xsb_segfault_message;
 
 /* This would yield a meaningful message in case of segfault */
-#define SET_FILEPTR(stream, fileno) \
-    if (fileno < 0 || fileno >= MAX_OPEN_FILES) \
-	xsb_abort("Invalid file descriptor %d in I/O predicate", fileno);\
-    stream = fileptr(fileno); \
+#define SET_FILEPTR(stream, xsb_filedes) \
+    if (xsb_filedes < 0 || xsb_filedes >= MAX_OPEN_FILES) \
+	xsb_abort("Invalid file descriptor %d in I/O predicate", xsb_filedes);\
+    stream = fileptr(xsb_filedes); \
     if (stream==NULL) \
-	xsb_abort("Invalid file descriptor %d in I/O predicate", fileno);
+	xsb_abort("Invalid file descriptor %d in I/O predicate", xsb_filedes);
