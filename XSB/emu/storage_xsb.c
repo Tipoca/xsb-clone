@@ -2,7 +2,7 @@
 ** Author(s): Michael Kifer
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
-** Copyright (C) The Research Foundation of SUNY, 2001
+** Copyright (C) The Research Foundation of SUNY, 2001,2002
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -18,10 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.c,v 1.3 2002-03-17 10:37:50 kifer Exp $
+** $Id: storage_xsb.c,v 1.4 2002-04-02 06:31:10 kifer Exp $
 ** 
 */
 
+/*
+#define DEBUG_STORAGE
+*/
 
 #include "xsb_config.h"
 #include "xsb_debug.h"
@@ -66,6 +69,9 @@ static inline STORAGE_HANDLE *get_storage_handle(Cell name)
   /* new buckets are filled out with 0's by the calloc in hashtable_xsb.c */
   if (handle_cell->handle==(Cell)0) {
     /* initialize new handle */
+#ifdef DEBUG_STORAGE
+    printf("GET_STORAGE_HANDLE: New trie created for %s\n", string_val(name));
+#endif
     handle_cell->handle= newtrie();
     /* Note: not necessary to initialize snapshot_number&changed: handle_cell
        was calloc()'ed 
@@ -73,6 +79,11 @@ static inline STORAGE_HANDLE *get_storage_handle(Cell name)
        handle_cell->changed=FALSE;
     */
   }
+#ifdef DEBUG_STORAGE
+  else
+    printf("GET_STORAGE_HANDLE: Using existing trie for %s\n",
+	   string_val(name));
+#endif
   return handle_cell;
 }
 
@@ -86,6 +97,10 @@ STORAGE_HANDLE *storage_builtin(int builtin_number, Cell name)
   case MARK_STORAGE_CHANGED:
     return mark_storage_changed(name);
   case DESTROY_STORAGE_HANDLE: {
+#ifdef DEBUG_STORAGE
+    printf("STORAGE_BUILTIN: Destroying storage handle for %s\n",
+	   string_val(name));
+#endif
     destroy_storage_handle(name);
     return NULL;
   }
