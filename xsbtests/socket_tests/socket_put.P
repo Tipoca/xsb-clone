@@ -1,5 +1,5 @@
 
-:- import spawn_process/5, process_control/2 from shell.
+:- import spawn_process/5, process_control/2, process_status/2 from shell.
 :- import slash/1 from machine.
 :- import file_flush/2, file_clone/3, file_reopen/4 from file_io.
 :- import file_put/2, copyIOport/2 from file_io.

@@ -9,7 +9,7 @@
 :- import 
      socket/2, socket_connect/4, socket_set_option/3,
      socket_close/2, socket_get0/3, socket_put/3  from socket.
-:- import file_close/1 from file_io.
+:- import file_open/3, file_close/1 from file_io.
 
 
 %% machine where server is running
@@ -31,7 +31,8 @@ client :-
 	machine(IPAddrOrHostname),
 	xsb_port(XSB_port),
 	tryN(4,
-	     socket_connect(Sockfd0 ,XSB_port, IPAddrOrHostname, Ecode2),
+	     (set_timer(3),
+		 socket_connect(Sockfd0 ,XSB_port, IPAddrOrHostname, Ecode2)),
 	     (writeln(sock_connect1(sockfd0,XSB_port,IPAddrOrHostname,Ecode2)),
 		 writeln('connected to server...')),
 	     (writeln('Cannot connect to server'), socket_close(Sockfd0,_)),
@@ -44,7 +45,7 @@ client :-
 	    socket_close(Sockfd0,_), fail
 	; true),
 	socket_set_option(Sockfd1,linger,SOCK_NOLINGER),
-	set_timer(5),
+	set_timer(3),
 	socket_connect(Sockfd1, XSB_port, IPAddrOrHostname, Ecode3),
 	(Ecode3 < 0
 	-> writeln('Cannot connect to server'),
