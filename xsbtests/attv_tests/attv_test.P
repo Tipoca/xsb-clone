@@ -2,10 +2,10 @@
 ** Author(s): Baoqiu Cui
 ** 
 ** This file contains some basic tests for attributed variables.
-** $Id: attv_test.P,v 1.5 2000-02-17 18:44:57 cbaoqiu Exp $
+** $Id: attv_test.P,v 1.6 2004-11-15 03:06:32 tswift Exp $
 */
 
-:- import put_attributes/2, get_attributes/3 from machine.
+:- import put_attr/3, get_attr/3, install_verify_attribute_handler/4 from machine.
 :- import get_atts/2, put_atts/2 from atts.
 :- import attv_unify/2 from machine.
 
@@ -17,71 +17,74 @@ test :-
 	test_implict_unify,
 	writeln('PASSED attv_test!').
 
-verify_attributes(Var, Value) :-
-	get_attributes(Var, Atts, _),
+:- install_verify_attribute_handler(nounif,AttrVal,Targ,dummy_handler(Targ,AttrVal)).
+
+dummy_handler(Value, Target) :-
+	(var(Target) -> 
+	    get_attr(Target, _, Atts)
+	 ;  Atts = Target),
 	write('Var''s attribute = '), writeln(Atts),
 	write('Value = '), writeln(Value).
 
 test_deref :-
 	Y2 = Y, Y = X,
-	put_attributes(X, v(1)),
-	put_attributes(X, v(2)),
-	get_attributes(X, V1, _M1),
+	put_attr(X, nounif,v(1)),
+	put_attr(X, nounif,v(2)),
+	get_attr(X, nounif, V1),
 	nonvar(V1), V1 = v(2),
-	get_attributes(Y, V3, _M3),
+	get_attr(Y, nounif,V3),
 	nonvar(V3), V3 = v(2),
-	put_attributes(X, []),
-	get_attributes(X, V2, _M2),
+	put_attr(X, nounif, _),
+	get_attr(X, nounif, V2),
 	var(V2),
-	get_attributes(Y, V4, _M4),
+	get_attr(Y, nounif, V4),
 	var(V4),
-	put_attributes(Y2, v(3)),
-	get_attributes(Y2, V5, _M5),
+	put_attr(Y2, nounif, v(3)),
+	get_attr(Y2, nounif, V5),
 	nonvar(V5), V5 = v(3),
 	writeln('== test_deref OK').
 	
 test_update :-
-	put_attributes(X, v(1,2,3)),
-	(put_attributes(X, v(2,3,4)),
-	 put_attributes(X, v(3,4,5)),
-	 get_attributes(X, V, _OM),
+	put_attr(X, _nounif,v(1,2,3)),
+	(put_attr(X, _nounif,v(2,3,4)),
+	 put_attr(X, _nounif,v(3,4,5)),
+	 get_attr(X, _nounif,V),
 	 nonvar(V), V = v(3,4,5),
 	 writeln('== test_update 1 OK')
          ;
-	 get_attributes(X, Vold, _OM1),
+	 get_attr(X, _nounif,Vold ),
 	 nonvar(Vold), Vold = v(1,2,3),
 	 writeln('== test_update 2 OK')
 	),
 	fail.
 test_update.
 
-
 test_unify :-
-	put_attributes(X, v(1)),
+	put_attr(X, nounif,v(1)),
 	Y = X,	% notice the order: op2 = X
 	X = Z,
-	get_attributes(Y, VY, _MY),
+	get_attr(Y, nounif,VY),
 	nonvar(VY), VY = v(1),
-	get_attributes(Z, VZ, _MZ),
+	get_attr(Z, nounif,VZ),
 	nonvar(VZ), VZ = v(1),
 	writeln('== test_unify OK').
 
 test_attv_interrupt :-
-	put_attributes(X, v(1)),
+	put_attr(X, nounif,v(1)),
 	Y = 5,
 	Y = X,	% unify(ATTV, Y) ???
 	writeln('== test_attv_interrupt OK').
 
 test_implict_unify :-
-	put_attributes(X, v(11)),
-	put_attributes(Y, v(22)),
+	put_attr(X, nounif,v(11)),
+	put_attr(Y, nounif,v(22)),
 	handle_interrupts([(X,a), (Y,b)]),
 	X == a, Y == b,
 	writeln('== test_implict_unify OK').
 
 handle_interrupts([]) :- !.
 handle_interrupts([(Var,Value)|Ints]) :-
-	get_attributes(Var, Atts, _),
+	get_attr(Var, nounif, Atts),
 	write('Attribute = '), writeln(Atts),
 	attv_unify(Var, Value),
 	handle_interrupts(Ints).
