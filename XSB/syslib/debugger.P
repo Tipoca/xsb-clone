@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.P,v 1.15 1999/10/26 06:47:48 kifer Exp $
+** $Id: debugger.P,v 1.16 1999/12/21 20:07:00 warren Exp $
 ** 
 */
 
@@ -578,7 +578,7 @@ term_mod(Mod:Term,Psc,Newterm) :-
 %% must already have been loaded if necessary.
 %% I=0: turn trace on; I=1: turn trace off
 basic_call(I,PSC,Call) :-
-	psc_prop(PSC, Code),
+	psc_ep(PSC, Code),
 	psc_type(PSC, Nt),
 	%%stat_flag(HIDE_STATE,V), V1 is V-1,	% calc hide_state-1
 	%%ll_write(call_hs_i(V,I)),ll_nl,

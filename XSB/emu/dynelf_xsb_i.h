@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf_xsb_i.h,v 1.12 2000-02-22 18:42:34 kostis Exp $
+** $Id: dynelf_xsb_i.h,v 1.13 2000-03-01 16:22:33 dwarren Exp $
 ** 
 */
 
@@ -140,7 +140,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
 
   
   /* (3) find address of function and data objects */
-  search_ptr = (Pair)get_ep(cur_mod);
+  search_ptr = (Pair)get_data(cur_mod);
   
   while (search_ptr) {
     name = get_name(search_ptr->psc_ptr);
@@ -149,9 +149,9 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
       if ((funcep = (int *) dlsym(handle, name)) == NULL) {
 	fprintf(stdwarn, "%s\n", dlerror());
 	xsb_warn("LOADER: Cannot find foreign procedure %s", name);
-	set_ep(search_ptr->psc_ptr, (byte *)(dummy));
+	set_forn(search_ptr->psc_ptr, (byte *)(dummy));
       } else { 
-	set_ep(search_ptr->psc_ptr, (byte *)(funcep));
+	set_forn(search_ptr->psc_ptr, (byte *)(funcep));
       }
       
     }

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_delete.c,v 1.1 2000-01-11 17:19:07 ejohnson Exp $
+** $Id: sub_delete.c,v 1.2 2000-03-01 16:22:34 dwarren Exp $
 ** 
 */
 
@@ -118,7 +118,7 @@ static void delete_tst_answer_set(TSTNptr root) {
 
   TSTNptr current, sibling;
   TSTHTptr hash_hdr;
-  int i;
+  unsigned int i;
 
 
   if ( IsNULL(root) )
@@ -156,7 +156,7 @@ void delete_subsumptive_table(BTNptr root) {
 
   BTNptr current, sibling;
   BTHTptr hash_hdr;
-  int i;
+  unsigned int i;
   SGFrame sf;
 
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.24 1999/12/04 03:06:37 kifer Exp $
+** $Id: consult.P,v 1.25 2000/01/19 19:38:01 cbaoqiu Exp $
 ** 
 */
 
@@ -562,8 +562,8 @@ set_retracted(Head,Arity,OPsc,Psc,Prref,Index,Hashsize) :-
 	),
 	psc_tabled(Psc, Tabled),
 	(Tabled =:= 0
-	 ->	psc_prop(Psc, Prref)		/* get the Prref */
-	 ;	psc_prop(Psc, Prrefa),
+	 ->	psc_ep(Psc, Prref)		/* get the Prref */
+	 ;	psc_ep(Psc, Prrefa),
 		buff_word(Prrefa, 24, Prref)	% !! into calld
 	),
 	asserta(load_dyn_retracted(OPsc,Prref,NArity,Index,Hashsize)),

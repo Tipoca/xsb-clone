@@ -19,13 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.P,v 1.32 2000-02-22 14:54:15 tswift Exp $
+** $Id: builtin.P,v 1.33 2000-03-01 16:22:06 dwarren Exp $
 ** 
 */
 
 
 :- compiler_options([xpp_on]).
-#include "builtin.h"
+#include "../emu/builtin.h"
 
 /*======================================================================*/
 /* inline predicates							*/
@@ -68,6 +68,8 @@ inline_builtin(psc_prop, 2, PSC_PROP).
 inline_builtin(psc_set_type, 2, PSC_SET_TYPE).
 inline_builtin(psc_set_prop, 2, PSC_SET_PROP).
 inline_builtin(psc_set_spy, 2, PSC_SET_SPY).
+inline_builtin(psc_ep, 2, PSC_EP).
+inline_builtin(psc_set_ep, 2, PSC_SET_EP).
 
 inline_builtin(term_psc, 2, TERM_PSC).
 inline_builtin(term_type, 2, TERM_TYPE).

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.3 1999-12-22 18:07:04 warren Exp $
+** $Id: psc_xsb.h,v 1.4 2000-03-01 16:22:34 dwarren Exp $
 ** 
 */
 
@@ -35,11 +35,14 @@
 
 struct psc_rec {
   byte env;			/* 0 - visible; 1 - local; 2 - unloaded */
-  byte entry_type;		/* see below */
+  byte entry_type;		/* see psc_defs.h */
   byte arity;
   byte length;
   char *nameptr;
-  byte *ep;      /* entry point, various meaning */
+  struct psc_rec *data;      /* psc of module, if pred; otw data */
+  byte *ep;                     /* entry point (initted to next word) */
+  word load_inst;               /* byte-code load_pred, or call_forn */
+  struct psc_rec *this_psc;     /* BC arg: this psc or foreign entry point */
 };
 
 typedef struct psc_rec *Psc;
@@ -67,6 +70,7 @@ typedef struct psc_pair *Pair;
 #define  get_spy(psc)		((psc)->env & 0xf0)
 #define  get_arity(psc)		((psc)->arity)
 #define  get_ep(psc)		((psc)->ep)
+#define  get_data(psc)		((psc)->data)
 #define  get_name(psc)		((psc)->nameptr)
 
 #define  set_type(psc, type)	(psc)->entry_type = type
@@ -75,7 +79,13 @@ typedef struct psc_pair *Pair;
 #define  set_arity(psc, ari)	((psc)->arity = ari)
 #define  set_length(psc, len)	((psc)->length = len)
 #define  set_ep(psc, val)	((psc)->ep = val)
+#define  set_data(psc, val)     ((psc)->data = val)
 #define  set_name(psc, name)	((psc)->nameptr = name)
+
+#define set_forn(psc, val) {                   \
+    cell_opcode(get_ep(psc)) = call_forn;      \
+    *(((byte **)get_ep(psc))+1) = val;         \
+}
 
 #define  pair_psc(pair)		((pair)->psc_ptr)
 #define  pair_next(pair)	((pair)->next)

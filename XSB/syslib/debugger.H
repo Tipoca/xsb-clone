@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.H,v 1.11 1999/08/28 09:49:12 kostis Exp $
+** $Id: debugger.H,v 1.12 1999/11/20 06:51:58 kifer Exp $
 ** 
 */
 
@@ -45,7 +45,7 @@
 
 :- import break/0, prompt/3 from x_interp.
 :- import term_psc/2, psc_insert/4, stat_flag/2, stat_set_flag/2, 
-	  psc_name/2, psc_type/2, psc_prop/2, psc_spy/2, psc_set_spy/2,
+	  psc_name/2, psc_type/2, psc_ep/2, psc_spy/2, psc_set_spy/2,
 	  psc_arity/2, conname/2, code_call/3, term_arg/3, term_type/2,
 	  term_new/2
      from machine.

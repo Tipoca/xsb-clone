@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.27 2000-02-22 14:54:15 tswift Exp $
+** $Id: builtin.h,v 1.28 2000-03-01 16:22:33 dwarren Exp $
 ** 
 */
 
@@ -35,6 +35,8 @@
 #define PSC_SET_TYPE	 5
 #define PSC_SET_PROP	 6
 #define PSC_SET_SPY      7
+#define PSC_EP   	 8
+#define PSC_SET_EP	 9
 
 #define TERM_PSC	11
 #define TERM_TYPE	12

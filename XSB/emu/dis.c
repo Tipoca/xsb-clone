@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.11 2000-01-07 08:51:24 kifer Exp $
+** $Id: dis.c,v 1.12 2000-03-01 16:22:33 dwarren Exp $
 ** 
 */
 
@@ -87,7 +87,7 @@ static void dis_data(void)
 		}
 	   else if (strcmp(modname,"usermod")==0) 
 		fprintf(filedes, "\t/* Same as module global */\n");
-	   else dis_data_sub((Pair *)&get_ep(psc_ptr));
+	   else dis_data_sub((Pair *)&get_data(psc_ptr));
 	   fprintf(filedes, "\n");
 	   temp_ptr = &((*temp_ptr)->next);
 	}
@@ -123,7 +123,7 @@ static void dis_data_sub(Pair *chain_ptr)
 	  if (get_tip(temp) == NULL) fprintf(filedes, "UNTABLED, "); 
 	  else fprintf(filedes, "TABLED, ");
 	}
-	fprintf(filedes, "%p\n", get_ep(temp));
+	fprintf(filedes, "%p\n", get_ep(temp));  /* dsw ???? */
 	chain_ptr = &((*chain_ptr)->next);
    } /* while */
 }

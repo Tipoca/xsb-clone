@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.6 2000-02-29 18:43:35 tswift Exp $
+** $Id: inst_xsb.h,v 1.7 2000-03-01 16:22:34 dwarren Exp $
 ** 
 */
 
@@ -335,6 +335,8 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 
 /* Procedure instructions */
 
+#define call_forn       0xe5
+#define load_pred       0xe6
 #define allocate_gc     0xe7
 #define call            0xe8
 #define allocate        0xe9

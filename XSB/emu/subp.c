@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.36 2000/01/07 08:51:53 kifer Exp $
+** $Id: subp.c,v 1.37 2000/01/28 18:01:40 unova Exp $
 ** 
 */
 
@@ -219,7 +219,7 @@ static void default_inthandler(int intcode, byte *cur_inst)
 /* builds the current call onto the heap and returns a pointer to it.	*/
 /*======================================================================*/
 
-static Pair build_call(Psc psc)
+Pair build_call(Psc psc)
 {
   register Cell arg;
   register Pair callstr;
