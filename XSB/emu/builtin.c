@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.185 2004-09-02 19:48:50 tswift Exp $
+** $Id: builtin.c,v 1.186 2004-09-03 19:10:31 dwarren Exp $
 ** 
 */
 
@@ -2717,7 +2717,7 @@ prolog_term build_xsb_backtrace() {
   Psc tmp_psc, called_psc;
   byte *tmp_cpreg;
   byte instruction;
-  CPtr tmp_ereg, tmp_breg, forward, backward;
+  CPtr tmp_ereg, tmp_breg, forward, backward, threg;
   prolog_term backtrace;
 
   backtrace = makelist(hreg);
@@ -2725,7 +2725,8 @@ prolog_term build_xsb_backtrace() {
   backward = hreg++;
   if (xsb_profiling_enabled) {
     tmp_psc = psc_from_code_addr(pcreg);
-    follow(hreg++) = makeint(tmp_psc);
+    threg = hreg++;
+    bld_oint(threg,tmp_psc);
     tmp_ereg = ereg;
     tmp_cpreg = cpreg;
     instruction = *(tmp_cpreg-2*sizeof(Cell));
@@ -2735,13 +2736,15 @@ prolog_term build_xsb_backtrace() {
 	called_psc = *((Psc *)tmp_cpreg - 1);
 	if (called_psc != tmp_psc) {
 	  follow(forward) = makelist(hreg);
-	  follow(hreg++) = makeint(called_psc);
+	  threg = hreg++;
+	  bld_oint(threg,called_psc);
 	  forward = hreg++;
 	}
       }
       tmp_psc = psc_from_code_addr(tmp_cpreg);
       follow(forward) = makelist(hreg);
-      follow(hreg++) = makeint(tmp_psc);
+      threg = hreg++;
+      bld_oint(threg,tmp_psc);
       forward = hreg++;
       tmp_cpreg = *((byte **)tmp_ereg-1);
       tmp_ereg = *(CPtr *)tmp_ereg;
@@ -2754,7 +2757,8 @@ prolog_term build_xsb_backtrace() {
 	   && (pb)top_of_localstk > (pb)top_of_heap + 48) {
       tmp_psc = psc_from_code_addr(cp_pcreg(tmp_breg));
       follow(backward) = makelist(hreg);
-      follow(hreg++) = makeint(tmp_psc);
+      threg = hreg++;
+      bld_oint(threg,tmp_psc);
       backward = hreg++;
       tmp_breg = cp_prevbreg(tmp_breg);
     }
@@ -2769,7 +2773,8 @@ prolog_term build_xsb_backtrace() {
       if (instruction == call) {
 	called_psc = *((Psc *)tmp_cpreg - 1);
 	follow(forward) = makelist(hreg);
-	follow(hreg++) = makeint(called_psc);
+	threg = hreg++;
+	bld_oint(threg,called_psc);
 	forward = hreg++;
       }
       tmp_cpreg = *((byte **)tmp_ereg-1);

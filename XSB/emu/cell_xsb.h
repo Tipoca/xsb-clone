@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.15 2002-10-07 15:20:44 dwarren Exp $
+** $Id: cell_xsb.h,v 1.16 2004-09-03 19:10:32 dwarren Exp $
 ** 
 */
 
@@ -295,8 +295,8 @@ extern Float getfloatval(Cell);
       cell(addr) = binttemp;}
 
 #define bld_oint(addr, value)					\
-    if (int_overflow(value)) {					\
-      bld_boxedint(addr, value);				\
-    } else {bld_int(addr,value);}
+    if (int_overflow(((Integer)value))) {					\
+      bld_boxedint(addr, ((Integer)value));				\
+    } else {bld_int(addr,((Integer)value));}
 
 #endif /* __CELL_XSB_H__ */
