@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.49 2003-06-23 16:43:56 dwarren Exp $
+** $Id: parse.P,v 1.50 2003-06-27 21:27:59 kifer Exp $
 ** 
 */
 
@@ -142,7 +142,13 @@ xpp_process_file(FileName, XPP_process, IOportFromProc) :-
 	((integer(FileName) ; var(FileName))
 	-> fmt_write_string(FullXPP_command,'%s',arg(XPP_command)),
 	    InputStream = FileName
-	; fmt_write_string(FullXPP_command,'%s %s',args(XPP_command,FileName)),
+	;
+	    (   xsb_configuration(host_os,windows)
+	    -> 
+		fmt_write_string(FullXPP_command,'%s ''"%s"''',args(XPP_command,FileName))
+	    ;
+		fmt_write_string(FullXPP_command,'%s "%s"',args(XPP_command,FileName))
+	    ),
 	    InputStream = block
 	),
 #ifdef DEBUG_GPP
