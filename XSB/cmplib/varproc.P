@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varproc.P,v 1.4 1999-11-20 06:51:43 kifer Exp $
+** $Id: varproc.P,v 1.5 2004-01-26 17:53:03 dwarren Exp $
 ** 
 */
 
@@ -298,9 +298,9 @@ search_occ([_|Rest], Vid) :- search_occ(Rest, Vid).
 get_OccList([], VOList, VOList, 0).
 get_OccList([One|Rest], VOListIn, VOListOut, Arity) :-
 	( One = goal(_,_,Arity,VOList) ->
-		append(VOListIn, VOList, VOListOut)
+		append(VOList, VOListIn, VOListOut)
 	; One = inlinegoal(_,_,_,VOList) ->
-		append(VOListIn, VOList, VOListMed),
+		append(VOList, VOListIn, VOListMed),
 		get_OccList(Rest, VOListMed, VOListOut, Arity)
 	; One = ifthenelse(Test,ThenGoals,ElseGoals) -> 
 		get_OccList(Test, VOListIn, TestVOList, TestArity),
