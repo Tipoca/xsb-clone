@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.80 2001-05-24 17:54:51 lfcastro Exp $
+** $Id: emuloop.c,v 1.81 2001-07-02 16:20:02 lfcastro Exp $
 ** 
 */
 
@@ -359,7 +359,7 @@ static int emuloop(byte *startaddr)
 #ifdef JUMPTABLE_EMULOOP
 
 #define XSB_INST(INum,Instr,Label,d1,d2,d3,d4) \
-        instr_addr[INum] = &&##Label
+        instr_addr[INum] = && Label
 #include "xsb_inst_list.h"
 
 #else
