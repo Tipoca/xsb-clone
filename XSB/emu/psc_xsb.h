@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.1 1999-10-26 06:47:22 kifer Exp $
+** $Id: psc_xsb.h,v 1.2 1999-12-14 21:11:14 ejohnson Exp $
 ** 
 */
 
@@ -107,6 +107,8 @@ extern Psc ret_psc[];
 extern Psc get_ret_psc(int);
 
 extern Psc get_intern_psc();
+
+extern struct Table_Info_Frame *get_tip(Psc);
 
 /*======================================================================*/
 /*  HiLog related macros.						*/
