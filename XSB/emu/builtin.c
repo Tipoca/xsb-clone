@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.20 1999-02-03 11:14:10 workflow Exp $
+** $Id: builtin.c,v 1.21 1999-02-03 16:07:06 workflow Exp $
 ** 
 */
 
@@ -1514,22 +1514,8 @@ int builtin_call(byte number)
   case TRIE_DISPOSE:
     trie_dispose();
     break;
-  case TRIE_DISPOSE_NR:{
-    NODEptr x = (NODEptr)ptoc_int(1); /* was 2 !*/
-    safe_delete_branch(x);
-  }
-    break;
-  case TRIE_UNDISPOSE:
-    undelete_branch((NODEptr) ptoc_int(2));
-    break;
   case BOTTOM_UP_UNIFY:
-    {
-      NODEptr x = (NODEptr) ptoc_int(3);
-      if(DelFlag(x) !=  0)
-	return FALSE;
-      else
-	bottom_up_unify();
-    }
+    bottom_up_unify();
     break;
   case DELETE_TRIE:
     if (strcmp(ptoc_string(2),"intern") == 0){
