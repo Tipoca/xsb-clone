@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.23 2004-03-06 21:55:14 tswift Exp $
+** $Id: parse.H,v 1.24 2004-03-13 21:00:21 dwarren Exp $
 ** 
 */
 
@@ -42,7 +42,7 @@
 :- import append/3, memberchk/2, log_ith/3 from basics.
 :- import check_file_compiler_options/1, 
              error/1, message/1, option/1, setoptions1/1, warning/1 from auxlry.
-:- import sym_insert/5, sym_propin/2, sym_complete/1,
+:- import sym_insert/5, sym_propin/2, sym_complete/1, sym_prop/2,
 	  add_new_clause/2, clause_listify/2
      from symtab.
 :- import functor/3, seen/0, file_exists/1, '=..'/2, atom/1, integer/1, 
