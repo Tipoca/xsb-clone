@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.5 2000-04-29 21:53:51 kifer Exp $
+** $Id: cut_xsb.h,v 1.6 2000-05-16 19:07:32 lfcastro Exp $
 ** 
 */
 
@@ -54,6 +54,14 @@
 /*									*/
 /*----------------------------------------------------------------------*/
 
+#ifdef CHAT
+#define CHAT_CSF_CLEANUP(instruc) \
+ if (instruc == resume_compl_suspension) \
+    chat_free_cp_compl_susp_chat_areas((ComplSuspFrame)breg);
+#else
+#define CHAT_CSF_CLEANUP(instruc)
+#endif
+
 #define CHECK_TABLE_CUT(instruc)       \
   if (check_table_cut)                 \
     switch (instruc) {                 \
@@ -72,7 +80,9 @@
       break;                           \
     default:                           \
       break;                           \
-    }
+    }                                  \
+  CHAT_CSF_CLEANUP(instruc)
+
 
 #define cut_code(OP1)	                                        \
    { CPtr cut_breg;					        \

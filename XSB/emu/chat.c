@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chat.c,v 1.19 2000-04-29 21:53:50 kifer Exp $
+** $Id: chat.c,v 1.20 2000-05-16 19:07:31 lfcastro Exp $
 ** 
 */
 
@@ -320,6 +320,27 @@ CPtr chat_free_compl_susp_chat_area(chat_init_pheader ptr)
     return prev;
 }
 #endif
+
+
+/**
+ * chat_free_cp_compl_susp_chat_areas: cleans up CSFs on cuts
+ * @b: Completion Suspension Frame
+ * 
+ * As suggested by Kostis.
+ **/
+void chat_free_cp_compl_susp_chat_areas(ComplSuspFrame b)
+{
+  chat_init_pheader chat_ptr, chat_ptr_tmp;
+
+  chat_ptr = (chat_init_pheader) csf_prevcsf(b);
+  while (chat_ptr != NULL) {
+    chat_ptr_tmp = (chat_init_pheader) 
+      csf_prevcsf((CPtr)(&chat_get_cons_start(chat_ptr)));
+    chat_free_chat_area(chat_ptr, BATCH_MODE);
+    chat_ptr = chat_ptr_tmp;
+  }
+  chat_free_chat_area((chat_init_pheader)csf_chat_area(b),BATCH_MODE);
+}
 
 /*----------------------------------------------------------------------*/
 /* Routines that restore CHAT areas.                                    */
