@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.103 2001-03-29 23:09:38 kifer Exp $
+## $Id: configure.in,v 1.104 2001-04-03 19:48:51 dwarren Exp $
 ## 
 ##
 
@@ -529,6 +529,12 @@ else
 	CFLAGS="-Xa"
 	;;
  esac
+fi
+
+if test "${enable_no_cygwin+set}" = "set"; then
+	if test "${xsb_scheduling_strategy}" = "local" ; then
+		emuloop_opt_level=-${optimization_level-"O1 -fomit-frame-pointer"}
+	fi
 fi
 
 dnl In XSB, CC is the C compiler to be used with the C interface
