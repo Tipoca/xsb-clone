@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.37 2000/01/28 18:01:40 unova Exp $
+** $Id: subp.c,v 1.38 2000/03/01 16:22:35 dwarren Exp $
 ** 
 */
 
@@ -605,7 +605,7 @@ static Cell abort_cp_offset(void)
     return 0;
   }
   else
-    return (Cell) get_ep(pair_psc(abort_pair));
+    return (Cell) get_data(pair_psc(abort_pair));
 }
 
 byte *exception_handler(char *string)
