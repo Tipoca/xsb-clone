@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.74 2001-02-06 16:56:36 lfcastro Exp $
+** $Id: emuloop.c,v 1.75 2001-02-13 17:46:06 dwarren Exp $
 ** 
 */
 
@@ -877,7 +877,7 @@ contcase:     /* the main loop */
         if (gc_heap(op1)) { /* garbage collection potentially modifies hreg */
 	  if ((ereg - hreg) < (long)op2) {
 	    if (flags[STACK_REALLOC]) {
-	      if (glstack_realloc(resize_stack(glstack.size,0),op1) != 0) {
+	      if (glstack_realloc(resize_stack(glstack.size,(op2*sizeof(Cell))),op1) != 0) {
 		local_global_exception(lpcreg);
 		XSB_Next_Instr();
 	      }
