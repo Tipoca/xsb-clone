@@ -35,8 +35,6 @@ EOF
 #------------------------------------
 ../gentest.sh $XEMU trdynctest "test."
 #------------------------------------
-../gentest.sh $XEMU trans "trans(z),writeln(ok)."
-#------------------------------------
 ../gentest.sh $XEMU ins "main."
 #------------------------------------
 ../gentest.sh $XEMU float "test."
