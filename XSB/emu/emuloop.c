@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.101 2004-09-29 21:41:55 dwarren Exp $
+** $Id: emuloop.c,v 1.102 2004-11-24 22:35:03 dwarren Exp $
 ** 
 */
 
@@ -1673,7 +1673,7 @@ contcase:     /* the main loop */
   XSB_Start_Instr(calld,_calld)   /* PPA-L */
     ADVANCE_PC(size_xxx); /* this is ok */
     cpreg = lpcreg+sizeof(Cell); 
-    check_glstack_overflow(MAX_ARITY, lpcreg,OVERFLOW_MARGIN);
+    /*check_glstack_overflow(MAX_ARITY, lpcreg,OVERFLOW_MARGIN);  try eliminating?? */
     handle_xsb_profile_interrupt;
     lpcreg = *(pb *)lpcreg;
   XSB_End_Instr()

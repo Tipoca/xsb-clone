@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.26 2002/10/04 20:42:02 lfcastro Exp $
+** $Id: slginsts_xsb_i.h,v 1.27 2002/11/04 18:09:03 dwarren Exp $
 ** 
 */
 
@@ -138,7 +138,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   else 
     continuation = (pb) &check_complete_inst;
 
-  check_glstack_overflow(MAX_ARITY,lpcreg,OVERFLOW_MARGIN);
+  check_glstack_overflow(CallInfo_CallArity(callInfo),lpcreg,OVERFLOW_MARGIN);
 
   /*
    *  Perform a call-check/insert operation on the current call.  The
@@ -673,7 +673,7 @@ XSB_Start_Instr(resume_compl_suspension,_resume_compl_suspension)
     
     /* Switches the environment to a frame of a subgoal that was	*/
     /* suspended on completion, and sets the continuation pointer.	*/
-    check_glstack_overflow(MAX_ARITY,lpcreg,OVERFLOW_MARGIN);
+    check_glstack_overflow(0,lpcreg,OVERFLOW_MARGIN);
     freeze_and_switch_envs(csf, COMPL_SUSP_CP_SIZE);
     ptcpreg = csf_ptcp(csf);
     neg_delay = (csf_neg_loop(csf) != FALSE);
@@ -690,7 +690,7 @@ XSB_Start_Instr(resume_compl_suspension,_resume_compl_suspension)
     CPtr csf = cs_compsuspptr(breg);
     /* Switches the environment to a frame of a subgoal that was	*/
     /* suspended on completion, and sets the continuation pointer.	*/
-    check_glstack_overflow(MAX_ARITY,lpcreg,OVERFLOW_MARGIN);
+    check_glstack_overflow(0,lpcreg,OVERFLOW_MARGIN);
     freeze_and_switch_envs(csf, COMPL_SUSP_CP_SIZE);
     ptcpreg = csf_ptcp(csf);
     neg_delay = (csf_neg_loop(csf) != FALSE);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.13 2004-09-29 21:41:55 dwarren Exp $
+** $Id: memory_xsb.h,v 1.14 2004-11-24 22:35:04 dwarren Exp $
 ** 
 */
 
@@ -233,9 +233,8 @@ extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
      }									      \
      else {								      \
        if ((flags[STACK_REALLOC] == FALSE) ||				      \
-	   (glstack_realloc(resize_stack(glstack.size,EXTRA+OVERFLOW_MARGIN), \
-			    arity) != 0)) {				      \
-	 xsb_basic_abort(local_global_exception);					      \
+	   (glstack_ensure_space(EXTRA,arity) != 0)) {			      \
+	 xsb_basic_abort(local_global_exception);			      \
        }								      \
      }									      \
    }

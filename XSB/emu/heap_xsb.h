@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.h,v 1.7 2002-03-12 18:49:31 lfcastro Exp $
+** $Id: heap_xsb.h,v 1.8 2004-11-24 22:35:04 dwarren Exp $
 ** 
 */
 
@@ -54,6 +54,7 @@
 
 extern int  gc_heap(int);
 extern int  mark_heap(int,int *);
+extern xsbBool glstack_ensure_space(int,int);
 extern xsbBool glstack_realloc(int,int);
 
 extern void print_cp(int);
