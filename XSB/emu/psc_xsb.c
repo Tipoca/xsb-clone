@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.11 2002-08-15 17:00:26 lfcastro Exp $
+** $Id: psc_xsb.c,v 1.12 2003-06-18 16:37:35 lfcastro Exp $
 ** 
 */
 
@@ -179,7 +179,7 @@ static int is_globalmod(Psc mod_psc)
  * know that have this property are the modules "global" and "usermod".
  */
     if (mod_psc)
-      return (((Cell)get_data(mod_psc) == 1));
+      return (((Cell)get_data(mod_psc) == USERMOD_PSC));
     /** dsw need a better check here!!?! **/
     else
       return 1;

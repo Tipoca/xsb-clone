@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.62 2003-05-01 18:51:34 dwarren Exp $
+** $Id: biassert.c,v 1.63 2003-06-18 16:37:35 lfcastro Exp $
 ** 
 */
 
@@ -2111,6 +2111,10 @@ xsbBool db_build_prref( /* PSC, Tabled?, -PrRef */ )
   /* moved this functionality from Prolog (very ugly and error-prone) to C */
   set_type(psc, T_DYNA);
   set_env(psc, T_VISIBLE);
+
+  /* set data to point to usemod -- lfcastro */
+  if (get_data(psc) == NULL) 
+    set_data(psc,global_mod);
     
   p = (CPtr)mem_alloc(sizeof(PrRefData));
   Loc = 0 ;
