@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.17 2002/03/15 11:08:21 kifer Exp $
+** $Id: curr_sym.P,v 1.18 2002/05/22 15:41:25 lfcastro Exp $
 ** 
 */
 
 
-:- compiler_options([xpp_on]).
+:- compiler_options([xpp_on,sysmod,optimize]).
 
 #include "standard.h"
 #include "flag_defs_xsb.h"
@@ -428,7 +428,7 @@ psc_properties(PSC, Property) :-
 psc_properties(PSC, Property) :-
 	psc_name(PSC, Functor),		% Finding the Functor and the Arity
 	psc_arity(PSC, Arity),		% twice is silly, isn''t it?
-	( standard_symbol(Functor, Arity, _) -> Property = built_in ).
+	( standard_symbol(Functor, Arity, _) -> Property = xsb_standard_predicate ).
 		 % Unfortunately this doesn''t take the Module into account.
 
 
