@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf_xsb_i.h,v 1.21 2005-01-14 18:30:55 ruim Exp $
+** $Id: dynelf_xsb_i.h,v 1.22 2005-01-17 17:51:48 tswift Exp $
 ** 
 */
 
@@ -84,9 +84,14 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   strcpy(sofilename, pofilename);
   
   file_extension_ptr = xsb_strrstr(sofilename, XSB_OBJ_EXTENSION_STRING);
+#if (defined(__APPLE__))
+  /* replace the OBJ file suffix with the dylib suffix */
+ strcpy(file_extension_ptr+1, "dylib");
+#else
   /* replace the OBJ file suffix with the so suffix */
-  strcpy(file_extension_ptr+1, "so");
-  
+ strcpy(file_extension_ptr+1, "so");
+#endif
+
   /* (1.5) include necessary paths into LD_LIBRARY_PATH
      so that the right libraries would be consulted at loading time.
      NOTE: Some systems (Solaris) ignore runtime changes of LD_LIBRARY_PATH,
