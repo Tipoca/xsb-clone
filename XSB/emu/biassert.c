@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.69 2004-07-07 22:29:12 dwarren Exp $
+** $Id: biassert.c,v 1.70 2004-07-13 17:29:52 dwarren Exp $
 ** 
 */
 
@@ -2283,16 +2283,15 @@ static void abolish_trie_asserted_stuff(PrRef prref) {
 
    BTNptr pRoot;
    CPtr b;
-   
+
    /*** printf("abolish_trie\n"); ***/
    b = (CPtr)prref->FirstClRef;
    pRoot = (BTNptr)*(b + 3);
    switch_to_trie_assert;
    delete_trie(pRoot);
    switch_from_trie_assert;
-   /**   mem_dealloc(b);  where is this allocated?? */
-   *(b + 3) = (Cell) 0;
-   /* shouldn't we change one of the instr fields too? */
+   *(pb)prref = fail;
+   mem_dealloc((pb)(b-2),6*sizeof(Cell));  /* allocated in trie_assert */
 }
 
 /*----------------------------------------------------------------------*/
