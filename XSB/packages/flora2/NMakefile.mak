@@ -20,7 +20,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: NMakefile.mak,v 1.7 2002-08-17 19:03:13 kifer Exp $
+## $Id: NMakefile.mak,v 1.8 2002-09-02 20:36:41 kifer Exp $
 ## 
 ##
 
@@ -41,7 +41,7 @@ ALLOBJS = flrarguments$(OBJEXT) \
 	  flroperator$(OBJEXT) \
 	  flrparser$(OBJEXT) \
 	  flrporting$(OBJEXT) \
-	  flrprettyprint$(OBJEXT) \
+	  flrpretifydump$(OBJEXT) \
 	  flrprint$(OBJEXT) \
 	  flrprolog$(OBJEXT) \
 	  flrregistry$(OBJEXT) \
