@@ -21,7 +21,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.86 2002-04-02 06:34:48 kifer Exp $
+** $Id: flrutils.P,v 1.87 2002-04-04 04:11:20 kifer Exp $
 **
 */
 
@@ -177,7 +177,7 @@ flloadtrailer(TrailerName,Workspace) :-
 	  consult(UserTrailerWSOFile),
 	  !,
 	  %% Check if the patch needs to be loaded.
-	  flora_user_module_predicate_symbol(FLORA_THIS_MODULE,Workspace,Predicate),
+	  flora_firstorder_user_module_predicate_symbol(FLORA_THIS_MODULE,Workspace,Predicate),
 	  (current_predicate(Predicate/1) -> true; flloadpatch(Workspace))
         ),
 	!.
