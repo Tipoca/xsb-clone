@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.22 1999-06-17 20:10:08 kifer Exp $
+** $Id: flrshell.P,v 1.23 1999-06-18 06:35:45 kifer Exp $
 **
 */
 
@@ -194,11 +194,15 @@ all :-
 	    trie_assert('_$_$_flora_switch'(all))
 	).
 
-
-/*********************************************************************/
 one :-
 	trie_retract_all('_$_$_flora_switch'(all)).
 
+
+%% Turn off printing CPU time and host information
+%% These are used in the test suite in order to eliminate 
+%% time/host dependent output. 
+chatterbox(off) :- trie_assert('_$_$_flora_switch'(no_chatter)).
+chatterbox(on) :- trie_retract_all('_$_$_flora_switch'(no_chatter)).
 
 /*********************************************************************/
 end :-

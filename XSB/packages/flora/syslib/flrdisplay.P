@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdisplay.P,v 1.2 1999-06-16 01:29:59 kifer Exp $
+** $Id: flrdisplay.P,v 1.3 1999-06-18 06:35:46 kifer Exp $
 ** 
 */
 
@@ -61,10 +61,13 @@
 	    ( N = 0 ->
 		nl, writeln('No.')
 	      ;
-	        '_$_$_flora_write_matches'(L), nl,
-		write(N), write(' solution(s) in '),
-		write(T), write(' seconds on '),
-		unix(hostname),
+		('_$_$_flora_switch'(no_chatter) -> true
+		  ;
+		    '_$_$_flora_write_matches'(L), nl,
+		    write(N), write(' solution(s) in '),
+		    write(T), write(' seconds on '),
+		    unix(hostname)
+		),
 		nl, writeln('Yes.')
 	    )
 	).
