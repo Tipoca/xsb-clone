@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.21 2001/07/16 05:20:45 kifer Exp $
+** $Id: consult.H,v 1.22 2002/04/10 23:33:21 tswift Exp $
 ** 
 */
 
@@ -48,8 +48,7 @@
 	  seeing/1, see/1, seen/0, call/1, goal_cut_trans/3,
 	  expand_term/2, read/1, op/3, (table)/1, (index)/3, (index)/2,
 	  (=..)/2, writeln/1, write_canonical/1, tell/1,
-          told/0, telling/1, functor/3, cputime/1,
-          '>'/2, is/2, '=:='/2, '=\='/2
+	  told/0, telling/1, functor/3, cputime/1
      from standard.
 :- import code_load/3, code_call/3, file_read_canonical/3,
 	  stat_flag/2,

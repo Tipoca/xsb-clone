@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: scrptutl.H,v 1.3 2002-04-10 23:33:23 tswift Exp $
+** $Id: scrptutl.H,v 1.4 2002-04-13 05:01:53 lfcastro Exp $
 ** 
 */
 
@@ -37,7 +37,7 @@
 
 :- import concat_atom/3 from string.
 :- import close/1, name/2, see/1, get0/1, open/3, atom/1, arg/3, functor/3,
-          repeat/0, seeing/1, '<'/2, '=:='/2
+	repeat/0, seeing/1
 	from standard.
 :- import reverse/2 from basics.
 :- import unix/1 from unix.

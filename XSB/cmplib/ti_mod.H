@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ti_mod.H,v 1.4 2002-04-10 23:33:24 tswift Exp $
+** $Id: ti_mod.H,v 1.5 2002-04-13 05:01:48 lfcastro Exp $
 ** 
 */
 
@@ -31,6 +31,5 @@
 :- import gensym_pred/2 from preproc.
 :- import membercheck/2 from listutil.
 :- import sym_name/3, sym_insert/5, sym_pass_thru/1 from symtab.
-:- import integer/1, number/1, atom_codes/2, number_codes/2,
-          is/2, '>'/2, '=:='/2  from standard.
+:- import integer/1, number/1, atom_codes/2, number_codes/2 from standard.
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.H,v 1.11 2001/12/18 22:11:15 xmc Exp $
+** $Id: xsb_read.H,v 1.12 2002/04/10 23:33:23 tswift Exp $
 ** 
 */
 
@@ -31,10 +31,7 @@
 :- import '_$op'/3 from file_op.
 :- import file_put/2 from file_io.
 :- import file_write0/2, file_nl/1 from xsb_writ.
-
-:- import atom/1, atom_codes/2, repeat/0, 
-          '>'/2, '<'/2, '=:='/2, '=\='/2, is/2, '>='/2, '=<'/2 from standard.
-
+:- import atom/1, atom_codes/2, repeat/0 from standard.
 :- import '_$hilog_symbol'/1 from hilogsym.
 :- import term_new/2, term_set_arg/4, stat_flag/2,
 	  file_gettoken/5, psc_insert/4, stat_set_flag/2, conname/2, 

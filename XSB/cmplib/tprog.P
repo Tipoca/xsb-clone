@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tprog.P,v 1.12 2002-04-10 23:33:24 tswift Exp $
+** $Id: tprog.P,v 1.13 2002-04-13 05:01:48 lfcastro Exp $
 ** 
 */
 
@@ -60,7 +60,6 @@ tclause(Sym, clause(Args,Body,crec(ARSize,Label)),
 							% was getpbreg
 	),
 	theadpars(Args,1,Pil1,Pil3,Tin,TRegs),
-%	write(user,p(Body)),nl(user),nl(user),
 	tbody(Body,ARSize1,Pil3,Pilr,TRegs,_,lastgoal,no,
 	      [],Tabled,Tabar,Sym,NC).
 

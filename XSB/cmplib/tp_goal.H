@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_goal.H,v 1.2 2002-04-10 23:33:24 tswift Exp $
+** $Id: tp_goal.H,v 1.3 2002-04-13 05:01:48 lfcastro Exp $
 ** 
 */
 
@@ -35,4 +35,4 @@
 	vprag_use/2, vprag_lastchunk/2, vprag_argno/2, vprag_level/2,
 	vprag_occ/2, vprag_type1/2
    from varproc.
-:- import is/2, '=:='/2 from standard.
+

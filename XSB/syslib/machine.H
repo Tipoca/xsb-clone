@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.44 2002/03/21 23:32:49 tswift Exp $
+** $Id: machine.H,v 1.45 2002/04/10 23:33:22 tswift Exp $
 ** 
 */
 
@@ -147,6 +147,5 @@
 
 :- export set_pil_on/0, set_pil_off/0, set_prof_on/1, set_prof_off/0.
 
-:- import '=:='/2 from standard.
 /* --------------------- end of file machine.H ------------------------ */
 

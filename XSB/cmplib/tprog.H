@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tprog.H,v 1.5 2002-04-10 23:33:24 tswift Exp $
+** $Id: tprog.H,v 1.6 2002-04-13 05:01:48 lfcastro Exp $
 ** 
 */
 
@@ -38,4 +38,4 @@
 :- import tcond/10, tvar_hold/3 from tp_cond.
 :- import sym_name/3, sym_type/2 from symtab.
 :- import tgetpar/6, tgoalargs/7 from tp_goal.
-:- import is/2, '>'/2, '=:='/2, '=\='/2, '=<'/2 from standard.
+

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.H,v 1.12 2002-04-10 23:33:23 tswift Exp $
+** $Id: aggregs.H,v 1.13 2002-04-13 05:01:53 lfcastro Exp $
 ** 
 */
 
@@ -56,8 +56,7 @@
 
 :- import apply/2,apply/3,apply/4 from usermod.
 
-:- import arg/3, call/1, call_c/1, atom/1, functor/3, 
-	  '=..'/2, is/2 from standard.
+:- import arg/3, call/1, call_c/1, atom/1, functor/3, '=..'/2 from standard.
 :- import member/2, copy_term/2, append/3 from basics.
 :- import sort/2, findall/3, bagof/3, excess_vars/4 from setof.
 :- import (table)/1 from usermod.

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.H,v 1.9 2002-04-10 23:33:23 tswift Exp $
+** $Id: compile.H,v 1.10 2002-04-13 05:01:48 lfcastro Exp $
 ** 
 */
 
@@ -61,8 +61,7 @@
 :- import force_tp_index_loaded/0, makeindex/6 from tp_index.
 :- import force_preprocess_loaded/0, preprocess/3 from preproc.
 :- import write_asmheader/4, write_asm_instructions/1 from writeasm.
-:- import abort/0, tell/1, telling/1, told/0, cputime/1,
-             '=:='/2, '=\='/2, is/2 from standard.
+:- import abort/0, tell/1, telling/1, told/0, cputime/1 from standard.
 :- import force_peephole_loaded/0, compile_peephole_opt/2 from peephole.
 :- import message/1, warning/1, error/1, time_message/2,
 	  setoptions/1, option/1

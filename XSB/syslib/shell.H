@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.H,v 1.7 2001/05/31 16:33:50 lfcastro Exp $
+** $Id: shell.H,v 1.8 2002/04/10 23:33:22 tswift Exp $
 ** 
 */
 
@@ -35,7 +35,7 @@
 	sys_mkdir/2, sys_rmdir/2,
 	sys_unlink/2, sys_exit/1, sys_rename/3.
 
-:- import atom/1, abort/1,'=:='/2 from standard.
+:- import atom/1, abort/1 from standard.
 :- import sys_system/7, expand_filename/2, sys_syscall/4
    from machine.
 

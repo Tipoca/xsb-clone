@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.H,v 1.16 2002/02/28 04:08:24 kifer Exp $
+** $Id: debugger.H,v 1.17 2002/04/10 23:33:22 tswift Exp $
 ** 
 */
 
@@ -37,8 +37,7 @@
 
 :- import =.. /2, \= /2, functor/3, atom/1, is_list/1, call/1, cputime/1,
           call/1, see/1, seeing/1, seen/0, repeat/0, read/1, warning/1,
-         abort/0, abort/1, (import)/1, callable/1,
-         '<'/2, '=:='/2, '=\='/2, is/2
+	  abort/0, abort/1, (import)/1, callable/1
      from standard.
 
 :- import assert/1 from assert.

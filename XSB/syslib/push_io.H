@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: push_io.H,v 1.1 2000/12/27 00:28:24 kifer Exp $
+** $Id: push_io.H,v 1.2 2002/04/10 23:33:22 tswift Exp $
 ** 
 */
 
 
 
-:- import abort/1, atom/1  from standard.
+:- import abort/1, atom/1 from standard.
 :- import see/1, seeing/1, seen/0 from standard.
 :- import assert/1, retractall/1, (dynamic)/1 from assert.
 

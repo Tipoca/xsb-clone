@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dbclause.H,v 1.7 1999/08/28 10:33:22 kostis Exp $
+** $Id: dbclause.H,v 1.8 2002/04/10 23:33:22 tswift Exp $
 ** 
 */
 
@@ -27,8 +27,7 @@
 :- export db_clause/4, db_retractall/2, db_abolish/1, '_$clause_int'/1.
 
 :- import asserti/2, (dynamic)/1 from assert.
-:- import abort/1, atom/1, call/1, repeat/0, is_most_general_term/1,
-          is/2, '=:='/2, '=\='/2
+:- import abort/1, atom/1, call/1, repeat/0, is_most_general_term/1
      from standard.
 :- import set_inthandler/2, '_$load_undef'/1 from loader.
 :- import stat_set_flag/2, code_call/3, conname/2,

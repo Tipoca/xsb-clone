@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wrapping.H,v 1.2 2002-04-10 23:33:23 tswift Exp $
+** $Id: wrapping.H,v 1.3 2002-04-13 05:01:53 lfcastro Exp $
 ** 
 */
 
 :- export wrap/2, write_header/0, process_from/2.
 
 :- import append/3, member/2, select/3, length/2 from basics.
-:- import write/1, nl/0, atom_codes/2, '=\='/2, is/2 from standard.
+:- import write/1, nl/0, atom_codes/2 from standard.
 :- import arg/3, functor/3, told/0, seen/0, read/1 from standard.
 :- import repeat/0, tell/1, see/1 from standard.
 :- import fmt_write/2 from file_io.

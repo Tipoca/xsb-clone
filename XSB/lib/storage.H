@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage.H,v 1.8 2002-04-10 23:33:23 tswift Exp $
+** $Id: storage.H,v 1.9 2002-04-13 05:01:53 lfcastro Exp $
 ** 
 */
 
@@ -41,4 +41,3 @@
 	trie_reclaim_uninterned_nr/1
    from intern.
 
-:- import '=<'/2 from standard.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: num_vars.H,v 1.3 1999/12/08 17:41:23 warren Exp $
+** $Id: num_vars.H,v 1.4 2002/04/10 23:33:22 tswift Exp $
 ** 
 */
 
@@ -26,7 +26,6 @@
 :- export numbervars/1, numbervars/3.
 :- export unnumbervars/2, unnumbervars/3.
 
-:- import '>'/2, '=<'/2, '>='/2, '=:='/2, is/2 from standard.
 :- import term_psc/2, term_type/2, psc_arity/2, term_arg/3, term_new/2
         from machine.
 :- import log_ith/3 from basics.

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: symtab.H,v 1.5 2002-04-10 23:33:24 tswift Exp $
+** $Id: symtab.H,v 1.6 2002-04-13 05:01:48 lfcastro Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
 :- import 'table #'/0 from compile.
 :- import memberchk/2, append/3, member/2 from basics.
 :- import error/1 from auxlry.
-:- import integer/1, functor/3, is/2, '>'/2, '=:='/2 from standard.
+:- import integer/1, functor/3 from standard.
 :- import membercheck/2, member2/2, closetail/1 from listutil.
 :- import ll_arg/3 from auxlry.
 :- import conget/2, conset/2 from gensym.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.H,v 1.4 2002-04-10 23:33:23 tswift Exp $
+** $Id: cp_opt.H,v 1.5 2002-04-13 05:01:48 lfcastro Exp $
 ** 
 */
 
@@ -30,5 +30,5 @@
 :- import have_hardcut/2 from preproc.
 :- import index_split/2 from tp_index.
 :- import member/2, append/3 from basics.
-:- import functor/3, arg/3, atom_codes/2, '=:='/2, is/2 from standard.
+:- import functor/3, arg/3, atom_codes/2 from standard.
 :- import sym_type/2, sym_name/3, sym_index/2 from symtab.

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: preproc.H,v 1.3 2002-04-10 23:33:24 tswift Exp $
+** $Id: preproc.H,v 1.4 2002-04-13 05:01:48 lfcastro Exp $
 ** 
 */
 
@@ -33,4 +33,4 @@
 :- import str_cat/3 from machine.
 :- import conget/2, gensym/2 from gensym.
 :- import append/3 from basics.
-:- import is/2, '>'/2, '=:='/2, '=\='/2 from standard.
+

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: listutil.H,v 1.3 2002-04-10 23:33:23 tswift Exp $
+** $Id: listutil.H,v 1.4 2002-04-13 05:01:48 lfcastro Exp $
 ** 
 */
 
@@ -30,5 +30,4 @@
 	  absmerge/3, delete/3, delete_ith/4, reverse/2.
 
 :- import member/2 from basics.
-:- import is/2, '=:='/2 from standard.
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.21 2001/06/16 22:44:03 kifer Exp $
+** $Id: file_io.H,v 1.22 2002/04/10 23:33:22 tswift Exp $
 ** 
 */
 
@@ -32,7 +32,7 @@
 
 :- import
 	abort/1, atom_codes/2, '\='/2, repeat/0,
-        file_exists/1, is/2, '=:='/2, '>='/2
+	file_exists/1
       from standard.
 
 :- import gensym/2 from gensym.
