@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.8 1999-02-10 16:20:05 warren Exp $
+** $Id: biassert.c,v 1.9 1999-02-10 17:07:30 warren Exp $
 ** 
 */
 
@@ -1957,7 +1957,7 @@ bool compiled_to_dynamic( /* +PSC, +OldPred */ )
 }
 
 bool db_build_prref( /* PSC, Tabled?, -PrRef */ )
-{   CPtr p, /* tip, */ tp ;
+{   CPtr p, tp ;
     tab_inf_ptr tip; 
     int Loc ;
     Psc PSC = (Psc)ptoc_int(1);
