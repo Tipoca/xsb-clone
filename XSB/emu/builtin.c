@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.146 2002-09-09 13:53:01 dwarren Exp $
+** $Id: builtin.c,v 1.147 2002-09-10 16:22:50 dwarren Exp $
 ** 
 */
 
@@ -485,6 +485,7 @@ static int ground(CPtr temp)
 
   case XSB_STRUCT:
     arity = (int) get_arity(get_str_psc(temp));
+    if (arity == 0) return TRUE;
     for (j=1; j < arity ; j++) 
       if (!ground(clref_val(temp)+j))
 	return FALSE;
