@@ -19,17 +19,18 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.3 2002/11/04 18:09:13 dwarren Exp $
+** $Id: error_handler.H,v 1.4 2003/01/06 04:46:36 kifer Exp $
 ** 
 */
 
-
-:- export default_error_handler/1.
+:- export domain_error/4, type_error/4, instantiation_error/2,
+              check_stream/3, check_nonvar_list/3, check_nonvar/3, 
+              default_error_handler/1.
 
 :- import (dynamic)/1 from assert.
 %%:- import reset_undef_pred_handlers/0 from loader.
 :- import close_open_tables/0 from machine.
-:- import messageln/2 from standard.
+:- import atom/1, messageln/2, throw/1 from standard.
 
 
 

@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.H,v 1.13 2002/04/13 05:01:59 lfcastro Exp $
+** $Id: xsb_read.H,v 1.14 2002/09/20 06:00:01 kifer Exp $
 ** 
 */
 
 
 :- export file_read/2, file_read/3, string_as/1, vv/2, 'syntax errors'/0.
 :- export file_read_foe/3.
-
+:- export vv/2.
 
 :- import '_$op'/3 from file_op.
 :- import file_put/2 from file_io.
