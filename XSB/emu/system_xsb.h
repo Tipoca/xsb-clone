@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.h,v 1.10 2001-07-02 19:40:20 kifer Exp $
+** $Id: system_xsb.h,v 1.11 2001-08-06 06:10:14 kifer Exp $
 ** 
 */
 
@@ -69,9 +69,10 @@ extern int kill(pid_t pid, int sig);
 #define MAX_SUBPROC_NUMBER 40  /* max number of subrocesses allowed       */
 
 
-#define RUNNING	       1
-#define STOPPED	       2
-#define EXITED	       3
-#define ABORTED	       4
-#define INVALID	       5
-#define UNKNOWN	       6
+#define RUNNING	               1
+#define STOPPED	      	       2
+#define EXITED_NORMALLY	       3
+#define EXITED_ABNORMALLY      4
+#define ABORTED	       	       5
+#define INVALID	       	       6
+#define UNKNOWN	       	       7

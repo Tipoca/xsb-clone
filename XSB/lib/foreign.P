@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.30 2000-12-14 20:09:18 kifer Exp $
+** $Id: foreign.P,v 1.31 2001-08-06 06:10:14 kifer Exp $
 ** 
 */
 
@@ -182,7 +182,12 @@ compile_H(Modname, Base, Options, ExList, LdOption, CompComm, TempFile) :-
 	    open_or_xpp_file(HFile,CPPprocess),
 	    read_clauses(Modname,ExList,'',LdOption,CompComm,TempFile), !,
 	    (	CPPprocess = none, ! 
-	    ;	process_control(CPPprocess,wait),
+	    ;	
+		process_control(CPPprocess, wait(ExitCode)),
+		(ExitCode==0,!
+		; abort(('Error while preprocessing ', HFile,
+			 '. Dynamic loading aborted.'))
+		),
 		stat_flag(CURRENT_INPUT,FromPort),
 		file_close(FromPort)
 	    ),
