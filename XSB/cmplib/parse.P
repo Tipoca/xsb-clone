@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.67 2004-12-10 21:49:30 tswift Exp $
+** $Id: parse.P,v 1.68 2005-01-03 22:28:05 dwarren Exp $
 ** 
 */
 
@@ -321,6 +321,12 @@ change_multifile_directive(ApplyFact, ModName, NewFact) :-
 
 change_multifile_directive(':-'(index(P/A, Arg, Size)), ModName, 
 			   ':-'(index(P_Mod/A, Arg, Size))) :-
+	functor(Term, P, A),
+	'_$multifile2'(Term, ModName, _), !,
+	get_p_mod(P, ModName, P_Mod).
+
+change_multifile_directive(':-'(index(P/A, Arg)), ModName, 
+			   ':-'(index(P_Mod/A, Arg))) :-
 	functor(Term, P, A),
 	'_$multifile2'(Term, ModName, _), !,
 	get_p_mod(P, ModName, P_Mod).
