@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.132 2002-03-15 09:57:23 kifer Exp $
+## $Id: configure.in,v 1.133 2002-03-27 06:07:34 kifer Exp $
 ## 
 ##
 
@@ -1209,12 +1209,9 @@ case "$canonical" in
 		   ;;
 	      esac
 	      ;;
-      *freebsd*)
+      *freebsd* )
 	AC_DEFINE(FREEBSD)
 	AC_DEFINE(FOREIGN_ELF)
-#	if test "$CC" = "gcc" ; then
-#		CFLAGS="-m486 ${CFLAGS}"
-#	fi
 	if test "$__export_dynamic" = "yes" ; then
 		LDFLAGS="${LDFLAGS} -Wl,-export-dynamic"
 	fi
@@ -1222,7 +1219,12 @@ case "$canonical" in
 		LDFLAGS="${LDFLAGS} -ldl"
 	fi
 	;;
-      *sgi*) 
+      *-rhapsody* | *-darwin* )
+        AC_DEFINE(DARWIN)
+	# Darwin uses its own format for shared libraries and doesn't
+	# support the dlopen() interface. We need to find a wrapper for that.
+	;;
+      *sgi* ) 
 	     AC_DEFINE(FOREIGN_ELF)
 	     if test "${machine64bit}" = yes ; then
 		AC_DEFINE(SGI64)
