@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.H,v 1.5 2001-04-02 21:49:46 gzyang Exp $
+** $Id: flrcoder.H,v 1.6 2001-06-07 08:46:11 kifer Exp $
 **
 */
 
@@ -33,7 +33,7 @@
 
 :- import str_cat/3 from string.
 
-:- import flora_nohilogdef/2 from flrnohilog.
+:- import flora_firstorderdef/2 from flrnohilog.
 
 :- import flora_prlgdef/2 from flrprolog.
 
