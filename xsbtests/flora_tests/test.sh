@@ -9,11 +9,39 @@ XEMU=$1
 options=$2
 
 file_list=*.flr
+
+exclude_list="abp.flr"
+
 flora_options=[flora],flora_shell.
 flora_command="chatterbox(off). test."
 
+# Test if element is a member of exclude list
+# $1 - element
+# $2 - exclude list
+member ()
+{
+    for elt in $2 ; do
+	if test "$1" = "$elt" ; then
+	    return 0
+	fi
+    done
+    return 1
+}
+
 for file in $file_list ; do
+    if member $file $exclude_list; then
+	continue
+    fi
     prog=`basename $file .flr`
     # XEMU and options must be together in quotes
     ../gentest.sh "$XEMU $options -e $flora_options" $prog "$flora_command"
 done
+
+# precautionary measure: rm *.[PO] only is we are certain 
+# that this is flora_tests directory
+dir=`pwd`
+dir=`basename $dir`
+if test "flora_tests"="$dir" ; then
+    rm *.[PO]
+    rm auxiliary/*.[PO]
+fi

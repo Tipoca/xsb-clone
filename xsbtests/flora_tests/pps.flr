@@ -24,15 +24,18 @@ removeFrom(golfCL,wheel145,1).
 addTo(golfCL,wheel155,1).
 1.ready_user[].
 
+:- table change_meth/3.
+change_meth(O,S,M) :- O.change@(S,M)[].
+
 /* RULES */
 O[M@(T) -> Q] :- T:stage1, apply(O,M):edbscalar,
-              O[M@(S) -> Q], T = S + 1, not O.change@(S,M)[].
+              O[M@(S) -> Q], T = S + 1, tnot(change_meth(O,S,M)).
 
 O[M@(T) -> Q] :- T:stage1, apply(O,M):edbscalar,
               O[change@(S,M) ->  Q], T = S + 1.
 
 O[M@(T)->>Q] :- T:stage1, apply(O,M):edbmultivalued,
-             O[M@(S)->>Q], T = S + 1, not delete(O,M,Q,S).
+             O[M@(S)->>Q], T = S + 1, tnot(delete(O,M,Q,S)).
 
 O[M@(T)->>Q] :- T:stage1, apply(O,M):edbmultivalued,
              insert(O,M,Q,S), T = S + 1.
@@ -40,6 +43,7 @@ O[M@(T)->>Q] :- T:stage1, apply(O,M):edbmultivalued,
 apply(pps,produces):edbmultivalued.
 apply(P,hasConfig):edbscalar :- pps[produces@(S)->>P], S:state.
 insert(pps,produces,P,S) :- start(P,S), S:stage4.
+:- table delete/4.
 delete(pps,produces,P,S) :- stop(P,S), S:stage4.
 stop(P,S) :- P.hasConfig@(S)[needsPart->>Q], stop(Q,S), S:stage4.
 change(O,S,hasConfig) :- addTo(O,P,S), S:stage4.
@@ -72,5 +76,12 @@ tst2 :- P.hasConfig@(S)[needsPart->>Q],
 	write(P), write(S), write('  '), writeln(Q), fail.
 tst2.
 
-test :- tst1, tst2.
+test :- tell(temp), tst1, tst2, told.
+
+:- table ttt1/2, ttt2/3.
+ttt1(S,P) :- pps[produces@(S)->>P].
+tttt1(S,P) :- ttt1(S,P), get_residual(ttt1(S,P),[]).
+
+ttt2(Q,P,S) :- P.hasConfig@(S)[needsPart->>Q].
+tttt2(Q,P,S) :- ttt2(Q,P,S), get_residual(ttt2(Q,P,S),[]).
 

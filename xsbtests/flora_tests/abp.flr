@@ -170,6 +170,6 @@ tst3 :-abp.S[rfile@(N)->D], not S.running[],
 	write(S), write('  '), write(N), write('  '), writeln(D), fail.
 tst3.
 
-test :- tst1, tst2, tst3.
+test :- tell(temp), tst1, tst2, tst3, told.
 
 

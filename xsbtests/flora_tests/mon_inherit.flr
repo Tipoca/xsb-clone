@@ -16,4 +16,4 @@
     tst3 :- aa[@SM=>>V], @SM=..SMM, write(SMM), write('  '), writeln(V), fail.
     tst3.
 
-test :- tst1, tst2, tst3.
+test :- tell(temp), tst1, tst2, tst3, told.

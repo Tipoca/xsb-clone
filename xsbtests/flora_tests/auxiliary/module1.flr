@@ -2,6 +2,7 @@
 ** and the two pieces of info get evaluated as one.
 */
 
+:- import flcompile/1 from flrutils.
 ?- flcompile('auxiliary/module2').
 
 :- import employee[salary@(number) => number] from module2.

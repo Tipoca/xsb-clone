@@ -1,7 +1,8 @@
 
-?- ['auxiliary/static'].
-?- <'auxiliary/dynamic'>.
+?- ['auxiliary/static_tst'].
+?- <'auxiliary/dynamic_tst'>.
 
-test :- D:department[coursesOffered ->> C], 
+test :- tell(temp), 
+	D:department[coursesOffered ->> C], 
 	write(D), write('  '), writeln(C), fail.
-test.
+test :- told.

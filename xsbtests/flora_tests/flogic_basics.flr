@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flogic_basics.flr,v 1.1 1999-06-18 06:33:01 kifer Exp $
+** $Id: flogic_basics.flr,v 1.2 1999-10-16 23:04:44 kifer Exp $
 ** 
 */
 
@@ -26,7 +26,7 @@
 %%% SOME SIMPLE EXAMPLES SHOWING SEVERAL F-LOGIC FEATURES 
 %%% ===========================================================================
 
-times_flies_like_an_arrow.		% a 0-ary PREDICATE (proposition)
+time_flies_like_an_arrow.		% a 0-ary PREDICATE (proposition)
 fruit_flies_like_an_apple[].		% an OBJECT with empty specification []
 
 e(a,b). e(b,a). e(b,c).			% a binary PREDICATE (graph)
@@ -68,7 +68,7 @@ person[instances ->> {X}] :- X:person.  % NON-INHERITABLE mvd method of person
 %%% now ask some QUERIES here (or INTERACTIVELY from the FLORA SHELL)
 %%% ===========================================================================
 
-tst1 :- times_flies_like_an_arrow.	% ==> `yes'
+tst1 :- time_flies_like_an_arrow.	% ==> `yes'
 
 tst2 :- fruit_flies_like_a_banana[].	% ==> `yes'
 
@@ -91,6 +91,6 @@ tst7 :- X..kids[
 	write(X), write('  '), write(K), write('  '), writeln(H), fail. 
 tst7.
 
-test :- tst1, tst2, tst3, tst4, tst5, tst6, tst7.
+test :- tell(temp), tst1, tst2, tst3, tst4, tst5, tst6, tst7, told.
 
 

@@ -48,4 +48,4 @@ q.q[].
     tst7 :- aabb1[@M ->> K], @M=..MM,write(MM),write('  '),writeln(K),fail.
     tst7.
 
-    test :- tst1, tst2, tst3, tst4, tst5, tst6, tst7.
+    test :- tell(temp), tst1, tst2, tst3, tst4, tst5, tst6, tst7, told.

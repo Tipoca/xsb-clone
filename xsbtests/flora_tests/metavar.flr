@@ -19,5 +19,5 @@ tst1.
 tst2 :- o2[@M -> R], @M=..N, write(N), write(' '), writeln(R), fail.
 tst2.
 
-test :- tst1, tst2.
+test :- tell(temp), tst1, tst2, told.
 

@@ -10,6 +10,9 @@ testsuite.sh XSB-INSTALL-DIR
     (/tmp/xsb_test_log.$USER) with the log of the run. In case any test
     fails, the script will automatically notify the user who started it.
 
+    Can take options, like -exclude <test-list> and -only <test-list>
+    See the header of testsuite.sh for more details
+
 supertest.sh XSB-INSTALL-DIR
 
 	     Configures XSB with several different parameters and then runs

@@ -141,7 +141,7 @@ d(X,Y):direct[from->X;to->Y;l->>{L}] :-
 	Y:station[l->>{L}], not X=Y.
 
 
-test :- X:direct[from->F], write(X), write('  '), writeln(F), fail.
-test.
+test :- tell(temp), X:direct[from->F], write(X), write('  '), writeln(F), fail.
+test :- told.
 
 

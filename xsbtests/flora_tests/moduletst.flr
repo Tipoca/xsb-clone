@@ -23,5 +23,5 @@ tst6 :- Z= avg{X [Who]; Who[salary@(Year)->X]},
 	write(Z), write('   '), writeln(Who), fail.
 tst6.
 
-test :- tst1, tst2, tst3, tst4, tst5, tst6.
+test :- tell(temp), tst1, tst2, tst3, tst4, tst5, tst6, told.
 

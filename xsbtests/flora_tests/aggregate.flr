@@ -21,30 +21,30 @@ mary[salary@(1996) -> 70].
 mary[salary@(1997) -> 80].
 mary[salary@(1998) -> unknown].
 
-tst1 :- Z := max {X; john[salary@(Year)->X] }, write(Z).
+tst1 :- Z := max {X; john[salary@(Year)->X] }, writeln(Z).
 
 tst2 :- Z := max{X ; john[salary@(Year) ->X], Year < 1996},
-	write(Z).
+	writeln(Z).
 
 tst3 :- Z=count{Year; john.salary@(Year) <
     	    	    	max{X; john[salary@(Y2)->X], Y2<Year} },
-	write(Z).
+	writeln(Z).
 
 tst4 :- Z=count{Year; john.salary@(Year) < mary.salary@(Year)},
-	write(Z).
+	writeln(Z).
 
-tst5 :- Z= avg{X [Who]; Who[salary@(Year)->X]}, write(Z).
+tst5 :- Z= avg{X [Who]; Who[salary@(Year)->X]}, writeln(Z).
 
 tst6 :- Z= collectset{Year [Who]; Who[salary@(Year) -> X], X < 60},
-	write(Z).
+	writeln(Z).
 
-tst7 :- retract(mary[salary@(Y)->S],S=unknown), write(Z).
+tst7 :- retract(mary[salary@(Y)->S],S=unknown), writeln(Z).
 
 tst8 :- retract(john[salary@(Y)->S1], mary[salary@(Y)->S2], S1<S2),
-	write(Z).
+	writeln(Z).
 
 tst9 :- retract(john[salary@(Y)->S1] | mary[salary@(Y)->S2], S1<S2),
-	write(Z).
+	writeln(Z).
 
-test :- tst1, tst2, tst3, tst4, tst5, tst6, tst7, tst8, tst9.
+test :- tell(temp), tst1, tst2, tst3, tst4, tst5, tst6, tst7, tst8, tst9, told.
 
