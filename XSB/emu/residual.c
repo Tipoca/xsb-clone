@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.9 1999-10-05 04:01:51 kifer Exp $
+** $Id: residual.c,v 1.10 1999-10-12 20:22:56 ejohnson Exp $
 ** 
 */
 
@@ -118,7 +118,7 @@ void build_delay_list(CPtr delay_list, DE de)
     build_delay_list(tail, de_next(de)); /* recursive call */
     head = hreg;
     subg = de_subgoal(de);
-    psc = TIF_PSC(subg_tip_ptr(subg));
+    psc = TIF_PSC(subg_tif_ptr(subg));
     arity = get_arity(psc);
     if ((ans_subst = de_ans_subst(de)) == NULL) { /* Negative DE */
       follow(oldhreg) = makecs(hreg);
