@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.64 2002/12/09 15:29:05 dwarren Exp $
+** $Id: standard.P,v 1.65 2003/03/03 20:54:55 lfcastro Exp $
 ** 
 */
 
@@ -908,9 +908,24 @@ statistics :- stat_sta(1).
 
 statistics(X) :- stat_sta(X).
 
-get_date(_Year,_Month,_Day,_Hour,_Minute) :-
+get_date(_Year,_Month,_Day,_Hour,_Minute,_Second) :-
 	'_$builtin'(GET_DATE).
 
+now(When) :-
+	(   var(When)
+	->  get_date(Y,Mo,D,H,Mi,S),
+	    concat_atom([Y,'/',Mo,'/',D,' ',H,':',Mi,':',S],When)
+	;   throw(error(instantiation_error,
+			('Error: now(-When) called with bound var: ',When)))
+	).
+
+datime(Datime) :-
+	(   var(When)
+	->  get_date(Y,Mo,D,H,Mi,S),
+	    Datime = datime(Y,Mo,D,H,Mi,S)
+	;   throw(error(instantiation_error,
+		('Error: datime(-Datime) called with bound var: ',When)))
+	).
 
 %-----------------------------------------------------------------------------%
 

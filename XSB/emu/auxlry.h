@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.17 2003-03-05 15:29:57 lfcastro Exp $
+** $Id: auxlry.h,v 1.18 2003-03-05 19:59:58 lfcastro Exp $
 ** 
 */
 
@@ -33,8 +33,8 @@
 
 extern double cpu_time(void);
 extern double real_time(void);
-extern void get_date(unsigned *year, unsigned *month, unsigned *day,
-		    unsigned *hour, unsigned *minute);
+extern void get_date(int *year, int *month, int *day,
+		    int *hour, int *minute, int *second);
 
 struct trace_str {		/* for tracing purpose below */
     unsigned long maxlstack_count, maxgstack_count, maxtrail_count, maxcpstack_count;

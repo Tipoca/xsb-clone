@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.152 2003-03-05 14:35:19 lfcastro Exp $
+** $Id: builtin.c,v 1.153 2003-03-05 19:59:56 lfcastro Exp $
 ** 
 */
 
@@ -1241,13 +1241,14 @@ int builtin_call(byte number)
     break;
   }
   case GET_DATE: {
-    int year=0, month=0, day=0, hour=0, minute=0;
-    get_date(&year,&month,&day,&hour,&minute);
+    int year=0, month=0, day=0, hour=0, minute=0, second=0;
+    get_date(&year,&month,&day,&hour,&minute,&second);
     ctop_int(1,year);
     ctop_int(2,month);
     ctop_int(3,day);
     ctop_int(4,hour);
     ctop_int(5,minute);
+    ctop_int(6,second);
     break;
   }
   case CODE_LOAD:		/* R1: +FileName, bytecode file to be loaded */

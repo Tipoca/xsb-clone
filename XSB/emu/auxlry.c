@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.12 2003-03-05 15:29:55 lfcastro Exp $
+** $Id: auxlry.c,v 1.13 2003-03-05 19:59:59 lfcastro Exp $
 ** 
 */
 
@@ -94,7 +94,7 @@ double cpu_time(void)
 /*----------------------------------------------------------------------*/
 
 void get_date(int *year, int *month, int *day,
-	     int *hour, int *minute)
+	     int *hour, int *minute, int *second)
 {
 #ifdef WIN_NT
     SYSTEMTIME SystemTime;
@@ -105,6 +105,7 @@ void get_date(int *year, int *month, int *day,
     *day = SystemTime.wDay;
     *hour = SystemTime.wHour;
     *minute = SystemTime.wMinute;
+    *second = SystemTime.wSecond;
     GetTimeZoneInformation(&tz);
     *hour = *hour + tz.Bias/60;
     *minute = *minute + tz.Bias % 60;
@@ -122,6 +123,7 @@ void get_date(int *year, int *month, int *day,
     *day = tm->tm_mday;
     *hour = tm->tm_hour;
     *minute = tm->tm_min;
+    *second = tm->tm_sec;
 #endif
 #endif
 }
