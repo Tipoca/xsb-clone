@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbsocket.i,v 1.7 1999-07-21 23:09:01 kifer Exp $
+** $Id: xsbsocket.i,v 1.8 1999-07-22 19:10:06 kifer Exp $
 ** 
 */
 
@@ -167,7 +167,7 @@ inline static bool xsb_socket_request(void)
     */
 #ifdef WIN_NT
     sockptr = NULL;
-    i = sockfd;
+    i = -1;
 #else
     if ((sockptr = fdopen(sockfd, "r+")) == NULL) {
       sockptr = NULL;
@@ -216,7 +216,7 @@ inline static bool xsb_socket_request(void)
     */
 #ifdef WIN_NT
     sockptr = NULL;
-    i = sockfd;
+    i = -1;
 #else
     if ((sockptr = fdopen(sockfd, "r+")) == NULL) {
       xsb_warn("SOCKET_CONNECT: fdopen failed");
