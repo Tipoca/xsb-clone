@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: default.flr,v 1.2 1999-05-07 01:41:27 kifer Exp $
+** $Id: default.flr,v 1.3 1999-06-11 01:29:22 kifer Exp $
 ** 
 */
 
@@ -72,8 +72,8 @@ person[instances ->> {X}] :- X:person.  % NON-INHERITABLE mvd method of person
 
 ?- times_flies_like_an_arrow.	% ==> `yes'
 
-?- fruit_flies_like_an_apple.	% ==> `no' (and a warning)
-?- writeln('>>> Answer NO and WARNING intended! <<<').
+%%?- fruit_flies_like_an_apple.	% ==> `no' (and a warning)
+%%?- writeln('>>> Answer NO and WARNING intended! <<<').
 
 ?- fruit_flies_like_an_apple[].	% ==> `yes'
 
@@ -97,6 +97,5 @@ person[instances ->> {X}] :- X:person.  % NON-INHERITABLE mvd method of person
 ?- nl, write('mary..kids[] ??'), mary..kids[].
 
 // new
-?- nl, write('Thanks to '), unix(whoami), writeln('for using FLORA!').
-
-
+?- nl, write('On '), unix(date), 
+       writeln('FLORA thanks you for giving it a chance!').
