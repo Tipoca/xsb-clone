@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.P,v 1.16 2002-03-15 09:57:21 kifer Exp $
+** $Id: compile.P,v 1.17 2002-06-03 16:27:13 dwarren Exp $
 ** 
 */
 
@@ -156,8 +156,8 @@ table_process(ModuleIn, ModuleOut, SFile) :-
 	),
 	conget('table #', Tables),
 	( Tables =:= 0 -> ModuleOut = ModuleMid
-	; cp_opt(ModuleMid, ModuleOut), 
-          ( option(no_check) -> true ; build_graph(ModuleOut) )
+	; cp_opt(ModuleMid, ModuleOut)
+          %%,( option(no_check) -> true ; build_graph(ModuleOut) )
 	),
 	( option(table_dump) -> dump_module(SFile, ModuleOut) ; true ).
 
