@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug.c,v 1.7 1999-03-04 06:49:43 cbaoqiu Exp $
+** $Id: debug.c,v 1.8 1999-04-16 16:14:31 unova Exp $
 ** 
 */
 
@@ -146,7 +146,7 @@ void printterm(Cell term, byte car, int level)
 	fprintf(outfile, "\"%s\"", string_val(term));
 	break;
       case INT:
-	fprintf(outfile, "%d", int_val(term));
+	fprintf(outfile, "%ld", (long)int_val(term));
 	return;
       case FLOAT:
 	fprintf(outfile, "%f", float_val(term));
