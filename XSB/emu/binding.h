@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: binding.h,v 1.5 1999-10-09 02:00:19 cbaoqiu Exp $
+** $Id: binding.h,v 1.6 1999-10-10 04:11:52 cbaoqiu Exp $
 ** 
 */
 
@@ -80,7 +80,7 @@
 #define push_pre_image_trail0(addr, prev_value, new_value)	\
   if (trfreg > trreg) {						\
     if ((char *)trfreg > ((char *)(top_of_cpstack) -		\
-                          TRAIL_FRAME_SIZE*sizeof(CPtr)))	\
+                          TRAIL_FRAME_SIZE*sizeof(CPtr))) {	\
       handle_tcpstack_overflow();				\
     }								\
     *(trfreg + 4) = (CPtr) trreg;				\
@@ -91,7 +91,7 @@
   }								\
   else {							\
     if ((char *)trreg > ((char *)(top_of_cpstack) -		\
-                          TRAIL_FRAME_SIZE*sizeof(CPtr)))	\
+                          TRAIL_FRAME_SIZE*sizeof(CPtr))) {	\
       handle_tcpstack_overflow();				\
     }								\
     trreg = trreg + 4;						\
