@@ -13,11 +13,11 @@ t2 :- re_match('ab(de)*', 'abcd',0,_,L), writeln(L).
 
 %% Tests 3&4 test the \1 backreference feature.
 %% We must use the basic mode here because some packages
-%% don't allow backreference in extended regular expressions
+%% don't allow back-reference in extended regular expressions
 %% [] means: flags=basic/case-sensitive
-t3 :- re_match("a\\(b*\\|e*\\)cd\\1",'abbbcdbbbbbo', 0, [], M), writeln(M).
+t3 :- re_match("a\\(b*\\)cd\\1",'abbbcdbbbbbo', 0, [], M), writeln(M).
 %% ignorecase/basic
-t4 :- re_match('a\(b*\|e*\)cd\1','aBBbcdbBbbboabBBcdbbbbbo',2,[ignorecase],M),
+t4 :- re_match('a\(b*\)cd\1','aBBbcdbBbbboabBBcdbbbbbo',2,[ignorecase],M),
       writeln(M).
 
 %% Tests 5&6 test the | (or) feature.
