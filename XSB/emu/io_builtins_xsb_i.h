@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.16 2002-08-07 15:42:13 lfcastro Exp $
+** $Id: io_builtins_xsb_i.h,v 1.17 2004-04-19 18:30:55 dwarren Exp $
 ** 
 */
 
@@ -269,6 +269,56 @@ inline static xsbBool file_function(void)
     } while (!break_loop);
     
     ctop_string(3, string_find(VarBuf.string,1));
+    
+    /* this complex cond takes care of incomplete lines: lines that end with
+       end of file and not with end-of-line. */
+    if ((VarBuf.length>0) || (!eof))
+      return TRUE;
+    else
+      return FALSE;
+  }
+  case FILE_READ_LINE_LIST: {
+    /* Works like FILE_READ_LINE but returns a list of codes
+    ** Invoke: file_function(FILE_READ_LINE, +File, -List). Returns
+    ** the list of codes read.
+    ** Prolog invocation: file_read_line_list(+File, -Str) */
+    char buf[MAX_IO_BUFSIZE+1];
+    int break_loop = FALSE;
+    int eof=FALSE;
+    char *atomname;
+    Cell new_list;
+    CPtr top = NULL;
+    int i;
+
+    SET_FILEPTR(fptr, ptoc_int(2));
+    XSB_StrSet(&VarBuf,"");
+
+    do {
+      if (fgets(buf, MAX_IO_BUFSIZE, fptr) == NULL) {
+	eof=TRUE;
+	break;
+      } else {
+	XSB_StrAppend(&VarBuf,buf);
+	break_loop = (buf[(strlen(buf)-1)] == '\n');
+      }
+    } while (!break_loop);
+    
+    check_glstack_overflow(3, pcreg, 2*sizeof(Cell)*VarBuf.length);
+    atomname = VarBuf.string;
+
+    if (VarBuf.length == 0) new_list = makenil;
+    else {
+      new_list = makelist(hreg);
+      for (i = 0; i < VarBuf.length; i++) {
+	follow(hreg++) = makeint(*(unsigned char *)atomname);
+	atomname++;
+	top = hreg++;
+	follow(top) = makelist(hreg);
+      }
+      follow(top) = makenil;
+    }
+
+    ctop_tag(3, new_list);
     
     /* this complex cond takes care of incomplete lines: lines that end with
        end of file and not with end-of-line. */
