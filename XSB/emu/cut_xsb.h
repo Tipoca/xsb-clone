@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.12 2002-10-04 20:42:00 lfcastro Exp $
+** $Id: cut_xsb.h,v 1.13 2002-10-04 21:38:39 lfcastro Exp $
 ** 
 */
 
@@ -125,8 +125,8 @@
 #define good_trail_register(t)	(conditional(((CPtr) *((t)-2))))
 
 #define unwind_trail(tbreg, t1, t2) {	\
-    while (!good_trail_register(trreg) &&				\
-	   trreg > trfreg &&						\
+    while (trreg > trfreg &&						\
+           !good_trail_register(trreg) &&				\
 	   trreg > cp_trreg(tbreg))					\
       trreg = trail_parent(trreg);					\
     (t2) = (CPtr) trail_parent((t1) = (CPtr)trreg);			\
