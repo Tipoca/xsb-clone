@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.15 2003-04-14 19:52:13 lfcastro Exp $
+** $Id: odbc_call.H,v 1.16 2003-07-22 17:19:22 lfcastro Exp $
 ** 
 */
 
@@ -66,3 +66,5 @@
 	from setof.
 
 :- import numbervars/1 from num_vars.
+
+:- import ','/2, (:-)/2, '/'/2 from usermod.

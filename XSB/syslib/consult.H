@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.23 2002/04/13 05:01:59 lfcastro Exp $
+** $Id: consult.H,v 1.24 2002/09/20 06:00:01 kifer Exp $
 ** 
 */
 
@@ -71,3 +71,4 @@
 :- import xsb_configuration/2 from xsb_configuration.
 
 :- import banner_control/1 from banner.
+:- import (multifile)/1 from standard.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ora_call.H,v 1.8 2002-04-13 05:01:53 lfcastro Exp $
+** $Id: ora_call.H,v 1.9 2003-07-22 17:19:22 lfcastro Exp $
 ** 
 */
 
@@ -32,7 +32,7 @@
 :- export db_error_message/3, connect/0.
 :- export '$ora_err$'/1, '$show_query$'/1, '$cursor_table$'/1.
 
-:- import table_arity/2 from usermod.
+:- import table_arity/2, ','/2, (:-)/2 from usermod.
 :- import str_cat/3, oracle_query/7 from machine.
 :- import conset/2, conget/2 from gensym.
 :- import (dynamic)/1, assert/1, asserta/1, retract/1,

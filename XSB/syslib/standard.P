@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.69 2003/04/18 17:30:38 lfcastro Exp $
+** $Id: standard.P,v 1.70 2003/05/06 21:57:37 tswift Exp $
 ** 
 */
 
@@ -38,6 +38,7 @@
 #include "psc_defs.h"
 #include "builtin.h"
 
+:- import (:-)/2 from usermod.
 
 			/************************/
 			/*   INPUT and OUTPUT   */

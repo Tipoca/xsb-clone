@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.H,v 1.12 2002/04/10 23:33:21 tswift Exp $
+** $Id: assert.H,v 1.13 2002/04/13 05:01:59 lfcastro Exp $
 ** 
 */
 
@@ -50,7 +50,7 @@
      from machine.
 %%:- import term_psc/2 from machine.
 :- import '_$table'/1 from file_op.
-:- import standard_symbol/3 from std_xsb.
+:- import standard_symbol/3, standard_dynamic_symbol/2 from std_xsb.
 :- import default_assert_size/1 from config.
 :- import '_$multifile_retract'/3 from parse.
 %%:- import assert_hook/1, retract_hook/2 from usermod.

@@ -19,9 +19,10 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.H,v 1.1 1999/04/10 13:56:00 kostis Exp $
+** $Id: std_xsb.H,v 1.2 2003/07/18 22:29:25 tswift Exp $
 ** 
 */
 
 :- export standard_symbol/3.
 :- export standard_metapredicate/3.
+:- export standard_dynamic_symbol/2.
