@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: plmchconfig.P,v 1.3 1998-12-22 21:32:35 kifer Exp $
+** $Id: plmchconfig.P,v 1.4 1999-02-03 01:30:15 kifer Exp $
 ** 
 */
 
@@ -82,9 +82,9 @@ make_xsbpatternH(CC, CC_opts) :-
 			 ' %s -I%s%sCORE -I%s',
 			 f(CCflags,PerlArchlib,Slash,EmuDir)),
 	make_xsbpatternH(CC, CC_opts),
-	consult(Module, [cc(CC), cc_opts(CC_opts)]),
 	xsb_configuration(config_libdir, ConfigLibdir),
 	str_cat(Module, '.O', Objfile),
+	consult(Module, [cc(CC), cc_opts(CC_opts)]),
 	unix(['mv', ' -f ', Objfile, ' ', ConfigLibdir]),
 	%% Note: the .so ending is heavily Unix-centered. I dunno what this
 	%% corresponds to in windows. - mk
