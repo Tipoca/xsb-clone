@@ -18,12 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.9 2001-01-24 21:08:47 dwarren Exp $
+** $Id: odbc_call.H,v 1.10 2001-08-08 15:05:39 dwarren Exp $
 ** 
 */
 
 
-:- export odbc_open/3, odbc_open/4,
+:- export odbc_open/1, odbc_open/2,
+        odbc_open/3, odbc_open/4,
 	odbc_close/0, odbc_close/1,
 	odbc_shutdown/0,
 	odbc_sql/3, odbc_sql/4,
