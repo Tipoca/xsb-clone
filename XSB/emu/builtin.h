@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.13 1999-08-09 00:34:14 kifer Exp $
+** $Id: builtin.h,v 1.14 1999-08-14 16:41:43 kostis Exp $
 ** 
 */
 
@@ -53,7 +53,7 @@
 
 #define STR_CAT		27
 #define STR_CMP		28
-#define STR_HSH		29
+
 #define CALL0		31
 /* some other builtins that might need hard implementation */
 #define STAT_STA	32
@@ -63,7 +63,7 @@
 #define BUFF_DEALLOC	36
 #define BUFF_CELL	37
 #define BUFF_SET_CELL	38
-#define COPY_TERM	39
+#define COPY_TERM0	39
 /* check for substring */
 #define STR_SUB	        40
 #define DIRNAME_CANONIC 41
@@ -72,7 +72,7 @@
 #define PSC_IMPORT	43
 
 #define PSC_INSERTMOD	46
-#define LOAD_SEG	47
+
 #define FILE_GETTOKEN	48
 #define FILE_PUTTOKEN	49
 #define TERM_HASH	50
