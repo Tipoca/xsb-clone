@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.41 2005-01-14 18:31:33 ruim Exp $
+** $Id: system_xsb.c,v 1.42 2005-02-11 01:55:59 vidrevich Exp $
 ** 
 */
 
@@ -33,7 +33,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <ctype.h>
-
 
 #ifdef WIN_NT
 #include <windows.h>
@@ -986,8 +985,8 @@ static int xsb_find_first_file(CTXTdeclc prolog_term handle,
   filehandle = FindFirstFile(dir,&filedata);
   if (filehandle == INVALID_HANDLE_VALUE)
     return FALSE;
-  c2p_int((Integer)filehandle,handle);
-  c2p_string(filedata.cFileName,file);
+  c2p_int(CTXTc (Integer)filehandle,handle);
+  c2p_string(CTXTc filedata.cFileName,file);
   return TRUE;
 #else
   DIR *dirhandle;
@@ -1020,7 +1019,7 @@ static int xsb_find_next_file(CTXTdeclc prolog_term handle,
     FindClose(filehandle);
     return FALSE;
   }
-  c2p_string(filedata.cFileName,file);
+  c2p_string(CTXTc filedata.cFileName,file);
   return TRUE;
 #else
   DIR *dirhandle = (DIR *) p2c_int(handle);
