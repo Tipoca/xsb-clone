@@ -19,14 +19,14 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.44 2004-01-14 20:23:33 dwarren Exp $
+## $Id: Makefile,v 1.45 2004-09-02 00:24:30 dwarren Exp $
 ## 
 ##
 
 OBJEXT=.xwam
 
 ALL = 	aggregs${OBJEXT} array${OBJEXT} array1${OBJEXT} assoc_xsb${OBJEXT} \
-	basic_props${OBJEXT} \
+	basic_props${OBJEXT} lists${OBJEXT} \
 	directry${OBJEXT} foreign${OBJEXT} format${OBJEXT} \
 	intern${OBJEXT} obsolete${OBJEXT} odbc_call${OBJEXT} \
 	ordsets${OBJEXT} ora_call${OBJEXT} \
