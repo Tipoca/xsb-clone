@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.28 2005-01-14 18:31:19 ruim Exp $
+** $Id: io_builtins_xsb_i.h,v 1.29 2005-03-01 22:10:40 dwarren Exp $
 ** 
 */
 
@@ -31,6 +31,10 @@
 
 #if (defined(CYGWIN))
 #include <fcntl.h>
+#endif
+
+#ifdef WIN_NT
+#include <io.h>
 #endif
 
 static struct stat stat_buff;
@@ -116,13 +120,14 @@ inline static xsbBool file_function(CTXTdecl)
     break;
   case FILE_TRUNCATE: /* file_function(2,+IOport,+Length,-Ret,_) */
     size = ptoc_int(CTXTc 3);
-#ifndef WIN_NT
     SET_FILEPTR(fptr, ptoc_int(CTXTc 2));
+#ifndef WIN_NT
     fseek(fptr, (long) size, 0);
     value = ftruncate( fileno(fptr), (off_t) size);
     ctop_int(CTXTc 4, (int) value);
 #else
-    xsb_warn("FILE_TRUNCATE: operation not supported under Windows.");
+    //    xsb_warn("FILE_TRUNCATE: operation not supported under Windows.");
+    ctop_int(CTXTc 4, (int) _chsize(fileno(fptr), size));
 #endif
     break;
   case FILE_POS: /* file_function(3, +IOport, -Pos) */
