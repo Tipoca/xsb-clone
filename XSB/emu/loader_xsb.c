@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.28 2002-12-26 22:45:49 tswift Exp $
+** $Id: loader_xsb.c,v 1.29 2003-01-28 22:57:05 dwarren Exp $
 ** 
 */
 
@@ -98,7 +98,7 @@ extern TIFptr get_tip(Psc);
 #define get_obj_string(x,len)	(get_obj_data((x),(len)))
 
 #define get_obj_word_bb(x)    {get_obj_word(x) ; fix_bb(x) ; }
-#define get_obj_word_bbsig(x) {get_obj_word(x) ; fix_bb4(x) ; \
+#define get_obj_word_bbsig(x) {get_obj_word(x) ; fix_bb4(x) ;\
 			       *(Cell *)(x) = makeint(*(int *)(x));}
 #define get_obj_word_bbsig_notag(x) {get_obj_word(x) ; fix_bb4(x) ; \
 			       *(Integer *)(x) = *(int *)(x);}

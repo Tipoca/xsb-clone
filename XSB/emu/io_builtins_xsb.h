@@ -18,12 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.h,v 1.2 2002-05-20 17:47:10 tswift Exp $
+** $Id: io_builtins_xsb.h,v 1.3 2003-01-28 22:57:04 dwarren Exp $
 ** 
 */
 
 
 #include "io_defs_xsb.h"
+#include "token_xsb.h"
 
 #define MAX_OPEN_FILES    55
 #define MIN_USR_OPEN_FILE 7     /* Where user files start in the XSB
@@ -36,3 +37,7 @@ extern int xsb_intern_file(FILE *f, char *c);
 extern void write_quotedname(FILE *file, char *string);
 extern void double_quotes(char *string, char *new_string);
 extern xsbBool no_quotes_needed(char *string);
+
+int read_canonical_term(FILE *, STRFILE *, Cell);
+
+void print_term_canonical(FILE *, Cell, int);

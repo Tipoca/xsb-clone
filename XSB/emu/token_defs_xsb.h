@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_defs_xsb.h,v 1.1 1999-11-20 06:45:50 kifer Exp $
+** $Id: token_defs_xsb.h,v 1.2 2003-01-28 22:57:06 dwarren Exp $
 ** 
 */
 
@@ -52,6 +52,8 @@
 #define TK_POSTOP   20
 #define TK_QATOM    21
 #define TK_QSTR     22		/* quoted string */
+#define TK_TERML    23          /* term, for write_canonical lettervar */
+#define TK_TERM     24          /* term, for write_canonical */
 
 #define DIGIT    0              /* 0 .. 9 */
 #define BREAK    1              /* _ */

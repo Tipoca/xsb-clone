@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.20 2002-05-31 18:17:45 lfcastro Exp $
+** $Id: debug_xsb.c,v 1.21 2003-01-28 22:57:00 dwarren Exp $
 ** 
 */
 
@@ -44,7 +44,6 @@
 #include "macro_xsb.h"
 #include "inst_xsb.h"
 #include "debug_xsb.h"
-#include "token_xsb.h"
 #include "varstring_xsb.h"
 #include "cinterf.h"
 #include "io_defs_xsb.h"
