@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.2 2001-10-01 19:48:29 lfcastro Exp $
+** $Id: complete_local.h,v 1.3 2001-10-20 21:53:24 lfcastro Exp $
 ** 
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -96,7 +96,8 @@ static inline int  ScheduleNonLeaderGenerator(VariantSF subgoal)
   } 
   return 0;
 }
-#endif
+#endif /* CHAT */
+#endif /* LOCAL */
 
 #ifdef PROFILE
 #define ProfileLeader \
@@ -152,6 +153,7 @@ static inline int  ScheduleNonLeaderGenerator(VariantSF subgoal)
 #define ProfileLeader
 #endif
 
+#ifdef LOCAL_EVAL
 #ifdef CHAT
 #define DisposeOfComplSusp(subgoal) \
         chat_free_compl_susp_chat_areas(subgoal)
