@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.50 2001/03/28 08:56:34 kifer Exp $
+** $Id: machine.P,v 1.51 2001/06/29 22:54:11 kifer Exp $
 ** 
 */
 
@@ -205,7 +205,6 @@ odbc_exec_query(_A, _B, _C, _D, _E, _F) :- '_$builtin'(ODBC_EXEC_QUERY).
 '$$unwind_stack':- '$$unwind_stack'.
 '$$clean_up_block':- '$$clean_up_block'.
 
-print_chat :- print_chat.
 print_ls :- print_ls.
 print_tr :- print_tr.
 print_heap(X,Y) :- print_heap(X,Y).
