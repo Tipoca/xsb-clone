@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.5 2001-06-27 19:26:34 gzyang Exp $
+** $Id: flrcompiler.H,v 1.6 2001-06-29 23:31:29 kifer Exp $
 **
 */
 
@@ -40,14 +40,14 @@
 :- import
 	flora_argdef/3,
 	flora_define_arguments/3
-   from flrsignature.
+   from flrarguments.
 
 :- import flora_define_prolog/2 from flrprolog.
 
 :- import
 	flora_define_firstorder/2,
 	flora_define_flogicstatic/2
-   from flrnohilog.
+   from flrfirstorder.
 
 :- import flora_is_dynamic_flogic_base/2 from flrwrapper.
 

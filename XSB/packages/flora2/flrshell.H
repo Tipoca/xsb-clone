@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.18 2001-06-29 22:58:36 kifer Exp $
+** $Id: flrshell.H,v 1.19 2001-06-29 23:31:29 kifer Exp $
 **
 */
 
@@ -69,11 +69,11 @@
 
 :- import flora_shreset_operator/0 from flroperator.
 
-:- import flora_shreset_arguments/0 from flrsignature.
+:- import flora_shreset_arguments/0 from flrarguments.
 
 %%:- import flora_shreset_prolog/0 from flrprolog.
 
-:- import flora_shreset_firstorder/0 from flrnohilog.
+:- import flora_shreset_firstorder/0 from flrfirstorder.
 
 :- import
 	flora_load_library/1,

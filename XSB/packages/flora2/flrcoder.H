@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.H,v 1.10 2001-06-27 19:26:34 gzyang Exp $
+** $Id: flrcoder.H,v 1.11 2001-06-29 23:31:29 kifer Exp $
 **
 */
 
@@ -36,7 +36,7 @@
 :- import
 	flora_firstorderdef/2,
 	flora_flogicstaticdef/2
-   from flrnohilog.
+   from flrfirstorder.
 
 :- import flora_prlgdef/2 from flrprolog.
 

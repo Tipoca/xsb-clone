@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.18 2001-06-29 22:58:36 kifer Exp $
+## $Id: Makefile,v 1.19 2001-06-29 23:31:29 kifer Exp $
 ## 
 ##
 
@@ -31,9 +31,9 @@ XSBDIR = ../..
 ALLOBJS = flroperator.O \
 	  flrnodefp.O \
 	  flrnowsp.O \
-	  flrsignature.O \
+	  flrarguments.O \
 	  flrprolog.O \
-	  flrnohilog.O \
+	  flrfirstorder.O \
 	  flrprint.O \
 	  flrlibman.O \
 	  flrlexer.O \
@@ -102,16 +102,16 @@ flrnowsp.O : flrnowsp.P flrnowsp.H $(FLORA_TERMS)
 	@echo 'mc(flrnowsp,$(OPTION)).' >> cmd...
 
 
-flrsignature.O : flrsignature.P flrsignature.H $(FLORA_TERMS)
-	@echo 'mc(flrsignature,$(OPTION)).' >> cmd...
+flrarguments.O : flrarguments.P flrarguments.H $(FLORA_TERMS)
+	@echo 'mc(flrarguments,$(OPTION)).' >> cmd...
 
 
 flrprolog.O : flrprolog.P flrprolog.H $(FLORA_TERMS)
 	@echo 'mc(flrprolog,$(OPTION)).' >> cmd...
 
 
-flrnohilog.O : flrnohilog.P flrnohilog.H $(FLORA_TERMS)
-	@echo 'mc(flrnohilog,$(OPTION)).' >> cmd...
+flrfirstorder.O : flrfirstorder.P flrfirstorder.H $(FLORA_TERMS)
+	@echo 'mc(flrfirstorder,$(OPTION)).' >> cmd...
 
 
 flrprint.O : flrprint.P flrprint.H $(XSB_STANDARD)

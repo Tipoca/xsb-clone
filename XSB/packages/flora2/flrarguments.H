@@ -1,4 +1,4 @@
-/* File:      flrsignature.H
+/* File:      flrarguments.H
 **
 ** Author(s): Guizhen Yang
 **
@@ -20,6 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
+** $Id: flrarguments.H,v 1.1 2001-06-29 23:31:29 kifer Exp $
 **
 */
 

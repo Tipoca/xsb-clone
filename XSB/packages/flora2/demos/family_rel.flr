@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: family_rel.flr,v 1.5 2001-06-07 08:46:10 kifer Exp $
+** $Id: family_rel.flr,v 1.6 2001-06-29 23:31:29 kifer Exp $
 ** 
 */
 
@@ -67,14 +67,17 @@ spouse(X,Y) :- spouse(Y,X).	% now spouse is an IDB (derived) relation!
 child(wilhelm,franz).
 child(wilhelm,heinz).
 child(wilhelm,hermann).
-child(rita,X) :- child(wilhelm,X).	% rita & wilhelm have the same kids
+
 child(hermann,bernhard).
 child(hermann,karl).
 child(hermann,kati).
-child(johanna,X) :- child(hermann,X).	% like above for johanna & hermann 
+
 child(bernhard,albert).
 child(monique,albert).
 child(kati,eva).
+
+child(rita,X) :- child(wilhelm,X).	% rita & wilhelm have the same kids
+child(johanna,X) :- child(hermann,X).	% like above for johanna & hermann 
 
 %%% ======================================================================
 %%% DEFINE SOME DERIVED (IDB) RELATIONS

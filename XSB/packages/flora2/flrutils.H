@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.26 2001-06-29 22:58:36 kifer Exp $
+** $Id: flrutils.H,v 1.27 2001-06-29 23:31:29 kifer Exp $
 **
 */
 
@@ -92,11 +92,11 @@
 
 :- import flora_reset_operator/0 from flroperator.
 
-:- import flora_reset_arguments/0 from flrsignature.
+:- import flora_reset_arguments/0 from flrarguments.
 
 :- import flora_reset_prolog/0 from flrprolog.
 
-:- import flora_reset_firstorder/0 from flrnohilog.
+:- import flora_reset_firstorder/0 from flrfirstorder.
 
 :- import flora_parse/3 from flrparser.
 
