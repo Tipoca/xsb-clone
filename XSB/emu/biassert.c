@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.68 2004-02-02 20:29:48 dwarren Exp $
+** $Id: biassert.c,v 1.69 2004-07-07 22:29:12 dwarren Exp $
 ** 
 */
 
@@ -2109,7 +2109,7 @@ xsbBool db_get_last_clause( /*+(PrRef)Pred, -(ClRef)Clause,
 xsbBool db_get_clause( /*+CC, ?CI, ?CIL, +PrRef, +Head, +Failed, -Clause, -Type, -EntryPoint, -NewCI, -NewCIL */ )
 {
   PrRef Pred = (PrRef)ptoc_int(4);
-  int IndexLevel, IndexArg, nimInds ;
+  int IndexLevel = 0, IndexArg = 0, nimInds ;
   ClRef Clause ;
   prolog_term Head = reg_term(5);
   CPtr EntryPoint = 0;
