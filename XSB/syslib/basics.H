@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.H,v 1.3 1999/07/21 13:25:12 tswift Exp $
+** $Id: basics.H,v 1.4 1999/08/18 12:34:00 kostis Exp $
 ** 
 */
 
 
 :- export append/3, copy_term/2, flatten/2, ground/1, ith/3, length/2, 
-	  member/2, memberchk/2, reverse/2, select/3.
+	  member/2, memberchk/2, subset/2, reverse/2, select/3.
 
 :- import copy_term0/2 from machine.
 :- import integer/1, is_list/1 from standard.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.P,v 1.3 1999/07/07 23:48:51 tswift Exp $
+** $Id: basics.P,v 1.4 1999/08/18 12:34:02 kostis Exp $
 ** 
 */
 
@@ -98,6 +98,13 @@ member(X,[_|L]) :- member(X,L).
 %---
 memberchk(X,[X|_]) :- !.
 memberchk(X,[_|L]) :- memberchk(X,L).
+
+%---
+% subset
+subset([],_).
+subset([H|T],List) :-
+	memberchk(H,List),
+        subset(T,List).
 
 %---
 % A not so naive reverse
