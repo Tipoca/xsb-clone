@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.H,v 1.6 2000-01-11 16:39:27 ejohnson Exp $
+** $Id: aggregs.H,v 1.7 2000-01-18 15:42:04 ejohnson Exp $
 ** 
 */
 
@@ -58,6 +58,6 @@
 :- import arg/3, call/1, functor/3, '=..'/2 from standard.
 :- import member/2, copy_term/2, append/3 from basics.
 :- import sort/2, findall/3, bagof/3 from setof.
-:- import get_returns/3, delete_return/2, variant/1 from tables.
+:- import get_returns/3, delete_return/2, (use_variant_tabling)/1 from tables.
 :- import (table)/1 from usermod.
 :- import variant/2 from subsumes.

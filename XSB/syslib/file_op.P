@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.P,v 1.7 1999/08/19 15:28:05 luis Exp $
+** $Id: file_op.P,v 1.8 1999/08/19 16:19:10 luis Exp $
 ** 
 */
 
@@ -107,6 +107,8 @@ deactivate_op(T, S) :-
 '_$op1'(1150,fx,(multifile)).
 '_$op1'(1100,xfy,';').
 '_$op1'(1100,fx,(table)).	% Added for tabling
+'_$op1'(1100,fx,(use_variant_tabling)).		% Added for tabling
+'_$op1'(1100,fx,(use_subsumptive_tabling)).	% Added for tabling
 '_$op1'(1100,fx,(edb)).		% Added for tabling
 '_$op1'(1100,fy,(index)).	% Not in the Prolog standard
 '_$op1'(1100,fy,(ti)).		% Added for transformational indexing

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xnmr.P,v 1.12 2000-01-11 16:39:28 ejohnson Exp $
+** $Id: xnmr.P,v 1.13 2000-01-18 15:42:06 ejohnson Exp $
 ** 
 */
 
@@ -176,7 +176,7 @@ compute_query(Q,Q1) :-
 
 
 :- table '{}'/1.
-:- variant(['{}'(_)]).
+:- use_variant_tabling '{}'(_).
 '{}'(Q) :- 
 	'_$savecp'(C), 
 	goal_cut_trans(Q,X,C),
@@ -414,11 +414,3 @@ explicitly_negate_query(X,X1) :-
 -xnmr_dummy :- true.
 
 %-true :- fail.
-
-
-
-
-
-
-
-
