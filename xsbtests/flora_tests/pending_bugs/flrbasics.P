@@ -1,0 +1,457 @@
+/**** closure/flrheader.P: Prepended automatically by the FLORA compiler ****/
+
+
+
+:- table fd/3.
+:- table mvd/3.
+:- table ifd/3.
+:- table imvd/3.
+:- table isa/2.
+:- table sub/2.
+:- table fs/3.
+:- table mvs/3.
+
+
+:- import member/2, ground/1 from basics.
+
+
+
+/****************************************************************************/
+:- table tmp_pred/0.
+tnot_all(Test) :- 
+	assert((tmp_pred :- Test)),
+	%% Retract "tmp_pred :- Test" after use
+	%% Abolish table for tmp_pred
+	(tnot(tmp_pred)
+	->  retractall(tmp_pred),
+	    abolish_table_pred(tmp_pred/0)
+	;   retractall(tmp_pred),
+	    abolish_table_pred(tmp_pred/0),
+	    fail
+	).
+
+
+
+
+/************************** End of Header ***********************************/
+
+time_flies_like_an_arrow.
+
+
+
+isa(john,employee).
+
+
+sub(employee,person).
+
+
+isa(bill,person).
+
+fs(person,age,integer).
+
+mvs(person,kids,person).
+
+isa(mary,employee).
+
+fd(mary,age,29).
+
+mvd(mary,kids,tim).
+
+mvd(mary,kids,leo).
+
+mvd(mary,kids,betty).
+
+fd(mary,salary,1998,a_lot).
+
+
+mvd(tim,hobbies,stamps).
+
+mvd(tim,hobbies,snowboard).
+
+
+mvd(betty,hobbies,fishing).
+
+mvd(betty,hobbies,diving).
+
+
+isa(snowboard,dangerous_hobby).
+
+
+isa(diving,dangerous_hobby).
+
+
+fd(_h6904,self,_h6904).
+
+
+imvd(person,believes_in,something).
+
+imvd(person,believes_in,something_else).
+
+
+mvd(person,instances,_h8038) :- 
+        isa_rhs(_h8038,person).
+
+
+tst1 :- 
+        time_flies_like_an_arrow.
+
+
+tst2 :- 
+        exists(fruit_flies_like_a_banana).
+
+
+
+%%% tst3.
+tst3.
+
+
+tst4 :- 
+        isa_rhs(_h10237,person),
+        writeln(_h10237),
+        fail.
+
+
+%%% tst4.
+tst4.
+
+
+tst5 :- 
+        mvd_rhs(person,instances,_h10996),
+        writeln(_h10996),
+        fail.
+
+
+%%% tst5.
+tst5.
+
+
+tst6 :- 
+        mvd_rhs(_h11910,believes_in,_h11948),
+        write(_h11910),
+        write('  '),
+        writeln(_h11948),
+        fail.
+
+
+%%% tst6.
+tst6.
+
+
+tst7 :- 
+        mvd_rhs(_h13378,kids,_h13635),
+        fd_rhs(_h13635,self,_h13430),
+        isa_rhs(_h13473,dangerous_hobby),
+        mvd_rhs(_h13635,hobbies,_h13473),
+        write(_h13378),
+        write('  '),
+        write(_h13430),
+        write('  '),
+        writeln(_h13473),
+        fail.
+
+
+%%%  tst7.
+tst7.
+
+
+test :- 
+        tst1,
+        tst2,
+        tst3,
+        tst4,
+        tst5,
+        tst6,
+        tst7.
+
+
+:- table subclass/2.
+:- table strict_subclass/2.
+
+subclass(X,X) :- exists(X).
+subclass(X,Y) :- strict_subclass(X,Y).
+
+%% Using flora_subclass can be a major source of inefficiency
+%% In most cases, we want to use strict_subclass
+%% We table strict_sub to avoid repetition
+:- table strict_sub/2.
+strict_sub(X,Y) :- 
+	ground(X), ground(Y), !,
+	X \= Y, sub(X,Y).
+strict_sub(X,Y) :- sub(X,Y), X \= Y.
+strict_subclass(X,Y) :- strict_sub(X,Y).
+
+
+
+/*****************************************************************************
+  closure rules for X:Y, X::Z implies X:Z
+*****************************************************************************/
+:- table isa/2.
+
+isa(O,C) :-
+	strict_subclass(C1,C),
+	isa(O,C1).
+
+
+/*****************************************************************************
+  rules for monotonic inheritance of signatures
+*****************************************************************************/
+:- table fs/3.
+:- table mvs/3.
+:- table ifs/3.
+:- table imvs/3.
+
+%% Instance
+fs(O,MethodArgs,R) :-
+	isa(O,Class),
+	fs(Class,MethodArgs,R).
+ifs(O,MethodArgs,R) :-
+	isa(O,Class),
+	ifs(Class,MethodArgs,R).
+
+mvs(O,MethodArgs,R) :-
+	isa(O,Class),
+	mvs(Class,MethodArgs,R).
+imvs(O,MethodArgs,R) :-
+	isa(O,Class),
+	imvs(Class,MethodArgs,R).
+
+%% Subclass
+fs(Sub,MethodArgs,R) :-
+	strict_subclass(Sub,Class),
+	fs(Class,MethodArgs,R).
+ifs(Sub,MethodArgs,R) :-
+	strict_subclass(Sub,Class),
+	ifs(Class,MethodArgs,R).
+
+mvs(Sub,MethodArgs,R) :-
+	strict_subclass(Sub,Class),
+	mvs(Class,MethodArgs,R).
+imvs(Sub,MethodArgs,R) :-
+	strict_subclass(Sub,Class),
+	imvs(Class,MethodArgs,R).
+
+
+/*****************************************************************************
+  rules for nonmonotonic inheritance of behavior
+*****************************************************************************/
+
+:- table fd/3.
+:- table mvd/3.
+:- table ifd/3.
+:- table imvd/3.
+:- table defined_fd/2.
+:- table defined_mvd/2.
+:- table defined_ifd/2.
+:- table defined_imvd/2.
+:- table overwritten_fd/3.
+:- table overwritten_mvd/3.
+:- table overwritten_ifd/3.
+:- table overwritten_imvd/3.
+:- table conflict_fd/3.
+:- table conflict_ifd/3.
+:- table conflict_mvd/3.
+:- table conflict_imvd/3.
+
+
+fd(Object,Method,Value) :-
+	%% If Object,Method are ground, check if Object[Method->...]
+	%% is defined right away --an optimization
+	(ground(Object), ground(Method) ->
+	    tnot(defined_fd(Object,Method)),
+	    isa(Object,Class),
+	    ifd(Class,Method,Value)
+	  ;
+	    isa(Object,Class),
+	    ifd(Class,Method,Value),
+	    tnot_all(defined_fd(Object,Method))
+	),
+	tnot_all(overwritten_fd(Object,Class,Method)),
+	tnot_all(conflict_fd(Object,Class,Method)).
+
+defined_fd(Object,Method) :-
+	fd(Object,Method,_).
+
+overwritten_fd(Object,Class,Method) :-
+	isa(Object,SubClass),
+	SubClass \= Class,
+	strict_subclass(SubClass,Class),
+	ifd(SubClass,Method,_).
+
+%% When this is called, Object always belongs to Class
+conflict_fd(Object,Class,Method) :-
+	defined_ifd(Class1,Method),
+	ground(Class1), ground(Class),
+	Class \= Class1,
+	isa(Object,Class1),
+	tnot(strict_subclass(Class1,Class)),
+	tnot(strict_subclass(Class,Class1)).
+
+
+mvd(Object,Method,Value) :-
+	(ground(Object), ground(Method) ->
+	    tnot(defined_mvd(Object,Method)),
+	    isa(Object,Class),
+	    imvd(Class,Method,Value)
+	  ;
+	    isa(Object,Class),
+	    imvd(Class,Method,Value),
+	    tnot_all(defined_mvd(Object,Method))
+	),
+	tnot_all(overwritten_mvd(Object,Class,Method)),
+	tnot_all(conflict_mvd(Object,Class,Method)).
+
+defined_mvd(Object,Method) :-
+	mvd(Object,Method,_).
+
+overwritten_mvd(Object,Class,Method) :-
+	isa(Object,SubClass),
+	strict_subclass(SubClass,Class),
+	imvd(SubClass,Method,_).
+
+conflict_mvd(Object,Class,Method) :-
+	defined_imvd(Class1,Method),
+	ground(Class), ground(Class1),
+	Class \= Class1,
+	isa(Object,Class1),
+	tnot(strict_subclass(Class1,Class)),
+	tnot(strict_subclass(Class,Class1)).
+
+
+ifd(Class,Method,Value) :-
+	(ground(Class), ground(Method) ->
+	    tnot(defined_ifd(Class,Method)),
+	    strict_subclass(Class,Super),
+	    ifd(Super,Method,Value)
+	  ;
+	    strict_subclass(Class,Super),
+	    ifd(Super,Method,Value),
+	    tnot_all(defined_ifd(Class,Method))
+	),
+	tnot_all(overwritten_ifd(Class,Super,Method)),
+	tnot_all(conflict_ifd(Class,Super,Method)).
+
+defined_ifd(Class,Method) :-
+	ifd(Class,Method,_).
+
+overwritten_ifd(Class,Super,Method) :-
+	strict_subclass(Class,S),
+	strict_subclass(S,Super),
+	ifd(S,Method,_).
+
+%% Note: when this is called, Class is always a subclass of Super
+conflict_ifd(Class,Super,Method) :-
+	defined_ifd(Super1,Method),
+	ground(Super1), ground(Super),
+	Super1 \= Super,
+	strict_subclass(Class,Super1),
+	tnot(strict_subclass(Super1,Super)),
+	tnot(strict_subclass(Super,Super1)).
+
+
+imvd(Class,Method,Value) :-
+	(ground(Class), ground(Method) ->
+	    tnot(defined_imvd(Class,Method)),
+	    strict_subclass(Class,Super),
+	    imvd(Super,Method,Value)
+	  ;
+	    strict_subclass(Class,Super),
+	    imvd(Super,Method,Value),
+	    tnot_all(defined_imvd(Class,Method))
+	),
+	tnot_all(overwritten_imvd(Class,Super,Method)),
+	tnot_all(conflict_imvd(Class,Super,Method)).
+
+defined_imvd(Class,Method) :-
+	imvd(Class,Method,_).
+
+overwritten_imvd(Class,Super,Method) :-
+	strict_subclass(Class,S),
+	strict_subclass(S,Super),
+	imvd(S,Method,_).
+
+%% Note: when this is called, Class is always a subclass of Super
+conflict_imvd(Class,Super,Method) :-
+	defined_imvd(Super1,Method),
+	ground(Super1), ground(Super),
+	Super1 \= Super,
+	strict_subclass(Class,Super1),
+	tnot(strict_subclass(Super1,Super)),
+	tnot(strict_subclass(Super,Super1)).
+
+
+/*****************************************************************************
+  rules for object existence and empty result sets
+*****************************************************************************/
+:- table exists/1.
+:- table mvd/2.
+:- table imvd/2.
+
+exists(X) :- fd(X,_,_).
+exists(X) :- fd(_,_,X).
+exists(X) :- mvd(X,_,_).
+exists(X) :- mvd(_,_,X).
+exists(X) :- ifd(X,_,_).
+exists(X) :- ifd(_,_,X).
+exists(X) :- imvd(X,_,_).
+exists(X) :- imvd(_,_,X).
+exists(X) :- isa(X,_).
+exists(X) :- isa(_,X).
+exists(X) :- sub(X,_).
+exists(X) :- sub(_,X).
+
+exists(X) :-
+	fd(_,M,_),
+	M =.. [_|L],
+	member(X,L).
+
+exists(X) :-
+	mvd(_,M,_),
+	M =.. [_|L],
+	member(X,L).
+
+exists(X) :-
+	ifd(_,M,_),
+	M =.. [_|L],
+	member(X,L).
+
+exists(X) :-
+	imvd(_,M,_),
+	M =.. [_|L],
+	member(X,L).
+
+
+mvd(O,M) :- mvd(O,M,_).
+
+imvd(O,M) :- imvd(O,M,_).
+
+
+/*****************************************************************************
+  rules for flattened path expressions on RHS
+*****************************************************************************/
+fd_rhs(O,M,R)   :- fd(O,M,R).
+mvd_rhs(O,M,R)  :- mvd(O,M,R).
+ifd_rhs(O,M,R)  :- ifd(O,M,R).
+imvd_rhs(O,M,R) :- imvd(O,M,R).
+mvd_rhs(O,M)    :- mvd(O,M).
+imvd_rhs(O,M)   :- imvd(O,M).
+isa_rhs(O1,O2)  :- isa(O1,O2).
+sub_rhs(O1,O2)  :- subclass(O1,O2).
+fs_rhs(O,M,R)   :- fs(O,M,R).
+mvs_rhs(O,M,R)  :- mvs(O,M,R).
+
+
+/*****************************************************************************
+  complementary rules to protect against "undefined" error reported by XSB 
+*****************************************************************************/
+fd(_,_,_)   :- fail.
+mvd(_,_,_)  :- fail.
+ifd(_,_,_)  :- fail.
+imvd(_,_,_) :- fail.
+fs(_,_,_)   :- fail.
+mvs(_,_,_)  :- fail.
+sub(_,_)    :- fail.
+isa(_,_)    :- fail.
+
+
+/****************************  End of Trailer  ******************************/
+
