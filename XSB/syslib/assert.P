@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.P,v 1.22 2003/10/17 21:25:18 dwarren Exp $
+** $Id: assert.P,v 1.23 2003/10/28 13:54:25 dwarren Exp $
 ** 
 */
 
@@ -193,13 +193,15 @@ check_assert((Head :- Body), Pred) :-
 	!,			% This captures Clause being variable
 	( var(Head) ->
 		abort(('Uninstantiated argument 1 of ', Pred))
-	; check_assert(Head, Pred), 
+	; check_assert_fact(Head, Pred), 
 	  ( check_body(Body) -> true
 	  ; abort(('Wrong type in argument 1 of ', Pred,
 			   ' (callable term expected)'))
 	  )
 	).
-check_assert(Head, Pred) :- 	% asserting a fact
+check_assert(Head, Pred) :- check_assert_fact(Head, Pred).
+
+check_assert_fact(Head, Pred) :- 	% asserting a fact
 	( callable(Head) -> 
 	    ( functor(Head, F, A),
 		standard_symbol(F, A, _Prop),
