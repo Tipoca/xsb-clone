@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.P,v 1.24 2001/04/06 15:14:16 dwarren Exp $
+** $Id: file_io.P,v 1.25 2001/04/08 06:17:04 kifer Exp $
 ** 
 */
 
@@ -231,7 +231,7 @@ copyIOport(FromIOport, ToIOport) :-
 	(file_read_line(FromIOport, Line) 
 	-> file_write(ToIOport, Line),fail
 	; true
-	).
+	), !.
 copyIOport(_,_).
 
 /***************************************************************/
