@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.35 1999-04-14 03:03:08 kifer Exp $
+## $Id: configure.in,v 1.36 1999-04-17 03:10:42 kifer Exp $
 ## 
 ##
 
@@ -658,6 +658,18 @@ if test "${perl_support}" = "yes"; then
    perl_cc_compiler=`perl -MConfig -e 'print $Config{cc}'`
    perl_ccflags=`perl -MConfig -e 'print $Config{ccflags}'`
    perl_libs=`perl -MConfig -e 'print $Config{libs}'`
+
+   # Perl base revision comes out as 5.0, so we strip .0
+   perl_baserev=`perl -MConfig -e 'print $Config{baserev}' | sed -e 's/\..*//'`
+   perl_patchlevel=`perl -MConfig -e 'print $Config{patchlevel}'`
+
+   # perl support doesn't work with perl < 5.004
+   if test $[perl_baserev] -lt 5 ; then
+      perl_support=no
+   fi
+   if test "$perl_baserev" = "5" -a $[perl_patchlevel] -lt 4  ; then
+      perl_support=no
+   fi
 fi
 
 
