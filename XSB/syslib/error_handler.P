@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.23 2004/08/29 22:57:04 tswift Exp $
+** $Id: error_handler.P,v 1.24 2004/09/02 00:23:25 dwarren Exp $
 ** 
 */
 
@@ -164,7 +164,10 @@ print_mod_pred_arity_list([Psc|Pscs]) :-
 	(Psc =:= 0
 	 ->	messageln('... unknown/?',STDERR)
 	 ;	psc_data(Psc,ModPsc),
-		psc_name(ModPsc,ModName),
+		(ModPsc =\= 0
+		 ->	psc_name(ModPsc,ModName)
+		 ;	ModName = unknown
+		),
 		psc_name(Psc,Name),
 		psc_arity(Psc,Arity),
 		(ModName \== usermod
