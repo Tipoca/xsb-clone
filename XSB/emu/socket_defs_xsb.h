@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_defs_xsb.h,v 1.1 1999-10-25 05:59:21 kifer Exp $
+** $Id: socket_defs_xsb.h,v 1.2 1999-11-09 04:31:34 kifer Exp $
 ** 
 */
 
@@ -39,3 +39,8 @@
 #define SOCKET_GET0        11
 #define SOCKET_PUT         12
 #define SOCKET_SET_OPTION  13
+#define SOCKET_SET_SELECT     14
+#define SOCKET_SELECT         15
+#define SOCKET_SELECT_DESTROY 16
+#define SET_TIMEOUT           17	
+

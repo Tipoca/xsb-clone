@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket.H,v 1.4 1999-08-14 06:10:56 kifer Exp $
+** $Id: socket.H,v 1.5 1999-11-09 04:31:36 kifer Exp $
 ** 
 */
 
@@ -33,6 +33,9 @@
      socket_connect/5, socket_close/2, socket_recv/3,
      socket_send/3, socket_send_eof/2, socket_send_asci/3,
      socket_get0/3, socket_put/3.
+
+:- export socket_set_select/4, socket_select/5, socket_select_destroy/1.
+
 
 :- import socket_request/7, file_function/7 from machine.
 
