@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.P,v 1.2 1998/11/15 06:09:11 kifer Exp $
+** $Id: assert.P,v 1.3 1999/01/15 18:41:51 kostis Exp $
 ** 
 */
 
@@ -241,6 +241,30 @@ convert_to_dyna(PHead,Prref) :-
 		compiled_to_dynamic(PSC,OldP)
 	; abort(('Asserting to something illegal (Type = ', SYMTYPE, ')'))
 	).
+
+/*======================================================================*/
+/* db_new_prref(+PSC,+PHead,-Prref):					*/
+/*	creates an empty Prref, i.e.  one with no clauses in it.  	*/
+/*	If called, it will simply fail.  Prref must be a variable at 	*/
+/*	the time of call. It points the entry point of the psc record	*/
+/*	pointed to by PSC to this Prref. So in effect it makes it	*/
+/*	dynamic.	 						*/
+/*	dsw:								*/
+/*	Prref ->:							*/
+/*		-4: Addr of last Clref on ALL chain			*/
+/*		0: BC instruction: fail (if empty),			*/
+/*			jump and save breg (if nonempty)		*/
+/*		4: Addr of first Clref on ALL chain			*/
+/*======================================================================*/
+
+db_new_prref(PSC,PHead,Prref) :-
+	psc_set_type(PSC, 1),        /* Make it dynamic */
+	psc_set_env(PSC, 0),         /* Make it exported */
+	('_$table'(PHead)
+	 ->	Tabled = 1
+	 ;	Tabled = 0
+	),
+	db_build_prref( PSC, Tabled, Prref).
 
 /*======================================================================*/
 /* retract(+Fact)							*/
