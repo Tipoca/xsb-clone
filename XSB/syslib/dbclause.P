@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dbclause.P,v 1.11 1999/10/25 06:00:49 kifer Exp $
+** $Id: dbclause.P,v 1.12 1999/11/16 23:12:37 warren Exp $
 ** 
 */
 
@@ -132,7 +132,7 @@ db_clause(Head,Body,Prref,Clref) :-
 	 ->	chk_if_trie_assert(Clref,Result,_),
 		(Result = trie ->
 			Body = true,
-			db_clause_match_trassert(Head,Clref)
+			db_clause_match_trassert(Head)
 		;
 		Result = nottrie ->
 			Body = '$compiled'	
@@ -162,16 +162,9 @@ db_clause_match(Head,Body,Entry) :-
 	).
 
 
-db_clause_match_trassert(Head,Clref) :-
-	Entry is Clref + 8,
-	(db_do_call(Entry,Head) ->
-		stat_set_flag(24,0),
-		true
-	;
-		stat_set_flag(24,0),
-		fail
-	).
-
+db_clause_match_trassert(Head) :-
+	stat_set_flag(24,0),
+	call(Head).
 
 
 % db_do_call(+CodeEntry, +Head)
