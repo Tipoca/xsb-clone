@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.P,v 1.12 2001/03/17 22:42:30 tswift Exp $
+** $Id: file_op.P,v 1.13 2001/05/31 17:59:14 dwarren Exp $
 ** 
 */
 
@@ -279,7 +279,7 @@ retract_index(Pred) :-
 fix_arg([],_,[]).
 fix_arg([Arg|Args],Arity,[Narg|Nargs]) :-
 	(integer(Arg)
-	 ->	((Arg > 0, Arg =< Arity)
+	 ->	((Arg > 256 ; Arg > 0, Arg =< Arity)
 		 ->	Narg = Arg
 		 ;	fail
 		)
