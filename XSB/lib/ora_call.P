@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ora_call.P,v 1.5 1999-04-27 14:39:58 kifer Exp $
+** $Id: ora_call.P,v 1.6 1999-06-04 21:01:28 warren Exp $
 ** 
 */
 
@@ -2349,7 +2349,7 @@ get_output_value(CursorHandle,BindVarValue,Status) :-
 execute_immediate(StmtString,Status) :-
 	oracle_query(12,StmtString,Status).
 
-attribute('$','$','$','$').
+:- assert(attribute('$','$','$','$')).
 
 db_sqlcaid(Res) :- oracle_query(16,Res).
 db_sqlcabc(Res) :- oracle_query(17,Res).
