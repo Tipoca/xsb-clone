@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.P,v 1.6 1999/08/19 15:12:44 luis Exp $
+** $Id: file_op.P,v 1.7 1999/08/19 15:28:05 luis Exp $
 ** 
 */
 
@@ -116,9 +116,9 @@ deactivate_op(T, S) :-
 '_$op1'(1100,fx,(parallel)).	% Not in the Prolog standard
 '_$op1'(1100,fx,(local)).	% Not in the Prolog standard
 '_$op1'(1100,fx,(foreign_pred)). % Not in the Prolog standard 
+'_$op1'(1100,fx,(compile_command)). % Not in the Prolog standard
 '_$op1'(1050,fy,(import)).	% Not in the Prolog standard
 '_$op1'(1050,xfx,(from)).	% Not in the Prolog standard
-'_$op1'(1050,fx,(compile_command)). % Not in the Prolog standard
 '_$op1'(1050,xfy,'->').
 '_$op1'(1000,xfy,',').
 '_$op1'(900,fy,not).		% Not in the Prolog standard
