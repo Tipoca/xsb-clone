@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.h,v 1.3 2003-01-28 22:57:04 dwarren Exp $
+** $Id: io_builtins_xsb.h,v 1.4 2003-09-18 18:43:52 dwarren Exp $
 ** 
 */
 
@@ -38,6 +38,6 @@ extern void write_quotedname(FILE *file, char *string);
 extern void double_quotes(char *string, char *new_string);
 extern xsbBool no_quotes_needed(char *string);
 
-int read_canonical_term(FILE *, STRFILE *, Cell);
+int read_canonical_term(FILE *, STRFILE *, int);
 
 void print_term_canonical(FILE *, Cell, int);

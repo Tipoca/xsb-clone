@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.29 2003-04-16 14:11:31 lfcastro Exp $
+** $Id: odbc_xsb.c,v 1.30 2003-09-18 18:43:52 dwarren Exp $
 ** 
 */
 
@@ -1163,7 +1163,6 @@ int GetColumn()
 {
   struct Cursor *cur = (struct Cursor *)ptoc_int(2);
   int ColCurNum = ptoc_int(3);
-  Cell op1;
   Cell op = ptoc_tag(4);
   UDWORD len;
 
@@ -1197,12 +1196,9 @@ int GetColumn()
     if (isconstr(op) && get_arity(get_str_psc(op)) == 1) {
       STRFILE strfile;
       
-      op1 = cell(clref_val(op)+1);
-      XSB_Deref(op1);
-      
       strfile.strcnt = strlen(cur->Data[ColCurNum]);
       strfile.strptr = strfile.strbase = cur->Data[ColCurNum];
-      read_canonical_term(NULL,&strfile,op1); /* terminating '.'? */
+      read_canonical_term(NULL,&strfile,2); /* terminating '.'? */
       return TRUE;
     }
     if (!isstring(op)) return FALSE;
@@ -1221,12 +1217,9 @@ int GetColumn()
     if (isconstr(op) && get_arity(get_str_psc(op)) == 1) {
       STRFILE strfile;
       
-      op1 = cell(clref_val(op)+1);
-      XSB_Deref(op1);
-      
       strfile.strcnt = strlen(cur->Data[ColCurNum]);
       strfile.strptr = strfile.strbase = cur->Data[ColCurNum];
-      read_canonical_term(NULL,&strfile,op1); /* terminating '.'? */
+      read_canonical_term(NULL,&strfile,2); /* terminating '.'? */
       return TRUE;
     }
     if (!isstring(op)) return FALSE;
