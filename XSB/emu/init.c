@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.20 1999-05-27 16:02:34 kifer Exp $
+** $Id: init.c,v 1.21 1999-07-15 21:41:13 ejohnson Exp $
 ** 
 */
 
@@ -171,7 +171,6 @@ char *init_para(int argc, char *argv[])
   char *cmd_line_goal="true.";
   int strlen_instdir, strlen_initfile, strlen_2ndfile;
 
-  HASHrootptr = &HASHroot;
   init_newtrie();
   init_trie_aux_areas();
 

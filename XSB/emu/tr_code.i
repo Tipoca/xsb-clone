@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code.i,v 1.5 1999-07-06 16:35:18 ejohnson Exp $
+** $Id: tr_code.i,v 1.6 1999-07-15 21:41:19 ejohnson Exp $
 ** 
 */
 
@@ -47,13 +47,13 @@
 								\
    switch (cell_tag(Subterm)) {					\
    case STRING:  case INT:  case FLOAT:				\
-     symbol = TrieEncodeConstant(Subterm);			\
+     symbol = EncodeTrieConstant(Subterm);			\
      break;							\
    case LIST:							\
-     symbol = TrieEncodeList(Subterm);				\
+     symbol = EncodeTrieList(Subterm);				\
      break;							\
    case CS:							\
-     symbol = TrieEncodeFunctor(Subterm);			\
+     symbol = EncodeTrieFunctor(Subterm);			\
      break;							\
    default:							\
      fprintf(stderr,"Bad tag :Type %ld ",cell_tag(Subterm));	\

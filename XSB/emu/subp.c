@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.10 1999/04/23 19:41:58 cbaoqiu Exp $
+** $Id: subp.c,v 1.11 1999/06/23 19:50:48 kostis Exp $
 ** 
 */
 
@@ -51,7 +51,8 @@
 #include "deref.h"
 #include "flags.h"
 #include "binding.h"
-#include "tries.h"
+#include "trie_internals.h"
+#include "trassert.h"
 #include "choice.h"
 #include "token.h"
 #include "sig.h"
@@ -504,7 +505,8 @@ byte *exception_handler(char *string)
   fprintf(stderr, "%s! Aborting...\n", string);
   breg = (CPtr)(tcpstack.high - abort_cp_offset());
   hbreg = cp_hreg(breg);
-  ebreg = cp_ebreg(breg); 
+  ebreg = cp_ebreg(breg);
+  switch_from_trie_assert;      /* ensure table-trie space is default */
   remove_open_tables_reset_freezes();
   return cp_pcreg(breg); 
 }

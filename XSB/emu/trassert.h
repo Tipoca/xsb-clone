@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trassert.h,v 1.3 1999-07-06 16:35:21 ejohnson Exp $
+** $Id: trassert.h,v 1.4 1999-07-15 21:41:22 ejohnson Exp $
 ** 
 */
 
@@ -28,41 +28,12 @@ extern int trie_retract(void);
 extern int trie_retract_safe(void);
 
 
-extern NODEptr free_trie_nodes;
-extern NODEptr free_trie_space;
-extern NODEptr top_trie_space;
-extern NODEptr tra_free_trie_nodes;
-extern NODEptr tra_free_trie_space;
-extern NODEptr tra_top_trie_space; 
-extern NODEptr bak_free_trie_nodes;
-extern NODEptr bak_free_trie_space;
-extern NODEptr bak_top_trie_space;
-extern char *trie_node_chunk_ptr;
-extern char *tra_trie_node_chunk_ptr;
-extern char *bak_trie_node_chunk_ptr;
-extern BasicTrieHT HASHroot, *HASHrootptr, tra_HASHroot; 
-
-#define switch_to_trie_assert {\
-   bak_free_trie_nodes = free_trie_nodes;\
-   bak_free_trie_space = free_trie_space;\
-   bak_top_trie_space = top_trie_space;\
-   bak_trie_node_chunk_ptr = trie_node_chunk_ptr;\
-   free_trie_nodes = tra_free_trie_nodes;\
-   free_trie_space = tra_free_trie_space;\
-   top_trie_space = tra_top_trie_space;\
-   trie_node_chunk_ptr = tra_trie_node_chunk_ptr;\
-   HASHrootptr = &tra_HASHroot;\
+#define switch_to_trie_assert {		\
+   smBTN = &smAssertBTN;		\
+   smBTHT = &smAssertBTHT;		\
 }
 
-#define switch_from_trie_assert {\
-   tra_free_trie_nodes = free_trie_nodes;\
-   tra_free_trie_space = free_trie_space;\
-   tra_top_trie_space = top_trie_space;\
-   tra_trie_node_chunk_ptr = trie_node_chunk_ptr;\
-   free_trie_nodes = bak_free_trie_nodes;\
-   free_trie_space = bak_free_trie_space;\
-   top_trie_space = bak_top_trie_space;\
-   trie_node_chunk_ptr = bak_trie_node_chunk_ptr;\
-   HASHrootptr = &HASHroot;\
+#define switch_from_trie_assert {	\
+   smBTN = &smTableBTN;			\
+   smBTHT = &smTableBTHT;		\
 }
- 

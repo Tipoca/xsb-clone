@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.29 1999-07-06 16:35:09 ejohnson Exp $
+** $Id: emuloop.c,v 1.30 1999-07-15 21:41:12 ejohnson Exp $
 ** 
 */
 
@@ -228,7 +228,7 @@ static int emuloop(byte *startaddr)
 /* for slginsts.i
    -------------- */
   Cell  CallNumVar;
-  ALPtr OldRetPtr;
+  ALNptr OldRetPtr;
   NODEptr TrieRetPtr;
   CallInfoRecord callInfo;
   CallLookupResults lookupResults;

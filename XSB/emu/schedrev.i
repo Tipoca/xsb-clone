@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev.i,v 1.2 1999-04-22 06:49:18 kifer Exp $
+** $Id: schedrev.i,v 1.3 1999-07-15 21:41:15 ejohnson Exp $
 ** 
 */
 
@@ -32,7 +32,7 @@
  * orig_breg is the address of the TCP
  */
 CPtr sched_answers(CPtr subg_struct, CPtr orig_breg, int leader) {
-  ALPtr tmp_ret_ptr;
+  ALNptr tmp_ret_ptr;
   CPtr first_sched_node, prev_node, active_node;
 
 #ifdef PROFILE

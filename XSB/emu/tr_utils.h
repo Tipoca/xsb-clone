@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.10 1999-07-06 16:35:20 ejohnson Exp $
+** $Id: tr_utils.h,v 1.11 1999-07-15 21:41:21 ejohnson Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@ extern void init_newtrie(void);
 extern void delete_branch(BTNptr, BTNptr *);
 extern void safe_delete_branch(BTNptr);
 extern void undelete_branch(BTNptr);
+extern void delete_trie(BTNptr);
 
 extern bool has_unconditional_answers(SGFrame);
 
@@ -41,7 +42,4 @@ extern void newtrie(void);
 extern void trie_intern(void);
 extern int  trie_interned(void);
 extern void trie_dispose(void);
-extern void delete_trie(BTNptr);
-
-extern BTNptr *Set_ArrayPtr;
-extern int first_free_set;
+extern void delete_interned_trie(int);

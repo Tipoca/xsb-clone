@@ -18,12 +18,17 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory.h,v 1.5 1999-05-17 17:20:52 unova Exp $
+** $Id: memory.h,v 1.6 1999-07-15 21:41:14 ejohnson Exp $
 ** 
 */
 
 
+/*===========================================================================*/
+
 /*
+ *			SLG-WAM Stack Management
+ *			========================
+ *
  * Information on each independent data area needed by the slg-wam is kept
  * in one of these structures.  "low" and "high" point into memory to
  * delineate the bounds of the data area: "low" gets the address returned
