@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.23 1999-08-23 21:47:27 luis Exp $
+## $Id: topMakefile.in,v 1.24 1999-08-29 23:51:48 kifer Exp $
 ## 
 ##
 
@@ -156,6 +156,7 @@ prepare:
 	  ln ${src_config_objlibdir}/*.o . 2> /dev/null || echo "" ; \
 	  ln ${src_config_prefix}/emuMakefile ./Makefile 
 	@rm -f /tmp/xsb_*lib_warn
+	@rm -f /tmp/*match_warn
 	@rm -f /tmp/flora_*_warn
 
 emu: ${src_config_prefix}/config.h ${src_config_prefix}/debug.h
@@ -200,6 +201,7 @@ do_cleaning:
 	@cp ./Installation_summary $(src_config_prefix)
 	@echo ""
 	@cat /tmp/xsb_*lib_warn 2> /dev/null || echo ""
+	@cat /tmp/*match_warn 2> /dev/null || echo ""
 	@cat /tmp/flora_*_warn 2> /dev/null || echo ""
 
 inform_executable:

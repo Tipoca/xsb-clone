@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.8 1999-08-28 20:08:49 kifer Exp $
+## $Id: Makefile,v 1.9 1999-08-29 23:51:48 kifer Exp $
 ## 
 ##
 
@@ -88,7 +88,6 @@ init:
 
 finish:
 	@echo 'fmt_write($(STDWARN),"---------------------------------------------------\n",_).' >> cmd...
-
 
 
 .DONE:
