@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.52.2.1 2003/09/11 13:55:11 tschrijvers Exp $
+** $Id: machine.H,v 1.55 2003/09/29 13:05:17 tschrijvers Exp $
 ** 
 */
 
@@ -152,7 +152,7 @@
         interprolog_callback/3.
 
 :- import assert/1, retract/1 from assert.
-:- import write/1, writeln/1 from standard.
+:- import write/1, writeln/1, is_attv/1 from standard.
 
 :- export 
 	file_function/7, conname/2, conpsc/2, machine_file_exists/1,

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.33.2.1 2003/09/11 13:55:11 tschrijvers Exp $
+** $Id: x_interp.H,v 1.34 2003/09/29 13:05:17 tschrijvers Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
 %% These are explicitly imported because they are used early on, 
 %% before XSB is fully bootstrapped.
 :- import abort/0, call/1, call_c/1, call_expose/1, catch/3, goal_cut_trans/3,
-          atom_codes/2, seeing/1, telling/1, see/1, tell/1, seen/0, told/0, write/1, nl/0, is_attv/1
+          atom_codes/2, seeing/1, telling/1, see/1, tell/1, seen/0, told/0
      from standard.
 :- import '$$exception_ball'/1 from standard.
 :- import close_open_tables/0, conname/2, 
@@ -53,7 +53,7 @@
 :- import  retractall/1 from assert.
 :- import call_xsb_hook/2, xsb_exit_hook/1 from xsb_hook.
 %:- import verify_attributes/2 from usermod.
-:- import attv_unify/2, get_attributes/2, verify_attribute_handler/4 from machine.
+:- import verify_attribute_handler/4 from machine.
 
 :- import conset/2, conget/2 from gensym.
 
