@@ -19,14 +19,14 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.19 1999/08/17 06:28:20 kifer Exp $
+## $Id: Makefile,v 1.20 1999/08/19 15:08:34 kifer Exp $
 ## 
 ##
 
 ALL =	assert.O basics.O consult.O curr_sym.O dbclause.O dbcmpl.O \
 	dcg.O debugger.O domain.O eval.O file_io.O \
-	file_op.O hilogsym.O loader.O \
-	machine.O num_vars.O shell.O standard.O std_xsb.O \
+	file_op.O hilogsym.O loader.O machine.O \
+	num_vars.O setof.O shell.O standard.O std_xsb.O \
 	string.O subsumes.O sysinitrc.O tables.O term_exp.O \
 	unix.O x_interp.O xsb_read.O xsb_writ.O xcallxsb.O
 
@@ -77,10 +77,11 @@ all: init $(ALL) finish
 
 init:
 	/bin/rm -f $(SVFILE)
-	@echo 'import file_reopen/4, fmt_write/3 from file_io.' >> cmd...
+	@echo 'import file_reopen/4, fmt_write/3, file_flush/2 from file_io.' >> cmd...
 	@echo "file_reopen($(SVFILE),$(OWRITE),$(STDWARN),_)." >> cmd...
-	@echo 'fmt_write($(STDWARN),"%s\n",arg("-------------- Warnings --------------------")).' >> cmd...
+	@echo 'fmt_write($(STDWARN),"-------------- Warnings --------------------\n",_).' >> cmd...
 	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
+	@echo 'file_flush($(STDWARN),_).' >> cmd...
 
 finish:
 	@echo 'fmt_write($(STDWARN),"%s\n",arg("--------------------------------------------")).' >> cmd...

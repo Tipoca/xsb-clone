@@ -19,14 +19,15 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.16 1999-08-19 15:08:33 kifer Exp $
+## $Id: Makefile,v 1.17 1999-08-25 13:51:55 kifer Exp $
 ## 
 ##
 
 
 ALL = 	aggregs.O array.O array1.O directry.O foreign.O \
-	intern.O interprolog.O obsolete.O odbc_call.O ordsets.O ora_call.O \
-	packaging.O scrptutl.O setof.O socket.O wrapping.O
+	intern.O interprolog.O obsolete.O \
+	odbc_call.O ordsets.O ora_call.O \
+	packaging.O scrptutl.O socket.O wrapping.O
 
 EMU_INCLUDES = ../emu/builtin.h ../emu/celltags.h ../emu/flag_defs.h \
 	../emu/io_defs.h ../emu/msyscall.h ../emu/sig.h \
@@ -75,10 +76,11 @@ all: init $(ALL) finish
 
 init:
 	/bin/rm -f $(SVFILE)
-	@echo 'import file_reopen/4, fmt_write/3 from file_io.' >> cmd...
+	@echo 'import file_reopen/4, fmt_write/3, file_flush/2 from file_io.' >> cmd...
 	@echo "file_reopen($(SVFILE),$(OWRITE),$(STDWARN),_)." >> cmd...
-	@echo 'fmt_write($(STDWARN),"%s\n",arg("-------------- Warnings --------------------")).' >> cmd...
+	@echo 'fmt_write($(STDWARN),"-------------- Warnings --------------------\n",_).' >> cmd...
 	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
+	@echo 'file_flush($(STDWARN),_).' >> cmd...
 
 finish:
 	@echo 'fmt_write($(STDWARN),"%s\n",arg("--------------------------------------------")).' >> cmd...
