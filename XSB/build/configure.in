@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.152 2003-05-20 19:23:20 lfcastro Exp $
+## $Id: configure.in,v 1.153 2003-06-18 13:42:39 lfcastro Exp $
 ## 
 ##
 
@@ -678,7 +678,7 @@ if test -n "$with_gcc" ; then
 	if test -n "$optimization_level"; then
 	   c_inline_level=""
 	else
-	   c_inline_level="-finline-functions -Winline"
+	   c_inline_level="-finline-functions"
 	fi
 	CFLAGS="-Wall -ansi -pedantic"
    fi
@@ -691,7 +691,7 @@ else
 	if test -n "$optimization_level"; then
 	   c_inline_level=""
 	else
-	   c_inline_level="-finline-functions -Winline" 
+	   c_inline_level="-finline-functions" 
 	fi
 	CFLAGS="-Wall -ansi -pedantic"
 	 ;;
