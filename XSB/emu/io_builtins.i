@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.i,v 1.12 1999-05-04 20:40:53 workflow Exp $
+** $Id: io_builtins.i,v 1.13 1999-05-05 03:35:14 kifer Exp $
 ** 
 */
 
@@ -132,10 +132,11 @@ inline static bool file_function(void)
     ctop_int(5, (int) value);
     break;
   case FILE_TRUNCATE: /* file_function(2,+filedes,+length,-ret,-dontcare) */
+    size = ptoc_int(3);
 #ifndef WIN_NT
     SET_FILEPTR(fptr, ptoc_int(2));
-    fseek(fptr, (long) ptoc_int(3), 0);
-    value = ftruncate( fileno(fptr), (off_t) ptoc_int(3));
+    fseek(fptr, (long) size, 0);
+    value = ftruncate( fileno(fptr), (off_t) size);
     ctop_int(4, (int) value);
 #else
     xsb_warn("FILE_TRUNCATE: operation not supported under Windows.");
@@ -149,7 +150,6 @@ inline static bool file_function(void)
       if (isnonvar(term)) return ptoc_int(3) == ftell(fptr);
       else ctop_int(3, ftell(fptr));
     } else { /* reading from string */
-      int offset;
       sfptr = strfileptr(file_des);
       offset = sfptr->strptr - sfptr->strbase;
       if (isnonvar(term))
