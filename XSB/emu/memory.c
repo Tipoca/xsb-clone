@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory.c,v 1.6 1999-02-10 15:46:09 kifer Exp $
+** $Id: memory.c,v 1.7 1999-02-18 13:02:17 kostis Exp $
 ** 
 */
 
@@ -245,6 +245,21 @@ void tcpstack_realloc(long new_size) {
   /* I'm not sure if the following is REALLY needed - RFM */
   if (VarPosReg != NULL)
     VarPosReg = (CPtr)((byte*)VarPosReg + cps_offset) ;
+}
+
+/* ------------------------------------------------------------------------- */
+
+void handle_tcpstack_overflow(void)
+{
+  if (flags[STACK_REALLOC]) {
+#ifdef DEBUG
+    fprintf(stderr, "Expanding trail and choice point stack...\n");
+#endif
+    tcpstack_realloc(resize_stack(tcpstack.size,0));
+  }
+  else {
+    xsb_exit("Trail/ChoicePoint stack overflow detected but expansion is off");
+  }
 }
 
 /* ------------------------------------------------------------------------- */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory.h,v 1.3 1999-02-05 16:07:05 kostis Exp $
+** $Id: memory.h,v 1.4 1999-02-18 13:02:18 kostis Exp $
 ** 
 */
 
@@ -112,6 +112,7 @@ extern byte *mem_alloc(unsigned long);
 extern void mem_dealloc(byte *, unsigned long);
 extern void tcpstack_realloc(long);
 extern void complstack_realloc(long);
+extern void handle_tcpstack_overflow(void);
 
 /* Instruction Externs
    ------------------- */

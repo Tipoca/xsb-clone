@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.3 1998-11-19 05:24:19 kifer Exp $
+** $Id: cinterf.c,v 1.4 1999-02-18 13:02:16 kostis Exp $
 ** 
 */
 
@@ -33,6 +33,7 @@
 
 #include "auxlry.h"
 #include "cell.h"
+#include "memory.h"
 #include "register.h"
 #include "psc.h"
 #include "flags.h"
@@ -46,7 +47,8 @@
 #include "cinterf.h"
 #include "self_orientation.h"
 
-char *expand_filename(char *);
+/* the following really belongs somewhere else */
+extern char *expand_filename(char *);
 
 
 
