@@ -2,12 +2,12 @@
 ## Author(s): Yifei Dong
 ## Contact:   lmc@cs.sunysb.edu
 ##
-## $Id: Makefile,v 1.3 2002-03-03 04:15:39 kifer Exp $
+## $Id: Makefile,v 1.4 2002-03-03 18:24:20 kifer Exp $
 
 
 ALL = comp.O count.O formula.O mucalculus.O quad.O  \
 	typecheck.O util.O xmc.O \
-	justify.O navigate.O gui.O
+	justify.O navigate.O gui.O xlparse.O
 
 Option = [optimize]
 
