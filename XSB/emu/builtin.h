@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.5 1999-04-02 03:48:03 kifer Exp $
+** $Id: builtin.h,v 1.6 1999-04-04 03:54:47 kifer Exp $
 ** 
 */
 
@@ -121,7 +121,7 @@ extern void init_builtin_table(void);
 #define IS_XWAMMODE             117
 #define CLOSE_OPEN_TABLES       118
 
-#define FILE_FUNCTION           122
+#define FILE_FUNCTION           123
 
 #define SLASH_BUILTIN           124
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.h,v 1.1 1999-04-01 05:03:10 kifer Exp $
+** $Id: io_builtins.h,v 1.2 1999-04-04 03:54:49 kifer Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 #define FILE_GETBUF    	   8
 #define FILE_PUTBUF    	   9
 #define FILE_READ_LINE 	   10
+#define FILE_WRITE_LINE	   11
 
 /* OP numbers for formatted_io */
 #define FMT_WRITE    	   1

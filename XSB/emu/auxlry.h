@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.1.1.1 1998-11-05 16:55:11 sbprolog Exp $
+** $Id: auxlry.h,v 1.2 1999-04-04 03:54:42 kifer Exp $
 ** 
 */
 
@@ -87,4 +87,15 @@ typedef enum XSB_Execution_Mode {
 
 extern Exec_Mode xsb_mode;
 
-#define fileptr(fileno) open_files[fileno]
+#define fileptr(fileno)  open_files[fileno]
+
+extern char *xsb_default_segfault_msg;
+extern char *xsb_segfault_message;
+
+/* This would yield a meaningful message in case of segfault */
+#define SET_FILEPTR(stream, fileno) \
+    	if (fileno < 0 || fileno >= MAX_OPEN_FILES) \
+    	    xsb_abort("Invalid file descriptor passed to I/O predicate"); \
+	stream = fileptr(fileno); \
+    	if (stream==NULL) \
+    	    xsb_abort("Invalid file descriptor passed to I/O predicate");

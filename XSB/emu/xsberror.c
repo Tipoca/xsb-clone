@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsberror.c,v 1.5 1999-03-30 16:25:21 kifer Exp $
+** $Id: xsberror.c,v 1.6 1999-04-04 03:54:50 kifer Exp $
 ** 
 */
 
@@ -99,10 +99,16 @@ void xsb_mesg(char *description, ...)
 
 /*----------------------------------------------------------------------*/
 
-void xsb_exit(char *description)
+void xsb_exit(char *description, ...)
 {
-    fprintf(stderr, "%s\nExiting XSB abnormally...\n", description);
-    exit(1);
+  va_list args;
+
+  va_start(args, description);
+  vfprintf(stderr, description, args);
+  va_end(args);
+
+  fprintf(stderr, "\nExiting XSB abnormally...\n");
+  exit(1);
 }
 
 /*----------------------------------------------------------------------*/
