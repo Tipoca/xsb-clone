@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: family_rel.flr,v 1.2 1999-05-22 15:30:19 kifer Exp $
+** $Id: family_rel.flr,v 1.3 1999-06-17 05:45:34 kifer Exp $
 ** 
 */
 
@@ -26,9 +26,8 @@
 %%% QUERYING THE PEDIGREE OF ``THE FALLERS'' 
 %%% (German TV serial; see: www.swf.de/diefallers/stammbaum/index.html)
 %%% 
-%%% RELATIONAL (= DATALOG) version
+%%% This demo contains a purely RELATIONAL (= DATALOG) version
 %%%
-%%% $Id: family_rel.flr,v 1.2 1999-05-22 15:30:19 kifer Exp $
 %%% ======================================================================
 
 %%% ======================================================================
