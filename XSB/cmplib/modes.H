@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.H,v 1.2 1999-04-27 14:39:21 kifer Exp $
+** $Id: modes.H,v 1.3 1999-08-28 09:06:13 kostis Exp $
 ** 
 */
 
@@ -44,11 +44,9 @@
    from standard.
 
 :- import message/1, time_message/2 from auxlry.
-
 :- import findall/3 from setof.
-
 :- import append/3, ground/1, length/2, member/2 from basics.
-:- import str_length/2, str_cat/3, str_substring/4 from string.
+:- import str_cat/3 from string.
 :- import conset/2, conget/2 from prof_sbp.
 :- import libpath/1 from loader.
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.P,v 1.3 1999-08-13 15:31:28 kostis Exp $
+** $Id: modes.P,v 1.4 1999-08-28 09:06:14 kostis Exp $
 ** 
 */
 
@@ -448,11 +448,6 @@ get_new_negliteral_name(NewName) :-
 
 /** Now that all user predicates are wrapped with '_call_user', there
    is no need to specially standardize names; so,
-
-standardize_name(F, N) :-
-	(nonvar(F) -> str_cat('_$an_', F, N)
-		; str_length(N, L), Len is L - 4, str_substring(N, 4, Len, F)
-	).
 **/
 
 standardize_name(X,X).	%Leave name unchanged.
@@ -621,11 +616,10 @@ mangle_file_names(File, Src, Decls) :-
 		str_cat(Src, DeclExt, Decls).
 
 strip_trailing_ext(Name, TruncName) :-
-	str_length(Name, L), 
-	L > 2, Start is L - 2,
-	str_substring(Name, Start, L, SrcExt),
-	srcfilename_ext(SrcExt),
-	str_substring(Name, 0, Start, TruncName), !.
+	atom_codes(Name, L),
+	srcfilename_ext(SrcExt), atom_codes(SrcExt, EL),
+	append(BL, EL, L), atom_codes(TruncName, BL),
+	!.
 strip_trailing_ext(Name, Name).
 
 prolog_file_exists(Name) :-
