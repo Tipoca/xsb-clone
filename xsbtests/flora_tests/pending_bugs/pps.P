@@ -34,9 +34,10 @@
 
 
 :- import member/2, ground/1 from basics.
+:- import sk_not/1 from tables.
 
 
-tnot_all(Test) :- ground(Test), tnot(Test).
+tnot_all(Test) :- sk_not(Test).
 
 
 isa(0,stage1).
@@ -188,13 +189,26 @@ derived_fd(_h13348,'flora_@'(_h13366,_h13382),_h13406) :-
         =(_h13382,_h13761).
 
 
-derived_mvd(_h14886,'flora_@'(_h14904,_h14920),_h14942) :- 
-        isa_rhs(_h14920,stage1),
-        isa_rhs(apply(_h14886,_h14904),edbmultivalued),
-        mvd_rhs(_h14886,'flora_@'(_h14904,_h15082),_h14942),
-        is(_h15362,+(_h15082,1)),
-        =(_h14920,_h15362),
-        tnot(delete(_h14886,_h14904,_h14942,_h15082)).
+derived_mvd(O,'flora_@'(M,T),Q) :- 
+        isa_rhs(T,stage1),
+        isa_rhs(apply(O,M),edbmultivalued),
+        mvd_rhs(O,'flora_@'(M,S),Q),
+        is(T1,+(S,1)),
+        =(T,T1),
+        tnot(delete(O,M,Q,S)).
+	%%not_deleted(O,M,Q,S).
+
+:- table not_deleted/4.
+not_deleted(O,M,Q,S) :- tnot(delete(O,M,Q,S)).
+%% ?- derived_mvd(pps,'flora_@'(produces,2),passatC).
+%% ?- (derived_mvd(pps,'flora_@'(produces,2),passatC); get_residual(derived_mvd(pps,'flora_@'(produces,2),passatC),[])).
+%% ?- (derived_mvd(O,'flora_@'(M,S),Q), fail; get_residual(derived_mvd(O,'flora_@'(M,S),Q),[])), writeln(get_residual(derived_mvd(O,'flora_@'(M,S),Q),[])), fail.
+%% ?- mvd_rhs(pps,'flora_@'(produces,1),passatC).
+%% ?- tnot(delete(pps,produces,passatC,1)).
+%% ?- not_deleted(pps,produces,passatC,1).
+%% ?- (not_deleted(pps,produces,passatC,1); get_residual(not_deleted(pps,produces,passatC,1))).
+%% ?- (delete(O,M,Q,S), fail; get_residual(delete(O,M,Q,S),[]), writeln(delete(O,M,Q,S)),fail).
+%% ?- (delete(pps,produces,passatC,1), fail; get_residual(delete(pps,produces,passatC,1),[]), writeln(delete(pps,produces,passatC,1)),fail).
 
 
 derived_mvd(_h16393,'flora_@'(_h16411,_h16427),_h16449) :- 
@@ -227,12 +241,14 @@ insert(pps,produces,_h18702,_h18716) :-
 
 
 %%% delete(pps,produces,P,S) :- stop(P,S), S:stage4.
+:- table delete/4.
 delete(pps,produces,_h19605,_h19619) :- 
         stop(_h19605,_h19619),
         isa_rhs(_h19619,stage4).
 
 
 %%% stop(P,S) :- P.hasConfig@(S)[needsPart->>Q], stop(Q,S), S:stage4.
+:- table stop/2.
 stop(_h20420,_h20434) :- 
         fd_rhs(_h20420,'flora_@'(hasConfig,_h20434),_h20617),
         mvd_rhs(_h20617,'flora_@'(needsPart),_h20525),
@@ -324,10 +340,17 @@ isa(_h30017,stage1) :-
 
 %%%   tst1 :- pps[produces@(S)->>P], write(S), write('  '), writeln(P), fail.
 tst1 :- 
-        mvd_rhs(pps,'flora_@'(produces,_h30965),_h30987),
-        write(_h30965),
+	(mvd_rhs(pps,'flora_@'(produces,X),Y), fail
+	; get_residual(mvd_rhs(pps,'flora_@'(produces,X),Y),[]),
+	    write(X),
+	    write('  '),
+	    writeln(Y),
+	    fail).
+tst11 :- 
+	mvd_rhs(pps,'flora_@'(produces,X),Y),
+        write(X),
         write('  '),
-        writeln(_h30987),
+        writeln(Y),
         fail.
 
 
@@ -336,13 +359,25 @@ tst1.
 
 
 tst2 :- 
-        fd_rhs(_h32162,'flora_@'(hasConfig,_h32191),_h32354),
-        mvd_rhs(_h32354,'flora_@'(needsPart),_h32228),
-        write(_h32162),
-        write(_h32191),
+	(aux(X,Y,Z), fail
+	; get_residual(aux(X,Y,Z), []),
+	    write(X),
+	    write(Y),
+	    write('  '),
+	    writeln(Z),
+	    fail).
+tst22 :- 
+	aux(X,Y,Z),
+        write(X),
+        write(Y),
         write('  '),
-        writeln(_h32228),
+        writeln(Z),
         fail.
+
+:- table aux/3.
+aux(X,Y,Z) :-
+	fd_rhs(X,'flora_@'(hasConfig,Y),_h32354),
+	mvd_rhs(_h32354,'flora_@'(needsPart),Z).
 
 
 %%% tst2.
@@ -369,8 +404,8 @@ ttt1(_h33921,_h33935) :-
 
 %%% tttt1(S,P) :- ttt1(S,P), get_residual(ttt1(S,P),[]).
 tttt1(_h34610,_h34624) :- 
-        ttt1(_h34610,_h34624),
-        get_residual(ttt1(_h34610,_h34624),[]).
+        (ttt1(_h34610,_h34624), fail
+	; get_residual(ttt1(_h34610,_h34624),[])).
 
 
 %%%  ttt2(Q,P,S) :- P.hasConfig@(S)[needsPart->>Q].
@@ -381,10 +416,19 @@ ttt2(_h35348,_h35362,_h35376) :-
 
 %%% tttt2(Q,P,S) :- ttt2(Q,P,S), get_residual(ttt2(Q,P,S),[]).
 tttt2(_h36174,_h36188,_h36202) :- 
-        ttt2(_h36174,_h36188,_h36202),
-        get_residual(ttt2(_h36174,_h36188,_h36202),[]).
+        (ttt2(_h36174,_h36188,_h36202), fail
+	; get_residual(ttt2(_h36174,_h36188,_h36202),[])).
 
 
+%%%  v1(S,P) :- passatC.hasConfig@(0)[needsPart->>P].
+%%% 
+v1(S,P) :- 
+        fd_rhs(passatC,'flora_@'(hasConfig,0),Y),
+        mvd_rhs(Y,'flora_@'(needsPart),P).
+:- table vv1/2.
+vv1(S,P) :- 
+        fd_rhs(passatC,'flora_@'(hasConfig,S),Y),
+        mvd_rhs(Y,'flora_@'(needsPart),P).
 %%%  
 
 
