@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orastuff.h,v 1.5 2000-10-02 13:53:35 ejohnson Exp $
+** $Id: orastuff.h,v 1.6 2005-01-14 18:31:25 ruim Exp $
 ** 
 */
 

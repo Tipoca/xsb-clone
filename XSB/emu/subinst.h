@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subinst.h,v 1.4 2002-05-20 17:47:10 tswift Exp $
+** $Id: subinst.h,v 1.5 2005-01-14 18:31:33 ruim Exp $
 ** 
 */
 

@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: copysubdirs.sh,v 1.4 2001-04-21 22:52:49 kifer Exp $
+## $Id: copysubdirs.sh,v 1.5 2005-01-14 18:30:41 ruim Exp $
 ## 
 ##
 

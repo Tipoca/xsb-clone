@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.4 2000-10-05 17:23:17 ejohnson Exp $
+** $Id: struct_manager.h,v 1.5 2005-01-14 18:31:33 ruim Exp $
 ** 
 */
 
@@ -218,6 +218,7 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
  */
 #define SM_AllocateStruct(SM,pStruct) {		\
 						\
+   SYS_MUTEX_LOCK( MUTEX_SM ); 			\
    if ( IsNonNULL(SM_FreeList(SM)) ) {		\
      SM_AllocateFree(SM,pStruct);		\
    }						\
@@ -226,6 +227,7 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
        smAllocateBlock(&SM);			\
      SM_AllocateFromBlock(SM,pStruct);		\
    }						\
+   SYS_MUTEX_UNLOCK( MUTEX_SM ); 		\
  }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -239,8 +241,10 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
  *  the chain must be deallocated individually.
  */
 #define SM_DeallocateStructList(SM,pHead,pTail) {	\
+   SYS_MUTEX_LOCK( MUTEX_SM ); 				\
    SMFL_NextFreeStruct(pTail) = SM_FreeList(SM);	\
    SM_FreeList(SM) = pHead;				\
+   SYS_MUTEX_UNLOCK( MUTEX_SM ); 			\
  }
 
 #define SM_DeallocateStruct(SM,pStruct)		\

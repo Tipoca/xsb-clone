@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.18 2002-05-31 15:09:01 lfcastro Exp $
+** $Id: bineg_xsb_i.h,v 1.19 2005-01-14 18:30:50 ruim Exp $
 ** 
 */
 
@@ -82,7 +82,7 @@ case LRD_SUCCESS: {
      */
     static XSB_StrDefine(vsNegSubgoal);
     XSB_StrSet(&vsNegSubgoal,"");
-    print_pterm(ptoc_tag(regNegSubgoal),1,&vsNegSubgoal);
+    print_pterm(CTXTc ptoc_tag(CTXTc regNegSubgoal),1,&vsNegSubgoal);
     xsb_abort("Illegal table operation\n\t Attempted DELAY of negative "
 	      "subsumptive literal: %s", vsNegSubgoal.string);
   }
@@ -149,7 +149,7 @@ case IS_INCOMPLETE: {
 /*----------------------------------------------------------------------*/
 
     case GET_PTCP:
-      ctop_int(1, (Integer)ptcpreg);
+      ctop_int(CTXTc 1, (Integer)ptcpreg);
       break;
 
 /*----------------------------------------------------------------------*/
@@ -186,8 +186,8 @@ case IS_INCOMPLETE: {
       }
 #endif /* DEBUG_DELAYVAR */
 
-      as_leaf = (NODEptr) ptoc_int(1);
-      delay_lists = ptoc_tag(2);
+      as_leaf = (NODEptr) ptoc_int(CTXTc 1);
+      delay_lists = ptoc_tag(CTXTc 2);
       if (is_conditional_answer(as_leaf)) {
 	bind_list((CPtr)delay_lists, hreg);
 	{ /*
@@ -230,7 +230,7 @@ case IS_INCOMPLETE: {
 	   * copy_of_num_heap_term_vars at the end of build_delay_list().
 	   */
 	  copy_of_num_heap_term_vars = global_num_vars + 1;
-	  build_delay_list(dls_head, de);
+	  build_delay_list(CTXTc dls_head, de);
 	  if ((dl = dl_next(dl)) != NULL) {
 	    bind_list(dls_tail, hreg);
 	  }

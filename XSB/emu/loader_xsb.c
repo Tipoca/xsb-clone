@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.34 2004-08-20 18:11:35 dwarren Exp $
+** $Id: loader_xsb.c,v 1.35 2005-01-14 18:31:20 ruim Exp $
 ** 
 */
 
@@ -445,14 +445,21 @@ static void load_index(FILE *fd, int index_bytes, int table_num)
     get_obj_word_bb(&clause_no);
     
     temp_space = clause_no * 2;
+#ifndef MULTI_THREAD
     if (top_of_localstk - hreg >= temp_space + 512)
       temp_ptr = hptr = hreg;
-    else temp_ptr = hptr = (CPtr)malloc(temp_space*sizeof(CPtr));
+    else 
+#endif
+       temp_ptr = hptr = (CPtr)malloc(temp_space*sizeof(CPtr));
     t_len = get_index_tab(fd, clause_no);
     
     gen_index((xsbBool)(table_num > 0), clause_no, sob_arg_p, arity);
     free(indextab);
+#ifndef MULTI_THREAD
     if (temp_ptr != hreg) free(temp_ptr);
+#else
+    free(temp_ptr);
+#endif
     count += 10 + t_len;
   }
 }

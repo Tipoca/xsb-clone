@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.20 2003-10-28 18:03:13 kostis Exp $
+** $Id: dis.c,v 1.21 2005-01-14 18:30:55 ruim Exp $
 ** 
 */
 
@@ -175,7 +175,7 @@ CPtr print_inst(FILE *fd, CPtr inst_ptr)
 	   break;
 	 case S:
 	   if (cell_opcode(&instr) == (byte) call ||
-	       cell_opcode(&instr) == (byte) execute) {
+	       cell_opcode(&instr) == (byte) xsb_execute) {
 	     fprintf(fd, ", 0x%lx", *loc_pcreg);
 	     psc = (Psc) cell(loc_pcreg++);
 	     fprintf(fd,", '%s'/%d", get_name(psc), get_arity(psc));

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.c,v 1.6 2002-05-31 15:09:03 lfcastro Exp $
+** $Id: storage_xsb.c,v 1.7 2005-01-14 18:31:32 ruim Exp $
 ** 
 */
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.62 2004/08/20 18:16:31 dwarren Exp $
+** $Id: machine.H,v 1.63 2004/08/24 20:41:11 tswift Exp $
 ** 
 */
 
@@ -138,6 +138,7 @@
 	'$$findall_add'/3,
 	'$$findall_get_solutions'/4,
 	socket_request/7,
+        thread_request/5, mt_random_request/3,
 	set_arg/3,
 	put_attributes/2,
 	get_attributes/2,

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.13 2002-05-22 15:41:16 lfcastro Exp $
+** $Id: struct_manager.c,v 1.14 2005-01-14 18:31:33 ruim Exp $
 ** 
 */
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sw_envs.h,v 1.12 2002-03-12 17:31:21 lfcastro Exp $
+** $Id: sw_envs.h,v 1.13 2005-01-14 18:31:33 ruim Exp $
 ** 
 */
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_status_defs.h,v 1.1 2000-01-11 16:53:17 ejohnson Exp $
+** $Id: table_status_defs.h,v 1.2 2005-01-14 18:31:34 ruim Exp $
 ** 
 */
 

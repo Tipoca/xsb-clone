@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.12 2002-12-26 22:47:54 tswift Exp $
+** $Id: function.c,v 1.13 2005-01-14 18:31:16 ruim Exp $
 ** 
 */
 
@@ -35,6 +35,7 @@
 #include "deref.h"
 #include "heap_xsb.h"
 #include "binding.h"
+#include "context.h"
 
 #define FUN_PLUS   1
 #define FUN_MINUS  2
@@ -71,7 +72,7 @@
     else return 0
 
 
-int  unifunc_call(int funcnum, CPtr regaddr)
+int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
 {
   Cell value;
   Float fvalue; 

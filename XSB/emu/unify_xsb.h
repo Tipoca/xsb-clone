@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify_xsb.h,v 1.5 2003-09-29 13:05:12 tschrijvers Exp $
+** $Id: unify_xsb.h,v 1.6 2005-01-14 18:31:54 ruim Exp $
 ** 
 */
 
@@ -85,7 +85,7 @@
                                                              \
   op1 = (Cell)(clref_val(op1));                              \
   op2 = (Cell)(clref_val(op2));                              \
-  if ( !unify(cell((CPtr)op1), cell((CPtr)op2)))             \
+  if ( !unify(CTXTc cell((CPtr)op1), cell((CPtr)op2)))       \
     { IFTHEN_FAILED; }                                       \
   op1 = (Cell)((CPtr)op1+1);                                 \
   op2 = (Cell)((CPtr)op2+1);                                 \
@@ -107,7 +107,7 @@
     while (--arity)                                          \
       {                                                      \
 	op1 = (Cell)((CPtr)op1+1); op2 = (Cell)((CPtr)op2+1);\
-	if (!unify(cell((CPtr)op1), cell((CPtr)op2)))        \
+	if (!unify(CTXTc cell((CPtr)op1), cell((CPtr)op2)))  \
 	  {                                                  \
 	    IFTHEN_FAILED;                                   \
 	  }                                                  \
@@ -125,13 +125,13 @@
  loc##_label_op1_attv:                                       \
   if (isattv(op2)) goto loc##_label_both_attv;               \
   attv_dbgmsg(">>>> ATTV = something, interrupt needed\n");  \
-  add_interrupt(cell(((CPtr)dec_addr(op1) + 1)),op2);        \
+  add_interrupt(CTXTc cell(((CPtr)dec_addr(op1) + 1)),op2);  \
   bind_copy((CPtr)dec_addr(op1), op2);                       \
   IFTHEN_SUCCEED;                                            \
                                                              \
  loc##_label_op2_attv:                                       \
   attv_dbgmsg(">>>> something = ATTV, interrupt needed\n");  \
-  add_interrupt(cell(((CPtr)dec_addr(op2) + 1)),op1);        \
+  add_interrupt(CTXTc cell(((CPtr)dec_addr(op2) + 1)),op1);  \
   bind_copy((CPtr)dec_addr(op2), op1);                       \
   IFTHEN_SUCCEED;                                            \
                                                              \
@@ -139,7 +139,7 @@
   if (op1 != op2)                                            \
     {                                                        \
       attv_dbgmsg(">>>> ATTV = ???, interrupt needed\n");    \
-      add_interrupt(cell(((CPtr)dec_addr(op1) + 1)),op2);    \
+      add_interrupt(CTXTc cell(((CPtr)dec_addr(op1) + 1)),op2);    \
       bind_copy((CPtr)dec_addr(op1), op2);                   \
     }                                                        \
   IFTHEN_SUCCEED

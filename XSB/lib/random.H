@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random.H,v 1.5 2002-04-13 05:01:53 lfcastro Exp $
+** $Id: random.H,v 1.6 2005-01-14 18:31:57 ruim Exp $
 ** 
 */
 

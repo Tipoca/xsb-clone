@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_def_xsb.h,v 1.3 2001-12-30 05:57:25 kifer Exp $
+** $Id: cell_def_xsb.h,v 1.4 2005-01-14 18:30:52 ruim Exp $
 ** 
 */
 

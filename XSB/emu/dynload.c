@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynload.c,v 1.7 2000-05-20 06:55:58 kifer Exp $
+** $Id: dynload.c,v 1.8 2005-01-14 18:30:55 ruim Exp $
 ** 
 */
 

@@ -19,11 +19,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.h,v 1.2 1998-12-09 03:15:47 cbaoqiu Exp $
+** $Id: residual.h,v 1.3 2005-01-14 18:31:28 ruim Exp $
 ** 
 */
 
 
-extern void build_delay_list(CPtr, DE);
+extern void build_delay_list(CTXTdeclc CPtr, DE);
 
 /*---------------------- end of file residual.h ------------------------*/

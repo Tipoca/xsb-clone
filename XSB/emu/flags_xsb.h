@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flags_xsb.h,v 1.1 1999-10-26 06:47:04 kifer Exp $
+** $Id: flags_xsb.h,v 1.2 2005-01-14 18:31:16 ruim Exp $
 ** 
 */
 

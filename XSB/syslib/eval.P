@@ -18,13 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: eval.P,v 1.15 2002/10/07 15:22:56 dwarren Exp $
+** $Id: eval.P,v 1.9.2.2 2004/10/18 20:48:19 ruim Exp $
 ** 
 */
 
 :- compiler_options([xpp_on,optimize,sysmod]).
 
 #include "celltags_xsb.h"
+#include "thread_defs_xsb.h"
 
 /*-------------------------------------------------------------------------
 

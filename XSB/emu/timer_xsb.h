@@ -18,10 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.h,v 1.9 2000-06-19 07:05:32 ruim Exp $
+** $Id: timer_xsb.h,v 1.10 2005-01-14 18:31:35 ruim Exp $
 ** 
 */
 
+#ifndef _TIMER_XSB_H_
+#define _TIMER_XSB_H_
 
 #ifndef CONFIG_INCLUDED
 #error "File xsb_config.h must be included before this file"
@@ -62,7 +64,13 @@ void xsb_timer_handler(int signo);
 #endif
 
 /* generic function to control the timeout */
+#ifndef MULTI_THREAD
 int make_timed_call(xsbTimeout*, void (*) (xsbTimeout*));
+#else
+struct th_context ;
+int make_timed_call(struct th_context *, xsbTimeout*, 
+		    void (*) (struct th_context *, xsbTimeout*));
+#endif
 
 #define NEW_TIMEOUT_OBJECT  (xsbTimeout *)malloc(sizeof(xsbTimeout))
 
@@ -89,3 +97,5 @@ int make_timed_call(xsbTimeout*, void (*) (xsbTimeout*));
 #define OP_TIMED_OUT                  (sigsetjmp(xsb_timer_env,1) != 0)
 
 #endif
+
+#endif /* _TIMER_XSB_H_ */

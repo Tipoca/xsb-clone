@@ -19,10 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.h,v 1.2 1999-11-20 06:45:51 kifer Exp $
+** $Id: token_xsb.h,v 1.3 2005-01-14 18:31:35 ruim Exp $
 ** 
 */
 
+#ifndef _TOKEN_XSB_H_
+#define _TOKEN_XSB_H_
 
 #include "token_defs_xsb.h"
 
@@ -53,6 +55,8 @@ extern struct token *token;
 extern struct token *GetToken(FILE *, STRFILE *, int);
 
 extern int intype(int);
+
+#endif /* _TOKEN_XSB_H_ */
 
 /*======================================================================*/
 /*======================================================================*/

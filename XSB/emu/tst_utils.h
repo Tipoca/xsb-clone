@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.h,v 1.6 2001-04-28 20:15:38 ejohnson Exp $
+** $Id: tst_utils.h,v 1.7 2005-01-14 18:31:39 ruim Exp $
 ** 
 */
 

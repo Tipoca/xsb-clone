@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sp_unify_xsb_i.h,v 1.3 2000-04-29 21:53:58 kifer Exp $
+** $Id: sp_unify_xsb_i.h,v 1.4 2005-01-14 18:31:31 ruim Exp $
 ** 
 */
 
 
 /* to be used when cell op1 is known to contain an int */
-static inline xsbBool int_unify(Cell op1, Cell op2)
+static inline xsbBool int_unify(CTXTdeclc Cell op1, Cell op2)
 {	/* No checking for interrupts is needed!       */
   XSB_Deref(op2);
   if (isref(op2)) {
@@ -37,7 +37,7 @@ static inline xsbBool int_unify(Cell op1, Cell op2)
 
 
 /* to be used when cell op1 is known to contain an atom */
-static inline xsbBool atom_unify(Cell op1, Cell op2)
+static inline xsbBool atom_unify(CTXTdeclc Cell op1, Cell op2)
 {	/* No checking for interrupts is needed!	*/
   XSB_Deref(op2);
   if (isref(op2)) {

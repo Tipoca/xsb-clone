@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wind2unix.h,v 1.3 2001-03-27 23:18:42 kifer Exp $
+** $Id: wind2unix.h,v 1.4 2005-01-14 18:31:54 ruim Exp $
 ** 
 */
 

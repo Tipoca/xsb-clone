@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pre_cond.H,v 1.1.1.1 1998-11-05 17:00:11 sbprolog Exp $
+** $Id: pre_cond.H,v 1.2 2005-01-14 18:30:45 ruim Exp $
 ** 
 */
 

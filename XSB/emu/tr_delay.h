@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_delay.h,v 1.15 2002-05-31 15:09:03 lfcastro Exp $
+** $Id: tr_delay.h,v 1.16 2005-01-14 18:31:35 ruim Exp $
 ** 
 */
 

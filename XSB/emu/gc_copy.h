@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_copy.h,v 1.5 2002-05-31 15:09:02 lfcastro Exp $
+** $Id: gc_copy.h,v 1.6 2005-01-14 18:31:16 ruim Exp $
 ** 
 */
 
@@ -154,7 +154,7 @@ static void find_and_copy_block(CPtr hp)
 /*-------------------------------------------------------------------------*/
 #ifdef GC
 
-inline static void adapt_hreg_from_choicepoints(CPtr h)
+inline static void adapt_hreg_from_choicepoints(CTXTdeclc CPtr h)
 {
   CPtr b, bprev;
 
@@ -173,7 +173,7 @@ inline static void adapt_hreg_from_choicepoints(CPtr h)
 
 #ifdef SLG_GC
 
-inline static void adapt_hfreg_from_choicepoints(CPtr h)
+inline static void adapt_hfreg_from_choicepoints(CTXTdeclc CPtr h)
 {
   CPtr b, bprev;
   b = (bfreg < breg ? bfreg : breg);
@@ -194,7 +194,7 @@ inline static void adapt_hfreg_from_choicepoints(CPtr h)
 
 #ifdef GC
 
-static CPtr copy_heap(int marked, CPtr begin_new_h, CPtr end_new_h, int arity)
+static CPtr copy_heap(CTXTdeclc int marked, CPtr begin_new_h, CPtr end_new_h, int arity)
 {
     CPtr p, q;
     int  tag; 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_hook.H,v 1.5 2002/04/10 23:33:22 tswift Exp $
+** $Id: xsb_hook.H,v 1.4.4.1 2004/09/29 19:44:30 ruim Exp $
 ** 
 */
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.h,v 1.3 1999-12-10 07:47:32 kifer Exp $
+** $Id: findall.h,v 1.4 2005-01-14 18:31:15 ruim Exp $
 ** 
 */
 
@@ -75,5 +75,5 @@ extern CPtr gl_bot, gl_top ;
 extern void findall_free(int);
 extern int get_more_chunk(void);
 extern void findall_copy_to_heap(Cell, CPtr, CPtr *);
-extern int findall_init_c(void);
+extern int findall_init_c(CTXTdecl);
 

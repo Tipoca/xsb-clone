@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: scc_xsb.h,v 1.1 1999-10-25 05:59:07 kifer Exp $
+** $Id: scc_xsb.h,v 1.2 2005-01-14 18:31:28 ruim Exp $
 ** 
 */
 
 
 #if (!defined(LOCAL_EVAL))
-extern ComplStackFrame DFS_DGT(ComplStackFrame);
+extern ComplStackFrame DFS_DGT(CTXTdeclc ComplStackFrame);
 extern void find_independent_scc(ComplStackFrame);
 #endif
 

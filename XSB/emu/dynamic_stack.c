@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynamic_stack.c,v 1.4 2002-05-31 15:09:02 lfcastro Exp $
+** $Id: dynamic_stack.c,v 1.5 2005-01-14 18:30:55 ruim Exp $
 ** 
 */
 

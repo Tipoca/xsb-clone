@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynaout_xsb_i.h,v 1.9 2002-09-02 01:00:19 kifer Exp $
+** $Id: dynaout_xsb_i.h,v 1.10 2005-01-14 18:30:55 ruim Exp $
 ** 
 */
 

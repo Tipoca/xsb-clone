@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: binding.h,v 1.16 2002-03-12 17:31:21 lfcastro Exp $
+** $Id: binding.h,v 1.17 2005-01-14 18:30:50 ruim Exp $
 ** 
 */
 
@@ -68,7 +68,7 @@
    if (trfreg > trreg) {\
      if ((char *)trfreg > \
 	 ((char *)(top_of_cpstack) - (TRAIL_FRAME_SIZE*sizeof(CPtr)))) {\
-       handle_tcpstack_overflow();\
+       handle_tcpstack_overflow(CTXT);\
      }\
      *(trfreg+3) = (CPtr) trreg;\
      trreg = trfreg + 3;\
@@ -78,7 +78,7 @@
    else {\
      if ((char *)trreg > \
 	 ((char *)(top_of_cpstack) - (TRAIL_FRAME_SIZE*sizeof(CPtr)))) {\
-       handle_tcpstack_overflow();\
+       handle_tcpstack_overflow(CTXT);\
      }\
      trreg = trreg+3;\
      *trreg = (CPtr) trreg-3;\
@@ -91,7 +91,7 @@
   if (trfreg > trreg) {						\
     if ((char *)trfreg > ((char *)(top_of_cpstack) -		\
                           TRAIL_FRAME_SIZE*sizeof(CPtr))) {	\
-      handle_tcpstack_overflow();				\
+      handle_tcpstack_overflow(CTXT);				\
     }								\
     *(trfreg + 4) = (CPtr) trreg;				\
     trreg = trfreg + 4;						\
@@ -102,7 +102,7 @@
   else {							\
     if ((char *)trreg > ((char *)(top_of_cpstack) -		\
                           TRAIL_FRAME_SIZE*sizeof(CPtr))) {	\
-      handle_tcpstack_overflow();				\
+      handle_tcpstack_overflow(CTXT);				\
     }								\
     trreg = trreg + 4;						\
     *trreg = (CPtr) trreg - 4;					\

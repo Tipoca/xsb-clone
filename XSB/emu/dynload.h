@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynload.h,v 1.1.1.1 1998-11-05 16:55:15 sbprolog Exp $
+** $Id: dynload.h,v 1.2 2005-01-14 18:30:56 ruim Exp $
 ** 
 */
 

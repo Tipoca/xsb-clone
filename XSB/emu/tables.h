@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.h,v 1.8 2002-11-05 20:50:37 lfcastro Exp $
+** $Id: tables.h,v 1.9 2005-01-14 18:31:34 ruim Exp $
 ** 
 */
 
@@ -35,10 +35,10 @@
  *                    ===========================
  */
 
-void	table_call_search(TabledCallInfo *, CallLookupResults *);
-BTNptr	table_answer_search(VariantSF, int, int, CPtr, xsbBool *);
-void	table_consume_answer(BTNptr, int, int, CPtr, TIFptr);
-ALNptr	table_identify_relevant_answers(SubProdSF, SubConsSF, CPtr);
+void	table_call_search(CTXTdeclc TabledCallInfo *, CallLookupResults *);
+BTNptr	table_answer_search(CTXTdeclc VariantSF, int, int, CPtr, xsbBool *);
+void	table_consume_answer(CTXTdeclc BTNptr, int, int, CPtr, TIFptr);
+ALNptr	table_identify_relevant_answers(CTXTdeclc SubProdSF, SubConsSF, CPtr);
 void	table_complete_entry(VariantSF);
 
 void	release_all_tabling_resources(void);
@@ -65,7 +65,7 @@ void	release_all_tabling_resources(void);
      if ( MoreAnswersAreAvailable(Consumer,Producer) ) {		\
        PreIdentificationOp;						\
        NewAnswerContinuation =						\
-	 table_identify_relevant_answers(Producer, Consumer,		\
+	 table_identify_relevant_answers(CTXTc Producer, Consumer,	\
 					 AnswerTemplate);		\
        PostIdentificationOp;						\
      }									\

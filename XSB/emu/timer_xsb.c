@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.c,v 1.10 2000-09-27 02:25:03 kifer Exp $
+** $Id: timer_xsb.c,v 1.11 2005-01-14 18:31:35 ruim Exp $
 ** 
 */
 
@@ -185,7 +185,7 @@ void xsb_timer_handler(int signo)
 /* the following function is a general format for timeout control. it takes 
    function calls which need timeout control as argument and controls the
    timeout for different platform */ 
-int make_timed_call(xsbTimeout *pptr, void (*fptr)(xsbTimeout *))
+int make_timed_call(CTXTdeclc xsbTimeout *pptr, void (*fptr)(CTXTdeclc xsbTimeout *))
 {
 #ifdef WIN_NT   
   int return_msg; /* message_pump() return value */
@@ -214,7 +214,7 @@ int make_timed_call(xsbTimeout *pptr, void (*fptr)(xsbTimeout *))
 #else /* UNIX */
   if ( !OP_TIMED_OUT ) { /* no timeout */
     SET_TIMER; /* specify the timeout period */       
-    (*fptr)(pptr); /* procedure call that needs timeout control */
+    (*fptr)(CTXTc pptr); /* procedure call that needs timeout control */
     TURNOFFALARM;
     return FALSE;
   } else {  /* timeout */

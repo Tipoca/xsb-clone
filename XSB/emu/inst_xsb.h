@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.14 2004-08-20 18:11:35 dwarren Exp $
+** $Id: inst_xsb.h,v 1.15 2005-01-14 18:31:18 ruim Exp $
 ** 
 */
 
@@ -267,6 +267,9 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define trie_try_fail           0x92
 #define trie_retry_fail         0x93
 
+/* to unlock the trie */
+#define trie_fail_unlock        0x94
+
 /*----------------------------------------------------------------------*/
 
 #define getfloat	0x80
@@ -353,7 +356,7 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define allocate        0xe9
 #define deallocate      0xea
 #define proceed         0xeb
-#define execute         0xec
+#define xsb_execute         0xec
 #define calld           0xef
 
 /* Branching instructions */

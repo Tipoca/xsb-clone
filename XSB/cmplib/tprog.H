@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tprog.H,v 1.6 2002-04-13 05:01:48 lfcastro Exp $
+** $Id: tprog.H,v 1.7 2005-01-14 18:30:48 ruim Exp $
 ** 
 */
 

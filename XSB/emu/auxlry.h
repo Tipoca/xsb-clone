@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.19 2004-08-19 22:15:24 tswift Exp $
+** $Id: auxlry.h,v 1.20 2005-01-14 18:30:49 ruim Exp $
 ** 
 */
 
@@ -76,7 +76,8 @@ extern char *xsb_segfault_message;
 /* This would yield a meaningful message in case of segfault */
 #define SET_FILEPTR(stream, xsb_filedes) \
     if (xsb_filedes < 0 || xsb_filedes >= MAX_OPEN_FILES) \
-	xsb_abort("Invalid file descriptor %d in I/O predicate", xsb_filedes);\
+	xsb_abort("Invalid file descriptor %d in I/O predicate",\
+			xsb_filedes);\
     stream = fileptr(xsb_filedes); \
     if ((stream==NULL) && (xsb_filedes != 0)) \
 	xsb_abort("Invalid file descriptor %d in I/O predicate", xsb_filedes);

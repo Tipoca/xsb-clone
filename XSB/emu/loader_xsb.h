@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.h,v 1.4 2000-04-29 21:53:55 kifer Exp $
+** $Id: loader_xsb.h,v 1.5 2005-01-14 18:31:21 ruim Exp $
 ** 
 */
 

@@ -19,14 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.3 2002-05-31 18:17:45 lfcastro Exp $
+** $Id: debug_xsb.h,v 1.4 2005-01-14 18:30:55 ruim Exp $
 ** 
 */
 
 #ifndef __DEBUG_XSB_H__
 #define __DEBUG_XSB_H__
-/* Terry's stuff */
-extern void terry_print_heap(int);
 
 #define STRIDESIZE     30
 

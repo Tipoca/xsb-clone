@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: num_vars.P,v 1.6 1999/12/08 17:41:25 warren Exp $
+** $Id: num_vars.P,v 1.7.10.1 2004/09/29 19:44:28 ruim Exp $
 ** 
 */
 

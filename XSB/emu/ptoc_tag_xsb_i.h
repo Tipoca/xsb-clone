@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ptoc_tag_xsb_i.h,v 1.3 2002-03-13 22:40:13 lfcastro Exp $
+** $Id: ptoc_tag_xsb_i.h,v 1.4 2005-01-14 18:31:27 ruim Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
  *  Returns the still-tagged value (a Cell) at the end of the deref chain
  *  leading from `regnum'.
  */
-static inline Cell ptoc_tag(int regnum)
+static inline Cell ptoc_tag(CTXTdeclc int regnum)
 {
   /* reg is global array in register.h */
   register Cell addr = cell(reg+regnum);

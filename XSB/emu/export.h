@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: export.h,v 1.3 2000-05-20 06:56:00 kifer Exp $
+** $Id: export.h,v 1.4 2005-01-14 18:31:15 ruim Exp $
 ** 
 */
 

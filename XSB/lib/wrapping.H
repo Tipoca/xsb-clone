@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wrapping.H,v 1.3 2002-04-13 05:01:53 lfcastro Exp $
+** $Id: wrapping.H,v 1.4 2005-01-14 18:31:57 ruim Exp $
 ** 
 */
 
@@ -31,3 +31,4 @@
 :- import repeat/0, tell/1, see/1 from standard.
 :- import fmt_write/2 from file_io.
 :- import xsb_configuration/2 from xsb_configuration.
+:- import throw/1 from standard.

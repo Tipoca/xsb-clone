@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: private_builtin.c,v 1.9 2000/05/20 06:56:05 kifer Exp $
+** $Id: private_builtin.c,v 1.10.6.1 2004/09/29 19:44:18 ruim Exp $
 ** 
 */
 

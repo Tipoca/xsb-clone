@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tpinline.H,v 1.2 1999-11-20 06:51:36 kifer Exp $
+** $Id: tpinline.H,v 1.3 2005-01-14 18:30:47 ruim Exp $
 ** 
 */
 

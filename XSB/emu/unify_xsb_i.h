@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify_xsb_i.h,v 1.8 2002-03-12 17:31:22 lfcastro Exp $
+** $Id: unify_xsb_i.h,v 1.9 2005-01-14 18:31:54 ruim Exp $
 ** 
 */
 
@@ -127,18 +127,18 @@
  loc##_label_op1_attv:\
   if (isattv(op2)) goto loc##_label_both_attv;\
   attv_dbgmsg(">>>> ATTV = something, interrupt needed\n");\
-  add_interrupt(op1, op2);\
+  add_interrupt(CTXTc op1, op2);\
   IFTHEN_SUCCEED;\
 \
  loc##_label_op2_attv:\
   attv_dbgmsg(">>>> something = ATTV, interrupt needed\n");\
-  add_interrupt(op2, op1);\
+  add_interrupt(CTXTc op2, op1);\
   IFTHEN_SUCCEED;\
 \
  loc##_label_both_attv:\
   if (op1 != op2)\
     {\
       attv_dbgmsg(">>>> ATTV = ???, interrupt needed\n");\
-      add_interrupt(op1, op2);\
+      add_interrupt(CTXTc op1, op2);\
     }\
   IFTHEN_SUCCEED

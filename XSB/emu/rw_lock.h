@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: rw_lock.h,v 1.1 2004-08-29 22:52:16 tswift Exp $
+** $Id: rw_lock.h,v 1.2 2005-01-14 18:31:28 ruim Exp $
 ** 
 */
 

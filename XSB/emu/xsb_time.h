@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_time.h,v 1.2 2001-10-09 05:48:20 kifer Exp $
+** $Id: xsb_time.h,v 1.3 2005-01-14 18:31:55 ruim Exp $
 ** 
 */
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring_xsb.h,v 1.5 2001-07-24 15:36:49 dwarren Exp $
+** $Id: varstring_xsb.h,v 1.6 2005-01-14 18:31:54 ruim Exp $
 ** 
 */
 

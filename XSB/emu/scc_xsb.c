@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: scc_xsb.c,v 1.6 2002-02-05 21:34:43 tswift Exp $
+** $Id: scc_xsb.c,v 1.7 2005-01-14 18:31:28 ruim Exp $
 ** 
 */
 
@@ -34,6 +34,8 @@
 #include "psc_xsb.h"
 #include "tries.h"
 #include "macro_xsb.h"
+#include "context.h"
+#include "scc_xsb.h"
 
 #if (!defined(LOCAL_EVAL))
 
@@ -83,7 +85,7 @@ static void DFS_DGT_visit(ComplStackFrame u)
     }
 }
 
-ComplStackFrame DFS_DGT(ComplStackFrame leader)
+ComplStackFrame DFS_DGT(CTXTdeclc ComplStackFrame leader)
 {
     ComplStackFrame u, max_u = NULL;
 

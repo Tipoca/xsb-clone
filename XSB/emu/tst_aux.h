@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_aux.h,v 1.7 2001-04-28 20:15:37 ejohnson Exp $
+** $Id: tst_aux.h,v 1.8 2005-01-14 18:31:38 ruim Exp $
 ** 
 */
 
@@ -56,7 +56,9 @@
  *  For flattening a heap term during processing.
  */
 
+#ifndef MULTI_THREAD
 extern DynamicStack tstTermStack;
+#endif
 #define TST_TERMSTACK_INITSIZE    25
 
 #define TermStack_Top		((CPtr)DynStk_Top(tstTermStack))
@@ -182,7 +184,9 @@ typedef tstLogFrame *pLogFrame;
 #define LogFrame_Value(Frame)	( (Frame)->value )
 
 
+#ifndef MULTI_THREAD
 extern DynamicStack tstTermStackLog;
+#endif
 #define TST_TERMSTACKLOG_INITSIZE    20
 
 #define TermStackLog_Top	((pLogFrame)DynStk_Top(tstTermStackLog))
@@ -225,7 +229,9 @@ extern DynamicStack tstTermStackLog;
  *  For constructing terms from the symbols stored along a path in the trie.
  */
 
+#ifndef MULTI_THREAD
 extern DynamicStack tstSymbolStack;
+#endif
 #define TST_SYMBOLSTACK_INITSIZE   25
 
 #define SymbolStack_Top		  ((CPtr)DynStk_Top(tstSymbolStack))
@@ -275,7 +281,9 @@ extern DynamicStack tstSymbolStack;
  *  simple WAM trailing -- it saves address locations only.
  */
 
+#ifndef MULTI_THREAD
 extern DynamicStack tstTrail;
+#endif
 #define TST_TRAIL_INITSIZE    20
 
 #define Trail_Top		((CPtr *)DynStk_Top(tstTrail))

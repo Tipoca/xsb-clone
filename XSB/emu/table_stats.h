@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.h,v 1.8 2000-06-27 17:59:17 ejohnson Exp $
+** $Id: table_stats.h,v 1.9 2005-01-14 18:31:34 ruim Exp $
 ** 
 */
 

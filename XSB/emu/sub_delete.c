@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_delete.c,v 1.7 2004-05-03 21:56:46 dwarren Exp $
+** $Id: sub_delete.c,v 1.8 2005-01-14 18:31:33 ruim Exp $
 ** 
 */
 
@@ -35,6 +35,7 @@
 #include "trie_internals.h"
 #include "macro_xsb.h"
 #include "error_xsb.h"
+#include "thread_xsb.h"
 
 extern BTHTptr hhadded;
 

@@ -18,14 +18,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trassert.h,v 1.4 1999-07-15 21:41:22 ejohnson Exp $
+** $Id: trassert.h,v 1.5 2005-01-14 18:31:37 ruim Exp $
 ** 
 */
 
+#include "context.h"
 
-extern int trie_assert(void);
-extern int trie_retract(void);
-extern int trie_retract_safe(void);
+extern int trie_assert(CTXTdecl);
+extern int trie_retract(CTXTdecl);
+extern int trie_retract_safe(CTXTdecl);
 
 
 #define switch_to_trie_assert {		\

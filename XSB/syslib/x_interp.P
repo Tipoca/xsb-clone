@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.47 2003/09/29 13:05:17 tschrijvers Exp $
+** $Id: x_interp.P,v 1.48 2004/08/19 22:15:27 tswift Exp $
 ** 
 */
 
@@ -51,11 +51,13 @@ interpreter :-
         fail.
 
 interpreter :-
-	retractall('$$exception_ball'(_)),
+	xsb_thread_self(T),
+	retractall('$$exception_ball'(T,_)),
 	catch(interpreter_cmd_goal([]),Ball,default_error_handler(Ball)),
 	fail.
 interpreter :-
-	retractall('$$exception_ball'(_)),
+	xsb_thread_self(T),
+	retractall('$$exception_ball'(T,_)),
 	x_interp_repeat,
 	catch(interpreter_readloop([]),Ball,default_error_handler(Ball)),
 	fail.

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.H,v 1.15 2003/11/14 19:34:14 tswift Exp $
+** $Id: xsb_read.H,v 1.16 2004/06/04 19:49:27 dwarren Exp $
 ** 
 */
 
@@ -38,5 +38,6 @@
 	  conpsc/2, intern_string/2, term_psc/2, psc_set_prop/2, psc_prop/2
      from machine.
 :- import banner_control/1 from banner.
+:- import xsb_sys_mutex_lock/1, xsb_sys_mutex_unlock/1 from thread.
 
 /* -------------------- end of file file_read.H ----------------------- */

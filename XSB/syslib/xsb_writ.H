@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.H,v 1.9 2002/04/13 05:01:59 lfcastro Exp $
+** $Id: xsb_writ.H,v 1.10 2003/07/01 20:07:51 lfcastro Exp $
 ** 
 */
 
@@ -44,4 +44,6 @@
 :- import windows_os_loader/0 from loader.
 
 :- import conget/2, conset/2 from gensym.
+
+:- import xsb_sys_mutex_lock/1, xsb_sys_mutex_unlock/1 from thread.
 /* ------------------- end of file file_write.H ----------------------- */

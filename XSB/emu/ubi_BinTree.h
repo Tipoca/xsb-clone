@@ -29,6 +29,12 @@
  * -------------------------------------------------------------------------- **
  *
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/01/29 18:44:09  dwarren
+ * Modified implementation of profiling to avoid the extra psc-record
+ * field for the count.  Now the counts are kept in the code-ptr records
+ * and accumulated only at accumulation time.  Someday may want to improve
+ * accumulation algorithm.
+ *
  * Revision 1.1  2004/01/14 20:27:14  dwarren
  * XSB Prolog Profiling as command line option -p
  *
@@ -443,7 +449,7 @@ long ubi_btSgn( long x );
    * ------------------------------------------------------------------------ **
    */
 
-ubi_btNodePtr ubi_btInitNode( ubi_btNodePtr NodePtr );
+ubi_btNodePtr ubi_btInitNode( ubi_btNodePtr uNodePtr );
   /* ------------------------------------------------------------------------ **
    * Initialize a tree node.
    *

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.H,v 1.18 2004/03/15 14:13:02 dwarren Exp $
+** $Id: assert.H,v 1.11.4.2 2004/10/18 20:48:14 ruim Exp $
 ** 
 */
 
@@ -61,4 +61,6 @@
 :- import '_$multifile_retract'/3 from parse.
 %%:- import assert_hook/1, retract_hook/2 from usermod.
 :- import call_xsb_hook/3, xsb_assert_hook/1, xsb_retract_hook/1 from xsb_hook.
+
+:- import xsb_sys_mutex_lock/1, xsb_sys_mutex_unlock/1 from thread.
 

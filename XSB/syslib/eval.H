@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: eval.H,v 1.4 2002/09/27 22:47:06 tswift Exp $
+** $Id: eval.H,v 1.2.10.2 2004/10/18 20:48:19 ruim Exp $
 ** 
 */
 
@@ -28,5 +28,4 @@
 
 :- import atom/1, number/1, throw/1 from standard.
 :- import term_type/2, pow/3 from machine.
-
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.c,v 1.14 2002-05-20 17:47:09 tswift Exp $
+** $Id: inst_xsb.c,v 1.15 2005-01-14 18:31:18 ruim Exp $
 ** 
 */
 

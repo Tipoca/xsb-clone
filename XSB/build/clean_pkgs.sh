@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: clean_pkgs.sh,v 1.3 2002-03-13 10:17:49 kifer Exp $
+## $Id: clean_pkgs.sh,v 1.4 2005-01-14 18:30:22 ruim Exp $
 ## 
 ##
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subsumes.H,v 1.4 2002/04/10 23:33:22 tswift Exp $
+** $Id: subsumes.H,v 1.3.6.2 2004/10/18 20:48:41 ruim Exp $
 ** 
 */
 

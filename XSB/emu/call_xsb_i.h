@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: call_xsb_i.h,v 1.7 2004-08-13 13:27:12 dwarren Exp $
+** $Id: call_xsb_i.h,v 1.8 2005-01-14 18:30:52 ruim Exp $
 ** 
 */
 
 
 
 
-static inline int prolog_call0(Cell term)
+static inline int prolog_call0(CTXTdeclc Cell term)
 {
     Psc  psc;
     if (isconstr(term)) {
@@ -45,7 +45,7 @@ static inline int prolog_call0(Cell term)
       psc = pair_psc(sym);
     } else {
       if (isnonvar(term))
-	err_handle(TYPE, 1, "call", 1, "callable term", term);
+	err_handle(CTXTc TYPE, 1, "call", 1, "callable term", term);
       else err(INSTANTIATION, 1, "call", 1);
       pcreg = (pb)&fail_inst;
       return FALSE;
@@ -79,13 +79,13 @@ static inline int prolog_call0(Cell term)
       break;
 *****/
     }
-    if (asynint_val) intercept(psc);
+    if (asynint_val) intercept(CTXTc psc);
 
     return TRUE;
 }
 
 
-static inline int prolog_code_call(Cell term, int value)
+static inline int prolog_code_call(CTXTdeclc Cell term, int value)
 {
   Psc  psc;
   if (isconstr(term)) {

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xnmr.P,v 1.15 2003-02-28 15:23:16 lfcastro Exp $
+** $Id: xnmr.P,v 1.16 2005-01-14 18:31:58 ruim Exp $
 ** 
 */
 

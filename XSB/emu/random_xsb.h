@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random_xsb.h,v 1.1 2000-04-05 17:39:41 cbaoqiu Exp $
+** $Id: random_xsb.h,v 1.2 2005-01-14 18:31:28 ruim Exp $
 ** 
 */
 
-extern int ret_random();
-extern int getrand();
-extern void setrand();
+extern int ret_random(CTXTdecl);
+extern int getrand(CTXTdecl);
+extern void setrand(CTXTdecl);
 
 #define RET_RANDOM	1
 #define GET_RAND	2

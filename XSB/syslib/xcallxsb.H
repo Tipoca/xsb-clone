@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.H,v 1.8 2002/04/13 05:01:59 lfcastro Exp $
+** $Id: xcallxsb.H,v 1.6.4.2 2004/10/18 20:48:45 ruim Exp $
 ** 
 */
 

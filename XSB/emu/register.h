@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: register.h,v 1.7 2002-08-07 15:42:13 lfcastro Exp $
+** $Id: register.h,v 1.8 2005-01-14 18:31:28 ruim Exp $
 ** 
 */
 
@@ -26,6 +26,8 @@
 #define __REGISTER_H__
 
 #include "psc_xsb.h"
+
+#ifndef MULTI_THREAD
 
 /* Argument Registers
    ------------------ */
@@ -77,6 +79,8 @@ extern CPtr root_address;
 /*---- for splitting stack mode ----------------------------------------*/
 
 extern CPtr ebreg;	/* breg into environment stack */
+
+#endif
 
 
 #endif /* __REGISTER_H__ */

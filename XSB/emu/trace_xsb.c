@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.10 2000/06/27 17:59:18 ejohnson Exp $
+** $Id: trace_xsb.c,v 1.10.6.2 2004/10/18 20:46:22 ruim Exp $
 ** 
 */
 
@@ -94,7 +94,7 @@ void perproc_stat(void)
  * time of 'time_start'.
  */
 
-void total_stat(double elapstime) {
+void total_stat(CTXTdeclc double elapstime) {
 
   NodeStats
     tbtn,		/* Table Basic Trie Nodes */
