@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flogic_basics.flr,v 1.2 1999-05-18 04:01:28 kifer Exp $
+** $Id: flogic_basics.flr,v 1.3 1999-05-22 15:30:20 kifer Exp $
 ** 
 */
 
@@ -61,7 +61,7 @@ person[instances ->> {X}] :- X:person.  % NON-INHERITABLE mvd method of person
 
 
 %%% ===========================================================================
-%%% now ask some QUERIES here (or INTERACTIVELY from the FLIP SHELL)
+%%% now ask some QUERIES here (or INTERACTIVELY from the FLORA SHELL)
 %%% ===========================================================================
 
 ?- times_flies_like_an_arrow.	% ==> `yes'
@@ -84,6 +84,6 @@ person[instances ->> {X}] :- X:person.  % NON-INHERITABLE mvd method of person
             {H:dangerous_hobby}	% ... which are dangerous?
 ]. 
 
-?- writeln('Thanks '), unix(whoami), writeln(' for using FLIP!').
+?- writeln('Thanks for using FLORA!').
 
 

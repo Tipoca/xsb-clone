@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: family_rel.flr,v 1.1 1999-04-19 21:44:45 guizyang Exp $
+** $Id: family_rel.flr,v 1.2 1999-05-22 15:30:19 kifer Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 %%% 
 %%% RELATIONAL (= DATALOG) version
 %%%
-%%% $Id: family_rel.flr,v 1.1 1999-04-19 21:44:45 guizyang Exp $
+%%% $Id: family_rel.flr,v 1.2 1999-05-22 15:30:19 kifer Exp $
 %%% ======================================================================
 
 %%% ======================================================================
@@ -95,8 +95,6 @@ sister(X,S) :- parent(X,P), parent(S,P), female(S), not X=S.
 ancestor(X,Y) :- parent(X,Y).		% read as ``ancestor_of X is Y''
 ancestor(X,Y) :- ancestor(X,Z), ancestor(Z,Y).
 
-%%% uncomment when using FLORID:
-%?-sys.eval. 	
 
 %%% ======================================================================
 %%% now ask some queries:
