@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.28 2000/07/31 20:28:03 ejohnson Exp $
+** $Id: tables.P,v 1.29 2000/08/05 08:47:36 cbaoqiu Exp $
 ** 
 */
 
@@ -126,14 +126,13 @@ tfindall(T, Call, Result) :-
 		is_incomplete(Call,SubgPtr,PTCP,_), findall(T,Call,Result)
 	  )
         ; PredType == subsumptive ->
-	  ( warning(('tfindall/3 does not yet fully support subsumptive',
-	             ' predicates.')),
-	    ( AnsSetStatus == complete ->
-		warning((Call, ' answer set is complete; continuing...')),
-		findall(T,Call,Result)
-	    ; abort([' ', Call,
-	             'answer set is not complete; cannot continue.'])
-	    )
+	  warning(('tfindall/3 does not yet fully support ',
+	           'subsumptive predicates.')),
+	  ( AnsSetStatus == complete -> findall(T,Call,Result)
+          ; AnsSetStatus == undefined ->
+	     ( call(Call), fail ; tfindall(T,Call,Result) )
+	  ; AnsSetStatus == incomplete ->
+	     abort(('tfindall/3: Incomplete subsumptive subgoal: ', Call))
 	  )
         ; abort(['Illegal (untabled?) subgoal to tfindall/3: ', Call])
 	).
