@@ -26,8 +26,9 @@ sort temp > ${FILE}_new
 #-----------------------
 # print out differences.
 #-----------------------
-d=`diff ${FILE}_new ${FILE}_old`
-if test -z "$d"; then 
+status=0
+diff ${FILE}_new ${FILE}_old || status=1
+if test "$status" = 0 ; then 
 	echo "$BASEDIR/$FILE tested"
 	rm -f ${FILE}_new
 else

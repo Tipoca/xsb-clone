@@ -15,7 +15,7 @@ for suff in $suffixes ; do
     if test "$status" = 0 ; then
 	echo "$outfile1 tested"
     else
-	echo "$outfile1 different!!!"
+	echo "$outfile1 and $infile differ!!!"
     fi
 
     /bin/rm -f $outfile1 $outfile

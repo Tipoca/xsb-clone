@@ -7,4 +7,4 @@ echo "-------------------------------------------------------"
 XEMU=$1
 
 
-./CSH/all_sem.csh $XEMU
+./CSH/all_sem.sh $XEMU
