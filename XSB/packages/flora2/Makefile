@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.35 2002-08-17 19:03:14 kifer Exp $
+## $Id: Makefile,v 1.36 2002-10-18 06:40:18 kifer Exp $
 ## 
 ##
 
@@ -36,7 +36,7 @@ ALLOBJS = flrarguments${OBJEXT} \
 	  flrcoder${OBJEXT} \
 	  flrdependency${OBJEXT} \
 	  flora2devel${OBJEXT} \
-	  flrfirstorder${OBJEXT} \
+	  flrhilogtable${OBJEXT} \
 	  flrlexer${OBJEXT} \
 	  flrlibman${OBJEXT} \
 	  flrnodefp${OBJEXT} \
@@ -131,8 +131,8 @@ flrprolog${OBJEXT} : flrprolog${PROLOGEXT} flrprolog.H $(FLORA_TERMS)
 	@echo 'mc(flrprolog,$(OPTION)).' >> cmd...
 
 
-flrfirstorder${OBJEXT} : flrfirstorder${PROLOGEXT} flrfirstorder.H $(FLORA_TERMS)
-	@echo 'mc(flrfirstorder,$(OPTION)).' >> cmd...
+flrhilogtable${OBJEXT} : flrhilogtable${PROLOGEXT} flrhilogtable.H $(FLORA_TERMS)
+	@echo 'mc(flrhilogtable,$(OPTION)).' >> cmd...
 
 
 flrprint${OBJEXT} : flrprint${PROLOGEXT} flrprint.H

@@ -19,7 +19,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: static_data.in,v 1.10 2002-08-17 19:03:07 kifer Exp $
+** $Id: static_data.in,v 1.11 2002-10-18 06:40:17 kifer Exp $
 ** 
 */
 
@@ -62,6 +62,8 @@ hide_this_hide(flora_write_Yes,0).
 hide_this_hide(flora_handle_trace,0).
 hide_this_hide(flora_handle_notrace,0).
 hide_this_hide(flora_handle_end_of_call,0).
+
+hide_this_hide(flora_error_undefined,1).
 
 hide_this_hide(FLORA_DB_FIND_PREDICATE,2).
 hide_this_hide(FLORA_DB_RECLAIM_SPACE_PREDICATE,0).

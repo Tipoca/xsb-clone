@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrimport.P,v 1.12 2002-08-17 19:02:57 kifer Exp $
+** $Id: flrimport.P,v 1.13 2002-10-18 06:40:16 kifer Exp $
 **
 */
 
@@ -67,24 +67,11 @@ funish_up(NewA,NewP,File,Module) :-
 %% Make bar(...) dynamic and place it
 %% into the correct XSB module (the module where flImport is called)
 %% Use:
-%%        :- flImport hilog/firstorder P as A from File>>Module.
-
-%% This assumes that P is a Flora predicate
-flImportFirstorder(P,A,File,Module) :-
-	check_args(P,A,Module),
-	P = FuncP/ArityP,
-	%% attach the workspace
-	flora_firstorder_module_predicate_symbol(FuncP,Module,WSFuncP),
-	duplicate(A,NewA,Args),
-	(import WSFuncP/ArityP from usermod), % import whatever P is bound to
-	functor(NewP, WSFuncP, ArityP),
-	%% unify the args of P and A
-	NewP =.. [_|Args],
-	funish_up(NewA,NewP,File,Module).
+%%        :- flImport P as A from File>>Module.
 
 
 %% This assumes that P is a prolog predicate within a flora program.
-flImportHiLog(P,A,File,Module) :-
+flImportPredicate(P,A,File,Module) :-
 	check_args(P,A,Module),
 	P = FuncP/ArityP,
 	%% attach the workspace

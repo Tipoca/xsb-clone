@@ -20,7 +20,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: NMakefile.mak,v 1.8 2002-09-02 20:36:41 kifer Exp $
+## $Id: NMakefile.mak,v 1.9 2002-10-18 06:40:18 kifer Exp $
 ## 
 ##
 
@@ -33,7 +33,7 @@ ALLOBJS = flrarguments$(OBJEXT) \
 	  flrcoder$(OBJEXT) \
 	  flrdependency$(OBJEXT) \
 	  flora2devel$(OBJEXT) \
-	  flrfirstorder$(OBJEXT) \
+	  flrhilogtable$(OBJEXT) \
 	  flrlexer$(OBJEXT) \
 	  flrlibman$(OBJEXT) \
 	  flrnodefp$(OBJEXT) \

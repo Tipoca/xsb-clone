@@ -18,7 +18,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: default.flr,v 1.10 2002-08-17 19:03:07 kifer Exp $
+** $Id: default.flr,v 1.11 2002-10-18 06:40:17 kifer Exp $
 ** 
 */
 
@@ -27,11 +27,7 @@
 %%% SOME SIMPLE EXAMPLES SHOWING SEVERAL F-LOGIC FEATURES 
 %%% ===========================================================================
 
-:- firstorder tc/2.
 :- table tc/2.
-%% Could also leave tc/2 as HiLog predicate and add the directive
-%% :- hilogtable 2.
-
 
 times_flies_like_an_arrow.		% a 0-ary PREDICATE (proposition)
 fruit_flies_like_an_apple[].		% an OBJECT with empty specification []

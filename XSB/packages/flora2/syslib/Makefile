@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.21 2002-08-17 19:02:59 kifer Exp $
+## $Id: Makefile,v 1.22 2002-10-18 06:40:16 kifer Exp $
 ## 
 ##
 
@@ -49,8 +49,7 @@ ALLOBJS = flranswer${OBJEXT} \
 	  flrshdirect${OBJEXT} \
 	  flrdynmod${OBJEXT} \
 	  flrequality${OBJEXT} \
-	  flrimport${OBJEXT} \
-	  flrexpunge${OBJEXT}
+	  flrimport${OBJEXT}
 
 FLORA_INCLUDES_DIR = ../flrincludes
 DYN_INCLUDES_DIR = ../includes
@@ -144,10 +143,6 @@ flrequality${OBJEXT} : flrequality$(PROLOGEXT) $(FLORA_TERMS)
 
 flrimport${OBJEXT}: flrimport$(PROLOGEXT) $(FLORA_TERMS) $(FLRHEADER)
 	@echo 'mc(flrimport,$(OPTION)).' >> cmd...
-
-
-flrexpunge${OBJEXT} : flrexpunge$(PROLOGEXT) $(FLORA_TERMS)
-	@echo 'mc(flrexpunge,$(OPTION)).' >> cmd...
 
 
 init:

@@ -18,7 +18,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flogic_basics.flr,v 1.9 2002-08-17 19:03:06 kifer Exp $
+** $Id: flogic_basics.flr,v 1.10 2002-10-18 06:40:17 kifer Exp $
 ** 
 */
 
@@ -29,7 +29,6 @@
 time_flies_like_an_arrow.		% a 0-ary PREDICATE (proposition)
 fruit_flies_like_an_apple[].		% an OBJECT with empty specification []
 
-:- firstorder e/2, tc/2.
 :- table tc/2.
 
 e(a,b). e(b,a). e(b,c).			% a binary PREDICATE (graph)

@@ -22,7 +22,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.25 2002-08-17 19:03:09 kifer Exp $
+** $Id: flrshell.H,v 1.26 2002-10-18 06:40:18 kifer Exp $
 **
 */
 
@@ -46,7 +46,8 @@
 	flora_set_counter/2,
 	flora_module_path_get/1,
 	flora_module_path_add/1,
-	flora_module_path_remove/1
+	flora_module_path_remove/1,
+	flora_banner_control/1
    from flrporting.
 
 :- import flora_plg2hlg/4 from prolog2hilog.
@@ -71,8 +72,6 @@
 :- import flora_shreset_arguments/0 from flrarguments.
 
 %%:- import flora_shreset_prolog/0 from flrprolog.
-
-:- import flora_shreset_firstorder/0 from flrfirstorder.
 
 :- import
 	flora_load_library/1,
@@ -106,4 +105,3 @@
    from flrdebugger.
 
 :- dynamic flora_switch(_).
-:- index(flora_switch/1,trie).
