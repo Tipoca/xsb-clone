@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete.i,v 1.6 1999-01-18 17:59:32 kostis Exp $
+** $Id: complete.i,v 1.7 1999-01-28 09:00:58 cbaoqiu Exp $
 ** 
 */
 
@@ -96,13 +96,21 @@ case check_complete: {
 	  {
 	    int i;
 	    CPtr temp_hreg;
+	    char *ret_str;
 	    
-	    temp_hreg = hreg;
-	    new_heap_functor(hreg, get_ret_psc(num_heap_term_vars));
-	    for (i = 0; i < num_heap_term_vars; i++)
-	      cell(hreg++) = (Cell) var_addr[i];
-	    delay_positively(SUBGOAL, aln_answer_ptr(tcp_trie_return(breg)),
-			     temp_hreg);
+	    if (num_heap_term_vars == 0) {
+	      ret_str = string_find("ret", 1);
+	      delay_positively(SUBGOAL, aln_answer_ptr(tcp_trie_return(breg)),
+			       makestring(ret_str));
+	    }
+	    else {
+	      temp_hreg = hreg;
+	      new_heap_functor(hreg, get_ret_psc(num_heap_term_vars));
+	      for (i = 0; i < num_heap_term_vars; i++)
+		cell(hreg++) = (Cell) var_addr[i];
+	      delay_positively(SUBGOAL, aln_answer_ptr(tcp_trie_return(breg)),
+			       makecs(temp_hreg));
+	    }
 	  }
 	}
 	lpcreg = cpreg;
