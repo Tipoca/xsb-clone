@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.h,v 1.1 1999-10-25 05:58:50 kifer Exp $
+** $Id: odbc_xsb.h,v 1.2 2001-01-03 20:40:23 dwarren Exp $
 ** 
 */
 
@@ -29,22 +29,31 @@ extern void ODBCConnect();
 extern void ODBCDisconnect();
 extern void SetBindVarNum();
 extern void FindFreeCursor();
-extern void SetVar();
-extern void SetBind();
+extern void SetBindVal();
 extern void Parse();
-extern void GetColumn();
-extern void SetCursorFree(int);
+extern int  GetColumn();
+extern void SetCursorClose(int);
 extern void FetchNextCol();
+extern void ODBCCommit();
+extern void ODBCRollback();
+extern void ODBCColumns();
+extern void ODBCTables();
+extern void ODBCUserTables();
 
 #define ODBC_CONNECT             1
 #define ODBC_PARSE               2
 #define ODBC_SET_BIND_VAR_NUM    3
 #define ODBC_FETCH_NEXT_COL      4
 #define ODBC_GET_COLUMN          5
-#define ODBC_SET_VAR             6
+#define ODBC_SET_BIND_VAL        6
 #define ODBC_FIND_FREE_CURSOR    7
 #define ODBC_DISCONNECT          8
-#define ODBC_SET_BIND            9
+#define ODBC_SET_CURSOR_CLOSE    9
+#define ODBC_COMMIT             10
+#define ODBC_ROLLBACK           11
+#define ODBC_COLUMNS            12
+#define ODBC_TABLES             13
+#define ODBC_USER_TABLES        14
 
 #endif
 

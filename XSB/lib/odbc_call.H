@@ -1,5 +1,5 @@
 /* File:      odbc_call.H
-** Author(s): Lily Dong
+** Author(s): Lily Dong, David S. Warren
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1993-1998
@@ -18,14 +18,22 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.5 2000-11-13 21:39:24 dwarren Exp $
+** $Id: odbc_call.H,v 1.6 2001-01-03 20:40:23 dwarren Exp $
 ** 
 */
 
 
+:- export odbc_open/3, odbc_close/0, odbc_sql/3, odbc_query/2,
+	odbc_import/2, odbc_sql/2, odbc_transaction/1,
+	odbc_get_schema/2, odbc_show_schema/1, odbc_user_tables/1,
+	odbc_insert/2, odbc_delete/2, odbc_flag/3,
+	odbc_attach/2, odbc_record/2, odbc_create_table/2,
+	odbc_create_index/3, odbc_delete_table/1,
+	odbc_delete_view/1, odbc_delete_index/2,
+	odbc_add_record/2, odbc_delete_record/2.
+
 % import some necessary predicates from library.
 
-:- import str_cat/3, concat_atom/2 from string.
 :- import call0/1, odbc_exec_query/5 from machine.
 :- import conset/2, conget/2, coninc/1 from gensym.
 :- import length/2, append/3, member/2 from basics.

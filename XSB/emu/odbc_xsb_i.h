@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb_i.h,v 1.1 1999-10-25 05:58:51 kifer Exp $
+** $Id: odbc_xsb_i.h,v 1.2 2001-01-03 20:40:23 dwarren Exp $
 ** 
 */
 
@@ -26,40 +26,57 @@
 #ifdef XSB_ODBC
 
 case ODBC_EXEC_QUERY:
-   switch (ptoc_int(1)) {
-      case ODBC_CONNECT:
-         ODBCConnect();
-         break; 
-      case ODBC_PARSE:
-         Parse(); 
-         break; 
-      case ODBC_SET_BIND_VAR_NUM:
-         SetBindVarNum();
-         break;
-      case ODBC_FETCH_NEXT_COL:
-         FetchNextCol();
-         break; 
-      case ODBC_GET_COLUMN:
-         GetColumn();
-         break; 
-      case ODBC_SET_VAR:
-         SetVar();
-         break; 
-      case ODBC_FIND_FREE_CURSOR:
-         FindFreeCursor();
-         break; 
-      case ODBC_DISCONNECT:
-         ODBCDisconnect();
-         break; 
-      case ODBC_SET_BIND:
-         SetBind();
-         break; 
-      default:
-        xsb_error("Unknown or unimplemented ODBC request type");
-         /* Put an error message here */
-         break; 
-   }
+switch (ptoc_int(1)) {
+ case ODBC_CONNECT:
+   ODBCConnect();
    break; 
+ case ODBC_PARSE:
+   Parse(); 
+   break; 
+ case ODBC_SET_BIND_VAR_NUM:
+   SetBindVarNum();
+   break;
+ case ODBC_FETCH_NEXT_COL:
+   FetchNextCol();
+   break; 
+ case ODBC_GET_COLUMN:
+   return GetColumn();
+   break; 
+ case ODBC_SET_BIND_VAL:
+   SetBindVal();
+   break; 
+ case ODBC_FIND_FREE_CURSOR:
+   FindFreeCursor();
+   break; 
+ case ODBC_DISCONNECT:
+   ODBCDisconnect();
+   break; 
+ case ODBC_SET_CURSOR_CLOSE: {
+   int i = ptoc_int(2);
+   SetCursorClose(i);
+   break;
+ }
+ case ODBC_COMMIT:
+   ODBCCommit();
+   break;
+ case ODBC_ROLLBACK:
+   ODBCRollback();
+   break;
+ case ODBC_COLUMNS:
+   ODBCColumns();
+   break;
+ case ODBC_TABLES:
+   ODBCTables();
+   break;
+ case ODBC_USER_TABLES:
+   ODBCUserTables();
+   break;
+ default:
+   xsb_error("Unknown or unimplemented ODBC request type");
+   /* Put an error message here */
+   break; 
+}
+break; 
 
 #endif
 
