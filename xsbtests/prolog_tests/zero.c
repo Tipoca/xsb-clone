@@ -1,5 +1,4 @@
-extern void ctop_int(int, int);
-extern int ptoc_int(int);
+#include "cinterf.h"
 
 int minus_one(void)
 {
