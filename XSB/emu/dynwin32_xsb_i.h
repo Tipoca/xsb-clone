@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32_xsb_i.h,v 1.9 2002-05-27 02:37:21 kifer Exp $
+** $Id: dynwin32_xsb_i.h,v 1.10 2003-02-21 16:45:25 lfcastro Exp $
 ** 
 */
 
@@ -77,7 +77,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   
   /* (2) open the needed object */
   if (( handle = LoadLibrary(sofilename)) == 0 ) {
-    xsb_warn("Cannot load library %s",sofilename);
+    xsb_warn("Cannot load library %s; error #%d",sofilename,GetLastError());
     return 0;
   }
   
