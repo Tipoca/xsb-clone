@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.16 2004-01-29 18:44:09 dwarren Exp $
+** $Id: psc_xsb.c,v 1.17 2004-09-30 13:22:21 dwarren Exp $
 ** 
 */
 
@@ -195,8 +195,8 @@ static int is_globalmod(Psc mod_psc)
 static Pair search(int arity, char *name, Pair *search_ptr)
 {
     Psc psc_ptr;
-    Pair *init_search_ptr = search_ptr;
-    Pair found_pair;
+    /*    Pair *init_search_ptr = search_ptr; */
+    /*    Pair found_pair; */
 
     while (*search_ptr) {
       psc_ptr = (*search_ptr)->psc_ptr;
