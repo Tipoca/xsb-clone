@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.19 1999-01-13 06:20:39 kifer Exp $
+## $Id: configure.in,v 1.20 1999-01-13 15:37:19 kifer Exp $
 ## 
 ##
 
@@ -378,7 +378,7 @@ case $CC in
 	c_low_opt_level="-O4"
 	CFLAGS="-ansi -pedantic -Wall"
 	;;
-   cc)  if test -z "$__sunpro_c"; then
+   cc)  if test "$__sunpro_c" = "no"; then
 	   c_low_opt_level="-O4"
 	else
 	   c_low_opt_level="-xO4"
@@ -700,7 +700,7 @@ fi
 
 # Normally, the optimization level will be O4. 
 # SGI64 must have O1 and 32 bit SGI's can have O2
-if test -z "$__sunpro_c"; then
+if test "$__sunpro_c" = "no"; then
    c_opt_level="-O4"
 else
    c_opt_level="-xO4"
