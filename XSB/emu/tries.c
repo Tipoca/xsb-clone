@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.35 1999-10-26 21:32:51 kostis Exp $
+** $Id: tries.c,v 1.36 1999-10-29 10:40:19 kostis Exp $
 ** 
 */
 
@@ -58,7 +58,6 @@
 
 extern Psc term_psc(Cell);
 extern Cell ptoc_tag(int);
-extern void ctop_tag(int, Cell);
 extern TIFptr get_tip(Psc);
 #ifdef DPVR_DEBUG_BD
 extern void printterm(Cell, byte, int);
