@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.31 1999/12/19 15:33:03 kostis Exp $
+** $Id: std_xsb.P,v 1.32 2000/01/11 17:01:53 ejohnson Exp $
 ** 
 */
 
@@ -250,6 +250,7 @@ standard_symbol(writeq, 2, standard).
 standard_symbol(write_canonical, 1, standard).
 standard_symbol(write_canonical, 2, standard).
 standard_symbol(xsb_flag, 2, curr_sym).
+standard_symbol((attribute), 1, atts).
 
 standard_symbol(('_$cutto'), 1, standard).
 standard_symbol(('_$savecp'), 1, standard).
