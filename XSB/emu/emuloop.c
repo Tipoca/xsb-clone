@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.63 2000-04-29 21:53:53 kifer Exp $
+** $Id: emuloop.c,v 1.64 2000-05-19 22:55:39 kifer Exp $
 ** 
 */
 
@@ -1319,7 +1319,10 @@ nunify: /* ( op1, op2 ) */
 /* word op1, op2 */
 #include "unify_xsb_i.h"
 
-    goto contcase;  /* end of nunify */
+    /* unify_xsb_i already ends with this statement.
+       goto contcase;  
+    */
+    /* end of nunify */
 
 /*======================================================================*/
 

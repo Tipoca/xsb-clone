@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.41 2000/04/29 21:53:59 kifer Exp $
+** $Id: subp.c,v 1.42 2000/05/19 04:58:34 kifer Exp $
 ** 
 */
 
@@ -157,8 +157,10 @@ xsbBool unify(Cell rop1, Cell rop2)
 
 /*----------------------------------------*/
 #include "unify_xsb_i.h"
+  /* unify_xsb_i already ends with this statement
+     IFTHEN_SUCCEED;
+  */
 /*----------------------------------------*/
-  IFTHEN_SUCCEED;
 
 }  /* end of unify */
 
