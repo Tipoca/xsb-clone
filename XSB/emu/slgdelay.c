@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.9 1999/02/06 17:18:22 kostis Exp $
+** $Id: slgdelay.c,v 1.10 1999/02/27 21:58:46 cbaoqiu Exp $
 ** 
 */
 
@@ -153,9 +153,9 @@ static DE intern_delay_element(Cell delay_elem)
 #endif
 
   tmp_cell = cell(cptr + 1);
-  subgoal = (SGFrame) int_val(tmp_cell);
+  subgoal = (SGFrame) addr_val(tmp_cell);
   tmp_cell = cell(cptr + 2);
-  ans_subst = (NODEptr) int_val(tmp_cell);
+  ans_subst = (NODEptr) addr_val(tmp_cell);
   tmp_cell = cell(cptr + 3);
   
   /*
@@ -369,9 +369,9 @@ bool answer_is_junk(CPtr dlist)		  /* assumes that dlist != NULL */
       dlist = clref_val(dlist);
       cptr = (CPtr) cs_val(cell(dlist));
       tmp_cell = cell(cptr + 1);
-      subgoal = (SGFrame) int_val(tmp_cell);
+      subgoal = (SGFrame) addr_val(tmp_cell);
       tmp_cell = cell(cptr + 2);
-      ans_subst = (NODEptr) int_val(tmp_cell);
+      ans_subst = (NODEptr) addr_val(tmp_cell);
       if (is_failing_delay_element(subgoal,ans_subst)) {
 	return TRUE;
       }

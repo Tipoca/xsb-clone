@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell.h,v 1.1.1.1 1998-11-05 16:55:12 sbprolog Exp $
+** $Id: cell.h,v 1.2 1999-03-04 06:49:42 cbaoqiu Exp $
 ** 
 */
 
@@ -228,6 +228,9 @@ extern Float getfloatval(Cell);
 #define clref_val(dcell) (CPtr)dec_addr(dcell)
 #define makelist(list) (Cell)(enc_addr(list) | LIST)
 #define maketrievar(val) (Cell)(enc_int(val) | TrieVar)
+
+#define addr_val(dcell) int_val(dcell)
+#define makeaddr(val) makeint(val)
 
 /* common representations */
 #define vptr(dcell) (CPtr)(dcell)

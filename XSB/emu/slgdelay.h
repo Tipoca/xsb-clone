@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.7 1999-02-27 21:58:47 cbaoqiu Exp $
+** $Id: slgdelay.h,v 1.8 1999-03-04 06:49:45 cbaoqiu Exp $
 ** 
 */
 
@@ -42,9 +42,9 @@
   follow(hreg++) = makecs(sreg);					\
   follow(hreg++) = (delayreg == NULL) ? makenil : (Cell) delayreg;	\
   new_heap_functor(sreg, delay_psc);					\
-  cell(sreg) = makeint(SUBGOAL); sreg++;				\
-  cell(sreg) = makeint(NEG_DELAY); sreg++;				\
-  cell(sreg) = makeint(NEG_DELAY); sreg++;				\
+  cell(sreg) = makeaddr(SUBGOAL); sreg++;				\
+  cell(sreg) = makeaddr(NEG_DELAY); sreg++;				\
+  cell(sreg) = makeaddr(NEG_DELAY); sreg++;				\
   hreg = sreg;								\
   delayreg = (CPtr) new_delay_cons_cell;				\
 }
@@ -68,8 +68,8 @@
   follow(hreg++) = makecs(sreg);					\
   follow(hreg++) = (delayreg == NULL) ? makenil : (Cell) delayreg;	\
   new_heap_functor(sreg, delay_psc);					\
-  cell(sreg++) = makeint(SUBGOAL);					\
-  cell(sreg++) = makeint(ANSWER);					\
+  cell(sreg++) = makeaddr(SUBGOAL);					\
+  cell(sreg++) = makeaddr(ANSWER);					\
   follow(sreg++) = MAKE_SUBSF;						\
   hreg = sreg;								\
   delayreg = (CPtr) new_delay_cons_cell;				\

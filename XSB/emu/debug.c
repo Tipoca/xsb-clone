@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug.c,v 1.6 1999-02-25 15:01:33 kostis Exp $
+** $Id: debug.c,v 1.7 1999-03-04 06:49:43 cbaoqiu Exp $
 ** 
 */
 
@@ -484,9 +484,9 @@ static void print_delay_element(FILE *fp, Cell del_elem)
       fprintf(fp, "%s(", get_name(psc));
       cptr = (CPtr)cs_val(del_elem);
       tmp_cell = cell(cptr + 1);
-      print_subgoal(fp, (SGFrame) int_val(tmp_cell)); fprintf(fp, ",");
+      print_subgoal(fp, (SGFrame) addr_val(tmp_cell)); fprintf(fp, ",");
       tmp_cell = cell(cptr + 2);
-      fprintf(fp, "%p", (NODEptr) int_val(tmp_cell)); fprintf(fp, ",");
+      fprintf(fp, "%p", (NODEptr) addr_val(tmp_cell)); fprintf(fp, ",");
       tmp_cell = cell(cptr + 3);
       if (isinteger(tmp_cell)) {
 	fprintf(fp, "NEG");
