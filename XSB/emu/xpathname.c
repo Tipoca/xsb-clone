@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xpathname.c,v 1.4 1999-01-19 02:37:10 kifer Exp $
+** $Id: xpathname.c,v 1.5 1999-01-31 15:42:07 kostis Exp $
 ** 
 */
 
@@ -172,7 +172,7 @@ char *tilde_expand_filename_norectify(char *filename, char *expanded) {
     while ( (*path_suffix != '\0') && (*path_suffix != '/') )
       path_suffix++;
     username_len = path_suffix - path_prefix;
-    bcopy(path_prefix, username, username_len);
+    memmove(username, path_prefix, username_len);
     username[username_len] = '\0';
     
     pw_struct = (struct passwd *) getpwnam(username);
