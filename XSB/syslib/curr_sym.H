@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.H,v 1.15 2004/06/04 19:49:25 dwarren Exp $
+** $Id: curr_sym.H,v 1.16 2004/08/24 16:26:28 tswift Exp $
 ** 
 */
 
@@ -28,6 +28,7 @@
 	current_module/1, current_module/2,
 	current_atom/1,
 	current_functor/1, current_functor/2, 
+            current_index/2,
 	current_predicate/1, current_predicate/2,
             current_prolog_flag/2,
 	predicate_property/2, module_property/2, 
@@ -35,7 +36,7 @@
 
 :- export current_input_port/1, current_output_port/1.
 
-:- import '_$op'/3 from file_op.
+:- import '_$op'/3, '_$trie_asserted'/1, '_$index'/3 from file_op.
 :- import '_$hilog_symbol'/1 from hilogsym.
 :- import libpath/1 from loader.
 :- import functor/3, warning/1, abort/1, number/1,integer/1,atom/1 from standard.
