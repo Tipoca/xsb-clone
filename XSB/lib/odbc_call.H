@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.7 2001-01-08 18:06:11 dwarren Exp $
+** $Id: odbc_call.H,v 1.8 2001-01-10 14:00:54 dwarren Exp $
 ** 
 */
 
@@ -48,4 +48,16 @@
 
 :- import call0/1, odbc_exec_query/6 from machine.
 :- import conset/2, conget/2, coninc/1 from gensym.
-:- import length/2, append/3, member/2 from basics.
+:- import length/2, append/3, member/2, copy_term/2 from basics.
+
+:- import (dynamic)/1, retractall/1, abolish/1, asserta/1, assert/1,
+	retract/1
+	from assert.
+
+:- import writeln/1, write/1 , '=..'/2, atomic/1, atom_codes/2,
+        atom/1, number_codes/2, name/2, number/1, integer/1, nl/0,
+	'\='/2, functor/3, abort/1
+	from standard.
+
+:- import findall/3, setof/3, bagof/3
+	from setof.
