@@ -17,6 +17,7 @@
 #
 # For example:
 
-XSB/build       mailx -s "XSB commit: %{}" kifer
+XSB/build           	mailx -s "XSB commit: %{}" kifer
+XSB/packages/flora.*    mailx -s "XSB commit: %{}" kifer
 
 DEFAULT		(echo ""; whoami; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
