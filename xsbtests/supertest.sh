@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: supertest.sh,v 1.5 1999-01-14 20:57:05 kifer Exp $
+## $Id: supertest.sh,v 1.6 1999-01-14 21:55:21 kifer Exp $
 ## 
 ##
 
@@ -44,10 +44,6 @@ fi
 # Make sure to delete locks, if the user decides to abort the test
 trap 'rm -fr $testdir/$lockfile $testdir/lock.test; exit 1' 1 2 15
 
-config=`$xsbdir/build/config.guess`
-canonical=`$xsbdir/build/config.sub $config`
-execdir_prefix=$xsbdir/config/$canonical
-
 if test -f "$testdir/$lockfile" ; then
  echo "./$lockfile exists. Remove it first"
  exit
@@ -61,7 +57,7 @@ configure > $logfile
 echo "Making XSB with default options"
 makexsb fast >> $logfile
 cd $testdir
-./testsuite.sh $execdir_prefix/bin/xsb
+./testsuite.sh $xsbdir
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-local-scheduling"
@@ -69,7 +65,7 @@ configure --config-tag=localsched --enable-local-scheduling >> $logfile
 echo "Making XSB with --enable-local-scheduling"
 makexsb --config-tag=localsched fast >> $logfile
 cd $testdir
-./testsuite.sh $execdir_prefix-localsched/bin/xsb
+./testsuite.sh $xsbdir localsched
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-chat"
@@ -77,7 +73,7 @@ configure --config-tag=chat --enable-chat >> $logfile
 echo "Making XSB with --enable-chat"
 makexsb --config-tag=chat fast >> $logfile
 cd $testdir
-./testsuite.sh $execdir_prefix-chat/bin/xsb
+./testsuite.sh $xsbdir chat
 
 
 cd $xsbdir/build
@@ -86,6 +82,6 @@ configure --config-tag=localschedNchat --enable-chat --enable-local-scheduling >
 echo "Making XSB with --enable-chat --enable-local-scheduling"
 makexsb --config-tag=localschedNchat fast >> $logfile
 cd $testdir
-./testsuite.sh $execdir_prefix-localschedNchat/bin/xsb
+./testsuite.sh $xsbdir localschedNchat
 
 rm $testdir/$lockfile
