@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.21 1999-10-05 04:01:13 kifer Exp $
+** $Id: biassert.c,v 1.22 1999-10-10 11:38:13 kostis Exp $
 ** 
 */
 
@@ -48,7 +48,6 @@
 #include "inst.h"
 #include "token.h"
 #include "loader.h"
-#include "load_seg.h"
 #include "trie_internals.h"
 #include "choice.h"
 #include "xmacro.h"

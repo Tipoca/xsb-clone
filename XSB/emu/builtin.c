@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.66 1999-10-09 02:00:20 cbaoqiu Exp $
+** $Id: builtin.c,v 1.67 1999-10-10 11:38:10 kostis Exp $
 ** 
 */
 
@@ -69,7 +69,6 @@
 #include "register.h"
 #include "flags.h"
 #include "loader.h"
-#include "load_seg.h"
 #include "binding.h"
 #include "xmacro.h"
 #include "token.h"

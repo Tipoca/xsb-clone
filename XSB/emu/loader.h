@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.h,v 1.2 1999-10-09 16:48:27 kostis Exp $
+** $Id: loader.h,v 1.3 1999-10-10 11:38:07 kostis Exp $
 ** 
 */
 
@@ -65,10 +65,6 @@ typedef struct text_segment text_seg, seg_hdr, *pseg ;
 #define seg_size(s)     (((s)-1)->size)
 #define seg_text(s)     ((CPtr)(s))
  
-extern byte *loader(char *, int);
-extern void env_type_set(Psc, byte, byte, bool);
-
-
 #define OBJ_WORD_SIZE           4
 #define WORD_SIZE               ( sizeof(Cell) )
 /* Zoom the object file to fit actual word size */
@@ -108,3 +104,10 @@ extern void env_type_set(Psc, byte, byte, bool);
 			<< 8) | (unsigned int)(*((pb)(lptr)+2)))\
 			<< 8) | (unsigned int)(*((pb)(lptr)+3)) \
 		       )
+
+/* === functions used in other parts of the system ====================== */
+
+extern byte *loader(char *, int);
+extern void env_type_set(Psc, byte, byte, bool);
+extern void unload_seg(pseg);
+

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.c,v 1.38 1999-10-08 07:32:16 kifer Exp $
+** $Id: io_builtins.c,v 1.39 1999-10-10 11:38:12 kostis Exp $
 ** 
 */
 
@@ -47,8 +47,6 @@
 #include "flags.h"
 #include "inst.h"
 #include "token.h"
-#include "loader.h"
-#include "load_seg.h"
 #include "tries.h"
 #include "choice.h"
 #include "xmacro.h"

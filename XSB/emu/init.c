@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.33 1999-10-09 18:11:33 kostis Exp $
+** $Id: init.c,v 1.34 1999-10-10 11:38:14 kostis Exp $
 ** 
 */
 
@@ -56,7 +56,6 @@
 #include "choice.h"
 #include "flags.h"
 #include "loader.h"
-#include "load_seg.h"
 #include "xmacro.h"
 #include "tr_utils.h"
 #include "export.h"
