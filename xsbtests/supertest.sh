@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: supertest.sh,v 1.11 1999-10-22 17:42:46 kostis Exp $
+## $Id: supertest.sh,v 1.12 1999-10-22 21:04:43 ejohnson Exp $
 ## 
 ##
 
@@ -61,7 +61,7 @@ echo "Making XSB with default options"
 makexsb fast >> $logfile
 makexsb module >> $logfile
 cd $testdir
-./testsuite.sh -exclude sub_tests $xsbdir
+./testsuite.sh $xsbdir
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-local-scheduling"
@@ -70,7 +70,7 @@ echo "Making XSB with --enable-local-scheduling"
 makexsb --config-tag=localsched fast >> $logfile
 makexsb --config-tag=localsched module >> $logfile
 cd $testdir
-./testsuite.sh -tag localsched -exclude sub_tests $xsbdir
+./testsuite.sh -tag localsched $xsbdir
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-slg-wam"
