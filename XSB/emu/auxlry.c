@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.17 2003-03-20 18:40:08 lfcastro Exp $
+** $Id: auxlry.c,v 1.18 2003-09-11 14:23:34 dwarren Exp $
 ** 
 */
 
@@ -114,17 +114,13 @@ void get_date(int *year, int *month, int *day,
 {
 #ifdef WIN_NT
     SYSTEMTIME SystemTime;
-    TIME_ZONE_INFORMATION tz;
-    GetLocalTime(&SystemTime);
+    GetSystemTime(&SystemTime);
     *year = SystemTime.wYear;
     *month = SystemTime.wMonth;
     *day = SystemTime.wDay;
     *hour = SystemTime.wHour;
     *minute = SystemTime.wMinute;
     *second = SystemTime.wSecond;
-    GetTimeZoneInformation(&tz);
-    *hour = *hour + tz.Bias/60;
-    *minute = *minute + tz.Bias % 60;
 #else
 #ifdef HAVE_GETTIMEOFDAY
     struct timeval tv;
