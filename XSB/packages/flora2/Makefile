@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.13 2001-04-10 03:09:41 kifer Exp $
+## $Id: Makefile,v 1.14 2001-05-03 20:36:08 kifer Exp $
 ## 
 ##
 
@@ -173,7 +173,7 @@ finish:
 
 
 clean:
-	/bin/rm -f *~ *.O
+	/bin/rm -f *~ *.O ../flora2.O
 	cd closure; $(MAKE) clean
 	cd genincludes; $(MAKE) clean
 	cd syslib; $(MAKE) clean
