@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_re_match.c,v 1.7 1999-07-28 21:48:54 kifer Exp $
+** $Id: xsb_re_match.c,v 1.8 1999-08-01 20:42:55 kifer Exp $
 ** 
 */
 
@@ -72,8 +72,8 @@ static int first_call = TRUE; /* whether this is the first call to the regexp
 
 /* output buffer should be large enough to include the input string and the
    substitution string <= sizeof(subst_buf) */
-char output_buffer[5*MAXBUFSIZE], input_buffer[4*MAXBUFSIZE];
-char temp_buffer[4*MAXBUFSIZE];
+static char output_buffer[5*MAXBUFSIZE], input_buffer[4*MAXBUFSIZE];
+static char temp_buffer[4*MAXBUFSIZE];
 
 
 /* XSB regular expression matcher entry point

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wldmtchconfig.P,v 1.1 1999-04-30 15:49:01 kifer Exp $
+** $Id: wldmtchconfig.P,v 1.2 1999-08-01 20:42:56 kifer Exp $
 ** 
 */
 
@@ -42,7 +42,7 @@ make_xsb_wildmatchH(CC, CC_opts, LoaderFlags) :-
     write('%% XSB CC:         '), writeln(CC),
     write('%% Compiler flags: '), writeln(CC_opts),
     writeln(':- import slash/1 from machine.'),
-    writeln(':- export do_glob_directory__/4, do_wildmatch__/3.'),
+    writeln(':- export do_glob_directory__/4, do_wildmatch__/3, do_convert_string__/3.'),
     write(':- ldoption('''),
     write(LoaderFlags),
     writeln(''').'),
