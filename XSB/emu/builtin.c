@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.78 1999-11-17 17:41:55 ejohnson Exp $
+** $Id: builtin.c,v 1.79 1999-11-19 20:31:06 cbaoqiu Exp $
 ** 
 */
 
@@ -149,6 +149,7 @@ extern void force_answer_false(BTNptr);
 #if (defined(DEBUG) && defined(DEBUG_DELAY))
 extern void print_delay_list(FILE *, CPtr);
 extern void print_subgoal(FILE *, SGFrame);
+extern void printterm(Cell, byte, int);	/* used in bineg_xsb_i.h */
 #endif
 
 /* ------- variables also used in other parts of the system -----------	*/
