@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.33 1999-10-21 06:07:05 kifer Exp $
+## $Id: topMakefile.in,v 1.34 1999-10-21 17:08:57 kifer Exp $
 ## 
 ##
 
@@ -145,7 +145,7 @@ devel: prepare emu xsbmod gpp remake_dot_O_files configure_packages_src emu_clea
 superdevel: prepare emu xsbmod gpp remake_dot_O_files_force configure_packages_src emu_clean
 
 # Developer who needs a quick re-make of the executable
-fast: prepare emu xsbmod gpp emu_clean
+fast: prepare emu emu_clean
 
 prepare:
 	@cd $(src_emudir); \
