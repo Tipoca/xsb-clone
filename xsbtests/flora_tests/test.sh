@@ -15,7 +15,7 @@ file_list=*.flr
 exclude_list="abp.flr btupdates.flr"
 
 flora_options=flora_shell.
-flora_command="chatterbox(off). test."
+flora_command="chatterbox(off). test. flEnd."
 
 # Test if element is a member of exclude list
 # $1 - element

@@ -36,7 +36,8 @@ student[first      *=>  string,
 	remarks    *=>  string,    % whatever appropriate
         remarks    *->  '',
         #print(_),
-	#enroll(_,_)
+	#enroll(_,_),
+        *active
 ].
 
 instructor[name        =>  string,

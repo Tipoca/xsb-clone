@@ -6,6 +6,10 @@
     #enroll(_,_)
     #print(_),
     #print(_),
+    *active,
+    *active,
+    active,
+    active,
     advisor ->> {'ad1'},
     advisor ->> {'ad2'},
     canteach *-> '',
@@ -16,6 +20,8 @@
     defense *-> 'nottaken',
     defense -> 'df2',
     defense -> 'nottaken',
+    domestic
+    female
     first -> 'John',
     first -> 'Mary',
     graduated *-> 'futuredate',
@@ -43,17 +49,22 @@
     rpe -> 'rp2',
     status ->> {'st1'},
     status ->> {'st3'},
-    support ->> {'sp2','sp3'}
-    taught ->> {'tt11','tt12'}
+    support ->> {'sp2','sp3'},
+    taught ->> {'tt11','tt12'},
+'john'		:  'student'.
 'john'	:  'student'.
 'john'[
+'mary'		:  'student'.
 'mary'	:  'student'.
 'mary'[
 'student'[
 'student'[
 Class info: 
+ISA info: 
 Self info: 
 ].
 ].
 ].
 ].
+john  taught: [tt11,tt12]
+mary  taught: []

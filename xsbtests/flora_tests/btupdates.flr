@@ -1,6 +1,5 @@
 
-%%:- debug.
-%% Demo illustrating backtrackable updates.
+%% tests for backtrackable and non-backtrackable updates.
 
 ?- ['auxiliary/marymodule'>>mod2].
 
@@ -68,8 +67,16 @@ q(2002,111).
 q(2003,100).
 
 ?- abolish_all_tables.
+/*
+  %% XSB is broken with respect to backtracking over the updates.
+  %% while-do uses failure loop, so it can crash XSB. Use while-loop instead
 ?- while q(Y,S) do
        btinsert{mary[salary(Y)->S]@mod2}.
+*/
+?- while q(Y,S) loop (
+       btinsert{mary[salary(Y)->S]@mod2},
+	delete{q(Y,S)}
+    ).
 ?- abolish_all_tables.
 %% Should have salaries for 1995, 1999, 2001-2003
 ?- writeln('After query5:')@prolog(), mary[salary(Y)->V]@mod2,
@@ -81,8 +88,16 @@ q(2003,100).
 rr(2010) :- true.
 rr(3000) :- true.
 %% Here deletion for Y=3000 should fail and so the entire query should fail
+/*
+  %% XSB is broken with respect to backtracking over the updates.
+  %% while-do uses failure loop, so it can crash XSB. Use while-loop instead
 ?- while rr(Y) do
        btdelete{mary[salary(Y)->_]@mod2}.
+*/
+?- while rr(Y) loop (
+       btdelete{mary[salary(Y)->_]@mod2},
+	delete{rr(Y)}
+    ).
 %% Should have salaries for 1995, 1999, 2001-2003
 ?- writeln('After query6:')@prolog(), mary[salary(Y)->V]@mod2,
 	fmt_write('mary[salary(%S)->%S]\n', arg(Y,V))@flora(io).
@@ -112,11 +127,17 @@ rr(3000) :- true.
 	writeln(yes)@prolog().
 
 
+/*
 %% This is like Query 7, but we don't use don't care vars
 %% and thus execute the loop several times. The result is that all facts 
 %% about mary's salary are deleted
+  %% XSB is broken with respect to backtracking over the updates.
+  %% do-until uses failure loop, so it can crash XSB. Use loop-until instead
 ?- do btdelete{mary[salary(Y)->S]@mod2}
     	until (abolish_all_tables, 3 > count{YY| mary[salary(YY)->_]@mod2}).
+*/
+?- loop btdelete{mary[salary(Y)->S]@mod2}
+    	until (abolish_all_tables, 1 > count{YY| mary[salary(YY)->_]@mod2}).
 
 %% Should have no facts of the form mary[salary(...)->...]
 ?- abolish_all_tables.
@@ -126,3 +147,52 @@ rr(3000) :- true.
 
 
 
+?- writeln('Query 9 begins')@prolog().
+?- abolish_all_tables.
+qq(2022,333).
+qq(2023,222).
+qq(2024,222).
+qq(2025,222).
+qq(2026,222).
+qq(2027,222).
+qq(2028,222).
+
+?- while qq(Y,S) do
+       btinsert{mary[salary(Y)->S]@mod2}.
+
+?- abolish_all_tables.
+%% Should have salaries for 2022, 2023, ..., 2028
+?- writeln('After query9:')@prolog(), mary[salary(Y)->V]@mod2,
+	fmt_write('mary[salary(%S)->%S]\n', arg(Y,V))@flora(io).
+
+
+?- writeln('Query 10 begins')@prolog().
+?- abolish_all_tables.
+rrr(2022) :- true.
+rrr(3000) :- true.
+rrr(2023) :- true.
+%% Here deletion for Y=3000 should fail so the entire query should fail
+%% BUT: for 2022 it committed, so only the 2023 salary wasn't removed
+?- while rrr(Y) do
+       btdelete{mary[salary(Y)->_]@mod2}.
+
+%% Should have salaries for up to 2003 and 2022, 2023
+?- writeln('After query10:')@prolog(), mary[salary(Y)->V]@mod2,
+	fmt_write('mary[salary(%S)->%S]\n', arg(Y,V))@flora(io).
+
+
+?- writeln('Query 11 begins')@prolog().
+?- abolish_all_tables.
+
+%% Here we don't use don't care vars, so
+%% execute the loop several times. The result is that all facts 
+%% about mary's salary are deleted
+?- do btdelete{mary[salary(Y)->S]@mod2}
+    	until (abolish_all_tables, 3 > count{YY| mary[salary(YY)->_]@mod2}).
+
+
+%% Should have no facts of the form mary[salary(...)->...]
+?- abolish_all_tables.
+?- writeln('After query11:')@prolog(), 
+	unless mary[salary(Y)->V]@mod2 do
+	    writeln('Removed all Mary''s salary info')@prolog().
