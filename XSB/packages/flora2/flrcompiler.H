@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.10 2002-04-07 23:09:17 kifer Exp $
+** $Id: flrcompiler.H,v 1.11 2002-04-28 23:11:20 kifer Exp $
 **
 */
 
@@ -32,6 +32,8 @@
 	flora_concat_atoms/2,
 	flora_match_substring/3
     from flrporting.
+
+:- import is_pratom/3 from flrcoder.
 
 :- import member/2, append/3, length/2 from basics.
 

@@ -18,7 +18,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prolog2hilog.c,v 1.11 2002-04-07 23:09:12 kifer Exp $
+** $Id: prolog2hilog.c,v 1.12 2002-04-28 23:11:20 kifer Exp $
 ** 
 */
 
@@ -147,7 +147,7 @@ static prolog_term hilog2prolog(prolog_term hterm, char *apply)
   int arity, i;
 
   if (is_var(hterm))
-    return p2p_new();
+    return hterm;
   else if (is_list(hterm))
     return map_list(hilog2prolog,hterm,apply);
   else if (is_commalist(hterm))
@@ -198,7 +198,7 @@ static prolog_term prolog2hilog(prolog_term pterm, char *apply)
   int arity, i;
 
   if (is_var(pterm))
-    return p2p_new();
+    return pterm;
   else if (is_list(pterm))
     return map_list(prolog2hilog,pterm,apply);
   else if (is_commalist(pterm))
@@ -323,7 +323,7 @@ inline static int is_commalist(prolog_term term)
 
 
 /* 
-   plg2hlg(a(qq,b(c,4),b(c,5,d(X,U))),X,aaa).
+   plg2hlg(a(qq,b(c,4),b(c,5,d(X,U))),Y,aaa).
    plg2hlg(aaa(qq,b(c,4)),X,aaa).
    plg2hlg(X, aaa(qq,b(c,4),aaa(kkk,Bbb,aaa(ppp,aaa(uuu,Aaa),Ooo))),aaa).
    plg2hlg(X, aaa(qq,aaa(aaa,4)),aaa).

@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.P,v 1.32 2002-04-17 14:38:54 gzyang Exp $
+** $Id: flrcoder.P,v 1.33 2002-04-28 23:11:20 kifer Exp $
 **
 */
 
@@ -1134,6 +1134,7 @@ flora_build_struct(Term,DWS,Prefix,VarList,Code) :-
 	flora_build_structlist(Args,DWS,Prefix,VarList,ArgsCodeList),
 	%% If p(a)@prolog(mod) is run from Flora shell, the code generated
 	%% must look like: X =.. [p,a], call(X).
+	%% due to XSB module design inconsistencies
 	Code=','('=..'(P,[F|ArgsCodeList]),call(P)).
 
 flora_build_struct(Term,DWS,Prefix,VarList,Code) :-

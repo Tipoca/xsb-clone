@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.31 2002-04-07 23:09:17 kifer Exp $
+## $Id: Makefile,v 1.32 2002-04-28 23:11:21 kifer Exp $
 ## 
 ##
 
@@ -99,6 +99,10 @@ system: $(ALLOBJS)
 	cd syslib; $(MAKE)
 	cd trailer; $(MAKE)
 	cd debugger; $(MAKE)
+
+top: init $(ALLOBJS)
+	./CompileChangedFiles.sh $(PROLOG_COMMAND)
+	@cat $(SVFILE)
 
 libs:
 	cd lib; $(MAKE)
