@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.76 2000-04-06 17:28:54 kifer Exp $
+## $Id: configure.in,v 1.77 2000-04-10 23:45:58 kifer Exp $
 ## 
 ##
 
@@ -1104,7 +1104,7 @@ AC_SUBST(xsb_release_date)
 AC_SUBST(xsb_full_version_name)
 AC_SUBST(engine_mode)
 
-#These are used to compile the interface with SModels
+#These are used to compile the interface with sModels
 if test "${with_smodels}" = "" ; then
 	smodels_goal=nope
 else

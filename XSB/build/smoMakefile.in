@@ -1,4 +1,4 @@
-## File:      packages/SModels/Makefile
+## File:      packages/sModels/Makefile
 ## Author(s): luis (adapted from packages/flora/Makefile)
 ## Contact:   xsb-contact@cs.sunysb.edu
 ## 
@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: smoMakefile.in,v 1.5 1999-10-15 03:07:37 kifer Exp $
+## $Id: smoMakefile.in,v 1.6 2000-04-10 23:45:58 kifer Exp $
 ## 
 ##
 
