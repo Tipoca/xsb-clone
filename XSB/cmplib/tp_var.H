@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_var.H,v 1.5 2004-08-20 18:13:46 dwarren Exp $
+** $Id: tp_var.H,v 1.6 2004-08-31 00:22:22 dwarren Exp $
 ** 
 */
 
 
 
 :- export force_tp_var_loaded/0.
-:- export putvarinst/5, getvarinst/5, bldvarinst/4, univarinst/3,
+:- export putvarinst/5, getvarinst/5, bldvarinst/5, univarinst/5,
 	  release/3, alloc_reg/3, release_if_done/6, hold/3, getreg/2,
 	  reserve/3, alloc_reg1/4, release_if_done0/5.
 

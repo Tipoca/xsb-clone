@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.P,v 1.19 2004-03-06 21:55:14 tswift Exp $
+** $Id: compile.P,v 1.20 2004-08-31 00:22:20 dwarren Exp $
 ** 
 */
 
@@ -297,7 +297,6 @@ find_if_tabled(Sym, tabled(Tabind,Ar)):-
 find_if_tabled(_, 0). 
 
 /*======================================================================*/
-
 compile_clauses([], _, PilCode, PilCode, Nin, Nin).
 compile_clauses([Clause|Clauses], Sym, PilCode, PilCodeR, Nin, Nout) :-
 	Nmid is Nin + 1,  

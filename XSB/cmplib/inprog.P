@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inprog.P,v 1.7 2004-08-20 18:13:45 dwarren Exp $
+** $Id: inprog.P,v 1.8 2004-08-31 00:22:21 dwarren Exp $
 ** 
 */
 
@@ -129,8 +129,13 @@ inp_body(goal(Sym,Args),goal(Sym,NArgs),VarTab,VarTabr,Ckin,Ckout,VarList) :-
     inp_args(Args,NArgs,VOList,[],b,1,VarList).
 inp_body(inlinegoal(Name,Arity,Args),inlinegoal(Name,Arity,NArgs),
 		VarTab,VarTabr,Chunkno,Chunkno,VarList) :-
-    VarTab=[inlinegoal(Chunkno,Name,Arity,VOList)|VarTabr],
-    inp_args(Args,NArgs,VOList,[],i,1,VarList).
+%%	(Name = (=), Arity =:= 2, Args = [Lhs,Rhs], Rhs = varocc(_), \+ Lhs = varocc(_)
+%%	 ->	Args2 = [Rhs,Lhs]
+%%	 ;	Args2 = Args
+%%	),
+	Args2 = Args,
+	VarTab=[inlinegoal(Chunkno,Name,Arity,VOList)|VarTabr],
+	inp_args(Args2,NArgs,VOList,[],i,1,VarList).
 
 
 /*  	"inp_body_test" converts the test for an if-then-else		*/
