@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.7 2001-03-23 18:53:49 gzyang Exp $
+** $Id: flrutils.H,v 1.8 2001-03-24 23:33:02 kifer Exp $
 **
 */
 
@@ -109,6 +109,8 @@
 	flora_intern_code/4
    from flrcoder.
 
+:- import plg2hlg/3 from prolog2hilog.
+
 :- import
 	flora_stderr_nl/0,
 	flora_stderr_string/1,
@@ -142,6 +144,7 @@
 	flLoad/2,
 	flConsult/1,
 	flCompileInclude/1,
+	flP2H/2,
 	flloadtrailer/1,
 	flloadtrailer/2,
 	flsetuptrailer/1,

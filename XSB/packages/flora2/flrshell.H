@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.8 2001-03-23 18:53:49 gzyang Exp $
+** $Id: flrshell.H,v 1.9 2001-03-24 23:33:02 kifer Exp $
 **
 */
 
@@ -87,6 +87,7 @@
 	maxerr/1,
 	flCompile/1,
 	flCompile/2,
+	flP2H/2,
 	flLoad/1,
 	flLoad/2,
 	flConsult/1,
