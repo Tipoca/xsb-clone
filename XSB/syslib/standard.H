@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.36 2003/04/02 19:42:37 lfcastro Exp $
+** $Id: standard.H,v 1.37 2003/05/06 21:57:37 tswift Exp $
 ** 
 */
 
@@ -68,7 +68,7 @@
 	'\='/2,		'=..'/2,	'^=..'/2,	'=='/2,
 	'\=='/2,	'@<'/2,		'@>'/2,		'@=<'/2,
 	'@>='/2,	';'/2,		','/2,		'->'/2,
-	'_$cutto'/1,	'_$savecp'/1.	
+	':'/2,		'$cutto'/1,	'_$savecp'/1.	
 
 
 /* --------------------------------------------------------------- */
@@ -91,7 +91,7 @@
 	  psc_name/2, psc_set_prop/2, psc_prop/2, psc_type/2,
 	  stat_set_flag/2, stat_flag/2, psc_set_type/2, term_compare/3,
 	  stat_sta/1, stat_cputime/1, stat_walltime/1,
-          term_psc/2, term_new/2, term_type/2  %%, close_open_tables/0
+          term_psc/2, term_new/2, term_new_mod/3, term_type/2  %%, close_open_tables/0
 	  from machine.
 :- import '$$set_scope_marker'/0, '$$unwind_stack'/0, 
           '$$clean_up_block'/0 
