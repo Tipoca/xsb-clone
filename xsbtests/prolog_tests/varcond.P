@@ -1,5 +1,5 @@
 :- compiler_options([xpp_on]).
-#include "loader_defs.h"
+#include "extensions_xsb.h"
 
 test :- q(_,Y), writeln(res(Y)), fail.
 test :- shell(['rm varcond', XSB_OBJ_EXTENSION_ATOM]),

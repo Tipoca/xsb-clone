@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wldmtchconfig.P,v 1.8 2002-03-14 09:55:02 kifer Exp $
+** $Id: wldmtchconfig.P,v 1.9 2002-03-15 09:19:48 kifer Exp $
 ** 
 */
 
 :- compiler_options([xpp_on]).
-#include "loader_defs.h"
+#include "extensions_xsb.h"
 
 
 :- import slash/1, str_cat/3, machine_file_exists/1 from machine.

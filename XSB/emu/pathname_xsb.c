@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.14 2002-03-13 10:17:46 kifer Exp $
+** $Id: pathname_xsb.c,v 1.15 2002-03-15 09:19:50 kifer Exp $
 ** 
 */
 
@@ -54,7 +54,7 @@
 #include "cinterf.h"
 #include "error_xsb.h"
 #include "flags_xsb.h"
-#include "loader_defs.h"
+#include "extensions_xsb.h"
 
 /*=========================================================================*/
 

@@ -21,13 +21,13 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.80 2002-03-15 03:36:37 kifer Exp $
+** $Id: flrutils.P,v 1.81 2002-03-15 09:19:50 kifer Exp $
 **
 */
 
 
 :- compiler_options([xpp_on]).
-#include "loader_defs.h"
+#include "extensions_xsb.h"
 
 
 #define FLORA_FILE_EXT		flr

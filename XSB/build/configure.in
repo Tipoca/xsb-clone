@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.130 2002-03-15 08:09:43 kifer Exp $
+## $Id: configure.in,v 1.131 2002-03-15 09:19:54 kifer Exp $
 ## 
 ##
 
@@ -1447,8 +1447,16 @@ AC_SUBST(mno_cyg_lib)
 AC_SUBST(DLLTYPE)
 AC_SUBST(java_win_site_includes)
 
+xsb_src_extension=.P
+xsb_hdr_extension=.H
 xsb_obj_extension=.xwam
+xsb_asm_extension=.A
+xsb_decl_extension=.D
+AC_SUBST(xsb_src_extension)
+AC_SUBST(xsb_hdr_extension)
 AC_SUBST(xsb_obj_extension)
+AC_SUBST(xsb_asm_extension)
+AC_SUBST(xsb_decl_extension)
 
 topdir_base=/`basename $topdir`
 topdir_wind=`echo $topdir_base | sed 's,/,\\\\,g'`

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.24 2002-03-13 10:17:47 kifer Exp $
+** $Id: loader_xsb.c,v 1.25 2002-03-15 09:19:50 kifer Exp $
 ** 
 */
 
@@ -42,7 +42,7 @@
 #include "psc_xsb.h"
 #include "psc_defs.h"
 #include "loader_xsb.h"
-#include "loader_defs.h"
+#include "extensions_xsb.h"
 #include "cell_xsb.h"
 #include "heap_xsb.h"
 #include "flags_xsb.h"

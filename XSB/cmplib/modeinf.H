@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modeinf.H,v 1.6 2000-01-18 15:41:50 ejohnson Exp $
+** $Id: modeinf.H,v 1.7 2002-03-15 09:19:53 kifer Exp $
 ** 
 */
 
@@ -51,7 +51,6 @@
 :- import inline_predicate/2 from builtin.
 
 :- import findall/3 from setof.
-:- import decl_ext/1, hdr_ext/1 from curr_sym.
 :- import
 	append/3, copy_term/2, ith/3, length/2, member/2, memberchk/2,
 	select/3

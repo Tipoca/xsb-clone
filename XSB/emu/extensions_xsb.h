@@ -1,4 +1,4 @@
-/* File:      loader_defs.h
+/* File:      extensions_xsb.h
 ** Author(s): kifer
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_defs.h,v 1.3 2002-03-15 08:09:43 kifer Exp $
+** $Id: extensions_xsb.h,v 1.1 2002-03-15 09:19:51 kifer Exp $
 ** 
 */
 
@@ -36,3 +36,6 @@
 #define XSB_OBJ_EXTENSION_ATOM_SANS_DOT    'xwam'
 #define XSB_SRC_EXTENSION_ATOM_SANS_DOT    'P'
 #define XSB_HDR_EXTENSION_ATOM_SANS_DOT    'H'
+
+#define XSB_ASM_EXTENSION_ATOM    '.A'
+#define XSB_DECL_EXTENSION_ATOM   '.D'

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.H,v 1.7 1999-11-20 06:50:49 kifer Exp $
+** $Id: compile.H,v 1.8 2002-03-15 09:19:53 kifer Exp $
 ** 
 */
 
@@ -70,7 +70,6 @@
 :- import sys_unlink/2 from shell.
 :- import member/2 from basics.
 :- import force_ti_mod_loaded/0, ti_pred_block/3 from ti_mod.
-:- import hdr_ext/1, obj_ext/1, asm_ext/1, decl_ext/1 from curr_sym.
 
 :- import modeanalyze/3 from modeinf.
 :- import assert/1, retractall/1, (dynamic)/1  from assert.

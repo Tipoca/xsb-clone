@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.23 2002-03-13 10:17:47 kifer Exp $
+** $Id: init_xsb.c,v 1.24 2002-03-15 09:19:50 kifer Exp $
 ** 
 */
 
@@ -56,7 +56,7 @@
 #include "choice.h"
 #include "flags_xsb.h"
 #include "loader_xsb.h"
-#include "loader_defs.h"
+#include "extensions_xsb.h"
 #include "macro_xsb.h"
 #include "tr_utils.h"
 #include "export.h"

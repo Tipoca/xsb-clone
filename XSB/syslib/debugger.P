@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.P,v 1.23 2002/02/22 23:26:53 lfcastro Exp $
+** $Id: debugger.P,v 1.24 2002/03/13 10:17:46 kifer Exp $
 ** 
 */
 
@@ -29,7 +29,7 @@
 #include "char_defs.h"
 #include "sig_xsb.h"
 #include "standard.h"
-#include "loader_defs.h"
+#include "extensions_xsb.h"
 
 :- set_inthandler('_$deb_spy'(_), MYSIG_SPY),
    set_inthandler('_$deb_trace'(_), MYSIG_TRACE).

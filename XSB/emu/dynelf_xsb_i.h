@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf_xsb_i.h,v 1.19 2002-03-15 05:01:19 kifer Exp $
+** $Id: dynelf_xsb_i.h,v 1.20 2002-03-15 09:19:51 kifer Exp $
 ** 
 */
 
@@ -44,7 +44,7 @@
 #include "io_builtins_xsb.h"
 #include "varstring_xsb.h"
 #include "string_xsb.h"
-#include "loader_defs.h"
+#include "extensions_xsb.h"
 
 #define BUFFEXTRA 1024
 

@@ -1,5 +1,5 @@
 :- compiler_options([xpp_on]).
-#include "loader_defs.h"
+#include "extensions_xsb.h"
 
 :- import shell/1 from shell.
 :- import numbervars/1 from num_vars.
