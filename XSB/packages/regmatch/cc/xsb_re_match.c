@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_re_match.c,v 1.12 1999-10-25 06:00:45 kifer Exp $
+** $Id: xsb_re_match.c,v 1.13 1999-10-26 06:54:38 kifer Exp $
 ** 
 */
 
@@ -31,7 +31,7 @@
 #include <regex.h>
 
 #include "auxlry.h"
-#include "cell.h"
+#include "cell_xsb.h"
 #include "error_xsb.h"
 #include "cinterf.h"
 #include "heap_xsb.h"

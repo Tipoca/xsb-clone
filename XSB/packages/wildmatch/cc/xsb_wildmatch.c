@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_wildmatch.c,v 1.6 1999-10-25 06:00:47 kifer Exp $
+** $Id: xsb_wildmatch.c,v 1.7 1999-10-26 06:54:39 kifer Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
 #include <glob.h>
 
 #include "auxlry.h"
-#include "cell.h"
+#include "cell_xsb.h"
 #include "error_xsb.h"
 #include "cinterf.h"
 

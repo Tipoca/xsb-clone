@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbpattern.c,v 1.3 1998-11-18 08:00:19 kifer Exp $
+** $Id: xsbpattern.c,v 1.4 1999-10-26 06:54:36 kifer Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
        try_match__() -- find the match pattern,
        next_match__() -- find the next match pattern,
        do_bulk_match__() -- find the global match patterns,
-       string_substitute__() -- substitute the string with expected pattern,
+       perl_substitute__() -- substitute the string with expected pattern,
        load_perl__() -- load the perl interpretor,
        unload_perl__() -- release the perl interpretor object,
        get_match_resultC__() -- get the perl pattern match C function,
@@ -168,7 +168,7 @@ int do_bulk_match__( void )
 }
 
 /*----------------------------------------------------------------------------
-string_substitute__()
+perl_substitute__()
 The pattern substitution function which includes loading perl interpreter 
 and doing the pattern substitution, then returning the replaced string.
 arguments: 
@@ -176,7 +176,7 @@ arguments:
 	 char* pattern, match pattern
   output:char* string, output text
 ----------------------------------------------------------------------------*/
-int string_substitute__( void )
+int perl_substitute__( void )
 {
 
   SV *text=newSV(0);    /* Perl representation for the string to be 
