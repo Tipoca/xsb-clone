@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.16 1999-02-25 15:01:27 kostis Exp $
+** $Id: init.c,v 1.17 1999-04-24 05:02:17 kifer Exp $
 ** 
 */
 
@@ -354,10 +354,7 @@ char *init_para(int argc, char *argv[])
       }
 
       if (strchr(cmd_line_goal, '.') == NULL) {
-	char tmpbuf[100];
-	sprintf(tmpbuf, "Syntax error in command line goal:\n\t`%s'",
-		cmd_line_goal);
-	xsb_abort(tmpbuf);
+	xsb_exit("\n\nSyntax error in command line goal:\n\t`%s'", cmd_line_goal);
       }
       break;
     case 'h':
