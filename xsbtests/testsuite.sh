@@ -1,12 +1,10 @@
 #! /bin/sh
 
-# Generated automatically from xsb.in by configure.
-
-## File:      testsuite.csh
+## File:      testsuite.sh
 ## Author(s): Juliana Freire
 ## Contact:   xsb-contact@cs.sunysb.edu
 ## 
-## Copyright (C) The Research Foundation of SUNY, 1996-1998
+## Copyright (C) The Research Foundation of SUNY, 1996-1999
 ## 
 ## XSB is free software; you can redistribute it and/or modify it under the
 ## terms of the GNU Library General Public License as published by the Free
@@ -22,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $ID$
+## $Id: testsuite.sh,v 1.12 1999-01-14 20:57:10 kifer Exp $
 ## 
 ##
 
@@ -31,11 +29,21 @@
 # log for possible errors.
 #==================================================================
 
+# $1 is expected to be the path to XSB installation directory
+# $2 is optional. If specified, this is the tag to use to 
+#    locate the XSB executable (e.g., dbg, chat, etc.). 
+#    It is usually specified using the --config-tag option of 'configure'
+#    The XSB executable is either in
+#    	 $1/config/architecture/bin/xsb
+#    or in
+#    	 $1/config/architecture-$2/bin/xsb
+#    depending on whether the configuration tag was given on command line.
+
 echo ==============================================================
 
 
-if test $# -gt 1 -o $# = 0; then
-	echo "Usage: testsuite.csh <full path for emulator>"
+if test $# -gt 2 -o $# = 0; then
+	echo "Usage: testsuite.csh <full path for XSB installation directory>"
 	echo ""
 	exit
 fi
@@ -46,7 +54,19 @@ if test -n "$USER"; then
 fi
 
 
-XEMU=$1
+installdir=$1
+
+if test -z "$2" ; then
+    config_tag=
+else
+    config_tag="-$2"
+fi
+
+config=`$installdir/build/config.guess`
+canonical=`$installdir/build/config.sub $config`
+
+XEMU=$installdir/config/$canonical$config_tag/bin/xsb
+
 GREP="grep -i"
 MSG_FILE=/tmp/xsb_test_msg.$USER
 LOG_FILE=/tmp/xsb_test_log.$USER
