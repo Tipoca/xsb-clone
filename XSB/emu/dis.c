@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.1.1.1 1998-11-05 16:55:14 sbprolog Exp $
+** $Id: dis.c,v 1.2 1999-01-25 18:36:59 kostis Exp $
 ** 
 */
 
@@ -179,9 +179,11 @@ CPtr print_inst(FILE *fd, CPtr inst_ptr)
 	 case C:
 	 case L:
 	 case G:
+	   fprintf(fd, "\t0x%lx", cell(lpcreg++));
+	   break;
 	 case I:
 	 case N:
-	   fprintf(fd, "\t0x%lx", cell(lpcreg++));
+	   fprintf(fd, "\t%ld", cell(lpcreg++));
 	   break;
 	 case F:
 	   fprintf(fd, "\t0x%lx", cell(lpcreg++));
