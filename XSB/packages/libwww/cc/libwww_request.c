@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_request.c,v 1.16 2005-02-22 06:22:02 kifer Exp $
+** $Id: libwww_request.c,v 1.17 2005-02-26 19:19:51 kifer Exp $
 ** 
 */
 
@@ -27,6 +27,9 @@
 #include "libwww_req.h"
 #include "deref.h"
 #include "cinterf.h"
+
+int total_number_of_requests = 0;
+int event_loop_runnung = FALSE;
 
 
 /* Calling sequence:
