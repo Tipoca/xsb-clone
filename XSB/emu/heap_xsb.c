@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.21 2001-05-24 17:54:51 lfcastro Exp $
+** $Id: heap_xsb.c,v 1.22 2001-05-24 18:53:47 lfcastro Exp $
 ** 
 */
 
@@ -95,7 +95,6 @@ Todo:
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <time.h>  /* --lfcastro */
-#include <sys/resource.h>
 
 #include "auxlry.h"
 #include "cell_xsb.h"
