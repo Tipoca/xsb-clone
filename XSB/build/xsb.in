@@ -22,7 +22,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: xsb.in,v 1.9 2002-02-21 16:57:50 lfcastro Exp $
+## $Id: xsb.in,v 1.10 2002-03-06 08:14:56 kifer Exp $
 ## 
 ##
 
@@ -43,7 +43,7 @@
 
 suffix=@config_tag@
 
-invocation_name=$0
+invocation_name=`basename $0`
 
 # If symbolic link: is there a more elegant way to extract the value of a link?
 if test -h $invocation_name ; then
