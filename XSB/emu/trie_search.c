@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_search.c,v 1.1 2000-06-25 16:59:18 ejohnson Exp $
+** $Id: trie_search.c,v 1.2 2000-06-26 19:09:27 ruim Exp $
 ** 
 */
 
@@ -79,8 +79,7 @@
 
 /*-------------------------------------------------------------------------*/
 
-inline BTNptr bt_escape_search(BTNptr btRoot, xsbBool *isNew) {
-
+BTNptr bt_escape_search(BTNptr btRoot, xsbBool *isNew) {
   BTNptr btn;
 
   btn = BTN_Child(btRoot);

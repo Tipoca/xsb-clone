@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.13 2000-06-25 16:59:15 ejohnson Exp $
+** $Id: macro_xsb.h,v 1.14 2000-06-26 19:09:26 ruim Exp $
 ** 
 */
 
@@ -365,7 +365,7 @@ typedef struct SubsumedConsumerSubgoalFrame {
    subg_next_subgoal(pSF) = Chain;		\
    if ( IsNonNULL(Chain) )			\
      subg_prev_subgoal(Chain) = pSF;		\
-   NewChain = pSF;				\
+   NewChain = (VariantSF)pSF;				\
  }
 
 #define subg_dll_remove_sf(pSF,Chain,NewChain) {			 \
@@ -517,7 +517,7 @@ void tstCreateTSIs(TSTNptr);
    subg_ans_list_ptr(pNewSF) = empty_return();			\
    conssf_timestamp(pNewSF) = CONSUMER_SF_INITIAL_TS;		\
    conssf_consumers(pNewSF) = subg_consumers(Producer);		\
-   subg_consumers(Producer) = pNewSF;				\
+   subg_consumers(Producer) = (SubConsSF)pNewSF;		\
    SF = (VariantSF)pNewSF;					\
 }
 
