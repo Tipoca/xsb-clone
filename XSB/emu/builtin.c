@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.113 2001-01-26 23:56:08 lfcastro Exp $
+** $Id: builtin.c,v 1.114 2001-02-05 14:44:30 dwarren Exp $
 ** 
 */
 
@@ -323,6 +323,8 @@ DllExport void call_conv ctop_int(int regnum, prolog_int value)
   XSB_Deref(addr);
   if (isref(addr)) {
     bind_int(vptr(addr), value);
+    if (value != ptoc_int(regnum))
+      fprintf(stderr,"CTOP_INT: OVERFLOW %lx (Reg = %d)\n", value, regnum);
   }
   else
     xsb_abort("CTOP_INT: Wrong type of argument %lx (Reg = %d)", addr, regnum);
