@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.15 1999-03-13 17:50:45 kifer Exp $
+## $Id: testsuite.sh,v 1.16 1999-04-19 20:03:15 luis Exp $
 ## 
 ##
 
@@ -29,7 +29,7 @@
 # log for possible errors.
 #==================================================================
 
-# Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude test_list] path
+#Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude test_list] [-mswin] path
 # where: opts      -- options to pass to XSB
 #        tag       -- the configuration tag to use
 #        test_list -- the list of tests to NOT run
@@ -73,6 +73,12 @@ do
 	    shift
 	    ;;
 
+      *-mswin*)
+	    shift
+		windows=true
+		echo "Running tests under Windows"
+		;;
+
       *)
 	    break
 	    ;;
@@ -82,7 +88,7 @@ done
 
 # install dir argument
 if test -z "$1" -o $# -gt 1; then
-    echo "Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude \"test_list\"] path"
+    echo "Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude \"test_list\"] [-mswin] path"
     echo "where: opts      -- options to pass to XSB"
     echo "       tag       -- the configuration tag to use"
     echo "       test_list -- the list of tests to NOT run"
@@ -99,8 +105,13 @@ fi
 
 
 # get canonical configuration name
+if test -z "$windows"; then
 config=`$installdir/build/config.guess`
 canonical=`$installdir/build/config.sub $config`
+else
+config=x86-pc-windows
+canonical=x86-pc-windows
+fi
 
 XEMU=$installdir/config/$canonical$config_tag/bin/xsb
 
