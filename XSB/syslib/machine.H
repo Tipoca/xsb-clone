@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.57 2003/10/17 21:25:18 dwarren Exp $
+** $Id: machine.H,v 1.58 2003/11/11 19:40:40 dwarren Exp $
 ** 
 */
 
@@ -151,6 +151,7 @@
         install_verify_attribute_handler/4,
         verify_attribute_handler/4,
 	globalvar/1,
+	xsb_backtrace/0,
         interprolog_callback/3.
 
 :- import assert/1, retract/1 from assert.

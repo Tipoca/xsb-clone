@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.64 2003/10/17 21:25:18 dwarren Exp $
+** $Id: machine.P,v 1.65 2003/11/11 19:40:40 dwarren Exp $
 ** 
 */
 
@@ -265,6 +265,9 @@ install_verify_attribute_handler(Mod,Attr,Value,Handler) :-
    ANY NUMBER OF BUILTINS WITH IT. */
 private_builtin(_OpCode,_A1,_A2,_A3,_A4,_A5,_A6,_A7,_A8,_A9,_A10) :-
 	'_$builtin'(PRIVATE_BUILTIN).
+
+xsb_backtrace :- xsb_backtrace(1).
+xsb_backtrace(_Opcode) :- '_$builtin'(XSB_BACKTRACE).
 
 segfault_handler(_Type) :- '_$builtin'(SEGFAULT_HANDLER).
 
