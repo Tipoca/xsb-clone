@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: load_seg.c,v 1.3 1999-08-04 14:41:59 ejohnson Exp $
+** $Id: load_seg.c,v 1.4 1999-08-10 14:39:33 warren Exp $
 ** 
 */
 
@@ -181,7 +181,6 @@ static int get_index_tab(int clause_no)
   Integer ival;
   Cell val;
 
-  hptr = hreg;
   size = hsize(clause_no);
 
   indextab = (struct hrec *)malloc(size*sizeof(struct hrec)); 
