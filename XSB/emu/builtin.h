@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.57 2004-01-14 20:27:12 dwarren Exp $
+** $Id: builtin.h,v 1.58 2004-04-09 00:05:31 dwarren Exp $
 ** 
 */
 
@@ -239,8 +239,9 @@
 /* added by TLS to support clpqr */
 #define XSB_POW                 236
 
-/* added by dsw to support profiling */
+/* added by dsw to support profiling, and backtracing */
 #define XSB_PROFILE             237
+#define XSB_BACKTRACE		238
 
 /* added by Bart Demoen & Kostis Sagonas for debugging and convenience */
 #define PRINT_LS                240
