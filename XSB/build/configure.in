@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.38 1999-04-17 16:24:04 kostis Exp $
+## $Id: configure.in,v 1.39 1999-04-17 19:16:14 kostis Exp $
 ## 
 ##
 
@@ -774,7 +774,8 @@ case "$canonical" in
      *decstation*) AC_DEFINE(DECstation)
 		   AC_DEFINE(MIPS_BASED)
 		;;
-     *hpux*) AC_DEFINE(HP700) ;;
+     *hpux*) AC_DEFINE(HP700)
+		;;
      *linux*) AC_DEFINE(LINUX)
 	      case "${canonical}" in
 		   *ppc* | *powerpc* | *m68k* ) AC_DEFINE(MKLINUX_PPC) ;;
