@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.36 2002/04/05 01:32:17 kifer Exp $
+** $Id: consult.P,v 1.37 2002/09/02 01:00:17 kifer Exp $
 ** 
 */
 
@@ -206,8 +206,7 @@ load_exec(File, ModName) :-
 		file_nl(STDERR), fail
 	),
 	!,
-	stat_flag(BANNER_CTL,BannerCtl),
-	(   KeepQuiet is BannerCtl mod QUIETLOAD, KeepQuiet =:= 0
+	(   banner_control(quietload)
 	->  true
 	;   file_write0(STDMSG, '['), file_write0(STDMSG, ModName),
 	    file_write0(STDMSG, ' loaded]'), file_nl(STDMSG)

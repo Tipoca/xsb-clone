@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.29 2002/08/16 14:51:08 dwarren Exp $
+** $Id: x_interp.H,v 1.30 2002/08/27 20:06:57 tswift Exp $
 ** 
 */
 
@@ -55,4 +55,5 @@
 :- import verify_attributes/2 from usermod.
 :- import conset/2, conget/2 from gensym.
 
+:- import banner_control/1 from banner.
 
