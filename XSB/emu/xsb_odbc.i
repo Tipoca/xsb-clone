@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_odbc.i,v 1.1.1.1 1998-11-05 16:55:26 sbprolog Exp $
+** $Id: xsb_odbc.i,v 1.2 1999-04-13 14:16:09 kostis Exp $
 ** 
 */
 
 
 #ifdef XSB_ODBC
 
-case ODBC_QUERY:
+case ODBC_EXEC_QUERY:
    switch (ptoc_int(1)) {
       case ODBC_CONNECT:
          ODBCConnect();
