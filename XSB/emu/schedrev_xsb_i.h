@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.2 2000-04-29 21:53:57 kifer Exp $
+** $Id: schedrev_xsb_i.h,v 1.3 2000-05-25 00:32:01 ejohnson Exp $
 ** 
 */
 
@@ -56,13 +56,13 @@ static CPtr sched_answers(SGFrame producer_sf, CPtr producer_cpf,
     while ( IsNonNULL(consumer_cpf) ) {
       consumer_sf = (SGFrame)nlcp_subgoal_ptr(consumer_cpf);
       answer_set = ALN_Next(nlcp_trie_return(consumer_cpf));
-      if ( IsNULL(answer_set) &&
-	   ConsumerCacheNeedsUpdating(consumer_sf,producer_sf) ) {
-	switch_envs(consumer_cpf);
-	answer_set =
-	  table_retrieve_answers(producer_sf,consumer_sf,
-				 consumer_cpf + NLCPSIZE);
-      }
+      if ( IsNULL(answer_set) && (consumer_sf != producer_sf) )
+	if ( ConsumerCacheNeedsUpdating(consumer_sf,producer_sf) ) {
+	  switch_envs(consumer_cpf);
+	  answer_set =
+	    table_retrieve_answers(producer_sf,consumer_sf,
+				   consumer_cpf + NLCPSIZE);
+	}
       /* if there is a new answer, schedule the consumer */
       if ( IsNonNULL(answer_set) ) { 
 	if ( IsNonNULL(last_sched_cons) )
@@ -95,7 +95,7 @@ static CPtr sched_answers(SGFrame producer_sf, CPtr producer_cpf,
 #endif
       tcp_trie_return(producer_cpf) = subg_ans_list_ptr(producer_sf);
     }
-    if(aln_next_aln(tcp_trie_return(producer_cpf))) {
+    if(ALN_Next(tcp_trie_return(producer_cpf))) {
       /*so that checkcompl will ret ans*/
       tcp_tag(producer_cpf) = (int)RETRY_GEN_ACTIVE_TAG;
       if (!last_sched_cons)

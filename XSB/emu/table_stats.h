@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.h,v 1.3 2000-04-25 23:16:06 ejohnson Exp $
+** $Id: table_stats.h,v 1.4 2000-05-25 00:32:03 ejohnson Exp $
 ** 
 */
 
@@ -134,7 +134,7 @@ typedef struct {
 
 /* Collection Routines
    ------------------- */
-SubgStats subgoal_statistics();
+SubgStats subgoal_statistics(Structure_Manager *);
 NodeStats node_statistics(Structure_Manager *);
 HashStats hash_statistics(Structure_Manager *);
 
@@ -142,16 +142,16 @@ HashStats hash_statistics(Structure_Manager *);
 
 /* Helpful Totaling Routines
    ------------------------- */
-#define CurrentTotalTableSpaceAlloc(BTN,BTHT,SF,ALN,TSTN,TSTHT,TSI)	   \
-   ( NodeStats_SizeAllocNodes(BTN)  +  HashStats_SizeAllocTotal(BTHT)  +   \
-     SubgStats_SizeAllocFrames(SF)  +					   \
-     NodeStats_SizeAllocNodes(TSTN)  +  HashStats_SizeAllocTotal(TSTHT)  + \
+#define CurrentTotalTableSpaceAlloc(BTN,BTHT,VARSF,SUBSF,ALN,TSTN,TSTHT,TSI)  \
+   ( NodeStats_SizeAllocNodes(BTN)  +  HashStats_SizeAllocTotal(BTHT)  +      \
+     SubgStats_SizeAllocFrames(VARSF)  +  SubgStats_SizeAllocFrames(SUBSF)  + \
+     NodeStats_SizeAllocNodes(TSTN)  +  HashStats_SizeAllocTotal(TSTHT)  +    \
      NodeStats_SizeAllocNodes(TSI)  +  NodeStats_SizeAllocNodes(ALN) )
 
-#define CurrentTotalTableSpaceUsed(BTN,BTHT,SF,ALN,TSTN,TSTHT,TSI)	 \
-   ( NodeStats_SizeUsedNodes(BTN)  +  HashStats_SizeUsedTotal(BTHT)  +	 \
-     SubgStats_SizeUsedFrames(SF)  +					 \
-     NodeStats_SizeUsedNodes(TSTN)  +  HashStats_SizeUsedTotal(TSTHT)  + \
+#define CurrentTotalTableSpaceUsed(BTN,BTHT,VARSF,SUBSF,ALN,TSTN,TSTHT,TSI) \
+   ( NodeStats_SizeUsedNodes(BTN)  +  HashStats_SizeUsedTotal(BTHT)  +	    \
+     SubgStats_SizeUsedFrames(VARSF)  +  SubgStats_SizeUsedFrames(SUBSF)  + \
+     NodeStats_SizeUsedNodes(TSTN)  +  HashStats_SizeUsedTotal(TSTHT)  +    \
      NodeStats_SizeUsedNodes(TSI)  +  NodeStats_SizeUsedNodes(ALN) )
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -175,9 +175,9 @@ void reset_maximum_tablespace_stats();
    ---------------------------------- */
 void compute_maximum_tablespace_stats();
 void update_maximum_tablespace_stats(NodeStats *btn, HashStats *btht,
-				     SubgStats *sf, NodeStats *aln,
-				     NodeStats *tstn, HashStats *tstht,
-				     NodeStats *tsi);
+				     SubgStats *varsf, SubgStats *subsf,
+				     NodeStats *aln, NodeStats *tstn,
+				     HashStats *tstht, NodeStats *tsi);
 
 /* Read Currently Recorded Maximum Values
    -------------------------------------- */

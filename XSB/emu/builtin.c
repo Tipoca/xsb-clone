@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.93 2000-05-20 06:55:55 kifer Exp $
+** $Id: builtin.c,v 1.94 2000-05-25 00:32:00 ejohnson Exp $
 ** 
 */
 
@@ -1650,7 +1650,10 @@ int builtin_call(byte number)
 		   "Valid subgoal frame pointer", goalTerm);
 	return FALSE;	/* fail */
       }
-      subsumerSF = subg_producer(goalSF);
+      if ( IsProperlySubsumed(goalSF) )
+	subsumerSF = (SGFrame)subg_producer(goalSF);
+      else
+	subsumerSF = goalSF;
       pred_type = TIF_EvalMethod(subg_tif_ptr(subsumerSF));
     }
     else {
@@ -1684,11 +1687,11 @@ int builtin_call(byte number)
 	  goalSF = subsumerSF = NULL;
 	else if ( path_type == VARIANT_PATH ) {
 	  goalSF = CallTrieLeaf_GetSF(leaf);
-	  subsumerSF = subg_producer(goalSF);
+	  subsumerSF = (SGFrame)subg_producer(goalSF);
 	}
 	else {
 	  goalSF = NULL;
-	  subsumerSF = subg_producer(CallTrieLeaf_GetSF(leaf));
+	  subsumerSF = (SGFrame)subg_producer(CallTrieLeaf_GetSF(leaf));
 	}
       }
     }

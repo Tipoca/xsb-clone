@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.10 2000-05-20 06:56:14 kifer Exp $
+** $Id: tst_utils.c,v 1.11 2000-05-25 00:32:06 ejohnson Exp $
 ** 
 */
 
@@ -439,8 +439,8 @@ void printAnswerList(ALNptr pALN) {
   printf("Answer List %p:\n", pALN);
   while ( IsNonNULL(pALN) ) {
     printf("  ");
-    triePrintPath(aln_answer_ptr(pALN),YES);
+    triePrintPath(ALN_Answer(pALN),YES);
     printf("\n");
-    pALN = aln_next_aln(pALN);
+    pALN = ALN_Next(pALN);
   }
 }
