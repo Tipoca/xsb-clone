@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.27 1999-11-12 21:42:07 warren Exp $
+** $Id: biassert.c,v 1.28 1999-11-15 21:14:53 warren Exp $
 ** 
 */
 
@@ -1100,7 +1100,8 @@ typedef ClRef SOBRef ;
 				ClRefIEntryPoint((Cl),ClRefNumInds(Cl))	\
 	))
 
-#define ClRefNotRetracted(Cl) (cell_opcode(ClRefEntryAny(Cl))!=fail)
+#define ClRefNotRetracted(Cl) (cell_opcode(ClRefEntryAny(Cl))!=fail || \
+                               cell_operand1(ClRefEntryAny(Cl))!=66)
 
 static void db_addbuff(byte, ClRef, PrRef, int, int); 
 static void db_addbuff_i(int, ClRef, PrRef, int, int *, int, prolog_term, int);
@@ -1757,6 +1758,16 @@ static int really_delete_clause(ClRef Clause)
     return TRUE ;
 }
 
+static int force_retract_buffers()
+{
+  while (!retract_buffer_empty()) {
+    really_delete_clause(*OldestCl);
+    remove_from_buffer();
+  }
+  return TRUE;
+}
+
+
 static int retract_clause( ClRef Clause, int retract_nr )
 {
 #ifdef RETRACT_DEBUG
@@ -2015,6 +2026,7 @@ int gen_retract_all(/* R1: + buff */)
   int btop = 0;
   ClRef buffer ;
 
+  force_retract_buffers();
   buffers_to_free[btop++] = (ClRef)ptoc_int(1);
   while (btop > 0) {
     buffer = buffers_to_free[--btop];
@@ -2030,7 +2042,8 @@ int gen_retract_all(/* R1: + buff */)
       if (another_buff(ClRefTryInstr(buffer)))
 	  buffers_to_free[btop++] = ClRefNext(buffer);
 	  if( ClRefNotRetracted(buffer) )
-		retract_clause(buffer,0) ;
+	    /*		retract_clause(buffer,0) */
+	    really_delete_clause(buffer);
       break;
     case COMPILED_CL:
       {
