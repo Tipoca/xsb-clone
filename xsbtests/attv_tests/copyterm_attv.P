@@ -1,13 +1,18 @@
 /* File:      copyterm_attv.P
 ** Author(s): Baoqiu Cui
 **
-** $Id: copyterm_attv.P,v 1.1 1999-11-05 21:51:20 cbaoqiu Exp $
+** $Id: copyterm_attv.P,v 1.2 2000-02-13 09:27:27 cbaoqiu Exp $
 */
 
 :- import put_attributes/2, get_attributes/3 from machine.
 :- import attv_unify/2 from machine.
 
 test :-
+	test_sharing,
+	test_cyclic_term,
+	writeln('Passed copyterm_attv test!').
+
+test_sharing :-
 	put_attributes(X, v(a)),
 	copy_term(f(X,g(X)), T),
 	T = f(Y,g(Z)),			% Y and Z are shared in T
@@ -23,5 +28,16 @@ test :-
 	put_attributes(B, v(456)),
 	get_attributes(C, VC, _),
 	nonvar(VC), VC = v(456),
+	writeln('== test_sharing is OK').
 
-	writeln('== test_copy_term OK').
+test_cyclic_term :-
+	put_attributes(X, v(Y,a)),
+	put_attributes(Y, v(X,b)),
+	copy_term(f(X,X), f(NewX1, NewX2)),
+	NewX1 == NewX2,
+	get_attributes(NewX2, VX, _),
+	nonvar(VX), VX = v(NewY, a),
+	get_attributes(NewY, VY, _),
+	nonvar(VY), VY = v(XinY, b),
+	XinY == NewX1,
+	writeln('== test_cyclic_term is OK').

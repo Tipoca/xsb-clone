@@ -1,1 +1,3 @@
-== test_copy_term OK
+== test_cyclic_term is OK
+== test_sharing is OK
+Passed copyterm_attv test!
