@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.3 1999-11-03 21:35:46 cbaoqiu Exp $
+** $Id: loader_xsb.c,v 1.4 1999-11-17 04:16:27 kifer Exp $
 ** 
 */
 
@@ -538,7 +538,7 @@ void env_type_set(Psc psc, byte t_env, byte t_type, bool is_new)
 
 /*----------------------------------------------------------------------*/
 
-inline unsigned int read_magic(FILE *fd)
+unsigned int read_magic(FILE *fd)
 {
   unsigned int num;
 
