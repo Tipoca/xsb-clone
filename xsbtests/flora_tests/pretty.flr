@@ -1,0 +1,10 @@
+
+%%:- debug.
+
+?- ['auxiliary/pretty_data'>>data].
+
+test1 :- writeln('Self info: ')@prolog(), student[#pp_self(data)]@flora(pp).
+test2 :- writeln('Class info: ')@prolog(), student[#pp_class(data)]@flora(pp).
+test3 :- writeln('ISA info: ')@prolog(), student[#pp_isa(data)]@flora(pp).
+
+test :- tell(temp)@prolog(), test1, test2, test3, told@prolog().

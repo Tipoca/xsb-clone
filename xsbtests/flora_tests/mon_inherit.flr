@@ -1,4 +1,7 @@
+
 /* This demo shows various cases of monotonic inheritance */
+
+%%:- debug.
 
     a[b   *=> c,   bs   =>> e].
     a[b1  *=> c1,  bs1 *=>> e1].

@@ -1,4 +1,6 @@
 
+%%:- debug.
+
 ?- expand_filename('auxiliary', _X)@prolog(machine),
 	assert(library_directory(_X)@prolog())@prolog().
 

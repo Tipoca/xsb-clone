@@ -1,4 +1,6 @@
 %% pps.flr -- a parts production system
+
+%%:- debug.
 /*
   Following are the steps to get the results:
   1. start flora2 shell.

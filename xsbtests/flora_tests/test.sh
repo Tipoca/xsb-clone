@@ -31,6 +31,19 @@ member ()
 }
 
 
+# Remove the .P and .O files to make sure we are using the 
+# latest compiled sources
+# Precautionary measure: rm *.[PO] only if we are certain 
+# that this is flora_tests directory
+dir=`pwd`
+dir=`basename $dir`
+if test "flora_tests"="$dir" ; then
+    rm -f *.[PO] *.fld *.fdb
+    rm -f auxiliary/*.[PO] auxiliary/*.fld auxiliary/*.fdb
+fi
+
+
+# run the tests
 for file in $file_list ; do
     if member $file "$exclude_list"; then
 	continue
@@ -41,12 +54,3 @@ for file in $file_list ; do
     ../gentest.sh "$XEMU $options -e $flora_options" $prog "$flora_command"
 done
 
-
-# precautionary measure: rm *.[PO] only if we are certain 
-# that this is flora_tests directory
-#dir=`pwd`
-#dir=`basename $dir`
-#if test "flora_tests"="$dir" ; then
-#    rm *.[PO]
-#    rm auxiliary/*.[PO]
-#fi

@@ -1,4 +1,6 @@
 
+%%:- debug.
+
 tom.father.father[wife->mary].
 tom[father->john].
 john[father->smith].

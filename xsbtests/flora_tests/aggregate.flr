@@ -1,6 +1,7 @@
 /* This demo shows the use of aggregates and insert/delete commands.
 */
 
+%%:- debug.
 
 john[salary(1990) -> 20].
 john[salary(1991) -> 40].

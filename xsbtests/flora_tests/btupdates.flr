@@ -1,4 +1,5 @@
 
+%%:- debug.
 %% Demo illustrating backtrackable updates.
 
 ?- ['auxiliary/marymodule'>>mod2].
