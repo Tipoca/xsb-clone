@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.6 1999-06-02 14:59:45 luis Exp $
+** $Id: cinterf.h,v 1.7 1999-06-09 17:30:35 luis Exp $
 ** 
 */
 
@@ -206,6 +206,7 @@ DllExport extern bool call_conv is_string(prolog_term);
 DllExport extern bool call_conv is_list(prolog_term);
 DllExport extern bool call_conv is_nil(prolog_term);
 DllExport extern bool call_conv is_functor(prolog_term);
+DllExport extern bool call_conv is_chars(prolog_term,int*);
 
 extern int   c2p_term(char*, char*, prolog_term);
 extern int   p2c_term(char*, char*, prolog_term);

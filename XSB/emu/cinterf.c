@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.12 1999-06-04 17:55:14 luis Exp $
+** $Id: cinterf.c,v 1.13 1999-06-09 17:30:07 luis Exp $
 ** 
 */
 
@@ -390,13 +390,64 @@ void c_string_to_p_charlist(char *name, prolog_term list,
   } 
 }
 
+/* The following function checks if a given term is a prolog string.
+   It also counts the size of the list.
+   It deals with the same escape sequences as p_charlist_to_c_string */
+
+DllExport bool call_conv is_chars(prolog_term term, int *size)
+{
+  int escape_mode=FALSE, head_val;
+  prolog_term list, head;
+
+  list = term;
+  *size = 0;
+  
+  if (!is_list(list)) 
+    return FALSE;
+
+  while (is_list(list)) {
+    if (is_nil(list)) break;
+
+    head = p2p_car(list);
+    if (!is_int(head)) 
+      return FALSE;
+    
+    head_val = int_val(head);
+    if (head_val < 0 || head_val > 255) 
+      return FALSE;
+
+    if (escape_mode)
+      switch (head_val) {
+      case 'a':
+      case 'b':
+      case 'f':
+      case 'n':
+      case 'r':
+      case 't':
+      case 'v':
+	(*size)++;
+	escape_mode=FALSE;
+	break;
+      default:
+	(*size) += 2;
+      }
+    else
+      if (head_val == '\\') 
+	escape_mode = TRUE;
+      else
+	(*size)++;
+    list = p2p_cdr(list);
+  }
+  return TRUE;
+}
+
 /* the following two functions were introduced by Luis Castro */
 /* they extend the c interface to allow for an easy interface for 
 lists of characters */
-
+    
 DllExport void call_conv p2c_chars(prolog_term term, char *buf, int bsize)
 {
-  p_charlist_to_c_string(term, buf, bsize, "p2c_chars", "list -> char*");
+  buf = p_charlist_to_c_string(term, buf, bsize, "p2c_chars", "list -> char*");
 }
 
 DllExport void call_conv c2p_chars(char *str, prolog_term term)
