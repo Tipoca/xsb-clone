@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.17 1999-06-22 18:24:30 kifer Exp $
+** $Id: flrutils.P,v 1.18 1999-06-23 00:22:03 kifer Exp $
 **
 */
 
@@ -654,7 +654,7 @@ compile_flrfile(MaxErr,ErrorCount,Status,OldOpts,NewOpts) :-
 		displayln, flora_warnheader, display('unsafe variable(s) '),
 		telling(CurrStream), tell(userout),
 		write_list(L), tell(CurrStream),
-		displayln(' in a rule head of a fact.')
+		displayln(' in a rule head or a fact.')
 	      ;
 		true
 	    ),
