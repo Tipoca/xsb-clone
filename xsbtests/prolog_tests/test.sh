@@ -47,9 +47,15 @@ options=$2
 #------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
 #------------------------------------------------------------------------
-rm -f xeddis.o xeddis.so xeddis.O
-../gentest.sh "$XEMU $options" cinter1 "test."
+os_type=`uname -s`
+if test "$os_type" = "HP-UX" ; then
+	echo "Foreign language interface tests bypassed"
+else
 #------------------------------------------------------------------------
-rm -f zero.o zero.so zero.O
-../gentest.sh "$XEMU $options" cinter2 "test."
+	rm -f xeddis.o xeddis.so xeddis.O
+	../gentest.sh "$XEMU $options" cinter1 "test."
 #------------------------------------------------------------------------
+	rm -f zero.o zero.so zero.O
+	../gentest.sh "$XEMU $options" cinter2 "test."
+#------------------------------------------------------------------------
+fi
