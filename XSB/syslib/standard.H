@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.7 1999/04/08 18:06:27 kostis Exp $
+** $Id: standard.H,v 1.8 1999/04/09 09:10:18 kostis Exp $
 ** 
 */
 
@@ -82,7 +82,7 @@
 	  term_psc/2, term_new/2, term_type/2, stat_set_flag/2, 
 	  stat_flag/2, psc_set_type/2, term_compare/3,
 	  stat_sta/1, conname/2, conpsc/2, stat_cputime/1, 
-	  expand_filename/2, machine_file_exists/1, psc_insert/3,
+	  expand_filename/2, machine_file_exists/1, psc_insert/4,
 	  psc_import/3, call0/1, close_open_tables/0, is_backslashing_os/0
      from machine.
 :- import file_open/3, file_close/1, file_get/2, file_put/2

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.11 1999-03-11 17:15:08 kostis Exp $
+** $Id: biassert.c,v 1.12 1999-04-09 12:18:10 kostis Exp $
 ** 
 */
 
@@ -1955,13 +1955,18 @@ bool compiled_to_dynamic( /* +PSC, +OldPred */ )
 }
 
 bool db_build_prref( /* PSC, Tabled?, -PrRef */ )
-{   CPtr p, tp ;
-    tab_inf_ptr tip; 
-    int Loc ;
-    Psc PSC = (Psc)ptoc_int(1);
-    Integer Arity = get_arity(PSC);
-    Integer Tabled = ptoc_int(2);
+{
+  CPtr p, tp;
+  tab_inf_ptr tip; 
+  int Loc;
+  Psc PSC = (Psc)ptoc_int(1);
+  Integer Arity = get_arity(PSC);
+  Integer Tabled = ptoc_int(2);
 
+  /* moved this functionality from Prolog (very ugly and error-prone) to C */
+    set_type(PSC, T_DYNA);
+    set_env(PSC, T_VISIBLE);
+    
     p = (CPtr)mem_alloc(4*sizeof(Cell));
     Loc = 0 ;
     dbgen_inst_ppp(fail,p,&Loc) ;
