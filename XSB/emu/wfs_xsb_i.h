@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wfs_xsb_i.h,v 1.8 2002-05-31 15:09:04 lfcastro Exp $
+** $Id: wfs_xsb_i.h,v 1.9 2002-07-09 02:27:01 lfcastro Exp $
 ** 
 */
 
@@ -279,9 +279,9 @@ static void batched_compute_wfs(CPtr leader_compl_frame,
 		mark_delayed(ComplStkFrame, susp_csf, nsf);
 		non_lrd_stratified = TRUE;
 		xsb_dbgmsg((LOG_DELAY, "\t   Subgoal "));
-		dbg_print_subgoal(LOG_DELAY, (VariantSF)susp_subgoal);
+		dbg_print_subgoal(LOG_DELAY,stddbg,(VariantSF)susp_subgoal);
 		xsb_dbgmsg((LOG_DELAY, " depends negatively on subgoal "));
-		dbg_print_subgoal(LOG_DELAY, curr_subg);
+		dbg_print_subgoal(LOG_DELAY, stddbg, curr_subg);
 		xsb_dbgmsg((LOG_DELAY, "\n"));
 	      } /*  no completed susp_subg */
 	    }
