@@ -18,14 +18,14 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 1998-11-15 02:56:33 kifer Exp $
+## $Id: Makefile,v 1.4 1999-04-20 20:45:13 tswift Exp $
 ## 
 ##
 
 
-ALL = 	flip.O slx.O perlmatch.O
+ALL = 	flip.O slx.O perlmatch.O gap.O
 
-SUBDIR = flip slx perlmatch
+SUBDIR = flip slx perlmatch gap
 
 Option = [optimize]
 
@@ -67,6 +67,10 @@ flip::
 perlmatch::
 	@echo ""
 	cd perlmatch; make
+
+gap::
+	@echo ""
+	cd gap; make
 
 
 # Unfortunately, this needs to be commented on the NeXT.
