@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.i,v 1.11 1999-05-01 22:38:06 kifer Exp $
+** $Id: io_builtins.i,v 1.12 1999-05-04 20:40:53 workflow Exp $
 ** 
 */
 
@@ -134,6 +134,7 @@ inline static bool file_function(void)
   case FILE_TRUNCATE: /* file_function(2,+filedes,+length,-ret,-dontcare) */
 #ifndef WIN_NT
     SET_FILEPTR(fptr, ptoc_int(2));
+    fseek(fptr, (long) ptoc_int(3), 0);
     value = ftruncate( fileno(fptr), (off_t) ptoc_int(3));
     ctop_int(4, (int) value);
 #else
