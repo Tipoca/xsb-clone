@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.6 1999/03/30 16:25:40 kifer Exp $
+** $Id: standard.H,v 1.7 1999/04/08 18:06:27 kostis Exp $
 ** 
 */
 
@@ -88,7 +88,7 @@
 :- import file_open/3, file_close/1, file_get/2, file_put/2
      from file_io.
 
-:- import str_tolist/2, str_fromlist/2 from string.
+:- import str_fromlist/2 from string.
 :- import file_write0/2, file_write/2, file_write_prolog/2, 
 	  file_write_quoted/2, file_write_canonical/2, file_nl/1
      from xsb_writ.

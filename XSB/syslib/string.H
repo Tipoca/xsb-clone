@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string.H,v 1.1.1.1 1998/11/05 16:59:53 sbprolog Exp $
+** $Id: string.H,v 1.2 1999/01/15 12:29:54 kostis Exp $
 ** 
 */
 
 
 :- export concat_atom/2, concat_atom/3, str_cat/3, str_sub/2, str_sub/3,
    str_fromlist/2, str_length/2, str_substring/4, str_substring/2, 
-   str_tolist/2, sublist/2.
+   sublist/2.
 
 :- import atom/1 from standard.
 :- import buff_set_byte/3, buff_alloc/2, buff_byte/3, buff_dealloc/3,
