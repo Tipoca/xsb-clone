@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.40 2002-06-02 18:43:44 kifer Exp $
+** $Id: cinterf.c,v 1.41 2002-08-07 16:15:12 lfcastro Exp $
 ** 
 */
 
@@ -65,54 +65,63 @@ void c_string_to_p_charlist(char *name, prolog_term list,
 DllExport xsbBool call_conv is_var(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return isref(t);
 }
 
 DllExport xsbBool call_conv is_int(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return (isinteger(t) | isboxedinteger(t));
 }
 
 DllExport xsbBool call_conv is_float(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return isfloat(t);
 }
 
 DllExport xsbBool call_conv is_string(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return isstring(t);
 }
 
 DllExport xsbBool call_conv is_atom(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return isatom(t);
 }
 
 DllExport xsbBool call_conv is_list(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return islist(t);
 }
 
 DllExport xsbBool call_conv is_nil(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return isnil(t);
 }
 
 DllExport xsbBool call_conv is_functor(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return isconstr(t);
 }
 
 DllExport xsbBool call_conv is_attv(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return isattv(t);
 }
 
