@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.14 1999/12/19 08:43:31 cbaoqiu Exp $
+** $Id: tables.H,v 1.15 1999/12/30 18:17:16 tswift Exp $
 ** 
 */
 
 
 :- export abolish_all_tables/0, abolish_table_call/1, abolish_table_pred/1,
-	  variant/1, subsumptive/1,
-	  get_calls_for_table/2, get_returns_for_call/2, table_state/2, 
+	  variant/1, subsumptive/1, table_state/2, table_state/4,
+	  get_calls_for_table/2, get_returns_for_call/2,
 	  tfindall/3, tnot/1, 't not'/1, sk_not/1,
 	  delete_return/2,
 	  get_call/3, get_calls/3, get_delay_lists/3,
