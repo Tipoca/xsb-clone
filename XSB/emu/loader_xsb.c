@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.16 2000-05-20 06:56:03 kifer Exp $
+** $Id: loader_xsb.c,v 1.17 2000-06-28 06:41:39 kifer Exp $
 ** 
 */
 
@@ -546,7 +546,7 @@ unsigned int read_magic(FILE *fd)
 
 /*----------------------------------------------------------------------*/
 
-inline void get_obj_atom(FILE *fd, VarString *atom)
+inline static void get_obj_atom(FILE *fd, VarString *atom)
 {
   byte x;
   unsigned int len;
