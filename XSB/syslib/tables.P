@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.8 1999/01/19 00:25:11 kostis Exp $
+** $Id: tables.P,v 1.9 1999/02/16 17:03:04 kostis Exp $
 ** 
 */
 
@@ -282,6 +282,7 @@ trie_delete_branch_ret(_LeafNode,_Hook,_BranchOrRet) :- '_$builtin'(149).
 get_returns(_CallStr,_RetSkel) :- '_$builtin'(150).
 get_calls(_CallSkel)  :- '_$builtin'(151).
 construct_ret_for_call(_RetSkel) :- '_$builtin'(153).
+force_truth_value(_AnsLeafNode, _TruthValue) :- '_$builtin'(254).
 
 /*======================================================================*/
 /*  Emulator-dependent constants (make sure they are kept up-to-date).	*/

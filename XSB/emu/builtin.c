@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.22 1999-02-22 16:56:49 workflow Exp $
+** $Id: builtin.c,v 1.23 1999-03-06 03:34:47 cbaoqiu Exp $
 ** 
 */
 
@@ -161,6 +161,9 @@ extern void parse_filename(char *filenam, char **dir, char **base, char **ext);
 
 extern int  findall_init(void), findall_add(void), findall_get_solutions(void);
 extern int  copy_term(void);
+
+extern void force_answer_true(NODEptr);
+extern void force_answer_false(NODEptr);
 
 #if (defined(DEBUG) && defined(DEBUG_DELAY))
 extern void print_delay_list(FILE *, CPtr);
@@ -1910,6 +1913,16 @@ int builtin_call(byte number)
   case JAVA_INTERRUPT: 
     return( startInterruptThread( (SOCKET)ptoc_int(1) ) );
 #endif
+
+  case FORCE_TRUTH_VALUE: /* +R1: AnsLeafPtr; +R2: TruthValue */
+    as_leaf = (NODEptr) ptoc_addr(1);
+    tmpstr = ptoc_string(2);
+    if (!strcmp(tmpstr, "true"))
+      force_answer_true(as_leaf);
+    else if (!strcmp(tmpstr, "false"))
+      force_answer_false(as_leaf);
+    else xsb_abort("Unknown truth value (arg 2) in force_truth_value/2");
+  break;
 
   default:
     sprintf(message, "Builtin #%d is not implemented.\n", number);

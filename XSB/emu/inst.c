@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.c,v 1.6 1999-02-25 18:12:02 kostis Exp $
+** $Id: inst.c,v 1.7 1999-03-06 03:34:49 cbaoqiu Exp $
 ** 
 */
 
@@ -427,6 +427,7 @@ void init_builtin_table(void)
 #endif
 
   set_builtin_table(JAVA_INTERRUPT, "setupJavaInterrupt");
+  set_builtin_table(FORCE_TRUTH_VALUE, "force_truth_value");
 }
 
 /*----------------------------------------------------------------------*/

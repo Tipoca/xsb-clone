@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.h,v 1.8 1999-02-22 16:56:52 workflow Exp $
+** $Id: inst.h,v 1.9 1999-03-06 03:34:51 cbaoqiu Exp $
 ** 
 */
 
@@ -553,3 +553,4 @@ extern Cell builtin_table[BUILTIN_TBL_SZ][2];
 #define SOCKET_REQUEST          252
 
 #define JAVA_INTERRUPT          253
+#define FORCE_TRUTH_VALUE	254
