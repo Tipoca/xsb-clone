@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.19 2000-04-29 21:53:53 kifer Exp $
+** $Id: emudef.h,v 1.20 2000-05-23 20:42:08 cbaoqiu Exp $
 ** 
 */
 
@@ -244,9 +244,9 @@ int *asynint_ptr = &asynint_val;
     /* there is attv interrupt */					\
     synint_proc(PSC, MYSIG_ATTV, lpcreg-2*sizeof(Cell));		\
     lpcreg = pcreg;							\
-    /* Set PSC to verify_attributes/2, so that the later call of */	\
-    /* intercept(PSC) will set the return point, pcreg, to	 */	\
-    /* verify_attributes/2.					 */	\
+    /* Set PSC to '_$attv_int'/2, so that the later call of	*/	\
+    /* intercept(PSC) will set the return point, pcreg, to	*/	\
+    /* '_$attv_int'/2.						*/	\
     PSC = (Psc) flags[MYSIG_ATTV+32];					\
   }									\
   else { 								\
@@ -276,9 +276,9 @@ int *asynint_ptr = &asynint_val;
       /* there is attv interrupt */					\
       synint_proc(PSC, MYSIG_ATTV, lpcreg-2*sizeof(Cell));		\
       lpcreg = pcreg;							\
-      /* Set PSC to verify_attributes/2, so that the later call of */	\
-      /* intercept(PSC) will set the return point, pcreg, to	 */	\
-      /* verify_attributes/2.					 */	\
+      /* Set PSC to '_$attv_int'/2, so that the later call of	*/	\
+      /* intercept(PSC) will set the return point, pcreg, to	*/	\
+      /* '_$attv_int'/2.					*/	\
       PSC = (Psc) flags[MYSIG_ATTV+32];					\
     }									\
     else { 								\
