@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.22 1999-11-30 04:35:07 kifer Exp $
+## $Id: testsuite.sh,v 1.23 2000-02-15 07:45:09 bartkul Exp $
 ## 
 ##
 
@@ -207,7 +207,7 @@ else
 	NeXT_DATE=0
 fi
 
-testall.sh -opts "$options" -exclude "$excluded_tests" -add "$added_tests" -only "$only_tests" \
+./testall.sh -opts "$options" -exclude "$excluded_tests" -add "$added_tests" -only "$only_tests" \
 		    $XEMU  >> $LOG_FILE 2>&1
 
 

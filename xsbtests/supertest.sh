@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: supertest.sh,v 1.14 1999-12-04 03:20:00 kifer Exp $
+## $Id: supertest.sh,v 1.15 2000-02-15 07:45:09 bartkul Exp $
 ## 
 ##
 
@@ -59,41 +59,41 @@ echo "***NOTE: XSB must be fully pre-built with default options"
 echo ""
 cd $xsbdir/build
 echo "Configuring XSB with default options"
-configure > $logfile
+./configure > $logfile
 echo "Making XSB with default options"
 # Using the fast mode saves time by not building packages.
 # Packages must already be pre-built for default options, 
 # or else this first run would fail on regmatch_tests
-makexsb fast >> $logfile
-makexsb module >> $logfile
+./makexsb fast >> $logfile
+./makexsb module >> $logfile
 cd $testdir
 ./testsuite.sh $xsbdir
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-local-scheduling"
-configure --config-tag=localsched --enable-local-scheduling >> $logfile
+./configure --config-tag=localsched --enable-local-scheduling >> $logfile
 echo "Making XSB with --enable-local-scheduling"
-makexsb --config-tag=localsched fast >> $logfile
-makexsb --config-tag=localsched module >> $logfile
+./makexsb --config-tag=localsched fast >> $logfile
+./makexsb --config-tag=localsched module >> $logfile
 cd $testdir
 ./testsuite.sh -tag localsched $xsbdir
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-slg-wam"
-configure --config-tag=slg-wam --enable-slg-wam >> $logfile
+./configure --config-tag=slg-wam --enable-slg-wam >> $logfile
 echo "Making XSB with --enable-slg-wam"
-makexsb --config-tag=slg-wam fast >> $logfile
-makexsb --config-tag=slg-wam module >> $logfile
+./makexsb --config-tag=slg-wam fast >> $logfile
+./makexsb --config-tag=slg-wam module >> $logfile
 cd $testdir
 ./testsuite.sh -tag slg-wam $xsbdir
 
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-slg-wam --enable-local-scheduling"
-configure --config-tag=localschedNslg-wam --enable-slg-wam --enable-local-scheduling >> $logfile
+./configure --config-tag=localschedNslg-wam --enable-slg-wam --enable-local-scheduling >> $logfile
 echo "Making XSB with --enable-slg-wam --enable-local-scheduling"
-makexsb --config-tag=localschedNslg-wam fast >> $logfile
-makexsb --config-tag=localschedNslg-wam module >> $logfile
+./makexsb --config-tag=localschedNslg-wam fast >> $logfile
+./makexsb --config-tag=localschedNslg-wam module >> $logfile
 cd $testdir
 ./testsuite.sh -tag localschedNslg-wam $xsbdir
 

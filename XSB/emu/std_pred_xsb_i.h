@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.3 1999-12-21 22:56:40 warren Exp $
+** $Id: std_pred_xsb_i.h,v 1.4 2000-02-15 07:45:09 bartkul Exp $
 ** 
 */
 
@@ -357,7 +357,7 @@ inline static bool atom_to_list(int call_type)
 	else return isnil(list);
       } else {
 	/* check that there is enough space on the heap! */
-	check_glstack_overflow(2, pcreg, 2*len*sizeof(Cell)) ;
+	check_glstack_overflow(2, pcreg, 2*len*sizeof(Cell), goto contcase) ;
 	list = ptoc_tag(2);   /* in case it changed */
 
 	new_list = makelist(hreg);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.55 2000-01-26 15:01:53 kostis Exp $
+** $Id: emuloop.c,v 1.56 2000-02-15 07:45:08 bartkul Exp $
 ** 
 */
 
@@ -1191,7 +1191,7 @@ contcase:     /* the main loop */
     pppad;
     pad64;
     cpreg = lpcreg+sizeof(Cell); 
-    check_glstack_overflow(MAX_ARITY, lpcreg, OVERFLOW_MARGIN);
+    check_glstack_overflow(MAX_ARITY, lpcreg, OVERFLOW_MARGIN, goto contcase);
     lpcreg = *(pb *)lpcreg;
     goto contcase;
 

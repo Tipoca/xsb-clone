@@ -11,5 +11,5 @@ test :- xsb_configuration(compiler_flags,CFLAGS),
 	shell([Compiler, ' -o ', 'c_calls_xsb.exe ',
 	       ObjDir, 'xsb.o ', ' c_calls_xsb.o ', LDFLAGS]),
 	xsb_configuration(install_dir,InstallDir),
-	shell(['c_calls_xsb.exe ', InstallDir, ' c_calls_xsb > temp1']),
+	shell(['./c_calls_xsb.exe ', InstallDir, ' c_calls_xsb > temp1']),
 	shell('cat temp1 >> temp; rm temp1').
