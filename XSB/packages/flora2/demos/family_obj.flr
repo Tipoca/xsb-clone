@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: family_obj.flr,v 1.5 2001-06-04 21:39:42 kifer Exp $
+** $Id: family_obj.flr,v 1.6 2002-02-27 18:45:20 kifer Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 %%% ======================================================================
 
 
+%%:- debug.
 
 male :: person.		% subclass relation
 female :: person.	% subclass relation
