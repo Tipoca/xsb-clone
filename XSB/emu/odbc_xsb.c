@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.28 2003-04-02 18:35:17 lfcastro Exp $
+** $Id: odbc_xsb.c,v 1.29 2003-04-16 14:11:31 lfcastro Exp $
 ** 
 */
 
@@ -913,8 +913,8 @@ extern xsbBool unify(Cell, Cell);
 /*-----------------------------------------------------------------------------*/
 void ODBCDataSources()
 {
-  static UCHAR DSN[SQL_MAX_DSN_LENGTH+1];
-  static UCHAR Description[SQL_MAX_DSN_LENGTH+1];
+  static SQLCHAR DSN[SQL_MAX_DSN_LENGTH+1];
+  static SQLCHAR Description[SQL_MAX_DSN_LENGTH+1];
   RETCODE rc;
   int seq;
   SWORD dsn_size, descr_size;
@@ -937,9 +937,9 @@ void ODBCDataSources()
   seq = ptoc_int(2);
   
   if (seq == 1) {
-    rc = SQLDataSources(henv,SQL_FETCH_FIRST,&DSN,
+    rc = SQLDataSources(henv,SQL_FETCH_FIRST,DSN,
 			SQL_MAX_DSN_LENGTH,&dsn_size,
-			&Description,SQL_MAX_DSN_LENGTH,
+			Description,SQL_MAX_DSN_LENGTH,
 			&descr_size);
     if (rc == SQL_NO_DATA_FOUND) {
       ctop_int(5,2);
@@ -951,9 +951,9 @@ void ODBCDataSources()
       return;
     }
   } else {
-    rc = SQLDataSources(henv,SQL_FETCH_NEXT,&DSN,
+    rc = SQLDataSources(henv,SQL_FETCH_NEXT,DSN,
 			SQL_MAX_DSN_LENGTH,&dsn_size,
-			&Description,SQL_MAX_DSN_LENGTH,
+			Description,SQL_MAX_DSN_LENGTH,
 			&descr_size);
     if (rc == SQL_NO_DATA_FOUND) {
       ctop_int(5,2);
