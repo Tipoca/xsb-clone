@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.2 1999-10-26 06:47:07 kifer Exp $
+** $Id: init_xsb.c,v 1.3 1999-10-27 14:15:47 kostis Exp $
 ** 
 */
 
@@ -122,8 +122,6 @@ extern void perproc_reset_stat(void), reset_stat_total(void);
 extern char *install_dir; 
 extern char *xsb_config_file; /* configuration.P */
 extern char *user_home; /* the user HOME dir or install dir, if HOME is null */
-
-void process_long_option(char *option);
 
 /*==========================================================================*/
 
@@ -231,6 +229,28 @@ static void init_open_files(void)
   setvbuf(stdfdbk, NULL, _IONBF, 0);
 
   for (i=MIN_USR_OPEN_FILE; i < MAX_OPEN_FILES; i++) open_files[i] = NULL;
+}
+
+/*==========================================================================*/
+
+/* if command line option is long --optionname, then the arg here is
+   'optionname'. Process it and return.
+*/
+static void process_long_option(char *option)
+{
+  if (0==strcmp(option, "nobanner")) {
+    flags[BANNER_CTL] *= NOBANNER;
+  } else if (0==strcmp(option, "quietload")) {
+    flags[BANNER_CTL] *= QUIETLOAD;
+  } else if (0==strcmp(option, "noprompt")) {
+    flags[BANNER_CTL] *= NOPROMPT;
+  } else if (0==strcmp(option, "help")) {
+    help_message();
+  } else if (0==strcmp(option, "version")) {
+    version_message();
+  }
+
+  return;
 }
 
 /*==========================================================================*/
@@ -723,27 +743,6 @@ void init_symbols(void)
   /* make another reference to global module -- "usermod" */
   tp = insert_module(T_MODU, "usermod");	/* loaded */
   set_ep(pair_psc(tp), get_ep(global_mod));
-}
-
-
-/* if command line option is long --optionname, then the arg here is
-   'optionname'. Process it and return.
-*/
-void process_long_option(char *option)
-{
-  if (0==strcmp(option, "nobanner")) {
-    flags[BANNER_CTL] *= NOBANNER;
-  } else if (0==strcmp(option, "quietload")) {
-    flags[BANNER_CTL] *= QUIETLOAD;
-  } else if (0==strcmp(option, "noprompt")) {
-    flags[BANNER_CTL] *= NOPROMPT;
-  } else if (0==strcmp(option, "help")) {
-    help_message();
-  } else if (0==strcmp(option, "version")) {
-    version_message();
-  }
-
-  return;
 }
 
 /*==========================================================================*/
