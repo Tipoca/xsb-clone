@@ -18,12 +18,12 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.1 1999-09-22 07:31:32 kifer Exp $
+## $Id: Makefile,v 1.2 1999-09-25 16:36:17 kifer Exp $
 ## 
 ##
 
 
-ALL = 	 ????
+ALL = 	 libwwwconfig.O
 
 EMU_INCLUDES = ../../emu/builtin.h ../../emu/celltags.h ../../emu/flag_defs.h \
 	../../emu/io_defs.h ../../emu/msyscall.h ../../emu/sig.h \
