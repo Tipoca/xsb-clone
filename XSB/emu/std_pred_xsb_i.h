@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.4 2000-02-15 07:45:09 bartkul Exp $
+** $Id: std_pred_xsb_i.h,v 1.5 2000-04-06 08:21:55 bartkul Exp $
 ** 
 */
 
@@ -232,9 +232,13 @@ inline static bool univ_builtin(void)
 	bind_copy((CPtr)term, cell(head));	 /* term<-num  */
 	return TRUE;	/* succeed */
       }
-      else err_handle(TYPE, 2, "=..", 2,
-		      "[]-terminated list whose first element is atomic",
-		      list);
+      else
+	{
+	  err_handle(TYPE, 2, "=..", 2,
+		     "[]-terminated list whose first element is atomic",
+		     list);
+	  return(FALSE);
+	}
     }
     if (isnonvar(list))
       err_handle(TYPE, 2, "=..", 2,
