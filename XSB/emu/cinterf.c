@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.46 2003-05-12 02:26:14 kifer Exp $
+** $Id: cinterf.c,v 1.47 2004-12-20 19:26:14 dwarren Exp $
 ** 
 */
 
@@ -320,7 +320,7 @@ DllExport prolog_term call_conv p2p_deref(prolog_term term)
 char *p_charlist_to_c_string(prolog_term term, VarString *buf,
 			     char *in_func, char *where)
 {
-  int head_val;
+  Integer head_val;
   char head_char[1];
   int escape_mode=FALSE;
   prolog_term list = term, list_head;

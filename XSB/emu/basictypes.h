@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.17 2004-01-14 15:21:17 dwarren Exp $
+** $Id: basictypes.h,v 1.18 2004-12-20 19:26:14 dwarren Exp $
 ** 
 */
 
@@ -51,7 +51,7 @@ typedef unsigned long word;
 typedef byte *pb;
 typedef word *pw;
 typedef int (*PFI)(void);
-typedef int *int_ptr;
+// typedef int *int_ptr;
 
 
 #endif /* BASIC_TYPES_INCLUDED */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.26 2004-02-02 20:29:48 dwarren Exp $
+** $Id: socket_xsb.c,v 1.27 2004-12-20 19:26:15 dwarren Exp $
 ** 
 */
 
@@ -694,7 +694,7 @@ xsbBool xsb_socket_request(void)
     /* specify the time out */
     timeout_term = reg_term(3);
     if (isinteger(timeout_term)|isboxedinteger(timeout_term)) {
-      timeout = int_val(timeout_term);
+      timeout = oint_val(timeout_term);
       /* initialize tv */
       tv = (struct timeval *)malloc(sizeof(struct timeval));
       tv->tv_sec = timeout;

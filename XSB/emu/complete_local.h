@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.6 2002-05-20 17:47:09 tswift Exp $
+** $Id: complete_local.h,v 1.7 2004-12-20 19:26:14 dwarren Exp $
 ** 
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -286,7 +286,8 @@ static inline void CompleteSimplifyAndReclaim(CPtr cs_ptr)
 static inline void SetupReturnFromLeader(CPtr orig_breg, CPtr cs_ptr, VariantSF subgoal)
 {
   CPtr answer_template;
-  int template_size, attv_num, tmp;
+  int template_size, attv_num;
+  Integer tmp;
 
   switch_envs(orig_breg); 
   /* check where this brings the stacks, that will determine how
