@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred.i,v 1.11 1999-09-25 16:34:25 kifer Exp $
+** $Id: std_pred.i,v 1.12 1999-10-11 15:43:05 kostis Exp $
 ** 
 */
 
@@ -437,6 +437,7 @@ inline static bool number_to_list(int call_type)
     if (sscanf(str, "%ld%c", &c, &hack_char) == 1) {
       bind_int((CPtr)(term), c);
     } else {
+      Float float_temp;
 #ifdef BITS64
       if (sscanf(str, "%le%c", &float_temp, &hack_char) == 1)
 #else

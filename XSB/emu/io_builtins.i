@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.i,v 1.19 1999-09-03 19:42:58 warren Exp $
+** $Id: io_builtins.i,v 1.20 1999-10-11 15:43:06 kostis Exp $
 ** 
 */
 
@@ -107,6 +107,7 @@ bool file_stat(void)
 /* file_flush, file_pos, file_truncate, file_seek */
 inline static bool file_function(void)
 {
+  static FILE *fptr;
   static int io_port, value, size, offset, length, mode;
   static STRFILE *sfptr;
   static char buf[MAX_IO_BUFSIZE+1];
