@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: syscall_xsb.h,v 1.3 2003-08-04 16:34:01 lfcastro Exp $
+** $Id: syscall_xsb.h,v 1.4 2004-03-02 15:12:52 dwarren Exp $
 ** 
 */
 
@@ -213,3 +213,4 @@
 
 #define SYS_cwd         300  /* current working directory */
 #define SYS_filecopy    301
+#define SYS_create      302  /* for creating file as lock */

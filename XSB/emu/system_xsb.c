@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.35 2004-01-14 20:27:13 dwarren Exp $
+** $Id: system_xsb.c,v 1.36 2004-03-02 15:12:52 dwarren Exp $
 ** 
 */
 
@@ -173,7 +173,12 @@ int sys_syscall(int callno)
     result = file_copy(from,to);
     break;
   }
-    
+  case SYS_create: {
+    result = open(ptoc_longstring(3),O_CREAT|O_EXCL,S_IREAD|S_IWRITE);
+    if (result >= 0) close(result);
+    break;
+  }
+
   default: xsb_abort("[SYS_SYSCALL] Unknown system call number, %d", callno);
   }
   return result;
