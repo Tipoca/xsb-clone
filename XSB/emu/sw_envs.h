@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sw_envs.h,v 1.5 1999-10-09 02:00:29 cbaoqiu Exp $
+** $Id: sw_envs.h,v 1.6 1999-10-24 20:09:34 cbaoqiu Exp $
 ** 
 */
 
@@ -77,11 +77,12 @@
 #endif
 
 #ifdef WAM_TRAIL
-#define table_undo_bindings(old_trreg) \
-    while (trreg > (CPtr *) old_trreg) {\
-      CPtr temp_trreg = *(--trreg); \
-      untrail(temp_trreg); \
-    }
+#define table_undo_bindings(old_trreg) {	\
+  while (trreg > (CPtr *) old_trreg) {		\
+    CPtr temp_trreg = *(--trreg);		\
+    untrail2(trreg, (Cell)temp_trreg);		\
+  }						\
+}
 #else
 #define table_undo_bindings(old_trreg) \
     while (trreg > (CPtr *) old_trreg) {\
