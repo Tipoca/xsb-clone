@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.54 2000-01-07 08:51:27 kifer Exp $
+** $Id: emuloop.c,v 1.55 2000-01-26 15:01:53 kostis Exp $
 ** 
 */
 
@@ -1291,8 +1291,8 @@ contcase:     /* the main loop */
 /* unification routines							*/
 /*======================================================================*/
 
-#define IFTHEN_SUCCEED
-#define IFTHEN_FAILED	Fail1
+#define IFTHEN_SUCCEED  goto contcase
+#define IFTHEN_FAILED	{Fail1 ; goto contcase ;}
 
 nunify: /* ( op1, op2 ) */
 /* word op1, op2 */
