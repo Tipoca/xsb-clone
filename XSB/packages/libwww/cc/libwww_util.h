@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_util.h,v 1.8 2000-04-23 02:15:43 kifer Exp $
+** $Id: libwww_util.h,v 1.9 2000-05-01 06:18:54 kifer Exp $
 ** 
 */
 
@@ -54,7 +54,7 @@
 
 int total_number_of_requests;
 int event_loop_runnung;
-HTList *XML_converter=NULL, *RDF_converter=NULL;
+HTList *XML_converter=NULL, *RDF_converter=NULL, *HTML_converter=NULL;
 
 /*
 #define LIBWWW_DEBUG_VERBOSE
@@ -182,6 +182,7 @@ REQUEST_CONTEXT *set_subrequest_context(HTRequest *request,
 void setup_termination_filter(HTRequest *request, HTNetAfter *filter);
 void set_xml_conversions(void);
 void set_rdf_conversions(void);
+void set_html_conversions(void);
 
 #define AUTH_OR_REDIRECTION(status) \
     ((status == HT_NO_ACCESS) || (status == HT_NO_PROXY_ACCESS) \
