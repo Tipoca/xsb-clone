@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.14 2000-06-17 23:28:52 kifer Exp $
+** $Id: cinterf.h,v 1.15 2000-11-22 15:31:23 dwarren Exp $
 ** 
 */
 
@@ -158,6 +158,7 @@
 DllExport extern prolog_int call_conv ptoc_int(reg_num);	/* defined in builtin.c */
 DllExport extern prolog_float call_conv ptoc_float(reg_num);	/* defined in builtin.c */
 DllExport extern char* call_conv ptoc_string(reg_num);	/* defined in builtin.c */
+DllExport extern char* call_conv ptoc_longstring(reg_num);	/* defined in builtin.c */
 DllExport extern char* call_conv ptoc_abs(reg_num);
 
 DllExport extern void  call_conv ctop_int(reg_num, prolog_int); /* defined in builtin.c */
