@@ -19,12 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.H,v 1.11 1999-11-30 14:18:29 kostis Exp $
+** $Id: foreign.H,v 1.12 1999-12-01 17:57:48 kifer Exp $
 ** 
 */
 
 
 :- export compile_cH/5.
+:- export compile_so/3.
 
 :- import shell/1 from shell.
 :- import asm_magic/1 from asm.
@@ -41,6 +42,7 @@
 :- import write_header/0, process_from/2 from wrapping.
 :- import file_close/1, fmt_write_string/3 from file_io.
 :- import str_len/2, str_cat/3, stat_flag/2 from machine.
+:- import parse_filename/4 from machine.
 :- import message/1, warning/1, time_message/2 from auxlry.
 :- import read/1, see/1, seen/0, write/1, put/1, tell/1, told/0, repeat/0,
 	  atom/1, file_exists/1, cputime/1, abort/1, seeing/1, telling/1
