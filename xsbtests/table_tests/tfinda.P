@@ -11,6 +11,3 @@ s(_).
 
 test:- p2,fail.
 test:- p2,tnot(p2),q2,tnot(q2)-> writeln(ok);writeln('tfinda test failure').
-
-
-
