@@ -1,0 +1,55 @@
+/* File:      general.P
+** Author(s): Baoqiu Cui
+**
+** $Id: general.P,v 1.1 2000-01-12 00:30:47 cbaoqiu Exp $
+*/
+
+:- import put_atts/2, get_atts/2, attribute/1 from atts.
+:- import put_attributes/2 from machine.
+
+:- attribute((dom/1, name/2)).
+
+test :-
+	test1,
+	test2.
+
+%-----------------------------------------------------------------------
+% test1: one attv contains two normal vars, so in total there
+% are 3 vars in ret/n
+%-----------------------------------------------------------------------
+test1 :-
+	put_atts(X, dom(f(_T1,T2,T2))),
+	put_atts(X, name(baoqiu, cui)),
+	p(X),
+	fail.
+test1 :-
+	get_calls(p(_X), Cs, Ret),
+	get_returns(Cs, Ret),
+	Ret = ret(A,_B,_C),
+	get_atts(A, dom(f(Var1,Var2,Var3))),
+	Var1 \== Var2, Var2 == Var3,
+	get_atts(A, name(baoqiu, cui)),
+	writeln('test1 is OK').
+
+%-----------------------------------------------------------------------
+% test2: cyclic attributed variable
+%-----------------------------------------------------------------------
+test2 :-
+	put_atts(X, dom(5)),
+	put_atts(X, name(X, cui)), % cyclic attv
+	p(X),
+	fail.
+test2 :-
+	get_calls(p(_X), Cs, Ret),
+	get_returns(Cs, Ret),
+	Ret = ret(A),
+	get_atts(A, dom(Five)),
+	writeln(Five),
+	get_atts(A, name(B, cui)), % A == B
+	A == B,
+	get_atts(B, dom(Five2)),
+	writeln(Five2),
+	writeln('test2 is OK').
+
+:- table p/1.
+p(_).
