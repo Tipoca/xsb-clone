@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.61 2002/11/04 18:09:13 dwarren Exp $
+** $Id: standard.P,v 1.62 2002/11/26 17:45:53 tswift Exp $
 ** 
 */
 
@@ -199,8 +199,8 @@ open(F,write,F):-!,
 	),
 	psc_prop(PSC, File0),
 	stat_set_flag(CURRENT_OUTPUT, File0),
-	conpsc(current_input, CurinPsc),
-	psc_set_prop(CurinPsc, PSC),
+	conpsc(current_output, CuroutPsc),
+	psc_set_prop(CuroutPsc, PSC),
 	tell0(CurFile).
 open(F,append,F):-!, 
 	telling(CurFile),
@@ -215,8 +215,8 @@ open(F,append,F):-!,
 	),
 	psc_prop(PSC, File0),
 	stat_set_flag(CURRENT_OUTPUT, File0),
-	conpsc(current_input, CurinPsc),
-	psc_set_prop(CurinPsc, PSC),
+	conpsc(current_output, CuroutPsc),
+	psc_set_prop(CuroutPsc, PSC),
 	tell0(CurFile).
 
 open(File,w,File):-!, 
