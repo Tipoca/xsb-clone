@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.42 2000/12/04 17:10:48 ejohnson Exp $
+** $Id: std_xsb.P,v 1.43 2001/03/16 14:53:01 tswift Exp $
 ** 
 */
 
@@ -254,14 +254,16 @@ standard_symbol(sys_exit, 1, shell).
 standard_symbol(var, 1, standard).
 standard_symbol(write, 1, standard).
 standard_symbol(write, 2, standard).
-standard_symbol(writeln, 1, standard).
-standard_symbol(writeln, 2, standard).
-standard_symbol(write_prolog, 1, standard).
-standard_symbol(write_prolog, 2, standard).
-standard_symbol(writeq, 1, standard).
-standard_symbol(writeq, 2, standard).
 standard_symbol(write_canonical, 1, standard).
 standard_symbol(write_canonical, 2, standard).
+standard_symbol(write_prolog, 1, standard).
+standard_symbol(write_prolog, 2, standard).
+standard_symbol(write_term, 1, standard).
+standard_symbol(write_term, 2, standard).
+standard_symbol(writeln, 1, standard).
+standard_symbol(writeln, 2, standard).
+standard_symbol(writeq, 1, standard).
+standard_symbol(writeq, 2, standard).
 standard_symbol(xsb_flag, 2, curr_sym).
 standard_symbol((attribute), 1, atts).
 
