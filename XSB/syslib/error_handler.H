@@ -19,15 +19,17 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.43 2002/08/16 14:51:08 dwarren Exp $
+** $Id: error_handler.H,v 1.1 2002/08/27 20:11:20 tswift Exp $
 ** 
 */
 
 
 :- export default_error_handler/1.
 
-:- import abort/0, messageln/2 from standard.
 :- import (dynamic)/1 from assert.
+:- import reset_undef_pred_handlers/0 from loader.
+:- import close_open_tables/0, conpsc/2, psc_prop/2 from machine.
+:- import messageln/2 from standard.
 
 
 

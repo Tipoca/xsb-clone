@@ -1,5 +1,5 @@
 /* File:      standard.H
-** Author(s): Kostis Sagonas, Jiyang Xu 
+** Author(s): Sagonas, Warren, Kifer, Cui, Demoen, Swift and others
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.29 2002/04/13 05:01:59 lfcastro Exp $
+** $Id: standard.H,v 1.30 2002/08/27 20:06:57 tswift Exp $
 ** 
 */
 
@@ -86,19 +86,14 @@
 	set_timer/1,
 	(import)/1,	(multifile)/1.
 
-
-/* The following predicates are directly imported from other modules */
-
-:- import '_$load_undef'/1,
-	reset_undef_pred_handlers/0
-   from loader.
-:- import psc_set_prop/2, psc_name/2, psc_arity/2, psc_prop/2, psc_type/2,
-	  term_psc/2, term_new/2, term_type/2, stat_set_flag/2, 
-	  stat_flag/2, psc_set_type/2, term_compare/3,
-	  stat_sta/1, conname/2, conpsc/2, stat_cputime/1, 
-	  expand_filename/2, machine_file_exists/1, psc_insert/4,
-	  psc_import/3, call0/1, close_open_tables/0
-     from machine.
+:- import call0/1, conname/2, conpsc/2, 
+	  expand_filename/2, machine_file_exists/1, 
+	  psc_arity/2, psc_import/3, psc_insert/4,
+	  psc_name/2, psc_set_prop/2, psc_prop/2, psc_type/2,
+	  stat_set_flag/2, stat_flag/2, psc_set_type/2, term_compare/3,
+	  stat_sta/1, stat_cputime/1, 
+	  term_psc/2, term_new/2, term_type/2
+	  from machine.
 :- import '$$set_scope_marker'/0, '$$unwind_stack'/0, 
           '$$clean_up_block'/0 
      from machine. 
