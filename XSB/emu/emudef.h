@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.8 1999-04-30 15:53:29 kifer Exp $
+** $Id: emudef.h,v 1.9 1999-05-13 13:15:44 warren Exp $
 ** 
 */
 
@@ -196,12 +196,13 @@ int *asynint_ptr = &asynint_val;
       if (!call_intercept || \
           !(flags[DEBUG_ON] && !flags[HIDE_STATE] && \
                (get_spy(psc) || flags[TRACE]) \
-         ) ) \
+         ) ) {\
       /* A foreign function must return an int! \
 	 If dyn_pred returns 0, then fail    	 */ \
-      if (dyn_pred()) \
-        lpcreg = cpreg;		/* "proceed" */ \
-      else lpcreg = (pb)&fail_inst; \
+        if (dyn_pred()) \
+          lpcreg = cpreg;		/* "proceed" */ \
+        else lpcreg = (pb)&fail_inst; \
+      } \
       break; \
     case T_UDEF: \
     case T_UFUN: \
