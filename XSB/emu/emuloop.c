@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.4 1998-12-21 01:08:16 cbaoqiu Exp $
+** $Id: emuloop.c,v 1.5 1999-01-10 01:07:01 cbaoqiu Exp $
 ** 
 */
 
@@ -74,6 +74,7 @@ extern tab_inf_ptr UglyHackForTip;
 
 #ifdef DEBUG
 extern void printterm(Cell, byte, int);
+extern void print_completion_stack(void);
 #endif
 
 /*----------------------------------------------------------------------*/
