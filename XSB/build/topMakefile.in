@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.15 1999-05-19 01:37:54 kifer Exp $
+## $Id: topMakefile.in,v 1.16 1999-06-10 18:46:16 kifer Exp $
 ## 
 ##
 
@@ -141,7 +141,7 @@ XSB = xsb
 
 
 # Normal user
-all: prepare emu configure_packages_src register emu_clean 
+all: prepare emu remake_dot_O_files configure_packages_src register emu_clean 
 
 # Developer who just checked out or updated CVS copy
 devel: prepare emu remake_dot_O_files configure_packages_src emu_clean
