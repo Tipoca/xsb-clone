@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.13 1999-04-13 17:24:47 kostis Exp $
+** $Id: tries.c,v 1.14 1999-05-19 19:48:58 warren Exp $
 ** 
 */
 
@@ -1636,24 +1636,20 @@ byte * trie_get_calls(void)
 static void construct_ret(void)
 {
     Pair sym;
-    Cell term; /* the function assumes that term is free on call ! */
-    CPtr sreg;
+    Cell term;
     int  arity, i, new;
 
     arity = global_num_vars + 1;
     if (arity == 0) {
       ctop_string(3, (char *) ret_psc[0]);
     } else {
-      term = ptoc_tag(3);
-      sreg = hreg;
-      bind_cs((CPtr)term, sreg);
+      bind_cs((CPtr)ptoc_tag(3), hreg);
       sym = insert("ret", arity, (Psc)flags[CURRENT_MODULE], &new);
-      new_heap_functor(sreg, sym->psc_ptr);
+      new_heap_functor(hreg, sym->psc_ptr);
       for (i = 0; i < arity; i++) {
-	bind_copy(sreg, (Cell)var_regs[i]);
-	sreg++;
+	term = (Cell)var_regs[i];
+	nbldval(term);
       }
-      hreg = sreg;
     }
 }
 
