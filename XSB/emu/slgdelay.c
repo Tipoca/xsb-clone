@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.32 2000/06/28 16:54:52 ruim Exp $
+** $Id: slgdelay.c,v 1.33 2000/09/27 22:09:05 lfcastro Exp $
 ** 
 */
 
@@ -359,7 +359,7 @@ static void record_de_usage(DL dl)
   PNDE pnde, current_first;
   NODEptr as_leaf;
 #ifdef DEBUG_DELAYVAR
-  NODE tmp;
+  PNDE tmp;
 #endif
  
   de = dl_de_list(dl);

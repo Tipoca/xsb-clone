@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.12 2001-06-21 19:07:59 tswift Exp $
+** $Id: complete_xsb_i.h,v 1.13 2001-06-22 21:05:47 tswift Exp $
 ** 
 */
 
@@ -48,8 +48,8 @@ XSB_Start_Instr(check_complete,_check_complete)
   subgoal = (VariantSF) tcp_subgoal_ptr(breg);	/* subgoal that is checked */
 
 #ifdef DEBUG_DELAY
-  fprintf(stderr, ">>>> check_complete is called.  The checked subgoal is: ");
-  print_subgoal(stderr, subgoal); fprintf(stderr, "\n");
+  fprintf(stderr, "check_complete_entered(");
+  print_subgoal(stderr, subgoal); fprintf(stderr, ").\n");
 #endif
   cs_ptr = subg_compl_stack_ptr(subgoal);
 
