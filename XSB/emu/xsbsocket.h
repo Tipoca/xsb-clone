@@ -1,5 +1,5 @@
 /* File:      xsbsocket.h
-** Author(s): kifer
+** Author(s): juliana, davulcu, kifer
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1999
@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbsocket.h,v 1.2 1999-04-22 07:00:11 kifer Exp $
+** $Id: xsbsocket.h,v 1.3 1999-04-23 04:10:40 kifer Exp $
 ** 
 */
 
