@@ -19,12 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asm.H,v 1.1.1.1 1998-11-05 17:00:00 sbprolog Exp $
+** $Id: asm.H,v 1.2 1999-10-22 16:35:53 kostis Exp $
 ** 
 */
 
 
-:- export asm_genheader/4, asm_PIL/4.
+:- export asm_genheader/4, asm_PIL/4, asm_magic/1.
 
 :- import insert/2 from listutil.
 :- import asm_opt/5 from asm_opt.
