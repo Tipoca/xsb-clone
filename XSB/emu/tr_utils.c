@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.57 2000/12/04 17:10:43 ejohnson Exp $
+** $Id: tr_utils.c,v 1.58 2000/12/13 16:36:38 tswift Exp $
 ** 
 */
 
@@ -1225,7 +1225,7 @@ static void insertLeaf(IGRptr r, BTNptr leafn)
   while(p != NULL){
     /*    xsb_warn("loopd"); */
     if(p -> leaf == leafn){
-      xsb_warn(" Leaf Node was previously deleted !");
+      xsb_warn("Leaf node was previously deleted!");
       return;
     }
     p = p -> next;
