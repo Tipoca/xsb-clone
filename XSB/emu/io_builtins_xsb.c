@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.44 2004-10-11 01:33:15 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.45 2004-10-11 13:08:48 dwarren Exp $
 ** 
 */
 
@@ -1500,6 +1500,7 @@ xsbBool no_quotes_needed(char *string)
 
   if (*string == '\0') return TRUE;
   if (!strcmp(string,"[]")) return FALSE;
+  if (string[0] == '/' && string[1] == '*') return TRUE;
   ctr = 0;
   nextchar = (int) string[0];
   flag = 0;
@@ -1526,12 +1527,8 @@ xsbBool no_quotes_needed(char *string)
   ctr = 0; 
   while (nextchar != '\0' && !flag) {
     switch(nextchar) {
-    case 47: if (string[ctr+1] == '*') {
-      flag = 1;
-      break;
-    }
     case 35: case 36: case 38: case 42: case 43: case 45: case 46:
-    case 58: case 60: case 61: case 62: case 63: case 64: 
+    case 47: case 58: case 60: case 61: case 62: case 63: case 64: 
     case 92: case 94: case 96: case 126:
       nextchar++;
       break;
