@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.25 2001-03-17 05:44:02 kifer Exp $
+** $Id: findall.c,v 1.26 2002-08-07 15:42:13 lfcastro Exp $
 ** 
 */
 
@@ -213,7 +213,7 @@ copy_again : /* for tail recursion optimisation */
 	}
 
       q = *pfirstel;
-      if (is_list(q))
+      if (islist(q))
 	{
 	  CPtr p;
 	  
@@ -450,7 +450,7 @@ static int findall_copy_template_to_chunk(Cell from, CPtr to, CPtr *h)
 	    }
 	  
 	  q = *pfirstel;
-	  if (is_list(q))
+	  if (islist(q))
 	    {
 	      CPtr p;
 	      
@@ -811,7 +811,7 @@ copy_again : /* for tail recursion optimisation */
 	  }
 
 	q = *pfirstel;
-	if (is_list(q))
+	if (islist(q))
 	  {
 	    CPtr p;
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.143 2002-05-22 15:41:12 lfcastro Exp $
+** $Id: builtin.c,v 1.144 2002-08-07 15:42:13 lfcastro Exp $
 ** 
 */
 
@@ -953,7 +953,7 @@ int builtin_call(byte number)
   case CONGET_TERM: {
     Integer res = conget((Cell)ptoc_tag(1));
     prolog_term arg2 = reg_term(2);
-    if (is_var(arg2)) {
+    if (isref(arg2)) {
       c2p_int(res,arg2);
       return TRUE;
     } else {
@@ -2071,7 +2071,7 @@ int builtin_call(byte number)
     int size;
     xsbBool retcode;
     size_var = reg_term(2);
-    if (! is_var(size_var)) {
+    if (! isref(size_var)) {
       xsb_abort("[IS_CHARLIST] Arg 2 must be a variable");
     }
     retcode = is_charlist(reg_term(1), &size);
