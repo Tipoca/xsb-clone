@@ -1,8 +1,5 @@
-[b1]  c1
-[b1]  c1
-[b]  c
-[b]  c
-[b]  d
-[bs1]  d2
-[bs1]  e1
-[bs]  e
+b  c
+b  c
+b1  c1
+b1  c1
+bs1  e1

@@ -1,0 +1,60 @@
+Query 1 begins
+After the no-effect query:
+a[f->c]
+a[f->b]
+mary[salary(1991)->30]
+mary[salary(1993)->70]
+mary[salary(1994)->60]
+mary[salary(1995)->60]
+mary[salary(1997)->80]
+mary[salary(1998)->90]
+mary[salary(1992)->60]
+mary[salary(1996)->70]
+Query 2 begins
+After query2:
+a[f->d]
+a[f->c]
+mary[salary(1993)->70]
+mary[salary(1994)->60]
+mary[salary(1995)->60]
+mary[salary(1997)->80]
+mary[salary(1998)->90]
+mary[salary(1992)->60]
+mary[salary(1996)->70]
+Query 3 begins
+After query3:
+a[f->f]
+a[f->d]
+a[f->c]
+mary[salary(1994)->60]
+mary[salary(1995)->60]
+mary[salary(1997)->80]
+mary[salary(1998)->90]
+mary[salary(1999)->100]
+mary[salary(1996)->70]
+Query 4 begins
+After query4:
+mary[salary(1995)->60]
+mary[salary(1999)->100]
+Query 5 begins
+After query5:
+mary[salary(1995)->60]
+mary[salary(1999)->100]
+mary[salary(2001)->110]
+mary[salary(2002)->111]
+mary[salary(2003)->100]
+Query 6 begins
+After query6:
+mary[salary(1995)->60]
+mary[salary(1999)->100]
+mary[salary(2001)->110]
+mary[salary(2002)->111]
+mary[salary(2003)->100]
+Query 7 begins
+After query7:
+mary[salary(2002)->111]
+mary[salary(2003)->100]
+Query 8 begins
+yes
+After query8:
+No facts of the form mary[salary(...)->...]

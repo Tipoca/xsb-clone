@@ -6,10 +6,14 @@ b  a
 b  b
 b  c
 b  d
-bill
-bill
-bill  something
-bill  something_else
+betty
+betty
+betty  something
+betty  something_else
+bob
+bob
+bob  something
+bob  something_else
 john
 john
 john  something
@@ -20,3 +24,7 @@ mary  betty  diving
 mary  something
 mary  something_else
 mary  tim  snowboard
+tim
+tim
+tim  something
+tim  something_else

@@ -10,7 +10,9 @@ options=$2
 
 file_list=*.flr
 
-exclude_list="abp.flr"
+%% abp.flr does not work. Perhaps the program is wrong.
+%% btupdates.flr is loaded using btupdates_load.flr
+exclude_list="abp.flr btupdates.flr"
 
 flora_options=flora_shell.
 flora_command="chatterbox(off). test."
@@ -28,8 +30,9 @@ member ()
     return 1
 }
 
+
 for file in $file_list ; do
-    if member $file $exclude_list; then
+    if member $file "$exclude_list"; then
 	continue
     fi
     prog=`basename $file .flr`
@@ -38,7 +41,6 @@ for file in $file_list ; do
     ../gentest.sh "$XEMU $options -e $flora_options" $prog "$flora_command"
 done
 
-../gentest.sh "$XEMU $options -e $flora_options" compileWives.P "$flora_command"
 
 # precautionary measure: rm *.[PO] only if we are certain 
 # that this is flora_tests directory

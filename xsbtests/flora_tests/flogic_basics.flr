@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flogic_basics.flr,v 1.5 2001-08-23 18:25:38 kifer Exp $
+** $Id: flogic_basics.flr,v 1.6 2002-02-26 10:21:04 kifer Exp $
 ** 
 */
 
@@ -92,7 +92,7 @@ tst6 :- X[believes_in ->> {Y}],
 tst6 :- true.
 
 tst7 :- X..kids[		
-		   self -> K;	
+		   self -> K,	
 		   hobbies ->> {H:dangerous_hobby}
 	       ],
 	write(X)@flora(io), write('  ')@prolog(), write(K)@flora(io),
