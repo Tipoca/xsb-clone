@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.22 1999-10-05 04:02:01 kifer Exp $
+** $Id: tries.c,v 1.23 1999-10-09 18:37:52 kostis Exp $
 ** 
 */
 
@@ -687,14 +687,13 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
  *----------------------------------------------------------------------*/
 
 BTNptr variant_trie_search(int arity, CPtr cptr,
-			    CPtr subgoal_ptr, int *flagptr)
+			   CPtr subgoal_ptr, int *flagptr)
 {
     Psc   psc;
     CPtr  xtemp1;
     int   i, j, flag = 1;
     Cell  tag = FREE, item;
     ALNptr answer_node;
-
 
     ans_chk_ins++; /* Counter (answers checked & inserted) */
 
