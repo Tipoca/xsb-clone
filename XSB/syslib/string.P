@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string.P,v 1.22 2002/02/20 14:58:24 dwarren Exp $
+** $Id: string.P,v 1.23 2002/07/01 16:21:47 dwarren Exp $
 ** 
 */
 
@@ -62,11 +62,17 @@ concat_atom(Atomlist,Sep,Atom):-
 
 atom_to_charlist([],_,[]).
 atom_to_charlist([Atom],_,[List]):- !,
-	atom(Atom),
-	atom_codes(Atom,List).
+	(atom(Atom)
+	 ->	atom_codes(Atom,List)
+	 ; number(Atom)
+	 ->	number_codes(Atom,List)
+	).
 atom_to_charlist([Atom|Rest],Slist,[List,Slist|Lrest]):- 
-	atom(Atom),
-	atom_codes(Atom,List),
+	(atom(Atom)
+	 ->	atom_codes(Atom,List)
+	 ; number(Atom)
+	 ->	number_codes(Atom,List)
+	),
 	atom_to_charlist(Rest,Slist,Lrest).
 
 %% Get substring of String beginning at from and ending at To.
