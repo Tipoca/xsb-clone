@@ -133,9 +133,9 @@
    ).
 
 
-/*
 %% Need to add these
-p :- storage_insert_fact_bt(aaa, f(a), X),
+%% Answer: hello,yes,no
+p :- storage_insert_fact_bt(aaa, f(a), _X),
 	(storage_insert_fact_bt(aaa, f(a), _), fail
 	; storage_find_fact(aaa, f(a)), writeln(hello)),
 	(storage_delete_fact_bt(aaa,f(a),_),
@@ -143,7 +143,8 @@ p :- storage_insert_fact_bt(aaa, f(a), X),
 	    fail
 	; (storage_find_fact(aaa,f(a))->writeln(no); writeln(yes))).
 
-q :- storage_insert_fact_bt(aaa, f(a), X),
+%% Answer: hello,yes,no,hello
+q :- storage_insert_fact_bt(aaa, f(a), _X),
 	(storage_insert_fact(aaa, f(a), _), fail
 	; storage_find_fact(aaa, f(a)), writeln(hello)),
 	(storage_delete_fact_bt(aaa,f(a),_),
@@ -152,4 +153,6 @@ q :- storage_insert_fact_bt(aaa, f(a), X),
 	; (storage_find_fact(aaa,f(a))->writeln(no); writeln(yes))),
 	fail.
 q:- storage_find_fact(aaa,f(a)), writeln(hello).
-*/
+
+
+:- p, q.

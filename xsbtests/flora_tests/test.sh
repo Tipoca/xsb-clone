@@ -10,7 +10,7 @@ options=$2
 
 file_list=*.flr
 
-exclude_list="abp.flr wives.flr"
+exclude_list="abp.flr"
 
 flora_options=flora_shell.
 flora_command="chatterbox(off). test."
