@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32.i,v 1.3 1999-05-03 19:55:41 luis Exp $
+** $Id: dynwin32.i,v 1.4 1999-05-25 13:31:18 luis Exp $
 ** 
 */
 
@@ -90,7 +90,8 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   while (search_ptr) {
     name = get_name(search_ptr->psc_ptr);
 #ifdef XSB_DLL
-    tempname = "__";
+    tempname[0] = '_';
+    tempname[1] = '_';
     strcpy(tempname[2],name);
     tempsize=strlen(tempname);
     tempname[tempsize++] = '@';

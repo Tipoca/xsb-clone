@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.4 1999-05-03 00:55:40 luis Exp $
+** $Id: cinterf.h,v 1.5 1999-05-25 13:26:36 luis Exp $
 ** 
 */
 
@@ -146,17 +146,6 @@
 /*======================================================================*/
 /* High level C interface						*/
 /*======================================================================*/
-
-/*  #ifdef XSB_DLL */
-/*  #define DllExport _declspec(dllexport) */
-/*  #define call_conv __stdcall */
-/*  #elif defined(XSB_DLL_C) */
-/*  #define DllExport _declspec(dllexport) */
-/*  #define call_conv __cdecl */
-/*  #else */
-/*  #define DllExport */
-/*  #define call_conv */
-/*  #endif */
 
 #include "export.h"
 

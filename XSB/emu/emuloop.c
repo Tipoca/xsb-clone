@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.24 1999-05-24 16:00:57 luis Exp $
+** $Id: emuloop.c,v 1.25 1999-05-25 13:32:02 luis Exp $
 ** 
 */
 
@@ -63,6 +63,7 @@
 #include "tr_utils.h"
 #include "cut.h"
 #include "export.h"
+#include "self_orientation.h"
 
 CPtr	VarPosReg;
 /*
