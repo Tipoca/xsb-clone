@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.19 2004-09-28 17:24:41 tswift Exp $
+** $Id: odbc_call.H,v 1.20 2004-09-29 21:56:17 dwarren Exp $
 **
 */
 
@@ -64,7 +64,7 @@
 
 :- import writeln/1, write/1 , '=..'/2, atomic/1, atom_codes/2,
         atom/1, number_codes/2, name/2, number/1, integer/1, nl/0,
-	'\='/2, functor/3, abort/1, structure/1
+	'\='/2, functor/3, abort/1, structure/1, throw/1
 	from standard.
 
 :- import findall/3, setof/3, bagof/3
