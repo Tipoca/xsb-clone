@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.14 2001-04-27 04:56:13 kifer Exp $
+** $Id: flrshell.H,v 1.15 2001-06-04 06:52:41 kifer Exp $
 **
 */
 
@@ -86,7 +86,8 @@
    from flrprint.
 
 :- import
-	maxerr/1,
+	flMaxerr/1,
+	flHalt/0,
 	flP2H/2,
 	flCompileInclude/1,
 	flloadtrailer/1,

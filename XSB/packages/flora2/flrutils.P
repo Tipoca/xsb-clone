@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.32 2001-05-04 00:38:24 kifer Exp $
+** $Id: flrutils.P,v 1.33 2001-06-04 06:52:40 kifer Exp $
 **
 */
 
@@ -1131,11 +1131,11 @@ flora_list2conjunct([G|L],Goal) :-
 
 
 /*************************************************************************
-  maxerr(+Num)
+  flMaxerr(+Num)
 *************************************************************************/
-:- maxerr(8).
+:- flMaxerr(8).
 
-maxerr(X) :-
+flMaxerr(X) :-
 	( var(X) ->
 	    flora_maxerr(X)
 
@@ -1148,3 +1148,7 @@ maxerr(X) :-
 	).
 
 flP2H(PrologTerm,HiLogTerm) :- plg2hlg(PrologTerm,HiLogTerm,WRAP_HILOG).
+
+
+flHalt :- halt.
+

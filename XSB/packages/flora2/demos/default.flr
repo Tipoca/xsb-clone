@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: default.flr,v 1.5 2001-03-25 05:09:14 gzyang Exp $
+** $Id: default.flr,v 1.6 2001-06-04 06:52:40 kifer Exp $
 ** 
 */
 
@@ -27,8 +27,11 @@
 %%% SOME SIMPLE EXAMPLES SHOWING SEVERAL F-LOGIC FEATURES 
 %%% ===========================================================================
 
-:- flProlog tc/2.
-:- table tc/2.
+:- flPredicate tc/2.
+:- flTable tc/2.
+%% Could also leave tc/2 as HiLog predicate and added the 
+%% :- flHilogTable 2.
+%% directive
 
 
 times_flies_like_an_arrow.		% a 0-ary PREDICATE (proposition)
