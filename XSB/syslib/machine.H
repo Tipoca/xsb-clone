@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.31 1999/08/30 16:40:54 kostis Exp $
+** $Id: machine.H,v 1.32 1999/10/08 07:30:27 kifer Exp $
 ** 
 */
 
@@ -133,7 +133,11 @@
 	'$$findall_init'/2,
 	'$$findall_add'/3,
 	'$$findall_get_solutions'/4,
-	socket_request/7.
+	socket_request/7,
+	put_attributes/2,
+	get_attributes/3,
+	delete_attributes/1,
+	attv_unify/2.
 
 :- export 
 	file_function/7, conname/2, conpsc/2, machine_file_exists/1,

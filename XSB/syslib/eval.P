@@ -18,10 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: eval.P,v 1.2 1998/11/15 06:09:14 kifer Exp $
+** $Id: eval.P,v 1.3 1999/08/18 16:46:01 warren Exp $
 ** 
 */
 
+:- compiler_options([xpp_on]).
+
+#include "celltags.h"
 
 %-------------------------------------------------------------------------
 % NOTE:	Predicate eval/2 is the one who is responsible for error checking
@@ -39,11 +42,12 @@
 
 eval(Arg, Res) :- 
 	term_type(Arg, T), 
-	( T =:= 0 -> abort('Unbound variable in arithmetic expression')
-	; T =:= 2 -> Res=Arg
-	; T =:= 6 -> Res=Arg
+	( (T =:= FREE; T =:= ATTV) ->
+	    abort('Unbound variable in arithmetic expression')
+	; T =:= INT -> Res=Arg
+	; T =:= FLOAT -> Res=Arg
 	; eval0(Arg, Res) -> true	/* system defined function */
-	; T =:= 1 -> eval1(Arg, Res)	/* user defined function */
+	; T =:= CS -> eval1(Arg, Res)	/* user defined function */
 	).
 
 eval0('+'(X,Y), Res) :- eval(X, Res1), eval(Y, Res2), Res is Res1 + Res2.

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.35 1999/09/06 17:32:56 kifer Exp $
+** $Id: machine.P,v 1.36 1999/10/08 07:30:29 kifer Exp $
 ** 
 */
 
@@ -213,6 +213,11 @@ gc_heap :- gc_heap.
 
 socket_request(_ReqNumber,_Domain,_Sockfd,_Port,_Hostname,_Sockfptr,_Error) :-
 	'_$builtin'(SOCKET_REQUEST).
+
+put_attributes(_Var, _VNew) :- '_$builtin'(PUT_ATTRIBUTES).
+get_attributes(_Var, _V, _OldMask) :- '_$builtin'(GET_ATTRIBUTES).
+delete_attributes(_Var) :- '_$builtin'(DELETE_ATTRIBUTES).
+attv_unify(_Var, _Value) :- '_$builtin'(ATTV_UNIFY).
 
 /*======================================================================*/
 
