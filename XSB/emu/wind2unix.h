@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wind2unix.h,v 1.1 2000-05-20 06:56:15 kifer Exp $
+** $Id: wind2unix.h,v 1.2 2001-03-27 04:58:56 kifer Exp $
 ** 
 */
 
@@ -26,6 +26,20 @@
 /* This stuff isn't defined in NT */
 #ifndef S_ISDIR
 #define S_ISDIR(mode) ((mode & S_IFMT) == S_IFDIR)
+#endif
+#ifndef S_ISREG
+#define S_ISREG(mode) ((mode & S_IFMT) == S_IFREG)
+#endif
+
+#ifndef R_OK
+#define R_OK 4
+#endif
+#ifndef W_OK
+#define W_OK 2
+#endif
+/* On NT this just tests for existence rather than execution */
+#ifndef X_OK
+#define X_OK 0
 #endif
 
 #ifdef WIN_NT
@@ -39,6 +53,7 @@
 #define fileno     _fileno
 #define unlink     _unlink
 #define strcasecmp _stricmp
+#define access     _access
 #endif
 
 /* The separator used between pathnames in PATH environment */
