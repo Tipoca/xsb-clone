@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.111 2000-12-04 17:10:42 ejohnson Exp $
+** $Id: builtin.c,v 1.112 2000-12-06 13:39:47 dwarren Exp $
 ** 
 */
 
@@ -247,6 +247,7 @@ void constructString(Cell addr, int ivstr)
   int val;
   static char *charstr = "x";
 
+ constructStringBegin:
   XSB_Deref(addr);
   switch (cell_tag(addr)) {
   case XSB_FREE:
@@ -257,13 +258,13 @@ void constructString(Cell addr, int ivstr)
   case XSB_STRUCT:  
     if (get_str_psc(addr) == comma_psc) {
       constructString(cell(clref_val(addr)+1),ivstr);
-      constructString(cell(clref_val(addr)+2),ivstr);
-      return;
+      addr = cell(clref_val(addr)+2);  /* tail recursion opt */
+      goto constructStringBegin;
     } else xsb_abort("PTOC_LONGSTRING: Argument of unknown type");
   case XSB_LIST:
     constructString(cell(clref_val(addr)),ivstr);
-    constructString(cell(clref_val(addr)+1),ivstr);
-    return;
+    addr = cell(clref_val(addr)+1);  /* tail recursion opt */
+    goto constructStringBegin;
   case XSB_INT: 
     val = int_val(addr);
     if (val < 256 && val >= 0) {
