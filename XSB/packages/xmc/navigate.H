@@ -18,10 +18,10 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: navigate.H,v 1.2 2001-07-01 21:52:54 gmkp Exp $
+** $Id: navigate.H,v 1.3 2001-07-03 22:32:16 gmkp Exp $
 ** 
 */
 
 :- import member/2 from basics.
 :- import close_open_tables/0 from machine.
-
+:- import trie_interned/3 from intern.
