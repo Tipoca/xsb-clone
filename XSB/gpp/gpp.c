@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.27 2002-04-02 06:31:47 kifer Exp $
+** $Id: gpp.c,v 1.28 2002-05-04 20:04:05 kifer Exp $
 ** 
 */
 
@@ -44,7 +44,7 @@
 
 #define STACKDEPTH 50
 #define MAXARGS 100
-#define MAXINCL 10   /* max # of include dirs */
+#define MAXINCL 14   /* max # of include dirs */
 
 #define MAX_GPP_NUM_SIZE 15
 
