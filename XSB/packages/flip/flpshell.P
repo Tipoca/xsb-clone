@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flpshell.P,v 1.13 1998-12-04 21:18:45 kifer Exp $
+** $Id: flpshell.P,v 1.14 1999-02-03 18:18:36 kifer Exp $
 ** 
 */
 
@@ -138,10 +138,12 @@ gen_code(Module, Force) :-
 	open_output(InFileL),
 	package_configuration(dir(flip), FlipDir),
 	slash(Slash),
+	%% prepend tabling directives
 	fmt_write_string(Header,
 			 '%s%slib%sflpheader.P', f(FlipDir,Slash,Slash)),
 	copy_to_output(Header),
 	comp_all,
+	%% append the closure rules for ISA, inheritance, Functional methods
 	fmt_write_string(Trailer,
 			 '%s%slib%sflptrailer.P', f(FlipDir,Slash,Slash)),
 	copy_to_output(Trailer),
