@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.7 2000/05/25 00:32:04 ejohnson Exp $
+** $Id: trace_xsb.c,v 1.8 2000/05/29 04:23:40 ejohnson Exp $
 ** 
 */
 
@@ -131,9 +131,9 @@ void total_stat(double elapstime) {
 
   tbtn = node_statistics(&smTableBTN);
   tbtht = hash_statistics(&smTableBTHT);
-  varsf = node_statistics(&smVarSF);
-  prodsf = node_statistics(&smProdSF);
-  conssf = node_statistics(&smConsSF);
+  varsf = subgoal_statistics(&smVarSF);
+  prodsf = subgoal_statistics(&smProdSF);
+  conssf = subgoal_statistics(&smConsSF);
   aln = node_statistics(&smALN);
   tstn = node_statistics(&smTSTN);
   tstht = hash_statistics(&smTSTHT);

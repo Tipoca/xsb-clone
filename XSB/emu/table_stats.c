@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.12 2000-05-29 04:23:38 ejohnson Exp $
+** $Id: table_stats.c,v 1.13 2000-05-30 14:11:08 ejohnson Exp $
 ** 
 */
 
@@ -127,6 +127,56 @@ HashStats hash_statistics(Structure_Manager *sm) {
   return ht_stats;
 }
 
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+NodeStats subgoal_statistics(Structure_Manager *sm) {
+
+  NodeStats sg_stats;
+  TIFptr tif;
+  VariantSF pProdSF;
+  SubConsSF pConsSF;
+  int nSubgoals;
+
+
+  sg_stats = node_statistics(sm);
+  nSubgoals = 0;
+  if ( sm == &smVarSF ) {
+    for ( tif = tif_list.first;  IsNonNULL(tif);  tif = TIF_NextTIF(tif) )
+      if ( IsVariantPredicate(tif) )
+	for ( pProdSF = TIF_Subgoals(tif);  IsNonNULL(pProdSF);
+	      pProdSF = subg_next_subgoal(pProdSF) )
+	  nSubgoals++;
+  }
+  else if ( sm == &smProdSF ) {
+    for ( tif = tif_list.first;  IsNonNULL(tif);  tif = TIF_NextTIF(tif) )
+      if ( IsSubsumptivePredicate(tif) )
+	for ( pProdSF = TIF_Subgoals(tif);  IsNonNULL(pProdSF);
+	      pProdSF = subg_next_subgoal(pProdSF) )
+	  nSubgoals++;
+  }
+  else if ( sm == &smConsSF ) {
+    for ( tif = tif_list.first;  IsNonNULL(tif);  tif = TIF_NextTIF(tif) )
+      if ( IsSubsumptivePredicate(tif) )
+	for ( pProdSF = TIF_Subgoals(tif);  IsNonNULL(pProdSF);
+	      pProdSF = subg_next_subgoal(pProdSF) )
+	  for ( pConsSF = subg_consumers(pProdSF);  IsNonNULL(pConsSF); 
+		pConsSF = conssf_consumers(pConsSF) )
+	    nSubgoals++;
+  }
+  else {
+    xsb_dbgmsg("Incorrect use of subgoal_statistics()\n"
+	       "SM does not contain subgoal frames");
+    return sg_stats;
+  }
+
+  if ( NodeStats_NumUsedNodes(sg_stats) != nSubgoals )
+    xsb_warn("Inconsistent Subgoal Frame Usage Calculations:\n"
+	     "\tSubgoal Frame count mismatch");
+
+  return sg_stats;
+}
+
 /*-------------------------------------------------------------------------*/
 
 /*
@@ -152,9 +202,9 @@ void print_detailed_tablespace_stats() {
 
   btn = node_statistics(&smTableBTN);
   btht = hash_statistics(&smTableBTHT);
-  varsf = node_statistics(&smVarSF);
-  prodsf = node_statistics(&smProdSF);
-  conssf = node_statistics(&smConsSF);
+  varsf = subgoal_statistics(&smVarSF);
+  prodsf = subgoal_statistics(&smProdSF);
+  conssf = subgoal_statistics(&smConsSF);
   aln = node_statistics(&smALN);
   tstn = node_statistics(&smTSTN);
   tstht = hash_statistics(&smTSTHT);
@@ -337,9 +387,9 @@ void compute_maximum_tablespace_stats() {
 
   btn = node_statistics(&smTableBTN);
   btht = hash_statistics(&smTableBTHT);
-  varsf = node_statistics(&smVarSF);
-  prodsf = node_statistics(&smProdSF);
-  conssf = node_statistics(&smConsSF);
+  varsf = subgoal_statistics(&smVarSF);
+  prodsf = subgoal_statistics(&smProdSF);
+  conssf = subgoal_statistics(&smConsSF);
   tstn = node_statistics(&smTSTN);
   tstht = hash_statistics(&smTSTHT);
   tsi = node_statistics(&smTSIN);

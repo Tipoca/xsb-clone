@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.h,v 1.5 2000-05-29 04:23:38 ejohnson Exp $
+** $Id: table_stats.h,v 1.6 2000-05-30 14:11:08 ejohnson Exp $
 ** 
 */
 
@@ -111,6 +111,7 @@ typedef struct {
 
 /* Collection Routines
    ------------------- */
+NodeStats subgoal_statistics(Structure_Manager *);
 NodeStats node_statistics(Structure_Manager *);
 HashStats hash_statistics(Structure_Manager *);
 
