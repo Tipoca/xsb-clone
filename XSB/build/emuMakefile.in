@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.6 1998-12-21 01:05:56 cbaoqiu Exp $
+## $Id: emuMakefile.in,v 1.7 1999-01-27 13:46:58 unova Exp $
 ## 
 
 
@@ -79,7 +79,7 @@ DEPENDFLAGS = -m
 
 
 SRCS =	auxlry.c biassert.c builtin.c \
-	chat.c cinterf.c cutils.c debug.c \
+	chat.c cinterf.c debug.c \
 	dis.c  dynload.c emuloop.c \
 	findall.c function.c hash.c \
 	heap.c  init.c  inst.c \
@@ -96,7 +96,7 @@ ORASRCS = $(SRCS) orastuff.c
 
 
 OBJS = auxlry.o biassert.o builtin.o \
-	chat.o cinterf.o cutils.o debug.o \
+	chat.o cinterf.o debug.o \
 	dis.o dynload.o emuloop.o \
 	findall.o  function.o  hash.o \
 	heap.o  init.o  inst.o \
