@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.12 2001-04-28 20:15:36 ejohnson Exp $
+** $Id: bineg_xsb_i.h,v 1.13 2001-06-22 21:07:23 tswift Exp $
 ** 
 */
 
@@ -208,6 +208,10 @@ case IS_INCOMPLETE: {
 	  new_heap_free(hreg);
 	  new_heap_free(hreg);
 	  de = dl_de_list(dl);
+#ifdef DEBUG_DELAY
+	  fprintf(stderr, "orig_delayed_term(");
+	  print_subgoal(stderr, de_subgoal(de)); fprintf(stderr, ").\n");
+#endif
 	  /*
 	   * This answer may have more than one delay list.  We have to
 	   * restore copy_of_num_heap_term_vars for each of them.  But,
