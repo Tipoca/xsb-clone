@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.165 2005-02-06 02:15:05 tswift Exp $
+## $Id: configure.in,v 1.166 2005-02-06 18:39:30 tswift Exp $
 ## 
 ##
 
@@ -1243,7 +1243,7 @@ case "$canonical" in
 		;;
      *linux*) AC_DEFINE(LINUX)
 	      AC_DEFINE(_GNU_SOURCE)
-	      if test $((`uname -r | cut -d "." -f "1 2"`)) == 2.6; then
+	      if test "`uname -r | cut -d "." -f "1 2"`" = "2.6"; then
 		echo "Guessing the tagging for this version of Linux"
 		AC_DEFINE(GUESS_TAGGING)
 	      fi
