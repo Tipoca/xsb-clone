@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.H,v 1.6 1999-11-20 06:50:46 kifer Exp $
+** $Id: auxlry.H,v 1.7 2000-01-19 19:33:41 cbaoqiu Exp $
 ** 
 */
 
@@ -32,6 +32,7 @@
 :- import numbervars/3 from num_vars.
 :- import 'error occurred'/0 from compile.
 :- import current_compiled_module/1 from compile.
+:- import load_dyn_module/1 from consult.
 :- import conget/2, conset/2 from gensym.
 :- import member/2 from basics.
 :- import ttywritenl/2, cputime/1, arg/3, functor/3, atomic/1,
