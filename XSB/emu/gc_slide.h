@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_slide.h,v 1.1 2001-12-13 21:13:35 lfcastro Exp $
+** $Id: gc_slide.h,v 1.2 2002-01-28 16:47:56 lfcastro Exp $
 ** 
 */
 
@@ -291,7 +291,9 @@ static void sort_buffer(unsigned long *indata, unsigned long insize)
   unsigned long size_stack[4000];
   int stack_index=0;
   int leftsize;
+#ifdef GC_PROFILE
   unsigned long begin_sorting, end_sorting;
+#endif
   
   randomize_data(indata,insize);
 

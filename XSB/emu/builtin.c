@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.136 2002-01-23 17:08:08 dwarren Exp $
+** $Id: builtin.c,v 1.137 2002-01-28 16:47:55 lfcastro Exp $
 ** 
 */
 
@@ -2099,7 +2099,7 @@ int builtin_call(byte number)
   case PRINT_HEAP: print_heap(0,2000,1) ; return TRUE ;
   case PRINT_CP: print_cp(1) ; return TRUE ;
   case PRINT_REGS: print_regs(10,1) ; return TRUE ;
-  case PRINT_ALL_STACKS: print_all_stacks() ; return TRUE ;
+  case PRINT_ALL_STACKS: print_all_stacks(10) ; return TRUE ;
   case EXP_HEAP: glstack_realloc(glstack.size + 1,0) ; return TRUE ;
   case MARK_HEAP: {
     int tmpval;

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.19 2001/10/01 19:48:29 lfcastro Exp $
+** $Id: slginsts_xsb_i.h,v 1.20 2001/12/13 21:13:35 lfcastro Exp $
 ** 
 */
 
@@ -730,7 +730,8 @@ XSB_Start_Instr(resume_compl_suspension,_resume_compl_suspension)
 }
 #else
 {
-  if (csf_pcreg(breg) == &resume_compl_suspension_inst) {
+  if ((unsigned long) csf_pcreg(breg) == 
+      (unsigned long) &resume_compl_suspension_inst) {
     CPtr csf = breg;
     
     /* Switches the environment to a frame of a subgoal that was	*/

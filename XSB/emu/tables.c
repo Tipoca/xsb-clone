@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.24 2001-12-13 21:13:35 lfcastro Exp $
+** $Id: tables.c,v 1.25 2002-01-28 16:47:56 lfcastro Exp $
 ** 
 */
 
@@ -120,17 +120,15 @@ void table_call_search(TabledCallInfo *call_info,
     variant_call_search(call_info,results);
   else
     subsumptive_call_search(call_info,results);
-/* #ifdef CHAT */
-/*   if (IsNULL(CallLUR_Subsumer(*results))) */
-/* #endif */
   {
     /*
-     * A New Producer: Move answer template from CPS to Heap.  The
+     * Move answer template from CPS to Heap.  The
      * arrangement of this vector is similar to that in the CPS: the
      * size of the vector is now at the high end, but the components
      * are still arranged from high mem (first) to low (last).
      */
-    CPtr tmplt_component, tmplt_var_addr, h_addr, dummy;
+    CPtr tmplt_component, tmplt_var_addr, h_addr;
+    byte *dummy;
     int size, j;
 
     tmplt_component = CallLUR_VarVector(*results);

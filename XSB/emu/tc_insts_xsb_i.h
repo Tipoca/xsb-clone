@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.12 2001-12-13 21:13:35 lfcastro Exp $
+** $Id: tc_insts_xsb_i.h,v 1.13 2002-01-28 16:47:56 lfcastro Exp $
 ** 
 */
 
@@ -342,7 +342,37 @@ XSB_Start_Instr(trie_no_cp_val,_trie_no_cp_val)
   xsb_dbgmsg("trie_no_cp_val");
 #endif
   NodePtr = (BTNptr) lpcreg;
-  unify_with_trie_val;
+{
+  Cell cell2deref;							
+  XSB_Deref(*reg_arrayptr);    						
+  if (isref(*reg_arrayptr)) {						
+    cell2deref = (Cell)var_regs[(int)int_val(opatom)];			
+    XSB_Deref(cell2deref);	       					
+    if (cell2deref != *reg_arrayptr)					
+      bind_ref((CPtr) *reg_arrayptr, cell2deref);			
+  }									
+  else if (isattv(*reg_arrayptr)) {					
+    cell2deref = (Cell) var_regs[(int)int_val(opatom)];			
+    XSB_Deref(cell2deref);     						
+    if (*reg_arrayptr != cell2deref) {					
+      /* Do not trigger attv interrupt! */				
+      bind_ref(clref_val(*reg_arrayptr), cell2deref);			
+    }									
+    else {								
+      attv_dbgmsg(">>>> keep old attr in unify_with_trie_val\n");	
+    }									
+  }									
+  else {								
+    op1 = (Cell)*reg_arrayptr;						
+    op2 = (Cell) var_regs[(int)int_val(opatom)];			
+    if (unify(op1,op2) == FALSE) {					
+      Fail1;								
+      XSB_Next_Instr();							
+    }									
+  }									
+  reg_arrayptr--;							
+}
+/*   unify_with_trie_val; */
   next_lpcreg;
 XSB_End_Instr()
 

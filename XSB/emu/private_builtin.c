@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: private_builtin.c,v 1.8 2000/04/29 21:53:56 kifer Exp $
+** $Id: private_builtin.c,v 1.9 2000/05/20 06:56:05 kifer Exp $
 ** 
 */
 
@@ -88,7 +88,7 @@ xsbBool private_builtin(void)
   case PRINT_HEAP: print_heap(0,2000,1) ; return TRUE ;
   case PRINT_CP: print_cp(1) ; return TRUE ;
   case PRINT_REGS: print_regs(10,1) ; return TRUE ;
-  case PRINT_ALL_STACKS: print_all_stacks() ; return TRUE ;
+  case PRINT_ALL_STACKS: print_all_stacks(10) ; return TRUE ;
   case EXP_HEAP: glstack_realloc(glstack.size + 1,0) ; return TRUE ;
   case MARK_HEAP: mark_heap(ptoc_int(2),&tmpval) ; return TRUE ;
   case GC_HEAP: return(gc_heap(0)) ;

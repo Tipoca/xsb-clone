@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.1 2001-12-13 21:13:35 lfcastro Exp $
+** $Id: gc_mark.h,v 1.2 2002-01-28 16:47:55 lfcastro Exp $
 ** 
 */
 
@@ -536,7 +536,7 @@ inline static unsigned long mark_trail_section(CPtr begintr, CPtr endtr)
 #endif
 
       /* stop if we're not going anywhere */
-      if (a == *a)
+      if ((unsigned long) a == (unsigned long) *a)
 	break;
 
       /* jump to previous cell */
@@ -1042,7 +1042,7 @@ int mark_heap(int arity, int *marked_dregs)
   
   stack_boundaries ;
   
-  if (print_on_gc) print_all_stacks();
+  if (print_on_gc) print_all_stacks(arity);
   
   if (slide) {
 #ifdef CHAT
@@ -1149,7 +1149,7 @@ int mark_heap(int arity, int *marked_dregs)
   if (slide)
     marked += mark_hreg_from_choicepoints();
 
-  if (print_on_gc) print_all_stacks();
+  if (print_on_gc) print_all_stacks(arity);
 
   return marked ;
 } /* mark_heap */

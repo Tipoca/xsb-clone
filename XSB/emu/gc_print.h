@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_print.h,v 1.2 2001-12-17 17:26:26 lfcastro Exp $
+** $Id: gc_print.h,v 1.3 2002-01-28 16:47:55 lfcastro Exp $
 ** 
 */
 
@@ -417,10 +417,10 @@ void print_chat(int add)
 #endif
 } /* print_chat */
 
-void print_all_stacks(void)
+void print_all_stacks(int arity)
 {
     printnum++ ;
-    print_regs(10,0) ;
+    print_regs(arity,0) ;
     print_heap(0,200000,0) ;
     print_ls(0) ;
     print_tr(0) ;

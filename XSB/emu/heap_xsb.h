@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.h,v 1.5 2001-01-26 23:56:09 lfcastro Exp $
+** $Id: heap_xsb.h,v 1.6 2002-01-28 16:47:56 lfcastro Exp $
 ** 
 */
 
@@ -60,7 +60,7 @@ extern void print_cp(int);
 extern void print_tr(int);
 extern void print_ls(int);
 extern void print_chat(int);
-extern void print_all_stacks(void);
+extern void print_all_stacks(int);
 extern void print_regs(int,int);
 extern void print_heap(int,int,int);
 extern void print_gc_statistics(void);
