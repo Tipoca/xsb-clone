@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.H,v 1.16 2004/08/24 16:26:28 tswift Exp $
+** $Id: curr_sym.H,v 1.17 2004/09/30 21:08:20 tswift Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 
 :- export current_input_port/1, current_output_port/1.
 
+:- import set_file_write_depth/1, get_file_write_depth/1 from xsb_writ.
 :- import '_$op'/3, '_$trie_asserted'/1, '_$index'/3 from file_op.
 :- import '_$hilog_symbol'/1 from hilogsym.
 :- import libpath/1 from loader.
