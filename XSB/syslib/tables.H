@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.1.1.1 1998/11/05 16:59:59 sbprolog Exp $
+** $Id: tables.H,v 1.3 1998/12/21 01:10:10 cbaoqiu Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 	  delete_return/2,
 	  get_call/3, get_calls/3, get_returns/2, get_returns/3,
 	  get_residual/2,
-	  get_lastnode_and_retskel/3, /* because it is used in intern.P */
+	  get_lastnode_cs_retskel/3, /* because it is used in intern.P */
 	  breg_retskel/4.
 
 :- export is_trie_asserted/1, (trie_dynamic)/1, trie_assert/1, trie_assert/2,
