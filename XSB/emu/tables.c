@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.2 1999-10-15 02:54:15 cbaoqiu Exp $
+** $Id: tables.c,v 1.3 1999-10-15 17:32:52 cbaoqiu Exp $
 ** 
 */
 
@@ -117,8 +117,8 @@ void table_call_search(TabledCallInfo *call_info, CallLookupResults *results) {
  * Template is a pointer to the first term in the vector, with the
  * elements arranged from high to low memory.
  */
-BTNptr table_answer_search(SGFrame producer, int size, CPtr template,
-			   bool *is_new) {
+BTNptr table_answer_search(SGFrame producer, int size, int attv_num,
+			   CPtr template, bool *is_new) {
 
   BTNptr answer;
 
@@ -147,7 +147,7 @@ BTNptr table_answer_search(SGFrame producer, int size, CPtr template,
     ans_var_pos_reg = hreg++;	/* Leave a cell for functor ret/n */
 #endif /* IGNORE_DELAYVAR */
 
-    answer = variant_answer_search(size,template,producer,&wasFound);
+    answer = variant_answer_search(size,template,attv_num,producer,&wasFound);
 
 #ifdef DEBUG_DELAYVAR
 #ifndef IGNORE_DELAYVAR
