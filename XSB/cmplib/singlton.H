@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: singlton.H,v 1.9 2003-11-29 03:07:48 tswift Exp $
+** $Id: singlton.H,v 1.10 2003-12-10 14:26:15 dwarren Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 :- import numbervars_cmplib/3 from auxlry.
 :- import option/1 from auxlry.
 :- import ll_arg/3 from auxlry.
-:- import append/3 from basics.
+:- import append/3, copy_term/2 from basics.
 :- import atom_codes/2, functor/3, hilog_functor/3, atomic/1, integer/1,
 	  arg/3, '=..'/2
      from standard.
