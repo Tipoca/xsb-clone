@@ -1,0 +1,6 @@
+tst1: (_$_$_flora'usermod'foo'd_fd(a,b,c)  ','  _$_$_flora'usermod'foo'd_meth(c,e))
+tst1: (_$_$_flora'usermod'foo'd_fd(a,b,c)  ','  _$_$_flora'usermod'foo'd_meth(c,e))
+tst2: [(_$_$_flora'usermod'main'mvd(alice,likes,flora)  ','  _$_$_flora'usermod'main'isa(flora,cool)),_$_$_flora'usermod'main'mvd(sally,likes,_$_$_flora'usermod'main'isa(flora,cool))]
+tst2: [(_$_$_flora'usermod'main'mvd(alice,likes,flora)  ','  _$_$_flora'usermod'main'isa(flora,cool)),_$_$_flora'usermod'main'mvd(sally,likes,_$_$_flora'usermod'main'isa(flora,cool))]
+tst3: (_$_$_flora'usermod'bar'd_isa(b,a)  ','  _$_$_flora'usermod'bar'd_fd(b,b,c))
+tst3: (_$_$_flora'usermod'bar'd_isa(b,a)  ','  _$_$_flora'usermod'bar'd_fd(b,b,c))

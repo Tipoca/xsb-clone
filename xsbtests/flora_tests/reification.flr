@@ -1,0 +1,16 @@
+
+tom[believes->> ~alice[likes->>flora:cool]].
+tom[believes->> ~sally[likes->> ~flora:cool]].
+tst1 :- X = ~a[b->c[e]]@foo, write('tst1: ')@prolog(), writeln(X)@prolog().
+tst2 :- X = collectset{B| tom[believes->>B]},
+	write('tst2: ')@prolog(), writeln(X)@prolog().
+tst3 :- X = ~b:a[b->c]@bar, write('tst3: ')@prolog(), writeln(X)@prolog().
+
+pretest :- tst1, tst2, tst3.
+
+test :- tell(temp)@prolog(),
+	debug[#check_undefined(on)]@flora(sys),
+	pretest,
+	debug[#check_undefined(off)]@flora(sys),
+	pretest,
+	told@prolog().
