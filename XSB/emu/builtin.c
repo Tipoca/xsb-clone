@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.179 2004-07-07 22:08:12 dwarren Exp $
+** $Id: builtin.c,v 1.180 2004-07-10 21:04:28 dwarren Exp $
 ** 
 */
 
@@ -1218,12 +1218,15 @@ int builtin_call(byte number)
     /* used in file_read.P, array.P, array1.P */
     int  disp = ptoc_int(2);
     Cell term = ptoc_tag(1);
-    if (ptoc_int(4) == 0) {
-      pushtrail(clref_val(term)+disp,cell(reg+3));
-    } else if (ptoc_int(4) < 0) {
-      push_pre_image_trail(clref_val(term)+disp, cell(reg+3));
+    CPtr arg_loc = clref_val(term)+disp;
+    Cell new_val = cell(reg+3);
+    int perm_flag = ptoc_int(4);
+    if (perm_flag == 0) {
+      pushtrail(arg_loc,new_val);
+    } else if (perm_flag < 0) {
+      push_pre_image_trail(arg_loc,new_val);
     }
-    bld_copy(clref_val(term)+disp, cell(reg+3));
+    bld_copy(arg_loc, new_val);
     break;
   }
   case STAT_FLAG:	/* R1: flagname(+int); R2: value(-int) */
