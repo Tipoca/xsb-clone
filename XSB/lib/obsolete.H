@@ -18,16 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: obsolete.H,v 1.2 1999-03-30 16:25:23 kifer Exp $
+** $Id: obsolete.H,v 1.3 1999-08-09 00:34:31 kifer Exp $
 ** 
 */
 
 
-:- import fmt_read/3
-   from file_io.
+:- import fmt_write/3 from file_io.
 
-
-:- import fmt_write/2, file_nl/1
-   from file_io.
-
-:- export fmt_read/4.
+:- export obsolete/2.

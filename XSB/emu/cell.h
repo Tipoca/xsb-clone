@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell.h,v 1.5 1999-07-06 16:35:06 ejohnson Exp $
+** $Id: cell.h,v 1.6 1999-08-09 00:34:15 kifer Exp $
 ** 
 */
 
@@ -68,15 +68,7 @@
 
 /* ==== types of cells =================================================*/
 
-#define FREE	0x0	/* Free variable */
-#define REF	0x0	/* Reference */
-#define CS	0x1	/* Structure */
-#define INT     0x2	/* integer */
-#define LIST	0x3	/* List */
-#define REF1	0x4	/* REF */
-#define STRING  0x5	/* Non-Numeric Constant (Atom) */
-#define FLOAT	0x6	/* Floating point number */
-         /* Tag 0x7 is unused */
+#include "celltags.h"
 
 #define TrieVar 0x0
 

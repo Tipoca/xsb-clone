@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.H,v 1.1.1.1 1998/11/05 16:59:47 sbprolog Exp $
+** $Id: curr_sym.H,v 1.2 1999/04/10 13:56:07 kostis Exp $
 ** 
 */
 
@@ -41,10 +41,13 @@
 :- import psc_name/2, psc_arity/2, psc_prop/2, psc_type/2, term_psc/2,
 	  term_type/2, stat_flag/2, machine_file_exists/1, getenv/2, 
 	  psc_env/2, psc_spy/2, psc_tabled/2, dereference_the_bucket/2,
-	  pair_psc/2, pair_next/2, next_bucket/2, conpsc/2, conname/2,
-	  str_cat/3, is_pcdos/0, intern_string/2
+	  pair_psc/2, pair_next/2, next_bucket/2, conpsc/2,
+	  str_cat/3, intern_string/2
      from machine.
-:- import xsb_configuration/2 from configuration.
+:- import xsb_configuration/2 from xsb_configuration.
+
+%% don't support dos any more
+%%:- import dos_os/2 from xsb_configuration.
 
 
-/* ----------------- end of file current_symbols.H -------------------- */
+/* ----------------- end of file current_sym.H -------------------- */

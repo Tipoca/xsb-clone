@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.33 1999-08-04 16:22:50 kifer Exp $
+** $Id: emuloop.c,v 1.34 1999-08-09 00:34:19 kifer Exp $
 ** 
 */
 
@@ -136,6 +136,8 @@ CPtr	ans_var_pos_reg;
 /*----------------------------------------------------------------------*/
 
 extern int  builtin_call(int), unifunc_call(int, CPtr);
+extern Cell builtin_table[BUILTIN_TBL_SZ][2];
+
 
 #ifdef DEBUG
 extern void debug_inst(byte *, CPtr);

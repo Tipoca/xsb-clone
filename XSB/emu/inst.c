@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.c,v 1.12 1999-07-13 10:11:06 unova Exp $
+** $Id: inst.c,v 1.13 1999-08-09 00:34:23 kifer Exp $
 ** 
 */
 
@@ -30,8 +30,9 @@
 #include "auxlry.h"
 #include "cell.h"
 #include "inst.h"
-#include "builtin.h"
 #include "subinst.h"
+
+extern void init_builtin_table(void);
 
 Cell subinst_table[BUILTIN_TBL_SZ][2];
 

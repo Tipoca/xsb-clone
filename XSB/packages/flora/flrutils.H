@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.3 1999-08-01 07:41:18 kifer Exp $
+** $Id: flrutils.H,v 1.4 1999-08-09 00:34:43 kifer Exp $
 **
 */
 
@@ -50,15 +50,13 @@
 
 :- import fmt_write_string/3, file_time/2 from file_io.
 
-%%:- import unix/1 from unix.
-
 :- import read_tokens/2 from flrtokens.
 
 :- import rule/3 from flrparser.
 
 :- import set_load_mode/1, compile_flogic/3 from flrcompiler.
 
-:- import xsb_configuration/2 from configuration.
+:- import xsb_configuration/2 from xsb_configuration.
 
 :- dynamic flora_maxerr(_).
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.5 1999-01-13 12:45:54 kostis Exp $
+** $Id: auxlry.P,v 1.6 1999-08-09 00:33:57 kifer Exp $
 ** 
 */
 
@@ -74,7 +74,12 @@ setoptions1([Opt|Rest]) :-
 	 ->	setopt(Opt1,0)
 	 ;	setopt(Opt,1)
 	),
-	setoptions1(Rest).
+	%% cpp was off and now is on, hence we had compiler_options(cpp_on)
+	%% Restart!
+	(conget(migh_need_restart,1), conget(cpp_on,1)
+	->  conset(needs_restart,1), conset(migh_need_restart,0)
+	;   setoptions1(Rest)
+	).
 
 setopt(Opt,Setting) :-
 	( current_option(Opt) -> conset(Opt, Setting)
@@ -105,6 +110,9 @@ current_option(ti_opt1).
 current_option(db_opt).
 current_option(unfold).
 current_option(reorder).
+
+/* preprocessor */
+current_option(cpp_on).
 
 /* need to test out optimizations -- tls */
 current_option(no_check).

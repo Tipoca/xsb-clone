@@ -1,8 +1,8 @@
-/* File:      packages.H -- Package bootstrapping aid
+/* File:      io_defs.h
 ** Author(s): kifer
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
-** Copyright (C) The Research Foundation of SUNY, 1993-1998
+** Copyright (C) The Research Foundation of SUNY, 1999
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -18,24 +18,31 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: packaging.H,v 1.5 1999-08-09 00:34:34 kifer Exp $
+** $Id: io_defs.h,v 1.1 1999-08-09 00:34:26 kifer Exp $
 ** 
 */
 
 
-:- export bootstrap_package/2, bootstrap_syspackage/2,
-	  bootstrap_sitepackage/2, bootstrap_userpackage/3,
-	  package_configuration/2, unload_package/1.
+/* OP numbers for file_function */
+#define FILE_FLUSH         0
+#define FILE_SEEK          1
+#define FILE_TRUNCATE      2
+#define FILE_POS      	   3
+#define FILE_OPEN      	   4
+#define FILE_CLOSE     	   5
+#define FILE_GET     	   6
+#define FILE_PUT     	   7
+#define FILE_GETBUF    	   8
+#define FILE_PUTBUF    	   9
+#define FILE_READ_LINE 	   10
+#define FILE_WRITE_LINE	   11
 
-:- import (dynamic)/1, assert/1, retract/1
-   from assert.
-
-%% :- import abort/1 from standard.
-
-:- import slash/1, expand_filename/2
-   from machine.
-:- import xsb_configuration/2 from xsb_configuration.
-
-:- import fmt_write_string/3 from file_io.
+/* OP numbers for formatted_io */
+#define FMT_WRITE    	   1
+#define FMT_WRITE_STRING   2
+#define FMT_READ       	   3
 
 
+/* OP numbers for file_stat */
+#define FILE_STAT_TIME	  0
+#define FILE_STAT_SIZE	  1

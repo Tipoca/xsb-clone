@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.H,v 1.3 1999/03/30 16:25:58 kifer Exp $
+** $Id: xsb_writ.H,v 1.4 1999/04/08 18:06:33 kostis Exp $
 ** 
 */
 
@@ -31,8 +31,11 @@
 :- import file_put/2 from file_io.
 :- import integer/1 from standard.
 :- import term_psc/2, psc_arity/2, psc_name/2, term_arg/3, 
-	  term_type/2, file_puttoken/3, file_writequoted/2,
- 	  is_backslashing_os/0
+	  term_type/2, file_puttoken/3, file_writequoted/2
      from machine.
+
+%% We must import this from the loader, because this might be called
+%% for the first time before xsb_configuration configuration is loaded.
+:- import windows_os_loader/0 from loader.
 
 /* ------------------- end of file file_write.H ----------------------- */

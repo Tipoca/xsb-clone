@@ -19,12 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.5 1999/04/08 18:06:09 kostis Exp $
+** $Id: loader.H,v 1.6 1999/04/10 13:56:02 kostis Exp $
 ** 
 */
 
 
-:- export load_pred/1, load/1, libpath/1, set_inthandler/2, '_$load_undef'/1.
+:- export load_pred/1, load/1, libpath/1, set_inthandler/2, '_$load_undef'/1,
+	dos_os_loader/0, windows_os_loader/0.
 
 
 :- import term_type/2, term_psc/2, psc_name/2, psc_arity/2, psc_env/2,
@@ -40,7 +41,7 @@
 :- import standard_symbol/3 from std_xsb.
 :- import reconsult/1 from consult.
 :- import library_directory/1 from usermod.
-:- import xsb_configuration/2 from configuration.
+:- import xsb_configuration/2 from xsb_configuration.
 :- import abort/0 from standard.
 :- import file_put/2 from file_io.
 

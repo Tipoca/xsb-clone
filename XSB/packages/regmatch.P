@@ -18,11 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: regmatch.P,v 1.5 1999-07-27 14:59:14 kifer Exp $
+** $Id: regmatch.P,v 1.6 1999-08-09 00:34:38 kifer Exp $
 ** 
 */
 
-:- import xsb_configuration/2 from configuration.
+:- import xsb_configuration/2 from xsb_configuration.
 :- import bootstrap_package/2 from packaging.
 :- import abort/1 from standard.
 

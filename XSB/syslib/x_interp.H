@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.14 1999/07/27 14:55:32 kifer Exp $
+** $Id: x_interp.H,v 1.15 1999/08/03 19:17:22 kifer Exp $
 ** 
 */
 
@@ -32,7 +32,7 @@
 :- import numbervars/1 from num_vars.
 :- import set_inthandler/2 from loader.
 :- import file_write/2, file_nl/1 from xsb_writ.
-:- import xsb_configuration/2 from configuration.
+:- import xsb_configuration/2 from xsb_configuration.
 :- import file_read/3, vv/2, file_read/2 from xsb_read.
 %% These are explicitly imported because they are used early on, 
 %% before XSB is fully bootstrapped.

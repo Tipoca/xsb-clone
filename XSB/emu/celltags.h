@@ -1,8 +1,8 @@
-/* File:      packages.H -- Package bootstrapping aid
-** Author(s): kifer
+/* File:      celltags.h
+** Author(s): David S. Warren, Jiyang Xu, Terrance Swift
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
-** Copyright (C) The Research Foundation of SUNY, 1993-1998
+** Copyright (C) The Research Foundation of SUNY, 1999
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -18,24 +18,21 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: packaging.H,v 1.5 1999-08-09 00:34:34 kifer Exp $
+** $Id: celltags.h,v 1.1 1999-08-09 00:34:16 kifer Exp $
 ** 
 */
 
 
-:- export bootstrap_package/2, bootstrap_syspackage/2,
-	  bootstrap_sitepackage/2, bootstrap_userpackage/3,
-	  package_configuration/2, unload_package/1.
 
-:- import (dynamic)/1, assert/1, retract/1
-   from assert.
+/* ==== types of cells =================================================*/
 
-%% :- import abort/1 from standard.
-
-:- import slash/1, expand_filename/2
-   from machine.
-:- import xsb_configuration/2 from xsb_configuration.
-
-:- import fmt_write_string/3 from file_io.
-
+#define FREE	0	/* Free variable */
+#define REF	0	/* Reference */
+#define CS	1	/* Structure */
+#define INT     2	/* integer */
+#define LIST	3	/* List */
+#define REF1	4	/* REF */
+#define STRING  5	/* Non-Numeric Constant (Atom) */
+#define FLOAT	6	/* Floating point number */
+/* Tag 7 is unused */
 

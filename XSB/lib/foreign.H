@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.H,v 1.2 1999-08-04 22:26:49 kifer Exp $
+** $Id: foreign.H,v 1.3 1999-08-09 00:34:29 kifer Exp $
 ** 
 */
 
 
 :- export compile_cH/5.
 
-:- import unix/1 from unix.
+:- import shell/1 from shell.
 :- import memberchk/2 from basics.
 :- import write_int/1 from prof_sbp.
 :- import attach/2, length/2 from listutil.
@@ -36,4 +36,4 @@
 :- import read/1, see/1, seen/0, write/1, put/1, tell/1, told/0,
 	  atom/1, file_exists/1, cputime/1, abort/1
      from standard.
-:- import xsb_configuration/2 from configuration.
+:- import xsb_configuration/2 from xsb_configuration.

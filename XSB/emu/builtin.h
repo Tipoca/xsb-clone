@@ -18,15 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.12 1999-08-04 14:41:50 ejohnson Exp $
+** $Id: builtin.h,v 1.13 1999-08-09 00:34:14 kifer Exp $
 ** 
 */
 
 #define BUILTIN_TBL_SZ 256
-
-extern Cell builtin_table[BUILTIN_TBL_SZ][2];
-
-extern void init_builtin_table(void);
 
 /************************************************************************/
 /*	The following is the set of all primitive predicates.		*/

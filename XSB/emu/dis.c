@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.4 1999-08-04 14:41:54 ejohnson Exp $
+** $Id: dis.c,v 1.5 1999-08-09 00:34:17 kifer Exp $
 ** 
 */
 
@@ -44,6 +44,7 @@
 
 /* --------------- The following are working variables ----------------	*/
 
+extern Cell builtin_table[BUILTIN_TBL_SZ][2];
 extern TIFptr get_tip(Psc);
 
 /*static FILE *filedes ;*/

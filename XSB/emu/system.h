@@ -18,12 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system.h,v 1.1 1999-08-03 19:18:50 kifer Exp $
+** $Id: system.h,v 1.2 1999-08-09 00:34:28 kifer Exp $
 ** 
 */
 
-#define PLAIN_SYSTEM_CALL    	 1
-#define SPAWN_PROCESS	         2
+#define PLAIN_SYSTEM_CALL    	 0
+#define SPAWN_PROCESS	         1
+#define SHELL		         2
 #define GET_PROCESS_TABLE    	 3
 #define PROCESS_STATUS    	 4
 #define PROCESS_CONTROL    	 5

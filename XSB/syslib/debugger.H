@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.H,v 1.5 1999/07/02 08:06:26 kifer Exp $
+** $Id: debugger.H,v 1.6 1999/07/04 06:18:21 kifer Exp $
 ** 
 */
 
@@ -60,7 +60,7 @@
 	'_$_deb_print_hidden'/0, '_$_debugger_data_loaded'/0
    from usermod.
 :- import call/1, see/1, seen/0, repeat/0 from standard.
-:- import xsb_configuration/2 from configuration.
+:- import xsb_configuration/2 from xsb_configuration.
 :- import fmt_write_string/3 from file_io.
 :- import assert/1 from assert.
 :- dynamic debug_display_call_hook(_), '_$_debugger_data_loaded'/0.

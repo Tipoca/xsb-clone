@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: default.flr,v 1.5 1999-08-04 16:25:41 kifer Exp $
+** $Id: default.flr,v 1.6 1999-08-09 00:34:44 kifer Exp $
 ** 
 */
 
@@ -91,5 +91,5 @@ person[instances ->> {X}] :- X:person.  % NON-INHERITABLE mvd method of person
 ?- nl, write('mary..kids[] ??'), mary..kids[].
 
 // new
-?- nl, write('On '), unix(date), 
+?- nl, write('On '), shell(date), 
        writeln('FLORA thanks you for giving it a chance!').
