@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_util.h,v 1.5 2000-04-05 02:17:11 kifer Exp $
+** $Id: libwww_util.h,v 1.6 2000-04-05 05:11:18 kifer Exp $
 ** 
 */
 
@@ -159,3 +159,4 @@ void HTXML_newInstance (HTStream *		me,
 void add_result_param(prolog_term *result_param, 
 		      char *functor, int cnt, ...);
 void add_subrequest_error(HTRequest *request, int status);
+int verifyMIMEformat(HTRequest *request, REQUEST_TYPE type);

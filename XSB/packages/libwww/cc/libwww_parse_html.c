@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse_html.c,v 1.6 2000-04-05 02:17:11 kifer Exp $
+** $Id: libwww_parse_html.c,v 1.7 2000-04-05 05:11:18 kifer Exp $
 ** 
 */
 
@@ -94,8 +94,10 @@ PRIVATE void html_endElement (USERDATA *htext, int element_number)
       html_pop_suppressed_element(htext);
 
 #ifdef LIBWWW_DEBUG_VERBOSE
-  if (!STACK_TOP(htext).suppress)
-    print_prolog_term(STACK_TOP(htext).elt_term, "elt_term");
+  if (htext->stackptr >= 0) {
+    if (!STACK_TOP(htext).suppress)
+      print_prolog_term(STACK_TOP(htext).elt_term, "elt_term");
+  }
 #endif
 
   return;
@@ -383,7 +385,11 @@ USERDATA *html_create_userData( HTRequest *             request,
 				HTStream *              output_stream)
 {
   USERDATA *me = NULL;
+
   if (request) {
+    /* make sure that MIME type is appropriate for HTML */
+    if (!verifyMIMEformat(request, HTMLPARSE))
+      return NULL;
     if ((me = (USERDATA *) HT_CALLOC(1, sizeof(USERDATA))) == NULL)
       HT_OUTOFMEM("libwww_parse_html");
     me->delete_method = html_delete_userData;
