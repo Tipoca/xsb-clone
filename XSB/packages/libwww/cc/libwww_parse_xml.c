@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse_xml.c,v 1.5 2000-04-02 23:13:49 kifer Exp $
+** $Id: libwww_parse_xml.c,v 1.6 2000-04-03 05:04:37 kifer Exp $
 ** 
 */
 
@@ -528,10 +528,10 @@ PRIVATE int xml_externalEntityRef (XML_Parser     parser,
   HTChunk   *chunk = NULL;
   char      *cwd = HTGetCurrentDirectoryURL();
 
-  /* make it a blocking request, so that we get the result now */
+  /* make it a blocking request, so that we get the result right away */
   HTRequest_setPreemptive(request, YES);
   /* put the same context on this request */
-  HTRequest_setContext(request, (void *) context);
+  HTRequest_setContext(request, (void *)context);
 
   uri = HTParse((char *)systemId, cwd, PARSE_ALL);
   anchor = HTAnchor_findAddress(uri);
@@ -541,12 +541,18 @@ PRIVATE int xml_externalEntityRef (XML_Parser     parser,
 #endif
 
   HTRequest_setOutputFormat(request, WWW_SOURCE);
-  /* close connection after request is done */
-  HTRequest_addConnection(request, "close", "");
+  /*
+    HTRequest_addConnection(request, "close", "");
+  */
   /* Launch a new subrequest. Since this request is blocking, this will
      execute the request immediately. */
   context->is_subrequest = TRUE;
   chunk = HTLoadAnchorToChunk(anchor,request);
+  /* if subrequest failed to terminate, then kill it to avoid blockage */
+  if (context->is_subrequest) {
+    HTRequest_kill(request);
+    context->is_subrequest = FALSE;
+  }
   if (chunk) {
     char *ext_entity_expansion = HTChunk_toCString(chunk);
 
