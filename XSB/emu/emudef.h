@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.44 2005-01-14 18:30:56 ruim Exp $
+** $Id: emudef.h,v 1.45 2005-02-04 16:56:10 dwarren Exp $
 ** 
 */
 
@@ -100,6 +100,10 @@ char *list_dot;
 
 int asynint_code = 0;
 int asynint_val = 0;
+
+int next_free_code = 0;
+Integer enc[16] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+Integer dec[8] = {-1,-1,-1,-1,-1,-1,-1,-1};
 
 /* Replacements for labelled code in emusubs.i */
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.15 2005-01-14 18:31:22 ruim Exp $
+** $Id: memory_xsb.h,v 1.16 2005-02-04 16:56:13 dwarren Exp $
 ** 
 */
 
@@ -123,7 +123,7 @@ extern long pspacesize;
 /* Memory Function Prototypes
    -------------------------- */
 extern byte *mem_alloc(unsigned long);
-extern void mem_dealloc(byte *, unsigned long);
+extern void mem_dealloc(void *, unsigned long);
 #ifndef MULTI_THREAD
 extern void tcpstack_realloc(long);
 extern void complstack_realloc(long);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.17 2004-09-29 21:41:55 dwarren Exp $
+** $Id: cell_xsb.h,v 1.18 2005-02-04 16:56:09 dwarren Exp $
 ** 
 */
 
@@ -162,6 +162,15 @@ extern Float getfloatval(Cell);
 #define enc_addr(addr) ((Cell)(addr) << 1)
 #define dec_addr(dcell) (((Cell)(dcell) >> 1) & 0x7ffffffc)
 
+#elif defined(GENERAL_TAGGING)
+extern Integer enc[], dec[];
+
+#define enc_int(val)  (((Integer)(val) << 3))
+#define dec_int(val)  ((Integer)(val) >> 3)
+
+#define enc_addr(addr) ((Cell)((enc[((unsigned long)addr)>>28] | ((unsigned long)(addr) & 0x0ffffffc)) << 1))
+#define dec_addr(dcell) ((Cell)(dec[(unsigned long)(dcell)>>29] | (((unsigned long)(dcell) >> 1) & 0x0ffffffc)))
+
 #else
 /* take bits 0-1, 30-31 */
 /* BIG_MEM allows Solaris/Sun machines to use 1 gig of memory */
@@ -171,6 +180,7 @@ extern Float getfloatval(Cell);
 
 #define enc_addr(addr) ((Cell)(addr) << 1)
 #define dec_addr(dcell) (((Cell)(dcell) >> 1) & 0x7ffffffc)
+
 #endif
 
 /*======================================================================*/

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.78 2004/11/17 21:55:07 tswift Exp $
+** $Id: subp.c,v 1.79 2005/01/14 18:31:33 ruim Exp $
 ** 
 */
 
@@ -408,7 +408,8 @@ void init_interrupt(void)
   /* Don't handle SIGSEGV/SIGBUS if configured with DEBUG */
   xsb_default_segfault_handler = SIG_DFL;
 #else 
-  xsb_default_segfault_handler = xsb_segfault_quitter;
+  xsb_default_segfault_handler = SIG_DFL;
+  //  xsb_default_segfault_handler = xsb_segfault_quitter;
 #endif
 
 #ifdef SIGBUS

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.21 2005-01-24 14:58:04 dwarren Exp $
+** $Id: pathname_xsb.c,v 1.22 2005-02-04 16:56:14 dwarren Exp $
 ** 
 */
 
@@ -55,6 +55,7 @@
 #include "error_xsb.h"
 #include "flags_xsb.h"
 #include "extensions_xsb.h"
+#include "memory_xsb.h"
 
 /*=========================================================================*/
 
@@ -232,7 +233,7 @@ DllExport char * call_conv strip_names_from_path(char* path, int how_many)
 {
   int i, abort_flag=FALSE;
   char *cutoff_ptr;
-  char *buffer = (char *) malloc(MAXPATHLEN);
+  char *buffer = (char *) mem_alloc(MAXPATHLEN);
 
 #ifdef SIMPLESCALAR
   if (!buffer)
