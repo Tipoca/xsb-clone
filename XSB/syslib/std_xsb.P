@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.16 1999/08/23 04:08:26 kifer Exp $
+** $Id: std_xsb.P,v 1.17 1999/08/25 13:57:17 kifer Exp $
 ** 
 */
 
@@ -97,6 +97,15 @@ standard_symbol(fmt_write, 2, file_io).
 standard_symbol(fmt_write, 3, file_io).
 standard_symbol(fmt_write_string, 3, file_io).
 standard_symbol(fmt_write_string, 4, file_io).
+
+standard_symbol(file_flush, 2, file_io).
+standard_symbol(file_open, 3, file_io).
+standard_symbol(file_close, 1, file_io).
+standard_symbol(file_clone, 3, file_io).
+standard_symbol(file_reopen, 4, file_io).
+
+standard_symbol(file_write, 2, xsb_writ).
+standard_symbol(file_read, 2, xsb_read).
 
 standard_symbol(get, 1, standard).
 standard_symbol(get0, 1, standard).
