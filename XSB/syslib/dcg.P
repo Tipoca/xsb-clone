@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dcg.P,v 1.11 2003/07/31 16:44:08 dwarren Exp $
+** $Id: dcg.P,v 1.12 2003/12/08 22:33:43 tswift Exp $
 ** 
 */
 
@@ -53,7 +53,7 @@ set_dcg_style(X) :- write(X), writeln(': invalid DCG style'), fail.
 
 :- dynamic word(_,_,_).
 :- dynamic num_words(_).
-:- index(word(_,_,_),2,101).
+:- index(word(_,_,_),1,501).
 
 reset_dcg_mode :- 
 	(word([_|_],_,_)
