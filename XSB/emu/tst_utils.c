@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.20 2001-04-29 17:21:13 ejohnson Exp $
+** $Id: tst_utils.c,v 1.21 2001-04-29 17:25:56 ejohnson Exp $
 ** 
 */
 
@@ -254,7 +254,7 @@ static void symstkPrintNextTerm(FILE *fp, xsbBool list_recursion) {
       Psc psc;
       int i;
 
-b      if ( list_recursion )
+      if ( list_recursion )
 	fprintf(fp, "|");
       psc = DecodeTrieFunctor(symbol);
       fprintf(fp, "%s(", get_name(psc));
