@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.15 1999/09/24 21:15:53 warren Exp $
+** $Id: consult.H,v 1.16 1999/10/08 07:32:19 kifer Exp $
 ** 
 */
 
@@ -29,6 +29,7 @@
 	  load_dyn/1, load_dyn/2, 
 	  load_dync/1, load_dync/2, read_canonical/1,
 	  ensure_dyn_loaded/1, ensure_dync_loaded/1,
+	  ensure_loaded/1, ensure_loaded/2,
 	  cvt_canonical/2.
 
 :- local load_dyn_retracted/5, load_dyn_trie_retracted/1,

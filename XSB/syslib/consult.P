@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.20 1999/10/08 07:32:22 kifer Exp $
+** $Id: consult.P,v 1.21 1999/10/26 06:47:46 kifer Exp $
 ** 
 */
 
@@ -613,13 +613,34 @@ proc_table((Pred, Preds)) :- !,
 proc_table(Pname/Arity) :- 
 	table(Pname/Arity).
 
+ensure_loaded(File,dyn) :- ensure_dyn_loaded(File).
+ensure_loaded(File,dync) :- ensure_dync_loaded(File).
+ensure_loaded(File,consult) :- ensure_loaded(File).
 
+ensure_loaded([]) :- !.
+ensure_loaded([File|Files]) :- !, 
+	ensure_loaded(File),
+	ensure_loaded(Files).
+ensure_loaded(File) :-
+	(if_should_not_reload(File)
+	 ->	true
+	 ;	reconsult(File)
+	).	
+
+ensure_dyn_loaded([]) :- !.
+ensure_dyn_loaded([File|Files]) :- !, 
+	ensure_dyn_loaded(File),
+	ensure_dyn_loaded(Files).
 ensure_dyn_loaded(File) :-
 	(if_should_not_reload(File)
 	 ->	true
 	 ;	load_dyn(File)
 	).
 
+ensure_dync_loaded([]) :- !.
+ensure_dync_loaded([File|Files]) :- !, 
+	ensure_dync_loaded(File),
+	ensure_dync_loaded(Files).
 ensure_dync_loaded(File) :-
 	(if_should_not_reload(File)
 	 ->	true
