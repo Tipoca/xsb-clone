@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.23 1999-10-09 02:00:21 cbaoqiu Exp $
+** $Id: builtin.h,v 1.24 1999-10-19 20:11:46 ejohnson Exp $
 ** 
 */
 
@@ -161,7 +161,7 @@
 #define TRIE_DISPOSE_NR         165
 #define TRIE_UNDISPOSE          166
 
-#define SET_SUBSUMPTIVE_EVAL	170
+#define SET_TABLED_EVAL		170
 
 #define PUT_ATTRIBUTES		172
 #define GET_ATTRIBUTES		173

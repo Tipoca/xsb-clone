@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xmacro.h,v 1.13 1999-10-13 20:52:07 ejohnson Exp $
+** $Id: xmacro.h,v 1.14 1999-10-19 20:11:47 ejohnson Exp $
 ** 
 */
 
@@ -33,27 +33,32 @@
  *  allowing access to its calls and their associated answers.
  */
 
-typedef enum Tabled_Computation_Method {
-  VARIANT_TCM, SUBSUMPTIVE_TCM
-} TabledCompMethod;
+#include "flags.h"
+
+typedef enum Tabled_Evaluation_Method {
+  VARIANT_TEM      = VARIANT_EVAL_METHOD,
+  SUBSUMPTIVE_TEM  = SUBSUMPTIVE_EVAL_METHOD
+} TabledEvalMethod;
 
 typedef struct Table_Info_Frame *TIFptr;
 typedef struct Table_Info_Frame {
   TIFptr next_tif;	/* pointer to next table info frame */
   BTNptr call_trie;	/* pointer to the root of the call trie */
   Psc  psc_ptr;		/* pointer to the PSC record of the subgoal */
-  TabledCompMethod method;
+  TabledEvalMethod method;
 } TableInfoFrame;
 
 #define TIF_NextTIF(pTIF)	   ( (pTIF)->next_tif )
 #define TIF_CallTrie(pTIF)	   ( (pTIF)->call_trie )
 #define TIF_PSC(pTIF)		   ( (pTIF)->psc_ptr )
-#define TIF_TablingMethod(pTIF)	   ( (pTIF)->method )
+#define TIF_EvalMethod(pTIF)	   ( (pTIF)->method )
 
-#define IsVariantPredicate(pTIF)	( (pTIF)->method == VARIANT_TCM )
-#define IsSubsumptivePredicate(pTIF)	( (pTIF)->method == SUBSUMPTIVE_TCM )
+#define IsVariantPredicate(pTIF)		\
+   ( TIF_EvalMethod(pTIF) == VARIANT_TEM )
 
-#include "flags.h"
+#define IsSubsumptivePredicate(pTIF)		\
+   ( TIF_EvalMethod(pTIF) == SUBSUMPTIVE_TEM )
+
 
 #define New_TIF(pTIF,pPSC) {					     \
    pTIF = malloc(sizeof(TableInfoFrame));			     \
@@ -62,7 +67,7 @@ typedef struct Table_Info_Frame {
    TIF_NextTIF(pTIF) = NULL;					     \
    TIF_CallTrie(pTIF) = NULL;					     \
    TIF_PSC(pTIF) = pPSC;					     \
-   TIF_TablingMethod(pTIF) = flags[TABLING_METHOD];		     \
+   TIF_EvalMethod(pTIF) = flags[TABLING_METHOD];		     \
  }
 
 /*===========================================================================*/
