@@ -19,13 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.H,v 1.13 2003/12/09 23:32:25 tswift Exp $
+** $Id: shell.H,v 1.14 2004/01/21 20:02:18 dwarren Exp $
 ** 
 */
 
 
 :- export cd/1, ls/0, rename/2, rm/1, edit/1,
-	cwd/1, sys_cwd/2, sys_pid/1,
+	cwd/1, create_lockfile/1, sys_cwd/2, sys_pid/1,
 	shell/5, shell/2, shell/1, sleep/1,
 	is_plain_file/1, is_directory/1,
 	spawn_process/5, get_process_table/1, process_status/2, 
