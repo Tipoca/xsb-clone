@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.1.1.1 1998-11-05 16:55:11 sbprolog Exp $
+** $Id: auxlry.c,v 1.2 1999-02-01 21:43:24 kostis Exp $
 ** 
 */
 
@@ -67,8 +67,8 @@ double cpu_time(void)
 
 /*----------------------------------------------------------------------*/
 
-/** Note: this one is not used anywhere, but it would make a good builtin for
-    some applications!!! --mk */
+/** Note: this one is not used anywhere, but it would make a
+    good builtin for some applications!!! --mk **/
 #ifdef HAVE_GETTIMEOFDAY
 int get_date(void)
 {
@@ -76,7 +76,7 @@ int get_date(void)
   struct timeval tvs;
 
   gettimeofday(&tvs, 0);
-  value = localtime(&(tvs.tv_sec));
+  value = localtime((time_t *)(&(tvs.tv_sec)));
   return ((value->tm_year)<<16) + ((value->tm_mon+1)<<8) + value->tm_mday;
 }
 #endif
