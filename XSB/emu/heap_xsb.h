@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.h,v 1.2 1999-12-19 15:33:04 kostis Exp $
+** $Id: heap_xsb.h,v 1.3 2000-04-05 00:49:20 cbaoqiu Exp $
 ** 
 */
 
@@ -64,5 +64,6 @@ extern void print_all_stacks(void);
 extern void print_regs(int,int);
 extern void print_heap(int,int,int);
 extern void print_gc_statistics(void);
+extern Cell attv_interrupts[20480][2];
 
 /*----------------------------------------------------------------------*/

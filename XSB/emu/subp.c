@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.38 2000/03/01 16:22:35 dwarren Exp $
+** $Id: subp.c,v 1.39 2000/03/14 21:05:50 dwarren Exp $
 ** 
 */
 
@@ -89,7 +89,7 @@ static struct sigaction act, oact;
 void (*xsb_default_segfault_handler)(int); /* where the previous value of the
 					     SIGSEGV/SIGBUS handler is saved */
 
-static Cell attv_interrupts[20480][2];
+Cell attv_interrupts[20480][2];
 
 /*
  * Put an attv interrupt into the interrupt chain. op1 is the related
