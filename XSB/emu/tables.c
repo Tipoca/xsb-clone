@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.5 1999-10-22 20:57:32 ejohnson Exp $
+** $Id: tables.c,v 1.6 1999-10-25 05:59:40 kifer Exp $
 ** 
 */
 
@@ -34,15 +34,15 @@
 
 #include "auxlry.h"
 #include "cell.h"
-#include "heap.h"
-#include "xsb_memory.h"
+#include "heap_xsb.h"
+#include "memory_xsb.h"
 #include "register.h"
 #include "binding.h"
 #include "psc.h"
 #include "table_stats.h"
 #include "trie_internals.h"
-#include "xmacro.h"
-#include "xsberror.h"
+#include "macro_xsb.h"
+#include "error_xsb.h"
 #include "tables.h"
 
 
@@ -63,7 +63,7 @@ Structure_Manager smALN = SM_InitDecl(AnsListNode, ALNs_PER_BLOCK,
  * answer template on the CPS, unless a producer was found and we're
  * running in CHAT node.  In that case, this value is the same as
  * CallInfo_VarVector(*call_info), and the AT is sitting on the heap,   
- * its size pointed to by (hreg - 1).  See slginsts.i for answer
+ * its size pointed to by (hreg - 1).  See slginsts_xsb_i.h for answer
  * template layout.
  */
 

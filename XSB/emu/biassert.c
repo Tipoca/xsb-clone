@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.22 1999-10-10 11:38:13 kostis Exp $
+** $Id: biassert.c,v 1.23 1999-10-25 05:57:22 kifer Exp $
 ** 
 */
 
@@ -38,19 +38,19 @@
 
 #include "auxlry.h"
 #include "cell.h"
-#include "xsberror.h"
+#include "error_xsb.h"
 #include "cinterf.h"
-#include "xsb_memory.h"
+#include "memory_xsb.h"
 #include "psc.h"
-#include "heap.h"
+#include "heap_xsb.h"
 #include "register.h"
 #include "flags.h"
 #include "inst.h"
-#include "token.h"
-#include "loader.h"
+#include "token_xsb.h"
+#include "loader_xsb.h"
 #include "trie_internals.h"
 #include "choice.h"
-#include "xmacro.h"
+#include "macro_xsb.h"
 #include "tr_utils.h"
 #include "trassert.h"
 

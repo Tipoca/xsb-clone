@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_re_match.c,v 1.11 1999-10-08 07:35:06 kifer Exp $
+** $Id: xsb_re_match.c,v 1.12 1999-10-25 06:00:45 kifer Exp $
 ** 
 */
 
@@ -32,9 +32,9 @@
 
 #include "auxlry.h"
 #include "cell.h"
-#include "xsberror.h"
+#include "error_xsb.h"
 #include "cinterf.h"
-#include "heap.h"
+#include "heap_xsb.h"
 
 extern char *p_charlist_to_c_string(prolog_term term, char *outstring, 
 				    int outstring_size,

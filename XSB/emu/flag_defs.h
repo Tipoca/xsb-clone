@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs.h,v 1.6 1999-10-19 20:11:46 ejohnson Exp $
+** $Id: flag_defs.h,v 1.7 1999-10-25 05:58:12 kifer Exp $
 ** 
 */
 
@@ -53,7 +53,7 @@
 #define CMD_LINE_GOAL  	21	/* The Prolog goal passed on cmd 
 				   line with -e	       	       	           */
 #define USER_HOME  	22	/* $HOME, if not null. Else INSTALL_DIR    */
-#define INSTALL_DIR	23	/* set dynamically in self_orientation.c   */
+#define INSTALL_DIR	23	/* set dynamically in orient_xsb.c         */
 
 #define CLAUSE_INT	24	/* for clause interrupt			YW */
 

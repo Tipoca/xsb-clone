@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.6 1999-10-16 01:05:37 kifer Exp $
+## $Id: Makefile,v 1.7 1999-10-25 06:00:43 kifer Exp $
 ## 
 ##
 
@@ -26,12 +26,6 @@ XSBDIR = ../..
 
 ALL = 	plmchconfig.O plmchshell.O
 
-EMU_INCLUDES = $(XSBDIR)/emu/builtin.h $(XSBDIR)/emu/celltags.h \
-	$(XSBDIR)/emu/flag_defs.h \
-	$(XSBDIR)/emu/io_defs.h $(XSBDIR)/emu/msyscall.h $(XSBDIR)/emu/sig.h \
-	$(XSBDIR)/emu/system.h $(XSBDIR)/emu/xsbsocket.h 
-PROLOG_INCLUDES = $(XSBDIR)/prolog_includes/char_defs.h \
-	$(XSBDIR)/prolog_includes/standard.h
 
 Option = [optimize]
 

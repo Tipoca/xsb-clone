@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc.c,v 1.7 1999-10-05 04:01:50 kifer Exp $
+** $Id: psc.c,v 1.8 1999-10-25 05:59:01 kifer Exp $
 ** 
 */
 
@@ -32,15 +32,15 @@
 
 #include "auxlry.h"
 #include "cell.h"
-#include "xsberror.h"
+#include "error_xsb.h"
 #include "psc.h"
 #include "tries.h"
-#include "hash.h"
-#include "xmacro.h"
-#include "loader.h"
+#include "hash_xsb.h"
+#include "macro_xsb.h"
+#include "loader_xsb.h"
 #include "flags.h"
 #include "inst.h"
-#include "xsb_memory.h"
+#include "memory_xsb.h"
 
 
 /* === String Table manipulation ======================================	*/

@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.12 1999-10-16 01:05:29 kifer Exp $
+## $Id: Makefile,v 1.13 1999-10-25 06:00:41 kifer Exp $
 ## 
 ##
 
@@ -28,8 +28,9 @@ ALL = 	flrutils.O flrtokens.O flrparser.O flrcompiler.O flrshell.O
 
 EMU_INCLUDES = $(XSBDIR)/emu/builtin.h $(XSBDIR)/emu/celltags.h \
 	$(XSBDIR)/emu/flag_defs.h \
-	$(XSBDIR)/emu/io_defs.h $(XSBDIR)/emu/msyscall.h $(XSBDIR)/emu/sig.h \
-	$(XSBDIR)/emu/system.h $(XSBDIR)/emu/xsbsocket.h 
+	$(XSBDIR)/emu/io_defs_xsb.h $(XSBDIR)/emu/syscall_xsb.h \
+	$(XSBDIR)/emu/sig_xsb.h \
+	$(XSBDIR)/emu/system_defs_xsb.h $(XSBDIR)/emu/socket_xsb.h 
 PROLOG_INCLUDES = $(XSBDIR)/prolog_includes/char_defs.h \
 	$(XSBDIR)/prolog_includes/standard.h
 

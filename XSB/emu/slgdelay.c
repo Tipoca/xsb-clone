@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.19 1999/10/05 04:01:53 kifer Exp $
+** $Id: slgdelay.c,v 1.20 1999/10/12 20:25:09 ejohnson Exp $
 ** 
 */
 
@@ -38,14 +38,14 @@
 #include "psc.h"
 #include "register.h"
 #include "trie_internals.h"
-#include "xsb_memory.h"
+#include "memory_xsb.h"
 #include "choice.h"
-#include "xmacro.h"
+#include "macro_xsb.h"
 #include "tr_utils.h"
 #include "inst.h"
 #include "chat.h"
-#include "xsberror.h"
-#include "io_builtins.h"
+#include "error_xsb.h"
+#include "io_builtins_xsb.h"
 
 static void simplify_neg_succeeds(SGFrame);
 static void simplify_pos_unsupported(NODEptr);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orastuff.h,v 1.1.1.1 1998-11-05 16:55:20 sbprolog Exp $
+** $Id: orastuff.h,v 1.2 1999-10-25 05:58:55 kifer Exp $
 ** 
 */
 
@@ -88,7 +88,7 @@ void ctop_string(int regnum, char *value);
 /* from psc.c */
 char* string_find(char *, int);
 
-/* from xsberror.c */
+/* from error_xsb.c */
 void xsb_abort(char *);
 
 

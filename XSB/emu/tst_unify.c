@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_unify.c,v 1.1 1999-10-12 19:23:12 ejohnson Exp $
+** $Id: tst_unify.c,v 1.2 1999-10-25 05:59:58 kifer Exp $
 ** 
 */
 
@@ -32,18 +32,18 @@
 #include "auxlry.h"
 #include "cell.h"
 #include "register.h"
-#include "xsb_memory.h"
+#include "memory_xsb.h"
 #include "binding.h"
 #include "psc.h"
 #include "deref.h"
 #include "subp.h"          /* bool unify(Cell, Cell) */
 #include "table_stats.h"
 #include "trie_internals.h"
-#include "xmacro.h"
+#include "macro_xsb.h"
 #include "choice.h"
 #include "tst_aux.h"
 #include "tst_utils.h"
-#include "xsberror.h"
+#include "error_xsb.h"
 
 
 /* ========================================================================= */

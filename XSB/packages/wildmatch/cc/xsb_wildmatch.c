@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_wildmatch.c,v 1.5 1999-08-01 20:42:56 kifer Exp $
+** $Id: xsb_wildmatch.c,v 1.6 1999-10-25 06:00:47 kifer Exp $
 ** 
 */
 
@@ -35,7 +35,7 @@
 
 #include "auxlry.h"
 #include "cell.h"
-#include "xsberror.h"
+#include "error_xsb.h"
 #include "cinterf.h"
 
 /* Casefolding seems to be defined in some versions of gcc, but not in

@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.22 1999-10-15 03:07:42 kifer Exp $
+## $Id: Makefile,v 1.23 1999-10-25 06:00:38 kifer Exp $
 ## 
 ##
 
@@ -31,8 +31,8 @@ ALL = 	aggregs.O array.O array1.O directry.O foreign.O \
 	xnmr.O
 
 EMU_INCLUDES = ../emu/builtin.h ../emu/celltags.h ../emu/flag_defs.h \
-	../emu/io_defs.h ../emu/msyscall.h ../emu/sig.h \
-	../emu/system.h ../emu/xsbsocket.h 
+	../emu/io_defs_xsb.h ../emu/syscall_xsb.h ../emu/sig_xsb.h \
+	../emu/system_xsb.h ../emu/socket_defs_xsb.h 
 PROLOG_INCLUDES = ../prolog_includes/char_defs.h ../prolog_includes/standard.h
 
 Option = [sysmod,optimize,quit_on_error]

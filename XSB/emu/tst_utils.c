@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.1 1999-10-12 19:23:12 ejohnson Exp $
+** $Id: tst_utils.c,v 1.2 1999-10-25 05:59:59 kifer Exp $
 ** 
 */
 
@@ -38,10 +38,10 @@
 #include "deref.h"
 #include "trie_internals.h"
 #include "tst_aux.h"
-#include "xmacro.h"
+#include "macro_xsb.h"
 #include "choice.h"
 #include "inst.h"
-#include "xsberror.h"
+#include "error_xsb.h"
 
 
 /* ======================================================================= */

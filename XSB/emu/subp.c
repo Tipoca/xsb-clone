@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.23 1999/10/10 12:36:46 kostis Exp $
+** $Id: subp.c,v 1.24 1999/10/12 20:34:44 ejohnson Exp $
 ** 
 */
 
@@ -43,21 +43,21 @@
 
 #include "auxlry.h"
 #include "cell.h"
-#include "xsberror.h"
+#include "error_xsb.h"
 #include "psc.h"
-#include "xsb_memory.h"
+#include "memory_xsb.h"
 #include "register.h"
-#include "heap.h"
+#include "heap_xsb.h"
 #include "deref.h"
 #include "flags.h"
 #include "binding.h"
 #include "trie_internals.h"
 #include "trassert.h"
 #include "choice.h"
-#include "token.h"
-#include "sig.h"
+#include "token_xsb.h"
+#include "sig_xsb.h"
 #include "inst.h"
-#include "xmacro.h"
+#include "macro_xsb.h"
 
 /*======================================================================*/
 /*======================================================================*/
@@ -132,7 +132,7 @@ bool unify(Cell rop1, Cell rop2)
   op1 = rop1; op2 = rop2;
 
 /*----------------------------------------*/
-#include "unify.i"
+#include "unify_xsb_i.h"
 /*----------------------------------------*/
   IFTHEN_SUCCEED;
 

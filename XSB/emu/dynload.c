@@ -19,25 +19,25 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynload.c,v 1.4 1999-10-21 06:22:47 kifer Exp $
+** $Id: dynload.c,v 1.5 1999-10-25 05:58:01 kifer Exp $
 ** 
 */
 
 
 #include "configs/config.h"	/* This should appear BEFORE the ifdef!	*/
 
-extern char executable[];        /* from self_orientation.c */
+extern char executable[];        /* from orient_xsb.c */
 
 #ifdef FOREIGN
 
 #ifdef FOREIGN_ELF
-#include "dynelf.i"
+#include "dynelf_xsb_i.h"
 #else
 #ifdef FOREIGN_AOUT
-#include "dynaout.i"
+#include "dynaout_xsb_i.h"
 #else
 #ifdef FOREIGN_WIN32
-#include "dynwin32.i"
+#include "dynwin32_xsb_i.h"
 #endif /* FOREIGN_WIN32 */
 #endif /* FOREIGN_AOUT */
 #endif /* FOREIGN_ELF */

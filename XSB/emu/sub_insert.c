@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_insert.c,v 1.2 1999-10-18 21:50:11 cbaoqiu Exp $
+** $Id: sub_insert.c,v 1.3 1999-10-25 05:59:31 kifer Exp $
 ** 
 */
 
@@ -33,13 +33,13 @@
 #include "auxlry.h"
 #include "cell.h"
 #include "register.h"
-#include "xsberror.h"
+#include "error_xsb.h"
 #include "psc.h"
 #include "deref.h"
 #include "table_stats.h"
 #include "trie_internals.h"
 #include "tst_aux.h"
-#include "xmacro.h"
+#include "macro_xsb.h"
 #include "binding.h"
 #include "inst.h"
 

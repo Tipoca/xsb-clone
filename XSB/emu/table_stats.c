@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.2 1999-10-13 21:03:47 ejohnson Exp $
+** $Id: table_stats.c,v 1.3 1999-10-25 05:59:39 kifer Exp $
 ** 
 */
 
@@ -33,8 +33,8 @@
 #include "psc.h"
 #include "table_stats.h"
 #include "trie_internals.h"
-#include "xmacro.h"
-#include "xsberror.h"
+#include "macro_xsb.h"
+#include "error_xsb.h"
 
 
 

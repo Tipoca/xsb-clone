@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.11 1999-10-15 02:54:13 cbaoqiu Exp $
+** $Id: residual.c,v 1.12 1999-10-25 05:59:02 kifer Exp $
 ** 
 */
 
@@ -34,15 +34,15 @@
 
 #include "auxlry.h"
 #include "cell.h"
-#include "xsb_memory.h"
+#include "memory_xsb.h"
 #include "psc.h"
 #include "register.h"
-#include "heap.h"
+#include "heap_xsb.h"
 #include "binding.h"
 #include "tries.h"
-#include "xmacro.h"
-#include "xsberror.h"
-#include "io_builtins.h"
+#include "macro_xsb.h"
+#include "error_xsb.h"
+#include "io_builtins_xsb.h"
 
 /*----------------------------------------------------------------------*/
 
@@ -210,7 +210,7 @@ void build_delay_list(CPtr delay_list, DE de)
 	/*
 	 * Restore var_addr[] to copy_of_var_addr[], which contains all
 	 * the variables in the _head_ predicate after get_returns is
-	 * called (see bineg.i).
+	 * called (see bineg_xsb_i.h).
 	 *
 	 * The content of copy_of_var_addr[] is used in
 	 * load_delay_trie(), and might be changed by each delay

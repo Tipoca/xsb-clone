@@ -18,20 +18,13 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 1999-10-16 01:05:40 kifer Exp $
+## $Id: Makefile,v 1.6 1999-10-25 06:00:44 kifer Exp $
 ## 
 ##
 
 XSBDIR = ../..
 
 ALL = 	regmtchconfig.O regmtchshell.O
-
-EMU_INCLUDES = $(XSBDIR)/emu/builtin.h $(XSBDIR)/emu/celltags.h \
-	$(XSBDIR)/emu/flag_defs.h \
-	$(XSBDIR)/emu/io_defs.h $(XSBDIR)/emu/msyscall.h $(XSBDIR)/emu/sig.h \
-	$(XSBDIR)/emu/system.h $(XSBDIR)/emu/xsbsocket.h 
-PROLOG_INCLUDES = $(XSBDIR)/prolog_includes/char_defs.h \
-	$(XSBDIR)/prolog_includes/standard.h
 
 Option = [optimize]
 
