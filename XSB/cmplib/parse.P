@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.36 2001-03-15 20:49:25 tswift Exp $
+** $Id: parse.P,v 1.37 2001-05-04 00:36:28 kifer Exp $
 ** 
 */
 
@@ -176,7 +176,7 @@ make_include_directive1(' ',_, []).
 
 
 make_gpp_options(X) :- xpp_options(X), !.
-make_gpp_options(' -P -m -nostdinc -nocurinc ').
+make_gpp_options(' -P -m -nostdinc -curdirinclast ').
 
 /*======================================================================*/
 /* parse_clauses(+ModName, #module(#SymTab,#DcList,#ClList,#QrList))	*/
