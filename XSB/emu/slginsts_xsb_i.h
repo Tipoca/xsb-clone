@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.4 1999/12/22 19:05:02 kostis Exp $
+** $Id: slginsts_xsb_i.h,v 1.5 2000/02/15 07:45:09 bartkul Exp $
 ** 
 */
 
@@ -481,9 +481,9 @@ case new_answer_dealloc: {
 #ifdef DEBUG_DELAYVAR
   xsb_dbgmsg(">>>> New answer for %s subgoal: ",
 	     (is_completed(producer_sf) ? "completed" : "incomplete"));
+  fprintf(stddbg, ">>>> ");
   print_subgoal(stddbg, producer_sf);
-  xsb_dbgmsg("\n");
-  xsb_dbgmsg(">>>>              has delayreg = %p", delayreg);
+  xsb_dbgmsg(">>>> has delayreg = %p", delayreg);
 #endif
 
   producer_csf = subg_compl_stack_ptr(producer_sf);
@@ -551,7 +551,7 @@ case new_answer_dealloc: {
     if (is_conditional_answer(answer_leaf)) {	/* positive delay */
 #ifndef LOCAL_EVAL
 #ifdef DEBUG_DELAYVAR
-      fprintf(stddbg, "\n>>>> delay_positively in new_answer_dealloc\n");
+      fprintf(stddbg, ">>>> delay_positively in new_answer_dealloc\n");
 #endif
       /*
        * The new answer for this call is a conditional one, so add it
