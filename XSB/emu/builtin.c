@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.18 1999-02-01 23:55:58 kostis Exp $
+** $Id: builtin.c,v 1.19 1999-02-02 17:17:01 kostis Exp $
 ** 
 */
 
@@ -32,7 +32,6 @@
 
 /* Private debugs */
 #include "debugs/debug_delay.h"
-#include "debugs/debug_kostis.h"
 
 
 #ifdef WIN_NT

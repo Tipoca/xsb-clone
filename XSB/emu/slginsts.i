@@ -18,14 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts.i,v 1.9 1999-01-29 04:18:25 cbaoqiu Exp $
+** $Id: slginsts.i,v 1.10 1999-02-02 17:17:03 kostis Exp $
 ** 
 */
 
 
 /* special debug includes */
 #include "debugs/debug_delay.h"
-#include "debugs/debug_kostis.h"
 
 
 #define ARITY	op1

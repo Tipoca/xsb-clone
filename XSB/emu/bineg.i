@@ -18,14 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg.i,v 1.6 1999-01-29 20:06:42 kostis Exp $
+** $Id: bineg.i,v 1.7 1999-02-02 17:16:59 kostis Exp $
 ** 
 */
 
 
 /* special debug includes */
 #include "debugs/debug_delay.h"
-#include "debugs/debug_kostis.h"
 
 /*----------------------------------------------------------------------*/
 /* Contains builtin predicates for SLG negation (and tfindall/3).	*/
