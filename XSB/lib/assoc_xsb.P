@@ -8,7 +8,7 @@
 **   Mats Carlsson, et al.  SICStus Prolog User's Manual.
 **   Swedish Institute of Computer Science, 1995. ISBN 91-630-3648-7
 **
-** $Id: assoc_xsb.P,v 1.4 2002-04-13 05:01:53 lfcastro Exp $
+** $Id: assoc_xsb.P,v 1.5 2004-06-04 19:53:19 dwarren Exp $
 ** 
 */
 
@@ -34,8 +34,8 @@
 	get_prev_assoc/4,		% Key x Assoc -> Key x Val
 	is_assoc/1,			% Assoc ->
 	list_to_assoc/2,		% List -> Assoc
-	map_assoc/2,			% Goal x Assoc ->
-	map_assoc/3,			% Goal x Assoc -> Assoc
+%%	map_assoc/2,			% Goal x Assoc ->
+%%	map_assoc/3,			% Goal x Assoc -> Assoc
 	max_assoc/3,			% Assoc -> Key x Val
 	min_assoc/3,			% Assoc -> Key x Val
 	ord_list_to_assoc/2,		% List -> Assoc
