@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.26 1999-03-27 09:33:01 workflow Exp $
+** $Id: builtin.c,v 1.27 1999-03-29 21:06:49 kifer Exp $
 ** 
 */
 
@@ -790,7 +790,7 @@ int builtin_call(byte number)
     case FILE_TRUNCATE: /* file_function(2,+file, +length, -ret, -dontcare) */
       tmpval = ptoc_int(2);
       fptr = fileptr(tmpval);
-      value = ftruncate((int) fptr -> _file, (off_t) ptoc_int(3));
+      value = ftruncate((int) fileno(fptr), (off_t) ptoc_int(3));
       ctop_int(4, (int) value);
       break;
     default:
