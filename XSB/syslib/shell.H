@@ -19,12 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.H,v 1.14 2004/01/21 20:02:18 dwarren Exp $
+** $Id: shell.H,v 1.15 2004/03/02 15:14:01 dwarren Exp $
 ** 
 */
 
 
-:- export cd/1, ls/0, rename/2, rm/1, edit/1,
+:- export cd/1, ls/0, rename/2, rm/1, rmdir/1, rmdir_rec/1, edit/1,
 	cwd/1, create_lockfile/1, sys_cwd/2, sys_pid/1,
 	shell/5, shell/2, shell/1, sleep/1,
 	is_plain_file/1, is_directory/1,
@@ -35,7 +35,9 @@
 	sys_mkdir/2, sys_rmdir/2,
 	sys_unlink/2, sys_exit/1, sys_rename/3, sys_filecopy/3.
 
-:- import ground/1, append/3 from basics.
+:- import ground/1, append/3, member/2 from basics.
+:- import findall/3 from setof.
+:- import path_sysop/2 from file_io.
 :- import check_nonvar/3 from error_handler.
 :- import sys_system/7, expand_filename/2, sys_syscall/4
    from machine.
