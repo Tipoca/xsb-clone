@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.21 2001-03-17 05:42:24 kifer Exp $
+** $Id: loader_xsb.c,v 1.22 2001-03-23 03:51:41 kifer Exp $
 ** 
 */
 
@@ -413,7 +413,7 @@ static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
     } /* for */
   }
   if (inst_addr != end_addr) {
-    fprintf(stderr, "inst_addr %p, end_addr %p\n", inst_addr, end_addr);
+    xsb_dbgmsg("inst_addr %p, end_addr %p", inst_addr, end_addr);
     return FALSE;
   }
   else return TRUE;

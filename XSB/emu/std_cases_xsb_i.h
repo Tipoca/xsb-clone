@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.3 2000-08-05 07:59:23 cbaoqiu Exp $
+** $Id: std_cases_xsb_i.h,v 1.4 2001-03-23 03:51:41 kifer Exp $
 ** 
 */
 
@@ -112,7 +112,7 @@
     if (isinteger(term)) {
       int  i;
       for (i=1; i<=int_val(term); i++)
-	putc(32, fileptr(flags[CURRENT_OUTPUT]));	/* 32=' ' */
+	putc(' ', fileptr(flags[CURRENT_OUTPUT]));
     } else {
       if (isnonvar(term)) err_handle(TYPE, 1, "tab", 1, "integer", term);
       else err(INSTANTIATION, 1, "tab", 1);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.8 2001-03-17 05:44:01 kifer Exp $
+** $Id: token_xsb.c,v 1.9 2001-03-23 03:51:41 kifer Exp $
 ** 
 */
 
@@ -518,27 +518,25 @@ int token_too_long_warning = 1;
 
 void realloc_strbuff(char **pstrbuff, char **ps, int *pn)
      /* Expand token buffer when needed.
-	 *pstrbuff: base address of current buffer
-         *ps: tail of current buffer
-	 *pn: number of elements remaining in the current buffer
-	          --  C.R., 7/27/97
-      */
+      * pstrbuff: base address of current buffer
+      * ps: tail of current buffer
+      * pn: number of elements remaining in the current buffer
+      * --  C.R., 7/27/97
+     */
 { 
   char *newbuff;
 
   newbuff = (char *)realloc(*pstrbuff, strbuff_len * 2);
   exit_if_null(newbuff);
-  if (token_too_long_warning)
-    {
-      xsb_warn("Extra-long token. Runaway string?");
-	  token_too_long_warning = 0;
-    }
+  if (token_too_long_warning) {
+    xsb_warn("Extra-long token. Runaway string?");
+    token_too_long_warning = 0;
+  }
 
-  if (*pstrbuff != newbuff)
-    {
-      /* Aha, base address has changed, so change s too*/
-      *ps += newbuff - *pstrbuff;
-    }
+  if (*pstrbuff != newbuff) {
+    /* Aha, base address has changed, so change s too*/
+    *ps += newbuff - *pstrbuff;
+  }
   *pstrbuff = newbuff;
   *pn += strbuff_len;
   strbuff_len *= 2;
