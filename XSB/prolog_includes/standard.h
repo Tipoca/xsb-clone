@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.h,v 1.2 1999-08-12 18:07:18 kifer Exp $
+** $Id: standard.h,v 1.3 1999-08-14 06:10:59 kifer Exp $
 ** 
 */
 
@@ -31,3 +31,6 @@
 #define OWRITE	     1	  /* open for write       */
 #define OAPPEND	     2	  /* open for append      */
 #define OSTRING	     3	  /* open for as a string */
+
+#define AF_INET     0	  /* XSB-side request for Internet domain */
+#define AF_UNIX     1     /* XSB-side request for UNIX domain */
