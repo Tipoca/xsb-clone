@@ -21,7 +21,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.98 2002-04-30 04:22:56 gzyang Exp $
+** $Id: flrutils.P,v 1.99 2002-04-30 15:59:07 gzyang Exp $
 **
 */
 
@@ -957,7 +957,7 @@ flora_generate_Pfile(PFileName,FileOptionList,RuleList,FactList,DBFile,FLDFile,F
 
 	      ; member(FLEQLBASIC,FileOptionList) ->
 		  %% The basic equality trailer does not include the equality
-		  %% specified by the equailty rules (a:=:b).
+		  %% implied by single-valued methods.
 	          flora_message_line('Including basic equality maintenance'),
 		  flora_include_file([FLEQLTRAILER],FileStatus)
 
