@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.7 1999-11-17 03:54:30 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.8 1999-11-27 23:27:24 warren Exp $
 ** 
 */
 
@@ -1005,6 +1005,8 @@ int read_canonical(void)
 	findall_copy_to_heap(term,(CPtr)arg2,&hreg) ; /* this can't fail */
 	findall_free(findall_chunk_index) ; 
 	
+	deref(arg2);
+	term = (prolog_term) arg2;
 	if (isinteger(term) || 
 	    isfloat(term) || 
 	    isstring(term) ||
