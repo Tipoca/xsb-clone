@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.14 1999/08/04 16:21:36 kifer Exp $
+** $Id: subp.c,v 1.15 1999/08/06 14:35:49 kostis Exp $
 ** 
 */
 
@@ -66,6 +66,8 @@
 #define IFTHEN_SUCCEED	return 1
 
 double realtime_count;
+
+extern int *asynint_ptr;	/* 0 - no interrupt (or being processed) */
 
 extern void dis(int), debug_call(Psc);
 extern void total_stat(double);

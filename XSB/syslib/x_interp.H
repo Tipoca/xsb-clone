@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.15 1999/08/03 19:17:22 kifer Exp $
+** $Id: x_interp.H,v 1.16 1999/08/09 00:35:27 kifer Exp $
 ** 
 */
 
@@ -40,8 +40,7 @@
           push_abort_cutpoint/0, pop_abort_cutpoint/0, atom_codes/2,
 	  '\='/2
      from standard.
-:- import conpsc/2, psc_type/2, psc_set_type/2, psc_prop/2, psc_set_prop/2,
-          psc_arity/2, term_psc/2, term_arg/3, term_new/2, term_type/2,
+:- import conpsc/2, psc_set_type/2, psc_prop/2, psc_set_prop/2, term_psc/2,
 	  conname/2, stat_flag/2, stat_set_flag/2, intern_string/2,
 	  is_xwammode/1, close_open_tables/0, trimcore/0, slash/1
      from machine.
