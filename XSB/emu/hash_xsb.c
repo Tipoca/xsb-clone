@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.7 2002-08-28 19:25:47 lfcastro Exp $
+** $Id: hash_xsb.c,v 1.8 2004-12-10 22:03:49 tswift Exp $
 ** 
 */
 
@@ -249,8 +249,8 @@ void symbol_table_stats() {
   printf("\tused buckets:\t%lu  (range: [%d, %lu])\n", used_buckets,
 	 first_index, last_index);
   printf("\tunused buckets:\t%lu\n", unused_buckets);
-  printf("\tfullest bucket:\t%lu  (size: %lu)\n", fullest_bucket_num,
-	 fullest_bucket_size);
+  printf("\tmaximum bucket size:\t%lu  (#: %lu)\n", fullest_bucket_size, 
+	 fullest_bucket_num);
 }  
 
 
@@ -295,6 +295,6 @@ void string_table_stats() {
   printf("\tused buckets:\t%lu  (range: [%d, %lu])\n", used_buckets,
 	 first_index, last_index);
   printf("\tunused buckets:\t%lu\n", unused_buckets);
-  printf("\tfullest bucket:\t%lu  (size: %lu)\n\n", fullest_bucket_num,
-	 fullest_bucket_size);
+  printf("\tmaximum bucket size:\t%lu  (#: %lu)\n", fullest_bucket_size, 
+	 fullest_bucket_num);
 }
