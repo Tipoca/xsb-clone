@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrundefined.H,v 1.7 2002-05-02 17:01:44 kifer Exp $
+** $Id: flrundefined.H,v 1.8 2002-05-16 03:18:57 kifer Exp $
 **
 */
 
@@ -42,6 +42,7 @@
 
 :- import
 	flora_write_atom/1,
+	flora_write_quoted_atom/1,
 	flora_concat_atoms/2,
 	flora_concat_items/2
    from flrporting.
