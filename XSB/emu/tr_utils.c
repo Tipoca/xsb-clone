@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.40 2000/05/25 00:32:03 ejohnson Exp $
+** $Id: tr_utils.c,v 1.41 2000/05/29 04:23:39 ejohnson Exp $
 ** 
 */
 
@@ -1036,6 +1036,13 @@ void undelete_branch(BTNptr lowest_node_in_branch) {
    else
      xsb_dbgmsg("Attempt to undelete a node that is not deleted");
  }
+
+
+void reclaim_uninterned_nr(BTNptr root)
+{
+  puts("To be implemented");
+}
+
 
 /*----------------------------------------------------------------------*/
 

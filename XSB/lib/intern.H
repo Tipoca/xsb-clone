@@ -18,14 +18,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.H,v 1.1 2000-06-05 00:54:12 kifer Exp $
+** $Id: intern.H,v 1.2 2000-06-14 21:16:06 kifer Exp $
 ** 
 */
 
 
 :- export new_trie/1, trie_intern/5, trie_intern/4, trie_interned/4,
 	  trie_intern/3, trie_interned/3, trie_unintern/2, delete_trie/1,
-	  trie_unintern_nr/2, unmark_uninterned_nr/2.
+	  trie_unintern_nr/2, trie_reclaim_uninterned_nr/1, 
+	  unmark_uninterned_nr/2. 
 
 :- import integer/1, abort/1 from standard.
 :- import get_lastnode_cs_retskel/4 from tables.

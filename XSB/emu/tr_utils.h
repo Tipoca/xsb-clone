@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.19 2000-05-29 04:23:39 ejohnson Exp $
+** $Id: tr_utils.h,v 1.20 2000-06-14 21:16:05 kifer Exp $
 ** 
 */
 
@@ -42,6 +42,7 @@ extern void init_newtrie(void);
 extern void delete_branch(BTNptr, BTNptr *);
 extern void safe_delete_branch(BTNptr);
 extern void undelete_branch(BTNptr);
+extern void reclaim_uninterned_nr(BTNptr root);
 extern void delete_trie(BTNptr);
 
 extern xsbBool has_unconditional_answers(VariantSF);

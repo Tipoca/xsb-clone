@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.9 2000-06-05 00:54:12 kifer Exp $
+** $Id: intern.P,v 1.10 2000-06-14 21:16:06 kifer Exp $
 ** 
 */
 
@@ -147,6 +147,10 @@ delete_all(Root,[Hd|Tl]) :- trie_unintern(Root,Hd),
 
 delete_trie(Root) :- delete_trie(Root,intern).
 
+
+/* reclaims nodes previously uninterned (but not deleted)
+   with trie_unintern_nr */
+trie_reclaim_uninterned_nr(_Root) :- '_$builtin'(RECLAIM_UNINTERNED_NR).
 
 
 /* builtin calls */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.29 2000-04-05 17:42:02 cbaoqiu Exp $
+** $Id: builtin.h,v 1.30 2000-06-14 21:16:04 kifer Exp $
 ** 
 */
 
@@ -164,6 +164,7 @@
 #define DELETE_TRIE             164
 #define TRIE_DISPOSE_NR         165
 #define TRIE_UNDISPOSE          166
+#define RECLAIM_UNINTERNED_NR   167
 
 #define SET_TABLED_EVAL		170
 

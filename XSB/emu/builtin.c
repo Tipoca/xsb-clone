@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.96 2000-05-29 04:23:33 ejohnson Exp $
+** $Id: builtin.c,v 1.97 2000-06-14 21:16:04 kifer Exp $
 ** 
 */
 
@@ -646,6 +646,7 @@ void init_builtin_table(void)
   set_builtin_table(DELETE_TRIE, "delete_trie");
   set_builtin_table(TRIE_DISPOSE_NR, "trie_dispose_nr");
   set_builtin_table(TRIE_UNDISPOSE, "trie_undispose");
+  set_builtin_table(RECLAIM_UNINTERNED_NR, "reclaim_uninterned_nr");
 
   set_builtin_table(SET_TABLED_EVAL, "set_tabled_eval_method");
   set_builtin_table(PUT_ATTRIBUTES, "put_attributes");
@@ -1793,6 +1794,9 @@ int builtin_call(byte number)
     break;
   case TRIE_UNDISPOSE:
     undelete_branch((BTNptr) ptoc_int(2));
+    break;
+  case RECLAIM_UNINTERNED_NR:
+    reclaim_uninterned_nr((BTNptr) ptoc_int(1));
     break;
   case BOTTOM_UP_UNIFY:
     return ( bottom_up_unify() );
