@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modeinf.H,v 1.10 2003-07-22 17:15:32 lfcastro Exp $
+** $Id: modeinf.H,v 1.11 2004-07-06 13:30:24 dwarren Exp $
 ** 
 */
 
@@ -44,7 +44,7 @@
 	write/1, writeln/1, writeq/1, write_canonical/1, ('=..')/2
    from standard.
 
-:- import file_time/2 from machine.
+:- import file_time/2 from file_io.
 
 :- import message/1, time_message/2, warning/1, option/1 from auxlry.
 
