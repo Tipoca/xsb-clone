@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.H,v 1.12 2003-06-23 16:44:44 dwarren Exp $
+** $Id: auxlry.H,v 1.13 2004-03-06 21:55:13 tswift Exp $
 ** 
 */
 
@@ -28,6 +28,7 @@
 	  setoptions/1, setoptions1/1, subsumes/2, dict_lookup/3, option/1,
 	  verbo_time_message/2, subsumed_member/2, ll_arg/3,
 	  freeze/1, melt/2, writetop/2, set_global_compiler_options/1,
+              check_file_compiler_options/1,
 	  numbervars_cmplib/3.
 
 :- import 'error occurred'/0 from compile.

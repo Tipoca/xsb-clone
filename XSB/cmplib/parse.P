@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.58 2004-02-19 20:28:19 dwarren Exp $
+** $Id: parse.P,v 1.59 2004-03-06 21:55:14 tswift Exp $
 ** 
 */
 
@@ -596,6 +596,7 @@ parse_directive(compiler_options(Options),_SymTab) :-
 	%% interest in restarting. It might turn into a restart 
 	%% request if xpp_on is subsequently set.
 	(conget(xpp_on, 0) ->  conset(migh_need_restart,1) ;   true),
+	check_file_compiler_options(Options),
 	setoptions1(Options).
 parse_directive(comment(_,_),_SymTab).
 parse_directive(Directive,_SymTab) :-

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.22 2004-01-30 17:04:21 dwarren Exp $
+** $Id: parse.H,v 1.23 2004-03-06 21:55:14 tswift Exp $
 ** 
 */
 
@@ -40,7 +40,8 @@
 :- import add_hilog_symbol/1 from hilogsym.
 :- import conset/2, conget/2 from gensym.
 :- import append/3, memberchk/2, log_ith/3 from basics.
-:- import error/1, message/1, option/1, setoptions1/1, warning/1 from auxlry.
+:- import check_file_compiler_options/1, 
+             error/1, message/1, option/1, setoptions1/1, warning/1 from auxlry.
 :- import sym_insert/5, sym_propin/2, sym_complete/1,
 	  add_new_clause/2, clause_listify/2
      from symtab.
