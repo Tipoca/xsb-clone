@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.30 2000-02-23 18:24:00 dwarren Exp $
+** $Id: cinterf.c,v 1.31 2000-03-15 06:17:21 kifer Exp $
 ** 
 */
 
@@ -165,7 +165,7 @@ DllExport bool call_conv c2p_list(prolog_term var)
 	bind_list(vptr(v), sreg);
 	return TRUE;
     } else {
-	xsb_warn("C2P_LIST: Argument 2 must be a variable");
+	xsb_warn("C2P_LIST: Argument must be a variable");
 	return FALSE;
     }
 }
@@ -177,7 +177,7 @@ DllExport bool call_conv c2p_nil(prolog_term var)
        bind_nil(vptr(v));
        return TRUE;
     } else {
-	xsb_warn("C2P_NIL: Argument 2 must be a variable");
+	xsb_warn("C2P_NIL: Argument must be a variable");
 	return FALSE;
     }
 }
