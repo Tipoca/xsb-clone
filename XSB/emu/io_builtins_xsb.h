@@ -18,17 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.h,v 1.5 2004-08-19 22:15:25 tswift Exp $
+** $Id: io_builtins_xsb.h,v 1.6 2004-08-29 22:57:04 tswift Exp $
 ** 
 */
 
 
 #include "io_defs_xsb.h"
 #include "token_xsb.h"
-
-#define MAX_OPEN_FILES    55
-#define MIN_USR_OPEN_FILE 7     /* Where user files start in the XSB
-				   open files table */
 
 /* TLS: The following data structure holds all info abt. streams that
    we might eventually want to access from Prolog.  Names, etc come

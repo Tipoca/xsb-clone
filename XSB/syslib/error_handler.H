@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.13 2004/05/18 13:45:24 tswift Exp $
+** $Id: error_handler.H,v 1.14 2004/08/19 22:15:26 tswift Exp $
 ** 
 */
 
@@ -33,7 +33,6 @@
               check_ground/3,
               check_nonvar_list/3, check_nonvar/3, 
               check_number/3,
-              check_stream/3, 
               check_var/3, 
               default_error_handler/1,
 	  default_sys_error_handler/1,
@@ -48,7 +47,6 @@
 :- import close_open_tables/0, psc_data/2, psc_name/2, psc_arity/2,
              xsb_backtrace/1 from machine.
 
-:- import atom/1, number/1, messageln/2, throw/1,integer/1 from standard.
+:- import atom/1, number/1, messageln/2, throw/1 from standard.
 :- import concat_atom/2 from string.
 :- import xsb_flag/2 from curr_sym.
-
