@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dbclause.P,v 1.3 1999/04/08 18:06:04 kostis Exp $
+** $Id: dbclause.P,v 1.4 1999/04/09 12:18:08 kostis Exp $
 ** 
 */
 
@@ -200,7 +200,7 @@ db_do_call(Entry, Head) :-
 	stat_set_flag(24, 1),	        % set clause interrupt on (CLAUSE_INT)
 	code_call(Entry, Head, 1).	% Type =:= 1 means dynamic predicate.
 
-db_body_save(_) :- fail.	% gotta fix this, by having dynamic!
+:- dynamic(db_body_save(_)).
 
 '_$clause_int'(Call) :-
 	stat_set_flag(24,0),	% turn clause intercept off

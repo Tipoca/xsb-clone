@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.13 1999/04/27 14:40:08 kifer Exp $
+** $Id: standard.P,v 1.14 1999/04/27 20:03:27 kostis Exp $
 ** 
 */
 
@@ -958,7 +958,7 @@ multifile([P/A, _T1, T2]) :-	% T1 is not used
 	functor(TT1, P, A),	% TT1 is in usermod
 	TT1 =.. [_|Args],
 	T2 =.. [_|Args],	% T2 still belongs to the original module
-	(retract0(:-(TT1, T2)); true),
+	(retract0(:-(TT1, T2)),fail; true),
 	% Here the original retract (retract0/1) must be used, because
 	% '_$multifile_retract'(TT1,_,TT2) is true and retract/1 will change
 	% TT1 to TT2.
