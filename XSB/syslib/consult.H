@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.16 1999/10/08 07:32:19 kifer Exp $
+** $Id: consult.H,v 1.17 1999/11/10 17:37:24 warren Exp $
 ** 
 */
 
@@ -51,7 +51,7 @@
      from standard.
 :- import code_load/3, code_call/3, file_read_canonical/3,
 	  stat_flag/2,
-	  expand_filename/2, tilde_expand_filename/2, unload_seg/1,
+	  expand_filename/2, unload_seg/1,
 	  buff_word/3, assert_code_to_buff/1, assert_buff_to_clref/6,
 	  conpsc/2, psc_prop/2, psc_tabled/2, psc_type/2, psc_name/2,
 	  psc_arity/2, existing_file_extension/2, almost_search_module/5
