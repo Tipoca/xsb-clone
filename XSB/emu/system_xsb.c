@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.24 2001-08-29 04:05:43 kifer Exp $
+** $Id: system_xsb.c,v 1.25 2001-08-29 08:25:14 kifer Exp $
 ** 
 */
 
@@ -769,13 +769,13 @@ static void split_string(char *string, char *params[], char *callname)
 
   buf_ptr = buffer;
 
-  /*
+  /* Debugging
   fprintf(stderr,"%s\n", string);
   */
   do {
     arg_ptr = get_next_command_argument(&buf_ptr,&string);
     params[idx] = arg_ptr;
-    /*
+    /* Debugging
     fprintf(stderr,"%s\n", arg_ptr);
     */
     idx++;
