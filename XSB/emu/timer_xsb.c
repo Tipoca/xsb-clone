@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.c,v 1.7 2000-05-22 05:48:06 kifer Exp $
+** $Id: timer_xsb.c,v 1.8 2000-05-25 23:23:05 kifer Exp $
 ** 
 */
 
@@ -100,12 +100,21 @@
 	       For instance, 
    
 	       xsbTimeout *pptr = NEW_TIMEOUT_OBJECT; // defined in timer_xsb.h
+	       int timeout_flag;
+
 	       // timeout is set in Prolog using set_timer/1 call
 	       if (CHECK_TIMER_SET) {
-		  make_timed_call((void*)pptr, new_foo);
-	       } else
+		  timeout=make_timed_call(pptr, new_foo);
+		  if (timeout_flag == TIMER_SETUP_ERR) {
+		     // problem setting up timer (Windows only)
+	          } else if (timeout_flag) {
+	            // timeout happened
+		    .....
+		  }
+	       } else {
 	         // timer is not set
-		 new_foo((void*)pptr); 
+		 new_foo(pptr); 
+	       }
 
        step 3: Free the xsbTimeout object when appropriate.
 */
