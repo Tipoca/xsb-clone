@@ -19,17 +19,19 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: deref.h,v 1.2 1998-12-21 01:08:13 cbaoqiu Exp $
+** $Id: deref.h,v 1.3 1999-07-04 10:39:18 kostis Exp $
 ** 
 */
 
 
 /* deref expects argument of type Cell */
 
-#define deref(op) while (isref(op)) { \
-		    if (op == follow(op)) \
-  			break; \
-		    op = follow(op); }
+#define deref(op) deref2(op,break)
+
+#define deref2(op,stat) while (isref(op)) { \
+                    if (op == follow(op)) \
+                        stat; \
+                    op = follow(op); }
 
 #define cptr_deref(op) while (isref(op)) { \
 			 if (op == (CPtr) cell(op)) \
