@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.i,v 1.7 1999-04-16 04:10:42 kifer Exp $
+** $Id: io_builtins.i,v 1.8 1999-04-21 02:22:07 kifer Exp $
 ** 
 */
 
@@ -209,11 +209,13 @@ inline static bool file_function(void)
     break;
   case FILE_PUT:   /* file_function(7, +FileDes, +IntVal) */
     /* ptoc_int(2) is file descriptor */
-    SET_FILEPTR(fptr, ptoc_int(2));
+    file_des = ptoc_int(2);
+    SET_FILEPTR(fptr, file_des);
     /* ptoc_int(3) is char to write */
-    putc(ptoc_int(3), fptr);
+    value = ptoc_int(3);
+    putc(value, fptr);
 #ifdef WIN_NT
-    if (file_des==2 && ch=='\n') fflush(fptr); /* hack for Java interface */
+    if (file_des==2 && value=='\n') fflush(fptr); /* hack for Java interface */
 #endif
     break;
   case FILE_GETBUF:
