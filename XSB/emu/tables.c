@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.1 1999-10-12 19:23:08 ejohnson Exp $
+** $Id: tables.c,v 1.2 1999-10-15 02:54:15 cbaoqiu Exp $
 ** 
 */
 
@@ -173,7 +173,7 @@ BTNptr table_answer_search(SGFrame producer, int size, CPtr template,
 
 /*-------------------------------------------------------------------------*/
 
-void table_consume_answer(BTNptr answer, int size, CPtr template,
+void table_consume_answer(BTNptr answer, int size, int attv_num, CPtr template,
 			  TIFptr pred) {
 
   if (size == 0) {
@@ -186,7 +186,7 @@ void table_consume_answer(BTNptr answer, int size, CPtr template,
       consume_subsumptive_answer(answer,size,template);
     else
       /* this also tracks variables created during unification */
-      load_solution_trie(size,template,answer);
+      load_solution_trie(size,attv_num,template,answer);
   }
 }
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.10 1999-10-12 20:22:56 ejohnson Exp $
+** $Id: residual.c,v 1.11 1999-10-15 02:54:13 cbaoqiu Exp $
 ** 
 */
 
@@ -74,7 +74,7 @@ static Cell cell_array[500];
 /*----------------------------------------------------------------------*/
 
 #define build_subgoal_args(SUBG)	\
-	load_solution_trie(arity, &cell_array[arity-1], subg_leaf_ptr(SUBG))
+	load_solution_trie(arity, 0, &cell_array[arity-1], subg_leaf_ptr(SUBG))
 
 
 CPtr *copy_of_var_addr;
@@ -191,7 +191,7 @@ void build_delay_list(CPtr delay_list, DE de)
 	 * and binds the call substitution factor.  The substitution
 	 * factor of the answer is left in var_addr[].
 	 */
-	load_solution_trie(i, &cell_array[i-1], ans_subst);
+	load_solution_trie(i, 0, &cell_array[i-1], ans_subst);
 	
 #ifdef DEBUG_DELAYVAR
 	xsb_dbgmsg(">>>> (after load_solution_trie) num_heap_term_vars = %d",

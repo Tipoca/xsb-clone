@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete.i,v 1.16 1999-10-13 13:59:22 ejohnson Exp $
+** $Id: complete.i,v 1.17 1999-10-15 02:54:12 cbaoqiu Exp $
 ** 
 */
 
@@ -66,7 +66,7 @@ case check_complete: {
     }
     else { /* This code mimics the answer_return code */
       CPtr answer_template;
-      Cell template_size;
+      Cell template_size, attv_num;
       ALNptr answer_set;
       BTNptr answer_leaf;
 
@@ -76,10 +76,12 @@ case check_complete: {
 	tcp_trie_return(breg) = answer_set;   /* update answer continuation */
 	ARITY = tcp_arity(breg); 
 	answer_template = breg + TCP_SIZE + (Cell)ARITY;
-	template_size = int_val(cell(answer_template));
+
+	int tmp = int_val(cell(answer_template));
+	get_var_and_attv_nums(template_size, attv_num, tmp);
 	answer_template += template_size;
 	answer_leaf = ALN_Answer(answer_set);
-	table_consume_answer(answer_leaf,template_size,answer_template,
+	table_consume_answer(answer_leaf,template_size,attv_num,answer_template,
 			     subg_tif_ptr(subgoal));
 
 	/*

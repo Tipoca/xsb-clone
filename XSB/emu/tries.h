@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.17 1999-10-13 14:53:34 ejohnson Exp $
+** $Id: tries.h,v 1.18 1999-10-15 02:54:16 cbaoqiu Exp $
 ** 
 */
 
@@ -300,7 +300,7 @@ extern void	aux_call_info(void);
 extern void	remove_open_tries(CPtr);
 extern void     init_trie_aux_areas(void);
 extern void	get_lastnode_cs_retskel(void);
-extern void     load_solution_trie(int, CPtr, BTNptr);
+extern void     load_solution_trie(int, int, CPtr, BTNptr);
 extern void     variant_call_search(TabledCallInfo *, CallLookupResults *);
 extern BTNptr   one_term_chk_ins(CPtr, BTNptr, int *);
 extern BTNptr   whole_term_chk_ins(Cell, BTNptr *, int *);
