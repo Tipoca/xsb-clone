@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.10 1999-03-09 23:08:15 warren Exp $
+** $Id: biassert.c,v 1.11 1999-03-11 17:15:08 kostis Exp $
 ** 
 */
 
@@ -663,10 +663,6 @@ int assert_code_to_buff(/* Clause, Size */)
     Head = p2p_arg(Clause, 1);
     Body = p2p_arg(Clause, 2);
     if (isstring(Body)) {
-      if (isnil(Body)) {
-	fprintf(stderr,"***Error: [] cannot be body of assert\n");
-	return FALSE;
-      }
       sym = insert(string_val(Body),0,(Psc)flags[CURRENT_MODULE],&v);
       Body = makecs(hreg);
       new_heap_functor(hreg,sym->psc_ptr);
