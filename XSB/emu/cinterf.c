@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.35 2001-03-17 05:44:02 kifer Exp $
+** $Id: cinterf.c,v 1.36 2001-05-13 21:01:20 kifer Exp $
 ** 
 */
 
@@ -302,7 +302,7 @@ char *p_charlist_to_c_string(prolog_term term, VarString *buf,
   int escape_mode=FALSE;
   prolog_term list = term, list_head;
 
-  if (!is_list(list)) {
+  if (!is_list(list) && !is_nil(list)) {
     xsb_abort("[%s] %s is not a list of characters", in_func, where);
   }
 

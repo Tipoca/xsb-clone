@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.20 2001-03-17 05:44:01 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.21 2001-05-13 21:01:20 kifer Exp $
 ** 
 */
 
@@ -275,11 +275,11 @@ xsbBool fmt_write(void)
       XSB_StrSet(&StrArgBuf,"");
       print_pterm(Arg, TRUE, &StrArgBuf);
       PRINT_ARG(StrArgBuf.string);
-    } else if (is_string(Arg)) {
+    } else if (is_string(Arg) && !is_nil(Arg)) {
       TYPE_ERROR_CHK('s', "FMT_WRITE");
       str_arg = string_val(Arg);
       PRINT_ARG(str_arg);
-    } else if (is_list(Arg)) {
+    } else if (is_list(Arg) || is_nil(Arg)) {
       TYPE_ERROR_CHK('s', "FMT_WRITE");
       sprintf(aux_msg, "argument %d", i);
       str_arg = p_charlist_to_c_string(Arg, &StrArgBuf, "FMT_WRITE", aux_msg);
