@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 2001-05-03 04:18:33 kifer Exp $
+## $Id: Makefile,v 1.6 2001-05-04 00:38:24 kifer Exp $
 ## 
 ##
 
@@ -61,9 +61,7 @@ HDRMSG = "While compiling XSB/packages/flora2/demos:"
 all: init recompile
 
 recompile: $(ALL) finish
-	@touch cmd...
-	$(Prolog) < cmd...
-	@rm cmd...
+	./CompileChangedFiles.sh $(Prolog)
 	@cat $(SVFILE)
 
 .flr.P:
@@ -71,10 +69,10 @@ recompile: $(ALL) finish
 
 init:
 	rm -f $(SVFILE)
-	@echo "import bootstrap_flora/0 from flora2." >> cmd...
-	@echo "bootstrap_flora." >> cmd...
-	@echo "file_reopen($(SVFILE),w,$(STDWARN),_)." >> cmd...
-	@echo "file_clone($(STDWARN), $(STDERR),_)." >> cmd...
+	@echo "import bootstrap_flora/0 from flora2." >> cmd...hdr
+	@echo "bootstrap_flora." >> cmd...hdr
+	@echo "file_reopen($(SVFILE),w,$(STDWARN),_)." >> cmd...hdr
+	@echo "file_clone($(STDWARN), $(STDERR),_)." >> cmd...hdr
 	@echo 'fmt_write($(STDWARN),"-------------- Warnings/Errors --------------------\n",_).' >> cmd...
 	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
 	@echo "file_flush($(STDWARN), _)." >> cmd...
