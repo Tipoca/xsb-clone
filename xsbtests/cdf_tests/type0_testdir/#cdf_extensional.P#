@@ -18,7 +18,8 @@ isa_ext(cid(f(cid(c1,test),
     	     cid(c13,test)).
 
 isa_ext(crid(s1,test),crid(s2,test)).
-isa_ext(crid(s2,test),crid(s2,cdf)).
+isa_ext(crid(s2,test),crid(s2,cdf)).b
+
 isa_ext(crid(s2,test),crid(s3,test)).
 isa_ext(crid(s3,test),crid('CDF Class-Object Relations',cdf)).
 
@@ -67,7 +68,7 @@ minAttr_ext(cid(c2,test),rid(r2,test),oid(o12,test),2).
 minAttr_ext(oid(o2,test),rid(r1,test),cid(c12,test),2).
 minAttr_ext(oid(o2,test),rid(r4,test),cid(c12,test),2).
 minAttr_ext(oid(o2,test),rid(r2,test),oid(o12,test),2).
-minAttr_ext(oid(o2,test),rid(r4,test),oid(o12,test),2).
+%minAttr_ext(oid(o2,test),rid(r4,test),oid(o12,test),2).
 
 minAttr_ext(cid(c2,test),rid(prod(rid(r2,test),rid(r2,test)),test),cid(c12,test),2).
 
@@ -80,6 +81,11 @@ maxAttr_ext(oid(o2,test),rid(r4,test),oid(o12,test),2).
 
 maxAttr_ext(cid(c2,test),rid(prod(rid(r2,test),rid(r2,test)),test),
 	                                                         cid(c12,test),2).
+
+coversAttr_ext(cid(c2,test),rid(r2,test),cid(c12,test)).
+coversAttr_ext(cid(c2,test),rid(r2,test),cid(c13,test)).
+coversAttr_ext(cid(c2,test),rid(r3,test),cid(c12,test)).
+
 
 end_of_file.
 % nothing can be both a c12 and a c2.

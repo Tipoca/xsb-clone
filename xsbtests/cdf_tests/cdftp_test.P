@@ -20,6 +20,11 @@ loadont:-
 	load_intensional_rules(cdftp_testdir).
 
 testont:- 
+	(cdf_configuration(tabled_isa,on) -> 
+	    testont1
+	  ; messageln('Cannot perform cdfpt_test without tabled isa')).
+
+testont1:- 
 %	loadont,
 	set_debug_off,
 	testval(cid(bookshelfStereo,o1),true),

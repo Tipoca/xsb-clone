@@ -14,3 +14,4 @@ options=$2
 ../loadtest.sh "$XEMU $options" ce_test "testall."
 ../loadtest.sh "$XEMU $options" cdftp_test "oneclicktest."
 ../gentest.sh "$XEMU $options" type0_test "testreturns."
+../gentest.sh "$XEMU $options" insert_test "testreturns."

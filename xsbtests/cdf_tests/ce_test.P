@@ -1,8 +1,8 @@
 :- compiler_options([xpp_on]).
 
 #include "standard.h"
-
 :- import messageln/2 from standard.
+messageln(Message) :- messageln(Message, STDMSG).
 
 :- [ce_values].
 :- [altcdf].
@@ -14,7 +14,9 @@
 %?- testall.
 
 testall:- 
-	testall1.
+	(cdf_configuration(tabled_isa,on) -> 
+	    testall1
+	  ; messageln('Cannot perform ce_test without tabled isa')).
 
 testall1:- 
 	sat_test(Formula,Val),

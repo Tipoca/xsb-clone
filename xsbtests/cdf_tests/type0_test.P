@@ -1,5 +1,6 @@
 
 :- [altcdf].
+:- [test_utils].
 
 :- import load_extensional_facts/1,
 	  load_intensional_rules/1 from cdf_io.
@@ -8,8 +9,6 @@
 :- import retractallExtTerm/1 from cdf_init_cdf.
 :- import allAttr/3, hasAttr/3, classHasAttr/3, minAttr/4, maxAttr/4, 
 	 coversAttr/3 from cdf_init_cdf.
-
-:- import numbervars/1 from num_vars.
 
 loadfacts:- 
 	load_extensional_facts('type0_testdir').
@@ -104,15 +103,6 @@ testcoversAttrreturns:-
 	test_display(coversAttr(cid(c2,test),rid(r2,test),X)),
 	% coversAttr(cid(c2,test),rid(r2,test),cid(c13,test))
 	test_display(coversAttr(cid(c2,test),X,cid(c12,test))).
-
-test_display(Goal):- 
-	copy_term(Goal,Goala),
-	numbervars(Goala),
-	write('% -------------------- goal -----------  '),writeln(Goala),
-	call(Goal),
-	writeln(Goal),
-	fail.
-test_display(_).
 
 
 end_of_file.

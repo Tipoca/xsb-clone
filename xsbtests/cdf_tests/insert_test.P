@@ -1,0 +1,60 @@
+
+:- [altcdf].
+:- [test_utils].
+
+:- import load_extensional_facts/1,
+	  load_intensional_rules/1 from cdf_io.
+:- import update_all_components/2 from cdf_comps_noshare.
+:- import load_component/3 from cdf_comps_share.
+:- import retractallExtTerm/1 from cdf_init_cdf.
+:- import allAttr/3, hasAttr/3, classHasAttr/3, minAttr/4, maxAttr/4, 
+	 coversAttr/3,
+	 newExtTerm/1 from cdf_init_cdf.
+
+loadfacts:- 
+	load_extensional_facts('type0_testdir').
+%	load_intensional_rules('type0_testdir').
+
+testreturns:- 
+	loadfacts,
+	testhasAttrtreturns_1,
+	testhasAttrtreturns_2.
+/*
+	testallAttrtreturns,
+	testclassHasAttrreturns,
+	testminAttrreturns,
+	testmaxAttrreturns,
+*/
+
+testhasAttrtreturns_1:- 
+/* 
+   below the following bindings should be returned.
+    test bff inh:  X = rid(r4,test) Y = oid(o12,test);
+    test bff inh:  X = rid(r4,test) Y = oid(o13,test);
+                      X = rid(r1,test) Y = oid(o12,test);
+                      X = rid(prod(rid(r2,test),rid(r2,test)),test) Y = cid(c12,test);
+Note that  X = rid(r2,test) Y = oid(o12,test) is implied by          
+               X = rid(r1,test) Y = oid(o12,test);
+*/
+	test_display(hasAttr(oid(o2,test),X,_Y)).
+
+testhasAttrtreturns_2:- 
+%	add an object in a class that already has a hasAttr
+	newExtTerm(hasAttr_ext(oid(o2,test),rid(r1,test),oid(o12,test))),
+%	add an object not in a class that already has a hasAttr
+	newExtTerm(hasAttr_ext(oid(o2,test),rid(r4,test),oid(o13,test))),
+% test fbb inh: X = cid(o2,test);
+	test_display(hasAttr(X,rid(r1,test),cid(c12,test))),
+/* 
+   below the following bindings should be returned.
+    test bff inh:  X = rid(r4,test) Y = oid(o12,test);
+    test bff inh:  X = rid(r4,test) Y = oid(o13,test);
+                      X = rid(r1,test) Y = oid(o12,test);
+                      X = rid(prod(rid(r2,test),rid(r2,test)),test) Y = cid(c12,test);
+Note that  X = rid(r2,test) Y = oid(o12,test) is implied by          
+               X = rid(r1,test) Y = oid(o12,test);
+*/
+	test_display(hasAttr(oid(o2,test),X,_Y)).
+
+end_of_file.
+
