@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbsocket.i,v 1.10 1999-07-25 15:36:21 kifer Exp $
+** $Id: xsbsocket.i,v 1.11 1999-07-26 03:22:52 kifer Exp $
 ** 
 */
 
@@ -128,7 +128,7 @@ inline static bool xsb_socket_request(void)
     sock_linger_opt.l_onoff = TRUE;
     sock_linger_opt.l_linger = 5;
     if (setsockopt(sock_handle, SOL_SOCKET, SO_LINGER,
-		   &sock_linger_opt, sizeof(sock_linger_opt))
+		   (void *) &sock_linger_opt, sizeof(sock_linger_opt))
 	< 0) {
       xsb_warn("SOCKET_REQUEST: Cannot set socket linger option");
       return FALSE;
