@@ -18,12 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: packaging.P,v 1.5 2003-07-22 17:19:22 lfcastro Exp $
+** $Id: packaging.P,v 1.6 2004-03-13 21:04:51 dwarren Exp $
 ** 
 */
 
 
 :- dynamic package_configuration/2.
+:- import package_configuration/2 from usermod.
 :- import library_directory/1 from usermod.
 
 %% This predicate is suppsed to keep track of the packages.
