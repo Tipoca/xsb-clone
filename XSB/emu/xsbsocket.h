@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbsocket.h,v 1.5 1999-07-21 21:33:34 kifer Exp $
+** $Id: xsbsocket.h,v 1.6 1999-07-21 23:09:00 kifer Exp $
 ** 
 */
 
@@ -50,7 +50,7 @@
 #define WSAGetLastError()      	   1       /* in windows; use 1 in Unix */
 #define BAD_SOCKET(sockfd)         sockfd<0
 #define SOCKET_OP_FAILED(sockfd)   sockfd<0
-#define IS_IP_ADDR(string)    	   inet_addr(string) != (in_addr_t) -1
+#define IS_IP_ADDR(string)    	   inet_addr(string) != -1
 #endif
 
 #ifdef WIN_NT
