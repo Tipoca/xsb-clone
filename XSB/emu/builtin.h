@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.28 2000-03-01 16:22:33 dwarren Exp $
+** $Id: builtin.h,v 1.29 2000-04-05 17:42:02 cbaoqiu Exp $
 ** 
 */
 
@@ -83,6 +83,8 @@
 #define TERM_HASH	50
 #define UNLOAD_SEG	51
 #define LOAD_OBJ	52
+
+#define WH_RANDOM	53
 
 #define GETENV			 54
 #define SYS_SYSCALL		 55
