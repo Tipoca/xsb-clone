@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrprettyprint.flr,v 1.2 1999-06-16 15:23:08 kifer Exp $
+** $Id: flrprettyprint.flr,v 1.3 1999-06-17 07:52:22 kifer Exp $
 **
 */
 
@@ -35,7 +35,7 @@
 
 %%:- export flora_prettyprint/1.
 
-Class :: flora_metaclass.
+Obj : flora_pp_superclass.
 
 
 %% Methods to ignore during pretty printing
@@ -51,6 +51,7 @@ flora_prettyprint_class(Class, OutFile) :-
 flora_prettyprint_class(Class) :-
     	flora_prettyprint(Class),
 	X : Class,
+	X[],  %% to ground X, if non-ground
 	flora_prettyprint(X),
 	fail.
 
@@ -73,7 +74,7 @@ flora_pp_write_header(X) :-
     	fmt_write('''%s''[', f(X)),
     	nl.
 flora_pp_write_header(X) :-
-    	is_string(X),
+    	is_charlist(X),
 	!,
     	fmt_write('"%s"[',arg(X)),
     	nl.
@@ -159,7 +160,7 @@ flora_pp_write_value(Val) :-
 	!,
 	fmt_write('''%s''', arg(Val)).
 flora_pp_write_value(Val) :-
-	is_string(Val),
+	is_charlist(Val),
 	!,
 	fmt_write('"%s"', arg(Val)).
 flora_pp_write_value(Val) :- write(Val).
