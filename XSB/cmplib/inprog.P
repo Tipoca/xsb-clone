@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inprog.P,v 1.1.1.1 1998-11-05 17:00:07 sbprolog Exp $
+** $Id: inprog.P,v 1.2 1999-01-27 14:40:57 kostis Exp $
 ** 
 */
 
@@ -50,7 +50,7 @@ inprog(Sym, clause(Args,Body,CPrag), clause(NArgs,NBody,CPrag), NC) :-
       inp_body(Body, NBody, VarTab1, [], 1, _ChunkOut, VarList)
 		% The id of the first chunk is 1, same as the head.
     ),
-    varproc(VarList, VarTab, Sym, NC, PvarCount),
+    varproc(VarList, VarTab, PvarCount),
     ( (need_alloc(Body) ; sym_type(Sym,tabled(_,_,_,_))) -> 
 	ARSize is PvarCount + 2		/* tls changed for XWAM */
     ; ARSize = 0

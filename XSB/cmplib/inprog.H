@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inprog.H,v 1.1.1.1 1998-11-05 17:00:06 sbprolog Exp $
+** $Id: inprog.H,v 1.2 1999-01-27 14:40:54 kostis Exp $
 ** 
 */
 
@@ -29,7 +29,7 @@
 :- import member1/2 from auxlry.
 :- import gennum/1 from prof_sbp.
 :- import sym_name/3, sym_type/2 from symtab.
-:- import varproc/5, vprag_common/2, vprag_argno/2, vprag_level/2,
+:- import varproc/3, vprag_common/2, vprag_argno/2, vprag_level/2,
 	  vprag_context/2
      from varproc.
 
