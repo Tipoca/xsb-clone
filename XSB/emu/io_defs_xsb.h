@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_defs_xsb.h,v 1.2 1999-11-23 04:06:44 kifer Exp $
+** $Id: io_defs_xsb.h,v 1.3 2000-12-27 00:30:05 kifer Exp $
 ** 
 */
 
@@ -42,6 +42,7 @@
 #define FD2IOPORT   	   15
 #define FILE_CLEARERR      16
 #define TMPFILE_OPEN       17
+#define IS_VALID_IOPORT    18
 
 /* OP numbers for formatted_io */
 #define FMT_WRITE    	   1
