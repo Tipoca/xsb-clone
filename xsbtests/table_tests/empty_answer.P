@@ -15,7 +15,7 @@ path(X,Y) :- arc(X,Y).
 path(X,Y) :- path(X,Z), arc(Z,Y).
 
 test :- 
-	path(X1,Y1),
+	path(_X1,_Y1),
 	path(X,Y), % writeln(path(X,Y)), 
 	(((X=1, Y=2); (X=2, Y=2)) ->
 	    get_calls(path(_,_),Cs,Oskel),
@@ -26,4 +26,4 @@ test :-
 	;
 	    fail
         ).
-test.
+test :- writeln('Empty answer OK').
