@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.31 2003-02-10 17:18:06 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.32 2003-02-27 20:36:53 dwarren Exp $
 ** 
 */
 
@@ -1411,12 +1411,13 @@ void write_quotedname(FILE *file, char *string)
 }
 
 
-static char *wcan_string = NULL;
+char *wcan_string = NULL;
+int wcan_disp = 0;
+int letter_flag = 1;
+
 static int wcan_string_len = 0;
-static int wcan_disp = 0;
 static char wcan_buff[32];
 static Psc dollar_var_psc = NULL;
-static int letter_flag = 1;
 
 void expand_wcan_string(int need)
 {
