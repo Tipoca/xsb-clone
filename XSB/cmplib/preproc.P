@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: preproc.P,v 1.1.1.1 1998-11-05 17:00:11 sbprolog Exp $
+** $Id: preproc.P,v 1.2 1999-11-20 06:51:12 kifer Exp $
 ** 
 */
 
@@ -285,7 +285,7 @@ empty_ifthen_else(inlinegoal(true,0,[]), inlinegoal(true,0,[])).
 
 gensym_pred(P, NP) :-
 	gensym('_#', N2),
-	name_append(P, N2, NP).
+	str_cat(P, N2, NP).
 
 force_preprocess_loaded.
 

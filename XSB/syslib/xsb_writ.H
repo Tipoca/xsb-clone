@@ -18,20 +18,22 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.H,v 1.4 1999/04/08 18:06:33 kostis Exp $
+** $Id: xsb_writ.H,v 1.5 1999/08/09 00:35:30 kifer Exp $
 ** 
 */
 
 
 :- export file_write/2, file_write0/2, file_write_prolog/2, 
-	  file_write_quoted/2, file_write_canonical/2,
-	  file_nl/1.
+	file_write_quoted/2, file_write_canonical/2,
+	file_nl/1.
+:- export write_int/1, write_float/1.
 
 :- import '_$op'/3 from file_op.
 :- import file_put/2 from file_io.
 :- import integer/1 from standard.
 :- import term_psc/2, psc_arity/2, psc_name/2, term_arg/3, 
-	  term_type/2, file_puttoken/3, file_writequoted/2
+	stat_flag/2,
+	term_type/2, file_puttoken/3, file_writequoted/2
      from machine.
 
 %% We must import this from the loader, because this might be called

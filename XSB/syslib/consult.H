@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.17 1999/11/10 17:37:24 warren Exp $
+** $Id: consult.H,v 1.18 1999/11/12 14:41:29 warren Exp $
 ** 
 */
 
@@ -67,5 +67,5 @@
 	  '_$multifile'/1, '_$multifile1'/1,
 	  '_$multifile2'/3, '_$apply_arity'/1
      from parse.
-:- import conset/2, conget/2  from prof_sbp.
+:- import conset/2, conget/2  from gensym.
 :- import xsb_configuration/2 from xsb_configuration.

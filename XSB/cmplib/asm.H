@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asm.H,v 1.3 1999-11-03 21:35:17 cbaoqiu Exp $
+** $Id: asm.H,v 1.4 1999-11-20 06:50:41 kifer Exp $
 ** 
 */
 
@@ -30,7 +30,8 @@
 :- import asm_opt/5 from asm_opt.
 :- import asm_inst/4 from asm_inst.
 :- import term_hash/3, str_len/2 from machine.
-:- import ll_arg/3, write_int/1 from prof_sbp.
+:- import write_int/1 from xsb_writ.
+:- import ll_arg/3 from auxlry.
 :- import functor/3, write/1, put/1, tell/1 from standard.
 :- import asm_gendata/1, asm_genindex/2, asm_gentext/2, asm_putlength/1
      from asmpass2.

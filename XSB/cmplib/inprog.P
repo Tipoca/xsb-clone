@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inprog.P,v 1.5 1999-10-09 16:31:22 kostis Exp $
+** $Id: inprog.P,v 1.6 1999-11-20 06:50:57 kifer Exp $
 ** 
 */
 
@@ -169,7 +169,7 @@ inp_arg(Arg, NArg, VOList, VOListr, Head, Argno, Level, VarList) :-
 		vprag_argno(Prag, Argno),
 		VOList = [NArg|VOListr],
 		vprag_common(Prag, Common),
-		member1(variable(Vid, Common), VarList)
+		memberchk(variable(Vid, Common), VarList)
 	; Arg = structure(Sym,Args) ->
 		NArg = structure(Sym,NArgs),
         	inp_subargs(Args, NArgs, VOList, VOListr,Head,Argno,VarList)

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.H,v 1.9 1999-10-26 06:51:37 kifer Exp $
+** $Id: foreign.H,v 1.10 1999-11-20 06:51:49 kifer Exp $
 ** 
 */
 
@@ -31,10 +31,10 @@
 :- import str_sub/2 from string.
 :- import memberchk/2 from basics.
 :- import file_close/1, fmt_write_string/3 from file_io.
-:- import write_int/1 from prof_sbp.
+:- import write_int/1 from xsb_writ.
 :- import process_control/2 from shell.
 :- import open_or_xpp_file/2 from parse.
-:- import conset/2, conget/2 from prof_sbp.
+:- import conset/2, conget/2 from gensym.
 :- import attach/2, length/2 from listutil.
 :- import hdr_ext/1, obj_ext/1 from curr_sym.
 :- import xsb_configuration/2 from xsb_configuration.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.H,v 1.3 1998/11/18 16:21:52 kifer Exp $
+** $Id: xcallxsb.H,v 1.4 1999/03/30 16:25:50 kifer Exp $
 ** 
 */
 
@@ -37,5 +37,5 @@
 :- import file_write/2, file_nl/1 from xsb_writ.
 :- import file_read_foe/3, file_read/3 from xsb_read.
 :- import excess_vars/4 from setof.
-:- import conset/2 from prof_sbp.
+:- import conset/2 from gensym.
 :- import [] / 0 from usermod.	       % just to make usermod typed "module"

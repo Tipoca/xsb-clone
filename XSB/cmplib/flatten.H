@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flatten.H,v 1.1.1.1 1998-11-05 17:00:06 sbprolog Exp $
+** $Id: flatten.H,v 1.2 1999-11-20 06:50:53 kifer Exp $
 ** 
 */
 
@@ -27,6 +27,6 @@
 :- export flatten/2.
 :- export force_flatten_loaded/0.
 
-:- import gennum/1 from prof_sbp.
+:- import gennum/1 from gensym.
 :- import arithrelop/1 from tp_eval.
 

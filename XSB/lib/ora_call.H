@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ora_call.H,v 1.5 1999-04-27 14:39:57 kifer Exp $
+** $Id: ora_call.H,v 1.6 1999-11-20 06:51:51 kifer Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
 
 :- import table_arity/2 from usermod.
 :- import str_cat/3, oracle_query/7 from machine.
-:- import conset/2, conget/2 from prof_sbp.
+:- import conset/2, conget/2 from gensym.
 :- import (dynamic)/1, assert/1, asserta/1, retract/1,
    retractall/1 from assert.
 :- import write/1, writeln/1, (=..)/2, atom_codes/2 from standard.

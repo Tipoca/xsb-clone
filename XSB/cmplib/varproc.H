@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varproc.H,v 1.2 1999-01-27 14:40:59 kostis Exp $
+** $Id: varproc.H,v 1.3 1999-11-20 06:51:41 kifer Exp $
 ** 
 */
 
@@ -30,7 +30,6 @@
 	  vprag_context/2, vprag_loc/2, vprag_occ/2, vprag_type/2, 
 	  vprag_use/2, vprag_nouse/2, vprag_lastchunk/2, vprag_type1/2.
 
-:- import member1/2 from auxlry.
-:- import member/2, append/3 from prof_sbp.
+:- import member/2, append/3, memberchk/2 from basics.
 :- import closetail/1, length/2, member2/2 from listutil.
 

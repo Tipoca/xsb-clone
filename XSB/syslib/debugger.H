@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.H,v 1.10 1999/08/25 13:57:08 kifer Exp $
+** $Id: debugger.H,v 1.11 1999/08/28 09:49:12 kostis Exp $
 ** 
 */
 
@@ -78,7 +78,7 @@
 	trace_standard_predicate(_,_), is_xpar_call(_,_),
 	trace_this_enable_print_on_redo(_,_).
 
-:- import conset/2, conget/2 from prof_sbp.
+:- import conset/2, conget/2 from gensym.
 
 
 /* --------------------- end of file debugger.H ----------------------- */

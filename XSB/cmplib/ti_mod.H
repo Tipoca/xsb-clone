@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ti_mod.H,v 1.2 1999-08-13 15:28:58 kostis Exp $
+** $Id: ti_mod.H,v 1.3 1999-11-20 06:51:28 kifer Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 
 :- import option/1 from auxlry.
 :- import str_cat/3 from string.
-:- import gensym/2 from prof_sbp.
+:- import gensym/2 from gensym.
 :- import gensym_pred/2 from preproc.
 :- import membercheck/2 from listutil.
 :- import sym_name/3, sym_insert/5, sym_pass_thru/1 from symtab.

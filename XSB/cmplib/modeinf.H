@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modeinf.H,v 1.2 1999-04-27 14:39:17 kifer Exp $
+** $Id: modeinf.H,v 1.3 1999-11-20 06:50:59 kifer Exp $
 ** 
 */
 
@@ -57,7 +57,7 @@
    from basics.
 
 :- import str_cat/3 from string.
-:- import conset/2, conget/2 from prof_sbp.
+:- import conset/2, conget/2 from gensym.
 :- import libpath/1 from loader.
 
 :- import '_$call_user'/1 from usermod.

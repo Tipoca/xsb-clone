@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_index.H,v 1.2 1999-08-09 15:07:15 kostis Exp $
+** $Id: tp_index.H,v 1.3 1999-11-20 06:51:31 kifer Exp $
 ** 
 */
 
@@ -27,6 +27,7 @@
 :- export force_tp_index_loaded/0, makeindex/6, index_split/2.
 
 :- import sym_name/3 from symtab.
-:- import gennum/1, member/2 from prof_sbp.
+:- import gennum/1 from gensym.
+:- import member/2 from basics.
 :- import length/2, nthmember/3 from listutil.
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_cond.H,v 1.1.1.1 1998-11-05 17:00:19 sbprolog Exp $
+** $Id: tp_cond.H,v 1.2 1999-11-20 06:51:29 kifer Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 :- export tcond/10, tvar_hold/3, force_tp_cond_loaded/0.
 
 :- import warning/1 from auxlry.
-:- import gennum/1 from prof_sbp.
+:- import gennum/1 from gensym.
 :- import vprag_loc/2, vprag_type/2 from varproc.
 :- import eval_relop/11, arithrelop/1 from tp_eval.
 :- import geninl_load_lhs/7, geninline/9 from tpinline.

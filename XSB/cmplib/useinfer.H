@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: useinfer.H,v 1.2 1999-04-10 13:56:14 kostis Exp $
+** $Id: useinfer.H,v 1.3 1999-11-20 06:51:39 kifer Exp $
 ** 
 */
 
 
 :- export useinfer/3.
 
-:- import member/2 from prof_sbp.
+:- import member/2 from basics.
 :- import warning/1, option/1 from auxlry.
 :- import standard_symbol/3 from std_xsb.
 :- import sym_propin/2, sym_prop/2, sym_insert/5, sym_scan/3,

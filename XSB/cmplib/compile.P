@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.P,v 1.10 1999-11-16 18:24:06 kifer Exp $
+** $Id: compile.P,v 1.11 1999-11-20 06:50:51 kifer Exp $
 ** 
 */
 
@@ -74,7 +74,7 @@ compile(Modname, Basename, Options, ExportList) :-
 	dispose_symtab( SymTab ),
 	( option(compile_off) -> print_result(Module) ; true ),
 	( conget('error occurred', 1) ->
-		str_cat('/bin/rm ', OFile, Command), system(Command), 
+		sys_unlink(OFile,_), 
 		message(('The file ', OFile, ' is removed')), abort
 	; true
 	), !,
@@ -181,6 +181,8 @@ modeinfer(ModName, Module, SymTab) :-
 
 /*======================================================================*/
 /*======================================================================*/
+
+myclose(F) :- tell(F), told.
 
 compile1(Modname, Module, SymTab, AFile, OFile, TIFile, IsModule) :-
       ( option(compile_off) ->		%  generate *.A file

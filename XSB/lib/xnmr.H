@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xnmr.H,v 1.5 1999-10-11 17:37:17 luis Exp $
+** $Id: xnmr.H,v 1.6 1999-11-20 06:51:52 kifer Exp $
 ** 
 */
 
@@ -50,7 +50,7 @@
 :- import consult/1 from consult.
 :- consult(sModels).
 
-:- import coninc/1, conget/2 from prof_sbp.
+:- import coninc/1, conget/2 from gensym.
 
 :- import init_smodels/1, a_stable_model/0, print_current_stable_model/0,
 	in_all_stable_models/2, set_query_true/1

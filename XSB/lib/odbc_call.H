@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.3 1999-04-10 14:26:04 kostis Exp $
+** $Id: odbc_call.H,v 1.4 1999-11-20 06:51:50 kifer Exp $
 ** 
 */
 
@@ -27,5 +27,5 @@
 
 :- import str_cat/3 from string.
 :- import odbc_exec_query/5 from machine.
-:- import conset/2, conget/2 from prof_sbp.
+:- import conset/2, conget/2 from gensym.
 :- import length/2, append/3, member/2 from basics.

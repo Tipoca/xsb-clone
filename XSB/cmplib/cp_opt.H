@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.H,v 1.2 1999-04-27 14:39:15 kifer Exp $
+** $Id: cp_opt.H,v 1.3 1999-11-20 06:50:52 kifer Exp $
 ** 
 */
 
@@ -29,6 +29,6 @@
 :- import parse_preddef/4 from parse.
 :- import have_hardcut/2 from preproc.
 :- import index_split/2 from tp_index.
-:- import member/2, append/3 from prof_sbp.
+:- import member/2, append/3 from basics.
 :- import functor/3, arg/3, atom_codes/2 from standard.
 :- import sym_type/2, sym_name/3, sym_index/2 from symtab.

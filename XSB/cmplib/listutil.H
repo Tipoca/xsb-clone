@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: listutil.H,v 1.1.1.1 1998-11-05 17:00:07 sbprolog Exp $
+** $Id: listutil.H,v 1.2 1999-11-20 06:50:58 kifer Exp $
 ** 
 */
 
@@ -29,5 +29,5 @@
 	  closetail/1, insert/2, membercheck/2, nthmember/3,
 	  absmerge/3, delete/3, delete_ith/4, reverse/2.
 
-:- import member/2 from prof_sbp.
+:- import member/2 from basics.
 

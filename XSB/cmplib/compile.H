@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.H,v 1.6 1999-11-16 18:24:04 kifer Exp $
+** $Id: compile.H,v 1.7 1999-11-20 06:50:49 kifer Exp $
 ** 
 */
 
@@ -66,9 +66,9 @@
 :- import message/1, warning/1, error/1, time_message/2,
 	  setoptions/1, option/1
      from auxlry.
-:- import prepare/0, member/2, gennum/1,
-	myclose/1, conget/2, conset/2, system/1
-     from prof_sbp.
+:- import prepare/0, gennum/1, conget/2, conset/2 from gensym.
+:- import sys_unlink/2 from shell.
+:- import member/2 from basics.
 :- import force_ti_mod_loaded/0, ti_pred_block/3 from ti_mod.
 :- import hdr_ext/1, obj_ext/1, asm_ext/1, decl_ext/1 from curr_sym.
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.8 1999/08/28 15:28:44 kostis Exp $
+** $Id: loader.H,v 1.9 1999/10/17 00:13:48 kifer Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 	  windows_os_loader/0.
 
 :- import abort/1 from standard.
-:- import conset/2 from prof_sbp.
+:- import conset/2 from gensym.
 :- import reconsult/1 from consult.
 :- import standard_symbol/3 from std_xsb.
 :- import library_directory/1 from usermod.

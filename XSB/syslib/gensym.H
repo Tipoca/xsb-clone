@@ -1,8 +1,9 @@
-/* File:      spec.H
-** Author(s): Kostis Sagonas
+/* File:      gensym.H 
+** Author(s): Kostis F, Sagonas, Jiyang Xu 
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
-** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
+** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1999
+** Copyright (C) ECRC, Germany, 1990
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -18,20 +19,21 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: spec.H,v 1.3 1999-11-20 06:51:17 kifer Exp $
+** $Id:$
 ** 
 */
 
 
-:- export spec/2.
+:- export gensym/2, gennum/1, prepare/0.
+:- export copyterm/2, conlength/2.
+:- export conset/2, conget/2, coninc/1.
+:- export newcounter/1, inccounter/1, getcounter/1.
 
-:- import name/2, atom_codes/2 from standard.
-:- import conget/2, conset/2 from gensym.
-:- import memberchk/2, append/3 from basics.
-:- import gensym_pred/2, have_hardcut/2 from preproc.
-:- import warning/1, message/1, error/1, option/1 from auxlry.
-:- import sym_name/3, sym_insert/5, sym_prop/2, sym_propin/2,
-	  sym_type/2, add_new_clause/2, clause_listify/2
-     from symtab.
-
-/*----------------------- end of file spec.H ---------------------------*/
+:- import append/3 from basics.
+:- import dict_lookup/3 from auxlry.
+:- import psc_set_prop/2, conpsc/2, conname/2,psc_prop/2, str_len/2,
+ 	  psc_set_type/2
+     from machine.
+:- import name/2, arg/3, functor/3, atomic/1,
+	  integer/1, atom_codes/2
+     from standard.
