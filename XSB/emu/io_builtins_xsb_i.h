@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.26 2004-09-28 17:24:46 tswift Exp $
+** $Id: io_builtins_xsb_i.h,v 1.27 2004-09-30 14:54:45 dwarren Exp $
 ** 
 */
 
@@ -719,7 +719,7 @@ inline static xsbBool file_function(void)
   case PRINT_OPENFILES: { /* no args */
     int i; 
     for (i= 0 ; i < MAX_OPEN_FILES ; i++) {
-      if ((int) open_files[i].file_name == 0) {
+      if (open_files[i].file_name == NULL) {
  	printf("i: %d File Ptr %p Mode %c Type %d \n",
  	        i,open_files[i].file_ptr,open_files[i].io_mode,
 	        open_files[i].stream_type);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hashtable_xsb.c,v 1.5 2004-07-07 22:31:14 dwarren Exp $
+** $Id: hashtable_xsb.c,v 1.6 2004-09-30 14:54:45 dwarren Exp $
 ** 
 */
 
@@ -126,7 +126,7 @@ xsbBucket *search_bucket(Cell name,
 static void init_hashtable(xsbHashTable *table)
 {
   /* calloc zeroes the allocated space; clients rely on this */
-  table->table = (char *)calloc(table->length,table->bucket_size);
+  table->table = (byte *)calloc(table->length,table->bucket_size);
   if (!table->table)
     xsb_exit("Out of Memory: Can't create hash table");
   table->initted = TRUE;
