@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.h,v 1.1.1.1 1998-11-05 16:55:18 sbprolog Exp $
+** $Id: loader.h,v 1.2 1999-10-09 16:48:27 kostis Exp $
 ** 
 */
 
@@ -34,10 +34,9 @@
 
 /* Data structures holding the compiled code */
 
-struct index_block
-{       struct index_block *next ;
-        unsigned long size ;
-        /* Cell block[]; */     /* bucket table|try/retry chain */
+struct index_block {
+  struct index_block *next ;
+  unsigned long size ;
 } ;
  
 typedef struct index_block index_hdr, * pindex ;
@@ -48,13 +47,11 @@ typedef struct index_block index_hdr, * pindex ;
 #define i_size(i)       ((i)->size)
 #define i_block(i)      ((CPtr)((i)+1))
  
-struct text_segment
-{
-        struct text_segment * next ;
-        struct text_segment * prev ;
-        pindex index ;
-        unsigned long size ;
-        /* Cell text[]; */
+struct text_segment {
+  struct text_segment * next ;
+  struct text_segment * prev ;
+  pindex index ;
+  unsigned long size ;
 } ;
  
 typedef struct text_segment text_seg, seg_hdr, *pseg ;
@@ -68,28 +65,27 @@ typedef struct text_segment text_seg, seg_hdr, *pseg ;
 #define seg_size(s)     (((s)-1)->size)
 #define seg_text(s)     ((CPtr)(s))
  
-extern byte * loader(char *, int);
+extern byte *loader(char *, int);
 extern void env_type_set(Psc, byte, byte, bool);
 
-/* In the following, y is the number of bytes we want to read from fd */
 
 #define OBJ_WORD_SIZE           4
 #define WORD_SIZE               ( sizeof(Cell) )
-#define ZOOM_FACTOR             (WORD_SIZE / OBJ_WORD_SIZE)
 /* Zoom the object file to fit actual word size */
+#define ZOOM_FACTOR             (WORD_SIZE / OBJ_WORD_SIZE)
 
+/* In the following, y is the number of bytes we want to read from fd   */
 #define get_obj_data(x,y)	(fread((char *)(x), 1, (y), fd))
 
 #define get_obj_byte(x)		(get_obj_data((x),1))
 #define get_obj_word(x)		(get_obj_data((x),OBJ_WORD_SIZE))
 #define get_obj_string(x,len)	(get_obj_data((x),(len)))
 
-#define get_obj_word_bb(x) {get_obj_word(x) ; fix_bb(x) ; }
+#define get_obj_word_bb(x)    {get_obj_word(x) ; fix_bb(x) ; }
 #define get_obj_word_bbsig(x) {get_obj_word(x) ; fix_bb4(x) ; \
-			*(Integer *)(x) = *(int *)(x);}
+			       *(Integer *)(x) = *(int *)(x);}
 #define get_obj_word_bbflt(x) {get_obj_word(x) ; fix_bb4(x) ; \
-			*(Float *)(x) = *(float *)(x);}
-
+			       *(Float *)(x) = *(float *)(x);}
 
 /************************************************************************/
 /*									*/
@@ -107,8 +103,8 @@ extern void env_type_set(Psc, byte, byte, bool);
 
 /* experimental */
 #define fix_bb4(lptr) (*(unsigned int *)(lptr) = \
-	    (((((unsigned int)(*(pb)(lptr)) \
-	<< 8  | (unsigned int)(*((pb)(lptr)+1)))\
-	<< 8) | (unsigned int)(*((pb)(lptr)+2)))\
-	<< 8) | (unsigned int)(*((pb)(lptr)+3)) \
-		     )
+		       (((((unsigned int)(*(pb)(lptr)) \
+			<< 8  | (unsigned int)(*((pb)(lptr)+1)))\
+			<< 8) | (unsigned int)(*((pb)(lptr)+2)))\
+			<< 8) | (unsigned int)(*((pb)(lptr)+3)) \
+		       )
