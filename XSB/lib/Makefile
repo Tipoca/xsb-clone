@@ -19,50 +19,49 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.10 1999-04-10 14:09:03 kostis Exp $
+## $Id: Makefile,v 1.11 1999-08-14 06:15:26 kifer Exp $
 ## 
 ##
 
-
-#-----------------------------------------------------------------------#
-# Files in directory lib can be made even in the presense of no .O files.
-# For that reason, self-make is always suggested.
-#-----------------------------------------------------------------------#
 
 ALL = 	aggregs.O array.O array1.O copyterm.O directry.O foreign.O \
 	intern.O interprolog.O obsolete.O odbc_call.O ordsets.O ora_call.O \
 	record.O packaging.O scrptutl.O setof.O socket.O
 
+EMU_INCLUDES = ../emu/builtin.h ../emu/celltags.h ../emu/flag_defs.h \
+	../emu/io_defs.h ../emu/msyscall.h ../emu/sig.h \
+	../emu/system.h ../emu/xsbsocket.h 
+PROLOG_INCLUDES = ../prolog_includes/char_defs.h ../prolog_includes/standard.h
+
 Option = [sysmod,optimize]
 
 #-----------------------------------------------------------------------#
-#
-# Self-make: Version 1.9 or higher
 #
 XSB=../bin/xsb
 Prolog = $(XSB)
 #
 #-----------------------------------------------------------------------#
 
-# continue to the next when one error occurs
-.IGNORE:
 
 # suffix rules
 .SUFFIXES: .P .O .H
-
-.H.P:
-	echo 'mc($*, $(Option)).' >> cmd...
-
-.P.O:
-	echo 'mc($*, $(Option)).' >> cmd...
 
 all: $(ALL)
 	@touch cmd...
 	$(Prolog) < cmd...
 	/bin/rm cmd...
 
-# Unfortunately, this needs to be commented on the NeXT.
-# %.O:	%.H
+%.O:   %.P  $(PROLOG_INCLUDES) $(EMU_INCLUDES)
+	echo 'mc($*, $(Option)).' >> cmd...
+%.O:   %.H
+	echo 'mc($*, $(Option)).' >> cmd...
+
+# These targets are obsolete
+.H.O:
+	echo 'mc($*, $(Option)).' >> cmd...
+.P.O:
+	echo 'mc($*, $(Option)).' >> cmd...
+
 
 .DONE:
 	echo Done
