@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.26 1999/10/18 21:50:12 cbaoqiu Exp $
+** $Id: tr_utils.c,v 1.27 1999/10/25 05:59:51 kifer Exp $
 ** 
 */
 
@@ -827,14 +827,14 @@ BTNptr *Set_ArrayPtr = NULL;
  * set, ..., the last one contains 0.  If first_free_set == 0, that
  * means no free set available.
  */
-int first_free_set = 0;
-int Set_ArraySz = 100;
+static int first_free_set = 0;
+static int Set_ArraySz = 100;
 /*
  * num_sets is the number of sets have been used (including the fixed
  * trie, Set_ArrayPtr[0] (see trie_intern/3)).  It is also the index for
  * the next element to use when no free element is available.
  */
-int num_sets = 1;
+static int num_sets = 1;
 
 /*----------------------------------------------------------------------*/
 
