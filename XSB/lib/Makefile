@@ -19,14 +19,14 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.14 1999-08-17 06:28:18 kifer Exp $
+## $Id: Makefile,v 1.15 1999-08-17 19:22:17 luis Exp $
 ## 
 ##
 
 
 ALL = 	aggregs.O array.O array1.O directry.O foreign.O \
 	intern.O interprolog.O obsolete.O odbc_call.O ordsets.O ora_call.O \
-	packaging.O scrptutl.O setof.O socket.O
+	packaging.O scrptutl.O setof.O socket.O wrapping.O
 
 EMU_INCLUDES = ../emu/builtin.h ../emu/celltags.h ../emu/flag_defs.h \
 	../emu/io_defs.h ../emu/msyscall.h ../emu/sig.h \
