@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.13 2001-06-22 21:07:23 tswift Exp $
+** $Id: bineg_xsb_i.h,v 1.14 2001-07-07 00:18:24 ejohnson Exp $
 ** 
 */
 
@@ -75,7 +75,13 @@ case LRD_SUCCESS: {
   if ( is_completed(sf) || neg_delay == FALSE )
     return TRUE;
   else {
-    XSB_StrDefine(vsNegSubgoal);
+    /*
+     * Using a static here prevents multiple buffers from being left
+     * dangling when executed multiple times, as no opportunity exists
+     * to reclaim the string after use in xsb_abort().
+     */
+    static XSB_StrDefine(vsNegSubgoal);
+    XSB_StrSet(&vsNegSubgoal,"");
     print_pterm(ptoc_tag(regNegSubgoal),1,&vsNegSubgoal);
     xsb_abort("Illegal table operation\n\t Attempted DELAY of negative "
 	      "subsumptive literal: %s", vsNegSubgoal.string);
