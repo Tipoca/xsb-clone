@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xpathname.c,v 1.6 1999-02-10 15:46:11 kifer Exp $
+** $Id: xpathname.c,v 1.7 1999-04-19 15:41:29 luis Exp $
 ** 
 */
 
@@ -424,4 +424,24 @@ void parse_filename(char *filename, char **dir, char **base, char **extension)
     *(*extension-1) = '\0'; 
 }
 
+/* transform_pathname takes cygwin-like pathnames and transforms them
+   into windows-like pathnames (in-place).
+   It assumes that the given pathname is a valid cygwin absolute
+   pathname */
+void transform_pathname(char *filename) 
+{
+  char *pointer;
+
+  pointer=filename+2;
+  filename[0]=*pointer;
+  filename[1]=':';
+  filename[2]='\\';
+  for(pointer+=2;*pointer;pointer++) 
+    if (*pointer == '/')
+      *(pointer-1) = '\\';
+    else
+      *(pointer-1) = *pointer;
+
+  *(pointer-1) = '\0';
+}
 
