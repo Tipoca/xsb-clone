@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.H,v 1.6 1999/04/10 14:56:47 kostis Exp $
+** $Id: assert.H,v 1.7 1999/05/04 17:44:29 warren Exp $
 ** 
 */
 
@@ -44,7 +44,7 @@
 :- import '_$index'/3, '_$trie_asserted'/1, retract_trie_index/1,
 	  retract_index/1 from file_op.
 :- import psc_prop/2, psc_type/2, psc_set_type/2, psc_arity/2, buff_byte/3,
-	  buff_word/3, conpsc/2, assert_code_to_buff/2, assert_buff_to_clref/7,
+	  buff_word/3, conpsc/2, assert_code_to_buff/1, assert_buff_to_clref/6,
 	  psc_tabled/2, psc_set_prop/2, unload_seg/1,
 	  db_build_prref/3
      from machine.

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.11 1999/08/28 07:54:19 kostis Exp $
+** $Id: consult.H,v 1.12 1999/08/28 19:18:22 kifer Exp $
 ** 
 */
 
@@ -47,11 +47,10 @@
 	  (=..)/2, writeln/1, write_canonical/1, tell/1,
 	  told/0, telling/1, functor/3, cputime/1
      from standard.
-:- import code_load/3, code_call/3,
+:- import code_load/3, code_call/3, file_read_canonical/3,
 	  expand_filename/2, tilde_expand_filename/2, unload_seg/1,
-	  buff_word/3, assert_code_to_buff/2, assert_buff_to_clref/7,
-	  file_read_canonical/3, conpsc/2, 
-	  psc_prop/2, psc_tabled/2, psc_type/2, psc_name/2,
+	  buff_word/3, assert_code_to_buff/1, assert_buff_to_clref/6,
+	  conpsc/2, psc_prop/2, psc_tabled/2, psc_type/2, psc_name/2,
 	  psc_arity/2, existing_file_extension/2, almost_search_module/5
      from machine.
 :- import file_time/2, file_close/1 from file_io.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.19 1999-08-28 09:49:06 kostis Exp $
+** $Id: builtin.h,v 1.20 1999-08-30 16:40:48 kostis Exp $
 ** 
 */
 
@@ -127,7 +127,7 @@
 
 #define FILE_READ_CANONICAL	133
 #define GEN_RETRACT_ALL		134
-#define COMPILED_TO_DYNAMIC	135
+
 #define DB_RETRACT0		136
 #define DB_GET_CLAUSE		137
 #define DB_BUILD_PRREF		138
