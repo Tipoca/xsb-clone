@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.9 2000/05/29 04:23:37 ejohnson Exp $
+** $Id: slginsts_xsb_i.h,v 1.10 2000/06/22 01:27:51 lfcastro Exp $
 ** 
 */
 
@@ -269,8 +269,9 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle); {
     if ( IsNULL(answer_set) && (consumer_sf != producer_sf) )
       if ( MoreAnswersAvailable(consumer_sf,producer_sf) )
 	answer_set =
-	  table_retrieve_answers((SubProdSF)producer_sf,
-				 (SubConsSF)consumer_sf, answer_template);
+	  table_identify_relevant_answers((SubProdSF)producer_sf,
+					  (SubConsSF)consumer_sf,
+					  answer_template);
 
     if ( IsNonNULL(answer_set) ) {
       int tmp;
@@ -373,8 +374,8 @@ XSB_Start_Instr(answer_return,_answer_return); {
     if ( MoreAnswersAvailable(consumer_sf,producer_sf) ) {
       switch_envs(breg);
       answer_set =
-	table_retrieve_answers(producer_sf, (SubConsSF)consumer_sf,
-			       answer_template);
+	table_identify_relevant_answers(producer_sf, (SubConsSF)consumer_sf,
+					answer_template);
     }
   }
 

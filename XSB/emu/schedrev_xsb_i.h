@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.4 2000-05-29 04:23:36 ejohnson Exp $
+** $Id: schedrev_xsb_i.h,v 1.5 2000-06-27 17:59:16 ejohnson Exp $
 ** 
 */
 
@@ -69,8 +69,9 @@ static CPtr sched_answers(VariantSF producer_sf, CPtr producer_cpf,
 	  if ( MoreAnswersAvailable(consumer_sf,producer_sf) ) {
 	    switch_envs(consumer_cpf);
 	    answer_set =
-	      table_retrieve_answers((SubProdSF)producer_sf, consumer_sf,
-				     consumer_cpf + NLCPSIZE);
+	      table_identify_relevant_answers((SubProdSF)producer_sf,
+					      consumer_sf,
+					      consumer_cpf + NLCPSIZE);
 	  }
 	if ( IsNonNULL(answer_set) )
 	  ScheduleConsumer(consumer_cpf,first_sched_cons,last_sched_cons);

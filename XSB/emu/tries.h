@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.26 2000-06-25 16:59:18 ejohnson Exp $
+** $Id: tries.h,v 1.27 2000-06-27 17:59:19 ejohnson Exp $
 ** 
 */
 
@@ -307,7 +307,7 @@ extern void	load_delay_trie(int, CPtr, BTNptr);
 extern xsbBool  bottom_up_unify(void);
 
 extern void    consume_subsumptive_answer(BTNptr, int, CPtr);
-extern ALNptr  retrieve_unifying_answers(TSTNptr, TimeStamp, int, CPtr);
+extern ALNptr  tst_collect_relevant_answers(TSTNptr, TimeStamp, int, CPtr);
 extern void    delete_subsumptive_table(struct Table_Info_Frame *);
 
 extern void    tstShrinkDynStacks(void);

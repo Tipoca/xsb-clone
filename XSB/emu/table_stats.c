@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.14 2000-06-23 20:54:08 ruim Exp $
+** $Id: table_stats.c,v 1.15 2000-06-27 17:59:16 ejohnson Exp $
 ** 
 */
 
@@ -485,9 +485,9 @@ void print_detailed_subsumption_stats() {
 	 ( (NumSubOps_AnswerCheckInsert != 0)
 	   ? (float)NumSubOps_AnswerInsert / (float)NumSubOps_AnswerCheckInsert
 	   : 0 ));
-  printf("  Answer retrieval operations:       %8u\n"
+  printf("  Relevant-answer identify ops:      %8u\n"
 	 "  Answer-list consumption ops:       %8u\n",
-	 NumSubOps_AnswerRetrieval, NumSubOps_AnswerConsumption);
+	 NumSubOps_IdentifyRelevantAnswers, NumSubOps_AnswerConsumption);
 }
 
 /*==========================================================================*/
