@@ -31,7 +31,7 @@ diff -w comp_testdir/test_0/cdf_extensional.P comp_outdir/test/cdf_extensional.P
 if test "$status" = 0 ; then 
 	echo "compUpd1: comp_testdir/test/cdf_extensional.P tested"
 else
-	echo "compUpd1: comp_testdir/test/cdf_extensional.P differ!!!"
+	echo "compUpd1: comp_testdir/test/cdf_extensional.P differs!!!"
 	diff -w comp_testdir/test_0/cdf_extensional.P comp_outdir/test/cdf_extensional.P  
 fi
 
