@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.5 2000-05-29 04:23:33 ejohnson Exp $
+** $Id: bineg_xsb_i.h,v 1.6 2000-06-24 13:55:04 ruim Exp $
 ** 
 */
 
@@ -156,7 +156,7 @@
 	   * answer for the head predicate.
 	   */
 	  int i;
-	  copy_of_var_addr = calloc(var_addr_arraysz, sizeof(CPtr));
+	  copy_of_var_addr = (CPtr *)calloc(var_addr_arraysz, sizeof(CPtr));
 	  if(copy_of_var_addr == NULL){
 	    xsb_exit("No enough memory to calloc copy_of_var_addr!\nBye");
 	  }

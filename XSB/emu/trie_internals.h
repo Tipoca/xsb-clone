@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.12 2000-06-23 20:54:09 ruim Exp $
+** $Id: trie_internals.h,v 1.13 2000-06-24 13:55:04 ruim Exp $
 ** 
 */
 
@@ -645,12 +645,12 @@ extern void     expand_trie_ht(BTHTptr);
    SM_RemoveFromAllocList_DL(SM,THT,BTHT_PrevBTHT,BTHT_NextBTHT)
 
 /* Preparation for mass deallocation */
-#define TrieHT_FreeAllocatedBuckets(SM) {		\
-   BTHTptr pBTHT;					\
-							\
-   for ( pBTHT = SM_AllocList(SM);  IsNonNULL(pBTHT);	\
+#define TrieHT_FreeAllocatedBuckets(SM) {			\
+   BTHTptr pBTHT;						\
+								\
+   for ( pBTHT = (BTHTptr)SM_AllocList(SM);  IsNonNULL(pBTHT);	\
 	 pBTHT = (BTHTptr)BTHT_NextBTHT(pBTHT) )		\
-     free(BTHT_BucketArray(pBTHT));			\
+     free(BTHT_BucketArray(pBTHT));				\
  }
 
 /* Allocating Headers
@@ -771,7 +771,9 @@ extern Structure_Manager smTSIN;
  * 'prev' and 'next' links are left to the caller to set.
  */
 #define New_TSIN(TSIN, TSTN) {			\
-   SM_AllocateStruct(smTSIN,TSIN);		\
+   void *t = TSIN ;				\
+   SM_AllocateStruct(smTSIN,t);			\
+   TSIN = (TSINptr)t ;				\
    TSIN_TSTNode(TSIN) = TSTN;			\
    TSIN_TimeStamp(TSIN) = TSTN_TimeStamp(TSTN);	\
  }
@@ -842,7 +844,7 @@ extern Structure_Manager smALN;
    void *p ;					\
 						\
    SM_AllocateStruct(smALN,p);			\
-   pALN = p ;					\
+   pALN = (ALNptr)p ;					\
    ALN_Answer(pALN) = (BTNptr)pTN;		\
    ALN_Next(pALN) = (ALNptr)pNext;		\
  }
