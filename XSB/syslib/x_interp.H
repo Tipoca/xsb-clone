@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.7 1999/03/30 16:25:48 kifer Exp $
+** $Id: x_interp.H,v 1.8 1999/04/01 05:05:21 kifer Exp $
 ** 
 */
 
@@ -35,7 +35,7 @@
 :- import xsb_configuration/2 from configuration.
 :- import file_read/3, vv/2, file_read/2 from xsb_read.
 :- import abort/0, call/1, call_c/1, call_expose/1, goal_cut_trans/3,
-          see/1, seen/0, push_abort_cutpoint/0, pop_abort_cutpoint/0
+          push_abort_cutpoint/0, pop_abort_cutpoint/0
      from standard.
 :- import conpsc/2, psc_type/2, psc_set_type/2, psc_prop/2, psc_set_prop/2,
           psc_arity/2, term_psc/2, term_arg/3, term_new/2, term_type/2,
@@ -44,7 +44,7 @@
 	  slash/1
      from machine.
 
-:- import file_read_line/2, file_open/3, file_close/1, file_get/2,
+:- import file_read_line/3, file_open/3, file_close/1, file_get/2,
 	fmt_write_string/3
     from file_io.
 
