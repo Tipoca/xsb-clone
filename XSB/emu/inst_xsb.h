@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.7 2000-03-01 16:22:34 dwarren Exp $
+** $Id: inst_xsb.h,v 1.8 2000-06-22 01:27:51 lfcastro Exp $
 ** 
 */
 
 
-#ifndef XSB_INSTS
+#ifndef __XSB_INSTS__
 
-#define XSB_INSTS
+#define __XSB_INSTS__
 
 extern void init_inst_table(void);
 
@@ -202,6 +202,9 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define bldnil          0x1d
 #define uninumcon	0x1e
 #define bldnumcon	0x1f
+
+#define no_inst         0x20 
+/* the above number is used for invalid opcodes in the threading engine */
 
 #define getattv		0x30
 #define putattv		0x31

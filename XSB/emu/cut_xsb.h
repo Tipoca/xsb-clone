@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.6 2000-05-16 19:07:32 lfcastro Exp $
+** $Id: cut_xsb.h,v 1.7 2000-06-22 01:27:50 lfcastro Exp $
 ** 
 */
 
@@ -104,7 +104,7 @@
 	breg = cut_breg;					\
      }								\
      check_table_cut = TRUE;                                    \
-     goto contcase;						\
+     XSB_Next_Instr();		       			\
    }
 
 /*----------------------------------------------------------------------*/

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.6 2000-04-29 21:54:00 kifer Exp $
+** $Id: tr_code_xsb_i.h,v 1.7 2000-06-22 01:27:51 lfcastro Exp $
 ** 
 */
 
@@ -204,7 +204,7 @@ int     delay_it;
   else {								\
     if (*reg_arrayptr != opatom) {					\
       Fail1;								\
-      goto contcase;							\
+      XSB_Next_Instr();							\
     }									\
   }									\
 }
@@ -250,7 +250,7 @@ int     delay_it;
     }								\
     else {							\
       Fail1;							\
-      goto contcase;						\
+      XSB_Next_Instr();						\
     }								\
   }								\
 }
@@ -282,7 +282,7 @@ int     delay_it;
       *reg_arrayptr = (Cell)(clref_val(temp));				\
     } else {								\
       Fail1;								\
-      goto contcase;							\
+      XSB_Next_Instr();							\
     }									\
   }									\
 }
@@ -322,7 +322,7 @@ int     delay_it;
     op2 = (Cell) var_regs[(int)int_val(opatom)];			\
     if (unify(op1,op2) == FALSE) {					\
       Fail1;								\
-      goto contcase;							\
+      XSB_Next_Instr();							\
     }									\
   }									\
   reg_arrayptr--;							\
