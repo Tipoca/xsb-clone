@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.7 2001-04-04 19:54:00 tswift Exp $
+** $Id: schedrev_xsb_i.h,v 1.8 2001-04-04 19:58:02 tswift Exp $
 ** 
 */
 
@@ -129,12 +129,10 @@ static CPtr sched_answers(VariantSF producer_sf, CPtr producer_cpf,
 /*-------------------------------------------------------------------------*/
 
 /* returns 0 if reached fixpoint, otherwise, returns the next breg 
- * for batched - should extend to local (but first decide if can
- * do local without sched_ans in subg_frame)
- * also try to do for batched what I did for local: at fixpoint
- * create a sched_chain of all active nodes with unresolved answers
- * I recall that kostis mentioned cps should not be relinked
- * I cannot remember why...
+ * for batched.  Essentially this routine performs a sched_answer()
+ * for each subgoal in the (A)SCC except the leader.  This
+ * sched_answer() has already been performed earlier in the
+ * check_complete instruction.
  */
 
 static CPtr find_fixpoint(VariantSF subg, CPtr producer_cpf) {
