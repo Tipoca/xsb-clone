@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.4 1999-10-13 14:31:23 ejohnson Exp $
+** $Id: trie_internals.h,v 1.5 1999-10-13 20:52:07 ejohnson Exp $
 ** 
 */
 
@@ -691,7 +691,7 @@ extern Structure_Manager *smBTHT;
 
 /* Allocating New TSTNs
    -------------------- */
-#define TSTNs_PER_BLOCK   16
+#define TSTNs_PER_BLOCK    K
 extern Structure_Manager smTSTN;
 
 TSTNptr new_tstn(int TrieType, int NodeType, Cell Symbol,
@@ -756,7 +756,7 @@ typedef struct TimeStamp_Index_Node {
 
 /* Memory Management
    ----------------- */
-#define TSI_ENTRIES_PER_BLOCK    16
+#define TSI_ENTRIES_PER_BLOCK  256
 
 extern Structure_Manager smEntry;
 
@@ -810,7 +810,7 @@ typedef struct HashTable_for_TSTNs {
 
 /* Memory Management
    ----------------- */
-#define TSTHTs_PER_BLOCK    K
+#define TSTHTs_PER_BLOCK  16
 
 extern Structure_Manager smTSTHT;
 

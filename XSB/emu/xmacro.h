@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xmacro.h,v 1.12 1999-10-13 15:17:02 ejohnson Exp $
+** $Id: xmacro.h,v 1.13 1999-10-13 20:52:07 ejohnson Exp $
 ** 
 */
 
@@ -340,7 +340,7 @@ extern ALNptr empty_return();
 
 /* Global Structure Management
    --------------------------- */
-#define SUBGOAL_FRAMES_PER_BLOCK     K
+#define SUBGOAL_FRAMES_PER_BLOCK    16
 
 extern struct Structure_Manager smSF;
 
