@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.10 2000-01-07 08:51:38 kifer Exp $
+** $Id: loader_xsb.c,v 1.11 2000-01-27 23:07:14 unova Exp $
 ** 
 */
 
@@ -544,7 +544,7 @@ unsigned int read_magic(FILE *fd)
   unsigned int num;
 
   if (get_obj_word(&num) < 4) return 0;
-  fix_bb((byte *)&num);
+  fix_bb4((byte *)&num);
   return num;
 }
 

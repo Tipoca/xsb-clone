@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.5 2000-01-07 08:51:28 kifer Exp $
+** $Id: error_xsb.c,v 1.6 2000-01-27 23:07:12 unova Exp $
 ** 
 */
 
@@ -76,7 +76,7 @@ void xsb_abort(char *description, ...)
   pcreg = exception_handler(message);
 
   /* this allows xsb_abort to jump out even from nested loops */
-  longjmp(xsb_abort_fallback_environment, (int) pcreg);
+  longjmp(xsb_abort_fallback_environment, (Integer) pcreg);
 }
 
 
@@ -96,7 +96,7 @@ void xsb_bug(char *description, ...)
   pcreg = exception_handler(message);
 
   /* this allows xsb_abort to jump out even from nested loops */
-  longjmp(xsb_abort_fallback_environment, (int) pcreg);
+  longjmp(xsb_abort_fallback_environment, (Integer) pcreg);
 }
 
 /*----------------------------------------------------------------------*/
