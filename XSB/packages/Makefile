@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.26 2002-08-16 19:08:22 lfcastro Exp $
+## $Id: Makefile,v 1.27 2002-08-20 18:30:36 xmc Exp $
 ## 
 ##
 
@@ -29,7 +29,7 @@ ALL = 	slx${OBJEXT} perlmatch${OBJEXT} gap${OBJEXT} \
 	sModels${OBJEXT} libwww${OBJEXT} clpr${OBJEXT} xsbdoc${OBJEXT} \
 	xmc${OBJEXT} iprolog${OBJEXT}
 
-SUBDIR = flora2 slx perlmatch gap regmatch wildmatch libwww sModels \
+SUBDIR = iprolog flora2 slx perlmatch gap regmatch wildmatch libwww sModels \
 	clpqr xsbdoc xmc iprolog
 
 Option = [optimize]
