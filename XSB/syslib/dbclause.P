@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dbclause.P,v 1.14 2000/04/29 21:54:03 kifer Exp $
+** $Id: dbclause.P,v 1.15 2000/06/19 03:10:50 kifer Exp $
 ** 
 */
 
@@ -110,9 +110,9 @@ db_retract_abol(Prref1) :-
 	 ;	Prref = Prref1
 	),
 	buff_byte(Prref,0,Op),
-	buff_word(Prref,4,Buff),
 	(Op =\= 248	% fail	
-	 ->	gen_retract_all(Buff)
+	 ->	buff_word(Prref,4,Buff),
+		gen_retract_all(Buff)
 	 ;	true
 	),
 	buff_set_byte(Prref,0,248).	% fail
