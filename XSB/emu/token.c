@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token.c,v 1.1.1.1 1998-11-05 16:55:23 sbprolog Exp $
+** $Id: token.c,v 1.2 1999-08-10 12:17:52 kostis Exp $
 ** 
 */
 
@@ -62,8 +62,6 @@ extern void xsb_exit(char *);
 #define InType(c)       (intab.chtype+1)[c]
 #define DigVal(c)       (digval+1)[c]
 
-/*#define MY_MAXINT ((int)0x07ffffff)*/	/* Modified by Kostis */
- 
 #ifdef BITS64
 #define MY_MAXINT ((long)0x07fffffffffffff)
 #else
