@@ -10,7 +10,7 @@
     direction text, and enhancements to forms for improved
     accessibility for people with disabilities.
 
-          Draft: $Date: 2005-03-01 03:31:44 $
+          Draft: $Date: 2005-03-14 05:43:28 $
 
           Authors:
               Dave Raggett <dsr@w3.org>
@@ -168,17 +168,17 @@
 
 <!ENTITY % HTMLlat1 PUBLIC
    "-//W3C//ENTITIES Latin1//EN//HTML"
-   "HTMLlat1.ent">
+   "http://www.w3.org/TR/REC-html40-971218/HTMLlat1.ent">
 %HTMLlat1;
 
 <!ENTITY % HTMLsymbol PUBLIC
    "-//W3C//ENTITIES Symbols//EN//HTML"
-   "HTMLsymbol.ent">
+   "http://www.w3.org/TR/REC-html40-971218/HTMLsymbol.ent">
 %HTMLsymbol;
 
 <!ENTITY % HTMLspecial PUBLIC
    "-//W3C//ENTITIES Special//EN//HTML"
-   "HTMLspecial.ent">
+   "http://www.w3.org/TR/REC-html40-971218/HTMLspecial.ent">
 %HTMLspecial;
 <!--=================== Generic Attributes ===============================-->
 
