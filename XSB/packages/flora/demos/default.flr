@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: default.flr,v 1.4 1999-06-17 05:45:33 kifer Exp $
+** $Id: default.flr,v 1.5 1999-08-04 16:25:41 kifer Exp $
 ** 
 */
 
@@ -29,9 +29,6 @@
 
 // new
 :- table tc/2.
-
-// new
-:- import unix/1 from unix.
 
 
 times_flies_like_an_arrow.		% a 0-ary PREDICATE (proposition)

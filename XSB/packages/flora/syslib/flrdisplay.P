@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdisplay.P,v 1.8 1999-07-31 02:51:32 kifer Exp $
+** $Id: flrdisplay.P,v 1.9 1999-08-04 16:25:42 kifer Exp $
 ** 
 */
 
@@ -35,8 +35,6 @@
 :- import length/2 from basics.
 
 :- import findall/3 from setof.
-
-:- import unix/1 from unix.
 
 :- import stat_flag/2 from machine.
 
