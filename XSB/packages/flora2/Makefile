@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.29 2002-03-24 09:08:38 kifer Exp $
+## $Id: Makefile,v 1.30 2002-04-03 08:27:16 kifer Exp $
 ## 
 ##
 
@@ -80,11 +80,11 @@ STDERR = 2
 HDRMSG = "While compiling XSB/packages/flora2:"
 
 
-all: init system libs misc showerrors finish
+all: init system libs misc finish showerrors
 
-core: init system showerrors finish
+core: init system finish showerrors
 
-extra: init system libs pkgs showerrors finish
+extra: init system libs pkgs finish showerrors
 
 showerrors:
 	@cat $(XSBDIR)/build/.flora*.tmp
