@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbdoc.P,v 1.1 2001-05-25 00:42:45 tswift Exp $
+** $Id: xsbdoc.P,v 1.2 2002-12-06 19:45:57 tswift Exp $
 ** 
 */
 
@@ -33,5 +33,6 @@ init_xsb_doc:-
 	bootstrap_package('xsbdoc',xsbdoc),
 	[full_ciao_ops].
 
-
 :- init_xsb_doc.
+
+?- import xsbdoc/2 from xsbdoc1.
