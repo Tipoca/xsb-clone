@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wfs.i,v 1.3 1999-01-18 17:59:38 kostis Exp $
+** $Id: wfs.i,v 1.4 1999-01-28 15:01:43 kostis Exp $
 ** 
 */
 
@@ -354,7 +354,7 @@ static void batched_compute_wfs(CPtr leader_compl_frame,
 
 	  H = cp_hreg(breg);
 	  EB = cp_ebreg(breg);
-#ifdef DEBUG
+#ifdef Chat_DEBUG
 fprintf(stderr, "leader_cp = %p, subgoal = %p, eb = %d\n",
 	breg, tcp_subgoal_ptr(breg), ((CPtr)glstack.high - 1) - EB);
 #endif
