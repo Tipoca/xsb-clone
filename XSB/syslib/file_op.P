@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.P,v 1.17 2002/04/13 05:01:59 lfcastro Exp $
+** $Id: file_op.P,v 1.18 2003/01/30 21:11:45 dwarren Exp $
 ** 
 */
 
@@ -283,6 +283,8 @@ fix_arg([Arg|Args],Arity,[Narg|Nargs]) :- !,
 	fix_arg(Args,Arity,Nargs).
 fix_arg(Arg,Arity,Narg) :-
 	(integer(Arg), Arg >= 256
+	 ->	Narg = Arg
+	 ; Arg == 0
 	 ->	Narg = Arg
 	 ;	conv_joint(Arg,Arity,Narg)
 	).
