@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.12 2001-04-08 20:11:56 gzyang Exp $
+** $Id: flrutils.H,v 1.13 2001-04-09 23:20:51 gzyang Exp $
 **
 */
 
@@ -63,7 +63,6 @@
 	file_time/2,
 	fmt_write_string/3,
 	fmt_write/3,
-	file_open/3,
 	file_close/1,
 	print_file_contents/1,
 	path_sysop/2
