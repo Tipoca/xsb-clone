@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_time.h,v 1.1 2001-06-29 21:03:29 kifer Exp $
+** $Id: xsb_time.h,v 1.2 2001-10-09 05:48:20 kifer Exp $
 ** 
 */
 
@@ -29,10 +29,15 @@
 
 #else /* Unix */
 
+#if TIME_WITH_SYS_TIME
+#include <sys/time.h>
+#include <time.h>
+#else
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #else
 #include <time.h>
+#endif
 #endif
 
 #endif

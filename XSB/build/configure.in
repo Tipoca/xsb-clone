@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.116 2001-08-30 11:59:48 dwarren Exp $
+## $Id: configure.in,v 1.117 2001-10-09 05:48:21 kifer Exp $
 ## 
 ##
 
@@ -724,6 +724,9 @@ test "${have_errors}" = "yes" &&
 
 dnl Note, under NT, we sould include time.h instead
 AC_CHECK_HEADERS(sys/time.h)
+
+dnl defines TIME_WITH_SYS_TIME if both allowed
+AC_HEADER_TIME
 
 AC_CHECK_HEADERS(sys/resource.h, , have_errors=yes)
 test "${have_errors}" = "yes" &&
