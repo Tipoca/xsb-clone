@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.47 2001/06/22 17:36:09 tswift Exp $
+** $Id: standard.P,v 1.48 2001/07/04 13:54:25 uid23157 Exp $
 ** 
 */
 
@@ -259,6 +259,7 @@ char_blank(Ch) :- Ch >= 11, Ch =< 32.
 
 get0(C) :- stat_flag(CURRENT_INPUT, File), file_get(File, C0), C = C0.
 
+% Not in manual.
 skip(C) :- get0(C0), (C0=C ; skip(C)).
 
 % TLS: most error checking assumed to happen in atom_codes or put.
@@ -518,16 +519,16 @@ number_digits(T, L) :- number_digits(T, L).
 name(T, L) :-
 	term_type(T, Type),
 	( Type =:= XSB_FREE -> 
-		( var(L) -> abort('Uninstantiated argument 2 of name/2')
+		( var(L) -> abort('Uninstantiated arguments 1 & 2 of name/2')
 		; ( ascii_list(L) -> 
 			( int_fromlist(L, T) -> true ; atom_codes(T, L) )
-		  ; abort('Wrong type in argument 2 of name/2')
+		  ; abort(['Wrong type in argument 2 of name/2:',L])
 		  )
 		)
 	; Type =:= XSB_INT -> int_name(T, [], L)	% integer
 	; Type =:= XSB_FLOAT -> real_name(T, [], L)	% real
 	; Type =:= XSB_STRING -> atom_codes(T, L)
-	; abort('Wrong type in argument 1 of name/2')
+	; abort(['Wrong type in argument 1 of name/2:',T])
 	).
 
 ascii_list([]).
