@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.29 2003-07-11 04:25:47 kifer Exp $
+** $Id: gpp.c,v 1.30 2004-07-21 19:45:32 dwarren Exp $
 ** 
 */
 
@@ -1215,7 +1215,7 @@ int findCommentEnd(char *endseq,char quote,char warn,int pos,int flags)
     if (c==0) bug("Input ended while scanning a comment/string");
     if (c==warn) {
       warn=0;
-      if (WarningLevel > 1)
+      if (WarningLevel > 2)
 	warning("possible comment/string termination problem");
     }
     if (c==quote) pos+=2;
