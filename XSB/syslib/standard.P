@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.52 2001/12/29 06:28:15 kifer Exp $
+** $Id: standard.P,v 1.53 2002/02/06 16:59:52 tswift Exp $
 ** 
 */
 
@@ -732,6 +732,16 @@ goal_cut_untrans(X,Y) :- atom(X) -> conname(X,Y1),Y=Y1 ; Y=X.
 
 once(Term) :- call(Term), !.
 
+/* once over tabled predicates with demand support --lfcastro */
+demand_once(Goal) :-
+	'_$savecp'(Breg),
+	call(Goal),
+	write(calling(do_once(Breg))), writeln(.),
+	do_once(Breg).
+
+do_once(_Breg) :-
+	'_$builtin'(DO_ONCE).
+	
 repeat :- true; repeat.
 
 (A,B) :- call_c(A), call_c(B).	% must have no cuts

@@ -19,11 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ptoc_tag_xsb_i.h,v 1.2 2000-04-29 21:53:57 kifer Exp $
+** $Id: ptoc_tag_xsb_i.h,v 1.3 2002-03-13 22:40:13 lfcastro Exp $
 ** 
 */
 
-
+#ifndef __PTOC_TAG_XSB_I_H__
+#define __PTOC_TAG_XSB_I_H__
 
 /*
  *  Returns the still-tagged value (a Cell) at the end of the deref chain
@@ -37,3 +38,5 @@ static inline Cell ptoc_tag(int regnum)
   XSB_Deref(addr);
   return addr;
 }
+
+#endif

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.18 2002-03-12 17:31:21 lfcastro Exp $
+** $Id: macro_xsb.h,v 1.19 2002-03-13 22:40:13 lfcastro Exp $
 ** 
 */
 
@@ -556,6 +556,15 @@ void tstCreateTSIs(TSTNptr);
  }
 
 /*----------------------------------------------------------------------*/
+#ifdef DEMAND
+#define Reset_Demand_Freeze_Registers \
+    bdfreg = bfreg; \
+    trdfreg = trfreg; \
+    hdfreg = hfreg; \
+    edfreg = efreg
+#else
+#define Reset_Demand_Freeze_Registers 
+#endif
 
 #define reset_freeze_registers \
     bfreg = (CPtr)(tcpstack.high) - CP_SIZE; \
@@ -563,7 +572,8 @@ void tstCreateTSIs(TSTNptr);
     hfreg = (CPtr)(glstack.low); \
     efreg = (CPtr)(glstack.high) - 1; \
     level_num = xwammode = 0; \
-    root_address = ptcpreg = NULL
+    root_address = ptcpreg = NULL; \
+    Reset_Demand_Freeze_Registers
 
 #define adjust_freeze_registers(tcp) \
     if (bfreg < tcp_bfreg(tcp)) { bfreg = tcp_bfreg(tcp); }	 \

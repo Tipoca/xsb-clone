@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: register.h,v 1.5 2002-03-12 17:31:21 lfcastro Exp $
+** $Id: register.h,v 1.6 2002-03-13 22:40:13 lfcastro Exp $
 ** 
 */
 
@@ -55,6 +55,15 @@ extern CPtr openreg;
 extern CPtr ptcpreg;	/* parent tabled CP (subgoal)	*/
 extern CPtr delayreg;
 extern CPtr interrupt_reg;
+
+/*---- registers added for demand support ------------------------------*/
+#ifdef DEMAND
+/* demand-freeze registers */
+extern CPtr edfreg;
+extern CPtr bdfreg;
+extern CPtr hdfreg;
+extern CPtr *trdfreg;
+#endif
 
 /*---- other stuff added for the SLG-WAM -------------------------------*/
 

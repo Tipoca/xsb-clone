@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.43 2002-03-12 17:31:21 lfcastro Exp $
+** $Id: builtin.h,v 1.44 2002-03-13 22:40:13 lfcastro Exp $
 ** 
 */
 
@@ -102,6 +102,7 @@
 #define PARSE_FILENAME        	 69
 #define ALMOST_SEARCH_MODULE     70
 #define EXISTING_FILE_EXTENSION  71
+#define DO_ONCE                  72
 
 /* for efficiency, implemented these in C */
 #define CONGET_TERM	         75

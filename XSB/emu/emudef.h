@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.31 2002-03-12 17:31:21 lfcastro Exp $
+** $Id: emudef.h,v 1.32 2002-03-13 22:40:13 lfcastro Exp $
 ** 
 */
 
@@ -56,6 +56,15 @@ CPtr root_address;
 
 CPtr ptcpreg;
 CPtr delayreg;
+
+#ifdef DEMAND
+/* demand-freeze registers */
+CPtr edfreg;
+CPtr bdfreg;
+CPtr hdfreg;
+CPtr *trdfreg;
+#endif
+
 /*
  * interrupt_reg points to interrupt_counter, which stores the number of
  * interrupts in the interrupt chain for attributed variables.
