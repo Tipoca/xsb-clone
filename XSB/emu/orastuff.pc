@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orastuff.pc,v 1.8 1999-11-22 22:58:34 warren Exp $
+** $Id: orastuff.pc,v 1.9 1999-12-20 17:52:55 warren Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
 #include "flags_xsb.h"
 #include "error_xsb.h"
 #include "io_builtins_xsb.h"
-#include "cc.h"
+#include "cinterf.h"
 
 EXEC SQL INCLUDE "orastuff.h";
 
