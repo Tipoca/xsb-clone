@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xmain.c,v 1.10 1999-05-24 16:01:29 luis Exp $
+** $Id: xmain.c,v 1.11 1999-08-04 16:21:38 kifer Exp $
 ** 
 */
 
@@ -60,8 +60,8 @@ int main(int argc, char *argv[])
 #ifdef WIN_NT
   INT err;
   WSADATA wsaData;
-  FILE *stream_err, *stream_out;
 #ifdef SILENT_NT
+  FILE *stream_err, *stream_out;
   stream_err = freopen("errorlog", "w", stderr);
   stream_out = freopen("outlog", "w", stdout);
 #endif

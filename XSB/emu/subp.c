@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.12 1999/07/15 21:41:18 ejohnson Exp $
+** $Id: subp.c,v 1.13 1999/07/22 15:24:12 warren Exp $
 ** 
 */
 
@@ -62,9 +62,7 @@
 /*======================================================================*/
 /*======================================================================*/
 
-#define FAILED		return 0
 #define IFTHEN_FAILED	return 0
-#define SUCCEED		return 1
 #define IFTHEN_SUCCEED	return 1
 
 double realtime_count;
@@ -109,7 +107,7 @@ void print_statistics(int amount)
     realtime_count = real_time();
     perproc_reset_stat();
     reset_stat_total();
-    printf("Statistics is reset.\n");
+    fprintf(stderr, "Statistics is reset.\n");
     break;
   case 1:			/* print stack usage and cputime */
     perproc_stat();

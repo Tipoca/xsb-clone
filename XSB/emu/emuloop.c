@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.32 1999-08-04 14:41:56 ejohnson Exp $
+** $Id: emuloop.c,v 1.33 1999-08-04 16:22:50 kifer Exp $
 ** 
 */
 
@@ -1133,7 +1133,7 @@ contcase:     /* the main loop */
     pad;
     op1byte;
     if (unifunc_call((int)(op1), opregaddr) == 0) {
-      printf("Error in unary function call\n");
+      fprintf(stderr, "Error in unary function call\n");
       Fail1;
     }
     pad64;
