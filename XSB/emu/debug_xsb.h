@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.2 2002-05-31 15:09:02 lfcastro Exp $
+** $Id: debug_xsb.h,v 1.3 2002-05-31 18:17:45 lfcastro Exp $
 ** 
 */
 
@@ -38,14 +38,6 @@ extern void terry_print_heap(int);
     fprintf(stddbg, "=== Frame for "); print_subgoal(stddbg, SUBG); \
     if (is_completed(SUBG)) fprintf(stddbg, " (completed) ===\n"); \
     else fprintf(stddbg, " (incomplete) ===\n"); }
-
-static char *compl_stk_frame_field[] = {
-  "subgoal_ptr", "level_num",
-  "del_ret_list", "visited", 
-#ifndef LOCAL_EVAL
-"DG_edges", "DGT_edges"
-#endif
-};
 
 /* extern int cur_log_level; */
 #define cur_log_level flags[VERBOSENESS_LEVEL]
