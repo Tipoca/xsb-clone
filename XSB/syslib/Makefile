@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.37 2001/06/11 01:28:09 kifer Exp $
+## $Id: Makefile,v 1.38 2002/02/23 04:04:33 kifer Exp $
 ## 
 ##
 
@@ -64,6 +64,7 @@ all: init $(ALL) finish
 %.O:   %.P  $(PROLOG_INCLUDES) $(EMU_INCLUDES)
 	@cp -f $*.O $(OBJFILESAVED) || echo ""
 	echo 'mc($*, $(Option)).' >> cmd...
+
 # The following is done because of brain damage in some make utilities
 # (notably Sun's), which don't take %.P %.H in the same dependency list
 %.P:   %.H

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.23 2001-07-02 17:14:00 dwarren Exp $
+** $Id: loader_xsb.c,v 1.24 2002-03-13 10:17:47 kifer Exp $
 ** 
 */
 
@@ -42,6 +42,7 @@
 #include "psc_xsb.h"
 #include "psc_defs.h"
 #include "loader_xsb.h"
+#include "loader_defs.h"
 #include "cell_xsb.h"
 #include "heap_xsb.h"
 #include "flags_xsb.h"
@@ -589,8 +590,8 @@ static xsbBool load_one_sym(FILE *fd, Psc cur_mod, int count, int exp)
   get_obj_byte(&t_env);
   /* this simple check can avoid worse situations in case of compiler bugs */
   if (t_env > T_GLOBAL) 
-    xsb_abort("[LOADER] The loaded object file %s.O is corrupted",
-	      cur_mod->nameptr);
+    xsb_abort("[LOADER] The loaded object file %s%s is corrupted",
+	      cur_mod->nameptr, XSB_OBJ_EXTENSION_STRING);
 
   get_obj_byte(&t_type);
   get_obj_byte(&t_arity);
@@ -789,7 +790,7 @@ static byte *loader_foreign(char *filename, FILE *fd, int exp)
 /*									*/
 /************************************************************************/
 
-static int warned_old_obj = 0;	/* warned the user about old .O files ? */
+static int warned_old_obj = 0;	/* warned the user about old object files ? */
 
 byte *loader(char *file, int exp)
 {

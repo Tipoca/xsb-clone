@@ -23,9 +23,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unix.P,v 1.7 1999/08/09 00:35:26 kifer Exp $
+** $Id: unix.P,v 1.8 1999/11/16 19:06:23 kifer Exp $
 ** 
 */
+
+
+:- compiler_options([xpp_on,sysmod]).
+#include "loader_defs.h"
 
 
 :- export unix/2, cd/1, unix/1, ls/0, rename/2, rm/1, edit/1.
@@ -82,7 +86,7 @@ rm(Name) :-
 edit(File) :- 
 	obsolete('edit/1 in module unix', 'use edit/1 in module shell'),
 	expand_filename(File, FileName), 
-	unix(['$EDITOR ', '$EDITOR_OPTIONS ', FileName, '.P']).
+	unix(['$EDITOR ', '$EDITOR_OPTIONS ', FileName, XSB_SRC_EXTENSION_ATOM]).
 
 /*
 sys_exit() :- sys_syscall(1).

@@ -18,9 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.P,v 1.6 2000-01-18 15:41:55 ejohnson Exp $
+** $Id: modes.P,v 1.7 2002-03-13 10:17:48 kifer Exp $
 ** 
 */
+
+
+:- compiler_options([sysmod,optimize,spec_repr,xpp_on]).
+#include "loader_defs.h"
 
  
 /************************************************************************/
@@ -747,8 +751,8 @@ remove_asserted_stuff :-
 	retractall('_$call_user'(_)).
 
 declfilename_ext('.D').
-srcfilename_ext('.P').
-hdrfilename_ext('.H').
+srcfilename_ext(XSB_SRC_EXTENSION_ATOM).
+hdrfilename_ext(XSB_HDR_EXTENSION_ATOM).
 
 
 print_stats :-

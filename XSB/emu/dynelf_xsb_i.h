@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf_xsb_i.h,v 1.17 2001-08-14 00:26:58 kifer Exp $
+** $Id: dynelf_xsb_i.h,v 1.18 2002-03-13 10:17:48 kifer Exp $
 ** 
 */
 
@@ -80,7 +80,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   /* (1) create filename.so */
   
   strcpy(sofilename, pofilename);
-  /* replace the O suffix with the so suffix */
+  /* replace the .O suffix with the so suffix */
   strcpy(sofilename+strlen(pofilename)-1, "so");
   
   /* (1.5) include necessary paths into LD_LIBRARY_PATH

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.c,v 1.11 2002-02-21 16:57:56 lfcastro Exp $
+** $Id: orient_xsb.c,v 1.12 2002-03-13 10:17:46 kifer Exp $
 ** 
 */
 
@@ -47,6 +47,7 @@
 #include "basictypes.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
+#include "loader_defs.h"
 
 char executable[MAXPATHLEN] = {'\0'};	/* This is set to a real name below */
 
@@ -243,7 +244,7 @@ void set_config_file() {
      level as the xsb executable. */
   xsb_config_file = strip_names_from_path(executable, 2);
   sprintf(xsb_config_file+strlen(xsb_config_file),
-	  "%clib%cxsb_configuration.P", SLASH, SLASH);
+	  "%clib%cxsb_configuration%s", SLASH, SLASH,XSB_SRC_EXTENSION_STRING);
 
   /* Perform sanity checks: xsb_config_file must be in install_dir/config
      This is probably redundant */
@@ -251,7 +252,8 @@ void set_config_file() {
        || (strstr(xsb_config_file, "config") == NULL) ) {
     fprintf(stderr,
 	    "*************************************************************\n");
-    fprintf(stderr, "PANIC!! The file configuration.P\n");
+    fprintf(stderr,
+	    "PANIC!! The file configuration%s\n", XSB_SRC_EXTENSION_STRING);
     fprintf(stderr,
 	    "is not where it is expected: %s%cconfig%c%s%clib\n",
 	    install_dir, SLASH, SLASH, FULL_CONFIG_NAME, SLASH);

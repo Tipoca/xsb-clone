@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.11 2001-11-08 21:35:25 dwarren Exp $
+** $Id: auxlry.h,v 1.12 2002-03-13 10:17:48 kifer Exp $
 ** 
 */
 
@@ -65,7 +65,7 @@ extern int asynint_val;
 typedef enum XSB_Execution_Mode {
   DEFAULT,           /* mode has not been set by user */
   INTERPRETER,       /* currently the mode to be used in default condition */
-  DISASSEMBLE,       /* dissassemble .O file */
+  DISASSEMBLE,       /* dissassemble object file file */
   C_CALLING_XSB,
   CUSTOM_BOOT_MODULE,     /* user specifies boot module on the command line */
   CUSTOM_CMD_LOOP_DRIVER  /* user specifies command loop driver 

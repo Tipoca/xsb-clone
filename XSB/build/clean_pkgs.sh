@@ -1,6 +1,6 @@
 #! /bin/sh
 
-## File:      clean_pkgs.sh -- Clean package directory out of .O and .so files
+## File:      clean_pkgs.sh -- Clean package directory out of OBJ and .so files
 ## Author(s): kifer
 ## Contact:   xsb-contact@cs.sunysb.edu
 ## 
@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: clean_pkgs.sh,v 1.2 2002-03-03 04:15:40 kifer Exp $
+## $Id: clean_pkgs.sh,v 1.3 2002-03-13 10:17:49 kifer Exp $
 ## 
 ##
 
