@@ -18,17 +18,18 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.8 1999-08-28 20:09:01 kifer Exp $
+## $Id: Makefile,v 1.9 1999-09-18 21:14:25 kifer Exp $
 ## 
 ##
 
 
 ALL = 	flrprettyprint.P
 
-EMU_INCLUDES = ../emu/builtin.h ../emu/celltags.h ../emu/flag_defs.h \
-	../emu/io_defs.h ../emu/msyscall.h ../emu/sig.h \
-	../emu/system.h ../emu/xsbsocket.h 
-PROLOG_INCLUDES = ../prolog_includes/char_defs.h ../prolog_includes/standard.h
+EMU_INCLUDES = ../../../emu/builtin.h ../../../emu/celltags.h ../../../emu/flag_defs.h \
+	../../../emu/io_defs.h ../../../emu/msyscall.h ../../../emu/sig.h \
+	../../../emu/system.h ../../../emu/xsbsocket.h 
+PROLOG_INCLUDES = ../../../prolog_includes/char_defs.h \
+	../../../prolog_includes/standard.h
 
 
 Option = [optimize]
@@ -44,7 +45,7 @@ Prolog = $(XSB) -i -s -m 2000 -c 2000 -e 'segfault_handler(warn).'
 #-----------------------------------------------------------------------#
 
 # Make sure warnings are saved in a file.
-SVFILE = '/tmp/flora_lib_warn'
+SVFILE = '../../../build/.flora_lib_warn.tmp'
 OWRITE = 1
 STDWARN = 3
 STDERR = 2

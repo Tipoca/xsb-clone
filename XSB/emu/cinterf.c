@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.17 1999-07-05 06:13:04 kifer Exp $
+** $Id: cinterf.c,v 1.18 1999-09-18 21:14:20 kifer Exp $
 ** 
 */
 
@@ -196,7 +196,7 @@ DllExport bool call_conv c2p_functor(char *functor, int arity, prolog_term var)
 	for (i=0; i<arity; sreg++,i++) { bld_free(sreg); }
 	return TRUE;
     } else {
-	xsb_warn("C2P_FUNCTOR: Argument 2 must be a variable");
+	xsb_warn("C2P_FUNCTOR: Argument 3 must be a variable");
 	return FALSE;
     }
 }
