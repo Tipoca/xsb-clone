@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.34 1999-10-10 11:38:14 kostis Exp $
+** $Id: init.c,v 1.35 1999-10-12 20:20:13 ejohnson Exp $
 ** 
 */
 
@@ -250,6 +250,7 @@ char *init_para(int argc, char *argv[])
   char *boot_module, *cmd_loop_driver;
   char *cmd_line_goal="true.";
   int  strlen_instdir, strlen_initfile, strlen_2ndfile;
+  void tstInitDataStructs();
 
   init_flags();
   /* this needs to appear here as streams are used below in xsb_warn() */
@@ -257,6 +258,7 @@ char *init_para(int argc, char *argv[])
 
   init_newtrie();
   init_trie_aux_areas();
+  tstInitDataStructs();
 
   /* init stat. structures */
   perproc_reset_stat();
@@ -289,7 +291,7 @@ char *init_para(int argc, char *argv[])
 
 
   xsb_mode = DEFAULT;
-  flags[TABLING_METHOD] = VARIANT_TM;
+  flags[TABLING_METHOD] = VARIANT_TCM;
 
 
   /* Modify Parameters Using Command Line Options
@@ -374,7 +376,14 @@ char *init_para(int argc, char *argv[])
       flags[TRACE_STA] = call_intercept = 1;
       break;
     case 'S':
-      flags[TABLING_METHOD] = SUBSUMPTIVE_TM;
+#ifndef CHAT
+      flags[TABLING_METHOD] = SUBSUMPTIVE_TCM;
+#else
+      {
+	void print_chat_sub_warning();
+	print_chat_sub_warning();
+      }
+#endif
       break;
     case 'd':
       if ( (xsb_mode != DEFAULT) && (xsb_mode != CUSTOM_BOOT_MODULE) )
