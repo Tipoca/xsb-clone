@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf_xsb_i.h,v 1.3 1999-10-26 17:42:15 luis Exp $
+** $Id: dynelf_xsb_i.h,v 1.4 1999-10-26 20:24:35 luis Exp $
 ** 
 */
 
@@ -33,6 +33,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "auxlry.h"
 #include "cell_xsb.h"
@@ -63,10 +64,10 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   void	*handle;
   void	*funcep;
   bool	dummy();
-  char  *ldp1,*ldp2;
-  char  *ldstring,*libpath;
-  char  ldtemp;
-  int   slibpath;
+/*   char  *ldp1,*ldp2; */
+/*   char  *ldstring,*libpath; */
+/*   char  ldtemp; */
+/*   int   slibpath; */
   
   /* (1) create filename.so */
   
