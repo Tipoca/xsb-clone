@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.26 2003-03-24 20:23:01 lfcastro Exp $
+** $Id: odbc_xsb.c,v 1.27 2003-03-26 18:36:45 lfcastro Exp $
 ** 
 */
 
@@ -109,6 +109,10 @@ SWORD ODBCToXSBType(SWORD odbcType)
   case SQL_FLOAT:
   case SQL_DOUBLE:
     return SQL_C_FLOAT;
+  case SQL_BINARY:
+  case SQL_VARBINARY:
+  case SQL_LONGVARBINARY:
+    return SQL_BINARY;
   case SQL_DATE:
   case SQL_TIME:
   case SQL_TIMESTAMP: 
@@ -892,6 +896,9 @@ UDWORD DisplayColSize(SWORD coltype, UDWORD collen, UCHAR *colname)
     if (tmp < MAXVARSTRLEN) return tmp;
     else return MAXVARSTRLEN;
   }
+  case SQL_C_BINARY: {
+    return MAXVARSTRLEN;
+  }
   case SQL_C_FLOAT:
     return sizeof(float *);
   default: 
@@ -1102,6 +1109,30 @@ int GetColumn()
   /* according to the column type and pass it back to XSB*/
   switch (ODBCToXSBType(cur->ColTypes[ColCurNum])) {
   case SQL_C_CHAR:
+    /* convert the column string to a C string */
+    len = ((cur->ColLen[ColCurNum] < cur->OutLen[ColCurNum])?
+	   cur->ColLen[ColCurNum]:cur->OutLen[ColCurNum]);
+    *(cur->Data[ColCurNum]+len) = '\0';
+
+    /* compare strings here, so don't intern strings unnecessarily*/
+    XSB_Deref(op);
+    if (isref(op)) 
+      return unify(op, makestring(string_find(cur->Data[ColCurNum],1))); 
+    if (isconstr(op) && get_arity(get_str_psc(op)) == 1) {
+      STRFILE strfile;
+      
+      op1 = cell(clref_val(op)+1);
+      XSB_Deref(op1);
+      
+      strfile.strcnt = strlen(cur->Data[ColCurNum]);
+      strfile.strptr = strfile.strbase = cur->Data[ColCurNum];
+      read_canonical_term(NULL,&strfile,op1); /* terminating '.'? */
+      return TRUE;
+    }
+    if (!isstring(op)) return FALSE;
+    if (strcmp(string_val(op),cur->Data[ColCurNum])) return FALSE;
+    return TRUE;
+  case SQL_C_BINARY:
     /* convert the column string to a C string */
     len = ((cur->ColLen[ColCurNum] < cur->OutLen[ColCurNum])?
 	   cur->ColLen[ColCurNum]:cur->OutLen[ColCurNum]);
