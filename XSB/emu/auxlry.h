@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.2 1999-04-04 03:54:42 kifer Exp $
+** $Id: auxlry.h,v 1.3 1999-04-04 04:22:18 kifer Exp $
 ** 
 */
 
@@ -94,8 +94,8 @@ extern char *xsb_segfault_message;
 
 /* This would yield a meaningful message in case of segfault */
 #define SET_FILEPTR(stream, fileno) \
-    	if (fileno < 0 || fileno >= MAX_OPEN_FILES) \
-    	    xsb_abort("Invalid file descriptor passed to I/O predicate"); \
-	stream = fileptr(fileno); \
-    	if (stream==NULL) \
-    	    xsb_abort("Invalid file descriptor passed to I/O predicate");
+    if (fileno < 0 || fileno >= MAX_OPEN_FILES) \
+	xsb_abort("Invalid file descriptor %d in I/O predicate", fileno);\
+    stream = fileptr(fileno); \
+    if (stream==NULL) \
+	xsb_abort("Invalid file descriptor %d in I/O predicate", fileno);
