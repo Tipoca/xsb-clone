@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.50 1999-08-09 00:29:14 kifer Exp $
+## $Id: configure.in,v 1.51 1999-08-23 21:47:11 luis Exp $
 ## 
 ##
 
@@ -1039,10 +1039,19 @@ AC_SUBST(xsb_release_date)
 AC_SUBST(xsb_full_version_name)
 AC_SUBST(engine_mode)
 
+#These are used to compile the interface with SModels
+if test "${with_smodels}" = "" ; then
+	smodels_goal=nope
+else
+	smodels_goal=all
+fi
+AC_SUBST(smodels_goal)
+AC_SUBST(with_smodels)
 
 AC_OUTPUT([ ${arch_config_prefix}/topMakefile:topMakefile.in
 	    ${arch_config_prefix}/emuMakefile:emuMakefile.in
 	    ${arch_config_prefix}/modMakefile:modMakefile.in
+	    ${arch_config_prefix}/smoMakefile:smoMakefile.in
 dnl prolog_includes/config.h makes .O files system-dependent -- don't want this
 dnl	    ${prolog_includes}/config.h:def_prolog_config.in
 	    ${arch_config_file}:${configuration_templ}
