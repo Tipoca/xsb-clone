@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.10 2004/01/21 20:02:17 dwarren Exp $
+** $Id: error_handler.P,v 1.11 2004/01/28 23:00:09 tswift Exp $
 ** 
 */
 
@@ -49,8 +49,8 @@ default_error_handler(Error) :-
 	fail.
 
 /* messages are handled via abort/1.  */
-default_sys_error_handler('_$abort_ball').
-default_sys_error_handler('_$abort_ball'(Msg)) :-
+default_sys_error_handler('_$abort_ball'(_BackTrace)).
+default_sys_error_handler('_$abort_ball'(Msg,_BackTrace)) :-
 	messageln(Msg,STDERR).
 default_sys_error_handler(error(instantiation_error,Msg)) :-
 	messageln(('++Error[XSB/Runtime/P]: [Instantiation] ', Msg), 
