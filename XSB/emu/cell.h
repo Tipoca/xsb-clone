@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell.h,v 1.3 1999-04-17 16:44:04 kostis Exp $
+** $Id: cell.h,v 1.4 1999-04-22 07:30:38 kifer Exp $
 ** 
 */
 
@@ -115,7 +115,7 @@ extern Float getfloatval(Cell);
 /*======================================================================*/
 
 /* for HP machines (works for HP700 & 9000 series) take bits 0-1, 28, 29, 31 */
-#if (defined(HP700) || (defined(LINUX_ELF))) 
+#if defined(HP700)
 #define enc_int(val) ( ((Integer)(val) & 0xb0000003) ?\
 			(((Integer)(val) << 5) | 0x10) :\
 			(((Integer)(val) << 1) & 0x80000000) |\
@@ -174,8 +174,9 @@ extern Float getfloatval(Cell);
 #define dec_addr(dcell) (((Cell)(dcell) >> 2) & 0x3ffffffc)
 #endif
 
-#elif (defined(BIG_MEM) || defined(WIN_NT))  /* take bits 0-1, 30-31 */
-/* BIG_MEM will allow Solaris/Sun machines to use 1 gig of memory */
+#elif (defined(BIG_MEM) || defined(WIN_NT) || defined(LINUX_ELF))
+/* take bits 0-1, 30-31 */
+/* BIG_MEM allows Solaris/Sun machines to use 1 gig of memory */
 
 #define enc_int(val) ( ((Integer)(val) & 0xc0000003) ?\
 		       (((Integer)(val) << 4) | 0x08) :\
