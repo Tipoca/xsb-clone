@@ -1,13 +1,13 @@
 /* File:      general.P
 ** Author(s): Baoqiu Cui
 **
-** $Id: general.P,v 1.1 2000-01-12 00:30:47 cbaoqiu Exp $
+** $Id: general.P,v 1.2 2000-02-17 18:44:57 cbaoqiu Exp $
 */
 
-:- import put_atts/2, get_atts/2, attribute/1 from atts.
+:- import put_atts/2, get_atts/2 from atts.
 :- import put_attributes/2 from machine.
 
-:- attribute((dom/1, name/2)).
+:- attribute dom/1, name/2.
 
 test :-
 	test1,

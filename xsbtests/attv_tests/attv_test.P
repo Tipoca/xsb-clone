@@ -2,11 +2,11 @@
 ** Author(s): Baoqiu Cui
 ** 
 ** This file contains some basic tests for attributed variables.
-** $Id: attv_test.P,v 1.4 1999-11-05 21:50:11 cbaoqiu Exp $
+** $Id: attv_test.P,v 1.5 2000-02-17 18:44:57 cbaoqiu Exp $
 */
 
 :- import put_attributes/2, get_attributes/3 from machine.
-:- import get_atts/2, put_atts/2, attribute/1 from atts.
+:- import get_atts/2, put_atts/2 from atts.
 :- import attv_unify/2 from machine.
 
 test :-
