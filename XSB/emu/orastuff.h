@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orastuff.h,v 1.4 2000-04-29 21:53:55 kifer Exp $
+** $Id: orastuff.h,v 1.5 2000-10-02 13:53:35 ejohnson Exp $
 ** 
 */
 
@@ -55,33 +55,6 @@ EXEC SQL INCLUDE sqlca;
 #define IsExceptionStatus(Status)   (Status > SUCCESS)
 #define IsSuccessStatus(Status)     (Status == SUCCESS)
 #define IsFailureStatus(Status)     (Status < SUCCESS)
-
-
-/*
- *  Boolean data type and its values. is defined elsewhere
-typedef enum Boolean {
-  FALSE = 0, TRUE = 1,
-  NO = 0, YES = 1
-} xsbBool;
- */
-
-
-#define IsNULL(Ptr)      (Ptr == NULL)
-#define IsNonNULL(Ptr)   (Ptr != NULL)
-
-
-/* ======================================================================== */
-
-/*
- *              X S B   F U N C T I O N   P R O T O T Y P E S
- *		=============================================
- */
-
-/* from psc.c */
-char* string_find(char *, int);
-
-/* from error_xsb.c */
-void xsb_abort(char *);
 
 
 /* ======================================================================== */

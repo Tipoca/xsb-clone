@@ -18,10 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orastuff.pc,v 1.12 2000-05-20 06:56:04 kifer Exp $
+** $Id: orastuff.pc,v 1.13 2000-10-02 13:53:36 ejohnson Exp $
 ** 
 */
 
+
+#include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,12 +32,14 @@
 #include <ctype.h>
 #include <stdarg.h>
 
-#include "xsb_config.h"
+#include "basicdefs.h"
+#include "basictypes.h"
 #include "cell_xsb.h"
+#include "cinterf.h"
+#include "psc_xsb.h"
 #include "flags_xsb.h"
 #include "error_xsb.h"
 #include "io_builtins_xsb.h"
-#include "cinterf.h"
 
 EXEC SQL INCLUDE "orastuff.h";
 
