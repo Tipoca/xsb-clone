@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dcg.P,v 1.12 2003/12/08 22:33:43 tswift Exp $
+** $Id: dcg.P,v 1.13 2004/01/26 22:05:03 dwarren Exp $
 ** 
 */
 
@@ -62,6 +62,19 @@ reset_dcg_mode :-
 	        retractall(num_words(_)),
 	        assert(word([Token|Tokens],Token,Tokens))
 	).
+
+:- dynamic dynamic_supports_table/2.
+set_dcg_supported_table(TSkel) :-
+	table_state(TSkel,PType,_CType,_AStat),
+	PType \== undefined,
+	(dynamic_supports_table(word(_,_,_),TSkel)
+	 ->	true
+	 ;	assert(dynamic_supports_table(word(_,_,_),TSkel))
+	).
+
+tphrase_set_string_auto_abolish(List) :-
+	abolish_invalid_table_pred(word(_,_,_)),
+	tphrase_set_string_keeping_tables(List).
 
 tphrase_set_string(List) :-
 	abolish_all_tables,   % since changing EDB tables depend on.

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.77 2004/01/20 17:19:23 dwarren Exp $
+** $Id: standard.P,v 1.78 2004/01/28 23:00:12 tswift Exp $
 ** 
 */
 
@@ -863,7 +863,7 @@ not(Term) :-  (call(Term), nop, !, fail) ; true.
 %% true/0 is now defined in emu/init_xsb.c. This is so that we can
 %% maintain its psc in a global variable and use it when adding an
 %% interrupt, instead of always searching for it.       --lfcastro
-%%true. 		% including this used to cause compiling error, now not
+true. 		% including this used to cause compiling error, now not
 
 otherwise.	% same as true
 
