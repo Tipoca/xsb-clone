@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.19 2003-07-22 18:30:17 lfcastro Exp $
+** $Id: dis.c,v 1.20 2003-10-28 18:03:13 kostis Exp $
 ** 
 */
 
@@ -114,7 +114,7 @@ static void dis_data_sub(Pair *chain_ptr, char* modname)
 	    case T_MODU: fprintf(filedes, "'MODU',"); break;
 	    case T_FORN: fprintf(filedes, "'FORN',"); break;
 	    case T_UDEF: fprintf(filedes, "'UDEF',"); break;
-	    default:	 fprintf(filedes, "'????',"); break;
+	    default:	 fprintf(filedes, "\'????\',"); break;
 	}
 	switch(get_env(temp)) {
 	    case T_VISIBLE:  fprintf(filedes, "'VISIBLE',"); break;
