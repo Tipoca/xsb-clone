@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.c,v 1.6 1999-03-25 02:47:12 kifer Exp $
+** $Id: io_builtins.c,v 1.7 1999-03-26 11:26:36 kostis Exp $
 ** 
 */
 
@@ -31,8 +31,6 @@
 #include <string.h>
 #include <setjmp.h>
 #include <stdlib.h>
-#include <signal.h>
-
 
 #include "auxlry.h"
 #include "cell.h"
