@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory.c,v 1.2 1998-12-21 01:08:34 cbaoqiu Exp $
+** $Id: memory.c,v 1.3 1999-01-13 16:58:11 kostis Exp $
 ** 
 */
 
@@ -214,20 +214,19 @@ void tcpstack_realloc(long new_size) {
        csf_ptr < (ComplStackFrame)complstack.high;
 	 csf_ptr++) {
     subg_ptr = (SGFrame)compl_subgoal_ptr(csf_ptr);
-#ifdef CHAT
-    xsb_exit("Implementation of Trail/CP stack realloc still murky in CHAT");
-#else
     /* Alter specific fields
        --------------------- */
+#if (!defined(CHAT))
     if (subg_asf_list_ptr(subg_ptr) != NULL)
       subg_asf_list_ptr(subg_ptr) =
 	(CPtr)( (byte *)subg_asf_list_ptr(subg_ptr) + cps_offset );
+#endif
     if (subg_compl_susp_ptr(subg_ptr) != NULL)
       subg_compl_susp_ptr(subg_ptr) =
 	(CPtr)( (byte *)subg_compl_susp_ptr(subg_ptr) + cps_offset );
-    subg_cp_ptr(subg_ptr) =
-      (CPtr)((byte *)subg_cp_ptr(subg_ptr) + cps_offset);
-#endif
+    if (subg_cp_ptr(subg_ptr) != NULL)
+      subg_cp_ptr(subg_ptr) =
+	(CPtr)((byte *)subg_cp_ptr(subg_ptr) + cps_offset);
   }
 						     
   /* Update the system variables
@@ -237,11 +236,9 @@ void tcpstack_realloc(long new_size) {
   tcpstack.size = new_size;
   
   trreg = (CPtr *)((byte *)trreg + trail_offset);
-#if (!defined(CHAT))
-  trfreg = (CPtr *)((byte *)trfreg + trail_offset);
-#endif
   breg = (CPtr)((byte *)breg + cps_offset);
 #if (!defined(CHAT))
+  trfreg = (CPtr *)((byte *)trfreg + trail_offset);
   bfreg = (CPtr)((byte *)bfreg + cps_offset);
 #endif
 #ifdef PTCP_IN_CP
