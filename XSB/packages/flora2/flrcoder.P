@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.P,v 1.7 2001-03-12 16:50:36 gzyang Exp $
+** $Id: flrcoder.P,v 1.8 2001-03-15 23:28:46 gzyang Exp $
 **
 */
 
@@ -444,6 +444,7 @@ flora_write_wsstruct(Term,WS,Prefix) :-
 	    str_cat(Prefix,F,NewF),
 	    flora_write_flogic(WS,NewF,N,Args,Prefix)
 	;
+	  %% Workspace applied to Prolog terms has no effect.
 	  is_prologterm(Term,F,N,Args),
 	  flora_write_prolog(F,N,Args,Prefix)
         ).
