@@ -18,16 +18,16 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.16 2001-05-25 00:42:45 tswift Exp $
+## $Id: Makefile,v 1.17 2001-05-25 19:18:30 lfcastro Exp $
 ## 
 ##
 
 
 ALL = 	flora.O slx.O perlmatch.O gap.O regmatch.O wildmatch.O \
-	sModels.O libwww.O clpr.O xsbdoc.O
+	sModels.O libwww.O clpr.O xsbdoc.O xmc.O
 
 SUBDIR = flora slx perlmatch gap regmatch wildmatch libwww sModels \
-	clpqr xsbdoc
+	clpqr xsbdoc xmc
 
 Option = [optimize]
 
@@ -99,6 +99,9 @@ wildmatch::
 	@echo ""
 	cd wildmatch; make
 
+xmc::
+	@echo ""
+	cd xmc; make
 
 init:
 	/bin/rm -f $(SVFILE)

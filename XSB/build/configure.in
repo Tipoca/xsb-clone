@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.107 2001-05-17 12:50:16 dwarren Exp $
+## $Id: configure.in,v 1.108 2001-05-25 19:17:00 lfcastro Exp $
 ## 
 ##
 
@@ -1244,6 +1244,7 @@ AC_OUTPUT([ ${arch_config_prefix}/topMakefile:topMakefile.in
 	    ${scriptdir}/wxsb.bat:wxsb.in
 	    ${arch_config_prefix}/banner.msg:banner.in
 	    ${arch_config_prefix}/MSVC_mkfile.mak:MSVC_mkfile.in
+	    ${prefix}/packages/xmc.P:xmc.in
 	    ])
 
 chmod 644 ${arch_config_file}
