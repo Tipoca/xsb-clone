@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.15 2001-08-21 16:28:00 kifer Exp $
+** $Id: gpp.c,v 1.16 2001-08-21 18:24:12 kifer Exp $
 ** 
 */
 
@@ -966,7 +966,7 @@ void initthings(int argc,char **argv)
       index1 = index2+1;
       index2 = strchr(index1,'%');
       strncat(include_directive_marker,index1, index2-index1);
-      strcat(include_directive_marker,"\"%s\"");
+      strcat(include_directive_marker,"%s");
       /* replace the third % with %s */
       index1 = index2+1;
       index2 = strchr(index1,'%');
