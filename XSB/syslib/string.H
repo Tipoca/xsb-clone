@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string.H,v 1.16 2002/04/13 05:01:59 lfcastro Exp $
+** $Id: string.H,v 1.17 2002/07/01 16:21:47 dwarren Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 :- export term_to_codes/2, term_to_atom/2, codes_to_term/2, atom_to_term/2.
 :- export read_atom_to_term/3, read_atom_to_term/2.
 
-:- import flatten/2, append/3, memberchk/2, copy_term/2, length/2 from basics.
+:- import append/3, memberchk/2, copy_term/2, length/2 from basics.
 :- import str_len/2 from machine.
 :- import atom/1, atom_codes/2, number/1, integer/1, structure/1, '=..'/2,
         is_list/1, number_codes/2, float/1 from standard.
