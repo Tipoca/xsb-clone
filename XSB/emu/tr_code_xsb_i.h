@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.1 1999-10-25 05:59:50 kifer Exp $
+** $Id: tr_code_xsb_i.h,v 1.2 1999-11-05 03:52:11 cbaoqiu Exp $
 ** 
 */
 
@@ -298,7 +298,7 @@ int     delay_it;
       bind_copy((CPtr)dec_addr(*reg_arrayptr), cell2deref);	\
     }								\
     else {							\
-      /* printf(".... keeping the old attribute\n"); */		\
+      attv_dbgmsg(">>>> keeping the old attribute\n");		\
     }								\
   }								\
   else {							\

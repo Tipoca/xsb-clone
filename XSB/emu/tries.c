@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.36 1999-10-29 10:40:19 kostis Exp $
+** $Id: tries.c,v 1.37 1999-11-05 03:52:12 cbaoqiu Exp $
 ** 
 */
 
@@ -653,12 +653,10 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
       }									\
       break;								\
     case ATTV:								\
-      /* fprintf(stderr, ".... in recvariant_trie_ans_subsf\n"); */	\
       /* Now xtemp1 can only be the first occurrence of an attv */	\
       *(hreg++) = (Cell) xtemp1;					\
       xtemp1 = clref_val(xtemp1); /* the VAR part of the attv */	\
       StandardizeAndTrailVariable(xtemp1, ctr);				\
-      /* printf(".... ctr = %d\n", ctr) */;				\
       one_node_chk_ins(flag, EncodeNewTrieAttv(ctr), TrieType);		\
       attv_ctr++; ctr++;						\
       pdlpush(cell(xtemp1+1));	/* the ATTR part of the attv */		\

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify_xsb_i.h,v 1.2 1999-11-04 23:01:26 cbaoqiu Exp $
+** $Id: unify_xsb_i.h,v 1.3 1999-11-05 03:52:13 cbaoqiu Exp $
 ** 
 */
 
@@ -91,7 +91,7 @@ tail_recursion:
 	 IFTHEN_SUCCEED;
        }
        else if (isattv(op2)) {
-	 /* fprintf(stderr, ".... CS = ATTV, interrupt needed\n"); */
+	 attv_dbgmsg(">>>> CS = ATTV, interrupt needed\n");
 	 add_interrupt(op2, op1);
 	 IFTHEN_SUCCEED;
        }
@@ -116,7 +116,7 @@ tail_recursion:
 	 IFTHEN_SUCCEED;
        }
        else if (isattv(op2)) {
-	 /* fprintf(stderr, ".... LIST = ATTV, interrupt needed\n"); */
+	 attv_dbgmsg(">>>> LIST = ATTV, interrupt needed\n");
 	 add_interrupt(op2, op1);
 	 IFTHEN_SUCCEED;
        }
@@ -129,7 +129,7 @@ tail_recursion:
        if (op1 == op2)
 	 { IFTHEN_SUCCEED; }
        else if (isattv(op2)) {
-	 /* fprintf(stderr, ".... INT = ATTV, interrupt needed\n"); */
+	 attv_dbgmsg(">>>> INT = ATTV, interrupt needed\n");
 	 add_interrupt(op2, op1);
 	 IFTHEN_SUCCEED;
        }
@@ -144,7 +144,7 @@ tail_recursion:
 	 IFTHEN_SUCCEED;
        }
        else if (!isattv(op2) || (isattv(op2) && op1 != op2)) {
-	 /* fprintf(stderr, ".... ATTV = ???, interrupt needed\n"); */
+	 attv_dbgmsg(">>>> ATTV = ???, interrupt needed\n");
 	 add_interrupt(op1, op2);
 	 IFTHEN_SUCCEED;
        }
