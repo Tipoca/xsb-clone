@@ -20,14 +20,12 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.H,v 1.15 2002-04-07 23:09:17 kifer Exp $
+** $Id: flrcoder.H,v 1.16 2002-04-16 16:40:38 kifer Exp $
 **
 */
 
 
 :- import format/2 from format.
-
-:- import write_canonical/1, writeln/1 from standard.
 
 :- import append/3 from basics.
 

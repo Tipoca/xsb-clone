@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.43 2002-04-10 05:16:11 kifer Exp $
+** $Id: flrutils.H,v 1.44 2002-04-16 16:40:37 kifer Exp $
 **
 */
 
@@ -37,7 +37,8 @@
 	flora_slash/1,
 	flora_cputime/1,
 	flora_set_counter/2,
-	flora_concat_atoms/2
+	flora_concat_atoms/2,
+	flora_copy_input/0
    from flrporting.
 
 :- import format/2 from format.
