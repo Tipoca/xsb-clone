@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket.H,v 1.1.1.1 1998-11-05 17:00:30 sbprolog Exp $
+** $Id: socket.H,v 1.2 1999-07-06 15:54:37 warren Exp $
 ** 
 */
 
@@ -26,5 +26,5 @@
      socket_connect/4, socket_flush/1, socket_close/1, socket_recv/2,
      socket_send/2, socket_send_eof/1, socket_send_asci/2.
 
-:- import socket_request/6 from machine.
+:- import socket_request/6,file_function/7 from machine.
 

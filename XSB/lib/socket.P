@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket.P,v 1.1.1.1 1998-11-05 17:00:31 sbprolog Exp $
+** $Id: socket.P,v 1.2 1999-07-06 15:54:38 warren Exp $
 ** 
 */
 
@@ -29,7 +29,7 @@ socket_listen(Sockfd,Length) :- socket_request(2,Sockfd,Length,_,_,_).
 socket_accept(Sockfd,Sockfptr) :- socket_request(3,Sockfd,Sockfptr,_,_,_).
 socket_connect(Sockfd,Port,Hostname,Sockfptr) :- 
 	socket_request(4,0,Sockfd,Port,Hostname,Sockfptr).
-socket_flush(Sockfd) :- socket_request(5,Sockfd,_,_,_,_).
+socket_flush(FileDes) :- file_function(0,FileDes,_,[],[],[],[]).  % for back comp
 socket_close(Sockfd) :- socket_request(6,Sockfd,_,_,_,_).
 socket_recv(Sockfd, Msg) :- socket_request(7,Sockfd,Msg,_,_,_).
 socket_send(Sockfd, Msg) :- socket_request(8,Sockfd,Msg,_,_,_).
