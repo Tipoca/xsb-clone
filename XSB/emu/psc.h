@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc.h,v 1.7 1999-10-12 20:21:48 ejohnson Exp $
+** $Id: psc.h,v 1.8 1999-10-23 21:19:26 kifer Exp $
 ** 
 */
 
@@ -55,21 +55,8 @@ typedef struct psc_pair *Pair;
 
 /* === env definition: (env) ======================================*/
 
-#define T_VISIBLE	0
-#define T_HIDDEN	1
-#define T_UNLOADED	2
-
-/* === type definition: (entry_type) ===============================*/
-
-#define T_ORDI  0	/* constant-type: no ep definition, may be set later */
-#define T_DYNA	1	/* constant-type: dynamic, code in buffer */
-#define T_PRED  2	/* constant-type: ep points to compiled code */
-
-#define T_MODU  4	/* ep field is used to hold psc-list */
-#define T_FILE  5	/* ep field could be file descriptor (not now) */
-
-#define T_UDEF 12	/* unloaded T_PRED */
-#define T_FORN 13	/* predicate in foreign language */
+/* Type definitions */
+#include "psc_defs.h"
 
 /*======================================================================*/
 /* Interface macros (in the following "psc" is typed "Psc")		*/
