@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: peephole.P,v 1.8 2004-08-31 00:22:22 dwarren Exp $
+** $Id: peephole.P,v 1.9 2005-02-04 16:39:03 dwarren Exp $
 ** 
 */
 
@@ -40,10 +40,11 @@ compile_peephole_opt(Pil, OptPil) :-
 	compile_popt4(Pil3,_,OptPil),
 	!.
 
-
 compile_popt1([], []).
 compile_popt1([Inst|Rest], Pil1) :- compile_popt11(Inst, Rest, Pil1).
 
+compile_popt11(trustmeorelsefail(R), [trymeorelse(R,L)|PilRest], [retrymeorelse(R,L)|OptPilRest]) :-
+	compile_popt1a(PilRest, OptPilRest).
 compile_popt11(puttvar(T,R), [getstr(R,S)|PilRest], [putstr(T,S)|OptPilRest]) :-
 	compile_popt1a(PilRest, OptPilRest).
 compile_popt11(puttvar(T,T), [movreg(T,R)|PilRest], [puttvar(T,R)|OptPilRest]) :-
