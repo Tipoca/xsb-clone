@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.c,v 1.6 2000-01-07 08:51:36 kifer Exp $
+** $Id: inst_xsb.c,v 1.7 2000-02-29 18:43:35 tswift Exp $
 ** 
 */
 
@@ -233,7 +233,6 @@ static void init_inst_table_4(void)
   set_inst(halt, "halt",               PPP,X, X,X);
   set_inst(builtin, "builtin",         PP, A, X,X);
   set_inst(unifunc, "unifunc",	       PPP,X, X,X);
-  set_inst(userfunc, "userfunc",       PP, A, S,X);
   set_inst(reset, "reset",	       PPP,X, X,X);
 }
 

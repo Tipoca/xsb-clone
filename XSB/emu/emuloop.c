@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.56 2000-02-15 07:45:08 bartkul Exp $
+** $Id: emuloop.c,v 1.57 2000-02-29 18:43:35 tswift Exp $
 ** 
 */
 
@@ -1176,16 +1176,6 @@ contcase:     /* the main loop */
     }
     pad64;
     goto contcase;
-
-  case userfunc: {  /* PPA-S */	/* The same as "call" now */
-    Psc psc;
-
-    pppad; pad64; op2word;	/* the first arg is used later by alloc */
-    cpreg = lpcreg;
-    psc = (Psc)op2;
-    call_sub(psc);
-    goto contcase;
-  }
 
   case calld:   /* PPA-L */
     pppad;
