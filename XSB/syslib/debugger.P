@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.P,v 1.5 1999/07/02 08:06:29 kifer Exp $
+** $Id: debugger.P,v 1.6 1999/07/04 06:18:23 kifer Exp $
 ** 
 */
 
@@ -273,8 +273,11 @@ deb_traceget(N,Spy,Type,Call,C) :-
 
 debug_display_call(Call) :- (debug_display_call_hook(Hook)
 			    	-> Invocation =.. [Hook, Call],
-				   call(Invocation)
-			    	; ll_write(Call)
+				    %% Prevent backtracking through 
+				    %% the print function hook: succeed 
+				    %% even if the print function doesn't.
+				   (call(Invocation) -> true; true)
+			    	;  ll_write(Call)
 			    ).
 
 leashable('Call').
