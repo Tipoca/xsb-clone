@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.44 2002-03-26 09:32:31 kifer Exp $
+** $Id: parse.P,v 1.45 2003-04-18 20:11:39 dwarren Exp $
 ** 
 */
 
@@ -240,11 +240,21 @@ check_compilable_clause(:-(D)) :- var(D), !,
 check_compilable_clause(:-(H,B)) :- var(H), !, 
 	error(('Clause cannot be compiled: ',:-(H,B))),
 	fail.
+check_compilable_clause(:-(H,B)) :- embedded_number(B), !, 
+	error(('Clause cannot be compiled: ',:-(H,B))),
+	fail.
 check_compilable_clause([]) :- !.
 check_compilable_clause([Cl|Cls]) :- !,
 	check_compilable_clause(Cl),
 	check_compilable_clause(Cls).
 check_compilable_clause(_).
+
+embedded_number(B) :- number(B), !.
+embedded_number((A,B)) :- 
+	(embedded_number(A)
+	 ->	true
+	 ;	embedded_number(B)
+	).
 
 %-------------------------------------------------------------------------
 % Note: The VariableList is not used in the rule parse_clause/3 for the 
