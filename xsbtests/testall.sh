@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.11 1999-11-29 07:43:35 kifer Exp $
+## $Id: testall.sh,v 1.12 1999-11-30 15:00:44 kifer Exp $
 ## 
 ##
 
@@ -87,7 +87,7 @@ member ()
 # float_tests: don't pass. --mk
 default_testlist="basic_tests prolog_tests retract_tests \
 	  table_tests ptq neg_tests sem_tests delay_tests \
-	  wfs_tests ai_tests attv_tests sub_tests io_tests"
+	  wfs_tests ai_tests attv_tests sub_tests io_tests regmatch_tests"
 
 if test -z "$only_tests"; then
     testlist="$default_testlist $added_tests"
