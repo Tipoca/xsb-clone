@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.34 2000/12/08 17:26:48 ejohnson Exp $
+** $Id: tables.P,v 1.35 2001/02/13 22:04:13 lfcastro Exp $
 ** 
 */
 
@@ -264,8 +264,11 @@ get_calls(_CallTerm) :- '_$builtin'(TRIE_UNIFY_CALL).
 
 get_calls_for_table(PredSpec,Call) :-
 	( PredSpec = P/N
-	  -> functor(Call,P,N)
-	  ;  functor(PredSpec,P,N), functor(Call,P,N) ),
+	 ->	functor(Call,P,N)
+	 ;	term_psc(PredSpec,PSC),
+		term_new(PSC,Call)
+	        %% functor(PredSpec,P,N), functor(Call,P,N) ),
+	),
 	get_calls(Call, _CallStr, _RetSkel).
 
 

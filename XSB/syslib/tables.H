@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.26 2000/11/22 20:06:13 ejohnson Exp $
+** $Id: tables.H,v 1.27 2000/12/04 17:10:48 ejohnson Exp $
 ** 
 */
 
@@ -66,7 +66,7 @@
      from assert.
 :- import (=..)/2, abort/1, call/1, functor/3, is_attv/1, (table)/1, tcall/1
      from standard.  
-:- import abolish_table_info/0, delete_attributes/1
+:- import abolish_table_info/0, delete_attributes/1, term_psc/2, term_new/2
      from machine.
 :- import numbervars/3, unnumbervars/2
      from num_vars.
