@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_slide.h,v 1.7 2002-05-31 15:09:02 lfcastro Exp $
+** $Id: gc_slide.h,v 1.8 2003-03-19 16:45:58 lfcastro Exp $
 ** 
 */
 
@@ -278,6 +278,11 @@ static CPtr slide_heap(int num_marked)
       endtr = tr_top ;
       for (p = tr_bot; p <= endtr ; p++ ) 
 	{ contents = cell(p) ;
+#ifdef SLG_GC
+	if (!tr_marked(p-tr_bot))
+	  continue;
+	tr_clear_mark(p-tr_bot);
+#endif
 	  q = hp_pointer_from_cell(contents,&tag) ;
 	  if (!q) continue ;
 	  if (! h_marked(q-heap_bot)) {
