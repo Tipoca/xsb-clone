@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.20 1999/10/10 22:44:57 cbaoqiu Exp $
+** $Id: x_interp.H,v 1.21 1999/12/06 06:18:31 kifer Exp $
 ** 
 */
 
@@ -40,6 +40,7 @@
           push_abort_cutpoint/0, pop_abort_cutpoint/0, atom_codes/2,
 	  '\='/2
      from standard.
+:- import '$$exception_ball'/1 from standard.
 :- import psc_set_type/2, psc_prop/2, psc_set_prop/2, term_psc/2,
 	  conname/2, stat_flag/2, stat_set_flag/2, intern_string/2,
 	  is_xwammode/1, close_open_tables/0, trimcore/0, slash/1
@@ -47,6 +48,7 @@
 :- import file_open/3, file_close/1, file_get/2, fmt_write_string/3,
 	  print_file_contents/2, file_flush/2
     from file_io.
+:- import retractall/1 from assert.
 :- import call_xsb_hook/1, xsb_exit_hook/1 from xsb_hook.
 :- import verify_attributes/2, ','/2 from usermod.
 :- import conset/2, conget/2 from gensym.

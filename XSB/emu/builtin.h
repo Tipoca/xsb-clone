@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.26 1999-12-14 20:41:49 ejohnson Exp $
+** $Id: builtin.h,v 1.27 2000-02-22 14:54:15 tswift Exp $
 ** 
 */
 
@@ -208,6 +208,10 @@
 
 #define ORACLE_QUERY		230
 #define ODBC_EXEC_QUERY		231
+
+#define SET_SCOPE_MARKER        232
+#define UNWIND_STACK            233
+#define CLEAN_UP_BLOCK          234
 
 /* added by Bart Demoen & Kostis Sagonas for debugging and convenience */
 #define PRINT_CHAT              239
