@@ -19,12 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tprog.H,v 1.1.1.1 1998-11-05 17:00:22 sbprolog Exp $
+** $Id: tprog.H,v 1.2 1999-01-13 12:37:56 kostis Exp $
 ** 
 */
 
 
-:- export compile_clause/6.
+:- export compile_clause/5.
 :- export force_tprog_loaded/0.
 
 :- import option/1 from auxlry.

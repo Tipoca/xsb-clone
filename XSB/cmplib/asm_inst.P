@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asm_inst.P,v 1.2 1998-12-21 01:06:08 cbaoqiu Exp $
+** $Id: asm_inst.P,v 1.3 1999-01-13 12:37:59 kostis Exp $
 ** 
 */
 
@@ -67,9 +67,7 @@ asm_inst(bldfloat(Float),	8,	131,	[ppp, n(Float)]	).
 asm_inst(trys(A,L),		8,	154,	[pp, a(A), l(L)]).
 asm_inst(retrys(A,L),		8,	155,	[pp, a(A), l(L)]).
 asm_inst(trusts(A,L),		8,	156,	[pp, a(A), l(L)]).
-asm_inst(neck(A),		4,	157,	[pp, a(A)]	).
-asm_inst(neck_putpbreg(A,V),	4,	158,	[p, a(A), v(V)]	).
-asm_inst(neck_puttbreg(A,R),	4,	159,	[p, a(A), r(R)]	).
+
 asm_inst(trymeelse(A,L),	8,	160,	[pp, a(A), l(L)]).
 asm_inst(retrymeelse(A,L),	8,	161,	[pp, a(A), l(L)]).
 asm_inst(trustmeelsefail(A),	4,	162,	[pp, a(A)]	).
