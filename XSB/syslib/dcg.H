@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dcg.H,v 1.11 2003/07/31 16:44:08 dwarren Exp $
+** $Id: dcg.H,v 1.12 2004/03/05 01:02:11 dwarren Exp $
 ** 
 */
 
@@ -35,11 +35,11 @@
    from standard.
 :- import xsb_flag/2 from curr_sym.
 :- import stat_set_flag/2 from machine.
-:- import assert/1, retractall/1, (dynamic)/1 from assert.
-:- import abolish_all_tables/0, abolish_invalid_table_pred/1, table_state/4
+:- import assert/1, retractall/1, (dynamic)/1, clause/2 from assert.
+:- import abolish_all_tables/0, invalidate_tables_for/1, table_state/4
 	from tables.
 :- import (:-)/2 from usermod.
-:- import dynamic_supports_table/2 from usermod.
+:- import invalidate_table_for/1 from usermod.
 
 /* ----------------------- end of file dcg.H -------------------------- */
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.30 2003/06/18 16:51:14 lfcastro Exp $
+** $Id: tables.H,v 1.31 2004/03/05 01:02:11 dwarren Exp $
 ** 
 */
 
@@ -26,9 +26,8 @@
 :- export
       abolish_all_tables/0,
       abolish_table_call/1,
-      abolish_invalid_table_call/1,
+      invalidate_tables_for/1,
       abolish_table_pred/1,
-      abolish_invalid_table_pred/1,
       abolish_module_tables/1,
       delete_return/2,
       force_truth_value/2,
@@ -69,12 +68,13 @@
      from assert.
 :- import (=..)/2, abort/1, call/1, functor/3, is_attv/1, (table)/1, tcall/1
      from standard.
-:- import throw/1, is_most_general_term/1 from standard.
+:- import throw/1 from standard.
 
 :- import abolish_table_info/0, delete_attributes/1, term_psc/2, term_new/2
      from machine.
 :- import numbervars/3, unnumbervars/2
      from num_vars.
-:- import dynamic_supports_table/2 from usermod.
+
+:- import invalidate_table_for/1 from usermod.
 
 /* ------------------- end of file tables.H --------------------------- */
