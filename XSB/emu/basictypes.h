@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.16 2000-04-29 21:53:49 kifer Exp $
+** $Id: basictypes.h,v 1.17 2004-01-14 15:21:17 dwarren Exp $
 ** 
 */
 
@@ -43,7 +43,9 @@ typedef unsigned long prolog_term;
 
 typedef short  xsbBool;
 
+#ifndef __RPCNDR_H__
 typedef unsigned char byte;
+#endif
 typedef unsigned int counter;
 typedef unsigned long word;
 typedef byte *pb;
