@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dbclause.H,v 1.4 1999/04/09 12:18:07 kostis Exp $
+** $Id: dbclause.H,v 1.5 1999/05/04 17:44:32 warren Exp $
 ** 
 */
 
@@ -35,6 +35,6 @@
           conpsc/2, term_arg/3, psc_arity/2, gen_retract_all/1,
 	  buff_set_byte/3, buff_set_cell/4, buff_set_var/4, buff_byte/3, 
 	  buff_word/3, buff_cell/3, buff_alloc/2, 
-          db_get_clause/8, db_retract0/2, db_remove_prref/1
+          db_get_clause/9, db_retract0/2, db_remove_prref/1, db_reclaim0/2
      from machine.
 

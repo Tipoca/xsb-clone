@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.11 1999/04/10 13:55:52 kostis Exp $
+## $Id: Makefile,v 1.12 1999/04/10 14:09:08 kostis Exp $
 ## 
 ##
 
@@ -46,7 +46,7 @@ Option = [sysmod,optimize]
 #
 # Self-make: Version 1.9
 #
-XSB=../bin/xsb
+XSB=../bin/xsb-old
 Prolog = $(XSB)
 #
 #-------------------------------------------------------------------#

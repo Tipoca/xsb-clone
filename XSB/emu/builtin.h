@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.8 1999-04-27 14:39:42 kifer Exp $
+** $Id: builtin.h,v 1.9 1999-05-06 16:01:19 unova Exp $
 ** 
 */
 
@@ -135,6 +135,7 @@ extern void init_builtin_table(void);
 #define DB_GET_CLAUSE		137
 #define DB_BUILD_PRREF		138
 #define DB_REMOVE_PRREF		139
+#define DB_RECLAIM0		140
 
 #define FORMATTED_IO            142
 #define TABLE_STATUS            143

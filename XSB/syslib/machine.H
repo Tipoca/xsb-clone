@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.16 1999/04/09 12:18:01 kostis Exp $
+** $Id: machine.H,v 1.17 1999/04/13 17:24:56 kostis Exp $
 ** 
 */
 
@@ -116,10 +116,11 @@
 	file_read_canonical/3,
 	gen_retract_all/1,
 	compiled_to_dynamic/2,
-	db_get_clause/8,
+	db_get_clause/9,
 	db_retract0/2,
 	db_build_prref/3,
 	db_remove_prref/1,
+	db_reclaim0/2,
 	oracle_query/7,
 	odbc_exec_query/5,
 	private_builtin/11,
