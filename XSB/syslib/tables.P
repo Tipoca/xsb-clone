@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.12 1999/04/13 17:24:59 kostis Exp $
+** $Id: tables.P,v 1.13 1999/04/27 20:09:07 kostis Exp $
 ** 
 */
 
@@ -29,6 +29,14 @@
 
 :- compiler_options([sysmod]).
 
+
+/*----------------------------------------------------------------------*/
+
+subsumptive( [] ) :- !.
+subsumptive([ P/N | Preds ]) :-
+	functor(Term,P,N),
+	(set_subsumptive_eval(Term); true),
+	subsumptive(Preds).
 
 /*----------------------------------------------------------------------*/
 
@@ -163,6 +171,7 @@ trie_retract_all(X) :- retractall(X).
 /* builtins to get (and change) trie nodes - they belong somewhere else */
 /*======================================================================*/
 
+set_subsumptive_eval(_Term) :- '_$builtin'(170).
 table_status(_Call,_Status) :- '_$builtin'(143).
 abolish_table_predicate(_Term) :- '_$builtin'(146).
 trie_delete_branch_ret(_LeafNode,_Hook,_BranchOrRet) :- '_$builtin'(149).

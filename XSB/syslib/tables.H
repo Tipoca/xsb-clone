@@ -18,12 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.8 1999/04/08 18:06:17 kostis Exp $
+** $Id: tables.H,v 1.9 1999/04/13 17:25:00 kostis Exp $
 ** 
 */
 
 
 :- export abolish_all_tables/0, abolish_table_call/1, abolish_table_pred/1,
+	  subsumptive/1,
 	  get_calls_for_table/2, get_returns_for_call/2, table_state/2, 
 	  tfindall/3, tnot/1, 't not'/1, etnot/1,
 	  delete_return/2,
