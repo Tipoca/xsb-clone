@@ -2,7 +2,7 @@
 ## Author(s): Yifei Dong
 ## Contact:   lmc@cs.sunysb.edu
 ##
-## $Id: Makefile,v 1.7 2002-03-15 08:09:38 kifer Exp $
+## $Id: Makefile,v 1.8 2002-03-15 10:04:23 kifer Exp $
 
 
 OBJEXT=.xwam
@@ -74,7 +74,7 @@ libxlp.a: driver.o xl.tab.o lex.yy.o
 	$(AR) r libxlp.a driver.o xl.tab.o lex.yy.o
 
 xlparse.so: xlparse.H xlparse.c libxlp.a
-	@$(XSB) -e 'compile(xlparse),halt.'
+	@$(XSB) -e 'compile(xlparse). halt.'
 
 xl.tab.h xl.tab.c: xl.y
 	bison -d xl.y
