@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.80 2004/11/04 23:03:08 tswift Exp $
+** $Id: std_xsb.P,v 1.81 2004/12/10 21:45:41 tswift Exp $
 ** 
 */
 
@@ -337,6 +337,7 @@ standard_symbol(write_prolog, 1, standard).
 standard_symbol(write_prolog, 2, standard).
 standard_symbol(write_term, 1, write_term).	% ISO
 standard_symbol(write_term, 2, write_term).	% ISO
+standard_symbol(write_term, 3, write_term).	% ISO
 standard_symbol(writeln, 1, standard).		% Not ISO
 standard_symbol(writeln, 2, standard).		% Not ISO
 standard_symbol(writeq, 1, standard).
