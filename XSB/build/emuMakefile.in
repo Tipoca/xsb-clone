@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.13 1999-08-02 00:26:50 kifer Exp $
+## $Id: emuMakefile.in,v 1.14 1999-08-31 20:39:47 kifer Exp $
 ## 
 
 
@@ -163,6 +163,11 @@ dynload.o: dynload.c
 emuloop.o: emuloop.c
 	$(CC) -c $(LCFLAGS) emuloop.c
 	@cp emuloop.o $(arch_config_objlibdir) 2> /dev/null || echo ""
+
+# Higher optimization level has problem with some versions of gcc
+tr_utils.o: tr_utils.c
+	$(CC) -c -O1 tr_utils.c
+	@cp tr_utils.o $(arch_config_objlibdir) 2> /dev/null || echo ""
 
 .c.o:
 	$(CC) -c $(CFLAGS) $*.c
