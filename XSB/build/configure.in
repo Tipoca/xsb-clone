@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.122 2002-02-21 16:57:50 lfcastro Exp $
+## $Id: configure.in,v 1.123 2002-02-23 04:02:49 kifer Exp $
 ## 
 ##
 
@@ -491,7 +491,7 @@ dnl Find the source directory.
 
 if test ! -f "${emudir}/emuloop.h" -o ! -f "${syslibdir}/tables.P" ; then
   echo ""
-  echo "    ******* I cannot find XSB sources!!! *_******"
+  echo "    ******* I cannot find XSB sources!!! *******"
   echo "    You must run \`configure' in the directory \`srcDir/build' "
   echo "    where \`srcDir' is the top directory of the XSB source tree."
   echo ""
@@ -1000,7 +1000,7 @@ AC_SUBST(javac)
 AC_SUBST(java_support)
 
 AC_PATH_PROG(java_path,javac,no)
-java_path="${java_path%bin/javac}include"
+java_path=`echo $java_path | sed 's,bin/javac,include,' `
 
 if test "${with_interprolog}" = "yes"; then
   if test "${java_support}" != "yes"; then
