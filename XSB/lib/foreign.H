@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.H,v 1.6 1999-08-20 19:54:21 luis Exp $
+** $Id: foreign.H,v 1.7 1999-09-01 16:03:19 kifer Exp $
 ** 
 */
 
@@ -44,5 +44,5 @@
 :- import stat_flag/2 from machine.
 :- import process_control/2 from shell.
 :- import conset/2, conget/2 from prof_sbp.
-:- import open_or_cpp_file/2 from parse.
+:- import open_or_xpp_file/2 from parse.
 :- import repeat/0 from standard.

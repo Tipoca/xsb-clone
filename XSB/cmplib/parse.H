@@ -19,14 +19,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.12 1999-08-28 19:16:57 kifer Exp $
+** $Id: parse.H,v 1.13 1999-09-01 16:03:15 kifer Exp $
 ** 
 */
 
 
 :- export parse/4, get_symtab/2, parse_preddef/4.
 :- export get_p_mod/3, change_multifile_directive/3, 
-	cpp_file/3, open_or_cpp_file/2, xsb_cpp_include_dir/1,
+	xpp_process_file/3, open_or_xpp_file/2, xpp_include_dir/1,
+	xpp_program/1,
 	'_$multifile'/1, '_$multifile1'/1,
 	'_$multifile2'/3, '_$apply_arity'/1,
 	'_$multifile_retract'/3.

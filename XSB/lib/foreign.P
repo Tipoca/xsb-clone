@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.10 1999-08-20 19:54:22 luis Exp $
+** $Id: foreign.P,v 1.11 1999-09-01 16:03:20 kifer Exp $
 ** 
 */
 
@@ -88,7 +88,7 @@ compile_H(Modname, Base, Options, ExList, LdOption, CompComm, TempFile) :-
 		telling(OldTell),
 %		see(HFile),
 		repeat,
-		open_or_cpp_file(HFile,CPPprocess),
+		open_or_xpp_file(HFile,CPPprocess),
 		read_clauses(Modname,ExList,'',LdOption,CompComm,TempFile), !,
 		( CPPprocess = none, ! 
 	        ; 

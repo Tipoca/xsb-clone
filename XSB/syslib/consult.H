@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.12 1999/08/28 19:18:22 kifer Exp $
+** $Id: consult.H,v 1.13 1999/08/30 16:40:52 kostis Exp $
 ** 
 */
 
@@ -60,7 +60,7 @@
 :- import append/3, memberchk/2 from basics.
 :- import '_$index'/3, '_$trie_asserted'/1 from file_op.
 :- import add_hilog_symbol/1 from hilogsym.
-:- import get_p_mod/3, change_multifile_directive/3, open_or_cpp_file/2,
+:- import get_p_mod/3, change_multifile_directive/3, open_or_xpp_file/2,
 	  '_$multifile'/1, '_$multifile1'/1,
 	  '_$multifile2'/3, '_$apply_arity'/1
      from parse.
