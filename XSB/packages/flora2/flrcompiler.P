@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.46 2002-04-07 23:09:17 kifer Exp $
+** $Id: flrcompiler.P,v 1.47 2002-04-10 05:16:12 kifer Exp $
 **
 */
 
@@ -1562,11 +1562,17 @@ compile_flcontrolconstruct(Cond,Action,Wrapper,Code,Status) :-
 
 /****************************************************************************
   compile_pathexp(+ParserTerm,-Object,-Code,-Status)
+
+  Handles pathexps that are atoms, numbers, special tokens, like _#, _#123, _@,
+  vars, strings
 ****************************************************************************/
 %% ParserTerm is a primitive object -- no oid code and no spec code results
 compile_pathexp(ParserTerm,Object,NULL,NULL,[]) :-
 	( is_flatom(ParserTerm,_A) ->
 	    atomobj_struct(ParserTerm,Object)
+
+	; is_fltoken(ParserTerm,FL_THISMODULE,Index) ->
+	    thismodule_struct(Object)
 
 	; is_flnumber(ParserTerm,_N) ->
 	    numobj_struct(ParserTerm,Object)
@@ -1817,6 +1823,7 @@ compile_flbirelate(ObjTerm1,RelType,ObjTerm2,Obj1,OidCode,Code,Status) :-
 ****************************************************************************/
 compile_flobjspec(ObjTerm,SpecBody,Object,OidCode,Code,Status) :-
 	( SpecBody == [] ->
+	    %% Just objtref, no body. Something like a.b.c. Possibly a.b.c[]
 	    ( is_flobjref(ObjTerm,OTerm,RefType,ATerm) ->
 		compile_pathexplist([OTerm,ATerm],[OObj,AObj],OidCode,ObjCode,Status),
 		( Status == [] ->
@@ -2329,11 +2336,15 @@ compile_head_pathexp(ParserTerm,Object,CodeList,Status) :-
 
 /****************************************************************************
   compile_head_fltoken(+Token,+Index,-Object)
+
+  Handles _#, _#123, _@, atoms
 ****************************************************************************/
 compile_head_fltoken(Token,Index,Object) :-
 	( Token == FL_NEWOID ->
 	    new_oidobj(Index,Object)
-	;
+        ; Token == FL_THISMODULE ->
+	    thismodule_struct(Object)
+        ;
 	  atomobj_struct(Token,Index,Object)
 	).
 

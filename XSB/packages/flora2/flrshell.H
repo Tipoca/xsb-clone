@@ -22,7 +22,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.22 2002-04-07 23:09:15 kifer Exp $
+** $Id: flrshell.H,v 1.23 2002-04-10 05:16:12 kifer Exp $
 **
 */
 
@@ -43,7 +43,10 @@
 :- import
 	flora_slash/1,
 	flora_concat_atoms/2,
-	flora_set_counter/2
+	flora_set_counter/2,
+	flora_module_path_get/1,
+	flora_module_path_add/1,
+	flora_module_path_remove/1
    from flrporting.
 
 :- import pop_stdin/1 from push_io.

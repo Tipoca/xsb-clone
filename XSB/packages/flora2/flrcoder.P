@@ -20,14 +20,14 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.P,v 1.28 2002-04-07 23:09:17 kifer Exp $
+** $Id: flrcoder.P,v 1.29 2002-04-10 05:16:12 kifer Exp $
 **
 */
 
 
 :- compiler_options([xpp_on]).
 
-#include "char_defs.h"
+#include "flora_characters.flh"
 #include "flora_errors.flh"
 #include "flora_terms.flh"
 #include "flora_porting.flh"
