@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.9 1999-03-27 09:33:07 workflow Exp $
+** $Id: slgdelay.h,v 1.10 1999-06-18 18:21:23 cbaoqiu Exp $
 ** 
 */
 
@@ -221,6 +221,11 @@ extern bool answer_is_junk(CPtr);
 extern void abolish_wfs_space(void);
 extern void simplify_neg_fails(SGFrame);
 extern void do_delay_stuff(NODEptr, SGFrame, bool);
+extern unsigned long allocated_de_space(int * num_blocks);
+extern unsigned long unused_de_space(void);
+extern unsigned long allocated_dl_space(int * num_blocks);
+extern unsigned long unused_dl_space(void);
+
 
 #ifdef DEBUG
 extern void print_subgoal(FILE *, SGFrame);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.12 1999/03/06 03:34:53 cbaoqiu Exp $
+** $Id: slgdelay.c,v 1.13 1999/03/11 18:13:43 kostis Exp $
 ** 
 */
 
@@ -128,6 +128,80 @@ static char *new_block;		/* used in new_entry() */
   else									\
     pnde_next(pnde_prev(PNDE)) = pnde_next(PNDE);			\
   release_entry(PNDE, released_pndes, pnde_next)
+
+
+/*
+ * The following functions are used for statistics.
+ */
+
+unsigned long allocated_de_space(int * num_blocks)
+{
+  int size = 0;
+  char *t = current_de_block;
+
+  *num_blocks = 0;
+  while (t) {
+    (*num_blocks)++;
+    size =+ (de_block_size + sizeof(Cell));
+    t = *(char **)t;
+  }
+  return size;
+}
+
+static int released_de_num(void)
+{
+  int i = 0;
+  DE p;
+
+  p = released_des;
+  while (p != NULL) {
+    i++;
+    p = de_next(p);
+  }
+  return(i);
+}
+
+unsigned long unused_de_space(void)
+{
+  return (current_de_block_top
+	  - next_free_de
+	  + released_de_num()) * sizeof(struct delay_element);
+}
+
+
+unsigned long allocated_dl_space(int * num_blocks)
+{
+  int size = 0;
+  char *t = current_dl_block;
+
+  *num_blocks = 0;
+  while (t) {
+    (*num_blocks)++;
+    size =+ (dl_block_size + sizeof(Cell));
+    t = *(char **)t;
+  }
+  return size;
+}
+
+static int released_dl_num(void)
+{
+  int i = 0;
+  DL p;
+
+  p = released_dls;
+  while (p != NULL) {
+    i++;
+    p = dl_next(p);
+  }
+  return(i);
+}
+
+unsigned long unused_dl_space(void)
+{
+  return (current_dl_block_top
+	  - next_free_dl
+	  + released_dl_num()) * sizeof(struct delay_list);
+}
 
 /*
  * Assign one entry for delay_elem in the current DE (Delay Element)
