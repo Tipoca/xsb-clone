@@ -1,8 +1,7 @@
-
 The ptq testsuite was the first testsuite written for XSB, as I recall
 in 1992, before we even had much of a system.  It has been extremely
 helpful in finding a number of bugs in XSB, but can be a little
-difficult to read and to understand if you dont have the code.
+difficult to read and to understand if you don't have the code.
 
 The first idea was to automatically compare the output of the emulator
 against that of David and Weidong's XOLDT meta-interpreter for each
@@ -21,15 +20,16 @@ The file jtaulredemu stands for
 	lred = cuts (for lambda reduction) are done in a particular
 	part of the parse
 
-	emu = this file was created by XSB.  The reference files are
-marked int and are created by the interpreter.
+	emu = this file was created by XSB.
+
+The reference files are marked int and are created by the interpreter.
 
 For jtaulredemu, four files are then created (via genlredscaff.sh)
 
-output_table(s(_,_,_,_,_),${argv[2]}_s).
-output_table(te1(_,_,_,_,_,_,_),${argv[2]}_te1).
-output_table(cn(_,_,_,_,_,_),${argv[2]}_cn).
-output_table(iv(_,_,_,_,_,_),${argv[2]}_iv).
+output_table(${argv[2]}_s,s(_,_,_,_,_)).
+output_table(${argv[2]}_te1,te1(_,_,_,_,_,_,_)).
+output_table(${argv[2]}_cn,cn(_,_,_,_,_,_)).
+output_table(${argv[2]}_iv,iv(_,_,_,_,_,_)).
 	
          jtaulredemu_cn
          jtaulredemu_iv
@@ -63,9 +63,10 @@ genscaff.sh
 genlredscaff.sh
 diffall.sh
 
-As of 1/99 the only other modifications that may need to be done to
-the ptq testsuite is to rewrite output_tables/2 to use new table
-routines.
+In January 1999, Kostis modified the ptq testsuite by adding a file
+named ptq_out.P which does the output using the table routines
+get_calls/3 and get_returns/2, rather than get_calls_for_table and
+get_returns_for_call.
 
 - Terry (1/14/1999)
 
