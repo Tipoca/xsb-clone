@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.11 2002-01-23 17:08:08 dwarren Exp $
+** $Id: function.c,v 1.12 2002-12-26 22:47:54 tswift Exp $
 ** 
 */
 
@@ -59,6 +59,8 @@
 #define FUN_truncate  23
 #define FUN_round  24
 #define FUN_ceiling  25
+#define FUN_max  26
+#define FUN_min  27
 
 /* --- returns 1 when succeeds, and returns 0 when there is an error --	*/
 
