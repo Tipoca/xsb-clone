@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.2 1999-11-17 03:54:28 kifer Exp $
+** $Id: error_xsb.h,v 1.3 2000-02-17 01:35:49 tswift Exp $
 ** 
 */
 
@@ -51,6 +51,17 @@
 #define XSBUNDERFLOW	15  /* renamed from UNDERFLOW. This def isn't used, but
 			       UNDERFLOW clashes with some C compilers */
 #define ZERO_DIVIDE	16 
+
+/* TLS: used for determing the offset of a putpvar + call so that
+   the pc register can be saved so that the proper choice point can be
+   (in a necessarily roundabout manner) determined. 
+*/
+#ifdef BITS64
+#define THROWPAD 20
+#else 
+#define THROWPAD 12
+#endif 
+
 
 extern void xsb_exit(char *, ...);
 extern void xsb_abort(char *, ...);
@@ -85,5 +96,4 @@ extern jmp_buf xsb_abort_fallback_environment; /* Environment for abort
 
 /* SIGSEGV handler that catches segfaults; used unless configured with DEBUG */
 extern void xsb_segfault_catcher (int);
-
 
