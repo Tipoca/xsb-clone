@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.16 2001-08-21 18:24:12 kifer Exp $
+** $Id: gpp.c,v 1.17 2001-08-22 05:20:29 kifer Exp $
 ** 
 */
 
@@ -1967,6 +1967,8 @@ int ParsePossibleMeta()
 	 fprintf(N->out->f,
 		 include_directive_marker,
 		 N->lineno, N->filename, "2");
+	 /* Need to leave the blank line in lieu of #include, like cpp does */
+	 fprintf(N->out->f,"\n");
        }
        free(C);
        PopSpecs();
