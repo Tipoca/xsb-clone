@@ -32,22 +32,37 @@ testreturns:-
 	test_display(cdf_flags(_,_)),
 	removeCheckFromContext(_,_),
 	test_display(cdf_flags(_,_)),
+
             test_display(cdf_check_ground_fail(hasAttr(cid(c1,test),_,oid(o2,test)))),
             test_display(cdf_check_ground_fail(
 	                                       hasAttr(cid(c1,test),rid(_,cdfpt),oid(o2,test)))),
+	test_display(cdf_check_ground_fail(
+   	                   isa(cid(p(cid(a,test),cid(_,cdfpt)),test),cid('CDF Root',cdf)))),
+	test_display(cdf_check_ground_fail(
+   	                   isa(cid(p(cid(a,test),cid(_,cdftp)),test),cid('CDF Root',cdf)))),
+
             test_display(check_types(hasAttr(cid(c1,test),rid(_,test),oid(o2,test)))),
             test_display(check_types(
                                        hasAttr(cid(c1,test),crid(cr1,cdfpt),oid(o2,test)))),
+	test_display(check_types(
+	          hasAttr(cid(p(cid(a,test),rid(b,test)),test),rid(r,test),cid(c,test)))),
             test_display(check_types(isa(cid(c2,test),oid(o2,test)))),
             test_display(check_types(isa(oid(o2,test),cid(c2,test)))),
+	test_display(check_types(
+	          isa(cid(p(cid(a,test),cid(b,test)),test),cid(c,test)))),
+	test_display(check_types(
+	          isa(cid(p(cid(a,test),rid(b,test)),test),cid(c,test)))),
+
             test_display(check_identity(   
   	                           hasAttr_ext(oid(o2,test),rid(r4,test),oid(o12,test)))),
             test_display(check_identity(   
   	                           hasAttr_ext(oid(o2,test),rid(r4,test),oid(13,test)))),
+
             test_display(check_implication(usercall,
   	                           hasAttr_ext(oid(o2,test),rid(r4,test),oid(13,test)))),
             test_display(check_implication(usercall,
   	                           hasAttr_ext(oid(o2,test),rid(r4,test),cid(c12,test)))),
+
 	test_display(isa_ext_test(_,_)),
             test_display(classify_if_necessary(usercall,test)),
 	test_display(isa_ext_test(_,_)),
