@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.h,v 1.11 2002-08-15 17:00:26 lfcastro Exp $
+** $Id: subp.h,v 1.12 2004-10-15 14:26:08 dwarren Exp $
 ** 
 */
 
@@ -28,6 +28,7 @@ extern void intercept(Psc);
 extern void init_interrupt(void);
 extern void print_statistics(int);
 extern void print_qatom(FILE *, char *);
+extern void print_dqatom(FILE *, char *);
 extern void print_op(FILE *, char *, int);
 extern void remove_open_tables_reset_freezes(void);
 

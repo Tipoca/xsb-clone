@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.45 2004-10-11 13:08:48 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.46 2004-10-15 14:26:07 dwarren Exp $
 ** 
 */
 
@@ -1493,7 +1493,7 @@ int xsb_intern_file(char *context,char *addr, int *ioport,char *strmode)
 
 /*----------------------- write_quotedname/2 ---------------------------*/
 
-xsbBool no_quotes_needed(char *string)
+xsbBool quotes_are_needed(char *string)
 {
   int nextchar;
   int ctr, flag;
@@ -1547,8 +1547,8 @@ void double_quotes(char *string, char *new_string)
   int ctr = 0, nctr = 0;
 
   while (string[ctr] != '\0') {
-    if (string[ctr] == 39) {
-      new_string[nctr] = 39;
+    if (string[ctr] == '\'') {
+      new_string[nctr] = '\'';
       nctr++;
     }
     new_string[nctr] = string[ctr];
@@ -1564,7 +1564,7 @@ void write_quotedname(FILE *file, char *string)
   if (*string == '\0') 
     fprintf(file,"''");
   else {
-    if (!no_quotes_needed(string)) {
+    if (!quotes_are_needed(string)) {
       fprintf(file,"%s",string);
     }
     else {
@@ -1605,18 +1605,18 @@ void wcan_append_string(char *string)
 
 void wcan_append_string_chk(char *string)
 {
-  if (no_quotes_needed(string)) {
+  if (quotes_are_needed(string)) {
     int string_len = strlen(string);
     int ctr = 0;
     int maxlen = wcan_disp+2*(string_len+1);
     if (maxlen > wcan_string_len) 
       expand_wcan_string(maxlen);
-    wcan_string[wcan_disp++] = 39;
+    wcan_string[wcan_disp++] = '\'';
     while (string[ctr] != '\0') {
-      if (string[ctr] == 39) wcan_string[wcan_disp++] = 39;
+      if (string[ctr] == '\'') wcan_string[wcan_disp++] = '\'';
       wcan_string[wcan_disp++] = string[ctr++];
     }
-    wcan_string[wcan_disp++] = 39;
+    wcan_string[wcan_disp++] = '\'';
   } else {
     wcan_append_string(string);
   }

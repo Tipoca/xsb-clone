@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.189 2004-09-30 13:22:21 dwarren Exp $
+** $Id: builtin.c,v 1.190 2004-10-15 14:26:07 dwarren Exp $
 ** 
 */
 
@@ -1552,7 +1552,7 @@ int builtin_call(byte number)
     case TK_INOP   : print_op(fptr, ptoc_string(3), 2); break;
     case TK_POSTOP : print_op(fptr, ptoc_string(3), 3); break;
     case TK_QATOM  : print_qatom(fptr, ptoc_string(3)); break;
-    case TK_QSTR   : fprintf(fptr, "\"%s\"", ptoc_string(3)); break;
+    case TK_QSTR   : print_dqatom(fptr, ptoc_string(3)); break;
     case TK_TERML  : print_term_canonical(fptr, ptoc_tag(3), 1); break;
     case TK_TERM   : print_term_canonical(fptr, ptoc_tag(3), 0); break;
     default : printf("flg: %ld\n",(long)ptoc_int(2));
