@@ -1,0 +1,98 @@
+:- compiler_options([xpp_on]).
+#include "socket_defs_xsb.h"
+#include "timer_defs_xsb.h"
+#include "char_defs.h"
+
+#define Q_LENGTH  10
+
+:- import 
+     socket/2, socket_bind/3, socket_listen/3, socket_accept/3, 
+     socket_set_option/3, socket_close/2 from socket.
+
+:- import file_close/1, fmt_write/3, fd2ioport/2, file_flush/2 from file_io.
+
+:- import 
+        file_write/2,
+        file_write_canonical/2 
+        from xsb_writ.
+
+:- import
+        file_read_canonical/3 from machine.
+
+%% Port on which the server is listening
+xsb_port(6028).
+
+server :-
+  socket(Sockfd0, ErrCode),
+  writeln(socket(sockfd0, ErrCode)),
+  (ErrCode == SOCK_OK
+  ->  socket_set_option(Sockfd0,linger,SOCK_NOLINGER),
+      xsb_port(XSBPort),
+      socket_bind(Sockfd0, XSBPort, ErrBind),
+      writeln(socket_bind(sockfd0, XSBPort, ErrBind)),
+      (ErrBind == SOCK_OK
+      -> socket_listen(Sockfd0,Q_LENGTH, ErrListen),
+	  writeln(socket_listen(sockfd0,Q_LENGTH, ErrListen))
+      ;  writeln('Cannot bind'), fail
+      ),
+      socket_accept(Sockfd0, Sockfd0_out1, ErrorCode),
+      writeln(socket_accept1(sockfd0, sockfd0_out1, ErrorCode)),
+      (ErrorCode == SOCK_OK
+      ->  fd2ioport(Sockfd0_out1,Sockptr0)
+      ;   writeln('Cannot accept connection1'), fail
+      ),
+      socket_accept(Sockfd0, Sockfd0_out2, ErrorCode2), 
+      writeln(socket_accept2(sockfd0, sockfd0_out2, ErrorCode2)),
+      (ErrorCode2 == SOCK_OK
+      ->  fd2ioport(Sockfd0_out2,Sockptr1)
+      ;   writeln('Cannot accept connection2'), fail
+      ),
+      server_loop(Sockptr0, Sockptr1, Sockfd0)
+  ;   writeln('Cannot open socket'), fail
+  ).
+
+
+
+server_loop(Sockptr0, Sockptr1, Sockfd0) :-
+    file_read_canonical(Sockptr0, Goal, Psc),
+    Psc = Psc,
+    Goal =.. [F|_Rest],
+    (F=end_of_file -> 
+	writeln('Client quits...'),
+	socket_close(Sockfd0,_ErrClose),
+	file_close(Sockptr1), file_close(Sockptr0),
+	true
+    ;	((F=h; F=g) ->
+	    call(Goal), 
+	    file_write_canonical(Sockptr1, Goal),
+	    file_write(Sockptr1, '. ')
+	;   write('Invalid goal: '), writeln(Goal),
+	    fmt_write(Sockptr1, '''+++Invalid goal: %S''', arg(Goal)),
+	    file_write(Sockptr1, '. ')
+	),
+	file_flush(Sockptr1,_),
+	fail
+    ).
+
+  
+server_loop(Sockptr0, Sockptr1, Sockfd0) :-
+  file_write_canonical(Sockptr1, end),
+  file_write(Sockptr1, '. '),
+  file_flush(Sockptr1,_),
+  server_loop(Sockptr0,Sockptr1, Sockfd0).
+
+
+
+g(1).
+g(2).
+g(3).
+g(4).
+g(5). 
+
+
+
+h(a).
+h(b).
+h(c).
+h(d).
+h(e).
