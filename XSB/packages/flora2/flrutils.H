@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.31 2001-07-16 17:00:49 gzyang Exp $
+** $Id: flrutils.H,v 1.32 2001-08-06 19:33:20 gzyang Exp $
 **
 */
 
@@ -155,6 +155,7 @@
 :- dynamic flora_xpp_extra_options/1.
 :- dynamic flora_module_registry/1.
 :- dynamic flora_storage_registry/1.
+:- dynamic flora_current_compile_file/1.
 
 :- index(flora_maxerr/1,trie).
 
