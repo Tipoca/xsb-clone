@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.6 2000-01-07 08:51:33 kifer Exp $
+** $Id: heap_xsb.c,v 1.7 2000-01-25 03:54:39 cbaoqiu Exp $
 ** 
 */
 
@@ -839,7 +839,7 @@ static int chat_mark_substitution_factor(void)
   CPtr compl_fr;
   SGFrame subg_ptr;
   CPtr region_to_mark, d;
-  int  CallNumVar, attv_num, tmp, m = 0;
+  int  CallNumVar, m = 0;
 
   /* mark the substitution factor starting from the completion stack */
   compl_fr = openreg;
@@ -847,8 +847,8 @@ static int chat_mark_substitution_factor(void)
     {
       /* substitution factor is now in the heap for generators */
       region_to_mark = compl_hreg(compl_fr);
-      tmp = int_val(cell(region_to_mark)) + 1; /* mark the Num too */
-      get_var_and_attv_nums(CallNumVar, attv_num, tmp);
+      /* `+ 1': mark the Num too */
+      CallNumVar = (int_val(cell(region_to_mark)) & 0xffff) + 1;
       while (CallNumVar--)
 	m += mark_cell(region_to_mark--);
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.11 2000-01-11 16:53:18 ejohnson Exp $
+** $Id: tables.c,v 1.12 2000-01-25 03:54:40 cbaoqiu Exp $
 ** 
 */
 
@@ -83,11 +83,10 @@ void table_call_search(TabledCallInfo *call_info, CallLookupResults *results) {
      * are still arranged from high mem (first) to low (last).
      */
     CPtr tmplt_component, tmplt_var_addr, h_addr;
-    int size, j, attv_num, tmp;
+    int size, j;
 
     tmplt_component = CallLUR_VarVector(*results);
-    tmp = int_val(*tmplt_component);
-    get_var_and_attv_nums(size, attv_num, tmp);
+    size = int_val(*tmplt_component) & 0xffff;
 
     for ( j = size - 1, tmplt_component = tmplt_component + size;
 	  j >= 0;
