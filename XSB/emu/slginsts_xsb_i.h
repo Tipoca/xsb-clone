@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.10 2000/06/22 01:27:51 lfcastro Exp $
+** $Id: slginsts_xsb_i.h,v 1.11 2000/06/27 17:59:16 ejohnson Exp $
 ** 
 */
 
@@ -379,7 +379,7 @@ XSB_Start_Instr(answer_return,_answer_return); {
     }
   }
 
-  if ( IsNonNULL(answer_set) ) {
+  if ( IsNonNULL(answer_set)) {
     int tmp;
     
     /* Restore Consumer's state
