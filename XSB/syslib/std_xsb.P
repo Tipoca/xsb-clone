@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.1 1999/04/10 13:55:59 kostis Exp $
+** $Id: std_xsb.P,v 1.2 1999/04/27 14:40:11 kifer Exp $
 ** 
 */
 
@@ -151,6 +151,7 @@ standard_symbol(proper_hilog, 1, standard).
 standard_symbol(put, 1, standard).
 standard_symbol(read, 1, standard).
 standard_symbol(read, 2, standard).
+standard_symbol(set_dcg_style, 1, dcg).
 
 standard_symbol(file_read_line, 2, file_io).
 

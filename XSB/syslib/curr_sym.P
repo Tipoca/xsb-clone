@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id$
+** $Id: curr_sym.P,v 1.1.1.1 1998/11/05 16:59:47 sbprolog Exp $
 ** 
 */
 
@@ -467,6 +467,13 @@ xsb_flag(tracing, Trace) :-
 xsb_flag(goal, Goal) :-
 	stat_flag(21, GoalUninterned),
 	intern_string(GoalUninterned, Goal).      	
+
+xsb_flag(dcg_style, DcgMode) :-
+	stat_flag(18, Dcg_flag),
+	(Dcg_flag = 0 -> DcgMode = xsb
+    	    ;
+	  DcgMode = standard
+        ).
 	
 
 hdr_ext(HExt) :-

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flags.h,v 1.2 1999-02-01 23:48:17 kostis Exp $
+** $Id: flags.h,v 1.3 1999-05-27 16:02:33 kifer Exp $
 ** 
 */
 
@@ -45,6 +45,8 @@ extern Cell flags[];		/* System flags + user flags */
 #define CURRENT_MODULE	12	/* current module (0 = usermod)		YW */
 #define MOD_LIST	13	/* the list of module (Psc) entries	YR */
 #define RELOC_TABLE	14	/* relocation table			YR */
+
+#define DCG_MODE        18      /* DGC mode: standard or xsb	        MK */
 
 #define GARBAGE_COLLECT 20      /* type of garbage collecion employed:     */
                                 /* 0 = none; 1 = sliding; 2 = copying.  NW */

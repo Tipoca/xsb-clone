@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.19 1999-05-17 17:20:49 unova Exp $
+** $Id: init.c,v 1.20 1999-05-27 16:02:34 kifer Exp $
 ** 
 */
 
@@ -182,6 +182,7 @@ char *init_para(int argc, char *argv[])
 
   flags[STACK_REALLOC] = TRUE;
   flags[GARBAGE_COLLECT] = SLIDING_GC;
+  flags[DCG_MODE] = XSB_STYLE_DCG;
 
   /* Set default Prolog files.
      ------------------------- */

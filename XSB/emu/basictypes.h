@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.9 1999-04-04 15:53:32 kifer Exp $
+** $Id: basictypes.h,v 1.10 1999-05-27 16:02:32 kifer Exp $
 ** 
 */
 
@@ -75,3 +75,6 @@ typedef unsigned long prolog_term;	/* opaque type definition */
 
 #endif
 
+
+#define XSB_STYLE_DCG  0    /* use XSB style DCG grammars */
+#define STANDARD_DCG   1    /* use standard DCG grammars */
