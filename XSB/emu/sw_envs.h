@@ -18,14 +18,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sw_envs.h,v 1.10 2001-05-24 17:54:52 lfcastro Exp $
+** $Id: sw_envs.h,v 1.11 2001-06-21 19:07:59 tswift Exp $
 ** 
 */
 
 #ifdef PROFILE
 #define PROFILE_SWITCH_ENV num_switch_envs++;
+#define PROFILE_SWITCH_ENV_ITER num_switch_envs_iter++;
 #else
 #define PROFILE_SWITCH_ENV 
+#define PROFILE_SWITCH_ENV_ITER
 #endif
 
 #if (!defined(CHAT))
@@ -59,10 +61,12 @@
   if (start_trreg != end_trreg) {					\
     do {								\
       while (start_trreg > end_trreg) {					\
+        PROFILE_SWITCH_ENV_ITER                                         \
 	untrail2(start_trreg, (Cell) trail_variable(start_trreg));	\
 	start_trreg = trail_parent(start_trreg);			\
       }									\
       while (end_trreg > start_trreg) {					\
+        PROFILE_SWITCH_ENV_ITER                                         \
 	tmp = parent;							\
 	parent = trail_parent(parent);					\
 	*tmp = (CPtr) end_trreg;					\
@@ -73,6 +77,7 @@
     *end_trreg = (CPtr) parent;						\
     parent = tmp;							\
     while (end_trreg < trreg) {						\
+      PROFILE_SWITCH_ENV_ITER                                         \
       tmp = parent;							\
       cell((CPtr)((Cell)trail_variable(tmp) & ~PRE_IMAGE_MARK)) =	\
 	(Cell) trail_value(tmp);					\

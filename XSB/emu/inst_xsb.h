@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.10 2001-05-24 17:54:52 lfcastro Exp $
+** $Id: inst_xsb.h,v 1.11 2001-06-21 19:07:59 tswift Exp $
 ** 
 */
 
@@ -162,6 +162,7 @@ extern void init_inst_table(void);
 #ifdef PROFILE
 extern Cell inst_table[BUILTIN_TBL_SZ][6];
 extern unsigned long num_switch_envs;
+extern unsigned long num_switch_envs_iter;
 #else
 extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #endif

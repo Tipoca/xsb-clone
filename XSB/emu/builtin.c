@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.123 2001-05-24 17:54:51 lfcastro Exp $
+** $Id: builtin.c,v 1.124 2001-06-21 19:07:59 tswift Exp $
 ** 
 */
 
@@ -839,8 +839,13 @@ static void write_out_profile(void)
   for (i = 0; i < BUILTIN_TBL_SZ; i++) {
     if (subinst_table[i][0] != 0) ssum = ssum + subinst_table[i][1];
   }
-  tot = isum + ssum;
+    tot = isum + ssum;
   if (tot!=0) {
+    fprintf(stdout,
+	    "max subgoals %u max completed %u max consumers in ascc %u
+             max compl_susps in ascc %u\n",
+	          max_subgoals,max_completed,max_consumers_in_ascc,
+	          max_compl_susps_in_ascc);
     rat1 = isum / tot;
     rat2 = ssum / tot;
     fprintf(stdout,
@@ -869,6 +874,8 @@ static void write_out_profile(void)
 		BuiltinName(i), i, builtin_table[i][1]);
     fprintf(stdout,"switch_envs(%d).\n",
 	    num_switch_envs);
+    fprintf(stdout,"switch_envs_iter(%d).\n",
+	    num_switch_envs_iter);
   }
   else 
     fprintf(stdout,"Instruction profiling not turned On\n");
