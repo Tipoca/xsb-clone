@@ -1,5 +1,4 @@
 == test_attv_interrupt OK
-== test_copy_term OK
 == test_deref OK
 == test_implict_unify OK
 == test_unify OK
