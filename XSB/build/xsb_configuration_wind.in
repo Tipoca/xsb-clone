@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_configuration_wind.in,v 1.4 1999-04-01 05:01:04 kifer Exp $
+** $Id: xsb_configuration_wind.in,v 1.5 1999-04-28 18:30:19 kifer Exp $
 ** 
 */
 
@@ -46,6 +46,8 @@
 xsb_configuration(compiler, 'cc').
 xsb_configuration(compiler_flags, '').
 xsb_configuration(loader_flags, '').
+
+xsb_configuration(regmatch_support, 'no').
 
 xsb_configuration(perl_support, 'no').
 %% The folowing two must not be set, if perl_support=no

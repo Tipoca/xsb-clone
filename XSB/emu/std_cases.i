@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases.i,v 1.2 1999-04-27 17:20:53 cbaoqiu Exp $
+** $Id: std_cases.i,v 1.3 1999-04-28 18:30:23 kifer Exp $
 ** 
 */
 
@@ -83,7 +83,7 @@
   /* number_chars should be redefined to return digit-atoms */
   case NUMBER_CHARS:	/* r1: ?term; r2: ?character list	*/
   case NUMBER_CODES:	/* r1: ?term; r2: ?character list	*/
-    return number_chars();
+    return number_codes();
     
   case PUT:	/* r1: +integer	*/
     term = ptoc_tag(1);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred.i,v 1.7 1999-04-27 14:39:49 kifer Exp $
+** $Id: std_pred.i,v 1.8 1999-04-28 18:30:24 kifer Exp $
 ** 
 */
 
@@ -340,7 +340,7 @@ inline static bool atom_codes(void)
   return TRUE;
 }
 
-inline static bool number_chars(void)
+inline static bool number_codes(void)
 {
   int i;
   long c;
