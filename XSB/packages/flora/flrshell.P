@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.29 1999-08-23 04:10:53 kifer Exp $
+** $Id: flrshell.P,v 1.30 1999-08-25 13:57:07 kifer Exp $
 **
 */
 
@@ -84,9 +84,6 @@
 	see(userin),
 	told,
 	tell(userout),
-	(conget('_$_deb_autopilot',2),!  % unless trace autopilot is permanent,
-	;   conset('_$_deb_autopilot',0) % reset debugger autopilot mode 
-	),
 	file_nl(STDFDBK), file_write(STDFDBK, 'flora ?- ').
 
 '_$_$_flora_loop_guard'(S) :- (member(eof,S) -> end ; fail).
