@@ -21,23 +21,17 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.21 1999-06-16 15:21:09 kifer Exp $
+** $Id: flrshell.P,v 1.22 1999-06-17 20:10:08 kifer Exp $
 **
 */
 
 
 /*********************************************************************/
 '_$_$_flora_shell' :-
-	( package_configuration(dir(flora),FloraDir) ->
-	    true
-
+	( package_configuration(loaded(flora), yes) -> true
 	  ;
-	    bootstrap_flora,
-	    package_configuration(dir(flora),FloraDir)
+	    bootstrap_flora
 	),
-	slash(S),
-	fmt_write_string(Lib,'%s%ssyslib%sflrdisplay',f(FloraDir,S,S)),
-	[tables, Lib, flrutils],
 	'_$_$_flora_welcome_msg',
 	all,
 	push_abort_cutpoint,
