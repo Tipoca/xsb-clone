@@ -19,14 +19,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.13 1999/08/30 16:40:52 kostis Exp $
+** $Id: consult.H,v 1.14 1999/09/01 16:03:21 kifer Exp $
 ** 
 */
 
 
 :- export consult/1, consult/2, '.'/2, reconsult/1, reconsult/2,
 	  compile/1, compile/2, search_module/6,
-	  load_dyn/1, load_dync/1, read_canonical/1,
+	  load_dyn/1, load_dyn/2, 
+	  load_dync/1, load_dync/2, read_canonical/1,
 	  ensure_dyn_loaded/1, ensure_dync_loaded/1,
 	  cvt_canonical/2.
 
