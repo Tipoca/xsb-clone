@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.7 2001-05-24 17:54:51 lfcastro Exp $
+** $Id: flag_defs_xsb.h,v 1.8 2001-07-16 05:15:37 kifer Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@
 #define QUASI_SKIPPING	 9	/* debugger, 1 = quasi skip, 0 = not	NW */
 #define CURRENT_INPUT	10	/* current input file descriptor	NW */
 #define CURRENT_OUTPUT	11	/* current output file descriptor	NW */
-#define CURRENT_MODULE	12	/* current module (0 = usermod)		YW */
+#define CURRENT_MODULE	12	/* current module. USERMOD_PSC=usermod  YW */
 #define MOD_LIST	13	/* the list of module (Psc) entries	YR */
 
 #define SYS_TIMER       16      /* XSB Timer	    	    	    	MK */

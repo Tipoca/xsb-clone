@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.17 2001-05-24 17:54:52 lfcastro Exp $
+** $Id: init_xsb.c,v 1.18 2001-07-16 05:15:37 kifer Exp $
 ** 
 */
 
@@ -739,7 +739,7 @@ void init_symbols(void)
 
   /* insert mod name global */
   tp = insert_module(T_MODU, "global");	/* loaded */
-  set_data(pair_psc(tp), (Psc)1);	/* 1 stands for global mod */
+  set_data(pair_psc(tp), (Psc)USERMOD_PSC);	/* initialize global mod PSC */
   global_mod = pair_psc(tp);
 
   /* insert "[]"/0 into String Table */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_defs.h,v 1.3 2001-05-24 17:54:52 lfcastro Exp $
+** $Id: psc_defs.h,v 1.4 2001-07-16 05:15:37 kifer Exp $
 ** 
 */
 
@@ -47,5 +47,10 @@
 #define T_LOCAL    1
 #define T_IMPORTED 2
 #define T_GLOBAL   4
+
+
+/* Global module */
+
+#define USERMOD_PSC    1
 
 #endif /* _PSC_DEFS_ */
