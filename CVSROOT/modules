@@ -35,9 +35,10 @@ xsbcmplib    -d cmplib     XSB/cmplib
 xsbpackages  -d packages   XSB/packages
 
 flora        -d flora      XSB/packages/flora
-flip         -d flora      XSB/packages/flip
 
 xsbdocs	     -d docs       XSB/docs
+htdocs	     -d htdocs	   XSB/docs/homepage
+
 xsbtests     -d tests      xsbtests
 xsbexamples  -d examples   XSB/examples
 xsbadmin     -d admin      XSB/admin
