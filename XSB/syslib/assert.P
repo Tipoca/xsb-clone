@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.P,v 1.18 2001/02/26 22:13:55 dwarren Exp $
+** $Id: assert.P,v 1.19 2003/07/22 17:22:07 lfcastro Exp $
 ** 
 */
 
@@ -549,14 +549,16 @@ clause0(Head, Body) :-
 
 check_clause(Head) :-
 	( var(Head) ->
-		abort('Uninstantiated argument 1 of clause/2')
-	; callable(Head) -> 
-		( functor(Head, F, A), standard_symbol(F, A, _Prop) ->
-			abort(('Not permitted to access clauses of built-in predicate ', F/A))
-		; true
-		)
-	; abort(('Wrong type in argument 1 of clause/2', 
-			 ' (callable term expected)'))
+	    abort('Uninstantiated argument 1 of clause/2')
+	;   callable(Head) -> 
+	    (	functor(Head, F, A),
+		standard_symbol(F, A, _Prop),
+		\+ standard_dynamic_symbol(F, A)
+	    ->	abort(('Not permitted to access clauses of built-in predicate ', F/A))
+	    ;	true
+	    )
+	;   abort(('Wrong type in argument 1 of clause/2', 
+		   ' (callable term expected)'))
 	).
 
 /*======================================================================*/
