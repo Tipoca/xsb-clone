@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.16 2003-06-23 16:44:44 dwarren Exp $
+** $Id: auxlry.P,v 1.17 2003-07-18 22:39:11 tswift Exp $
 ** 
 */
 
@@ -58,6 +58,7 @@ error(Message) :-
 set_global_compiler_options(Options) :-
 	retractall('_$global_compiler_options'(_)),
 	assert('_$global_compiler_options'(Options)).
+
 
 /*======================================================================*/
 /*  setoptions(+Options)						*/
@@ -154,9 +155,9 @@ current_option(ciao_directives).
 set_ciao_opts:- 
 	op(500,yfx,#),
 	op(975, xfx,(=>)),
-	op(978, xfx,(::)),
-	op(1100,fx,(document_export)),
-	op(1100,fx,(document_import)).
+	op(978, xfx,(::)).
+%	op(1100,fx,(document_export)),
+%	op(1100,fx,(document_import)).
 
 
 /* options kept only for backwards compatibility;

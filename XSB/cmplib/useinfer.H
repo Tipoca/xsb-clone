@@ -19,15 +19,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: useinfer.H,v 1.3 1999-11-20 06:51:39 kifer Exp $
+** $Id: useinfer.H,v 1.4 2003-07-18 22:39:12 tswift Exp $
 ** 
 */
 
 
 :- export useinfer/3.
 
-:- import member/2 from basics.
-:- import warning/1, option/1 from auxlry.
+:- import standard_metapredicate/3 from std_xsb.
+:- import member/2, ith/3 from basics.
+:- import warning/1, option/1,message/1 from auxlry.
 :- import standard_symbol/3 from std_xsb.
 :- import sym_propin/2, sym_prop/2, sym_insert/5, sym_scan/3,
 	  extract_symlist/3, sym_env/2, sym_name/3
