@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap.h,v 1.3 1999-01-13 18:19:07 kostis Exp $
+** $Id: heap.h,v 1.4 1999-01-23 17:41:37 kostis Exp $
 ** 
 */
 
@@ -43,7 +43,7 @@
 #define new_heap_functor(sh_reg, psc) bld_functor(sh_reg++, psc)
 /* make a new functor node in heap */
 
-#define new_heap_node(sh_reg, x) bld_copy0(sh_reg++, x)
+#define new_heap_node(sh_reg, x) bld_copy(sh_reg++, x)
 /* make a new heap node with value x (one word type) */
 
 /*----- The following functions are used in other parts of the system --*/

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.3 1999-01-17 14:56:18 kostis Exp $
+** $Id: choice.h,v 1.4 1999-01-23 17:41:35 kostis Exp $
 ** 
 */
 
@@ -479,17 +479,17 @@ typedef struct compl_susp_choice_point {
  *  On "exit", 't_breg' points to the topmost arg on the cpstack.
  */
 #define save_registers(t_breg, arity, ii, regbase) \
-    for (ii = 1; ii <= arity; ii++) bld_copy0(--t_breg, cell(regbase+ii))
+    for (ii = 1; ii <= arity; ii++) bld_copy(--t_breg, cell(regbase+ii))
 
 
 #define restore_registers(t_breg, arity, ii, regbase) \
     t_breg += CP_SIZE; \
-    for (ii = arity; ii >= 1; ii--) bld_copy0(regbase+ii, cell(t_breg++))
+    for (ii = arity; ii >= 1; ii--) bld_copy(regbase+ii, cell(t_breg++))
 
 
 #define table_restore_registers(t_breg, arity, ii, regbase) \
     t_breg += TCP_SIZE; \
-    for (ii = arity; ii >= 1; ii--) bld_copy0(regbase+ii, cell(t_breg++))
+    for (ii = arity; ii >= 1; ii--) bld_copy(regbase+ii, cell(t_breg++))
 
 
 /* Local (Environment) Stack
