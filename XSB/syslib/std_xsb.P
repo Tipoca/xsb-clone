@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.54 2001/06/29 22:54:10 kifer Exp $
+** $Id: std_xsb.P,v 1.55 2001/07/05 20:29:28 tswift Exp $
 ** 
 */
 
@@ -49,6 +49,8 @@ standard_symbol(break, 0, x_interp).
 standard_symbol('C', 3, dcg).
 standard_symbol(call, 1, standard).
 standard_symbol(callable, 1, standard).
+standard_symbol(catch, 3, standard).
+standard_symbol(throw, 1, standard).
 standard_symbol(cd, 1, shell).
 standard_symbol(cwd, 1, shell).
 standard_symbol(clause, 2, assert).

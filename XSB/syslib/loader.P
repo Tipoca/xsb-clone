@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.30 2001/06/17 09:37:32 kifer Exp $
+** $Id: loader.P,v 1.31 2001/06/29 22:54:11 kifer Exp $
 ** 
 */
 
@@ -106,8 +106,8 @@ set_inthandler(Handler, Number) :-
 
 set_current_module :-
 	conpsc(current_module, CURMOD_PSC),
-	conpsc(usermod, USERMOD_PSC),
-	psc_set_prop(CURMOD_PSC, USERMOD_PSC),
+	conpsc(usermod, UsermodPsc),
+	psc_set_prop(CURMOD_PSC, UsermodPsc),
 	stat_set_flag(CURRENT_MODULE, 0).
 
 
