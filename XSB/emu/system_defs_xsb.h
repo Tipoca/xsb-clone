@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_defs_xsb.h,v 1.4 2001/03/26 04:59:02 kifer Exp $
+** $Id: system_defs_xsb.h,v 1.5 2001/05/31 16:33:38 lfcastro Exp $
 ** 
 */
 
@@ -36,3 +36,4 @@
 #define STAT_FILE_TIME           9
 #define STAT_FILE_SIZE           10
 #define EXEC                     11
+#define GET_TMP_FILENAME         12

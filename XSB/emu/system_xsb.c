@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.16 2001-05-31 16:50:27 lfcastro Exp $
+** $Id: system_xsb.c,v 1.17 2001-06-10 04:57:28 kifer Exp $
 ** 
 */
 
@@ -172,6 +172,9 @@ xsbBool sys_system(int callno)
 #else
     sleep(ptoc_int(2));
 #endif
+    return TRUE;
+  case GET_TMP_FILENAME:
+    ctop_string(2,string_find(tmpnam(NULL),1));
     return TRUE;
   case IS_PLAIN_FILE:
   case IS_DIRECTORY:
@@ -840,6 +843,9 @@ xsbBool file_stat(int callno, char *file)
     } else  /* no file */
       return FALSE;
   }
+  default:
+    xsb_abort("Unsupported file_stat code: %d\n", callno);
+    return FALSE;
   } /* switch */
 }
 
