@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.h,v 1.4 1999-08-16 07:24:54 kifer Exp $
+** $Id: standard.h,v 1.5 1999-10-20 06:51:34 kifer Exp $
 ** 
 */
 
@@ -32,10 +32,10 @@
 #define STDFDBK	     6    /* output for XSB feedback
 			     (prompt/yes/no/Aborting/answers) */
 
-#define OREAD	     0	  /* open for read        */
-#define OWRITE	     1	  /* open for write       */
-#define OAPPEND	     2	  /* open for append      */
-#define OSTRING	     3	  /* open for as a string */
+#define OREAD	     0	  /* open for read            	    */
+#define OWRITE	     1	  /* open for write           	    */
+#define OAPPEND	     2	  /* open for append          	    */
+#define OSTRING	     3	  /* open as a string (for reading) */
 
 #define AF_INET     0	  /* XSB-side socket request for Internet domain */
 #define AF_UNIX     1     /* XSB-side socket request for UNIX domain */
