@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.49 2003/04/02 19:42:40 lfcastro Exp $
+** $Id: machine.H,v 1.50 2003/05/01 18:52:51 dwarren Exp $
 ** 
 */
 
@@ -140,7 +140,8 @@
 	put_attributes/2,
 	get_attributes/3,
 	delete_attributes/1,
-        attv_unify/2, 
+        attv_unify/2,
+	predicate_module/3,
         interprolog_callback/3.
 
 :- export 
