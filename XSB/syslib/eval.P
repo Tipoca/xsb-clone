@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: eval.P,v 1.1.1.1 1998/11/05 16:59:53 sbprolog Exp $
+** $Id: eval.P,v 1.2 1998/11/15 06:09:14 kifer Exp $
 ** 
 */
 
@@ -87,14 +87,17 @@ eval1(Term, Res) :-
 	psc_type(Psc, T1),
 	( T1 =\= 14, eval_regularterm(Term, Res)	 % Regular term
 	; T1 =:= 14,
-          psc_prop(Psc, Code),
-	  eval_func(Code, Term, T1),
-	  '_$getreturn'(Res)
+	  abort('Invalid term in arithmetic expression')
+% no longer support user-defined functions
+%          psc_prop(Psc, Code),
+%	  eval_func(Code, Term, T1),
+%	  '_$getreturn'(Res)
 	).
 
-/* need this because code_call/3 must be the last goal of a clause.	*/
-
-eval_func(Code, Term, T1) :- code_call(Code, Term, T1).
+/* need this because code_call/3 must be the last goal of a clause.
+no longer support user-defined functions
+eval_func(Code, Term, T1) :- code_call(Code, Term, T1).  
+*/
 
 eval_regularterm(Term, Res) :-
 	functor(Term, F, A),

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id$
+** $Id: eval.H,v 1.1.1.1 1998/11/05 16:59:58 sbprolog Exp $
 ** 
 */
 
@@ -29,7 +29,7 @@
 :- import load/1 from loader.
 :- import functor/3, arg/3, abort/1 from standard.
 :- import term_type/2, term_psc/2, psc_type/2, 
-	  psc_prop/2, code_call/3, psc_name/2
+	  psc_prop/2, psc_name/2
      from machine.
 
 
