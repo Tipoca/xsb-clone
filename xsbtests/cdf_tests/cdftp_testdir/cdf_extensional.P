@@ -67,6 +67,9 @@ allAttr_ext(cid(person,fam),rid(hasSister,fam),cid(woman,fam)).
   isa_ext(cid(woman,fam),cid(female,fam)).
   isa_ext(cid(woman,fam),cid(person,fam)).
 
+  isa_ext(oid(adam,fam),cid(man,fam)).
+  isa_ext(oid(eve,fam),cid(woman,fam)).
+
   isa_ext(cid(man,fam),cid(person,fam)).
   necessCond_ext(cid(man,fam),vid(not(cid(woman,fam)))).
 

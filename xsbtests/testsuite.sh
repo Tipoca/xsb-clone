@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.24 2000-04-29 20:16:22 kifer Exp $
+## $Id: testsuite.sh,v 1.25 2004-05-18 00:17:28 tswift Exp $
 ## 
 ##
 
@@ -259,6 +259,8 @@ $GREP "fatal" $LOG_FILE >> $RES_FILE
 # some other problems that should highlight bugs in the test suite
 $GREP "syntax error" $LOG_FILE >> $RES_FILE
 $GREP "cannot find" $LOG_FILE >> $RES_FILE
+$GREP "undefined" $LOG_FILE >> $RES_FILE
+
 echo "-----------------------------------------"
 
 if test "$NeXT_DATE" = 1; then

@@ -18,9 +18,10 @@ for suff in $suffixes ; do
     diff -w $outfile1 $tempinfile || status=1
     if test "$status" = 0 ; then
 	echo "$outfile1 tested"
+            /bin/rm -f $outfile1 $outfile $tempinfile
     else
 	echo "$outfile1 and $infile differ!!!"
+	diff -w ${FILE}_new ${FILE}_old
     fi
 
-    /bin/rm -f $outfile1 $outfile $tempinfile
 done
