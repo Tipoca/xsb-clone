@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts.i,v 1.6 1999-01-18 17:59:36 kostis Exp $
+** $Id: slginsts.i,v 1.7 1999-01-22 12:48:40 kostis Exp $
 ** 
 */
 
@@ -449,12 +449,7 @@ return_table_code:
 #endif
     CallNumVar = *(VarPosReg);
     num_vars_in_var_regs = -1;
-    reg_arrayptr = reg_array -1;
-#ifdef DEBUG /* PLEASE TAKE ME OUT OF HERE */
-    fprintf(stderr,"  Trie-returning answers of ");
-    print_subgoal(stderr, (SGFrame)xcurcall);
-    fprintf(stderr," %ld vars\n", CallNumVar);
-#endif
+    reg_arrayptr = reg_array-1;
     for (i = 1; i <= CallNumVar; i++) {
        pushreg(cell(VarPosReg+i));
     }
