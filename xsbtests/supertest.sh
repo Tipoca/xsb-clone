@@ -1,7 +1,8 @@
 #! /bin/sh
 
+# THIS SCRIPT EXPECTS TO BE RUN FROM THE TESTSUITE DIRECTORY
+
 # $1 must be the path to the XSB installation directory
-# This script expects to be run from the testsuite directory
 
 xsbdir=$1
 testdir=`pwd`
@@ -19,6 +20,10 @@ fi
 # Make sure to delete locks, if the user decides to abort the test
 trap 'rm -fr $testdir/$lockfile $testdir/lock.test; exit 1' 1 2 15
 
+config=`$xsbdir/build/config.guess`
+canonical=`$xsbdir/build/config.sub $config`
+execdir_prefix=$xsbdir/config/$canonical
+
 if test -f "$testdir/$lockfile" ; then
  echo "./$lockfile exists. Remove it first"
  exit
@@ -32,7 +37,7 @@ configure > $logfile
 echo "Making XSB with default options"
 makexsb fast >> $logfile
 cd $testdir
-./testsuite.sh $xsbdir/bin/xsb
+./testsuite.sh $execdir_prefix/bin/xsb
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-local-scheduling"
@@ -40,7 +45,7 @@ configure --config-tag=localsched --enable-local-scheduling >> $logfile
 echo "Making XSB with --enable-local-scheduling"
 makexsb --config-tag=localsched fast >> $logfile
 cd $testdir
-./testsuite.sh $xsbdir/bin/xsb-localsched
+./testsuite.sh $execdir_prefix-localsched/bin/xsb
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-chat"
@@ -48,7 +53,7 @@ configure --config-tag=chat --enable-chat >> $logfile
 echo "Making XSB with --enable-chat"
 makexsb --config-tag=chat fast >> $logfile
 cd $testdir
-./testsuite.sh $xsbdir/bin/xsb-chat
+./testsuite.sh $execdir_prefix-chat/bin/xsb
 
 
 cd $xsbdir/build
@@ -57,6 +62,6 @@ configure --config-tag=localschedNchat --enable-chat --enable-local-scheduling >
 echo "Making XSB with --enable-chat --enable-local-scheduling"
 makexsb --config-tag=localschedNchat fast >> $logfile
 cd $testdir
-./testsuite.sh $xsbdir/bin/xsb-localschedNchat
+./testsuite.sh $execdir_prefix-localschedNchat/bin/xsb
 
 rm $testdir/$lockfile
