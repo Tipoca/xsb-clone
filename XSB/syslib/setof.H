@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: setof.H,v 1.3.8.2 2004/10/18 20:48:22 ruim Exp $
+** $Id: setof.H,v 1.6 2005/01/14 18:32:01 ruim Exp $
 ** 
 */
 
@@ -33,4 +33,4 @@
 :- import functor/3, (=..)/2, arg/3, call/1 from standard.
 :- import '$$findall_init'/2, '$$findall_add'/3, '$$findall_get_solutions'/4
      from machine.
-
+:- import variant/2 from subsumes.
