@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.15 1999-01-24 17:07:42 kostis Exp $
+** $Id: builtin.c,v 1.16 1999-01-27 17:40:53 kostis Exp $
 ** 
 */
 
@@ -148,7 +148,6 @@ extern tab_inf_ptr first_tip;
 extern tab_inf_ptr last_tip;
 
 extern int  sys_syscall(int);
-extern int  buff_copyterm(Cell, pb, long, long, long);
 extern bool fmt_read(void), fmt_write(void), fmt_write_string(void),
   read_canonical(void), file_read_line(void);
 extern bool assert_code_to_buff(void), assert_buff_to_clref(void),
