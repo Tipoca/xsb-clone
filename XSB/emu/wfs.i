@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wfs.i,v 1.7 1999-04-22 06:49:27 kifer Exp $
+** $Id: wfs.i,v 1.8 1999-08-06 14:36:29 kostis Exp $
 ** 
 */
 
@@ -134,7 +134,7 @@ static void reclaim_edge_space(ComplStackFrame csf_ptr)
 
 /*----------------------------------------------------------------------*/
 
-static void construct_dep_graph(ComplStackFrame leader_compl_frame)
+static inline void construct_dep_graph(ComplStackFrame leader_compl_frame)
 {
     EPtr eptr;
     CPtr asf, nsf;
