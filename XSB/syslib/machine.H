@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.39 2000/12/04 17:10:47 ejohnson Exp $
+** $Id: machine.H,v 1.40 2001/01/08 18:07:35 dwarren Exp $
 ** 
 */
 
@@ -47,6 +47,8 @@
 	term_arg/3, 
 	term_set_arg/4, 
 	term_hash/3,
+	conget/2,
+	conset/2,
 	stat_flag/2, 
 	stat_set_flag/2, 
 	stat_sta/1,

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.36 2001-03-26 04:59:02 kifer Exp $
+** $Id: builtin.h,v 1.37 2001-03-28 08:56:35 kifer Exp $
 ** 
 */
 
@@ -102,6 +102,10 @@
 #define PARSE_FILENAME        	 69
 #define ALMOST_SEARCH_MODULE     70
 #define EXISTING_FILE_EXTENSION  71
+
+/* for efficiency, implemented these in C */
+#define CONGET_TERM	         75
+#define CONSET_TERM	         76
 
 #define PSC_ENV		        100
 #define PSC_SPY		        101

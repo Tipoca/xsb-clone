@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.48 2001/01/08 18:07:35 dwarren Exp $
+** $Id: machine.P,v 1.49 2001/03/26 01:38:15 kifer Exp $
 ** 
 */
 
@@ -136,6 +136,9 @@ almost_search_module(FileName, Dir, ModName, Extension, BaseName) :-
 	almost_search_module(FileName, Dir, ModName, Extension, BaseName).
 existing_file_extension(FileName, Extension) :-
 	existing_file_extension(FileName, Extension).
+
+conget(_Term,_Val) :- '_$builtin'(CONGET_TERM).
+conset(_Term,_Val) :- '_$builtin'(CONSET_TERM).
 
 psc_env(PSC, Env) :- psc_env(PSC, Env).
 psc_spy(PSC, Spy) :- psc_spy(PSC, Spy).

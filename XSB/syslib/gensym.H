@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gensym.H,v 1.3 1999/12/09 23:40:16 kifer Exp $
+** $Id: gensym.H,v 1.4 1999/12/31 06:46:30 kifer Exp $
 ** 
 */
 
@@ -28,8 +28,10 @@
 :- export conlength/2, conset/2, conget/2, coninc/1.
 :- export newcounter/1, inccounter/1, getcounter/1.
 
-:- import psc_set_prop/2, conpsc/2, conname/2,psc_prop/2, 
-	str_len/2, str_cat/3, psc_set_type/2
+:- import psc_set_prop/2, 
+	%% conpsc/2,
+	conname/2,psc_prop/2, 
+	str_len/2, str_cat/3, psc_set_type/2, term_psc/2
      from machine.
 :- import number_codes/2, atom_codes/2, arg/3,
 	integer/1, atom/1, abort/1
