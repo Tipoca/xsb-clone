@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.5 2001-03-27 17:52:03 dwarren Exp $
+** $Id: flag_defs_xsb.h,v 1.6 2001-03-28 04:17:25 kifer Exp $
 ** 
 */
 
@@ -76,7 +76,6 @@
  MYSIG_SPY        3    // _$deb_spy
  MYSIG_TRACE      4    // _$deb_trace
  MYSIG_ATTV       8    // _$attv_int
- MYSIG_PSC       14    // _$psc_int
  MYSIG_CLAUSE    16    // _$clause_int
 
 These values are added to INT_HANDLERS_FLAGS_START to obtain the actual
