@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trassert.h,v 1.2 1998-12-21 01:09:08 cbaoqiu Exp $
+** $Id: trassert.h,v 1.3 1999-07-06 16:35:21 ejohnson Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@ extern NODEptr bak_top_trie_space;
 extern char *trie_node_chunk_ptr;
 extern char *tra_trie_node_chunk_ptr;
 extern char *bak_trie_node_chunk_ptr;
-extern struct HASHhdr HASHroot, *HASHrootptr, tra_HASHroot; 
+extern BasicTrieHT HASHroot, *HASHrootptr, tra_HASHroot; 
 
 #define switch_to_trie_assert {\
    bak_free_trie_nodes = free_trie_nodes;\

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory.c,v 1.7 1999-02-18 13:02:17 kostis Exp $
+** $Id: memory.c,v 1.8 1999-07-06 16:35:13 ejohnson Exp $
 ** 
 */
 
@@ -49,10 +49,10 @@
 #include "cell.h"      /* CPtr */
 #include "memory.h"
 #include "register.h"  /* breg, trreg */
+#include "psc.h"       /* needed by "tries.h" and "xmacro.h" */
 #include "tries.h"     /* needed by "choice.h" */
 #include "choice.h"    /* choice point structures and macros */
 #include "xsberror.h"  /* xsb_exit() */
-#include "psc.h"       /* needed by "xmacro.h" */
 #include "xmacro.h"    /* Completion Stack and Subgoal Frame def's */
 
 #include "flags.h"

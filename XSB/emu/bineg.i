@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg.i,v 1.10 1999-06-14 00:32:07 cbaoqiu Exp $
+** $Id: bineg.i,v 1.11 1999-07-06 16:35:03 ejohnson Exp $
 ** 
 */
 
@@ -58,8 +58,7 @@
 	  if ((tip = get_tip(psc)) == NULL) {
 	    xsb_abort("Predicate %s/%d is not tabled", get_name(psc), arity);
 	  }
-	  subgoal_ptr = ti_call_trie_root(tip);
-	  get_subgoal_ptr(term, arity, (CPtr)&subgoal_ptr);
+	  subgoal_ptr = get_subgoal_ptr(term, tip);
 	}
 	ctop_int(4, (Integer)subgoal_ptr);
 #ifdef DEBUG_DELAY

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chat.c,v 1.8 1999-04-09 17:05:54 kostis Exp $
+** $Id: chat.c,v 1.9 1999-07-06 16:35:07 ejohnson Exp $
 ** 
 */
 
@@ -33,9 +33,9 @@
 #include "auxlry.h"
 #include "cell.h"
 #include "register.h"
+#include "psc.h"
 #include "tries.h"
 #include "choice.h"
-#include "psc.h"
 #include "xmacro.h"
 #include "memory.h"
 #include "xsberror.h"

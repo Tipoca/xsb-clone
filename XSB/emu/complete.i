@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete.i,v 1.11 1999-04-22 06:49:12 kifer Exp $
+** $Id: complete.i,v 1.12 1999-07-06 16:35:07 ejohnson Exp $
 ** 
 */
 
@@ -46,9 +46,8 @@ case check_complete: {
   SUBGOAL = tcp_subgoal_ptr(breg);	/* get the subgoal that is checked */
 
 #ifdef DEBUG_DELAY
-  xcurcall = SUBGOAL;
   fprintf(stderr, ">>>> check_complete is called.  The checked subgoal is: ");
-  print_subgoal(stderr, (SGFrame) xcurcall); fprintf(stderr, "\n");
+  print_subgoal(stderr, (SGFrame)SUBGOAL); fprintf(stderr, "\n");
 #endif
 
   CC_CSPTR = subg_compl_stack_ptr(SUBGOAL);

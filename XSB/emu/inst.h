@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.h,v 1.14 1999-05-18 16:09:09 warren Exp $
+** $Id: inst.h,v 1.15 1999-07-06 16:35:12 ejohnson Exp $
 ** 
 */
 
@@ -51,6 +51,8 @@ extern void init_inst_table(void);
 /************************************************************************/
 /*	Macros to fetch the instructions/operands.			*/
 /************************************************************************/
+
+#define inst_name(C)		((char *)inst_table[C][0])
 
 #define cell_opcode(C)		(*(pb)(C))
 
@@ -235,6 +237,7 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define hash_opcode 		0x79
 #define hash_handle 		0x7a
 #define trie_assert_inst	0x7c
+#define trie_root		0x7d
 
 /* jf: reclaim deleted returns at completion */
 #define trie_no_cp_fail         0x90

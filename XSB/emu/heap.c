@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap.c,v 1.17 1999-04-16 16:42:02 unova Exp $
+** $Id: heap.c,v 1.18 1999-07-06 16:35:10 ejohnson Exp $
 ** 
 */
 
@@ -105,10 +105,10 @@ Todo:
 #include <stdio.h>     /* printf */
 
 #include "register.h"  /* breg, trreg */
+#include "psc.h"       /* needed by "tries.h" and "xmacro.h" */
 #include "tries.h"     /* needed by "choice.h" */
 #include "choice.h"    /* choice point structures and macros */
 #include "xsberror.h"  /* xsb_exit() and friends */
-#include "psc.h"       /* needed by "xmacro.h" */
 #include "xmacro.h"    /* Completion Stack and Subgoal Frame def's */
 #include "realloc.h"   /* Heap - ls reallocation macros */
 #include "chat.h"      /* CHAT related declarations */

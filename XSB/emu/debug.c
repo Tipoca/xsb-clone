@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug.c,v 1.8 1999-04-16 16:14:31 unova Exp $
+** $Id: debug.c,v 1.9 1999-07-06 16:35:08 ejohnson Exp $
 ** 
 */
 
@@ -456,7 +456,7 @@ void print_subgoal(FILE *fp, SGFrame subg)
   int  i = 0;
   Psc  psc = ti_psc_ptr(subg_tip_ptr(subg));
 
-  for (leaf = subg_leaf_ptr(subg); leaf != NOPAR; leaf = unftag(Parent(leaf))) {
+  for (leaf = subg_leaf_ptr(subg); leaf != NULL; leaf = Parent(leaf)) {
     cell_array[i++] = Atom(leaf);
   }
   fprintf(fp, "%s", get_name(psc));

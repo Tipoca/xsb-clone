@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.c,v 1.10 1999-05-18 16:09:08 warren Exp $
+** $Id: inst.c,v 1.11 1999-07-06 16:35:11 ejohnson Exp $
 ** 
 */
 
@@ -143,6 +143,7 @@ static void init_inst_table_2(void)
   set_inst(hash_opcode, "hash_opcode", X,X,X,X);
   set_inst(hash_handle, "hash_handle", X,X,X,X);
   set_inst(trie_assert_inst,"trie_assert_inst",X,X,X,X);
+  set_inst(trie_proceed, "trie_root", X,X,X,X);
   set_inst(trie_no_cp_numcon_succ, "trie_no_cp_numcon_succ", X, X, X,X);
   set_inst(trie_try_numcon_succ, "trie_try_numcon_succ", X, X, X,X);
   set_inst(trie_retry_numcon_succ, "trie_retry_numcon_succ", X,X,X,X);
