@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.28 2003-03-14 18:54:29 dwarren Exp $
+** $Id: init_xsb.c,v 1.29 2003-04-14 19:01:14 lfcastro Exp $
 ** 
 */
 
@@ -760,6 +760,20 @@ void init_symbols(void)
   temp = insert("true", 0, global_mod, &new_indicator);
   true_psc = pair_psc(temp);
   true_sym = get_name(true_psc);
+  /* create code for true/0 */
+  {
+    CPtr p;
+    int Loc;
+    set_env(true_psc, T_VISIBLE);
+    set_type(true_psc, T_PRED);
+    p = (CPtr) mem_alloc(sizeof(PrRefData));
+    Loc = 0;
+    *(CPtr)((pb)p) = (Cell) 0;
+    *(CPtr)((pb)p) = (byte)proceed;
+    p[2] = (Cell) p;
+    set_ep(true_psc,(pb)p);
+  }
+  
 
   temp = insert(":-", 2, global_mod, &new_indicator);
   if_psc = pair_psc(temp);
