@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb_i.h,v 1.6 2004-12-20 19:26:15 dwarren Exp $
+** $Id: odbc_xsb_i.h,v 1.7 2005-01-17 20:39:24 dwarren Exp $
 **
 */
 
@@ -82,6 +82,9 @@ switch (ptoc_int(1)) {
    break;
  case ODBC_GET_INFO:
    ODBCGetInfo();
+   break;
+ case ODBC_ROW_COUNT:
+   ODBCRowCount();
    break;
  default:
    xsb_error("Unknown or unimplemented ODBC request type");
