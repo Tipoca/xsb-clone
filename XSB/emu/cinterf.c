@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.16 1999-06-27 04:58:31 kifer Exp $
+** $Id: cinterf.c,v 1.17 1999-07-05 06:13:04 kifer Exp $
 ** 
 */
 
@@ -50,6 +50,7 @@
 
 /* the following really belongs somewhere else */
 extern char *expand_filename(char *);
+extern void xsb_sprint_variable(char *sptr, CPtr var);
 
 
 char *p_charlist_to_c_string(prolog_term term, char *buf, int buf_size,
@@ -1050,7 +1051,7 @@ void print_pterm(prolog_term term, int toplevel, char *straddr, int *ind)
   int i;
 
   if (is_var(term)) {
-      sprintf(tempstring,"_%p",(char *)term);
+      xsb_sprint_variable(tempstring, (CPtr) term);
       strcpy(straddr+*ind,tempstring);
       *ind += strlen(tempstring);
   } else if (is_int(term)) {
