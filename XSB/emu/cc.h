@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cc.h,v 1.1.1.1 1998-11-05 16:55:12 sbprolog Exp $
+** $Id: cc.h,v 1.2 1999-05-03 00:54:18 luis Exp $
 ** 
 */
 
@@ -145,16 +145,18 @@
 /* High level C interface						*/
 /*======================================================================*/
 
-#ifdef XSB_DLL
-#define DllExport _declspec(dllexport)
-#define call_conv __stdcall
-#elif defined(XSB_DLL_C)
-#define DllExport _declspec(dllexport)
-#define call_conv __cdecl
-#else
-#define DllExport
-#define call_conv
-#endif
+/*  #ifdef XSB_DLL */
+/*  #define DllExport _declspec(dllexport) */
+/*  #define call_conv __stdcall */
+/*  #elif defined(XSB_DLL_C) */
+/*  #define DllExport _declspec(dllexport) */
+/*  #define call_conv __cdecl */
+/*  #else */
+/*  #define DllExport */
+/*  #define call_conv */
+/*  #endif */
+
+#include "export.h"
 
 #include "basictypes.h"
 

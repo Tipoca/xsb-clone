@@ -18,11 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_odbc.c,v 1.3 1998-11-17 01:56:47 kifer Exp $
+** $Id: xsb_odbc.c,v 1.4 1999-05-03 00:55:54 luis Exp $
 ** 
 */
 
-
+#include "configs/config.h"
 #include <windows.h>
 #include <SQL.H>
 #include <SQLEXT.H>

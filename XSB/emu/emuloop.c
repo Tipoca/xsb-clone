@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.19 1999-04-27 14:39:45 kifer Exp $
+** $Id: emuloop.c,v 1.20 1999-05-03 00:55:43 luis Exp $
 ** 
 */
 
@@ -62,7 +62,7 @@
 #include "subp.h"
 #include "tr_utils.h"
 #include "cut.h"
-
+#include "export.h"
 CPtr	VarPosReg;
 /*
  * Variables ans_var_pos_reg is a pointer to substitution factor of an
@@ -1308,7 +1308,7 @@ table_restore_sub:
 /*======================================================================*/
 /*======================================================================*/
 
-int xsb(int flag, int argc, char *argv[])
+DllExport int call_conv xsb(int flag, int argc, char *argv[])
 { 
    char *startup_file;
    FILE *fd;

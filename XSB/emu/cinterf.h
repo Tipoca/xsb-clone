@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.3 1998-11-17 01:56:44 kifer Exp $
+** $Id: cinterf.h,v 1.4 1999-05-03 00:55:40 luis Exp $
 ** 
 */
 
@@ -147,17 +147,18 @@
 /* High level C interface						*/
 /*======================================================================*/
 
-#ifdef XSB_DLL
-#define DllExport _declspec(dllexport)
-#define call_conv __stdcall
-#elif defined(XSB_DLL_C)
-#define DllExport _declspec(dllexport)
-#define call_conv __cdecl
-#else
-#define DllExport
-#define call_conv
-#endif
+/*  #ifdef XSB_DLL */
+/*  #define DllExport _declspec(dllexport) */
+/*  #define call_conv __stdcall */
+/*  #elif defined(XSB_DLL_C) */
+/*  #define DllExport _declspec(dllexport) */
+/*  #define call_conv __cdecl */
+/*  #else */
+/*  #define DllExport */
+/*  #define call_conv */
+/*  #endif */
 
+#include "export.h"
 
 DllExport extern prolog_int call_conv ptoc_int(reg_num);	/* defined in builtin.c */
 DllExport extern prolog_float call_conv ptoc_float(reg_num);	/* defined in builtin.c */

@@ -1,9 +1,8 @@
-/* File:      emuloop.h
-** Author(s): Kostis Sagonas
+/* File:      export.h 
+** Author(s): luis
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
-** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
-** Copyright (C) ECRC, Germany, 1990
+** Copyright (C) The Research Foundation of SUNY, 1998
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -19,12 +18,29 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.h,v 1.2 1999-05-03 00:55:44 luis Exp $
+** $Id: export.h,v 1.1 1999-05-03 00:57:41 luis Exp $
 ** 
 */
 
-#include "export.h"
+#ifndef __EXPORT_H__
+#define __EXPORT_H__
 
-DllExport extern int call_conv xsb(int, int, char **);
+#include "configs/config.h"
 
-/*----------------------------------------------------------------------*/
+#ifdef XSB_DLL
+#define DllExport __declspec(dllexport)
+#define call_conv __stdcall
+#elif defined(XSB_DLL_C)
+#define DllExport __declspec(dllexport)
+#define call_conv __cdecl
+#else
+#define DllExport
+#define call_conv
+#endif
+
+#endif 
+
+
+
+
+

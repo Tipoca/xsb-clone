@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.17 1999-04-24 05:02:17 kifer Exp $
+** $Id: init.c,v 1.18 1999-05-03 00:55:47 luis Exp $
 ** 
 */
 
@@ -47,6 +47,7 @@
 #include "load_seg.h"
 #include "xmacro.h"
 #include "tr_utils.h"
+#include "export.h"
 
 /*-----------------------------------------------------------------------*/
 
@@ -80,7 +81,7 @@ pdl = {NULL, NULL, 0,
 
 Exec_Mode xsb_mode;     /* How XSB is run: interp, disassem, user spec, etc. */
 
-extern char *strip_names_from_path(char* path, int how_many);
+DllExport extern char * call_conv strip_names_from_path(char*, int);
 
 /* real_alloc uses malloc only to keep pspacesize straight. */
 #define real_alloc(X) malloc(X) 
