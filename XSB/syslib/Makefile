@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.42 2002/04/10 23:33:21 tswift Exp $
+## $Id: Makefile,v 1.43 2002/04/13 05:01:59 lfcastro Exp $
 ## 
 ##
 
@@ -27,7 +27,8 @@ OBJEXT=.xwam
 
 ALL =	assert${OBJEXT} atts${OBJEXT} basics${OBJEXT} consult${OBJEXT} \
 	curr_sym${OBJEXT} dbclause${OBJEXT} \
-	dcg${OBJEXT} debugger${OBJEXT} domain${OBJEXT} eval${OBJEXT}  \
+	dcg${OBJEXT} debugger${OBJEXT} domain${OBJEXT}\
+	error_handler${OBJEXT}  eval${OBJEXT}  \
 	file_io${OBJEXT} \
 	file_op${OBJEXT} gensym${OBJEXT} hilogsym${OBJEXT} loader${OBJEXT}  \
 	machine${OBJEXT} num_vars${OBJEXT} \

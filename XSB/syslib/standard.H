@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.28 2002/04/10 23:33:22 tswift Exp $
+** $Id: standard.H,v 1.29 2002/04/13 05:01:59 lfcastro Exp $
 ** 
 */
 
@@ -80,7 +80,7 @@
         catch/3,                throw/1,        '$$exception_ball'/1,
         goal_cut_trans/3,	goal_cut_untrans/2,
 	tcall/1,	arity_integer/1,	prolog_arglist/4,
-	message/1,      message/2,
+	message/1,      message/2, messageln/2,
         warning/1,	push_abort_cutpoint/0,  pop_abort_cutpoint/0,
         abort/1,	abort/0,
 	set_timer/1,

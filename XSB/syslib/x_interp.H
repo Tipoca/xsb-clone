@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.28 2002/04/13 05:01:59 lfcastro Exp $
+** $Id: x_interp.H,v 1.29 2002/08/16 14:51:08 dwarren Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
 :- import file_read/3, vv/2 from xsb_read.
 %% These are explicitly imported because they are used early on, 
 %% before XSB is fully bootstrapped.
-:- import abort/0, call_c/1, call_expose/1, goal_cut_trans/3,
+:- import abort/0, call_c/1, call_expose/1, catch/3, goal_cut_trans/3,
           push_abort_cutpoint/0, pop_abort_cutpoint/0, atom_codes/2,
           seeing/1, telling/1, see/1, tell/1, seen/0, told/0
      from standard.
@@ -50,7 +50,9 @@
 	  fmt_write/3, file_getbuf_atom/4
     from file_io.
 :- import push_stdin/2, pop_stdin/1 from push_io.
-:- import retractall/1 from assert.
+:- import  retractall/1 from assert.
 :- import call_xsb_hook/2, xsb_exit_hook/1 from xsb_hook.
 :- import verify_attributes/2 from usermod.
 :- import conset/2, conget/2 from gensym.
+
+

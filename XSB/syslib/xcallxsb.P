@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.P,v 1.8 2000/06/08 06:50:06 kifer Exp $
+** $Id: xcallxsb.P,v 1.9 2001/11/02 22:20:58 dwarren Exp $
 ** 
 */
 
@@ -95,7 +95,7 @@ eval_cmdline_goal :-
 eval_cmdline_goal(FileDes) :-
 	file_read(FileDes, Goal),
 	Goal \= end_of_file,
-	(call((Goal,!)) -> true ; true),
+	(catch(call((Goal,!)),Msg,default_error_handler(Msg)) -> true ; true),
 	eval_cmdline_goal(FileDes).
 eval_cmdline_goal(FileDes) :- file_close(FileDes).
 
