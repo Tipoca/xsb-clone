@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flogic_basics.flr,v 1.1 1999-04-19 21:44:47 guizyang Exp $
+** $Id: flogic_basics.flr,v 1.2 1999-05-18 04:01:28 kifer Exp $
 ** 
 */
 
@@ -30,6 +30,8 @@ times_flies_like_an_arrow.		% a 0-ary PREDICATE (proposition)
 fruit_flies_like_an_apple[].		% an OBJECT with empty specification []
 
 e(a,b). e(b,a). e(b,c).			% a binary PREDICATE (graph)
+
+:- table tc/2.
 
 tc(X,Y) :- e(X,Y).			% a RULE and ...
 tc(X,Y) :- tc(X,Z), tc(Z,Y).		% ... a (doubly) RECURSIVE RULE
@@ -65,7 +67,7 @@ person[instances ->> {X}] :- X:person.  % NON-INHERITABLE mvd method of person
 ?- times_flies_like_an_arrow.	% ==> `yes'
 
 ?- fruit_flies_like_a_banana.	% ==> `no' (and a warning)
-?- call(myprint(">>> Answer NO and WARNING intended! <<<")).
+?- writeln('>>> Answer NO and WARNING intended! <<<').
 
 ?- fruit_flies_like_a_banana[].	% ==> `yes'
 
@@ -82,6 +84,6 @@ person[instances ->> {X}] :- X:person.  % NON-INHERITABLE mvd method of person
             {H:dangerous_hobby}	% ... which are dangerous?
 ]. 
 
-?- call(myprint("Thanks ")), call(unix(whoami)), call(myprint(" for using FLIP!")).
+?- writeln('Thanks '), unix(whoami), writeln(' for using FLIP!').
 
 
