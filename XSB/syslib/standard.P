@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.81 2004/04/09 00:04:24 dwarren Exp $
+** $Id: standard.P,v 1.82 2004/04/09 21:05:44 dwarren Exp $
 ** 
 */
 
@@ -448,6 +448,13 @@ proper_hilog(X) :-
 functor(T, F, N) :- functor(T, F, N).
 
 arg(I, T, A) :- arg(I, T, A).
+
+goal_arg(I,G,A) :-
+	(G @= (_:_)
+	 ->	G = (_:G1),
+		goal_arg(I,G1,A)
+	 ;	arg(I,G,A)
+	).
 
 arg0(I, T, A) :- 
 	term_type(I, I_type),

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.46 2004/04/09 00:04:24 dwarren Exp $
+** $Id: standard.H,v 1.47 2004/04/09 21:05:44 dwarren Exp $
 ** 
 */
 
@@ -31,7 +31,7 @@
 
 :- export 
 	arg/3,		arg0/3,		atom/1,		atomic/1,
-	atom_chars/2,   atom_codes/2,
+	goal_arg/3,	atom_chars/2,   atom_codes/2,
 	call/1,		call_expose/1,	callable/1,
 	close/1,	compare/3,	compound/1,	cputime/1,	
             display/1, now/1, datime/1,
