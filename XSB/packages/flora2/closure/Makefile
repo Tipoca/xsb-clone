@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.15 2001-06-10 02:00:52 kifer Exp $
+## $Id: Makefile,v 1.16 2001-06-16 23:06:58 gzyang Exp $
 ## 
 ##
 
@@ -31,8 +31,7 @@ XSBDIR = ../../..
 ALLOBJS = flrcommon.flh \
           flrtrailer.flh \
 	  flreqltrailer.flh \
-          flrscalareql.flh \
-          flrdbdyn.flh
+          flrscalareql.flh
 
 XSB = $(XSBDIR)/bin/xsb
 

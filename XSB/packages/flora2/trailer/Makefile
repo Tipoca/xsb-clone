@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.8 2001-04-09 20:58:31 gzyang Exp $
+## $Id: Makefile,v 1.9 2001-06-16 23:07:11 gzyang Exp $
 ## 
 ##
 
@@ -61,21 +61,21 @@ all: init $(ALLOBJS) finish
 	@cat $(SVFILE)
 
 
-standard.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flrcommon.flh \
+standard.P : $(CLOSURE)/flrcommon.flh \
              $(CLOSURE)/flrtrailer.flh $(HEADERINC)/flrheader_inc.flh \
-             $(HEADERINC)/flrdbdyn_inc.flh $(HEADERINC)/flrtrailer_inc.flh
+             $(HEADERINC)/flrtrailer_inc.flh
 	@echo 'flsetuptrailer(none).' >> cmd...
 
 
-eqlbasic.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flrcommon.flh \
+eqlbasic.P : $(CLOSURE)/flrcommon.flh \
              $(CLOSURE)/flreqltrailer.flh $(HEADERINC)/flrheader_inc.flh \
-             $(HEADERINC)/flrdbdyn_inc.flh $(HEADERINC)/flreqltrailer_inc.flh
+             $(HEADERINC)/flreqltrailer_inc.flh
 	@echo 'flsetuptrailer(basic).' >> cmd...
 
 
-eqlflogic.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flrcommon.flh \
+eqlflogic.P : $(CLOSURE)/flrcommon.flh \
               $(CLOSURE)/flreqltrailer.flh $(CLOSURE)/flrscalareql.flh \
-              $(HEADERINC)/flrheader_inc.flh $(HEADERINC)/flrdbdyn_inc.flh \
+              $(HEADERINC)/flrheader_inc.flh \
               $(HEADERINC)/flreqltrailer_inc.flh $(HEADERINC)/flrscalareql_inc.flh
 	@echo 'flsetuptrailer(flogic).' >> cmd...
 
@@ -83,10 +83,6 @@ eqlflogic.P : $(CLOSURE)/flrdbdyn.flh $(CLOSURE)/flrcommon.flh \
 patch.P : $(GENINCLUDES)/flrpatch.flh $(HEADERINC)/flrheader_inc.flh \
           $(HEADERINC)/flrdefinition_inc.flh
 	@echo 'flsetuppatch.' >> cmd...
-
-
-$(CLOSURE)/flrdbdyn.flh : $(CLOSURE)/flrdbdyn.fli $(CLOSURE)/includes/flrpred.fli
-	@cd $(CLOSURE); make
 
 
 $(CLOSURE)/flrcommon.flh : $(CLOSURE)/flrcommon.fli $(CLOSURE)/includes/flrpred.fli
