@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string_xsb.c,v 1.11 2001/06/29 22:50:48 kifer Exp $
+** $Id: string_xsb.c,v 1.12 2001/07/11 06:14:31 kifer Exp $
 ** 
 */
 
@@ -383,7 +383,7 @@ static char *xsb_strrstr(char *str, char *pat)
   
   if (patlen > len)
     return NULL;
-  for (p = str + (len - patlen); p > str; --p)
+  for (p = str + (len - patlen); p >= str; --p)
     if (*p == *pat && strncmp(p, pat, patlen) == 0)
       return (char *) p;
   return NULL;
