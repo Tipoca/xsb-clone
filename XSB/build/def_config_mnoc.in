@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_mnoc.in,v 1.7 2005-02-01 16:56:57 tswift Exp $
+** $Id: def_config_mnoc.in,v 1.8 2005-02-06 02:15:05 tswift Exp $
 ** 
 */
 
@@ -384,4 +384,7 @@ the local program counter */
 
 /* GC on SLG-WAM! ;) */
 #undef SLG_GC
+
+/* Guess tagging strategy for newer versions of Linux */
+#undef GUESS_TAGGING
 

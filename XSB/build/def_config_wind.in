@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_wind.in,v 1.19 2005-02-01 16:56:57 tswift Exp $
+** $Id: def_config_wind.in,v 1.20 2005-02-06 02:15:05 tswift Exp $
 ** 
 */
 
@@ -127,4 +127,7 @@
 
 /* Defined under OS X */
 #undef DARWIN
+
+/* Guess tagging strategy for newer versions of Linux */
+#undef GUESS_TAGGING
 
