@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrundefined.H,v 1.5 2002-04-24 02:19:33 kifer Exp $
+** $Id: flrundefined.H,v 1.6 2002-05-02 02:02:02 kifer Exp $
 **
 */
 
@@ -32,6 +32,8 @@
 :- dynamic term_seen(_).
 
 :- import length/2 from basics.
+
+:- import subsumes/2 from subsumes.
 
 :- import 
 	FLORA_DB_FIND_PREDICATE/2, 
