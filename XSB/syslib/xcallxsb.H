@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.H,v 1.4 1999/03/30 16:25:50 kifer Exp $
+** $Id: xcallxsb.H,v 1.5 1999/11/20 06:52:08 kifer Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@
 :- import
        call_c/1, call_expose/1, goal_cut_trans/3, repeat/0, (=..)/2
    from standard.
+:- import set_inthandler/2 from loader.
 :- import file_write/2, file_nl/1 from xsb_writ.
 :- import file_read_foe/3, file_read/3 from xsb_read.
 :- import excess_vars/4 from setof.
