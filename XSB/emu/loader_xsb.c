@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.22 2001-03-23 03:51:41 kifer Exp $
+** $Id: loader_xsb.c,v 1.23 2001-07-02 17:14:00 dwarren Exp $
 ** 
 */
 
@@ -186,7 +186,8 @@ inline static void inserth(CPtr label, struct hrec *bucket)
   if (bucket->l > 1) {
     temp = (CPtr)*temp;
     while ((CPtr)*temp != temp) 
-      temp = (CPtr)*(++temp);
+      /*temp = (CPtr)*(++temp); */
+      temp = (CPtr)*(temp+1);
   }
   *temp = (Cell)hptr;
   cell(hptr) = (Cell) label; hptr++;
