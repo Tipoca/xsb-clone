@@ -19,22 +19,27 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.5 2003/11/14 19:34:12 tswift Exp $
+** $Id: error_handler.H,v 1.6 2003/11/29 03:10:32 tswift Exp $
 ** 
 */
 
-:- export domain_error/4, permission_error/4,
-              instantiation_error/2, type_error/4, 
+:- export domain_error/4, existence_error/4,
+              instantiation_error/2,  % obsolescent
+              instantiation_error/3,
+               permission_error/4, type_error/4, 
               check_atom/3,
+              check_ground/3,
               check_nonvar_list/3, check_nonvar/3, 
               check_stream/3, 
-              default_error_handler/1.
+              default_error_handler/1,
+              default_sys_error_handler/1.
 
 :- import (dynamic)/1 from assert.
+:- import ground/1 from basics.
 %%:- import reset_undef_pred_handlers/0 from loader.
 :- import close_open_tables/0 from machine.
 :- import atom/1, messageln/2, throw/1 from standard.
-
+:- import concat_atom/2 from string.
 
 
 
