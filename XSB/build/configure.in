@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.58 1999-10-15 03:07:35 kifer Exp $
+## $Id: configure.in,v 1.59 1999-10-20 04:55:55 kifer Exp $
 ## 
 ##
 
@@ -557,6 +557,9 @@ if test "$have_readline" = yes ; then
 fi
 
 
+AC_CHECK_HEADERS(stdarg.h, , have_errors=yes)
+test "${have_errors}" = "yes" &&
+    AC_MSG_ERROR([Your C compiler is not ANSI compliant: stdarg.h is missing!])
 
 # Checks for header files
 
