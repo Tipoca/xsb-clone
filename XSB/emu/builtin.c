@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.144 2002-08-07 15:42:13 lfcastro Exp $
+** $Id: builtin.c,v 1.145 2002-08-19 15:40:24 tswift Exp $
 ** 
 */
 
@@ -239,6 +239,30 @@ DllExport char* call_conv ptoc_string(int regnum)
     xsb_abort("[PTOC_STRING] Argument of unknown type");
   }
   return "";
+}
+
+/* Used to pass integer or float values to math functions 
+   that do the conversion. */
+DllExport prolog_float call_conv ptoc_number(int regnum)
+{
+  /* reg is global array in register.h */
+  register Cell addr = cell(reg+regnum);
+
+  /* XSB_Deref and then check the type */
+  XSB_Deref(addr);
+  switch (cell_tag(addr)) {
+  case XSB_STRUCT:
+    if (isboxedinteger(addr)) return(boxedint_val(addr));
+  case XSB_FREE:
+  case XSB_REF1: 
+  case XSB_ATTV:
+  case XSB_LIST: xsb_abort("[PTOC_INT] Float-convertable argument expected");
+  case XSB_FLOAT: return (prolog_float)float_val(addr);
+  case XSB_STRING: return (prolog_int)string_val(addr);	/* dsw */
+  case XSB_INT: return int_val(addr);
+  default: xsb_abort("[PTOC_INT] Argument of unknown type");
+  }
+  return 0.0;
 }
 
 
@@ -785,6 +809,8 @@ void init_builtin_table(void)
   set_builtin_table(SET_SCOPE_MARKER, "set_scope_marker");
   set_builtin_table(UNWIND_STACK, "unwind_stack");
   set_builtin_table(CLEAN_UP_BLOCK, "clean_up_block");
+
+  set_builtin_table(XSB_POW, "xsb_pow");
 
   set_builtin_table(PRINT_LS, "print_ls");
   set_builtin_table(PRINT_TR, "print_tr");
@@ -2019,6 +2045,11 @@ int builtin_call(byte number)
     TIF_EvalMethod(tif) = (TabledEvalMethod)ptoc_int(regTEM);
     return TRUE;
   }
+
+  /* TLS: useful for CLPQR -- see eval.P */
+  case XSB_POW: 
+    ctop_float(3,pow(ptoc_number(1),ptoc_number(2))); 
+    return TRUE ;
 
   case PRINT_LS: print_ls(1) ; return TRUE ;
   case PRINT_TR: print_tr(1) ; return TRUE ;
