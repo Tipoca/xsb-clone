@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.i,v 1.9 1999-04-22 06:49:16 kifer Exp $
+** $Id: io_builtins.i,v 1.10 1999-04-23 19:24:39 luis Exp $
 ** 
 */
 
@@ -132,9 +132,13 @@ inline static bool file_function(void)
     ctop_int(5, (int) value);
     break;
   case FILE_TRUNCATE: /* file_function(2,+filedes,+length,-ret,-dontcare) */
+#ifndef WIN_NT
     SET_FILEPTR(fptr, ptoc_int(2));
     value = ftruncate( fileno(fptr), (off_t) ptoc_int(3));
     ctop_int(4, (int) value);
+#else
+    xsb_warn("FILE_TRUNCATE: operation not supported under Windows.");
+#endif
     break;
   case FILE_POS: /* file_function(3, +filedes, -pos) */
     file_des = ptoc_int(2);  /* expand for reading from strings?? */
