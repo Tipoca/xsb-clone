@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.c,v 1.22 1999-04-23 19:24:12 luis Exp $
+** $Id: io_builtins.c,v 1.23 1999-04-23 19:42:58 cbaoqiu Exp $
 ** 
 */
 
@@ -197,7 +197,7 @@ bool fmt_write(void)
 					1,   /* initialize    	      	     */
 					0);  /* write    	      	     */
   xsb_segfault_message =
-    "FMT_WRITE: Argument type doesn't match format specifier";
+    "++FMT_WRITE: Argument type doesn't match format specifier\n";
   signal(SIGSEGV, &xsb_segfault_catcher);
   
   for (i = 1; (i <= Arity); i++) {
@@ -315,7 +315,7 @@ bool fmt_write_string(void)
 					1,  /* initialize     	      	     */
 					0); /* write     	      	     */
   xsb_segfault_message =
-    "FMT_WRITE_STRING: Argument type doesn't match format specifier";
+    "++FMT_WRITE_STRING: Argument type doesn't match format specifier\n";
   signal(SIGSEGV, &xsb_segfault_catcher);
   
   for (i = 1; (i <= Arity); i++) {
