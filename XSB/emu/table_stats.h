@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.h,v 1.1 1999-10-12 19:23:07 ejohnson Exp $
+** $Id: table_stats.h,v 1.2 1999-10-26 20:17:00 ejohnson Exp $
 ** 
 */
 
@@ -157,6 +157,12 @@ NodeStats tsi_statistics();
      NodeStats_SizeUsedNodes(TSTN)  +  HashStats_SizeUsedTotal(TSTHT)  + \
      NodeStats_SizeUsedNodes(TSI)  +  NodeStats_SizeUsedNodes(ALN) )
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+/* Printing Routines
+   ----------------- */
+void print_detailed_tablespace_stats();
+
 /*-------------------------------------------------------------------------*/
 
 /*
@@ -236,7 +242,7 @@ extern NumSubOps numSubOps;
 
 
 void reset_subsumption_stats();
-void print_subsumption_stats();
+void print_detailed_subsumption_stats();
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
