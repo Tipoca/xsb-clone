@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.54 2003-02-21 17:53:40 lfcastro Exp $
+## $Id: topMakefile.in,v 1.55 2003-04-17 09:59:24 kostis Exp $
 ## 
 ##
 
@@ -434,6 +434,8 @@ distclean: clean
 
 # clean only the object code for this architecture
 clean:
+	@echo "Cleaning up ${src_config_libdir}"
+	@rm -f ${src_config_libdir}/*$(xsb_obj_extension) ${src_config_libdir}/*.so
 	@echo "Cleaning up ${src_config_objlibdir}"
 	@-rm -f ${src_config_objlibdir}/*
 	@echo "Cleaning up ${src_emudir}"
