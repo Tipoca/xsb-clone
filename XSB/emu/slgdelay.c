@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.24 2000/01/07 08:51:48 kifer Exp $
+** $Id: slgdelay.c,v 1.25 2000/02/24 19:42:39 cbaoqiu Exp $
 ** 
 */
 
@@ -134,13 +134,18 @@ static char *new_block;		/* used in new_entry() */
 
 #define remove_pnde(PNDE_HEAD, PNDE_ITEM) {			\
   PNDE *pnde_head_ptr;						\
+  PNDE next;							\
 								\
   pnde_head_ptr = &(PNDE_HEAD);					\
+  next = pnde_next(PNDE_ITEM);					\
   if (*pnde_head_ptr) {						\
     if (*pnde_head_ptr == PNDE_ITEM)				\
-      *pnde_head_ptr = pnde_next(PNDE_ITEM);			\
-    else							\
-      pnde_next(pnde_prev(PNDE_ITEM)) = pnde_next(PNDE_ITEM);	\
+      *pnde_head_ptr = next;					\
+    else {							\
+      pnde_next(pnde_prev(PNDE_ITEM)) = next;			\
+      if (next)							\
+        pnde_prev(next) = pnde_prev(PNDE_ITEM);			\
+    }								\
     release_entry(PNDE_ITEM, released_pndes, pnde_next);	\
   }								\
 }
