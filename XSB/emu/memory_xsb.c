@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.12 2005-02-04 16:56:13 dwarren Exp $
+** $Id: memory_xsb.c,v 1.13 2005-02-04 20:02:15 dwarren Exp $
 ** 
 */
 
@@ -72,7 +72,7 @@ void extend_enc_dec_as_nec(void *lptr, void *hptr) {
       if (enc[nibble] == -1) {
 	enc[nibble] = next_free_code << 28;
 	dec[next_free_code] = nibble << 28;
-	printf("recoding %lx to %lx\n",nibble,next_free_code);
+	// printf("recoding %lx to %lx\n",nibble,next_free_code);
 	next_free_code++;
       }
     }

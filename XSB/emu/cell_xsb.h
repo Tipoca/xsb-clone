@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.18 2005-02-04 16:56:09 dwarren Exp $
+** $Id: cell_xsb.h,v 1.19 2005-02-04 20:02:14 dwarren Exp $
 ** 
 */
 
@@ -163,7 +163,7 @@ extern Float getfloatval(Cell);
 #define dec_addr(dcell) (((Cell)(dcell) >> 1) & 0x7ffffffc)
 
 #elif defined(GENERAL_TAGGING)
-extern Integer enc[], dec[];
+extern unsigned long enc[], dec[];
 
 #define enc_int(val)  (((Integer)(val) << 3))
 #define dec_int(val)  ((Integer)(val) >> 3)

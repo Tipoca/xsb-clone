@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.45 2005-02-04 16:56:10 dwarren Exp $
+** $Id: emudef.h,v 1.46 2005-02-04 20:02:15 dwarren Exp $
 ** 
 */
 
@@ -102,8 +102,12 @@ int asynint_code = 0;
 int asynint_val = 0;
 
 int next_free_code = 0;
-Integer enc[16] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
-Integer dec[8] = {-1,-1,-1,-1,-1,-1,-1,-1};
+unsigned long enc[16] = {0xffffffff,0xffffffff,0xffffffff,0xffffffff,
+			 0xffffffff,0xffffffff,0xffffffff,0xffffffff,
+			 0xffffffff,0xffffffff,0xffffffff,0xffffffff,
+			 0xffffffff,0xffffffff,0xffffffff,0xffffffff};
+unsigned long dec[8] = {0xffffffff,0xffffffff,0xffffffff,0xffffffff,
+			0xffffffff,0xffffffff,0xffffffff,0xffffffff};
 
 /* Replacements for labelled code in emusubs.i */
 
