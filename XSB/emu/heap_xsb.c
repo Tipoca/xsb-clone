@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.26 2001-06-29 21:03:29 kifer Exp $
+** $Id: heap_xsb.c,v 1.27 2001-07-02 16:18:53 lfcastro Exp $
 ** 
 */
 
@@ -96,7 +96,9 @@ Todo:
 #include <sys/stat.h>
 
 /* Take care of the time.h business */
-#include "xsb_time.h"
+/* #include "xsb_time.h" */
+/* But I need time.h, not sys/time.h here! -lfcastro */
+#include <time.h>
 
 #include "auxlry.h"
 #include "cell_xsb.h"
