@@ -334,9 +334,9 @@ true(True) --> [True], {is_true(True)}.
 :- mode strip_indicator(+,-).
 
 strip_indicator(Cat_i, Cat) :-
-	atom_chars(Cat_i, Cat_i_List),
+	atom_codes(Cat_i, Cat_i_List),
 	( append(Cat_List, [0'_|_Indicator], Cat_i_List) ->
-		atom_chars(Cat, Cat_List)
+		atom_codes(Cat, Cat_List)
 	; Cat = Cat_i
 	).
 
@@ -383,8 +383,8 @@ is_true(t).
 
 is_a_variable(X) :-
 	atom(X),
-	atom_chars(X, [Var|NumberList]),
-	atom_chars(VarName, [Var]), is_variable(VarName),
+	atom_codes(X, [Var|NumberList]),
+	atom_codes(VarName, [Var]), is_variable(VarName),
 	( NumberList == [] -> true
 	; name(Number, NumberList), integer(Number)
 	).
@@ -402,8 +402,8 @@ is_variable(v).
 
 is_an_event(X) :-
 	atom(X),
-	atom_chars(X, [Var|NumberList]),
-	atom_chars(VarName, [Var]), is_event(VarName),
+	atom_codes(X, [Var|NumberList]),
+	atom_codes(VarName, [Var]), is_event(VarName),
 	( NumberList == [] -> true
 	; NumberList == [0''] -> true
 	; name(Number, NumberList), integer(Number)
@@ -415,8 +415,8 @@ is_event(e).
 
 is_a_set_variable(X) :-
 	atom(X),
-	atom_chars(X, [Var|NumberList]),
-	atom_chars(VarName, [Var]), is_set_variable(VarName),
+	atom_codes(X, [Var|NumberList]),
+	atom_codes(VarName, [Var]), is_set_variable(VarName),
 	( NumberList == [] -> true
 	; name(Number, NumberList), integer(Number)
 	).
