@@ -18,38 +18,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_hook.P,v 1.1 1999-10-10 04:25:23 kifer Exp $
+** $Id: xsb_hook.H,v 1.1 1999/10/10 04:25:22 kifer Exp $
 ** 
 */
 
-%% Hooks
-:- dynamic xsb_exit_hook(_), xsb_before_prompt_hook(_).
+:- import '=..'/2, atom/1, call/1, warning/1, callable/1 from standard.
+:- import retract/1, assert/1, (dynamic)/1 from assert.
 
-%% Hook handling
-add_xsb_hook(Hook) :-
-	call(Hook), !.  % hook is already there
-add_xsb_hook(Hook) :-
-	(   callable(Hook)
-	->  assert(Hook)
-	;   warning(('ADD_XSB_HOOK: ',Hook,' must be a callable literal'))
-	).
+:- export add_xsb_hook/1, remove_xsb_hook/1, call_xsb_hook/1.
 
-remove_xsb_hook(Hook) :-
-	(   callable(Hook)
-	->  retract(Hook)
-	;   warning(('REMOVE_XSB_HOOK: ',Hook,' must be a callable literal'))
-	).
-
-%% Hook must be of the form hookName(_)
-call_xsb_hook(Hook) :-
-	call(Hook),
-	Hook =.. [HookName, HookCall],
-	(   atom(HookName)
-	->  (   callable(HookCall)
-	    ->	call(HookCall)
-	    ;	warning(('CALL_XSB_HOOK: ',HookCall,' must be a callable literal'))
-	    )
-	;   warning(('CALL_XSB_HOOK: ',HookName, ' is not a name of a hook'))
-	),
-	fail.
-call_xsb_hook(_).
+:- export
+	xsb_exit_hook/1,
+	xsb_before_prompt_hook/1.

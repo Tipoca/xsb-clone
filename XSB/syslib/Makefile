@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.24 1999/10/08 07:27:53 kifer Exp $
+## $Id: Makefile,v 1.25 1999/10/08 20:42:24 kifer Exp $
 ## 
 ##
 
@@ -28,7 +28,7 @@ ALL =	assert.O basics.O consult.O curr_sym.O dbclause.O \
 	file_op.O hilogsym.O loader.O machine.O \
 	num_vars.O setof.O shell.O standard.O std_xsb.O \
 	string.O subsumes.O sysinitrc.O tables.O term_exp.O \
-	unix.O x_interp.O xsb_read.O xsb_writ.O xcallxsb.O
+	unix.O x_interp.O xsb_hook.O xsb_read.O xsb_writ.O xcallxsb.O
 
 EMU_INCLUDES = ../emu/builtin.h ../emu/celltags.h ../emu/flag_defs.h \
 	../emu/io_defs.h ../emu/msyscall.h ../emu/sig.h \
