@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.38 2003/07/30 21:50:52 dwarren Exp $
+** $Id: standard.H,v 1.39 2003/07/31 14:17:47 dwarren Exp $
 ** 
 */
 
@@ -117,5 +117,6 @@
 :- import predicate_property/2 from curr_sym.
 :- import (dynamic)/1, asserta/1 from assert.
 :- import concat_atom/2 from string.
+:- import consult/1, reconsult/1 from consult.
 
 /* --------------------- end of file standard.H ----------------------- */

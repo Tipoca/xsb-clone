@@ -18,13 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dbclause.H,v 1.9 2002/04/13 05:01:59 lfcastro Exp $
+** $Id: dbclause.H,v 1.10 2003/05/01 18:52:50 dwarren Exp $
 ** 
 */
 
 	  
 :- export db_retract/3, db_retract_nr/3, db_reclaim_space/2.
 :- export db_clause/4, db_retractall/2, db_abolish/1, '_$clause_int'/1.
+:- export db_get_clauses_in_list/8.
 
 :- import asserti/2, (dynamic)/1 from assert.
 :- import abort/1, atom/1, call/1, repeat/0, is_most_general_term/1

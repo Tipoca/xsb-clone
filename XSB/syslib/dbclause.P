@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dbclause.P,v 1.20 2003/03/07 18:33:30 dwarren Exp $
+** $Id: dbclause.P,v 1.21 2003/05/01 18:52:50 dwarren Exp $
 ** 
 */
 
@@ -239,6 +239,18 @@ db_get_clauses1(ClRef0,CurrILvl0,CurrInd0,PrRef,Head,Failed,
 		 db_get_clauses1(ClRef1,NLev,NInd,PrRef,Head,Failed,
 			ClRef,Typ,EntryP,Typ1,EntryP1)
 		)
+	).
+
+
+db_get_clauses_in_list(Lo,OClRef,ONlev,ONind,Prref,Head,CeList0,CeList) :-
+	db_get_clause(OClRef,ONlev,ONind,Prref,Head,0,NClref,_Typ,Entry,NNlev,NNind),
+	(NClref =:= 0
+	 ->	CeList0 = CeList
+	 ; Lo > 0
+	 ->	Lo1 is Lo-1,
+		db_get_clauses_in_list(Lo1,NClref,NNlev,NNind,Prref,Head,CeList0,CeList)
+	 ; 	CeList0 = [[NClref|Entry]|CeList1],
+		db_get_clauses_in_list(Lo,NClref,NNlev,NNind,Prref,Head,CeList1,CeList)
 	).
 
 /************************************************************************/
