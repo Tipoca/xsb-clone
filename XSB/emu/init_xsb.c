@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.29 2003-04-14 19:01:14 lfcastro Exp $
+** $Id: init_xsb.c,v 1.30 2003-04-16 17:34:06 lfcastro Exp $
 ** 
 */
 
@@ -763,13 +763,13 @@ void init_symbols(void)
   /* create code for true/0 */
   {
     CPtr p;
-    int Loc;
     set_env(true_psc, T_VISIBLE);
     set_type(true_psc, T_PRED);
     p = (CPtr) mem_alloc(sizeof(PrRefData));
-    Loc = 0;
-    *(CPtr)((pb)p) = (Cell) 0;
-    *(CPtr)((pb)p) = (byte)proceed;
+    *(pb)((pb)p) = (byte)proceed;
+    *(pb)((pb)p+1) = (byte)0;
+    *(pb)((pb)p+2) = (byte)0;
+    *(pb)((pb)p+3) = (byte)0;
     p[2] = (Cell) p;
     set_ep(true_psc,(pb)p);
   }
