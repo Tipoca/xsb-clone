@@ -19,10 +19,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.13 2001-05-24 17:54:51 lfcastro Exp $
+** $Id: choice.h,v 1.14 2001-09-24 17:23:52 lfcastro Exp $
 ** 
 */
-
+#ifndef __CHOICE_H__
+#define __CHOICE_H__
 
 /* --- Types of Choice Points ----------------------------------------- */
 
@@ -490,4 +491,6 @@ typedef struct compl_susp_choice_point {
     if (hbreg >= hfreg) hreg = hbreg; else hreg = hfreg; \
     cpreg = cp_cpreg(t_breg); \
     t_ereg = cp_ereg(t_breg)
+#endif
+
 #endif

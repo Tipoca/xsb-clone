@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.81 2001-07-02 16:20:02 lfcastro Exp $
+** $Id: emuloop.c,v 1.82 2001-09-24 17:23:52 lfcastro Exp $
 ** 
 */
 
@@ -296,6 +296,7 @@ int  xctr;
 #ifndef LOCAL_EVAL 
 #include "wfs_xsb_i.h" 
 #endif 
+#include "complete_local.h"
 
 /*----------------------------------------------------------------------*/
 
