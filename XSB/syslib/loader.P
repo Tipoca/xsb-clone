@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.39 2003/01/06 04:46:36 kifer Exp $
+** $Id: loader.P,v 1.40 2004/03/13 21:03:22 dwarren Exp $
 ** 
 */
 
@@ -193,7 +193,7 @@ load_library_directories :-
 		; true
         ).
 
-load_library_directories.
+%%load_library_directories.
 
 
 /*****************************************************************************
