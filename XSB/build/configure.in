@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.84 2000-06-22 19:36:11 ruim Exp $
+## $Id: configure.in,v 1.85 2000-06-22 20:06:53 ruim Exp $
 ## 
 ##
 
@@ -441,8 +441,7 @@ case $CC in
    gcc)	emuloop_opt_level=-${optimization_level-"O4 -fomit-frame-pointer"}
 	trutils_opt_level=-${optimization_level-"O1 -fomit-frame-pointer"}
 	c_inline_level="-finline-functions -Winline" 
-	CFLAGS="-Wall"
-#	CFLAGS="-ansi -pedantic"
+	CFLAGS="-Wall -ansi -pedantic"
 # -ansi & -pedantic are used only if not using threading
 	;;
    cc)  if test "$__sunpro_c" = "no"; then
