@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: symtab.H,v 1.9 2004-02-02 13:55:30 dwarren Exp $
+** $Id: symtab.H,v 1.10 2004-06-04 19:52:20 dwarren Exp $
 ** 
 */
 
@@ -31,7 +31,6 @@
 	  sym_pass_thru/1, typ_prop/1, env_prop/1, dispose_symtab/1.
 :- export add_new_clause/2, clause_listify/2.
 
-:- import 'table #'/0 from compile.
 :- import memberchk/2, member/2 from basics.
 :- import log_ith/3 from basics.
 :- import error/1 from auxlry.

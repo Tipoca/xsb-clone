@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.H,v 1.13 2002/07/15 12:28:43 dwarren Exp $
+** $Id: curr_sym.H,v 1.14 2004/05/18 13:45:22 tswift Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 	current_input/1, current_output/1,
 	current_input_port/1, current_output_port/1,
 	current_module/1, current_module/2,
-	current_atom/1, current_atom/2, 
+	current_atom/1,
 	current_functor/1, current_functor/2, 
 	current_predicate/1, current_predicate/2,
 	predicate_property/2, module_property/2, 

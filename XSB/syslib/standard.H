@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.47 2004/04/09 21:05:44 dwarren Exp $
+** $Id: standard.H,v 1.48 2004/04/13 19:13:14 dwarren Exp $
 ** 
 */
 
@@ -106,6 +106,7 @@
 :- import retract0/1, assertz/1, clause/2, retractall/1 from assert.
 :- import domain_error/4, check_atom/3, check_nonvar/3 from error_handler.
 :- import  check_stream/3, check_nonvar_list/3 from error_handler.
+:- import '_$load_undef'/1 from loader.
 
 :- import call0/1, conname/2, conpsc/2, 
 	  expand_filename/2, machine_file_exists/1, 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.H,v 1.13 2004-03-06 21:55:13 tswift Exp $
+** $Id: auxlry.H,v 1.14 2004-06-04 19:52:20 dwarren Exp $
 ** 
 */
 
@@ -31,7 +31,6 @@
               check_file_compiler_options/1,
 	  numbervars_cmplib/3.
 
-:- import 'error occurred'/0 from compile.
 :- import current_compiled_module/1 from compile.
 :- import load_dyn_module/1 from consult.
 :- import conget/2, conset/2 from gensym.
