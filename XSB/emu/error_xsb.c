@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.12 2000-06-28 16:54:50 ruim Exp $
+** $Id: error_xsb.c,v 1.13 2001-03-12 17:51:00 kifer Exp $
 ** 
 */
 
@@ -221,7 +221,7 @@ void xsb_exit(char *description, ...)
 void err_handle(int description, int arg, char *f,
 		int ar, char *expected, Cell found)
 {
-  char message[160];	/* Allow 2 lines of error reporting.	*/
+  char message[240];	/* Allow 3 lines of error reporting.	*/
   
   switch (description) {
   case INSTANTIATION:
@@ -255,8 +255,8 @@ void err_handle(int description, int arg, char *f,
     break;
   default:
     sprintf(message, 
-	    "! %s error (not completely handled yet)\n",
-	    err_msg[description]);
+	    "! %s error (not completely handled yet): %s\n",
+	    err_msg[description], expected);
     break;
   }
   pcreg = exception_handler(message);

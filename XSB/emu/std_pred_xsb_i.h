@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.8 2000-06-22 19:40:31 ruim Exp $
+** $Id: std_pred_xsb_i.h,v 1.9 2001-03-12 17:51:00 kifer Exp $
 ** 
 */
 
@@ -208,8 +208,7 @@ inline static xsbBool univ_builtin(void)
 	      bld_copy(sreg, cell(clref_val(list))); sreg++;
 	    }
 	    if (isnil(list) && arity <= MAX_ARITY) {
-				/* '=..'/2 always creates a psc
-				 * in the current module */
+	      /* '=..'/2 always creates a psc in the current * module */
 	      sym = (Pair)insert(name, (char)arity,
 				 (Psc)flags[CURRENT_MODULE],
 				 &new_indicator);
@@ -218,9 +217,8 @@ inline static xsbBool univ_builtin(void)
 	    } else {
 	      hreg = hreg-1;	/* restore hreg */
 	      if (arity > MAX_ARITY)
-		err_handle(IMPLEMENTATION, 2, "=..", 2,
-			   "list of at most 255 elements",
-			   arity);
+		xsb_abort("[In =..] Attempt to construct a functor with arity %d > %d",
+			  arity, MAX_ARITY);
 	      else err_handle(TYPE, 2, "=..", 2,
 			      "[]-terminated list", list);
 	      return FALSE;
