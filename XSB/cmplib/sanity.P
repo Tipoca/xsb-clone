@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sanity.P,v 1.1.1.1 1998-11-05 17:00:13 sbprolog Exp $
+** $Id: sanity.P,v 1.2 1999-08-09 15:07:09 kostis Exp $
 ** 
 */
 
@@ -80,7 +80,7 @@ write_pred_props(Sym, Name, Arity) :-
 	( sym_prop(mode(Mode), Sym) ->
 		write(':- mode  '), write(Mode), put(0'.), nl
 	; true ),
-	( sym_prop(tabled(_,_,_,_), Sym) ->
+	( sym_prop(tabled(_,_), Sym) ->
 		write(':- table '), writeq(Name), put(0'/),
 		write(Arity), put(0'.), nl
 	; true ).

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tprog.P,v 1.7 1999-04-12 23:27:24 tswift Exp $
+** $Id: tprog.P,v 1.8 1999-08-09 15:07:17 kostis Exp $
 ** 
 */
 
@@ -44,8 +44,8 @@ compile_clause(Sym, Clause, PilCode, PilCodeR, NC) :-
 
 tclause(Sym, clause(Args,Body,crec(ARSize,Label)),
 	[label(clau,Label)|Pil0], Pilr, NC) :- 
-	( sym_type(Sym, tabled(_,_,_,Tabar)) -> Tabled = 1,
-						ARSize1 is ARSize + 1
+	( sym_type(Sym, tabled(_,Tabar)) -> Tabled = 1,
+					    ARSize1 is ARSize + 1
 	; Tabar = Tabar, Tabled = 0,ARSize1 = ARSize
 	),
 	gennum(N), Label = (Sym,N),

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tabdef.P,v 1.1.1.1 1998-11-05 17:00:17 sbprolog Exp $
+** $Id: tabdef.P,v 1.2 1999-08-09 15:07:14 kostis Exp $
 ** 
 */
 
@@ -128,7 +128,7 @@ table_immediate_recursions([Pred|Preds], PredsOut) :-
 
 needs_tabling(Pred) :-
 	Pred = pred(Sym,Cls,_),
-	( sym_prop(tabled(_,_,_,_), Sym) -> fail
+	( sym_prop(tabled(_,_), Sym) -> fail
 	; clauses_call_sym(Cls, Sym), fail_if(proven_terminating(Pred))
 	).
 
@@ -274,7 +274,7 @@ call_themselves([Pred|Preds], LoopPreds, AllPreds) :-
 /*----------------------------------------------------------------------*/
 
 path(Sym1, Sym2, Preds) :-
-	fail_if(sym_prop(tabled(_,_,_,_),Sym1)),
+	fail_if(sym_prop(tabled(_,_),Sym1)),
 	exclude(Preds, Sym1, Cls, RestPreds), nonvar(Cls),
 	path_in_clauses(Cls, Sym1, Sym2, RestPreds).
 
@@ -433,13 +433,13 @@ is_meta_pred(Sym) :-
 /*----------------------------------------------------------------------*/
 
 table_it(Sym) :-
-	sym_propin(tabled(_,_), Sym),
+	sym_propin(tabled, Sym),
 	sym_name(Sym, Name, Arity),
 	message(('% Compiling predicate ', 
 		    Name, '/', Arity, ' as a tabled predicate')).
 
 table_sym_of_arg(Sym, Name, Arity) :-
-	( sym_prop(tabled(_,_,_,_), Sym) -> true
+	( sym_prop(tabled(_,_), Sym) -> true
 	; sym_prop(defined, Sym) -> table_it(Sym)
 	; sym_prop(im(_), Sym) -> true
 	; error(('Tabling meta predicate ', Name, '/', Arity,
@@ -460,7 +460,7 @@ tabling_meta_predicate_exists(SymTab) :-
 remove_tabled_preds([], []).
 remove_tabled_preds([Pred|Preds], PredsOut) :-
 	Pred = pred(Sym,_,_),
-	( sym_prop(tabled(_,_,_,_), Sym) -> PredsOut = P
+	( sym_prop(tabled(_,_), Sym) -> PredsOut = P
 	; PredsOut = [Pred|P]
 	),
 	remove_tabled_preds(Preds, P).

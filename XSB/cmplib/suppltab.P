@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: suppltab.P,v 1.1.1.1 1998-11-05 17:00:16 sbprolog Exp $
+** $Id: suppltab.P,v 1.2 1999-08-09 15:07:11 kostis Exp $
 ** 
 */
 
@@ -73,7 +73,7 @@ pred_edb_dependency(Pred, AllPreds) :-
 	Pred = pred(Sym,Cls,_Prag),
 	sym_name(Sym, Name, Arity),
 	( edb_dep(Name, Arity, _) -> true	% already computed
-	; sym_prop(tabled(_,_,_,_), Sym) -> assert(edb_dep(Name,Arity,1))
+	; sym_prop(tabled(_,_), Sym) -> assert(edb_dep(Name,Arity,1))
 	; sym_prop((edb), Sym) -> assert(edb_dep(Name,Arity,1))
 	; sym_prop(defined, Sym),
 	  ( nonvar(Cls) ; member1(Pred, AllPreds) ) ->
@@ -194,7 +194,7 @@ new_preds([P1,P2|Ps], [GA|GAs], [Sym|Syms], Name,
 	  SymTab, [Pred|NPmid], NPout, NewBody) :-
 	new_pred(GA, HeadArgs, 0, Arity, P1, Body),
 	gensym_pred(Name, NewName),
-	Properties = [pred,defined,used,tabled(_,_)],
+	Properties = [pred,defined,used,tabled],
 	sym_insert(NewName, Arity, Properties, SymTab, Sym),
 	Pred = pred(Sym,[clause(HeadArgs,Body,_)],_Prag),
 	new_preds([P2|Ps], GAs, Syms, Name, SymTab, NPmid, NPout, NewBody).

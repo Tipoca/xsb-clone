@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.H,v 1.3 1999-04-10 13:56:11 kostis Exp $
+** $Id: compile.H,v 1.4 1999-08-09 15:07:01 kostis Exp $
 ** 
 */
 
@@ -58,7 +58,7 @@
 :- import sym_name/3, sym_type/2, sym_prop/2 from symtab.
 :- import dispose_symtab/1 from symtab.
 :- import force_tprog_loaded/0, compile_clause/5 from tprog.
-:- import force_tp_index_loaded/0, makeindex/7 from tp_index.
+:- import force_tp_index_loaded/0, makeindex/6 from tp_index.
 :- import force_preprocess_loaded/0, preprocess/3 from preproc.
 :- import write_asmheader/4, write_asm_instructions/1 from writeasm.
 :- import abort/0, tell/1, telling/1, told/0, cputime/1 from standard.

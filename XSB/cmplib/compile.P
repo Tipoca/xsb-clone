@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.P,v 1.5 1999-01-13 12:37:55 kostis Exp $
+** $Id: compile.P,v 1.6 1999-08-09 15:07:03 kostis Exp $
 ** 
 */
 
@@ -249,17 +249,14 @@ compile_predicate2(pred(Sym,Clauses,Prag), PilCode-PilCodeR, NC) :-
 	gennum(L),
 	PilCode = [label(pred,(Sym,L)),test_heap(Arity,Margin)|PilCode1],
 	sym_name(Sym,_,Arity), Margin = 2000, % Margin is temporary
-	find_if_tabled(Sym,Tabled,Tabind),
-	makeindex(Sym, Clauses, PilCode1, PilCodeM, Prag, Tabled, Tabind),
-%    ( option(profile) -> cputime(TimeStart) ; TimeStart = TimeStart ),
+	find_if_tabled(Sym, Tabled),
+	makeindex(Sym, Clauses, PilCode1, PilCodeM, Prag, Tabled),
 	compile_clauses(Clauses, Sym, PilCodeM, PilCodeR, 0, NC).
-%    ( option(profile) -> 
-%		time_message(TimeStart, 'Compile_clauses finito') 
-%    ; true).
 
-find_if_tabled(Sym, 1, tabled(Tabind,Chs,Rhs,Ar)):-
-	sym_type(Sym, tabled(Tabind,Chs,Rhs,Ar)),!. 
-find_if_tabled(_, 0, _). 
+find_if_tabled(Sym, tabled(Tabind,Ar)):-
+	sym_type(Sym, tabled(Tabind,Ar)),
+	!. 
+find_if_tabled(_, 0). 
 
 /*======================================================================*/
 
