@@ -23,7 +23,7 @@ XSB/packages/flora.*    mailx -s "XSB commit: %{}" kifer guizyang
 
 XSB/emu	       	        mailx -s "XSB commit: %{}" cbaoqiu kostis tswift
 XSB/syslib	        mailx -s "XSB commit: %{}" cbaoqiu kostis tswift
-XSB/lib	            	mailx -s "XSB commit: %{}" cbaoqiu kostis
-XSB/cmplib	      	mailx -s "XSB commit: %{}" cbaoqiu kostis
+XSB/lib	            	mailx -s "XSB commit: %{}" cbaoqiu kostis tswift
+XSB/cmplib	      	mailx -s "XSB commit: %{}" cbaoqiu kostis tswift
 
 DEFAULT		(echo ""; whoami; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
