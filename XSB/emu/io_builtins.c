@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.c,v 1.28 1999-06-23 04:34:53 kifer Exp $
+** $Id: io_builtins.c,v 1.29 1999-06-26 05:01:35 kifer Exp $
 ** 
 */
 
@@ -56,7 +56,8 @@
 #include "configs/special.h"
 #include "binding.h"
 
-extern print_pterm(prolog_term term, int toplevel, char *straddr, int *ind);
+extern void print_pterm(prolog_term term,
+			int toplevel, char *straddr, int *ind);
 
 static FILE *fptr;			/* working variable */
     
