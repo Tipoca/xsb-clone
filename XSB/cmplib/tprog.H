@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tprog.H,v 1.2 1999-01-13 12:37:56 kostis Exp $
+** $Id: tprog.H,v 1.3 1999-02-23 12:23:54 kostis Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 :- export force_tprog_loaded/0.
 
 :- import option/1 from auxlry.
-:- import inprog/4 from inprog.
+:- import inprog/3 from inprog.
 :- import merge/3 from listutil.
 :- import flatten/2 from flatten.
 :- import gennum/1 from prof_sbp.

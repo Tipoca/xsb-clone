@@ -19,12 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inprog.H,v 1.2 1999-01-27 14:40:54 kostis Exp $
+** $Id: inprog.H,v 1.3 1999-02-23 12:23:56 kostis Exp $
 ** 
 */
 
 
-:- export force_inprog_loaded/0, inprog/4.
+:- export force_inprog_loaded/0, inprog/3.
 
 :- import member1/2 from auxlry.
 :- import gennum/1 from prof_sbp.
