@@ -18,10 +18,9 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.14 2001-09-24 17:23:52 lfcastro Exp $
+** $Id: complete_xsb_i.h,v 1.15 2001-10-05 19:26:49 tswift Exp $
 ** 
 */
-
 
 /* special debug includes */
 #include "debugs/debug_delay.h"
@@ -106,6 +105,8 @@ XSB_Start_Instr(check_complete,_check_complete)
       FailIfAnswersFound((cc_tbreg == orig_breg ? 0 : cc_tbreg));
       
       CompleteSimplifyAndReclaim(cs_ptr);
+
+      remove_unfounded_set(cs_ptr);
       
       /* leader has non-returned answers? */
       if (has_answer_code(subgoal) && (subg_answers(subgoal) > COND_ANSWERS)) {

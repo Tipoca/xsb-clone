@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.82 2001-09-24 17:23:52 lfcastro Exp $
+** $Id: emuloop.c,v 1.83 2001-10-05 19:26:49 tswift Exp $
 ** 
 */
 
@@ -68,6 +68,7 @@
 #include "io_builtins_xsb.h"
 #include "unify_xsb.h"
 #include "emuloop_aux.h"
+#include "remove_unf.h"
 
 #include "hash_xsb.h"
 /*
