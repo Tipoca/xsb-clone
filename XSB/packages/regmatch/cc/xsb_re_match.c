@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_re_match.c,v 1.6 1999-07-27 14:59:16 kifer Exp $
+** $Id: xsb_re_match.c,v 1.7 1999-07-28 21:48:54 kifer Exp $
 ** 
 */
 
@@ -313,7 +313,7 @@ bool do_regsubstitute__(void)
 
   output_term = reg_term(4);
   if (! is_var(output_term))
-    xsb_abort("RE_SUBSTITUTE: Arg 4 (the output string) must be an unbound variable");
+    xsb_abort("RE_SUBSTITUTE: Arg 4 (the output) must be an unbound variable");
 
   subst_reg_list_term1 = subst_reg_list_term;
   subst_str_list_term1 = subst_str_list_term;
