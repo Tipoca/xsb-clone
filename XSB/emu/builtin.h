@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.11 1999-07-27 14:55:24 kifer Exp $
+** $Id: builtin.h,v 1.12 1999-08-04 14:41:50 ejohnson Exp $
 ** 
 */
 
@@ -160,6 +160,8 @@ extern void init_builtin_table(void);
 #define DELETE_TRIE             164
 #define TRIE_DISPOSE_NR         165
 #define TRIE_UNDISPOSE          166
+
+#define SET_SUBSUMPTIVE_EVAL	170
 
 /* This is the builtin where people should put their private, experimental
    builtin code. SEE THE EXAMPLE IN private_builtin.c to UNDERSTAND HOW TO DO

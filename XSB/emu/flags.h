@@ -19,11 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flags.h,v 1.3 1999-05-27 16:02:33 kifer Exp $
+** $Id: flags.h,v 1.4 1999-08-04 14:41:57 ejohnson Exp $
 ** 
 */
 
 
+#ifndef SYSTEM_FLAGS
+
+#define SYSTEM_FLAGS
 extern Cell flags[];		/* System flags + user flags */
 
 /* -------- system flags --------------------------------------------------*/
@@ -93,3 +96,9 @@ As best as I can tell, only the following exist/are used:
 #define ORA_INPUTARRAY_LENGTH     58   /* max # simultaneous input tuples */
 #define ORA_INPUTARRAY_WIDTH      59   /* max size of each input value    */
 #define ORA_OUTPUTARRAY_LENGTH    60   /* max # simultaneous output tuples */
+
+
+#define TABLING_METHOD	61   /* Method used to evaluate tabled calls:
+				variant or subsumption */
+
+#endif

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.31 1999-07-22 21:58:17 kifer Exp $
+** $Id: emuloop.c,v 1.32 1999-08-04 14:41:56 ejohnson Exp $
 ** 
 */
 
@@ -65,7 +65,6 @@
 #include "export.h"
 #include "self_orientation.h"
 
-CPtr	VarPosReg;
 /*
  * Variable ans_var_pos_reg is a pointer to substitution factor of an
  * answer in the heap.  It is used and set in function
@@ -227,11 +226,10 @@ static int emuloop(byte *startaddr)
 
 /* for slginsts.i
    -------------- */
+  CallLookupResults lookupResults;
   Cell  CallNumVar;
   ALNptr OldRetPtr;
   NODEptr TrieRetPtr;
-  CallInfoRecord callInfo;
-  CallLookupResults lookupResults;
 
 
   xsb_segfault_message = xsb_default_segfault_msg;
@@ -1266,8 +1264,8 @@ subtryme:
   register CPtr cps_top;	/* cps_top only needed for efficiency */
 
   save_find_locx(ereg);		/* sets ebreg to the top of the E-stack	*/
+  check_tcpstack_overflow;
   cps_top = top_of_cpstack;
-  check_tcpstack_overflow(cps_top);
   save_registers(cps_top, (Cell)op1, i, rreg);
   save_choicepoint(cps_top, ereg, (byte *)op2, breg);
   breg = cps_top;

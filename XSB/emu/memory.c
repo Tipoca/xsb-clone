@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory.c,v 1.8 1999-07-06 16:35:13 ejohnson Exp $
+** $Id: memory.c,v 1.9 1999-08-04 14:42:01 ejohnson Exp $
 ** 
 */
 
@@ -242,9 +242,6 @@ void tcpstack_realloc(long new_size) {
 #endif
   if (root_address != NULL)
     root_address = (CPtr)((byte *)root_address + cps_offset);
-  /* I'm not sure if the following is REALLY needed - RFM */
-  if (VarPosReg != NULL)
-    VarPosReg = (CPtr)((byte*)VarPosReg + cps_offset) ;
 }
 
 /* ------------------------------------------------------------------------- */

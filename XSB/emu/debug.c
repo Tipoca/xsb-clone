@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug.c,v 1.9 1999-07-06 16:35:08 ejohnson Exp $
+** $Id: debug.c,v 1.10 1999-08-04 14:41:52 ejohnson Exp $
 ** 
 */
 
@@ -452,9 +452,9 @@ static void print_term_of_subgoal(FILE *fp, int *i)
 
 void print_subgoal(FILE *fp, SGFrame subg)
 {
-  NODEptr leaf;
+  BTNptr leaf;
   int  i = 0;
-  Psc  psc = ti_psc_ptr(subg_tip_ptr(subg));
+  Psc  psc = TIF_PSC(subg_tip_ptr(subg));
 
   for (leaf = subg_leaf_ptr(subg); leaf != NULL; leaf = Parent(leaf)) {
     cell_array[i++] = Atom(leaf);
@@ -486,7 +486,7 @@ static void print_delay_element(FILE *fp, Cell del_elem)
       tmp_cell = cell(cptr + 1);
       print_subgoal(fp, (SGFrame) addr_val(tmp_cell)); fprintf(fp, ",");
       tmp_cell = cell(cptr + 2);
-      fprintf(fp, "%p", (NODEptr) addr_val(tmp_cell)); fprintf(fp, ",");
+      fprintf(fp, "%p", (BTNptr) addr_val(tmp_cell)); fprintf(fp, ",");
       tmp_cell = cell(cptr + 3);
       if (isinteger(tmp_cell)) {
 	fprintf(fp, "NEG");

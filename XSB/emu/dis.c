@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.3 1999-03-17 18:34:46 kostis Exp $
+** $Id: dis.c,v 1.4 1999-08-04 14:41:54 ejohnson Exp $
 ** 
 */
 
@@ -44,7 +44,7 @@
 
 /* --------------- The following are working variables ----------------	*/
 
-extern tab_inf_ptr get_tip(Psc);
+extern TIFptr get_tip(Psc);
 
 /*static FILE *filedes ;*/
 #define filedes stdout

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code.i,v 1.6 1999-07-15 21:41:19 ejohnson Exp $
+** $Id: tr_code.i,v 1.7 1999-08-04 14:42:08 ejohnson Exp $
 ** 
 */
 
@@ -137,10 +137,10 @@ int global_num_vars;
 
 CPtr    tbreg;
 #ifdef LOCAL_EVAL
-NODEptr TrieRootPtr;
+BTNptr TrieRootPtr;
 #endif
-NODEptr NodePtr,Last_Nod_Sav;
-NODEptr *hash_base; 
+BTNptr NodePtr,Last_Nod_Sav;
+BTNptr *hash_base; 
 CPtr    temp_ptr_for_hash;
 int     hash_offset, hashed_hash_offset;
 /*

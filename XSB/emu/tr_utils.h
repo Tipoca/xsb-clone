@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.11 1999-07-15 21:41:21 ejohnson Exp $
+** $Id: tr_utils.h,v 1.12 1999-08-04 14:42:10 ejohnson Exp $
 ** 
 */
 
@@ -29,7 +29,7 @@ extern void delete_predicate_table(BTNptr);
 extern void reclaim_del_ret_list(SGFrame);
 extern void delete_return(BTNptr, SGFrame);
 extern void reclaim_ans_list_nodes(SGFrame);
-extern CPtr get_subgoal_ptr(Cell, tab_inf_ptr);
+extern CPtr get_subgoal_ptr(Cell, TIFptr);
 extern void init_newtrie(void);
 extern void delete_branch(BTNptr, BTNptr *);
 extern void safe_delete_branch(BTNptr);

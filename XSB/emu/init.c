@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.23 1999-07-22 19:09:18 kifer Exp $
+** $Id: init.c,v 1.24 1999-08-04 14:41:58 ejohnson Exp $
 ** 
 */
 
@@ -203,6 +203,7 @@ char *init_para(int argc, char *argv[])
 
 
   xsb_mode = DEFAULT;
+  flags[TABLING_METHOD] = VARIANT_TM;
 
 
   /* Modify Parameters Using Command Line Options
@@ -281,6 +282,9 @@ char *init_para(int argc, char *argv[])
       break;
     case 's':
       flags[TRACE_STA] = call_intercept = 1;
+      break;
+    case 'S':
+      flags[TABLING_METHOD] = SUBSUMPTIVE_TM;
       break;
     case 'd':
       if ( (xsb_mode != DEFAULT) && (xsb_mode != CUSTOM_BOOT_MODULE) )
