@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.2 1999-07-15 21:41:22 ejohnson Exp $
+** $Id: trie_internals.h,v 1.3 1999-08-16 07:24:40 kifer Exp $
 ** 
 */
 
@@ -133,9 +133,8 @@
      TN_Instr(pTN) = (byte)trie_try_list;		\
      break;						\
    default:						\
-     fprintf(stderr, "Trie Node creation: Bad tag"	\
-	     " in symbol %lx\n", Symbol);		\
-     xsb_abort("Bye");					\
+     xsb_abort("Trie Node creation: Bad tag in symbol %lx", \
+               Symbol);	    	    	    		\
    }
 
 

@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.19 1999-08-14 08:18:18 kifer Exp $
+## $Id: topMakefile.in,v 1.20 1999-08-16 07:23:47 kifer Exp $
 ## 
 ##
 
@@ -187,6 +187,8 @@ do_cleaning:
 	@echo "    ----------------- End of Build ------------------------" >> ./Installation_summary
 	@echo "" >> ./Installation_summary
 	@cp ./Installation_summary $(src_config_prefix)
+	@echo ""
+	@cat /tmp/xsb_*lib_warn 2> /dev/null || echo ""
 
 inform_executable:
 	@echo "" ; \

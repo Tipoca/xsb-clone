@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_defs.h,v 1.1 1999-08-09 00:34:26 kifer Exp $
+** $Id: io_defs.h,v 1.2 1999-08-16 07:24:21 kifer Exp $
 ** 
 */
 
@@ -36,6 +36,8 @@
 #define FILE_PUTBUF    	   9
 #define FILE_READ_LINE 	   10
 #define FILE_WRITE_LINE	   11
+#define FILE_REOPEN    	   12
+#define FILE_CLONE     	   13
 
 /* OP numbers for formatted_io */
 #define FMT_WRITE    	   1

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.6 1999/08/11 20:29:15 kifer Exp $
+** $Id: consult.P,v 1.7 1999/08/12 18:07:19 kifer Exp $
 ** 
 */
 
@@ -254,8 +254,8 @@ load_exec(File, ModName) :-
 		file_nl(STDERR), fail
 	),
 	!,
-	file_write0(STDERR, '['), file_write0(STDERR, ModName),
-	file_write0(STDERR, ' loaded]'), file_nl(STDERR),
+	file_write0(STDMSG, '['), file_write0(STDMSG, ModName),
+	file_write0(STDMSG, ' loaded]'), file_nl(STDMSG),
 	(Init > 4			% Prolog byte code loaded
 	 ->	co_code_call(Init, true, 2),	% call '_$main'
 		unload_seg(Init)		% free space for '_$main'

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32.i,v 1.5 1999-08-09 18:56:06 warren Exp $
+** $Id: dynwin32.i,v 1.6 1999-08-16 07:24:13 kifer Exp $
 ** 
 */
 
@@ -45,7 +45,7 @@
 
 bool dummy()
 {
-    fprintf(stderr, "++Error: trying to use an undefined foreign procedure\n");
+    xsb_error("Trying to use an undefined foreign procedure");
     return FALSE;
 }
 
@@ -76,7 +76,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   /* (2) open the needed object */
   
   if (( handle = LoadLibrary(sofilename)) == 0 ) {
-    fprintf(stderr, "Cannot load library %s\n",sofilename);
+    xsb_warn("Cannot load library %s",sofilename);
     return 0;
   }
   
@@ -101,8 +101,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
 #endif
     if (get_type(search_ptr->psc_ptr) == T_FORN) {
       if ((funcep = (int (*)) GetProcAddress(handle, name)) == NULL) {
-	fprintf(stderr, "Cannot find function %s\n", name);
-	fprintf(stderr, "++Warning: cannot find foreign procedure %s\n", name);
+	xsb_warn("Cannot find foreign procedure %s", name);
 	set_ep(search_ptr->psc_ptr, (byte *)(dummy));
       } else { 
 	set_ep(search_ptr->psc_ptr, (byte *)(funcep));

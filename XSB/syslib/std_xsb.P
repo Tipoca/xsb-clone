@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.10 1999/08/14 18:17:52 kostis Exp $
+** $Id: std_xsb.P,v 1.11 1999/08/14 18:48:43 kifer Exp $
 ** 
 */
 
@@ -67,10 +67,12 @@ standard_symbol(current_atom, 1, curr_sym).
 standard_symbol(current_functor, 1, curr_sym).
 standard_symbol(current_functor, 2, curr_sym).
 standard_symbol(current_input, 1, curr_sym).
+standard_symbol(current_input_fd, 1, curr_sym).
 standard_symbol(current_module, 1, curr_sym).
 standard_symbol(current_module, 2, curr_sym).
 standard_symbol(current_op, 3, curr_sym).
 standard_symbol(current_output, 1, curr_sym).
+standard_symbol(current_output_fd, 1, curr_sym).
 standard_symbol(current_predicate, 1, curr_sym).
 standard_symbol(current_predicate, 2, curr_sym).
 standard_symbol(debug, 0, debugger).

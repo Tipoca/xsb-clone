@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbsocket.c,v 1.4 1999-08-14 06:12:03 kifer Exp $
+** $Id: xsbsocket.c,v 1.5 1999-08-16 07:24:50 kifer Exp $
 ** 
 */
 
@@ -92,7 +92,7 @@ static char *get_host_IP(char *host_name_or_IP) {
   listptr = host_struct->h_addr_list;
 
   if ((ptr = (struct in_addr *) *listptr++) != NULL) {
-	  fprintf(stderr," Int. address: %s \n", inet_ntoa(*ptr));
+	  xsb_mesg(" Int. address: %s", inet_ntoa(*ptr));
 	  return(inet_ntoa(*ptr));
   }
   return NULL;

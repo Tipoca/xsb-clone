@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_odbc.i,v 1.3 1999-04-22 06:49:28 kifer Exp $
+** $Id: xsb_odbc.i,v 1.4 1999-08-16 07:24:47 kifer Exp $
 ** 
 */
 
@@ -56,7 +56,7 @@ case ODBC_EXEC_QUERY:
          SetBind();
          break; 
       default:
-        fprintf(stderr, "undefined yet.\n");
+        xsb_error("Unknown or unimplemented ODBC request type");
          /* Put an error message here */
          break; 
    }

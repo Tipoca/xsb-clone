@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.11 1999-08-13 15:31:27 kostis Exp $
+** $Id: parse.P,v 1.12 1999-08-16 07:23:55 kifer Exp $
 ** 
 */
 
@@ -151,9 +151,9 @@ parse_clauses(ModName, Module) :-
 	    %% stop parsing clauses, if needs_restart parsing
 	    (conget(needs_restart, 1) 
 	    -> (ModName = user
-	       ->  warning('Module user cannot be C preprocessed')
+	       ->  warning('Module "user" cannot be C preprocessed')
 	       ;   ModName = xsb_configuration
-	       ->  warning('Module xsb_configuration cannot be C preprocessed')
+	       ->  warning('Module "xsb_configuration" cannot be C preprocessed')
 	       ;   true
 	       )
 	    ; parse_clauses(ModName, Module)

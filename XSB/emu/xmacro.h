@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xmacro.h,v 1.7 1999-08-04 14:42:14 ejohnson Exp $
+** $Id: xmacro.h,v 1.8 1999-08-16 07:24:44 kifer Exp $
 ** 
 */
 
@@ -414,11 +414,11 @@ extern ALNptr empty_return();
 #define reclaim_stacks(tcp) \
   if (tcp == root_address) { \
     reset_freeze_registers; \
-    /* fprintf(stderr,"reset registers.... \n"); */ \
+    /* xsb_dbgmsg("reset registers...."); */ \
   } \
   else { \
     adjust_freeze_registers(tcp); \
-    /* fprintf(stderr,"adjust registers.... \n"); */ \
+    /* xsb_dbgmsg(adjust registers...."); */ \
   }
 #endif
 

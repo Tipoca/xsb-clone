@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.h,v 1.3 1999-08-14 06:10:59 kifer Exp $
+** $Id: standard.h,v 1.4 1999-08-16 07:24:54 kifer Exp $
 ** 
 */
 
@@ -26,11 +26,16 @@
 #define STDIN	     0
 #define STDOUT	     1
 #define STDERR	     2
+#define STDWARN	     3    /* output stream for xsb warnings  */
+#define STDMSG	     4    /* output for regular xsb messages */
+#define STDDBG	     5    /* output for debugging info       */
+#define STDFDBK	     6    /* output for XSB feedback
+			     (prompt/yes/no/Aborting/answers) */
 
 #define OREAD	     0	  /* open for read        */
 #define OWRITE	     1	  /* open for write       */
 #define OAPPEND	     2	  /* open for append      */
 #define OSTRING	     3	  /* open for as a string */
 
-#define AF_INET     0	  /* XSB-side request for Internet domain */
-#define AF_UNIX     1     /* XSB-side request for UNIX domain */
+#define AF_INET     0	  /* XSB-side socket request for Internet domain */
+#define AF_UNIX     1     /* XSB-side socket request for UNIX domain */

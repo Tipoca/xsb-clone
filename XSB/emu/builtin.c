@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.51 1999-08-14 16:41:41 kostis Exp $
+** $Id: builtin.c,v 1.52 1999-08-16 07:24:03 kifer Exp $
 ** 
 */
 
@@ -61,6 +61,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #endif /* WIN_NT */
+
+#include <fcntl.h>
 
 #include "auxlry.h"
 #include "cell.h"
