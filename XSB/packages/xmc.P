@@ -1,6 +1,6 @@
 %%%	xmc.P:  Startup file for XMC
 
-%% $Id: xmc.P,v 1.1 2001-05-25 19:18:30 lfcastro Exp $
+%% $Id: xmc.P,v 1.2 2001-05-31 16:33:43 lfcastro Exp $
 
 %% ----------------------------------------------------------------------
 %%	xlc(S): compile XL program to trans rules.
@@ -40,3 +40,10 @@ cleanup :-
 mck(P, F) :-
 	startstate(P, S),
 	models(S, form(F)).
+
+xmc_gui :- check_gui('/usr/bin/itkwish').
+check_gui(no) :-
+	write('Incr Tcl/Tk has not been found during configuration.'),
+	!, fail.
+check_gui(_) :-
+	exec('/home/luis/Programs/XSB/packages/xmc/xmc-gui').

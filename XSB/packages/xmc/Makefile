@@ -2,7 +2,7 @@
 ## Author(s): Yifei Dong
 ## Contact:   lmc@cs.sunysb.edu
 ##
-## $Id: Makefile,v 1.1 2001-05-25 19:11:43 lfcastro Exp $
+## $Id: Makefile,v 1.2 2001-05-31 16:33:47 lfcastro Exp $
 
 
 ALL = comp.O count.O formula.O mucalculus.O quad.O  \
@@ -26,7 +26,7 @@ AR = ar
 #-----------------------------------------------------------------------#
 
 # Make sure warnings are saved in a file.
-SVFILE = '$(XSBDIR)/build/.xmc.tmp'
+SVFILE = './.xmc.tmp'
 OWRITE = 1
 STDWARN = 3
 STDERR = 2
@@ -47,6 +47,7 @@ all:  init $(ALL) finish parse libxlp.a xlparse.so
 	@rm cmd...
 	@cat $(SVFILE)
 	@rm -f $(SVFILE)
+	@chmod 755 xmc-gui
 
 init:
 	@cp /dev/null cmd...
