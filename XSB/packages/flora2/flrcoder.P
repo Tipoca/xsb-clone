@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.P,v 1.6 2001-03-09 20:50:52 gzyang Exp $
+** $Id: flrcoder.P,v 1.7 2001-03-12 16:50:36 gzyang Exp $
 **
 */
 
@@ -46,6 +46,7 @@ is_prdynamic(PRDYNAMIC(P,A),P,A).
 is_prexport(PREXPORT(P,A),P,A).
 is_primport(PRIMPORT(P,A,M),P,A,M).
 is_prindex(PRINDEX(P,A,N),P,A,N).
+is_prhilogtable(PRHILOGTABLE(A),A).
 
 is_pratom(PRATOM(Atom),Atom).
 is_prnumber(PRNUMBER(Number),Number).
@@ -372,6 +373,16 @@ flora_write_struct(Term,_Prefix) :-
 	;
 	  write_canonical(table(P/A))
 	).
+
+flora_write_struct(Term,_Prefix) :-
+	is_prhilogtable(Term,A),
+	!,
+	eval(A+1,N),
+	write('table(/('),
+	flora_write_workspace(WRAP_HILOG),
+	write(','),
+	write(N),
+	writeln('))').
 
 flora_write_struct(Term,_Prefix) :-
 	is_prdynamic(Term,P,A),
@@ -834,6 +845,13 @@ flora_build_struct(Term,DWS,_Prefix,_VarList,Code) :-
 	;
 	  Code=table(P/A)
 	).
+
+flora_build_struct(Term,DWS,_Prefix,_VarList,Code) :-
+	is_prhilogtable(Term,A),
+	!,
+	eval(A+1,N),
+	flora_build_workspace(WRAP_HILOG,DWS,NewP),
+	Code=table(NewP/N).
 
 flora_build_struct(Term,DWS,_Prefix,_VarList,Code) :-
 	is_prdynamic(Term,P,A),

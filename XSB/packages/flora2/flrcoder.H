@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.H,v 1.2 2001-01-09 01:33:55 gzyang Exp $
+** $Id: flrcoder.H,v 1.3 2001-03-12 16:50:35 gzyang Exp $
 **
 */
 
@@ -28,6 +28,8 @@
 :- import write_canonical/1, writeln/1 from standard.
 
 :- import append/3 from basics.
+
+:- import eval/2 from eval.
 
 :- import str_cat/3 from string.
 
