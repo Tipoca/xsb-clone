@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.30 2003-06-18 16:32:08 lfcastro Exp $
+** $Id: loader_xsb.c,v 1.31 2003-06-20 15:58:44 lfcastro Exp $
 ** 
 */
 
@@ -615,11 +615,12 @@ static xsbBool load_one_sym(FILE *fd, Psc cur_mod, int count, int exp)
     else 
       mod = cur_mod;
     temp_pair = insert(str.string, t_arity, mod, &is_new);
-    /*if (is_new && t_env==T_IMPORTED) */
+/*     if (is_new && t_env==T_IMPORTED) */
     /* make sure all data fields of predicates PSCs point to 
        their corresponding module */
-    if (is_new || 
+    if (is_new ||
 	(get_type(temp_pair->psc_ptr) == T_ORDI &&
+	 (t_type == T_DYNA || t_type == T_PRED) &&
 	 get_data(temp_pair->psc_ptr) == NULL))
       set_data(temp_pair->psc_ptr, mod);
     /* set psc_data to the psc record of the module name */
