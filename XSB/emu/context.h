@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.2 2005-01-14 18:38:37 ruim Exp $
+** $Id: context.h,v 1.3 2005-02-13 15:28:55 vidrevich Exp $
 ** 
 */
 
@@ -43,7 +43,6 @@
 #include "tries.h"
 #include "choice.h"
 #include "macro_xsb.h"
-#include "timer_xsb.h"
 #include "token_xsb.h"
 
 #define MAX_REGS 257
