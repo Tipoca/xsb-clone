@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbpattern.c,v 1.6 1999-12-05 15:00:57 kostis Exp $
+** $Id: xsbpattern.c,v 1.7 1999-12-10 07:37:02 kifer Exp $
 ** 
 */
 
@@ -40,8 +40,8 @@
 #include "perlpattern.c"          /*pattern match basic functions */   
 
 void build_sub_match_spec( void );
-bool is_global_pattern( char *);
-bool global_pattern_mode = FALSE;
+int is_global_pattern( char *);
+int global_pattern_mode = FALSE;
 
 
 #define xsb_warn(warning)	fprintf(stderr, "++Warning: %s\n", warning)
@@ -423,7 +423,7 @@ void build_sub_match_spec( void ) {
 ** This is needed so that next_match will know that it has to fail immediately,
 ** if no `g' has been specified.
 */
-bool is_global_pattern(char *pattern) {
+int is_global_pattern(char *pattern) {
   int len = strlen(pattern), i = len-1;
 
   /* skip other Perl pattern modifiers and spaces */
