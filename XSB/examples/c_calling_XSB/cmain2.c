@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cmain2.c,v 1.5 1999-10-22 03:51:49 kifer Exp $
+** $Id: cmain2.c,v 1.6 2000-06-08 06:50:38 kifer Exp $
 ** 
 */
 
@@ -50,7 +50,7 @@
 /* The following include is necessary to get the macros and routine
    headers */
 
-#include "../../emu/cinterf.h"
+#include "cinterf.h"
 extern char *xsb_executable_full_path(char *);
 extern char *strip_names_from_path(char*, int);
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cmain.c,v 1.6 2000-01-11 22:36:31 warren Exp $
+** $Id: cmain.c,v 1.7 2000-06-08 06:50:38 kifer Exp $
 ** 
 */
 
@@ -54,15 +54,15 @@ was compiled.  */
 /* The following include is necessary to get the macros and routine
    headers */
 
-#include "../../emu/cinterf.h"
+#include "cinterf.h"
 extern char *xsb_executable_full_path(char *);
 extern char *strip_names_from_path(char*, int);
 
 int main(int argc, char *argv[])
 { 
   int rcode;
-  int myargc = 2;
-  char *myargv[2];
+  int myargc = 3;
+  char *myargv[3];
 
   /* xsb_init relies on the calling program to pass the absolute or relative
      path name of the XSB installation directory. We assume that the current
@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
      To get installation directory, we strip 3 file names from the path. */
   myargv[0] = strip_names_from_path(xsb_executable_full_path(argv[0]), 3);
   myargv[1] = "-n";
+  myargv[2] = "-e writeln(hello). writeln(kkk).";
 
   /* Initialize xsb */
   xsb_init(myargc,myargv);  /* depend on user to put in right options (-n) */
@@ -106,7 +107,7 @@ int main(int argc, char *argv[])
 	     p2c_string(p2p_arg(reg_term(1),3)),
 	     xsb_var_string(2)
 	     );
-    flush(stdout);
+    fflush(stdout);
     rcode = xsb_next();
   }
 
@@ -128,7 +129,7 @@ int main(int argc, char *argv[])
 	     xsb_var_string(2),
 	     xsb_var_string(3)
 	     );
-    flush(stdout);
+    fflush(stdout);
     rcode = xsb_next();
   }
 
