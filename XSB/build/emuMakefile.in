@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.26 2000-01-11 17:12:38 ejohnson Exp $
+## $Id: emuMakefile.in,v 1.27 2000-01-28 16:30:00 unova Exp $
 ## 
 
 
@@ -130,7 +130,7 @@ xsbmod:: $(OBJS)
 	@echo ""; \
 	   echo "Making a C-callable XSB module $(arch_config_objlibdir)/xsb.o"; \
 	   echo ""
-	ld -o xsb.o -r $(OBJS)
+	ld $(LINKFLAGS) -o xsb.o -r $(OBJS)
 	@cp xsb.o $(arch_config_objlibdir) 2> /dev/null || echo ""
 
 # same as xsbmod, but with oracle support
