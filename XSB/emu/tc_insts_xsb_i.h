@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.4 2000-04-29 21:54:00 kifer Exp $
+** $Id: tc_insts_xsb_i.h,v 1.5 2000-05-19 11:45:32 tswift Exp $
 ** 
 */
 
@@ -235,7 +235,7 @@ case trie_try_var: {
 	NodePtr = (BTNptr) (lpcreg - 1);
 	save_find_locx(ereg);
 	tbreg = top_of_cpstack;
-	save_find_locx(ereg);
+	/*	save_find_locx(ereg);*/
 	save_trie_registers(tbreg);
 	save_choicepoint(tbreg,ereg,(byte *)opfail,breg);
 	breg = tbreg;
