@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.2 1999-10-26 06:47:30 kifer Exp $
+** $Id: tc_insts_xsb_i.h,v 1.3 1999-12-11 08:07:08 cbaoqiu Exp $
 ** 
 */
 
@@ -652,7 +652,6 @@ case trie_proceed:	/* This is essentially a "proceed" */
 	xsb_dbgmsg("trie_proceed:");
 #endif
 	NodePtr = (BTNptr) (lpcreg - 1);
-	num_vars_in_var_regs = -1;
 	proceed_lpcreg;
 	goto contcase;
 
