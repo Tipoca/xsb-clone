@@ -34,7 +34,7 @@ XSB/emu $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net ko
 XSB/syslib $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net kostis@csd.uu.se tswift@cs.stonybrook.edu warren@cs.stonybrook.edu
 XSB/lib $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net kostis@csd.uu.se tswift@cs.stonybrook.edu warren@cs.stonybrook.edu
 XSB/cmplib $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net kostis@csd.uu.se tswift@cs.stonybrook.edu warren@cs.stonybrook.edu
-XSB/packages/flora2.* mail -s "FLORA-2 commit: %{}" xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu guizyang@cs.stonybrook.edu changz@cs.stonybrook.edu bintang@cs.stonybrook.edu amit@cs.stonybrook.edu
+XSB/packages/flora2.* mail -s "FLORA-2 (XSB package) commit: %{}" xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu guizyang@cs.stonybrook.edu changz@cs.stonybrook.edu bintang@cs.stonybrook.edu amit@cs.stonybrook.edu
 XSB/packages/flora.*  mail -s "FLORA-1 commit: %{}" xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu guizyang@cs.stonybrook.edu
 
 XSB/build  mail -s "XSB commit: %{}" xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu luis@cs.stonybrook.edu
