@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.6 2000-01-11 17:08:29 ejohnson Exp $
+** $Id: tst_utils.c,v 1.7 2000-04-29 21:54:02 kifer Exp $
 ** 
 */
 
@@ -150,25 +150,25 @@ void printTrieSymbol(Cell symbol) {
     printf("%lu [ESCAPE_NODE_SYMBOL]", ESCAPE_NODE_SYMBOL);
   else {
     switch(TrieSymbolType(symbol)) {
-    case INT:
+    case XSB_INT:
       printf(IntegerFormatString, int_val(symbol));
       break;
-    case FLOAT:
+    case XSB_FLOAT:
       printf("%f", float_val(symbol));
       break;
-    case STRING:
+    case XSB_STRING:
       printf("%s", string_val(symbol));
       break;
-    case TrieVar:
+    case XSB_TrieVar:
       printf("V" IntegerFormatString, DecodeTrieVar(symbol));
       break;
-    case CS:
+    case XSB_STRUCT:
       {
 	Psc psc = DecodeTrieFunctor(symbol);
 	printf("%s/%d", get_name(psc), get_arity(psc));
       }
       break;
-    case LIST:
+    case XSB_LIST:
       printf("LIST");
       break;
     default:
@@ -318,19 +318,19 @@ static void symstkPrintNextTerm() {
   Cell symbol = SymbolStack_Pop;
 
   switch(TrieSymbolType(symbol)) {
-  case INT:
+  case XSB_INT:
     printf(IntegerFormatString, int_val(symbol));
     break;
-  case FLOAT:
+  case XSB_FLOAT:
     printf("%f", float_val(symbol));
     break;
-  case STRING:
+  case XSB_STRING:
     printf("%s", string_val(symbol));
     break;
-  case TrieVar:
+  case XSB_TrieVar:
     printf("V" IntegerFormatString, DecodeTrieVar(symbol));
     break;
-  case CS:
+  case XSB_STRUCT:
     {
       Psc psc;
       int i;
@@ -345,12 +345,12 @@ static void symstkPrintNextTerm() {
       printf(")");
     }
     break;
-  case LIST:
+  case XSB_LIST:
     {
       printf("[");
       symstkPrintNextTerm();
       symbol = SymbolStack_Peek;
-      while (symbol == LIST) {
+      while (symbol == XSB_LIST) {
 	/*
 	 * Remove the symbol we just peeked at (using assignment eliminates
 	 * a compiler warning) placing the next term on top of the stack.
@@ -380,7 +380,7 @@ static void symstkPrintNextTerm() {
 }
 
 
-void triePrintPath(BTNptr pLeaf, bool printLeafAddr) {
+void triePrintPath(BTNptr pLeaf, xsbBool printLeafAddr) {
 
   Psc pscPred;
 
@@ -447,7 +447,7 @@ void printAnswerTemplate(CPtr pAnsTmplt, int size) {
 
 /* Printing a SF's associated Call
    ------------------------------- */
-void sfPrintGoal(SGFrame pSF, bool printAddr) {
+void sfPrintGoal(SGFrame pSF, xsbBool printAddr) {
 
   Psc pPSC;
 

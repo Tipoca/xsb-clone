@@ -19,24 +19,24 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: deref.h,v 1.4 1999-10-09 02:00:23 cbaoqiu Exp $
+** $Id: deref.h,v 1.5 2000-04-29 21:53:52 kifer Exp $
 ** 
 */
 
 
 /* deref expects argument of type Cell */
 
-#define deref(op) deref2(op,break)
+#define XSB_Deref(op) XSB_Deref2(op,break)
 
 /*
-#define deref2(op,stat) while (isref(op)) { \
+#define XSB_Deref2(op,stat) while (isref(op)) { \
                     if (op == follow(op)) \
                         stat; \
                     op = follow(op); }
 */
 
-/* deref2 is changed to consider attributed variables */
-#define deref2(op, stat) {				\
+/* XSB_Deref2 is changed to consider attributed variables */
+#define XSB_Deref2(op, stat) {				\
   while (isref(op)) {					\
     if (op == follow(op))				\
       stat;						\
@@ -57,13 +57,13 @@
 }
 
 /*
-#define cptr_deref(op) while (isref(op)) { \
+#define XSB_CptrDeref(op) while (isref(op)) { \
 			 if (op == (CPtr) cell(op)) \
   			     break; \
 			 op = (CPtr) cell(op); }
 */
 
-#define cptr_deref(op) {				\
+#define XSB_CptrDeref(op) {				\
   while (isref(op)) {					\
     if (op == (CPtr) cell(op)) break;			\
     op = (CPtr) cell(op);				\

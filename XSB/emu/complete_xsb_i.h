@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.3 1999-10-27 14:17:54 kostis Exp $
+** $Id: complete_xsb_i.h,v 1.4 2000-04-29 21:53:51 kifer Exp $
 ** 
 */
 
@@ -31,7 +31,7 @@
 case check_complete: {
   CPtr    cs_ptr;
   CPtr    orig_breg = breg;
-  bool    leader = FALSE;
+  xsbBool    leader = FALSE;
   SGFrame subgoal;
 #ifdef LOCAL_EVAL
   int     i;

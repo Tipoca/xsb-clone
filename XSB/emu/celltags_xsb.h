@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: celltags_xsb.h,v 1.2 1999-10-27 16:12:59 ejohnson Exp $
+** $Id: celltags_xsb.h,v 1.3 2000-04-29 21:53:50 kifer Exp $
 ** 
 */
 
@@ -26,16 +26,16 @@
 
 /* ==== types of cells =================================================*/
 
-#define FREE	0	/* Free variable */
-#define REF	0	/* Reference */
-#define CS	1	/* Structure */
-#define INT     2	/* integer */
-#define LIST	3	/* List */
-#define REF1	4	/* REF */
-#define STRING  5	/* Non-Numeric Constant (Atom) */
-#define FLOAT	6	/* Floating point number */
-#define ATTV	7	/* Attributed variable */
+#define XSB_FREE	0	/* Free variable */
+#define XSB_REF		0	/* Reference */
+#define XSB_STRUCT	1	/* Structure */
+#define XSB_INT     	2	/* integer */
+#define XSB_LIST	3	/* List */
+#define XSB_REF1	4	/* XSB_REF */
+#define XSB_STRING  	5	/* Non-Numeric Constant (Atom) */
+#define XSB_FLOAT	6	/* Floating point number */
+#define XSB_ATTV	7	/* Attributed variable */
 
-#define CELL_TAG_NBITS	3
+#define XSB_CELL_TAG_NBITS	3
 
-#define TrieVar FREE    /* Cell tag of a standardized variable in tries */
+#define XSB_TrieVar XSB_FREE    /* Cell tag of a standardized var in tries */

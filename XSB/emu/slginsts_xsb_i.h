@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.5 2000/02/15 07:45:09 bartkul Exp $
+** $Id: slginsts_xsb_i.h,v 1.6 2000/02/24 19:44:15 cbaoqiu Exp $
 ** 
 */
 
@@ -468,7 +468,7 @@ case new_answer_dealloc: {
   CPtr producer_cpf, producer_csf, answer_template;
   int template_size, attv_num, tmp;
   SGFrame producer_sf;
-  bool isNewAnswer = FALSE;
+  xsbBool isNewAnswer = FALSE;
   BTNptr answer_leaf;
 
   pad;

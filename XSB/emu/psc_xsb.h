@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.4 2000-03-01 16:22:34 dwarren Exp $
+** $Id: psc_xsb.h,v 1.5 2000-04-29 21:53:57 kifer Exp $
 ** 
 */
 
@@ -126,10 +126,10 @@ extern struct Table_Info_Frame *get_tip(Psc);
 
 #define hilog_psc(psc)	\
 		(((!strcmp(get_name(psc),"apply")) && (get_arity(psc) > 1)))
-#define hilog_cs(term) /* to be used when known that term is a CS */ \
+#define hilog_cs(term) /* to be used when known that term is a XSB_STRUCT */ \
 		((hilog_psc(get_str_psc(term))))
 #define hilog_term(term) \
-		((cell_tag(term) == CS) && (hilog_psc(get_str_psc(term))))
+		((cell_tag(term) == XSB_STRUCT) && (hilog_psc(get_str_psc(term))))
 
 /*----------------------------------------------------------------------*/
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.12 2000-03-01 16:22:33 dwarren Exp $
+** $Id: dis.c,v 1.13 2000-04-29 21:53:52 kifer Exp $
 ** 
 */
 
@@ -55,7 +55,7 @@ static void dis_data(void);
 static void dis_text(void);
 static void dis_data_sub(Pair *);
 
-void dis(bool distext)
+void dis(xsbBool distext)
 {  
 /*   filedes = fopen("stdout","w"); */
    dis_data();

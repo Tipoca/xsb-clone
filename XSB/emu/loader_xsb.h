@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.h,v 1.3 1999-11-30 05:03:16 kifer Exp $
+** $Id: loader_xsb.h,v 1.4 2000-04-29 21:53:55 kifer Exp $
 ** 
 */
 
@@ -91,6 +91,6 @@ typedef struct text_segment text_seg, seg_hdr, *pseg ;
 /* === functions used in other parts of the system ====================== */
 
 extern byte *loader(char *, int);
-extern void env_type_set(Psc, byte, byte, bool);
+extern void env_type_set(Psc, byte, byte, xsbBool);
 extern void unload_seg(pseg);
 extern unsigned int read_magic(FILE *);

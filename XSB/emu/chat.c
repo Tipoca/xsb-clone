@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chat.c,v 1.18 2000-01-27 23:07:08 unova Exp $
+** $Id: chat.c,v 1.19 2000-04-29 21:53:50 kifer Exp $
 ** 
 */
 
@@ -207,7 +207,7 @@ static void chat_update_stats(int incremental, int nrarguments, long size_tr)
 #define BATCH_MODE     0
 #define SELECTIVE_MODE 1
 
-static void chat_free_chat_area(chat_init_pheader phead, bool mode)
+static void chat_free_chat_area(chat_init_pheader phead, xsbBool mode)
 {
   chat_incr_pheader p,q;
 

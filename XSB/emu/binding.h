@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: binding.h,v 1.11 1999-12-14 21:03:52 ejohnson Exp $
+** $Id: binding.h,v 1.12 2000-04-29 21:53:49 kifer Exp $
 ** 
 */
 
@@ -238,7 +238,7 @@
 /* --- for building vals on the heap ---------------------------------- */
 
 #define nbldval(OP1) {							  \
-   deref(OP1);								  \
+   XSB_Deref(OP1);								  \
    if ( isnonvar(OP1) ||						  \
 	( /* (CPtr)(OP1) >= glstack.low && */				  \
 	  (CPtr)(OP1) <= top_of_heap ) ) {			 	  \

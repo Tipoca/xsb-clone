@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ptoc_tag_xsb_i.h,v 1.1 1999-12-10 07:47:36 kifer Exp $
+** $Id: ptoc_tag_xsb_i.h,v 1.2 2000-04-29 21:53:57 kifer Exp $
 ** 
 */
 
@@ -34,6 +34,6 @@ static inline Cell ptoc_tag(int regnum)
   /* reg is global array in register.h */
   register Cell addr = cell(reg+regnum);
 
-  deref(addr);
+  XSB_Deref(addr);
   return addr;
 }

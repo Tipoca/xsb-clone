@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.6 2000-01-07 08:51:31 kifer Exp $
+** $Id: function.c,v 1.7 2000-04-29 21:53:54 kifer Exp $
 ** 
 */
 
@@ -62,7 +62,7 @@ int  unifunc_call(int funcnum, CPtr regaddr)
   float fvalue; 
 
   value = cell(regaddr);
-  deref(value);
+  XSB_Deref(value);
   switch (funcnum) {
       case FUN_float:
 	  if (isinteger(value)) fvalue = (float) int_val(value);

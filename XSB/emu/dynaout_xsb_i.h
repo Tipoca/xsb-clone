@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynaout_xsb_i.h,v 1.4 2000-03-01 16:22:33 dwarren Exp $
+** $Id: dynaout_xsb_i.h,v 1.5 2000-04-29 21:53:52 kifer Exp $
 ** 
 */
 
@@ -48,7 +48,7 @@ char tfile[128];	/* uniquely-named tmp file for "ld" */
 
 /*----------------------------------------------------------------------*/
 
-bool dummy()
+xsbBool dummy()
 {
     xsb_error("Trying to use an undefined foreign procedure");
     return FALSE;

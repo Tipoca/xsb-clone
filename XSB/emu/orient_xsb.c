@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.c,v 1.5 2000-04-04 16:31:45 kifer Exp $
+** $Id: orient_xsb.c,v 1.6 2000-04-29 21:53:56 kifer Exp $
 ** 
 */
 
@@ -54,7 +54,7 @@ char *user_home;     	     	     	/* the user $HOME dir or install dir,
 					   if $HOME is null */ 
 
 
-extern bool is_absolute_filename(char *);
+extern xsbBool is_absolute_filename(char *);
 DllExport extern char * call_conv strip_names_from_path(char*, int);
 
 static void check_create_dir(char *);

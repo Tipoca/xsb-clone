@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_wildmatch.c,v 1.10 2000-01-07 08:52:10 kifer Exp $
+** $Id: xsb_wildmatch.c,v 1.11 2000-04-29 21:54:03 kifer Exp $
 ** 
 */
 
@@ -55,8 +55,8 @@ static prolog_term wild_term, input_string_term;
 
 static char *lowercase_string(char *str);
 
-static vstrDEFINE(wild_buffer);
-static vstrDEFINE(input_string_buffer);
+static XSB_StrDefine(wild_buffer);
+static XSB_StrDefine(input_string_buffer);
 
 
 /* XSB wildcard matcher entry point 

@@ -20,13 +20,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify_xsb_i.h,v 1.5 2000-01-26 15:01:54 kostis Exp $
+** $Id: unify_xsb_i.h,v 1.6 2000-04-29 21:54:02 kifer Exp $
 ** 
 */
 
  tail_recursion:
-  deref2(op1, goto label_op1_free);
-  deref2(op2, goto label_op2_free);
+  XSB_Deref2(op1, goto label_op1_free);
+  XSB_Deref2(op2, goto label_op2_free);
 
   if (isattv(op1)) goto label_op1_attv;
   if (isattv(op2)) goto label_op2_attv;
@@ -42,7 +42,7 @@
 
 
  label_op1_free:
-  deref2(op2, goto label_both_free);
+  XSB_Deref2(op2, goto label_both_free);
   bind_copy((CPtr)(op1), op2);
   IFTHEN_SUCCEED;
 

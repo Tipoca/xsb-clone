@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: private_builtin.in,v 1.3 1999-11-17 03:54:19 kifer Exp $
+** $Id: private_builtin.in,v 1.4 2000-04-29 21:53:49 kifer Exp $
 ** 
 */
 
@@ -55,7 +55,7 @@
 #include "flags.h"
 
 /* The folowing function must be defined. What's inside doesn't matter */
-bool private_builtin(void)
+xsbBool private_builtin(void)
 {
   /*
   ctop_string(1, "abc");
@@ -80,7 +80,7 @@ bool private_builtin(void)
 
 /* Arg 1 is the OP code. The rest are real arguments to the builtin */
 /*
-bool private_builtin(void)
+xsbBool private_builtin(void)
 {
   switch (ptoc_int(1)) {
   case PRINT_LS: print_ls(1) ; return TRUE ;

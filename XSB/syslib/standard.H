@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.18 1999/11/20 06:52:05 kifer Exp $
+** $Id: standard.H,v 1.19 2000/02/22 14:54:15 tswift Exp $
 ** 
 */
 
@@ -113,7 +113,6 @@
 :- import predicate_property/2 from curr_sym.
 :- import (dynamic)/1, asserta/1, retract/1 from assert.
 
-:- import sys_exit/1 from shell.
-:- import conget/2, conset/2 from gensym.
+:- import conset/2 from gensym.
 
 /* --------------------- end of file standard.H ----------------------- */

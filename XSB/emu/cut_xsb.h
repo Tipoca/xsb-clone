@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.4 2000-03-04 18:33:03 dwarren Exp $
+** $Id: cut_xsb.h,v 1.5 2000-04-29 21:53:51 kifer Exp $
 ** 
 */
 
@@ -42,7 +42,7 @@
 /* this, is as follows:                                         	*/
 /*									*/
 /*	#define cut_code(OP1)						*/
-/*	    deref(OP1);							*/
+/*	    XSB_Deref(OP1);						*/
 /*	    cut_breg = (CPtr)(tcpstack.high - int_val(OP1));		*/
 /*	    cut_restore_trail_condition_registers(cut_breg);		*/
 /*	    if (breg != cut_breg) {					*/
@@ -78,7 +78,7 @@
    { CPtr cut_breg;					        \
      byte inst_cut_over;                                        \
 								\
-     deref(OP1);						\
+     XSB_Deref(OP1);						\
      cut_breg = (CPtr)(tcpstack.high - int_val(OP1));		\
      cut_restore_trail_condition_registers(cut_breg);		\
      if (breg != cut_breg) { /* not cutting back to the current CP */\

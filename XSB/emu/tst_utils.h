@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.h,v 1.2 2000-01-11 16:43:45 ejohnson Exp $
+** $Id: tst_utils.h,v 1.3 2000-04-29 21:54:02 kifer Exp $
 ** 
 */
 
@@ -41,8 +41,8 @@ SGFrame findSF_forAnswerLeaf(TSTNptr);
 SGFrame findProdSF_for_ConsSF(SGFrame);
 int containsSF(SGFrame, SGFrame);
 
-void triePrintPath(BTNptr, bool);
-void sfPrintGoal(SGFrame, bool);
+void triePrintPath(BTNptr, xsbBool);
+void sfPrintGoal(SGFrame, xsbBool);
 void sfPrintConsGoals(SGFrame);
 
 void printAnswerTemplate(CPtr, int);

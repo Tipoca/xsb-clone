@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.3 1999-12-14 21:04:53 ejohnson Exp $
+** $Id: bineg_xsb_i.h,v 1.4 2000-04-29 21:53:50 kifer Exp $
 ** 
 */
 
@@ -135,7 +135,7 @@
 	  Cell x;
 	  fprintf(stddbg, ">>>> var_regs[%d] =",i);
 	  x = (Cell)var_regs[i];
-	  deref(x);
+	  XSB_Deref(x);
 	  printterm(x,1,25);
 	  fprintf(stddbg, "\n");
 	}

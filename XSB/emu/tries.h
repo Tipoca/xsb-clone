@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.22 2000-01-11 17:19:10 ejohnson Exp $
+** $Id: tries.h,v 1.23 2000-04-29 21:54:01 kifer Exp $
 ** 
 */
 
@@ -305,14 +305,14 @@ extern BTNptr   one_term_chk_ins(CPtr, BTNptr, int *);
 extern BTNptr   whole_term_chk_ins(Cell, BTNptr *, int *);
 extern BTNptr	get_next_trie_solution(ALNptr *);
 extern BTNptr	variant_answer_search(int, int, CPtr, struct subgoal_frame *,
-				      bool *);
+				      xsbBool *);
 extern BTNptr   delay_chk_insert(int, CPtr, CPtr *);
 extern void     undo_answer_bindings(void);
 extern void	load_delay_trie(int, CPtr, BTNptr);
-extern bool     bottom_up_unify(void);
+extern xsbBool  bottom_up_unify(void);
 
 void	subsumptive_call_search(TabledCallInfo *, CallLookupResults *);
-TSTNptr	subsumptive_answer_search(int,CPtr,struct subgoal_frame *,bool *);
+TSTNptr	subsumptive_answer_search(int,CPtr,struct subgoal_frame *,xsbBool *);
 void	consume_subsumptive_answer(BTNptr,int,CPtr);
 ALNptr	retrieve_unifying_answers(TSTNptr,TimeStamp,int,CPtr);
 void	delete_subsumptive_table(BTNptr);

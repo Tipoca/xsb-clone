@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.21 1999/10/26 06:47:51 kifer Exp $
+** $Id: loader.P,v 1.22 2000/03/01 16:23:25 dwarren Exp $
 ** 
 */
 
@@ -242,8 +242,8 @@ XSB's in-lined predicates, builtins, and functions.
 
 '_$load_undef'(Term) :-
 	term_type(Term, Type),
-	( Type =:= CS -> term_psc(Term, PSC)
-	; Type =:= STRING -> psc_insert(Term, 0, PSC, 0)
+	( Type =:= XSB_STRUCT -> term_psc(Term, PSC)
+	; Type =:= XSB_STRING -> psc_insert(Term, 0, PSC, 0)
 	),
 	load_pred(PSC),
 	call0(Term).

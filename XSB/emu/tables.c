@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.12 2000-01-25 03:54:40 cbaoqiu Exp $
+** $Id: tables.c,v 1.13 2000-04-29 21:53:59 kifer Exp $
 ** 
 */
 
@@ -112,7 +112,7 @@ void table_call_search(TabledCallInfo *call_info, CallLookupResults *results) {
  * elements arranged from high to low memory.
  */
 BTNptr table_answer_search(SGFrame producer, int size, int attv_num,
-			   CPtr template, bool *is_new) {
+			   CPtr template, xsbBool *is_new) {
 
   BTNptr answer;
 
@@ -135,7 +135,7 @@ BTNptr table_answer_search(SGFrame producer, int size, int attv_num,
      * We want to save the substitution factor of the answer in the
      * heap, so we have to change variant_answer_search().
      */
-    bool wasFound = TRUE;
+    xsbBool wasFound = TRUE;
 
 #ifndef IGNORE_DELAYVAR
     ans_var_pos_reg = hreg++;	/* Leave a cell for functor ret/n */

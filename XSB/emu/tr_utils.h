@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.16 2000-01-11 17:19:09 ejohnson Exp $
+** $Id: tr_utils.h,v 1.17 2000-04-29 21:54:00 kifer Exp $
 ** 
 */
 
@@ -44,7 +44,7 @@ extern void safe_delete_branch(BTNptr);
 extern void undelete_branch(BTNptr);
 extern void delete_trie(BTNptr);
 
-extern bool has_unconditional_answers(SGFrame);
+extern xsbBool has_unconditional_answers(SGFrame);
 
 extern void newtrie(void);
 extern void trie_intern(void);
@@ -52,4 +52,4 @@ extern int  trie_interned(void);
 extern void trie_dispose(void);
 extern void delete_interned_trie(int);
 
-extern bool check_table_cut;
+extern xsbBool check_table_cut;

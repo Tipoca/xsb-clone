@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.42 2000/03/01 16:23:25 dwarren Exp $
+** $Id: machine.P,v 1.43 2000/03/02 11:39:29 kostis Exp $
 ** 
 */
 
@@ -230,14 +230,14 @@ is_charlist(List) :- is_charlist(List, _).
 
 conname(Con, Name) :-
 	term_type(Con, Type),
-	( Type =:= STRING -> Name = Con
-	; Type =:= CS -> term_psc(Con, Psc), psc_name(Psc, Name)
+	( Type =:= XSB_STRING -> Name = Con
+	; Type =:= XSB_STRUCT -> term_psc(Con, Psc), psc_name(Psc, Name)
 	).
 
 conpsc(Con, Psc) :-
 	term_type(Con, Type),
-	( Type =:= CS -> term_psc(Con, Psc)
-	; Type =:= STRING -> psc_insert(Con, 0, Psc, 0)
+	( Type =:= XSB_STRUCT -> term_psc(Con, Psc)
+	; Type =:= XSB_STRING -> psc_insert(Con, 0, Psc, 0)
 	).
 
 machine_file_exists(File) :- 

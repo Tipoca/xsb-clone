@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orastuff.h,v 1.3 1999-11-22 22:58:33 warren Exp $
+** $Id: orastuff.h,v 1.4 2000-04-29 21:53:55 kifer Exp $
 ** 
 */
 
@@ -62,7 +62,7 @@ EXEC SQL INCLUDE sqlca;
 typedef enum Boolean {
   FALSE = 0, TRUE = 1,
   NO = 0, YES = 1
-} bool;
+} xsbBool;
  */
 
 
@@ -274,8 +274,8 @@ typedef struct Select_List_Item_Specification {
 			      valid range: [0..(numSLIs-1)] */
   int cur_row_number;      /* RowID of next tuple to return to Prolog */
   uint total_rows_recvd;   /* total num rows received from Oracle so far */
-  bool end_of_active_set;  /* flag indicating whether the last of the active
-			      set has been returned from Oracle. */
+  xsbBool end_of_active_set;  /* flag indicating whether the last of the active
+				 set has been returned from Oracle. */
 } SLI_Spec;  
 
 

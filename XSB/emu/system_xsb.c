@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.5 2000-01-07 08:51:54 kifer Exp $
+** $Id: system_xsb.c,v 1.6 2000-04-29 21:53:59 kifer Exp $
 ** 
 */
 
@@ -109,7 +109,7 @@ int sys_syscall(int callno)
   return result;
 }
 
-bool sys_system(int callno)
+xsbBool sys_system(int callno)
 {
   int pid;
 
@@ -141,11 +141,11 @@ bool sys_system(int callno)
 				       one for NULL termination*/
     prolog_term cmdspec_term, cmdlist_temp_term;
     prolog_term cmd_or_arg_term;
-    bool toproc_needed=FALSE, fromproc_needed=FALSE, fromstderr_needed=FALSE;
+    xsbBool toproc_needed=FALSE, fromproc_needed=FALSE, fromstderr_needed=FALSE;
     char *cmd_or_arg=NULL, *shell_cmd=NULL;
     int idx = 0, tbl_pos;
     char *callname=NULL;
-    bool params_are_in_a_list=FALSE;
+    xsbBool params_are_in_a_list=FALSE;
 
     init_process_table();
 
@@ -554,7 +554,7 @@ static int get_free_process_cell(void)
 
 static void init_process_table(void)
 {
-  static bool process_table_initted = FALSE;
+  static xsbBool process_table_initted = FALSE;
   int i;
 
   if (!process_table_initted) {

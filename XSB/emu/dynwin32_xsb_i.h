@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32_xsb_i.h,v 1.5 2000-03-01 16:22:33 dwarren Exp $
+** $Id: dynwin32_xsb_i.h,v 1.6 2000-04-29 21:53:53 kifer Exp $
 ** 
 */
 
@@ -43,7 +43,7 @@
 
 /*----------------------------------------------------------------------*/
 
-bool dummy()
+xsbBool dummy()
 {
     xsb_error("Trying to use an undefined foreign procedure");
     return FALSE;
@@ -63,7 +63,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   int 	strl = strlen(pofilename);
   HMODULE handle;
   void	*funcep;
-  bool	dummy();
+  xsbBool	dummy();
   
   /* (1) create filename.so */
   

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.P,v 1.16 1999/12/21 20:07:00 warren Exp $
+** $Id: debugger.P,v 1.17 2000/03/01 16:23:25 dwarren Exp $
 ** 
 */
 
@@ -240,7 +240,7 @@ must_load(PSC) :-
 %% +Call, -PSC, -Pred, -Arity
 get_psc_info(Call, PSC, P, A) :-
 	term_type(Call,Type),
-	(Type =:= STRING
+	(Type =:= XSB_STRING
 	 ->	psc_insert(Call, 0, PSC, 0), P = Call, A = 0
 	 ;	term_psc(Call,PSC), psc_name(PSC,P), psc_arity(PSC,A)
 	).

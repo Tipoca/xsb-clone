@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.1 1999-10-25 05:59:10 kifer Exp $
+** $Id: schedrev_xsb_i.h,v 1.2 2000-04-29 21:53:57 kifer Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
  */
 
 static CPtr sched_answers(SGFrame producer_sf, CPtr producer_cpf,
-			  bool is_leader) {
+			  xsbBool is_leader) {
   ALNptr answer_set;
   CPtr first_sched_cons, last_sched_cons, consumer_cpf;
   SGFrame consumer_sf;
