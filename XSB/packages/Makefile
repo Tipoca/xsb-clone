@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.22 2002-04-11 15:54:20 lfcastro Exp $
+## $Id: Makefile,v 1.23 2002-05-04 20:04:44 kifer Exp $
 ## 
 ##
 
@@ -76,7 +76,7 @@ slx::
 
 flora2::
 	@echo ""
-	cd flora2; make
+	cd flora2; makeflora all ../$(PROLOG)
 
 libwww::
 	@echo ""
