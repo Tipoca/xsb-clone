@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse_xml.h,v 1.6 2000-04-05 02:17:11 kifer Exp $
+** $Id: libwww_parse_xml.h,v 1.7 2000-04-11 22:06:42 kifer Exp $
 ** 
 */
 
@@ -98,5 +98,7 @@ PRIVATE int xml_unknownEncoding (void 	      	*encodingHandlerData,
 				 const XML_Char *name,
 				 XML_Encoding   *info);
 /*
-PRIVATE void xml_default (void * userData, const XML_Char * s, int len);
+  PRIVATE void xml_default (void * userData, const XML_Char * s, int len);
 */
+
+PRIVATE prolog_term xml_push_dummy(USERDATA    *userdata);
