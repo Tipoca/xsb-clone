@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.14 2001-03-20 06:24:04 gzyang Exp $
+** $Id: flrshell.P,v 1.15 2001-03-20 06:40:24 gzyang Exp $
 **
 */
 
@@ -48,7 +48,7 @@ flora_shell_loop :-
 	( flora_good_command(Status) ->
 	    findall(Op,member(FLSYSLIB(Op),Options),OpList),
 	    flora_load_library(OpList),
-	    writeln(Code),
+	    %writeln(Code),
 	    call(Code)
 	;
 	  true
