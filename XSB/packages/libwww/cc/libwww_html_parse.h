@@ -18,13 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_html_parse.h,v 1.2 2000-03-15 05:40:54 kifer Exp $
+** $Id: libwww_html_parse.h,v 1.3 2000-03-15 06:18:58 kifer Exp $
 ** 
 */
 
 
 /*
 #define LIBWWW_DEBUG
+#define LIBWWW_DEBUG_VERBOSE
 #define LIBWWW_DEBUG_TERSE
 */
 #ifdef LIBWWW_DEBUG_VERBOSE

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_html_parse.c,v 1.3 2000-03-15 05:40:54 kifer Exp $
+** $Id: libwww_html_parse.c,v 1.4 2000-03-15 06:18:58 kifer Exp $
 ** 
 */
 
@@ -597,7 +597,11 @@ PRIVATE BOOL delete_HText_obj(HText *me)
 
   /* close open tags on stack */
   for (i=me->stackptr; i>=0; i--)
-    pop_element(me);
+    if (parsing(me))
+      pop_element(me);
+    else
+      pop_suppressed_element(me);
+
   /* terminate the parsed prolog terms list */
   c2p_nil(me->parsed_term_tail);
 
