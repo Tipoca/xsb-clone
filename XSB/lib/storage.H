@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage.H,v 1.1 2000-06-19 03:10:01 kifer Exp $
+** $Id: storage.H,v 1.2 2001-03-28 09:11:46 kifer Exp $
 ** 
 */
 
@@ -38,4 +38,4 @@
 
 :- import conget/2, conset/2 from gensym.
 
-:- import abort/1, integer/1 from standard.
+:- import abort/1  from standard.
