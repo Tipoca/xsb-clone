@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: self_orientation.c,v 1.18 1999-07-26 22:51:53 kifer Exp $
+** $Id: self_orientation.c,v 1.19 1999-08-09 00:29:26 kifer Exp $
 ** 
 */
 
@@ -136,11 +136,14 @@ char *xsb_executable_full_path(char *myname)
 {
   struct stat fileinfo;
   char *path = getenv("PATH");
-  int link_len, len, found = 0;
+  int len, found = 0;
   char *pathcounter, save;
   static char myname_augmented[MAXPATHLEN];
+#ifndef WIN_NT
+  int link_len;
+#endif
 
-  
+
 #ifndef WIN_NT
   /* Unix */
   /* if we can read symlink, then it is a symlink */
@@ -248,9 +251,11 @@ void set_config_file() {
   int retcode;
   struct stat fileinfo;
 
-  /* The config file is always 1 directory below the executable. */
+  /* The config file is in the lib directory at the same 
+     level as the xsb executable. */
   xsb_config_file = strip_names_from_path(executable, 2);
-  sprintf(xsb_config_file+strlen(xsb_config_file), "%cconfiguration.P", SLASH);
+  sprintf(xsb_config_file+strlen(xsb_config_file),
+	  "%clib%cxsb_configuration.P", SLASH, SLASH);
 
   /* Perform sanity checks: xsb_config_file must be in install_dir/config
      This is probably redundant */

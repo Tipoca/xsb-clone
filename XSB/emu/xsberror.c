@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsberror.c,v 1.13 1999-06-26 05:01:37 kifer Exp $
+** $Id: xsberror.c,v 1.14 1999-08-09 00:29:28 kifer Exp $
 ** 
 */
 
@@ -37,6 +37,7 @@
 #include "register.h"
 #include "xsberror.h"
 
+extern void exit(int status);
 extern void print_pterm(Cell, int, char *, int *);
 
 /*----------------------------------------------------------------------*/

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbsocket.h,v 1.9 1999-08-02 00:50:37 kifer Exp $
+** $Id: xsbsocket.h,v 1.10 1999-08-09 00:29:29 kifer Exp $
 ** 
 */
 
@@ -39,7 +39,6 @@
 #define SOCKET_SET_OPTION  13
 
 #ifdef WIN_NT
-#define IPPROTO_TCP                0  /* defined in Unix, but not Windows */
 #define BAD_SOCKET(sockfd)         sockfd==INVALID_SOCKET
 #define SOCKET_OP_FAILED(sockfd)   sockfd==SOCKET_ERROR
 #define IS_IP_ADDR(string)    	   inet_addr(string) != INADDR_NONE
