@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.34 2000/01/10 18:30:23 warren Exp $
+** $Id: tr_utils.c,v 1.35 2000/01/11 17:19:08 ejohnson Exp $
 ** 
 */
 
@@ -1293,12 +1293,12 @@ void breg_retskel(void)
     sg_frame = (SGFrame)(tcp_subgoal_ptr(tcp));
 #ifdef CHAT
     where = compl_hreg(subg_compl_stack_ptr(sg_frame));
-    Nvars = int_val(cell(where));
+    Nvars = int_val(cell(where)) & 0xffff; /* See get_var_and_attv_nums() */
     cptr = where - Nvars - 1;
 #else
     arity = ptoc_int(2);
     where = tcp + TCP_SIZE + (Cell)arity;
-    Nvars = int_val(cell(where));
+    Nvars = int_val(cell(where)) & 0xffff; /* See get_var_and_attv_nums() */
     cptr = where + Nvars;
 #endif
     if (Nvars == 0) {
