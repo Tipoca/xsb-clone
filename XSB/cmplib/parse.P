@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.30 1999-12-12 06:47:26 kifer Exp $
+** $Id: parse.P,v 1.31 2000-02-18 16:06:56 kifer Exp $
 ** 
 */
 
@@ -151,7 +151,7 @@ make_gpp_command(GPP_command) :-
 			      '-I',InstallDir,Slash)),
 	xsb_configuration(config_bindir, Bindir),
 	%% Construct the gpp command
-	fmt_write_string(GPP_command, '%s%sgpp -P -m %s -DXSB_PROLOG ',
+	fmt_write_string(GPP_command, '%s%sgpp -P -m -nostdinc -nocurinc %s -DXSB_PROLOG ',
 			 args(Bindir,Slash,IncludeDirs)).
 
 %% Make an include directive out of the dirs in xpp_include_dir/1
