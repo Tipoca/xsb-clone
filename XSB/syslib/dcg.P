@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dcg.P,v 1.6 1999/11/10 17:36:10 warren Exp $
+** $Id: dcg.P,v 1.7 2000/02/07 12:20:15 kostis Exp $
 ** 
 */
 
@@ -174,12 +174,15 @@ phrase(Phrase_Type, List, Rest) :-
 
 
 tphrase(Phrase_Type) :-
+	tphrase(Phrase_Type,End,End).
+
+tphrase(Phrase_Type, To, End) :-
 	(nonvar(Phrase_Type)
 	 ->     (num_words(End)
                  ->     true
 	         ;      abort('No input for tphrase/1')
 	        ),
-		dcg_body_nonvar(Phrase_Type, 0, End, Goal),
+		dcg_body_nonvar(Phrase_Type, 0, To, Goal),
 	        call(Goal)
 	; abort('Uninstantiated argument 1 of tphrase/1')
 	).

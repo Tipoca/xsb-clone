@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.34 2000/02/17 19:24:58 cbaoqiu Exp $
+** $Id: std_xsb.P,v 1.35 2000/05/28 20:51:29 kifer Exp $
 ** 
 */
 
@@ -224,6 +224,7 @@ standard_symbol(sk_not, 1, tables).
 standard_symbol(told, 0, standard).
 standard_symbol(tphrase, 1, dcg).
 standard_symbol(tphrase, 2, dcg).
+standard_symbol(tphrase, 3, dcg).
 standard_symbol(tphrase_set_string, 1, dcg).
 standard_symbol(tphrase_string_length, 1, dcg).
 standard_symbol(true, 0, standard).
