@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.27 2002-05-31 15:09:02 lfcastro Exp $
+** $Id: loader_xsb.c,v 1.28 2002-12-26 22:45:49 tswift Exp $
 ** 
 */
 
@@ -636,13 +636,21 @@ static xsbBool load_one_sym(FILE *fd, Psc cur_mod, int count, int exp)
 
 /************************************************************************
 *                                                                       *
-* Load_syms is a function which loads a symbol table given in a byte    *
-* code file into an appropriate format in the pcs table.  As part of    *
-* its function it resolves entry points for byte code intructions (call *
-* to relloc_addr), and maintains a tableau so that instructions with    *
-* indices into the psc table may have those indices resolved before     *
-* loading them in the intruction array (byte code program space).  The  *
-* intructions are loaded by a separate function.                        *
+ Load_syms loads a symbol table from a byte code file into an
+ appropriate format in the psc table (i.e. e.g. a chain, or a hash
+ table of chains if the module is global).  Among other functions, it
+ 
+ -- resolves entry points for byte code intructions (call to
+ relloc_addr), and maintains a tableau so that instructions with
+ indices into the psc table may have those indices resolved before
+ loading them in the intruction array (byte code program space).  The
+ intructions are loaded by a separate function.  
+
+ -- initizlizes psc records (via insert and sub-functions) so that the
+ default entry points of new, imported predicates is the undefined
+ predicate handler.  This e.p. will be over-written whenever the
+ module for the predicate is loaded.
+
 *                                                                       *
 ************************************************************************/
 
