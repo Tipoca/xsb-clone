@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.17 2003-03-12 14:53:41 lfcastro Exp $
+** $Id: pathname_xsb.c,v 1.18 2004-02-16 17:16:39 dwarren Exp $
 ** 
 */
 
@@ -519,6 +519,7 @@ void transform_cygwin_pathname(char *filename)
 }
 
 /*=========================================================================*/
+#define not_a_dir(fileinfo) !(fileinfo.st_mode & _S_IFDIR)
 
 char *existing_file_extension(char *basename)
 {
@@ -527,17 +528,17 @@ char *existing_file_extension(char *basename)
 
   strcpy(filename, basename); strcat(filename, XSB_SRC_EXTENSION_STRING);
   /*  +1 skips the "."   */
-  if (! stat(filename, &fileinfo)) return XSB_SRC_EXTENSION_STRING+1;
+  if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return XSB_SRC_EXTENSION_STRING+1;
 
   strcpy(filename, basename); strcat(filename, ".c");
-  if (! stat(filename, &fileinfo)) return "c";
+  if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return "c";
 
   strcpy(filename, basename);
-  if (! stat(filename, &fileinfo)) return ""; /* no extension */
+  if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return ""; /* no extension */
 
   sprintf(filename, "%s%s", basename, XSB_OBJ_EXTENSION_STRING);
   /*  +1 skips the "."   */
-  if (! stat(filename, &fileinfo)) return XSB_OBJ_EXTENSION_STRING+1;
+  if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return XSB_OBJ_EXTENSION_STRING+1;
 
   return NULL; /* signifies that the search was unsuccessful */
 }
