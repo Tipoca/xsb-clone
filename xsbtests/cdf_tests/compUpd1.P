@@ -13,6 +13,7 @@
 testreturns:- 
 	load_extensional_facts('comp_testdir'),
 	load_intensional_rules('comp_testdir'),
+	load_dyn('comp_testdir/initialization_file.P'),
 	update_all_components(comp_outdir,[action(create)]).
 
 end_of_file.

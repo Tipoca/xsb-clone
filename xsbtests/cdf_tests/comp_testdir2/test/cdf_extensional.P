@@ -1,7 +1,6 @@
 isa_ext(cid(component(cid(test,test),cid(allAtoms,cdf),cid(allIntegers,cdf)),test),cid(components,cdf)).
 isa_ext(cid(compName(cid(test,test),cid(allAtoms,cdf)),test),cid(compNames,cdf)).
 isa_ext(cid(test,test),cid(componentIDs,cdf)).
-isa_ext(crid(hasPath,test),crid('CDF Class-Object Relations',cdf)).
 isa_ext(crid(hasVersion,test),crid('CDF Class-Object Relations',cdf)).
 isa_ext(crid(componentDepends,test),crid('CDF Class-Object Relations',cdf)).
 isa_ext(crid(prod(crid(s2,test),crid(s2,test)),test),crid('CDF Class-Object Relations',cdf)).
@@ -54,10 +53,9 @@ maxAttr_ext(oid(o2,test),rid(r4,test),cid(c12,test),2).
 maxAttr_ext(oid(o2,test),rid(r1,test),cid(c12,test),2).
 maxAttr_ext(cid(c2,test),rid(r2,test),oid(o12,test),2).
 maxAttr_ext(cid(c2,test),rid(r2,test),cid(c12,test),2).
-classHasAttr_ext(cid(component(cid(test,test),cid('c:\XSBNEW\tests\cdf_tests\comp_outdir2',cdfpt),cid(0,cdfpt)),test),crid(componentDepends,test),cid(component(cid(cdfpt,cdfpt),cid('',cdfpt),cid(0,cdfpt)),cdfpt)).
-classHasAttr_ext(cid(component(cid(test,test),cid('c:\XSBNEW\tests\cdf_tests\comp_outdir2',cdfpt),cid(0,cdfpt)),test),crid(componentDepends,test),cid(component(cid(cdf,cdf),cid('',cdfpt),cid(0,cdfpt)),cdf)).
-classHasAttr_ext(cid(compName(cid(test,test),cid('c:\XSBNEW\tests\cdf_tests\comp_outdir2',cdfpt)),test),crid(hasVersion,test),cid(0,cdfpt)).
-classHasAttr_ext(cid(test,test),crid(hasPath,test),cid('c:\XSBNEW\tests\cdf_tests\comp_outdir2',cdfpt)).
+classHasAttr_ext(cid(test,test),crid(componentDepends,test),cid(component(cid(cdfpt,cdfpt),cid('',cdfpt),cid(0,cdfpt)),cdfpt)).
+classHasAttr_ext(cid(test,test),crid(componentDepends,test),cid(component(cid(cdf,cdf),cid('',cdfpt),cid(0,cdfpt)),cdf)).
+classHasAttr_ext(cid(test,test),crid(hasVersion,test),cid(0,cdfpt)).
 classHasAttr_ext(cid(c2,test),crid(prod(crid(s2,test),crid(s2,test)),test),cid(c12,test)).
 classHasAttr_ext(rid(r2,test),crrid(s2,test),oid('rd ridname',test)).
 classHasAttr_ext(crid(s2,test),crcrid('Name',test),oid('s2 cridname',test)).

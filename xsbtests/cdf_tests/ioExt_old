@@ -8,11 +8,9 @@ allAttr_ext(oid(o2,test),rid(r4,test),oid(o12,test)).
 classHasAttr_ext(cid(c2,test),crid(prod(crid(s2,test),crid(s2,test)),test),cid(c12,test)).
 classHasAttr_ext(cid(c2,test),crid(s2,test),cid(c12,test)).
 classHasAttr_ext(cid(c2,test),crid(s2,test),oid(o12,test)).
-classHasAttr_ext(cid(cdf,cdf),crid(hasPath,cdf),cid('c:\XSBNEW\XSB\packages\altCDF',cdfpt)).
-classHasAttr_ext(cid(cdfpt,cdfpt),crid(hasPath,cdfpt),cid('c:\XSBNEW\XSB\packages\altCDF',cdfpt)).
-classHasAttr_ext(cid(compName(cid(cdf,cdf),cid('c:\XSBNEW\XSB\packages\altCDF',cdfpt)),cdf),crid(hasVersion,cdf),cid(0,cdfpt)).
-classHasAttr_ext(cid(compName(cid(cdfpt,cdfpt),cid('c:\XSBNEW\XSB\packages\altCDF',cdfpt)),cdfpt),crid(hasVersion,cdfpt),cid(0,cdfpt)).
-classHasAttr_ext(cid(component(cid(cdfpt,cdfpt),cid('c:\XSBNEW\XSB\packages\altCDF',cdfpt),cid(0,cdfpt)),cdfpt),crid(componentDepends,cdfpt),cid(component(cid(cdf,cdf),cid('',cdfpt),cid(0,cdfpt)),cdf)).
+classHasAttr_ext(cid(cdf,cdf),crid(hasVersion,cdf),cid(0,cdfpt)).
+classHasAttr_ext(cid(cdfpt,cdfpt),crid(hasVersion,cdfpt),cid(0,cdfpt)).
+classHasAttr_ext(cid(cdfpt,cdfpt),crid(componentDepends,cdfpt),cid(component(cid(cdf,cdf),cid('',cdfpt),cid(0,cdfpt)),cdf)).
 classHasAttr_ext(crid(s2,test),crcrid('Name',test),oid('s2 cridname',test)).
 classHasAttr_ext(rid(r2,test),crrid(s2,test),oid('rd ridname',test)).
 coversAttr_ext(cid(c2,test),rid(r2,test),cid(c12,test)).
@@ -54,8 +52,6 @@ isa_ext(crid('Description',cdf),crid('CDF Class-Object Relations',cdf)).
 isa_ext(crid('Name',cdf),crid('CDF Class-Object Relations',cdf)).
 isa_ext(crid(componentDepends,cdf),crid('CDF Class-Object Relations',cdf)).
 isa_ext(crid(componentDepends,cdfpt),crid('CDF Class-Object Relations',cdf)).
-isa_ext(crid(hasPath,cdf),crid('CDF Class-Object Relations',cdf)).
-isa_ext(crid(hasPath,cdfpt),crid('CDF Class-Object Relations',cdf)).
 isa_ext(crid(hasVersion,cdf),crid('CDF Class-Object Relations',cdf)).
 isa_ext(crid(hasVersion,cdfpt),crid('CDF Class-Object Relations',cdf)).
 isa_ext(crid(prod(crid(s2,test),crid(s2,test)),test),crid('CDF Class-Object Relations',cdf)).
