@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.48 2002-03-13 10:17:48 kifer Exp $
+## $Id: topMakefile.in,v 1.49 2002-03-13 22:29:04 lfcastro Exp $
 ## 
 ##
 
@@ -150,7 +150,11 @@ arch_config_objlibdir=$(src_config_prefix)/saved.o
 emumake_goal=@emumake_goal@
 
 # Normal user
-all: prepare emu xsbmod xsbdll gpp remake_dot_O_files configure_packages_src register emu_clean 
+all: prepare emu xsbmod xsbdll gpp remake_dot_O_files register emu_clean 
+
+# Packages
+packages: configure_packages_src
+	cd $(srcdir); make XSB=$(src_scriptdir)/xsb$(config_tag) packages
 
 # Developer who just checked out or updated CVS copy
 devel: prepare emu xsbmod xsbdll gpp remake_dot_O_files configure_packages_src emu_clean

@@ -18,12 +18,12 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.8 2001-01-26 23:56:08 lfcastro Exp $
+## $Id: Makefile,v 1.9 2002-03-13 22:28:59 lfcastro Exp $
 ## 
 ##
 
 
-SUBDIR = cmplib syslib lib packages
+SUBDIR = cmplib syslib lib
 XSB=./bin/xsb
 
 all: $(SUBDIR)
