@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.H,v 1.13 2002-03-13 10:21:51 kifer Exp $
+** $Id: flrcoder.H,v 1.14 2002-03-29 17:05:30 kifer Exp $
 **
 */
 
@@ -47,7 +47,7 @@
 	flora_firstorder_user_module_predicate_symbol/3,
 	flora_firstorder_user_module_predicate/4,
 	flora_firstorder_system_module_predicate/4,
-	flora_user_storage_name/2,
+	flora_user_fdb_storage_name/2,
 	%% Storage for skeletons of defined predicates
 	flora_user_fld_storage_name/2
    from flrwrapper.
@@ -67,13 +67,13 @@
 	is_prtable/3,
 	is_prhilogtable/2,
 	is_prthismodule/1,
-	is_prthisstorage/1,
+	is_prthisfdbstorage/1,
 	is_pratom/3,
 	is_prnumber/3,
 	is_prvariable/3,
 	is_prstring/3,
 	is_prlist/4,
-	is_prstorage/3,
+	is_prfdbstorage/3,
 	is_skolem/5,
 	is_prterm/4,
 	is_goallogic/4,
