@@ -21,14 +21,17 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.17 2003-02-01 07:36:53 kifer Exp $
+## $Id: Makefile,v 1.18 2003-06-18 07:01:29 kifer Exp $
 ## 
 ##
 
 
 FLORADIR = ..
 
-ALLOBJS = flrpatch.flh flrpreddef.flh flrindex_P.flh flrdyna.flh flrdynz.flh
+ALLOBJS = flrpatch.flh flrpreddef.flh flrindex_P.flh \
+	  flrdyna.flh flrdynz.flh \
+	  flrtable.flh flrhilogtable.flh \
+	  flrrefreshtable.flh
 
 PROLOG = none
 
@@ -37,6 +40,7 @@ PROLOG_COMMAND = $(PROLOG) -s -m 2000 -c 2000 -e 'segfault_handler(warn).'
 FLORA_INCLUDES_DIR = ../flrincludes
 
 FLORA_TERMS = $(FLORA_INCLUDES_DIR)/flora_terms.flh
+FLORA_WSPREDICATES = $(FLORA_INCLUDES_DIR)/flora_wspredicates.flh
 
 # Make sure warnings are saved in a file.
 SVFILE = '$(FLORADIR)/.flora_genincl_warn.tmp'
@@ -54,7 +58,7 @@ all: clean init $(ALLOBJS) finish
 	@cat $(SVFILE)
 
 
-%.flh: %.fli $(FLORA_TERMS)
+%.flh: %.fli $(FLORA_TERMS) $(FLORA_WSPREDICATES)
 	@echo 'flWrapAround($*).' >> cmd...
 
 

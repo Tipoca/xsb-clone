@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.13 2002-10-18 06:40:18 kifer Exp $
+** $Id: flrcompiler.H,v 1.14 2003-06-18 07:01:37 kifer Exp $
 **
 */
 
@@ -33,18 +33,14 @@
 	flora_match_substring/3
     from flrporting.
 
-:- import is_pratom/3 from flrcoder.
-
 :- import member/2, append/3, length/2 from basics.
 
 :- import sort/2, keysort/2, findall/3 from setof.
 
 :- import flora_define_operator/3 from flroperator.
 
-:- import
-	flora_argdef/3,
-	flora_define_arguments/3
-   from flrarguments.
+:- import flora_argdef/3 from flrarguments.
+%%:- import flora_define_arguments/3 from flrarguments.
 
 :- import flora_define_prolog/2 from flrprolog.
 

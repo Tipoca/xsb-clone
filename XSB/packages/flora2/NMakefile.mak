@@ -20,7 +20,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: NMakefile.mak,v 1.10 2003-02-01 07:36:55 kifer Exp $
+## $Id: NMakefile.mak,v 1.11 2003-06-18 07:01:37 kifer Exp $
 ## 
 ##
 
@@ -49,13 +49,13 @@ ALLOBJS = flrarguments$(OBJEXT) \
 	  flrundefined$(OBJEXT) \
 	  flrundefhook$(OBJEXT) \
 	  flrutils$(OBJEXT) \
-	  flrversion${OBJEXT} \
+	  flrversion$(OBJEXT) \
 	  flrwraparound$(OBJEXT) \
 	  flrwrapper$(OBJEXT)
 
 OPTIONS = [optimize]
 
-!include .prolog_path
+!INCLUDE .prolog_path_wind
 
 .SUFFIXES: $(PROLOGEXT) $(OBJEXT)
 

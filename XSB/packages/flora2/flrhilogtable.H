@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrhilogtable.H,v 1.2 2003-02-01 07:36:55 kifer Exp $
+** $Id: flrhilogtable.H,v 1.3 2003-06-18 07:01:37 kifer Exp $
 **
 */
 
@@ -34,6 +34,8 @@
 
 :- index(flora_hilogtable/2,trie).
 :- index(flora_not_tabled_head/2,trie).
+
+:- import flora_abort/0 from flrutils.
 
 :- import
 	is_prdirective/2,
@@ -52,17 +54,12 @@
    from flrporting.
 
 :- import
-	flora_error_line/1,
-	flora_error_line/2
+	flora_error_line/1
    from flrprint.
 
 :- import
 	flora_storage_check_module_name/1
-   from flrstorage.
-
-:- import
-	flora_module_registry/1
-   from flrregistry.
+   from flrstorageutils.
 
 :- export
 	flora_hilogtable/2,
