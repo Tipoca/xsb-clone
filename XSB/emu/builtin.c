@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.177 2004-04-12 13:08:00 dwarren Exp $
+** $Id: builtin.c,v 1.178 2004-05-03 21:55:40 dwarren Exp $
 ** 
 */
 
@@ -895,6 +895,9 @@ inline static int abolish_table_predicate(Psc psc)
   if ( IsNULL(tif) )
     xsb_abort("[abolish_table] Attempt to delete untabled predicate (%s/%d)\n",
 	      get_name(psc), get_arity(psc));
+
+  if (IsVariantPredicate(tif) && IsNULL(TIF_CallTrie(tif))) 
+    return 1;
 
   if ( ! is_completed_table(tif) )
     return 0;
@@ -2658,7 +2661,8 @@ int print_xsb_backtrace() {
     tmp_breg = breg;
     while (tmp_breg && tmp_breg != cp_prevbreg(tmp_breg)) {
       tmp_psc = psc_from_code_addr(cp_pcreg(tmp_breg));
-      if (tmp_psc) printf("... %s/%d,  pc=%p\n",get_name(tmp_psc),get_arity(tmp_psc),cp_pcreg(tmp_breg));
+      if (tmp_psc) printf("... %s/%d,  pc=%p, hreg=%p\n",
+			  get_name(tmp_psc),get_arity(tmp_psc),cp_pcreg(tmp_breg),cp_hreg(tmp_breg));
       else printf("... unknown/?,  i=%x, pc=%p\n",*cp_pcreg(tmp_breg),cp_pcreg(tmp_breg));
       tmp_breg = cp_prevbreg(tmp_breg);
     }
