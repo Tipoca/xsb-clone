@@ -2,7 +2,7 @@
 ** Author(s): Baoqiu Cui
 ** 
 ** Some tests for tabled attributed variables.
-** $Id: tabled_attv.P,v 1.1 1999-10-27 02:39:46 cbaoqiu Exp $
+** $Id: tabled_attv.P,v 1.2 1999-11-14 17:58:44 cbaoqiu Exp $
 */
 
 :- import put_attributes/2, get_attributes/3 from machine.
@@ -15,6 +15,12 @@ test :-
 	test_data_backtrack,
 	writeln('PASSED tabled_attv').
 
+
+verify_attributes(Var, Value) :-
+	% write('  -- verify: '), writeln(Var-Value),
+	attv_unify(Var, Value).
+
+
 :- table p/3.
 
 test_table1 :-
@@ -26,6 +32,7 @@ test_table1 :-
 	Y = X,
 	put_attributes(Z, vz(1)),
 	p(X, f(Y,Z), W),
+	call(true),				% to be removed (???)
 	get_attributes(Z, VZ, _), VZ = vz(5,5,5,5,5),
 	X == Y,
 	get_attributes(W, VW, _), VW = vw(1),
@@ -56,6 +63,7 @@ test_table2 :-
 	put_attributes(A2, v2(2)),
 	put_attributes(A3, v3(3)),
 	p(X, A1, A2, A3, A2),
+	call(true),				% to be removed (???)
 	X = f(A1, A2, A3, A4, New),
 	A1 == 5,
 	get_attributes(A4, V2, _), nonvar(V2), V2 = v2(22),
@@ -69,6 +77,7 @@ test_table2 :-
 	put_attributes(A2, v2(2)),
 	put_attributes(A3, v3(3)),
 	p(X, A1, A2, A3, A2),
+	call(true),				% to be removed (???)
 	X = f(A1, A2, A3, A4, New),
 	A1 == 5,
 	get_attributes(A4, V2, _), nonvar(V2), V2 = v2(22),
@@ -96,6 +105,7 @@ test_data_backtrack :-
 	put_attributes(A2, v(2)),
 	put_attributes(A3, v(3)),
 	p4(A1,A2,A3),
+	call(true),				% to be removed (???)
 	nonvar(A1), A1 = f(X,2,Y),
 	nonvar(A2), A2 = 'string',
 	nonvar(A3), A3 = [A,b,C], A == X, C == Y,
@@ -112,6 +122,7 @@ test_data_backtrack_1 :-
 	put_attributes(A2, v(2)),
 	put_attributes(A3, v(3)),
 	p4(A1,A2,A3),
+	call(true),				% to be removed (???)
 	nonvar(A1), A1 = f(X,2,Y),
 	nonvar(A2), A2 = 'string',
 	nonvar(A3), A3 = [A,b,C], A == X, C == Y,
@@ -121,6 +132,7 @@ test_data_backtrack_2 :-
 	put_attributes(A2, v(2)),
 	put_attributes(A3, v(3)),
 	p4(A1,A2,A3),
+	call(true),				% to be removed (???)
 	get_attributes(A1, V11, _), nonvar(V11), V11 = v(11),
 	get_attributes(A2, V22, _), nonvar(V22), V22 = v(22),
 	get_attributes(A3, V33, _), nonvar(V33), V33 = v(33),
@@ -130,6 +142,7 @@ test_data_backtrack_3 :-
 	put_attributes(A2, v(2)),
 	put_attributes(A3, v(3)),
 	p4(A1, A2, A3),
+	call(true),				% to be removed (???)
 	get_attributes(A1, V111, _), nonvar(V111), V111 = v(111),
 	get_attributes(A2, V222, _), nonvar(V222), V222 = v(222),
 	get_attributes(A3, V333, _), nonvar(V333), V333 = v(333),
