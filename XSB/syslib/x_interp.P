@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.36 2000/06/17 23:28:53 kifer Exp $
+** $Id: x_interp.P,v 1.37 2000/12/27 00:30:05 kifer Exp $
 ** 
 */
 
@@ -116,13 +116,13 @@ interpreter1 :-
 	).
 
 read_in_stop(halt) :-          %% quit XSB, regardless of break level
-	call_xsb_hook(xsb_exit_hook(_)),
+	call_xsb_hook(xsb_exit_hook(_),all),
 	halt.
 read_in_stop(end_of_file) :-   %% pop a break level, out if at top
 	%% if we previously pushed an input stream onto cmd_line_argument stack
 	%% then pop it back and make this stream current
 	(pop_stdin(cmd_line_argument) ->  fail
-	; call_xsb_hook(xsb_exit_hook(_))
+	; call_xsb_hook(xsb_exit_hook(_),all)
 	).
 
 

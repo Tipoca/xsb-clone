@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.23 2000/05/06 21:22:48 kifer Exp $
+** $Id: x_interp.H,v 1.24 2000/12/27 00:30:05 kifer Exp $
 ** 
 */
 
@@ -49,6 +49,6 @@
     from file_io.
 :- import push_stdin/2, pop_stdin/1 from push_io.
 :- import retractall/1 from assert.
-:- import call_xsb_hook/1, xsb_exit_hook/1 from xsb_hook.
+:- import call_xsb_hook/2, xsb_exit_hook/1 from xsb_hook.
 :- import verify_attributes/2 from usermod.
 :- import conset/2, conget/2 from gensym.

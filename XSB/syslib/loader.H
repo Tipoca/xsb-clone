@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.9 1999/10/17 00:13:48 kifer Exp $
+** $Id: loader.H,v 1.10 1999/11/20 06:52:02 kifer Exp $
 ** 
 */
 
@@ -42,4 +42,5 @@
 	  unload_seg/1, machine_file_exists/1, call0/1,
 	  formatted_io/5, slash/1, dirname_canonic/2
    from machine.
+:- import call_xsb_hook/3 from xsb_hook.
 
