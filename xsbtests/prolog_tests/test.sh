@@ -62,6 +62,12 @@ options=$2
 # Test write_term library
 #------------------------------------
 ../gentest.sh "$XEMU $options" wttest "test."
+
+#------------------------------------
+# Rare specialization bug test
+#------------------------------------
+../gentest.sh "$XEMU $options" spec_tbl_fold_bug "test."
+
 #------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
 #------------------------------------------------------------------------
