@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dcg.P,v 1.9 2000/07/07 20:52:22 dwarren Exp $
+** $Id: dcg.P,v 1.10 2001/04/17 21:43:31 dwarren Exp $
 ** 
 */
 
@@ -65,6 +65,9 @@ reset_dcg_mode :-
 
 tphrase_set_string(List) :-
 	abolish_all_tables,   % since changing EDB tables depend on.
+	tphrase_set_string_keeping_tables(List).
+
+tphrase_set_string_keeping_tables(List) :-
 	retractall(word(_,_,_)),
 	retractall(num_words(_)),
 	assert_word_list(List,0,N),
