@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.2 1999-06-22 18:24:29 kifer Exp $
+** $Id: flrcompiler.H,v 1.3 1999-07-26 03:52:29 kifer Exp $
 **
 */
 
@@ -28,9 +28,6 @@
 	member/2, append/3, length/2
    from basics.
 
-:- import
-	atom_codes/2, number_codes/2
-   from standard.
 
 :- import fmt_write_string/3 from file_io.
 

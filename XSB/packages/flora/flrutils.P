@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.22 1999-07-26 01:46:22 guizyang Exp $
+** $Id: flrutils.P,v 1.23 1999-07-26 03:52:30 kifer Exp $
 **
 */
 
@@ -465,8 +465,7 @@ write_list([X1,X2|Xs]) :-
 generate_code(LoadMode,Directives,FlrFile,PFile,MaxErr,Status) :-
 	displayln, flora_msgheader,
 	display('compiling '), display(FlrFile),
-	(LoadMode == static_mode -> Str="static" ; Str="dynamic"),
-	atom_codes(A,Str),
+	(LoadMode == static_mode -> A = static ; A = (dynamic)),
 	display(' to '), display(A), display(' code with options: '),
 	telling(F), tell(userout), write_list(Directives), tell(F),
 	displayln(']'),
