@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.41 2002-03-15 08:09:42 kifer Exp $
+## $Id: Makefile,v 1.42 2003-09-29 13:05:13 tschrijvers Exp $
 ## 
 ##
 
@@ -33,7 +33,10 @@ ALL = 	aggregs${OBJEXT} array${OBJEXT} array1${OBJEXT} assoc_xsb${OBJEXT} \
 	packaging${OBJEXT} random${OBJEXT} scrptutl${OBJEXT} \
 	socket${OBJEXT} storage${OBJEXT} \
 	ugraphs${OBJEXT} wrapping${OBJEXT} write_term${OBJEXT} \
-	xsb_ciao${OBJEXT} xnmr${OBJEXT} justifyLP${OBJEXT}
+	xsb_ciao${OBJEXT} xnmr${OBJEXT} justifyLP${OBJEXT} \
+	lists${OBJEXT} pairlist${OBJEXT} pretty_print${OBJEXT} \
+	globalvar${OBJEXT} mutablevar${OBJEXT} \
+	chr${OBJEXT} chr_pp${OBJEXT}
 
 EMU_INCLUDES = ../emu/builtin.h ../emu/celltags_xsb.h ../emu/flag_defs_xsb.h \
 	../emu/io_defs_xsb.h ../emu/syscall_xsb.h ../emu/sig_xsb.h \

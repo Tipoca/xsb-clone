@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify_xsb.h,v 1.4 2002-05-31 15:09:04 lfcastro Exp $
+** $Id: unify_xsb.h,v 1.5 2003-09-29 13:05:12 tschrijvers Exp $
 ** 
 */
 
@@ -125,19 +125,22 @@
  loc##_label_op1_attv:                                       \
   if (isattv(op2)) goto loc##_label_both_attv;               \
   attv_dbgmsg(">>>> ATTV = something, interrupt needed\n");  \
-  add_interrupt(op1, op2);                                   \
+  add_interrupt(cell(((CPtr)dec_addr(op1) + 1)),op2);        \
+  bind_copy((CPtr)dec_addr(op1), op2);                       \
   IFTHEN_SUCCEED;                                            \
                                                              \
  loc##_label_op2_attv:                                       \
   attv_dbgmsg(">>>> something = ATTV, interrupt needed\n");  \
-  add_interrupt(op2, op1);                                   \
+  add_interrupt(cell(((CPtr)dec_addr(op2) + 1)),op1);        \
+  bind_copy((CPtr)dec_addr(op2), op1);                       \
   IFTHEN_SUCCEED;                                            \
                                                              \
  loc##_label_both_attv:                                      \
   if (op1 != op2)                                            \
     {                                                        \
       attv_dbgmsg(">>>> ATTV = ???, interrupt needed\n");    \
-      add_interrupt(op1, op2);                               \
+      add_interrupt(cell(((CPtr)dec_addr(op1) + 1)),op2);    \
+      bind_copy((CPtr)dec_addr(op1), op2);                   \
     }                                                        \
   IFTHEN_SUCCEED
 

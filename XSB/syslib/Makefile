@@ -19,13 +19,13 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.44 2002/08/27 20:06:57 tswift Exp $
+## $Id: Makefile,v 1.45.2.1 2003/09/26 12:15:43 tschrijvers Exp $
 ## 
 ##
 
 OBJEXT=.xwam
 
-ALL =	assert${OBJEXT} atts${OBJEXT} basics${OBJEXT} consult${OBJEXT} \
+ALL =	assert${OBJEXT} basics${OBJEXT} consult${OBJEXT} \
 	banner${OBJEXT} \
 	curr_sym${OBJEXT} dbclause${OBJEXT} \
 	dcg${OBJEXT} debugger${OBJEXT} domain${OBJEXT}\
