@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.7 2001-04-08 23:51:42 gzyang Exp $
+## $Id: Makefile,v 1.8 2001-04-24 04:49:25 kifer Exp $
 ## 
 ##
 
@@ -44,6 +44,7 @@ ALLOBJS = flranswer.O \
 	  flrshdirect.O \
 	  flrdynmod.O \
 	  flrequality.O \
+	  flrimport.O \
 	  flrabolish.O
 
 EMU_INCLUDES = $(XSBDIR)/emu/builtin.h \
@@ -58,9 +59,11 @@ XSB_STANDARD = $(XSBDIR)/prolog_includes/standard.h
 XSB_EMU_FLAG_DEFS = $(XSBDIR)/emu/flag_defs_xsb.h
 
 FLORA_INCLUDES_DIR = ../flrincludes
+DYN_INCLUDES_DIR = ../includes
 
 FLORA_TERMS = $(FLORA_INCLUDES_DIR)/flora_terms.flh
 FLORA_ERRORS = $(FLORA_INCLUDES_DIR)/flora_errors.flh
+FLRHEADER = $(DYN_INCLUDES_DIR)/flrheader.flh
 
 
 OPTION = [optimize]
@@ -145,6 +148,9 @@ flrdynmod.O : flrdynmod.P $(FLORA_TERMS)
 
 flrequality.O : flrequality.P $(FLORA_TERMS)
 	@echo 'mc(flrequality,$(OPTION)).' >> cmd...
+
+flrimport.O: flrimport.P $(FLORA_TERMS) $(FLRHEADER)
+	@echo 'mc(flrimport,$(OPTION)).' >> cmd...
 
 
 flrabolish.O : flrabolish.P $(FLORA_TERMS)

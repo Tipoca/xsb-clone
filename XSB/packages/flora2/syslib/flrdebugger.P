@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdebugger.P,v 1.1 2001-04-21 22:53:30 kifer Exp $
+** $Id: flrdebugger.P,v 1.2 2001-04-24 04:49:25 kifer Exp $
 ** 
 */
 
 :- compiler_options([xpp_on]).
 #include "standard.h"
 
-#include "flora_prefix.h"
+#include "flrheader.flh
 
 
 
