@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdisplay.P,v 1.3 2001-03-20 06:26:47 gzyang Exp $
+** $Id: flrdisplay.P,v 1.4 2001-04-02 21:51:38 gzyang Exp $
 ** 
 */
 
@@ -28,11 +28,20 @@
 :- compiler_options([xpp_on]).
 
 #include "flora_terms.flh"
+#include "standard.h"
 
 
 :- import file_write/2 from xsb_writ.
 
-:- export flora_write/2.
+:- export
+	flora_stderr_write/1,
+	flora_stdfdbk_write/1,
+	flora_write/2.
+
+
+/********************************************************************/
+flora_stderr_write(X) :- flora_write(STDERR,X).
+flora_stdfdbk_write(X) :- flora_write(STDFDBK,X).
 
 
 /********************************************************************/

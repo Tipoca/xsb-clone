@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 2001-03-22 16:20:05 gzyang Exp $
+## $Id: Makefile,v 1.6 2001-04-02 21:51:51 gzyang Exp $
 ## 
 ##
 
@@ -121,6 +121,10 @@ init:
 
 finish:
 	@echo 'fmt_write($(STDWARN),"-------------------- End --------------------------\n",_).' >> cmd...
+
+
+clean:
+	/bin/rm -f *~ *.P *.O *.flh
 
 
 .DONE:

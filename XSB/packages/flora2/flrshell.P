@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.19 2001-03-25 00:13:34 gzyang Exp $
+** $Id: flrshell.P,v 1.20 2001-04-02 21:49:46 gzyang Exp $
 **
 */
 
@@ -171,7 +171,7 @@ reset(X) :-
 	fail.
 
 reset(FL_PROLOG) :- !, flora_shreset_prolog.
-reset(FL_NOHILOG) :- !, flora_shreset_nohilog.
+reset(FL_PREDICATE) :- !, flora_shreset_nohilog.
 reset(FL_SIGNATURE) :- !, flora_shreset_signature.
 reset(FL_OP) :- !, flora_shreset_operator.
 

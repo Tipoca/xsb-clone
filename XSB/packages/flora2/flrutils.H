@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.10 2001-03-26 17:50:16 gzyang Exp $
+** $Id: flrutils.H,v 1.11 2001-04-02 21:49:46 gzyang Exp $
 **
 */
 
@@ -130,7 +130,7 @@
 	flora_message_line/2
    from flrprint.
 
-:- import flora_write/2 from flrdisplay.
+:- import flora_stderr_write/1 from flrdisplay.
 
 :- import flora_include/2 from flrlibman.
 

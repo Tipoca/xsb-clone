@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.10 2001-03-23 18:53:51 gzyang Exp $
+## $Id: Makefile,v 1.11 2001-04-02 21:50:50 gzyang Exp $
 ## 
 ##
 
@@ -75,7 +75,7 @@ flrdbdyn.flh : flrdbdyn.fli flrpred.fli
 	@echo 'flCompileInclude(flrdbdyn).' >> cmd...
 
 
-flrpatch.flh : flrpatch.fli flrpred.fli $(FLORA_TERMS)
+flrpatch.flh : flrpatch.fli $(FLORA_TERMS)
 	@echo 'flCompileInclude(flrpatch).' >> cmd...
 
 
@@ -94,6 +94,10 @@ init:
 
 finish:
 	@echo 'fmt_write($(STDWARN),"-------------------- End --------------------------\n",_).' >> cmd...
+
+
+clean:
+	/bin/rm -f *~ *.flh
 
 
 .DONE:
