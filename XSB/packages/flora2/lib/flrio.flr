@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrio.flr,v 1.4 2001-08-06 06:12:06 kifer Exp $
+** $Id: flrio.flr,v 1.5 2001-12-19 08:14:54 kifer Exp $
 **
 */
 
@@ -84,13 +84,13 @@ Filehandle[#readline(atom,String)] :-
 Filehandle[#readline(charlist,String)] :-
 	!, file_read_line_list(Filehandle,String)@prolog(file_io).
 _Filehandle[#readline(Request,_)] :- 
-	abort(('Invalid readline format, ', Request))@prolog().
+	abort(('Invalid readline format, ', Request))@flora(sys).
 readline(atom,String) :-
 	!, file_read_line_atom(String)@prolog(file_io).
 readline(charlist,String) :-
 	!, file_read_line_list(String)@prolog(file_io).
 readline(Request,_) :- 
-	abort(('Invalid readline format, ', Request))@prolog().
+	abort(('Invalid readline format, ', Request))@flora(sys).
 
 
 %%%%%%%%%%%%%%%%%%%%
