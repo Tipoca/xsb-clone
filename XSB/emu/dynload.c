@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynload.c,v 1.2 1998-11-19 05:24:21 kifer Exp $
+** $Id: dynload.c,v 1.3 1999-04-19 15:39:19 luis Exp $
 ** 
 */
 
@@ -38,6 +38,10 @@ extern char executable[];        /* from self_orientation.c */
 #else
 #ifdef FOREIGN_AOUT
 #include "dynaout.i"
+#else
+#ifdef FOREIGN_WIN32
+#include "dynwin32.i"
+#endif /* FOREIGN_WIN32 */
 #endif /* FOREIGN_AOUT */
 #endif /* FOREIGN_ELF */
 #endif /* FOREIGN_COFF */
