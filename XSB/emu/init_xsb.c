@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.30 2003-04-16 17:34:06 lfcastro Exp $
+** $Id: init_xsb.c,v 1.31 2003-06-18 16:32:09 lfcastro Exp $
 ** 
 */
 
@@ -760,6 +760,8 @@ void init_symbols(void)
   temp = insert("true", 0, global_mod, &new_indicator);
   true_psc = pair_psc(temp);
   true_sym = get_name(true_psc);
+  /* initialize data field of 'true's Psc to point to usermod */
+  set_data(true_psc, global_mod);
   /* create code for true/0 */
   {
     CPtr p;

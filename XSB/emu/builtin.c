@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.159 2003-06-18 16:06:34 lfcastro Exp $
+** $Id: builtin.c,v 1.160 2003-06-18 16:32:09 lfcastro Exp $
 ** 
 */
 
@@ -991,11 +991,15 @@ int builtin_call(byte number)
   case PSC_PROP: {	/* R1: +PSC; R2: -term */
 			/* prop: as a buffer pointer */
     Psc psc = (Psc)ptoc_addr(1);
+    if (get_type(psc) == T_PRED || get_type(psc) == T_DYNA)
+      xsb_abort("[psc_prop/2] Cannot get property of predicate.\n");
     ctop_int(2, (Integer)get_data(psc));
     break;
   }
   case PSC_SET_PROP: {	       /* R1: +PSC; R2: +int */
     Psc psc = (Psc)ptoc_addr(1);
+    if (get_type(psc) == T_PRED)
+      xsb_abort("[psc_set_prop/2] Cannot set property of predicate.\n");
     set_data(psc, (Psc)ptoc_int(2));
     break;
   }
