@@ -1,7 +1,7 @@
 /* File:      general.P
 ** Author(s): Baoqiu Cui
 **
-** $Id: general.P,v 1.3 2000-07-31 20:34:35 ejohnson Exp $
+** $Id: general.P,v 1.4 2000-08-05 08:35:32 cbaoqiu Exp $
 */
 
 :- import put_atts/2, get_atts/2 from atts.
@@ -12,8 +12,6 @@
 test :-
 	test1,
 	test2.
-
-verify_attributes(_,_).
 
 %-----------------------------------------------------------------------
 % test1: one attv contains two normal vars, so in total there
