@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prolog2hilog.c,v 1.1 2001-03-24 23:40:25 kifer Exp $
+** $Id: prolog2hilog.c,v 1.2 2001-06-07 08:46:09 kifer Exp $
 ** 
 */
 
@@ -106,6 +106,7 @@ xsbBool plg2hlg () {
 	  c2p_string(apply_h, apply_t); /* arg 3 gets the value of apply_h */
 	return p2p_unify(pterm, temp_pterm);
       } else if (is_string(apply_t)) {
+	printf("apply_h=%s apply_t=%s\n",apply_h,string_val(apply_t));
 	return (p2p_unify(pterm, temp_pterm)
 		&& (apply_h==NULL
 		    || strcmp(apply_h,string_val(apply_t))==0));
