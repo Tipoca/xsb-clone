@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.13 2005-02-04 20:02:15 dwarren Exp $
+** $Id: memory_xsb.c,v 1.14 2005-02-04 21:50:24 dwarren Exp $
 ** 
 */
 
@@ -62,7 +62,7 @@
 
 #if defined(GENERAL_TAGGING)
 extern long int next_free_code;
-extern Integer enc[], dec[];
+extern unsigned long enc[], dec[];
 
 void extend_enc_dec_as_nec(void *lptr, void *hptr) {
     unsigned long nibble;
