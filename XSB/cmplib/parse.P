@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.46 2003-04-18 20:51:58 lfcastro Exp $
+** $Id: parse.P,v 1.47 2003-05-13 17:08:04 lfcastro Exp $
 ** 
 */
 
@@ -80,11 +80,14 @@ parse1(Modname, File, Module) :-
 	(
 	    XPP_process == none, ! 
 	;   %% Wait, if cpp was spawned so as to not leave zombies
-	    process_control(XPP_process, wait(XPP_status)),
-	    (XPP_status == 0, !
-	    ; error(('While preprocessing ', File,
-		     '. Compilation aborted.')),
-		fail
+	    (   xsb_configuration(host_os,windows)
+	    -> (process_control(XPP_process,kill);true)
+	    ;  process_control(XPP_process, wait(XPP_status)),
+ 	       (   XPP_status == 0, !
+ 	       ;   error(('While preprocessing ', File,
+			  '. Compilation aborted.')),
+		   fail
+	       )
 	    ),
 	    %% Also, release the file descriptor used to read from cpp
 	    current_input_port(FromPort), file_close(FromPort),
