@@ -21,38 +21,38 @@
 xsb_port(6022).
 
 server :-
-  socket(Sockfd0, ErrCode),
-  (ErrCode =\= SOCK_OK
-  -> writeln('Cannot open socket'), socket_close(Sockfd0,_), fail
-  ; true),
-  writeln(socket(sockfd0, ErrCode)),
-  socket_set_option(Sockfd0,linger,SOCK_NOLINGER),
-  xsb_port(XSBPort),
-  tryN(4,
-       socket_bind(Sockfd0, XSBPort, ErrBind),
-       writeln(socket_bind(sockfd0, XSBPort, ErrBind)),
-       (writeln('Cannot bind...'), socket_close(Sockfd0,_)),
-       ErrBind
-      ),
-
-  socket_listen(Sockfd0,Q_LENGTH, ErrListen),
-  writeln(socket_listen(sockfd0,Q_LENGTH, ErrListen)),
-
-  tryN(4,
-       socket_accept(Sockfd0, Sockfd0_out1, ErrorCode),
-       writeln(socket_accept1(sockfd0, sockfd0_out1, ErrorCode)),
-       (writeln('Cannot accept connection1'),
-	   socket_close(Sockfd0,_), socket_close(sockfd0_out1,_)),
-       ErrorCode
-      ),
-  tryN(4,
-       socket_accept(Sockfd0, Sockfd0_out2, ErrorCode2), 
-       writeln(socket_accept(sockfd0, sockfd0_out2, ErrorCode2)),
-       (writeln('Cannot accept connection2'),
-	   socket_close(Sockfd0,_), socket_close(Sockfd0_out2,_)),
-       ErrorCode2
-      ),
-  server_loop(Sockfd0_out1, Sockfd0_out2, Sockfd0).
+	socket(Sockfd0, ErrCode),
+	(ErrCode =\= SOCK_OK
+	-> writeln('Cannot open socket'), fail
+	; true),
+	writeln(socket(sockfd0, ErrCode)),
+	socket_set_option(Sockfd0,linger,SOCK_NOLINGER),
+	xsb_port(XSBPort),
+	tryN(4,
+	     socket_bind(Sockfd0, XSBPort, ErrBind),
+	     writeln(socket_bind(sockfd0, XSBPort, ErrBind)),
+	     (writeln('Cannot bind...'), socket_close(Sockfd0,_)),
+	     ErrBind
+	    ),
+	
+	socket_listen(Sockfd0,Q_LENGTH, ErrListen),
+	writeln(socket_listen(sockfd0,Q_LENGTH, ErrListen)),
+	
+	tryN(4,
+	     socket_accept(Sockfd0, Sockfd0_out1, ErrorCode),
+	     writeln(socket_accept1(sockfd0, sockfd0_out1, ErrorCode)),
+	     (writeln('Cannot accept connection1'),
+		 socket_close(Sockfd0,_), socket_close(sockfd0_out1,_)),
+	     ErrorCode
+	    ),
+	tryN(4,
+	     socket_accept(Sockfd0, Sockfd0_out2, ErrorCode2), 
+	     writeln(socket_accept(sockfd0, sockfd0_out2, ErrorCode2)),
+	     (writeln('Cannot accept connection2'),
+		 socket_close(Sockfd0,_), socket_close(Sockfd0_out2,_)),
+	     ErrorCode2
+	    ),
+	server_loop(Sockfd0_out1, Sockfd0_out2, Sockfd0).
 
 
 

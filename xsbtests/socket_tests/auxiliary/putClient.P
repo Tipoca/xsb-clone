@@ -25,8 +25,7 @@ client :-
 	writeln('started client...'),
 	socket(Sockfd0, ErrCode),
 	(ErrCode =\= SOCK_OK
-	-> writeln('Cannot open write socket to server.'),
-	    socket_close(Sockfd0,_), fail
+	-> writeln('Cannot open write socket to server.'), fail
 	; true),
 	socket_set_option(Sockfd0,linger,SOCK_NOLINGER),
 	machine(IPAddrOrHostname),
@@ -42,7 +41,7 @@ client :-
 	socket(Sockfd1, Error2),
 	(Error2 =\= SOCK_OK
 	-> writeln('Cannot read from the server'),
-	    socket_close(Sockfd1,_), fail
+	    socket_close(Sockfd0,_), fail
 	; true),
 	socket_set_option(Sockfd1,linger,SOCK_NOLINGER),
 	set_timer(5),
@@ -61,7 +60,7 @@ client_loop(Sockfd0, Sockfd1) :-
   %%write('Please enter a character or an ASCII code. ^D terminates: '),
   get0(Char),
   %%writeln(Char),
-  ((Char == CH_EOF_P; Char == CH_EOF_C) ->
+  ((Char == CH_EOF_P; Char == 4; Char == CH_EOF_C) ->
       !,
       socket_put(Sockfd0, CH_EOF_C,_),
       socket_close(Sockfd0, _),
