@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.4 2001-02-19 19:01:04 gzyang Exp $
+** $Id: flrshell.H,v 1.5 2001-02-20 22:55:49 gzyang Exp $
 **
 */
 
@@ -45,6 +45,8 @@
 :- import fmt_write_string/3 from file_io.
 
 :- import slash/1 from machine.
+
+:- import cwd/1, cd/1 from shell.
 
 :- import package_configuration/2 from packaging.
 
