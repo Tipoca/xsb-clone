@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.3 2000-07-25 20:45:59 ejohnson Exp $
+** $Id: struct_manager.h,v 1.4 2000-10-05 17:23:17 ejohnson Exp $
 ** 
 */
 
@@ -175,7 +175,9 @@ typedef struct Structure_Manager {
 extern void smPrint(Structure_Manager, char *);
 extern void smAllocateBlock(Structure_Manager *);
 extern void smFreeBlocks(Structure_Manager *);
-extern xsbBool smIsValidStructRef(Structure_Manager *, void *);
+extern xsbBool smIsValidStructRef(Structure_Manager, void *);
+extern xsbBool smIsAllocatedStruct(Structure_Manager, void *);
+extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 

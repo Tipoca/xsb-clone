@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.12 2000/07/14 16:19:13 lfcastro Exp $
+** $Id: slginsts_xsb_i.h,v 1.13 2000/07/31 20:27:56 ejohnson Exp $
 ** 
 */
 
@@ -465,8 +465,7 @@ XSB_Start_Instr(answer_return,_answer_return); {
  *    information necessary to perform this Answer Check/Insert operation
  *    is saved in the producer's choice point frame.  This structure can be
  *    reached through the subgoal frame, which is noted in the first
- *    environment variable.  Upon derivation of the first answer, all
- *    negation suspensions of the subgoal are abolished.
+ *    environment variable.
  */
 
 XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc); {

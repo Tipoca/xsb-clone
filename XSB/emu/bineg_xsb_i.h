@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.8 2000-09-28 21:31:01 ejohnson Exp $
+** $Id: bineg_xsb_i.h,v 1.9 2000-10-05 17:23:14 ejohnson Exp $
 ** 
 */
 
@@ -56,9 +56,9 @@ case IS_INCOMPLETE: {
   VariantSF producerSF = ptoc_addr(regSubgoalFrame);
   CPtr t_ptcp = ptoc_addr(regRootSubgoal);
 
-  if ( ! smIsValidStructRef(&smVarSF,producerSF) &&
-       ! smIsValidStructRef(&smProdSF,producerSF) &&
-       ! smIsValidStructRef(&smConsSF,producerSF) )
+  if ( ! smIsValidStructRef(smVarSF,producerSF) &&
+       ! smIsValidStructRef(smProdSF,producerSF) &&
+       ! smIsValidStructRef(smConsSF,producerSF) )
     xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
 	      regSubgoalFrame, BuiltinName(IS_INCOMPLETE), Arity);
 

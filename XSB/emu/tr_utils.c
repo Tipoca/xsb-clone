@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.54 2000/09/27 22:09:06 lfcastro Exp $
+** $Id: tr_utils.c,v 1.55 2000/09/28 21:31:04 ejohnson Exp $
 ** 
 */
 
@@ -141,6 +141,22 @@ SubProdSF get_subsumer_sf(Cell callTerm, TIFptr pTIF) {
     return ( conssf_producer(sf) );
 }
   
+/*----------------------------------------------------------------------*/
+
+BTNptr get_trie_root(BTNptr node) {
+
+  while ( IsNonNULL(node) ) {
+    if ( IsTrieRoot(node) )
+      return node;
+    node = BTN_Parent(node);
+  }
+  /*
+   * If the trie is constructed correctly, processing will not reach
+   * here, other than if 'node' was originally NULL.
+   */
+  return NULL;
+}
+
 /*----------------------------------------------------------------------*/
 
 /*
@@ -707,10 +723,6 @@ void delete_trie(BTNptr iroot) {
  * the node as deleted and changes the try instruction to fail.
  * The deleted node is then linked into the del_nodes_list
  * in the completion stack.
- *
- * Problems: there is no check whether the node is actually in the given
- *   subgoal frame, nor whether the node has been previously deleted.
- *   Some notion of success or failure would help this latter problem.
  */
 void delete_return(BTNptr l, VariantSF sg_frame) 
 {
