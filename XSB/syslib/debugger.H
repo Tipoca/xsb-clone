@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.H,v 1.13 2000/03/01 16:23:25 dwarren Exp $
+** $Id: debugger.H,v 1.14 2000/12/27 00:26:43 kifer Exp $
 ** 
 */
 
@@ -66,7 +66,7 @@
    from usermod.
 :- import xsb_configuration/2 from xsb_configuration.
 
-:- import fmt_write_string/3 from file_io.
+:- import fmt_write_string/3, file_flush/2 from file_io.
 :- import file_get/2, file_put/2, file_flush/2 from file_io.
 :- import file_reopen/4, file_clone/3 from file_io.
 
