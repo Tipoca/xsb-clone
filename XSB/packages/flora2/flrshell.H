@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.2 2001-01-09 01:33:55 gzyang Exp $
+** $Id: flrshell.H,v 1.3 2001-01-10 03:50:32 gzyang Exp $
 **
 */
 
@@ -54,6 +54,14 @@
 
 :- import unstrap_flora/0 from flora2.
 
+:- import flora_shreset_operator/0 from flroperator.
+
+:- import flora_shreset_signature/0 from flrsignature.
+
+:- import flora_shreset_prolog/0 from flrprolog.
+
+:- import flora_shreset_nohilog/0 from flrnohilog.
+
 :- import flora_load_library/1 from flrlibman.
 
 :- import
@@ -61,7 +69,8 @@
 	flora_stdmsg_line/1,
 	flora_stdmsg_string/2,
 	flora_stdfdbk_line/0,
-	flora_stdfdbk_string/1
+	flora_stdfdbk_string/1,
+	flora_error_line/1
    from flrprint.
 
 :- import
