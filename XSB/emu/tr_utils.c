@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.12 1999/02/23 10:50:43 kostis Exp $
+** $Id: tr_utils.c,v 1.13 1999/03/27 09:33:09 workflow Exp $
 ** 
 */
 
@@ -69,16 +69,6 @@ extern Cell ptoc_tag(int);
 #ifdef DEBUG
 extern void printterm(Cell, byte, int);
 #endif
-
-/*----------------------------------------------------------------------*/
-
-void trie_node_element(void)
-{
-  NODEptr i;
-
-  i = (NODEptr) ptoc_int(1);
-  ctop_int(2, (Integer)Child(i));
-}
 
 /*----------------------------------------------------------------------*/
 
@@ -338,6 +328,8 @@ void delete_table_trie(NODEptr x)
   struct HASHhdr *thdr;
   NODEptr node, rnod; 
 
+  if (x == NULL) return;
+
   push_node(x);
   while (node_stk_top != 0) {
     pop_node(node);
@@ -394,15 +386,6 @@ void delete_table_trie(NODEptr x)
     }
     free_node(node);
   }
-}
-
-/*----------------------------------------------------------------------*/
-
-void delete_predicate_table(void)
-{
-/* r1 contains pointer to node that is root of call trie to free */ 
-
-  delete_table_trie(((NODEptr)ptoc_int(1)));
 }
 
 /*----------------------------------------------------------------------*/

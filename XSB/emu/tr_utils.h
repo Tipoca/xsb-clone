@@ -18,15 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.8 1999-02-22 16:56:56 workflow Exp $
+** $Id: tr_utils.h,v 1.9 1999-04-13 17:24:51 kostis Exp $
 ** 
 */
 
 
 extern void breg_retskel(void);
-extern void trie_node_element(void);
 extern void construct_ret_for_call(void);
-extern void delete_predicate_table(void);
+extern void delete_table_trie(NODEptr);
 extern void reclaim_del_ret_list(SGFrame);
 extern void delete_return(NODEptr, SGFrame);
 extern void reclaim_ans_list_nodes(SGFrame);

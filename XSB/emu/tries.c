@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.12 1999-02-23 10:50:41 kostis Exp $
+** $Id: tries.c,v 1.13 1999-04-13 17:24:47 kostis Exp $
 ** 
 */
 
@@ -1679,17 +1679,6 @@ void get_lastnode_cs_retskel(void)
   ctop_int(1, (Integer)Last_Nod_Sav);
   ctop_int(2, (Integer)Child(Last_Nod_Sav));
   construct_ret();		/* build RetSkel in the 3rd argument */
-}
-
-/*----------------------------------------------------------------------*/
-
-void prolog_newnode(void) 
-{
-    NODEptr i;
-  
-    /* Used only in one context hence this abuse */
-    NewNode(i,(Cell)0,NULL,NULL,NULL);
-    ctop_int(1, (Integer)i);
 }
 
 /*----------------------------------------------------------------------*/

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.11 1999-03-27 09:33:11 workflow Exp $
+** $Id: tries.h,v 1.12 1999-04-13 17:24:48 kostis Exp $
 ** 
 */
 
@@ -105,7 +105,6 @@ extern int	allocated_trie_hash_size(void);
 extern byte *	trie_get_returns_for_call(void);
 extern void	abolish_trie(void);
 extern void	aux_call_info(void);
-extern void	prolog_newnode(void);
 extern void	remove_open_tries(CPtr);
 extern void     init_trie_aux_areas(void);
 extern void	get_lastnode_cs_retskel(void);
