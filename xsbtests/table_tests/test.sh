@@ -33,7 +33,7 @@ EOF
 #--------------------------------------------------
 ../gentest.sh "$XEMU $options" testdyntable "test."
 #--------------------------------------------------
-../gentest.sh "$XEMU $options" aggregs_test "test."
+../gentest.sh "$XEMU -l $options" aggregs_test "test."
 #--------------------------------------------------
 ../gentest.sh "$XEMU $options" trassert "test."
 #--------------------------------------------------

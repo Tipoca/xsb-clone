@@ -215,6 +215,12 @@ Node = 99, NumTargs = 1
 [[a,b,c],[d],72899]
 [[a,b],[c,d],80999]
 [[a],[b,c,d],89999]
+fmax(p(a,A),1)
+fmax(p(a,b),3)
+fmax(p(a,b),3)
+fmax(p(a,c),2)
+fmax(p(a,c),2)
+fmax(p(b,c),3)
 p([A,B|C],[D|E])
 p([a],[c,d])
 p(a,A)
