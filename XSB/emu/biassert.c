@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.70 2004-07-13 17:29:52 dwarren Exp $
+** $Id: biassert.c,v 1.71 2004-08-04 13:21:26 dwarren Exp $
 ** 
 */
 
@@ -1001,10 +1001,11 @@ static void db_genmvs(struct instruction *inst_queue, RegStat Reg)
 /*======================================================================*/
 
 /*======================================================================*/
-/* assert_buff_to_clref(+Arg,+Arity,+Prref,+AZ,+Index,+HashTabSize)	*/
+/* assert_buff_to_clref(+Term +Arg,+Arity,+Prref,+AZ,+Index,+HashTabSize)*/
 /*	allocates a Clref, copies the byte-code for the clause from	*/
 /*	an internal buffer into it, and adds to to the chains.		*/
 /*	The arguments are:						*/
+/*	Term:  The term being asserted.					*/
 /*	Arg:   The argument value of the indexed arg (ignored if no ind)*/
 /*	Arity: the number of registers to save in a choice point.	*/
 /*		Note the Arity is one more than the original arity, to  */
