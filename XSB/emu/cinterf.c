@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.43 2003-02-21 16:43:08 lfcastro Exp $
+** $Id: cinterf.c,v 1.44 2003-04-26 18:01:03 kifer Exp $
 ** 
 */
 
@@ -440,7 +440,8 @@ DllExport xsbBool call_conv is_charlist(prolog_term term, int *size)
       return FALSE;
     
     head_char = (char) int_val(head);
-    if (head_char < 0 || head_char > 255) 
+    /* ' ' is the lowest printable ascii and '~' is the highest */
+    if (head_char < (int)' ' || head_char > (int)'~')
       return FALSE;
 
     if (escape_mode)
