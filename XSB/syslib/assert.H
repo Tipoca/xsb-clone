@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.H,v 1.16 2003/10/17 21:25:18 dwarren Exp $
+** $Id: assert.H,v 1.17 2003/10/28 13:54:24 dwarren Exp $
 ** 
 */
 
@@ -45,7 +45,7 @@
   db_retract_nr/3, db_reclaim_space/2
      from dbclause.
 :- import '_$index'/3, '_$trie_asserted'/1, retract_trie_index/1,
-	  retract_index/1 from file_op.
+	  retract_index/1, mpa_to_skel/2  from file_op.
 :- import psc_ep/2, psc_type/2, psc_set_type/2, psc_arity/2, buff_byte/3,
 	  buff_word/3, conpsc/2, assert_code_to_buff/1, assert_buff_to_clref/6,
   psc_tabled/2, psc_set_ep/2, unload_seg/1, db_build_prref/3,
