@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsberror.c,v 1.1.1.1 1998-11-05 16:55:26 sbprolog Exp $
+** $Id: xsberror.c,v 1.2 1999-03-18 01:26:57 cbaoqiu Exp $
 ** 
 */
 
@@ -47,7 +47,7 @@ static char *err_msg[] = {
 
 void xsb_abort(char *description)
 {
-    char message[80];
+    char message[240];
 
     sprintf(message, "++Error: %s\n", description);
     pcreg = exception_handler(message);
