@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dbclause.P,v 1.17 2001/02/19 17:36:56 dwarren Exp $
+** $Id: dbclause.P,v 1.18 2001/02/26 22:13:55 dwarren Exp $
 ** 
 */
 
@@ -166,7 +166,11 @@ db_clause_match(Head,Body,Entry) :-
 	 	db_body_save(Buff),
 		buff_cell(Buff,0,Body0),
 		goal_cut_trans_a(Body0, Body1, _),
-		Body = Body1
+		(atom(Body)
+		 ->	conname(Body1,Body2),
+		 	Body = Body2
+		 ;	Body = Body1
+		)
 	 ;	stat_set_flag(CLAUSE_INT,0),
 	 	fail
 	).
