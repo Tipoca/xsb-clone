@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdebugger.P,v 1.4 1999-08-01 07:42:12 kifer Exp $
+** $Id: flrdebugger.P,v 1.5 1999-08-19 15:10:49 kifer Exp $
 ** 
 */
 
@@ -371,7 +371,6 @@ flora_read_debugger_data :-
 	fmt_write_string(DebugDataFile,
 			 '%s/syslib/flrdebug_data.P', arg(FlrSysLib)),
 	file_open(DebugDataFile, 0, File),
-	writeln(File),
 	repeat,
 	    file_read(File,T),
 	    (T = end_of_file -> true
