@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.71 2003/07/22 17:22:07 lfcastro Exp $
+** $Id: standard.P,v 1.72 2003/07/30 21:50:52 dwarren Exp $
 ** 
 */
 
@@ -1027,7 +1027,7 @@ message((M1,M2), File) :-
 	message(M2, File).
 message([M|ML], File) :-
 	!,
-	message(M),
+	message(M, File),
 	messagelist(ML, File).
 message(P/N, File) :-		% temp solution till we fix operators
 	!,
