@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.14 2002-11-04 18:09:03 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.15 2003-07-07 16:54:55 lfcastro Exp $
 ** 
 */
 
@@ -485,8 +485,12 @@ inline static xsbBool number_to_list(int call_type)
       if (isfloat(term)) {
 	sprintf(str, "%e", float_val(term));
       } else {
-	err_handle(TYPE, 1, call_name, 2, "number", term);
-	return FALSE;	/* fail */
+	if (isboxedinteger(term)) {
+	  sprintf(str,"%ld",(long)boxedint_val(term));
+	} else {
+	  err_handle(TYPE, 1, call_name, 2, "number", term);
+	  return FALSE;	/* fail */
+	}
       }
     }
     new_list = makelist(hreg);
