@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.21 2001-08-23 17:49:26 kifer Exp $
+** $Id: system_xsb.c,v 1.22 2001-08-23 19:06:35 kifer Exp $
 ** 
 */
 
@@ -794,7 +794,16 @@ char *get_next_command_argument(char **buffptr, char **cmdlineprt)
      been found and extracted */
   while ((!isspace(**cmdlineprt) || quoted) && **cmdlineprt != '\0') {
     if (escaped) {
-      **buffptr=**cmdlineprt;
+      switch (**cmdlineprt) {
+      case 'b': **buffptr='\b'; break;
+      case 'f': **buffptr='\f'; break;
+      case 'n': **buffptr='\n'; break;
+      case 'r': **buffptr='\r'; break;
+      case 't': **buffptr='\t'; break;
+      case 'v': **buffptr='\v'; break;
+      default:
+	**buffptr=**cmdlineprt;
+      }
       (*buffptr)++;
       (*cmdlineprt)++;
       escaped=FALSE;
