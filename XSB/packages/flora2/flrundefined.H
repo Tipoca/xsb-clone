@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrundefined.H,v 1.1 2002-02-28 04:25:27 kifer Exp $
+** $Id: flrundefined.H,v 1.2 2002-03-08 09:07:55 kifer Exp $
 **
 */
 
@@ -39,9 +39,9 @@
 
 :- import flora_decode_predicate/6 from flrwrapper.
 
-:- import flora_error_line/2 from flrprint.
-
 :- import flora_debug_module_registry/1 from flrutils.
+
+:- import flora_error_line/2 from flrprint.
 
 :- export
 	flora_debug_code/2,

@@ -21,14 +21,14 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.9 2002-02-28 04:25:26 kifer Exp $
+## $Id: Makefile,v 1.10 2002-03-08 09:07:54 kifer Exp $
 ## 
 ##
 
 
 XSBDIR = ../../..
 
-ALLOBJS = flrpatch.flh flrpreddef.flh flrnopreddef.flh
+ALLOBJS = flrpatch.flh flrpreddef.flh
 
 XSB = $(XSBDIR)/bin/xsb
 
@@ -54,6 +54,10 @@ all: clean init $(ALLOBJS) finish
 	@cat $(SVFILE)
 
 
+flrpreddef.flh: flrpreddef.fli $(FLORA_TERMS)
+	@echo 'flWrapAround(flrpreddef).' >> cmd...
+
+
 %.flh: %.fli $(FLORA_TERMS)
 	@echo 'flCompileInclude($*).' >> cmd...
 
@@ -63,6 +67,7 @@ init:
 	@echo "import bootstrap_flora/0 from flora2." >> cmd...
 	@echo "bootstrap_flora." >> cmd...
 	@echo "[flrutils]." >> cmd...
+	@echo "[flrwraparound]." >> cmd...
 	@echo "import flCompileInclude/1 from flrutils." >> cmd...
 	@echo "file_reopen($(SVFILE),w,$(STDWARN),_)." >> cmd...
 	@echo "file_clone($(STDWARN),$(STDERR),_)." >> cmd...

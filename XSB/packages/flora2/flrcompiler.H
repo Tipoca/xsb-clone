@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.7 2002-02-28 04:25:28 kifer Exp $
+** $Id: flrcompiler.H,v 1.8 2002-03-08 09:07:55 kifer Exp $
 **
 */
 
@@ -50,13 +50,9 @@
    from flrfirstorder.
 
 :- import 
-	flora_is_dynamic_flogic_base/2,
-	flora_is_flogic_base/1
+	flora_is_dynamic_flogic_base/2
    from flrwrapper.
-
-:- dynamic flora_in_debug_mode(_).
 
 :- export 
 	flora_reset_compiler/0, 
-	flora_compile/4,
-	flora_debug_mode/0.
+	flora_compile/4.

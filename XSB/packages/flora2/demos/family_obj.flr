@@ -18,7 +18,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: family_obj.flr,v 1.7 2002-02-28 04:25:26 kifer Exp $
+** $Id: family_obj.flr,v 1.8 2002-03-08 09:07:55 kifer Exp $
 ** 
 */
 
@@ -36,7 +36,6 @@
 %%% ======================================================================
 
 
-%%:- debug.
 
 male :: person.		% subclass relation
 female :: person.	% subclass relation

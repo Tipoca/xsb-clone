@@ -18,7 +18,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.11 2002-02-28 04:25:26 kifer Exp $
+## $Id: Makefile,v 1.12 2002-03-08 09:07:55 kifer Exp $
 ## 
 ##
 
@@ -26,7 +26,8 @@ XSBDIR=../../..
 
 ALL = 	aggregate.P benchmark.P default.P family_obj.P \
 	family_rel.P flogic_basics.P metavar.P mix.P module1.P mod1.P \
-	mono_inherit.P rel_ops.P tree_traversal.P
+	mono_inherit.P rel_ops.P tree_traversal.P \
+	btupdates.P pretty.P
 
 EMU_INCLUDES = $(XSBDIR)/emu/builtin.h \
 	$(XSBDIR)/emu/flag_defs_xsb.h \

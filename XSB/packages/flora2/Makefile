@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.23 2002-03-04 09:25:54 kifer Exp $
+## $Id: Makefile,v 1.24 2002-03-08 09:07:55 kifer Exp $
 ## 
 ##
 
@@ -40,6 +40,7 @@ ALLOBJS = flroperator.O \
 	  flrcomposer.O \
           flrparser.O \
 	  flrcompiler.O \
+	  flrdependency.O \
 	  flrcoder.O \
 	  flrundefined.O \
 	  flrutils.O \
@@ -139,6 +140,10 @@ flrparser.O : flrparser.P flrparser.H $(FLORA_TERMS) $(FLORA_ERRORS)
 
 flrcompiler.O : flrcompiler.P flrcompiler.H $(FLORA_TERMS) $(FLORA_ERRORS)
 	@echo 'mc(flrcompiler,$(OPTION)).' >> cmd...
+
+
+flrdependency.O : flrdependency.P flrdependency.H $(FLORA_TERMS)
+	@echo 'mc(flrdependency,$(OPTION)).' >> cmd...
 
 
 flrcoder.O : flrcoder.P flrcoder.H $(XSB_CHAR_DEFS) $(FLORA_TERMS) $(FLORA_ERRORS)

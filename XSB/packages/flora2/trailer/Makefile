@@ -21,7 +21,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.12 2002-02-28 04:25:24 kifer Exp $
+## $Id: Makefile,v 1.13 2002-03-08 09:07:54 kifer Exp $
 ## 
 ##
 
@@ -80,10 +80,10 @@ eqlflogic.P : $(CLOSURE)/flrcommon.flh \
 	@echo 'flsetuptrailer(flogic).' >> cmd...
 
 
-patch.P : $(GENINCLUDES)/flrpatch.flh $(GENINCLUDES)/flrnopreddef.flh \
+patch.P : $(GENINCLUDES)/flrpatch.flh $(GENINCLUDES)/flrpreddef.flh \
 	  $(HEADERINC)/flrheader_inc.flh \
           $(HEADERINC)/flrdefinition_inc.flh \
-          $(HEADERINC)/flrnopreddef_inc.flh 
+          $(HEADERINC)/flrpreddef_inc.flh 
 	@echo 'flsetuppatch.' >> cmd...
 
 
@@ -107,7 +107,7 @@ $(GENINCLUDES)/flrpatch.flh : $(GENINCLUDES)/flrpatch.fli $(FLORA_TERMS)
 	@cd $(GENINCLUDES); make
 
 
-$(GENINCLUDES)/flrnopreddef.flh : $(GENINCLUDES)/flrnopreddef.fli $(FLORA_TERMS)
+$(GENINCLUDES)/flrpreddef.flh : $(GENINCLUDES)/flrpreddef.fli $(FLORA_TERMS)
 	@cd $(GENINCLUDES); make
 
 

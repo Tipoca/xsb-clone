@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.38 2002-03-02 07:25:20 kifer Exp $
+** $Id: flrutils.H,v 1.39 2002-03-08 09:07:55 kifer Exp $
 **
 */
 
@@ -114,7 +114,6 @@
 
 :- import
 	flora_reset_compiler/0,
-	flora_debug_mode/0,
 	flora_compile/4
    from flrcompiler.
 
@@ -167,15 +166,22 @@
 	flora_fld_storage_name/2
    from flrwrapper.
 
+:- import check_for_dependencies/2 from flrdependency.
+
 :- dynamic flora_maxerr(_).
 :- dynamic flora_xpp_extra_options/1.
 :- dynamic flora_module_registry/1.
 
 :- dynamic flora_debug_module_registry/1.
+:- dynamic flora_in_debug_mode/1.
 
 :- dynamic flora_storage_registry/1.
 
 :- index(flora_maxerr/1,trie).
+:- index(flora_debug_module_registry/1,trie).
+:- index(flora_storage_registry/1,trie).
+:- index(flora_module_registry/1,trie).
+:- index(flora_in_debug_mode/1,trie).
 
 :- export
 	flMaxerr/1,
@@ -212,6 +218,7 @@
 	flora_module_registry/1,
 	%% support for undefinedness
 	flora_debug_module_registry/1,
+	flora_in_debug_mode/1,
 
 	flora_storage_registry/1,
 	flora_reclaim_storage_space/0,
