@@ -18,13 +18,13 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 2000-05-28 20:50:58 kifer Exp $
+## $Id: Makefile,v 1.6 2001-07-05 04:27:35 kifer Exp $
 ## 
 ##
 
 XSBDIR = ../..
 
-ALL = 	 libwwwconfig.O
+ALL = 	 libwwwconfig.O libwww_init.O
 
 PROLOG_INCLUDES = $(XSBDIR)/prolog_includes/char_defs.h \
 	$(XSBDIR)/prolog_includes/standard.h
@@ -73,6 +73,10 @@ init:
 
 finish:
 	@echo 'fmt_write($(STDWARN),"-------------------- End --------------------------\n",_).' >> cmd...
+
+
+clean:
+	rm -f *.O cc/*.H
 
 
 .DONE:
