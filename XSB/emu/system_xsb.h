@@ -18,10 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.h,v 1.7 2000-06-30 19:36:57 kifer Exp $
+** $Id: system_xsb.h,v 1.8 2000-07-18 10:49:10 ruim Exp $
 ** 
 */
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifndef fileno				/* fileno may be a  macro */
 extern int    fileno(FILE *f);	        /* this is defined in POSIX */
@@ -42,6 +46,10 @@ extern int kill(pid_t pid, int sig);
 #define PIPE(filedes_array)  pipe(filedes_array)
 #define WAIT(pid, status)    waitpid(pid, &status, 0)
 #define KILL_FAILED(pid)     kill(pid, SIGKILL) < 0
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #define FREE_PROC_TABLE_CELL(pid)   ((pid < 0) \

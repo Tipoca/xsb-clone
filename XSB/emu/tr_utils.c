@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.50 2000/06/28 16:54:53 ruim Exp $
+** $Id: tr_utils.c,v 1.51 2000/07/14 16:19:13 lfcastro Exp $
 ** 
 */
 
@@ -732,11 +732,11 @@ void delete_return(BTNptr l, VariantSF sg_frame)
     /* lfcastro: run the CP stack, also */
     { 
       NLChoice b;
-      b = breg;
+      b = (NLChoice)breg;
       while (b <= (NLChoice)sg_frame->cp_ptr) {
 	if (b->trie_return == a)
 	  b->trie_return = n;
-	b = b->prev;
+	b = (NLChoice)b->prev;
       }
     }
 #else
