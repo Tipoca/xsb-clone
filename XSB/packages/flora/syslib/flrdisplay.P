@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdisplay.P,v 1.3 1999-06-18 06:35:46 kifer Exp $
+** $Id: flrdisplay.P,v 1.4 1999-06-22 22:08:57 kifer Exp $
 ** 
 */
 
@@ -40,6 +40,8 @@
 :- import current_predicate/1 from curr_sym.
 
 :- import '_$_$_write_flora_warnheader'/0 from flrutils.
+
+:- dynamic '_$_$_flora_switch'/1.
 
 
 /********************************************************************/
