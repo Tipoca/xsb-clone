@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdisplay.P,v 1.7 1999-07-05 06:13:50 kifer Exp $
+** $Id: flrdisplay.P,v 1.8 1999-07-31 02:51:32 kifer Exp $
 ** 
 */
 
@@ -110,7 +110,7 @@
 /********************************************************************/
 %% Hookup to the Flora debugger
 
-%% flora_call essentially repeats the XSB call definition
+%% flora_call is a wrapper around XSB call
 '_$_$_flora_call'(Goal) :- 
     	'_$_$_flora_handle_trace',
     	call(Goal),
