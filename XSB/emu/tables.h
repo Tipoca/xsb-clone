@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.h,v 1.6 2000-06-27 17:59:17 ejohnson Exp $
+** $Id: tables.h,v 1.7 2001-01-31 10:23:29 ejohnson Exp $
 ** 
 */
 
@@ -43,6 +43,58 @@ ALNptr	table_identify_relevant_answers(SubProdSF, SubConsSF, CPtr);
 void	table_complete_entry(VariantSF);
 
 void	release_all_tabling_resources(void);
+
+
+/*
+ * The next answer to consume is obtained from the old answer continuation.
+ * The new answer continuation is the old continuation but with this answer
+ * removed.
+ */
+
+#define table_pending_answer( OldAnswerContinuation,			\
+			      NewAnswerContinuation,			\
+			      NextAnswer,				\
+			      Consumer,					\
+			      Producer,					\
+			      AnswerTemplate,				\
+			      PreIdentificationOp,			\
+			      PostIdentificationOp ) {			\
+			   						\
+   NewAnswerContinuation = ALN_Next(OldAnswerContinuation);		\
+									\
+   if ( IsNULL(NewAnswerContinuation) && IsProperlySubsumed(Consumer) )	\
+     if ( MoreAnswersAreAvailable(Consumer,Producer) ) {		\
+       PreIdentificationOp;						\
+       NewAnswerContinuation =						\
+	 table_identify_relevant_answers(Producer, Consumer,		\
+					 AnswerTemplate);		\
+       PostIdentificationOp;						\
+     }									\
+   if ( IsNonNULL(NewAnswerContinuation) )				\
+     NextAnswer = ALN_Answer(NewAnswerContinuation);			\
+   else									\
+     NextAnswer = NULL;							\
+ }
+
+
+/*
+ * Used as an argument to table_pending_answer() when no pre- or post-
+ * identification operation is required.
+ */
+
+#define TPA_NoOp
+
+
+/*
+ * Determines whether a producer subgoal has added answers to its set
+ * since the given consumer last collected relevant answers from that set.
+ */
+
+#define MoreAnswersAreAvailable(ConsSF,ProdSF)			\
+   ( IsNonNULL(subg_ans_root_ptr(ProdSF)) &&			\
+     (TSTN_TimeStamp((TSTNptr)subg_ans_root_ptr(ProdSF)) >	\
+      conssf_timestamp(ConsSF)) )
+
 
 /*===========================================================================*/
 

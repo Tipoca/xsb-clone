@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.8 2001-01-26 23:56:08 lfcastro Exp $
+** $Id: complete_xsb_i.h,v 1.9 2001-01-31 10:23:29 ejohnson Exp $
 ** 
 */
 
@@ -31,17 +31,13 @@
 XSB_Start_Instr(check_complete,_check_complete)
   CPtr    cs_ptr;
   CPtr    orig_breg = breg;
-  xsbBool    leader = FALSE;
+  xsbBool leader = FALSE;
   VariantSF subgoal;
-#ifdef CHAT
-  CPtr xtemp1;
-#else
-#ifdef LOCAL_EVAL
-  Def1op
-#endif
-#endif
 #ifdef LOCAL_EVAL
   int     i;
+#ifndef CHAT
+  Def1op
+#endif
 #endif
 
   /* this CP has exhausted program resolution -- backtracking occurs */

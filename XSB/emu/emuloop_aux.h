@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop_aux.h,v 1.1 2001-01-27 00:02:18 lfcastro Exp $
+** $Id: emuloop_aux.h,v 1.2 2001-01-31 10:23:29 ejohnson Exp $
 ** 
 */
 
@@ -51,10 +51,9 @@
 #define RESTORE_SUB                                                       \
 {                                                                         \
   CPtr tbreg;                                                             \
-  CPtr xtemp1;                                                            \
                                                                           \
   tbreg = breg;                                                           \
-  /*   switch_envs(tbreg); */                                             \
+  /*  switch_envs(tbreg); */                                              \
   undo_bindings(tbreg);                                                   \
   ptcpreg = cp_ptcp(tbreg);                                               \
   delayreg = cp_pdreg(tbreg);                                             \

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chatsched_xsb_i.h,v 1.5 2000-06-27 17:59:16 ejohnson Exp $
+** $Id: chatsched_xsb_i.h,v 1.6 2001-01-31 10:23:29 ejohnson Exp $
 ** 
 */
 
@@ -49,29 +49,28 @@ static CPtr schedule_subgoal(VariantSF producer_sf, CPtr compl_fr)
 
     /**** find the first consumer with unresolved answers, if any ****/
 
-    if ( IsSubsumptiveProducer(producer_sf) ) {
-      SubConsSF consumer_sf;
-      ALNptr answer_set;
+    if ( IsSubsumptiveProducer(producer_sf) )
       while ( IsNonNULL(chat_ptr) ) {
+	SubConsSF consumer_sf;
+	ALNptr answer_continuation;
+	BTNptr next_answer;
+	CPtr templ, *baseTR;
+
 	consumer_cpf = (CPtr)(&chat_get_cons_start(chat_ptr));
 	consumer_sf = (SubConsSF)nlcp_subgoal_ptr(consumer_cpf);
-	answer_set = ALN_Next(nlcp_trie_return(consumer_cpf));
-	if ( IsNULL(answer_set) && ((VariantSF)consumer_sf != producer_sf) )
-	  if ( MoreAnswersAvailable(consumer_sf,producer_sf) ) {
-	    CPtr templ, *baseTR;
-
-	    templ = restore_answer_template(chat_ptr, &baseTR);
-	    answer_set =
-	      table_identify_relevant_answers((SubProdSF)producer_sf,
-					      consumer_sf, templ);
-	    undo_template_restoration(baseTR);
-	  }
-	if ( IsNonNULL(answer_set) )
+	table_pending_answer( nlcp_trie_return(consumer_cpf),
+			      answer_continuation,
+			      next_answer,
+			      consumer_sf,
+			      (SubProdSF)producer_sf,
+			      templ,
+			      templ = restore_answer_template(chat_ptr,&baseTR),
+			      undo_template_restoration(baseTR) );
+	if ( IsNonNULL(answer_continuation) )
 	  break;
 	else
 	  chat_ptr = (chat_init_pheader)nlcp_prevlookup(consumer_cpf);
       }
-    }
     else
       while ( IsNonNULL(chat_ptr) ) {
 	consumer_cpf = (CPtr)(&chat_get_cons_start(chat_ptr));

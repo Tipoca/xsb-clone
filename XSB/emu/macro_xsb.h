@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.15 2000-09-28 21:31:03 ejohnson Exp $
+** $Id: macro_xsb.h,v 1.16 2001-01-31 10:23:29 ejohnson Exp $
 ** 
 */
 
@@ -393,15 +393,6 @@ typedef struct SubsumedConsumerSubgoalFrame {
    subg_prev_subgoal(pSF) = subg_next_subgoal(pSF) = NULL;		 \
  }
 
-
-/*
- * Determines whether a producer subgoal has added answers to its set
- * since the given consumer last collected relevant answers from this set.
- */
-#define MoreAnswersAvailable(ConsSF,ProdSF)			\
-   ( IsNonNULL(subg_ans_root_ptr(ProdSF)) &&			\
-     (TSTN_TimeStamp((TSTNptr)subg_ans_root_ptr(ProdSF)) >	\
-      conssf_timestamp(ConsSF)) )
 
 extern ALNptr empty_return(void);
 
