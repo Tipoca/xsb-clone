@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_aux.h,v 1.1 1999-10-12 19:23:09 ejohnson Exp $
+** $Id: tst_aux.h,v 1.2 1999-12-14 21:07:06 ejohnson Exp $
 ** 
 */
 
@@ -65,7 +65,7 @@
 /*
  *  tstTermStack
  *  ------------
- *  for flattening of the heap term during processing
+ *  for flattening of a heap term during processing
  */
 
 #define TST_TERMSTACK_SIZE    K
@@ -100,6 +100,11 @@ extern struct tstTermStack    tstTermStack;
    TermStack_Push( *(pListHeadCell) );                       \
  }
 
+
+/*
+ * In the following, the Vector pointers point to a valid vector component,
+ * either the highest or lowest (address-wise).
+ */
 
 #define TermStack_PushLowToHighVector(pVectorLow,Magnitude) {    \
    int i, numElements;                                           \
