@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrmetaops.P,v 1.5 2002-03-11 07:47:44 kifer Exp $
+** $Id: flrmetaops.P,v 1.6 2002-03-11 17:21:08 kifer Exp $
 ** 
 */
 
@@ -36,10 +36,8 @@
 #include "flora_terms.flh"
 
 
-FL_UNIVEQFORM(X,Y) :-
-	(var(X) ; var(Y)),
-	!,
-	X=Y.
+
+FL_UNIVEQFORM(X,Y) :- X=Y, !.
 
 %% This takes care of F-logic molecules with dynamic module specification
 FL_UNIVEQFORM(X, Y) :-
@@ -93,6 +91,3 @@ FL_UNIVEQFORM(X, Y) :-
 	; flora_decode_predicate(X,_Type,ModuleName,_WrapPref,_PredSym,_ArgL)),
 	flora_module_predicate(FL_FIRSTORDER,Fun,Args,ModuleName,Literal),
 	X = Literal.
-
-
-FL_UNIVEQFORM(X,Y) :- X=Y, !.
