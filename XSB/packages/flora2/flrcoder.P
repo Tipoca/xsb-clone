@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.P,v 1.34 2002-04-30 03:18:07 gzyang Exp $
+** $Id: flrcoder.P,v 1.35 2002-05-17 07:02:41 kifer Exp $
 **
 */
 
@@ -724,7 +724,9 @@ flora_write_workspace(THISMODULE,_WS,Funct) :-
 flora_write_workspace(USERMODULE,WS,Funct) :-
 	!,
 	flora_write_atom('FLORA_USER_WORKSPACE('),
-	flora_write_functor(WS),
+	(WS == FL_THISMODULE -> write('FLORA_THIS_MODULE_NAME')
+	; flora_write_functor(WS)
+	),
 	put(0',),
 	flora_write_functor(Funct),
 	put(0')).
@@ -1294,7 +1296,12 @@ flora_build_sysmod(Term,WS,DWS,Prefix,VarList,Code) :-
 flora_build_wsliteral(Mode,F,_N,Args,WS,DWS,Prefix,VarList,Code) :-
 	flora_build_structlist(Args,DWS,Prefix,VarList,ACodeList),
 	( Mode == USERMODULE ->
-	    flora_user_module_predicate(F,ACodeList,WS,Code)
+	    (WS == FL_THISMODULE
+	    %% In the shell, THIS module can be only FLORA_DEFAULT_WORKSPACE
+	    -> NewWS = FLORA_DEFAULT_WORKSPACE
+	    ;  NewWS = WS
+	    ),
+	    flora_user_module_predicate(F,ACodeList,NewWS,Code)
 
 	; Mode == SYSTEMMODULE ->
 	    flora_system_module_predicate(F,ACodeList,WS,Code)

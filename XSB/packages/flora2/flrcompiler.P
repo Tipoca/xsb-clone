@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.51 2002-05-06 04:01:16 gzyang Exp $
+** $Id: flrcompiler.P,v 1.52 2002-05-17 07:02:41 kifer Exp $
 **
 */
 
@@ -1764,6 +1764,12 @@ compile_flvar(Name,Index,VarObject) :-
 
   Compile term in the OID position.
 ****************************************************************************/
+compile_fltermobj(Funct,1,Args,Object,OidCode,Code,Status) :-
+	%% If it is ~(...) treat as reificated term
+	is_flatom(Funct,FL_UNIVEQFORM),
+	compile_argpathexplist(Args,[FL_BODYFORMULA],AObj,OidCode,Code,Status),
+	(Status == [] -> AObj = [Object] ; true).
+
 compile_fltermobj(Funct,N,Args,Object,OidCode,Code,Status) :-
 	is_flatom(Funct,FAtom),
 	flora_argdef(FAtom,N,ArgTypes),

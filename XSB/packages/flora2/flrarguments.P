@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrarguments.P,v 1.10 2002-04-07 23:09:17 kifer Exp $
+** $Id: flrarguments.P,v 1.11 2002-05-17 07:02:41 kifer Exp $
 **
 */
 
@@ -34,6 +34,7 @@ flora_arguments_spec((findall),3,[FL_OID,FL_BODYFORMULA,FL_OID]) :- !.
 flora_arguments_spec((catch),3,[FL_BODYFORMULA,FL_OID,FL_BODYFORMULA]) :- !.
 flora_arguments_spec(call,1,[FL_BODYFORMULA]) :- !.
 flora_arguments_spec(get_residual,2,[FL_BODYFORMULA,FL_OID]) :- !.
+flora_arguments_spec(FL_UNIVEQFORM,1,[FL_BODYFORMULA]) :- !.
 
 
 /****************************************************************************
