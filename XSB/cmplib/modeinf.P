@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modeinf.P,v 1.9 2002-03-15 09:57:21 kifer Exp $
+** $Id: modeinf.P,v 1.10 2004-03-15 14:11:59 dwarren Exp $
 ** 
 */
 
@@ -229,7 +229,11 @@ gen_imported_defns(SymTab) :-
 pred2mods([], _Mods).
 pred2mods([sym(P, A, prop(_,im(Mod),_,_,_,_), _)|Rest], ModList) :-
 	memberchk(module(Mod, Preds), ModList),
-	memberchk((P/A), Preds),
+	(P = Mod:P1
+	 ->	true
+	 ;	P1 = P
+	),
+	memberchk((P1/A), Preds),
 	pred2mods(Rest, ModList).
 
 imported_clauses([]) :- !.
