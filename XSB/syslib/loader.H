@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.17 2002/11/04 18:09:13 dwarren Exp $
+** $Id: loader.H,v 1.18 2002/12/26 23:39:01 tswift Exp $
 ** 
 */
 
 
 :- export load_pred/1, load/1, libpath/1, set_inthandler/2,
 	'_$load_undef'/1,
-	reset_undef_pred_handlers/0,
+	%%reset_undef_pred_handlers/0,
 	windows_os_loader/0.
 
 :- import abort/1, catch/3,throw/1 from standard.
@@ -46,5 +46,5 @@
 	  unload_seg/1, machine_file_exists/1, call0/1,
 	  formatted_io/5, slash/1, dirname_canonic/2
    from machine.
-:- import call_xsb_hook/3, xsb_undefined_predicate_hook/1 from xsb_hook.
+%%:- import call_xsb_hook/3, xsb_undefined_predicate_hook/1 from xsb_hook.
 
