@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.4 2001-01-10 03:50:32 gzyang Exp $
+** $Id: flrshell.P,v 1.5 2001-02-19 19:01:04 gzyang Exp $
 **
 */
 
@@ -118,6 +118,10 @@ help :-
 	flora_stdmsg_line('    load FILE.flr (into the default module `main''), or FILE.P or FILE.O'),
 	flora_stdmsg_line('o [FILE[.{P|O|flr}][>> Module],...]'),
 	flora_stdmsg_line('    load a list of .flr (into the module `Module''), .P, or .O files'),
+	flora_stdmsg_line('o flloadtrailer({standard|equality},Module)'),
+	flora_stdmsg_line('    load the standard/equality trailer into the module `Module'''),
+	flora_stdmsg_line('o flloadtrailer({standard|equality})'),
+	flora_stdmsg_line('    load the standard/equality trailer into the default module `main'''),
 	flora_stdmsg_line('o abolish_all_tables'),
 	flora_stdmsg_line('    flush all tabled data'),
 	flora_stdmsg_line('o prolog Functor/Arity'),

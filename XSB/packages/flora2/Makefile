@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.2 2001-01-09 01:33:55 gzyang Exp $
+## $Id: Makefile,v 1.3 2001-02-19 19:01:04 gzyang Exp $
 ## 
 ##
 
@@ -80,6 +80,7 @@ all: init $(ALLOBJS) finish
 	@cat $(SVFILE)
 	cd syslib; $(MAKE)
 	cd closure; $(MAKE)
+	cd trailer; $(MAKE)
 
 
 flroperator.O : flroperator.P flroperator.H $(FLORA_TERMS)
