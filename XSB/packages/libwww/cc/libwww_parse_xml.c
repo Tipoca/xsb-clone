@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse_xml.c,v 1.10 2000-04-11 22:06:42 kifer Exp $
+** $Id: libwww_parse_xml.c,v 1.11 2000-04-23 02:15:43 kifer Exp $
 ** 
 */
 
@@ -370,9 +370,9 @@ PRIVATE void xml_pop_suppressed_element(USERDATA *userdata)
 }
 
 
-USERDATA *xml_create_userData(XML_Parser parser,
-			      HTRequest *request,
-			      HTStream  *target_stream)
+PRIVATE USERDATA *xml_create_userData(XML_Parser parser,
+				      HTRequest *request,
+				      HTStream  *target_stream)
 {
   USERDATA *me = NULL;
 #ifdef LIBWWW_DEBUG

@@ -18,7 +18,25 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse_rdf.h,v 1.1 2000-04-11 22:06:42 kifer Exp $
+** $Id: libwww_parse_rdf.h,v 1.2 2000-04-23 02:15:43 kifer Exp $
 ** 
 */
 
+
+typedef struct RDF_userData USERDATA;
+struct RDF_userData {
+  DELETE_USERDATA *   	  delete_method;
+  int 	      	      	  status;    	   /* this is used to carry status into
+					      delete_userData */
+  HTRDF *                 parser; 
+  HTRequest *		  request;
+  HTStream *		  target;
+  prolog_term	     	  parsed_term;      /* actual result of the parse */
+  prolog_term	     	  parsed_term_tail; /* auxil variable */
+};
+
+PRIVATE void rdf_new_triple_handler (HTRDF *rdfp, HTTriple *t, void *context);
+PRIVATE void rdf_delete_userData(void *userdata);
+PRIVATE USERDATA *rdf_create_userData(HTRDF 	*parser,
+				      HTRequest *request,
+				      HTStream  *target_stream);
