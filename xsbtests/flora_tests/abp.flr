@@ -10,6 +10,7 @@ emptyamsg[bit->u].
 	int/1.
 :- table 
 	int/1.
+:- equality flogic.
 
 int(1).
 int(N) :- 
