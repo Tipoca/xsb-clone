@@ -18,18 +18,21 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dcg.H,v 1.1.1.1 1998/11/05 16:59:48 sbprolog Exp $
+** $Id: dcg.H,v 1.2 1999/05/27 16:02:38 kifer Exp $
 ** 
 */
 
 
 :- export dcg/2, 'C'/3, phrase/2, phrase/3, set_dcg_style/1.
+:- export tphrase/2, reset_dcg_mode/0, set_tphrase_input/1, tphrase/1.
 
 :- import abort/1, arg/3, call/1, is_list/1, functor/3,
 	write/1, writeln/1, warning/1
    from standard.
 :- import xsb_flag/2 from curr_sym.
 :- import stat_set_flag/2 from machine.
+:- import assert/1, retractall/1, (dynamic)/1 from assert.
+:- import abolish_all_tables/0 from tables.
 
 /* ----------------------- end of file dcg.H -------------------------- */
 
