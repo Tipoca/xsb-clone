@@ -18,7 +18,7 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: simgui.P,v 1.1 2001-07-01 21:52:54 gmkp Exp $
+** $Id: simgui.P,v 1.2 2001-12-18 21:15:28 xmc Exp $
 ** 
 */
 
@@ -94,9 +94,8 @@ get_conditional_child(Child,Tran,Seq,Cond,AnsChild,Result) :-
 %----------------------------------------------------------------
 % get_local_process -- used for simulation
 %----------------------------------------------------------------
-get_local_process(State,Proc,Line,Char,VarString) :-
-	symlookup(State,Proc,(Line,Char),Var),
-	conv_binding_string(Var,VarString).
+get_local_process(State,Proc,Line,Char,Var) :-
+	symlookup(State,Proc,(Line,Char),Var).
 
 
 %-----------------------------------------------------------------
