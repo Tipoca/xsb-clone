@@ -19,13 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.13 1999-03-23 05:30:11 kifer Exp $
+** $Id: emuloop.c,v 1.14 1999-03-25 02:47:10 kifer Exp $
 ** 
 */
 
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 
 #ifdef FOREIGN
 #ifndef SOLARIS
@@ -165,6 +166,7 @@ int     xctr;
 #endif 
 
 /* place for a meaningful message when segfault is detected */
+char *xsb_default_segfault_msg = "Memory violation occurred during evaluation";
 char *xsb_segfault_message;
 jmp_buf xsb_fall_back_environment;
 
@@ -193,9 +195,8 @@ static int emuloop(byte *startaddr)
   ALPtr OldRetPtr;
   NODEptr TrieRetPtr;
   char  message[80];
-  char *default_segfault_msg = "Memory violation occurred during evaluation";
 
-  xsb_segfault_message = default_segfault_msg;
+  xsb_segfault_message = xsb_default_segfault_msg;
 
   rreg = reg; /* for SUN */
   op1 = op2 = (Cell) NULL;
@@ -1073,7 +1074,9 @@ contcase:     /* the main loop */
     /* fallback point for segmentation faults */
     if (setjmp(xsb_fall_back_environment)) {
       char *tmp_message = xsb_segfault_message;
-      xsb_segfault_message = default_segfault_msg; /* restore default */
+      xsb_segfault_message = xsb_default_segfault_msg; /* restore default */
+      /* Restore the default signal handling */
+      signal(SIGSEGV, xsb_default_segfault_handler);
       xsb_abort(tmp_message);
     }
   
