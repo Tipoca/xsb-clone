@@ -18,7 +18,7 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: justify.H,v 1.3 2001-07-03 22:32:16 gmkp Exp $
+** $Id: justify.H,v 1.4 2001-12-18 21:14:26 xmc Exp $
 ** 
 */
 
@@ -28,10 +28,4 @@
 :- import variant/2 from subsumes.
 :- import close_open_tables/0 from machine.
 :- import trie_intern/4, trie_interned/4, trie_unintern/2, 
-		new_trie/1, delete_trie/1 from intern.
-:- import member/2, append/3 from basics.
-:- import get_residual/2, get_calls_for_table/2 from tables.
-:- import variant/2 from subsumes.
-:- import close_open_tables/0 from machine.
-:- import trie_intern/5, trie_intern/4, trie_interned/4, trie_unintern/2, 
 		new_trie/1, delete_trie/1 from intern.
