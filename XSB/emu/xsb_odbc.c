@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_odbc.c,v 1.4 1999-05-03 00:55:54 luis Exp $
+** $Id: xsb_odbc.c,v 1.5 1999-05-03 20:12:42 luis Exp $
 ** 
 */
 
@@ -32,6 +32,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "cinterf.h"
+#include "export.h"
 
 #define MAXCURSORNUM                    20
 #define MAXCOLS                         100
