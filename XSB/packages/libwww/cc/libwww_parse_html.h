@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse_html.h,v 1.5 2000-04-02 23:13:49 kifer Exp $
+** $Id: libwww_parse_html.h,v 1.6 2000-04-05 02:17:11 kifer Exp $
 ** 
 */
 
@@ -53,9 +53,10 @@ struct _HText {
 
 PRIVATE inline HTTag *special_find_tag(USERDATA *htext, int element_number);
 
-PRIVATE USERDATA *create_userData( HTRequest         *request,
-				   HTParentAnchor    *anchor,
-				   HTStream          *output_stream);
+PRIVATE USERDATA *html_create_userData( HTRequest         *request,
+					HTParentAnchor    *anchor,
+					HTStream          *output_stream);
+PRIVATE void html_delete_userData(void *me);
 
 PRIVATE int find_matching_elt(USERDATA *htext, int elt_number);
 

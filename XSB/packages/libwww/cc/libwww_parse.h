@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse.h,v 1.2 2000-04-02 23:13:49 kifer Exp $
+** $Id: libwww_parse.h,v 1.3 2000-04-05 02:17:11 kifer Exp $
 ** 
 */
 
@@ -26,7 +26,6 @@
 
 
 #define PARSE_STACK_INCREMENT  50
-PRIVATE void delete_userData(void *me);
 
 
 #define STACK_TOP(htext)        htext->stack[htext->stackptr]

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse_xml.h,v 1.5 2000-04-02 23:13:49 kifer Exp $
+** $Id: libwww_parse_xml.h,v 1.6 2000-04-05 02:17:11 kifer Exp $
 ** 
 */
 
@@ -50,9 +50,10 @@ struct XML_userData {
 
 /* function declarations */
 
-PRIVATE USERDATA *create_userData(XML_Parser parser,
-				  HTRequest  *request,
-				  HTStream   *target_stream);
+PRIVATE USERDATA *xml_create_userData(XML_Parser parser,
+				      HTRequest  *request,
+				      HTStream   *target_stream);
+PRIVATE void xml_delete_userData(void *me);
 
 PRIVATE int xml_push_element (USERDATA    *userdata,
 			      const XML_Char  *tag,
