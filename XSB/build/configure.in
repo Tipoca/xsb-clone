@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.135 2002-05-22 15:41:08 lfcastro Exp $
+## $Id: configure.in,v 1.136 2002-09-02 01:00:20 kifer Exp $
 ## 
 ##
 
@@ -760,7 +760,7 @@ fi
 
 dnl --with-libwww=DIR
 cd $topdir/packages/libwww
-configure --with-config="$canonical" --with-libwww="$with_libwww" > /dev/null
+./configure --with-config="$canonical" --with-libwww="$with_libwww" > /dev/null
 cd $build_dir
 
 
@@ -1319,6 +1319,7 @@ case "$canonical" in
 		 LDFLAGS="${LDFLAGS} -N"
 		;;
       *-cygwin*) AC_DEFINE(CYGWIN)
+		 AC_DEFINE(FOREIGN_WIN32)
 		 builtins_opt_level=-${optimization_level-"O1 -fomit-frame-pointer"}
 		;;
 esac
