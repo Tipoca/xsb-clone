@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.6 2001-01-31 10:23:29 ejohnson Exp $
+** $Id: schedrev_xsb_i.h,v 1.7 2001-04-04 19:54:00 tswift Exp $
 ** 
 */
 
@@ -149,7 +149,9 @@ static CPtr find_fixpoint(VariantSF subg, CPtr producer_cpf) {
 #endif
   complFrame = openreg;
   /* for each subgoal in the ASCC, from youngest to leader there is no
-   * need to include the leader 
+   * need to include the leader.  This is because sched_answers() is
+   * done for each subgoal whenever it executes a check_complete
+   * operation. Thus, scheduling for the leader has already been done.
    */
   while(complFrame < subg_compl_stack_ptr(subg)) {
 #ifdef PROFILE
