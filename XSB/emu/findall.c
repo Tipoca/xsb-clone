@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.2 1998-12-01 17:10:38 sbprolog Exp $
+** $Id: findall.c,v 1.3 1999-02-02 17:59:20 kostis Exp $
 ** 
 */
 
@@ -38,7 +38,7 @@
 #include "memory.h"
 #include "psc.h"
 #include "xsberror.h"
-
+#include "heap.h"
 #include "binding.h"
 #include "subp.h"
 #include "flags.h"
