@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.42 2005-01-17 17:53:04 tswift Exp $
+** $Id: foreign.P,v 1.43 2005-02-23 07:45:43 kifer Exp $
 ** 
 */
 
@@ -184,7 +184,14 @@ compile_c(Modname, Base, Options, Dir, LdOption, CompComm, TempFile) :-
 		       Base,'.dll ',Base,'.def ',
 		       Obj,' ',TempObj,' -lxsb'])
 	    ;	str_sub('windows', Configuration)
-	    ->	warning(('You must create the ', Modname,'.dll'))
+	    ->  %% check if Module.dll exists in the bindir or current dir
+		%% If not - issue a warning
+		fmt_write_string(DLLhere, '%s.dll', arg(Modname)),
+		xsb_configuration(config_bindir,BINDIR),
+		fmt_write_string(DLLbin, '%s\%s.dll', arg(BINDIR,Modname)),
+		((file_exists(DLLhere) ; file_exists(DLLbin)) -> true
+		; warning(('You must create the ', Modname,'.dll'))
+		)
 	    ;	shell([CC_Name, ' -c ', Base, '.c ', TempFile, ' ', CC_Opts]),
 	        /* The following is here because C compilers usually put 
 	           the object file in the current directory
