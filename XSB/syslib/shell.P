@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.P,v 1.24 2004/08/10 22:32:48 tswift Exp $
+** $Id: shell.P,v 1.25 2004/09/10 17:29:46 tswift Exp $
 ** 
 */
 
@@ -103,7 +103,8 @@ cd(Path) :-
 	(   var(Path)
 	->  abort('Uninstantiated argument 1 of cd/1')
 	;   (   expand_filename(Path,Dir)
-	    ->	sys_chdir(Dir,Res),
+	    ->	slash(Slash),
+		sys_chdir([Dir,Slash],Res),
 		Res =:= 0
 	    ;	abort('Wrong type in argument 1 of cd/1')
 	    )
