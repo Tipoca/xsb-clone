@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.2 1999-02-01 21:43:24 kostis Exp $
+** $Id: auxlry.c,v 1.3 1999-04-17 16:44:00 kostis Exp $
 ** 
 */
 
@@ -27,21 +27,26 @@
 
 #include <stdio.h>
 
-#if defined(WIN_NT)
+#ifdef WIN_NT
 #include <time.h>
+
 #else
+
 #include <sys/time.h>
 #include <sys/resource.h>
+
 #ifdef SOLARIS
 /*--- Include the following to bypass header file inconcistencies ---*/
 extern int getrusage();
 extern int gettimeofday();
 #endif
+
+#ifdef HP700
+#include <sys/syscall.h>
+extern int syscall();
+#define getrusage(T, USAGE)	syscall(SYS_getrusage, T, USAGE);
 #endif
 
-#if (defined(HP300) || defined(HP700))
-#include <sys/syscall.h>
-#define getrusage(T, USAGE)	syscall(SYS_getrusage, T, USAGE);
 #endif
 
 /*----------------------------------------------------------------------*/
