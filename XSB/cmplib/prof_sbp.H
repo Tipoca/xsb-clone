@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prof_sbp.H,v 1.3 1999-04-27 14:39:24 kifer Exp $
+** $Id: prof_sbp.H,v 1.4 1999-08-03 19:15:06 kifer Exp $
 ** 
 */
 
@@ -33,7 +33,7 @@
 
 :- import dict_lookup/3 from auxlry.
 :- import psc_set_prop/2, conpsc/2, conname/2,psc_prop/2, str_len/2,
- 	  stat_flag/2, file_puttoken/3, psc_set_type/2, sys_system/2,
+ 	  stat_flag/2, file_puttoken/3, psc_set_type/2,
 	  term_arg/3
      from machine.
 :- import name/2, arg/3, functor/3, atomic/1, atom/1, told/0, tell/1, 
