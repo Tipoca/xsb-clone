@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.6 1998/11/15 05:46:00 kifer Exp $
+## $Id: Makefile,v 1.7 1998/11/18 16:21:51 kifer Exp $
 ## 
 ##
 
@@ -38,17 +38,16 @@ Option = [sysmod,optimize]
 
 #-------------------------------------------------------------------#
 ### Please select ONE Prolog below to run this makefile.
-### At developement stage, an older version of XSB or PSB-Prolog is 
-### suggested.
+### At developement stage, an older version of XSB is suggested.
 ###
 ### Note: if you select self-make, be careful to save all the
 ###	  current *.O files, so that when the new files have
 ###	  errors, the old *.O can be re-installed.
 #
-# Self-make: Version 1.4.1
+# Self-make: Version 1.9
 #
 XSB=../bin/xsb
-Prolog = $(XSB) -i -s -m 1200 -c 2000
+Prolog = $(XSB)
 #
 #-------------------------------------------------------------------#
 
