@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrparser.P,v 1.22 1999-10-18 05:23:59 kifer Exp $
+** $Id: flrparser.P,v 1.23 1999-10-26 21:13:24 guizyang Exp $
 **
 */
 
@@ -275,6 +275,10 @@ literal_list([],_) --> [], !.
 /**************************************************************/
 term(T,V) --> flogic_molecule(T,V), !.
 term(T,V) --> predicate_term(T,V), !.
+term(vterm(Name,Var),V) -->
+	[var(Name)],
+	{flora_member(var(Name,Var),V)},
+	!.
 
 
 /**************************************************************/
