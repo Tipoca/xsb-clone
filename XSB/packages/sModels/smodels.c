@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: smodels.c,v 1.1 1999-08-23 22:11:29 luis Exp $
+** $Id: smodels.c,v 1.2 2001-06-05 19:18:08 lfcastro Exp $
 ** 
 */
 
@@ -109,8 +109,6 @@ extern "C" void printAnswer(void)
 
 extern "C" void close(void)
 {
-  int i;
-  
   delete(api);
   delete(smodels);
   free(atoms);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.12 2001-04-28 20:15:36 ejohnson Exp $
+** $Id: debug_xsb.c,v 1.13 2001-06-05 19:17:58 lfcastro Exp $
 ** 
 */
 
@@ -1563,6 +1563,56 @@ static void debug_interact(void)
   }
   return;
 }
+
+#ifdef CP_DEBUG
+void print_cpf_pred(CPtr cpf)
+{
+  char *lcpreg;
+  Psc psc;
+  
+#if 0
+  lcpreg = cp_cpreg(cpf);
+  psc = *(CPtr)(lcpreg-4);
+#else
+  psc = cp_psc(cpf);
+#endif
+  if (psc) {
+    switch(get_type(psc)) {
+    case T_PRED:
+      fprintf(stddbg,"choicepoint(address(%p),pred(%s/%d)).\n",
+	      cpf, get_name(psc), get_arity(psc));
+      break;
+    case T_DYNA:
+      fprintf(stddbg,"choicepoint(address(%p),dyna_pred(%s/%d)).\n",
+	      cpf, get_name(psc), get_arity(psc));
+      break;
+    case T_ORDI:
+      fprintf(stddbg,"choicepoint(address(%p),t_ordi).\n",
+	      cpf);
+      break;
+    case T_UDEF:
+      fprintf(stddbg,"choicepoint(address(%p),unloaded(%s/%p)).\n",
+	      cpf, get_name(psc), get_arity(psc));
+      break;
+    default:
+      fprintf(stddbg,"choicepoint(address(%p),unknown_pred).\n", cpf);
+      break;
+    }
+  } else
+    fprintf(stddbg,"choicepoint(address(%p),unknown_psc).\n", cpf);
+
+}
+void print_cp_backtrace()
+{
+  CPtr mycp;
+  mycp = breg;
+  while (mycp <= tcpstack.high - CP_SIZE -1 && mycp != cp_prevbreg(mycp)) {
+    print_cpf_pred(mycp);
+    mycp = cp_prevbreg(mycp);
+  }
+}
+
+#endif /* CP_DEBUG */
 
 
 #endif	/* DEBUG */

@@ -18,12 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.13 2001-03-12 17:51:00 kifer Exp $
+** $Id: error_xsb.c,v 1.14 2001-06-05 19:17:58 lfcastro Exp $
 ** 
 */
 
 
 #include "xsb_config.h"
+#include "xsb_debug.h"
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -70,6 +71,10 @@ static char *err_msg[] = {
 /* you can pass either 1 argument---a full description (a string),
    or a variable number of arguments -- a format followed by arguments.
 */
+#if defined(DEBUG) && defined(CP_DEBUG)
+extern void print_cp_backtrace();
+#endif
+
 void xsb_abort(char *description, ...)
 {
   char message[MAXBUFSIZE];
@@ -85,6 +90,9 @@ void xsb_abort(char *description, ...)
   va_end(args);
   pcreg = exception_handler(message);
 
+#if defined(DEBUG) && defined(CP_DEBUG)
+  print_cp_backtrace();
+#endif
   /* this allows xsb_abort to jump out even from nested loops */
   longjmp(xsb_abort_fallback_environment, (Integer) pcreg);
 }

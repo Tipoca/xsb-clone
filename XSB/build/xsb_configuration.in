@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_configuration.in,v 1.17 1999-12-02 07:06:07 kifer Exp $
+** $Id: xsb_configuration.in,v 1.18 2001-06-05 19:17:54 lfcastro Exp $
 ** 
 */
 
@@ -150,6 +150,9 @@ xsb_configuration(config_libdir, ConfigLibdir) :-
      slash(Slash),
      fmt_write_string(ConfigLibdir, '%s%slib', f(ConfigDir, Slash)).
 
+/* this is the path for Incr Tcl/Tk, used by the XMC Package */
+xsb_configuration(itkwish_path, '@itkwith_path@').
+
 /* site-specific directories */
 xsb_configuration(site_dir, '@site_prefix@').
 xsb_configuration(site_libdir, SiteLibdir) :-
@@ -189,3 +192,4 @@ xsb_configuration(user_config_libdir, UserConfigLibdir) :-
      fmt_write_string(UserConfigLibdir,
 		      '%s%s.xsb%sconfig%s%s',
 		      f(UserHome,Slash,Slash,Slash,Config)).
+

@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: smoMakefile.in,v 1.6 2000-04-10 23:45:58 kifer Exp $
+## $Id: smoMakefile.in,v 1.7 2001-06-05 19:17:54 lfcastro Exp $
 ## 
 ##
 
@@ -40,6 +40,9 @@ SMODELSHEADER= $(SMODELS)/api.h $(SMODELS)/atomrule.h $(SMODELS)/dcl.h \
 
 Option = [sysmod,optimize]
 
+GCC=@CC@
+CFLAGS=@CFLAGS@ -I@arch_config_prefix@
+GMM=g++
 XSB=../../bin/xsb
 Prolog = $(XSB) 
 
@@ -55,13 +58,19 @@ Prolog = $(XSB)
 
 all: $(ALL)
 	@../../build/touch.sh cmd...
-	ln -s $(SMODELSOBJ) .
-	ln -s $(SMODELSHEADER) .
 	$(Prolog) < cmd...
 	@rm cmd...
 
 clean: 
 	rm *.o *.so *.O *.h
+
+xsb_wrap_smodels.o: xsb_wrap_smodels.c
+	$(GCC) $(CFLAGS) -c xsb_wrap_smodels.c
+
+module: xsb_wrap_smodels.o 
+	$(GMM) $(CFLAGS) -s -o smodels.so -shared -I$(SMODELS) \
+	-L$(SMODELS) smodels.c \
+	xsb_wrap_smodels.o $(SMODELS)/.libs/libsmodels.a
 
 nope:
 
