@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.96 2004-01-14 20:27:12 dwarren Exp $
+** $Id: emuloop.c,v 1.97 2004-01-16 22:03:56 dwarren Exp $
 ** 
 */
 
@@ -122,7 +122,7 @@ CPtr	ans_var_pos_reg;
 
 #define handle_xsb_profile_interrupt 				\
     if (asynint_val && (asynint_val & PROFINT_MARK)) {		\
-      asynint_val &= PROFINT_MARK;				\
+      asynint_val &= ~PROFINT_MARK;				\
       log_prog_ctr(lpcreg);					\
     }								\
 
