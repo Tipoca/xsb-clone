@@ -18,15 +18,15 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.17 2001-05-25 19:18:30 lfcastro Exp $
+## $Id: Makefile,v 1.18 2001-06-29 22:51:21 kifer Exp $
 ## 
 ##
 
 
-ALL = 	flora.O slx.O perlmatch.O gap.O regmatch.O wildmatch.O \
+ALL = 	flora2.O slx.O perlmatch.O gap.O regmatch.O wildmatch.O \
 	sModels.O libwww.O clpr.O xsbdoc.O xmc.O
 
-SUBDIR = flora slx perlmatch gap regmatch wildmatch libwww sModels \
+SUBDIR = flora2 slx perlmatch gap regmatch wildmatch libwww sModels \
 	clpqr xsbdoc xmc
 
 Option = [optimize]
@@ -71,9 +71,9 @@ slx::
 	@echo ""
 	cd slx; make
 
-flora::
+flora2::
 	@echo ""
-	cd flora; make
+	cd flora2; make
 
 libwww::
 	@echo ""
