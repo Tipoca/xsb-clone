@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.14 1999-06-17 07:50:58 kifer Exp $
+** $Id: cinterf.c,v 1.15 1999-06-22 03:20:06 kifer Exp $
 ** 
 */
 
@@ -1037,7 +1037,7 @@ int clenpterm(prolog_term term)
   }
 }
 
-char tempstring[100];
+char tempstring[MAXBUFSIZE];
 
 /* print a prolog_term into a buffer.
 (Atoms are quoted if !toplevel and it's necessary for Prolog reading) */
