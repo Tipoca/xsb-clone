@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.35 2004-08-19 22:15:24 tswift Exp $
+** $Id: init_xsb.c,v 1.36 2004-08-20 18:11:35 dwarren Exp $
 ** 
 */
 
@@ -751,6 +751,7 @@ Psc make_code_psc_rec(char *name, int arity, Psc mod_psc) {
   set_data(new_psc, mod_psc);
   set_env(new_psc, T_UNLOADED);
   set_type(new_psc, T_ORDI);
+  if (mod_psc != global_mod) link_sym(new_psc, global_mod); /* Add to global module as well */
   return new_psc;
 }
 

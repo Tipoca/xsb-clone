@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.19 2004-08-19 22:15:25 tswift Exp $
+** $Id: io_builtins_xsb_i.h,v 1.20 2004-08-20 18:11:35 dwarren Exp $
 ** 
 */
 
@@ -31,6 +31,7 @@
 
 static struct stat stat_buff;
 extern char   *expand_filename(char *filename);
+extern int old_xsb_intern_fileptr(FILE *, char *);
 
 
 static FILE *stropen(char *str)

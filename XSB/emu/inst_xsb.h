@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.13 2004-03-08 13:56:28 dwarren Exp $
+** $Id: inst_xsb.h,v 1.14 2004-08-20 18:11:35 dwarren Exp $
 ** 
 */
 
@@ -209,6 +209,9 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 
 #define no_inst         0x20 
 /* the above number is used for invalid opcodes in the threading engine */
+
+#define uniavar		0x21  /* for single occurrence variables */
+#define bldavar		0x22
 
 #define getattv		0x30
 #define putattv		0x31

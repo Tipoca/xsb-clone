@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.33 2004-03-08 13:56:28 dwarren Exp $
+** $Id: loader_xsb.c,v 1.34 2004-08-20 18:11:35 dwarren Exp $
 ** 
 */
 
@@ -857,7 +857,7 @@ byte *loader(char *file, int exp)
   }
   else {
     xsb_abort("File: %s does not have proper byte code format...\n%s",
-	      file, "\t Please recompile it");
+	      file, "\t Please remove it and then recompile");
     first_inst = NULL;
   }
 
