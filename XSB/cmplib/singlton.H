@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: singlton.H,v 1.5 2002-04-13 05:01:48 lfcastro Exp $
+** $Id: singlton.H,v 1.6 2003-04-21 15:40:17 lfcastro Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 
 :- import vv/2 from xsb_read.
 :- import warning/1 from auxlry.
-:- import numbervars/3 from num_vars.
+:- import numbervars_cmplib/3 from auxlry.
 :- import ll_arg/3 from auxlry.
 :- import append/3 from basics.
 :- import atom_codes/2, functor/3, hilog_functor/3, atomic/1, integer/1,
