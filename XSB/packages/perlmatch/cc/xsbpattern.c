@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbpattern.c,v 1.7 1999-12-10 07:37:02 kifer Exp $
+** $Id: xsbpattern.c,v 1.8 1999-12-14 13:32:32 kostis Exp $
 ** 
 */
 
@@ -37,12 +37,13 @@
 
 
 #include "interface.h"
-#include "perlpattern.c"          /*pattern match basic functions */   
+#include "perlpattern.c"          /* pattern match basic functions */   
 
 void build_sub_match_spec( void );
 int is_global_pattern( char *);
 int global_pattern_mode = FALSE;
 
+extern void xsb_abort(char *, ...);
 
 #define xsb_warn(warning)	fprintf(stderr, "++Warning: %s\n", warning)
 
