@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts.i,v 1.15 1999-03-18 01:25:44 cbaoqiu Exp $
+** $Id: slginsts.i,v 1.16 1999-03-26 06:37:39 cbaoqiu Exp $
 ** 
 */
 
@@ -217,6 +217,7 @@ case old_new_answer_dealloc:
     CallNumVar = *(GENERATOR_CP + TCP_SIZE + (Cell) ARITY);
     CallNumVar = int_val(CallNumVar); /* # of SF vars is stored tagged */
     VarsInCall = GENERATOR_CP + TCP_SIZE + (Cell) ARITY + CallNumVar;
+    SUBGOAL = tcp_subgoal_ptr(GENERATOR_CP);
 #endif
 
     xflag = 0;
