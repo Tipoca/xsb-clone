@@ -18,6 +18,12 @@
 # For example:
 
 XSB/build           	mailx -s "XSB commit: %{}" kifer
-XSB/packages/flora.*    mailx -s "XSB commit: %{}" kifer
+XSB/admin           	mailx -s "XSB commit: %{}" kifer
+XSB/packages/flora.*    mailx -s "XSB commit: %{}" kifer guizyang
+
+XSB/emu	       	        mailx -s "XSB commit: %{}" cbaoqiu kostis tswift
+XSB/syslib	        mailx -s "XSB commit: %{}" cbaoqiu kostis tswift
+XSB/lib	            	mailx -s "XSB commit: %{}" cbaoqiu kostis
+XSB/cmplib	      	mailx -s "XSB commit: %{}" cbaoqiu kostis
 
 DEFAULT		(echo ""; whoami; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
