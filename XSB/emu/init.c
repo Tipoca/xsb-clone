@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.32 1999-10-09 02:00:26 cbaoqiu Exp $
+** $Id: init.c,v 1.33 1999-10-09 18:11:33 kostis Exp $
 ** 
 */
 
@@ -116,7 +116,6 @@ Cell proceed_inst;
 Cell reset_inst;
 
 extern double realtime_count;
-extern pw reloc_table[];
 
 extern void perproc_reset_stat(void), reset_stat_total(void); 
 
@@ -184,7 +183,6 @@ static void init_flags(void)
 
   for (i=0; i<64; i++) flags[i] = 0;
   flags[BANNER_CTL] = 1; /* this one is a product of prime numbers */
-  flags[RELOC_TABLE] = (Cell)reloc_table;
 }
 
 /*==========================================================================*/

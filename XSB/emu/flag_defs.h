@@ -1,5 +1,5 @@
 /* File:      flag_defs.h
-** Author(s): Jiyang Xu, Kostis F. Sagonas, Ernie Johnson
+** Author(s): Jiyang Xu, Kostis Sagonas, Ernie Johnson
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1999
@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs.h,v 1.4 1999-10-08 07:32:15 kifer Exp $
+** $Id: flag_defs.h,v 1.5 1999-10-09 18:11:34 kostis Exp $
 ** 
 */
 
@@ -42,12 +42,11 @@
 #define CURRENT_OUTPUT	11	/* current output file descriptor	NW */
 #define CURRENT_MODULE	12	/* current module (0 = usermod)		YW */
 #define MOD_LIST	13	/* the list of module (Psc) entries	YR */
-#define RELOC_TABLE	14	/* relocation table			YR */
 
 #define BANNER_CTL      17      /* Controls whether banner, "loaded" msgs
 				   are displayed; passed to Prolog side.
-				   Check BANNER_CTL values at the end   MK */
-#define DCG_MODE        18      /* DGC mode: standard or xsb	        MK */
+				   Check BANNER_CTL values at the end      */
+#define DCG_MODE        18      /* DGC mode: standard or xsb	           */
 
 #define GARBAGE_COLLECT 20      /* type of garbage collection employed:    */
                                 /* 0 = none; 1 = sliding; 2 = copying.  NW */
