@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.3 1999/01/15 18:42:06 kostis Exp $
+** $Id: standard.H,v 1.4 1999/01/16 16:34:31 kostis Exp $
 ** 
 */
 
@@ -103,5 +103,6 @@
 :- import numbervars/1 from num_vars.
 :- import predicate_property/2 from curr_sym.
 :- import (dynamic)/1, asserta/1, retract/1 from assert.
+:- import conset/2 from prof_sbp.
 
 /* --------------------- end of file standard.H ----------------------- */
