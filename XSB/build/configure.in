@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.73 2000-02-24 18:18:12 lfcastro Exp $
+## $Id: configure.in,v 1.74 2000-02-29 21:54:50 kifer Exp $
 ## 
 ##
 
@@ -954,7 +954,7 @@ case "$canonical" in
 		    CFLAGS="${CFLAGS} -OPT:Olimit=7500"
 	     	fi
 	     fi
-	     trutils_opt_level=c_opt_level
+	     trutils_opt_level=${c_opt_level}
 	    ;;
       *-solaris* | *-sunos5* ) AC_DEFINE(SOLARIS)
 		 LDFLAGS="${LDFLAGS} -lnsl -ldl"
