@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.P,v 1.37 1999-11-21 06:42:17 kifer Exp $
+** $Id: flrshell.P,v 1.38 1999-11-22 19:24:52 kifer Exp $
 **
 */
 
@@ -164,9 +164,9 @@ rundemo(X,Dtvs) :-
 	slash(Slash),
 	%% Add the demo directory to library_directory
 	fmt_write_string(DemoDir, '%s%sdemos', f(FloraDir, Slash)),
-	(library_directory(DemoDir)
-	       -> true
-		; assert(library_directory(DemoDir))
+	(  library_directory(DemoDir)
+        -> true
+	;  assert(library_directory(DemoDir))
 	),
 	flconsult(X,Dtvs),
 	retract(library_directory(DemoDir)).
@@ -177,9 +177,9 @@ rundemo(X) :-
 	slash(Slash),
 	%% Add the demo directory to library_directory
 	fmt_write_string(DemoDir, '%s%sdemos', f(FloraDir, Slash)),
-	(library_directory(DemoDir)
-	       -> true
-		; assert(library_directory(DemoDir))
+	(  library_directory(DemoDir)
+        -> true
+	;  assert(library_directory(DemoDir))
 	),
 	flconsult(X),
 	retract(library_directory(DemoDir)).
@@ -238,9 +238,9 @@ flcompile_all_demos  :-
 	slash(S),
 	fmt_write_string(DemoDir,'%s%sdemos',f(FloraDir,S)),
         glob_directory('*.flr', DemoDir, _, DemoList),
-	(library_directory(DemoDir) -> true
-	    ;
-	    assert(library_directory(DemoDir))
+	(  library_directory(DemoDir)
+	-> true
+	;  assert(library_directory(DemoDir))
 	),
 	flcompile_demo(DemoList),
 	retract(library_directory(DemoDir)).
