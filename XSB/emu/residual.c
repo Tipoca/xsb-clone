@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.7 1999-08-16 07:24:27 kifer Exp $
+** $Id: residual.c,v 1.8 1999-09-18 04:39:43 cbaoqiu Exp $
 ** 
 */
 
@@ -254,7 +254,9 @@ void build_delay_list(CPtr delay_list, DE de)
 		   num_heap_term_vars);
 #endif /* DEBUG_DELAYVAR */
 	
+#ifndef IGNORE_DELAYVAR
 	load_delay_trie(i, &cell_array[i-1], de_subs_fact_leaf(de));
+#endif
 	
 #ifdef DEBUG_DELAYVAR
 	xsb_dbgmsg(">>>> num_heap_term_vars becomes %d",

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete.i,v 1.12 1999-07-06 16:35:07 ejohnson Exp $
+** $Id: complete.i,v 1.13 1999-09-18 04:39:41 cbaoqiu Exp $
 ** 
 */
 
@@ -96,20 +96,23 @@ case check_complete: {
 	  fprintf(stderr, ">>>> delay_positively in check_complete\n");
 #endif
 	  {
-	    int i;
-	    CPtr temp_hreg;
-	    
 	    if (num_heap_term_vars == 0) {
 	      delay_positively(SUBGOAL, aln_answer_ptr(tcp_trie_return(breg)),
 			       makestring((char *) ret_psc[0]));
 	    }
 	    else {
-	      temp_hreg = hreg;
+#ifndef IGNORE_DELAYVAR
+	      int i;
+	      CPtr temp_hreg = hreg;
 	      new_heap_functor(hreg, get_ret_psc(num_heap_term_vars));
 	      for (i = 0; i < num_heap_term_vars; i++)
 		cell(hreg++) = (Cell) var_addr[i];
 	      delay_positively(SUBGOAL, aln_answer_ptr(tcp_trie_return(breg)),
 			       makecs(temp_hreg));
+#else
+	      delay_positively(SUBGOAL, aln_answer_ptr(tcp_trie_return(breg)),
+			       makestring((char *) ret_psc[0]));
+#endif /* IGNORE_DELAYVAR */
 	    }
 	  }
 	}
