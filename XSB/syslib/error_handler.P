@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.17 2004/05/18 13:45:24 tswift Exp $
+** $Id: error_handler.P,v 1.18 2004/05/18 19:19:44 vidrevich Exp $
 ** 
 */
 
@@ -67,8 +67,8 @@ default_sys_error_handler(error(Error,Msg,Backtrace)) :-
 default_sys_error_handler(error(Error,Msg)) :-
 	get_sys_error_description(error(Error,Msg),NewMsg),
 	messageln(NewMsg,STDERR).
-default_sys_error_handler(error(Error,Msg)) :-
-	messageln(('Unhandled Exception: ',error(Error,Msg)),STDERR).
+default_sys_error_handler(X) :-
+	messageln(('Unhandled Exception: ',X),STDERR).
 
 % get_sys_error_description/3
 get_sys_error_description('_$abort_ball'(AbortMsgs, Backtrace), ExceptionDescription, BacktraceList) :- !,
