@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.33 2003-08-04 16:34:01 lfcastro Exp $
+** $Id: system_xsb.c,v 1.34 2003-08-08 18:54:24 lfcastro Exp $
 ** 
 */
 
@@ -1053,11 +1053,18 @@ static int file_copy(char *source, char *dest)
       return 0;
     }
   } else {
+#ifdef WIN_NT
+    if (!strcmp(source,dest)) {
+      xsb_warn("[file_copy] %s and %s are the same file.\n", source,dest);
+      return 0;
+    }
+#else
     if (source_stat.st_dev == dest_stat.st_dev &&
 	source_stat.st_ino == dest_stat.st_ino) {
       xsb_warn("[file_copy] %s and %s are the same file.\n", source,dest);
       return 0;
     }
+#endif
     dest_exists = 1;
   }
   
