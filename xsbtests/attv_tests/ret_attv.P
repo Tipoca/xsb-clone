@@ -1,10 +1,10 @@
 /* File:      ret_attv.P
 ** Author(s): Baoqiu Cui
 ** 
-** $Id: ret_attv.P,v 1.1 2000-01-05 17:05:15 cbaoqiu Exp $
+** $Id: ret_attv.P,v 1.2 2000-07-31 20:34:35 ejohnson Exp $
 */
 
-:- import put_attributes/2, get_attributes/3 from machine.
+:- import attv_unify/2, put_attributes/2, get_attributes/3 from machine.
 
 test :-
 	test_get_calls,
