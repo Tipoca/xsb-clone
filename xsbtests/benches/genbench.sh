@@ -24,6 +24,7 @@ EOF
 if test -f "$FILE" ; then
     mv "$FILE" "$FILE"_tmp
     cat "$FILE"_tmp temp > "$FILE"
+    rm "$FILE"_tmp temp
 else
     mv temp "$FILE"
 fi

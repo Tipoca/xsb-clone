@@ -1,10 +1,14 @@
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "cinterf.h"
 
 int prand(void)
 {
-  ctop_int(1,rand());
+  unsigned int r = rand();
+
+  r = r & 0xFFFFFF;
+  ctop_int(1,r);
   return(1);
 }
 

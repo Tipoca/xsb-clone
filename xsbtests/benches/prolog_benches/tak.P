@@ -1,8 +1,7 @@
 
 % This one originally came from C.R. Ramakrishnan (I think).  
 
-
-bench_ak(Type,N):- 
+bench_tak(Type,N):- 
 	cputime(T1),
 	main1(N),
 	cputime(T2),T is T2-T1,
