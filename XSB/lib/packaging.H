@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: packaging.H,v 1.3 1999-04-01 05:24:10 kifer Exp $
+** $Id: packaging.H,v 1.4 1999-05-19 01:38:21 kifer Exp $
 ** 
 */
 
@@ -29,8 +29,8 @@
 
 :- import (dynamic)/1, assert/1, retract/1
    from assert.
-:- import abort/1
-   from standard.
+
+%% :- import abort/1 from standard.
 
 :- import slash/1, expand_filename/2
    from machine.
