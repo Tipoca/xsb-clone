@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_copy.h,v 1.1 2001-12-13 21:13:35 lfcastro Exp $
+** $Id: gc_copy.h,v 1.2 2002-02-26 18:22:07 lfcastro Exp $
 ** 
 */
 
@@ -245,19 +245,26 @@ static CPtr copy_heap(int marked, CPtr begin_new_h, CPtr end_new_h, int arity)
       for (p = tr_bot; p <= endtr; p++) {
 	contents = cell(p);
 
-	/* lfcastro -- experimental for copying */
 #ifdef SLG_GC
 	if (!tr_marked(p-tr_bot))
 	  continue;
 	tr_clear_mark(p-tr_bot);
 #endif
-
 	q = hp_pointer_from_cell(contents,&tag) ;
 	if (!q) continue ;
 	if (h_marked(q-heap_bot)) 
 	  find_and_copy_block(q); 
 	adapt_external_heap_pointer(p,q,tag);
 	}
+#ifndef CHAT
+#ifdef PRE_IMAGE_TRAIL
+      /* re-tag pre image cells in trail */
+      if (tr_pre_marked(p-tr_bot)) {
+	*p = *p | PRE_IMAGE_MARK;
+	tr_clear_pre_mark(p-tr_bot);
+      }
+#endif
+#endif
     }
 
   /* choicepoints */
