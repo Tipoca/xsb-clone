@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbsocket.i,v 1.9 1999-07-24 23:33:30 kifer Exp $
+** $Id: xsbsocket.i,v 1.10 1999-07-25 15:36:21 kifer Exp $
 ** 
 */
 
@@ -41,6 +41,8 @@
 #endif /* WIN_NT */
 
 #include "xsbsocket.h"
+
+struct linger sock_linger_opt;
 
 char *get_host_IP(char *host_name_or_IP) {
   struct hostent *host_struct;
@@ -121,6 +123,17 @@ inline static bool xsb_socket_request(void)
       xsb_warn("SOCKET_REQUEST: Cannot open stream socket");
       return FALSE;
     }
+
+    /* Set the "linger" parameter to a small number of seconds */
+    sock_linger_opt.l_onoff = TRUE;
+    sock_linger_opt.l_linger = 5;
+    if (setsockopt(sock_handle, SOL_SOCKET, SO_LINGER,
+		   &sock_linger_opt, sizeof(sock_linger_opt))
+	< 0) {
+      xsb_warn("SOCKET_REQUEST: Cannot set socket linger option");
+      return FALSE;
+    };
+
     ctop_int(3, (SOCKET) sock_handle);
     break;
   case SOCKET_BIND: /* socket_request(1,+domain,+sock_handle,+port) */
