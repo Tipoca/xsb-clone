@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwwwconfig.P,v 1.14 1999-12-04 03:10:07 kifer Exp $
+** $Id: libwwwconfig.P,v 1.15 2000-03-29 16:58:59 kifer Exp $
 ** 
 */
 
@@ -45,7 +45,7 @@ make_xsb_libwwwH(CC, CC_opts, LoaderFlags) :-
     write('%% XSB CC:                '), writeln(CC),
     write('%% Libwww compiler flags: '), writeln(CC_opts),
     writeln(':- import slash/1 from machine.'),
-    writeln(':- export do_libwww_fetch_url___/4,do_libwww_form_request___/4.'),
+    writeln(':- export do_libwww_request___/1.'),
     fmt_write(':- ldoption('' %s'').', arg(LoaderFlags)), nl,
     told,
     tell(OldTell).
