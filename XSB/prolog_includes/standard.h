@@ -18,12 +18,10 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.h,v 1.6 1999-11-23 04:06:47 kifer Exp $
+** $Id: standard.h,v 1.7 1999-11-29 07:59:56 kifer Exp $
 ** 
 */
 
-
-#include "file_modes_xsb.h"
 
 
 #define STDIN	     0
