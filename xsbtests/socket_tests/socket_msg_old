@@ -16,8 +16,6 @@
 
 
 
-
-
     +++Invalid goal: sddfg
     g(1)
     g(2)
@@ -34,8 +32,6 @@ Answers:
 Answers: 
 Answers: 
 Client quits...
-Evaluating command line goal:  
-Evaluating command line goal:  
 Exiting.
 Invalid goal: sddfg
 Please enter goal: g(X). or h(X).  Type e. to finish. Goal: 
@@ -48,8 +44,6 @@ Timeout or EOF: -2
 Timeout or EOF: -2
 Timeout or EOF: -2
 Timeout or EOF: -2
-['auxiliary/msgClient'].
-['auxiliary/msgServer'].
 connected to server...
 recv(sockfd0,tmsg,-1)
 recv(sockfd0,tmsg,-2)

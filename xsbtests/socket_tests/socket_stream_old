@@ -12,8 +12,6 @@
 
 
 
-
-
     +++Invalid goal: sddfg
     g(1)
     g(2)
@@ -30,8 +28,6 @@ Answers:
 Answers: 
 Answers: 
 Client quits...
-Evaluating command line goal:  
-Evaluating command line goal:  
 Exiting.
 Invalid goal: sddfg
 Please enter goal: g(X). or h(X).  Type e. to finish. Goal: 
@@ -39,8 +35,6 @@ Please enter goal: g(X). or h(X).  Type e. to finish. Goal:
 Please enter goal: g(X). or h(X).  Type e. to finish. Goal: 
 Please enter goal: g(X). or h(X).  Type e. to finish. Goal: 
 Please enter goal: g(X). or h(X).  Type e. to finish. Goal: 
-['auxiliary/streamClient'].
-['auxiliary/streamServer'].
 connected to server...
 socket(sockfd0,0)
 socket_accept1(sockfd0,sockfd0_out1,0)

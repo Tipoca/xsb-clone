@@ -33,14 +33,8 @@
 
 
 
-
-
 Client quits...
-Evaluating command line goal:  
-Evaluating command line goal:  
 Exiting.
-['auxiliary/putClient'].
-['auxiliary/putServer'].
 connected to server...
 g(X).
 h(X).
