@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_wildmatch.c,v 1.13 2005-02-22 06:22:00 kifer Exp $
+** $Id: xsb_wildmatch.c,v 1.14 2005-03-05 07:52:21 kifer Exp $
 ** 
 */
 
@@ -114,7 +114,9 @@ int do_wildmatch__(void)
   return FALSE;
 }
 
+#ifndef GLOB_ABORTED
 #define	GLOB_ABORTED	(-2)	/* Unignored error. */
+#endif
 #define	GLOB_NOMATCH	(-3)	/* No match and GLOB_NOCHECK not set. */
 #define	GLOB_NOSYS	(-4)	/* Function not supported. */
 #define GLOB_ABEND	GLOB_ABORTED
