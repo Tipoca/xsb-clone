@@ -18,12 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring_xsb.h,v 1.2 2000-04-29 21:54:02 kifer Exp $
+** $Id: varstring_xsb.h,v 1.3 2001-07-06 18:19:42 kifer Exp $
 ** 
 */
 
 
 #ifndef VARSTRING_INCLUDED
+#include "export.h"
 
 struct varstr;
 typedef struct varstr VarString;
@@ -69,7 +70,7 @@ struct varstr {
 };
 
 
-extern struct varstr_ops VarStrOps;
+DllExport extern struct varstr_ops VarStrOps;
 
 /* calling sequence shortcuts; all expect a VarString pointer */
 #define XSB_StrSet(vstr,str)           (vstr)->op->set(vstr,str)

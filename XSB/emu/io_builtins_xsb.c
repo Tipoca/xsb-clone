@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.21 2001-05-13 21:01:20 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.22 2001-07-06 18:19:42 kifer Exp $
 ** 
 */
 
@@ -60,7 +60,6 @@
 
 FILE *open_files[MAX_OPEN_FILES]; /* open file table */
 
-extern void print_pterm(prolog_term term,int toplevel,VarString* saddr);
 
 static FILE *fptr;			/* working variable */
     

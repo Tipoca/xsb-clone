@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.10 2001-04-20 02:11:36 kifer Exp $
+** $Id: varstring.c,v 1.11 2001-07-06 18:19:42 kifer Exp $
 ** 
 */
 
@@ -96,14 +96,14 @@ static void  vs_prependblk(VarString *vstr,char*,int);
 static void  vs_adjust_size(VarString *vstr, int add_size);
 static inline void vs_null_terminate(VarString *vstr);
 
-struct varstr_ops VarStrOps = {vs_set,vs_setv,
-			       vs_append,vs_prepend, 
-			       vs_appendv,vs_prependv,
-			       vs_compare,vs_strcmp,
-			       vs_appendblk,vs_prependblk,
-			       vs_null_terminate,
-			       vs_ensure_size,
-			       vs_shrink,vs_destroy};
+DllExport struct varstr_ops VarStrOps = {vs_set,vs_setv,
+					 vs_append,vs_prepend, 
+					 vs_appendv,vs_prependv,
+					 vs_compare,vs_strcmp,
+					 vs_appendblk,vs_prependblk,
+					 vs_null_terminate,
+					 vs_ensure_size,
+					 vs_shrink,vs_destroy};
 
 
 

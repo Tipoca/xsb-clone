@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.36 2001-05-13 21:01:20 kifer Exp $
+** $Id: cinterf.c,v 1.37 2001-07-06 18:19:42 kifer Exp $
 ** 
 */
 
@@ -1056,7 +1056,7 @@ char tempstring[MAXBUFSIZE];
    Buffer is a VarString. If the VarString is non-empty, the term is appended
    to the current contents of the VarString.
 */
-void print_pterm(prolog_term term, int toplevel, VarString *straddr)
+DllExport void call_conv print_pterm(prolog_term term, int toplevel, VarString *straddr)
 {
   int i;
 

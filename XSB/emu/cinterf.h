@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.15 2000-11-22 15:31:23 dwarren Exp $
+** $Id: cinterf.h,v 1.16 2001-07-06 18:19:42 kifer Exp $
 ** 
 */
 
@@ -246,7 +246,7 @@ DllExport extern int call_conv xsb_get_last_answer_string(char*,int,int*);
 DllExport extern int call_conv xsb_close_query();
 DllExport extern int call_conv xsb_close();
 
-extern void print_pterm(Cell, int, VarString*);
+DllExport extern void call_conv print_pterm(Cell, int, VarString*);
 extern char *p_charlist_to_c_string(prolog_term term, VarString *buf,
 				    char *in_func, char *where);
 
