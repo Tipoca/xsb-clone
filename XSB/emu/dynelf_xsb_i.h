@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf_xsb_i.h,v 1.16 2000-05-20 06:55:58 kifer Exp $
+** $Id: dynelf_xsb_i.h,v 1.17 2001-08-14 00:26:58 kifer Exp $
 ** 
 */
 
@@ -47,8 +47,9 @@
 #define BUFFEXTRA 1024
 
 #if (defined(SOLARIS) && defined(__GNUC__))
-/* just to supress stupid gcc warning */
-extern int putenv(const char *);
+/* Under which Solaris is this needed? Doesn't seem to be needed under
+   2.6,2.7,2.8 */
+/*extern int putenv(const char *);*/
 #endif
 
 /*----------------------------------------------------------------------*/
