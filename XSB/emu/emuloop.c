@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.47 1999-10-26 06:46:58 kifer Exp $
+** $Id: emuloop.c,v 1.48 1999-10-29 16:01:11 tswift Exp $
 ** 
 */
 
@@ -1289,7 +1289,8 @@ restore_sub:
   register CPtr tbreg;
 
   tbreg = breg;
-  switch_envs(tbreg);
+  /*   switch_envs(tbreg); */
+  undo_bindings(tbreg);
   ptcpreg = cp_ptcp(tbreg);
   delayreg = cp_pdreg(tbreg);
   restore_some_wamregs(tbreg, ereg);
