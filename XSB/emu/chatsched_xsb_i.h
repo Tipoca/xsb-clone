@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chatsched_xsb_i.h,v 1.3 2000-05-29 04:23:34 ejohnson Exp $
+** $Id: chatsched_xsb_i.h,v 1.4 2000-06-19 07:09:16 ruim Exp $
 ** 
 */
 
@@ -58,12 +58,12 @@ static CPtr schedule_subgoal(VariantSF producer_sf, CPtr compl_fr)
 	answer_set = ALN_Next(nlcp_trie_return(consumer_cpf));
 	if ( IsNULL(answer_set) && ((VariantSF)consumer_sf != producer_sf) )
 	  if ( MoreAnswersAvailable(consumer_sf,producer_sf) ) {
-	    CPtr template, *baseTR;
+	    CPtr templ, *baseTR;
 
-	    template = restore_answer_template(chat_ptr, &baseTR);
+	    templ = restore_answer_template(chat_ptr, &baseTR);
 	    answer_set =
 	      table_retrieve_answers((SubProdSF)producer_sf, consumer_sf,
-				     template);
+				     templ);
 	    undo_template_restoration(baseTR);
 	  }
 	if ( IsNonNULL(answer_set) )
