@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.i,v 1.18 1999-08-18 05:49:19 kifer Exp $
+** $Id: io_builtins.i,v 1.19 1999-09-03 19:42:58 warren Exp $
 ** 
 */
 
@@ -444,6 +444,18 @@ inline static bool file_function(void)
     break;
   }
     
+  case FILE_CLEARERR: { /* file_function(16, +OIport) */
+    io_port = ptoc_int(2);
+    if ((io_port < 0) && (io_port >= -MAXIOSTRS)) {
+    }
+    else {
+      fprintf(stderr,"clearerr %d\n", io_port);
+      SET_FILEPTR(fptr, io_port);
+      clearerr(fptr);
+    }
+    break;
+  }
+
   default:
     xsb_abort("Invalid file function request %d\n", ptoc_int(1));
   }
