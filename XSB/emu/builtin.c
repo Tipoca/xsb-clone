@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.131 2001-11-07 21:08:00 dwarren Exp $
+** $Id: builtin.c,v 1.132 2001-11-08 21:35:25 dwarren Exp $
 ** 
 */
 
@@ -249,7 +249,7 @@ codes.  Puts result in a fixed buffer (if nec.) automatically extended */
 void constructString(Cell addr, int ivstr)
 {
   int val;
-  static char *charstr = "x";
+  static char charstr[2] = "x";
 
  constructStringBegin:
   XSB_Deref(addr);
@@ -1106,8 +1106,8 @@ int builtin_call(byte number)
   case STAT_SET_FLAG:	/* R1: flagname(+int); R2: value(+int); */
     flags[ptoc_int(1)] = ptoc_int(2);
     if (flags[DEBUG_ON]||flags[TRACE_STA]||flags[HITRACE]||flags[CLAUSE_INT])
-      *asynint_ptr |= MSGINT_MARK;
-    else *asynint_ptr &= ~MSGINT_MARK;
+      asynint_val |= MSGINT_MARK;
+    else asynint_val &= ~MSGINT_MARK;
     break;
   case BUFF_ALLOC: {	/* R1: size (+integer); R2: -buffer; */
 	           /* the length of the buffer is also stored at position 0 */

@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sig_xsb.h,v 1.2 2001-03-23 03:54:31 kifer Exp $
+** $Id: sig_xsb.h,v 1.3 2001-11-08 21:35:25 dwarren Exp $
 ** 
 */
 
 
 /* signals 1 and 8-15 are asynchronous. They are flaged by the variable  */
-/* *asynint_ptr, which can be 8-15 and maybe OR'ed with KEYINT_MARK.	 */
+/* asynint_val, which can be 8-15 and maybe OR'ed with KEYINT_MARK.	 */
 /* At some interval (currently at the entry of "call", etc), a check is  */
 /* made to see if there is an asynchronous interrupt occurred. If yes,	 */
 /* the procedure "interrupt_proc" is invoked. The rest of signals (0 and */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.19 2001-11-07 21:08:01 dwarren Exp $
+** $Id: init_xsb.c,v 1.20 2001-11-08 21:35:25 dwarren Exp $
 ** 
 */
 
@@ -412,7 +412,7 @@ char *init_para(int argc, char *argv[])
       break;
     case 's':
       flags[TRACE_STA] = 1;
-      *asynint_ptr |= MSGINT_MARK;
+      asynint_val |= MSGINT_MARK;
       break;
     case 'S':
       flags[TABLING_METHOD] = SUBSUMPTIVE_TEM;
@@ -424,13 +424,13 @@ char *init_para(int argc, char *argv[])
       break;
     case 'T': 
       flags[HITRACE] = 1;
-      *asynint_ptr |= MSGINT_MARK; 
+      asynint_val |= MSGINT_MARK; 
       break;
     case 't': 
 #ifdef DEBUG
       flags[PIL_TRACE] = 1;
       flags[HITRACE] = 1;
-      *asynint_ptr |= MSGINT_MARK;
+      asynint_val |= MSGINT_MARK;
 #else
       xsb_exit("-t option unavailable for this executable (non-debug mode)");
 #endif

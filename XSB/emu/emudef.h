@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.28 2001-11-07 21:08:00 dwarren Exp $
+** $Id: emudef.h,v 1.29 2001-11-08 21:35:25 dwarren Exp $
 ** 
 */
 
@@ -87,7 +87,6 @@ char *list_dot;
 
 int asynint_code = 0;
 int asynint_val = 0;
-int *asynint_ptr = &asynint_val;
 
 #ifdef DEBUG_ATTV
 #define attv_dbgmsg(String) xsb_dbgmsg(String)
@@ -233,15 +232,15 @@ int *asynint_ptr = &asynint_val;
 
 
 #define call_sub(PSC) {							\
-  if ( (*asynint_ptr) | int_val(cell(interrupt_reg)) ) {   	        \
-    if (*asynint_ptr) { /* non-attv intrpt */				\
-      if (*asynint_ptr & KEYINT_MARK) {					\
+  if ( (asynint_val) | int_val(cell(interrupt_reg)) ) {   	        \
+    if (asynint_val) { /* non-attv intrpt */				\
+      if (asynint_val & KEYINT_MARK) {					\
         synint_proc(PSC, MYSIG_KEYB, lpcreg-2*sizeof(Cell));		\
         lpcreg = pcreg;							\
       }									\
       else								\
         lpcreg = (byte *)get_ep(PSC);					\
-      *asynint_ptr = *asynint_ptr & ~KEYINT_MARK;			\
+      asynint_val = asynint_val & ~KEYINT_MARK;			\
       asynint_code = 0;		         				\
     }									\
     else if (int_val(cell(interrupt_reg))) { /* attv intrpt */		\
@@ -252,7 +251,7 @@ int *asynint_ptr = &asynint_val;
       /* '_$attv_int'/2.					*/	\
       PSC = (Psc) flags[MYSIG_ATTV+INT_HANDLERS_FLAGS_START];		\
     }									\
-    if (*asynint_ptr & MSGINT_MARK) { /* for debug or for stats */	\
+    if (asynint_val & MSGINT_MARK) { /* for debug or for stats */	\
       pcreg = lpcreg;							\
       intercept(PSC);							\
       lpcreg = pcreg;							\

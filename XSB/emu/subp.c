@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.55 2001/11/02 22:20:53 dwarren Exp $
+** $Id: subp.c,v 1.56 2001/11/07 21:08:01 dwarren Exp $
 ** 
 */
 
@@ -80,7 +80,7 @@
 
 double realtime_count;
 
-extern int *asynint_ptr;	/* 0 - no interrupt (or being processed) */
+extern int asynint_val;	/* 0 - no interrupt (or being processed) */
 extern int asynint_code;	/* 0 means keyboard interrupt */
 
 extern void dis(xsbBool), debug_call(Psc);
@@ -353,10 +353,10 @@ inline static void keyint_proc(int sig)
 #ifndef LINUX
   init_interrupt();  /* reset interrupt, if using signal */
 #endif
-  if (*asynint_ptr & KEYINT_MARK) {
+  if (asynint_val & KEYINT_MARK) {
     xsb_abort("unhandled keyboard interrupt");
   } else {
-    *asynint_ptr |= KEYINT_MARK;
+    asynint_val |= KEYINT_MARK;
     asynint_code = 0;
   }
 }
