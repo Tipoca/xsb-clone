@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.10 1999/02/03 16:07:15 workflow Exp $
+** $Id: tr_utils.c,v 1.11 1999/02/22 16:56:55 workflow Exp $
 ** 
 */
 
@@ -722,7 +722,7 @@ void breg_retskel(void)
 #else
     arity = ptoc_int(2);
     where = tcp + TCP_SIZE + (Cell)arity;
-    Nvars = cell(where);
+    Nvars = int_val(cell(where));
     cptr = where + Nvars;
 #endif
     if (Nvars == 0) {
