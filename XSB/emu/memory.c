@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory.c,v 1.9 1999-08-04 14:42:01 ejohnson Exp $
+** $Id: memory.c,v 1.10 1999-09-08 13:45:29 warren Exp $
 ** 
 */
 
@@ -168,12 +168,14 @@ void tcpstack_realloc(long new_size) {
    *  pointer to mark the bottom of the Trail.  The TRx reg's point to the
    *  previous-link field of the Trail frames (i.e., the last field).
    */
+#ifndef CHAT
   if (trail_offset != 0) {
     for (trail_link = (CPtr *)new_trail;
 	 trail_link <= (CPtr *)(trail_top + trail_offset);
 	 trail_link = trail_link + 3)
       *trail_link = (CPtr)((byte *)*trail_link + trail_offset);
   }
+#endif
 
   /* Update the CP Stack pointers
      ---------------------------- */
