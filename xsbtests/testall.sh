@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.6 1999-08-20 05:46:16 kifer Exp $
+## $Id: testall.sh,v 1.7 1999-10-14 00:44:58 cbaoqiu Exp $
 ## 
 ##
 
@@ -92,7 +92,7 @@ fi
     # float_tests don't pass. --mk
 testlist="basic_tests prolog_tests retract_tests \
 	  table_tests ptq neg_tests sem_tests delay_tests \
-	  wfs_tests ai_tests"
+	  wfs_tests ai_tests attv_tests"
 
 # Run each test in $testlist except for the tests in $excluded_tests
 for tst in $testlist ; do
