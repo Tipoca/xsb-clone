@@ -19,13 +19,13 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.1 2000-06-09 13:27:44 cbaoqiu Exp $
+## $Id: Makefile,v 1.2 2000-06-09 14:21:04 cbaoqiu Exp $
 ## 
 ##
 
-ALL = arith.O arith_r.O assoc.O bv.O class.O clpr.O ineq.O itf3.O\
-fourmotz.O nf.O ordering.O project.O redund.O store.O ugraphs.O\
-dump.O
+ALL = 	arith.O arith_r.O bv.O class.O clpr.O ineq.O itf3.O \
+	fourmotz.O nf.O ordering.O project.O redund.O store.O \
+	dump.O
 
 # Option = [optimize, spec_off]
 
