@@ -8,17 +8,15 @@ echo "Testing $TEST"
 
 XEMU=$1
 
+############################################################
+# First make sure all files are compiled.
+############################################################
 $XEMU << EOF
 
-[sem_lex].
-
-[semantica].
-
-[sem_pretty].
-
-[sem_dnf].
+[sem_lex,semantica,sem_pretty,sem_dnf,sem_pe].
 
 EOF
+############################################################
 
 $XEMU << EOF
 
@@ -109,14 +107,6 @@ echo "---------------------------------------------------------------------"
 ############################################################
 TEST=sem3
 echo "Testing $TEST"
-
-# needed to ensure .O files are there
-$XEMU << EOF
-
-[sem_lex].
-
-EOF
-
 
 $XEMU << EOF
 
