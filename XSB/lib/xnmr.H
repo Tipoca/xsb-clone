@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xnmr.H,v 1.1 1999-08-25 21:56:56 warren Exp $
+** $Id: xnmr.H,v 1.2 1999-08-26 18:45:40 warren Exp $
 ** 
 */
 
@@ -48,7 +48,7 @@
 :- import consult/1 from consult.
 :- consult(sModels).
 
-:- import init_smodels/2, a_stable_model/0, print_current_stable_model/0,
+:- import init_smodels/1, a_stable_model/0, print_current_stable_model/0,
 	in_all_stable_models/2
         from smodelsint.
 
