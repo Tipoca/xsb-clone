@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: special.h,v 1.4 1999-04-03 04:46:42 kifer Exp $
+** $Id: special.h,v 1.5 1999-07-27 15:01:43 kifer Exp $
 ** 
 */
 
@@ -34,6 +34,8 @@
 
 #ifdef WIN_NT
 #define fdopen   _fdopen
+#define popen    _popen
+#define pclose   _pclose
 #endif
 
 /* The separator used between pathnames in PATH environment */
