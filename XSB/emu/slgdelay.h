@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.3 1998-12-21 01:08:46 cbaoqiu Exp $
+** $Id: slgdelay.h,v 1.4 1999-01-05 19:37:09 cbaoqiu Exp $
 ** 
 */
 
@@ -110,7 +110,9 @@ struct delay_element {
 			 * list, depending on what DE it is (positive or
 			 * negative).  Will be set in record_de_usage()
 			 */
-  CPtr    subs_fact;
+#ifdef DEBUG_DELAYVAR
+  NODEptr subs_fact;	/* root of the delay trie for this DE */
+#endif
   NODEptr subs_fact_leaf;
 } ;
 
@@ -118,7 +120,9 @@ struct delay_element {
 #define de_ans_subst(X)  (X) -> ans_subst
 #define de_next(X)	 (X) -> next
 #define de_pnde(X)	 (X) ->	pnde
+#ifdef DEBUG_DELAYVAR
 #define de_subs_fact(X)	     (X) -> subs_fact
+#endif
 #define de_subs_fact_leaf(X) (X) -> subs_fact_leaf
 
 /*--------------------------------------------------------------------*/
