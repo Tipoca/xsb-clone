@@ -2,7 +2,7 @@
 ** Author(s): Mats Carlsson (see below)
 **	      (modified by Baoqiu Cui to make it work in XSB)
 **
-** $Id: assoc.P,v 1.1 2000-06-09 13:40:26 cbaoqiu Exp $
+** $Id: assoc.P,v 1.2 2000-06-18 00:05:16 cbaoqiu Exp $
 ** 
 */
 
@@ -35,6 +35,8 @@
 	put_assoc/4.			% Key x Assoc x Val -> Assoc
 
 :- import length/2 from basics.
+:- import compare/3, writeln/1 from standard.
+:- import 'C'/3 from dcg.
 
 % :- meta_predicate
 % 	map_assoc(:, ?),
