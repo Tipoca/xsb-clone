@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.25 2000/01/19 19:38:01 cbaoqiu Exp $
+** $Id: consult.P,v 1.26 2000/03/01 16:23:25 dwarren Exp $
 ** 
 */
 
@@ -663,7 +663,7 @@ if_should_not_reload(File) :-
 	get_HRname(SExt,Base,_Hfname,Filename),
 	file_time(Filename,time(Ctime1,Ctime2)),
 	load_dyn_file_loaded(Filename,time(Ltime1,Ltime2)),
-	time(Ltime1,Ltime2) @=< time(Ctime1,Ctime2),
+	time(Ltime1,Ltime2) @>= time(Ctime1,Ctime2),
 	\+ need_more_index(Filename).
 
 need_more_index(Filename) :-
