@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.14 2000-05-29 04:23:37 ejohnson Exp $
+** $Id: slgdelay.h,v 1.15 2000-05-29 18:08:28 cbaoqiu Exp $
 ** 
 */
 
@@ -51,12 +51,13 @@
     
 /*
  * When delay_positively() is called, SUBGOAL is the subgoal frame of the
- * delayed subgoal, ANSWER is the answer node in the trie, and SUBSF is
- * the pointer to the substitution factor (the ret/n functor built on the
- * heap) of the answer of the delayed subgoal call.
+ * delayed subgoal, ANSWER is the answer node in the trie, and MAKE_SUBSF
+ * is the pointer to the substitution factor (the ret/n functor built on
+ * the heap, or a string ret_psc[0]) of the answer of the delayed subgoal
+ * call.
  *
  * A delay element will be built on the heap according to the value in
- * SUBSF, and it is inserted at the head of delay list of the parent
+ * MAKE_SUBSF, and it is inserted at the head of delay list of the parent
  * predicate (pointed by delayreg).
  */
 

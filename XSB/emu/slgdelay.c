@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.29 2000/05/20 06:56:07 kifer Exp $
+** $Id: slgdelay.c,v 1.30 2000/05/29 04:23:37 ejohnson Exp $
 ** 
 */
 
@@ -638,7 +638,7 @@ static void release_all_dls(ASI asi)
     de = dl_de_list(dl);
     while (de) {
       tmp_de = de_next(de);
-      if (de_ans_subst(de) == NULL) { /* is NED */
+      if (de_ans_subst(de) == NULL) { /* is NDE */
 	remove_pnde(subg_nde_list(de_subgoal(de)), de_pnde(de));
       }
       else {
