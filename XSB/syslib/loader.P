@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.36 2002/04/13 05:01:59 lfcastro Exp $
+** $Id: loader.P,v 1.37 2002/11/04 18:09:13 dwarren Exp $
 ** 
 */
 
@@ -35,7 +35,7 @@
  *  got thrown at that early.
  */
 
-:- compiler_options([sysmod,xpp_on]).
+:- compiler_options([sysmod,xpp_on,optimize]).
 
 #include "../prolog_includes/standard.h"
 #include "char_defs.h"
@@ -361,8 +361,9 @@ load(ModName) :-
 	    ->	reconsult(FileName_P)
 	    )
 	;   tilde_expand_filename(ModName,ExpandedModName),
-	    abort(['Module ', ExpandedModName,
-		   ' is not found in XSB library directories'])
+	    throw(error(existence_error(file,ExpandedModName),['Module ', 
+			     ExpandedModName,
+	                     ' is not found in XSB library directories']))
 	).
 
 /*
