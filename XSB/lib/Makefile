@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.36 2001-03-17 22:42:29 tswift Exp $
+## $Id: Makefile,v 1.37 2001-05-31 16:51:22 lfcastro Exp $
 ## 
 ##
 
@@ -29,7 +29,7 @@ ALL = 	aggregs.O array.O array1.O assoc_xsb.O \
 	directry.O foreign.O format.O \
 	intern.O obsolete.O odbc_call.O ordsets.O ora_call.O \
 	packaging.O random.O scrptutl.O socket.O storage.O \
-	ugraphs.O wrapping.O write_term.O xsb_ciao.O xnmr.O
+	ugraphs.O wrapping.O write_term.O xsb_ciao.O xnmr.O justifyLP.O
 
 EMU_INCLUDES = ../emu/builtin.h ../emu/celltags_xsb.h ../emu/flag_defs_xsb.h \
 	../emu/io_defs_xsb.h ../emu/syscall_xsb.h ../emu/sig_xsb.h \
