@@ -18,15 +18,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse_html.h,v 1.4 2000-03-29 16:58:59 kifer Exp $
+** $Id: libwww_parse_html.h,v 1.5 2000-04-02 23:13:49 kifer Exp $
 ** 
 */
 
 
-#define MAX_HTML_NESTING  70
 typedef HText  USERDATA;
 struct _HText {
   DELETE_USERDATA *    	  delete_method;
+  int 	      	      	  status;    	   /* this is used to carry status into
+					      delete_userData */
   HTRequest *		  request;
   HTParentAnchor * 	  node_anchor; 	   /* not used */
   HTStream *		  target;
@@ -36,6 +37,7 @@ struct _HText {
   prolog_term	     	  parsed_term;      /* actual result of the parse */
   prolog_term	     	  parsed_term_tail; /* auxil variable */
   int   		  stackptr;
+  int	       	          stacksize;	    /* current size of stack */
   struct stack_node {
     int	       	   element_number;    /* which element this is  */
     SGMLContent    element_type;      /* SGML_EMPTY, PCDATA_SPECIAL, normal */
@@ -43,7 +45,7 @@ struct _HText {
 					 suppressed region */
     prolog_term	   elt_term;	      /* here we build elements */
     prolog_term    content_list_tail; /* auxil var to help build elements */
-  } 	    	    	  stack[MAX_HTML_NESTING]; /* keeps nested elements */
+  } 	    	    	  *stack;     /* keeps nested elements */
 };
 
 

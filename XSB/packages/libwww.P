@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww.P,v 1.5 2000-03-29 16:58:58 kifer Exp $
+** $Id: libwww.P,v 1.6 2000-04-02 23:13:49 kifer Exp $
 ** 
 */
 
@@ -33,7 +33,7 @@
 %% some packages use it.
 
 :- export libwww_request/1.
-:- import do_libwww_request___/1 from xsb_libwww.
+:- import do_libwww_request___/1 from libwww_request.
 
 :- bootstrap_package('libwww', libwww),
 	(   xsb_configuration(libwww_support, 'yes')
