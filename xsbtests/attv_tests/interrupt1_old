@@ -1,0 +1,5 @@
+   Value = 5
+   Var's attribute = v(a)
+First time: X = 5
+In verify_attributes/2:
+Second time: X = 5
