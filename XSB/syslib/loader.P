@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.22 2000/03/01 16:23:25 dwarren Exp $
+** $Id: loader.P,v 1.23 2000/04/29 21:54:03 kifer Exp $
 ** 
 */
 
@@ -121,7 +121,7 @@ set_current_input :-
 	psc_set_type(UserInPSC, 5),        % ``ep'' field contains file desc
 	psc_set_prop(UserInPSC, 0),        % ``data'' field set to stdin
 	conset(current_input, UserInPSC),
-	stat_set_flag(CURRENT_INPUT, 0).
+	stat_set_flag(CURRENT_INPUT, STDIN).
 
 
 /*

@@ -18,20 +18,21 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.14 2000/06/17 23:28:53 kifer Exp $
+** $Id: file_io.H,v 1.15 2000/06/24 22:39:01 kifer Exp $
 ** 
 */
 
 
-:- import
-	stat_flag/2, file_function/7,
+:- import stat_flag/2, file_function/7,
 	%%intern_string/2,
     	file_stat/3, formatted_io/5 
       from machine.
+:- import conpsc/2, psc_set_type/2, psc_set_prop/2 from machine.
 
-:- import
-	abort/1, atom_codes/2
+:- import abort/1, atom_codes/2
       from standard.
+
+:- import gensym/2 from gensym.
 
 :- import file_write/2 from xsb_writ.
 
@@ -52,5 +53,6 @@
 	  file_read_line_atom/1, file_read_line_atom/2,
 	  file_read_line_list/1, file_read_line_list/2,
 	  file_reopen/4, file_clone/3,
-	  pipe_open/2, fd2ioport/2,
-	  file_clearerr/1, tmpfile_open/1.
+	  pipe_open/2, fd2ioport/2, ioport2iostream/2,
+	  file_clearerr/1, tmpfile_open/1,
+	  is_valid_ioport/1.
