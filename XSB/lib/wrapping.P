@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wrapping.P,v 1.1 1999-08-17 19:22:20 luis Exp $
+** $Id: wrapping.P,v 1.2 1999-08-18 18:59:45 luis Exp $
 ** 
 */
 
@@ -71,6 +71,7 @@ process_from(from(PDecl,CDecl),/(PredName,Arity)) :-
 	nl,
 	create_ctypelist(ArgTypeList,ArgUseList,CTypeList),
 	define_ctype(RetType,'+',RRetType),
+	% create prototype:
 	write(RRetType),
 	write(' '),
 	write(FuncName),
@@ -192,6 +193,8 @@ process_cfunc(CFunc,Functor,LArgType) :-
 	write(')').
 
 cargs_list(_,0,[]) :- !.
+cargs_list(CFunc,1,[]) :-
+	arg(1,CFunc,void).
 cargs_list(CFunc,Arity,[ArgType|LArgType]) :-
 	NArity is Arity - 1,
 	cargs_list(CFunc,NArity,LArgType),
@@ -209,9 +212,11 @@ process_pdecl(PDecl,Functor,Arity,LArgUse) :-
 	write(Functor),
 	write('/'),
 	write(Arity),
-	write('('),
-	pargs_list(PDecl,Arity,LArgUse),
-	write(')').
+	(Arity =\= 0 ->
+	    write('('),
+	    pargs_list(PDecl,Arity,LArgUse),
+	    write(')')
+	; true).
 
 
 linearize_arguse([],[]) :- !.
