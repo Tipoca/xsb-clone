@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.4 1999-02-18 13:02:16 kostis Exp $
+** $Id: cinterf.c,v 1.5 1999-03-02 01:00:55 kifer Exp $
 ** 
 */
 
@@ -983,10 +983,24 @@ DllExport int call_conv xsb_init(int argc, char *argv[])
 /*									*/
 /************************************************************************/
 
-DllExport int call_conv xsb_init_string(char *cmdline) {
+DllExport int call_conv xsb_init_string(char *cmdline_param) {
 	int i = 0, argc = 0;
 	char **argv, delim;
+	char cmdline[2*MAXPATHLEN+1];
+
+	if (strlen(cmdline_param) > 2*MAXPATHLEN) {
+	    fprintf(stderr,
+		    "**************************************************************************\n");
+	    fprintf(stderr,
+		    "%18s...: command used to call XSB server is too long!\n",
+		    cmdline_param);
+	    fprintf(stderr,
+		    "**************************************************************************\n");
+	    exit(1);
+	}
+	strncpy(cmdline, cmdline_param, 2*MAXPATHLEN - 1);
 	argv = (char **) malloc(20*sizeof(char *));
+
 	while (cmdline[i] == ' ') i++;
 	while (cmdline[i] != '\0') {
 		if ((cmdline[i] == '"') || (cmdline[i] == '\'')) {

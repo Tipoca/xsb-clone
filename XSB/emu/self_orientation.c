@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: self_orientation.c,v 1.8 1998-12-23 21:09:17 kifer Exp $
+** $Id: self_orientation.c,v 1.9 1999-03-02 01:00:57 kifer Exp $
 ** 
 */
 
@@ -198,8 +198,10 @@ char *xsb_executable_full_path(char *myname)
   /* XSB executable isn't found after searching PATH */
   fprintf(stderr,
 	  "*************************************************************\n");
-  printf("PANIC!!! Can't determine the full name of the XSB executable!\n");
-  printf("         Please report this bug to xsb-contact@cs.sunysb.edu\n");
+  fprintf(stderr, 
+	  "PANIC!!! Can't determine the full name of the XSB executable!\n");
+  fprintf(stderr, 
+	  "         Please report this bug to xsb-contact@cs.sunysb.edu\n");
   fprintf(stderr,
 	  "*************************************************************\n");
   exit(1);
