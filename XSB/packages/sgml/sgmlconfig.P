@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sgmlconfig.P,v 1.4 2005-03-05 18:39:59 kifer Exp $
+** $Id: sgmlconfig.P,v 1.5 2005-03-06 00:29:02 kifer Exp $
 ** 
 */
 
@@ -141,4 +141,6 @@ running_under(windows) :-
 	xsb_configuration(architecture, A),
 	str_sub(windows, A),
 	!.
-running_under(unix).
+running_under(unix) :-
+	\+ running_under(cygwin),
+        \+ running_under(windows).
