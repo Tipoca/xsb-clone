@@ -25,12 +25,13 @@ if test -f ${FILE}_new; then
 fi
     
 sort temp > ${FILE}_new
+sort ${FILE}_old > temp
 
 #-----------------------
 # print out differences.
 #-----------------------
 status=0
-diff ${FILE}_new ${FILE}_old || status=1
+diff ${FILE}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$BASEDIR/$FILE tested"
 	rm -f ${FILE}_new

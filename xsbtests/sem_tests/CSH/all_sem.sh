@@ -44,14 +44,15 @@ if test -f "tests/${TEST}_new" ; then
 fi
 
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
 	echo "${TEST}_new/old differ!!!"
-	diff tests/${TEST}_new tests/${TEST}_old
+	diff tests/${TEST}_new temp
 fi
 echo "---------------------------------------------------------------------"
 
@@ -87,9 +88,10 @@ if test -f tests/${TEST}_new ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -141,9 +143,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
-    status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+status=0
+diff tests/${TEST}_new temp || status=1
 
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
@@ -188,9 +191,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -233,9 +237,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -279,9 +284,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -324,9 +330,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -372,9 +379,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -417,9 +425,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -469,9 +478,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -515,9 +525,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -564,9 +575,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -611,9 +623,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -663,9 +676,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -709,9 +723,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -759,9 +774,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -809,9 +825,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -859,9 +876,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -909,9 +927,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -973,9 +992,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
@@ -1021,9 +1041,10 @@ if test -f "tests/${TEST}_new" ; then
 fi
     
 sort temp > tests/${TEST}_new
+sort tests/${TEST}_old > temp
 
 status=0
-diff tests/${TEST}_new tests/${TEST}_old || status=1
+diff tests/${TEST}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$TEST tested"
 else
