@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.H,v 1.15 2003/10/02 23:46:04 dwarren Exp $
+** $Id: assert.H,v 1.16 2003/10/17 21:25:18 dwarren Exp $
 ** 
 */
 
@@ -33,7 +33,7 @@
 :- export clause0/2, clause/2.
 :- export (dynamic)/1.
 :- export t_assert/2.
-
+:- export exchange_definitions/2.
 
 :- import append/3 from basics.
 :- import (=..)/2, functor/3, integer/1, callable/1, throw/1,

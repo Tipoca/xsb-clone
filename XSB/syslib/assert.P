@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.P,v 1.21 2003/10/02 23:46:04 dwarren Exp $
+** $Id: assert.P,v 1.22 2003/10/17 21:25:18 dwarren Exp $
 ** 
 */
 
@@ -578,8 +578,24 @@ t_assert_1(Clause, Flag) :-
 %	writeln(clause(Clause) +psc(PSC) +arity(Arity) +prref(Prref)),
 	trie_assert_builtin(Clause,PSC,Arity,Prref,Flag).
 
+/*======================================================================*/
+/* exchange_definitions(+Skel1,+Skel2)					*/
+/*	Skel1 and Skel2 are predicate terms.  This predicate exchanges	*/
+/*	the entry points and types in the PSC records of the two	*/
+/*	predicates.							*/
+/*======================================================================*/
 
-
+exchange_definitions(Skel1,Skel2) :-
+	conpsc(Skel1,PSC1),
+	conpsc(Skel2,PSC2),
+	psc_type(PSC1,Type1),
+	psc_type(PSC2,Type2),
+	psc_ep(PSC1,EP1),
+	psc_ep(PSC2,EP2),
+	psc_set_ep(PSC1,EP2),
+	psc_set_ep(PSC2,EP1),
+	psc_set_type(PSC1,Type2),
+	psc_set_type(PSC2,Type1).
 
 trie_assert_builtin(_Clause,_PSC,_Arity,_Prref,_Flag) :-
 	'_$builtin'(TRIE_ASSERT).
