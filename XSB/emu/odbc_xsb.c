@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.43 2005-02-14 19:32:05 harpreet_singh Exp $
+** $Id: odbc_xsb.c,v 1.44 2005-03-04 15:11:17 vidrevich Exp $
 **
 */
 
@@ -742,7 +742,7 @@ void SetBindVarNum(CTXTdecl)
     xsb_abort("[ODBC] Not enough memory for cur->BindTypes!");
 }
 
-void write_canonical_term(Cell prologterm);
+void call_conv write_canonical_term(Cell prologterm);
 extern char *wcan_string;
 extern int wcan_disp;
 extern int letter_flag;
