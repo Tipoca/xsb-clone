@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xpathname.c,v 1.10 1999-08-28 07:54:17 kostis Exp $
+** $Id: xpathname.c,v 1.11 1999-09-20 08:52:39 kostis Exp $
 ** 
 */
 
@@ -486,7 +486,7 @@ bool almost_search_module(char *filename)
     ctop_string(3, string_find(filename, 1)); /* Mod = FileName */
   } else { /* input argument is a full file name */
     if (! strcmp(extension, "")) {
-      extension = existing_file_extension(filename);
+      extension = existing_file_extension(fullname);
       if (! extension) return FALSE; /* file was not found */
     } else {
       if (stat(fullname, &fileinfo)) return FALSE; /* file not found */
