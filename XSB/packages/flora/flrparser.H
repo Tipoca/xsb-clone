@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrparser.H,v 1.1 1999-06-16 01:32:52 kifer Exp $
+** $Id: flrparser.H,v 1.2 1999-06-22 18:24:29 kifer Exp $
 **
 */
 
 
 
 :- import
-	atom_chars/2, integer/1
+	atom_codes/2, integer/1
    from standard.
 
 :- import append/3 from basics.
