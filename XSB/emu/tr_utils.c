@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.6 1999/01/27 19:46:01 kostis Exp $
+** $Id: tr_utils.c,v 1.7 1999/01/29 04:18:30 cbaoqiu Exp $
 ** 
 */
 
@@ -65,6 +65,7 @@
 CPtr Temp_VarPosReg;
 CPtr call_vars[MAX_VAR_SIZE];
 
+extern Cell ptoc_tag(int);
 #ifdef DEBUG
 extern void printterm(Cell, byte, int);
 #endif

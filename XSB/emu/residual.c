@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.3 1999-01-05 19:37:05 cbaoqiu Exp $
+** $Id: residual.c,v 1.4 1999-01-31 14:02:24 kostis Exp $
 ** 
 */
 
@@ -45,6 +45,23 @@
 
 #ifdef DEBUG_RESIDUAL
 extern void print_subgoal(FILE *, SGFrame);
+#endif
+
+/*----------------------------------------------------------------------*/
+
+#ifdef DEBUG_DELAYVAR
+#define print_trie_atom(X) {\
+ if (isstring(X)) \
+   printf("atom(%s)",string_val(X));\
+ else if (isconstr(X)) \
+   printf("atom(%s/%d)",get_name((Psc)dec_addr(X)),get_arity((Psc)dec_addr(X)));\
+ else if (isinteger(X)) \
+   printf("atom(%d)",int_val(X));\
+ else if (islist(X))\
+   printf("./2");\
+ else\
+  printf("Unk(%x)",(int)X);\
+ }
 #endif
 
 /*----------------------------------------------------------------------*/
