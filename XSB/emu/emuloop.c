@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.6 1999-01-18 18:55:43 kostis Exp $
+** $Id: emuloop.c,v 1.7 1999-01-27 16:21:31 unova Exp $
 ** 
 */
 
@@ -599,7 +599,9 @@ contcase:	/* the main loop */
   case test_heap: /* PPA-N */
     ppad ;
     op1 = op1byte ;
+    pad64;
     op2 = *(pw)lpcreg; lpcreg+=4;
+    pad64;
 #ifdef GC
     if (/* (infcounter++ > 1000) || */ (ereg - hreg) < op2)
       {
