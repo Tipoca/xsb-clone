@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.164 2003-09-29 13:05:12 tschrijvers Exp $
+** $Id: builtin.c,v 1.165 2003-09-30 14:44:26 tschrijvers Exp $
 ** 
 */
 
@@ -1166,11 +1166,11 @@ int builtin_call(byte number)
     break;
   }
   case TERM_SET_ARG: {	/* R1: +term; R2: index (+int) */
-			/* R3: newarg (+term); R4: +perm(not used) */
+			/* R3: newarg (+term) */
     /* used in file_read.P, array.P, array1.P */
     int  disp = ptoc_int(2);
     Cell term = ptoc_tag(1);
-    if (ptoc_int(4) > 0) {
+    if (ptoc_int(4) == 0) {
       pushtrail(clref_val(term)+disp,cell(reg+3));
     } else if (ptoc_int(4) < 0) {
       push_pre_image_trail(clref_val(term)+disp, cell(reg+3));
