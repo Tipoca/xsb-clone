@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.6 2000-01-07 08:51:19 kifer Exp $
+** $Id: cell_xsb.h,v 1.7 2000-01-11 17:04:12 ejohnson Exp $
 ** 
 */
 
@@ -243,6 +243,7 @@ extern Float getfloatval(Cell);
 #define numequal(num1, num2) num1 == num2
 
 #define isnumber(dcell)	((isinteger(dcell)) || (isfloat(dcell)))
+#define isconstant(dcell)  ( isstring(dcell) || isnumber(dcell) )
 #define isatom(dcell)	((isstring(dcell)) || \
 			 (isconstr(dcell) && get_arity(get_str_psc(dcell))==0))
 #define isatomic(dcell)	((isstring(dcell)) || (isnumber(dcell)) || \
