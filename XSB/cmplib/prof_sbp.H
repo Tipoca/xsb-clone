@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prof_sbp.H,v 1.1.1.1 1998-11-05 17:00:13 sbprolog Exp $
+** $Id: prof_sbp.H,v 1.2 1999-01-15 18:41:40 kostis Exp $
 ** 
 */
 
@@ -32,8 +32,8 @@
 :- export ll_arg/3.
 
 :- import dict_lookup/3 from auxlry.
-:- import psc_set_prop/3, conpsc/2, conname/2,psc_prop/2, str_len/2,
- 	  stat_flag/2, file_puttoken/3, psc_set_type/3, sys_system/2,
+:- import psc_set_prop/2, conpsc/2, conname/2,psc_prop/2, str_len/2,
+ 	  stat_flag/2, file_puttoken/3, psc_set_type/2, sys_system/2,
 	  term_arg/3
      from machine.
 :- import name/2, arg/3, functor/3, atomic/1, atom/1, told/0, tell/1, 

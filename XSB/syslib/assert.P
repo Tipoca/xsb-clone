@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.P,v 1.1.1.1 1998/11/05 16:59:46 sbprolog Exp $
+** $Id: assert.P,v 1.2 1998/11/15 06:09:11 kifer Exp $
 ** 
 */
 
@@ -411,13 +411,13 @@ abolish1(Term) :-
 	( Type =:= 1 ->				% DYNA
 		psc_prop(Psc, Prref),
 		db_abolish(Term, Prref),
-		psc_set_type(Psc, 0, 1),
-		psc_set_prop(Psc, 0, 1)
+		psc_set_type(Psc, 0),
+		psc_set_prop(Psc, 0)
 	; Type =:= 2 ->				% normal compiled predicate
 		psc_prop(Psc,Ep),		% get entry point
 		unload_seg(Ep),			% free the space
-		psc_set_type(Psc, 0, 1),
-		psc_set_prop(Psc, 0, 1)
+		psc_set_type(Psc, 0),
+		psc_set_prop(Psc, 0)
 	; Type =:= 0	/* need to check imported !!!! */
 	).
 

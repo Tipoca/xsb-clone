@@ -19,16 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: db.H,v 1.1 1998-11-15 01:22:21 kifer Exp $
+** $Id: db.H,v 1.2 1999-01-15 18:41:53 kostis Exp $
 ** 
 */
 
 
-
-
 :- export db_new_prref/3.
 
-:- import psc_set_type/3, psc_set_prop/3, tip_prop/4,
-	  psc_arity/2, psc_set_env/2, db_build_prref/5
-	from machine.
 :- import '_$table'/1 from file_op.
+:- import psc_set_type/2, psc_set_prop/2, tip_prop/4,
+	  psc_arity/2, psc_set_env/2, db_build_prref/5 from machine.

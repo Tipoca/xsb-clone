@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prof_sbp.P,v 1.1.1.1 1998-11-05 17:00:13 sbprolog Exp $
+** $Id: prof_sbp.P,v 1.2 1999-01-15 18:41:44 kostis Exp $
 ** 
 */
 
@@ -105,14 +105,14 @@ copyterm_args(Term, NewTerm, N, VarDict) :-
 myclose(F) :- tell(F), told.
 
 conset(Con, Val) :- 
-	conpsc(Con, Psc), psc_set_prop(Psc, Val, 1).
+	conpsc(Con, Psc), psc_set_prop(Psc, Val).
 
 conget(Con, Val) :- 
 	conpsc(Con, Psc), psc_prop(Psc, Val0), Val = Val0.
 
 coninc(Con) :-
 	conpsc(Con, Psc), psc_prop(Psc, N),
-	NewN is N+1, psc_set_prop(Psc, NewN, 1).
+	NewN is N+1, psc_set_prop(Psc, NewN).
 
 system(X) :- sys_system(X, _).
 
@@ -128,15 +128,15 @@ write_float(Num) :-
 /* counter routines. A counter is a unary term.				*/
 /*======================================================================*/
 
-newcounter(C) :- conpsc(C, Psc), psc_set_type(Psc, 8, 1),
+newcounter(C) :- conpsc(C, Psc), psc_set_type(Psc, 8),
 	arg(1, C, V), 
 	( integer(V), V0 = V
 	; V0 = 0
 	),
-	psc_set_prop(Psc, V0, 1).
+	psc_set_prop(Psc, V0).
 
 inccounter(C) :- conpsc(C, Psc), psc_prop(Psc, V), 
-		 V1 is V + 1, psc_set_prop(Psc, V1, 1).
+		 V1 is V + 1, psc_set_prop(Psc, V1).
 
 getcounter(C) :- conpsc(C, Psc), psc_prop(Psc, V), arg(1, C, V).
 

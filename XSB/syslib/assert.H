@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id$
+** $Id: assert.H,v 1.1.1.1 1998/11/05 16:59:50 sbprolog Exp $
 ** 
 */
 
@@ -43,11 +43,9 @@
 	  db_retract_nr/3, db_reclaim_space/2
      from dbclause.
 :- import '_$index'/3, '_$trie_asserted'/1  from file_op.
-:- import psc_prop/2, psc_type/2, psc_set_type/3, psc_arity/2, buff_byte/3,
-	  buff_word/3, conpsc/2,
-	  assert_code_to_buff/2, assert_buff_to_clref/7,
-	  compiled_to_dynamic/2,
-	  psc_tabled/2, psc_set_prop/3, unload_seg/1
+:- import psc_prop/2, psc_type/2, psc_set_type/2, psc_arity/2, buff_byte/3,
+	  buff_word/3, conpsc/2, assert_code_to_buff/2, assert_buff_to_clref/7,
+	  compiled_to_dynamic/2, psc_tabled/2, psc_set_prop/2, unload_seg/1
      from machine.
 
 :- import standard_symbol/3 from std_sbp.
