@@ -44,7 +44,10 @@ XEMU=$1
 ../gentest.sh $XEMU mf_test1 "test."
 #------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
+#------------------------------------------------------------------------
 rm -f xeddis.o xeddis.so xeddis.O
 ../gentest.sh $XEMU cinter1 "test."
 #------------------------------------------------------------------------
-
+rm -f zero.o zero.so zero.O
+../gentest.sh $XEMU cinter2 "test."
+#------------------------------------------------------------------------

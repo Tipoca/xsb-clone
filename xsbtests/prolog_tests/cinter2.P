@@ -1,0 +1,18 @@
+:- xsb_configuration(compiler, CC), consult(zero, [CC]).
+
+:- import diag/2, minus_one/2, zero/1 from zero.
+
+test :- test(Call), call(Call), writeln(Call), fail.
+test.
+
+test(diag(-100000,_X)).
+test(diag(0,_X)).
+test(diag(1,_X)).
+test(diag(2,_X)).
+test(diag(1000000,_X)).
+test(minus_one(-100000,_X)).
+test(minus_one(0,_X)).
+test(minus_one(1,_X)).
+test(minus_one(2,_X)).
+test(minus_one(1000000,_X)).
+test(zero(_X)).
