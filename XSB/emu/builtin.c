@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.109 2000-11-22 15:24:43 dwarren Exp $
+** $Id: builtin.c,v 1.110 2000-11-22 20:06:12 ejohnson Exp $
 ** 
 */
 
@@ -1498,7 +1498,9 @@ int builtin_call(byte number)
     const int Arity = 2;
     const int regSubgoalTerm  = 1;  /* in: subgoal term */
     const int regSubgoalFrame = 2;  /* out: producer from which subgoal
-				            consumes */
+				       consumes */
+    const int regPredTypeCode = 3;  /* out: predicate type (as INT) */
+
     Cell term;
     Psc  psc;
     TIFptr tif;
@@ -1523,9 +1525,10 @@ int builtin_call(byte number)
 		get_name(psc), get_arity(psc), regSubgoalTerm,
 		BuiltinName(GET_PRODUCER_SUBGOAL_FRAME), Arity);
     if ( IsSubsumptivePredicate(tif) )
-      ctop_addr(regSubgoalFrame, get_subsumer_sf(term, tif));      
+      ctop_addr(regSubgoalFrame, get_subsumer_sf(term, tif));
     else
       ctop_addr(regSubgoalFrame, get_variant_sf(term, tif));
+    ctop_int(regPredTypeCode, TIF_EvalMethod(tif));
     break;
   }
 

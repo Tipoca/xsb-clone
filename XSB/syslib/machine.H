@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.36 2000/03/01 16:23:25 dwarren Exp $
+** $Id: machine.H,v 1.37 2000/09/28 21:31:06 ejohnson Exp $
 ** 
 */
 
@@ -100,7 +100,7 @@
 	get_osp_breg/2,
 	cut_if_leader/3,
 	get_ptcp/1,
-	get_producer_subgoal_frame/2,
+	get_producer_subgoal_frame/3,
 	dereference_the_bucket/2,
 	pair_psc/2, 
 	pair_next/2, 

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.44 2000/04/29 21:54:04 kifer Exp $
+** $Id: machine.P,v 1.45 2000/09/28 21:31:07 ejohnson Exp $
 ** 
 */
 
@@ -143,8 +143,8 @@ psc_tabled(PSC, Tabled) :- psc_tabled(PSC, Tabled).
 
 get_ptcp(_PTCP) :- '_$builtin'(GET_PTCP).
 is_incomplete(_SubgoalFrame, _PTCP) :- '_$builtin'(IS_INCOMPLETE).
-get_producer_subgoal_frame(Subgoal,SubgoalFrame) :-
-	get_producer_subgoal_frame(Subgoal,SubgoalFrame).
+get_producer_subgoal_frame(Subgoal,SubgoalFrame,PredTypeCode) :-
+	get_producer_subgoal_frame(Subgoal,SubgoalFrame,PredTypeCode).
 
 dereference_the_bucket(Pair_Pointer, Pair) :-
 	dereference_the_bucket(Pair_Pointer, Pair).

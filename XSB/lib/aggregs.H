@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.H,v 1.9 2000-11-13 21:39:24 dwarren Exp $
+** $Id: aggregs.H,v 1.10 2000-11-22 20:06:04 ejohnson Exp $
 ** 
 */
 
@@ -64,5 +64,5 @@
 	table_state/4 from tables.
 :- import (table)/1 from usermod.
 :- import variant/2 from subsumes.
-:- import get_ptcp/1, get_producer_subgoal_frame/2, is_incomplete/2
+:- import get_ptcp/1, get_producer_subgoal_frame/3, is_incomplete/2
 	from machine.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.P,v 1.16 2000-11-13 21:39:24 dwarren Exp $
+** $Id: aggregs.P,v 1.17 2000-11-22 20:06:04 ejohnson Exp $
 ** 
 */
 
@@ -145,7 +145,8 @@ bagReduce(Template,Call,Res,Op,Id) :-
 		)
 	 ; AnsSetStatus == incomplete
 	 ->	get_ptcp(PTCP),
-		get_producer_subgoal_frame(bagReduce1(Template,Call,Res,Op,Id),SubgPtr),
+		get_producer_subgoal_frame(bagReduce1(Template,Call,Res,Op,Id),
+		                           SubgPtr,_PTCode),
 		is_incomplete(SubgPtr,PTCP),
 		bagReduce1(Template,Call,Res,Op,Id)
 	).
