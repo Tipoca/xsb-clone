@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.15 1999-11-21 05:52:27 kifer Exp $
+## $Id: Makefile,v 1.16 1999-11-30 14:34:54 kifer Exp $
 ## 
 ##
 
@@ -49,7 +49,6 @@ Prolog = $(XSB) -s -m 2000 -c 2000 -e 'set_dcg_style(standard),segfault_handler(
 
 # Make sure warnings are saved in a file.
 SVFILE = '$(XSBDIR)/build/.flora_top_warn.tmp'
-OWRITE = 1
 STDWARN = 3
 STDERR = 2
 HDRMSG = "While compiling XSB/packages/flora:"
@@ -86,7 +85,7 @@ init:
 	/bin/rm -f $(SVFILE)
 	@echo "import bootstrap_flora/0 from flora." >> cmd...
 	@echo "bootstrap_flora." >> cmd...
-	@echo "file_reopen($(SVFILE),$(OWRITE),$(STDWARN),_)." >> cmd...
+	@echo "file_reopen($(SVFILE),w,$(STDWARN),_)." >> cmd...
 	@echo "file_clone($(STDWARN), $(STDERR),_)." >> cmd...
 	@echo 'fmt_write($(STDWARN),"-------------- Warnings/Errors --------------------\n",_).' >> cmd...
 	@echo 'fmt_write($(STDWARN),"%s\n",arg($(HDRMSG))).' >> cmd...
