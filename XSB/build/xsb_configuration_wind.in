@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_configuration_wind.in,v 1.12 1999-10-20 18:22:07 kifer Exp $
+** $Id: xsb_configuration_wind.in,v 1.13 1999-12-02 07:06:08 kifer Exp $
 ** 
 */
 
@@ -69,6 +69,7 @@ xsb_configuration(perl_libs, '').
 xsb_configuration(libwww_support, 'no').
 xsb_configuration(libwww_ccflags, '').
 xsb_configuration(libwww_ldflags, '').
+xsb_configuration(libwww_libdir,  '@libwww_libdir@').
 
 
 xsb_configuration(site_dir, 'C:\xsb_site').
