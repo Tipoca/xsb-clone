@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsberror.c,v 1.6 1999-04-04 03:54:50 kifer Exp $
+** $Id: xsberror.c,v 1.7 1999-04-23 19:41:59 cbaoqiu Exp $
 ** 
 */
 
@@ -57,8 +57,6 @@ void xsb_abort(char *description, ...)
     char message[MAXBUFSIZE];
     va_list args;
 
-    xsb_default_segfault_handler = signal(SIGSEGV, SIG_DFL);
-
     va_start(args, description);
 
     strcpy(message, "\n++Error: ");
@@ -69,7 +67,6 @@ void xsb_abort(char *description, ...)
     va_end(args);
     pcreg = exception_handler(message);
 
-    signal(SIGSEGV,  xsb_default_segfault_handler);
     /* this allows xsb_abort to jump out even from nested loops */
     longjmp(xsb_abort_fallback_environment, 1);
 }

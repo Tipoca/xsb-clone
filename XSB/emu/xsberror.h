@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsberror.h,v 1.7 1999-04-04 03:54:51 kifer Exp $
+** $Id: xsberror.h,v 1.8 1999-04-23 19:42:00 cbaoqiu Exp $
 ** 
 */
 
@@ -67,8 +67,6 @@ extern char *xsb_segfault_message; /* Put your segfault message here prior to
 extern void (*xsb_default_segfault_handler)(int); /* where the previous value
 						     of the SIGSEGV handler is
 						     saved */ 
-extern jmp_buf xsb_segfault_fallback_environment; /* Environment for segfault
-						     longjump saved here */
 extern jmp_buf xsb_abort_fallback_environment; /* Environment for abort
 						  longjump saved here */
 

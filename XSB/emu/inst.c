@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.c,v 1.8 1999-03-17 18:34:44 kostis Exp $
+** $Id: inst.c,v 1.9 1999-04-23 19:41:56 cbaoqiu Exp $
 ** 
 */
 
@@ -228,6 +228,7 @@ static void init_inst_table_4(void)
   set_inst(builtin, "builtin",         PP, A, X,X);
   set_inst(unifunc, "unifunc",	       PPP,X, X,X);
   set_inst(userfunc, "userfunc",       PP, A, S,X);
+  set_inst(reset, "reset",	       PPP,X, X,X);
 }
 
 /*----------------------------------------------------------------------*/

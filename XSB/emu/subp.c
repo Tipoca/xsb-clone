@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.8 1999/04/03 02:22:20 kostis Exp $
+** $Id: subp.c,v 1.9 1999/04/04 05:20:19 kifer Exp $
 ** 
 */
 
@@ -191,13 +191,6 @@ Psc synint_proc(Psc psc, int intcode, byte *cur_inst)
 void keyint_proc(int sig)
 {
   *asynint_ptr |= KEYINT_MARK;
-}
-
-/* SIGSEGV/SIGBUS handler that catches segfaults; used unless 
-   configured with DEBUG */ 
-void xsb_segfault_catcher(int err)
-{
-  longjmp(xsb_segfault_fallback_environment, 1);
 }
 
 void init_interrupt(void)
@@ -518,6 +511,16 @@ byte *exception_handler(char *string)
   ebreg = cp_ebreg(breg); 
   remove_open_tables_reset_freezes();
   return cp_pcreg(breg); 
+}
+
+/* SIGSEGV/SIGBUS handler that catches segfaults; used unless 
+   configured with DEBUG */ 
+void xsb_segfault_catcher(int err)
+{
+  char *tmp_message = xsb_segfault_message;
+  xsb_segfault_message = xsb_default_segfault_msg; /* restore default */
+  longjmp(xsb_abort_fallback_environment,
+	  (int) exception_handler(tmp_message));
 }
 
 #ifdef WIN_NT
