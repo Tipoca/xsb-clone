@@ -21,7 +21,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.85 2002-03-29 17:05:29 kifer Exp $
+** $Id: flrutils.P,v 1.86 2002-04-02 06:34:48 kifer Exp $
 **
 */
 
@@ -1080,7 +1080,7 @@ flora_load_dyn_fdb(InDBFile,ModuleName) :-
 			       args(DBFile,ModuleName)),
 	    cputime(T0),
 	    seeing(PreInFile),
-	    flora_set_xpp_options_for_compile(ModuleName),
+	    flora_set_xpp_options_for_read(ModuleName),
 	    %% Don't issue irrelevant warnings
 	    flora_add_xpp_options('-warninglevel 1 '),
 	    xpp_process_file(DBFile,XPP_process,IOportFromProc),
@@ -1128,7 +1128,7 @@ flora_load_dyn_fld(InFLDFile,ModuleName) :-
 			       args(FLDFile,ModuleName)),
 	    cputime(T0),
 	    seeing(PreInFile),
-	    flora_set_xpp_options_for_compile(ModuleName),
+	    flora_set_xpp_options_for_read(ModuleName),
 	    %% Don't issue irrelevant warnings
 	    flora_add_xpp_options('-warninglevel 1 '),
 	    xpp_process_file(FLDFile,XPP_process,IOportFromProc),
