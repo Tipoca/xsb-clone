@@ -7,23 +7,23 @@ echo "-------------------------------------------------------"
 XEMU=$1
 options=$2
 
+#========================================================================
 # Force some files to be compiled before running the tests.  cycle.P
 # will always be compiled, because there was a bug on Linux in compiling
-# this file and we want to catch it.
+# this file and we want to catch it.  Since this step is performed only
+# so that the corresponding .O files exist, it is not included as part
+# of the garbage collection test.
 
-$XEMU $options << EOF
+$XEMU $options -g none << EOF
 
-[lists].
-
-[sets].
-
-[correct].
-
-[utils].
-
+compile(lists).
+compile(sets).
+compile(correct).
+compile(utils).
 compile(cycle).
 
 EOF
+#========================================================================
 
 #--------------------------------------------------
 # Tests get_calls and get_returns and tries as code
