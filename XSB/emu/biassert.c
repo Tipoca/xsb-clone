@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.9 1999-02-10 17:07:30 warren Exp $
+** $Id: biassert.c,v 1.10 1999-03-09 23:08:15 warren Exp $
 ** 
 */
 
@@ -278,7 +278,7 @@ extern tab_inf_ptr last_tip;
 
 
 #ifdef ASSERTDEBUG
-dbgen_printinst3(Opcode, Arg1, Arg2, Arg3)
+void dbgen_printinst3(Opcode, Arg1, Arg2, Arg3)
 {
   switch (Opcode) {
   case getlist_tvar_tvar:
@@ -292,7 +292,7 @@ dbgen_printinst3(Opcode, Arg1, Arg2, Arg3)
   }
 }
 
-dbgen_printinst(Opcode, Arg1, Arg2)
+void dbgen_printinst(Opcode, Arg1, Arg2)
 {
   switch (Opcode) {
   case getpvar:	/* PRV */
@@ -373,6 +373,8 @@ dbgen_printinst(Opcode, Arg1, Arg2)
     printf("noop - - -\n"); break;
   case jumptbreg:
     printf("jumptbreg - - %d 0x%x\n", Arg1, Arg2); break;
+  case test_heap:
+    printf("test_heap - - %d %d\n", Arg1, Arg2); break;
   case dyntrustmeelsefail:
     printf("dyntrustmeelsefail - - %d 0x%x\n", Arg1, Arg2); break;
   case retrymeelse:
@@ -2203,7 +2205,7 @@ int trie_assert(void)
   Trie_Asserted_Clref = trie_asserted_clref(Prref);
 
 #ifdef ASSERTDEBUG
-  printf(" Trie_Asserted_Clref %x \n",Trie_Asserted_Clref);
+  printf(" Trie_Asserted_Clref %p \n",Trie_Asserted_Clref);
 #endif
 
   if(Trie_Asserted_Clref == NULL){
