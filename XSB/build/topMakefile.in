@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.51 2002-03-15 08:09:43 kifer Exp $
+## $Id: topMakefile.in,v 1.52 2003-01-29 19:02:42 lfcastro Exp $
 ## 
 ##
 
@@ -214,11 +214,17 @@ smodels:
 # C-drivers that pass queries to XSB
 module: prepare xsbmod do_cleaning inform_module
 
+dynmodule: prepare xsbdynmod 
+
 # if supporting Oracle, then emumake_goal=xsbora; else emumake_goal=xsb
 # This invokes xsboramod and xsbmod goals in emuMakefile, respectively
 xsbmod: ${src_config_prefix}/xsb_config.h ${src_config_prefix}/xsb_debug.h
 	cd ${src_emudir}; \
 	    make $(emumake_goal)mod
+
+xsbdynmod: ${src_config_prefix}/xsb_config.h ${src_config_prefix}/xsb_debug.h
+	cd ${src_emudir}; \
+	    make $(emumake_goal)dynmod
 
 xsbdll: ${src_config_prefix}/xsb_config.h ${src_config_prefix}/xsb_debug.h
 	cd ${src_emudir}; make dll
