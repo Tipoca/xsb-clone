@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.15 2001-05-31 16:33:38 lfcastro Exp $
+** $Id: system_xsb.c,v 1.16 2001-05-31 16:50:27 lfcastro Exp $
 ** 
 */
 
@@ -188,7 +188,7 @@ xsbBool sys_system(int callno)
     cmdspec_term = reg_term(2);
     if (is_list(cmdspec_term)) {
       prolog_term temp, head;
-      char *string_head;
+      char *string_head=NULL;
 
       if (is_nil(cmdspec_term))
 	xsb_abort("[exec] Arg 1 must not be an empty list.");
@@ -219,7 +219,7 @@ xsbBool sys_system(int callno)
     xsb_abort("[exec] builtin not supported in this architecture.");
 #endif
   }
-
+    
   case SHELL: /* smart system call: like SPAWN_PROCESS, but returns error code
 		 instead of PID. Uses system() rather than execvp.
 		 Advantage: can pass arbitrary shell command. */
