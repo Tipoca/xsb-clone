@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.H,v 1.10 2003/04/25 16:04:46 lfcastro Exp $
+** $Id: shell.H,v 1.11 2003/06/09 16:38:16 lfcastro Exp $
 ** 
 */
 
@@ -33,7 +33,7 @@
 	exec/1, list_directory/2.
 :- export sys_chdir/2, sys_access/3, sys_stat/3, sys_link/3,
 	sys_mkdir/2, sys_rmdir/2,
-	sys_unlink/2, sys_exit/1, sys_rename/3.
+	sys_unlink/2, sys_exit/1, sys_rename/3, sys_filecopy/3.
 
 :- import atom/1, abort/1, is_list/1 from standard.
 :- import sys_system/7, expand_filename/2, sys_syscall/4

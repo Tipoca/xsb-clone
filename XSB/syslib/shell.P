@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.P,v 1.17 2003/05/14 16:25:34 lfcastro Exp $
+** $Id: shell.P,v 1.18 2003/06/09 16:38:15 lfcastro Exp $
 ** 
 */
 
@@ -150,4 +150,5 @@ sys_rename(Old, New, Res)   :-	sys_syscall(SYS_rename, Res, Old, New).
 sys_cwd(Name, Res)   	    :-	sys_syscall(SYS_cwd, Res, Name, _).
 sys_mkdir(Name, Res)   	    :-	sys_syscall(SYS_mkdir, Res, Name, _).
 sys_rmdir(Name, Res)   	    :-	sys_syscall(SYS_rmdir, Res, Name, _).
+sys_filecopy(Source,Dest,Res)  :-  sys_syscall(SYS_filecopy, Res, Source, Dest).
 
