@@ -18,14 +18,18 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: back_assert.H,v 1.1 2000-06-17 23:24:24 kifer Exp $
+** $Id: storage.H,v 1.1 2000-06-19 03:10:01 kifer Exp $
 ** 
 */
 
 
-:- export assert_bt/2, retract_bt/2, reclaim_space_bt/0,
-	keypair_insert_bt/3, keypair_delete_bt/2,
-	keypair_insert/3, keypair_delete/2, keypair_find/2.
+:- export storage_insert_fact_bt/3, storage_delete_fact_bt/3, 
+	storage_insert_fact/3, storage_delete_fact/3,
+	storage_find_fact/2,
+	storage_reclaim_space/1,
+	storage_insert_keypair_bt/4, storage_delete_keypair_bt/3,
+	storage_insert_keypair/4, storage_delete_keypair/3,
+	storage_find_keypair/3.
 
 :- import trie_intern/5, trie_interned/4, trie_unintern/2, trie_unintern_nr/2,
 	unmark_uninterned_nr/2, new_trie/1,
@@ -34,4 +38,4 @@
 
 :- import conget/2, conset/2 from gensym.
 
-:- import abort/1 from standard.
+:- import abort/1, integer/1 from standard.
