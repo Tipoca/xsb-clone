@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.24 2003-02-27 20:36:51 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.25 2003-03-20 21:29:32 lfcastro Exp $
 ** 
 */
 
@@ -803,6 +803,10 @@ void ODBCColumns()
 void ODBCTables()
 {
   struct Cursor *cur = (struct Cursor *)ptoc_int(2);
+  /* dummy_string is used to trick the code in FindFreeCursor into
+     not reusing cursors used by this function. It seems that SQLTables
+     leaves cursors in an invalid state.                  -- lfcastro */
+  static const char *dummy_string="THIS is NOT an SQL query";
   RETCODE rc;
 
   if (((rc=SQLTables(cur->hstmt,
@@ -810,9 +814,12 @@ void ODBCTables()
 		     NULL, 0,
 		     NULL, 0,
 		     NULL, 0)) == SQL_SUCCESS) ||
-      (rc == SQL_SUCCESS_WITH_INFO)) 
+      (rc == SQL_SUCCESS_WITH_INFO)) {
     ctop_int(3,0);
-  else {
+    free(cur->Sql);
+    cur->Sql = malloc(strlen(dummy_string)+1);
+    strcpy(cur->Sql, dummy_string);
+  } else {
     ctop_int(3,PrintErrorMsg(cur));
     SetCursorClose(cur);
   }
