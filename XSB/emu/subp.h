@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.h,v 1.5 1999-10-30 00:02:12 cbaoqiu Exp $
+** $Id: subp.h,v 1.6 1999-12-14 03:38:19 kifer Exp $
 ** 
 */
 
@@ -33,7 +33,8 @@ extern void remove_open_tables_reset_freezes(void);
 
 extern bool unify(Cell, Cell);
 
-/* don't use Cell declarations here, to avoid compiler warnings */
+/* don't use Cell declarations here, to avoid gcc compiler warnings;
+   However, this causes warnings under Windows */
 extern int compare(/* Cell, Cell */);
 extern int key_compare(/* Cell, Cell */);
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.1 1999-10-25 05:59:29 kifer Exp $
+** $Id: std_pred_xsb_i.h,v 1.2 1999-12-14 03:38:18 kifer Exp $
 ** 
 */
 
@@ -604,7 +604,7 @@ inline static bool keysort(void)
       cell_tbl[i] = heap_addr;
       term2 = cell(clref_val(term2)+1);
     }
-    qsort(cell_tbl, len, sizeof(Cell),  key_compare);
+    qsort(cell_tbl, len, sizeof(Cell), key_compare);
     new_list = makelist(hreg);
     for (i=0 ; i < len ; i++) {
       follow(hreg++) = cell_tbl[i];
