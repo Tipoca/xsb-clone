@@ -1,6 +1,6 @@
 /* File:      prolog2hilog.c
 ** Author(s): kifer
-** Contact:   xsb-contact@cs.sunysb.edu
+** Contact:   flora-users@lists.sourceforge.net
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 2000
 ** 
@@ -18,7 +18,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prolog2hilog.c,v 1.10 2002-02-28 04:25:25 kifer Exp $
+** $Id: prolog2hilog.c,v 1.11 2002-04-07 23:09:12 kifer Exp $
 ** 
 */
 

@@ -2,7 +2,7 @@
 **
 ** Author(s): Guizhen Yang
 **
-** Contact:   xsb-contact@cs.sunysb.edu
+** Contact:   flora-users@lists.sourceforge.net
 **
 ** Copyright (C) The Research Foundation of SUNY, 1999-2001
 **
@@ -20,20 +20,22 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.9 2002-04-03 08:26:57 kifer Exp $
+** $Id: flrcompiler.H,v 1.10 2002-04-07 23:09:17 kifer Exp $
 **
 */
 
 
+:- import
+	flora_increment_counter/4,
+	flora_set_counter/2,
+	flora_get_counter/2,
+	flora_concat_atoms/2,
+	flora_match_substring/3
+    from flrporting.
+
 :- import member/2, append/3, length/2 from basics.
 
-:- import assert/1, retractall/1 from assert.
-
 :- import sort/2, keysort/2, findall/3 from setof.
-
-:- import conset/2, conget/2 from gensym.
-
-:- import str_cat/3, str_sub/3 from string.
 
 :- import flora_define_operator/3 from flroperator.
 

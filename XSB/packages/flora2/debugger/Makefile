@@ -1,9 +1,9 @@
-## File:      packages/flora2/syslib/Makefile
+## File:      flora2/syslib/Makefile
 ##
 ## Author(s): Michael Kifer
 ##            Guizhen Yang
 ##
-## Contact:   xsb-contact@cs.sunysb.edu
+## Contact:   flora-users@lists.sourceforge.net
 ## 
 ## Copyright (C) The Research Foundation of SUNY, 1999-2001
 ## 
@@ -21,18 +21,19 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.6 2002-03-15 08:09:41 kifer Exp $
+## $Id: Makefile,v 1.7 2002-04-07 23:09:14 kifer Exp $
 ## 
 ##
 
 OBJEXT=.xwam
 
-XSBDIR = ../../..
+PROLOGDIR = ../../..
+FLORADIR = ..
 
 ALLOBJS = flrdebugger${OBJEXT} dynamic_data.dat static_data.dat
 
-XSB_STANDARD = $(XSBDIR)/prolog_includes/standard.h
-XSB_EMU_FLAG_DEFS = $(XSBDIR)/emu/flag_defs_xsb.h
+XSB_STANDARD = $(PROLOGDIR)/prolog_includes/standard.h
+XSB_EMU_FLAG_DEFS = $(PROLOGDIR)/emu/flag_defs_xsb.h
 
 FLORA_INCLUDES_DIR = ../flrincludes
 DYN_INCLUDES_DIR = ../includes
@@ -46,20 +47,20 @@ FLRHEADER = $(DYN_INCLUDES_DIR)/flrheader.flh
 
 OPTION = [optimize]
 
-XSB = $(XSBDIR)/bin/xsb
+PROLOG = $(PROLOGDIR)/bin/xsb
 
-PROLOG = $(XSB) -s -m 2000 -c 2000 -e 'segfault_handler(warn).'
+PROLOG_COMMAND = $(PROLOG) -s -m 2000 -c 2000 -e 'segfault_handler(warn).'
 
 # Make sure warnings are saved in a file.
-SVFILE = '$(XSBDIR)/build/.flora_debug_warn.tmp'
+SVFILE = '$(FLORADIR)/.flora_debug_warn.tmp'
 STDWARN = 3
 STDERR = 2
-HDRMSG = "While compiling XSB/packages/flora2/debugger:"
+HDRMSG = "While compiling .../flora2/debugger:"
 
 
 all: init $(ALLOBJS) finish
-	@$(XSBDIR)/build/touch.sh cmd...
-	$(PROLOG) < cmd...
+	@$(PROLOGDIR)/build/touch.sh cmd...
+	$(PROLOG_COMMAND) < cmd...
 	/bin/rm -f cmd...
 	@cat $(SVFILE)
 

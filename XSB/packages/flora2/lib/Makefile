@@ -1,6 +1,6 @@
-## File:      packages/flora2/lib/Makefile
+## File:      flora2/lib/Makefile
 ## Author(s): kifer
-## Contact:   xsb-contact@cs.sunysb.edu
+## Contact:   flora-users@lists.sourceforge.net
 ## 
 ## Copyright (C) The Research Foundation of SUNY, 2001
 ## 
@@ -18,22 +18,23 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.12 2002-03-24 09:08:38 kifer Exp $
+## $Id: Makefile,v 1.13 2002-04-07 23:09:12 kifer Exp $
 ## 
 ##
 
 OBJEXT=.xwam
 
-XSBDIR=../../..
+PROLOGDIR=../../..
+FLORADIR=..
 
 ALL = 	flrprettyprint.P flrio.P flrstorage.P flrsystem.P
 
-EMU_INCLUDES = $(XSBDIR)/emu/builtin.h \
-	$(XSBDIR)/emu/flag_defs_xsb.h \
-	$(XSBDIR)/emu/io_defs_xsb.h \
-	$(XSBDIR)/emu/system_defs_xsb.h $(XSBDIR)/emu/socket_defs_xsb.h 
-PROLOG_INCLUDES = $(XSBDIR)/prolog_includes/char_defs.h \
-	$(XSBDIR)/prolog_includes/standard.h
+EMU_INCLUDES = $(PROLOGDIR)/emu/builtin.h \
+	$(PROLOGDIR)/emu/flag_defs_xsb.h \
+	$(PROLOGDIR)/emu/io_defs_xsb.h \
+	$(PROLOGDIR)/emu/system_defs_xsb.h $(PROLOGDIR)/emu/socket_defs_xsb.h 
+PROLOG_INCLUDES = $(PROLOGDIR)/prolog_includes/char_defs.h \
+	$(PROLOGDIR)/prolog_includes/standard.h
 
 
 Option = [optimize]
@@ -43,16 +44,16 @@ Option = [optimize]
 #
 # Self-make: Version 1.4.1
 #
-XSB=$(XSBDIR)/bin/xsb
-Prolog = $(XSB) -i -s -m 2000 -c 2000 -e 'segfault_handler(warn).'
+PROLOG=$(PROLOGDIR)/bin/xsb
+PROLOG_COMMAND = $(PROLOG) -i -s -m 2000 -c 2000 -e 'segfault_handler(warn).'
 #
 #-----------------------------------------------------------------------#
 
 # Make sure warnings are saved in a file.
-SVFILE = '$(XSBDIR)/build/.flora_lib_warn.tmp'
+SVFILE = '$(FLORADIR)/.flora_lib_warn.tmp'
 STDWARN = 3
 STDERR = 2
-HDRMSG = "While compiling XSB/packages/flora2/lib:"
+HDRMSG = "While compiling .../flora2/lib:"
 
 
 # suffix rules
@@ -62,7 +63,7 @@ all: clean init recompile
 
 recompile: $(ALL) finish
 	@touch cmd...
-	$(Prolog) < cmd...
+	$(PROLOG_COMMAND) < cmd...
 	@rm cmd...
 	@cat $(SVFILE)
 

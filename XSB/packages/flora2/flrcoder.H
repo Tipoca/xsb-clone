@@ -2,7 +2,7 @@
 **
 ** Author(s): Guizhen Yang
 **
-** Contact:   xsb-contact@cs.sunysb.edu
+** Contact:   flora-users@lists.sourceforge.net
 **
 ** Copyright (C) The Research Foundation of SUNY, 1999-2001
 **
@@ -20,10 +20,12 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.H,v 1.14 2002-03-29 17:05:30 kifer Exp $
+** $Id: flrcoder.H,v 1.15 2002-04-07 23:09:17 kifer Exp $
 **
 */
 
+
+:- import format/2 from format.
 
 :- import write_canonical/1, writeln/1 from standard.
 

@@ -2,7 +2,7 @@
 **
 ** Author(s): Guizhen Yang
 **
-** Contact:   xsb-contact@cs.sunysb.edu
+** Contact:   flora-users@lists.sourceforge.net
 **
 ** Copyright (C) The Research Foundation of SUNY, 1999-2001
 **
@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrfirstorder.H,v 1.2 2002-02-28 04:25:28 kifer Exp $
+** $Id: flrfirstorder.H,v 1.3 2002-04-07 23:09:17 kifer Exp $
 **
 */
 
@@ -39,9 +39,7 @@
 
 :- index(flora_dynflogicstatic/2,trie).
 
-:- import assert/1, retractall/1 from assert.
-
-:- import conget/2 from gensym.
+:- import flora_get_counter/2 from flrporting.
 
 :- export
 	flora_firstorderdef/2,

@@ -5,7 +5,7 @@
 ;; Christian Schlepphorst (schlepph@informatik.uni-freiburg.de)
 ;; Michael Kifer (kifer@cs.sunysb.edu)
 
-;; $Id: flora.el,v 1.12 2002-03-15 08:09:41 kifer Exp $
+;; $Id: flora.el,v 1.13 2002-04-07 23:09:13 kifer Exp $
 
 ;;; Commentary:
 
@@ -649,7 +649,7 @@ If DYNAMICALLY (prefix arg) is not nil, consult into dynamic area."
 	  (progn
 	    (display-buffer flora-process-buffer)
 	    (switch-to-buffer-other-window flora-process-buffer)))
-      ;; time is needed for XSB to return. otherwise, the point will be off
+      ;; time is needed for Prolog to return. otherwise, the point will be off
       (goto-char (point-max))
       (or switch
 	  (select-window wind))))

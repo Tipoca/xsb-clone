@@ -2,7 +2,7 @@
 **
 ** Author(s): Guizhen Yang 
 **
-** Contact:   xsb-contact@cs.sunysb.edu
+** Contact:   flora-users@lists.sourceforge.net
 **
 ** Copyright (C) The Research Foundation of SUNY, 1999-2001
 **
@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flraggsum.P,v 1.5 2002-02-28 04:25:25 kifer Exp $
+** $Id: flraggsum.P,v 1.6 2002-04-07 23:09:11 kifer Exp $
 ** 
 */
 
@@ -30,8 +30,6 @@
 #include "flora_terms.flh"
 
 :- import ground/1, member/2 from basics.
-
-:- import findall/3, sort/2 from setof.
 
 :- import flora_warning_line/1 from flrprint.
 

@@ -2,7 +2,7 @@
 **
 ** Author(s): kifer
 **
-** Contact:   xsb-contact@cs.sunysb.edu
+** Contact:   flora-users@lists.sourceforge.net
 **
 ** Copyright (C) The Research Foundation of SUNY, 1999-2001
 ** 
@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrimport.H,v 1.5 2002-02-28 04:25:24 kifer Exp $
+** $Id: flrimport.H,v 1.6 2002-04-07 23:09:10 kifer Exp $
 **
 */
 
