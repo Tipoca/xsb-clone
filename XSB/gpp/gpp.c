@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.25 2001-12-19 07:35:24 kifer Exp $
+** $Id: gpp.c,v 1.26 2002-03-26 09:29:16 kifer Exp $
 ** 
 */
 
@@ -910,9 +910,8 @@ int idequal(char *b,int l,char *s)
 {
   int i;
   
-  if ((int)strlen(s)!=l) return 0;
   for (i=0;i<l;i++) if (b[i]!=s[i]) return 0;
-  return 1;
+  return (s[l]==0);
 }
 
 int findIdent(char *b,int l)
