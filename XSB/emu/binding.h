@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: binding.h,v 1.9 1999-11-04 23:53:06 cbaoqiu Exp $
+** $Id: binding.h,v 1.10 1999-12-10 07:47:25 kifer Exp $
 ** 
 */
 
@@ -197,8 +197,6 @@
 
 #define bind_attv(addr, attv)	pushtrail(addr, makeattv(attv));\
 				bld_attv(addr, attv)
-
-#define bind_copy0(addr, val)	pushtrail(addr, val); *(addr) = val
 
 #define bind_copy(addr, val)	pushtrail(addr, val); *(addr) = val
 

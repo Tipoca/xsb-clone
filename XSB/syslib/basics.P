@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.P,v 1.5 1999/11/02 22:54:32 warren Exp $
+** $Id: basics.P,v 1.6 1999/12/07 21:13:39 warren Exp $
 ** 
 */
 
@@ -36,8 +36,8 @@ append([],L,L).
 append([X|L1],L2,[X|L3]) :- append(L1,L2,L3).
 
 %---
-/* copy_term0 is defined on machine.P */
-copy_term(A,B) :- copy_term0(A,C), B = C.
+/* copy_term0 is defined in machine.P */
+copy_term(A,B) :- copy_term0(A,B).
 
 %---
 flatten([H|T],Flatlist):-

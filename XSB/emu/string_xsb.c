@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string_xsb.c,v 1.3 1999/11/20 06:46:51 kifer Exp $
+** $Id: string_xsb.c,v 1.4 1999/11/29 00:30:20 kifer Exp $
 ** 
 */
 
@@ -52,14 +52,14 @@ extern char *p_charlist_to_c_string(prolog_term term, VarString *outstring,
 extern void c_string_to_p_charlist(char *name, prolog_term list,
 				   char *in_func, char *where);
 
-extern Cell ptoc_tag(int regnum);
-
 static Cell term, term2;
 
 static vstrDEFINE(input_buffer);
 static vstrDEFINE(subst_buf);
 static vstrDEFINE(output_buffer);
 
+
+#include "ptoc_tag_xsb_i.h"
 
 
 /* R1: +Substring; R2: +String; R3: ?Pos

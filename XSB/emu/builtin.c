@@ -2,7 +2,7 @@
 ** Author(s): Xu, Warren, Sagonas, Swift, Freire, Johnson
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
-** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
+** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1999
 ** Copyright (C) ECRC, Germany, 1990
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.79 1999-11-19 20:31:06 cbaoqiu Exp $
+** $Id: builtin.c,v 1.80 1999-12-10 07:47:26 kifer Exp $
 ** 
 */
 
@@ -158,18 +158,9 @@ Cell flags[64];			  /* System flags + user flags */
 
 /* ------- utility routines -------------------------------------------	*/
 
-/*
- *  Returns the still-tagged value (a Cell) at the end of the deref chain
- *  leading from `regnum'.
- */
-inline Cell ptoc_tag(int regnum)
-{
-  /* reg is global array in register.h */
-  register Cell addr = cell(reg+regnum);
 
-  deref(addr);
-  return addr;
-}
+#include "ptoc_tag_xsb_i.h"
+
 
 DllExport prolog_int call_conv ptoc_int(int regnum)
 {
@@ -452,23 +443,7 @@ static int is_most_general_term(Cell term)
 
 /* --------------------------------------------------------------------	*/
 
-inline Psc term_psc(Cell term)
-{
-  int value;
-  Psc psc;
-  Pair sym;
-
-  if (isconstr(term))
-    return get_str_psc(term);
-  else {
-    if (isstring(term)) {
-      psc = (Psc)flags[CURRENT_MODULE];
-      sym = insert(string_val(term), 0, psc, &value);
-      return pair_psc(sym);
-    }
-    else return NULL;
-  }
-}
+#include "term_psc_xsb_i.h"
 
 /* -------------------------------------------------------------------- */
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify_xsb_i.h,v 1.3 1999-11-05 03:52:13 cbaoqiu Exp $
+** $Id: unify_xsb_i.h,v 1.4 1999-12-10 07:47:44 kifer Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@ tail_recursion:
      switch (cell_tag(op1)) {
      case FREE:
      case REF1: 
-     label_op2_free: bind_copy0((CPtr)(op2), op1);
+     label_op2_free: bind_copy((CPtr)(op2), op1);
                      IFTHEN_SUCCEED;
 		     break;
      label_op1_free:
@@ -63,8 +63,9 @@ tail_recursion:
 	  }
 	  IFTHEN_SUCCEED;
 	}
-	else { bind_copy0((CPtr)(op1), op2);
-	       IFTHEN_SUCCEED;
+	else {
+	  bind_copy((CPtr)(op1), op2);
+	  IFTHEN_SUCCEED;
 	}
 	break; /* for op1=free */
 
@@ -140,7 +141,7 @@ tail_recursion:
        deref(op2);
        if (isref(op2)) {
 	 /* op2 is FREE				attv ... free */
-	 bind_copy0((CPtr)op2, op1);
+	 bind_copy((CPtr)op2, op1);
 	 IFTHEN_SUCCEED;
        }
        else if (!isattv(op2) || (isattv(op2) && op1 != op2)) {

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.3 1999-11-16 19:06:03 kifer Exp $
+** $Id: system_xsb.c,v 1.4 1999-12-10 07:47:39 kifer Exp $
 ** 
 */
 
@@ -47,7 +47,6 @@
 
 #include <fcntl.h>
 
-#include "basictypes.h"
 #include "auxlry.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"

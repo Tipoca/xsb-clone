@@ -2,7 +2,7 @@
 ** Author(s): Warren, Xu, Swift, Sagonas, Johnson
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
-** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
+** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1999
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -18,25 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.8 1999-11-23 04:06:42 kifer Exp $
+** $Id: auxlry.h,v 1.9 1999-12-10 07:47:22 kifer Exp $
 ** 
 */
 
 
+#include "basicdefs.h"
 #include "basictypes.h"
 
-#define MOD %
-
-#define IsNULL(ptr)      ( (ptr) == NULL )
-#define IsNonNULL(ptr)   ( (ptr) != NULL )
-
-typedef unsigned char byte;
-typedef unsigned int counter;
-typedef unsigned long word;
-typedef byte *pb;
-typedef word *pw;
-typedef int (*PFI)();
-typedef int *int_ptr;
 
 #define ihash(val, size) (word)(val) % (size)
 

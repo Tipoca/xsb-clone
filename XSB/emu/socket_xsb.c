@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.8 1999-12-06 06:20:23 kifer Exp $
+** $Id: socket_xsb.c,v 1.9 1999-12-10 07:47:37 kifer Exp $
 ** 
 */
 
@@ -59,7 +59,6 @@
 #include "cell_xsb.h"
 #include "error_xsb.h"
 #include "cinterf.h"
-#include "basictypes.h"
 
 #include "io_builtins_xsb.h"
 #include "socket_xsb.h"

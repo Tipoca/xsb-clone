@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.41 1999-11-17 21:52:13 cbaoqiu Exp $
+** $Id: tries.c,v 1.42 1999-12-10 07:47:43 kifer Exp $
 ** 
 */
 
@@ -56,8 +56,6 @@
 
 /*----------------------------------------------------------------------*/
 
-extern Psc term_psc(Cell);
-extern Cell ptoc_tag(int);
 extern TIFptr get_tip(Psc);
 #ifdef DPVR_DEBUG_BD
 extern void printterm(Cell, byte, int);
@@ -670,6 +668,11 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
   }									\
   resetpdl;								\
 }
+
+
+#include "term_psc_xsb_i.h"
+#include "ptoc_tag_xsb_i.h"
+
 
 /*
  * Called in SLG instruction `new_answer_dealloc', variant_answer_search()

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.9 1999-11-29 00:30:17 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.10 1999-12-10 07:47:33 kifer Exp $
 ** 
 */
 
@@ -164,6 +164,9 @@ static vstrDEFINE(StrArgBuf);      	      /* holder for string arguments */
 bool fmt_write(void);
 bool fmt_write_string(void);
 bool fmt_read(void);
+
+
+#include "ptoc_tag_xsb_i.h"
     	    
 
 bool formatted_io (void)
@@ -999,8 +1002,7 @@ int read_canonical(void)
 	/* p = findall_solutions + findall_chunk_index;*/
 	check_glstack_overflow(3, pcreg, size*sizeof(Cell)) ;
 	/*printf("checked overflow: size: %d\n",size*sizeof(Cell));*/
-	arg2 = (Cell)Areg(2);
-	deref(arg2);
+	arg2 = ptoc_tag(2);
 	if (isnonvar(arg2)) 
 	  xsb_abort("READ_CANONICAL: argument must be a variable");
 	bind_ref((CPtr)arg2,hreg);  /* build a new var to trail binding */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sp_unify_xsb_i.h,v 1.1 1999-10-25 05:59:25 kifer Exp $
+** $Id: sp_unify_xsb_i.h,v 1.2 1999-12-10 07:47:38 kifer Exp $
 ** 
 */
 
@@ -29,7 +29,7 @@ static inline bool int_unify(Cell op1, Cell op2)
   deref(op2);
   if (isref(op2)) {
     /* op2 is FREE:                       num ... free */
-    bind_copy0((CPtr)(op2), op1);
+    bind_copy((CPtr)(op2), op1);
     return TRUE;
   }
   return (op1 == op2);
@@ -42,7 +42,7 @@ static inline bool atom_unify(Cell op1, Cell op2)
   deref(op2);
   if (isref(op2)) {
     /* op2 is FREE                      string ... free */
-    bind_copy0((CPtr)(op2), op1);
+    bind_copy((CPtr)(op2), op1);
     return TRUE;
   }
   return (op1 == op2);

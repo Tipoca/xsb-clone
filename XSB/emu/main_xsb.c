@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: main_xsb.c,v 1.2 1999-11-16 19:05:57 kifer Exp $
+** $Id: main_xsb.c,v 1.3 1999-12-10 07:47:35 kifer Exp $
 ** 
 */
 
@@ -52,7 +52,7 @@
 #endif
 
 #include "orient_xsb.h"
-#include "basictypes.h"
+#include "basicdefs.h"
 
 int main(int argc, char *argv[])
 { 

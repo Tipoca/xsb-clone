@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.c,v 1.2 1999-11-16 19:05:59 kifer Exp $
+** $Id: orient_xsb.c,v 1.3 1999-12-10 07:47:36 kifer Exp $
 ** 
 */
 
@@ -43,6 +43,7 @@
 /* special.h must be included after sys/stat.h */
 #include "configs/special.h"
 #include "export.h"
+#include "basicdefs.h"
 #include "basictypes.h"
 
 char executable[MAXPATHLEN] = {'\0'};	/* This is set to a real name below */

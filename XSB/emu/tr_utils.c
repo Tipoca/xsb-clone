@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.28 1999/10/25 12:02:30 kostis Exp $
+** $Id: tr_utils.c,v 1.29 1999/10/26 06:47:31 kifer Exp $
 ** 
 */
 
@@ -68,10 +68,14 @@
 CPtr Temp_VarPosReg;
 CPtr call_vars[MAX_VAR_SIZE];
 
-extern Cell ptoc_tag(int);
 #ifdef DEBUG
 extern void printterm(Cell, byte, int);
 #endif
+
+
+#include "ptoc_tag_xsb_i.h"
+#include "term_psc_xsb_i.h"
+
 
 /*----------------------------------------------------------------------*/
 
@@ -264,7 +268,6 @@ CPtr get_subgoal_ptr(Cell callTerm, TIFptr pTIF) {
 
   int arity;
   BTNptr pTrieRepOfCall;
-  extern Psc term_psc(Cell);
 
   arity = get_arity(term_psc(callTerm));
   pTrieRepOfCall = variant_call_lookup(arity, (CPtr)cs_val(callTerm),

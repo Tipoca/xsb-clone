@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.3 1999-11-23 04:06:44 kifer Exp $
+** $Id: io_builtins_xsb_i.h,v 1.4 1999-12-10 07:47:34 kifer Exp $
 ** 
 */
 
@@ -30,7 +30,6 @@
 #include "file_modes_xsb.h"
 
 static struct stat stat_buff;
-extern Cell   ptoc_tag(int i);
 extern char   *expand_filename(char *filename);
 
 
