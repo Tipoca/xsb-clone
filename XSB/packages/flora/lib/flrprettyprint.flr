@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrprettyprint.flr,v 1.9 1999-06-26 05:03:56 kifer Exp $
+** $Id: flrprettyprint.flr,v 1.10 1999-07-02 08:09:47 kifer Exp $
 **
 */
 
@@ -129,16 +129,16 @@ flora_pp_write_semicolon_maybe([_First| _Rest]) :- writeln(';').
 
 flora_pp_write_method_invocation([]).
 flora_pp_write_method_invocation([Attr]) :- 
-    	write(Attr).
+    	flora_pp_write_value(Attr).
 flora_pp_write_method_invocation([M, Arg |Args]) :-
-    	write(M), write('@('), write(Arg),
+    	flora_pp_write_value(M), write('@('), flora_pp_write_value(Arg),
 	flora_pp_write_arglist(Args),
 	write(')').
 
 flora_pp_write_arglist([]).
 flora_pp_write_arglist([Arg|Rest]) :-
     	write(','), flora_pp_write_value(Arg),
-	flora_write_list(Rest).
+	flora_pp_write_arglist(Rest).
 
 flora_pp_write_set(L) :-
     	write('{'),
