@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.16 1999-08-18 12:31:29 kostis Exp $
+** $Id: builtin.h,v 1.17 1999-08-19 15:08:31 kifer Exp $
 ** 
 */
 
@@ -163,6 +163,8 @@
    IT. Note: even though this is a single builtin, YOU CAN SIMULATE ANY NUMBER
    OF BUILTINS WITH IT.  */
 #define PRIVATE_BUILTIN	        180
+
+#define SEGFAULT_HANDLER	182
 
 #define VAR			190
 #define NONVAR			191

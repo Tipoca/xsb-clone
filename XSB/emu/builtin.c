@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.55 1999-08-18 12:31:30 kostis Exp $
+** $Id: builtin.c,v 1.56 1999-08-19 15:08:29 kifer Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <signal.h>
 
 #ifdef WIN_NT
 #include <windows.h>
@@ -112,6 +113,8 @@ extern bool sys_system(int);
 extern bool formatted_io(void), read_canonical(void);
 extern bool file_stat(void);
 extern bool private_builtin(void);
+
+extern void xsb_segfault_quitter(int err);
 
 #ifdef WIN_NT
 extern boolean startInterruptThread(SOCKET intSocket);
@@ -619,6 +622,8 @@ void init_builtin_table(void)
   set_builtin_table(TRIMCORE, "trimcore");
 
   set_builtin_table(PRIVATE_BUILTIN, "private_builtin");
+
+  set_builtin_table(SEGFAULT_HANDLER, "segfault_handler");
 
   set_builtin_table(VAR, "var");
   set_builtin_table(NONVAR, "nonvar");
@@ -1496,6 +1501,32 @@ int builtin_call(byte number)
        DO IT. Note: even though this is a single builtin, YOU CAN SIMULATE ANY
        NUMBER OF BUILTINS WITH IT.  */
   case PRIVATE_BUILTIN: return private_builtin();
+
+  case SEGFAULT_HANDLER: { /* Set the desired segfault handler:
+			      +Arg1:  none  - don't catch segfaults;
+				      warn  - warn and exit;
+				      catch - try to recover */
+    char *type = ptoc_string(1);
+    switch (*type) {
+    case 'w': /* warn: Warn and wuit */
+      xsb_default_segfault_handler = xsb_segfault_quitter;
+      break;
+    case 'n': /* none: Don't handle segfaults */
+      xsb_default_segfault_handler = SIG_DFL;
+      break;
+    case 'c': /* catch: Try to recover from all segfaults */
+      xsb_default_segfault_handler = xsb_segfault_catcher;
+      break;
+    default:
+      xsb_warn("Request for unsupported type of segfault handling, %s", type);
+      return TRUE;
+    }
+#ifdef SIGBUS
+    signal(SIGBUS, xsb_default_segfault_handler);
+#endif
+    signal(SIGSEGV, xsb_default_segfault_handler);
+    return TRUE;
+  }
 
   case IS_CHARLIST: {
     prolog_term size_var;

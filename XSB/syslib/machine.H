@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.26 1999/08/14 17:52:17 kostis Exp $
+** $Id: machine.H,v 1.27 1999/08/18 12:34:06 kostis Exp $
 ** 
 */
 
@@ -119,6 +119,7 @@
 	oracle_query/7,
 	odbc_exec_query/5,
 	private_builtin/11,
+	segfault_handler/1,
 	is_charlist/2,
 	is_charlist/1,
 	trimcore/0,

@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.15 1999-08-17 19:22:17 luis Exp $
+## $Id: Makefile,v 1.16 1999-08-19 15:08:33 kifer Exp $
 ## 
 ##
 
@@ -38,7 +38,7 @@ Option = [sysmod,optimize,quit_on_error]
 #-----------------------------------------------------------------------#
 #
 XSB=../bin/xsb
-Prolog = $(XSB)
+Prolog = $(XSB) -e "segfault_handler(warn)."
 #
 #-----------------------------------------------------------------------#
 

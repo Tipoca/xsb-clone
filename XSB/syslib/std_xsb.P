@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.13 1999/08/17 06:34:21 kifer Exp $
+** $Id: std_xsb.P,v 1.14 1999/08/17 19:30:14 warren Exp $
 ** 
 */
 
@@ -88,6 +88,8 @@ standard_symbol(file_exists, 1, standard).
 standard_symbol(findall, 3, setof).
 standard_symbol(float, 1, standard).
 standard_symbol(functor, 3, standard).
+
+standard_symbol(segfault_handler, 1, machine).
 
 standard_symbol(fmt_read, 3, file_io).
 standard_symbol(fmt_read, 4, file_io).
