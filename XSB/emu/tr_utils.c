@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.69 2002/05/31 15:09:03 lfcastro Exp $
+** $Id: tr_utils.c,v 1.70 2002/10/18 04:43:00 kifer Exp $
 ** 
 */
 
@@ -1235,7 +1235,7 @@ void reclaim_uninterned_nr(long rootidx)
 	 the garbage list. So it is a non-deleted node on the garbage list.
 	 It is removed from there only when we reclaim space.
       */
-      xsb_dbgmsg("Non deleted interned node in garbage list - ok");
+      xsb_dbgmsg((LOG_INTERN,"Non deleted interned node in garbage list - ok"));
     }
 
     switch_from_trie_assert;
