@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.57 1999-08-25 17:46:49 warren Exp $
+** $Id: builtin.c,v 1.58 1999-08-27 16:14:54 warren Exp $
 ** 
 */
 
@@ -435,7 +435,9 @@ static int is_most_general_term(Cell term)
   Psc psc;
 
   deref(term);
-  if (isconstr(term)) {
+  if (isstring(term)) {
+    return TRUE;
+  } else if (isconstr(term)) {
     mini_trail_top = (CPtr *)(& mini_trail[0]) - 1;
     psc = get_str_psc(term);
     taddr = clref_val(term);
@@ -451,8 +453,24 @@ static int is_most_general_term(Cell term)
     }
     mini_undo_bindings;
     return TRUE;
-  } else return isstring(term);
-}    
+  } else if (islist(term)) {
+    mini_trail_top = (CPtr *)(& mini_trail[0]) - 1;
+    while (islist(term)) {
+      addr = cell(clref_val(term));
+      deref(addr);
+	if (isnonvar(addr)) {
+	  mini_undo_bindings;
+	  return FALSE;
+	} else {
+	  mini_bind_variable(addr);
+	  term = cell(clref_val(term)+1);
+	  deref(term);
+	}
+    }
+    mini_undo_bindings;
+    return isnil(term);
+  } else return FALSE;
+}
 
 /* --------------------------------------------------------------------	*/
 
