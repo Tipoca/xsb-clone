@@ -2,11 +2,12 @@
  * tests whether the checking for deleted answers works correctly
  */
 
-:- import member/2, copy_term/2  from basics.
-:- import findall/3, bagof/3 from setof.
-:- import get_calls/3, get_returns/3, delete_return/2, breg_retskel/4 from tables.
+:- import get_calls/3, get_returns/3, delete_return/2 from tables.
 
-arc(1,2). arc(2,3). arc(2,4). arc(4,1).
+arc(1,2).
+arc(2,3).
+arc(2,4).
+arc(4,1).
 
 :- table path/2.
 
@@ -26,12 +27,3 @@ test :-
 	    fail
         ).
 test.
-
-/* Results: (if EMPTY_ANSWER is not defined, this goes into an
- * infinite loop 
- */
-/*
-path(1,2)deleted(1,2)
-path(2,3)path(2,3)path(2,4)path(2,3)path(2,4)path(4,1)path(2,3)path(2,4)path(4,1)path(2,1)path(2,3)path(2,4)path(4,1)path(2,1)path(4,2)path(2,3)path(2,4)path(4,1)path(2,1)path(4,2)path(2,2)deleted(2,2)
-deleted(2,2) deleted(2,2) deleted(2,2) deleted(2,2) deleted(2,2)
-*/
