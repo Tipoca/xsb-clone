@@ -21,14 +21,14 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.4 2001-06-17 17:49:49 kifer Exp $
+## $Id: Makefile,v 1.5 2001-06-18 18:26:23 kifer Exp $
 ## 
 ##
 
 
 XSBDIR = ../../..
 
-ALLOBJS = flrpatch.flh
+ALLOBJS = flrpatch.flh flrdebug_dyndata.flh
 
 XSB = $(XSBDIR)/bin/xsb
 
