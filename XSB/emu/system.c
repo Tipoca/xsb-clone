@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system.c,v 1.4 1999-07-20 18:54:42 kifer Exp $
+** $Id: system.c,v 1.5 1999-07-22 05:45:52 kifer Exp $
 ** 
 */
 
@@ -46,8 +46,8 @@
 #include <unistd.h>
 #endif
 
-FILE *popen(char *cmd, char *mode);
-int pclose(FILE *stream);
+extern FILE *popen(const char *cmd, const char *mode);
+extern int pclose(FILE *stream);
 
 int sys_syscall(int callno)
 {
