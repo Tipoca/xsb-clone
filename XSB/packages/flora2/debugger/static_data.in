@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: static_data.in,v 1.1 2001-06-26 21:22:00 kifer Exp $
+** $Id: static_data.in,v 1.2 2001-07-11 01:38:31 kifer Exp $
 ** 
 */
 
@@ -62,6 +62,8 @@ hide_this_hide(flora_load_file,1).
 hide_this_hide(FLLIBLOAD,1).
 
 trace_this_noprint(flora_findall,3).
+
+show_this_hide(flP2H,2).
 
 %% These are handled by the debugger only if flTraceLow is NOT in effect.
 flora_show_this_hide(FLLIBCOLLECTSET/4).
