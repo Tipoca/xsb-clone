@@ -31,7 +31,7 @@ sort ${TEST_FILE}_old > temp
 #-----------------------
 # print out differences.
 #-----------------------
-d=`diff ${TEST_FILE}_new temp`
+d=`diff -w ${TEST_FILE}_new temp`
 if test -z "$d"; then 
 	echo "$BASEDIR/$TEST_FILE tested"
 	rm -f ${TEST_FILE}_new

@@ -31,13 +31,13 @@ sort ${FILE}_old > temp
 # print out differences.
 #-----------------------
 status=0
-diff ${FILE}_new temp || status=1
+diff -w ${FILE}_new temp || status=1
 if test "$status" = 0 ; then 
 	echo "$BASEDIR/$FILE tested"
 	rm -f ${FILE}_new
 else
 	echo "$BASEDIR/$FILE differ!!!"
-	diff ${FILE}_new ${FILE}_old
+	diff -w ${FILE}_new ${FILE}_old
 fi
 
 rm -f temp

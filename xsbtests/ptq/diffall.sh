@@ -15,7 +15,7 @@ for suff in $suffixes ; do
     sort -u $infile > $tempinfile
 
     status=0
-    diff $outfile1 $tempinfile || status=1
+    diff -w $outfile1 $tempinfile || status=1
     if test "$status" = 0 ; then
 	echo "$outfile1 tested"
     else

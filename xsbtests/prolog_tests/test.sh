@@ -59,6 +59,11 @@ options=$2
 #------------------------------------
 ../gentest.sh "$XEMU $options" format_test "test."
 #------------------------------------
+# Test listing/0
+#------------------------------------
+../gentest.sh "$XEMU $options" listing_test "test."
+
+#------------------------------------
 # Test write_term library
 #------------------------------------
 ../gentest.sh "$XEMU $options" wttest "test."
