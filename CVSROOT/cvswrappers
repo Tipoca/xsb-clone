@@ -36,6 +36,7 @@
 *.wav   -m 'COPY' -k 'b'
 *.au    -m 'COPY' -k 'b'
 *.O     -m 'COPY' -k 'b'
+*.xwam  -m 'COPY' -k 'b'
 *.o     -m 'COPY' -k 'b'
 *.exe   -m 'COPY' -k 'b'
 *.so    -m 'COPY' -k 'b'
