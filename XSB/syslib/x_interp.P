@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.31 1999/11/21 05:46:34 kifer Exp $
+** $Id: x_interp.P,v 1.32 1999/11/23 04:06:57 kifer Exp $
 ** 
 */
 
@@ -244,9 +244,6 @@ version_message :-
 	print_file_contents(ConfMsg, STDMSG).
 
 /* === utilities ======================================================= */
-
-conset(Con, Val) :- conpsc(Con, PSC), psc_set_prop(PSC, Val).
-conget(Con, Val) :- conpsc(Con, Psc), psc_prop(Psc, Val0), Val = Val0.
 
 %% The interpreter NEEDS this repeat: do not use the one in standard.
 x_interp_repeat :- true ; x_interp_repeat.
