@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: prolog2hilog.c,v 1.1 2000-05-28 20:52:50 kifer Exp $
+** $Id: prolog2hilog.c,v 1.2 2000-05-28 23:21:30 kifer Exp $
 ** 
 */
 
@@ -188,11 +188,9 @@ static prolog_term prolog2hilog(prolog_term pterm, char *apply)
 
   if (is_scalar(pterm) || is_var(pterm))
     return pterm;
-#ifdef P2HDEBUG
   if (!is_functor(pterm))
     xsb_abort("PLG2HLG: Arg 1 = `%s' (the Prolog term) must be a var, a const, or a functor.",
 	      pterm2string(pterm));
-#endif
 
   arity = p2c_arity(pterm);
   c2p_functor(apply,arity+1,hterm);
