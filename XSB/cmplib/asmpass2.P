@@ -19,10 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asmpass2.P,v 1.1.1.1 1998-11-05 17:00:02 sbprolog Exp $
+** $Id: asmpass2.P,v 1.2 1999-10-05 04:04:16 kifer Exp $
 ** 
 */
 
+:- compiler_options([xpp_on]).
+
+#define XSB_MAX_ATOM_LEN 255
 
 /*======================================================================*/
 /*  asm_gendata(+SymList)						*/ 
@@ -41,8 +44,10 @@ asm_putsym(Sym) :-
 	sym_env(Sym, Env), env_code(Env, DomCode),
 	sym_category(Sym, Cat), category_code(Cat, CatCode),
 	put(DomCode), put(CatCode), put(Arity),
-	( L < 256 -> put(L) 
-	; error('cannot generate byte-code for atoms having length > 255') 
+	(   L =< XSB_MAX_ATOM_LEN
+	->  put(L) 
+	;   error(('cannot generate byte-code for atoms longer than ',
+		   XSB_MAX_ATOM_LEN)) 
 	),
 	write(Name),
 	( DomCode =\= 2 -> true
