@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.16 2000/01/11 17:01:54 ejohnson Exp $
+** $Id: tables.H,v 1.17 2000/01/18 15:42:17 ejohnson Exp $
 ** 
 */
 
@@ -29,7 +29,7 @@
 	  get_calls_for_table/2, get_returns_for_call/2,
 	  tfindall/3, tnot/1, 't not'/1, sk_not/1,
 	  delete_return/2,
-	  get_call/3, get_calls/3, get_delay_lists/3,
+	  get_call/3, get_calls/3, get_delay_lists/2,
           get_returns/2, get_returns/3,
 	  get_residual/2,
 	  get_lastnode_cs_retskel/4, /* because it is used in intern.P */
