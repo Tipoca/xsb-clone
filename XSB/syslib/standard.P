@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.55 2002/04/10 23:33:22 tswift Exp $
+** $Id: standard.P,v 1.56 2002/04/13 05:01:59 lfcastro Exp $
 ** 
 */
 
@@ -991,6 +991,7 @@ abort :-
         close_open_tables, 
 	'_$cutto'(Cp), 
 	reset_undef_pred_handlers,
+	seen, told,
 	fail.
 
 
@@ -1018,20 +1019,15 @@ warning(Message) :-
 %  message/1
 message(X) :- message(X, STDMSG).
 
+message(Message, File) :-
+	var(Message), !,
+	file_write0(File, Message).
 message((M1,M2), File) :-
 	!,
-	((var(M1); var(M2))
-	->  abort('Uninstantiated message variable')
-	;   true
-	),
 	message(M1, File),
 	message(M2, File).
 message(P/N, File) :-		% temp solution till we fix operators
 	!,
-	(var(P)
-	->  abort('Uninstantiated message variable')
-	;   true
-	),
 	message(P, File),
 	file_put(File, CH_SLASH),
 	file_write0(File, N).
