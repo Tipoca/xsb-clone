@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.5 1999-01-24 17:07:45 kostis Exp $
+** $Id: biassert.c,v 1.6 1999-01-26 17:20:16 unova Exp $
 ** 
 */
 
@@ -1961,7 +1961,7 @@ bool db_build_prref( /* Arity, FirstTIP, -TIP, -PrRef, -PrEntry */ )
     p[2] = (Cell)p ;
     if( (Integer)FirstTIP != - 1 )
     {	tip = (CPtr)mem_alloc(4*sizeof(Cell)) ;
-	tip[0] = (Cell)FirstTIP ;
+	tip[0] = 0 ; 
 	tip[1] = 0 ;
 	tp  = (CPtr)mem_alloc(9*sizeof(Cell)) ;
 	Loc = 0 ;
