@@ -19,17 +19,17 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id:$
+** $Id: shell.P,v 1.1 1999/08/09 00:35:15 kifer Exp $
 ** 
 */
 
 
 :- compiler_options([cpp_on]).
 
-#include "../emu/celltags.h"
-#include "../emu/system.h"
-#include "../emu/builtin.h"
-#include "../emu/msyscall.h"
+#include "celltags.h"
+#include "system.h"
+#include "builtin.h"
+#include "msyscall.h"
 
 
 /* Create subprocess. Redirect its standard input to StreamToProc

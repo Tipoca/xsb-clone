@@ -19,16 +19,17 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.5 1999-08-09 00:33:59 kifer Exp $
+** $Id: parse.H,v 1.6 1999-08-11 20:29:02 kifer Exp $
 ** 
 */
 
 
 :- export parse/4, get_symtab/2, parse_preddef/4.
 :- export get_p_mod/3, change_multifile_directive/3, 
-	  '_$multifile'/1, '_$multifile1'/1,
-	  '_$multifile2'/3, '_$apply_arity'/1,
-	  '_$multifile_retract'/3.
+	open_or_cpp_file/1,
+	'_$multifile'/1, '_$multifile1'/1,
+	'_$multifile2'/3, '_$apply_arity'/1,
+	'_$multifile_retract'/3.
 
 :- import stat_flag/2, stat_set_flag/2 from machine.
 :- import closetail/1 from listutil.
@@ -52,3 +53,4 @@
 :- import xsb_configuration/2 from xsb_configuration.
 
 :- import fmt_write_string/3 from file_io.
+:- import windows_os_loader/0 from loader.
