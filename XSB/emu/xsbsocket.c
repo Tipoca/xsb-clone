@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsbsocket.c,v 1.2 1999-08-02 00:50:36 kifer Exp $
+** $Id: xsbsocket.c,v 1.3 1999-08-02 09:05:21 kifer Exp $
 ** 
 */
 
@@ -60,6 +60,10 @@
 
 #include "io_builtins.h"
 #include "xsbsocket.h"
+
+
+/* In WIN_NT, this gets redefined into _fdopen by configs/special.h */
+extern FILE *fdopen(int fildes, const char *type);
 
 int retcode; /* return code from socket operation */
 

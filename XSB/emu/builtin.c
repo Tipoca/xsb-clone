@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.47 1999-08-02 00:28:56 kifer Exp $
+** $Id: builtin.c,v 1.48 1999-08-02 09:05:18 kifer Exp $
 ** 
 */
 
@@ -104,9 +104,6 @@
 #include "io_builtins.h"
 
 /*======================================================================*/
-
-/* In WIN_NT, this gets redefined into _fdopen by configs/special.h */
-extern FILE *fdopen(int fildes, const char *type);
 
 extern tab_inf_ptr get_tip(Psc);
 extern tab_inf_ptr first_tip;

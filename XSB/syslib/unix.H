@@ -19,14 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unix.H,v 1.4 1999-07-20 18:55:17 kifer Exp $
+** $Id: unix.H,v 1.5 1999-08-02 09:05:24 kifer Exp $
 ** 
 */
 
 
 :- export unix/2, cd/1, unix/1, ls/0, rename/2, rm/1, edit/1,
-	open_process_stream/3, close_process_stream/2,
-	open_process_pipe/3, close_process_pipe/2.
+	spawn_process/3.
 :- export sys_chdir/2, sys_access/3, sys_stat/3, sys_link/3.
 
 :- import str_cat/3 from string.
