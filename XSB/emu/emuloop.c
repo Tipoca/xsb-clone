@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.70 2000-06-28 16:54:50 ruim Exp $
+** $Id: emuloop.c,v 1.71 2000-07-15 17:02:47 cbaoqiu Exp $
 ** 
 */
 
@@ -609,6 +609,15 @@ contcase:     /* the main loop */
       bld_ref((CPtr)op1, *(sreg));
       op1 = (Cell)op3;
       bld_ref((CPtr)op1, *(sreg+1));
+    } else if (isattv(op1)) {
+      attv_dbgmsg(">>>> getlist_tvar_tvar: ATTV interrupt needed\n");
+      add_interrupt(op1, makelist(hreg));
+      op1 = (Cell)op2;
+      bld_ref((CPtr)op1, hreg);
+      new_heap_free(hreg);
+      op1 = (Cell)op3;
+      bld_ref((CPtr)op1, hreg);
+      new_heap_free(hreg);
     }
     else Fail1;
     XSB_Next_Instr();	/* end getlist_tvar_tvar */
