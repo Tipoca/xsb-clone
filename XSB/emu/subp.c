@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.3 1998/12/21 01:08:52 cbaoqiu Exp $
+** $Id: subp.c,v 1.4 1999/03/23 05:30:14 kifer Exp $
 ** 
 */
 
@@ -205,7 +205,9 @@ void init_interrupt(void)
 #else
   signal(SIGINT, keyint_proc); 
 #endif
+#ifndef DEBUG
   signal(SIGSEGV, &xsb_segfault_handler);
+#endif
 }
 
 
