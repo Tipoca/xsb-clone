@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 2004-05-03 19:50:44 tswift Exp $
+## $Id: Makefile,v 1.6 2004-05-21 19:42:45 vidrevich Exp $
 ## 
 ##
 
@@ -37,8 +37,8 @@ Option = [optimize,quit_on_error]
 
 #-----------------------------------------------------------------------#
 #
-#XSB=../../bin/xsb
-XSB=.../../../XSBENV/XSB/bin/xsb
+XSB=../../bin/xsb
+#XSB=.../../../XSBENV/XSB/bin/xsb
 Prolog = $(XSB) -e "segfault_handler(warn)."
 #
 #-----------------------------------------------------------------------#
@@ -53,7 +53,7 @@ HDRMSG = "While compiling XSB/packages/altCDF:"
 .SUFFIXES: .P ${OBJEXT} .H
 
 all: init $(ALL) finish
-	@../../../XSBENV/XSB/build/touch.sh cmd...
+	@../../build/touch.sh cmd...
 	$(Prolog) < cmd...
 	/bin/rm -f cmd...
 	@cat $(SVFILE)
@@ -63,13 +63,13 @@ all: init $(ALL) finish
 # The following is done because of brain damage in some make utilities
 # (notably Sun's), which don't take %.P %.H in the same dependency list
 %.P:   %.H
-	../../../XSBENV/XSB/build/touch.sh $@
+	../../build/touch.sh $@
 
 
 # These targets are obsolete. They are here just in case some 
 # obscure make utility doesn't understand patterns
 .H.P:
-	../../../XSBENV/XSB/build/touch.sh $@
+	../../build/touch.sh $@
 .P${OBJEXT}:
 	echo 'mc($*, $(Option)).' >> cmd...
 
