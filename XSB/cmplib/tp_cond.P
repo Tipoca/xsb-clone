@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_cond.P,v 1.3 2000-02-07 12:56:47 kostis Exp $
+** $Id: tp_cond.P,v 1.4 2000-07-05 10:44:50 bartkul Exp $
 ** 
 */
 
@@ -85,7 +85,7 @@ tcond(inlinegoal(Op,_,Args),SuccLab,FailLab,
 	)
     ; Args = [Arg],		% Op = var/nonvar (only for the moment)
 	tcond_sot(Op,Arg,SuccLab,FailLab,Pil,Pilr,Tin,Tout,Hold)
-    ; Args = [], Op = true, Pil = Pilr, Tin = Tout
+    ; Args = [], Pil = Pilr, Tin = Tout
     ).
 
 tcond_relop(Op, Arg1, Arg2, SuccLab, FailLab,
