@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.20 1999-10-26 07:51:32 kifer Exp $
+## $Id: testsuite.sh,v 1.21 1999-10-26 15:11:10 kifer Exp $
 ## 
 ##
 
@@ -30,10 +30,12 @@
 #==================================================================
 
 #Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude exclude_list] \
-#    	     	     [-only test_list] [-mswin] path
+#    	     	     [-add add_list] [-only test_list] [-mswin] path
 # where: opts         -- options to pass to XSB
 #        tag          -- the configuration tag to use
-#        exclude_list -- the list of tests to NOT run
+#        exclude_list -- the list of tests (in quotes) to NOT run
+#        add_list     -- ilist of test directories to adds
+#    	     	     	 (which are normally not tested)
 #        test_list    -- the list of tests TO run; replaces default,
 #    	     	     	 both -exclude and -only can be specified at once
 #        path         -- full path name of the XSB installation directory
@@ -71,6 +73,12 @@ do
 	    shift
 	    ;;
 
+     *-add*)
+	    shift
+	    added_tests=$1
+	    shift
+	    ;;
+
      *-only*)
 	    shift
 	    only_tests=$1
@@ -98,10 +106,12 @@ done
 
 # install dir argument
 if test -z "$1" -o $# -gt 1; then
-    echo "Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude \"test_list\"] [-mswin] path"
+    echo "Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude \"excl_list\"] [-add \"add_list\"] [-only \"test_list\"] [-mswin] path"
     echo "where: opts      -- options to pass to XSB"
     echo "       tag       -- the configuration tag to use"
-    echo "       test_list -- the list of tests to NOT run"
+    echo "       excl_list -- the list of tests to NOT run"
+    echo "       add_list  -- the list of additional tests to run"
+    echo "       test_list -- run only these tests"
     echo "       path      -- full path name of the XSB installation directory"
     exit
 fi
@@ -197,7 +207,7 @@ else
 	NeXT_DATE=0
 fi
 
-testall.sh -opts "$options" -exclude "$excluded_tests" -only "$only_tests" \
+testall.sh -opts "$options" -exclude "$excluded_tests" -add "$added_tests" -only "$only_tests" \
 		    $XEMU  >> $LOG_FILE 2>&1
 
 

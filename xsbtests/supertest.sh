@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: supertest.sh,v 1.12 1999-10-22 21:04:43 ejohnson Exp $
+## $Id: supertest.sh,v 1.13 1999-10-26 15:11:08 kifer Exp $
 ## 
 ##
 
@@ -54,14 +54,21 @@ else
  echo $$ > $lockfile
 fi
 
+echo ""
+echo "***NOTE: XSB must be fully pre-built with default options"
+echo ""
 cd $xsbdir/build
 echo "Configuring XSB with default options"
 configure > $logfile
 echo "Making XSB with default options"
+# Using the fast mode saves time by not building packages.
+# Packages must already be pre-built for default options, 
+# or else this first run would fail on regmatch_tests
 makexsb fast >> $logfile
 makexsb module >> $logfile
 cd $testdir
-./testsuite.sh $xsbdir
+# we test regmatch_tests only once, for this build
+./testsuite.sh -add regmatch_tests $xsbdir
 
 cd $xsbdir/build
 echo "Configuring XSB with --enable-local-scheduling"

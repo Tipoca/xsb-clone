@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.9 1999-10-18 16:27:58 ejohnson Exp $
+## $Id: testall.sh,v 1.10 1999-10-26 15:11:09 kifer Exp $
 ## 
 ##
 
@@ -42,6 +42,11 @@ do
 	    excluded_tests=$1
 	    shift
 	    ;;
+     *-add*)
+	    shift
+	    added_tests=$1
+	    shift
+	    ;;
      *-only*)
 	    shift
 	    only_tests=$1
@@ -54,9 +59,11 @@ do
 done
 
 if test -z "$1" -o $# -gt 1; then
-  echo "Usage: testall.sh [-opts opts] [-exclude \"test_list\"] executable"
+  echo "Usage: testall.sh [-opts opts] [-exclude \"excl_list\"] [-add \"added_tests\"] [-only \"test-list\"] executable"
   echo "where: opts       -- options to pass to XSB executable"
-  echo "       test_list  -- quoted, space-separated list of tests to NOT run"
+  echo "       excl_list  -- quoted, space-separated list of tests to NOT run"
+  echo "       add_list   -- list of additional tests to run"
+  echo "       only_list  -- run only this list of tests"
   echo "       executable -- full path name of the XSB executable"
   exit
 fi
@@ -83,10 +90,11 @@ default_testlist="basic_tests prolog_tests retract_tests \
 	  wfs_tests ai_tests attv_tests sub_tests"
 
 if test -z "$only_tests"; then
-    testlist=$default_testlist
+    testlist="$default_testlist $added_tests"
 else
     testlist=$only_tests
 fi
+    echo $testlist
 
 # Run each test in $testlist except for the tests in $excluded_tests
 for tst in $testlist ; do
