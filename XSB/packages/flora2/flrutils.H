@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.35 2001-08-29 08:31:34 kifer Exp $
+** $Id: flrutils.H,v 1.36 2001-11-26 19:12:16 gzyang Exp $
 **
 */
 
@@ -80,7 +80,7 @@
 :- import storage_insert_fact/3,
 	storage_commit/1,
 	storage_reclaim_space/1
-    from storage.
+   from storage.
 
 :- import bootstrap_flora/0 from flora2.
 :- bootstrap_flora.
@@ -96,7 +96,11 @@
 	flora_current_compile_filename/1
    from flrlexer.
 
-:- import flora_compose/3 from flrcomposer.
+:- import
+	flora_reset_composer/0,
+	flora_compose/3,
+	flora_nth_token/2
+   from flrcomposer.
 
 :- import flora_reset_operator/0 from flroperator.
 
