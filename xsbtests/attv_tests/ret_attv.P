@@ -1,0 +1,42 @@
+/* File:      ret_attv.P
+** Author(s): Baoqiu Cui
+** 
+** $Id: ret_attv.P,v 1.1 2000-01-05 17:05:15 cbaoqiu Exp $
+*/
+
+:- import put_attributes/2, get_attributes/3 from machine.
+
+test :-
+	test_get_calls,
+	writeln('Passed ret_attv!').
+
+verify_attributes(Var, Value) :-
+	% write('  -- verify: '), writeln(Var-Value),
+	attv_unify(Var, Value).
+
+:- table p/2.
+
+p(X,Y) :-
+	get_attributes(Y, VY, _),
+	VY == v(1),
+	X = 123,
+	put_attributes(Y, v(2)).
+
+test_get_calls :-
+	put_attributes(Y, v(1)),
+	p(_X, Y),
+	fail.
+test_get_calls :-
+	get_calls(p(_X, _Y), Cs, Ret),
+	% writeln(Ret),
+	Ret = ret(_A, B),
+	get_attributes(B, VB, _),
+	writeln(VB),
+	VB == v(1),
+	get_returns(Cs, Ret),
+	% writeln(Ret),
+	Ret = ret(A2, B2),
+	A2 = 123,
+	get_attributes(B2, VB2, _),
+	writeln(VB2),
+	VB2 == v(2).

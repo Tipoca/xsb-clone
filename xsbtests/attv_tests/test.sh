@@ -19,3 +19,4 @@ opts=$2
 ../gentest.sh "$XEMU $opts" trie_assert_attv "test."
 ../gentest.sh "$XEMU $opts" trie_assert_attv2 "test."
 ../gentest.sh "$XEMU $opts" assert_attv "test."
+../gentest.sh "$XEMU $opts" ret_attv "test."
