@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.36 2004-08-20 18:11:35 dwarren Exp $
+** $Id: init_xsb.c,v 1.37 2004-08-24 16:26:27 tswift Exp $
 ** 
 */
 
@@ -187,6 +187,7 @@ static void init_flags(void)
   flags[SYS_TIMER]  = TIMEOUT_ERR; /* start with expired timer */
   flags[BANNER_CTL] = 1;           /* a product of prime numbers; each prime
 				      determines which banner isn't shown */
+  flags[BACKTRACE] = 1;           /* Backtrace on error by default */
 }
 
 /*==========================================================================*/
