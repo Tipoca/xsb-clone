@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.42 1999-04-30 15:51:39 kifer Exp $
+## $Id: configure.in,v 1.43 1999-05-08 02:23:23 kifer Exp $
 ## 
 ##
 
@@ -1220,6 +1220,7 @@ if test "$have_warnings" = "yes"; then
 	echo "PLEASE SCAN THE ABOVE MESSAGES FOR CONFIGURATION WARNINGS"
 	echo ""
 fi
+
 
 echo ""
 if test -z "$config_tag" ; then
