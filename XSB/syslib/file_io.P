@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.P,v 1.18 2000/06/17 23:28:53 kifer Exp $
+** $Id: file_io.P,v 1.19 2000/06/24 04:05:12 kifer Exp $
 ** 
 */
 
@@ -80,9 +80,9 @@ tmpfile_open(IOport) :-
 	file_function(TMPFILE_OPEN, IOport, _, _, _, _, _).
 
 
-file_getbuf(IOport, ByteCount, ToString, BytesRead) :-
+file_getbuf(IOport, ByteCount, ToAtom, BytesRead) :-
 	(var(ToAtom), var(BytesRead) ->
-	    file_function(FILE_GETBUF, IOport,ByteCount,ToString,BytesRead,_,_)
+	    file_function(FILE_GETBUF, IOport,ByteCount,ToAtom,BytesRead,_,_)
 	; abort('Usage: file_getbuf([+IOport,] +ByteCount, -ToAtom, -BytesRead)')
         ).
 
