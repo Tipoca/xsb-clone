@@ -14,7 +14,7 @@ options=$2
 # so that the corresponding .O files exist, it is not included as part
 # of the garbage collection test.
 
-$XEMU $options -g none << EOF
+$XEMU -m 4000 -c 4000 -g none << EOF
 
 compile(lists).
 compile(sets).
