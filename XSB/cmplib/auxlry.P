@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.4 1998-12-21 23:54:43 kifer Exp $
+** $Id: auxlry.P,v 1.5 1999-01-13 12:45:54 kostis Exp $
 ** 
 */
 
@@ -119,22 +119,6 @@ current_option(mi_debug).
 current_option(mi_dump).
 current_option(mi_warn).
 current_option(mi_foreign).
-
-
-/* more options for type inference -- taken out by Kostis (10/16/92)
-
-current_option(typeinfer).
-current_option(funcinfer).
-current_option(shallow).
-
-current_option(show_et).
-current_option(print_local).
-current_option(write_prog).
-current_option(fix).
-current_option(least).
-current_option(d1).
-current_option(step).
- */
 
 /* options kept only for backwards compatibility;
    should be deleted in the next release.	*/
