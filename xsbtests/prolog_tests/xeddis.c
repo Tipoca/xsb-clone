@@ -41,6 +41,7 @@ int min_ed_dis(void)
   }*/
 /*  return cost[len1][len2];*/
     ctop_int(3,cost[len1][len2]);
+    return 1;
 }
 
 int mymin(a,b,c)
@@ -54,7 +55,7 @@ int a,b,c;
   }
 }
 
-substring(void)
+int substring(void)
 {
 char *string1,*string2;
 int length, i;
@@ -69,4 +70,8 @@ i = 0;
 while (string1[i] == string2[i] && i < length) i++;
 
 ctop_int(3,i);
+return 1;
 }
+
+
+
