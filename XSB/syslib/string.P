@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string.P,v 1.26 2003/12/29 17:48:07 tswift Exp $
+** $Id: string.P,v 1.27 2004/03/17 21:10:21 dwarren Exp $
 ** 
 */
 
@@ -56,6 +56,10 @@ c_atom(A,L0,L) :-
 		 ;	c_atom(R,L0,L1),
 			c_atom(A1,L1,L)
 		)
+	 ; A @= (_,_)
+	 ->	A = (A1,R),
+		c_atom(R,L0,L1),
+		c_atom(A1,L1,L)
 	 ;	(atom(A)
 		 ->	atom_codes(A,AC)
 		 ;	number(A)
@@ -85,6 +89,10 @@ c_atom(A,S,L0,L) :-
 		 ;	c_atom(R,S,L0,L1),
 			c_atom(A1,S,L1,L)
 		)
+	 ; A @= (_,_)
+	 ->	A = (A1,R),
+		c_atom(R,S,L0,L1),
+		c_atom(A1,S,L1,L)
 	 ;	(atom(A)
 		 ->	atom_codes(A,AC)
 		 ;	number(A)

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.11 2004/01/28 23:00:09 tswift Exp $
+** $Id: error_handler.P,v 1.12 2004/04/09 21:05:43 dwarren Exp $
 ** 
 */
 
@@ -83,6 +83,33 @@ default_sys_error_handler(Msg) :-
 	messageln(('++Error[XSB/Runtime/P] uncaught exception: ', Msg), 
 	           STDERR).
 
+/* prints out backtrace as built by build_xsb_backtrace:
+list pair, with car=forward continuation, cdr=backward continuation.
+backward is [] if xsb not started with -p option */
+
+print_backtrace([For|Back]) :-
+	messageln('Forward Continuation...',STDERR),
+	print_mod_pred_arity_list(For),
+	(Back == []
+	 ->	true
+	 ;	messageln('Backward Continuation...',STDERR),
+		print_mod_pred_arity_list(Back)
+	).
+
+print_mod_pred_arity_list([]).
+print_mod_pred_arity_list([Psc|Pscs]) :-
+	(Psc =:= 0
+	 ->	messageln('... unknown/?',STDERR)
+	 ;	psc_data(Psc,ModPsc),
+		psc_name(ModPsc,ModName),
+		psc_name(Psc,Name),
+		psc_arity(Psc,Arity),
+		(ModName \== usermod
+		 ->	messageln(['... ',ModName,':',Name,'/',Arity],STDERR)
+		 ;	messageln(['... ',Name,'/',Arity],STDERR)
+		)
+	),
+	print_mod_pred_arity_list(Pscs).
 %-----------------------------------------------------------------------
 
 % ISO-compatable convenience predicates
