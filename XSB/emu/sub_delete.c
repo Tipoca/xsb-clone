@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_delete.c,v 1.5 2000-05-29 04:23:37 ejohnson Exp $
+** $Id: sub_delete.c,v 1.6 2003-03-12 14:56:35 lfcastro Exp $
 ** 
 */
 
@@ -122,7 +122,13 @@ static void delete_tst_answer_set(TSTNptr root) {
   if ( IsNULL(root) )
     return;
 
-  if ( IsHashHeader(TSTN_Child(root)) ) {
+  /* I inserted the check for TSTN_Child(root) below to avoid
+     a segmentation fault. It seems to be working fine with it, 
+     and there doesn't seem to be any memory leak (wrt abolishing
+     subsumptive tables), but as I don't know the code, I'd feel
+     better if somebody who did looked at it.       -- lfcastro */
+
+  if ( TSTN_Child(root) && IsHashHeader(TSTN_Child(root)) ) {
     hash_hdr = TSTN_GetHashHdr(root);
     for ( i = 0;  i < TSTHT_NumBuckets(hash_hdr);  i++ )
       for ( current = TSTHT_BucketArray(hash_hdr)[i];
