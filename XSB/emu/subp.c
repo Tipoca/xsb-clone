@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.69 2004/01/14 20:27:13 dwarren Exp $
+** $Id: subp.c,v 1.70 2004/01/14 23:19:32 dwarren Exp $
 ** 
 */
 
@@ -42,12 +42,12 @@
 #include <winsock.h>
 #include <io.h>
 #include <string.h>
-#endif
-
-#define _REENTRANT
+#else
 #include <pthread.h>
 #include <sched.h>
-#include <errno.h>
+#endif
+
+
 #include "auxlry.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
@@ -790,7 +790,7 @@ xsbBool startProfileThread()
 
   if (!if_profiling) {
     err = pthread_create(&Thread,NULL,(void *)&setProfileBit,(void *)NULL);
-    printf("err=%s\n",strerror(errno));
+    printf("err=%d\n",err);
     //  schedparam.sched_priority = 100; //sched_get_priority_max(SCHED_OTHER);
     //    pthread_setschedparam(Thread,SCHED_OTHER,&schedparam);
     if_profiling = 1;
