@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.1 1998-11-15 05:44:21 kifer Exp $
+** $Id: foreign.P,v 1.2 1999-07-22 20:43:58 warren Exp $
 ** 
 */
 
@@ -46,6 +46,8 @@ compile_c(Modname, Base, Options, Dir, LdOption) :-
 		unix([CC_Name, ' -c ', Base, '.c ', CC_Opts]),
 		unix(['ld -expect_unresolved \* -O1 -shared -o ', Base, '.so ',
 				Base, '.o ', LdOption])
+	; str_sub('windows', Configuration) ->
+	        message(('You are responsible for creating ',Modname,'.dll'))
 	; unix([CC_Name, ' -c ', Base, '.c ', CC_Opts]),
 	  /* The following appears here because C compilers usually put the 
 	     object file in the current directory and not in the source's one.*/
