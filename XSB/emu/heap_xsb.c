@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.11 2000-04-04 20:54:06 lfcastro Exp $
+** $Id: heap_xsb.c,v 1.12 2000-04-06 11:44:55 cbaoqiu Exp $
 ** 
 */
 
@@ -1008,9 +1008,8 @@ int mark_heap(int arity, int *marked_dregs)
 #ifdef CHAT
   marked += chat_mark_frozen_parts(&avail_dreg_marks);
   if (slide) *marked_dregs = MAX_DREG_MARKS - avail_dreg_marks;
-#endif
-
   marked += mark_from_attv_array();
+#endif
 
   marked += mark_hreg_from_choicepoints();
 
