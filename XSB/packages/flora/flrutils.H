@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.10 1999-11-21 05:52:30 kifer Exp $
+** $Id: flrutils.H,v 1.11 2000-02-07 00:06:09 kifer Exp $
 **
 */
 
@@ -48,7 +48,7 @@
 
 :- import library_directory/1 from usermod.
 
-:- import trie_assert/1, trie_retract_all/1 from tables.
+:- import trie_assert/1, trie_retract_all/1, sk_not/1 from tables.
 
 :- import slash/1, is_absolute_filename/1, parse_filename/4,
 	stat_set_flag/2 
@@ -83,6 +83,5 @@
 	STD_FPREFIX(warning_nl)/1, STD_FPREFIX(warning_nl)/2,
 	flora_message_nl/1, flora_message_nl/2, flora_message/1,
 	flora_display_msg/1, flora_display_msg/2,
-	STD_FPREFIX(tnot_all)/1,
 	STD_FPREFIX(then)/2, STD_FPREFIX(else)/2.
 
