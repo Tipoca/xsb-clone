@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.P,v 1.21 1999-10-26 21:13:24 guizyang Exp $
+** $Id: flrcompiler.P,v 1.22 1999-11-20 08:00:34 kifer Exp $
 **
 */
 
@@ -971,29 +971,13 @@ var_member(E,[_|T]) :-
 
 
 /**************************************************************************/
-init_gensym(Root):-
-	nonvar(Root),
-	conset(Root,0).
-
-
-gensym(Root,Symbol):-
-	nonvar(Root),
-	var(Symbol),
-	conget(Root,Counter),
-	NewCounter is Counter + 1,
-	conset(Root,NewCounter),
-	fmt_write_string(Symbol, '%s%d', args(Root,NewCounter)).
-
-
-
-/**************************************************************************/
 new_aux(Aux) :-
 	gensym(aux,V),
 	flora_word(V,Aux).
 
 
 init_flrcompiler :-
-	init_gensym(aux).
+	conset(aux,0).
 
 
 /***************************************************************************
