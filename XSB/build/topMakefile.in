@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.12 1999-03-02 01:02:24 kifer Exp $
+## $Id: topMakefile.in,v 1.13 1999-03-29 20:29:27 kifer Exp $
 ## 
 ##
 
@@ -264,7 +264,7 @@ configure_packages_install:
 	  chmod 644  $(install_config_prefix)/configuration.O
 
 remake_dot_O_files:
-	cd $(srcdir); make
+	cd $(srcdir); make XSB=$(src_scriptdir)/xsb$(config_tag)
 
 # clean for this architecture only
 configclean::
