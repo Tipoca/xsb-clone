@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.13 2001-04-09 20:25:35 gzyang Exp $
+## $Id: Makefile,v 1.14 2001-04-10 00:56:54 kifer Exp $
 ## 
 ##
 
@@ -49,7 +49,7 @@ HDRMSG = "While compiling XSB/packages/flora2/closure:"
 # suffix rules
 .SUFFIXES: .flh .fli
 
-all: init $(ALLOBJS) finish
+all: clean init $(ALLOBJS) finish
 	@$(XSBDIR)/build/touch.sh cmd...
 	$(PROLOG) < cmd...
 	@rm cmd...
