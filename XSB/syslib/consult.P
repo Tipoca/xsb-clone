@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.34 2002/03/13 10:17:46 kifer Exp $
+** $Id: consult.P,v 1.35 2002/03/15 09:19:48 kifer Exp $
 ** 
 */
 
@@ -225,9 +225,9 @@ co_code_call(A,B,C) :- code_call(A,B,C).
 
 compile_load_user(Options) :-
 	compile(user, user, Options, _), !,
-	str_cat(user,XSB_OBJ_EXTENSION_ATOM,user_obj_file),
-	load_exec(user_obj_file, user),
-	rm(user_obj_file).
+	str_cat(user,XSB_OBJ_EXTENSION_ATOM,UserObjFile),
+	load_exec(UserObjFile, user),
+	rm(UserObjFile).
 
 /*-------------define load_dyn for reading in dynamic predicates -----*/
 
