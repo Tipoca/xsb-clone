@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.8 1998-12-22 15:48:53 kostis Exp $
+** $Id: builtin.c,v 1.9 1999-01-10 01:05:00 cbaoqiu Exp $
 ** 
 */
 
@@ -1513,8 +1513,8 @@ int  builtin_call(byte number)
   case TRIE_GET_CALL: /* r1: +call_term */
     pcreg = trie_get_calls();
     break;
-  case GET_LASTNODE_AND_RETSKEL:
-    get_lastnode_and_retskel();
+  case GET_LASTNODE_CS_RETSKEL:
+    get_lastnode_cs_retskel();
     break;
   case CONSTRUCT_RET_FOR_CALL:
     construct_ret_for_call();

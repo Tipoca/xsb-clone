@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.c,v 1.2 1998-12-21 01:08:26 cbaoqiu Exp $
+** $Id: inst.c,v 1.3 1999-01-10 01:05:02 cbaoqiu Exp $
 ** 
 */
 
@@ -360,7 +360,7 @@ void init_builtin_table(void)
   set_builtin_table(TRIE_DELETE_TERM, "trie_delete_term");
   set_builtin_table(TRIE_GET_RETURN, "trie_get_return");
   set_builtin_table(TRIE_GET_CALL, "trie_get_call");
-  set_builtin_table(GET_LASTNODE_AND_RETSKEL, "get_lastnode_and_retskel");
+  set_builtin_table(GET_LASTNODE_CS_RETSKEL, "get_lastnode_cs_retskel");
   set_builtin_table(CONSTRUCT_RET_FOR_CALL, "construct_ret_for_call");
   set_builtin_table(BREG_RETSKEL,"breg_retskel");
 

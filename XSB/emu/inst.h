@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst.h,v 1.2 1998-12-21 01:08:28 cbaoqiu Exp $
+** $Id: inst.h,v 1.3 1999-01-10 01:05:04 cbaoqiu Exp $
 ** 
 */
 
@@ -490,7 +490,7 @@ extern Cell builtin_table[BUILTIN_TBL_SZ][2];
 #define TRIE_DELETE_TERM	149
 #define TRIE_GET_RETURN		150
 #define TRIE_GET_CALL		151
-#define GET_LASTNODE_AND_RETSKEL 152
+#define GET_LASTNODE_CS_RETSKEL 152
 #define CONSTRUCT_RET_FOR_CALL  153
 
 #define BREG_RETSKEL		154
