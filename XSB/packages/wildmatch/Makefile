@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.11 2002-03-15 08:09:39 kifer Exp $
+## $Id: Makefile,v 1.12 2004-09-26 01:33:33 kifer Exp $
 ## 
 ##
 
@@ -41,7 +41,7 @@ Prolog = $(XSB) -i -s -m 2000 -c 2000
 
 # Make sure warnings are saved in a file.
 SVFILE = '$(XSBDIR)/build/.wildmatch_warn.tmp'
-OWRITE = 1
+OWRITE = w
 STDWARN = 3
 STDERR = 2
 HDRMSG = "While compiling XSB/packages/wildmatch:"

@@ -2,7 +2,7 @@
 ## Author(s): Yifei Dong
 ## Contact:   lmc@cs.sunysb.edu
 ##
-## $Id: Makefile,v 1.8 2002-03-15 10:04:23 kifer Exp $
+## $Id: Makefile,v 1.9 2004-09-26 01:33:33 kifer Exp $
 
 
 OBJEXT=.xwam
@@ -31,7 +31,7 @@ AR = ar
 
 # Make sure warnings are saved in a file.
 SVFILE = './.xmc.tmp'
-OWRITE = 1
+OWRITE = w
 STDWARN = 3
 STDERR = 2
 HDRMSG = "While compiling XSB/packages/xmc:"
