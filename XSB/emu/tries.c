@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.40 1999-11-17 17:42:02 ejohnson Exp $
+** $Id: tries.c,v 1.41 1999-11-17 21:52:13 cbaoqiu Exp $
 ** 
 */
 
@@ -1267,7 +1267,8 @@ void variant_call_search(TabledCallInfo *call_info, CallLookupResults *results)
 	 * the new substitution factor may contain FREE variables if we
 	 * don't point the local variables to heap here.
 	 */
-	if (ls_top <= call_arg && call_arg <= ls_bot) {
+	if (top_of_localstk <= call_arg &&
+	    call_arg <= (CPtr) glstack.high - 1) {
 	  bld_free(hreg);
 	  bind_ref(call_arg, hreg);
 	  call_arg = hreg++;
