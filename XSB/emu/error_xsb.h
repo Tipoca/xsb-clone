@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.12 2004-08-31 15:14:11 tswift Exp $
+** $Id: error_xsb.h,v 1.13 2004-09-29 21:41:55 dwarren Exp $
 ** 
 */
 
@@ -59,7 +59,7 @@
    (in a necessarily roundabout manner) determined. 
 */
 #ifdef BITS64
-#define THROWPAD 20
+#define THROWPAD 24
 #else 
 #define THROWPAD 12
 #endif 

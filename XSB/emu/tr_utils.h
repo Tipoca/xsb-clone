@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.27 2002-10-04 20:42:02 lfcastro Exp $
+** $Id: tr_utils.h,v 1.28 2004-09-29 21:41:56 dwarren Exp $
 ** 
 */
 
@@ -49,7 +49,7 @@ extern void trie_intern(void);
 extern int  trie_interned(void);
 extern void trie_dispose(void);
 extern void trie_dispose_nr(void);
-extern void delete_interned_trie(int);
+extern void delete_interned_trie(Integer);
 extern void trie_undispose(long, BTNptr);
 extern xsbBool check_table_cut;
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.7 2003-11-11 19:40:25 dwarren Exp $
+** $Id: std_cases_xsb_i.h,v 1.8 2004-09-29 21:41:56 dwarren Exp $
 ** 
 */
 
@@ -36,15 +36,27 @@
     return isatom(ptoc_tag(1));
     
   case INTEGER:	/* r1: ?term */ {
-      int tag = ptoc_tag(1);
-      return (isinteger(tag) || isboxedinteger(tag));
+     Cell tmp1;
+     Psc tmp2;
+
+      Cell tag = ptoc_tag(1);
+      if (isinteger(tag)) return TRUE;
+      if (!isconstr(tag)) return FALSE;
+      tmp1 = dec_addr(tag);
+      /*printf("tag = %x, tmp1 = %p, hreg = %p\n",tag,tmp1,hreg);*/
+      tmp2 = *((Psc *)tmp1);
+      if (tmp2 != box_psc) return FALSE;
+      return (int_val(cell(clref_val(tag)+1)) == 1);
+
+      /**      int tag = ptoc_tag(1);
+	       return (isinteger(tag) || isboxedinteger(tag));**/
   }
     
   case REAL:		/* r1: ?term */
     return isfloat(ptoc_tag(1));
     
   case NUMBER:	/* r1: ?term */ {
-      int tag = ptoc_tag(1);
+      Cell tag = ptoc_tag(1);
       return (isnumber(tag) || isboxedinteger(tag));
   }
   case ATOMIC: {	/* r1: ?term */

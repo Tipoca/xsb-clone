@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.100 2004-08-20 18:11:34 dwarren Exp $
+** $Id: emuloop.c,v 1.101 2004-09-29 21:41:55 dwarren Exp $
 ** 
 */
 
@@ -1482,7 +1482,7 @@ contcase:     /* the main loop */
   XSB_Start_Instr(allocate_gc,_allocate_gc) /* PAA */
     Def3ops
     Op2(get_xax);
-    Op3((CPtr) (int)get_xxa);
+    Op3((CPtr) (Cell)get_xxa);
     ADVANCE_PC(size_xxx);
     if (efreg_on_top(ereg))
       op1 = (Cell)(efreg-1);

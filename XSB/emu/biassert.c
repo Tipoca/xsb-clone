@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.72 2004-08-31 00:19:13 dwarren Exp $
+** $Id: biassert.c,v 1.73 2004-09-29 21:41:54 dwarren Exp $
 ** 
 */
 
@@ -603,7 +603,7 @@ int assert_code_to_buff_p(prolog_term Clause)
   int Arity;
   int has_body;
   int Argno;
-  int v;
+  Integer v;
   Pair sym;
 
   /* set catcher */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.72 2004/01/14 20:27:13 dwarren Exp $
+** $Id: tr_utils.c,v 1.73 2004/05/06 13:35:10 dwarren Exp $
 ** 
 */
 
@@ -889,7 +889,7 @@ BTNptr *Set_ArrayPtr = NULL;
  * set, ..., the last one contains 0.  If first_free_set == 0, that
  * means no free set available.
  */
-static int first_free_set = 0;
+static Integer first_free_set = 0;
 static int Set_ArraySz = 100;
 /*
  * num_sets is the number of sets have been used (including the fixed
@@ -1024,13 +1024,13 @@ void trie_dispose(void)
 
 #define DELETED_SET 1
 
-void delete_interned_trie(int tmpval) {
+void delete_interned_trie(Integer tmpval) {
   /*
    * We can only delete a valid BTNptr, so that only those sets
    * that were used before can be put into the free set list.
    */
   if ((Set_ArrayPtr[tmpval] != NULL) &&
-      (!((long) Set_ArrayPtr[tmpval] & 0x3))) {
+      (!((Integer) Set_ArrayPtr[tmpval] & 0x3))) {
     switch_to_trie_assert;
     delete_trie(Set_ArrayPtr[tmpval]);
     switch_from_trie_assert;

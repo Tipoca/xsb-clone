@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.12 2002-11-04 18:09:03 dwarren Exp $
+** $Id: memory_xsb.h,v 1.13 2004-09-29 21:41:55 dwarren Exp $
 ** 
 */
 
@@ -102,7 +102,8 @@ extern System_Stack pdl,            /* PDL                        */
 /*
  *  Size of margin between facing stacks before reallocating a larger area.
  */
-#define OVERFLOW_MARGIN	(2048 * ZOOM_FACTOR)
+//#define OVERFLOW_MARGIN	(2048 * ZOOM_FACTOR)
+#define OVERFLOW_MARGIN	(8192 * ZOOM_FACTOR)
 
 
 /* Calculate New Stack Size
