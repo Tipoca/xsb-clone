@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred.i,v 1.4 1998-12-21 01:08:50 cbaoqiu Exp $
+** $Id: std_pred.i,v 1.5 1999-04-01 05:03:11 kifer Exp $
 ** 
 */
 
@@ -245,9 +245,6 @@
 	}
 	break;
 
-    case MY_HiLog_FUNCTOR:
-	break;
-
     case HiLog_ARG:	/* r1: +index (int); r2: +term; r3: ?arg (term) */
 	index = ptoc_tag(1);
 	if (isinteger(index)) {
@@ -274,12 +271,6 @@
 	break;
 
     case HiLog_UNIV:	/* r1: ?term; r2: ?list	*/
-	break;
-
-    case MY_COPY_TERM:
-	break;
-
-    case MY_NAME:
 	break;
 
     case ATOM_CHARS:	/* r1: ?term; r2: ?character list	*/

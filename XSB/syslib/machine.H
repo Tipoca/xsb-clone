@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.10 1999/03/29 20:47:01 kifer Exp $
+** $Id: machine.H,v 1.11 1999/03/30 16:25:37 kifer Exp $
 ** 
 */
 
@@ -115,10 +115,7 @@
 	write_out_profile/0,
 	assert_code_to_buff/2,
 	assert_buff_to_clref/7,
-	fmt_write/3,
-	fmt_write_string/3,
-	fmt_read/4,
-        file_read_line/3,
+        formatted_io/5,
 	file_read_canonical/3,
 	gen_retract_all/1,
 	compiled_to_dynamic/2,
