@@ -39,9 +39,9 @@ done
 
 # precautionary measure: rm *.[PO] only is we are certain 
 # that this is flora_tests directory
-dir=`pwd`
-dir=`basename $dir`
-if test "flora_tests"="$dir" ; then
-    rm *.[PO]
-    rm auxiliary/*.[PO]
-fi
+#dir=`pwd`
+#dir=`basename $dir`
+#if test "flora_tests"="$dir" ; then
+#    rm *.[PO]
+#    rm auxiliary/*.[PO]
+#fi
