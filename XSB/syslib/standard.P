@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.27 1999/09/25 16:34:30 kifer Exp $
+** $Id: standard.P,v 1.28 1999/10/10 22:44:56 cbaoqiu Exp $
 ** 
 */
 
@@ -925,7 +925,7 @@ abort(Message) :-
         messageln('Aborting...', STDFDBK),
 	abort.
 
-abort_1([]) :- nl.
+abort_1([]) :- file_nl(STDERR).
 abort_1([H|T]):- message((H,' '), STDERR), abort_1(T).
 
 
