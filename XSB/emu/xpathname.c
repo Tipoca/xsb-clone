@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xpathname.c,v 1.3 1998-11-13 07:16:53 kifer Exp $
+** $Id: xpathname.c,v 1.4 1999-01-19 02:37:10 kifer Exp $
 ** 
 */
 
@@ -128,7 +128,7 @@ char *expand_filename(char *filename) {
 }
 
 /*
-** Like expand_filename, but expands only Unix tilde by replacing '~', '~user'
+** Like expand_filename, but ONLY expands Unix tilde by replacing '~', '~user'
 ** with the home directory of the appropriate user.
 ** Does nothing on NT and DOS.
 */
@@ -308,6 +308,7 @@ char *get_file_extension(char *path) {
 
 /* 
 ** Go over path name and get rid of `..', `.', and multiple slashes 
+** Won't delete leading `..'.
 ** Expects two strings (with allocated storage) as params: the input path and
 ** the output path. Returns the second argument.
 */
@@ -356,11 +357,16 @@ static char *rectify_pathname(char *inpath, char *outpath) {
       break; /* we found a file name, will process it */
     case 2: 
       if ((*inptr1 == '.') && (*(inptr1+1) == '.')) {
-	inptr1 = inptr2;
 	nameidx--; /* drop the previous file name from the names array */
-	if (nameidx < 0)
-	  xsb_abort("Malformed file name");
-	continue;
+	if (nameidx < 0) {
+	  /* These are leading ..'s -- leave them */
+	  nameidx++;
+	  break;
+	} else {
+	  /* Discard .. and the previous file name */
+	  inptr1 = inptr2;
+	  continue;
+	}
       }
       break;
     } /* done processing '.' and '..' */
