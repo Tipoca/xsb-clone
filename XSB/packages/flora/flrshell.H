@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.13 1999-11-21 05:52:29 kifer Exp $
+** $Id: flrshell.H,v 1.14 2000-05-19 03:55:26 kifer Exp $
 **
 */
 
@@ -36,7 +36,7 @@
 
 :- import member/2, ground/1 from basics.
 
-:- import trie_assert/1, trie_retract_all/1 from tables.
+:- import trie_assert/1, trie_retract_all/1, sk_not/1 from tables.
 
 :- import slash/1 from machine.
 
@@ -69,8 +69,7 @@
 	flload/1, dynload/1, dyncompile/1, dyncompile/2, dynconsult/1,
 	dynconsult/2, STD_FPREFIX(warning_nl)/1,
 	STD_FPREFIX(warning_nl)/2,
-	flora_display_msg/1, flora_display_msg/2,
-	STD_FPREFIX(tnot_all)/1
+	flora_display_msg/1, flora_display_msg/2
    from flrutils.
 
 :- import glob_directory/4 from wildmatch.
