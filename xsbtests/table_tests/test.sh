@@ -8,8 +8,6 @@ XEMU=$1
 
 $XEMU << EOF
 
-[set_reduce].
-
 [lists].
 
 [sets].
