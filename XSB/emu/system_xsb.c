@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.36 2004-03-02 15:12:52 dwarren Exp $
+** $Id: system_xsb.c,v 1.37 2004-03-30 14:04:59 dwarren Exp $
 ** 
 */
 
@@ -1016,8 +1016,10 @@ static int xsb_find_next_file(prolog_term handle,
   HANDLE filehandle;
   
   filehandle = (HANDLE) p2c_int(handle);
-  if (!FindNextFile(filehandle,&filedata)) 
+  if (!FindNextFile(filehandle,&filedata)) {
+    FindClose(filehandle);
     return FALSE;
+  }
   c2p_string(filedata.cFileName,file);
   return TRUE;
 #else
