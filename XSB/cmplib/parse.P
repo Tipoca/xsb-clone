@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.64 2004-03-25 13:40:31 dwarren Exp $
+** $Id: parse.P,v 1.65 2004-06-28 13:18:31 dwarren Exp $
 ** 
 */
 
@@ -646,8 +646,7 @@ parse_list(Spec, SymTab, SymbolProp, _Directive) :-
 	sym_insert(P, A, SymbolProp, SymTab, _).
 parse_list(X, _, _, Directive) :-
 	warning(('Non predicate specification "', X, 
-		 '" found in ', Directive, ' directive')),
-	fail.
+		 '" found in ', Directive, ' directive. Ignored!')).
 
 /*======================================================================*/
 /* module_close(+ModuleIn, -ModuleOut)					*/
