@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.P,v 1.11 2001-04-02 21:49:46 gzyang Exp $
+** $Id: flrcoder.P,v 1.12 2001-04-09 20:05:32 gzyang Exp $
 **
 */
 
@@ -437,14 +437,14 @@ flora_write_struct(Term,_Prefix) :-
 flora_write_struct(Term,_Prefix) :-
 	is_prthismodule(Term),
 	!,
-	write('VAR_WORKSPACE').
+	write('FLORA_VAR_WORKSPACE').
 
 flora_write_struct(Term,_Prefix) :-
 	is_prstorage(Term,WSTerm),
 	!,
-	write('WSSTORAGE('),
+	write('FLORA_WSSTORAGE('),
 	( is_prthismodule(WSTerm) ->
-	    write('VAR_WORKSPACE')
+	    write('FLORA_VAR_WORKSPACE')
 	;
 	  flora_write_functor(WSTerm)
 	),
@@ -542,12 +542,12 @@ flora_write_variable(Name) :-
   writes out Atom in a workspace macro.
 ****************************************************************************/
 flora_write_workspace(Funct) :-
-	write('WORKSPACE(VAR_WORKSPACE,'),
+	write('FLORA_WORKSPACE(FLORA_VAR_WORKSPACE,'),
 	flora_write_functor(Funct),
 	write(')').
 
 flora_write_workspace(WS,Funct) :-
-	write('WORKSPACE('),
+	write('FLORA_WORKSPACE('),
 	flora_write_functor(WS),
 	write(','),
 	flora_write_functor(Funct),

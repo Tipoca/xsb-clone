@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.P,v 1.24 2001-04-08 20:11:56 gzyang Exp $
+** $Id: flrutils.P,v 1.25 2001-04-09 20:05:32 gzyang Exp $
 **
 */
 
@@ -455,7 +455,7 @@ flora_library_directory(LibDir) :- xsb_configuration(cmplibdir,LibDir).
 *************************************************************************/
 flora_setup_workspace(FileName,Workspace) :-
 	file_open(FileName,w,IOport),
-	fmt_write(IOport,"#define VAR_WORKSPACE %s\n",args(Workspace)),
+	fmt_write(IOport,"#define FLORA_VAR_WORKSPACE %s\n",args(Workspace)),
 	file_close(IOport).
 
 
