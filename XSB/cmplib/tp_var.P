@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_var.P,v 1.10 2004-08-31 00:22:22 dwarren Exp $
+** $Id: tp_var.P,v 1.11 2004-09-03 18:36:35 dwarren Exp $
 ** 
 */
 
@@ -112,8 +112,8 @@ bldvarinst(VPrag, Pil, Pilr, Tin, Tout) :-
 	(Occ == v
 	 ->	Tout = Tin,
 		%%bldvar_v(Typ,Loc,Pil,Pilr)
-		vprag_loc(VPrag,256),
-	Pil = [bldavar|Pilr]
+		(vprag_loc(VPrag,256) -> true ; true),
+		Pil = [bldavar|Pilr]
 	; Occ == f
 	 ->	alloc_reg(VPrag,Tin,Tout),
 		vprag_loc(VPrag,Loc),
