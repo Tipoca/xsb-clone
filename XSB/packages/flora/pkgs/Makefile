@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.1 1999-06-16 01:35:00 kifer Exp $
+## $Id: Makefile,v 1.2 1999-06-16 15:22:37 kifer Exp $
 ## 
 ##
 
@@ -42,7 +42,10 @@ Prolog = $(XSB) -i -s -m 2000 -c 2000 -e '[flora], bootstrap_flora.'
 .flr.P:
 	echo 'import flcompile/1 from flrutils. flcompile($*).' >> cmd...
 
-all: $(ALL)
+# We should have touch *.flr here when there will be packages
+all: recompile
+
+recompile: $(ALL)
 	@touch cmd...
 	$(Prolog) < cmd...
 	/bin/rm cmd...
