@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: setjmp_xsb.h,v 1.1 1999-11-17 03:54:33 kifer Exp $
+** $Id: setjmp_xsb.h,v 1.2 1999-11-17 04:36:12 kifer Exp $
 ** 
 */
 
@@ -38,7 +38,9 @@
 
 /* need _POSIX_C_SOURCE for setjmp.h to define the right stuff with gcc */
 #ifndef WIN_NT
+#ifndef _POSIX_C_SOURCE
 #define _POSIX_C_SOURCE
+#endif
 #endif
 #include <setjmp.h> 
 
