@@ -20,18 +20,19 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrimport.H,v 1.6 2002-04-07 23:09:10 kifer Exp $
+** $Id: flrimport.H,v 1.7 2002-04-10 05:13:54 kifer Exp $
 **
 */
 
 
-:- import term_new/2, term_psc/2 from machine.
+:- import copy_term/2 from basics.
 :- import flora_load_module_internal/2 from flrutils.
 :- import flora_firstorder_module_predicate_symbol/3,
 	flora_hilog_module_predicate_symbol/2
     from flrwrapper.
+
 :- export
-	flImportFloraPred/4,
+	flImportFirstorder/4,
 	flImportHiLog/4.
 
 
