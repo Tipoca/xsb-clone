@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chr.P,v 1.1 2004-08-19 22:21:27 tswift Exp $
+** $Id: chr_interp.P,v 1.1 2004-11-24 12:39:14 tswift Exp $
 ** 
 */
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
