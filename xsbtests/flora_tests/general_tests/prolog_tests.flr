@@ -73,14 +73,16 @@ tst10 :- write('tst10 ')@prolog(),
 
 %% Prolog predicates with embedded Flora terms (not meta)
 tst11 :- write('tst11 ')@prolog(),
-	insert{f(a,b)[b->c]},
-	 if bar(f(a,X)[b->Y])@prologall()
-         then writeln(('X'=X,'Y'=Y))@prologall()
+	 insert{f(a,b)[b->c]},
+	 L = collectset{T| bar(f(a,X)[b->Y])@prologall(), T=(X,Y)},
+	 if L \= []
+         then (sort(L,SortedL)@prolog(), writeln(SortedL)@prologall())
          else writeln('something wrong')@prolog().
 
 tst12 :- write('tst12 ')@prolog(),
-	if bar(f(a[b->Y],X))@prologall()
-         then writeln(('X'=X,'Y'=Y))@prologall()
+	L = collectset{T| bar(f(a[b->Y],X))@prologall(), T=(X,Y)},
+	if L \= []
+         then (sort(L,SortedL)@prolog(), writeln(SortedL)@prologall())
          else writeln('something wrong')@prolog().
 
 :- equality basic.
