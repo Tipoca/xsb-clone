@@ -144,9 +144,10 @@ else
 	cp $LOG_FILE $NEW_LOG
 fi
 
+HOSTNAME=`hostname`
+
 # -s tests if size > 0
 if test -s $RES_FILE; then
-	HOSTNAME=`hostname`
 	cat $RES_FILE
 	echo "-----------------------------------------"
 	echo "***FAILED testsuite for $XEMU on $HOSTNAME"
