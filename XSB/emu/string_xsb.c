@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string_xsb.c,v 1.12 2001/07/11 06:14:31 kifer Exp $
+** $Id: string_xsb.c,v 1.13 2002/02/26 10:23:21 kifer Exp $
 ** 
 */
 
@@ -46,6 +46,7 @@
 #include "cinterf.h"
 
 #include "sp_unify_xsb_i.h"
+#include "string_xsb.h"
 
 extern char *p_charlist_to_c_string(prolog_term term, VarString *outstring, 
 				    char *in_func, char *where);
@@ -57,7 +58,6 @@ static Cell term, term2, term3;
 static XSB_StrDefine(input_buffer);
 static XSB_StrDefine(subst_buf);
 static XSB_StrDefine(output_buffer);
-static char *xsb_strrstr(char *str, char *pat);
 
 
 #include "ptoc_tag_xsb_i.h"
@@ -373,7 +373,7 @@ xsbBool string_substitute(void)
  *
  */
 
-static char *xsb_strrstr(char *str, char *pat)
+char *xsb_strrstr(char *str, char *pat)
 {
   size_t len, patlen;
   const char *p;

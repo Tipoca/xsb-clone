@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf_xsb_i.h,v 1.18 2002-03-13 10:17:48 kifer Exp $
+** $Id: dynelf_xsb_i.h,v 1.19 2002-03-15 05:01:19 kifer Exp $
 ** 
 */
 
@@ -43,6 +43,8 @@
 #include "error_xsb.h"
 #include "io_builtins_xsb.h"
 #include "varstring_xsb.h"
+#include "string_xsb.h"
+#include "loader_defs.h"
 
 #define BUFFEXTRA 1024
 
@@ -69,6 +71,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   char	sofilename[MAXPATHLEN];
   void	*handle;
   void	*funcep;
+  char  *file_extension_ptr;
   /*
   char  ldtemp; 
   char  *ldp1,*ldp2;
@@ -78,10 +81,11 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   */
   
   /* (1) create filename.so */
-  
   strcpy(sofilename, pofilename);
-  /* replace the .O suffix with the so suffix */
-  strcpy(sofilename+strlen(pofilename)-1, "so");
+  
+  file_extension_ptr = xsb_strrstr(sofilename, XSB_OBJ_EXTENSION_STRING);
+  /* replace the OBJ file suffix with the so suffix */
+  strcpy(file_extension_ptr+1, "so");
   
   /* (1.5) include necessary paths into LD_LIBRARY_PATH
      so that the right libraries would be consulted at loading time.
