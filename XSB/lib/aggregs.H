@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.H,v 1.2 1999-07-10 20:25:40 tswift Exp $
+** $Id: aggregs.H,v 1.3 1999-07-11 01:28:27 tswift Exp $
 ** 
 */
 
@@ -46,6 +46,7 @@
 % to use bagAvg, must define in usermod: 
 %	:- hilog sumcount.  sumcount([S|C],X,[S1|C1]) :- S1 is S+X, C1 is C+1.
 	bagAvg/2,
+	filterPO/4,
 	filterReduce/4,
         filterReduce1/4.  % this predicate only for demonstration purposes.
 
