@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.12 2002-03-13 10:17:48 kifer Exp $
+** $Id: auxlry.h,v 1.13 2002-03-17 10:36:02 kifer Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 #include "basictypes.h"
 
 
-#define ihash(val, size) (word)(val) % (size)
+#define ihash(val, size) ((word)(val) % (size))
 
 extern double cpu_time(void);
 extern double real_time(void);
