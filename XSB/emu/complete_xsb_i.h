@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.16 2001-12-13 21:13:36 lfcastro Exp $
+** $Id: complete_xsb_i.h,v 1.17 2002-02-22 03:23:45 lfcastro Exp $
 ** 
 */
 
@@ -55,6 +55,8 @@ XSB_Start_Instr(check_complete,_check_complete)
   delayreg = tcp_pdreg(breg);
 
   subgoal = (VariantSF) tcp_subgoal_ptr(breg);	/* subgoal that is checked */
+
+/*   print_subgoal(stderr, subgoal);  */
 
   cs_ptr = subg_compl_stack_ptr(subgoal);
 
@@ -120,8 +122,8 @@ XSB_Start_Instr(check_complete,_check_complete)
 
     /* do all possible stack reclamation */
     if (openreg == prev_compl_frame(cs_ptr)) {
-      reclaim_stacks(orig_breg);
-      if (breg == orig_breg) {
+      if (breg == orig_breg) {	
+	reclaim_stacks(orig_breg); /* lfcastro */
 	breg = tcp_prevbreg(breg);
 #ifdef CHAT
 	restore_trail_condition_registers(breg);
