@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.8 2000-06-28 16:54:54 ruim Exp $
+** $Id: varstring.c,v 1.9 2001-03-17 05:44:01 kifer Exp $
 ** 
 */
 
@@ -357,7 +357,7 @@ static void vs_adjust_size(VarString *vstr, int minsize)
 #else
     vstr->size        = 0;
     vstr->length      = 0;
-    xsb_abort("No room expand a variable-length string");
+    xsb_abort("No room to expand a variable-length string");
 #endif
   }
 

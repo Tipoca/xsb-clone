@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.55 2000-07-31 20:27:59 ejohnson Exp $
+** $Id: tries.c,v 1.56 2001-03-17 05:44:01 kifer Exp $
 ** 
 */
 
@@ -1414,7 +1414,7 @@ void remove_open_tries(CPtr bottom_parameter)
     CallStrPtr = (VariantSF)compl_subgoal_ptr(openreg);
     if (!is_completed(CallStrPtr)) {
       if (warned == FALSE) {
-	xsb_warn("Removing incomplete tables...");
+	xsb_mesg("Removing incomplete tables...");
 	check_table_cut = FALSE;  /* permit cuts over tables */
 	warned = TRUE;
       }

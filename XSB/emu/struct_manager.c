@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.11 2000-10-05 17:23:16 ejohnson Exp $
+** $Id: struct_manager.c,v 1.12 2001-03-17 05:44:01 kifer Exp $
 ** 
 */
 
@@ -76,7 +76,7 @@ void smAllocateBlock(Structure_Manager *pSM) {
 #endif
   pNewBlock = malloc(SM_NewBlockSize(*pSM));
   if ( IsNULL(pNewBlock) )
-    xsb_abort("Ran out of memory in allocation of %s block\n",
+    xsb_abort("[smAllocateBlock] Out of memory in allocation of %s block\n",
 	      SM_StructName(*pSM));
   SMBlk_NextBlock(pNewBlock) = SM_CurBlock(*pSM);
   SM_CurBlock(*pSM) = pNewBlock;

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.48 2001-02-26 22:13:48 dwarren Exp $
+** $Id: biassert.c,v 1.49 2001-03-17 05:44:02 kifer Exp $
 ** 
 */
 
@@ -389,13 +389,13 @@ static void assertcmp_printerror(int num)
 {
     switch (num) {
     case ERR_FUNCTOR:
-	xsb_abort("Assert: functor expected");
+	xsb_abort("[Assert] functor expected");
 	break;
     case ERR_REGISTER:
-	xsb_abort("Assert: need too many registers");
+	xsb_abort("[Assert] need too many registers");
 	break;
     default: 
-	xsb_abort("Assert: error occured in assert_cmp");
+	xsb_abort("[Assert] error occured in assert_cmp");
     }
 }
 

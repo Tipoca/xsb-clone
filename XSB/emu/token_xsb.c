@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.7 2001-03-15 21:52:46 tswift Exp $
+** $Id: token_xsb.c,v 1.8 2001-03-17 05:44:01 kifer Exp $
 ** 
 */
 
@@ -958,7 +958,7 @@ case deleted ****/
 
         }
         /* There is no way we can get here */
-        xsb_abort("Internal error: InType(%d)==%d\n", c, InType(c));
+        xsb_abort("[Internal error] InType(%d)==%d\n", c, InType(c));
         /*NOTREACHED*/
 	return FALSE; /* to pacify the compiler */
 }

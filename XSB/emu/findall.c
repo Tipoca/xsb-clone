@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.24 2001-03-10 00:02:17 kifer Exp $
+** $Id: findall.c,v 1.25 2001-03-17 05:44:02 kifer Exp $
 ** 
 */
 
@@ -103,12 +103,12 @@ int findall_init_c()
 	}
 
   if (nextfree < 0) /* could realloc here - too lazy to do it */
-	xsb_abort("FINDALL: maximum number of active findalls reached");
+	xsb_abort("[FINDALL] Maximum number of active findalls reached");
   thisfree = nextfree;
 	/* no checking - no trailing - just use findall_init correct :-) */
   p = findall_solutions + nextfree ;
   if (!(w = (CPtr)malloc(FINDALL_CHUNCK_SIZE * sizeof(Cell))))
-	xsb_abort("FINDALL: not enough memory");
+	xsb_abort("[FINDALL] Not enough memory");
 
   *w = 0 ;
   p->first_chunk = p->current_chunk = w ;

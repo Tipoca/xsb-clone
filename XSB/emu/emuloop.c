@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.76 2001-03-07 15:29:08 kifer Exp $
+** $Id: emuloop.c,v 1.77 2001-03-17 05:44:02 kifer Exp $
 ** 
 */
 
@@ -1266,7 +1266,7 @@ contcase:     /* the main loop */
     switch (get_type(psc)) {
     case T_PRED:
     case T_DYNA:
-      xsb_abort("System Error: trying to load an already loaded pred");
+      xsb_abort("[EMULOOP] Trying to load an already loaded pred");
     default:
       /* printf("loading module %s for %s/%d\n",
 	 get_name(get_data(psc)),get_name(psc),get_arity(psc)); */

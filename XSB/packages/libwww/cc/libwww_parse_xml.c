@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse_xml.c,v 1.13 2000-05-01 06:18:54 kifer Exp $
+** $Id: libwww_parse_xml.c,v 1.14 2001-03-17 05:44:01 kifer Exp $
 ** 
 */
 
@@ -388,7 +388,7 @@ PRIVATE USERDATA *xml_create_userData(XML_Parser parser,
 	HTRequest_kill(request);
 	return NULL;
       */
-      xsb_abort("LIBWWW_REQUEST: Bug: Request type/MIME type mismatch");
+      xsb_abort("[LIBWWW_REQUEST] Bug: Request type/MIME type mismatch");
     }
     if ((me = (USERDATA *) HT_CALLOC(1, sizeof(USERDATA))) == NULL)
       HT_OUTOFMEM("libwww_parse_xml");
@@ -446,7 +446,7 @@ PRIVATE void xml_delete_userData(void *userdata)
   if (is_var(me->parsed_term))
     p2p_unify(parsed_result, me->parsed_term);
   else
-    xsb_abort("LIBWWW_REQUEST: Request %s: Arg 4 (Result) must be unbound variable",
+    xsb_abort("[LIBWWW_REQUEST] Request %s: Arg 4 (Result) must be unbound variable",
 	      RequestID(request));
 
   if (me->target) FREE_TARGET(me);
