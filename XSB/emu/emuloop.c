@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.9 1999-02-10 23:19:54 kostis Exp $
+** $Id: emuloop.c,v 1.10 1999-02-25 15:01:28 kostis Exp $
 ** 
 */
 
@@ -179,7 +179,7 @@ static int emuloop(byte *startaddr)
   int  i, j, arity;	/* to unify subfields of op1 and op2 */
   int  restore_type;	/* 0 for retry restore; 1 for trust restore */ 
 #if (defined(GC) && defined(GC_TEST))
-#define GC_INFERENCES 50 /* make sure the garbage collection test is hard */
+#define GC_INFERENCES 66 /* make sure the garbage collection test is hard */
   static int infcounter = 0;
 #endif
   int   xflag;

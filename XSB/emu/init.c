@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init.c,v 1.15 1999-02-05 15:51:59 kostis Exp $
+** $Id: init.c,v 1.16 1999-02-25 15:01:27 kostis Exp $
 ** 
 */
 
@@ -179,7 +179,7 @@ char *init_para(int argc, char *argv[])
 
 
   flags[STACK_REALLOC] = TRUE;
-  flags[GARBAGE_COLLECT] = COPYING_GC;  /* temporarily copying made default */
+  flags[GARBAGE_COLLECT] = SLIDING_GC;
 
   /* Set default Prolog files.
      ------------------------- */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug.c,v 1.5 1999-01-28 09:03:03 cbaoqiu Exp $
+** $Id: debug.c,v 1.6 1999-02-25 15:01:33 kostis Exp $
 ** 
 */
 
@@ -1013,7 +1013,7 @@ static void print_heap(int overlap)	/* Heap grows up */
 static char *compl_stk_frame_field[] = {
         "subgoal_ptr", "level_num",
 #ifdef CHAT
-	"tcp-hreg", "chain-bit", "tcp-pdreg", "tcp-ptcp", "cons_copy_list",
+	"tcp-hreg", "tcp-pdreg", "tcp-ptcp", "cons_copy_list",
 #endif
 	"del_ret_list", "visited", "DG_edges", "DGT_edges"
 };
