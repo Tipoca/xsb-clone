@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.15 1999-11-20 06:51:03 kifer Exp $
+** $Id: parse.H,v 1.16 2001-01-26 14:41:58 tswift Exp $
 ** 
 */
 
@@ -41,7 +41,7 @@
 :- import conset/2, conget/2 from gensym.
 :- import otherwise/0 from standard.
 :- import append/3, memberchk/2 from basics.
-:- import error/1, warning/1, message/1, setoptions1/1 from auxlry.
+:- import error/1, message/1, option/1, setoptions1/1, warning/1 from auxlry.
 :- import sym_insert/5, sym_propin/2, sym_complete/1,
 	  add_new_clause/2, clause_listify/2
      from symtab.

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.11 2000-05-17 01:50:08 kifer Exp $
+** $Id: auxlry.P,v 1.12 2001-01-26 14:41:58 tswift Exp $
 ** 
 */
 
@@ -89,7 +89,9 @@ setoptions1([Opt|Rest]) :-
 	).
 
 setopt(Opt,Setting) :-
-	( current_option(Opt) -> conset(Opt, Setting)
+	( current_option(Opt) -> conset(Opt, Setting),
+	   		 	 (Opt = ciao_directives -> 
+					set_ciao_opts ; true)
 	; current_option(Opt, NewOpt) -> conset(NewOpt, Setting)
 	; warning(('Unknown compiler option: ', Opt))
 	).
@@ -138,6 +140,21 @@ current_option(mi_debug).
 current_option(mi_dump).
 current_option(mi_warn).
 current_option(mi_foreign).
+
+/* TLS: added Jan, O1.  This is put in so that XSB can read files commented
+   via lpdoc without having to have something along the lines of texinfo .src
+   files.  The current set of accepted directives is small and is
+   geared towards lpdoc, but I'll probably
+   expand them as I understand better more of ciao's functionality.
+*/
+
+current_option(ciao_directives).
+
+set_ciao_opts:- 
+	op(500,yfx,#),
+	op(975, xfx,(=>)),
+	op(978, xfx,(::)).
+
 
 /* options kept only for backwards compatibility;
    should be deleted in the next release.	*/

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.H,v 1.7 2000-01-19 19:33:41 cbaoqiu Exp $
+** $Id: auxlry.H,v 1.8 2001-01-26 14:41:58 tswift Exp $
 ** 
 */
 
@@ -35,8 +35,8 @@
 :- import load_dyn_module/1 from consult.
 :- import conget/2, conset/2 from gensym.
 :- import member/2 from basics.
-:- import ttywritenl/2, cputime/1, arg/3, functor/3, atomic/1,
-	  tell/1, nl/0, write/1, '=..'/2, telling/1
+:- import  '=..'/2, arg/3, atomic/1, cputime/1, functor/3, nl/0, op/3,
+	  tell/1, telling/1, ttywritenl/2, write/1
      from standard.
 :- import assert/1, retractall/1, (dynamic)/1 from assert.
 :- import sys_exit/1 from shell.
