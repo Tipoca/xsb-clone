@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.150 2003-05-13 20:49:21 lfcastro Exp $
+## $Id: configure.in,v 1.151 2003-05-14 14:31:13 lfcastro Exp $
 ## 
 ##
 
@@ -1363,8 +1363,8 @@ if test "${do_debugging}" = "yes" ; then
         CFLAGS="${CFLAGS} -gdwarf-2 -g3"
    else
 	CFLAGS="${CFLAGS} -g"
-	LDFLAGS="-g ${LDFLAGS}"
-	LINKFLAGS="-g ${LINKFLAGS}"
+	LDFLAGS=" -g ${LDFLAGS}"
+	LINKFLAGS=" -g ${LINKFLAGS}"
    fi
 fi
 
