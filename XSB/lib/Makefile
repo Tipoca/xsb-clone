@@ -19,15 +19,15 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.30 2000-05-28 20:50:58 kifer Exp $
+## $Id: Makefile,v 1.31 2000-06-09 13:44:31 cbaoqiu Exp $
 ## 
 ##
 
 
-ALL = 	aggregs.O array.O array1.O directry.O foreign.O \
+ALL = 	aggregs.O array.O array1.O assoc.O directry.O foreign.O \
 	intern.O obsolete.O \
 	odbc_call.O ordsets.O ora_call.O \
-	packaging.O random.O scrptutl.O socket.O wrapping.O \
+	packaging.O random.O scrptutl.O socket.O ugraph.O wrapping.O \
 	xnmr.O
 
 EMU_INCLUDES = ../emu/builtin.h ../emu/celltags_xsb.h ../emu/flag_defs_xsb.h \
