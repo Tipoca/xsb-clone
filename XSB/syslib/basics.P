@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.P,v 1.11 2001/10/09 19:13:15 dwarren Exp $
+** $Id: basics.P,v 1.12 2003/12/15 17:18:56 dwarren Exp $
 ** 
 */
 
@@ -107,15 +107,19 @@ log_ith0(K,[L|R],E,N) :-
 	).
 
 % First arg (K) is bound
-bintree0(0,E,E,1).
-bintree0(K,[L|R],E,N) :- 
-	N > 1,
-	N2 is N // 2,
-	(K < N2
-	 ->	bintree0(K,L,E,N2)
-	 ;	K1 is K - N2,
-		bintree0(K1,R,E,N2)
+bintree0(K,T,E,N) :- 
+	(N > 1
+	 ->	T = [L|R],
+		N2 is N // 2,
+		(K < N2
+		 ->	bintree0(K,L,E,N2)
+		 ;	K1 is K - N2,
+			bintree0(K1,R,E,N2)
+		)
+	 ;      K =:= 0,
+		T = E
 	).
+
 
 % K is unbound
 log_ith1(K,[L|_R],E,N) :-
