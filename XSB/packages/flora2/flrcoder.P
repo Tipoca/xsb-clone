@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcoder.P,v 1.12 2001-04-09 20:05:32 gzyang Exp $
+** $Id: flrcoder.P,v 1.13 2001-04-10 14:23:57 gzyang Exp $
 **
 */
 
@@ -787,9 +787,7 @@ flora_build_query(Term,DWS,Code) :-
 /****************************************************************************
   flora_build_structlist(+TermList,+DefaultWorkspace,+Prefix,?VarList,-CodeList)
 ****************************************************************************/
-flora_build_structlist([T],DWS,Prefix,VarList,[Code]) :-
-	!,
-	flora_build_struct(T,DWS,Prefix,VarList,Code).
+flora_build_structlist([],_DWS,_Prefix,_VarList,[]) :- !.
 
 flora_build_structlist([T|L],DWS,Prefix,VarList,[TCode|LCode]) :-
 	!,
