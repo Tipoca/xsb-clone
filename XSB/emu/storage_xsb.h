@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.h,v 1.1 2001-08-13 04:31:35 kifer Exp $
+** $Id: storage_xsb.h,v 1.2 2002-03-10 05:06:15 kifer Exp $
 ** 
 */
 
@@ -32,13 +32,24 @@
    CHANGED is a flag that tell if the trie has been changed by a backtrackable
 	   update since the last commit.
 */
-struct storage_handle {
-  Cell      name;
-  Integer   handle;
-  Integer   snapshot_number;
-  xsbBool   changed;
-};
+
 
 typedef struct storage_handle STORAGE_HANDLE;
+struct storage_handle {
+  Cell             name;
+  Integer          handle;
+  Integer          snapshot_number;
+  xsbBool          changed;
+  STORAGE_HANDLE  *next;
+  STORAGE_HANDLE  *prev;
+};
+
 
 extern STORAGE_HANDLE *storage_builtin(int builtin_number, Cell storage_name);
+
+/* 127 is a prime that is close to 2^7 */
+#define STORAGE_HASH_SIZE  127
+
+#define storage_hash(val, size)    (word)(val) % (size)
+
+#define isfree_storage_handle(handle_cell)  (handle_cell->name == (Cell)0)

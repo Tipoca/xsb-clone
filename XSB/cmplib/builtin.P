@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.P,v 1.43 2001-06-29 22:50:49 kifer Exp $
+** $Id: builtin.P,v 1.44 2002-03-10 05:06:15 kifer Exp $
 ** 
 */
 
@@ -73,6 +73,8 @@ inline_builtin(psc_set_ep, 2, PSC_SET_EP).
 
 inline_builtin(conget, 2, CONGET_TERM).
 inline_builtin(conset, 2, CONSET_TERM).
+
+inline_builtin(storage_builtin, 5, STORAGE_BUILTIN).
 
 inline_builtin(term_psc, 2, TERM_PSC).
 inline_builtin(term_type, 2, TERM_TYPE).

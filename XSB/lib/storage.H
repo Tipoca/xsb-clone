@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage.H,v 1.6 2001-08-13 04:31:35 kifer Exp $
+** $Id: storage.H,v 1.7 2002-03-10 05:06:15 kifer Exp $
 ** 
 */
 
@@ -31,7 +31,9 @@
 	storage_commit/1,
 	storage_insert_keypair_bt/4, storage_delete_keypair_bt/3,
 	storage_insert_keypair/4, storage_delete_keypair/3,
-	storage_find_keypair/3.
+	storage_find_keypair/3,
+	%% this is for debugging/profiling
+	storage_show_table_state/0.
 
 :- import trie_intern/5, trie_interned/4, trie_unintern_nr/2,
 	unmark_uninterned_nr/2,
