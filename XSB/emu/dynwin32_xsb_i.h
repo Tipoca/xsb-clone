@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32_xsb_i.h,v 1.2 1999-10-26 06:46:58 kifer Exp $
+** $Id: dynwin32_xsb_i.h,v 1.3 1999-11-08 23:04:11 luis Exp $
 ** 
 */
 
@@ -73,7 +73,6 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   sofilename[strl+2] = '\0';
   
   /* (2) open the needed object */
-  
   if (( handle = LoadLibrary(sofilename)) == 0 ) {
     xsb_warn("Cannot load library %s",sofilename);
     return 0;
@@ -90,11 +89,11 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
     name = get_name(search_ptr->psc_ptr);
 #ifdef XSB_DLL
     tempname[0] = '_';
-    tempname[1] = '_';
-    strcpy(tempname[2],name);
+    /*    tempname[1] = '_'; */
+    strcpy(tempname+1,name);
     tempsize=strlen(tempname);
     tempname[tempsize++] = '@';
-    tempname[tempsize++] = '1';
+    tempname[tempsize++] = '0';
     tempname[tempsize++] = '\0';
     name = tempname;
 #endif
@@ -111,4 +110,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   }
   return (byte *)4;
 }
+
+
+
 
