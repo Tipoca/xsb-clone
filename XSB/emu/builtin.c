@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.145 2002-08-19 15:40:24 tswift Exp $
+** $Id: builtin.c,v 1.146 2002-09-09 13:53:01 dwarren Exp $
 ** 
 */
 
@@ -463,31 +463,34 @@ Cell  val_to_hash(Cell term)
 
 static int ground(CPtr temp)
 {
+ int j, arity;
+ groundBegin:
   XSB_CptrDeref(temp);
   switch(cell_tag(temp)) {
   case XSB_FREE: 
   case XSB_REF1: 
   case XSB_ATTV:
     return FALSE;
+
   case XSB_STRING: 
   case XSB_INT: 
   case XSB_FLOAT:
     return TRUE;
+
   case XSB_LIST:
-    {
-      int flag;
-      flag = ground(clref_val(temp));
-      flag = flag & ground(clref_val(temp)+1);
-      return flag;
-    }
+    if (!ground(clref_val(temp))) 
+      return FALSE;
+    temp = clref_val(temp)+1;
+    goto groundBegin;
+
   case XSB_STRUCT:
-    {
-      int j, arity, flag=1;
-      arity = (int) get_arity(get_str_psc(temp));
-      for (j=1; j <= arity ; j++) 
-	flag = flag & ground(clref_val(temp)+j);
-      return flag;
-    }
+    arity = (int) get_arity(get_str_psc(temp));
+    for (j=1; j < arity ; j++) 
+      if (!ground(clref_val(temp)+j))
+	return FALSE;
+    temp = clref_val(temp)+arity;
+    goto groundBegin;
+
   default:
     xsb_abort("[ground/1] Term with unknown tag (%d)",
 	      (int)cell_tag(temp));
