@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.10 2001-04-08 23:51:37 gzyang Exp $
+## $Id: Makefile,v 1.11 2001-04-09 20:44:22 gzyang Exp $
 ## 
 ##
 
@@ -81,7 +81,7 @@ all: init $(ALLOBJS) finish
 	@rm cmd...
 	@cat $(SVFILE)
 	cd closure; $(MAKE)
-	cd includes; $(MAKE)
+	cd genincludes; $(MAKE)
 	cd syslib; $(MAKE)
 	cd trailer; $(MAKE)
 	cd lib; $(MAKE)
@@ -174,11 +174,12 @@ finish:
 clean:
 	/bin/rm -f *~ *.O
 	cd closure; $(MAKE) clean
-	cd includes; $(MAKE) clean
+	cd genincludes; $(MAKE) clean
 	cd syslib; $(MAKE) clean
 	cd trailer; $(MAKE) clean
 	/bin/rm -f headerinc/*~
 	/bin/rm -f syslibinc/*~
+	/bin/rm -f includes/*~
 
 
 .DONE:
