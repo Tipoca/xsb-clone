@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xnmr.P,v 1.10 1999-10-26 06:47:40 kifer Exp $
+** $Id: xnmr.P,v 1.11 1999-11-23 16:57:35 luis Exp $
 ** 
 */
 
@@ -34,6 +34,10 @@
 :- local '_$answers_found'/0.
 
 :- set_nmr_mode.
+
+?- import(from(set_nmr_mode/0,xnmr)).
+?- import(from(set_answerset_mode/0,xnmr)).
+?- import(from((-)/1,xnmr)).
 
 :- nmr.
 
@@ -405,6 +409,10 @@ explicitly_negate_query(X,X1) :-
 explicitly_negate_query(X,X1) :-
 	X1 = '-'(X),!.
 
+% some explicitly-negated predicates
+-xnmr_dummy :- true.
+
+%-true :- fail.
 
 
 
