@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_retrv.c,v 1.11 2000-06-25 16:59:19 ejohnson Exp $
+** $Id: tst_retrv.c,v 1.12 2000-06-26 15:53:30 ejohnson Exp $
 ** 
 */
 
@@ -62,7 +62,8 @@
  */
 
 static CPtr *trail_base;    /* ptr to topmost used Cell on the system Trail;
-			       the beginning of our tstTrail. */
+			       the beginning of our local trail for this
+			       operation. */
 
 static CPtr *orig_trreg;            
 static CPtr orig_hreg;      /* Markers for noting original values of WAM */

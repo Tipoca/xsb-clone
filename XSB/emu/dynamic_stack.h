@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynamic_stack.h,v 1.1 2000-06-25 16:59:15 ejohnson Exp $
+** $Id: dynamic_stack.h,v 1.2 2000-06-26 15:53:26 ejohnson Exp $
 ** 
 */
 
@@ -95,6 +95,11 @@ extern void dsShrink(DynamicStack *);
      dsExpand(&(DS),N);				\
  }
 
+
+/*
+ * In the following macros, "Frame" is assigned a pointer to either
+ * the next or the current frame on the stack.
+ */
 
 /* Operations With Bounds Checking
    ------------------------------- */
