@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_prolog_config.in,v 1.2 1999-10-20 18:22:06 kifer Exp $
+** $Id: def_prolog_config.in,v 1.3 2002-03-14 09:55:05 kifer Exp $
 ** 
 */
 
@@ -40,7 +40,6 @@
 #define CH_OS_SLASH    	      47    	/*  /     */
 #endif
 
-#define XSB_OBJFILE_EXTENSION	 '.O'
 
 
 /* architecture is something like i386-pc-linux or sparc-sun-solaris5.2 */

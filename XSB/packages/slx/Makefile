@@ -18,12 +18,14 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.4 2002-03-03 04:15:39 kifer Exp $
+## $Id: Makefile,v 1.5 2002-03-14 09:55:02 kifer Exp $
 ## 
 ##
 
 
-ALL = 	slxshell.O
+OBJEXT=.O
+
+ALL = 	slxshell${OBJEXT}
 
 Option = [optimize]
 
@@ -40,8 +42,8 @@ Prolog = $(XSB) -i -s -m 2000 -c 2000
 .IGNORE:
 
 # suffix rules
-.SUFFIXES: .P .O .H
-.P.O:
+.SUFFIXES: .P ${OBJEXT} .H
+.P${OBJEXT}:
 	echo 'mc($*, $(Option)).' >> cmd...
 
 all: $(ALL)
@@ -53,7 +55,7 @@ all: $(ALL)
 .PHONY: clean
 
 clean:
-	/bin/rm -f *.O *~ .*~ *.bak
+	/bin/rm -f *${OBJEXT} *~ .*~ *.bak
 
 
 .DONE:

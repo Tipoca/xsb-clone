@@ -18,13 +18,15 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.8 2002-03-03 04:15:39 kifer Exp $
+## $Id: Makefile,v 1.9 2002-03-14 09:55:02 kifer Exp $
 ## 
 ##
 
+OBJEXT=.O
+
 XSBDIR = ../..
 
-ALL = 	 libwwwconfig.O libwww_init.O
+ALL = 	 libwwwconfig${OBJEXT} libwww_init${OBJEXT}
 
 PROLOG_INCLUDES = $(XSBDIR)/prolog_includes/char_defs.h \
 	$(XSBDIR)/prolog_includes/standard.h
@@ -52,7 +54,7 @@ HDRMSG = "While compiling XSB/packages/libwww:"
 .IGNORE:
 
 # suffix rules
-.SUFFIXES: .P .O .H
+.SUFFIXES: .P ${OBJEXT} .H
 
 all: init $(ALL) finish
 	@touch cmd...
@@ -60,7 +62,7 @@ all: init $(ALL) finish
 	@rm cmd...
 	@cat $(SVFILE)
 
-.P.O:
+.P${OBJEXT}:
 	echo 'mc($*, $(Option)).' >> cmd...
 
 init:
@@ -76,8 +78,8 @@ finish:
 
 
 clean:
-	rm -f *.O *~ .*~ *.bak
-	rm -f cc/*.H cc/*.so cc/*.o cc/*.O cc/*~ cc/.*~ cc/*.bak
+	rm -f *${OBJEXT} *~ .*~ *.bak
+	rm -f cc/*.H cc/*.so cc/*.o cc/*${OBJEXT} cc/*~ cc/.*~ cc/*.bak
 
 
 .DONE:

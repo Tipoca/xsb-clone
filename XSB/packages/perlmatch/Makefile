@@ -18,13 +18,15 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.11 2002-03-03 04:15:39 kifer Exp $
+## $Id: Makefile,v 1.12 2002-03-14 09:55:02 kifer Exp $
 ## 
 ##
 
+OBJEXT=.O
+
 XSBDIR = ../..
 
-ALL = 	plmchconfig.O plmchshell.O
+ALL = 	plmchconfig${OBJEXT} plmchshell${OBJEXT}
 
 
 Option = [optimize]
@@ -50,7 +52,7 @@ HDRMSG = "While compiling XSB/packages/perlmatch:"
 .IGNORE:
 
 # suffix rules
-.SUFFIXES: .P .O .H
+.SUFFIXES: .P ${OBJEXT} .H
 
 all: init $(ALL) finish
 	@touch cmd...
@@ -58,7 +60,7 @@ all: init $(ALL) finish
 	@rm cmd...
 	@cat $(SVFILE)
 
-.P.O:
+.P${OBJEXT}:
 	echo 'mc($*, $(Option)).' >> cmd...
 
 init:
@@ -75,7 +77,7 @@ finish:
 .PHONY: clean
 
 clean:
-	/bin/rm -f *.O *~ .*~ *.bak
+	/bin/rm -f *${OBJEXT} *~ .*~ *.bak
 	/bin/rm -f cc/*.[Oo]  cc/*.so cc/*~ cc/.*~ cc/*.bak
 
 .DONE:

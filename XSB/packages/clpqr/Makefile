@@ -19,15 +19,19 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.4 2002-03-03 04:15:40 kifer Exp $
+## $Id: Makefile,v 1.5 2002-03-14 09:55:02 kifer Exp $
 ## 
 ##
 
+OBJEXT=.O
+
 XSBDIR=../..
 
-ALL = 	arith.O arith_r.O bv.O class.O clpr.O ineq.O itf3.O \
-	fourmotz.O nf.O ordering.O project.O redund.O store.O \
-	dump.O
+ALL = 	arith${OBJEXT} arith_r${OBJEXT} bv${OBJEXT} class${OBJEXT} \
+	clpr${OBJEXT} ineq${OBJEXT} itf3${OBJEXT} \
+	fourmotz${OBJEXT} nf${OBJEXT} ordering${OBJEXT} \
+	project${OBJEXT} redund${OBJEXT} store${OBJEXT} \
+	dump${OBJEXT}
 
 # Option = [optimize, spec_off]
 
@@ -54,7 +58,7 @@ HDRMSG = "While compiling XSB/packages/clpqr:"
 .IGNORE:
 
 # suffix rules
-.SUFFIXES: .P .O .H
+.SUFFIXES: .P ${OBJEXT} .H
 
 all: init $(ALL) finish
 	@touch cmd...
@@ -62,7 +66,7 @@ all: init $(ALL) finish
 	@rm cmd...
 	@cat $(SVFILE)
 
-.P.O:
+.P${OBJEXT}:
 	echo 'mc($*, $(Option)).' >> cmd...
 
 init:
@@ -79,7 +83,7 @@ finish:
 .PHONY: clean
 
 clean:
-	/bin/rm -f *.O *~ .*~ *.bak
+	/bin/rm -f *${OBJEXT} *~ .*~ *.bak
 
 .DONE:
 	echo Done
