@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 2003-10-08 13:51:30 dwarren Exp $
+## $Id: Makefile,v 1.4 2004-05-03 19:46:11 tswift Exp $
 ## 
 ##
 
@@ -28,7 +28,7 @@ OBJEXT=.xwam
 ALL = 	cdf_checks${OBJEXT} cdf_comps_share${OBJEXT} cdf_concurrency${OBJEXT} \
 	cdf_config${OBJEXT} \
 	cdf_exceptions${OBJEXT} cdf_init_cdf${OBJEXT} \
-	cdf_io${OBJEXT} cdf_oblivion${OBJEXT} cdf_utilities${OBJEXT} 
+	cdf_io${OBJEXT} cdf_oblivion${OBJEXT} cdf_utilities${OBJEXT}
 
 EMU_INCLUDES = 
 PROLOG_INCLUDES = 
@@ -37,7 +37,8 @@ Option = [optimize,quit_on_error]
 
 #-----------------------------------------------------------------------#
 #
-XSB=../../bin/xsb
+#XSB=../../bin/xsb
+XSB=c:/XSBNEW/XSB/config/x86-pc-windows/bin/xsb
 Prolog = $(XSB) -e "segfault_handler(warn)."
 #
 #-----------------------------------------------------------------------#
