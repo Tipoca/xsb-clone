@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xpathname.c,v 1.11 1999-09-20 08:52:39 kostis Exp $
+** $Id: xpathname.c,v 1.12 1999-09-21 00:11:58 kifer Exp $
 ** 
 */
 
@@ -359,6 +359,10 @@ static char *rectify_pathname(char *inpath, char *outpath) {
 	  /* These are leading ..'s -- leave them */
 	  nameidx++;
 	  break;
+	} else if (strcmp(names[nameidx], "..") == 0) {
+	  /* the previous name was also ".." -- leave the ..'s intact: we must
+	     be looking at the leading sequence of ../../../something */
+	  nameidx++;
 	} else {
 	  /* Discard .. and the previous file name */
 	  inptr1 = inptr2;
