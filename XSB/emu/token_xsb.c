@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.11 2002-01-23 17:08:10 dwarren Exp $
+** $Id: token_xsb.c,v 1.12 2002-02-23 04:05:00 kifer Exp $
 ** 
 */
 
@@ -245,10 +245,7 @@ int intype(int c)
 
 static void SyntaxError(char *description)
 {
-	char message[100];
-
-	sprintf(message, "++Error: %s (syntax error)\n", description);
-	pcreg = exception_handler(message);
+	xsb_abort("[TOKENIZER] Syntax error: %s", description);
 }
  
 
