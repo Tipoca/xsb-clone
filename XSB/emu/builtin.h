@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.25 1999-12-12 03:27:36 kifer Exp $
+** $Id: builtin.h,v 1.26 1999-12-14 20:41:49 ejohnson Exp $
 ** 
 */
 
@@ -145,9 +145,9 @@
 #define TRIE_RETRACT		148
 #define TRIE_DELETE_TERM	149
 #define TRIE_GET_RETURN		150
-#define TRIE_GET_CALL		151
+#define TRIE_UNIFY_CALL		151	/* get_calls/1 */
 #define GET_LASTNODE_CS_RETSKEL 152
-#define CONSTRUCT_RET_FOR_CALL  153
+#define TRIE_GET_CALL		153	/* get_call/3 */
 #define BREG_RETSKEL		154
 #define TRIE_RETRACT_SAFE	155
 
