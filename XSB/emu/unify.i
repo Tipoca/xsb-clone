@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify.i,v 1.6 1999-10-09 02:00:29 cbaoqiu Exp $
+** $Id: unify.i,v 1.7 1999-10-10 12:36:45 kostis Exp $
 ** 
 */
 
@@ -78,7 +78,7 @@ tail_recursion:
 						/* 0(a) != 0(b) */
 	     IFTHEN_FAILED;
 	   } else {
-	     arity = get_arity(((Pair)(CPtr)op1)->psc_ptr);
+	     int arity = get_arity(((Pair)(CPtr)op1)->psc_ptr);
 	     while (--arity) {
 	       op1 = (Cell)((CPtr)op1+1); op2 = (Cell)((CPtr)op2+1);
 	       if (!unify(cell((CPtr)op1), cell((CPtr)op2))) {
