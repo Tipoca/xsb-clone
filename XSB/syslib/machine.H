@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.4 1999/01/15 12:29:49 kostis Exp $
+** $Id: machine.H,v 1.5 1999/01/15 18:42:01 kostis Exp $
 ** 
 */
 
@@ -116,7 +116,6 @@
 	slg_not/1,
 	is_xwammode/1, 
 	close_open_tables/0, 
-	call_hash/5,
 	print_predicate_table/1, 
 	abolish_table_info/0,
 	zero_out_profile/0, 
