@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrtokens.P,v 1.6 1999-06-22 16:50:09 kifer Exp $
+** $Id: flrtokens.P,v 1.7 1999-08-01 19:41:54 guizyang Exp $
 **
 */
 
@@ -389,8 +389,8 @@ hex_symbol(Ch,Value) :-
   This table is for ASCII.
 ****************************************************************************/
 escape_char(0'\, 92).
-escape_char(0'n, 10).		% \n = NewLine
-escape_char(0'N, 10).		% \N = NewLine
+%%% escape_char(0'n, 10).		% \n = NewLine
+%%% escape_char(0'N, 10).		% \N = NewLine
 escape_char(0't,  9).		% \t = Tab
 escape_char(0'T,  9).		% \T = Tab
 escape_char(0'r, 13).		% \r = Return
