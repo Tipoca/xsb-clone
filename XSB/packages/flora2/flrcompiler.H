@@ -20,7 +20,7 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrcompiler.H,v 1.8 2002-03-08 09:07:55 kifer Exp $
+** $Id: flrcompiler.H,v 1.9 2002-04-03 08:26:57 kifer Exp $
 **
 */
 
@@ -45,6 +45,7 @@
 :- import flora_define_prolog/2 from flrprolog.
 
 :- import
+	flora_firstorderdef/2,
 	flora_define_firstorder/2,
 	flora_define_flogicstatic/2
    from flrfirstorder.
