@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.12 2001-03-26 04:59:02 kifer Exp $
+** $Id: io_builtins_xsb_i.h,v 1.13 2001-04-20 02:11:36 kifer Exp $
 ** 
 */
 
@@ -219,8 +219,8 @@ inline static xsbBool file_function(void)
     SET_FILEPTR(fptr, ptoc_int(2));
     XSB_StrSet(&VarBuf,"");
     XSB_StrEnsureSize(&VarBuf,size);
-    VarBuf.length = size;
     value = fread(VarBuf.string, 1, size, fptr);
+    VarBuf.length = value;
     XSB_StrNullTerminate(&VarBuf);
     ctop_string(4, string_find(VarBuf.string,1));
     ctop_int(5, value);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.9 2001-03-17 05:44:01 kifer Exp $
+** $Id: varstring.c,v 1.10 2001-04-20 02:11:36 kifer Exp $
 ** 
 */
 
@@ -352,7 +352,7 @@ static void vs_adjust_size(VarString *vstr, int minsize)
 
   if (NULL == (vstr->string = (char *)realloc(vstr->string, newsize))) {
 #ifdef DEBUG_VARSTRING
-    fprintf(stderr, "No room expand a variable-length string\n");
+    fprintf(stderr, "No room to expand a variable-length string\n");
     return;
 #else
     vstr->size        = 0;
