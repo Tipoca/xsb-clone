@@ -1,4 +1,9 @@
-% This file contains some basic tests for attributed variables.
+/* File:      attv_test.P
+** Author(s): Baoqiu Cui
+** 
+** This file contains some basic tests for attributed variables.
+** $Id: attv_test.P,v 1.2 1999-10-19 01:38:48 cbaoqiu Exp $
+*/
 
 :- import put_attributes/2, get_attributes/3 from machine.
 :- import get_atts/2, put_atts/2, attribute/1 from atts.
