@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.18 2000-02-15 07:45:08 bartkul Exp $
+** $Id: findall.c,v 1.19 2000-03-09 04:36:47 cbaoqiu Exp $
 ** 
 */
 
@@ -316,7 +316,8 @@ copy_again : /* for tail recursion optimisation */
        * are shared in the `to area'.
        */
       bld_attv(var, to);
-      cell(to) = (Cell) to++;
+      cell(to) = (Cell) to;
+      to++;
       goto copy_again;
     }
   } /* case ATTV */
@@ -560,7 +561,8 @@ static int findall_copy_template_to_chunk(Cell from, CPtr to, CPtr *h)
        */
       findall_trail(var,(Cell)var);
       bld_attv(var, to);
-      cell(to) = (Cell) to++;
+      cell(to) = (Cell) to;
+      to++;
       goto copy_again;
     }
     else {		  /* is a new attv in the `to area' */
@@ -969,7 +971,8 @@ copy_again : /* for tail recursion optimisation */
 	   */
 	  findall_trail(var,(Cell)var);
 	  bld_attv(var, to);
-	  cell(to) = (Cell) to++;
+	  cell(to) = (Cell) to;
+	  to++;
 	  goto copy_again;
 	} else			/* is a new attv in the `to area' */
 	  bld_attv(to, var);
