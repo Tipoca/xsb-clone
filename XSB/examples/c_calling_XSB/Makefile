@@ -21,21 +21,23 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.2 1999-03-02 01:03:04 kifer Exp $
+## $Id: Makefile,v 1.3 1999-10-20 06:50:26 kifer Exp $
 ## 
 
 ##################### You may need to edit some of these!
 
 
 # Where the architectue specific XSB stuff is
-ARCH=arch_dir=i686-pc-linux-gnu
+ARCH=i686-pc-linux-gnu
+#ARCH=i686-pc-linux-gnu-dbg
 arch_dir=$(HOME)/XSB/XSB/config/$(ARCH)
 
 CC=gcc
 CFLAGS= -O4 -ansi -pedantic -Wall
+#CFLAGS= -ansi -pedantic -Wall -g
 LDFLAGS= -lm -ldl -Wl,-export-dynamic
 # For Soraris use:
-LDFLAGS= -lsocket  -lm -lnsl -ldl -Wl,-export-dynamic
+#LDFLAGS=  -lsocket -lm -lnsl -ldl -Wl,-export-dynamic
 
 ## DON'T EDIT BELOW THIS LINE
 ############################################################################
