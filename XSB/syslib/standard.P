@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.49 2001/10/24 20:19:20 tswift Exp $
+** $Id: standard.P,v 1.50 2001/12/19 07:36:43 kifer Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 #include "standard.h"
 #include "char_defs.h"
 #include "psc_defs.h"
+#include "builtin.h"
 
 
 			/************************/
@@ -1110,5 +1111,12 @@ catch(_Goal,Catcher,Handler) :-
 throw(Ball) :-
         asserta('$$exception_ball'(Ball)),
         '$$unwind_stack'. % unwind_stack xsb_exits if no catcher was found
+
+%% Rounding floats and such
+floatop(_OpType,_FloatVal,_IntVal) :- '_$builtin'(FLOATOP).
+
+ceil(Float,Int) :- floatop('ceil',Float,Int).
+floor(Float,Int) :- floatop('floor',Float,Int).
+round(Float,Int) :- floatop('round',Float,Int).
 
 /* --------------------- end of file standard.P ----------------------- */
