@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.75 2004/07/07 22:31:14 dwarren Exp $
+** $Id: subp.c,v 1.77 2004/10/15 14:43:38 dwarren Exp $
 ** 
 */
 
@@ -27,6 +27,7 @@
 /* xsb_config.h must be the first #include.  Pls don't move it! */
 #include "xsb_config.h"
 #include "xsb_debug.h"
+
 
 #include "debugs/debug_attv.h"
 
@@ -52,6 +53,7 @@
 
 #include "auxlry.h"
 #include "cell_xsb.h"
+#include "debug_xsb.h"
 #include "error_xsb.h"
 #include "psc_xsb.h"
 
@@ -114,6 +116,11 @@ void add_interrupt(Cell op1, Cell op2) {
 #ifndef PRE_IMAGE_TRAIL
 #error "PRE_IMAGE_TRAIL has to be defined for add_interrupt() !"
 #else
+
+  /*  printf("add_interrupt(");  
+  dbg_printterm(0,stddbg,op1, 10);  
+  printf(","); dbg_printterm(0,stddbg,op2, 10); printf(")\n");*/
+
   num = int_val(cell(interrupt_reg));
   /**printf("interrupt count = %d\n",num);**/
   push_pre_image_trail(&(attv_interrupts[num][0]), op1);
