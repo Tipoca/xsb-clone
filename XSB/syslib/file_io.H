@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.22 2002/04/10 23:33:22 tswift Exp $
+** $Id: file_io.H,v 1.23 2002/04/13 05:01:59 lfcastro Exp $
 ** 
 */
 
@@ -38,6 +38,7 @@
 :- import gensym/2 from gensym.
 
 :- import is_plain_file/1, is_directory/1, rename/2, rm/1, cwd/1,
+	sys_filecopy/3,
 	cd/1, sys_link/3, sys_mkdir/2, sys_rmdir/2, sys_access/3
       from shell.
 
