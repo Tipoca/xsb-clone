@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrwraparound.H,v 1.1 2001-06-29 22:58:36 kifer Exp $
+** $Id: flrwraparound.H,v 1.2 2001-08-29 08:32:59 kifer Exp $
 **
 */
 
@@ -40,7 +40,7 @@
 :- import ','/2 from standard.
 
 :- import
-	flora_set_xpp_options/0,
+	flora_set_xpp_options_for_read/0,
 	flora_clear_xpp_options/0,
 	flora_check_filename/1,
 	flora_locate_file/3
