@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.9 1999-05-01 22:38:03 kifer Exp $
+** $Id: cinterf.c,v 1.10 1999-06-02 14:57:56 luis Exp $
 ** 
 */
 
@@ -270,6 +270,20 @@ DllExport prolog_term call_conv p2p_deref(prolog_term term)
     Cell t = (Cell)term;
     deref(t);
     return (prolog_term)t;
+}
+
+/* the following two functions were introduced by Luis Castro */
+/* they extend the c interface to allow for an easy interface for 
+lists of characters */
+
+DllExport void call_conv p2c_chars(prolog_term term, char *buf, int bsize)
+{
+  p_charlist_to_c_string(term, buf, bsize, "p2c_chars", "list -> char*");
+}
+
+DllExport void call_conv c2p_chars(char *str, prolog_term term)
+{
+  c_string_to_p_charlist(str,term,"c2p_chars", "char* -> list");
 }
 
 /* convert Arg 1 -- prolog list of characters (a.k.a. prolog string) into C
