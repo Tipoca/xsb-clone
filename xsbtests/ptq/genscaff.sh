@@ -21,5 +21,5 @@ EOF
 suffixes="iv s te1 cn"
 for suff in $suffixes ; do
     file=$2_$suff
-    sort -u $file > ${file}1
+    /usr/bin/sort -u $file > ${file}1
 done

@@ -12,7 +12,7 @@ for suff in $suffixes ; do
     test -f "$infile" || touch "$infile"
 
 # resorting infile to avoid problems with incompatable sorts (a la Redhat 6.1)
-    sort -u $infile > $tempinfile
+    /usr/bin/sort -u $infile > $tempinfile
 
     status=0
     diff -w $outfile1 $tempinfile || status=1
