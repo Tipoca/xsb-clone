@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.4 1999/01/16 16:34:35 kostis Exp $
+** $Id: standard.P,v 1.5 1999/03/18 20:13:35 warren Exp $
 ** 
 */
 
@@ -242,7 +242,7 @@ writeln(Ostr,Term):- tell(Ostr),writeln(Term),tell(userout).
 
 writeln(T) :- stat_flag(11, File), file_write(File, T), file_nl(File).
 
-display(T) :- telling(F), tell(userin), write(T), told, tell(F).	
+display(T) :- telling(F), tell(userout), write(T), told, tell(F).	
 
 
 write_prolog(Ostr,Term):- tell(Ostr),write_prolog(Term),tell(userout).
