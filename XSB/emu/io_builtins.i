@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins.i,v 1.4 1999-04-04 15:53:35 kifer Exp $
+** $Id: io_builtins.i,v 1.5 1999-04-14 03:03:09 kifer Exp $
 ** 
 */
 
@@ -107,7 +107,7 @@ bool file_stat(void)
 }
 
 /* file_flish, file_pos, file_truncate, file_seek */
-inline bool file_function(void)
+inline static bool file_function(void)
 {
   static int file_des, value, size, offset, length;
   static STRFILE *sfptr;
