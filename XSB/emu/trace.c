@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace.c,v 1.11 1999-10-13 14:15:19 ejohnson Exp $
+** $Id: trace.c,v 1.12 1999-10-13 21:03:47 ejohnson Exp $
 ** 
 */
 
@@ -310,8 +310,8 @@ void total_stat(double elapstime) {
   printf("\nVariant Operations:\n");
   printf("  %ld subgoal check/insert attempts", subg_chk_ins);
   printf(" inserted %5ld subgoals in the tables\n", subg_inserts);
-  printf("  %ld answer check/insert attempts", ans_chk_ins);
-  printf(" inserted %5ld answers in the tables\n", ans_inserts);
+  printf("  %ld answer  check/insert attempts", ans_chk_ins);
+  printf(" inserted %5ld answers  in the tables\n", ans_inserts);
 
   if (de_count > 0) {
     printf("\n");

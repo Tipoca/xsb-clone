@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.1 1999-10-12 19:23:07 ejohnson Exp $
+** $Id: table_stats.c,v 1.2 1999-10-13 21:03:47 ejohnson Exp $
 ** 
 */
 
@@ -413,8 +413,8 @@ void print_subsumption_stats() {
 	 NumSubOps_VariantCall, NumSubOps_SubsumedCall,
 	 NumSubOps_SubsumedCallEntry, NumSubOps_CallToCompletedTable);
   printf("  Answer check/insert operations:    %8d\n"
-	 "    Actual answer inserts:         %6d\n"
-	 "    Derivation ratio (New/Total):    %4.2f\n",
+	 "  * Actual answer inserts:         %6d\n"
+	 "  * Derivation ratio (New/Total):    %4.2f\n",
 	 NumSubOps_AnswerCheckInsert, NumSubOps_AnswerInsert,
 	 ( (NumSubOps_AnswerCheckInsert != 0)
 	   ? (float)NumSubOps_AnswerInsert / (float)NumSubOps_AnswerCheckInsert
