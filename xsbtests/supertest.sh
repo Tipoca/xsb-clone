@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: supertest.sh,v 1.10 1999-10-18 17:05:26 ejohnson Exp $
+## $Id: supertest.sh,v 1.11 1999-10-22 17:42:46 kostis Exp $
 ## 
 ##
 
@@ -59,6 +59,7 @@ echo "Configuring XSB with default options"
 configure > $logfile
 echo "Making XSB with default options"
 makexsb fast >> $logfile
+makexsb module >> $logfile
 cd $testdir
 ./testsuite.sh -exclude sub_tests $xsbdir
 
@@ -67,6 +68,7 @@ echo "Configuring XSB with --enable-local-scheduling"
 configure --config-tag=localsched --enable-local-scheduling >> $logfile
 echo "Making XSB with --enable-local-scheduling"
 makexsb --config-tag=localsched fast >> $logfile
+makexsb --config-tag=localsched module >> $logfile
 cd $testdir
 ./testsuite.sh -tag localsched -exclude sub_tests $xsbdir
 
@@ -75,6 +77,7 @@ echo "Configuring XSB with --enable-slg-wam"
 configure --config-tag=slg-wam --enable-slg-wam >> $logfile
 echo "Making XSB with --enable-slg-wam"
 makexsb --config-tag=slg-wam fast >> $logfile
+makexsb --config-tag=slg-wam module >> $logfile
 cd $testdir
 ./testsuite.sh -tag slg-wam $xsbdir
 
@@ -84,6 +87,7 @@ echo "Configuring XSB with --enable-slg-wam --enable-local-scheduling"
 configure --config-tag=localschedNslg-wam --enable-slg-wam --enable-local-scheduling >> $logfile
 echo "Making XSB with --enable-slg-wam --enable-local-scheduling"
 makexsb --config-tag=localschedNslg-wam fast >> $logfile
+makexsb --config-tag=localschedNslg-wam module >> $logfile
 cd $testdir
 ./testsuite.sh -tag localschedNslg-wam $xsbdir
 
