@@ -11,6 +11,7 @@ if ( $status == 0 ) then
 else
 	echo "$argv[1]_s1 different \!\!\!"
 endif
+/bin/rm -f ${argv[1]}_s  ${argv[1]}_s1
 echo "--------------------------------------------------------"
 if (-e $argv[2]_iv1) then 
 else
@@ -22,6 +23,7 @@ if ( $status == 0 ) then
 else
 	echo "$argv[1]_iv1 different\!\!\!"
 endif
+/bin/rm -f ${argv[1]}_iv  ${argv[1]}_iv1
 echo "--------------------------------------------------------"
 if (-e $argv[2]_cn1) then 
 else
@@ -33,6 +35,7 @@ if ( $status == 0 ) then
 else
 	echo "$argv[1]_cn1 different\!\!\!"
 endif
+/bin/rm -f ${argv[1]}_cn  ${argv[1]}_cn1
 echo "--------------------------------------------------------"
 if (-e $argv[2]_te11) then 
 else
@@ -44,3 +47,4 @@ if ( $status == 0 ) then
 else
 	echo "$argv[1]_te11 different\!\!\!"
 endif
+/bin/rm -f ${argv[1]}_te1  ${argv[1]}_te11
