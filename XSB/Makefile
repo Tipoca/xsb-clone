@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.6 1999-03-29 20:29:25 kifer Exp $
+## $Id: Makefile,v 1.7 1999-03-30 16:25:07 kifer Exp $
 ## 
 ##
 
@@ -35,16 +35,16 @@ touch::
 
 syslib::
 	@echo ""
-	cd syslib; make XSB=$(XSB)
+	cd syslib; make
 
 lib::
 	@echo ""
-	cd lib; make XSB=$(XSB)
+	cd lib; make
 
 cmplib::
 	@echo ""
-	cd cmplib; make XSB=$(XSB)
+	cd cmplib; make
 
 packages::
 	@echo ""
-	cd packages; make XSB=$(XSB)
+	cd packages; make

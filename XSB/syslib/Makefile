@@ -19,12 +19,13 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.8 1999/02/05 20:54:04 kostis Exp $
+## $Id: Makefile,v 1.9 1999/02/10 19:18:29 kostis Exp $
 ## 
 ##
 
 ALL =	assert.O basics.O consult.O curr_sym.O dbclause.O dbcmpl.O \
-	dcg.O debugger.O domain.O eval.O file_op.O hilogsym.O loader.O \
+	dcg.O debugger.O domain.O eval.O file_io.O \
+	file_op.O hilogsym.O loader.O \
 	machine.O num_vars.O standard.O std_sbp.O \
 	string.O subsumes.O sysinitrc.O tables.O term_exp.O \
 	x_interp.O xsb_read.O xsb_tok.O xsb_writ.O xcallxsb.O

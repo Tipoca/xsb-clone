@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modeinf.P,v 1.1.1.1 1998-11-05 17:00:08 sbprolog Exp $
+** $Id: modeinf.P,v 1.2 1999-03-30 16:25:11 kifer Exp $
 ** 
 */
 
@@ -955,7 +955,7 @@ get_time(Type, Mod, Time) :-
 	get_ext(Type, Ext),
 	str_cat(Mod, Ext, File),
 	(expand_incl_file_name(File, FileName)
-		->  file_time(FileName, time(Time1,Time2)) 
+		->  file_time(FileName, time(_Time1,_Time2)) 
 		;   Time = time(0,0)
 	).
 

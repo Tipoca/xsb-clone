@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsberror.h,v 1.5 1999-03-29 20:37:06 kifer Exp $
+** $Id: xsberror.h,v 1.6 1999-03-30 16:25:22 kifer Exp $
 ** 
 */
 
@@ -52,12 +52,11 @@
 
 extern void xsb_exit(char *);
 extern void xsb_abort(char *, ...);
+extern void xsb_warn(char *, ...);
+extern void xsb_mesg(char *, ...);
 extern void err_handle(int, int, char *, int, char *, Cell);
 
 #define err(d, a, f, ar)	err_handle(d, a, f, ar, NULL, (Cell)NULL)
-
-#define xsb_mesg(message)       fprintf(stderr, "%s\n", message)
-#define xsb_warn(warning)	fprintf(stderr, "\n++Warning: %s\n", warning)
 
 extern char *xsb_default_segfault_msg;
 extern char *xsb_segfault_message; /* put your segfault message here prior to

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.2 1999-03-27 09:33:05 workflow Exp $
+** $Id: builtin.h,v 1.3 1999-03-30 16:25:19 kifer Exp $
 ** 
 */
 
@@ -38,10 +38,6 @@ extern void init_builtin_table(void);
 #define PSC_PROP	 4
 #define PSC_SET_TYPE	 5
 #define PSC_SET_PROP	 6
-#define FILE_OPEN	 7
-#define FILE_CLOSE	 8
-#define FILE_GET	 9
-#define FILE_PUT	10
 #define TERM_PSC	11
 #define TERM_TYPE	12
 #define TERM_COMPARE	13
@@ -82,8 +78,6 @@ extern void init_builtin_table(void);
 
 #define PSC_INSERT	42
 #define PSC_IMPORT	43
-#define FILE_GETBUF	44
-#define FILE_PUTBUF	45
 #define PSC_INSERTMOD	46
 #define LOAD_SEG	47
 #define FILE_GETTOKEN	48
@@ -100,7 +94,6 @@ extern void init_builtin_table(void);
 #define FILE_STAT		60
 #define FILE_WRITEQUOTED	61
 #define FAST_GROUND		62
-#define FILE_POS                64
 #define INTERN_STRING           65
 #define EXPAND_FILENAME 	66
 #define TILDE_EXPAND_FILENAME   67

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.1.1.1 1998/11/05 16:59:57 sbprolog Exp $
+** $Id: consult.H,v 1.2 1998/12/11 15:26:42 warren Exp $
 ** 
 */
 
@@ -49,15 +49,18 @@
 	  (=..)/2, writeln/1, write_canonical/1, tell/1,
 	  told/0, telling/1, functor/3, cputime/1
      from standard.
+
 :- import code_load/3, code_call/3, buff_byte/3, str_len/2, str_sub/2,
 	  expand_filename/2, tilde_expand_filename/2,
-     	  file_time/2, unload_seg/1,
-	  buff_word/3, 
+     	  unload_seg/1, buff_word/3, 
 	  assert_code_to_buff/2, assert_buff_to_clref/7,
 	  file_read_canonical/3, stat_flag/2, conpsc/2, 
 	  psc_prop/2, psc_tabled/2, psc_type/2, psc_name/2,
 	  psc_arity/2, slash/1
      from machine.
+:- import file_time/2
+     from file_io.
+
 :- import asserta/1, (dynamic)/1, retractall/1, assert/1, retract/1, t_assert/2
 	 from assert.
 :- import warning/1, time_message/2 from auxlry.

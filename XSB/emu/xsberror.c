@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsberror.c,v 1.4 1999-03-29 20:37:05 kifer Exp $
+** $Id: xsberror.c,v 1.5 1999-03-30 16:25:21 kifer Exp $
 ** 
 */
 
@@ -73,6 +73,29 @@ void xsb_abort(char *description, ...)
     /* this allows xsb_abort to jump out even from nested loops */
     longjmp(xsb_abort_fallback_environment, 1);
 }
+
+
+void xsb_warn(char *description, ...)
+{
+  va_list args;
+
+  va_start(args, description);
+  fprintf(stderr, "\n++Warning: ");
+  vfprintf(stderr, description, args);
+  va_end(args);
+  fprintf(stderr, "\n");
+}
+
+void xsb_mesg(char *description, ...)
+{
+  va_list args;
+
+  va_start(args, description);
+  vfprintf(stderr, description, args);
+  va_end(args);
+  fprintf(stderr, "\n");
+}
+
 
 /*----------------------------------------------------------------------*/
 

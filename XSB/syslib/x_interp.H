@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.5 1999/02/05 20:09:08 kostis Exp $
+** $Id: x_interp.H,v 1.6 1999/02/18 13:12:08 kostis Exp $
 ** 
 */
 
@@ -39,8 +39,11 @@
      from standard.
 :- import conpsc/2, psc_type/2, psc_set_type/2, psc_prop/2, psc_set_prop/2,
           psc_arity/2, term_psc/2, term_arg/3, term_new/2, term_type/2,
-	  conname/2, file_get/2, stat_flag/2, stat_set_flag/3, str_insert/2,
+	  conname/2, stat_flag/2, stat_set_flag/3, str_insert/2,
 	  is_xwammode/1, close_open_tables/0, trimcore/0, fmt_write_string/3,
-	  file_read_line/2, slash/1, file_open/3, file_close/1
+	  slash/1
      from machine.
+
+:- import file_read_line/2, file_open/3, file_close/1, file_get/2
+     from file_io.
 

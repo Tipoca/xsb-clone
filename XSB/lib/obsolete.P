@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: obsolete.P,v 1.1 1999-03-29 20:24:47 kifer Exp $
+** $Id: obsolete.P,v 1.2 1999-03-30 16:25:24 kifer Exp $
 ** 
 */
 
@@ -29,6 +29,6 @@ obsolete(Msg1, Msg2) :-
     	    	  args(Msg1, Msg2)),
     	file_nl(1).
 
-fmt_read(Fmt,Types,Result,Status) :- 
+fmt_read(Fmt,_Types,Result,Status) :- 
 	obsolete('fmt_read/4', 'fmt_read/3'),
 	fmt_read(Fmt, Result, Status).

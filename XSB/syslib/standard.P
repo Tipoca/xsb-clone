@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.5 1999/03/18 20:13:35 warren Exp $
+** $Id: standard.P,v 1.6 1999/03/24 03:57:56 kifer Exp $
 ** 
 */
 
@@ -201,7 +201,8 @@ close(userout) :- !.
 close(F) :- 
 	conpsc(F, PSC),
 	psc_type(PSC, Type), Type=5,
-	psc_prop(PSC, File), file_close(File),
+	psc_prop(PSC, File), 
+	file_close(File),
 	psc_set_type(PSC, 0).
 
 

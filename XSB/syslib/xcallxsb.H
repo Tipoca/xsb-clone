@@ -18,15 +18,19 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.H,v 1.2 1998/11/15 06:07:55 kifer Exp $
+** $Id: xcallxsb.H,v 1.3 1998/11/18 16:21:52 kifer Exp $
 ** 
 */
 
 
 
 :- import
-       integer/1, file_open/3, file_close/1, close_open_tables/0
+       integer/1, close_open_tables/0
    from machine.
+
+:- import file_open/3, file_close/1
+     from file_io.
+
 :- import
        call_c/1, call_expose/1, goal_cut_trans/3, repeat/0, (=..)/2
    from standard.
