@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.7 2001-03-24 23:30:57 kifer Exp $
+## $Id: Makefile,v 1.8 2001-03-25 00:13:34 gzyang Exp $
 ## 
 ##
 
@@ -139,7 +139,7 @@ flrcoder.O : flrcoder.P flrcoder.H $(XSB_CHAR_DEFS) $(FLORA_TERMS) $(FLORA_ERROR
 	@echo 'mc(flrcoder,$(OPTION)).' >> cmd...
 
 
-flrutils.O : flrutils.P flrutils.H $(XSB_CHAR_DEFS) $(FLORA_TERMS) $(XSB_EMU_FLAG_DEFS)
+flrutils.O : flrutils.P flrutils.H $(XSB_CHAR_DEFS) $(XSB_STANDARD) $(FLORA_TERMS) $(XSB_EMU_FLAG_DEFS)
 	@echo 'mc(flrutils,$(OPTION)).' >> cmd...
 
 

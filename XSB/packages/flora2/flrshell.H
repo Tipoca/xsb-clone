@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.9 2001-03-24 23:33:02 kifer Exp $
+** $Id: flrshell.H,v 1.10 2001-03-25 00:13:34 gzyang Exp $
 **
 */
 
@@ -93,7 +93,6 @@
 	flConsult/1,
 	flCompileInclude/1,
 	flloadtrailer/1,
-	flloadtrailer/2,
 	flora_shell_command_line/3,
 	flora_good_command/1,
 	flora_end_of_input/1,
