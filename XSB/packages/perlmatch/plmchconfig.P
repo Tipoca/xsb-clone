@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: plmchconfig.P,v 1.5 1999-02-03 18:57:59 kifer Exp $
+** $Id: plmchconfig.P,v 1.6 1999-04-01 05:24:13 kifer Exp $
 ** 
 */
 
 
-:- import file_time/2, fmt_write_string/3, slash/1, str_cat/3,
-	machine_file_exists/1 from machine.
+:- import slash/1, str_cat/3, machine_file_exists/1 from machine.
+:- import fmt_write_string/3, file_time/2 from file_io.
 :- import real_search_module/4 from consult.
 :- import xsb_configuration/2 from configuration.
 

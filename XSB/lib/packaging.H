@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: packaging.H,v 1.2 1998-11-15 06:07:50 kifer Exp $
+** $Id: packaging.H,v 1.3 1999-04-01 05:24:10 kifer Exp $
 ** 
 */
 
@@ -32,8 +32,10 @@
 :- import abort/1
    from standard.
 
-:- import fmt_write_string/3, slash/1, expand_filename/2
+:- import slash/1, expand_filename/2
    from machine.
 :- import xsb_configuration/2 from configuration.
+
+:- import fmt_write_string/3 from file_io.
 
 
