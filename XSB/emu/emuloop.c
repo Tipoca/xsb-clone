@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.30 1999-07-15 21:41:12 ejohnson Exp $
+** $Id: emuloop.c,v 1.31 1999-07-22 21:58:17 kifer Exp $
 ** 
 */
 
@@ -1341,8 +1341,12 @@ DllExport int call_conv xsb(int flag, int argc, char *argv[])
 #endif
 
    if (flag == 0) {  /* initialize xsb */
-     /* set the name of the executable to the real name */
-     xsb_executable_full_path(argv[0]);
+     /* Set the name of the executable to the real name.
+	The name of the executable could have been set in cinterf.c:xsb_init
+	if XSB is called from C. In this case, we don't want `executable'
+	to be overwritten, so we check if it is initialized. */
+     if(executable[0] == '\0')
+       xsb_executable_full_path(argv[0]);
 
      /* set install_dir, xsb_config_file and user_home */
      set_install_dir();

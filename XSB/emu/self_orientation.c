@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: self_orientation.c,v 1.16 1999-07-22 19:09:21 kifer Exp $
+** $Id: self_orientation.c,v 1.17 1999-07-22 21:58:22 kifer Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 #include "configs/config.h"
 #include "basictypes.h"
 
-char executable[MAXPATHLEN];		/* This is set to a real name below */
+char executable[MAXPATHLEN] = {'\0'};	/* This is set to a real name below */
 
 char *install_dir; 			/* installation directory */
 char *xsb_config_file;     		/* XSB configuration file */
