@@ -2,7 +2,7 @@
 ** Author(s): David S. Warren, Jiyang Xu, Terrance Swift
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
-** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
+** Copyright (C) The Research Foundation of SUNY, 1993-19989
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.3 1999-11-17 03:54:23 kifer Exp $
+** $Id: cell_xsb.h,v 1.4 1999-11-29 00:30:12 kifer Exp $
 ** 
 */
 
@@ -74,7 +74,8 @@
 /* CELL: an element in the local stack or global stack (heap).		*/
 /*======================================================================*/
 
-typedef unsigned long Cell;
+#include "cell_def_xsb.h"
+
 typedef Cell *CPtr;
 
 #ifdef BITS64

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.4 1999-11-17 03:54:32 kifer Exp $
+** $Id: pathname_xsb.c,v 1.5 1999-11-29 00:30:19 kifer Exp $
 ** 
 */
 
@@ -50,8 +50,8 @@
 #include "setjmp_xsb.h"
 #include "auxlry.h"
 #include "psc_xsb.h"
-#include "cinterf.h"
 #include "cell_xsb.h"
+#include "cinterf.h"
 #include "error_xsb.h"
 
 /*=========================================================================*/

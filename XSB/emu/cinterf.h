@@ -19,10 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.8 1999-06-17 07:51:00 kifer Exp $
+** $Id: cinterf.h,v 1.9 1999-11-29 00:30:14 kifer Exp $
 ** 
 */
 
+
+#ifndef CELL_DEFS_INCLUDED
+#include "cell_def_xsb.h"
+#endif
 
 
 /*
@@ -148,6 +152,7 @@
 /*======================================================================*/
 
 #include "export.h"
+#include "varstring_xsb.h"
 
 DllExport extern prolog_int call_conv ptoc_int(reg_num);	/* defined in builtin.c */
 DllExport extern prolog_float call_conv ptoc_float(reg_num);	/* defined in builtin.c */
@@ -187,8 +192,7 @@ DllExport extern prolog_float call_conv p2c_float(prolog_term);
 DllExport extern char*    call_conv p2c_string(prolog_term);
 DllExport extern char*    call_conv p2c_functor(prolog_term);
 DllExport extern int      call_conv p2c_arity(prolog_term);
-DllExport extern void     call_conv p2c_chars(prolog_term term, 
-					      char *buf, int bsize);
+DllExport extern char*    call_conv p2c_chars(prolog_term term,VarString *buf);
 
 DllExport extern prolog_term call_conv p2p_arg(prolog_term, int);
 DllExport extern prolog_term call_conv p2p_car(prolog_term);
@@ -231,11 +235,13 @@ DllExport extern int call_conv xsb_command();
 DllExport extern int call_conv xsb_command_string(char *);
 DllExport extern int call_conv xsb_query();
 DllExport extern int call_conv xsb_query_string(char *);
-DllExport extern int call_conv xsb_query_string_string(char *,char *,int,char *);
+DllExport extern int call_conv xsb_query_string_string(char*,VarString*,char*);
 DllExport extern int call_conv xsb_next();
-DllExport extern int call_conv xsb_next_string(char *,int,char *);
+DllExport extern int call_conv xsb_next_string(VarString*,char*);
 DllExport extern int call_conv xsb_close_query();
 DllExport extern int call_conv xsb_close();
+
+extern void print_pterm(Cell, int, VarString*);
 
 /* macros for constructing answer terms and setting and retrieving atomic
 values in them. To pass or retrieve complex arguments, you must use
