@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.P,v 1.7 1999-07-11 02:37:33 tswift Exp $
+** $Id: aggregs.P,v 1.8 1999-07-21 14:26:25 tswift Exp $
 ** 
 */
 
@@ -130,7 +130,9 @@ bagReduce1(Call,Res,Op,Id) :-
 bagOf(Call,List) :- bagof(Var,Call(Var),List).
 
 /*=======================================================================*/
-/* Can this be done with sysmod? */
+/* Need to figure out a way around module system so that 
+   the proper call of min is done.
+
 filterMin(Call,Var) :- filterReduce(Call,min,neg_inf,Var).
 
 filterMax(Call,Var) :- filterReduce(Call,max,inf,Var).
@@ -142,6 +144,7 @@ max(X,Y,Z):- (X > Y -> Z = X ; Z = Y).
 min(X,Y,Y):- \+ number(X),!.
 min(X,Y,X):- \+ number(Y),!.
 min(One,Two,Min):- One > Two -> Min = Two ; Min = One.
+*/
 
 % Reduce elements using associative Op with identity Id.
 filterReduce(Call,Op,Id,Res) :- filterReduce1(Call,Op,Id,Res), fail.
