@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.25 1999-10-13 14:53:33 ejohnson Exp $
+** $Id: tries.c,v 1.26 1999-10-13 15:09:58 ejohnson Exp $
 ** 
 */
 
@@ -75,6 +75,10 @@ int  var_addr_arraysz = DEFAULT_ARRAYSIZ;
 Cell CallVarEnum[NUM_TRIEVARS];
 Cell TrieVarBindings[NUM_TRIEVARS];
 
+/*
+ * global_num_vars is a new variable to save the value of variable
+ * num_vars_in_var_regs temporarily.
+ */
 int global_num_vars;
 
 /*
