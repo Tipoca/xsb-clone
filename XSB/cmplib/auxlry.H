@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.H,v 1.11 2003-04-21 15:40:18 lfcastro Exp $
+** $Id: auxlry.H,v 1.12 2003-06-23 16:44:44 dwarren Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@
      from standard.
 :- import assert/1, retractall/1, (dynamic)/1 from assert.
 :- import sys_exit/1 from shell.
-:- import term_psc/2, term_type/2, psc_arity/2, term_arg/3, term_new/2
+:- import term_psc/2, term_type/2, psc_arity/2, term_arg/3
         from machine.
 
 /* ------------------------ end of file auxlry.H ---------------------- */
