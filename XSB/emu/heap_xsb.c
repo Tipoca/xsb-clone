@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.12 2000-04-06 11:44:55 cbaoqiu Exp $
+** $Id: heap_xsb.c,v 1.13 2000-04-07 18:36:16 cbaoqiu Exp $
 ** 
 */
 
@@ -115,7 +115,7 @@ Todo:
 #include "flags_xsb.h"     /* for checking whether functionality is enabled */
 #include "heap_xsb.h"
 #include "io_builtins_xsb.h"
-#include "subp.h"          /* for attr_interrupts[][] */
+#include "subp.h"          /* for attv_interrupts[][] */
 #include "binding.h"       /* for PRE_IMAGE_TRAIL */
 
 /*=========================================================================*/
@@ -760,8 +760,8 @@ static int mark_from_attv_array()
   max = int_val(cell(interrupt_reg));
 
   for (i=0; i<max; i++) {
-    m += mark_cell(attv_interrupts[i][0]);
-    m += mark_cell(attv_interrupts[i][1]);
+    m += mark_cell((CPtr) attv_interrupts[i][0]);
+    m += mark_cell((CPtr) attv_interrupts[i][1]);
   }
   return m;
 }
