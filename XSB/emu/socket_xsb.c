@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.22 2001-03-17 05:44:01 kifer Exp $
+** $Id: socket_xsb.c,v 1.23 2001-03-27 22:59:31 dwarren Exp $
 ** 
 */
 
@@ -48,7 +48,7 @@
 #include <io.h>
 #include <stdarg.h>
 #include <winsock.h>
-#include <wsipx.h>
+#include "wsipx.h"
 #else /* UNIX */
 #include <sys/time.h>
 #include <sys/socket.h>

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.119 2001-03-27 17:52:02 dwarren Exp $
+** $Id: builtin.c,v 1.120 2001-03-27 22:59:31 dwarren Exp $
 ** 
 */
 
@@ -43,7 +43,7 @@
 #include <process.h>
 #include <stdarg.h>
 #include <winsock.h>
-#include <wsipx.h>
+#include "wsipx.h"
 #include <tchar.h>
 #else /* Unix */
 #include <unistd.h> 
