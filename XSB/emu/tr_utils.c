@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.13 1999/03/27 09:33:09 workflow Exp $
+** $Id: tr_utils.c,v 1.14 1999/04/13 17:24:49 kostis Exp $
 ** 
 */
 
@@ -768,7 +768,7 @@ void newtrie(void)
   if (first_free_set != 0) {	/* a free set is available */
     i = first_free_set;		/* save it in i */
     ctop_int(1, first_free_set);
-    first_free_set = (int) Set_ArrayPtr[first_free_set] >> 2;
+    first_free_set = (long) Set_ArrayPtr[first_free_set] >> 2;
     Set_ArrayPtr[i] = NULL;	/* must be reset to NULL */
   }
   else {
@@ -835,7 +835,7 @@ int trie_interned(void)
    * nor a deleted set (deleted by builtin delete_trie/1).
    */
   if ((Set_ArrayPtr[RootIndex] != NULL) &&
-      (!((int) Set_ArrayPtr[RootIndex] & 0x3))) {
+      (!((long) Set_ArrayPtr[RootIndex] & 0x3))) {
     deref(trie_term);
     deref(Leafterm);
     if (isref(Leafterm)) {  

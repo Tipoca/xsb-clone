@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.35 1999-04-13 17:24:44 kostis Exp $
+** $Id: builtin.c,v 1.36 1999-04-16 04:10:39 kifer Exp $
 ** 
 */
 
@@ -1506,7 +1506,7 @@ int builtin_call(byte number)
        * that were used before can be put into the free set list.
        */
       if ((Set_ArrayPtr[tmpval] != NULL) &&
-	  (!((int) Set_ArrayPtr[tmpval] & 0x3))) {
+	  (!((long) Set_ArrayPtr[tmpval] & 0x3))) {
 	delete_trie(Set_ArrayPtr[tmpval]);
 	switch_from_trie_assert;
         /*
