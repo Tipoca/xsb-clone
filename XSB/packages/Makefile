@@ -18,12 +18,12 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.7 1999-05-25 04:03:06 kifer Exp $
+## $Id: Makefile,v 1.8 1999-08-25 17:25:29 luis Exp $
 ## 
 ##
 
 
-ALL = 	flora.O slx.O perlmatch.O gap.O regmatch.O wildmatch.O
+ALL = 	flora.O slx.O perlmatch.O gap.O regmatch.O wildmatch.O sModels.O
 
 SUBDIR = flora slx perlmatch gap regmatch wildmatch
 
