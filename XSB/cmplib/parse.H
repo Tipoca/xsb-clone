@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.27 2004-12-10 21:49:30 tswift Exp $
+** $Id: parse.H,v 1.28 2005-01-17 20:29:13 dwarren Exp $
 ** 
 */
 
@@ -46,7 +46,7 @@
 	  add_new_clause/2, clause_listify/2
      from symtab.
 :- import functor/3, seen/0, file_exists/1, '=..'/2, atom/1, integer/1, 
-	  op/3, (index)/3, real/1, see/1, expand_term/2, (=..)/2,
+	  op/3, (index)/3, (index)/2, real/1, see/1, expand_term/2, (=..)/2,
   name/2, seeing/1, is_most_general_term/1, number/1
      from standard.
 :- import retract/1, retractall/1, assert/1, (dynamic)/1 from assert.
