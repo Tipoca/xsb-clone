@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.49 2003-02-21 17:53:38 lfcastro Exp $
+## $Id: emuMakefile.in,v 1.50 2003-05-13 20:49:21 lfcastro Exp $
 ## 
 
 
@@ -143,14 +143,14 @@ allORAOBJS = $(allOBJS) orastuff.o
 xsb:: $(allOBJS)
 	@echo ""; echo "Making XSB executable $(EXECUTABLE) "; echo ""
 	cd $(emudir); \
-	$(CC) -o $(EXECUTABLE) $(LINKFLAGS) $(allOBJS) $(LDFLAGS) 
+	$(CC) -o $(EXECUTABLE) $(allOBJS) $(LDFLAGS) 
 
 xsbora:: $(allORAOBJS)
 	@echo ""; \
 	  echo "Making XSB executable $(EXECUTABLE) with support for Oracle"; \
 	  echo ""
 	cd $(emudir); \
-	$(CC) -o $(EXECUTABLE) $(LINKFLAGS) $(allORAOBJS) $(LDFLAGS)
+	$(CC) -o $(EXECUTABLE) $(allORAOBJS) $(LDFLAGS)
 
 # Goal for making an XSB load module to be linked with external
 # C-drivers that pass queries to XSB
