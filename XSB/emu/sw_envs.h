@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sw_envs.h,v 1.7 1999-10-28 03:22:25 cbaoqiu Exp $
+** $Id: sw_envs.h,v 1.8 1999-11-20 05:04:13 cbaoqiu Exp $
 ** 
 */
 
@@ -38,18 +38,17 @@
 #ifdef CHAT
 #define switch_envs(tbreg)	undo_bindings(tbreg)
 #else
-
 /*
  * If PRE_IMAGE_TRAIL is never used, the line of untrail2 in the following
  * macro should be changed to:
  * 	untrail((CPtr) trail_variable(start_trreg));
  */
 #define switch_envs(tbreg) {						\
-  CPtr *start_trreg, *end_trreg;					\
+  CPtr *start_trreg, *end_trreg, *parent, *tmp;				\
 									\
   start_trreg = trreg;							\
-  end_trreg = cp_trreg(tbreg);						\
-  trreg = cp_trreg(tbreg);						\
+  end_trreg = trreg = cp_trreg(tbreg);					\
+  parent = trail_parent(end_trreg);					\
   if (start_trreg != end_trreg) {					\
     do {								\
       while (start_trreg > end_trreg) {					\
@@ -57,14 +56,22 @@
 	start_trreg = trail_parent(start_trreg);			\
       }									\
       while (end_trreg > start_trreg) {					\
-	end_trreg = trail_parent(end_trreg);				\
+	tmp = parent;							\
+	parent = trail_parent(parent);					\
+	*tmp = (CPtr) end_trreg;					\
+	end_trreg = tmp;						\
       }									\
     } while (start_trreg != end_trreg);					\
-    end_trreg = trreg;							\
-    while (end_trreg > start_trreg) {					\
-      cell((CPtr) trail_variable(end_trreg)) =				\
-	(Cell) trail_value(end_trreg);					\
-      end_trreg = trail_parent(end_trreg);				\
+    tmp = trail_parent(end_trreg);					\
+    *end_trreg = (CPtr) parent;						\
+    parent = tmp;							\
+    while (end_trreg < trreg) {						\
+      tmp = parent;							\
+      cell((CPtr)((Cell)trail_variable(tmp) & ~PRE_IMAGE_MARK)) =	\
+	(Cell) trail_value(tmp);					\
+      parent = trail_parent(parent);					\
+      *tmp = (CPtr) end_trreg;						\
+      end_trreg = tmp;							\
     }									\
   }									\
 }
