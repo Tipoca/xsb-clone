@@ -75,13 +75,13 @@ visits since August 10, 2001.
 
 <hr>
 <address>
-Email:<a href="mailto:xsb-contact@cs.sunysb.edu">xsb-contact@cs.sunysb.edu</a>
+Email:<a href="mailto:xsb-contact@cs.stonybrook.edu">xsb-contact@cs.stonybrook.edu</a>
 </address>
 
 <hr>
 <p>
 <!--Don't touch! The date gets updated when you commit changes to this page-->
-$Date: 2002-03-12 07:59:22 $
+$Date: 2002-03-12 08:13:22 $
 
 </body>
 </html>
