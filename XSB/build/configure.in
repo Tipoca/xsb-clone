@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.158 2003-09-28 22:22:13 kifer Exp $
+## $Id: configure.in,v 1.159 2003-09-29 08:26:51 kifer Exp $
 ## 
 ##
 
@@ -765,6 +765,14 @@ fi
 dnl --with-libwww=DIR
 cd $topdir/packages/libwww
 ./configure --with-config="$canonical" --with-libwww="$with_libwww" > /dev/null
+cd $build_dir
+
+cd $topdir/packages/dbdrivers
+./run_configure_scripts --with-odbc-libdir="$with_odbc_libdir" \
+			--with-odbc-incdir="$with_odbc_incdir" \
+			--with-mysql-libdir="$with_mysql_libdir" \
+			--with-mysql-incdir="$with_mysql_incdir" \
+              > /dev/null
 cd $build_dir
 
 
@@ -1692,6 +1700,7 @@ EOT
 fi
 
 cat $topdir/packages/libwww/Installation_summary
+cat $topdir/packages/dbdrivers/Installation_summary
 
 if test -n "$javac"; then
    cat <<EOT

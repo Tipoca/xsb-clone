@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.1 2001-07-05 03:44:47 kifer Exp $
+## $Id: configure.in,v 1.2 2003-09-29 08:26:50 kifer Exp $
 ## 
 ##
 
@@ -102,8 +102,6 @@ if test "$support" = "yes"; then
 
 EOT
 fi
-
 ) | tee Installation_summary
 
-AC_OUTPUT([ libwww_init.P:libwww_init.in
-	    ])
+AC_OUTPUT([libwww_init.P:libwww_init.in])
