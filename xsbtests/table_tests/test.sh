@@ -64,11 +64,7 @@ EOF
 # test heap reclamation after check complete
 ../gentest.sh "$XEMU $options" testh "time2048."
 #-------------------------------------------------
- 
-echo "--------------------------------------------------------------------"
-echo "Testing empty_answer"
-$XEMU $options << EOF
-[empty_answer].
-test.
-EOF
-
+../gentest.sh "$XEMU $options" empty_answer "test".
+#-------------------------------------------------
+../gentest.sh "$XEMU $options" abol_test "test".
+#-------------------------------------------------
