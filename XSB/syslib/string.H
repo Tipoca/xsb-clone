@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string.H,v 1.3 1999/04/09 09:10:22 kostis Exp $
+** $Id: string.H,v 1.4 1999/07/15 19:24:12 tswift Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
    str_fromlist/2, str_length/2, str_substring/4, str_substring/2, 
    sublist/2.   
 
-:- import atom/1 from standard.
+:- import atom/1,atom_codes/2 from standard.
 :- import buff_set_byte/3, buff_alloc/2, buff_byte/3, buff_dealloc/3,
 	  str_insert/2, str_len/2 from machine.
 :- import flatten/2 from basics.
