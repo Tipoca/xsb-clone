@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrshell.H,v 1.6 1999-08-23 04:10:53 kifer Exp $
+** $Id: flrshell.H,v 1.7 1999-08-23 05:41:49 kifer Exp $
 **
 */
 
@@ -44,7 +44,7 @@
 
 :- import consult/2, compile/1, compile/2 from consult.
 
-:- import conset/2, conset/2 from prof_sbp.
+:- import conget/2, conset/2 from prof_sbp.
 
 :- import
 	bootstrap_package/2, package_configuration/2, unload_package/1
