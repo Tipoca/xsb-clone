@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.H,v 1.12 1999/11/20 06:51:58 kifer Exp $
+** $Id: debugger.H,v 1.13 2000/03/01 16:23:25 dwarren Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
 :- import file_write/2 from xsb_writ.
 
 :- import =.. /2, \= /2, functor/3, atom/1, is_list/1, call/1, cputime/1,
-          call/1, see/1, seen/0, repeat/0, read/1, warning/1,
+          call/1, see/1, seeing/1, seen/0, repeat/0, read/1, warning/1,
 	  abort/0, abort/1, (import)/1
      from standard.
 

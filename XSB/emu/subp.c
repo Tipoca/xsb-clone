@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.47 2000/06/19 07:48:08 ruim Exp $
+** $Id: subp.c,v 1.48 2000/06/25 16:59:16 ejohnson Exp $
 ** 
 */
 
@@ -355,7 +355,7 @@ void init_interrupt(void)
   /* Don't handle SIGSEGV/SIGBUS if configured with DEBUG */
   xsb_default_segfault_handler = SIG_DFL;
 #else 
-  xsb_default_segfault_handler = xsb_segfault_catcher;
+  xsb_default_segfault_handler = xsb_segfault_quitter;
 #endif
 
 #ifdef SIGBUS

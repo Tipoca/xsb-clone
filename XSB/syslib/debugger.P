@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.P,v 1.18 2000/04/29 21:54:03 kifer Exp $
+** $Id: debugger.P,v 1.19 2000/05/25 22:57:02 kifer Exp $
 ** 
 */
 
@@ -39,13 +39,15 @@ read_debugger_data :- '_$_debugger_data_loaded', !.
 read_debugger_data :- 
 	xsb_configuration(syslibdir, SysLib),
 	fmt_write_string(DebugDataFile, '%s/debugger_data.P', arg(SysLib)),
+	seeing(OldFile),
 	see(DebugDataFile),
 	repeat,
 	    read(T),
 	    (T = end_of_file -> true
 	    	    	     ;  assert(T), fail
 	    ),
-	seen.
+	seen,
+	see(OldFile).
 
 /* -- tracing flags setting  -------------------------------------- */
 

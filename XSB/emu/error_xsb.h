@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.3 2000-02-17 01:35:49 tswift Exp $
+** $Id: error_xsb.h,v 1.4 2000-12-27 00:26:43 kifer Exp $
 ** 
 */
 
@@ -96,4 +96,5 @@ extern jmp_buf xsb_abort_fallback_environment; /* Environment for abort
 
 /* SIGSEGV handler that catches segfaults; used unless configured with DEBUG */
 extern void xsb_segfault_catcher (int);
+extern void xsb_segfault_quitter(int);
 
