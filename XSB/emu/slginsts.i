@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts.i,v 1.24 1999-10-09 18:37:55 kostis Exp $
+** $Id: slginsts.i,v 1.25 1999-10-12 20:28:03 kostis Exp $
 ** 
 */
 
@@ -92,7 +92,7 @@ case tabletrysingle: {
 			  CallInfo_TableInfo(callInfo) );
     producerCPF = CallLUR_VarVector(lookupResults);
     save_find_locx(ereg);
-    save_registers(producerCPF, CallInfo_CallArity(callInfo), i, rreg);
+    save_registers(producerCPF, CallInfo_CallArity(callInfo), rreg);
     SaveProducerCPF(producerCPF, continuation, CallLUR_Subsumer(lookupResults),
 		    CallInfo_CallArity(callInfo));
 
@@ -109,6 +109,7 @@ case tabletrysingle: {
     /* Unify Call with Answer Trie
        --------------------------- */
     if (has_answer_code(CallLUR_Subsumer(lookupResults))) {
+      int i;
       Cell  CallNumVar;
 #ifdef DEBUG_DELAY
       fprintf(stddbg, "++Returning answers from COMPLETED table: ");

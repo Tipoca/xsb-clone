@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.23 1999-10-09 18:37:52 kostis Exp $
+** $Id: tries.c,v 1.24 1999-10-12 20:28:05 kostis Exp $
 ** 
 */
 
@@ -74,6 +74,13 @@ int  num_heap_term_vars;
 CPtr *var_addr;
 int  var_addr_arraysz = DEFAULT_ARRAYSIZ;
 Cell VarEnumerator[NUM_TRIEVARS];
+/*
+ * global_num_vars is a new variable to save the value of variable
+ * num_vars_in_var_regs temporarily.
+ */
+int global_num_vars;
+
+/*----------------------------------------------------------------------*/
 /*
  * Array mini_trail[] is used to trail the variable bindings when we copy
  * terms into tries.  The variables trailed using mini_trail are those

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.9 1999-10-12 19:59:34 ejohnson Exp $
+** $Id: choice.h,v 1.10 1999-10-12 20:28:01 kostis Exp $
 ** 
 */
 
@@ -404,18 +404,22 @@ typedef struct compl_susp_choice_point {
  *
  *  On "exit", 't_breg' points to the topmost arg on the cpstack.
  */
-#define save_registers(t_breg, arity, ii, regbase) \
-    for (ii = 1; ii <= arity; ii++) bld_copy(--t_breg, cell(regbase+ii))
+#define save_registers(t_breg, arity, regbase) {\
+    int ii;\
+    for (ii = 1; ii <= arity; ii++) bld_copy(--t_breg, cell(regbase+ii));\
+  }
 
-
-#define restore_registers(t_breg, arity, ii, regbase) \
+#define restore_registers(t_breg, arity, regbase) {\
+    int ii;\
     t_breg += CP_SIZE; \
-    for (ii = arity; ii >= 1; ii--) bld_copy(regbase+ii, cell(t_breg++))
+    for (ii = arity; ii >= 1; ii--) bld_copy(regbase+ii, cell(t_breg++));\
+  }
 
-
-#define table_restore_registers(t_breg, arity, ii, regbase) \
+#define table_restore_registers(t_breg, arity, regbase) {\
+    int ii;\
     t_breg += TCP_SIZE; \
-    for (ii = arity; ii >= 1; ii--) bld_copy(regbase+ii, cell(t_breg++))
+    for (ii = arity; ii >= 1; ii--) bld_copy(regbase+ii, cell(t_breg++));\
+  }
 
 
 /* Local (Environment) Stack
