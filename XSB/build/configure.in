@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.136 2002-09-02 01:00:20 kifer Exp $
+## $Id: configure.in,v 1.137 2002-09-05 05:10:47 kifer Exp $
 ## 
 ##
 
@@ -1319,7 +1319,6 @@ case "$canonical" in
 		 LDFLAGS="${LDFLAGS} -N"
 		;;
       *-cygwin*) AC_DEFINE(CYGWIN)
-		 AC_DEFINE(FOREIGN_WIN32)
 		 builtins_opt_level=-${optimization_level-"O1 -fomit-frame-pointer"}
 		;;
 esac
