@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.40 2004/03/13 21:03:22 dwarren Exp $
+** $Id: loader.P,v 1.41 2004/04/09 00:00:16 dwarren Exp $
 ** 
 */
 
@@ -279,23 +279,15 @@ load_pred1(PSC) :-
 		%% '_$cutto'(B)
 		!
 		;
+		xsb_backtrace(BT),
 		throw(error(undefined_predicate(Name,Arity,ModName),
 			    ['The predicate: ', Name, '/', Arity,
-			     ' is not defined in module ', ModName]))
-	    /*
-		call_undef_pred_handlers(PSC, ['The predicate: ',
-					       Name, '/', Arity,
-					       ' is not defined in module ',
-					       ModName])
-	    */
+			     ' is not defined in module ', ModName],BT))
 	    )
 	;
+	    xsb_backtrace(BT),
 	    throw(error(undefined_predicate(Name,Arity,usermod),
-			['Undefined predicate: ', Name, '/', Arity]))
-	/*
-	    call_undef_pred_handlers(PSC, ['Undefined predicate: ',
-					   Name, '/', Arity])
-	*/
+			['Undefined predicate: ', Name, '/', Arity],BT))
 	).
 
 
