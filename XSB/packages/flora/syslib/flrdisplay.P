@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ** 
-** $Id: flrdisplay.P,v 1.14 1999-09-06 17:32:44 kifer Exp $
+** $Id: flrdisplay.P,v 1.15 1999-09-22 07:30:24 kifer Exp $
 ** 
 */
 
@@ -27,10 +27,11 @@
 :- compiler_options([xpp_on]).
 #include "standard.h"
 #include "char_defs.h"
-/* For CPP
-    #define STD_FPREFIX(X)    '_$_$_flora_' ## X
-*/
+
+#mode save
+#mode nostring "\!#'"
 #define STD_FPREFIX(X)    '_$_$_flora_''X'
+#mode restore
 
 
 :- import

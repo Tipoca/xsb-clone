@@ -22,19 +22,26 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: gppMakefile.in,v 1.1 1999-09-06 17:32:03 kifer Exp $
+## $Id: gppMakefile.in,v 1.2 1999-09-22 07:30:09 kifer Exp $
 ## 
 
 
 CC=@CC@
 BINDIR=@arch_bindir@
+OBJDIR=@arch_config_prefix@/saved.o
 
-all: gpp install
+all: prepare gpp install
 
-gpp: gpp.c
-	$(CC) gpp.c -o gpp
+gpp: gpp.o
+	$(CC) -o gpp $(OBJDIR)/gpp.o
 
-# GPP is tiny, so we don't keep object code around
+gpp.o: gpp.c
+	$(CC) -c gpp.c
+	@mv -f gpp.o $(OBJDIR) || echo ""
+
+prepare:
+	@ln $(OBJDIR)/gpp.o . 2> /dev/null || echo "" 
+
 install:
-	@mv -f gpp $(BINDIR)
+	@mv -f gpp $(BINDIR) || echo ""
 	@rm -f gpp.o
