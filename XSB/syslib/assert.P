@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.P,v 1.26 2004/08/20 18:16:24 dwarren Exp $
+** $Id: assert.P,v 1.27 2004/08/31 00:25:09 dwarren Exp $
 ** 
 */
 
@@ -44,7 +44,8 @@
 /*	AorZ/\2:  0 for uniform treatment of anonymous variables,	*/
 /*		  2 for special treatment of anonymous variables.	*/
 /*	Index: the number of the argument on which to index; 		*/
-/*		0 for no indexing. 					*/
+/*		0 for no indexing. (If there is index declaration, this	*/
+/*			argument is ignored.)				*/
 /*======================================================================*/
 
 /*======================================================================*/
