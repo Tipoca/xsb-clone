@@ -18,7 +18,7 @@
 ## along with FLORA-2; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.18 2004-06-20 08:33:32 kifer Exp $
+## $Id: Makefile,v 1.19 2004-06-20 08:38:58 kifer Exp $
 ## 
 ##
 

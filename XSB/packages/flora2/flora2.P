@@ -22,7 +22,7 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **
-** $Id: flora2.P,v 1.6 2004-06-20 08:33:35 kifer Exp $
+** $Id: flora2.P,v 1.7 2004-06-20 08:38:59 kifer Exp $
 ** 
 */
 

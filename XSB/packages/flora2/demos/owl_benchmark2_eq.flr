@@ -1,6 +1,6 @@
 %% OWL in Flora-2 (v0.2)
 %%
-%% $Revision: 1.1 $, $Date: 2004-06-20 08:33:33 $
+%% $Revision: 1.2 $, $Date: 2004-06-20 08:38:58 $
 
 % The followings are used by nsexpand.pl to replace shortname URI
 % with fully qualified URI. 
@@ -323,7 +323,7 @@ beyondOWLLite[resource->C, errmsg->" for a restriction class which has a owl:all
 %% from http://www.agfa.com/w3c/euler/rdfs-rules 
 %%
 %% Author: Harry Chen, Tim Finin
-%% $Revision: 1.1 $, $Date: 2004-06-20 08:33:33 $ 
+%% $Revision: 1.2 $, $Date: 2004-06-20 08:38:58 $ 
 %%
 
 % The followings are used by nsexpand.pl to replace shortname URI
@@ -527,7 +527,7 @@ X :: rdfs_Literal :- X : rdfs_Datatype.
 %% Animal sources
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 rdf(uri("http://users.ebiquity.org/~hchen4/ont/animals"),rdf_type,owl_Ontology ).
-rdf(uri("http://users.ebiquity.org/~hchen4/ont/animals"),owl_versionInfo,"$Revision: 1.1 $" ).
+rdf(uri("http://users.ebiquity.org/~hchen4/ont/animals"),owl_versionInfo,"$Revision: 1.2 $" ).
 rdf(animals_Animal,rdf_type,owl_Class ).
 rdf(animals_Animal,rdfs_label,"Animal" ).
 rdf(animals_Male,rdf_type,owl_Class ).
