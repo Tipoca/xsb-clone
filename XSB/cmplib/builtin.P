@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.P,v 1.51 2004-03-08 13:58:24 dwarren Exp $
+** $Id: builtin.P,v 1.52 2004-04-09 20:53:49 dwarren Exp $
 ** 
 */
 
@@ -72,6 +72,7 @@ inline_builtin(psc_set_prop, 2, PSC_SET_PROP).
 inline_builtin(psc_set_spy, 2, PSC_SET_SPY).
 inline_builtin(psc_ep, 2, PSC_EP).
 inline_builtin(psc_set_ep, 2, PSC_SET_EP).
+inline_builtin(psc_data, 2, PSC_DATA).
 
 inline_builtin(conget, 2, CONGET_TERM).
 inline_builtin(conset, 2, CONSET_TERM).
