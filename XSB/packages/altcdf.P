@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: altcdf.P,v 1.1 2003-05-22 14:38:28 tswift Exp $
+** $Id: altcdf.P,v 1.2 2003-12-04 16:49:47 tswift Exp $
 ** 
 */
 
@@ -30,8 +30,9 @@
 :- import bootstrap_package/2 from packaging.
 
 init_cdf:- 
-	bootstrap_package('altCDF','altCDF'),
+	bootstrap_package(['altCDF',cdftp,doc],'altCDF'),
 	[cdf_init_cdf],
 	[cdf_io].
 
 :- init_cdf.
+
