@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.27 1999-06-23 21:26:03 kostis Exp $
+** $Id: emuloop.c,v 1.28 1999-06-24 14:13:48 kostis Exp $
 ** 
 */
 
@@ -1161,7 +1161,9 @@ contcase:     /* the main loop */
     op2 = *(op3);
     deref(op1); 
     deref(op2);
-    if (!isinteger(op1) || !isinteger(op2)) { bitop_exception(lpcreg); }
+    if (!isinteger(op1) || !isinteger(op2)) {
+      arithmetic_abort(op2, "'>>'", op1);
+    }
     else { bld_int(op3, int_val(op2) >> int_val(op1)); }
     goto contcase; 
 
@@ -1173,7 +1175,9 @@ contcase:     /* the main loop */
     op2 = *(op3);
     deref(op1); 
     deref(op2);
-    if (!isinteger(op1) || !isinteger(op2)) { bitop_exception(lpcreg); }
+    if (!isinteger(op1) || !isinteger(op2)) {
+      arithmetic_abort(op2, "'<<'", op1);
+    }
     else { bld_int(op3, int_val(op2) << int_val(op1)); }
     goto contcase; 
 
@@ -1185,7 +1189,9 @@ contcase:     /* the main loop */
     op2 = *(op3);
     deref(op1); 
     deref(op2);
-    if (!isinteger(op1) || !isinteger(op2)) { bitop_exception(lpcreg); }
+    if (!isinteger(op1) || !isinteger(op2)) {
+      arithmetic_abort(op2, "'\\/'", op1);
+    }
     else { bld_int(op3, int_val(op2) | int_val(op1)); }
     goto contcase; 
 
@@ -1197,7 +1203,9 @@ contcase:     /* the main loop */
     op2 = *(op3);
     deref(op1); 
     deref(op2);
-    if (!isinteger(op1) || !isinteger(op2)) { bitop_exception(lpcreg); }
+    if (!isinteger(op1) || !isinteger(op2)) {
+      arithmetic_abort(op2, "'/\\'", op1);
+    }
     else { bld_int(op3, int_val(op2) & int_val(op1)); }
     goto contcase; 
 
@@ -1207,7 +1215,7 @@ contcase:     /* the main loop */
     pad64;
     op2 = *(op3);
     deref(op2);
-    if (!isinteger(op2)) { bitop_exception(lpcreg); }
+    if (!isinteger(op2)) { arithmetic_abort1("'\\'", op2); }
     else { bld_int(op3, ~(int_val(op2))); }
     goto contcase; 
 

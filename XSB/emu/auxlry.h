@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.4 1999-06-23 21:26:01 kostis Exp $
+** $Id: auxlry.h,v 1.5 1999-06-24 14:13:49 kostis Exp $
 ** 
 */
 
@@ -57,9 +57,6 @@ extern byte call_intercept;	/* hitrace or trace_sta for efficiency */
 
 #define unify_float_unification_exception \
   exception_handler("! Float Unification Exception\n")
-
-#define bitop_exception(t_pcreg) \
- t_pcreg = exception_handler("! Bitop Exception\n")
 
 #define complstack_exception(t_pcreg) \
  t_pcreg = exception_handler("! Completion Stack Overflow Exception\n")
