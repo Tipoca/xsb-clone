@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.51 2003-07-18 22:39:11 tswift Exp $
+** $Id: parse.P,v 1.52 2003-07-22 21:47:23 dwarren Exp $
 ** 
 */
 
@@ -528,7 +528,10 @@ parse_directive(import(from(X, Mod)), SymTab) :-
 		sym_insert(Mod, 0, [module], SymTab, _)
 	).
 parse_directive(document_import(from(X, Mod)), SymTab) :-
-	parse_list(X, SymTab, [docim(Mod)], (document_import)).
+	(var(Mod)
+	 ->	error(('Module cannot be a variable. Document_importing: ',X))
+	 ;	parse_list(X, SymTab, [docim(Mod)], (document_import))
+	).
 parse_directive(local(X), SymTab) :-
 	parse_list(X, SymTab, [(local)], (local)).
 parse_directive(index(X), SymTab) :-	% for compiled-code indexing
