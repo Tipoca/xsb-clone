@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: eval.P,v 1.13 2002/08/19 15:44:29 tswift Exp $
+** $Id: eval.P,v 1.14 2002/09/27 22:47:06 tswift Exp $
 ** 
 */
 
@@ -62,15 +62,18 @@ eval(Expr, Res) :-
 	eval(Expr,Res,Expr).
 
 eval(Arg, Res,Expr) :- 
-	term_type(Arg, T), 
-	((T =:= XSB_FREE; T =:= XSB_ATTV) ->
-	    eval_instantiation_abort(Expr)
-	; T =:= XSB_INT -> Res=Arg
-	; T =:= XSB_FLOAT -> Res=Arg
-	; (T =:= XSB_STRING; T =:= XSB_LIST) ->
-		throw(error(type_error(arithmetic_expression,Expr),
-		      ('Non evaluable arithmetic expression:',Expr)))
-	; eval0(Arg, Res,Expr) -> true	/* system defined function */
+	(number(Arg)
+	 ->	Res=Arg
+	 ; var(Arg)
+	 ->	eval_instantiation_abort(Expr)
+	 ; atom(Arg)
+	 ->	throw(error(type_error(arithmetic_expression,Expr),
+			    ('Non evaluable arithmetic expression:',Expr)))
+	 ; term_type(Arg,T),T =:= XSB_LIST
+	 ->	throw(error(type_error(arithmetic_expression,Expr),
+			    ('Non evaluable arithmetic expression:',Expr)))
+	 ; eval0(Arg, Res,Expr)
+	 ->	true	/* system defined function */
 %	; T =:= XSB_STRUCT -> eval1(Arg, Res)	/* user defined function */
 	).
 
