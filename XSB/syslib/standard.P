@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.93 2004/09/16 22:08:06 dwarren Exp $
+** $Id: standard.P,v 1.94 2004/09/28 17:24:43 tswift Exp $
 ** 
 */
 
@@ -289,20 +289,16 @@ put_char(C):-
 
 %ISO
 put_code(S_or_A,C):- 
-	check_open_stream_or_alias(S_or_A,get_char/2,1,output,Str),
-	(var(C) -> 
-	    file_put(Str,C)
-	 ; (integer(C) -> 
+	check_open_stream_or_alias(S_or_A,put_code/2,1,output,Str),
+	(integer(C) -> 
 	        file_put(Str,C)
-	     ;  domain_error(integer_or_variable,C,get_code/2,2) ) ).
+	 ;  domain_error(integer_or_variable,C,put_code/2,2) ).
 
 %ISO
 put_code(C):- 
-	(var(C) -> 
-	    put(C)
-	 ; (integer(C) -> 
+	(integer(C) -> 
 	        put(C)
-	     ;  domain_error(integer_or_variable,C,get_code/2,2) ) ).
+	 ;  domain_error(integer_or_variable,C,put_code/1,1) ).
 
 put(C) :- put(C).
 
