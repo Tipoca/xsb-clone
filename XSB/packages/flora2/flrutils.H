@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrutils.H,v 1.28 2001-07-11 01:38:32 kifer Exp $
+** $Id: flrutils.H,v 1.29 2001-07-14 18:10:04 gzyang Exp $
 **
 */
 
@@ -176,7 +176,6 @@
 	flora_check_filename/1,
 	flora_set_xpp_options/0,
 	flora_set_xpp_options/1,
-	flora_set_xpp_extra_options/1,
 	flora_clear_xpp_options/0,
 	flora_list2conjunct/2,
 	flora_check_workspace/1,
