@@ -5,7 +5,7 @@
 ;; Christian Schlepphorst (schlepph@informatik.uni-freiburg.de)
 ;; Michael Kifer (kifer@cs.sunysb.edu)
 
-;; $Id: flora.el,v 1.9 2001-07-16 05:29:38 kifer Exp $
+;; $Id: flora.el,v 1.10 2001-11-21 18:31:03 kifer Exp $
 
 ;;; Commentary:
 
@@ -128,7 +128,7 @@
     '("\\(\\[\\|\\]\\|{\\|}\\)"
       1 'bold)
     (list (format "\\b\\(%s\\|^#[a-z]\\)\\b" flora-directives-regexp)
-	  1 'flora-font-lock-system-face)
+	  1 '(quote flora-font-lock-system-face))
     '("\\(\\b[A-Za-z0-9_]+\\b *\\((\\b[^)]+\\b)\\)?\\)[ \t\n]*\\((.*)[ \t\C-m]*\\)?\\*?[---=]>"
       1 'font-lock-function-name-face)
     )
