@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.P,v 1.9 1999/12/30 18:17:16 tswift Exp $
+** $Id: basics.P,v 1.10 2001/10/09 18:53:56 dwarren Exp $
 ** 
 */
 
@@ -244,7 +244,7 @@ select(Element, [Element1|Rest_L1], [Element1|Rest_L2]) :-
 for(I,B1,B2) :-
 	(B1 =< B2
 	 ->	forup(I,B1,B2)
-	 ;	fordown(I,B2,B1)
+	 ;	fordown(I,B1,B2)
 	).
 
 forup(L,L,H) :- L =< H.
