@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.71 2004/03/08 14:00:27 dwarren Exp $
+** $Id: std_xsb.P,v 1.72 2004/03/13 21:03:22 dwarren Exp $
 ** 
 */
 
@@ -323,6 +323,7 @@ standard_symbol(writeln, 2, standard).		% Not ISO
 standard_symbol(writeq, 1, standard).
 standard_symbol(writeq, 2, standard).
 standard_symbol(xsb_flag, 2, curr_sym).		% Not ISO
+standard_symbol(set_xsb_flag, 2, curr_sym).	% Not ISO
 standard_symbol((attribute), 1, atts).
 
 standard_symbol(default_error_handler, 1, error_handler).		
