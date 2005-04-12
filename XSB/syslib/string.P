@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string.P,v 1.28 2004/04/12 13:09:47 dwarren Exp $
+** $Id: string.P,v 1.29 2005/04/09 01:02:59 tswift Exp $
 ** 
 */
 
@@ -154,7 +154,7 @@ compute_options([H|T],Structure):-
 	compute_options(T,Structure).
 
 compute_option(ignore_ops(Flag),Structure):- 
-	(Flag = false ; Flag = canonical), !,
+	(Flag = true ; Flag = canonical), !,
 	option_structure(Structure,Flag,_Quoted,_NumVars).
 compute_option(quoted(Flag),Structure):- 
 	boolean(Flag),!,
