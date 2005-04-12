@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.42 2005-02-11 01:55:59 vidrevich Exp $
+** $Id: system_xsb.c,v 1.43 2005-04-12 18:38:13 tswift Exp $
 ** 
 */
 
@@ -634,7 +634,31 @@ static int xsb_spawn (char *progname, char *argv[], int callno,
 
   if (callno == SPAWN_PROCESS) {
 #ifdef WIN_NT
-    pid = spawnvp(P_NOWAIT, progname, argv);
+
+    static char bufQuoted[MAX_CMD_LEN + 2*(MAX_SUBPROC_PARAMS + 2)];
+    const char * argvQuoted[MAX_SUBPROC_PARAMS + 2];
+    char *  argq = bufQuoted;
+    char *  arge = bufQuoted + sizeof(bufQuoted);
+    char ** argp = argv;
+    size_t  len  = 0; 
+    int     i;
+
+    for (i = 0; i < MAX_SUBPROC_PARAMS + 2; ++i) {
+      if (*argp && (argq + (len = strlen(*argp)) + 4 < arge)) {
+         argvQuoted[i] = argq;
+         *argq++ = '"';
+         strncpy(argq, *argp, len);
+         argq += len;
+         *argq++ = '"';
+         *argq++ = '\0';
+         ++argp;
+      } else {
+         *argq = '\0';
+         argvQuoted[i] = 0;
+         break;
+      }
+    }
+    pid = spawnvp(P_NOWAIT, progname, argvQuoted);
 #else
     pid = fork();
 #endif
