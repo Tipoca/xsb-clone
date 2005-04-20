@@ -10,7 +10,7 @@ class expressions.  These provers may use based on structural
 subsumption techniques (e.g. as used in CLASSIC~\cite{PMBRB91},
 LOOM~\cite{MacB94} and GRAIL~\cite{RBGHNS97}); tableaux
 construction~\cite{HoPS99}(redo Bibs); or stable model
-generation~\cite{Swif03} --- the CDF theorem prover is based on the
+generation~\cite{Swif04} --- the CDF theorem prover is based on the
 last technique.
 
 At a high level, the CDF prover first translates a class expression
@@ -168,7 +168,7 @@ principle relations between individuals (Definition~\ref{def:redund}).
 For visualization purposes, the above structure is also portrayed via
 a structure graph in Figure~\ref{fig:struct1}~\footnote{Structure
 graphs are used in this paper only for expository purposes,
-\cite{Swif03} provides definitions of a structure graph for ontology
+\cite{Swif04} provides definitions of a structure graph for ontology
 languages.}.  The vertices of a structure graph correspond to the
 individuals in the structure labelled with the principle classes to
 which the individuals belong, along with any uniqueness constraints
@@ -260,7 +260,7 @@ $hasAttr(Id1,R,C2)$, $maxAttr(Id1,R,C2,N)$,  \\
 \> \> \> \> \> \> \>		{\rm /* cf. Definition~\ref{def:redund} */}\\
 %------------------------------------------------------------------------------------
 \ \\
-\>  \underline{LocalClassExpression($Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $)}  \\
+\>  \underline{LocalClassExpression($Expr $)}  \\
 \> \> Let $\cF = getRelevantFacts(Id)$ \\
 \> \> $CE = Id$ \\
 \> \> For each $f \in \cF$ \\
@@ -280,10 +280,10 @@ $hasAttr(Id1,R,C2)$, $maxAttr(Id1,R,C2,N)$,  \\
 \> \> return CE \\
 \\
 %------------------------------------------------------------------------------------
-\>  \underline{LocalClassFormula($Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $)}  \\
+\>  \underline{LocalClassFormula($ Expr $)}  \\
 \> \> Let $\cF = getRelevantFacts(Id)$ \\
-\> \> If $Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $ is a class identifier, CF = $elt(X_0,Id)$ \\
-\> \> Else If $Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $ is an object identifier $oid(I)$ \\
+\> \> If $ Exp $ is a class identifier, CF = $elt(X_0,Id)$ \\
+\> \> Else If $ Exp $ is an object identifier $oid(I)$ \\
 \> \> \> CF = $elt(X_0,cid(I)) 
 	\wedge \forall X_1 [elt(X_1,cid(I)) \Ra X_1 = X_0]$ \\
 \> \> while $\cF$ is non-empty \\
@@ -318,8 +318,8 @@ We now turn to the formalization of the algorithm sketched in
 Example~\ref{ex:type1cc}.  To start, we begin by formalizing the
 construction of local class expressions and formulas in
 Figure~\ref{fig:lcelcf}.  Construction of both local class expressions
-for an identifier $Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $ begins with obtaining all of the facts relevant
-to $Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $, as described by the routine {\sf getRelevantFacts($Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $)}.
+for an identifier $Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $ begins with obtaining all of the facts relevant
+to $Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $, as described by the routine {\sf getRelevantFacts($Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $)}.
 This routine begins with a transformation that is purely technical.
 In most parts of CDF an object is designated via an object identifier
 $oid(I)$, but in class expressions an object is cast into a singleton
@@ -336,10 +336,10 @@ relevant sufficiency rules using those class identifiers that occur
 directly in those rules (Definition~\ref{def:suffic}).  And finally,
 it finds an irredundant basis for that set.
 
-A local class expression for a given class or object identifier, $Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $,
+A local class expression for a given class or object identifier, $Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $,
 is constructed by the routine {\sf LocalClassExpression(Id)}, which
-begins by calling {\sf getRelevantFacts($Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $)} to obtain the set of
-facts $\cF$ relevant to $Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $.  Each fact in $\cF$ is translated to a
+begins by calling {\sf getRelevantFacts($Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $)} to obtain the set of
+facts $\cF$ relevant to $Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $.  Each fact in $\cF$ is translated to a
 class expression, and the class expressions cojoined together to form
 a class expression $CE$.  If an object identifier, say $oid(I)$ occurs
 in $CE$, all occurrences of $oid(I)$ are replaced by $cid(I)$.  In
@@ -399,8 +399,8 @@ In a more general case, $\cO$ will also contain object identifiers,
 and the above argument, while it becomes more complicated, remains
 essentially the same, so that the local class formula is
 $TH(\cO)$-equivalent to the instance axioms applied to all facts in
-{\sf getRelevantFacts($Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $)}.  In addition, it is an easy induction to
-show that for any identifier $Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $ in a CDF instance, {\sc
+{\sf getRelevantFacts($Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $)}.  In addition, it is an easy induction to
+show that for any identifier $Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $ in a CDF instance, {\sc
 localClassFormula(Id)} is logically equivelent to
 $localClassExpression(Id)^{\cI}[X_0]$
 %
@@ -424,9 +424,9 @@ Details can be added to this argument to show:
 
 %--------------------------------------------------------------------------
 \begin{lemma} \label{lem:localce}
-Let $\cO$ be a well-typed, acceptable CDF instance, $Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $ be an object
+Let $\cO$ be a well-typed, acceptable CDF instance, $Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $ be an object
 or class identifier in $\cO$, $\cO_{Id}$ be {\sf
-getRelevantFacts($Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $)}, and $\cO_{isa}$ be the {\tt isa/2} facts
+getRelevantFacts($Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $)}, and $\cO_{isa}$ be the {\tt isa/2} facts
 in $\cO$.
 \begin{itemize}
 \item $TH(\cO_{Id} \cup \cO_{isa}) \vdash \cO_{Id}^{\cI}
@@ -442,19 +442,19 @@ $TH(\cO_{Id} \cup \cO_{isa}) \vdash \cO_{Id}^{\cI}
 
 \paragraph*{Combining Local Class Formulas to Check Consistency}
 The algorithm for checking consistency of an object or class
-identifier $Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $ in a CDF instance $\cO$ is presented schematically in
+identifier $Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $ in a CDF instance $\cO$ is presented schematically in
 Figure~\ref{fig:type1cc}.  We assume that $\cO$ is well-typed and
 acceptable.  The algorithm begins with a call {\sf
-checkIdConsistency(\{$Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $\})}.  As indicated in the previous
-discussion, {\sf checkIdConsistency(\{$Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $\}} first transforms
-information about $Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $ into a local class expression; then checks
+checkIdConsistency(\{$Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $\})}.  As indicated in the previous
+discussion, {\sf checkIdConsistency(\{$Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $\}} first transforms
+information about $Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $ into a local class expression; then checks
 consistency of the local class expression, and constructs new local
 class expressions as needed.  Note that {\sf
-localClassExpression($Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $)} automatically transforms object
+localClassExpression($Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $)} automatically transforms object
 identifiers into classes with uniqueness constraints, so {\sf
-checkIdConsistency(\{$Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $\})} can be applied to object identifiers as
+checkIdConsistency(\{$Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $\})} can be applied to object identifiers as
 well as class identifiers.  In addition, as Figure~\ref{fig:lcelcf}
-indicates, {\sf localClassExpression($Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $)} also handles class
+indicates, {\sf localClassExpression($Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $)} also handles class
 identifiers with uniqueness constraints.
 
 %------------------------------------------------------------------------------------
@@ -470,7 +470,7 @@ foo\=foo\=foo\=foo\=foo\=foo\=foooo\=foooooooooooooooo \=fooooooooo\=\kill
 \> \> 	{\rm /* Assume consistency is being checked with respect to a
 		well-typed, acceptable CDF instance $\cO$ */} \\
 \> \> 	Let $CSExpr$ be $\bigwedge_{Id \in CSet} \{$ 
-			LocalClassExpr($Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $) $\}$,  \\
+			LocalClassExpr($Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $) $\}$,  \\
 \> \> 	If checkCeConsistency($CSExpr$,$Structure$) succeeds  \\
 \> \> \> 	    checkContexts($Structure$) \\
 \> \>     Else emit cdf warning and abort \\
@@ -555,7 +555,7 @@ $\vdash_{inh}$ relation (Definition~\ref{def:redund}).  This
 terminology is not used outside of this section.
 %------------------
 \begin{definition}
- Let $\cO$ be a CDF instance.  An identifier $Id: consist.tex,v 1.1 2005-04-12 23:48:59 tswift Exp $ {\em directly
+ Let $\cO$ be a CDF instance.  An identifier $Id: consist.tex,v 1.2 2005-04-20 17:46:08 tswift Exp $ {\em directly
  depends on} an identifier $Id_{targ}$ if $\cO \vdash_{inh} f$, and
  $f$ is {\tt hasAttr(Id,R,Id$_{targ}$)}, {\tt
  allAttr(Id,R,Id$_{targ}$)}, {\tt maxAttr(Id,R,Id$_{targ}$)}, or {\tt
