@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.47 2005-04-22 18:36:02 dwarren Exp $
+** $Id: emudef.h,v 1.48 2005-04-22 20:34:42 dwarren Exp $
 ** 
 */
 
@@ -278,7 +278,6 @@ unsigned long dec[8] = {0xffffffff,0xffffffff,0xffffffff,0xffffffff,
     lpcreg = (pb)get_ep(PSC);						\
   } else {								\
      if (asynint_val & KEYINT_MARK) {                                   \
-       lpcreg = (pb)get_ep(PSC);					\
         synint_proc(CTXTc PSC, MYSIG_KEYB);	                      	\
         lpcreg = pcreg;							\
         asynint_val = asynint_val & ~KEYINT_MARK;			\
