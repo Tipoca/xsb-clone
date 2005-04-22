@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.P,v 1.34 2005-01-17 20:52:18 dwarren Exp $
+** $Id: odbc_call.P,v 1.35 2005-04-22 13:48:20 vidrevich Exp $
 **
 */
 
@@ -1967,6 +1967,9 @@ odbc_data_sources(N,DataSourceName,Description) :-
 	).
 odbc_data_sources(_,DataSourceName,Description) :-
 	odbc_data_sources(2,DataSourceName,Description).
+
+odbc_connection_exists(ConnectionName):-
+        odbc_connection(ConnectionName,_).
 
 odbc_get_info(InfoType, Info) :-
 	odbc_get_info(_, InfoType, Info).
