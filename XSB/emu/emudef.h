@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.46 2005-02-04 20:02:15 dwarren Exp $
+** $Id: emudef.h,v 1.47 2005-04-22 18:36:02 dwarren Exp $
 ** 
 */
 
@@ -274,20 +274,19 @@ unsigned long dec[8] = {0xffffffff,0xffffffff,0xffffffff,0xffffffff,
 /*======================================================================*/
 
 #define call_sub(PSC) {							\
-  if ( (asynint_val) | int_val(cell(interrupt_reg)) ) {   	        \
+  if ( !(asynint_val) & !int_val(cell(interrupt_reg)) ) {   	        \
+    lpcreg = (pb)get_ep(PSC);						\
+  } else {								\
      if (asynint_val & KEYINT_MARK) {                                   \
+       lpcreg = (pb)get_ep(PSC);					\
         synint_proc(CTXTc PSC, MYSIG_KEYB);	                      	\
         lpcreg = pcreg;							\
         asynint_val = asynint_val & ~KEYINT_MARK;			\
-        asynint_code = 0;		         			\
+        asynint_code = 0;						\
      } else if (int_val(cell(interrupt_reg))) {                         \
         synint_proc(CTXTc PSC, MYSIG_ATTV);		                \
         lpcreg = pcreg;							\
-        /* Set PSC to '_$attv_int'/2, so that the later call of	*/	\
-        /* intercept(PSC) will set the return point, pcreg, to	*/	\
-        /* '_$attv_int'/2.					*/	\
-        PSC = (Psc) flags[MYSIG_ATTV+INT_HANDLERS_FLAGS_START];		\
-     } else if (asynint_val & MSGINT_MARK) {                            \
+      } else if (asynint_val & MSGINT_MARK) {                           \
         pcreg = (byte *)get_ep(PSC);					\
         intercept(CTXTc PSC);						\
         lpcreg = pcreg;							\
@@ -299,10 +298,31 @@ unsigned long dec[8] = {0xffffffff,0xffffffff,0xffffffff,0xffffffff,
         lpcreg = (byte *)get_ep(PSC);					\
         asynint_code = 0;		         			\
      }                                                                  \
+  }									\
+}
+
+#define proceed_sub {							\
+  if ( !(asynint_val) & !int_val(cell(interrupt_reg)) ) {		\
+     lpcreg = cpreg;							\
   } else {								\
-    lpcreg = (pb)get_ep(PSC);						\
-    /* check_glstack_overflow(get_arity(PSC),	  */    		\
-    /*                       lpcreg,OVERFLOW_MARGIN); */		\
+     if (asynint_val & KEYINT_MARK) {					\
+        synint_proc(CTXTc true_psc, MYSIG_KEYB);			\
+        lpcreg = pcreg;							\
+        asynint_val = asynint_val & ~KEYINT_MARK;			\
+        asynint_code = 0;						\
+     } else if (asynint_val & MSGINT_MARK) {				\
+        lpcreg = cpreg;  /* ignore MSGINT in proceed */			\
+     } else if (int_val(cell(interrupt_reg))) {				\
+        synint_proc(CTXTc true_psc, MYSIG_ATTV);			\
+        lpcreg = pcreg;							\
+      }  else {								\
+        if (asynint_val & PROFINT_MARK) {				\
+          asynint_val &= ~PROFINT_MARK;					\
+          log_prog_ctr(lpcreg);						\
+        }								\
+        lpcreg = cpreg;							\
+        asynint_code = 0;						\
+     }									\
   }									\
 }
 

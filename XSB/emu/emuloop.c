@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.105 2005-03-08 22:21:57 tswift Exp $
+** $Id: emuloop.c,v 1.106 2005-04-22 18:36:03 dwarren Exp $
 ** 
 */
 
@@ -1604,8 +1604,7 @@ contcase:     /* the main loop */
   XSB_End_Instr()
 
   XSB_Start_Instr(proceed,_proceed)  /* PPP */
-    handle_xsb_profile_interrupt;
-    lpcreg = cpreg;
+     proceed_sub;
   XSB_End_Instr()
 
   XSB_Start_Instr(xsb_execute,_xsb_execute) /* PPP-S */
