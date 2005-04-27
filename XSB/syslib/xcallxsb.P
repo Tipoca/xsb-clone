@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.P,v 1.9.6.2 2004/10/18 20:48:45 ruim Exp $
+** $Id: xcallxsb.P,v 1.12 2005/01/14 18:32:05 ruim Exp $
 ** 
 */
 
@@ -26,6 +26,7 @@
 :- compiler_options([sysmod,xpp_on]).
 #include "standard.h"
 #include "sig_xsb.h"
+#include "flag_defs_xsb.h"
 
 :- import conget/2, conset/2 from gensym.
 
@@ -84,6 +85,16 @@ do_pcall(Call,VarTerm) :-
 	'_$savecp'(C), 
 	goal_cut_trans(Y,X,C),
 	call_expose(X).
+
+
+string_to_term(Atom,Goal) :-
+	stat_flag(STDERR_BUFFERED,StderrBuffered),
+	1 =:= StderrBuffered,						% If stdio is redirected and buffered we want to capture error messages
+	!,
+	file_open(Atom,sr,Fp),
+	file_read(Fp,Goal,_),
+	file_close(Fp).
+
 
 string_to_term(Atom,Goal) :-
 	file_open(Atom,sr,Fp),

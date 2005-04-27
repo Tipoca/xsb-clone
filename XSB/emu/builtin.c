@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.194 2005-02-23 20:52:16 dwarren Exp $
+** $Id: builtin.c,v 1.195 2005-04-27 04:20:13 evansbj Exp $
 ** 
 */
 
@@ -193,7 +193,7 @@ extern double realtime_count; /* from subp.c */
 
 /* ------- variables also used in other parts of the system -----------	*/
 
-Cell flags[64];			  /* System flags + user flags */
+Cell flags[65];			  /* System flags + user flags */
 
 /* ------- utility routines -------------------------------------------	*/
 
