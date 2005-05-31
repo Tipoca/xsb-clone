@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: private_builtin.in,v 1.6 2005-01-14 18:30:42 ruim Exp $
+** $Id: private_builtin.in,v 1.7 2005-05-31 18:38:23 kifer Exp $
 ** 
 */
 
@@ -37,22 +37,22 @@
 #include <signal.h>
 #include <errno.h>
 #include <string.h>
-#include <setjmp_xsb.h>
 #include <stdlib.h>
 #ifndef WIN_NT
 #include <unistd.h> 
 #endif
 #include <sys/stat.h>
 
+#include "setjmp_xsb.h"
 #include "auxlry.h"
-#include "cell.h"
-#include "xsberror.h"
+#include "cell_xsb.h"
+#include "error_xsb.h"
 #include "cinterf.h"
 #include "memory.h"
-#include "psc.h"
-#include "heap.h"
+#include "psc_xsb.h"
+#include "heap_xsb.h"
 #include "register.h"
-#include "flags.h"
+#include "flags_xsb.h"
 
 /* The folowing function must be defined. What's inside doesn't matter */
 xsbBool private_builtin(void)
