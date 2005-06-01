@@ -1,10 +1,10 @@
-/* File:      flrimport.H
+/* File:      flora2.P
 **
-** Author(s): kifer
+** Author(s): Michael Kifer
 **
 ** Contact:   flora-users@lists.sourceforge.net
-**
-** Copyright (C) The Research Foundation of SUNY, 1999-2001
+** 
+** Copyright (C) The Research Foundation of SUNY, 1998 - 2005
 ** 
 ** FLORA-2 is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -20,24 +20,27 @@
 ** along with FLORA-2; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flrimport.H,v 1.14 2004-08-24 17:46:52 kifer Exp $
 **
+** $Id: flora2.P,v 1.24 2005-06-01 04:12:16 kifer Exp $
+** 
 */
 
 
-:- import
-	append/3,
-	copy_term/2
-   from basics.
-:- import flora_load_module_internal/2 from flrutils.
-:- import 
-        flora_hilog_module_predicate_symbol/2,
-        flora_tabled_hilog_module_predicate_symbol/2
-    from flrwrapper.
-:- import flora_error_line/1, flora_error_line/2 from flrprint.
+:- export bootstrap_flora/0,  flora_shell/0.
 
-:- export
-	flImportPredicate/4.
+flora_msg :-
+	nl,
+	nl,
+	writeln('Thank you for your interest in the FLORA-2 package.'),
+	nl,
+	writeln('This package is distributed separately.'),
+	writeln('It can be downloaded from its own Web site:'),
+	nl,
+	writeln('       http://flora.sourceforge.net/download.php'),
+	nl,
+	writeln('                        The FLORA-2 team.'),
+	nl,
+	nl.
 
-
-
+bootstrap_flora :- flora_msg.
+flora_shell :- flora_msg.
