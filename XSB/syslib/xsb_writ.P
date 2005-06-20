@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.P,v 1.22 2005/01/14 18:32:06 ruim Exp $
+** $Id: xsb_writ.P,v 1.23 2005/04/09 01:03:00 tswift Exp $
 ** 
 */
 
@@ -91,7 +91,13 @@ l_write(File,T,Prec) :-
 
 l_write(File,_,_,0) :-
 	!,
-	file_puttoken(File, TK_ATOM, '...').
+	file_puttoken(File, XSB_STRING, '...').
+l_write(File, Int, _, _) :-
+	integer(Int), !,
+	file_puttoken(File, XSB_INT, Int).
+l_write(File, Flt, _, _) :-
+	float(Flt), !,
+	file_puttoken(File, XSB_FLOAT, Flt).
 l_write(File, Var, _, _D) :- 
 	term_type(Var, Type), 
 	(Type =:= XSB_FREE; Type =:= XSB_ATTV),
