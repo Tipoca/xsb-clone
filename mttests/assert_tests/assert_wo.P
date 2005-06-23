@@ -1,7 +1,7 @@
 
 % This tests only writing for assert.
 
-:- index(p/2,tries).
+:- index(p/2,trie).
 :- dynamic(p/2).
 
 %%% for(?I,+B1,+B2) nondeterministically binds I to all integer values

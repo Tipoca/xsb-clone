@@ -31,7 +31,7 @@ do_f(H) :-
 	writeln( H, done ).
 
 do_func(0,_) :- !.
-do_func(N,F) :- !.
+do_func(N,F) :- !,
 	functor(Fun,F,N),
 	fill_functor( F, 1, N, F ),
 	N1 is N - 1,
