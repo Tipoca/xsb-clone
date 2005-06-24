@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.30 2005-03-05 07:51:06 kifer Exp $
+** $Id: io_builtins_xsb_i.h,v 1.31 2005-06-24 14:36:31 dwarren Exp $
 ** 
 */
 
@@ -357,7 +357,7 @@ inline static xsbBool file_function(CTXTdecl)
     ** the list of codes read. Rewritten by DSW 5/18/04 to allow \0 in lines.
     ** Prolog invocation: file_read_line_list(+File, -Str) */
     char *atomname;
-    char c;
+    int c;
     Cell new_list;
     CPtr top = NULL;
     int i;
