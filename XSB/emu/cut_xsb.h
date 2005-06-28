@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.14 2005-01-14 18:30:54 ruim Exp $
+** $Id: cut_xsb.h,v 1.15 2005-06-28 17:12:05 dwarren Exp $
 ** 
 */
 
@@ -56,26 +56,26 @@
 /*									*/
 /*----------------------------------------------------------------------*/
 
+#define IS_TABLE_INSTRUC(instruc)		\
+   (instruc == check_complete || 		\
+    instruc == resume_compl_suspension ||	\
+    instruc == answer_return ||			\
+    instruc == tabletrust ||			\
+    instruc == tableretry )	       
+
+
 #define CHECK_TABLE_CUT(instruc)       \
-  if (check_table_cut)                 \
-    switch (instruc) {                 \
-    case check_complete:               \
-    case resume_compl_suspension:      \
-    case answer_return:                \
-    case tabletrust:                   \
-    case tableretry:                   \
-      if (!is_completed(tcp_subgoal_ptr(breg))) {\
+  if (check_table_cut && IS_TABLE_INSTRUC(instruc) && \
+      !is_completed(tcp_subgoal_ptr(breg)))  {\
           Psc psc = TIF_PSC(subg_tif_ptr(tcp_subgoal_ptr(breg)));\
           Psc call_psc = *(*((Psc **)ereg-1)-1);  \
+          printf("Illegal cut over incomplete tabled predicate: %s/%d, from within a call to %s/%d\n", \
+		    get_name(psc), get_arity(psc),          \
+		    get_name(call_psc), get_arity(call_psc));          \
           xsb_abort("Illegal cut over a tabled predicate: %s/%d, from within a call to %s/%d\n", \
 		    get_name(psc), get_arity(psc),          \
 		    get_name(call_psc), get_arity(call_psc));          \
-      }                                \
-      break;                           \
-    default:                           \
-      break;                           \
-    }
-
+      }
 
 #define cut_code(OP1)	                                        \
    { CPtr cut_breg;					        \
