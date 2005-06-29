@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: interprolog_xsb_i.h,v 1.2 2005-01-14 18:31:19 ruim Exp $
+** $Id: interprolog_xsb_i.h,v 1.3 2005-06-29 13:58:15 vidrevich Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 #ifdef XSB_INTERPROLOG
 
   case INTERPROLOG_CALLBACK: 
-          return interprolog_callback(); 
+          return interprolog_callback(CTXT); 
 
 #endif
 

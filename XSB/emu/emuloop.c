@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.107 2005-04-27 04:20:14 evansbj Exp $
+** $Id: emuloop.c,v 1.108 2005-06-29 13:58:14 vidrevich Exp $
 ** 
 */
 
@@ -1926,15 +1926,12 @@ return 0;
 /*======================================================================*/
 /*======================================================================*/
 
-DllExport int call_conv xsb(int flag, int argc, char *argv[])
+DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
 { 
    char *startup_file;
    FILE *fd;
    unsigned int magic_num;
    static double realtime;	/* To retain its value across invocations */
-#ifdef MULTI_THREAD
-   static th_context *th ;
-#endif
 
    extern void dis(xsbBool);
    extern char *init_para(int, char **);
@@ -1971,9 +1968,7 @@ DllExport int call_conv xsb(int flag, int argc, char *argv[])
      realtime = real_time();
      setbuf(stdout, NULL);
      startup_file = init_para(argc, argv);	/* init parameters */
-#ifdef MULTI_THREAD
-     th = malloc( sizeof( th_context ) ) ;
-#endif
+
      init_machine(CTXT);	/* init space, regs, stacks */
      init_inst_table();		/* init table of instruction types */
      init_symbols();		/* preset a few symbols in PSC table */

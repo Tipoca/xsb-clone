@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: main_xsb.c,v 1.6 2005-01-14 18:31:21 ruim Exp $
+** $Id: main_xsb.c,v 1.7 2005-06-29 13:58:15 vidrevich Exp $
 ** 
 */
 
@@ -56,6 +56,10 @@
 
 int main(int argc, char *argv[])
 { 
+#ifdef MULTI_THREAD
+   static th_context *th ;
+#endif
+
 #ifdef HAVE_SOCKET
 #ifdef WIN_NT
   INT err;
@@ -73,10 +77,14 @@ int main(int argc, char *argv[])
 #endif
 #endif
 
-  xsb(0, argc, argv);  /* init xsb */
+#ifdef MULTI_THREAD
+     th = malloc( sizeof( th_context ) ) ;
+#endif
 
-  xsb(1, 0, 0);        /* normal execution */
-  xsb(2, 0, 0);        /* when halts, exit */
+  xsb(CTXTc 0, argc, argv);  /* init xsb */
+
+  xsb(CTXTc 1, 0, 0);        /* normal execution */
+  xsb(CTXTc 2, 0, 0);        /* when halts, exit */
   return 0;
 }
 
