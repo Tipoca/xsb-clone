@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.108 2005-06-29 13:58:14 vidrevich Exp $
+** $Id: emuloop.c,v 1.109 2005-06-29 18:01:19 dwarren Exp $
 ** 
 */
 
@@ -1016,7 +1016,7 @@ contcase:     /* the main loop */
     /* This is not a good way to do this, but until we put retract into C,
        or add new builtins, it will have to do. */
     for (i = 0; i <= 2; i++) {
-      if (opa[i] != 0) {
+      if (indexreg[i] != 0) {
         if (indexreg[i] > 0x80) {
           int k, depth = 0;
           Cell *stk[MAXTOINDEX];
