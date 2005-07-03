@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.14 2005-02-04 21:50:24 dwarren Exp $
+** $Id: memory_xsb.c,v 1.15 2005-07-03 22:27:44 ruim Exp $
 ** 
 */
 
@@ -55,6 +55,7 @@
 #include "choice.h"
 #include "error_xsb.h"
 #include "macro_xsb.h"
+#include "thread_xsb.h"
 
 #include "flags_xsb.h"
 #include "subp.h"
@@ -87,7 +88,9 @@ byte *mem_alloc(unsigned long size)
 
     size = (size+7) & ~0x7 ;	      /* round to 8 */
     pspacesize += size;
+    SYS_MUTEX_LOCK(MUTEX_MEM);
     ptr = (byte *) malloc(size);
+    SYS_MUTEX_UNLOCK(MUTEX_MEM);
 #if defined(GENERAL_TAGGING)
     //    printf("mem_alloc %x %x\n",ptr,ptr+size);
     extend_enc_dec_as_nec(ptr,ptr+size);
@@ -102,7 +105,9 @@ void mem_dealloc(void *addr, unsigned long size)
 {
     size = (size+7) & ~0x7 ;	      /* round to 8 */
     pspacesize -= size;
+    SYS_MUTEX_LOCK(MUTEX_MEM);
     free(addr);
+    SYS_MUTEX_UNLOCK(MUTEX_MEM);
 }
 
 
