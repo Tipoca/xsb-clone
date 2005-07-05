@@ -1,0 +1,9 @@
+
+
+:- table p/3.
+
+p(A,A,N).
+p(A,C,N) :- A < N, B is A + 1, p(B, C, N).
+
+sc1(N,F) :- p(1,X,N), writeln(F,X), fail.
+
