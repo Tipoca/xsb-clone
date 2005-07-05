@@ -35,7 +35,7 @@ fi
 
 for t_dir in $TESTS
 do
-	if [ -d $t_dir ]
+	if [ -d $t_dir -a -f $t_dir/test.sh ]
 	then
 		(	echo "trying $t_dir"
 			cd $t_dir
