@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.174 2005-05-13 00:08:32 kifer Exp $
+## $Id: configure.in,v 1.175 2005-07-06 11:57:00 kostis Exp $
 ##
 ##
 
@@ -1418,9 +1418,6 @@ case "$canonical" in
                     *i*86-*-*) AC_DEFINE(SOLARIS_x86)
                     ;;
                     *)
-                        if test "$CC" = "gcc" ; then
-                            CFLAGS="-msupersparc ${CFLAGS}"
-                        fi
                     ;;
                 esac
                 
