@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.43 2005-04-27 04:20:15 evansbj Exp $
+** $Id: init_xsb.c,v 1.44 2005-07-06 18:29:13 dwarren Exp $
 ** 
 */
 
@@ -729,6 +729,8 @@ void init_machine(CTXTdecl)
   glstack	= init_glstack ;
   tcpstack	= init_tcpstack ;
   complstack	= init_complstack ;
+
+  findall_solutions = NULL;
 
 /*  call_intercept = init_call_intercept ; */
 #endif

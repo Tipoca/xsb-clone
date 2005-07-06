@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.h,v 1.10 2005-01-14 18:31:19 ruim Exp $
+** $Id: io_builtins_xsb.h,v 1.11 2005-07-06 18:29:14 dwarren Exp $
 ** 
 */
 
@@ -51,3 +51,8 @@ extern xsbBool quotes_are_needed(char *string);
 int read_canonical_term(CTXTdeclc FILE *, STRFILE *, int);
 
 void print_term_canonical(CTXTdeclc FILE *, Cell, int);
+
+extern int get_more_chunk(CTXTdecl);
+extern void findall_copy_to_heap(CTXTdeclc Cell, CPtr, CPtr *);
+extern int findall_init_c(CTXTdecl);
+extern void findall_free(CTXTdeclc int);
