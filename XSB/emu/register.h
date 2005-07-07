@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: register.h,v 1.8 2005-01-14 18:31:28 ruim Exp $
+** $Id: register.h,v 1.9 2005-07-07 16:55:52 dwarren Exp $
 ** 
 */
 
@@ -26,6 +26,7 @@
 #define __REGISTER_H__
 
 #include "psc_xsb.h"
+#include "varstring_xsb.h"
 
 #ifndef MULTI_THREAD
 
@@ -69,6 +70,12 @@ extern CPtr bdfreg;
 extern CPtr hdfreg;
 extern CPtr *trdfreg;
 #endif
+
+/*---- global thread-specific char buffers for local builtins ----------*/
+extern VarString *tsgLBuff1;
+extern VarString *tsgLBuff2;
+extern VarString *tsgSBuff1;
+extern VarString *tsgSBuff2;
 
 /*---- other stuff added for the SLG-WAM -------------------------------*/
 

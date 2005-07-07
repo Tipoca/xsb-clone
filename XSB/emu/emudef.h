@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.49 2005-05-03 17:14:35 dwarren Exp $
+** $Id: emudef.h,v 1.50 2005-07-07 16:55:50 dwarren Exp $
 ** 
 */
 
@@ -65,6 +65,11 @@ CPtr bdfreg;
 CPtr hdfreg;
 CPtr *trdfreg;
 #endif
+
+VarString *tsgLBuff1;
+VarString *tsgLBuff2;
+VarString *tsgSBuff1;
+VarString *tsgSBuff2;
 
 /*
  * interrupt_reg points to interrupt_counter, which stores the number of

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring_xsb.h,v 1.6 2005-01-14 18:31:54 ruim Exp $
+** $Id: varstring_xsb.h,v 1.7 2005-07-07 16:55:53 dwarren Exp $
 ** 
 */
 
@@ -100,7 +100,7 @@ extern DllExport struct varstr_ops VarStrOps;
    the VarString */
 #define XSB_StrCreate(vstr)    	     varstring_create(vstr)
 /* Assumes vstr points to an uninitialized VarString. Initializes it. */
-#define XSB_StrInit(vstr)    	     varstring_Init(vstr)
+#define XSB_StrInit(vstr)    	     varstring_init(vstr)
 
 
 #define VARSTRING_INCLUDED

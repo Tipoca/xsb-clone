@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.109 2005-06-29 18:01:19 dwarren Exp $
+** $Id: emuloop.c,v 1.110 2005-07-07 16:55:51 dwarren Exp $
 ** 
 */
 
@@ -50,6 +50,7 @@
 #include "heap_xsb.h"
 #include "sig_xsb.h"
 #include "context.h"
+#include "varstring_xsb.h"
 #include "emudef.h"
 #include "loader_xsb.h"
 #include "binding.h"

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.44 2005-07-06 18:29:13 dwarren Exp $
+** $Id: init_xsb.c,v 1.45 2005-07-07 16:55:51 dwarren Exp $
 ** 
 */
 
@@ -64,6 +64,7 @@
 #include "timer_defs_xsb.h"
 #include "sig_xsb.h"
 #include "thread_xsb.h"
+#include "varstring_xsb.h"
 
 /*-----------------------------------------------------------------------*/
 
@@ -734,6 +735,16 @@ void init_machine(CTXTdecl)
 
 /*  call_intercept = init_call_intercept ; */
 #endif
+
+  tsgLBuff1 = (VarString *)malloc(sizeof(VarString));
+  XSB_StrInit(tsgLBuff1);
+  tsgLBuff2 = (VarString *)malloc(sizeof(VarString));
+  XSB_StrInit(tsgLBuff2);
+  tsgSBuff1 = (VarString *)malloc(sizeof(VarString));
+  XSB_StrInit(tsgSBuff1);
+  tsgSBuff2 = (VarString *)malloc(sizeof(VarString));
+  XSB_StrInit(tsgSBuff2);
+
   /* Allocate Stack Spaces and set Boundary Parameters
      ------------------------------------------------- */
   pdl.low = (byte *)real_alloc(pdl.init_size * K);
