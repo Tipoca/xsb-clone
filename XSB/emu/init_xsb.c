@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.46 2005-07-08 20:25:21 dwarren Exp $
+** $Id: init_xsb.c,v 1.47 2005-07-08 21:25:21 dwarren Exp $
 ** 
 */
 
@@ -732,6 +732,9 @@ void init_machine(CTXTdecl)
   complstack	= init_complstack ;
 
   findall_solutions = NULL;
+
+#define MAXSBUFFS 30
+  LSBuff = (VarString **)calloc(sizeof(VarString *),MAXSBUFFS);
 
   opstk_size = 0;
   funstk_size = 0;

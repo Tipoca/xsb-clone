@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.6 2005-07-08 20:25:21 dwarren Exp $
+** $Id: context.h,v 1.7 2005-07-08 21:25:21 dwarren Exp $
 ** 
 */
 
@@ -170,6 +170,8 @@ f_tr_chunk *_cur_tr_chunk ;
 CPtr 	*_cur_tr_top ;
 CPtr 	*_cur_tr_limit ;
 
+VarString **_LSBuff; /* 30 buffers for making longstring in ctop_longstring */
+
 /* Global thread-specific charstring buffers for local use within builtins */
 VarString *_tsgLBuff1;
 VarString *_tsgLBuff2;
@@ -285,6 +287,8 @@ typedef struct th_context th_context ;
 #define cur_tr_chunk		(th->_cur_tr_chunk)
 #define cur_tr_top		(th->_cur_tr_top)
 #define cur_tr_limit		(th->_cur_tr_limit)
+
+#define LSBuff			(th->_LSBuff)
 
 #define tsgLBuff1		(th->_tsgLBuff1)
 #define tsgLBuff2		(th->_tsgLBuff2)
