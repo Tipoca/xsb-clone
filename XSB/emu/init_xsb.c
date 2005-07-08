@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.45 2005-07-07 16:55:51 dwarren Exp $
+** $Id: init_xsb.c,v 1.46 2005-07-08 20:25:21 dwarren Exp $
 ** 
 */
 
@@ -732,6 +732,17 @@ void init_machine(CTXTdecl)
   complstack	= init_complstack ;
 
   findall_solutions = NULL;
+
+  opstk_size = 0;
+  funstk_size = 0;
+  funstk = NULL;
+  opstk = NULL;
+  rc_vars = (struct vartype *)malloc(MAXVAR*sizeof(struct vartype));
+
+  token = (struct token_t *)malloc(sizeof(struct token_t));
+  strbuff = NULL;
+  lastc = ' ';
+  strbuff_len = InitStrLen;
 
 /*  call_intercept = init_call_intercept ; */
 #endif

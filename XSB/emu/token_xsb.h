@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.h,v 1.3 2005-01-14 18:31:35 ruim Exp $
+** $Id: token_xsb.h,v 1.4 2005-07-08 20:25:22 dwarren Exp $
 ** 
 */
 
@@ -44,15 +44,13 @@ struct strbuf {
 extern STRFILE *iostrs[MAXIOSTRS];
 #define iostrdecode(j) (-1-j)
 #define strfileptr(desc) iostrs[iostrdecode(desc)]
+#define InitStrLen	1000
 
-struct token {
-  int type;
-  char *value;
-  int nextch;
-};
+#ifndef MULTI_THREAD
+extern struct token_t *token;
+#endif
 
-extern struct token *token;
-extern struct token *GetToken(FILE *, STRFILE *, int);
+extern struct token_t *GetToken(CTXTdeclc FILE *, STRFILE *, int);
 
 extern int intype(int);
 
