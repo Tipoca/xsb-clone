@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.197 2005-07-08 00:54:24 dwarren Exp $
+** $Id: builtin.c,v 1.198 2005-07-08 17:11:14 dwarren Exp $
 ** 
 */
 
@@ -1526,7 +1526,8 @@ int builtin_call(CTXTdeclc byte number)
       token = GetToken(fptr, NULL, ptoc_int(CTXTc 2));
     }
     if (token->type == TK_ERROR) {
-      pcreg = (pb)&fail_inst;
+      //      pcreg = (pb)&fail_inst;
+      return FALSE;
     }
     else {
       ctop_int(CTXTc 3, token->type);
