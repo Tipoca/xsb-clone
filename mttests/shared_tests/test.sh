@@ -15,6 +15,7 @@ echo "------------------------------------------------------"
 # convention is that to use test_single, leave the last argument of test
 # goal uninstantiated to unify with the stream.
 
-../gentest.sh "$XEMU $options" sharedcomp1 "sc1(1000,_)" $NUM
+../gentest.sh "$XEMU $options" sharedcomp1 "sc(1000,_)" $NUM
+../gentest.sh "$XEMU $options" sharedcomp2 "sc(1000,_)" $NUM
 
 
