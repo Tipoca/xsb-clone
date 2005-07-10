@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.c,v 1.12 2005-07-08 00:54:25 dwarren Exp $
+** $Id: timer_xsb.c,v 1.13 2005-07-10 18:35:08 ruim Exp $
 ** 
 */
 
@@ -37,6 +37,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
+#include <errno.h>
 #endif
 
 #include <stdio.h>
@@ -166,7 +167,11 @@ int op_timed_out(xsbTimeout *timeout)
   TURNOFFALARM;
   switch (timeout->timeout_info.exitFlag) {
   case STILL_WAITING: /* The call timed out */
+#ifdef WIN_NT
     pthread_cancel(*timeout->timeout_info.timedThread);
+#else
+    pthread_cancel(timeout->timeout_info.timedThread);
+#endif
     return TRUE;
   case TIMED_OUT:
     return TRUE;
@@ -252,7 +257,11 @@ int make_timed_call(CTXTdeclc xsbTimeout *pptr, void (*fptr)(xsbTimeout *))
     xsb_error("SOCKET_REQUEST: Can't create concurrent timer thread\n");
     return TIMER_SETUP_ERR;
   }
+#ifdef WIN_NT
   pthread_detach(*pptr->timeout_info.timedThread);
+#else
+  pthread_detach(pptr->timeout_info.timedThread);
+#endif
   return_msg = OP_TIMED_OUT(pptr);
 #ifdef WIN_NT
   free(pptr->timeout_info.timedThread);
