@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.30 2005/07/04 20:47:01 ruim Exp $
+** $Id: slginsts_xsb_i.h,v 1.31 2005/07/05 05:39:43 ruim Exp $
 ** 
 */
 
@@ -173,13 +173,18 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
    a different thread, wait for it to complete.
  */
   if ( !IsNULL(producer_sf) ) {
-        table_tid = int_val(tcp_tid(subg_cp_ptr(producer_sf))) ;
+     if( !is_completed(producer_sf))
+/* if the table is completed its generator cp (where the table tid is stored)
+   might have been removed
+ */
+     {  table_tid = int_val(tcp_tid(subg_cp_ptr(producer_sf))) ;
 	if (table_tid != xsb_thread_self()) 
 		while( !is_completed(producer_sf) )
 		{	pthread_mutex_unlock(&completing_mut);
 			pthread_cond_wait(&completing_cond,&completing_mut) ;
 		} 
-        pthread_mutex_unlock(&completing_mut);
+     }
+     pthread_mutex_unlock(&completing_mut);
   } 
 #endif
 
