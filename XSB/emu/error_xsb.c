@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.32 2005-06-28 17:12:06 dwarren Exp $
+** $Id: error_xsb.c,v 1.33 2005-07-11 16:58:30 dwarren Exp $
 ** 
 */
 
@@ -221,9 +221,10 @@ void call_conv xsb_instantiation_error(CTXTdeclc char *predicate,int arity,
 /*****************/
 
 
-static Cell *space_for_ball = 0;
 
 #ifndef MULTI_THREAD
+static Cell *space_for_ball = 0;
+
 void call_conv xsb_basic_abort(char *message)
 {
   prolog_term ball_to_throw;
