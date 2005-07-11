@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.200 2005-07-08 21:25:20 dwarren Exp $
+** $Id: builtin.c,v 1.201 2005-07-11 16:50:47 dwarren Exp $
 ** 
 */
 
@@ -653,10 +653,6 @@ void xsb_sprint_variable(CTXTdeclc char *sptr, CPtr var)
     else sprintf(sptr, "_%p", var);   /* Should never happen */
   }
 }
-
-/* --------------------------------------------------------------------	*/
-
-STRFILE *iostrs[MAXIOSTRS] = {NULL,NULL,NULL,NULL,NULL};
 
 /* --------------------------------------------------------------------	*/
 
@@ -2517,7 +2513,7 @@ int builtin_call(CTXTdeclc byte number)
   return TRUE; /* catch for every break from switch */
 }
 
-/* Prolog Profiling */
+/* Prolog Profiling (NOT thread-safe) */
 
 ubi_btRoot TreeRoot;
 ubi_btRootPtr RootPtr = NULL;

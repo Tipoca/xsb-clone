@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.32 2005-07-04 13:17:09 dwarren Exp $
+** $Id: io_builtins_xsb_i.h,v 1.33 2005-07-11 16:50:48 dwarren Exp $
 ** 
 */
 
@@ -36,6 +36,9 @@
 #ifdef WIN_NT
 #include <io.h>
 #endif
+
+/* protected by MUTEX IO */
+STRFILE *iostrs[MAXIOSTRS] = {NULL,NULL,NULL,NULL,NULL};
 
 static struct stat stat_buff;
 extern char   *expand_filename(char *filename);
