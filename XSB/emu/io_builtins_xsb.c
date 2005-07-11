@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.55 2005-07-08 20:25:21 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.56 2005-07-11 16:49:01 dwarren Exp $
 ** 
 */
 
@@ -58,7 +58,7 @@
 #include "deref.h"
 #include "findall.h"
 
-stream_record open_files[MAX_OPEN_FILES]; /* open file table */
+stream_record open_files[MAX_OPEN_FILES]; /* open file table, protected by MUTEX IO */
 
 // static FILE *fptr;			/* working variable */
     
@@ -186,7 +186,7 @@ xsbBool formatted_io (CTXTdecl)
 ----------------------------------------------------------------------*/
 /* The following definitions are to use the threadsafe char buffers,
    but use more reasonable names.  These buffers will just grow
-   (unless the are explicitly shrunk.)  The provide global buffers
+   (unless they are explicitly shrunk.)  They provide global buffers
    without having to malloc them every time.  The names are undef'ed
    at the end. */
 #define FmtBuf (*tsgSBuff1)
