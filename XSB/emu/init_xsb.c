@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.47 2005-07-08 21:25:21 dwarren Exp $
+** $Id: init_xsb.c,v 1.48 2005-07-11 19:47:20 dwarren Exp $
 ** 
 */
 
@@ -746,6 +746,8 @@ void init_machine(CTXTdecl)
   strbuff = NULL;
   lastc = ' ';
   strbuff_len = InitStrLen;
+
+  random_seeds = 0;
 
 /*  call_intercept = init_call_intercept ; */
 #endif
