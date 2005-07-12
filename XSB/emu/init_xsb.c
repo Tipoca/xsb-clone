@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.49 2005-07-12 15:54:24 ruim Exp $
+** $Id: init_xsb.c,v 1.50 2005-07-12 21:20:49 dwarren Exp $
 ** 
 */
 
@@ -748,6 +748,13 @@ void init_machine(CTXTdecl)
   strbuff_len = InitStrLen;
 
   random_seeds = 0;
+
+  asrtBuff = (struct asrtBuff_t *)malloc(sizeof(struct asrtBuff_t));
+  asrtBuff->Buff = NULL;
+  asrtBuff->Buff_size = 512;
+  asrtBuff->Loc = NULL;
+  asrtBuff->BLim = 0;
+  asrtBuff->Size = 0;
 
 /*  call_intercept = init_call_intercept ; */
 
