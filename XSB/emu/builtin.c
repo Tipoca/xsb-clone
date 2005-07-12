@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.201 2005-07-11 16:50:47 dwarren Exp $
+** $Id: builtin.c,v 1.202 2005-07-12 17:37:35 dwarren Exp $
 ** 
 */
 
@@ -1617,7 +1617,10 @@ int builtin_call(CTXTdeclc byte number)
     break;
 
   case EXPAND_FILENAME:	       /* R1: +FileName, R2: -ExpandedFileName */
-    ctop_string(CTXTc 2, expand_filename(ptoc_longstring(CTXTc 1)));
+    {char *filename = expand_filename(ptoc_longstring(CTXTc 1));
+    ctop_string(CTXTc 2, string_find(filename,1));
+    free(filename);
+    }
     break;
   case TILDE_EXPAND_FILENAME:  /* R1: +FileN, R2: -TildeExpanded FN */
     ctop_string(CTXTc 2, tilde_expand_filename(ptoc_longstring(CTXTc 1)));
