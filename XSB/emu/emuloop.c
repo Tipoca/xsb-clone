@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.110 2005-07-07 16:55:51 dwarren Exp $
+** $Id: emuloop.c,v 1.111 2005-07-12 15:54:24 ruim Exp $
 ** 
 */
 
@@ -1935,7 +1935,7 @@ DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
    static double realtime;	/* To retain its value across invocations */
 
    extern void dis(xsbBool);
-   extern char *init_para(int, char **);
+   extern char *init_para(CTXTdeclc int, char **);
    extern void perform_IO_Redirect(int, char **);
    extern void init_machine(CTXTdecl), init_symbols(void);
 #ifdef FOREIGN
@@ -1968,7 +1968,7 @@ DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
 
      realtime = real_time();
      setbuf(stdout, NULL);
-     startup_file = init_para(argc, argv);	/* init parameters */
+     startup_file = init_para(CTXTc argc, argv);	/* init parameters */
 
      init_machine(CTXT);	/* init space, regs, stacks */
      init_inst_table();		/* init table of instruction types */

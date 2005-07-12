@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.48 2005-07-11 19:47:20 dwarren Exp $
+** $Id: init_xsb.c,v 1.49 2005-07-12 15:54:24 ruim Exp $
 ** 
 */
 
@@ -325,7 +325,7 @@ for (i=1; i<argc; i++)
 
 /* Initialize System Parameters
    ---------------------------- */
-char *init_para(int argc, char *argv[])
+char *init_para(CTXTdeclc int argc, char *argv[])
 {
   int i;
   char warning[80];
@@ -341,7 +341,7 @@ char *init_para(int argc, char *argv[])
 
 #ifdef MULTI_THREAD
   init_system_mutexes() ;
-  init_system_threads() ;
+  init_system_threads(th) ;
 #endif
 
   init_open_files();
@@ -750,6 +750,9 @@ void init_machine(CTXTdecl)
   random_seeds = 0;
 
 /*  call_intercept = init_call_intercept ; */
+
+  th->tid = xsb_thread_self() ;
+  th->waiting_for_thread = NULL ;
 #endif
 
   tsgLBuff1 = (VarString *)malloc(sizeof(VarString));

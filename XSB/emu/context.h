@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.9 2005-07-11 19:47:19 dwarren Exp $
+** $Id: context.h,v 1.10 2005-07-12 15:54:24 ruim Exp $
 ** 
 */
 
@@ -225,6 +225,11 @@ DynamicStack  _tstTermStack;
 DynamicStack  _tstTermStackLog;
 DynamicStack  _tstSymbolStack;
 DynamicStack  _tstTrail;
+
+/* stuff for deadlock detection in completion */
+
+struct th_context * waiting_for_thread;
+int tid ;
 
 } ;
 
