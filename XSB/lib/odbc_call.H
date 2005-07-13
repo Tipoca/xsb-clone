@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.22 2005-04-22 13:48:20 vidrevich Exp $
+** $Id: odbc_call.H,v 1.23 2005-07-13 19:47:26 vidrevich Exp $
 **
 */
 
@@ -34,6 +34,7 @@
   odbc_import/2, odbc_import/3, odbc_import/4,
   odbc_transaction/1, odbc_transaction/2,
 	odbc_connect_option/5,
+   set_connect_option/3, get_connect_option/3,
 	odbc_get_schema/2, odbc_get_schema/3,
 	odbc_show_schema/1, odbc_show_schema/2,
 	odbc_user_tables/1, odbc_user_tables/2,

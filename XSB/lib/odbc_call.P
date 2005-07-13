@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.P,v 1.35 2005-04-22 13:48:20 vidrevich Exp $
+** $Id: odbc_call.P,v 1.36 2005-07-13 19:47:26 vidrevich Exp $
 **
 */
 
@@ -1622,12 +1622,17 @@ odbc_transaction(Connection,rollback) :-
 	 ;	true
 	).
 odbc_transaction(Connection,autocommit(on)) :-
-	odbc_connection_check(Connection,ConnHandle),
-	odbc_connect_option(ConnHandle,1,102,1,RetVal),
-	RetVal =:= 0.
+	set_connect_option(Connection,102,1).
 odbc_transaction(Connection,autocommit(off)) :-
+	set_connect_option(Connection,102,0).
+
+set_connect_option(Connection,Attr,Value):-
 	odbc_connection_check(Connection,ConnHandle),
-	odbc_connect_option(ConnHandle,1,102,0,RetVal),
+	odbc_connect_option(ConnHandle,1,Attr,Value,RetVal),
+	RetVal =:= 0.
+get_connect_option(Connection,Attr,Value):-
+	odbc_connection_check(Connection,ConnHandle),
+	odbc_connect_option(ConnHandle,0,Attr,Value,RetVal),
 	RetVal =:= 0.
 
 odbc_delete(Head,Body) :-
