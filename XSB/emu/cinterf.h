@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.22 2005-06-29 13:58:13 vidrevich Exp $
+** $Id: cinterf.h,v 1.23 2005-07-15 14:48:53 dwarren Exp $
 ** 
 */
 
@@ -256,7 +256,7 @@ DllExport extern int call_conv xsb_query_string_string_b(CTXTdeclc char*,char*,i
 DllExport extern int call_conv xsb_next(CTXTdecl);
 DllExport extern int call_conv xsb_next_string(CTXTdeclc VarString*,char*);
 DllExport extern int call_conv xsb_next_string_b(CTXTdeclc char*,int,int*,char*);
-DllExport extern int call_conv xsb_get_last_answer_string(char*,int,int*);
+DllExport extern int call_conv xsb_get_last_answer_string(CTXTdeclc char*,int,int*);
 DllExport extern int call_conv xsb_close_query(CTXTdecl);
 DllExport extern int call_conv xsb_close(CTXTdecl);
 DllExport extern int call_conv xsb_get_last_error_string(char*,int,int*);
