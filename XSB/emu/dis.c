@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.21 2005-01-14 18:30:55 ruim Exp $
+** $Id: dis.c,v 1.22 2005-07-15 15:02:21 dwarren Exp $
 ** 
 */
 
@@ -220,6 +220,7 @@ CPtr print_inst(FILE *fd, CPtr inst_ptr)
 	}  /* switch */
 	/*if (cell_opcode(&instr) == noop) loc_pcreg += 2 * *(loc_pcreg-1); */
 	if (cell_opcode(&instr) == noop) loc_pcreg += cell_operand3(&instr)/2; /* ?!@% */
+	else if (cell_opcode(&instr) == dynnoop) loc_pcreg += cell_operand3(&instr)/2; /* ?!@% */
     } /* for */
     fprintf(fd, ")");
     fflush(fd);

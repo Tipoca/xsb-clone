@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.52 2005-07-13 09:21:59 ruim Exp $
+** $Id: init_xsb.c,v 1.53 2005-07-15 15:02:31 dwarren Exp $
 ** 
 */
 
@@ -133,6 +133,7 @@ Cell resume_compl_suspension_inst2;
 Cell check_complete_inst;
 Cell hash_handle_inst;
 Cell fail_inst;
+Cell dynfail_inst;
 Cell trie_fail_unlock_inst;
 Cell halt_inst;
 Cell proceed_inst;
@@ -719,6 +720,7 @@ void init_machine(CTXTdecl)
   cell_opcode(&check_complete_inst) = check_complete;
   cell_opcode(&hash_handle_inst) = hash_handle;
   cell_opcode(&fail_inst) = fail;
+  cell_opcode(&dynfail_inst) = dynfail;
   cell_opcode(&trie_fail_unlock_inst) = trie_fail_unlock;
   cell_opcode(&halt_inst) = halt;
   cell_opcode(&proceed_inst) = proceed;         /* returned by load_obj */
@@ -755,6 +757,10 @@ void init_machine(CTXTdecl)
   asrtBuff->Loc = NULL;
   asrtBuff->BLim = 0;
   asrtBuff->Size = 0;
+  i_have_dyn_mutex = 0;
+
+  last_answer = (VarString *)malloc(sizeof(VarString));
+  XSB_StrInit(last_answer);
 
 /*  call_intercept = init_call_intercept ; */
 

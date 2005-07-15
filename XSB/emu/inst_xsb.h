@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.16 2005-03-08 22:21:57 tswift Exp $
+** $Id: inst_xsb.h,v 1.17 2005-07-15 15:02:32 dwarren Exp $
 ** 
 */
 
@@ -279,6 +279,8 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 
 /* Non-determinism instructions */
 
+#define dynfail		0x9e
+#define dyntrymeelse    0x9f
 #define trymeelse       0xa0
 #define retrymeelse     0xa1
 #define trustmeelsefail 0xa2
@@ -350,6 +352,8 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 /* Other Numeric instructions */
 #define minreg               0xe2
 #define maxreg               0xe3
+
+#define dynnoop         0xe4
 
 /* Procedure instructions */
 
