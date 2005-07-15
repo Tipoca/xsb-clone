@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop_aux.h,v 1.7 2005-01-14 18:30:58 ruim Exp $
+** $Id: emuloop_aux.h,v 1.8 2005-07-15 14:52:31 dwarren Exp $
 ** 
 */
 
@@ -46,7 +46,7 @@
   cp_prevtop(cps_top) = old_top;                                          \
   breg = cps_top;                                                         \
   hbreg = hreg;                                                           \
-  XSB_Next_Instr();                                                       \
+/*  XSB_Next_Instr();  */                                                     \
 } 
 #else
 #define SUBTRYME                                                          \
@@ -60,7 +60,7 @@
   save_choicepoint(cps_top, ereg, (byte *)op2, breg);                     \
   breg = cps_top;                                                         \
   hbreg = hreg;                                                           \
-  XSB_Next_Instr();                                                       \
+/*  XSB_Next_Instr(); */                                                      \
 } 
 #endif
 /*----------------------------------------------------------------------*/
