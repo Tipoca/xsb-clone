@@ -18,21 +18,41 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.18 2004-12-20 19:26:14 dwarren Exp $
+** $Id: basictypes.h,v 1.19 2005-07-18 21:54:00 crojo Exp $
 ** 
 */
 
 
 
 #ifndef BASIC_TYPES_INCLUDED
+#include "xsb_config.h"
+#include "cell_def_xsb.h"
 
+/*******************
+* Definitions for the basic Integer and Floating point types. 
+*   Each type varies depending on whether the BITS64 and PRECISE_FLOATS flags are set.
+*   These types should be used in place of 'float' and 'int'
+*******************/
 #ifdef BITS64
 typedef long prolog_int ;
+typedef long Integer ;
+typedef unsigned long UInteger ;
 #else
 typedef int prolog_int ;
+typedef int Integer ;
+typedef unsigned int UInteger ;
 #endif
 
-typedef double prolog_float ;
+typedef double prolog_float;
+
+#ifdef PRECISE_FLOATS
+typedef double Float;
+#else
+typedef float Float;
+#endif
+/*******************************/
+
+
 typedef int reg_num;
 
 /* CELL and PROLOG_TERM are defined identically.
@@ -52,6 +72,38 @@ typedef byte *pb;
 typedef word *pw;
 typedef int (*PFI)(void);
 // typedef int *int_ptr;
+
+
+/*******************
+* Definitions for converter types. 
+*   These types are used as bit manipulation tools, exploiting the shared memory of a union.
+
+* constraints: each member of the union should have equal size, in bytes.
+*******************/
+typedef union float_conv {
+  Cell i;
+  float f;
+} FloatConv;
+
+typedef union float_to_ints_conv {
+   Float float_val;
+   struct {
+    UInteger high;
+    UInteger low;
+   }int_vals;
+    
+} FloatToIntsConv;
+
+typedef union cell_to_bytes_conv {
+   Cell cell_val;
+   struct {
+    byte b1;
+    byte b2;
+    byte b3;
+    byte b4;
+   }byte_vals;
+    
+} CellToBytesConv;
 
 
 #endif /* BASIC_TYPES_INCLUDED */

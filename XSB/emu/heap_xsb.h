@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.h,v 1.9 2005-01-14 18:31:18 ruim Exp $
+** $Id: heap_xsb.h,v 1.10 2005-07-18 21:54:10 crojo Exp $
 ** 
 */
 
@@ -38,7 +38,7 @@
 /* make a new num node on the heap, with value val */
 
 #define new_heap_float(sh_reg, val) bld_float_tagged(sh_reg, val); sh_reg++
-/* make a new float node on the heap, with value val */
+/* make a new float node on the heap, with value val in tagged format.*/
 
 #define new_heap_functor(sh_reg, psc) bld_functor(sh_reg++, psc)
 /* make a new functor node in heap */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.50 2005-07-07 16:55:50 dwarren Exp $
+** $Id: emudef.h,v 1.51 2005-07-18 21:54:09 crojo Exp $
 ** 
 */
 
@@ -179,7 +179,7 @@ unsigned long dec[8] = {0xffffffff,0xffffffff,0xffffffff,0xffffffff,
     /* op1 is FREE */							\
     bind_float_tagged(vptr(OP1), OP2);                	                \
   }									\
-  else if (isfloat(OP1)) {						\
+  else if (isofloat(OP1)) {						\
     if (OP1 == OP2) {XSB_Next_Instr();} else Fail1;	                \
   }									\
   else if (isattv(OP1)) {						\

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.4 2005-01-14 18:30:55 ruim Exp $
+** $Id: debug_xsb.h,v 1.5 2005-07-18 21:54:09 crojo Exp $
 ** 
 */
 
@@ -112,6 +112,7 @@ extern void print_subgoal(FILE *, VariantSF);
 extern void print_delay_list(FILE *, CPtr);
 extern void printterm(FILE *, Cell, int);
 #else
+
 #define xsb_dbgmsg(a)
 #define dbg_print_subgoal(L,F,S)
 #define dbg_printterm(L,F,T,D)

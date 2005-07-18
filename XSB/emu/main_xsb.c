@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: main_xsb.c,v 1.7 2005-06-29 13:58:15 vidrevich Exp $
+** $Id: main_xsb.c,v 1.8 2005-07-18 21:54:11 crojo Exp $
 ** 
 */
 
@@ -53,7 +53,7 @@
 
 #include "orient_xsb.h"
 #include "basicdefs.h"
-
+#include "context.h"
 int main(int argc, char *argv[])
 { 
 #ifdef MULTI_THREAD

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: conget_xsb_i.h,v 1.3 2005-07-11 16:57:02 dwarren Exp $
+** $Id: conget_xsb_i.h,v 1.4 2005-07-18 21:54:08 crojo Exp $
 ** 
 */
 
@@ -51,7 +51,6 @@ static inline xsbBool conset(Cell string, Integer newval)
 
   if (!isstring(string))
     xsb_abort("[CONSET] Non-string in the first argument");
-
   psc = (Psc)flags[CURRENT_MODULE];
   sym = insert(string_val(string), 0, psc, &value);
   str_psc = pair_psc(sym);

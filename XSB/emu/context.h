@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.12 2005-07-15 15:02:20 dwarren Exp $
+** $Id: context.h,v 1.13 2005-07-18 21:54:08 crojo Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 
 #define __CONTEXT_H__
 
-#include "cell_xsb.h"
+#include "cell_def_xsb.h"
 #include "basictypes.h"
 
 struct token_t {

@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_mnoc.in,v 1.10 2005-02-12 02:41:44 harpreet_singh Exp $
+** $Id: def_config_mnoc.in,v 1.11 2005-07-18 21:53:57 crojo Exp $
 **
 */
 
@@ -67,6 +67,9 @@
 #ifndef CONFIG_INCLUDED
 #define CONFIG_INCLUDED
 #endif
+
+/* Double precision floats */
+#undef PRECISE_FLOATS
 
 /* Use local eval strategy. Default is `batched' */
 #undef LOCAL_EVAL

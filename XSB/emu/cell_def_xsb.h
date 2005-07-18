@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_def_xsb.h,v 1.4 2005-01-14 18:30:52 ruim Exp $
+** $Id: cell_def_xsb.h,v 1.5 2005-07-18 21:54:08 crojo Exp $
 ** 
 */
 
@@ -31,4 +31,6 @@
    PROLOG_TERM is used in the interface to point to a cell containing 
    the outer functor of a prolog term. */
 typedef unsigned long Cell;
+typedef Cell *CPtr;
+
 #endif

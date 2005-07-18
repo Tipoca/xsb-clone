@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.h,v 1.4 2005-07-08 20:25:22 dwarren Exp $
+** $Id: token_xsb.h,v 1.5 2005-07-18 21:54:12 crojo Exp $
 ** 
 */
 
@@ -49,7 +49,7 @@ extern STRFILE *iostrs[MAXIOSTRS];
 #ifndef MULTI_THREAD
 extern struct token_t *token;
 #endif
-
+#include "context.h"
 extern struct token_t *GetToken(CTXTdeclc FILE *, STRFILE *, int);
 
 extern int intype(int);

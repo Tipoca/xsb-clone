@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.53 2005-07-15 15:02:31 dwarren Exp $
+** $Id: init_xsb.c,v 1.54 2005-07-18 21:54:10 crojo Exp $
 ** 
 */
 
@@ -201,7 +201,6 @@ static void help_message(void)
 static void init_flags(void)
 {
   int i;
-
   for (i=0; i<65; i++) flags[i] = 0;
   flags[SYS_TIMER]  = TIMEOUT_ERR; /* start with expired timer */
   flags[BANNER_CTL] = 1;           /* a product of prime numbers; each prime
