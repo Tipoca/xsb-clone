@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.16 2005-01-14 18:31:34 ruim Exp $
+** $Id: tc_insts_xsb_i.h,v 1.17 2005-07-18 19:47:46 tswift Exp $
 ** 
 */
 
@@ -38,6 +38,7 @@ XSB_Start_Instr(trie_no_cp_str,_trie_no_cp_str)
 	non_ftag_lpcreg;
 XSB_End_Instr()
 
+     /* TLS: opfail below is actually the sibling trie node */
 XSB_Start_Instr(trie_try_str,_trie_try_str) 
 	CPtr tbreg;
 #ifdef SLG_GC

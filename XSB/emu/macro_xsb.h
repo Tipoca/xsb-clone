@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.22 2005-01-14 18:31:21 ruim Exp $
+** $Id: macro_xsb.h,v 1.23 2005-07-18 19:47:45 tswift Exp $
 ** 
 */
 
@@ -608,9 +608,9 @@ void tstCreateTSIs(TSTNptr);
      xsb_exit("pdlreg grew too much"); \
    else (pdlreg = (CPtr)(pdl.high) - 1)
 
-#define remove_open_tables_loop(Endpoint) remove_open_tries(Endpoint)
+#define remove_incomplete_tables_loop(Endpoint) remove_incomplete_tries(Endpoint)
 
-#define remove_open_tables() remove_open_tries(CTXTc COMPLSTACKBOTTOM)
+#define remove_incomplete_tables() remove_incomplete_tries(CTXTc COMPLSTACKBOTTOM)
 
 /*----------------------------------------------------------------------*/
 

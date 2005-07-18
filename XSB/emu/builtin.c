@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.203 2005-07-13 19:51:44 dwarren Exp $
+** $Id: builtin.c,v 1.204 2005-07-18 19:47:45 tswift Exp $
 ** 
 */
 
@@ -900,6 +900,8 @@ inline static xsbBool is_completed_table(TIFptr tif) {
 
 /*----------------------------------------------------------------------*/
 
+/* TLS: if non-completed table failure is caught in builtin 
+   and abort happens there.*/
 inline static int abolish_table_predicate(CTXTdeclc Psc psc)
 {
   TIFptr tif;
@@ -1794,7 +1796,7 @@ int builtin_call(CTXTdeclc byte number)
     break;
 
   case CLOSE_OPEN_TABLES:	/* No registers needed */
-    remove_open_tables_reset_freezes(CTXT);
+    remove_incomplete_tables_reset_freezes(CTXT);
     break;
 
   case ABOLISH_TABLE_INFO:

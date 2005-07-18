@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.34 2005-07-13 21:58:56 dwarren Exp $
+** $Id: error_xsb.c,v 1.35 2005-07-18 19:47:45 tswift Exp $
 ** 
 */
 
@@ -502,7 +502,7 @@ int unwind_stack(CTXTdecl)
      tmp_compl_frm = subg_compl_stack_ptr(tcp_subgoal_ptr(b));
    breg = b;
    if (tmp_compl_frm != NULL) {
-     remove_open_tries(CTXTc prev_compl_frame(tmp_compl_frm));
+     remove_incomplete_tries(CTXTc prev_compl_frame(tmp_compl_frm));
    }
    unwind_trail(breg,xtemp1,xtemp2);
    return(FALSE);

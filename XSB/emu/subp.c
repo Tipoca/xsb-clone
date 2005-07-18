@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.80 2005/02/04 16:56:15 dwarren Exp $
+** $Id: subp.c,v 1.81 2005/02/04 16:59:04 dwarren Exp $
 ** 
 */
 
@@ -723,10 +723,10 @@ void print_op(FILE *file, char *string, int pos)
 
 /* ----- The following is also called from the Prolog level ----------- */
 
-void remove_open_tables_reset_freezes(CTXTdecl)
+void remove_incomplete_tables_reset_freezes(CTXTdecl)
 {
   if (xwammode) {
-    remove_open_tables();
+    remove_incomplete_tables();
     reset_freeze_registers;
   }
 }

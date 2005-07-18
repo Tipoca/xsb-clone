@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.64 2005-01-14 18:31:38 ruim Exp $
+** $Id: tries.c,v 1.65 2005-07-18 19:47:46 tswift Exp $
 ** 
 */
 
@@ -1429,8 +1429,7 @@ static void remove_calls_and_returns(CTXTdeclc VariantSF CallStrPtr)
   FreeProducerSF(CallStrPtr);
 }
 
-
-void remove_open_tries(CTXTdeclc CPtr bottom_parameter)
+void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
 {
   xsbBool warned = FALSE;
   VariantSF CallStrPtr;
