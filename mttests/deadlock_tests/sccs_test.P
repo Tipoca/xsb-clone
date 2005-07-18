@@ -1,0 +1,145 @@
+/* TLS: initial dummy test -- will elaborate and scriptify */
+
+:- import xsb_thread_create/3, xsb_thread_join/3 from thread.
+
+:- table a1/0, b1/0.
+
+scc_test1:- 
+	xsb_thread_create(a1,One,_),
+	xsb_thread_create(b1,Two,_),
+	xsb_thread_join(One,_,_),
+	xsb_thread_join(Two,_,_).
+
+a1:- 
+	writeln('created a1'),
+	sleep(1),
+	writeln('a11 calling b1'),
+	b1.
+
+b1:-    writeln('created b1'),
+	sleep(1),
+	writeln('b1 calling a1'),
+	a1.
+
+%------------------------
+
+:- table a2/0, b2/0.
+
+scc_test2:- 
+	(a2 ; true),
+	xsb_thread_create(a2,One,_),
+	xsb_thread_create(b2,Two,_),
+	xsb_thread_join(One,_,_),
+	xsb_thread_join(Two,_,_).
+
+a2:- 
+	writeln('created a2'),
+	sleep(1),
+	writeln('a2 calling b2'),
+	b2.
+
+b2:-    writeln('created b2'),
+	sleep(1),
+	writeln('b2 calling a2'),
+	a2.
+
+%------------------------
+
+:- table a3/0, b3/0.
+
+scc_test3:- 
+	xsb_thread_create(a3,One,_),
+	xsb_thread_create(b3,Two,_),
+	xsb_thread_join(One,_,_),
+	xsb_thread_join(Two,_,_).
+
+a3:- 
+	writeln('created a3'),
+	sleep(1),
+	writeln('a3 calling b3'),
+	b3.
+a3.
+
+b3:-    writeln('created b3'),
+	sleep(1),
+	writeln('b3 calling a3'),
+	a3.
+b3.
+
+%------------------------
+
+:- table a4/1, b4/1.
+
+scc_test4:- 
+	a4(_),
+	xsb_thread_create(a4_write(_),One,_),
+	xsb_thread_create(b4_write(_),Two,_),
+	xsb_thread_join(One,_,_),
+	xsb_thread_join(Two,_,_).
+
+a4_write(X):- 
+	a4(X),writeln(found(a4(X))),fail ; true.
+
+b4_write(X):- 
+	b4(X),writeln(found(b4(X))),fail ; true.
+	
+
+a4(X):- 
+	writeln('created a4'),
+	sleep(1),
+	writeln('a4 calling b4'),
+	b4(X).
+a4(a).
+
+b4(X):-    writeln('created b4'),
+	sleep(1),
+	writeln('b4 calling a4'),
+	a4(X).
+b4(b).
+
+
+
+
+end_of_file.
+
+%------------------------------------------
+SCC is a - b - c- a  in different threads
+
+scc_test2:- 
+	xsb_thread_create(a2),
+	xsb_thread_create(b2),
+	xsb_thread_create(c2).
+
+a2:- 
+	sleep(1),
+	b2.
+
+b2:- 
+	sleep(1),
+	c2.
+
+c2:- 
+	sleep(1),
+	a2.
+
+%------------------------------------------
+SCC is a - b - c- a  in different threads
+
+scc_test3:- 
+	xsb_thread_create(a),
+	xsb_thread_create(c).
+
+a:- 
+	b.
+
+b:- 
+	sleep(1),
+	b.
+
+b:- 
+	sleep(1),
+	c.
+
+c:- 
+	sleep(1),
+	a.
