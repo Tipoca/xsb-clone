@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.82 2005/07/18 19:47:46 tswift Exp $
+** $Id: subp.c,v 1.83 2005/07/18 21:54:11 crojo Exp $
 ** 
 */
 
@@ -751,7 +751,10 @@ void xsb_segfault_catcher(int err)
 
 void xsb_segfault_quitter(int err)
 {
-  print_xsb_backtrace();
+#ifdef MULTI_THREAD
+  th_context *th = find_context(xsb_thread_self());
+#endif
+  print_xsb_backtrace(CTXT);
   xsb_exit(xsb_segfault_message);
 }
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.15 2005-02-23 20:50:42 dwarren Exp $
+** $Id: error_xsb.h,v 1.16 2005-07-19 21:25:44 dwarren Exp $
 ** 
 */
 
@@ -67,14 +67,15 @@
 
 
 DllExport extern void call_conv xsb_exit(char *, ...);
-#ifndef MULTI_THREAD
+//#ifndef MULTI_THREAD
 DllExport extern void call_conv xsb_abort(char *, ...);
 DllExport extern void call_conv xsb_bug(char *, ...);
-#else
-#define	xsb_abort	xsb_exit
-#define	xsb_basic_abort	xsb_exit
-#define	xsb_bug		xsb_exit
-#endif
+void call_conv xsb_basic_abort(char *);
+//#else
+//#define	xsb_abort	xsb_exit
+//#define	xsb_basic_abort	xsb_exit
+//#define	xsb_bug		xsb_exit
+//#endif
 DllExport extern void call_conv xsb_warn(char *, ...);
 DllExport extern void call_conv xsb_mesg(char *, ...);
 DllExport extern void call_conv xsb_error(char *, ...);
@@ -104,7 +105,7 @@ extern void (*xsb_default_segfault_handler)(int); /* where the previous value
 extern jmp_buf xsb_abort_fallback_environment; /* Environment for abort
 						  longjump saved here */
 
-extern int print_xsb_backtrace();
+extern int print_xsb_backtrace(CTXTdecl);
 
 /* SIGSEGV handler that catches segfaults; used unless configured with DEBUG */
 extern void xsb_segfault_catcher (int);
@@ -115,9 +116,6 @@ int unwind_stack(CTXTdecl);
 void call_conv xsb_type_error(CTXTdeclc char *,Cell , char *,int, int) ;
 void call_conv xsb_permission_error(CTXTdeclc char *,char *, int, char *,int) ;
 void call_conv xsb_instantiation_error(CTXTdeclc char *, int, int, char *) ;
-#ifndef MULTI_THREAD
-void call_conv xsb_basic_abort(char *);
-#endif
 
 /* should include these from whereever they are.... split out from biassert **/
 typedef struct
