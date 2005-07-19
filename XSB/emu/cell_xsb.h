@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.21 2005-07-18 21:54:08 crojo Exp $
+** $Id: cell_xsb.h,v 1.22 2005-07-19 14:16:56 dwarren Exp $
 ** 
 */
 
@@ -327,17 +327,6 @@ extern inline Float make_float_from_ints(UInteger, UInteger);
 //Note: anything that includes cell_xsb.h in the multithreaded environment implicitly includes
 //context.h as well, since bld_boxedfloat references hreg.
 extern inline void bld_boxedfloat(CTXTdeclc CPtr, Float);
-#else
-
-//the formal parameters for bld_boxedfloat vary depending on whether XSB is multi-threaded
-//or not.
-#ifdef MULTI_THREAD
-#define bld_boxedfloat(context, addr, value) bld_float(addr, value);
-#else
-#define bld_boxedfloat(addr, value) bld_float(addr, value);
-#endif /*MULTI_THREAD*/
-
 #endif /*PRECISE_FLOATS*/
-
    
 #endif /* __CELL_XSB_H__ */

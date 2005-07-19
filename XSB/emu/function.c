@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.15 2005-07-18 21:54:10 crojo Exp $
+** $Id: function.c,v 1.16 2005-07-19 14:16:59 dwarren Exp $
 ** 
 */
 
@@ -71,6 +71,7 @@
     else if (isboxedinteger(value)) fvalue = (Float) boxedint_val(value); \
     else return 0
 
+extern inline void bld_boxedfloat(CTXTdeclc CPtr, Float);
 
 int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
 {
