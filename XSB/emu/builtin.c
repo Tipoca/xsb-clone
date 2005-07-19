@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.205 2005-07-18 21:54:01 crojo Exp $
+** $Id: builtin.c,v 1.206 2005-07-19 13:57:42 dwarren Exp $
 ** 
 */
 
@@ -129,7 +129,7 @@ extern struct token_t *GetToken(CTXTdeclc FILE *, STRFILE *, int);
 extern int  sys_syscall(CTXTdeclc int);
 extern xsbBool sys_system(CTXTdeclc int);
 extern xsbBool formatted_io(CTXTdecl), read_canonical(CTXTdecl);
-extern xsbBool private_builtin(void);
+//extern xsbBool private_builtin(void);
 
 extern void xsb_segfault_quitter(int err);
 
@@ -2389,7 +2389,7 @@ int builtin_call(CTXTdeclc byte number)
        builtin code. SEE THE EXAMPLE IN private_builtin.c to UNDERSTAND HOW TO
        DO IT. Note: even though this is a single builtin, YOU CAN SIMULATE ANY
        NUMBER OF BUILTINS WITH IT.  */
-  case PRIVATE_BUILTIN: return private_builtin();
+  case PRIVATE_BUILTIN: return TRUE; //private_builtin();
 
   case SEGFAULT_HANDLER: { /* Set the desired segfault handler:
 			      +Arg1:  none  - don't catch segfaults;
