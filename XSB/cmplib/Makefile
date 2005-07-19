@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.21 2005-01-14 18:30:44 ruim Exp $
+## $Id: Makefile,v 1.22 2005-07-19 00:15:58 dwarren Exp $
 ## 
 ##
 
@@ -27,6 +27,7 @@ OBJEXT=.xwam
 
 ALL =	asm${OBJEXT} asm_inst${OBJEXT} asm_opt${OBJEXT} asmpass2${OBJEXT} \
 	auxlry${OBJEXT} builtin${OBJEXT} \
+	ciao_directives${OBJEXT} \
 	compile${OBJEXT} config${OBJEXT} cp_opt${OBJEXT} cutcheck${OBJEXT} \
 	flatten${OBJEXT} inprog${OBJEXT} \
 	listutil${OBJEXT} makemode${OBJEXT} modeinf${OBJEXT} modes${OBJEXT} \
