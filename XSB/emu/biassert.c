@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.80 2005-07-18 21:54:00 crojo Exp $
+** $Id: biassert.c,v 1.81 2005-07-20 18:21:54 dwarren Exp $
 ** 
 */
 
@@ -388,7 +388,7 @@ struct flatten_q {
 };
 
 
-#define INST_QUEUE_SIZE	16384	/* was 1024 (which was too low) */
+#define INST_QUEUE_SIZE	4096 /* was 1024 (which was too low) 16384 too high for default java stack*/
 
 struct instruction {
 	Cell opcode;
