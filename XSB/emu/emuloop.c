@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.114 2005-07-19 14:16:57 dwarren Exp $
+** $Id: emuloop.c,v 1.115 2005-07-20 16:45:22 ruim Exp $
 ** 
 */
 
@@ -72,6 +72,7 @@
 #include "emuloop_aux.h"
 #include "remove_unf.h"
 #include "thread_xsb.h"
+#include "deadlock.h"
 #include "rw_lock.h"
 #include "debug_xsb.h"
 
