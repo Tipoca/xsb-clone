@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.21 2005-07-04 20:47:00 ruim Exp $
+** $Id: choice.h,v 1.22 2005-07-20 16:00:56 ruim Exp $
 ** 
 */
 #ifndef __CHOICE_H__
@@ -123,9 +123,6 @@ typedef struct tabled_choice_point {
 #ifdef LOCAL_EVAL
     ALNptr trie_return;
 #endif
-#ifdef MULTI_THREAD
-    CPtr tid;
-#endif
 } *TChoice;
 
 #define TCP_SIZE	(sizeof(struct tabled_choice_point)/sizeof(CPtr))
@@ -161,10 +158,6 @@ typedef struct tabled_choice_point {
 
 #ifdef LOCAL_EVAL
 #define tcp_trie_return(b)	((TChoice)(b))->trie_return
-#endif
-
-#ifdef MULTI_THREAD
-#define tcp_tid(b)		((TChoice)(b))->tid
 #endif
 
 #define is_generator_choicepoint(b)			\

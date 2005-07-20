@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.23 2005-07-18 19:47:45 tswift Exp $
+** $Id: macro_xsb.h,v 1.24 2005-07-20 16:00:56 ruim Exp $
 ** 
 */
 
@@ -233,6 +233,11 @@ typedef struct subgoal_frame {
   CPtr compl_stack_ptr;	  /* Pointer to subgoal's completion stack frame */
   CPtr compl_suspens_ptr; /* SLGWAM: CP stack ptr */
   PNDE nde_list;	  /* pointer to a list of negative DEs */
+#ifdef MULTI_THREAD
+  int tid;		  /* Thread id of the generator thread for this sg */
+  byte grabbed; 	  /* Subgoal is marked to be computed for leader in
+			     deadlock detection */
+#endif
 } variant_subgoal_frame;
 
 #define subg_sf_type(b)		((VariantSF)(b))->sf_type
@@ -253,6 +258,8 @@ typedef struct subgoal_frame {
 #define subg_compl_susp_ptr(b)	((VariantSF)(b))->compl_suspens_ptr
 #define subg_nde_list(b)	((VariantSF)(b))->nde_list
 
+#define subg_tid(b)		((VariantSF)(b))->tid
+#define subg_grabbed(b)		((VariantSF)(b))->grabbed
 
 /* Subsumptive Producer Subgoal Frame
    ---------------------------------- */
