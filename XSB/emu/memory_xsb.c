@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.15 2005-07-03 22:27:44 ruim Exp $
+** $Id: memory_xsb.c,v 1.16 2005-07-20 20:54:23 dwarren Exp $
 ** 
 */
 
@@ -87,8 +87,8 @@ byte *mem_alloc(unsigned long size)
     byte * ptr;
 
     size = (size+7) & ~0x7 ;	      /* round to 8 */
-    pspacesize += size;
     SYS_MUTEX_LOCK(MUTEX_MEM);
+    pspacesize += size;
     ptr = (byte *) malloc(size);
     SYS_MUTEX_UNLOCK(MUTEX_MEM);
 #if defined(GENERAL_TAGGING)
@@ -104,8 +104,8 @@ byte *mem_alloc(unsigned long size)
 void mem_dealloc(void *addr, unsigned long size)
 {
     size = (size+7) & ~0x7 ;	      /* round to 8 */
-    pspacesize -= size;
     SYS_MUTEX_LOCK(MUTEX_MEM);
+    pspacesize -= size;
     free(addr);
     SYS_MUTEX_UNLOCK(MUTEX_MEM);
 }
