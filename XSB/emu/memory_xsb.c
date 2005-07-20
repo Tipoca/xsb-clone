@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.16 2005-07-20 20:54:23 dwarren Exp $
+** $Id: memory_xsb.c,v 1.17 2005-07-20 21:42:45 dwarren Exp $
 ** 
 */
 
@@ -90,11 +90,11 @@ byte *mem_alloc(unsigned long size)
     SYS_MUTEX_LOCK(MUTEX_MEM);
     pspacesize += size;
     ptr = (byte *) malloc(size);
-    SYS_MUTEX_UNLOCK(MUTEX_MEM);
 #if defined(GENERAL_TAGGING)
     //    printf("mem_alloc %x %x\n",ptr,ptr+size);
     extend_enc_dec_as_nec(ptr,ptr+size);
 #endif
+    SYS_MUTEX_UNLOCK(MUTEX_MEM);
     return ptr;
 }
 
