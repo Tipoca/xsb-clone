@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.83 2005/07/18 21:54:11 crojo Exp $
+** $Id: subp.c,v 1.84 2005/07/19 21:25:44 dwarren Exp $
 ** 
 */
 
@@ -473,6 +473,7 @@ void intercept(CTXTdeclc Psc psc) {
 /*======================================================================*/
 
 /* lose some precision in conversions from 32 bit formats */
+
 #ifdef BITS64
 #define FLOAT_MASK 0xfffffffffffffff8
 #else
@@ -480,21 +481,21 @@ void intercept(CTXTdeclc Psc psc) {
 #endif
 
 
-float getfloatval(Cell w)
+inline float getfloatval(Cell w)
 {
     FloatConv converter;
     converter.i = w & FLOAT_MASK;
     return converter.f;
 }
 
-Cell makefloat(float f)
+inline Cell makefloat(float f)
 {
     FloatConv converter;
     converter.f = f;
     return (Cell)(( converter.i & FLOAT_MASK ) | XSB_FLOAT);
 }
 
-static inline int sign(Float num)
+inline int sign(Float num)
 {
   if (num==0.0) return 0;
   else if (num>0.0) return 1;
