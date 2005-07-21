@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.81 2005-07-20 18:21:54 dwarren Exp $
+** $Id: biassert.c,v 1.82 2005-07-21 21:04:18 dwarren Exp $
 ** 
 */
 
@@ -2334,6 +2334,8 @@ xsbBool db_remove_prref( CTXTdecl /* PrRef */ )
 
   if ( *(pb)p == tabletrysingle )
     {
+      TIFptr mtTIF = (TIFptr) *(p+2);
+      Free_TIF(mtTIF);
       /* free prref, from calld instr set in db_build_prref */
       mem_dealloc((pb)(*(p+6)), sizeof(PrRefData));
       if (xsb_profiling_enabled)

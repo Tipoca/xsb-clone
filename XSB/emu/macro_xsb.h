@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.24 2005-07-20 16:00:56 ruim Exp $
+** $Id: macro_xsb.h,v 1.25 2005-07-21 21:04:24 dwarren Exp $
 ** 
 */
 
@@ -92,6 +92,23 @@ extern struct tif_list  tif_list;
      tif_list.first = pTIF;						\
    tif_list.last = pTIF;						\
  }
+
+#define Free_TIF(pTIF) {						\
+  TIFptr tTIF = tif_list.first;						\
+  if (tTIF == (pTIF)) {							\
+    tif_list.first = TIF_NextTIF((pTIF)); 				\
+    if (tif_list.last == (pTIF)) tif_list.last = NULL;			\
+  }									\
+  else {								\
+    while (tTIF != NULL && TIF_NextTIF(tTIF) != (pTIF))		     	\
+      tTIF = TIF_NextTIF(tTIF);						\
+    if (!tTIF) xsb_exit("Trying to free nonexistent TIF");		\
+    if ((pTIF) == tif_list.last) tif_list.last = tTIF;			\
+    TIF_NextTIF(tTIF) = TIF_NextTIF((pTIF));				\
+  }									\
+  delete_predicate_table(CTXTc pTIF);					\
+  mem_dealloc((pTIF),sizeof(TableInfoFrame));				\
+}
 
 /*===========================================================================*/
 

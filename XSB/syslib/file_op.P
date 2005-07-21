@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.P,v 1.23 2004/03/15 14:13:02 dwarren Exp $
+** $Id: file_op.P,v 1.24 2004/12/10 21:45:40 tswift Exp $
 ** 
 */
 
@@ -330,6 +330,9 @@ add_table(Spec) :-
 	retractall('_$table1'(Call)),
 	assertai('_$table1'(Call),1).
 
+retract_table(Spec) :-
+	mpa_to_skel(Spec,Call),
+	retractall('_$table1'(Call)).
 
 /*======================================================================*/
 /* mpa_to_skel(+MPAorSkel,-Skel) converts M:P/A or P/A to Skel 		*/

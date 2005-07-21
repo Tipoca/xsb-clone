@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.P,v 1.28 2004/08/31 21:45:22 dwarren Exp $
+** $Id: assert.P,v 1.29 2005/01/14 18:31:59 ruim Exp $
 ** 
 */
 
@@ -547,6 +547,7 @@ abolish(Pred,Arity) :-
 abolish1(Term) :-
 	retract_index(Term),
 	retract_trie_index(Term),
+	retract_table(Term),
 	conpsc(Term,Psc),
 	psc_type(Psc, Type),
 	(Type =:= T_DYNA	    % DYNA
