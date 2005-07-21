@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.37 2005/07/21 10:46:35 ruim Exp $
+** $Id: slginsts_xsb_i.h,v 1.38 2005/07/21 14:03:07 ruim Exp $
 ** 
 */
 
@@ -191,7 +191,6 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 		break ;
 	waiting_for_thread = find_context(table_tid) ;
 	if( would_deadlock( waiting_for_thread, th ) )
-#define BREAK_DEADLOCK
 #ifndef BREAK_DEADLOCK
 		xsb_exit( "deadlock in concurrent tabling detected" );
 #else
