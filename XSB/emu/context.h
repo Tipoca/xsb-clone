@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.13 2005-07-18 21:54:08 crojo Exp $
+** $Id: context.h,v 1.14 2005-07-21 10:46:35 ruim Exp $
 ** 
 */
 
@@ -242,8 +242,11 @@ DynamicStack  _tstTrail;
 
 /* stuff for deadlock detection in completion */
 
-struct th_context * waiting_for_thread;
+struct th_context *	waiting_for_thread;
+struct subgoal_frame *	waiting_for_subgoal;
 int tid ;
+int deadlock_brk_leader ;
+int reset_thread ;
 
 } ;
 
