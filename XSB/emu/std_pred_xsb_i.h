@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.24 2005-07-18 21:54:11 crojo Exp $
+** $Id: std_pred_xsb_i.h,v 1.25 2005-07-22 15:42:17 crojo Exp $
 ** 
 */
 
@@ -484,7 +484,7 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
       Float float_temp;
       //TODO: Refactor the below few lines of code once the "Floats are always double?" 
       //situation is resolved.
-#ifdef PRECISE_FLOATS
+#ifndef FAST_FLOATS
       if (sscanf(str, "%lf%c", &float_temp, &hack_char) == 1)
 #else
       if (sscanf(str, "%f%c", &float_temp, &hack_char) == 1)

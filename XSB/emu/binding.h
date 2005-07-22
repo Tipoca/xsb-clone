@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: binding.h,v 1.18 2005-07-18 21:54:01 crojo Exp $
+** $Id: binding.h,v 1.19 2005-07-22 15:42:12 crojo Exp $
 ** 
 */
 
@@ -160,7 +160,7 @@
       cell(addr) = binttemp;}
 
 
-#ifdef PRECISE_FLOATS
+#ifndef FAST_FLOATS
 //Below, bind_boxedfloat builds a boxedfloat, from Float 'value', on the heap.
 //It also creates a Cell pointing to it, and inserts it at addr. 
 //Pre-condition: value must be a 64-bit floating point value

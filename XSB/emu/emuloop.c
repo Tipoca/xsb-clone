@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.115 2005-07-20 16:45:22 ruim Exp $
+** $Id: emuloop.c,v 1.116 2005-07-22 15:42:14 crojo Exp $
 ** 
 */
 
@@ -254,9 +254,9 @@ static void *instr_addr[256];
 
 
 //Below is the implementation of the inline functions for creating and manipulating boxed floats,
-// declared in cell_xsb.h. They only exist if the PRECISE_FLOATS tag is defined. Otherwise, they
+// declared in cell_xsb.h. They only exist if the FAST_FLOATS tag is undefined. Otherwise, they
 // are defined as Cell-based macros. See cell_xsb.h for details.
-#ifdef PRECISE_FLOATS
+#ifndef FAST_FLOATS
 inline void bld_boxedfloat(CTXTdeclc CPtr addr, Float value)
 {
     Float tempFloat = value;

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.19 2005-07-18 21:54:00 crojo Exp $
+** $Id: basictypes.h,v 1.20 2005-07-22 15:42:12 crojo Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 
 /*******************
 * Definitions for the basic Integer and Floating point types. 
-*   Each type varies depending on whether the BITS64 and PRECISE_FLOATS flags are set.
+*   Each type varies depending on whether the BITS64 and FAST_FLOATS flags are set.
 *   These types should be used in place of 'float' and 'int'
 *******************/
 #ifdef BITS64
@@ -45,7 +45,7 @@ typedef unsigned int UInteger ;
 
 typedef double prolog_float;
 
-#ifdef PRECISE_FLOATS
+#ifndef FAST_FLOATS
 typedef double Float;
 #else
 typedef float Float;
