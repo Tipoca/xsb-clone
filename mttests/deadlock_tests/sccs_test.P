@@ -142,14 +142,14 @@ a5(a).
 b5(X):- thr_writeln('created b5'),
 	sleep(1),
 	thr_writeln('b5 calling c5'),
-	a5(X).
+	c5(X).
 b5(b).
 
 c5(X):- thr_writeln('created c5'),
 	sleep(1),
 	thr_writeln('c5 calling a5'),
-	c5(X).
-c5(b).
+	a5(X).
+c5(c).
 
 %------------------------------------------
 %SCC is a6   c6
@@ -179,7 +179,7 @@ b6(X):- thr_writeln('second clause b6'),
 	d6(X).
 
 c6(X):- thr_writeln('created c6'),d6(X).
-c6(a).
+c6(c).
 
 d6(X):- thr_writeln('created d6'),c6(X).
 d6(X):- thr_writeln('second clause d6'),
@@ -216,7 +216,7 @@ b7(X):- thr_writeln('second clause b7'),
 	d7(X).
 
 c7(X):- thr_writeln('created c7'),d7(X).
-c7(a).
+c7(c).
 
 d7(X):- thr_writeln('created d7'),c7(X).
 d7(X):- thr_writeln('second clause d7'),
@@ -252,7 +252,7 @@ b8(X):- thr_writeln('second clause b8'),
 	c8(X).
 
 c8(X):- thr_writeln('created c8'),d8(X).
-c8(a).
+c8(c).
 
 d8(X):- thr_writeln('created d8'),c8(X).
 d8(X):- thr_writeln('second clause d8'),
@@ -292,10 +292,54 @@ c9(X):- thr_writeln('second clause c9'),
 	sleep(1),
 	thr_writeln('c9 calling a9'),
 	a9(X).
-c9(a).
+c9(c).
 
 d9(X):- thr_writeln('created d9'),c9(X).
 
+%------------------------------------------
+%SCC is x10 - a10 - c10
+%           - b10   d10
 
+:- table a10/1, b10/1, c10/1, d10/1, x10/1.
+
+scc_test10:- 
+	xsb_thread_create(x10_write(_),One,_),
+	xsb_thread_create(c10_write(_),Two,_),
+	xsb_thread_join(One,_,_),
+	xsb_thread_join(Two,_,_).
+
+x10_write(X):- 
+	x10(X),thr_writeln(found(x10(X))),fail ; true.
+
+a10_write(X):- 
+	a10(X),thr_writeln(found(a10(X))),fail ; true.
+
+c10_write(X):- 
+	c10(X),thr_writeln(found(c10(X))),fail ; true.
+
+x10(X):- thr_writeln('created x10'),a10(X).
+x10(X):- thr_writeln('second clause x10'),
+	sleep(1),
+	thr_writeln('x10 calling c10'),
+	c10(X).
+x10(x).
+
+a10(X):- thr_writeln('created a10'),b10(X).
+a10(X):- thr_writeln('second clause a10'),
+	sleep(1),
+	thr_writeln('a10 calling c10'),
+	c10(X) ;x10(Y),Y=X.
+a10(a).
+
+b10(X):- thr_writeln('created b10'),a10(X).
+
+c10(X):- thr_writeln('created c10'),d10(X).
+c10(X):- thr_writeln('second clause c10'),
+	sleep(1),
+	thr_writeln('c10 calling a10'),
+	a10(X).
+c10(c).
+
+d10(X):- thr_writeln('created d10'),c10(X).
 
 end_of_file.
