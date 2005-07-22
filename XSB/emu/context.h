@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.14 2005-07-21 10:46:35 ruim Exp $
+** $Id: context.h,v 1.15 2005-07-22 17:21:51 dwarren Exp $
 ** 
 */
 
@@ -85,7 +85,6 @@ struct asrtBuff_t {
 #include "debugs/debug_attv.h"
 
 #include "basictypes.h"
-#include "cell_xsb.h"
 #include "memory_xsb.h"
 #include "varstring_xsb.h"
 #include "dynamic_stack.h"
