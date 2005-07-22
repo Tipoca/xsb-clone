@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.39 2005/07/21 14:03:56 ruim Exp $
+** $Id: slginsts_xsb_i.h,v 1.40 2005/07/21 16:51:03 dwarren Exp $
 ** 
 */
 
@@ -243,10 +243,6 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     NewProducerSF(producer_sf, CallLUR_Leaf(lookupResults),
 		  CallInfo_TableInfo(callInfo));
 #endif
-
-
-
-
     producer_cpf = answer_template;
     save_find_locx(ereg);
     save_registers(producer_cpf, CallInfo_CallArity(callInfo), rreg);
