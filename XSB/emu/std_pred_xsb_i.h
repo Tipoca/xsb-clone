@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.25 2005-07-22 15:42:17 crojo Exp $
+** $Id: std_pred_xsb_i.h,v 1.26 2005-07-24 18:51:39 dwarren Exp $
 ** 
 */
 
@@ -814,7 +814,7 @@ inline static xsbBool parsort(CTXTdecl)
     if (isnil(term2)) break;
     if (islist(term2)) {
       heap_addr = cell(clref_val(term2)); XSB_Deref(heap_addr);
-      if (par_spec.sort_num_pars == 0 || 
+      if (par_spec.sort_num_pars <= 0 || 
 	  (isconstr(heap_addr) && (get_arity(get_str_psc(heap_addr)) >= max_ind)) ||
 	  (islist(heap_addr) && max_ind <=2)) {
 	len++; term2 = cell(clref_val(term2)+1);
