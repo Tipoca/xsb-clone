@@ -297,6 +297,7 @@ c9(c).
 d9(X):- thr_writeln('created d9'),c9(X).
 
 %------------------------------------------
+% Can be grabbed by either first or second process.
 %SCC is x10 - a10 - c10
 %           - b10   d10
 
@@ -341,5 +342,174 @@ c10(X):- thr_writeln('second clause c10'),
 c10(c).
 
 d10(X):- thr_writeln('created d10'),c10(X).
+
+%------------------------------------------
+%SCC is x11 - a11 - c11 - y11
+%           - b11   d11
+
+:- table a11/1, b11/1, c11/1, d11/1, x11/1, y11/1.
+
+scc_test11:- 
+	xsb_thread_create(x11_write(_),One,_),
+	xsb_thread_create(y11_write(_),Two,_),
+	xsb_thread_join(One,_,_),
+	xsb_thread_join(Two,_,_).
+
+x11_write(X):- 
+	x11(X),thr_writeln(found(x11(X))),fail ; true.
+
+y11_write(X):- 
+	y11(X),thr_writeln(found(y11(X))),fail ; true.
+
+a11_write(X):- 
+	a11(X),thr_writeln(found(a11(X))),fail ; true.
+
+c11_write(X):- 
+	c11(X),thr_writeln(found(c11(X))),fail ; true.
+
+y11(X):- thr_writeln('created y11'),a11(X).
+y11(X):- thr_writeln('second clause x11'),
+	sleep(1),
+	thr_writeln('y11 calling x11'),
+	x11(X).
+y11(y).
+
+x11(X):- thr_writeln('created x11'),c11(X).
+x11(X):- thr_writeln('second clause x11'),
+	sleep(1),
+	thr_writeln('x11 calling y11'),
+	y11(X).
+x11(x).
+
+a11(X):- thr_writeln('created a11'),b11(X).
+a11(X):- thr_writeln('second clause a11'),
+	sleep(1),
+	thr_writeln('a11 calling c11'),
+	c11(X) ;x11(Y),Y=X.
+a11(a).
+
+b11(X):- thr_writeln('created b11'),a11(X).
+
+c11(X):- thr_writeln('created c11'),d11(X).
+c11(X):- thr_writeln('second clause c11'),
+	sleep(1),
+	thr_writeln('c11 calling a11'),
+	a11(X).
+c11(c).
+
+d11(X):- thr_writeln('created d11'),c11(X).
+
+%------------------------------------------
+%SCC is x11n - a11n - c11n - y11n
+%           - b11n   d11n
+% y11n is tnot x11n
+
+:- table a11n/0, b11n/0, c11n/0, d11n/0, x11n/0, y11n/0.
+
+scc_test11n:- 
+	xsb_thread_create(x11n_write,One,_),
+	xsb_thread_create(y11n_write,Two,_),
+	xsb_thread_join(One,_,_),
+	xsb_thread_join(Two,_,_).
+
+x11n_write:- 
+	x11n,thr_writeln(found(x11n)),fail ; true.
+
+y11n_write:- 
+	y11n,thr_writeln(found(y11n)),fail ; true.
+
+a11n_write:- 
+	a11n,thr_writeln(found(a11n)),fail ; true.
+
+c11n_write:- 
+	c11n,thr_writeln(found(c11n)),fail ; true.
+
+y11n:- thr_writeln('created y11n'),a11n.
+y11n:- thr_writeln('second clause x11n'),
+	sleep(1),
+	thr_writeln('y11n calling x11n'),
+	tnot(x11n).
+
+x11n:- thr_writeln('created x11n'),c11n.
+x11n:- thr_writeln('second clause x11n'),
+	sleep(1),
+	thr_writeln('x11n calling y11n'),
+	y11n.
+
+a11n:- thr_writeln('created a11n'),b11n.
+a11n:- thr_writeln('second clause a11n'),
+	sleep(1),
+	thr_writeln('a11n calling c11n'),
+	c11n.
+
+b11n:- thr_writeln('created b11n'),a11n.
+
+c11n:- thr_writeln('created c11n'),d11n.
+c11n:- thr_writeln('second clause c11n'),
+	sleep(1),
+	thr_writeln('c11n calling a11n'),
+	a11n.
+
+d11n:- thr_writeln('created d11n'),c11n.
+
+%--------------------------------------------------
+
+:- table a1n/0, b1n/0.
+
+scc_test1n:- 
+	xsb_thread_create(a1n,One,_),
+	xsb_thread_create(b1n,Two,_),
+	xsb_thread_join(One,_,_),
+	xsb_thread_join(Two,_,_).
+
+a1n:- 
+	thr_writeln('created a1n'),
+	sleep(1),
+	thr_writeln('a1n1n calling b1n'),
+	tnot(b1n).
+
+b1n:-    thr_writeln('created b1n'),
+	sleep(1),
+	thr_writeln('b1n calling a1n'),
+	a1n.
+
+%--------------------------------------------------
+% a1n1 calls b1n1, SLG-suspends, and fails
+:- table a1n1/0, b1n1/0.
+
+scc_test1n1:- 
+	xsb_thread_create(a1n1,One,_),
+	xsb_thread_create(b1n1,Two,_),
+	xsb_thread_join(One,_,_),
+	xsb_thread_join(Two,_,_).
+
+a1n1:- 
+	thr_writeln('created a1n1'),
+	sleep(1),
+	thr_writeln('a1n11n1 calling b1n1'),
+	tnot(b1n1).
+
+b1n1:-    thr_writeln('created b1n1'),
+	sleep(1).
+
+%--------------------------------------------------
+% a1n2 calls b1n2, SLG-suspends, and succeeds
+
+:- table a1n2/0, b1n2/0.
+
+scc_test1n2:- 
+	xsb_thread_create(a1n2,One,_),
+	xsb_thread_create(b1n2,Two,_),
+	xsb_thread_join(One,_,_),
+	xsb_thread_join(Two,_,_).
+
+a1n2:- 
+	thr_writeln('created a1n2'),
+	sleep(1),
+	thr_writeln('a1n21n2 calling b1n2'),
+	tnot(b1n2).
+
+b1n2:-    thr_writeln('created b1n2'),
+	sleep(1),fail.
 
 end_of_file.
