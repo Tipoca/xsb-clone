@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.206 2005-07-19 13:57:42 dwarren Exp $
+** $Id: builtin.c,v 1.207 2005-07-26 13:10:57 ruim Exp $
 ** 
 */
 
@@ -90,6 +90,7 @@
 #include "trie_internals.h"
 #include "table_status_defs.h"
 #include "rw_lock.h"
+#include "deadlock.h"
 
 #ifdef ORACLE
 #include "oracle_xsb.h"
