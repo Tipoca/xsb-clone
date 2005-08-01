@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.20 2005-01-14 18:31:37 ruim Exp $
+** $Id: trie_internals.h,v 1.21 2005-08-01 19:10:49 ruim Exp $
 ** 
 */
 
@@ -476,11 +476,7 @@ extern Cell TrieVarBindings[];
  *  Threshold to determine when to change from a chain of children to a
  *  hash table for them.
  */
-#ifndef MULTI_THREAD
 #define MAX_SIBLING_LEN   8
-#else
-#define MAX_SIBLING_LEN   10000
-#endif
 #define IsLongSiblingChain(ChainLength)	   ( ChainLength > MAX_SIBLING_LEN )
 
 /*
