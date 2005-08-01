@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.100 2005/06/28 17:21:52 dwarren Exp $
+** $Id: standard.P,v 1.101 2005/07/01 20:52:12 tswift Exp $
 ** 
 */
 
@@ -1176,6 +1176,18 @@ ttywritenl0(T, File) :- file_write(File, T).
 arity_integer(N) :-
 	integer(N),
 	N >= 0, N =< 255.
+
+% TLS: Like arity_integer, but performs checks.
+% conflating integer + var checks, as well as > 0 (domain) and =<
+% 255 (representation).  But it seems pedantic to add unnecessary ISO
+% checks. 
+check_arity_integer(N,Pred,Arg) :-
+	(integer(N) -> 
+	    (N >= 0, N =< 255 -> 
+		true 
+	     ;  domain_error(arity_integer,N,Pred,Arg) )
+         ; type_error(integer,N,Pred,Arg) ).
+
 
 %  all_atoms(+List)
 %  Given a proper list List determines whether it contains atoms only.

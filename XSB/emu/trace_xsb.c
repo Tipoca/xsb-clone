@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.10.6.2 2004/10/18 20:46:22 ruim Exp $
+** $Id: trace_xsb.c,v 1.12 2005/01/14 18:31:37 ruim Exp $
 ** 
 */
 
@@ -42,6 +42,7 @@
 #include "choice.h"
 #include "flags_xsb.h"
 #include "heap_xsb.h"
+#include "thread_xsb.h"
 
 /*======================================================================*/
 
@@ -248,6 +249,12 @@ void total_stat(CTXTdeclc double elapstime) {
 #ifdef GC
   printf("\n");
   print_gc_statistics();
+#endif
+
+#ifdef MULTI_THREAD
+
+  /*  print_mutex_use();*/
+
 #endif
 
   printf("Time: %.3f sec. cputime,  %.3f sec. elapsetime\n",

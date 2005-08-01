@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.23 2005-07-18 21:54:09 crojo Exp $
+** $Id: dis.c,v 1.24 2005-08-01 23:03:29 tswift Exp $
 ** 
 */
 
@@ -122,6 +122,7 @@ static void dis_data_sub(Pair *chain_ptr, char* modname)
 	    case T_UNLOADED: fprintf(filedes, "'UNLOADED',"); break;
 	    default:	     fprintf(filedes, "error_env,"); break;
 	}
+	// TLS: should T_DYNA be checked, also???
 	if (get_type(temp) == T_PRED) {
 	  if (get_tip(temp) == NULL) 
 	    fprintf(filedes, "'UNTABLED',"); 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.207 2005-07-26 13:10:57 ruim Exp $
+** $Id: builtin.c,v 1.208 2005-08-01 23:03:29 tswift Exp $
 ** 
 */
 
@@ -1153,7 +1153,7 @@ int builtin_call(CTXTdeclc byte number)
   }
   case PSC_SET_PROP: {	       /* R1: +PSC; R2: +int */
     Psc psc = (Psc)ptoc_addr(1);
-    if (get_type(psc) == T_PRED) {
+    if (get_type(psc) == T_PRED || get_type(psc) == T_DYNA) {
       xsb_warn("[psc_set_prop/2] Cannot set property of predicate.\n");
       return FALSE;
     }
