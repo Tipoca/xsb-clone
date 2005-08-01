@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.16 2005-07-26 22:46:23 crojo Exp $
+** $Id: context.h,v 1.17 2005-08-01 17:32:25 ruim Exp $
 ** 
 */
 
@@ -104,8 +104,8 @@ struct asrtBuff_t {
 #else
 #ifdef WIN_NT
 #include <windows.h>
-#endif
 #include <sql.h>
+#endif
 #endif
 //end of SQL related includes.
 
