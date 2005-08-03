@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.17 2005-08-03 19:44:21 crojo Exp $
+** $Id: function.c,v 1.18 2005-08-03 20:09:16 dwarren Exp $
 ** 
 */
 
@@ -188,12 +188,12 @@ int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
       if (fvalue > 0) 
       {
           ivalue = (prolog_int) floor(fvalue);
-          bld_oint(CTXTc regaddr,ivalue);
+          bld_oint(regaddr,ivalue);
       }
       else 
       {
           ivalue = (prolog_int) -floor(-fvalue);
-          bld_oint(CTXTc regaddr,ivalue);
+          bld_oint(regaddr,ivalue);
       }
     } else return 0;
     break;
@@ -209,7 +209,7 @@ int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
     else if (isofloat(value)) {
       fvalue = ofloat_val(value);
       ivalue = (prolog_int) floor(fvalue+0.5);
-      bld_oint(CTXTc regaddr, ivalue);
+      bld_oint(regaddr, ivalue);
     } else return 0;
     break;
   case FUN_ceiling:
@@ -224,7 +224,7 @@ int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
     else if (isofloat(value)) {
       fvalue = ofloat_val(value);
       ivalue = (prolog_int) -floor(-fvalue);
-      bld_oint(CTXTc regaddr,ivalue);
+      bld_oint(regaddr,ivalue);
     } else return 0;
     break;
   default:  return 0;
