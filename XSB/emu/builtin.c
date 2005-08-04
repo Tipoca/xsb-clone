@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.208 2005-08-01 23:03:29 tswift Exp $
+** $Id: builtin.c,v 1.209 2005-08-04 19:35:20 ruim Exp $
 ** 
 */
 
@@ -2043,7 +2043,11 @@ int builtin_call(CTXTdeclc byte number)
      * Now both goalSF and subsumerSF should be set for all cases.
      * Determine status values based on these pointers.
      */
+#ifndef MULTI_THREAD
     if ( IsNonNULL(goalSF) ) {
+#else
+    if ( IsNonNULL(goalSF) && !subg_grabbed(goalSF)) {
+#endif
       if ( goalSF == subsumerSF )
 	goal_type = PRODUCER_CALL;
       else
@@ -2052,7 +2056,11 @@ int builtin_call(CTXTdeclc byte number)
     else
       goal_type = NO_CALL_ENTRY;
 
+#ifndef MULTI_THREAD
     if ( IsNonNULL(subsumerSF) ) {
+#else
+    if ( IsNonNULL(subsumerSF) && !subg_grabbed(subsumerSF)) {
+#endif
       if ( is_completed(subsumerSF) )
 	answer_set_status = COMPLETED_ANSWER_SET;
       else

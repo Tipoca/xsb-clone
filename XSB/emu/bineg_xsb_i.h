@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.21 2005-08-01 19:10:47 ruim Exp $
+** $Id: bineg_xsb_i.h,v 1.22 2005-08-04 19:35:19 ruim Exp $
 ** 
 */
 
@@ -126,14 +126,14 @@ case IS_INCOMPLETE: {
                 break ;
         waiting_for_thread = find_context(table_tid) ;
         if( would_deadlock( waiting_for_thread, th ) )
-#ifndef BREAK_DEADLOCK
-                xsb_exit( "deadlock in concurrent tabling detected" );
-#else
-	{	reset_leader( th ) ;
+	{	/* code for leader */
+                reset_other_threads( th, waiting_for_thread, producerSF );
+                th->deadlock_brk_leader = TRUE ;
+                pthread_cond_broadcast(&completing_cond) ;
+		reset_leader( th ) ;
                 pthread_mutex_unlock(&completing_mut) ;
 		return TRUE ;
 	}
-#endif
 	th->waiting_for_subgoal = producerSF ;
         th->waiting_for_thread = waiting_for_thread ;
         pthread_mutex_unlock(&completing_mut);
