@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.24 2005-07-18 21:54:08 crojo Exp $
+** $Id: debug_xsb.c,v 1.25 2005-08-06 16:29:54 tswift Exp $
 ** 
 */
 
@@ -160,6 +160,7 @@ static void print_term(FILE *fp, Cell term, byte car, int level)
     return;
   case XSB_FLOAT:
     fprintf(fp, "%f", float_val(term));
+    fprintf(fp, "%f", ofloat_val(term));
     return;
   case XSB_LIST:
     cptr = clref_val(term);

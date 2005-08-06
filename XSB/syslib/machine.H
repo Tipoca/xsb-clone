@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.63 2004/08/24 20:41:11 tswift Exp $
+** $Id: machine.H,v 1.64 2005/01/14 18:32:01 ruim Exp $
 ** 
 */
 
@@ -132,6 +132,7 @@
         '$$clean_up_block'/0,
          thread_request/5,  mt_random_request/3,
         pow/3,
+   gc_clauses/0,
 	print_ls/0, print_tr/0, print_heap/2, print_cp/0, print_regs/0,
 	print_all_stacks/0, expand_heap/0, mark_heap/1, gc_heap/0,
 	'$$findall_init'/2,

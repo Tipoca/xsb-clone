@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.10 2005-07-18 21:54:11 crojo Exp $
+** $Id: std_cases_xsb_i.h,v 1.11 2005-08-06 16:29:54 tswift Exp $
 ** 
 */
 
@@ -148,3 +148,6 @@
     /* r2: +list of sort paramater specs			*/
     /* r3: ?sorted list of terms			*/
    return parsort(CTXT);
+
+  case GC_CLAUSES: 
+  return gc_clauses(CTXT);
