@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.37 2005-08-08 17:11:32 dwarren Exp $
+** $Id: error_xsb.c,v 1.38 2005-08-08 21:25:02 dwarren Exp $
 ** 
 */
 
@@ -141,7 +141,7 @@ void call_conv xsb_type_error(CTXTdeclc char *valid_type,Cell culprit,
   tptr++;
   bld_string(tptr,string_find(valid_type,1));
   tptr++;
-  if (culprit == NULL) bld_int(tptr,0); 
+  if (culprit == (Cell)NULL) bld_int(tptr,0); 
   else bld_ref(tptr,culprit);
 
   xsb_throw(CTXTc ball_to_throw);

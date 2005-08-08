@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.13 2005-08-08 17:11:33 dwarren Exp $
+** $Id: psc_xsb.h,v 1.14 2005-08-08 21:25:02 dwarren Exp $
 ** 
 */
 
@@ -38,7 +38,7 @@
 struct psc_rec {
   byte env;			/* 0&0x3 - visible; 1&0x3 - local; 2&0x3 - unloaded;  */
   				/* 0xc0, 2 bits for spy */
-				/* 0x20 - shared; 0x8 - tabled */
+				/* 0x20 - shared, 0x1 for pritave; 0x8 - tabled */
   byte entry_type;		/* see psc_defs.h */
   byte arity;
   byte length;
@@ -70,10 +70,10 @@ typedef struct psc_pair *Pair;
 /*======================================================================*/
 
 #define  get_type(psc)		((psc)->entry_type)
-#define  get_env(psc)		((psc)->env & 0x03)
-#define  get_spy(psc)		((psc)->env & 0xc0)
-#define  get_shared(psc)	((psc)->env & 0x20)
-#define  get_tabled(psc)	((psc)->env & 0x08)
+#define  get_env(psc)		((psc)->env & T_ENV)
+#define  get_spy(psc)		((psc)->env & T_SPY)
+#define  get_shared(psc)	((psc)->env & T_SHARED)
+#define  get_tabled(psc)	((psc)->env & T_TABLED)
 #define  get_arity(psc)		((psc)->arity)
 #define  get_ep(psc)		((psc)->ep)
 #define  get_data(psc)		((psc)->data)

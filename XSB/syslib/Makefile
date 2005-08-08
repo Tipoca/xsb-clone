@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.46 2003/09/29 13:05:16 tschrijvers Exp $
+## $Id: Makefile,v 1.47 2005/01/14 18:31:58 ruim Exp $
 ## 
 ##
 
@@ -43,7 +43,7 @@ ALL =	assert${OBJEXT} basics${OBJEXT} consult${OBJEXT} \
 EMU_INCLUDES = ../emu/builtin.h ../emu/celltags_xsb.h ../emu/flag_defs_xsb.h \
 	../emu/io_defs_xsb.h ../emu/syscall_xsb.h ../emu/sig_xsb.h \
 	../emu/system_defs_xsb.h ../emu/socket_defs_xsb.h \
-	../emu/thread_defs_xsb.h
+	../emu/thread_defs_xsb.h ../emu/psc_defs.h
 PROLOG_INCLUDES = ../prolog_includes/char_defs.h ../prolog_includes/standard.h
 
 

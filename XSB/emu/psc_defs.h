@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_defs.h,v 1.5 2005-01-14 18:31:26 ruim Exp $
+** $Id: psc_defs.h,v 1.6 2005-08-08 21:25:02 dwarren Exp $
 ** 
 */
 
@@ -28,6 +28,11 @@
 #define T_VISIBLE	0
 #define T_HIDDEN	1
 #define T_UNLOADED	2
+#define T_ENV		3
+#define T_TABLED	8
+#define T_SHARED	32 // 0x20  use decimal for Prolog include
+#define T_PRIVATE	16 // 0x10  use decimal for Prolog include
+#define T_SPY		192 // 0xc0 use decimal for Prolog include
 
 /* === type definition: (entry_type) ============================== */
 
