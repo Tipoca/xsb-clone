@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.101 2005/07/01 20:52:12 tswift Exp $
+** $Id: standard.P,v 1.102 2005/08/01 23:03:32 tswift Exp $
 ** 
 */
 
@@ -818,7 +818,6 @@ table(Ps) :-
 	 ;	functor(Ps,P,S), Ps1 = P/S
 	),
 	add_table(Ps1).
-
 
 			/***********************/
 			/*  LOGIC and CONTROL  */

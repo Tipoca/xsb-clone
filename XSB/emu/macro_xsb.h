@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.25 2005-07-21 21:04:24 dwarren Exp $
+** $Id: macro_xsb.h,v 1.26 2005-08-08 17:11:33 dwarren Exp $
 ** 
 */
 
@@ -109,6 +109,22 @@ extern struct tif_list  tif_list;
   delete_predicate_table(CTXTc pTIF);					\
   mem_dealloc((pTIF),sizeof(TableInfoFrame));				\
 }
+
+#define MAXTABTHREAD 100
+
+struct TDispBlk_t {
+  struct TDispBlk_t *PrevDB;
+  struct TDispBlk_t *NextDB;
+  Psc psc_ptr;
+  TabledEvalMethod method;
+  int MaxThread;
+  TIFptr Thread0;
+};
+
+struct TDispBlkHdr_t {
+  struct TDispBlk_t *firstDB;
+  struct TDispBlk_t *lastDB;
+};
 
 /*===========================================================================*/
 

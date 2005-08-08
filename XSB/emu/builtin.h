@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.63 2005-08-06 16:29:54 tswift Exp $
+** $Id: builtin.h,v 1.64 2005-08-08 17:11:30 dwarren Exp $
 ** 
 */
 
@@ -115,9 +115,11 @@
 #define GET_DATE                 80
 #define STAT_WALLTIME            81
 
+#define PSC_GET_SET_ENV_BYTE	 99
 #define PSC_ENV		        100
 #define PSC_SPY		        101
 #define PSC_TABLED	        102
+#define PSC_SET_TABLED		103
 
 #define IS_INCOMPLETE           104
 
@@ -152,6 +154,7 @@
 #define DB_BUILD_PRREF		138
 #define DB_REMOVE_PRREF		139
 #define DB_RECLAIM0		140
+#define DB_GET_PRREF		141
 
 #define FORMATTED_IO            142
 #define TABLE_STATUS            143

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.16 2005-07-26 22:46:25 crojo Exp $
+** $Id: token_xsb.c,v 1.17 2005-08-08 17:11:35 dwarren Exp $
 ** 
 */
 
@@ -684,7 +684,7 @@ START:
 		else if (c == intab.dpoint) {
                     d = GetC(card,instr);
                     if (InType(d) == DIGIT) {
-DECIMAL:                *s++ = '.';
+LAB_DECIMAL:                *s++ = '.';
                         do {
                             if (d != '_') *s++ = d;
                             d = GetC(card,instr);
@@ -813,7 +813,7 @@ ASTCOM:             if (com2plain(card, instr, d, intab.endcom)) {
                 } else
                 if (c == intab.dpoint && InType(d) == DIGIT) {
                     *s++ = '0';
-                    goto DECIMAL;
+                    goto LAB_DECIMAL;
                 }
                 while (InType(d) == SIGN) {
                     if (--n == 0) {

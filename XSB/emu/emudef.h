@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.51 2005-07-18 21:54:09 crojo Exp $
+** $Id: emudef.h,v 1.52 2005-08-08 17:11:31 dwarren Exp $
 ** 
 */
 
@@ -103,8 +103,10 @@ Psc ret_psc[MAX_ARITY];
 
 char *list_dot;
 
+#ifndef MULTI_THREAD
 int asynint_code = 0;
 int asynint_val = 0;
+#endif
 
 int next_free_code = 0;
 unsigned long enc[16] = {0xffffffff,0xffffffff,0xffffffff,0xffffffff,

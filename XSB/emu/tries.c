@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.65 2005-07-18 19:47:46 tswift Exp $
+** $Id: tries.c,v 1.66 2005-08-08 17:11:36 dwarren Exp $
 ** 
 */
 
@@ -57,7 +57,7 @@
 
 /*----------------------------------------------------------------------*/
 
-extern TIFptr get_tip(Psc);
+extern TIFptr get_tip(CTXTdeclc Psc);
 
 /*----------------------------------------------------------------------*/
 /* The following variables are used in other parts of the system        */
@@ -1765,7 +1765,7 @@ byte * trie_get_calls(CTXTdecl)
 
    call_term = ptoc_tag(CTXTc 1);
    if ((psc_ptr = term_psc(call_term)) != NULL) {
-     tip_ptr = get_tip(psc_ptr);
+     tip_ptr = get_tip(CTXTc psc_ptr);
      if (tip_ptr == NULL) {
        xsb_abort("get_calls/3 called with non-tabled predicate");
        return (byte *)&fail_inst;

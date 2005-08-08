@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.17 2005-07-15 15:02:32 dwarren Exp $
+** $Id: inst_xsb.h,v 1.18 2005-08-08 17:11:33 dwarren Exp $
 ** 
 */
 
@@ -301,6 +301,7 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define switchonterm    0xb0
 #define switchonbound	0xb3
 #define switchon3bound	0xb4
+#define switchonthread  0xb5
 
 /* Instructions to compile body ors	*/
 

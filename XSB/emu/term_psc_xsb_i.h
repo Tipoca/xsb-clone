@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: term_psc_xsb_i.h,v 1.2 2005-01-14 18:31:35 ruim Exp $
+** $Id: term_psc_xsb_i.h,v 1.3 2005-08-08 17:11:35 dwarren Exp $
 ** 
 */
 
@@ -31,8 +31,10 @@ static inline Psc term_psc(Cell term)
   Psc psc;
   Pair sym;
 
-  if (isconstr(term))
-    return get_str_psc(term);
+  if (isconstr(term)) {
+    psc = get_str_psc(term);
+    return psc;
+  }
   else {
     if (isstring(term)) {
       psc = (Psc)flags[CURRENT_MODULE];

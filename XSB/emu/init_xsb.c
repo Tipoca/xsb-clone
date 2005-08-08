@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.54 2005-07-18 21:54:10 crojo Exp $
+** $Id: init_xsb.c,v 1.55 2005-08-08 17:11:33 dwarren Exp $
 ** 
 */
 
@@ -727,6 +727,9 @@ void init_machine(CTXTdecl)
 #ifdef MULTI_THREAD
   interrupt_reg = &interrupt_counter;
 
+  asynint_code = 0;
+  asynint_val = 0;
+
   pdl		= init_pdl ;
   glstack	= init_glstack ;
   tcpstack	= init_tcpstack ;
@@ -760,6 +763,8 @@ void init_machine(CTXTdecl)
 
   last_answer = (VarString *)malloc(sizeof(VarString));
   XSB_StrInit(last_answer);
+  OldestCl = retracted_buffer;
+  NewestCl = retracted_buffer;
 
 /*  call_intercept = init_call_intercept ; */
 

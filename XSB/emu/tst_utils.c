@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.25 2005-07-18 21:54:12 crojo Exp $
+** $Id: tst_utils.c,v 1.26 2005-08-08 17:11:36 dwarren Exp $
 ** 
 */
 
@@ -167,12 +167,13 @@ void printTrieSymbol(FILE *fp, Cell symbol) {
       break;
     case XSB_STRUCT:
       {
-          if (isboxedfloat(symbol))
+	Psc psc;
+	if (isboxedfloat(symbol))
           {
               fprintf(fp, "%lf", boxedfloat_val(symbol));
               break;              
           }
-	Psc psc = DecodeTrieFunctor(symbol);
+	psc = DecodeTrieFunctor(symbol);
 	fprintf(fp, "%s/%d", get_name(psc), get_arity(psc));
       }
       break;
@@ -257,6 +258,8 @@ static void symstkPrintNextTerm(CTXTdeclc FILE *fp, xsbBool list_recursion) {
     break;
   case XSB_STRUCT:
     {
+      Psc psc;
+      int i;
       if (isboxedfloat(symbol))
       {
         if ( list_recursion )
@@ -265,8 +268,6 @@ static void symstkPrintNextTerm(CTXTdeclc FILE *fp, xsbBool list_recursion) {
           fprintf(fp, "%lf", boxedfloat_val(symbol));
         break;         
       }
-      Psc psc;
-      int i;
 
       if ( list_recursion )
 	fprintf(fp, "|");

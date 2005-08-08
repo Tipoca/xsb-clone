@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.64 2005/01/14 18:32:01 ruim Exp $
+** $Id: machine.H,v 1.65 2005/08/06 16:29:55 tswift Exp $
 ** 
 */
 
@@ -96,9 +96,12 @@
 	file_stat/3,
 	file_writequoted/2,
         intern_string/2,
+ 	psc_set_shared/2, 
+ 	psc_shared/2, 
  	psc_env/2, 
 	psc_spy/2, 
 	psc_tabled/2, 
+	psc_set_tabled/2, 
 	dereference_the_bucket/2,
 	pair_psc/2, 
 	pair_next/2, 
@@ -117,6 +120,7 @@
 	db_get_clause/11,
 	db_retract0/2,
 	db_build_prref/3,
+	db_get_prref/2,
 	db_remove_prref/1,
 	db_reclaim0/2,
 	oracle_query/7,

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asmpass2.P,v 1.4 2004-01-26 17:53:03 dwarren Exp $
+** $Id: asmpass2.P,v 1.5 2005-08-08 17:09:49 dwarren Exp $
 ** 
 */
 
@@ -42,8 +42,16 @@ asm_gendata(_).
 asm_putsym(Sym) :-
 	sym_name(Sym, Name, Arity), str_len(Name, L),
 	sym_env(Sym, Env), env_code(Env, DomCode),
+	(sym_prop((thread_shared),Sym)
+	 ->	DomCode1 is DomCode \/ 16'20
+	 ;	DomCode1 = DomCode
+	),
+	(sym_prop(tabled(_,_),Sym)
+	 ->	DomCode2 is DomCode1 \/ 16'08
+	 ;	DomCode2 = DomCode1
+	),
 	sym_category(Sym, Cat), category_code(Cat, CatCode),
-	put(DomCode), put(CatCode), put(Arity), asm_putlength(L),
+	put(DomCode2), put(CatCode), put(Arity), asm_putlength(L),
 	write(Name),
 	( DomCode =\= T_IMPORTED -> true
 	; Env = im(Mod), str_len(Mod, LM), put(LM), write(Mod)

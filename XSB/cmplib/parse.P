@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.69 2005-04-12 18:40:32 tswift Exp $
+** $Id: parse.P,v 1.70 2005-08-08 17:09:50 dwarren Exp $
 ** 
 */
 
@@ -608,6 +608,9 @@ parse_directive(compiler_options(Options),_SymTab,_ModName) :-
 	check_file_compiler_options(Options),
 	setoptions1(Options).
 parse_directive(comment(_,_),_SymTab,_ModName).
+parse_directive(thread_shared(PredCList),SymTab,_ModName) :-
+	parse_comma_list(PredCList,SymTab,[(thread_shared)],(thread_shared)).
+parse_directive(thread_private(_PredCList),_SymTab,_ModName).  % now the default, ....
 parse_directive(Directive,_SymTab,_ModName) :-
 	option(ciao_directives),
 	included_ciao_directive(Directive).

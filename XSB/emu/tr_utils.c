@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.75 2004/09/30 13:22:21 dwarren Exp $
+** $Id: tr_utils.c,v 1.76 2005/01/14 18:31:36 ruim Exp $
 ** 
 */
 
@@ -66,6 +66,10 @@
 
 #include "ptoc_tag_xsb_i.h"
 #include "term_psc_xsb_i.h"
+
+/*----------------------------------------------------------------------*/
+
+extern struct Table_Info_Frame *get_tip(CTXTdeclc Psc);
 
 /*----------------------------------------------------------------------*/
 
@@ -267,7 +271,7 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
     return NULL;
   }
 
-  tif = get_tip(psc);
+  tif = get_tip(CTXTc psc);
   if ( IsNULL(tif) )
     xsb_abort("Predicate %s/%d is not tabled", get_name(psc), get_arity(psc));
 
