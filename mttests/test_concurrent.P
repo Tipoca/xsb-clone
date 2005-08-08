@@ -123,14 +123,14 @@ nv_writeln(Str,Term):-
 %----------------------------------
 
 table_loop(N,Call):- 
-	(ts_firstcall(Call),fail ; true),
+	(call(Call),fail ; true),
 	table_loop_1(N,Call).
 	
-table_loop_1(0,Call):- !,ts_call(Call).
+table_loop_1(0,Call):- !,call(Call).
 table_loop_1(N,Call):- 
-	ts_abolish_table_call(Call),
+	abolish_table_pred(Call),
 	N > 0,
-	(ts_call(Call),fail ; true),
+	(call(Call),fail ; true),
 	N1 is N - 1,
 	table_loop_1(N1,Call).
 

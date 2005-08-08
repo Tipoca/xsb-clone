@@ -5,6 +5,7 @@ test :- abolish_table_info, int(p(X,Y)),writeln([X,Y]),fail.
  
 % interpreter 
  
+:- thread_shared int/1.
 :- table int/1. 
  
 int(G) :- rule(G,B),int_c(B).

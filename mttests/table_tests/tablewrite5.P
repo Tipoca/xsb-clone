@@ -1,9 +1,12 @@
 
 /* This test considers concurrent ts table creation and completion.
 Answers are returned through nested SCCs */
+:- import for/3 from basics.
 
-:- import random_pause/1, for/3 from mttestutils.
-:- import ts_assert/1, ts_call/1 from thread.
+:- import random_pause/1 from mttestutils.
+
+:- thread_shared num_is/1.
+:- dynamic num_is/1.
 
 :- assert((concurr_initialize(tablewrite(N,_)):- 
 		retractall(num_is(_)),
@@ -16,11 +19,13 @@ tablewrite(N,Str):-
 	fail.
 tablewrite(_,_).
 
+:- table table_call_a/1.
 table_call_a(X):- 
 	num_is(N),
 	random_pause(1000),
-	ts_firstcall(table_call_b(N,X)).
+	table_call_b(N,X).
 
+:- table table_call_b/2.
 table_call_b(N,X):- 
 	random_pause(1000),
 	for(X,1,N).

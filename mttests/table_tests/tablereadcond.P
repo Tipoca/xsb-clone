@@ -4,7 +4,9 @@ Then after the table is completed, threads read from the table
 concurrently N times. This tests concurrent reads as well as
 concurrent tabletry. Threads are sharing a table, but this shouldn't
 matter for now. */
+:- import for/3 from basics.
 
+:- thread_shared num_is/1.
 :- dynamic num_is/1.
 
 :- assert((concurr_initialize(tableread(N,_)):- 
@@ -12,6 +14,7 @@ matter for now. */
 		assert(num_is(N)),
 		tableread_table(_))).
 
+:- thread_shared tableread_table/1.
 :- table tableread_table/1.
 
 tableread_table(X):- 
@@ -19,6 +22,7 @@ tableread_table(X):-
 	for(X,1,N),
 	p(X).
 
+:- thread_shared p/1.
 :- table p/1.
 p(X):- tnot(p(X)).
 
@@ -31,20 +35,3 @@ tableread(_,Str):-
 	writeln(Str,X),
 	fail.
 tableread(_,_).
-	
-
-%%% for(?I,+B1,+B2) nondeterministically binds I to all integer values
-%%% from B1 to B2.  B1 and B2 must be integers, but either may be larger.
-for(I,B1,B2) :-
-	(B1 =< B2
-	 ->	forup(I,B1,B2)
-	 ;	fordown(I,B1,B2)
-	).
-
-forup(L,L,H) :- L =< H.
-forup(I,L,H) :- L < H, L1 is L+1, forup(I,L1,H).
-
-fordown(H,H,L) :- H >= L.
-fordown(I,H,L) :- H > L, H1 is H-1, fordown(I,H1,L).
-
-

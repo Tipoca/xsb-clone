@@ -4,7 +4,7 @@ dynamic code, then after the table is completed, threads read from the
 table concurrentl N times. This tests concurrent reads as well as
 concurrent tabletry. Threads are sharing a table, but this shouldn't
 matter for now. */
-
+:- thread_shared num_is/1.
 :- dynamic num_is/1.
 
 :- load_dyn(tableread_dyn1).
@@ -13,19 +13,3 @@ matter for now. */
 		retractall(num_is(_)),
 		assert(num_is(N)),
 		tableread_table(_))).
-
-%%% for(?I,+B1,+B2) nondeterministically binds I to all integer values
-%%% from B1 to B2.  B1 and B2 must be integers, but either may be larger.
-for(I,B1,B2) :-
-	(B1 =< B2
-	 ->	forup(I,B1,B2)
-	 ;	fordown(I,B1,B2)
-	).
-
-forup(L,L,H) :- L =< H.
-forup(I,L,H) :- L < H, L1 is L+1, forup(I,L1,H).
-
-fordown(H,H,L) :- H >= L.
-fordown(I,H,L) :- H > L, H1 is H-1, fordown(I,H1,L).
-
-
