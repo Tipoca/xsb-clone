@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.55 2005-08-08 17:11:33 dwarren Exp $
+** $Id: init_xsb.c,v 1.56 2005-08-08 18:24:36 dwarren Exp $
 ** 
 */
 
@@ -729,6 +729,7 @@ void init_machine(CTXTdecl)
 
   asynint_code = 0;
   asynint_val = 0;
+  clause_int = 0;
 
   pdl		= init_pdl ;
   glstack	= init_glstack ;

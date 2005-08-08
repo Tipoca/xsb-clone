@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.25 2005-08-06 16:29:54 tswift Exp $
+** $Id: debug_xsb.c,v 1.26 2005-08-08 18:24:34 dwarren Exp $
 ** 
 */
 
@@ -884,6 +884,7 @@ void debug_inst(CTXTdeclc byte *lpcreg, CPtr le_reg)
 {
   if (!print_hide) {
     fprintf(stddbg, "\nxctr %d ",xctr);
+    printf(" (intFlg:%x)",asynint_val);
     print_inst(stddbg, lpcreg);
   }
   if (register_watch_flag) monitor_register_watch(CTXT);
