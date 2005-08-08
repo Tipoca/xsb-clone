@@ -1,4 +1,4 @@
-:- import for/3 from basics.
+:- import for/3,length/2 from basics.
 :- import random_pause/1 from mttestutils.
 
 :- dynamic q/2.			% thread_private
@@ -11,9 +11,23 @@ test_retract(N,Str) :-  % N = 10000
 	  assert(q(J,I)),
 	  fail
 	  ;	 
+	  findall(X,q(X,_),List),
+	  length(List,Len),
+	  Len =\= N,
+	  !,
+	  writeln(Str,error_in_retract),
+	  fail
+	  ;
 	  for(J,1,N2),
 	  K is 2*J-1,
 	  retract(q(K,_)),
+	  fail
+	  ;	 
+	  findall(X,q(X,_),List),
+	  length(List,Len),
+	  Len =\= N2,
+	  !,
+	  writeln(Str,error_in_retract),
 	  fail
 	  ;	 
 	  for(J,1,N2),
