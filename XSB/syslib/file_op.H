@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.H,v 1.9 2005/07/21 21:04:30 dwarren Exp $
+** $Id: file_op.H,v 1.10 2005/08/08 17:10:31 dwarren Exp $
 ** 
 */
 
@@ -27,8 +27,7 @@
 :- export '_$op'/3, add_ops/3, op_priority/1, op_specifier/1.
 :- export add_index/3, retract_index/1, add_trie_index/1, retract_trie_index/1, 
   '_$index'/3 , '_$trie_asserted'/1.
-:- export add_table/1, retract_table/1, '_$table'/1.
-%%%:- export add_shared/1, add_private/1, '_$shared'/1.
+:- export add_table/1, retract_table/1.   %%, '_$table'/1.
 :- export mpa_to_skel/2.
 :- export force_file_op_loaded/0.
 
