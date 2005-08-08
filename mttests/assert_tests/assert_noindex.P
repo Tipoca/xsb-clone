@@ -4,6 +4,7 @@
 
 odd(X) :- I is X mod 2, I = 1.
 
+:- thread_shared p/2.
 :- dynamic p/2.
 
 test_assert(N,Str):- 

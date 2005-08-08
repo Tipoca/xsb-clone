@@ -1,0 +1,32 @@
+:- import for/3 from basics.
+:- import random_pause/1 from mttestutils.
+
+:- dynamic q/2.			% thread_private
+
+test_retract(N,Str) :-  % N = 10000
+	N2 is N//2,
+	(for(I,1,3),
+	 random_pause(1000),
+	 (for(J,1,N),
+	  assert(q(J,I)),
+	  fail
+	  ;	 
+	  for(J,1,N2),
+	  K is 2*J-1,
+	  retract(q(K,_)),
+	  fail
+	  ;	 
+	  for(J,1,N2),
+	  K is 2*J,
+	  retract(q(K,_)),
+	  fail
+	  ;	 
+	  true
+	 ),
+	 q(_,_),
+	 !,
+	 writeln(Str,error_in_retract)
+	 ;
+	 writeln(Str,retract_ok)
+	).
+

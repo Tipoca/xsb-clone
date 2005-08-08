@@ -29,3 +29,5 @@ echo "-------------------------------------------------------"
 
 ../gentest.sh "$XEMU $options" assert_rw "test_assert_rw(1000,_)" $NUM
 ../gentest.sh "$XEMU $options" assert_rw1 "test_assert_rw1(1000,_)" $NUM
+
+../gentest.sh "$XEMU $options" assert_retpri "test_retract(40000,_)" $NUM

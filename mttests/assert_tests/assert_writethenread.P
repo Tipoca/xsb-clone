@@ -1,6 +1,8 @@
 
 % This tests only writing for assert.
+:- import for/3 from basics.
 
+:- thread_shared p/2.
 :- index(p/2,trie).
 :- dynamic(p/2).
 
@@ -9,22 +11,6 @@
 		 assert(p(1,X)),
 		 fail ; true))).
 	
-
-%%% for(?I,+B1,+B2) nondeterministically binds I to all integer values
-%%% from B1 to B2.  B1 and B2 must be integers, but either may be larger.
-for(I,B1,B2) :-
-	(B1 =< B2
-	 ->	forup(I,B1,B2)
-	 ;	fordown(I,B1,B2)
-	).
-
-forup(L,L,H) :- L =< H.
-forup(I,L,H) :- L < H, L1 is L+1, forup(I,L1,H).
-
-fordown(H,H,L) :- H >= L.
-fordown(I,H,L) :- H > L, H1 is H-1, fordown(I,H1,L).
-
-
 test_assert_writethenread(N,Str):-
 	for(X,1,N),
 	p(1,X),
