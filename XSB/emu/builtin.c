@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.211 2005-08-08 17:11:30 dwarren Exp $
+** $Id: builtin.c,v 1.212 2005-08-09 13:59:59 evansbj Exp $
 ** 
 */
 
@@ -1782,7 +1782,11 @@ int builtin_call(CTXTdeclc byte number)
 #ifdef HAVE_GETHOSTBYNAME
     static struct hostent *hostptr;
     hostptr = gethostbyname(ptoc_longstring(CTXTc 1));
+#ifdef DARWIN	/* OS X returns an array of hostnames in h_addr_list */
+    memmove(ptoc_longstring(CTXTc 2), hostptr->h_addr_list[0], hostptr->h_length);
+#else
     memmove(ptoc_longstring(CTXTc 2), hostptr->h_addr, hostptr->h_length);
+#endif
 #else
     xsb_abort("[SYS_GETHOST] Operation not available for this configuration");
 #endif
