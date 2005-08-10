@@ -19,21 +19,22 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asmpass2.H,v 1.7 2005-08-08 17:09:49 dwarren Exp $
+** $Id: asmpass2.H,v 1.8 2005-08-10 19:55:37 dwarren Exp $
 ** 
 */
 
 
 :- export force_asm_pass2_loaded/0.
-:- export asm_gendata/1, asm_gentext/2, asm_genindex/2, asm_putlength/1.
+:- export asm_gendata/2, asm_gentext/3, asm_genindex/3, asm_putlength/2.
 
 :- import error/1 from auxlry.
 :- import log_ith/3 from basics.
 :- import asm_inst/4 from asm_inst.
 :- import membercheck/2 from listutil.
 :- import term_hash/3, str_len/2 from machine.
-:- import write/1, put/1, integer/1 from standard.
-:- import write_int/1, write_float/1 from xsb_writ.
+:- import write/2, integer/1 from standard.
+:- import file_put/2 from file_io.
+:- import write_int/2, write_float/2 from xsb_writ.
 :- import member/2 from basics.
 :- import sym_offset/2, sym_env/2, sym_category/2, sym_name/3, sym_prop/2 from symtab.
 

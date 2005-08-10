@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.23 2004-09-02 00:22:05 dwarren Exp $
+** $Id: auxlry.P,v 1.24 2005-08-10 19:55:37 dwarren Exp $
 ** 
 */
 
@@ -272,21 +272,21 @@ meltargs(I, X, Y, FrozenVarDict) :-
 /*----writetop----------------------------------------------------------*/
 
 writetop(Term, Level) :-
-	telling(F), tell(userout), writetop0(Term, Level), nl, tell(F).
+	writetop0(Term, Level), nl(userout).
 
-writetop0(Term, _Level) :- atomic(Term), !, write(Term).
-writetop0(Term, _Level) :- var(Term), !, write(Term).
+writetop0(Term, _Level) :- atomic(Term), !, write(userout,Term).
+writetop0(Term, _Level) :- var(Term), !, write(userout,Term).
 writetop0(Term, Level) :- 
 	Level1 is Level - 1,
 	Term =.. [F|Args],
-	write(F),write('('),
-	( Level1 < 0 -> write('_') ; writetop_args(Args,Level1), ! ),
-	write(')'),
+	write(userout,F),write(userout,'('),
+	( Level1 < 0 -> write(userout,'_') ; writetop_args(Args,Level1), ! ),
+	write(userout,')'),
 	!.
 
 writetop_args([X], Level) :- writetop0(X, Level), !.
 writetop_args([X|R], Level) :-
-	writetop0(X, Level), write(','), writetop_args(R, Level).
+	writetop0(X, Level), write(userout,','), writetop_args(R, Level).
 
 
 /*======================================================================*/
