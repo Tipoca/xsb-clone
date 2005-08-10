@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.P,v 1.23 2005-08-10 19:55:37 dwarren Exp $
+** $Id: compile.P,v 1.24 2005-08-10 20:08:25 dwarren Exp $
 ** 
 */
 
@@ -272,7 +272,7 @@ compile1(Modname, Module, SymTab, AFile, OFile, TIFile, IsModule) :-
       ; open(OFile,write,OStr),
 	asm_genheader(OStr, Modname, SymTab, IsModule), % generate OBJ header
 	compile0(Module, 0, dummy, OStr, TIFile, IsModule),
-	close(OStr), writeln(userout,closed(OFile))
+	close(OStr)
       ).
 
 /*======================================================================*/
