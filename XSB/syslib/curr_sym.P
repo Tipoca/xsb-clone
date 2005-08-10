@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.25 2004/11/04 23:03:07 tswift Exp $
+** $Id: curr_sym.P,v 1.26 2004/11/24 12:29:08 tswift Exp $
 ** 
 */
 
@@ -530,6 +530,9 @@ psc_properties(PSC, Property) :-
 psc_properties(PSC, Property) :- 
 	psc_tabled(PSC, Tabled),
 	( Tabled =\= 0 -> Property = tabled ).
+psc_properties(PSC, Property) :- 
+	psc_shared(PSC, Shared),
+	( Shared =\= 0 -> Property = shared ).
 psc_properties(PSC, Property) :-
 	psc_name(PSC, Functor),		% Finding the Functor and the Arity
 	psc_arity(PSC, Arity),		% twice is silly, isn''t it?

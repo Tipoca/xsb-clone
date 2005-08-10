@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.P,v 1.23 2005/04/09 01:03:00 tswift Exp $
+** $Id: xsb_writ.P,v 1.24 2005/06/20 17:54:16 dwarren Exp $
 ** 
 */
 
@@ -60,19 +60,23 @@ file_write0(File, Term) :- xsb_sys_mutex_lock(MUTEX_IO),
                            fail.
 file_write0(_, _).
 
-    	    	/******************************/
-    	        /* write_int/1, write_float/1 */
-    	    	/******************************/
-
+    	    	/**********************************/
+    	        /* write_int/1-2, write_float/1-2 */
+    	    	/**********************************/
 
 write_int(Num) :- 
 	stat_flag(11, File),
 	file_puttoken(File, TK_INT_0, Num).
 
+write_int(Str,Num) :-
+	file_puttoken(Str,TK_INT_0,Num).
+
 write_float(Num) :- 
 	stat_flag(11, File),
 	file_puttoken(File, TK_FLOAT_0, Num).
 
+write_float(Str,Num) :-
+	file_puttoken(Str,TK_FLOAT_0,Num).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
