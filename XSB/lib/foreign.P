@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.47 2005-08-10 19:56:42 dwarren Exp $
+** $Id: foreign.P,v 1.48 2005-08-11 03:14:38 evansbj Exp $
 ** 
 */
 
@@ -141,9 +141,9 @@ compile_c(Modname, Base, Options, Dir, LdOption, CompComm, TempFile) :-
 		shell(['ld -expect_unresolved \* -O1 -shared -o ',
 		       Base, '.so ', Base, '.o ', LdOption])
 	    ; str_sub('powerpc-apple-darwin', Configuration)
-	    ->	shell([CC_Name,' -dynamiclib -undefined dynamic_lookup -faltivec -o ', Base, '.dylib ', Base, '.c ', TempFile, ' ', CC_Opts, ' ', LdOption])
+	    ->	shell([CC_Name,' -dynamiclib -undefined dynamic_lookup -faltivec -fPIC -o ', Base, '.dylib ', Base, '.c ', TempFile, ' ', CC_Opts, ' ', LdOption])
 #ifdef FOREIGN_DEBUG
-	    , message((CC_Name,' -dynamiclib -undefined dynamic_lookup -faltivec -o ', Base, '.dylib ', Base, '.c ', TempFile, ' ', CC_Opts, ' ', LdOption))
+	    , message((CC_Name,' -dynamiclib -undefined dynamic_lookup -faltivec -fPIC -o ', Base, '.dylib ', Base, '.c ', TempFile, ' ', CC_Opts, ' ', LdOption))
 #endif
 
 	    ;	str_sub('cygwin', Configuration)

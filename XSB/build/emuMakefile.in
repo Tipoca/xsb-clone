@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.57 2005-07-20 16:45:18 ruim Exp $
+## $Id: emuMakefile.in,v 1.58 2005-08-11 03:12:59 evansbj Exp $
 ## 
 
 
@@ -169,7 +169,7 @@ xsbmod:: $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
 
 xsbdynmod::
 	echo "Making XSB Shared Library $(bindir)/libxsb.$(SHAREDLIB_EXTENSION)"
-	@LD@ -o libxsb.$(SHAREDLIB_EXTENSION) $(DYNMOD_LINKFLAGS) $(LINKFLAGS)  $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
+	@LD@ -o libxsb.$(SHAREDLIB_EXTENSION) $(DYNMOD_LINKFLAGS)  -faltivec -fPIC $(LINKFLAGS)  $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ} -framework JavaVM -lSystem -lm
 	@cp libxsb.$(SHAREDLIB_EXTENSION) $(bindir) 2>/dev/null || echo ""
 
 # same as xsbmod, but with oracle support

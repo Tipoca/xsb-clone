@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.180 2005-07-22 15:42:10 crojo Exp $
+## $Id: configure.in,v 1.181 2005-08-11 03:12:59 evansbj Exp $
 ##
 ##
 
@@ -1377,8 +1377,9 @@ case "$canonical" in
                 fi
         ;;
     *-rhapsody* | *-darwin* )
+				CFLAGS="-faltivec -fPIC ${CFLAGS} "
                 AC_DEFINE(DARWIN)
-		
+			    AC_DEFINE(FOREIGN_ELF)
 		DYNMOD_LINKFLAGS="-dynamiclib -single_module -nostartfiles"
 		DYNMOD_SHAREDLIB_EXTENSION=jnilib
         ;;
