@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.212 2005-08-09 13:59:59 evansbj Exp $
+** $Id: builtin.c,v 1.213 2005-08-13 15:04:02 ruim Exp $
 ** 
 */
 
@@ -2138,7 +2138,7 @@ int builtin_call(CTXTdeclc byte number)
      * Now both goalSF and subsumerSF should be set for all cases.
      * Determine status values based on these pointers.
      */
-#ifndef MULTI_THREAD
+#ifndef SHARED_COMPL_TABLES
     if ( IsNonNULL(goalSF) ) {
 #else
     if ( IsNonNULL(goalSF) && !subg_grabbed(goalSF)) {
@@ -2151,7 +2151,7 @@ int builtin_call(CTXTdeclc byte number)
     else
       goal_type = NO_CALL_ENTRY;
 
-#ifndef MULTI_THREAD
+#ifndef SHARED_COMPL_TABLES
     if ( IsNonNULL(subsumerSF) ) {
 #else
     if ( IsNonNULL(subsumerSF) && !subg_grabbed(subsumerSF)) {

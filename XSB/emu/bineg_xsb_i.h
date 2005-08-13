@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.22 2005-08-04 19:35:19 ruim Exp $
+** $Id: bineg_xsb_i.h,v 1.23 2005-08-13 15:04:02 ruim Exp $
 ** 
 */
 
@@ -98,7 +98,7 @@ case IS_INCOMPLETE: {
   const int regSubgoalFrame = 1;  /* in: rep of a tabled subgoal */
   const int regRootSubgoal  = 2;  /* in: PTCPreg */
 
-#ifdef MULTI_THREAD
+#ifdef SHARED_COMPL_TABLES
 	int table_tid ;
 	th_context *waiting_for_thread ;
 #endif
@@ -115,7 +115,7 @@ case IS_INCOMPLETE: {
   dbg_print_subgoal(LOG_DELAY, stddbg, producerSF);
   xsb_dbgmsg((LOG_DELAY, ", (%x)\n", (int)&subg_ans_root_ptr(producerSF)));
 
-#ifdef MULTI_THREAD
+#ifdef SHARED_COMPL_TABLES
 /* This allows sharing of completed tables.  */
      pthread_mutex_lock(&completing_mut);
      while( !is_completed(producerSF) )

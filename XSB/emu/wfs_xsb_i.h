@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wfs_xsb_i.h,v 1.10 2005-01-14 18:31:54 ruim Exp $
+** $Id: wfs_xsb_i.h,v 1.11 2005-08-13 15:04:02 ruim Exp $
 ** 
 */
 
@@ -379,7 +379,7 @@ static void batched_compute_wfs(CTXTdeclc CPtr leader_compl_frame,
 	 mark_as_completed(curr_subg);
 	 reclaim_incomplete_table_structs(curr_subg);
 	 if (neg_simplif_possible(curr_subg)) {
-	   simplify_neg_fails(curr_subg);
+	   simplify_neg_fails(CTXTc curr_subg);
 	 }
        }
        
@@ -504,7 +504,7 @@ static void batched_compute_wfs(CTXTdeclc CPtr leader_compl_frame,
       curr_subg = compl_subgoal_ptr(ComplStkFrame);
       mark_as_completed(curr_subg);
       if (neg_simplif_possible(curr_subg)) {
-	simplify_neg_fails(curr_subg);
+	simplify_neg_fails(CTXTc curr_subg);
       }
       ComplStkFrame = next_compl_frame(ComplStkFrame);
     }

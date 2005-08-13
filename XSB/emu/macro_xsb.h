@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.26 2005-08-08 17:11:33 dwarren Exp $
+** $Id: macro_xsb.h,v 1.27 2005-08-13 15:04:02 ruim Exp $
 ** 
 */
 
@@ -266,7 +266,7 @@ typedef struct subgoal_frame {
   CPtr compl_stack_ptr;	  /* Pointer to subgoal's completion stack frame */
   CPtr compl_suspens_ptr; /* SLGWAM: CP stack ptr */
   PNDE nde_list;	  /* pointer to a list of negative DEs */
-#ifdef MULTI_THREAD
+#ifdef SHARED_COMPL_TABLES
   int tid;		  /* Thread id of the generator thread for this sg */
   byte grabbed; 	  /* Subgoal is marked to be computed for leader in
 			     deadlock detection */
