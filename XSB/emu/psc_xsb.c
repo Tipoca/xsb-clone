@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.20 2005-08-08 17:11:33 dwarren Exp $
+** $Id: psc_xsb.c,v 1.21 2005-08-13 15:18:17 dwarren Exp $
 ** 
 */
 
@@ -106,9 +106,12 @@ static Psc make_psc_rec(char *name, char arity) {
   
   length = strlen(name);
   temp = (Psc)mem_alloc(sizeof(struct psc_rec));
-  set_env(temp, 0);
   set_type(temp, 0);
-  set_spy(temp, 0);
+  temp->env = 0;
+  //  set_env(temp, 0);
+  //  set_spy(temp, 0);
+  //  set_shared(temp, 0);
+  //  set_tabled(temp, 0);
   set_arity(temp, arity);
   set_length(temp, length);
   set_data(temp, 0);
