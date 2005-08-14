@@ -24,7 +24,7 @@ echo "Num is $NUM"
 
 # May make more general later.
 #-----------------------------
-ALLTESTS="assert_tests io_tests prolog_tests symbol_tests table_tests comp_test shared_tests"
+ALLTESTS="assert_tests io_tests prolog_tests symbol_tests table_tests comp_test negation_tests shared_tests"
 
 if [ -z "$TESTS" ]
 then
