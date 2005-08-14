@@ -1,12 +1,11 @@
-:-import ts_tnot/1, ts_abolish_tables/0, ts_call/1, ts_assert/1 from thread.
-/* */
+
+:- table win/2.
 
 test(N,Str):- 
-	ts_assert((win(X,M):-win(X,M))),
-	ts_call(win(2,N)),
+	win(2,N),
 	writeln(Str,won).
 
-win(A,N):- chain(A,B,N),ts_tnot(win(B,N)).
+win(A,N):- chain(A,B,N),tnot(win(B,N)).
 
 chain(A,B,N):- 
 	integer(A),

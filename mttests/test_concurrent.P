@@ -19,9 +19,6 @@ correct. */
 :- import xsb_mutex_init/1,
 	  xsb_mutex_lock/1,
 	  xsb_mutex_unlock/1 from thread.
-:- import ts_init_tables/0, ts_abolish_tables/0 from thread.
-:- import ts_abolish_table_call/1 from thread.
-:- import ts_assert/1, ts_call/1, ts_tnot/1 from thread.
 
 
 :- import mt_srand/0, random_pause/1 from mttestutils.
