@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.66 2005/08/08 17:10:31 dwarren Exp $
+** $Id: machine.H,v 1.67 2005/08/08 21:25:05 dwarren Exp $
 ** 
 */
 
@@ -31,6 +31,7 @@
 /*======================================================================*/
 
 :- export
+    float_op/10,
 	psc_name/2, 
 	psc_arity/2, 
 	psc_type/2, 
