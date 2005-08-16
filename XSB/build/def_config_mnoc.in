@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_mnoc.in,v 1.12 2005-07-22 19:40:35 crojo Exp $
+** $Id: def_config_mnoc.in,v 1.13 2005-08-16 15:42:11 dwarren Exp $
 **
 */
 
@@ -271,6 +271,10 @@
 #undef GC_TEST
 
 #undef MULTI_THREAD
+
+#undef SHARED_COMPL_TABLES
+
+#undef CONC_COMPL
 
 /* The number of bytes in a long.  */
 #undef SIZEOF_LONG
