@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.26 2005-08-08 17:11:36 dwarren Exp $
+** $Id: tst_utils.c,v 1.27 2005-08-16 21:39:53 dwarren Exp $
 ** 
 */
 
@@ -70,7 +70,7 @@ DynamicStack  tstTrail;
 
 void tstInitDataStructs(CTXTdecl) {
 
-  extern void initCollectRelevantAnswers(void);
+  extern void initCollectRelevantAnswers(CTXTdecl);
   extern void initSubsumptiveLookup(CTXTdecl);
 
   DynStk_Init(&tstTermStack, TST_TERMSTACK_INITSIZE, Cell, "TST Term Stack");
@@ -80,7 +80,7 @@ void tstInitDataStructs(CTXTdecl) {
 	      "Trie-Symbol Stack");
   DynStk_Init(&tstTrail, TST_TRAIL_INITSIZE, CPtr, "TST Trail");
   initSubsumptiveLookup(CTXT);
-  initCollectRelevantAnswers();
+  initCollectRelevantAnswers(CTXT);
 }
 
 

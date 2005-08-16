@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_unify.c,v 1.14 2005-01-14 18:31:39 ruim Exp $
+** $Id: tst_unify.c,v 1.15 2005-08-16 21:39:53 dwarren Exp $
 ** 
 */
 
@@ -106,6 +106,9 @@ static void consumption_error(CTXTdeclc char *string) {
 
   char *abort_string;
 
+#ifdef MULTI_THREAD
+  fprintf(stderr,"This error has occurred, but the following diagnostics may be wrong due to global variables\n");
+#endif
   fprintf(stderr,"\nAnswer Return ERROR:  Failed to unify answer\n\t");
 #ifdef DEBUG_VERBOSE
   printTriePath(stderr,gAnsLeaf,YES);
