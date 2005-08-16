@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.P,v 1.26 2005/08/08 17:10:31 dwarren Exp $
+** $Id: file_op.P,v 1.27 2005/08/08 19:37:03 dwarren Exp $
 ** 
 */
 
@@ -221,13 +221,13 @@ table to use. */
          ;      fail     % index1 doesn't exist yet, so it is empty
         ).
 
-:- dynamic '_$index1'(_,_,_).
 :- thread_shared('_$index1'(_,_,_)).
+:- dynamic '_$index1'(_,_,_).
 :- assert('_$index1'(dyn_op(_,_,_),3,17)),
    assert('_$index1'('_$index'(_,_,_),1,29)).
 
-:- dynamic '_$trie_asserted1'(_).
 :- thread_shared('_$trie_asserted1'(_)).
+:- dynamic '_$trie_asserted1'(_).
 '_$trie_asserted'(Term) :- 
 	conpsc('_$trie_asserted1'(_),Psc),
 	psc_type(Psc, Type),

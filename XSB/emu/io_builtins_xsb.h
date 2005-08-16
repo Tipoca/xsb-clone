@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.h,v 1.11 2005-07-06 18:29:14 dwarren Exp $
+** $Id: io_builtins_xsb.h,v 1.12 2005-08-16 19:19:09 dwarren Exp $
 ** 
 */
 
@@ -42,7 +42,7 @@ typedef struct  {
 extern stream_record open_files[];      /* Table of file pointers for open files */
 
 extern int xsb_intern_fileptr(FILE *file,char *c,char *c2,char *c3);
-extern int xsb_intern_file(char *c1,char *c2,int *i,char *strmode);
+extern int xsb_intern_file(char *c1,char *c2,int *i,char *strmode,int opennew);
 
 extern void write_quotedname(FILE *file, char *string);
 extern void double_quotes(char *string, char *new_string);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.57 2005-07-18 21:54:10 crojo Exp $
+** $Id: io_builtins_xsb.c,v 1.58 2005-08-16 19:19:09 dwarren Exp $
 ** 
 */
 
@@ -1451,7 +1451,7 @@ int xsb_intern_fileptr(FILE *fptr, char *context,char* name,char *strmode)
    is to handle possible Posix I/O modes, of which there is
    redundancy. */
 
-int xsb_intern_file(char *context,char *addr, int *ioport,char *strmode)
+int xsb_intern_file(char *context,char *addr, int *ioport,char *strmode,int opennew)
 {
   FILE *fptr;			/* working variable */
   int i, first_null, stream_found; 
@@ -1476,12 +1476,12 @@ int xsb_intern_file(char *context,char *addr, int *ioport,char *strmode)
        i < MAX_OPEN_FILES; 
        i++) {
     if (open_files[i].file_ptr != NULL) {
-      if (open_files[i].file_name != NULL &&
+      if (!opennew && open_files[i].file_name != NULL &&
 	  !strcmp(addr,open_files[i].file_name) && 
 	  open_files[i].io_mode == mode) {
 	stream_found = i;
 	break;
-      } } else if (first_null < 0) {first_null = i;}
+      } } else if (first_null < 0) {first_null = i; if (opennew) break;}
   }
 
   /*

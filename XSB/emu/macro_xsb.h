@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.27 2005-08-13 15:04:02 ruim Exp $
+** $Id: macro_xsb.h,v 1.28 2005-08-16 19:19:09 dwarren Exp $
 ** 
 */
 
@@ -82,7 +82,22 @@ extern struct tif_list  tif_list;
    if ( IsNULL(pTIF) )							\
      xsb_abort("Ran out of memory in allocation of TableInfoFrame");	\
    TIF_PSC(pTIF) = pPSC;						\
-   TIF_EvalMethod(pTIF) = (TabledEvalMethod)flags[TABLING_METHOD];	\
+   if (get_tabled(pPSC)==T_TABLED) {					\
+     TIF_EvalMethod(pTIF) = (TabledEvalMethod)flags[TABLING_METHOD];	\
+     if (TIF_EvalMethod(pTIF) == VARIANT_EVAL_METHOD)			\
+       set_tabled(pPSC,T_TABLED_VAR);					\
+     else set_tabled(pPSC,T_TABLED_SUB);				\
+   }									\
+   else if (get_tabled(pPSC)==T_TABLED_VAR) 				\
+      TIF_EvalMethod(pTIF) = VARIANT_EVAL_METHOD;			\
+   else if (get_tabled(pPSC)==T_TABLED_SUB) 				\
+     TIF_EvalMethod(pTIF) = SUBSUMPTIVE_EVAL_METHOD;			\
+   else {								\
+      xsb_warn("%s/%d not identified as tabled in .xwam file, Recompile (variant assumed)", \
+	get_name(pPSC),get_arity(pPSC));				\
+      TIF_EvalMethod(pTIF) = VARIANT_EVAL_METHOD;			\
+      set_tabled(pPSC,T_TABLED_VAR);					\
+   }									\
    TIF_CallTrie(pTIF) = NULL;						\
    TIF_Subgoals(pTIF) = NULL;						\
    TIF_NextTIF(pTIF) = NULL;						\

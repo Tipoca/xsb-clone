@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.30 2004/09/10 17:29:45 tswift Exp $
+** $Id: file_io.H,v 1.31 2004/09/28 17:24:43 tswift Exp $
 ** 
 */
 
@@ -58,7 +58,7 @@
 	  copyIOport/2,
   file_seek/4, file_truncate/3,
   file_pos/2, file_size/2, file_time/2,
-  file_open/3, file_close/1, file_close/2,
+  file_open/3, file_open/4, file_close/1, file_close/2,
               file_get/2, file_put/2,
 	  file_getbuf/4,
 	  file_getbuf_atom/4, file_getbuf_atom/3,

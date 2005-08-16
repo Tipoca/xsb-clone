@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.P,v 1.42 2004/11/24 12:29:08 tswift Exp $
+** $Id: file_io.P,v 1.43 2005/07/01 20:52:12 tswift Exp $
 ** 
 */
 
@@ -71,8 +71,10 @@ file_pos(IOport, Pos) :-
 	file_function(FILE_POS, IOport, Pos_1, _Ret, _E, _,_),
 	(Pos_1 < 0 -> Pos = end_of_file ; Pos = Pos_1).
 file_open(FileName, Mode_in, IOport) :-
+	file_open(FileName, Mode_in, 0, IOport).
+file_open(FileName, Mode_in, OpenNew, IOport) :-
 	preserve_numeric_calls(Mode_in,Mode),
-	file_function(XSB_FILE_OPEN, FileName, Mode, IOport, _E, _,_).
+	file_function(XSB_FILE_OPEN, FileName, Mode, OpenNew, IOport, _,_).
 /* TLS: file_close/1 is obsolescent */
 file_close(IOport) :-
 	file_function(FILE_CLOSE,IOport,NOFORCE_FILE_CLOSE,_Y,_Z, _,_).

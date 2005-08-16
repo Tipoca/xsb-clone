@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_defs.h,v 1.6 2005-08-08 21:25:02 dwarren Exp $
+** $Id: psc_defs.h,v 1.7 2005-08-16 19:19:09 dwarren Exp $
 ** 
 */
 
@@ -29,9 +29,12 @@
 #define T_HIDDEN	1
 #define T_UNLOADED	2
 #define T_ENV		3
-#define T_TABLED	8
+#define T_TABLED	12
+#define T_TABLED_VAR	8
+#define T_TABLED_SUB	4
+#define T_TABLED_SUB_LOADFILE 64 // for use in xwamfile, since T_GLOBAL took 4.
 #define T_SHARED	32 // 0x20  use decimal for Prolog include
-#define T_PRIVATE	16 // 0x10  use decimal for Prolog include
+#define T_SHARED_DET	16 // 0x10  use decimal for Prolog include
 #define T_SPY		192 // 0xc0 use decimal for Prolog include
 
 /* === type definition: (entry_type) ============================== */

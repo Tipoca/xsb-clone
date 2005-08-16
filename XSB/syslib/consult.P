@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.49 2005/03/08 22:22:00 tswift Exp $
+** $Id: consult.P,v 1.50 2005/08/08 17:10:25 dwarren Exp $
 ** 
 */
 
@@ -75,6 +75,7 @@ consult(Path, Options) :- \+ (\+ (reconsult(Path, Options))).
 
 /*======================================================================*/
 /*======================================================================*/
+:- thread_shared consult_file_loaded(_).
 :- dynamic consult_file_loaded(_).
 
 reconsult(Path) :- reconsult(Path, []).

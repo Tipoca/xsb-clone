@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.28 2005-01-17 20:29:13 dwarren Exp $
+** $Id: parse.H,v 1.29 2005-08-16 19:19:07 dwarren Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
 :- import closetail/1 from listutil.
 :- import inline_predicate/2 from builtin.
 :- import singleton_check/2 from singlton.
-:- import file_read/3, vv/2 from xsb_read.
+:- import file_read/3 from xsb_read.
 :- import add_hilog_symbol/1 from hilogsym.
 :- import conset/2, conget/2 from gensym.
 :- import append/3, memberchk/2, log_ith/3 from basics.
@@ -50,7 +50,7 @@
   name/2, seeing/1, is_most_general_term/1, number/1
      from standard.
 :- import retract/1, retractall/1, assert/1, (dynamic)/1 from assert.
-:- import add_table/1, '_$index'/3, mpa_to_skel/2 from file_op.
+:- import '_$index'/3, mpa_to_skel/2 from file_op.
 :- import misc_error/1 from error_handler.
 
 :- import spawn_process/5, process_control/2 from shell.

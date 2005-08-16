@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.67 2005/08/08 21:25:05 dwarren Exp $
+** $Id: machine.H,v 1.68 2005/08/15 20:55:41 crojo Exp $
 ** 
 */
 
@@ -100,7 +100,6 @@
  	psc_set_shared/2, 
  	psc_shared/2, 
  	psc_set_private/2, 
-	psc_private/2,
  	psc_env/2, 
 	psc_spy/2, 
 	psc_tabled/2, 

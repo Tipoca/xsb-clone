@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asmpass2.H,v 1.8 2005-08-10 19:55:37 dwarren Exp $
+** $Id: asmpass2.H,v 1.9 2005-08-16 19:19:07 dwarren Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 :- export force_asm_pass2_loaded/0.
 :- export asm_gendata/2, asm_gentext/3, asm_genindex/3, asm_putlength/2.
 
-:- import error/1 from auxlry.
+:- import error/1, warning/1 from auxlry.
 :- import log_ith/3 from basics.
 :- import asm_inst/4 from asm_inst.
 :- import membercheck/2 from listutil.
