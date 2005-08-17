@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.31 2004/09/28 17:24:43 tswift Exp $
+** $Id: file_io.H,v 1.32 2005/08/16 19:19:10 dwarren Exp $
 ** 
 */
 
 :- import (dynamic)/1,asserta/1 from assert.
 
-:- import stat_flag/2, file_function/7,
+:- import stat_flag/2, file_function/7, file_function/3,
 	parse_filename/4, is_absolute_filename/1,
 	expand_filename/2,
 	sys_system/7, formatted_io/5 

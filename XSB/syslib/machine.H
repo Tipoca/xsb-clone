@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.68 2005/08/15 20:55:41 crojo Exp $
+** $Id: machine.H,v 1.69 2005/08/16 19:19:10 dwarren Exp $
 ** 
 */
 
@@ -163,8 +163,8 @@
 :- import write/1, writeln/1, is_attv/1 from standard.
 
 :- export 
-	file_function/7, conname/2, conpsc/2, machine_file_exists/1,
-  	slash/1.
+	file_function/7, file_function/3, conname/2, conpsc/2, 
+	machine_file_exists/1, slash/1.
 
 :- export set_pil_on/0, set_pil_off/0, set_prof_on/1, set_prof_off/0.
 
