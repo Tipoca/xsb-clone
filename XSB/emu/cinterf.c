@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.55 2005-08-08 21:25:01 dwarren Exp $
+** $Id: cinterf.c,v 1.56 2005-08-17 15:58:20 dwarren Exp $
 ** 
 */
 
@@ -1543,7 +1543,9 @@ DllExport int call_conv xsb_close(CTXTdecl)
 //
 #include <io.h>
 #include <Basetsd.h>
-//typedef SSIZE_T	ssize_t;
+#if !defined(CYGWIN)
+typedef SSIZE_T	ssize_t;
+#endif
 static inline ssize_t pread(int fd, void *buf, size_t count, long offset)
 {
 if (-1 == lseek(fd,offset,SEEK_SET))
