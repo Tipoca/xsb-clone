@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.216 2005-08-16 19:19:09 dwarren Exp $
+** $Id: builtin.c,v 1.217 2005-08-19 07:23:54 ruim Exp $
 ** 
 */
 
@@ -196,7 +196,7 @@ extern double realtime_count; /* from subp.c */
 
 /* ------- variables also used in other parts of the system -----------	*/
 
-Cell flags[65];			  /* System flags + user flags */
+Cell flags[MAX_FLAGS];			  /* System flags + user flags */
 #ifndef MULTI_THREAD
 Cell clause_int = 0;  /* former flag that must be local */
 #endif

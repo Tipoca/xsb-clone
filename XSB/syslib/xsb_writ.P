@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.P,v 1.24 2005/06/20 17:54:16 dwarren Exp $
+** $Id: xsb_writ.P,v 1.25 2005/08/10 19:54:32 dwarren Exp $
 ** 
 */
 
@@ -65,14 +65,14 @@ file_write0(_, _).
     	    	/**********************************/
 
 write_int(Num) :- 
-	stat_flag(11, File),
+	stat_flag(CURRENT_OUTPUT, File),
 	file_puttoken(File, TK_INT_0, Num).
 
 write_int(Str,Num) :-
 	file_puttoken(Str,TK_INT_0,Num).
 
 write_float(Num) :- 
-	stat_flag(11, File),
+	stat_flag(CURRENT_OUTPUT, File),
 	file_puttoken(File, TK_FLOAT_0, Num).
 
 write_float(Str,Num) :-
