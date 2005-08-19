@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.217 2005-08-19 07:23:54 ruim Exp $
+** $Id: builtin.c,v 1.218 2005-08-19 16:24:10 ruim Exp $
 ** 
 */
 
@@ -197,6 +197,7 @@ extern double realtime_count; /* from subp.c */
 /* ------- variables also used in other parts of the system -----------	*/
 
 Cell flags[MAX_FLAGS];			  /* System flags + user flags */
+Cell pflags[MAX_PRIVATE_FLAGS];		  /* Thread private flags */
 #ifndef MULTI_THREAD
 Cell clause_int = 0;  /* former flag that must be local */
 #endif
@@ -1335,14 +1336,17 @@ int builtin_call(CTXTdeclc byte number)
     int flagname = ptoc_int(CTXTc 1);
     int flagval;
     if (flagname == CLAUSE_INT) flagval = clause_int;
+    else if (flagname <= MAX_PRIVATE_FLAGS ) flagval = pflags[flagname];
     else flagval = flags[flagname];
-    ctop_int(CTXTc 2, flags[flagname]);
+    ctop_int(CTXTc 2, flagval);
     break;
   }
   case STAT_SET_FLAG: {	/* R1: flagname(+int); R2: value(+int); */
     int flagval = ptoc_int(CTXTc 2);
     int flagname = ptoc_int(CTXTc 1);
     if (flagname == CLAUSE_INT) clause_int = flagval;
+    else if (flagname <= MAX_PRIVATE_FLAGS )
+    	pflags[flagname] = flagval;
     else flags[flagname] = flagval;
     if (flags[DEBUG_ON]||flags[TRACE_STA]||flags[HITRACE]||clause_int)
       asynint_val |= MSGINT_MARK;

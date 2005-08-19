@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.11 2005-08-06 16:29:54 tswift Exp $
+** $Id: std_cases_xsb_i.h,v 1.12 2005-08-19 16:24:10 ruim Exp $
 ** 
 */
 
@@ -117,7 +117,7 @@
   case PUT: {	/* r1: +integer	*/
     Cell term = ptoc_tag(CTXTc 1);
     if (isinteger(term)) {
-      putc(int_val(term), fileptr(flags[CURRENT_OUTPUT]));
+      putc(int_val(term), fileptr(pflags[CURRENT_OUTPUT]));
     } else {
       if (isnonvar(term)) err_handle(CTXTc TYPE, 1, "put", 1, "integer", term);
       else err(INSTANTIATION, 1, "put", 1);
@@ -129,7 +129,7 @@
     if (isinteger(term)) {
       int  i;
       for (i=1; i<=int_val(term); i++)
-	putc(' ', fileptr(flags[CURRENT_OUTPUT]));
+	putc(' ', fileptr(pflags[CURRENT_OUTPUT]));
     } else {
       if (isnonvar(term)) err_handle(CTXTc TYPE, 1, "tab", 1, "integer", term);
       else err(INSTANTIATION, 1, "tab", 1);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.17 2005-07-20 21:42:45 dwarren Exp $
+** $Id: memory_xsb.c,v 1.18 2005-08-19 16:24:10 ruim Exp $
 ** 
 */
 
@@ -286,7 +286,7 @@ void tcpstack_realloc(CTXTdeclc long new_size) {
 
 void handle_tcpstack_overflow(CTXTdecl)
 {
-  if (flags[STACK_REALLOC]) {
+  if (pflags[STACK_REALLOC]) {
     xsb_warn("Expanding the Trail and Choice Point Stack...");
     tcpstack_realloc(CTXTc resize_stack(tcpstack.size,0));
   }

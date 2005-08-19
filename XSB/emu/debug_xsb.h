@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.5 2005-07-18 21:54:09 crojo Exp $
+** $Id: debug_xsb.h,v 1.6 2005-08-19 16:24:10 ruim Exp $
 ** 
 */
 
@@ -38,7 +38,7 @@
     else fprintf(stddbg, " (incomplete) ===\n"); }
 
 /* extern int cur_log_level; */
-#define cur_log_level flags[VERBOSENESS_LEVEL]
+#define cur_log_level pflags[VERBOSENESS_LEVEL]
 typedef struct subgoal_frame *VariantSF;
 /* Verboseness levels */
 #define LOG_QUIET 0

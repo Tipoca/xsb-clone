@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.28 2005-08-16 19:19:09 dwarren Exp $
+** $Id: macro_xsb.h,v 1.29 2005-08-19 16:24:10 ruim Exp $
 ** 
 */
 
@@ -83,7 +83,7 @@ extern struct tif_list  tif_list;
      xsb_abort("Ran out of memory in allocation of TableInfoFrame");	\
    TIF_PSC(pTIF) = pPSC;						\
    if (get_tabled(pPSC)==T_TABLED) {					\
-     TIF_EvalMethod(pTIF) = (TabledEvalMethod)flags[TABLING_METHOD];	\
+     TIF_EvalMethod(pTIF) = (TabledEvalMethod)pflags[TABLING_METHOD];	\
      if (TIF_EvalMethod(pTIF) == VARIANT_EVAL_METHOD)			\
        set_tabled(pPSC,T_TABLED_VAR);					\
      else set_tabled(pPSC,T_TABLED_SUB);				\

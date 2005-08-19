@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.8 2005-01-14 18:30:53 ruim Exp $
+** $Id: complete_local.h,v 1.9 2005-08-19 16:24:10 ruim Exp $
 ** 
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -77,7 +77,7 @@ void makeConsumerFromGenerator(CTXTdeclc VariantSF producer_sf)
     if (num_compl_susps_in_ascc > max_compl_susps_in_ascc) { \
       max_compl_susps_in_ascc = num_compl_susps_in_ascc; \
     } \
-    if (flags[PROFFLAG] > 2) { \
+    if (pflags[PROFFLAG] > 2) { \
       fprintf(stdmsg, \
               "p(lev(%d),lead(%d),subg(%d),ec(%d),cons(%d),cs(%d)).\n", \
 	      level_num,leader_level,num_subgoals,num_completed, \

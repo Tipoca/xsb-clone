@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.36 2005-08-16 19:19:09 dwarren Exp $
+** $Id: io_builtins_xsb_i.h,v 1.37 2005-08-19 16:24:10 ruim Exp $
 ** 
 */
 
@@ -259,10 +259,10 @@ inline static xsbBool file_function(CTXTdecl)
 	open_files[io_port].file_name = NULL;
 	open_files[io_port].io_mode = '\0';
 	open_files[io_port].stream_type = 0;
-	if (flags[CURRENT_INPUT] == (Cell) io_port) 
-	  { flags[CURRENT_INPUT] = STDIN;}
-	if (flags[CURRENT_OUTPUT] == (Cell) io_port) 
-	  { flags[CURRENT_OUTPUT] = STDOUT;}
+	if (pflags[CURRENT_INPUT] == (Cell) io_port) 
+	  { pflags[CURRENT_INPUT] = STDIN;}
+	if (pflags[CURRENT_OUTPUT] == (Cell) io_port) 
+	  { pflags[CURRENT_OUTPUT] = STDOUT;}
 	//printf("Close port %d\n",io_port);
       }
     break;

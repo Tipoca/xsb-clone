@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_slide.h,v 1.9 2004-12-20 19:26:15 dwarren Exp $
+** $Id: gc_slide.h,v 1.10 2005-08-19 16:24:10 ruim Exp $
 ** 
 */
 
@@ -371,7 +371,7 @@ static CPtr slide_heap(int num_marked)
       }
     } else {
 #ifdef GC_PROFILE
-      if (verbose_gc && flags[GARBAGE_COLLECT]==INDIRECTION_SLIDE_GC)
+      if (verbose_gc && pflags[GARBAGE_COLLECT]==INDIRECTION_SLIDE_GC)
 	fprintf(stddbg,"{GC} Giving up Fast-Slide scheme.\n");
 #endif
 #endif /* INDIRECTION_SLIDE */

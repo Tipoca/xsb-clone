@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_profile.h,v 1.6 2005-07-05 20:21:23 dwarren Exp $
+** $Id: gc_profile.h,v 1.7 2005-08-19 16:24:10 ruim Exp $
 ** 
 */
 
@@ -104,9 +104,9 @@ do { \
 } while(0)
 
 #define INIT_GC_PROFILE \
-  verbose_gc=flags[VERBOSE_GC]; \
-  examine_data=flags[EXAMINE_DATA]; \
-  count_chains=flags[COUNT_CHAINS]
+  verbose_gc=pflags[VERBOSE_GC]; \
+  examine_data=pflags[EXAMINE_DATA]; \
+  count_chains=pflags[COUNT_CHAINS]
 
 #define DECL_GC_PROFILE \
   unsigned long begin_slidetime, begin_copy_time
