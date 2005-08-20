@@ -19,10 +19,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.h,v 1.5 2005-01-14 18:31:21 ruim Exp $
+** $Id: loader_xsb.h,v 1.6 2005-08-20 06:50:27 ruim Exp $
 ** 
 */
 
+#include "context.h"
 
 #define REL_TAB_SIZE      32768
 #define FOREIGN_NAMELEN   128
@@ -90,7 +91,7 @@ typedef struct text_segment text_seg, seg_hdr, *pseg ;
 
 /* === functions used in other parts of the system ====================== */
 
-extern byte *loader(char *, int);
+extern byte *loader(CTXTdeclc char *, int);
 extern void env_type_set(Psc, byte, byte, xsbBool);
 extern void unload_seg(pseg);
 extern unsigned int read_magic(FILE *);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.118 2005-08-19 16:24:10 ruim Exp $
+** $Id: emuloop.c,v 1.119 2005-08-20 06:50:27 ruim Exp $
 ** 
 */
 
@@ -2080,7 +2080,7 @@ DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
 
    extern void dis(xsbBool);
    extern char *init_para(CTXTdeclc int, char **);
-   extern void perform_IO_Redirect(int, char **);
+   extern void perform_IO_Redirect(CTXTdeclc int, char **);
    extern void init_machine(CTXTdecl), init_symbols(void);
 #ifdef FOREIGN
 #ifndef FOREIGN_ELF
@@ -2096,7 +2096,7 @@ DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
 	if XSB is called from C. In this case, we don't want `executable'
 	to be overwritten, so we check if it is initialized. */
 
-	perform_IO_Redirect(argc, argv);
+	perform_IO_Redirect(CTXTc argc, argv);
 
 #ifdef SIMPLESCALAR
      strcpy(executable,argv[0]);
@@ -2131,7 +2131,7 @@ DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
      magic_num = read_magic(fd);
      fclose(fd);
      if (magic_num == 0x11121307 || magic_num == 0x11121305)
-       inst_begin = loader(startup_file,0);
+       inst_begin = loader(CTXTc startup_file,0);
      else
        xsb_exit("Incorrect startup file format");
 

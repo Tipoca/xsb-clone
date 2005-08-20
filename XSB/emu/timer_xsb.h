@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.h,v 1.12 2005-08-19 16:24:10 ruim Exp $
+** $Id: timer_xsb.h,v 1.13 2005-08-20 06:50:28 ruim Exp $
 ** 
 */
 
@@ -91,7 +91,7 @@ int make_timed_call(CTXTdeclc xsbTimeout*, void (*) (xsbTimeout*));
 #ifdef MULTI_THREAD /* PTHREADS */
 
 #define SETALARM            ;  /* no-op */
-#define OP_TIMED_OUT(timeout)        (op_timed_out(timeout))
+#define OP_TIMED_OUT(timeout)        (op_timed_out(CTXTc timeout))
 
 #define TURNOFFALARM        /* no-op */
 #define CHECK_TIMER_SET     ((int)pflags[SYS_TIMER] > 0)

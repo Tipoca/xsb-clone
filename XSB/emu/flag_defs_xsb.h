@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.16 2005-08-19 12:55:08 ruim Exp $
+** $Id: flag_defs_xsb.h,v 1.17 2005-08-20 06:50:27 ruim Exp $
 ** 
 */
 
@@ -67,7 +67,7 @@
 These values are added to INT_HANDLERS_FLAGS_START to obtain the actual
 interrupt flag
 ---------------------------------------------------------------------------- */
-#define MAX_PRIVATE_FLAGS 41
+#define MAX_PRIVATE_FLAGS 42
 
 /* Thread shared flags */
 

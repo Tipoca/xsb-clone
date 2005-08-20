@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.42 2005-08-16 19:19:09 dwarren Exp $
+** $Id: loader_xsb.c,v 1.43 2005-08-20 06:50:27 ruim Exp $
 ** 
 */
 
@@ -730,7 +730,7 @@ static void new_tdispblk(TIFptr *instr_ptr, Psc psc) {
 #endif
 
 /************************************************************************/
-static byte *loader1(FILE *fd, int exp)
+static byte *loader1(CTXTdeclc FILE *fd, int exp)
 {
   char name[FOREIGN_NAMELEN], arity;
   byte name_len;
@@ -884,7 +884,7 @@ static byte *loader_foreign(char *filename, FILE *fd, int exp)
 
 static int warned_old_obj = 0;	/* warned the user about old object files ? */
 
-byte *loader(char *file, int exp)
+byte *loader(CTXTdeclc char *file, int exp)
 {
   FILE *fd;	      /* file descriptor */
   unsigned int magic_num;
@@ -907,7 +907,7 @@ byte *loader(char *file, int exp)
   }
 
   if (magic_num == 0x11121307 || magic_num == 0x11121305)
-    first_inst = loader1(fd,exp);
+    first_inst = loader1(CTXTc fd,exp);
   else if (magic_num == 0x11121308) {
 #ifdef FOREIGN
     first_inst = loader_foreign(file, fd, exp);

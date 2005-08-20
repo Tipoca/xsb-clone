@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.c,v 1.15 2005-08-19 16:24:10 ruim Exp $
+** $Id: timer_xsb.c,v 1.16 2005-08-20 06:50:28 ruim Exp $
 ** 
 */
 
@@ -142,7 +142,7 @@ sigjmp_buf xsb_timer_env;
 #endif /* MULTI_THREAD */
 
 #ifdef MULTI_THREAD
-int op_timed_out(xsbTimeout *timeout)
+int op_timed_out(CTXTdeclc xsbTimeout *timeout)
 {
   struct timespec wakeup_time;
   int rc;

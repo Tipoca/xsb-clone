@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.86 2005/08/08 17:11:34 dwarren Exp $
+** $Id: subp.c,v 1.87 2005/08/19 16:24:10 ruim Exp $
 ** 
 */
 
@@ -428,7 +428,7 @@ void init_interrupt(void)
  */
 void intercept(CTXTdeclc Psc psc) {
 
-  if (clause_int)
+  if (pflags[CLAUSE_INT])
     synint_proc(CTXTc psc, MYSIG_CLAUSE);
   else if (flags[DEBUG_ON] && !flags[HIDE_STATE]) {
     if (get_spy(psc)) { /* spy'ed pred, interrupted */

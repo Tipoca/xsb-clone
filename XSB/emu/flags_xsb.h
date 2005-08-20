@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flags_xsb.h,v 1.5 2005-08-19 16:24:10 ruim Exp $
+** $Id: flags_xsb.h,v 1.6 2005-08-20 06:50:27 ruim Exp $
 ** 
 */
 
@@ -31,9 +31,8 @@
 #include "cell_xsb.h"
 
 extern Cell flags[];		/* System flags + user flags */
-extern Cell pflags[];		/* Thread private flags */
 #ifndef MULTI_THREAD
-extern Cell clause_int;		/* former flag, must be thread-specific */
+extern Cell pflags[];		/* Thread private flags */
 #endif
 
 #include "flag_defs_xsb.h"
