@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.59 2005-08-20 06:50:27 ruim Exp $
+** $Id: init_xsb.c,v 1.60 2005-08-21 14:22:55 ruim Exp $
 ** 
 */
 
@@ -776,7 +776,8 @@ void init_machine(CTXTdecl)
 /* This is here just for the first thread - others initialize its xsb tid
    on xsb_thread_run - the first thread has always tid = 0 */
   th->tid = 0 ;
-
+#endif
+#ifdef SHARED_COMPL_TABLES
   th->waiting_for_thread = NULL ;
 #endif
 
