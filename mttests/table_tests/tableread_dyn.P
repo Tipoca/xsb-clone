@@ -12,4 +12,4 @@ matter for now. */
 :- assert((concurr_initialize(tableread(N,_)):- 
 		retractall(num_is(_)),
 		assert(num_is(N)),
-		tableread_table(_))).
+		(tableread_table(_),fail;true))).

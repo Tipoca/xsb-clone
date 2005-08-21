@@ -12,7 +12,7 @@ matter for now. */
 :- assert((concurr_initialize(tableread(N,_)):- 
 		retractall(num_is(_)),
 		assert(num_is(N)),
-		tableread_table(_))).
+		(tableread_table(_),fail;true))).
 
 :- thread_shared tableread_table/1.
 :- table tableread_table/1.
