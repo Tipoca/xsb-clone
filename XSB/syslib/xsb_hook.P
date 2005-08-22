@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_hook.P,v 1.6 2001/05/04 18:14:48 lfcastro Exp $
+** $Id: xsb_hook.P,v 1.7 2004/04/09 00:02:16 dwarren Exp $
 ** 
 */
 
@@ -27,6 +27,13 @@
 #include "psc_defs.h"
 
 %% Hooks
+:- thread_shared 
+	xsb_exit_hook(_),
+	xsb_assert_hook(_),
+	xsb_retract_hook(_),
+	xsb_before_prompt_hook(_),
+	xsb_undefined_predicate_hook(_).
+
 :- dynamic
 	xsb_exit_hook(_),
 	xsb_assert_hook(_),
