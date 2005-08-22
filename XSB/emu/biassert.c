@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.87 2005-08-20 06:50:27 ruim Exp $
+** $Id: biassert.c,v 1.88 2005-08-22 19:38:22 dwarren Exp $
 ** 
 */
 
@@ -2513,17 +2513,13 @@ xsbBool db_remove_prref( CTXTdecl /* Psc */ )
 
   xsb_dbgmsg((LOG_RETRACT_GC, "DEL Prref %p", p ));
 
-#ifdef MULTI_THREAD
-  if (get_shared(psc)) { /* noop if not shared */
     SYS_MUTEX_LOCK( MUTEX_DYNAMIC );
-#endif
-    free_prref(CTXTc (CPtr *)get_ep(psc));
-    set_type(psc, T_ORDI);
-    set_ep(psc, ((byte *)(&(psc->load_inst))));
-#ifdef MULTI_THREAD
+    if (get_ep(psc) != ((byte *)(&(psc->load_inst)))) {
+      free_prref(CTXTc (CPtr *)get_ep(psc));
+      set_type(psc, T_ORDI);
+      set_ep(psc, ((byte *)(&(psc->load_inst))));
+    }
     SYS_MUTEX_UNLOCK( MUTEX_DYNAMIC );
-  }
-#endif
 
   return TRUE ;
 }

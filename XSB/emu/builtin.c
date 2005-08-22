@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.219 2005-08-20 06:50:27 ruim Exp $
+** $Id: builtin.c,v 1.220 2005-08-22 19:38:22 dwarren Exp $
 ** 
 */
 
@@ -941,18 +941,23 @@ inline static xsbBool is_completed_table(TIFptr tif) {
 inline static int abolish_table_predicate(CTXTdeclc Psc psc)
 {
   TIFptr tif;
+  SYS_MUTEX_LOCK(MUTEX_TABLE);
   tif = get_tip(CTXTc psc);
-  if ( IsNULL(tif) )
+  if ( IsNULL(tif) ) {
+    SYS_MUTEX_UNLOCK(MUTEX_TABLE);
     xsb_abort("[abolish_table_pred] Attempt to delete untabled predicate (%s/%d)\n",
 	      get_name(psc), get_arity(psc));
-
-  if (IsVariantPredicate(tif) && IsNULL(TIF_CallTrie(tif))) 
+  }
+  if (IsVariantPredicate(tif) && IsNULL(TIF_CallTrie(tif))) {
+    SYS_MUTEX_UNLOCK(MUTEX_TABLE);
     return 1;
-
-  if ( ! is_completed_table(tif) )
+  }
+  if ( ! is_completed_table(tif) ) {
+    SYS_MUTEX_UNLOCK(MUTEX_TABLE);
     return 0;
-
+  }
   delete_predicate_table(CTXTc tif);
+  SYS_MUTEX_UNLOCK(MUTEX_TABLE);
   return 1;
 }
 
