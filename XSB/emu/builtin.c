@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.220 2005-08-22 19:38:22 dwarren Exp $
+** $Id: builtin.c,v 1.221 2005-08-24 20:51:52 dwarren Exp $
 ** 
 */
 
@@ -1240,8 +1240,9 @@ int builtin_call(CTXTdeclc byte number)
   }
   case PSC_SET_EP: {	       /* R1: +PSC; R2: +int */
     Psc psc = (Psc)ptoc_addr(1);
-    pb ep = (pb)ptoc_int(CTXTc 2);
-    set_ep(psc, (ep==NULL?((byte *)(&(psc->load_inst))):ep));
+    byte *ep = (pb)ptoc_int(CTXTc 2);
+    if (ep == (byte *)NULL) set_ep(psc,(byte *)(&(psc->load_inst)));
+    else if (ep == (byte *)4) set_ep(psc,(byte *)&fail_inst);
     break;
   }
 
