@@ -19,7 +19,6 @@ correct. */
 :- import xsb_mutex_init/1,
 	  xsb_mutex_lock/1,
 	  xsb_mutex_unlock/1 from thread.
-:- import ts_abolish_tables/0 from thread.
 
 
 :- import mt_srand/0, random_pause/1 from mttestutils.
@@ -88,7 +87,6 @@ test_single(File,Goal,MUT):-
 	close(Handle).
 
 gen_result(File,Goal):- 
-	ts_init_tables,
 	retractall(test_thread_number(_)),
 	assert(test_thread_number(1)),
 	call_init(Goal),
@@ -132,16 +130,12 @@ table_loop_1(N,Call):-
 	N1 is N - 1,
 	table_loop_1(N1,Call).
 
-ts_firstcall(Goal):- 
-	ts_assert((Goal :- Goal)),
-	ts_call(Goal).
-
 % Assumes Call and each call in List is already ts.
-table_loop_list(0,Call,_List):- !,ts_call(Call).
+table_loop_list(0,Call,_List):- !,call(Call).
 table_loop_list(N,Call,List):- 
 	N > 0,
-	ts_abolish_tables,
-	(ts_call(Call),fail ; true),
+	abolish_table_pred(Call),
+	(call(Call),fail ; true),
 	N1 is N - 1,
 	table_loop_list(N1,Call,List).
 
