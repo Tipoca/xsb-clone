@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.34 2005/03/08 22:22:00 tswift Exp $
+** $Id: consult.H,v 1.35 2005/08/08 17:10:25 dwarren Exp $
 ** 
 */
 
@@ -30,6 +30,7 @@
 	  load_dyn_module/1,
 	  load_dync/1, load_dync/2, read_canonical/1,
 	  current_loaded_file/1,
+          if_file_loaded/1,
 	  ensure_dyn_loaded/1, ensure_dync_loaded/1,
 	  ensure_loaded/1, ensure_loaded/2,
           (thread_shared)/1,
@@ -38,7 +39,7 @@
 :- local load_dyn_retracted/5, load_dyn_trie_retracted/1,
 	 load_dyn_file_loaded/2, load_dyn_pred_loaded/4, load_dyn_file/1.
 
-:- import domain_error/4 from error_handler.
+:- import domain_error/4, instantiation_error/2 from error_handler.
 :- import asserta/1, (dynamic)/1, retractall/1, assert/1, retract/1, t_assert/2
      from assert.
 :- import warning/1, time_message/2 from auxlry.
