@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.29 2005-08-19 16:24:10 ruim Exp $
+** $Id: macro_xsb.h,v 1.30 2005-08-28 16:42:28 ruim Exp $
 ** 
 */
 
@@ -281,8 +281,13 @@ typedef struct subgoal_frame {
   CPtr compl_stack_ptr;	  /* Pointer to subgoal's completion stack frame */
   CPtr compl_suspens_ptr; /* SLGWAM: CP stack ptr */
   PNDE nde_list;	  /* pointer to a list of negative DEs */
-#ifdef SHARED_COMPL_TABLES
+#ifdef MULTI_THREAD
   int tid;		  /* Thread id of the generator thread for this sg */
+#endif
+#ifdef CONC_COMPL
+  ALNptr tag;		  /* Tag can't be stored in answer list in conc compl */
+#endif
+#ifdef SHARED_COMPL_TABLES
   byte grabbed; 	  /* Subgoal is marked to be computed for leader in
 			     deadlock detection */
 #endif
@@ -307,6 +312,7 @@ typedef struct subgoal_frame {
 #define subg_nde_list(b)	((VariantSF)(b))->nde_list
 
 #define subg_tid(b)		((VariantSF)(b))->tid
+#define subg_tag(b)		((VariantSF)(b))->tag
 #define subg_grabbed(b)		((VariantSF)(b))->grabbed
 
 /* Subsumptive Producer Subgoal Frame
@@ -541,6 +547,7 @@ void tstCreateTSIs(TSTNptr);
 #define NO_ANSWERS	(ALNptr)0
 #define UNCOND_ANSWERS	(ALNptr)1
 #define COND_ANSWERS	(ALNptr)2
+#define INCOMP_ANSWERS	(ALNptr)3
 
 /*----------------------------------------------------------------------*/
 /* The following 2 macros are to be used for incomplete subgoals.	*/

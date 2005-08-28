@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.21 2005-08-01 19:10:49 ruim Exp $
+** $Id: trie_internals.h,v 1.22 2005-08-28 16:42:28 ruim Exp $
 ** 
 */
 
@@ -873,6 +873,7 @@ extern Structure_Manager smALN;
    ALN_Next(pALN) = (ALNptr)pNext;		\
  }
 
+#ifndef CONC_COMPL
 #define free_answer_list(SubgoalFrame) {			\
    if ( subg_answers(SubgoalFrame) > COND_ANSWERS )		\
      SM_DeallocateStructList(smALN,				\
@@ -881,6 +882,14 @@ extern Structure_Manager smALN;
    else								\
      SM_DeallocateStruct(smALN,subg_ans_list_ptr(SubgoalFrame))	\
  }
+#else
+#define free_answer_list(SubgoalFrame) {			\
+   if ( !IsNULL(subg_answers(SubgoalFrame)) )			\
+     SM_DeallocateStructList(smALN,				\
+			     subg_ans_list_ptr(SubgoalFrame),	\
+			     subg_ans_list_tail(SubgoalFrame))	\
+ }
+#endif
 
 /*===========================================================================*/
 

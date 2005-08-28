@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.76 2005/01/14 18:31:36 ruim Exp $
+** $Id: tr_utils.c,v 1.77 2005/08/08 17:11:36 dwarren Exp $
 ** 
 */
 
@@ -81,7 +81,11 @@ xsbBool has_unconditional_answers(VariantSF subg)
   /* and its answer list has already been reclaimed. */
   /* In either case, the result is immediately obtained. */
  
+#ifndef CONC_COMPL
   if (node_ptr <= COND_ANSWERS) return (node_ptr == UNCOND_ANSWERS);
+#else
+  if (subg_tag(subg) <= COND_ANSWERS) return (subg_tag(subg) == UNCOND_ANSWERS);
+#endif
  
   /* If the subgoal has not been completed, or is early completed but its */
   /* answer list has not been reclaimed yet, check each of its nodes. */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.32 2005-08-08 17:11:35 dwarren Exp $
+** $Id: tables.c,v 1.33 2005-08-28 16:42:28 ruim Exp $
 ** 
 */
 
@@ -401,7 +401,11 @@ void table_complete_entry(VariantSF producerSF) {
       }
       pALN = ALN_Next(pALN);
     } while ( IsNonNULL(pALN) );
+#ifndef CONC_COMPL
     subg_answers(producerSF) = tag;
+#else
+    subg_tag(producerSF) = tag;
+#endif
 
       xsb_dbgmsg((LOG_STRUCT_MANAGER, "  Reclaiming ALN chain for subgoal\n"));
       dbg_smPrint(LOG_STRUCT_MANAGER, smALN, "  before chain reclamation");
@@ -409,8 +413,10 @@ void table_complete_entry(VariantSF producerSF) {
     if ( IsNULL(subg_ans_list_tail(producerSF)) ||
 	 IsNonNULL(ALN_Next(subg_ans_list_tail(producerSF))) )
       xsb_abort("Answer-List exception: Tail pointer incorrectly maintained");
+#ifndef CONC_COMPL
     SM_DeallocateStructList(smALN,pRealAnsList,subg_ans_list_tail(producerSF));
     subg_ans_list_tail(producerSF) = NULL;
+#endif
 
     dbg_smPrint(LOG_STRUCT_MANAGER, smALN, "  after chain reclamation");
   }

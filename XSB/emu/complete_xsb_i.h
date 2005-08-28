@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.22 2005-08-18 12:33:41 ruim Exp $
+** $Id: complete_xsb_i.h,v 1.23 2005-08-28 16:42:28 ruim Exp $
 ** 
 */
 
@@ -89,17 +89,21 @@ XSB_Start_Instr(check_complete,_check_complete)
       cc_tbreg = ProcessSuspensionFrames(CTXTc cc_tbreg, cs_ptr);
       FailIfAnswersFound((cc_tbreg == orig_breg ? 0 : cc_tbreg));
       
-#ifdef SHARED_COMPL_TABLES
+#ifdef MULTI_THREAD
     pthread_mutex_lock(&completing_mut);
 #endif
       CompleteSimplifyAndReclaim(CTXTc cs_ptr);
-#ifdef SHARED_COMPL_TABLES
+#ifdef MULTI_THREAD
     pthread_cond_broadcast(&completing_cond);
     pthread_mutex_unlock(&completing_mut);
 #endif
 
       /* leader has non-returned answers? */
+#ifndef CONC_COMPL
       if (has_answer_code(subgoal) && (subg_answers(subgoal) > COND_ANSWERS)) {
+#else
+      if (has_answer_code(subgoal) && (subg_tag(subgoal) > COND_ANSWERS)) {
+#endif
 	reclaim_incomplete_table_structs(subgoal);
 	/* schedule return of answers from trie code */
 	SetupReturnFromLeader(CTXTc orig_breg, cs_ptr, subgoal);
@@ -117,7 +121,14 @@ XSB_Start_Instr(check_complete,_check_complete)
     
 #else /* NOT LOCAL:  FOR BATCHED SCHEDULING */
 
+#ifdef CONC_COMPL
+    pthread_mutex_lock(&completing_mut);
+#endif
     batched_compute_wfs(CTXTc cs_ptr, orig_breg, subgoal);
+#ifdef CONC_COMPL
+    pthread_cond_broadcast(&completing_cond);
+    pthread_mutex_unlock(&completing_mut);
+#endif
 
     /* do all possible stack reclamation */
     if (openreg == prev_compl_frame(cs_ptr)) {

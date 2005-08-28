@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.23 2005-07-21 10:46:35 ruim Exp $
+** $Id: choice.h,v 1.24 2005-08-28 16:42:28 ruim Exp $
 ** 
 */
 #ifndef __CHOICE_H__
@@ -237,6 +237,9 @@ typedef struct consumer_choice_point {
     CPtr subgoal_ptr;	/* where the answer list lives */
     CPtr prevlookup;	/* link for chain of consumer CPFs */
     ALNptr trie_return;	/* last answer consumed by this consumer */
+#ifdef CONC_COMPL
+    Cell tid ;		/* Thread whose stacks the cp resides in */
+#endif
 }
 *NLChoice;
 #define NLCP_SIZE	(sizeof(struct consumer_choice_point)/sizeof(CPtr))
@@ -257,6 +260,7 @@ typedef struct consumer_choice_point {
 #ifdef SLG_GC
 #define nlcp_prevtop(b)         ((NLChoice)(b))->prev_top
 #endif
+#define nlcp_tid(b)        	((NLChoice)(b))->tid
 
 #define is_consumer_choicepoint(b) \
     (cp_pcreg(b) == (byte *) &answer_return_inst)
