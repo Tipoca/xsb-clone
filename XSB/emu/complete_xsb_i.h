@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.23 2005-08-28 16:42:28 ruim Exp $
+** $Id: complete_xsb_i.h,v 1.24 2005-09-01 18:29:38 tswift Exp $
 ** 
 */
 
@@ -98,6 +98,8 @@ XSB_Start_Instr(check_complete,_check_complete)
     pthread_mutex_unlock(&completing_mut);
 #endif
 
+    /* TLS: not sure about condition: how could subg_answers be true
+       and has_answer_code be false? */
       /* leader has non-returned answers? */
 #ifndef CONC_COMPL
       if (has_answer_code(subgoal) && (subg_answers(subgoal) > COND_ANSWERS)) {

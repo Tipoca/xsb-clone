@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.52 2005-08-08 17:11:31 dwarren Exp $
+** $Id: emudef.h,v 1.53 2005-09-01 18:29:38 tswift Exp $
 ** 
 */
 
@@ -53,7 +53,11 @@ CPtr *trfreg;
 
 CPtr pdlreg;
 CPtr openreg;
-CPtr root_address;
+
+/* TLS 08/05: Root address is the address of the first tabled choice
+   point on the thread's stack.  It is used to reclaim freeze
+   registers, but could be removed, I think. */
+CPtr root_address;      
 
 CPtr ptcpreg = NULL;
 CPtr delayreg;
