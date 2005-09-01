@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.32 2005-08-16 21:39:53 dwarren Exp $
+** $Id: tries.h,v 1.33 2005-09-01 18:37:07 tswift Exp $
 ** 
 */
 
@@ -113,6 +113,9 @@ typedef struct InstructionPlusTypeFrame {
 #define IPT_Status(IPT)		((IPT).status)
 #define IPT_TrieType(IPT)	((IPT).trie_type)
 #define IPT_NodeType(IPT)	((IPT).node_type)
+
+extern char *trie_node_type_table[9];
+extern char *trie_trie_type_table[6];
 
 /*===========================================================================*/
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.65 2005-08-15 20:55:40 crojo Exp $
+** $Id: builtin.h,v 1.66 2005-09-01 18:37:06 tswift Exp $
 ** 
 */
 
@@ -233,6 +233,11 @@
 #define PARSORT			222
 
 #define GC_CLAUSES              223
+
+/* TLS: cases for GC_CLAUSES */
+#define GC_TABLED_PREDS           0
+#define GC_DYNAMIC                1
+
 
 #define ORACLE_QUERY		230
 #define ODBC_EXEC_QUERY		231
