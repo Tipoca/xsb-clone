@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.79 2005/09/01 18:37:06 tswift Exp $
+** $Id: tr_utils.c,v 1.80 2005/09/02 20:43:14 tswift Exp $
 ** 
 */
 
@@ -1513,11 +1513,14 @@ void mark_tabled_preds(CTXTdecl)
     // asserted and interned tries
     if ( is_trie_instruction(cp_inst) ) {
       if (is_answer_trie_node( *cp_top ) ) {
-	tif = get_tif_for_answer_trie_cp(CTXTc (BTNptr) *cp_top);
-	DelTFptr dtf = TIF_DelTF(tif);
-	BTNptr call_trie = TIF_CallTrie(tif);
-	VariantSF subgoals = TIF_Subgoals(tif);	
+	DelTFptr dtf;
+	BTNptr call_trie;
+	VariantSF subgoals;
 	int marked = 0;
+	tif = get_tif_for_answer_trie_cp(CTXTc (BTNptr) *cp_top);
+	dtf = TIF_DelTF(tif);
+	call_trie = TIF_CallTrie(tif);
+	subgoals = TIF_Subgoals(tif);	
 
 	while (dtf && !marked ) {
 	  if (DTF_CallTrie(dtf) == call_trie 
