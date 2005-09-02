@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.121 2005-08-22 19:52:25 dwarren Exp $
+** $Id: emuloop.c,v 1.122 2005-09-02 20:43:13 tswift Exp $
 ** 
 */
 
@@ -891,6 +891,18 @@ contcase:     /* the main loop */
   XSB_End_Instr()
 
   XSB_Start_Instr(retrymeelse,_retrymeelse) /* PPA-L */
+    Def1op
+    Op1(get_xxa);
+    cp_pcreg(breg) = (byte *)get_xxxl;
+    restore_type = 0;
+    ADVANCE_PC(size_xxxX);
+    RESTORE_SUB
+  XSB_End_Instr()
+
+      /* TLS: added to distinguish dynamic from static choice points when 
+	 gc-ing retracted clauses. */ 
+
+  XSB_Start_Instr(dynretrymeelse,_dynretrymeelse) /* PPA-L */
     Def1op
     Op1(get_xxa);
     cp_pcreg(breg) = (byte *)get_xxxl;

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.13 2005-09-01 18:37:06 tswift Exp $
+** $Id: std_cases_xsb_i.h,v 1.14 2005-09-02 20:43:13 tswift Exp $
 ** 
 */
 
@@ -156,8 +156,8 @@
 	return TRUE;
       }
       case GC_DYNAMIC: {
-	xsb_abort("gc_dynamic/1 not yet functional\n");
-	//	return gc_dynamic(CTXT);
+	ctop_int(CTXTc 2, (Integer) gc_dynamic(CTXT));
+	return TRUE;
       }
     }
   }

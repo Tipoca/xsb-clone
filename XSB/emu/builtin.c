@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.222 2005-09-01 18:37:06 tswift Exp $
+** $Id: builtin.c,v 1.223 2005-09-02 20:43:13 tswift Exp $
 ** 
 */
 
@@ -937,8 +937,12 @@ inline static void abolish_table_info(CTXTdecl)
 		"\n\t Cannot abolish incomplete tables");
     }
 
-  abolish_all_tables_cps_check(CTXT) ;
-
+  if (flags[NUM_THREADS] == 1) {
+    abolish_all_tables_cps_check(CTXT) ;
+  } else {
+    xsb_warn("abolish_all_tables/0 called with more than one active thread.  No CP check.\n");
+  }
+   
   for ( pTIF = tif_list.first; IsNonNULL(pTIF); pTIF = TIF_NextTIF(pTIF) ) {
     TIF_CallTrie(pTIF) = NULL;
     TIF_Subgoals(pTIF) = NULL;

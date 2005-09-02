@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.18 2005-08-08 17:11:33 dwarren Exp $
+** $Id: inst_xsb.h,v 1.19 2005-09-02 20:43:13 tswift Exp $
 ** 
 */
 
@@ -310,6 +310,7 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define trustmeorelsefail	0xb9
 
 #define dyntrustmeelsefail	0xba	/* Dynamic trust instruction */
+#define dynretrymeelse      	0xbb	/* Dynamic retry inst (for gc) */
 
 /* Tabling instructions --- they should really be changed to be as shown */
 
