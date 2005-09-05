@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.24 2005-09-01 18:29:38 tswift Exp $
+** $Id: complete_xsb_i.h,v 1.25 2005-09-05 08:21:32 ruim Exp $
 ** 
 */
 
@@ -66,7 +66,7 @@ XSB_Start_Instr(check_complete,_check_complete)
  * for this subgoal.  Its purely a heuristic -- perhaps we should test
  * to see whether its inclusion makes any difference 
  */
-  FailIfAnswersFound(sched_answers(CTXTc subgoal, breg, leader));
+  FailIfAnswersFound(sched_answers(CTXTc subgoal, NULL));
 
   if (leader) {
 
@@ -77,7 +77,7 @@ XSB_Start_Instr(check_complete,_check_complete)
     /* SpitOutGraph(cs_ptr); */
     /* check if fixpoint has been reached, otherwise schedule any
      * unresolved answers */
-    FailIfAnswersFound(check_fixpoint(subgoal,breg));
+    FailIfAnswersFound(check_fixpoint(cs_ptr,breg));
 
 #ifdef LOCAL_EVAL
     {
