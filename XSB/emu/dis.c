@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.25 2005-08-08 17:11:30 dwarren Exp $
+** $Id: dis.c,v 1.26 2005-09-09 23:53:21 tswift Exp $
 ** 
 */
 
@@ -110,7 +110,7 @@ static void dis_data_sub(Pair *chain_ptr, char* modname)
 	    case T_PRED: fprintf(filedes, "'PRED',"); break;
 	    case T_DYNA: fprintf(filedes, "'DYNA',"); break;
 	    case T_ORDI: fprintf(filedes, "'ORDI',"); break;
-	    case T_FILE: fprintf(filedes, "'FILE',"); break;
+	      //	    case T_FILE: fprintf(filedes, "'FILE',"); break;
 	    case T_MODU: fprintf(filedes, "'MODU',"); break;
 	    case T_FORN: fprintf(filedes, "'FORN',"); break;
 	    case T_UDEF: fprintf(filedes, "'UDEF',"); break;
