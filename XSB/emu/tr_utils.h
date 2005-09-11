@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.30 2005-09-01 18:37:07 tswift Exp $
+** $Id: tr_utils.h,v 1.31 2005-09-11 01:29:39 tswift Exp $
 ** 
 */
 
@@ -59,6 +59,10 @@ extern int abolish_table_predicate(CTXTdeclc Psc);
 extern void abolish_all_tables_cps_check(CTXTdecl);
 extern int gc_tabled_preds(CTXTdecl);
 
+#ifndef MULTI_THREAD
+extern BTNptr *freeing_stack;
+extern int freeing_stack_size;
+#endif
 
 /* Prasad's changes */
 
