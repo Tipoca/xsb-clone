@@ -1,0 +1,7 @@
+
+:- [eqset,vcm].
+
+test(MA,PA) :-
+%	trace,
+	verify(cm,[_C, MA,_MV], error,[PA]),
+	show_atts([MA,PA]).

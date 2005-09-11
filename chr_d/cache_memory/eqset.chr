@@ -1,0 +1,101 @@
+
+:- chr_module(eqset).
+
+:- constraints neq/2, in_set/3, nin_set/2, is_in_set/2, set_add/3, set_remove/2,
+               project1/2, project2/2, project_in_set/2, project_nin_set/2.
+
+neq(X,X) <=> fail.
+neq(X,Y) #ID \ neq(Y,X) <=> true pragma passive(ID).
+
+in_set(A,V,S), nin_set(A1,S) <=> A == A1 | fail.
+
+in_set(A,V1,S) #ID \ in_set(A,V2,S) <=> V1 \== V2 | fail pragma passive(ID).
+
+is_in_set(A,S), in_set(A,_,S) <=> true.
+is_in_set(_,_) <=> fail.
+
+set_add(A,V,S) \ nin_set(A,S) #ID <=> in_set(A,V,S) pragma passive(ID). 
+set_add(_,_,_) <=> true.
+
+set_remove(A,S) \ in_set(A,_,S) #ID <=> nin_set(A,S) pragma passive(ID).
+set_remove(_,_) <=> true.
+
+
+project1(X,L), neq(X,Y1) #ID1 \ neq(X,Y2) #ID2 <=> 
+                   Y1 \== Y2, check_arg_pairs([Y1],[Y2], L) 
+                 | true pragma passive(ID1),passive(ID2).
+project1(_,_) <=> true.
+
+project2(X,L), neq(Y1,X) #ID1 \ neq(Y2,X) #ID2 <=> 
+                   Y1 \== Y2, check_arg_pairs([Y1],[Y2], L) 
+                 | true pragma passive(ID1),passive(ID2).
+project2(_,_) <=> true.
+
+
+project_in_set(S,L), in_set(A1,V1,S) #ID1 \ in_set(A2,V2,S) #ID2 
+            <=> A1 \== A2, V1 \== V2, check_arg_pairs([A1,V1],[A2,V2],L)
+              | true pragma passive(ID1),passive(ID2).
+project_in_set(_,_) <=> true.
+
+
+project_nin_set(S,L) \ nin_set(A,S) #ID <=> \+ var_member(A,L)
+                                          | true pragma passive(ID1).
+project_nin_set(_,_) <=> true.
+
+
+
+get_par_list([X|Xs],ParList) :-
+	get_par_list(Xs,PL),
+	(var(X)
+	 -> ParList = [X|PL]
+	  ; X =.. [_|XPars],
+	    get_par_list(XPars,XL),
+	    append(XL,PL,ParList)
+	).
+get_par_list([],[]).
+
+subset([],_).
+subset([X|Xs],L) :-
+	var_member(X,L),
+	subset(Xs,L).
+
+intersect(_,[],[]).
+intersect(L,[X|Xs],[X|Ys]) :-
+	var_member(X,L),
+	intersect(L,Xs,Ys).
+intersect(L,[X|Xs],Ys) :-
+	\+ var_member(X,L),
+	intersect(L,Xs,Ys).
+
+var_member(V, [X|_Xs]) :-
+	V == X.
+var_member(V, [X|Xs]) :-
+	V \== X,
+	var_member(V,Xs).
+
+
+
+%% check two lists of elements, L1 and L2 whether L1 subsumes L2 
+%% w.r.t. the third list L.
+check_arg_pairs([],[],_).
+check_arg_pairs([X|Xs],[Y|Ys], Vs) :-
+	atom(X),!,
+	X == Y,
+	check_arg_pairs(Xs,Ys, Vs).	
+check_arg_pairs([_|Xs],[Y|Ys], Vs) :-
+	atom(Y),!,
+	check_arg_pairs(Xs,Ys, Vs).	
+check_arg_pairs([X|Xs],[Y|Ys], Vs) :-
+	var(X),
+	(
+	 (var_member(X,Vs),var_member(Y,Vs),X==Y)
+	 ;
+	 (\+var_member(X,Vs),\+var_member(Y,Vs))
+	),
+	check_arg_pairs(Xs,Ys, Vs).
+check_arg_pairs([X|Xs],[Y|Ys], Vs) :-
+	compound(X),
+	X =.. [_|ArgsX],
+	Y =.. [_|ArgsY],
+	check_arg_pairs(ArgsX,ArgsY, Vs),
+	check_arg_pairs(Xs,Ys, Vs).

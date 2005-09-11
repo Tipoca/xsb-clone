@@ -1,0 +1,311 @@
+(:-compiler_options([singleton_warnings_off])).
+
+(:-import install_verify_attribute_handler / 4  ','  get_attr / 3  ','  put_attr / 3  from  machine).
+
+(:-local attr_unify_hook / 2).
+
+(:-install_verify_attribute_handler(leq,A,B,attr_unify_hook(A,B))).
+
+(:-import ground / 1  ','  member / 2  ','  append / 3  ','  ith / 3  from  basics).
+
+(:-import delete_ith / 4  from  listutil).
+
+(:-[attv_aux]).
+
+(:-import length / 2  from  basics).
+
+(:-debug_ctl(hide,[append / 3,member / 2,var_member / 2,get_attr / 3,put_attr / 3,get_atts / 2,put_atts / 2,via_1 / 2,via_2 / 3,empty_history / 1,create_mutable / 2,gen_id / 1,get_mutable / 2,update_mutable / 2,term_variables / 2,lock / 1,none_locked / 1,attach_leq / 2,global_term_ref_1 / 1,get_leq_atts / 3,put_leq_atts / 3,append_unique / 4,append_unique / 3,merge_atts / 4,remove_duplicates / 2,merge_attr_lists / 3,check_leq / 2,match_leq / 2,add_leq / 2,nf_put_atts / 2,nf_put_atts / 3,list_show_atts / 1])).
+
+cycle(A,B,C) :-
+        leq(A,B),
+        leq(B,C),
+        leq(C,A).
+
+(:-attribute leq / 2).
+
+attr_unify_hook(v(A,B),C) :-
+        (  var(C) ->
+             get_leq_atts(C,D,E),
+             merge_attr_lists([A,B],[D,E],[F,G]),
+             pose_all_constr([leq / 2],1,C,[F,G])
+        ;
+             pose_all_constr([leq / 2],1,C,[A,B])
+        ).
+
+get_leq_atts(A,B,C) :-
+        (  get_attr(A,leq,v(B,C)) ->
+             true
+        ;
+             C = [],
+             B = []
+        ).
+
+put_leq_atts(A,B,C) :-
+        nf_put_atts(A,leq,v(B,C)).
+
+check_leq(A,B) :-
+        var_in_list([A,B]),
+        (  var(A) ->
+             get_leq_atts(A,C,D),
+             var_member(attr(B),C)
+        ;
+             true
+        ),
+        (  var(B) ->
+             get_leq_atts(B,E,F),
+             var_member(attr(A),F)
+        ;
+             true
+        ).
+
+match_leq(A,B) :-
+        var(A),
+        get_leq_atts(A,C,D),
+        member(attr(B),C).
+
+match_leq(A,B) :-
+        var(B),
+        get_leq_atts(B,C,D),
+        member(attr(A),D).
+
+add_leq(A,B) :-
+        (  check_leq(A,B) ->
+             true
+        ;
+             add_leq_1(A,B)
+        ).
+
+add_leq_1(A,B) :-
+        (  var(A) ->
+             get_leq_atts(A,C,D),
+             append_unique(A,C,[attr(B)],E),
+             put_leq_atts(A,E,D)
+        ;
+             true
+        ),
+        (  var(B) ->
+             get_leq_atts(B,F,G),
+             append_unique(B,G,[attr(A)],H),
+             put_leq_atts(B,F,H)
+        ;
+             true
+        ).
+
+remove_leq(A,B) :-
+        (  var(A) ->
+             get_leq_atts(A,C,D),
+             abs_ith(E,C,attr(B)),
+             delete_ith(E,C,attr(B),F),
+             put_leq_atts(A,F,D)
+        ;
+             true
+        ),
+        (  var(B) ->
+             get_leq_atts(B,G,H),
+             abs_ith(I,H,attr(A)),
+             delete_ith(I,H,attr(A),J),
+             put_leq_atts(B,G,J)
+        ;
+             true
+        ).
+
+leq(A,B) :-
+        leq_eval_1(A,B).
+
+leq_eval_1(A,B) :-
+        (
+          B == A,
+          true,
+          true,
+          true ->
+             true
+        ;
+             leq_eval_2(A,B)
+        ).
+
+leq_eval_2(A,B) :-
+        (
+          true,
+          number(A),
+          number(B),
+          true,
+          true ->
+             A =< B
+        ;
+             leq_eval_3(A,B)
+        ).
+
+leq_eval_3(A,B) :-
+        (
+          true,
+          number(A),
+          match_leq(C,B),
+          number(C),
+          C > A ->
+             true,
+             true
+        ;
+             leq_eval_4(A,B)
+        ).
+
+leq_eval_4(A,B) :-
+        (
+          true,
+          number(A),
+          get_nth_attr(B,leq,2,C) ->
+             leq_eval_4_1(A,B,C),
+             leq_eval_5(A,B)
+        ;
+             leq_eval_5(A,B)
+        ).
+
+leq_eval_4_1(A,B,[]).
+
+leq_eval_4_1(A,B,[attr(C)|D]) :-
+        (
+          true,
+          check_leq(C,B),
+          number(C),
+          A > C ->
+             remove_leq(C,B),
+             true
+        ;
+             true
+        ),
+        leq_eval_4_1(A,B,D).
+
+leq_eval_5(A,B) :-
+        (
+          true,
+          number(B),
+          match_leq(A,C),
+          number(C),
+          C < B ->
+             true,
+             true
+        ;
+             leq_eval_6(A,B)
+        ).
+
+leq_eval_6(A,B) :-
+        (
+          true,
+          number(B),
+          get_nth_attr(A,leq,1,C) ->
+             leq_eval_6_1(A,B,C),
+             leq_eval_7(A,B)
+        ;
+             leq_eval_7(A,B)
+        ).
+
+leq_eval_6_1(A,B,[]).
+
+leq_eval_6_1(A,B,[attr(C)|D]) :-
+        (
+          true,
+          check_leq(A,C),
+          number(C),
+          B < C ->
+             remove_leq(A,C),
+             true
+        ;
+             true
+        ),
+        leq_eval_6_1(A,B,D).
+
+leq_eval_7(A,B) :-
+        (
+          true,
+          true,
+          check_leq(B,A),
+          true ->
+             A = B
+        ;
+             leq_eval_8(A,B)
+        ).
+
+leq_eval_8(A,B) :-
+        (
+          true,
+          true,
+          get_nth_attr(A,leq,1,C),
+          get_nth_attr(B,leq,2,D) ->
+             leq_eval_8_1(A,B,C,D),
+             leq_eval_9(A,B)
+        ;
+             leq_eval_9(A,B)
+        ).
+
+leq_eval_8_1(A,B,[],C).
+
+leq_eval_8_1(A,B,[attr(C)|D],E) :-
+        (
+          C == B,
+          check_leq(A,B),
+          true ->
+             true,
+             true,
+             leq_eval_8_2(A,B,C,E)
+        ;
+             true
+        ),
+        leq_eval_8_1(A,B,D,E).
+
+leq_eval_8_2(A,B,C,[]).
+
+leq_eval_8_2(A,B,C,[attr(D)|E]) :-
+        (
+          D == A,
+          check_leq(A,B),
+          true ->
+             true,
+             true
+        ;
+             true
+        ),
+        leq_eval_8_2(A,B,C,E).
+
+leq_prop_1(A,B) :-
+        true,
+        true,
+        !,
+        get_nth_attr(B,leq,1,C),
+        leq_prop_1_1(A,B,C).
+
+leq_prop_1_1(A,B,[]) :-
+        leq_prop_2(A,B).
+
+leq_prop_1_1(A,B,[attr(C)|D]) :-
+        true,
+        true,
+        !,
+        leq(A,C),
+        leq_prop_1_1(A,B,D).
+
+leq_prop_2(A,B) :-
+        true,
+        true,
+        !,
+        get_nth_attr(A,leq,2,C),
+        leq_prop_2_1(A,B,C).
+
+leq_prop_2_1(A,B,[]) :-
+        leq_prop_3(A,B).
+
+leq_prop_2_1(A,B,[attr(C)|D]) :-
+        true,
+        true,
+        !,
+        leq(C,B),
+        leq_prop_2_1(A,B,D).
+
+leq_prop_3(A,B).
+
+leq_eval_9(A,B) :-
+        add_leq(A,B),
+        leq_prop_1(A,B),
+        !.
+
+show_atts(A) :-
+        show_atts(A,leq).
+
