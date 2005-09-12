@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.h,v 1.4 2005-01-14 18:31:32 ruim Exp $
+** $Id: storage_xsb.h,v 1.5 2005-09-12 01:09:33 tswift Exp $
 ** 
 */
 
@@ -44,5 +44,5 @@ struct storage_handle {
 };
 
 
-extern STORAGE_HANDLE *storage_builtin(int builtin_number, Cell storage_name);
+extern STORAGE_HANDLE *storage_builtin(CTXTdeclc int builtin_number, Cell storage_name);
 

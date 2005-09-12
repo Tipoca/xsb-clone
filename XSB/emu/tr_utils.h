@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.31 2005-09-11 01:29:39 tswift Exp $
+** $Id: tr_utils.h,v 1.32 2005-09-12 01:09:33 tswift Exp $
 ** 
 */
 
@@ -37,7 +37,7 @@ extern void breg_retskel(CTXTdecl);
 extern void delete_predicate_table(CTXTdeclc TIFptr);
 extern void reclaim_del_ret_list(VariantSF);
 extern void delete_return(CTXTdeclc BTNptr, VariantSF);
-extern void init_newtrie(void);
+extern void init_newtrie(CTXTdecl);
 extern void delete_branch(CTXTdeclc BTNptr, BTNptr *);
 extern void safe_delete_branch(BTNptr);
 extern void undelete_branch(BTNptr);
@@ -46,7 +46,7 @@ extern void delete_trie(CTXTdeclc BTNptr);
 
 extern xsbBool has_unconditional_answers(VariantSF);
 
-extern Integer  newtrie(void);
+extern Integer  newtrie(CTXTdecl);
 extern void trie_intern(CTXTdecl);
 extern int  trie_interned(CTXTdecl);
 extern void trie_dispose(CTXTdecl);
@@ -62,6 +62,7 @@ extern int gc_tabled_preds(CTXTdecl);
 #ifndef MULTI_THREAD
 extern BTNptr *freeing_stack;
 extern int freeing_stack_size;
+
 #endif
 
 /* Prasad's changes */

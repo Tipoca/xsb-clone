@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.22 2005-09-11 01:29:39 tswift Exp $
+** $Id: context.h,v 1.23 2005-09-12 01:09:33 tswift Exp $
 ** 
 */
 
@@ -233,6 +233,11 @@ DynamicStack  _tstTrail;
 
 BTNptr *_freeing_stack;
 int _freeing_stack_size;
+
+  BTNptr *_Set_ArrayPtr;
+  Integer _first_free_set;
+  int _Set_ArraySz;
+  int _num_sets;
 
   /********** variables for findall buffers **********/
 findall_solution_list *_findall_solutions;  /*= NULL;*/
@@ -455,6 +460,11 @@ typedef struct th_context th_context ;
 
 #define  freeing_stack          (th->_freeing_stack)
 #define  freeing_stack_size     (th->_freeing_stack_size)
+
+#define  Set_ArrayPtr           (th->_Set_ArrayPtr)
+#define  first_free_set         (th->_first_free_set)
+#define  Set_ArraySz            (th->_Set_ArraySz)
+#define  num_sets               (th->_num_sets)
 
 #define FCursor (th->_FCursor)
 #define LCursor (th->_LCursor)

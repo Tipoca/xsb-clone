@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.223 2005-09-02 20:43:13 tswift Exp $
+** $Id: builtin.c,v 1.224 2005-09-12 01:09:33 tswift Exp $
 ** 
 */
 
@@ -2284,7 +2284,7 @@ int builtin_call(CTXTdeclc byte number)
     break;
 
   case NEWTRIE:
-    ctop_int(CTXTc 1,newtrie());
+    ctop_int(CTXTc 1,newtrie(CTXT));
     break;
   case TRIE_INTERN:
     trie_intern(CTXT);
@@ -2309,7 +2309,7 @@ int builtin_call(CTXTdeclc byte number)
 
   case STORAGE_BUILTIN: {
     STORAGE_HANDLE *storage_handle =
-      storage_builtin(ptoc_int(CTXTc 1),(Cell)ptoc_tag(CTXTc 2));
+      storage_builtin(CTXTc ptoc_int(CTXTc 1),(Cell)ptoc_tag(CTXTc 2));
     if (storage_handle != NULL) {
       ctop_int(CTXTc 3, (Integer)storage_handle->handle);
       ctop_int(CTXTc 4, (Integer)storage_handle->snapshot_number);

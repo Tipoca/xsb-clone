@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.c,v 1.7 2005-01-14 18:31:32 ruim Exp $
+** $Id: storage_xsb.c,v 1.8 2005-09-12 01:09:33 tswift Exp $
 ** 
 */
 
@@ -59,7 +59,7 @@ static xsbHashTable hash_table =
   {STORAGE_TBL_SIZE,sizeof(STORAGE_HANDLE),FALSE,NULL};
 
 
-static inline STORAGE_HANDLE *get_storage_handle(Cell name)
+static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name)
 {
   STORAGE_HANDLE *handle_cell;
 
@@ -70,7 +70,7 @@ static inline STORAGE_HANDLE *get_storage_handle(Cell name)
     xsb_dbgmsg((LOG_STORAGE,
 	       "GET_STORAGE_HANDLE: New trie created for %s\n", 
 	       string_val(name)));
-    handle_cell->handle= newtrie();
+    handle_cell->handle= newtrie(CTXT);
     /* Note: not necessary to initialize snapshot_number&changed: handle_cell
        was calloc()'ed 
        handle_cell->snapshot_number=0;
@@ -84,11 +84,11 @@ static inline STORAGE_HANDLE *get_storage_handle(Cell name)
   return handle_cell;
 }
 
-STORAGE_HANDLE *storage_builtin(int builtin_number, Cell name)
+STORAGE_HANDLE *storage_builtin(CTXTdeclc int builtin_number, Cell name)
 {
   switch (builtin_number) {
   case GET_STORAGE_HANDLE:
-    return get_storage_handle(name);
+    return get_storage_handle(CTXTc name);
   case INCREMENT_STORAGE_SNAPSHOT:
     return increment_storage_snapshot(name);
   case MARK_STORAGE_CHANGED:

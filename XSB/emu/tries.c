@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.68 2005-09-11 01:29:39 tswift Exp $
+** $Id: tries.c,v 1.69 2005-09-12 01:09:33 tswift Exp $
 ** 
 */
 
@@ -231,6 +231,7 @@ void init_trie_aux_areas(CTXTdecl)
   alloc_arr(Cell,reg_array,reg_array_size);
   reg_arrayptr = reg_array -1;
 
+  /* used by delete_table() */
   freeing_stack = NULL;
   freeing_stack_size = 0;
 
@@ -1181,14 +1182,17 @@ static void bottomupunify(CTXTdeclc Cell term, BTNptr Root, BTNptr Leaf)
 /*
  *  Used with tries created via the builtin trie_intern.
  */
+
+#ifndef MULTI_THREAD
+  extern  BTNptr *Set_ArrayPtr;
+#endif
+
 xsbBool bottom_up_unify(CTXTdecl)
 {
   Cell    term;
   BTNptr root;
   BTNptr leaf;
   int     rootidx;
-  extern  BTNptr *Set_ArrayPtr;
-
 
   leaf = (BTNptr) ptoc_int(CTXTc 3);   
   if( IsDeletedNode(leaf) )
