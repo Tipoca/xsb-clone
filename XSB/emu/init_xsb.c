@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.61 2005-09-12 01:09:33 tswift Exp $
+** $Id: init_xsb.c,v 1.62 2005-09-12 18:20:35 tswift Exp $
 ** 
 */
 
@@ -347,7 +347,7 @@ char *init_para(CTXTdeclc int argc, char *argv[])
 
   init_open_files();
 
-  init_newtrie(CTXT);
+  //  init_newtrie(CTXT);
 
   /* init stat. structures */
   perproc_reset_stat();
@@ -737,6 +737,8 @@ void init_machine(CTXTdecl)
   complstack	= init_complstack ;
 
   findall_solutions = NULL;
+
+  init_newtrie(CTXT);
 
 #define MAXSBUFFS 30
   LSBuff = (VarString **)calloc(sizeof(VarString *),MAXSBUFFS);

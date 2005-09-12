@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.69 2005-09-12 01:09:33 tswift Exp $
+** $Id: tries.c,v 1.70 2005-09-12 18:20:37 tswift Exp $
 ** 
 */
 
@@ -230,10 +230,6 @@ void init_trie_aux_areas(CTXTdecl)
   alloc_arr(CPtr,var_addr,var_addr_arraysz);
   alloc_arr(Cell,reg_array,reg_array_size);
   reg_arrayptr = reg_array -1;
-
-  /* used by delete_table() */
-  freeing_stack = NULL;
-  freeing_stack_size = 0;
 
   for (i = 0; i < NUM_TRIEVARS; i++)
     VarEnumerator[i] = (Cell) & (VarEnumerator[i]);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.82 2005/09/11 01:29:39 tswift Exp $
+** $Id: tr_utils.c,v 1.83 2005/09/12 01:09:33 tswift Exp $
 ** 
 */
 
@@ -324,11 +324,6 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
 
 #define freeing_stack_increment 50
 
-#ifndef MULTI_THREAD
-BTNptr *freeing_stack;
-int freeing_stack_size;
-#endif
-
 #define push_node(node) {\
   if (node_stk_top >= freeing_stack_size) {\
     freeing_stack_size = freeing_stack_size + freeing_stack_increment;\
@@ -357,6 +352,9 @@ static void delete_variant_table(CTXTdeclc BTNptr x) {
   int node_stk_top = 0, call_nodes_top = 0;
   BTNptr node, rnod, *Bkp; 
   BTHTptr ht;
+  
+  BTNptr *freeing_stack;
+  int freeing_stack_size = 0;
 
   if ( IsNULL(x) )
     return;
