@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.43 2005-08-20 06:50:27 ruim Exp $
+** $Id: loader_xsb.c,v 1.44 2005-09-13 13:02:04 dwarren Exp $
 ** 
 */
 
@@ -723,9 +723,9 @@ static void new_tdispblk(TIFptr *instr_ptr, Psc psc) {
   if (!tdispblkhdr.lastDB) tdispblkhdr.lastDB = tdispblk;
 
   tdispblk->psc_ptr = psc;
-  tdispblk->method = 3 /*DISPATCH_BLOCK*/;
+  tdispblk->method = DISPATCH_BLOCK;
   tdispblk->MaxThread = MAXTABTHREAD;
-  *instr_ptr = (TIFptr)(((CPtr)tdispblk)+2);
+  *instr_ptr = (TIFptr)tdispblk;
 }
 #endif
 

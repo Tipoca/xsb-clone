@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.23 2005-09-09 23:53:21 tswift Exp $
+** $Id: psc_xsb.c,v 1.24 2005-09-13 13:02:05 dwarren Exp $
 ** 
 */
 
@@ -176,6 +176,10 @@ TIFptr *get_tip_or_tdisp(Psc temp)
     }
 }
 
+/* get_tip takes a psc record and returns the tip (or null).  If
+   multithreaded, it must go through the dispatch table to get the
+   tip. */
+
 TIFptr get_tip(CTXTdeclc Psc psc) {
   TIFptr *tip = get_tip_or_tdisp(psc);
 #ifndef MULTI_THREAD
@@ -189,10 +193,11 @@ TIFptr get_tip(CTXTdeclc Psc psc) {
       if (temp1 && (*(pb)temp1 == tabletrysingle)) 
 	return *(TIFptr *)(temp1+2);
       else return (TIFptr) NULL;
-    }
+    } else xsb_error("Internal Error in table dispatch\n");
   }
-  if (TIF_EvalMethod(*tip) != 3 /*DISPATCH_BLOCK*/) return *tip;
-  { struct TDispBlk_t *tdispblk = (struct TDispBlk_t *)(((CPtr)(*tip))-2);
+  if (TIF_EvalMethod(*tip) != DISPATCH_BLOCK) return *tip;
+  /* *tip points to 3rd word in TDispBlk, so get addr of TDispBlk */
+  { struct TDispBlk_t *tdispblk = (struct TDispBlk_t *) (*tip);
     TIFptr rtip = (TIFptr)((&(tdispblk->Thread0))[th->tid]);
     if (!rtip) {
       New_TIF(rtip,psc);

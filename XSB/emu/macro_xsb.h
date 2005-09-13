@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.31 2005-09-01 18:37:06 tswift Exp $
+** $Id: macro_xsb.h,v 1.32 2005-09-13 13:02:04 dwarren Exp $
 ** 
 */
 
@@ -103,7 +103,8 @@ typedef struct Deleted_Table_Frame {
 
 typedef enum Tabled_Evaluation_Method {
   VARIANT_TEM      = VARIANT_EVAL_METHOD,
-  SUBSUMPTIVE_TEM  = SUBSUMPTIVE_EVAL_METHOD
+  SUBSUMPTIVE_TEM  = SUBSUMPTIVE_EVAL_METHOD,
+  DISPATCH_BLOCK    = 3
 } TabledEvalMethod;
 
 typedef struct Table_Info_Frame *TIFptr;
@@ -189,11 +190,11 @@ extern struct tif_list  tif_list;
 
 #define MAXTABTHREAD 100
 
-struct TDispBlk_t {
+struct TDispBlk_t { /* first two fields must be same as Table_Info_Frame for coercion! */
+  Psc psc_ptr;
+  TabledEvalMethod method; /* == DISPATCH_BLOCK for disp block, VARIANT/SUB for TIF */
   struct TDispBlk_t *PrevDB;
   struct TDispBlk_t *NextDB;
-  Psc psc_ptr;
-  TabledEvalMethod method;
   int MaxThread;
   TIFptr Thread0;
 };

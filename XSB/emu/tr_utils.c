@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.83 2005/09/12 01:09:33 tswift Exp $
+** $Id: tr_utils.c,v 1.84 2005/09/12 18:20:37 tswift Exp $
 ** 
 */
 
@@ -353,7 +353,7 @@ static void delete_variant_table(CTXTdeclc BTNptr x) {
   BTNptr node, rnod, *Bkp; 
   BTHTptr ht;
   
-  BTNptr *freeing_stack;
+  BTNptr *freeing_stack = NULL;
   int freeing_stack_size = 0;
 
   if ( IsNULL(x) )
@@ -1469,7 +1469,7 @@ inline int abolish_table_predicate(CTXTdeclc Psc psc)
 		" of predicate %s/%d\n", get_name(psc), get_arity(psc));
   }
 
-  if (flags[NUM_THREADS] == 1) {
+  if (flags[NUM_THREADS] == 1 || !get_shared(psc)) {
     action = abolish_table_pred_cps_check(CTXTc psc);
   }
   else action = 1;

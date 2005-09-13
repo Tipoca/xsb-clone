@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.92 2005-09-02 20:43:13 tswift Exp $
+** $Id: biassert.c,v 1.93 2005-09-13 13:02:04 dwarren Exp $
 ** 
 */
 
@@ -94,6 +94,7 @@ struct DispBlkHdr_t {
 } DispBlkHdr = {NULL, NULL};
 
 #ifdef MULTI_THREAD
+/* For a private dynamic predicate, return addr of its prref or its table wrapper */
 CPtr dynpredep_to_prortb(CTXTdeclc void *pred_ep) {
     if (th->tid > (((struct DispBlk_t **)pred_ep)[1])->MaxThread) 
       xsb_abort("Dynamic Dispatch block too small");
