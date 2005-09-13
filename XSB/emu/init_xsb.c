@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.62 2005-09-12 18:20:35 tswift Exp $
+** $Id: init_xsb.c,v 1.63 2005-09-13 15:21:11 tswift Exp $
 ** 
 */
 
@@ -725,6 +725,8 @@ void init_machine(CTXTdecl)
   cell_opcode(&halt_inst) = halt;
   cell_opcode(&proceed_inst) = proceed;         /* returned by load_obj */
 
+  init_newtrie(CTXT);
+
 #ifdef MULTI_THREAD
   interrupt_reg = &interrupt_counter;
 
@@ -737,8 +739,6 @@ void init_machine(CTXTdecl)
   complstack	= init_complstack ;
 
   findall_solutions = NULL;
-
-  init_newtrie(CTXT);
 
 #define MAXSBUFFS 30
   LSBuff = (VarString **)calloc(sizeof(VarString *),MAXSBUFFS);
