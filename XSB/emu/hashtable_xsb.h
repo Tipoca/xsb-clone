@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hashtable_xsb.h,v 1.3 2005-01-14 18:31:16 ruim Exp $
+** $Id: hashtable_xsb.h,v 1.4 2005-09-16 00:56:41 tswift Exp $
 ** 
 */
 
@@ -31,8 +31,8 @@ struct bucket {
   xsbBucket  *next;
 };
 
-typedef struct hash_table  xsbHashTable;
-struct hash_table {
+typedef struct bt_storage_hash_table_struct  xsbHashTable;
+struct bt_storage_hash_table_struct {
   int           length;
   int           bucket_size;  
   xsbBool       initted;

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.63 2005-09-13 15:21:11 tswift Exp $
+** $Id: init_xsb.c,v 1.64 2005-09-16 00:56:41 tswift Exp $
 ** 
 */
 
@@ -346,8 +346,6 @@ char *init_para(CTXTdeclc int argc, char *argv[])
 #endif
 
   init_open_files();
-
-  //  init_newtrie(CTXT);
 
   /* init stat. structures */
   perproc_reset_stat();

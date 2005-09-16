@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hashtable_xsb.c,v 1.6 2004-09-30 14:54:45 dwarren Exp $
+** $Id: hashtable_xsb.c,v 1.7 2005-09-16 00:56:41 tswift Exp $
 ** 
 */
 
@@ -38,7 +38,6 @@
 #include "macro_xsb.h"
 #include "error_xsb.h"
 
-#include "hashtable_xsb.h"
 #include "tr_utils.h"
 #include "debug_xsb.h"
 #include "flags_xsb.h"

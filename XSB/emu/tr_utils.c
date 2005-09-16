@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.84 2005/09/12 18:20:37 tswift Exp $
+** $Id: tr_utils.c,v 1.85 2005/09/13 13:02:05 dwarren Exp $
 ** 
 */
 
@@ -59,6 +59,7 @@
 #include "rw_lock.h"
 #include "debug_xsb.h"
 #include "thread_xsb.h"
+#include "storage_xsb.h"
 
 /*----------------------------------------------------------------------*/
 
@@ -625,7 +626,7 @@ void undelete_branch(BTNptr lowest_node_in_branch) {
  * delete_trie() is used by gen_retractall (i.e. abolish or retractall
  * with an open atomic formula) to delete an entire asserted trie.
  * Its also called via the builtin DELETE_TRIE --
- * delete_interned_trie() to delete an interned trie */
+ * delete_interned_trie() to delete an interned trie or storage trie */
 /*----------------------------------------------------------------------*/
 
 #define DELETE_TRIE_STACK_INIT 100
@@ -949,6 +950,11 @@ void init_newtrie(CTXTdecl)
   Set_ArraySz = 100;
   num_sets = 1;
   Set_ArrayPtr = (BTNptr *) calloc(Set_ArraySz,sizeof(BTNptr));
+
+  bt_storage_hash_table.length = STORAGE_TBL_SIZE;
+  bt_storage_hash_table.bucket_size = sizeof(STORAGE_HANDLE);
+  bt_storage_hash_table.initted = FALSE;
+  bt_storage_hash_table.table = NULL;
 }
 
 /*----------------------------------------------------------------------*/
