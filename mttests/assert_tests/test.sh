@@ -33,3 +33,5 @@ echo "-------------------------------------------------------"
 ../gentest.sh "$XEMU $options" assert_retpri "test_retract(40000,_)" $NUM
 
 ../gentest.sh "$XEMU $options" trie_intern "test_intern(2000,_)" $NUM
+
+../gentest.sh "$XEMU $options" test_storage "test_storage(1000,_)" $NUM
