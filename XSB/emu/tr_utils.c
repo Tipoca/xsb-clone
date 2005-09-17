@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.85 2005/09/13 13:02:05 dwarren Exp $
+** $Id: tr_utils.c,v 1.86 2005/09/16 00:56:41 tswift Exp $
 ** 
 */
 
@@ -417,6 +417,9 @@ static void delete_variant_table(CTXTdeclc BTNptr x) {
     }
   }
   TRIE_W_UNLOCK();
+
+  free(freeing_stack);
+
 }
 
 void delete_predicate_table(CTXTdeclc TIFptr tif) {
@@ -1610,4 +1613,7 @@ int gc_tabled_preds(CTXTdecl)
     return -1;
   }
 }
+
+
+
 
