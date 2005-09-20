@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.31 2005-08-19 16:24:10 ruim Exp $
+** $Id: socket_xsb.c,v 1.32 2005-09-20 22:51:38 crued Exp $
 ** 
 */
 
@@ -402,11 +402,12 @@ static int socket_put(CTXTdeclc int *rc, int timeout) {
      sock_handle = (SOCKET) ptoc_int(CTXTc 2);
      tmpch = (char)ptoc_int(CTXTc 3);
 
-     if (!write_select(sock_handle, timeout)) {
-	  return -1;
+     if (write_select(sock_handle, timeout)) {
+        *rc = sendto(sock_handle, &tmpch, 1, 0, NULL,0);
+	  return NORMAL_TERMINATION;
+     } else {
+	  return TIMED_OUT;
      }
-
-     return sendto(sock_handle, &tmpch, 1, 0, NULL,0);
 }
 
 /* in order to save builtin numbers, create a single socket function with
