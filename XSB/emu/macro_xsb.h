@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.32 2005-09-13 13:02:04 dwarren Exp $
+** $Id: macro_xsb.h,v 1.33 2005-09-28 22:23:57 ruim Exp $
 ** 
 */
 
@@ -245,6 +245,9 @@ struct completion_stack_frame {
   EPtr    DG_edges;
   EPtr    DGT_edges;
 #endif
+#ifdef CONC_COMPL
+  CPtr	  ext_cons;
+#endif
 } ;
 
 #define COMPLFRAMESIZE	(sizeof(struct completion_stack_frame)/sizeof(CPtr))
@@ -256,6 +259,9 @@ struct completion_stack_frame {
 #ifndef LOCAL_EVAL
 #define compl_DG_edges(b)	((ComplStackFrame)(b))->DG_edges
 #define compl_DGT_edges(b)	((ComplStackFrame)(b))->DGT_edges
+#endif
+#ifdef CONC_COMPL
+#define compl_ext_cons(b)	((ComplStackFrame)(b))->ext_cons
 #endif
 
 #define prev_compl_frame(b)	(((CPtr)(b))+COMPLFRAMESIZE)

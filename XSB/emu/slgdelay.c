@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.34.4.4 2004/12/14 08:47:05 ruim Exp $
+** $Id: slgdelay.c,v 1.38 2005/01/14 18:31:30 ruim Exp $
 ** 
 */
 
@@ -45,6 +45,7 @@
 #include "inst_xsb.h"
 #include "error_xsb.h"
 #include "io_builtins_xsb.h"
+#include "thread_xsb.h"
 
 static void simplify_neg_succeeds(CTXTdeclc VariantSF);
 extern void simplify_pos_unsupported(CTXTdeclc NODEptr);

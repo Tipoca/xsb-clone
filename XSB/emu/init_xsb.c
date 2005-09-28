@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.65 2005-09-19 01:35:23 tswift Exp $
+** $Id: init_xsb.c,v 1.66 2005-09-28 22:23:57 ruim Exp $
 ** 
 */
 
@@ -798,6 +798,10 @@ void init_machine(CTXTdecl)
 #endif
 #ifdef SHARED_COMPL_TABLES
   th->waiting_for_thread = NULL ;
+#endif
+#ifdef CONC_COMPL
+  pthread_cond_init( &th->cond_var, NULL );
+  th->completing = FALSE;
 #endif
 
   tsgLBuff1 = (VarString *)malloc(sizeof(VarString));

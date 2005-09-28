@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.25 2005-09-16 00:56:41 tswift Exp $
+** $Id: context.h,v 1.26 2005-09-28 22:23:57 ruim Exp $
 ** 
 */
 
@@ -27,10 +27,12 @@
 
 #define __CONTEXT_H__
 
+
 #include "cell_def_xsb.h"
 #include "basictypes.h"
 #include "setjmp_xsb.h"
 #include "flag_defs_xsb.h"
+#include "conc_compl.h"
 #include "hashtable_xsb.h"
 
 typedef struct ClRefHdr
@@ -91,6 +93,7 @@ struct asrtBuff_t {
 
 #include <sys/types.h>
 #include <stdio.h>
+#include <pthread.h>
 
 #include "debugs/debug_attv.h"
 
@@ -313,6 +316,15 @@ struct th_context * 	waiting_for_thread;
 struct subgoal_frame *	waiting_for_subgoal;
 int deadlock_brk_leader ;
 int reset_thread ;
+#endif
+
+#ifdef CONC_COMPL
+int may_have_answers ;
+int completing ;
+int completed ;
+CPtr cc_leader ;
+ThreadDepList TDL ;
+pthread_cond_t cond_var ;
 #endif
 
 } ;
