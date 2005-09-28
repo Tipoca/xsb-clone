@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.14 2005-09-02 20:43:13 tswift Exp $
+** $Id: std_cases_xsb_i.h,v 1.15 2005-09-28 13:37:04 dwarren Exp $
 ** 
 */
 
@@ -63,7 +63,7 @@
   }
   case ATOMIC: {	/* r1: ?term */
     Cell term = ptoc_tag(CTXTc 1);
-    return (isatomic(term) || isboxedinteger(term));
+    return (isatomic(term) || isboxedinteger(term) || isboxedfloat(term));
   }
 
   case COMPOUND: {	/* r1: ?term */
