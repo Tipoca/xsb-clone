@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dbclause.H,v 1.14 2004/02/02 14:00:39 dwarren Exp $
+** $Id: dbclause.H,v 1.15 2005/08/08 17:10:30 dwarren Exp $
 ** 
 */
 
@@ -31,8 +31,9 @@
 :- import set_inthandler/2, '_$load_undef'/1 from loader.
 :- import log_ith/3 from basics.
 :- import stat_set_flag/2, code_call/3, conname/2,
-          gen_retract_all/1, buff_word/3, buff_byte/3,
+          gen_retract_all/1,
 	  db_get_clause/11, db_retract0/2, db_remove_prref/1, db_reclaim0/2,
-  globalvar/1, term_set_arg/4, psc_ep/2
+	  globalvar/1, term_set_arg/4, psc_ep/2,
+	  trie_assert_hdr_info/3
      from machine.
 
