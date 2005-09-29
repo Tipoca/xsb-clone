@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.26 2005-09-28 22:23:57 ruim Exp $
+** $Id: complete_xsb_i.h,v 1.27 2005-09-29 15:12:43 ruim Exp $
 ** 
 */
 
@@ -101,7 +101,6 @@ XSB_Start_Instr(check_complete,_check_complete)
 		else
 			WakeOtherThreads(th) ;
 	}
-	th->may_have_answers = busy ;
 	th->completing = TRUE ;
 	th->completed = FALSE ;
 	th->cc_leader = cs_ptr ;
