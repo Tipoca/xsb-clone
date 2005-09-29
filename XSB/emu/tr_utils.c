@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.86 2005/09/16 00:56:41 tswift Exp $
+** $Id: tr_utils.c,v 1.87 2005/09/17 20:32:11 tswift Exp $
 ** 
 */
 
@@ -1451,9 +1451,10 @@ void check_insert_new_deltf(CTXTdeclc TIFptr tif)
   if (!found) {
     New_DelTF(dtf,tif);
   }
+  TIF_CallTrie(tif) = NULL;
+  TIF_Subgoals(tif) = NULL;
   SYS_MUTEX_UNLOCK(MUTEX_SM);
 }
-
 
 inline int abolish_table_predicate(CTXTdeclc Psc psc)
 {
