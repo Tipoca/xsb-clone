@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.66 2005-09-01 18:37:06 tswift Exp $
+** $Id: builtin.h,v 1.67 2005-09-29 15:35:25 dwarren Exp $
 ** 
 */
 
@@ -171,6 +171,7 @@
 #define BREG_RETSKEL		154
 #define TRIE_RETRACT_SAFE	155
 #define ABOLISH_MODULE_TABLES   156
+#define TRIE_ASSERT_HDR_INFO	157
 
 #define TRIMCORE		158
 #define NEWTRIE                 159
