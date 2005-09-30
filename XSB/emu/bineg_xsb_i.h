@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.23 2005-08-13 15:04:02 ruim Exp $
+** $Id: bineg_xsb_i.h,v 1.24 2005-09-30 20:04:26 ruim Exp $
 ** 
 */
 
@@ -136,7 +136,6 @@ case IS_INCOMPLETE: {
 	}
 	th->waiting_for_subgoal = producerSF ;
         th->waiting_for_thread = waiting_for_thread ;
-        pthread_mutex_unlock(&completing_mut);
         pthread_cond_wait(&completing_cond,&completing_mut) ;
         if( th->reset_thread )
         {       th->reset_thread = FALSE ;

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.48 2005/09/28 22:23:57 ruim Exp $
+** $Id: slginsts_xsb_i.h,v 1.49 2005/09/29 15:12:43 ruim Exp $
 ** 
 */
 
@@ -216,7 +216,6 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
         }
         th->waiting_for_subgoal = producer_sf ;
         th->waiting_for_thread = waiting_for_thread ;
-	pthread_mutex_unlock(&completing_mut);
 	pthread_cond_wait(&completing_cond,&completing_mut) ;
         if( th->reset_thread )
         {       th->reset_thread = FALSE ;

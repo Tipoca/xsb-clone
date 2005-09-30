@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.27 2005-09-29 15:12:43 ruim Exp $
+** $Id: complete_xsb_i.h,v 1.28 2005-09-30 20:04:26 ruim Exp $
 ** 
 */
 
@@ -60,6 +60,7 @@ XSB_Start_Instr(check_complete,_check_complete)
 	}
 	if( (tmp_breg = check_fixpoint(cs_ptr,breg)) )
 	{
+		th->last_ans++;
 		breg = tmp_breg ;
 		break ;
 	}
@@ -89,10 +90,11 @@ XSB_Start_Instr(check_complete,_check_complete)
 	}
 */	
 	if( !busy )
-		busy = MayHaveAnswers(th) ;
+	{	
 
-	if( !busy )
-	{	if( CheckForSCC(th) )
+		if( MayHaveAnswers(th) )
+			WakeOtherThreads(th) ;
+		else if( CheckForSCC(th) )
 		{
 			CompleteOtherThreads(th);
 			CompleteTop(th, cs_ptr);
@@ -101,10 +103,10 @@ XSB_Start_Instr(check_complete,_check_complete)
 		else
 			WakeOtherThreads(th) ;
 	}
+
 	th->completing = TRUE ;
 	th->completed = FALSE ;
 	th->cc_leader = cs_ptr ;
-	pthread_mutex_unlock(&completing_mut) ;
 	pthread_cond_wait(&th->cond_var, &completing_mut) ;
 	th->completing = FALSE ;
 	if( th->completed )

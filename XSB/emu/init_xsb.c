@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.66 2005-09-28 22:23:57 ruim Exp $
+** $Id: init_xsb.c,v 1.67 2005-09-30 20:04:26 ruim Exp $
 ** 
 */
 
@@ -802,6 +802,7 @@ void init_machine(CTXTdecl)
 #ifdef CONC_COMPL
   pthread_cond_init( &th->cond_var, NULL );
   th->completing = FALSE;
+  th->last_ans = 1;
 #endif
 
   tsgLBuff1 = (VarString *)malloc(sizeof(VarString));
