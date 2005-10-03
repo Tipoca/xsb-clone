@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.21 2005-01-14 18:31:28 ruim Exp $
+** $Id: residual.c,v 1.22 2005-10-03 13:26:43 tswift Exp $
 ** 
 */
 
@@ -67,18 +67,17 @@
 
 /*----------------------------------------------------------------------*/
 
+#ifndef MULTI_THREAD
 static Cell cell_array[500];
+CPtr *copy_of_var_addr;
+int copy_of_num_heap_term_vars;
+#endif
 
 /*----------------------------------------------------------------------*/
 
 #define build_subgoal_args(SUBG)	\
 	load_solution_trie(CTXTc arity, 0, &cell_array[arity-1], subg_leaf_ptr(SUBG))
 
-
-CPtr *copy_of_var_addr;
-int copy_of_num_heap_term_vars;
-
-/*----------------------------------------------------------------------*/
 
 /*
  * Function build_delay_list() is called by builtin #143 GET_DELAY_LISTS

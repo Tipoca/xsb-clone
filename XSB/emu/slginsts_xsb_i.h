@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.49 2005/09/29 15:12:43 ruim Exp $
+** $Id: slginsts_xsb_i.h,v 1.50 2005/09/30 20:04:26 ruim Exp $
 ** 
 */
 
@@ -140,17 +140,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   Op1(get_xxxxl);
   tip =  (TIFptr) get_xxxxl;
 #ifdef MULTI_THREAD
-  /* get right TIF, if thread_private */
-  if (TIF_EvalMethod(tip) == DISPATCH_BLOCK) {
-    struct TDispBlk_t *tdispblk;
-    tdispblk = (struct TDispBlk_t *)tip;
-    if (th->tid > tdispblk->MaxThread) xsb_abort("Table Dispatch block too small");
-    tip = (&(tdispblk->Thread0))[th->tid];
-    if (!tip) { /* this may not be possible, as it may always be initted in get_tip? */
-      New_TIF(tip,tdispblk->psc_ptr);
-      (&(tdispblk->Thread0))[th->tid] = tip;
-    }
-  }
+  handle_dispatch_block(tip);
 #endif
   CallInfo_TableInfo(callInfo) = tip;
   ADVANCE_PC(size_xxxXX);

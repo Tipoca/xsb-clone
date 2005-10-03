@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.c,v 1.15 2005-01-14 18:31:18 ruim Exp $
+** $Id: inst_xsb.c,v 1.16 2005-10-03 13:26:43 tswift Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@
 
 extern void init_builtin_table(void);
 
+/* ------------------------------------------------------------------- */
 #ifdef PROFILE
 
 /* Initialize this stuff for profiling.  In profiling, the number of
@@ -85,7 +86,7 @@ Cell inst_table[BUILTIN_TBL_SZ][5];
 	inst_table[inst][2] = op2type; \
 	inst_table[inst][3] = op3type; \
 	inst_table[inst][4] = op4type
-#endif
+#endif /* PROFILE */
 
 /*----------------------------------------------------------------------*/
 

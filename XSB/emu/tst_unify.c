@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_unify.c,v 1.15 2005-08-16 21:39:53 dwarren Exp $
+** $Id: tst_unify.c,v 1.16 2005-10-03 13:26:44 tswift Exp $
 ** 
 */
 
@@ -98,9 +98,11 @@
 /* Error Reporting
    --------------- */
 
+#ifndef MULTI_THREAD
 static BTNptr gAnsLeaf;    /* answer to consume */
 static CPtr gAnsTmplt;      /* ... using this template */
 static int gSizeTmplt;      /* ... of this size */
+#endif
 
 static void consumption_error(CTXTdeclc char *string) {
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.5 2005-01-14 18:31:33 ruim Exp $
+** $Id: struct_manager.h,v 1.6 2005-10-03 13:26:43 tswift Exp $
 ** 
 */
 
@@ -136,6 +136,7 @@ typedef struct Structure_Manager {
     void *dealloc;	   /* - deallocated structs, poised for reuse */
   } struct_lists;
 } Structure_Manager;
+typedef struct Structure_Manager *SMptr;
 
 
 /* Macro Short-Hands  (mainly for "internal" use)

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sw_envs.h,v 1.13 2005-01-14 18:31:33 ruim Exp $
+** $Id: sw_envs.h,v 1.14 2005-10-03 13:26:43 tswift Exp $
 ** 
 */
 
@@ -83,18 +83,10 @@
   }									\
 }
 
-#ifdef MEASURE_WAM_STUFF
-#define undo_bindings(TBREG) {			\
-   CPtr *old_trreg = cp_trreg(TBREG);		\
-   undbind_num++;				\
-   table_undo_bindings(old_trreg);		\
-}
-#else
 #define undo_bindings(TBREG) {			\
    CPtr *old_trreg = cp_trreg(TBREG);		\
    table_undo_bindings(old_trreg);		\
 }
-#endif
 
 /*
  * If PRE_IMAGE_TRAIL is never used, the line of untrail2 in the following

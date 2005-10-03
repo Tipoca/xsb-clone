@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.18 2005-08-19 16:24:10 ruim Exp $
+** $Id: memory_xsb.h,v 1.19 2005-10-03 13:26:43 tswift Exp $
 ** 
 */
 
@@ -148,6 +148,11 @@ extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
 
 /* Stack Overflow Checkers
    ----------------------- */
+#define local_global_exception "! Local/Global Stack Overflow Exception\n"
+
+#define complstack_exception "! Completion Stack Overflow Exception\n"
+
+#define trail_cp_exception "! Trail/CP Stack Overflow Exception\n"
 
 #ifdef DEBUG_ASSERTIONS
 

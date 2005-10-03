@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_defs.h,v 1.9 2005-09-13 13:02:05 dwarren Exp $
+** $Id: psc_defs.h,v 1.10 2005-10-03 13:26:43 tswift Exp $
 ** 
 */
 
@@ -33,7 +33,7 @@
 #define T_TABLED	12 /* both bits may be on if it is known that pred is tabled, but not
 			      yet determined whether it is variant or subsumptive tabled */
 #define T_TABLED_VAR	8 /* Variant tabled (unless T_TABLED_SUB is also on, in which case
-			     it is tabled, but not yet determined which kind. */
+			     it is tabled, but not yet determined which kind.) */
 #define T_TABLED_SUB	4 /* Subsumptive tabled (unless T_TABLED_VAR is also on, ...*/
 #define T_TABLED_SUB_LOADFILE 64 /* Bit in the t_env byte in .xwam (objcode) file symtab 
 				    that is used to set T_TABLED_SUB in the psc.  
@@ -45,8 +45,6 @@
 #define T_SPY		192 // 0xc0 use decimal for Prolog include
 
 /* === type definition: (entry_type) ============================== */
-/* T_FILE is still used in set_current_input and set_current_output in
-   loader_xsb.c At some point, the s*/
 
 #define T_ORDI  0	/* constant-type: no ep definition, may be set later */
 #define T_DYNA	1	/* constant-type: dynamic, code in buffer */

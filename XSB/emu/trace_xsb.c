@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.12 2005/01/14 18:31:37 ruim Exp $
+** $Id: trace_xsb.c,v 1.13 2005/08/01 23:03:30 tswift Exp $
 ** 
 */
 
@@ -43,6 +43,7 @@
 #include "flags_xsb.h"
 #include "heap_xsb.h"
 #include "thread_xsb.h"
+#include "trace_xsb.h"
 
 /*======================================================================*/
 
@@ -202,6 +203,10 @@ void total_stat(CTXTdeclc double elapstime) {
 	 tablespace_alloc - tablespace_used);
   printf("\n");
 
+/* TLS: Max stack stuff is probably not real useful with multiple
+   threads -- to even get it to work correcly you'd have to use locks.
+*/
+#ifndef MT_ENGINE
   if (flags[TRACE_STA]) {
     /* Report Maximum Usages
        --------------------- */
@@ -218,6 +223,7 @@ void total_stat(CTXTdeclc double elapstime) {
 	   maximum_total_tablespace_usage());
     printf("\n");
   }
+#endif
 
   printf("Tabling Operations\n");
   printf("  %u subsumptive call check/insert ops: %u producers, %u variants,\n"
