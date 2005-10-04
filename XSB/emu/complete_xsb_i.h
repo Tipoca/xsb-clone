@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.28 2005-09-30 20:04:26 ruim Exp $
+** $Id: complete_xsb_i.h,v 1.29 2005-10-04 12:13:13 ruim Exp $
 ** 
 */
 
@@ -75,7 +75,7 @@ XSB_Start_Instr(check_complete,_check_complete)
 		break ;
 	}
 
-/*	if( EmptyThreadDepList(&th->TDL) )
+	if( EmptyThreadDepList(&th->TDL) )
 	{	CPtr orig_breg = breg;	
     		batched_compute_wfs(CTXTc cs_ptr, breg, 
 				(VariantSF)tcp_subgoal_ptr(breg));
@@ -88,7 +88,7 @@ XSB_Start_Instr(check_complete,_check_complete)
 		Fail1;
 		XSB_Next_Instr();
 	}
-*/	
+	
 	if( !busy )
 	{	
 
