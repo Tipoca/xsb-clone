@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.30 2005-10-04 11:21:00 ruim Exp $
+** $Id: context.h,v 1.31 2005-10-04 11:48:28 ruim Exp $
 ** 
 */
 
@@ -332,7 +332,6 @@ int reset_thread ;
 int completing ;
 int completed ;
 int last_ans ;
-int may_have_answers ;
 CPtr cc_leader ;
 ThreadDepList TDL ;
 pthread_cond_t cond_var ;
