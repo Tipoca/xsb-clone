@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.19 2005-10-10 19:56:54 tswift Exp $
+** $Id: tc_insts_xsb_i.h,v 1.20 2005-10-10 20:25:14 tswift Exp $
 ** 
 */
 
@@ -601,7 +601,7 @@ XSB_Start_Instr(hash_opcode,_hash_opcode)
 	temp_ptr_for_hash = (CPtr)*reg_arrayptr;
         XSB_CptrDeref(temp_ptr_for_hash);
         if (!isref(temp_ptr_for_hash) 
-	    && (BTHT_BucketArray(hash_header) == NULL)){ 
+	    && (*hash_base == NULL)){ 
             /* Ground call and no variables in hash table */
 	    hash_nonvar_subterm(temp_ptr_for_hash,hash_header,
 				hashed_hash_offset);
