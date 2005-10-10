@@ -19,18 +19,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.31 2005-10-04 11:48:28 ruim Exp $
+** $Id: context.h,v 1.32 2005-10-10 12:28:29 kostis Exp $
 ** 
 */
 
 #ifndef __CONTEXT_H__
-
 #define __CONTEXT_H__
-
 
 #include "cell_def_xsb.h"
 #include "basictypes.h"
-#include "setjmp_xsb.h"
 #include "flag_defs_xsb.h"
 #include "conc_compl.h"
 #include "hashtable_xsb.h"
