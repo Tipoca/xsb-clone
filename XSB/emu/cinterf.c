@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.56 2005-08-17 15:58:20 dwarren Exp $
+** $Id: cinterf.c,v 1.57 2005-10-10 12:29:05 kostis Exp $
 ** 
 */
 
@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <errno.h>
 
 #include "auxlry.h"
