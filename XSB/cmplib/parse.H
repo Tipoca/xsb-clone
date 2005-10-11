@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.30 2005-09-27 16:59:20 kifer Exp $
+** $Id: parse.H,v 1.31 2005-10-11 15:21:04 dwarren Exp $
 ** 
 */
 
@@ -58,6 +58,8 @@
 
 :- import fmt_write_string/3, file_close/1 from file_io.
 :- import file_size/2 from file_io.
+
+:- import standard_symbol/3 from std_xsb.
 
 %%:- import windows_os_loader/0 from loader.
 
