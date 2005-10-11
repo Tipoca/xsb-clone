@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.57 2005-10-10 12:29:05 kostis Exp $
+** $Id: cinterf.c,v 1.58 2005-10-11 15:19:10 dwarren Exp $
 ** 
 */
 
@@ -29,7 +29,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#if !defined(WIN_NT) || defined(CYGWIN)
 #include <unistd.h>
+#endif
 #include <errno.h>
 
 #include "auxlry.h"
