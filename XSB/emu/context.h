@@ -1,5 +1,4 @@
 /* File:      context.h
-** Author(s): Warren, Swift, Xu, Sagonas
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
@@ -19,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.32 2005-10-10 12:28:29 kostis Exp $
+** $Id: context.h,v 1.33 2005-10-12 23:06:26 tswift Exp $
 ** 
 */
 
@@ -28,6 +27,8 @@
 
 #include "cell_def_xsb.h"
 #include "basictypes.h"
+
+#include "setjmp_xsb.h"
 #include "flag_defs_xsb.h"
 #include "conc_compl.h"
 #include "hashtable_xsb.h"

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.94 2005-09-29 15:31:47 dwarren Exp $
+** $Id: biassert.c,v 1.95 2005-10-12 23:06:26 tswift Exp $
 ** 
 */
 
@@ -2553,7 +2553,7 @@ xsbBool db_remove_prref( CTXTdecl /* Psc */ )
 {
   Psc psc = (Psc)ptoc_int(CTXTc 1) ;
 
-  xsb_dbgmsg((LOG_RETRACT_GC, "DEL Prref %p", p ));
+  //  xsb_dbgmsg((LOG_RETRACT_GC, "DEL Prref %p", p )); TLS: p?
 
     SYS_MUTEX_LOCK( MUTEX_DYNAMIC );
     if (get_ep(psc) != ((byte *)(&(psc->load_inst)))) {
