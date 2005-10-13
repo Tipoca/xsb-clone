@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.26 2005-07-24 18:51:39 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.27 2005-10-13 14:25:28 dwarren Exp $
 ** 
 */
 
@@ -537,6 +537,12 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
 }
 
 #ifdef MULTI_THREAD
+
+/* Define own qsort routine when multithreading because it has to pass
+   the thread ID to the compare routine when comparing terms.  The
+   standard system qsort routine, which is used when single threading,
+   does not support such an extra parameter.
+*/
 
 typedef int (*compfptr)(CTXTdeclc const void *, const void *) ;
 
