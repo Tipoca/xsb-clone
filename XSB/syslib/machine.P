@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.77 2005/08/17 16:04:18 dwarren Exp $
+** $Id: machine.P,v 1.78 2005/09/29 15:53:04 dwarren Exp $
 ** 
 */
 
@@ -82,12 +82,14 @@ psc_set_tabled(PSC, Bool) :-
 	 ->	psc_set_env(PSC, Bool, T_TABLED)
 	 ;	true
 	).
-psc_tabled(PSC, Tabled) :- psc_get_env(PSC, Tabled, T_TABLED).
+psc_tabled(PSC, Tabled) :-
+	psc_get_set_env_byte(PSC,255,0,Res), % check if either bit ot T_TABLED is on
+	(Res /\ T_TABLED =\= 0 -> Tabled = 1 ; Tabled = 0).
 
 psc_set_env(PSC,Bool,Mask) :-
 	Or is Bool*Mask, And is \(Mask),
 	psc_get_set_env_byte(PSC,And,Or,_).
-psc_get_env(PSC,Bool,Mask) :-
+psc_get_env(PSC,Bool,Mask) :-	% Checks if all bits of Mask are on
 	psc_get_set_env_byte(PSC,255,0,Res), Bool is (Res /\ Mask) // Mask.
 psc_get_set_env_byte(_PSC, _And, _Or, _Res) :- '_$builtin'(PSC_GET_SET_ENV_BYTE).
 
