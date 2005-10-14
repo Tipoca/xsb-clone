@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.226 2005-10-03 13:26:43 tswift Exp $
+** $Id: builtin.c,v 1.227 2005-10-14 13:24:36 dwarren Exp $
 ** 
 */
 
@@ -1440,10 +1440,16 @@ int builtin_call(CTXTdeclc byte number)
     return string_substitute(CTXT);
   case STR_LEN:	{	/* R1: +String; R2: -Length */
     Cell term = ptoc_tag(CTXTc 1);
+    Cell num = ptoc_tag(CTXTc 2);
     if (isstring(term)) {
       char *addr = string_val(term);
-      return int_unify(CTXTc makeint(strlen(addr)), ptoc_tag(CTXTc 2));
-    } else return FALSE;
+      if (isref(num) || (isinteger(num) && int_val(num) >= 0))
+	return int_unify(CTXTc makeint(strlen(addr)), num);
+      else if (!isinteger(num)) xsb_type_error(CTXTc "integer",num,"atom_length",2,2);
+      else xsb_domain_error(CTXTc "not_less_than_zero",num,"atom_length",2,2);
+    } else if (isref(term)) xsb_instantiation_error(CTXTc "atom_length",2,1,NULL);
+      else xsb_type_error(CTXTc "atom",term,"atom_length",2,1);
+    return FALSE;
   }
   case STR_CAT:		/* R1: +Str1; R2: +Str2: R3: -Str3 */
     return str_cat(CTXT);
