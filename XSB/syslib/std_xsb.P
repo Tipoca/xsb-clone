@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.82 2004/12/29 16:40:25 dwarren Exp $
+** $Id: std_xsb.P,v 1.83 2005/08/08 17:10:36 dwarren Exp $
 ** 
 */
 
@@ -59,6 +59,7 @@ standard_symbol(at_end_of_stream,1,file_io).                        % ISO
 standard_symbol(atom, 1, standard).                               % ISO
 standard_symbol(atom_concat, 3, standard).                   % ISO
 standard_symbol(atomic, 1, standard).                            % ISO
+standard_symbol(atom_length, 2, standard).                     % ISO
 standard_symbol(atom_chars, 2, standard).                     % ISO
 standard_symbol(atom_codes, 2, standard).                    % ISO
 standard_symbol(bagof, 3, setof).			% ISO
