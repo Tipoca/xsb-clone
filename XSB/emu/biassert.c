@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.96 2005-10-18 20:12:53 dwarren Exp $
+** $Id: biassert.c,v 1.97 2005-10-18 20:37:16 dwarren Exp $
 ** 
 */
 
@@ -2623,7 +2623,6 @@ static int another_buff(Cell Instr)
 void retractall_prref(CTXTdeclc PrRef prref) {
   int btop = 0;
   ClRef buffer;
-  ClRef frstbuff;
   ClRef buffers_to_free[MAXDYNFREEBUFF];
 
   if (prref && (cell_opcode((CPtr)prref) != fail)) {
@@ -2632,8 +2631,7 @@ void retractall_prref(CTXTdeclc PrRef prref) {
       return;
     }
     force_retract_buffers(CTXT);
-    frstbuff = prref->FirstClRef;
-    buffers_to_free[btop++] = frstbuff;
+    buffers_to_free[btop++] = prref->FirstClRef;
     while (btop > 0) {
       if (btop >= MAXDYNFREEBUFF) xsb_exit("Too many buffers to retract");
       buffer = buffers_to_free[--btop];
