@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.97 2005-10-18 20:37:16 dwarren Exp $
+** $Id: biassert.c,v 1.98 2005-10-20 13:49:07 dwarren Exp $
 ** 
 */
 
@@ -2631,6 +2631,7 @@ void retractall_prref(CTXTdeclc PrRef prref) {
       return;
     }
     force_retract_buffers(CTXT);
+    if (cell_opcode((CPtr)prref) == fail) return; /* if freeing buffered clauses empties it */
     buffers_to_free[btop++] = prref->FirstClRef;
     while (btop > 0) {
       if (btop >= MAXDYNFREEBUFF) xsb_exit("Too many buffers to retract");
