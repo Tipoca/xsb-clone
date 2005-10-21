@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.227 2005-10-14 13:24:36 dwarren Exp $
+** $Id: builtin.c,v 1.228 2005-10-21 21:23:15 crojo Exp $
 ** 
 */
 
@@ -1202,8 +1202,20 @@ int builtin_call(CTXTdeclc byte number)
   case TERM_TYPE: {	/* R1: +term; R2: tag (-int)			  */
 			/* <0 - var, 1 - cs, 2 - int, 3 - list, 7 - ATTV> */
     Cell term = ptoc_tag(CTXTc 1);
-    if (isref(term)) ctop_int(CTXTc 2, 0);
-    else ctop_int(CTXTc 2, cell_tag(term));
+    if (isref(term)) {
+        ctop_int(CTXTc 2, XSB_FREE);
+    }
+    else {
+        if (isboxedinteger(term)) {
+            ctop_int(CTXTc 2, XSB_INT);
+            break;
+        }
+        if (isboxedfloat(term)) {
+            ctop_int(CTXTc 2, XSB_FLOAT);
+            break;
+        }
+        ctop_int(CTXTc 2, cell_tag(term));
+    }
     break;
   }
   case TERM_COMPARE:	/* R1, R2: +term; R3: res (-int) */
