@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.50 2005/09/30 20:04:26 ruim Exp $
+** $Id: slginsts_xsb_i.h,v 1.51 2005/10/03 13:26:43 tswift Exp $
 ** 
 */
 
@@ -305,7 +305,8 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       if (attv_num > 0) {
 	CPtr cptr;
 	for (cptr = answer_template - 1;
-	     cptr >= answer_template + template_size; cptr++) {
+	     cptr >= answer_template - template_size; cptr--) {
+	  // tls changed from 10/05   cptr >= answer_template + template_size; cptr++) 
 	  if (isattv(cell(cptr)))
 	    var_regs[++num_vars_in_var_regs] = (CPtr) cell(cptr);
 	}
