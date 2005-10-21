@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.23 2005-10-03 13:26:44 tswift Exp $
+** $Id: trie_internals.h,v 1.24 2005-10-21 17:47:52 tswift Exp $
 ** 
 */
 
@@ -108,10 +108,12 @@
    case XSB_TrieVar:						\
      if (IsNewTrieVar(Symbol))					\
        TN_Instr(pTN) = (byte)trie_try_var;			\
-     else if (IsNewTrieAttv(Symbol))				\
+     else if (IsNewTrieAttv(Symbol)) {				\
        TN_Instr(pTN) = (byte)trie_try_attv;			\
-     else							\
+     } \
+     else {							\
        TN_Instr(pTN) = (byte)trie_try_val;			\
+     } \
      break;							\
    case XSB_LIST:						\
      TN_Instr(pTN) = (byte)trie_try_list;			\

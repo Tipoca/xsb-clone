@@ -19,23 +19,24 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: deref.h,v 1.7 2005-01-14 18:30:55 ruim Exp $
+** $Id: deref.h,v 1.8 2005-10-21 17:47:52 tswift Exp $
 ** 
 */
 
 #ifndef __DEREF_H__
 #define __DEREF_H__
 
-/* deref expects argument of type Cell */
+/* TLS: Bao changed these derefs to handle attributed variables, since
+ *  a reference chain can, in principle, have a chain of var pointers
+ *  followed by a chain of attv pointers, ending in a free variable.
+ *  Actually, the code here is somewhat more general, and allows more
+ *  intermixture of attv and var pointers.  So I may be wrong or the
+ *  code may be a little more general than it needs to be.
+ * 
+ *  XSB_Deref(op) is the same as XSB_CptrDeref(op) except that
+ *  XSB_CptrDeref(op) performs an explicit cast of op to a CPtr.  */
 
 #define XSB_Deref(op) XSB_Deref2(op,break)
-
-/*
-#define XSB_Deref2(op,stat) while (isref(op)) { \
-                    if (op == follow(op)) \
-                        stat; \
-                    op = follow(op); }
-*/
 
 /* XSB_Deref2 is changed to consider attributed variables */
 #define XSB_Deref2(op, stat) {				\
@@ -57,13 +58,6 @@
     }							\
   }							\
 }
-
-/*
-#define XSB_CptrDeref(op) while (isref(op)) { \
-			 if (op == (CPtr) cell(op)) \
-  			     break; \
-			 op = (CPtr) cell(op); }
-*/
 
 #define XSB_CptrDeref(op) {				\
   while (isref(op)) {					\

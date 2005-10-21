@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.22 2005-10-03 13:26:43 tswift Exp $
+** $Id: auxlry.h,v 1.23 2005-10-21 17:47:52 tswift Exp $
 ** 
 */
 
@@ -70,3 +70,5 @@ extern char *xsb_segfault_message;
 	xsb_abort("Invalid file descriptor %d in I/O predicate", xsb_filedes);
 
 #endif /* __AUXLRY_H__ */
+
+extern void gdb_duymmy(void);

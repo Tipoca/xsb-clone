@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.18 2003-09-11 14:23:34 dwarren Exp $
+** $Id: auxlry.c,v 1.19 2005-10-21 17:47:52 tswift Exp $
 ** 
 */
 
@@ -157,3 +157,10 @@ double real_time(void)
 }
 
 /*----------------------------------------------------------------------*/
+
+/* My version of gdb gets confused when I set a breakpoint in include
+   files within emuloop.  Thus the use of gdb_dummy() */
+
+void gdb_dummy(void) 
+  {
+  }

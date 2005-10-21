@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.20 2005-10-10 20:25:14 tswift Exp $
+** $Id: tc_insts_xsb_i.h,v 1.21 2005-10-21 17:47:52 tswift Exp $
 ** 
 */
 
@@ -339,7 +339,8 @@ XSB_Start_Instr(trie_no_cp_val,_trie_no_cp_val)
     cell2deref = (Cell) var_regs[(int)int_val(opatom)];			
     XSB_Deref(cell2deref);     						
     if (*reg_arrayptr != cell2deref) {					
-      /* Do not trigger attv interrupt! */				
+      /* Do not trigger attv interrupt! */			      
+      
       bind_ref(clref_val(*reg_arrayptr), cell2deref);			
     }									
     else {								
