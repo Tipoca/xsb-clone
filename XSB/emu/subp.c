@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.88 2005/08/20 06:50:27 ruim Exp $
+** $Id: subp.c,v 1.89 2005/10/03 13:26:43 tswift Exp $
 ** 
 */
 
@@ -81,8 +81,6 @@
 extern xsbBool quotes_are_needed(char *string);
 
 /*======================================================================*/
-
-/* attv_dbgmsg() is used in unify_xsb_i.h */
 
 #undef IFTHEN_FAILED
 #define IFTHEN_FAILED	return 0
@@ -184,7 +182,7 @@ xsbBool unify(CTXTdeclc Cell rop1, Cell rop2)
 
 /*----------------------------------------*/
   unify_xsb(unify);
-  /* unify_xsb_i already ends with this statement
+  /* unify_xsb.h already ends with this statement
      IFTHEN_SUCCEED;
   */
 /*----------------------------------------*/
@@ -835,8 +833,7 @@ xsbBool startProfileThread()
   struct sched_param param;
 
   if (!if_profiling) {
-    int result = pthread_create( &a_thread, NULL, (void*)&setProfileBit, 
-               (void*)NULL);
+    pthread_create(&a_thread, NULL, (void*)&setProfileBit, (void*)NULL);
     param.sched_priority = sched_get_priority_max(SCHED_OTHER);
     pthread_setschedparam(a_thread, SCHED_OTHER, &param);
 
