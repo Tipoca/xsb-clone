@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.73 2005-10-28 21:50:29 tswift Exp $
+** $Id: tries.c,v 1.74 2005-10-29 00:04:46 tswift Exp $
 ** 
 */
 
@@ -1095,7 +1095,29 @@ BTNptr delay_chk_insert(CTXTdeclc int arity, CPtr cptr, CPtr *hook)
         }
         recvariant_trie(flag,DELAY_TRIE_TT);
         break;
-        default:
+      case XSB_ATTV:
+	//	/* Now xtemp1 can only be the first occurrence of an attv */
+	//	*(hreg++) = (Cell) xtemp1;
+	xtemp1 = clref_val(xtemp1); /* the VAR part of the attv */
+	/*
+	 * Bind the VAR part of this attv to VarEnumerator[ctr], so all the
+	 * later occurrences of this attv will look like a regular variable
+	 * (after dereferencing).
+	 */
+	if (! IsStandardizedVariable(xtemp1)) {
+	  StandardizeAndTrailVariable(xtemp1, ctr);	
+	  one_node_chk_ins(flag, EncodeNewTrieAttv(ctr), DELAY_TRIE_TT);
+          ctr++; attv_ctr++;
+        }
+        else {
+          one_node_chk_ins(flag,
+			   EncodeTrieVar(IndexOfStdVar(xtemp1)),
+			   DELAY_TRIE_TT);
+        }
+	pdlpush(cell(xtemp1+1));	/* the ATTR part of the attv */
+	recvariant_trie(flag, DELAY_TRIE_TT);
+	break;
+      default:
           xsb_abort("Bad type tag in delay_chk_insert()\n");
         }
     }
