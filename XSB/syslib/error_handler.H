@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.17 2004/09/28 17:24:42 tswift Exp $
+** $Id: error_handler.H,v 1.18 2004/12/10 21:45:40 tswift Exp $
 ** 
 */
 
@@ -35,11 +35,12 @@
               check_number/3,
               check_var/3, 
               default_error_handler/1,
-	  default_sys_error_handler/1,
+	      default_sys_error_handler/1,
               get_sys_error_description/2,
               get_sys_error_description/3,
               print_backtrace/1,
-              get_backtrace/2.
+	      get_backtrace/2,
+	      get_backtrace_list/2.
 
 :- import (dynamic)/1 from assert.
  :- import ground/1 from basics.

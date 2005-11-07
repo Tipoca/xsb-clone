@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.78 2005/09/29 15:53:04 dwarren Exp $
+** $Id: machine.P,v 1.79 2005/10/14 15:58:39 dwarren Exp $
 ** 
 */
 
@@ -126,6 +126,7 @@ call0(Term) :- call0(Term).
 stat_sta(X) :- stat_sta(X).
 stat_cputime(X) :- stat_cputime(X).
 stat_walltime(X) :- stat_walltime(X).
+xwam_state(_Code,_Val) :- '_$builtin'(XWAM_STATE).  /* maybe make it inline for some values?*/
 code_load(ByteCodeFileName, InitAddr, Exp) :-
 	code_load(ByteCodeFileName, InitAddr, Exp).
 buff_set_var(Buff, Disp, BuffSize, Var) :-

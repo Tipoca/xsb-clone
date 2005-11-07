@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.70 2005/08/17 16:04:18 dwarren Exp $
+** $Id: machine.H,v 1.71 2005/09/29 15:53:04 dwarren Exp $
 ** 
 */
 
@@ -55,6 +55,7 @@
 	stat_flag/2, 
 	stat_set_flag/2, 
 	stat_sta/1,
+	xwam_state/2,
 	buff_alloc/2, 
 	buff_word/3, 
 	buff_set_word/3,
