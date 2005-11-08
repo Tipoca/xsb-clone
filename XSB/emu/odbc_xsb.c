@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.50 2005-07-26 22:46:23 crojo Exp $
+** $Id: odbc_xsb.c,v 1.51 2005-11-08 02:13:15 tswift Exp $
 **
 */
 
@@ -944,7 +944,7 @@ void Parse(CTXTdecl)
       switch (cur->BindTypes[j]) {
       case 2:
 	rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_CHAR,
-			      SQL_CHAR, 0, 0,(char *) cur->BindList[j], 0, &SQL_NTSval);
+			      SQL_CHAR, strlen((char *)cur->BindList[j]) + 1, 0,(char *) cur->BindList[j], 0, &SQL_NTSval);
 	break;
       case 3:
 	rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_CHAR,
@@ -973,7 +973,7 @@ void Parse(CTXTdecl)
       case 2:
 	/* we're sloppy here.  it's ok for us to use the default values*/
 	rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_CHAR,
-			      SQL_CHAR, 0, 0,(char *)cur->BindList[j], 0, &SQL_NTSval);
+			      SQL_CHAR, strlen((char *)cur->BindList[j]) + 1, 0,(char *)cur->BindList[j], 0, &SQL_NTSval);
 	break;
       case 3:
 	rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_CHAR,
