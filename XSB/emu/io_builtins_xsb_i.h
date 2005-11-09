@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.37 2005-08-19 16:24:10 ruim Exp $
+** $Id: io_builtins_xsb_i.h,v 1.38 2005-11-09 17:52:27 dwarren Exp $
 ** 
 */
 
@@ -45,8 +45,9 @@ extern int xsb_intern_fileptr(FILE *, char *, char *, char *);
 
 static FILE *stropen(char *str)
 {
-  int i;
+  int i, len;
   STRFILE *tmp;
+  char *stringbuff;
 
   for (i=0; i<MAXIOSTRS; i++) {
     if (iostrs[i] == NULL) break;
@@ -54,17 +55,25 @@ static FILE *stropen(char *str)
   if (i>=MAXIOSTRS) return FALSE;
   tmp = (STRFILE *)mem_alloc(sizeof(STRFILE));
   iostrs[i] = tmp;
-  tmp->strcnt = strlen(str);
-  tmp->strptr = str;
-  tmp->strbase = str;
+  len = strlen(str);
+  // new copy is needed in case string came from concatenated longstring
+  stringbuff = (char *)mem_alloc(len+1);
+  strcpy(stringbuff,str);
+
+  tmp->strcnt = len;
+  tmp->strptr = stringbuff;
+  tmp->strbase = stringbuff;
   return (FILE *)iostrdecode(i);
 }
 
 static void strclose(int i)
 {
   i = iostrdecode(i);
-  mem_dealloc((byte *)iostrs[i],sizeof(STRFILE));
-  iostrs[i] = NULL;
+  if (iostrs[i] != NULL) {
+    mem_dealloc(iostrs[i]->strbase,iostrs[i]->strcnt+1);
+    mem_dealloc((byte *)iostrs[i],sizeof(STRFILE));
+    iostrs[i] = NULL;
+  }
 }
 
 /* TLS: these are ports, rather than file descriptors, therefore using
