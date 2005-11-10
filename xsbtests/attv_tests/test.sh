@@ -21,4 +21,4 @@ opts=$2
 ../gentest.sh "$XEMU $opts" assert_attv "test."
 ../gentest.sh "$XEMU $opts" ret_attv "test."
 ../gentest.sh "$XEMU $opts" fd1 "test."
-#../gentest.sh "$XEMU $opts" general "test."
+../gentest.sh "$XEMU $opts" general "test."

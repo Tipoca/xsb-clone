@@ -5,6 +5,14 @@
 :- import get_attr/3, put_attr/3 from machine.
 :- import stat_set_flag/2 from machine.
 
+/* 
+attv call / const success: test1 ; 1a has aliasing
+attv call / attv success (aliasing) test2
+var call / attv success test3
+attv call / attv success (multiple table calls): test4
+
+*/
+
 test:- 
 	test1,test1t,
 	test1ta,
@@ -66,7 +74,6 @@ p2t(X):- put_attr(Y,fd,[2,3,4]), X = Y.
 
 %----------------
 % tests unify_with_trie_attv
-
 test3t:- 
 	p3(X),
 	get_attr(X,fd,Atts),
