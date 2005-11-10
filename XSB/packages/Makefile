@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.30 2004-09-22 02:41:05 kifer Exp $
+## $Id: Makefile,v 1.31 2005-11-10 19:18:09 pgiri Exp $
 ## 
 ##
 
@@ -27,10 +27,10 @@ OBJEXT=.xwam
 ALL = 	slx${OBJEXT} perlmatch${OBJEXT} gap${OBJEXT} \
 	regmatch${OBJEXT} wildmatch${OBJEXT} \
 	xasp${OBJEXT} libwww${OBJEXT} xsbdoc${OBJEXT} \
-	xmc${OBJEXT} iprolog${OBJEXT}
+	xmc${OBJEXT} justify${OBJEXT}
 
-SUBDIR = iprolog flora2 slx perlmatch gap regmatch wildmatch libwww xasp \
-	 xsbdoc xmc iprolog
+SUBDIR = flora2 slx perlmatch gap regmatch wildmatch libwww xasp \
+	 xsbdoc xmc justify
 
 Option = [optimize]
 
@@ -112,6 +112,10 @@ wildmatch::
 xmc::
 	@echo ""
 	cd xmc; make
+
+justify::
+	@echo ""
+	cd justify; make
 
 init:
 	/bin/rm -f $(SVFILE)
