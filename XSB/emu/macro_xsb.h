@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.34 2005-10-03 13:26:43 tswift Exp $
+** $Id: macro_xsb.h,v 1.35 2005-11-10 16:42:24 dwarren Exp $
 ** 
 */
 
@@ -61,7 +61,7 @@ typedef struct Deleted_Table_Frame {
 #define DTF_PrevPredDTF(pDTF)	   ( (pDTF)->next_pred_delTF )
 
 #define New_DelTF(pDTF,pTIF) {						\
-   pDTF = (DelTFptr)mem_alloc(sizeof(DeletedTableFrame));			\
+   pDTF = (DelTFptr)mem_alloc(sizeof(DeletedTableFrame));		\
    if ( IsNULL(pDTF) )							\
      xsb_abort("Ran out of memory in allocation of DeletedTableFrame");	\
    DTF_CallTrie(pDTF) = TIF_CallTrie(pTIF);				\
@@ -95,7 +95,7 @@ typedef struct Deleted_Table_Frame {
   if (DTF_NextPredDTF(pDTF) != 0) {					\
     DTF_PrevPredDTF(DTF_NextPredDTF(pDTF)) = DTF_PrevPredDTF(pDTF);	\
   }									\
-  free(pDTF);								\
+  mem_dealloc(pDTF,sizeof(DeletedTableFrame));				\
 }
 
 /*===========================================================================*/
