@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.11 2005-08-28 16:42:28 ruim Exp $
+** $Id: complete_local.h,v 1.12 2005-11-10 23:05:55 tswift Exp $
 ** 
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -27,6 +27,9 @@
 #ifdef LOCAL_EVAL
 void makeConsumerFromGenerator(CTXTdeclc VariantSF producer_sf)
 {
+  xsb_dbgmsg((LOG_COMPLETION,
+	      "Transforming %x from a generator to consumer (prev %x)\n",
+	      breg,nlcp_prevbreg(breg)));
   nlcp_trie_return(breg) = subg_ans_list_ptr(producer_sf);
   nlcp_pcreg(breg) = (pb) &answer_return_inst;
   nlcp_prevlookup(breg) = subg_asf_list_ptr(producer_sf);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.59 2005-11-09 17:52:27 dwarren Exp $
+** $Id: cinterf.c,v 1.60 2005-11-10 23:05:55 tswift Exp $
 ** 
 */
 
@@ -1209,9 +1209,7 @@ if (!xsb_initted)
 	
 	if (0 == (rc = xsb(CTXTc 0,argc,argv)))     /* initialize xsb */
 		{
-		  printf("xsb-initted\n");
 		if (0 == (rc = xsb(CTXTc 1,0,0)))       /* enter xsb to set up regs */
-		  printf("xsb-regs set\n");
 		xsb_initted = 1;
 		}
 	}
