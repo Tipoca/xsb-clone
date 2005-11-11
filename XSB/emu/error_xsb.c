@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.40 2005-11-10 16:42:24 dwarren Exp $
+** $Id: error_xsb.c,v 1.41 2005-11-11 21:24:30 tswift Exp $
 ** 
 */
 
@@ -265,9 +265,11 @@ void call_conv xsb_basic_abort(char *message)
 
   tptr =   (Cell *) malloc(10*sizeof(Cell));
   ball_to_throw = makecs(tptr);
-  bld_functor(tptr, pair_psc(insert("_$abort_ball",2,
+  bld_functor(tptr, pair_psc(insert("error",3,
 				    (Psc)flags[CURRENT_MODULE],&isnew)));
 
+  tptr++;
+  bld_string(tptr,string_find("misc_error",1));
   tptr++;
 #ifdef MULTI_THREAD
   sprintf(mtmessage,"[th %d] %s",tid,message);

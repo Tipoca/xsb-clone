@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.89 2005/10/03 13:26:43 tswift Exp $
+** $Id: subp.c,v 1.90 2005/10/28 10:27:34 kostis Exp $
 ** 
 */
 
@@ -733,10 +733,8 @@ void print_op(FILE *file, char *string, int pos)
 
 void remove_incomplete_tables_reset_freezes(CTXTdecl)
 {
-  if (xwammode) {
     remove_incomplete_tables();
     reset_freeze_registers;
-  }
 }
 
 /* ----- C level exception handlers ----------------------------------- */
