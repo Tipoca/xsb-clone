@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.230 2005-11-10 23:05:54 tswift Exp $
+** $Id: builtin.c,v 1.231 2005-11-12 15:48:49 dwarren Exp $
 ** 
 */
 
@@ -2741,11 +2741,13 @@ void add_to_profile_count_table(Psc apsc, int count) {
     if (psc_profile_count_table == NULL) {
       psc_profile_count_max = initial_psc_profile_count_size;
       psc_profile_count_table = (psc_profile_count *)
-	malloc(psc_profile_count_max*sizeof(psc_profile_count));
+	mem_alloc(psc_profile_count_max*sizeof(psc_profile_count));
     } else {
       psc_profile_count_max = 2*psc_profile_count_max;
       psc_profile_count_table = (psc_profile_count *)
-	realloc(psc_profile_count_table,psc_profile_count_max*sizeof(psc_profile_count));
+	mem_realloc(psc_profile_count_table,
+		    (psc_profile_count_max/2)*sizeof(psc_profile_count),
+		    psc_profile_count_max*sizeof(psc_profile_count));
     }
   }
   for (i=0; i<psc_profile_count_num; i++)

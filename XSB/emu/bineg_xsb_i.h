@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.24 2005-09-30 20:04:26 ruim Exp $
+** $Id: bineg_xsb_i.h,v 1.25 2005-11-12 15:48:49 dwarren Exp $
 ** 
 */
 
@@ -239,7 +239,7 @@ case IS_INCOMPLETE: {
 	   * answer for the head predicate.
 	   */
 	  int i;
-	  copy_of_var_addr = (CPtr *)calloc(var_addr_arraysz, sizeof(CPtr));
+	  copy_of_var_addr = (CPtr *)mem_calloc(var_addr_arraysz, sizeof(CPtr));
 	  if(copy_of_var_addr == NULL){
 	    xsb_exit("No enough memory to calloc copy_of_var_addr!\nBye");
 	  }
@@ -275,7 +275,7 @@ case IS_INCOMPLETE: {
 	  }
 	}
 	bind_nil(dls_tail);
-	free(copy_of_var_addr);
+	mem_dealloc(copy_of_var_addr,var_addr_arraysz*sizeof(CPtr));
       } else {
 	bind_nil((CPtr)delay_lists);
       }

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: main_xsb.c,v 1.8 2005-07-18 21:54:11 crojo Exp $
+** $Id: main_xsb.c,v 1.9 2005-11-12 15:48:50 dwarren Exp $
 ** 
 */
 
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 #endif
 
 #ifdef MULTI_THREAD
-     th = malloc( sizeof( th_context ) ) ;
+  th = malloc( sizeof( th_context ) ) ;  /* don't use mem_alloc */
 #endif
 
   xsb(CTXTc 0, argc, argv);  /* init xsb */

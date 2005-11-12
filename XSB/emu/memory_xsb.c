@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.18 2005-08-19 16:24:10 ruim Exp $
+** $Id: memory_xsb.c,v 1.19 2005-11-12 15:48:50 dwarren Exp $
 ** 
 */
 
@@ -96,6 +96,42 @@ byte *mem_alloc(unsigned long size)
 #endif
     SYS_MUTEX_UNLOCK(MUTEX_MEM);
     return ptr;
+}
+
+
+/* === calloc permanent memory ============================================= */
+
+byte *mem_calloc(unsigned long size, unsigned long occs)
+{
+    byte * ptr;
+    unsigned long length = (size*occs+7) & ~0x7;
+
+    SYS_MUTEX_LOCK(MUTEX_MEM);
+    pspacesize += length;
+    ptr = (byte *) calloc(size,occs);
+#if defined(GENERAL_TAGGING)
+    //    printf("mem_calloc %x %x\n",ptr,ptr+length);
+    extend_enc_dec_as_nec(ptr,ptr+length);
+#endif
+    SYS_MUTEX_UNLOCK(MUTEX_MEM);
+    return ptr;
+}
+
+
+/* === realloc permanent memory ============================================ */
+
+byte *mem_realloc(void *addr, unsigned long oldsize, unsigned long newsize)
+{
+    newsize = (newsize+7) & ~0x7 ;	      /* round to 8 */
+    oldsize = (oldsize+7) & ~0x7 ;	      /* round to 8 */
+    SYS_MUTEX_LOCK(MUTEX_MEM);
+    pspacesize = pspacesize - oldsize + newsize;
+    addr = (byte *) realloc(addr,newsize);
+#if defined(GENERAL_TAGGING)
+    extend_enc_dec_as_nec(addr,addr+newsize);
+#endif
+    SYS_MUTEX_UNLOCK(MUTEX_MEM);
+    return addr;
 }
 
 

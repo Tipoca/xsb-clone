@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.24 2005-10-21 17:47:52 tswift Exp $
+** $Id: trie_internals.h,v 1.25 2005-11-12 15:48:51 dwarren Exp $
 ** 
 */
 
@@ -646,7 +646,7 @@ typedef struct Basic_Trie_HashTable {
    BTHT_NumContents(((BTHTptr)btht)) = MAX_SIBLING_LEN + 1;		\
    BTHT_NumBuckets(((BTHTptr)btht)) = TrieHT_INIT_SIZE;			\
    BTHT_BucketArray(((BTHTptr)btht)) =					\
-     (BTNptr *)calloc(TrieHT_INIT_SIZE, sizeof(void *));		\
+     (BTNptr *)mem_calloc(TrieHT_INIT_SIZE, sizeof(void *));		\
    if ( IsNonNULL(BTHT_BucketArray(((BTHTptr)btht))) )			\
      TrieHT_AddNewToAllocList(SM,((BTHTptr)btht))			\
    else {								\
@@ -675,7 +675,7 @@ extern void expand_trie_ht(BTHTptr);
 								\
    for ( pBTHT = (BTHTptr)SM_AllocList(SM);  IsNonNULL(pBTHT);	\
 	 pBTHT = (BTHTptr)BTHT_NextBTHT(pBTHT) )		\
-     free(BTHT_BucketArray(pBTHT));				\
+     mem_dealloc(BTHT_BucketArray(pBTHT),BTHT_NumBuckets(pBTHT)*sizeof(void *)); \
  }
 
 /* Allocating Headers

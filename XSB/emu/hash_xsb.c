@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.8 2004-12-10 22:03:49 tswift Exp $
+** $Id: hash_xsb.c,v 1.9 2005-11-12 15:48:50 dwarren Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@
 #include "hash_xsb.h"
 #include "psc_xsb.h"
 #include "flags_xsb.h"
+#include "memory_xsb.h"
 
 
 /*
@@ -144,7 +145,7 @@ void expand_symbol_table() {
   unsigned long index, new_size, new_index;
 
   new_size = next_prime(symbol_table.size);
-  new_table = (Pair *)calloc(new_size, sizeof(void *));
+  new_table = (Pair *)mem_calloc(new_size, sizeof(void *));
 
   for (bucket_ptr = (Pair *)symbol_table.table, index = 0;
        index < symbol_table.size;  bucket_ptr++, index++)
@@ -157,7 +158,7 @@ void expand_symbol_table() {
       new_table[new_index] = cur_pair;
     }
 
-  free((void *)symbol_table.table);
+  mem_dealloc((void *)symbol_table.table,symbol_table.size);
   symbol_table.size = new_size;
   symbol_table.table = (void **)new_table;
 }
@@ -179,7 +180,7 @@ void expand_string_table() {
   unsigned long index, new_size, new_index;
 
   new_size = next_prime(string_table.size);
-  new_table = (void **)calloc(new_size, sizeof(void *));
+  new_table = (void **)mem_calloc(new_size, sizeof(void *));
 
   for (bucket_ptr = string_table.table, index = 0;
        index < string_table.size;
@@ -194,7 +195,7 @@ void expand_string_table() {
       new_table[new_index] = (void *)cur_entry;
     }
 
-  free((void *)string_table.table);
+  mem_dealloc((void *)string_table.table,string_table.size);
   string_table.size = new_size;
   string_table.table = new_table;
 }

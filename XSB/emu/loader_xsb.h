@@ -19,13 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.h,v 1.6 2005-08-20 06:50:27 ruim Exp $
+** $Id: loader_xsb.h,v 1.7 2005-11-12 15:48:50 dwarren Exp $
 ** 
 */
 
 #include "context.h"
 
-#define REL_TAB_SIZE      32768
 #define FOREIGN_NAMELEN   128
 #define SHORT_LDOPTIONLEN 254
 

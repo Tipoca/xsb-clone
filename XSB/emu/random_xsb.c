@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random_xsb.c,v 1.8 2005-07-11 19:47:20 dwarren Exp $
+** $Id: random_xsb.c,v 1.9 2005-11-12 15:48:51 dwarren Exp $
 ** 
 */
 
@@ -48,6 +48,7 @@
 #include "ptoc_tag_xsb_i.h"
 #include "error_xsb.h"
 #include "context.h"
+#include "memory_xsb.h"
 
 #ifndef MULTI_THREAD
 struct random_seeds_t *random_seeds = 0;
@@ -56,7 +57,7 @@ struct random_seeds_t *random_seeds = 0;
 struct random_seeds_t *init_random_seeds() {
 
   struct random_seeds_t *seeds;
-  seeds = (struct random_seeds_t *)malloc(sizeof(struct random_seeds_t));
+  seeds = (struct random_seeds_t *)mem_alloc(sizeof(struct random_seeds_t));
   if (!seeds) xsb_abort("No space for random seeds!!");
   seeds->IX = 6293;
   seeds->IY = 21877;

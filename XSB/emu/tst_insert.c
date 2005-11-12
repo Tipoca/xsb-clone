@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_insert.c,v 1.17 2005-01-14 18:31:39 ruim Exp $
+** $Id: tst_insert.c,v 1.18 2005-11-12 15:48:51 dwarren Exp $
 ** 
 */
 
@@ -42,6 +42,7 @@
 #include "trie_internals.h"
 #include "tst_aux.h"
 #include "thread_xsb.h"
+#include "memory_xsb.h"
 
 
 

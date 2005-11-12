@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hashtable_xsb.c,v 1.7 2005-09-16 00:56:41 tswift Exp $
+** $Id: hashtable_xsb.c,v 1.8 2005-11-12 15:48:50 dwarren Exp $
 ** 
 */
 
@@ -41,6 +41,7 @@
 #include "tr_utils.h"
 #include "debug_xsb.h"
 #include "flags_xsb.h"
+#include "memory_xsb.h"
 
 /*
   A simple hashtable.
@@ -84,7 +85,8 @@ xsbBucket *search_bucket(Cell name,
 	  if (bucket) {
 	    /* use memcpy() because client bucket might have extra fields */
 	    memcpy(prev, bucket, table->bucket_size);
-	    free(bucket);
+	    mem_dealloc(bucket,table->bucket_size);
+	    //printf("dealloc bucket size: %d\n",table->bucket_size);
 	  } else {
 	    mark_bucket_free(prev,table->bucket_size);
 	    xsb_dbgmsg((LOG_HASHTABLE,
@@ -97,7 +99,8 @@ xsbBucket *search_bucket(Cell name,
 	} else {
 	  /* Not top bucket: rearrange pointers & free space */
 	  prev->next = bucket->next;
-	  free(bucket);
+	  mem_dealloc(bucket,table->bucket_size);
+	  //printf("dealloc bucket size: %d\n",table->bucket_size);
 	}
 	return NULL;
       } else
@@ -111,7 +114,8 @@ xsbBucket *search_bucket(Cell name,
   /* else create new bucket */
   /* calloc nullifies the allocated space; CLIENTS RELY ON THIS */
   if (!bucket) { /* i.e., it is not a top bucket */
-    bucket = (xsbBucket *)calloc(1,table->bucket_size);
+    bucket = (xsbBucket *)mem_calloc(1,table->bucket_size);
+    //printf("calloc bucket, size: %d\n",table->bucket_size);
     if (!bucket)
       xsb_exit("Out of Memory: Can't allocate hash bucket");
     prev->next = bucket;
@@ -125,7 +129,8 @@ xsbBucket *search_bucket(Cell name,
 static void init_hashtable(xsbHashTable *table)
 {
   /* calloc zeroes the allocated space; clients rely on this */
-  table->table = (byte *)calloc(table->length,table->bucket_size);
+  table->table = (byte *)mem_calloc(table->length,table->bucket_size);
+  //printf("calloc table, size: %d\n",table->length*table->bucket_size);
   if (!table->table)
     xsb_exit("Out of Memory: Can't create hash table");
   table->initted = TRUE;
@@ -142,11 +147,14 @@ void destroy_hashtable(xsbHashTable *table)
     bucket=get_top_bucket(table,i)->next;
     while (bucket != NULL) {
       next = bucket->next;
-      free(bucket);
+      mem_dealloc(bucket,table->bucket_size);
+      //printf("dealloc bucket size: %d\n",table->bucket_size);
       bucket = next;
     }
   }
-  free(table->table);
+  mem_dealloc(table->table,table->length*table->bucket_size);
+  //printf("dealloc table size: %d\n",table->length*table->bucket_size);
+
 }
 
 

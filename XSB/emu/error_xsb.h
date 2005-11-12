@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.18 2005-10-14 13:24:37 dwarren Exp $
+** $Id: error_xsb.h,v 1.19 2005-11-12 15:48:50 dwarren Exp $
 ** 
 */
 
@@ -128,6 +128,6 @@ xsbBool assert_buff_to_clref_p(CTXTdeclc prolog_term, byte, PrRef, int,
 
 int assert_code_to_buff_p(CTXTdeclc prolog_term);
 
-DllExport void call_conv xsb_throw(CTXTdeclc prolog_term);
+DllExport void call_conv xsb_throw(CTXTdeclc prolog_term, unsigned long);
 
 extern prolog_term build_xsb_backtrace(CTXTdecl);

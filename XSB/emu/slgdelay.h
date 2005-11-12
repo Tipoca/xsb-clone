@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.19 2005-01-14 18:31:30 ruim Exp $
+** $Id: slgdelay.h,v 1.20 2005-11-12 15:48:51 dwarren Exp $
 ** 
 */
 
@@ -97,7 +97,7 @@ typedef struct AS_info {
 #define asi_dl_list(X)	(X) -> dl_list
 
 #define create_as_info(ANS, SUBG)		\
-    asi = (ASI) malloc(sizeof(struct AS_info));	\
+    asi = (ASI) mem_alloc(sizeof(struct AS_info));	\
     Child(ANS) = (NODEptr) asi;			\
     asi_pdes(asi) = NULL;			\
     asi_subgoal(asi) = SUBG;			\

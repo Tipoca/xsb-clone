@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.76 2005-11-08 01:05:16 tswift Exp $
+** $Id: tries.c,v 1.77 2005-11-12 15:48:51 dwarren Exp $
 ** 
 */
 
@@ -449,7 +449,7 @@ void expand_trie_ht(BTHTptr pHT) {
 
 
   new_size = TrieHT_NewSize(pHT);
-  bucket_array = (BTNptr *)realloc( BTHT_BucketArray(pHT),
+  bucket_array = (BTNptr *)mem_realloc( BTHT_BucketArray(pHT), BTHT_NumBuckets(pHT)*sizeof(void*),
 				     new_size * sizeof(BTNptr) );
   if ( IsNULL(bucket_array) )
     return;

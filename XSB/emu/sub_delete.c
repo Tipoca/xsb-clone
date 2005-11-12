@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_delete.c,v 1.8 2005-01-14 18:31:33 ruim Exp $
+** $Id: sub_delete.c,v 1.9 2005-11-12 15:48:51 dwarren Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 #include "macro_xsb.h"
 #include "error_xsb.h"
 #include "thread_xsb.h"
+#include "memory_xsb.h"
 
 extern BTHTptr hhadded;
 
@@ -89,12 +90,12 @@ static void free_al(VariantSF sf) {
    -------------------------------------- */
 
 static void delete_btht(BTHTptr btht) {
-  free(BTHT_BucketArray(btht));
+  mem_dealloc(BTHT_BucketArray(btht),BTHT_NumBuckets(btht)*sizeof(void *));
   free_btht(btht);
 }
 
 static void delete_tstht(TSTHTptr tstht) {
-  free(BTHT_BucketArray(tstht));
+  mem_dealloc(BTHT_BucketArray(tstht),BTHT_NumBuckets(tstht)*sizeof(void *));
   free_tsi(tstht);
   free_tstht(tstht);
 }

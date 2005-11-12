@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.60 2005-11-10 23:05:55 tswift Exp $
+** $Id: cinterf.c,v 1.61 2005-11-12 15:48:50 dwarren Exp $
 ** 
 */
 
@@ -896,7 +896,7 @@ static char *ptoc_term0(char *ptr, char *c_dataptr, char **subformat,
 	    if (*(ptr++) != '(') cppc_error(15);
 	    fields = count_fields(ptr, ')');
 	    size = count_csize(ptr, ')');
-	    cdptr2 = (char *)malloc(size);
+	    cdptr2 = (char *)mem_alloc(size);  /* leak */
 	    *((char **)c_dataptr) = cdptr2;
 	    argno = 0;
 	    for (i = 1; i <= fields; i++) {
@@ -918,7 +918,7 @@ static char *ptoc_term0(char *ptr, char *c_dataptr, char **subformat,
 	    if (*(ptr++)!='(') cppc_error(16);
 	    fields = count_fields(ptr, ')');
 	    size = count_csize(ptr, ')');
-	    cdptr2 = (char *)malloc(size);
+	    cdptr2 = (char *)mem_alloc(size);  /* leak */
 	    *((char **)c_dataptr) = cdptr2;
 	    argno = 0;
 	    for (i = 1; i <= fields; i++) {
@@ -1244,7 +1244,7 @@ DllExport int call_conv xsb_init_string(CTXTdeclc char *cmdline_param) {
 	    exit(1);
 	}
 	strncpy(cmdline, cmdline_param, 2*MAXPATHLEN - 1);
-	argv = (char **) malloc(20*sizeof(char *));
+	argv = (char **) mem_alloc(20*sizeof(char *));  /* count space even if never released */
 
 	while (cmdline[i] == ' ') i++;
 	while (cmdline[i] != '\0') {
