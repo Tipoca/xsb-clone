@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string_xsb.c,v 1.16 2005/01/14 18:31:32 ruim Exp $
+** $Id: string_xsb.c,v 1.17 2005/11/09 17:52:27 dwarren Exp $
 ** 
 */
 
@@ -65,19 +65,21 @@ static XSB_StrDefine(output_buffer);
 
 xsbBool str_cat(CTXTdecl)
 {
-  static char *str1, *str2, *tmpstr;
+  char *str1, *str2, *tmpstr;
+  int tmpstr_len;
 
   term = ptoc_tag(CTXTc 1);
   term2 = ptoc_tag(CTXTc 2);
   if (isatom(term) && isatom(term2)) {
     str1 = string_val(term);
     str2 = string_val(term2);
+    tmpstr_len = strlen(str1) + strlen(str2) + 1;
     
-    tmpstr = (char *)malloc(strlen(str1) + strlen(str2) + 1);
+    tmpstr = (char *)mem_alloc(tmpstr_len);
     strcpy(tmpstr, str1);
     strcat(tmpstr, str2);
     str1 = string_find(tmpstr, 1);
-    free(tmpstr);
+    mem_dealloc(tmpstr,tmpstr_len);
     return atom_unify(CTXTc makestring(str1), ptoc_tag(CTXTc 3));
   } else return FALSE;
 }

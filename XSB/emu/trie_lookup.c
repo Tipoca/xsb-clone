@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.10 2005-08-16 21:39:53 dwarren Exp $
+** $Id: trie_lookup.c,v 1.11 2005-11-13 21:38:38 dwarren Exp $
 ** 
 */
 
@@ -43,6 +43,7 @@
 #include "debug_xsb.h"
 #include "flags_xsb.h"
 #include "context.h"
+#include "memory_xsb.h"
 #if (defined(DEBUG_VERBOSE) || defined(DEBUG_ASSERTIONS))
 #include "tst_utils.h"
 #endif
@@ -344,11 +345,11 @@ void initSubsumptiveLookup(CTXTdecl) {
   tstCCPStack.ceiling = tstCCPStack.base + CALL_CPSTACK_SIZE;
 
   variant_cont.subterms.stack.ptr =
-    malloc(VAR_CONT_INIT_STACK_SIZE *
-	   sizeof(variant_cont.subterms.stack.ptr[0]));
+    mem_alloc(VAR_CONT_INIT_STACK_SIZE *
+	      sizeof(variant_cont.subterms.stack.ptr[0]));
   variant_cont.bindings.stack.ptr =
-    malloc(VAR_CONT_INIT_STACK_SIZE *
-	   sizeof(variant_cont.bindings.stack.ptr[0]));
+    mem_alloc(VAR_CONT_INIT_STACK_SIZE *
+	      sizeof(variant_cont.bindings.stack.ptr[0]));
   if ( IsNULL(variant_cont.subterms.stack.ptr) ||
        IsNULL(variant_cont.bindings.stack.ptr) )
     xsb_abort("Not enough memory to initialize subsumptive subsystem");

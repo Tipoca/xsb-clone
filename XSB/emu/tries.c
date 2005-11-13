@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.77 2005-11-12 15:48:51 dwarren Exp $
+** $Id: tries.c,v 1.78 2005-11-13 21:38:38 dwarren Exp $
 ** 
 */
 
@@ -237,10 +237,10 @@ void init_trie_aux_areas(CTXTdecl)
 
 void free_trie_aux_areas(CTXTdecl)
 {
-  free(term_stack);
-  free(var_addr);
-  free(Addr_Stack);
-  free(reg_array);
+  mem_dealloc(term_stack,term_stacksize);
+  mem_dealloc(var_addr,var_addr_arraysz);
+  mem_dealloc(Addr_Stack,addr_stack_size);
+  mem_dealloc(reg_array,reg_array_size);
 }
 
 /*-------------------------------------------------------------------------*/

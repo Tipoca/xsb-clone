@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.17 2005-08-08 17:11:35 dwarren Exp $
+** $Id: token_xsb.c,v 1.18 2005-11-13 21:38:38 dwarren Exp $
 ** 
 */
 
@@ -37,6 +37,7 @@
 #include "subp.h"
 #include "register.h"
 #include "error_xsb.h"
+#include "memory_xsb.h"
 
 #define exit_if_null(x) {\
   if(x == NULL){\
@@ -553,7 +554,7 @@ struct token_t *GetToken(CTXTdeclc FILE *card, STRFILE *instr, int prevch)
 	if (strbuff == NULL)
 	  {
 	    /* First call for GetToken, so allocate a buffer */
-	    strbuff = (char *)malloc(strbuff_len);
+	    strbuff = (char *)mem_alloc(strbuff_len);
 	    exit_if_null(strbuff);
 	  }
 	s = strbuff;

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.68 2005-11-12 15:48:50 dwarren Exp $
+** $Id: init_xsb.c,v 1.69 2005-11-13 21:38:37 dwarren Exp $
 ** 
 */
 
@@ -168,10 +168,12 @@ static void display_file(char *infile_name)
 static void version_message(void)
 {
   char licensemsg[MAXPATHLEN], configmsg[MAXPATHLEN];
+  char *stripped_config_file;
 
   sprintf(licensemsg, "%s%cetc%ccopying.msg", install_dir, SLASH, SLASH);
+  stripped_config_file = strip_names_from_path(xsb_config_file, 2);
   sprintf(configmsg, "%s%cbanner.msg", 
-	  strip_names_from_path(xsb_config_file, 2), SLASH);
+	  stripped_config_file, SLASH);
 
   display_file(configmsg);
   fprintf(stdmsg, "\n");

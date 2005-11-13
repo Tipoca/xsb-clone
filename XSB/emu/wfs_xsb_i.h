@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wfs_xsb_i.h,v 1.13 2005-10-12 23:06:26 tswift Exp $
+** $Id: wfs_xsb_i.h,v 1.14 2005-11-13 21:38:39 dwarren Exp $
 ** 
 */
 
@@ -47,7 +47,7 @@ void abolish_edge_space(void)
  
     while (edge_space_chunk_ptr) {
       t = *(char **)edge_space_chunk_ptr;
-      free(edge_space_chunk_ptr);
+      mem_dealloc(edge_space_chunk_ptr,edge_alloc_chunk_size+sizeof(Cell));
       edge_space_chunk_ptr = t;
     }
     free_edges = free_edge_space = top_edge_space = NULL;
@@ -57,7 +57,7 @@ static EPtr alloc_more_edge_space(void)
 {
     char *t;
 
-    if ((t = (char *)malloc(edge_alloc_chunk_size+sizeof(Cell))) == NULL)
+    if ((t = (char *)mem_alloc(edge_alloc_chunk_size+sizeof(Cell))) == NULL)
       xsb_abort("No space to allocate more edges for SCC detection");
     *(char **)t = edge_space_chunk_ptr;
     edge_space_chunk_ptr = t;

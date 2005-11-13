@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.39 2005-11-12 15:48:50 dwarren Exp $
+** $Id: io_builtins_xsb_i.h,v 1.40 2005-11-13 21:38:37 dwarren Exp $
 ** 
 */
 
@@ -247,6 +247,7 @@ inline static xsbBool file_function(CTXTdecl)
       ctop_int(CTXTc 5,ioport);
     }
     else ctop_int(CTXTc 5,-1);
+    mem_dealloc(addr,MAXPATHLEN);
 
     break;
   }
@@ -505,6 +506,7 @@ inline static xsbBool file_function(CTXTdecl)
       }
     } else
       ctop_int(CTXTc 5, -3);
+    mem_dealloc(addr,MAXPATHLEN);
 
     break;
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.h,v 1.13 2005-08-20 06:50:28 ruim Exp $
+** $Id: timer_xsb.h,v 1.14 2005-11-13 21:38:38 dwarren Exp $
 ** 
 */
 
@@ -84,7 +84,7 @@ typedef struct xsb_timeout xsbTimeout;
 
 int make_timed_call(CTXTdeclc xsbTimeout*, void (*) (xsbTimeout*));
 
-#define NEW_TIMEOUT_OBJECT  (xsbTimeout *)malloc(sizeof(xsbTimeout))
+// #define NEW_TIMEOUT_OBJECT  (xsbTimeout *)mem_alloc(sizeof(xsbTimeout))
 
 
 

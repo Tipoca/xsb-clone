@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.33 2005-09-01 18:37:07 tswift Exp $
+** $Id: tries.h,v 1.34 2005-11-13 21:38:38 dwarren Exp $
 ** 
 */
 
@@ -397,7 +397,7 @@ extern CPtr reg_arrayptr, var_regs[];
 
 /* allocate an array for easy expansion */ 
 #define alloc_arr(AArrType,AArrayNam,AArraySz){\
-    AArrayNam = (AArrType *)malloc(sizeof(AArrType) * AArraySz);\
+    AArrayNam = (AArrType *)mem_alloc(sizeof(AArrType) * AArraySz); \
     if (AArrayNam == NULL) {\
       xsb_exit("No More memory for reallocating Array");\
     }\
@@ -416,7 +416,7 @@ extern CPtr reg_arrayptr, var_regs[];
     for (i = 0; i < Siz; i++) {\
       ArrayNam[i] = Temp[i];\
     }\
-    free(Temp);\
+    mem_dealloc(Temp,Siz*sizeof(ArrType));\
 }
 
 #define will_overflow_reg_array(x) {\

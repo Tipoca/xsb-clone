@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.24 2005-07-05 20:20:44 dwarren Exp $
+** $Id: pathname_xsb.c,v 1.25 2005-11-13 21:38:38 dwarren Exp $
 ** 
 */
 
@@ -199,7 +199,7 @@ char *tilde_expand_filename(char *filename) {
 char *expand_filename(char *filename) {
   char aux_filename[MAXPATHLEN],
    aux_filename2[MAXPATHLEN];
-  char *absolute_filename = malloc(MAXPATHLEN); // since xsb may not be initialized
+  char *absolute_filename = mem_alloc(MAXPATHLEN); // since xsb may not be initialized
 
   if (is_absolute_filename(filename)) {
     return rectify_pathname(filename, absolute_filename);
@@ -235,7 +235,7 @@ DllExport char * call_conv strip_names_from_path(char* path, int how_many)
 {
   int i, abort_flag=FALSE;
   char *cutoff_ptr;
-  char *buffer = (char *) malloc(MAXPATHLEN);
+  char *buffer = malloc(MAXPATHLEN);  // can't change to mem_alloc for mt, lock not initted?
 
 #ifdef SIMPLESCALAR
   if (!buffer)
