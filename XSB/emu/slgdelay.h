@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.20 2005-11-12 15:48:51 dwarren Exp $
+** $Id: slgdelay.h,v 1.21 2005-11-14 18:58:49 tswift Exp $
 ** 
 */
 
@@ -85,6 +85,9 @@ typedef struct delay_list	*DL;
 typedef struct pos_neg_de_list	*PNDE;
 
 /*--------------------------------------------------------------------*/
+
+/* hangs off of answer escape node, which is main access to it, along
+   with PDES; function is vaguely analogous to subgoal frame. */
 
 typedef struct AS_info {
   PNDE	  pdes;		/* pos DEs that refer to this answer substitution */

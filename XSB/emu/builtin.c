@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.232 2005-11-13 21:38:37 dwarren Exp $
+** $Id: builtin.c,v 1.233 2005-11-14 18:58:49 tswift Exp $
 ** 
 */
 
@@ -180,7 +180,7 @@ prolog_term build_xsb_backtrace(CTXTdecl);
 extern xsbBool xsb_socket_request(CTXTdecl);
 
 extern int  findall_init(CTXTdecl), findall_add(CTXTdecl),
-	    findall_get_solutions(CTXTdecl);
+  findall_get_solutions(CTXTdecl);
 extern int  copy_term(CTXTdecl);
 
 extern xsbBool substring(CTXTdecl);
@@ -501,7 +501,7 @@ Cell  val_to_hash(Cell term)
       value = (Cell)int_val(term);
       break;
     case XSB_LIST:
-      value = (Cell)(list_str);
+      value = (Cell)(list_pscPair);
       break;
     case XSB_STRUCT:
       //to make a hash val for a boxed int, we take the int value inside the box and cast it
@@ -2594,9 +2594,13 @@ case WRITE_OUT_PROFILE:
     return retcode;
   }
 
-  case FINDALL_INIT: return(findall_init(CTXT)) ;
-  case FINDALL_ADD: return(findall_add(CTXT)) ;
-  case FINDALL_GET_SOLS: return(findall_get_solutions(CTXT)) ;
+    case FINDALL_FREE: 
+      findall_free(CTXTc ptoc_int(CTXTc 1));
+      return TRUE;
+      break;
+    case FINDALL_INIT: return(findall_init(CTXT)) ;
+    case FINDALL_ADD: return(findall_add(CTXT)) ;
+    case FINDALL_GET_SOLS: return(findall_get_solutions(CTXT)) ;
 
 #ifdef HAVE_SOCKET
   case SOCKET_REQUEST:

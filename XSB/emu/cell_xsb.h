@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.24 2005-07-22 15:42:13 crojo Exp $
+** $Id: cell_xsb.h,v 1.25 2005-11-14 18:58:49 tswift Exp $
 ** 
 */
 
@@ -163,7 +163,7 @@ extern unsigned long enc[], dec[];
 #define makestring(str) (Cell)(enc_addr(str) | XSB_STRING)
 
 /* special-case strings [] */
-#define	makenil		makestring(nil_sym)
+#define	makenil		makestring(nil_string)
 
 /* pointer manipulation */
 #define cs_val(dcell) (Pair)dec_addr(dcell)
@@ -222,7 +222,7 @@ extern unsigned long enc[], dec[];
 #define isatomic(dcell)	((isstring(dcell)) || (isnumber(dcell)) || \
 			 (isconstr(dcell) && get_arity(get_str_psc(dcell))==0))
 
-#define isnil(dcell) (isstring(dcell) && (char *)string_val(dcell) == nil_sym)
+#define isnil(dcell) (isstring(dcell) && (char *)string_val(dcell) == nil_string)
 #define isboxed(term) (isconstr(term) && get_str_psc(term) == box_psc )
 
 /*======================================================================*/

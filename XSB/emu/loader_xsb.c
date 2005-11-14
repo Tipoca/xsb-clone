@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.46 2005-11-13 21:38:37 dwarren Exp $
+** $Id: loader_xsb.c,v 1.47 2005-11-14 18:58:49 tswift Exp $
 ** 
 */
 
@@ -231,7 +231,7 @@ static int get_index_tab(FILE *fd, int clause_no)
       val = (Cell) ival; 
       count += 9;
       break;
-    case 'l': val = (Cell)(list_str); 
+    case 'l': val = (Cell)(list_pscPair); 
       count += 5;
       break;
     case 'n': val = 0;

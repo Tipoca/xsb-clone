@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: call_xsb_i.h,v 1.9 2005-11-07 20:53:03 dwarren Exp $
+** $Id: call_xsb_i.h,v 1.10 2005-11-14 18:58:49 tswift Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@ static inline int prolog_call0(CTXTdeclc Cell term)
     } else if (isstring(term)) {
       int  value;
       Pair sym;
-      if (string_val(term) == true_sym) return TRUE; /* short-circuit if calling "true" */
+      if (string_val(term) == true_string) return TRUE; /* short-circuit if calling "true" */
       sym = insert(string_val(term),0,(Psc)flags[CURRENT_MODULE],&value);
       psc = pair_psc(sym);
     } else {

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.21 2005-11-13 21:38:37 dwarren Exp $
+** $Id: memory_xsb.h,v 1.22 2005-11-14 18:58:49 tswift Exp $
 ** 
 */
 
@@ -140,7 +140,7 @@ extern void handle_tcpstack_overflow(struct th_context *);
 
 /* Instruction Externs
    ------------------- */
-extern byte *inst_begin;       /* ptr to beginning of instruction array. */
+extern byte *inst_begin_gl;       /* ptr to beginning of instruction array. */
 
 extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
 	    resume_compl_suspension_inst, fail_inst, dynfail_inst, 

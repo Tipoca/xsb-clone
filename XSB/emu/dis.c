@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.26 2005-09-09 23:53:21 tswift Exp $
+** $Id: dis.c,v 1.27 2005-11-14 18:58:49 tswift Exp $
 ** 
 */
 
@@ -237,7 +237,7 @@ static void dis_text(void)
    int comma;
 
    fprintf(filedes, "\n/*text below\t\t*/\n\n");
-   this_seg = (pseg) inst_begin;
+   this_seg = (pseg) inst_begin_gl;
    while (this_seg) {		/* repeat for all text segment */
       fprintf(filedes, "segment([\n");
       endaddr = (CPtr) ((pb) seg_hdr(this_seg) + seg_size(this_seg)) ;

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.53 2005-09-01 18:29:38 tswift Exp $
+** $Id: emudef.h,v 1.54 2005-11-14 18:58:49 tswift Exp $
 ** 
 */
 
@@ -87,11 +87,11 @@ CPtr interrupt_reg = &interrupt_counter;
 /*
  * Ptr to the beginning of instr. array
  */ 
-byte *inst_begin;
+byte *inst_begin_gl;
 
-char *nil_sym, *true_sym;
+char *nil_string, *true_string;
 
-Pair list_str;
+Pair list_pscPair;
 
 Psc list_psc, comma_psc, true_psc, if_psc, colon_psc;
 Psc tnot_psc, delay_psc;
@@ -105,7 +105,8 @@ Psc box_psc;
  */
 Psc ret_psc[MAX_ARITY];
 
-char *list_dot;
+/* TLS: changed name to accord with new global conventions. */
+char *list_dot_string;
 
 #ifndef MULTI_THREAD
 int asynint_code = 0;

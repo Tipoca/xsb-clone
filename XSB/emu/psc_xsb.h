@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.18 2005-10-03 13:26:43 tswift Exp $
+** $Id: psc_xsb.h,v 1.19 2005-11-14 18:58:49 tswift Exp $
 ** 
 */
 
@@ -163,10 +163,10 @@ extern Psc box_psc;
 extern Psc tnot_psc;
 extern Psc colon_psc;
 extern Psc delay_psc;
-extern char *nil_sym;
-extern char *true_sym;
-extern Pair list_str;
-extern char *list_dot;
+extern char *nil_string;
+extern char *true_string;
+extern Pair list_pscPair;
+extern char *list_dot_string;
 
 extern Psc ret_psc[];
 extern Psc get_ret_psc(int);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.33 2005-10-12 23:06:26 tswift Exp $
+** $Id: context.h,v 1.34 2005-11-14 18:58:49 tswift Exp $
 ** 
 */
 
@@ -290,8 +290,6 @@ struct sort_par_spec _par_spec;		/* spec for par_sort */
   /* used for C-level longjumps in assert */
 jmp_buf _assertcmp_env;
 
-jmp_buf _xsb_abort_fallback_environment;
-
 ClRef _retracted_buffer[MAX_RETRACTED_CLAUSES+1];
 ClRef *_OldestCl;
 ClRef *_NewestCl;
@@ -302,6 +300,14 @@ struct random_seeds_t *_random_seeds;	/* struct containing seeds for random num 
  
 struct Structure_Manager *_smBTN;
 struct Structure_Manager *_smBTHT;
+
+  /********** Error handling  **********/
+
+byte *_catch_scope_marker;
+jmp_buf _xsb_abort_fallback_environment;
+
+  /********** cinterf stuff  **********/
+jmp_buf _cinterf_env;
 
  /************ Pointers to cursor information used by
  odbc_xsb.c context-local cursor table ***********/
@@ -456,11 +462,14 @@ typedef struct th_context th_context ;
 #define par_spec		(th->_par_spec)
 
 #define assertcmp_env		(th->_assertcmp_env)
-#define xsb_abort_fallback_environment (th->_xsb_abort_fallback_environment)
+#define cinterf_env             (th->_cinterf_env)
 
 #define retracted_buffer	(th->_retracted_buffer)
 #define OldestCl		(th->_OldestCl)
 #define NewestCl		(th->_NewestCl)
+
+#define xsb_abort_fallback_environment (th->_xsb_abort_fallback_environment)
+#define catch_scope_marker            (th->_catch_scope_marker)
 
 #define random_seeds		(th->_random_seeds)
 

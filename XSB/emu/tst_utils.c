@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.27 2005-08-16 21:39:53 dwarren Exp $
+** $Id: tst_utils.c,v 1.28 2005-11-14 18:58:49 tswift Exp $
 ** 
 */
 
@@ -241,7 +241,7 @@ static void symstkPrintNextTerm(CTXTdeclc FILE *fp, xsbBool list_recursion) {
     {
       char *string = string_val(symbol);
       if ( list_recursion ) {
-	if ( string == nil_sym )
+	if ( string == nil_string )
 	  fprintf(fp, "]");
 	else
 	  fprintf(fp, "|%s]", string);
