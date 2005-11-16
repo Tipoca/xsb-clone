@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.70 2005-11-14 18:58:49 tswift Exp $
+** $Id: init_xsb.c,v 1.71 2005-11-16 17:17:33 ruim Exp $
 ** 
 */
 
@@ -714,6 +714,10 @@ char *init_para(CTXTdeclc int argc, char *argv[])
     break;
   }
 
+  /* Other basic initializations
+     --------------------------- */
+  realtime_count = real_time();
+
   return ( (char *) flags[BOOT_MODULE] );
 
 }
@@ -913,10 +917,6 @@ void init_machine(CTXTdecl)
   cp_prevbreg(breg) = breg;               /* note ! */
   cp_pdreg(breg) = delayreg;
 
-
-  /* Other basic initializations
-     --------------------------- */
-  realtime_count = real_time();
 
   /* init trie stuff */
 
