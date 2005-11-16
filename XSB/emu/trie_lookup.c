@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.11 2005-11-13 21:38:38 dwarren Exp $
+** $Id: trie_lookup.c,v 1.12 2005-11-16 17:32:05 dwarren Exp $
 ** 
 */
 
@@ -346,10 +346,10 @@ void initSubsumptiveLookup(CTXTdecl) {
 
   variant_cont.subterms.stack.ptr =
     mem_alloc(VAR_CONT_INIT_STACK_SIZE *
-	      sizeof(variant_cont.subterms.stack.ptr[0]));
+	      sizeof(variant_cont.subterms.stack.ptr[0]),TABLE_SPACE);
   variant_cont.bindings.stack.ptr =
     mem_alloc(VAR_CONT_INIT_STACK_SIZE *
-	      sizeof(variant_cont.bindings.stack.ptr[0]));
+	      sizeof(variant_cont.bindings.stack.ptr[0]),TABLE_SPACE);
   if ( IsNULL(variant_cont.subterms.stack.ptr) ||
        IsNULL(variant_cont.bindings.stack.ptr) )
     xsb_abort("Not enough memory to initialize subsumptive subsystem");

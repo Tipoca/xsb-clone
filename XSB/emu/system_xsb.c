@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.44 2005-11-13 21:38:38 dwarren Exp $
+** $Id: system_xsb.c,v 1.45 2005-11-16 17:32:05 dwarren Exp $
 ** 
 */
 
@@ -1184,7 +1184,7 @@ static int file_copy(char *source, char *dest)
       xsb_warn("[file_copy] Cannot create symlink %s", dest);
       return 0;
     }
-    mem_dealloc(lpath,lpath_len);
+    mem_dealloc(lpath,lpath_len,OTHER_SPACE);
     return 1;
   }
 #endif
@@ -1244,7 +1244,7 @@ static char *xreadlink(const char *path, int *bufsize)
   *bufsize = 0;
 
   do {
-    buf = mem_realloc(buf, *bufsize, *bufsize + GROWBY);
+    buf = mem_realloc(buf, *bufsize, *bufsize + GROWBY,OTHER_SPACE);
     *bufsize += GROWBY;
     readsize = readlink(path, buf, *bufsize); /* 1st try */
     if (readsize == -1) {

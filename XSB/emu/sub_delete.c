@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_delete.c,v 1.9 2005-11-12 15:48:51 dwarren Exp $
+** $Id: sub_delete.c,v 1.10 2005-11-16 17:32:05 dwarren Exp $
 ** 
 */
 
@@ -90,12 +90,12 @@ static void free_al(VariantSF sf) {
    -------------------------------------- */
 
 static void delete_btht(BTHTptr btht) {
-  mem_dealloc(BTHT_BucketArray(btht),BTHT_NumBuckets(btht)*sizeof(void *));
+  mem_dealloc(BTHT_BucketArray(btht),BTHT_NumBuckets(btht)*sizeof(void *),TABLE_SPACE);
   free_btht(btht);
 }
 
 static void delete_tstht(TSTHTptr tstht) {
-  mem_dealloc(BTHT_BucketArray(tstht),BTHT_NumBuckets(tstht)*sizeof(void *));
+  mem_dealloc(BTHT_BucketArray(tstht),BTHT_NumBuckets(tstht)*sizeof(void *),TABLE_SPACE);
   free_tsi(tstht);
   free_tstht(tstht);
 }

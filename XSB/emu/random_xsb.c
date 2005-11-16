@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random_xsb.c,v 1.9 2005-11-12 15:48:51 dwarren Exp $
+** $Id: random_xsb.c,v 1.10 2005-11-16 17:32:05 dwarren Exp $
 ** 
 */
 
@@ -57,7 +57,7 @@ struct random_seeds_t *random_seeds = 0;
 struct random_seeds_t *init_random_seeds() {
 
   struct random_seeds_t *seeds;
-  seeds = (struct random_seeds_t *)mem_alloc(sizeof(struct random_seeds_t));
+  seeds = (struct random_seeds_t *)mem_alloc(sizeof(struct random_seeds_t),OTHER_SPACE);
   if (!seeds) xsb_abort("No space for random seeds!!");
   seeds->IX = 6293;
   seeds->IY = 21877;
