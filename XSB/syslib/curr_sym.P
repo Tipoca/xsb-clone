@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.26 2004/11/24 12:29:08 tswift Exp $
+** $Id: curr_sym.P,v 1.27 2005/08/10 19:54:32 dwarren Exp $
 ** 
 */
 
@@ -43,8 +43,12 @@ current_atom(Module:Atom) :-
 	( First_PSC_Pair =:= 1 ->	% We are dealing with a global module!
 	    warning(('Predicate current_atom/1 for module "',
 		     ModuleName,
-		     '" is not yet implemented !')),
-	    fail
+		     '" does not include usermod strings !')),
+	    psc_scan_in_hash_table(0,PSC),
+	    psc_arity(PSC, Arity), 
+	    Arity =:= 0,
+	    psc_name(PSC, Name),
+	    Atom = Name
         ; psc_scan_in_module(First_PSC_Pair, PSC), 
 	  psc_arity(PSC, Arity), 
 	  0 = Arity,
