@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.12 2005-11-16 17:32:05 dwarren Exp $
+** $Id: trie_lookup.c,v 1.13 2005-11-16 22:34:54 dwarren Exp $
 ** 
 */
 
@@ -108,8 +108,6 @@
 #ifndef MULTI_THREAD
 static struct VariantContinuation variant_cont;
 #endif
-
-#define VAR_CONT_INIT_STACK_SIZE  64
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -344,17 +342,10 @@ void initSubsumptiveLookup(CTXTdecl) {
 
   tstCCPStack.ceiling = tstCCPStack.base + CALL_CPSTACK_SIZE;
 
-  variant_cont.subterms.stack.ptr =
-    mem_alloc(VAR_CONT_INIT_STACK_SIZE *
-	      sizeof(variant_cont.subterms.stack.ptr[0]),TABLE_SPACE);
-  variant_cont.bindings.stack.ptr =
-    mem_alloc(VAR_CONT_INIT_STACK_SIZE *
-	      sizeof(variant_cont.bindings.stack.ptr[0]),TABLE_SPACE);
-  if ( IsNULL(variant_cont.subterms.stack.ptr) ||
-       IsNULL(variant_cont.bindings.stack.ptr) )
-    xsb_abort("Not enough memory to initialize subsumptive subsystem");
+  variant_cont.subterms.stack.ptr = NULL;
+  variant_cont.bindings.stack.ptr = NULL;
   variant_cont.subterms.stack.size =
-    variant_cont.bindings.stack.size = VAR_CONT_INIT_STACK_SIZE;
+    variant_cont.bindings.stack.size = 0;
   
   /* set entries to unbound */
   for (i = 0; i < NUM_TRIEVARS; i++)

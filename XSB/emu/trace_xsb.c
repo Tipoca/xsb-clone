@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.14 2005/10/03 13:26:44 tswift Exp $
+** $Id: trace_xsb.c,v 1.15 2005/11/16 17:32:05 dwarren Exp $
 ** 
 */
 
@@ -100,7 +100,8 @@ static char *pspace_cat[NUM_CATS_SPACE] =
   {"atom        ","asserted    ","compiled    ","foreign     ",
    "table       ","findall     ","profile     ","mt-private  ",
    "buffer      ","gc temp     ","hash        ","interprolog ",
-   "thread      ","read canon  ","leaking...  ","other       "};
+   "thread      ","read canon  ","leaking...  ","special     ",
+   "other       "};
 
 void total_stat(CTXTdeclc double elapstime) {
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.92 2005/11/12 15:48:51 dwarren Exp $
+** $Id: tr_utils.c,v 1.93 2005/11/16 17:32:05 dwarren Exp $
 ** 
 */
 
@@ -988,7 +988,7 @@ int num_sets;
 void init_newtrie(CTXTdecl)
 {
   first_free_set = 0;
-  Set_ArraySz = 100;
+  Set_ArraySz = 10;  /* must be at least num_sets */
   num_sets = 1;
   Set_ArrayPtr = (BTNptr *) mem_calloc(Set_ArraySz,sizeof(BTNptr),TABLE_SPACE);
 
