@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.63 2005/10/14 13:25:42 dwarren Exp $
+** $Id: standard.H,v 1.64 2005/11/11 21:21:21 tswift Exp $
 **
 */
 
@@ -134,7 +134,7 @@
 	  file_write_quoted/2, file_write_canonical/2, file_nl/1
      from xsb_writ.
 :- import xsb_thread_self/1 from thread.
-
+:- import findall/3 from setof.
 
 
 /* --------------------- end of file standard.H ----------------------- */
