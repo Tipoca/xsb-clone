@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify_xsb.h,v 1.6 2005-01-14 18:31:54 ruim Exp $
+** $Id: unify_xsb.h,v 1.7 2005-11-17 21:46:57 dwarren Exp $
 ** 
 */
 
@@ -42,6 +42,19 @@
                                                              \
   if (isattv(op1)) goto loc##_label_op1_attv;                \
   if (isattv(op2)) goto loc##_label_op2_attv;                \
+                                                             \
+  if (isfloat(op2) && isboxedfloat(op1) ) {                  \
+    if ( float_val(op2) == (float)boxedfloat_val(op1))       \
+      {IFTHEN_SUCCEED;}                                      \
+    else                                                     \
+      {IFTHEN_FAILED;}                                       \
+  }                                                          \
+  if (isfloat(op1) && isboxedfloat(op2) ) {                  \
+    if ( float_val(op1) == (float)boxedfloat_val(op2))       \
+      {IFTHEN_SUCCEED;}                                      \
+    else                                                     \
+      {IFTHEN_FAILED;}                                       \
+  }                                                          \
                                                              \
   if (cell_tag(op1) != cell_tag(op2))                        \
     {IFTHEN_FAILED;}                                         \
