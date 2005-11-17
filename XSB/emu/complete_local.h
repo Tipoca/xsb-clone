@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.12 2005-11-10 23:05:55 tswift Exp $
+** $Id: complete_local.h,v 1.13 2005-11-17 23:24:24 tswift Exp $
 ** 
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -302,7 +302,9 @@ static inline void CompleteSimplifyAndReclaim(CTXTdeclc CPtr cs_ptr)
     compl_subg = compl_subgoal_ptr(ComplStkFrame);
     mark_as_completed(compl_subg); 
     if (neg_simplif_possible(compl_subg)) {
+      SYS_MUTEX_LOCK( MUTEX_DELAY ) ;
       simplify_neg_fails(CTXTc compl_subg);
+      SYS_MUTEX_UNLOCK( MUTEX_DELAY ) ;
     }
 
     ComplStkFrame = next_compl_frame(ComplStkFrame);
