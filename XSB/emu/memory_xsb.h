@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.24 2005-11-16 22:34:54 dwarren Exp $
+** $Id: memory_xsb.h,v 1.25 2005-11-17 18:22:41 tswift Exp $
 ** 
 */
 
@@ -165,7 +165,8 @@ extern byte *inst_begin_gl;       /* ptr to beginning of instruction array. */
 
 extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
 	    resume_compl_suspension_inst, fail_inst, dynfail_inst, 
-  	    halt_inst, proceed_inst, resume_compl_suspension_inst2,
+  	    halt_inst, proceed_inst, 
+// resume_compl_suspension_inst2,
 	    reset_inst, trie_fail_unlock_inst;
 
 

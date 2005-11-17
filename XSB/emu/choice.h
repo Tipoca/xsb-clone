@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.25 2005-09-28 22:23:57 ruim Exp $
+** $Id: choice.h,v 1.26 2005-11-17 18:22:41 tswift Exp $
 ** 
 */
 #ifndef __CHOICE_H__
@@ -353,9 +353,14 @@ typedef struct compl_susp_frame {
 #define SAVE_CSFPSC(b)
 #endif
 
-#define is_compl_susp_frame(b) \
-    ((cp_pcreg(b) == (byte *) &resume_compl_suspension_inst) || \
+/*
+#define is_compl_susp_frame(b)				\
+    ((cp_pcreg(b) == (byte *) &resume_compl_suspension_inst) ||	\
     (cp_pcreg(b) == (byte *) &resume_compl_suspension_inst2))
+*/
+
+#define is_compl_susp_frame(b)				\
+  ((cp_pcreg(b) == (byte *) &resume_compl_suspension_inst))
       
 #define save_compl_susp_frame(t_breg,t_ereg,subg,t_ptcp,CPREG) \
     t_breg -= CSF_SIZE; \
@@ -433,7 +438,9 @@ typedef struct compl_susp_choice_point {
     cs_compsuspptr(t_breg) = compsuspptr;\
     cs_hreg(t_breg) = hreg; \
     cs_ebreg(t_breg) = ebreg; \
-    cs_pcreg(t_breg) = (pb) &resume_compl_suspension_inst2
+    cs_pcreg(t_breg) = (pb) &resume_compl_suspension_inst
+
+//    cs_pcreg(t_breg) = (pb) &resume_compl_suspension_inst2
 
 /* --------------------------------------------------------------------	*/
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.16 2005-11-10 23:05:55 tswift Exp $
+** $Id: cut_xsb.h,v 1.17 2005-11-17 18:22:41 tswift Exp $
 ** 
 */
 
@@ -107,11 +107,12 @@
 #define cut_restore_trail_condition_registers(CUTB) \
     if ((CPtr)  *CUTB >= (CPtr) pdl.low || \
 		*CUTB == (Cell) &answer_return_inst || \
-                *CUTB == (Cell) &resume_compl_suspension_inst ||\
-                *CUTB == (Cell) &resume_compl_suspension_inst2) { \
+ 	        *CUTB == (Cell) &resume_compl_suspension_inst) {	\
 	ebreg = cp_ebreg(CUTB); \
 	hbreg = cp_hreg(CUTB); \
     }
+
+	  //                *CUTB == (Cell) &resume_compl_suspension_inst2) { 
 
 /*----------------------------------------------------------------------*/
 /* Deletes all trail frames that are no longer conditional.		*/
