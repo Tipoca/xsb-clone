@@ -19,16 +19,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.18 2004/12/10 21:45:40 tswift Exp $
+** $Id: error_handler.H,v 1.19 2005/11/07 20:58:04 dwarren Exp $
 ** 
 */
 
-:- export domain_error/4,domain_error/5,
+:- export     calculation_error/3, domain_error/4,domain_error/5,
               existence_error/4,
               instantiation_error/2,  % obsolescent
               instantiation_error/3,
-              permission_error/4, type_error/4, 
-              misc_error/1,
+              misc_error/1,permission_error/4, 
+              representation_error/3, table_error/1, type_error/4, 
               check_atom/3, check_atom_list/3,
               check_ground/3, check_integer/3, check_nonneg_integer/3,
               check_nonvar_list/3, check_nonvar/3, 
