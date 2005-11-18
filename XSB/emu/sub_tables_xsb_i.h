@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.7 2005-09-01 18:37:06 tswift Exp $
+** $Id: sub_tables_xsb_i.h,v 1.8 2005-11-18 21:09:36 tswift Exp $
 ** 
 */
 
@@ -225,7 +225,7 @@ inline static  void subsumptive_call_search(CTXTdeclc TabledCallInfo *callStruct
    * subsuming call is incomplete, an entry is created in the Call Trie.
    */
 
-  if ( path_type == NO_PATH ) {
+  if ( path_type == NO_PATH ) {    /* new producer */
     NumSubOps_ProducerCall++;
     Trail_Unwind_All;
     CallLUR_Subsumer(*results) = NULL;  /* no SF found, so no subsumer */
@@ -244,7 +244,7 @@ inline static  void subsumptive_call_search(CTXTdeclc TabledCallInfo *callStruct
 #endif
     return;
   }
-  else {
+  else {                           /* consume from producer */
   /* Set Correct Answer Template
      --------------------------- */
     sf_with_ans_set = (SubProdSF)CallTrieLeaf_GetSF(btn);
@@ -267,7 +267,7 @@ inline static  void subsumptive_call_search(CTXTdeclc TabledCallInfo *callStruct
       answer_template = extract_template_from_lookup(CTXTc answer_template);
       Trail_Unwind_All;
     }
-    else {
+    else {                         /* consume from subsumed call */
 #ifdef DEBUG_CALL_CHK_INS
       if ( strcmp(targetGN,goal_name) == 0 ) {
 	fprintf(stddbg,"Found entry without own answer table:\n  ");

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.13 2005-11-16 22:34:54 dwarren Exp $
+** $Id: trie_lookup.c,v 1.14 2005-11-18 21:09:37 tswift Exp $
 ** 
 */
 
@@ -918,6 +918,10 @@ void *iter_sub_trie_lookup(CTXTdeclc void *trieNode, TriePathType *pathType) {
       }
       break;
 
+    case XSB_ATTV:
+      xsb_table_error(CTXTc 
+	      "Attributed variables not yet implemented in calls to subsumptive tables.");
+      break;
 
     /* SUBTERM HAS UNKNOWN CELL TAG
        ---------------------------- */

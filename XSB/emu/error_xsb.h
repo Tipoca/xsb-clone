@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.19 2005-11-12 15:48:50 dwarren Exp $
+** $Id: error_xsb.h,v 1.20 2005-11-18 21:09:36 tswift Exp $
 ** 
 */
 
@@ -111,10 +111,11 @@ extern void xsb_segfault_quitter(int);
 
 int unwind_stack(CTXTdecl);
 
-void call_conv xsb_type_error(CTXTdeclc char *,Cell , char *,int, int) ;
-void call_conv xsb_permission_error(CTXTdeclc char *,char *, int, char *,int) ;
-void call_conv xsb_instantiation_error(CTXTdeclc char *, int, int, char *) ;
 void call_conv xsb_domain_error(CTXTdeclc char *, Cell, char *, int, int) ;
+void call_conv xsb_instantiation_error(CTXTdeclc char *, int, int, char *) ;
+void call_conv xsb_permission_error(CTXTdeclc char *,char *, int, char *,int) ;
+void call_conv xsb_table_error(CTXTdeclc char *) ;
+void call_conv xsb_type_error(CTXTdeclc char *,Cell , char *,int, int) ;
 
 /* should include these from whereever they are.... split out from biassert **/
 typedef struct

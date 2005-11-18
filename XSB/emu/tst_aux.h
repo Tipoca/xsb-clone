@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_aux.h,v 1.8 2005-01-14 18:31:38 ruim Exp $
+** $Id: tst_aux.h,v 1.9 2005-11-18 21:09:37 tswift Exp $
 ** 
 */
 
@@ -352,6 +352,10 @@ extern DynamicStack tstTrail;
      Symbol = EncodeTrieList(subterm);				\
      TermStack_PushListArgs(subterm);				\
      break;							\
+   case XSB_ATTV:						\
+     xsb_table_error(CTXTc                                      \
+        "Attributed variables not yet implemented in answers for subsumptive tables.");	\
+      break;                                                    \
    default:							\
      Symbol = 0;  /* avoid "uninitialized" compiler warning */	\
      TrieError_UnknownSubtermTag(subterm);			\
