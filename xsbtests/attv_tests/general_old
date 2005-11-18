@@ -3,3 +3,4 @@
 test1 is OK
 test2 is OK
 test4: splatted bug without table
+test6 properly caught

@@ -1,7 +1,7 @@
 /* File:      general.P
 ** Author(s): Baoqiu Cui / Swift
 **
-** $Id: general.P,v 1.5 2005-11-10 23:01:35 tswift Exp $
+** $Id: general.P,v 1.6 2005-11-18 21:12:40 tswift Exp $
 */
 
 :- xsb_flag(verboseness,3).
@@ -15,7 +15,8 @@ test :-
 	test2,
 	(test3 ; true),
 	test4,
-	(test5 ; true).
+	(test5 ; true),
+	test6.
 
 %-----------------------------------------------------------------------
 % test1: one attv contains two normal vars, so in total there
@@ -84,4 +85,20 @@ test5:-
 	writeln('test5: splatted bug without table but w. unification').
 
 r(X):- put_attr(X,general2,splat).
+
+% Test 6 catches error handling for attvs in subs tables (and tests catch/throw)
+:- table s1/1.
+:- use_subsumptive_tabling s1/1.
+
+s1(_).
+
+test6:- catch(test6_1,error(table_error,_Msg,_Bt),writeln('test6 properly caught')).
+
+test6_1:- 
+	put_attr(X,general5,bug),
+	s1(X),
+	writeln('test6: attv call to subsumptive table.').
+
+
+%--------------
 

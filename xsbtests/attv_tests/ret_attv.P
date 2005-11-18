@@ -1,7 +1,7 @@
 /* File:      ret_attv.P
 ** Author(s): Baoqiu Cui
 ** 
-** $Id: ret_attv.P,v 1.4 2004-11-17 21:43:37 tswift Exp $
+** $Id: ret_attv.P,v 1.5 2005-11-18 21:12:40 tswift Exp $
 */
 
 :- import put_attr/3, get_attr/3 from machine.
@@ -31,13 +31,13 @@ test_get_calls :-
 	fail.
 test_get_calls :-
 	get_calls(p(_X, _Y), Cs, Ret),
-	% writeln(Ret),
+%	writeln(Ret),
 	Ret = ret(_A, B),
 	get_attr(B, ret, VB),
 	writeln(VB),
 	VB == v(1),
 	get_returns(Cs, Ret),
-	% writeln(Ret),
+%	 writeln(Ret),
 	Ret = ret(A2, B2),
 	A2 = 123,
 	get_attr(B2, ret, VB2),
