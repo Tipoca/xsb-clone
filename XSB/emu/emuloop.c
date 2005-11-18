@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.124 2005-11-17 21:46:56 dwarren Exp $
+** $Id: emuloop.c,v 1.125 2005-11-18 23:29:01 tswift Exp $
 ** 
 */
 
@@ -919,6 +919,15 @@ contcase:     /* the main loop */
     ADVANCE_PC(size_xxxX);
     RESTORE_SUB
   XSB_End_Instr()
+
+      /* TLS: according to David.  It may be that a call to a
+       *  predicate P performs a lot of shallow backtracking esp. to
+       *  facts. If so, the interrupt might not be handled until the
+       *  engine is not executing P any more.  Putting the handler in
+       *  trusts means that any interrupt posted during the
+       *  backtracking will be caught, and thus gives the profiler a
+       *  better chance of accurately reflecting where the time is
+       *  spent. */
 
   XSB_Start_Instr(trustmeelsefail,_trustmeelsefail) /* PPA */
     Def1op

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.234 2005-11-16 17:32:03 dwarren Exp $
+** $Id: builtin.c,v 1.235 2005-11-18 23:29:01 tswift Exp $
 ** 
 */
 
@@ -198,7 +198,7 @@ extern int set_scope_marker(CTXTdecl);
 extern int unwind_stack(CTXTdecl);
 extern int clean_up_block(CTXTdecl);
 
-extern double realtime_count; /* from subp.c */
+extern double realtime_count_gl; /* from subp.c */
 
 extern BTNptr trie_asserted_trienode(CPtr clref);
 extern int gc_dynamic(CTXTdecl);
@@ -1499,7 +1499,7 @@ int builtin_call(CTXTdeclc byte number)
   }
   case STAT_WALLTIME: {
     int value;
-    value = (int) ((real_time() - realtime_count) * 1000);
+    value = (int) ((real_time() - realtime_count_gl) * 1000);
     ctop_int(CTXTc 1, value);
     break;
   }

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.h,v 1.10 2005-07-18 21:54:10 crojo Exp $
+** $Id: heap_xsb.h,v 1.11 2005-11-18 23:29:01 tswift Exp $
 ** 
 */
 
@@ -65,6 +65,7 @@ extern void print_all_stacks(CTXTdeclc int);
 extern void print_regs(CTXTdeclc int,int);
 extern void print_heap(CTXTdeclc int,int,int);
 extern void print_gc_statistics(void);
+#ifndef MULTI_THREAD
 extern Cell attv_interrupts[20480][2];
-
+#endif
 /*----------------------------------------------------------------------*/

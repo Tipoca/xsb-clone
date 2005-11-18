@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.34 2005-11-14 18:58:49 tswift Exp $
+** $Id: context.h,v 1.35 2005-11-18 23:29:01 tswift Exp $
 ** 
 */
 
@@ -341,6 +341,7 @@ ThreadDepList TDL ;
 pthread_cond_t cond_var ;
 #endif
 
+Cell _attv_interrupts[20480][2];
 } ;
 
 typedef struct th_context th_context ;
@@ -507,6 +508,8 @@ typedef struct th_context th_context ;
 #define FCurNum (th->_FCurNum)
 
 #define  pflags			(th->_pflags)
+
+#define  attv_interrupts        (th->_attv_interrupts)
 
 #define CTXT			th
 #define CTXTc			th ,
