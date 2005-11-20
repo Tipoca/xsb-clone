@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.73 2005-11-18 23:29:01 tswift Exp $
+** $Id: init_xsb.c,v 1.74 2005-11-20 21:23:28 dwarren Exp $
 ** 
 */
 
@@ -963,8 +963,8 @@ void init_symbols(void)
   int  i, new_indicator;
 
   inst_begin_gl = 0;
-  symbol_table.table = (void **)mem_calloc(symbol_table.size, sizeof(Pair),ATOM_STR_SPACE);
-  string_table.table = (void **)mem_calloc(string_table.size, sizeof(char *),ATOM_STR_SPACE);
+  symbol_table.table = (void **)mem_calloc(symbol_table.size, sizeof(Pair),ATOM_SPACE);
+  string_table.table = (void **)mem_calloc(string_table.size, sizeof(char *),STRING_SPACE);
 
   /* insert mod name global */
   /*tp = insert_module(T_MODU, "global");	/ loaded */

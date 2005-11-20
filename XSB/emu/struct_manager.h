@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.6 2005-10-03 13:26:43 tswift Exp $
+** $Id: struct_manager.h,v 1.7 2005-11-20 21:23:29 dwarren Exp $
 ** 
 */
 
@@ -240,8 +240,15 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
  *  chain are maintained.  Head and Tail are relative to the ordering
  *  imposed by this first-word linkage.  Otherwise, each structure in
  *  the chain must be deallocated individually.
+ *  Set the second word to -1 to indicate that the block is free.
  */
 #define SM_DeallocateStructList(SM,pHead,pTail) {	\
+   void *pStruct = pHead;				\
+   while (pStruct != pTail) {				\
+     *(((int *)pStruct)+1) = -1;			\
+     pStruct = *(void **)pStruct;			\
+   }							\
+   *(((int *)pStruct)+1) = -1;				\
    SYS_MUTEX_LOCK( MUTEX_SM ); 				\
    SMFL_NextFreeStruct(pTail) = SM_FreeList(SM);	\
    SM_FreeList(SM) = pHead;				\

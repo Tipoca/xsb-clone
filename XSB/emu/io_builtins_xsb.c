@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.60 2005-11-16 17:32:04 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.61 2005-11-20 21:23:28 dwarren Exp $
 ** 
 */
 
@@ -688,6 +688,9 @@ is just a stack of operands. They are Prolog terms. (How to handle
 variables remains to be seen.)
 ***/
 
+/* prevpsc is kept as an optimization to save a lookup in prolog.  If
+   it has changed, it is reset to 0.  So it doesn't need to be
+   protected for multithreading, since it is self-correcting. */
 static Psc prevpsc = 0;
 
 

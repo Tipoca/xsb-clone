@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.25 2005-11-16 17:32:05 dwarren Exp $
+** $Id: psc_xsb.c,v 1.26 2005-11-20 21:23:29 dwarren Exp $
 ** 
 */
 
@@ -77,7 +77,7 @@ char *string_find(char *str, int insert) {
   }
   
   if (insert) {
-    str0 = (char *)mem_alloc(CHAR_PTR_SIZE + strlen(str) + 1,ATOM_STR_SPACE);
+    str0 = (char *)mem_alloc(CHAR_PTR_SIZE + strlen(str) + 1,STRING_SPACE);
     *ptr = str0;
     *(char **)str0 = NULL;
     str0 = str0 + CHAR_PTR_SIZE;
@@ -103,7 +103,7 @@ static Psc make_psc_rec(char *name, char arity) {
   int length;
   
   length = strlen(name);
-  temp = (Psc)mem_alloc(sizeof(struct psc_rec),ATOM_STR_SPACE);
+  temp = (Psc)mem_alloc(sizeof(struct psc_rec),ATOM_SPACE);
   set_type(temp, 0);
   temp->env = 0;
   //  set_env(temp, 0);
@@ -128,7 +128,7 @@ static Pair make_psc_pair(Psc psc_ptr, Pair *link_ptr) {
 
   Pair new_pair;
   
-  new_pair = (Pair)mem_alloc(sizeof(struct psc_pair),ATOM_STR_SPACE);
+  new_pair = (Pair)mem_alloc(sizeof(struct psc_pair),ATOM_SPACE);
   //  printf("new_psc_pair %d, prev %d\n",(int)new_pair, (int)*link_ptr);
   pair_psc(new_pair) = psc_ptr;         /* set 1st to point to psc_rec */
   pair_next(new_pair) = *link_ptr;      /* set 2nd to old head */
