@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.235 2005-11-18 23:29:01 tswift Exp $
+** $Id: builtin.c,v 1.236 2005-11-21 22:36:30 dwarren Exp $
 ** 
 */
 
@@ -1510,6 +1510,9 @@ int builtin_call(CTXTdeclc byte number)
       break;
     case 1: /* current CP Stack size */
       ctop_int(CTXTc 2, (pb)tcpstack.high - (pb)breg);
+      break;
+    case 2: /* value of delayreg */
+      ctop_int(CTXTc 2, (Integer)delayreg);
       break;
     default: xsb_error("Undefined component of XWAM_STATE");
     }

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.94 2005/11/16 22:34:54 dwarren Exp $
+** $Id: tr_utils.c,v 1.95 2005/11/17 23:24:25 tswift Exp $
 ** 
 */
 
@@ -449,6 +449,8 @@ static void delete_variant_table(CTXTdeclc BTNptr x) {
 	      }
 	    }
 	  } /* free answer trie */
+	  free_answer_list(pSF);
+	  FreeProducerSF(pSF);
 	} /* is leaf */
 	else 
 	  push_node(BTN_Child(node));
