@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.64 2005-11-16 17:32:03 dwarren Exp $
+** $Id: cinterf.c,v 1.65 2005-11-29 00:02:16 tswift Exp $
 ** 
 */
 
@@ -1212,7 +1212,7 @@ if (!xsb_initted_gl)
 	sprintf(executable1, "%s%cconfig%c%s%cbin%cxsb",
 	argv[0], SLASH, SLASH, FULL_CONFIG_NAME, SLASH, SLASH);
 	expfilename = expand_filename(executable1);
-	strcpy(executable, expfilename);
+	strcpy(executable_path_gl, expfilename);
 	mem_dealloc(expfilename,MAXPATHLEN,OTHER_SPACE);
 
 	if (0 == (rc = xsb(CTXTc 0,argc,argv)))     /* initialize xsb */

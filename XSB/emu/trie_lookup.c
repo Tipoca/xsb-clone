@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.14 2005-11-18 21:09:37 tswift Exp $
+** $Id: trie_lookup.c,v 1.15 2005-11-29 00:02:16 tswift Exp $
 ** 
 */
 
@@ -1052,6 +1052,8 @@ void *var_trie_lookup(CTXTdeclc void *branchRoot, xsbBool *wasFound,
  * in the last argument, then the variables in the term are copied into
  * it, with the 0th element containing the (unencoded) count.  The ith
  * encountered variable is placed in array element i.
+ * 
+ * Routine used in meta-predicates such as get_call()
  */
 
 void *variant_trie_lookup(CTXTdeclc void *trieRoot, int nTerms, CPtr termVector,

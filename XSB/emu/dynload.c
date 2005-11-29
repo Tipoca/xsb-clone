@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynload.c,v 1.8 2005-01-14 18:30:55 ruim Exp $
+** $Id: dynload.c,v 1.9 2005-11-29 00:02:16 tswift Exp $
 ** 
 */
 
 
 #include "xsb_config.h"  /* This should appear BEFORE the ifdef! */
 
-extern char executable[];         /* from orient_xsb.c */
+extern char executable_path_gl[];         /* from orient_xsb.c */
 
 #ifdef FOREIGN
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.26 2005-11-16 17:32:04 dwarren Exp $
+** $Id: pathname_xsb.c,v 1.27 2005-11-29 00:02:16 tswift Exp $
 ** 
 */
 
@@ -62,7 +62,7 @@
 #define DDOT	".."
 #define DOT	"."
 
-extern char *user_home;  	  /* from main_xsb.c: the user $HOME dir or
+extern char *user_home_gl;  	  /* from main_xsb.c: the user $HOME dir or
 				     install dir, if $HOME is null */
 static char *rectify_pathname(char *, char *);
 extern void transform_cygwin_pathname(char *);
@@ -147,7 +147,7 @@ char *tilde_expand_filename_norectify(char *filename, char *expanded) {
   if (filename[1] == '/' || filename[1] == '\0') {
     /*  The file name begins with "~/" or is simply "~" -- so replace
 	'~' with the user's home directory. */
-    path_prefix = user_home;
+    path_prefix = user_home_gl;
     path_suffix = filename + 1;
   } else {
     /*  The file name begins with ~<username>.  Use a system call to

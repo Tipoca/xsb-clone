@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.125 2005-11-18 23:29:01 tswift Exp $
+** $Id: emuloop.c,v 1.126 2005-11-29 00:02:16 tswift Exp $
 ** 
 */
 
@@ -2182,9 +2182,9 @@ DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
 	perform_IO_Redirect(CTXTc argc, argv);
 
 #ifdef SIMPLESCALAR
-     strcpy(executable,argv[0]);
+     strcpy(executable_path_gl,argv[0]);
 #else
-     if (executable[0] == '\0')
+     if (executable_path_gl[0] == '\0')
        xsb_executable_full_path(argv[0]);
 #endif
 

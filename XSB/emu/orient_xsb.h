@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.h,v 1.2 2005-01-14 18:31:25 ruim Exp $
+** $Id: orient_xsb.h,v 1.3 2005-11-29 00:02:16 tswift Exp $
 ** 
 */
 
@@ -29,5 +29,5 @@ extern void  set_install_dir(void);
 extern void  set_config_file(void);
 extern void  set_user_home(void);
 extern char *xsb_executable_full_path(char *);
-extern char  executable[];
+extern char  executable_path_gl[];
 
