@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: rw_lock.c,v 1.3 2005-02-11 13:14:29 vidrevich Exp $
+** $Id: rw_lock.c,v 1.4 2005-12-07 13:23:02 ruim Exp $
 ** 
 */
 
@@ -31,7 +31,7 @@
 
 #include "xsb_config.h"
 
-#ifdef MULTI_THREAD
+#ifdef MULTI_THREAD_RWL
 
 #include "rw_lock.h"
 

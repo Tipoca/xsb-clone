@@ -19,11 +19,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: rw_lock.h,v 1.3 2005-02-11 13:14:29 vidrevich Exp $
+** $Id: rw_lock.h,v 1.4 2005-12-07 13:23:02 ruim Exp $
 ** 
 */
 
-#ifdef MULTI_THREAD
+#ifdef MULTI_THREAD_RWL
 
 #ifdef WIN_NT
 #include "pthread.h"
@@ -71,5 +71,5 @@ void rw_unlock_write(rw_lock *l) ;
 #define TRIE_W_LOCK()
 #define	TRIE_W_UNLOCK()
 
-#endif /* MULTI_THREAD */
+#endif /* MULTI_THREAD_RWL */
 

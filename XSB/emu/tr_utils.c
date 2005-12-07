@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.95 2005/11/17 23:24:25 tswift Exp $
+** $Id: tr_utils.c,v 1.96 2005/11/21 22:36:30 dwarren Exp $
 ** 
 */
 
@@ -1076,7 +1076,7 @@ int trie_interned(CTXTdecl)
   int RootIndex;
   int ret_val = FALSE;
   Cell Leafterm, trie_term;
-#ifdef MULTI_THREAD
+#ifdef MULTI_THREAD_RWL
    CPtr tbreg;
 #ifdef SLG_GC
    CPtr old_cptop;
@@ -1100,7 +1100,7 @@ int trie_interned(CTXTdecl)
       reg_arrayptr = reg_array -1;
       num_vars_in_var_regs = -1;
       pushreg(trie_term);
-#ifdef MULTI_THREAD
+#ifdef MULTI_THREAD_RWL
 /* save choice point for trie_unlock instruction */
        save_find_locx(ereg);
        tbreg = top_of_cpstack;

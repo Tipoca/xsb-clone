@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.79 2005-11-16 17:32:06 dwarren Exp $
+** $Id: tries.c,v 1.80 2005-12-07 13:23:03 ruim Exp $
 ** 
 */
 
@@ -1810,7 +1810,7 @@ byte *trie_get_returns(CTXTdeclc VariantSF sf, Cell retTerm) {
 
   BTNptr ans_root_ptr;
   Cell retSymbol;
-#ifdef MULTI_THREAD
+#ifdef MULTI_THREAD_RWL
    CPtr tbreg;
 #ifdef SLG_GC
    CPtr old_cptop;
@@ -1859,7 +1859,7 @@ byte *trie_get_returns(CTXTdeclc VariantSF sf, Cell retTerm) {
   xsb_dbgmsg((LOG_DEBUG,">>>> The end of trie_get_returns ==> go to answer trie"));
 #endif
   delay_it = 0;  /* Don't delay the answer. */
-#ifdef MULTI_THREAD
+#ifdef MULTI_THREAD_RWL
 /* save choice point for trie_unlock instruction */
        save_find_locx(ereg);
        tbreg = top_of_cpstack;
@@ -1886,7 +1886,7 @@ byte * trie_get_calls(CTXTdecl)
    BTNptr call_trie_root;
    CPtr cptr;
    int i;
-#ifdef MULTI_THREAD
+#ifdef MULTI_THREAD_RWL
    CPtr tbreg;
 #ifdef SLG_GC
    CPtr old_cptop;
@@ -1913,7 +1913,7 @@ byte * trie_get_calls(CTXTdecl)
 #endif
 	 pushreg(cell(cptr+i));
        }
-#ifdef MULTI_THREAD
+#ifdef MULTI_THREAD_RWL
 /* save choice point for trie_unlock instruction */
        save_find_locx(ereg);
        tbreg = top_of_cpstack;
