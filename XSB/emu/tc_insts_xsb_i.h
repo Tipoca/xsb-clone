@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.24 2005-12-07 13:23:02 ruim Exp $
+** $Id: tc_insts_xsb_i.h,v 1.25 2005-12-12 18:44:53 dwarren Exp $
 ** 
 */
 
@@ -667,7 +667,8 @@ XSB_Start_Instr(hash_opcode,_hash_opcode)
      *  instead pass in the header, allowing access to all needed fields,
      *  including the bucket array.
      */
-	  cell(--tbreg) = makestring(hash_header);
+	  //	  printf("makeaddr: tc_insts_xsb_i.h: %p\n",hash_header); //dsw!!!
+	  cell(--tbreg) = makeaddr(hash_header); /* BUT NOT A STRING */
 	  cell(--tbreg) = makeint(FIRST_HASH_NODE);
 	  save_choicepoint(tbreg,ereg,(byte *)&hash_handle_inst,breg);
 #ifdef SLG_GC

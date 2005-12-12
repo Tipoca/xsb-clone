@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.126 2005-11-29 00:02:16 tswift Exp $
+** $Id: emuloop.c,v 1.127 2005-12-12 18:44:52 dwarren Exp $
 ** 
 */
 
@@ -1037,7 +1037,7 @@ contcase:     /* the main loop */
     if ((ereg - hreg) < (long)op2)
       {
 #endif
-        if (gc_heap(CTXTc op1)) { /* garbage collection potentially modifies hreg */
+        if (gc_heap(CTXTc op1,FALSE)) { /* garbage collection potentially modifies hreg */
 	  if ((ereg - hreg) < (long)op2) {
 	    if (pflags[STACK_REALLOC]) {
 	      if (glstack_realloc(CTXTc resize_stack(glstack.size,(op2*sizeof(Cell))),op1) != 0) {

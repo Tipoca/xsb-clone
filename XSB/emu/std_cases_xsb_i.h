@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.15 2005-09-28 13:37:04 dwarren Exp $
+** $Id: std_cases_xsb_i.h,v 1.16 2005-12-12 18:44:53 dwarren Exp $
 ** 
 */
 
@@ -149,15 +149,3 @@
     /* r3: ?sorted list of terms			*/
    return parsort(CTXT);
 
-  case GC_CLAUSES: {
-    switch (ptoc_int(CTXTc 1)) {
-      case GC_TABLED_PREDS: {
-	ctop_int(CTXTc 2, (Integer) gc_tabled_preds(CTXT));
-	return TRUE;
-      }
-      case GC_DYNAMIC: {
-	ctop_int(CTXTc 2, (Integer) gc_dynamic(CTXT));
-	return TRUE;
-      }
-    }
-  }

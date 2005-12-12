@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hashtable_xsb.c,v 1.9 2005-11-16 17:32:04 dwarren Exp $
+** $Id: hashtable_xsb.c,v 1.10 2005-12-12 18:44:52 dwarren Exp $
 ** 
 */
 
@@ -42,6 +42,7 @@
 #include "debug_xsb.h"
 #include "flags_xsb.h"
 #include "memory_xsb.h"
+#include "heap_xsb.h"
 
 /*
   A simple hashtable.
@@ -184,3 +185,32 @@ void show_table_state(xsbHashTable *table)
   }
 }
 
+#ifndef MULTI_THREAD
+// only handles the one hashtable.
+extern xsbHashTable bt_storage_hash_table;
+#endif
+
+void mark_hash_table_strings(CTXTdecl) {
+  xsbBucket *bucket;
+  int i;
+  xsbHashTable *table;
+
+  table = &bt_storage_hash_table;
+  if (table->initted==TRUE) {
+    for (i=0; i < table->length; i++) {
+      bucket = get_top_bucket(table,i);
+      if (!is_free_bucket(bucket)) {
+	if (bucket->name && isstring(bucket->name)) {
+	  mark_string(string_val(bucket->name),"hashtable");
+	}
+	bucket = bucket->next;
+	while (bucket != NULL) {
+	  if (bucket->name && isstring(bucket->name)) {
+	    mark_string(string_val(bucket->name),"hashtable-b");
+	  }
+	  bucket = bucket->next;
+	}
+      }
+    }
+  }
+}

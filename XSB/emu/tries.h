@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.35 2005-11-16 17:32:06 dwarren Exp $
+** $Id: tries.h,v 1.36 2005-12-12 18:44:54 dwarren Exp $
 ** 
 */
 
@@ -77,6 +77,9 @@
 
 #define TN_SetHashHdr(pTN,pTHT)		TN_Child(pTN) = (void *)(pTHT)
 #define TN_GetHashHdr(pTN)		TN_Child(pTN)
+
+#define FREE_TRIE_NODE_MARK -1
+#define FREE_TRIE_BLOCK_MARK -2
 
 /*===========================================================================*/
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.26 2005-11-20 21:23:29 dwarren Exp $
+** $Id: psc_xsb.c,v 1.27 2005-12-12 18:44:53 dwarren Exp $
 ** 
 */
 
@@ -92,6 +92,19 @@ exit_string_find:
   return str0;
 }
 
+char *string_find_safe(char *str) {
+
+  char *ptr, *str0;
+
+  ptr = (char *)((Integer)(*(string_table.table + hash(str, 0, string_table.size))) & ~1);
+  while (ptr) {
+    str0 = ptr + CHAR_PTR_SIZE;
+    if (strcmp(str, str0) == 0)
+      return str0;
+    ptr = (char *)(((Integer)(*(void **)ptr)) & ~1);
+  }
+  return NULL;
+}
 
 /* === PSC and PSC-PAIR structure creation/initialization =============== */
 

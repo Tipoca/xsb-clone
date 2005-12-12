@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.15 2005-11-29 00:02:16 tswift Exp $
+** $Id: trie_lookup.c,v 1.16 2005-12-12 18:44:54 dwarren Exp $
 ** 
 */
 
@@ -994,7 +994,7 @@ void *var_trie_lookup(CTXTdeclc void *branchRoot, xsbBool *wasFound,
 
   BTNptr parent;	/* Last node containing a matched symbol */
 
-  Cell symbol;		/* Trie representation of current heap symbol,
+  Cell symbol = 0;	/* Trie representation of current heap symbol,
 			   used for matching/inserting into a TSTN */
 
   int std_var_num;	/* Next available TrieVar index; for standardizing

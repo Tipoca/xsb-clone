@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.h,v 1.11 2005-11-18 23:29:01 tswift Exp $
+** $Id: heap_xsb.h,v 1.12 2005-12-12 18:44:52 dwarren Exp $
 ** 
 */
 
@@ -53,10 +53,11 @@
 
 /*----- The following functions are used in other parts of the system --*/
 
-extern int  gc_heap(CTXTdeclc int);
+extern int  gc_heap(CTXTdeclc int, int);
 extern int  mark_heap(CTXTdeclc int,int *);
 extern xsbBool glstack_ensure_space(CTXTdeclc int,int);
 extern xsbBool glstack_realloc(CTXTdeclc int,int);
+extern char *string_find_safe(char *str);
 
 extern void print_cp(CTXTdeclc int);
 extern void print_tr(CTXTdeclc int);

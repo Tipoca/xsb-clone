@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.7 2005-11-20 21:23:29 dwarren Exp $
+** $Id: struct_manager.h,v 1.8 2005-12-12 18:44:53 dwarren Exp $
 ** 
 */
 
@@ -245,10 +245,10 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
 #define SM_DeallocateStructList(SM,pHead,pTail) {	\
    void *pStruct = pHead;				\
    while (pStruct != pTail) {				\
-     *(((int *)pStruct)+1) = -1;			\
+     *(((int *)pStruct)+1) = FREE_TRIE_NODE_MARK;	\
      pStruct = *(void **)pStruct;			\
    }							\
-   *(((int *)pStruct)+1) = -1;				\
+   *(((int *)pStruct)+1) = FREE_TRIE_NODE_MARK;		\
    SYS_MUTEX_LOCK( MUTEX_SM ); 				\
    SMFL_NextFreeStruct(pTail) = SM_FreeList(SM);	\
    SM_FreeList(SM) = pHead;				\

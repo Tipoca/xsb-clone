@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.22 2005-11-16 17:32:05 dwarren Exp $
+** $Id: slgdelay.h,v 1.23 2005-12-12 18:44:53 dwarren Exp $
 ** 
 */
 
@@ -46,7 +46,7 @@
   new_heap_functor(sreg, delay_psc);					\
   cell(sreg) = makeaddr(SUBGOAL); sreg++;				\
   cell(sreg) = makeaddr(NEG_DELAY); sreg++;				\
-  cell(sreg) = makeaddr(NEG_DELAY); sreg++;				\
+  cell(sreg) = makeaddr(NEG_DELAY); sreg++; /* NOT STRINGS */		\
   hreg = sreg;								\
   delayreg = (CPtr) new_delay_cons_cell;				\
 }
