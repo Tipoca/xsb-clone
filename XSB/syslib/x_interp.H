@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.36 2004/08/20 18:16:34 dwarren Exp $
+** $Id: x_interp.H,v 1.37 2005/01/14 18:32:05 ruim Exp $
 ** 
 */
 
@@ -43,7 +43,8 @@
           intern_string/2, is_xwammode/1, 
           psc_prop/2, psc_set_prop/2, psc_set_type/2, 
 	  stat_flag/2, stat_set_flag/2,
-	  slash/1, term_psc/2, trimcore/0
+	  slash/1, term_psc/2, trimcore/0,
+	  xwam_state/2
      from machine.
 :- import file_open/3, file_close/1, file_get/2, fmt_write_string/3,
           file_flush/2, /*ioport2iostream/2,*/

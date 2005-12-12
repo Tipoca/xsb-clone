@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.64 2005/11/11 21:21:21 tswift Exp $
+** $Id: standard.H,v 1.65 2005/11/16 21:30:30 dwarren Exp $
 **
 */
 
@@ -115,7 +115,7 @@
 :- import windows_os_loader/0 from loader.
 
  :- import call0/1, conname/2,
-          expand_filename/2, gc_clauses/2,is_charlist/1,
+          expand_filename/2, gc_stuff/2,is_charlist/1,
           machine_file_exists/1, 
 	  psc_arity/2, psc_import/3, psc_insert/4,
 	  psc_name/2, psc_type/2,

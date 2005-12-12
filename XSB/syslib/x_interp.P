@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.48 2004/08/19 22:15:27 tswift Exp $
+** $Id: x_interp.P,v 1.49 2005/01/14 18:32:05 ruim Exp $
 ** 
 */
 
@@ -139,14 +139,24 @@ process_query1(X, []) :-	%% no printable variables appeared in the input
 	call_query(X),
 	close_open_tables,
 	!,
-	file_nl(STDFDBK), file_write(STDFDBK, yes), file_nl(STDFDBK),
+	xwam_state(2,DelayReg),
+	(DelayReg =:= 0
+	 ->	Ans = yes
+	 ;	Ans = undefined
+	),
+	file_nl(STDFDBK), file_write(STDFDBK, Ans), file_nl(STDFDBK),
 	fail.
 process_query1(X, Vars) :- 
 	prompt(MorePrompt,MorePrompt,'_$more_prompt'(_)),
 	call_query(X),
+	xwam_state(2,DelayReg),
 	stat_flag(LETTER_VARS, LetterVars),
 	( LetterVars =:= 0 -> print_answer(Vars)
 	; ( numbervars(Vars), print_answer(Vars), fail ; true )
+	),
+	(DelayReg =:= 0
+	 ->	true
+	 ;	file_write(STDFDBK, ' undefined')
 	),
 	file_write(STDFDBK, MorePrompt),
 	file_flush(STDFDBK, _),

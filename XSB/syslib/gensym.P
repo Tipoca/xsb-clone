@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gensym.P,v 1.6 2004/02/25 21:24:07 tswift Exp $
+** $Id: gensym.P,v 1.7 2004/05/17 19:16:17 dwarren Exp $
 ** 
 */
 
@@ -45,7 +45,7 @@ conlength(Con, Length) :-
 	conname(Con, Name), str_len(Name, Len), Length = Len.
 
 /*----gennum------------------------------------------------------------*/
-
+:- conset(gennum_val,0).
 gennum(N) :- conget(gennum_val, O), N is O + 1, conset(gennum_val, N).
 gennum(Obj,N) :-
 	nonvar(Obj), conget(Obj, O), N is O + 1, conset(Obj, N).

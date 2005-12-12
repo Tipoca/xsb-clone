@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.71 2005/09/29 15:53:04 dwarren Exp $
+** $Id: machine.H,v 1.72 2005/11/07 20:58:04 dwarren Exp $
 ** 
 */
 
@@ -143,6 +143,7 @@
    gc_clauses/0,
 	print_ls/0, print_tr/0, print_heap/2, print_cp/0, print_regs/0,
 	print_all_stacks/0, expand_heap/0, mark_heap/1, gc_heap/0,
+	gc_stuff/2,
 	'$$findall_init'/2,
 	'$$findall_add'/3,
 	'$$findall_get_solutions'/4,
