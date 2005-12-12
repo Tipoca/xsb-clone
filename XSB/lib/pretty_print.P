@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pretty_print.P,v 1.4 2004-11-24 12:23:54 tswift Exp $
+** $Id: pretty_print.P,v 1.5 2005-12-12 18:46:53 dwarren Exp $
 ** 
 */
 
@@ -29,6 +29,16 @@
 :- import call0/1 from machine.
 
 :- import numbervars/3 from num_vars.
+
+:- import (dynamic)/1 from assert.
+:- import nl/0 from standard.
+:- import writeln/1 from standard.
+:- import writeq/1 from standard.
+:- import tab/1 from standard.
+:- import put/1 from standard.
+:- import (\=)/2 from standard.
+:- import write/1 from standard.
+:- import copy_term/2 from basics.
 
 
 %:- import from lists.
