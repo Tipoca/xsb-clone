@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.236 2005-11-21 22:36:30 dwarren Exp $
+** $Id: builtin.c,v 1.237 2005-12-12 00:19:11 tswift Exp $
 ** 
 */
 
@@ -2606,8 +2606,13 @@ case WRITE_OUT_PROFILE:
     case FINDALL_GET_SOLS: return(findall_get_solutions(CTXT)) ;
 
 #ifdef HAVE_SOCKET
-  case SOCKET_REQUEST:
-    return xsb_socket_request(CTXT);
+    case SOCKET_REQUEST: {
+      xsbBool xsb_socket_request_return;
+      SYS_MUTEX_LOCK( MUTEX_SOCKETS ) ;
+      xsb_socket_request_return = xsb_socket_request(CTXT);
+      SYS_MUTEX_UNLOCK( MUTEX_SOCKETS ) ;
+      return xsb_socket_request_return;
+    }
 #endif /* HAVE_SOCKET */	    
 
 #ifdef WIN_NT

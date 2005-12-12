@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.11 2005-11-20 21:23:26 dwarren Exp $
+** $Id: hash_xsb.c,v 1.12 2005-12-12 00:19:12 tswift Exp $
 ** 
 */
 
@@ -35,7 +35,7 @@
 #include "psc_xsb.h"
 #include "flags_xsb.h"
 #include "memory_xsb.h"
-
+#include "thread_xsb.h"
 
 /*
  *  The "Atom Table" is divided into two structures, based on the type
@@ -217,6 +217,7 @@ void symbol_table_stats() {
   int first_index;
   Pair pair_ptr;
 
+ SYS_MUTEX_LOCK( MUTEX_SYMBOL ) ;
 
   symbols = used_buckets = unused_buckets = last_index = 0;
   fullest_bucket_size = fullest_bucket_num = 0;
@@ -254,6 +255,9 @@ void symbol_table_stats() {
   printf("\tunused buckets:\t%lu\n", unused_buckets);
   printf("\tmaximum bucket size:\t%lu  (#: %lu)\n", fullest_bucket_size, 
 	 fullest_bucket_num);
+
+ SYS_MUTEX_UNLOCK( MUTEX_SYMBOL ) ;
+
 }  
 
 
@@ -264,6 +268,7 @@ void string_table_stats() {
   int first_index;
   void *ptr;
 
+ SYS_MUTEX_LOCK( MUTEX_STRING ) ;
 
   strings = used_buckets = unused_buckets = last_index = 0;
   fullest_bucket_size = fullest_bucket_num = 0;
@@ -300,4 +305,7 @@ void string_table_stats() {
   printf("\tunused buckets:\t%lu\n", unused_buckets);
   printf("\tmaximum bucket size:\t%lu  (#: %lu)\n", fullest_bucket_size, 
 	 fullest_bucket_num);
+
+ SYS_MUTEX_UNLOCK( MUTEX_STRING ) ;
+
 }

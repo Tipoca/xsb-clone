@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.19 2005-09-02 20:43:13 tswift Exp $
+** $Id: inst_xsb.h,v 1.20 2005-12-12 00:19:12 tswift Exp $
 ** 
 */
 
@@ -48,7 +48,7 @@ extern void init_inst_table(void);
 #define PP  12	/* double pad */
 #define PPP 13	/* triple pad */
 #define PPR 14  /* = PP + R; for switchonterm and switchonbound */
-#define T   15  /* tabletry */
+#define T   15  /* tabletry (tip pointer) */
 #define RRR 16  /* = R + R + R; for switchon3bound */
 #define F   17  /* floating point number */
 #define B   18  /* tagged (boxed) integer number */

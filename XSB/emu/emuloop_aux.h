@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop_aux.h,v 1.8 2005-07-15 14:52:31 dwarren Exp $
+** $Id: emuloop_aux.h,v 1.9 2005-12-12 00:19:12 tswift Exp $
 ** 
 */
 
@@ -64,11 +64,8 @@
 } 
 #endif
 /*----------------------------------------------------------------------*/
-#ifdef PROFILE
-#define SHARING_PROFILE
-#endif
 
-#ifdef SHARING_PROFILE
+#if defined(PROFILE) && !defined(MULTI_THREAD)
 #define RESTORE_SUB                                                       \
 {                                                                         \
   CPtr tbreg;                                                             \
