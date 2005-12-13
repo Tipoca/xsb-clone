@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.238 2005-12-12 18:44:51 dwarren Exp $
+** $Id: builtin.c,v 1.239 2005-12-13 01:13:45 tswift Exp $
 ** 
 */
 
@@ -1749,7 +1749,13 @@ int builtin_call(CTXTdeclc byte number)
 			   R3: -Int (res), or mode: read/write;
 			   R4: undefined or Stream used for output/input
 			   from/to the shell command. */
-    return sys_system(CTXTc ptoc_int(CTXTc 1));
+    {
+      xsbBool sys_system_return;
+      SYS_MUTEX_LOCK( MUTEX_SYS_SYSTEM );
+      sys_system_return = sys_system(CTXTc ptoc_int(CTXTc 1));
+      SYS_MUTEX_UNLOCK( MUTEX_SYS_SYSTEM );
+      return sys_system_return;
+    }
   case SYS_GETHOST: {
     /* +R1: a string indicating the host name  */
     /* +R2: a buffer (of length 16) for returned structure */
