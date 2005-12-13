@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.26 2005-01-17 17:48:26 tswift Exp $
+## $Id: testsuite.sh,v 1.27 2005-12-13 14:20:20 dwarren Exp $
 ## 
 ##
 
@@ -260,7 +260,7 @@ $GREP "fatal" $LOG_FILE >> $RES_FILE
 # some other problems that should highlight bugs in the test suite
 $GREP "syntax error" $LOG_FILE >> $RES_FILE
 $GREP "cannot find" $LOG_FILE >> $RES_FILE
-$GREP "undefined" $LOG_FILE >> $RES_FILE
+$GREP "predicate undefined" $LOG_FILE >> $RES_FILE
 
 echo "-----------------------------------------"
 
