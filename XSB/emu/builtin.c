@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.240 2005-12-15 16:39:52 dwarren Exp $
+** $Id: builtin.c,v 1.241 2005-12-15 20:59:28 dwarren Exp $
 ** 
 */
 
@@ -1595,10 +1595,7 @@ int builtin_call(CTXTdeclc byte number)
 	  ctop_int(CTXTc 4, *(long *)(token->value));
 	  break;
         case TK_REAL : case TK_REALFUNC : 
-	  {
-          Float float_temp =  (Float)(*(double *)(token->value));
-          ctop_float(CTXTc 4, float_temp);
-	  }
+	  ctop_float(CTXTc 4, *(double *)(token->value));
 	  break;
         case TK_PUNC : case TK_HPUNC :
 	  ctop_int(CTXTc 4, *(token->value)); break;
