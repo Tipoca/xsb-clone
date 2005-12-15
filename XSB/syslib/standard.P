@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.108 2005/12/12 18:45:46 dwarren Exp $
+** $Id: standard.P,v 1.109 2005/12/14 22:32:15 kostis Exp $
 ** 
 */
 
@@ -67,7 +67,7 @@ see(Integer):-
 	set_input(Integer).
 see(File) :- 
 	check_atom(File,see/1,1),
-	open(File,read,0,Str),
+	open(File,read,Str),
 	set_input(Str).
 
 seeing(Str) :- stat_flag(CURRENT_INPUT, Str).
@@ -87,7 +87,7 @@ tell(Integer):-
 	set_output(Integer).
 tell(File) :- 
 	check_atom(File,tell/1,1),
-	open(File,write,0,Str),
+	open(File,write,Str),
 	set_output(Str).
 
 telling(Str) :- stat_flag(CURRENT_OUTPUT, Str).
