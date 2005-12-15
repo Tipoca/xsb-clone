@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.45 2005-11-18 21:09:36 tswift Exp $
+** $Id: error_xsb.c,v 1.46 2005-12-15 16:39:52 dwarren Exp $
 ** 
 */
 
@@ -468,7 +468,7 @@ DllExport void call_conv xsb_dbgmsg1(int log_level, char *description, ...)
     va_start(args, description);
     vfprintf(stddbg, description, args);
     va_end(args);
-    fprintf(stddbg, "\n");
+    //    fprintf(stddbg, "\n");
   }
 }
 #endif

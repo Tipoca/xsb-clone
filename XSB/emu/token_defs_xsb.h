@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_defs_xsb.h,v 1.3 2004-10-15 14:43:38 dwarren Exp $
+** $Id: token_defs_xsb.h,v 1.4 2005-12-15 16:39:52 dwarren Exp $
 ** 
 */
 
@@ -65,9 +65,9 @@
 #define PUNCT    6              /* (),[]|{}% */
 #define ATMQT    7              /* ' (atom quote) */
 #define LISQT    8              /* " (list quote) */
-#define STRQT    9              /* $ (string quote) */
-#define CHRQT   10              /* ` (character quote, maybe) */
-#define TILDE   11              /* ~ (like character quote but buggy) */
+#define STRQT    9              /* $ (string quote), not used, now $ is SIGN */
+#define CHRQT   10              /* ` (character quote, maybe), not used, now ` is SIGN */
+#define TILDE   11              /* ~ (like character quote but buggy), not used, now SIGN */
 #define SPACE   12              /* layout and control chars */
 #define EOLN    13              /* line terminators ^J ^L */
 #define REALO   14              /* floating point number */
