@@ -63,3 +63,4 @@ options=$2
 # -------
 ../gentest.sh "$XEMU -m  1500 -c  5000 -o 2000 $options -S" floratest "go."
 ../gentest.sh "$XEMU -m 10000 -c 60000 -o 4000 $options -S" decker    "go."
+../gentest.sh "$XEMU $options -S" pilegaard "test."
