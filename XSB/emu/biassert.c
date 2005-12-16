@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.103 2005-12-15 16:39:51 dwarren Exp $
+** $Id: biassert.c,v 1.104 2005-12-16 17:05:48 dwarren Exp $
 ** 
 */
 
@@ -103,7 +103,7 @@ CPtr dynpredep_to_prortb(CTXTdeclc void *pred_ep) {
 }
 #endif
 
-inline PrRef dynpredep_to_prref(CTXTdeclc void *pred_ep) {
+PrRef dynpredep_to_prref(CTXTdeclc void *pred_ep) {
 #ifdef MULTI_THREAD
   if (cell_opcode((CPtr)(pred_ep)) == switchonthread) {
     if (th->tid > (((struct DispBlk_t **)pred_ep)[1])->MaxThread) 
