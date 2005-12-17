@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.52 2005-12-17 18:37:46 tswift Exp $
+** $Id: odbc_xsb.c,v 1.53 2005-12-17 20:33:18 dwarren Exp $
 **
 */
 
@@ -69,7 +69,7 @@
 
 static Psc     nullFctPsc = NULL;
 /* static int      numberOfCursors = 0; */
-static long      SQL_NTSval = SQL_NTS;
+/*static long      SQL_NTSval = SQL_NTS;*/
 static long      SQL_NULL_DATAval = SQL_NULL_DATA;
 
 static HENV henv = NULL;
