@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.13 2005-12-12 18:44:52 dwarren Exp $
+** $Id: hash_xsb.c,v 1.14 2005-12-17 02:46:32 dwarren Exp $
 ** 
 */
 
@@ -312,7 +312,7 @@ void string_table_stats() {
 }
 
 void free_unused_strings() {
-  int i;
+  unsigned long i;
   void *ptr, *prevptr;
   int used = 0, unused = 0;
 

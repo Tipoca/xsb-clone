@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.19 2005-10-21 17:47:52 tswift Exp $
+** $Id: auxlry.c,v 1.20 2005-12-17 02:46:28 dwarren Exp $
 ** 
 */
 
@@ -55,7 +55,7 @@ extern int syscall();
 
 double cpu_time(void)
 {
-  float time_sec;
+  double time_sec;
 
 #if defined(WIN_NT)
 #ifndef _MSC_VER
@@ -90,10 +90,10 @@ double cpu_time(void)
     stime = lkernel / 1.0e7;
     utime = luser / 1.0e7;
 
-    time_sec = (float) stime + utime;
+    time_sec =  stime + utime;
 
   } else {
-    time_sec = ((float) clock() / CLOCKS_PER_SEC);
+    time_sec = ( clock() / CLOCKS_PER_SEC);
   }
 
 #else

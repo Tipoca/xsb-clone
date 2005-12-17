@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.241 2005-12-15 20:59:28 dwarren Exp $
+** $Id: builtin.c,v 1.242 2005-12-17 02:46:31 dwarren Exp $
 ** 
 */
 
@@ -367,7 +367,7 @@ void constructString(CTXTdeclc Cell addr, int ivstr)
   case XSB_INT: 
     val = int_val(addr);
     if (val < 256 && val >= 0) {
-      XSB_StrAppendC(LSBuff[ivstr],val);
+      XSB_StrAppendC(LSBuff[ivstr],(char)val);
       return;
     } else xsb_abort("[PTOC_LONGSTRING] Argument of unknown type");
   case XSB_STRING: 
@@ -1391,7 +1391,7 @@ int builtin_call(CTXTdeclc byte number)
       bld_int(vptr(addr+disp), tmpval); break;
     }
     case XSB_FLOAT:
-      bld_float(vptr(addr+disp), ptoc_float(CTXTc 4)); break;
+      bld_float(vptr(addr+disp),(float)ptoc_float(CTXTc 4)); break;
     case XSB_STRUCT: 
       bld_cs(vptr(addr+disp), (Pair)ptoc_int(CTXTc 4)); break;
     case XSB_STRING:

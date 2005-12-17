@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.104 2005-12-16 17:05:48 dwarren Exp $
+** $Id: biassert.c,v 1.105 2005-12-17 02:46:31 dwarren Exp $
 ** 
 */
 
@@ -1384,7 +1384,7 @@ xsbBool assert_buff_to_clref(CTXTdecl /*Head,Arity,Prref,AZ,Indexes,HashTabSize,
 {
   ClRef Clref;
   assert_buff_to_clref_p(CTXTc reg_term(CTXTc 1),
-			 ptoc_int(CTXTc 2),
+			 (byte)ptoc_int(CTXTc 2),
 			 (PrRef)ptoc_int(CTXTc 3),
 			 ptoc_int(CTXTc 4),
 			 reg_term(CTXTc 5),

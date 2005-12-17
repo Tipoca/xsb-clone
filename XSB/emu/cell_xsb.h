@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.26 2005-11-17 21:46:56 dwarren Exp $
+** $Id: cell_xsb.h,v 1.27 2005-12-17 02:46:32 dwarren Exp $
 ** 
 */
 
@@ -290,7 +290,7 @@ extern inline Float make_float_from_ints(UInteger, UInteger);
      ?int_val(dcell)         \
      :(isboxedinteger(dcell) \
        ?boxedint_val(dcell)  \
-       :0x80000000))
+       :(Integer)0x80000000))
 
 
 #ifndef FAST_FLOATS

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.13 2005-12-12 18:44:52 dwarren Exp $
+** $Id: gc_mark.h,v 1.14 2005-12-17 02:46:32 dwarren Exp $
 ** 
 */
 
@@ -943,7 +943,7 @@ void mark_code_strings(int pflag, CPtr inst_addr, CPtr end_addr) {
 }
 
 void mark_atom_and_code_strings(CTXTdecl) {
-  int i;
+  unsigned long i;
   Pair pair_ptr, mod_pair_ptr;
   PrRef prref;
   ClRef clref;
