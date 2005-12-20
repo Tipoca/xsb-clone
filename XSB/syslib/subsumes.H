@@ -18,15 +18,18 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subsumes.H,v 1.3.6.2 2004/10/18 20:48:41 ruim Exp $
+** $Id: subsumes.H,v 1.6 2005/01/14 18:32:04 ruim Exp $
 ** 
 */
 
 
 :- export subsumes_chk/2, variant/2, subsumes/2.
+:- export mysubsumes_chk/2.
 
 :- import numbervars/1 from num_vars.
-:- import conset/2, conget/2 from gensym.
+%%:- import conset/2, conget/2 from gensym.
 :- import term_psc/2, psc_arity/2, term_arg/3, term_type/2
      from machine.
+:- import get_attributes/2,attv_unify/2 from machine.
+%%:- import functor/3, arg/3 from standard.
 
