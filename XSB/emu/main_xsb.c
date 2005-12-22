@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: main_xsb.c,v 1.9 2005-11-12 15:48:50 dwarren Exp $
+** $Id: main_xsb.c,v 1.10 2005-12-22 23:33:56 tswift Exp $
 ** 
 */
 
@@ -42,6 +42,7 @@
 /* wind2unix.h must be included after sys/stat.h */
 #include "wind2unix.h"
 
+#include "context.h"
 #include "emuloop.h"
 
 #ifdef HAVE_SOCKET
@@ -53,7 +54,7 @@
 
 #include "orient_xsb.h"
 #include "basicdefs.h"
-#include "context.h"
+
 int main(int argc, char *argv[])
 { 
 #ifdef MULTI_THREAD

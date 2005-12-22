@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_unify.c,v 1.16 2005-10-03 13:26:44 tswift Exp $
+** $Id: tst_unify.c,v 1.17 2005-12-22 23:34:02 tswift Exp $
 ** 
 */
 
@@ -103,6 +103,14 @@ static BTNptr gAnsLeaf;    /* answer to consume */
 static CPtr gAnsTmplt;      /* ... using this template */
 static int gSizeTmplt;      /* ... of this size */
 #endif
+
+// TLS: temporary 12/05
+static void debug_answer_consumption(CTXTdecl) {
+  printf("-----------------------------\n");
+  printTriePath(stderr,gAnsLeaf,NO);
+  fprintf(stderr,"\nwith ");
+  printAnswerTemplate(stderr,gAnsTmplt,gSizeTmplt);
+ }
 
 static void consumption_error(CTXTdeclc char *string) {
 
@@ -390,7 +398,6 @@ void consume_subsumptive_answer(CTXTdeclc BTNptr pAnsLeaf, int sizeTmplt,
 				CPtr pAnsTmplt) {
 
   Cell subterm, symbol, sym_orig_tag;
-
 
   /* Set globals for error reporting
      ------------------------------- */

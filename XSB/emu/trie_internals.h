@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.26 2005-11-16 17:32:05 dwarren Exp $
+** $Id: trie_internals.h,v 1.27 2005-12-22 23:34:01 tswift Exp $
 ** 
 */
 
@@ -726,11 +726,11 @@ extern Structure_Manager *smBTHT;
 #define TSTNs_PER_BLOCK    K
 extern Structure_Manager smTSTN;
 
-extern TSTNptr new_tstn(int TrieType, int NodeType, Cell Symbol,
+extern TSTNptr new_tstn(CTXTdeclc int TrieType, int NodeType, Cell Symbol,
 			TSTNptr Parent, TSTNptr Sibling);
 
 #define New_TSTN(TSTN,TrieType,NodeType,Symbol,Parent,Sibling)	\
-   TSTN = new_tstn(TrieType,NodeType,Symbol,Parent,Sibling)
+   TSTN = new_tstn(CTXTc TrieType,NodeType,Symbol,Parent,Sibling)
 
 #define CreateEscapeTSTN(pTSTN,TrieType,Parent) {			\
    New_TSTN(pTSTN,TrieType,LEAF_NT,ESCAPE_NODE_SYMBOL,Parent,NULL);	\

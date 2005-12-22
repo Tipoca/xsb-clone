@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.23 2005-12-12 18:44:53 dwarren Exp $
+** $Id: slgdelay.h,v 1.24 2005-12-22 23:33:58 tswift Exp $
 ** 
 */
 
@@ -225,13 +225,19 @@ extern xsbBool neg_delay;
  * Procedures used in other parts of the system.
  */
 
+/* TLS: because of include dependencies (context -> macro_xsb ->
+   slgdelay), context.h cannot be included until the code is
+   refactored.  Therefore, the CTXT-style declarations cannot yet be
+   used. */
+
 extern xsbBool answer_is_junk(CPtr);
-extern void abolish_wfs_space(void);
 #ifndef MULTI_THREAD
+extern void abolish_wfs_space(void);
 extern void simplify_neg_fails(VariantSF);
 extern void do_delay_stuff(NODEptr, VariantSF, xsbBool);
 #else
 struct th_context;
+extern void abolish_wfs_space(struct th_context *);
 extern void simplify_neg_fails(struct th_context *, VariantSF);
 extern void do_delay_stuff(struct th_context *, NODEptr, VariantSF, xsbBool);
 #endif
@@ -245,6 +251,7 @@ extern void simplify_pos_unsupported(NODEptr);
 extern void simplify_pos_unsupported(struct th_context *, NODEptr);
 #endif
 extern void release_all_dls(ASI);
+
 
 /*---------------------- end of file slgdelay.h ------------------------*/
 

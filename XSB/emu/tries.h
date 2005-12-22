@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.36 2005-12-12 18:44:54 dwarren Exp $
+** $Id: tries.h,v 1.37 2005-12-22 23:34:02 tswift Exp $
 ** 
 */
 
@@ -337,11 +337,12 @@ extern xsbBool  bottom_up_unify(struct th_context *);
 #ifndef MULTI_THREAD
 extern void    consume_subsumptive_answer(BTNptr, int, CPtr);
 extern ALNptr  tst_collect_relevant_answers(TSTNptr, TimeStamp, int, CPtr);
+extern void    delete_subsumptive_table(struct Table_Info_Frame *);
 #else
 extern void    consume_subsumptive_answer(struct th_context *, BTNptr, int, CPtr);
 extern ALNptr  tst_collect_relevant_answers(struct th_context *, TSTNptr, TimeStamp, int, CPtr);
+extern void    delete_subsumptive_table(struct th_context *, struct Table_Info_Frame *);
 #endif
-extern void    delete_subsumptive_table(struct Table_Info_Frame *);
 
 #ifndef MULTI_THREAD
 extern void    tstShrinkDynStacks(void);

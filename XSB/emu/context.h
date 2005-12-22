@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.35 2005-11-18 23:29:01 tswift Exp $
+** $Id: context.h,v 1.36 2005-12-22 23:33:55 tswift Exp $
 ** 
 */
 
@@ -126,7 +126,7 @@ struct th_context
 {
 /* System & user Flags */
 
-int _call_intercept ;
+  int _call_intercept ;
 
 /* The SLG-WAM data regions
    ------------------------ */
@@ -342,9 +342,13 @@ pthread_cond_t cond_var ;
 #endif
 
 Cell _attv_interrupts[20480][2];
+  
 } ;
 
 typedef struct th_context th_context ;
+
+
+#define xsb_thread_id           (th -> tid)
 
 #define call_intercept		(th->_call_intercept)
 

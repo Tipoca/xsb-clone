@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.14 2005-12-17 02:46:32 dwarren Exp $
+** $Id: hash_xsb.c,v 1.15 2005-12-22 23:33:56 tswift Exp $
 ** 
 */
 
@@ -211,14 +211,14 @@ void expand_string_table() {
  *   - buckets which are most full
  */
 
-void symbol_table_stats() {
+void symbol_table_stats(CTXTdecl) {
 
   unsigned long   i, symbols, bucket_contains, used_buckets, unused_buckets,
                   fullest_bucket_size, fullest_bucket_num, last_index;
   int first_index;
   Pair pair_ptr;
 
- SYS_MUTEX_LOCK( MUTEX_SYMBOL ) ;
+  SYS_MUTEX_LOCK( MUTEX_SYMBOL ) ;
 
   symbols = used_buckets = unused_buckets = last_index = 0;
   fullest_bucket_size = fullest_bucket_num = 0;
@@ -262,7 +262,7 @@ void symbol_table_stats() {
 }  
 
 
-void string_table_stats() {
+void string_table_stats(CTXTdecl) {
 
   unsigned long   i, strings, bucket_contains, used_buckets, unused_buckets,
                   fullest_bucket_size, fullest_bucket_num, last_index;

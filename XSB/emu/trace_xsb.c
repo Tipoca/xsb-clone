@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.17 2005/11/20 21:23:29 dwarren Exp $
+** $Id: trace_xsb.c,v 1.18 2005/12/12 18:44:54 dwarren Exp $
 ** 
 */
 
@@ -223,7 +223,7 @@ void total_stat(CTXTdeclc double elapstime) {
 /* TLS: Max stack stuff is probably not real useful with multiple
    threads -- to even get it to work correcly you'd have to use locks.
 */
-#ifndef MT_ENGINE
+#ifndef MULTI_THREAD
   if (flags[TRACE_STA]) {
     /* Report Maximum Usages
        --------------------- */
@@ -276,7 +276,8 @@ void total_stat(CTXTdeclc double elapstime) {
 
 #ifdef MULTI_THREAD
 
-  /*  print_mutex_use();*/
+  printf("%d active user thread%s.\n",flags[NUM_THREADS],
+	 (flags[NUM_THREADS]>1?"s":""));
 
 #endif
 

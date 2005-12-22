@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.54 2005/11/16 17:32:05 dwarren Exp $
+** $Id: slginsts_xsb_i.h,v 1.55 2005/12/07 13:23:02 ruim Exp $
 ** 
 */
 
@@ -562,6 +562,9 @@ XSB_Start_Instr(answer_return,_answer_return)
     tmp = int_val(cell(answer_template));
     get_var_and_attv_nums(template_size, attv_num, tmp);
     answer_template--;
+
+    //    printf("answer_template %x size %d\n",answer_template,template_size);
+    //    sfPrintGoal(CTXTdeclc stddbg, consumer_sf, FALSE);
 
     table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
 			 subg_tif_ptr(consumer_sf));

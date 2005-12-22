@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.80 2005-12-07 13:23:03 ruim Exp $
+** $Id: tries.c,v 1.81 2005-12-22 23:34:01 tswift Exp $
 ** 
 */
 
@@ -260,7 +260,7 @@ BTNptr new_btn(CTXTdeclc int trie_t, int node_t, Cell symbol, BTNptr parent,
 
 /*-------------------------------------------------------------------------*/
 
-TSTNptr new_tstn(int trie_t, int node_t, Cell symbol, TSTNptr parent,
+TSTNptr new_tstn(CTXTdeclc int trie_t, int node_t, Cell symbol, TSTNptr parent,
 		TSTNptr sibling) {
 
   void * tstn;
@@ -1980,7 +1980,7 @@ Cell get_lastnode_cs_retskel(CTXTdeclc Cell callTerm) {
 /* creates an empty (dummy) answer.					*/
 /*----------------------------------------------------------------------*/
 
-ALNptr empty_return(void)
+ALNptr empty_return(CTXTdecl)
 {
     ALNptr i;
   

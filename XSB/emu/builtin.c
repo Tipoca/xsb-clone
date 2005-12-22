@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.242 2005-12-17 02:46:31 dwarren Exp $
+** $Id: builtin.c,v 1.243 2005-12-22 23:33:55 tswift Exp $
 ** 
 */
 
@@ -963,7 +963,7 @@ inline static void abolish_table_info(CTXTdecl)
   reset_freeze_registers;
   openreg = COMPLSTACKBOTTOM;
   release_all_tabling_resources();
-  abolish_wfs_space(); 
+  abolish_wfs_space(CTXT); 
   SYS_MUTEX_UNLOCK( MUTEX_TABLE );
 }
 
@@ -1904,6 +1904,9 @@ int builtin_call(CTXTdeclc byte number)
 
   case CLOSE_OPEN_TABLES:	/* No registers needed */
     remove_incomplete_tables_reset_freezes(CTXT);
+#ifdef MULTI_THREAD
+    release_held_mutexes(CTXT);
+#endif
     break;
 
   case ABOLISH_TABLE_INFO:

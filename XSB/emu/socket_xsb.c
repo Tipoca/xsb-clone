@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.34 2005-11-16 17:32:05 dwarren Exp $
+** $Id: socket_xsb.c,v 1.35 2005-12-22 23:33:58 tswift Exp $
 ** 
 */
 
@@ -93,7 +93,7 @@ static xsbBool set_error_code(CTXTdeclc int ErrCode, int ErrCodeArgNumber,char *
 extern FILE *fdopen(int fildes, const char *type);
 
 /* declare the utility functions for select calls (bodies of these functions are below) */
-static void init_connections();
+static void init_connections(CTXTdecl);
 static void set_sockfd(int count);
 static xsbBool list_sockfd(prolog_term list, fd_set *fdset, int *max_fd,
 			   int **fds, int * size);
@@ -692,7 +692,7 @@ xsbBool xsb_socket_request(CTXTdecl)
 	  E_sockfd = reg_term(CTXTc 5);	
     
 	  /* initialize the array of connect_t structure for select call */	
-	  init_connections(); 
+	  init_connections(CTXT); 
     
 	  /* check whether the same connection name exists */
 	  for (i=0;i<MAXCONNECT;i++) {
@@ -859,7 +859,7 @@ static xsbBool set_error_code(CTXTdeclc int ErrCode, int ErrCodeArgNumber, char 
 }
 
 /* initialize the array of the structure */
-static void init_connections() 
+static void init_connections(CTXTdecl) 
 {
      int i;  
      static int initialized = FALSE; /* This is only initialized once. */

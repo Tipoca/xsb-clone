@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.33 2005-10-03 13:26:44 tswift Exp $
+** $Id: tr_utils.h,v 1.34 2005-12-22 23:34:00 tswift Exp $
 ** 
 */
 
@@ -35,7 +35,7 @@ extern Cell build_ret_term(CTXTdeclc int, Cell[]);
 extern void construct_answer_template(CTXTdeclc Cell, SubProdSF, Cell[]);
 extern void breg_retskel(CTXTdecl);
 extern void delete_predicate_table(CTXTdeclc TIFptr);
-extern void reclaim_del_ret_list(VariantSF);
+extern void reclaim_del_ret_list(CTXTdeclc VariantSF);
 extern void delete_return(CTXTdeclc BTNptr, VariantSF);
 extern void init_newtrie(CTXTdecl);
 extern void delete_branch(CTXTdeclc BTNptr, BTNptr *);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.96 2005/11/21 22:36:30 dwarren Exp $
+** $Id: tr_utils.c,v 1.97 2005/12/07 13:23:02 ruim Exp $
 ** 
 */
 
@@ -470,7 +470,7 @@ void delete_predicate_table(CTXTdeclc TIFptr tif) {
     if ( IsVariantPredicate(tif) )
       delete_variant_table(CTXTc TIF_CallTrie(tif));
     else
-      delete_subsumptive_table(tif);
+      delete_subsumptive_table(CTXTc tif);
     TIF_CallTrie(tif) = NULL;
     TIF_Subgoals(tif) = NULL;
   }
@@ -908,7 +908,7 @@ void delete_return(CTXTdeclc BTNptr l, VariantSF sg_frame)
  * completion stack), and reclaim the leaves and corresponding branches
  *----------------------------------------------------------------------*/
 
-void  reclaim_del_ret_list(VariantSF sg_frame) {
+void  reclaim_del_ret_list(CTXTdeclc VariantSF sg_frame) {
   ALNptr x,y;
   
   x = compl_del_ret_list(subg_compl_stack_ptr(sg_frame));

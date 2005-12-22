@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_search.c,v 1.8 2005-11-29 00:02:16 tswift Exp $
+** $Id: trie_search.c,v 1.9 2005-12-22 23:34:01 tswift Exp $
 ** 
 */
 
@@ -99,7 +99,7 @@ BTNptr bt_escape_search(CTXTdeclc BTNptr btRoot, xsbBool *isNew) {
 
 /*-------------------------------------------------------------------------*/
 
-inline static TSTNptr tst_escape_search(TSTNptr tstRoot, xsbBool *isNew) {
+inline static TSTNptr tst_escape_search(CTXTdeclc TSTNptr tstRoot, xsbBool *isNew) {
 
   TSTNptr tstn;
 
@@ -229,7 +229,7 @@ TSTNptr subsumptive_tst_search(CTXTdeclc TSTNptr tstRoot, int nTerms, CPtr termV
     Trail_Unwind_All;
   }
   else
-    tstn = tst_escape_search(tstRoot,isNew);
+    tstn = tst_escape_search(CTXTc tstRoot,isNew);
   return tstn;
 }
 
@@ -320,7 +320,7 @@ TSTNptr variant_tst_search(CTXTdeclc TSTNptr tstRoot, int nTerms, CPtr termVecto
     Trail_Unwind_All;
   }
   else
-    tstn = tst_escape_search(tstRoot,isNew);
+    tstn = tst_escape_search(CTXTc tstRoot,isNew);
   return tstn;
 }
 
