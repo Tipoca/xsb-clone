@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.24 2005-12-26 17:17:20 tswift Exp $
+** $Id: memory_xsb.c,v 1.25 2005-12-26 18:48:54 tswift Exp $
 ** 
 */
 
@@ -104,10 +104,10 @@ void *mem_alloc(unsigned long size, int category)
     extend_enc_dec_as_nec(ptr,ptr+size);
 #endif
     SYS_MUTEX_UNLOCK_NOERROR(MUTEX_MEM);
-    if (ptr == NULL)
+    if (ptr == NULL) {
       xsb_memory_error();
-    else 
-      return ptr;
+    }
+    return ptr;
 }
 
 
@@ -126,10 +126,10 @@ void *mem_calloc(unsigned long size, unsigned long occs, int category)
     extend_enc_dec_as_nec(ptr,ptr+length);
 #endif
     SYS_MUTEX_UNLOCK_NOERROR(MUTEX_MEM);
-    if (ptr == NULL)
+    if (ptr == NULL) {
       xsb_memory_error();
-    else 
-      return ptr;
+    }
+    return ptr;
 }
 
 
@@ -146,10 +146,10 @@ void *mem_realloc(void *addr, unsigned long oldsize, unsigned long newsize, int 
     extend_enc_dec_as_nec(addr,addr+newsize);
 #endif
     SYS_MUTEX_UNLOCK_NOERROR(MUTEX_MEM);
-    if (addr == NULL)
+    if (addr == NULL) {
       xsb_memory_error();
-    else 
-      return addr;
+    }
+    return addr;
 }
 
 
