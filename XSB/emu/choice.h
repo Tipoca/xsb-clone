@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.26 2005-11-17 18:22:41 tswift Exp $
+** $Id: choice.h,v 1.27 2005-12-26 17:17:19 tswift Exp $
 ** 
 */
 #ifndef __CHOICE_H__
@@ -354,9 +354,9 @@ typedef struct compl_susp_frame {
 #endif
 
 /*
-#define is_compl_susp_frame(b)				\
-    ((cp_pcreg(b) == (byte *) &resume_compl_suspension_inst) ||	\
-    (cp_pcreg(b) == (byte *) &resume_compl_suspension_inst2))
+| #define is_compl_susp_frame(b)				\
+|     ((cp_pcreg(b) == (byte *) &resume_compl_suspension_inst) ||	\
+|    (cp_pcreg(b) == (byte *) &resume_compl_suspension_inst2))
 */
 
 #define is_compl_susp_frame(b)				\

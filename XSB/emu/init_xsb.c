@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.75 2005-11-29 00:02:16 tswift Exp $
+** $Id: init_xsb.c,v 1.76 2005-12-26 17:17:20 tswift Exp $
 ** 
 */
 
@@ -127,7 +127,7 @@ DllExport extern char * call_conv strip_names_from_path(char*, int);
 
 Cell answer_return_inst;
 Cell resume_compl_suspension_inst;
-Cell resume_compl_suspension_inst2;
+// Cell resume_compl_suspension_inst2;
 Cell check_complete_inst;
 Cell hash_handle_inst;
 Cell fail_inst;
@@ -736,7 +736,7 @@ void init_machine(CTXTdecl)
 
   cell_opcode(&answer_return_inst) = answer_return;
   cell_opcode(&resume_compl_suspension_inst) = resume_compl_suspension;
-  cell_opcode(&resume_compl_suspension_inst2) = resume_compl_suspension;
+  //  cell_opcode(&resume_compl_suspension_inst2) = resume_compl_suspension;
   cell_opcode(&check_complete_inst) = check_complete;
   cell_opcode(&hash_handle_inst) = hash_handle;
   cell_opcode(&fail_inst) = fail;
