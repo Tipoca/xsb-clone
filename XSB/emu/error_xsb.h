@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.21 2005-12-26 17:17:20 tswift Exp $
+** $Id: error_xsb.h,v 1.22 2005-12-29 18:06:47 dwarren Exp $
 ** 
 */
 
@@ -117,7 +117,7 @@ void call_conv xsb_permission_error(CTXTdeclc char *,char *, int, char *,int) ;
 void call_conv xsb_table_error(CTXTdeclc char *) ;
 void call_conv xsb_type_error(CTXTdeclc char *,Cell , char *,int, int) ;
 
-extern void xsb_memory_error(void);
+extern void call_conv xsb_memory_error(void);
 
 /* should include these from whereever they are.... split out from biassert **/
 typedef struct
