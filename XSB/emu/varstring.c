@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.18 2005-11-16 17:32:06 dwarren Exp $
+** $Id: varstring.c,v 1.19 2005-12-31 23:16:03 tswift Exp $
 ** 
 */
 
@@ -378,14 +378,15 @@ static void vs_adjust_size(VarString *vstr, int minsize)
 
   newsize = (minsize/vstr->increment +1) * (vstr->increment);
 
-  if (NULL == (vstr->string = (char *)mem_realloc(vstr->string, vstr->size, newsize,OTHER_SPACE))) {
+  if (NULL == (vstr->string = (char *)mem_realloc_nocheck(vstr->string, vstr->size, 
+							  newsize,OTHER_SPACE))) {
 #ifdef DEBUG_VARSTRING
     fprintf(stderr, "No room to expand a variable-length string\n");
     return;
 #else
     vstr->size        = 0;
     vstr->length      = 0;
-    xsb_abort("No room to expand a variable-length string");
+    xsb_memory_error("memory","No room to expand a variable-length string");
 #endif
   }
 

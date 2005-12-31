@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.78 2005-12-31 01:43:34 tswift Exp $
+** $Id: init_xsb.c,v 1.79 2005-12-31 23:16:03 tswift Exp $
 ** 
 */
 
@@ -1055,6 +1055,14 @@ void init_symbols(void)
   ret_psc[0] = (Psc) string_find("ret", 1);
   for (i = 1; i < MAX_ARITY; i++) ret_psc[i] = NULL;
 
+  /* Finally, eagerly insert pscs used for resource errors.  This way,
+     we don't have to worry abt the symbol table growing when we're
+     thowing a memory error. */
+  temp = (Pair)insert("$$exception_ball", (byte)2, 
+					pair_psc(insert_module(0,"standard")), 
+		      &new_indicator);
+  temp = (Pair) insert("error",3,global_mod,&new_indicator);
+  temp = (Pair) insert("resource_error",1,global_mod,&new_indicator);
 }
 
 /*==========================================================================*/

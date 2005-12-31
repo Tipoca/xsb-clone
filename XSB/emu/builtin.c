@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.245 2005-12-31 01:43:33 tswift Exp $
+** $Id: builtin.c,v 1.246 2005-12-31 23:16:03 tswift Exp $
 ** 
 */
 
@@ -122,6 +122,8 @@
 #include "debug_xsb.h"
 
 #include "thread_xsb.h"
+
+int mem_flag;
 
 /*======================================================================*/
 extern void delete_variant_sf_and_answers(CTXTdeclc VariantSF pSF);
@@ -1905,6 +1907,7 @@ int builtin_call(CTXTdeclc byte number)
   }
 
   case IS_XWAMMODE:     /* R1: -int flag for xwammode */  
+
     if (xwammode) ctop_int(CTXTc 1,1);
     else ctop_int(CTXTc 1,0);
     break;
