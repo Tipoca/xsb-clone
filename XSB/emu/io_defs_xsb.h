@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_defs_xsb.h,v 1.10 2004-09-28 17:24:46 tswift Exp $
+** $Id: io_defs_xsb.h,v 1.11 2005-12-31 01:43:35 tswift Exp $
 ** 
 */
 
@@ -50,6 +50,8 @@
 #define PRINT_OPENFILES 21
 #define FILE_END_OF_FILE 22
 #define FILE_PEEK 23
+#define XSB_STREAM_LOCK_B 24
+#define XSB_STREAM_UNLOCK_B 25
 
 /* This sequence is for stream properties */
 #define STREAM_FILE_NAME              0

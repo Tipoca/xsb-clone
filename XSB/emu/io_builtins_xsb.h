@@ -18,10 +18,9 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.h,v 1.12 2005-08-16 19:19:09 dwarren Exp $
+** $Id: io_builtins_xsb.h,v 1.13 2005-12-31 01:43:34 tswift Exp $
 ** 
 */
-
 
 #include "io_defs_xsb.h"
 #include "token_xsb.h"
@@ -37,9 +36,14 @@ typedef struct  {
   int stream_type;
   int reposition;
   int eof_action;
+#ifdef MULTI_THREAD
+  pthread_mutex_t stream_mutex;
+#endif  
 } stream_record;
 
 extern stream_record open_files[];      /* Table of file pointers for open files */
+
+#define OPENFILES_MUTEX(i) &(open_files[i].stream_mutex) 
 
 extern int xsb_intern_fileptr(FILE *file,char *c,char *c2,char *c3);
 extern int xsb_intern_file(char *c1,char *c2,int *i,char *strmode,int opennew);

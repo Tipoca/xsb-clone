@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.77 2005-12-29 20:06:43 tswift Exp $
+** $Id: init_xsb.c,v 1.78 2005-12-31 01:43:34 tswift Exp $
 ** 
 */
 
@@ -212,9 +212,17 @@ static void init_flags(CTXTdecl)
 
 /*==========================================================================*/
 
+/* In MT engine, now providing a separate mutex (default type) for
+   each io stream.  */
+
 static void init_open_files(void)
 {
   int i, msg_fd, dbg_fd, warn_fd, fdbk_fd;
+
+#ifdef MULTI_THREAD
+  pthread_mutexattr_t attr_std ;
+  pthread_mutexattr_init( &attr_std ) ;
+#endif
 
   open_files[0].file_ptr = stdin;
   open_files[0].io_mode = 'r';
@@ -275,6 +283,15 @@ static void init_open_files(void)
   setbuf(stderr, NULL);
 
   for (i=MIN_USR_OPEN_FILE; i < MAX_OPEN_FILES; i++) open_files[i].file_ptr = NULL;
+
+#ifdef MULTI_THREAD
+  if( pthread_mutexattr_settype( &attr_std, PTHREAD_MUTEX_RECURSIVE_NP )<0 )
+    xsb_exit( "[THREAD] Error initializing mutexes" ) ;
+
+  for( i = 0; i < MAX_OPEN_FILES ; i++ ) {
+    pthread_mutex_init(OPENFILES_MUTEX(i) , &attr_std ) ;
+  }
+#endif
 }
 
 /*==========================================================================*/
