@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.H,v 1.13 2005/08/10 19:54:32 dwarren Exp $
+** $Id: xsb_writ.H,v 1.14 2005/10/21 21:28:06 crojo Exp $
 ** 
 */
 
@@ -45,5 +45,6 @@
 
 :- import conget/2, conset/2 from gensym.
 
-:- import xsb_sys_mutex_lock/1, xsb_sys_mutex_unlock/1 from thread.
+%:- import xsb_sys_mutex_lock/1, xsb_sys_mutex_unlock/1 from thread.
+:- import xsb_stream_lock/1, xsb_stream_unlock/1 from file_io.
 /* ------------------- end of file file_write.H ----------------------- */
