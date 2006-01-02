@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.49 2005/01/14 18:32:05 ruim Exp $
+** $Id: x_interp.P,v 1.50 2005/12/12 18:45:47 dwarren Exp $
 ** 
 */
 
@@ -86,11 +86,8 @@ interpreter_cmd_goal(_) :-
 	    -> true
 	    ;  file_write(STDMSG, CmdGoal), file_nl(STDMSG)
 	    ),
-            file_open(CmdGoal, sr, FileDes),
-	    %% promote I/O port to stream
-	    FileDes = CmdGoalStream,
-%	    ioport2iostream(FileDes,CmdGoalStream),
-	    %% make CmdGoalStream the current input stream;s
+            file_open(CmdGoal, sr, CmdGoalStream),
+	    %% make CmdGoalStream the current input stream;
 	    %% push the old stream on cmd_line_argument stack
 	    push_stdin(cmd_line_argument, CmdGoalStream),
             file_nl(STDMSG)
