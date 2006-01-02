@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.42 2005-12-31 01:43:35 tswift Exp $
+** $Id: io_builtins_xsb_i.h,v 1.43 2006-01-02 16:33:37 dwarren Exp $
 ** 
 */
 
@@ -78,10 +78,12 @@ static void strclose(int i)
 
 #ifdef MULTI_THREAD
 #define XSB_STREAM_LOCK(index) { \
-    pthread_mutex_lock(OPENFILES_MUTEX(index)); \
+  if (index >= 0) pthread_mutex_lock(OPENFILES_MUTEX(index)); \
+  else pthread_mutex_lock(OPENFILES_MUTEX(iostrdecode(index))); \
 }
 #define XSB_STREAM_UNLOCK(index) { \
-    pthread_mutex_unlock(OPENFILES_MUTEX(index)); \
+  if (index >= 0) pthread_mutex_unlock(OPENFILES_MUTEX(index)); \
+  else pthread_mutex_unlock(OPENFILES_MUTEX(iostrdecode(index))); \
 }
 #else
 #define XSB_STREAM_LOCK(index) 
@@ -251,10 +253,11 @@ inline static xsbBool file_function(CTXTdecl)
     case OWRITE:  strmode = "wb"; break; /* WRITE_MODE */
     case OAPPEND: strmode = "ab"; break; /* APPEND_MODE */
     case OSTRINGR:
-      if ((fptr = stropen(tmpstr)))
+      if ((fptr = stropen(tmpstr))) {
 	ctop_int(CTXTc 5, (Integer)fptr);
-      else 
+      } else {
 	ctop_int(CTXTc 5, -1000);
+      }
       SYS_MUTEX_UNLOCK( MUTEX_IO );
       return TRUE;
     case OSTRINGW:
@@ -799,9 +802,9 @@ inline static xsbBool file_function(CTXTdecl)
     char iomode;
 
     stream = ptoc_int(CTXTc 2);
-    XSB_STREAM_LOCK(stream);
     if (stream >= MAX_OPEN_FILES)
 	return FALSE;
+    XSB_STREAM_LOCK(stream);
     if ((stream < 0) && (stream >= -MAXIOSTRS)) {
       /* port for reading from string */
       sfptr = strfileptr(stream);
