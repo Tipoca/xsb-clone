@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.22 2005-12-15 20:59:28 dwarren Exp $
+** $Id: token_xsb.c,v 1.23 2006-01-03 18:14:09 dwarren Exp $
 ** 
 */
 
@@ -383,7 +383,7 @@ READ_ERROR: if (q < 0) {
             case 'b':		        /* backspace */
                 return  '\b';
             case 'f':		        /* formfeed */
-                return '\b';
+                return '\f';
             case '\n':		        /* seeing a newline */
                 while (IsLayout(c = GetC(card,instr)));
                 goto BACK;
@@ -419,6 +419,7 @@ READ_ERROR: if (q < 0) {
 	    case '\\':			/* backslash */
 	        return '\\';
 // Don't include ISO's single quote escape; it breaks '/\', which is (commonly?) used in XSB
+// If this is changed, change double_quotes() in io_builtins_xsb.c
 //	    case '\'':			/* single quote */
 //	        return '\'';
 	    case '"':			/* double quote */
