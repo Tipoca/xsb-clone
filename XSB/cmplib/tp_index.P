@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_index.P,v 1.6 2005-01-14 18:30:47 ruim Exp $
+** $Id: tp_index.P,v 1.7 2006-01-03 17:15:50 dwarren Exp $
 ** 
 */
 
@@ -237,7 +237,7 @@ index_argpats([clause(Arglist,_,crec(_,L))|CRest], N,
 
 index_argpat(constant(Sym), n, []) :- sym_name(Sym, [], 0).
 index_argpat(integer(X), i, X).
-index_argpat(real(X), i, X).
+index_argpat(real(X), f, X). %% dsw changed from i...
 index_argpat(constant(C), c, C).
 index_argpat(varocc(_), v, v).
 index_argpat(structure(Sym,_), l, l) :- sym_name(Sym, '.', 2).
