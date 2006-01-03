@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.51 2005/08/16 19:19:09 dwarren Exp $
+** $Id: consult.P,v 1.52 2005/08/26 20:19:55 dwarren Exp $
 ** 
 */
 
@@ -209,7 +209,8 @@ file_exists_here_or_configbin(C_Obj,CC_Obj) :-
 
 search_module(FileName, Dir, Mod, Ext, Base, Obj) :-
 	almost_search_module(FileName, D, Mod, E, B),
-	( D == '', FileName == Mod -> % only a module name was given
+	( D == '', (FileName == Mod ; E == XSB_SRC_EXTENSION_ATOM_SANS_DOT)
+	 ->	% only a module name was given
 	    real_search_module(Mod, Dir, Base, Ext)
 	; Dir = D, Ext = E, Base = B
 	),
