@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.63 2005-12-17 02:46:32 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.64 2006-01-03 17:34:20 dwarren Exp $
 ** 
 */
 
@@ -1598,6 +1598,9 @@ void double_quotes(char *string, char *new_string)
   while (string[ctr] != '\0') {
     if (string[ctr] == '\'') {
       new_string[nctr] = '\'';
+      nctr++;
+    } else if (string[ctr] == '\\') {
+      new_string[nctr] = '\\';
       nctr++;
     }
     new_string[nctr] = string[ctr];
