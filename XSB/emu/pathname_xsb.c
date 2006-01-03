@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.27 2005-11-29 00:02:16 tswift Exp $
+** $Id: pathname_xsb.c,v 1.28 2006-01-03 21:16:36 dwarren Exp $
 ** 
 */
 
@@ -580,7 +580,13 @@ xsbBool almost_search_module(CTXTdeclc char *filename)
       if (! extension) return FALSE; /* file was not found */
       extension = string_find(extension,1);
     } else {
-      if (stat(fullname, &fileinfo)) return FALSE; /* file not found */
+      if (stat(fullname, &fileinfo) && !strcmp(dir,"")) {
+	/* file not found, so let search through dirs try to find it */ 
+	ctop_string(CTXTc 2, dir);
+	ctop_string(CTXTc 3, basename);
+	ctop_string(CTXTc 4, extension);
+	return TRUE;
+      }
     }
     if (! strcmp(dir, "")) {
       char dot_dir[MAXPATHLEN];
