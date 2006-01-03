@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.246 2005-12-31 23:16:03 tswift Exp $
+** $Id: builtin.c,v 1.247 2006-01-03 17:14:20 dwarren Exp $
 ** 
 */
 
@@ -502,7 +502,9 @@ Cell  val_to_hash(Cell term)
 
   switch(cell_tag(term)) {
     case XSB_INT:
-    case XSB_FLOAT:  /* Yes, use int_val to avoid conversion problem */
+      value = (Cell)int_val(term);
+      break;
+    case XSB_FLOAT:
       value = (Cell)int_val(term);
       break;
     case XSB_LIST:
@@ -525,7 +527,7 @@ Cell  val_to_hash(Cell term)
                     int_val(cell(clref_val(term)+3));
           break;
       }
-      //but if this structure isn't any special boxed representation, then we use it's PSC as
+      //but if this structure isn't any special boxed representation, then we use its PSC as
       //a hash value.
       value = (Cell)get_str_psc(term);
       break;

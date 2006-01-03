@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.49 2006-01-02 16:33:37 dwarren Exp $
+** $Id: error_xsb.c,v 1.50 2006-01-03 17:14:21 dwarren Exp $
 ** 
 */
 
@@ -251,7 +251,6 @@ void call_conv xsb_permission_error(CTXTdeclc
 void call_conv xsb_resource_error(CTXTdeclc char *resource,
 					char *predicate,int arity, int arg) 
 {
-  printf("in resource error\n");
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr; char message[255];
