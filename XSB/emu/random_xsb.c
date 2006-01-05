@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random_xsb.c,v 1.10 2005-11-16 17:32:05 dwarren Exp $
+** $Id: random_xsb.c,v 1.11 2006-01-05 22:49:52 dwarren Exp $
 ** 
 */
 
@@ -63,8 +63,8 @@ struct random_seeds_t *init_random_seeds() {
   seeds->IY = 21877;
   seeds->IZ = 7943;
   seeds->TX = 1.0/30269.0;
-  seeds->TX = 1.0/30307.0;
-  seeds->TX = 1.0/30323.0;
+  seeds->TY = 1.0/30307.0;
+  seeds->TZ = 1.0/30323.0;
   return seeds;
 }
 
