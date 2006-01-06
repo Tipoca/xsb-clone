@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.18 2005/12/12 18:44:54 dwarren Exp $
+** $Id: trace_xsb.c,v 1.19 2005/12/22 23:34:00 tswift Exp $
 ** 
 */
 
@@ -276,7 +276,7 @@ void total_stat(CTXTdeclc double elapstime) {
 
 #ifdef MULTI_THREAD
 
-  printf("%d active user thread%s.\n",flags[NUM_THREADS],
+  printf("%ld active user thread%s.\n",flags[NUM_THREADS],
 	 (flags[NUM_THREADS]>1?"s":""));
 
 #endif
