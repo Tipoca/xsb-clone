@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.92 2005/11/18 23:29:01 tswift Exp $
+** $Id: subp.c,v 1.93 2005/12/22 23:33:58 tswift Exp $
 ** 
 */
 
@@ -265,13 +265,13 @@ void print_statistics(CTXTdeclc int amount) {
     reset_stat_total(); 	/* reset 'ttt' struct variable (all 0's) */
     break;
   case 2:		    /* Print Detailed Table Usage */
-    print_detailed_tablespace_stats();
+    print_detailed_tablespace_stats(CTXT);
     break;
   case 3:		    /* Print Detailed Table, Stack, and CPUtime */
     perproc_stat();
     total_stat(CTXTc real_time()-realtime_count_gl);
     reset_stat_total();
-    print_detailed_tablespace_stats();
+    print_detailed_tablespace_stats(CTXT);
     print_detailed_subsumption_stats();
     break;
   case 4:                  /* mutex use (if PROFILE_MUTEXES is defined) */

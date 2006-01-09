@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.43 2005/11/17 23:24:24 tswift Exp $
+** $Id: slgdelay.c,v 1.44 2005/12/22 23:33:58 tswift Exp $
 ** 
 */
 
@@ -630,6 +630,7 @@ static void handle_unsupported_answer_subst(CTXTdeclc NODEptr as_leaf)
   fprintf(stddbg, ">>>> start handle_unsupported_answer_subst()\n");
 #endif
 
+  SET_TRIE_ALLOCATION_TYPE_SF(unsup_subgoal);
   delete_branch(CTXTc as_leaf, &subg_ans_root_ptr(unsup_subgoal));
   simplify_pos_unsupported(CTXTc as_leaf);
   if (is_completed(unsup_subgoal)) {
@@ -918,6 +919,7 @@ void force_answer_false(CTXTdeclc NODEptr as_leaf)
     SYS_MUTEX_LOCK( MUTEX_DELAY ) ;
     subgoal = asi_subgoal(asi);
     release_all_dls(asi);
+    SET_TRIE_ALLOCATION_TYPE_SF(subgoal);
     delete_branch(CTXTc as_leaf, &subg_ans_root_ptr(subgoal));
     simplify_pos_unsupported(CTXTc as_leaf);
     mark_subgoal_failed(subgoal);

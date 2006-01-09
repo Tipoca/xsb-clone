@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.9 2005-12-22 23:33:58 tswift Exp $
+** $Id: sub_tables_xsb_i.h,v 1.10 2006-01-09 00:06:32 tswift Exp $
 ** 
 */
 
@@ -340,7 +340,7 @@ inline static  void *newAnswerSet(CTXTdeclc int n, TSTNptr Parent) {
     symbol = EncodeTriePSC(get_ret_psc(n));
   else
     symbol = EncodeTrieConstant(makestring(get_ret_string()));
-  New_TSTN(CTXTc root, TS_ANSWER_TRIE_TT, TRIE_ROOT_NT, symbol, Parent, NULL );
+  New_TSTN(root, TS_ANSWER_TRIE_TT, TRIE_ROOT_NT, symbol, Parent, NULL );
   TSTN_TimeStamp(root) = EMPTY_TST_TIMESTAMP;
   return root;
 }

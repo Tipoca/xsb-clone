@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.17 2005-11-16 17:32:05 dwarren Exp $
+** $Id: struct_manager.c,v 1.18 2006-01-09 00:06:32 tswift Exp $
 ** 
 */
 
@@ -105,6 +105,20 @@ void smFreeBlocks(Structure_Manager *pSM) {
   }
   SM_CurBlock(*pSM) = SM_NextStruct(*pSM) = SM_LastStruct(*pSM) = NULL;
   SM_AllocList(*pSM) = SM_FreeList(*pSM) = NULL;
+}
+
+void smPrintBlocks(Structure_Manager *pSM) {
+
+  void *pCurBlock, *pNextBlock;
+
+  printf("blocks for SM %x size %d\n",pSM,SM_NewBlockSize(*pSM));
+  pCurBlock = SM_CurBlock(*pSM);
+  while ( IsNonNULL(pCurBlock) ) {
+    printf("Block %x\n",pCurBlock);
+    pNextBlock = SMBlk_NextBlock(pCurBlock);
+    //    mem_dealloc(pCurBlock,SM_NewBlockSize(*pSM),TABLE_SPACE);
+    pCurBlock = pNextBlock;
+  }
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */

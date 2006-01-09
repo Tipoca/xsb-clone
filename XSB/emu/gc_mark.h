@@ -19,12 +19,15 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.14 2005-12-17 02:46:32 dwarren Exp $
+** $Id: gc_mark.h,v 1.15 2006-01-09 00:06:31 tswift Exp $
 ** 
 */
 
-extern Structure_Manager smTableBTN;
+#ifndef MULTI_THREAD
 extern Structure_Manager smTSTN;
+#endif
+
+extern Structure_Manager smTableBTN;
 extern Structure_Manager smAssertBTN;
 extern PrRef dynpredep_to_prref(CTXTdeclc void *pred_ep);
 extern ClRef db_get_clause_code_space(PrRef, ClRef, CPtr *, CPtr *);
@@ -899,17 +902,20 @@ int mark_heap(CTXTdeclc int arity, int *marked_dregs)
   }
 
 
-void mark_trie_strings() {
+void mark_trie_strings(CTXTdecl) {
 
   BTNptr pBTNStruct, *apBTNStruct;
   TSTNptr pTSTNStruct, *apTSTNStruct;
   void *pBlock, **apBlock;
 
-  //  printf("marking trie strings\n");
+#ifdef MULTI_THREAD
+  printf("marking private trie strings\n");
+  mark_trie_strings_for(*private_smTableBTN,BTNptr,pBTNStruct,apBTNStruct);
+  printf("marked private trie strings\n");
+#endif  
   mark_trie_strings_for(smTableBTN,BTNptr,pBTNStruct,apBTNStruct);
   mark_trie_strings_for(smTSTN,TSTNptr,pTSTNStruct,apTSTNStruct);
   mark_trie_strings_for(smAssertBTN,BTNptr,pBTNStruct,apBTNStruct);
-  //  printf("marked trie strings\n");
 }
 
 void mark_code_strings(int pflag, CPtr inst_addr, CPtr end_addr) {
@@ -1003,7 +1009,7 @@ void mark_nonheap_strings(CTXTdecl) {
   empty = string_find_safe("");
   if (!empty) mark_string(empty,"empty");
 
-  mark_trie_strings();
+  mark_trie_strings(CTXT);
   mark_atom_and_code_strings(CTXT);
   mark_findall_strings(CTXT);
   mark_open_filenames();

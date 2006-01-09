@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.128 2006-01-03 17:14:21 dwarren Exp $
+** $Id: emuloop.c,v 1.129 2006-01-09 00:06:30 tswift Exp $
 ** 
 */
 
@@ -75,8 +75,9 @@
 #include "deadlock.h"
 #include "rw_lock.h"
 #include "debug_xsb.h"
-
 #include "hash_xsb.h"
+#include "struct_manager.h"
+
 /*
  * Variable ans_var_pos_reg is a pointer to substitution factor of an
  * answer in the heap.  It is used and set in function

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.19 2005/12/22 23:34:00 tswift Exp $
+** $Id: trace_xsb.c,v 1.20 2006/01/06 14:21:52 dwarren Exp $
 ** 
 */
 
@@ -136,9 +136,9 @@ void total_stat(CTXTdeclc double elapstime) {
 
   tbtn = node_statistics(&smTableBTN);
   tbtht = hash_statistics(&smTableBTHT);
-  varsf = subgoal_statistics(&smVarSF);
-  prodsf = subgoal_statistics(&smProdSF);
-  conssf = subgoal_statistics(&smConsSF);
+  varsf = subgoal_statistics(CTXTc &smVarSF);
+  prodsf = subgoal_statistics(CTXTc &smProdSF);
+  conssf = subgoal_statistics(CTXTc &smConsSF);
   aln = node_statistics(&smALN);
   tstn = node_statistics(&smTSTN);
   tstht = hash_statistics(&smTSTHT);

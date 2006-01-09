@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.37 2005-12-22 23:34:02 tswift Exp $
+** $Id: tries.h,v 1.38 2006-01-09 00:06:33 tswift Exp $
 ** 
 */
 
@@ -119,6 +119,18 @@ typedef struct InstructionPlusTypeFrame {
 
 extern char *trie_node_type_table[9];
 extern char *trie_trie_type_table[6];
+
+/* Information for initializing dynamic trie structure managers */
+
+#define  BTN_NAME       0
+#define  BTHT_NAME      1
+#define  PRODSF_NAME    2
+#define  CONSSF_NAME    3
+#define  TSTNSF_NAME    4
+#define  TSINSF_NAME    5
+#define  TSTHT_NAME     6
+
+extern char *TrieSMNameTable[7];
 
 /*===========================================================================*/
 
