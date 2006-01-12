@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.26 2005-11-16 17:32:03 dwarren Exp $
+** $Id: bineg_xsb_i.h,v 1.27 2006-01-12 21:33:49 tswift Exp $
 ** 
 */
 
@@ -40,9 +40,11 @@ case SLG_NOT: {
 
   sf = ptoc_addr(regSF);
 #ifdef DEBUG_ASSERTIONS
-  if ( ! smIsValidStructRef(smVarSF,sf) )
-    xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
-	      regSF, BuiltinName(SLG_NOT), Arity);
+  /* Need to change for MT: smVarSF can be private or shared
+|  if ( ! smIsValidStructRef(smVarSF,sf) )
+|    xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
+|	      regSF, BuiltinName(SLG_NOT), Arity);
+  */
 #endif
   if ( has_no_answers(sf) &&
        (is_completed(sf) || neg_delay == FALSE) )
@@ -106,10 +108,12 @@ case IS_INCOMPLETE: {
   VariantSF producerSF = ptoc_addr(regSubgoalFrame);
   CPtr t_ptcp = ptoc_addr(regRootSubgoal);
 #ifdef DEBUG_ASSERTIONS
-  if ( ! smIsValidStructRef(smVarSF,producerSF) &&
-       ! smIsValidStructRef(smProdSF,producerSF) )
-    xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
-	      regSubgoalFrame, BuiltinName(IS_INCOMPLETE), Arity);
+  /* Need to change for MT: smVarSF can be private or shared
+|  if ( ! smIsValidStructRef(smVarSF,producerSF) &&
+|       ! smIsValidStructRef(smProdSF,producerSF) )
+|    xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
+|	      regSubgoalFrame, BuiltinName(IS_INCOMPLETE), Arity);
+  */
 #endif
   xsb_dbgmsg((LOG_DELAY, "Is incomplete for "));
   dbg_print_subgoal(LOG_DELAY, stddbg, producerSF);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.15 2006-01-09 00:06:31 tswift Exp $
+** $Id: gc_mark.h,v 1.16 2006-01-12 21:33:50 tswift Exp $
 ** 
 */
 
@@ -913,9 +913,11 @@ void mark_trie_strings(CTXTdecl) {
   mark_trie_strings_for(*private_smTableBTN,BTNptr,pBTNStruct,apBTNStruct);
   printf("marked private trie strings\n");
 #endif  
+  SYS_MUTEX_LOCK(MUTEX_SM);
   mark_trie_strings_for(smTableBTN,BTNptr,pBTNStruct,apBTNStruct);
-  mark_trie_strings_for(smTSTN,TSTNptr,pTSTNStruct,apTSTNStruct);
   mark_trie_strings_for(smAssertBTN,BTNptr,pBTNStruct,apBTNStruct);
+  SYS_MUTEX_UNLOCK(MUTEX_SM);
+  mark_trie_strings_for(smTSTN,TSTNptr,pTSTNStruct,apTSTNStruct);
 }
 
 void mark_code_strings(int pflag, CPtr inst_addr, CPtr end_addr) {

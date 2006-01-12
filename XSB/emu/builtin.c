@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.248 2006-01-09 00:06:30 tswift Exp $
+** $Id: builtin.c,v 1.249 2006-01-12 21:33:50 tswift Exp $
 ** 
 */
 
@@ -2073,12 +2073,15 @@ case WRITE_OUT_PROFILE:
     }
     if ( is_encoded_addr(goalTerm) ) {
       goalSF = (VariantSF)decode_addr(goalTerm);
-      if ( ! smIsValidStructRef(smVarSF,goalSF) &&
-	   ! smIsValidStructRef(smProdSF,goalSF) &&
-	   ! smIsValidStructRef(smConsSF,goalSF) )
-	xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
-		  regGoalHandle, BuiltinName(TABLE_STATUS), Arity);
-
+#ifdef DEBUG_ASSERTIONS
+  /* Need to change for MT: smVarSF can be private or shared
+|      if ( ! smIsValidStructRef(smVarSF,goalSF) &&
+|	   ! smIsValidStructRef(smProdSF,goalSF) &&
+|	   ! smIsValidStructRef(smConsSF,goalSF) )
+|	xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
+|		  regGoalHandle, BuiltinName(TABLE_STATUS), Arity);
+  */
+#endif
       if ( IsProperlySubsumed(goalSF) )
 	subsumerSF = (VariantSF)conssf_producer(goalSF);
       else
@@ -2262,16 +2265,19 @@ case WRITE_OUT_PROFILE:
      * So we currently disallow its use on subsumptive predicates.
      */
     sf = ptoc_addr(regTableEntry);
-    if ( smIsValidStructRef(smProdSF,sf) ||
-	 smIsValidStructRef(smConsSF,sf) )
-      xsb_abort("Invalid Table Entry Handle: Subsumptive table entry"
-		"\n\t Argument %d of %s/%d\n\t Answers for subsumptive"
-		" subgoals may not be deleted",
-		regTableEntry, BuiltinName(TRIE_DELETE_RETURN), Arity);
-    if ( ! smIsValidStructRef(smVarSF,sf) )
-      xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
-		regTableEntry, BuiltinName(TRIE_DELETE_RETURN), Arity);
-
+#ifdef DEBUG_ASSERTIONS
+  /* Need to change for MT: smVarSF can be private or shared
+|    if ( smIsValidStructRef(smProdSF,sf) ||
+|	 smIsValidStructRef(smConsSF,sf) )
+|      xsb_abort("Invalid Table Entry Handle: Subsumptive table entry"
+|		"\n\t Argument %d of %s/%d\n\t Answers for subsumptive"
+|		" subgoals may not be deleted",
+|		regTableEntry, BuiltinName(TRIE_DELETE_RETURN), Arity);
+|    if ( ! smIsValidStructRef(smVarSF,sf) )
+|      xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
+|		regTableEntry, BuiltinName(TRIE_DELETE_RETURN), Arity);
+  */
+#endif
     leaf = ptoc_addr(regReturnNode);
     SET_TRIE_ALLOCATION_TYPE_SF(sf); /* set to private/shared SM */
     if ( ! smIsValidStructRef(*smBTN,leaf) )
@@ -2296,12 +2302,15 @@ case WRITE_OUT_PROFILE:
     Cell retTerm;
 
     sf = ptoc_addr(regTableEntry);
-    if ( ! smIsValidStructRef(smVarSF,sf) &&
-	 ! smIsValidStructRef(smProdSF,sf) &&
-	 ! smIsValidStructRef(smConsSF,sf) )
-      xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
-		regTableEntry, BuiltinName(TRIE_GET_RETURN), Arity);
-
+#ifdef DEBUG_ASSERTIONS
+  /* Need to change for MT: smVarSF can be private or shared
+|    if ( ! smIsValidStructRef(smVarSF,sf) &&
+|	 ! smIsValidStructRef(smProdSF,sf) &&
+|	 ! smIsValidStructRef(smConsSF,sf) )
+|      xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
+|		regTableEntry, BuiltinName(TRIE_GET_RETURN), Arity);
+  */
+#endif
     retTerm = ptoc_tag(CTXTc regRetTerm);
     if ( isref(retTerm) ) {
       err_handle(CTXTc INSTANTIATION, regRetTerm, BuiltinName(TRIE_GET_RETURN),

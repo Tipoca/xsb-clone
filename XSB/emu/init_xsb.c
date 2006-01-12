@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.80 2006-01-09 00:06:31 tswift Exp $
+** $Id: init_xsb.c,v 1.81 2006-01-12 21:33:50 tswift Exp $
 ** 
 */
 
@@ -897,7 +897,24 @@ void cleanup_thread_structures(CTXTdecl)
 
   free_trie_aux_areas(CTXT) ;
 
-
+  mem_dealloc(private_smTableBTN,sizeof(struct Structure_Manager),
+	      MT_PRIVATE_SPACE);
+  mem_dealloc(private_smTableBTHT,sizeof(struct Structure_Manager),
+	      MT_PRIVATE_SPACE);
+  mem_dealloc(private_smTSTN,sizeof(struct Structure_Manager),
+	      MT_PRIVATE_SPACE);
+  mem_dealloc(private_smTSTHT,sizeof(struct Structure_Manager),
+	      MT_PRIVATE_SPACE);
+  mem_dealloc(private_smTSIN,sizeof(struct Structure_Manager),
+	      MT_PRIVATE_SPACE); 
+  mem_dealloc(private_smVarSF,sizeof(struct Structure_Manager),
+	      MT_PRIVATE_SPACE);
+  mem_dealloc(private_smProdSF,sizeof(struct Structure_Manager),
+	      MT_PRIVATE_SPACE); 
+  mem_dealloc(private_smConsSF,sizeof(struct Structure_Manager),
+	      MT_PRIVATE_SPACE); 
+  mem_dealloc(private_smALN,sizeof(struct Structure_Manager),
+	      MT_PRIVATE_SPACE); 
 }
 #endif /* MULTI_THREAD */
 

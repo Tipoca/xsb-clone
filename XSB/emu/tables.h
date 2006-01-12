@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.h,v 1.11 2006-01-09 00:06:33 tswift Exp $
+** $Id: tables.h,v 1.12 2006-01-12 21:33:52 tswift Exp $
 ** 
 */
 
@@ -42,7 +42,7 @@ ALNptr	table_identify_relevant_answers(CTXTdeclc SubProdSF, SubConsSF, CPtr);
 void	table_complete_entry(CTXTdeclc VariantSF);
 
 void	release_all_tabling_resources(CTXTdecl);
-
+VariantSF NewProducerSF(CTXTdeclc BTNptr,TIFptr);
 
 /*
  * The next answer to consume is obtained from the old answer continuation.

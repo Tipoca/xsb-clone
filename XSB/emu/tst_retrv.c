@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_retrv.c,v 1.22 2005-12-16 00:18:24 tswift Exp $
+** $Id: tst_retrv.c,v 1.23 2006-01-12 21:33:53 tswift Exp $
 ** 
 */
 
@@ -241,12 +241,13 @@ void initCollectRelevantAnswers(CTXTdecl) {
 /*
  *  Create a new answer-list node, set it to point to an answer,  
  *  and place it at the head of a chain of answer-list nodes.
+ *  For MT engine: use only for private,subsumed tables.
  */
-#define ALN_InsertAnswer(pAnsListHead,pAnswerNode) {		\
-   ALNptr newAnsListNode;					\
-   New_ALN(newAnsListNode,(void *)pAnswerNode,pAnsListHead);	\
-   pAnsListHead = newAnsListNode;				\
- }
+#define ALN_InsertAnswer(pAnsListHead,pAnswerNode) {			\
+    ALNptr newAnsListNode;						\
+    New_Private_ALN(newAnsListNode,(void *)pAnswerNode,pAnsListHead);	\
+    pAnsListHead = newAnsListNode;					\
+  }
 
 /*
  *  Error handler for the collection algorithm.
