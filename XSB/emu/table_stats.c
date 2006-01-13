@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.20 2006-01-09 00:06:32 tswift Exp $
+** $Id: table_stats.c,v 1.21 2006-01-13 23:56:57 tswift Exp $
 ** 
 */
 
@@ -134,10 +134,9 @@ NodeStats subgoal_statistics(CTXTdeclc Structure_Manager *sm) {
 
   NodeStats sg_stats;
   TIFptr tif;
+  int nSubgoals;
   VariantSF pProdSF;
   SubConsSF pConsSF;
-  int nSubgoals;
-
 
   sg_stats = node_statistics(sm);
   nSubgoals = 0;
@@ -148,6 +147,7 @@ NodeStats subgoal_statistics(CTXTdeclc Structure_Manager *sm) {
 	      pProdSF = (VariantSF)subg_next_subgoal(pProdSF) )
 	  nSubgoals++;
   }
+  /* No shared smProdSF or smConsSF in MT engine */
   else if ( sm == &smProdSF ) {
     for ( tif = tif_list.first;  IsNonNULL(tif);  tif = TIF_NextTIF(tif) )
       if ( IsSubsumptivePredicate(tif) )
