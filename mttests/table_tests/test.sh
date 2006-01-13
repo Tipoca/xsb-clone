@@ -15,13 +15,16 @@ echo "-------------------------------------------------------"
 # convention is that to use test_single, leave the last argument of test
 # goal uninstantiated to unify with the stream.
 
-../gentest.sh "$XEMU $options" tableread "tableread(10000,_)" $NUM
-../gentest.sh "$XEMU $options" tableread2 "tableread(10000,_)" $NUM
+../gentest.sh "$XEMU $options" tableread "tableread(1000,_)" $NUM
+../gentest.sh "$XEMU $options" tableread2 "tableread(1000,_)" $NUM
+#../gentest.sh "$XEMU $options" tableread "tableread(10000,_)" $NUM
+#../gentest.sh "$XEMU $options" tableread2 "tableread(10000,_)" $NUM
 ../gentest.sh "$XEMU $options" tableread3 "tableread(10,_)" $NUM
-../gentest.sh "$XEMU $options" tablereadcond "tableread(10000,_)" $NUM
+# ../gentest.sh "$XEMU $options" tablereadcond "tableread(10000,_)" $NUM
+ ../gentest.sh "$XEMU $options" tablereadcond "tableread(1000,_)" $NUM
 #../gentest.sh "$XEMU $options" tableread4 "tableread(1000,_)" $NUM
 
-../gentest.sh "$XEMU $options" tableread_dyn "tableread(10000,_)" $NUM
+#../gentest.sh "$XEMU $options" tableread_dyn "tableread(10000,_)" $NUM
 
 ../gentest.sh "$XEMU $options" tablewrite "test(_)" $NUM
 ../gentest.sh "$XEMU $options" tablewrite2 "test(_)" $NUM
@@ -38,5 +41,8 @@ echo "-------------------------------------------------------"
 
 ../gentest.sh "$XEMU $options" tablewrites6 "tablewrite(100,_)" $NUM
 ../gentest.sh "$XEMU $options" tablewrites7 "tablewrite(100,_)" $NUM
+
+# test of private subsumption.
+../seqgentest.sh "$XEMU $options" subsumption1 "test." 
 
 
