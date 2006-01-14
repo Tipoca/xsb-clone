@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.37 2006-01-12 21:33:52 tswift Exp $
+** $Id: tables.c,v 1.38 2006-01-14 16:39:34 dwarren Exp $
 ** 
 */
 
@@ -104,7 +104,10 @@ Structure_Manager smALN    = SM_InitDecl(AnsListNode, ALNs_PER_BLOCK,
  * SMs when adding answers.
  */
 
-inline VariantSF NewProducerSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo) {   
+#ifndef WIN32
+inline 
+#endif
+VariantSF NewProducerSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo) {   
     									
     void *pNewSF;							
 
