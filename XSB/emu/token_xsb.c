@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.23 2006-01-03 18:14:09 dwarren Exp $
+** $Id: token_xsb.c,v 1.24 2006-01-14 16:25:32 dwarren Exp $
 ** 
 */
 
@@ -61,13 +61,6 @@
  
 #define InType(c)       (intab.chtype+1)[c]
 #define DigVal(c)       (digval+1)[c]
-
-#ifdef BITS64
-#define MY_MAXINT ((long)0x7fffffffffffff)
-#define MY_MAXINT ((long)0x7fffffffffffffff)
-#else
-#define MY_MAXINT ((int)0x7fffffff)	/* Modified by Kostis */
-#endif
 
 //Char outqt[EOFCH+1];   /* All the "+1" appear because of the EOF char */
  
