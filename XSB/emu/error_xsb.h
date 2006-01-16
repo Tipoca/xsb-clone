@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.23 2005-12-31 23:16:03 tswift Exp $
+** $Id: error_xsb.h,v 1.24 2006-01-16 00:33:23 tswift Exp $
 ** 
 */
 
@@ -112,9 +112,10 @@ extern void xsb_segfault_quitter(int);
 int unwind_stack(CTXTdecl);
 
 void call_conv xsb_domain_error(CTXTdeclc char *, Cell, char *, int, int) ;
+void call_conv xsb_existence_error(CTXTdeclc char *,Cell, char *,int, int) ;
 void call_conv xsb_instantiation_error(CTXTdeclc char *, int, int, char *) ;
-void call_conv xsb_permission_error(CTXTdeclc char *,char *, int, char *,int) ;
-void call_conv xsb_resource_error(CTXTdeclc char *,char *, int, int) ;
+void call_conv xsb_permission_error(CTXTdeclc char *,char *,Cell,char *,int) ;
+void call_conv xsb_resource_error(CTXTdeclc char *,char *, int) ;
 void call_conv xsb_resource_error_nopred(CTXTdeclc char *,char *) ;
 void call_conv xsb_table_error(CTXTdeclc char *) ;
 void call_conv xsb_type_error(CTXTdeclc char *,Cell , char *,int, int) ;
