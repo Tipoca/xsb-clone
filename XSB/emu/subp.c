@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.93 2005/12/22 23:33:58 tswift Exp $
+** $Id: subp.c,v 1.94 2006/01/09 00:06:32 tswift Exp $
 ** 
 */
 
@@ -814,11 +814,16 @@ extern long if_profiling;
 extern long prof_flag;
 
 void setProfileBit(void *place_holder) {
+  long unhandled = 0;
 #ifdef MULTI_THREAD
   th_context *th = find_context(xsb_thread_self());
 #endif
   while (TRUE) {
     if (if_profiling) {
+      if (asynint_val & PROFINT_MARK) {
+	unhandled++;
+	if (!(unhandled % 10)) printf("Unhandled profile ints: %ld\n",unhandled);
+      }
       asynint_val |= PROFINT_MARK;
     }
 #ifdef WIN_NT
@@ -836,7 +841,6 @@ xsbBool startProfileThread()
   if (!if_profiling) {
     Thread = (HANDLE)_beginthread(setProfileBit,0,NULL);
     SetThreadPriority(Thread,THREAD_PRIORITY_HIGHEST/*_ABOVE_NORMAL*/);
-    if_profiling = 1;
   }
 #elif defined(SOLARIS)
   printf("Profiling not supported\n");
