@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flatten.H,v 1.5 2004-08-31 00:22:20 dwarren Exp $
+** $Id: flatten.H,v 1.6 2006-01-17 21:52:35 dwarren Exp $
 ** 
 */
 
@@ -30,3 +30,4 @@
 :- import gennum/1 from gensym.
 :- import arithrelop/1 from tp_eval.
 :- import length/2 from basics.
+:- import functor/3 from standard.
