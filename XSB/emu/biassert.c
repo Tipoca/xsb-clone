@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.106 2005-12-31 23:16:02 tswift Exp $
+** $Id: biassert.c,v 1.107 2006-01-17 21:50:18 dwarren Exp $
 ** 
 */
 
@@ -751,7 +751,7 @@ static void db_gentopinst(CTXTdeclc prolog_term T0, int Argno, RegStat Reg)
   struct instruction_q *inst_queue = &inst_queue_lc;
   
   if (isinteger(T0)) {
-    dbgen_instB_ppvw(getnumcon, Argno, T0); /* getnumcon */
+    dbgen_instB_ppvw(getnumcon, Argno, int_val(T0)); /* getnumcon */
   } else if (isstring(T0)) {
     if (strcmp(string_val(T0),"$assertAVAR"))
 	dbgen_instB_ppvw(getcon, Argno, (Cell)string_val(T0));  /* getcon */
@@ -840,7 +840,7 @@ static void db_geninst(CTXTdeclc prolog_term Sub, RegStat Reg,
   int Rt;
   
   if (isinteger(Sub)) {
-    dbgen_instB_pppw(uninumcon, Sub);
+    dbgen_instB_pppw(uninumcon, int_val(Sub));
   } else if (isstring(Sub)) {
     if (!strcmp(string_val(Sub),"$assertAVAR")) {
       dbgen_instB_ppp(uniavar);
@@ -899,9 +899,9 @@ static void db_genaput(CTXTdeclc prolog_term T0, int Argno,
   } else if ((Rt = is_frozen_var(T0))) {
     inst_queue_push(inst_queue, movreg, Rt, Argno);
   } else if (isinteger(T0)) {
-    inst_queue_push(inst_queue, putnumcon, T0, Argno);
+    inst_queue_push(inst_queue, putnumcon, int_val(T0), Argno);
   } else if (isfloat(T0)) {
-    inst_queue_push(inst_queue, putnumcon, makeint(p2c_float_as_int(T0)), 
+    inst_queue_push(inst_queue, putnumcon, p2c_float_as_int(T0), 
 		    Argno);
   } else if (isnil(T0)) {
     inst_queue_push(inst_queue, putnil, 0, Argno);
@@ -1002,7 +1002,7 @@ static void db_bldsubs(CTXTdeclc prolog_term Sub, RegStat Reg,
       flatten_stack_push(flatten_stackq, bldavar, 0);
     else flatten_stack_push(flatten_stackq,bldcon,(Cell)string_val(Sub)); /* bldcon */
   } else if (isinteger(Sub)) {               /* bldnumcon(Sub) */
-    flatten_stack_push(flatten_stackq, bldnumcon, Sub);
+    flatten_stack_push(flatten_stackq, bldnumcon, int_val(Sub));
   } else if (isfloat(Sub)) {             /* bldfloat(Sub) */
     flatten_stack_push(flatten_stackq, bldfloat, Sub);
   } else if (isref(Sub)) {

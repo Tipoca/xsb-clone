@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.50 2006-01-03 17:14:21 dwarren Exp $
+** $Id: loader_xsb.c,v 1.51 2006-01-17 21:50:20 dwarren Exp $
 ** 
 */
 
@@ -417,7 +417,7 @@ static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
 	inst_addr ++;
 	break;
       case B:                       // boxed integer
-	get_obj_word_bbsig(inst_addr);
+	get_obj_word_bbsig_notag(inst_addr);
 	inst_addr ++;
 	break;
       case I:                      // index of sob
