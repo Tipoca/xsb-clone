@@ -12,7 +12,8 @@ test(P) :-
 	consult(P), tell(temp),
 	query(P,Q,SGs,Tr,Un),
 	call_top_query(P,Q),
-	test_tv(SGs,Tr,Un).
+	test_tv(SGs,Tr,Un),
+	told.
 
 call_top_query(P,Q) :-
 	( numbervars(Q), write('Evaluating '), writeln(P:Q), fail ; true ),
