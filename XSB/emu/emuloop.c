@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.130 2006-01-17 21:50:19 dwarren Exp $
+** $Id: emuloop.c,v 1.131 2006-01-18 19:32:25 dwarren Exp $
 ** 
 */
 
@@ -1480,11 +1480,11 @@ contcase:     /* the main loop */
     ADVANCE_PC(size_xxxXX);
     XSB_Deref(op1); 
     if (isnumber(op1)) {
-      if (int_val(op1) == op2)
+      if (int_val(op1) == (Integer)op2)
 	lpcreg = (byte *)op3;
     }
     else if (isboxedinteger(op1)) {
-       if (oint_val(op1) == op2)
+       if (oint_val(op1) == (Integer)op2)
           lpcreg = (byte *)op3;
     }	  
     else if (isboxedfloat(op1)) {
@@ -1504,11 +1504,11 @@ contcase:     /* the main loop */
     ADVANCE_PC(size_xxxXX);
     XSB_Deref(op1); 
     if (isnumber(op1)) {
-      if (int_val(op1) != op2)
+      if (int_val(op1) != (Integer)op2)
 	lpcreg = (byte *) op3;
     }
     else if (isboxedinteger(op1)) {
-       if (oint_val(op1) != op2)
+       if (oint_val(op1) != (Integer)op2)
           lpcreg = (byte *)op3;
     }	  
     else if (isboxedfloat(op1)) {
