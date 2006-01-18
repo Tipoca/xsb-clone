@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.23 2005/01/14 18:32:00 ruim Exp $
+** $Id: loader.H,v 1.24 2005/09/09 23:50:56 tswift Exp $
 ** 
 */
 
@@ -29,7 +29,7 @@
 	%%reset_undef_pred_handlers/0,
 	windows_os_loader/0.
 
-:- import catch/3,throw/1 from standard.
+:- import catch/3,throw/1,warning/1 from standard.
 :- import default_error_handler/1 from error_handler.
 %:- import conset/2 from gensym.
 :- import reconsult/1 from consult.
@@ -51,4 +51,4 @@
    from machine.
 %%:- import call_xsb_hook/3, xsb_undefined_predicate_hook/1 from xsb_hook.
 :- import xsb_sys_mutex_unlock/1 from thread.
-
+:- import current_prolog_flag/2 from curr_sym.

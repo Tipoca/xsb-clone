@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.46 2005/11/07 20:58:04 dwarren Exp $
+** $Id: loader.P,v 1.47 2005/12/12 18:45:46 dwarren Exp $
 ** 
 */
 
@@ -278,16 +278,22 @@ load_pred1(PSC) :-
 		%% '_$cutto'(B)
 		!
 		;
-		xsb_sys_mutex_unlock( MUTEX_LOAD_UNDEF ),
-		xsb_backtrace(BT),
-		throw(error(existence_error(procedure,ModName:Name/Arity),[],BT))
+	        handle_undefined_pred(ModName,Name,Arity)
 	    )
 	;
-	    xsb_sys_mutex_unlock( MUTEX_LOAD_UNDEF ),
-	    xsb_backtrace(BT),
-	    throw(error(existence_error(procedure,usermod:Name/Arity),[],BT))
+	    handle_undefined_pred(usermod,Name,Arity)
 	).
 
+handle_undefined_pred(ModName,Name,Arity) :-
+	(current_prolog_flag(undefined_predicate,fail)
+	 ->	fail
+	 ;	current_prolog_flag(undefined_predicate,warning)
+	 ->	warning(['Undefined predicate: ',ModName,':',Name,'/',Arity,': failing']),
+		fail
+	 ;	xsb_sys_mutex_unlock( MUTEX_LOAD_UNDEF ),
+		xsb_backtrace(BT),
+		throw(error(existence_error(procedure,ModName:Name/Arity),[],BT))
+	).
 
 /*
 %% Invoke undefined pred handlers until one succeeds.
