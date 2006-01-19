@@ -68,4 +68,5 @@ options=$2
 ../gentest.sh "$XEMU $options" altindex "test."
 #------------------------------------
 ../gentest.sh "$XEMU $options" longname "test."
-
+#------------------------------------
+../gentest.sh "$XEMU $options" gctest "test."
