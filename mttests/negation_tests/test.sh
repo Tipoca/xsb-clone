@@ -19,5 +19,8 @@ echo "-------------------------------------------------------"
 ../gentest.sh "$XEMU $options" tabchain "test(2000,_)" $NUM
 ../gentest.sh "$XEMU $options" tabcycle "test(2000,_)" $NUM
 ../gentest.sh "$XEMU $options" tabsimp "test(2000,_)" $NUM
+../gentest.sh "$XEMU $options" tabchain_shared "test(20000,_)" $NUM
+../gentest.sh "$XEMU $options" tabcycle_shared "test(10000,_)" $NUM
+../gentest.sh "$XEMU $options" tabsimp_shared "test(20000,_)" $NUM
 
 
