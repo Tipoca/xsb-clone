@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage.H,v 1.10 2005-01-14 18:31:57 ruim Exp $
+** $Id: storage.H,v 1.11 2006-01-20 01:30:48 kifer Exp $
 ** 
 */
 
@@ -41,3 +41,5 @@
 	trie_reclaim_uninterned_nr/1
    from intern.
 
+
+:- import throw/1, atom/1 from standard.

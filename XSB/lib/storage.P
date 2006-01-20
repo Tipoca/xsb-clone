@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage.P,v 1.11 2005-01-14 18:31:57 ruim Exp $
+** $Id: storage.P,v 1.12 2006-01-20 01:30:48 kifer Exp $
 ** 
 */
 
@@ -197,6 +197,8 @@ storage_reclaim_space(StorageName) :-
 %% Create a new trie or use an existing one 
 %% that is already saved as a property of StorageName
 triehandle_for_storage(StorageName,Handle,Snapshot) :-
+	(atom(StorageName), !
+	; throw(error(storage('Invalid storage name', StorageName)))),
 	storage_builtin(GET_STORAGE_HANDLE,StorageName,Handle,Snapshot,_).
 
 
