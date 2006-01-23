@@ -150,3 +150,5 @@ opts=$2
 # Test of simplification and delete return
 #----------------------------------------------------------------------
 ../gentest.sh "$XEMU $opts" dret_test "test."
+
+../gentest.sh "$XEMU $opts" tabsimp_seq "test(20000)."
