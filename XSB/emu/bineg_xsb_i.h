@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.27 2006-01-12 21:33:49 tswift Exp $
+** $Id: bineg_xsb_i.h,v 1.28 2006-01-23 21:21:31 tswift Exp $
 ** 
 */
 
@@ -170,13 +170,15 @@ case IS_INCOMPLETE: {
     xsb_dbgmsg((LOG_DELAY,"an UNTABLED predicate"));
     xsb_dbgmsg((LOG_DELAY, ")\n"));
 
+    check_tcpstack_overflow;
+
     adjust_level(subg_compl_stack_ptr(producerSF));
     save_find_locx(ereg);
     efreg = ebreg;
     if (trreg > trfreg) trfreg = trreg;
     if (hfreg < hreg) hfreg = hreg;
     if (bfreg > breg) bfreg = breg;
-    /* check_stack_overflow(bfreg, pcreg, (byte *)pcreg);	*/
+
 #ifdef SLG_GC
     old_cptop = bfreg;
 #endif

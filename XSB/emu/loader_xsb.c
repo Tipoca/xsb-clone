@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.51 2006-01-17 21:50:20 dwarren Exp $
+** $Id: loader_xsb.c,v 1.52 2006-01-23 21:21:31 tswift Exp $
 ** 
 */
 
@@ -953,20 +953,22 @@ byte *loader(CTXTdeclc char *file, int exp)
 } /* loader */
 
 #ifdef MULTI_THREAD
-void thread_free_tab_blks(CTXTdecl) {
-  struct TDispBlk_t *tdispblk;
-  TIFptr tip;
-
-  SYS_MUTEX_LOCK( MUTEX_TABLE );
-  for (tdispblk=tdispblkhdr.firstDB ; tdispblk != NULL ; tdispblk=tdispblk->NextDB) {
-    if (th->tid <= tdispblk->MaxThread) {
-      tip = (&(tdispblk->Thread0))[th->tid];
-      if (tip) {
-	delete_predicate_table(CTXTc tip);
-	(&(tdispblk->Thread0))[th->tid] = (TIFptr) NULL;
-      }
-    }
-  }
-  SYS_MUTEX_UNLOCK( MUTEX_TABLE );
-}
+/* TLS: not currently used.
+| void thread_free_tab_blks(CTXTdecl) {
+|   struct TDispBlk_t *tdispblk;
+|   TIFptr tip;
+| 
+|   SYS_MUTEX_LOCK( MUTEX_TABLE );
+|   for (tdispblk=tdispblkhdr.firstDB ; tdispblk != NULL ; tdispblk=tdispblk->NextDB) {
+|     if (th->tid <= tdispblk->MaxThread) {
+|       tip = (&(tdispblk->Thread0))[th->tid];
+|       if (tip) {
+| 	delete_predicate_table(CTXTc tip);
+| 	(&(tdispblk->Thread0))[th->tid] = (TIFptr) NULL;
+|       }
+|     }
+|   }
+|   SYS_MUTEX_UNLOCK( MUTEX_TABLE );
+| }
+*/
 #endif
