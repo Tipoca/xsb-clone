@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.81 2006-01-12 21:33:50 tswift Exp $
+** $Id: init_xsb.c,v 1.82 2006-01-24 14:10:01 tswift Exp $
 ** 
 */
 
@@ -318,7 +318,8 @@ static void process_long_option(char *option)
 }
 
 /*==========================================================================*/
-/* Currently done on process startup after init_para(). */
+/* Currently done on process startup after init_para(). Do not use elsewhere, 
+   to avoid problems with multi-threading. */
 
 FILE *stream_err, *stream_out; 
 

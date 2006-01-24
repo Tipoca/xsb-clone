@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.131 2006-01-18 19:32:25 dwarren Exp $
+** $Id: emuloop.c,v 1.132 2006-01-24 14:10:01 tswift Exp $
 ** 
 */
 
@@ -369,11 +369,13 @@ int  xctr;
 /* place for a meaningful message when segfault is detected */
 char *xsb_default_segfault_msg =
      "\n++Memory violation occurred during evaluation.\n++Please report this problem using the XSB bug tracking system accessible from\n++\t http://sourceforge.net/projects/xsb\n++Please supply the steps necessary to reproduce the bug.\n";
-char *xsb_segfault_message;
+
 
 #ifndef MULTI_THREAD
 jmp_buf xsb_abort_fallback_environment;
 #endif
+
+char *xsb_segfault_message;
 
 /*======================================================================*/
 /* the main emulator loop.						*/

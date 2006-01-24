@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.83 2006-01-12 21:33:53 tswift Exp $
+** $Id: tries.c,v 1.84 2006-01-24 14:10:01 tswift Exp $
 ** 
 */
 
@@ -73,7 +73,7 @@ Cell VarEnumerator[NUM_TRIEVARS];
 Cell TrieVarBindings[NUM_TRIEVARS];
 #endif
 
-xsbBool check_table_cut = TRUE;  /* flag for close_open_tables to turn off
+/* xsbBool check_table_cut = TRUE;  flag for close_open_tables to turn off
 				    cut-over-table check */
 
 /*
@@ -1594,7 +1594,7 @@ void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
     if (!is_completed(CallStrPtr)) {
       if (warned == FALSE) {
 	xsb_mesg("Removing incomplete tables...");
-	check_table_cut = FALSE;  /* permit cuts over tables */
+	//	check_table_cut = FALSE;  /* permit cuts over tables */
 	warned = TRUE;
       }
       remove_calls_and_returns(CTXTc CallStrPtr);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.24 2005-12-31 01:43:33 tswift Exp $
+** $Id: auxlry.h,v 1.25 2006-01-24 14:10:00 tswift Exp $
 ** 
 */
 
@@ -39,6 +39,9 @@ extern void get_date(int *year, int *month, int *day,
 extern int asynint_val;
 #endif
 
+extern char *xsb_segfault_message;
+extern char *xsb_default_segfault_msg;
+
 /*
  *  Mode in which XSB is run.
  */
@@ -56,9 +59,6 @@ typedef enum XSB_Execution_Mode {
 extern Exec_Mode xsb_mode;
 
 #define fileptr(xsb_filedes)  open_files[xsb_filedes].file_ptr
-
-extern char *xsb_default_segfault_msg;
-extern char *xsb_segfault_message;
 
 /* This would yield a meaningful message in case of segfault */
 #define SET_FILEPTR(stream, xsb_filedes) \

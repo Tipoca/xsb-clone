@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.24 2006-01-16 00:33:23 tswift Exp $
+** $Id: error_xsb.h,v 1.25 2006-01-24 14:10:01 tswift Exp $
 ** 
 */
 
@@ -94,6 +94,7 @@ extern FILE *stdfdbk;	    	/* Stream for XSB feedback msgs         */
 #define err(d, a, f, ar)	err_handle(CTXTc d, a, f, ar, NULL, (Cell)NULL)
 
 extern char *xsb_default_segfault_msg;
+
 extern char *xsb_segfault_message; /* Put your segfault message here prior to
 				      executing the command that might
 				      segfault. Then restore it to
