@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.21 2005/12/26 17:16:30 tswift Exp $
+** $Id: error_handler.H,v 1.22 2006/01/16 00:44:25 tswift Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
               check_atom/3, check_atom_list/3, check_callable/3,
               check_ground/3, check_integer/3, check_nonneg_integer/3,
               check_nonvar_list/3, check_nonvar/3, 
-              check_number/3,
+              check_number/3, check_one_thread/3,
               check_var/3, 
               default_error_handler/1,
 	      default_sys_error_handler/1,
@@ -48,7 +48,7 @@
  :- import ground/1 from basics.
 %%:- import reset_undef_pred_handlers/0 from loader.
 :- import close_open_tables/0, psc_data/2, psc_name/2, psc_arity/2,
-             xsb_backtrace/1 from machine.
+          stat_flag/2, xsb_backtrace/1 from machine.
 
  :- import atom/1, callable/1, messageln/2, number/1, 
            throw/1,integer/1 from standard.

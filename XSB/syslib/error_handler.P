@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.34 2005/12/26 17:16:30 tswift Exp $
+** $Id: error_handler.P,v 1.35 2006/01/16 00:44:25 tswift Exp $
 ** 
 */
 
@@ -299,6 +299,14 @@ check_nonvar(Term,Predicate,Arg) :-
 	    instantiation_error(Predicate,Arg,nonvar)
              ;  true).
 
+check_one_thread(Op,Obj_type,Predicate):- 
+	stat_flag(NUM_THREADS, Value),
+	(Value > 1 -> 
+	    misc_error(('Operation ',Op,' on ',Obj_type,
+	                 ' is not permitted when more than one thread is active (',
+			 Predicate,')') )
+         ; true).
+	
 %-------------
 % Checks that a term is a variable
 check_var(Term,Predicate,Arg) :- 
