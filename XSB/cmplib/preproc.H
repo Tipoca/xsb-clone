@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: preproc.H,v 1.5 2005-01-14 18:30:46 ruim Exp $
+** $Id: preproc.H,v 1.6 2006-01-27 17:54:12 dwarren Exp $
 ** 
 */
 
@@ -33,4 +33,4 @@
 :- import str_cat/3 from machine.
 :- import conget/2, gensym/2 from gensym.
 :- import append/3 from basics.
-
+:- import inline_jumpcof_cond/3 from builtin.

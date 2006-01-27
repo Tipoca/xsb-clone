@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tprog.P,v 1.15 2004-09-03 18:36:36 dwarren Exp $
+** $Id: tprog.P,v 1.16 2006-01-27 17:54:12 dwarren Exp $
 ** 
 */
 
@@ -185,10 +185,10 @@ tbody(goal(Sym,Args),A,Pil,Pilr,Tin,Tout,Meet,_,_HoldRegs,Tabled,Tabar,_,_) :-
     sym_name(Sym, Pred, Arity),
     reserve(Arity,Tin,T1), Tout = [],
     tgoalargs(Args,1,Pil,Pil1,T1,_,Tabled),
-    ( option(sysmod), inline_builtin(Pred, Arity, BltNum), !,
-	( LastLit =:= 1, 
-	  ( A > 0,  Pil1 = [deallocate,builtin(BltNum),proceed|Pilr]
-	  ; A =< 0, Pil1 = [builtin(BltNum),proceed | Pilr]
+    ( (option(sysmod), inline_builtin(Pred, Arity, BltNum)) ->
+	( LastLit =:= 1 ->
+	  ( A > 0 ->  Pil1 = [deallocate,builtin(BltNum),proceed|Pilr]
+	   ; Pil1 = [builtin(BltNum),proceed | Pilr]
 	  )
         ; LastLit =\= 1, Pil1 = [builtin(BltNum)|Pilr]
         )

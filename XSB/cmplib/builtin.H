@@ -19,11 +19,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.H,v 1.2 2005-01-14 18:30:44 ruim Exp $
+** $Id: builtin.H,v 1.3 2006-01-27 17:54:11 dwarren Exp $
 ** 
 */
 
 
 
-:- export inline_predicate/2, inline_builtin/3, builtin_function/3.
+:- export inline_predicate/2, inline_builtin/3, inline_jumpcof_cond/3, builtin_function/3.
 
