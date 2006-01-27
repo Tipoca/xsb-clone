@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.70 2005-12-12 18:44:52 dwarren Exp $
+** $Id: builtin.h,v 1.71 2006-01-27 17:50:16 dwarren Exp $
 ** 
 */
 
@@ -272,6 +272,20 @@
 
 /* This hook is for Interprolog */
 #define INTERPROLOG_CALLBACK    255
+
+/* cons for jumpcof calls */
+#define ATOM_TEST		1
+#define INTEGER_TEST		2
+#define REAL_TEST		3
+#define NUMBER_TEST		4
+#define ATOMIC_TEST		5
+#define COMPOUND_TEST		6
+#define CALLABLE_TEST		7
+#define IS_LIST_TEST		8
+#define IS_MOST_GENERAL_TERM_TEST 9
+#define IS_ATTV_TEST		10
+#define VAR_TEST		11
+#define NONVAR_TEST		12
 
 #define PLUS_FUNCT 1
 #define MINUS_FUNCT 2

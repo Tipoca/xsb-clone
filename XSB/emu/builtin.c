@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.250 2006-01-16 22:13:30 dwarren Exp $
+** $Id: builtin.c,v 1.251 2006-01-27 17:50:16 dwarren Exp $
 ** 
 */
 
@@ -586,7 +586,7 @@ static int ground(CTXTdeclc CPtr temp)
 
 /* --------------------------------------------------------------------	*/
 
-inline static int is_proper_list(Cell term)	/* for standard preds */
+int is_proper_list(Cell term)	/* for standard preds */
 {
   register Cell addr;
 
@@ -611,7 +611,7 @@ inline static int is_proper_list(Cell term)	/* for standard preds */
    follow(addr) = makenil;			\
    *(++mini_trail_top) = (CPtr)addr;
 
-static int is_most_general_term(Cell term)
+int is_most_general_term(Cell term)
 {
   CPtr mini_trail[MAX_ARITY];
   CPtr *mini_trail_top;
