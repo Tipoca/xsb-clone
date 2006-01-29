@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.83 2006-01-27 20:29:46 tswift Exp $
+** $Id: init_xsb.c,v 1.84 2006-01-29 22:46:05 ruim Exp $
 ** 
 */
 
@@ -743,6 +743,29 @@ char *init_para(CTXTdeclc int argc, char *argv[])
 
 /*==========================================================================*/
 #ifdef MULTI_THREAD
+
+void set_init_glstack_size(int s)
+{
+	init_glstack.size = s ;
+}
+
+void set_init_tcpstack_size(int s)
+{
+	init_tcpstack.size = s ;
+}
+
+void set_init_pdl_size(int s)
+{
+	init_pdl.size = s ;
+}
+
+void set_init_complstack_size(int s)
+{
+	init_complstack.size = s ;
+}
+
+
+
 /* To be called each time a thread is created: initializes
  * thread-private memory areas that are cleaned up in
  * cleanup_thread_structures() */
