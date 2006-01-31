@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.80 2005/11/07 20:58:04 dwarren Exp $
+** $Id: machine.P,v 1.81 2005/12/12 18:45:46 dwarren Exp $
 ** 
 */
 
@@ -345,7 +345,7 @@ socket_request(_ReqNumber,_Domain,_Sockfd,_Port,_Hostname,_Sockfptr,_Error) :-
 
 /*======================================================================*/
 
-thread_request(_ReqNumber,_Arg1,_Arg2,_Arg3,_Rc) :-
+thread_request(_ReqNumber,_Arg1,_Arg2,_Arg3,_Arg4,_Arg5,_Arg6,_Arg7) :-
         '_$builtin'(THREAD_REQUEST).
 
 mt_random_request(_ReqNumber,_Arg1,_Arg2):-  

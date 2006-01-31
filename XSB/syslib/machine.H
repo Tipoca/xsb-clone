@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.72 2005/11/07 20:58:04 dwarren Exp $
+** $Id: machine.H,v 1.73 2005/12/12 18:45:46 dwarren Exp $
 ** 
 */
 
@@ -138,7 +138,7 @@
         '$$set_scope_marker'/0,
         '$$unwind_stack'/0,
         '$$clean_up_block'/0,
-         thread_request/5,  mt_random_request/3,
+        thread_request/8,  mt_random_request/3,
         pow/3,
    gc_clauses/0,
 	print_ls/0, print_tr/0, print_heap/2, print_cp/0, print_regs/0,
