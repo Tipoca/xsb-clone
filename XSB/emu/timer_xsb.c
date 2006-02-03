@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.c,v 1.19 2005-12-12 00:19:12 tswift Exp $
+** $Id: timer_xsb.c,v 1.20 2006-02-03 18:14:13 tswift Exp $
 ** 
 */
 
@@ -137,7 +137,7 @@
 
 #ifdef MULTI_THREAD
 
-void init_machine(CTXTdecl);
+void init_machine(CTXTdeclc int, int, int, int);
 
 #else /* not multithreaded */
 
