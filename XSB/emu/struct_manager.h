@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.10 2006-01-12 21:33:51 tswift Exp $
+** $Id: struct_manager.h,v 1.11 2006-02-06 20:20:04 tswift Exp $
 ** 
 */
 
@@ -506,7 +506,6 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
      if ( SM_AllocList(SM) == pRecord )					      \
        SM_AllocList(SM) = NextFieldMacro(pRecord);			      \
      else {								\
-       gdb_dummy();							\
        xsb_abort("Record not present in given Structure Manager: %s",	      \
 		 SM_StructName(SM));					      \
      }									\

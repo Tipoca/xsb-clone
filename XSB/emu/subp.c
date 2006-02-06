@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.94 2006/01/09 00:06:32 tswift Exp $
+** $Id: subp.c,v 1.95 2006/01/1ll6 22:13:31 dwarren Exp $
 ** 
 */
 
@@ -360,6 +360,7 @@ Psc synint_proc(CTXTdeclc Psc psc, int intcode)
     case MYSIG_KEYB:		/*  1 */
     case MYSIG_SPY:		/*  3 */
     case MYSIG_TRACE:		/*  4 */
+    case THREADSIG_CANCEL:		/* f */
     case MYSIG_CLAUSE:		/* 16 */
       if (psc) bld_cs(reg+1, build_call(CTXTc psc));
       psc = (Psc)pflags[intcode+INT_HANDLERS_FLAGS_START];
