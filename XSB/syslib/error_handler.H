@@ -19,11 +19,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.22 2006/01/16 00:44:25 tswift Exp $
+** $Id: error_handler.H,v 1.23 2006/01/24 23:34:01 tswift Exp $
 ** 
 */
 
-:- export     domain_error/4,domain_error/5,
+:- export abort_on_thread_cancel/0, domain_error/4,domain_error/5,
    evaluation_error/3, existence_error/4,
    instantiation_error/2,  % obsolescent
    instantiation_error/3,
@@ -44,7 +44,7 @@
 	      get_backtrace/2,
 	      get_backtrace_list/2.
 
-:- import (dynamic)/1 from assert.
+ :- import (dynamic)/1,asserta/1 from assert.
  :- import ground/1 from basics.
 %%:- import reset_undef_pred_handlers/0 from loader.
 :- import close_open_tables/0, psc_data/2, psc_name/2, psc_arity/2,
@@ -54,3 +54,4 @@
            throw/1,integer/1 from standard.
 :- import concat_atom/2 from string.
 :- import xsb_flag/2 from curr_sym.
+ :- import xsb_thread_property/2 , xsb_thread_self/1 from thread.

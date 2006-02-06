@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.37 2005/01/14 18:32:05 ruim Exp $
+** $Id: x_interp.H,v 1.38 2005/12/12 18:45:47 dwarren Exp $
 ** 
 */
 
@@ -62,3 +62,4 @@
 
 :- import xsb_thread_self/1 from thread.
 
+:- import abort_on_thread_cancel/0 from error_handler.
