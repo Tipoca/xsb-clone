@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: setof.H,v 1.7 2005/01/24 15:01:22 dwarren Exp $
+** $Id: setof.H,v 1.8 2006/02/06 20:09:08 tswift Exp $
 ** 
 */
 
@@ -30,8 +30,11 @@
 	  excess_vars/4.
 
 :- import tfindall/3 from tables.
-   :- import functor/3, (=..)/2, arg/3, call/1, catch/3,throw/1 from standard.
- :- import '$$findall_init'/2, '$$findall_add'/3, '$$findall_get_solutions'/4,
-   '$$findall_free'/1
+:- import functor/3, (=..)/2, arg/3, 
+%      catch/3,throw/1, 
+       call/1  from standard.
+ :- import '$$findall_init'/2, '$$findall_add'/3, 
+%   '$$findall_free'/1,
+    '$$findall_get_solutions'/4
      from machine.
 :- import variant/2 from subsumes.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.H,v 1.7 2006/01/31 00:24:16 tswift Exp $
+** $Id: thread.H,v 1.8 2006/02/06 20:09:08 tswift Exp $
 ** 
 */
 
@@ -53,7 +53,7 @@
  
  :- import check_callable/3, check_integer/3, check_nonvar/3, check_var/3,
    default_error_handler/1,domain_error/5,
-   instantiation_error/3, misc_error/1 from error_handler.
+   instantiation_error/3, misc_error/1, permission_error/4 from error_handler.
 
 :- import thread_request/8 from machine.
 :- import stat_set_flag/2, term_psc/2 from machine.
