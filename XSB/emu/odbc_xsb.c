@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.57 2006-02-09 19:29:23 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.58 2006-02-16 18:30:13 dwarren Exp $
 **
 */
 
@@ -1007,7 +1007,6 @@ RETCODE rc;
   }
   /* submit it for execution*/
   if (SQLExecute(cur->hstmt) != SQL_SUCCESS) {
-    printf("execute failed\n");
     ctop_int(CTXTc 3,PrintErrorMsg(cur));
     SetCursorClose(cur);
     return;
