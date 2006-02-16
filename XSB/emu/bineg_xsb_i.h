@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.28 2006-01-23 21:21:31 tswift Exp $
+** $Id: bineg_xsb_i.h,v 1.29 2006-02-16 18:32:49 dwarren Exp $
 ** 
 */
 
@@ -246,7 +246,8 @@ case IS_INCOMPLETE: {
 	   * answer for the head predicate.
 	   */
 	  int i;
-	  while (var_addr_arraysz < global_num_vars+1) trie_expand_array(CPtr,var_addr,var_addr_arraysz,"var_addr");
+	  if (var_addr_arraysz < global_num_vars+1) 
+	    trie_expand_array(CPtr,var_addr,var_addr_arraysz,global_num_vars+1,"var_addr");
 	  copy_of_var_addr_arraysz = var_addr_arraysz;
 	  copy_of_var_addr = (CPtr *)mem_calloc(copy_of_var_addr_arraysz, sizeof(CPtr),OTHER_SPACE);
 	  if(copy_of_var_addr == NULL){
