@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.H,v 1.19 2005/08/10 19:54:32 dwarren Exp $
+** $Id: curr_sym.H,v 1.20 2006/01/18 16:10:23 dwarren Exp $
 ** 
 */
 
@@ -51,7 +51,9 @@
      from machine.
 :- import xsb_configuration/2 from xsb_configuration.
 :- import fmt_write_string/3 from file_io.
-:- import check_nonvar/3, check_number/3,domain_error/5,type_error/4,
+:- import check_nonvar/3, 
+   %check_number/3,
+          domain_error/5,type_error/4,
           instantiation_error/3, domain_error/4 from error_handler.
 :- import retractall/1, (dynamic)/1, asserta/1 from assert.
 :- import findall/3 from setof.
