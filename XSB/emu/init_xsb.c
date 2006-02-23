@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.85 2006-02-03 18:14:13 tswift Exp $
+** $Id: init_xsb.c,v 1.86 2006-02-23 15:54:24 dwarren Exp $
 ** 
 */
 
@@ -993,7 +993,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   /* Allocate Stack Spaces and set Boundary Parameters
      ------------------------------------------------- */
 
-  if (pdlsize == NULL) {
+  if (pdlsize == 0) {
   pdl.low = (byte *)malloc(pdl.init_size * K);
   } else {
     pdl.low = (byte *)malloc(pdlsize * K);
@@ -1003,7 +1003,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   pdl.high = pdl.low + pdl.init_size * K;
   pdl.size = pdl.init_size;
 
-  if (glsize == NULL) {
+  if (glsize == 0) {
     glstack.low = (byte *)malloc(glstack.init_size * K);
   } else {
     glstack.low = (byte *)malloc(glsize * K);
@@ -1017,7 +1017,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   extend_enc_dec_as_nec(glstack.low,glstack.high);
 #endif
 
-  if (tcpsize == NULL) {
+  if (tcpsize == 0) {
     tcpstack.low = (byte *)malloc(tcpstack.init_size * K);
   } else {
     tcpstack.low = (byte *)malloc(tcpsize * K);
@@ -1027,7 +1027,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   tcpstack.high = tcpstack.low + tcpstack.init_size * K;
   tcpstack.size = tcpstack.init_size;
 
-  if (complstacksize == NULL) {
+  if (complstacksize == 0) {
     complstack.low = (byte *)malloc(complstack.init_size * K);
   } else {
     complstack.low = (byte *)malloc(complstacksize * K);
@@ -1137,7 +1137,10 @@ void init_symbols(void)
 {
   Psc  tables_psc, standard_psc;
   Pair temp, tp;
-  int  i, new_indicator, status;
+  int  i, new_indicator;
+#ifdef MULTI_THREAD
+  int status;
+#endif
 
   inst_begin_gl = 0;
   symbol_table.table = (void **)mem_calloc(symbol_table.size, sizeof(Pair),ATOM_SPACE);

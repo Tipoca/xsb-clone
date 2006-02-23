@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.95 2006/01/1ll6 22:13:31 dwarren Exp $
+** $Id: subp.c,v 1.96 2006/02/06 20:20:05 tswift Exp $
 ** 
 */
 
@@ -92,10 +92,9 @@ double realtime_count_gl;
 #ifndef MULTI_THREAD
 extern int asynint_val;	/* 0 - no interrupt (or being processed) */
 extern int asynint_code;	/* 0 means keyboard interrupt */
-
 #endif
 
-
+extern void print_mutex_use(void);
 
 extern void dis(xsbBool), debug_call(CTXTdeclc Psc);
 
