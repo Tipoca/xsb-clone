@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tpinline.H,v 1.3 2005-01-14 18:30:47 ruim Exp $
+** $Id: tpinline.H,v 1.4 2006-02-23 15:56:03 dwarren Exp $
 ** 
 */
 
@@ -30,7 +30,6 @@
 
 :- import sym_name/3 from symtab.
 :- import error/1, message/1 from auxlry.
-:- import gennum/1 from gensym.
 :- import append/3 from basics.
 :- import tgetpar/6, tputpar/7 from tp_goal.
 :- import term_comp_op/1, term_comp_tab/4 from tp_comp.

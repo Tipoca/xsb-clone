@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tpinline.P,v 1.9 2006-01-27 17:54:12 dwarren Exp $
+** $Id: tpinline.P,v 1.10 2006-02-23 15:56:03 dwarren Exp $
 ** 
 */
 
@@ -37,15 +37,6 @@ geninline(true, [], _, Pil, Pil, T, T, _, _).
 geninline(fail, [], _, [fail|Pil], Pil, T, T, _, _).
 geninline(halt, [], _, [halt|Pilr], Pilr, T, T, _, _).
 
-geninline(var, [Arg], HoldR, Pil, Pilr, Tin, Tout, _, _) :-
-	geninl_load_lhs(Arg, R, Pil, 
-			[switchonterm(R,abs(-1),abs(-1))|Pilr], Tin, Tmid, _),
-	geninl_unload_lhs(Arg, R, HoldR, Tmid, Tout).
-geninline(nonvar, [Arg], HoldR, Pil, Pilr, Tin, Tout, _, _) :-
-	geninl_load_lhs(Arg, R, Pil, Pil1, Tin, Tmid, _),
-	gennum(LabId), Label = (disj(LabId),LabId),
-	Pil1 = [switchonterm(R,Label,Label),fail,label(swit,Label)|Pilr],
-	geninl_unload_lhs(Arg, R, HoldR, Tmid, Tout).
 geninline('_$builtin', [integer(N)], _, [builtin(N)|Pilr], Pilr, T, T, _, _).
 geninline('_$savecp', [Arg], _, Pil, Pilr, Tin, Tout, _, _) :-
 	geninline_savecp(Arg, Pil, Pilr, Tin, Tout).
