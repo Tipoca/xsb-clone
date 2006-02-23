@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.134 2006-02-03 18:14:13 tswift Exp $
+** $Id: emuloop.c,v 1.135 2006-02-23 14:43:05 dwarren Exp $
 ** 
 */
 
@@ -2020,7 +2020,7 @@ contcase:     /* the main loop */
       jump_cond_fail(isattv(op2));
       break;
     case VAR_TEST:
-      jump_cond_fail(isref(op2));
+      jump_cond_fail(isref(op2) || isattv(op2));
       break;
     case NONVAR_TEST:
       jump_cond_fail(isnonvar(op2));
