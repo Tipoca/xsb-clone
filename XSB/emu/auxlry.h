@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.25 2006-01-24 14:10:00 tswift Exp $
+** $Id: auxlry.h,v 1.26 2006-02-27 22:03:46 tswift Exp $
 ** 
 */
 
@@ -57,6 +57,7 @@ typedef enum XSB_Execution_Mode {
 } Exec_Mode;
 
 extern Exec_Mode xsb_mode;
+extern int max_threads_glc;
 
 #define fileptr(xsb_filedes)  open_files[xsb_filedes].file_ptr
 

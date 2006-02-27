@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.108 2006-01-24 14:10:01 tswift Exp $
+** $Id: biassert.c,v 1.109 2006-02-27 22:03:46 tswift Exp $
 ** 
 */
 
@@ -2463,8 +2463,6 @@ xsbBool db_retract0( CTXTdecl /* ClRef, retract_nr */ )
   ----------------------------------------------------------------------*/
 #define FIXED_BLOCK_SIZE_FOR_TABLED_PRED     (8 * sizeof(Cell))
 
-#define MAXTHREAD 100
-
 /* TLS: changed mem_alloc to nocheck as xsb_throw() depends on this
    predicate.  So if we're out of memory here, we're sunk. */
 
@@ -2526,7 +2524,7 @@ PrRef build_prref( CTXTdeclc Psc psc )
       /* create new switchonthread instruction and dispblock */
       pb disp_instr_addr = mem_calloc(sizeof(Cell),2,MT_PRIVATE_SPACE);
       dispblk = (struct DispBlk_t *) 
-	mem_calloc(sizeof(struct DispBlk_t)+MAXTHREAD*sizeof(Cell),
+	mem_calloc(sizeof(struct DispBlk_t)+MAX_THREADS*sizeof(Cell),
 		   1,MT_PRIVATE_SPACE);
 
       SYS_MUTEX_LOCK( MUTEX_DISPBLKHDR );
@@ -2536,7 +2534,7 @@ PrRef build_prref( CTXTdeclc Psc psc )
       if (!DispBlkHdr.lastDB) DispBlkHdr.lastDB = dispblk;
       SYS_MUTEX_UNLOCK( MUTEX_DISPBLKHDR );
 
-      dispblk->MaxThread = MAXTHREAD;
+      dispblk->MaxThread = MAX_THREADS;
       *disp_instr_addr = switchonthread;
       *(((CPtr *)disp_instr_addr)+1) = (CPtr)dispblk;
       set_ep(psc,disp_instr_addr);

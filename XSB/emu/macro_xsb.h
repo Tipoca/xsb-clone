@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.40 2006-01-29 22:46:05 ruim Exp $
+** $Id: macro_xsb.h,v 1.41 2006-02-27 22:03:46 tswift Exp $
 ** 
 */
 
@@ -213,8 +213,6 @@ extern struct tif_list  tif_list;
  *  instructions point, and the per-predicate TIFs that are used to
  *  manage thread-private tables.
  */
-
-#define MAXTABTHREAD 256
 
 struct TDispBlk_t { /* first two fields must be same as Table_Info_Frame for coercion! */
   Psc psc_ptr;

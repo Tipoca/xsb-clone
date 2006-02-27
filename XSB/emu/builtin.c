@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.251 2006-01-27 17:50:16 dwarren Exp $
+** $Id: builtin.c,v 1.252 2006-02-27 22:03:46 tswift Exp $
 ** 
 */
 
@@ -1922,6 +1922,7 @@ int builtin_call(CTXTdeclc byte number)
 #endif
     break;
 
+    /* Abolish_all_tables */
   case ABOLISH_TABLE_INFO:
     abolish_table_info(CTXT);
     break;
@@ -2189,8 +2190,8 @@ case WRITE_OUT_PROFILE:
     }
     psc = term_psc(term);
     if ( IsNULL(psc) ) {
-      err_handle(CTXTc TYPE, regTerm, BuiltinName(ABOLISH_TABLE_PREDICATE),
-		 Arity, "Predicate specification", term);
+      xsb_domain_error(CTXTc "predicate_or_term_indicator",term,
+  		       "abolish_table_pred",1, 1) ;
       break;
     }
     if (abolish_table_predicate(CTXTc psc)) {
