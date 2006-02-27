@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_mnoc.in,v 1.13 2005-08-16 15:42:11 dwarren Exp $
+** $Id: def_config_mnoc.in,v 1.14 2006-02-27 19:18:26 tswift Exp $
 **
 */
 
@@ -261,6 +261,8 @@
 #define PROFILE
 #define DEBUG_ORACLE
 #endif
+
+#undef NON_OPT_COMPILE
 
 /*  File needed for XSB to get the configuration information */
 #undef CONFIGURATION
