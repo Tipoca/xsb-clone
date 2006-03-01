@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.P,v 1.57 2006-01-27 17:54:11 dwarren Exp $
+** $Id: builtin.P,v 1.58 2006-03-01 18:14:29 dwarren Exp $
 ** 
 */
 
@@ -48,8 +48,8 @@ inline_predicate('@=<', 2).
 inline_predicate('@>', 2).
 inline_predicate('@>=', 2).
 
-inline_predicate(var, 1).
-inline_predicate(nonvar, 1).
+%%inline_predicate(var, 1).
+%%inline_predicate(nonvar, 1).
 inline_predicate('_$cutto', 1).
 inline_predicate('_$savecp', 1).
 inline_predicate('_$builtin', 1).
@@ -59,7 +59,6 @@ inline_predicate(true, 0).
 inline_predicate(halt, 0).
 inline_predicate('!', 0).
 
-%% doesn't yet work...
 inline_predicate(Pred,A) :- inline_jumpcof_cond(Pred,A,_).
 
 /*======================================================================*/
