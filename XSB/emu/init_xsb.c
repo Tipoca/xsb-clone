@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.87 2006-02-27 22:03:46 tswift Exp $
+** $Id: init_xsb.c,v 1.88 2006-03-06 22:45:33 tswift Exp $
 ** 
 */
 
@@ -926,6 +926,11 @@ void cleanup_thread_structures(CTXTdecl)
   mem_dealloc(a_tstCPStack,sizeof(struct tstCPStack_t),OTHER_SPACE);
   mem_dealloc(asrtBuff,sizeof(struct asrtBuff_t),OTHER_SPACE);
   mem_dealloc(last_answer,sizeof(VarString),OTHER_SPACE);
+
+  XSB_StrDestroy(tsgLBuff1);
+  XSB_StrDestroy(tsgLBuff2);
+  XSB_StrDestroy(tsgSBuff1);
+  XSB_StrDestroy(tsgSBuff2);
 
   mem_dealloc(tsgLBuff1,sizeof(VarString),OTHER_SPACE);
   mem_dealloc(tsgLBuff2,sizeof(VarString),OTHER_SPACE);
