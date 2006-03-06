@@ -19,12 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.H,v 1.18 2005-08-10 19:56:42 dwarren Exp $
+** $Id: foreign.H,v 1.19 2006-03-06 00:52:01 tswift Exp $
 ** 
 */
 
 
-:- export compile_cH/5, compile_so/3, runtime_loader_flag/3.
+:- export compile_cH/6, compile_so/3, runtime_loader_flag/3.
 
 :- import shell/1 from shell.
 :- import asm_magic/2 from asm.
