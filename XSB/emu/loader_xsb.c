@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.53 2006-02-27 22:03:46 tswift Exp $
+** $Id: loader_xsb.c,v 1.54 2006-03-14 20:27:08 dwarren Exp $
 ** 
 */
 
@@ -669,7 +669,7 @@ static xsbBool load_one_sym(FILE *fd, Psc cur_mod, int count, int exp)
        their corresponding module */
     if (is_new ||
 	(get_type(temp_pair->psc_ptr) == T_ORDI &&
-	 (t_type == T_DYNA || t_type == T_PRED) &&
+	 (t_type == T_DYNA || t_type == T_PRED || t_type == T_UDEF) &&
 	 get_data(temp_pair->psc_ptr) == NULL))
       set_data(temp_pair->psc_ptr, mod);
     /* set psc_data to the psc record of the module name */
