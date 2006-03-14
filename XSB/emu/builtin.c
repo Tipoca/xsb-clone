@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.252 2006-02-27 22:03:46 tswift Exp $
+** $Id: builtin.c,v 1.253 2006-03-14 19:48:49 dwarren Exp $
 ** 
 */
 
@@ -1007,7 +1007,8 @@ int abolish_usermod_tables(CTXTdecl)
       psc = pair_psc(pair);
       type = get_type(psc);
       if (type == T_DYNA || type == T_PRED) 
-	if (!strcmp(get_name(get_data(psc)),"usermod") ||
+	if (!get_data(psc) ||
+	    !strcmp(get_name(get_data(psc)),"usermod") ||
 	    !strcmp(get_name(get_data(psc)),"global")) 
 	  abolish_if_tabled(CTXTc psc);
     }
