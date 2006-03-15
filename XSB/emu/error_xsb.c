@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.51 2006-01-16 00:33:23 tswift Exp $
+** $Id: error_xsb.c,v 1.52 2006-03-15 13:15:53 tswift Exp $
 ** 
 */
 
@@ -760,6 +760,7 @@ int unwind_stack(CTXTdecl)
      remove_incomplete_tries(CTXTc prev_compl_frame(tmp_compl_frm));
    }
    unwind_trail(breg,xtemp1,xtemp2);
+
    return(FALSE);
 
 } /* unwind_stack */

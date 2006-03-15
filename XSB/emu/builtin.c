@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.253 2006-03-14 19:48:49 dwarren Exp $
+** $Id: builtin.c,v 1.254 2006-03-15 13:15:53 tswift Exp $
 ** 
 */
 
@@ -2541,16 +2541,18 @@ case WRITE_OUT_PROFILE:
     mark_heap(CTXTc ptoc_int(CTXTc 1),&tmpval);
     return TRUE;
   }
+
+    /* TLS: changed && -> & */
   case GC_STUFF: {
     int gc = ptoc_int(CTXTc 1);
     int ret_val = 0;
-    if (gc && GC_GC_STRINGS) {
+    if (gc & GC_GC_STRINGS) {
       gc &= ~GC_GC_HEAP;
       ret_val |= gc_heap(CTXTc 2,TRUE);
     }
-    if (gc && GC_GC_HEAP) ret_val |= gc_heap(CTXTc 2,FALSE);
-    if (gc && GC_GC_CLAUSES) ret_val |= gc_dynamic(CTXT);
-    if (gc && GC_GC_TABLED_PREDS) ret_val |= gc_tabled_preds(CTXT);
+    if (gc & GC_GC_HEAP) ret_val |= gc_heap(CTXTc 2,FALSE);
+    if (gc & GC_GC_CLAUSES) ret_val |= gc_dynamic(CTXT);
+    if (gc & GC_GC_TABLED_PREDS) ret_val |= gc_tabled_preds(CTXT);
 
     ctop_int(CTXTc 2, ret_val);
     return TRUE;
