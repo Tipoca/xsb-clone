@@ -70,6 +70,8 @@ EOF
 #-------------------------------------------------
 ../gentest.sh "$XEMU $options" abol_test2 "test".
 #-------------------------------------------------
+../gentest.sh "$XEMU $options" abol_test3 "test".
+#-------------------------------------------------
 ../gentest.sh "$XEMU $options" flora1 "test".
 #-------------------------------------------------
 ../gentest.sh "$XEMU $options" pps "test".
