@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.88 2006-03-06 22:45:33 tswift Exp $
+** $Id: init_xsb.c,v 1.89 2006-03-17 18:17:59 tswift Exp $
 ** 
 */
 
@@ -412,7 +412,7 @@ char *init_para(CTXTdeclc int argc, char *argv[])
 
 
   xsb_mode = DEFAULT;
-  pflags[TABLING_METHOD] = VARIANT_TEM;
+  pflags[TABLING_METHOD] = VARIANT_EVAL_METHOD;
 
   /* Modify Parameters Using Command Line Options
      -------------------------------------------- */
@@ -540,7 +540,7 @@ char *init_para(CTXTdeclc int argc, char *argv[])
       xsb_warn(warning);
 #endif
     case 'S':
-      pflags[TABLING_METHOD] = SUBSUMPTIVE_TEM;
+      pflags[TABLING_METHOD] = SUBSUMPTIVE_EVAL_METHOD;
       break;
     case 'd':
       if ( (xsb_mode != DEFAULT) && (xsb_mode != CUSTOM_BOOT_MODULE) )

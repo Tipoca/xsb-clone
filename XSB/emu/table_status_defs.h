@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_status_defs.h,v 1.2 2005-01-14 18:31:34 ruim Exp $
+** $Id: table_status_defs.h,v 1.3 2006-03-17 18:17:59 tswift Exp $
 ** 
 */
 
@@ -30,8 +30,9 @@
  */
 
 #define UNTABLED_PREDICATE	 -1
-#define VARIANT_EVAL_METHOD	  0
-#define SUBSUMPTIVE_EVAL_METHOD	  1
+#define VARIANT_EVAL_METHOD	  0x0
+#define SUBSUMPTIVE_EVAL_METHOD	  0x1
+#define DISPATCH_BLOCK	  0x3
 
 
 /*
