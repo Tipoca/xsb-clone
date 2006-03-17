@@ -65,12 +65,20 @@ EOF
 ../gentest.sh "$XEMU $options" testh "time2048."
 #-------------------------------------------------
 ../gentest.sh "$XEMU $options" empty_answer "test".
-#-------------------------------------------------
+#------------------------------------------------- atp/atc basic
 ../gentest.sh "$XEMU $options" abol_test "test".
-#-------------------------------------------------
+#------------------------------------------------- amt basic
 ../gentest.sh "$XEMU $options" abol_test2 "test".
-#-------------------------------------------------
+#------------------------------------------------- amt gc diff preds
+../gentest.sh "$XEMU $options" abol_test2a "test".
+#------------------------------------------------- atp gc same preds
 ../gentest.sh "$XEMU $options" abol_test3 "test".
+#------------------------------------------------- atp gc diff preds
+../gentest.sh "$XEMU $options" abol_test3a "test".
+#------------------------------------------------- atp gc diff preds + valid
+../gentest.sh "$XEMU $options" abol_test3b "test".
+#------------------------------------------------- atp gc diff preds + valid + multiple gcs
+../gentest.sh "$XEMU $options" abol_test3c "test".
 #-------------------------------------------------
 ../gentest.sh "$XEMU $options" flora1 "test".
 #-------------------------------------------------

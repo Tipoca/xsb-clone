@@ -24,4 +24,4 @@ test:- abolish_module_tables(usermod),fail.
 test:- writeln('-------'),fail.
 test:- get_residual(upath(1,Y),_),writeln(answer(u(c,Y))),fail.
 test:- get_residual(mpath(1,Y),_),writeln(answer(m(c,Y))),fail.
-test.
+test:- gc_tables(N),writeln(remaining(N)).
