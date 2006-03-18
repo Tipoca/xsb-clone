@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.45 2006/01/09 00:06:32 tswift Exp $
+** $Id: slgdelay.c,v 1.46 2006/01/19 23:33:00 tswift Exp $
 ** 
 */
 
@@ -856,6 +856,8 @@ void simplify_pos_unsupported(CTXTdeclc NODEptr as_leaf)
   } /* while */
 }
 
+/* Can currently be called with only one active thread: otherwise put
+   mutexes back in. */
 void abolish_wfs_space(CTXTdecl)
 {
   char *last_block;
@@ -866,7 +868,7 @@ void abolish_wfs_space(CTXTdecl)
 
   /* clear DE blocks */
 
-    SYS_MUTEX_LOCK( MUTEX_DELAY ) ;
+    //    SYS_MUTEX_LOCK( MUTEX_DELAY ) ;
   while (current_de_block_gl) {
     last_block = *(char **) current_de_block_gl;
     mem_dealloc(current_de_block_gl,de_block_size_glc + sizeof(Cell),TABLE_SPACE);
@@ -906,7 +908,7 @@ void abolish_wfs_space(CTXTdecl)
 #ifndef LOCAL_EVAL
     abolish_edge_space();
 #endif
-    SYS_MUTEX_UNLOCK( MUTEX_DELAY ) ;
+    //    SYS_MUTEX_UNLOCK( MUTEX_DELAY ) ;
 }
 
 /*

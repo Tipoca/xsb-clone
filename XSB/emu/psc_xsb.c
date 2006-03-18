@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.29 2006-01-13 23:56:57 tswift Exp $
+** $Id: psc_xsb.c,v 1.30 2006-03-18 17:37:49 tswift Exp $
 ** 
 */
 
@@ -223,7 +223,7 @@ TIFptr get_tip(CTXTdeclc Psc psc) {
   { struct TDispBlk_t *tdispblk = (struct TDispBlk_t *) (*tip);
     TIFptr rtip = (TIFptr)((&(tdispblk->Thread0))[th->tid]);
     if (!rtip) {
-      New_TIF(rtip,psc);
+      rtip = New_TIF(CTXTc psc);
       (&(tdispblk->Thread0))[th->tid] = rtip;
     }
     return rtip; 

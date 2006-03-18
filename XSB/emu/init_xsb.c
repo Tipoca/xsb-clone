@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.89 2006-03-17 18:17:59 tswift Exp $
+** $Id: init_xsb.c,v 1.90 2006-03-18 17:37:49 tswift Exp $
 ** 
 */
 
@@ -836,6 +836,9 @@ void init_thread_structures(CTXTdecl)
   NewestCl = retracted_buffer;
 
 /*  call_intercept = init_call_intercept ; */
+
+  private_tif_list.first = NULL;
+  private_tif_list.last = NULL;
 
   /******** Initialize Private structure managers ********/
 
