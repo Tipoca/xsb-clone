@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.255 2006-03-17 18:17:59 tswift Exp $
+** $Id: builtin.c,v 1.256 2006-03-20 15:54:55 tswift Exp $
 ** 
 */
 
@@ -2113,20 +2113,20 @@ case WRITE_OUT_PROFILE:
       xsb_abort("[abolish_table_call] Cannot abolish incomplete tabled call"
 		" of predicate %s/%d\n",get_name(psc),get_arity(psc));
     }
-    if (flags[NUM_THREADS] == 1 || !get_shared(psc)) {
-      action = abolish_table_pred_cps_check(CTXTc psc);
-    } else action = 1;
-    if (!action) {
+    //    if (flags[NUM_THREADS] == 1 || !get_shared(psc)) {
+    //      action = abolish_table_pred_cps_check(CTXTc psc);
+    //    } else action = 1;
+    //    if (!action) {
       delete_branch(CTXTc subgoal->leaf_ptr, &tif->call_trie); /* delete call */
       delete_variant_sf_and_answers(CTXTc subgoal); // delete answers
       TRIE_W_UNLOCK();
       return TRUE;
-    }
-    else {
-      TRIE_W_UNLOCK();
-      xsb_abort("Cannot abolish a table call for a table in use: %s/%d\n",get_name(psc),get_arity(psc));
-      return TRUE;
-    }
+      //    }
+      //    else {
+      //      TRIE_W_UNLOCK();
+      //      xsb_abort("Cannot abolish a table call for a table in use: %s/%d\n",get_name(psc),get_arity(psc));
+      //      return TRUE;
+      //    }
   }
 
   case ABOLISH_MODULE_TABLES: {
@@ -2316,7 +2316,7 @@ case WRITE_OUT_PROFILE:
     trie_dispose_nr(CTXT);
     break;
   case TRIE_UNDISPOSE:
-    trie_undispose(ptoc_int(CTXTc 1), (BTNptr) ptoc_int(CTXTc 2));
+    trie_undispose(CTXTc ptoc_int(CTXTc 1), (BTNptr) ptoc_int(CTXTc 2));
     break;
   case RECLAIM_UNINTERNED_NR:
     reclaim_uninterned_nr(CTXTc ptoc_int(CTXTc 1));
