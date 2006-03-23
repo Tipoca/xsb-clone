@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.256 2006-03-20 15:54:55 tswift Exp $
+** $Id: builtin.c,v 1.257 2006-03-23 14:10:15 dwarren Exp $
 ** 
 */
 
@@ -2101,7 +2101,7 @@ case WRITE_OUT_PROFILE:
     VariantSF subgoal;
     TIFptr tif;
     Psc psc;
-    int action;
+    //    int action;
 
     TRIE_W_LOCK();
     subgoal = (VariantSF) ptoc_int(CTXTc 1);
@@ -2316,7 +2316,7 @@ case WRITE_OUT_PROFILE:
     trie_dispose_nr(CTXT);
     break;
   case TRIE_UNDISPOSE:
-    trie_undispose(CTXTc ptoc_int(CTXTc 1), (BTNptr) ptoc_int(CTXTc 2));
+    trie_undispose(ptoc_int(CTXTc 1), (BTNptr) ptoc_int(CTXTc 2));
     break;
   case RECLAIM_UNINTERNED_NR:
     reclaim_uninterned_nr(CTXTc ptoc_int(CTXTc 1));
