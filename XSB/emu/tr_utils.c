@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.104 2006/03/18 17:37:49 tswift Exp $
+** $Id: tr_utils.c,v 1.105 2006/03/24 16:40:29 tswift Exp $
 ** 
 */
 
@@ -2016,7 +2016,10 @@ void abolish_all_tables_cps_check(CTXTdecl)
   }
 }
 
-inline void abolish_table_info(CTXTdecl)
+#if !defined(WIN_NT) || defined(CYGWIN) 
+inline 
+#endif
+void abolish_table_info(CTXTdecl)
 {
   CPtr csf;
   TIFptr pTIF;
