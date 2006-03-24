@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.25 2006-01-24 14:10:01 tswift Exp $
+** $Id: error_xsb.h,v 1.26 2006-03-24 16:40:28 tswift Exp $
 ** 
 */
 
@@ -26,6 +26,7 @@
 #include "setjmp_xsb.h"
 #include "export.h"
 #include "context.h"
+#include "psc_xsb.h"
 
 /*----------------------------------------------------------------------*/
 /* The following is a list of errors as defined by the Prolog ISO	*/
@@ -124,10 +125,12 @@ void call_conv xsb_type_error(CTXTdeclc char *,Cell , char *,int, int) ;
 extern void call_conv xsb_memory_error(char *, char *);
 
 /* should include these from whereever they are.... split out from biassert **/
-typedef struct
-{	Cell	Instr ;
-	struct ClRefHdr *FirstClRef ;
-	struct ClRefHdr *LastClRef ;
+typedef struct {
+  Cell	Instr ;
+  struct ClRefHdr *FirstClRef ;
+  struct ClRefHdr *LastClRef ;
+  Psc psc;     // pointer to PSC
+  int mark;    // mark (for gc)
 }	*PrRef, PrRefData ;
 
 xsbBool assert_buff_to_clref_p(CTXTdeclc prolog_term, byte, PrRef, int,

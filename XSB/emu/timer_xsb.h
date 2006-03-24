@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.h,v 1.14 2005-11-13 21:38:38 dwarren Exp $
+** $Id: timer_xsb.h,v 1.15 2006-03-24 16:40:29 tswift Exp $
 ** 
 */
 
@@ -55,12 +55,14 @@
 extern sigjmp_buf xsb_timer_env;
 #endif
 
+/* TLS: changed xsb_timeout_info so to be non-empty when MULTI_THREAD
+   is not defined.  Some compilers complain about empty structures. */
 struct xsb_timeout_info {
+  int             exitFlag;
 #ifdef MULTI_THREAD
   pthread_t_p     timedThread;
   pthread_cond_t  condition;
   pthread_mutex_t mutex;
-  int             exitFlag;
   CTXTdecl;
 #else /* not multithreaded */
 #ifdef WIN_NT

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_delete.c,v 1.14 2006-03-17 18:17:59 tswift Exp $
+** $Id: sub_delete.c,v 1.15 2006-03-24 16:40:28 tswift Exp $
 ** 
 */
 
@@ -206,7 +206,8 @@ void delete_subsumptive_table(CTXTdeclc TIFptr tif) {
 
 /* TLS: use this when table has been deleted (via an abolish), but
    space for it has not been reclaimed.  In this case, we get the
-   access points from the DelTF rather than the TIF. 
+   access points from the DelTF rather than the TIF. For now, called
+   only when 1 active thread.
 
    Input types reflect those of the TIFs */
 

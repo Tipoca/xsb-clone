@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.36 2006-03-17 18:18:00 tswift Exp $
+** $Id: tr_utils.h,v 1.37 2006-03-24 16:40:29 tswift Exp $
 ** 
 */
 
@@ -52,28 +52,12 @@ extern int  trie_interned(CTXTdecl);
 extern void trie_dispose(CTXTdecl);
 extern void trie_dispose_nr(CTXTdecl);
 extern void delete_interned_trie(CTXTdeclc Integer);
-extern void trie_undispose(long, BTNptr);
+extern void trie_undispose(CTXTdeclc long, BTNptr);
 // extern xsbBool check_table_cut;
 
 extern int abolish_table_predicate(CTXTdeclc Psc);
 extern void abolish_private_tables(CTXTdecl);
 extern void abolish_shared_tables(CTXTdecl);
 extern int gc_tabled_preds(CTXTdecl);
-
-/* Prasad's changes */
-
-typedef struct InternGarbageLeafFrame *IGLptr;
-typedef struct InternGarbageRootFrame *IGRptr;
-
-typedef struct InternGarbageLeafFrame{
-  BTNptr leaf;
-  IGLptr next;  
-} InternGarbageLeaf;
-
-typedef struct InternGarbageRootFrame{
-  long root;
-  IGLptr leaves;
-  IGRptr next;
-} InternGarbageRoot;
 
 #endif /* __TR_UTILS_H__ */

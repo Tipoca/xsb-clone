@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.39 2006-03-18 17:37:48 tswift Exp $
+** $Id: context.h,v 1.40 2006-03-24 16:40:28 tswift Exp $
 ** 
 */
 
@@ -209,16 +209,18 @@ struct th_context
 
   struct tif_list _private_tif_list;
 
-BTNptr  _NodePtr, 
-	_Last_Nod_Sav;
+  BTNptr  _NodePtr, 
+    _Last_Nod_Sav;
 
-int     _delay_it;
+  int     _delay_it;
 
-int	_AnsVarCtr;
-CPtr	_ans_var_pos_reg;
+  int	_AnsVarCtr;
+  CPtr	_ans_var_pos_reg;
 
 /* Flag used in the locking of called tries */
-int	trie_locked;
+  int	trie_locked;
+
+  IGRptr _IGRhead;
 
   /* Variables for subsumptive and TST tries.  */
 struct VariantContinuation *_variant_cont;
@@ -441,6 +443,8 @@ typedef struct th_context th_context ;
 #define Last_Nod_Sav		(th->_Last_Nod_Sav)
 
 #define delay_it		(th->_delay_it)
+
+#define IGRhead                 (th->_IGRhead)
 
 #define variant_cont		(*(th->_variant_cont))
 #define a_variant_cont		(th->_variant_cont)

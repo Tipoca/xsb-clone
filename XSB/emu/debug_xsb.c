@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.28 2005-11-14 18:58:49 tswift Exp $
+** $Id: debug_xsb.c,v 1.29 2006-03-24 16:40:28 tswift Exp $
 ** 
 */
 
@@ -250,10 +250,13 @@ static int count_producer_subgoals(void)
   VariantSF temp_ptr;
 
   i = 0;
+
+  SYS_MUTEX_LOCK( MUTEX_TABLE );
   for ( tif = tif_list.first;  IsNonNULL(tif);  tif = TIF_NextTIF(tif) )
     for ( temp_ptr = TIF_Subgoals(tif);  IsNonNULL(temp_ptr);
 	  temp_ptr = (VariantSF)subg_next_subgoal(temp_ptr) )
       i ++;
+  SYS_MUTEX_UNLOCK( MUTEX_TABLE );
   return(i);
 }
 
@@ -640,6 +643,7 @@ void print_tables(void)
   xsb_dbgmsg((LOG_DEBUG,"\t There are %d producer subgoal structures...", i));
 
   i = 0;
+  SYS_MUTEX_LOCK( MUTEX_TABLE );
   for ( tif = tif_list.first;  IsNonNULL(tif) && (ans == 'y');
 	tif = TIF_NextTIF(tif) ) {
     fprintf(stddbg,EOSUBG);
@@ -690,6 +694,7 @@ void print_tables(void)
 	i = 0;
       }
     }
+  SYS_MUTEX_UNLOCK( MUTEX_TABLE );
   }
   fprintf(stddbg, EOS);
 }

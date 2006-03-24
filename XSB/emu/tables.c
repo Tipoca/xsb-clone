@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.41 2006-03-18 17:37:49 tswift Exp $
+** $Id: tables.c,v 1.42 2006-03-24 16:40:29 tswift Exp $
 ** 
 */
 
@@ -579,11 +579,13 @@ inline TIFptr New_TIF(CTXTdeclc Psc pPSC) {
    TIF_NextTIF(pTIF) = NULL;						
 #ifdef MULTI_THREAD
    if (get_shared(pPSC)) {
+     SYS_MUTEX_LOCK( MUTEX_TABLE );				
      if ( IsNonNULL(tif_list.last) )					
        TIF_NextTIF(tif_list.last) = pTIF;				      
      else									
        tif_list.first = pTIF;						
      tif_list.last = pTIF;						
+     SYS_MUTEX_UNLOCK( MUTEX_TABLE );				
    } else {
      if ( IsNonNULL(private_tif_list.last) )					
        TIF_NextTIF(private_tif_list.last) = pTIF;			     

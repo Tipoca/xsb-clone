@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.39 2006-02-16 18:32:50 dwarren Exp $
+** $Id: tries.h,v 1.40 2006-03-24 16:40:29 tswift Exp $
 ** 
 */
 
@@ -508,5 +508,21 @@ struct tstCPStack_t {
   tstChoicePointFrame *ceiling; /* overflow pointer: points beyond array end */
   tstChoicePointFrame base[TST_CPSTACK_SIZE];
 };
+
+/* Prasad's changes */
+
+typedef struct InternGarbageRootFrame *IGRptr;
+typedef struct InternGarbageLeafFrame *IGLptr;
+
+typedef struct InternGarbageLeafFrame{
+  BTNptr leaf;
+  IGLptr next;  
+} InternGarbageLeaf;
+
+typedef struct InternGarbageRootFrame{
+  long root;
+  IGLptr leaves;
+  IGRptr next;
+} InternGarbageRoot;
 
 #endif
