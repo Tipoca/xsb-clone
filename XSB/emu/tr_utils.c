@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.106 2006/03/24 17:13:40 dwarren Exp $
+** $Id: tr_utils.c,v 1.107 2006/03/27 00:13:54 tswift Exp $
 ** 
 */
 
@@ -1606,7 +1606,7 @@ void check_insert_global_deltf_subgoal(CTXTdeclc VariantSF subgoal) {
   if (subg_next_subgoal(subgoal) != 0) 
     subg_next_subgoal(subgoal) = subg_prev_subgoal(subgoal);
 
-  (DelTFptr) subg_deltf_ptr(subgoal) = dtf;
+  subg_deltf_ptr(subgoal) = dtf;
 
   SYS_MUTEX_UNLOCK(MUTEX_TABLE);
 }
