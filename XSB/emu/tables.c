@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.42 2006-03-24 16:40:29 tswift Exp $
+** $Id: tables.c,v 1.43 2006-03-27 00:13:54 tswift Exp $
 ** 
 */
 
@@ -134,6 +134,7 @@ VariantSF NewProducerSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo) {
      pNewSF = memset(pNewSF,0,sizeof(subsumptive_producer_sf));		    
      subg_sf_type(pNewSF) = SUBSUMPTIVE_PRODUCER_SFT;			    
    }
+   subg_deltf_ptr(pNewSF) = NULL;
    subg_tif_ptr(pNewSF) = TableInfo;					    
    subg_dll_add_sf(pNewSF,TIF_Subgoals(TableInfo),TIF_Subgoals(TableInfo)); 
    subg_leaf_ptr(pNewSF) = Leaf;					    
