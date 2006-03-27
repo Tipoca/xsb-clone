@@ -45,4 +45,17 @@ echo "-------------------------------------------------------"
 # test of private subsumption.
 ../seqgentest.sh "$XEMU $options" subsumption1 "test." 
 
+../seqgentest.sh "$XEMU $options" abol_test "test." # test of ast/apt with stack ch
+../seqgentest.sh "$XEMU $options" abol_test2 "test." # test of ast/apt with stack ch
+../seqgentest.sh "$XEMU $options" abol_test3 "test." # test of atp w. mult threads.
+../seqgentest.sh "$XEMU $options" abol_test4 "test."  # test of atp w. mult threads.
+../seqgentest.sh "$XEMU $options" abol_test5 "test."  # test of gc w. mult threads
+
+../seqgentest.sh "$XEMU $options" abol_test3_call "test." # test of atc w. mult threads.
+../seqgentest.sh "$XEMU $options" abol_test4_call "test." # test of atc w. mult threads.
+../seqgentest.sh "$XEMU $options" abol_test5_call "test." # test of atc w. mult threads.
+
+
+
+
 
