@@ -80,6 +80,8 @@ EOF
 #------------------------------------------------- atp gc diff preds + valid + multiple gcs
 ../gentest.sh "$XEMU $options" abol_test3c "test".
 #-------------------------------------------------
+../gentest.sh "$XEMU $options" atc_test "test".
+#------------------------------------------------- 
 ../gentest.sh "$XEMU $options" flora1 "test".
 #-------------------------------------------------
 ../gentest.sh "$XEMU $options" pps "test".

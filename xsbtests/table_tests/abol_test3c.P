@@ -30,9 +30,16 @@ test:- upred(_X),fail.
 test:-  upred(X),tr(Y),
 	abolish_table_pred(upred/1),
 	fail.
+%test:- writeln('-------'),fail.
 
 test:- upred(X),abolish_table_pred(upred/1),gc_tables(N),
 	writeln(remaining1(N)),fail.
 test:- gc_tables(N),writeln(remaining2(N)),fail.
 test.
+
+end_of_file.
+
+test:- upred(X),writeln(X),abolish_table_pred(upred/1),
+	gc_tables(N),
+	fail.
 
