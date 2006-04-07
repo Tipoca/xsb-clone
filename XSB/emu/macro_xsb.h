@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.45 2006-03-27 00:13:54 tswift Exp $
+** $Id: macro_xsb.h,v 1.46 2006-04-07 19:34:07 ruim Exp $
 ** 
 */
 
@@ -554,7 +554,7 @@ enum SubgoalFrameType {
 #define VARIANT_SUBSUMPTION_MASK  0x03
 
 #define SHARED_PRIVATE_MASK 0x04
-#define SHARED_SFT 0x01
+#define SHARED_SFT 0x04
 #define PRIVATE_SFT 0x00
 
 /* --------------------------------
