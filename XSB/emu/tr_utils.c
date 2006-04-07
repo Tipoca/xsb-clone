@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.107 2006/03/27 00:13:54 tswift Exp $
+** $Id: tr_utils.c,v 1.108 2006/03/27 14:15:20 tswift Exp $
 ** 
 */
 
@@ -1655,7 +1655,7 @@ void check_insert_private_deltf_subgoal(CTXTdeclc VariantSF subgoal)
   if (subg_next_subgoal(subgoal) != 0) 
     subg_next_subgoal(subgoal) = subg_prev_subgoal(subgoal);
 
-  (DelTFptr) subg_deltf_ptr(subgoal) = dtf;
+  subg_deltf_ptr(subgoal) = dtf;
 }
 
 #define check_insert_shared_deltf_subgoal(context, subgoal)	\
