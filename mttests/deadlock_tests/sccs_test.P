@@ -1,6 +1,6 @@
 /* TLS: initial dummy test -- will elaborate and scriptify */
 
-:- import xsb_thread_create/3, xsb_thread_join/3, 
+:- import xsb_thread_create/3, xsb_thread_join/2, 
 	  xsb_thread_self/1 from thread.
 
 thr_writeln(X):- 
@@ -13,10 +13,10 @@ thr_writeln(X):-
 :- thread_shared a1/0, b1/0.
 
 scc_test1:- 
-	xsb_thread_create(a1,One,_),
-	xsb_thread_create(b1,Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(a1,One,[]),
+	xsb_thread_create(b1,Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 a1:- 
 	thr_writeln('created a1'),
@@ -38,10 +38,10 @@ b1:-    thr_writeln('created b1'),
 
 scc_test2:- 
 	(a2 ; true),
-	xsb_thread_create(a2,One,_),
-	xsb_thread_create(b2,Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(a2,One,[]),
+	xsb_thread_create(b2,Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 a2:- 
 	thr_writeln('created a2'),
@@ -61,10 +61,10 @@ b2:-    thr_writeln('created b2'),
 :- thread_shared a3/0, b3/0.
 
 scc_test3:- 
-	xsb_thread_create(a3,One,_),
-	xsb_thread_create(b3,Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(a3,One,[]),
+	xsb_thread_create(b3,Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 a3:- 
 	thr_writeln('created a3'),
@@ -87,10 +87,10 @@ b3.
 % a4/b4 complete and reuse.
 scc_test4:- 
 	a4(_),
-	xsb_thread_create(a4_write(_),One,_),
-	xsb_thread_create(b4_write(_),Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(a4_write(_),One,[]),
+	xsb_thread_create(b4_write(_),Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 a4_write(X):- 
 	a4(X),thr_writeln(found(a4(X))),fail ; true.
@@ -120,12 +120,12 @@ b4(b).
 :- thread_shared a5/1, b5/1, c5/1.
 
 scc_test5:- 
-	xsb_thread_create(a5_write(_),One,_),
-	xsb_thread_create(b5_write(_),Two,_),
-	xsb_thread_create(c5_write(_),Three,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_),
-	xsb_thread_join(Three,_,_).
+	xsb_thread_create(a5_write(_),One,[]),
+	xsb_thread_create(b5_write(_),Two,[]),
+	xsb_thread_create(c5_write(_),Three,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_),
+	xsb_thread_join(Three,_).
 
 a5_write(X):- 
 	a5(X),thr_writeln(found(a5(X))),fail ; true.
@@ -164,10 +164,10 @@ c5(c).
 :- thread_shared a6/1, b6/1, c6/1, d6/1.
 
 scc_test6:- 
-	xsb_thread_create(a6_write(_),One,_),
-	xsb_thread_create(c6_write(_),Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(a6_write(_),One,[]),
+	xsb_thread_create(c6_write(_),Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 a6_write(X):- 
 	a6(X),thr_writeln(found(a6(X))),fail ; true.
@@ -202,10 +202,10 @@ d6(X):- thr_writeln('second clause d6'),
 :- thread_shared a7/1, b7/1, c7/1, d7/1.
 
 scc_test7:- 
-	xsb_thread_create(a7_write(_),One,_),
-	xsb_thread_create(c7_write(_),Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(a7_write(_),One,[]),
+	xsb_thread_create(c7_write(_),Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 a7_write(X):- 
 	a7(X),thr_writeln(found(a7(X))),fail ; true.
@@ -239,10 +239,10 @@ d7(X):- thr_writeln('second clause d7'),
 :- thread_shared a8/1, b8/1, c8/1, d8/1.
 
 scc_test8:- 
-	xsb_thread_create(a8_write(_),One,_),
-	xsb_thread_create(c8_write(_),Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(a8_write(_),One,[]),
+	xsb_thread_create(c8_write(_),Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 a8_write(X):- 
 	a8(X),thr_writeln(found(a8(X))),fail ; true.
@@ -276,10 +276,10 @@ d8(X):- thr_writeln('second clause d8'),
 :- thread_shared a9/1, b9/1, c9/1, d9/1.
 
 scc_test9:- 
-	xsb_thread_create(a9_write(_),One,_),
-	xsb_thread_create(c9_write(_),Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(a9_write(_),One,[]),
+	xsb_thread_create(c9_write(_),Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 a9_write(X):- 
 	a9(X),thr_writeln(found(a9(X))),fail ; true.
@@ -314,10 +314,10 @@ d9(X):- thr_writeln('created d9'),c9(X).
 :- thread_shared a10/1, b10/1, c10/1, d10/1, x10/1.
 
 scc_test10:- 
-	xsb_thread_create(x10_write(_),One,_),
-	xsb_thread_create(c10_write(_),Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(x10_write(_),One,[]),
+	xsb_thread_create(c10_write(_),Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 x10_write(X):- 
 	x10(X),thr_writeln(found(x10(X))),fail ; true.
@@ -361,10 +361,10 @@ d10(X):- thr_writeln('created d10'),c10(X).
 :- thread_shared a11/1, b11/1, c11/1, d11/1, x11/1, y11/1.
 
 scc_test11:- 
-	xsb_thread_create(x11_write(_),One,_),
-	xsb_thread_create(y11_write(_),Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(x11_write(_),One,[]),
+	xsb_thread_create(y11_write(_),Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 x11_write(X):- 
 	x11(X),thr_writeln(found(x11(X))),fail ; true.
@@ -419,10 +419,10 @@ d11(X):- thr_writeln('created d11'),c11(X).
 :- thread_shared a11n/0, b11n/0, c11n/0, d11n/0, x11n/0, y11n/0.
 
 scc_test11n:- 
-	xsb_thread_create(x11n_write,One,_),
-	xsb_thread_create(y11n_write,Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(x11n_write,One,[]),
+	xsb_thread_create(y11n_write,Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 x11n_write:- 
 	x11n,thr_writeln(found(x11n)),fail ; true.
@@ -470,10 +470,10 @@ d11n:- thr_writeln('created d11n'),c11n.
 :- thread_shared a1n/0, b1n/0.
 
 scc_test1n:- 
-	xsb_thread_create(a1n,One,_),
-	xsb_thread_create(b1n,Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(a1n,One,[]),
+	xsb_thread_create(b1n,Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 a1n:- 
 	thr_writeln('created a1n'),
@@ -492,10 +492,10 @@ b1n:-    thr_writeln('created b1n'),
 :- thread_shared a1n1/0, b1n1/0.
 
 scc_test1n1:- 
-	xsb_thread_create(a1n1,One,_),
-	xsb_thread_create(b1n1,Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(a1n1,One,[]),
+	xsb_thread_create(b1n1,Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 a1n1:- 
 	thr_writeln('created a1n1'),
@@ -513,10 +513,10 @@ b1n1:-    thr_writeln('created b1n1'),
 :- thread_shared a1n2/0, b1n2/0.
 
 scc_test1n2:- 
-	xsb_thread_create(a1n2,One,_),
-	xsb_thread_create(b1n2,Two,_),
-	xsb_thread_join(One,_,_),
-	xsb_thread_join(Two,_,_).
+	xsb_thread_create(a1n2,One,[]),
+	xsb_thread_create(b1n2,Two,[]),
+	xsb_thread_join(One,_),
+	xsb_thread_join(Two,_).
 
 a1n2:- 
 	thr_writeln('created a1n2'),
