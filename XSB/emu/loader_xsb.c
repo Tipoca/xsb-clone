@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.55 2006-03-18 17:37:49 tswift Exp $
+** $Id: loader_xsb.c,v 1.56 2006-04-10 14:21:04 dwarren Exp $
 ** 
 */
 
@@ -670,9 +670,10 @@ static xsbBool load_one_sym(FILE *fd, Psc cur_mod, int count, int exp)
     if (is_new ||
 	(get_type(temp_pair->psc_ptr) == T_ORDI &&
 	 (t_type == T_DYNA || t_type == T_PRED || t_type == T_UDEF) &&
-	 get_data(temp_pair->psc_ptr) == NULL))
+	 get_data(temp_pair->psc_ptr) == NULL)) {
+      /* set psc_data to the psc record of the module name */
       set_data(temp_pair->psc_ptr, mod);
-    /* set psc_data to the psc record of the module name */
+    }
     env_type_set(temp_pair->psc_ptr, (t_env&(T_ENV|T_GLOBAL)), t_type, (xsbBool)is_new);
 
     if (is_new || !get_shared(temp_pair->psc_ptr)) {
@@ -684,7 +685,8 @@ static xsbBool load_one_sym(FILE *fd, Psc cur_mod, int count, int exp)
 
     if (t_env&T_TABLED_SUB_LOADFILE) 
       set_tabled(temp_pair->psc_ptr,((t_env&T_TABLED_VAR) | T_TABLED_SUB));
-    else set_tabled(temp_pair->psc_ptr,(t_env&T_TABLED_VAR));
+    else if (is_new || (get_type(temp_pair->psc_ptr) != T_DYNA))
+      set_tabled(temp_pair->psc_ptr,(t_env&T_TABLED_VAR));
     //printf("sym loaded: %s/%d, tabled=%x\n",get_name(temp_pair->psc_ptr),get_arity(temp_pair->psc_ptr),get_tabled(temp_pair->psc_ptr));
     /* dsw added following, maybe wrongly */
     if (exp && (t_env&0x7) == T_EXPORTED) {
