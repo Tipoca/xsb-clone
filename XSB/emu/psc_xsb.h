@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.19 2005-11-14 18:58:49 tswift Exp $
+** $Id: psc_xsb.h,v 1.20 2006-04-10 13:06:25 dwarren Exp $
 ** 
 */
 
@@ -80,7 +80,7 @@ struct psc_rec {
 				/* 0x20 - shared, 0x1 for pritave; 0x8 - tabled */
   byte entry_type;		/* see psc_defs.h */
   byte arity;
-  byte length;
+  byte unused;
   char *nameptr;
   struct psc_rec *data;      /* psc of module, if pred; otw data */
   byte *ep;                     /* entry point (initted to next word) */

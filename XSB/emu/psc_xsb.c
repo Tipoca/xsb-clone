@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.30 2006-03-18 17:37:49 tswift Exp $
+** $Id: psc_xsb.c,v 1.31 2006-04-10 13:06:25 dwarren Exp $
 ** 
 */
 
@@ -116,9 +116,7 @@ char *string_find_safe(char *str) {
  */
 static Psc make_psc_rec(char *name, char arity) {
   Psc temp;
-  int length;
   
-  length = strlen(name);
   temp = (Psc)mem_alloc(sizeof(struct psc_rec),ATOM_SPACE);
   set_type(temp, 0);
   temp->env = 0;
@@ -127,7 +125,6 @@ static Psc make_psc_rec(char *name, char arity) {
   //  set_shared(temp, 0);
   //  set_tabled(temp, 0);
   set_arity(temp, arity);
-  set_length(temp, length);
   set_data(temp, 0);
   set_ep(temp,(byte *)&(temp->load_inst));
   set_name(temp, string_find(name, 1));
