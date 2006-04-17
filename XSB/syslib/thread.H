@@ -18,11 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.H,v 1.8 2006/02/06 20:09:08 tswift Exp $
+** $Id: thread.H,v 1.9 2006/02/09 17:28:57 tswift Exp $
 ** 
 */
 
-:- export xsb_thread_cancel/1,
+:- export abolish_private_tables/0,abolish_shared_tables/0,
+          xsb_thread_cancel/1,
           xsb_thread_create/2,xsb_thread_create/3, 
           xsb_thread_detach/1,
 	  xsb_thread_exit/1,  

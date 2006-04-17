@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.73 2005/12/12 18:45:46 dwarren Exp $
+** $Id: machine.H,v 1.74 2006/01/31 00:24:16 tswift Exp $
 ** 
 */
 
@@ -120,12 +120,12 @@
         formatted_io/5,
 	file_read_canonical/3,
 	db_get_last_clause/4,
-	gen_retract_all/1,
+	gen_retract_all/2,
 	db_get_clause/11,
-	db_retract0/2,
+	db_retract0/3,
 	db_build_prref/3,
 	db_get_prref/2,
-	db_remove_prref/1,
+	db_remove_prref/2,
 	db_reclaim0/2,
 	oracle_query/7,
 	odbc_exec_query/6,

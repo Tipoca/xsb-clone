@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.38 2005/12/12 18:45:47 dwarren Exp $
+** $Id: x_interp.H,v 1.39 2006/02/06 20:09:08 tswift Exp $
 ** 
 */
 
@@ -36,7 +36,8 @@
 %% These are explicitly imported because they are used early on, 
 %% before XSB is fully bootstrapped.
 :- import abort/0, call/1, call_c/1, call_expose/1, catch/3, goal_cut_trans/3,
-          atom_codes/2, seeing/1, telling/1, see/1, tell/1, seen/0, told/0
+   atom_codes/2, seeing/1, telling/1, see/1, tell/1, seen/0, told/0,
+   gc_tables/1,gc_dynamic/1
      from standard.
 :- import '$$exception_ball'/2 from standard.
 :- import close_open_tables/0, conname/2, 

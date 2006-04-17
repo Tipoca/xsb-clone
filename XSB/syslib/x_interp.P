@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.51 2006/01/02 16:35:01 dwarren Exp $
+** $Id: x_interp.P,v 1.52 2006/02/06 20:09:08 tswift Exp $
 ** 
 */
 
@@ -101,6 +101,7 @@ interpreter_readloop(_) :-
 	%% the handler when it starts up, which will cause a lot of grief
 	x_interp_repeat,
 	trimcore,
+	gc_tables(_),gc_dynamic(_),
 	stat_set_flag(HIDE_STATE, 1), %% hide call interceptions.
 	stat_set_flag(INVOKE_NUM, 0),
 	conset('_$break_level', 0),
