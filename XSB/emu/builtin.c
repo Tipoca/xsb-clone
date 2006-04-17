@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.259 2006-03-27 00:13:53 tswift Exp $
+** $Id: builtin.c,v 1.260 2006-04-17 20:54:56 tswift Exp $
 ** 
 */
 
@@ -142,7 +142,6 @@ extern xsbBool startInterruptThread(SOCKET intSocket);
 #endif
 
 // Externs for profiler
-extern TIFptr get_tip(CTXTdeclc Psc);
 
 long if_profiling = 0;
 long profile_thread_started = 0;

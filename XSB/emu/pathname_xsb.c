@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.28 2006-01-03 21:16:36 dwarren Exp $
+** $Id: pathname_xsb.c,v 1.29 2006-04-17 20:54:57 tswift Exp $
 ** 
 */
 
@@ -49,6 +49,7 @@
 
 #include "setjmp_xsb.h"
 #include "auxlry.h"
+#include "context.h"
 #include "psc_xsb.h"
 #include "cell_xsb.h"
 #include "cinterf.h"

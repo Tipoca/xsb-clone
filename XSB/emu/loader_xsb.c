@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.56 2006-04-10 14:21:04 dwarren Exp $
+** $Id: loader_xsb.c,v 1.57 2006-04-17 20:54:57 tswift Exp $
 ** 
 */
 
@@ -39,6 +39,7 @@
 #include <string.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "psc_xsb.h"
 #include "psc_defs.h"
 #include "loader_xsb.h"

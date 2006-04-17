@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.20 2006-04-10 13:06:25 dwarren Exp $
+** $Id: psc_xsb.h,v 1.21 2006-04-17 20:54:57 tswift Exp $
 ** 
 */
 
@@ -174,7 +174,12 @@ inline static char *get_ret_string()	{ return (char *)ret_psc[0]; }
 
 extern Psc get_intern_psc();
 
-//extern struct Table_Info_Frame *get_tip(CTXTdeclc Psc);
+/* Can't use CTXTdeclc here because its included early in context.h */
+#ifdef MULTI_THREAD
+extern struct Table_Info_Frame *get_tip(struct th_context *, Psc);
+#else
+extern struct Table_Info_Frame *get_tip(Psc);
+#endif
 
 extern void print_symbol_table();
 extern Psc get_psc_from_ep(void *);

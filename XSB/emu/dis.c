@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.27 2005-11-14 18:58:49 tswift Exp $
+** $Id: dis.c,v 1.28 2006-04-17 20:54:56 tswift Exp $
 ** 
 */
 
@@ -31,6 +31,7 @@
 #include <string.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "psc_xsb.h"
 #include "hash_xsb.h"
 #include "loader_xsb.h"

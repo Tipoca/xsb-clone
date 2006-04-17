@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.38 2006-03-27 00:13:54 tswift Exp $
+** $Id: tr_utils.h,v 1.39 2006-04-17 20:54:58 tswift Exp $
 ** 
 */
 
@@ -43,6 +43,7 @@ extern void safe_delete_branch(BTNptr);
 extern void undelete_branch(BTNptr);
 extern void reclaim_uninterned_nr(CTXTdeclc long rootidx);
 extern void delete_trie(CTXTdeclc BTNptr);
+extern xsbBool is_completed_table(TIFptr);
 
 extern xsbBool has_unconditional_answers(VariantSF);
 

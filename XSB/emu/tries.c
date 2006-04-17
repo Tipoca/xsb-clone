@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.85 2006-02-16 18:32:50 dwarren Exp $
+** $Id: tries.c,v 1.86 2006-04-17 20:54:58 tswift Exp $
 ** 
 */
 
@@ -54,10 +54,6 @@
 #include "thread_xsb.h"
 #include "debug_xsb.h"
 #include "subp.h"
-
-/*----------------------------------------------------------------------*/
-
-extern TIFptr get_tip(CTXTdeclc Psc);
 
 /*----------------------------------------------------------------------*/
 /* The following variables are used in other parts of the system        */

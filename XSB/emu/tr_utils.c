@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.109 2006/04/07 17:55:27 ruim Exp $
+** $Id: tr_utils.c,v 1.110 2006/04/07 21:11:11 dwarren Exp $
 ** 
 */
 
@@ -70,10 +70,6 @@
 
 #include "ptoc_tag_xsb_i.h"
 #include "term_psc_xsb_i.h"
-
-/*----------------------------------------------------------------------*/
-
-extern struct Table_Info_Frame *get_tip(CTXTdeclc Psc);
 
 /*----------------------------------------------------------------------*/
 
@@ -1494,7 +1490,7 @@ DelTFptr deltf_chain_begin = (DelTFptr) NULL;
 
 /* - - - - - */
 
-inline static xsbBool is_completed_table(TIFptr tif) {
+xsbBool is_completed_table(TIFptr tif) {
   VariantSF sf;
 
   for ( sf = TIF_Subgoals(tif);  IsNonNULL(sf);  

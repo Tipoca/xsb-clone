@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.26 2006-03-24 16:40:28 tswift Exp $
+** $Id: error_xsb.h,v 1.27 2006-04-17 20:54:57 tswift Exp $
 ** 
 */
 
@@ -123,20 +123,6 @@ void call_conv xsb_table_error(CTXTdeclc char *) ;
 void call_conv xsb_type_error(CTXTdeclc char *,Cell , char *,int, int) ;
 
 extern void call_conv xsb_memory_error(char *, char *);
-
-/* should include these from whereever they are.... split out from biassert **/
-typedef struct {
-  Cell	Instr ;
-  struct ClRefHdr *FirstClRef ;
-  struct ClRefHdr *LastClRef ;
-  Psc psc;     // pointer to PSC
-  int mark;    // mark (for gc)
-}	*PrRef, PrRefData ;
-
-xsbBool assert_buff_to_clref_p(CTXTdeclc prolog_term, byte, PrRef, int,
-			       prolog_term, int, ClRef *);
-
-int assert_code_to_buff_p(CTXTdeclc prolog_term);
 
 DllExport void call_conv xsb_throw(CTXTdeclc prolog_term, unsigned long);
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.41 2006-03-27 00:13:53 tswift Exp $
+** $Id: context.h,v 1.42 2006-04-17 20:54:56 tswift Exp $
 ** 
 */
 
@@ -33,10 +33,16 @@
 #include "conc_compl.h"
 #include "hashtable_xsb.h"
 
+/* Note that ClRef pointers typically point to the end of a ClRef, so
+   to access the components, the pointer must be decremented! */
+
 typedef struct ClRefHdr
 {	unsigned long buflen ;
 	struct ClRefHdr *prev ;
 }	*ClRef, ClRefData, ClRefHdr ;
+
+#define ClRef_Buflen(CLREF)        ( (CLREF)->buflen )
+#define ClRef_Prev(CLREF)          ( (CLREF)->prev )
 
 struct token_t {
   int type;
