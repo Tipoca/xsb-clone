@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.42 2006-04-17 20:54:56 tswift Exp $
+** $Id: context.h,v 1.43 2006-04-24 15:41:16 tswift Exp $
 ** 
 */
 
@@ -215,6 +215,7 @@ struct th_context
 
   struct tif_list _private_tif_list;
   DelTFptr _private_deltf_chain_begin;
+  DelCFptr _private_delcf_chain_begin;
 
   BTNptr  _NodePtr, 
     _Last_Nod_Sav;
@@ -446,6 +447,7 @@ typedef struct th_context th_context ;
 
 #define private_tif_list        (th-> _private_tif_list)
 #define private_deltf_chain_begin (th-> _private_deltf_chain_begin)
+#define private_delcf_chain_begin (th-> _private_delcf_chain_begin)
 
 #define NodePtr			(th->_NodePtr)
 #define Last_Nod_Sav		(th->_Last_Nod_Sav)
