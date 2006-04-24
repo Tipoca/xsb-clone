@@ -15,7 +15,7 @@ echo "-------------------------------------------------------"
 # convention is that to use test_single, leave the last argument of test
 # goal uninstantiated to unify with the stream.
 
-../gentest.sh "$XEMU $options" assert_noindex "test_assert(1000,_)" $NUM
+../gentest.sh "$XEMU $options" assert_noindex "test_assert(100,_)" $NUM
 
 ../gentest.sh "$XEMU $options" call_dyna "test_call_dyna(1000,_)" $NUM
 
@@ -35,3 +35,7 @@ echo "-------------------------------------------------------"
 ../gentest.sh "$XEMU $options" trie_intern "test_intern(2000,_)" $NUM
 
 ../gentest.sh "$XEMU $options" test_storage "test_storage(1000,_)" $NUM
+
+../seqgentest.sh "$XEMU $options" retractall_test1 "test." 
+../seqgentest.sh "$XEMU $options" retractall_test2 "test." 
+../seqgentest.sh "$XEMU $options" retractall_test3 "test." 
