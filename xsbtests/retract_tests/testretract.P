@@ -13,7 +13,7 @@ test :-
 	test_c,
 	test_d,
 	test_r,
-	test_nr,
+%	test_nr,
 	test_cm,
 	test0,
 	test0a,
