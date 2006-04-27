@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.71 2006-01-27 17:50:16 dwarren Exp $
+** $Id: builtin.h,v 1.72 2006-04-27 01:05:26 tswift Exp $
 ** 
 */
 
@@ -153,7 +153,7 @@
 #define DB_RETRACT0		136
 #define DB_GET_CLAUSE		137
 #define DB_BUILD_PRREF		138
-#define DB_REMOVE_PRREF		139
+#define DB_ABOLISH0		139
 #define DB_RECLAIM0		140
 #define DB_GET_PRREF		141
 
@@ -234,6 +234,8 @@
 #define KEYSORT			221
 #define PARSORT			222
 
+#define DYNAMIC_CODE_FUNCTION   223
+
 #define FINDALL_FREE    	229
 
 #define ORACLE_QUERY		230
@@ -260,6 +262,7 @@
 #define PRINT_CP                243
 #define PRINT_REGS              244
 #define PRINT_ALL_STACKS        245
+
 #define EXP_HEAP                246
 #define MARK_HEAP               247
 #define GC_STUFF                248
