@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.111 2006/04/17 20:54:57 tswift Exp $
+** $Id: tr_utils.c,v 1.112 2006/04/24 15:41:16 tswift Exp $
 ** 
 */
 
@@ -1680,6 +1680,8 @@ int fast_abolish_table_predicate(CTXTdeclc Psc psc)
 {
   TIFptr tif;
 
+  gc_tabled_preds(CTXT);
+
   tif = get_tip(CTXTc psc);
 
   if (IsVariantPredicate(tif) && IsNULL(TIF_CallTrie(tif))) {
@@ -1893,6 +1895,7 @@ inline int abolish_table_predicate(CTXTdeclc Psc psc)
   TIFptr tif;
   int action;
 
+  gc_tabled_preds(CTXT);
   tif = get_tip(CTXTc psc);
   if ( IsNULL(tif) ) {
     xsb_abort("[abolish_table_pred] Attempt to delete non-tabled predicate (%s/%d)\n",

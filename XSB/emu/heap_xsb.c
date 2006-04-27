@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.50 2006-01-19 20:49:45 dwarren Exp $
+** $Id: heap_xsb.c,v 1.51 2006-04-27 21:08:47 tswift Exp $
 ** 
 */
 
@@ -222,7 +222,6 @@ static int ls_early_reset;
 
 /* ways to count gc and control the output during a gc */
 static int printnum = 0 ;
-static int num_gc = 0 ;
 
 #ifdef DEBUG_VERBOSE
 static int print_at = 0 ; /* at the print_at-th gc, the stacks are printed */
@@ -321,8 +320,11 @@ static unsigned long heap_marks_size;
 /* global variables used for statistics.                                */
 /*======================================================================*/
 
+#ifndef MULTI_THREAD
 static double total_time_gc = 0 ;
 static unsigned long total_collected = 0 ;
+static int num_gc = 0 ;
+#endif
 
 /*----------------------------------------------------------------------*/
 /* marker bits in different areas.                                      */

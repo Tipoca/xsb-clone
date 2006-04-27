@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_profile.h,v 1.8 2005-12-12 18:44:52 dwarren Exp $
+** $Id: gc_profile.h,v 1.9 2006-04-27 21:08:47 tswift Exp $
 ** 
 */
 
@@ -287,11 +287,11 @@ inline static void inspect_ptr(CPtr cell_ptr)
 /* the following cannot be "static inline" since it's used in
    emu/trace_xsb.c and also uses global variables in heap_xsb.c
    --lfcastro */
-void print_gc_statistics(void)
+void print_gc_statistics(CTXTdecl)
 {
   char *which = (slide) ? "sliding" : "copying" ;
 
-  printf("{GC} %4d heap garbage collections by %s: collected %ld cells in %lf secs\n\n",
+  printf("%4d heap garbage collections by %s: collected %ld cells in %lf secs\n\n",
 	 num_gc, which, total_collected, total_time_gc);
 }
 

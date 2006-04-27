@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.43 2006-04-24 15:41:16 tswift Exp $
+** $Id: context.h,v 1.44 2006-04-27 21:08:47 tswift Exp $
 ** 
 */
 
@@ -371,6 +371,10 @@ pthread_cond_t cond_var ;
 #endif
 
 Cell _attv_interrupts[20480][2];
+
+int _num_gc;
+double _total_time_gc;
+unsigned long _total_collected;
   
 } ;
 
@@ -576,6 +580,10 @@ typedef struct th_context th_context ;
 #define  pflags			(th->_pflags)
 
 #define  attv_interrupts        (th->_attv_interrupts)
+
+#define num_gc                  (th->_num_gc)
+#define total_time_gc           (th->_total_time_gc)
+#define total_collected         (th->_total_collected)
 
 #define CTXT			th
 #define CTXTc			th ,

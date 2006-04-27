@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.261 2006-04-27 01:05:26 tswift Exp $
+** $Id: builtin.c,v 1.262 2006-04-27 21:08:47 tswift Exp $
 ** 
 */
 
@@ -165,6 +165,7 @@ extern xsbBool gen_retract_all(CTXTdecl), db_retract0(CTXTdecl),
 extern xsbBool db_get_last_clause(CTXTdecl);
 extern xsbBool db_build_prref(CTXTdecl), db_abolish0(CTXTdecl), 
 	       db_reclaim0(CTXTdecl), db_get_prref(CTXTdecl);
+extern xsbBool dynamic_code_function(CTXT);
 
 extern char *dirname_canonic(char *);
 extern xsbBool almost_search_module(CTXTdeclc char *);
