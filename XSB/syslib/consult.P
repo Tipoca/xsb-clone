@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.54 2006/01/24 23:34:01 tswift Exp $
+** $Id: consult.P,v 1.55 2006/03/06 00:40:26 tswift Exp $
 ** 
 */
 
@@ -296,6 +296,10 @@ add_lib_dir1(Path) :-
 	).
 
 /*-------------define load_dyn for reading in dynamic predicates -----*/
+
+read_canonical(S_or_A,Term) :- 
+	check_open_stream_or_alias(S_or_A,read_canonical/2,1,input,Istr),
+	file_read_canonical(Istr,Term,_).
 
 read_canonical(Term) :- 
 	current_input_port(File), 

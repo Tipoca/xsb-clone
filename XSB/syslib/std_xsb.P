@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.85 2005/11/10 23:33:11 tswift Exp $
+** $Id: std_xsb.P,v 1.86 2006/01/18 16:10:23 dwarren Exp $
 ** 
 */
 
@@ -195,6 +195,7 @@ standard_dynamic_symbol(library_directory,1).
 standard_symbol(load_dyn, 1, consult).			% Not ISO
 standard_symbol(load_dync, 1, consult).			% Not ISO
 standard_symbol(read_canonical, 1, consult).
+standard_symbol(read_canonical, 2, consult).
 
 standard_symbol(listing, 0, standard).
 standard_symbol(listing, 1, standard).
