@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.44 2006-04-27 21:08:47 tswift Exp $
+** $Id: context.h,v 1.45 2006-04-30 18:27:13 tswift Exp $
 ** 
 */
 
@@ -297,6 +297,7 @@ char*   _strbuff; // = NULL;  /* Pointer to token buffer; Will be allocated on f
 int     _strbuff_len; // = InitStrLen;  /* first allocation size, doubled on subsequent overflows */
 double  _double_v;
 long	_rad_int;
+int _token_too_long_warning;
 
 struct sort_par_spec _par_spec;		/* spec for par_sort */
 
@@ -502,6 +503,7 @@ typedef struct th_context th_context ;
 #define strbuff_len		(th->_strbuff_len)
 #define double_v		(th->_double_v)
 #define rad_int			(th->_rad_int)
+#define token_too_long_warning  (th->_token_too_long_warning)
 
 #define par_spec		(th->_par_spec)
 

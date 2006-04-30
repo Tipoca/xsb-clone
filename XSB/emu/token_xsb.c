@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.24 2006-01-14 16:25:32 dwarren Exp $
+** $Id: token_xsb.c,v 1.25 2006-04-30 18:27:14 tswift Exp $
 ** 
 */
 
@@ -497,8 +497,10 @@ static int com2plain(register FILE *card,	/* source file */
         if (c < 0) return 1; 
 	else return 0; 
 }
- 
+
+#ifndef MULTI_THREAD 
 int token_too_long_warning = 1;
+#endif
 
 void realloc_strbuff(CTXTdeclc char **pstrbuff, char **ps, int *pn)
      /* Expand token buffer when needed.
