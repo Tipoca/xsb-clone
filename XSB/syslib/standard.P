@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.111 2005/12/17 19:15:47 tswift Exp $
+** $Id: standard.P,v 1.112 2006/04/10 14:22:31 dwarren Exp $
 ** 
 */
 
@@ -821,7 +821,7 @@ table(Ps) :-
 	 ->	Ps1 = Ps
 	 ;	functor(Ps,P,S), Ps1 = P/S
 	),
-	dynamic(Ps1),		% implies dynamic....
+%%	dynamic(Ps1),		% implies dynamic....
 	add_table(Ps1).
 
 			/***********************/
