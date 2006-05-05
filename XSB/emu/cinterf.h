@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.26 2005-11-14 18:58:49 tswift Exp $
+** $Id: cinterf.h,v 1.27 2006-05-05 21:38:02 dwarren Exp $
 ** 
 */
 
@@ -197,6 +197,7 @@ DllExport extern xsbBool call_conv c2p_float(CTXTdeclc double, prolog_term);
 DllExport extern xsbBool call_conv c2p_string(CTXTdeclc char *, prolog_term);
 DllExport extern xsbBool call_conv c2p_list(CTXTdeclc prolog_term);
 DllExport extern xsbBool call_conv c2p_nil(CTXTdeclc prolog_term);
+DllExport extern void call_conv ensure_heap_space(CTXTdeclc int, int);
 DllExport extern xsbBool call_conv c2p_functor(CTXTdeclc char *, int, prolog_term);
 DllExport extern void call_conv c2p_setfree(prolog_term);
 DllExport extern void call_conv c2p_chars(CTXTdeclc char *str, int regs_to_protect, prolog_term term);

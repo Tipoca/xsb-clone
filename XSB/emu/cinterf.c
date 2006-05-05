@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.65 2005-11-29 00:02:16 tswift Exp $
+** $Id: cinterf.c,v 1.66 2006-05-05 21:38:02 dwarren Exp $
 ** 
 */
 
@@ -213,6 +213,11 @@ DllExport void call_conv c2p_setfree(prolog_term var)
 {
     CPtr v = (CPtr)var;
     bld_free(v);
+}
+
+/* space is space in words required; regcnt is number of registers to protect */
+DllExport void call_conv ensure_heap_space(CTXTdeclc int space, int regcnt) {
+  check_glstack_overflow(regcnt,pcreg,space);
 }
 
 DllExport xsbBool call_conv c2p_functor(CTXTdeclc char *functor, int arity, 
