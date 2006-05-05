@@ -3,7 +3,8 @@
 :- import retract_nr/1 from assert.
 
 test:- test11,test12,test21,test22,
-	test31,test32,test41,test42,test51,test52.
+	test31,test32,test41,test42,test51,test52,
+	ret_ind_gc_test.
 
 :- index(p/2,[2,*(1)]).
 :- index(q/2,[2,*(1)]).
@@ -22,7 +23,7 @@ test11:- p(X,_),retract(p(f(1),_)),writeln((11-1,p(X))),fail.
 test11:- p(X,_),writeln((11-2,p(X))),fail.
 test11:- q(X,_),retract(p(f(2),_)),writeln((11-3,q(X))),fail.
 test11:- init2,fail.
-test11:- gc_dynamic(N),fail.
+test11:- gc_dynamic(_N),fail.
 test11.
 
 test12:- init2,fail.
@@ -30,7 +31,7 @@ test12:- p(_,X),retract(p(_,1)),writeln((12-1,p(X))),fail.
 test12:- p(_,X),writeln((12-2,p(X))),fail.
 test12:- q(_,X),retract(p(_,2)),writeln((12-3,q(X))),fail.
 test12:- init2,fail.
-test12:- gc_dynamic(N),fail.
+test12:- gc_dynamic(_N),fail.
 test12.
 
 /* Test delay and gc of 2 retracted clauses */
@@ -95,6 +96,51 @@ test52:- p(_,X),retract(p(_,1)),gc_dynamic(N),
 	 writeln((52-3,p(X),gc(N))),fail.
 test52:- gc_dynamic(N),writeln((52-4,gc(N))),fail.
 test52.
+
+/** test when using index chains */
+
+:- import for/3 from basics.
+
+:- dynamic p/4.
+:- index(p/4,[1,2,3]).
+
+ret_ind_gc_test :-
+	ret_ind_gc_test1,
+	writeln(ret_ind_gc_passed1),
+	ret_ind_gc_test2,
+	writeln(ret_ind_gc_passed2).	
+
+init_p(IM,JM,KM,LM) :-
+	retractall(p(_,_,_,_)),
+	for(I,1,IM),
+	for(J,1,JM),
+	for(K,1,KM),
+	for(L,1,LM),
+	assert(p(I,J,K,L)),
+	fail.
+init_p(_,_,_,_).
+
+ret_ind_gc_test1 :-
+	init_p(2,8,5,10),
+	p(_,_,3,Z),
+	Z = 3,
+	retractall(p(_,_,_,_)),
+	fail.
+ret_ind_gc_test1.
+
+
+ret_ind_gc_test2 :-
+	init_p(5,5,5,5),
+	p(X,Y,2,Z),
+	Z = 1,
+	retract(p(X,Y,2,1)),
+	fail.
+ret_ind_gc_test2 :-
+	p(_X,_Y,_Z,_W),
+	fail.
+ret_ind_gc_test2 :- gc_dynamic(_N).
+
+
 
 end_of_file.
 

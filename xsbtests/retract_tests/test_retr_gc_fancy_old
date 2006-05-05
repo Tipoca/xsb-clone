@@ -30,3 +30,5 @@
 (52 - 2  ','  q(1))
 (52 - 3  ','  p(1)  ','  gc(2))
 (52 - 4  ','  gc(0))
+ret_ind_gc_passed1
+ret_ind_gc_passed2
