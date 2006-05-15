@@ -22,12 +22,12 @@ tablewrite(_,_).
 :- table table_call_a/1.
 table_call_a(X):- 
 	num_is(N),
-	random_pause(1000),
+	random_pause(100),
 	table_call_b(N,X).
 
 :- table table_call_b/2.
 table_call_b(_N,_X):- 
-	random_pause(1000),
+	random_pause(100),
 	table_call_a(_),
 	fail.
 table_call_b(N,g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(g(
