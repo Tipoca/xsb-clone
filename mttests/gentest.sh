@@ -68,7 +68,7 @@ fi
 for elt in ${FILE}_temp.*; do
     nfiles=$[nfiles+1]
     sort $elt > temp_new
-    diff temp_new temp_old
+    diff -w temp_new temp_old
     result=$?
     if test "$result" = 0 ; then 
 	echo "$BASEDIR/$elt tested"
