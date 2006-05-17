@@ -4,7 +4,7 @@
 **
 ** Contact:   flora-users@lists.sourceforge.net
 ** 
-** Copyright (C) The Research Foundation of SUNY, 1998 - 2005
+** Copyright (C) The Research Foundation of SUNY, 1998 - 2006
 ** 
 ** FLORA-2 is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -21,7 +21,7 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **
-** $Id: flora2.P,v 1.24 2005-06-01 04:12:16 kifer Exp $
+** $Id: flora2.P,v 1.25 2006-05-17 21:55:10 kifer Exp $
 ** 
 */
 
