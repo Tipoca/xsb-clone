@@ -73,6 +73,11 @@ options=$2
 #------------------------------------
 ../gentest.sh "$XEMU $options" spec_tbl_fold_bug "test."
 
+#------------------------------------
+# unify_with_occurs_check test
+#------------------------------------
+../gentest.sh "$XEMU $options" uwoc "test."
+
 #------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
 #------------------------------------------------------------------------
