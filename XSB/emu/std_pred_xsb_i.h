@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.31 2006-05-22 20:47:45 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.32 2006-05-22 23:30:51 tswift Exp $
 ** 
 */
 
@@ -923,10 +923,14 @@ xsbBool unify_with_occurs_check(CTXTdeclc Cell Term1, Cell Term2) {
   switch (cell_tag(Term1)) {
   case XSB_ATTV: 
   case XSB_REF: 
-  case XSB_REF1: 
-    if (not_occurs_in(Term1,Term2))
-      return unify(CTXTc Term1,Term2);
-    else return FALSE;
+  case XSB_REF1: {
+    if (isnonvar(Term2)) {
+      if (not_occurs_in(Term1,Term2))
+	return unify(CTXTc Term1,Term2);
+      else return FALSE;
+    } else 
+      return (int) unify(CTXTc Term1,Term2);
+  }
   case XSB_INT:
   case XSB_STRING:
   case XSB_FLOAT: 
