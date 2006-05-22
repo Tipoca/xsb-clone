@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.83 2006/04/17 20:51:30 tswift Exp $
+** $Id: machine.P,v 1.84 2006/04/27 00:55:09 tswift Exp $
 ** 
 */
 
@@ -122,6 +122,9 @@ string_substitute(_String, _SubstSpec, _SubstList, _Result) :-
 
 parsort(_InList,_ParSpec,_ElimDupls,_OutList) :-
 	'_$builtin'(PARSORT).
+
+unify_with_occurs_check(_One,_Two):- 
+	'_$builtin'(UNIFY_WITH_OCCURS_CHECK).
 
 call0(Term) :- call0(Term).
 stat_sta(X) :- stat_sta(X).

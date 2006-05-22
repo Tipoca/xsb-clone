@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.75 2006/04/17 20:51:30 tswift Exp $
+** $Id: machine.H,v 1.76 2006/04/27 00:55:10 tswift Exp $
 ** 
 */
 
@@ -131,6 +131,7 @@
 	oracle_query/7,
 	odbc_exec_query/6,
         parsort/4,
+   unify_with_occurs_check/2,
 	private_builtin/11,
 	segfault_handler/1,
 	is_charlist/2,
