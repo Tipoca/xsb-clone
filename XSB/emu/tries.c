@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.86 2006-04-17 20:54:58 tswift Exp $
+** $Id: tries.c,v 1.87 2006-05-22 14:53:44 dwarren Exp $
 ** 
 */
 
@@ -576,6 +576,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
       return;								\
     }									\
   }									\
+  if (top_of_localstk < top_of_heap) xsb_abort("Heap overflow: should expand"); \
 }
 
 /*----------------------------------------------------------------------*/
@@ -630,6 +631,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
     xsb_abort("Bad tag in macro_make_heap_term");			\
     return;								\
   }									\
+  if (top_of_localstk < top_of_heap) xsb_abort("Heap overflow: should expand"); \
 }
 
 /*----------------------------------------------------------------------*/
