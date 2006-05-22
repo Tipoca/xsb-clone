@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.h,v 1.5 2005-07-18 21:54:12 crojo Exp $
+** $Id: token_xsb.h,v 1.6 2006-05-22 15:40:04 dwarren Exp $
 ** 
 */
 
@@ -30,6 +30,7 @@
 
  
 #define strgetc(p) (--(p)->strcnt>=0? ((int)*(p)->strptr++): -1)
+#define strpeekc(p) ((p)->strcnt>=0? ((int)*(p)->strptr): -1)
 
 #define GetC(card,instr) (instr ? strgetc(instr) : getc(card))
 
