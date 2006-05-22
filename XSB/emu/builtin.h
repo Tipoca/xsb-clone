@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.72 2006-04-27 01:05:26 tswift Exp $
+** $Id: builtin.h,v 1.73 2006-05-22 20:47:45 tswift Exp $
 ** 
 */
 
@@ -188,6 +188,7 @@
 
 #define SET_TABLED_EVAL		170
 
+#define UNIFY_WITH_OCCURS_CHECK  171
 #define PUT_ATTRIBUTES		172
 #define GET_ATTRIBUTES		173
 #define DELETE_ATTRIBUTES	174

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.262 2006-04-27 21:08:47 tswift Exp $
+** $Id: builtin.c,v 1.263 2006-05-22 20:47:45 tswift Exp $
 ** 
 */
 
@@ -864,8 +864,9 @@ void init_builtin_table(void)
   set_builtin_table(RECLAIM_UNINTERNED_NR, "reclaim_uninterned_nr");
   set_builtin_table(GLOBALVAR, "globalvar");
 
-
   set_builtin_table(SET_TABLED_EVAL, "set_tabled_eval_method");
+  set_builtin_table(UNIFY_WITH_OCCURS_CHECK, "unify_with_occurs_check");
+
   set_builtin_table(PUT_ATTRIBUTES, "put_attributes");
   set_builtin_table(GET_ATTRIBUTES, "get_attributes");
   set_builtin_table(DELETE_ATTRIBUTES, "delete_attributes");
@@ -2354,6 +2355,9 @@ case WRITE_OUT_PROFILE:
 ***/
     return TRUE;
   }
+
+    case UNIFY_WITH_OCCURS_CHECK:
+      return unify_with_occurs_check(CTXTc cell(reg+1),cell(reg+2));
 
   case XSB_PROFILE:
     {

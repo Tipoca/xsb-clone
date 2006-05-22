@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.17 2005-11-10 23:05:55 tswift Exp $
+** $Id: schedrev_xsb_i.h,v 1.18 2006-05-22 20:47:45 tswift Exp $
 ** 
 */
 
@@ -60,7 +60,8 @@ static CPtr sched_answers(CTXTdeclc VariantSF producer_sf, CPtr *last_consumer)
   consumer_cpf = subg_asf_list_ptr(producer_sf);
 
   /**** The producer has answers and consuming calls ****/  
-  if ( has_answers(producer_sf) && IsNonNULL(consumer_cpf) ) {
+  if ( has_answers(producer_sf) && IsNonNULL(consumer_cpf) 
+       && !subg_is_reclaimed(producer_sf)) {
     /**** Check each consumer for unresolved answers ****/
     if ( IsSubsumptiveProducer(producer_sf) )
       while ( IsNonNULL(consumer_cpf) ) {
