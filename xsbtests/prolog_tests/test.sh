@@ -78,6 +78,11 @@ options=$2
 #------------------------------------
 ../gentest.sh "$XEMU $options" uwoc "test."
 
+#------------------------------------
+# term_to_atom test
+#------------------------------------
+../gentest.sh "$XEMU $options" test_termtoatom "test."
+
 #------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
 #------------------------------------------------------------------------
