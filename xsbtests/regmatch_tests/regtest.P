@@ -15,13 +15,13 @@ t2 :- re_match('ab(de)*', 'abcd',0,_,L), writeln(L).
 %% We must use the basic mode here because some packages
 %% don't allow back-reference in extended regular expressions
 %% [] means: flags=basic/case-sensitive
-t3 :- re_match("a\\(b*\\)cd\\1",'abbbcdbbbbbo', 0, [], M), writeln(M).
+t3 :- re_match("a\\\\(b*\\\\)cd\\\\1",'abbbcdbbbbbo', 0, [], M), writeln(M).
 
 %% ignorecase/basic
 % tls: change since mac has a different semantics for ignorecase + \1
 
-%t4 :- re_match('a\(b*\)cd\1','aBBbcdbBbbboabBBcdbbbbbo',2,[ignorecase],M),
-t4 :- re_match('a\(b*\)cd','aBBbcdbBbbboabBBcdbbbbbo',2,[ignorecase],M),
+%t4 :- re_match('a\\(b*\\)cd\1','aBBbcdbBbbboabBBcdbbbbbo',2,[ignorecase],M),
+t4 :- re_match('a\\(b*\\)cd','aBBbcdbBbbboabBBcdbbbbbo',2,[ignorecase],M),
       writeln(M).
 
 %% Tests 5&6 test the | (or) feature.
@@ -31,17 +31,17 @@ t5 :- re_match("a(bb|ee)+cd",'abbeebbcdbb', 0, [extended], M), writeln(M).
 t6 :- re_match('a..((be|eb)+)cd','acdbEeBeBbEcdo',0,[ignorecase,extended],M),
       writeln(M).
 
-t7 :- re_match("a(b*)cd\\(",'abbbcd(bbo', 0, _, M), writeln(M).
+t7 :- re_match("a(b*)cd\\\\(",'abbbcd(bbo', 0, _, M), writeln(M).
 
 %% Arg 4=1 means flags=ignorecase/extended
-t8 :- re_match("a(b*)cd\\\\",'aBBbcd\bbo', 0, 1, M), writeln(M).
+t8 :- re_match("a(b*)cd\\",'aBBbcd\\bbo', 0, 1, M), writeln(M).
 
 t9 :- re_bulkmatch('[^a-zA-Z0-9]+', '123&*-456 )7890% 123', 0, 1, X),
 	writeln(X).
 
 
-t10 :- Str = 'abbbcd\bbo',
-      re_match("a(b*)cd\\\\",'abbbcd\bbo',0,_,[match(X,Y), match(V,W)|L]),
+t10 :- Str = 'abbbcd\\bbo',
+      re_match("a(b*)cd\\",'abbbcd\\bbo',0,_,[match(X,Y), match(V,W)|L]),
       substring(Str,X,Y,UninternedMatch),
       intern_string(UninternedMatch,Match),
       substring(Str,V,W,UninternedParen1),
