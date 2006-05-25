@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: preproc.H,v 1.6 2006-01-27 17:54:12 dwarren Exp $
+** $Id: preproc.H,v 1.7 2006-05-25 14:33:34 dwarren Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 :- export preprocess/3, gensym_pred/2, have_hardcut/2.
 
 :- import option/1 from auxlry.
-:- import inline_neg/2, compl_cond/5 from pre_cond.
+:- import compl_cond/5 from pre_cond.
 :- import sym_prop/2, sym_insert/5, sym_name/3 from symtab.
 :- import str_cat/3 from machine.
 :- import conget/2, gensym/2 from gensym.
