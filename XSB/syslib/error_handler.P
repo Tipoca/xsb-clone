@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.37 2006/02/06 20:09:08 tswift Exp $
+** $Id: error_handler.P,v 1.38 2006/02/20 20:36:31 tswift Exp $
 ** 
 */
 
@@ -354,7 +354,7 @@ check_one_thread(Op,Obj_type,Predicate):-
 check_var(Term,Predicate,Arg) :- 
 	(var(Term) -> 
 	    true
-             ;  instantiation_error(Predicate,Arg,variable) ).
+             ;  type_error(variable,Term,Predicate,Arg) ).
 
 %-------------
 
