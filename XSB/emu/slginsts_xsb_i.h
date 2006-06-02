@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.57 2006/01/09 00:06:32 tswift Exp $
+** $Id: slginsts_xsb_i.h,v 1.58 2006/01/12 21:33:51 tswift Exp $
 ** 
 */
 
@@ -204,7 +204,6 @@ xsb_dbgmsg((LOG_DEBUG,"After variant call search AT: %x\n",answer_template));
         {       /* code for leader */
                 reset_other_threads( th, waiting_for_thread, producer_sf );
                 th->deadlock_brk_leader = TRUE ;
-                pthread_cond_broadcast(&completing_cond) ;
                 continue ;
         }
         th->waiting_for_subgoal = producer_sf ;
