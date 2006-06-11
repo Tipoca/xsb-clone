@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf_xsb_i.h,v 1.22 2005-01-17 17:51:48 tswift Exp $
+** $Id: dynelf_xsb_i.h,v 1.23 2006-06-11 21:35:10 tswift Exp $
 ** 
 */
 
@@ -157,7 +157,6 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   
   /* (3) find address of function and data objects */
   search_ptr = (Pair)get_data(cur_mod);
-  
   while (search_ptr) {
     name = get_name(search_ptr->psc_ptr);
     
