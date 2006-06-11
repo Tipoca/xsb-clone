@@ -2,6 +2,7 @@
 #include <string.h>
 #include "xsb_config.h"
 #include "cinterf.h"
+#include "context.h"
 
 static int mymin(int a, int b, int c)
 {
@@ -13,15 +14,15 @@ static int mymin(int a, int b, int c)
   }
 }
 
-DllExport int call_conv min_ed_dis(void)
+DllExport int call_conv min_ed_dis(CTXTdecl)
 {
   int len1,len2, i, j;
   int ins,del,rep;
   int cost[200][200];
   char *string1, *string2;
 
-  string1 = ptoc_string(1);
-  string2 = ptoc_string(2);
+  string1 = extern_ptoc_string(1);
+  string2 = extern_ptoc_string(2);
   len1 = strlen(string1);
   len2 = strlen(string2);
   for (i = 0; i < 200; i++) cost[i][0]= i;
@@ -36,6 +37,6 @@ DllExport int call_conv min_ed_dis(void)
       cost[i][j] = mymin(del,ins,rep);
     }
   }   
-  ctop_int(3,cost[len1][len2]);
+  extern_ctop_int(3,cost[len1][len2]);
   return 1;
 }
