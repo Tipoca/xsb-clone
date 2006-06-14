@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.264 2006-06-01 13:19:41 dwarren Exp $
+** $Id: builtin.c,v 1.265 2006-06-14 15:27:23 dwarren Exp $
 ** 
 */
 
@@ -530,10 +530,8 @@ Cell  val_to_hash(Cell term)
       //a hash value.
       value = (Cell)get_str_psc(term);
       break;
-    case XSB_STRING: /* The following test is a necessary nuisance caused  */
-      /* by the strange (dynamic) compilation of []/0 in an */
-      /* index position which should be fixed one fine day! */
-      value = (Cell)(isnil(term) ? 0 : string_val(term));
+    case XSB_STRING:
+      value = (Cell)(string_val(term));
       break;
     default: xsb_abort("[term_hash/3] Indexing on illegal argument");
       value = 0;
