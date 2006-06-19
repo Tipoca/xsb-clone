@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.H,v 1.14 2005/10/21 21:28:06 crojo Exp $
+** $Id: xsb_writ.H,v 1.15 2005/12/31 01:47:37 tswift Exp $
 ** 
 */
 
@@ -41,7 +41,8 @@
 
 %% We must import this from the loader, because this might be called
 %% for the first time before xsb_configuration configuration is loaded.
-:- import windows_os_loader/0 from loader.
+%:- import windows_os_loader/0 from loader.
+ :- import xsb_configuration/2 from xsb_configuration.
 
 :- import conget/2, conset/2 from gensym.
 
