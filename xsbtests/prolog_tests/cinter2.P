@@ -1,11 +1,11 @@
 :- xsb_configuration(compiler, CC), consult(zero, [CC]).
 
 :- import member/2 from basics.
-:- import diag/2, minus_one/2, zero/1 from zero.
+:- import diag/2, minus_one/2, zero/1,my_sqrt/2,change_char/4 from zero.
 
-% test interpreted calls
+test:- writeln('----------    testing interpreted calls'),fail.
 test :- test(Call), call(Call), writeln(Call), fail.
-% test compiled calls
+test:- writeln('----------    testing compiled calls'),fail.
 test :- gen(X), diag1(X,Y), writeln(diag1(X,Y)), fail.
 test :- gen(X), minus_one1(X,Y), writeln(minus_one1(X,Y)), fail.
 test :- zero1(X), writeln(zero1(X)), fail.
@@ -28,3 +28,5 @@ test(minus_one(1,_X)).
 test(minus_one(2,_X)).
 test(minus_one(1000000,_X)).
 test(zero(_X)).
+test(my_sqrt(25,_X)).
+test(change_char(cot,3,w,_X)).

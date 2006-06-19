@@ -1,3 +1,6 @@
+----------    testing compiled calls
+----------    testing interpreted calls
+change_char(cot,3,w,cow)
 diag(-100000,-100000)
 diag(0,0)
 diag(1,1)
@@ -18,5 +21,6 @@ minus_one1(0,-1)
 minus_one1(1,0)
 minus_one1(100000,99999)
 minus_one1(2,1)
+my_sqrt(25,5.0000)
 zero(0)
 zero1(0)
