@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.95 2006-06-19 23:46:23 evansbj Exp $
+** $Id: init_xsb.c,v 1.96 2006-06-21 20:11:41 dwarren Exp $
 ** 
 */
 
@@ -1148,7 +1148,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   cp_ereg(breg) = ereg;
   cp_prevbreg(breg) = breg;               /* note ! */
   cp_pdreg(breg) = delayreg;
-
+  cp_prevtop(breg) = (CPtr)(tcpstack.high) - 1;
 
   /* init trie stuff */
 
