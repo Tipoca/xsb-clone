@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.29 2006-03-24 16:40:28 tswift Exp $
+** $Id: debug_xsb.c,v 1.30 2006-06-21 20:09:24 dwarren Exp $
 ** 
 */
 
@@ -49,6 +49,8 @@
 #include "cinterf.h"
 #include "io_defs_xsb.h"
 #include "io_builtins_xsb.h"
+#include "thread_defs_xsb.h"
+#include "thread_xsb.h"
 
 #if (defined(DEBUG_VERBOSE) || defined(DEBUG_VM))
 #include "subp.h"
@@ -544,12 +546,13 @@ static void print_pdlstack(CTXTdecl)
 char *stringTabledEvalMethod(TabledEvalMethod method) {
 
   switch(method) {
-  case VARIANT_TEM:
-    return ("variant");
-    break;
-  case SUBSUMPTIVE_TEM:
-    return ("subsumption");
-    break;
+    // to be fixed when have time..... dsw
+    //  case VARIANT_TEM:
+    //    return ("variant");
+    //    break;
+    //  case SUBSUMPTIVE_TEM:
+    //    return ("subsumption");
+    //    break;
   default:
     return ("unknown");
     break;
