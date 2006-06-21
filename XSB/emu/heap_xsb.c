@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.51 2006-04-27 21:08:47 tswift Exp $
+** $Id: heap_xsb.c,v 1.52 2006-06-21 20:17:11 dwarren Exp $
 ** 
 */
 
@@ -299,7 +299,7 @@ static unsigned long heap_marks_size;
 
 #define stack_boundaries \
   heap_top = hreg; \
-  ls_top = top_of_localstk ; \
+  ls_top = top_of_localstk - 256;  /* extra space for environment above top */ \
   if (ls_top < heap_top) xsb_exit("Heap and local stack are clobbered"); \
   heap_bot = (CPtr)glstack.low ; \
   ls_bot = (CPtr)glstack.high - 1 ; \
