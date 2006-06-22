@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.33 2006-05-22 23:57:17 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.34 2006-06-22 18:54:10 dwarren Exp $
 ** 
 */
 
@@ -129,7 +129,7 @@ inline static xsbBool arg_builtin(CTXTdecl)
     if ((disp = int_val(index)) > 0) {
       term = ptoc_tag(CTXTc 2);
       if (isnonvar(term)) {
-	if (isconstr(term)) {
+	if (isconstr(term) && !isboxedinteger(term) && !isboxedfloat(term)) {
 	  if (disp <= (int)get_arity(get_str_psc(term))) {
 	    return unify(CTXTc (Cell)(clref_val(term)+disp),
 			 ptoc_tag(CTXTc 3));
