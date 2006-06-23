@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.30 2006-06-23 14:53:10 tswift Exp $
+** $Id: cinterf.h,v 1.31 2006-06-23 18:26:02 tswift Exp $
 ** 
 */
 
@@ -194,7 +194,8 @@ extern "C" {
 
 #define extern_p2p_arg(term,argno) p2p_arg(term,argno)
 #define extern_p2p_car(term) p2p_car(term)
-#define extern_p2p_cdf(term) p2p_cdf(term)
+#define extern_p2p_cdr(term) p2p_cdr(term)
+#define extern_p2p_deref(term) p2p_deref(term)
 #define extern_p2p_new() p2p_new(CTXT)
 #define extern_p2p_unify(term1, term2) p2p_unify(CTXTc term1, term2)
 
