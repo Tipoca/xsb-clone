@@ -84,7 +84,11 @@ options=$2
 ../gentest.sh "$XEMU $options" test_termtoatom "test."
 
 #------------------------------------------------------------------------
+../gentest.sh "$XEMU $options" cinter3 "test."
+
+#------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
+# (actually, mac / others do not create .so)
 #------------------------------------------------------------------------
 
 OBJEXT=.xwam
