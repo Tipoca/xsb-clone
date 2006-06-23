@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.61 2006-06-20 14:14:43 dwarren Exp $
+** $Id: loader_xsb.c,v 1.62 2006-06-23 14:53:10 tswift Exp $
 ** 
 */
 
@@ -881,6 +881,9 @@ static byte *loader1(CTXTdeclc FILE *fd, int exp)
 /************************************************************************/
 
 #ifdef FOREIGN
+
+/* ldoption is specified in .H file and indicates library files, etc
+   that need to be loaded. */
 static byte *loader_foreign(char *filename, FILE *fd, int exp)
 {
   byte name_len, *instr;
