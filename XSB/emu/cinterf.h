@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.31 2006-06-23 18:26:02 tswift Exp $
+** $Id: cinterf.h,v 1.32 2006-07-02 18:36:28 tswift Exp $
 ** 
 */
 
@@ -166,8 +166,6 @@ extern "C" {
 #define extern_ctop_abs(reg_num,val) ctop_abs(CTXTc reg_num,val) 
 #define extern_ctop_float(reg_num, val) ctop_float(CTXTc reg_num, val) 
 #define extern_ctop_int(reg_num,val) ctop_int(CTXTc reg_num,val) 
-#define extern_ctop_string(reg_num,val) \
-  ctop_string(CTXTc reg_num,string_find(val,1)) 
 
 #define extern_ptoc_abs(reg_num) ptoc_abs(CTXTc reg_num) 
 #define extern_ptoc_float(reg_num) ptoc_float(CTXTc reg_num) 
@@ -220,6 +218,8 @@ DllExport extern void  call_conv ctop_int(CTXTdeclc reg_num, prolog_int);
 DllExport extern void  call_conv ctop_float(CTXTdeclc reg_num, double);
 						/* def in builtin.c */
 DllExport extern void  call_conv ctop_string(CTXTdeclc reg_num, char*);
+						/* def in builtin.c */
+DllExport extern void  call_conv extern_ctop_string(CTXTdeclc reg_num, char*);
 						/* def in builtin.c */
 DllExport extern int   call_conv ctop_abs(reg_num, char*);
 

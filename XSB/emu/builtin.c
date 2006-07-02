@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.267 2006-06-23 15:03:19 dwarren Exp $
+** $Id: builtin.c,v 1.268 2006-07-02 18:36:28 tswift Exp $
 ** 
 */
 
@@ -458,6 +458,11 @@ DllExport void call_conv ctop_string(CTXTdeclc int regnum, char *value)
   }
   else
     xsb_abort("[CTOP_STRING] Wrong type of argument: %lux", addr);
+}
+
+DllExport void call_conv extern_ctop_string(CTXTdeclc int regnum, char *value)
+{
+  ctop_string(CTXTc regnum,string_find(value,1)) ;
 }
 
 inline static void ctop_constr(CTXTdeclc int regnum, Pair psc_pair)
