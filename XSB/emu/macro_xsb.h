@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.47 2006-04-17 20:54:57 tswift Exp $
+** $Id: macro_xsb.h,v 1.48 2006-07-04 01:28:18 tswift Exp $
 ** 
 */
 
@@ -189,7 +189,7 @@ typedef struct Deleted_Table_Frame {
    DTF_NextDTF(pDTF) = private_deltf_chain_begin;			\
    DTF_NextPredDTF(pDTF) = TIF_DelTF(pTIF);				\
    if (private_deltf_chain_begin)					\
-     DTF_PrevDTF(deltf_chain_begin) = pDTF;				\
+     DTF_PrevDTF(private_deltf_chain_begin) = pDTF;				\
    if (TIF_DelTF(pTIF))  DTF_PrevPredDTF(TIF_DelTF(pTIF)) = pDTF;	\
    private_deltf_chain_begin = pDTF;					\
    TIF_DelTF(pTIF) = pDTF;                                              \
