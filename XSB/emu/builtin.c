@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.268 2006-07-02 18:36:28 tswift Exp $
+** $Id: builtin.c,v 1.269 2006-07-07 21:08:14 dwarren Exp $
 ** 
 */
 
@@ -2867,11 +2867,13 @@ Psc psc_from_code_addr(byte *code_addr) {
   return NULL;
 }
 
+#define MAX_BACKTRACE_LENGTH 50
 int print_xsb_backtrace(CTXTdecl) {
   Psc tmp_psc, called_psc;
   byte *tmp_cpreg;
   byte instruction;
   CPtr tmp_ereg, tmp_breg;
+  long backtrace_length = 0;
   if (xsb_profiling_enabled) {
     // print forward continuation
     fprintf(stdout,"Forward Continuation...\n");
@@ -2881,7 +2883,8 @@ int print_xsb_backtrace(CTXTdecl) {
     tmp_ereg = ereg;
     tmp_cpreg = cpreg;
     instruction = *(tmp_cpreg-2*sizeof(Cell));
-    while (tmp_cpreg && (instruction == call || instruction == trymeorelse)) {
+    while (tmp_cpreg && (instruction == call || instruction == trymeorelse) && 
+	   (backtrace_length++ < MAX_BACKTRACE_LENGTH)) {
       if (instruction == call) {
 	called_psc = *((Psc *)tmp_cpreg - 1);
 	if (called_psc != tmp_psc) {
@@ -2911,7 +2914,8 @@ int print_xsb_backtrace(CTXTdecl) {
     tmp_ereg = ereg;
     tmp_cpreg = cpreg;
     instruction = *(tmp_cpreg-2*sizeof(Cell));
-    while (tmp_cpreg && (instruction == call || instruction == trymeorelse)) {
+    while (tmp_cpreg && (instruction == call || instruction == trymeorelse) && 
+	   (backtrace_length++ < MAX_BACKTRACE_LENGTH)) {
       if (instruction == call) {
 	called_psc = *((Psc *)tmp_cpreg - 1);
 	fprintf(stdout,"... %s/%d\n",get_name(called_psc),get_arity(called_psc));
