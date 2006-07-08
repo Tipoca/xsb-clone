@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wrapping.P,v 1.7 2006-06-23 14:56:36 tswift Exp $
+** $Id: wrapping.P,v 1.8 2006-07-08 17:41:55 tswift Exp $
 ** 
 */
 
@@ -181,8 +181,8 @@ write_cargs(Listin,EngType) :-
 	write(Var).
 */
 
-write_cargs([],EngType) :- !.
-write_cargs(List,EngType) :-
+write_cargs([],_EngType) :- !.
+write_cargs(List,_EngType) :-
 	List = [carg(Var,Type)|Rest],
 	write_cargs0(Rest),
 	write(Type),
