@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.17 2005-08-20 06:50:27 ruim Exp $
+** $Id: flag_defs_xsb.h,v 1.18 2006-07-08 18:49:11 tswift Exp $
 ** 
 */
 
@@ -46,8 +46,8 @@
 #define EXAMINE_DATA    11      /* examine data on GC                      */
 #define PROFFLAG        12
 #define TABLING_METHOD	13      /* Default method used to evaluate tabled */
-
-/* Flags 14-24 are reserved for future use */
+#define CLAUSE_GARBAGE_COLLECT 14 /* Turn clause gc on or off */
+/* Flags 14-24 are open to use */
 
 /*
  *  Flags 25-41 are reserved for Interrupt Handler PSCs.

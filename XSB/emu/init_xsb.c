@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.96 2006-06-21 20:11:41 dwarren Exp $
+** $Id: init_xsb.c,v 1.97 2006-07-08 18:49:11 tswift Exp $
 ** 
 */
 
@@ -218,6 +218,7 @@ static void init_flags(CTXTdecl)
 				      determines which banner isn't shown */
   flags[NUM_THREADS] = 1;          /* 1 thread will be run at start */
   pflags[BACKTRACE] = 1;           /* Backtrace on error by default */
+  pflags[CLAUSE_GARBAGE_COLLECT] = 1;           /* Clause GC on by default */
 }
 
 /*==========================================================================*/
@@ -1148,6 +1149,9 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   cp_ereg(breg) = ereg;
   cp_prevbreg(breg) = breg;               /* note ! */
   cp_pdreg(breg) = delayreg;
+#ifdef CP_DEBUG
+  cp_psc(breg) = 0;
+#endif
   cp_prevtop(breg) = (CPtr)(tcpstack.high) - 1;
 
   /* init trie stuff */
