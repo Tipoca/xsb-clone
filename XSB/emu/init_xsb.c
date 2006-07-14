@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.97 2006-07-08 18:49:11 tswift Exp $
+** $Id: init_xsb.c,v 1.98 2006-07-14 16:49:36 tswift Exp $
 ** 
 */
 
@@ -1141,7 +1141,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   /* Place a base choice point frame on the CP Stack: this choice point
      is needed for cut -- make sure you initialize all its fields.
      ------------------------------------------------------------------ */
-  breg = (CPtr)(tcpstack.high) - CP_SIZE;
+  bfreg = breg = (CPtr)(tcpstack.high) - CP_SIZE;
   cp_pcreg(breg) = (pb) &halt_inst; 	  /* halt on last failure */
   cp_ebreg(breg) = ebreg;
   cp_hreg(breg) = hreg;

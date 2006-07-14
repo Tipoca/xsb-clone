@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.31 2006-07-08 18:49:11 tswift Exp $
+** $Id: debug_xsb.c,v 1.32 2006-07-14 16:49:36 tswift Exp $
 ** 
 */
 
@@ -438,6 +438,26 @@ void alt_print_cp(CTXTdecl)
 
     endp = cp_prevtop(endp);
   }
+
+  fclose(where) ;
+} /* print_cp */
+
+extern void dis_data(FILE *);
+extern void dis_text(FILE *);
+
+void alt_dis(CTXTdecl)
+{
+  FILE *where ;
+
+  alt_printnum++ ;
+  where = fopen("ALTDIS","w") ;
+  if (! where)
+    { xsb_dbgmsg((LOG_GC, "could not open ALTDIS"));
+      return;
+    }
+
+  dis_data(where);
+  dis_text(where);
 
   fclose(where) ;
 } /* print_cp */

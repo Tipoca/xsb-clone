@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.97 2006/02/23 15:54:25 dwarren Exp $
+** $Id: subp.c,v 1.98 2006/04/27 21:08:47 tswift Exp $
 ** 
 */
 
@@ -296,10 +296,10 @@ void print_statistics(CTXTdeclc int amount) {
     break;
   case 5:
     dis(0); 
-    break;		/* output memory image; for debugging */
+    break;		/* output memory image - data only; for debugging */
   case 6:
     dis(1); 
-    break;		/* output memory image; for debugging */
+    break;		/* output memory image - data + text; for debugging */
 #ifdef CP_DEBUG
   case 7:
     print_cp_backtrace();
