@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.27 2005-12-13 14:20:20 dwarren Exp $
+## $Id: testsuite.sh,v 1.28 2006-07-15 17:50:45 tswift Exp $
 ## 
 ##
 
@@ -50,6 +50,7 @@
 #    depending on whether the configuration tag was given on command line.
 
 echo ==========================================================================
+echo "Begin: `date`"
 
 export config_tag
 
@@ -295,5 +296,5 @@ fi
 rm -f $RES_FILE
 rm -f $lockfile
 
-echo "Done"
+echo "Done `date`"
 echo ==============================================================
