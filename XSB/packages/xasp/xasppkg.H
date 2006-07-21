@@ -19,11 +19,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xasppkg.H,v 1.1 2003-02-21 16:57:22 lfcastro Exp $
+** $Id: xasppkg.H,v 1.2 2006-07-21 19:33:18 tswift Exp $
 ** 
 */
 
-:- compile_command 'make module'.
+%:- compile_command 'make module'.
 	
 :- foreign_pred smodelsInit from init(void):void.
 :- foreign_pred smodelsNumAtoms(+a) from numberAtoms(a:int):void.
