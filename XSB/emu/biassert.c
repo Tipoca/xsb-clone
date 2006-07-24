@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.122 2006-07-20 20:41:34 tswift Exp $
+** $Id: biassert.c,v 1.123 2006-07-24 14:46:20 dwarren Exp $
 ** 
 */
 
@@ -2598,22 +2598,23 @@ static int really_delete_clause(ClRef);
 */
 
 int sweep_dynamic(CTXTdeclc DelCFptr *chain_begin) { 
-  DelCFptr delcf_ptr = *chain_begin; 
+  DelCFptr next_delcf_ptr, delcf_ptr = *chain_begin; 
   int dcf_cnt = 0;
   PrRef prref;
-   
+
   /* Free global deltcs */
   while (delcf_ptr) {
+    next_delcf_ptr = DCF_NextDCF(delcf_ptr);
     if (DCF_Mark(delcf_ptr)) {
       //      fprintf(stderr,"GC Sweep skipping marked %s/%d\n",
-      //      get_name(DCF_PSC(delcf_ptr)),get_arity(DCF_PSC(delcf_ptr)));
+      //	      get_name(DCF_PSC(delcf_ptr)),get_arity(DCF_PSC(delcf_ptr)));
       DCF_Mark(delcf_ptr) = 0;
       dcf_cnt++;
     }
     else {
       if (DCF_Type(delcf_ptr) == DELETED_PRREF) {
 	//	fprintf(stderr,"Garbage Collecting Predicate: %s/%d\n",
-	//    get_name(DCF_PSC(delcf_ptr)),get_arity(DCF_PSC(delcf_ptr)));
+	//		get_name(DCF_PSC(delcf_ptr)),get_arity(DCF_PSC(delcf_ptr)));
 	gc_retractall(CTXTc DCF_ClRef(delcf_ptr));
 	prref = dynpredep_to_prref(CTXTc get_ep(DCF_PSC(delcf_ptr)));
 	Free_DelCF(delcf_ptr,prref,*chain_begin);
@@ -2622,7 +2623,7 @@ int sweep_dynamic(CTXTdeclc DelCFptr *chain_begin) {
 	if (DTF_Type(delcf_ptr) == DELETED_CLREF) {
 	  if (determine_if_safe_to_delete(DCF_ClRef(delcf_ptr))) {
 	    //	    fprintf(stderr,"Garbage Collecting Clause: %s/%d (%p)\n",
-	    //    get_name(DCF_PSC(delcf_ptr)),get_arity(DCF_PSC(delcf_ptr)),
+	    //		    get_name(DCF_PSC(delcf_ptr)),get_arity(DCF_PSC(delcf_ptr)),
 	    //		    DCF_ClRef(delcf_ptr));
 	    really_delete_clause(DCF_ClRef(delcf_ptr));
 	    prref = dynpredep_to_prref(CTXTc get_ep(DCF_PSC(delcf_ptr)));
@@ -2630,12 +2631,12 @@ int sweep_dynamic(CTXTdeclc DelCFptr *chain_begin) {
 	  } else {
 	    dcf_cnt++;
 	    //	    fprintf(stderr,"GC Sweep skipping unsafe: %s/%d\n",
-	    //    get_name(DCF_PSC(delcf_ptr)),get_arity(DCF_PSC(delcf_ptr)));
+	    //		    get_name(DCF_PSC(delcf_ptr)),get_arity(DCF_PSC(delcf_ptr)));
 	  }
 	}
       }
     }
-    delcf_ptr = DCF_NextDCF(delcf_ptr);
+    delcf_ptr = next_delcf_ptr;
   }
   return dcf_cnt;
 }
