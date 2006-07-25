@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.123 2006-07-24 14:46:20 dwarren Exp $
+** $Id: biassert.c,v 1.124 2006-07-25 14:18:41 tswift Exp $
 ** 
 */
 
@@ -3527,8 +3527,8 @@ int gen_retract_all(CTXTdecl/* R1: +PredEP , R2: +PSC */)
     SYS_MUTEX_UNLOCK( MUTEX_DYNAMIC );
   }
   else {
-    fprintf(stderr,"Delaying retractall of prref in use: %s/%d\n",
-	    get_name(psc),get_arity(psc));
+    //    fprintf(stderr,"Delaying retractall of prref in use: %s/%d\n",
+    //    get_name(psc),get_arity(psc));
 #ifndef MULTI_THREAD
     check_insert_private_delcf_pred(prref,psc);
 #else
