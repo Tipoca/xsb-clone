@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.29 2006-02-27 22:03:46 tswift Exp $
+** $Id: memory_xsb.c,v 1.30 2006-07-25 14:25:54 dwarren Exp $
 ** 
 */
 
@@ -215,10 +215,12 @@ void *mem_realloc_nocheck(void *addr, unsigned long oldsize, unsigned long newsi
 
 void mem_dealloc(void *addr, unsigned long size, int category)
 {
+  //  int i;
     size = (size+7) & ~0x7 ;	      /* round to 8 */
 #ifdef NON_OPT_COMPILE
     SYS_MUTEX_LOCK_NOERROR(MUTEX_MEM);
 #endif
+    //    if (size > 0) for (i=0; i<size/4-1; i++) *((CPtr *)addr + i) = (CPtr)0xefefefef;
     pspacesize[category] -= size;
     free(addr);
 #ifdef NON_OPT_COMPILE
