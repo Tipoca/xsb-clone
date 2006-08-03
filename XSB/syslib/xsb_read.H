@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.H,v 1.18 2005/12/31 01:47:37 tswift Exp $
+** $Id: xsb_read.H,v 1.19 2006/02/09 17:28:57 tswift Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
 :- import atom/1, atom_codes/2, repeat/0 from standard.
 :- import '_$hilog_symbol'/1 from hilogsym.
 :- import term_new/2, term_set_arg/4, 
-	  file_gettoken/5, psc_insert/4, stat_set_flag/2, conname/2, 
+	  file_gettoken/5, psc_insert/4, conname/2, 
 	  conpsc/2, intern_string/2, term_psc/2, psc_set_prop/2, psc_prop/2
      from machine.
 :- import banner_control/1 from banner.
