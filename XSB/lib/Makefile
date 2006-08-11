@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.49 2005-12-12 18:46:53 dwarren Exp $
+## $Id: Makefile,v 1.50 2006-08-11 20:33:56 tswift Exp $
 ## 
 ##
 
@@ -28,7 +28,7 @@ OBJEXT=.xwam
 ALL = 	aggregs${OBJEXT} array${OBJEXT} array1${OBJEXT} assoc_xsb${OBJEXT} \
 	basic_props${OBJEXT} lists${OBJEXT} \
 	directry${OBJEXT} foreign${OBJEXT} format${OBJEXT} \
-	intern${OBJEXT} mttestutils${OBJEXT} \
+	intern${OBJEXT} mttestutils${OBJEXT} mutex_xsb${OBJEXT} \
 	obsolete${OBJEXT} odbc_call${OBJEXT} \
 	ordsets${OBJEXT} ora_call${OBJEXT} \
 	packaging${OBJEXT} random${OBJEXT} scrptutl${OBJEXT} \
@@ -47,7 +47,7 @@ Option = [sysmod,optimize,quit_on_error]
 
 #-----------------------------------------------------------------------#
 #
-XSB=../bin/xsb
+XSB=../bin/xsb 
 Prolog = $(XSB) -e "segfault_handler(warn)."
 #
 #-----------------------------------------------------------------------#
