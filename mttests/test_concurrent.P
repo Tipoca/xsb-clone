@@ -14,9 +14,9 @@ correct. */
 :- import xsb_thread_create/2,
 	  xsb_thread_join/2, 
 	  xsb_thread_self/1 from thread.
-:- import xsb_mutex_init/1,
-	  xsb_mutex_lock/1,
-	  xsb_mutex_unlock/1 from thread.
+%:- import xsb_mutex_init/1,
+%	  xsb_mutex_lock/1,
+%	  xsb_mutex_unlock/1 from thread.
 
 :- import mt_srand/0, random_pause/1 from mttestutils.
 :- import numbervars/3 from num_vars.
@@ -36,7 +36,7 @@ test_concurrent_goal(M,File,Goal):-
 	assert(test_thread_number(M)),
 	call_init(Goal),
 	mt_srand,
-	xsb_mutex_init(MUT),
+%	xsb_mutex_init(MUT),
 	make_duplicate_goals(M,test_single(File,Goal,MUT),List),
 	exec_goals(List,Ids),
 	join_list(Ids),
