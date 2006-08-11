@@ -1,0 +1,15 @@
+
+:- import thread_create/2,thread_join/2 from thread.
+:- import mutex_create/1,mutex_destroy/1, with_mutex/2 from mutex_xsb.
+
+test:- 
+	mutex_create(console_mutex),
+	thread_create(use_console,T1),
+	thread_create(use_console,T2),
+	thread_join([T1,T2],Error),
+	mutex_destroy(console_mutex),
+	writeln(return_code(Error)).
+
+use_console:- 
+	with_mutex(console_mutex,(write('hello world'),nl)).
+

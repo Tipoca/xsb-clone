@@ -23,3 +23,5 @@ options=$3
 # the test below uses the C interface and cannot currently be tested
 
 #../gentest.sh "$XEMU $options" serialise "test_serialise(40,_)" $NUM
+
+../seqgentest.sh "$XEMU $options" mutex_test "test." 
