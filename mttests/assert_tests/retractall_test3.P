@@ -1,6 +1,6 @@
 /* tests delay and garbage collecting of tables with multiple active threads.*/
 
-:- import xsb_thread_create/2 from thread.
+:- import xsb_thread_create/2, xsb_thread_join/2 from thread.
 
 :- dynamic p/1.
 :- dynamic s/1.
@@ -11,13 +11,15 @@ initp3:- assert(p(1)),assert(p(2)),assert(p(3)).
 inits3:- assert(s(1)),assert(s(2)),assert(s(3)).
 
 test:- inits3,fail.
-test:- xsb_thread_create(test1,_),fail.
-test:- initp3,fail.
-test:- retractall(p(_)),fail.
-test:- p(X),writeln((1-1,p(X))),fail.
-test:- s(X),writeln((1-1,s(X))),fail.
-test:- gc_dynamic(N),writeln((1-2,gc(N))),fail.
-test.
+test:- xsb_thread_create(test1,ID),
+	(initp3,fail ;
+	 retractall(p(_)),fail ;
+	 p(X),writeln((1-1,p(X))),fail ;
+	 s(X),writeln((1-1,s(X))),fail ;
+	 gc_dynamic(N),writeln((1-2,gc(N))),fail ;
+	 true
+	),
+	xsb_thread_join(ID,_).
 
 test1:- initp3,fail.
 test1:- p(X),retractall(p(_)),writeln((test1-1,p(X))),fail.
