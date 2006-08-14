@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.115 2006/06/20 13:20:48 tswift Exp $
+** $Id: standard.P,v 1.116 2006/07/14 16:57:45 tswift Exp $
 ** 
 */
 
@@ -1034,6 +1034,8 @@ X @>= Y :- X @>= Y.
   '>'(X,Y) :- eval(X, X1), eval(Y, Y1), X1 > Y1.
 '=:='(X,Y) :- eval(X, X1), eval(Y, Y1), X1 =:= Y1.
 '=\='(X,Y) :- eval(X, X1), eval(Y, Y1), X1 =\= Y1.
+
+'?='(X,Y):- (X == Y ; X \= Y),!.
 
 
 			/*****************************/

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.P,v 1.27 2005/08/08 19:37:03 dwarren Exp $
+** $Id: file_op.P,v 1.28 2005/08/16 19:19:10 dwarren Exp $
 ** 
 */
 
@@ -155,6 +155,7 @@ deactivate_op(T, S) :-
 '_$op1'(700,xfx,'>=').
 %'_$op1'(700,xfx,in).		% Not in the Prolog standard (used for domains)
 %'_$op1'(700,xfx,'/=').		% Not in the Prolog standard (used for domains)
+'_$op1'(700,xfx,'?=').
 '_$op1'(661,xfy,'.').		% Not in the Prolog standard /* !! */
 '_$op1'(600,xfy,':').		% As Quintus (Not as in the Prolog standard)
 '_$op1'(500,yfx,'+').
