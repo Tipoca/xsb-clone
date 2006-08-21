@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.32 2006-07-14 16:49:36 tswift Exp $
+** $Id: debug_xsb.c,v 1.33 2006-08-21 10:47:26 kostis Exp $
 ** 
 */
 
@@ -283,7 +283,7 @@ void alt_print_cpf_pred(CPtr cpf,FILE* where)
     fprintf(where,"choicepoint(address(%p),unknown_psc).\n", cpf);
 }
 
-#endif CP_DEBUG
+#endif /* CP_DEBUG */
 
 /*-------------------------------------------*/ 
 
