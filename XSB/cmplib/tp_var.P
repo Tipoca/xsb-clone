@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_var.P,v 1.12 2006-06-21 20:06:54 dwarren Exp $
+** $Id: tp_var.P,v 1.13 2006-08-22 08:38:59 kostis Exp $
 ** 
 */
 
@@ -239,9 +239,11 @@ alloc_reg(_Prag,T,T).
 
 computil_find_reg(VPrag,T,R) :-
 	vprag_use(VPrag, Use),	/* find reg in "use" list that's available */
-	computil_find_reg1(Use,T,R). !.
+	computil_find_reg1(Use,T,R),
+	!.
 computil_find_reg(VPrag,T,R) :-
-	vprag_nouse(VPrag, Nouse), !,
+	vprag_nouse(VPrag, Nouse),
+	!,
 	append(Nouse,T,T1),
 	getreg(T1,R).		/* find available reg not in "nouse" list */
 computil_find_reg(_VPrag,T,R) :- getreg(T,R).
