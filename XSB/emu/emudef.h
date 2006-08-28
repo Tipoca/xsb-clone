@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.59 2006-02-06 20:20:03 tswift Exp $
+** $Id: emudef.h,v 1.60 2006-08-28 13:58:47 tswift Exp $
 ** 
 */
 
@@ -324,8 +324,13 @@ unsigned long dec[8] = {0xffffffff,0xffffffff,0xffffffff,0xffffffff,
   if ( !(asynint_val) & !int_val(cell(interrupt_reg)) ) {   	        \
     lpcreg = (pb)get_ep(PSC);						\
   } else {								\
-    if (asynint_val) {							\
-      if (asynint_val & KEYINT_MARK) {					\
+    if (int_val(cell(interrupt_reg))) {					\
+      synint_proc(CTXTc PSC, MYSIG_ATTV);		                \
+      lpcreg = pcreg;							\
+    }									\
+    else {								\
+      if (asynint_val) {						\
+	if (asynint_val & KEYINT_MARK) {				\
         synint_proc(CTXTc PSC, MYSIG_KEYB);	                      	\
         lpcreg = pcreg;							\
         asynint_val = asynint_val & ~KEYINT_MARK;			\
@@ -348,10 +353,8 @@ unsigned long dec[8] = {0xffffffff,0xffffffff,0xffffffff,0xffffffff,
         lpcreg = (byte *)get_ep(PSC);					\
         asynint_val = 0;		         			\
       }									\
-    } else if (int_val(cell(interrupt_reg))) {				\
-        synint_proc(CTXTc PSC, MYSIG_ATTV);		                \
-        lpcreg = pcreg;							\
     }									\
+  }									\
   }									\
 }
 
