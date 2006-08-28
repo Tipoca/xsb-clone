@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chr_pp.P,v 1.3 2006-02-27 23:37:54 evansbj Exp $
+** $Id: chr_pp.P,v 1.4 2006-08-28 13:44:15 tswift Exp $
 ** 
 */
 
@@ -571,6 +571,8 @@ generate_detach_a_constraint_1_1(CFct / CAty,Mod,Clause) :-
 	),
 	Clause = (Head :- Body).
 
+/* TLS: total is totol number of constraints in module; position is 
+   the index of this constraint. */
 generate_detach_a_constraint_t_p(Total,Position,CFct / CAty ,Mod,Clause) :-
 	concat_atom(['detach_',CFct, (/) ,CAty],Fct),
 	Args = [[Var|Vars],Susp],
