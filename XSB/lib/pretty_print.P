@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pretty_print.P,v 1.5 2005-12-12 18:46:53 dwarren Exp $
+** $Id: pretty_print.P,v 1.6 2006-08-31 13:45:20 tswift Exp $
 ** 
 */
 
@@ -98,10 +98,10 @@ pretty_print1((H :- B)) :-
 pretty_print1(H):-
 	pretty_print2(H,true).
 
-pretty_print2(H,true) :- !, 	replacement_hook(H),write('.'),nl.
-pretty_print2(H,!) :- !, pretty_print3(H,0), write(' :- !').
+pretty_print2(H,true) :- !, 	replacement_hook(H),write(' .'),nl.
+pretty_print2(H,!) :- !, pretty_print3(H,0), write(' :- !.').
 pretty_print2(H,B) :- pretty_print3(H,0), write(' :-'), nl, pretty_print3(B,8),
-	                 writeln('.').
+	                 writeln(' .').
 
 pretty_print3((A,B),Space) :- !,
 	pretty_print3(A,Space),
