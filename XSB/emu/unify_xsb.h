@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify_xsb.h,v 1.7 2005-11-17 21:46:57 dwarren Exp $
+** $Id: unify_xsb.h,v 1.8 2006-09-01 13:12:39 dwarren Exp $
 ** 
 */
 
@@ -117,6 +117,7 @@
     }                                                        \
   {                                                          \
     int arity = get_arity(((Pair)(CPtr)op1)->psc_ptr);       \
+    if (arity == 0) {IFTHEN_SUCCEED;}			     \
     while (--arity)                                          \
       {                                                      \
 	op1 = (Cell)((CPtr)op1+1); op2 = (Cell)((CPtr)op2+1);\
