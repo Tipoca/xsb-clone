@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.28 2006-01-27 20:29:47 tswift Exp $
+** $Id: memory_xsb.h,v 1.29 2006-09-01 13:08:50 dwarren Exp $
 ** 
 */
 
@@ -213,7 +213,7 @@ extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
 
 #define check_glstack_overflow(arity,PCREG,EXTRA)			   \
    if ((pb)top_of_localstk < (pb)top_of_heap + OVERFLOW_MARGIN + EXTRA) {  \
-     if ((pb)top_of_localstk < (pb)top_of_heap) {			   \
+     if ((pb)top_of_localstk < (pb)top_of_heap+256*ZOOM_FACTOR) {	   \
        xsb_basic_abort("\nFatal ERROR:  -- "				   \
 				 "Local Stack clobbered Heap --\n");	   \
      }									   \
@@ -271,13 +271,13 @@ extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
 
 #define check_glstack_overflow(arity,PCREG,EXTRA)			      \
    if ((pb)top_of_localstk < (pb)top_of_heap + OVERFLOW_MARGIN + EXTRA) {     \
-     if ((pb)top_of_localstk < (pb)top_of_heap) {			      \
+     if ((pb)top_of_localstk < (pb)top_of_heap+256*ZOOM_FACTOR) {	      \
        xsb_basic_abort("\nFatal ERROR:  -- "			      	      \
 				 "Local Stack clobbered Heap --\n");	      \
      }									      \
      else {								      \
        if ((pflags[STACK_REALLOC] == FALSE) ||				      \
-	   (glstack_ensure_space(CTXTc EXTRA,arity) != 0)) {			      \
+	   (glstack_ensure_space(CTXTc EXTRA,arity) != 0)) {		      \
 	 xsb_basic_abort(local_global_exception);			      \
        }								      \
      }									      \
