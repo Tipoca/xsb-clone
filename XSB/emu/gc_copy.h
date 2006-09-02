@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_copy.h,v 1.6 2005-01-14 18:31:16 ruim Exp $
+** $Id: gc_copy.h,v 1.7 2006-09-02 19:27:52 tswift Exp $
 ** 
 */
 
@@ -222,7 +222,9 @@ static CPtr copy_heap(CTXTdeclc int marked, CPtr begin_new_h, CPtr end_new_h, in
 	  continue;
 	tr_clear_mark(p-tr_bot);
 #endif
-	q = hp_pointer_from_cell(contents,&tag) ;
+	/* TLS: I'm guessing at the change here from hp_pointer to trail_hp_pointer.
+	   See the reasoning in the documentation of this function. */
+	q = trail_hp_pointer_from_cell(contents,&tag) ;
 	if (!q) continue ;
 	if (h_marked(q-heap_bot)) 
 	  find_and_copy_block(q); 

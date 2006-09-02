@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_slide.h,v 1.11 2006-07-02 18:36:29 tswift Exp $
+** $Id: gc_slide.h,v 1.12 2006-09-02 19:27:52 tswift Exp $
 ** 
 */
 
@@ -122,10 +122,13 @@ static void unchain(CPtr hptr, CPtr destination)
 
 /*----------------------------------------------------------------------*/
 
+int swt_flag = 0;
+
 inline static void swap_with_tag(CPtr p, CPtr q, int tag)
 { /* p points to a cell with contents a tagged pointer
      make *q = p + tag, but maybe shift p
   */
+  if (swt_flag)  printf("swap_with_tag(%p,%p,%d)\n",p,q,tag);
    *p = *q ;
    switch (tag) {
    case XSB_REF:
@@ -287,7 +290,7 @@ static CPtr slide_heap(int num_marked)
 	  continue;
 	tr_clear_mark(p-tr_bot);
 #endif
-	  q = hp_pointer_from_cell(contents,&tag) ;
+	  q = trail_hp_pointer_from_cell(contents,&tag) ;
 	  if (!q) continue ;
 	  if (! h_marked(q-heap_bot)) {
 	    continue ;
