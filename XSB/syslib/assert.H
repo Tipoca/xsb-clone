@@ -19,12 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.H,v 1.23 2005/08/08 17:10:21 dwarren Exp $
+** $Id: assert.H,v 1.24 2006/04/17 20:51:30 tswift Exp $
 ** 
 */
 
 
-:- export assert0/1, assert/1, asserta/1, assertz/1, 
+:- export convert_to_dyna/3,/* incremental evaluation */ assert0/1, assert/1, asserta/1, assertz/1, 
 	  asserti/2, assertai/2, assertzi/2, assert/3.
 :- export retract/1, retractall/1, abolish/1, abolish/2. 
 :- export retract0/1.	% used in standard.P (for multifile)

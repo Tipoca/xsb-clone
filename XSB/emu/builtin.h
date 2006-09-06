@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.73 2006-05-22 20:47:45 tswift Exp $
+** $Id: builtin.h,v 1.74 2006-09-06 05:15:26 diptikalyan Exp $
 ** 
 */
 
@@ -112,6 +112,9 @@
 #define CONSET_TERM	         76
 
 #define STORAGE_BUILTIN	       	 77
+
+/* incremental evaluation */
+#define INCR_EVAL_BUILTIN        78
 
 #define GET_DATE                 80
 #define STAT_WALLTIME            81

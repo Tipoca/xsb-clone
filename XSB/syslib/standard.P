@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.116 2006/07/14 16:57:45 tswift Exp $
+** $Id: standard.P,v 1.117 2006/08/14 21:28:46 tswift Exp $
 ** 
 */
 
@@ -71,7 +71,8 @@ see(File) :-
 	open(File,read,Str),
 	set_input(Str).
 
-seeing(Str) :- stat_flag(CURRENT_INPUT, Str).
+seeing(Str) :- 
+	stat_flag(CURRENT_INPUT, Str).
 
 seen :- stat_flag(CURRENT_INPUT, Str),
 	(Str > 6 -> close(Str) ; true),
@@ -824,6 +825,42 @@ table(Ps) :-
 	),
 %%	dynamic(Ps1),		% implies dynamic....
 	add_table(Ps1).
+
+
+
+
+
+/* for incremental evaluation: add incremental tabled declaration */
+
+
+incr(Ps) :- 
+	check_nonvar(Ps,(incr)/1,1),
+	(Ps=P/S
+	 ->	nonvar(P),nonvar(S);
+		true	
+	),
+	add_incr_table(Ps).
+
+incrdynamic(Ps) :- 
+	check_nonvar(Ps,(incrdynamic)/1,1),
+	(Ps=P/S
+	 ->	nonvar(P),nonvar(S);
+		true	
+	),
+	add_incr_dynamic(Ps).
+
+
+opaque(Ps) :- 
+	check_nonvar(Ps,(opaque)/1,1),
+	(Ps=P/S
+	 ->	nonvar(P),nonvar(S);
+		true	
+	),
+	add_opaque(Ps).
+
+
+
+
 
 			/***********************/
 			/*  LOGIC and CONTROL  */

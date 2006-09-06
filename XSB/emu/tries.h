@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.40 2006-03-24 16:40:29 tswift Exp $
+** $Id: tries.h,v 1.41 2006-09-06 05:15:27 diptikalyan Exp $
 ** 
 */
 
@@ -508,6 +508,59 @@ struct tstCPStack_t {
   tstChoicePointFrame *ceiling; /* overflow pointer: points beyond array end */
   tstChoicePointFrame base[TST_CPSTACK_SIZE];
 };
+
+
+/*=========================================================================*/
+
+/* Called-by Graph: 
+   additional structures to handle incremental evaluation  
+*/
+
+
+typedef struct callnodetag* callnodeptr;
+typedef struct _calllist* calllistptr;
+typedef struct _call2list* call2listptr;
+typedef struct outedge* outedgeptr;
+
+
+typedef struct outedge{
+	struct hashtable* hasht; 
+	callnodeptr callnode;
+}OUTEDGE;
+
+typedef struct callnodetag{
+  outedgeptr  outedges;
+  calllistptr inedges; 
+  void* goal;
+  unsigned int no_of_answers;
+  unsigned int deleted:1, changed:1,falsecount:15,outcount:15;
+  callnodeptr prev_call;
+  ALNptr aln; 
+  int id; 
+}CALL_NODE;
+
+struct key{
+	int goal;
+}KEY;
+
+
+typedef struct _calllist{
+  union{
+    callnodeptr item;  /* when used in list as in nq */
+    outedgeptr prevnode; /* when used in inedges */
+    call2listptr item2; /* when used in abolishing*/
+  };
+  calllistptr next;
+}CALLLIST;
+
+
+typedef struct _call2list{
+  callnodeptr item;
+  call2listptr next;
+  call2listptr prev;
+}CALL2LIST;
+
+
 
 /* Prasad's changes */
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.31 2006-04-10 13:06:25 dwarren Exp $
+** $Id: psc_xsb.c,v 1.32 2006-09-06 05:15:27 diptikalyan Exp $
 ** 
 */
 
@@ -164,11 +164,14 @@ TIFptr *get_tip_or_tdisp(Psc temp)
 	if (temp1 != 0) {
 	  switch (*(pb)temp1) {
 	    case tabletry:
+	    case tabletrysinglenoanswers: /* incremental evaluation */
 	    case tabletrysingle:
 	      return (TIFptr *) (temp1+2) ;
 	    case test_heap:
 	      if (*(pb)(temp1+2) == tabletry ||
-		  *(pb)(temp1+2) == tabletrysingle)
+		  *(pb)(temp1+2) == tabletrysingle  ||
+		  *(pb)(temp1+2) == tabletrysinglenoanswers  
+		  )		
 		return (TIFptr *) (temp1+4) ;
 	      else return (TIFptr *)NULL;
 	      break;
@@ -176,7 +179,9 @@ TIFptr *get_tip_or_tdisp(Psc temp)
 	    case switchonbound:
 	    case switchonterm:
 	      if (  *(pb) (temp1+3) == tabletry 
-	        ||  *(pb) (temp1+3) == tabletrysingle) 
+	        ||  *(pb) (temp1+3) == tabletrysingle
+		    ||  *(pb) (temp1+3) == tabletrysinglenoanswers
+		    ) 
 		return (TIFptr *) (temp1+5) ;
 	      else return (TIFptr *) NULL;
 	    default:
@@ -206,7 +211,7 @@ TIFptr get_tip(CTXTdeclc Psc psc) {
     if ((get_type(psc) == T_DYNA) &&
 	(*(pb)(temp1) ==  switchonthread)) {
       temp1 = dynpredep_to_prortb(CTXTc temp1);
-      if (temp1 && (*(pb)temp1 == tabletrysingle)) 
+      if (temp1 && (*(pb)temp1 == tabletrysingle) ) 
 	return *(TIFptr *)(temp1+2);
       else return (TIFptr) NULL;
     } else {

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.98 2006-07-14 16:49:36 tswift Exp $
+** $Id: init_xsb.c,v 1.99 2006-09-06 05:15:27 diptikalyan Exp $
 ** 
 */
 
@@ -67,6 +67,8 @@
 #include "varstring_xsb.h"
 #include "struct_manager.h"
 #include "trie_internals.h"
+#include "call_graph_xsb.h" /* for incremental evaluation*/
+#include "incr_xsb.h" /* for incremental evaluation */
 /*-----------------------------------------------------------------------*/
 
 /* Sizes of the Data Regions in K-byte blocks
@@ -1137,6 +1139,9 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   reset_freeze_registers;
   openreg = ((CPtr) complstack.high);
   delayreg = NULL;
+
+  /* for incremenatal evaluation */
+  affected = eneetq(); 
 
   /* Place a base choice point frame on the CP Stack: this choice point
      is needed for cut -- make sure you initialize all its fields.

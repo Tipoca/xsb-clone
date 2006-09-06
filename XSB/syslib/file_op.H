@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.H,v 1.10 2005/08/08 17:10:31 dwarren Exp $
+** $Id: file_op.H,v 1.11 2005/08/08 19:37:02 dwarren Exp $
 ** 
 */
 
@@ -28,17 +28,19 @@
 :- export add_index/3, retract_index/1, add_trie_index/1, retract_trie_index/1, 
   '_$index'/3 , '_$trie_asserted'/1.
 :- export add_table/1, retract_table/1.   %%, '_$table'/1.
+:- export add_incr_table/1, add_incr_dynamic/1, add_opaque/1. %% incremental evaluation 
 :- export mpa_to_skel/2.
 :- export force_file_op_loaded/0.
 
 :- import default_assert_size/1 from config.
 :- import integer/1, functor/3, atom/1 from standard.
-:- import assert/1, assertai/2, retract/1, retractall/1, (dynamic)/1 from assert.
+   :- import convert_to_dyna/3, /*incremental evaluation */ assert/1, assertai/2, retract/1, retractall/1, (dynamic)/1 from assert.
 
 :- import conpsc/2, psc_type/2, term_new/2, psc_insert/4, 
 	term_psc/2, psc_set_tabled/2 from machine.
 :- import instantiation_error/2 from error_handler.
 
+ :- import psc_set_incr/2 from increval. /* incremental */
 :- index '_$op1'/3-3.
 
 /*
