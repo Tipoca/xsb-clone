@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.32 2006-09-06 05:15:27 diptikalyan Exp $
+** $Id: psc_xsb.c,v 1.33 2006-09-06 15:11:27 dwarren Exp $
 ** 
 */
 
@@ -124,6 +124,7 @@ static Psc make_psc_rec(char *name, char arity) {
   //  set_spy(temp, 0);
   //  set_shared(temp, 0);
   //  set_tabled(temp, 0);
+  temp->incr = 0;
   set_arity(temp, arity);
   set_data(temp, 0);
   set_ep(temp,(byte *)&(temp->load_inst));
