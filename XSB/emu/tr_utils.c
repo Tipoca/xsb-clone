@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.117 2006/08/11 16:00:47 dwarren Exp $
+** $Id: tr_utils.c,v 1.118 2006/09/06 05:15:27 diptikalyan Exp $
 ** 
 */
 
@@ -303,10 +303,10 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
 
     /* incremental evaluation: check introduced as because of fact
        predicates  */
-
+    /*
     if(IsNonNULL(sf) && IsNULL(sf->callnode)) 
       return NULL;
-      
+    */
     /* incremental evaluation end */
 
     if ( IsProperlySubsumed(sf) )
