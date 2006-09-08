@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.52 2006-06-21 20:17:11 dwarren Exp $
+** $Id: heap_xsb.c,v 1.53 2006-09-08 19:59:47 dwarren Exp $
 ** 
 */
 
@@ -325,6 +325,8 @@ static double total_time_gc = 0 ;
 static unsigned long total_collected = 0 ;
 static int num_gc = 0 ;
 #endif
+
+static int num_sgc = 0 ;
 
 /*----------------------------------------------------------------------*/
 /* marker bits in different areas.                                      */
@@ -777,8 +779,9 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 #ifdef MULTI_THREAD
   if (flags[NUM_THREADS] == 1) {
 #endif
-    if (gc_strings) {
+    if (gc_strings && (flags[STRING_GARBAGE_COLLECT] == 1)) {
       //      long beg_string_space_size = pspacesize[STRING_SPACE];
+      num_sgc++;
       begin_stringtime = cpu_time();
       mark_nonheap_strings(CTXT);
       free_unused_strings();

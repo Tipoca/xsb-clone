@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.99 2006-09-06 05:15:27 diptikalyan Exp $
+** $Id: init_xsb.c,v 1.100 2006-09-08 19:59:47 dwarren Exp $
 ** 
 */
 
@@ -221,6 +221,7 @@ static void init_flags(CTXTdecl)
   flags[NUM_THREADS] = 1;          /* 1 thread will be run at start */
   pflags[BACKTRACE] = 1;           /* Backtrace on error by default */
   pflags[CLAUSE_GARBAGE_COLLECT] = 1;           /* Clause GC on by default */
+  flags[STRING_GARBAGE_COLLECT] = 1;           /* String GC on by default */
 }
 
 /*==========================================================================*/

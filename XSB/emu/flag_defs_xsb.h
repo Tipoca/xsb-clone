@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.18 2006-07-08 18:49:11 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.19 2006-09-08 19:59:47 dwarren Exp $
 ** 
 */
 
@@ -47,7 +47,7 @@
 #define PROFFLAG        12
 #define TABLING_METHOD	13      /* Default method used to evaluate tabled */
 #define CLAUSE_GARBAGE_COLLECT 14 /* Turn clause gc on or off */
-/* Flags 14-24 are open to use */
+/* Flags 15-24 are open to use */
 
 /*
  *  Flags 25-41 are reserved for Interrupt Handler PSCs.
@@ -117,6 +117,7 @@ interrupt flag
 #define ORA_INPUTARRAY_WIDTH      68   /* max size of each input value    */
 #define ORA_OUTPUTARRAY_LENGTH    69   /* max # simultaneous output tuples */
 
+#define STRING_GARBAGE_COLLECT    70 /* Turn string gc on or off */
 
 
 #define MAX_FLAGS		75
