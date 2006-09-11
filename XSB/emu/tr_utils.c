@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.118 2006/09/06 05:15:27 diptikalyan Exp $
+** $Id: tr_utils.c,v 1.119 2006/09/06 16:05:05 diptikalyan Exp $
 ** 
 */
 
@@ -285,6 +285,8 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
     return NULL;
   }
 
+  
+
   tif = get_tip(CTXTc psc);
   if ( IsNULL(tif) )
     xsb_abort("Predicate %s/%d is not tabled", get_name(psc), get_arity(psc));
@@ -303,10 +305,10 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
 
     /* incremental evaluation: check introduced as because of fact
        predicates  */
-    /*
-    if(IsNonNULL(sf) && IsNULL(sf->callnode)) 
+    
+    if(IsNonNULL(sf) && get_incr(psc) && IsNULL(sf->callnode)) 
       return NULL;
-    */
+    
     /* incremental evaluation end */
 
     if ( IsProperlySubsumed(sf) )
