@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <alloca.h>
+#include <stdlib.h>
 #include <math.h>
 
 #include "xsb_config.h"
@@ -47,7 +47,7 @@ DllExport int call_conv change_char(CTXTdecl)
    char *c, *str_out;
 
 	str_in = (char *) extern_ptoc_string(1);
-	str_out = (char *) alloca(strlen(str_in)+1);
+	str_out = (char *) calloc(strlen(str_in)+1, sizeof(char));
 	strcpy(str_out, str_in);
 	pos = extern_ptoc_int(2);
 	c = (char *) extern_ptoc_string(3);
@@ -62,12 +62,13 @@ DllExport int call_conv change_char(CTXTdecl)
 	 */
 
 	extern_ctop_string(CTXTc 4, str_out);
+	free(str_out);
 	// extern_ctop_string(4, (char *) string_find(str_out,4));
 
 	return TRUE;
 }
 
-int my_sqrt(CTXTdecl)
+DllExport int call_conv my_sqrt(CTXTdecl)
 {
    int i = extern_ptoc_int(1);
 
