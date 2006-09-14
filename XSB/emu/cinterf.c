@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.66 2006-05-05 21:38:02 dwarren Exp $
+** $Id: cinterf.c,v 1.67 2006-09-14 16:13:55 crojo Exp $
 ** 
 */
 
@@ -1276,6 +1276,36 @@ DllExport int call_conv xsb_init_string(CTXTdeclc char *cmdline_param) {
 	}
 	argv[argc] = 0;
 	return xsb_init(CTXTc argc,argv);
+}
+
+/************************************************************************/
+/*                                                                      */
+/* pipe_xsb_stdin() splits XSB's stdin stream into a read end and a     */
+/* write end. The read end takes the place of the original stdin, and   */
+/* the write end is accessable through a call to write_to_xsb_stdin,    */
+/* another c interface routine. These two calls can be used to send     */
+/* input to a thread running xsb.dll code that is blocking on input,    */
+/* such as the top-level interpreter or trace debugger.                 */
+/*                                                                      */
+/************************************************************************/
+DllExport int call_conv pipe_xsb_stdin() {
+    extern int pipe_input_stream();
+    return pipe_input_stream();
+}
+
+/************************************************************************/
+/*                                                                      */
+/* writeln_to_xsb_stdin(char *) is to be called after a call to           */
+/* pipe_xsb_stdin, and writes a string of characters to the write end   */
+/* of xsb's piped stdin stream.                                         */
+/*                                                                      */
+/************************************************************************/
+DllExport int call_conv writeln_to_xsb_stdin(char * input){
+    extern FILE * input_write_stream;
+    fprintf(stdout, "\n"); 
+    fprintf(input_write_stream, "%s\n", input); 
+    fflush(input_write_stream);
+    return 0;
 }
 
 /************************************************************************/
