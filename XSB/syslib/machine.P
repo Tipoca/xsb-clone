@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.84 2006/04/27 00:55:09 tswift Exp $
+** $Id: machine.P,v 1.86 2006/09/13 17:10:52 dwarren Exp $
 ** 
 */
 
@@ -243,6 +243,9 @@ attv_unify(Var, Value) :-
 	->  '_$attv_unify'(Var,Value)
 	;   Var = Value
 	).
+
+/* TLS: an attribute list has the form [Module1,Value1,Module2,Value2,...]
+   where there is a unique value for each module */
 
 put_attr(Var,Mod,Val) :-
       ( get_attributes(Var,Atts) ->
