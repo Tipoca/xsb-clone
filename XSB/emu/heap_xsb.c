@@ -19,10 +19,9 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.53 2006-09-08 19:59:47 dwarren Exp $
+** $Id: heap_xsb.c,v 1.54 2006-09-20 13:52:38 tswift Exp $
 ** 
 */
-
 
 /*************************************************************************
  * This module provides:
@@ -209,7 +208,9 @@ static xsbBool slide;
 static const int fragmentation_only = 0;
 #endif
 		      
-/* choose to do early reset or not */
+/* choose to do early reset or not.  TLS: I doubt that EARLY_RESET
+   will work with the pre-image trail needed for attributed
+   variables */
 /* #define EARLY_RESET 1 */
 
 
