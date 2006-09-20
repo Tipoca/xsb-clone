@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.41 2006-09-06 05:15:27 diptikalyan Exp $
+** $Id: tries.h,v 1.42 2006-09-20 15:01:25 tswift Exp $
 ** 
 */
 
@@ -539,9 +539,9 @@ typedef struct callnodetag{
   int id; 
 }CALL_NODE;
 
-struct key{
+typedef struct key{
 	int goal;
-}KEY;
+} KEY;
 
 
 typedef struct _calllist{
