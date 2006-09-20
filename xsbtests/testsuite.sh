@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.28 2006-07-15 17:50:45 tswift Exp $
+## $Id: testsuite.sh,v 1.29 2006-09-20 14:56:54 tswift Exp $
 ## 
 ##
 
@@ -262,6 +262,7 @@ $GREP "fatal" $LOG_FILE >> $RES_FILE
 $GREP "syntax error" $LOG_FILE >> $RES_FILE
 $GREP "cannot find" $LOG_FILE >> $RES_FILE
 $GREP "predicate undefined" $LOG_FILE >> $RES_FILE
+$GREP "Memory violation" $LOG_FILE >> $RES_FILE
 
 echo "-----------------------------------------"
 

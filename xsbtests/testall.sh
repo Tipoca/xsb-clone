@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.16 2002-10-18 06:41:03 kifer Exp $
+## $Id: testall.sh,v 1.17 2006-09-20 14:56:54 tswift Exp $
 ## 
 ##
 
@@ -89,7 +89,8 @@ member ()
 # what about compiler_tests?
 default_testlist="basic_tests prolog_tests retract_tests \
 	  table_tests ptq neg_tests sem_tests delay_tests \
-	  wfs_tests ai_tests attv_tests sub_tests io_tests regmatch_tests"
+	  wfs_tests ai_tests attv_tests constraint_tests \
+          sub_tests io_tests regmatch_tests"
 
 if test -z "$only_tests"; then
     testlist="$default_testlist $added_tests"
