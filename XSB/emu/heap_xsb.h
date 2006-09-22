@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.h,v 1.13 2006-04-27 21:08:47 tswift Exp $
+** $Id: heap_xsb.h,v 1.14 2006-09-22 23:41:26 tswift Exp $
 ** 
 */
 
@@ -58,6 +58,7 @@ extern int  mark_heap(CTXTdeclc int,int *);
 extern xsbBool glstack_ensure_space(CTXTdeclc int,int);
 extern xsbBool glstack_realloc(CTXTdeclc int,int);
 extern char *string_find_safe(char *str);
+extern void initialize_glstack(CPtr, CPtr);
 
 extern void print_cp(CTXTdeclc int);
 extern void print_tr(CTXTdeclc int);

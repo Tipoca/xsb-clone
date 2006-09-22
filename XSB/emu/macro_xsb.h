@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.49 2006-09-06 05:15:27 diptikalyan Exp $
+** $Id: macro_xsb.h,v 1.50 2006-09-22 23:41:26 tswift Exp $
 ** 
 */
 
@@ -565,18 +565,16 @@ struct completion_stack_frame {
 #define prev_compl_frame(b)	(((CPtr)(b))+COMPLFRAMESIZE)
 #define next_compl_frame(b)	(((CPtr)(b))-COMPLFRAMESIZE)
 
-
 #define adjust_level(CS_FRAME) {					\
   int new_level = compl_level(CS_FRAME);				\
   if ( new_level < compl_level(openreg) ) {				\
     CPtr csf = CS_FRAME;						\
-    while ( (compl_level(csf) >= new_level) && (csf >= openreg) ) {	\
+    while ( (csf >= openreg) && (compl_level(csf) >= new_level) ) {	\
       compl_level(csf) = new_level;					\
       csf = next_compl_frame(csf);					\
     }									\
   }									\
 }
-
 
 /*
  *  The overflow test MUST be placed after the initialization of the
