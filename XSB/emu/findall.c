@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.34 2006-09-01 13:12:39 dwarren Exp $
+** $Id: findall.c,v 1.35 2006-09-25 15:53:04 dwarren Exp $
 ** 
 */
 
@@ -76,6 +76,11 @@ extern int findall_init_c(CTXTdecl);
 /* malloc a new chunck and link it in in the current findall */
 int get_more_chunk(CTXTdecl)
 { CPtr newchunk ;
+
+  if (!current_findall) 
+    /* set remainder of "full" buffer to 0 so string gc doesn't access uninitted space */
+    while (current_findall->top_of_chunk < current_findall->current_chunk+FINDALL_CHUNCK_SIZE)
+      *(current_findall->top_of_chunk++) = (Cell)NULL;
 
   if (!(newchunk = (CPtr)mem_alloc(FINDALL_CHUNCK_SIZE * sizeof(Cell),FINDALL_SPACE)))
     xsb_exit("get_more_chunk failed");
