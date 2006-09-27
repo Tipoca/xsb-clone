@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.102 2006-09-22 23:41:26 tswift Exp $
+** $Id: init_xsb.c,v 1.103 2006-09-27 22:03:43 tswift Exp $
 ** 
 */
 
@@ -965,7 +965,7 @@ void init_thread_structures(CTXTdecl)
   total_collected = 0;
 
   token_too_long_warning = 1;
-
+  IGRhead = NULL;
   /***************/
 
 /* This is here just for the first thread - others initialize its xsb tid
@@ -973,6 +973,7 @@ void init_thread_structures(CTXTdecl)
   th->tid = 0 ;
 #ifdef SHARED_COMPL_TABLES
   th->waiting_for_thread = NULL ;
+  th->deadlock_brk_leader = FALSE;
 #endif
 #ifdef CONC_COMPL
   pthread_cond_init( &th->cond_var, NULL );

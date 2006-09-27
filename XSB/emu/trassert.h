@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trassert.h,v 1.5 2005-01-14 18:31:37 ruim Exp $
+** $Id: trassert.h,v 1.6 2006-09-27 22:03:43 tswift Exp $
 ** 
 */
 
@@ -29,10 +29,18 @@ extern int trie_retract(CTXTdecl);
 extern int trie_retract_safe(CTXTdecl);
 
 
-#define switch_to_trie_assert {		\
-   smBTN = &smAssertBTN;		\
-   smBTHT = &smAssertBTHT;		\
+#ifdef MULTI_THREAD
+#define switch_to_trie_assert {\
+   threads_current_sm = PRIVATE_SM;\
+   smBTN = &smAssertBTN;\
+   smBTHT = &smAssertBTHT;\
 }
+#else
+#define switch_to_trie_assert {\
+   smBTN = &smAssertBTN;\
+   smBTHT = &smAssertBTHT;\
+}
+#endif
 
 #define switch_from_trie_assert {	\
    smBTN = &smTableBTN;			\
