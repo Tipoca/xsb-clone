@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.35 2006-09-25 15:53:04 dwarren Exp $
+** $Id: findall.c,v 1.36 2006-09-28 15:50:14 dwarren Exp $
 ** 
 */
 
@@ -82,7 +82,7 @@ int get_more_chunk(CTXTdecl)
     while (current_findall->top_of_chunk < current_findall->current_chunk+FINDALL_CHUNCK_SIZE)
       *(current_findall->top_of_chunk++) = (Cell)NULL;
 
-  if (!(newchunk = (CPtr)mem_alloc(FINDALL_CHUNCK_SIZE * sizeof(Cell),FINDALL_SPACE)))
+  if (!(newchunk = (CPtr)mem_calloc(FINDALL_CHUNCK_SIZE, sizeof(Cell),FINDALL_SPACE)))
     xsb_exit("get_more_chunk failed");
 
   *newchunk = 0 ;
@@ -127,7 +127,7 @@ int findall_init_c(CTXTdecl)
   thisfree = nextfree;
 	/* no checking - no trailing - just use findall_init correct :-) */
   p = findall_solutions + nextfree ;
-  if (!(w = (CPtr)mem_alloc(FINDALL_CHUNCK_SIZE * sizeof(Cell),FINDALL_SPACE)))
+  if (!(w = (CPtr)mem_calloc(FINDALL_CHUNCK_SIZE, sizeof(Cell),FINDALL_SPACE)))
 	xsb_abort("[FINDALL] Not enough memory");
 
   *w = 0 ;
