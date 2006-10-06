@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.29 2006-09-01 13:08:50 dwarren Exp $
+** $Id: memory_xsb.h,v 1.30 2006-10-06 20:04:28 dwarren Exp $
 ** 
 */
 
@@ -134,9 +134,10 @@ extern System_Stack pdl,            /* PDL                        */
 #define LEAK_SPACE		15
 #define SPECIAL_SPACE		16
 #define OTHER_SPACE		17
+#define INCR_TABLE_SPACE	18
 // VARSTRING_SPACE??  some other to thread?
 
-#define NUM_CATS_SPACE		18
+#define NUM_CATS_SPACE		19
 
 /* Program and Symbol Tables Space (in Bytes)
    ------------------------------------------ */
