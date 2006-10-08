@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.46 2006-05-22 15:40:04 dwarren Exp $
+** $Id: io_builtins_xsb_i.h,v 1.47 2006-10-08 23:40:39 tswift Exp $
 ** 
 */
 
@@ -497,7 +497,7 @@ inline static xsbBool file_function(CTXTdecl)
     else if (isstring(pterm))
       addr = string_val(pterm);
     else {
-      xsb_abort("[FILE_WRITE_LINE] Outmput arg must be an atom or a char list");
+      xsb_abort("[FILE_WRITE_LINE] Output arg must be an atom or a char list");
       addr = NULL;
     }
     offset = ptoc_int(CTXTc 4);
