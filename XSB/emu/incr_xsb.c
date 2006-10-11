@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.1 2006-09-06 05:15:27 diptikalyan Exp $
+** $Id: incr_xsb.c,v 1.2 2006-10-11 21:06:22 dwarren Exp $
 ** 
 */
 
