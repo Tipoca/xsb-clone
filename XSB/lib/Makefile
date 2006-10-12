@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.51 2006-08-14 21:34:19 tswift Exp $
+## $Id: Makefile,v 1.52 2006-10-12 23:30:28 tswift Exp $
 ## 
 ##
 
@@ -28,7 +28,7 @@ OBJEXT=.xwam
 ALL = 	aggregs${OBJEXT} array${OBJEXT} array1${OBJEXT} assoc_xsb${OBJEXT} \
 	basic_props${OBJEXT} lists${OBJEXT} constraintLib${OBJEXT} \
 	directry${OBJEXT} foreign${OBJEXT} format${OBJEXT} \
-	intern${OBJEXT} mttestutils${OBJEXT} mutex_xsb${OBJEXT} \
+	intern${OBJEXT} iso8601${OBJEXT} mttestutils${OBJEXT} mutex_xsb${OBJEXT} \
 	obsolete${OBJEXT} odbc_call${OBJEXT} \
 	ordsets${OBJEXT} ora_call${OBJEXT} \
 	packaging${OBJEXT} random${OBJEXT} scrptutl${OBJEXT} \
