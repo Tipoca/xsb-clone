@@ -14,3 +14,4 @@ opts=$2
 
 ../gentest.sh "$XEMU $opts" test_constraintLib "test."
 ../gentest.sh "$XEMU $opts" timetest "test."
+../gentest.sh "$XEMU $opts" gctest "test."
