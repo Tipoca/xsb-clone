@@ -7,7 +7,7 @@
 %%%% TEST ASSERTAI!
 
 test :- 
-	test_0a,
+	test_0a,  %testretract0.
 	test_a,
 	test_b,
 	test_c,
@@ -15,11 +15,11 @@ test :-
 	test_r,
 %	test_nr,
 	test_cm,
-	test0,
+	test0,  %testretract1.
 	test0a,
 	test1,
 	test2,
-	test5,
+	test5,  %testretract3
 	test6,
 	test7,
 	test8,
