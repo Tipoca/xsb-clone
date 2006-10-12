@@ -19,13 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.50 2006-06-11 21:41:56 tswift Exp $
+** $Id: foreign.P,v 1.51 2006-10-12 23:33:15 tswift Exp $
 ** 
 */
 
 :- compiler_options([xpp_on]).
 
-%%#define FOREIGN_DEBUG
+#define FOREIGN_DEBUG
 
 #include "flag_defs_xsb.h"
 #include "psc_defs.h"
