@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.103 2006-09-27 22:03:43 tswift Exp $
+** $Id: init_xsb.c,v 1.104 2006-10-18 20:42:26 dwarren Exp $
 ** 
 */
 
@@ -966,6 +966,12 @@ void init_thread_structures(CTXTdecl)
 
   token_too_long_warning = 1;
   IGRhead = NULL;
+
+  {int i;
+    for (i=0; i<MAX_BIND_VALS; i++) {
+      term_string[i] = NULL;
+    }
+  }
   /***************/
 
 /* This is here just for the first thread - others initialize its xsb tid
