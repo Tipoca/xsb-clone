@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.143 2006-09-06 05:15:26 diptikalyan Exp $
+** $Id: emuloop.c,v 1.144 2006-10-25 10:46:38 ruim Exp $
 ** 
 */
 
@@ -1725,7 +1725,7 @@ contcase:     /* the main loop */
     Op1(get_xxxl);
     ADVANCE_PC(size_xxxX);
 #ifdef MULTI_THREAD
-    fp = op1;
+    fp = (int(*)())op1;
     if (fp(CTXT))  /* call foreign function */
       lpcreg = cpreg;
     else Fail1;
