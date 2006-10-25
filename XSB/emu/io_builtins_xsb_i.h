@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.48 2006-10-25 15:35:03 ruim Exp $
+** $Id: io_builtins_xsb_i.h,v 1.49 2006-10-25 17:53:39 ruim Exp $
 ** 
 */
 
@@ -289,6 +289,7 @@ inline static xsbBool file_function(CTXTdecl)
       int rtrn; 
       io_port = ptoc_int(CTXTc 2);
       if (io_port < 0) {
+	CHECK_IOS_OWNER(io_port);
 	strclose(io_port);
       }
       else {
