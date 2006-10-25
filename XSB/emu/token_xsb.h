@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.h,v 1.6 2006-05-22 15:40:04 dwarren Exp $
+** $Id: token_xsb.h,v 1.7 2006-10-25 15:35:04 ruim Exp $
 ** 
 */
 
@@ -28,7 +28,6 @@
 
 #include "token_defs_xsb.h"
 
- 
 #define strgetc(p) (--(p)->strcnt>=0? ((int)*(p)->strptr++): -1)
 #define strpeekc(p) ((p)->strcnt>=0? ((int)*(p)->strptr): -1)
 
@@ -38,6 +37,9 @@ struct strbuf {
   int strcnt;
   char *strptr;
   char *strbase;
+#ifdef MULTI_THREAD
+  int owner;
+#endif
 };
 
 #define STRFILE struct strbuf
