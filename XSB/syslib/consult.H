@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.40 2006/06/11 21:47:45 tswift Exp $
+** $Id: consult.H,v 1.42 2006/10/06 21:24:34 dwarren Exp $
 ** 
 */
 
@@ -37,6 +37,7 @@
           read_canonical/1,read_canonical/2,
           if_file_loaded/1,
           (thread_shared)/1,
+          (thread_private)/1,
 	  cvt_canonical/2.
 
 :- local load_dyn_retracted/5, load_dyn_trie_retracted/1,
@@ -65,7 +66,7 @@
 	  assert_code_to_buff/1, assert_buff_to_clref/6,
 	  conpsc/2, psc_type/2, psc_name/2, slash/1, psc_arity/2, 
 	  existing_file_extension/2, almost_search_module/5, db_get_prref/2,
-	  term_psc/2, psc_set_shared/2
+	  term_psc/2, psc_set_shared/2, psc_set_private/2
      from machine.
 :- import get_p_mod/3, change_multifile_directive/3, open_or_xpp_file/2,
 	  '_$multifile'/1, '_$multifile1'/1,
