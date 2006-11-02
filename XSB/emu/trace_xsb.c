@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.22 2006/01/13 23:56:58 tswift Exp $
+** $Id: trace_xsb.c,v 1.26 2006/10/18 20:42:27 dwarren Exp $
 ** 
 */
 
@@ -43,6 +43,7 @@
 #include "heap_xsb.h"
 #include "thread_xsb.h"
 #include "trace_xsb.h"
+#include "deadlock.h"
 
 /*======================================================================*/
 /* Process-level information: keep this global */
@@ -484,6 +485,10 @@ void total_stat(CTXTdeclc double elapstime) {
     printf("\n");
   }
 
+#ifdef SHARED_COMPL_TABLES
+  printf("%ld deadlocks have occured\n\n", num_deadlocks );
+#endif
+
   printf("%ld active user thread%s.\n",flags[NUM_THREADS],
 	 (flags[NUM_THREADS]>1?"s":""));
 
@@ -515,6 +520,9 @@ void perproc_reset_stat(void)
    ans_chk_ins = ans_inserts = 0;
    subg_chk_ins = subg_inserts = 0;
    time_start = cpu_time();
+#ifdef SHARED_COMPL_TABLES
+   num_deadlocks = 0;
+#endif
 }
 
 #endif

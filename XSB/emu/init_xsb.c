@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.105 2006-10-25 15:35:02 ruim Exp $
+** $Id: init_xsb.c,v 1.106 2006-11-02 02:59:44 ruim Exp $
 ** 
 */
 
@@ -70,6 +70,7 @@
 #include "trie_internals.h"
 #include "call_graph_xsb.h" /* for incremental evaluation*/
 #include "incr_xsb.h" /* for incremental evaluation */
+#include "deadlock.h"
 /*-----------------------------------------------------------------------*/
 
 /* Sizes of the Data Regions in K-byte blocks
@@ -436,6 +437,9 @@ char *init_para(CTXTdeclc int argc, char *argv[])
 #ifdef MULTI_THREAD
   init_system_mutexes() ;
   init_system_threads(th) ;
+#endif
+#ifdef SHARED_COMPL_TABLES
+  num_deadlocks = 0;
 #endif
 
   init_open_files();
