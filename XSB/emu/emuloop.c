@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.144 2006-10-25 10:46:38 ruim Exp $
+** $Id: emuloop.c,v 1.145 2006-11-04 12:41:26 ruim Exp $
 ** 
 */
 
@@ -2294,7 +2294,7 @@ DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
      setbuf(stdout, NULL);
      startup_file = init_para(CTXTc argc, argv);	/* init parameters */
 
-     init_machine(CTXTc (int)NULL,(int)NULL,(int)NULL,(int)NULL);	/* init space, regs, stacks */
+     init_machine(CTXTc 0, 0, 0, 0);	/* init space, regs, stacks */
      init_inst_table();		/* init table of instruction types */
      init_symbols();		/* preset a few symbols in PSC table */
      init_interrupt();		/* catch ^C interrupt signal */
