@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.55 2006-09-22 23:41:26 tswift Exp $
+** $Id: heap_xsb.c,v 1.56 2006-11-04 00:52:59 ruim Exp $
 ** 
 */
 
@@ -394,7 +394,7 @@ void initialize_glstack(CPtr from, CPtr to)
 {
   CPtr p = (CPtr) from;
   while (p <= (CPtr) to) {
-    *p = (CPtr) 0;
+    *p = 0;
     p++;
   }
 }

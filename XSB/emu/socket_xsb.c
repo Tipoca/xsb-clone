@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.36 2006-10-23 15:26:25 ruim Exp $
+** $Id: socket_xsb.c,v 1.37 2006-11-04 00:53:00 ruim Exp $
 ** 
 */
 
@@ -424,8 +424,8 @@ xsbBool xsb_socket_request(CTXTdecl)
      SOCKADDR_IN socket_addr;
      struct linger sock_linger_opt;
      int rc;
-     char *message_buffer;
-     unsigned long msg_len;
+     char *message_buffer = NULL; /* initialized to keep compiler happy */
+     unsigned long msg_len = 0;	  /* initialized to keep compiler happy */
      char char_read;
 
      switch (ptoc_int(CTXTc 1)) {
