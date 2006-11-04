@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.108 2006-11-04 11:27:39 ruim Exp $
+** $Id: init_xsb.c,v 1.109 2006-11-04 11:53:36 ruim Exp $
 ** 
 */
 
@@ -1316,7 +1316,7 @@ void init_symbols(void)
   if (status != 0) 
     xsb_exit("Cannot init pthread attr during system initialization");
   /* set minimal stack size to a reasonable value */
-  status = pthread_attr_setstacksize(&normal_attr_gl,512*1024*K*ZOOM_FACTOR);
+  status = pthread_attr_setstacksize(&normal_attr_gl,512*K*ZOOM_FACTOR);
 #ifdef DEBUG
   if (status != 0) 
   {
