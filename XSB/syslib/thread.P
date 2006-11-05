@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.P,v 1.12 2006/08/11 20:35:46 tswift Exp $
+** $Id: thread.P,v 1.13 2006/10/23 13:51:58 ruim Exp $
 ** 
 */
 
@@ -159,9 +159,9 @@ abolish_shared_tables:-
 /* Routines used internally. */
 
 '_$thread_run'( Goal ) :-
-	(catch(call(Goal),Ball,(default_error_handler(Ball))), xsb_thread_exit
+	(catch(call(Goal),Ball,(default_error_handler(Ball))), thread_exit
 	 ;
-	 xsb_thread_exit
+	 thread_exit
 	).
 
 /* store thread flag predicate in THREAD_RUN flag */
