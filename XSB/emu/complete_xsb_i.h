@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.30 2005-11-07 20:37:41 tswift Exp $
+** $Id: complete_xsb_i.h,v 1.31 2006-11-05 23:53:14 ruim Exp $
 ** 
 */
 
@@ -101,7 +101,7 @@ XSB_Start_Instr(check_complete,_check_complete)
 	{	
 
 		if( MayHaveAnswers(th) )
-			WakeOtherThreads(th) ;
+			;
 		else if( CheckForSCC(th) )
 		{
 			CompleteOtherThreads(th);
