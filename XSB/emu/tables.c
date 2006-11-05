@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.44 2006-09-06 05:15:27 diptikalyan Exp $
+** $Id: tables.c,v 1.45 2006-11-05 13:59:43 ruim Exp $
 ** 
 */
 
@@ -799,6 +799,7 @@ inline TIFptr New_TIF(CTXTdeclc Psc pPSC) {
    TIF_Subgoals(pTIF) = NULL;						
    TIF_NextTIF(pTIF) = NULL;						
 #ifdef MULTI_THREAD
+   pthread_mutex_init( &TIF_CALL_TRIE_LOCK(pTIF), NULL );
    if (get_shared(pPSC)) {
      SYS_MUTEX_LOCK( MUTEX_TABLE );				
      if ( IsNonNULL(tif_list.last) )					
