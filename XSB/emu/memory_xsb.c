@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.33 2006-11-06 07:56:04 ruim Exp $
+** $Id: memory_xsb.c,v 1.34 2006-11-06 08:04:21 ruim Exp $
 ** 
 */
 
@@ -330,13 +330,14 @@ Please use -c N or cpsize(N) to start with a larger choice point stack"
    */
   if (trail_offset != 0) {
     for (trail_link = (CPtr *)(trail_top + trail_offset);
-	 trail_link >= (CPtr *)new_trail;
+	 trail_link > (CPtr *)new_trail;
 	 trail_link = trail_link - 3) {
       *trail_link = (CPtr)((byte *)*trail_link + trail_offset);
       /* Check if this is a 4 word trail frame (also keep valgrind quiet) */
-      if (((trail_link-2) >= (CPtr *) new_trail) && ((Cell)*(trail_link-2) & PRE_IMAGE_MARK)) trail_link--;
+      if (((Cell)*(trail_link-2) & PRE_IMAGE_MARK)) trail_link--;
     }
   }
+  *trail_link = (CPtr)((byte *)*trail_link + trail_offset);
 
   /* Update the pointers in the CP Stack
      ----------------------------------- */
