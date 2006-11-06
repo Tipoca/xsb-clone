@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.110 2006-11-04 12:41:26 ruim Exp $
+** $Id: init_xsb.c,v 1.111 2006-11-06 16:54:38 tswift Exp $
 ** 
 */
 
@@ -976,9 +976,11 @@ void init_thread_structures(CTXTdecl)
 /* This is here just for the first thread - others initialize its xsb tid
    on xsb_thread_run - the first thread has always tid = 0 */
   th->tid = 0 ;
+
 #ifdef SHARED_COMPL_TABLES
   th->waiting_for_thread = NULL ;
   th->deadlock_brk_leader = FALSE;
+  th->reset_thread = FALSE;
 #endif
 #ifdef CONC_COMPL
   pthread_cond_init( &th->cond_var, NULL );
