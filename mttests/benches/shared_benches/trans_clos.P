@@ -1,4 +1,3 @@
-
 :- import thread_create/3, thread_join/2, thread_self/1 from thread.
 
 :- dynamic edge/2.
@@ -158,12 +157,34 @@ do_bench_s(D,M) :-
 	writeln( datum(D,T) ).
 
 
-bench( [T], GName, GSize ) :-
-	readGraph( GName ),
+bench( T, GName, GSize ) :-
 	init_info(T),
-	do_bench_s( [T], GSize ).
+	do_bench_s( [T,GName], GSize ).
 
-mt_bench( [T], GName, GSize, NThreads ) :-
-	readGraph( GName ),
+priv_benches(GName,GSize) :-
+	bench(tc_lr_p,GName,GSize),
+	bench(tc_rr_p,GName,GSize).
+
+sh_benches(GName,GSize) :-
+	bench(tc_lr_s,GName,GSize),
+	bench(tc_rr_s,GName,GSize).
+
+seq_benches(GName,GSize) :-
+	bench(tc_lr,GName,GSize),
+	bench(tc_rr,GName,GSize).
+
+mt_bench( T, GName, GSize, NThreads ) :-
 	init_info(T),
-	do_bench_mt( [T], GSize, NThreads ).
+	do_bench_mt( [T,GName], GSize, NThreads ),
+	flush_output.
+
+
+mt_benches(GName,GSize,NT) :-
+	mt_bench(tc_lr_s,GName,GSize,NT),
+	mt_bench(tc_lr_p,GName,GSize,NT),
+	mt_bench(tc_rr_s,GName,GSize,NT),
+	(	NT =< 4
+	->	mt_bench(tc_rr_p,GName,GSize,NT)
+	;	true
+	).
+

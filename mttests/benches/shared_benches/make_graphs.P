@@ -1,0 +1,11 @@
+
+:- [gen_graph].
+
+make_big_graphs :-
+	fileGraph(1536,1280,g1536x1280),
+	fileGraph(1024,768,g1024x768).
+
+make_small_graphs :-
+	fileGraph(1024,64,g1024x64),
+	fileGraph(512,64,g512x64),
+	fileGraph(256,128,g256x128).
