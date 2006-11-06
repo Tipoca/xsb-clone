@@ -70,6 +70,13 @@ lines_tab([B|Bs],Seq,Priv,Shared) :-
 	line_tab(B,Seq,Priv,Shared),
 	lines_tab(Bs,Seq,Priv,Shared).
 
+header_tab :-
+	write(bench), write( ' & ' ),
+	write(seq), write( ' & ' ),
+	write(priv), write( ' & ' ),
+	write(overhead), write( ' & ' ),
+	write(shared), write( ' & ' ),
+	write(overhead), nl.
 table_tab( Benches, Sched ) :-
 	write( Benches ), write(' '), write( Sched ), nl,
 	str_cat( Benches, '-seq-', S1 ), str_cat( S1, Sched, Seq ),
@@ -80,6 +87,7 @@ table_tab( Benches, Sched ) :-
 	read_file(Shared),
 	findall(B,datum(Seq,B,_),L),
 	sort(L, LS),
+	header_tab,
 	lines_tab(LS,Seq,Priv,Shared).
 
 table_all :-
