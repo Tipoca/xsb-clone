@@ -147,14 +147,14 @@ do_bench_mt(D,M,N) :-
 	thread_join( Ts, _ ),
 	walltime(T2),
 	T is T2 - T1,
-	writeln( datum(D,N,T) ).
+	write( datum(D,N,T) ), writeln('.').
 
 do_bench_s(D,M) :-
 	walltime(T1),
 	do_tc(1,M),
 	walltime(T2),
 	T is T2 - T1,
-	writeln( datum(D,T) ).
+	write( datum(D,T) ), writeln('.').
 
 
 bench( T, GName, GSize ) :-
