@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.21 2006-01-14 16:25:32 dwarren Exp $
+** $Id: basictypes.h,v 1.22 2006-11-06 10:31:39 ruim Exp $
 ** 
 */
 
@@ -68,7 +68,7 @@ typedef short  xsbBool;
 #ifndef __RPCNDR_H__
 typedef unsigned char byte;
 #endif
-typedef unsigned int counter;
+typedef unsigned long int counter;
 typedef unsigned long word;
 typedef byte *pb;
 typedef word *pw;

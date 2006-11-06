@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.88 2006-09-06 05:15:27 diptikalyan Exp $
+** $Id: tries.c,v 1.89 2006-11-06 10:31:39 ruim Exp $
 ** 
 */
 
@@ -60,7 +60,7 @@
 /* The following variables are used in other parts of the system        */
 /*----------------------------------------------------------------------*/
 
-long subg_chk_ins, subg_inserts, ans_chk_ins, ans_inserts; /* statistics */
+counter subg_chk_ins, subg_inserts, ans_chk_ins, ans_inserts; /* statistics */
 
 #ifndef MULTI_THREAD
 int  num_heap_term_vars;
