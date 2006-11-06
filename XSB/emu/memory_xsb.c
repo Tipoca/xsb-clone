@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.32 2006-11-06 01:41:32 tswift Exp $
+** $Id: memory_xsb.c,v 1.33 2006-11-06 07:56:04 ruim Exp $
 ** 
 */
 
@@ -253,6 +253,14 @@ void tcpstack_realloc(CTXTdeclc long new_size) {
 
   ComplStackFrame csf_ptr;    /* for stepping through the ComplStack */
   VariantSF subg_ptr;         /* and altering the CP ptrs in the SGFs */
+
+#ifdef CONC_COMPL
+  if( flags[NUM_THREADS] > 1 && openreg < COMPLSTACKBOTTOM )
+	xsb_exit( 
+"Concurrent Completion doesn't yet support choice point stack expansion\n\
+Please use -c N or cpsize(N) to start with a larger choice point stack"
+	);
+#endif
 
   if (new_size == tcpstack.size)
     return;

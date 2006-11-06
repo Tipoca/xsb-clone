@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.64 2006/11/05 13:59:43 ruim Exp $
+** $Id: slginsts_xsb_i.h,v 1.65 2006/11/05 23:53:15 ruim Exp $
 ** 
 */
 
@@ -461,7 +461,8 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 #ifdef CONC_COMPL
     CPtr producer_cpf = NULL;
 
-    /* with variant tabling and thus in CONC_COMPL, producer_sf == consumer_sf */
+    /* with variant tabling and thus in CONC_COMPL shared tables, 
+       producer_sf == consumer_sf */
     if( subg_tid(producer_sf) == th->tid )
     {
 #endif
