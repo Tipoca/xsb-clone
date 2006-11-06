@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.119 2006/09/06 16:05:05 diptikalyan Exp $
+** $Id: tr_utils.c,v 1.121 2006/10/13 20:58:42 dwarren Exp $
 ** 
 */
 
@@ -462,7 +462,12 @@ static void delete_variant_table(CTXTdeclc BTNptr x, int incr) {
 	  a delay list: may overstate problems but will warn for any
 	  possible corruption. */
 
+
+#ifndef CONC_COMPL
 	  if ( subg_answers(pSF) == COND_ANSWERS ) {
+#else
+	  if ( subg_tag(pSF) == COND_ANSWERS ) {
+#endif
 	    xsb_warn("abolish_table_pred/1 is deleting a table with conditional\
                       answers: delay dependencies may be corrupted.\n");
 	  }
