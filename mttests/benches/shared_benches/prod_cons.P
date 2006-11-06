@@ -3,9 +3,8 @@
 
 tab_name( prod ).
 
-prod( A, A ) :- A =< 1.
+prod( A, A ).
 prod( X, Y ) :- X > 1, X1 is X - 1, prod(X1, Y).
-prod( X, X ) :- X > 1.
 
 
 prod_cons( G ) :- 
