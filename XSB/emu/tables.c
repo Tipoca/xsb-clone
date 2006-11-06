@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.47 2006-11-06 12:02:19 ruim Exp $
+** $Id: tables.c,v 1.48 2006-11-06 17:31:53 ruim Exp $
 ** 
 */
 
@@ -713,11 +713,13 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
     if ( IsNULL(subg_ans_list_tail(producerSF)) ||
 	 IsNonNULL(ALN_Next(subg_ans_list_tail(producerSF))) )
       xsb_abort("Answer-List exception: Tail pointer incorrectly maintained");
-#ifndef CONC_COMPL
 #ifdef MULTI_THREAD
     if (IsSharedSF(producerSF)) {				
+#ifndef CONC_COMPL
+      /* Can't deallocate answer return list for CONC_COMPL shared tables */
       SM_DeallocateSharedStructList(smALN,pRealAnsList,
 			      subg_ans_list_tail(producerSF));
+#endif
     } else {
       SM_DeallocateStructList(*private_smALN,pRealAnsList,
 			      subg_ans_list_tail(producerSF));
@@ -725,7 +727,6 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
 #else
       SM_DeallocateStructList(smALN,pRealAnsList,
 			      subg_ans_list_tail(producerSF));
-#endif
     subg_ans_list_tail(producerSF) = NULL;
 #endif
 

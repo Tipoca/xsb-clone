@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.28 2006-01-27 20:29:43 tswift Exp $
+** $Id: choice.h,v 1.29 2006-11-06 17:31:53 ruim Exp $
 ** 
 */
 #ifndef __CHOICE_H__
@@ -144,7 +144,7 @@ typedef struct tabled_choice_point {
 #define tcp_ptcp(b)		((TChoice)(b))->ptcp
 #define tcp_subgoal_ptr(b)	((TChoice)(b))->subgoal_ptr
 #ifdef CONC_COMPL
-#define tcp_compl_stack_ptr(b)	((TChoice)(b))->compl_stack_ptr
+#define tcp_compl_stack_ptr(b) ((TChoice)(b))->compl_stack_ptr
 #endif
 
 #ifdef CP_DEBUG
@@ -180,11 +180,17 @@ typedef struct tabled_choice_point {
 
 /* The following macro is used to perform early completion */
 #ifdef CONC_COMPL
-#define perform_early_completion(ProdSF,ProdCPF)
+/* can't perform early completion for CONC_COMPL shared tables */
+#define perform_early_completion(ProdSF,ProdCPF)	    	\
+    if( IsPrivateSF(ProdSF) )					\
+    {   if (tcp_pcreg(ProdCPF) != (byte *) &answer_return_inst) \
+      	    tcp_pcreg(ProdCPF) = (byte *) &check_complete_inst; \
+        mark_as_completed(ProdSF)				\
+    }
 #else
-#define perform_early_completion(ProdSF,ProdCPF)	    \
-    if (tcp_pcreg(ProdCPF) != (byte *) &answer_return_inst) \
-      tcp_pcreg(ProdCPF) = (byte *) &check_complete_inst;   \
+#define perform_early_completion(ProdSF,ProdCPF)	    	\
+    if (tcp_pcreg(ProdCPF) != (byte *) &answer_return_inst) 	\
+      tcp_pcreg(ProdCPF) = (byte *) &check_complete_inst;   	\
     mark_as_completed(ProdSF)
 #endif
 

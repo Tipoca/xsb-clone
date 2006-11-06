@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.36 2006-11-06 10:31:39 ruim Exp $
+** $Id: memory_xsb.c,v 1.37 2006-11-06 17:31:53 ruim Exp $
 ** 
 */
 
@@ -446,6 +446,10 @@ void complstack_realloc (CTXTdeclc long new_size) {
   ComplStackFrame csf_ptr;
   VariantSF subg_ptr;
 
+#ifdef CONC_COMPL
+  byte **cp_ptr ;
+#endif
+
   
   if (new_size == complstack.size)
     return;
@@ -474,6 +478,9 @@ void complstack_realloc (CTXTdeclc long new_size) {
     
     top_offset = (long)(new_top - complstack.low);
     bottom_offset = (long)(new_bottom - complstack.high);
+    /* the following floats the completion stack from the middle
+     * of the re-allocated block of memory to its upper end
+     */
     memmove(cs_top + bottom_offset,     /* move to */
 	    cs_top + top_offset,        /* move from */
 	    (long)(complstack.high - cs_top) );
@@ -502,8 +509,18 @@ void complstack_realloc (CTXTdeclc long new_size) {
     subg_ptr = compl_subgoal_ptr(csf_ptr);
     subg_compl_stack_ptr(subg_ptr) =
       (CPtr)((byte *)subg_compl_stack_ptr(subg_ptr) + bottom_offset);
-  }
+  } 
 
+#ifdef CONC_COMPL
+  /* In CONC_COMPL there are pointers from the choice points into
+     the completion stack */
+
+  for ( cp_ptr = (byte **)(top_of_cpstack);
+	cp_ptr < (byte **)tcpstack.high;
+	cp_ptr++ )
+	if( *cp_ptr >= cs_top && *cp_ptr < complstack.high )
+		*cp_ptr += bottom_offset ;
+#endif
 
   /* Update the system variables
      --------------------------- */

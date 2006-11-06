@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.27 2006/11/02 02:59:44 ruim Exp $
+** $Id: trace_xsb.c,v 1.28 2006/11/06 10:31:39 ruim Exp $
 ** 
 */
 
@@ -486,7 +486,8 @@ void total_stat(CTXTdeclc double elapstime) {
   }
 
 #ifdef SHARED_COMPL_TABLES
-  printf("%ld deadlocks have occured\n\n", num_deadlocks );
+  printf("%lu thread suspensions have occured\n\n", num_suspends );
+  printf("%lu deadlocks have occured\n\n", num_deadlocks );
 #endif
 
   printf("%ld active user thread%s.\n",flags[NUM_THREADS],
@@ -521,6 +522,7 @@ void perproc_reset_stat(void)
    subg_chk_ins = subg_inserts = 0;
    time_start = cpu_time();
 #ifdef SHARED_COMPL_TABLES
+   num_suspends = 0;
    num_deadlocks = 0;
 #endif
 }

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wfs_xsb_i.h,v 1.15 2005-11-16 17:32:06 dwarren Exp $
+** $Id: wfs_xsb_i.h,v 1.16 2006-11-06 17:31:53 ruim Exp $
 ** 
 */
 
@@ -380,7 +380,8 @@ static void batched_compute_wfs(CTXTdeclc CPtr leader_compl_frame,
       if( !is_completed(curr_subg) )
       {
         mark_as_completed(curr_subg);
-        WakeDependentThreads(th, curr_subg);
+	if( IsSharedSF( curr_subg ) )
+        	WakeDependentThreads(th, curr_subg);
       }
 #else
       mark_as_completed(curr_subg);
@@ -514,7 +515,8 @@ static void batched_compute_wfs(CTXTdeclc CPtr leader_compl_frame,
       if( !is_completed(curr_subg) )
       {
         mark_as_completed(curr_subg);
-        WakeDependentThreads(th, curr_subg);
+	if( IsSharedSF( curr_subg ) )
+        	WakeDependentThreads(th, curr_subg);
       }
 #else
       mark_as_completed(curr_subg);
