@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.46 2006-11-05 23:53:15 ruim Exp $
+** $Id: tables.c,v 1.47 2006-11-06 12:02:19 ruim Exp $
 ** 
 */
 
@@ -122,7 +122,7 @@ VariantSF NewProducerSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo) {
 	SM_AllocateSharedStruct(smVarSF,pNewSF);				
 	pNewSF = memset(pNewSF,0,sizeof(variant_subgoal_frame));		
 	subg_sf_type(pNewSF) = SHARED_VARIANT_PRODUCER_SFT;	
-#ifdef CONC_COMPL
+#ifdef CONC_COMPL_SFL
 	pthread_mutex_init( &subg_lock(pNewSF), NULL ) ;
 #endif
       }									

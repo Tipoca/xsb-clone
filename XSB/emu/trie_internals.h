@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.30 2006-11-05 23:53:15 ruim Exp $
+** $Id: trie_internals.h,v 1.31 2006-11-06 12:02:19 ruim Exp $
 ** 
 */
 
@@ -975,7 +975,7 @@ subsumptive tables, which are private in the MT engine.
     if (IsSharedSF(SubgoalFrame)) {				\
     /* Can't deallocate answer return list in CONC_COMPL shared tables */\
     } else {								\
-      if ( subg_answers(SubgoalFrame) > COND_ANSWERS )			\
+      if ( subg_tag(SubgoalFrame) > COND_ANSWERS )			\
 	SM_DeallocateStructList(*private_smALN,				\
 				subg_ans_list_ptr(SubgoalFrame),	\
 				subg_ans_list_tail(SubgoalFrame))	\
