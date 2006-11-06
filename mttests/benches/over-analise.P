@@ -91,6 +91,10 @@ table_all :-
 	nl, nl,
 	table_tab(tab,loc),
 	nl, nl,
-	table_tab(tab,bat).
+	table_tab(tab,bat),
+	nl, nl,
+	table_tab(shared,loc),
+	nl, nl,
+	table_tab(shared,bat).
 	
 

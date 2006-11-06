@@ -55,4 +55,6 @@ table_all :-
 	pr_table('synth-local'),
 	pr_table('synth-batched'),
 	pr_table('tab-local'),
-	pr_table('tab-batched').
+	pr_table('tab-batched'),
+	pr_table('shared-local'),
+	pr_table('shared-batched').

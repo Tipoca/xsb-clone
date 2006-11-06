@@ -157,21 +157,21 @@ do_bench_s(D,M) :-
 	write( datum(D,T) ), writeln('.').
 
 
-bench( T, GName, GSize ) :-
+bench( T, TN, GName, GSize ) :-
 	init_info(T),
-	do_bench_s( [T,GName], GSize ).
+	do_bench_s( [TN,GName], GSize ).
 
 priv_benches(GName,GSize) :-
-	bench(tc_lr_p,GName,GSize),
-	bench(tc_rr_p,GName,GSize).
+	bench(tc_lr_p,tc_lr,GName,GSize),
+	bench(tc_rr_p,tc_rr,GName,GSize).
 
 sh_benches(GName,GSize) :-
-	bench(tc_lr_s,GName,GSize),
-	bench(tc_rr_s,GName,GSize).
+	bench(tc_lr_s,tc_lr,GName,GSize),
+	bench(tc_rr_s,tc_rr,GName,GSize).
 
 seq_benches(GName,GSize) :-
-	bench(tc_lr,GName,GSize),
-	bench(tc_rr,GName,GSize).
+	bench(tc_lr,tc_lr,GName,GSize),
+	bench(tc_rr,tc_rr,GName,GSize).
 
 mt_bench( T, GName, GSize, NThreads ) :-
 	init_info(T),

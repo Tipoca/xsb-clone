@@ -17,3 +17,4 @@ fi
 (cd prolog_benches; ./test_over.sh $PREF ../$DIR )
 (cd synth_benches; ./test_over.sh $PREF ../$DIR )
 (cd tab_benches; ./test_over.sh $PREF ../$DIR )
+(cd shared_benches; ./test_over.sh $PREF ../$DIR )

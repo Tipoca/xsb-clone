@@ -18,3 +18,4 @@ fi
 (cd prolog_benches; ./test_scal.sh $PREF ../$DIR $MAX )
 (cd synth_benches; ./test_scal.sh $PREF ../$DIR $MAX )
 (cd tab_benches; ./test_scal.sh $PREF ../$DIR $MAX )
+(cd shared_benches; ./test_scal.sh $PREF ../$DIR $MAX )
