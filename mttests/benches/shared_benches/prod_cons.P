@@ -46,7 +46,10 @@ bench_n_threads(N) :-
 	thread_join(L,_).
 
 
+mt_bench(Type,_,1) :-
+	write(datum(Type,1,0)), writeln('.').
 mt_bench(Type,M,N) :-
+	N > 1,
 	abolish( work_size/1 ),
 	assert( work_size(M) ),
 	walltime(ST),
