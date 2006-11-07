@@ -44,10 +44,21 @@ pr_lines([B|Bs],F) :-
 	pr_line(B,F), nl,
 	pr_lines(Bs,F).
 
+pr_header( [] ).
+pr_header( [H] ) :-
+	write(H), nl.
+pr_header( [H|L] ) :-
+	write(H), write(' & '), pr_header(L).
+
+header(F) :-
+	findall(N,datum(F,_,N,_),L), sort(L,L1),
+	pr_header(L1).
+
 pr_table(F) :-
 	read_file(F),
 	findall(B,datum(F,B,_,_),L), sort(L,L1),
 	writeln(F),
+	header(F),
 	pr_lines(L1,F).
 
 table_all :-

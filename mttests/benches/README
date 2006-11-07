@@ -9,16 +9,23 @@ different configurations:
 	--enable-batched-scheduling
 	--enable-batched-scheduling --enable-ccmpl.
 
-run the script: 
+To do de overhead analisys, run the script: 
 
 overhead.sh $XSB $DIR
 
-where directory_name is the name of a subdirectory (in the current
+where DIR is the name of a subdirectory which must exist (in the current
 path) into which intermediate results will be stored.  
 
 To output the results in latex readable format, run the script:
 
-format_anal.sh $DIR
+over-analise.sh $DIR $FILE $XSB
 
-(Currently, for the mac not all benchmarks run for batched, and I've
-had to comment out a few tests -- other platforms may be different).
+To do de scalability analisys, run the script: 
+
+scala.sh $XSB $DIR
+
+where the arguments are the same as in above.
+
+To ouput the results to a file, run the script:
+
+scal-analise.sh $DIR $FILE $XSB
