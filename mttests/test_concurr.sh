@@ -29,19 +29,24 @@ fi
 
 #-----------------------
 
-if  test ! -f "$XEMU"; then
-    echo "No emulator file: $XEMU"
+# get the xsb command name (without the options)
+
+XEMUCOMMAND=`echo $XEMU | awk '{ print $1 }'`
+
+if  test ! -f "$XEMUCOMMAND"; then
+    echo "No emulator file: $XEMUCOMMAND"
     exit 1
 fi
 
-if  test ! -x "$XEMU"; then
-    echo "Cant execute emulator: $XEMU"
+if  test ! -x "$XEMUCOMMAND"; then
+    echo "Cant execute emulator: $XEMUCOMMAND"
     exit 1
 fi
 
 if [ -z "$XEMU" ]
 then
 	echo "Usage: $0 EMULATOR [NUM_THREADS]"
+	echo "or $0 "EMULATOR [FLAGS]" [NUM_THREADS]"
 	echo
 	echo NUM_THREADS=0 generates test results
 	exit 1
@@ -84,7 +89,7 @@ fi
 
 # TLS: this says to send output to $LOG_FILE, and to send stderr to 
 # stdout -- i.e. to $LOG_FILE
-sh ./test_concurr_1.sh -opts "$options"  $XEMU $NUM >> $LOG_FILE 2>&1
+sh ./test_concurr_1.sh -opts "$options"  "$XEMU" $NUM >> $LOG_FILE 2>&1
 
 #-----------------------------
 
