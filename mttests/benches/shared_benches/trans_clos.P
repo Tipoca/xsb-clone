@@ -1,4 +1,5 @@
 :- import thread_create/3, thread_join/2, thread_self/1 from thread.
+:- import mutex_create/1, mutex_destroy/1, with_mutex/2 from mutex_xsb.
 
 :- dynamic edge/2.
 :- dynamic rec_type/2.
@@ -13,6 +14,7 @@
 :- thread_private tc_lr_p/2, tc_rr_p/2.
 
 :- table tc_lr/2, tc_rr/2.
+
 
 tc_lr_p( InitNode, X ) :-
 	tc_lr_p( InitNode, N ),
@@ -52,11 +54,20 @@ tc_rr( InitNode, X ) :-
 	edge( InitNode, X ).
 
 call_rec_tc( S ) :-
+	out(yes),
 	rec_type(F),
 	G =.. [F,S,X],
 	G,
-%	thread_self(I),
-%	writeln(I:S/X),
+	( ( F == tc_rr ; F == tc_lr )
+	->	writeln(S/X)
+	;	with_mutex( out_mut, writeln(S/X) )
+	),
+	fail.
+call_rec_tc( S ) :-
+	out(no),
+	rec_type(F),
+	G =.. [F,S,_],
+	G,
 	fail.
 call_rec_tc( _ ).
 
@@ -71,12 +82,7 @@ do_tc( S, S2 ) :-
 create_threads( M, _, [] ) :- M =< 0.
 create_threads( M, P, [T|Ts] ) :- 
 	S is M - P + 1,
-%	writeln( thread(S,M) ),
-%	thread_create( do_tc(S,M), T, 
-%		[glsize(10000),tcsize(10000),complsize(10000)] ),
-%		[tcsize(512)] ),
 	thread_create( do_tc(S,M), T, [] ),
-%	writeln( thread(S,M,T) ),
 	S1 is S - 1,
 	create_threads(S1,P,Ts).
 
@@ -92,21 +98,25 @@ init_info(T) :-
 
 doTest(F,M,N) :-
 	P is floor(M/N),
+	assert(out(yes)),
+	mutex_create(out_mut),
 	walltime(T1),
-%	tell(F),
+	tell(F),
 	create_threads( M, P, Ts ),
 	thread_join( Ts, _ ),
 	walltime(T2),
-%	told,
+	told,
+	mutex_destroy(out_mut),
 	T is T2 - T1,
 	writeln( T ).
 
 doTest_s(F,M) :-
+	assert(out(yes)),
 	walltime(T1),
-%	tell(F),
+	tell(F),
 	do_tc(1,M),
 	walltime(T2),
-%	told,
+	told,
 	T is T2 - T1,
 	writeln( T ).
 
@@ -132,15 +142,16 @@ test_rp( Name, M, N ) :-
 
 test_r( Name, M ) :-
 	readGraph( Name ),
-	init_info(tc_rr_s),
+	init_info(tc_rr),
 	doTest_s(r,M).
 
 test_l( Name, M ) :-
 	readGraph( Name ),
-	init_info(tc_rr_s),
-	doTest_s(s,M).
+	init_info(tc_lr),
+	doTest_s(l,M).
 
 do_bench_mt(D,M,N) :-
+	assert(out(no)),
 	P is floor(M/N),
 	walltime(T1),
 	create_threads( M, P, Ts ),
@@ -150,6 +161,7 @@ do_bench_mt(D,M,N) :-
 	write( datum(D,N,T) ), writeln('.').
 
 do_bench_s(D,M) :-
+	assert(out(no)),
 	walltime(T1),
 	do_tc(1,M),
 	walltime(T2),
