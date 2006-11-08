@@ -11,12 +11,12 @@ files is compared to a canonical file to see if the execution was
 correct. */
 
 :- import concat_atom/2 from string.
-:- import xsb_thread_create/2,
-	  xsb_thread_join/2, 
-	  xsb_thread_self/1 from thread.
-%:- import xsb_mutex_init/1,
-%	  xsb_mutex_lock/1,
-%	  xsb_mutex_unlock/1 from thread.
+:- import thread_create/2,
+	  thread_join/2, 
+	  thread_self/1 from thread.
+%:- import mutex_init/1,
+%	  mutex_lock/1,
+%	  mutex_unlock/1 from thread.
 
 :- import mt_srand/0, random_pause/1 from mttestutils.
 :- import numbervars/3 from num_vars.
@@ -36,7 +36,7 @@ test_concurrent_goal(M,File,Goal):-
 	assert(test_thread_number(M)),
 	call_init(Goal),
 	mt_srand,
-%	xsb_mutex_init(MUT),
+%	mutex_init(MUT),
 	make_duplicate_goals(M,test_single(File,Goal,MUT),List),
 	exec_goals(List,Ids),
 	join_list(Ids),
@@ -45,19 +45,19 @@ test_concurrent_goal(M,File,Goal):-
 
 exec_goals([],[]).
 exec_goals([Goal|Grest],[Id|Rest]):- 
-	xsb_thread_create(Goal,Id),
+	thread_create(Goal,Id),
 	exec_goals(Grest,Rest).
 
 join_list([]).
 join_list([Id|Rest]):- 
-	xsb_thread_join(Id,_),
+	thread_join(Id,_),
 	join_list(Rest).	
 	
 exec_goals_and_join([],[]).
 exec_goals_and_join([Goal|Grest],[Id|Rest]):- 
 	random_pause(10),
-	xsb_thread_create(Goal,Id),
-	xsb_thread_join(Id,_Exit),
+	thread_create(Goal,Id),
+	thread_join(Id,_Exit),
 	exec_goals_and_join(Grest,Rest).
 
 make_duplicate_goals(0,_Goal,[]):-!.
@@ -66,16 +66,16 @@ make_duplicate_goals(N,Goal,[Goal|Rest]):-
 	make_duplicate_goals(N1,Goal,Rest).
 
 thread_open(File,Mode,Handle):- 
-	xsb_thread_self(Id),
+	thread_self(Id),
 	number_chars(Id,L),
 	atom_chars(Atom_id,L),
 	concat_atom([File,'.',Atom_id],Real_file),
 	open(Real_file,Mode,Handle).
 
 test_single(File,Goal,MUT):- 
-%	xsb_mutex_lock(MUT),
+%	mutex_lock(MUT),
 	thread_open(File,write,Handle),	
-%	xsb_mutex_unlock(MUT),
+%	mutex_unlock(MUT),
 	functor(Goal,_,N),
 	arg(N,Goal,Handle),
 	writeln(calling(Goal)),

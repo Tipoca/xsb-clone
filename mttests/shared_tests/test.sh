@@ -17,5 +17,7 @@ echo "------------------------------------------------------"
 
 ../gentest.sh "$XEMU $options" sharedcomp1 "sc(1000,_)" $NUM
 ../gentest.sh "$XEMU $options" sharedcomp2 "sc(1000,_)" $NUM
+../gentest.sh "$XEMU $options" sharedpriv1 "spfail(_)" $NUM
+../gentest.sh "$XEMU $options" sharedpriv2 "spfail(_)" $NUM
 
 
