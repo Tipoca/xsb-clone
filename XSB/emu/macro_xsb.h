@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.53 2006-11-06 12:02:19 ruim Exp $
+** $Id: macro_xsb.h,v 1.54 2006-11-08 01:42:57 ruim Exp $
 ** 
 */
 
@@ -461,6 +461,7 @@ extern TIFptr New_TIF(Psc);
       if ((pTIF) == private_tif_list.last) private_tif_list.last = tTIF; \
       TIF_NextTIF(tTIF) = TIF_NextTIF((pTIF));				\
     }									\
+    SET_TRIE_ALLOCATION_TYPE_PRIVATE();					\
     delete_predicate_table(CTXTc pTIF);					\
     mem_dealloc((pTIF),sizeof(TableInfoFrame),TABLE_SPACE);		\
   }
