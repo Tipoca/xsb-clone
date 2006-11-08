@@ -15,6 +15,10 @@
 
 :- table tc_lr/2, tc_rr/2.
 
+:- dynamic out/1.
+
+:- thread_shared out/1.
+
 
 tc_lr_p( InitNode, X ) :-
 	tc_lr_p( InitNode, N ),
@@ -98,6 +102,7 @@ init_info(T) :-
 
 doTest(F,M,N) :-
 	P is floor(M/N),
+	abolish(out/1),
 	assert(out(yes)),
 	mutex_create(out_mut),
 	walltime(T1),
@@ -111,6 +116,7 @@ doTest(F,M,N) :-
 	writeln( T ).
 
 doTest_s(F,M) :-
+	abolish(out/1),
 	assert(out(yes)),
 	walltime(T1),
 	tell(F),
@@ -151,6 +157,7 @@ test_l( Name, M ) :-
 	doTest_s(l,M).
 
 do_bench_mt(D,M,N) :-
+	abolish(out/1),
 	assert(out(no)),
 	P is floor(M/N),
 	walltime(T1),
@@ -161,6 +168,7 @@ do_bench_mt(D,M,N) :-
 	write( datum(D,N,T) ), writeln('.').
 
 do_bench_s(D,M) :-
+	abolish(out/1),
 	assert(out(no)),
 	walltime(T1),
 	do_tc(1,M),
