@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.13 2005-11-17 23:24:24 tswift Exp $
+** $Id: complete_local.h,v 1.14 2006-11-08 17:06:33 ruim Exp $
 ** 
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -33,9 +33,6 @@ void makeConsumerFromGenerator(CTXTdeclc VariantSF producer_sf)
   nlcp_trie_return(breg) = subg_ans_list_ptr(producer_sf);
   nlcp_pcreg(breg) = (pb) &answer_return_inst;
   nlcp_prevlookup(breg) = subg_asf_list_ptr(producer_sf);
-#ifdef CONC_COMPL
-  nlcp_tid(breg) = makeint(th->tid);
-#endif
   subg_asf_list_ptr(producer_sf) = breg;
 }
 #endif /* LOCAL */

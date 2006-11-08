@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wfs_xsb_i.h,v 1.16 2006-11-06 17:31:53 ruim Exp $
+** $Id: wfs_xsb_i.h,v 1.17 2006-11-08 17:06:33 ruim Exp $
 ** 
 */
 
@@ -376,16 +376,7 @@ static void batched_compute_wfs(CTXTdeclc CPtr leader_compl_frame,
      if (compl_visited(ComplStkFrame) != FALSE) {
        curr_subg = compl_subgoal_ptr(ComplStkFrame);
        if (compl_visited(ComplStkFrame) != DELAYED) {
-#ifdef CONC_COMPL
-      if( !is_completed(curr_subg) )
-      {
-        mark_as_completed(curr_subg);
-	if( IsSharedSF( curr_subg ) )
-        	WakeDependentThreads(th, curr_subg);
-      }
-#else
-      mark_as_completed(curr_subg);
-#endif
+      	 mark_as_completed(curr_subg);
 	 reclaim_incomplete_table_structs(curr_subg);
 	 if (neg_simplif_possible(curr_subg)) {
 	   simplify_neg_fails(CTXTc curr_subg);
@@ -511,16 +502,7 @@ static void batched_compute_wfs(CTXTdeclc CPtr leader_compl_frame,
     ComplStkFrame = leader_compl_frame;
     while (ComplStkFrame >= openreg) {
       curr_subg = compl_subgoal_ptr(ComplStkFrame);
-#ifdef CONC_COMPL
-      if( !is_completed(curr_subg) )
-      {
-        mark_as_completed(curr_subg);
-	if( IsSharedSF( curr_subg ) )
-        	WakeDependentThreads(th, curr_subg);
-      }
-#else
       mark_as_completed(curr_subg);
-#endif
       if (neg_simplif_possible(curr_subg)) {
 	simplify_neg_fails(CTXTc curr_subg);
       }
