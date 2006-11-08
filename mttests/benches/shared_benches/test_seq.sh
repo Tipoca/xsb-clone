@@ -9,11 +9,13 @@ echo "-------------------------------------------------------"
 
 # XEMU and options must be together in quotes
  ../genbench.sh "$XEMU"  "[trans_clos],readGraph(g256x128)."\
-			 "seq_benches(g256x128,256)." "$FILE"
- ../genbench.sh "$XEMU"  "[trans_clos],readGraph(g512x64)."\
-			 "seq_benches(g512x64,512)." "$FILE"
- ../genbench.sh "$XEMU"  "[trans_clos],readGraph(g1024x64)."\
-			 "seq_benches(g1024x64,1024)." "$FILE"
+			 "seq_benches(256x128,256)." "$FILE"
+ ../genbench.sh "$XEMU"  "[trans_clos],readGraph(g512x8)."\
+			 "seq_benches(g512x8,512)." "$FILE"
+ ../genbench.sh "$XEMU"  "[trans_clos],readGraph(g2048x2)."\
+			 "seq_benches(g2048x2,2048)." "$FILE"
+ ../genbench.sh "$XEMU"  "[trans_clos],readGraph(g8192x1)."\
+			 "seq_benches(g8192x1,8192)." "$FILE"
 
 
 

@@ -6,6 +6,6 @@ DIR=$2
 ./test_seq.sh	$PREF/bin/xsb		$DIR/shared-seq-loc.P
 ./test_seq.sh	$PREF/bin/xsb-btc	$DIR/shared-seq-bat.P
 ./test_priv.sh	$PREF/bin/xsb-mt	$DIR/shared-mt-p-loc.P
-./test_sh.sh	$PREF/bin/xsb-mt	$DIR/shared-mt-s-loc.P
 ./test_priv.sh	$PREF/bin/xsb-btc-ccmpl	$DIR/shared-mt-p-bat.P
+./test_sh.sh	$PREF/bin/xsb-mt	$DIR/shared-mt-s-loc.P
 ./test_sh.sh	$PREF/bin/xsb-btc-ccmpl	$DIR/shared-mt-s-bat.P

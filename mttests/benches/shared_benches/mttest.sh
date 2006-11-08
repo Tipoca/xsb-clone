@@ -11,10 +11,10 @@ echo "-------------------------------------------------------"
 
 # XEMU and options must be together in quotes
  ../genbench.sh "$XEMU"  "[prod_cons]." \
-		"mt_bench([prod_cons],2000000,$NUM)." "$FILE"
- ../genbench.sh "$XEMU $OPT"  "[trans_clos],readGraph(g256x128)." \
-		"mt_benches(g256x128,256,$NUM)." "$FILE"
- ../genbench.sh "$XEMU $OPT"  "[trans_clos],readGraph(g512x64)." \
-		"mt_benches(g512x64,512,$NUM)." "$FILE"
- ../genbench.sh "$XEMU $OPT"  "[trans_clos],readGraph(g1024x64)." \
-		"mt_benches(g1024x64,1024,$NUM)." "$FILE"
+		"mt_bench([prod_cons],1000000,$NUM)." "$FILE"
+ ../genbench.sh "$XEMU $OPT"  "[trans_clos],readGraph(g512x8)." \
+		"mt_benches(g512x8,8,$NUM)." "$FILE"
+ ../genbench.sh "$XEMU $OPT"  "[trans_clos],readGraph(g2048x2)." \
+		"mt_benches(g2048x2,2048,$NUM)." "$FILE"
+ ../genbench.sh "$XEMU $OPT"  "[trans_clos],readGraph(g8192x1)." \
+		"mt_benches(g8192x1,8192,$NUM)." "$FILE"
