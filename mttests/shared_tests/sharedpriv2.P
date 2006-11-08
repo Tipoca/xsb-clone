@@ -6,7 +6,7 @@
 
 :- thread_shared max/1.
 
-max(2000).
+max(10000).
 
 p(X) :- X > 0, X1 is X - 1, q(X1).
 p(0) :- max(N), q(N).
