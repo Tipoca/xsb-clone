@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.37 2006-10-02 14:46:57 dwarren Exp $
+** $Id: findall.c,v 1.38 2006-11-09 21:22:19 dwarren Exp $
 ** 
 */
 
@@ -435,11 +435,17 @@ static int findall_copy_template_to_chunk(CTXTdeclc Cell from, CPtr to, CPtr *h)
     switch ( cell_tag( from ) )
       {
       case XSB_INT :
-      case XSB_FLOAT :
       case XSB_STRING :
 	*to = from ;
 	return(size) ;
     
+      case XSB_FLOAT :
+	*to = from ;
+#ifndef FAST_FLOATS
+	return(size+4);  /* will be copied out as boxed so need its space */
+#else
+	return(size);
+#endif
       case XSB_REF :
       case XSB_REF1 :
 	if (on_glstack((CPtr)(from)))
@@ -677,8 +683,9 @@ int findall_get_solutions(CTXTdecl)
   
   p = findall_solutions + cur_f ;
   
+  //  check_glstack_overflow(4, pcreg, p->size*sizeof(Cell)) ;
   check_glstack_overflow(4, pcreg, p->size*sizeof(Cell)) ;
-  
+
   arg1 = ptoc_tag(CTXTc 1);  /* only after enough space is ensured */
   arg2 = ptoc_tag(CTXTc 2);  /* only after enough space is ensured */
   
