@@ -21,5 +21,8 @@ echo "------------------------------------------------------"
 ../gentest.sh "$XEMU $options" sharedpriv2 "spfail(_)" $NUM
 ../gentest.sh "$XEMU $options" sharedpriv3 "spone(_)" $NUM
 ../gentest.sh "$XEMU $options" sharedpriv4 "spone(_)" $NUM
+../gentest.sh "$XEMU $options" sharedpriv5 "spone(_)" $NUM
+../gentest.sh "$XEMU $options" sharedpriv6 "spmany(_)" $NUM
+../gentest.sh "$XEMU $options" sharedpriv7 "spmany(_)" $NUM
 
 
