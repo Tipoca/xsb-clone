@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.48 2006-11-06 17:31:53 ruim Exp $
+** $Id: tables.c,v 1.49 2006-11-09 14:52:25 ruim Exp $
 ** 
 */
 
@@ -115,7 +115,7 @@ VariantSF NewProducerSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo) {
     if ( IsVariantPredicate(TableInfo) ) {				
 #ifdef MULTI_THREAD								
       if (threads_current_sm == PRIVATE_SM) {				
-	SM_AllocateStruct(smVarSF,pNewSF);				
+	SM_AllocateStruct(*private_smVarSF,pNewSF);				
 	pNewSF = memset(pNewSF,0,sizeof(variant_subgoal_frame));		
 	subg_sf_type(pNewSF) = PRIVATE_VARIANT_PRODUCER_SFT;		
       } else {								
