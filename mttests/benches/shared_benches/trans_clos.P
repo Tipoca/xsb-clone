@@ -203,7 +203,7 @@ mt_benches(GName,GSize,NT) :-
 	mt_bench(tc_lr_s,GName,GSize,NT),
 	mt_bench(tc_lr_p,GName,GSize,NT),
 	mt_bench(tc_rr_s,GName,GSize,NT),
-	(	NT =< 4
+	(	NT =< 16
 	->	mt_bench(tc_rr_p,GName,GSize,NT)
 	;	true
 	).
