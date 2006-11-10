@@ -13,7 +13,7 @@ echo "-------------------------------------------------------"
  ../genbench.sh "$XEMU"  "[prod_cons]." \
 		"mt_bench([prod_cons],1000000,$NUM)." "$FILE"
  ../genbench.sh "$XEMU $OPT"  "[trans_clos],readGraph(g256x128)." \
-		"mt_benches(256x128,256,$NUM)." "$FILE"
+		"mt_benches(g256x128,256,$NUM)." "$FILE"
  ../genbench.sh "$XEMU $OPT"  "[trans_clos],readGraph(g512x8)." \
 		"mt_benches(g512x8,512,$NUM)." "$FILE"
  ../genbench.sh "$XEMU $OPT"  "[trans_clos],readGraph(g2048x2)." \

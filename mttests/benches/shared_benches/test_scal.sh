@@ -10,7 +10,7 @@ do
 	./mttest.sh $PREF/bin/xsb-mt \
 		    $DIR/shared-local.P $nthreads 
 	./mttest.sh $PREF/bin/xsb-btc-ccmpl \
-		    $DIR/shared-batched.P $nthreads "-c 8000"
+		    $DIR/shared-batched.P $nthreads
 	nthreads=$[$nthreads*2]
 done
 
