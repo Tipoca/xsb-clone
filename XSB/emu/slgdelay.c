@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.46 2006/01/19 23:33:00 tswift Exp $
+** $Id: slgdelay.c,v 1.47 2006/03/18 17:37:49 tswift Exp $
 ** 
 */
 
@@ -50,6 +50,18 @@
 static void simplify_neg_succeeds(CTXTdeclc VariantSF);
 extern void simplify_pos_unsupported(CTXTdeclc NODEptr);
 static void simplify_pos_unconditional(CTXTdeclc NODEptr);
+
+Structure_Manager smASI      = SM_InitDecl(ASI_Node, ASIs_PER_BLOCK,
+					    "Answer Substitution Info Node");
+
+#define create_as_info(ANS, SUBG)				\
+  {								\
+    SM_AllocateStruct(smASI,((void *) asi));			\
+    Child(ANS) = (NODEptr) asi;					\
+    asi_pdes(asi) = NULL;					\
+    asi_subgoal(asi) = SUBG;					\
+    asi_dl_list(asi) = NULL;					\
+  }
 
 /*
  * Some new global variables ...
@@ -904,6 +916,8 @@ void abolish_wfs_space(CTXTdecl)
   current_de_block_top_gl = NULL;
   current_dl_block_top_gl = NULL;
   current_pnde_block_top_gl = NULL;
+
+  SM_ReleaseResources(smASI);
 
 #ifndef LOCAL_EVAL
     abolish_edge_space();

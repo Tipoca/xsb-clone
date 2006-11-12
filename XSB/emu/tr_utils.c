@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.123 2006/11/08 00:25:56 tswift Exp $
+** $Id: tr_utils.c,v 1.124 2006/11/09 16:58:34 ruim Exp $
 ** 
 */
 
@@ -2425,6 +2425,7 @@ void release_private_tabling_resources(CTXTdecl) {
 
 /*
  * Frees all the tabling space resources (with a hammer)
+ * WFS stuff released elsewhere -- including smASI.
  */
 
 void release_all_tabling_resources(CTXTdecl) {

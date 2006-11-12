@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.24 2005-12-22 23:33:58 tswift Exp $
+** $Id: slgdelay.h,v 1.25 2006-11-12 20:00:18 tswift Exp $
 ** 
 */
 
@@ -94,17 +94,22 @@ typedef struct AS_info {
   VariantSF subgoal;	/* subgoal to which this answer substitution belongs */
   DL	  dl_list;	/* delay lists that this answer substitution has */
 } *ASI;
+typedef struct AS_info ASI_Node;
 
 #define asi_pdes(X)	(X) -> pdes
 #define asi_subgoal(X)	(X) -> subgoal
 #define asi_dl_list(X)	(X) -> dl_list
 
+#define ASIs_PER_BLOCK  256
+
+/*
 #define create_as_info(ANS, SUBG)		\
     asi = (ASI) mem_alloc(sizeof(struct AS_info),TABLE_SPACE);	\
     Child(ANS) = (NODEptr) asi;			\
     asi_pdes(asi) = NULL;			\
     asi_subgoal(asi) = SUBG;			\
     asi_dl_list(asi) = NULL
+*/
 
 /*--------------------------------------------------------------------*/
 
