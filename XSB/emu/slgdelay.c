@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.47 2006/03/18 17:37:49 tswift Exp $
+** $Id: slgdelay.c,v 1.48 2006/11/12 20:00:18 tswift Exp $
 ** 
 */
 
@@ -56,7 +56,7 @@ Structure_Manager smASI      = SM_InitDecl(ASI_Node, ASIs_PER_BLOCK,
 
 #define create_as_info(ANS, SUBG)				\
   {								\
-    SM_AllocateStruct(smASI,((void *) asi));			\
+    SM_AllocateStruct(smASI,asi);				\
     Child(ANS) = (NODEptr) asi;					\
     asi_pdes(asi) = NULL;					\
     asi_subgoal(asi) = SUBG;					\
