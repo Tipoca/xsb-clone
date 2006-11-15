@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.24 2006-11-15 16:38:10 tswift Exp $
+** $Id: table_stats.c,v 1.25 2006-11-15 18:21:38 dwarren Exp $
 ** 
 */
 
@@ -256,6 +256,15 @@ void print_detailed_tablespace_stats(CTXTdecl) {
     btht,		/* Basic Trie Hash Tables */
     tstht;		/* Time Stamp Trie Hash Tables */
   
+  unsigned long
+    trieassert_alloc, trieassert_used,
+    tablespace_alloc, tablespace_used,
+    de_space_alloc, de_space_used,
+    dl_space_alloc, dl_space_used,
+    pnde_space_alloc, pnde_space_used;
+
+  int num_de_blocks, num_dl_blocks, num_pnde_blocks;
+
 
   btn = node_statistics(&smTableBTN);
   btht = hash_statistics(&smTableBTHT);
@@ -268,15 +277,6 @@ void print_detailed_tablespace_stats(CTXTdecl) {
   tsi = node_statistics(&smTSIN);
   tsi = node_statistics(&smTSIN);
   asi = node_statistics(&smASI);
-
-  unsigned long
-    trieassert_alloc, trieassert_used,
-    tablespace_alloc, tablespace_used,
-    de_space_alloc, de_space_used,
-    dl_space_alloc, dl_space_used,
-    pnde_space_alloc, pnde_space_used;
-
-  int num_de_blocks, num_dl_blocks, num_pnde_blocks;
 
   de_space_alloc = allocated_de_space(current_de_block_gl,&num_de_blocks);
   de_space_used = de_space_alloc - unused_de_space();
