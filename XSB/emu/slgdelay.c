@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.50 2006/11/15 16:38:09 tswift Exp $
+** $Id: slgdelay.c,v 1.51 2006/11/15 22:02:20 tswift Exp $
 ** 
 */
 
@@ -460,7 +460,7 @@ static DE intern_delay_element_private(CTXTdeclc Cell delay_elem)
   else
     return NULL;
 }
-#endif (MULTI_THREAD)
+#endif // (MULTI_THREAD)
 
 /*
  * Construct a delay list according to dlist.  Assign an entry in the
