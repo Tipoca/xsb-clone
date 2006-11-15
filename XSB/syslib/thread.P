@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.P,v 1.13 2006/10/23 13:51:58 ruim Exp $
+** $Id: thread.P,v 1.14 2006/11/05 12:18:38 ruim Exp $
 ** 
 */
 
@@ -39,8 +39,6 @@ thread_create( Goal, ThreadId , Options) :-
 %	                GLSize,TCSize,ComplSize,PDLSize,Detached)),
 	thread_request( XSB_THREAD_CREATE, Goal, ThreadId, 
 	                GLSize,TCSize,ComplSize,PDLSize,Detached).
-
-:- import writeln/1 from standard.
 
 check_options_list(Options,_GLSize,_TCSize,_ComplSize,_PDLSize,_Detached):- 
 	check_nonvar(Options,thread_create/3,3),
@@ -150,10 +148,16 @@ thread_yield:-
 abolish_private_tables:-
 	thread_request( ABOLISH_PRIVATE_TABLES, _,_,_, _, _, _, _).
 
+abolish_all_private_tables:-
+	thread_request( ABOLISH_ALL_PRIVATE_TABLES, _,_,_, _, _, _, _).
+
 /*---------------*/
 
 abolish_shared_tables:-
 	thread_request( ABOLISH_SHARED_TABLES, _,_,_, _, _, _, _).
+
+abolish_all_shared_tables:-
+	thread_request( ABOLISH_ALL_SHARED_TABLES, _,_,_, _, _, _, _).
 
 /* ==================================================================  */
 /* Routines used internally. */
