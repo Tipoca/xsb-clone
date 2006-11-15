@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.49 2006/11/14 23:51:20 ruim Exp $
+** $Id: slgdelay.c,v 1.50 2006/11/15 16:38:09 tswift Exp $
 ** 
 */
 
@@ -908,8 +908,19 @@ static void handle_unsupported_answer_subst(CTXTdeclc NODEptr as_leaf)
       simplify_neg_fails(CTXTc unsup_subgoal);
     }
   }
-  mem_dealloc(unsup_asi,sizeof(struct AS_info),TABLE_SPACE);
+  //  mem_dealloc(unsup_asi,sizeof(struct AS_info),TABLE_SPACE);
+#ifdef MULTI_THREAD
+  if (!get_private(TIF_PSC(subg_tif_ptr(asi_subgoal(unsup_asi))))) {
+    SM_DeallocateSharedStruct(smASI,unsup_asi);
+  }
+  else {
+    SM_DeallocateStruct(*private_smASI,unsup_asi);
+  }
+#else
+  SM_DeallocateStruct(smASI,unsup_asi);
+#endif
 }
+
 
 /*
  * To release all the DLs (and their DEs) in the DelayInfo node `asi'.
@@ -975,7 +986,18 @@ static void simplify_pos_unconditional(CTXTdeclc NODEptr as_leaf)
    * free it, and really mark `as_leaf' as an unconditional answer.
    */
   Child(as_leaf) = NULL;
-  mem_dealloc(asi,sizeof(struct AS_info),TABLE_SPACE);
+
+  //  mem_dealloc(asi,sizeof(struct AS_info),TABLE_SPACE);
+#ifdef MULTI_THREAD
+  if (!get_private(TIF_PSC(subg_tif_ptr(asi_subgoal(asi))))) {
+    SM_DeallocateSharedStruct(smASI,asi);
+  }
+  else {
+    SM_DeallocateStruct(*private_smASI,asi);
+  }
+#else
+  SM_DeallocateStruct(smASI,asi);
+#endif
 }
 
 /*
