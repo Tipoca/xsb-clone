@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.98 2006/04/27 21:08:47 tswift Exp $
+** $Id: subp.c,v 1.99 2006/07/14 16:49:36 tswift Exp $
 ** 
 */
 
@@ -271,13 +271,8 @@ void print_statistics(CTXTdeclc int amount) {
     break;
 
   case 2:		    /* Print Detailed Table Usage */
-#ifndef MULTI_THREAD
     print_detailed_tablespace_stats(CTXT);
     break;
-#else
-    fprintf(stdwarn,"statistics(2) not yet implemented for MT engine\n");
-    break;
-#endif
 
   case 3:		    /* Print Detailed Table, Stack, and CPUtime */
 #ifndef MULTI_THREAD

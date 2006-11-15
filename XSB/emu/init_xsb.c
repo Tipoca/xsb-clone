@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.111 2006-11-06 16:54:38 tswift Exp $
+** $Id: init_xsb.c,v 1.112 2006-11-15 16:38:09 tswift Exp $
 ** 
 */
 
@@ -958,6 +958,28 @@ void init_thread_structures(CTXTdecl)
 					  MT_PRIVATE_SPACE);
   SM_InitDeclDyna(private_smALN,AnsListNode, ALNs_PER_BLOCK,
 		  "Answer List Node (Private)");
+
+  private_smASI  = 
+    (struct Structure_Manager*) mem_alloc(sizeof(struct Structure_Manager),
+					  MT_PRIVATE_SPACE);
+  SM_InitDeclDyna(private_smASI,ASI_Node, ASIs_PER_BLOCK,
+		  "Answer Substitution Info (Private)");
+
+  private_current_de_block = NULL;
+  private_current_dl_block = NULL;
+  private_current_pnde_block = NULL;
+
+  private_released_des  = NULL;
+  private_released_dls   = NULL; 
+  private_released_pndes  = NULL;
+
+  private_next_free_de = NULL;
+  private_next_free_dl = NULL;
+  private_next_free_pnde = NULL; 
+
+  private_current_de_block_top = NULL; 
+  private_current_dl_block_top = NULL;
+  private_current_pnde_block_top = NULL;
 
   num_gc = 0;
   total_time_gc = 0;

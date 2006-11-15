@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.49 2006-11-09 14:52:25 ruim Exp $
+** $Id: tables.c,v 1.50 2006-11-15 16:38:10 tswift Exp $
 ** 
 */
 
@@ -586,8 +586,10 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
   dbg_print_subgoal(LOG_STRUCT_MANAGER, stddbg, producerSF);
   xsb_dbgmsg((LOG_STRUCT_MANAGER, " complete... reclaiming structures.\n"));
 
+#ifndef MULTI_THREAD
   if (flags[TRACE_STA])
     compute_maximum_tablespace_stats(CTXT);
+#endif
 
   /* Reclaim Auxiliary Structures from the TST
      ----------------------------------------- */

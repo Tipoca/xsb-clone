@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.32 2006-11-06 17:31:53 ruim Exp $
+** $Id: trie_internals.h,v 1.33 2006-11-15 16:38:10 tswift Exp $
 ** 
 */
 
@@ -1078,5 +1078,12 @@ extern TSTNptr tst_insert(CTXTdeclc TSTNptr root, TSTNptr start, Cell firstSym,
 
 /*===========================================================================*/
 
+/* defined here, because its difficult to include slgdelay.h everywhere I want. */
+
+extern Structure_Manager smASI;
+
+#define DLS_PER_BLOCK  2048
+#define DES_PER_BLOCK  2048
+#define PNDES_PER_BLOCK  2048
 
 #endif
