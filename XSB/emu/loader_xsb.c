@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.62 2006-06-23 14:53:10 tswift Exp $
+** $Id: loader_xsb.c,v 1.63 2006-11-20 16:53:42 ruim Exp $
 ** 
 */
 
@@ -975,11 +975,11 @@ byte *loader(CTXTdeclc char *file, int exp)
 | 
 |   SYS_MUTEX_LOCK( MUTEX_TABLE );
 |   for (tdispblk=tdispblkhdr.firstDB ; tdispblk != NULL ; tdispblk=tdispblk->NextDB) {
-|     if (th->tid <= tdispblk->MaxThread) {
-|       tip = (&(tdispblk->Thread0))[th->tid];
+|     if (xsb_thread_entry <= tdispblk->MaxThread) {
+|       tip = (&(tdispblk->Thread0))[xsb_thread_entry];
 |       if (tip) {
 | 	delete_predicate_table(CTXTc tip);
-| 	(&(tdispblk->Thread0))[th->tid] = (TIFptr) NULL;
+| 	(&(tdispblk->Thread0))[xsb_thread_entry] = (TIFptr) NULL;
 |       }
 |     }
 |   }

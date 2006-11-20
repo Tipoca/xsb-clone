@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.125 2006/11/12 20:00:18 tswift Exp $
+** $Id: tr_utils.c,v 1.126 2006/11/15 16:38:10 tswift Exp $
 ** 
 */
 
@@ -2467,10 +2467,10 @@ void thread_free_private_tifs(CTXTdecl) {
   SYS_MUTEX_LOCK( MUTEX_TABLE );
   for (tdispblk=tdispblkhdr.firstDB 
 	 ; tdispblk != NULL ; tdispblk=tdispblk->NextDB) {
-    if (th->tid <= tdispblk->MaxThread) {
-      tip = (&(tdispblk->Thread0))[th->tid];
+    if (xsb_thread_entry <= tdispblk->MaxThread) {
+      tip = (&(tdispblk->Thread0))[xsb_thread_entry];
       if (tip) {
-	(&(tdispblk->Thread0))[th->tid] = (TIFptr) NULL;
+	(&(tdispblk->Thread0))[xsb_thread_entry] = (TIFptr) NULL;
 	Free_Private_TIF(tip);
       }
     }

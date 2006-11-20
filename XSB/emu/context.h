@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.47 2006-11-15 16:38:09 tswift Exp $
+** $Id: context.h,v 1.48 2006-11-20 16:53:41 ruim Exp $
 ** 
 */
 
@@ -402,6 +402,7 @@ typedef struct th_context th_context ;
 
 
 #define xsb_thread_id           (th -> tid)
+#define xsb_thread_entry        (THREAD_ENTRY(th -> tid))
 
 #define call_intercept		(th->_call_intercept)
 

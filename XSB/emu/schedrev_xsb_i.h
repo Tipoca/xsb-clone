@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.19 2006-11-05 23:53:15 ruim Exp $
+** $Id: schedrev_xsb_i.h,v 1.20 2006-11-20 16:53:42 ruim Exp $
 ** 
 */
 
@@ -86,7 +86,7 @@ static CPtr sched_answers(CTXTdeclc VariantSF producer_sf, CPtr *last_consumer)
     else
       while ( IsNonNULL(consumer_cpf) ) {
 #ifdef CONC_COMPL
-	if( int_val(nlcp_tid(consumer_cpf)) != th->tid )
+	if( int_val(nlcp_tid(consumer_cpf)) != xsb_thread_id )
 		;
 	else
 #endif

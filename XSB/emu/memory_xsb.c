@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.38 2006-11-08 17:06:33 ruim Exp $
+** $Id: memory_xsb.c,v 1.39 2006-11-20 16:53:42 ruim Exp $
 ** 
 */
 
@@ -511,7 +511,7 @@ void complstack_realloc (CTXTdeclc long new_size) {
     /* In CONC_COMPL there might be completion stack frames pointing to
        subgoal frames owned by other threads which in turn point
        to the other thread's completion stack */
-    if( subg_tid(subg_ptr) == th->tid )
+    if( subg_tid(subg_ptr) == xsb_thread_id )
 #endif
     subg_compl_stack_ptr(subg_ptr) =
       (CPtr)((byte *)subg_compl_stack_ptr(subg_ptr) + bottom_offset);

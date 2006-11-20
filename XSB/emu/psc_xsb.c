@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.33 2006-09-06 15:11:27 dwarren Exp $
+** $Id: psc_xsb.c,v 1.34 2006-11-20 16:53:42 ruim Exp $
 ** 
 */
 
@@ -224,10 +224,10 @@ TIFptr get_tip(CTXTdeclc Psc psc) {
   if (TIF_EvalMethod(*tip) != DISPATCH_BLOCK) return *tip;
   /* *tip points to 3rd word in TDispBlk, so get addr of TDispBlk */
   { struct TDispBlk_t *tdispblk = (struct TDispBlk_t *) (*tip);
-    TIFptr rtip = (TIFptr)((&(tdispblk->Thread0))[th->tid]);
+    TIFptr rtip = (TIFptr)((&(tdispblk->Thread0))[xsb_thread_entry]);
     if (!rtip) {
       rtip = New_TIF(CTXTc psc);
-      (&(tdispblk->Thread0))[th->tid] = rtip;
+      (&(tdispblk->Thread0))[xsb_thread_entry] = rtip;
     }
     return rtip; 
   }
