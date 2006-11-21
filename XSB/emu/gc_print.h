@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_print.h,v 1.7 2005-01-14 18:31:16 ruim Exp $
+** $Id: gc_print.h,v 1.8 2006-11-21 00:52:20 ruim Exp $
 ** 
 */
 
@@ -150,6 +150,7 @@ void print_heap(CTXTdeclc int start, int end, int add)
   char buf[100] ;
   FILE *where ;
 
+  SYS_MUTEX_LOCK(MUTEX_STACKS);
   sprintf(buf,"HEAP%d",printnum) ;
   printnum += add ;
   where = fopen(buf,"w") ;
@@ -171,6 +172,7 @@ void print_heap(CTXTdeclc int start, int end, int add)
   }
 
   fclose(where) ;
+  SYS_MUTEX_UNLOCK(MUTEX_STACKS);
 } /* print_heap */
 
 void print_ls(CTXTdeclc int add)
@@ -180,6 +182,7 @@ void print_ls(CTXTdeclc int add)
   int start ;
   FILE *where ;
 
+  SYS_MUTEX_LOCK(MUTEX_STACKS);
   sprintf(buf,"LS%d",printnum) ;
   printnum += add ;
   where = fopen(buf,"w") ;
@@ -200,6 +203,7 @@ void print_ls(CTXTdeclc int add)
   }
 
   fclose(where) ;
+  SYS_MUTEX_UNLOCK(MUTEX_STACKS);
 } /* print_ls */
 
 void print_cp(CTXTdeclc int add)
@@ -208,6 +212,8 @@ void print_cp(CTXTdeclc int add)
   char buf[100] ;
   int  start ;
   FILE *where ;
+
+  SYS_MUTEX_LOCK(MUTEX_STACKS);
 
   sprintf(buf,"CP%d",printnum) ;
   printnum += add ;
@@ -230,6 +236,7 @@ void print_cp(CTXTdeclc int add)
   }
 
   fclose(where) ;
+  SYS_MUTEX_UNLOCK(MUTEX_STACKS);
 } /* print_cp */
 
 void print_tr(CTXTdeclc int add)
@@ -238,6 +245,8 @@ void print_tr(CTXTdeclc int add)
   int  start ;
   FILE *where ;
   char buf[100] ;
+
+  SYS_MUTEX_LOCK(MUTEX_STACKS);
 
   sprintf(buf,"TRAIL%d",printnum) ;
   printnum += add ;
@@ -282,6 +291,7 @@ void print_tr(CTXTdeclc int add)
   }
 
   fclose(where) ;
+  SYS_MUTEX_UNLOCK(MUTEX_STACKS);
 } /* print_tr */
 
 void print_regs(CTXTdeclc int a, int add)
