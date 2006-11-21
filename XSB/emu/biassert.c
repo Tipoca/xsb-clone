@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.128 2006-11-20 16:53:41 ruim Exp $
+** $Id: biassert.c,v 1.129 2006-11-21 01:22:12 ruim Exp $
 ** 
 */
 
@@ -3244,7 +3244,7 @@ PrRef build_prref( CTXTdeclc Psc psc )
       /* create new switchonthread instruction and dispblock */
       pb disp_instr_addr = mem_calloc(sizeof(Cell),2,MT_PRIVATE_SPACE);
       dispblk = (struct DispBlk_t *) 
-	mem_calloc(sizeof(struct DispBlk_t)+MAX_THREADS*sizeof(Cell),
+	mem_calloc(sizeof(struct DispBlk_t)+max_threads_glc*sizeof(Cell),
 		   1,MT_PRIVATE_SPACE);
 
       SYS_MUTEX_LOCK( MUTEX_DYNAMIC );
@@ -3254,7 +3254,7 @@ PrRef build_prref( CTXTdeclc Psc psc )
       if (!DispBlkHdr.lastDB) DispBlkHdr.lastDB = dispblk;
       SYS_MUTEX_UNLOCK( MUTEX_DYNAMIC );
 
-      dispblk->MaxThread = MAX_THREADS;
+      dispblk->MaxThread = max_threads_glc;
       *disp_instr_addr = switchonthread;
       *(((CPtr *)disp_instr_addr)+1) = (CPtr)dispblk;
       set_ep(psc,disp_instr_addr);
