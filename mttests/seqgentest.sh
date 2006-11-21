@@ -12,7 +12,7 @@ echo "--------------------------------------------------------------------"
 echo "Testing $BASEDIR/$FILE"
 #echo "$EMU"     # debug check: verify that options have been passed to xsb
 
-$EMU << EOF
+$EMU -g none << EOF
 [$FILE].
 tell(temp).
 $CMD

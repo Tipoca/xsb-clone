@@ -42,7 +42,7 @@ ulimit -c unlimited
 
 #$EMU -r -gc none -m 8192 << EOF
 #$EMU << EOF
-$EMU  -gc none  << EOF
+$EMU  -g none  << EOF
 
 ['../test_concurrent'].
 
