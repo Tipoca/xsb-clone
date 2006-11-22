@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.113 2006-11-21 01:22:12 ruim Exp $
+** $Id: init_xsb.c,v 1.114 2006-11-22 16:18:07 ruim Exp $
 ** 
 */
 
@@ -1233,6 +1233,25 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   num_vars_in_var_regs = -1;
   init_trie_aux_areas(CTXT);
   tstInitDataStructs(CTXT);
+
+  /* GC and Heap realloc stuff */ 
+
+#ifdef MULTI_THREAD
+  total_time_gc = 0;
+  total_collected = 0;
+  num_gc = 0;
+
+  heap_marks = NULL;
+  ls_marks = NULL;
+  tr_marks = NULL;
+  cp_marks = NULL;
+
+  slide_buf = NULL;
+  slide_top = 0;
+  slide_buffering = 0;
+  slide_buf_size = 0;
+#endif
+
 } /* init_machine() */
 
 Psc make_code_psc_rec(char *name, int arity, Psc mod_psc) {
