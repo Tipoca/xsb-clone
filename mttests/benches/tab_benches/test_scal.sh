@@ -3,7 +3,7 @@ DIR=$2
 
 . ../funcs.sh
 
-min $3 32
+min $3 64
 MAX=$?
 
 nthreads=1

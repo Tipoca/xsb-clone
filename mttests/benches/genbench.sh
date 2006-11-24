@@ -13,7 +13,7 @@ BASEDIR=`basename $DIR`
 #echo "Benching $BASEDIR/$FILE"
 #echo "$EMU"     # debug check: verify that options have been passed to xsb
 
-$EMU << EOF
+$EMU -g none << EOF
 $COMP_CMD
 tell(temp).
 $CMD

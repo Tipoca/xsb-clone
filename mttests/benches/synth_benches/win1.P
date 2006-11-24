@@ -18,6 +18,8 @@
 :- import get_residual/2 from tables.
 :- import 't not'/1 from tables.
 
+:- thread_shared move2k/2, move1k/2.
+
 cycle_win_bench:- 
 	bigbench(win2k(1),[win,cycle(2048),its(75)],75),
 	bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(75)],75).
