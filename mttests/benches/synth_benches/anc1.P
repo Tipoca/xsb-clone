@@ -1,10 +1,10 @@
 chain_ancestor_bench:- 
-	bigbench(rancestor1k(1,_),[tabled_right_anc,1024,chain],5),
+	bigbench(rancestor1k(1,_),[tabled_right_anc,1024,chain],2),
 	bigbench(ancestor1k(1,_),[tabled_left_anc,1024,chain],1500),
 	bigbench(ancestor2k(1,_),[tabled_left_anc,2048,chain],750).
 
 cycle_ancestor_bench:- 
-	bigbench(rancestor1k(1,_),[tabled_right_anc,1024,cycle],3),
+	bigbench(rancestor1k(1,_),[tabled_right_anc,1024,cycle],1),
 	bigbench(ancestor1k(1,_),[tabled_left_anc,1024,cycle],1500),
 	bigbench(ancestor2k(1,_),[tabled_left_tanc,2048,cycle],750).
 

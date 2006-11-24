@@ -29,8 +29,11 @@ chain_win_bench:-
 	bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(1000)],1000).
 
 abolish_tables :-
-	abolish_table_pred(win2k/1),
-	abolish_table_pred(unsafe_win/1).
+	abolish_all_tables.
+
+%abolish_tables :-
+%	abolish_table_pred(win2k/1),
+%	abolish_table_pred(unsafe_win/1).
 
 :- table win2k/1.
 :- thread_shared win2k/1.

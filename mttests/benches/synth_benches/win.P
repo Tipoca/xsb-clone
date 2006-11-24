@@ -1,3 +1,7 @@
+:- import xsb_configuration/2 from xsb_configuration.
+
+:- import abolish_all_private_tables from thread.
+
 :- import 
 	abolish_table_info/0,
 	buff_alloc/3, buff_cell/3, buff_dealloc/4, buff_set_word/3, buff_word/3,
@@ -39,8 +43,13 @@ mt_chain_win_bench(M):-
 	mt_bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(1000)],1000,M).
 
 abolish_tables :-
-	abolish_table_pred(win2k/1),
-	abolish_table_pred(unsafe_win/1).
+	xsb_configuration(engine_mode,'multi-threading') ->
+	abolish_all_private_tables ;
+	abolish_all_tables.
+
+%abolish_tables :-
+%	abolish_table_pred(win2k/1),
+%	abolish_table_pred(unsafe_win/1).
 
 :- table win2k/1.
 win2k(X):- move2k(X,Y),tnot(win2k(Y)).
