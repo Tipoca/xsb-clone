@@ -19,24 +19,24 @@
 :- import 't not'/1 from tables.
 
 cycle_win_bench:- 
-	bigbench(win2k(1),[win,cycle(2048),its(100)],100),
-	bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(100)],100).
+	bigbench(win2k(1),[win,cycle(2048),its(75)],75),
+	bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(75)],75).
 
 mt_cycle_win_bench(M):- 
-	mt_bigbench(win2k(1),[win,cycle(2048),its(100)],100,M),
-	mt_bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(100)],100,M).
+	mt_bigbench(win2k(1),[win,cycle(2048),its(75)],75,M),
+	mt_bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(75)],75,M).
 
 chain_win_bench:- 
-	bigbench(win2k(1),[win,chain(2048),its(100)],100),
-	bigbench(unsafe_win(1),[unsafe_win,chain(2048),its(100)],100),
-	bigbench(sldnf1_win(1),[sldnf1_win,chain(2048),its(100)],100),
-	bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(100)],100).
+	bigbench(win2k(1),[win,chain(2048),its(200)],200),
+	bigbench(unsafe_win(1),[unsafe_win,chain(2048),its(200)],200),
+	bigbench(sldnf1_win(1),[sldnf1_win,chain(2048),its(1000)],1000),
+	bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(1000)],1000).
 
 mt_chain_win_bench(M):- 
-	mt_bigbench(win2k(1),[win,chain(2048),its(100)],100,M),
-	mt_bigbench(unsafe_win(1),[unsafe_win,chain(2048),its(100)],100,M),
-	mt_bigbench(sldnf1_win(1),[sldnf1_win,chain(2048),its(100)],100,M),
-	mt_bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(100)],100,M).
+	mt_bigbench(win2k(1),[win,chain(2048),its(200)],200,M),
+	mt_bigbench(unsafe_win(1),[unsafe_win,chain(2048),its(200)],200,M),
+	mt_bigbench(sldnf1_win(1),[sldnf1_win,chain(2048),its(1000)],1000,M),
+	mt_bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(1000)],1000,M).
 
 abolish_tables :-
 	abolish_table_pred(win2k/1),

@@ -1,6 +1,10 @@
 PREF=$1
 DIR=$2
-MAX=$3
+
+. ../funcs.sh
+
+min $3 32
+MAX=$?
 
 nthreads=1
 while [ $nthreads -le $MAX ]

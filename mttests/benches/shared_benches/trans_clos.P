@@ -194,9 +194,11 @@ seq_benches(GName,GSize) :-
 	bench(tc_rr,tc_rr,GName,GSize).
 
 mt_bench( T, GName, GSize, NThreads ) :-
+	GSize >= NThreads,
 	init_info(T),
 	do_bench_mt( [T,GName], GSize, NThreads ),
 	flush_output.
+mt_bench( T, GName, GSize, NThreads ).
 
 
 mt_benches(GName,GSize,NT) :-
@@ -207,4 +209,20 @@ mt_benches(GName,GSize,NT) :-
 	->	mt_bench(tc_rr_p,GName,GSize,NT)
 	;	true
 	).
+
+mt_mem_bench_ls(GName,GSize,NT) :-
+	readGraph(GName),
+	mt_bench(tc_lr_s,GName,GSize,NT).
+
+mt_mem_bench_lp(GName,GSize,NT) :-
+	readGraph(GName),
+	mt_bench(tc_lr_p,GName,GSize,NT).
+
+mt_mem_bench_rs(GName,GSize,NT) :-
+	readGraph(GName),
+	mt_bench(tc_rr_s,GName,GSize,NT).
+
+mt_mem_bench_rp(GName,GSize,NT) :-
+	readGraph(GName),
+	mt_bench(tc_rr_p,GName,GSize,NT).
 
