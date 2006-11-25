@@ -6,7 +6,8 @@ bench( Type, N ) :-
         cputime(T1),
         main1(N),
         cputime(T2), T is T2 - T1,
-        writeq(datum(Type,T)), writeln('.'), nl.
+        writeq(datum(Type,T)), writeln('.'), nl,
+	flush_output.
                                                                                 
 main1(N) :- repeat(N), abolish_tables, tp, fail.
 main1(_).

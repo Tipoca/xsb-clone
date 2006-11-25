@@ -26,23 +26,27 @@
 
 cycle_win_bench:- 
 	bigbench(win2k(1),[win,cycle(2048),its(75)],75),
-	bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(75)],75).
+	bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(75)],75),
+	flush_output.
 
 mt_cycle_win_bench(M):- 
 	mt_bigbench(win2k(1),[win,cycle(2048),its(20)],20,M),
-	mt_bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(20)],20,M).
+	mt_bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(20)],20,M),
+	flush_output.
 
 chain_win_bench:- 
 	bigbench(win2k(1),[win,chain(2048),its(200)],200),
 	bigbench(unsafe_win(1),[unsafe_win,chain(2048),its(200)],200),
 	bigbench(sldnf1_win(1),[sldnf1_win,chain(2048),its(1000)],1000),
-	bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(1000)],1000).
+	bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(1000)],1000),
+	flush_output.
 
 mt_chain_win_bench(M):- 
 	mt_bigbench(win2k(1),[win,chain(2048),its(50)],50,M),
 	mt_bigbench(unsafe_win(1),[unsafe_win,chain(2048),its(50)],50,M),
 	mt_bigbench(sldnf1_win(1),[sldnf1_win,chain(2048),its(250)],250,M),
-	mt_bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(250)],250,M).
+	mt_bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(250)],250,M),
+	flush_output.
 
 abolish_tables :-
 	xsb_configuration(engine_mode,'multi-threading') ->

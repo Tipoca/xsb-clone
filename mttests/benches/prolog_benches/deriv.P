@@ -21,7 +21,8 @@ bench_deriv(Type,N,Length):-
 	cputime(T1),
 	main1(N,Log,Times,Div,Ops),
 	cputime(T2),T is T2-T1,
-	writeq(datum(Type,T)),writeln('.'),nl.
+	writeq(datum(Type,T)),writeln('.'),nl,
+	flush_output.
 
 mt_bench_deriv(Type,N,Length,M):- 
 	create_log(Length,Log),
@@ -31,7 +32,8 @@ mt_bench_deriv(Type,N,Length,M):-
 	walltime(T1),
 	n_par_execute(main1(N,Log,Times,Div,Ops),M),
 	walltime(T2),T is T2-T1,
-	writeq(datum(Type,M,T)),writeln('.'),nl.
+	writeq(datum(Type,M,T)),writeln('.'),nl,
+	flush_output.
 
 
 main1(N,Log,Times,Div,Ops):- 

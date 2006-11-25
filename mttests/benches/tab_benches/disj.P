@@ -8,13 +8,15 @@ mt_bench(Type,N,M):-
         walltime(T1),
         n_par_execute(main1(N), M),
         walltime(T2),T is T2-T1,
-        writeq(datum(Type,M,T)),writeln('.'),nl.
+        writeq(datum(Type,M,T)),writeln('.'),nl,
+	flush_output.
                                                                                 
 bench( Type, N ) :-
         cputime(T1),
         main1(N),
         cputime(T2), T is T2 - T1,
-        writeq(datum(Type,T)), writeln('.'), nl.
+        writeq(datum(Type,T)), writeln('.'), nl,
+	flush_output.
                                                                                 
 main1(N) :- repeat(N), abolish_tables, tp, fail.
 main1(_).

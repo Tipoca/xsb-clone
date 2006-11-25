@@ -19,7 +19,8 @@ bench_serialise(Type,N,Length):-
 	cputime(T1),
 	main1(N,L),
 	cputime(T2),T is T2-T1,
-	writeq(datum(Type,T)),writeln('.'),nl.
+	writeq(datum(Type,T)),writeln('.'),nl,
+	flush_output.
 
 create_random_list(1,[R]):- !,prand(R).
 create_random_list(N,[R|T]):- 

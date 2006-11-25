@@ -20,7 +20,8 @@ bench_serialise(Type,N,Length):-
 	cputime(T1),
 	main1(N,L),
 	cputime(T2),T is T2-T1,
-	writeq(datum(Type,T)),writeln('.'),nl.
+	writeq(datum(Type,T)),writeln('.'),nl,
+	flush_output.
 
 mt_bench_serialise(Type,N,Length,M) :-
 	see(random_list),
@@ -29,7 +30,8 @@ mt_bench_serialise(Type,N,Length,M) :-
 	walltime(T1),
 	n_par_execute(main1(N,L), M),
 	walltime(T2),T is T2-T1,
-	writeq(datum(Type,M,T)),writeln('.'),nl.
+	writeq(datum(Type,M,T)),writeln('.'),nl,
+	flush_output.
 
 
 read_list([], end_of_file).

@@ -47,7 +47,8 @@ bench_n_threads(N) :-
 
 
 mt_bench(Type,_,1) :-
-	write(datum(Type,1,0)), writeln('.').
+	write(datum(Type,1,0)), writeln('.'),
+	flus_output.
 mt_bench(Type,M,N) :-
 	N > 1,
 	abolish( work_size/1 ),
@@ -56,5 +57,6 @@ mt_bench(Type,M,N) :-
 	bench_n_threads(N),
 	walltime(FT),
 	T is FT - ST,
-	write(datum(Type,N,T)), writeln('.').
+	write(datum(Type,N,T)), writeln('.'),
+	flush_output.
 
