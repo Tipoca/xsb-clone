@@ -48,7 +48,7 @@ bench_n_threads(N) :-
 
 mt_bench(Type,_,1) :-
 	write(datum(Type,1,0)), writeln('.'),
-	flus_output.
+	flush_output.
 mt_bench(Type,M,N) :-
 	N > 1,
 	abolish( work_size/1 ),
