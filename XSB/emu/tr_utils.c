@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.127 2006/11/20 16:53:42 ruim Exp $
+** $Id: tr_utils.c,v 1.128 2006/11/22 16:18:07 ruim Exp $
 ** 
 */
 
@@ -2429,6 +2429,8 @@ void abolish_private_tables(CTXTdecl) {
 
 void abolish_all_private_tables(CTXTdecl) {
 
+  TIFptr pTIF;
+
   check_for_incomplete_tables("abolish_all_private_tables/0");
 
   // TRUE means we found a private table
@@ -2436,6 +2438,12 @@ void abolish_all_private_tables(CTXTdecl) {
     xsb_abort("[abolish_all_private_tables/0] Illegal table operation"
 		  "\n\t Backtracking through tables to be abolished.");
   else {
+    for ( pTIF = private_tif_list.first; IsNonNULL(pTIF)
+	  			       ; pTIF = TIF_NextTIF(pTIF) ) {
+	  TIF_CallTrie(pTIF) = NULL;
+    	  TIF_Subgoals(pTIF) = NULL;
+    }
+
     SM_ReleaseResources(*private_smTableBTN);
     TrieHT_FreeAllocatedBuckets(*private_smTableBTHT);
     SM_ReleaseResources(*private_smTableBTHT);
