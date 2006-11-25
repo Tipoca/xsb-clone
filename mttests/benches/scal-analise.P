@@ -3,6 +3,7 @@
 min(A,B,A) :- A < B.
 min(A,B,B) :- A >= B.
 
+min_list([],1000000).
 min_list([X],X).
 min_list([X|L],Y) :- min_list(L,Z), min(Z,X,Y).
 
