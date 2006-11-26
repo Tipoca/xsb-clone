@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.43 2006-11-06 10:31:39 ruim Exp $
+** $Id: tries.h,v 1.44 2006-11-26 00:39:21 ruim Exp $
 ** 
 */
 
@@ -403,11 +403,13 @@ extern int  global_num_vars;
 /* used for statistics */
 extern counter subg_chk_ins, subg_inserts, ans_chk_ins, ans_inserts;
 
+#ifndef MULTI_THREAD
 /* trie routine variables */
-extern BTNptr Last_Nod_Sav, Paren;
+extern BTNptr Last_Nod_Sav;
 
 /* registers for trie backtracking */
 extern CPtr reg_arrayptr, var_regs[];
+#endif
 
 /*----------------------------------------------------------------------*/
 
