@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.114 2006-11-22 16:18:07 ruim Exp $
+** $Id: init_xsb.c,v 1.115 2006-11-26 23:43:43 tswift Exp $
 ** 
 */
 
@@ -966,6 +966,12 @@ void init_thread_structures(CTXTdecl)
 					  MT_PRIVATE_SPACE);
   SM_InitDeclDyna(private_smASI,ASI_Node, ASIs_PER_BLOCK,
 		  "Answer Substitution Info (Private)");
+
+  private_smDelCF  = 
+    (struct Structure_Manager*) mem_alloc(sizeof(struct Structure_Manager),
+					  MT_PRIVATE_SPACE);
+  SM_InitDeclDyna(private_smDelCF, DeletedClauseFrame, DELCFs_PER_BLOCK,
+		  "Deleted Clause Frames (Private)");
 
   private_current_de_block = NULL;
   private_current_dl_block = NULL;

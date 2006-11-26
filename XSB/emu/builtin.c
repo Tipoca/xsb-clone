@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.271 2006-10-23 15:26:25 ruim Exp $
+** $Id: builtin.c,v 1.272 2006-11-26 23:43:42 tswift Exp $
 ** 
 */
 
@@ -1738,6 +1738,9 @@ int builtin_call(CTXTdeclc byte number)
   case SYS_ERRNO:			/* R1: -Int (errno) */
     ctop_int(CTXTc 1, errno);
     break;
+
+    /* TLS: file_writequoted is intended for use within l_write.  Do
+       not use it directly -- as it should have its streams locked. */
   case FILE_WRITEQUOTED: {
     FILE* fptr;
     int   tmpval = ptoc_int(CTXTc 1);

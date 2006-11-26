@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.55 2006-11-20 16:53:42 ruim Exp $
+** $Id: macro_xsb.h,v 1.56 2006-11-26 23:43:43 tswift Exp $
 ** 
 */
 
@@ -330,6 +330,8 @@ typedef struct Deleted_Clause_Frame {
 #define DCF_PrevDCF(pDCF)	   ( (pDCF)->prev_delCF )
 #define DCF_NextPredDCF(pDCF)	   ( (pDCF)->next_pred_delCF )
 #define DCF_PrevPredDCF(pDCF)	   ( (pDCF)->prev_pred_delCF )
+
+#define DELCFs_PER_BLOCK  2048
 
 /*===========================================================================*/
 
