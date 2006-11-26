@@ -92,7 +92,7 @@ create_threads( M, P, [T|Ts] ) :-
 
 readGraph(Name) :-
 	abolish(edge/2),
-        index(edge/2,trie),
+        %index(edge/2,trie),
 	load_dyn(Name).
 
 init_info(T) :-
