@@ -1,27 +1,27 @@
 :- thread_shared move2k/2, move1k/2.
 
 chain_ancestor_bench:- 
-	bigbench(rancestor1k(1,_),[tabled_right_anc,1024,chain],2),
-	bigbench(ancestor1k(1,_),[tabled_left_anc,1024,chain],1500),
-	bigbench(ancestor2k(1,_),[tabled_left_anc,2048,chain],750),
+	bigbench(rancestor1k(1,_),[tabled_right_anc,chain(1024),its(4)],4),
+	bigbench(ancestor1k(1,_),[tabled_left_anc,chain(1024),its(3000)],3000),
+	bigbench(ancestor2k(1,_),[tabled_left_anc,chain(2048),its(1500)],1500),
 	flush_output.
 
 mt_chain_ancestor_bench(M):- 
-	mt_bigbench(rancestor1k(1,_),[tabled_right_anc,1024,chain],1,M),
-	mt_bigbench(ancestor1k(1,_),[tabled_left_anc,1024,chain],375,M),
-	mt_bigbench(ancestor2k(1,_),[tabled_left_anc,2048,chain],200,M),
+	mt_bigbench(rancestor1k(1,_),[tabled_right_anc,chain(1024),its(1)],1,M),
+	mt_bigbench(ancestor1k(1,_),[tabled_left_anc,chain(1024),its(375)],375,M),
+	mt_bigbench(ancestor2k(1,_),[tabled_left_anc,chain(2048),its(200)],200,M),
 	flush_output.
 
 cycle_ancestor_bench:- 
-	bigbench(rancestor1k(1,_),[tabled_right_anc,1024,cycle],1),
-	bigbench(ancestor1k(1,_),[tabled_left_anc,1024,cycle],1500),
-	bigbench(ancestor2k(1,_),[tabled_left_anc,2048,cycle],750),
+	bigbench(rancestor1k(1,_),[tabled_right_anc,cycle(1024),its(2)],2),
+	bigbench(ancestor1k(1,_),[tabled_left_anc,cycle(1024),its(3000)],3000),
+	bigbench(ancestor2k(1,_),[tabled_left_anc,cycle(2048),its(1500)],1500),
 	flush_output.
 
 mt_cycle_ancestor_bench(M):- 
-	mt_bigbench(rancestor1k(1,_),[tabled_right_anc,1024,cycle],1,M),
-	mt_bigbench(ancestor1k(1,_),[tabled_left_anc,1024,cycle],375,M),
-	mt_bigbench(ancestor2k(1,_),[tabled_left_anc,2048,cycle],200,M),
+	mt_bigbench(rancestor1k(1,_),[tabled_right_anc,cycle(1024),its(1)],1,M),
+	mt_bigbench(ancestor1k(1,_),[tabled_left_anc,cycle(1024),its(375)],375,M),
+	mt_bigbench(ancestor2k(1,_),[tabled_left_anc,cycle(2048),its(200)],200,M),
 	flush_output.
 
 abolish_tables :-

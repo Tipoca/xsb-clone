@@ -862,28 +862,7 @@ member1__1(_185,_187) :-
                          [_185,_187]).
 
 abolish_tables :-
-	abolish_table_pred(member1__1/2),
-	abolish_table_pred(peepelimupd__1/4),
-	abolish_table_pred(peepdel__1/3),
-	abolish_table_pred(apeepelim__1/6),
-	abolish_table_pred(peepelim__1/6),
-	abolish_table_pred(peepredundant__1/6),
-	abolish_table_pred(peepterm__1/2),
-	abolish_table_pred(peepchk__1/2),
-	abolish_table_pred(peepuse__1/2),
-	abolish_table_pred(poptchkmember__1/3),
-	abolish_table_pred(poptmovreg0__1/4),
-	abolish_table_pred(poptmovreg__1/5),
-	abolish_table_pred(notmember1__1/2),
-	abolish_table_pred(compbuiltin__1/3),
-	abolish_table_pred(poptbuiltin__1/4),
-	abolish_table_pred(comppopt4__1/5),
-	abolish_table_pred(poptuni2bld__1/2),
-	abolish_table_pred(comppopt1a__1/2),
-	abolish_table_pred(comppopt1av__1/2),
-	abolish_table_pred(comppopt11__1/3),
-	abolish_table_pred(comppopt1__1/2),
-	abolish_table_pred(comppeepopt__1/3).
+	abolish_all_tables.
 
 %---------------- Definitions of tabled preds --------------
 

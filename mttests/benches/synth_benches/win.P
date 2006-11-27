@@ -25,8 +25,8 @@
 :- thread_shared move2k/2, move1k/2.
 
 cycle_win_bench:- 
-	bigbench(win2k(1),[win,cycle(2048),its(75)],75),
-	bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(75)],75),
+	bigbench(win2k(1),[win,cycle(2048),its(150)],150),
+	bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(150)],150),
 	flush_output.
 
 mt_cycle_win_bench(M):- 
@@ -35,10 +35,10 @@ mt_cycle_win_bench(M):-
 	flush_output.
 
 chain_win_bench:- 
-	bigbench(win2k(1),[win,chain(2048),its(200)],200),
-	bigbench(unsafe_win(1),[unsafe_win,chain(2048),its(200)],200),
-	bigbench(sldnf1_win(1),[sldnf1_win,chain(2048),its(1000)],1000),
-	bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(1000)],1000),
+	bigbench(win2k(1),[win,chain(2048),its(400)],400),
+	bigbench(unsafe_win(1),[unsafe_win,chain(2048),its(400)],400),
+	bigbench(sldnf1_win(1),[sldnf1_win,chain(2048),its(2000)],2000),
+	bigbench(sldnf2_win(1),[sldnf2_win,chain(2048),its(2000)],2000),
 	flush_output.
 
 mt_chain_win_bench(M):- 

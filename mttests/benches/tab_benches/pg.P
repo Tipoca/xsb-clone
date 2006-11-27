@@ -4,6 +4,10 @@
 
 :- import n_par_execute/2 from thread.
                                                                                 
+:- import xsb_configuration/2 from xsb_configuration.
+
+:- import abolish_all_private_tables/0 from thread.
+
 mt_bench(Type,N,M):-
         walltime(T1),
         n_par_execute(main1(N), M),
@@ -132,16 +136,9 @@ pdsbm__1(_225,_227) :-
                          [_225,_227]).
 
 abolish_tables :-
-	abolish_table_pred(pdsbm__1/2),
-	abolish_table_pred(pds__1/2),
-	abolish_table_pred(pds1__1/4),
-	abolish_table_pred(check__1/5),
-	abolish_table_pred(mergedelete__1/3),
-	abolish_table_pred(rev__1/3),
-	abolish_table_pred(dif__1/5),
-	abolish_table_pred(iota1__1/3),
-	abolish_table_pred(iota__1/2),
-	abolish_table_pred(member__1/2).
+        xsb_configuration(engine_mode,'multi-threading') ->
+        abolish_all_private_tables ;
+        abolish_all_tables.
 
 %---------------- Definitions of tabled preds --------------
 

@@ -321,37 +321,7 @@ prec__1(_93) :-
                           [_93]).
 
 abolish_tables :-
-	abolish_table_pred(prec__1/1),
-	abolish_table_pred(resources__1/1),
-	abolish_table_pred(minaf__1/1),
-	abolish_table_pred(minnf__1/1),
-	abolish_table_pred(maxef__1/1),
-	abolish_table_pred(minsf__1/1),
-	abolish_table_pred(maxnf__1/1),
-	abolish_table_pred(duration__1/2),
-	abolish_table_pred(jobs__1/1),
-	abolish_table_pred(p__1/2),
-	abolish_table_pred(el__1/2),
-	abolish_table_pred(rev__1/3),
-	abolish_table_pred(disj__1/4),
-	abolish_table_pred(disjunct__1/1),
-	abolish_table_pred(ellist__1/3),
-	abolish_table_pred(makedisj2__1/4),
-	abolish_table_pred(makedisj1__1/3),
-	abolish_table_pred(makedisj__1/4),
-	abolish_table_pred(makeminnf__1/2),
-	abolish_table_pred(makeminsf__1/2),
-	abolish_table_pred(makeminaf__1/2),
-	abolish_table_pred(smeqc__1/3),
-	abolish_table_pred(makemaxef__1/2),
-	abolish_table_pred(makemaxnf__1/2),
-	abolish_table_pred(gteqc__1/3),
-	abolish_table_pred(makeprec__1/2),
-	abolish_table_pred(setup__1/3),
-	abolish_table_pred(memberEl__1/3),
-	abolish_table_pred(makevars__1/2),
-	abolish_table_pred(top__1/1),
-	abolish_table_pred(zero200__1/1).
+	abolish_all_tables.
 
 %---------------- Definitions of tabled preds --------------
 

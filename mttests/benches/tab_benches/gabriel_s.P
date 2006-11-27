@@ -259,26 +259,7 @@ length__1(_362,_364,_366) :-
                          [_362,_364,_366]).
 
 abolish_tables :-
-	abolish_table_pred(length__1/3),
-	abolish_table_pred(length__1/2),
-	abolish_table_pred(concat__1/3),
-	abolish_table_pred(my_atom__1/1),
-	abolish_table_pred(match__1/2),
-	abolish_table_pred(p_match__1/2),
-	abolish_table_pred(p_investigate__1/2),
-	abolish_table_pred(my_arg__1/3),
-	abolish_table_pred(my_functor__1/3),
-	abolish_table_pred(property__1/3),
-	abolish_table_pred(get_pats__1/4),
-	abolish_table_pred(get_pats__1/3),
-	abolish_table_pred(investigate__1/2),
-	abolish_table_pred(split__1/4),
-	abolish_table_pred(randomize__1/3),
-	abolish_table_pred(fill__1/3),
-	abolish_table_pred(test__1/3),
-	abolish_table_pred(init__1/6),
-	abolish_table_pred(init__1/5),
-	abolish_table_pred(main__1/2).
+	abolish_all_tables.
 
 %---------------- Definitions of tabled preds --------------
 
