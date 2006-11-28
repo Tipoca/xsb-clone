@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.116 2006-11-28 02:37:25 ruim Exp $
+** $Id: init_xsb.c,v 1.117 2006-11-28 14:18:06 ruim Exp $
 ** 
 */
 
@@ -1048,22 +1048,31 @@ void cleanup_thread_structures(CTXTdecl)
 
   free_trie_aux_areas(CTXT) ;
 
+  pthread_mutex_destroy(&private_smTableBTN->sm_lock);
   mem_dealloc(private_smTableBTN,sizeof(struct Structure_Manager),
 	      MT_PRIVATE_SPACE);
+  pthread_mutex_destroy(&private_smTableBTHT->sm_lock);
   mem_dealloc(private_smTableBTHT,sizeof(struct Structure_Manager),
 	      MT_PRIVATE_SPACE);
+  pthread_mutex_destroy(&private_smTSTN->sm_lock);
   mem_dealloc(private_smTSTN,sizeof(struct Structure_Manager),
 	      MT_PRIVATE_SPACE);
+  pthread_mutex_destroy(&private_smTSTHT->sm_lock);
   mem_dealloc(private_smTSTHT,sizeof(struct Structure_Manager),
 	      MT_PRIVATE_SPACE);
+  pthread_mutex_destroy(&private_smTSIN->sm_lock);
   mem_dealloc(private_smTSIN,sizeof(struct Structure_Manager),
 	      MT_PRIVATE_SPACE); 
+  pthread_mutex_destroy(&private_smVarSF->sm_lock);
   mem_dealloc(private_smVarSF,sizeof(struct Structure_Manager),
 	      MT_PRIVATE_SPACE);
+  pthread_mutex_destroy(&private_smProdSF->sm_lock);
   mem_dealloc(private_smProdSF,sizeof(struct Structure_Manager),
 	      MT_PRIVATE_SPACE); 
+  pthread_mutex_destroy(&private_smConsSF->sm_lock);
   mem_dealloc(private_smConsSF,sizeof(struct Structure_Manager),
 	      MT_PRIVATE_SPACE); 
+  pthread_mutex_destroy(&private_smALN->sm_lock);
   mem_dealloc(private_smALN,sizeof(struct Structure_Manager),
 	      MT_PRIVATE_SPACE); 
 }

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.33 2006-11-15 16:38:10 tswift Exp $
+** $Id: trie_internals.h,v 1.34 2006-11-28 14:18:06 ruim Exp $
 ** 
 */
 
@@ -647,9 +647,9 @@ typedef struct Basic_Trie_HashTable {
     if (threads_current_sm == PRIVATE_SM) {				\
       _New_TrieHT_Sub(SM,THT,TrieType);					\
     } else {								\
-      SYS_MUTEX_LOCK( MUTEX_SM );					\
+      SM_Lock(SM);							\
       _New_TrieHT_Sub(SM,THT,TrieType);					\
-      SYS_MUTEX_UNLOCK( MUTEX_SM );					\
+      SM_Unlock(SM);							\
     }									\
 }
 #else
