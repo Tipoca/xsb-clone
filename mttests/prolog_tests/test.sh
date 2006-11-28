@@ -19,6 +19,7 @@ options=$3
 ../gentest.sh "$XEMU $options" nreverse "test_nrev(10,500,_)" $NUM
 ../gentest.sh "$XEMU $options" query "test_query(1000,_)" $NUM
 ../gentest.sh "$XEMU $options" qsort "test_qsort(10,1000,_)" $NUM
+../gentest.sh "$XEMU $options" gc "test(2500,_)" $NUM
 
 # the test below uses the C interface and cannot currently be tested
 
