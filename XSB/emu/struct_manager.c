@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.20 2006-11-06 10:31:39 ruim Exp $
+** $Id: struct_manager.c,v 1.21 2006-11-28 16:42:58 tswift Exp $
 ** 
 */
 
@@ -28,6 +28,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 #include "auxlry.h"
 #include "struct_manager.h"
