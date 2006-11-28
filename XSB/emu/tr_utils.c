@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.128 2006/11/22 16:18:07 ruim Exp $
+** $Id: tr_utils.c,v 1.129 2006/11/25 13:00:10 ruim Exp $
 ** 
 */
 
@@ -365,10 +365,18 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
 
 static void free_trie_ht(CTXTdeclc BTHTptr ht) {
 
-  TrieHT_RemoveFromAllocList(*smBTHT,ht);
   mem_dealloc(BTHT_BucketArray(ht),BTHT_NumBuckets(ht)*sizeof(void *),
 	      TABLE_SPACE);
-  SM_DeallocatePossSharedStruct(*smBTHT,ht); 
+#ifdef MULTI_THREAD
+  if( threads_current_sm == SHARED_SM )
+	SYS_MUTEX_LOCK(MUTEX_SM);
+#endif
+  TrieHT_RemoveFromAllocList(*smBTHT,ht);
+  SM_DeallocateStruct(*smBTHT,ht); 
+#ifdef MULTI_THREAD
+  if( threads_current_sm == SHARED_SM )
+	SYS_MUTEX_UNLOCK(MUTEX_SM);
+#endif
 }
 
 /* delete_variant_sf_and_answers deletes and reclaims space for
