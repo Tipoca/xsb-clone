@@ -16,3 +16,4 @@ options=$3
 # goal uninstantiated to unify with the stream.
 
 ../gentest.sh "$XEMU $options" f1 "write_f(_)" $NUM
+../gentest.sh "$XEMU $options" symtabtest "test(_)" $NUM
