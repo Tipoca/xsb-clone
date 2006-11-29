@@ -4,7 +4,7 @@ XEMU=$1
 FILE=$2
 
 echo "-------------------------------------------------------"
-echo "--- Running benches/synth_benches/test_priv.sh      ---"
+echo "--- Running benches/shared_benches/test_priv.sh     ---"
 echo "-------------------------------------------------------"
 
 # XEMU and options must be together in quotes

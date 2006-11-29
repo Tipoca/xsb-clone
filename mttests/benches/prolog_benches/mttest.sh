@@ -6,7 +6,6 @@ NUM=$3
 
 echo "-------------------------------------------------------"
 echo "--- Running benches/prolog_benches/mttest.sh        ---"
-echo "$XEMU $2 $3"
 echo "-------------------------------------------------------"
 
 # XEMU and options must be together in quotes

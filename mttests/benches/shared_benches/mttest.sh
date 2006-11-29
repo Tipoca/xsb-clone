@@ -6,7 +6,7 @@ NUM=$3
 OPT=$4
 
 echo "-------------------------------------------------------"
-echo "--- Running benches/tab_benches/mttest.sh           ---"
+echo "--- Running benches/shared_benches/mttest.sh        ---"
 echo "-------------------------------------------------------"
 
 # XEMU and options must be together in quotes

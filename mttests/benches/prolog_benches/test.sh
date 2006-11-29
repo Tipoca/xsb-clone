@@ -5,7 +5,6 @@ FILE=$2
 
 echo "-------------------------------------------------------"
 echo "--- Running benches/prolog_benches/test.sh          ---"
-echo "$XEMU $2"
 echo "-------------------------------------------------------"
 
 # XEMU and options must be together in quotes
