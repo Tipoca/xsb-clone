@@ -205,7 +205,7 @@ mt_benches(GName,GSize,NT) :-
 	mt_bench(tc_lr_s,GName,GSize,NT),
 	mt_bench(tc_lr_p,GName,GSize,NT),
 	mt_bench(tc_rr_s,GName,GSize,NT),
-	(	NT =< 16
+	(	NT =< 32
 	->	mt_bench(tc_rr_p,GName,GSize,NT)
 	;	true
 	).

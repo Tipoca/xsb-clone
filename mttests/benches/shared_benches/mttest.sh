@@ -12,7 +12,7 @@ echo "-------------------------------------------------------"
 # XEMU and options must be together in quotes
  ../genbench.sh "$XEMU --max_threads 4096"  "[prod_cons]." \
 		"mt_bench([prod_cons],1000000,$NUM)." "$FILE"
- ../genbench.sh "$XEMU --max_threads 4096 $OPT" \
+ ../genbench.sh "$XEMU --max_threads 4096 -c 4096" \
 		"[trans_clos],readGraph(g256x128)." \
 		"mt_benches(g256x128,256,$NUM)." "$FILE"
  ../genbench.sh "$XEMU --max_threads 4096 $OPT" \
