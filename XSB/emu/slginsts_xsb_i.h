@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.67 2006/11/20 16:53:42 ruim Exp $
+** $Id: slginsts_xsb_i.h,v 1.68 2006/11/28 02:37:25 ruim Exp $
 ** 
 */
 
@@ -304,8 +304,8 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 #ifdef CONC_COMPL
     subg_tid(producer_sf) = xsb_thread_id;
     subg_tag(producer_sf) = INCOMP_ANSWERS;
-#endif
     UNLOCK_CALL_TRIE() ;
+#endif
 
     /* for incremental evaluation - start */
     
