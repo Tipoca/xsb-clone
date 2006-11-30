@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.29 2006/11/06 17:31:53 ruim Exp $
+** $Id: trace_xsb.c,v 1.30 2006/11/15 16:38:10 tswift Exp $
 ** 
 */
 
@@ -43,6 +43,7 @@
 #include "heap_xsb.h"
 #include "thread_xsb.h"
 #include "trace_xsb.h"
+#include "thread_xsb.h"
 #include "deadlock.h"
 #include "slgdelay.h"
 
@@ -537,6 +538,8 @@ void total_stat(CTXTdeclc double elapstime) {
   printf("%lu deadlocks have occured\n\n", num_deadlocks );
 #endif
 
+  printf("Peak number of active user threads: %lu\n", max_threads_sofar );
+
   printf("%ld active user thread%s.\n",flags[NUM_THREADS],
 	 (flags[NUM_THREADS]>1?"s":""));
 
@@ -572,6 +575,7 @@ void perproc_reset_stat(void)
    num_suspends = 0;
    num_deadlocks = 0;
 #endif
+   max_threads_sofar = flags[NUM_THREADS];
 }
 
 #endif
