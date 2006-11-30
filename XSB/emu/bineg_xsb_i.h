@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.30 2006-11-28 02:37:25 ruim Exp $
+** $Id: bineg_xsb_i.h,v 1.31 2006-11-30 21:10:24 ruim Exp $
 ** 
 */
 
@@ -122,6 +122,7 @@ case IS_INCOMPLETE: {
 #ifdef SHARED_COMPL_TABLES
 /* This allows sharing of completed tables.  */
      pthread_mutex_lock(&completing_mut);
+     SYS_MUTEX_INCR( MUTEX_COMPL );
      while( !is_completed(producerSF) )
      {
 	table_tid = subg_tid(producerSF) ;
@@ -141,6 +142,7 @@ case IS_INCOMPLETE: {
 	th->waiting_for_subgoal = producerSF ;
         th->waiting_for_tid = table_tid ;
         pthread_cond_wait(&completing_cond,&completing_mut) ;
+        SYS_MUTEX_INCR( MUTEX_COMPL );
         if( th->reset_thread )
         {       th->reset_thread = FALSE ;
 		th->waiting_for_subgoal = NULL ;

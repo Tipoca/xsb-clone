@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.51 2006/11/15 22:02:20 tswift Exp $
+** $Id: slgdelay.c,v 1.52 2006/11/15 23:23:45 tswift Exp $
 ** 
 */
 
@@ -681,14 +681,16 @@ void do_delay_stuff_shared(CTXTdeclc NODEptr as_leaf, VariantSF subgoal, xsbBool
     ASI	asi;
     DL dl = NULL;
 
-    SYS_MUTEX_LOCK( MUTEX_DELAY ) ;
-    if (delayreg && (!sf_exists || is_conditional_answer(as_leaf))) {
-      if ((dl = intern_delay_list(CTXTc delayreg)) != NULL) {
-	mark_conditional_answer(as_leaf, subgoal, dl, smASI);
-	record_de_usage(dl);
+    if (delayreg) { 
+      SYS_MUTEX_LOCK( MUTEX_DELAY ) ;
+      if (!sf_exists || is_conditional_answer(as_leaf)) {
+        if ((dl = intern_delay_list(CTXTc delayreg)) != NULL) {
+	  mark_conditional_answer(as_leaf, subgoal, dl, smASI);
+	  record_de_usage(dl);
+        }
       }
+      SYS_MUTEX_UNLOCK( MUTEX_DELAY ) ;
     }
-    SYS_MUTEX_UNLOCK( MUTEX_DELAY ) ;
     /*
      * Check for the derivation of an unconditional answer.
      */

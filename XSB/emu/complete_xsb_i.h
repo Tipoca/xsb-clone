@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.31 2006-11-05 23:53:14 ruim Exp $
+** $Id: complete_xsb_i.h,v 1.32 2006-11-30 21:10:24 ruim Exp $
 ** 
 */
 
@@ -59,6 +59,7 @@ XSB_Start_Instr(check_complete,_check_complete)
 
   cs_ptr = tcp_compl_stack_ptr(breg);
   pthread_mutex_lock(&completing_mut);
+  SYS_MUTEX_INCR( MUTEX_COMPL );
   for(;;)
   {
   	if (prev_compl_frame(cs_ptr) < COMPLSTACKBOTTOM && !is_leader(cs_ptr))
@@ -116,6 +117,7 @@ XSB_Start_Instr(check_complete,_check_complete)
 	th->completed = FALSE ;
 	th->cc_leader = cs_ptr ;
 	pthread_cond_wait(&th->cond_var, &completing_mut) ;
+        SYS_MUTEX_INCR( MUTEX_COMPL );
 	th->completing = FALSE ;
 	if( th->completed )
 		break ;
@@ -172,6 +174,7 @@ XSB_Start_Instr(check_complete,_check_complete)
       
 #ifdef SHARED_COMPL_TABLES
     pthread_mutex_lock(&completing_mut);
+    SYS_MUTEX_INCR( MUTEX_COMPL );
 #endif
       CompleteSimplifyAndReclaim(CTXTc cs_ptr);
 #ifdef SHARED_COMPL_TABLES
