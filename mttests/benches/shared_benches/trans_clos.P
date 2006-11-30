@@ -76,7 +76,7 @@ call_rec_tc( S ) :-
 call_rec_tc( _ ).
 
 do_tc( S, S ) :-
-	call_rec_tc( S ).
+	call_rec_tc( S ), !.
 do_tc( S, S2 ) :-
 	S2 > S,
 	call_rec_tc( S ),
@@ -92,7 +92,7 @@ create_threads( M, P, [T|Ts] ) :-
 
 readGraph(Name) :-
 	abolish(edge/2),
-        %index(edge/2,trie),
+        index(edge/2,trie),
 	load_dyn(Name).
 
 init_info(T) :-
@@ -212,17 +212,21 @@ mt_benches(GName,GSize,NT) :-
 
 mt_mem_bench_ls(GName,GSize,NT) :-
 	readGraph(GName),
-	mt_bench(tc_lr_s,GName,GSize,NT).
+	mt_bench(tc_lr_s,GName,GSize,NT),
+	writeln(memsuccess).
 
 mt_mem_bench_lp(GName,GSize,NT) :-
 	readGraph(GName),
-	mt_bench(tc_lr_p,GName,GSize,NT).
+	mt_bench(tc_lr_p,GName,GSize,NT),
+	writeln(memsuccess).
 
 mt_mem_bench_rs(GName,GSize,NT) :-
 	readGraph(GName),
-	mt_bench(tc_rr_s,GName,GSize,NT).
+	mt_bench(tc_rr_s,GName,GSize,NT),
+	writeln(memsuccess).
 
 mt_mem_bench_rp(GName,GSize,NT) :-
 	readGraph(GName),
-	mt_bench(tc_rr_p,GName,GSize,NT).
+	mt_bench(tc_rr_p,GName,GSize,NT),
+	writeln(memsuccess).
 
