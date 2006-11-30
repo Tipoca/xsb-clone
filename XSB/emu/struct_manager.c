@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.21 2006-11-28 16:42:58 tswift Exp $
+** $Id: struct_manager.c,v 1.22 2006-11-30 18:18:43 dwarren Exp $
 ** 
 */
 
@@ -28,7 +28,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef MULTI_THREAD
+#ifdef WIN_NT
+#include "pthread.h"
+#else
 #include <pthread.h>
+#endif
+#endif
 
 #include "auxlry.h"
 #include "struct_manager.h"
