@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.52 2006-11-25 22:22:13 tswift Exp $
+** $Id: foreign.P,v 1.53 2006-12-01 13:21:14 kifer Exp $
 ** 
 */
 
@@ -75,6 +75,8 @@ runtime_loader_flag(Compiler,LibraryDir,Flag):-
 	->  str_cat('-Wl,-rpath,', LibraryDir, Flag)
 	;   str_sub(netbsd, Configuration)
 	->  str_cat('-Wl,-rpath,', LibraryDir, Flag)
+	;   str_sub('freebsd', Configuration)
+	->  str_cat('-Wl,-rpath,', LibraryDir, Flag)
 	;   str_sub('bsd-', Configuration)
 	->  str_cat('-Wl,-rpath,', LibraryDir, Flag)
 	;  str_cat('-rpath ', LibraryDir, Flag)
@@ -115,6 +117,24 @@ compile_c(Modname, Base, Ext, Options, Dir, LdOption, CompComm, TempFile) :-
 		       Base, Ext, TempFile, ' ', CC_Opts, ' ', LdOption))
 #endif
 	    ;	str_sub('linux', Configuration)
+	    ->	shell([CC_Name, SymbolTableFlag, ' -o ', Base, '.so',
+		       ' -shared ',
+		       Base, Ext, TempFile, ' ', CC_Opts, ' ', LdOption])
+#ifdef FOREIGN_DEBUG
+	    , message((CC_Name, SymbolTableFlag, ' -o ', Base, '.so',
+		       ' -shared ',
+		       Base, Ext, TempFile, ' ', CC_Opts, ' ', LdOption))
+#endif
+	    ; str_sub('freebsd', Configuration)
+	    ->	shell([CC_Name, SymbolTableFlag, ' -o ', Base, '.so',
+		       ' -shared ',
+		       Base, Ext, TempFile, ' ', CC_Opts, ' ', LdOption])
+#ifdef FOREIGN_DEBUG
+	    , message((CC_Name, SymbolTableFlag, ' -o ', Base, '.so',
+		       ' -shared ',
+		       Base, Ext, TempFile, ' ', CC_Opts, ' ', LdOption))
+#endif
+	    ; str_sub('netbsd', Configuration)
 	    ->	shell([CC_Name, SymbolTableFlag, ' -o ', Base, '.so',
 		       ' -shared ',
 		       Base, Ext, TempFile, ' ', CC_Opts, ' ', LdOption])
