@@ -10,15 +10,15 @@ echo "--- Running benches/shared_benches/stat_test.sh     ---"
 echo "-------------------------------------------------------"
 
 # XEMU and options must be together in quotes
- ../stat_genbench.sh "$XEMU --max_threads 4096 $OPT" \
+ ../stat_genbench.sh "$XEMU --max_threads 4096 -c 4096" \
 		"[trans_clos]" "mt_mem_bench_ls(g256x128,256,$NUM)" "$FILE"
- ../stat_genbench.sh "$XEMU --max_threads 4096 $OPT" \
+ ../stat_genbench.sh "$XEMU --max_threads 4096 -c 4096" \
 		"[trans_clos]" "mt_mem_bench_lp(g256x128,256,$NUM)" "$FILE"
- ../stat_genbench.sh "$XEMU --max_threads 4096 $OPT" \
+ ../stat_genbench.sh "$XEMU --max_threads 4096 -c 4096" \
 		"[trans_clos]" "mt_mem_bench_rs(g256x128,256,$NUM)" "$FILE"
 if [ $NUM -le 16 ]
 then
- ../stat_genbench.sh "$XEMU --max_threads 4096 $OPT" \
+ ../stat_genbench.sh "$XEMU --max_threads 4096 -c 4096" \
 		"[trans_clos]" "mt_mem_bench_rp(g256x128,256,$NUM)" "$FILE"
 fi
  ../stat_genbench.sh "$XEMU --max_threads 4096 $OPT" \
