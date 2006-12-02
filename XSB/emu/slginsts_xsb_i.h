@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.69 2006/11/29 02:10:21 ruim Exp $
+** $Id: slginsts_xsb_i.h,v 1.70 2006/11/30 21:10:24 ruim Exp $
 ** 
 */
 
@@ -501,6 +501,10 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     SaveConsumerCPF( consumer_cpf, consumer_sf,
 		     subg_asf_list_ptr(producer_sf), 
 		     answer_template);
+#ifdef CONC_COMPL
+    nlcp_tid(consumer_cpf) = makeint(xsb_thread_id);
+#endif
+
 #ifdef SLG_GC
     nlcp_prevtop(consumer_cpf) = prev_cptop;
 #endif
@@ -510,8 +514,6 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 		breg,nlcp_prevbreg(breg)));
 
 #ifdef CONC_COMPL
-    nlcp_tid(consumer_cpf) = makeint(xsb_thread_id);
-
     if( subg_tid(producer_sf) != xsb_thread_id )
     {
 	push_completion_frame(producer_sf);

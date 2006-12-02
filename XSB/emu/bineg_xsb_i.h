@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.31 2006-11-30 21:10:24 ruim Exp $
+** $Id: bineg_xsb_i.h,v 1.32 2006-12-02 19:31:57 ruim Exp $
 ** 
 */
 
@@ -127,7 +127,7 @@ case IS_INCOMPLETE: {
      {
 	table_tid = subg_tid(producerSF) ;
         /* if the thread owns the table, proceed */
-        if (table_tid == th->tid)
+        if (table_tid == xsb_thread_id)
                 break ;
         waiting_for_thread = find_context(table_tid) ;
         if( would_deadlock( table_tid, xsb_thread_id ) )

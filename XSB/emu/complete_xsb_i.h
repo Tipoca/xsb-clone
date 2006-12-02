@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.32 2006-11-30 21:10:24 ruim Exp $
+** $Id: complete_xsb_i.h,v 1.33 2006-12-02 19:31:57 ruim Exp $
 ** 
 */
 
@@ -58,71 +58,68 @@ XSB_Start_Instr(check_complete,_check_complete)
   xsb_dbgmsg((LOG_DEBUG,"Check complete %x",breg));
 
   cs_ptr = tcp_compl_stack_ptr(breg);
-  pthread_mutex_lock(&completing_mut);
-  SYS_MUTEX_INCR( MUTEX_COMPL );
-  for(;;)
-  {
-  	if (prev_compl_frame(cs_ptr) < COMPLSTACKBOTTOM && !is_leader(cs_ptr))
-    	{
+  if (prev_compl_frame(cs_ptr) < COMPLSTACKBOTTOM && !is_leader(cs_ptr))
 		breg = tcp_prevbreg(breg); 
-		break ;
-	}
-	if( (tmp_breg = check_fixpoint(cs_ptr,breg)) )
-	{
-		th->last_ans++;
-		breg = tmp_breg ;
-		break ;
-	}
-	new_leader = cs_ptr ;
-
-	UpdateDeps( th, &busy, &new_leader ) ;
-
-	if( new_leader > cs_ptr )
-	{
-		adjust_level(new_leader) ;
-		breg = tcp_prevbreg(breg); 
-		break ;
-	}
-
-	if( EmptyThreadDepList(&th->TDL) )
-	{	CPtr orig_breg = breg;	
-    		batched_compute_wfs(CTXTc cs_ptr, breg, 
-				(VariantSF)tcp_subgoal_ptr(breg));
-    		if (openreg == prev_compl_frame(cs_ptr))
-		{	if (breg == orig_breg)
-			{	reclaim_stacks(orig_breg);
-				breg = tcp_prevbreg(breg);
-      		}	}
-  		pthread_mutex_unlock(&completing_mut);
-		Fail1;
-		XSB_Next_Instr();
-	}
-	
-	if( !busy )
-	{	
-
-		if( MayHaveAnswers(th) )
-			;
-		else if( CheckForSCC(th) )
-		{
-			CompleteOtherThreads(th);
-			CompleteTop(th, cs_ptr);
-			break;
-		}
-		else
-			WakeOtherThreads(th) ;
-	}
-
-	th->completing = TRUE ;
-	th->completed = FALSE ;
-	th->cc_leader = cs_ptr ;
-	pthread_cond_wait(&th->cond_var, &completing_mut) ;
+  else
+  {     pthread_mutex_lock(&completing_mut);
         SYS_MUTEX_INCR( MUTEX_COMPL );
-	th->completing = FALSE ;
-	if( th->completed )
-		break ;
+  	for(;;)
+  	{
+		if( (tmp_breg = check_fixpoint(cs_ptr,breg)) )
+		{
+			th->last_ans++;
+			breg = tmp_breg ;
+			break ;
+		}
+		new_leader = cs_ptr ;
+
+		UpdateDeps( th, &busy, &new_leader ) ;
+
+		if( new_leader > cs_ptr )
+		{
+			adjust_level(new_leader) ;
+			breg = tcp_prevbreg(breg); 
+			break ;
+		}
+
+		if( EmptyThreadDepList(&th->TDL) )
+		{	CPtr orig_breg = breg;	
+    			batched_compute_wfs(CTXTc cs_ptr, breg, 
+					(VariantSF)tcp_subgoal_ptr(breg));
+    			if (openreg == prev_compl_frame(cs_ptr))
+			{	if (breg == orig_breg)
+				{	reclaim_stacks(orig_breg);
+					breg = tcp_prevbreg(breg);
+      			}	}
+			break ;
+		}
+
+		if( !busy )
+		{	
+
+			if( MayHaveAnswers(th) )
+				;
+			else if( CheckForSCC(th) )
+			{
+				CompleteOtherThreads(th);
+				CompleteTop(th, cs_ptr);
+				break;
+			}
+			else
+				WakeOtherThreads(th) ;
+		}
+
+		th->completing = TRUE ;
+		th->completed = FALSE ;
+		th->cc_leader = cs_ptr ;
+		pthread_cond_wait(&th->cond_var, &completing_mut) ;
+        	SYS_MUTEX_INCR( MUTEX_COMPL );
+		th->completing = FALSE ;
+		if( th->completed )
+			break ;
+  	}
+        pthread_mutex_unlock(&completing_mut);
   }
-  pthread_mutex_unlock(&completing_mut);
 #else /* not CONC_COMPL */
   CPtr    orig_breg = breg;
   xsbBool leader = FALSE;

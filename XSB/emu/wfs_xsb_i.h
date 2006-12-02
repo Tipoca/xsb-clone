@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wfs_xsb_i.h,v 1.18 2006-11-08 18:19:21 ruim Exp $
+** $Id: wfs_xsb_i.h,v 1.19 2006-12-02 19:31:57 ruim Exp $
 ** 
 */
 
@@ -377,14 +377,14 @@ static void batched_compute_wfs(CTXTdeclc CPtr leader_compl_frame,
        curr_subg = compl_subgoal_ptr(ComplStkFrame);
        if (compl_visited(ComplStkFrame) != DELAYED) {
 #ifdef CONC_COMPL
-      if( !is_completed(curr_subg) )
-      {
-        mark_as_completed(curr_subg);
-	if( IsSharedSF( curr_subg ) )
-        	WakeDependentThreads(th, curr_subg);
-      }
+      	  if( !is_completed(curr_subg) )
+          {
+        	mark_as_completed(curr_subg);
+		if( IsSharedSF( curr_subg ) )
+        		WakeDependentThreads(th, curr_subg);
+     	  }
 #else
-      mark_as_completed(curr_subg);
+          mark_as_completed(curr_subg);
 #endif
 	 reclaim_incomplete_table_structs(curr_subg);
 	 if (neg_simplif_possible(curr_subg)) {
