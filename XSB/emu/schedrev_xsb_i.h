@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.20 2006-11-20 16:53:42 ruim Exp $
+** $Id: schedrev_xsb_i.h,v 1.21 2006-12-03 17:09:28 ruim Exp $
 ** 
 */
 
@@ -156,7 +156,6 @@ static CPtr find_fixpoint(CTXTdeclc CPtr leader_csf, CPtr producer_cpf)
     /* check if all answers have been resolved for this subgoal */
 
     /* if there are unresolved answers for currSubg */
-    SUBGOAL_LOCK(currSubg) ;
 #ifdef CONC_COMPL
     if ( IsNonNULL(compl_ext_cons(complFrame)) )
     	last_cons=tmp_sched=sched_external(CTXTc compl_ext_cons(complFrame));
@@ -176,7 +175,6 @@ static CPtr find_fixpoint(CTXTdeclc CPtr leader_csf, CPtr producer_cpf)
       if( last_cons == NULL ) printf("lc NULL");
       prev_sched = last_cons;
     }
-    SUBGOAL_UNLOCK(currSubg) ;
     complFrame = prev_compl_frame(complFrame);	
   }  /* while */
 

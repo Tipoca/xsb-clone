@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.52 2006-11-29 02:10:21 ruim Exp $
+** $Id: tables.c,v 1.53 2006-12-03 17:09:28 ruim Exp $
 ** 
 */
 
@@ -122,9 +122,6 @@ VariantSF NewProducerSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo) {
 	SM_AllocateSharedStruct(smVarSF,pNewSF);				
 	pNewSF = memset(pNewSF,0,sizeof(variant_subgoal_frame));		
 	subg_sf_type(pNewSF) = SHARED_VARIANT_PRODUCER_SFT;	
-#ifdef CONC_COMPL_SFL
-	pthread_mutex_init( &subg_lock(pNewSF), NULL ) ;
-#endif
       }									
     }
 #else
@@ -803,6 +800,8 @@ inline TIFptr New_TIF(CTXTdeclc Psc pPSC) {
    TIF_Subgoals(pTIF) = NULL;						
    TIF_NextTIF(pTIF) = NULL;						
 #ifdef MULTI_THREAD
+   /* The call trie lock is also initialized for private TIFs,
+      just in case they ever change to shared */
    pthread_mutex_init( &TIF_CALL_TRIE_LOCK(pTIF), NULL );
    if (get_shared(pPSC)) {
      SYS_MUTEX_LOCK( MUTEX_TABLE );				
