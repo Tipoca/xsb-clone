@@ -1,4 +1,6 @@
 :- thread_shared move2k/2, move1k/2.
+:- index(move2k/2,trie).
+:- index(move1k/2,trie).
 
 chain_ancestor_bench:- 
 	bigbench(rancestor1k(1,_),[tabled_right_anc,chain(1024),its(4)],4),
