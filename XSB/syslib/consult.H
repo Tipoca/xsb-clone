@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.42 2006/10/06 21:24:34 dwarren Exp $
+** $Id: consult.H,v 1.43 2006/11/01 23:49:45 ruim Exp $
 ** 
 */
 
@@ -55,7 +55,8 @@
 :- import predicate_property/2, current_input_port/1 from curr_sym.
 :- import default_assert_size/1 from config.
 :- import check_open_stream_or_alias/5, 
-          file_close/1,file_get/2, file_open/3, file_time/2 from file_io.
+	path_sysop/3,
+	file_close/1,file_get/2, file_open/3, file_time/2 from file_io.
 :- import '_$index'/3, '_$trie_asserted'/1, mpa_to_skel/2 from file_op.
 :- import compile_cH/6 from foreign.
 :- import conset/2, conget/2, gensym/2  from gensym.
