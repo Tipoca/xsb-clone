@@ -19,12 +19,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.H,v 1.20 2006-06-11 21:41:56 tswift Exp $
+** $Id: foreign.H,v 1.21 2006-12-04 10:18:51 kifer Exp $
 ** 
 */
 
 
-:- export compile_cH/6, compile_so/3, runtime_loader_flag/3.
+:- export
+	compile_cH/6,
+	compile_so/3,
+	runtime_loader_flag/3,
+	foreign_module_library_extension/2.
 
 :- import asm_magic/2 from asm.
 :- import asm_putlength/2 from asmpass2.

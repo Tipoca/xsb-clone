@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.53 2006-12-01 13:21:14 kifer Exp $
+** $Id: foreign.P,v 1.54 2006-12-04 10:18:51 kifer Exp $
 ** 
 */
 
@@ -75,11 +75,32 @@ runtime_loader_flag(Compiler,LibraryDir,Flag):-
 	->  str_cat('-Wl,-rpath,', LibraryDir, Flag)
 	;   str_sub(netbsd, Configuration)
 	->  str_cat('-Wl,-rpath,', LibraryDir, Flag)
-	;   str_sub('freebsd', Configuration)
+	;   str_sub(freebsd, Configuration)
 	->  str_cat('-Wl,-rpath,', LibraryDir, Flag)
 	;   str_sub('bsd-', Configuration)
 	->  str_cat('-Wl,-rpath,', LibraryDir, Flag)
 	;  str_cat('-rpath ', LibraryDir, Flag)
+	).
+
+%% This should really be used in compile_c, and in consult.P
+%% but needs to be tested - mk
+foreign_module_library_extension(Configuration,Extension) :-
+	( ( str_sub('solaris', Configuration)
+	  ; str_sub('linux', Configuration)
+	  ; str_sub('freebsd', Configuration)
+	  ; str_sub('netbsd', Configuration)
+	  ; str_sub('bsd-', Configuration)
+	  ; str_sub('sgi', Configuration)
+	  ; str_sub('alpha', Configuration)
+	  )
+	->
+	    Extension = '.so'
+	;
+	    str_sub('darwin', Configuration)
+	->
+	    Extension = '.dylib'
+	;
+	    Extension = '.o'
 	).
 
 
