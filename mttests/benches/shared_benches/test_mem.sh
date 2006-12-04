@@ -17,7 +17,7 @@ do
 	./mmttest.sh $PREF/config/${ARCH}-mt/bin/xsb \
 		    $DIR/mem-shared-local.txt $nthreads 
 	./mmttest.sh $PREF/config/${ARCH}-btc-ccmpl/bin/xsb \
-		    $DIR/mem-shared-batched.txt $nthreads "CP"
+		    $DIR/mem-shared-batched.txt $nthreads "$CP"
 	nthreads=$[$nthreads*2]
 done
 

@@ -15,7 +15,7 @@ do
 	./stat_test.sh $PREF/bin/xsb-mt \
 		    $DIR/stat-local.txt $nthreads
 	./stat_test.sh $PREF/bin/xsb-btc-ccmpl \
-		    $DIR/stat-batched.txt $nthreads $CP
+		    $DIR/stat-batched.txt $nthreads "$CP"
 	nthreads=$[$nthreads*2]
 done
 

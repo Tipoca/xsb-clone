@@ -6,10 +6,19 @@ tab_name( prod ).
 prod( A, A ).
 prod( X, Y ) :- X > 1, X1 is X - 1, prod(X1, Y).
 
+:- table pc_seq/2.
+
+pc_seq( X, Y ) :- prod( X, Y ).
 
 prod_cons( G ) :- 
 	G, 
 	fail.
+
+prod_cons_seq( N ) :-
+	pc_seq(N,_), fail.	% produce
+prod_cons_seq( N ) :-
+	pc_seq(N,_), fail.	% consume
+prod_cons_seq( _ ).
 
 prod_cons_pair( G1, X1, X2 ) :-
 	thread_create( prod_cons( G1 ), X1, [glsize(15000),tcsize(15000)] ),
@@ -33,6 +42,9 @@ do_pairs([G|Gs],[T1,T2|L]) :-
 	prod_cons_pair( G, T1, T2 ),
 	do_pairs(Gs,L).
 
+bench_1_thread :-
+	work_size( M ),
+	prod_cons_seq( M ).
 bench_n_threads(N) :-
 	R is N mod 2,
 	(	R =\=0
@@ -46,8 +58,14 @@ bench_n_threads(N) :-
 	thread_join(L,_).
 
 
-mt_bench(Type,_,1) :-
-	write(datum(Type,1,0)), writeln('.'),
+mt_bench(Type,M,1) :-
+	abolish( work_size/1 ),
+	assert( work_size(M) ),
+	walltime(ST),
+	bench_1_thread,
+	walltime(FT),
+	T is FT - ST,
+	write(datum(Type,1,T)), writeln('.'),
 	flush_output.
 mt_bench(Type,M,N) :-
 	N > 1,
