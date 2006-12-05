@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.190 2006-11-27 17:36:20 kifer Exp $
+## $Id: configure.in,v 1.191 2006-12-05 11:02:54 kostis Exp $
 ##
 ##
 
@@ -1605,19 +1605,19 @@ AC_SUBST(with_smodels)
 AC_SUBST(smodels_goal)
 
 
-if test ${c_opt_level} = "-"; then
+if test "${c_opt_level}" = "-"; then
    c_opt_level=
 fi
-if test ${loader_opt_level} = "-"; then
+if test "${loader_opt_level}" = "-"; then
    loader_opt_level=
 fi
-if test ${builtins_opt_level} = "-"; then
+if test "${builtins_opt_level}" = "-"; then
    builtins_opt_level=
 fi
-if test ${emuloop_opt_level} = "-"; then
+if test "${emuloop_opt_level}" = "-"; then
    emuloop_opt_level=
 fi
-if test ${trutils_opt_level} = "-"; then
+if test "${trutils_opt_level}" = "-"; then
    trutils_opt_level=
 fi
 loaderCFLAGS="${c_site_includes} ${loader_opt_level} ${c_inline_level} ${CFLAGS}"
