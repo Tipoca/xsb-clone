@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.41 2006-09-06 05:15:27 diptikalyan Exp $
+** $Id: tr_utils.h,v 1.42 2006-12-07 00:26:45 tswift Exp $
 ** 
 */
 
@@ -68,5 +68,7 @@ extern void abolish_table_info(CTXTdecl);
 extern int abolish_usermod_tables(CTXTdecl);
 extern int abolish_module_tables(CTXTdeclc const char *module_name);
 
+extern void release_any_pndes(CTXTdeclc PNDE firstPNDE);
+void delete_delay_trie(CTXTdeclc BTNptr root);
 
 #endif /* __TR_UTILS_H__ */
