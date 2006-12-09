@@ -14,12 +14,14 @@ test:- p(X),writeln((1-1,p(X))),fail.
 test:- s(X),writeln((1-1,s(X))),fail.
 
 test:- xsb_thread_create((retractall(p(_)),writeln(donep)),ID1),
-	xsb_thread_create((retractall(s(_)),writeln(dones)),ID2),
+       xsb_thread_join(ID1,_),
+       	xsb_thread_create((retractall(s(_)),writeln(dones)),ID2),
+	xsb_thread_join(ID2,_),
 	(p(X),writeln((1-2,p(X))),fail
 	 ;
 	 true
 	),
-	xsb_thread_join(ID2,_),xsb_thread_join(ID1,_),fail.
+	fail.
 test:- s(X),writeln((1-2,s(X))),fail.
 
 test:- gc_dynamic(N),writeln((1-3,gc(N))),fail.
