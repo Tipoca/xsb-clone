@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.53 2006/11/30 21:10:24 ruim Exp $
+** $Id: slgdelay.c,v 1.54 2006/12/07 00:26:45 tswift Exp $
 ** 
 */
 
@@ -370,10 +370,11 @@ static DE intern_delay_element(CTXTdeclc Cell delay_elem)
     de_ans_subst(de) = ans_subst; /* Leaf of the answer (substitution) trie */
 
 #ifndef IGNORE_DELAYVAR
+    de_subs_fact(de) = NULL;
     if (arity != 0) {
       de_subs_fact_leaf(de) = delay_chk_insert(CTXTc arity, ret_n + 1,
 					       (CPtr *) &de_subs_fact(de));
-    }
+    } 
 #endif /* IGNORE_DELAYVAR */
     return de;
   }
@@ -434,10 +435,11 @@ static DE intern_delay_element_private(CTXTdeclc Cell delay_elem)
     de_subgoal(de) = subgoal;
     de_ans_subst(de) = ans_subst; /* Leaf of the answer (substitution) trie */
 
+    de_subs_fact(de) = NULL;
     if (arity != 0) {
       de_subs_fact_leaf(de) = delay_chk_insert(CTXTc arity, ret_n + 1,
 					       (CPtr *) &de_subs_fact(de));
-    }
+    } 
     return de;
   }
   else

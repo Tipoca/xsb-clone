@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.90 2006-12-07 00:26:46 tswift Exp $
+** $Id: tries.c,v 1.91 2006-12-14 19:38:07 tswift Exp $
 ** 
 */
 
@@ -407,6 +407,47 @@ BTNptr newBasicAnswerTrie(CTXTdeclc Cell symbol, CPtr Paren, int trie_type) {
    GNodePtrPtr = &(BTN_Child(LocalNodePtr));				\
    TRIE_W_UNLOCK();							\
 }
+
+/* This functional version of the above code is not used in the system
+   -- but I  use it for debugging (sequential mode) so please leave it around
+
+void fone_node_chk_ins(int Found,Cell item,int TrieType,BTNptr **GNPP,
+		       BTNptr *Parent) {
+									
+   int count = 0;							
+   BTNptr LocalNodePtr;					
+
+   BTNptr *GNodePtrPtr = *GNPP;
+   BTNptr Paren = *Parent;
+									
+   TRIE_W_LOCK();							
+   if ( IsNULL(*GNodePtrPtr) ) {					
+     New_BTN(LocalNodePtr,TrieType,INTERIOR_NT,item,Paren,NULL);	
+     *GNodePtrPtr = Paren = LocalNodePtr;				
+     Found = 0;								
+   }									
+   else if ( IsHashHeader(*GNodePtrPtr) ) {				
+     BTHTptr ht = (BTHTptr)*GNodePtrPtr;				
+     GNodePtrPtr = CalculateBucketForSymbol(ht,item);			
+     IsInsibling(*GNodePtrPtr,count,Found,item,TrieType);		
+     if (!Found) {							
+     MakeHashedNode(LocalNodePtr);					
+       BTHT_NumContents(ht)++;						
+       TrieHT_ExpansionCheck(ht,count);					
+     }									
+   }									
+   else {								
+     BTNptr pParent = Paren;						
+     IsInsibling(*GNodePtrPtr,count,Found,item,TrieType);		
+     if (IsLongSiblingChain(count))					
+//       used to pass in GNodePtrPtr (ptr to hook)		      
+       hashify_children(CTXTc pParent,TrieType);			
+   }									
+   GNodePtrPtr = &(BTN_Child(LocalNodePtr));				
+   *GNPP = GNodePtrPtr;
+   *Parent = Paren;
+}
+*/
 
 /*----------------------------------------------------------------------*/
 
