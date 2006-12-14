@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.29 2006-09-20 14:56:54 tswift Exp $
+## $Id: testsuite.sh,v 1.30 2006-12-14 22:11:24 dwarren Exp $
 ## 
 ##
 
@@ -223,7 +223,7 @@ fi
 
 
 touch $RES_FILE
-coredumps=`find . -name core -print`
+coredumps=`/usr/bin/find . -name core -print`
 
 if test -n "$coredumps" ; then
   echo "The following coredumps occurred during this test run:" >> $RES_FILE
