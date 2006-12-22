@@ -24,7 +24,9 @@ echo "Num is $NUM"
 
 # May make more general later.
 #-----------------------------
-ALLTESTS="basic_tests"
+#ALLTESTS="basic_tests prolog_tests"
+ALLTESTS="basic_tests prolog_tests"
+#ALLTESTS="float_tests"
 
 if [ -z "$TESTS" ]
 then
