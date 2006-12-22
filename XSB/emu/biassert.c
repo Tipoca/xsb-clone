@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.131 2006-11-26 23:43:42 tswift Exp $
+** $Id: biassert.c,v 1.132 2006-12-22 18:39:01 dwarren Exp $
 ** 
 */
 
@@ -987,9 +987,11 @@ static void db_putterm(CTXTdeclc int Rt, prolog_term T0,
     case bldtvar:
       if (Reg->RegArrayInit[Arg1]) {
 	dbgen_instB_ppv(bldtval, Arg1);
+	reg_release(Reg,Arg1);
       } else {
 	Reg->RegArrayInit[Arg1] = 1;
 	dbgen_instB_ppv(bldtvar, Arg1);
+	reg_release(Reg,Arg1);
       }
       break;
     case bldavar:
