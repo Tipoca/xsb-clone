@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.67 2006-09-14 16:13:55 crojo Exp $
+** $Id: cinterf.c,v 1.68 2006-12-31 23:49:40 tswift Exp $
 ** 
 */
 
@@ -1168,6 +1168,7 @@ int xsb_answer_string(CTXTdeclc VarString *ans, char *sep)
 {
   int i;
   
+  XSB_StrSet(ans,"");
   if (!is_string(reg_term(CTXTc 2))) {
     for (i=1; i<p2c_arity(reg_term(CTXTc 2)); i++) {
       print_pterm(CTXTc p2p_arg(reg_term(CTXTc 2),i),TRUE,ans);
