@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.68 2006-12-31 23:49:40 tswift Exp $
+** $Id: cinterf.c,v 1.69 2007-01-08 22:09:27 dwarren Exp $
 ** 
 */
 
@@ -243,30 +243,35 @@ DllExport xsbBool call_conv c2p_functor(CTXTdeclc char *functor, int arity,
 DllExport Integer call_conv p2c_int(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return oint_val(t);
 }
 
 DllExport double call_conv p2c_float(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return (double)(ofloat_val(t));
 }
 
 DllExport char* call_conv p2c_string(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return string_val(t);
 }
 
 DllExport char* call_conv p2c_functor(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return get_name(get_str_psc(t));
 }
 
 DllExport int call_conv p2c_arity(prolog_term term)
 {
     Cell t = (Cell)term;
+    XSB_Deref(t);
     return get_arity(get_str_psc(t));
 }
 
