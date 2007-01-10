@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.117 2006-11-28 14:18:06 ruim Exp $
+** $Id: init_xsb.c,v 1.118 2007-01-10 16:31:58 ruim Exp $
 ** 
 */
 
@@ -1363,6 +1363,8 @@ void init_symbols(void)
   if (status != 0) 
     xsb_exit("Cannot set pthread attr detached state during system initialization");
 
+  pthread_attr_setscope(&detached_attr_gl,PTHREAD_SCOPE_SYSTEM);
+
   /* set minimal stack size to a reasonable value */
   pthread_attr_setstacksize(&detached_attr_gl,512*K*ZOOM_FACTOR);
   status = pthread_attr_init(&normal_attr_gl);
@@ -1380,6 +1382,7 @@ void init_symbols(void)
 		printf( "Minimum thread stack size set to %d\n", stack_size ) ;
   }
 #endif
+  pthread_attr_setscope(&normal_attr_gl,PTHREAD_SCOPE_SYSTEM);
 #endif
 
 }
