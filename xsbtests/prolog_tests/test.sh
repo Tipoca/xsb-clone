@@ -106,4 +106,10 @@ else
 #------------------------------------------------------------------------
 	rm -f c_calls_xsb.o c_calls_xsb$OBJEXT c_calls_xsb_make$OBJEXT
 	../gentest.sh "$XEMU $options" c_calls_xsb_make "test."
+#------------------------------------------------------------------------
+	rm -f cfixedstring.o c_fixedstring_make$OBJEXT
+	../gentest.sh "$XEMU $options" cfixedstring_make "test."
+#------------------------------------------------------------------------
+	rm -f cvarstring.o c_varstring_make$OBJEXT
+	../gentest.sh "$XEMU $options" cvarstring_make "test."
 fi

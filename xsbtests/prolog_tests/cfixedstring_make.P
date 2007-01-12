@@ -1,0 +1,15 @@
+%% This compiles the examples below on Unix
+
+test:- xsb_configuration(compiler_flags,CFLAGS),
+	xsb_configuration(loader_flags,LDFLAGS),
+	xsb_configuration(config_dir,CONFDIR),
+	xsb_configuration(emudir,Emudir),
+	xsb_configuration(compiler,Compiler),
+	str_cat(CONFDIR, '/saved.o/', ObjDir),
+	compile('edb.P'),
+	shell([Compiler, ' -c ', ' -I', Emudir, ' -I', CONFDIR, ' ', CFLAGS, ' cfixedstring.c ']),
+	shell([Compiler, ' -o ', './cfixedstring.exe ',
+	       ObjDir, 'xsb.o ', ' cfixedstring.o ', LDFLAGS]),
+	xsb_configuration(install_dir,InstallDir),
+	shell(['./cfixedstring.exe ', InstallDir,' > temp1']),
+	shell('cat temp1 >> temp; rm temp1').

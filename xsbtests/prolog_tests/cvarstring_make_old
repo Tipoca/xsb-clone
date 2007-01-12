@@ -1,0 +1,4 @@
+cvsreturn 1|2|3
+cvsreturn [1,2]|[3,4]|[5,6]
+cvsreturn _h102|_h116|_h102
+cvsreturn a|b|c

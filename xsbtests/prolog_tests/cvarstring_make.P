@@ -1,0 +1,15 @@
+%% This compiles the examples below on Unix
+
+test:- xsb_configuration(compiler_flags,CFLAGS),
+	xsb_configuration(loader_flags,LDFLAGS),
+	xsb_configuration(config_dir,CONFDIR),
+	xsb_configuration(emudir,Emudir),
+	xsb_configuration(compiler,Compiler),
+	str_cat(CONFDIR, '/saved.o/', ObjDir),
+	compile('edb.P'),
+	shell([Compiler, ' -c ', ' -I', Emudir, ' -I', CONFDIR, ' ', CFLAGS, ' cvarstring.c ']),
+	shell([Compiler, ' -o ', './cvarstring.exe ',
+	       ObjDir, 'xsb.o ', ' cvarstring.o ', LDFLAGS]),
+	xsb_configuration(install_dir,InstallDir),
+	shell(['./cvarstring.exe ', InstallDir,' > temp1']),
+	shell('cat temp1 >> temp; rm temp1').
