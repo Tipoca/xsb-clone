@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.76 2006/04/27 00:55:10 tswift Exp $
+** $Id: machine.H,v 1.78 2006/09/13 17:10:52 dwarren Exp $
 ** 
 */
 
@@ -162,6 +162,7 @@
         install_verify_attribute_handler/4,
         verify_attribute_handler/4,
 	globalvar/1,
+        ccall_store_error/2,
 	xsb_backtrace/0, xsb_backtrace/1.
 
 :- import assert/1, retract/1, (dynamic)/1 from assert.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.H,v 1.6.4.2 2004/10/18 20:48:45 ruim Exp $
+** $Id: xcallxsb.H,v 1.10 2005/01/14 18:32:05 ruim Exp $
 ** 
 */
 
@@ -38,4 +38,5 @@
 :- import file_read_foe/3, file_read/3 from xsb_read.
 :- import excess_vars/4 from setof.
 :- import conset/2 from gensym.
+   :- import ccall_error_handler/1 from error_handler.
 :- import [] / 0 from usermod.	       % just to make usermod typed "module"

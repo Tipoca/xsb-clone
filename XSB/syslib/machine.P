@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.87 2006/09/20 13:43:29 tswift Exp $
+** $Id: machine.P,v 1.88 2006/11/01 23:49:45 ruim Exp $
 ** 
 */
 
@@ -392,6 +392,8 @@ set_prof_on(Level) :- stat_set_flag(PROFFLAG,Level).
 
 globalvar(_Var) :-
 	'_$builtin'(GLOBALVAR).
+
+ccall_store_error(_Type,_Message) :- '_$builtin'(CCALL_STORE_ERROR).
 
 /* Prompt routines */
 
