@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.56 2006-12-22 18:57:39 tswift Exp $
+** $Id: error_xsb.c,v 1.57 2007-01-12 23:33:28 tswift Exp $
 ** 
 */
 
@@ -780,6 +780,27 @@ DllExport void call_conv dbgmsg1_xsb(int log_level, char *description)
 #endif
 
 /*----------------------------------------------------------------------*/
+
+DllExport void call_conv xsb_initialization_exit(char *description, ...)
+{
+  va_list args;
+
+  if (xsb_mode != C_CALLING_XSB) {
+    va_start(args, description);
+    vfprintf(stderr, description, args);
+    va_end(args);
+
+    fprintf(stdfdbk, "\nExiting XSB abnormally...\n");
+    exit(1);
+  }
+  else {
+    sprintf(xsb_get_error_type(),"init_error");
+    va_start(args, description);
+    vsprintf(xsb_get_error_message(), description, args);
+    va_end(args);
+    longjmp(ccall_init_env, XSB_ERROR);
+  }
+}
 
 DllExport void call_conv xsb_exit(char *description, ...)
 {

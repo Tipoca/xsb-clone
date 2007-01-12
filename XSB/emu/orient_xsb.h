@@ -18,11 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.h,v 1.3 2005-11-29 00:02:16 tswift Exp $
+** $Id: orient_xsb.h,v 1.4 2007-01-12 23:33:29 tswift Exp $
 ** 
 */
 
 #include "export.h"
+
 
 extern void  set_xsbinfo_dir (void);
 extern void  set_install_dir(void);

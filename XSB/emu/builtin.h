@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.74 2006-09-06 05:15:26 diptikalyan Exp $
+** $Id: builtin.h,v 1.75 2007-01-12 23:33:28 tswift Exp $
 ** 
 */
 
@@ -188,6 +188,7 @@
 #define TRIE_UNDISPOSE          166
 #define RECLAIM_UNINTERNED_NR   167
 #define GLOBALVAR               168
+#define CCALL_STORE_ERROR       169
 
 #define SET_TABLED_EVAL		170
 

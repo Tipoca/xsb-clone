@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.272 2006-11-26 23:43:42 tswift Exp $
+** $Id: builtin.c,v 1.273 2007-01-12 23:33:28 tswift Exp $
 ** 
 */
 
@@ -921,6 +921,7 @@ void init_builtin_table(void)
   set_builtin_table(TRIE_UNDISPOSE, "trie_undispose");
   set_builtin_table(RECLAIM_UNINTERNED_NR, "reclaim_uninterned_nr");
   set_builtin_table(GLOBALVAR, "globalvar");
+  set_builtin_table(CCALL_STORE_ERROR, "ccall_store_error");
 
   set_builtin_table(SET_TABLED_EVAL, "set_tabled_eval_method");
   set_builtin_table(UNIFY_WITH_OCCURS_CHECK, "unify_with_occurs_check");
@@ -2357,6 +2358,9 @@ case WRITE_OUT_PROFILE:
     break;
   case GLOBALVAR:
     ctop_tag(CTXTc 1, ((Cell)glstack.low));
+    break;
+  case CCALL_STORE_ERROR:
+    create_ccall_error(ptoc_string(CTXTc 1),ptoc_string(CTXTc 2));
     break;
 
   case STORAGE_BUILTIN: {

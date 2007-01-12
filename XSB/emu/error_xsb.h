@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.31 2006-12-22 18:57:39 tswift Exp $
+** $Id: error_xsb.h,v 1.32 2007-01-12 23:33:28 tswift Exp $
 ** 
 */
 
@@ -68,6 +68,7 @@
 
 
 DllExport extern void call_conv xsb_exit(char *, ...);
+DllExport extern void call_conv xsb_initialization_exit(char *, ...);
 DllExport extern void call_conv exit_xsb(char *);
 
 DllExport extern void call_conv xsb_abort(char *, ...);

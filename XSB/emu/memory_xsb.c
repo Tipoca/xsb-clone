@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.39 2006-11-20 16:53:42 ruim Exp $
+** $Id: memory_xsb.c,v 1.40 2007-01-12 23:33:29 tswift Exp $
 ** 
 */
 
@@ -105,7 +105,6 @@ void *mem_alloc(unsigned long size, int category)
     ptr = (byte *) malloc(size);
 
 #if defined(GENERAL_TAGGING)
-    //    printf("mem_alloc %x %x\n",ptr,ptr+size);
     extend_enc_dec_as_nec(ptr,ptr+size);
 #endif
 

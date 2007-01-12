@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: main_xsb.c,v 1.10 2005-12-22 23:33:56 tswift Exp $
+** $Id: main_xsb.c,v 1.11 2007-01-12 23:33:28 tswift Exp $
 ** 
 */
 
@@ -82,10 +82,10 @@ int main(int argc, char *argv[])
   th = malloc( sizeof( th_context ) ) ;  /* don't use mem_alloc */
 #endif
 
-  xsb(CTXTc 0, argc, argv);  /* init xsb */
+  xsb(CTXTc XSB_INIT, argc, argv);  /* init xsb */
 
-  xsb(CTXTc 1, 0, 0);        /* normal execution */
-  xsb(CTXTc 2, 0, 0);        /* when halts, exit */
+  xsb(CTXTc XSB_EXECUTE, 0, 0);        /* normal execution */
+  xsb(CTXTc XSB_SHUTDOWN, 0, 0);        /* when halts, exit */
   return 0;
 }
 
