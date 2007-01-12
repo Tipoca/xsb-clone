@@ -21,22 +21,22 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.4 1999-10-22 03:51:48 kifer Exp $
+## $Id: Makefile,v 1.5 2007-01-12 23:48:21 tswift Exp $
 ## 
 
 ##################### You may need to edit some of these!
 
 
 # Where the architectue specific XSB stuff is
-ARCH=i686-pc-linux-gnu
+ARCH=powerpc-apple-darwin7.5.1-dflt
 #ARCH=i686-pc-linux-gnu-dbg
-arch_dir=$(HOME)/XSB/XSB/config/$(ARCH)
+arch_dir=$(HOME)/XSBNEW/XSB/config/$(ARCH)
 
 CC=gcc
 CFLAGS= -O4 -ansi -pedantic -Wall
 # for debug:
 #CFLAGS= -ansi -pedantic -Wall -g
-LDFLAGS= -lm -ldl -Wl,-export-dynamic
+LDFLAGS= -lm -ldl -Wl
 # For Solaris use:
 #LDFLAGS=  -lsocket -lm -lnsl -ldl -Wl,-export-dynamic
 
