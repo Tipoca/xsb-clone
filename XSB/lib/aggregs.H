@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.H,v 1.15 2005-08-16 21:23:51 dwarren Exp $
+** $Id: aggregs.H,v 1.16 2007-01-12 22:20:56 dwarren Exp $
 ** 
 */
 
@@ -60,7 +60,7 @@
 :- import member/2, copy_term/2, append/3 from basics.
 :- import sort/2, findall/3, bagof/3, excess_vars/4 from setof.
 :- import ','/2 from usermod.
-:- import variant/2 from subsumes.
+:- import subsumes/2, variant/2 from subsumes.
 
 :- import delete_return/2,
 	  get_producer_call/3,
