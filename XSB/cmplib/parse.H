@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.31 2005-10-11 15:21:04 dwarren Exp $
+** $Id: parse.H,v 1.32 2007-01-12 23:29:31 tswift Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
 :- import closetail/1 from listutil.
 :- import inline_predicate/2 from builtin.
 :- import singleton_check/2 from singlton.
-:- import file_read/3 from xsb_read.
+:- import file_read_fapoe/3 from xsb_read.
 :- import add_hilog_symbol/1 from hilogsym.
 :- import conset/2, conget/2 from gensym.
 :- import append/3, memberchk/2, log_ith/3 from basics.

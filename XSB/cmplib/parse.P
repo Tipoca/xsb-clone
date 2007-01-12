@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.74 2006-01-27 17:54:11 dwarren Exp $
+** $Id: parse.P,v 1.75 2007-01-12 23:29:31 tswift Exp $
 ** 
 */
 
@@ -242,7 +242,7 @@ parse_clauses(M, _) :-	% Under normal conditions this clause is unreachable!
 	error(('Clauses of ', M, ' cannot be parsed.')).
 
 my_read(Term, Vars) :-
-	stat_flag(CURRENT_INPUT, File), file_read(File, Term, Vars).
+	stat_flag(CURRENT_INPUT, File), file_read_fapoe(File, Term, Vars).
 
 check_compilable_clause(Cl) :- var(Cl), !, 
 	error(('Clause cannot be compiled: ',Cl)),
