@@ -5,7 +5,7 @@
 chain_ancestor_bench:- 
 	bigbench(rancestor1k(1,_),[tabled_right_anc,chain(1024),its(4)],4),
 	bigbench(ancestor1k(1,_),[tabled_left_anc,chain(1024),its(3000)],3000),
-	bigbench(ancestor2k(1,_),[tabled_left_anc,chain(2048),its(1500)],1500),
+	%bigbench(ancestor2k(1,_),[tabled_left_anc,chain(2048),its(1500)],1500),
 	flush_output.
 
 mt_chain_ancestor_bench(M):- 
@@ -17,7 +17,7 @@ mt_chain_ancestor_bench(M):-
 cycle_ancestor_bench:- 
 	bigbench(rancestor1k(1,_),[tabled_right_anc,cycle(1024),its(2)],2),
 	bigbench(ancestor1k(1,_),[tabled_left_anc,cycle(1024),its(3000)],3000),
-	bigbench(ancestor2k(1,_),[tabled_left_anc,cycle(2048),its(1500)],1500),
+	%bigbench(ancestor2k(1,_),[tabled_left_anc,cycle(2048),its(1500)],1500),
 	flush_output.
 
 mt_cycle_ancestor_bench(M):- 

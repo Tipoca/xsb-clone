@@ -46,12 +46,12 @@ bench_1_thread :-
 	work_size( M ),
 	prod_cons_seq( M ).
 bench_n_threads(N) :-
-	R is N mod 2,
-	(	R =\=0
-	->	writeln( 'odd thread number'(N) ),
-		fail
-	;	true
-	),
+	%R is N mod 2,
+	%(	R =\=0
+	%->	writeln( 'odd thread number'(N) ),
+	%	fail
+	%;	true
+	%),
 	Npairs is floor( N / 2),
 	create_pairs(Npairs,Lpairs),
 	do_pairs(Lpairs,L),
