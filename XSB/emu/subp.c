@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.99 2006/07/14 16:49:36 tswift Exp $
+** $Id: subp.c,v 1.100 2006/11/15 16:38:10 tswift Exp $
 ** 
 */
 
@@ -288,6 +288,7 @@ void print_statistics(CTXTdeclc int amount) {
 #endif
   case 4:                  /* mutex use (if PROFILE_MUTEXES is defined) */
     print_mutex_use();
+    print_mem_allocs();
     break;
   case 5:
     dis(0); 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.31 2006-10-18 20:42:26 dwarren Exp $
+** $Id: memory_xsb.h,v 1.32 2007-01-13 23:10:36 tswift Exp $
 ** 
 */
 
@@ -153,6 +153,7 @@ extern void *mem_calloc(unsigned long, unsigned long, int);
 extern void *mem_realloc(void *, unsigned long, unsigned long, int);
 extern void *mem_realloc_nocheck(void *, unsigned long, unsigned long, int);
 extern void mem_dealloc(void *, unsigned long, int);
+extern void print_mem_allocs(void);
 #ifndef MULTI_THREAD
 extern void tcpstack_realloc(long);
 extern void complstack_realloc(long);
