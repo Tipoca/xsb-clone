@@ -15,9 +15,12 @@ cycle_ancestor_bench:-
 	flush_output.
 
 abolish_tables :-
-	abolish_table_pred(ancestor2k/2),
-	abolish_table_pred(ancestor1k/2),
-	abolish_table_pred(rancestor1k/2).
+	abolish_all_tables.
+
+%abolish_tables :-
+%	abolish_table_pred(ancestor2k/2),
+%	abolish_table_pred(ancestor1k/2),
+%	abolish_table_pred(rancestor1k/2).
 
 :- table ancestor2k/2.
 :- thread_shared ancestor2k/2.

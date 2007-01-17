@@ -1,4 +1,9 @@
+:- import xsb_configuration/2 from xsb_configuration.
+
+:- import abolish_all_private_tables/0 from thread.
+
 :- thread_shared move2k/2, move1k/2.
+
 :- index(move2k/2,trie).
 :- index(move1k/2,trie).
 
@@ -27,9 +32,14 @@ mt_cycle_ancestor_bench(M):-
 	flush_output.
 
 abolish_tables :-
-	abolish_table_pred(ancestor2k/2),
-	abolish_table_pred(ancestor1k/2),
-	abolish_table_pred(rancestor1k/2).
+	xsb_configuration(engine_mode,'multi-threading') ->
+	abolish_all_private_tables ;
+	abolish_all_tables.
+
+%abolish_tables :-
+%	abolish_table_pred(ancestor2k/2),
+%	abolish_table_pred(ancestor1k/2),
+%	abolish_table_pred(rancestor1k/2).
 
 :- table ancestor2k/2.
 ancestor2k(X,Y):- ancestor2k(X,Z), move2k(Z,Y).
