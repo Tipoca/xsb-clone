@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.119 2007-01-12 23:33:28 tswift Exp $
+** $Id: init_xsb.c,v 1.120 2007-01-17 17:41:20 tswift Exp $
 ** 
 */
 
@@ -1394,7 +1394,7 @@ void init_symbols(void)
   	if (status != 0) 
     		xsb_initialization_exit("Cannot determine thread stack size during system initialization");
 	else
-		printf( "Minimum thread stack size set to %d\n", stack_size ) ;
+	  printf( "Minimum thread stack size set to %d\n", (int) stack_size ) ;
   }
 #endif
   pthread_attr_setscope(&normal_attr_gl,PTHREAD_SCOPE_SYSTEM);
