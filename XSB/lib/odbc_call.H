@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.25 2006-10-16 21:44:45 dwarren Exp $
+** $Id: odbc_call.H,v 1.26 2007-01-24 22:15:42 dwarren Exp $
 **
 */
 
@@ -30,7 +30,7 @@
 	odbc_sql/3, odbc_sql/4,
 	findall_odbc_sql/3, findall_odbc_sql/4,
 	odbc_sql_cnt/4,
-	odbc_query/2, odbc_query/3,
+	odbc_query/3,
 	odbc_deallocate_query/1, odbc_deallocate_query/2,
   odbc_import/2, odbc_import/3, odbc_import/4,
   odbc_transaction/1, odbc_transaction/2,
