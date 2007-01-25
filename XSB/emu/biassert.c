@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.134 2007-01-16 22:23:02 dwarren Exp $
+** $Id: biassert.c,v 1.135 2007-01-25 20:33:53 tswift Exp $
 ** 
 */
 
@@ -1375,7 +1375,7 @@ xsbBool assert_buff_to_clref_p(CTXTdeclc prolog_term Head,
   /* ctop_int(7, (Integer)Clause);  DO NOT RETURN ANYTHING */
   /* *Clref = Clause; */
   
-  SYS_MUTEX_LOCK( MUTEX_DYNAMIC );
+  SYS_MUTEX_LOCK(MUTEX_DYNAMIC);
 
   if (NI <= 0) db_addbuff(Arity,Clause,Pred,AZ,FALSE,1);
   else db_addbuff_i(Arity,Clause,Pred,AZ,Index,NI,Head,HashTabSize);

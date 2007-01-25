@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.22 2006-11-30 18:18:43 dwarren Exp $
+** $Id: struct_manager.c,v 1.23 2007-01-25 20:33:55 tswift Exp $
 ** 
 */
 
@@ -80,8 +80,8 @@ void smAllocateBlock(Structure_Manager *pSM) {
 
   void *pNewBlock;
 
-  dbg_smPrint(LOG_STRUCT_MANAGER, *pSM,"before block allocation");
-  pNewBlock = mem_alloc(SM_NewBlockSize(*pSM),TABLE_SPACE);  // counted in table-stats
+  //  smPrint(*pSM,"before block allocation");
+  pNewBlock = mem_calloc(SM_NewBlockSize(*pSM),1,TABLE_SPACE);  // counted in table-stats
   if ( IsNULL(pNewBlock) )
     xsb_abort("[smAllocateBlock] Out of memory in allocation of %s block\n",
 	      SM_StructName(*pSM));

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.15 2006-11-30 21:10:24 ruim Exp $
+** $Id: struct_manager.h,v 1.16 2007-01-25 20:33:55 tswift Exp $
 ** 
 */
 
@@ -327,6 +327,13 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
    PTHREAD_MUTEX_INITIALIZER					\
  }
 
+#define BuffM_InitDecl(Size,StructsPerBlock,NameString) {	\
+   {NULL, NULL, NULL},						\
+     {Size, StructsPerBlock, NameString},			\
+   {NULL, NULL},						\
+   PTHREAD_MUTEX_INITIALIZER					\
+ }
+
 #define SM_InitDeclDyna(StructPtr,StructType,StructsPerBlock,NameString)  \
   (StructPtr->cur_block).pBlock = NULL; 				\
   (StructPtr->cur_block).pNextStruct = NULL;				\
@@ -337,6 +344,17 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
   (StructPtr->struct_lists).alloc = NULL;				\
   (StructPtr->struct_lists).dealloc = NULL;				\
   pthread_mutex_init(&StructPtr->sm_lock, NULL );
+
+#define BuffM_InitDeclDyna(BuffPtr,BuffSize,BuffsPerBlock,NameString)	\
+  (BuffPtr->cur_block).pBlock = NULL;					\
+  (BuffPtr->cur_block).pNextStruct = NULL;				\
+  (BuffPtr->cur_block).pLastStruct = NULL;				\
+  (BuffPtr->struct_desc).size = BuffSize;				\
+  (BuffPtr->struct_desc).num = BuffsPerBlock;				\
+  (BuffPtr->struct_desc).name = NameString;				\
+  (BuffPtr->struct_lists).alloc = NULL;					\
+  (BuffPtr->struct_lists).dealloc = NULL;				\
+  pthread_mutex_init(&BuffPtr->sm_lock, NULL );
 
 #endif
   

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.61 2006-10-25 10:46:38 ruim Exp $
+** $Id: emudef.h,v 1.62 2007-01-25 20:33:54 tswift Exp $
 ** 
 */
 
@@ -82,6 +82,8 @@ VarString *tsgSBuff2;
 Cell interrupt_counter;
 CPtr interrupt_reg = &interrupt_counter;
 
+byte *current_inst;
+
 #endif /* MULTI_THREAD */
 
 /*
@@ -93,7 +95,7 @@ char *nil_string, *true_string;
 
 Pair list_pscPair;
 
-Psc list_psc, comma_psc, true_psc, if_psc, colon_psc;
+Psc list_psc, comma_psc, true_psc, if_psc, colon_psc, ccall_psc;
 Psc tnot_psc, delay_psc;
 Psc box_psc;
 

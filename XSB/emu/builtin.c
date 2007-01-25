@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.273 2007-01-12 23:33:28 tswift Exp $
+** $Id: builtin.c,v 1.274 2007-01-25 20:33:53 tswift Exp $
 ** 
 */
 
@@ -2359,9 +2359,14 @@ case WRITE_OUT_PROFILE:
   case GLOBALVAR:
     ctop_tag(CTXTc 1, ((Cell)glstack.low));
     break;
-  case CCALL_STORE_ERROR:
+  case CCALL_STORE_ERROR: {
+#ifdef MULTI_THREAD
+    create_ccall_error(find_context(xsb_thread_id), ptoc_string(CTXTc 1),ptoc_string(CTXTc 2));
+#else
     create_ccall_error(ptoc_string(CTXTc 1),ptoc_string(CTXTc 2));
+#endif
     break;
+  }
 
   case STORAGE_BUILTIN: {
     STORAGE_HANDLE *storage_handle =

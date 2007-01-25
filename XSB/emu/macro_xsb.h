@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.59 2006-12-07 00:26:45 tswift Exp $
+** $Id: macro_xsb.h,v 1.60 2007-01-25 20:33:54 tswift Exp $
 ** 
 */
 
@@ -866,7 +866,7 @@ extern ALNptr empty_return(struct th_context *,VariantSF);
 
 /* Global Structure Management
    --------------------------- */
-#define SUBGOAL_FRAMES_PER_BLOCK    16
+#define SUBGOAL_FRAMES_PER_BLOCK    128
 
 extern struct Structure_Manager smVarSF;
 extern struct Structure_Manager smProdSF;
