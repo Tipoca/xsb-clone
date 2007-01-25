@@ -37,13 +37,7 @@
 int main(int argc, char *argv[])
 { 
 
-#ifdef MULTI_THREAD
-   static th_context *th ;
-   th = malloc( sizeof( th_context ) ) ;  /* don't use mem_alloc */
-#endif
-
   int anslen,rc;
-
   int return_size = 15;
   char *return_string;
   return_string = malloc(return_size);
@@ -53,15 +47,20 @@ int main(int argc, char *argv[])
 
   myargv[0] = argv[1];
 
-
-  if (xsb_init(CTXTc myargc,myargv)) {
-    fprintf(stderr,"%s initializing XSB: %s\n",xsb_get_error_type(),xsb_get_error_message());
+  if (xsb_init(myargc,myargv)) {
+    fprintf(stderr,"%s initializing XSB: %s\n",xsb_get_error_type(xsb_get_main_thread()),
+	    xsb_get_error_message(xsb_get_main_thread()));
     exit(XSB_ERROR);
   }
 
+#ifdef MULTI_THREAD
+  th_context *th = xsb_get_main_thread();
+#endif
+
   /* Create command to consult a file: edb.P, and send it. */
   if (xsb_command_string(CTXTc "consult('edb.P').") == XSB_ERROR)
-    fprintf(stderr,"++Error consulting edb.P: %s/%s\n",xsb_get_error_type(),xsb_get_error_message());
+    fprintf(stderr,"++Error consulting edb.P: %s/%s\n",xsb_get_error_type(xsb_get_main_thread()),
+	    xsb_get_error_message(xsb_get_main_thread()));
 
   rc = xsb_query_string_string_b(CTXTc "p(X,Y,Z).",return_string,return_size,&anslen,"|");
 
@@ -79,7 +78,8 @@ int main(int argc, char *argv[])
   }
 
  if (rc == XSB_ERROR) 
-   fprintf(stderr,"++Query Error: %s/%s\n",xsb_get_error_type(),xsb_get_error_message());
+   fprintf(stderr,"++Query Error: %s/%s\n",xsb_get_error_type(xsb_get_main_thread()),
+	   xsb_get_error_message(xsb_get_main_thread()));
 
   xsb_close(CTXT);
   return(0);
