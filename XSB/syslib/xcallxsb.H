@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.H,v 1.10 2005/01/14 18:32:05 ruim Exp $
+** $Id: xcallxsb.H,v 1.11 2007/01/12 23:24:35 tswift Exp $
 ** 
 */
 
@@ -31,6 +31,7 @@
 :- import file_open/3, file_close/1
      from file_io.
 
+:- import set_xsb_ready/0 from thread.
 :- import call_c/1, call_expose/1, catch/3,
  	  goal_cut_trans/3, repeat/0, (=..)/2  from standard.
 :- import set_inthandler/2 from loader.
