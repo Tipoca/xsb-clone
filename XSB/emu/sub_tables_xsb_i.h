@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.10 2006-01-09 00:06:32 tswift Exp $
+** $Id: sub_tables_xsb_i.h,v 1.11 2007-01-29 19:35:27 dwarren Exp $
 ** 
 */
 
@@ -363,8 +363,8 @@ TSTNptr subsumptive_answer_search(CTXTdeclc SubProdSF sf, int nTerms,
   if ( IsNULL(subg_ans_root_ptr(sf)) )
     subg_ans_root_ptr(sf) = newAnswerSet(CTXTc nTerms, (TSTNptr) sf);
   root = (TSTNptr)subg_ans_root_ptr(sf);
-  tstn = subsumptive_tst_search( CTXTc root, nTerms, answerVector,
-				 ProducerSubsumesSubgoals(sf), isNew );
+  tstn = subsumptive_tst_search( CTXTc root, nTerms, answerVector, 
+				 (xsbBool)ProducerSubsumesSubgoals(sf), isNew );
   if ( *isNew )
     NumSubOps_AnswerInsert++;
   return tstn;
