@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.H,v 1.16 2007-01-12 22:20:56 dwarren Exp $
+** $Id: aggregs.H,v 1.17 2007-02-09 18:15:41 dwarren Exp $
 ** 
 */
 
@@ -29,6 +29,7 @@
 :- export 
 	bagReduce/4,
 	bagReduce/5,
+   bagReduce1/5,
 	bagPO/3,
 	bagPO/4,
 	bagPO1/3,
