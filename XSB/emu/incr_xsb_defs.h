@@ -18,11 +18,9 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb_defs.h,v 1.1 2006-09-06 05:15:27 diptikalyan Exp $
+** $Id: incr_xsb_defs.h,v 1.2 2007-02-09 18:12:17 dwarren Exp $
 ** 
 */
-
-
 #define GET_AFFECTED_CALLS      1
 #define INCR_STATISTICS         2
 #define GET_CALL_GRAPH          3
@@ -35,3 +33,4 @@
 #define IMM_DEPEND_LIST         10
 #define IMM_DEPENDENT_ON_LIST   11
 #define IS_AFFECTED             12
+#define PSC_GET_INCR            13

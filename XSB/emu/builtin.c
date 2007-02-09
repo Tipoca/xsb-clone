@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.274 2007-01-25 20:33:53 tswift Exp $
+** $Id: builtin.c,v 1.275 2007-02-09 18:12:16 dwarren Exp $
 ** 
 */
 
@@ -2283,9 +2283,17 @@ case WRITE_OUT_PROFILE:
     const int regRetTerm   = 4;   /* out: term in ret/N form:
 				     Call Trie -> answer template
 				     Other Trie -> variable vector */
+    Cell call_term = ptoc_tag(CTXTc regCallTerm);
+    if (isconstr(call_term)) {
+      Psc psc = term_psc(call_term);
+      if (get_incr(psc) && (get_type(psc) == T_DYNA)) {
+	xsb_abort("get_calls/3 called with incremental dynamic predicate: %s/%d",
+		  get_name(psc),get_arity(psc));
+      }
+    }
     ctop_int(CTXTc regTrieLeaf, (Integer)Last_Nod_Sav);
     ctop_int(CTXTc regLeafChild, (Integer)BTN_Child(Last_Nod_Sav));
-    ctop_tag(CTXTc regRetTerm, get_lastnode_cs_retskel(CTXTc ptoc_tag(CTXTc regCallTerm)));
+    ctop_tag(CTXTc regRetTerm, get_lastnode_cs_retskel(CTXTc call_term));
     return TRUE;
   }
 
@@ -2414,10 +2422,20 @@ case WRITE_OUT_PROFILE:
     }      
     if ((eval_meth == VARIANT_EVAL_METHOD) && (get_tabled(psc) != T_TABLED_VAR)) {
       if (get_tabled(psc) == T_TABLED) set_tabled(psc,T_TABLED_VAR);
+      else if (!(TIF_CallTrie(get_tip(CTXTc psc)))) {
+	  set_tabled(psc,T_TABLED_VAR);
+	  TIF_EvalMethod(get_tip(CTXTc psc)) = VARIANT_EVAL_METHOD;
+	}
       else xsb_warn("Cannot change to variant tabling method for %s/%d",get_name(psc),get_arity(psc));
     } else if ((eval_meth == SUBSUMPTIVE_EVAL_METHOD) && (get_tabled(psc) != T_TABLED_SUB)) {
-      if (get_tabled(psc) == T_TABLED) set_tabled(psc,T_TABLED_SUB);
-      else xsb_warn("Cannot change to subsumptive tabling method for %s/%d",get_name(psc),get_arity(psc));
+      if (get_tabled(psc) == T_TABLED && !get_incr(psc)) set_tabled(psc,T_TABLED_SUB);
+      else {
+	if (!(TIF_CallTrie(get_tip(CTXTc psc)))) {
+	  set_tabled(psc,T_TABLED_SUB);
+	  TIF_EvalMethod(get_tip(CTXTc psc)) = SUBSUMPTIVE_EVAL_METHOD;
+	}
+	else xsb_warn("Cannot change to subsumptive tabling method for %s/%d",get_name(psc),get_arity(psc));
+      }
     }
 
     /***    tif = get_tip(CTXTc psc);

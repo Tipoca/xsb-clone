@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.2 2006-10-11 21:06:22 dwarren Exp $
+** $Id: incr_xsb.c,v 1.3 2007-02-09 18:12:17 dwarren Exp $
 ** 
 */
 
@@ -150,8 +150,18 @@ xsbBool incr_eval_builtin(CTXTdecl)
   }
   case PSC_SET_INCR: {
     Psc psc = (Psc)ptoc_addr(2);   
-    set_incr(psc,ptoc_int(CTXTc 3));
-    //    printf("%s/%d:%u incr set to %d\n",get_name(psc),get_arity(psc),psc,ptoc_int(3));    
+    if (get_tabled(psc) != T_TABLED_SUB) {
+      set_incr(psc,ptoc_int(CTXTc 3));
+    //    printf("%s/%d:%u incr set to %d\n",get_name(psc),get_arity(psc),psc,ptoc_int(3));
+    } else {
+      xsb_abort("Cannot incrementally maintain a subsumptive table (%s/%d)",get_name(psc),get_arity(psc));
+    }
+    break;
+  }
+
+  case PSC_GET_INCR: {
+    Psc psc = (Psc)ptoc_addr(2);   
+    ctop_int(CTXTc 3,get_incr(psc));
     break;
   }
 

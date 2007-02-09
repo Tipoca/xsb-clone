@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.35 2006-11-08 00:25:56 tswift Exp $
+** $Id: debug_xsb.c,v 1.36 2007-02-09 18:12:16 dwarren Exp $
 ** 
 */
 
@@ -423,7 +423,7 @@ void alt_print_cp(CTXTdecl)
   alt_printnum++ ;
   where = fopen(buf,"w") ;
   if (! where)
-    { xsb_dbgmsg((LOG_GC, "could not open CP%d", printnum));
+    { xsb_dbgmsg((LOG_GC, "could not open CP%d", alt_printnum));
       return;
     }
 
@@ -754,6 +754,21 @@ char *stringSubgoalFrameType(byte type) {
   }
 }
 
+/*
+ * Tries to make the interface more robust by cleaning-up any extra user
+ * input supplied to a prompt.  Place a call to this function after any
+ * input scan which doesn't take the whole input line (ie. which isn't a
+ * `scanf("%s", &array);').
+ */
+static void skip_to_nl(void)
+{
+  char c;
+
+  do {
+    c = getchar();
+  } while (c != '\n');
+}
+
 void print_tables(void)
 {
   int i = 0;
@@ -900,21 +915,6 @@ void print_help(void)
 }
 
 /*--------------------------------------------------------------------------*/
-
-/*
- * Tries to make the interface more robust by cleaning-up any extra user
- * input supplied to a prompt.  Place a call to this function after any
- * input scan which doesn't take the whole input line (ie. which isn't a
- * `scanf("%s", &array);').
- */
-static void skip_to_nl(void)
-{
-  char c;
-
-  do {
-    c = getchar();
-  } while (c != '\n');
-}
 
 /*----- For table debugging --------------------------------------------*/ 
 
