@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.58 2007-01-25 20:33:54 tswift Exp $
+** $Id: error_xsb.c,v 1.59 2007-02-17 20:12:46 dwarren Exp $
 ** 
 */
 
@@ -436,7 +436,7 @@ void call_conv xsb_resource_error_nopred(CTXTdeclc char *resource,char *message)
   //  bld_string(tptr,string_find(message,1));
   bld_string(tptr,MsgBuf.string);
   tptr++;
-  bld_copy(tptr,(Integer)nil_string);
+  bld_copy(tptr,makenil);
   tptr++;
   bld_functor(tptr, pair_psc(insert("resource_error",1,
 				    (Psc)flags[CURRENT_MODULE],&isnew)));
