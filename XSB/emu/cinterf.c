@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.71 2007-01-25 20:33:53 tswift Exp $
+** $Id: cinterf.c,v 1.72 2007-02-18 16:26:05 dwarren Exp $
 ** 
 */
 
@@ -69,6 +69,26 @@ char *p_charlist_to_c_string(CTXTdeclc prolog_term term, VarString *buf,
 			     char *in_func, char *where);
 void c_string_to_p_charlist(CTXTdeclc char *name, prolog_term list,
 			    int regs_to_protect, char *in_func, char *where);
+
+#ifndef HAVE_SNPRINTF
+#include <stdarg.h>
+int snprintf(char *buffer, size_t count, const char *fmt, ...) {
+       va_list ap;
+       int ret;
+
+       va_start(ap, fmt);
+       ret = _vsnprintf(buffer, count-1, fmt, ap);
+
+       if (ret < 0) {
+               buffer[count-1] = '\0';
+       }
+
+       va_end(ap);
+       return ret;
+}
+#endif
+
+
 
 /*======================================================================*/
 /* Low level C interface						*/
