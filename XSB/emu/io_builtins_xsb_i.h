@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.50 2007-02-18 16:20:13 dwarren Exp $
+** $Id: io_builtins_xsb_i.h,v 1.51 2007-02-20 21:01:40 harpreet_singh Exp $
 ** 
 */
 
@@ -440,14 +440,14 @@ inline static xsbBool file_function(CTXTdecl)
 	line_buff_len = line_buff_disp+MAX_IO_BUFSIZE;
 	if(!(line_buff = mem_realloc(line_buff,old_len,line_buff_len,LEAK_SPACE)))
 	  xsb_exit("No space for line buffer");
-	printf("frll: expand buffer line_buff(%p,%d)\n",line_buff,line_buff_len);
+//	printf("frll: expand buffer line_buff(%p,%d)\n",line_buff,line_buff_len);
       }
       *(line_buff+line_buff_disp) = c = getc(fptr);
       if (c == EOF) break;
       line_buff_disp++;
     } while (c != '\n');
     *(line_buff+line_buff_disp) = 0;
-    printf("frll: eol at %d\n",line_buff_disp);
+//    printf("frll: eol at %d\n",line_buff_disp);
     
     check_glstack_overflow(3, pcreg, 2*sizeof(Cell)*line_buff_disp);
     atomname = line_buff;
