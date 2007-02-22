@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.134 2007/02/09 18:12:17 dwarren Exp $
+** $Id: tr_utils.c,v 1.135 2007/02/22 00:16:05 tswift Exp $
 ** 
 */
 
@@ -363,8 +363,15 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
 
 static void free_trie_ht(CTXTdeclc BTHTptr ht) {
 
-  mem_dealloc(BTHT_BucketArray(ht),BTHT_NumBuckets(ht)*sizeof(void *),
-	      TABLE_SPACE);
+#ifdef MULTI_THREAD
+  if (BTHT_NumBuckets(ht) == TrieHT_INIT_SIZE 
+      && threads_current_sm != SHARED_SM) {
+    SM_DeallocateStruct(*private_smTableBTHTArray,BTHT_BucketArray(ht)); 
+  }
+  else
+#endif
+    mem_dealloc(BTHT_BucketArray(ht),BTHT_NumBuckets(ht)*sizeof(void *),
+		TABLE_SPACE);
 #ifdef MULTI_THREAD
   if( threads_current_sm == SHARED_SM )
 	SM_Lock(*smBTHT);
