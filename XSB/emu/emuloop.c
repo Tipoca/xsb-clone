@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.151 2007-02-22 00:16:04 tswift Exp $
+** $Id: emuloop.c,v 1.152 2007-02-22 20:05:02 tswift Exp $
 ** 
 */
 
@@ -1996,7 +1996,6 @@ contcase:     /* the main loop */
     current_inst = lpcreg;
 #ifdef MULTI_THREAD
     if (xsb_mode == C_CALLING_XSB && th != main_thread_gl) {
-      UNLOCK_XSB_SYNCH;
       pthread_cond_signal(&xsb_done_cond);
       xsb_ready = 1;
       pthread_cond_wait( &xsb_started_cond, &xsb_synch_mut );
