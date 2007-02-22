@@ -11,14 +11,15 @@
 ** 
 ** XSB is distributed in the hope that it will be useful, but WITHOUT ANY
 ** WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-** FOR A PARTICULAR PURPOSE.  See the GNU Library General Public License for
+** FOR
+ A PARTICULAR PURPOSE.  See the GNU Library General Public License for
 ** more details.
 ** 
 ** You should have received a copy of the GNU Library General Public License
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cvarstring_thread.c,v 1.1 2007-01-29 22:49:45 tswift Exp $
+** $Id: cvarstring_thread.c,v 1.2 2007-02-22 00:18:57 tswift Exp $
 ** 
 */
 
@@ -93,9 +94,7 @@ int main(int argc, char *argv[])
  if (rcr == XSB_ERROR) 
    fprintf(stderr,"++Query Error r: %s/%s\n",xsb_get_error_type(r_th),xsb_get_error_message(r_th));
 
- if (xsb_command_string(r_th,"thread_exit.") == XSB_ERROR)
-    fprintf(stderr,"++Error exiting: %s/%s\n",xsb_get_error_type(r_th),
-	    xsb_get_error_message(r_th));
+ // xsb_kill_thread(r_th);
 
  xsb_close(xsb_get_main_thread());      /* Close connection */
   return(0);
