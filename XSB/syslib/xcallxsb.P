@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.P,v 1.15 2007/01/12 23:24:35 tswift Exp $
+** $Id: xcallxsb.P,v 1.16 2007/01/25 20:32:22 tswift Exp $
 ** 
 */
 
@@ -47,8 +47,8 @@ c_callloop_cmd_goal(_) :-
 
 c_callloop_query_loop(_) :-
 %	writeln(foo),
+%	set_xsb_ready,
 	repeat,
-	set_xsb_ready,
 	get_from_caller(Par,VarTerm,Command),
 	(\+integer(Command)
 	 ->	file_write(STDERR,'C command error; must be an integer; is '),
