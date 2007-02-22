@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.c,v 1.20 2006-02-03 18:14:13 tswift Exp $
+** $Id: timer_xsb.c,v 1.21 2007-02-22 00:16:05 tswift Exp $
 ** 
 */
 
@@ -246,7 +246,7 @@ void xsb_timer_handler(int signo)
 /* the following function is a general format for timeout control. it takes 
    function calls which need timeout control as argument and controls the
    timeout for different platform */ 
-int make_timed_call(CTXTdeclc xsbTimeout *pptr, void (*fptr)(xsbTimeout *))
+int make_timed_call(CTXTdeclc xsbTimeout *pptr,  void (*fptr)(xsbTimeout *))
 {
 #if defined(WIN_NT) || defined(MULTI_THREAD)   
   int return_msg; /* message_pump() return value */

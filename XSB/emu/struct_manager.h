@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.16 2007-01-25 20:33:55 tswift Exp $
+** $Id: struct_manager.h,v 1.17 2007-02-22 00:16:05 tswift Exp $
 ** 
 */
 
@@ -390,6 +390,18 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
      SM_AllocateFromBlock(SM,pStruct);		\
    }						\
  }
+
+#ifdef MULTI_THREAD
+#define SM_AllocatePossSharedStruct(SM,pStruct)		\
+  if (threads_current_sm == PRIVATE_SM) {			\
+    SM_AllocateStruct(SM,pStruct);				\
+  } else {							\
+  SM_AllocateSharedStruct(SM,pStruct);	\
+  }
+#else
+#define SM_AllocatePossSharedStruct(SM,pStruct)	\
+  SM_AllocateStruct(SM,pStruct)
+#endif
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 

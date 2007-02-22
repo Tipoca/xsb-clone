@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.132 2006/12/07 00:26:45 tswift Exp $
+** $Id: tr_utils.c,v 1.134 2007/02/09 18:12:17 dwarren Exp $
 ** 
 */
 
@@ -2142,8 +2142,6 @@ int abolish_table_pred_cps_check(CTXTdeclc Psc psc)
   abolish_table_predicate does not reclaim space for previously
  "abolished" tables in deltf frames.  Need to do gc tables for
   that. */
-
-extern void hashtable1_destroy_all(int);
 
 inline int abolish_table_predicate(CTXTdeclc Psc psc)
 {

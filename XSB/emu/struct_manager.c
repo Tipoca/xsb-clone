@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.23 2007-01-25 20:33:55 tswift Exp $
+** $Id: struct_manager.c,v 1.24 2007-02-22 00:16:05 tswift Exp $
 ** 
 */
 
@@ -66,7 +66,7 @@ void smPrint(Structure_Manager smRecord, char *string) {
 	  SM_CurBlock(smRecord),	nBlocks,
 	  SM_NextStruct(smRecord),	SM_FreeList(smRecord),
 	  SM_LastStruct(smRecord),	SM_AllocList(smRecord),
-	  SM_StructsPerBlock(smRecord),	SM_StructSize(smRecord));
+	  SM_StructsPerBlock(smRecord),	(int) SM_StructSize(smRecord));
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */

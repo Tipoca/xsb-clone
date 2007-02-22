@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.8 2006-08-28 13:58:47 tswift Exp $
+** $Id: debug_xsb.h,v 1.9 2007-02-22 00:16:04 tswift Exp $
 ** 
 */
 
@@ -31,11 +31,6 @@
 #define EOS	"--------------------BOTTOM_OF_STACK--------------------\n"
 #define EOFR	"--------------------------------------------\n"
 #define EOSUBG	"------------------------------------------------------------\n"
-
-#define print_subg_header(SUBG) { \
-    fprintf(stddbg, "=== Frame for "); print_subgoal(stddbg, SUBG); \
-    if (is_completed(SUBG)) fprintf(stddbg, " (completed) ===\n"); \
-    else fprintf(stddbg, " (incomplete) ===\n"); }
 
 /* extern int cur_log_level; */
 #define cur_log_level pflags[VERBOSENESS_LEVEL]

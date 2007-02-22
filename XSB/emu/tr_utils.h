@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.42 2006-12-07 00:26:45 tswift Exp $
+** $Id: tr_utils.h,v 1.43 2007-02-22 00:16:06 tswift Exp $
 ** 
 */
 
@@ -69,6 +69,10 @@ extern int abolish_usermod_tables(CTXTdecl);
 extern int abolish_module_tables(CTXTdeclc const char *module_name);
 
 extern void release_any_pndes(CTXTdeclc PNDE firstPNDE);
-void delete_delay_trie(CTXTdeclc BTNptr root);
+extern void delete_delay_trie(CTXTdeclc BTNptr root);
+extern void release_all_tabling_resources(CTXTdecl);
+
+// Perhaps this should be in hashtable.h?
+extern void hashtable1_destroy_all(int);
 
 #endif /* __TR_UTILS_H__ */
