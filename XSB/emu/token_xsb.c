@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.27 2007-02-23 20:17:05 tswift Exp $
+** $Id: token_xsb.c,v 1.28 2007-02-23 21:06:11 dwarren Exp $
 ** 
 */
 
@@ -518,7 +518,7 @@ void realloc_strbuff(CTXTdeclc char **pstrbuff, char **ps, int *pn)
 { 
   char *newbuff;
 
-  newbuff = (char *)realloc(*pstrbuff, strbuff_len * 2);
+  newbuff = (char *)mem_realloc(*pstrbuff, strbuff_len, strbuff_len * 2,OTHER_SPACE);
   exit_if_null(newbuff);
   if (token_too_long_warning) {
     xsb_warn("Extra-long token. Runaway string?");
