@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_wind.in,v 1.26 2006-02-27 19:18:26 tswift Exp $
+** $Id: def_config_wind.in,v 1.27 2007-02-23 22:00:14 dwarren Exp $
 **
 */
 
@@ -112,9 +112,6 @@
 
 /* Define if you have the mkdir function.  */
 #define HAVE_MKDIR 1
-
-/* Define if you have the snprintf function.  */
-#define HAVE_SNPRINTF 1
 
 /* Define if you have readline library */
 #undef HAVE_READLINE
