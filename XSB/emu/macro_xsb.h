@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.60 2007-01-25 20:33:54 tswift Exp $
+** $Id: macro_xsb.h,v 1.61 2007-02-23 20:17:05 tswift Exp $
 ** 
 */
 
@@ -440,7 +440,7 @@ extern TIFptr New_TIF(Psc);
     else {								\
       while  (tTIF != NULL && TIF_NextTIF(tTIF) != (pTIF))		\
 	tTIF =  TIF_NextTIF(tTIF);					\
-      if (!tTIF) xsb_exit("Trying to free nonexistent TIF");		\
+      if (!tTIF) xsb_exit(CTXTc "Trying to free nonexistent TIF");	\
       if ((pTIF) == tif_list.last) tif_list.last = tTIF;		\
       TIF_NextTIF(tTIF) = TIF_NextTIF((pTIF));				\
     }									\
@@ -459,7 +459,7 @@ extern TIFptr New_TIF(Psc);
     else {								\
       while  (tTIF != NULL && TIF_NextTIF(tTIF) != (pTIF))		\
 	tTIF =  TIF_NextTIF(tTIF);					\
-      if (!tTIF) xsb_exit("Trying to free nonexistent TIF");		\
+      if (!tTIF) xsb_exit(CTXTc "Trying to free nonexistent TIF");	\
       if ((pTIF) == private_tif_list.last) private_tif_list.last = tTIF; \
       TIF_NextTIF(tTIF) = TIF_NextTIF((pTIF));				\
     }									\
@@ -1097,7 +1097,7 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 
 #define resetpdl \
    if (pdlreg < (CPtr) pdl.low) \
-     xsb_exit("pdlreg grew too much"); \
+     xsb_exit(CTXTc "pdlreg grew too much"); \
    else (pdlreg = (CPtr)(pdl.high) - 1)
 
 #define remove_incomplete_tables_loop(Endpoint) remove_incomplete_tries(Endpoint)

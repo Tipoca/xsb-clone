@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.152 2007-02-22 20:05:02 tswift Exp $
+** $Id: emuloop.c,v 1.153 2007-02-23 20:17:04 tswift Exp $
 ** 
 */
 
@@ -1990,6 +1990,9 @@ contcase:     /* the main loop */
 #endif
   XSB_End_Instr()
 
+    /* for an explanation of the code below see the documentation
+       "Using the API with the MT engine" in cinterf.c */
+
   XSB_Start_Instr(halt,_halt)  /* PPP */
     ADVANCE_PC(size_xxx);
     pcreg = lpcreg; 
@@ -2245,7 +2248,7 @@ return(0);	/* not "goto contcase"! */
   default: {
     char message[80];
     sprintf(message, "Illegal opcode hex %x", *lpcreg); 
-    xsb_exit(message);
+    xsb_exit(CTXTc message);
   }
 } /* end of switch */
 #else
@@ -2253,7 +2256,7 @@ return(0);	/* not "goto contcase"! */
     {
       char message[80];
       sprintf(message, "Illegal opcode hex %x", *lpcreg);
-      xsb_exit(message);
+      xsb_exit(CTXTc message);
     }
 #endif
 
@@ -2348,7 +2351,7 @@ DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
 
 	if (xsb_mode == DISASSEMBLE) {
 	  dis(1);
-	  exit(0);  /* wont be called by C_CALLING_XSB in this case */
+	  exit(0);  /* This raw exit ok -- wont be called by C_CALLING_XSB */
 	}
 
 	/* do it after initialization, so that typing 

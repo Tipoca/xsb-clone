@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.45 2007-02-22 00:16:07 tswift Exp $
+** $Id: tries.h,v 1.46 2007-02-23 20:17:06 tswift Exp $
 ** 
 */
 
@@ -457,7 +457,7 @@ extern CPtr reg_arrayptr, var_regs[];
     if (ArraySz < NeededSz) ArraySz = NeededSz;\
     ArrayNam = mem_realloc(ArrayNam,Siz*sizeof(ArrType),ArraySz*sizeof(ArrType),TABLE_SPACE);\
     if (ArrayNam == NULL) \
-      xsb_exit("No More memory for reallocating Array");\
+      xsb_exit(CTXTc "No More memory for reallocating Array");\
 }
 
 #define will_overflow_reg_array(x) {\

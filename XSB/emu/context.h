@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.53 2007-02-22 00:16:04 tswift Exp $
+** $Id: context.h,v 1.54 2007-02-23 20:17:04 tswift Exp $
 ** 
 */
 
@@ -30,8 +30,8 @@
 
 #include "setjmp_xsb.h"
 #include "flag_defs_xsb.h"
-#include "conc_compl.h"
 #include "hashtable_xsb.h"
+#include "conc_compl.h"
 
 /* Note that ClRef pointers typically point to the end of a ClRef, so
    to access the components, the pointer must be decremented! */
@@ -742,5 +742,13 @@ typedef struct th_context th_context ;
 
 
 #endif /* MULTI_THREAD */
+
+#ifdef MULTI_THREAD
+extern xsbBucket *search_bucket(th_context *th, Cell name, xsbHashTable *tbl,
+				enum xsbHashSearchOp search_op);
+#else
+extern xsbBucket *search_bucket(Cell name, xsbHashTable *tbl,
+				enum xsbHashSearchOp search_op);
+#endif
 
 #endif /* __CONTEXT_H__ */

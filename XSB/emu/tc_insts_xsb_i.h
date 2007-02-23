@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.25 2005-12-12 18:44:53 dwarren Exp $
+** $Id: tc_insts_xsb_i.h,v 1.26 2007-02-23 20:17:05 tswift Exp $
 ** 
 */
 
@@ -704,7 +704,7 @@ if ( int_val(cell(breg + CP_SIZE + 2)) == HASH_IS_NOT_FREE ) {
       }
       XSB_Deref(*reg_arrayptr);
       if (isref(*reg_arrayptr))   /* sanity check */
-	xsb_exit("error_condition in hash_handle\n");
+	xsb_exit(CTXTc "error_condition in hash_handle\n");
 
       hash_nonvar_subterm(*reg_arrayptr,hash_hdr,hashed_hash_offset);
       if (hash_offset == FIRST_HASH_NODE) {
@@ -734,7 +734,7 @@ if ( int_val(cell(breg + CP_SIZE + 2)) == HASH_IS_NOT_FREE ) {
       else {
 	xsb_error("Hash Offset %d, HHO %d",
 		  hash_offset, hashed_hash_offset);
-	xsb_exit("error_condition in hash_handle\n");
+	xsb_exit(CTXTc "error_condition in hash_handle\n");
       }
     }
     else {  /* unification of trie with variable term */

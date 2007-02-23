@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.c,v 1.9 2005-09-16 00:56:41 tswift Exp $
+** $Id: storage_xsb.c,v 1.10 2007-02-23 20:17:05 tswift Exp $
 ** 
 */
 
@@ -44,9 +44,9 @@
 
 /* this func would insert handle into hashtable, if it isn't there */
 #define find_or_insert_storage_handle(name)  \
-    	    (STORAGE_HANDLE *)search_bucket(name,&bt_storage_hash_table,hashtable_insert)
+    	    (STORAGE_HANDLE *)search_bucket(CTXTc name,&bt_storage_hash_table,hashtable_insert)
 #define destroy_storage_handle(name) \
-    	    search_bucket(name,&bt_storage_hash_table,hashtable_delete)
+    	    search_bucket(CTXTc name,&bt_storage_hash_table,hashtable_delete)
 #define show_table_state()    show_table_state(&bt_storage_hash_table)
 
 static STORAGE_HANDLE        *increment_storage_snapshot(CTXTdeclc Cell name);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.275 2007-02-09 18:12:16 dwarren Exp $
+** $Id: builtin.c,v 1.276 2007-02-23 20:17:04 tswift Exp $
 ** 
 */
 
@@ -2178,12 +2178,12 @@ case WRITE_OUT_PROFILE:
     if (trie_assert(CTXT))
       return TRUE;
     else
-      xsb_exit("Failure of trie_assert/1");
+      xsb_exit(CTXTc "Failure of trie_assert/1");
   case TRIE_RETRACT:
     if (trie_retract(CTXT))
       return TRUE;
     else
-      xsb_exit("Failure of trie_retract/1");
+      xsb_exit(CTXTc "Failure of trie_retract/1");
 
   case TRIE_RETRACT_SAFE:
     return trie_retract_safe(CTXT);
@@ -2320,6 +2320,7 @@ case WRITE_OUT_PROFILE:
     break;
 
   case TRIMCORE:
+
     /*
      * In each case, check whether the initial size of the data area is
      * large enough to contain the currently used portion of the data area.

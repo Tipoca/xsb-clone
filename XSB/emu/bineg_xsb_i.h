@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.33 2006-12-13 02:24:41 ruim Exp $
+** $Id: bineg_xsb_i.h,v 1.34 2007-02-23 20:17:04 tswift Exp $
 ** 
 */
 
@@ -260,7 +260,7 @@ case IS_INCOMPLETE: {
 	  copy_of_var_addr_arraysz = var_addr_arraysz;
 	  copy_of_var_addr = (CPtr *)mem_calloc(copy_of_var_addr_arraysz, sizeof(CPtr),OTHER_SPACE);
 	  if(copy_of_var_addr == NULL){
-	    xsb_exit("No enough memory to calloc copy_of_var_addr!\nBye");
+	    xsb_exit(CTXTc "No enough memory to calloc copy_of_var_addr!\nBye");
 	  }
 	  for( i = 0; i <= global_num_vars; i++)
 	    copy_of_var_addr[i] = var_regs[i];

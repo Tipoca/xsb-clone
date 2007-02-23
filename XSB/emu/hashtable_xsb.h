@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hashtable_xsb.h,v 1.4 2005-09-16 00:56:41 tswift Exp $
+** $Id: hashtable_xsb.h,v 1.5 2007-02-23 20:17:05 tswift Exp $
 ** 
 */
 
@@ -40,10 +40,6 @@ struct bt_storage_hash_table_struct {
 };
 
 enum  xsbHashSearchOp {hashtable_insert, hashtable_delete, hashtable_find};
-
-
-extern xsbBucket *search_bucket(Cell name, xsbHashTable *tbl,
-				enum xsbHashSearchOp search_op);
 
 extern void destroy_hash_table(xsbHashTable *table);
 

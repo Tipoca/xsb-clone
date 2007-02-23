@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.11 2005-10-03 13:26:43 tswift Exp $
+** $Id: tr_code_xsb_i.h,v 1.12 2007-02-23 20:17:05 tswift Exp $
 ** 
 */
 
@@ -45,8 +45,8 @@
    Cell symbol = 0;	/* eliminate compiler warning */	\
 								\
    switch (cell_tag(Subterm)) {					\
-   case XSB_STRING:    	       	       	       	       	       \
-   case XSB_INT:    	       	       	       	       	       \
+   case XSB_STRING:						\
+   case XSB_INT:						\
    case XSB_FLOAT:	      	  				\
      symbol = EncodeTrieConstant(Subterm);			\
      break;							\
@@ -58,7 +58,7 @@
      break;							\
    default:							\
      fprintf(stderr,"Bad tag :Type %ld ",cell_tag(Subterm));	\
-     xsb_exit("In instruction hash_handle");			\
+     xsb_exit(CTXTc "In instruction hash_handle");		\
      break;							\
    }								\
    BucketNum = TrieHash(symbol,BTHT_GetHashSeed(pBTHT));	\

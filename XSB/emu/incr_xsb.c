@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.3 2007-02-09 18:12:17 dwarren Exp $
+** $Id: incr_xsb.c,v 1.4 2007-02-23 20:17:05 tswift Exp $
 ** 
 */
 
@@ -201,7 +201,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
     
 
   default:
-    xsb_exit("Unknown Incremental Evaluation Builtin: %d\n.", builtin_number);
+    xsb_exit(CTXTc "Unknown Incremental Evaluation Builtin: %d\n.", builtin_number);
     break;
   }
   return TRUE;
