@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.60 2007-02-23 20:17:04 tswift Exp $
+** $Id: error_xsb.c,v 1.61 2007-02-23 22:02:14 dwarren Exp $
 ** 
 */
 
@@ -74,6 +74,20 @@ static char *err_msg_table[] = {
 	"Underflow", "Zero division" };
 
 /*----------------------------------------------------------------------*/
+
+#ifndef HAVE_SNPRINTF
+#include <stdarg.h>
+int vsnprintf(char *buffer, size_t count, const char *fmt, va_list ap) {
+       int ret;
+
+       ret = _vsnprintf(buffer, count-1, fmt, ap);
+       if (ret < 0) {
+               buffer[count-1] = '\0';
+       }
+
+       return ret;
+}
+#endif
 
 #if defined(DEBUG_VERBOSE) && defined(CP_DEBUG)
 extern void print_cp_backtrace();
