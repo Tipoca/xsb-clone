@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.276 2007-02-23 20:17:04 tswift Exp $
+** $Id: builtin.c,v 1.277 2007-02-27 18:51:13 dwarren Exp $
 ** 
 */
 
@@ -2958,16 +2958,20 @@ int print_xsb_backtrace(CTXTdecl) {
     fprintf(stdout,"Partial Forward Continuation...\n");
     tmp_ereg = ereg;
     tmp_cpreg = cpreg;
-    instruction = *(tmp_cpreg-2*sizeof(Cell));
+    if (!tmp_cpreg) instruction = *(tmp_cpreg-2*sizeof(Cell));
     while (tmp_cpreg && (instruction == call || instruction == trymeorelse) && 
 	   (backtrace_length++ < MAX_BACKTRACE_LENGTH)) {
       if (instruction == call) {
 	called_psc = *((Psc *)tmp_cpreg - 1);
 	fprintf(stdout,"... %s/%d\n",get_name(called_psc),get_arity(called_psc));
       }
+      if (!tmp_ereg) {
+	fprintf(stdout,"... error in backtrace \n");
+	break;
+      }
       tmp_cpreg = *((byte **)tmp_ereg-1);
       tmp_ereg = *(CPtr *)tmp_ereg;
-      instruction = *(tmp_cpreg-2*sizeof(Cell));
+      if (!tmp_cpreg) instruction = *(tmp_cpreg-2*sizeof(Cell));
     }
   }
   return TRUE;
