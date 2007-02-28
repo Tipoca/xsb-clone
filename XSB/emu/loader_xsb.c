@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.66 2007-02-27 18:53:15 dwarren Exp $
+** $Id: loader_xsb.c,v 1.67 2007-02-28 15:02:08 dwarren Exp $
 ** 
 */
 
@@ -847,9 +847,9 @@ static byte *loader1(CTXTdeclc FILE *fd, int exp)
 	} else {
 	  unload_seg((pseg)get_ep(ptr->psc_ptr));
 	  set_ep(ptr->psc_ptr, (pb)seg_first_inst);
+	  if (xsb_profiling_enabled)
+	    add_prog_seg(ptr->psc_ptr, (pb)seg_first_inst, text_bytes);
 	}
-	if (xsb_profiling_enabled)
-	  add_prog_seg(ptr->psc_ptr, (pb)seg_first_inst, text_bytes);
       }
       instruct_tip = get_tip_or_tdisp(ptr->psc_ptr);
       if (instruct_tip != NULL) {
