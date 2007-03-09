@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.29 2006-04-17 20:54:57 tswift Exp $
+** $Id: pathname_xsb.c,v 1.30 2007-03-09 15:45:49 kifer Exp $
 ** 
 */
 
@@ -290,7 +290,9 @@ DllExport char * call_conv strip_names_from_path(char* path, int how_many)
    is b.c */
 static char *get_file_basename(char *path) {
   char *ptr;
-  ptr = strrchr(path, SLASH);
+  char canonicized[MAXPATHLEN];
+  //ptr = strrchr(path, SLASH);
+  ptr = strrchr(rectify_pathname(path,canonicized), SLASH);
   if (ptr == NULL)
     return path;
   else
