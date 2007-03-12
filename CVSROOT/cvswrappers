@@ -43,3 +43,4 @@
 *.dll   -k 'b'
 *.lib   -k 'b'
 *.exp   -k 'b'
+*.mak   -k 'b'
