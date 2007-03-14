@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.75 2007-02-23 20:17:04 tswift Exp $
+** $Id: cinterf.c,v 1.76 2007-03-14 16:02:52 dwarren Exp $
 ** 
 */
 
@@ -1151,7 +1151,7 @@ DllExport void call_conv print_pterm(CTXTdeclc prolog_term term, int toplevel,
     sprintf(tempstring,"%d", (int) p2c_int(term));
     XSB_StrAppend(straddr,tempstring);
   } else if (is_float(term)) {
-    sprintf(tempstring,"%f", (float) p2c_float(term));
+    sprintf(tempstring,"%lg", (double) p2c_float(term));
     XSB_StrAppend(straddr,tempstring);
   } else if (is_nil(term)) {
     XSB_StrAppend(straddr,"[]");
