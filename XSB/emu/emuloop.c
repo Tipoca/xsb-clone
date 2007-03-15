@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.153 2007-02-23 20:17:04 tswift Exp $
+** $Id: emuloop.c,v 1.154 2007-03-15 21:30:44 dwarren Exp $
 ** 
 */
 
@@ -1830,6 +1830,29 @@ contcase:     /* the main loop */
     ADVANCE_PC(size_xxx);
     cpreg = *((byte **)ereg-1);
     ereg = *(CPtr *)ereg;
+  XSB_End_Instr()
+
+  XSB_Start_Instr(deallocate_gc,_deallocate_gc) /* PPA */
+    ADVANCE_PC(size_xxx);
+    cpreg = *((byte **)ereg-1);
+    ereg = *(CPtr *)ereg;
+    /* following required for recursive loops that build structure on way back up. */
+    if (((pb)ereg - (pb)hreg) < 2048) { 
+      Def1op
+      Op1((lpcreg[-1]));  // already advanced pc, so look back
+      if (gc_heap(CTXTc (int)op1,FALSE)) { // no regs, garbage collection potentially modifies hreg 
+	if (((pb)ereg - (pb)hreg) < 2048) {
+	  if (pflags[STACK_REALLOC]) {
+	    if (glstack_realloc(CTXTc resize_stack(glstack.size,OVERFLOW_MARGIN),(int)op1) != 0) {
+	      xsb_basic_abort(local_global_exception);
+	    }
+	  } else {
+	    xsb_warn("Reallocation is turned OFF !");
+	    xsb_basic_abort(local_global_exception);
+	  }
+	}
+      }
+    }
   XSB_End_Instr()
 
   XSB_Start_Instr(proceed,_proceed)  /* PPP */
