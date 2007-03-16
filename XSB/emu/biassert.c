@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.138 2007-02-23 20:17:04 tswift Exp $
+** $Id: biassert.c,v 1.139 2007-03-16 20:40:29 dwarren Exp $
 ** 
 */
 
@@ -80,6 +80,10 @@ CPtr standard_cgc_block_end_gl = NULL;
 #define write_word(Buff,Loc,w) { *(CPtr)((pb)Buff + *(Loc)) = (Cell)(w); *(Loc) += 4; \
 				pad64bits(Loc); }
 #define write_byte(Buff,Loc,w) { *(pb)((pb)Buff + *(Loc)) = (byte)(w); *(Loc) += 1; }
+
+#define get_byte(Disp) (*(pb)((pb)(asrtBuff->Buff) + *(asrtBuff->Loc)+(Disp)))
+#define zap_byte(Disp,b) {*(pb)((pb)(asrtBuff->Buff) + (*(asrtBuff->Loc))+(Disp)) = (byte)(b);}
+
 
 #ifdef BITS64
 #define pad64bits(Loc)	{ *(Loc) += 4; }
@@ -819,7 +823,7 @@ static void db_genterms(CTXTdeclc int unibld, struct instruction_q *flatten_queu
 	dbgen_instB3_tv(getlist_tvar_tvar, Argno, Rt1, Rt2);
 	reg_release(Reg,Argno);
       } else {
-	if (unibld || !istop) {dbgen_instB_ppv(getlist, Argno);}    /* getlist */
+	if (unibld || !istop) {dbgen_instB_ppv(getlist, Argno);}
 	else {dbgen_instB_ppv(putlist, Argno);}    /* putlist */
 	reg_release(Reg,Argno);
 	flatten_queue->inst_queue_added = 0;
@@ -853,6 +857,7 @@ static void db_geninst(CTXTdeclc int unibld, prolog_term Sub, RegStat Reg,
 {
   int Rt, occs;
   
+ begin_db_geninst:
   if (isinteger(Sub)) {
     if (unibld) {dbgen_instB_pppw(uninumcon, int_val(Sub));}
     else {dbgen_instB_pppw(bldnumcon, int_val(Sub));}
@@ -899,8 +904,27 @@ static void db_geninst(CTXTdeclc int unibld, prolog_term Sub, RegStat Reg,
     freeze_var(CTXTc Sub,Rt,Reg);
   } else {
     Rt = reg_get(CTXTc Reg, TVAR);
-    if (unibld) {dbgen_instB_ppv(unitvar, Rt);}
-    else {dbgen_instB_ppv(bldtvar, Rt);}
+    if (unibld) {
+      if (islist(Sub) && isinteger(p2p_car(Sub))) {
+	int num = int_val(p2p_car(Sub));
+	if (num >= 0 && num <= 0xffff) {
+	  dbgen_instB3_tv(unitvar_getlist_uninumcon,Rt,num>>8,num&0xff);
+	  reg_release(Reg,Rt);
+	  Sub = p2p_cdr(Sub);
+	  goto begin_db_geninst;
+	} else dbgen_instB_ppv(unitvar, Rt);
+      } else dbgen_instB_ppv(unitvar, Rt);
+    } else {
+      if (islist(Sub) && isinteger(p2p_car(Sub))) {
+	int num = int_val(p2p_car(Sub));
+	if (num >= 0 && num <= 0xffff) {
+	  dbgen_instB3_tv(bldtvar_list_numcon,Rt,num>>8,num&0xff);
+	  reg_release(Reg,Rt);
+	  Sub = p2p_cdr(Sub);
+	  goto begin_db_geninst;
+	} else dbgen_instB_ppv(bldtvar, Rt);
+	} else dbgen_instB_ppv(bldtvar, Rt);
+    }
     Reg->RegArrayInit[Rt] = 1;  /* reg is inited */
     inst_queue_add(flatten_queue, Rt, Sub, 0);
   }
@@ -1161,10 +1185,10 @@ typedef ClRef SOBRef ;
 #define INDEXED_CL	3
 
 #define MakeClRef(ptr,Type,NCells)\
-{	long sz = (((NCells)*sizeof(Cell)+sizeof(ClRefHdr) + 7) & ~0x7);	\
-	(ptr) = (ClRef)mem_calloc(sz,1,ASSERT_SPACE);\
-	(ptr)->buflen = ((Type)&3)+sz;\
-	(ptr)++;\
+{	long sz = (((NCells)*sizeof(Cell)+sizeof(ClRefHdr) + 7) & ~0x7);\
+  (ptr) = (ClRef)mem_calloc(sz,1,ASSERT_SPACE); /*calloc to mark strs*/	\
+	(ptr)->buflen = ((Type)&3)+sz;					\
+	(ptr)++;							\
 }
 
 /* Clause common fields */
