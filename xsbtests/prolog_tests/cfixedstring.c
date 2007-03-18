@@ -40,10 +40,10 @@ int main(int argc, char *argv[])
   int anslen,rc;
   int return_size = 15;
   char *return_string;
-  return_string = malloc(return_size);
-
   int myargc = 1;
   char *myargv[1];
+
+  return_string = malloc(return_size);
 
   myargv[0] = argv[1];
 
