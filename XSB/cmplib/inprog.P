@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inprog.P,v 1.8 2004-08-31 00:22:21 dwarren Exp $
+** $Id: inprog.P,v 1.9 2007-03-18 17:38:58 dwarren Exp $
 ** 
 */
 
@@ -182,7 +182,7 @@ inp_arg(Arg, NArg, VOList, VOListr, Head, Argno, Level, VarList) :-
 	; Arg = structure(Sym,Args) ->
 		NArg = structure(Sym,NArgs),
         	inp_subargs(Args, NArgs, VOList, VOListr,Head,Argno,VarList)
-	; NArg = Arg, VOListr = VOList      /* integer, real, constant */
+	; NArg = Arg, VOListr = VOList      /* integer, real, constant, string */
 	).
 
 inp_subargs([],[],VOList,VOList,_,_,_).

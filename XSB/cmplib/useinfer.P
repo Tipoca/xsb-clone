@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: useinfer.P,v 1.4 2006-01-27 17:54:12 dwarren Exp $
+** $Id: useinfer.P,v 1.5 2007-03-18 17:38:59 dwarren Exp $
 ** 
 */
 
@@ -233,6 +233,7 @@ check_args([Arg|Args], SymTab, InList, OutList) :-
 check_arg(constant(Sym), _SymTab, InList, [Sym|InList]).
 check_arg(integer(_), _SymTab, InList, InList).
 check_arg(real(_), _SymTab, InList, InList).
+check_arg(string(_), _SymTab, InList, InList).
 check_arg(varocc(_), _SymTab, InList, InList).
 check_arg(structure(Sym,Args), SymTab, InList, OutList) :-
 %	message(add_if_necessary(Sym, InList, MedList)),

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_eval.P,v 1.6 2005-03-08 22:21:59 tswift Exp $
+** $Id: tp_eval.P,v 1.7 2007-03-18 17:38:58 dwarren Exp $
 ** 
 */
 
@@ -100,6 +100,11 @@ eval_exp(structure(Sym,Args),R,Pil,Pilr,HoldR,Tin,Tout,PredSym,NC) :-
 eval_exp(constant(Sym),R,[Inst|Pil],Pil,_,Tin,Tout,PredSym,NC) :-
 	sym_name(PredSym, P, A), sym_name(Sym, Const, _),
 	error(('non-numeric constant ', Const, ' in a numeric expression')),
+	message(('         in clause #', NC, ' of predicate ', P,'/',A)),
+	Inst = fail, Tin = Tout, R = 0.
+eval_exp(string(Sym),R,[Inst|Pil],Pil,_,Tin,Tout,PredSym,NC) :-
+	sym_name(PredSym, P, A),
+	error(('non-numeric string ', Sym, ' in a numeric expression')),
 	message(('         in clause #', NC, ' of predicate ', P,'/',A)),
 	Inst = fail, Tin = Tout, R = 0.
 

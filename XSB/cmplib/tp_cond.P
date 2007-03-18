@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_cond.P,v 1.6 2006-01-27 17:54:12 dwarren Exp $
+** $Id: tp_cond.P,v 1.7 2007-03-18 17:38:58 dwarren Exp $
 ** 
 */
 
@@ -48,6 +48,7 @@ tvar_hold_args([Arg|Args], HoldIn, HoldOut) :-
 tvar_hold_arg(real(_), HoldIn, HoldIn).
 tvar_hold_arg(integer(_), HoldIn, HoldIn).
 tvar_hold_arg(constant(_), HoldIn, HoldIn).
+tvar_hold_arg(string(_), HoldIn, HoldIn).
 tvar_hold_arg(structure(_,Args), HoldIn, HoldOut) :- 
 	tvar_hold_args(Args, HoldIn, HoldOut).
 tvar_hold_arg(varocc(Vid,Prag), HoldIn, HoldOut) :-
