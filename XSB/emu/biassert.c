@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.143 2007-03-18 14:48:49 dwarren Exp $
+** $Id: biassert.c,v 1.144 2007-03-21 15:15:55 dwarren Exp $
 ** 
 */
 
@@ -766,7 +766,8 @@ int assert_code_to_buff_p(CTXTdeclc prolog_term Clause)
     dbgen_instB_pppw(xsb_execute, get_str_psc(Body));
   } else dbgen_instB_ppp(proceed);
   asrtBuff->Size = *asrtBuff->Loc;
-  write_word(asrtBuff->Buff,&Loc_size,(asrtBuff->Size/sizeof(Cell)));  /* backpatch max heap needed*/
+  /* backpatch max heap needed, *2 due to mega-instructions for small intlists */
+  write_word(asrtBuff->Buff,&Loc_size,(2*asrtBuff->Size/sizeof(Cell)));
 
   return TRUE;
 }
