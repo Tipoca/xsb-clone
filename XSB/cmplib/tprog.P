@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tprog.P,v 1.17 2007-03-15 21:31:30 dwarren Exp $
+** $Id: tprog.P,v 1.18 2007-03-21 15:23:01 dwarren Exp $
 ** 
 */
 
@@ -198,7 +198,7 @@ tbody(goal(Sym,Args),A,Pil,Pilr,Tin,Tout,Meet,_,_HoldRegs,Tabled,Tabar,_,_) :-
 		Pil1 = [call(Sym,A),
 			check_interrupt(Sym,A),
 			new_answer_dealloc(Tabar,A1)|Pilr]
-	 ; ( A > 0 -> Pil1 = [deallocate_gc(Arity),execute(Sym)|Pilr]
+	 ; ( A > 0 -> Pil1 = [deallocate,execute(Sym)|Pilr]
 	   ;          Pil1 = [execute(Sym)|Pilr] )
 	 )
       ; Pil1 = [call(Sym,A)|Pilr] )   /* LastLit =\= 1 --  A: ARSize */
