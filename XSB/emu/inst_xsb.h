@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.24 2007-03-16 20:40:31 dwarren Exp $
+** $Id: inst_xsb.h,v 1.25 2007-03-23 18:13:27 dwarren Exp $
 ** 
 */
 
@@ -371,6 +371,7 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define proceed         0xeb
 #define xsb_execute         0xec
 #define deallocate_gc	0xed
+#define proceed_gc      0xee
 #define calld           0xef
 
 /* Branching instructions */

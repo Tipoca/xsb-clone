@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asm_inst.P,v 1.17 2007-03-18 17:38:57 dwarren Exp $
+** $Id: asm_inst.P,v 1.18 2007-03-23 18:13:26 dwarren Exp $
 ** 
 */
 
@@ -130,7 +130,7 @@ asm_inst(allocate,		4,	233,	[ppp]		).
 asm_inst(deallocate,		4,	234,	[ppp]		).
 asm_inst(proceed,		4,	235,	[ppp]		).
 asm_inst(execute(S),		8,	236,	[ppp, s(S)]	).
-asm_inst(deallocate_gc(A),	4,	237,	[pp, a(A)]	).
+asm_inst(proceed_gc,		4,	238,	[ppp]		).
 	% Address has been preprocessed
 asm_inst(calld(L,B),		8,	239,	[pp, a(B), n(L)]).
 	% not used by the compiler; Address has been preprocessed
