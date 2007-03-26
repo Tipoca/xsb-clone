@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.156 2007-03-23 18:13:27 dwarren Exp $
+** $Id: emuloop.c,v 1.157 2007-03-26 13:34:04 dwarren Exp $
 ** 
 */
 
@@ -1909,7 +1909,6 @@ contcase:     /* the main loop */
   XSB_End_Instr()
 
   XSB_Start_Instr(proceed_gc,_proceed_gc) /* PPP */
-    proceed_sub;
     /* following required for recursive loops that build structure on way back up. */
     if (((pb)ereg - (pb)hreg) < 2048) { 
       if (gc_heap(CTXTc 0,FALSE)) { // no regs, garbage collection potentially modifies hreg 
@@ -1925,6 +1924,7 @@ contcase:     /* the main loop */
 	}
       }
     }
+    proceed_sub;
   XSB_End_Instr()
 
     /* This is the WAM-execute.  Name was changed because of conflict
