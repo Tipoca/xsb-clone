@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.38 2007-03-30 10:34:06 tswift Exp $
+** $Id: debug_xsb.c,v 1.39 2007-03-30 18:58:04 dwarren Exp $
 ** 
 */
 
@@ -884,8 +884,8 @@ void print_deleted_clause_frame(DelCFptr delcf) {
 
 void print_delcf_chain() {
   
-  printf("--------------------------------------------------------\n");
   DelCFptr delcf = delcf_chain_begin;
+  printf("--------------------------------------------------------\n");
   while(delcf) {
     print_deleted_clause_frame(delcf);
     delcf = delcf->next_delCF;    
