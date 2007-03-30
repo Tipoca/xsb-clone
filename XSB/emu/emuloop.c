@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.157 2007-03-26 13:34:04 dwarren Exp $
+** $Id: emuloop.c,v 1.158 2007-03-30 10:34:07 tswift Exp $
 ** 
 */
 
@@ -2338,7 +2338,7 @@ return(0);	/* not "goto contcase"! */
 #ifndef JUMPTABLE_EMULOOP
   default: {
     char message[80];
-    sprintf(message, "Illegal opcode hex %x", *lpcreg); 
+    sprintf(message, "Illegal opcode hex %x (& %x)", *lpcreg,lpcreg); 
     xsb_exit(CTXTc message);
   }
 } /* end of switch */
@@ -2346,7 +2346,7 @@ return(0);	/* not "goto contcase"! */
   _no_inst:
     {
       char message[80];
-      sprintf(message, "Illegal opcode hex %x", *lpcreg);
+      sprintf(message, "Illegal opcode hex %x (& %x)", *lpcreg,(int) lpcreg);
       xsb_exit(CTXTc message);
     }
 #endif
