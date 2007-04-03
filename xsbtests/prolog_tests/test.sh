@@ -87,9 +87,6 @@ options=$2
 ../gentest.sh "$XEMU $options" cinter3 "test."
 
 #------------------------------------------------------------------------
-../gentest.sh "$XEMU $options" dealloc_mem_exp "test(300000)."
-
-#------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
 # (actually, mac / others do not create .so)
 #------------------------------------------------------------------------
@@ -115,4 +112,7 @@ else
 #------------------------------------------------------------------------
 	rm -f cvarstring.o c_varstring_make$OBJEXT
 	../gentest.sh "$XEMU $options" cvarstring_make "test."
+#------------------------------------------------------------------------
+	rm -f cregs.o c_regs_make$OBJEXT
+	../gentest.sh "$XEMU $options" cregs_make "test."
 fi
