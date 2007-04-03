@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.136 2007/02/22 20:41:53 tswift Exp $
+** $Id: tr_utils.c,v 1.137 2007/02/23 20:17:05 tswift Exp $
 ** 
 */
 
@@ -1570,8 +1570,8 @@ static void insertLeaf(IGRptr r, BTNptr leafn)
   if(r == NULL)
     return;
   p = r -> leaves;
+#ifdef UNDEFINED
   while(p != NULL){
-    /*    xsb_warn("loopd"); */
     if(p -> leaf == leafn){
       /* The following should be permitted, because we should be able to
 	 backtrackably delete backtrackably deleted nodes (which should have no
@@ -1584,6 +1584,7 @@ static void insertLeaf(IGRptr r, BTNptr leafn)
     }
     p = p -> next;
   }
+#endif
   p = newIGL(leafn);
   p -> next = r -> leaves;
   r -> leaves = p;
