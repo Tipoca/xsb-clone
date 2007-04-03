@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.P,v 1.16 2007/01/25 20:32:22 tswift Exp $
+** $Id: xcallxsb.P,v 1.17 2007/02/22 00:18:02 tswift Exp $
 ** 
 */
 
@@ -35,6 +35,8 @@
 
 c_callloop :-
         set_inthandler('_$keyboard_int'(_), MYSIG_KEYB),
+	set_inthandler('_$attv_int'(_,_), MYSIG_ATTV),
+	set_inthandler('_$thread_int'(_,_), THREADSIG_CANCEL),
 	catch(c_callloop_cmd_goal([]),Ball,ccall_error_handler(Ball)),
 	fail.
 c_callloop :-
