@@ -18,12 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.H,v 1.4 2005-09-29 15:50:36 dwarren Exp $
+** $Id: intern.H,v 1.5 2007-04-03 16:40:32 tswift Exp $
 ** 
 */
 
 
-:- export new_trie/1, trie_intern/5, trie_intern/4, trie_interned/4,
+:- export new_trie/1, trie_intern/5, trie_intern/4, 
+   trie_intern/2,
+   trie_interned/4,
 	  trie_intern/3, trie_interned/3, trie_unintern/2, delete_trie/1,
 	  trie_set_last_int/2,
 	  trie_unintern_nr/2, trie_reclaim_uninterned_nr/1, 
