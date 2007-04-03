@@ -1,4 +1,4 @@
-/* File:      cfixedstring.c
+/* File:      cregs.c
 ** Author(s): Terrance Swift
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -21,7 +21,7 @@
 ** 
 */
 
-/*   Simple example file showing how to call XSB from C without varstrings  
+/*   Simple example file showing how to call XSB from C using the registers 
  *   To make this file, see the instructions in ./README */
 
 #include <stdio.h>
@@ -34,10 +34,16 @@
 /* context.h is necessary for the type of a thread context. */
 #include "context.h"
 
+/* The following include is necessary to get the macros and routine
+   headers */
+extern char *xsb_executable_full_path(char *);
+extern char *strip_names_from_path(char*, int);
+
 int main(int argc, char *argv[])
 { 
 
-  int anslen,rc;
+  int rc;
+
   int return_size = 15;
   char *return_string;
   return_string = malloc(return_size);
@@ -60,29 +66,29 @@ int main(int argc, char *argv[])
 #define xsb_get_main_thread_macro() 
 #endif
 
+  c2p_functor(CTXTc "consult",1,reg_term(CTXTc 1));
+  c2p_string(CTXTc "edb.P",p2p_arg(reg_term(CTXTc 1),1));
+
   /* Create command to consult a file: edb.P, and send it. */
-  if (xsb_command_string(CTXTc "consult('edb.P').") == XSB_ERROR)
+  if (xsb_command(CTXT) == XSB_ERROR)
     fprintf(stderr,"++Error consulting edb.P: %s/%s\n",
 	    xsb_get_error_type(xsb_get_main_thread_macro()),
 	    xsb_get_error_message(xsb_get_main_thread_macro()));
 
-  rc = xsb_query_string_string_b(CTXTc "p(X,Y,Z).",return_string,return_size,&anslen,"|");
+  c2p_functor(CTXTc "pregs",3,reg_term(CTXTc 1));
 
-  while (rc == XSB_SUCCESS || rc == XSB_OVERFLOW) {
+  rc = xsb_query(CTXT);
+
+  while (rc == XSB_SUCCESS) {
   
-    if (rc == XSB_OVERFLOW) {
-      printf("reallocating (%d)\n",anslen);
-      return_string = (char *) realloc(return_string,anslen);
-      return_size = anslen;
-      rc = xsb_get_last_answer_string(CTXTc return_string,return_size,&anslen);
-    }    
-
-    printf("Return %s %d %d\n",return_string,return_size,anslen);
-    rc = xsb_next_string_b(CTXTc return_string,return_size,&anslen,"|");
+    printf("Answer: pregs(%s,%s,%s)\n",
+	     xsb_var_string(1),xsb_var_string(2),xsb_var_string(2));
+    rc = xsb_next(CTXT);
   }
 
  if (rc == XSB_ERROR) 
-   fprintf(stderr,"++Query Error: %s/%s\n",xsb_get_error_type(xsb_get_main_thread_macro()),
+   fprintf(stderr,"++Query Error: %s/%s\n",
+	   xsb_get_error_type(xsb_get_main_thread_macro()),
 	   xsb_get_error_message(xsb_get_main_thread_macro()));
 
   xsb_close(CTXT);
