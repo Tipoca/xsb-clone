@@ -18,20 +18,23 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.H,v 1.5 2007-04-03 16:40:32 tswift Exp $
+** $Id: intern.H,v 1.6 2007-04-05 17:28:42 tswift Exp $
 ** 
 */
 
 
 :- export new_trie/1, trie_intern/5, trie_intern/4, 
-   trie_intern/2,
-   trie_interned/4,
+   trie_intern/2,trie_interned/2,
+   trie_interned/4, trie_retractall/2, bulk_trie_intern/2,
 	  trie_intern/3, trie_interned/3, trie_unintern/2, delete_trie/1,
-	  trie_set_last_int/2,
+	  trie_set_last_int/2, 
 	  trie_unintern_nr/2, trie_reclaim_uninterned_nr/1, 
 	  unmark_uninterned_nr/2. 
 
 :- import integer/1, abort/1 from standard.
 :- import get_lastnode_cs_retskel/4 from tables.
+:- import member/2 from basics.
+:- import findall/3 from setof.
+:- import dynamic_code_function/5 from machine.
 
 %%%:- import buff_word/3, buff_set_word/3  from machine.
