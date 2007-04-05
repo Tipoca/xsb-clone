@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.75 2007-01-12 23:33:28 tswift Exp $
+** $Id: builtin.h,v 1.76 2007-04-05 17:26:57 tswift Exp $
 ** 
 */
 
@@ -327,3 +327,6 @@
 #define BITSHIFTR_FUNCT 27
 #define UMINUS_FUNCT 28
 
+/* For trie disposal */
+#define USE_CPS_CHECK 0
+#define NO_CPS_CHECK  1

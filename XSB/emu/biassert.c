@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.145 2007-03-30 10:34:06 tswift Exp $
+** $Id: biassert.c,v 1.146 2007-04-05 17:26:56 tswift Exp $
 ** 
 */
 
@@ -2074,6 +2074,7 @@ Predicates for Clause Garbage Collecting and Safe Space Reclamation
    (int) inst == trie_trust_list  || (int) inst ==  trie_trust_var ||	\
    (int) inst == trie_trust_val || (int) inst == trie_trust_numcon ||	\
    (int) inst == trie_trust_numcon_succ  ||				\
+   (int) inst == hash_handle ||						\
    (int) inst == retry ||   (int) inst == trust ||  (int) inst == retrymeorelse || \
    (int) inst == trustmeorelsefail || inst == (int) tableretry || (int) inst == tabletrust || \
    (int) inst == check_complete || (int) inst == answer_return ||	\
@@ -3776,7 +3777,10 @@ void init_standard_cgc_blocks(void) {
   standard_cgc_block_end_gl = (CPtr) (get_ep(psc) + 0x94);
 }
 
-
+/* Also includes trie stuff */
+#ifndef MULTI_THREAD
+extern BTNptr *Set_ArrayPtr;
+#endif
 xsbBool dynamic_code_function( CTXTdecl ) 
 {
   switch (ptoc_int(CTXTc 1)) {
@@ -3799,6 +3803,10 @@ xsbBool dynamic_code_function( CTXTdecl )
 
   case INIT_STANDARD_CGC_BLOCKS:
     init_standard_cgc_blocks();
+    break;
+
+  case INTERNED_TRIE_CPS_CHECK:
+    ctop_int(CTXTc 3 ,interned_trie_cps_check(CTXTc Set_ArrayPtr[ptoc_int(CTXTc 2)]));
     break;
 
   }

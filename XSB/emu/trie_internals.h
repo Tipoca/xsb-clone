@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.36 2007-02-22 00:16:06 tswift Exp $
+** $Id: trie_internals.h,v 1.37 2007-04-05 17:26:57 tswift Exp $
 ** 
 */
 
@@ -533,6 +533,17 @@ extern void  hashify_children(CTXTdeclc BTNptr, int);
    if ( (NumBucketContents > BUCKET_CONTENT_THRESHOLD) &&	\
         (TrieHT_NumContents(pHT) > TrieHT_NumBuckets(pHT)) )	\
      expand_trie_ht(CTXTc (BTHTptr)pHT);			\
+ }
+
+// Want trieht expansion check in asserted code, but not in tables 
+#define Interned_TrieHT_ExpansionCheck(pHT,NumBucketContents) {		\
+    if ( (NumBucketContents > BUCKET_CONTENT_THRESHOLD) &&		\
+	 (TrieHT_NumContents(pHT) > TrieHT_NumBuckets(pHT)) ) {		\
+      if (cps_check_flag == CPS_CHECK)					\
+	expand_flag = interned_trie_cps_check(CTXTc *hook);		\
+      if (expand_flag == EXPAND_HASHES)					\
+	expand_trie_ht(CTXTc (BTHTptr)pHT);				\
+    }									\
  }
 
    

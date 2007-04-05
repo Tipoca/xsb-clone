@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.78 2007-04-03 13:59:44 dwarren Exp $
+** $Id: cinterf.c,v 1.79 2007-04-05 17:26:57 tswift Exp $
 ** 
 */
 
@@ -1742,17 +1742,15 @@ DllExport int call_conv
 }    
 
 /************************************************************************
-xsb_next() causes xsb to return the next answer.  It should
-only be called from xsb_next_string, and should not be used with
-xsb_query().  xsb_next_string() (or xsb_close_query) must be called
-after xsb_query.  If there is another answer, xsb_next returns
-XSB_SUCCESS and the variables in goal term (in xsb register 1) are
-bound to the answer values.  In addition xsb register 2 will contain a
-term of the form ret(V1,V2,...,Vn) where the Vis are the values for
-the variables for the next answer.  xsb_next returns XSB_SUCESS if the
-next is found, XSB_FAILURE if there are no more answers, and XSB_ERROR
-if an error is encountered. If XSB_FAILURE or XSB_ERROR is returned,
-then the query is automatically closed.
+xsb_next() causes xsb to return the next answer.  If there is another
+answer, xsb_next returns XSB_SUCCESS and the variables in goal term
+(in xsb register 1) are bound to the answer values.  In addition xsb
+register 2 will contain a term of the form ret(V1,V2,...,Vn) where the
+Vis are the values for the variables for the next answer.  xsb_next
+returns XSB_SUCCESS if the next answer is found, XSB_FAILURE if there
+are no more answers, and XSB_ERROR if an error is encountered. If
+XSB_FAILURE or XSB_ERROR is returned, then the query is automatically
+closed.
 ************************************************************************/
 
 DllExport int call_conv xsb_next(CTXTdecl)

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.46 2007-02-23 20:17:06 tswift Exp $
+** $Id: tries.h,v 1.47 2007-04-05 17:26:57 tswift Exp $
 ** 
 */
 
@@ -349,7 +349,7 @@ extern void     free_trie_aux_areas(void);
 extern void     load_solution_trie(int, int, CPtr, BTNptr);
 extern void     variant_call_search(TabledCallInfo *, CallLookupResults *);
 extern BTNptr   one_term_chk_ins(CPtr, BTNptr, int *);
-extern BTNptr   whole_term_chk_ins(Cell, BTNptr *, int *);
+extern BTNptr   whole_term_chk_ins(Cell, BTNptr *, int *, int, int);
 extern BTNptr	get_next_trie_solution(ALNptr *);
 extern BTNptr	variant_answer_search(int, int, CPtr, struct subgoal_frame *,
 				      xsbBool *);
@@ -372,7 +372,7 @@ extern void     free_trie_aux_areas(struct th_context *);
 extern void     load_solution_trie(struct th_context *, int, int, CPtr, BTNptr);
 extern void     variant_call_search(struct th_context *, TabledCallInfo *, CallLookupResults *);
 extern BTNptr   one_term_chk_ins(struct th_context *, CPtr, BTNptr, int *);
-extern BTNptr   whole_term_chk_ins(struct th_context *, Cell, BTNptr *, int *);
+extern BTNptr   whole_term_chk_ins(struct th_context *, Cell, BTNptr *, int *, int, int);
 extern BTNptr	get_next_trie_solution(ALNptr *);
 extern BTNptr	variant_answer_search(struct th_context *, int, int, CPtr, 
 				      struct subgoal_frame *, xsbBool *);

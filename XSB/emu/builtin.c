@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.277 2007-02-27 18:51:13 dwarren Exp $
+** $Id: builtin.c,v 1.278 2007-04-05 17:26:56 tswift Exp $
 ** 
 */
 
@@ -131,6 +131,9 @@ int mem_flag;
 
 /*======================================================================*/
 extern struct token_t *GetToken(CTXTdeclc FILE *, STRFILE *, int);
+#ifndef MULTI_THREAD
+extern BTNptr *Set_ArrayPtr;
+#endif
 
 extern int  sys_syscall(CTXTdeclc int);
 extern xsbBool sys_system(CTXTdeclc int);
@@ -2398,7 +2401,9 @@ case WRITE_OUT_PROFILE:
   case DELETE_TRIE:
     if (strcmp(ptoc_string(CTXTc 2),"intern") == 0){
       int tmpval = ptoc_int(CTXTc 1);
-      delete_interned_trie(CTXTc tmpval);
+      if (!interned_trie_cps_check(CTXTc Set_ArrayPtr[tmpval])) 
+	delete_interned_trie(CTXTc tmpval);
+      else xsb_abort("[DELETE_TRIE] Backtracking through trie to be abolished.");
     }
     else {
       xsb_abort("[DELETE_TRIE] Invalid use of this operation");
