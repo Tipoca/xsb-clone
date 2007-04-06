@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.95 2007-04-05 17:26:57 tswift Exp $
+** $Id: tries.c,v 1.96 2007-04-06 11:41:48 tswift Exp $
 ** 
 */
 
@@ -1764,10 +1764,14 @@ void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
 }
 
 /*----------------------------------------------------------------------*/
-
 /*
  * For creating interned tries via buitin "trie_intern".
+ * These differ from the trie inserts used by tables because there may
+ * be failure continuations pointing into the trie -- here we need to
+ * take these continuations into account before we hash.  Otherwise
+ * they are identical to their non interned versions.
  */
+
 #define one_interned_node_chk_ins(Found,item,TrieType)		{	\
 									\
    int count = 0;							\
