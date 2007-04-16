@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.34 2006-11-20 16:53:42 ruim Exp $
+** $Id: psc_xsb.c,v 1.35 2007-04-16 16:14:16 tswift Exp $
 ** 
 */
 
@@ -70,6 +70,7 @@ char *string_find(char *str, int insert) {
 
   char **ptr, *str0;
 
+  //  printf("interning %s\n",str);
   SYS_MUTEX_LOCK_NOERROR( MUTEX_STRING ) ;
   ptr = (char **)string_table.table + hash(str, 0, string_table.size);
   while (*ptr) {

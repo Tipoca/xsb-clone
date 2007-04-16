@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.52 2007-02-23 20:17:05 tswift Exp $
+** $Id: io_builtins_xsb_i.h,v 1.53 2007-04-16 16:14:15 tswift Exp $
 ** 
 */
 
@@ -912,6 +912,18 @@ inline static xsbBool file_function(CTXTdecl)
 #endif
     break;
   }
+
+  case FILE_NL: 
+    io_port = ptoc_int(CTXTc 2);
+    SET_FILEPTR(fptr, io_port);
+#ifdef WIN_NT
+    XSB_STREAM_LOCK(io_port);
+    putc(CH_RETURN,fptr); putc(CH_NEWLINE,fptr);
+    XSB_STREAM_UNLOCK(io_port);
+#else
+    putc(CH_NEWLINE,fptr);
+#endif
+    break;
 
   default:
     xsb_abort("[FILE_FUNCTION]: Invalid file operation, %d\n", ptoc_int(CTXTc 1));
