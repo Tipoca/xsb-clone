@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.P,v 1.16 2004/08/19 22:15:25 tswift Exp $
+** $Id: basics.P,v 1.19 2007/01/26 18:28:14 dwarren Exp $
 ** 
 */
 
@@ -287,7 +287,8 @@ select(Element, [Element1|Rest_L1], [Element1|Rest_L2]) :-
 	select(Element, Rest_L1, Rest_L2).
 
 %%% for(?I,+B1,+B2) nondeterministically binds I to all integer values
-%%% from B1 to B2.  B1 and B2 must be integers, but either may be larger.
+%%% from B1 to B2 inclusive.  B1 and B2 must be integers, but either
+% may be larger.  
 for(I,B1,B2) :-
 	(B1 =< B2
 	 ->	forup(I,B1,B2)

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.H,v 1.15 2005/12/31 01:47:37 tswift Exp $
+** $Id: xsb_writ.H,v 1.17 2006/06/20 13:20:49 tswift Exp $
 ** 
 */
 
@@ -32,16 +32,12 @@
 
 	
 :- import '_$op'/3 from file_op.
-:- import file_put/2 from file_io.
+   :- import file_put/2,file_function/3 from file_io.
 :- import integer/1 from standard.
 :- import term_psc/2, psc_arity/2, psc_name/2, term_arg/3, 
 	stat_flag/2,
 	term_type/2, file_puttoken/3, file_writequoted/2
      from machine.
-
-%% We must import this from the loader, because this might be called
-%% for the first time before xsb_configuration configuration is loaded.
-:- import windows_os_loader/0 from loader.
 
 :- import conget/2, conset/2 from gensym.
 

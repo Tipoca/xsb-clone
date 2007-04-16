@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.70 2006/08/14 21:28:46 tswift Exp $
+** $Id: standard.H,v 1.74 2007/02/09 18:08:56 dwarren Exp $
 **
 */
 
@@ -113,7 +113,7 @@
      from error_handler.
 :- import  check_nonvar_list/3 from error_handler.
 :- import '_$load_undef'/1 from loader.
-:- import windows_os_loader/0 from loader.
+
 
  :- import call0/1, conname/2,
           dynamic_code_function/5,
