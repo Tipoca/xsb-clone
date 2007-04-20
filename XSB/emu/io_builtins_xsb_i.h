@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.53 2007-04-16 16:14:15 tswift Exp $
+** $Id: io_builtins_xsb_i.h,v 1.54 2007-04-20 14:40:54 tswift Exp $
 ** 
 */
 
@@ -352,7 +352,7 @@ inline static xsbBool file_function(CTXTdecl)
     VarBuf.length = value;
     XSB_StrNullTerminate(&VarBuf);
     XSB_STREAM_UNLOCK(io_port);
-    ctop_string(CTXTc 4, string_find(VarBuf.string,1));
+    ctop_string(CTXTc 4, VarBuf.string);
     ctop_int(CTXTc 5, value);
     break;
   case FILE_PUTBUF:
@@ -405,7 +405,7 @@ inline static xsbBool file_function(CTXTdecl)
       }
     } while (!break_loop);
     
-    ctop_string(CTXTc 3, string_find(VarBuf.string,1));
+    ctop_string(CTXTc 3, VarBuf.string);
     
     XSB_STREAM_UNLOCK(io_port);
     /* this complex cond takes care of incomplete lines: lines that end with

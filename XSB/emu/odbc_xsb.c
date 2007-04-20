@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.64 2006-11-09 21:51:21 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.65 2007-04-20 14:40:54 tswift Exp $
 **
 */
 
@@ -1736,7 +1736,7 @@ void ODBCGetInfo(CTXTdecl)
 		if(retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
   	    {
 			//printf("string type:%d:%s:%d\n",InfoType,strValue,pcbValue);
-			ctop_string(CTXTc 4,string_find(strValue,1));
+			ctop_string(CTXTc 4,strValue);
 			ctop_int(CTXTc 5,0);
   		} else {
 		  ctop_int(CTXTc 5,1);

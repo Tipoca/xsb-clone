@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.66 2006-01-14 16:25:32 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.67 2007-04-20 14:40:53 tswift Exp $
 ** 
 */
 
@@ -478,7 +478,7 @@ xsbBool fmt_write_string(CTXTdecl)
   /* fmt_write_string is used in places where interning of the string is needed
      (such as constructing library search paths)
      Therefore, must use string_find(..., 1). */
-  ctop_string(CTXTc 2, string_find(OutString.string,1));
+  ctop_string(CTXTc 2, OutString.string);
   
   return TRUE;
 }

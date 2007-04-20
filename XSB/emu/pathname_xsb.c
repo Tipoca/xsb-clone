@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.30 2007-03-09 15:45:49 kifer Exp $
+** $Id: pathname_xsb.c,v 1.31 2007-04-20 14:41:00 tswift Exp $
 ** 
 */
 
@@ -596,15 +596,15 @@ xsbBool almost_search_module(CTXTdeclc char *filename)
       dot_dir[0] = '.';
       dot_dir[1] = SLASH;
       dot_dir[2] = '\0';
-      ctop_string(CTXTc 2, string_find(dot_dir, 1));
+      ctop_string(CTXTc 2, dot_dir);
       strcat(dot_dir, basename); /* dot_dir is updated here */
-      ctop_string(CTXTc 5, string_find(dot_dir, 1));
+      ctop_string(CTXTc 5, dot_dir);
     } else {
       char dirtmp[MAXPATHLEN];
       ctop_string(CTXTc 2, dir);
       strcpy(dirtmp,dir);
       strcat(dirtmp, basename);
-      ctop_string(CTXTc 5, string_find(dirtmp, 1));
+      ctop_string(CTXTc 5, dirtmp);
     }
     ctop_string(CTXTc 3, basename);
     ctop_string(CTXTc 4, extension);

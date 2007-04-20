@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.45 2005-11-16 17:32:05 dwarren Exp $
+** $Id: system_xsb.c,v 1.46 2007-04-20 14:41:00 tswift Exp $
 ** 
 */
 
@@ -164,7 +164,7 @@ int sys_syscall(CTXTdeclc int callno)
     /* returns 0, if != NULL, 1 otherwise */
     result = (getcwd(current_dir, MAX_CMD_LEN-1) == NULL);
     if (result == 0)
-      ctop_string(CTXTc 3,string_find(current_dir,1));
+      ctop_string(CTXTc 3,current_dir);
     break;
   }
   case SYS_filecopy: {
@@ -201,7 +201,7 @@ xsbBool sys_system(CTXTdeclc int callno)
 #endif
     return TRUE;
   case GET_TMP_FILENAME:
-    ctop_string(CTXTc 2,string_find(tmpnam(NULL),1));
+    ctop_string(CTXTc 2,tmpnam(NULL));
     return TRUE;
   case IS_PLAIN_FILE:
   case IS_DIRECTORY:
