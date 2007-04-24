@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.54 2007-02-23 20:17:04 tswift Exp $
+** $Id: context.h,v 1.55 2007-04-24 18:35:31 tswift Exp $
 ** 
 */
 
@@ -100,7 +100,12 @@ struct ccall_error_t {
   //  char ccall_error_backtrace
 };
 
-
+typedef struct Message_Queue_Cell *MQ_Cell_Ptr;
+typedef struct Message_Queue_Cell {
+  MQ_Cell_Ptr          next;
+  MQ_Cell_Ptr          prev;
+  int                  size;
+} MQ_Cell;
 
 #define MAX_RETRACTED_CLAUSES   20
 
@@ -380,6 +385,9 @@ jmp_buf _xsb_abort_fallback_environment;
   pthread_mutex_t _xsb_query_mut;
   struct ccall_error_t _ccall_error;
 
+  /********** Message Queue State  **********/
+  MQ_Cell_Ptr _current_mq_cell;
+
  /************ Pointers to cursor information used by
  odbc_xsb.c context-local cursor table ***********/
 
@@ -591,6 +599,8 @@ typedef struct th_context th_context ;
 #define xsb_ready_mut           (th-> _xsb_ready_mut)
 #define xsb_query_mut           (th-> _xsb_query_mut)
 #define ccall_error             (th-> _ccall_error)
+
+#define current_mq_cell         (th->_current_mq_cell) 
 
 #define retracted_buffer	(th->_retracted_buffer)
 #define OldestCl		(th->_OldestCl)
