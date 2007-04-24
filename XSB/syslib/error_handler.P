@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.41 2007/01/24 22:24:28 dwarren Exp $
+** $Id: error_handler.P,v 1.42 2007/02/23 20:14:36 tswift Exp $
 ** 
 */
 
@@ -401,7 +401,7 @@ check_nonvar_list(Term,Predicate,Arg):-
 	check_nonvar(Term,Predicate,Arg),
 	(check_nonvar_list1(Term,Predicate,Arg) -> 
 	    true
-	 ;  domain_error(list,Term,Predicate,Arg)).
+	 ;  type_error(list,Term,Predicate,Arg)).
 	    
 check_nonvar_list1([],_Predicate,_Arg).
 check_nonvar_list1([H|T],Predicate,Arg):- 
