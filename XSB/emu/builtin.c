@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.280 2007-04-20 14:40:52 tswift Exp $
+** $Id: builtin.c,v 1.281 2007-04-28 13:29:49 tswift Exp $
 ** 
 */
 
@@ -2504,10 +2504,22 @@ case WRITE_OUT_PROFILE:
     break;
 
   /* TLS: useful for power function -- see eval.P */
-  case XSB_POW: 
-    ctop_float(CTXTc 3,pow(ptoc_int(CTXTc 1),ptoc_int(CTXTc 2))); 
-    return TRUE ;
-
+    case XSB_POW: {
+      Cell val = ptoc_tag(CTXTc 1);
+      if (isofloat(ptoc_tag(CTXTc 1))) {
+	if (isofloat(ptoc_tag(CTXTc 2)))
+	  ctop_float(CTXTc 3,powf(ptoc_float(CTXTc 1),ptoc_float(CTXTc 2))); 
+	else 
+	  ctop_float(CTXTc 3,powl(ptoc_float(CTXTc 1),ptoc_int(CTXTc 2))); 
+      }
+      else {
+	if (isofloat(ptoc_tag(CTXTc 2)))
+	  ctop_float(CTXTc 3,powl(ptoc_int(CTXTc 1),ptoc_float(CTXTc 2))); 
+	else 
+	  ctop_int(CTXTc 3,pow(ptoc_int(CTXTc 1),ptoc_int(CTXTc 2))); 
+      }
+      return TRUE ;
+    }
   case PRINT_LS: print_ls(CTXTc 1) ; return TRUE ;
   case PRINT_TR: print_tr(CTXTc 1) ; return TRUE ;
   case PRINT_HEAP: print_heap(CTXTc 0,2000,1) ; return TRUE ;
