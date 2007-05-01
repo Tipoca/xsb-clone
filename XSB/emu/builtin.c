@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.281 2007-04-28 13:29:49 tswift Exp $
+** $Id: builtin.c,v 1.282 2007-05-01 14:52:28 tswift Exp $
 ** 
 */
 
@@ -173,6 +173,7 @@ extern xsbBool db_get_last_clause(CTXTdecl);
 extern xsbBool db_build_prref(CTXTdecl), db_abolish0(CTXTdecl), 
 	       db_reclaim0(CTXTdecl), db_get_prref(CTXTdecl);
 extern xsbBool dynamic_code_function(CTXTdecl);
+extern xsbBool table_inspection_function(CTXTdecl);
 
 extern char *dirname_canonic(char *);
 extern xsbBool almost_search_module(CTXTdeclc char *);
@@ -2505,7 +2506,6 @@ case WRITE_OUT_PROFILE:
 
   /* TLS: useful for power function -- see eval.P */
     case XSB_POW: {
-      Cell val = ptoc_tag(CTXTc 1);
       if (isofloat(ptoc_tag(CTXTc 1))) {
 	if (isofloat(ptoc_tag(CTXTc 2)))
 	  ctop_float(CTXTc 3,powf(ptoc_float(CTXTc 1),ptoc_float(CTXTc 2))); 
@@ -2640,6 +2640,11 @@ case WRITE_OUT_PROFILE:
 
     case DYNAMIC_CODE_FUNCTION: {
       dynamic_code_function(CTXT);
+      break;
+    }
+
+    case TABLE_INSPECTION_FUNCTION: {
+      table_inspection_function(CTXT);
       break;
     }
 
