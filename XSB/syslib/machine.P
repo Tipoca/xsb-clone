@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.88 2006/11/01 23:49:45 ruim Exp $
+** $Id: machine.P,v 1.89 2007/01/12 23:24:35 tswift Exp $
 ** 
 */
 
@@ -228,6 +228,9 @@ db_reclaim0(_Clause,_Type) :- '_$builtin'(DB_RECLAIM0).
 dynamic_code_function(Switch,One,Two,Three,Four):- 
 	dynamic_code_function(Switch,One,Two,Three,Four).
 
+table_inspection_function(_Switch,_One,_Two,_Three,_Four):- 
+	'_$builtin'(TABLE_INSPECTION_FUNCTION).
+	
 formatted_io(_OPnumber, _FileOrString,_Format,_ArgTerm,_RetCode) :-
 	'_$builtin'(FORMATTED_IO).
 
