@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.74 2007/02/09 18:08:56 dwarren Exp $
+** $Id: standard.H,v 1.75 2007/04/16 16:15:34 tswift Exp $
 **
 */
 
@@ -77,6 +77,8 @@
         '@>='/2,	';'/2,		','/2,		'->'/2,         '?='/2,
 	':'/2,		'_$cutto'/1,	'_$savecp'/1.	
 %%:- export (thread_shared)/1, (thread_private)/1.
+
+   :- export expand_atom/2.
 
 /* --------------------------------------------------------------- */
 /*  exported predicates used in other modules (but not "standard")  */
