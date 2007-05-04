@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.122 2007/04/16 16:15:34 tswift Exp $
+** $Id: standard.P,v 1.123 2007/05/03 13:57:14 tswift Exp $
 ** 
 */
 
@@ -1444,6 +1444,7 @@ expand_atom_1([H,H1|T],NewList):-
 	    NewList = [H|Tout],
 	    expand_atom_1([H1|T],Tout)).
 	    
+read_alphanumeric_list([],[],[]).
 read_alphanumeric_list([H|T],Tout,Return):- 
 	((H >= 97,H =< 122 ; H >=65,H =< 90 ; H >= 48,H =< 58 ; H = 95) -> 
 	    Tout = [H|Tout1],
