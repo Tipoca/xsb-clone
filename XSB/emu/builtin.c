@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.282 2007-05-01 14:52:28 tswift Exp $
+** $Id: builtin.c,v 1.283 2007-05-04 18:04:46 dwarren Exp $
 ** 
 */
 
@@ -2508,15 +2508,15 @@ case WRITE_OUT_PROFILE:
     case XSB_POW: {
       if (isofloat(ptoc_tag(CTXTc 1))) {
 	if (isofloat(ptoc_tag(CTXTc 2)))
-	  ctop_float(CTXTc 3,powf(ptoc_float(CTXTc 1),ptoc_float(CTXTc 2))); 
+	  ctop_float(CTXTc 3,powl(ptoc_float(CTXTc 1),ptoc_float(CTXTc 2))); 
 	else 
 	  ctop_float(CTXTc 3,powl(ptoc_float(CTXTc 1),ptoc_int(CTXTc 2))); 
       }
       else {
 	if (isofloat(ptoc_tag(CTXTc 2)))
-	  ctop_float(CTXTc 3,powl(ptoc_int(CTXTc 1),ptoc_float(CTXTc 2))); 
+	  ctop_float(CTXTc 3,powl((prolog_float)ptoc_int(CTXTc 1),ptoc_float(CTXTc 2))); 
 	else 
-	  ctop_int(CTXTc 3,pow(ptoc_int(CTXTc 1),ptoc_int(CTXTc 2))); 
+	  ctop_int(CTXTc 3,(Integer)powl((prolog_float)ptoc_int(CTXTc 1),(prolog_float)ptoc_int(CTXTc 2))); 
       }
       return TRUE ;
     }
