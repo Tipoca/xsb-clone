@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xasppkg.c,v 1.1 2003-02-21 16:57:22 lfcastro Exp $
+** $Id: xasppkg.c,v 1.2 2007-05-12 20:36:27 kodachi_garou Exp $
 ** 
 */
 
@@ -32,6 +32,9 @@
 #include "api.h"
 #include "atomrule.h"
 
+// These variables should not be global in the MT-engine.
+// They will soon be moved to the th_context structure so that
+// each thread can have its own Smodels instance.
 Smodels *smodels;
 Api *api;
 Atom **atoms;
