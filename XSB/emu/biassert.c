@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.147 2007-04-09 18:52:09 dwarren Exp $
+** $Id: biassert.c,v 1.148 2007-05-16 18:51:56 dwarren Exp $
 ** 
 */
 
@@ -1829,6 +1829,12 @@ ClRef first_clref( PrRef Pred, prolog_term Head, int *ILevel, int *Index )
 
     /* first findout what index shall we use */
     sob = Pred->FirstClRef;
+    
+    /* skip deleted ones */
+    while (ClRefType(sob) == SOB_RECORD && ClRefSOBOpCode(sob) == fail) { 
+      sob = ClRefNext(sob);
+    }
+
     find_usable_index(Head,&sob,ILevel,Index);
 
     if( *ILevel == 0 )	/* It's not indexable, so s points to first clause */
