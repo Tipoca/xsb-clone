@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.284 2007-05-10 16:15:03 dwarren Exp $
+** $Id: builtin.c,v 1.285 2007-05-25 18:11:29 dwarren Exp $
 ** 
 */
 
@@ -2988,7 +2988,7 @@ int print_xsb_backtrace(CTXTdecl) {
     tmp_ereg = ereg;
     tmp_cpreg = cpreg;
     if (!tmp_cpreg) instruction = *(tmp_cpreg-2*sizeof(Cell));
-    else instruction = fail_inst;
+    else instruction = (unsigned char)fail_inst;
     while (tmp_cpreg && (instruction == call || instruction == trymeorelse) && 
 	   (backtrace_length++ < MAX_BACKTRACE_LENGTH)) {
       if (instruction == call) {
