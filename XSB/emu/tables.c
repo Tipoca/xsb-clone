@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.53 2006-12-03 17:09:28 ruim Exp $
+** $Id: tables.c,v 1.54 2007-06-01 22:47:10 tswift Exp $
 ** 
 */
 
@@ -110,25 +110,25 @@ inline
 #endif
 VariantSF NewProducerSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo) {   
     									
-    void *pNewSF;							
+  void *pNewSF;							
 
-    if ( IsVariantPredicate(TableInfo) ) {				
+  if ( IsVariantPredicate(TableInfo) ) {				
 #ifdef MULTI_THREAD								
-      if (threads_current_sm == PRIVATE_SM) {				
-	SM_AllocateStruct(*private_smVarSF,pNewSF);				
-	pNewSF = memset(pNewSF,0,sizeof(variant_subgoal_frame));		
-	subg_sf_type(pNewSF) = PRIVATE_VARIANT_PRODUCER_SFT;		
-      } else {								
-	SM_AllocateSharedStruct(smVarSF,pNewSF);				
-	pNewSF = memset(pNewSF,0,sizeof(variant_subgoal_frame));		
-	subg_sf_type(pNewSF) = SHARED_VARIANT_PRODUCER_SFT;	
-      }									
-    }
+    if (threads_current_sm == PRIVATE_SM) {				
+      SM_AllocateStruct(*private_smVarSF,pNewSF);				
+      pNewSF = memset(pNewSF,0,sizeof(variant_subgoal_frame));		
+      subg_sf_type(pNewSF) = PRIVATE_VARIANT_PRODUCER_SFT;		
+    } else {								
+      SM_AllocateSharedStruct(smVarSF,pNewSF);				
+      pNewSF = memset(pNewSF,0,sizeof(variant_subgoal_frame));		
+      subg_sf_type(pNewSF) = SHARED_VARIANT_PRODUCER_SFT;	
+    }									
+  }
 #else
-       SM_AllocateStruct(smVarSF,pNewSF);			       
-       pNewSF = memset(pNewSF,0,sizeof(variant_subgoal_frame));		
-       subg_sf_type(pNewSF) = PRIVATE_VARIANT_PRODUCER_SFT;
-   }
+    SM_AllocateStruct(smVarSF,pNewSF);			       
+    pNewSF = memset(pNewSF,0,sizeof(variant_subgoal_frame));		
+    subg_sf_type(pNewSF) = PRIVATE_VARIANT_PRODUCER_SFT;
+  }
 #endif
     else {								    
      SM_AllocateStruct(smProdSF,pNewSF);				    
@@ -142,7 +142,7 @@ VariantSF NewProducerSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo) {
    CallTrieLeaf_SetSF(Leaf,pNewSF);					    
    subg_ans_list_ptr(pNewSF) = empty_return_handle(pNewSF);		     
    subg_compl_stack_ptr(pNewSF) = openreg - COMPLFRAMESIZE;		    
-
+   ((VariantSF) pNewSF)->visited = 0;
 /* incremental evaluation start */
 if((get_incr(TIF_PSC(TableInfo))) &&(IsVariantPredicate(TableInfo))){
   //  sfPrintGoal(stdout,pNewSF,NO);printf(" is marked incr\n");

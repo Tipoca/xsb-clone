@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_defs_xsb.h,v 1.12 2007-04-16 16:14:16 tswift Exp $
+** $Id: io_defs_xsb.h,v 1.13 2007-06-01 22:47:06 tswift Exp $
 ** 
 */
 
@@ -95,3 +95,11 @@
 /* from char_defs in prolog_includes */
 #define CH_NEWLINE 10
 #define CH_RETURN 13
+
+/* Alias types (not limited to streams) */
+
+#define STREAM_ALIAS             0 
+#define THREAD_ALIAS             1
+#define MUTEX_ALIAS              2
+#define QUEUE_ALIAS              3
+#define TRIE_ALIAS               4

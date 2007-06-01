@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.c,v 1.10 2007-02-23 20:17:05 tswift Exp $
+** $Id: storage_xsb.c,v 1.11 2007-06-01 22:47:10 tswift Exp $
 ** 
 */
 
@@ -68,7 +68,7 @@ static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name)
     xsb_dbgmsg((LOG_STORAGE,
 	       "GET_STORAGE_HANDLE: New trie created for %s\n", 
 	       string_val(name)));
-    handle_cell->handle= newtrie(CTXT);
+    handle_cell->handle= newtrie(CTXTc 0);  /* create as private */
     /* Note: not necessary to initialize snapshot_number&changed: handle_cell
        was calloc()'ed 
        handle_cell->snapshot_number=0;

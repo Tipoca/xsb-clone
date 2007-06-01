@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.96 2007-04-06 11:41:48 tswift Exp $
+** $Id: tries.c,v 1.97 2007-06-01 22:47:10 tswift Exp $
 ** 
 */
 
@@ -1756,7 +1756,7 @@ void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
 	SET_TRIE_ALLOCATION_TYPE_SF(CallStrPtr); // set smBTN to private/shared
 	tif = subg_tif_ptr(CallStrPtr);
 	delete_branch(CTXTc CallStrPtr->leaf_ptr, &tif->call_trie); /* delete call */
-	delete_variant_sf_and_answers(CTXTc CallStrPtr); // delete answers + subgoal
+	delete_variant_sf_and_answers(CTXTc CallStrPtr,FALSE); // delete answers + subgoal
       } else remove_calls_and_returns(CTXTc CallStrPtr);
     }
     openreg += COMPLFRAMESIZE;

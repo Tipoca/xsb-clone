@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.285 2007-05-25 18:11:29 dwarren Exp $
+** $Id: builtin.c,v 1.286 2007-06-01 22:47:05 tswift Exp $
 ** 
 */
 
@@ -2061,6 +2061,7 @@ case WRITE_OUT_PROFILE:
       TIFptr tif;
 
       psc = term_psc(goalTerm);
+
       if ( IsNULL(psc) ) {
 	err_handle(CTXTc TYPE, regGoalHandle, BuiltinName(TABLE_STATUS),
 		   4, "Callable term", goalTerm);
@@ -2143,36 +2144,30 @@ case WRITE_OUT_PROFILE:
   }
 
   case ABOLISH_TABLE_PREDICATE: {
-    const int Arity = 1;
     const int regTerm = 1;   /* in: tabled predicate as term */
     Cell term;
     Psc psc;
 
     term = ptoc_tag(CTXTc regTerm);
-    if ( isref(term) ) {
-      err_handle(CTXTc INSTANTIATION, regTerm,
-		 BuiltinName(ABOLISH_TABLE_PREDICATE), Arity, "", term);
-      break;
-    }
+
     psc = term_psc(term);
     if ( IsNULL(psc) ) {
       xsb_domain_error(CTXTc "predicate_or_term_indicator",term,
   		       "abolish_table_pred",1, 1) ;
       break;
     }
-    if (abolish_table_predicate(CTXTc psc)) {
-      return TRUE;
-    }
+    abolish_table_predicate(CTXTc psc,ptoc_int(CTXTc 2));
+    return TRUE;
   }
 
   case ABOLISH_TABLE_CALL: {
     /* incremental evaluation */
     VariantSF subg=(VariantSF) ptoc_int(CTXTc 1);
     if(IsIncrSF(subg))
-      return abolish_table_call_incr(CTXTc (VariantSF) ptoc_int(CTXTc 1));
+      abolish_table_call_incr(CTXTc subg);
     else
-      return abolish_table_call(CTXTc (VariantSF) ptoc_int(CTXTc 1));
-
+      abolish_table_call(CTXTc subg, ptoc_int(CTXTc 2));
+    return TRUE;
   }
 
   case ABOLISH_MODULE_TABLES: {
@@ -2357,7 +2352,7 @@ case WRITE_OUT_PROFILE:
     break;
 
   case NEWTRIE:
-    ctop_int(CTXTc 1,newtrie(CTXT));
+    ctop_int(CTXTc 2,newtrie(CTXTc ptoc_int(CTXTc 1)));
     break;
   case TRIE_INTERN:
     trie_intern(CTXT);

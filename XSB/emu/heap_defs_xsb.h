@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_defs_xsb.h,v 1.4 2005-12-12 18:44:52 dwarren Exp $
+** $Id: heap_defs_xsb.h,v 1.5 2007-06-01 22:47:06 tswift Exp $
 ** 
 */
 
@@ -34,6 +34,10 @@
 #define GC_GC_STRINGS		2
 #define GC_GC_CLAUSES		4
 #define GC_GC_TABLED_PREDS	8
+
+#define ABOLISH_TABLES_TRANSITIVELY  0
+#define ABOLISH_TABLES_SINGLY        1
+#define ABOLISH_TABLES_DEFAULT       2
 
 /*--- The following are used for string-space collection ---------------*/
 

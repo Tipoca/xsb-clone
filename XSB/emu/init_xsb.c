@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.121 2007-01-25 20:33:54 tswift Exp $
+** $Id: init_xsb.c,v 1.122 2007-06-01 22:47:06 tswift Exp $
 ** 
 */
 
@@ -911,12 +911,25 @@ void init_thread_structures(CTXTdecl)
   OldestCl = retracted_buffer;
   NewestCl = retracted_buffer;
 
-/*  call_intercept = init_call_intercept ; */
+  /* call_intercept = init_call_intercept ; */
 
   private_tif_list.first = NULL;
   private_tif_list.last = NULL;
   private_deltf_chain_begin = NULL;
   private_delcf_chain_begin = NULL;
+
+  /* Stuff for abolishing tables */
+  answer_stack_top = 0;
+  answer_stack = NULL;
+  answer_stack_size = 0;
+
+  done_subgoal_stack_top = 0;
+  done_subgoal_stack = NULL;
+  done_subgoal_stack_size = 0;
+
+  done_tif_stack_top = 0;
+  done_tif_stack = NULL;
+  done_tif_stack_size = 0;
 
   /******** Initialize Private structure managers ********/
 
