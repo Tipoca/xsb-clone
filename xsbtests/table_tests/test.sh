@@ -67,9 +67,9 @@ EOF
 ../gentest.sh "$XEMU $options" empty_answer "test".
 #------------------------------------------------- atp/atc basic
 ../gentest.sh "$XEMU $options" abol_test "test".
-#------------------------------------------------- amt basic
+#------------------------------------------------- a module t basic
 ../gentest.sh "$XEMU $options" abol_test2 "test".
-#------------------------------------------------- amt gc diff preds
+#------------------------------------------------- a module t gc diff preds
 ../gentest.sh "$XEMU $options" abol_test2a "test".
 #------------------------------------------------- atp gc same preds
 ../gentest.sh "$XEMU $options" abol_test3 "test".
@@ -81,7 +81,10 @@ EOF
 ../gentest.sh "$XEMU $options" abol_test3c "test".
 #-------------------------------------------------
 ../gentest.sh "$XEMU $options" atc_test "test".
-#-------------------------------------------------
+#------------------------------------------------- cascading abolish for subgoals with gc etc.
+../gentest.sh "$XEMU $options" abolish_cascade "test". 
+#------------------------------------------------- cascading abolish for preds with gc etc.
+../gentest.sh "$XEMU $options" abolish_cascade "test". 
 #-------------------------------------------------
 ../gentest.sh "$XEMU $options" recursive_aboltest "test".
 #------------------------------------------------- 
