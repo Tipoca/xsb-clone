@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.141 2007/05/01 14:52:29 tswift Exp $
+** $Id: tr_utils.c,v 1.142 2007/06/01 22:47:10 tswift Exp $
 ** 
 */
 
@@ -129,8 +129,21 @@ xsbBool has_conditional_answer(VariantSF subg)
 }
 
 /* This is needed to find an actual trie node from a CP -- hash-handle must be special-cased */
-#define TrieNodeFromCP(pCP)  ((*(byte *)*pCP == hash_handle) \
-			      ? (BTNptr) string_val(*(pCP+CP_SIZE+1)) :(BTNptr) *pCP)
+BTNptr TrieNodeFromCP(CPtr pCP) {							
+    prolog_int i;	
+    BTNptr pBTN;						
+    if (*(byte *)*pCP == hash_handle) {					
+      pBTN = (BTNptr) string_val(*(pCP+CP_SIZE+1));			
+      for (i = 0 ; i < BTHT_NumBuckets((BTHTptr) pBTN); i++) {		
+	if (BTHT_BucketArray((BTHTptr) pBTN)[i] != 0) {			
+	  return BTHT_BucketArray((BTHTptr) pBTN)[i];			
+	}									
+      }
+      return NULL;
+    }
+    else return (BTNptr) *pCP;						
+}
+
 
 /*----------------------------------------------------------------------*/
 
