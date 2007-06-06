@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_defs_xsb.h,v 1.5 2007-06-01 22:47:06 tswift Exp $
+** $Id: heap_defs_xsb.h,v 1.6 2007-06-06 21:26:26 dwarren Exp $
 ** 
 */
 
@@ -53,7 +53,7 @@
          Integer *pptr = ((Integer *)(str))-1;		\
          if (!( *(pptr) & 7)) *(pptr) |= 1;		\
      } else if (str) 					\
-         printf("Not interned: %s: '%s',%p\n",msg,str,str); \
+         printf("Not interned: %s: '%p',%s\n",msg,str,str); \
   } while(0)
 
 #define mark_if_string(tcell,msg) 		\
