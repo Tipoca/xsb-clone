@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.44 2007-02-23 20:17:05 tswift Exp $
+** $Id: memory_xsb.c,v 1.45 2007-06-06 20:43:19 tswift Exp $
 ** 
 */
 
@@ -62,19 +62,26 @@
 #include "debug_xsb.h"
 
 #if defined(GENERAL_TAGGING)
+
+#if BITS64
+#define _SHIFT_VALUE 60
+#else
+#define _SHIFT_VALUE 28
+#endif
+
 extern long int next_free_code;
 extern unsigned long enc[], dec[];
 
 void inline extend_enc_dec_as_nec(void *lptr, void *hptr) {
     unsigned long nibble;
-    unsigned long lnibble = (unsigned long)lptr >> 28;
-    unsigned long hnibble = (unsigned long)hptr >> 28;
+    unsigned long lnibble = (unsigned long)lptr >> _SHIFT_VALUE;
+    unsigned long hnibble = (unsigned long)hptr >> _SHIFT_VALUE;
     for (nibble = lnibble; nibble <= hnibble; nibble++) {
       if (enc[nibble] == -1) {
 	SYS_MUTEX_LOCK_NOERROR(MUTEX_GENTAG);
 	if (enc[nibble] == -1) { /* be sure not changed since test */
-	  enc[nibble] = next_free_code << 28;
-	  dec[next_free_code] = nibble << 28;
+	  enc[nibble] = next_free_code << _SHIFT_VALUE;
+	  dec[next_free_code] = nibble << _SHIFT_VALUE;
 	  // printf("recoding %lx to %lx\n",nibble,next_free_code);
 	  next_free_code++;
 	}

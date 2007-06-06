@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.17 2007-02-22 00:16:05 tswift Exp $
+** $Id: struct_manager.h,v 1.18 2007-06-06 20:43:19 tswift Exp $
 ** 
 */
 
@@ -419,10 +419,10 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
 #define SM_DeallocateSharedStructList(SM,pHead,pTail) {	\
    void *pStruct = pHead;				\
    while (pStruct != pTail) {				\
-     *(((int *)pStruct)+1) = FREE_TRIE_NODE_MARK;	\
+     *(((prolog_int *)pStruct)+1) = FREE_TRIE_NODE_MARK;	\
      pStruct = *(void **)pStruct;			\
    }							\
-   *(((int *)pStruct)+1) = FREE_TRIE_NODE_MARK;		\
+   *(((prolog_int *)pStruct)+1) = FREE_TRIE_NODE_MARK;		\
    SM_Lock(SM);						\
    SMFL_NextFreeStruct(pTail) = SM_FreeList(SM);	\
    SM_FreeList(SM) = pHead;				\
@@ -436,10 +436,10 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
 #define SM_DeallocateStructList(SM,pHead,pTail) {	\
    void *pStruct = pHead;				\
    while (pStruct != pTail) {				\
-     *(((int *)pStruct)+1) = FREE_TRIE_NODE_MARK;	\
+     *(((prolog_int *)pStruct)+1) = FREE_TRIE_NODE_MARK;	\
      pStruct = *(void **)pStruct;			\
    }							\
-   *(((int *)pStruct)+1) = FREE_TRIE_NODE_MARK;		\
+   *(((prolog_int *)pStruct)+1) = FREE_TRIE_NODE_MARK;		\
    SMFL_NextFreeStruct(pTail) = SM_FreeList(SM);	\
    SM_FreeList(SM) = pHead;				\
  }

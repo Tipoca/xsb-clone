@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.97 2007-06-01 22:47:10 tswift Exp $
+** $Id: tries.c,v 1.98 2007-06-06 20:43:19 tswift Exp $
 ** 
 */
 
@@ -2241,7 +2241,7 @@ byte * trie_get_calls(CTXTdecl)
  */
 Cell get_lastnode_cs_retskel(CTXTdeclc Cell callTerm) {
 
-  int arity;
+  prolog_int arity;
   Cell *vector;
 
   arity = global_num_vars + 1;
@@ -2251,7 +2251,7 @@ Cell get_lastnode_cs_retskel(CTXTdeclc Cell callTerm) {
     if ( IsProperlySubsumed(sf) ) {
       construct_answer_template(CTXTc callTerm, conssf_producer(sf),
 				(Cell *)var_regs);
-      arity = (int)var_regs[0];
+      arity = (prolog_int)var_regs[0];
       vector = (Cell *)&var_regs[1];
     }
   }

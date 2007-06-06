@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.142 2007/06/01 22:47:10 tswift Exp $
+** $Id: tr_utils.c,v 1.143 2007/06/04 13:00:09 tswift Exp $
 ** 
 */
 
@@ -2940,6 +2940,7 @@ inline void abolish_table_pred_transitive(CTXTdeclc TIFptr tif, int cps_check_fl
 inline void abolish_table_predicate_switch(CTXTdeclc TIFptr tif, Psc psc, int invocation_flag, 
 					  int cps_check_flag) {
 
+  //  printf("atps %s/%d\n",get_name(psc),get_arity(psc));
   if (get_variant_tabled(psc)
       && (invocation_flag == ABOLISH_TABLES_TRANSITIVELY 
 	  || (invocation_flag == ABOLISH_TABLES_DEFAULT 
@@ -3182,6 +3183,7 @@ int sweep_tabled_preds(CTXTdecl) {
 
 #ifndef MULTI_THREAD
 int gc_tabled_preds(CTXTdecl) {
+  //  printf("gc-ing tabled preds\n");
   //  print_deltf_chain(CTXT);
   mark_tabled_preds(CTXT);
   return sweep_tabled_preds(CTXT);
