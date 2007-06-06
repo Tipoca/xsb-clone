@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.54 2007-06-01 22:47:10 tswift Exp $
+** $Id: tables.c,v 1.55 2007-06-06 19:15:14 tswift Exp $
 ** 
 */
 
@@ -796,6 +796,7 @@ inline TIFptr New_TIF(CTXTdeclc Psc pPSC) {
    }									
    TIF_CallTrie(pTIF) = NULL;						
    TIF_Mark(pTIF) = 0;                                                  
+   TIF_Visited(pTIF) = 0;  
    TIF_DelTF(pTIF) = NULL;						
    TIF_Subgoals(pTIF) = NULL;						
    TIF_NextTIF(pTIF) = NULL;						
