@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.40 2007-06-01 22:47:06 tswift Exp $
+** $Id: debug_xsb.c,v 1.41 2007-06-08 15:27:03 dwarren Exp $
 ** 
 */
 
@@ -707,8 +707,8 @@ void print_private_deltfs(CTXTdecl) {
 extern DelTFptr deltf_chain_begin;
 
 void print_deltf_chain(CTXTdecl) {
-  printf("========================== deltf chain\n");
   DelTFptr dtf =   deltf_chain_begin;
+  printf("========================== deltf chain\n");
   while (dtf != NULL) {
     printDelTF(dtf);
     printf("\n");
