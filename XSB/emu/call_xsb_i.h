@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: call_xsb_i.h,v 1.10 2005-11-14 18:58:49 tswift Exp $
+** $Id: call_xsb_i.h,v 1.11 2007-06-10 18:43:57 tswift Exp $
 ** 
 */
 
@@ -45,8 +45,8 @@ static inline int prolog_call0(CTXTdeclc Cell term)
       psc = pair_psc(sym);
     } else {
       if (isnonvar(term))
-	err_handle(CTXTc TYPE, 1, "call", 1, "callable term", term);
-      else err(INSTANTIATION, 1, "call", 1);
+	xsb_type_error(CTXTc "callable",term,"call/1",1);
+      else xsb_instantiation_error(CTXTc "call/1",1);
       return FALSE;
     }
 #ifdef CP_DEBUG

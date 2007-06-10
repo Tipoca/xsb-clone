@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.45 2007-06-01 22:47:10 tswift Exp $
+** $Id: tr_utils.h,v 1.46 2007-06-10 18:43:58 tswift Exp $
 ** 
 */
 
@@ -27,12 +27,17 @@
 
 #include "context.h"
 
-typedef struct I_Trie_Header *ITHptr;
-typedef struct I_Trie_Header {
-  BTNptr root;
-  ITHptr prev;
-  ITHptr next;
-} ITrie_Header;
+struct interned_trie_t {
+  BTNptr  root;
+  byte    valid;
+  int     next_entry;
+} ;
+typedef struct interned_trie_t *ITrieptr;
+
+/* Also includes trie stuff */
+#ifndef MULTI_THREAD
+extern ITrieptr itrie_array;
+#endif
 
 extern VariantSF get_variant_sf(CTXTdeclc Cell, TIFptr, Cell *);
 extern SubProdSF get_subsumer_sf(CTXTdeclc Cell, TIFptr, Cell *);

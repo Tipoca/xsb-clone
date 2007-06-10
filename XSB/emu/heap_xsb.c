@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.58 2007-02-23 20:17:05 tswift Exp $
+** $Id: heap_xsb.c,v 1.59 2007-06-10 18:43:58 tswift Exp $
 ** 
 */
 
@@ -421,8 +421,7 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
 
   if (new_size <= glstack.size) return 0;
 
-  xsb_dbgmsg((LOG_REALLOC, 
-	     "Reallocating the Heap and Local Stack data area"));
+  //  fprintf(stddbg,"Reallocating the Heap and Local Stack data area");
 #ifdef DEBUG_VERBOSE
   if (LOG_REALLOC <= cur_log_level) {
     if (glstack.size == glstack.init_size) {

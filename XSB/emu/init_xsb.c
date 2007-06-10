@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.122 2007-06-01 22:47:06 tswift Exp $
+** $Id: init_xsb.c,v 1.123 2007-06-10 18:43:58 tswift Exp $
 ** 
 */
 
@@ -72,6 +72,7 @@
 #include "incr_xsb.h" /* for incremental evaluation */
 #include "deadlock.h"
 #include "cinterf.h"
+#include "storage_xsb.h"
 /*-----------------------------------------------------------------------*/
 
 /* Sizes of the Data Regions in K-byte blocks
@@ -1022,6 +1023,11 @@ void init_thread_structures(CTXTdecl)
   private_current_de_block_top = NULL; 
   private_current_dl_block_top = NULL;
   private_current_pnde_block_top = NULL;
+
+  bt_storage_hash_table.length = STORAGE_TBL_SIZE;
+  bt_storage_hash_table.bucket_size = sizeof(STORAGE_HANDLE);
+  bt_storage_hash_table.initted = FALSE;
+  bt_storage_hash_table.table = NULL;
 
   num_gc = 0;
   total_time_gc = 0;

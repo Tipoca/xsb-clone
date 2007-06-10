@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.98 2007-06-06 20:43:19 tswift Exp $
+** $Id: tries.c,v 1.99 2007-06-10 18:43:58 tswift Exp $
 ** 
 */
 
@@ -1395,10 +1395,6 @@ static void bottomupunify(CTXTdeclc Cell term, BTNptr Root, BTNptr Leaf)
  *  Used with tries created via the builtin trie_intern.
  */
 
-#ifndef MULTI_THREAD
-  extern  BTNptr *Set_ArrayPtr;
-#endif
-
 xsbBool bottom_up_unify(CTXTdecl)
 {
   Cell    term;
@@ -1412,7 +1408,7 @@ xsbBool bottom_up_unify(CTXTdecl)
 
   term    = ptoc_tag(CTXTc 1);
   rootidx = ptoc_int(CTXTc 2);
-  root    = Set_ArrayPtr[rootidx];  
+  root    = itrie_array[rootidx].root;  
   bottomupunify(CTXTc term, root, leaf);
   return TRUE;
 }

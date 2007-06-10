@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.149 2007-06-01 22:47:05 tswift Exp $
+** $Id: biassert.c,v 1.150 2007-06-10 18:43:57 tswift Exp $
 ** 
 */
 
@@ -3788,10 +3788,6 @@ void init_standard_cgc_blocks(void) {
   standard_cgc_block_end_gl = (CPtr) (get_ep(psc) + 0x94);
 }
 
-/* Also includes trie stuff */
-#ifndef MULTI_THREAD
-extern BTNptr *Set_ArrayPtr;
-#endif
 xsbBool dynamic_code_function( CTXTdecl ) 
 {
   switch (ptoc_int(CTXTc 1)) {
@@ -3817,7 +3813,7 @@ xsbBool dynamic_code_function( CTXTdecl )
     break;
 
   case INTERNED_TRIE_CPS_CHECK:
-    ctop_int(CTXTc 3 ,interned_trie_cps_check(CTXTc Set_ArrayPtr[ptoc_int(CTXTc 2)]));
+    ctop_int(CTXTc 3 ,interned_trie_cps_check(CTXTc itrie_array[ptoc_int(CTXTc 2)].root));
     break;
 
   }
