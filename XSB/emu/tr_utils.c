@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.145 2007/06/06 21:29:06 dwarren Exp $
+** $Id: tr_utils.c,v 1.146 2007/06/10 18:43:58 tswift Exp $
 ** 
 */
 
@@ -1311,7 +1311,7 @@ void init_newtrie(CTXTdecl) {
   int i ;
   
   itrie_array = 
-    mem_calloc(MAX_INTERNED_TRIES, sizeof(struct interned_trie_t), TABLE_SPACE);
+    mem_calloc(MAX_INTERNED_TRIES+1, sizeof(struct interned_trie_t), TABLE_SPACE);
 
   for( i = 0; i < MAX_INTERNED_TRIES; i++ ) {
     itrie_array[i].valid = FALSE;
