@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.H,v 1.14 2007/01/24 22:24:28 dwarren Exp $
+** $Id: thread.H,v 1.15 2007/01/25 20:32:22 tswift Exp $
 ** 
 */
 
 :- export thread_cancel/1,
-          thread_create/2,thread_create/3,
+          thread_create/1, thread_create/2,thread_create/3,
           thread_detach/1,
 	  thread_exit/1,
           thread_exit/0,
