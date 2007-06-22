@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.150 2007-06-10 18:43:57 tswift Exp $
+** $Id: biassert.c,v 1.151 2007-06-22 15:06:25 dwarren Exp $
 ** 
 */
 
@@ -3775,7 +3775,7 @@ void init_dbclause_cgc_blocks(void) {
 
   psc = ((Pair)insert("db_get_clauses1", 11, 
 		      pair_psc(insert_module(0, "dbclause")), &new)) -> psc_ptr;
-  dbclause_cgc_block_gl = (CPtr) (get_ep(psc) + 0xc8);
+  dbclause_cgc_block_gl = (CPtr) (get_ep(psc) + 0xc0);
 }
 
 void init_standard_cgc_blocks(void) {
