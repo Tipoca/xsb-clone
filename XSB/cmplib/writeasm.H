@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: writeasm.H,v 1.7 2005-08-10 19:55:37 dwarren Exp $
+** $Id: writeasm.H,v 1.8 2007-06-22 15:01:55 dwarren Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 :- import asm_inst/4 from asm_inst.
 :- import nl/1, write/2, writeln/2, writeq/2,
           arg/3, functor/3 from standard.
-:- import file_put/2 from file_io.
+:- import file_put/2, fmt_write/3 from file_io.
 :- import sym_name/3, sym_env/2, sym_category/2, sort_by_index/2,
           sym_prop/2 from symtab.
 :- import option/1 from auxlry.
