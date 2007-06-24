@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.H,v 1.24 2006/04/17 20:51:30 tswift Exp $
+** $Id: assert.H,v 1.27 2007/02/15 22:01:20 dwarren Exp $
 ** 
 */
 
@@ -33,6 +33,7 @@
 :- export clause0/2, clause/2.
 :- export (dynamic)/1.
 :- export t_assert/2.
+   :- export code_to_buff/2. % for message queues
 :- export exchange_definitions/2.
 
 :- import append/3, memberchk/2 from basics.
