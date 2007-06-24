@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.40 2007-06-10 18:43:57 tswift Exp $
+** $Id: cinterf.h,v 1.41 2007-06-24 19:03:22 tswift Exp $
 ** 
 */
 
@@ -207,18 +207,22 @@ extern "C" {
 #define extern_reg_term(regnum) reg_term(CTXTc regnum)
 
 /*======================================================================*/
+extern void iso_check_var(CTXTdeclc int reg_num,char *PredString);
+						/* defined in builtin.c */
 
+DllExport extern char* call_conv ptoc_abs(reg_num);
+extern Cell iso_ptoc_callable(CTXTdeclc int reg_num,char *PredString);
+						/* defined in builtin.c */
+DllExport extern prolog_float call_conv ptoc_float(CTXTdeclc reg_num);
+						/* defined in builtin.c */
 DllExport extern prolog_int call_conv ptoc_int(CTXTdeclc reg_num);	
 						/* defined in builtin.c */
 DllExport extern prolog_int call_conv iso_ptoc_int(CTXTdeclc int reg_num,char *PredString);
-						/* defined in builtin.c */
-DllExport extern prolog_float call_conv ptoc_float(CTXTdeclc reg_num);
 						/* defined in builtin.c */
 DllExport extern char* call_conv ptoc_string(CTXTdeclc reg_num);
 						/* defined in builtin.c */
 DllExport extern char* call_conv ptoc_longstring(CTXTdeclc reg_num);
 						/* defined in builtin.c */
-DllExport extern char* call_conv ptoc_abs(reg_num);
 
 DllExport extern void  call_conv ctop_int(CTXTdeclc reg_num, prolog_int);
 						/* defined in builtin.c */
