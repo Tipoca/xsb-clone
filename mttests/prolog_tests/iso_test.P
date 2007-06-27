@@ -1,12 +1,13 @@
 
-:- import thread_create/3, thread_join/2 from thread.
-:- import thread_create/2 from thread.
+:- import thread_create/3, thread_join/2, thread_join/1 from thread.
+:- import thread_create/2, thread_self/1, thread_join/2 from thread.
 
 
 test:- test_errors.
 
 test_errors:- test1i, test1ia, test1t, test2t, test3i, 
-	      test3ia, test3ib, test3t, test3d, test3ta.
+	      test3ia, test3ib, test3t, test3d, test3ta,
+	      ts_alias(sam),ts_alias(pam),test_pos_1,teste.
 
 test1i:- catch(thread_create(_X,_Y),
 	       error(instantiation_error,_,_),
@@ -38,52 +39,30 @@ test3d:- catch(thread_create(writeln(hello),_D,[foo]),
 test3ta:- catch(thread_create(writeln(hello),_D,[alias(3.2)]),
 	       error(type_error(Type,Culprit),_,_),
 	       writeln(caught_type_error_3a(Type,Culprit))).
+teste:- catch((thread_create(true,D,[detached(true)]),
+	       thread_join(D,_)),
+	       error(E,_,_),
+%	       writeln(E)
+	       writeln(caught_permission_existence_error)).
+
+% Don't yet have concurrency right -- but keeping in test suite.
+ts_alias(A):- 
+	thread_create(ts_alias_1,F,[alias(A)]),thread_join(F).
+
+ts_alias_1:- 
+	thread_self(sam) -> 
+	    writeln(sam_i_am)
+	  ; writeln(sam_i_aint).
 
 :- import get_alias/3 from file_io.
 
 test_pos_1:- 
-	thread_create(writeln(hello),Tid,[alias(foo3),alias(foo4)]),
-	get_alias(F,G,H),writeln(alias(F,G,H)),
-	thread_join(Tid),fail.
+	thread_create(true,Tid,[alias(foo3),alias(foo4)]),
+	(get_alias(F,G,H),writeln(alias(F,G,H)),fail ; true),
+	thread_join(Tid,_).
 
 test(F):- 
 	thread_create(writeln(hello),_T,[glsize(100),tcsize(100),pdlsize(100),complsize(100),
 	                                alias(thread1)]),
 	thread_join(thread1,F).
 
-time_create(N):- 
-	cputime(Before),
-	test_create(N),
-	cputime(After),
-	Time is After - Before,
-	writeln(time(Time)).
-	
-test_create(N):- 
-	N == 0 -> 
-	true
-    ;
-	thread_create(true,_),
-	N1 is N - 1,
-	test_create(N1).
-
-test_create_1(N):- 
-	N == 0 -> 
-	true
-    ;
-	thread_create(true,Tid),
-	thread_join(Tid,_),
-	writeln(Tid),
-	N1 is N - 1,
-	test_create_1(N1).
-
-test_create_2(N):- 
-	N == 0 -> 
-	true
-    ;
-	thread_create(true,Tid,[alias(foo)]),
-	thread_join(Tid,_),
-	writeln(Tid),
-	N1 is N - 1,
-	test_create_2(N1).
-
-	

@@ -1,0 +1,41 @@
+:- import thread_create/2,thread_create/3, thread_join/2 from thread.
+
+test:- 
+	set_xsb_flag(thread_detached,true),
+	test_create(200),
+	writeln(passed_detached_test),
+	set_xsb_flag(thread_detached,false),
+	test_create_join(200),
+	writeln(passed_join_test),
+	test_create_alias_join(200),
+	writeln(passed_alias_join_test),
+	catch(test_create(200),error(E,_,_),writeln(E)).
+
+test_create(N):- 
+	N == 0 -> 
+	true
+    ;
+	thread_create(true,_),
+	N1 is N - 1,
+	test_create(N1).
+
+test_create_join(N):- 
+	N == 0 -> 
+	true
+    ;
+	thread_create(true,Tid),
+	thread_join(Tid,_),
+	N1 is N - 1,
+	test_create_join(N1).
+
+test_create_alias_join(N):- 
+	N == 0 -> 
+	true
+    ;
+	thread_create(true,Tid,[alias(foo)]),
+	thread_join(Tid,_),
+	N1 is N - 1,
+	test_create_alias_join(N1).
+
+
+
