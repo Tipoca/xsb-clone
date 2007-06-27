@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.36 2007/06/01 22:52:39 tswift Exp $
+** $Id: curr_sym.P,v 1.37 2007/06/26 17:05:42 tswift Exp $
 ** 
 */
 
@@ -730,6 +730,13 @@ xsb_flag(thread_tcpsize, Size) :-
 	stat_flag(THREAD_TCPSIZE, Size).
 xsb_flag(thread_complsize, Size) :-
 	stat_flag(THREAD_COMPLSIZE, Size).
+xsb_flag(thread_detached, Bool) :-
+	stat_flag(THREAD_DETACHED, B),
+	(B == 0 -> Bool = false ; Bool = true).
+/* Not changeable */
+xsb_flag(max_threads, Max) :-
+	stat_flag(MAX_THREAD_FLAG, Max).
+	
 
 set_xsb_flag(Type,Val):- 
 	check_nonvar(Type,set_xsb_flag/2,1),
@@ -831,6 +838,9 @@ set_xsb_flag_1(thread_tcpsize, Size) :-!,
 	stat_set_flag(THREAD_TCPSIZE, Size).
 set_xsb_flag_1(thread_complsize, Size) :-!,
 	stat_set_flag(THREAD_COMPLSIZE, Size).
+set_xsb_flag_1(thread_detached, Bool) :- !,
+	(Bool == true -> B = 1 ; B = 0),
+	stat_set_flag(THREAD_DETACHED, B).
 set_xsb_flag_1(Type, _) :-  
 	domain_error(xsb_flag,Type,set_xsb_flag/2,2).
 
