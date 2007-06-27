@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.57 2007-06-10 18:43:57 tswift Exp $
+** $Id: context.h,v 1.58 2007-06-27 13:23:15 ruim Exp $
 ** 
 */
 
@@ -389,8 +389,8 @@ jmp_buf _xsb_abort_fallback_environment;
   /********** cinterf stuff  **********/
   jmp_buf _cinterf_env;
   byte *_current_inst;
-  int _xsb_inquery;
-  int _xsb_ready;
+  volatile int _xsb_inquery;
+  volatile int _xsb_ready;
   pthread_cond_t _xsb_started_cond;
   pthread_cond_t _xsb_done_cond;
   pthread_mutex_t _xsb_synch_mut;
