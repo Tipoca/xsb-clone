@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.124 2007-06-26 16:59:59 tswift Exp $
+** $Id: init_xsb.c,v 1.125 2007-06-27 00:51:29 tswift Exp $
 ** 
 */
 
@@ -442,7 +442,7 @@ int pipe_input_stream() {
   reset_stat_total();
 #endif
 
-  max_threads_glc = MAX_THREADS;
+  max_threads_glc = MAX_THREADS; 
   pflags[STACK_REALLOC] = TRUE;
 #ifdef GC
   pflags[GARBAGE_COLLECT] = INDIRECTION_SLIDE_GC;
@@ -744,6 +744,7 @@ int pipe_input_stream() {
   flags[CMD_LINE_GOAL] = (Cell) mem_alloc(strlen(cmd_line_goal) + 1,OTHER_SPACE);
   strcpy( (char *)flags[CMD_LINE_GOAL], cmd_line_goal );
   
+  flags[MAX_THREAD_FLAG] = max_threads_glc;
 
   /* Set the Prolog startup files.
      ----------------------------- */
