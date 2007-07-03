@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varproc.H,v 1.6 2005-01-14 18:30:48 ruim Exp $
+** $Id: varproc.H,v 1.7 2007-07-03 15:24:44 dwarren Exp $
 ** 
 */
 
@@ -29,7 +29,9 @@
 :- export varproc/3, vprag_common/2, vprag_argno/2, vprag_level/2,
 	  vprag_context/2, vprag_loc/2, vprag_occ/2, vprag_type/2, 
 	  vprag_use/2, vprag_nouse/2, vprag_lastchunk/2, vprag_type1/2.
+:- export addkey/4, find/3, leaflist/2, updatevs/5.
 
-:- import member/2, append/3, memberchk/2 from basics.
-:- import closetail/1, length/2, member2/2 from listutil.
+:- import append/3, member/2, memberchk/2 from basics.
+:- import closetail/1, member2/2 from listutil.
+:- import sort/2 from setof.
 

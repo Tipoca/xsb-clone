@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_index.P,v 1.8 2007-03-18 17:38:59 dwarren Exp $
+** $Id: tp_index.P,v 1.9 2007-07-03 15:24:44 dwarren Exp $
 ** 
 */
 
@@ -56,8 +56,12 @@ makeindex(Sym, Clauses, Pil, Pilr, _Prag, Tabled) :-
 
 makeindex(Sym, Clauses, Pil, Pilr, Prag, Tabled) :-
 	sym_name(Sym, _, Arity),
-	( member(index(Narg), Prag), nonvar(Narg), !
-	; Narg = 1				% Default index on arg 1
+	(member(index(Narg), Prag), integer(Narg)
+	 ->	true
+	 ; var(Narg)
+	 ->	Narg = 1		% Default index on arg 1
+	 ;	warning(('Illegal index specification: ',Narg)),
+		fail
 	),
 	( Narg =:= 0 ->
 	    makeNOindex(Clauses, Arity, Pil, Pilr, Tabled)

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_index.H,v 1.6 2005-01-14 18:30:47 ruim Exp $
+** $Id: tp_index.H,v 1.7 2007-07-03 15:24:44 dwarren Exp $
 ** 
 */
 
@@ -30,4 +30,4 @@
 :- import gennum/1 from gensym.
 :- import member/2 from basics.
 :- import length/2, nthmember/3 from listutil.
-
+:- import warning/1 from auxlry.
