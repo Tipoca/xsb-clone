@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.46 2007-06-10 18:43:58 tswift Exp $
+** $Id: memory_xsb.c,v 1.47 2007-07-03 14:56:53 dwarren Exp $
 ** 
 */
 
@@ -306,7 +306,7 @@ Please use -c N or cpsize(N) to start with a larger choice point stack"
   cps_top = (byte *)top_of_cpstack;
   trail_top = (byte *)top_of_trail;
 
-  fprintf(stddbg,"Reallocating the Trail and Choice Point Stack data area");
+  //  fprintf(stddbg,"Reallocating the Trail and Choice Point Stack data area\n");
 
   /* Expand the Trail / Choice Point Stack Area
      ------------------------------------------ */
