@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.148 2007/06/16 22:16:29 tswift Exp $
+** $Id: tr_utils.c,v 1.149 2007/07/03 14:56:53 dwarren Exp $
 ** 
 */
 
@@ -1372,13 +1372,13 @@ ITHptr new_shared_trie(CTXTdecl)
   return pITH;
 }
 
-int newtrie(CTXTdeclc int sharedflag) {
+Integer newtrie(CTXTdeclc int sharedflag) {
   if (sharedflag) 
     return (int) new_shared_trie(CTXT);
   else return new_private_trie(CTXT);
 }
 #else
-int newtrie(CTXTdeclc int sharedflag) {
+Integer newtrie(CTXTdeclc int sharedflag) {
   return new_private_trie(CTXT);
 }
 #endif
