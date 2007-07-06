@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.289 2007-06-24 19:03:21 tswift Exp $
+** $Id: builtin.c,v 1.290 2007-07-06 13:44:58 dwarren Exp $
 ** 
 */
 
@@ -3020,9 +3020,13 @@ int print_xsb_backtrace(CTXTdecl) {
     }
   } else {
     fprintf(stdout,"Partial Forward Continuation...\n");
+    if ((pb)top_of_localstk < (pb)top_of_heap+256*ZOOM_FACTOR) {
+      fprintf(stdout,"  Local Stack clobbered, no backtrace available\n");
+      return TRUE;
+    }
     tmp_ereg = ereg;
     tmp_cpreg = cpreg;
-    if (!tmp_cpreg) instruction = *(tmp_cpreg-2*sizeof(Cell));
+    if (tmp_cpreg) instruction = *(tmp_cpreg-2*sizeof(Cell));
     else instruction = (unsigned char)fail_inst;
     while (tmp_cpreg && (instruction == call || instruction == trymeorelse) && 
 	   (backtrace_length++ < MAX_BACKTRACE_LENGTH)) {
@@ -3036,7 +3040,7 @@ int print_xsb_backtrace(CTXTdecl) {
       }
       tmp_cpreg = *((byte **)tmp_ereg-1);
       tmp_ereg = *(CPtr *)tmp_ereg;
-      if (!tmp_cpreg) instruction = *(tmp_cpreg-2*sizeof(Cell));
+      if (tmp_cpreg) instruction = *(tmp_cpreg-2*sizeof(Cell));
     }
   }
   return TRUE;
