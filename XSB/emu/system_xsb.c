@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.46 2007-04-20 14:41:00 tswift Exp $
+** $Id: system_xsb.c,v 1.47 2007-07-07 21:02:08 tswift Exp $
 ** 
 */
 
@@ -195,9 +195,9 @@ xsbBool sys_system(CTXTdeclc int callno)
     return TRUE;
   case SLEEP_FOR_SECS:
 #ifdef WIN_NT
-    Sleep(ptoc_int(CTXTc 2) * 1000);
+    Sleep(iso_ptoc_int_arg(CTXTc 2,"sleep/1",1) * 1000);
 #else
-    sleep(ptoc_int(CTXTc 2));
+    sleep(iso_ptoc_int_arg(CTXTc 2,"sleep/1",1));
 #endif
     return TRUE;
   case GET_TMP_FILENAME:
