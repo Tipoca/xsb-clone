@@ -1,4 +1,6 @@
 passed_alias_join_test
 passed_detached_test
 passed_join_test
+passed_thread_detach_1
+passed_thread_detach_2
 resource_error(maximum threads)

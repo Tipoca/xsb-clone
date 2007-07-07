@@ -25,6 +25,7 @@ options=$3
 
 #../gentest.sh "$XEMU $options" serialise "test_serialise(40,_)" $NUM
 ../seqgentest.sh "$XEMU $options" iso_test "test." 
+../seqgentest.sh "$XEMU $options" alias_test "test." 
 ../seqgentest.sh "$XEMU $options" mutex_test "test." 
 ../seqgentest.sh "$XEMU $options" mqtest "test." 
 ../seqgentest.sh "$XEMU $options" cvartest_thread_make "test." 
