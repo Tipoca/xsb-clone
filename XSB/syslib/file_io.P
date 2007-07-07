@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.P,v 1.46 2005/12/31 01:47:36 tswift Exp $
+** $Id: file_io.P,v 1.47 2007/06/24 18:55:54 tswift Exp $
 ** 
 */
 
@@ -381,6 +381,19 @@ check_stream_or_alias(S_or_A,Predicate,Arg,Stream) :-
 
 :- dynamic '_$alias_dynamic'/3.
 :- thread_shared '_$alias_dynamic'/3.
+
+add_aliases_flag_error([],_Type,_Obj,Flag):- (var(Flag) -> Flag = 0 ; true).
+add_aliases_flag_error([H|T],Type,Obj,Flag):- 
+	add_alias_flag_error(H,Type,Obj,Flag),
+	(Flag == 1 -> 
+	    remove_alias(_,Type,Obj)
+	 ; 
+	    add_aliases_flag_error(T,Type,Obj,Flag) ).
+
+add_alias_flag_error(Alias,Type,Obj,Flag):- 
+	'_$alias_dynamic'(Alias,Type,_Stream) -> 
+	   Flag = 1
+	 ; asserta('_$alias_dynamic'(Alias,Type,Obj)).
 
 add_aliases([],_Type,_Stream,_Pred).
 add_aliases([H|T],Type,Stream,Pred):- 
