@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.63 2007-06-16 22:16:28 tswift Exp $
+** $Id: macro_xsb.h,v 1.64 2007-07-08 01:24:32 dwarren Exp $
 ** 
 */
 
@@ -1044,7 +1044,9 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 
 /*----------------------------------------------------------------------*/
 
-#define pdlpush(cell)	*(pdlreg) = cell;  pdlreg--
+#define pdlpush(cell)	*(pdlreg) = cell;				\
+                        if (pdlreg-- < (CPtr)pdl.low)	       		\
+			  xsb_exit(CTXTc "PANIC: pdl overflow; large or cyclic structure?")
 
 #define pdlpop		*(++pdlreg)
 
