@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.12 2007-02-23 20:17:05 tswift Exp $
+** $Id: tr_code_xsb_i.h,v 1.13 2007-07-10 20:29:35 dwarren Exp $
 ** 
 */
 
@@ -272,11 +272,12 @@ int     delay_it;
       new_heap_free(hreg);					\
     }								\
     reg_arrayptr += arity;					\
+    check_glstack_overflow(0,pcreg,0);				\
   }								\
   else if (isattv(*reg_arrayptr)) {				\
     attv_dbgmsg(">>>> add_interrupt in unify_with_trie_str\n");	\
     add_interrupt(CTXTc cell(((CPtr)dec_addr(*reg_arrayptr) + 1)), makecs(hreg));	\
-    bind_copy((CPtr)dec_addr(*reg_array), makecs(hreg));                       \
+    bind_copy((CPtr)dec_addr(*reg_array), makecs(hreg));        \
     reg_arrayptr--;						\
     *(hreg++) = (Cell) psc;					\
     for (i = arity; i >= 1; i--) {				\
@@ -284,6 +285,7 @@ int     delay_it;
       new_heap_free(hreg);					\
     }								\
     reg_arrayptr += arity;					\
+    check_glstack_overflow(0,pcreg,0);				\
   }   								\
   else {							\
     CPtr temp = (CPtr)*reg_arrayptr;				\
@@ -311,6 +313,7 @@ int     delay_it;
     *(++reg_arrayptr) = (Cell) hreg;        /* tail of list */		\
     new_heap_free(hreg);						\
     new_heap_free(hreg);						\
+    check_glstack_overflow(0,pcreg,0);					\
   }									\
   else if (isattv(*reg_arrayptr)) {					\
     attv_dbgmsg(">>>> add_interrupt in unify_with_trie_list\n");	\
@@ -321,6 +324,7 @@ int     delay_it;
     *(++reg_arrayptr) = (Cell) hreg;        /* head of list */		\
     new_heap_free(hreg);						\
     new_heap_free(hreg);						\
+    check_glstack_overflow(0,pcreg,0);					\
   }									\
   else {								\
     CPtr temp = (CPtr)*reg_arrayptr;					\
@@ -394,6 +398,7 @@ int     delay_it;
   new_heap_free(hreg);							\
   *reg_arrayptr = (Cell) hreg;						\
   new_heap_free(hreg);							\
+  check_glstack_overflow(0,pcreg,0);					\
 }
 
 /*----------------------------------------------------------------------*/

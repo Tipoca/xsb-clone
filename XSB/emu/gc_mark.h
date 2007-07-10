@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.24 2007-02-23 20:17:05 tswift Exp $
+** $Id: gc_mark.h,v 1.25 2007-07-10 20:29:34 dwarren Exp $
 ** 
 */
 
@@ -868,6 +868,10 @@ int mark_heap(CTXTdeclc int arity, int *marked_dregs)
   marked = mark_region(CTXTc reg+1,reg+arity);
   if (delayreg != NULL) {
     marked += mark_root(CTXTc (Cell)delayreg);
+  }
+  if (reg_array) {
+    //    printf("marking reg_array: %p to %p\n",reg_array,reg_arrayptr);
+    marked += mark_region(CTXTc reg_array,reg_arrayptr);
   }
   /* Heap[0] is a global variable */
   marked += mark_root(CTXTc (Cell)glstack.low);
