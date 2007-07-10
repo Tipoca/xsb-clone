@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.149 2007/07/03 14:56:53 dwarren Exp $
+** $Id: tr_utils.c,v 1.150 2007/07/06 13:58:47 ruim Exp $
 ** 
 */
 
@@ -949,11 +949,13 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook) {
 
 void safe_delete_branch(BTNptr lowest_node_in_branch) {
 
-  byte choicepttype;
+  byte instruction;
 
   MakeStatusDeleted(lowest_node_in_branch);
-  choicepttype = 0x3 & BTN_Instr(lowest_node_in_branch);
-  BTN_Instr(lowest_node_in_branch) = choicepttype | trie_no_cp_fail;
+  instruction = BTN_Instr(lowest_node_in_branch);
+  if (instruction != trie_root) instruction = (instruction & 0x3) | trie_no_cp_fail;
+  else instruction = trie_no_cp_fail;
+  BTN_Instr(lowest_node_in_branch) = trie_no_cp_fail;
 }
 
 void undelete_branch(BTNptr lowest_node_in_branch) {
@@ -1500,7 +1502,7 @@ void trie_dispose(CTXTdecl)
       delete_branch(CTXTc Leaf, &(itrie_array[Rootidx].root));
     }
     else {
-      //          printf(" safely deleting branch \n");
+      //      printf(" safely deleting branch %x\n",BTN_Instr(itrie_array[Rootidx].root));
       safe_delete_branch(itrie_array[Rootidx].root);
     }
   }
