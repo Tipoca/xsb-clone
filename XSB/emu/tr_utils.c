@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.150 2007/07/06 13:58:47 ruim Exp $
+** $Id: tr_utils.c,v 1.151 2007/07/10 20:25:10 dwarren Exp $
 ** 
 */
 
@@ -955,7 +955,7 @@ void safe_delete_branch(BTNptr lowest_node_in_branch) {
   instruction = BTN_Instr(lowest_node_in_branch);
   if (instruction != trie_root) instruction = (instruction & 0x3) | trie_no_cp_fail;
   else instruction = trie_no_cp_fail;
-  BTN_Instr(lowest_node_in_branch) = trie_no_cp_fail;
+  BTN_Instr(lowest_node_in_branch) = instruction;
 }
 
 void undelete_branch(BTNptr lowest_node_in_branch) {
