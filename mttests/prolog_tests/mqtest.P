@@ -5,12 +5,13 @@ test:-
 	test_1(20),
 	test_2(20),
 	test_3(20,_),
+	alias_test(20),
 	qt(_F,X,Y),writeln(qt(X,Y)).
 
 %--------------------------
 % simplest -- 1 writer, 1 reader.
 test_1(N):- 
-	message_queue_create(Queue,[size(10)]),
+	message_queue_create(Queue,[max_terms(10)]),
 	thread_create(producer_1(N,Queue),Id1),
 	thread_create(consumer_1(N,Queue),Id2),
 	thread_join(Id1,_),thread_join(Id2,_).
@@ -28,10 +29,10 @@ consumer_1(N,Queue):-
 	N1 is N - 1,
 	consumer_1(N1,Queue).
 
-%--------------------------!!
+%--------------------------
 % 1 writer, 2 readers (who read different things)
 test_2(N):- 
-	message_queue_create(Queue,[size(10)]),
+	message_queue_create(Queue,[max_terms(10)]),
 	thread_create(producer_2(N,Queue),_),
 	thread_create(consumer_2_howdy(N,Queue),Id1),
 	thread_create(consumer_2_doody(N,Queue),Id2),
@@ -64,7 +65,7 @@ consumer_2_doody(N,Queue):-
 % 2 writers, 2 readers -- all with different things
 
 test_3(N,Queue):- 
-	message_queue_create(Queue,[size(20)]),
+	message_queue_create(Queue,[max_terms(20)]),
 	thread_create(producer_3_white(N,Queue),Id1),
 	thread_create(producer_3_black(N,Queue),Id2),
 	thread_create(consumer_3_black(N,Queue),Id3),
@@ -107,7 +108,7 @@ consumer_3_black(N,Queue):-
 % Test of reading things out of order.
 
 qt(F,X,Y):-
-	message_queue_create(F,[size(20)]),
+	message_queue_create(F,[max_terms(20)]),
 	thread_send_message(F,howdy(1)),
 	thread_send_message(F,doody(1)),
 	thread_send_message(F,howdy(2)),
@@ -116,3 +117,25 @@ qt(F,X,Y):-
 	thread_get_message(F,doody(Y)),
 	thread_get_message(F,howdy(X)),
 	thread_get_message(F,howdy(Y)).
+
+%--------------------------
+
+alias_test(N):- 
+	message_queue_create(_Queue,[max_terms(10),alias(foo)]),
+	thread_create(alias_producer(N,foo),Id1),
+	thread_create(alias_consumer(N,foo),Id2),
+	thread_join(Id1,_),thread_join(Id2,_).
+
+alias_producer(0,_Queue):- !.
+alias_producer(N,Queue):- 
+	thread_send_message(Queue,alias_ola(N)),
+	N1 is N - 1,
+	alias_producer(N1,Queue).
+
+alias_consumer(0,_Queue):- !.
+alias_consumer(N,Queue):- 
+	thread_get_message(Queue,M),
+	writeln(alias_got(M)),
+	N1 is N - 1,
+	alias_consumer(N1,Queue).
+
