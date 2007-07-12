@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.60 2007-07-10 20:29:34 dwarren Exp $
+** $Id: heap_xsb.c,v 1.61 2007-07-12 14:38:02 dwarren Exp $
 ** 
 */
 
@@ -835,14 +835,19 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 
 /*--------------------------------------------------------------------------*/
 
-xsbBool glstack_ensure_space(CTXTdeclc int extra, int arity) {
-  if (pflags[GARBAGE_COLLECT] != NO_GC && arity < 255) {
-    gc_heap(CTXTc arity,FALSE);
+void glstack_ensure_space(CTXTdeclc int extra, int arity) {
+  if ((pb)top_of_localstk < (pb)top_of_heap+(256*ZOOM_FACTOR)) {
+    xsb_basic_abort("\nFatal ERROR:  -- "
+		    "Local Stack clobbered Heap --\n");
+  } else {
+    if (pflags[STACK_REALLOC] == FALSE) xsb_basic_abort(local_global_exception);
+    if (pflags[GARBAGE_COLLECT] != NO_GC && arity < 255) {
+      gc_heap(CTXTc arity,FALSE);
+    }
+    if ((pb)top_of_localstk < (pb)top_of_heap + OVERFLOW_MARGIN + extra) {
+      glstack_realloc(CTXTc resize_stack(glstack.size,extra+OVERFLOW_MARGIN),arity);
+    }
   }
-  if ((pb)top_of_localstk < (pb)top_of_heap + OVERFLOW_MARGIN + extra) {
-    return glstack_realloc(CTXTc resize_stack(glstack.size,extra+OVERFLOW_MARGIN),arity);
-  }
-  else return FALSE;
 }
 
 /*--------------------------------------------------------------------------*/
