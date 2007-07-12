@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.100 2007-07-12 14:38:02 dwarren Exp $
+** $Id: tries.c,v 1.101 2007-07-12 22:53:03 tswift Exp $
 ** 
 */
 
@@ -1427,7 +1427,7 @@ xsbBool bottom_up_unify(CTXTdecl)
 
 /*----------------------------------------------------------------------*/
 
-void handle_heap_overflow_trie(CPtr *cptr, int arity, int heap_needed) {
+void handle_heap_overflow_trie(CTXTdeclc CPtr *cptr, int arity, int heap_needed) {
   int i;
 
   if (*cptr > (CPtr)glstack.low && *cptr < hreg) {
@@ -1470,7 +1470,7 @@ void load_solution_trie(CTXTdeclc int arity, int attv_num, CPtr cptr, BTNptr Tri
     }
     heap_needed = follow_par_chain(CTXTc TriePtr);
     if (glstack_overflow(heap_needed*sizeof(Cell))) 
-      handle_heap_overflow_trie(&cptr,arity,heap_needed);
+      handle_heap_overflow_trie(CTXTc &cptr,arity,heap_needed);
     load_solution_from_trie(CTXTc arity,cptr);
   }
 }
@@ -1483,7 +1483,7 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
      int heap_needed;
      heap_needed = follow_par_chain(CTXTc TriePtr);
      if (glstack_overflow(heap_needed*sizeof(Cell))) 
-       handle_heap_overflow_trie(&cptr,arity,heap_needed);
+       handle_heap_overflow_trie(CTXTc &cptr,arity,heap_needed);
      load_solution_from_trie(CTXTc arity,cptr);
    }
 }

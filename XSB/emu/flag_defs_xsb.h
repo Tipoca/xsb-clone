@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.22 2007-06-27 00:51:29 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.23 2007-07-12 22:53:03 tswift Exp $
 ** 
 */
 
@@ -123,7 +123,8 @@ interrupt flag
 #define THREAD_COMPLSIZE          74   /* Initial COMPLSize for created thread */
 #define THREAD_PDLSIZE            75   /* Initial PDLSize for created thread */
 #define THREAD_DETACHED           76   /* Initial Detached flag for created thread */
-#define MAX_THREAD_FLAG           77   /* Initial Detached flag for created thread */
+#define MAX_THREAD_FLAG           77   /* Maximum number of threads (not changeable after startup) */
+#define MAX_QUEUE_TERMS           78   /* Default Maximum number of terms in a message queue*/
 
 #define MAX_FLAGS		80
 
