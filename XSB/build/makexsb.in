@@ -29,7 +29,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: makexsb.in,v 1.10 2005-01-14 18:30:42 ruim Exp $
+## $Id: makexsb.in,v 1.11 2007-07-13 18:30:59 kifer Exp $
 ## 
 ##
 
@@ -67,8 +67,11 @@ if test "$force_devel" = "yes"; then
     makeargs="$makeargs devel"
 fi
 
-config=`@topdir@/build/config.guess`
-dir=@topdir@/config/`@topdir@/build/config.sub $config`${suffix}
+#config=`@topdir@/build/config.guess`
+#dir=@topdir@/config/`@topdir@/build/config.sub $config`${suffix}
+config=`./config.guess`
+#dir=@topdir@/config/`./config.sub $config`${suffix}
+dir=../config/`./config.sub $config`${suffix}
 makefile=${dir}/topMakefile
 
 
@@ -78,7 +81,7 @@ if test -r "$makefile" ; then
    echo ""
    make -f ${makefile}  $makeargs
 else
-   echo "${makefile}: doesn't exist or is not readable."
+   echo "${makefile}: does not exist or is not readable."
    echo "Have you configured XSB for this architecture?"
    echo ""
 fi
