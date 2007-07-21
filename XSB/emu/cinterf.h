@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.42 2007-07-07 21:02:07 tswift Exp $
+** $Id: cinterf.h,v 1.43 2007-07-21 16:24:18 ruim Exp $
 ** 
 */
 
@@ -324,7 +324,6 @@ DllExport extern char * call_conv xsb_get_error_message(CTXTdecl);
 DllExport extern char * call_conv xsb_get_error_type(CTXTdecl);
 #ifdef MULTI_THREAD
 DllExport extern th_context * call_conv xsb_get_main_thread();
-extern th_context *main_thread_gl;
 #endif
 
 #ifdef MULTI_THREAD

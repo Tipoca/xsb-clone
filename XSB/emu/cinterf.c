@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.81 2007-05-24 23:11:19 evansbj Exp $
+** $Id: cinterf.c,v 1.82 2007-07-21 16:24:17 ruim Exp $
 ** 
 */
 
@@ -1284,7 +1284,6 @@ jmp_buf ccall_init_env;
 // In the multi-threaded engine this will be used only for initialization errors.
 
 #ifdef MULTI_THREAD
-th_context *main_thread_gl = NULL;
 struct ccall_error_t init_ccall_error;
 
 #else
