@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: main_xsb.c,v 1.12 2007-07-21 16:24:18 ruim Exp $
+** $Id: main_xsb.c,v 1.13 2007-07-22 18:40:48 ruim Exp $
 ** 
 */
 
@@ -55,8 +55,6 @@
 #include "orient_xsb.h"
 #include "basicdefs.h"
 
-#include "thread_xsb.h"
-
 int main(int argc, char *argv[])
 { 
 #ifdef MULTI_THREAD
@@ -82,7 +80,6 @@ int main(int argc, char *argv[])
 
 #ifdef MULTI_THREAD
   th = malloc( sizeof( th_context ) ) ;  /* don't use mem_alloc */
-  main_thread_gl = th ;
 #endif
 
   xsb(CTXTc XSB_INIT, argc, argv);  /* init xsb */

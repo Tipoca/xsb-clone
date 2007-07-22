@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.82 2007-07-21 16:24:17 ruim Exp $
+** $Id: cinterf.c,v 1.83 2007-07-22 18:40:48 ruim Exp $
 ** 
 */
 
@@ -52,6 +52,7 @@
 #include "orient_xsb.h"
 #include "loader_xsb.h"
 #include "context.h"
+#include "thread_xsb.h"
 
 
 /*
@@ -1331,8 +1332,6 @@ DllExport char * call_conv xsb_get_error_message(CTXTdecl) {
   }
 
 #ifdef MULTI_THREAD
-extern th_context *main_thread_gl;
-
 th_context * xsb_get_main_thread() {
   return main_thread_gl;
 }

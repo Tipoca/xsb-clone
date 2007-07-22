@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.160 2007-06-21 16:55:12 dwarren Exp $
+** $Id: emuloop.c,v 1.161 2007-07-22 18:40:48 ruim Exp $
 ** 
 */
 
@@ -2408,6 +2408,13 @@ DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
    extern char tfile[];
 #endif
 #endif
+#endif
+
+#ifdef MULTI_THREAD
+/* this has to be initialized here and not in main_xsb.c because
+   of windows linkage problems for the variable main_thread_gl
+ */
+   main_thread_gl = th ;
 #endif
 
    if (flag == XSB_INIT || flag == XSB_C_INIT) {  /* initialize xsb */
