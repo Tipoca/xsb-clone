@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.38 2007-04-20 14:41:00 tswift Exp $
+** $Id: socket_xsb.c,v 1.39 2007-07-22 10:12:32 ruim Exp $
 ** 
 */
 
@@ -124,12 +124,28 @@ static char *get_host_IP(char *host_name_or_IP) {
      struct hostent *host_struct;
      struct in_addr *ptr;
      char **listptr;
+     char *error;
  
      /* if host_name_or_IP is an IP addr, then just return; else use 
 	gethostbyname */
      if (IS_IP_ADDR(host_name_or_IP))
 	  return(host_name_or_IP);
      host_struct = gethostbyname(host_name_or_IP);
+
+     if( host_struct == NULL )
+     {
+	if( h_errno == HOST_NOT_FOUND )
+		error = "socket: host not found" ;
+	else if ( h_errno == NO_ADDRESS || h_errno == NO_DATA )
+		error = "socket: host doesn't have a valid IP address" ;
+	else if( h_errno == NO_RECOVERY )
+		error = "socket: non recoverable error" ;
+	else if( h_errno == TRY_AGAIN )
+		error = "socket: temporary error" ;
+	else
+		error = "socket: unknown error" ;
+	xsb_abort( error ) ;
+     }
   
      listptr = host_struct->h_addr_list;
 
