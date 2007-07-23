@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.28 2007-05-01 14:52:29 tswift Exp $
+** $Id: slgdelay.h,v 1.29 2007-07-23 16:18:43 ruim Exp $
 ** 
 */
 
@@ -93,7 +93,7 @@ typedef struct AS_info {
   PNDE	  pdes;		/* pos DEs that refer to this answer substitution */
   VariantSF subgoal;	/* subgoal to which this answer substitution belongs */
   DL	  dl_list;	/* delay lists that this answer substitution has */
-  unsigned int  scratchpad;  /* to be used for answer completion and
+  UInteger  scratchpad;  /* to be used for answer completion and
 				other answer-oriented post-processing  */ 
 } *ASI;
 typedef struct AS_info ASI_Node;

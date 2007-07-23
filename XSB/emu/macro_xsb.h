@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.64 2007-07-08 01:24:32 dwarren Exp $
+** $Id: macro_xsb.h,v 1.65 2007-07-23 16:18:43 ruim Exp $
 ** 
 */
 
@@ -26,6 +26,8 @@
 #define __MACRO_XSB_H__
 
 #include "debug_xsb.h"
+
+#include "basictypes.h"
 
 /*----------------------------------------------------------------------*/
 
