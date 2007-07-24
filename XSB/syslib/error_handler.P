@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.45 2007/07/24 19:08:04 ruim Exp $
+** $Id: error_handler.P,v 1.46 2007/07/24 21:32:47 ruim Exp $
 ** 
 */
 
@@ -76,6 +76,7 @@ ccall_error_handler(Error) :-
 	  ; 
 	    default_sys_error_handler_nonmain(Error,Thread,Backtrace,Msg) ).
 
+default_sys_error_handler(error(thread_cancel,_)) :- !.
 default_sys_error_handler(error(Error,Msg)) :-
 	get_sys_error_description(error(Error,Msg),NewMsg),
 	messageln(NewMsg,STDERR),!.
