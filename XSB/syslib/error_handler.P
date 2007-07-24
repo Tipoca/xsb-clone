@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.44 2007/07/07 21:07:01 tswift Exp $
+** $Id: error_handler.P,v 1.45 2007/07/24 19:08:04 ruim Exp $
 ** 
 */
 
@@ -121,7 +121,7 @@ default_sys_error_handler_nonmain(thread_cancel,Thread,Backtrace,Msg):- !,
 	(xsb_thread_property(Thread,joinable) -> 
 	       get_backtrace(Backtrace,ReadBT),
 	       asserta('_$thread_exit_ball'(Thread,
-	                                    cancellation(error(thread_cancel,Msg,ReadBT))))
+	                                    cancelled(error(thread_cancel,Msg,ReadBT))))
 	     ; true),
 	internal_thread_exit(THREAD_CANCELLED).
 % Error: non-cancellation.
