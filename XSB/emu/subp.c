@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.102 2007/02/23 16:35:12 dwarren Exp $
+** $Id: subp.c,v 1.103 2007/02/23 20:17:05 tswift Exp $
 ** 
 */
 
@@ -409,6 +409,9 @@ void keyint_proc(int sig)
 {
 #ifdef MULTI_THREAD
   th_context *th = find_context(xsb_thread_self());
+
+  if (th->cond_var_ptr != NULL)
+	pthread_cond_broadcast( th->cond_var_ptr ) ;
 #endif
 #ifndef LINUX
   init_interrupt();  /* reset interrupt, if using signal */
