@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.64 2007-07-25 15:43:46 ruim Exp $
+** $Id: error_xsb.c,v 1.65 2007-07-25 15:52:15 ruim Exp $
 ** 
 */
 
@@ -51,6 +51,7 @@
 #include "flags_xsb.h"
 #include "term_psc_xsb_i.h"
 #include "thread_xsb.h"
+#include "emuloop.h"
 
 extern void remove_incomplete_tries(CTXTdeclc CPtr);
 extern PrRef get_prref(CTXTdeclc Psc psc);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.35 2007-07-25 15:43:46 ruim Exp $
+** $Id: error_xsb.h,v 1.36 2007-07-25 15:52:15 ruim Exp $
 ** 
 */
 
@@ -94,8 +94,6 @@ extern void arithmetic_abort1(CTXTdeclc char *, Cell);
 extern void arithmetic_abort(CTXTdeclc Cell, char *, Cell);
 extern void arithmetic_comp_abort(CTXTdeclc Cell, char *, int);
 extern void err_handle(CTXTdeclc int, int, char *, int, char *, Cell);
-
-extern int wam_initialized ;
 
 extern FILE *stdmsg;	    	/* Stream for XSB messages     	         */
 extern FILE *stdwarn;	    	/* Stream for XSB warnings     	         */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.127 2007-07-25 15:43:46 ruim Exp $
+** $Id: init_xsb.c,v 1.128 2007-07-25 15:52:15 ruim Exp $
 ** 
 */
 
@@ -119,8 +119,6 @@ Exec_Mode xsb_mode;     /* How XSB is run: interp, disassem, user spec, etc. */
 int max_threads_glc;
 
 int xsb_profiling_enabled = 0;
-
-int wam_initialized = FALSE ;
 
 /* from pathname_xsb.c */
 DllExport extern char * call_conv strip_names_from_path(char*, int);
@@ -1284,8 +1282,6 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   slide_buffering = 0;
   slide_buf_size = 0;
 #endif
-
-  wam_initialized = TRUE ;
 
 } /* init_machine() */
 

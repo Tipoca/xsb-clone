@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.161 2007-07-22 18:40:48 ruim Exp $
+** $Id: emuloop.c,v 1.162 2007-07-25 15:52:15 ruim Exp $
 ** 
 */
 
@@ -118,6 +118,8 @@ void log_rec(CTXTdeclc Psc psc, char *ctype) {
     return;
 }
 #endif
+
+int wam_initialized = FALSE ;
 
 /*----------------------------------------------------------------------*/
 
@@ -438,6 +440,8 @@ int emuloop(CTXTdeclc byte *startaddr)
 #define GC_INFERENCES 66 /* make sure the garbage collection test is hard */
   static int infcounter = 0;
 #endif
+
+  wam_initialized = TRUE ;
 
   xsb_segfault_message = xsb_default_segfault_msg;
   rreg = reg; /* for SUN (TLS ???) */
