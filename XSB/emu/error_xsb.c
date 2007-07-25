@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.65 2007-07-25 15:52:15 ruim Exp $
+** $Id: error_xsb.c,v 1.66 2007-07-25 17:07:37 evansbj Exp $
 ** 
 */
 
@@ -605,7 +605,7 @@ void call_conv xsb_basic_abort(char *message)
   char mtmessage[MAXBUFSIZE];
   int tid = xsb_thread_self();
   th_context *th;
-  th = find_context(xsb_thread_self());
+  th = find_context(tid);
 #endif
 
   if( !wam_initialized )
@@ -616,8 +616,7 @@ void call_conv xsb_basic_abort(char *message)
 
   tptr =   (Cell *) mem_alloc(ball_len,LEAK_SPACE);
   ball_to_throw = makecs(tptr);
-  bld_functor(tptr, pair_psc(insert("error",3,
-				    (Psc)flags[CURRENT_MODULE],&isnew)));
+  bld_functor(tptr, pair_psc(insert("error",3,(Psc)flags[CURRENT_MODULE],&isnew)));
 
   tptr++;
   bld_string(tptr,string_find("misc_error",1));
