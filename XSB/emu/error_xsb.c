@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.63 2007-06-10 18:43:58 tswift Exp $
+** $Id: error_xsb.c,v 1.64 2007-07-25 15:43:46 ruim Exp $
 ** 
 */
 
@@ -606,6 +606,12 @@ void call_conv xsb_basic_abort(char *message)
   th_context *th;
   th = find_context(xsb_thread_self());
 #endif
+
+  if( !wam_initialized )
+  {
+	fprintf(stderr, "Error initializing: %s\n", message ) ;
+	exit(1) ;
+  }
 
   tptr =   (Cell *) mem_alloc(ball_len,LEAK_SPACE);
   ball_to_throw = makecs(tptr);
