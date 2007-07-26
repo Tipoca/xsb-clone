@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.c,v 1.18 2007-01-12 23:33:29 tswift Exp $
+** $Id: orient_xsb.c,v 1.19 2007-07-26 02:15:35 evansbj Exp $
 ** 
 */
 
@@ -180,8 +180,9 @@ char *xsb_executable_full_path(char *myname)
     sprintf(executable_path_gl, "%s%c%s", current_dir_gl, SLASH, myname_augmented);
   }
 
-  /* found executable by prepending cwd */
-  if (!stat(executable_path_gl, &fileinfo)) return executable_path_gl;
+  /* found executable by prepending cwd. Make sure we haven't found a directory named xsb */
+  if ((!stat(executable_path_gl, &fileinfo)) && (S_ISREG(fileinfo.st_mode))) return executable_path_gl;
+                                          //  or (!S_ISDIR(fileinfo.st_mode))
 
   /* Otherwise, search PATH environment var.
      This code is a modified "which" shell builtin */
