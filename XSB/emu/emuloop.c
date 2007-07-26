@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.162 2007-07-25 15:52:15 ruim Exp $
+** $Id: emuloop.c,v 1.163 2007-07-26 15:14:29 tswift Exp $
 ** 
 */
 
@@ -2452,16 +2452,6 @@ DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
 	init_inst_table();		/* init table of instruction types */
 	init_symbols(CTXT);		/* preset a few symbols in PSC table */
 	init_interrupt();		/* catch ^C interrupt signal */
-
-#ifdef MULTI_THREAD
-	if (pthread_cond_init( &(th->_xsb_started_cond), NULL )) 
-	  printf("xsb_started_cond not initialized \n");
-	if (pthread_cond_init( &(th->_xsb_done_cond), NULL ))
-	  printf("xsb_done_cond not initialized \n");
-	pthread_mutex_init( &(th->_xsb_ready_mut), NULL ) ;
-	pthread_mutex_init( &(th->_xsb_synch_mut), NULL ) ;
-	xsb_ready = 0;
-#endif
 
 	/* "b" does nothing in UNIX, denotes binary file in Windows -- 
 	   needed in Windows for reading byte-code files */
