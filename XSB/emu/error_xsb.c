@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.67 2007-07-26 15:14:29 tswift Exp $
+** $Id: error_xsb.c,v 1.68 2007-07-30 12:39:48 tswift Exp $
 ** 
 */
 
@@ -97,7 +97,7 @@ DllExport void call_conv xsb_initialization_exit(char *description, ...)
   }
 }
 
-void xsb_unrecoverable_error(CTXTdeclc char *);
+void call_conv xsb_unrecoverable_error(CTXTdeclc char *);
 
 DllExport void call_conv xsb_exit(CTXTdeclc  char *description, ...)
 {
