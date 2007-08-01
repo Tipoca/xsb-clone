@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.27 2005-12-17 02:46:32 dwarren Exp $
+** $Id: cell_xsb.h,v 1.28 2007-08-01 22:19:07 tswift Exp $
 ** 
 */
 
@@ -115,7 +115,17 @@ extern inline int sign(Float);
 #define GENERAL_TAGGING
 #endif
 
-#if defined(GENERAL_TAGGING)
+#if BITS64
+
+/* 64 bit, take bits 0, 61-63 */
+/* Encoded integers/addresses */
+#define enc_int(val) ((Integer)(val) << 3)
+#define dec_int(dcell) ((Integer)(dcell) >> 3)
+/* Fewer bit representation of pointers */
+#define enc_addr(addr) ((Cell)(addr))
+#define dec_addr(dcell) (((Cell)(dcell)) & 0xfffffffffffffff8)
+
+#elif defined(GENERAL_TAGGING)
 
 /* General Tagging for systems that return addresses in higher half
    (2-4GB) of virtual memory.  This builds a table for the high-order
@@ -129,15 +139,6 @@ extern unsigned long enc[], dec[];
 
 #define enc_addr(addr) ((Cell)((enc[((unsigned long)(addr))>>28] | ((unsigned long)(addr) & 0x0ffffffc)) << 1))
 #define dec_addr(dcell) ((Cell)(dec[(unsigned long)(dcell)>>29] | (((unsigned long)(dcell) >> 1) & 0x0ffffffc)))
-
-#elif BITS64
-/* 64 bit, take bits 0, 61-63 */
-/* Encoded integers/addresses */
-#define enc_int(val) ((Integer)(val) << 3)
-#define dec_int(dcell) ((Integer)(dcell) >> 3)
-/* Fewer bit representation of pointers */
-#define enc_addr(addr) ((Cell)(addr))
-#define dec_addr(dcell) (((Cell)(dcell)) & 0xfffffffffffffff8)
 
 #else
 /* take bits 0-1, 31 */
