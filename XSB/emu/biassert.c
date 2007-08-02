@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.151 2007-06-22 15:06:25 dwarren Exp $
+** $Id: biassert.c,v 1.152 2007-08-02 19:07:41 tswift Exp $
 ** 
 */
 
@@ -108,10 +108,9 @@ struct DispBlkHdr_t {
 
 /* For a private dynamic predicate, return addr of its prref or its
    table wrapper */
-
 CPtr dynpredep_to_prortb(CTXTdeclc void *pred_ep) {
-    if (xsb_thread_entry > (((struct DispBlk_t **)pred_ep)[1])->MaxThread) 
-      xsb_abort("Dynamic Dispatch block too small");
+  //    if (xsb_thread_entry > (((struct DispBlk_t **)pred_ep)[1])->MaxThread) 
+  //      xsb_abort("Dynamic Dispatch block too small");
     return (CPtr) ((&((struct DispBlk_t **)pred_ep)[1]->Thread0)[xsb_thread_entry]);
 }
 #endif
@@ -126,8 +125,8 @@ CPtr dynpredep_to_prortb(CTXTdeclc void *pred_ep) {
 PrRef dynpredep_to_prref(CTXTdeclc void *pred_ep) {
 #ifdef MULTI_THREAD
   if (cell_opcode((CPtr)(pred_ep)) == switchonthread) {
-    if (xsb_thread_entry > (((struct DispBlk_t **)pred_ep)[1])->MaxThread) 
-      xsb_abort("Dynamic Dispatch block too small");
+    //    if (xsb_thread_entry > (((struct DispBlk_t **)pred_ep)[1])->MaxThread) 
+    //      xsb_abort("Dynamic Dispatch block too small");
     pred_ep = (pb) (&((struct DispBlk_t **)pred_ep)[1]->Thread0)[xsb_thread_entry];
   }
   if (!pred_ep) return NULL;
@@ -3335,14 +3334,8 @@ PrRef get_prref(CTXTdeclc Psc psc) {
       pb new_ep;
       struct DispBlk_t *dispblk = ((struct DispBlk_t **)get_ep(psc))[1];
       allocate_prref_tab(CTXTc psc,&prref,&new_ep);
-      if (dispblk->MaxThread >= xsb_thread_entry) {
-	(&(dispblk->Thread0))[xsb_thread_entry] = (CPtr) new_ep;
-      } else {
-	//      SYS_MUTEX_UNLOCK( MUTEX_DYNAMIC );
-	xsb_exit(CTXTc "must expand dispatch-block");
-      }
+      (&(dispblk->Thread0))[xsb_thread_entry] = (CPtr) new_ep;
     }
-    //  SYS_MUTEX_UNLOCK( MUTEX_DYNAMIC );
 #endif
   }
   return prref;

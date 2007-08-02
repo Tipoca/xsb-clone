@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.65 2007-07-23 16:18:43 ruim Exp $
+** $Id: macro_xsb.h,v 1.66 2007-08-02 19:07:41 tswift Exp $
 ** 
 */
 
@@ -435,14 +435,14 @@ struct TDispBlkHdr_t {
 };
 
 /* If private predicate in MT engine, find the thread's private TIF,
-   otherwise leave unchanged */
+   otherwise leave unchanged.
+
+   TLS: took out check of MaxThread -- MaxThread is always set to max_threads_glc  */
 #define  handle_dispatch_block(tip)					\
   if ( isPrivateTIF(tip) ) {						\
     TDBptr tdispblk;							\
     tdispblk = (TDBptr) tip;						\
-    if (xsb_thread_entry > TDB_MaxThread(tdispblk))				\
-      xsb_abort("Table Dispatch block too small");			\
-    tip = TDB_PrivateTIF(tdispblk,xsb_thread_entry);				\
+    tip = TDB_PrivateTIF(tdispblk,xsb_thread_entry);			\
     if (!tip) {								\
       /* this may not be possible, as it may always be initted in get_tip? */\
       tip = New_TIF(CTXTc tdispblk->psc_ptr);			\
