@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.P,v 1.22 2007/07/22 10:28:41 ruim Exp $
+** $Id: thread.P,v 1.23 2007/07/24 19:08:04 ruim Exp $
 ** 
 */
 
@@ -244,6 +244,10 @@ set_xsb_ready:-
 	thread_request( SET_XSB_READY, _,_,_, _, _, _, _,_).
 
 usleep(X):- thread_request( XSB_USLEEP, X,_,_, _, _, _, _,_).
+
+thread_sleep(Seconds) :-
+	Miliseconds is Seconds * 1000000,
+	thread_request( XSB_USLEEP, Miliseconds,_,_, _, _, _, _,_).
 
 /* ==================================================================  */
 /* Routines used internally. */

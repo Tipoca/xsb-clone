@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.H,v 1.18 2007/06/27 00:47:41 tswift Exp $
+** $Id: thread.H,v 1.19 2007/07/07 21:04:18 tswift Exp $
 ** 
 */
 
@@ -31,7 +31,7 @@
           thread_join/1,
           thread_property/2,
    thread_self/1,set_xsb_ready/0,
-   thread_yield/0, usleep/1.
+   thread_yield/0, usleep/1, thread_sleep/1.
 
 :- export abolish_private_tables/0,abolish_shared_tables/0.
 :- export abolish_all_private_tables/0,abolish_all_shared_tables/0.
