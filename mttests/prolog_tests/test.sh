@@ -27,6 +27,7 @@ options=$3
 ../seqgentest.sh "$XEMU $options" iso_test "test." 
 ../seqgentest.sh "$XEMU $options" alias_test "test." 
 ../seqgentest.sh "$XEMU $options" mutex_test "test." 
+../seqgentest.sh "$XEMU $options" peektest "test." 
 ../seqgentest.sh "$XEMU $options" mqtest "test." 
 ../seqgentest.sh "$XEMU $options" cvartest_thread_make "test." 
 ../seqgentest.sh "$XEMU $options" cregtest_thread_make "test." 
