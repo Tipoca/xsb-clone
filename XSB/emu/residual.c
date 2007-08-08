@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.22 2005-10-03 13:26:43 tswift Exp $
+** $Id: residual.c,v 1.23 2007-08-08 17:50:51 dwarren Exp $
 ** 
 */
 
@@ -33,6 +33,7 @@
 #include "debugs/debug_residual.h"
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "memory_xsb.h"
 #include "psc_xsb.h"

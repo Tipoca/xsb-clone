@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.128 2007-07-25 15:52:15 ruim Exp $
+** $Id: init_xsb.c,v 1.129 2007-08-08 17:50:50 dwarren Exp $
 ** 
 */
 
@@ -45,6 +45,7 @@
 #endif
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
 #include "inst_xsb.h"

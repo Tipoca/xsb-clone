@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.15 2005-12-22 23:33:56 tswift Exp $
+** $Id: hash_xsb.c,v 1.16 2007-08-08 17:50:50 dwarren Exp $
 ** 
 */
 
@@ -31,6 +31,7 @@
 #include <stdlib.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "hash_xsb.h"
 #include "psc_xsb.h"

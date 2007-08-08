@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.103 2007/02/23 20:17:05 tswift Exp $
+** $Id: subp.c,v 1.104 2007/07/24 20:19:33 ruim Exp $
 ** 
 */
 
@@ -51,6 +51,7 @@
 #endif
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "debug_xsb.h"
 #include "error_xsb.h"

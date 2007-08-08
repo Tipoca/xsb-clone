@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.67 2007-02-28 15:02:08 dwarren Exp $
+** $Id: loader_xsb.c,v 1.68 2007-08-08 17:50:51 dwarren Exp $
 ** 
 */
 
@@ -214,8 +214,12 @@ inline static void inserth(CPtr label, struct hrec *bucket)
 
 Integer float_val_to_hash(Float Flt) {
   //  Float Fltval = Flt;
+#ifndef FAST_FLOATS
   return ((ID_BOXED_FLOAT << BOX_ID_OFFSET ) | (FLOAT_HIGH_16_BITS(Flt))) ^
     FLOAT_MIDDLE_24_BITS(Flt) ^ FLOAT_LOW_24_BITS(Flt);
+#else
+  return 0;  /* never called */
+#endif
 }
 
 /* this generates the index table, an array of pointers to hrecs (sort
@@ -249,8 +253,11 @@ static int get_index_tab(CTXTdeclc FILE *fd, int clause_no)
     case 'f': 
       get_obj_word_bbsig_notag(&ival);
       //      printf("sfloat: %f, %x\n",(*(float *)(&ival)), (*(Integer *)(&ival)) );
+#ifndef FAST_FLOATS
       val = float_val_to_hash(*(float *)(&ival));
-      hashval = ihash((Cell) val, size); 
+#else
+      val = ival;
+#endif
       hashval = ihash((Cell) val, size); 
       count += 9;
       break;

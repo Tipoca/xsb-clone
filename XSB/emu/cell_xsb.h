@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.28 2007-08-01 22:19:07 tswift Exp $
+** $Id: cell_xsb.h,v 1.29 2007-08-08 17:50:49 dwarren Exp $
 ** 
 */
 
@@ -338,9 +338,7 @@ extern inline Float make_float_from_ints(UInteger, UInteger);
 //if FAST_FLOATS is defined, then bld_boxedfloat becomes an alias for bld_float. If it is
 //defined, bld_boxedfloat is a function declaired here and implemented in emuloop.c.
 #ifndef FAST_FLOATS
-
-#include "context.h"
-//Note: anything that includes cell_xsb.h in the multithreaded environment implicitly includes
+//Note: anything that includes cell_xsb.h in the multithreaded must includes
 //context.h as well, since bld_boxedfloat references hreg.
 extern inline void bld_boxedfloat(CTXTdeclc CPtr, Float);
 #endif /*FAST_FLOATS*/

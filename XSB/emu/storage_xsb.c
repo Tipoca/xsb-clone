@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.c,v 1.11 2007-06-01 22:47:10 tswift Exp $
+** $Id: storage_xsb.c,v 1.12 2007-08-08 17:50:51 dwarren Exp $
 ** 
 */
 
@@ -29,6 +29,7 @@
 #include <stdlib.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "psc_xsb.h"
 #include "cinterf.h"
@@ -40,7 +41,6 @@
 
 #include "debug_xsb.h"
 #include "flags_xsb.h"
-#include "context.h"
 
 /* this func would insert handle into hashtable, if it isn't there */
 #define find_or_insert_storage_handle(name)  \

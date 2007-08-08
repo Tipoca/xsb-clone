@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: scc_xsb.c,v 1.7 2005-01-14 18:31:28 ruim Exp $
+** $Id: scc_xsb.c,v 1.8 2007-08-08 17:50:51 dwarren Exp $
 ** 
 */
 
@@ -29,12 +29,12 @@
 #include <stdio.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "register.h"
 #include "psc_xsb.h"
 #include "tries.h"
 #include "macro_xsb.h"
-#include "context.h"
 #include "scc_xsb.h"
 
 #if (!defined(LOCAL_EVAL))

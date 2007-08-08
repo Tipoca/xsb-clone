@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.c,v 1.19 2007-07-26 02:15:35 evansbj Exp $
+** $Id: orient_xsb.c,v 1.20 2007-08-08 17:50:51 dwarren Exp $
 ** 
 */
 
@@ -45,6 +45,7 @@
 #include "export.h"
 #include "basicdefs.h"
 #include "basictypes.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
 #include "extensions_xsb.h"

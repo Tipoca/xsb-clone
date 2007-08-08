@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.151 2007/07/10 20:25:10 dwarren Exp $
+** $Id: tr_utils.c,v 1.152 2007/07/11 17:55:31 dwarren Exp $
 ** 
 */
 
@@ -35,6 +35,7 @@
 
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "cinterf.h"
 #include "binding.h"

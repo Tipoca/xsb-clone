@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.55 2007-06-06 19:15:14 tswift Exp $
+** $Id: tables.c,v 1.56 2007-08-08 17:50:52 dwarren Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@
 #include <string.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "heap_xsb.h"
 #include "memory_xsb.h"

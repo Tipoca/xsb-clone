@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.84 2007-07-26 15:14:28 tswift Exp $
+** $Id: cinterf.c,v 1.85 2007-08-08 17:50:49 dwarren Exp $
 ** 
 */
 
@@ -35,6 +35,7 @@
 #include <errno.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "memory_xsb.h"
 #include "register.h"
@@ -51,7 +52,6 @@
 #include "error_xsb.h"
 #include "orient_xsb.h"
 #include "loader_xsb.h"
-#include "context.h"
 #include "thread_xsb.h"
 
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.55 2006/12/14 19:38:07 tswift Exp $
+** $Id: slgdelay.c,v 1.56 2007/05/01 14:52:29 tswift Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@
 #include "debugs/debug_delay.h"
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "psc_xsb.h"
 #include "register.h"

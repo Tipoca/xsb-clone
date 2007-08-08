@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.35 2007-04-16 16:14:16 tswift Exp $
+** $Id: psc_xsb.c,v 1.36 2007-08-08 17:50:51 dwarren Exp $
 ** 
 */
 
@@ -31,6 +31,7 @@
 #include <string.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
 #include "psc_xsb.h"

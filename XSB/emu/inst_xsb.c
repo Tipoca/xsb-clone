@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.c,v 1.16 2005-10-03 13:26:43 tswift Exp $
+** $Id: inst_xsb.c,v 1.17 2007-08-08 17:50:51 dwarren Exp $
 ** 
 */
 
@@ -28,6 +28,7 @@
 #include "xsb_debug.h"
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "inst_xsb.h"
 #include "subinst.h"

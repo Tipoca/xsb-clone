@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_insert.c,v 1.19 2005-12-22 23:34:02 tswift Exp $
+** $Id: tst_insert.c,v 1.20 2007-08-08 17:50:53 dwarren Exp $
 ** 
 */
 
@@ -32,6 +32,7 @@
 #include "debugs/debug_tries.h"
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "inst_xsb.h"
 #include "register.h"

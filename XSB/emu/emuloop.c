@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.163 2007-07-26 15:14:29 tswift Exp $
+** $Id: emuloop.c,v 1.164 2007-08-08 17:50:50 dwarren Exp $
 ** 
 */
 
@@ -40,6 +40,7 @@
 #endif
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "register.h"
 #include "error_xsb.h"
@@ -49,7 +50,6 @@
 #include "memory_xsb.h"
 #include "heap_xsb.h"
 #include "sig_xsb.h"
-#include "context.h"
 #include "varstring_xsb.h"
 #include "emudef.h"
 #include "loader_xsb.h"

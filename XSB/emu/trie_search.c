@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_search.c,v 1.9 2005-12-22 23:34:01 tswift Exp $
+** $Id: trie_search.c,v 1.10 2007-08-08 17:50:52 dwarren Exp $
 ** 
 */
 
@@ -32,6 +32,7 @@
 #include <stdlib.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
 #include "deref.h"

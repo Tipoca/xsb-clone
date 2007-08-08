@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.41 2007-03-12 16:06:20 dwarren Exp $
+** $Id: findall.c,v 1.42 2007-08-08 17:50:50 dwarren Exp $
 ** 
 */
 
@@ -31,6 +31,7 @@
 #include <stdlib.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"  	     /* cell_xsb.h must be included before deref.h */
 #include "deref.h"
 #include "register.h"
@@ -43,7 +44,6 @@
 #include "flags_xsb.h"
 #include "loader_xsb.h"
 #include "cinterf.h"
-#include "context.h"
 #include "findall.h"
 #include "thread_xsb.h"
 #include "debug_xsb.h"

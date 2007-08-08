@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_unify.c,v 1.18 2006-01-02 16:33:37 dwarren Exp $
+** $Id: tst_unify.c,v 1.19 2007-08-08 17:50:53 dwarren Exp $
 ** 
 */
 
@@ -29,6 +29,7 @@
 #include <stdio.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "register.h"
 #include "memory_xsb.h"

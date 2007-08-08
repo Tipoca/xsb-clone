@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.16 2005-12-12 18:44:54 dwarren Exp $
+** $Id: trie_lookup.c,v 1.17 2007-08-08 17:50:52 dwarren Exp $
 ** 
 */
 
@@ -32,6 +32,7 @@
 #include <stdlib.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
 #include "psc_xsb.h"
@@ -42,7 +43,6 @@
 #include "subp.h"
 #include "debug_xsb.h"
 #include "flags_xsb.h"
-#include "context.h"
 #include "memory_xsb.h"
 #if (defined(DEBUG_VERBOSE) || defined(DEBUG_ASSERTIONS))
 #include "tst_utils.h"

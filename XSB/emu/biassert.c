@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.152 2007-08-02 19:07:41 tswift Exp $
+** $Id: biassert.c,v 1.153 2007-08-08 17:50:49 dwarren Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 
 #include "setjmp_xsb.h"
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "psc_xsb.h"
 #include "error_xsb.h"
@@ -53,7 +54,6 @@
 #include "macro_xsb.h"
 #include "tr_utils.h"
 #include "trassert.h"
-#include "context.h"
 #include "thread_xsb.h"
 #include "debug_xsb.h"
 #include "biassert_defs.h"

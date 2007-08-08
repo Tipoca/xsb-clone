@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.31 2006/11/30 21:50:09 ruim Exp $
+** $Id: trace_xsb.c,v 1.32 2006/12/07 00:26:46 tswift Exp $
 ** 
 */
 
@@ -29,6 +29,7 @@
 #include <stdio.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "inst_xsb.h"
 #include "memory_xsb.h"

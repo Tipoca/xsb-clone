@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.102 2007-07-18 01:20:26 evansbj Exp $
+** $Id: tries.c,v 1.103 2007-08-08 17:50:52 dwarren Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 #include "debugs/debug_tries.h"
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "inst_xsb.h"
 #include "psc_xsb.h"

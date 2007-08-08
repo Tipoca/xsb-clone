@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.42 2007-07-10 20:29:34 dwarren Exp $
+** $Id: debug_xsb.c,v 1.43 2007-08-08 17:50:49 dwarren Exp $
 ** 
 */
 
@@ -31,13 +31,13 @@
 #include <string.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
 #include "binding.h"
 #include "psc_xsb.h"
 #include "memory_xsb.h"
 #include "flags_xsb.h"
-#include "context.h"
 #include "register.h"
 #include "deref.h"
 #include "trie_internals.h"

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random_xsb.c,v 1.11 2006-01-05 22:49:52 dwarren Exp $
+** $Id: random_xsb.c,v 1.12 2007-08-08 17:50:51 dwarren Exp $
 ** 
 */
 
@@ -41,13 +41,13 @@
 #include <stdlib.h>
 
 #include "xsb_config.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "cinterf.h"
 #include "deref.h"
 #include "register.h"
 #include "ptoc_tag_xsb_i.h"
 #include "error_xsb.h"
-#include "context.h"
 #include "memory_xsb.h"
 
 #ifndef MULTI_THREAD

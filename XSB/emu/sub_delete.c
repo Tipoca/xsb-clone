@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_delete.c,v 1.17 2007-02-22 21:17:04 tswift Exp $
+** $Id: sub_delete.c,v 1.18 2007-08-08 17:50:51 dwarren Exp $
 ** 
 */
 
@@ -30,6 +30,7 @@
 #include <stdlib.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "psc_xsb.h"
 #include "trie_internals.h"

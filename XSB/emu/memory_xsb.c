@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.47 2007-07-03 14:56:53 dwarren Exp $
+** $Id: memory_xsb.c,v 1.48 2007-08-08 17:50:51 dwarren Exp $
 ** 
 */
 
@@ -47,6 +47,7 @@
 
 #include "auxlry.h"
 #include "binding.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "memory_xsb.h"
 #include "register.h"

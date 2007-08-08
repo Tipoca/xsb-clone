@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string_xsb.c,v 1.18 2005/11/13 21:38:38 dwarren Exp $
+** $Id: string_xsb.c,v 1.19 2005/11/16 17:32:05 dwarren Exp $
 ** 
 */
 
@@ -30,6 +30,7 @@
 #include <string.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
 #include "psc_xsb.h"

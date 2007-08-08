@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.28 2007-02-23 21:06:11 dwarren Exp $
+** $Id: token_xsb.c,v 1.29 2007-08-08 17:50:52 dwarren Exp $
 ** 
 */
 
@@ -31,8 +31,8 @@
 #include <math.h>
 
 #include "auxlry.h"
-#include "cell_xsb.h"
 #include "context.h"
+#include "cell_xsb.h"
 #include "token_xsb.h"
 #include "psc_xsb.h"
 #include "subp.h"

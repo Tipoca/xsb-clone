@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.67 2007-04-20 14:40:53 tswift Exp $
+** $Id: io_builtins_xsb.c,v 1.68 2007-08-08 17:50:51 dwarren Exp $
 ** 
 */
 
@@ -37,8 +37,8 @@
 
 #include "setjmp_xsb.h"
 #include "auxlry.h"
-#include "cell_xsb.h"
 #include "context.h"
+#include "cell_xsb.h"
 #include "error_xsb.h"
 #include "cinterf.h"
 #include "memory_xsb.h"

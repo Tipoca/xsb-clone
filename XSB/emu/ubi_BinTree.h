@@ -29,6 +29,9 @@
  * -------------------------------------------------------------------------- **
  *
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2005/01/14 18:31:39  ruim
+ * Integration of multithreaded system
+ *
  * Revision 1.2  2004/01/29 18:44:09  dwarren
  * Modified implementation of profiling to avoid the extra psc-record
  * field for the count.  Now the counts are kept in the code-ptr records
@@ -198,6 +201,7 @@
 
 #include "xsb_config.h"
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "psc_xsb.h"
 

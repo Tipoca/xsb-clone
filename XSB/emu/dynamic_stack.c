@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynamic_stack.c,v 1.7 2005-11-16 17:32:03 dwarren Exp $
+** $Id: dynamic_stack.c,v 1.8 2007-08-08 17:50:50 dwarren Exp $
 ** 
 */
 
@@ -32,6 +32,7 @@
 #include <stdlib.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "tst_aux.h"  /* needs cell_xsb.h */
 #include "error_xsb.h"
