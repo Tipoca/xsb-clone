@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynelf_xsb_i.h,v 1.23 2006-06-11 21:35:10 tswift Exp $
+** $Id: dynelf_xsb_i.h,v 1.24 2007-08-09 01:22:49 evansbj Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 /* wind2unix.h must be included after sys/stat.h */
 #include "wind2unix.h"
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "memory_xsb.h"
 #include "inst_xsb.h"
