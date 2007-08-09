@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynaout_xsb_i.h,v 1.12 2005-11-29 00:02:16 tswift Exp $
+** $Id: dynaout_xsb_i.h,v 1.13 2007-08-09 04:11:05 evansbj Exp $
 ** 
 */
 
@@ -35,6 +35,7 @@
 #include <stdio.h>
 
 #include "auxlry.h"
+#include "context.h"
 #include "cell_xsb.h"
 #include "memory_xsb.h"
 #include "inst_xsb.h"
