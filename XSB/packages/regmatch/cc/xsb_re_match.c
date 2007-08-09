@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_re_match.c,v 1.23 2007-04-05 11:06:56 evansbj Exp $
+** $Id: xsb_re_match.c,v 1.24 2007-08-09 02:44:41 evansbj Exp $
 ** 
 */
 
@@ -29,12 +29,13 @@
 #include <string.h>
 #include <regex.h>
 
+/* context.h is necessary for the type of a thread context. */
+#include "context.h"
+
 #include "auxlry.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
 #include "cinterf.h"
-/* context.h is necessary for the type of a thread context. */
-#include "context.h"
 
 
 #include "heap_xsb.h"

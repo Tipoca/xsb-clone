@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_wildmatch.c,v 1.16 2007-04-05 11:12:40 evansbj Exp $
+** $Id: xsb_wildmatch.c,v 1.17 2007-08-09 02:45:18 evansbj Exp $
 ** 
 */
 
@@ -32,12 +32,13 @@
 #include <fnmatch.h>
 #include <glob.h>
 
+/* context.h is necessary for the type of a thread context. */
+#include "context.h"
+
 #include "auxlry.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
 #include "cinterf.h"
-/* context.h is necessary for the type of a thread context. */
-#include "context.h"
 
 /* Casefolding seems to be defined in some versions of gcc, but not in
    others. So, it is really not that portable.
