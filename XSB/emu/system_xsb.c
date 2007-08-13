@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.49 2007-08-08 17:50:52 dwarren Exp $
+** $Id: system_xsb.c,v 1.50 2007-08-13 19:14:18 dwarren Exp $
 ** 
 */
 
@@ -687,7 +687,7 @@ static int xsb_spawn (char *progname, char *argv[], int callno,
          break;
       }
     }
-    pid = spawnvp(P_NOWAIT, progname, argvQuoted);
+    pid = _spawnvp(P_NOWAIT, progname, argvQuoted);
 #else
     pid = fork();
 #endif
