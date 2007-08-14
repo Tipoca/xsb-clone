@@ -11,5 +11,7 @@ test:- xsb_configuration(compiler_flags,CFLAGS),
 	shell([Compiler, ' -o ', './cfixedstring.exe ',
 	       ObjDir, 'xsb.o ', ' cfixedstring.o ', LDFLAGS]),
 	xsb_configuration(install_dir,InstallDir),
-	shell(['./cfixedstring.exe ', InstallDir,' > temp1']),
-	shell('cat temp1 >> temp; rm temp1').
+	shell(['cfixedstring.exe ', InstallDir,' > temp1']),
+	told,
+	shell('cat temp1 >> temp'),
+	shell('rm temp1').

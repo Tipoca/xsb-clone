@@ -11,5 +11,7 @@ test:- xsb_configuration(compiler_flags,CFLAGS),
 	shell([Compiler, ' -o ', './cvarstring.exe ',
 	       ObjDir, 'xsb.o ', ' cvarstring.o ', LDFLAGS]),
 	xsb_configuration(install_dir,InstallDir),
-	shell(['./cvarstring.exe ', InstallDir,' > temp1']),
-	shell('cat temp1 >> temp; rm temp1').
+	shell(['cvarstring.exe ', InstallDir,' > temp1']),
+	told,
+	shell('cat temp1 >> temp'),
+	shell('rm temp1').
