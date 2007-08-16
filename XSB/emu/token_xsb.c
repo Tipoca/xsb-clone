@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.29 2007-08-08 17:50:52 dwarren Exp $
+** $Id: token_xsb.c,v 1.30 2007-08-16 14:38:28 dwarren Exp $
 ** 
 */
 
@@ -680,13 +680,21 @@ LAB_DECIMAL:                *s++ = '.';
 		token->nextch = c;
                 *s = 0;
 		for (rad_int = 0, s = strbuff; (c = *s++);) {
-		  d = rad_int;
+		  if (rad_int < MY_MAXINT/10 || 
+		      (rad_int == MY_MAXINT/10 && (c-'0') <= MY_MAXINT % 10)) 
+		    rad_int = rad_int*10-'0'+c;
+		  else {
+		    xsb_error("Overflow in integer, returning MAX_INT");
+		    rad_int = MY_MAXINT;
+		    break;
+		  }		    
+		  /*		  d = rad_int;
 		  rad_int = rad_int*10-'0'+c;
 		  if (rad_int < d || rad_int > MY_MAXINT) {
 		    xsb_error("Overflow in integer, returning MAX_INT");
 		    rad_int = MY_MAXINT;
 		    break;
-		  }
+		    }*/
 		}
 		  //		rad_int = atoi(strbuff);
 		token->value = (char *)(&rad_int);
