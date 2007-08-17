@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.55 2007-08-09 21:50:25 dwarren Exp $
+** $Id: foreign.P,v 1.56 2007-08-17 15:23:02 dwarren Exp $
 ** 
 */
 
@@ -189,18 +189,18 @@ compile_c(Modname, Base, Ext, Options, Dir, LdOption, CompComm, TempFile) :-
 #endif
 
 	    ;	str_sub('cygwin', Configuration)
-	    ->  message(shell([CC_Name, ' -c ', Base, Ext, TempFile, ' ', CC_Opts])),
+	    ->  message(shell([CC_Name, ' -c ', Base, Ext, TempFile, ' ', CC_Opts,' ',XSB_CC_Opts])),
 		concat_atom([Base,'.o'], Obj),
 		shell([CC_Name, ' -c ', Base, Ext, /*TempFile,*/ ' -o ',
-		       Obj, ' ', CC_Opts]),
+		       Obj, ' ', CC_Opts,' ',XSB_CC_Opts]),
 		(  TempFile = ''
 		-> TempObj = ''
 		;   substring(TempFile,0,-3,TempRoot),
 		    concat_atom([TempRoot,'.o '],TempObj),
 		    message(shell([CC_Name,' -c ',TempFile,' -o ',
-				   TempObj, ' ', CC_Opts])),
+				   TempObj, ' ', CC_Opts,' ',XSB_CC_Opts])),
 		    shell([CC_Name,' -c ',TempFile,' -o ',
-			   TempObj, ' ', CC_Opts])
+			   TempObj, ' ', CC_Opts,' ',XSB_CC_Opts])
 
 		),
 		xsb_configuration(config_dir,ConfigDir),
