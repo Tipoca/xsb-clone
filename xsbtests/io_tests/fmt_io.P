@@ -12,7 +12,7 @@ tst7 :- X='123456789012345678901234567890123456789012345678901234567890123456',
 	str_cat(Z,Z,W),
 	str_cat(W,W,WW),
 	str_cat(WW,WW,WWW),
-	fmt_write("%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n",
+	fmt_write("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n",
 		  a(WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,
 		    WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW)).
 
@@ -37,7 +37,7 @@ stst7 :- X='23456789012345678901234567890123456789012345678901234567890123456',
 	str_cat(W,W,WW),
 	str_cat(WW,WW,WWW),
 	str_cat(WWW,WWW,WWWW),
-	fmt_write_string(S,"%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n",
+	fmt_write_string(S,"%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n",
 		  a(WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,WWW,
 		    WWW,WWWW,WWWW,WWWW,WWW,WWWW,WWWW,WWWW,WWWW)),
 	writeln(S).

@@ -15,12 +15,22 @@ test2(FD) :-
 	file_flush(FD, _Ret1).
 
 test3(FD) :-
-         file_truncate(FD, 2, _Ret). /* truncate file to 2 bytes */
+	(xsb_configuration(os_type,windows)  % no truncate in windows
+	 ->	file_seek(FD,2,0,_),
+		file_write(FD,'    '),
+		file_flush(FD,_)
+	 ;	file_truncate(FD, 2, _Ret) /* truncate file to 2 bytes */
+	).
 
 test4(FD) :-
+	(xsb_configuration(os_type,windows)  % no truncate in windows
+	 ->	file_seek(FD,2,0,_Ret)
+	 ;	true
+	),
 	file_write(FD, 'c.done '),
 	file_flush(FD, _Ret1),
 	file_close(FD).
+
 
 test :- test1(FD), print_file_contents(log),
 	nl,
