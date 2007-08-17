@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.195 2007-08-17 20:16:06 tswift Exp $
+## $Id: configure.in,v 1.196 2007-08-17 22:24:29 tswift Exp $
 ##
 ##
 
@@ -243,10 +243,6 @@ p                    echo "configure: error: uncecognized option: $1"
     shift
 done
 
-
-if test "${fast_floats}" = "yes" ; then
-   AC_DEFINE(FAST_FLOATS)
-fi
 
 if test "${with_debug}" = "yes" ; then
    enable_debug=yes
@@ -955,17 +951,21 @@ fi
 # whatever default you get
 if test "$bits32" = "yes"; then 
    CFLAGS="-m32 ""$CFLAGS"
-   LINKFLAGS="-m32 ""$LINKFLAGS"
+   MEMFLAG=" -m32 "
 fi
 
 if test "$bits64" = "yes"; then 
    CFLAGS="-m64 ""$CFLAGS"
-   LINKFLAGS="-m64 ""$LINKFLAGS"
+   MEMFLAG=" -m64 "
 fi
 
 #TLS comment this out if you don't want fast floats automatically w. 64 bits.
 if test "$machine64bit" = "yes"; then
  fast_floats=yes	
+fi
+
+if test "${fast_floats}" = "yes" ; then
+   AC_DEFINE(FAST_FLOATS)
 fi
 
 # A series of checks for essential libraries.
@@ -1803,6 +1803,7 @@ AC_SUBST(trutilsCFLAGS)
 AC_SUBST(GPPCFLAGS)
 AC_SUBST(GPPWNTFLAG)
 AC_SUBST(CC)
+AC_SUBST(MEMFLAG)
 AC_SUBST(CXX)
 AC_SUBST(LDFLAGS)
 dnl used for SGIs only

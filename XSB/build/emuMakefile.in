@@ -25,11 +25,11 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.62 2006-09-06 05:15:26 diptikalyan Exp $
+## $Id: emuMakefile.in,v 1.63 2007-08-17 22:24:29 tswift Exp $
 ##
 
 
-CC=@CC@
+CC=@CC@@MEMFLAG@
 CPP=@CPP@
 CFLAGS=@CFLAGS@
 # Compilation flags for files requiring lower optimization level
@@ -173,7 +173,7 @@ xsbmod:: $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
 	@echo ""; \
 	   echo "Making a C-callable XSB module $(arch_config_objlibdir)/xsb.o"; \
 	   echo ""
-	@@LD@ -o xsb.o $(LINKFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
+	@@LD@ @MEMFLAG@ -o xsb.o $(LINKFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
 	@cp xsb.o $(arch_config_objlibdir) 2> /dev/null || echo ""
 
 xsbdynmod::
