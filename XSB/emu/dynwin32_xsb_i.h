@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32_xsb_i.h,v 1.17 2007-08-17 04:13:16 dwarren Exp $
+** $Id: dynwin32_xsb_i.h,v 1.18 2007-08-17 15:25:12 dwarren Exp $
 ** 
 */
 
@@ -135,7 +135,11 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
     strcpy(tempname+1,name);
     tempsize=strlen(tempname);
     tempname[tempsize++] = '@';
+#ifndef MULTI_THREAD
     tempname[tempsize++] = '0';
+#else
+    tempname[tempsize++] = '4';
+#endif
     tempname[tempsize++] = '\0';
     name = tempname;
 #endif
