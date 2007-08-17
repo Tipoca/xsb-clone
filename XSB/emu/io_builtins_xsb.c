@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.68 2007-08-08 17:50:51 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.69 2007-08-17 04:21:11 dwarren Exp $
 ** 
 */
 
@@ -126,6 +126,8 @@ char *p_charlist_to_c_string(CTXTdeclc prolog_term, VarString*, char*, char*);
 					 width, precision, arg); \
 	        break; \
 	} \
+	if (bytes_formatted >= SAFE_OUT_SIZE) \
+	  xsb_memory_error("memory","Buffer overflow in fmt_write_*"); \
         OutString.length += bytes_formatted; \
         XSB_StrNullTerminate(&OutString);
 
@@ -332,12 +334,13 @@ xsbBool fmt_write(CTXTdecl)
 
 #define MAX_SPRINTF_STRING_SIZE MAX_IO_BUFSIZE
 
-/* If no snprintf, we fill only half of OutString, to be on the safe side */
+/* If no snprintf, we fill only half of OutString, to be on the safe side;
+no, need more space if no snprintf... */
 #ifdef HAVE_SNPRINTF
 #define SAFE_OUT_SIZE MAX_SPRINTF_STRING_SIZE
 int sprintf(char *s, const char *format, /* args */ ...);
 #else
-#define SAFE_OUT_SIZE MAX_SPRINTF_STRING_SIZE/2
+#define SAFE_OUT_SIZE MAX_SPRINTF_STRING_SIZE
 #endif
 
 #define OutString (*tsgLBuff1)
