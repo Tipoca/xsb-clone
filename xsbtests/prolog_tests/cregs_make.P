@@ -1,6 +1,7 @@
 %% This compiles the examples below on Unix
 
-test:- xsb_configuration(compiler_flags,CFLAGS),
+test:- \+ windows_os,
+	xsb_configuration(compiler_flags,CFLAGS),
 	xsb_configuration(loader_flags,LDFLAGS),
 	xsb_configuration(config_dir,CONFDIR),
 	xsb_configuration(emudir,Emudir),
@@ -12,6 +13,15 @@ test:- xsb_configuration(compiler_flags,CFLAGS),
 	       ObjDir, 'xsb.o ', ' cregs.o ', LDFLAGS]),
 	xsb_configuration(install_dir,InstallDir),
 	shell(['cregs.exe ', InstallDir,' > temp1']),
+	told,
+	shell('cat temp1 >> temp'),
+	shell('rm temp1').
+test :- windows_os,
+	xsb_configuration(install_dir,InstallDir),
+	xsb_configuration(config_dir,CONFDIR),
+	shell(['cl.exe /nologo /MT /W3 /GX /O2 /I "',CONFDIR,'" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D XSB_DLL /c cregs.c']),
+	shell(['link.exe xsb.lib /nologo /machine:I386 /libpath:"',CONFDIR,'\\bin" /out:"cregs.exe" cregs.obj']),
+	shell(['cregs.exe ',InstallDir,' > temp1']),
 	told,
 	shell('cat temp1 >> temp'),
 	shell('rm temp1').

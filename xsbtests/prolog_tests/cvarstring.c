@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cvarstring.c,v 1.2 2007-01-25 20:37:52 tswift Exp $
+** $Id: cvarstring.c,v 1.3 2007-08-17 15:32:59 dwarren Exp $
 ** 
 */
 
@@ -41,7 +41,6 @@ int main(int argc, char *argv[])
 { 
 
   int rc;
-  XSB_StrDefine(return_string);
 
   /* xsb_init_string relies on the calling program to pass the absolute or relative
      path name of the XSB installation directory. We assume that the current
@@ -50,6 +49,14 @@ int main(int argc, char *argv[])
 
   int myargc = 1;
   char *myargv[1];
+#ifdef WIN_NT
+  VarString return_string, *rs;
+  XSB_StrCreate(&rs);
+  XSB_StrInit(rs);
+  return_string = *rs;
+#else
+  XSB_StrDefine(return_string);
+#endif
 
   myargv[0] = argv[1];
 

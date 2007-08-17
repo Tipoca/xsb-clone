@@ -1,7 +1,10 @@
 %% Compile the C program that calls XSB using the flags in xsb_configuration.
 %% Execute the C program, which calls and compiles XSB
 
-test :- xsb_configuration(compiler_flags,CFLAGS),
+:- import windows_os/0 from xsb_configuration.
+
+test :- \+ windows_os,
+	xsb_configuration(compiler_flags,CFLAGS),
 	xsb_configuration(loader_flags,LDFLAGS),
 	xsb_configuration(config_dir,CONFDIR),
 	xsb_configuration(compiler,Compiler),
@@ -22,3 +25,15 @@ test :- xsb_configuration(compiler_flags,CFLAGS),
 	told,
 	shell('cat temp1 >> temp'),
 	shell('rm temp1').
+test :- windows_os,
+	xsb_configuration(install_dir,InstallDir),
+	xsb_configuration(config_dir,CONFDIR),
+	writeln(userout,['cl.exe /nologo /MT /W3 /GX /O2 /I "',CONFDIR,'" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D XSB_DLL /c c_calls_xsb.c']),
+	shell(['cl.exe /nologo /MT /W3 /GX /O2 /I "',CONFDIR,'" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D XSB_DLL /c c_calls_xsb.c']),
+	writeln(userout,['link.exe xsb.lib /nologo /machine:I386 /libpath:"',CONFDIR,'" /out:"c_calls_xsb.exe" c_calls_xsb.obj']),
+	shell(['link.exe xsb.lib /nologo /machine:I386 /libpath:"',CONFDIR,'\\bin" /out:"c_calls_xsb.exe" c_calls_xsb.obj']),
+	shell(['c_calls_xsb.exe ',InstallDir,' c_calls_xsb > temp1']),
+	told,
+	shell('cat temp1 >> temp'),
+	shell('rm temp1').
+	

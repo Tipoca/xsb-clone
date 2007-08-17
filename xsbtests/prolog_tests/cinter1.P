@@ -1,3 +1,5 @@
+:- (windows_os -> shell('nmake /f MakefileCinter1') ; true).
+
 :- xsb_configuration(compiler, CC), consult(xeddis, [cc(CC)]).
 
 :- import min_ed_dis/3 from xeddis.

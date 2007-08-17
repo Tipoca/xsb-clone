@@ -1,4 +1,5 @@
 /* test of high-level C interface */
+:- (windows_os -> shell('nmake /f MakefileCinter3') ; true).
 
 :- [second_foreign].
 :- import paddints/3,paddfloats/3,pswapints/4,psort/2,plcsort/2

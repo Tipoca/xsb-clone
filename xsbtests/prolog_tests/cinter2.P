@@ -1,3 +1,5 @@
+:- (windows_os -> shell('nmake /f MakefileCinter2') ; true).
+
 :- xsb_configuration(compiler, CC), consult(zero, [CC]).
 
 :- import member/2 from basics.
