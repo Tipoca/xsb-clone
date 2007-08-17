@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32_xsb_i.h,v 1.16 2007-08-08 17:50:50 dwarren Exp $
+** $Id: dynwin32_xsb_i.h,v 1.17 2007-08-17 04:13:16 dwarren Exp $
 ** 
 */
 
@@ -141,7 +141,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
 #endif
     if (get_type(search_ptr->psc_ptr) == T_FORN) {
       if ((funcep = (int (*)) GetProcAddress(handle, name)) == NULL) {
-	xsb_warn("Cannot find foreign procedure %s", name);
+	xsb_warn("Cannot find foreign procedure %s (error #%d)", name,GetLastError());
 	set_forn(search_ptr->psc_ptr, (byte *)(dummy));
       } else { 
 	set_forn(search_ptr->psc_ptr, (byte *)(funcep));
