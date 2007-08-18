@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.85 2007-08-08 17:50:49 dwarren Exp $
+** $Id: cinterf.c,v 1.86 2007-08-18 19:55:20 tswift Exp $
 ** 
 */
 
@@ -1337,6 +1337,11 @@ th_context * xsb_get_main_thread() {
 }
 #endif
 
+#ifdef MULTI_THREAD
+int xsb_get_thread_entry(int tid) {
+  return THREAD_ENTRY(tid);
+}
+#endif
 
 DllExport int call_conv xsb_init(int argc, char *argv[])
 {
