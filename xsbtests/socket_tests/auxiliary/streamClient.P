@@ -4,20 +4,14 @@
 #include "char_defs.h"
 
 :- ['auxiliary/auxdefs'].
+%%:- ['auxiliary/auxdefs'].
 :- import tryN/5 from auxdefs.
 
 :- import 
      socket/2, socket_connect/4, socket_set_option/3,
      socket_close/2  from socket.
-:- import file_close/1, fd2ioport/2, file_flush/2 from file_io.
+:- import fd2iostream/3, file_flush/2 from file_io.
 
-:- import 
-        file_write/2,
-        file_write_canonical/2 
-        from xsb_writ.
-
-:- import
-        file_read_canonical/3 from machine.
 
 %% machine where server is running
 machine(localhost).
@@ -37,10 +31,13 @@ client :-
 	socket_set_option(Sockfd0,linger,SOCK_NOLINGER),
 	machine(IPAddrOrHostname),
 	xsb_port(XSB_port),
-	set_timer(5),
+	%%set_timer(10),
 	tryN(4,
 	     socket_connect(Sockfd0 ,XSB_port, IPAddrOrHostname, Ecode2),
-	     (fd2ioport(Sockfd0,Sockptr0), writeln('connected to server...')),
+	     (
+	       fd2iostream(Sockfd0,'w',Sockptr0), 
+	       writeln('connected to server...')
+	     ),
 	     (writeln('Cannot connect to server'), socket_close(Sockfd0,_)),
 	     Ecode2
 	    ),
@@ -53,10 +50,14 @@ client :-
 	socket_set_option(Sockfd1,linger,SOCK_NOLINGER),
 	tryN(4,
 	     socket_connect(Sockfd1, XSB_port, IPAddrOrHostname, Ecode3),
-	     (writeln(sock_connect2(sockfd1,XSB_port,IPAddrOrHostname,Ecode3)),
-		 fd2ioport(Sockfd1,Sockptr1)),
-	     (writeln('Cannot connect to server'),
-		 socket_close(Sockfd0,_), socket_close(Sockfd1,_)),
+	     (
+	       writeln(sock_connect2(sockfd1,XSB_port,IPAddrOrHostname,Ecode3)),
+	       fd2iostream(Sockfd1,'r',Sockptr1)
+	     ),
+	     (
+	       writeln('Cannot connect to server'),
+	       socket_close(Sockfd0,_), socket_close(Sockfd1,_)
+	     ),
 	     Ecode3
 	    ),
 	client_loop(Sockptr0, Sockptr1, Sockfd0, Sockfd1).
@@ -66,22 +67,21 @@ client :- writeln('Client error: exiting...').
 
 client_loop(Sockptr0, Sockptr1, Sockfd0, Sockfd1) :-  
   nl, writeln('Please enter goal: g(X). or h(X).  Type e. to finish. Goal: '), 
-  read_canonical(Goal),
+  read(0,Goal),
   ((Goal == 'e' ; Goal == end_of_file) ->
       !,
       socket_close(Sockfd0, _ErrClose), socket_close(Sockfd1, _ErrClose1),
-      file_close(Sockptr1), file_close(Sockptr0),
+      close(Sockptr1), close(Sockptr0),
       nl, writeln('Exiting.'), true
   ;   
-      file_write_canonical(Sockptr0, Goal), 
-      file_write(Sockptr0, '. '),
+      write_canonical(Sockptr0, Goal), 
+      write(Sockptr0, '. '),
       file_flush(Sockptr0,_),
       nl, writeln('Answers: '),
       repeat,
-      file_read_canonical(Sockptr1, Answer, Psc),
-      (Answer==end_of_file -> !, true
+      read(Sockptr1, Answer),
+      (Answer==end_of_file ->  true
       ;
-	  Psc = Psc,
 	  (   Answer == 'end' 
 	  ->  client_loop(Sockptr0, Sockptr1, Sockfd0, Sockfd1)
 	  ;   

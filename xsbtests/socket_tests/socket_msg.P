@@ -29,9 +29,9 @@ test :- xsb_configuration(config_bindir, Bindir), slash(S),
 	file_nl(ToClient), file_flush(ToClient,_),
 	file_write(ToClient, 'g(X).'),
 	file_nl(ToClient), file_flush(ToClient,_),
-	file_write(ToClient, 'end_of_file.'), % stop the client/server loop
+	file_write(ToClient, 'e.'), % stop the client/server loop
 	file_nl(ToClient), file_flush(ToClient,_),
-	file_write(ToClient, 'end_of_file.'), % stop client subprocess
+	file_write(ToClient, 'e.'), % stop client subprocess
 	file_nl(ToClient), file_flush(ToClient,_),
 	file_write(ToServer, 'end_of_file.'), % stop server subprocess
 	file_nl(ToServer), file_flush(ToServer,_),
@@ -46,7 +46,7 @@ test :- xsb_configuration(config_bindir, Bindir), slash(S),
 	file_close(FromClient),
 	file_close(ServErr),
 	file_close(ClientErr),
-	process_control(Servproc,wait),
-	process_control(ClientProc,wait),
+	process_control(Servproc,wait(XX)),
+	process_control(ClientProc,wait(XX)),
 	file_flush(1,_).
 

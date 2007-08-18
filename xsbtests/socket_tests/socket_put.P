@@ -46,7 +46,7 @@ test :- xsb_configuration(config_bindir, Bindir), slash(S),
 	file_close(FromClient),
 	file_close(ServErr),
 	file_close(ClientErr),
-	process_control(Servproc,wait),
-	process_control(ClientProc,wait),
+	process_control(Servproc,wait(XX)),
+	process_control(ClientProc,wait(XX)),
 	file_flush(1,_).
 

@@ -9,7 +9,6 @@
 :- import 
      socket/2, socket_connect/4, socket_set_option/3,
      socket_close/2, socket_get0/3, socket_put/3  from socket.
-:- import file_open/3, file_close/1 from file_io.
 
 
 %% machine where server is running

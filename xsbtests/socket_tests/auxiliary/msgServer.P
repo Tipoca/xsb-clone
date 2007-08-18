@@ -14,7 +14,7 @@
      socket_set_option/3,
      socket_close/2, socket_recv/3, socket_send/3 from socket.
 
-:- import file_close/1, fmt_write/3 from file_io.
+:- import fmt_write/3 from file_io.
 
 
 %% Port on which the server is listening
@@ -39,7 +39,7 @@ server :-
 	writeln(socket_listen(sockfd0,Q_LENGTH, ErrListen)),
 	
 	tryN(4,
-	     (set_timer(2),
+	     (set_timer(10),
 		 socket_accept(Sockfd0, Sockfd0_out1, ErrorCode)),
 	     writeln(socket_accept1(sockfd0, sockfd0_out1, ErrorCode)),
 	     (writeln('Cannot accept connection1'),
@@ -47,7 +47,7 @@ server :-
 	     ErrorCode
 	    ),
 	tryN(4,
-	     (set_timer(2),
+	     (set_timer(10),
 		 socket_accept(Sockfd0, Sockfd0_out2, ErrorCode2)),
 	     writeln(socket_accept(sockfd0, sockfd0_out2, ErrorCode2)),
 	     (writeln('Cannot accept connection2'),
@@ -61,11 +61,11 @@ server :-
 server_loop(Sockfd0_out1, Sockfd0_out2, Sockfd0) :-
     writeln(serverloop1),
     socket_recv(Sockfd0_out1, GoalStr,_),
-    file_open(GoalStr,sr,IOport),
-    file_read(IOport,Goal),
-    file_close(IOport),
+    open(atom(GoalStr),read,IOport),
+    read(IOport,Goal),
+    close(IOport),
     %% This tests the timer
-    set_timer(1),
+    set_timer(2),
     socket_recv(Sockfd0_out1, _Tmsg, Etimeout),
     writeln(recv(sockfd0,tmsg,Etimeout)),
     (Etimeout < 0 -> fmt_write("Timeout or EOF: %d\n", Etimeout) ; true),

@@ -14,7 +14,7 @@
      socket_set_option/3, socket_close/2, socket_get0/3,
      socket_put/3 from socket.
 
-:- import file_close/1, fmt_write/3 from file_io.
+:- import fmt_write/3 from file_io.
 :- import ground/1 from basics.
 
 
@@ -40,33 +40,34 @@ server :-
 	writeln(socket_listen(sockfd0,Q_LENGTH, ErrListen)),
 	
 	tryN(4,
-	     (set_timer(2),
+	     (set_timer(10),
 		 socket_accept(Sockfd0, Sockfd0_out1, ErrorCode)),
 	     writeln(socket_accept1(sockfd0, sockfd0_out1, ErrorCode)),
 	     (writeln('Cannot accept connection1'),
 		 socket_close(Sockfd0,_)),
 	     ErrorCode
 	    ),
-	set_timer(2),
+	set_timer(10),
 	socket_accept(Sockfd0, Sockfd0_out2, ErrorCode2), 
 	(ErrorCode2 < 0
 	-> writeln('Connection2: timed out'),
 	    socket_close(Sockfd0,_), fail
 	; true),
 	writeln(socket_accept(sockfd0, sockfd0_out2, ErrorCode2)),
-	set_timer(1),
+	set_timer(2),
 	server_loop(Sockfd0, Sockfd0_out1, Sockfd0_out2).
 
 
 
 server_loop(Sockfd_orig, Sockfd0, Sockfd1) :-
-	set_timer(2),
+	set_timer(10),
 	socket_get0(Sockfd0, Char,Ecode),
 	(Ecode == TIMEOUT_ERR
 	-> writeln('Timeout'),
 	    socket_close(Sockfd0,_),
 	    socket_close(Sockfd1,_),
 	    socket_close(Sockfd_orig,_),
+	    !,
 	    fail
 	; true),
 	((Char==CH_EOF_C; Char == 4) -> 
