@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.h,v 1.4 2005-07-08 00:54:25 dwarren Exp $
+** $Id: socket_xsb.h,v 1.5 2007-08-18 22:06:48 kifer Exp $
 ** 
 */
 
@@ -75,6 +75,7 @@
 /* These are used only by the readmsg function */
 #define SOCK_READMSG_FAILED  -1      /* failed socket call     	      	    */
 #define SOCK_READMSG_EOF     -2	     /* when EOF is reached    	       	    */
+#define SOCK_HEADER_LEN_MISMATCH -3  /* when hdr length != message length   */
 
 #endif /* __SOCKET_XSB_H__ */
 
