@@ -37,7 +37,7 @@ if test "$status" = 0 ; then
 	rm -f ${FILE}_new
 else
 	echo "$BASEDIR/$FILE differ!!!"
-	diff -w ${FILE}_new ${FILE}_old
+	diff -w ${FILE}_new temp
 fi
 
 rm -f temp
