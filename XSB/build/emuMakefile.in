@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.63 2007-08-17 22:24:29 tswift Exp $
+## $Id: emuMakefile.in,v 1.64 2007-08-22 19:21:23 tswift Exp $
 ##
 
 
@@ -64,7 +64,6 @@ ENTRY_FUNCTION=_win_xsbent@12
 
 
 
-# This one is used for SGI only
 LINKFLAGS=@LINKFLAGS@
 
 # Substitute an assignment for the MAKE variable, because
