@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.43 2007-08-08 17:50:49 dwarren Exp $
+** $Id: debug_xsb.c,v 1.44 2007-08-22 19:03:45 tswift Exp $
 ** 
 */
 
@@ -480,7 +480,7 @@ static void print_term_of_subgoal(CTXTdeclc FILE *fp, int *i)
   term = cell_array[*i];
   switch (cell_tag(term)) {
   case XSB_TrieVar:
-    fprintf(fp, "_v%d", (int_val(term) & 0xffff));
+    fprintf(fp, "_v%d", ((int) int_val(term) & 0xffff));
     break;
   case XSB_STRUCT:
     args = get_arity((Psc)cs_val(term));

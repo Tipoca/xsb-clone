@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.293 2007-08-08 17:50:49 dwarren Exp $
+** $Id: builtin.c,v 1.294 2007-08-22 19:03:45 tswift Exp $
 ** 
 */
 
@@ -512,7 +512,7 @@ DllExport void call_conv ctop_int(CTXTdeclc int regnum, prolog_int value)
   }
   else {
     if (isstring(addr)) printf("string %s\n",string_val(addr));
-    if (isinteger(addr)) printf("int %d\n",int_val(addr));
+    if (isinteger(addr)) printf("int %d\n",(int) int_val(addr));
     xsb_abort("[CTOP_INT] Wrong type of argument %lx (Reg = %d)", addr, regnum);
   }
 }
