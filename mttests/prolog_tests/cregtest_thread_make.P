@@ -11,6 +11,8 @@ test:- xsb_configuration(compiler_flags,CFLAGS),
 	shell([Compiler, ' -o ', './cretest_thread ',
 	       ObjDir, 'xsb.o ', ' cregs_thread.o ', LDFLAGS]),
 
-        shell(['./cretest_thread ../../XSB > temp1']),
-        shell('cat temp1 >> temp; rm temp1').
+	told,
+        shell(['cretest_thread ../../XSB > temp1']),
+        shell('cat temp1 >> temp'),
+        shell('rm temp1').
 

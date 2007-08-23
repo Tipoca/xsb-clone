@@ -10,6 +10,8 @@ test:- xsb_configuration(compiler_flags,CFLAGS),
 	shell([Compiler, ' -o ', './cretest_thread2 ',
 	       ObjDir, 'xsb.o ', ' cregs_thread2.o ', LDFLAGS]),
 
-        shell(['./cretest_thread2 ../../XSB > temp1']),
-        shell('cat temp1 >> temp; rm temp1').
+	told,
+        shell(['cretest_thread2 ../../XSB > temp1']),
+        shell('cat temp1 >> temp'),
+        shell('rm temp1').
 

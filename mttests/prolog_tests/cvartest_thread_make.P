@@ -11,7 +11,8 @@ test:- xsb_configuration(compiler_flags,CFLAGS),
 	shell([Compiler, ' -o ', './cvstest_thread ',
 	       ObjDir, 'xsb.o ', ' cvarstring_thread.o ', LDFLAGS]),
 %	writeln('You can find the executable in  ./cvstest_thread'),
-
-        shell(['./cvstest_thread ../../XSB > temp1']),
-        shell('cat temp1 >> temp; rm temp1').
+	told,
+        shell(['cvstest_thread ../../XSB > temp1']),
+        shell('cat temp1 >> temp'),
+        shell('rm temp1').
 
