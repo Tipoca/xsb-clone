@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.295 2007-08-22 22:04:33 tswift Exp $
+** $Id: builtin.c,v 1.296 2007-08-23 14:48:19 dwarren Exp $
 ** 
 */
 
@@ -943,7 +943,7 @@ void init_builtin_table(void)
   set_builtin_table(SYS_SYSTEM, "sys_system");
   set_builtin_table(SYS_GETHOST, "sys_gethost");
   set_builtin_table(SYS_ERRNO, "sys_errno");
-  set_builtin_table(SETENV, "setenv");
+  set_builtin_table(PUTENV, "putenv");
   set_builtin_table(FILE_WRITEQUOTED, "file_writequoted");
   set_builtin_table(GROUND, "ground");
 
@@ -1859,12 +1859,9 @@ int builtin_call(CTXTdeclc byte number)
     ctop_int(CTXTc 1, errno);
     break;
 
-  case SETENV: 
+  case PUTENV: 
     {
-      return !-setenv(iso_ptoc_string(CTXTc 1,"setenv/3"),
-		  iso_ptoc_string(CTXTc 2,"setenv/3"),
-		  iso_ptoc_int(CTXTc 3,"setenv/3"));
-
+      return !putenv(ptoc_longstring(CTXTc 1));
       break;
     }
 
