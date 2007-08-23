@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.81 2007/05/01 14:48:34 tswift Exp $
+** $Id: machine.H,v 1.82 2007/06/24 18:55:54 tswift Exp $
 ** 
 */
 
@@ -92,6 +92,7 @@
 	almost_search_module/5,
 	existing_file_extension/2,
 	getenv/2, 
+	setenv/3, 
 	sys_syscall/4,
 	sys_system/7, 
 	sys_gethost/2, 
