@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: chr_pp.in,v 1.2 2003-10-03 17:33:22 tschrijvers Exp $
+## $Id: chr_pp.in,v 1.3 2007-08-26 18:13:24 pmoura Exp $
 ## 
 ##
 
@@ -28,9 +28,9 @@ suffix=@config_tag@
 
 invocation_name=$0
 
-# If symbolic link: is there a more elegant way to extract the value of a link?
+# if we've a symbolic link, then extract the full path of the target
 if test -h $invocation_name ; then
-    invocation_name=`ls -l $invocation_name | sed 's,.*-> ,,'`
+    invocation_name=`dirname $invocation_name`"/"`stat -f %Y $invocation_name`
 fi
 
 case $invocation_name in
