@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.296 2007-08-23 14:48:19 dwarren Exp $
+** $Id: builtin.c,v 1.297 2007-08-28 16:43:49 dwarren Exp $
 ** 
 */
 
@@ -3088,7 +3088,7 @@ int print_xsb_backtrace(CTXTdecl) {
   } else {
     fprintf(stdout,"Partial Forward Continuation...\n");
     if ((pb)top_of_localstk < (pb)top_of_heap+256*ZOOM_FACTOR) {
-      fprintf(stdout,"  Local Stack clobbered, no backtrace available\n");
+      fprintf(stdout,"  Local Stack clobbered, no backtrace available (h:%p,e:%p)\n",hreg,ereg);
       return TRUE;
     }
     tmp_ereg = ereg;
