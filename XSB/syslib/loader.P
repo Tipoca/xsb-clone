@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.49 2006/01/18 17:32:31 dwarren Exp $
+** $Id: loader.P,v 1.51 2006/06/20 14:17:34 dwarren Exp $
 ** 
 */
 
@@ -90,7 +90,21 @@ loader_init(_) :-
 	reconsult(ConfigFile),
 	%%
 	load_library_directories,
+	site_specific_init,
 	execute_command_module.
+
+site_specific_init:- 
+	xsb_configuration(os_type,OsType),
+	site_specific_init(OsType).
+
+site_specific_init(darwin):- 
+	shell_to_list(sw_vers,List,_Ret),
+	memberchk(['ProductVersion:',Atom],List),
+	('10.2' @< Atom ->
+	    putenv(['MACOSX_DEPLOYMENT_TARGET',=,'10.3'])
+	 ;  true),
+	!.
+site_specific_init(_catchall).
 
 
 /*

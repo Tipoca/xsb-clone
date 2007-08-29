@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.77 2007/06/01 22:52:40 tswift Exp $
+** $Id: standard.H,v 1.78 2007/06/24 18:55:54 tswift Exp $
 **
 */
 
@@ -37,11 +37,12 @@
         check_arity_integer/3,  
 	close/1,             close/2,	compare/3,	
         compound/1,	cputime/1,	
-            display/1, displayln/1, now/1, datime/1,
-            error_write/1, error_writeln/1,
+        display/1, displayln/1, now/1, datime/1,
+        error_write/1, error_writeln/1,
 	expand_term/2,	file_exists/1,	fail/0,		fail_if/1,
 	fileerrors/0,	float/1,	functor/3,
-        gc_dynamic/1,   gc_tables/1,    get/1,		get0/1,		
+        gc_dynamic/1,   gc_tables/1,    gc_atoms/0,
+        get/1,		get0/1,		
         get_char/1,	get_char/2,     get_code/1,	get_code/2,
         halt/0,		
 	(hilog)/1,	hilog_arg/3,	hilog_functor/3,
