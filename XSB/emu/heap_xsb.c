@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.63 2007-08-28 18:54:12 dwarren Exp $
+** $Id: heap_xsb.c,v 1.64 2007-08-30 14:46:19 dwarren Exp $
 ** 
 */
 
@@ -588,6 +588,14 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
   int  rnum_in_reg_array = (reg_arrayptr-reg_array)+1;
   DECL_GC_PROFILE;
 
+  if (int_val(cell(interrupt_reg))) { 
+    /* until we gc attv_interrupts[] or change it: Also note this doesn't catch 
+       all problems, since this count might be reset to zero but there may still be
+       forward trail pointers into attv_interrupts and pointers there to the heap
+       won't get relocated (dsw)*/
+    fprintf(stderr,"Garbage Collection not done due to pending attv interrupts\n");
+    return(TRUE);  
+  }
   //  printf("start gc: hf:%p,h:%p\n",hfreg,hreg);
   INIT_GC_PROFILE;
   if (pflags[GARBAGE_COLLECT] != NO_GC) {

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.13 2007-07-10 20:29:35 dwarren Exp $
+** $Id: tr_code_xsb_i.h,v 1.14 2007-08-30 14:46:19 dwarren Exp $
 ** 
 */
 
@@ -219,8 +219,6 @@ int     delay_it;
 #define restore_trie_registers(temp) {			\
     int i;						\
     CPtr treg = temp;					\
-							\
-    reg_arrayptr = reg_array - 1;			\
     i = cell(treg);					\
     i = int_val(i);					\
     while (i > 0) {					\

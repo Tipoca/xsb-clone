@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.26 2007-08-28 18:54:12 dwarren Exp $
+** $Id: gc_mark.h,v 1.27 2007-08-30 14:46:19 dwarren Exp $
 ** 
 */
 
@@ -581,7 +581,7 @@ inline static unsigned long mark_trail_section(CTXTdeclc CPtr begintr, CPtr endt
 	      }
 #else
 	      { ls_mark(i) ;
-	      marked += mark_region(CTXTc trailed_cell, trailed_cell);
+	        marked += mark_root(CTXTc *trailed_cell);
 	      }
 #endif
 	    }
@@ -675,7 +675,6 @@ restart:
       if ((d = cp_pdreg(b)) != NULL) {
 	total_marked += mark_root(CTXTc (Cell)d);
       }
-
       total_marked += mark_trail_section(CTXTc a,(CPtr) tr);
 
       /* mark the arguments in the choicepoint */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.29 2006-11-06 17:31:53 ruim Exp $
+** $Id: choice.h,v 1.30 2007-08-30 14:46:19 dwarren Exp $
 ** 
 */
 #ifndef __CHOICE_H__
@@ -500,6 +500,7 @@ typedef struct compl_susp_choice_point {
 #define restore_some_wamregs(t_breg, t_ereg) \
     if (hbreg >= hfreg) hreg = hbreg; else hreg = hfreg; \
     cpreg = cp_cpreg(t_breg); \
-    t_ereg = cp_ereg(t_breg)
+    t_ereg = cp_ereg(t_breg); \
+    reg_arrayptr = reg_array - 1
 
 #endif
