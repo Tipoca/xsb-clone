@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.64 2007-08-30 14:46:19 dwarren Exp $
+** $Id: heap_xsb.c,v 1.65 2007-08-30 19:19:18 dwarren Exp $
 ** 
 */
 
@@ -535,6 +535,9 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
   }
 
   /* Update the attributed variables interrupt list --lfcastro */
+  /* There is a bug here, I think, since the count may be set 
+     back to 0, but there may heap ptrs in the pre-image trail 
+     still to attv_interrupts that need relocating. (dsw 8/07) */
   { 
     int size = int_val(cell(interrupt_reg));
     int i;
