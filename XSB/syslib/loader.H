@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.24 2005/09/09 23:50:56 tswift Exp $
+** $Id: loader.H,v 1.25 2006/01/18 16:10:23 dwarren Exp $
 ** 
 */
 
@@ -52,3 +52,6 @@
 %%:- import call_xsb_hook/3, xsb_undefined_predicate_hook/1 from xsb_hook.
 :- import xsb_sys_mutex_unlock/1 from thread.
 :- import current_prolog_flag/2 from curr_sym.
+%:- import shell_to_list/3 from shell.
+%:- import memberchk/2 from
+%:- import putenv/1 from machine.
