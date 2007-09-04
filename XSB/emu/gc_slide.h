@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_slide.h,v 1.14 2007-02-23 20:17:05 tswift Exp $
+** $Id: gc_slide.h,v 1.15 2007-09-04 00:49:09 dwarren Exp $
 ** 
 */
 
@@ -290,7 +290,7 @@ static CPtr slide_heap(CTXTdeclc int num_marked)
 	  continue;
 	tr_clear_mark(p-tr_bot);
 #endif
-	  q = trail_hp_pointer_from_cell(CTXTc contents,&tag) ;
+	  q = hp_pointer_from_cell(CTXTc contents,&tag) ;
 	  if (!q) continue ;
 	  if (! h_marked(q-heap_bot)) {
 	    continue ;

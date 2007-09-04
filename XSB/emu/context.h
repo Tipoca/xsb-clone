@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.60 2007-07-24 20:19:33 ruim Exp $
+** $Id: context.h,v 1.61 2007-09-04 00:49:08 dwarren Exp $
 ** 
 */
 
@@ -190,8 +190,6 @@ struct th_context
 
   CPtr _ptcpreg;
   CPtr _delayreg;
-  CPtr _interrupt_reg;
-  Cell _interrupt_counter;
 
   int _asynint_code;
   int _asynint_val;
@@ -436,8 +434,6 @@ ThreadDepList TDL ;
 pthread_cond_t cond_var ;
 #endif
 
-Cell _attv_interrupts[20480][2];
-
 int _num_gc;
 double _total_time_gc;
 unsigned long _total_collected;
@@ -518,8 +514,6 @@ typedef struct th_context th_context ;
 
 #define ptcpreg			(th->_ptcpreg)
 #define delayreg		(th->_delayreg)
-#define interrupt_reg		(th->_interrupt_reg)
-#define interrupt_counter	(th->_interrupt_counter)
 
 #define asynint_code		(th->_asynint_code)
 #define asynint_val		(th->_asynint_val)
@@ -723,8 +717,6 @@ typedef struct th_context th_context ;
 #define term_string (th->_term_string)
 
 #define  pflags			(th->_pflags)
-
-#define  attv_interrupts        (th->_attv_interrupts)
 
 #define num_gc                  (th->_num_gc)
 #define total_time_gc           (th->_total_time_gc)

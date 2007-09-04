@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.h,v 1.15 2005-07-18 19:47:46 tswift Exp $
+** $Id: subp.h,v 1.16 2007-09-04 00:49:09 dwarren Exp $
 ** 
 */
 
@@ -47,3 +47,5 @@ extern byte *exception_handler(CTXTdeclc char *);
 extern Psc synint_proc(CTXTdeclc Psc, int);
 extern void add_interrupt(CTXTdeclc Cell, Cell);
 extern Cell build_interrupt_chain(CTXTdecl);
+
+#define INT_REC_SIZE 4   /* number of words in heap interrupt record */

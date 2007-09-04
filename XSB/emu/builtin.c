@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.297 2007-08-28 16:43:49 dwarren Exp $
+** $Id: builtin.c,v 1.298 2007-09-04 00:49:08 dwarren Exp $
 ** 
 */
 
@@ -2479,7 +2479,7 @@ case WRITE_OUT_PROFILE:
     reclaim_uninterned_nr(CTXTc iso_ptoc_int(CTXTc 1,"reclaim_uninterned_nr/1"));
     break;
   case GLOBALVAR:
-    ctop_tag(CTXTc 1, ((Cell)glstack.low));
+    ctop_tag(CTXTc 1, cell((CPtr)glstack.low+2));
     break;
   case CCALL_STORE_ERROR: {
 #ifdef MULTI_THREAD

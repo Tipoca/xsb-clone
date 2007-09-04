@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.165 2007-08-28 16:47:39 dwarren Exp $
+** $Id: emuloop.c,v 1.166 2007-09-04 00:49:08 dwarren Exp $
 ** 
 */
 
@@ -1777,7 +1777,7 @@ argument positions.
     
     Op1(get_xxxs);
     ADVANCE_PC(size_xxxX);
-    if (int_val(cell(interrupt_reg)) > 0) {
+    if (attv_pending_interrupts) {
       cpreg = lpcreg;
       bld_cs(reg + 2, hreg);	/* see subp.c: build_call() */
       new_heap_functor(hreg, true_psc);
