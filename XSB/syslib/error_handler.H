@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.26 2007/01/12 23:24:35 tswift Exp $
+** $Id: error_handler.H,v 1.27 2007/07/07 21:07:01 tswift Exp $
 ** 
 */
 
@@ -38,6 +38,7 @@
               check_var/3, 
               default_error_handler/1,
 	      default_sys_error_handler/1,
+   default_sys_error_handler_nonmain/4,
    ccall_error_handler/1,
               get_sys_error_description/2,
               get_sys_error_description/3,
@@ -56,5 +57,4 @@
            throw/1,integer/1 from standard.
 :- import concat_atom/2, term_to_atom/2 from string.
 :- import xsb_flag/2 from curr_sym.
-:- import internal_thread_exit/1, 
-          xsb_thread_property/2 , xsb_thread_self/1 from thread.
+:- import internal_thread_exit/1, thread_property/2 , xsb_thread_self/1 from thread.
