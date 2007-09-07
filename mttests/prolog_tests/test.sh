@@ -34,3 +34,4 @@ options=$3
 ../seqgentest.sh "$XEMU $options" cvartest_thread_make2 "test." 
 ../seqgentest.sh "$XEMU $options" cregtest_thread_make2 "test." 
 ../seqgentest.sh "$XEMU --max_threads 100" detach_test "test." 
+../seqgentest.sh "$XEMU $options" thread_property "test." 
