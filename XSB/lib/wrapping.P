@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wrapping.P,v 1.9 2007-08-09 21:50:25 dwarren Exp $
+** $Id: wrapping.P,v 1.10 2007-09-08 04:30:50 evansbj Exp $
 ** 
 */
 
@@ -313,6 +313,7 @@ define_ccall(chars,'+',Var,Var).
 define_ccall(chars(_),'+',Var,Var).
 define_ccall(string,'+',Var,Var).
 define_ccall(string(_),'+',Var,Var).
+define_ccall(term,'+',Var,Var).
 define_ccall(intptr,'+',Var,CVar) :-
 	atom_codes(Var,LVar),
 	atom_codes(CVar,[38|LVar]). % 38 = '&'
