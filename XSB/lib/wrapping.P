@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wrapping.P,v 1.10 2007-09-08 04:30:50 evansbj Exp $
+** $Id: wrapping.P,v 1.11 2007-09-09 01:35:35 evansbj Exp $
 ** 
 */
 
@@ -388,7 +388,7 @@ out_variables(Var,'+',floatptr) :-
 out_variables(Var,'+',charsptr) :-
 	fmt_write('   prolog_term %sIn;',args(Var)),nl,
         fmt_write('   int %ssize;',args(Var)),nl,
-        fmt_write('   char *%s,*%sTemp',args(Var,Var)),nl.
+        fmt_write('   char *%s,*%sTemp;',args(Var,Var)),nl.
 out_variables(Var,'+',stringptr) :-
 	fmt_write('   prolog_term %sIn;',args(Var)),nl,
         fmt_write('   char *%s;',args(Var)),nl.
@@ -420,7 +420,7 @@ out_variables(Var,'-',string(Size)) :-
         fmt_write('   char %s[%d+1];',args(Var,Size)),nl.
 out_variables(Var,'-',stringptr) :-
 	fmt_write('   prolog_term %sOut;',args(Var)),nl,
-        fmt_write('   char *%s',args(Var)),nl.
+        fmt_write('   char *%s;',args(Var)),nl.
 out_variables(Var,'-',termptr) :-
 	fmt_write('   prolog_term %s;',args(Var)),nl.
 out_variables(Var,'-',atomptr) :-
@@ -446,7 +446,7 @@ out_variables(Var,'+-',charsptr) :-
         fmt_write('   int %ssize;',args(Var)),nl.
 out_variables(Var,'+-',stringptr) :-
 	fmt_write('   prolog_term %sIn,%sOut;',args(Var,Var)),nl,
-        fmt_write('   char *%s',args(Var)),nl.
+        fmt_write('   char *%s;',args(Var)),nl.
 out_variables(Var,'+-',termptr) :-
 	fmt_write('   prolog_term %s;',args(Var)),nl.
 out_variables(Var,'+-',atomptr) :-
