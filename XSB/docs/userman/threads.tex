@@ -445,8 +445,8 @@ fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
 \> \> socket\_bind($SockFD$, $XSBport$),\\
 \> \> socket\_listen($SockFD$,Q\_LENGTH),\\
 \> \> thread\_create( server\_loop($SockFD$), Id, [] ),\\
-\> \> assert( server\_id($Id: threads.tex,v 1.27 2007-09-16 16:27:57 pmoura Exp $) ),\\
-\> \> thread\_join( $Id: threads.tex,v 1.27 2007-09-16 16:27:57 pmoura Exp $ ).\\
+\> \> assert( server\_id($Id: threads.tex,v 1.28 2007-09-16 16:40:33 pmoura Exp $) ),\\
+\> \> thread\_join( $Id: threads.tex,v 1.28 2007-09-16 16:40:33 pmoura Exp $ ).\\
 \\
 \> server\_loop($SockFD$) :-\\
 \> \> socket\_accept($SockFD$, $SockClient$),\\
@@ -516,9 +516,9 @@ list\_of\_primes($I$, $F$, $List$, $Tail$) :-\\
 partition\_space($N$, $H$, $H_1$) :-\\
 \>        $H$ is $N//2$, $H_1$ is $H + 1$.\\
 \\
-worker( $Q$, $Id: threads.tex,v 1.27 2007-09-16 16:27:57 pmoura Exp $, $I$, $F$, $List$, $Tail$) :-\\
+worker( $Q$, $Id: threads.tex,v 1.28 2007-09-16 16:40:33 pmoura Exp $, $I$, $F$, $List$, $Tail$) :-\\
 \>        list\_of\_primes( $I$, $F$, $List$, $Tail$),\\
-\>        thread\_send\_message( $Q$, primes($Id: threads.tex,v 1.27 2007-09-16 16:27:57 pmoura Exp $,$List$,$Tail$) ).\\
+\>        thread\_send\_message( $Q$, primes($Id: threads.tex,v 1.28 2007-09-16 16:40:33 pmoura Exp $,$List$,$Tail$) ).\\
 \\
 master( $N$, $L$ )  :-\\
 \>        partition\_space( $N$, $H$, $H_1$),\\
@@ -935,6 +935,24 @@ clear_thread_table.
 \item {\tt ThreadOrAlias} is not associated with a valid thread
 \bi
 \item {\tt existence\_error(thread, ThreadOrAlias)}
+\ei
+\ei
+
+\ournewitem{thread\_sleep(+Seconds)}{thread}
+\index{\texttt{thread\_sleep/1}} 
+%
+Causes the calling thread to sleep approximately {\tt Seconds}
+before resuming.
+
+{\bf Error Cases}
+\bi
+\item 	{\tt Seconds} is a variable
+\bi
+\item 	{\tt instantiation\_error}.
+\ei
+\item 	{\tt Seconds} is not an integer
+\bi
+\item 	{\tt type\_error(integer, Seconds)}.
 \ei
 \ei
 
