@@ -445,8 +445,8 @@ fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
 \> \> socket\_bind($SockFD$, $XSBport$),\\
 \> \> socket\_listen($SockFD$,Q\_LENGTH),\\
 \> \> thread\_create( server\_loop($SockFD$), Id, [] ),\\
-\> \> assert( server\_id($Id: threads.tex,v 1.28 2007-09-16 16:40:33 pmoura Exp $) ),\\
-\> \> thread\_join( $Id: threads.tex,v 1.28 2007-09-16 16:40:33 pmoura Exp $ ).\\
+\> \> assert( server\_id($Id: threads.tex,v 1.29 2007-09-16 18:00:29 pmoura Exp $) ),\\
+\> \> thread\_join( $Id: threads.tex,v 1.29 2007-09-16 18:00:29 pmoura Exp $ ).\\
 \\
 \> server\_loop($SockFD$) :-\\
 \> \> socket\_accept($SockFD$, $SockClient$),\\
@@ -516,9 +516,9 @@ list\_of\_primes($I$, $F$, $List$, $Tail$) :-\\
 partition\_space($N$, $H$, $H_1$) :-\\
 \>        $H$ is $N//2$, $H_1$ is $H + 1$.\\
 \\
-worker( $Q$, $Id: threads.tex,v 1.28 2007-09-16 16:40:33 pmoura Exp $, $I$, $F$, $List$, $Tail$) :-\\
+worker( $Q$, $Id: threads.tex,v 1.29 2007-09-16 18:00:29 pmoura Exp $, $I$, $F$, $List$, $Tail$) :-\\
 \>        list\_of\_primes( $I$, $F$, $List$, $Tail$),\\
-\>        thread\_send\_message( $Q$, primes($Id: threads.tex,v 1.28 2007-09-16 16:40:33 pmoura Exp $,$List$,$Tail$) ).\\
+\>        thread\_send\_message( $Q$, primes($Id: threads.tex,v 1.29 2007-09-16 18:00:29 pmoura Exp $,$List$,$Tail$) ).\\
 \\
 master( $N$, $L$ )  :-\\
 \>        partition\_space( $N$, $H$, $H_1$),\\
@@ -698,6 +698,11 @@ remains unaltered.
 \index{\texttt{thread\_create/2}}
 %
 Acts as {\tt thread\_create(Goal,ThreadId,[])}.
+
+\ournewitem{thread\_create(+Goal)}{thread}
+\index{\texttt{thread\_create/1}}
+%
+Acts as {\tt thread\_create(Goal,\_,[detached(true)])}.
 
 \ournewitem{thread\_join(+Threads\_or\_aliases,-ExitDesignators)}{thread}
 \index{\texttt{thread\_join/2}} 
@@ -1444,8 +1449,4 @@ unifier of {\tt Message} and $T$.  If there are no terms on {\tt
 %
 
 
-
 \end{description}
-
-
-
