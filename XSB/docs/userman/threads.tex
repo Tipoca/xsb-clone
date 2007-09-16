@@ -255,7 +255,7 @@ be checked?
 
 \index{thread!valid}
 
-Our approach relies on the semantics of Pthreads, which can be either
+Our approach relies on the semantics of pthreads, which can be either
 {\em joinable} or {\em detached}.  Within this framework, we consider
 a thread to be {\em valid} if it has not yet terminated, or if it is
 joinable and has not yet been joined.  After a joinable Pthread
@@ -343,7 +343,7 @@ The error term in the above example is one example of a {\em thread
 \ei 
 %
 Any of these statuses except {\tt running} may be returned by {\tt
-  thread\_join/2}.  In Prolog, the statuses of exited threads `
+  thread\_join/2}.  In Prolog, the statuses of exited threads 
 provide much more information than C exit codes.  
 
 \comment{but C exit codes may conceivably be useful if XSB is called by one
@@ -366,7 +366,7 @@ section are fully described in Section~\ref{sec:mt-threading}.
 %
 There may be a number of situations in which it is useful to give one
 thread the ability to cancel the execution of another thread.  Within
-the semantics of Pthreads, this is called {\em thread cancellation}.
+the semantics of pthreads, this is called {\em thread cancellation}.
 At the C level, thread cancellation can be tricky, as mutexes must be
 released, allocated memory freed, and so on.  Accordingly, the
 predicate {\tt thread\_cancel/1} cancels XSB threads by acting purely
@@ -445,8 +445,8 @@ fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
 \> \> socket\_bind($SockFD$, $XSBport$),\\
 \> \> socket\_listen($SockFD$,Q\_LENGTH),\\
 \> \> thread\_create( server\_loop($SockFD$), Id, [] ),\\
-\> \> assert( server\_id($Id: threads.tex,v 1.26 2007-09-12 21:45:17 tswift Exp $) ),\\
-\> \> thread\_join( $Id: threads.tex,v 1.26 2007-09-12 21:45:17 tswift Exp $ ).\\
+\> \> assert( server\_id($Id: threads.tex,v 1.27 2007-09-16 16:27:57 pmoura Exp $) ),\\
+\> \> thread\_join( $Id: threads.tex,v 1.27 2007-09-16 16:27:57 pmoura Exp $ ).\\
 \\
 \> server\_loop($SockFD$) :-\\
 \> \> socket\_accept($SockFD$, $SockClient$),\\
@@ -516,9 +516,9 @@ list\_of\_primes($I$, $F$, $List$, $Tail$) :-\\
 partition\_space($N$, $H$, $H_1$) :-\\
 \>        $H$ is $N//2$, $H_1$ is $H + 1$.\\
 \\
-worker( $Q$, $Id: threads.tex,v 1.26 2007-09-12 21:45:17 tswift Exp $, $I$, $F$, $List$, $Tail$) :-\\
+worker( $Q$, $Id: threads.tex,v 1.27 2007-09-16 16:27:57 pmoura Exp $, $I$, $F$, $List$, $Tail$) :-\\
 \>        list\_of\_primes( $I$, $F$, $List$, $Tail$),\\
-\>        thread\_send\_message( $Q$, primes($Id: threads.tex,v 1.26 2007-09-12 21:45:17 tswift Exp $,$List$,$Tail$) ).\\
+\>        thread\_send\_message( $Q$, primes($Id: threads.tex,v 1.27 2007-09-16 16:27:57 pmoura Exp $,$List$,$Tail$) ).\\
 \\
 master( $N$, $L$ )  :-\\
 \>        partition\_space( $N$, $H$, $H_1$),\\
@@ -539,15 +539,15 @@ master( $N$, $L$ )  :-\\
 
 \section{Configuring the Multi-threaded Engine under Windows} \label{sec:mt-windows}
 
-Libraries for Pthreads are included on most versions of Unix and
+Libraries for pthreads are included on most versions of Unix and
 Linux.  Windows also supports multi-threading, but with a somewhat
-different semantics and API than that of Pthreads.  To run
+different semantics and API than that of pthreads.  To run
 multi-threaded XSB under Windows, a library must be included to
 translate the Pthread library, used by XSB, to the native thread API
 of Windows.
 
 Different libraries are available for this purpose.  Internally, the
-multi-threaded engine has been tested using the Win32 Pthreads
+multi-threaded engine has been tested using the Win32 pthreads
 interface, available via {\tt http://sourceware.org/pthreads-win32},
 but other libraries may also work, including Pthread library included
 with Cygwin.  To install the sourceware library, let {\tt \$XSBENV} be
@@ -879,7 +879,7 @@ predicate always succeeds.
 % 
 Make the calling thread ready to be run {\em after} other threads of
 the same priority.  This predicate relies on the real-time extensions
-to Pthreads specified in POSIX 1b, and may not be available on all
+to pthreads specified in POSIX 1b, and may not be available on all
 platforms.
 
 {\bf Error Cases}
