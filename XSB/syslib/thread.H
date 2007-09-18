@@ -18,20 +18,21 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.H,v 1.19 2007/07/07 21:04:18 tswift Exp $
+** $Id: thread.H,v 1.20 2007/08/02 00:00:48 pmoura Exp $
 ** 
 */
 
-:- export thread_cancel/1,
-          thread_create/1, thread_create/2,thread_create/3,
-          thread_detach/1,
-          thread_exit/1, internal_thread_exit/1,
-          thread_exit/0,
-	  thread_join/2, 
-          thread_join/1,
-          thread_property/2,
-   thread_self/1,set_xsb_ready/0,
-   thread_yield/0, usleep/1, thread_sleep/1.
+:- export
+	thread_cancel/1,
+	thread_create/1, thread_create/2,thread_create/3,
+	thread_detach/1,
+	thread_exit/1, internal_thread_exit/1,
+	thread_exit/0,
+	thread_join/2, thread_join/1,
+	thread_property/2,
+	thread_self/1,set_xsb_ready/0,
+	thread_yield/0, usleep/1, thread_sleep/1,
+	threads/0.
 
 :- export abolish_private_tables/0,abolish_shared_tables/0.
 :- export abolish_all_private_tables/0,abolish_all_shared_tables/0.
