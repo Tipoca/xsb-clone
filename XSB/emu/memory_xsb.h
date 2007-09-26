@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.35 2007-07-12 14:38:02 dwarren Exp $
+** $Id: memory_xsb.h,v 1.36 2007-09-26 20:15:22 dwarren Exp $
 ** 
 */
 
@@ -77,7 +77,7 @@ extern System_Stack pdl,            /* PDL                        */
 #define top_of_localstk  ( ((efreg < ebreg) && (efreg < ereg)) \
                            ? efreg  \
 			   : ( (ereg < ebreg) \
-			       ? ereg - *(cpreg - 2*sizeof(Cell)+3) + 1 \
+			       ? ereg - *(cpreg - (2*sizeof(Cell)-3)) + 1 \
 			       : ebreg ) )
 #define top_of_trail     ((trreg > trfreg) ? trreg : trfreg)
 #define top_of_cpstack   ((breg < bfreg) ? breg : bfreg)
@@ -177,8 +177,9 @@ extern byte *current_inst;
 extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
 	    resume_compl_suspension_inst, fail_inst, dynfail_inst, 
   	    halt_inst, proceed_inst, 
- resume_compl_suspension_inst2,
-	    reset_inst, trie_fail_unlock_inst;
+            resume_compl_suspension_inst2,
+            reset_inst, trie_fail_unlock_inst;
+extern byte *check_interrupts_restore_insts_addr;
 
 
 /* Stack Overflow Checkers

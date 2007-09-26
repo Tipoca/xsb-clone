@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.64 2007-09-04 00:49:08 dwarren Exp $
+** $Id: emudef.h,v 1.65 2007-09-26 20:15:22 dwarren Exp $
 ** 
 */
 
@@ -394,4 +394,24 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
     }									\
   }									\
 }
+
+#define allocate_env_and_call_check_ints(numregs,envsize) 	\
+do {								\
+  int new11;							\
+  Cell op11;							\
+  CPtr term11; Psc psc11;					\
+  if (efreg_on_top(ereg)) {					\
+    op11 = (Cell)(efreg-1);					\
+  } else {							\
+    if (ereg_on_top(ereg)) op11 = (Cell)(ereg - envsize);	\
+    else op11 = (Cell)(ebreg-1);				\
+  }								\
+  *(CPtr *)op11 = ereg;						\
+  *((byte **)((CPtr)op11-1)) = lpcreg;	/* return here */	\
+  ereg = (CPtr)op11; 						\
+  psc11 = pair_psc(insert("ret",(byte)numregs,(Psc)flags[CURRENT_MODULE],&new11)); \
+  term11 = (CPtr)build_call(CTXTc psc11);			\
+  bld_cs((ereg-2),((Cell)term11));				\
+  lpcreg = check_interrupts_restore_insts_addr;			\
+} while(0)
 

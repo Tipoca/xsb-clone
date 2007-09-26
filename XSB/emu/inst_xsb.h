@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.25 2007-03-23 18:13:27 dwarren Exp $
+** $Id: inst_xsb.h,v 1.26 2007-09-26 20:15:22 dwarren Exp $
 ** 
 */
 
@@ -314,6 +314,8 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 
 #define dyntrustmeelsefail	0xba	/* Dynamic trust instruction */
 #define dynretrymeelse      	0xbb	/* Dynamic retry inst (for gc) */
+
+#define restore_dealloc_proceed 0xbc    /* for special interrupt handling */
 
 /* Tabling instructions --- they should really be changed to be as shown */
 
