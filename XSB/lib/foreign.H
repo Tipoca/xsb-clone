@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.H,v 1.21 2006-12-04 10:18:51 kifer Exp $
+** $Id: foreign.H,v 1.22 2007-09-26 21:38:38 tswift Exp $
 ** 
 */
 
@@ -51,6 +51,6 @@
      from standard.
 :- import str_sub/2 from string.
 :- import concat_atom/2 from string.
-:- import write_header/0, process_from/2 from wrapping.
+:- import write_header/0, process_from/3 from wrapping.
 :- import write_int/2 from xsb_writ.
 :- import xsb_configuration/2 from xsb_configuration.
