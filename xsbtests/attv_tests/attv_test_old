@@ -1,3 +1,5 @@
+== test_attv_disj_interrupt OK
+== test_attv_disj_interrupt OK
 == test_attv_interrupt OK
 == test_deref OK
 == test_implict_unify OK
@@ -6,6 +8,10 @@
 == test_update 2 OK
 Attribute = v(11)
 Attribute = v(22)
+disjunct_A
+disjunct_B
 PASSED attv_test!
 Value = 5
+Value = 7
 Var's attribute = v(1)
+Var's attribute = v(12)
