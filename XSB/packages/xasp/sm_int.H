@@ -19,9 +19,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sm_int.H,v 1.3 2006-06-03 22:40:22 evansbj Exp $
+** $Id: sm_int.H,v 1.4 2007-09-27 17:43:35 tswift Exp $
 ** 
 */
+
+:- export private_conset/2, private_conget/2.
 
 :- export smcInit/0,smcReInit/0, smrInit/1,
   smcAddRule/2, 
@@ -36,11 +38,12 @@
   smcExamineModel/1, smcExamineModel/2, smrExamineModel/2, smEnd/0,
           print_cache/0.
 
-:- import delete_trie/1, new_trie/1, trie_intern/5, trie_interned/4 	
+   :- import delete_trie/1, new_trie/1, trie_intern/5, trie_interned/4, 
+   deterministic_trie_intern/2, deterministic_trie_unintern/2 , trie_interned/2
 	from intern.
 %:- import '$sm_atomnum'/2, '$sm_fact'/1 from usermod.
 
-:- import t_assert/2 from assert.
+%:- import t_assert/2 from assert.
 
 :- import '$sm_pos_compute'/1, '$sm_neg_compute'/1 from usermod.
 
