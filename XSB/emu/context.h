@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.61 2007-09-04 00:49:08 dwarren Exp $
+** $Id: context.h,v 1.62 2007-09-28 21:28:37 tswift Exp $
 ** 
 */
 
@@ -145,7 +145,6 @@ typedef struct Message_Queue_Cell {
 #define MAX_REGS 257
 
 /************************************************************************/
-
 struct th_context
 {
 /* System & user Flags */
@@ -193,6 +192,12 @@ struct th_context
 
   int _asynint_code;
   int _asynint_val;
+
+  CPtr _smodels;
+  CPtr _api;
+  CPtr _atoms;    
+  int _curatom;
+  int _totatoms;
 
   /*********** Global Variables for various tries --- some of this may
   be able to be changed to local variables.  Regarray size is the size
