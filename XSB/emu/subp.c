@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.107 2007/09/05 20:53:55 dwarren Exp $
+** $Id: subp.c,v 1.108 2007/09/12 21:50:47 tswift Exp $
 ** 
 */
 
@@ -100,7 +100,8 @@ extern void print_mutex_use(void);
 extern void dis(xsbBool), debug_call(CTXTdeclc Psc);
 
 #ifdef LINUX
-static struct sigaction act, oact;
+static struct sigaction int_act, int_oact;
+static struct sigaction abrt_act, abrt_oact;
 #endif
 
 void (*xsb_default_segfault_handler)(int); /* where the previous value of the
@@ -436,10 +437,15 @@ void cancel_proc(int sig)
 void init_interrupt(void)
 {
 #if (defined(LINUX))
-  act.sa_handler = keyint_proc;
-  sigemptyset(&act.sa_mask); 
-  act.sa_flags = 0;
-  sigaction(SIGINT, &act, &oact);
+  int_act.sa_handler = keyint_proc;
+  sigemptyset(&int_act.sa_mask); 
+  int_act.sa_flags = 0;
+  sigaction(SIGINT, &int_act, &int_oact);
+
+  abrt_act.sa_handler = keyint_proc;
+  sigemptyset(&abrt_act.sa_mask); 
+  abrt_act.sa_flags = 0;
+  sigaction(SIGABRT, &abrt_act, &abrt_oact);
 #else
   signal(SIGINT, keyint_proc); 
   signal(SIGABRT, cancel_proc); 
