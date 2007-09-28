@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.44 2007-08-22 19:03:45 tswift Exp $
+** $Id: debug_xsb.c,v 1.45 2007-09-28 19:38:56 tswift Exp $
 ** 
 */
 
@@ -516,7 +516,7 @@ static void print_term_of_subgoal(CTXTdeclc FILE *fp, int *i)
   /*    fprintf(fp, "%s", string_val(term));*/
     break;
   case XSB_INT:
-    fprintf(fp, "%d", int_val(term));
+    fprintf(fp, "%d", (int) int_val(term));
     break;
   case XSB_FLOAT:
     fprintf(fp, "%.5g", float_val(term));
