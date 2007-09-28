@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.26 2007-09-26 20:15:22 dwarren Exp $
+** $Id: inst_xsb.h,v 1.27 2007-09-28 18:20:13 dwarren Exp $
 ** 
 */
 
@@ -298,6 +298,8 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 
 #define getVn	        0xab      /* for tabled predicates */
 #define test_heap       0xac      /* for heap overflow testing */
+#define putpbreg_ci	0xad
+#define puttbreg_ci	0xae
 
 /* Indexing instructions */
 

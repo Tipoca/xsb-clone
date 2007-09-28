@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tpinline.H,v 1.4 2006-02-23 15:56:03 dwarren Exp $
+** $Id: tpinline.H,v 1.5 2007-09-28 18:20:10 dwarren Exp $
 ** 
 */
 
 
 
 :- export force_tp_geninline_loaded/0. 
-:- export geninline/9, geninl_load_lhs/7.
+:- export geninline/10, geninl_load_lhs/7.
 
 :- import sym_name/3 from symtab.
 :- import error/1, message/1 from auxlry.

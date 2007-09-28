@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.131 2007-09-26 20:15:22 dwarren Exp $
+** $Id: init_xsb.c,v 1.132 2007-09-28 18:20:11 dwarren Exp $
 ** 
 */
 
@@ -1137,7 +1137,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   check_interrupts_restore_insts_addr = calloc((3+1),sizeof(Integer));
   write_byte(check_interrupts_restore_insts_addr,&Loc,check_interrupt);
   Loc += 2; 
-  write_byte(check_interrupts_restore_insts_addr,&Loc,3); /* AR size */
+  write_byte(check_interrupts_restore_insts_addr,&Loc,4); /* AR size */
   pad64bits(&Loc);
   write_word(check_interrupts_restore_insts_addr,&Loc,0); /* unused psc addr */
   write_byte(check_interrupts_restore_insts_addr,&Loc,restore_dealloc_proceed);

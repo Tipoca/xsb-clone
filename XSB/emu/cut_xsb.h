@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.20 2006-05-22 15:06:48 tswift Exp $
+** $Id: cut_xsb.h,v 1.21 2007-09-28 18:20:11 dwarren Exp $
 ** 
 */
 
@@ -98,7 +98,6 @@
 	breg = cut_breg;					\
      }								\
      /*     check_table_cut = TRUE;	*/			\
-     XSB_Next_Instr();		       			        \
    }
 
 /*----------------------------------------------------------------------*/

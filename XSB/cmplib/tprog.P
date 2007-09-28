@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tprog.P,v 1.20 2007-09-03 15:33:41 dwarren Exp $
+** $Id: tprog.P,v 1.21 2007-09-28 18:20:11 dwarren Exp $
 ** 
 */
 
@@ -207,7 +207,7 @@ tbody(goal(Sym,Args),A,Pil,Pilr,Tin,Tout,Meet,_,_HoldRegs,Tabled,Tabar,_,_) :-
 
 tbody(inlinegoal(Pred,_Ar,Args),A,Pil,Pilr,Tin,Tout,Meet,_,HoldRegs,
 							Tabled,Tabar,Sym,NC) :-
-    geninline(Pred,Args,HoldRegs,Pil,Pil1,Tin,Tout,Sym,NC),
+    geninline(Pred,Args,HoldRegs,A,Pil,Pil1,Tin,Tout,Sym,NC),
     ( Meet == lastgoal ->
 	( Tabled =:= 1 ->      /* if tabled = 1, A>0 */
 		A1 is A-1,
