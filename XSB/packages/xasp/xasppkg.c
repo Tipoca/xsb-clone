@@ -19,19 +19,19 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xasppkg.c,v 1.3 2007-09-27 17:43:35 tswift Exp $
+** $Id: xasppkg.c,v 1.4 2007-09-28 20:48:47 tswift Exp $
 ** 
 */
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "smodels.h"
+#include "smodels/smodels.h"
 #ifndef SMODELS_H
 #error "You need the .h and .o files from SModels in your directory"
 #endif
-#include "api.h"
-#include "atomrule.h"
-#include "xsb_config.h"b
+#include "smodels/api.h"
+#include "smodels/atomrule.h"
+#include "xsb_config.h"
 
 // These variables should not be global in the MT-engine.
 // They will soon be moved to the th_context structure so that
