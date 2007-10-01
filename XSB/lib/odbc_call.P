@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.P,v 1.41 2007-01-24 22:15:42 dwarren Exp $
+** $Id: odbc_call.P,v 1.42 2007-10-01 18:54:48 dwarren Exp $
 **
 */
 
@@ -1580,6 +1580,8 @@ fetch(Columns,Cursor,Row) :-
 		 ;
 		 fetch(Columns,Cursor,Row)
 		)
+	 ; RetVal == 1  %% no more rows, OK
+	 ->	fail
 	 ; 	odbc_error(RetVal),
 		fail
 	).
