@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.66 2007-08-08 17:50:51 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.67 2007-10-01 17:01:00 dwarren Exp $
 **
 */
 
@@ -1176,9 +1176,11 @@ void ODBCColumns(CTXTdecl)
   str2 = str3 = NULL;
   if (str1) str2 = strtok(NULL,".");
   if (str2) str3 = strtok(NULL,".");
-  if (!str3 && !str2) {str3 = str1; str1 = NULL;}
-  else if (!str3) {str3 = str2; str2 = NULL;}
-  /*  printf("str1 %s, str2 %s, str3 %s\n",str1,str2,str3);*/
+  if (!str3) {
+    if (!str2) {str3 = str1; str1 = NULL;}
+    else {str3 = str2; str2 = str1; str1 = NULL;}
+  }
+  /*printf("str1 %s, str2 %s, str3 %s\n",str1,str2,str3);*/
   if (((rc=SQLColumns(cur->hstmt,
 		      str1, SQL_NTS,
 		      str2, SQL_NTS,
