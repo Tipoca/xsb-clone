@@ -11,7 +11,7 @@ test.
 
 %------------------------------------------
 
-testwhen:- testwhen1,testwhen2,testwhen3,testwhen4,testwhen5,testwhen6.
+testwhen:- testwhen1,testwhen2,testwhen3,testwhen4,testwhen5,testwhen6,testwhen7.
 
 testwhen1:- 
 	when(nonvar(X),writeln(test(1-2,nonvar))),
@@ -37,6 +37,11 @@ testwhen6:-
 	when(?=(X,Y),writeln(test(6-2,'?='))),
 	writeln(testwhen(6,'?=')),
 	X = a,Y = b.
+testwhen7:- 
+	when(ground(X),3>X),
+	X is 2+2,
+	writeln(testwhen7_failing).
+testwhen7.
 
 %------------------------------------------
 test:- test_unifiable.
