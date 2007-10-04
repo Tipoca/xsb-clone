@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.38 2007/06/27 00:47:41 tswift Exp $
+** $Id: curr_sym.P,v 1.39 2007/07/12 23:00:52 tswift Exp $
 ** 
 */
 
@@ -843,9 +843,10 @@ set_xsb_flag_1(thread_complsize, Size) :-!,
 set_xsb_flag_1(thread_detached, Bool) :- !,
 	(Bool == true -> B = 1 ; B = 0),
 	stat_set_flag(THREAD_DETACHED, B).
-set_xsb_flag_1(max_queue_terms, Bool) :- !,
-	(Bool == true -> B = 1 ; B = 0),
-	stat_set_flag(MAX_QUEUE_TERMS, B).
+set_xsb_flag_1(max_queue_terms, Num) :- !,
+	(integer(Num) -> 
+	    stat_set_flag(MAX_QUEUE_TERMS, Num)
+	;   type_error(integer,Num,set_xsb_flag/2,2) ).
 set_xsb_flag_1(Type, _) :-  
 	domain_error(xsb_flag,Type,set_xsb_flag/2,2).
 
