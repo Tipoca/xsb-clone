@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.108 2007/09/12 21:50:47 tswift Exp $
+** $Id: subp.c,v 1.109 2007/09/28 18:30:10 tswift Exp $
 ** 
 */
 
@@ -427,7 +427,7 @@ void cancel_proc(int sig)
 #ifndef LINUX
   init_interrupt();  /* reset interrupt, if using signal */
 #endif
-    asynint_val |= THREADINT_MARK;
+  //    asynint_val |= THREADINT_MARK;
     asynint_code = 0;
 }
 
