@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.H,v 1.20 2007/08/02 00:00:48 pmoura Exp $
+** $Id: thread.H,v 1.21 2007/09/18 14:15:24 pmoura Exp $
 ** 
 */
 
@@ -31,6 +31,7 @@
 	thread_join/2, thread_join/1,
 	thread_property/2,
 	thread_self/1,set_xsb_ready/0,
+   thread_signal/2,
 	thread_yield/0, usleep/1, thread_sleep/1,
 	threads/0.
 

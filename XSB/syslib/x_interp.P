@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.52 2006/02/06 20:09:08 tswift Exp $
+** $Id: x_interp.P,v 1.54 2006/09/13 17:10:52 dwarren Exp $
 ** 
 */
 
@@ -237,8 +237,25 @@ readl_brklp1 :-
 	is_xwammode(Flag),
 	( Flag =:= 1 -> abort ; break, call_c(Call) ).
 
-'_$thread_int'(_Call,_Code) :- 
-	abort_on_thread_cancel.
+:- import thread_get_signal/1 from mutex_xsb.
+:- import thread_peek_signal/1 from mutex_xsb.
+:- import repeat/0 from standard.
+
+%:- import writeln/1 from standard.
+% Continuation is in first arg as opposed to second in attv_int 
+'_$thread_int'(One,_Two) :- 
+	execute_messages_on_signale_queue,
+%	writeln(One),
+	call_c(One).
+
+execute_messages_on_signale_queue:- 
+	repeat,
+	(thread_peek_signal(Message) -> 
+	    thread_get_signal(Message),
+	    call(Message),
+	    fail
+	 ;  true),!.
+
 
 '_$attv_int'(Intlist, Call) :-
 % 	file_write(1, '.... in _$attv_int/2'), file_nl(1),

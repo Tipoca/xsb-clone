@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.93 2007/06/01 22:52:40 tswift Exp $
+** $Id: std_xsb.P,v 1.94 2007/08/29 22:13:08 tswift Exp $
 ** 
 */
 
@@ -30,6 +30,7 @@
 % TLS: just did first pass at metapredicates.  In addition, need to do
 % bagofs, setofs and phrases.
 
+standard_symbol(abort_on_thread_cancel,0,error_handler).
 standard_symbol(abolish, 1, assert).                               % ISO
 standard_metapredicate(abolish,1,1).
 
