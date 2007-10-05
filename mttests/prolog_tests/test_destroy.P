@@ -6,7 +6,7 @@
 :- import message_queue_destroy/1 from mutex_xsb.
 :- import usleep/1 from thread.
 
-test:- test1, test2, test3, test4.
+test:- test1, test2, test3, test4, test5, test6.
 
 % test of cancelling a thread while it is waiting on a queue.
 test1 :- message_queue_create(M),
@@ -84,14 +84,62 @@ q3_1(M) :-
         writeln(got(T)).
 
 test4:- 
-     thread_create(loop,T1,[]),
-     usleep(400),
+     thread_self(Tid),
+     thread_create(test4_1(Tid),T1,[]),
+     thread_get_message('Im alive'),
      thread_cancel(T1),
      thread_join(T1,_Ball),
      writeln(test4_ok).
 
-loop1:- write(f),loop1.
+test4_1(Tid):- 
+     thread_send_message(Tid,'Im alive'),
+     loop,
+     writeln(test_4_child_finito).
 
+:- import thread_signal/2 from thread.
+:- import thread_get_message/1 from mutex_xsb.
+
+test5:- 
+     thread_self(Tid),
+     thread_create(test5_1(Tid),T1,[]),
+%     usleep(500),
+     thread_get_message('Im alive'),
+     thread_signal(T1,writeln(call_foo_for_test5)),
+%     thread_send_message(T1,foo),
+     thread_join(T1,_Ball),
+     writeln(test5_ok).
+
+test5_1(Tid):- 
+     thread_send_message(Tid,'Im alive'),
+     loop(1000000),
+     writeln(test_5_child_finito).
+	
+loop(0):- !.
+loop(N):- N1 is N - 1,
+%	writeln(N),
+	loop(N1).
+
+test6:- 
+     thread_self(Tid),
+     thread_create(test6_1(Tid),T1,[]),
+%     usleep(500),
+     thread_get_message('Im alive'),
+     thread_signal(T1,writeln(call_foo_for_test5)),
+%     thread_send_message(T1,foo),
+     thread_join(T1,_Ball),
+     writeln(test6_ok).
+
+test6_1(Tid):- 
+     thread_send_message(Tid,'Im alive'),
+     sleep(1),
+     writeln(test_6_child_finito).
+	
+test7:- 
+	catch(thread_cancel(main),
+	      error(permission_error(cancel,main_thread,_),_,_),
+	      writeln(caught_main_thread_cancel_permission_error)).
+
+end_of_file.
 
 test5:- 
      thread_create(read(X),T1,[]),

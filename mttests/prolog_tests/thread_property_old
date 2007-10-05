@@ -1,5 +1,7 @@
+boundmode(alias(main))
 boundmode(detached(false))
 boundmode(status(running))
+varmode(0,alias(main))
 varmode(0,detached(false))
 varmode(0,status(running))
 varmode(1,detached(false))
