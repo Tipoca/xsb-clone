@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.83 2007/08/23 14:18:54 tswift Exp $
+** $Id: machine.H,v 1.84 2007/08/23 14:48:19 dwarren Exp $
 ** 
 */
 
@@ -141,7 +141,8 @@
 	trimcore/0,
         '$$set_scope_marker'/0,
         '$$unwind_stack'/0,
-        '$$clean_up_block'/0,
+        '$$clean_up_block'/1,
+%        '$$clean_up_block'/0,
         thread_request/9,  mt_random_request/3,
         pow/3,
         gc_clauses/0,
@@ -164,6 +165,7 @@
         verify_attribute_handler/4,
 	globalvar/1,
         ccall_store_error/2,
+   get_breg/1,
 	xsb_backtrace/0, xsb_backtrace/1.
 
 :- import assert/1, retract/1, (dynamic)/1 from assert.

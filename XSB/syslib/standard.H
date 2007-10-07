@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.78 2007/06/24 18:55:54 tswift Exp $
+** $Id: standard.H,v 1.79 2007/08/29 22:13:08 tswift Exp $
 **
 */
 
@@ -129,7 +129,7 @@
           term_psc/2, term_new/2, term_new_mod/3, term_type/2  %%, close_open_tables/0
 	  from machine.
 :- import '$$set_scope_marker'/0, '$$unwind_stack'/0, 
-	  '$$clean_up_block'/0
+	  '$$clean_up_block'/1
      from machine. 
 :- import numbervars/1 from num_vars.
 :- import calculate_singleton/3 from singlton.
