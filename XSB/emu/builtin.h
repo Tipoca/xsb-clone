@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.79 2007-08-23 14:48:19 dwarren Exp $
+** $Id: builtin.h,v 1.80 2007-10-07 17:37:55 tswift Exp $
 ** 
 */
 
@@ -201,6 +201,7 @@
 #define PRIVATE_BUILTIN	        180
 
 #define SEGFAULT_HANDLER	182
+#define GET_BREG                183
 
 #define FLOAT_OP        188
 #define IS_ATTV			189 /* similar to IS_LIST */

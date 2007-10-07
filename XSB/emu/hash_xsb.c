@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.16 2007-08-08 17:50:50 dwarren Exp $
+** $Id: hash_xsb.c,v 1.17 2007-10-07 17:37:54 tswift Exp $
 ** 
 */
 
@@ -87,7 +87,7 @@ unsigned long next_prime(unsigned long some_int) {
  *  Return a bucket number in the range [0 .. (hash_table_size - 1)].
  */
 
-unsigned long hash(char *obj_name, byte arity, unsigned long hash_table_size) {
+unsigned long hash(const char *obj_name, byte arity, unsigned long hash_table_size) {
 
   unsigned long hashval, temp;
   int i, j, k;

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.26 2007-06-01 22:47:09 tswift Exp $
+** $Id: psc_xsb.h,v 1.27 2007-10-07 17:37:54 tswift Exp $
 ** 
 */
 
@@ -151,7 +151,7 @@ extern Pair link_sym(Psc, Psc);
 extern Pair insert_module(int, char *);
 extern Pair insert(char *, byte, Psc, int *);
 
-extern char* string_find(char*, int);
+extern char* string_find(const char*, int);
 
 /*======================================================================*/
 /*  Special instance (0-arity interface functions)			*/

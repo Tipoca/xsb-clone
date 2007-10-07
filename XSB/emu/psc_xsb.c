@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.36 2007-08-08 17:50:51 dwarren Exp $
+** $Id: psc_xsb.c,v 1.37 2007-10-07 17:37:54 tswift Exp $
 ** 
 */
 
@@ -67,7 +67,7 @@ extern Psc synint_proc(Psc, int);
 
 #define CHAR_PTR_SIZE  sizeof(char *)
 
-char *string_find(char *str, int insert) {
+char *string_find(const char *str, int insert) {
 
   char **ptr, *str0;
 

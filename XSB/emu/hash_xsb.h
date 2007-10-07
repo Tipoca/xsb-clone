@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.h,v 1.3 2005-01-14 18:31:16 ruim Exp $
+** $Id: hash_xsb.h,v 1.4 2007-10-07 17:37:54 tswift Exp $
 ** 
 */
 
@@ -95,7 +95,7 @@ extern Hash_Table string_table;
  */
 
 unsigned long  next_prime(unsigned long  some_integer);
-unsigned long  hash(char *atom_name, byte arity, word hash_table_size);
+unsigned long  hash(const char *atom_name, byte arity, word hash_table_size);
 void  expand_symbol_table();
 void  expand_string_table();
 void  symbol_table_stats();
