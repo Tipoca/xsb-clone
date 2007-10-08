@@ -1,8 +1,9 @@
-:- import thread_create/2, thread_join/2 from thread.
+
+:- import thread_create/2, thread_create/3, thread_join/2 from thread.
 :- import thread_send_message/2, thread_get_message/1 from mutex_xsb.
 :- import thread_self/1,thread_exit/1 from thread.
 
-test:- test_1.
+test:- test_1,test_2.
 
 test_1:- 
 	set_xsb_flag(max_queue_terms,5),
@@ -31,6 +32,19 @@ child_1_1(Id):-
 	thread_send_message(Id,ola(7)),
 	thread_send_message(Id,ola(8)),
 	write(test_1_shouldnt_get_here).
+
+test_2:- 
+	thread_create(test_2_1,Id,[alias(foo)]),
+	thread_join(Id,_).
+
+%foo 
+test_2_1:- 
+	thread_create(child_2,_ChildId),
+	thread_get_message('Im alive'),
+	writeln(test_2_ok),
+	thread_exit(finito).
+
+child_2:- thread_send_message(foo,'Im alive').
 
 end_of_file.
 
