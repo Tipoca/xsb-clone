@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.45 2007-10-07 17:37:54 tswift Exp $
+** $Id: cinterf.h,v 1.46 2007-10-09 17:15:04 dwarren Exp $
 ** 
 */
 
@@ -305,6 +305,8 @@ DllExport extern int call_conv xsb_init(int, char **);
 DllExport extern int call_conv xsb_init_string(char *);
 DllExport extern int call_conv pipe_xsb_stdin(); 
 DllExport extern int call_conv writeln_to_xsb_stdin(char * input);
+DllExport int call_conv xsb_query_save(CTXTdeclc int NumRegs);
+DllExport int call_conv xsb_query_restore(CTXTdecl);
 DllExport extern int call_conv xsb_command(CTXTdecl);
 DllExport extern int call_conv xsb_command_string(CTXTdeclc char *);
 DllExport extern int call_conv xsb_query(CTXTdecl);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basicdefs.h,v 1.3 2007-01-12 23:33:28 tswift Exp $
+** $Id: basicdefs.h,v 1.4 2007-10-09 17:15:04 dwarren Exp $
 ** 
 */
 
@@ -84,6 +84,7 @@
 #define XSB_EXECUTE 1
 #define XSB_SHUTDOWN 2
 #define XSB_C_INIT 3
+#define XSB_SETUP_X 4
 
 #define XSBINITERRLEN 2048
 

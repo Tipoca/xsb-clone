@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.87 2007-08-21 14:04:26 dwarren Exp $
+** $Id: cinterf.c,v 1.88 2007-10-09 17:15:04 dwarren Exp $
 ** 
 */
 
@@ -1495,6 +1495,49 @@ DllExport int call_conv writeln_to_xsb_stdin(char * input){
     else xsb(CTXTc XSB_EXECUTE,0,0);				\
   }
 #endif
+
+/************************************************************************
+
+ xsb_query_save(CTXTdeclc NumRegs) saves the XSB registers and
+ initializes XSB so that XSB to be ready to accept a query.
+
+************************************************************************/
+
+DllExport int call_conv xsb_query_save(CTXTdeclc int NumRegs) {
+
+  LOCK_XSB_SYNCH;  // ?? is this right?
+  xsb(CTXTc XSB_SETUP_X,NumRegs,0);
+  UNLOCK_XSB_SYNCH; 
+  return(XSB_SUCCESS);
+
+}
+
+DllExport int call_conv xsb_query_restore(CTXTdecl) {
+
+  reset_ccall_error(CTXT);
+
+  LOCK_XSB_SYNCH;
+  c2p_int(CTXTc 3,reg_term(CTXTc 3));  /* command for finishing a goal */
+  EXECUTE_XSB;
+  if (ccall_error_thrown(CTXT))  
+    {UNLOCK_XSB_SYNCH;  return(XSB_ERROR);}
+  if (is_var(reg_term(CTXTc 2))) { /* goal succeeded */
+    prolog_term term = reg_term(CTXTc 1);
+    if (isconstr(term)) {
+      int  disp;
+      char *addr;
+      Psc psc = get_str_psc(term);
+      addr = (char *)(clref_val(term));
+      for (disp = 1; disp <= (int)get_arity(psc); ++disp) {
+	bld_copy(reg+disp, cell((CPtr)(addr)+disp));
+      }
+    }
+    UNLOCK_XSB_SYNCH; 
+    return(XSB_SUCCESS);
+  } 
+  UNLOCK_XSB_SYNCH;
+  return(XSB_ERROR);
+}
 
 /************************************************************************
 
