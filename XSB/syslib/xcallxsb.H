@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.H,v 1.12 2007/01/25 20:32:22 tswift Exp $
+** $Id: xcallxsb.H,v 1.13 2007/10/09 16:40:18 dwarren Exp $
 ** 
 */
 
@@ -37,3 +37,4 @@
 
 :- import xsb_flag/2 from curr_sym.
 
+ :- import ccall_error_handler/1 from error_handler.
