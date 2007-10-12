@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xasppkg.c,v 1.4 2007-09-28 20:48:47 tswift Exp $
+** $Id: xasppkg.c,v 1.5 2007-10-12 20:17:19 tswift Exp $
 ** 
 */
 
@@ -49,16 +49,19 @@ int curatom,totatoms; /* current atom, used during creation */
 
 extern "C" void init(CTXTdecl)
 {
-  smodels = (new Smodels);
 
-  api = new Api(&(((Smodels *) (th->_smodels))->program));
+  th->_smodels = (CPtr) (new Smodels);
+  //  smodels = (new Smodels);
+  
+  th->_api = (CPtr) (new Api(&(((Smodels *) (th->_smodels))->program)));
 }
 
 extern "C" void numberAtoms(CTXTdeclc int nAtoms)
 {
   int i;
 
-  atoms = (Atom **) malloc(sizeof(Atom*)*nAtoms);
+  //  atoms = (Atom **) malloc(sizeof(Atom*)*nAtoms);
+  th->_atoms = (CPtr) malloc(sizeof(Atom*)*nAtoms);
   for (i=0; i<nAtoms; i++) 
     atoms[i] = api->new_atom();
 
