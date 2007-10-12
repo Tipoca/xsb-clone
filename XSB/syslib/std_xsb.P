@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.95 2007/10/05 19:34:50 tswift Exp $
+** $Id: std_xsb.P,v 1.96 2007/10/12 15:54:07 tswift Exp $
 ** 
 */
 
@@ -340,6 +340,7 @@ standard_symbol(thread_self,1,thread).
 standard_symbol(thread_signal,2,thread).
 standard_symbol(thread_sleep,1,thread).
 standard_symbol(thread_yield,0,thread).
+standard_symbol(threads,0,thread).
 
 standard_symbol(thread_get_message,1, mutex_xsb).
 standard_symbol(thread_get_message,2, mutex_xsb).
@@ -347,6 +348,7 @@ standard_symbol(thread_get_signal,1, mutex_xsb).
 standard_symbol(thread_peek_message,1,  mutex_xsb).
 standard_symbol(thread_peek_message,2, mutex_xsb).
 standard_symbol(thread_peek_signal,1,  mutex_xsb).
+standard_symbol(thread_send_message,1, mutex_xsb).
 standard_symbol(thread_send_message,2, mutex_xsb).
 
 standard_symbol(tmpfile_open, 1, file_io).
