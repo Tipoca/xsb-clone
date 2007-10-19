@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.155 2007/09/28 19:38:57 tswift Exp $
+** $Id: tr_utils.c,v 1.156 2007/10/09 17:15:04 dwarren Exp $
 ** 
 */
 
@@ -47,10 +47,10 @@
 #include "flags_xsb.h"
 #include "trie_internals.h"
 #include "tst_aux.h"
-#include "cut_xsb.h"
 #include "macro_xsb.h"
 #include "sw_envs.h"
 #include "choice.h"
+#include "cut_xsb.h"
 #include "inst_xsb.h"
 #include "error_xsb.h"
 #include "io_builtins_xsb.h"

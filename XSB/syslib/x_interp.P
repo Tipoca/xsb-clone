@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.54 2006/09/13 17:10:52 dwarren Exp $
+** $Id: x_interp.P,v 1.55 2007/10/05 19:34:50 tswift Exp $
 ** 
 */
 
@@ -283,9 +283,25 @@ general_verify_attributes(Atts,Value) :-
 
 call_attribute_handlers([],_).
 call_attribute_handlers([Mod,Attr|Rest],Value) :-
-	verify_attribute_handler(Mod,Attr,Value,Handler),
-	call(Handler),
+	(Mod = call_cleanup_mod -> 
+	    call(Attr)
+	 ; 
+  	    verify_attribute_handler(Mod,Attr,Value,Handler),
+  	    call(Handler)),
 	call_attribute_handlers(Rest,Value).	
+/*
+:- import existence_error/4 from error_handler.
+
+call_attribute_handlers([Mod,Attr|Rest],Value) :-
+	(Mod = call_cleanup_mod -> 
+	    call(Attr)
+	 ; 
+   	    (verify_attribute_handler(Mod,Attr,Value,Handler) -> 
+		call(Handler)
+	    ; existence_error(attribute_handler,attribute([Mod,Attr|Rest],Value),
+	                       call_attribute_handlers/2,1) ) ),
+	call_attribute_handlers(Rest,Value).	
+*/	
 
 
 /* === version message ================================================= */
@@ -335,4 +351,5 @@ print_debug_state :-
 	  ->	file_write(STDDBG,[debug]), file_nl(STDDBG)
 	; true
 	).
+
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_retrv.c,v 1.24 2007-08-08 17:50:53 dwarren Exp $
+** $Id: tst_retrv.c,v 1.25 2007-10-19 21:15:16 tswift Exp $
 ** 
 */
 
@@ -39,11 +39,12 @@
 #include "psc_xsb.h"
 #include "deref.h"
 #include "binding.h"
-#include "cut_xsb.h"	   /* trail frame field access macros */
 #include "sw_envs.h"
 #include "subp.h"          /* xsbBool unify(CTXTc Cell, Cell) */
 #include "table_stats.h"
 #include "trie_internals.h"
+#include "choice.h"
+#include "cut_xsb.h"	   /* trail frame field access macros */
 #include "macro_xsb.h"
 #include "tst_aux.h"
 #include "tst_utils.h"
