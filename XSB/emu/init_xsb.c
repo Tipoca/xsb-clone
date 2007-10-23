@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.132 2007-09-28 18:20:11 dwarren Exp $
+** $Id: init_xsb.c,v 1.133 2007-10-23 15:53:19 ruim Exp $
 ** 
 */
 
@@ -117,7 +117,7 @@ pdl = {NULL, NULL, 0,
 #endif
 
 Exec_Mode xsb_mode;     /* How XSB is run: interp, disassem, user spec, etc. */
-int max_threads_glc;
+//int max_threads_glc;
 
 int xsb_profiling_enabled = 0;
 
@@ -357,9 +357,19 @@ static int process_long_option(char *option,int *ctr,char *argv[],int argc)
   } else if (0==strcmp(option, "max_threads")) {
     if ((int) (*ctr) < argc) {
       (*ctr)++;
+#ifdef MULTI_THREAD
       sscanf(argv[*ctr], "%d", &max_threads_glc);
+#endif
     }
     else xsb_warn("Missing size value for --max_threads");
+  } else if (0==strcmp(option, "max_mqueues")) {
+    if ((int) (*ctr) < argc) {
+      (*ctr)++;
+#ifdef MULTI_THREAD
+      sscanf(argv[*ctr], "%d", &max_mqueues_glc);
+#endif
+    }
+    else xsb_warn("Missing size value for --max_mqueues");
   }
 
   return(0);
@@ -457,7 +467,10 @@ int pipe_input_stream() {
   reset_stat_total();
 #endif
 
+#ifdef MULTI_THREAD
   max_threads_glc = MAX_THREADS; 
+  max_mqueues_glc = MAX_MQUEUES; 
+#endif
   pflags[STACK_REALLOC] = TRUE;
 #ifdef GC
   pflags[GARBAGE_COLLECT] = INDIRECTION_SLIDE_GC;
@@ -758,8 +771,12 @@ int pipe_input_stream() {
   /* the default for cmd_line_goal goal is "" */
   flags[CMD_LINE_GOAL] = (Cell) mem_alloc(strlen(cmd_line_goal) + 1,OTHER_SPACE);
   strcpy( (char *)flags[CMD_LINE_GOAL], cmd_line_goal );
-  
+ 
+#ifdef MULTI_THREAD 
   flags[MAX_THREAD_FLAG] = max_threads_glc;
+#else
+  flags[MAX_THREAD_FLAG] = 1;
+#endif
 
   /* Set the Prolog startup files.
      ----------------------------- */
