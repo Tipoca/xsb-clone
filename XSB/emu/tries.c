@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.103 2007-08-08 17:50:52 dwarren Exp $
+** $Id: tries.c,v 1.104 2007-10-26 22:47:33 tswift Exp $
 ** 
 */
 
@@ -2176,8 +2176,8 @@ byte *trie_get_returns(CTXTdeclc VariantSF sf, Cell retTerm) {
   delay_it = 0;  /* Don't delay the answer. */
 #ifdef MULTI_THREAD_RWL
 /* save choice point for trie_unlock instruction */
-       save_find_locx(ereg);
-       tbreg = top_of_cpstack;
+//       save_find_locx(ereg);
+//       tbreg = top_of_cpstack;
 #ifdef SLG_GC
        old_cptop = tbreg;
 #endif
@@ -2232,8 +2232,8 @@ byte * trie_get_calls(CTXTdecl)
        }
 #ifdef MULTI_THREAD_RWL
 /* save choice point for trie_unlock instruction */
-       save_find_locx(ereg);
-       tbreg = top_of_cpstack;
+//       save_find_locx(ereg);
+//       tbreg = top_of_cpstack;
 #ifdef SLG_GC
        old_cptop = tbreg;
 #endif

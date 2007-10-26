@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.156 2007/10/09 17:15:04 dwarren Exp $
+** $Id: tr_utils.c,v 1.157 2007/10/19 21:15:15 tswift Exp $
 ** 
 */
 
@@ -1449,8 +1449,8 @@ int trie_interned(CTXTdecl) {
       num_vars_in_var_regs = -1;
       pushreg(trie_term);
 #ifdef MULTI_THREAD_RWL /* save choice point for trie_unlock instruction */
-       save_find_locx(ereg);
-       tbreg = top_of_cpstack;
+      //       save_find_locx(ereg);
+      //       tbreg = top_of_cpstack;
 #ifdef SLG_GC
        old_cptop = tbreg;
 #endif
