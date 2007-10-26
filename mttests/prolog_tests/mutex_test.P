@@ -1,8 +1,5 @@
 
-:- import thread_create/2,thread_join/2 from thread.
-:- import mutex_create/1, mutex_create/2,mutex_destroy/1, with_mutex/2 from mutex_xsb.
-
-test:- test_1,test_2.
+test:- test_1,test_2,test_3.
 
 test_1:- 
 	mutex_create(_M,[alias(console_mutex)]),
@@ -26,5 +23,14 @@ test_2:-
 	writeln(mutex_property(foo1,Prop)),
 	fail.
 test_2.
+
+test_3:- 
+	mutex_create(M2,[]),
+	mutex_lock(M2),
+	mutex_lock(M2),
+	mutex_property(M2,Prop),
+	writeln(mutex_property(Prop)),
+	fail.
+test_3.
 	
 
