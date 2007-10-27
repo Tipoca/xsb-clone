@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.44 2007-10-27 08:47:40 ruim Exp $
+** $Id: findall.c,v 1.45 2007-10-27 09:31:57 ruim Exp $
 ** 
 */
 
@@ -1121,13 +1121,13 @@ Cell copy_term_from_thread( th_context *th, th_context *from, Cell arg1 )
   CPtr hptr ;
   Cell to ;
 
-  hptr = from->_hreg ;
+  hptr = hreg ;
 
-  init_findall_trail(from) ;
-  do_copy_term( from, arg1, &to, &hptr ) ;
-  findall_untrail(from) ;
+  init_findall_trail(th) ;
+  do_copy_term( th, arg1, &to, &hptr ) ;
+  findall_untrail(th) ;
 
-  from->_hreg = hptr ;
+  hreg = hptr ;
 
   return to ;
 }
