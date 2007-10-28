@@ -1,6 +1,6 @@
 
 test:- 
-	(test(4.5),fail ; test(-6.5),fail ; true).
+	(test(4.5),fail ; test(-6.5),fail ; fail).
 
 test(X):- 
 	Y is abs(X),
@@ -17,4 +17,24 @@ test(X):-
 test(X):- 
 	Y is truncate(abs(ceiling(round(X)))),
 	writeln(p(5,Y)).
+
+test:- X is cos(1),writeln(cos(1,X)),fail.
+test:- X is tan(1),writeln(tan(1,X)),fail.
+test:- X is asin(1),writeln(asin(1,X)),fail.
+test:- X is acos(1),writeln(acos(1,X)),fail.
+test:- X is 3**4,writeln(exp(3,4,X)),fail.
+test:- X is min(3,4),writeln(min(3,4,X)),fail.
+test:- X is max(3,4),writeln(max(3,4,X)),fail.
+test:- X is 8 >< 7,writeln('><'(8,7,X)),fail.
+test:- catch(txor1(_X),error(E1,_E2,_E3),writeln(caught(E1))),fail.
+test:- catch(txor2(_X),error(E1,_E2,_E3),writeln(caught(E1))),fail.
+test:- X is sign(-3),writeln(sign(-3,X)),fail.
+test:- X is sign(3),writeln(sign(3,X)),fail.
+test:- X is sign(0),writeln(sign(0,X)).
+
+txor1(X):- Y = a, X is Y >< 7.
+txor2(X):- p(Y),
+	X is Y >< 7.
+
+p(_).
 
