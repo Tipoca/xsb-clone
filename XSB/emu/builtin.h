@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.80 2007-10-07 17:37:55 tswift Exp $
+** $Id: builtin.h,v 1.81 2007-11-01 18:48:51 tswift Exp $
 ** 
 */
 
@@ -260,9 +260,6 @@
 /* added by dsw to support profiling, and backtracing */
 #define XSB_PROFILE             237
 #define XSB_BACKTRACE		238
-
-/* added by TLS Power function */
-#define XSB_POW                 239
 
 /* added by Bart Demoen & Kostis Sagonas for debugging and convenience */
 #define PRINT_LS                240

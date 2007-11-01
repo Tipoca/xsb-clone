@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.38 2007-10-07 17:37:54 tswift Exp $
+** $Id: error_xsb.h,v 1.39 2007-11-01 18:48:52 tswift Exp $
 ** 
 */
 
@@ -58,6 +58,22 @@ extern "C" {
 #define XSBUNDERFLOW	15  /* renamed from UNDERFLOW. This def isn't used, but
 			       UNDERFLOW clashes with some C compilers */
 #define ZERO_DIVIDE	16 
+
+#define EVALUATION_DOMAIN_ERROR 0
+#define EVALUATION_INSTANTIATION_ERROR 1
+#define EVALUATION_UNDERFLOW_ERROR 2
+#define EVALUATION_OVERFLOW_ERROR 3b
+
+#define pow_domain_error(op1,op2)	{			\
+  XSB_StrSet(&(*tsgSBuff1),"");					\
+  XSB_StrSet(&(*tsgSBuff2),"");					\
+  print_pterm(CTXTc op1, TRUE, &(*tsgSBuff1));			\
+  print_pterm(CTXTc op2, TRUE, &(*tsgSBuff2));			\
+  xsb_evaluation_error(EVALUATION_DOMAIN_ERROR,				\
+		       "Wrong domain in evaluable function **/2: %s is " \
+		       "negative and finite, while its exponent (%s) is not an integer", \
+		       (*tsgSBuff2).string, (*tsgSBuff1).string);	\
+  }
 
 /* TLS: used for determing the offset of a putpvar + call so that
    the pc register can be saved so that the proper choice point can be
@@ -121,16 +137,17 @@ extern void xsb_segfault_quitter(int);
 
 int unwind_stack(CTXTdecl);
 
-extern void call_conv xsb_domain_error(CTXTdeclc char *, Cell, const char *, int) ;
-extern void call_conv xsb_existence_error(CTXTdeclc char *,Cell, const char *,int, int) ;
-extern void call_conv xsb_instantiation_error(CTXTdeclc const char *, int) ;
-extern void call_conv xsb_misc_error(CTXTdeclc char*,const char*,int) ; 
-extern void call_conv xsb_permission_error(CTXTdeclc char *,char *,Cell,const char *,int) ;
-extern void call_conv xsb_resource_error(CTXTdeclc char *,const char *, int) ;
-extern void call_conv xsb_resource_error_nopred(CTXTdeclc char *,char *) ;
-extern void call_conv xsb_syntax_error(CTXTdeclc char *) ;
-extern void call_conv xsb_table_error(CTXTdeclc char *) ;
-extern void call_conv xsb_type_error(CTXTdeclc char *,Cell , const char *,int) ;
+DllExport extern void call_conv xsb_domain_error(CTXTdeclc char *, Cell, const char *, int) ;
+  DllExport extern void call_conv xsb_evaluation_error(int,char * , ...);
+DllExport extern void call_conv xsb_existence_error(CTXTdeclc char *,Cell, const char *,int, int) ;
+DllExport extern void call_conv xsb_instantiation_error(CTXTdeclc const char *, int) ;
+DllExport extern void call_conv xsb_misc_error(CTXTdeclc char*,const char*,int) ; 
+DllExport extern void call_conv xsb_permission_error(CTXTdeclc char *,char *,Cell,const char *,int) ;
+DllExport extern void call_conv xsb_resource_error(CTXTdeclc char *,const char *, int) ;
+DllExport extern void call_conv xsb_resource_error_nopred(CTXTdeclc char *,char *) ;
+DllExport extern void call_conv xsb_syntax_error(CTXTdeclc char *) ;
+DllExport extern void call_conv xsb_table_error(CTXTdeclc char *) ;
+DllExport extern void call_conv xsb_type_error(CTXTdeclc char *,Cell , const char *,int) ;
 
 extern void call_conv xsb_memory_error(char *, char *);
 

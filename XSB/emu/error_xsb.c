@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.71 2007-10-28 23:32:36 tswift Exp $
+** $Id: error_xsb.c,v 1.72 2007-11-01 18:48:52 tswift Exp $
 ** 
 */
 
@@ -271,11 +271,6 @@ void call_conv xsb_domain_error(CTXTdeclc char *valid_domain,Cell culprit,
 
 /*****************/
 /* Not using overflow or underflow yet */
-
-#define EVALUATION_DOMAIN_ERROR 0
-#define EVALUATION_INSTANTIATION_ERROR 1
-#define EVALUATION_UNDERFLOW_ERROR 2
-#define EVALUATION_OVERFLOW_ERROR 2
 
 void call_conv xsb_basic_evaluation_error(char *message,int type)
 {
