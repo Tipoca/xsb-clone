@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.P,v 1.29 2007/09/20 15:13:00 ruim Exp $
+** $Id: thread.P,v 1.30 2007/10/05 19:34:50 tswift Exp $
 ** 
 */
 
@@ -320,7 +320,7 @@ thread_sleep(Seconds) :-
 
 threads :-
 	write('------------------------------------------------------------------------'), nl,
-	fmt_write("\t%S\t\t\t%S\t\t%S\n", args('Thread', 'Detached', 'Status')),
+	fmt_write("  %S\t%S\t%S\t\t%S\n", args('Thread', 'Detached', 'Status', 'Alias')),
 	write('------------------------------------------------------------------------'), nl,
 	var_thread_property(Thread, detached(Detached)),
 	thread_property(Thread, status(Status)),
@@ -328,7 +328,7 @@ threads :-
 		true
 	;	Alias = Thread
 	),
-	fmt_write("\t%S\t\t\t%S\t\t\t%S\n", args(Alias, Detached, Status)),
+	fmt_write("  %S\t\t%S\t\t%S\t\t%S\n", args(Thread, Detached, Status, Alias)),
 	fail.
 threads :-
 	write('------------------------------------------------------------------------'), nl.
