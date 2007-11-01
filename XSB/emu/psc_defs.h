@@ -1,4 +1,3 @@
-
 /* File:      psc_defs.h
 ** Author(s): Jiyang Xu, Terry Swift, Kostis Sagonas
 ** Contact:   xsb-contact@cs.sunysb.edu
@@ -19,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_defs.h,v 1.11 2006-05-02 14:30:39 dwarren Exp $
+** $Id: psc_defs.h,v 1.12 2007-11-01 23:46:59 tswift Exp $
 ** 
 */
 

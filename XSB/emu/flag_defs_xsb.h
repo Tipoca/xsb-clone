@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.24 2007-08-03 20:34:56 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.25 2007-11-01 23:46:59 tswift Exp $
 ** 
 */
 
@@ -125,7 +125,8 @@ interrupt flag
 #define THREAD_DETACHED           76   /* Initial Detached flag for created thread */
 #define MAX_THREAD_FLAG           77   /* Maximum number of threads (not changeable after startup) */
 #define MAX_QUEUE_TERMS           78   /* Default Maximum number of terms in a message queue*/
-#define RECOMPILE_OVERRIDE        79
+#define RECOMPILE_OVERRIDE        79   /* Allows compilation when more than 1 thread */
+#define PRIVSHAR_DEFAULT          80   /* Default for shared or private predicates */
 
 #define MAX_FLAGS		85
 
@@ -139,3 +140,6 @@ interrupt flag
 #define QUIETLOAD    	  3   /* don't display "module loaded" msgs */
 #define NOPROMPT    	  5   /* display no prompt--useful in spawned
 				 subprocesses */
+
+#define DEFAULT_PRIVATE   0
+#define DEFAULT_SHARING   1

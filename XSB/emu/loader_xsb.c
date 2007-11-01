@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.68 2007-08-08 17:50:51 dwarren Exp $
+** $Id: loader_xsb.c,v 1.69 2007-11-01 23:46:59 tswift Exp $
 ** 
 */
 
@@ -687,7 +687,11 @@ static xsbBool load_one_sym(FILE *fd, Psc cur_mod, int count, int exp)
       if (!(get_ep(temp_pair->psc_ptr)) && (*(pb)get_ep(temp_pair->psc_ptr) == switchonthread))
 	xsb_warn("Shared declaration ignored for %s/%d\n",
 		get_name(temp_pair->psc_ptr),get_arity(temp_pair->psc_ptr));
-      else set_shared(temp_pair->psc_ptr, (t_env&T_SHARED));
+      else { 
+	if (!flags[PRIVSHAR_DEFAULT]) 
+	  set_shared(temp_pair->psc_ptr, (t_env&T_SHARED));
+	else set_shared(temp_pair->psc_ptr, (T_SHARED));
+      }
     }
 
     if (t_env&T_TABLED_SUB_LOADFILE) 

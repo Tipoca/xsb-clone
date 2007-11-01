@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.133 2007-10-23 15:53:19 ruim Exp $
+** $Id: init_xsb.c,v 1.134 2007-11-01 23:46:59 tswift Exp $
 ** 
 */
 
@@ -340,7 +340,8 @@ static int init_open_files(void)
 /*==========================================================================*/
 
 /* if command line option is long --optionname, then the arg here is
-   'optionname'. Process it and return.
+   'optionname'. Process it and return.  (Dont worry -- init_flags has
+   already been done)
 */
 static int process_long_option(char *option,int *ctr,char *argv[],int argc)
 {
@@ -350,6 +351,8 @@ static int process_long_option(char *option,int *ctr,char *argv[],int argc)
     flags[BANNER_CTL] *= QUIETLOAD;
   } else if (0==strcmp(option, "noprompt")) {
     flags[BANNER_CTL] *= NOPROMPT;
+  } else if (0==strcmp(option, "shared_predicates")) {
+    flags[PRIVSHAR_DEFAULT] = DEFAULT_SHARING;
   } else if (0==strcmp(option, "help")) {
     help_message();
   } else if (0==strcmp(option, "version")) {
@@ -374,6 +377,7 @@ static int process_long_option(char *option,int *ctr,char *argv[],int argc)
 
   return(0);
 }
+
 
 /*==========================================================================*/
 /* Currently done on process startup before init_para(). Do not use elsewhere, 
