@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: eval.P,v 1.19 2007/10/21 19:33:56 tswift Exp $
+** $Id: eval.P,v 1.20 2007/10/28 23:21:12 tswift Exp $
 ** 
 */
 
@@ -110,7 +110,7 @@ eval0(max(X,Y), Res,Expr) :- eval(X, Res1,Expr),eval(Y, Res2,Expr),
 eval0(exp(X,Y), Res,Expr) :- eval(X, Res1,Expr),eval(Y, Res2,Expr),
 			     pow(Res1,Res2,Res).
 eval0('**'(X,Y), Res,Expr) :- eval(X, Res1,Expr),eval(Y, Res2,Expr),
-			     pow(Res1,Res2,Res).
+			     Res is Res1 ** Res2.
 eval0('><'(X,Y), Res,Expr) :- eval(X, Res1,Expr),eval(Y, Res2,Expr),
 			     Res is Res1 >< Res2.
 
