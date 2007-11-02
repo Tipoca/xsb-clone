@@ -38,3 +38,4 @@ options=$3
 ../seqgentest.sh "$XEMU --max_threads 100" detach_test "test." 
 ../seqgentest.sh "$XEMU $options" thread_property "test." 
 ../seqgentest.sh "$XEMU $options" test_destroy "test." 
+../seqgentest.sh "$XEMU $options" test_exit "test." 
