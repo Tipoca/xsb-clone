@@ -25,7 +25,11 @@ int main(int argc, char *argv[])
   myargv[1] = "-n";  /* now unnecessary, but wont hurt */
 
   /* Initialize xsb */
-  xsb_init(myargc,myargv);  
+  if (xsb_init(myargc,myargv)) {
+    fprintf(stderr,"%s initializing XSB: %s\n",xsb_get_init_error_type(),
+	    xsb_get_init_error_message());
+    exit(XSB_ERROR);
+  }
 
 #ifdef MULTI_THREAD
   th_context *th = xsb_get_main_thread();
