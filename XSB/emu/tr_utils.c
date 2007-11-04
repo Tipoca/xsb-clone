@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.157 2007/10/19 21:15:15 tswift Exp $
+** $Id: tr_utils.c,v 1.158 2007/10/26 22:47:33 tswift Exp $
 ** 
 */
 
@@ -1311,7 +1311,7 @@ struct interned_trie_t* itrie_array;
 
 #define MAX_INTERNED_TRIES 2003
 
-void init_newtrie(CTXTdecl) {
+void init_trie_table(CTXTdecl) {
   int i ;
   
   itrie_array = 
