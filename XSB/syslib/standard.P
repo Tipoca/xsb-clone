@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.128 2007/10/07 17:41:22 tswift Exp $
+** $Id: standard.P,v 1.129 2007/10/19 21:10:37 tswift Exp $
 ** 
 */
 
@@ -1398,6 +1398,7 @@ gc_atoms:-
 %%     Do not call any of the $$ predicates below at other places.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- thread_private '$$exception_ball'/2.
 :- dynamic '$$exception_ball'/2.
 :- index '$$exception_ball'/2-0.
 
