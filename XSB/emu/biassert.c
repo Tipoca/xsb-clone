@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.157 2007-11-09 14:48:50 dwarren Exp $
+** $Id: biassert.c,v 1.158 2007-11-15 23:02:14 tswift Exp $
 ** 
 */
 
@@ -3283,7 +3283,7 @@ PrRef build_prref( CTXTdeclc Psc psc )
   //  printf("prref disp tab for %s/%d? shared=%d\n",
   //         get_name(psc),get_arity(psc),get_shared(psc));
 
-  if (flags[PRIVSHAR_DEFAULT]) set_shared(psc, (T_SHARED));
+  //  if (flags[PRIVSHAR_DEFAULT]) set_shared(psc, (T_SHARED));
 
   if ((*(pb)get_ep(psc) == switchonthread) || !get_shared(psc)) {
     struct DispBlk_t *dispblk;
