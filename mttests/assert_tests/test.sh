@@ -41,4 +41,8 @@ echo "-------------------------------------------------------"
 ../seqgentest.sh "$XEMU $options" retractall_test3 "test." 
 
 ../seqgentest.sh "$XEMU $options" test_private "test." 
+../seqgentest.sh "$XEMU $options" test_private_1 "test." 
+
+# test some special featurs of shared_predicates
 ../seqgentest.sh "$XEMU --shared_predicates $options" test_shared "test." 
+../seqgentest.sh "$XEMU --shared_predicates $options" test_abort "test." 
