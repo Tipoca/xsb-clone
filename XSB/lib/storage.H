@@ -18,18 +18,21 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage.H,v 1.11 2006-01-20 01:30:48 kifer Exp $
+** $Id: storage.H,v 1.12 2007-11-17 04:08:54 kifer Exp $
 ** 
 */
 
 
-:- export storage_insert_fact_bt/3, storage_delete_fact_bt/3, 
+:- export
+	storage_insert_fact_bt/3, storage_delete_fact_bt/3, 
+	storage_insert_fact_bt/5, storage_delete_fact_bt/5, 
 	storage_insert_fact/3, storage_delete_fact/3,
 	storage_delete_all/1,
 	storage_find_fact/2,
 	storage_reclaim_space/1,
 	storage_commit/1,
 	storage_insert_keypair_bt/4, storage_delete_keypair_bt/3,
+	storage_insert_keypair_bt/6, storage_delete_keypair_bt/5,
 	storage_insert_keypair/4, storage_delete_keypair/3,
 	storage_find_keypair/3,
 	%% this is for debugging/profiling
@@ -42,4 +45,8 @@
    from intern.
 
 
-:- import throw/1, atom/1 from standard.
+:- import
+	call/1,
+	throw/1,
+	atom/1
+   from standard.
