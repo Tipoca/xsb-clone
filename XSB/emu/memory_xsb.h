@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.36 2007-09-26 20:15:22 dwarren Exp $
+** $Id: memory_xsb.h,v 1.37 2007-11-18 18:53:00 evansbj Exp $
 ** 
 */
 
@@ -93,9 +93,9 @@ extern System_Stack pdl,            /* PDL                        */
 			  ( (CPtr)(Ptr) >= top_of_localstk) )
 
 #define IsInTrail(Ptr)	( ( (CPtr)(Ptr) <= (CPtr)top_of_trail ) &&	\
-    			  ( (CPtr)(Ptr) >= (CPtr)cpstack.low ) )
+    			  ( (CPtr)(Ptr) >= (CPtr)tcpstack.low ) )
 
-#define IsInCPS(Ptr)	( ( (CPtr)(Ptr) < (CPtr)cpstack.high ) &&	\
+#define IsInCPS(Ptr)	( ( (CPtr)(Ptr) < (CPtr)tcpstack.high ) &&	\
 			  ( (CPtr)(Ptr) >= top_of_cpstack) )
 
 
