@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.173 2007-11-01 18:48:52 tswift Exp $
+** $Id: emuloop.c,v 1.174 2007-11-20 19:17:20 tswift Exp $
 ** 
 */
 
@@ -2634,7 +2634,7 @@ DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
 
 	init_machine(CTXTc 0, 0, 0, 0);	/* init space, regs, stacks */
 	init_inst_table();		/* init table of instruction types */
-	init_symbols(CTXT);		/* preset a few symbols in PSC table */
+	init_symbols(CTXT);		/* preset symbols in PSC table; initialize Proc-level globals */
 	init_interrupt();		/* catch ^C interrupt signal */
 
 	/* "b" does nothing in UNIX, denotes binary file in Windows -- 

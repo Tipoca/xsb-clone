@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.104 2007-10-26 22:47:33 tswift Exp $
+** $Id: tries.c,v 1.105 2007-11-20 19:17:21 tswift Exp $
 ** 
 */
 
@@ -1405,7 +1405,8 @@ static void bottomupunify(CTXTdeclc Cell term, BTNptr Root, BTNptr Leaf)
 /*----------------------------------------------------------------------*/
 
 /*
- *  Used with tries created via the builtin trie_intern.
+ *  Used with tries created via the builtin trie_intern, to access a
+ *  trie from a leaf.  Not yet extended to shared tries.
  */
 
 xsbBool bottom_up_unify(CTXTdecl)

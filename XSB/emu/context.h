@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.62 2007-09-28 21:28:37 tswift Exp $
+** $Id: context.h,v 1.63 2007-11-20 19:17:20 tswift Exp $
 ** 
 */
 
@@ -353,6 +353,8 @@ struct random_seeds_t *_random_seeds;	/* struct containing seeds for random num 
   /* for tables */
   Structure_Manager *_private_smTableBTN;
   Structure_Manager *_private_smTableBTHT;
+  Structure_Manager *_private_smAssertBTN;
+  Structure_Manager *_private_smAssertBTHT;
   Structure_Manager *_private_smTableBTHTArray;
   Structure_Manager *_private_smTSTN; 
   Structure_Manager *_private_smTSTHT;
@@ -643,6 +645,8 @@ typedef struct th_context th_context ;
 
 #define private_smTableBTN        (th->_private_smTableBTN)
 #define private_smTableBTHT       (th->_private_smTableBTHT)
+#define private_smAssertBTN        (th->_private_smAssertBTN)
+#define private_smAssertBTHT       (th->_private_smAssertBTHT)
 #define private_smTableBTHTArray       (th->_private_smTableBTHTArray)
 #define private_smTSTN          (th-> _private_smTSTN)
 #define private_smTSTHT         (th-> _private_smTSTHT)
