@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.33 2006-12-02 19:31:57 ruim Exp $
+** $Id: complete_xsb_i.h,v 1.34 2007-11-24 02:06:32 ruim Exp $
 ** 
 */
 
@@ -169,14 +169,9 @@ XSB_Start_Instr(check_complete,_check_complete)
       cc_tbreg = ProcessSuspensionFrames(CTXTc cc_tbreg, cs_ptr);
       FailIfAnswersFound((cc_tbreg == orig_breg ? 0 : cc_tbreg));
       
-#ifdef SHARED_COMPL_TABLES
-    pthread_mutex_lock(&completing_mut);
-    SYS_MUTEX_INCR( MUTEX_COMPL );
-#endif
       CompleteSimplifyAndReclaim(CTXTc cs_ptr);
 #ifdef SHARED_COMPL_TABLES
     pthread_cond_broadcast(&completing_cond);
-    pthread_mutex_unlock(&completing_mut);
 #endif
 
     /* TLS: not sure about condition: how could subg_answers be true
