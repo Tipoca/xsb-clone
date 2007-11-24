@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.34 2007-02-23 20:17:04 tswift Exp $
+** $Id: bineg_xsb_i.h,v 1.35 2007-11-24 06:53:58 ruim Exp $
 ** 
 */
 
@@ -136,11 +136,14 @@ case IS_INCOMPLETE: {
         waiting_for_thread = find_context(table_tid) ;
         if( would_deadlock( table_tid, xsb_thread_id ) )
 	{	/* code for leader */
+     		pthread_mutex_unlock(&completing_mut);
                 reset_other_threads( th, waiting_for_thread, producerSF );
+     		pthread_mutex_lock(&completing_mut);
+                reset_thread_deps( th, waiting_for_thread, producerSF );
                 th->deadlock_brk_leader = TRUE ;
                 pthread_cond_broadcast(&completing_cond) ;
-		reset_leader( th ) ;
                 pthread_mutex_unlock(&completing_mut) ;
+		reset_leader( th ) ;
 		return TRUE ;
 	}
 	th->waiting_for_subgoal = producerSF ;
