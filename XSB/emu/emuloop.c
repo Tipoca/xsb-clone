@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.174 2007-11-20 19:17:20 tswift Exp $
+** $Id: emuloop.c,v 1.175 2007-11-28 16:26:01 dwarren Exp $
 ** 
 */
 
@@ -1738,7 +1738,7 @@ argument positions.
     XSB_Deref(op2);                                                      
     if (isinteger(op1)) {                                                
         if (isinteger(op2)) {                                            
-	  Integer temp = pow(int_val(op2),int_val(op1));		
+	  Integer temp = (Integer) pow(int_val(op2),int_val(op1));		
 	  bld_oint(op3, temp); }                                       
         else if (isboxedfloat(op2)) {					 
 	  Float temp = pow(boxedfloat_val(op2),(Float)int_val(op1)); 
@@ -1747,7 +1747,7 @@ argument positions.
 	  Float temp = pow(float_val(op2),(Float)int_val(op1));          
 	  bld_boxedfloat(CTXTc op3, temp); }                           
         else if (isboxedinteger(op2)) {                                  
-	  Integer temp = pow(boxedint_val(op2),int_val(op1));            
+	  Integer temp = (Integer) pow(boxedint_val(op2),int_val(op1));            
 	  bld_oint(op3, temp); }                                       
         else { arithmetic_abort(CTXTc op2, "**", op1); }               
     }                                                                    
@@ -1793,10 +1793,10 @@ argument positions.
     }                                                                    
     else if (isboxedinteger(op1)) {                                      
         if (isinteger(op2)) {						 
-	  Integer temp = pow(int_val(op2),boxedint_val(op1));           
+	  Integer temp = (Integer) pow(int_val(op2),boxedint_val(op1));           
 	  bld_oint(op3, temp); }                                       
         else if (isboxedinteger(op2)) {                                  
-	  Integer temp = pow(boxedint_val(op2),boxedint_val(op1));      
+	  Integer temp = (Integer) pow(boxedint_val(op2),boxedint_val(op1));      
 	  bld_oint(op3, temp); }                                       
         else if (isboxedfloat(op2)) {					 
 	  Float temp = pow(boxedfloat_val(op2),(Float)boxedint_val(op1));
