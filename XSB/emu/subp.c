@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.109 2007/09/28 18:30:10 tswift Exp $
+** $Id: subp.c,v 1.110 2007/10/05 19:23:09 tswift Exp $
 ** 
 */
 
@@ -82,11 +82,6 @@
 extern xsbBool quotes_are_needed(char *string);
 
 /*======================================================================*/
-
-#undef IFTHEN_FAILED
-#define IFTHEN_FAILED	return 0
-#undef IFTHEN_SUCCEED
-#define IFTHEN_SUCCEED	return 1
 
 double realtime_count_gl;
 
@@ -170,6 +165,11 @@ Cell build_interrupt_chain(CTXTdecl) {
 /*======================================================================*/
 /*  Unification routines.						*/
 /*======================================================================*/
+/* the follow redefinitions change how the unify_xsb() macro below works! */
+#undef IFTHEN_FAILED
+#define IFTHEN_FAILED	return 0
+#undef IFTHEN_SUCCEED
+#define IFTHEN_SUCCEED	return 1
 
 xsbBool unify(CTXTdeclc Cell rop1, Cell rop2)
 { /* begin unify */
