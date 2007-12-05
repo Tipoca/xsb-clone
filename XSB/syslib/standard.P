@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.129 2007/10/19 21:10:37 tswift Exp $
+** $Id: standard.P,v 1.130 2007/11/13 17:44:03 ruim Exp $
 ** 
 */
 
@@ -1046,7 +1046,7 @@ halt :- halt.
 %---------------%
 
 X = X.
-X \= Y :- ( X = Y, !, fail) ; true.
+X \= Y :- \+ ( X = Y ).
 
 %-------------------%
 %  Term comparison  %

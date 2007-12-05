@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger.P,v 1.29 2006/10/18 15:08:52 dwarren Exp $
+** $Id: debugger.P,v 1.30 2006/12/22 19:05:29 tswift Exp $
 ** 
 */
 
@@ -440,7 +440,6 @@ restore_shown.
 %% Stop showing trace; save the old shown
 %% If showing nothing, then noop.
 show_nothing :- setof(X, shown(X,_), L),
-	    	L \= [],
 		!,
 	        retractall('_$_deb_old_show'(_)),
 	        assert('_$_deb_old_show'(L)),

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.35 2007/06/24 18:55:54 tswift Exp $
+** $Id: file_io.H,v 1.36 2007/07/07 21:04:18 tswift Exp $
 ** 
 */
 
@@ -33,7 +33,7 @@
 
 :- import for/3 from basics.
 
-:- import  abort/1, atom_codes/2, '\='/2, repeat/0, integer/1,
+:- import  abort/1, atom_codes/2, repeat/0, integer/1,
                file_exists/1, atom/1
       from standard.
 
