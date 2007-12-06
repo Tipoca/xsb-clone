@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.56 2007-08-08 17:50:52 dwarren Exp $
+** $Id: tables.c,v 1.57 2007-12-06 23:24:55 ruim Exp $
 ** 
 */
 
@@ -717,10 +717,12 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
       /* Can't deallocate answer return list for CONC_COMPL shared tables */
       SM_DeallocateSharedStructList(smALN,pRealAnsList,
 			      subg_ans_list_tail(producerSF));
+      subg_ans_list_tail(producerSF) = NULL;
 #endif
     } else {
       SM_DeallocateStructList(*private_smALN,pRealAnsList,
 			      subg_ans_list_tail(producerSF));
+      subg_ans_list_tail(producerSF) = NULL;
     }
 #else
       SM_DeallocateStructList(smALN,pRealAnsList,

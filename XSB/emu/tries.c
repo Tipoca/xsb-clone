@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.105 2007-11-20 19:17:21 tswift Exp $
+** $Id: tries.c,v 1.106 2007-12-06 23:24:55 ruim Exp $
 ** 
 */
 
@@ -311,8 +311,8 @@ BTHTptr  New_BTHT(CTXTdeclc Structure_Manager * SM,int TrieType) {
 
    if (threads_current_sm == SHARED_SM) {
      /* Lock shared BTHT structure manager and malloc BTHT array */
+     SM_AllocateSharedStruct(*SM,btht);
      SM_Lock(*SM);
-     SM_AllocateStruct(*SM,btht);
      SM_AddToAllocList_DL(*SM,((BTHTptr)btht),BTHT_PrevBTHT,BTHT_NextBTHT);
      SM_Unlock(*SM);
      BTHT_BucketArray(((BTHTptr)btht)) =				\
