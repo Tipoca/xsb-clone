@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.19 2007-12-06 23:24:55 ruim Exp $
+** $Id: struct_manager.h,v 1.20 2007-12-08 20:58:22 ruim Exp $
 ** 
 */
 
@@ -411,9 +411,9 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
    while (pStruct != pTail) {				\
      void *pStmp = pStruct ;				\
      pStruct = *(void **)pStruct;			\
-     /*mem_dealloc(pStmp,SM_StructSize(SM),TABLE_SPACE);*/	\
+     mem_dealloc(pStmp,SM_StructSize(SM),TABLE_SPACE);	\
    }							\
-   /*mem_dealloc(pStruct,SM_StructSize(SM),TABLE_SPACE);*/	\
+   mem_dealloc(pStruct,SM_StructSize(SM),TABLE_SPACE);	\
  }
 #else
 #define SM_DeallocateSharedStructList(SM,pHead,pTail)  \
