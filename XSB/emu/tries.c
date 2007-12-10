@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.108 2007-12-10 05:35:26 ruim Exp $
+** $Id: tries.c,v 1.109 2007-12-10 17:02:04 ruim Exp $
 ** 
 */
 
@@ -1154,7 +1154,13 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   if ( flag == 0 ) {
     MakeLeafNode(Paren);
     TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
+#ifndef MULTI_THREAD
     ans_inserts++;
+#else
+#ifdef NON_OPT_COMPILE
+    ans_inserts++;
+#endif
+#endif
 
     New_ALN(subgoal_ptr,answer_node,Paren,NULL);
     SF_AppendNewAnswer(subgoal_ptr,answer_node);
