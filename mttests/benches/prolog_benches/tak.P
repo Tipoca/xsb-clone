@@ -11,11 +11,14 @@ bench_tak(Type,N):-
 	flush_output.
 
 mt_bench_tak(Type,N,M):- 
+	M < 4,!,
 	walltime(T1),
 	n_par_execute(main1(N),M),
 	walltime(T2),T is T2-T1,
 	writeq(datum(Type,M,T)),writeln('.'),nl,
 	flush_output.
+mt_bench_tak(Type,N,M):- 
+	writeq(datum(Type,M,0)),writeln('.'),nl.
 
 
 
