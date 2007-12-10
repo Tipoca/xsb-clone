@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.107 2007-12-09 18:41:38 ruim Exp $
+** $Id: tries.c,v 1.108 2007-12-10 05:35:26 ruim Exp $
 ** 
 */
 
@@ -274,15 +274,7 @@ BTNptr new_btn(CTXTdeclc int trie_t, int node_t, Cell symbol, BTNptr parent,
 
   void *btn;
 
-#ifdef MULTI_THREAD  
-  if (threads_current_sm == PRIVATE_SM) {
-    SM_AllocateStruct(*smBTN,btn);
-  } else {
-    SM_AllocateSharedStruct(*smBTN,btn);
-    }
-#else
-  SM_AllocateStruct(*smBTN,btn);
-#endif
+  SM_AllocatePossSharedStruct( *smBTN, btn );
   TN_Init(((BTNptr)btn),trie_t,node_t,symbol,parent,sibling);
   return (BTNptr)btn;
 }
