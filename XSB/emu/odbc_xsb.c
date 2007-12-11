@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.67 2007-10-01 17:01:00 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.68 2007-12-11 06:57:16 crued Exp $
 **
 */
 
@@ -29,6 +29,7 @@
 
 #ifdef CYGWIN
 #define FAR
+#include "windows.h" // main win32api include for Cygwin
 #include "sql.h"
 #include "sqlext.h"
 #include "odbc_string.h"
