@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_unify.c,v 1.19 2007-08-08 17:50:53 dwarren Exp $
+** $Id: tst_unify.c,v 1.20 2007-12-13 16:15:09 ruim Exp $
 ** 
 */
 
@@ -411,7 +411,14 @@ void consume_subsumptive_answer(CTXTdeclc BTNptr pAnsLeaf, int sizeTmplt,
     consumption_error(CTXTc "Bad answer handle");
     return;
   }
+#ifndef MULTI_THREAD
   NumSubOps_AnswerConsumption++;
+#else
+#ifdef NON_OPT_COMPILE
+  NumSubOps_AnswerConsumption++;
+#else
+#endif
+#endif
 
   /* Initialize Data Structs
      ----------------------- */
