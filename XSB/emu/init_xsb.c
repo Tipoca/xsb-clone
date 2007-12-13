@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.137 2007-11-20 19:17:20 tswift Exp $
+** $Id: init_xsb.c,v 1.138 2007-12-13 15:33:07 ruim Exp $
 ** 
 */
 
@@ -79,15 +79,29 @@
 /* Sizes of the Data Regions in K-byte blocks
    ------------------------------------------ */
 #ifdef BITS64
+#ifdef SHARED_COMPL_TABLES
+#define PDL_DEFAULT_SIZE         (8*2)
+#define GLSTACK_DEFAULT_SIZE    (96*2)
+#define TCPSTACK_DEFAULT_SIZE   (96*2)
+#define COMPLSTACK_DEFAULT_SIZE  (8*2)
+#else /* SEQUENTIAL OR CONC_COMPL */
 #define PDL_DEFAULT_SIZE         (64*2)
 #define GLSTACK_DEFAULT_SIZE    (768*2)
 #define TCPSTACK_DEFAULT_SIZE   (768*2)
 #define COMPLSTACK_DEFAULT_SIZE  (64*2)
-#else
+#endif /* SHARED_COMPL_TABLES */
+#else /* 32 BIT */
+#ifdef SHARED_COMPL_TABLES
+#define PDL_DEFAULT_SIZE         8
+#define GLSTACK_DEFAULT_SIZE    96
+#define TCPSTACK_DEFAULT_SIZE   96
+#define COMPLSTACK_DEFAULT_SIZE  8
+#else /* SEQUENTIAL OR CONC_COMPL*/
 #define PDL_DEFAULT_SIZE         64
 #define GLSTACK_DEFAULT_SIZE    768
 #define TCPSTACK_DEFAULT_SIZE   768
 #define COMPLSTACK_DEFAULT_SIZE  64
+#endif
 #endif
 
 #ifndef fileno				/* fileno may be a  macro */
