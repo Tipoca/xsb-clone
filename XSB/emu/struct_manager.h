@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.20 2007-12-08 20:58:22 ruim Exp $
+** $Id: struct_manager.h,v 1.21 2007-12-13 18:22:26 ruim Exp $
 ** 
 */
 
@@ -146,6 +146,10 @@
  *    avoid direct manipulatiion of the Structure Manager!  Use the
  *    provided interface routines.
  */
+
+/* Multi-threade system: alignment of structs to n bytes */
+
+#define S_ALIGN 16
 
 #define PRIVATE_SM 1
 #define SHARED_SM 0
@@ -338,8 +342,8 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
   (StructPtr->cur_block).pBlock = NULL; 				\
   (StructPtr->cur_block).pNextStruct = NULL;				\
   (StructPtr->cur_block).pLastStruct = NULL;				\
-  (StructPtr->struct_desc).size = sizeof(StructType);			\
-  (StructPtr->struct_desc).num = StructsPerBlock;			\
+  (StructPtr->struct_desc).size = ROUND(sizeof(StructType),S_ALIGN);	\
+  (StructPtr->struct_desc).num = StructsPerBlock+1;			\
   (StructPtr->struct_desc).name = NameString;				\
   (StructPtr->struct_lists).alloc = NULL;				\
   (StructPtr->struct_lists).dealloc = NULL;				\
@@ -349,8 +353,8 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
   (BuffPtr->cur_block).pBlock = NULL;					\
   (BuffPtr->cur_block).pNextStruct = NULL;				\
   (BuffPtr->cur_block).pLastStruct = NULL;				\
-  (BuffPtr->struct_desc).size = BuffSize;				\
-  (BuffPtr->struct_desc).num = BuffsPerBlock;				\
+  (BuffPtr->struct_desc).size = ROUND(sizeof(StructType),S_ALIGN);	\
+  (BuffPtr->struct_desc).num = BuffsPerBlock+1;				\
   (BuffPtr->struct_desc).name = NameString;				\
   (BuffPtr->struct_lists).alloc = NULL;					\
   (BuffPtr->struct_lists).dealloc = NULL;				\
@@ -369,6 +373,18 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
   pStruct = mem_alloc(SM_StructSize(SM),TABLE_SPACE);            	\
  }
 
+#ifndef MULTI_THREAD
+#define ALIGN_FIRST_STRUCT(SM)
+#else
+#define ALIGN_FIRST_STRUCT(SM)						\
+{ 									\
+  SM_NextStruct(SM) = (void *)ROUND((Cell)(SM_NextStruct(SM)),S_ALIGN) ;\
+  SM_LastStruct(SM) = (void *)ROUND((Cell)(SM_LastStruct(SM)),S_ALIGN) 	\
+						- SM_StructSize(SM) ;	\
+}
+#endif
+
+
 #define SM_AllocateStruct(SM,pStruct) {		\
 						\
    if ( IsNonNULL(SM_FreeList(SM)) ) {		\
@@ -376,7 +392,9 @@ extern xsbBool smIsAllocatedStructRef(Structure_Manager, void *);
    }						\
    else {					\
      if ( SM_CurBlockIsDepleted(SM) )		\
-       smAllocateBlock(&SM);			\
+     { smAllocateBlock(&SM);			\
+       ALIGN_FIRST_STRUCT(SM);			\
+     }						\
      SM_AllocateFromBlock(SM,pStruct);		\
    }						\
  }

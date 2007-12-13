@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.27 2007-10-23 15:53:19 ruim Exp $
+** $Id: auxlry.h,v 1.28 2007-12-13 18:22:26 ruim Exp $
 ** 
 */
 
@@ -71,6 +71,10 @@ extern Exec_Mode xsb_mode;
 	xsb_abort("Invalid file descriptor %d in I/O predicate", xsb_filedes);
 
 extern void gdb_dummy(void);
+
+/* round N to the next multiple of P2, P2 must be a power of 2 */
+
+#define ROUND(N,P2)	((N + (P2-1)) & ~(P2-1))
 
 #endif /* __AUXLRY_H__ */
 
