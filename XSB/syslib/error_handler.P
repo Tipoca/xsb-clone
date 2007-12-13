@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.47 2007/07/24 21:54:33 ruim Exp $
+** $Id: error_handler.P,v 1.48 2007/09/07 21:20:39 tswift Exp $
 ** 
 */
 
@@ -264,7 +264,7 @@ domain_error(Valid_type,Culprit,Predicate,Arg):-
 domain_error(Valid_type,Culprit,Predicate,Arg,Msg):- 
 	xsb_backtrace(Bt),
 	throw(error(domain_error(Valid_type,Culprit),
-                           (' in arg ',Arg,' of predicate ',Predicate, '(',Msg,')'),Bt)).
+                           (' in arg ',Arg,' of predicate ',Predicate, ' (',Msg,')'),Bt)).
 %------
 evaluation_error(Flag,Predicate,Arg):- 
 	xsb_backtrace(Bt),
