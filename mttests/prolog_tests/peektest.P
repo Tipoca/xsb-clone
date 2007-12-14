@@ -12,9 +12,9 @@ test:-
 % peek gets the first
 test_1(N):- 
 	message_queue_create(Queue,[max_terms(10)]),
-	thread_create(producer_1(N,Queue),Id1),
+	thread_create(producer_1(N,Queue),Id1),thread_join(Id1,_),
 	thread_create(consumer_1(Queue),Id2),
-	thread_join(Id1,_),thread_join(Id2,_).
+	thread_join(Id2,_).
 
 producer_1(0,_Queue):- !.
 producer_1(N,Queue):- 
@@ -30,9 +30,9 @@ consumer_1(Queue):-
 % peek cannot get any.
 test_2(N):- 
 	message_queue_create(Queue,[max_terms(10)]),
-	thread_create(producer_2(N,Queue),Id1),
+	thread_create(producer_2(N,Queue),Id1),thread_join(Id1,_),
 	thread_create(consumer_2(Queue),Id2),
-	thread_join(Id1,_),thread_join(Id2,_).
+	thread_join(Id2,_).
 
 producer_2(0,_Queue):- !.
 producer_2(N,Queue):- 
@@ -50,9 +50,9 @@ consumer_2(_Queue):-
 % peek has to backtrack to succeed.
 test_3:- 
 	message_queue_create(Queue,[max_terms(10)]),
-	thread_create(producer_3(Queue),Id1),
+	thread_create(producer_3(Queue),Id1),thread_join(Id1,_),
 	thread_create(consumer_3(Queue),Id2),
-	thread_join(Id1,_),thread_join(Id2,_).
+	thread_join(Id2,_).
 
 %producer_3(_Queue):- !.
 producer_3(Queue):- 
