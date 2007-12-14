@@ -45,4 +45,4 @@ echo "-------------------------------------------------------"
 
 # test some special featurs of shared_predicates
 ../seqgentest.sh "$XEMU --shared_predicates $options" test_shared "test." 
-../seqgentest.sh "$XEMU --shared_predicates $options" test_abort "test." 
+#../seqgentest.sh "$XEMU --shared_predicates $options" test_abort "test." 
