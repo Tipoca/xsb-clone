@@ -27,11 +27,12 @@ read_file(X,F) :- X = datum( B, N, V ),
 		read(Y),
 		read_file(Y,F).
 
-pr_data([],B,F).
+pr_data([],_B,_F).
 pr_data([N|Ns],B,F) :-
 	write( ' & ' ),
-	datum(F,B,N,T),
-	write(T),
+	findall(T,datum(F,B,N,T),LT),
+	min_list( LT, T1 ),
+	write(T1),
 	pr_data(Ns,B,F).
 
 
