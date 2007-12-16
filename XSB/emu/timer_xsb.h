@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.h,v 1.15 2006-03-24 16:40:29 tswift Exp $
+** $Id: timer_xsb.h,v 1.16 2007-12-16 13:22:31 ruim Exp $
 ** 
 */
 
@@ -63,7 +63,7 @@ struct xsb_timeout_info {
   pthread_t_p     timedThread;
   pthread_cond_t  condition;
   pthread_mutex_t mutex;
-  CTXTdecl;
+  th_context *th;
 #else /* not multithreaded */
 #ifdef WIN_NT
   long parent_thread;
