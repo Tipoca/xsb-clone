@@ -48,14 +48,14 @@ test_create_alias_join(N):-
 test_thread_detach_1:- 
 	thread_create(true,_Tid,[alias(foo_d_1)]),
 	thread_detach(foo_d_1),
-	  usleep(500),
+	  usleep(1000),
 	(get_alias(foo_d_1,_,_) -> 
 	    writeln(failed_thread_detach_1)
 	  ; writeln(passed_thread_detach_1)).
 
 test_thread_detach_2:-
 	  thread_create(thread_detach(foo_d_2),_,[alias(foo_d_2)]),
-	  usleep(500),
+	  usleep(1000),
 	  (get_alias(foo_d_2,_,_) -> 
 	      writeln(failed_thread_detach_2)
 	  ;   writeln(passed_thread_detach_2)).
