@@ -20,7 +20,7 @@ test:-
 	thread_create(thread_exit(exit_check),_Three),
 	thread_create(true,_Four),
 	thread_create(true,Five),thread_join(Five),  
-%	sleep(1),
+	sleep(1),
 	thread_property(X,Y),
 	(Y = status(exception(_)) -> Ynew = status(exception) ; Ynew = Y),
 	writeln(varmode(X,Ynew)),
