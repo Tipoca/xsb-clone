@@ -14,9 +14,9 @@ chain_ancestor_bench:-
 	flush_output.
 
 mt_chain_ancestor_bench(M):- 
-	mt_bigbench(rancestor1k(1,_),[tabled_right_anc,chain(1024),its(1)],1,M),
-	mt_bigbench(ancestor1k(1,_),[tabled_left_anc,chain(1024),its(375)],375,M),
-	mt_bigbench(ancestor2k(1,_),[tabled_left_anc,chain(2048),its(200)],200,M),
+	mt_bigbench(rancestor1k(1,_),[tabled_right_anc,chain(1024),its(4)],4,M),
+	mt_bigbench(ancestor1k(1,_),[tabled_left_anc,chain(1024),its(1000)],1000,M),
+	mt_bigbench(ancestor2k(1,_),[tabled_left_anc,chain(2048),its(800)],800,M),
 	flush_output.
 
 cycle_ancestor_bench:- 
@@ -26,9 +26,9 @@ cycle_ancestor_bench:-
 	flush_output.
 
 mt_cycle_ancestor_bench(M):- 
-	mt_bigbench(rancestor1k(1,_),[tabled_right_anc,cycle(1024),its(1)],1,M),
-	mt_bigbench(ancestor1k(1,_),[tabled_left_anc,cycle(1024),its(375)],375,M),
-	mt_bigbench(ancestor2k(1,_),[tabled_left_anc,cycle(2048),its(200)],200,M),
+	mt_bigbench(rancestor1k(1,_),[tabled_right_anc,cycle(1024),its(4)],4,M),
+	mt_bigbench(ancestor1k(1,_),[tabled_left_anc,cycle(1024),its(1000)],1000,M),
+	mt_bigbench(ancestor2k(1,_),[tabled_left_anc,cycle(2048),its(800)],800,M),
 	flush_output.
 
 abolish_tables :-
