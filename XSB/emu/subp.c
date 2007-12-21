@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.110 2007/10/05 19:23:09 tswift Exp $
+** $Id: subp.c,v 1.111 2007/12/05 19:02:39 dwarren Exp $
 ** 
 */
 
@@ -442,7 +442,7 @@ void init_interrupt(void)
   int_act.sa_flags = 0;
   sigaction(SIGINT, &int_act, &int_oact);
 
-  abrt_act.sa_handler = keyint_proc;
+  abrt_act.sa_handler = cancel_proc;
   sigemptyset(&abrt_act.sa_mask); 
   abrt_act.sa_flags = 0;
   sigaction(SIGABRT, &abrt_act, &abrt_oact);
