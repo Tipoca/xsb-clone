@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.38 2007-06-10 18:43:58 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.39 2007-12-22 22:04:36 tswift Exp $
 ** 
 */
 
@@ -117,7 +117,8 @@ inline static xsbBool functor_builtin(CTXTdecl)
   return TRUE;
 }
 
-
+/* TLS 12/08 replaced what had been a fail if arg 2 was not a compound
+   term with a type error, as specified in ISO */
 inline static xsbBool arg_builtin(CTXTdecl)
 {
   /* r1: +index (int); r2: +term; r3: ?arg (term) */
@@ -139,9 +140,14 @@ inline static xsbBool arg_builtin(CTXTdecl)
 	} else if (islist(term) && (disp==1 || disp==2)) {
 	  return unify(CTXTc (Cell)(clref_val(term)+disp-1),
 		       ptoc_tag(CTXTc 3));
-	} else return FALSE;	/* fail */
+	  //	} else return FALSE;	/* fail */
+	} else xsb_type_error(CTXTc "compound",term,"arg/3",2);
       } else xsb_instantiation_error(CTXTc "arg/3",2);
-    } else return FALSE;	/* fail */
+      //    } else return FALSE;	/* fail */
+    } else {
+      if (disp == 0) return FALSE;
+      else xsb_domain_error(CTXTc "not_less_than_zero",index,"arg/3",2);
+    }
   } else {
     if (isnonvar(index)) xsb_type_error(CTXTc "integer",index,"arg/3",1); 
     else xsb_instantiation_error(CTXTc "arg/3",1);
