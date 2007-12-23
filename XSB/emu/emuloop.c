@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.175 2007-11-28 16:26:01 dwarren Exp $
+** $Id: emuloop.c,v 1.176 2007-12-23 07:38:37 ruim Exp $
 ** 
 */
 
@@ -457,7 +457,8 @@ int emuloop(CTXTdeclc byte *startaddr)
 
 #endif
 
-  if ((lpcreg = (byte *) setjmp(xsb_abort_fallback_environment))) {
+  if(setjmp(xsb_abort_fallback_environment)) {
+    lpcreg = pcreg ;
     /*
     * Short circuit untrailing to avoid possible seg faults in
     * switch_envs.
