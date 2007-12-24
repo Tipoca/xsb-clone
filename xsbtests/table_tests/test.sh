@@ -94,3 +94,9 @@ EOF
 #-------------------------------------------------
 ../gentest.sh "$XEMU $options" terrys_trie_test "test".
 #-------------------------------------------------
+../gentest.sh "$XEMU $options" test_trie_property "test".
+#-------------------------------------------------
+../gentest.sh "$XEMU $options" bulk_trie_test "test".
+#-------------------------------------------------
+../gentest.sh "$XEMU $options" test_intern_seq "test".
+#-------------------------------------------------
