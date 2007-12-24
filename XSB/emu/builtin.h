@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.81 2007-11-01 18:48:51 tswift Exp $
+** $Id: builtin.h,v 1.82 2007-12-24 19:16:59 tswift Exp $
 ** 
 */
 
@@ -179,9 +179,9 @@
 #define NEWTRIE                 159
 #define TRIE_INTERN             160
 #define TRIE_INTERNED           161
-#define TRIE_DISPOSE            162
+#define TRIE_UNINTERN           162
 #define BOTTOM_UP_UNIFY         163
-#define DELETE_TRIE             164
+#define TRIE_TRUNCATE           164
 #define TRIE_DISPOSE_NR         165
 #define TRIE_UNDISPOSE          166
 #define RECLAIM_UNINTERNED_NR   167
@@ -328,6 +328,3 @@
 #define BITSHIFTR_FUNCT 27
 #define UMINUS_FUNCT 28
 
-/* For trie disposal */
-#define USE_CPS_CHECK 0
-#define NO_CPS_CHECK  1

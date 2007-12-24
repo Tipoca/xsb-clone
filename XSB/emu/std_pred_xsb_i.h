@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.39 2007-12-22 22:04:36 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.40 2007-12-24 19:16:59 tswift Exp $
 ** 
 */
 
@@ -118,7 +118,9 @@ inline static xsbBool functor_builtin(CTXTdecl)
 }
 
 /* TLS 12/08 replaced what had been a fail if arg 2 was not a compound
-   term with a type error, as specified in ISO */
+   term with a type error, and what had been a fail if arg 1 was less
+   than 0 with a domain error.  Both of these behaviors are specified
+   in ISO */
 inline static xsbBool arg_builtin(CTXTdecl)
 {
   /* r1: +index (int); r2: +term; r3: ?arg (term) */

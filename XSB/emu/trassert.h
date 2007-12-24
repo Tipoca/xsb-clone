@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trassert.h,v 1.9 2007-11-20 19:17:21 tswift Exp $
+** $Id: trassert.h,v 1.10 2007-12-24 19:17:00 tswift Exp $
 ** 
 */
 
@@ -30,16 +30,24 @@ extern int trie_retract_safe(CTXTdecl);
 
 
 #ifdef MULTI_THREAD
-#define switch_to_shared_trie_assert {			\
-    threads_current_sm = SHARED_SM;		\
-    smBTN = &smAssertBTN;			\
-    smBTHT = &smAssertBTHT;			\
+#define switch_to_shared_trie_assert(MUTEX_PTR) {	\
+    threads_current_sm = SHARED_SM;			\
+    smBTN = &smAssertBTN;				\
+    smBTHT = &smAssertBTHT;				\
+    pthread_mutex_lock( MUTEX_PTR ) ;			\
+}
+#define switch_from_shared_trie_assert(MUTEX_PTR) {	\
+    pthread_mutex_unlock( MUTEX_PTR ) ;			\
+    threads_current_sm = SHARED_SM;			\
+    smBTN = &smAssertBTN;				\
+    smBTHT = &smAssertBTHT;				\
 }
 #define switch_to_trie_assert {			\
     threads_current_sm = PRIVATE_SM;		\
     smBTN = private_smAssertBTN;			\
     smBTHT = private_smAssertBTHT;			\
 }
+
 #else
 #define switch_to_trie_assert {			\
     smBTN = &smAssertBTN;			\
@@ -51,11 +59,4 @@ extern int trie_retract_safe(CTXTdecl);
     smBTN = &smTableBTN;		    \
     smBTHT = &smTableBTHT;		    \
 }
-
-#ifdef MULTI_THREAD
-#define switch_to_privshar_trie_assert(type) 				\
-    if (type == PRIVATE_TRIE) switch_to_trie_assert else switch_to_shared_trie_assert; 
-#else
-#define switch_to_privshar_trie_assert(type) switch_to_trie_assert(type);
-#endif
 

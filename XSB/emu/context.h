@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.63 2007-11-20 19:17:20 tswift Exp $
+** $Id: context.h,v 1.64 2007-12-24 19:16:59 tswift Exp $
 ** 
 */
 
@@ -291,6 +291,8 @@ DynamicStack  _tstTrail;
 
   /********* Variables for array of interned tries *********/
   int _itrie_array_first_free;
+  int _itrie_array_last_free;
+  int _itrie_array_first_trie;
   struct interned_trie_t* _itrie_array;
 
   /* for backtrackable updates & assoc arrays (storage_xsb) */
@@ -715,8 +717,10 @@ typedef struct th_context th_context ;
 #define  done_tif_stack               (th->_done_tif_stack)
 #define  done_tif_stack_size          (th->_done_tif_stack_size)
 
-#define  itrie_array_first_free      (th->_itrie_array_first_free)
-#define  itrie_array                 (th->_itrie_array)
+#define  itrie_array_first_free       (th->_itrie_array_first_free)
+#define  itrie_array_last_free        (th->_itrie_array_last_free)
+#define  itrie_array_first_trie       (th->_itrie_array_first_trie)
+#define  itrie_array                  (th->_itrie_array)
 
 #define  bt_storage_hash_table             (th-> _bt_storage_hash_table)
 
