@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.48 2007/09/07 21:20:39 tswift Exp $
+** $Id: error_handler.P,v 1.49 2007/12/13 23:46:08 tswift Exp $
 ** 
 */
 
@@ -38,7 +38,6 @@
 
 /* Types of errors are based on Section 7.12 of the ISO Standard, but
 /* I've added tabling_error.  (see manual for types and explanation).*/
-
 default_error_handler(Error) :- 
 	default_user_error_handler(Error),
 	close_open_tables,

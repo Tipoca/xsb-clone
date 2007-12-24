@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.40 2007/10/04 00:08:08 tswift Exp $
+** $Id: curr_sym.P,v 1.41 2007/11/01 23:56:58 tswift Exp $
 ** 
 */
 
@@ -608,6 +608,7 @@ iso_flag(max_arity,255).
 iso_flag(integer_rounding_function,toward_zero).
 iso_flag(debug, Debug) :- xsb_flag(debugging, Debug).
 iso_flag(unknown, State) :- settable_prolog_flag(unknown, State).
+iso_flag(double_quotes,codes).
 
 % TLS: need to understand ISO char conversion
 %iso_flag(char_conversion,{on,off})

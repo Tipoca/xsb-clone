@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.94 2007/10/07 17:41:21 tswift Exp $
+** $Id: machine.P,v 1.95 2007/11/01 18:53:34 tswift Exp $
 ** 
 */
 
@@ -309,6 +309,15 @@ install_verify_attribute_handler(Mod,Attr,Value,Handler) :-
               true
       ),
       assert(verify_attribute_handler(Mod,Attr,Value,Handler)).
+
+:- dynamic attribute_portray_hook(_,_,_).
+install_attribute_portray_hook(Mod,Attr,Handler) :-
+      ( retract(attribute_portray_hook(Mod,_,_)) ->
+              write('Warning: replacing previous attribute_portray_hook for module '),write(Mod),writeln('.')
+      ;
+              true
+      ),
+      assert(attribute_portray_hook(Mod,Attr,Handler)).
 
 /* This is the builtin where people should put their private, experimental
    builtin code. SEE THE EXAMPLE IN emu/private_builtin.c to UNDERSTAND HOW 

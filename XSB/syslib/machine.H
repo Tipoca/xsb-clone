@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.85 2007/10/07 17:41:21 tswift Exp $
+** $Id: machine.H,v 1.86 2007/11/01 18:53:34 tswift Exp $
 ** 
 */
 
@@ -161,6 +161,7 @@
         get_attr/3,
         del_attr/2,
         install_verify_attribute_handler/4,
+        install_attribute_portray_hook/3,
         verify_attribute_handler/4,
 	globalvar/1,
         ccall_store_error/2,

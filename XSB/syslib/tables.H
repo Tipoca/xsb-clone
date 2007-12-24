@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.35 2007/05/01 14:48:34 tswift Exp $
+** $Id: tables.H,v 1.36 2007/06/01 22:52:40 tswift Exp $
 ** 
 */
 
@@ -60,6 +60,8 @@
 
    :- export find_components/1, find_forward_dependencies/1, find_backward_dependencies/1,
    find_answers/1.
+
+:- export '_$$get_returns'/3.
 
 :- import findall/3
      from setof.

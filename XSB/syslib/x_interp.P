@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.55 2007/10/05 19:34:50 tswift Exp $
+** $Id: x_interp.P,v 1.56 2007/10/19 21:10:36 tswift Exp $
 ** 
 */
 
@@ -200,7 +200,27 @@ print_answer([]) :- !.
 print_answer([vv(Name,Val)|Tail]) :-
 	file_nl(STDFDBK), file_write(STDFDBK, Name), 
 	file_write(STDFDBK, ' = '), file_write(STDFDBK, Val),
+	(is_attv(Val) -> portray_attributes(Val) ; true),
 	print_answer(Tail).
+
+:- import get_attributes/2 from machine.
+
+portray_attributes(Var):- 
+	get_attributes(Var,Atts),
+	portray_attributes_1(Atts).
+
+:- import attribute_portray_hook/3 from machine.
+portray_attributes_1([]).
+portray_attributes_1([Mod,Attr|T]):- 
+	(attribute_portray_hook(Mod,Attr,Handler) -> 
+	    file_write(STDFDBK,' { '),
+	    file_write(STDFDBK,Mod),
+	    file_write(STDFDBK,' : '),
+	    call(Handler),
+	    file_write(STDFDBK,' } ')
+	 ; true),
+	 portray_attributes_1(T).
+	
 
 
 /* === break =========================================================== */
