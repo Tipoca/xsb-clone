@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.302 2007-12-24 19:16:59 tswift Exp $
+** $Id: builtin.c,v 1.303 2007-12-24 20:21:01 tswift Exp $
 ** 
 */
 
@@ -2510,12 +2510,7 @@ case WRITE_OUT_PROFILE:
 
   case TRIE_TRUNCATE:
     // TLS: dont know why arg 2 is checked
-    if (ptoc_int(CTXTc 2) == 0) {  
-      trie_truncate(CTXTc  iso_ptoc_int(CTXTc 1,"trie_truncate/1"));
-    }
-    else {
-      xsb_abort("[TRIE_TRUNCATE] Invalid use of this operation");
-    }
+    trie_truncate(CTXTc  iso_ptoc_int(CTXTc 1,"trie_truncate/1"));
     break;
 
     case SET_TABLED_EVAL: { /* reg 1=psc, reg 2=eval method to use */
