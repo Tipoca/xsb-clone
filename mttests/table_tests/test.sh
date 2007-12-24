@@ -58,7 +58,4 @@ echo "-------------------------------------------------------"
 ../seqgentest.sh "$XEMU $options" abolish_cascade_conc "test." # test of cascading atc w. mult threads.
 ../seqgentest.sh "$XEMU $options" abolish_cascade_pred_conc "test." # test of cascading atp w. mult threads.
 
-
-
-
-
+../seqgentest.sh "$XEMU $options" test_new_intern "test." 
