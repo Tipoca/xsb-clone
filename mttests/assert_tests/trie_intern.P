@@ -1,5 +1,5 @@
 
-:- import new_trie/1,trie_intern/4, trie_interned/4,delete_trie/1 from intern.
+:- import new_trie/1,trie_intern/4, trie_interned/4,delete_trie/1, trie_drop/1 from intern.
 
 test_intern(N,Str):- 
 	intern(N),
@@ -31,7 +31,7 @@ interned(N,Str):-
 delete(0):- !.
 delete(N):- 
 	Root is N,
-	delete_trie(Root),
+	trie_drop(Root),
 	N1 is N - 1,
 	delete(N1).
 
