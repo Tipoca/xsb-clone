@@ -3,33 +3,33 @@
 :- ensure_loaded(elemNet).
 :- import between/3 from basics.
 
-/* This is the main benchmark routine which generates process-view of
-   a run of a Petri net for a mutex, unfolded many times.  For even N the net generated
-   has 2*N transitions, 3*N places, and  4N - 1 rachable states.
+/* This is a benchmark routine for private tables which generates process-view of
+   a run of a Petri net for a mutex, unfolded many times.  For odd N the net generated
+   has 2*N transitions, 3*N places, and  4(N+2) - 1 rachable states.
 
-   On my Mac on 12/07 it bench_process(400000,T) takes about 45 seconds of
+   On my Mac on 12/07 it bench_process_1(400000,T) takes about 45 seconds of
    walltime (and 20-30 secs for generation).
 */
 
-bench_process(N,Time):- 
-	generate_process(N),
+bench_process_1(N,Time):- 
+	generate_process_1(N),
 	walltime(Before),
 	reachable([a1,b1,c1],_),
 	walltime(After),
 	Time is After - Before,
 	statistics.
 
-generate_process(N):- 
+generate_process_1(N):- 
 	between(1,N,M),
 	IsOdd is M mod 2,
 	IsOdd == 1,
-	generate_process_odd(M),
+	generate_process_odd_1(M),
 	M1 is M + 1,
-	generate_process_even(M1),
+	generate_process_even_1(M1),
 	fail.
-generate_process(_).
+generate_process_1(_).
 
-generate_process_odd(Nin):-
+generate_process_odd_1(Nin):-
 	concat_atom([a,Nin],A),
 	concat_atom([b,Nin],B),
 	concat_atom([c,Nin],C),
@@ -42,7 +42,7 @@ generate_process_odd(Nin):-
 	assert(rule(S,A,[],[Anext])),
 	assert(rule(T,B,[C],[Bnext,Cnext])).
 
-generate_process_even(Nin):-
+generate_process_even_1(Nin):-
 	concat_atom([a,Nin],A),
 	concat_atom([b,Nin],B),
 	concat_atom([c,Nin],C),
@@ -55,4 +55,84 @@ generate_process_even(Nin):-
 	assert(rule(S,A,[B],[Anext,Bnext])),
 	assert(rule(T,C,[],[Cnext])).
 
+%------------------------------------------------------------------------------------
+
+/* This is a benchmark routine that can be used for shared tables.  It
+   consists of two process-chains like in the first benchmark, with a
+   joining transition at the end to a state 'finish'.  Given the two
+   initial states that are tested, the state 'finish' is never
+   reached.  However, each query generates 4(N+2) - 1 independent
+   states, for 2*(4(N+2) - 1) overall. 
+*/
+
+bench_process_2(N,Time):- 
+	generate_process_2(N),
+	walltime(Before),
+	shared_reachable([a1_1,b1_1,c1_1],_),
+	shared_reachable([a2_1,b2_1,c2_1],_),
+	walltime(After),
+	Time is After - Before,
+	statistics.
+
+generate_process_2(N):- 
+	between(1,N,M),
+	IsOdd is M mod 2,
+	IsOdd == 1,
+	generate_process_odd_2(M,1),
+	generate_process_odd_2(M,2),
+	M1 is M + 1,
+	generate_process_even_2(M1,1),
+	generate_process_even_2(M1,2),
+	fail.
+generate_process_2(N):- 
+	generate_join(N).
+
+generate_process_odd_2(Nin,Index):-
+	concat_atom([a,Index,'_',Nin],A),
+	concat_atom([b,Index,'_',Nin],B),
+	concat_atom([c,Index,'_',Nin],C),
+	concat_atom([s,Index,'_',Nin],S),
+	concat_atom([t,Index,'_',Nin],T),
+	Next is Nin + 1,
+	concat_atom([a,Index,'_',Next],Anext),
+	concat_atom([b,Index,'_',Next],Bnext),
+	concat_atom([c,Index,'_',Next],Cnext),
+	assert(rule(S,A,[],[Anext])),
+	assert(rule(T,B,[C],[Bnext,Cnext])).
+
+generate_process_even_2(Nin,Index):-
+	concat_atom([a,Index,'_',Nin],A),
+	concat_atom([b,Index,'_',Nin],B),
+	concat_atom([c,Index,'_',Nin],C),
+	concat_atom([s,Index,'_',Nin],S),
+	concat_atom([t,Index,'_',Nin],T),
+	Next is Nin + 1,
+	concat_atom([a,Index,'_',Next],Anext),
+	concat_atom([b,Index,'_',Next],Bnext),
+	concat_atom([c,Index,'_',Next],Cnext),
+	assert(rule(S,A,[B],[Anext,Bnext])),
+	assert(rule(T,C,[],[Cnext])).
+
+generate_join(Nin):- 
+	N is Nin + 2,  % join final states.
+	concat_atom([a1_,N],A1),
+	concat_atom([c1_,N],C1),
+	concat_atom([a2_,N],A2),
+	concat_atom([c2_,N],C2),
+	assert(rule(u,A1,[A2,C1,C2],[finish])).
+	
+%------------------------------------------------------------------------------------
+
+/* This benchmark routine uses the same process structure in
+   bench_process_2, but has an initial state that reaches finish.  Be
+   careful, however, as it generates (4(N+2))^2 reachable states.
+*/
+
+bench_process_3(N,Time):- 
+	generate_process_2(N),
+	walltime(Before),
+	shared_reachable([a1_1,a2_1,b1_1,b2_1,c1_1,c2_1],_),
+	walltime(After),
+	Time is After - Before,
+	statistics.
 

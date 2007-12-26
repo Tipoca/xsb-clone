@@ -10,6 +10,7 @@
 % Finds all configurations reachable from instate
 % First arg is a state: i.e. a sorted list of places each of which
 % have a token in S.
+
 :- table reachable/2.
 reachable(InState,NewState):-
 	reachable(InState,State),
@@ -17,11 +18,19 @@ reachable(InState,NewState):-
 reachable(InState,NewState):-
 	hasTransition(InState,NewState).
 
+:- thread_shared shared_reachable/2.
+:- table shared_reachable/2.
+shared_reachable(InState,NewState):-
+	shared_reachable(InState,State),
+	hasTransition(State,NewState).
+shared_reachable(InState,NewState):-
+	hasTransition(InState,NewState).
+
 hasTransition(State,NewState):-
 	get_rules_for_state(State,AllRules),
 	member(Rule,AllRules),
-	apply_rule_to_state(Rule,State,NewState).
-%        writeln(state(State,Rule,NewState)).
+	apply_rule_to_state(Rule,State,NewState),
+        writeln(state(State,Rule,NewState)).
 
 %----
 % Constructs sets of rules with concession in State.  Also indicates which
@@ -65,6 +74,17 @@ show_states:-
 	get_residual(reachable(X,Y),_F),writeln((X,Y)),fail.
 show_states.
 
+show_shared_states:- 
+	findall(Y,get_residual(shared_reachable(_X,Y),_F),Reached),
+	sort(Reached,Rsort),
+	member(State,Rsort),
+	writeln(State),
+	fail.
+show_shared_states.
+
+count_shared_states(L):- 
+	findall(1,get_residual(shared_reachable(_X,_Y),_F),List),
+	length(List,L).
 
 end_of_file.
 
