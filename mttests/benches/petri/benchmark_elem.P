@@ -1,0 +1,58 @@
+:- import concat_atom/2 from string.
+:- index(rule/4,2).
+:- ensure_loaded(elemNet).
+:- import between/3 from basics.
+
+/* This is the main benchmark routine which generates process-view of
+   a run of a Petri net for a mutex, unfolded many times.  For even N the net generated
+   has 2*N transitions, 3*N places, and  4N - 1 rachable states.
+
+   On my Mac on 12/07 it bench_process(400000,T) takes about 45 seconds of
+   walltime (and 20-30 secs for generation).
+*/
+
+bench_process(N,Time):- 
+	generate_process(N),
+	walltime(Before),
+	reachable([a1,b1,c1],_),
+	walltime(After),
+	Time is After - Before,
+	statistics.
+
+generate_process(N):- 
+	between(1,N,M),
+	IsOdd is M mod 2,
+	IsOdd == 1,
+	generate_process_odd(M),
+	M1 is M + 1,
+	generate_process_even(M1),
+	fail.
+generate_process(_).
+
+generate_process_odd(Nin):-
+	concat_atom([a,Nin],A),
+	concat_atom([b,Nin],B),
+	concat_atom([c,Nin],C),
+	concat_atom([s,Nin],S),
+	concat_atom([t,Nin],T),
+	Next is Nin + 1,
+	concat_atom([a,Next],Anext),
+	concat_atom([b,Next],Bnext),
+	concat_atom([c,Next],Cnext),
+	assert(rule(S,A,[],[Anext])),
+	assert(rule(T,B,[C],[Bnext,Cnext])).
+
+generate_process_even(Nin):-
+	concat_atom([a,Nin],A),
+	concat_atom([b,Nin],B),
+	concat_atom([c,Nin],C),
+	concat_atom([s,Nin],S),
+	concat_atom([t,Nin],T),
+	Next is Nin + 1,
+	concat_atom([a,Next],Anext),
+	concat_atom([b,Next],Bnext),
+	concat_atom([c,Next],Cnext),
+	assert(rule(S,A,[B],[Anext,Bnext])),
+	assert(rule(T,C,[],[Cnext])).
+
+
