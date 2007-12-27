@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.23 2007-10-20 19:13:01 tswift Exp $
+** $Id: cut_xsb.h,v 1.24 2007-12-27 22:22:23 ruim Exp $
 ** 
 */
 
@@ -118,6 +118,12 @@ static inline void  CHECK_CALL_CLEANUP(CTXTdeclc CPtr CurBreg) {
   }
 }
 
+#ifdef BITS64
+#define PAD64	4
+#else
+#define PAD64	0
+#endif
+
 #define cut_code(OP1)	                                        \
    { CPtr cut_breg;					        \
      byte inst_cut_over;                                        \
@@ -139,8 +145,8 @@ static inline void  CHECK_CALL_CLEANUP(CTXTdeclc CPtr CurBreg) {
         unwind_trail(breg,xtemp1,xtemp2);			\
 	breg = cut_breg;					\
 	if (attv_pending_interrupts) {				\
-	  int reserved_regs = *(lpcreg-2);				\
-	  int arsize = *(lpcreg-1);					\
+	  int reserved_regs = *(lpcreg-2-PAD64);			\
+	  int arsize = *(lpcreg-1-PAD64);				\
 	  allocate_env_and_call_check_ints(reserved_regs,arsize);	\
 	}								\
      }								\
