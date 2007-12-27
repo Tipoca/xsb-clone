@@ -1,11 +1,12 @@
 :- import trie_shas_insert/2,trie_shas_unify/2,
 	  trie_shas_delete/2 from intern.
 :- import trie_insert/2,trie_unify/2,trie_delete/2 from intern. 
+:- import trie_bulk_unify/3, trie_bulk_insert/2, trie_bulk_delete/2 from intern.
 
 :- import trie_create/2, trie_truncate/1 from intern.
 
 test:- test0_shas,test1_shas,test3,test4,test5,test6,test7,
-	test1_gen,test2_gen.
+	test1_gen,test2_gen, test_bulk.
 
 test0_shas:- 
 	trie_create(Rp,[type(shas)]),
@@ -134,6 +135,22 @@ test2_gen:-
 	trie_unify(foo,pair(b,Y)),
 	writeln(second(gen,2,Y)).
 test2_gen.
+
+test_bulk:- 
+   trie_create(_Tid,[type(shas),alias(foo_bulk)]),
+   trie_bulk_insert(foo_bulk,tbu(_)),
+   trie_bulk_unify(foo_bulk,_X,Y1),
+   writeln(bulk_first(Y1)),
+   trie_bulk_delete(foo_bulk,pair(word(_),_)),
+   trie_bulk_unify(foo_bulk,_X,Y2),
+   writeln(bulk_second(Y2)).
+
+tbu(pair(sentence(1),[a,dog,walks])).
+tbu(pair(sentence(2),[a,man,snores])).
+tbu(pair(word(1),man)).
+tbu(pair(sentence(3),[a,man,sleeps])).
+tbu(pair(word(2),dog)).
+tbu(pair(sentence(5),[a,man,sleeps])).
 
 insert_every_other(N,_Rp):- N =< 0,!.
 insert_every_other(N,Rp):- 
