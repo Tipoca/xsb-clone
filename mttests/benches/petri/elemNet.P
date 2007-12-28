@@ -29,8 +29,8 @@ shared_reachable(InState,NewState):-
 hasTransition(State,NewState):-
 	get_rules_for_state(State,AllRules),
 	member(Rule,AllRules),
-	apply_rule_to_state(Rule,State,NewState),
-        writeln(state(State,Rule,NewState)).
+	apply_rule_to_state(Rule,State,NewState).
+%        writeln(state(State,Rule,NewState)).
 
 %----
 % Constructs sets of rules with concession in State.  Also indicates which
