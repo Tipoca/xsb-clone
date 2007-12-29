@@ -11,11 +11,29 @@
 % First arg is a state: i.e. a sorted list of places each of which
 % have a token in S.
 
+:- import conget/2, conset/2 from machine.
+
 :- table reachable/2.
 reachable(InState,NewState):-
 	reachable(InState,State),
-	hasTransition(State,NewState).
+%	writeln(reachable(InState,State)),
+	hasTransition(State,NewState),
+        bound_search.
 reachable(InState,NewState):-
+	hasTransition(InState,NewState).
+
+bound_search:- 
+	conget(foo,N),
+	(N > 1000000 -> 
+	    abort('Too many states!')
+	  ; N1 is N + 1,
+	    conset(foo,N1) ).
+
+:- table right_reachable/2.
+right_reachable(InState,NewState):-
+	hasTransition(InState,MidState),
+	right_reachable(MidState,NewState).
+right_reachable(InState,NewState):-
 	hasTransition(InState,NewState).
 
 :- thread_shared shared_reachable/2.
@@ -68,6 +86,10 @@ flatsort(In,Out):-
 
 count_states(L):- 
 	findall(1,get_residual(reachable(_X,_Y),_F),List),
+	length(List,L).
+
+count_rr_states(L):- 
+	findall(1,get_residual(right_reachable(_X,_Y),_F),List),
 	length(List,L).
 
 show_states:- 
