@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.139 2008-01-01 14:41:26 ruim Exp $
+** $Id: init_xsb.c,v 1.140 2008-01-01 15:29:24 ruim Exp $
 ** 
 */
 
@@ -463,7 +463,7 @@ static long get_memarea_size( char *s )
 
 	size = strtol( s, &endptr, 0 );
 
-	if( size < 0 )
+	if( size <= 0 )
 		xsb_abort( "invalid size for memory area" );
 
         /* note : the sizes of the memory areas of XSB are kept in KiloBytes */
