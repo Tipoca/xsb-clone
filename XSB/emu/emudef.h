@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.66 2007-09-28 18:20:11 dwarren Exp $
+** $Id: emudef.h,v 1.67 2008-01-02 19:47:42 dwarren Exp $
 ** 
 */
 
@@ -97,7 +97,7 @@ char *nil_string, *true_string;
 
 Pair list_pscPair;
 
-Psc list_psc, comma_psc, true_psc, if_psc, colon_psc, ccall_psc;
+Psc list_psc, comma_psc, true_psc, if_psc, colon_psc, ccall_mod_psc, c_callloop_psc;
 Psc tnot_psc, delay_psc;
 Psc box_psc;
 

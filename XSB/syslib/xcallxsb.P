@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xcallxsb.P,v 1.19 2007/06/05 06:48:59 kifer Exp $
+** $Id: xcallxsb.P,v 1.20 2007/10/09 16:40:18 dwarren Exp $
 ** 
 */
 
@@ -38,7 +38,7 @@ c_callloop :-
 	fail.
 c_callloop :-
 	repeat,
-	catch(c_callloop_query_loop([]),Ball,ccall_error_handler(Ball)),
+	c_callloop_query_loop([]),
 	fail.
 
 c_callloop_cmd_goal(_) :-

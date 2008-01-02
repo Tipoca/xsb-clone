@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.303 2007-12-24 20:21:01 tswift Exp $
+** $Id: builtin.c,v 1.304 2008-01-02 19:47:42 dwarren Exp $
 ** 
 */
 
@@ -2782,6 +2782,11 @@ case WRITE_OUT_PROFILE:
 	bld_free(hreg); hreg++;
       }
       else {			/* update the atts (another copy) */
+	/*** Doesn't work for attv into and out of tables
+	     CPtr attv_attr = ((CPtr)dec_addr(attv))+1;
+	     push_pre_image_trail(attv_attr,atts);
+	     bld_copy(attv_attr,atts);
+	***/
 	bind_attv((CPtr)dec_addr(attv), hreg);
 	bld_free(hreg); hreg++;
 	bld_copy(hreg, atts); hreg++;

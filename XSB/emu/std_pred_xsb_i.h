@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.40 2007-12-24 19:16:59 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.41 2008-01-02 19:47:43 dwarren Exp $
 ** 
 */
 
@@ -28,6 +28,7 @@
 #include "xsb_config.h"
 #include "builtin.h"
 #include "sp_unify_xsb_i.h"
+#include "cut_xsb.h"
 /*----------------------------------------*/
 
 static xsbBool atom_to_list(CTXTdeclc int call_type);
@@ -1003,3 +1004,13 @@ xsbBool unify_with_occurs_check(CTXTdeclc Cell Term1, Cell Term2) {
   return TRUE;  /* hush, little compiler */
   }
   
+/* a new function, not yet used, intended to implement \= without a choicepoint */
+xsbBool unifiable(CTXTdeclc Cell Term1, Cell Term2) {
+  CPtr *start_trreg = trreg;
+  xsbBool unifies = unify(CTXTc Term1,Term2);
+  while (trreg != start_trreg) {
+    untrail2(trreg, ((Cell)trail_variable(trreg)));
+    trreg = trail_parent(trreg);
+  }
+  return unifies;
+}
