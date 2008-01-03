@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.28 2007-10-28 23:32:35 tswift Exp $
+** $Id: inst_xsb.h,v 1.29 2008-01-03 18:45:20 dwarren Exp $
 ** 
 */
 
@@ -215,6 +215,7 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define unitvar_getlist_uninumcon 0x23  /* combined, same reg, 16-bit int */
 #define bldtval_putlist_bldnumcon 0x24  /* combined, same reg, 16-bit int */
 #define bldtvar_list_numcon 0x25  /* combined, same reg, 16-bit int */
+#define getkpvars	0x26 /* get k pvars, k>=2 */
 #define xorreg          0x2f
 
 #define getattv		0x30

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.180 2008-01-02 19:47:42 dwarren Exp $
+** $Id: emuloop.c,v 1.181 2008-01-03 18:45:20 dwarren Exp $
 ** 
 */
 
@@ -496,6 +496,34 @@ contcase:     /* the main loop */
    /* trailing is needed here because this instruction can also be
        generated *after* the occurrence of the first call - kostis */
     bind_copy((CPtr)op1, op2);      /* In WAM bld_copy() */
+  XSB_End_Instr()
+
+  XSB_Start_Instr(getkpvars,_getkpvars)  /* AVR */
+    CPtr vaddr, vval, raddr;
+    Cell rval;
+    int k;
+    k = get_axx;
+    vaddr = get_xvx;
+    raddr = get_xxr;
+    ADVANCE_PC(size_xxx);
+    /* check for trailing only once */
+    vval = cell((CPtr *)vaddr);
+    if (conditional(vval)) {
+      while (k-- > 0) {
+	vval = cell((CPtr *)vaddr--);
+	rval = cell(raddr++);
+	// bind_copy(vval,rval);
+	pushtrail0(vval,rval);
+	*vval = rval;
+      }
+    } else {
+      while (k-- > 0) {
+	vval = cell((CPtr *)vaddr--);
+	rval = cell(raddr++);
+	// bld_copy(vval,rval);
+	*vval = rval;
+      }
+    }
   XSB_End_Instr()
 
   XSB_Start_Instr(getpval,_getpval) /* PVR */
