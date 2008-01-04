@@ -1,0 +1,115 @@
+
+:- import between/3 from basics.
+
+:- import conset/2,conget/2 from machine.
+:- import concat_atom/2 from string.
+
+:- conset(placectr,0).
+:- conset(transctr,0).
+
+:- index(rule/5,*(2)).
+
+% 14_7  - 6X6 is abt 12 secs
+% 14_9  - 6X6 is abt 32 secs  262207 states
+% 14_20 - 6X6 is abt 17 secs  117650 states
+
+% all 5x5 -- 5 seconds
+% 6x6,5x5,6x6,5x5 -- 33 seconds
+% break apart at p(8,1), p(15,1) p(23,1), p(30,1)
+bench_wf_1(Time):- 
+	nextplace(Pstart),
+	gen_widget_14_7(6,6,Pstart,P1),
+	writeln(p1(P1)),
+	gen_widget_14_20(5,5,P1,P2),
+	writeln(p1(P2)),
+	gen_widget_14_7(6,6,P2,P3),
+	writeln(p1(P3)),
+	gen_widget_14_20(5,5,P3,P4),
+	writeln(p1(P4)),
+	gen_widget_14_9(5,5,P3,_P5),
+	nexttrans(T),
+	assert(rule(T,p(P4,X),[],[p(0,X)],dyn([],[]))),
+	walltime(Before),
+	reachable([p(0,1)],_),
+	walltime(After),
+	Time is After - Before,
+	statistics.
+
+coninc(Ctr,N):- 
+	conget(Ctr,N),
+	N1 is N + 1,
+	conset(Ctr,N1).
+
+nextplace(N):- 
+	coninc(placectr,N).
+nexttrans(P):- 
+	coninc(transctr,N),
+	concat_atom([t,N],P).
+
+% create multiple instances, then synchronized merge.  There will be ~(Length+1)**Width states.	
+gen_widget_14_7(Width,Length,Pin,Pout):- 
+	nexttrans(T),
+	nextplace(P1),
+	assert(rule(T,p(Pin,X),[],[],dyn([],[insert(p(P1,o(X,N)),between(1,Width,N))]))),
+	gen_chain(Length,P1,Pendchn),
+	nexttrans(Tend),
+	nextplace(Pout),
+	gen_noconts(P1,Pendchn,EndInst,NoConts),
+	assert(rule(Tend,p(Pendchn,o(EndInst,1)),[],[p(Pout,EndInst)],dyn(NoConts,
+	                                                       [delete(p(Pendchn,o(EndInst,_)))]))).
+
+gen_widget_14_9(Width,Length,Pin,Pout):- 
+	nexttrans(T),
+	nextplace(P1),
+	assert(rule(T,p(Pin,X),[],[],dyn([],[insert(p(P1,o(X,N)),between(1,Width,N))]))),
+	gen_chain(Length,P1,Pendchn),
+	nextplace(Pout),
+	gen_noconts(P1,Pendchn,EndInst,NoConts),
+	% propagate first & set up catcher 
+	nexttrans(Tend1),	nextplace(Preset),
+	assert(rule(Tend1,p(Pendchn,o(EndInst,_)),[],[p(Pout,EndInst),p(Preset,EndInst)],
+	            dyn([doesnt_contain(constr(p(Preset,EndInst),true))],[]))),
+        % remove all but first
+	nexttrans(Tend2),
+	assert(rule(Tend2,p(Pendchn,o(EndInst,_)),[],[],
+	            dyn([contains(constr(p(Preset,EndInst),true))],[]))),
+        % reset catcher
+	nexttrans(Tend3),
+	assert(rule(Tend3,p(Preset,EndInst),[],[],dyn(NoConts,[]))).
+
+gen_widget_14_20(Width,Length,Pin,Pout):- 
+	nexttrans(T),
+	nextplace(P1),
+	assert(rule(T,p(Pin,X),[],[],dyn([],[insert(p(P1,o(X,N)),between(1,Width,N))]))),
+	gen_chain(Length,P1,Pendchn),
+	nexttrans(Tend),
+	nextplace(Pout),
+	gen_deletes(P1,Pout,EndInst,Deletes),
+	assert(rule(Tend,p(Pendchn,o(EndInst,_)),[],[p(Pout,EndInst)],dyn([],Deletes))).
+
+gen_noconts(Pout,Pout,_Var,[]):- !.
+gen_noconts(Pin,Pout,Var,[doesnt_contain(constr(p(Pin,o(Var,_)),true))|R]):- 
+	Pmid is Pin + 1,
+	gen_noconts(Pmid,Pout,Var,R).
+
+gen_deletes(Pout,Pout,_Var,[]):- !.
+gen_deletes(Pin,Pout,Var,[delete(p(Pin,o(Var,_)))|R]):- 
+	Pmid is Pin + 1,
+	gen_deletes(Pmid,Pout,Var,R).
+
+gen_chain(0,Pendchain,Pendchain):-!.
+gen_chain(N,Pin,Pendchain):-
+	nexttrans(T),
+	nextplace(Pout),
+	assert(rule(T,p(Pin,X),[],[p(Pout,X)],dyn([],[]))),
+	N1 is N - 1,
+	gen_chain(N1,Pout,Pendchain).
+
+end_of_file.
+
+rule(t1,p(p1,X),[],[],dyn([],[insert(p(p2,o(X,N)),between(1,4,N))])).
+rule(t2,p(p2,X),[],[p3(X)],dyn([],[])).
+rule(t3,p(p3,X),[],[p4(X)],dyn([],[])).
+rule(t4,p(p4,X),[],[p5(X)],dyn([doesnt_contain(constr(p(p2,o(X,_)),true)),
+	                           doesnt_contain(constr(p(p3,o(X,_)),true))],[delete(p(p4,o(X,_)))])).
+
