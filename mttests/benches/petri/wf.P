@@ -1,0 +1,102 @@
+p19_gen(1).
+p19_gen(2).
+p19_gen(3).
+
+t31_gen(4).
+
+cond1(1).
+cond1(3).
+
+t33_cond(2).
+
+/* simple and multi merge are the same from CEPN perspective.  Also,
+  CPNs automatically provide for 
+     11) Implicit termination automatically
+     12) mult. instances  w.o. synch
+*/
+:- index(rule/5,2).
+
+rule(t1,init(X),[],[p1(X)],dyn([],[])).
+rule(t2,p1(X),[],[p2(X)],dyn([],[])).           % 4) exclusive choice
+rule(t3,p1(X),[],[p3(X)],dyn([],[])).
+
+rule(t4,p2(X),[],[p4(X),p5(X)],dyn([],[])).        % 2) parallel split, branch 1
+rule(t5,p4(X),[],[p6(X)],dyn([],[])).
+rule(t6,p5(X),[],[p7(X)],dyn([],[])).
+rule(t7,p6(X),[p7(X)],[p8(X)],dyn([],[])).         % 3) synchronization, branch 1
+
+rule(t8,p3(X),[],[p9(X),p10(X)],dyn([],[])).       % 2) parallel split, branch 2
+rule(t9,p9(X),[],[p11(X)],dyn([],[])).
+rule(t10,p10(X),[],[p12(X)],dyn([],[])).
+rule(t11,p11(X),[p12(X)],[p13(X)],dyn([],[])).     % 3) synchronization, branch 2
+rule(t14,p8(X),[],[p14(X)],dyn([],[])).            % simple/multi merge
+rule(t13,p13(X),[],[p14(X)],dyn([],[])).
+
+rule(t15,p14(X),[],[p1(X)],dyn([],[])).       % 10) arbitrary cycle
+
+% 13) mult. instances  w. design knowl req instances
+rule(t16,p14(X),[],[p15(o(X,p14_1)),p15(o(X,p14_2)),p15(o(X,p14_3))],dyn([],[])).
+rule(t17,p15(X),[],[p16(X)],dyn([],[])).
+rule(t18,p16(o(X,1)),[p16(o(X,2)),p16(o(X,3))],[p17(X)],dyn([],[])).
+
+% 14) mult. instances  w. run time knowledge
+rule(t19,p17(X),[],[p18(X)],dyn([],[])).
+rule(t20,p18(X),[],[],dyn([],[insert(p19(o(X,I)),p19_gen(I))])).
+
+% 7) structured synchronizing merge -- once all instances get to p20,
+%    delete them and go to p21.
+rule(t21,p19(X),[],[p20(X)],dyn([],[])).
+rule(t22,p20(o(X,_)),[],[p21(X)],dyn([doesnt_contain(constr(p19(o(X,_)),true))],
+	                             [delete(p20(o(X,_)))])).
+
+% 9) structured discriminator w. reset.  Allow one p23 to go to p24.
+% When it does, set p23r.  Then delete other p23's as you find them,
+% and keep p23e set until all instances have reached p23
+rule(t23,p21(X),[],[p22(o(X,1)),p22(o(X,2)),p22(o(X,3))],dyn([],[])).
+rule(t23,p21(X),[],[p22(o(X,1)),p22(o(X,2))],dyn([],[])).
+rule(t24,p22(X),[],[p23(X)],dyn([],[])).
+rule(t25,p23(o(X,_Y)),[],[p24(X),p23r(X)],dyn([doesnt_contain(constr(p23r(X),true))],[])).
+rule(t25a,p23(o(X,_Y)),[],[],dyn([contains(constr(p23r(X),true))],[])).
+rule(t25b,p23r(X),[],[],dyn([doesnt_contain(constr(p22(o(X,_)),true))],[])).
+
+% 6) multi choice + synchronized merge
+rule(t26,p24(X),[],[p25(1,X)],dyn([],[insert(p25(C,X),cond1(C))])).
+rule(t27,p25(C,X),[],[p26(C,X)],dyn([],[])).
+rule(t28,p26(_,X),[],[p27(X)],dyn([doesnt_contain(constr(p25(_,X),true))],[delete(p26(_,_))])).
+ 
+% 15) mult. instances  w.o. run time knowledge (+ synchronized merge)
+rule(t29,p27(X),[],[],dyn([],[insert(p28(o(X,I)),p19_gen(I))])).
+rule(t30,p28(X),[],[p29(X)],dyn([],[])).
+rule(t31,p28(o(X,I)),[],[p29(o(X,I))],dyn([],[insert(p28(o(X,J)),t31_gen(J))])).
+rule(t32,p29(o(X,_I)),[],[p30(X)],dyn([doesnt_contain(constr(p28(_),true))],[delete(p29(_))])).
+
+% 16) Deferred choice
+rule(t33,p30(X),[],[p31(X)],dyn([condition(t33_cond(1))],[])).
+rule(t34,p30(X),[],[p32(X)],dyn([condition(\+ t33_cond(1))],[])).
+
+% 17) Interleaved parallel routing -- numerous instances above.  
+% The CPN diagram on pg. 35 appears incorrect (althought I dont know what
+% arc labels () and c mean).
+
+% 18) Milestone -- 36 may or may not be reachable, depending on
+% whether p33m is consumed by t38 or by t37
+rule(t35,p32(X),[],[p33(X),p34(X)],dyn([],[])).
+rule(t36,p33(X),[],[p33m(X)],dyn([],[])).
+rule(t37,p33m(X),[],[p33m1(X)],dyn([],[])).
+rule(t38,p33m(X),[p34(X)],[p33m1(X),p35(X)],dyn([],[])).
+rule(t39,p33m1(X),[p35(X)],[p36(X)],dyn([],[])).
+
+% 19) Cancel Activity
+rule(t40,p36(X),[],[p37(X),p38(X),p37(dummy)],dyn([],[])).
+rule(t40,p38(X),[],[p39(X)],dyn([],[delete(p37(X))])).
+
+% 20) Cancel Case
+rule(t41,p39(X),[],[],dyn([],[insert(p40(o(X,J)),p19_gen(J))])).
+rule(t42,p40(X),[],[p41(X)],dyn([],[])).
+rule(t43,p40(_),[],[],dyn([],[delete(p40(_)),delete(p41(_))])).
+
+end_of_file.
+
+
+
+
