@@ -47,7 +47,7 @@ shared_reachable(InState,NewState):-
 	hasTransition(InState,NewState).
 
 hasTransition(State,NewState):-
-%	writeln(hasTransition(State)),
+	writeln(hasTransition(State)),
 	get_rules_for_state(State,AllRules),
 	member(Rule,AllRules),
 	apply_rule_to_state(Rule,State,NewState).
@@ -62,21 +62,20 @@ get_rules_for_state(State,Flatrules):-
 
 get_rules_for_state_1([],_State,[]).
 get_rules_for_state_1([H|T],State,[Rules2|RT]):-
-	findall(rule(Tran,H,Places,Output,Dyn),rule(Tran,H,Places,Output,Dyn),Rules),
-	check_concession(Rules,State,Rules1),
+	get_rules_for_state_2(H,State,Rules1),
+%	findall(rule(Tran,H,Places,Output,Dyn),rule(Tran,H,Places,Output,Dyn),Rules),
+%	check_concession(Rules,State,Rules1),
 	check_dynamic_constraints(Rules1,Rules2,State),
 	get_rules_for_state_1(T,State,RT).
 
-% Check concession checks that a token is in all places in *t, and no
-% token is in t*. 
-check_concession([],_,[]).
-check_concession([rule(Name,Inp,Ilist,Outlist,Dyn)|T],Input,
-                	[rule(Name,Inp,Ilist,Outlist,Dyn)|T1]):-
-	state_subset(Ilist,Input),
-	ord_disjoint(Outlist,Input),!,
-	check_concession(T,Input,T1).
-check_concession([_Rule|T],Input,T1):-
-	check_concession(T,Input,T1).
+get_rules_for_state_2(H,State,Rules):- 
+	findall(rule(Tran,H,Places,Output,Dyn),
+	        (rule(Tran,H,Places,Output,Dyn),
+		 has_concession(rule(Tran,H,Places,Output,Dyn),State)),Rules).
+
+has_concession(rule(_Name,_Inp,Ilist,Outlist,_Dyn),State):- 
+	state_subset(Ilist,State),
+	ord_disjoint(Outlist,State).
 
 check_dynamic_constraints([],[],_State).
 check_dynamic_constraints([rule(Name,Inp,Ilist,Outlist,dyn([],App))|T],
@@ -97,6 +96,10 @@ call_dynamic_constraints([doesnt_contain(List)|R],State):-
 call_dynamic_constraints([contains(List)|R],State):- 
 	state_contains(List,State),
 	call_dynamic_constraints(R,State).
+call_dynamic_constraints([contains_at_least(Term,N)|R],State):- 
+	(integer(N) -> Cutoff = N ; call_c(N),arg(1,N,Cutoff)),  % allows dynamic computation of N
+	findall(Term,member(Term,State),Terms),length(Terms,L),L >= Cutoff,
+	call_dynamic_constraints(R,State).
 call_dynamic_constraints([condition(Goal)|R],State):- 
 	call_c(Goal),
 	call_dynamic_constraints(R,State).
@@ -114,13 +117,19 @@ apply_dynamic_effects([delete(Term)|T],State,Newstate):-
 	ord_subtract(State,Terms,Newstate1),
 	apply_dynamic_effects(T,Newstate1,Newstate).
 apply_dynamic_effects([insert(Term,Condition)|T],State,Newstate):- 
-	findall(Term,call_c(Condition),Terms),
+	eval_insert_condition(Condition,State,Term,Terms),
 	sort(Terms,SortTerms),
 	ord_union(State,SortTerms,Newstate1),
 	apply_dynamic_effects(T,Newstate1,Newstate).
 %apply_dynamic_effects([createInstances(Term,Generator)|T],State,Newstate):- 
 %	findall(Term,call(Generator),NewInsts),
 %	apply_dynamic_effects(T,[NewInsts|State],Newstate).
+
+% match against every pattern in state.
+eval_insert_condition(exists(Pattern),State,Term,Terms):- !,
+	findall(Term,member(Pattern,State),Terms).
+eval_insert_condition(Condition,_State,Term,Terms):- 
+	findall(Term,call_c(Condition),Terms).
 
 flatsort(In,Out):- 
 	flatten(In,In1),
@@ -238,4 +247,24 @@ check_incons([incons(N1,N)|R],InAccum,N):-!,
 check_incons([_|R],InAccum,N):-
 	check_incons(R,InAccum,N).
 */
+
+
+
+get_rules_for_state_1([],_State,[]).
+get_rules_for_state_1([H|T],State,[Rules2|RT]):-
+	findall(rule(Tran,H,Places,Output,Dyn),rule(Tran,H,Places,Output,Dyn),Rules),
+	check_concession(Rules,State,Rules1),
+	check_dynamic_constraints(Rules1,Rules2,State),
+	get_rules_for_state_1(T,State,RT).
+
+% Check concession checks that a token is in all places in *t, and no
+% token is in t*. 
+check_concession([],_,[]).
+check_concession([rule(Name,Inp,Ilist,Outlist,Dyn)|T],Input,
+                	[rule(Name,Inp,Ilist,Outlist,Dyn)|T1]):-
+	state_subset(Ilist,Input),
+	ord_disjoint(Outlist,Input),!,
+	check_concession(T,Input,T1).
+check_concession([_Rule|T],Input,T1):-
+	check_concession(T,Input,T1).
 

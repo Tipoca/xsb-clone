@@ -4,15 +4,32 @@ p19_gen(3).
 
 t31_gen(4).
 
-cond1(1).
+ncond1(1).
 cond1(3).
 
 t33_cond(2).
+
+recurse(X):- atomic(X),!.
+recurse(o(X,_)):- atomic(X),!.
+recurse(o(o(X,_),_)):- atomic(X),!.
+
+t69_cutoff(2).
+
+:- dynamic structloop/0.
+structloop_cond:- structloop -> retractall(structloop) ; assert(structloop).
 
 /* simple and multi merge are the same from CEPN perspective.  Also,
   CPNs automatically provide for 
      11) Implicit termination automatically
      12) mult. instances  w.o. synch
+
+  % Not on first pass:
+  23) transient trigger
+  24) persistent trigger
+% 39) Critical Section: Not modelling threads on first pass
+%     (i.e. vacuously true) 
+% 41) Thread Split
+% 42) Thread Merge
 */
 :- index(rule/5,2).
 
@@ -37,7 +54,7 @@ rule(t15,p14(X),[],[p1(X)],dyn([],[])).       % 10) arbitrary cycle
 % 13) mult. instances  w. design knowl req instances
 rule(t16,p14(X),[],[p15(o(X,p14_1)),p15(o(X,p14_2)),p15(o(X,p14_3))],dyn([],[])).
 rule(t17,p15(X),[],[p16(X)],dyn([],[])).
-rule(t18,p16(o(X,1)),[p16(o(X,2)),p16(o(X,3))],[p17(X)],dyn([],[])).
+rule(t18,p16(o(X,p14_1)),[p16(o(X,p14_2)),p16(o(X,p14_3))],[p17(X)],dyn([],[])).
 
 % 14) mult. instances  w. run time knowledge
 rule(t19,p17(X),[],[p18(X)],dyn([],[])).
@@ -53,7 +70,7 @@ rule(t22,p20(o(X,_)),[],[p21(X)],dyn([doesnt_contain(constr(p19(o(X,_)),true))],
 % When it does, set p23r.  Then delete other p23's as you find them,
 % and keep p23e set until all instances have reached p23
 rule(t23,p21(X),[],[p22(o(X,1)),p22(o(X,2)),p22(o(X,3))],dyn([],[])).
-rule(t23,p21(X),[],[p22(o(X,1)),p22(o(X,2))],dyn([],[])).
+%rule(t23,p21(X),[],[p22(o(X,1)),p22(o(X,2))],dyn([],[])).
 rule(t24,p22(X),[],[p23(X)],dyn([],[])).
 rule(t25,p23(o(X,_Y)),[],[p24(X),p23r(X)],dyn([doesnt_contain(constr(p23r(X),true))],[])).
 rule(t25a,p23(o(X,_Y)),[],[],dyn([contains(constr(p23r(X),true))],[])).
@@ -93,10 +110,89 @@ rule(t40,p38(X),[],[p39(X)],dyn([],[delete(p37(X))])).
 % 20) Cancel Case
 rule(t41,p39(X),[],[],dyn([],[insert(p40(o(X,J)),p19_gen(J))])).
 rule(t42,p40(X),[],[p41(X)],dyn([],[])).
-rule(t43,p40(_),[],[],dyn([],[delete(p40(_)),delete(p41(_))])).
+rule(t43,p40(X),[],[p42(X)],dyn([],[delete(p40(_)),delete(p41(_))])).
+
+%21) Structured Loop
+rule(t44,p42(X),[],[p43(X)],dyn([condition(\+ structloop)],[])).
+rule(t45,p42(X),[],[p44(X)],dyn([condition(structloop_cond)],[])).
+rule(t46,p43(X),[],[p42(X)],dyn([],[])).
+
+%22) Recursion
+rule(t47,p44(X),[],[p44(o(X,1)),p45(X)],dyn([condition(recurse(X))],[])).
+rule(t48,p44(o(X,1)),[],[p45(o(X,1)),p45a(o(X,1))],dyn([condition(\+ recurse(o(X,1)))],[])).
+rule(t49,p45(o(X,1)),[p45a(o(X,1))],[p45a(X)],dyn([],[])).
+rule(t50,p45(X),[p45a(X)],[p46(X)],dyn([condition(atomic(X))],[])).
+
+% 25) Cancel Region -- essentailly the same as Cancel Case
+% 26) Cancel Multiple Instances  -- essentailly the same as Cancel Case
+
+% 27) Complete Multiple Instances
+
+rule(t51,p46(X),[],[],dyn([],[insert(p47(o(X,I)),p19_gen(I))])).
+rule(t52,p47(X),[],[p48(X)],dyn([],[])).
+rule(t53,p48(o(X,_I)),[],[p49(X)],dyn([],
+	                              [insert(pcomplete(o(X,I)),exists(p47(o(X,I)))),
+				       insert(pcomplete(o(X,I)),exists(p48(o(X,I)))),
+				       delete(p47(o(X,_))),delete(p48(o(X,_)))])).
+
+% 28) Blocking Discriminator
+rule(t54,p49(X),[],[p50(o(X,1)),p50(o(X,2)),p50(o(X,3))],dyn([doesnt_contain(constr(p49b(X),true))],[])).
+rule(t55,p50(X),[],[p51(X)],dyn([],[])).
+rule(t56,p51(o(X,_Y)),[],[p49b(X),p51r(X),p52(X)],dyn([doesnt_contain(constr(p51r(X),true))],[])).
+rule(t56a,p51(o(X,_Y)),[],[],dyn([contains(constr(p51r(X),true))],[])).
+rule(t56b,p49b(X),[p51r(X)],[],dyn([doesnt_contain(constr(p50(o(X,_)),true)),
+                                    doesnt_contain(constr(p51(o(X,_)),true))],[])).
+
+% 29) Cancelling Discriminator
+% perhaps should be used with blocking as well?
+rule(t57,p52(X),[],[p53(o(X,1)),p53(o(X,2)),p53(o(X,3))],dyn([],[])).
+rule(t58,p53(X),[],[p54(X)],dyn([],[])).
+rule(t59,p54(o(X,_Y)),[],[p55(X)],dyn([],[delete(p53(o(X,_))),delete(p54(o(X,_)))])).
+
+% 30) Structured Partial Join (M of N)
+% This example is actually more closely related to 34 in that I'm
+% using instances.  Could be rewritten to use different branches
+% (i.e. have t60 create p56, p57 and p58 instead of instances.
+rule(t60,p55(X),[],[p56(o(X,1)),p56(o(X,2)),p56(o(X,3))],dyn([],[])).
+rule(t61,p56(X),[],[p57(X)],dyn([],[])).
+rule(t62,p57(o(X,_Y)),[],[p58(X),p58r(X)],dyn([contains_at_least(p57(o(X,_)),2)],
+	                                      [delete(p57(o(X,_)))])).
+rule(t63a,p57(o(X,_Y)),[],[],dyn([contains(constr(p58r(X),true))],[])).
+rule(t63b,p58r(X),[],[],dyn([doesnt_contain(constr(p56(o(X,_)),true)),
+                             doesnt_contain(constr(p57(o(X,_)),true))],[])).
+
+% 31) Blocking Partial Join 
+% combination of blocker (28) and structured partial join (30)
+
+% 32) Cancelling Partial Join 
+% combination of cancelling (29) and structured partial join (30)
+
+% 33) Generalized AND Join
+% Working a little differently in that all tokens are unique, and
+% based on ENs.
+rule(t64,p58(X),[],[p59(o(X,o(1,1))),p59(o(X,o(2,1))),p59(o(X,o(3,1))),
+	            p59(o(X,o(1,2))),p59(o(X,o(2,2))),p59(o(X,o(3,2)))],dyn([],[])).
+rule(t65,p59(o(X,o(1,_))),[p59(o(X,o(2,_))),p59(o(X,o(3,_)))],[p60(X)],dyn([],[])).
+rule(t66,p60(X),[],[p61(X)],dyn([],[])).
+
+% 34) Static Partial Join for Multiple Instances
+% 35) Cancelling Partial Join for Multiple Instances
+
+% 36) Dynamic Partial Join for Multiple Instances
+% Only difference here is that there is a call to t68_cuttoff(_)
+rule(t67,p62(X),[],[p63(o(X,1)),p63(o(X,2)),p63(o(X,3))],dyn([],[])).
+rule(t68,p63(X),[],[p64(X)],dyn([],[])).
+rule(t69,p64(o(X,_Y)),[],[p65(X),p65r(X)],dyn([contains_at_least(p64(o(X,_)),t69_cutoff(_))],
+	                                      [delete(p64(o(X,_)))])).
+rule(t69a,p64(o(X,_Y)),[],[],dyn([contains(constr(p65r(X),true))],[])).
+rule(t69b,p65r(X),[],[],dyn([doesnt_contain(constr(p63(o(X,_)),true)),
+                             doesnt_contain(constr(p64(o(X,_)),true))],[])).
+
+% 37) Acyclic Synchronizing Merge
+% 38) General Synchronizing Merge
+
+% 40) Interleaved Routing
+% 43) Explicit Termination -- Same mechanism as completing multiple
+% instances.
 
 end_of_file.
-
-
-
-
