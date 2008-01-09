@@ -197,7 +197,7 @@ generate_goallist(Index,[G|Rest],P):-
 */
 
 bench_process_3(N,NumThreads,Time):- 
-	generate_process_2(N),
+	generate_process_2(N,2),
 	walltime(Before),
 	n_par_execute( reachable([a1_1,a2_1,b1_1,b2_1,c1_1,c2_1],_), NumThreads ),
 	walltime(After),
