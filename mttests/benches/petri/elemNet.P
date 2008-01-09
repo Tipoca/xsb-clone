@@ -17,8 +17,8 @@
 reachable(InState,NewState):-
 	reachable(InState,State),
 %	writeln(reachable(InState,State)),
-	hasTransition(State,NewState),
-        bound_search.
+	hasTransition(State,NewState).
+%        bound_search.
 reachable(InState,NewState):-
 	hasTransition(InState,NewState).
 

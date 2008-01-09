@@ -2,6 +2,10 @@
 :- index(rule/4,2).
 :- ensure_loaded(elemNet).
 :- import between/3,member/2 from basics.
+:- import par_execute/1, n_par_execute/2 from thread.
+
+
+:- thread_shared rule/4.
 
 /* 
   generation and benchmarks for elementary Petri nets.
@@ -37,10 +41,11 @@
    walltime (and 20-30 secs for generation).
 */
 
-bench_process_1(N,Time):- 
+bench_process_1(N,NumThreads,Time):- 
+	abolish_all_tables,
 	generate_process_1(N),
 	walltime(Before),
-	reachable([a1,b1,c1],_),
+	n_par_execute( reachable([a1,b1,c1],_), NumThreads ),
 	walltime(After),
 	Time is After - Before,
 	statistics.
@@ -91,19 +96,24 @@ generate_process_even_1(Nin):-
    states, for Numthread*(4(N+2) - 1) overall.  */
 
 bench_process_2(N,Numthreads,Time):- 
+	abolish_all_tables,
 	generate_process_2(N,Numthreads),
-	generate_goallist(Numthreads,List),
+	generate_goallist(Numthreads,List,shared_reachable),
 	walltime(Before),
-	bench_process_2_sub(List),
+	par_execute(List),
 	walltime(After),
 	Time is After - Before,
 	statistics.
 
-bench_process_2_sub(List):- 
-	member(Goal,List),
-	call(Goal),
-	fail.
-bench_process_2_sub(_List).
+bench_process_2_private(N,Numthreads,Time):- 
+	abolish_all_tables,
+	generate_process_2(N,Numthreads),
+	generate_goallist(Numthreads,List,reachable),
+	walltime(Before),
+	par_execute(List),
+	walltime(After),
+	Time is After - Before,
+	statistics.
 
 generate_process_2(N,Numthreads):- 
 	between(1,N,M),
@@ -168,13 +178,14 @@ generate_joinlist(Index,N,[A,C|Rest]):-
 	I1 is Index - 1,
 	generate_joinlist(I1,N,Rest).
 
-generate_goallist(0,[]):- !.
-generate_goallist(Index,[shared_reachable([A,B,C],_)|Rest]):- 
+generate_goallist(0,[],_P):- !.
+generate_goallist(Index,[G|Rest],P):- 
 	concat_atom([a,Index,'_1'],A),
 	concat_atom([b,Index,'_1'],B),
 	concat_atom([c,Index,'_1'],C),
+	G =.. [P, [A, B, C], _ ],
 	I1 is Index - 1,
-	generate_goallist(I1,Rest).
+	generate_goallist(I1,Rest,P).
 
 %------------------------------------------------------------------------------------
 
@@ -185,10 +196,10 @@ generate_goallist(Index,[shared_reachable([A,B,C],_)|Rest]):-
    I can make this N-ary if needed.
 */
 
-bench_process_3(N,Time):- 
+bench_process_3(N,NumThreads,Time):- 
 	generate_process_2(N),
 	walltime(Before),
-	shared_reachable([a1_1,a2_1,b1_1,b2_1,c1_1,c2_1],_),
+	n_par_execute( reachable([a1_1,a2_1,b1_1,b2_1,c1_1,c2_1],_), NumThreads ),
 	walltime(After),
 	Time is After - Before,
 	statistics.
