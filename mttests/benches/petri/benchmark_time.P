@@ -140,7 +140,7 @@ generate_process_odd_2(Nin,Index):-
 
 generate_even_processes(0,_M):- !.
 generate_even_processes(N,M):- !,
-	generate_process_odd_2(M,N),
+	generate_process_even_2(M,N),
 	N1 is N - 1,
 	generate_even_processes(N1,M).
 
