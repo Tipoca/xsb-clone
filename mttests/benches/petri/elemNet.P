@@ -60,15 +60,15 @@ get_rules_for_state(State,Flatrules):-
 
 get_rules_for_state_1([],_State,[]).
 get_rules_for_state_1([H|T],State,[Rules1|RT]):-
-	findall(rule(Tran,H,Places,Output),rule(Tran,H,Places,Output),Rules),
+	findall(rule([H|Places],Output,Tran),rule([H|Places],Output,Tran),Rules),
 	check_concession(Rules,State,Rules1),
 	get_rules_for_state_1(T,State,RT).
 
 % Check concession checks that a token is in all places in *t, and no
 % token is in t*. 
 check_concession([],_,[]).
-check_concession([rule(Name,Inp,Ilist,Outlist)|T],Input,
-                	[rule(Name,Inp,Ilist,Outlist)|T1]):-
+check_concession([rule([Inp|Ilist],Outlist,Name)|T],Input,
+                	[rule([Inp|Ilist],Outlist,Name)|T1]):-
 	ord_subset(Ilist,Input),
 	ord_disjoint(Outlist,Input),!,
 	check_concession(T,Input,T1).
@@ -76,8 +76,8 @@ check_concession([_Rule|T],Input,T1):-
 	check_concession(T,Input,T1).
 
 %-------
-apply_rule_to_state(rule(_Name,In,InS,Out),State,NewState):-
-	ord_subtract(State,[In|InS],Diff),
+apply_rule_to_state(rule(Input,Out,_Name),State,NewState):-
+	ord_subtract(State,Input,Diff),
 	flatsort([Out|Diff],NewState).
 
 flatsort(In,Out):- 
@@ -116,14 +116,14 @@ find_conflicts([H|T],[InconsH|InconsT]):-
 	find_conflicts(T,InconsT).
 	
 find_conflicts_1([],_,[]).
-find_conflicts_1([rule(N,Inp,Ilist,Outlist)|T],
-                	rule(N1,Inp1,Ilist1,Outlist1),[Incons|TI]):- 
-	(\+ ord_disjoint([Inp|Ilist],[Inp1|Ilist1])
+find_conflicts_1([rule(Inplist,Outlist,N)|T],
+                	rule(Inplist1,Outlist1,N1),[Incons|TI]):- 
+	(\+ ord_disjoint(Inp|Ilist,Inplist1])
 	  ; \+ ord_disjoint(Outlist,Outlist1) ),!,
 	  (N @< N1 -> Incons = incons(N,N1) ; Incons = incons(N1,N)),
-	find_conflicts_1(T,rule(N1,Inp1,Ilist1,Outlist1),TI).
-find_conflicts_1([_|T],rule(N1,Inp1,Ilist1,Outlist1),TI):- 
-	find_conflicts_1(T,rule(N1,Inp1,Ilist1,Outlist1),TI).
+	find_conflicts_1(T,rule(Inplist1,Outlist1,N1),TI).
+find_conflicts_1([_|T],rule(Inplist1,Outlist1,N1),TI):- 
+	find_conflicts_1(T,rule(Inplist1,Outlist1,N1),TI).
 
 % Backtracks through ALL non-conflicting sets of rules for a given
 % state

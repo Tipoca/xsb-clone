@@ -1,11 +1,11 @@
 :- import concat_atom/2 from string.
-:- index(rule/4,2).
+:- index(rule/3,trie).
 :- ensure_loaded(elemNet).
 :- import between/3,member/2 from basics.
 :- import par_execute/1, n_par_execute/2 from thread.
 
 
-:- thread_shared rule/4.
+:- thread_shared rule/3.
 
 /* 
   generation and benchmarks for elementary Petri nets.
@@ -70,8 +70,8 @@ generate_process_odd_1(Nin):-
 	concat_atom([a,Next],Anext),
 	concat_atom([b,Next],Bnext),
 	concat_atom([c,Next],Cnext),
-	assert(rule(S,A,[],[Anext])),
-	assert(rule(T,B,[C],[Bnext,Cnext])).
+	assert(rule([A],[Anext],S)),
+	assert(rule([B,C],[Bnext,Cnext],T)).
 
 generate_process_even_1(Nin):-
 	concat_atom([a,Nin],A),
@@ -83,8 +83,8 @@ generate_process_even_1(Nin):-
 	concat_atom([a,Next],Anext),
 	concat_atom([b,Next],Bnext),
 	concat_atom([c,Next],Cnext),
-	assert(rule(S,A,[B],[Anext,Bnext])),
-	assert(rule(T,C,[],[Cnext])).
+	assert(rule([A,B],[Anext,Bnext],S)),
+	assert(rule([C],[Cnext],T)).
 
 %------------------------------------------------------------------------------------
 
@@ -142,8 +142,8 @@ generate_process_odd_2(Nin,Index):-
 	concat_atom([a,Index,'_',Next],Anext),
 	concat_atom([b,Index,'_',Next],Bnext),
 	concat_atom([c,Index,'_',Next],Cnext),
-	assert(rule(S,A,[],[Anext])),
-	assert(rule(T,B,[C],[Bnext,Cnext])).
+	assert(rule([A],[Anext],S)),
+	assert(rule([B,C],[Bnext,Cnext],S)).
 
 generate_even_processes(0,_M):- !.
 generate_even_processes(N,M):- !,
@@ -161,15 +161,15 @@ generate_process_even_2(Nin,Index):-
 	concat_atom([a,Index,'_',Next],Anext),
 	concat_atom([b,Index,'_',Next],Bnext),
 	concat_atom([c,Index,'_',Next],Cnext),
-	assert(rule(S,A,[B],[Anext,Bnext])),
-	assert(rule(T,C,[],[Cnext])).
+	assert(rule([A,B],[Anext,Bnext],S)),
+	assert(rule([C],[Cnext],T)).
 
 generate_join(Nin,Numthreads):- 
 	N is Nin + 2,  % join final states.
 	generate_joinlist(Numthreads,N,List),
 	sort(List,Slist),
 	Slist = [A1|Rest],
-	assert(rule(u,A1,Rest,[finish])).
+	assert(rule([A1|Rest],[finish],u)).
 
 generate_joinlist(0,_N,[]):- !.
 generate_joinlist(Index,N,[A,C|Rest]):- 
