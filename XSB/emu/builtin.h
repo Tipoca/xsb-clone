@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.82 2007-12-24 19:16:59 tswift Exp $
+** $Id: builtin.h,v 1.83 2008-01-16 17:19:37 dwarren Exp $
 ** 
 */
 
@@ -78,6 +78,7 @@
 #define PSC_INSERT	42
 #define PSC_IMPORT	43
 #define PSC_DATA	44
+#define CONPSC		45
 
 #define PSC_INSERTMOD	46
 
