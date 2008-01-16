@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.95 2007/11/01 18:53:34 tswift Exp $
+** $Id: machine.P,v 1.96 2007/12/24 19:18:57 tswift Exp $
 ** 
 */
 
@@ -383,12 +383,13 @@ conname(Con, Name) :-
 	; Type =:= XSB_STRUCT -> term_psc(Con, Psc), psc_name(Psc, Name)
 	).
 
-conpsc(Con, Psc) :-
+conpsc(_Con, _Psc) :- '_$builtin'(CONPSC).
+/**conpsc(Con, Psc) :-
 %%	term_psc(Con, Psc), Psc \== 0.
 	term_type(Con, Type),
 	( Type =:= XSB_STRUCT -> term_psc(Con, Psc)
 	; Type =:= XSB_STRING -> psc_insert(Con, 0, Psc, 0)
-	).
+	).***/
 
 machine_file_exists(File) :- 
 	sys_syscall(SYS_access, Res, File, 'r'), Res =:= 0.
