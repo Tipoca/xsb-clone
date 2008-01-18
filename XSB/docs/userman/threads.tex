@@ -111,6 +111,8 @@ multi-threaded engine, the XSB thread id of any thread can be queried
 using the predicate {\tt thread\_self/1}.
 
 \section{Communication among Threads}
+\index{tabling!thread\_private}
+\index{tabling!thread\_shared}
 
 \begin{example}
 Consider the program fragment
@@ -600,8 +602,8 @@ fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
 \> \> socket\_bind($SockFD$, $XSBport$),\\
 \> \> socket\_listen($SockFD$,Q\_LENGTH),\\
 \> \> thread\_create( server\_loop($SockFD$), Id, [] ),\\
-\> \> assert( server\_id($Id: threads.tex,v 1.33 2007-12-19 20:20:35 tswift Exp $) ),\\
-\> \> thread\_join( $Id: threads.tex,v 1.33 2007-12-19 20:20:35 tswift Exp $ ).\\
+\> \> assert( server\_id($Id: threads.tex,v 1.34 2008-01-18 22:40:19 tswift Exp $) ),\\
+\> \> thread\_join( $Id: threads.tex,v 1.34 2008-01-18 22:40:19 tswift Exp $ ).\\
 \\
 \> server\_loop($SockFD$) :-\\
 \> \> socket\_accept($SockFD$, $SockClient$),\\
@@ -671,9 +673,9 @@ list\_of\_primes($I$, $F$, $List$, $Tail$) :-\\
 partition\_space($N$, $H$, $H_1$) :-\\
 \>        $H$ is $N//2$, $H_1$ is $H + 1$.\\
 \\
-worker( $Q$, $Id: threads.tex,v 1.33 2007-12-19 20:20:35 tswift Exp $, $I$, $F$, $List$, $Tail$) :-\\
+worker( $Q$, $Id: threads.tex,v 1.34 2008-01-18 22:40:19 tswift Exp $, $I$, $F$, $List$, $Tail$) :-\\
 \>        list\_of\_primes( $I$, $F$, $List$, $Tail$),\\
-\>        thread\_send\_message( $Q$, primes($Id: threads.tex,v 1.33 2007-12-19 20:20:35 tswift Exp $,$List$,$Tail$) ).\\
+\>        thread\_send\_message( $Q$, primes($Id: threads.tex,v 1.34 2008-01-18 22:40:19 tswift Exp $,$List$,$Tail$) ).\\
 \\
 master( $N$, $L$ )  :-\\
 \>        partition\_space( $N$, $H$, $H_1$),\\
