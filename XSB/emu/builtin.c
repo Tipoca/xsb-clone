@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.305 2008-01-16 17:19:37 dwarren Exp $
+** $Id: builtin.c,v 1.306 2008-01-21 18:07:28 dwarren Exp $
 ** 
 */
 
@@ -2459,10 +2459,6 @@ case WRITE_OUT_PROFILE:
 	complstack_realloc(CTXTc complstack.init_size);
 
     if (glstack.size != glstack.init_size)
-      if ( (unsigned int)((glstack.high - (byte *)top_of_localstk) +
-			  ((byte *)hreg - glstack.low))
-	   < glstack.init_size * K - OVERFLOW_MARGIN )
-	// this is a noop since glstack_realloc won't shrink space.
 	glstack_realloc(CTXTc glstack.init_size,0);  
 
     tstShrinkDynStacks(CTXT);
