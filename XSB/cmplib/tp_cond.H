@@ -19,17 +19,17 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_cond.H,v 1.5 2007-09-28 18:20:10 dwarren Exp $
+** $Id: tp_cond.H,v 1.6 2008-01-22 17:44:34 dwarren Exp $
 ** 
 */
 
 
-:- export tcond/10, tvar_hold/3, force_tp_cond_loaded/0.
+:- export tcond/9, tvar_hold/3, force_tp_cond_loaded/0.
 
 :- import gennum/1 from gensym.
 :- import vprag_type/2 from varproc.
-:- import eval_relop/11, arithrelop/1 from tp_eval.
-:- import geninl_load_lhs/7, geninline/10 from tpinline.
+:- import eval_relop/10, arithrelop/1 from tp_eval.
+:- import geninl_load_lhs/7, geninline/9 from tpinline.
 :- import term_comp_op/1, term_comp_tab/4 from tp_comp.
 :- import release_if_done0/5, getreg/2 from tp_var.
 :- import inline_jumpcof_cond/3 from builtin.

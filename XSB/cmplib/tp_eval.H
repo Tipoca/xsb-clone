@@ -19,13 +19,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_eval.H,v 1.4 2005-01-14 18:30:47 ruim Exp $
+** $Id: tp_eval.H,v 1.5 2008-01-22 17:44:34 dwarren Exp $
 ** 
 */
 
 
 :- export force_tp_eval_loaded/0.
-:- export eval_relop/11, eval_exp/9, arithrelop/1.
+:- export eval_relop/10, eval_exp/8, arithrelop/1.
 
 :- import sym_name/3 from symtab.
 :- import error/1, message/1 from auxlry.

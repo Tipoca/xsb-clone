@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tpinline.H,v 1.5 2007-09-28 18:20:10 dwarren Exp $
+** $Id: tpinline.H,v 1.6 2008-01-22 17:44:35 dwarren Exp $
 ** 
 */
 
 
 
 :- export force_tp_geninline_loaded/0. 
-:- export geninline/10, geninl_load_lhs/7.
+:- export geninline/9, geninl_load_lhs/7.
 
 :- import sym_name/3 from symtab.
 :- import error/1, message/1 from auxlry.
@@ -34,7 +34,7 @@
 :- import tgetpar/6, tputpar/7 from tp_goal.
 :- import term_comp_op/1, term_comp_tab/4 from tp_comp.
 :- import vprag_occ/2, vprag_loc/2, vprag_type/2 from varproc.
-:- import arithrelop/1, eval_exp/9, eval_relop/11 from tp_eval.
+:- import arithrelop/1, eval_exp/8, eval_relop/10 from tp_eval.
 :- import release/3, alloc_reg/3, release_if_done/6, hold/3, getreg/2,
 	  putvarinst/5
      from tp_var.
