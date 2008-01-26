@@ -1,0 +1,77 @@
+
+:- [clpr].
+
+:- import {}/1 from nf_r.
+:- import dump/3 from dump.
+:- import entailed/1 from nf_r.
+:- import sup/4,maximize/1 from bv_r.
+:- import member/2 from basics.
+
+test:- test0.
+test:- test1.
+test:- test2.
+test:- test3.
+test:- test4.
+test:- test5.
+test:- test6.
+test:- test7.
+test:- test8.
+test:- test9.
+test:- test10.
+test:- test11.
+test:- test12.
+test:- test13.
+test:- test14.
+test:- test15.
+test:- test16.
+test:- test18.
+test:- test19.
+test:- test20.
+test:- test21.
+
+test0:- {X > 3},X = 4,writeln(test0('{X > 3},X = 4 succeeded')),fail.
+test0:- (({X > 3},X = 2) -> 
+	    writeln('{X > 3},X = 2 succeeded')
+	  ; 
+	    writeln(test0('{X > 3},X = 2 failed ok'))),
+	 fail.
+test1:- {X  > 3},	dump([X],[x],F),writeln(test1(F)),fail.
+test2:- {X + 3 > 4},	dump([X],[x],F),writeln(test2(F)),fail.
+test3:- {X > 3},{Y > 4},	dump([X,Y],[x,y],F),writeln(test3(F)),fail.
+test4:- {X - 3 > Y},Y = 0,	dump([X],[x],F),writeln(test4(F)),fail.
+test5:- {X  > 3},entailed(X > 2),writeln(test5_succeeded),fail.
+test6:- {X  > 3},entailed(X > 4),writeln(test_6_error),fail.
+test7:- {X  > 3 + Y},Y = 1,entailed(X > 2),writeln(test7_succeeded),fail.
+test8:- {X  > 3 + Y},Y = 1,entailed(X > 5),writeln(error(test8)),fail.
+test9:- {X  > 3*Y + 2},Y = 1,entailed(X > 5),writeln(succeeded(test9)),fail.
+test10:- {X  > 3*Y + 2},Y = 1,	entailed(X > 10),writeln(error(test10)),fail.
+test11:- {X  > 3*Y + 2},{Y > 0},entailed(X > Y),writeln(succeeded(test11)),fail.
+test12:- {X  > 3*Y + 2},{Y > 0},entailed(X < Y),writeln(error(test12)),fail.
+test13:- {X + Y = 10},X = Y,writeln(test13(X,Y)),fail.
+test14:-{ 2*X+Y =< 16, X+2*Y =< 11,X+3*Y =< 15, Z = 30*X+50*Y}, sup(Z,Sup,[X,Y],Vertex),
+        dump([X,Y,Z],[x,y,z],D),writeln(test14(Sup,Vertex)),
+	member(C,D),writeln(test14(C)),fail.
+test15:- { 2*X+Y =< 16, X+2*Y =< 11,X+3*Y =< 15, Z = 30*X+50*Y}, 
+	maximize(Z),writeln(test15(Z,X,Y)),fail.
+test16:-{2*A+3*B=C/2}, C=10.0, A=B,writeln(test16(A,B,C)),fail.
+test17:- {A-B+C=10, C=5+5},dump([A,B],[a,b],F),writeln(test17(F)),fail.
+test18:-{sin(cos(X)) = 1/2},writeln(test18(X)),fail.
+test19:-{sin(X+2+2)/sin(4+X) = Y},writeln(test19(Y)),fail.
+test20:-  % probably ok -- cf. 424
+	{ ((X+Y)*(Y+X)) / X = Y*Y/X+99},
+	dump([X,Y],[x,y],F),
+	writeln(test20(F)),fail.
+test21:-
+	{exp(X+Y+1,2) = 3*X*X+Y*Y}, X=Y,
+	writeln(test21(X,Y)).
+
+
+end_of_file.
+
+works like SWI w.r.t. dump/3, but swi prints out {A=B}
+
+
+end_of_file.
+
+
+
