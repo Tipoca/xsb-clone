@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.306 2008-01-21 18:07:28 dwarren Exp $
+** $Id: builtin.c,v 1.307 2008-01-28 18:16:49 dwarren Exp $
 ** 
 */
 
@@ -1642,7 +1642,9 @@ int builtin_call(CTXTdeclc byte number)
     if (value)       /* if predicate is new */
       set_data(pair_psc(sym), (psc));
     env_type_set(pair_psc(sym), T_IMPORTED, T_ORDI, (xsbBool)value);
-    link_sym(pair_psc(sym), (Psc)flags[CURRENT_MODULE]);
+    if (flags[CURRENT_MODULE]) /* in case before flags is initted */
+      link_sym(pair_psc(sym), (Psc)flags[CURRENT_MODULE]);
+    else link_sym(pair_psc(sym), global_mod);
     break;
   }
 
