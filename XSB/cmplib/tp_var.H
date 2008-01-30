@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_var.H,v 1.6 2004-08-31 00:22:22 dwarren Exp $
+** $Id: tp_var.H,v 1.7 2008-01-30 16:09:01 dwarren Exp $
 ** 
 */
 
@@ -33,6 +33,7 @@
 :- import abort/0 from standard.
 :- import append/3, memberchk/2 from basics.
 :- import member2/2 from listutil.
+:- import sort/2 from setof.
 :- import error/1, warning/1 from auxlry.
 :- import vprag_occ/2, vprag_loc/2, vprag_use/2, vprag_type/2,
 	  vprag_nouse/2, vprag_type1/2

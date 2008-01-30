@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.H,v 1.10 2005-08-16 19:19:07 dwarren Exp $
+** $Id: modes.H,v 1.11 2008-01-30 16:09:00 dwarren Exp $
 ** 
 */
 
@@ -58,3 +58,5 @@
 :- import get_maximal_calls/1 from usermod.
 
 :- import '_$local_calls'/1, apply/2, (:-)/2, (:-)/1 from usermod.
+
+:- import inline_predicate/2 from builtin.

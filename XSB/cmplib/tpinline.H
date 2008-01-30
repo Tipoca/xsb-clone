@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tpinline.H,v 1.6 2008-01-22 17:44:35 dwarren Exp $
+** $Id: tpinline.H,v 1.7 2008-01-30 16:09:01 dwarren Exp $
 ** 
 */
 
@@ -28,14 +28,16 @@
 :- export force_tp_geninline_loaded/0. 
 :- export geninline/9, geninl_load_lhs/7.
 
-:- import sym_name/3 from symtab.
-:- import error/1, message/1 from auxlry.
+%%:- import sym_name/3 from symtab.
+%%:- import error/1, message/1 from auxlry.
 :- import append/3 from basics.
 :- import tgetpar/6, tputpar/7 from tp_goal.
 :- import term_comp_op/1, term_comp_tab/4 from tp_comp.
 :- import vprag_occ/2, vprag_loc/2, vprag_type/2 from varproc.
-:- import arithrelop/1, eval_exp/8, eval_relop/10 from tp_eval.
+:- import arithrelop/1, /*eval_exp/8,*/ eval_relop/10 from tp_eval.
 :- import release/3, alloc_reg/3, release_if_done/6, hold/3, getreg/2,
 	  putvarinst/5
      from tp_var.
-
+:- import geninline_isindeed/8 from tp_eval.
+:- import inline_jumpcof_cond/3 from builtin.
+:- import memberchk/2 from basics.

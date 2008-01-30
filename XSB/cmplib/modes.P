@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.P,v 1.10 2005-01-14 18:30:45 ruim Exp $
+** $Id: modes.P,v 1.11 2008-01-30 16:09:00 dwarren Exp $
 ** 
 */
 
@@ -711,7 +711,6 @@ get_std_pred_defs(Flag) :-
 		fail
 	).
 
-:- import inline_predicate/2 from builtin.
 
 default_import(std, _P, _A).
 default_import(sysmod, P, A) :-	inline_predicate(P,A).
