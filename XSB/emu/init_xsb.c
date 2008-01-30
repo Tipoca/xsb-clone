@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.141 2008-01-02 19:47:43 dwarren Exp $
+** $Id: init_xsb.c,v 1.142 2008-01-30 16:03:03 dwarren Exp $
 ** 
 */
 
@@ -1453,7 +1453,7 @@ void init_symbols(CTXTdecl)
   if (new) {
     set_data(c_callloop_psc,ccall_mod_psc);
     env_type_set(c_callloop_psc, T_IMPORTED, T_ORDI, (xsbBool)new);
-    link_sym(c_callloop_psc, (Psc)flags[CURRENT_MODULE]);
+    link_sym(c_callloop_psc, global_mod);
   }
 
 

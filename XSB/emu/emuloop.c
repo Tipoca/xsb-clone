@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.181 2008-01-03 18:45:20 dwarren Exp $
+** $Id: emuloop.c,v 1.182 2008-01-30 16:03:03 dwarren Exp $
 ** 
 */
 
@@ -1606,6 +1606,48 @@ argument positions.
   XSB_Start_Instr(addreg,_addreg) /* PRR */
     Def3ops
     ARITHPROC(+, "+");
+  XSB_End_Instr() 
+
+  XSB_Start_Instr(addintfastasgn,_addintfastasgn) /*RRA*/
+    /* takes 3 1-byte operands: 
+       byte 1 is register or local variable (reg if byte3&2 is 0),
+           indicates target where sum will be assigned.
+       byte 2 is register or local variable (reg if byte3&1 is 0)
+           indicates first argument of sum.
+       byte 3 >> 2 is signed integer that is second argument of sum.
+           (Lowest 2 bits indicate reg or local var of 1st 2 args.)
+    */
+    register Cell op1; register char op2int; register CPtr op3;
+    Op1(get_xax);
+    op2int = (char)(get_xxa);
+    Op3((Cell)get_axx);
+    ADVANCE_PC(size_xxx);
+    //    printf("addintfastasgn: op1=%d, op2int=%d, op3=%d\n",(Integer)op1,(Integer)op2int,(Integer)op3);
+    if (op2int & 0x1) op1 = (Cell)(ereg -(Cell)op1);
+    else op1 = (Cell)(rreg + (Integer)op1);
+    if (op2int & 0x2) op3 = (CPtr)(ereg - (Cell)op3);
+    else op3 = (CPtr)(rreg + (Integer)op3);
+    op2int = op2int >> 2;
+    XSB_Deref(op1);
+    if (isinteger(op1)) {
+      Integer temp = int_val(op1) + op2int;
+      bld_oint(op3, temp); 
+    } else if (isfloat(op1)) {
+      Float temp = float_val(op1) + (Float)op2int;
+      bld_boxedfloat(CTXTc op3, temp); 
+    } else if (isboxedfloat(op1)) {
+      Float temp = boxedfloat_val(op1) + (Float)op2int;
+      bld_boxedfloat(CTXTc op3, temp);
+    } else if (isboxedinteger(op1)) {
+            Integer temp = boxedint_val(op1) + op2int;
+            bld_oint(op3, temp);
+    } else {
+      arithmetic_abort(CTXTc op2int, "+", op1); /* op2int must be wrong */
+    }
+  XSB_End_Instr() 
+
+  XSB_Start_Instr(addintfastuni,_addintfastuni) /*RRA*/
+    xsb_error("addintfastuni not implemented");
   XSB_End_Instr() 
 
   XSB_Start_Instr(subreg,_subreg) /* PRR */

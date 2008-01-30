@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.111 2007/12/05 19:02:39 dwarren Exp $
+** $Id: subp.c,v 1.112 2007/12/21 10:41:40 ruim Exp $
 ** 
 */
 
@@ -855,7 +855,7 @@ void setProfileBit(void *place_holder) {
     if (if_profiling) {
       if (asynint_val & PROFINT_MARK) {
 	unhandled++;
-	if (!(unhandled % 10)) printf("Unhandled profile ints: %ld\n",unhandled);
+	if (!(unhandled % 500)) printf("Unhandled profile ints: %ld\n",unhandled);
       }
       asynint_val |= PROFINT_MARK;
     }
