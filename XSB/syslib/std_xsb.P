@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.97 2007/10/12 18:10:59 pmoura Exp $
+** $Id: std_xsb.P,v 1.98 2007/10/19 21:10:38 tswift Exp $
 ** 
 */
 
@@ -294,6 +294,7 @@ standard_symbol(setof, 3, setof).
 standard_symbol(shell, 1, shell).
 standard_symbol(shell, 2, shell).
 standard_symbol(shell, 5, shell).
+standard_symbol(shell_to_list, 3, shell).
 standard_symbol(sk_not, 1, tables).
 standard_symbol(sleep, 1, shell).
 standard_symbol(skip, 1, standard).  	 	% TLS do we need this one?
