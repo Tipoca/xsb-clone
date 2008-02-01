@@ -9,9 +9,65 @@
 
 :- index(rule/5,*(2)).
 
+:- import par_execute/1 from thread.
+
+:- thread_shared rule/5.
+
+:- [colorNet].
+
 % 14_7  - 6X6 is abt 12 secs
 % 14_9  - 6X6 is abt 32 secs  262207 states
 % 14_20 - 6X6 is abt 17 secs  117650 states
+
+init_state( [p(8,1)] ).
+init_state( [p(15,1)] ).
+init_state( [p(23,1)] ).
+init_state( [p(30,1)] ).
+
+
+get_first_goals( _NT, [], [], [], _P ).
+get_first_goals( 0, LS, LS, [], _P ).
+get_first_goals( NT, [S|LS], LS1, [G|Gs], P ) :-
+	G =.. [P,S,_],
+	NT1 is NT - 1,
+	get_first_goals( NT1, LS, LS1, Gs, P ).
+
+get_goals( [], _NT, [], _P ).
+get_goals( LS, NT, [G|Gs], P ) :-
+	get_first_goals( NT, LS, LS1, G, P ),
+	get_goals( LS1, NT, Gs, P ).
+
+gen_goal_list( NThreads, P, LG ) :-
+	findall( S, init_state( S ), LS ),
+	get_goals( LS, NThreads, LG, P ).	
+
+gen_wf_1 :-
+	abolish(rule/5),
+	restartplace,
+	nextplace(Pstart),
+	gen_widget_14_7(6,6,Pstart,P1),
+	gen_widget_14_20(5,5,P1,P2),
+	gen_widget_14_7(6,6,P2,P3),
+	gen_widget_14_20(5,5,P3,P4),
+	gen_widget_14_9(5,5,P3,_P5),
+	nexttrans(T),
+	assert(rule(T,p(P4,X),[],[p(0,X)],dyn([],[]))).
+
+all_par_execute([]).
+all_par_execute([H|L]) :-
+	par_execute(H),
+	all_par_execute(L).
+
+bench_wf(NThreads,P) :-
+	gen_wf_1,
+	abolish_all_tables,
+	gen_goal_list(NThreads,P,LG),
+	walltime(Before),
+	all_par_execute(LG),
+	walltime(After),
+	Time is After - Before,
+	write(datum(P,NThreads,Time)),
+	writeln('.').
 
 % all 5x5 -- 5 seconds
 % 6x6,5x5,6x6,5x5 -- 33 seconds
@@ -39,6 +95,9 @@ coninc(Ctr,N):-
 	conget(Ctr,N),
 	N1 is N + 1,
 	conset(Ctr,N1).
+
+restartplace :-
+	conset(placectr,0).
 
 nextplace(N):- 
 	coninc(placectr,N).

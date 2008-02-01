@@ -47,7 +47,7 @@ shared_reachable(InState,NewState):-
 	hasTransition(InState,NewState).
 
 hasTransition(State,NewState):-
-	writeln(hasTransition(State)),
+%	writeln(hasTransition(State)),
 	get_rules_for_state(State,AllRules),
 	member(Rule,AllRules),
 	apply_rule_to_state(Rule,State,NewState).
