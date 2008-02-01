@@ -95,6 +95,54 @@ generate_process_even_1(Nin):-
    reached.  However, each query generates 4(N+2) - 1 independent
    states, for Numthread*(4(N+2) - 1) overall.  */
 
+n_states( 100000 ).
+
+bench_2( NThreads ) :-
+	bench_2_priv( NThreads, NThreads ),
+	bench_2_shared( NThreads, NThreads ).
+
+bench_2_shared( NThreads, NBraids ) :-
+	n_states( NS ),
+	bench_braids_2( NS, NBraids, NThreads, shared_reachable ),
+	bench_braids_2( NS, NBraids, NThreads, shared_reachable ),
+	bench_braids_2( NS, NBraids, NThreads, shared_reachable ),
+	(NThreads > 1 
+		-> 
+		( NThreads2 is NThreads // 2,
+		  bench_2_shared( NThreads2, NBraids ) )
+		;
+		true
+	).
+
+bench_2_priv( NThreads, NBraids ) :-
+	n_states( NS ),
+	bench_braids_2( NS, NBraids, NThreads, reachable ),
+	bench_braids_2( NS, NBraids, NThreads, reachable ),
+	bench_braids_2( NS, NBraids, NThreads, reachable ),
+	(NThreads > 1 
+		-> 
+		( NThreads2 is NThreads // 2,
+		  bench_2_priv( NThreads2, NBraids ) )
+		;
+		true
+	).
+
+bench_braids_2( NStates, NBraids, NThreads, Pred ) :-
+	abolish_all_tables,
+	generate_process_2(NStates,NBraids),
+	generate_goallist_thr(NBraids,NThreads,List,Pred,0),
+	walltime(Before),
+	all_par_execute(List),
+	walltime(After),
+	Time is After - Before,
+	write(datum(Pred,NThreads,Time)),
+	writeln('.').
+
+all_par_execute([]).
+all_par_execute([H|L]) :-
+	par_execute(H),
+	all_par_execute(L).
+
 bench_process_2(N,Numthreads,Time):- 
 	abolish_all_tables,
 	generate_process_2(N,Numthreads),
@@ -183,9 +231,25 @@ generate_goallist(Index,[G|Rest],P):-
 	concat_atom([a,Index,'_1'],A),
 	concat_atom([b,Index,'_1'],B),
 	concat_atom([c,Index,'_1'],C),
-	G =.. [P, [A, B, C], _ ],
-	I1 is Index - 1,
+	G =.. [P, [A, B, C], _ ], I1 is Index - 1, 
 	generate_goallist(I1,Rest,P).
+
+generate_goallist2(0,[],_P,I0):- !.
+generate_goallist2(I,[G|Rest],P,I0):- 
+	Index is I + I0,
+	concat_atom([a,Index,'_1'],A),
+	concat_atom([b,Index,'_1'],B),
+	concat_atom([c,Index,'_1'],C),
+	G =.. [P, [A, B, C], _ ],
+	I1 is I - 1,
+	generate_goallist2(I1,Rest,P,I0).
+
+generate_goallist_thr(0,_NT,[],_P,_I).
+generate_goallist_thr(NB,NT,[H|T],P,I) :-
+	NB1 is NB - NT,
+	I1 is I + NT,
+	generate_goallist2(NT,H,P,I),
+	generate_goallist_thr(NB1,NT,T,P,I1).
 
 %------------------------------------------------------------------------------------
 
