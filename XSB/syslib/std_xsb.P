@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.98 2007/10/19 21:10:38 tswift Exp $
+** $Id: std_xsb.P,v 1.99 2008/01/31 19:17:04 tswift Exp $
 ** 
 */
 
@@ -303,6 +303,7 @@ standard_symbol(spawn_process, 5, shell).
 standard_symbol((spy), 1, debugger).
 standard_symbol(statistics, 0, standard).
 standard_symbol(statistics, 1, standard).
+standard_symbol(time, 1, standard).			% also in SWI-Prolog and YAP
 standard_symbol(str_cat, 3, string).
 standard_symbol(str_length, 2, string).
 standard_symbol(str_match, 5, string).
