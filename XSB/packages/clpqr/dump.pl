@@ -1,4 +1,4 @@
-/*  $Id: dump.pl,v 1.3 2008-01-29 17:39:19 tswift Exp $
+/*  $Id: dump.pl,v 1.4 2008-02-01 00:26:51 tswift Exp $
 
     Part of CLP(Q,R) (Constraint Logic Programming over Rationals and Reals)
     
@@ -116,8 +116,8 @@ projecting_assert(QClause) :-
 	strip_module(QClause, Module, Clause),  % JW: SWI-Prolog not always qualifies the term!
 	copy_term(Clause,Copy,Constraints),
 	l2c(Constraints,Conj),			% fails for []
-	(   Sm = clpq
-	;   Sm = clpr
+    (   % Sm = clpq ; 
+	   Sm = clpr
 	),			% proper module for {}/1
 	!,
 	(   Copy = (H:-B)
