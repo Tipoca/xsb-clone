@@ -7,11 +7,11 @@
 :- conset(placectr,0).
 :- conset(transctr,0).
 
-:- index(rule/5,*(2)).
+:- index(rule/4,trie).
 
 :- import par_execute/1 from thread.
 
-:- thread_shared rule/5.
+:- thread_shared rule/4.
 
 :- [colorNet].
 
@@ -42,7 +42,7 @@ gen_goal_list( NThreads, P, LG ) :-
 	get_goals( LS, NThreads, LG, P ).	
 
 gen_wf_1 :-
-	abolish(rule/5),
+	abolish(rule/4),
 	restartplace,
 	nextplace(Pstart),
 	gen_widget_14_7(6,6,Pstart,P1),
@@ -51,7 +51,7 @@ gen_wf_1 :-
 	gen_widget_14_20(5,5,P3,P4),
 	gen_widget_14_9(5,5,P3,_P5),
 	nexttrans(T),
-	assert(rule(T,p(P4,X),[],[p(0,X)],dyn([],[]))).
+	assert(rule([p(P4,X)],[p(0,X)],dyn([],[]),T)).
 
 all_par_execute([]).
 all_par_execute([H|L]) :-
@@ -84,7 +84,7 @@ bench_wf_1(Time):-
 	writeln(p1(P4)),
 	gen_widget_14_9(5,5,P3,_P5),
 	nexttrans(T),
-	assert(rule(T,p(P4,X),[],[p(0,X)],dyn([],[]))),
+	assert(rule([p(P4,X)],[p(0,X)],dyn([],[]),T)),
 	walltime(Before),
 	reachable([p(0,1)],_),
 	walltime(After),
@@ -109,42 +109,42 @@ nexttrans(P):-
 gen_widget_14_7(Width,Length,Pin,Pout):- 
 	nexttrans(T),
 	nextplace(P1),
-	assert(rule(T,p(Pin,X),[],[],dyn([],[insert(p(P1,o(X,N)),between(1,Width,N))]))),
+	assert(rule([p(Pin,X)],[],dyn([],[insert(p(P1,o(X,N)),between(1,Width,N))]),T)),
 	gen_chain(Length,P1,Pendchn),
 	nexttrans(Tend),
 	nextplace(Pout),
 	gen_noconts(P1,Pendchn,EndInst,NoConts),
-	assert(rule(Tend,p(Pendchn,o(EndInst,1)),[],[p(Pout,EndInst)],dyn(NoConts,
-	                                                       [delete(p(Pendchn,o(EndInst,_)))]))).
+	assert(rule([p(Pendchn,o(EndInst,1))],[p(Pout,EndInst)],dyn(NoConts,
+	                                                       [delete(p(Pendchn,o(EndInst,_)))]),Tend)).
 
 gen_widget_14_9(Width,Length,Pin,Pout):- 
 	nexttrans(T),
 	nextplace(P1),
-	assert(rule(T,p(Pin,X),[],[],dyn([],[insert(p(P1,o(X,N)),between(1,Width,N))]))),
+	assert(rule([p(Pin,X)],[],dyn([],[insert(p(P1,o(X,N)),between(1,Width,N))]),T)),
 	gen_chain(Length,P1,Pendchn),
 	nextplace(Pout),
 	gen_noconts(P1,Pendchn,EndInst,NoConts),
 	% propagate first & set up catcher 
 	nexttrans(Tend1),	nextplace(Preset),
-	assert(rule(Tend1,p(Pendchn,o(EndInst,_)),[],[p(Pout,EndInst),p(Preset,EndInst)],
-	            dyn([doesnt_contain(constr(p(Preset,EndInst),true))],[]))),
+	assert(rule([p(Pendchn,o(EndInst,_))],[p(Pout,EndInst),p(Preset,EndInst)],
+	            dyn([doesnt_contain(constr(p(Preset,EndInst),true))],[]),Tend1)),
         % remove all but first
 	nexttrans(Tend2),
-	assert(rule(Tend2,p(Pendchn,o(EndInst,_)),[],[],
-	            dyn([contains(constr(p(Preset,EndInst),true))],[]))),
+	assert(rule([p(Pendchn,o(EndInst,_))],[],
+	            dyn([contains(constr(p(Preset,EndInst),true))],[]),Tend2)),
         % reset catcher
 	nexttrans(Tend3),
-	assert(rule(Tend3,p(Preset,EndInst),[],[],dyn(NoConts,[]))).
+	assert(rule([p(Preset,EndInst)],[],dyn(NoConts,[]),Tend3)).
 
 gen_widget_14_20(Width,Length,Pin,Pout):- 
 	nexttrans(T),
 	nextplace(P1),
-	assert(rule(T,p(Pin,X),[],[],dyn([],[insert(p(P1,o(X,N)),between(1,Width,N))]))),
+	assert(rule([p(Pin,X)],[],dyn([],[insert(p(P1,o(X,N)),between(1,Width,N))]),T)),
 	gen_chain(Length,P1,Pendchn),
 	nexttrans(Tend),
 	nextplace(Pout),
 	gen_deletes(P1,Pout,EndInst,Deletes),
-	assert(rule(Tend,p(Pendchn,o(EndInst,_)),[],[p(Pout,EndInst)],dyn([],Deletes))).
+	assert(rule([p(Pendchn,o(EndInst,_))],[p(Pout,EndInst)],dyn([],Deletes),Tend)).
 
 gen_noconts(Pout,Pout,_Var,[]):- !.
 gen_noconts(Pin,Pout,Var,[doesnt_contain(constr(p(Pin,o(Var,_)),true))|R]):- 
@@ -160,15 +160,15 @@ gen_chain(0,Pendchain,Pendchain):-!.
 gen_chain(N,Pin,Pendchain):-
 	nexttrans(T),
 	nextplace(Pout),
-	assert(rule(T,p(Pin,X),[],[p(Pout,X)],dyn([],[]))),
+	assert(rule([p(Pin,X)],[p(Pout,X)],dyn([],[]),T)),
 	N1 is N - 1,
 	gen_chain(N1,Pout,Pendchain).
 
 end_of_file.
 
-rule(t1,p(p1,X),[],[],dyn([],[insert(p(p2,o(X,N)),between(1,4,N))])).
-rule(t2,p(p2,X),[],[p3(X)],dyn([],[])).
-rule(t3,p(p3,X),[],[p4(X)],dyn([],[])).
-rule(t4,p(p4,X),[],[p5(X)],dyn([doesnt_contain(constr(p(p2,o(X,_)),true)),
-	                           doesnt_contain(constr(p(p3,o(X,_)),true))],[delete(p(p4,o(X,_)))])).
+rule([p(p1,X)],[],dyn([],[insert(p(p2,o(X,N)),between(1,4,N))],t1)).
+rule([p(p2,X)],[p3(X)],dyn([],[],t2)).
+rule([p(p3,X)],[p4(X)],dyn([],[],t3)).
+rule([p(p4,X)],[p5(X)],dyn([doesnt_contain(constr(p(p2,o(X,_)),true)),
+	                           doesnt_contain(constr(p(p3,o(X,_)),true))],[delete(p(p4,o(X,_)))],t4)).
 
