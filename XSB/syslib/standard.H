@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.80 2007/10/07 17:41:23 tswift Exp $
+** $Id: standard.H,v 1.81 2007/10/19 21:10:37 tswift Exp $
 **
 */
 
@@ -65,7 +65,7 @@
             set_input/1,    set_output/1,  
 	demand_once/1,
 	skip/1,		statistics/1,	statistics/0,	structure/1,
-	tab/1,		tell/1,		telling/1,	told/0,
+	tab/1,		tell/1,		telling/1,	time/1,	told/0,
 	ttywrite/1,	ttywritenl/1,   ttywrite/2,	ttywritenl/2, 
 	var/1,		walltime/1,	true/0,
 	write/1,	write/2,	write_prolog/1,	write_prolog/2,
