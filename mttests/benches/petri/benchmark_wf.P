@@ -58,6 +58,35 @@ all_par_execute([H|L]) :-
 	par_execute(H),
 	all_par_execute(L).
 
+
+bench_2(NThreads) :-
+	bench_2_priv(NThreads),
+	bench_2_shared(NThreads).
+
+bench_2_shared( NThreads ) :-
+	bench_wf( NThreads, shared_reachable ),
+	bench_wf( NThreads, shared_reachable ),
+	bench_wf( NThreads, shared_reachable ),
+	(NThreads > 1 
+		-> 
+		( NThreads2 is NThreads // 2,
+		  bench_2_shared( NThreads2 ) )
+		;
+		true
+	).
+
+bench_2_priv( NThreads ) :-
+	bench_wf( NThreads, reachable ),
+	bench_wf( NThreads, reachable ),
+	bench_wf( NThreads, reachable ),
+	(NThreads > 1 
+		-> 
+		( NThreads2 is NThreads // 2,
+		  bench_2_priv( NThreads2 ) )
+		;
+		true
+	).
+
 bench_wf(NThreads,P) :-
 	gen_wf_1,
 	abolish_all_tables,
