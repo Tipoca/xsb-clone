@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.69 2007-08-17 04:21:11 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.70 2008-02-01 17:11:33 dwarren Exp $
 ** 
 */
 
@@ -1282,9 +1282,9 @@ void next_format_substr(CTXTdeclc char *format, struct next_fmt_state *fmt_state
   do {
     /* last substring (and has no conversion spec) */
     if ((ptr=strchr(workspace.string+pos, '%')) == NULL) {
-      current_substr_start = workspace.length;
       result->type = '.';  /* last substring with no type specifier */
-      result->fmt  = workspace.string+pos;
+      result->fmt = workspace.string+current_substr_start;
+      current_substr_start = workspace.length;
       return;
     }
 
