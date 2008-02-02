@@ -4,7 +4,8 @@
 :- import {}/1 from clpr.
 :- import dump/3,projecting_assert/1 from dump.
 :- import entailed/1 from clpr.
-:- import sup/4, maximize/1 from clpr.
+:- import sup/4, sup/2, maximize/1 from clpr.
+:- import inf/4, inf/2, minimize/1 from clpr.
 :- import member/2 from basics.
 :- import bb_inf/3 from clpr.
 
@@ -26,6 +27,7 @@ test:- test11.
 test:- test12.
 test:- test13.
 test:- test14.
+test:- test14a.
 test:- test15.
 test:- test16.
 test:- test18.
@@ -40,6 +42,9 @@ test:- test26.
 test:- test27.
 test:- test28.
 test:- test29.
+test:- test30.
+test:- test31.
+test:- test32.
 test.
 
 test0:- {X > 3},X = 4,writeln(test0('{X > 3},X = 4 succeeded')),fail.
@@ -64,6 +69,9 @@ test13:- {X + Y = 10},X = Y,writeln(test13(X,Y)),fail.
 test14:-{ 2*X+Y =< 16, X+2*Y =< 11,X+3*Y =< 15, Z = 30*X+50*Y}, sup(Z,Sup,[X,Y],Vertex),
         dump([X,Y,Z],[x,y,z],D),writeln(test14(Sup,Vertex)),
 	member(C,D),writeln(test14(C)),fail.
+test14a:-{ 2*X+Y =< 16, X+2*Y =< 11,X+3*Y =< 15, Z = 30*X+50*Y}, sup(Z,Sup),
+        dump([X,Y,Z],[x,y,z],D),writeln(test14a(Sup)),
+	member(C,D),writeln(test14a(C)),fail.
 test15:- { 2*X+Y =< 16, X+2*Y =< 11,X+3*Y =< 15, Z = 30*X+50*Y}, 
 	maximize(Z),writeln(test15(Z,X,Y)),fail.
 test16:-{2*A+3*B=C/2}, C=10.0, A=B,writeln(test16(A,B,C)),fail.
@@ -85,6 +93,14 @@ test27:- e(8,E),writeln(test27(E)),fail.
 test28:- mg(P,12,0.01,B,Mp), dump([P,B,Mp],[p,b,mp],F),writeln(test28(F)),fail.
 test29:- conv_hull([ [1,1], [2,0], [3,0], [1,2], [2,2] ], [X,Y]),dump([X,Y],[x,y],F),
 	writeln(test29(F)),fail.
+test30:-{ 2*X+Y >= 16, X+2*Y >= 11,X+3*Y >= 15, Z = 30*X+50*Y}, inf(Z,Sup,[X,Y],Vertex),
+        dump([X,Y,Z],[x,y,z],D),writeln(test30(Sup,Vertex)),
+	member(C,D),writeln(test30(C)),fail.
+test31:-{ 2*X+Y >= 16, X+2*Y >= 11,X+3*Y >= 15, Z = 30*X+50*Y}, inf(Z,Sup),
+        dump([X,Y,Z],[x,y,z],D),writeln(test31(Sup)),
+	member(C,D),writeln(test31(C)),fail.
+test32:-{ 2*X+Y >= 16, X+2*Y >= 11,X+3*Y >= 15, Z = 30*X+50*Y}, minimize(Z),
+	writeln(test32(X,Y,Z)),fail.
 
 /* Below are copied out of Sicstus manual */
 /* Newton method for square root of 2 */
