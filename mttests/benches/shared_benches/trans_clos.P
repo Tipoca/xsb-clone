@@ -210,6 +210,10 @@ mt_benches(GName,GSize,NT) :-
 	;	true
 	).
 
+mt_benches_2(GName,GSize,NT) :-
+	mt_bench(tc_lr_s,GName,GSize,NT),
+	mt_bench(tc_lr_p,GName,GSize,NT).
+
 mt_mem_bench_ls(GName,GSize,NT) :-
 	readGraph(GName),
 	mt_bench(tc_lr_s,GName,GSize,NT),

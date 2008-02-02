@@ -65,8 +65,6 @@ bench_2(NThreads) :-
 
 bench_2_shared( NThreads ) :-
 	bench_wf( NThreads, shared_reachable ),
-	bench_wf( NThreads, shared_reachable ),
-	bench_wf( NThreads, shared_reachable ),
 	(NThreads > 1 
 		-> 
 		( NThreads2 is NThreads // 2,
@@ -76,8 +74,6 @@ bench_2_shared( NThreads ) :-
 	).
 
 bench_2_priv( NThreads ) :-
-	bench_wf( NThreads, reachable ),
-	bench_wf( NThreads, reachable ),
 	bench_wf( NThreads, reachable ),
 	(NThreads > 1 
 		-> 
@@ -95,9 +91,10 @@ bench_wf(NThreads,P) :-
 	all_par_execute(LG),
 	walltime(After),
 	Time is After - Before,
-	(Pred = rechable -> Bench = priv ; Bench = shared ),
+	(Pred = reachable -> Bench = priv ; Bench = shared ),
 	write(datum([wf,Bench],NThreads,Time)),
-	writeln('.').
+	writeln('.'),
+	flush_output.
 
 % all 5x5 -- 5 seconds
 % 6x6,5x5,6x6,5x5 -- 33 seconds

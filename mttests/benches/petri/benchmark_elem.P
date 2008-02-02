@@ -104,8 +104,6 @@ bench_2( NThreads ) :-
 bench_2_shared( NThreads, NBraids ) :-
 	n_states( NS ),
 	bench_braids_2( NS, NBraids, NThreads, shared_reachable ),
-	bench_braids_2( NS, NBraids, NThreads, shared_reachable ),
-	bench_braids_2( NS, NBraids, NThreads, shared_reachable ),
 	(NThreads > 1 
 		-> 
 		( NThreads2 is NThreads // 2,
@@ -116,8 +114,6 @@ bench_2_shared( NThreads, NBraids ) :-
 
 bench_2_priv( NThreads, NBraids ) :-
 	n_states( NS ),
-	bench_braids_2( NS, NBraids, NThreads, reachable ),
-	bench_braids_2( NS, NBraids, NThreads, reachable ),
 	bench_braids_2( NS, NBraids, NThreads, reachable ),
 	(NThreads > 1 
 		-> 
@@ -135,9 +131,10 @@ bench_braids_2( NStates, NBraids, NThreads, Pred ) :-
 	all_par_execute(List),
 	walltime(After),
 	Time is After - Before,
-	(Pred = rechable -> Bench = priv ; Bench = shared ),
+	(Pred = reachable -> Bench = priv ; Bench = shared ),
 	write(datum([elem,Bench],NThreads,Time)),
-	writeln('.').
+	writeln('.'),
+	flush_output.
 
 all_par_execute([]).
 all_par_execute([H|L]) :-
