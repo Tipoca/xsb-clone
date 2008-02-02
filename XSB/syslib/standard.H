@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.81 2007/10/19 21:10:37 tswift Exp $
+** $Id: standard.H,v 1.82 2008/02/01 00:08:52 pmoura Exp $
 **
 */
 
@@ -38,6 +38,7 @@
 	close/1,             close/2,	compare/3,	
         compound/1,	cputime/1,	
         display/1, displayln/1, now/1, datime/1,
+        console_write/1, console_writeln/1,
         error_write/1, error_writeln/1,
 	expand_term/2,	file_exists/1,	fail/0,		fail_if/1,
 	fileerrors/0,	float/1,	functor/3,
