@@ -95,7 +95,8 @@ bench_wf(NThreads,P) :-
 	all_par_execute(LG),
 	walltime(After),
 	Time is After - Before,
-	write(datum(P,NThreads,Time)),
+	(Pred = rechable -> Bench = priv ; Bench = shared ),
+	write(datum([wf,Bench],NThreads,Time)),
 	writeln('.').
 
 % all 5x5 -- 5 seconds

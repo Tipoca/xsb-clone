@@ -135,7 +135,8 @@ bench_braids_2( NStates, NBraids, NThreads, Pred ) :-
 	all_par_execute(List),
 	walltime(After),
 	Time is After - Before,
-	write(datum(Pred,NThreads,Time)),
+	(Pred = rechable -> Bench = priv ; Bench = shared ),
+	write(datum([elem,Bench],NThreads,Time)),
 	writeln('.').
 
 all_par_execute([]).
