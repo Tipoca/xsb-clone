@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.67 2008-01-02 19:47:42 dwarren Exp $
+** $Id: emudef.h,v 1.68 2008-02-03 18:28:55 dwarren Exp $
 ** 
 */
 
@@ -201,8 +201,8 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
   }									\
   else if (isattv(OP1)) {						\
     xsb_dbgmsg((LOG_ATTV,">>>> ATTV nunify_with_float, interrupt needed\n"));	\
-    add_interrupt(CTXTc cell(((CPtr)dec_addr(op1) + 1)),makefloat(OP2)); \
-    bind_float_tagged((CPtr)dec_addr(op1), makefloat(OP2));		\
+    add_interrupt(CTXTc cell(((CPtr)dec_addr(OP1) + 1)),makefloat(OP2)); \
+    bind_float_tagged((CPtr)dec_addr(OP1), makefloat(OP2));		\
   }									\
   else Fail1;	/* op1 is INT, STRING, STRUCT, or LIST */ 
 
@@ -222,8 +222,8 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
   }									\
   else if (isattv(OP1)) {						\
     xsb_dbgmsg((LOG_ATTV,">>>> ATTV nunify_with_float, interrupt needed\n"));	\
-    add_interrupt(CTXTc cell(((CPtr)dec_addr(op1) + 1)),makefloat(OP2)); \
-    bind_boxedfloat((CPtr)dec_addr(op1), OP2);				\
+    bind_boxedfloat((CPtr)dec_addr(OP1), OP2);				\
+    add_interrupt(CTXTc cell(((CPtr)dec_addr(OP1) + 1)),cell((CPtr)dec_addr(OP1))); \
   }									\
   else Fail1;	/* op1 is INT, STRING, STRUCT, or LIST */ 
 
