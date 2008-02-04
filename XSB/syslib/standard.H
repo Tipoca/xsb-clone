@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.82 2008/02/01 00:08:52 pmoura Exp $
+** $Id: standard.H,v 1.83 2008/02/02 00:04:30 tswift Exp $
 **
 */
 
@@ -103,7 +103,7 @@
 :- import consult/1, reconsult/1 from consult.
 :- import predicate_property/2 from curr_sym.
 :- import dcg/2 from dcg.
-:- import eval/2 from eval.
+%%:- import eval/2 from eval.
 :- import file_open/3, file_open/4, file_close/2, file_get/2, file_put/2,
   check_stream_or_alias/4, check_open_stream_or_alias/5, add_aliases/4,
   fd2iostream/3      from file_io.
