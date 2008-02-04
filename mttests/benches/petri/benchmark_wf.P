@@ -58,40 +58,27 @@ all_par_execute([H|L]) :-
 	par_execute(H),
 	all_par_execute(L).
 
+gen_2 :-
+	gen_wf_1.
 
 bench_2(NThreads) :-
 	bench_2_priv(NThreads),
 	bench_2_shared(NThreads).
 
 bench_2_shared( NThreads ) :-
-	bench_wf( NThreads, shared_reachable ),
-	(NThreads > 1 
-		-> 
-		( NThreads2 is NThreads // 2,
-		  bench_2_shared( NThreads2 ) )
-		;
-		true
-	).
+	bench_wf( NThreads, shared_reachable ).
 
 bench_2_priv( NThreads ) :-
-	bench_wf( NThreads, reachable ),
-	(NThreads > 1 
-		-> 
-		( NThreads2 is NThreads // 2,
-		  bench_2_priv( NThreads2 ) )
-		;
-		true
-	).
+	bench_wf( NThreads, reachable ).
 
 bench_wf(NThreads,P) :-
-	gen_wf_1,
 	abolish_all_tables,
 	gen_goal_list(NThreads,P,LG),
 	walltime(Before),
 	all_par_execute(LG),
 	walltime(After),
 	Time is After - Before,
-	(Pred = reachable -> Bench = priv ; Bench = shared ),
+	(P = reachable -> Bench = priv ; Bench = shared ),
 	write(datum([wf,Bench],NThreads,Time)),
 	writeln('.'),
 	flush_output.

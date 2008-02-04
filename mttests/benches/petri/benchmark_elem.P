@@ -97,35 +97,22 @@ generate_process_even_1(Nin):-
 
 n_states( 100000 ).
 
-bench_2( NThreads ) :-
-	bench_2_priv( NThreads, NThreads ),
-	bench_2_shared( NThreads, NThreads ).
+gen_2( NThreads ) :-
+	n_states( NStates ),
+	generate_process_2(NStates,NThreads).
+
+bench_2( NThreads, NBraids ) :-
+	bench_2_priv( NThreads, NBraids ),
+	bench_2_shared( NThreads, NBraids ).
 
 bench_2_shared( NThreads, NBraids ) :-
-	n_states( NS ),
-	bench_braids_2( NS, NBraids, NThreads, shared_reachable ),
-	(NThreads > 1 
-		-> 
-		( NThreads2 is NThreads // 2,
-		  bench_2_shared( NThreads2, NBraids ) )
-		;
-		true
-	).
+	bench_braids_2( NBraids, NThreads, shared_reachable ).
 
 bench_2_priv( NThreads, NBraids ) :-
-	n_states( NS ),
-	bench_braids_2( NS, NBraids, NThreads, reachable ),
-	(NThreads > 1 
-		-> 
-		( NThreads2 is NThreads // 2,
-		  bench_2_priv( NThreads2, NBraids ) )
-		;
-		true
-	).
+	bench_braids_2( NBraids, NThreads, reachable ).
 
-bench_braids_2( NStates, NBraids, NThreads, Pred ) :-
+bench_braids_2( NBraids, NThreads, Pred ) :-
 	abolish_all_tables,
-	generate_process_2(NStates,NBraids),
 	generate_goallist_thr(NBraids,NThreads,List,Pred,0),
 	walltime(Before),
 	all_par_execute(List),
