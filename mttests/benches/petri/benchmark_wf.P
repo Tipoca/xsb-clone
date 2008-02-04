@@ -24,6 +24,21 @@ init_state( [p(15,1)] ).
 init_state( [p(23,1)] ).
 init_state( [p(30,1)] ).
 
+init_state( [p(8,1)] ).
+init_state( [p(15,1)] ).
+init_state( [p(23,1)] ).
+init_state( [p(30,1)] ).
+
+init_state( [p(8,1)] ).
+init_state( [p(15,1)] ).
+init_state( [p(23,1)] ).
+init_state( [p(30,1)] ).
+
+init_state( [p(8,1)] ).
+init_state( [p(15,1)] ).
+init_state( [p(23,1)] ).
+init_state( [p(30,1)] ).
+
 
 get_first_goals( _NT, [], [], [], _P ).
 get_first_goals( 0, LS, LS, [], _P ).

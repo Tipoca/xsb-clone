@@ -8,15 +8,15 @@ FILE=$DIR/graph.P
 $XEMU << EOF
 [make_graphs].
 
-make_small_graphs.
+make_big_graphs.
 EOF
 
 nthreads=1
 while [ $nthreads -le $MAX ]
 do
 
-        ../genbench.sh "$XEMU" "[trans_clos],readGraph(g2048x2)." \
-		"mt_benches_2(g2048x2,2048,$nthreads)." "$FILE"
+        ../genbench.sh "$XEMU" "[trans_clos],readGraph(g8192x2)." \
+		"mt_benches_2(g8192x2,8192,$nthreads)." "$FILE"
 	nthreads=$[$nthreads*2]
 done
 
