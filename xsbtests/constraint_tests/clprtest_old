@@ -1,6 +1,7 @@
 succeeded(test11)
 succeeded(test9)
 test0({X > 3},X = 2 failed ok)
+test0({X > 3},X = 4 succeeded)
 test1([x > 3.0000])
 test13(5.0000,5.0000)
 test14(310.0000,[7.0000,2.0000])
