@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.99 2008/01/31 19:17:04 tswift Exp $
+** $Id: std_xsb.P,v 1.100 2008/02/01 14:40:31 pmoura Exp $
 ** 
 */
 
@@ -313,6 +313,7 @@ standard_symbol(stream_property,2,file_io).
 standard_symbol(string_substitute, 4, string).
 standard_symbol(structure, 1, standard).
 standard_symbol(substring, 4, string).
+standard_symbol(sub_atom, 5, sub_atom).
 standard_symbol(sys_exit, 1, shell).
 
 standard_symbol(tab, 1, standard).

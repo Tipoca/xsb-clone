@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.49 2006/10/13 21:00:05 dwarren Exp $
+## $Id: Makefile,v 1.50 2007/10/09 16:40:17 dwarren Exp $
 ## 
 ##
 
@@ -36,7 +36,7 @@ ALL =	assert${OBJEXT} basics${OBJEXT} consult${OBJEXT} \
 	push_io${OBJEXT} \
 	setof${OBJEXT} shell${OBJEXT} standard${OBJEXT} std_xsb${OBJEXT} \
 	string${OBJEXT} subsumes${OBJEXT} sysinitrc${OBJEXT} tables${OBJEXT}  \
-	term_exp${OBJEXT} thread${OBJEXT} \
+	term_exp${OBJEXT} thread${OBJEXT} sub_atom${OBJEXT} \
 	unix${OBJEXT} x_interp${OBJEXT} xsb_hook${OBJEXT} xsb_read${OBJEXT}  \
 	xsb_writ${OBJEXT} xcallxsb${OBJEXT} ccallxsb${OBJEXT} increval${OBJEXT}
 
