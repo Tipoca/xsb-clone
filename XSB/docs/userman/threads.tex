@@ -602,8 +602,8 @@ fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
 \> \> socket\_bind($SockFD$, $XSBport$),\\
 \> \> socket\_listen($SockFD$,Q\_LENGTH),\\
 \> \> thread\_create( server\_loop($SockFD$), Id, [] ),\\
-\> \> assert( server\_id($Id: threads.tex,v 1.34 2008-01-18 22:40:19 tswift Exp $) ),\\
-\> \> thread\_join( $Id: threads.tex,v 1.34 2008-01-18 22:40:19 tswift Exp $ ).\\
+\> \> assert( server\_id($Id: threads.tex,v 1.35 2008-02-12 23:49:25 tswift Exp $) ),\\
+\> \> thread\_join( $Id: threads.tex,v 1.35 2008-02-12 23:49:25 tswift Exp $ ).\\
 \\
 \> server\_loop($SockFD$) :-\\
 \> \> socket\_accept($SockFD$, $SockClient$),\\
@@ -673,9 +673,9 @@ list\_of\_primes($I$, $F$, $List$, $Tail$) :-\\
 partition\_space($N$, $H$, $H_1$) :-\\
 \>        $H$ is $N//2$, $H_1$ is $H + 1$.\\
 \\
-worker( $Q$, $Id: threads.tex,v 1.34 2008-01-18 22:40:19 tswift Exp $, $I$, $F$, $List$, $Tail$) :-\\
+worker( $Q$, $Id: threads.tex,v 1.35 2008-02-12 23:49:25 tswift Exp $, $I$, $F$, $List$, $Tail$) :-\\
 \>        list\_of\_primes( $I$, $F$, $List$, $Tail$),\\
-\>        thread\_send\_message( $Q$, primes($Id: threads.tex,v 1.34 2008-01-18 22:40:19 tswift Exp $,$List$,$Tail$) ).\\
+\>        thread\_send\_message( $Q$, primes($Id: threads.tex,v 1.35 2008-02-12 23:49:25 tswift Exp $,$List$,$Tail$) ).\\
 \\
 master( $N$, $L$ )  :-\\
 \>        partition\_space( $N$, $H$, $H_1$),\\
@@ -1080,14 +1080,14 @@ throws an exception $E$, the continuation will be the handler for $E$.
 \ei
 \ei
 
-\ournewitem{thread\_disable\_cancel/0}{thread}
+\ourmoditem{thread\_disable\_cancel/0}{thread}
 \index{\texttt{thread\_disable\_cancel/0}} 
 % 
 Disables the calling thread from being cancelled, so that it can be
 ensured that critical operations can run to completion.  This
 predicate always succeeds.
 
-\ournewitem{thread\_enable\_cancel/0}{thread}
+\ourmoditem{thread\_enable\_cancel/0}{thread}
 \index{\texttt{thread\_enable\_cancel/0}} 
 % 
 Enables the calling thread to be cancelled.  By default, threads may
@@ -1179,7 +1179,7 @@ before resuming.
 
 %----------
 
-\ournewitem{usleep(+Microseconds)}{thread}
+\ourmoditem{usleep(+Microseconds)}{thread}
 \index{\texttt{usleep/1}} 
 %
 Causes the calling thread to sleep approximately {\tt Microseconds}
