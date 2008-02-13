@@ -1,4 +1,4 @@
-/*  $Id: geler.pl,v 1.2 2008-01-30 03:54:06 tswift Exp $
+/*  $Id: geler.pl,v 1.3 2008-02-13 20:56:59 tswift Exp $
 
     Part of CLP(Q) (Constraint Logic Programming over Rationals)
 
@@ -43,7 +43,7 @@
 
 :- import maplist/2,term_variables/2, ignore/1 from swi.
 :- import del_attr/2, install_verify_attribute_handler/4 from machine.
-:- import nf_r_resubmit_eq/1, nf_r_transg/3 from nf_r.
+:- import nf_r_transg/3 from nf_r.
 
 % l2conj(List,Conj)
 %
@@ -76,6 +76,7 @@ nonexhausted((A,B)) -->
 
 :- install_verify_attribute_handler(geler,Attr,Other,attr_unify_hook(Attr,Other)).
 attr_unify_hook(g(CLP,goals(Gx),_),Y) :-
+%    writeln(geler_attr_unify_hook(g(CLP,goals(Gx),_),Y)),
 	!,
 	(   var(Y),
 	    (   get_attr(Y,geler,g(A,B,C))
