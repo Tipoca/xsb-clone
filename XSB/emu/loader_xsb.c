@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.70 2007-11-15 23:02:14 tswift Exp $
+** $Id: loader_xsb.c,v 1.71 2008-02-16 18:00:42 dwarren Exp $
 ** 
 */
 
@@ -261,6 +261,26 @@ static int get_index_tab(CTXTdeclc FILE *fd, int clause_no)
       hashval = ihash((Cell) val, size); 
       count += 9;
       break;
+    case 'd': {
+      double fval;
+      get_obj_string(&fval,8);
+#ifndef FAST_FLOATS
+      val = float_val_to_hash(fval);
+#else
+      {
+	union {
+	  long intp;
+	  float fltp;
+	} cvtr;
+	cvtr.fltp = (float)fval;
+	val = cvtr.intp;
+      }
+#endif
+      //      printf("bld float index: %2.14f, %0x, size=%d\n",fval,val,size);
+      hashval = ihash((Cell) val, size); 
+      count += 9;
+      break;
+    }
     case 'l': 
       hashval = ihash((Cell)(list_pscPair), size); 
       count += 5;
@@ -423,6 +443,10 @@ static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
       case N: case F:                      // number, float, leave bit pattern
 	get_obj_word_bbsig_notag(inst_addr);
 	inst_addr ++;
+	break;
+      case D:				// Double float (32-bit?)
+	get_obj_string(inst_addr,8);
+	inst_addr += 2;
 	break;
       case B:                       // boxed integer
 	get_obj_word_bbsig_notag(inst_addr);

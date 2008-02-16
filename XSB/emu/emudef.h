@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.68 2008-02-03 18:28:55 dwarren Exp $
+** $Id: emudef.h,v 1.69 2008-02-16 18:00:42 dwarren Exp $
 ** 
 */
 
@@ -212,17 +212,17 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
   XSB_Deref(OP1);      							\
   if (isref(OP1)) {							\
     /* op1 is FREE */							\
-      bind_boxedfloat(vptr(OP1), OP2);					\
+    bind_boxedfloat(vptr(OP1), (Float)OP2);				\
   }									\
   else if (isofloat(OP1)) {						\
-    if ( (float)ofloat_val(OP1) == OP2) {				\
+    if (ofloat_val(OP1) == (Float)OP2) {				\
       XSB_Next_Instr();							\
     }									\
     else Fail1;								\
   }									\
   else if (isattv(OP1)) {						\
     xsb_dbgmsg((LOG_ATTV,">>>> ATTV nunify_with_float, interrupt needed\n"));	\
-    bind_boxedfloat((CPtr)dec_addr(OP1), OP2);				\
+    bind_boxedfloat((CPtr)dec_addr(OP1), (Float)OP2);			\
     add_interrupt(CTXTc cell(((CPtr)dec_addr(OP1) + 1)),cell((CPtr)dec_addr(OP1))); \
   }									\
   else Fail1;	/* op1 is INT, STRING, STRUCT, or LIST */ 

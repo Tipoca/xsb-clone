@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random_xsb.c,v 1.12 2007-08-08 17:50:51 dwarren Exp $
+** $Id: random_xsb.c,v 1.13 2008-02-16 18:00:42 dwarren Exp $
 ** 
 */
 
@@ -89,7 +89,7 @@ int ret_random(CTXTdecl) {
 
   term = ptoc_tag(CTXTc 2);
   if (isref(term)) {
-    ctop_float(CTXTc 2, T - (int)T);
+    ctop_float(CTXTc 2, (Float)(T - (int)T));
     return TRUE;
   }
   else return FALSE;
