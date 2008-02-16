@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.32 2007-07-16 17:18:30 evansbj Exp $
+** $Id: pathname_xsb.c,v 1.33 2008-02-16 20:11:09 dwarren Exp $
 ** 
 */
 
@@ -492,6 +492,7 @@ void transform_cygwin_pathname(char *filename)
 
   if (filename[0] == '/') {
     if (filename[1] == '/') diff = 1;
+    else if (filename[2] == 0) diff = 1;
     else if (filename[1] == 'c' &&
 	     filename[2] == 'y' &&
 	     filename[3] == 'g' &&
