@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.80 2008-01-22 15:53:03 dwarren Exp $
+** $Id: parse.P,v 1.81 2008-02-16 21:49:59 dwarren Exp $
 ** 
 */
 
@@ -882,7 +882,7 @@ trans_goals(T, Goal, SymTab, VidIn, VidOut) :-
 	trans_goal(T, Goal, SymTab, VidIn, VidOut).
 
 trans_goal(Term, Goal, SymTab, VidIn, VidOut) :-
-	(Term = Mod:Term1, atom(Mod), nonvar(Term1)
+	(Term = Mod:Term1, atom(Mod), Term1 \= '$$var'(_)
 	 ->	functor(Term1, P, A),
 		Goal = goal(Sym, ArgList),
 		(sym_insert(P,A,[],SymTab,Sym),sym_prop(im(Mod),Sym)

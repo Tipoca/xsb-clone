@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.52 2007/08/29 22:13:09 tswift Exp $
+** $Id: loader.P,v 1.53 2007/08/30 16:41:31 tswift Exp $
 ** 
 */
 
@@ -386,11 +386,10 @@ load(ModName) :-
 	%% If OBJ file doesn't exist or doesn't load,
 	%% but SRC file exists somewhere on the load path
 	%% then recompile the SRC file and load it.
-	;   (   search_file(ModName, FileName_P, XSB_SRC_EXTENSION_ATOM),
-		machine_file_exists(FileName_P)
-	    ->	compile(FileName_P),
+	;   (search_file(ModName, FileName_P, XSB_SRC_EXTENSION_ATOM),
+	     machine_file_exists(FileName_P))
+	->	compile(FileName_P),
 		load(ModName)
-	    )
 	;   tilde_expand_filename(ModName,ExpandedModName),
 	    throw(error(existence_error(module,ExpandedModName),
 			['Module ', ExpandedModName,

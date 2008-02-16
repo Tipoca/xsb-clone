@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.33 2007-02-14 20:13:13 dwarren Exp $
+** $Id: parse.H,v 1.34 2008-02-16 21:49:59 dwarren Exp $
 ** 
 */
 
@@ -47,7 +47,7 @@
      from symtab.
 :- import functor/3, seen/0, file_exists/1, '=..'/2, atom/1, integer/1, 
 	  op/3, (index)/3, (index)/2, real/1, see/1, expand_term/2, (=..)/2,
-  name/2, seeing/1, is_most_general_term/1, number/1
+	  '\='/2, name/2, seeing/1, is_most_general_term/1, number/1
      from standard.
 :- import retract/1, retractall/1, assert/1, (dynamic)/1 from assert.
 :- import '_$index'/3, mpa_to_skel/2 from file_op.
