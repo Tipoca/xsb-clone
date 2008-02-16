@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.P,v 1.30 2006/06/20 13:20:49 tswift Exp $
+** $Id: xsb_writ.P,v 1.31 2007/04/16 16:15:35 tswift Exp $
 ** 
 */
 
@@ -92,10 +92,25 @@ write_float(Num) :-
 %	xsb_sys_mutex_unlock(MUTEX_IO).
 	xsb_stream_unlock(File).
 
+write_double(Num) :- 
+	stat_flag(CURRENT_OUTPUT, File),
+	xsb_stream_lock(File),
+%	xsb_sys_mutex_lock(MUTEX_IO),
+	file_puttoken(File, TK_DOUBLE_0, Num),
+%	xsb_sys_mutex_unlock(MUTEX_IO).
+	xsb_stream_unlock(File).
+
 write_float(Str,Num) :-
 	xsb_stream_lock(Str),
 %	xsb_sys_mutex_lock(MUTEX_IO),
 	file_puttoken(Str,TK_FLOAT_0,Num),
+%	xsb_sys_mutex_unlock(MUTEX_IO).
+	xsb_stream_unlock(Str).
+
+write_double(Str,Num) :-
+	xsb_stream_lock(Str),
+%	xsb_sys_mutex_lock(MUTEX_IO),
+	file_puttoken(Str,TK_DOUBLE_0,Num),
 %	xsb_sys_mutex_unlock(MUTEX_IO).
 	xsb_stream_unlock(Str).
 

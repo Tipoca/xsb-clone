@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.H,v 1.17 2006/06/20 13:20:49 tswift Exp $
+** $Id: xsb_writ.H,v 1.18 2007/04/16 16:15:35 tswift Exp $
 ** 
 */
 
@@ -27,6 +27,7 @@
 	file_write_quoted/2, file_write_canonical/2,
 	file_nl/1.
 :- export write_int/1, write_float/1, write_int/2, write_float/2.
+:- export write_double/1, write_double/2.
 :- export write_canonical_lettervar/1.
 :- export set_file_write_depth/1, get_file_write_depth/1.
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: writeasm.P,v 1.4 2007-06-22 15:01:54 dwarren Exp $
+** $Id: writeasm.P,v 1.5 2008-02-16 18:03:11 dwarren Exp $
 ** 
 */
 
@@ -143,6 +143,7 @@ write_inst_arg(AStr,s(_I), Sym) :- sp(AStr), write_sym(AStr,Sym).
 write_inst_arg(AStr,c(_I), Sym) :- sp(AStr), write_sym(AStr,Sym).
 write_inst_arg(AStr,i(_N), Int) :- sp(AStr), write(AStr,Int).
 write_inst_arg(AStr,n(_N), Int) :- sp(AStr), write(AStr,Int).
+write_inst_arg(AStr,d(_N), Int) :- sp(AStr), write(AStr,Int).
 write_inst_arg(AStr,a(_A), Int) :- sp(AStr), write(AStr,Int).
 write_inst_arg(AStr,l(_L), Lab) :- sp(AStr), write_label(AStr,Lab).
 write_inst_arg(AStr,t(_T), Arg) :- sp(AStr), write(AStr,Arg).

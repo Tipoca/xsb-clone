@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_eval.H,v 1.6 2008-01-30 16:09:01 dwarren Exp $
+** $Id: tp_eval.H,v 1.7 2008-02-16 18:03:07 dwarren Exp $
 ** 
 */
 
@@ -36,4 +36,5 @@
    putvarinst/5, release_if_done/6
      from tp_var.
 :- import tgetpar/6 from tp_goal.
+:- import eval/2 from eval.
 
