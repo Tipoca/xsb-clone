@@ -19,12 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: eval.H,v 1.7 2007/10/21 19:34:55 tswift Exp $
+** $Id: eval.H,v 1.8 2008/02/04 19:32:26 dwarren Exp $
 ** 
 */
 
 
-:- export eval/2.
+:- export eval/2, pi/1, e/1.
 
 /**
 :- import number/1, throw/1 from standard.

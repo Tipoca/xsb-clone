@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.137 2008/02/04 19:32:26 dwarren Exp $
+** $Id: standard.P,v 1.138 2008/02/12 23:44:48 tswift Exp $
 ** 
 */
 
@@ -898,6 +898,28 @@ call(Goal) :-
 	; type_error(callable,Goal,call/1,1)
 	).
 
+call(Mod:Goal,Arg):- !,
+	Goal =.. GoalList,
+	append(GoalList,[Arg],NewgoalList), 
+	Newgoal =.. NewgoalList,
+	call_c(Mod:Newgoal).
+call(Goal,Arg):- 
+	Goal =.. GoalList,
+	append(GoalList,[Arg],NewgoalList), 
+	Newgoal =.. NewgoalList,
+	call_c(Newgoal).
+
+call(Mod:Goal,Arg1,Arg2):- !,
+	Goal =.. GoalList,
+	append(GoalList,[Arg1,Arg2],NewgoalList), 
+	Newgoal =.. NewgoalList,
+	call_c(Mod:Newgoal).
+call(Goal,Arg1,Arg2):- 
+	Goal =.. GoalList,
+	append(GoalList,[Arg1,Arg2],NewgoalList), 
+	Newgoal =.. NewgoalList,
+	call_c(Newgoal).
+
 %  call_c(X)
 %  calls X when it is known that X contains no cuts!
 
@@ -1326,6 +1348,11 @@ error_writeln(X):-
 
 %  warning/1
 warning(Message) :- 
+	message('++Warning[XSB]: [Runtime/P] ', STDWARN),
+	messageln(Message, STDWARN).
+
+%  warning/1
+warningln(Message) :- 
 	message('++Warning[XSB]: [Runtime/P] ', STDWARN),
 	messageln(Message, STDWARN).
 
