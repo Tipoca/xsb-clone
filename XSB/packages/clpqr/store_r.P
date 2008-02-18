@@ -1,4 +1,4 @@
-/*  $Id: store_r.pl,v 1.1 2008-01-26 00:00:45 tswift Exp $
+/*  $Id: store_r.P,v 1.1 2008-02-18 20:29:35 tswift Exp $
 
     Part of CLP(R) (Constraint Logic Programming over Reals)
 

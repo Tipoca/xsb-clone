@@ -1,4 +1,4 @@
-/*  $Id: fourmotz_r.pl,v 1.1 2008-01-26 00:00:43 tswift Exp $
+/*  $Id: fourmotz_r.P,v 1.1 2008-02-18 20:29:35 tswift Exp $
 
     Part of CLP(R) (Constraint Logic Programming over Reals)
 
