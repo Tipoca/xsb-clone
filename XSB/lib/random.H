@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random.H,v 1.7 2005-01-17 17:53:21 tswift Exp $
+** $Id: random.H,v 1.8 2008-02-18 19:53:42 tswift Exp $
 ** 
 */
 
@@ -29,8 +29,11 @@
 	  randset/3,
 	  randset/3,
 	  getrand/1,
-	  setrand/1.
+   setrand/1,
+   gauss/2,
+   exponential/2,
+   weibull/3.
 
-:- import abort/1, integer/1 from standard.
+:- import abort/1, integer/1, repeat/0 from standard.
 :- import keysort/2 from setof.
 :- import datime/1 from standard.
