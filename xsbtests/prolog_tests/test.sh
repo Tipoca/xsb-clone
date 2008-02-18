@@ -12,6 +12,7 @@ options=$2
 #------------------------------------
     # XEMU and options must be together in quotes
 ../gentest.sh "$XEMU $options" arith_op "test."
+../gentest.sh "$XEMU $options" test_precision "test."
 ../gentest.sh "$XEMU $options" std1 "test."
 ../gentest.sh "$XEMU $options" std2 "test."
 #------------------------------------
