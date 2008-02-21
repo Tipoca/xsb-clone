@@ -1,0 +1,10 @@
+:- import str_cat/3 from machine.
+
+print_file(File):- 
+	retractall(datum(_,_)),
+	ensure_loaded(File),
+	setof(Time,datum(Type,Time),Times),
+	Times = [Min|_],
+	write(Type),write('  &  '),writeln(Min),fail.
+print_file(_File).
+
