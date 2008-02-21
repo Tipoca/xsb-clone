@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.41 2008-01-02 19:47:43 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.42 2008-02-21 20:57:50 tswift Exp $
 ** 
 */
 
@@ -312,7 +312,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
   Cell list, new_list;
   CPtr top = 0;
   char *call_name = (call_type == ATOM_CODES ? "atom_codes/2" : "atom_chars/2");
-  char *elt_type = (call_type == ATOM_CODES ? "ASCII code" : "character atom");
+  char *elt_type = (call_type == ATOM_CODES ? "ASCII code" : "character");
 
   term = ptoc_tag(CTXTc 1);
   list = ptoc_tag(CTXTc 2);
@@ -334,7 +334,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	if (((call_type==ATOM_CODES) && !isinteger(heap_addr))
 	    || ((call_type==ATOM_CHARS) && !isstring(heap_addr))) {
 	  if (isnonvar(heap_addr)) {
-	    xsb_type_error(CTXTc elt_type,list,call_name,2); 
+	    xsb_type_error(CTXTc elt_type,heap_addr,call_name,2); 
 	  }
 	  else xsb_instantiation_error(CTXTc call_name,2);
 	  mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);

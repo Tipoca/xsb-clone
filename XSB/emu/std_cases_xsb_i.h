@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.19 2007-06-10 18:43:58 tswift Exp $
+** $Id: std_cases_xsb_i.h,v 1.20 2008-02-21 20:57:50 tswift Exp $
 ** 
 */
 
@@ -98,8 +98,6 @@
   case HiLog_UNIV:	/* r1: ?term; r2: ?list	*/
     break;
     
-  /* atom_chars should be redefined to return char-atoms rather than ASCII
-     codes */ 
   case ATOM_CHARS:	/* r1: ?term; r2: ?character symbol list	*/
     return atom_to_list(CTXTc ATOM_CHARS);
   case ATOM_CODES:	/* r1: ?term; r2: ?character ascii code list	*/

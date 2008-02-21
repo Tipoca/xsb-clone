@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.187 2008-02-18 20:16:04 tswift Exp $
+** $Id: emuloop.c,v 1.188 2008-02-21 20:57:49 tswift Exp $
 ** 
 */
 
@@ -2878,7 +2878,10 @@ argument positions.
 		      (islist(op2))) && !isboxedfloat(op2) && !isboxedinteger(op2));
       break;
     case CALLABLE_TEST:
-      jump_cond_fail((isconstr(op2) && !isboxed(op2)) || isstring(op2) || islist(op2));
+      jump_cond_fail(iscallable(op2));
+      break;
+    case DIRECTLY_CALLABLE_TEST:
+      jump_cond_fail(is_directly_callable(op2));
       break;
     case IS_LIST_TEST:
       jump_cond_fail(is_proper_list(op2));

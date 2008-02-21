@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.142 2008-01-30 16:03:03 dwarren Exp $
+** $Id: init_xsb.c,v 1.143 2008-02-21 20:57:49 tswift Exp $
 ** 
 */
 
@@ -1445,8 +1445,9 @@ void init_symbols(CTXTdecl)
   true_string = get_name(true_psc);
   
   comma_psc = make_code_psc_rec(",", 2, standard_psc);
-
   colon_psc = make_code_psc_rec(":", 2, standard_psc);
+  cut_psc = make_code_psc_rec(":", 0, standard_psc);
+  cond_psc = make_code_psc_rec("->", 2, standard_psc);
 
   ccall_mod_psc = pair_psc(insert_module(0,"ccallxsb"));
   c_callloop_psc = pair_psc(insert("c_callloop_query_loop",1,ccall_mod_psc,&new));
