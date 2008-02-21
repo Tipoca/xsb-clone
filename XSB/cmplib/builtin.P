@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.P,v 1.60 2007-10-28 23:29:06 tswift Exp $
+** $Id: builtin.P,v 1.61 2008-02-21 21:09:00 tswift Exp $
 ** 
 */
 
@@ -242,6 +242,7 @@ inline_jumpcof_cond(number, 1, NUMBER_TEST).
 inline_jumpcof_cond(atomic, 1, ATOMIC_TEST).
 inline_jumpcof_cond(compound, 1, COMPOUND_TEST).
 inline_jumpcof_cond(callable, 1, CALLABLE_TEST).
+inline_jumpcof_cond(directly_callable, 1, DIRECTLY_CALLABLE_TEST).
 inline_jumpcof_cond(is_list, 1, IS_LIST_TEST).
 inline_jumpcof_cond(is_most_general_term, 1, IS_MOST_GENERAL_TERM_TEST).
 inline_jumpcof_cond(is_attv, 1, IS_ATTV_TEST).
