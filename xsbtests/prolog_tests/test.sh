@@ -93,6 +93,12 @@ options=$2
 #------------------------------------------------------------------------
 ../gentest.sh "$XEMU $options" fibp "test."
 
+#------------------------------------
+# test call/n
+#------------------------------------
+#------------------------------------------------------------------------
+../gentest.sh "$XEMU $options" call_tests "test."
+
 #------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
 # (actually, mac / others do not create .so)
