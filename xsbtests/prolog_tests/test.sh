@@ -11,6 +11,7 @@ options=$2
 # tests involving standard predicates
 #------------------------------------
     # XEMU and options must be together in quotes
+../gentest.sh "$XEMU $options" test_modules "test."
 ../gentest.sh "$XEMU $options" arith_op "test."
 ../gentest.sh "$XEMU $options" test_precision "test."
 ../gentest.sh "$XEMU $options" std1 "test."
