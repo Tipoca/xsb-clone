@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.70 2008-02-21 20:57:49 tswift Exp $
+** $Id: emudef.h,v 1.71 2008-02-22 17:10:16 tswift Exp $
 ** 
 */
 
@@ -98,7 +98,7 @@ char *nil_string, *true_string;
 Pair list_pscPair;
 
 Psc list_psc, comma_psc, true_psc, if_psc, colon_psc, ccall_mod_psc, c_callloop_psc;
-Psc tnot_psc, delay_psc, cond_psc, cut_psc;
+Psc tnot_psc, delay_psc, cond_psc, cut_psc, load_undef_psc;
 Psc box_psc;
 
 /*

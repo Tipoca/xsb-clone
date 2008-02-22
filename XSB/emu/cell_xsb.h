@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.30 2008-02-21 20:57:49 tswift Exp $
+** $Id: cell_xsb.h,v 1.31 2008-02-22 17:10:15 tswift Exp $
 ** 
 */
 
@@ -218,7 +218,8 @@ extern unsigned long enc[], dec[];
 #define is_directly_callable(op2) (((isconstr(op2) && !isboxed(op2)) || isstring(op2)) \
 				   && op2 != (Cell) comma_psc		\
 				   && op2 != (Cell) colon_psc && op2 != (Cell) cut_psc \
-				   && op2 != (Cell) cond_psc)
+				   && op2 != (Cell) cond_psc \
+				   && op2 != (Cell) load_undef_psc)
 
 #define isstring(dcell) (cell_tag(dcell)==XSB_STRING)
 #define numequal(num1, num2) num1 == num2
