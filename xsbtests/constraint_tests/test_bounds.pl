@@ -3,8 +3,12 @@
 Need example of lex_chain/1.
 */
 
+?- [bounds].
+
 :- import in/2, '#>'/2, tuples_in/2, all_different/1, label/1, '#='/2,
-    '#>='/2, '#\='/2, '#<'/2, '#=<'/2, serialized/2, sum/3 from bounds.
+    '#>='/2, '#\='/2, '#<'/2, '#=<'/2, serialized/2, sum/3
+    ,indomain/1,labeling/2,'#=>'/2
+ from bounds.
 
 test:- test0.
 test:- test1.
