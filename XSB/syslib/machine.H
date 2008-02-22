@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.87 2007/12/24 19:18:56 tswift Exp $
+** $Id: machine.H,v 1.88 2008/02/02 00:04:29 tswift Exp $
 ** 
 */
 
@@ -69,6 +69,7 @@
 	code_call/3, 
 	trie_assert_hdr_info/3,
 	call0/1,
+        calln/2,calln/3,calln/4,calln/5,calln/6,calln/7,calln/8,calln/9,calln/10,calln/11,calln/12,
 	code_load/3, 
 	file_gettoken/5,
 	stat_cputime/1,
