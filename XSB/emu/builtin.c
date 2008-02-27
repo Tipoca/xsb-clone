@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.310 2008-02-22 19:43:26 dwarren Exp $
+** $Id: builtin.c,v 1.311 2008-02-27 22:14:08 dwarren Exp $
 ** 
 */
 
@@ -1580,8 +1580,13 @@ int builtin_call(CTXTdeclc byte number)
 	bld_copy(reg+i,cell(addr+i));
       }
       goalname = get_name(psc);
-      if (modpsc) newpsc = pair_psc(insert(goalname,(byte)(arity+k),modpsc,&new));
-      else newpsc = pair_psc(insert(goalname,(byte)(arity+k),(Psc)flags[CURRENT_MODULE],&new));
+      if (!modpsc) modpsc = (Psc)flags[CURRENT_MODULE];
+      newpsc = pair_psc(insert(goalname,(byte)(arity+k),modpsc,&new));
+      if (new) {
+	set_data(newpsc, modpsc);
+	set_env(newpsc,T_UNLOADED);
+	set_type(newpsc, T_ORDI);
+      }
       pcreg = get_ep(newpsc);
       if (asynint_val) intercept(CTXTc newpsc);
       return TRUE;
