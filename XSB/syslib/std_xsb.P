@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.102 2008/02/13 01:06:07 tswift Exp $
+** $Id: std_xsb.P,v 1.103 2008/02/22 18:31:57 tswift Exp $
 ** 
 */
 
@@ -85,6 +85,16 @@ standard_symbol(call, 9, standard).                                % new ISO?
 standard_symbol(call, 10, standard).                                % new ISO?
 standard_symbol(call, 11, standard).                                % new ISO?
 standard_metapredicate(call,1,1).
+standard_metapredicate(call,2,1).
+standard_metapredicate(call,3,1).
+standard_metapredicate(call,4,1).
+standard_metapredicate(call,5,1).
+standard_metapredicate(call,6,1).
+standard_metapredicate(call,7,1).
+standard_metapredicate(call,8,1).
+standard_metapredicate(call,9,1).
+standard_metapredicate(call,10,1).
+standard_metapredicate(call,11,1).
 standard_symbol(call_cleanup, 2, standard).                                % new ISO?
 standard_metapredicate(call_cleanup,2,1).
 standard_metapredicate(call_cleanup,2,2).
