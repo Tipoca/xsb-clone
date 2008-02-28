@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xasppkg.H,v 1.3 2007-09-27 17:43:35 tswift Exp $
+** $Id: xasppkg.H,v 1.4 2008-02-28 19:55:58 dwarren Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 	
 :- private_foreign_pred smodelsInit from init(void):void.
 :- private_foreign_pred smodelsNumAtoms(+a) from numberAtoms(a:int):void.
-:- private_foreign_pred smodelsAtomName(+a) from atomName(a:string):void.
+%%:- private_foreign_pred smodelsAtomName(+a) from atomName(a:string):void.
 
 :- private_foreign_pred smodelsBeginBasicRule from beginBasicRule(void):void.
 :- private_foreign_pred smodelsBeginChoiceRule from beginChoiceRule(void):void.
