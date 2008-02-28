@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.P,v 1.29 2008-02-28 20:36:24 dwarren Exp $
+** $Id: compile.P,v 1.30 2008-02-28 22:32:39 dwarren Exp $
 ** 
 */
 
@@ -299,8 +299,9 @@ check_possible_hilog_conflict(SymTab) :-
 	 ->	(sym_gen(Sym,SymTab),
 		 sym_name(Sym,Name,Arity), Arity =\= 0,
 		 '_$hilog_symbol'(Name),
-		 warning(('Symbol: ', Name,
-			  ' is both a HiLog symbol and has a Prolog term of arity ',Arity))
+		 warning((Name,
+			  ' is both a HiLog symbol and a Prolog functor of arity ',Arity)),
+		 fail
 		 ;
 		 true
 		)
