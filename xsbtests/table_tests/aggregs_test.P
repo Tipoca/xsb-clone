@@ -1,6 +1,6 @@
 :- import bagReduce/4, bagPO/3, bagPOv/2, bagOf/2,
 	bagMin/2, bagMax/2, bagSum/2, bagCount/2, bagAvg/2,
-	filterReduce/4	from aggregs.
+	filterReduce/4, filterPO/3	from aggregs.
 :- import subsumes_chk/2 from subsumes.
 :- import numbervars/3, numbervars/1 from num_vars.
 
@@ -10,6 +10,7 @@
 :- import member/2 from basics.
 at :- abolish_table_info.
 :- [edge_dag].	% data for testing shortest path
+?- [subsumes].
 
 /* test data and query: test. */
 test :- at,fail.
@@ -61,6 +62,15 @@ test:-
 	filterReduce(p(a,b),max,neginf,Y),nvarwriteln(fmax(p(a,b),Y)),fail.
 test:- 
 	filterReduce(p(X,c),max,neginf,Y),nvarwriteln(fmax(p(X,c),Y)),fail.
+test:- 
+	filterPO(po1(a,b),Var,subsumes_chk),nvarwriteln(po1_1(a,b,Var)),fail.
+test:- 
+	filterPO(po1(a,c),Var,subsumes_chk),nvarwriteln(po1_2(a,c,Var)),fail.
+test:- 
+	filterPO(po1(X,c),Var,subsumes_chk),nvarwriteln(po1_3(X,c,Var)),fail.
+test.
+%test2:- filterPO(po(X,c),Var,subsumes_chk),nvarwriteln((X,Var)),fail.
+%	bagPO(hi_call,p(X,Y),subsumed),
 
 nvarwriteln(Term):-
 	numbervars(Term),
@@ -96,6 +106,13 @@ problem. */
 % to use this table decl, must compile(aggregs,[unfold_off,spec_repr]).
 %%:- table sal(_)(_).
 sal(Dept)(Sal) :- empp(Dept,Sal).
+
+
+po1(a,X,p(f(X),g(X))).
+po1(a,b,p(f(1),g(2))).
+po1(a,b,p(f(1),g(_))).
+po1(a,c,p(f(2),g(2))).
+po1(b,c,p(f(_),g(2))).
 
 :- hilog po.
 po(false,top).
@@ -143,7 +160,7 @@ successor(X,_Y,Z) :- Z is X+1.
 sumcount([S|C],X,[S1|C1]) :- S1 is S+X, C1 is C+1.
 
 /*******************************************************/
-p(a,X,1).
+p(a,_X,1).
 p(a,b,2).
 p(a,b,3).
 p(a,c,2).
