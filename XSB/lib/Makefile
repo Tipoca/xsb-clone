@@ -19,13 +19,13 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.53 2006-10-14 15:26:10 tswift Exp $
+## $Id: Makefile,v 1.54 2008-02-28 22:37:04 tswift Exp $
 ## 
 ##
 
 OBJEXT=.xwam
 
-ALL = 	aggregs${OBJEXT} array${OBJEXT} array1${OBJEXT} assoc_xsb${OBJEXT} \
+ALL = 	aggregs${OBJEXT} array${OBJEXT} assoc_xsb${OBJEXT} \
 	basic_props${OBJEXT} lists${OBJEXT} constraintLib${OBJEXT} \
 	directry${OBJEXT} foreign${OBJEXT} format${OBJEXT} \
 	intern${OBJEXT} mttestutils${OBJEXT} mutex_xsb${OBJEXT} \

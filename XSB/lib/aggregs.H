@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.H,v 1.17 2007-02-09 18:15:41 dwarren Exp $
+** $Id: aggregs.H,v 1.18 2008-02-28 22:37:04 tswift Exp $
 ** 
 */
 
@@ -52,6 +52,7 @@
 	filterPO/2,
 	filterPO/3,
 	filterReduce/4,
+	filterReduce_u/4,
         filterReduce1/4,  % this predicate only for demonstration purposes.
 	table_once/1.
 
