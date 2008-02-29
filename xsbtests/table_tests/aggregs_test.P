@@ -1,7 +1,7 @@
 :- import bagReduce/4, bagPO/3, bagPOv/2, bagOf/2,
 	bagMin/2, bagMax/2, bagSum/2, bagCount/2, bagAvg/2,
-	filterReduce/4, filterPO/3	from aggregs.
-:- import subsumes_chk/2 from subsumes.
+	filterReduce/4, filterPO/3, filterPO/2	from aggregs.
+:- import subsumes_chk/2,variant/2 from subsumes.
 :- import numbervars/3, numbervars/1 from num_vars.
 
 /***********************************************************************/
@@ -68,10 +68,20 @@ test:-
 	filterPO(po1(a,c),Var,subsumes_chk),nvarwriteln(po1_2(a,c,Var)),fail.
 test:- 
 	filterPO(po1(X,c),Var,subsumes_chk),nvarwriteln(po1_3(X,c,Var)),fail.
-test.
-%test2:- filterPO(po(X,c),Var,subsumes_chk),nvarwriteln((X,Var)),fail.
-%	bagPO(hi_call,p(X,Y),subsumed),
 
+test:- filterPO(fpo2(X,Y),aliasPrefer),nvarwriteln(fpo2(X,Y)),fail.
+
+test.
+
+fpo2(a,b).
+fpo2(a,c).
+fpo2(a,a).
+fpo2(b,c).
+fpo2(X,X).
+
+%aliasPrefer(fpo2(X,X),fpo2(Y,Z)):- \+ \+ (X = Y), \+ (Y == Z).
+aliasPrefer(fpo2(X,X),fpo2(Y,_Z)):- variant(X,Y).
+	
 nvarwriteln(Term):-
 	numbervars(Term),
 	writeln(Term).
