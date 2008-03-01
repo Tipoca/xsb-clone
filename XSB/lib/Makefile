@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.55 2008-03-01 02:51:25 dwarren Exp $
+## $Id: Makefile,v 1.56 2008-03-01 02:58:33 dwarren Exp $
 ## 
 ##
 
@@ -31,7 +31,7 @@ ALL = 	aggregs${OBJEXT} array${OBJEXT} assoc_xsb${OBJEXT} \
 	intern${OBJEXT} mttestutils${OBJEXT} mutex_xsb${OBJEXT} \
 	obsolete${OBJEXT} odbc_call${OBJEXT} \
 	ordsets${OBJEXT} ora_call${OBJEXT} \
-	packaging${OBJEXT} proc_files${OBJEXT} random${OBJEXT} scrptutl${OBJEXT} \
+	packaging${OBJEXT} random${OBJEXT} scrptutl${OBJEXT} \
 	socket${OBJEXT} storage${OBJEXT} \
 	ugraphs${OBJEXT} wrapping${OBJEXT} write_term${OBJEXT} \
 	xsb_ciao${OBJEXT} xnmr${OBJEXT} justifyLP${OBJEXT} \
