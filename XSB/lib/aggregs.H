@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.H,v 1.19 2008-03-01 02:51:25 dwarren Exp $
+** $Id: aggregs.H,v 1.20 2008-03-05 19:41:03 tswift Exp $
 ** 
 */
 
@@ -55,6 +55,7 @@
 	filterReduce_u/4,
         filterReduce1/4,  % this predicate only for demonstration purposes.
 	table_once/1.
+:- export filterMax/2, filterMin/2, filterPOA/4.
 
 :- import apply/2,apply/3,apply/4 from usermod.
 
