@@ -1,0 +1,45 @@
+:- import concat_atom/2 from string.
+:- thread_shared(rule/3).
+:- index(rule/3,trie).
+:- ensure_loaded(omegaNet).
+:- import between/3,member/2 from basics.
+:- import par_execute/1, n_par_execute/2 from thread.
+
+%------------------------------------------------------------------------------------
+/*
+For Private Tables
+*/
+
+bench_omega_1(N,NumThreads,Time):- 
+	abolish_all_tables,
+	retractall(rule(_,_,_)),
+	generate_omega_1(N),
+	walltime(Before),
+	n_par_execute( is_reachable([place(s0,1)],_), NumThreads ),
+%	is_reachable([place(s0,1)],_),
+	walltime(After),
+	Time is After - Before,
+	statistics.
+
+generate_omega_1(N):- 
+	between(1,N,M),
+	concat_atom([s,M],Sm),
+	Mpre is M - 1,concat_atom([s,Mpre],Spre),
+	asserta(rule(place(Spre,1),[],[place(Sm,1)])),
+	fail.
+generate_omega_1(N):- 
+	generate_small_unbounded(N).
+
+generate_small_unbounded(N):- 
+	concat_atom([s,N],S1),
+	N1 is N + 1,
+	concat_atom([s,N1],S2),
+	N2 is N + 2,
+	concat_atom([s,N2],S3),
+	N3 is N + 3,
+	concat_atom([s,N3],S4),
+	assert(rule(place(S1,1),[],[place(S1,1),place(S2,1)])),
+	assert(rule(place(S1,1),[],[place(S3,1)])),
+	assert(rule(place(S2,1),[place(S3,1)],[place(S3,1),place(S4,1)])),
+	assert(rule(place(S3,1),[],[place(S1,1)])).
+
