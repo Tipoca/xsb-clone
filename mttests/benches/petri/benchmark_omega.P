@@ -1,22 +1,36 @@
 :- import concat_atom/2 from string.
+
 :- thread_shared(rule/3).
 :- index(rule/3,trie).
 :- ensure_loaded(omegaNet).
 :- import between/3,member/2 from basics.
 :- import par_execute/1, n_par_execute/2 from thread.
 
-%------------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
 /*
 For Private Tables
+
+Generates a highly connected chain of loops of length N, with a small
+unbounded widget at the end.  Using n_par_execute n threads can
+traverse this using their private tables.
+
+Don't yet know a good number for n -- my guess is to try between 100
+and 200.
+
+Using par_execute/1 rather than n_par_execute/2 because goals are
+different for each thread.
+
+Not at all the best structure to test, but at least we understand it.
+
 */
 
-bench_omega_1(N,NumThreads,Time):- 
+bench_omega(N,NumThreads,Time):- 
 	abolish_all_tables,
 	retractall(rule(_,_,_)),
 	generate_omega_1(N),
 	walltime(Before),
 	n_par_execute( is_reachable([place(s0,1)],_), NumThreads ),
-%	is_reachable([place(s0,1)],_),
+%	is_reachable([place(s0,1)],_), count_states(L),writeln(numstates(L)),
 	walltime(After),
 	Time is After - Before,
 	statistics.
@@ -26,6 +40,7 @@ generate_omega_1(N):-
 	concat_atom([s,M],Sm),
 	Mpre is M - 1,concat_atom([s,Mpre],Spre),
 	asserta(rule(place(Spre,1),[],[place(Sm,1)])),
+	asserta(rule(place(Sm,1),[],[place(Spre,1)])),
 	fail.
 generate_omega_1(N):- 
 	generate_small_unbounded(N).
@@ -42,4 +57,54 @@ generate_small_unbounded(N):-
 	assert(rule(place(S1,1),[],[place(S3,1)])),
 	assert(rule(place(S2,1),[place(S3,1)],[place(S3,1),place(S4,1)])),
 	assert(rule(place(S3,1),[],[place(S1,1)])).
+
+
+%------------------------------------------------------------------------------
+/*
+For Shared Tables
+
+Generates Numthread highly connected chains of length N, each with
+small unbounded widgets at the end.  These chains are disjoint, so
+that they can be traversed by N threads in parallel, theoretically
+without any contention.
+
+Using par_execute/1 rather than n_par_execute/2 because goals are
+different for each thread.
+
+Not at all the best structure to test, but at least we understand it.
+
+*/
+
+shared_bench_omega(N,NumThreads,Time):- 
+	abolish_all_tables,
+	retractall(rule(_,_,_)),
+	shared_generate_omega(0,NumThreads,N,GoalList),
+	walltime(Before),
+%	par_execute(GoalList),
+	shared_is_reachable([place(s1,1)],_),
+	walltime(After),
+	Time is After - Before,
+	statistics.
+
+shared_generate_omega(Numthreads,Numthreads,_ChainLength,[]):- !.
+shared_generate_omega(N,Numthreads,ChainLength,
+	              [shared_is_reachable([place(Sn,1)],_)|Rest]):- 
+	ChainStart is N*(ChainLength + 4),
+        shared_generate_omega_1(ChainStart,ChainLength),
+	concat_atom([s,ChainStart],Sn),
+	N1 is N + 1,
+	shared_generate_omega(N1,Numthreads,ChainLength,Rest).
+
+% small unbounded adds 3 new nodes.
+shared_generate_omega_1(N,ChainLength):- 
+	End is N + ChainLength,
+	Start is N + 1,
+	between(Start,End,M),
+	concat_atom([s,M],Sm),
+	Mpre is M - 1,concat_atom([s,Mpre],Spre),
+	assert(rule(place(Spre,1),[],[place(Sm,1)])),
+	fail.
+shared_generate_omega_1(N,ChainLength):- 
+	End is N + ChainLength,
+	generate_small_unbounded(End).
 

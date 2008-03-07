@@ -1,10 +1,15 @@
 :- import flatten/2,memberchk/2, member/2,length/2 from basics.
 :- import parsort/4 from machine.
 
-% Place Transition Net Evaluator -- with omega markings.
+/* Place Transition Net Evaluator -- with omega markings.  Relies on
+variance-based partial-order style answer subsumption.  Doing this
+efficiently and cleanly is a work in progress.  I'm using filterPOA/5
+out of aggregs1.P which is efficient but not clean.  As I make
+progress w. answer subsumption, I'll update the filterPOA/5. */
 
 :- import conget/2, conset/2 from machine.
-:- import filterPOA/5 from aggregs.
+:- import filterPOA/5 from aggregs1.
+:- import shared_filterPOA/5 from aggregs1.
 
 is_reachable(InState,NewState):- 
 	filterPOA(reachable(InState),NewState,more_general_than,abstract,abstract_call).
@@ -16,6 +21,21 @@ reachable(InState,NewState):-
 %        bound_search.
 reachable(InState,NewState):-
 	hasTransition(InState,NewState).
+
+%------------
+
+shared_is_reachable(InState,NewState):- 
+	shared_filterPOA(shared_reachable(InState),NewState,more_general_than,abstract,abstract_call).
+
+shared_reachable(InState,NewState):-
+	shared_filterPOA(shared_reachable(InState),State,more_general_than,abstract,abstract_call),
+%	writeln(reachable(InState,State)),
+	hasTransition(State,NewState).
+%        bound_search.
+shared_reachable(InState,NewState):-
+	hasTransition(InState,NewState).
+
+%------------
 
 hasTransition(State,NewState):-
 	get_rules_for_state(State,AllRules),
@@ -146,6 +166,9 @@ abstract_1([place(P,N)|R1],[place(P,Ans)|R2],[place(P,NewAns)|R3]):-
 	(N @< Ans -> NewAns = omega ; NewAns = Ans),
 	abstract_1(R1,R2,R3).
 
+count_states(L):- 
+	findall(1,get_residual(aggregs1:filterPOAA1(_X,_Y,_Z,_W,_V),_F),List),
+	length(List,L).
 
 end_of_file.
 
