@@ -602,8 +602,8 @@ fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
 \> \> socket\_bind($SockFD$, $XSBport$),\\
 \> \> socket\_listen($SockFD$,Q\_LENGTH),\\
 \> \> thread\_create( server\_loop($SockFD$), Id, [] ),\\
-\> \> assert( server\_id($Id: threads.tex,v 1.36 2008-02-21 19:45:53 tswift Exp $) ),\\
-\> \> thread\_join( $Id: threads.tex,v 1.36 2008-02-21 19:45:53 tswift Exp $ ).\\
+\> \> assert( server\_id($Id: threads.tex,v 1.37 2008-03-08 18:12:11 pmoura Exp $) ),\\
+\> \> thread\_join( $Id: threads.tex,v 1.37 2008-03-08 18:12:11 pmoura Exp $ ).\\
 \\
 \> server\_loop($SockFD$) :-\\
 \> \> socket\_accept($SockFD$, $SockClient$),\\
@@ -673,9 +673,9 @@ list\_of\_primes($I$, $F$, $List$, $Tail$) :-\\
 partition\_space($N$, $H$, $H_1$) :-\\
 \>        $H$ is $N//2$, $H_1$ is $H + 1$.\\
 \\
-worker( $Q$, $Id: threads.tex,v 1.36 2008-02-21 19:45:53 tswift Exp $, $I$, $F$, $List$, $Tail$) :-\\
+worker( $Q$, $Id: threads.tex,v 1.37 2008-03-08 18:12:11 pmoura Exp $, $I$, $F$, $List$, $Tail$) :-\\
 \>        list\_of\_primes( $I$, $F$, $List$, $Tail$),\\
-\>        thread\_send\_message( $Q$, primes($Id: threads.tex,v 1.36 2008-02-21 19:45:53 tswift Exp $,$List$,$Tail$) ).\\
+\>        thread\_send\_message( $Q$, primes($Id: threads.tex,v 1.37 2008-03-08 18:12:11 pmoura Exp $,$List$,$Tail$) ).\\
 \\
 master( $N$, $L$ )  :-\\
 \>        partition\_space( $N$, $H$, $H_1$),\\
@@ -1669,6 +1669,10 @@ can be used to enumerate all active user-defined mutexes.
 \item {\tt MutexOrAlias} is not associated with an active mutex
 \bi
 \item {\tt existence\_error(mutex, MutexOrAlias)}
+\ei
+\item {\tt Property} is neither a variable nor a valid mutex property
+\bi
+\item {\tt domain\_error(mutex\_property, Property)}
 \ei
 \ei
 
