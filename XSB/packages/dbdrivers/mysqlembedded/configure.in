@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.2 2008-02-15 23:04:47 kifer Exp $
+## $Id: configure.in,v 1.3 2008-03-09 02:45:11 kifer Exp $
 ## 
 ##
 
@@ -76,7 +76,7 @@ if test -z "$with_mysqlembedded_libdir" ; then
    elif test -d /usr/local/mysql/lib/mysql ; then
       libdir="/usr/local/mysql/lib/mysql"
    else
-      echo "***Configuring MySQL failed: cannot find installation; please use the option --with-mysql-libdir"
+      echo "***Configuring MySQL Embedded Server failed: cannot find installation; please use the option --with-mysqlembedded-libdir"
       exit 1
    fi
 else
@@ -88,7 +88,7 @@ if test -z "$with_mysqlembedded_incdir" ; then
    elif test -d /usr/local/mysql/include/mysql ; then
        incdir="/usr/local/mysql/include/mysql"
    else
-      echo "***Configuring MySQL failed: cannot find installation; please use the option --with-mysql-incdir"
+      echo "***Configuring MySQL Embedded Server failed: cannot find installation; please use the option --with-mysqlembedded-incdir"
       exit 1
    fi
 else
