@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.23 2007-08-08 17:50:51 dwarren Exp $
+** $Id: residual.c,v 1.24 2008-03-10 16:21:50 dwarren Exp $
 ** 
 */
 
@@ -109,7 +109,7 @@ void build_delay_list(CTXTdeclc CPtr delay_list, DE de)
     tail = hreg+1;
     bind_list(delay_list, hreg);
     hreg = hreg + 3; 
-    build_delay_list(CTXTc tail, de_next(de)); /* recursive call */
+    build_delay_list(CTXTc tail, de_next(de)); /* recursive call, BUG, gc may move heap,destroying oldhreg!! */
     head = hreg;
     subg = de_subgoal(de);
     psc = TIF_PSC(subg_tif_ptr(subg));
@@ -129,7 +129,7 @@ void build_delay_list(CTXTdeclc CPtr delay_list, DE de)
 	  new_heap_free(sreg);
 	  cell_array[arity-j] = cell(sreg-1);
 	}
-	build_subgoal_args(subg);
+	build_subgoal_args(subg); 
       }
     } else {					/* Positive DE */
       if (arity == 0) {
@@ -251,7 +251,7 @@ void build_delay_list(CTXTdeclc CPtr delay_list, DE de)
 #ifndef IGNORE_DELAYVAR
 	load_delay_trie(CTXTc i, &cell_array[i-1], de_subs_fact_leaf(de));
 #endif
-	
+
 #ifdef DEBUG_DELAYVAR
 	xsb_dbgmsg((LOG_DEBUG,">>>> num_heap_term_vars becomes %d",
 		   num_heap_term_vars));

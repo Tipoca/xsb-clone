@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.110 2007-12-24 19:17:00 tswift Exp $
+** $Id: tries.c,v 1.111 2008-03-10 16:21:50 dwarren Exp $
 ** 
 */
 
@@ -1461,8 +1461,10 @@ void load_solution_trie(CTXTdeclc int arity, int attv_num, CPtr cptr, BTNptr Tri
       }
     }
     heap_needed = follow_par_chain(CTXTc TriePtr);
-    if (glstack_overflow(heap_needed*sizeof(Cell))) 
+    if (glstack_overflow(heap_needed*sizeof(Cell))) {
+      printf("stack overflow could cause problems for delay lists\n");
       handle_heap_overflow_trie(CTXTc &cptr,arity,heap_needed);
+    }
     load_solution_from_trie(CTXTc arity,cptr);
   }
 }

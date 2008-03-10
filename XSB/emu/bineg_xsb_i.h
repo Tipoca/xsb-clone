@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.36 2007-11-24 07:38:40 ruim Exp $
+** $Id: bineg_xsb_i.h,v 1.37 2008-03-10 16:21:49 dwarren Exp $
 ** 
 */
 
@@ -288,7 +288,7 @@ case IS_INCOMPLETE: {
 	   * copy_of_num_heap_term_vars at the end of build_delay_list().
 	   */
 	  copy_of_num_heap_term_vars = global_num_vars + 1;
-	  build_delay_list(CTXTc dls_head, de);
+	  build_delay_list(CTXTc dls_head, de);  /* BUG may move heap, and so saved dls_tail destroyed */
 	  if ((dl = dl_next(dl)) != NULL) {
 	    bind_list(dls_tail, hreg);
 	  }
