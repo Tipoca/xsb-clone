@@ -3,6 +3,22 @@
 Need example of lex_chain/1.
 */
 
+:- op(760,yfx,(#<=>)).
+:- op(750,xfy,(#=>)).
+:- op(750,yfx,(#<=)).
+:- op(740,yfx,(#\/)).
+:- op(730,yfx,(#\)).
+:- op(720,yfx,(#/\)).
+:- op(710, fy,(#\)).
+:- op(700,xfx,(#>)).
+:- op(700,xfx,(#<)).
+:- op(700,xfx,(#>=)).
+:- op(700,xfx,(#=<)).
+:- op(700,xfx,(#=)).
+:- op(700,xfx,(#\=)).
+:- op(700,xfx,(in)).
+:- op(550,xfx,(..)).
+
 ?- [bounds].
 
 :- import in/2, '#>'/2, tuples_in/2, all_different/1, label/1, '#='/2,
