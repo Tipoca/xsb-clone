@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.87 2008/02/18 22:09:04 pmoura Exp $
+** $Id: standard.H,v 1.88 2008/02/22 03:39:11 dwarren Exp $
 **
 */
 
@@ -93,7 +93,7 @@
         catch/3,                throw/1,        '$$exception_ball'/2,
         goal_cut_trans/3,	goal_cut_untrans/2,
 	tcall/1,	arity_integer/1,	prolog_arglist/4,
-	message/1,      message/2, messageln/2,
+   message/1,      messageln/1, message/2, messageln/2,
    warning/1,      warningln/1, abort/1,	abort/0,
 	set_timer/1,
 	(import)/1,	(multifile)/1.
