@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.143 2008/02/22 03:39:11 dwarren Exp $
+** $Id: standard.P,v 1.144 2008/03/14 00:33:53 tswift Exp $
 ** 
 */
 
@@ -1361,7 +1361,8 @@ warningln(Message) :-
 
 %  message/1
 message(X) :- message(X, STDMSG).
-messageln(X) :- message(X, STDMSG),nl
+
+messageln(X) :- message(X, STDMSG),nl.
 
 message(Message, File) :-
 	var(Message), !,

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.P,v 1.31 2007/11/01 19:58:06 pmoura Exp $
+** $Id: thread.P,v 1.32 2007/11/02 23:24:28 tswift Exp $
 ** 
 */
 
@@ -110,7 +110,6 @@ thread_create( Goal ) :-
 	thread_create( Goal, _, [detached(true)] ).
 
 /*---------------*/
-%:- import writeln/1 from standard.
 
 thread_exit(Term):- 
 	throw(thread_exit(Term)).
@@ -127,7 +126,7 @@ thread_exit_handler(ExitTerm):-
 	      ; true) ),
 	thread_request( XSB_THREAD_EXIT,THREAD_EXITED,_, _, _,_,_,_,_).
 
-:- import writeln/1 from standard.
+%:- import writeln/1 from standard.
 
 internal_thread_exit(ExitCode):- 
 	thread_request( XSB_CHECK_ALIASES_ON_EXIT,AliasedDetached,_,_,_,_,_,_,_),
@@ -287,8 +286,10 @@ thread_signal_1(Id,Message):-
 thread_enable_cancel :-
 	thread_request( THREAD_ENABLE_CANCEL, _, _, _, _, _, _, _, _ ).
 	
+/* until used somehow...
 thread_disable_cancel :-
 	thread_request( THREAD_DISABLE_CANCEL, _, _, _, _, _, _, _, _ ).
+*/
 
 /*---------------*/
 

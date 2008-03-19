@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.H,v 1.22 2007/10/05 19:34:50 tswift Exp $
+** $Id: thread.H,v 1.23 2007/11/02 23:24:28 tswift Exp $
 ** 
 */
 
@@ -62,7 +62,7 @@
 :- import thread_request/9 from machine.
 :- import stat_set_flag/2, term_psc/2 from machine.
 
-   :- import call/1, catch/3, integer/1,throw/1,call_cleanup/2 from standard.
+   :- import call/1, catch/3, integer/1,throw/1 /*,call_cleanup/2*/ from standard.
 
 :- import '_$thread_exit_ball'/2 from usermod.
 

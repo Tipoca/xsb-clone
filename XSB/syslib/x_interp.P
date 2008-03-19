@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.57 2007/12/24 19:18:57 tswift Exp $
+** $Id: x_interp.P,v 1.58 2008/02/02 00:04:30 tswift Exp $
 ** 
 */
 
@@ -222,7 +222,7 @@ portray_attributes_1([Mod,Attr|T]):-
 	 ; true),
 	 portray_attributes_1(T).
 
-:- import writeln/1 from standard.
+%%:- import writeln/1 from standard.
 :- import constraint_portray_hook/4 from machine.
 maybe_print_constraints(VarList):- 
 	constraint_portray_hook(_Mod,ValList,NameList,Hook),
