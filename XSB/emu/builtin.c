@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.313 2008-03-05 15:23:33 tswift Exp $
+** $Id: builtin.c,v 1.314 2008-03-19 22:58:09 tswift Exp $
 ** 
 */
 
@@ -1378,14 +1378,14 @@ int builtin_call(CTXTdeclc byte number)
   }
   case STAT_FLAG: {	/* R1: flagname(+int); R2: value(-int) */
     int flagname = ptoc_int(CTXTc 1);
-    int flagval;
+    prolog_int flagval;
     if (flagname < MAX_PRIVATE_FLAGS ) flagval = pflags[flagname];
     else flagval = flags[flagname];
     ctop_int(CTXTc 2, flagval);
     break;
   }
   case STAT_SET_FLAG: {	/* R1: flagname(+int); R2: value(+int); */
-    int flagval = ptoc_int(CTXTc 2);
+    prolog_int flagval = ptoc_int(CTXTc 2);
     int flagname = ptoc_int(CTXTc 1);
     if (flagname < MAX_PRIVATE_FLAGS )
     	pflags[flagname] = flagval;
