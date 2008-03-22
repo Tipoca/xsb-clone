@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.103 2008/02/22 18:31:57 tswift Exp $
+** $Id: std_xsb.P,v 1.104 2008/02/27 21:48:11 dwarren Exp $
 ** 
 */
 
@@ -110,6 +110,7 @@ standard_symbol(cwd, 1, shell).
 standard_symbol(clause, 2, assert).                               % ISO
 standard_metapredicate(clause,2,1).
 standard_symbol(close, 1, standard).                             % ISO 
+standard_symbol(close, 2, standard).                             % ISO 
 standard_symbol(compare, 3, standard).
 standard_symbol(compound, 1, standard).                      % ISO
 standard_symbol(compile, 1, consult).
