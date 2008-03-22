@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.55 2007-08-22 19:03:45 tswift Exp $
+** $Id: io_builtins_xsb_i.h,v 1.56 2008-03-22 19:17:35 tswift Exp $
 ** 
 */
 
@@ -144,7 +144,8 @@ inline static xsbBool file_function(CTXTdecl)
     }
     break;
   case FILE_TRUNCATE: /* file_function(2,+IOport,+Length,-Ret,_) */
-    size = ptoc_int(CTXTc 3);
+    size = iso_ptoc_int_arg(CTXTc 3,"file_truncate/3", 2);
+    //    size = ptoc_int(CTXTc 3);
     io_port = ptoc_int(CTXTc 2);
     XSB_STREAM_LOCK(io_port);
     SET_FILEPTR(fptr, io_port);

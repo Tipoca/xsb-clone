@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.73 2008-03-12 13:48:03 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.74 2008-03-22 19:17:35 tswift Exp $
 ** 
 */
 
@@ -220,7 +220,7 @@ xsbBool fmt_write(CTXTdecl)
   else if (isstring(Fmt_term))
     Fmt = string_val(Fmt_term);
   else
-    xsb_abort("[FMT_WRITE] Format must be an atom or a character string");
+    xsb_type_error(CTXTc "character string or atom",Fmt_term,"fmt_write/[2,3]",2);
   ValTerm = reg_term(CTXTc 4);
   if (isconstr(ValTerm) && !isboxed(ValTerm))
     Arity = get_arity(get_str_psc(ValTerm));
@@ -301,7 +301,8 @@ xsbBool fmt_write(CTXTdecl)
       float_arg = ofloat_val(Arg);
       PRINT_ARG(float_arg);
     } else {
-      xsb_abort("[FMT_WRITE] Argument %d has illegal type", i);
+      sprintf(aux_msg,"format_string %%%c",current_fmt_spec->type);
+      xsb_domain_error(CTXTc aux_msg,Arg,"fmw_write/2",2);
     }
     next_format_substr(CTXTc Fmt, &fmt_state,current_fmt_spec,
 		       0 /* don't initialize */,

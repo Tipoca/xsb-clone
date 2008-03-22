@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.74 2007-12-24 11:38:00 ruim Exp $
+** $Id: error_xsb.c,v 1.75 2008-03-22 19:17:34 tswift Exp $
 ** 
 */
 
@@ -760,7 +760,8 @@ DllExport void call_conv xsb_abort(char *description, ...)
   va_list args;
 
   va_start(args, description);
-  strcpy(message, "++Error[XSB]: [Runtime/C] ");
+  //  strcpy(message, "++Error[XSB]: [Runtime/C] ");
+  strcpy(message, " ");
   vsprintf(message+strlen(message), description, args);
   if (message[strlen(message)-1] == '\n') message[strlen(message)-1] = 0;
   va_end(args);

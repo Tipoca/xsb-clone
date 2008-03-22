@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_unify.c,v 1.20 2007-12-13 16:15:09 ruim Exp $
+** $Id: tst_unify.c,v 1.21 2008-03-22 19:17:35 tswift Exp $
 ** 
 */
 
@@ -132,7 +132,8 @@ static void consumption_error(CTXTdeclc char *string) {
   fprintf(stderr,
 	  "(* Note: this template may be partially instantiated *)\n");
 #ifdef DEBUG_ASSERTIONS
-  xsb_error(string);
+
+  //  xsb_error(string);
   /* Get Consumer SF from the CPS, using the ptr to AnsTmplt */
   {
     VariantSF pSF;
