@@ -13,3 +13,4 @@ options=$2
 ../gentest.sh "$XEMU $options" roots_int_comp "test."
 ../gentest.sh "$XEMU $options" read_test "test."
 ../gentest.sh "$XEMU $options" assert_test "test."
+../gentest.sh "$XEMU $options" test_precision "test."
