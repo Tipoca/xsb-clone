@@ -20,7 +20,9 @@ test_retract(N,Str) :-  % N = 10000
 	  ;
 	  for(J,1,N2),
 	  K is 2*J-1,
+%%	  writeln(q(K,_)),
 	  retract(q(K,_)),
+%%	  writeln(retracted),
 	  fail
 	  ;	 
 	  findall(X,q(X,_),List),
