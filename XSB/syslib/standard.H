@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.89 2008/03/14 00:33:54 tswift Exp $
+** $Id: standard.H,v 1.90 2008/03/22 19:23:16 tswift Exp $
 **
 */
 
@@ -114,7 +114,7 @@
      from file_op.
 :- import '_$hilog_symbol'/1, add_hilog_symbol/1 from hilogsym.
 :- import retract0/1, assertz/1, clause/2, retractall/1 from assert.
-:- import domain_error/4, check_atom/3, check_nonvar/3,check_var/3, type_error/4,
+:- import domain_error/4, domain_error/5, check_atom/3, check_nonvar/3,check_var/3, type_error/4,
    permission_error/4, instantiation_error/3, instantiation_error/2, check_nonneg_integer/3, 
    misc_error/1
      from error_handler.
