@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.75 2008-03-22 19:17:34 tswift Exp $
+** $Id: error_xsb.c,v 1.76 2008-03-27 19:55:16 tswift Exp $
 ** 
 */
 
@@ -425,7 +425,15 @@ void call_conv xsb_misc_error(CTXTdeclc char *inmsg,const char *predicate,int ar
 }
 
 /*****************/
-/* Operation/Object_type/Culprit */
+/* Operation/Object_type/Culprit 
+
+   When using permission error from the loader, and perhaps elsewhere,
+   there may not be a convenient cell for culprit.  In that case,
+   setting culprit to 0 in the call gives a different error message
+   that does not refer to culprit.  In this case, if desired the
+   culprit can be put in the object string.  This isn't perfect, but
+   it works.
+ */
 void call_conv xsb_permission_error(CTXTdeclc
 				    char *operation,char *object,Cell culprit, 
 				    const char *predicate,int arity) 
@@ -456,7 +464,8 @@ void call_conv xsb_permission_error(CTXTdeclc
   tptr++;
   bld_string(tptr,string_find(object,1));
   tptr++;
-  if (culprit == (Cell)NULL) bld_int(tptr,0); 
+  //  if (culprit == (Cell)NULL) bld_int(tptr,0); 
+  if (culprit == (Cell)NULL) bld_string(tptr,string_find("",1)); 
   else bld_ref(tptr,culprit);
 
   xsb_throw_internal(CTXTc ball_to_throw,ball_len);

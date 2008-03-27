@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.46 2007-10-09 17:15:04 dwarren Exp $
+** $Id: cinterf.h,v 1.47 2008-03-27 19:55:16 tswift Exp $
 ** 
 */
 
@@ -212,6 +212,9 @@ DllExport extern void iso_check_var(CTXTdeclc int reg_num,const char *PredString
 
 DllExport extern char* call_conv ptoc_abs(reg_num);
 DllExport extern Cell iso_ptoc_callable(CTXTdeclc int reg_num,const char *PredString);
+						/* defined in builtin.c */
+DllExport extern Cell iso_ptoc_callable_arg(CTXTdeclc int reg_num,
+					    const int PredString, const int arg);
 						/* defined in builtin.c */
 DllExport extern prolog_float call_conv ptoc_float(CTXTdeclc reg_num);
 						/* defined in builtin.c */

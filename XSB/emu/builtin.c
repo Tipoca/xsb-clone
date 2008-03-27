@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.314 2008-03-19 22:58:09 tswift Exp $
+** $Id: builtin.c,v 1.315 2008-03-27 19:55:16 tswift Exp $
 ** 
 */
 
@@ -322,6 +322,29 @@ inline Cell iso_ptoc_callable(CTXTdeclc int regnum,const char * PredString)
     return addr;
   else if (isref(addr))  xsb_instantiation_error(CTXTc PredString,regnum);
   else xsb_type_error(CTXTc "callable",addr,PredString,regnum);
+  return FALSE;
+}
+
+/* TLS: this one is designed to pass through Prolog register offsets
+   in PredString and arg -- that way ptocs for them need only be done
+   if theres an error */
+inline Cell iso_ptoc_callable_arg(CTXTdeclc int regnum,int PredString,int arg)
+{
+  /* reg is global array in register.h in the single-threaded engine
+   * and is defined as a thread-specific macro in context.h in the
+   * multi-threaded engine
+   */  
+  register Cell addr = cell(reg+regnum);
+
+  /* XSB_Deref and then check the type */
+  XSB_Deref(addr);
+
+  if ((isconstr(addr) && !isboxed(addr)) || isstring(addr) || islist(addr))
+    return addr;
+  else if (isref(addr))  xsb_instantiation_error(CTXTc ptoc_string(CTXTc PredString),
+						 ptoc_int(CTXTc arg));
+  else xsb_type_error(CTXTc "callable",addr,ptoc_string(CTXTc PredString),
+		      ptoc_int(CTXTc arg));
   return FALSE;
 }
 
