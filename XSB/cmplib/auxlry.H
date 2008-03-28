@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.H,v 1.15 2005-08-10 19:55:37 dwarren Exp $
+** $Id: auxlry.H,v 1.16 2008-03-28 14:59:37 tswift Exp $
 ** 
 */
 
@@ -42,6 +42,7 @@
 :- import sys_exit/1 from shell.
 :- import term_psc/2, term_type/2, psc_arity/2, term_arg/3
         from machine.
+:- import misc_error/1 from error_handler.
 
 /* ------------------------ end of file auxlry.H ---------------------- */
 
