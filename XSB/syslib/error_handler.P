@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.51 2008/01/02 19:47:43 dwarren Exp $
+** $Id: error_handler.P,v 1.52 2008/03/27 19:53:33 tswift Exp $
 ** 
 */
 
@@ -170,7 +170,7 @@ get_sys_error_description(error(representation_error(Flag),Msg), ExceptionDesc) 
 	ExceptionDesc = ('++Error[XSB/Runtime/P]: [Representation (',Flag,')] ', Msg) .
 get_sys_error_description(error(resource_error(Flag),Msg), ExceptionDesc) :- 
 	ExceptionDesc = ('++Error[XSB/Runtime/P]: [Resource (',Flag,')] ', Msg) .
-get_sys_error_description(error(syntvax_error,Msg), ExceptionDesc) :- 
+get_sys_error_description(error(syntax_error,Msg), ExceptionDesc) :- 
 	ExceptionDesc =   ('++Error[XSB/Runtime/P]: [Syntax] ', Msg) .
 get_sys_error_description(error(system_error,Msg), ExceptionDesc) :- 
 	ExceptionDesc =   ('++Error[XSB/Runtime/P]: [System] ', Msg) .
