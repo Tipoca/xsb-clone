@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.H,v 1.16 2008-03-28 14:59:37 tswift Exp $
+** $Id: auxlry.H,v 1.17 2008-03-31 13:37:04 dwarren Exp $
 ** 
 */
 
@@ -39,7 +39,7 @@
 	  ttywritenl/2, write/2
      from standard.
 :- import assert/1, retractall/1, (dynamic)/1 from assert.
-:- import sys_exit/1 from shell.
+%%:- import sys_exit/1 from shell.
 :- import term_psc/2, term_type/2, psc_arity/2, term_arg/3
         from machine.
 :- import misc_error/1 from error_handler.
