@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.315 2008-03-27 19:55:16 tswift Exp $
+** $Id: builtin.c,v 1.316 2008-03-31 13:38:49 dwarren Exp $
 ** 
 */
 
@@ -328,7 +328,7 @@ inline Cell iso_ptoc_callable(CTXTdeclc int regnum,const char * PredString)
 /* TLS: this one is designed to pass through Prolog register offsets
    in PredString and arg -- that way ptocs for them need only be done
    if theres an error */
-inline Cell iso_ptoc_callable_arg(CTXTdeclc int regnum,int PredString,int arg)
+inline Cell iso_ptoc_callable_arg(CTXTdeclc int regnum,const int PredString,const int arg)
 {
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
