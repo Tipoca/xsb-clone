@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.75 2008-03-29 21:04:05 tswift Exp $
+** $Id: io_builtins_xsb.c,v 1.76 2008-03-31 12:26:00 tswift Exp $
 ** 
 */
 
@@ -819,7 +819,7 @@ int read_canonical(CTXTdecl)
     instr = NULL;
     SET_FILEPTR(filep, tempfp);
   }
-  ctop_addr(CTXTc 3,read_canonical_term(CTXTc filep, instr, 1));
+  ctop_addr(3,read_canonical_term(CTXTc filep, instr, 1));
   return TRUE;
 }
 
