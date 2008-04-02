@@ -42,15 +42,37 @@ stst7 :- X='23456789012345678901234567890123456789012345678901234567890123456',
 		    WWW,WWWW,WWWW,WWWW,WWW,WWWW,WWWW,WWWW,WWWW)),
 	writeln(S).
 
+/*
+TLS: I'm sure there's a better way to make this test portable,
+but I don't really understand intricies of scanf() nor do I want
+to.  If someone wants to improve my hack, I'm all for that!
+*/
+scn1:- 
+       xsb_configuration(word_size,Size),
+       (Size = '32' -> scn1_32 ; scn1_64).
 
-scn1 :- fmt_read("aaa %s %d k %5f ll\n", a(X,Y,Z), WW),
+scn2:- 
+       xsb_configuration(word_size,Size),
+       (Size = '32' -> scn2_32 ; scn2_64).
+
+scn1_32 :- fmt_read("aaa %s %d k %5f ll\n", a(X,Y,Z), WW),
 	write(f(X,Y,WW)), fmt_write("%2.2f\n", Z).
-scn2 :- fmt_read('bbb %s %*d k lll%n %44f ll', a(X,Y,Z), WW),
+scn2_32 :- fmt_read('bbb %s %*d k lll%n %44f ll', a(X,Y,Z), WW),
 	write(f(X,Y,WW)), fmt_write("%2.1f\n", Z).
+
+scn1_64 :- fmt_read("aaa %s %ld k %5f ll\n", a(X,Y,Z), WW),
+	write(f(X,Y,WW)), fmt_write("%2.2f\n", Z).
+scn2_64 :- fmt_read('bbb %s %ld k lll %f ll', a(X,Y,Z), WW),
+	write(f(X,20,2)), fmt_write("%2.1f\n", Z).
 
 
 test :- tst1,tst2,tst3,tst4,tst5,tst6,tst7,
 	stst1,stst2,stst3,stst4,stst5,stst6,stst7,
 	see('fmt_io.data'),
 	scn1,scn2,
+	seen.
+
+quick:- 	see('fmt_io.data'),
+	scn1,
+	scn2,
 	seen.
