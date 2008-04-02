@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.190 2008-03-29 19:14:55 tswift Exp $
+** $Id: emuloop.c,v 1.191 2008-04-02 23:48:06 tswift Exp $
 ** 
 */
 
@@ -1068,7 +1068,7 @@ contcase:     /* the main loop */
   XSB_End_Instr()
 
   XSB_Start_Instr(unifloat,_unifloat) /* PPPF */
-    printf("UNIFLOAT ENTERED\n");
+    //    printf("UNIFLOAT ENTERED\n");
     Def2fops
     Op2f(get_xxxf); /* num in fop2 */
     ADVANCE_PC(size_xxxX);
