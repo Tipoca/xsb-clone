@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.201 2008-03-29 19:47:25 tswift Exp $
+## $Id: configure.in,v 1.202 2008-04-02 23:20:05 tswift Exp $
 ##
 ##
 
@@ -973,6 +973,12 @@ if test "$bits64" = "yes"; then
    MEMFLAG=" -m64 "
 fi
 
+if test "${machine64bit}" = "yes"; then
+   word_size="64"
+else
+   word_size="32"
+fi
+
 #TLS comment this out if you don't want fast floats automatically w. 64 bits.
 #if test "$machine64bit" = "yes"; then
 # fast_floats=yes	
@@ -1855,6 +1861,7 @@ AC_SUBST(site_prefix)
 AC_SUBST(xsb_release_date)
 AC_SUBST(xsb_full_version_name)
 AC_SUBST(engine_mode)
+AC_SUBST(word_size)
 
 AC_SUBST(ODBCSRC)
 AC_SUBST(ODBCOBJ)
