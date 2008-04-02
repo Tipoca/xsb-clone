@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_read.P,v 1.26 2007/04/16 16:15:35 tswift Exp $
+** $Id: xsb_read.P,v 1.27 2008/01/28 18:14:36 dwarren Exp $
 ** 
 */
 
@@ -103,6 +103,7 @@ file_read(File, Answer, Variables) :-
 #ifndef MULTI_THREAD
 get_synerr_psc(Psc):- term_psc('_$synerr'(_), Psc).
 #else 
+:- import xsb_thread_self/1 from thread.
 get_synerr_psc(Psc):- 
 	xsb_thread_self(Thread),
 	(Thread == 0 -> 

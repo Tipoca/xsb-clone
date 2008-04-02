@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.H,v 1.18 2007/04/16 16:15:35 tswift Exp $
+** $Id: xsb_writ.H,v 1.19 2008/02/16 18:03:11 dwarren Exp $
 ** 
 */
 
@@ -33,7 +33,8 @@
 
 	
 :- import '_$op'/3 from file_op.
-   :- import file_put/2,file_function/3 from file_io.
+:- import file_put/2 from file_io.
+:- import file_function/3 from machine.
 :- import integer/1 from standard.
 :- import term_psc/2, psc_arity/2, psc_name/2, term_arg/3, 
 	stat_flag/2,

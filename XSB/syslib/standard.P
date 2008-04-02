@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.147 2008/03/26 21:38:05 tswift Exp $
+** $Id: standard.P,v 1.148 2008/03/27 19:53:33 tswift Exp $
 ** 
 */
 
@@ -960,6 +960,8 @@ call(Goal) :-
    normal case.  Need call_c/1 in first condition -- otherwise trace
    is broken since call0 is apparently hidden from trace.  In second
    condition, tracing is done via goal_cut_trans/3. */
+directly_callable(Goal) :- directly_callable(Goal).  %inlined by compiler.
+
 call(Goal) :-
    ( directly_callable(Goal) -> 
        call_c(Goal) 
