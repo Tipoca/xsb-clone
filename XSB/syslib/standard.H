@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.91 2008/03/26 21:38:05 tswift Exp $
+** $Id: standard.H,v 1.92 2008/03/27 19:53:33 tswift Exp $
 **
 */
 
@@ -33,11 +33,12 @@
 	arg/3,		arg0/3,		atom/1,		
 	atom_concat/3,   atomic/1,	atom_length/2,
 	goal_arg/3,	atom_chars/2,   atom_codes/2,
-   call/1,	call/2, call/3, call/4, call/5, call/6, call/7, call/8, call/9, call/10, call/11,
+	call/1, call/2, call/3, call/4, call/5, call/6, call/7, call/8, call/9, call/10, call/11,
 	call_expose/1,	callable/1, char_code/2,
 	check_arity_integer/3,  call_cleanup/2, cleanup_handler/2,
 	close/1,             close/2,	compare/3,	
 	compound/1,	cputime/1,	
+	directly_callable/1,
 	display/1, displayln/1, now/1, datime/1,
 	console_write/1, console_writeln/1,
 	error_write/1, error_writeln/1,
