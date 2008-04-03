@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.P,v 1.33 2008/03/19 15:53:56 dwarren Exp $
+** $Id: thread.P,v 1.34 2008/03/29 20:35:58 pmoura Exp $
 ** 
 */
 
@@ -352,6 +352,7 @@ thread_run0(Goal) :-
 	call(Goal),
 	internal_thread_exit(THREAD_SUCCEEDED).
 
+/* called by xsb_thread_run() in thread_xsb.c */
 '_$thread_run'( Goal ) :-
 	(catch( thread_run0(Goal), Ball, handle_thread_error(Ball))
 	 ;

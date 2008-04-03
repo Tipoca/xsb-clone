@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.148 2008/03/27 19:53:33 tswift Exp $
+** $Id: standard.P,v 1.149 2008/04/02 16:21:14 dwarren Exp $
 ** 
 */
 
@@ -418,12 +418,22 @@ write(S_or_A,Term):-
 
 write(T) :- stat_flag(CURRENT_OUTPUT, Str), file_write(Str, T).
 
- writeln(S_or_A,Term):- 
-	check_open_stream_or_alias(S_or_A,writeln/2,1,output,Ostr),
-	file_write(Ostr,Term),file_nl(Ostr).
+:- import   file_function/3, xsb_stream_lock/1,xsb_stream_unlock/1 from file_io.
+:- import l_write/3 from xsb_writ.
 
+%writeln(T) :- stat_flag(CURRENT_OUTPUT,File),file_write(File,T),file_nl(File).
+writeln(T) :- stat_flag(CURRENT_OUTPUT,File),
+	xsb_stream_lock(File),
+	l_write(File, T, 999), 
+	file_function(FILE_NL, File, _),
+	xsb_stream_unlock(File).
 
-writeln(T) :- stat_flag(CURRENT_OUTPUT,File),file_write(File,T),file_nl(File).
+writeln(S_or_A,Term):- 
+	check_open_stream_or_alias(S_or_A,writeln/2,1,output,File),
+	xsb_stream_lock(File),
+	l_write(File, Term, 999), 
+	file_function(FILE_NL, File, _),
+	xsb_stream_unlock(File).
 
 % yes, according to the manual this is what it should do.
 display(T) :- telling(F), tell(user_out), write(T), told, tell(F).	

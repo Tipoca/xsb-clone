@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.H,v 1.19 2008/02/16 18:03:11 dwarren Exp $
+** $Id: xsb_writ.H,v 1.20 2008/04/02 16:21:18 dwarren Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 :- export write_double/1, write_double/2.
 :- export write_canonical_lettervar/1.
 :- export set_file_write_depth/1, get_file_write_depth/1.
-
+:- export l_write/3.
 	
 :- import '_$op'/3 from file_op.
 :- import file_put/2 from file_io.
