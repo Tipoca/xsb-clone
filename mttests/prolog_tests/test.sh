@@ -39,3 +39,4 @@ options=$3
 ../seqgentest.sh "$XEMU $options" thread_property "test." 
 ../seqgentest.sh "$XEMU $options" test_destroy "test." 
 ../seqgentest.sh "$XEMU $options" test_exit "test." 
+../seqgentest.sh "$XEMU $options" fodor "test." 
