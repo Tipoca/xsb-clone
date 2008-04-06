@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.38 2007-10-22 16:16:24 dwarren Exp $
+** $Id: psc_xsb.c,v 1.39 2008-04-06 23:04:23 tswift Exp $
 ** 
 */
 
@@ -375,11 +375,11 @@ Pair link_sym(Psc psc, Psc mod_psc)
 	if ( type != T_ORDI ) {
 	  if (type == T_DYNA || type == T_PRED) {
 	    Psc mod_psc = (Psc) get_data(pair_psc(found_pair));
-	    sprintf(message,
+	    snprintf(message,120,
 		    "%s/%d (type %d) had been defined in module: %s",
 		    name, arity, type, mod_psc == 0 ? "usermod" : get_name(mod_psc));
 	  } else 
-	    sprintf(message,
+	    snprintf(message,120,
 		    "%s/%d (type %d) had been defined in another module!",
 		    name, arity, type);
 	  xsb_warn(message);

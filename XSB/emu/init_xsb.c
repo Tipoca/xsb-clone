@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.144 2008-02-22 17:10:16 tswift Exp $
+** $Id: init_xsb.c,v 1.145 2008-04-06 23:04:22 tswift Exp $
 ** 
 */
 
@@ -194,9 +194,9 @@ static void version_message(void)
   char licensemsg[MAXPATHLEN], configmsg[MAXPATHLEN];
   char *stripped_config_file;
 
-  sprintf(licensemsg, "%s%cetc%ccopying.msg", install_dir_gl, SLASH, SLASH);
+  snprintf(licensemsg, MAXPATHLEN, "%s%cetc%ccopying.msg", install_dir_gl, SLASH, SLASH);
   stripped_config_file = strip_names_from_path(xsb_config_file_gl, 2);
-  sprintf(configmsg, "%s%cbanner.msg", 
+  snprintf(configmsg, MAXPATHLEN, "%s%cbanner.msg", 
 	  stripped_config_file, SLASH);
 
   display_file(configmsg);
@@ -210,7 +210,7 @@ static void help_message(void)
 {
   char helpmsg[MAXPATHLEN];
 
-  sprintf(helpmsg, "%s%cetc%chelp.msg", install_dir_gl, SLASH, SLASH);
+  snprintf(helpmsg, MAXPATHLEN, "%s%cetc%chelp.msg", install_dir_gl, SLASH, SLASH);
   puts("");
   display_file(helpmsg);
   if (xsb_mode != C_CALLING_XSB) exit(0);
@@ -679,8 +679,7 @@ static long get_memarea_size( char *s )
       asynint_val |= MSGINT_MARK;
       break;
 #else
-      sprintf(warning, "-s option not available with multi-threaded engine.");
-      xsb_warn(warning);
+      xsb_warn("-s option not available with multi-threaded engine.");
       break;
 #endif
     case 'S':

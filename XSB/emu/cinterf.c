@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.89 2008-01-02 19:47:42 dwarren Exp $
+** $Id: cinterf.c,v 1.90 2008-04-06 23:04:22 tswift Exp $
 ** 
 */
 
@@ -1369,20 +1369,24 @@ DllExport int call_conv xsb_init(int argc, char *argv[])
   // updateWarningStart();
   if (!xsb_initted_gl) {
 	/* we rely on the caller to tell us in argv[0]
-	the absolute or relative path name to the XSB installation directory */
-	sprintf(executable1, "%s%cconfig%c%s%cbin%cxsb",
-	argv[0], SLASH, SLASH, FULL_CONFIG_NAME, SLASH, SLASH);
-	expfilename = expand_filename(executable1);
-	strcpy(executable_path_gl, expfilename);
-	mem_dealloc(expfilename,MAXPATHLEN,OTHER_SPACE);
+	the absolute or relative path name to the XSB installation directory.
+	TLS: added error check.*/
+    if (MAXPATHLEN <  snprintf(executable1, MAXPATHLEN, "%s%cconfig%c%s%cbin%cxsb",
+		 argv[0], SLASH, SLASH, FULL_CONFIG_NAME, SLASH, SLASH))
+      xsb_abort("Cannot initialize: pathname %s%cconfig%c%s%cbin%cxsb "
+		"exceeds maximum pathlength (%d)\n",
+		argv[0], SLASH, SLASH, FULL_CONFIG_NAME, SLASH, SLASH,MAXPATHLEN);
+    expfilename = expand_filename(executable1);
+    strcpy(executable_path_gl, expfilename);
+    mem_dealloc(expfilename,MAXPATHLEN,OTHER_SPACE);
+    
+    if ((rc = setjmp(ccall_init_env))) return rc;  /* catch XSB_C_INIT exceptions */
 
-	if ((rc = setjmp(ccall_init_env))) return rc;  /* catch XSB_C_INIT exceptions */
-
-	if (0 == (rc = xsb(CTXTc XSB_C_INIT,argc,argv)))  {   /* initialize xsb */
-	  if (0 == (rc = xsb(CTXTc XSB_EXECUTE,0,0)))       /* enter xsb to set up regs */
-	    xsb_initted_gl = 1;
-	}
-	return(rc);
+    if (0 == (rc = xsb(CTXTc XSB_C_INIT,argc,argv)))  {   /* initialize xsb */
+      if (0 == (rc = xsb(CTXTc XSB_EXECUTE,0,0)))       /* enter xsb to set up regs */
+	xsb_initted_gl = 1;
+    }
+    return(rc);
  }
  else {
    create_ccall_error(CTXTc "permission_error","xsb_init() called when XSB has already been initialized.");

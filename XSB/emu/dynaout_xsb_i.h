@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynaout_xsb_i.h,v 1.13 2007-08-09 04:11:05 evansbj Exp $
+** $Id: dynaout_xsb_i.h,v 1.14 2008-04-06 23:04:22 tswift Exp $
 ** 
 */
 
@@ -75,7 +75,7 @@ static void dyn_link_all(char *symtab, Psc cur_mod)
   while (search_ptr) {
     name = get_name(search_ptr->psc_ptr);
 /* Jiyang changed it to the form ``module_pred'':
-    sprintf(name, "%s_%s", get_name(cur_mod), get_name(search_ptr->psc_ptr));
+|    sprintf(name, "%s_%s", get_name(cur_mod), get_name(search_ptr->psc_ptr));
  */
     if (get_type(search_ptr->psc_ptr) == T_FORN) {
       for (i=0; i<count; i++) {
@@ -107,7 +107,8 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   struct stat statbuff;
   char  *file_extension_ptr;
   
-  sprintf(tfile, "/tmp/xsb-dyn.%d", (int)getpid());
+  if (128 < snprintf(tfile, 128, "/tmp/xsb-dyn.%d", (int)getpid()))
+    xsb_abort("Cannot load foreign file: process id too long\n");
   
   /* first step: get the header entries of the *.o file, in order	*/
   /* to obtain the size of the object code and then allocate space	*/

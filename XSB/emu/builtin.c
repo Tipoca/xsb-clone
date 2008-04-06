@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.316 2008-03-31 13:38:49 dwarren Exp $
+** $Id: builtin.c,v 1.317 2008-04-06 23:04:20 tswift Exp $
 ** 
 */
 
@@ -1233,7 +1233,7 @@ int builtin_call(CTXTdeclc byte number)
     Psc psc = (Psc)ptoc_addr(1);
     if ((get_type(psc) == T_PRED || get_type(psc) == T_DYNA) && get_env(psc) != T_IMPORTED) {
       char str[100];
-      sprintf(str,"[psc_prop/2] Cannot get property of predicate: %s/%d\n",
+      snprintf(str,100,"[psc_prop/2] Cannot get property of predicate: %s/%d\n",
 	      get_name(psc),get_arity(psc));
       xsb_warn(str);
       return FALSE;

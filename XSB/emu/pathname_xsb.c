@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.33 2008-02-16 20:11:09 dwarren Exp $
+** $Id: pathname_xsb.c,v 1.34 2008-04-06 23:04:23 tswift Exp $
 ** 
 */
 
@@ -165,12 +165,13 @@ char *tilde_expand_filename_norectify(char *filename, char *expanded) {
       /*  The system has no info on this user, so we can't
 	  construct the absolute path -- abort. */
       char message[100];
-      sprintf(message, "[PATHNAME] `%s': unknown user\n", username);
+      snprintf(message, 100, "[PATHNAME] `%s': unknown user\n", username);
       xsb_abort(message);
     } else
       path_prefix = pw_struct -> pw_dir;
   }
-    
+   
+  // Dont know about this -- should probably be a snprintf.
   sprintf(expanded, "%s%c%s", path_prefix, SLASH, path_suffix);
   normalize_file_slashes(expanded);
   return expanded;
@@ -211,7 +212,7 @@ char *expand_filename(char *filename) {
 #endif
   } else {
     getcwd(aux_filename2, MAXPATHLEN-1);
-    sprintf(aux_filename, "%s%c%s", aux_filename2,
+    snprintf(aux_filename,MAXPATHLEN, "%s%c%s", aux_filename2,
 	    SLASH, filename);
     return rectify_pathname(aux_filename, absolute_filename);
   }
@@ -552,7 +553,7 @@ char *existing_file_extension(char *basename)
   strcpy(filename, basename);
   if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return ""; /* no extension */
 
-  sprintf(filename, "%s%s", basename, XSB_OBJ_EXTENSION_STRING);
+  snprintf(filename, MAXPATHLEN, "%s%s", basename, XSB_OBJ_EXTENSION_STRING);
   /*  +1 skips the "."   */
   if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return XSB_OBJ_EXTENSION_STRING+1;
 
