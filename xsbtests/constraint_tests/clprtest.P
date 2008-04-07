@@ -210,6 +210,8 @@ placed_square(B, [B,V|L], [X|L]) :-
 placed_square(B, [H|L], [X,Y|L]) :-
 	{ B < H, X= -B, Y=H-B }.
 
+test15(Z,X,Y):- { 2*X+Y =< 16, X+2*Y =< 11,X+3*Y =< 15, Z = 30*X+50*Y},maximize(Z).
+
 end_of_file.
 
 

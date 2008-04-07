@@ -18,3 +18,6 @@ opts=$2
 ../gentest.sh "$XEMU $opts" gctest "test."
 ../gentest.sh "$XEMU $opts" clprtest "test."
 ../gentest.sh "$XEMU $opts" test_bounds "test."
+
+# test of C-calling XSB w. constraints.
+../gentest.sh "$XEMU $opts" cvarconstr_make "test."
