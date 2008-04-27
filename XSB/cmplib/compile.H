@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.H,v 1.19 2008-03-28 14:59:40 tswift Exp $
+** $Id: compile.H,v 1.20 2008-04-27 15:29:10 tswift Exp $
 ** 
 */
 
@@ -63,7 +63,7 @@
 :- import write_asmheader/4, write_asm_instructions/2 from writeasm.
 :- import throw/1, cputime/1, open/3, close/1 from standard.
 :- import force_peephole_loaded/0, compile_peephole_opt/2 from peephole.
-:- import message/1, warning/1, time_message/2, setoptions/1, option/1
+   :- import message/1, warning/1, time_message/2, setoptions/1, option/1
      from auxlry.
 :- import prepare/0, gennum/1, conget/2, conset/2 from gensym.
 :- import sys_unlink/2 from shell.

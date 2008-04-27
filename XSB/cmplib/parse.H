@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.34 2008-02-16 21:49:59 dwarren Exp $
+** $Id: parse.H,v 1.35 2008-04-27 15:29:10 tswift Exp $
 ** 
 */
 
@@ -51,7 +51,7 @@
      from standard.
 :- import retract/1, retractall/1, assert/1, (dynamic)/1 from assert.
 :- import '_$index'/3, mpa_to_skel/2 from file_op.
-:- import misc_error/1 from error_handler.
+   :- import existence_error/4,misc_error/1, syntax_error/1 from error_handler.
 
 :- import spawn_process/5, process_control/2 from shell.
 :- import xsb_configuration/2 from xsb_configuration.

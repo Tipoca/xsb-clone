@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.25 2008-03-28 14:59:37 tswift Exp $
+** $Id: auxlry.P,v 1.26 2008-04-27 15:29:10 tswift Exp $
 ** 
 */
 
@@ -120,6 +120,10 @@ check_file_compiler_options([H|T]):-
 	check_file_compiler_options(T).
 
 unsuitable_for_file_options(ti_dump).
+
+% redefining for export
+current_xsb_compiler_option(Option):- 
+	current_option(Option).
 
 /* Old PSB genes */
 current_option(sysmod).

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.H,v 1.17 2008-03-31 13:37:04 dwarren Exp $
+** $Id: auxlry.H,v 1.18 2008-04-27 15:29:10 tswift Exp $
 ** 
 */
 
@@ -30,6 +30,7 @@
 	  freeze/1, melt/2, writetop/2, set_global_compiler_options/1,
               check_file_compiler_options/1,
 	  numbervars_cmplib/3.
+:- export current_xsb_compiler_option/1.
 
 :- import current_compiled_module/1 from compile.
 :- import load_dyn_module/1 from consult.
