@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: symtab.P,v 1.12 2004-07-10 21:08:11 dwarren Exp $
+** $Id: symtab.P,v 1.13 2008-05-07 15:12:00 dwarren Exp $
 ** 
 */
 
@@ -243,7 +243,7 @@ get_and_inc_tabnum(N):-
 
 sym_prop(X, sym(_,_,PropList,_)) :- sym_prop0(X, PropList).
 
-sym_prop0(pred, prop(Type,_,_,_,_,_)) :- !, Type == pred.
+sym_prop0(pred, prop(Type,_,_,_,_,_)) :- !, Type == (pred).
 sym_prop0(module, prop(Type,_,_,_,_,_)) :- !, Type == module.
 
 sym_prop0(ex, prop(_,Env,_,_,_,_)) :- !, Env == ex.
