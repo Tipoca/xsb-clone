@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.74 2008-04-06 23:04:22 tswift Exp $
+** $Id: loader_xsb.c,v 1.75 2008-05-07 15:08:31 dwarren Exp $
 ** 
 */
 
@@ -62,6 +62,7 @@
 #endif
 
 #include "debug_xsb.h"
+#include "cinterf.h"
  
 /* === stuff used from elsewhere ======================================	*/
 

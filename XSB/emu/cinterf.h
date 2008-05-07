@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.47 2008-03-27 19:55:16 tswift Exp $
+** $Id: cinterf.h,v 1.48 2008-05-07 15:08:31 dwarren Exp $
 ** 
 */
 
@@ -299,6 +299,9 @@ typedef char *vfile;
 
 extern char *vfile_open(/* vfile, func, func, func, func, func */);
 extern char *vfile_obj(/* vfile */);
+#ifndef HAVE_SNPRINTF
+extern int snprintf(char *buffer, size_t count, const char *fmt, ...);
+#endif
 
 /*======================================================================*/
 /* Routines to call xsb from C						*/

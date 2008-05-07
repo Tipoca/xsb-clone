@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.39 2008-04-06 23:04:23 tswift Exp $
+** $Id: psc_xsb.c,v 1.40 2008-05-07 15:08:31 dwarren Exp $
 ** 
 */
 
@@ -45,6 +45,7 @@
 #include "memory_xsb.h"
 #include "register.h"
 #include "thread_xsb.h"
+#include "cinterf.h"
 
 extern Psc synint_proc(Psc, int);
 
