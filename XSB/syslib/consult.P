@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.67 2008/02/02 00:04:29 tswift Exp $
+** $Id: consult.P,v 1.68 2008/04/27 15:25:56 tswift Exp $
 ** 
 */
 
@@ -56,7 +56,10 @@ check_compile_options(Option):-
 
 check_compile_option(Option):- 
 	check_nonvar(Option,compile/[1,2],2),
-	(current_xsb_compiler_option(Option) -> 
+	(Option @= +(_) ->  Option = +(Option_1) 
+          ; Option = -(_) -> Option = -(Option_1) 
+          ; Option = Option_1),
+	(current_xsb_compiler_option(Option_1) -> 
 	    true 
 	 ;  domain_error(xsb_compiler_option,Option,compile/[1,2],2) ).
 	
