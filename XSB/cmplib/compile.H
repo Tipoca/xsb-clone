@@ -20,13 +20,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.H,v 1.20 2008-04-27 15:29:10 tswift Exp $
+** $Id: compile.H,v 1.21 2008-05-08 10:41:11 tswift Exp $
 ** 
 */
 
 
 :- export compile/4, compile/5, mc/2, abort_if_syntax_errors/1. 
-:- export current_compiled_module/1.
+:- export current_compiled_module/1, check_compiler_options/1.
 
 :- import spec/2 from spec.
 :- import cp_opt/2 from cp_opt.
