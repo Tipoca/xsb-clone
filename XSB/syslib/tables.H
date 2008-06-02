@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.36 2007/06/01 22:52:40 tswift Exp $
+** $Id: tables.H,v 1.37 2007/12/24 19:18:57 tswift Exp $
 ** 
 */
 
@@ -58,7 +58,7 @@
       (use_subsumptive_tabling)/1,
       (use_variant_tabling)/1.
 
-   :- export find_components/1, find_forward_dependencies/1, find_backward_dependencies/1,
+   :- export find_components/1, find_forward_dependencies/1, %%%find_backward_dependencies/1,
    find_answers/1.
 
 :- export '_$$get_returns'/3.

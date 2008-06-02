@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.60 2008/04/03 22:43:05 tswift Exp $
+** $Id: x_interp.P,v 1.61 2008/04/07 00:25:47 tswift Exp $
 ** 
 */
 
@@ -61,7 +61,7 @@ interpreter :-
 	retractall('$$exception_ball'(T,_)),
 	x_interp_repeat,
 	stat_flag(CURRENT_INPUT, Str),
-	catch(interpreter_readloop([]),Ball,(see(Str),file_write(STDMSG,'Caught it'),
+	catch(interpreter_readloop([]),Ball,(see(Str), %%file_write(STDMSG,'Caught it'),
 	                                     default_error_handler(Ball))),
 	fail.
 
