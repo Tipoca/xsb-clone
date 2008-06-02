@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.164 2008-03-27 19:55:15 tswift Exp $
+** $Id: biassert.c,v 1.165 2008-06-02 21:29:18 dwarren Exp $
 ** 
 */
 
@@ -3931,7 +3931,7 @@ xsbBool dynamic_code_function( CTXTdecl )
       SYS_MUTEX_UNLOCK( MUTEX_DYNAMIC );
     }
     else if (termType == T_PRED) 
-      xsb_permission_error(CTXTc "modufy","static",ptoc_tag(CTXTc 2),
+      xsb_permission_error(CTXTc "modify","static",ptoc_tag(CTXTc 2),
 			   ptoc_string(CTXTc 4),ptoc_int(CTXTc 5));
     else 
       xsb_type_error(CTXTc "callable",ptoc_tag(CTXTc 2),ptoc_string(CTXTc 4),ptoc_int(CTXTc 5));
