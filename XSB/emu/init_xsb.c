@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.145 2008-04-06 23:04:22 tswift Exp $
+** $Id: init_xsb.c,v 1.146 2008-06-04 13:23:25 ruim Exp $
 ** 
 */
 
@@ -1113,7 +1113,6 @@ void init_thread_structures(CTXTdecl)
 
 #ifdef SHARED_COMPL_TABLES
   th->waiting_for_tid = -1 ;
-  th->deadlock_brk_leader = FALSE;
   th->reset_thread = FALSE;
 #endif
 #ifdef CONC_COMPL
