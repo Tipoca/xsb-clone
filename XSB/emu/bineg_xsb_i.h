@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.38 2008-06-04 13:23:24 ruim Exp $
+** $Id: bineg_xsb_i.h,v 1.39 2008-06-05 18:15:11 ruim Exp $
 ** 
 */
 
@@ -134,26 +134,20 @@ case IS_INCOMPLETE: {
            if( would_deadlock( table_tid, xsb_thread_id ) )
 	   {	/* code for leader */
                 reset_other_threads( th, waiting_for_thread, producerSF );
-                pthread_cond_broadcast(&completing_cond) ;
 		reset_leader( th ) ; /* this unlocks the completing_mut */
 		return TRUE ;
 	   }
 	   th->waiting_for_subgoal = producerSF ;
            th->waiting_for_tid = table_tid ;
-           pthread_cond_wait(&completing_cond,&completing_mut) ;
+           pthread_cond_wait(&TIF_ComplCond(subg_tif_ptr(producerSF)),
+                             &completing_mut) ;
 	   SYS_MUTEX_INCR( MUTEX_COMPL );
-           if( th->reset_thread )
-           {	th->reset_thread = FALSE ;
-		th->waiting_for_subgoal = NULL ;
-        	th->waiting_for_tid = -1 ;
-                pthread_mutex_unlock(&completing_mut) ;
-                /* restart the tabletry instruction */
-		return TRUE ;
-           }
         }
+        /* the thread was reset after being suspended */
         th->waiting_for_tid = -1 ;
         th->waiting_for_subgoal = NULL ;
      	pthread_mutex_unlock(&completing_mut) ;
+	return TRUE ;
      }
 #endif
 

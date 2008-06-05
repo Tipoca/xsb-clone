@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.65 2008-06-04 13:23:24 ruim Exp $
+** $Id: context.h,v 1.66 2008-06-05 18:15:12 ruim Exp $
 ** 
 */
 
@@ -431,7 +431,6 @@ Cell _pflags[MAX_PRIVATE_FLAGS];
 int waiting_for_tid;
 struct th_context *tmp_next;
 struct subgoal_frame *	waiting_for_subgoal;
-int reset_thread ;
 #endif
 
 #ifdef CONC_COMPL

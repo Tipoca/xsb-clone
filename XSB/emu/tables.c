@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.57 2007-12-06 23:24:55 ruim Exp $
+** $Id: tables.c,v 1.58 2008-06-05 18:15:13 ruim Exp $
 ** 
 */
 
@@ -807,6 +807,9 @@ inline TIFptr New_TIF(CTXTdeclc Psc pPSC) {
    /* The call trie lock is also initialized for private TIFs,
       just in case they ever change to shared */
    pthread_mutex_init( &TIF_CALL_TRIE_LOCK(pTIF), NULL );
+#ifdef SHARED_COMPL_TABLES
+   pthread_cond_init( &TIF_ComplCond(pTIF), NULL );
+#endif
    if (get_shared(pPSC)) {
      SYS_MUTEX_LOCK( MUTEX_TABLE );				
      if ( IsNonNULL(tif_list.last) )					

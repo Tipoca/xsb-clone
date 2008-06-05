@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.66 2007-08-02 19:07:41 tswift Exp $
+** $Id: macro_xsb.h,v 1.67 2008-06-05 18:15:12 ruim Exp $
 ** 
 */
 
@@ -299,6 +299,9 @@ typedef struct Table_Info_Frame {
 #ifdef MULTI_THREAD
   pthread_mutex_t call_trie_lock;
 #endif
+#ifdef SHARED_COMPL_TABLES
+  pthread_cond_t compl_cond;
+#endif
 } TableInfoFrame;
 
 #define TIF_PSC(pTIF)		   ( (pTIF)->psc_ptr )
@@ -311,6 +314,9 @@ typedef struct Table_Info_Frame {
 #define TIF_NextTIF(pTIF)	   ( (pTIF)->next_tif )
 #ifdef MULTI_THREAD
 #define TIF_CALL_TRIE_LOCK(pTIF)   ( (pTIF)->call_trie_lock )
+#endif
+#ifdef SHARED_COMPL_TABLES
+#define TIF_ComplCond(pTIF)   	   ( (pTIF)->compl_cond )
 #endif
 
 #define	cps_check_mark_tif(pTIF)   TIF_Mark(pTIF) = 0x1
@@ -358,6 +364,13 @@ extern TIFptr New_TIF(Psc);
 #else
 #define free_call_trie_mutex(pTIF)
 #endif
+
+#ifdef SHARED_COMPL_TABLES
+#define free_tif_cond_var(pTIF) 					\
+{	pthread_cond_destroy(&TIF_ComplCond(pTIF) );	}
+#else
+#define free_tif_cond_var(pTIF)
+#endif
    
 #define Free_Shared_TIF(pTIF) {						\
     TIFptr tTIF;							\
@@ -377,6 +390,7 @@ extern TIFptr New_TIF(Psc);
     SYS_MUTEX_UNLOCK( MUTEX_TABLE );					\
     delete_predicate_table(CTXTc pTIF,TRUE);				\
     free_call_trie_mutex(pTIF);						\
+    free_tif_cond_var(pTIF);						\
     mem_dealloc((pTIF),sizeof(TableInfoFrame),TABLE_SPACE);		\
   }
 
@@ -396,6 +410,7 @@ extern TIFptr New_TIF(Psc);
     SET_TRIE_ALLOCATION_TYPE_PRIVATE();					\
     delete_predicate_table(CTXTc pTIF,TRUE);				\
     free_call_trie_mutex(pTIF);						\
+    free_tif_cond_var(pTIF);						\
     mem_dealloc((pTIF),sizeof(TableInfoFrame),TABLE_SPACE);		\
   }
 

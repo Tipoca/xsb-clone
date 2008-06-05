@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.146 2008-06-04 13:23:25 ruim Exp $
+** $Id: init_xsb.c,v 1.147 2008-06-05 18:15:12 ruim Exp $
 ** 
 */
 
@@ -1113,7 +1113,6 @@ void init_thread_structures(CTXTdecl)
 
 #ifdef SHARED_COMPL_TABLES
   th->waiting_for_tid = -1 ;
-  th->reset_thread = FALSE;
 #endif
 #ifdef CONC_COMPL
   pthread_cond_init( &th->cond_var, NULL );

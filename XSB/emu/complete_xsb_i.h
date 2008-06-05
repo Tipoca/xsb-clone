@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.35 2007-11-30 13:09:22 ruim Exp $
+** $Id: complete_xsb_i.h,v 1.36 2008-06-05 18:15:12 ruim Exp $
 ** 
 */
 
@@ -170,11 +170,13 @@ XSB_Start_Instr(check_complete,_check_complete)
       FailIfAnswersFound((cc_tbreg == orig_breg ? 0 : cc_tbreg));
       
       CompleteSimplifyAndReclaim(CTXTc cs_ptr);
+/*
 #ifdef SHARED_COMPL_TABLES
     pthread_mutex_lock(&completing_mut);
     pthread_cond_broadcast(&completing_cond);
     pthread_mutex_unlock(&completing_mut);
 #endif
+*/
 
     /* TLS: not sure about condition: how could subg_answers be true
        and has_answer_code be false? */
