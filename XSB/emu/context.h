@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.66 2008-06-05 18:15:12 ruim Exp $
+** $Id: context.h,v 1.67 2008-06-08 22:10:04 ruim Exp $
 ** 
 */
 
@@ -429,6 +429,7 @@ Cell _pflags[MAX_PRIVATE_FLAGS];
 /* stuff for deadlock detection in completion */
 #ifdef SHARED_COMPL_TABLES
 int waiting_for_tid;
+int is_deadlock_leader;
 struct th_context *tmp_next;
 struct subgoal_frame *	waiting_for_subgoal;
 #endif
