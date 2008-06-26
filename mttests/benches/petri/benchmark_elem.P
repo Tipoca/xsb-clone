@@ -128,10 +128,11 @@ all_par_execute([H|L]) :-
 	par_execute(H),
 	all_par_execute(L).
 
-bench_process_2(N,Numthreads,Time):- 
+bench_shared_process_2(N,Numthreads,Numbraids,Time):- 
+	retractall(rule(_,_,_)),
 	abolish_all_tables,
-	generate_process_2(N,Numthreads),
-	generate_goallist(Numthreads,List,shared_reachable),
+	generate_process_2(N,Numbraids),
+	generate_goallist_thr(Numbraids,Numthreads,List,shared_reachable),
 	walltime(Before),
 	par_execute(List),
 	walltime(After),
@@ -139,6 +140,7 @@ bench_process_2(N,Numthreads,Time):-
 	statistics.
 
 bench_process_2_private(N,Numthreads,Time):- 
+	retractall(rule(_,_,_)),
 	abolish_all_tables,
 	generate_process_2(N,Numthreads),
 	generate_goallist(Numthreads,List,reachable),
@@ -229,7 +231,7 @@ generate_goallist2(I,[G|Rest],P,I0):-
 	I1 is I - 1,
 	generate_goallist2(I1,Rest,P,I0).
 
-generate_goallist_thr(0,_NT,[],_P,_I).
+generate_goallist_thr(0,_NT,[],_P,_I):-!.
 generate_goallist_thr(NB,NT,[H|T],P,I) :-
 	NB1 is NB - NT,
 	I1 is I + NT,
@@ -253,4 +255,5 @@ bench_process_3(N,NumThreads,Time):-
 	walltime(After),
 	Time is After - Before,
 	statistics.
+
 
