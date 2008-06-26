@@ -7,6 +7,9 @@
 :- index(move2k/2,trie).
 :- index(move1k/2,trie).
 
+scal_ranc_bench:-
+	mt_bigbench(rancestor512(1,_),[scal_ranc,chain(1024),its(10)],10).
+
 chain_ancestor_bench:- 
 	bigbench(rancestor1k(1,_),[tabled_right_anc,chain(1024),its(4)],4),
 	bigbench(ancestor1k(1,_),[tabled_left_anc,chain(1024),its(3000)],3000),
@@ -52,6 +55,10 @@ ancestor1k(X,Y):- move1k(X,Y).
 :- table rancestor1k/2.
 rancestor1k(X,Y):- move1k(X,Y).
 rancestor1k(X,Y):- move1k(X,Z),rancestor1k(Z,Y).
+
+:- table rancestor512/2.
+rancestor512(X,Y):- move512(X,Y).
+rancestor512(X,Y):- move512(X,Z),rancestor512(Z,Y).
 
 pancestor2k(X,Y):- move2k(X,Z),pancestor2k(Z,Y).
 pancestor2k(X,Y):- move2k(X,Y).

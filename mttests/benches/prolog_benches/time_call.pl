@@ -1,8 +1,5 @@
 
-:- initialize.
-
-initialize:- 
-	current_predicate(xsb_configuration,_) -> 
+:- 	current_predicate(xsb_configuration,_) -> 
 	assert((get_cputime(X):- cputime(X)))
 	; (prolog_flag(dialect,swi) -> 
 	    assert((get_cputime(X):- statistics(cputime,X)))
@@ -24,6 +21,12 @@ cpubench_call(Length):-
 	writeq(datum([call],T)),writeln('.'),nl,
 	flush_output.
 
+/* For benchmark tests */
+test:- 
+	cputime_call(100000,Time),
+	writeq(datum([call],Time)),writeln('.'),nl.
+
+
 make_list(0,[]):- !.
 make_list(N,[p(1)|T]):- 
 	N1 is N - 1,
@@ -38,6 +41,18 @@ cputime_call(N,Time):-
 
 call_list([]).
 call_list([H|T]):-
+	call(H),call(H),call(H),call(H),
+	call(H),call(H),call(H),call(H),
+	call(H),call(H),
+	call(H),call(H),call(H),call(H),
+	call(H),call(H),call(H),call(H),
+	call(H),call(H),
+	call(H),call(H),call(H),call(H),
+	call(H),call(H),call(H),call(H),
+	call(H),call(H),
+	call(H),call(H),call(H),call(H),
+	call(H),call(H),call(H),call(H),
+	call(H),call(H),
 	call(H),call(H),call(H),call(H),
 	call(H),call(H),call(H),call(H),
 	call(H),call(H),
@@ -85,9 +100,7 @@ call2_list([H|T]):-
 	call(H,_),call(H,_),
 	call2_list(T).
 
-%end_of_file.
-
-:- import call/2 from standard.
+end_of_file.
 
 :- import call_c/1 from standard.
 

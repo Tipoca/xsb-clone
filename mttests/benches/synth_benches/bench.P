@@ -200,6 +200,7 @@ bigbench(Call,Type,Its):-
 
 bigbench(0,_):-!.
 bigbench(N,Call):-
+%	writeln(calling),
 	(tcall(Call),fail; true),
 	abolish_tables,
 	N1 is N - 1,
