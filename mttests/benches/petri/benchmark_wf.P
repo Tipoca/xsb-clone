@@ -8,7 +8,7 @@
 
 :- index(rule/4,trie).
 
-:- import par_execute/1 from thread.
+:- import par_execute/1, n_par_execute/2 from thread.
 
 :- thread_shared rule/4.
 
@@ -17,7 +17,7 @@
 % All benchmarks are based on a graph of workflow branches called a
 % widget.  Branching always starts off with creation of multiple
 % instances (14) and ends either with or a cancellation pattern (20)
-% which cancells all of the tokens in the path after the first one
+% which cancels all of the tokens in the path after the first one
 % reaches the cancellation point; a synchronizing merge (7) which
 % joins any paths that may be present, or a discriminator (9) which
 % propagates the first token T to reach the discrimination point, and
@@ -49,7 +49,8 @@
 % last set of 16 queries.  Maybe this will work ok, but we may have to
 % fuss with it if the queries take different time.
 %
-% Private benchmark The shared benchmark probably has too many states
+% Private benchmark: Use gen_private and private_scale_wf/1
+% The shared benchmark probably has too many states
 % to scale up to 16 processors.  
 %
 % 0,8,15,23,30 1.33 million states ; reachable 165 secs
@@ -75,20 +76,20 @@ bench_2(NThreads) :-
 bench_2_shared( NThreads ) :-
 	shared_bench_wf( NThreads, shared_reachable ).
 
-bench_2_priv( NThreads ) :-
-	private_bench_wf( NThreads, reachable ).
+gen_private:- 
+	retractall(rule(_,_,_,_,_)),
+        private_gen_wf_1.
 
-private_bench_wf(NThreads,P) :-
+private_scale_wf(NThreads) :-
 	abolish_all_tables,
-	gen_private_goal_list(NThreads,P,LG),
-	private_gen_wf_1,
+	once(private_init_state(S)),
+%	gen_private_goal_list(NThreads,P,LG),
 %	alt_private_gen_wf_1,
 	walltime(Before),
-	all_seq_execute(LG),
+	n_par_execute(reachable(S,_),NThreads),
 	walltime(After),
 	Time is After - Before,
-	(P = reachable -> Bench = priv ; Bench = shared ),
-	write(datum([wf,Bench],NThreads,Time)),
+	write(datum([wf,priv],NThreads,Time)),
 	writeln('.'),
 	flush_output.
 
@@ -190,9 +191,22 @@ shared_init_state( [p(135,1)] ).
 shared_init_state( [p(143,1)] ).
 shared_init_state( [p(150,1)] ).
 
+duplicate_private_goal( NThreads, P, LG ) :-
+%	findall( S, private_init_state( S ), LS ),
+	private_init_state(S),
+	duplicate_goal(NThreads,P,S,LG).
+
+duplicate_goal(0,_Pred,_List,[]):-!.
+duplicate_goal(N,Pred,Arg,[[Goal]|R]):-
+	N1 is N - 1,
+	Goal =.. [Pred,Arg,_],
+	duplicate_goal(N1,Pred,Arg,R).
+
+/*
 gen_private_goal_list( NThreads, P, LG ) :-
 	findall( S, private_init_state( S ), LS ),
 	get_goals( LS, NThreads, LG, P ).	
+*/
 
 gen_shared_goal_list( NThreads, P, LG ) :-
 	findall( S, shared_init_state( S ), LS ),
@@ -212,20 +226,9 @@ get_first_goals( NT, [S|LS], LS1, [G|Gs], P ) :-
 
 all_par_execute([]).
 all_par_execute([H|L]) :-
+	writeln(par_execute(H)),
 	par_execute(H),
 	all_par_execute(L).
-
-all_seq_execute([]).
-all_seq_execute([H|L]) :-
-	seq_execute(H),
-	all_seq_execute(L).
-
-seq_execute(H):- 
-	member(G,H),
-%	writeln(H),
-	call(G),
-	fail.
-seq_execute(_H).
 
 /* Generation of workflows */
 private_gen_wf_1 :-
@@ -361,4 +364,16 @@ bench_wf_1(Time):-
 	walltime(After),
 	Time is After - Before,
 	statistics.
+
+all_seq_execute([]).
+all_seq_execute([H|L]) :-
+	seq_execute(H),
+	all_seq_execute(L).
+
+seq_execute(H):- 
+	member(G,H),
+%	writeln(H),
+	call(G),
+	fail.
+seq_execute(_H).
 

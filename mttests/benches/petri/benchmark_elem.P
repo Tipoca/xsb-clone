@@ -128,27 +128,35 @@ all_par_execute([H|L]) :-
 	par_execute(H),
 	all_par_execute(L).
 
-bench_shared_process_2(N,Numthreads,Numbraids,Time):- 
+
+gen_proc_2(N,Numbraids):- 
 	retractall(rule(_,_,_)),
+	generate_process_2(N,Numbraids).
+
+/* TLS: new benchelem uses these.
+   Shared generates a list of lists of goals -- differing on the number of threads.
+   Private just generates a list of goals. */
+bench_shared_process_2(Numthreads,Numbraids):- 
 	abolish_all_tables,
-	generate_process_2(N,Numbraids),
-	generate_goallist_thr(Numbraids,Numthreads,List,shared_reachable),
+	generate_goallist_thr(Numbraids,Numthreads,List,shared_reachable,0),
 	walltime(Before),
-	par_execute(List),
+	all_par_execute(List),
 	walltime(After),
 	Time is After - Before,
-	statistics.
+	write(datum([sh_elem],Numthreads,Time)),
+	writeln('.'),
+	flush_output.
 
-bench_process_2_private(N,Numthreads,Time):- 
-	retractall(rule(_,_,_)),
+bench_private_process_2(Numthreads):- 
 	abolish_all_tables,
-	generate_process_2(N,Numthreads),
 	generate_goallist(Numthreads,List,reachable),
 	walltime(Before),
 	par_execute(List),
 	walltime(After),
 	Time is After - Before,
-	statistics.
+	write(datum([pr_elem],Numthreads,Time)),
+	writeln('.'),
+	flush_output.
 
 generate_process_2(N,Numthreads):- 
 	between(1,N,M),

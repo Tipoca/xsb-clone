@@ -158,6 +158,10 @@ show_shared_states:-
 	fail.
 show_shared_states.
 
+count_rules(L):-
+	findall(1,rule(_,_,_,_),List),
+	length(List,L).
+
 count_shared_states(L):- 
 	findall(1,get_residual(shared_reachable(_X,_Y),_F),List),
 	length(List,L).
@@ -220,7 +224,7 @@ find_conflicts([H|T],[InconsH|InconsT]):-
 	find_conflicts(T,InconsT).
 	
 find_conflicts_1([],_,[]).
-find_conflicts_1([rule(Ilist,Outlist,N)|T],
+vfind_conflicts_1([rule(Ilist,Outlist,N)|T],
                 	rule(Ilist1,Outlist1,N1),[Incons|TI]):- 
 	(\+ ord_disjoint(Ilist,Ilist)
 	  ; \+ ord_disjoint(Outlist,Outlist1) ),!,
