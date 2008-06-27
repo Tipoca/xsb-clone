@@ -1,7 +1,7 @@
 :- import between/3 from basics.
 :- import conset/2,conget/2 from machine.
 :- import concat_atom/2 from string.
-:- import member/2 from basics.
+:- import member/2,length/2 from basics.
 
 :- conset(placectr,0).
 :- conset(transctr,0).
@@ -57,33 +57,19 @@
 % 8             .267 millison states ; reachable 32 seconds; 100MB table space
 %
 % Ive set up the private benchmark to use only state 8.  This should
-% allow us enough room to scale up to 16 processors (it would require
-% 1.6 gigabytes of table space).
+% allow us enough room to scale up to 16.
 %
 % If this proves to be a problem, use alt_private_gen_wf in
 % bench_private_wf 
 %
 % 8 .25 million states; reachable 29 secs; 48MB table
 %
-% space which would require 800MB of table space for 16 threads.  Let
-% me know if this isnt small enough.  It should be, as the threads
-% themselves do not require much stack space for these examples.
+% space which would require 800MB of table space for 16 threads. 
 
-bench_2(NThreads) :-
-	bench_2_priv(NThreads),
-	bench_2_shared(NThreads).
-
-bench_2_shared( NThreads ) :-
-	shared_bench_wf( NThreads, shared_reachable ).
-
-gen_private:- 
-	retractall(rule(_,_,_,_,_)),
-        private_gen_wf_1.
-
+/* simply duplicates a single goal to be executed independently by N threads */
 private_scale_wf(NThreads) :-
 	abolish_all_tables,
 	once(private_init_state(S)),
-%	gen_private_goal_list(NThreads,P,LG),
 %	alt_private_gen_wf_1,
 	walltime(Before),
 	n_par_execute(reachable(S,_),NThreads),
@@ -93,23 +79,112 @@ private_scale_wf(NThreads) :-
 	writeln('.'),
 	flush_output.
 
-shared_bench_wf_1(NThreads,Time):- 
+/* divies up all the start states among N threads. */
+shared_bench_wf(NThreads):- 
 	abolish_all_tables,
-	retractall(rule(_,_,_,_)),
-	gen_private_goal_list(NThreads,shared_reachable,LG),
-	gen_shared_wf,
+	gen_shared_goal_list( NThreads, shared_reachable, LG ),
 	walltime(Before),
-	all_par_execute(LG),
+	par_execute(LG),
 	walltime(After),
 	Time is After - Before,
-	statistics.
+	write(datum([wf,shared],NThreads,Time)),
+	writeln('.'),
+	flush_output.
+
+/* Used for private test */
+duplicate_private_goal( NThreads, P, LG ) :-
+%	findall( S, private_init_state( S ), LS ),
+	private_init_state(S),
+	duplicate_goal(NThreads,P,S,LG).
+
+duplicate_goal(0,_Pred,_List,[]):-!.
+duplicate_goal(N,Pred,Arg,[[Goal]|R]):-
+	N1 is N - 1,
+	Goal =.. [Pred,Arg,_],
+	duplicate_goal(N1,Pred,Arg,R).
+
+/* Divvies up into Len/Nthreads batches, each of which are executed via seq_execute */
+gen_shared_goal_list( NThreads, P, LG ) :-
+	findall( S, shared_init_state( S ), LS ),
+	length(LS,Len),
+	(NThreads > Len -> abort('Too many threads for init states') ; true),
+	Quot is Len//NThreads,
+	get_goals( LS, Quot, LG, P ).	
+
+get_goals( [], _NT, [], _P ).
+get_goals( LS, NT, [seq_execute(G)|Gs], P ) :-
+	get_first_goals( NT, LS, LS1, G, P ),
+	get_goals( LS1, NT, Gs, P ).
+
+get_first_goals( _NT, [], [], [], _P ).
+get_first_goals( 0, LS, LS, [], _P ).
+get_first_goals( NT, [S|LS], LS1, [G|Gs], P ) :-
+	G =.. [P,S,_],
+	NT1 is NT - 1,
+	get_first_goals( NT1, LS, LS1, Gs, P ).
+
+all_par_execute([]).
+all_par_execute([H|L]) :-
+	writeln(par_execute(H)),
+	par_execute(H),
+	all_par_execute(L).
+
+seq_execute(H):- 
+	member(G,H),
+%	writeln(G),
+	call(G),
+	fail.
+seq_execute(_H).
+
+writelist([]).
+writelist([H|T]):- 
+	writeln(H),
+	writelist(T).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/* Generation of workflows */
+
+gen_private_wf:- 
+	retractall(rule(_,_,_,_,_)),
+        private_gen_wf_1.
+
+private_gen_wf_1 :-
+	abolish(rule/4),
+	restartplace,
+	nextplace(First1),
+	gen_wf_2(First1,_First2).
+
+gen_wf_2(First,Last):- 
+	gen_widget_14_7(6,6,First,P1),
+	gen_widget_14_20(5,5,P1,P2),
+	gen_widget_14_7(6,6,P2,P3),
+	gen_widget_14_20(5,5,P3,P4),
+	gen_widget_14_9(5,5,P3,Last),
+	nexttrans(T),
+	assert(rule([p(P4,X)],[p(0,X)],dyn([],[]),T)).
+
+alt_private_gen_wf_1 :-
+	abolish(rule/4),
+	restartplace,
+	nextplace(First1),
+	alt_gen_wf_2(First1,_First2).
+
+alt_gen_wf_2(First,_Last):- 
+	gen_widget_14_7(6,6,First,P1),
+	gen_widget_14_20(5,5,P1,P2),
+	gen_widget_14_7(6,6,P2,P3),
+	gen_widget_14_20(5,5,P3,P4),
+%	gen_widget_14_9(5,5,P3,Last),
+	nexttrans(T),
+	assert(rule([p(P4,X)],[p(0,X)],dyn([],[]),T)).
 
 gen_shared_wf:- 
+	retractall(rule(_,_,_,_,_)),
 	nextplace(Pstart),
 	gen_widget_14_7(6,6,Pstart,P1),
-	writeln(p1(P1)),
+%	writeln(p1(P1)),
 	gen_widget_14_20(5,5,P1,P2),
-	writeln(p2(P2)),
+%	writeln(p2(P2)),
 	gen_widget_14_7(6,6,P2,P3),
 	writeln(p3(P3)),
 	gen_widget_14_20(5,5,P3,P4),
@@ -168,6 +243,7 @@ private_init_state( [p(8,1)] ).
 %private_init_state( [p(23,1)] ).
 %private_init_state( [p(30,1)] ).
 
+/****************************
 %shared_init_state( [p(0,1)] ).
 shared_init_state( [p(15,1)] ).
 shared_init_state( [p(23,1)] ).
@@ -178,6 +254,7 @@ shared_init_state( [p(48,1)] ).
 shared_init_state( [p(55,1)] ).
 shared_init_state( [p(63,1)] ).
 shared_init_state( [p(70,1)] ).
+*****************************/
 
 %shared_init_state( [p(80,1)] ).
 shared_init_state( [p(88,1)] ).
@@ -191,81 +268,6 @@ shared_init_state( [p(135,1)] ).
 shared_init_state( [p(143,1)] ).
 shared_init_state( [p(150,1)] ).
 
-duplicate_private_goal( NThreads, P, LG ) :-
-%	findall( S, private_init_state( S ), LS ),
-	private_init_state(S),
-	duplicate_goal(NThreads,P,S,LG).
-
-duplicate_goal(0,_Pred,_List,[]):-!.
-duplicate_goal(N,Pred,Arg,[[Goal]|R]):-
-	N1 is N - 1,
-	Goal =.. [Pred,Arg,_],
-	duplicate_goal(N1,Pred,Arg,R).
-
-/*
-gen_private_goal_list( NThreads, P, LG ) :-
-	findall( S, private_init_state( S ), LS ),
-	get_goals( LS, NThreads, LG, P ).	
-*/
-
-gen_shared_goal_list( NThreads, P, LG ) :-
-	findall( S, shared_init_state( S ), LS ),
-	get_goals( LS, NThreads, LG, P ).	
-
-get_goals( [], _NT, [], _P ).
-get_goals( LS, NT, [G|Gs], P ) :-
-	get_first_goals( NT, LS, LS1, G, P ),
-	get_goals( LS1, NT, Gs, P ).
-
-get_first_goals( _NT, [], [], [], _P ).
-get_first_goals( 0, LS, LS, [], _P ).
-get_first_goals( NT, [S|LS], LS1, [G|Gs], P ) :-
-	G =.. [P,S,_],
-	NT1 is NT - 1,
-	get_first_goals( NT1, LS, LS1, Gs, P ).
-
-all_par_execute([]).
-all_par_execute([H|L]) :-
-	writeln(par_execute(H)),
-	par_execute(H),
-	all_par_execute(L).
-
-/* Generation of workflows */
-private_gen_wf_1 :-
-	abolish(rule/4),
-	restartplace,
-	nextplace(First1),
-	gen_wf_2(First1,_First2).
-
-gen_wf_2(First,Last):- 
-	gen_widget_14_7(6,6,First,P1),
-	gen_widget_14_20(5,5,P1,P2),
-	gen_widget_14_7(6,6,P2,P3),
-	gen_widget_14_20(5,5,P3,P4),
-	gen_widget_14_9(5,5,P3,Last),
-	nexttrans(T),
-	assert(rule([p(P4,X)],[p(0,X)],dyn([],[]),T)).
-
-alt_private_gen_wf_1 :-
-	abolish(rule/4),
-	restartplace,
-	nextplace(First1),
-	alt_gen_wf_2(First1,_First2).
-
-alt_gen_wf_2(First,_Last):- 
-	gen_widget_14_7(6,6,First,P1),
-	gen_widget_14_20(5,5,P1,P2),
-	gen_widget_14_7(6,6,P2,P3),
-	gen_widget_14_20(5,5,P3,P4),
-%	gen_widget_14_9(5,5,P3,Last),
-	nexttrans(T),
-	assert(rule([p(P4,X)],[p(0,X)],dyn([],[]),T)).
-
-coninc(Ctr,N):- 
-	conget(Ctr,N),
-	N1 is N + 1,
-	conset(Ctr,N1).
-
 restartplace :-
 	conset(placectr,0).
 
@@ -274,6 +276,11 @@ nextplace(N):-
 nexttrans(P):- 
 	coninc(transctr,N),
 	concat_atom([t,N],P).
+
+coninc(Ctr,N):- 
+	conget(Ctr,N),
+	N1 is N + 1,
+	conset(Ctr,N1).
 
 % create multiple instances, then synchronized merge.  There will be ~(Length+1)**Width states.	
 gen_widget_14_7(Width,Length,Pin,Pout):- 
@@ -370,10 +377,9 @@ all_seq_execute([H|L]) :-
 	seq_execute(H),
 	all_seq_execute(L).
 
-seq_execute(H):- 
-	member(G,H),
-%	writeln(H),
-	call(G),
-	fail.
-seq_execute(_H).
+/*
+gen_private_goal_list( NThreads, P, LG ) :-
+	findall( S, private_init_state( S ), LS ),
+	get_goals( LS, NThreads, LG, P ).	
+*/
 

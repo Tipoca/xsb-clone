@@ -12,9 +12,13 @@ do
 
 echo "-------------------- Testing $nthreads threads ------------------------------"
 
-	../genbench.sh "$XEMU" "[benchmark_wf], gen_private." \
+	../genbench.sh "$XEMU" "[benchmark_wf], gen_private_wf." \
 			"private_scale_wf($nthreads)." "$FILE"
+
+	../genbench.sh "$XEMU" "[benchmark_wf], gen_shared_wf." \
+			"shared_bench_wf($nthreads)." "$FILE"
 
 
 	nthreads=$[$nthreads*2]
 done
+
