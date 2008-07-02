@@ -94,16 +94,19 @@ Not at all the best structure to test, but at least we understand it.
 
 */
 
-shared_bench_omega(N,NumThreads,Time):- 
+shared_bench_omega(N,NumThreads):- 
 	abolish_all_tables,
 	retractall(rule(_,_,_)),
 	shared_generate_omega(0,NumThreads,N,GoalList),
+%	writeln(GoalList),
 	walltime(Before),
-%	par_execute(GoalList),
-	shared_is_reachable([place(s1,1)],_),
+	par_execute(GoalList),
+%	shared_is_reachable([place(s1,1)],_),
 	walltime(After),
 	Time is After - Before,
-	statistics.
+	write(datum([omega,sh],NumThreads,Time)),
+	writeln('.'),
+	flush_output.
 
 shared_generate_omega(Numthreads,Numthreads,_ChainLength,[]):- !.
 shared_generate_omega(N,Numthreads,ChainLength,
