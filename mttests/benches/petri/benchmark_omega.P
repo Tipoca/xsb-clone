@@ -99,7 +99,7 @@ shared_bench_omega(N,Copies,NumThreads):-
 	retractall(rule(_,_,_)),
 	shared_generate_omega(0,Copies,N,InG),
 	get_par_goals(Copies,NumThreads,InG,OutG),
-	writelist(OutG),
+%	writelist(OutG),
 	walltime(Before),
 	par_execute(OutG),
 %	shared_is_reachable([place(s1,1)],_),
