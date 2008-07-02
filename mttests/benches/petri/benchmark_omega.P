@@ -24,6 +24,25 @@ Not at all the best structure to test, but at least we understand it.
 
 */
 
+gen_private_omega(N):-
+	retractall(rule(_,_,_)),
+	generate_omega_1(N).
+
+private_scale_omega(NumThreads):- 
+	abolish_all_tables,
+	cputime(B1),
+	walltime(Before),
+	n_par_execute( is_reachable([place(s0,1)],_), NumThreads ),
+%	is_reachable([place(s0,1)],_), count_states(L),writeln(numstates(L)),
+	walltime(After),
+	cputime(A1),
+	Time is After - Before,
+	write(datum([omega,priv],NumThreads,Time)),writeln('.'),
+	T1 is A1 - B1,
+	write(cpudatum([omega,priv],NumThreads,T1)),writeln('.'),
+	flush_output.
+
+% for testing
 bench_omega(N,NumThreads,Time):- 
 	abolish_all_tables,
 	retractall(rule(_,_,_)),

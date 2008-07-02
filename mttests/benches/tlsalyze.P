@@ -1,4 +1,7 @@
 
+%----------------------------------------------------
+% arranges datum/2 results into coumns
+
 analyze(File):- 
 	[File],
 	findall([Col,Num],find_best(Col,Num),Cols),
