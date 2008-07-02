@@ -13,8 +13,11 @@ do
 
 echo "-------------------- Testing $nthreads threads ------------------------------"
 
+	../genbench.sh "$XEMU" "[benchmark_omega], gen_private_omega($N)." \
+			"private_scale_omega($nthreads)." "$FILE"
+
 	../genbench.sh "$XEMU" "[benchmark_omega]." \
-			"shared_bench_omega(400000,$nthreads)." "$FILE"
+			"shared_bench_omega(400000,$MAX,$nthreads)." "$FILE"
 
 	nthreads=$[$nthreads*2]
 done

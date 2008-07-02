@@ -94,19 +94,35 @@ Not at all the best structure to test, but at least we understand it.
 
 */
 
-shared_bench_omega(N,NumThreads):- 
+shared_bench_omega(N,Copies,NumThreads):- 
 	abolish_all_tables,
 	retractall(rule(_,_,_)),
-	shared_generate_omega(0,NumThreads,N,GoalList),
-%	writeln(GoalList),
+	shared_generate_omega(0,Copies,N,InG),
+	get_par_goals(Copies,NumThreads,InG,OutG),
+	writelist(OutG),
 	walltime(Before),
-	par_execute(GoalList),
+	par_execute(OutG),
 %	shared_is_reachable([place(s1,1)],_),
 	walltime(After),
 	Time is After - Before,
 	write(datum([omega,sh],NumThreads,Time)),
 	writeln('.'),
 	flush_output.
+
+get_par_goals(Max,NThreads,InG,OutG):- 
+	Quot is Max//NThreads,
+	get_goals( InG, Quot, OutG ).	
+
+get_goals( [], _NT, []).
+get_goals( LS, NT, [seq_execute(G)|Gs]) :-
+	   get_first_goals( NT, LS, LS1, G),
+	   get_goals( LS1, NT, Gs).
+
+get_first_goals( _NT, [], [], [] ).
+get_first_goals( 0, LS, LS, [] ).
+get_first_goals( NT, [S|LS], LS1, [S|Gs]) :-
+		 NT1 is NT - 1,
+		 get_first_goals( NT1, LS, LS1, Gs).
 
 shared_generate_omega(Numthreads,Numthreads,_ChainLength,[]):- !.
 shared_generate_omega(N,Numthreads,ChainLength,
@@ -129,4 +145,19 @@ shared_generate_omega_1(N,ChainLength):-
 shared_generate_omega_1(N,ChainLength):- 
 	End is N + ChainLength,
 	generate_small_unbounded(End).
+
+seq_execute(H):- 
+		 member(G,H),
+%		 writeln(G),
+		 call(G),
+		 fail.
+seq_execute(_H).
+
+writelist([]).
+writelist([H|T]):- 
+		   writeln(H),
+		   writelist(T).
+
+
+
 
