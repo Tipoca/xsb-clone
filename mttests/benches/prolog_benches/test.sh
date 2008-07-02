@@ -1,7 +1,7 @@
 #! /bin/sh
 
 XEMU=$1
-FILE=$2
+FILE=prologRes.P
 
 echo "-------------------------------------------------------"
 echo "--- Running benches/prolog_benches/test.sh          ---"
