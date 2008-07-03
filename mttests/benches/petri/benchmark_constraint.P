@@ -10,13 +10,12 @@
 
 :- import par_execute/1 from thread.
 
-:- thread_shared rule/4.
+:- thread_shared rule/3.
 
 :- [constrNet].
 :- import {}/1 from clpr.
 
 /* 
-
 Generates approx 5(Lengh/2)*16 states, a fairly small number as will
 be explained below. 
 
@@ -45,17 +44,24 @@ time. Also, while this example has relatively few states compared to
 other examples, each state is large, as the attributes for each
 attributed variable need to be copied in -- and in CLP(R) these
 attributes are large structures.
-
-On my Mac: 
-       bench(49) creates 2016 states taking about 7MB in about 5 seconds of cputime
-       bench(101) creates 4096 states taking about 14MB in about 21 seconds of cputime
-
 */
 
+:- import n_par_execute/2 from thread.
+
 % Length should be 4*M+1 for integer M
-bench(Length,Time):- 
+private_scale_constr(Length,NumThr,NumCyc):- 
 	breset,
-	generate_cycle(Length,1),
+	generate_cycle(Length,NumCyc),
+	walltime(S),
+	n_par_execute(bench_1,NumThr),
+	walltime(E),
+	Time is E - S,
+	write(datum([constr,priv],NumThr,Time)),writeln('.'),
+	flush_output.
+	
+bench(Length,Num,Time):- 
+	breset,
+	generate_cycle(Length,Num),
 	cputime(S),
 	bench_1,
 	cputime(E),
@@ -69,7 +75,8 @@ bench_1.
 initState([place(resource_1,[])]).
 initState([place(resource_2,[])]).
 initState([place(resource_3,[])]).
-initState([place(resource_4,[])]).
+initState([place(resource_4,[])]). 
+/*
 initState([place(resource_5,[])]).
 initState([place(resource_6,[])]).
 initState([place(resource_7,[])]).
@@ -82,6 +89,7 @@ initState([place(resource_13,[])]).
 initState([place(resource_14,[])]).
 initState([place(resource_15,[])]).
 initState([place(resource_16,[])]).
+*/
 
 generate_cycle(_High,0):- !.
 generate_cycle(High,N):- 

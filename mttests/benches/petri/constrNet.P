@@ -13,8 +13,8 @@
 reachable(InState,NewState):-
 	reachable(InState,State),
 %	writeln(reachable(InState,State)),
-	hasTransition(State,NewState),
-	writeln(hasTransition(State,NewState)).
+	hasTransition(State,NewState).
+%	writeln(hasTransition(State,NewState)).
 reachable(InState,NewState):-
 	hasTransition(InState,NewState).
 

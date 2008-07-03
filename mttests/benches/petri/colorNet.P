@@ -139,6 +139,10 @@ count_states(L):-
 	findall(1,get_residual(reachable(_X,_Y),_F),List),
 	length(List,L).
 
+count_rules(L):- 
+	findall(1,rule(_,_,_,_),List),
+	length(List,L).
+
 count_rr_states(L):- 
 	findall(1,get_residual(right_reachable(_X,_Y),_F),List),
 	length(List,L).

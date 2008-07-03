@@ -186,7 +186,7 @@ generate_process_odd_2(Nin,Index):-
 	concat_atom([b,Index,'_',Next],Bnext),
 	concat_atom([c,Index,'_',Next],Cnext),
 	assert(rule([A],[Anext],S)),
-	assert(rule([B,C],[Bnext,Cnext],S)).
+	assert(rule([B,C],[Bnext,Cnext],T)).
 
 generate_even_processes(0,_M):- !.
 generate_even_processes(N,M):- !,
@@ -229,7 +229,7 @@ generate_goallist(Index,[G|Rest],P):-
 	G =.. [P, [A, B, C], _ ], I1 is Index - 1, 
 	generate_goallist(I1,Rest,P).
 
-generate_goallist2(0,[],_P,I0):- !.
+generate_goallist2(0,[],_P,_I0):- !.
 generate_goallist2(I,[G|Rest],P,I0):- 
 	Index is I + I0,
 	concat_atom([a,Index,'_1'],A),
