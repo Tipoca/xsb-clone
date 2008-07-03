@@ -6,10 +6,9 @@
 :- conset(placectr,0).
 :- conset(transctr,0).
 
-:- index(rule/4,trie).
-
 :- import par_execute/1 from thread.
 
+:- index(rule/3,trie).
 :- thread_shared rule/3.
 
 :- [constrNet].
