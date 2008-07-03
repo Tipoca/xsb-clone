@@ -48,8 +48,34 @@ Here are the times on my Mac
 
 55X16: 5.1 secs, 7392 states, 1808 calls, 2Mb
 77X16: 10.5 secs, 13728 states, 2512 calls 2.7Mbt
+
+Trying 199X4
 */
 
+:- import n_par_execute/2, par_execute/1 from thread.
+
+private_scale_prefs(Length,NumThr,NumC):- 
+	reset,
+	generate_chain(NumC,Length),
+	walltime(S),
+	n_par_execute(bench_1,NumThr),
+	walltime(E),
+	Time is E - S,
+	write(datum([constr,priv],NumThr,Time)),writeln('.'),
+	flush_output.
+	
+shared_bench_prefs(Length,NumThr,NumC):- 
+	breset,
+	generate_chain(NumC,Length),
+	get_goallist(NumC,NumThr,G),
+%	writelist(G),
+	walltime(S),
+	par_execute(G),
+	walltime(E),
+	Time is E - S,
+	write(datum([constr,shared],NumThr,Time)),writeln('.'),
+	flush_output.
+	
 bench(Length,Num,Time):- 
 	reset,
 	generate_chain(Num,Length),
@@ -67,6 +93,7 @@ initState([p1(1)]).
 initState([p2(1)]).
 initState([p3(1)]).
 initState([p4(1)]).
+/*
 initState([p5(1)]).
 initState([p6(1)]).
 initState([p7(1)]).
@@ -79,6 +106,7 @@ initState([p13(1)]).
 initState([p14(1)]).
 initState([p15(1)]).
 initState([p16(1)]).
+*/
 
 /* Length should be odd */
 generate_chain(0,_Length):- !.
