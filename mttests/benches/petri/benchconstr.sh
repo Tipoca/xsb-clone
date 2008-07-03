@@ -1,7 +1,7 @@
 XEMU=$1
 MAX=$2
 
-FILE=./omegaRes.P
+FILE=./constrRes.P
 
 rm -f $FILE
 
