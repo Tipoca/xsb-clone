@@ -12,7 +12,7 @@ do
 echo "-------------------- Testing $nthreads threads ------------------------------"
 
 	../genbench.sh "$XEMU" "[benchmark_prefs]." \
-			"private_scale_prefs(55,$nthreads,$MAX)." "$FILE"
+			"private_scale_prefs(199,$nthreads,$MAX)." "$FILE"
 
 
 	nthreads=$[$nthreads*2]
