@@ -1,6 +1,7 @@
 :- import between/3 from basics.
 :- import par_execute/1 from thread.
 :- import concat_atom/2 from string.
+:- import member/2 from basics.
 
 %:- index(rule/4,trie).
 :- thread_shared rule/4.
