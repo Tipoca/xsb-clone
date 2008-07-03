@@ -61,7 +61,7 @@ private_scale_prefs(Length,NumThr,NumC):-
 	n_par_execute(bench_1,NumThr),
 	walltime(E),
 	Time is E - S,
-	write(datum([constr,priv],NumThr,Time)),writeln('.'),
+	write(datum([prefs,priv],NumThr,Time)),writeln('.'),
 	flush_output.
 	
 shared_bench_prefs(Length,NumThr,NumC):- 
@@ -73,7 +73,7 @@ shared_bench_prefs(Length,NumThr,NumC):-
 	par_execute(G),
 	walltime(E),
 	Time is E - S,
-	write(datum([constr,shared],NumThr,Time)),writeln('.'),
+	write(datum([prefs,shared],NumThr,Time)),writeln('.'),
 	flush_output.
 	
 bench(Length,Num,Time):- 
@@ -88,6 +88,26 @@ bench_1:-
 	initState(S),reachable(S,_T),
 	fail.
 bench_1.
+
+get_goallist(Max,NThreads,Out):- 
+	findall(shared_reachable(S,_),initState(S),Goals),
+	get_par_goals(Max,NThreads,Goals,Out).
+
+get_par_goals(Max,NThreads,InG,OutG):- 
+	Quot is Max//NThreads,
+	get_goals( InG, Quot, OutG ).	
+
+get_goals( [], _NT, []).
+get_goals( LS, NT, [seq_execute(G)|Gs]) :-
+	   get_first_goals( NT, LS, LS1, G),
+	   get_goals( LS1, NT, Gs).
+
+get_first_goals( _NT, [], [], [] ).
+get_first_goals( 0, LS, LS, [] ).
+get_first_goals( NT, [S|LS], LS1, [S|Gs]) :-
+		 NT1 is NT - 1,
+		 get_first_goals( NT1, LS, LS1, Gs).
+
 
 initState([p1(1)]).
 initState([p2(1)]).
