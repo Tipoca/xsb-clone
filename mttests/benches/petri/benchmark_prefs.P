@@ -65,7 +65,7 @@ private_scale_prefs(Length,NumThr,NumC):-
 	flush_output.
 	
 shared_bench_prefs(Length,NumThr,NumC):- 
-	breset,
+	reset,
 	generate_chain(NumC,Length),
 	get_goallist(NumC,NumThr,G),
 %	writelist(G),
