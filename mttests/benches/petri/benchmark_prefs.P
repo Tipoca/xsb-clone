@@ -158,6 +158,18 @@ reset:-
 	abolish_all_tables,
 	retractall(rule(_,_,_,_)).
 
+seq_execute(H):- 
+		 member(G,H),
+%		 writeln(G),
+		 call(G),
+		 fail.
+seq_execute(_H).
+
+writelist([]).
+writelist([H|T]):- 
+		   writeln(H),
+		   writelist(T).
+
 end_of_file.
 
 rule([p(1)],[p(2)],dyn([],[]),t(1)).
