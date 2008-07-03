@@ -12,7 +12,8 @@ do
 echo "-------------------- Testing $nthreads threads ------------------------------"
 
 	../genbench.sh "$XEMU" "[benchmark_constraint]." \
-			"private_scale_constr(501,$nthreads,1)." "$FILE"
+			"shared_bench_constr(301,$nthreads,$MAX)." "$FILE"
+
 
 	nthreads=$[$nthreads*2]
 done

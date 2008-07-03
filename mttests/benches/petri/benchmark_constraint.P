@@ -59,6 +59,18 @@ private_scale_constr(Length,NumThr,NumCyc):-
 	write(datum([constr,priv],NumThr,Time)),writeln('.'),
 	flush_output.
 	
+shared_bench_constr(Length,NumThr,NumCyc):- 
+	breset,
+	generate_cycle(Length,NumCyc),
+	get_goallist(NumCyc,NumThr,G),
+	writelist(G),
+	walltime(S),
+	par_execute(G),
+	walltime(E),
+	Time is E - S,
+	write(datum([constr,priv],NumThr,Time)),writeln('.'),
+	flush_output.
+	
 bench(Length,Num,Time):- 
 	breset,
 	generate_cycle(Length,Num),
@@ -71,6 +83,31 @@ bench_1:-
 	initState(S),reachable(S,_T),
 	fail.
 bench_1.
+
+shared_bench_1:- 
+	initState(S),shared_reachable(S,_T),
+	fail.
+shared_bench_1.
+
+get_goallist(Max,NThreads,Out):- 
+	findall(shared_reachable(S,_),initState(S),Goals),
+	get_par_goals(Max,NThreads,Goals,Out).
+
+get_par_goals(Max,NThreads,InG,OutG):- 
+	Quot is Max//NThreads,
+	get_goals( InG, Quot, OutG ).	
+
+get_goals( [], _NT, []).
+get_goals( LS, NT, [seq_execute(G)|Gs]) :-
+	   get_first_goals( NT, LS, LS1, G),
+	   get_goals( LS1, NT, Gs).
+
+get_first_goals( _NT, [], [], [] ).
+get_first_goals( 0, LS, LS, [] ).
+get_first_goals( NT, [S|LS], LS1, [S|Gs]) :-
+		 NT1 is NT - 1,
+		 get_first_goals( NT1, LS, LS1, Gs).
+
 
 initState([place(resource_1,[])]).
 initState([place(resource_2,[])]).
@@ -186,6 +223,18 @@ generate_cycle(Low,High,N):-
 breset:- 
 	abolish_all_tables,
 	retractall(rule(_,_,_)).
+
+seq_execute(H):- 
+		 member(G,H),
+%		 writeln(G),
+		 call(G),
+		 fail.
+seq_execute(_H).
+
+writelist([]).
+writelist([H|T]):- 
+		   writeln(H),
+		   writelist(T).
 
 end_of_file.
 

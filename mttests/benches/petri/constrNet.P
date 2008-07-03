@@ -18,6 +18,14 @@ reachable(InState,NewState):-
 reachable(InState,NewState):-
 	hasTransition(InState,NewState).
 
+:- thread_shared shared_reachable/2.
+:- table shared_reachable/2.
+shared_reachable(InState,NewState):-
+	shared_reachable(InState,State),
+	hasTransition(State,NewState).
+shared_reachable(InState,NewState):-
+	hasTransition(InState,NewState).
+
 hasTransition(State,NewState):-
 %	writeln(hasTransition(State)),
 	get_rules_for_state(State,State,AllRules),
@@ -221,13 +229,5 @@ right_reachable(InState,NewState):-
 	hasTransition(InState,MidState),
 	right_reachable(MidState,NewState).
 right_reachable(InState,NewState):-
-	hasTransition(InState,NewState).
-
-:- thread_shared shared_reachable/2.
-:- table shared_reachable/2.
-shared_reachable(InState,NewState):-
-	shared_reachable(InState,State),
-	hasTransition(State,NewState).
-shared_reachable(InState,NewState):-
 	hasTransition(InState,NewState).
 
