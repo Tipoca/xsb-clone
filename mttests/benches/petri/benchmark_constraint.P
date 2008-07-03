@@ -63,12 +63,12 @@ shared_bench_constr(Length,NumThr,NumCyc):-
 	breset,
 	generate_cycle(Length,NumCyc),
 	get_goallist(NumCyc,NumThr,G),
-	writelist(G),
+%	writelist(G),
 	walltime(S),
 	par_execute(G),
 	walltime(E),
 	Time is E - S,
-	write(datum([constr,priv],NumThr,Time)),writeln('.'),
+	write(datum([constr,shared],NumThr,Time)),writeln('.'),
 	flush_output.
 	
 bench(Length,Num,Time):- 
