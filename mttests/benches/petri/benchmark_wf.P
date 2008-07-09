@@ -145,11 +145,11 @@ writelist([H|T]):-
 /* Generation of workflows */
 
 gen_private_wf:- 
-	retractall(rule(_,_,_,_,_)),
+	retractall(rule(_,_,_,_)),
         private_gen_wf_1.
 
 private_gen_wf_1 :-
-	abolish(rule/4),
+	retractall(rule(_,_,_,_)),
 	restartplace,
 	nextplace(First1),
 	gen_wf_2(First1,_First2).

@@ -12,6 +12,9 @@
 % have a token in S.
 
 :- import conget/2, conset/2 from machine.
+:- import coninc/1 from gensym.
+
+%:- conset(findall_cnt,0).
 
 :- table reachable/2.
 reachable(InState,NewState):-
@@ -61,6 +64,7 @@ get_rules_for_state(State,Flatrules):-
 get_rules_for_state_1([],_State,[]).
 get_rules_for_state_1([H|T],State,[Rules1|RT]):-
 	findall(rule([H|Places],Output,Tran),rule([H|Places],Output,Tran),Rules),
+%	coninc(findall_cnt),
 	check_concession(Rules,State,Rules1),
 	get_rules_for_state_1(T,State,RT).
 
