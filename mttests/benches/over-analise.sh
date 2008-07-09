@@ -6,7 +6,7 @@ if test -z "$EMUDIR$"
 then	EMUDIR=~/NEWXSB/XSB
 fi
 
-$EMUDIR/bin/xsb <<EOF
+$EMUDIR/bin/xsb-dflt <<EOF
 ['over-analise'].
 tell('$FILE').
 cd('$BENCH_DIR').

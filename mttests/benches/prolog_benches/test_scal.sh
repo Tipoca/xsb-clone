@@ -10,6 +10,6 @@ nthreads=1
 while [ $nthreads -le $MAX ]
 do
 	./mttest.sh $PREF/bin/xsb-mt $DIR/prolog.P $nthreads 
-	nthreads=$[$nthreads*2]
+	nthreads=$[$nthreads+2]
 done
 

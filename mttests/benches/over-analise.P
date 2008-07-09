@@ -96,14 +96,14 @@ table_all :-
 	nl, nl,
 	table_tab(synth,loc),
 	nl, nl,
-	table_tab(synth,bat),
+%	table_tab(synth,bat),
 	nl, nl,
 	table_tab(tab,loc),
 	nl, nl,
-	table_tab(tab,bat),
+%	table_tab(tab,bat),
 	nl, nl,
-	table_tab(shared,loc),
-	nl, nl,
-	table_tab(shared,bat).
+	table_tab(shared,loc).
+%	nl, nl,
+%	table_tab(shared,bat).
 	
 

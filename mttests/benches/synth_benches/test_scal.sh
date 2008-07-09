@@ -10,7 +10,7 @@ nthreads=1
 while [ $nthreads -le $MAX ]
 do
 	./mttest.sh $PREF/bin/xsb-mt $DIR/synth-local.P $nthreads 
-	./mttest.sh $PREF/bin/xsb-btc-ccmpl $DIR/synth-batched.P $nthreads 
-	nthreads=$[$nthreads*2]
+#	./mttest.sh $PREF/bin/xsb-btc-ccmpl $DIR/synth-batched.P $nthreads 
+	nthreads=$[$nthreads+1]
 done
 
