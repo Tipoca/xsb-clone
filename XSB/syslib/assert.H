@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.H,v 1.27 2007/02/15 22:01:20 dwarren Exp $
+** $Id: assert.H,v 1.28 2007/06/24 18:31:36 tswift Exp $
 ** 
 */
 
@@ -59,8 +59,8 @@
 :- import '_$multifile_retract'/3 from parse.
 
  :- import (=..)/2, functor/3, integer/1, callable/1, arg/3,
-  goal_cut_trans/3, goal_cut_untrans/2, abort/1, check_arity_integer/3,
-  is_most_general_term/1, atomic/1
+         goal_cut_trans/3, goal_cut_untrans/2, abort/1, check_arity_integer/3,
+         is_most_general_term/1, atomic/1, warning/1
      from standard.
 
 :- import standard_symbol/3, standard_dynamic_symbol/2 from std_xsb.
@@ -69,4 +69,4 @@
 
 :- import call_xsb_hook/3, xsb_assert_hook/1, xsb_retract_hook/1 from xsb_hook.
 
- :- import obsolete/2 from obsolete.
+:- import obsolete/2 from obsolete.
