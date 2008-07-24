@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.25 2006/01/18 16:10:23 dwarren Exp $
+** $Id: loader.H,v 1.26 2007/08/30 16:41:31 tswift Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 	windows_os_loader/0.
 
 :- import catch/3,throw/1,warning/1 from standard.
-:- import default_error_handler/1 from error_handler.
+:- import default_error_handler/1,existence_error/4 from error_handler.
 %:- import conset/2 from gensym.
 :- import reconsult/1 from consult.
 :- import compile/1 from consult.
