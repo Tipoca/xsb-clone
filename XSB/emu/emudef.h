@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.71 2008-02-22 17:10:16 tswift Exp $
+** $Id: emudef.h,v 1.72 2008-07-25 20:56:50 tswift Exp $
 ** 
 */
 
@@ -93,7 +93,7 @@ byte *current_inst;
  */ 
 byte *inst_begin_gl;
 
-char *nil_string, *true_string;
+char *nil_string, *true_string, *cut_string;
 
 Pair list_pscPair;
 

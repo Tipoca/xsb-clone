@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.192 2008-04-06 23:04:22 tswift Exp $
+** $Id: emuloop.c,v 1.193 2008-07-25 20:56:50 tswift Exp $
 ** 
 */
 
@@ -2925,9 +2925,12 @@ argument positions.
     case CALLABLE_TEST:
       jump_cond_fail(iscallable(op2));
       break;
-    case DIRECTLY_CALLABLE_TEST:
-      jump_cond_fail(is_directly_callable(op2));
+    case DIRECTLY_CALLABLE_TEST: {
+      //      printf("op2: %x, %x %x cut_psc %x %x\n",op2,cs_val(op2),get_str_psc(op2),cut_psc,cut_string);
+      if (isstring(op2)) jump_cond_fail((char *) cs_val(op2) != cut_string);
+      else jump_cond_fail(is_directly_callable(op2));
       break;
+    }
     case IS_LIST_TEST:
       jump_cond_fail(is_proper_list(op2));
       break;
