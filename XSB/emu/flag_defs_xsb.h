@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.25 2007-11-01 23:46:59 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.26 2008-07-25 18:52:53 tswift Exp $
 ** 
 */
 
@@ -127,6 +127,7 @@ interrupt flag
 #define MAX_QUEUE_TERMS           78   /* Default Maximum number of terms in a message queue*/
 #define RECOMPILE_OVERRIDE        79   /* Allows compilation when more than 1 thread */
 #define PRIVSHAR_DEFAULT          80   /* Default for shared or private predicates */
+#define WARNING_ACTION            81   /* Action to take on warnings: print,silent,exception */
 
 #define MAX_FLAGS		85
 
@@ -143,3 +144,8 @@ interrupt flag
 
 #define DEFAULT_PRIVATE   0
 #define DEFAULT_SHARING   1
+
+#define PRINT_WARNING     0
+#define SILENT_WARNING    1
+#define ERROR_WARNING     2
+
