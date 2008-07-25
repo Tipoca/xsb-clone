@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.105 2008/03/22 19:23:17 tswift Exp $
+** $Id: std_xsb.P,v 1.106 2008/04/02 16:21:16 dwarren Exp $
 ** 
 */
 
@@ -429,7 +429,7 @@ standard_symbol(('_$cutto'), 1, standard).	% Not ISO
 standard_symbol(('_$savecp'), 1, standard).	% Not ISO
 
 standard_symbol((('\+')), 1, standard).
-standard_symbol('!', 0, inline).
+standard_symbol('!', 0, standard).
 standard_symbol(('=:='), 2, standard).
 standard_symbol(('=\='), 2, standard).
 standard_symbol(('<'), 2, standard).
