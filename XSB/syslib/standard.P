@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.151 2008/04/07 00:25:45 tswift Exp $
+** $Id: standard.P,v 1.152 2008/07/25 18:48:59 tswift Exp $
 ** 
 */
 
@@ -976,7 +976,6 @@ call(Goal) :-
    ( directly_callable(Goal) -> 
        call_c(Goal) 
      ; callable(Goal) ->
-	writeln(Goal),
 	'_$savecp'(C), goal_cut_trans(Goal, Trans_Goal, C),call0(Trans_Goal) 
      ; var(Goal) ->
 	instantiation_error(call/1,1,bound) 
