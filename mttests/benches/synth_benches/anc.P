@@ -66,4 +66,27 @@ pancestor2k(X,Y):- move2k(X,Y).
 pancestor1k(X,Y):- move1k(X,Y).
 pancestor1k(X,Y):- move1k(X,Z),pancestor1k(Z,Y). 
 
+:- table danc512/2.
+:- use_subsumptive_tabling danc512/2.
+danc512(X,Y):- move512(X,Y).
+danc512(X,Y):- danc512(X,Z),danc512(Z,Y).
+
+:- table danc1k/2.
+:- use_subsumptive_tabling danc1k/2.
+danc1k(X,Y):- move1k(X,Y). %Y < 1024.
+danc1k(X,Y):- danc1k(X,Z),danc1k(Z,Y).
+
+:- table danc/2.
+:- use_subsumptive_tabling danc/2.
+danc(X,Y):- move128(X,Y).
+danc(X,Y):- danc(X,Z),danc(Z,Y).
+
+:- table sranc/2.
+:- use_subsumptive_tabling sranc/2.
+sranc(X,Y):- move2k(X,Y).
+sranc(X,Y):- move2k(X,Z),sranc(Z,Y).
+
+
+:- import member/2 from basics.
+
 
