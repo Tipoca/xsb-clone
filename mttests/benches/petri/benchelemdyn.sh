@@ -14,7 +14,7 @@ echo "-------------------- Testing $nthreads threads ---------------------------
 "bench_private_process_dyn($nthreads)." "$FILE"
 
     ../genbench.sh "$XEMU" "[benchmark_elem], gen_proc_2(100000,$MAX)." \
-"bench_shared_process_dyn($nthreads)." "$FILE"
+"bench_shared_process_dyn($nthreads,$MAX)." "$FILE"
 
 nthreads=$[$nthreads*2]
 done
