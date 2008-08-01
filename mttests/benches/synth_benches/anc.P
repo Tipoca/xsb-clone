@@ -91,6 +91,12 @@ sranc(X,Y):- move4k(X,Z),sranc(Z,Y).
 sranc2k(X,Y):- move2k(X,Y).
 sranc2k(X,Y):- move2k(X,Z),sranc2k(Z,Y).
 
+:- table ranc2k/2.
+:- use_subsumptive_tabling ranc2k/2.
+ranc2k(X,Y):- move2k(X,Y).
+ranc2k(X,Y):- move2k(X,Z),ranc2k(Z,Y).
+
+
 
 :- import member/2 from basics.
 
