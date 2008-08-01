@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.12 2007-12-13 16:15:09 ruim Exp $
+** $Id: sub_tables_xsb_i.h,v 1.13 2008-08-01 17:42:10 tswift Exp $
 ** 
 */
 
@@ -181,7 +181,7 @@ inline static  void subsumptive_call_search(CTXTdeclc TabledCallInfo *callStruct
 #ifndef MULTI_THREAD
   NumSubOps_CallCheckInsert++;
 #else
-#ifndef NON_OPT_COMPILE
+#ifdef NON_OPT_COMPILE
   NumSubOps_CallCheckInsert++;
 #endif
 #endif
@@ -412,7 +412,7 @@ TSTNptr subsumptive_answer_search(CTXTdeclc SubProdSF sf, int nTerms,
 
   TSTNptr root, tstn;
 
-#ifdef MULTI_THREAD
+#ifndef MULTI_THREAD
   NumSubOps_AnswerCheckInsert++;
 #else
 #ifdef NON_OPT_COMPILE
