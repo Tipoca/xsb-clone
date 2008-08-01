@@ -178,7 +178,21 @@ bench_private_process_dyn(Numthreads):-
 	par_execute(List),
 	walltime(After),
 	Time is After - Before,
-	write(datum([pr_cs_elem],Numthreads,Time)),
+	write(datum([pr_dyn_elem],Numthreads,Time)),
+	writeln('.'),
+	flush_output.
+
+bench_private_process_sdyn(Numthreads):- 
+	abolish_all_tables,
+	generate_goallist(Numthreads,List,go_shared_dyn_reachable),
+%	write(List),
+	walltime(Before),
+%	member(Goal,List),
+%	call(Goal),
+	par_execute(List),
+	walltime(After),
+	Time is After - Before,
+	write(datum([sh_dyn_elem],Numthreads,Time)),
 	writeln('.'),
 	flush_output.
 

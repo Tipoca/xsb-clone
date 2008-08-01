@@ -2,7 +2,7 @@ XEMU=$1
 MAX=$2
 
 #XEMU=$PREF/bin/xsb-mt
-FILE=./elemRes.P
+FILE=./elemResCS.P
 
 rm -f $FILE
 

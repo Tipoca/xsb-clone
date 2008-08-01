@@ -53,6 +53,19 @@ go_dyn_reachable(In,_):-
 %	writeln('-----------').
 	dyn_reachable(In,_).
 
+:- thread_shared shared_dyn_reachable/2.
+:- dynamic shared_dyn_reachable/2.
+:- table shared_dyn_reachable/2.
+
+go_shared_dyn_reachable(In,_):- 
+%	(table dyn_reachable/2),
+	assert((shared_dyn_reachable(InState,NewState):- shared_dyn_reachable(InState,State),hasTransition(State,NewState))),
+	assert((shared_dyn_reachable(InState,NewState):-hasTransition(InState,NewState))),
+%	writeln('-----------'),
+%	listing(dyn_reachable),
+%	writeln('-----------').
+	shared_dyn_reachable(In,_).
+
 :- thread_shared shared_reachable/2.
 :- table shared_reachable/2.
 shared_reachable(InState,NewState):-
