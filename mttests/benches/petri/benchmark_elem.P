@@ -158,6 +158,17 @@ bench_private_process_2(Numthreads):-
 	writeln('.'),
 	flush_output.
 
+bench_private_process_cs(Numthreads):- 
+	abolish_all_tables,
+	generate_goallist(Numthreads,List,right_reachable),
+	walltime(Before),
+	par_execute(List),
+	walltime(After),
+	Time is After - Before,
+	write(datum([pr_cs_elem],Numthreads,Time)),
+	writeln('.'),
+	flush_output.
+
 generate_process_2(N,Numthreads):- 
 	between(1,N,M),
 	IsOdd is M mod 2,

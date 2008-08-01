@@ -14,7 +14,7 @@ Generates a highly connected chain of loops of length N, with a small
 unbounded widget at the end.  Using n_par_execute n threads can
 traverse this using their private tables.
 
-Don't yet know a good number for n -- my guess is to try between 100
+Dont yet know a good number for n -- my guess is to try between 100
 and 200.
 
 Using par_execute/1 rather than n_par_execute/2 because goals are
@@ -101,7 +101,9 @@ shared_bench_omega(N,Copies,NumThreads):-
 	get_par_goals(Copies,NumThreads,InG,OutG),
 %	writelist(OutG),
 	walltime(Before),
+%	statistics(mutex),
 	par_execute(OutG),
+%	statistics(mutex),
 %	shared_is_reachable([place(s1,1)],_),
 	walltime(After),
 	Time is After - Before,

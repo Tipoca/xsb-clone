@@ -33,6 +33,7 @@ bound_search:-
 	    conset(foo,N1) ).
 
 :- table right_reachable/2.
+:- use_subsumptive_tabling right_reachable/2.
 right_reachable(InState,NewState):-
 	hasTransition(InState,MidState),
 	right_reachable(MidState,NewState).
