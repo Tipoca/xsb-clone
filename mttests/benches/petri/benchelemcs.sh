@@ -1,7 +1,7 @@
-PREF=$1
+XEMu=$1
 MAX=$2
 
-XEMU=$PREF/bin/xsb-mt
+#XEMU=$PREF/bin/xsb-mt
 FILE=./elemRes.P
 
 rm -f $FILE
