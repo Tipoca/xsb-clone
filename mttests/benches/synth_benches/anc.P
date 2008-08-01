@@ -83,8 +83,8 @@ danc(X,Y):- danc(X,Z),danc(Z,Y).
 
 :- table sranc/2.
 :- use_subsumptive_tabling sranc/2.
-sranc(X,Y):- move2k(X,Y).
-sranc(X,Y):- move2k(X,Z),sranc(Z,Y).
+sranc(X,Y):- move4k(X,Y).
+sranc(X,Y):- move4k(X,Z),sranc(Z,Y).
 
 
 :- import member/2 from basics.

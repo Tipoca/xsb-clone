@@ -214,6 +214,34 @@ def_chain_bench(It):-
 	bigbench(ancestor2k(1,_),'[tanc,2k]',It).
 
 
+priv_subsumption_bench(In,Limit):- In > Limit,!.
+priv_subsumption_bench(In,Limit):- 
+        priv_subsumption_test(In),
+	Next is In*2,
+	priv_subsumption_bench(Next,Limit).
+
+priv_subsumption_test(M):-
+	abolish_all_tables,
+	writeln('--------------------------------------------------------'),
+	walltime(B),
+	n_par_execute(sranc(_X,_Y),M),
+	walltime(A),
+	T is A - B,
+	writeq(datum(subsumption,M,T)),writeln('.'),nl,
+	fail.
+priv_subsumption_test(_).
+
+
+pst(M):-
+	abolish_all_tables,
+	writeln('--------------------------------------------------------'),
+	walltime(B),
+	n_par_execute(sranc(_X,_Y),M),
+	walltime(A),
+	T is A - B,
+	writeq(datum(subsumption,M,T)),writeln('.'),nl,
+	fail.
+pst(_).
 
 end_of_file.
 
