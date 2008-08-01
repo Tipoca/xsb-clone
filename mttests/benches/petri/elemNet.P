@@ -57,9 +57,9 @@ go_dyn_reachable(In,_):-
 :- dynamic shared_dyn_reachable/2.
 :- table shared_dyn_reachable/2.
 
-:- assert(shared_dyn_reachable(InState,NewState):- 
-	shared_dyn_reachable(InState,State),hasTransition(State,NewState)).
-:- assert(shared_dyn_reachable(InState,NewState):-hasTransition(InState,NewState)).
+:- assert((shared_dyn_reachable(InState,NewState):- 
+	shared_dyn_reachable(InState,State),hasTransition(State,NewState))).
+:- assert((shared_dyn_reachable(InState,NewState):-hasTransition(InState,NewState))).
 
 go_shared_dyn_reachable(In,_):- 
 %	(table dyn_reachable/2),
