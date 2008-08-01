@@ -146,6 +146,17 @@ bench_shared_process_2(Numthreads,Numbraids):-
 	writeln('.'),
 	flush_output.
 
+bench_shared_process_dyn(Numthreads,Numbraids):- 
+	abolish_all_tables,
+	generate_goallist_thr(Numbraids,Numthreads,List,shared_dyn_reachable,0),
+	walltime(Before),
+	all_par_execute(List),
+	walltime(After),
+	Time is After - Before,
+	write(datum([sh_dyn_elem],Numthreads,Time)),
+	writeln('.'),
+	flush_output.
+
 bench_private_process_2(Numthreads):- 
 	abolish_all_tables,
 	generate_goallist(Numthreads,List,reachable),
@@ -179,20 +190,6 @@ bench_private_process_dyn(Numthreads):-
 	walltime(After),
 	Time is After - Before,
 	write(datum([pr_dyn_elem],Numthreads,Time)),
-	writeln('.'),
-	flush_output.
-
-bench_private_process_sdyn(Numthreads):- 
-	abolish_all_tables,
-	generate_goallist(Numthreads,List,go_shared_dyn_reachable),
-%	write(List),
-	walltime(Before),
-%	member(Goal,List),
-%	call(Goal),
-	par_execute(List),
-	walltime(After),
-	Time is After - Before,
-	write(datum([sh_dyn_elem],Numthreads,Time)),
 	writeln('.'),
 	flush_output.
 
