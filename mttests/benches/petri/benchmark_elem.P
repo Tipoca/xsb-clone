@@ -4,7 +4,6 @@
 :- import between/3,member/2 from basics.
 :- import par_execute/1, n_par_execute/2 from thread.
 
-
 :- thread_shared rule/3.
 
 /* 
@@ -162,6 +161,20 @@ bench_private_process_cs(Numthreads):-
 	abolish_all_tables,
 	generate_goallist(Numthreads,List,right_reachable),
 	walltime(Before),
+	par_execute(List),
+	walltime(After),
+	Time is After - Before,
+	write(datum([pr_cs_elem],Numthreads,Time)),
+	writeln('.'),
+	flush_output.
+
+bench_private_process_dyn(Numthreads):- 
+	abolish_all_tables,
+	generate_goallist(Numthreads,List,go_dyn_reachable),
+%	write(List),
+	walltime(Before),
+%	member(Goal,List),
+%	call(Goal),
 	par_execute(List),
 	walltime(After),
 	Time is After - Before,
