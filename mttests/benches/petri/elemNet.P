@@ -32,6 +32,7 @@ bound_search:-
 	  ; N1 is N + 1,
 	    conset(foo,N1) ).
 
+
 :- table right_reachable/2.
 :- use_subsumptive_tabling right_reachable/2.
 right_reachable(InState,NewState):-
@@ -39,6 +40,18 @@ right_reachable(InState,NewState):-
 	right_reachable(MidState,NewState).
 right_reachable(InState,NewState):-
 	hasTransition(InState,NewState).
+
+:- dynamic dyn_reachable/2.
+:- table dyn_reachable/2.
+
+go_dyn_reachable(In,_):- 
+%	(table dyn_reachable/2),
+	assert((dyn_reachable(InState,NewState):- dyn_reachable(InState,State),hasTransition(State,NewState))),
+	assert((dyn_reachable(InState,NewState):-hasTransition(InState,NewState))),
+%	writeln('-----------'),
+%	listing(dyn_reachable),
+%	writeln('-----------').
+	dyn_reachable(In,_).
 
 :- thread_shared shared_reachable/2.
 :- table shared_reachable/2.
