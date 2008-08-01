@@ -1,4 +1,4 @@
-XEMu=$1
+XEMU=$1
 MAX=$2
 
 #XEMU=$PREF/bin/xsb-mt
