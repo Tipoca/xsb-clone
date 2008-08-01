@@ -243,6 +243,17 @@ pst(M):-
 	fail.
 pst(_).
 
+pst1(M):-
+	abolish_all_tables,
+	writeln('--------------------------------------------------------'),
+	walltime(B),
+	n_par_execute(sranc2k(_X,_Y),M),
+	walltime(A),
+	T is A - B,
+	writeq(datum(subsumption,M,T)),writeln('.'),nl,
+	fail.
+pst1(_).
+
 end_of_file.
 
 
