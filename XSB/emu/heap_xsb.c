@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.69 2008-01-21 18:07:29 dwarren Exp $
+** $Id: heap_xsb.c,v 1.70 2008-08-04 16:04:17 dwarren Exp $
 ** 
 */
 
@@ -660,6 +660,11 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
       //      printf("hfreg to heap is %p at %p, rnum_in_reg_array=%d,arity=%d,delay=%p\n",hfreg,hreg,rnum_in_reg_array,arity,delayreg);
       *(hreg++) = (unsigned long) hfreg;
 #endif
+    }
+
+    if (top_of_localstk < hreg) {
+      fprintf(stderr,"stack clobbered: no space for gc_heap\n"); 
+      xsb_exit(CTXTc "stack clobbered");
     }
 
     gc_strings = ifStringGC; /* default */
