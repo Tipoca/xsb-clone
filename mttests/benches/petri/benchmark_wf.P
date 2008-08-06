@@ -80,9 +80,10 @@ private_scale_wf(NThreads) :-
 	flush_output.
 
 /* divies up all the start states among N threads. */
-shared_bench_wf(NThreads):- 
+shared_bench_wf(NThreads,NWidgets):- 
 	abolish_all_tables,
-	gen_shared_goal_list( NThreads, shared_reachable, LG ),
+	gen_shared_goal_list( NThreads, NWidgets, shared_reachable, LG ),
+	writelist(LG),
 	walltime(Before),
 	par_execute(LG),
 	walltime(After),
@@ -104,12 +105,19 @@ duplicate_goal(N,Pred,Arg,[[Goal]|R]):-
 	duplicate_goal(N1,Pred,Arg,R).
 
 /* Divvies up into Len/Nthreads batches, each of which are executed via seq_execute */
-gen_shared_goal_list( NThreads, P, LG ) :-
-	findall( S, shared_init_state( S ), LS ),
-	length(LS,Len),
-	(NThreads > Len -> abort('Too many threads for init states') ; true),
-	Quot is Len//NThreads,
+gen_shared_goal_list( NThreads,NWidgets, P, LG ) :-
+	(NThreads > NWidgets -> abort('Too many threads for states') ; true),
+	get_init_states(NWidgets,LS),
+%	findall( S, shared_init_state( S ), LS ),
+%	length(LS,Len),
+	Quot is NWidgets//NThreads,
 	get_goals( LS, Quot, LG, P ).	
+
+get_init_states(0,[]):- !.
+get_init_states(N,[p(Place,1)|R]):- 
+	N1 is N - 1,
+	Place is N1*40 + 8,
+	get_init_states(N1,R).
 
 get_goals( [], _NT, [], _P ).
 get_goals( LS, NT, [seq_execute(G)|Gs], P ) :-
@@ -178,10 +186,16 @@ alt_gen_wf_2(First,_Last):-
 	nexttrans(T),
 	assert(rule([p(P4,X)],[p(0,X)],dyn([],[]),T)).
 
-gen_shared_wf:- 
-	retractall(rule(_,_,_,_)),
-	nextplace(Pstart),
-	gen_widget_14_7(6,6,Pstart,P1),
+gen_shared_wf(0).
+gen_shared_wf(N):- 
+	gen_shared_wf_1,
+	N1 is N - 1,
+	gen_shared_wf(N1).
+
+gen_shared_wf_1:- 
+	nextplace(In),
+	writeln(in(In)),
+	gen_widget_14_7(6,6,In,P1),
 	writeln(p1(P1)),
 	gen_widget_14_20(5,5,P1,P2),
 	writeln(p2(P2)),
@@ -190,48 +204,7 @@ gen_shared_wf:-
 	gen_widget_14_20(5,5,P3,P4),
 	writeln(p4(P4)),
 	gen_widget_14_9(5,5,P3,_P5),
-%	nexttrans(T),
-%	assert(rule([p(P4,X)],[p(0,X)],dyn([],[]),T)),
-%---------
-	nextplace(_),
-	nextplace(P5),
-	writeln(p5(P5)),
-	gen_widget_14_7(6,6,P5,P6),
-	writeln(p6(P6)),
-	gen_widget_14_20(5,5,P6,P7),
-	writeln(p7(P7)),
-	gen_widget_14_7(6,6,P7,P8),
-	writeln(p8(P8)),
-	gen_widget_14_20(5,5,P8,P9),
-	writeln(p9(P9)),
-	gen_widget_14_9(5,5,P9,_P10),
-%---------
-	nextplace(_),
-	nextplace(P10),
-	writeln(p10(P10)),
-	gen_widget_14_7(6,6,P10,P11),
-	writeln(p11(P11)),
-	gen_widget_14_20(5,5,P11,P12),
-	writeln(p12(P12)),
-	gen_widget_14_7(6,6,P12,P13),
-	writeln(p13(P13)),
-	gen_widget_14_20(5,5,P13,P14),
-	writeln(p14(P14)),
-	gen_widget_14_9(5,5,P14,_P15),
-%---------
-	nextplace(_),
-	nextplace(P15),
-	writeln(p15(P15)),
-	gen_widget_14_7(6,6,P15,P16),
-	writeln(p16(P16)),
-	gen_widget_14_20(5,5,P16,P17),
-	writeln(p17(P17)),
-	gen_widget_14_7(6,6,P17,P18),
-	writeln(p18(P18)),
-	gen_widget_14_20(5,5,P18,P19),
-	writeln(p19(P19)),
-	gen_widget_14_9(5,5,P19,P20),
-	writeln(p20(P20)).
+	nextplace(_).
 
 % 14_7  - 6X6 is abt 12 secs
 % 14_9  - 6X6 is abt 32 secs  262207 states
@@ -243,30 +216,6 @@ private_init_state( [p(8,1)] ).
 %private_init_state( [p(15,1)] ).
 %private_init_state( [p(23,1)] ).
 %private_init_state( [p(30,1)] ).
-
-%shared_init_state( [p(0,1)] ).
-shared_init_state( [p(8,1)] ).
-%shared_init_state( [p(15,1)] ).
-%shared_init_state( [p(23,1)] ).
-%shared_init_state( [p(30,1)] ).
-
-%shared_init_state( [p(40,1)] ).
-shared_init_state( [p(48,1)] ).
-%shared_init_state( [p(55,1)] ).
-%shared_init_state( [p(63,1)] ).
-%shared_init_state( [p(70,1)] ).
-
-%shared_init_state( [p(80,1)] ).
-shared_init_state( [p(88,1)] ).
-%shared_init_state( [p(95,1)] ).
-%shared_init_state( [p(103,1)] ).
-%shared_init_state( [p(110,1)] ).
-
-%shared_init_state( [p(120,1)] ).
-shared_init_state( [p(128,1)] ).
-%shared_init_state( [p(135,1)] ).
-%shared_init_state( [p(143,1)] ).
-%shared_init_state( [p(150,1)] ).
 
 restartplace :-
 	conset(placectr,0).
@@ -382,4 +331,89 @@ gen_private_goal_list( NThreads, P, LG ) :-
 	findall( S, private_init_state( S ), LS ),
 	get_goals( LS, NThreads, LG, P ).	
 */
+
+
+gen_shared_wf:- 
+	retractall(rule(_,_,_,_)),
+	gen_shared_wf_1,
+	gen_shared_wf_1,
+	gen_shared_wf_1,
+	gen_shared_wf_1.
+
+/*	gen_widget_14_7(6,6,Pstart,P1),
+	writeln(p1(P1)),
+	gen_widget_14_20(5,5,P1,P2),
+	writeln(p2(P2)),
+	gen_widget_14_7(6,6,P2,P3),
+	writeln(p3(P3)),
+	gen_widget_14_20(5,5,P3,P4),
+	writeln(p4(P4)),
+	gen_widget_14_9(5,5,P3,_P5),
+%	nexttrans(T),
+%	assert(rule([p(P4,X)],[p(0,X)],dyn([],[]),T)),
+%---------
+	nextplace(_),
+	nextplace(P5),
+	writeln(p5(P5)),
+	gen_widget_14_7(6,6,P5,P6),
+	writeln(p6(P6)),
+	gen_widget_14_20(5,5,P6,P7),
+	writeln(p7(P7)),
+	gen_widget_14_7(6,6,P7,P8),
+	writeln(p8(P8)),
+	gen_widget_14_20(5,5,P8,P9),
+	writeln(p9(P9)),
+	gen_widget_14_9(5,5,P9,_P10),
+%---------
+	nextplace(_),
+	nextplace(P10),
+	writeln(p10(P10)),
+	gen_widget_14_7(6,6,P10,P11),
+	writeln(p11(P11)),
+	gen_widget_14_20(5,5,P11,P12),
+	writeln(p12(P12)),
+	gen_widget_14_7(6,6,P12,P13),
+	writeln(p13(P13)),
+	gen_widget_14_20(5,5,P13,P14),
+	writeln(p14(P14)),
+	gen_widget_14_9(5,5,P14,_P15),
+%---------
+	nextplace(_),
+	nextplace(P15),
+	writeln(p15(P15)),
+	gen_widget_14_7(6,6,P15,P16),
+	writeln(p16(P16)),
+	gen_widget_14_20(5,5,P16,P17),
+	writeln(p17(P17)),
+	gen_widget_14_7(6,6,P17,P18),
+	writeln(p18(P18)),
+	gen_widget_14_20(5,5,P18,P19),
+	writeln(p19(P19)),
+	gen_widget_14_9(5,5,P19,P20),
+	writeln(p20(P20)).
+*/
+
+%shared_init_state( [p(0,1)] ).
+shared_init_state( [p(8,1)] ).
+%shared_init_state( [p(15,1)] ).
+%shared_init_state( [p(23,1)] ).
+%shared_init_state( [p(30,1)] ).
+
+%shared_init_state( [p(40,1)] ).
+shared_init_state( [p(48,1)] ).
+%shared_init_state( [p(55,1)] ).
+%shared_init_state( [p(63,1)] ).
+%shared_init_state( [p(70,1)] ).
+
+%shared_init_state( [p(80,1)] ).
+shared_init_state( [p(88,1)] ).
+%shared_init_state( [p(95,1)] ).
+%shared_init_state( [p(103,1)] ).
+%shared_init_state( [p(110,1)] ).
+
+%shared_init_state( [p(120,1)] ).
+shared_init_state( [p(128,1)] ).
+%shared_init_state( [p(135,1)] ).
+%shared_init_state( [p(143,1)] ).
+%shared_init_state( [p(150,1)] ).
 
