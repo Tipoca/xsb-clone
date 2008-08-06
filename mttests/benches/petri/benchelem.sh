@@ -1,7 +1,6 @@
-PREF=$1
+XEMU=$1
 MAX=$2
 
-XEMU=$PREF/bin/xsb-mt
 FILE=./elemRes.P
 
 rm -f $FILE
@@ -15,7 +14,6 @@ echo "-------------------- Testing $nthreads threads ---------------------------
 
 ../genbench.sh "$XEMU" "[benchmark_elem], gen_proc_2(100000,$MAX)." \
 "bench_shared_process_2($nthreads,$MAX)." "$FILE"
-
 
 nthreads=$[$nthreads*2]
 done
