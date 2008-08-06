@@ -114,7 +114,7 @@ gen_shared_goal_list( NThreads,NWidgets, P, LG ) :-
 	get_goals( LS, Quot, LG, P ).	
 
 get_init_states(0,[]):- !.
-get_init_states(N,[p(Place,1)|R]):- 
+get_init_states(N,[[p(Place,1)]|R]):- 
 	N1 is N - 1,
 	Place is N1*40 + 8,
 	get_init_states(N1,R).
