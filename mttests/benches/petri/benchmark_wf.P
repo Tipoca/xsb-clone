@@ -179,19 +179,20 @@ alt_gen_wf_2(First,_Last):-
 	assert(rule([p(P4,X)],[p(0,X)],dyn([],[]),T)).
 
 gen_shared_wf:- 
-	retractall(rule(_,_,_,_,_)),
+	retractall(rule(_,_,_,_)),
 	nextplace(Pstart),
 	gen_widget_14_7(6,6,Pstart,P1),
-%	writeln(p1(P1)),
+	writeln(p1(P1)),
 	gen_widget_14_20(5,5,P1,P2),
-%	writeln(p2(P2)),
+	writeln(p2(P2)),
 	gen_widget_14_7(6,6,P2,P3),
 	writeln(p3(P3)),
 	gen_widget_14_20(5,5,P3,P4),
 	writeln(p4(P4)),
 	gen_widget_14_9(5,5,P3,_P5),
-	nexttrans(T),
-	assert(rule([p(P4,X)],[p(0,X)],dyn([],[]),T)),
+%	nexttrans(T),
+%	assert(rule([p(P4,X)],[p(0,X)],dyn([],[]),T)),
+%---------
 	nextplace(_),
 	nextplace(P5),
 	writeln(p5(P5)),
