@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.88 2008/02/02 00:04:29 tswift Exp $
+** $Id: machine.H,v 1.89 2008/02/22 03:39:11 dwarren Exp $
 ** 
 */
 
@@ -171,7 +171,7 @@
 	xsb_backtrace/0, xsb_backtrace/1.
 
 :- import assert/1, retract/1, (dynamic)/1 from assert.
-:- import write/1, writeln/1, is_attv/1 from standard.
+:- import write/1, writeln/1, is_attv/1, warning/1 from standard.
 
 :- export 
 	file_function/7, file_function/3, conname/2, conpsc/2, 
