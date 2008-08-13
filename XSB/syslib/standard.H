@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.93 2008/04/02 16:34:50 dwarren Exp $
+** $Id: standard.H,v 1.94 2008/04/07 00:25:45 tswift Exp $
 **
 */
 
@@ -96,7 +96,9 @@
         goal_cut_trans/3,	goal_cut_untrans/2,
 	tcall/1,	arity_integer/1,	prolog_arglist/4,
    message/1,      messageln/1, message/2, messageln/2,
-   warning/1,      warningln/1, abort/1,	abort/0,
+   warning/1,      warning/2,
+   warningln/1,  % obsolete
+   abort/1,	abort/0,
 	set_timer/1,
 	(import)/1,	(multifile)/1.
 	  :- export cleanup_handler/2.

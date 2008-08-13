@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.152 2008/07/25 18:48:59 tswift Exp $
+** $Id: standard.P,v 1.153 2008/07/25 18:53:49 tswift Exp $
 ** 
 */
 
@@ -1421,20 +1421,22 @@ error_write(X):-
 error_writeln(X):- 
 	messageln(X,STDERR).
 
-%  warning/1
 warning(Message) :- 
+	warning(Message,'Runtime/P').
+
+warningln(Message) :- 
+	warning(Message,'Runtime/P').
+
+%Runtime/P
+warning(Message,Type) :- 
 	stat_flag(WARNING_ACTION,Flag),
 	(Flag == PRINT_WARNING -> 
-	    message('++Warning[XSB]: [Runtime/P] ', STDWARN),
+	    message(['++Warning[XSB]: [',Type,'] '], STDWARN),
 	    messageln(Message, STDWARN)
 	 ;  (Flag == SILENT_WARNING -> 
 	       true
 	     ; misc_error(Message) ) ).
 
-%  warning/1
-warningln(Message) :- 
-	message('++Warning[XSB]: [Runtime/P] ', STDWARN),
-	messageln(Message, STDWARN).
 
 %  message/1
 message(X) :- message(X, STDMSG).
