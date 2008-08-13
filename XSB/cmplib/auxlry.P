@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.26 2008-04-27 15:29:10 tswift Exp $
+** $Id: auxlry.P,v 1.27 2008-08-13 17:01:19 tswift Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@
 
 message(Message) :- ttywritenl(Message, STDMSG).
 
+:- import warning/2 from standard.
 warning(Message) :-
 	(current_compiled_module(Module)
 	 ->	true
@@ -41,7 +42,8 @@ warning(Message) :-
 	 ->	true
 	 ;	Module = '**Unknown**'
 	),
-	ttywritenl(('++Warning[XSB]: [Compiler] ', Module, ': ', Message), STDWARN).
+%	ttywritenl(('++Warning[XSB]: [Compiler] ', Module, ': ', Message), STDWARN).
+	warning([Module,' : ',Message],'Compiler').
 
 error(Message) :- 
 	misc_error(Message).

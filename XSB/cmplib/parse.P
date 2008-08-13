@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.83 2008-06-12 14:55:00 dwarren Exp $
+** $Id: parse.P,v 1.84 2008-08-13 17:01:17 tswift Exp $
 ** 
 */
 
@@ -519,10 +519,11 @@ parse_directive(import(from(X, Mod)), _QrList,SymTab,_ModName) :- !,
 	 ;	parse_comma_list(X, SymTab, [im(Mod)], (import)),
 		sym_insert(Mod, 0, [module], SymTab, _)
 	).
-parse_directive(use_module(Mod,X), _QrList,SymTab,_ModName) :- !,
-	(var(Mod)
+parse_directive(use_module(ModIm,X), _QrList,SymTab,_ModName) :- !,
+	(var(ModIm)
 	 ->	error(('Module cannot be a variable. Importing: ',X))
-	 ;	parse_list(X, SymTab, [im(Mod)], (import)),
+	 ;	(ModIm = library(Mod1) -> Mod = Mod1 ; Mod = ModIm),
+	        parse_list(X, SymTab, [im(Mod)], (import)),
 		sym_insert(Mod, 0, [module], SymTab, _)
 	).
 parse_directive(document_import(from(X, Mod)), _QrList,SymTab,_ModName) :- !,
