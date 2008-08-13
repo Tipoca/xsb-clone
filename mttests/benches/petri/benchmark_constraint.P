@@ -64,10 +64,11 @@ shared_bench_constr(Length,NumThr,NumCyc):-
 	breset,
 	generate_cycle(Length,NumCyc),
 	get_goallist(NumCyc,NumThr,G),
-%	writelist(G),
+	writelist(G),
 	walltime(S),
 %	statistics(mutex),
 	par_execute(G),
+%	seq_execute(G),
 %	statistics(mutex),
 	walltime(E),
 	Time is E - S,
@@ -93,8 +94,15 @@ shared_bench_1:-
 shared_bench_1.
 
 get_goallist(Max,NThreads,Out):- 
-	findall(shared_reachable(S,_),initState(S),Goals),
-	get_par_goals(Max,NThreads,Goals,Out).
+	get_raw_goals(Max,RawGoals),
+%	findall(shared_reachable(S,_),initState(S),Goals),
+	get_par_goals(Max,NThreads,RawGoals,Out).
+
+get_raw_goals(0,[]):-!.
+get_raw_goals(N,[shared_reachable([place(Resource,[])],_)|T]):-
+	concat_atom([resource_,N],Resource),
+	N1 is N - 1,
+	get_raw_goals(N1,T).
 
 get_par_goals(Max,NThreads,InG,OutG):- 
 	Quot is Max//NThreads,
