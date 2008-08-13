@@ -73,9 +73,10 @@ shared_bench_prefs(Length,NumThr,NumC):-
 	get_goallist(NumC,NumThr,G),
 %	writelist(G),
 	walltime(S),
-	statistics(mutex),
+%	statistics(mutex),
 	par_execute(G),
-	statistics(mutex),
+%	seq_execute(G),
+%	statistics(mutex),
 	walltime(E),
 	Time is E - S,
 	write(datum([prefs,shared],NumThr,Time)),writeln('.'),
@@ -95,8 +96,18 @@ bench_1:-
 bench_1.
 
 get_goallist(Max,NThreads,Out):- 
-	findall(shared_reachable(S,_),initState(S),Goals),
-	get_par_goals(Max,NThreads,Goals,Out).
+	get_raw_goals(Max,RawGoals),
+%	findall(shared_reachable(S,_),initState(S),Goals),
+	get_par_goals(Max,NThreads,RawGoals,Out).
+
+%initState([p1(1)]).
+get_raw_goals(0,[]):-!.
+get_raw_goals(N,[shared_reachable([Term],_)|T]):-
+	concat_atom([p,N],Functor),
+	functor(Term,Functor,1),
+	arg(1,Term,1),
+	N1 is N - 1,
+	get_raw_goals(N1,T).
 
 get_par_goals(Max,NThreads,InG,OutG):- 
 	Quot is Max//NThreads,
@@ -113,25 +124,6 @@ get_first_goals( NT, [S|LS], LS1, [S|Gs]) :-
 		 NT1 is NT - 1,
 		 get_first_goals( NT1, LS, LS1, Gs).
 
-
-initState([p1(1)]).
-initState([p2(1)]).
-initState([p3(1)]).
-initState([p4(1)]).
-/*
-initState([p5(1)]).
-initState([p6(1)]).
-initState([p7(1)]).
-initState([p8(1)]).
-initState([p9(1)]).
-initState([p10(1)]).
-initState([p11(1)]).
-initState([p12(1)]).
-initState([p13(1)]).
-initState([p14(1)]).
-initState([p15(1)]).
-initState([p16(1)]).
-*/
 
 /* Length should be odd */
 generate_chain(0,_Length):- !.
@@ -186,4 +178,23 @@ rule([p(3)],[p(5)],dyn([],[]),t(4)).
 rule([p(5)],[p(6)],dyn([],[]),t(5)).
 rule([p(5)],[p(7)],dyn([],[]),t(6)).
 
+
+initState([p1(1)]).
+initState([p2(1)]).
+initState([p3(1)]).
+initState([p4(1)]).
+/*
+initState([p5(1)]).
+initState([p6(1)]).
+initState([p7(1)]).
+initState([p8(1)]).
+initState([p9(1)]).
+initState([p10(1)]).
+initState([p11(1)]).
+initState([p12(1)]).
+initState([p13(1)]).
+initState([p14(1)]).
+initState([p15(1)]).
+initState([p16(1)]).
+*/
 
