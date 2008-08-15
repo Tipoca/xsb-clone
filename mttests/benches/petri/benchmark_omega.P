@@ -14,9 +14,6 @@ Generates a highly connected chain of loops of length N, with a small
 unbounded widget at the end.  Using n_par_execute n threads can
 traverse this using their private tables.
 
-Dont yet know a good number for n -- my guess is to try between 100
-and 200.
-
 Using par_execute/1 rather than n_par_execute/2 because goals are
 different for each thread.
 
@@ -32,8 +29,23 @@ private_scale_omega(NumThreads):-
 	abolish_all_tables,
 	cputime(B1),
 	walltime(Before),
-	n_par_execute( is_reachable([place(s0,1)],_), NumThreads ),
-%	is_reachable([place(s0,1)],_), count_states(L),writeln(numstates(L)),
+%	n_par_execute( is_reachable([place(s0,1)],_), NumThreads ),
+	is_reachable([place(s0,1)],_), count_states(L),writeln(numstates(L)),
+	walltime(After),
+	cputime(A1),
+	Time is After - Before,
+	write(datum([omega,priv],NumThreads,Time)),writeln('.'),
+	T1 is A1 - B1,
+	write(cpudatum([omega,priv],NumThreads,T1)),writeln('.'),
+	flush_output.
+
+alt_private_scale_omega(NumThreads):- 
+	abolish_all_tables,
+	cputime(B1),
+	walltime(Before),
+%	statistics(mutex),
+	n_par_execute( alt_is_reachable([place(s0,1)],_), NumThreads ),
+%	alt_is_reachable([place(s0,1)],_), statistics(mutex),alt_count_states(L),writeln(numstates(L)),
 	walltime(After),
 	cputime(A1),
 	Time is After - Before,

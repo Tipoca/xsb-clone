@@ -8,7 +8,7 @@ out of aggregs1.P which is efficient but not clean.  As I make
 progress w. answer subsumption, I'll update the filterPOA/5. */
 
 :- import conget/2, conset/2 from machine.
-:- import filterPOA/5 from aggregs1.
+:- import alt_filterPOA/5, filterPOA/5 from aggregs1.
 :- import shared_filterPOA/5 from aggregs1.
 
 is_reachable(InState,NewState):- 
@@ -20,6 +20,19 @@ reachable(InState,NewState):-
 	hasTransition(State,NewState).
 %        bound_search.
 reachable(InState,NewState):-
+	hasTransition(InState,NewState).
+
+alt_is_reachable(InState,NewState):- 
+	alt_filterPOA(alt_reachable(InState),NewState,more_general_than,
+ 	              abstract,abstract_call).
+
+alt_reachable(InState,NewState):-
+	alt_filterPOA(alt_reachable(InState),State,more_general_than,
+ 	              abstract,abstract_call),
+%	writeln(reachable(InState,State)),
+	hasTransition(State,NewState).
+%        bound_search.
+alt_reachable(InState,NewState):-
 	hasTransition(InState,NewState).
 
 %------------
@@ -168,6 +181,10 @@ abstract_1([place(P,N)|R1],[place(P,Ans)|R2],[place(P,NewAns)|R3]):-
 
 count_states(L):- 
 	findall(1,get_residual(aggregs1:filterPOAA1(_X,_Y,_Z,_W,_V),_F),List),
+	length(List,L).
+
+alt_count_states(L):- 
+	findall(1,get_residual(aggregs1:alt_filterPOAA1(_X,_Y,_Z,_W,_V),_F),List),
 	length(List,L).
 
 end_of_file.
