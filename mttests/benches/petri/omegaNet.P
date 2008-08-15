@@ -25,10 +25,14 @@ reachable(InState,NewState):-
 alt_is_reachable(InState,NewState):- 
 	alt_filterPOA(alt_reachable(InState),NewState,more_general_than,
  	              abstract,abstract_call).
+%	alt_filterPOA(alt_reachable(InState),NewState,more_general_than(_,_),
+% 	              abstract,abstract_call(_,_)).
 
 alt_reachable(InState,NewState):-
 	alt_filterPOA(alt_reachable(InState),State,more_general_than,
  	              abstract,abstract_call),
+%	alt_filterPOA(alt_reachable(InState),State,more_general_than(_,_),
+% 	              abstract,abstract_call(_,_)),
 %	writeln(reachable(InState,State)),
 	hasTransition(State,NewState).
 %        bound_search.
