@@ -78,8 +78,13 @@ danc1k(X,Y):- danc1k(X,Z),danc1k(Z,Y).
 
 :- table danc/2.
 :- use_subsumptive_tabling danc/2.
-danc(X,Y):- move128(X,Y).
+danc(X,Y):- move1k(X,Y).
 danc(X,Y):- danc(X,Z),danc(Z,Y).
+
+:- table danc1k/2.
+:- use_subsumptive_tabling danc1k/2.
+danc1k(X,Y):- move1k(X,Y).
+danc1k(X,Y):- danc1k(X,Z),danc1k(Z,Y).
 
 :- table sranc/2.
 :- use_subsumptive_tabling sranc/2.
