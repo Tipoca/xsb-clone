@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.59 2008-08-01 17:42:10 tswift Exp $
+** $Id: tables.c,v 1.60 2008-08-20 19:47:57 tswift Exp $
 ** 
 */
 
@@ -265,6 +265,19 @@ void table_call_search(CTXTdeclc TabledCallInfo *call_info,
      * value as the corresponding cell in the CPS s.g.  This is done so
      * that attvs can be analyzed upon interning answers -- see
      * documentation at the beginning of variant_call_search().
+     * 
+     * TLS: Copying from the CPS to heap is not good, as 1) the ls may
+     * be deallocated more quickly than the heap; 2) it may interfere
+     * with gc; and 3) it may interfere with heap / ls expansion.
+     * Here, 1) is not a problem because the tabled env will not be
+     * deallocated.  2) doesn't seem to be a problem in sliding GC as
+     * the heap is compacted but the local stack is not moved; however
+     * it does break copying GC.  3) is handled explicitly in our heap
+     * expansion routines -- cf glstack_realloc().  Nonetheless, I
+     * don't understand the intricies of call subsumption enough to
+     * change this around, so we're living with it, and I think we've
+     * prevented it from causing a memory problem.
+     *
      */
     CPtr tmplt_component, tmplt_var_addr, hrg_addr;
     int size, j;
