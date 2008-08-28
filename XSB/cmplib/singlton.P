@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: singlton.P,v 1.11 2004-08-31 00:22:22 dwarren Exp $
+** $Id: singlton.P,v 1.12 2008-08-28 16:07:43 dwarren Exp $
 ** 
 */
 
@@ -52,7 +52,7 @@ singleton_check(Clause, VariableList) :-
 		% only underscores as variables), where VariableList is
 		% variable and no singleton test is needed.
 'singleton check'(Clause, VariableList) :-
-	singleton_warnings(Clause, VariableList),
+	once(singleton_warnings(Clause, VariableList)),
 	fail.	% Undo numbervars' side-effects and reclaim all space used.
 'singleton check'(_, _).
 
