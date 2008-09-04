@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.75 2008-05-07 15:08:31 dwarren Exp $
+** $Id: loader_xsb.c,v 1.76 2008-09-04 19:19:17 tswift Exp $
 ** 
 */
 
@@ -928,7 +928,7 @@ static byte *loader1(CTXTdeclc FILE *fd, int exp)
       unload_seg(seg_first_inst);
 
       snprintf(culprit,255,"dynamic predicate %s/%d",name,arity);
-      xsb_permission_error(CTXTc "compile",culprit,0,"consult",1);
+      xsb_permission_error(CTXTc "redefine as static",culprit,0,"consult",1);
 	//      xsb_abort("[LOADER] Trying to compile a dynamic predicate, %s/%d",
 	//		name, arity);
       return NULL;
