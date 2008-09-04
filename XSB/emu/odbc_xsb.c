@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.69 2008-04-06 23:04:23 tswift Exp $
+** $Id: odbc_xsb.c,v 1.70 2008-09-04 14:07:13 dwarren Exp $
 **
 */
 
@@ -1564,7 +1564,7 @@ void ODBCConnectOption(CTXTdecl)
 
 //extern xsbBool glstack_realloc(CTXTc int,int);
 
-Cell build_codes_list(CTXTdeclc char *charptr) {
+Cell build_codes_list(CTXTdeclc byte *charptr) {
   int len = strlen(charptr);
 
   if (len == 0) {
