@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.99 2008/02/22 03:39:11 dwarren Exp $
+** $Id: machine.P,v 1.100 2008/08/11 12:52:29 tswift Exp $
 ** 
 */
 
@@ -28,7 +28,7 @@
 /* NOTE: This file BETTER be always compiled with the "sysmod" option.	*/
 /*----------------------------------------------------------------------*/
 
-:- compiler_options([sysmod,xpp_on]).
+:- compiler_options([sysmod,optimize,xpp_on]).
 
 #include "builtin.h"
 #include "celltags_xsb.h"
