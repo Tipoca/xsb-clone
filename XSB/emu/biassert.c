@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.166 2008-08-01 20:08:14 tswift Exp $
+** $Id: biassert.c,v 1.167 2008-09-08 13:52:44 dwarren Exp $
 ** 
 */
 
@@ -3950,7 +3950,7 @@ xsbBool dynamic_code_function( CTXTdecl )
       termType = get_type(psc);
       if ( termType == T_DYNA ) {		
 	ctop_int(CTXTc 3,(Integer)psc);
-	ctop_int(CTXTc 4,(Integer)get_ep(CTXTc psc));
+	ctop_int(CTXTc 4,(Integer)get_ep(psc));
       }
       else if (termType == T_PRED) 
 	xsb_permission_error(CTXTc "modify","static",ptoc_tag(CTXTc 2),
