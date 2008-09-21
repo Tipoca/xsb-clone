@@ -215,6 +215,14 @@ Node = 99, NumTargs = 1
 [[a,b,c],[d],72900]
 [[a,b],[c,d],81000]
 [[a],[b,c,d],90000]
+[place(p1,1),place(p2,2),place(p3,3)]
+[place(p1,2),place(p2,1),place(p3,3)]
+[place(p1,2),place(p2,1),place(p3,omega)]
+[place(p1,2),place(p2,2),place(p3,omega)]
+filterMax(salary(cse),25000)
+filterMax(salary(lin),51000)
+filterMin(salary(cse),20000)
+filterMin(salary(lin),21000)
 fmax(p(a,A),1)
 fmax(p(a,b),3)
 fmax(p(a,b),3)

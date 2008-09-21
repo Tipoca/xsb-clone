@@ -92,6 +92,8 @@ EOF
 #-------------------------------------------------
 ../gentest.sh "$XEMU $options" pps "test".
 #-------------------------------------------------
+../gentest.sh "$XEMU $options" dipti "test".
+#-------------------------------------------------
 ../gentest.sh "$XEMU $options" terrys_trie_test "test".
 #-------------------------------------------------
 ../gentest.sh "$XEMU $options" test_trie_property "test".
