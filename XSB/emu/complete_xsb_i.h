@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.36 2008-06-05 18:15:12 ruim Exp $
+** $Id: complete_xsb_i.h,v 1.37 2008-09-21 19:16:33 tswift Exp $
 ** 
 */
 
@@ -153,7 +153,7 @@ XSB_Start_Instr(check_complete,_check_complete)
     /* The following code is only done in profile mode; it keeps track
      * of characteristics of SCCs */
 
-    /* ProfileLeader; */
+     ProfileLeader; 
     /* SpitOutGraph(cs_ptr); */
     /* check if fixpoint has been reached, otherwise schedule any
      * unresolved answers */
@@ -228,8 +228,8 @@ XSB_Start_Instr(check_complete,_check_complete)
      * backtracking into the same choice point multiple times --
      * incorrectly if we have a cut. */
 
-    find_leader(tmp_cs_ptr); 
-    tcp_prevbreg(tmp_breg) = subg_cp_ptr(compl_subgoal_ptr(tmp_cs_ptr));
+    //    find_leader(tmp_cs_ptr); 
+    //    tcp_prevbreg(tmp_breg) = subg_cp_ptr(compl_subgoal_ptr(tmp_cs_ptr));
 
     xsb_dbgmsg((LOG_SCHED,"backtracking from check complete to: %x @breg %x\n",
 		  breg,*tcp_pcreg(breg)));
