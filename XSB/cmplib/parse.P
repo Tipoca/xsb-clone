@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.88 2008-09-19 14:30:02 dwarren Exp $
+** $Id: parse.P,v 1.89 2008-09-22 15:47:25 dwarren Exp $
 ** 
 */
 
@@ -34,11 +34,6 @@
 /*======================================================================*/
 
 %-----------------------------------------------------------------------
-%:- dynamic '_$multifile'(_).
-%:- dynamic '_$multifile1'(_).
-%:- dynamic '_$multifile2'(_,_,_).
-%:- dynamic '_$apply_arity'(_).
-%:- dynamic '_$multifile_retract'(_,_,_).
 
 :- dynamic xpp_include_dir(_).
 :- dynamic xpp_options(_).
@@ -588,7 +583,6 @@ parse_preddef_chk_dyn(H0, B, List, QrList, ModName, SymTab) :-
 		sym_insert(F,A,[],SymTab,PredSym)
 	 ;	H = H0, F = F0, PredSym = PredSym0
 	),
-%%	sym_propin(defined,PredSym),
 	(sym_prop((dynamic),PredSym)
 	 ->	(sym_prop(has_dynamic_clauses,PredSym)
 		 ->	true
