@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.72 2008-07-25 20:56:50 tswift Exp $
+** $Id: emudef.h,v 1.73 2008-09-26 20:32:01 tswift Exp $
 ** 
 */
 
@@ -32,6 +32,7 @@
    ------------------ */
 Cell reg[MAX_REGS];
 
+//#define CP_DEBUG 1
 
 /* Special Registers
    ----------------- */

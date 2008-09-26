@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.31 2007-09-26 20:15:22 dwarren Exp $
+** $Id: choice.h,v 1.32 2008-09-26 20:32:01 tswift Exp $
 ** 
 */
 #ifndef __CHOICE_H__
@@ -33,6 +33,8 @@
 #define COMPL_SUSP_CP_FRAME	3
 
 /* --- type definitions ----------------------------------------------- */
+
+// #define CP_DEBUG 1
 
 typedef struct choice_point {
     byte *next_clause;	/* the entry of next choice */

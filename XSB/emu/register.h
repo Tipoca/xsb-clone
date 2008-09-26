@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: register.h,v 1.9 2005-07-07 16:55:52 dwarren Exp $
+** $Id: register.h,v 1.10 2008-09-26 20:32:01 tswift Exp $
 ** 
 */
 
@@ -45,6 +45,8 @@ extern CPtr hbreg;	/* heap back track point        */
 extern CPtr sreg;	/* current build or unify field */
 extern byte *cpreg;	/* return point register        */
 extern byte *pcreg;	/* program counter              */
+
+// #define CP_DEBUG 1
 
 #ifdef CP_DEBUG
 extern Psc pscreg;

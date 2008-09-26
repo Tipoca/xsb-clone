@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.37 2008-09-21 19:16:33 tswift Exp $
+** $Id: complete_xsb_i.h,v 1.38 2008-09-26 20:32:01 tswift Exp $
 ** 
 */
 
@@ -149,7 +149,8 @@ XSB_Start_Instr(check_complete,_check_complete)
   FailIfAnswersFound(sched_answers(CTXTc subgoal, NULL));
 
   if (leader) {
-
+    
+    //    printf("leader scheduling answers breg %x\n",breg);
     /* The following code is only done in profile mode; it keeps track
      * of characteristics of SCCs */
 
@@ -213,8 +214,7 @@ XSB_Start_Instr(check_complete,_check_complete)
 
   }
   else {    /* if not leader */
-    CPtr tmp_breg = breg;
-    CPtr tmp_cs_ptr = cs_ptr;
+    //    CPtr tmp_breg = breg;    CPtr tmp_cs_ptr = cs_ptr;
 
 #ifdef LOCAL_EVAL
     makeConsumerFromGenerator(CTXTc subgoal);
@@ -222,11 +222,11 @@ XSB_Start_Instr(check_complete,_check_complete)
 #endif
     breg = tcp_prevbreg(breg); 
     
-    /* in the case where we backtrack to a check_complete instruction
-     * for a subtoal that is not the leader, we need to set its
-     * prevbreg value to the leader.  Otherwise, we could end up
-     * backtracking into the same choice point multiple times --
-     * incorrectly if we have a cut. */
+    /* TLS: Nov 05; backed out Sept 08.  in the case where we
+     * backtrack to a check_complete instruction for a subtoal that is
+     * not the leader, we need to set its prevbreg value to the
+     * leader.  Otherwise, we could end up backtracking into the same
+     * choice point multiple times -- incorrectly if we have a cut. */
 
     //    find_leader(tmp_cs_ptr); 
     //    tcp_prevbreg(tmp_breg) = subg_cp_ptr(compl_subgoal_ptr(tmp_cs_ptr));
