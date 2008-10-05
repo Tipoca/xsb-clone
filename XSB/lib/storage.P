@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage.P,v 1.13 2007-11-17 04:08:53 kifer Exp $
+** $Id: storage.P,v 1.14 2008-10-05 01:07:50 kifer Exp $
 ** 
 */
 
@@ -240,7 +240,6 @@ triehandle_for_storage(StorageName,Handle,Snapshot) :-
 	storage_builtin(GET_STORAGE_HANDLE,StorageName,Handle,Snapshot,_).
 
 
-%% This one seems no longer used. Check!!!
 mark_storage_changed_bt(StorageName) :-
 	storage_builtin(MARK_STORAGE_CHANGED,StorageName,_,_,_).
 
