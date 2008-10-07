@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.48 2008-05-07 15:08:31 dwarren Exp $
+** $Id: cinterf.h,v 1.49 2008-10-07 02:23:23 kifer Exp $
 ** 
 */
 
@@ -152,6 +152,7 @@ extern "C" {
 **  		both file and obj are opaque pointers of type char*
 */
 
+#include <stdlib.h>
 #include "basicdefs.h"
 #include "basictypes.h"
 
