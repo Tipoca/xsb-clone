@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.P,v 1.26 2005/03/07 18:24:45 dwarren Exp $
+** $Id: shell.P,v 1.27 2007/08/29 22:13:08 tswift Exp $
 ** 
 */
 
@@ -56,6 +56,12 @@ shell(Cmd) :- shell(Cmd, none, none, none, _).
 shell_to_list(Cmd, List,ErrCode) :- 
 	shell(Cmd, none, Output, none, ErrCode),
  	file_to_list(Output,List).
+
+:- export shell_to_list/4.
+shell_to_list(Cmd, OList,EList,ErrCode) :- 
+	shell(Cmd, none, Ostr, Estr, ErrCode),
+ 	file_to_list(Ostr,OList),
+ 	file_to_list(Estr,EList).
 
 exec(Cmd) :- sys_system(EXEC,Cmd,_,_,_,_,_).
 
