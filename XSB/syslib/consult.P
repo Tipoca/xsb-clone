@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.69 2008/05/08 10:39:59 tswift Exp $
+** $Id: consult.P,v 1.70 2008/09/19 14:28:06 dwarren Exp $
 ** 
 */
 
@@ -153,11 +153,11 @@ reconsult0(Path, Options, Ensure_loaded) :-
 			  i_want_compile(SExt, Base, Obj))
  		          ->    check_one_thread_w_override,
 			        compile_f(SExt,Base,Options,_ExList,Mod,Dir),
-				load_exec(Obj, Mod),
 				(consult_file_loaded(ExpObj)
 				 ->	true
 				 ;	assert(consult_file_loaded(ExpObj))
-				)
+				),
+				load_exec(Obj, Mod)
 			 ;     /* Compilation not required */
   			       (Ensure_loaded==true ->  
 			                (consult_file_loaded(ExpObj)
@@ -168,15 +168,14 @@ reconsult0(Path, Options, Ensure_loaded) :-
 					 )
 			         ;	/* Ensure_loaded == false */
 				       check_one_thread_w_override,
-				       load_exec(Obj, Mod),
 				       (consult_file_loaded(ExpObj)
-				        ->	true
-				       ;	assert(consult_file_loaded(ExpObj))
-					)
+				        ->     true
+					;      assert(consult_file_loaded(ExpObj))
+				       ),
+				       load_exec(Obj, Mod)
 				)
 			)
 		)
-	    
          ;	existence_error('file/module',Path,consult/1,1)
 	).
 
@@ -828,6 +827,7 @@ ensure_loaded(File,Dir):-
 	check_nonvar(Dir,ensure_loaded/2,1),
 	ensure_loaded_novarcheck(File,Dir).
 
+:- index ensure_loaded_novarcheck/2-2.
 ensure_loaded_novarcheck(File,dyn) :- !, ensure_dyn_loaded(File,1).
 ensure_loaded_novarcheck(File,dyna) :- !, ensure_dyn_loaded(File,0).
 ensure_loaded_novarcheck(File,dync) :- !, ensure_dync_loaded(File,1).
