@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.112 2007/12/21 10:41:40 ruim Exp $
+** $Id: subp.c,v 1.113 2008/01/30 16:03:03 dwarren Exp $
 ** 
 */
 
@@ -844,7 +844,8 @@ xsbBool startInterruptThread(SOCKET intSocket)
 
 
 extern long if_profiling;
-extern long prof_flag;
+extern long prof_gc_count;
+extern int garbage_collecting;
 
 void setProfileBit(void *place_holder) {
   long unhandled = 0;
@@ -853,11 +854,15 @@ void setProfileBit(void *place_holder) {
 #endif
   while (TRUE) {
     if (if_profiling) {
-      if (asynint_val & PROFINT_MARK) {
-	unhandled++;
-	if (!(unhandled % 500)) printf("Unhandled profile ints: %ld\n",unhandled);
+      if (garbage_collecting) {
+	prof_gc_count++;
+      } else {
+	if (asynint_val & PROFINT_MARK) {
+	  unhandled++;
+	  if (!(unhandled % 500)) printf("Unhandled profile ints: %ld\n",unhandled);
+	}
+	asynint_val |= PROFINT_MARK;
       }
-      asynint_val |= PROFINT_MARK;
     }
 #ifdef WIN_NT
     Sleep(10);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.194 2008-09-15 18:47:45 dwarren Exp $
+** $Id: emuloop.c,v 1.195 2008-10-15 16:41:53 dwarren Exp $
 ** 
 */
 
@@ -372,7 +372,6 @@ extern int is_proper_list(Cell term);
 extern int is_most_general_term(Cell term);
 
 extern void log_prog_ctr(byte *);
-extern long prof_flag;
 
 #ifdef DEBUG_VM
 extern void debug_inst(CTXTdeclc byte *, CPtr);
