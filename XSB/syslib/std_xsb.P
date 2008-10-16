@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.107 2008/07/25 20:58:09 tswift Exp $
+** $Id: std_xsb.P,v 1.108 2008/10/08 20:46:19 tswift Exp $
 ** 
 */
 
@@ -100,6 +100,7 @@ standard_metapredicate(call_cleanup,2,1).
 standard_metapredicate(call_cleanup,2,2).
 standard_symbol(callable, 1, standard).
 standard_metapredicate(callable,1,1).
+standard_symbol(char_code,2,standard).
 standard_symbol(current_input_port, 1, curr_sym).
 standard_symbol(current_output_port, 1, curr_sym).
 standard_symbol(catch, 3, standard).
