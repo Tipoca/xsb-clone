@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.195 2008-10-15 16:41:53 dwarren Exp $
+** $Id: emuloop.c,v 1.196 2008-10-16 17:57:58 dwarren Exp $
 ** 
 */
 
@@ -2573,8 +2573,6 @@ argument positions.
       break;
 #endif
     default:
-      /* xsb_dbgmsg("loading module %s for %s/%d\n",
-	 get_name(get_data(psc)),get_name(psc),get_arity(psc)); */
       bld_cs(reg+1, build_call(CTXTc psc));   /* put call-term in r1 */
       /* get psc of undef handler */
       psc = (Psc)pflags[MYSIG_UNDEF+INT_HANDLERS_FLAGS_START];
