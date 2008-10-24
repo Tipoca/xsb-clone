@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.319 2008-10-16 17:57:58 dwarren Exp $
+** $Id: builtin.c,v 1.320 2008-10-24 15:50:32 dwarren Exp $
 ** 
 */
 
@@ -3137,7 +3137,7 @@ void retrieve_prof_table(CTXTdecl) { /* r2: +NodePtr, r3: -p(PSC,ModPSC,Cnt), r4
     follow(hreg++) = makeint(psc_profile_count_table[i].prof_count);
     apsc = psc_profile_count_table[i].psc;
     bld_oint(pscptrloc,(Integer)(apsc));
-    bld_oint(modpscptrloc,(Integer)(apsc->data));
+    bld_oint(modpscptrloc,(Integer)(isstring(get_data(apsc))?global_mod:get_data(apsc)));
     ctop_int(CTXTc 4,i+1);
   } else if (i == psc_profile_count_num) {
     follow(hreg++) = makeint(prof_gc_count);
