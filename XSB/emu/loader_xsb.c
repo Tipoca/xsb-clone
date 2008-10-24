@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.78 2008-10-16 17:57:58 dwarren Exp $
+** $Id: loader_xsb.c,v 1.79 2008-10-24 18:55:20 dwarren Exp $
 ** 
 */
 
@@ -965,7 +965,11 @@ static byte *loader1(CTXTdeclc FILE *fd, char *filename, int exp)
 	  xsb_exit(CTXTc message);
 	}
 	if (isstring(get_data(ptr->psc_ptr)) &&
+#if defined(WIN_NT) || defined(CYGWIN)
+	    stricmp(string_val(get_data(ptr->psc_ptr)),filename)) {
+#else
 	    strcmp(string_val(get_data(ptr->psc_ptr)),filename)) {
+#endif
 	  xsb_warn("Redefining: %s/%d from file %s; Previously defined from file %s",
 		   get_name(ptr->psc_ptr),get_arity(ptr->psc_ptr),
 		   filename, string_val(get_data(ptr->psc_ptr)));
