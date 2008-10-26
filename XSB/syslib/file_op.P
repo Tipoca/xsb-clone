@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.P,v 1.35 2007/10/28 23:14:53 tswift Exp $
+** $Id: file_op.P,v 1.36 2008/03/16 22:19:28 tswift Exp $
 ** 
 */
 
@@ -367,8 +367,8 @@ add_opaque(Spec) :-
 /*======================================================================*/
 /* mpa_to_skel(+MPAorSkel,-Skel) converts M:P/A or P/A to Skel 		*/
 /*======================================================================*/
-% TLS: added some checking here, as I think silently failing cfan be dangerous.
 
+% TLS: added some checking here, as I think silently failing can be dangerous.
 mpa_to_skel(Mod:P/A,Skel) :-
 	atom(Mod),atom(P),integer(A),!,
 	psc_insert(P,A,PSC,Mod),
