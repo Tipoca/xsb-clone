@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.196 2008-10-16 17:57:58 dwarren Exp $
+** $Id: emuloop.c,v 1.197 2008-10-26 15:26:15 tswift Exp $
 ** 
 */
 
@@ -3322,6 +3322,11 @@ extern pthread_mutexattr_t attr_rec_gl ;
 	set_xsbinfo_dir();
 
 	current_inst = inst_begin_gl;   // current_inst is thread-specific.
+
+#ifdef MULTI_THREAD
+	init_message_queue(&mq_table[0], MQ_CHECK_FLAGS);
+	init_message_queue(&mq_table[max_threads_glc], MQ_CHECK_FLAGS);
+#endif
 
 	return(0);
 
