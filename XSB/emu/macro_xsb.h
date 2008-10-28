@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.67 2008-06-05 18:15:12 ruim Exp $
+** $Id: macro_xsb.h,v 1.68 2008-10-28 12:37:29 tswift Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@
  *                   ===========================
  *
  *    These records are used to hold pointers to abolished call and
- *    answer tries for table garbage collection.  These are effective
+ *    answer tries for table garbage collection.  These are effectively
  *    a union type, as they can hold deleted subgoals as well as
  *    deleted predicates.
  */     
@@ -222,7 +222,7 @@ extern int assert_code_to_buff_p(prolog_term);
 /*===========================================================================*/
 
 /*             
- * 		     Deleted Clause Frames`
+ * 		     Deleted Clause Frames
  *                   ===========================
  *
  *    These records are used to hold pointers to abolished dynamic
@@ -495,8 +495,6 @@ struct ascc_edge {
 
 #define DELAYED		-1
 
-/*----------------------------------------------------------------------*/
-
 struct completion_stack_frame {
   VariantSF subgoal_ptr;
   int     _level_num;
@@ -583,8 +581,6 @@ struct completion_stack_frame {
 /*----------------------------------------------------------------------*/
 
 #include "slgdelay.h"
-
-/*----------------------------------------------------------------------*/
 
 enum SubgoalFrameType {
   SHARED_VARIANT_PRODUCER_SFT        = 0x06,   /* binary 0110 */
