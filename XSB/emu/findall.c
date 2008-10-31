@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.46 2008-10-23 17:33:54 tswift Exp $
+** $Id: findall.c,v 1.47 2008-10-31 21:50:39 dwarren Exp $
 ** 
 */
 
@@ -524,6 +524,7 @@ static int findall_copy_template_to_chunk(CTXTdeclc Cell from, CPtr to, CPtr *h)
 		findall_trail(CTXTc pfirstel,(Cell)pfirstel);
 		*to = (Cell)to ;
 		*pfirstel = makelist((CPtr)to);
+		size += 2;
 	      }
 	    else
 	      {
