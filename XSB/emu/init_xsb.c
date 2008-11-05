@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.149 2008-07-25 20:56:50 tswift Exp $
+** $Id: init_xsb.c,v 1.150 2008-11-05 18:26:45 tswift Exp $
 ** 
 */
 
@@ -1116,10 +1116,11 @@ void init_thread_structures(CTXTdecl)
   th->is_deadlock_leader = FALSE ;
 #endif
 #ifdef CONC_COMPL
-  pthread_cond_init( &th->cond_var, NULL );
   th->completing = FALSE;
   th->last_ans = 1;
+  pthread_cond_init( &th->cond_var, NULL );
 #endif
+  th->cond_var_ptr = NULL;
 }
 
 void cleanup_thread_structures(CTXTdecl)
