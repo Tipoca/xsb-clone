@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.37 2007-11-18 18:53:00 evansbj Exp $
+** $Id: memory_xsb.h,v 1.38 2008-11-05 22:47:16 dwarren Exp $
 ** 
 */
 
@@ -150,6 +150,7 @@ extern long pspacesize[NUM_CATS_SPACE];
 extern void *mem_alloc(unsigned long, int);
 extern void *mem_alloc_nocheck(unsigned long, int);
 extern void *mem_calloc(unsigned long, unsigned long, int);
+extern void *mem_calloc_nocheck(unsigned long, unsigned long, int);
 extern void *mem_realloc(void *, unsigned long, unsigned long, int);
 extern void *mem_realloc_nocheck(void *, unsigned long, unsigned long, int);
 extern void mem_dealloc(void *, unsigned long, int);

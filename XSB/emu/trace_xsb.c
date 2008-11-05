@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.33 2007/08/08 17:50:52 dwarren Exp $
+** $Id: trace_xsb.c,v 1.34 2008/08/20 19:47:58 tswift Exp $
 ** 
 */
 
@@ -111,7 +111,7 @@ void perproc_stat(void)
  * time of 'time_start'.
  */
 
-static char *pspace_cat[NUM_CATS_SPACE] =
+char *pspace_cat[NUM_CATS_SPACE] =
   {"atom        ","string      ","asserted    ","compiled    ",
    "foreign     ","table       ","findall     ","profile     ",
    "mt-private  ","buffer      ","gc temp     ","hash        ",

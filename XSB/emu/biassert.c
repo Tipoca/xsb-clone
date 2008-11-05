@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.167 2008-09-08 13:52:44 dwarren Exp $
+** $Id: biassert.c,v 1.168 2008-11-05 22:47:15 dwarren Exp $
 ** 
 */
 
@@ -2821,9 +2821,14 @@ static int really_delete_clause(CTXTdeclc ClRef Clause)
 	      if (sob && ClRefNumNonemptyBuckets(sob) == 0) { 
                 /* if emptied bucket, decrement count; if all empty, reclaim SOB */
 		if (!determine_if_sob_safe_to_delete((ClRef) sob)) {
+		  pb oldaddr;
 		  printf("!!! deleting improper sob %p\n",sob);
 		  ClRefSOBOpCode(sob) = fail;
 		  print_clref_sob(sob);
+		  /* memory lost, but try to release what is not needed. */
+		  oldaddr = (pb)ClRefAddr(sob);
+		  if (oldaddr != mem_realloc((pb)ClRefAddr(sob),ClRefSize(sob),4*sizeof(long),ASSERT_SPACE))
+		    xsb_exit(CTXTc "realloc error: not leaving address unchanged when shrinking!");
 		} else {
 		xsb_dbgmsg((LOG_RETRACT,"deleting sob - %p", sob ));
 		delete_from_sobchain(CTXTc sob) ;

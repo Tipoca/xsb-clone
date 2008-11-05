@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.25 2007-08-08 17:50:51 dwarren Exp $
+** $Id: struct_manager.c,v 1.26 2008-11-05 22:47:16 dwarren Exp $
 ** 
 */
 
@@ -82,7 +82,7 @@ void smAllocateBlock(Structure_Manager *pSM) {
   void *pNewBlock;
 
   //  smPrint(*pSM,"before block allocation");
-  pNewBlock = mem_calloc(SM_NewBlockSize(*pSM),1,TABLE_SPACE);  // counted in table-stats
+  pNewBlock = mem_calloc_nocheck(SM_NewBlockSize(*pSM),1,TABLE_SPACE);  // counted in table-stats
   if ( IsNULL(pNewBlock) )
     xsb_abort("[smAllocateBlock] Out of memory in allocation of %s block\n",
 	      SM_StructName(*pSM));

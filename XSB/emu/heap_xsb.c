@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.73 2008-10-15 16:41:53 dwarren Exp $
+** $Id: heap_xsb.c,v 1.74 2008-11-05 22:47:16 dwarren Exp $
 ** 
 */
 
@@ -478,11 +478,11 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
 	  new_heap_bot = (CPtr)realloc(heap_bot, new_size_in_bytes);
 	}
 	if (new_heap_bot == NULL) {
-	  xsb_mesg("Not enough core to resize the Heap and Local Stack!");
+	  xsb_mesg("Not enough core to resize the Heap and Local Stack! (%d)",new_size_in_bytes);
 	  return 1; /* return an error output -- will be picked up later */
 	}
       } else {
-	xsb_mesg("Not enough core to resize the Heap and Local Stack!");
+	xsb_mesg("Not enough core to resize the Heap and Local Stack! (%d)",new_size_in_bytes);
 	return 1; /* return an error output -- will be picked up later */
       }
     }

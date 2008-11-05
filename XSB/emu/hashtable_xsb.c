@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hashtable_xsb.c,v 1.12 2007-08-08 17:50:50 dwarren Exp $
+** $Id: hashtable_xsb.c,v 1.13 2008-11-05 22:47:16 dwarren Exp $
 ** 
 */
 
@@ -118,8 +118,6 @@ xsbBucket *search_bucket(CTXTdeclc Cell name,
   if (!bucket) { /* i.e., it is not a top bucket */
     bucket = (xsbBucket *)mem_calloc(1,table->bucket_size,HASH_SPACE);
     //printf("calloc bucket, size: %d\n",table->bucket_size);
-    if (!bucket)
-      xsb_exit(CTXTc "Out of Memory: Can't allocate hash bucket");
     prev->next = bucket;
     /* NOTE: not necessary to nullify bucket->next because of calloc() */
   }
@@ -133,8 +131,6 @@ static void init_hashtable(CTXTdeclc xsbHashTable *table)
   /* calloc zeroes the allocated space; clients rely on this */
   table->table = (byte *)mem_calloc(table->length,table->bucket_size,HASH_SPACE);
   //printf("calloc table, size: %d\n",table->length*table->bucket_size);
-  if (!table->table)
-    xsb_exit(CTXTc "Out of Memory: Can't create hash table");
   table->initted = TRUE;
 }
 
