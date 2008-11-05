@@ -11,7 +11,7 @@ test :- num(N), number_codes(N, L), number_codes(Num, L),
 	integer(Num), writeln(created_integer(Num)), fail.
 test :- num(N), number_codes(N, L), number_codes(Num, L),
 	float(Num), writeln(created_float(Num)), fail.
-test :- failing(List), number_codes(_, List), writeln(bug(List)), fail.
+test :- failing(List), catch(number_codes(_, List),_E,fail), writeln(bug(List)), fail.
 
 %% convert 3-digit exponents codes to 2 digits for windows
 fix_float_codes(Inp,Num0,Num) :-
@@ -28,7 +28,7 @@ test :- num(N), number_chars(N, L), number_chars(Num, L),
 	integer(Num), writeln(created_integer(Num)), fail.
 test :- num(N), number_chars(N, L), number_chars(Num, L),
 	float(Num), writeln(created_float(Num)), fail.
-test :- failing2(List), number_chars(_, List), writeln(bug(List)), fail.
+test :- failing2(List), catch(number_chars(_, List),_E,fail), writeln(bug(List)), fail.
 
 %% convert 3-digit exponents digits to 2 chars for windows.
 fix_float_chars(Inp,Num0,Num) :-
@@ -44,7 +44,7 @@ test :- num(N), number_digits(N, L), number_digits(Num, L),
 	integer(Num), writeln(created_integer(Num)), fail.
 test :- num(N), number_digits(N, L), number_digits(Num, L),
 	float(Num), writeln(created_float(Num)), fail.
-test :- failing3(List), number_digits(_, List), writeln(bug(List)), fail.
+test :- failing3(List), catch( number_digits(_, List),_E,fail),writeln(bug(List)), fail.
 
 %% convert 3-digit exponents digits to 2 digits for windows.
 fix_float_digs(Inp,Num0,Num) :-
