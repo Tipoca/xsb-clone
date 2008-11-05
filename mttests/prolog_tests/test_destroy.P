@@ -6,9 +6,12 @@
 :- import message_queue_destroy/1 from mutex_xsb.
 :- import usleep/1 from thread.
 
-test:- test1, test2, test3, test4, test5, test6.
+test:- test1, test2, test2pr, test3, test4, test5, test6, test7.
 
-% test of cancelling a thread while it is waiting on a queue.
+%================= 
+% test of cancelling a thread while it is waiting on
+% a public queue.
+
 test1 :- message_queue_create(M),
 %     thread_self(S),
      thread_create(q1(M),T,[]),
@@ -31,7 +34,7 @@ q1(M) :-
 loop :- loop.
 
 %================= 
-% test of (maybe) sending to a destroyed queue.
+% test of (maybe) sending to a destroyed public queue.
 % In this test q2_1 may succeed, or may throw an existence
 % error, so I'm just printing out the fact that it succeeds.
 
@@ -56,8 +59,25 @@ q2_1(M):-
         thread_send_message(M,ola2(S)).
 %	writeln(send2(S)).
 
+%================= 
+% test of (maybe) sending to a destroyed private queue.
+
+test2pr :- 
+	catch(main2pr,error(existence_error(_,_),_,_),
+	writeln(test2pr_existence_error_caught)).
+
+main2pr :- 
+     thread_self(S),
+     thread_create(q2pr(S),T1,[]),
+     thread_get_message('Im alive'),
+     sleep(1),
+     thread_send_message(T1,'How about now').
+    
+q2pr(Id) :- 
+	thread_send_message(Id,'Im alive').
+
 %===================
-% test of reading from a destroyed queue.
+% test of reading from a destroyed public queue.
 
 :- import thread_create/3, thread_join/2, thread_cancel/1 from thread.
 :- import message_queue_create/1, thread_get_message/2 from mutex_xsb.
@@ -75,13 +95,16 @@ test3 :- message_queue_create(M),
      writeln(test3_existence_error_ok).
 
 q3(M) :- 
-	catch(q3_1(M),error(existence_error(_,_),_,_),true).
+	catch(q3_1(M),error(existence_error(_,_),_,_),writeln(queue_existence_error_caught)).
 
 q3_1(M) :- 
         thread_self(_S),
 %        writeln(started(S)),
         thread_get_message(M,T),
         writeln(got(T)).
+
+%===================
+% Test of cancelling a thread in execution
 
 test4:- 
      thread_self(Tid),
@@ -98,6 +121,9 @@ test4_1(Tid):-
 
 :- import thread_signal/2 from thread.
 :- import thread_get_message/1 from mutex_xsb.
+
+%===================
+% Test of signalling a thread in execution
 
 test5:- 
      thread_self(Tid),
@@ -119,6 +145,9 @@ loop(N):- N1 is N - 1,
 %	writeln(N),
 	loop(N1).
 
+%===================
+% Test of signalling a thread (when it wakes from sleep)
+
 test6:- 
      thread_self(Tid),
      thread_create(test6_1(Tid),T1,[]),
@@ -134,6 +163,9 @@ test6_1(Tid):-
      sleep(1),
      writeln(test_6_child_finito).
 	
+%================= 
+% test of cancelling main thread
+
 test7:- 
 	catch(thread_cancel(main),
 	      error(permission_error(cancel,main_thread,_),_,_),
