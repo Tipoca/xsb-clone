@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: thread.P,v 1.38 2008/04/27 15:25:57 tswift Exp $
+** $Id: thread.P,v 1.39 2008/07/17 17:41:34 tswift Exp $
 ** 
 */
 
@@ -329,11 +329,11 @@ set_xsb_ready :-
 	thread_request( SET_XSB_READY, _,_,_, _, _, _, _,_).
 
 usleep(X) :-
-	thread_request( XSB_USLEEP, X,_,_, _, _, _, _,_).
+	thread_request( XSB_USLEEP,X ,_,_, _, _, _, _,_).
 
 thread_sleep(Seconds) :-
-	Microseconds is Seconds * 1000000,
-	thread_request( XSB_USLEEP, Microseconds,_,_, _, _, _, _,_).
+%	Microseconds is Seconds * 1000000,
+	thread_request( XSB_USLEEP, Seconds,_,_, _, _, _, _,_).
 
 
 /* ==================================================================  */
