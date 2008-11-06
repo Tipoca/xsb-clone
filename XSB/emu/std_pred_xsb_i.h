@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.43 2008-09-05 22:08:47 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.44 2008-11-06 00:05:16 tswift Exp $
 ** 
 */
 
@@ -242,7 +242,7 @@ inline static xsbBool univ_builtin(CTXTdecl)
 	    } else {
 	      hreg = hreg-1;	/* restore hreg */
 	      if (arity > MAX_ARITY)
-		xsb_representation_error(CTXTc "Greater than MAX_ARITY","=../2",2);
+		xsb_representation_error(CTXTc "Greater than MAX_ARITY",arity,"=../2",2);
 	      else {
 		if (isnonvar(list)) 
 		  xsb_type_error(CTXTc "list",list,"=../2",2);  /* X =.. [foo|Y]. */
@@ -319,7 +319,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
   Cell list, new_list;
   CPtr top = 0;
   char *call_name = (call_type == ATOM_CODES ? "atom_codes/2" : "atom_chars/2");
-  char *elt_type = (call_type == ATOM_CODES ? "ASCII code" : "character");
+  char *elt_type = (call_type == ATOM_CODES ? "character code" : "character");
 
   term = ptoc_tag(CTXTc 1);
   list = ptoc_tag(CTXTc 2);
@@ -353,9 +353,10 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	  c = *string_val(heap_addr);
 
 	if (c < 0 || c > 255) {
-	  err_handle(CTXTc RANGE, 2, call_name, 2, "ASCII code", heap_addr);
+	  //	  err_handle(CTXTc RANGE, 2, call_name, 2, "ASCII code", heap_addr);
 	  mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
-	  return FALSE;	/* fail */
+	  xsb_representation_error(CTXTc "character code",heap_addr,call_name,2);
+	  return FALSE;	/* keep compiler happy */
 	}
 	if (atomname >= atomnamelast) {
 	  atomnameaddr = (char *)mem_realloc(atomnameaddr,atomnamelen,(atomnamelen << 1),LEAK_SPACE);
@@ -428,8 +429,8 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
   CPtr top = 0;
   char *call_name =
     (call_type == NUMBER_CODES ?
-     "number_codes" : (call_type == NUMBER_DIGITS?
-		       "number_digits" : "number_chars"));
+     "number_codes/2" : (call_type == NUMBER_DIGITS?
+		       "number_digits/2" : "number_chars/2"));
   char *elt_type =
     (call_type == NUMBER_CODES ?
      "integer" : (call_type == NUMBER_DIGITS? "digit" : "digit atom"));
@@ -472,7 +473,8 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
 	}
 
 	if (c < 0 || c > 255) {
-	  err_handle(CTXTc RANGE, 2, call_name, 2, "ASCII code", heap_addr);
+	  xsb_representation_error(CTXTc "character code",heap_addr,call_name,2);
+	  //	  err_handle(CTXTc RANGE, 2, call_name, 2, "ASCII code", heap_addr);
 	  return FALSE;	/* fail */
 	}
 	if (StringLoc > 200) return FALSE;
@@ -501,7 +503,9 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
 	{
 	  bind_boxedfloat((CPtr)(term), float_temp);
 	}
-      else return FALSE;	/* fail */
+      // TLS: changed to fail to syntax error to conform w. ISO.  
+      else xsb_syntax_error_non_compile(CTXTc list,call_name,2);
+      //            else return FALSE;	/* fail */
     }
   } else {	/* use is: NUMBER --> CHARS/CODES/DIGITS */
     if (isinteger(term)) {
