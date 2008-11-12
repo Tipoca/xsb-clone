@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.H,v 1.43 2008/04/03 22:43:05 tswift Exp $
+** $Id: x_interp.H,v 1.44 2008/04/07 00:25:47 tswift Exp $
 ** 
 */
 
@@ -35,7 +35,7 @@
 :- import file_read/3, vv/2 from xsb_read.
 %% These are explicitly imported because they are used early on, 
 %% before XSB is fully bootstrapped.
-:- import abort/0, call/1, call_c/1, call_expose/1, catch/3, goal_cut_trans/3,
+:- import abort/0, call/1, call_c/1, call_expose/1, catch/3, call_goal_cut_trans/3,
    atom_codes/2, seeing/1, telling/1, see/1, tell/1, seen/0, told/0,
    gc_tables/1,gc_dynamic/1,
    handle_interrupts/1

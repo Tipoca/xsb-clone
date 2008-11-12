@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.62 2008/06/02 21:24:38 dwarren Exp $
+** $Id: x_interp.P,v 1.64 2008/10/16 23:51:50 tswift Exp $
 ** 
 */
 
@@ -197,7 +197,7 @@ call_query(_) :-
 %% hidden version of call
 '_$call'(Y) :- 
 	'_$savecp'(C), 
-	goal_cut_trans(Y,X,C),
+	call_goal_cut_trans(Y,X,C),
 	call_expose(X).
 
 %% first argument is an open ended list
