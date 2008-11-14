@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.51 2008-10-08 20:44:27 tswift Exp $
+** $Id: system_xsb.c,v 1.52 2008-11-14 00:34:04 tswift Exp $
 ** 
 */
 
@@ -66,7 +66,7 @@
 #include "thread_defs_xsb.h"
 #include "thread_xsb.h"
 
-#define MAX_CMD_LEN 1024
+#define MAX_CMD_LEN 8192
 
 static int xsb_spawn (char *prog, char *arg[], int callno,
 		      int pipe1[], int pipe2[], int pipe3[],
@@ -772,6 +772,10 @@ static void concat_array(char *array[], char *separator,
     *current_pos='\0';
     space_left -= separator_size;
     idx++;
+  }
+  if (space_left < 0) {
+    xsb_resource_error(CTXTc "spawn_process/shell buffer",
+		       "spawn_process/shell",5) ;
   }
 }
 
