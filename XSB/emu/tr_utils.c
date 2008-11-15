@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.163 2007/12/27 00:01:46 tswift Exp $
+** $Id: tr_utils.c,v 1.164 2008/10/16 17:57:58 dwarren Exp $
 ** 
 */
 
@@ -1113,7 +1113,7 @@ void delete_trie(CTXTdeclc BTNptr iroot) {
 	  }
 	}
       } else
-	printf("null node");
+	fprintf(stddbg,"null node");
       break;
     }
   }
@@ -2635,7 +2635,7 @@ int find_answers_for_subgoal(CTXTdeclc VariantSF subgoal) {
 	  }
 	}
       } else
-	printf("null node");
+	fprintf(stddbg,"null node");
       break;
     }
   }
