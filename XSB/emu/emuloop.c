@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.197 2008-10-26 15:26:15 tswift Exp $
+** $Id: emuloop.c,v 1.198 2008-11-25 18:40:07 dwarren Exp $
 ** 
 */
 
@@ -370,6 +370,7 @@ extern Pair build_call(CTXTdeclc Psc);
 
 extern int is_proper_list(Cell term);
 extern int is_most_general_term(Cell term);
+extern int is_number_atom(Cell term);
 
 extern void log_prog_ctr(byte *);
 
@@ -2942,6 +2943,9 @@ argument positions.
       break;
     case NONVAR_TEST:
       jump_cond_fail(isnonvar(op2) && !isattv(op2));
+      break;
+    case IS_NUMBER_ATOM_TEST:
+      jump_cond_fail(is_number_atom(op2));
       break;
     default: 
       xsb_error("Undefined jumpcof condition");

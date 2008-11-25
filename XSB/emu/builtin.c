@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.321 2008-10-24 18:55:20 dwarren Exp $
+** $Id: builtin.c,v 1.322 2008-11-25 18:40:07 dwarren Exp $
 ** 
 */
 
@@ -860,6 +860,28 @@ int is_most_general_term(Cell term)
   }
 }
 
+int is_number_atom(Cell term) {
+  char hack_char;	
+  long c;
+  
+  XSB_Deref(term);
+  if (!isstring(term)) return FALSE;
+  if (sscanf(string_val(term), "%ld%c", &c, &hack_char) == 1) {
+    return TRUE;
+  } else {
+    Float float_temp;
+    //TODO: Refactor the below few lines of code once the "Floats are always double?" 
+    //situation is resolved.
+#ifndef FAST_FLOATS
+    if (sscanf(string_val(term), "%lf%c", &float_temp, &hack_char) == 1)
+#else
+      if (sscanf(string_val(term), "%f%c", &float_temp, &hack_char) == 1)
+#endif
+	return TRUE;
+      else return FALSE;	/* fail */
+  }
+}
+
 /* --------------------------------------------------------------------	*/
 
 #include "term_psc_xsb_i.h"
@@ -1097,6 +1119,7 @@ void init_builtin_table(void)
   set_builtin_table(NUMBER_CODES, "number_codes");
   set_builtin_table(IS_CHARLIST, "is_charlist");
   set_builtin_table(NUMBER_DIGITS, "number_digits");
+  set_builtin_table(IS_NUMBER_ATOM, "is_number_atom");
 
   set_builtin_table(PUT, "put");
   set_builtin_table(TAB, "tab");

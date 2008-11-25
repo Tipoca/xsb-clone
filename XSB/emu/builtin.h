@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.85 2008-02-22 03:39:10 dwarren Exp $
+** $Id: builtin.h,v 1.86 2008-11-25 18:40:07 dwarren Exp $
 ** 
 */
 
@@ -232,6 +232,7 @@
 #define NUMBER_CODES		212
 #define IS_CHARLIST		213
 #define NUMBER_DIGITS		214
+#define IS_NUMBER_ATOM		215
 
 #define SORT			220
 #define KEYSORT			221
@@ -298,6 +299,7 @@
 #define VAR_TEST		11
 #define NONVAR_TEST		12
 #define DIRECTLY_CALLABLE_TEST  13
+#define IS_NUMBER_ATOM_TEST	14
 
 #define PLUS_FUNCT 1
 #define MINUS_FUNCT 2
