@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.159 2008/11/06 00:10:18 tswift Exp $
+** $Id: standard.P,v 1.160 2008/11/12 21:56:52 dwarren Exp $
 ** 
 */
 
@@ -507,6 +507,8 @@ callable(X) :- callable(X).
 is_list(X) :- is_list(X).
 
 is_most_general_term(X) :- is_most_general_term(X).
+
+is_number_atom(X) :- is_number_atom(X).
 
 % A term X is a proper hilog term if it somewhere 
 % contains a subterm that is not a prolog term.
