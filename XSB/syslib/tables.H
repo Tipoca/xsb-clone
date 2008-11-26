@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.37 2007/12/24 19:18:57 tswift Exp $
+** $Id: tables.H,v 1.38 2008/06/02 21:24:38 dwarren Exp $
 ** 
 */
 
@@ -73,8 +73,7 @@
      from assert.
 :- import (=..)/2, abort/1, call/1, functor/3, is_attv/1, tcall/1
      from standard.
-:- import throw/1 from standard.
-:- import domain_error/5, check_nonvar/3, type_error/4 from error_handler.
+   :- import domain_error/5, check_nonvar/3, type_error/4, table_error/1 from error_handler.
 
 :- import abolish_table_info/0, delete_attributes/1, table_inspection_function/5,
    term_psc/2, term_new/2 from machine.

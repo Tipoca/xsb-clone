@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.48 2008/03/07 23:21:51 tswift Exp $
+** $Id: tables.P,v 1.49 2008/03/22 19:23:17 tswift Exp $
 ** 
 */
 
@@ -158,7 +158,6 @@ tnot(Subgoal) :-
 	; abort(['Illegal (untabled?) subgoal to ''t not''/1: ',Subgoal])
 	).
 
-
 t_not(Subgoal,PredType,PTCP) :-
 	get_producer_call(Subgoal,ProducerSF,AnswerTmplt),
 	is_incomplete(ProducerSF,PTCP),
@@ -167,7 +166,6 @@ t_not(Subgoal,PredType,PTCP) :-
 	  ;  fail_if(trie_get_return(ProducerSF,AnswerTmplt)),
 	     lrd_success(ProducerSF,Subgoal)
 	 ).
-
 
 %% skolemized tnot.  Variables temporarily changed to ground and tnot 
 %% call is made.  Should give existential semantics to nonground negative
@@ -485,11 +483,11 @@ abolish_table_call_internal(Call,Action) :-
 	get_calls(Call,Handle,_Template),
 	table_state(Handle,PredType,_CallType,AnsSetStatus),
 	(   AnsSetStatus == undefined
-	->  throw(error(table_error(abolishing_undefined_call)))
+	->  table_error(['abolishing undefined tabled call ',Call])
 	;   AnsSetStatus == incomplete
-	->  throw(error(table_error(abolishing_incomplete_call)))
+	->  table_error(['abolishing incomplete tabled call ',Call])
 	;   PredType == subsumptive
-	->  throw(error(table_error(abolishing_subsumptive_call)))
+	->  table_error(['abolishing subsumptive tabled call ',Call])
 	;   abolish_table_call_bi(Handle,Action)
 	),
 	fail.
