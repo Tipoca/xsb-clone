@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_insert.c,v 1.20 2007-08-08 17:50:53 dwarren Exp $
+** $Id: tst_insert.c,v 1.21 2008-12-31 23:44:42 tswift Exp $
 ** 
 */
 
@@ -532,6 +532,11 @@ inline static  void update_timestamps(TSTNptr tstLeaf, TSTNptr tstRoot,
  * 'maintainTSI' -- these need to be maintained during insertion.
  */
 
+/* TLS??? */
+#ifndef MULTI_THREAD
+extern int AnsVarCtr;
+#endif
+
 TSTNptr tst_insert(CTXTdeclc TSTNptr tstRoot, TSTNptr lastMatch, Cell firstSymbol,
 		   xsbBool maintainTSI) {
 
@@ -566,6 +571,7 @@ TSTNptr tst_insert(CTXTdeclc TSTNptr tstRoot, TSTNptr lastMatch, Cell firstSymbo
   update_timestamps(lastMatch,tstRoot,maintainTSI);
   MakeLeafNode(lastMatch);
   TN_UpgradeInstrTypeToSUCCESS(lastMatch,TrieSymbolType(symbol));
+  AnsVarCtr = AnsVarCtr + std_var_num;
   return lastMatch;
 }
 

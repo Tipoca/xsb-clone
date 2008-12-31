@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.40 2008-11-05 22:47:16 dwarren Exp $
+** $Id: bineg_xsb_i.h,v 1.41 2008-12-31 23:44:42 tswift Exp $
 ** 
 */
 
@@ -58,6 +58,10 @@ case SLG_NOT: {
 }
 
 /*----------------------------------------------------------------------*/
+
+/* This case is obsolescent.  Leaving it around for a while just in
+   case there's a problem with well-founded call subsumption, but
+   let's hope it can be removed */
 
 case LRD_SUCCESS: {
 

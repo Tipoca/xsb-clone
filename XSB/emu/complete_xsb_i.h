@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.38 2008-09-26 20:32:01 tswift Exp $
+** $Id: complete_xsb_i.h,v 1.39 2008-12-31 23:44:42 tswift Exp $
 ** 
 */
 
@@ -187,6 +187,7 @@ XSB_Start_Instr(check_complete,_check_complete)
 	/* schedule return of answers from trie code */
 	SetupReturnFromLeader(CTXTc orig_breg, cs_ptr, subgoal);
 	lpcreg = (byte *) subg_ans_root_ptr(subgoal);
+	//	printf("finished completion");
 	XSB_Next_Instr();
       } else {  /* There are no answers to return */
 	reclaim_incomplete_table_structs(subgoal);

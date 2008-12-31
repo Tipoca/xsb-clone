@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.79 2008/06/08 22:10:04 ruim Exp $
+** $Id: slginsts_xsb_i.h,v 1.80 2008/09/26 20:32:01 tswift Exp $
 ** 
 */
 
@@ -143,6 +143,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 
   int incrflag = 0; /* for incremental evaluation */
 
+  gdb_dummy();
 #ifdef SHARED_COMPL_TABLES
   byte * inst_addr = lpcreg;
   int table_tid ;
@@ -868,7 +869,7 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
    * try to add this answer; it is a redundant one anyway...
    */
   if ((subgoal_space_has_been_reclaimed(producer_sf,producer_csf)) ||
-      (IsNonNULL(delayreg) && answer_is_junk(delayreg))) {
+      (IsNonNULL(delayreg) && answer_is_junk(CTXTc delayreg))) {
     Fail1;
     XSB_Next_Instr();
   }

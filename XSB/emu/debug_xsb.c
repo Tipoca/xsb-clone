@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.45 2007-09-28 19:38:56 tswift Exp $
+** $Id: debug_xsb.c,v 1.46 2008-12-31 23:44:42 tswift Exp $
 ** 
 */
 
@@ -553,7 +553,7 @@ void print_subgoal(CTXTdeclc FILE *fp, VariantSF subg)
 
 /*----------------------------------------------------------------------*/
 
-static void print_delay_element(CTXTdeclc FILE *fp, Cell del_elem)
+void print_delay_element(CTXTdeclc FILE *fp, Cell del_elem)
 {
   Psc  psc = 0;
   CPtr cptr;

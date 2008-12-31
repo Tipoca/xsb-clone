@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.322 2008-11-25 18:40:07 dwarren Exp $
+** $Id: builtin.c,v 1.323 2008-12-31 23:44:42 tswift Exp $
 ** 
 */
 
@@ -2291,7 +2291,7 @@ case WRITE_OUT_PROFILE:
     const int regAnsSetStatus = 4;   /* out: status (as INT) */
 
     int pred_type, goal_type, answer_set_status;
-    VariantSF goalSF, subsumerSF;
+    VariantSF goalSF = NULL, subsumerSF;
     Cell goalTerm;
 
     goalTerm = ptoc_tag(CTXTc regGoalHandle);
@@ -2316,7 +2316,7 @@ case WRITE_OUT_PROFILE:
 	subsumerSF = goalSF;
       pred_type = TIF_EvalMethod(subg_tif_ptr(subsumerSF));
     }
-    else {
+    else {   /* Regular term: Not SF ptr */
       Psc psc;
       TIFptr tif;
 
@@ -2399,6 +2399,7 @@ case WRITE_OUT_PROFILE:
     ctop_int(CTXTc regPredType, pred_type);
     ctop_int(CTXTc regGoalType, goal_type);
     ctop_int(CTXTc regAnsSetStatus, answer_set_status);
+    ctop_addr(5, goalSF);
     return TRUE;
   }
 
@@ -2879,7 +2880,7 @@ case WRITE_OUT_PROFILE:
     }
 
     case TABLE_INSPECTION_FUNCTION: {
-      table_inspection_function(CTXT);
+      return table_inspection_function(CTXT);
       break;
     }
 

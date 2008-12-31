@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.79 2008-11-06 00:05:16 tswift Exp $
+** $Id: error_xsb.c,v 1.80 2008-12-31 23:44:42 tswift Exp $
 ** 
 */
 
@@ -1135,8 +1135,8 @@ int unwind_stack(CTXTdecl)
    /* now find the corresponding breg */
    b = breg;
    while (cp_ereg(b) <= e) {
-     if (IS_TABLE_INSTRUC(*cp_pcreg(b))) 
-       tmp_compl_frm = subg_compl_stack_ptr(tcp_subgoal_ptr(b));
+     //     if (IS_TABLE_INSTRUC(*cp_pcreg(b))) 
+       //       tmp_compl_frm = subg_compl_stack_ptr(tcp_subgoal_ptr(b));
      b = cp_prevbreg(b);
    }
    if (IS_TABLE_INSTRUC(*cp_pcreg(b))) 
