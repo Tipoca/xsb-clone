@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.17 2006-09-20 14:56:54 tswift Exp $
+## $Id: testall.sh,v 1.18 2008-12-31 23:52:43 tswift Exp $
 ## 
 ##
 
@@ -110,6 +110,23 @@ for tst in $testlist ; do
 	rm -f core
     fi
     ./test.sh "$XEMU" "-e segfault_handler(warn). $options"
+    cd ..
+  fi
+done
+
+% also want to add delay and wfs
+default_subsumptive_testlist="neg_tests wfs_tests delay_tests"
+testlist=$default_subsumptive_testlist
+
+for tst in $testlist ; do
+  if member "$tst" "$excluded_tests" ; then
+    continue
+  else
+    cd $tst
+    if test -f core ; then
+	rm -f core
+    fi
+    ./stest.sh "$XEMU" "-e segfault_handler(warn). -S $options"
     cd ..
   fi
 done
