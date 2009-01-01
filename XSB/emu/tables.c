@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.61 2008-12-31 23:44:42 tswift Exp $
+** $Id: tables.c,v 1.62 2009-01-01 00:07:22 tswift Exp $
 ** 
 */
 
@@ -383,16 +383,6 @@ void table_call_search_incr(CTXTdeclc TabledCallInfo *call_info,
 
 
 
-
-
-
-
-
-
-
-
-
-
 /*=========================================================================*/
 
 /*
@@ -406,11 +396,6 @@ void table_call_search_incr(CTXTdeclc TabledCallInfo *call_info,
  * elements arranged from high to low memory.
  * Assumes that private/shared switch for SMs has been set.
  */
-
-/* TLS???*/
-#ifndef MULTI_THREAD
-extern int AnsVarCtr;
-#endif
 
 BTNptr table_answer_search(CTXTdeclc VariantSF producer, int size, int attv_num,
 			   CPtr templ, xsbBool *is_new) {

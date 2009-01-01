@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.18 2008-12-31 23:44:42 tswift Exp $
+** $Id: trie_lookup.c,v 1.19 2009-01-01 00:07:22 tswift Exp $
 ** 
 */
 
@@ -658,11 +658,6 @@ static void sub_trie_lookup_error(CTXTdeclc char *string) {
  * The search terminates once the first such subsuming path is
  * encountered.
  */
-
-/* TLS??? */
-#ifndef MULTI_THREAD
-extern int AnsVarCtr;
-#endif
 
 typedef enum Search_Strategy_Mode {
   MATCH_SYMBOL_EXACTLY, MATCH_WITH_TRIEVAR

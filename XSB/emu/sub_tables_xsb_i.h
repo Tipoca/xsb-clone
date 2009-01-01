@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.14 2008-12-31 23:44:42 tswift Exp $
+** $Id: sub_tables_xsb_i.h,v 1.15 2009-01-01 00:07:22 tswift Exp $
 ** 
 */
 
@@ -405,11 +405,6 @@ inline static  void *newAnswerSet(CTXTdeclc int n, TSTNptr Parent) {
  * answer if the set was originally empty, conditionally insert the
  * answer into the set, and indicate to the caller whether it is new.
  */
-
-/* TLS???*/
-#ifndef MULTI_THREAD
-extern int AnsVarCtr;
-#endif
 
 inline static
 TSTNptr subsumptive_answer_search(CTXTdeclc SubProdSF sf, int nTerms,

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_insert.c,v 1.21 2008-12-31 23:44:42 tswift Exp $
+** $Id: tst_insert.c,v 1.22 2009-01-01 00:07:22 tswift Exp $
 ** 
 */
 
@@ -531,11 +531,6 @@ inline static  void update_timestamps(TSTNptr tstLeaf, TSTNptr tstRoot,
  * If the TST contains Time-Stamp Indices -- as noted in the argument
  * 'maintainTSI' -- these need to be maintained during insertion.
  */
-
-/* TLS??? */
-#ifndef MULTI_THREAD
-extern int AnsVarCtr;
-#endif
 
 TSTNptr tst_insert(CTXTdeclc TSTNptr tstRoot, TSTNptr lastMatch, Cell firstSymbol,
 		   xsbBool maintainTSI) {

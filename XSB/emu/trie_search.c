@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_search.c,v 1.11 2008-12-31 23:44:42 tswift Exp $
+** $Id: trie_search.c,v 1.12 2009-01-01 00:07:22 tswift Exp $
 ** 
 */
 
@@ -181,11 +181,6 @@ BTNptr subsumptive_bt_search(CTXTdeclc BTNptr btRoot, int nTerms, CPtr termVecto
  * TSIs are being maintained for the given Time-Stamped Trie.  This
  * information is needed when the term set is inserted.
  */
-
-/* TLS??? */
-#ifndef MULTI_THREAD
-extern int AnsVarCtr;
-#endif
 
 TSTNptr subsumptive_tst_search(CTXTdeclc TSTNptr tstRoot, int nTerms, CPtr termVector,
 			       xsbBool maintainTSI, xsbBool *isNew) {
