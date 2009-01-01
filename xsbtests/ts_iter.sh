@@ -60,5 +60,5 @@ sh testsuite.sh -tag "dflt"  $XSBDIR
  
  cd ../../tests
  
- sh testsuite.sh -tag btc $XSBDIR
+ sh testsuite.sh -tag btc -exclude "wfs_tests_subsumption delay_tests_subsumption" $XSBDIR
  
