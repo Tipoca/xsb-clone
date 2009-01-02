@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.18 2008-12-31 23:52:43 tswift Exp $
+## $Id: testall.sh,v 1.19 2009-01-02 17:55:44 tswift Exp $
 ## 
 ##
 
@@ -119,7 +119,7 @@ default_subsumptive_testlist="neg_tests wfs_tests delay_tests"
 testlist=$default_subsumptive_testlist
 
 for tst in $testlist ; do
-  if member "$tst" "$excluded_tests" ; then
+  if member "${tst}_subsumption" "$excluded_tests" ; then
     continue
   else
     cd $tst
