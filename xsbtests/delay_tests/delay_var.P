@@ -36,6 +36,7 @@ und :- tnot(und).
 :- table reverse/2.
 
 p(f(88,X), _XX) :- q(X, f(Y,g(Z))), r(Y), Y=h(_DD,_EE,_FF), Z=fff(_).
+%p(f(88,X), XX) :- q(X, f(Y,g(Z))), r(Y), Y=h(_DD,_EE,_FF), Z=fff(_),writeln(p(f(88,X),XX)).
 p(_X, XX) :- r(XX, t(ZZ)), XX = fff(_SS,_TT), r(ZZ).
 q(ggg(_X,Y,_Z,8),_) :- und, Y = 555.
 r(_,_) :- und.

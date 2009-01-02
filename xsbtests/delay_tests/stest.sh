@@ -147,7 +147,7 @@ opts=$2
 #----------------------------------------------------------------------
 ../sgentest.sh "$XEMU $opts" delay_var "test."
 #----------------------------------------------------------------------
-# Test of simplification and delete return (not currently working for call subsumption)
+# Tests of simplification and delete return
 #----------------------------------------------------------------------
-# ../sgentest.sh "$XEMU $opts" dret_test "test."
+../sgentest.sh "$XEMU $opts" dret_test "test."
 ../sgentest.sh "$XEMU $opts" tabsimp_seq "test(20000)."
