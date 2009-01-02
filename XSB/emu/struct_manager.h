@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.22 2007-12-13 21:47:58 ruim Exp $
+** $Id: struct_manager.h,v 1.23 2009-01-02 17:50:03 tswift Exp $
 ** 
 */
 
@@ -251,8 +251,8 @@ typedef struct Structure_Manager *SMptr;
 
 
 #define SM_AllocateFree(SM,pNewStruct)				\
-   pNewStruct = SM_FreeList(SM);				\
-   SM_FreeList(SM) = SMFL_NextFreeStruct(SM_FreeList(SM))
+  pNewStruct = SM_FreeList(SM);					\
+  SM_FreeList(SM) = SMFL_NextFreeStruct(SM_FreeList(SM))
 
 #define SM_AllocateFromBlock(SM,pNewStruct)			\
    pNewStruct = SM_NextStruct(SM);				\

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.168 2008-11-05 22:47:15 dwarren Exp $
+** $Id: biassert.c,v 1.169 2009-01-02 17:50:03 tswift Exp $
 ** 
 */
 
@@ -4122,7 +4122,7 @@ int trie_retract(CTXTdecl)
 	       " Before: Child of Instrn Node %p", Child(inst_node_ptr)));
     switch_to_trie_assert;
     SYS_MUTEX_LOCK(MUTEX_TRIE);
-    delete_branch(CTXTc Last_Nod_Sav, &(Child(inst_node_ptr)));
+    delete_branch(CTXTc Last_Nod_Sav, &(Child(inst_node_ptr)),VARIANT_EVAL_METHOD);
     SYS_MUTEX_UNLOCK(MUTEX_TRIE);
     switch_from_trie_assert;
     xsb_dbgmsg((LOG_DEBUG,
