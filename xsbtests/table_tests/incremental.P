@@ -1,0 +1,33 @@
+:- import incr_assert/1 from increval.
+
+test:- test1.
+
+test1:- p(X,Y),writeln(first_p(X,Y)),fail.
+test1:- incr_assert(q(d,4)),fail.
+test1:- p(X,Y),writeln(second_p(X,Y)),fail.
+test1.
+
+
+%:- table p/2 as incremental.
+:- table p/2.
+:- use_incremental_tabling p/2.
+
+p(X,Y) :- q(X,Y),Y =< 5.
+
+:- use_incremental_dynamic q/2.
+:- dynamic q/2.
+q(a,1).
+q(b,3).
+q(c,5).
+q(d,7).
+
+
+end_of_file.
+
+Hi David
+
+The following example, which I want to put into the testsuite, doesnt
+work as described in the manual.  Do you know what the problem might
+be?
+
+Terry
