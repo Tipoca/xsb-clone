@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.17 2008-12-31 23:44:42 tswift Exp $
+** $Id: complete_local.h,v 1.18 2009-01-03 01:11:26 tswift Exp $
 ** 
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -286,8 +286,6 @@ static inline CPtr ProcessSuspensionFrames(CTXTdeclc CPtr cc_tbreg_in,
   } /* while - for each subg in compl stack */
   return cc_tbreg;
 }
-
-#include "tst_utils.h"
 
 static inline void CompleteSimplifyAndReclaim(CTXTdeclc CPtr cs_ptr)
 {

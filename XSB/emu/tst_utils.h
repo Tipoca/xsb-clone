@@ -18,10 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.h,v 1.7 2005-01-14 18:31:39 ruim Exp $
+** $Id: tst_utils.h,v 1.8 2009-01-03 01:11:26 tswift Exp $
 ** 
 */
 
+#include "dynamic_stack.h"
 
 /* Debugging Routines
    ------------------ */
@@ -39,3 +40,4 @@ extern void printAnswerList(FILE *, ALNptr);
 
 extern void printTabledCall(FILE *, TabledCallInfo);
 extern void printTriePathType(FILE *, TriePathType, BTNptr);
+extern void printSymbolStack(FILE *, char* , DynamicStack);
