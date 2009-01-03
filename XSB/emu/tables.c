@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.64 2009-01-03 01:11:26 tswift Exp $
+** $Id: tables.c,v 1.65 2009-01-03 20:22:48 tswift Exp $
 ** 
 */
 
@@ -579,7 +579,7 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
 
 #ifndef MULTI_THREAD
   if (flags[TRACE_STA])
-    compute_maximum_tabvlespace_stats(CTXT);
+    compute_maximum_tablespace_stats(CTXT);
 #endif
 
   /* Reclaim Auxiliary Structures from the TST
