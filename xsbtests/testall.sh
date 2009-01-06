@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.19 2009-01-02 17:55:44 tswift Exp $
+## $Id: testall.sh,v 1.20 2009-01-06 15:40:23 dwarren Exp $
 ## 
 ##
 
@@ -114,19 +114,21 @@ for tst in $testlist ; do
   fi
 done
 
-% also want to add delay and wfs
+# also want to add delay and wfs
+# this screws up the parameter -only...
 default_subsumptive_testlist="neg_tests wfs_tests delay_tests"
-testlist=$default_subsumptive_testlist
+subtestlist=$default_subsumptive_testlist
 
-for tst in $testlist ; do
+for tst in $subtestlist ; do
   if member "${tst}_subsumption" "$excluded_tests" ; then
     continue
-  else
+  else if member "$tst" "$testlist" ; then
     cd $tst
     if test -f core ; then
 	rm -f core
     fi
     ./stest.sh "$XEMU" "-e segfault_handler(warn). -S $options"
     cd ..
+    fi
   fi
 done
