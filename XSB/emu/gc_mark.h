@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.31 2008-11-05 22:47:16 dwarren Exp $
+** $Id: gc_mark.h,v 1.32 2009-01-06 21:50:37 dwarren Exp $
 ** 
 */
 
@@ -369,7 +369,8 @@ static int mark_root(CTXTdeclc Cell cell_val)
       case XSB_REF1 :
 	if (whereto != TO_NOWHERE) return(0) ;
 	break ;
-	/* default: return(0); */
+      default: xsb_warn("Encountered bad STR pointer in GC marking; ignored\n");
+	return(0);
       }
       TO_BUFFER(cell_ptr);
       h_mark(i) ; m = 1 ; 
@@ -599,6 +600,7 @@ restart:
 	  ls_mark(e - ls_top) ;
 	  /* TLS: get number of perm. vars from cpreg */
 	  yvar = *(cp-2*sizeof(Cell)+3) - 1 ;  
+	  //	  printf("ereg=%p, npvar=%d\n",e,yvar);
 	  total_marked += mark_region(CTXTc e-yvar,e-2) ;
 	  i = (e-2) - ls_top ;
 	  while (yvar-- > 1) { ls_mark(i--); }
