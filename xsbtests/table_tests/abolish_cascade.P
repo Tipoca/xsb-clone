@@ -37,7 +37,7 @@ r1(g,c,e):- undefined.
 r1(h,c,e):- undefined.
 r1(i,c,e):- undefined.
 
-%undefined :- tnot(undefined).
+undefined :- tnot(undefined).
 
 :- table s/0,t/0.
 s:- tnot(t).
