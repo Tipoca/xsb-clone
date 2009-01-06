@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.80 2008/09/26 20:32:01 tswift Exp $
+** $Id: slginsts_xsb_i.h,v 1.81 2008/12/31 23:44:42 tswift Exp $
 ** 
 */
 
@@ -142,6 +142,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   TIFptr tip;
 
   int incrflag = 0; /* for incremental evaluation */
+  VariantSF parent_table_sf=NULL; /* used for creating call graph */
 
   gdb_dummy();
 #ifdef SHARED_COMPL_TABLES
@@ -158,7 +159,6 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 #endif
 
   /* incremental evaluation */
-  VariantSF parent_table_sf=NULL; /* used for creating call graph */
   old_call=NULL;
 
   xwammode = 1;

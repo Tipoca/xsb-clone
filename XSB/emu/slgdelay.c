@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.60 2009/01/02 17:50:03 tswift Exp $
+** $Id: slgdelay.c,v 1.61 2009/01/03 01:11:26 tswift Exp $
 ** 
 */
 
@@ -1068,8 +1068,8 @@ void construct_ground_term(CTXTdeclc BTNptr as_leaf,VariantSF subgoal) {
       } 
       else { 
 	maxvar++;
-	aliasArray[maxvar] = DynStk_Top(simplAnsStack) 
-					 - DynStk_FrameSize(simplAnsStack);
+	aliasArray[maxvar] = DynStk_PrevFrame(simplAnsStack);
+	  //DynStk_Top(simplAnsStack) - DynStk_FrameSize(simplAnsStack);
 	answerStack_copyTerm(CTXT);
       }
     }
@@ -1131,9 +1131,9 @@ static void handle_empty_dl_creation(CTXTdeclc DL dl)
     /* Perform simplify_neg_succeeds() for consumer sfs (producers and
        variants done below) */
     if (IsSubProdSF(subgoal) && is_ground_answer(as_leaf)) {
-      construct_ground_term(CTXTc as_leaf,subgoal);
       BTNptr leaf;
       Cell callVars[NUM_TRIEVARS];
+      construct_ground_term(CTXTc as_leaf,subgoal);
 
       leaf = simpl_variant_trie_lookup(CTXTc TIF_CallTrie(subg_tif_ptr(subgoal)),
 				 get_arity(TIF_PSC(subg_tif_ptr(subgoal))), 
@@ -1177,8 +1177,8 @@ static void handle_unsupported_answer_subst(CTXTdeclc NODEptr as_leaf)
      done before delete_branch) from the simplification itself (which
      must be done after delete_branch). */
   if (IsSubProdSF(unsup_subgoal) && is_ground_answer(as_leaf)) {
-    construct_ground_term(CTXTc as_leaf,unsup_subgoal);
     Cell callVars[NUM_TRIEVARS];
+    construct_ground_term(CTXTc as_leaf,unsup_subgoal);
 
     subgoal_leaf = simpl_variant_trie_lookup(CTXTc TIF_CallTrie(subg_tif_ptr(unsup_subgoal)),
 				     get_arity(TIF_PSC(subg_tif_ptr(unsup_subgoal))), 
