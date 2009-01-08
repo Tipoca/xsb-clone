@@ -22,4 +22,6 @@ opts=$2
 ../gentest.sh "$XEMU $opts" ret_attv "test."
 ../gentest.sh "$XEMU $opts" fd1 "test."
 ../gentest.sh "$XEMU $opts" general "test."
-../gentest.sh "$XEMU $opts" catch1 "test."
+
+# the following is obsolete (attvs now allowed in subsumptive tables)
+#../gentest.sh "$XEMU $opts" catch1 "test."
