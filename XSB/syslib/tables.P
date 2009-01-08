@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.50 2008/11/26 16:27:49 tswift Exp $
+** $Id: tables.P,v 1.51 2008/12/31 23:44:42 tswift Exp $
 ** 
 */
 
@@ -284,6 +284,9 @@ tunnumcall(GGoal) :-
 	unnumbervars(GGoal,VGoal),
 	call(VGoal).
 
+% we've got true and fail -- why not this?
+:- table undefined/0.
+undefined:- tnot(undefined).
 
 /*----------------------------------------------------------------------*/
 /* Predicates to retrieve information out of tables.                    */

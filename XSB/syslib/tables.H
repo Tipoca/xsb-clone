@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.38 2008/06/02 21:24:38 dwarren Exp $
+** $Id: tables.H,v 1.39 2008/11/26 16:27:49 tswift Exp $
 ** 
 */
 
@@ -55,6 +55,7 @@
       trie_retract/1,
       trie_retract_nr/1,
       trie_retract_all/1,
+      undefined/0,
       (use_subsumptive_tabling)/1,
       (use_variant_tabling)/1.
 
