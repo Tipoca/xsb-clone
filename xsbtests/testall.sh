@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.20 2009-01-06 15:40:23 dwarren Exp $
+## $Id: testall.sh,v 1.21 2009-01-08 20:44:57 tswift Exp $
 ## 
 ##
 
@@ -116,7 +116,7 @@ done
 
 # also want to add delay and wfs
 # this screws up the parameter -only...
-default_subsumptive_testlist="neg_tests wfs_tests delay_tests"
+default_subsumptive_testlist="neg_tests wfs_tests delay_tests constraint_tests"
 subtestlist=$default_subsumptive_testlist
 
 for tst in $subtestlist ; do
