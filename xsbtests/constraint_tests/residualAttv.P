@@ -31,6 +31,6 @@ query2:-
 p2(X):- q2(X,Y).
 q2(X,Y):- {Y < 9},undefined.
 
-undefined :- tnot(undefined).
+%undefined :- tnot(undefined).
 
 
