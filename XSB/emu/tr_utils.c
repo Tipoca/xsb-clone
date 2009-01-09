@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.168 2009/01/02 17:50:03 tswift Exp $
+** $Id: tr_utils.c,v 1.169 2009/01/04 21:12:29 tswift Exp $
 ** 
 */
 
@@ -2882,7 +2882,7 @@ the use of varsf_has_conditional_answer()
 */
 void abolish_table_call(CTXTdeclc VariantSF subgoal, int invocation_flag) {
   if (varsf_has_conditional_answer(subgoal) 
-      && (invocation_flag != ABOLISH_TABLES_TRANSITIVELY 
+      && (invocation_flag == ABOLISH_TABLES_TRANSITIVELY 
 	  || (invocation_flag == ABOLISH_TABLES_DEFAULT 
 	      && flags[TABLE_GC_ACTION] == ABOLISH_TABLES_TRANSITIVELY))) {
       abolish_table_call_transitive(CTXTc subgoal);
