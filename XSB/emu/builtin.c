@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.324 2009-01-02 17:50:03 tswift Exp $
+** $Id: builtin.c,v 1.325 2009-01-10 23:37:06 tswift Exp $
 ** 
 */
 
@@ -1031,7 +1031,7 @@ void init_builtin_table(void)
   set_builtin_table(FILE_FUNCTION, "file_function");
   set_builtin_table(SLASH_BUILTIN, "slash");
 
-  set_builtin_table(ABOLISH_TABLE_INFO, "abolish_table_info");
+  set_builtin_table(ABOLISH_ALL_TABLES, "abolish_all_tables");
   set_builtin_table(ABOLISH_MODULE_TABLES, "abolish_module_tables");
   set_builtin_table(ZERO_OUT_PROFILE, "zero_out_profile");
   set_builtin_table(WRITE_OUT_PROFILE, "write_out_profile");
@@ -2150,9 +2150,8 @@ int builtin_call(CTXTdeclc byte number)
 #endif
     break;
 
-    /* Abolish_all_tables */
-  case ABOLISH_TABLE_INFO:
-    abolish_table_info(CTXT);
+  case ABOLISH_ALL_TABLES:
+    abolish_all_tables(CTXT);
     break;
 
   case ZERO_OUT_PROFILE:

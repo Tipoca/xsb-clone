@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.69 2008-12-31 23:44:42 tswift Exp $
+** $Id: macro_xsb.h,v 1.70 2009-01-10 23:37:07 tswift Exp $
 ** 
 */
 
@@ -319,8 +319,8 @@ typedef struct Table_Info_Frame {
 #define TIF_ComplCond(pTIF)   	   ( (pTIF)->compl_cond )
 #endif
 
-#define	cps_check_mark_tif(pTIF)   TIF_Mark(pTIF) = 0x1
-#define	cps_check_unmark_tif(pTIF)   TIF_Mark(pTIF) = 0x0
+#define	gc_mark_tif(pTIF)   TIF_Mark(pTIF) = 0x1
+#define	gc_unmark_tif(pTIF)   TIF_Mark(pTIF) = 0x0
 
 /*
  * #define IsVariantPredicate(pTIF)		\

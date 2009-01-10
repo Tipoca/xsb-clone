@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.51 2009-01-02 17:50:03 tswift Exp $
+** $Id: tr_utils.h,v 1.52 2009-01-10 23:37:07 tswift Exp $
 ** 
 */
 
@@ -107,7 +107,7 @@ extern void abolish_table_predicate_switch(CTXTdeclc TIFptr, Psc, int, int);
 extern void abolish_table_call(CTXTdeclc VariantSF, int);
 extern void abolish_private_tables(CTXTdecl);
 extern void abolish_shared_tables(CTXTdecl);
-extern void abolish_table_info(CTXTdecl);
+extern void abolish_all_tables(CTXTdecl);
 extern int abolish_usermod_tables(CTXTdecl);
 extern int abolish_module_tables(CTXTdeclc const char *module_name);
 extern int abolish_table_call_incr(CTXTdeclc VariantSF); /* incremental evaluation */

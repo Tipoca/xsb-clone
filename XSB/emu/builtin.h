@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.86 2008-11-25 18:40:07 dwarren Exp $
+** $Id: builtin.h,v 1.87 2009-01-10 23:37:07 tswift Exp $
 ** 
 */
 
@@ -146,7 +146,7 @@
 #define FILE_FUNCTION           123
 #define SLASH_BUILTIN           124
 
-#define ABOLISH_TABLE_INFO      126
+#define ABOLISH_ALL_TABLES      126
 #define ZERO_OUT_PROFILE        127
 #define WRITE_OUT_PROFILE       128
 #define ASSERT_CODE_TO_BUFF	129
