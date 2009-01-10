@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.P,v 1.100 2008/08/11 12:52:29 tswift Exp $
+** $Id: machine.P,v 1.101 2008/09/06 18:36:23 tswift Exp $
 ** 
 */
 
@@ -219,7 +219,7 @@ file_function(Function, A, B) :-
 	file_function(Function, A, B).
 slash(Slash) :- slash(Slash).
 
-abolish_table_info :- abolish_table_info.
+abolish_table_info :- '_$builtin'(ABOLISH_ALL_TABLES).
 zero_out_profile :- '_$builtin'(ZERO_OUT_PROFILE).
 write_out_profile :- '_$builtin'(WRITE_OUT_PROFILE).
 assert_code_to_buff(Clause) :- assert_code_to_buff(Clause).
