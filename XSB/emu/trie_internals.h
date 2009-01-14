@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.37 2007-04-05 17:26:57 tswift Exp $
+** $Id: trie_internals.h,v 1.38 2009-01-14 18:40:12 dwarren Exp $
 ** 
 */
 
@@ -645,7 +645,7 @@ extern void expand_trie_ht(CTXTdeclc BTHTptr);
    for ( pBTHT = (BTHTptr)SM_AllocList(SM);  IsNonNULL(pBTHT);		\
 	 pBTHT = (BTHTptr)BTHT_NextBTHT(pBTHT) ) {			\
      /*     printf("freeing table for thread %d: %x\n",xsb_thread_id,pBTHT); */ \
-     if (BTHT_NumBuckets(pBTHT) > TrieHT_INIT_SIZE)			\
+     /*     if (BTHT_NumBuckets(pBTHT) > TrieHT_INIT_SIZE) memory leak if in	*/	\
        mem_dealloc(BTHT_BucketArray(pBTHT),BTHT_NumBuckets(pBTHT)*sizeof(void *),TABLE_SPACE); \
    }									\
  }
