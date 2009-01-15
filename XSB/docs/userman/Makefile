@@ -1,6 +1,6 @@
 # File: XSB/docs/userman/Makefile
 #
-# $Id: Makefile,v 1.4 2008-10-07 16:47:14 kifer Exp $
+# $Id: Makefile,v 1.5 2009-01-15 23:09:16 tswift Exp $
 
 .PHONY: all manual1 manual2
 
@@ -9,6 +9,8 @@ all: manual1 manual2
 manual1:
 	latex manual1	
 	bibtex manual1
+	makeindex manual1
+	makeindex manual1.prdx -o manual1.pnd
 	latex manual1
 	latex manual1
 	dvips manual1.dvi -o manual1.ps
@@ -17,6 +19,7 @@ manual1:
 manual2:
 	latex manual2	
 	bibtex manual2
+	makeindex manual1
 	latex manual2
 	latex manual2
 	dvips manual2.dvi -o manual2.ps
