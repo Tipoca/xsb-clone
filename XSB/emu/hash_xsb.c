@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.17 2007-10-07 17:37:54 tswift Exp $
+** $Id: hash_xsb.c,v 1.18 2009-01-15 22:43:05 dwarren Exp $
 ** 
 */
 
@@ -198,7 +198,7 @@ void expand_string_table() {
       new_table[new_index] = (void *)cur_entry;
     }
 
-  mem_dealloc((void *)string_table.table,string_table.size,STRING_SPACE);
+  mem_dealloc((void *)string_table.table,string_table.size*sizeof(void *),STRING_SPACE);
   string_table.size = new_size;
   string_table.table = new_table;
   //  printf("expanded string table to: %ld\n",new_size);
