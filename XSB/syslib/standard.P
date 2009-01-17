@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.161 2008/11/25 18:41:39 dwarren Exp $
+** $Id: standard.P,v 1.162 2008/12/17 20:31:47 dwarren Exp $
 ** 
 */
 
@@ -1607,6 +1607,9 @@ multifile([P/A, _T1, T2]) :-	% T1 is not used
 % import(+from(Symbols, Module))
 %
 % import(Mod) :- import all preds in that module. not implemented yet.
+
+use_module(Mod,Syms):- 
+	import(from(Syms, Mod)).
 
 import(from(Syms, Mod)) :- !, 
 	conname(Mod, MName),
