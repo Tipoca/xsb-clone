@@ -1,5 +1,5 @@
 #! /bin/sh
-
+ 
 # $1 is expected to have xsb ececutable + command line options
 EMU=$1
 CONSULT_FILE=$2
