@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.48 2009-01-01 00:07:22 tswift Exp $
+** $Id: tries.h,v 1.49 2009-01-24 22:06:20 tswift Exp $
 ** 
 */
 
@@ -340,6 +340,8 @@ typedef struct Call_Check_Insert_Results {
 
 #ifndef MULTI_THREAD
 extern int AnsVarCtr;
+extern CPtr VarEnumerator_trail[];
+extern CPtr *VarEnumerator_trail_top;
 
 extern BTNptr   newBasicTrie(Cell,int);
 extern byte *	trie_get_calls(void);
