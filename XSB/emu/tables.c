@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.65 2009-01-03 20:22:48 tswift Exp $
+** $Id: tables.c,v 1.66 2009-01-24 21:57:07 tswift Exp $
 ** 
 */
 
@@ -429,6 +429,7 @@ BTNptr table_answer_search(CTXTdeclc VariantSF producer, int size, int attv_num,
     //      fprintf(stddbg, "The answer is new: ");printTriePath(stderr, answer, NO);
     do_delay_stuff(CTXTc (NODEptr)answer, producer, wasFound);
 
+    VarEnumerator_trail_top = (CPtr *)(& VarEnumerator_trail[0]) - 1;
     undo_answer_bindings(CTXT);
     Trail_Unwind_All;
 
