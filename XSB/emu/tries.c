@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.114 2009-01-02 17:50:03 tswift Exp $
+** $Id: tries.c,v 1.115 2009-01-24 22:18:22 tswift Exp $
 ** 
 */
 
@@ -91,8 +91,8 @@ int global_num_vars;
  * those that are bound to elements in VarEnumerator[].
  */
 #ifndef MULTI_THREAD
-static CPtr VarEnumerator_trail[NUM_TRIEVARS];
-static CPtr *VarEnumerator_trail_top;
+CPtr VarEnumerator_trail[NUM_TRIEVARS];
+CPtr *VarEnumerator_trail_top;
 #endif
 
 
