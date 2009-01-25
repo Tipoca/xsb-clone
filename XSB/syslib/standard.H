@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.100 2009/01/08 21:10:45 tswift Exp $
+** $Id: standard.H,v 1.101 2009/01/17 20:31:15 tswift Exp $
 **
 */
 
@@ -82,7 +82,6 @@
         '@>='/2,	';'/2,		','/2,		'->'/2,         '?='/2,
 	':'/2,		'_$cutto'/1,	'_$savecp'/1.	
 :- export handle_interrupts/1.
-%%:- export (thread_shared)/1, (thread_private)/1.
 
    :- export expand_atom/2.
 
@@ -126,7 +125,6 @@
      from error_handler.
 :- import  check_nonvar_list/3 from error_handler.
 :- import '_$load_undef'/1 from loader.
-
 :- import call0/1, conname/2,
           dynamic_code_function/5,
           expand_filename/2, gc_stuff/2,
@@ -150,7 +148,8 @@
 :- import file_write0/2, file_write/2, file_write_prolog/2, 
 	  file_write_quoted/2, file_write_canonical/2, file_nl/1
      from xsb_writ.
-:- import xsb_thread_self/1 from thread.
+:- import xsb_thread_self/1, (thread_shared)/1, (thread_private)/1 from thread.
 :- import findall/3 from setof.
+:- import (use_variant_tabling)/1, (use_subsumptive_tabling)/1 from tables.
 
 /* --------------------- end of file standard.H ----------------------- */
