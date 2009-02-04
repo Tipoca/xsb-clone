@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.74 2008-11-05 22:47:16 dwarren Exp $
+** $Id: heap_xsb.c,v 1.75 2009-02-04 16:17:19 dwarren Exp $
 ** 
 */
 
@@ -242,7 +242,7 @@ int gc_strings = FALSE;
 
 int force_string_gc = FALSE; /* flag set when string space has expanded a lot */
 long last_string_space_size = 100000;
-static long last_assert_space_size = 10000;
+long last_assert_space_size = 10000;
 #define AUTO_STRING_GC_NTH 10
 
 /******* When to GC string space? *************/

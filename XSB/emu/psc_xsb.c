@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.41 2009-01-30 22:31:34 dwarren Exp $
+** $Id: psc_xsb.c,v 1.42 2009-02-04 16:17:19 dwarren Exp $
 ** 
 */
 
@@ -67,6 +67,7 @@ extern Psc synint_proc(Psc, int);
    mutexes. */
 
 extern long last_string_space_size;
+extern long last_assert_space_size;
 #define CHAR_PTR_SIZE  sizeof(char *)
 
 char *string_find(const char *str, int insert) {
@@ -90,7 +91,10 @@ char *string_find(const char *str, int insert) {
     str0 = str0 + CHAR_PTR_SIZE;
     strcpy(str0, str);
     string_table_increment_and_check_for_overflow;
-    force_string_gc = (pspacesize[STRING_SPACE] > 4*last_string_space_size);
+    if ((pspacesize[STRING_SPACE] > 4*last_string_space_size) &&
+	(pspacesize[ASSERT_SPACE] < 4*last_assert_space_size)) {
+      force_string_gc = TRUE;
+    }
   }
   else
     str0 = NULL ;
