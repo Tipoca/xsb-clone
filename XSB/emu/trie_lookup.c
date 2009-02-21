@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.19 2009-01-01 00:07:22 tswift Exp $
+** $Id: trie_lookup.c,v 1.20 2009-02-21 17:05:07 tswift Exp $
 ** 
 */
 
@@ -1430,6 +1430,8 @@ static BTNptr rec_sub_trie_lookup(CTXTdeclc BTNptr parent, TriePathType *pathTyp
  * there exists a subsuming path in the given trie.  A pointer to the
  * leaf of the discovered path, if any, is returned, and a flag is set
  * to indicate how the path relates to the subterm.
+ * 
+ * Used in get_producer_call/3 and other Prolog routines.
  */
 
 void *subsumptive_trie_lookup(CTXTdeclc void *trieRoot, int nTerms, CPtr termVector,
