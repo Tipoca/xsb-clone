@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.89 2008/02/22 03:39:11 dwarren Exp $
+** $Id: machine.H,v 1.90 2008/08/11 12:52:30 tswift Exp $
 ** 
 */
 
@@ -95,6 +95,7 @@
 	getenv/2, 
 	putenv/1, 
 	sys_syscall/4,
+	sys_syscall/5,
 	sys_system/7, 
 	sys_gethost/2, 
 	sys_errno/1, 
