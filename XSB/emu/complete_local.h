@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.18 2009-01-03 01:11:26 tswift Exp $
+** $Id: complete_local.h,v 1.19 2009-02-21 16:47:33 tswift Exp $
 ** 
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -326,11 +326,11 @@ static inline void CompleteSimplifyAndReclaim(CTXTdeclc CPtr cs_ptr)
     ComplStkFrame = next_compl_frame(ComplStkFrame);
   } /* while */
   
-  /* TLS: placemarker while I develop it.  This function should happen
+  /* TLS: placemarker for development.  This function should happen
    *after* simplification and *before* removal of answer lists, which
-   is useful for traversing dependency graphs. */
+   *is useful for traversing dependency graphs. */
 
-  /*  remove_unfounded_set(cs_ptr); */
+  //  answer_completion(CTXTc cs_ptr);
       
   /* reclaim all answer lists, but the one for the leader */
   ComplStkFrame = next_compl_frame(cs_ptr);

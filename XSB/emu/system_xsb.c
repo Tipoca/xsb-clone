@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.53 2008-11-14 16:15:10 tswift Exp $
+** $Id: system_xsb.c,v 1.54 2009-02-21 16:47:34 tswift Exp $
 ** 
 */
 
@@ -65,6 +65,8 @@
 #include "memory_xsb.h"
 #include "thread_defs_xsb.h"
 #include "thread_xsb.h"
+
+extern void get_statistics(CTXTdecl);
 
 #define MAX_CMD_LEN 8192
 
@@ -182,6 +184,10 @@ int sys_syscall(CTXTdeclc int callno)
     break;
   }
 
+  case STATISTICS_2: {
+    get_statistics(CTXT);
+    break;
+  }
   default: xsb_abort("[SYS_SYSCALL] Unknown system call number, %d", callno);
   }
   return result;

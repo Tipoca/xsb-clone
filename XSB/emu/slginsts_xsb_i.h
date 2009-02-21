@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.81 2008/12/31 23:44:42 tswift Exp $
+** $Id: slginsts_xsb_i.h,v 1.82 2009/01/06 15:37:10 dwarren Exp $
 ** 
 */
 
@@ -249,6 +249,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
      }
      if( !is_completed(producer_sf) && subg_tid(producer_sf) != xsb_thread_id )
      {
+	th->reset_thread = FALSE;
      	pthread_mutex_lock(&completing_mut);
      	SYS_MUTEX_INCR( MUTEX_COMPL );
      	while( !is_completed(producer_sf))
@@ -274,8 +275,11 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
         th->waiting_for_tid = -1 ;
         th->waiting_for_subgoal = NULL ;
         pthread_mutex_unlock(&completing_mut);
-        lpcreg = pcreg ;
-        XSB_Next_Instr() ;
+	if( th->reset_thread )
+	{
+        	lpcreg = pcreg ;
+	        XSB_Next_Instr() ;
+	}
      } 
   }
 
