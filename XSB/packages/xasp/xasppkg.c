@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xasppkg.c,v 1.7 2009-02-21 00:30:13 tswift Exp $
+** $Id: xasppkg.c,v 1.8 2009-02-26 17:17:32 tswift Exp $
 ** 
 */
 
@@ -73,15 +73,17 @@ extern "C" void numberAtoms(CTXTdeclc int nAtoms)
   totatoms=nAtoms;
 }
 
-/*
+
 extern "C" void atomName(CTXTdeclc char *name)
 { 
-  Atom ** loc_atoms = atoms;
-  int loc_curatom = curatom;
-  api->set_name(globatoms[loc_curatom],name);
+  api->set_name(atoms[curatom],name);
   curatom++;
+//  Atom ** loc_atoms = atoms;
+//  int loc_curatom = curatom;
+//  api->set_name(globatoms[loc_curatom],name);
+//  curatom++;
 }
-*/
+
 //extern "C" void __assert(const char *a, int b, const char *c) { return; }
 
 
