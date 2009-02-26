@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.H,v 1.18 2005/03/07 18:24:45 dwarren Exp $
+** $Id: shell.H,v 1.19 2007/08/29 22:13:08 tswift Exp $
 ** 
 */
 
@@ -35,6 +35,7 @@
 :- export sys_chdir/2, sys_access/3, sys_stat/3, sys_link/3,
 	sys_mkdir/2, sys_rmdir/2,
 	sys_unlink/2, sys_exit/1, sys_rename/3, sys_filecopy/3.
+:- export platform/1.
 
 :- import file_to_list/2 from scrptutl.
 :- import ground/1, append/3, member/2 from basics.

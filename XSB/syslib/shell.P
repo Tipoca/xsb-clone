@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.P,v 1.27 2007/08/29 22:13:08 tswift Exp $
+** $Id: shell.P,v 1.28 2008/10/08 20:46:19 tswift Exp $
 ** 
 */
 
@@ -76,6 +76,10 @@ process_status(Pid, Status) :- sys_system(PROCESS_STATUS,Pid,Status,_,_,_,_).
 %% Send signal to process. Currently wait, kill
 process_control(Pid, Signal) :- sys_system(PROCESS_CONTROL,
 					   Pid, Signal, _,_,_,_).
+
+/* darwin, linux-gnu */
+platform(Platform):- 
+	xsb_configuration(os_type,Platform).
 
 %% Sleep for the specified number of seconds
 sleep(Seconds) :- sys_system(SLEEP_FOR_SECS, Seconds,_,_,_,_,_).
