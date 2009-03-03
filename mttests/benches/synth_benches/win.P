@@ -27,6 +27,48 @@
 :- index(move2k/2,trie).
 :- index(move1k/2,trie).
 
+benchChain(N,Arg,T):- 
+	abolish_all_tables,
+	generate_chain(N),
+	cputime(B),
+	win(Arg),writeln(here),
+	cputime(A),
+	T is A - B.
+
+generate_chain(N):- 
+	retractall(move(_,_)),
+	generate_chain_1(N).
+
+generate_chain_1(1):- !.
+generate_chain_1(N):- 
+	N1 is N - 1,
+	asserta(move(N1,N)),
+	generate_chain_1(N1).
+
+benchCycle(N,Arg,T):- 
+	abolish_all_tables,
+	generate_cycle(N),
+	cputime(B),
+	win(Arg),
+	cputime(A),
+	T is A - B.
+
+generate_cycle(N):- 
+	retractall(move(_,_)),
+	generate_cycle_1(N,N).
+
+generate_cycle_1(1,L):- assert(move(L,1)),!.
+generate_cycle_1(N,L):- 
+	N1 is N - 1,
+	asserta(move(N1,N)),
+	generate_cycle_1(N1,L).
+
+:- table win/1.
+win(X):- move(X,Y),tnot(win(Y)).
+
+
+% Obsolescent.
+
 cycle_win_bench:- 
 	bigbench(win2k(1),[win,cycle(2048),its(150)],150),
 	%bigbench(unsafe_win(1),[unsafe_win,cycle(2048),its(150)],150),
@@ -59,9 +101,6 @@ abolish_tables :-
 %abolish_tables :-
 %	abolish_table_pred(win2k/1),
 %	abolish_table_pred(unsafe_win/1).
-
-:- table win2k/1.
-win2k(X):- move2k(X,Y),tnot(win2k(Y)).
 
 :- table unsafe_win/1.
 unsafe_win(X):- move2k(X,Y),'t not'(unsafe_win(Y)).
@@ -135,5 +174,6 @@ win_t(X):- move2k(X,Y),tnot(win_tu(Y)).
 win_tu(X):- move2k(X,Y),tnot(win_t(Y)),tnot(neg(win_tu(X))).
 
 neg(win(1)).
+
 
 end_of_file.
