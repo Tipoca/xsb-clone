@@ -3,8 +3,8 @@
 :- import concat_atom/2 from string.
 :- import member/2 from basics.
 
-%:- index(rule/4,trie).
-:- thread_shared rule/4.
+:- index(rule/4,trie).
+%:- thread_shared rule/4.
 
 :- [prefNet].
 
@@ -67,6 +67,16 @@ private_scale_prefs(Length,NumThr,NumC):-
 	write(datum([prefs,priv],NumThr,Time)),writeln('.'),
 	flush_output.
 	
+seq_bench_prefs(Length,Num):- 
+	reset,
+	generate_chain(Num,Length),
+	cputime(S),
+	bench_1,
+	cputime(E),
+	Time is E - S,
+	write(datum([prefs,seq],Time)),writeln('.'),
+	flush_output.
+	
 shared_bench_prefs(Length,NumThr,NumC):- 
 	reset,
 	generate_chain(NumC,Length),
@@ -90,6 +100,7 @@ bench(Length,Num,Time):-
 	cputime(E),
 	Time is E - S.
 
+
 bench_1:- 
 	initState(S),reachable(S,_T),
 	fail.
@@ -100,7 +111,7 @@ get_goallist(Max,NThreads,Out):-
 %	findall(shared_reachable(S,_),initState(S),Goals),
 	get_par_goals(Max,NThreads,RawGoals,Out).
 
-%initState([p1(1)]).
+initState([p1(1)]).
 get_raw_goals(0,[]):-!.
 get_raw_goals(N,[shared_reachable([Term],_)|T]):-
 	concat_atom([p,N],Functor),
