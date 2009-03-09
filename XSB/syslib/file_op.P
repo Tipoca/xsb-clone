@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.P,v 1.37 2008/10/26 14:59:50 tswift Exp $
+** $Id: file_op.P,v 1.38 2009/02/21 16:42:52 tswift Exp $
 ** 
 */
 
@@ -241,11 +241,8 @@ table to use. */
 '_$trie_asserted'(Term) :- 
 	conpsc('_$trie_asserted1'(_),Psc),
 	psc_type(Psc, Type),
-	(Type =:= 1				% DYNA so exists 
-	 ->     '_$trie_asserted1'(Term)
-         ;      fail     % table doesn't exist yet, so it is empty
-        ).
-	
+	Type =:= 1,		% DYNA so exists 
+	'_$trie_asserted1'(Term).
 
 add_trie_index(Spec) :-
 	mpa_to_skel(Spec,Pcall),
