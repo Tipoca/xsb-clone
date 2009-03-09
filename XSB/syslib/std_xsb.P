@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.112 2009/01/17 20:31:15 tswift Exp $
+** $Id: std_xsb.P,v 1.113 2009/02/21 16:42:53 tswift Exp $
 ** 
 */
 
@@ -464,6 +464,7 @@ standard_metapredicate((:),2,2).
 standard_symbol(('^'), 2, setof).
 
 standard_symbol((:-), 2, usermod).
+standard_symbol((?-), 1, usermod).
 standard_symbol((-->), 2, usermod).
 standard_symbol(('?='),2,standard).
 
