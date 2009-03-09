@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.51 2008/12/31 23:44:42 tswift Exp $
+** $Id: tables.P,v 1.52 2009/01/08 21:18:19 tswift Exp $
 ** 
 */
 
@@ -261,7 +261,7 @@ t_not(Subgoal,PredType,PTCP) :-
 
 writeit(0).
 %writeit(1).
-mywriteln(Term):- (writeit(1) -> writeln(Term); true).
+mywriteln(Term):- writeit(If),(If =:= 1 -> writeln(Term); true).
 
 %% skolemized tnot.  Variables temporarily changed to ground and tnot 
 %% call is made.  Should give existential semantics to nonground negative
