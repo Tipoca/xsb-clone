@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.56 2009-03-14 22:04:47 tswift Exp $
+** $Id: memory_xsb.c,v 1.57 2009-03-14 22:46:21 tswift Exp $
 ** 
 */
 
@@ -202,8 +202,8 @@ void *mem_calloc(unsigned long size, unsigned long occs, int category)
 {
     byte * ptr;
 
-    unsigned long length = (size*occs+7) & ~0x7;
 #ifdef NON_OPT_COMPILE
+    unsigned long length = (size*occs+7) & ~0x7;
     //    printf("Callocing size %d occs %d category %d\n",size,occs,category);
     memcount_gl.num_mem_allocs++;
     SYS_MUTEX_LOCK_NOERROR(MUTEX_MEM);
