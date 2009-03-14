@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xasppkg.c,v 1.8 2009-02-26 17:17:32 tswift Exp $
+** $Id: xasppkg.c,v 1.9 2009-03-14 20:56:25 tswift Exp $
 ** 
 */
 
@@ -39,7 +39,11 @@ Atom **globatoms;
 // They will soon be moved to the th_context structure so that
 // each thread can have its own Smodels instance.
 
+#ifdef CYGWIN
+#include "../../emu/context.h"
+#else
 #include "context.h"
+#endif
 
 //#define MULTI_THREAD 1
 
@@ -84,8 +88,9 @@ extern "C" void atomName(CTXTdeclc char *name)
 //  curatom++;
 }
 
-//extern "C" void __assert(const char *a, int b, const char *c) { return; }
-
+#ifdef CYGWIN
+extern "C" void __assert(const char *a, int b, const char *c) { return; }
+#endif
 
 extern "C" void beginBasicRule(CTXTdecl)
 {
