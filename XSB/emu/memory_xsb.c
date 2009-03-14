@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.55 2009-02-21 23:13:07 ruim Exp $
+** $Id: memory_xsb.c,v 1.56 2009-03-14 22:04:47 tswift Exp $
 ** 
 */
 
@@ -210,6 +210,7 @@ void *mem_calloc(unsigned long size, unsigned long occs, int category)
     pspacesize[category] += length;
 #else
 #ifndef MULTI_THREAD
+    unsigned long length = (size*occs+7) & ~0x7;
     pspacesize[category] += length;
 #endif
 #endif

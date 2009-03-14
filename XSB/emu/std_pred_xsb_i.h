@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.44 2008-11-06 00:05:16 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.45 2009-03-14 22:04:47 tswift Exp $
 ** 
 */
 
@@ -66,7 +66,7 @@ inline static xsbBool functor_builtin(CTXTdecl)
 	(isconstr(term) && get_arity(get_str_psc(term)) == 0)) {
       arity = ptoc_tag(CTXTc 3);
       /* tls: added !isnumber conjunct */
-      if (arity_integer(arity) && !isnumber(functor)) {
+      if (arity_integer(arity) && !xsb_isnumber(functor)) {
 	value = int_val(arity);
 	if (value == 0) return unify(CTXTc functor, term);
 	else {
@@ -93,7 +93,7 @@ inline static xsbBool functor_builtin(CTXTdecl)
 	}
 	/* TLS rearranged order of the two elses below */
       } else {
-	  if (isnumber(functor))
+	  if (xsb_isnumber(functor))
 	    return (unify(CTXTc term, functor) && 
 		    int_unify(CTXTc makeint(0), arity));
 	  else {
@@ -253,7 +253,7 @@ inline static xsbBool univ_builtin(CTXTdecl)
 	  }
 	} return TRUE;
       }
-      if ((isnumber(cell(head)) || isboxedinteger(cell(head))) && isnil(cell(head+1))) { /* list=[num] */
+      if ((xsb_isnumber(cell(head)) || isboxedinteger(cell(head))) && isnil(cell(head+1))) { /* list=[num] */
 	bind_copy((CPtr)term, cell(head));	 /* term<-num  */
 	return TRUE;	/* succeed */
       }

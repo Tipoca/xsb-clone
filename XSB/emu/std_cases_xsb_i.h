@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.20 2008-02-21 20:57:50 tswift Exp $
+** $Id: std_cases_xsb_i.h,v 1.21 2009-03-14 22:04:47 tswift Exp $
 ** 
 */
 
@@ -54,7 +54,7 @@
   case NUMBER:	/* r1: ?term */ {
       Cell tag = ptoc_tag(CTXTc 1);
       printf("number in std_cases_xsb_i.h This should NOT occur! This code should now be unreachable\n");
-      return (isnumber(tag) || isboxedinteger(tag) || isboxedfloat(tag));
+      return (xsb_isnumber(tag) || isboxedinteger(tag) || isboxedfloat(tag));
   }
   case ATOMIC: {	/* r1: ?term */
     Cell term = ptoc_tag(CTXTc 1);

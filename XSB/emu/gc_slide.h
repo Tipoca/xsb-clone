@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_slide.h,v 1.15 2007-09-04 00:49:09 dwarren Exp $
+** $Id: gc_slide.h,v 1.16 2009-03-14 22:04:47 tswift Exp $
 ** 
 */
 
@@ -265,7 +265,7 @@ static void sort_buffer(unsigned long *indata, unsigned long insize)
 
 static CPtr slide_heap(CTXTdeclc int num_marked)
 {
-  int  tag ;
+  int  tag = 0;  // TLS: to quiet compiler
   Cell contents;
   CPtr p, q ;
 

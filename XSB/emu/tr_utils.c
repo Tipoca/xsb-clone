@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.174 2009/01/22 15:28:22 tswift Exp $
+** $Id: tr_utils.c,v 1.175 2009/02/21 16:47:34 tswift Exp $
 ** 
 */
 
@@ -4213,7 +4213,7 @@ void unfounded_component(CTXTdecl) {
   int starting_scc = done_answer_stack[starting_index].scc;
   DL delayList;
   DE delayElement;
-  BTNptr cur_answer;
+  BTNptr cur_answer = 0;  // TLS: compiler (rightly) complained about it being uninit.
 
   while (starting_index < done_answer_stack_top) {
     founded = 0; 

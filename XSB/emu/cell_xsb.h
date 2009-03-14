@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.34 2008-07-25 20:56:50 tswift Exp $
+** $Id: cell_xsb.h,v 1.35 2009-03-14 22:04:47 tswift Exp $
 ** 
 */
 
@@ -227,11 +227,11 @@ extern unsigned long enc[], dec[];
 #define isstring(dcell) (cell_tag(dcell)==XSB_STRING)
 #define numequal(num1, num2) num1 == num2
 
-#define isnumber(dcell)	((isinteger(dcell)) || (isfloat(dcell)))
-#define isconstant(dcell)  ( isstring(dcell) || isnumber(dcell) )
+#define xsb_isnumber(dcell)	((isinteger(dcell)) || (isfloat(dcell)))
+#define isconstant(dcell)  ( isstring(dcell) || xsb_isnumber(dcell) )
 #define isatom(dcell)	((isstring(dcell)) || \
 			 (isconstr(dcell) && get_arity(get_str_psc(dcell))==0))
-#define isatomic(dcell)	((isstring(dcell)) || (isnumber(dcell)) || \
+#define isatomic(dcell)	((isstring(dcell)) || (xsb_isnumber(dcell)) || \
 			 (isconstr(dcell) && get_arity(get_str_psc(dcell))==0))
 
 #define isnil(dcell) (isstring(dcell) && (char *)string_val(dcell) == nil_string)
