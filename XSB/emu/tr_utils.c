@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.175 2009/02/21 16:47:34 tswift Exp $
+** $Id: tr_utils.c,v 1.176 2009/03/14 22:04:47 tswift Exp $
 ** 
 */
 
@@ -1335,22 +1335,20 @@ struct shared_interned_trie_t* shared_itrie_array;
 
 /* Need to expand trie array on demand -- this is high up on list -- TLS.*/
 
-#define MAX_INTERNED_TRIES 2003
+int max_interned_tries_glc;
 
 void init_private_trie_table(CTXTdecl) {
   int i ;
   
   itrie_array = 
-    mem_calloc(MAX_INTERNED_TRIES+1, sizeof(struct interned_trie_t), TABLE_SPACE);
+    mem_calloc(max_interned_tries_glc+1, sizeof(struct interned_trie_t), TABLE_SPACE);
 
-  for( i = 0; i < MAX_INTERNED_TRIES; i++ ) {
+  for( i = 0; i < max_interned_tries_glc; i++ ) {
     //    itrie_array[i].valid = FALSE;
     itrie_array[i].next_entry = i+1;
     itrie_array[i].root = NULL;
   }
-  //  itrie_array[MAX_INTERNED_TRIES].valid = FALSE;
-  itrie_array[MAX_INTERNED_TRIES].next_entry = -1;
-  //  itrie_array[MAX_INTERNED_TRIES].root = NULL;
+  itrie_array[max_interned_tries_glc].next_entry = -1;
 
   /* Set to 1 to avoid problems with storage_xsb.c which ues this (it
      returns a new trie with a 0 value) */
@@ -1363,13 +1361,13 @@ void init_shared_trie_table() {
   int i ;
   
   shared_itrie_array = 
-    mem_calloc(MAX_INTERNED_TRIES+1, sizeof(struct shared_interned_trie_t), TABLE_SPACE);
+    mem_calloc(max_interned_tries_glc+1, sizeof(struct shared_interned_trie_t), TABLE_SPACE);
 
-  for( i = 0; i < MAX_INTERNED_TRIES; i++ ) {
+  for( i = 0; i < max_interned_tries_glc; i++ ) {
       shared_itrie_array[i].next_entry = i+1;
       pthread_mutex_init(&shared_itrie_array[i].trie_mutex, &attr_rec_gl ) ;
   }
-    shared_itrie_array[MAX_INTERNED_TRIES].next_entry = -1;
+    shared_itrie_array[max_interned_tries_glc].next_entry = -1;
 
     // Set to 1 to avoid problems with storage_xsb.c which ues this (it
     //  returns a new trie with a 0 value) 
