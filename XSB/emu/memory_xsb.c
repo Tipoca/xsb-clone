@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.57 2009-03-14 22:46:21 tswift Exp $
+** $Id: memory_xsb.c,v 1.58 2009-03-29 16:32:50 tswift Exp $
 ** 
 */
 
@@ -202,15 +202,17 @@ void *mem_calloc(unsigned long size, unsigned long occs, int category)
 {
     byte * ptr;
 
-#ifdef NON_OPT_COMPILE
+#if defined(NON_OPT_COMPILE) || !defined(MULTI_THREAD)  || defined(GENERAL_TAGGING)
     unsigned long length = (size*occs+7) & ~0x7;
+#endif
+
+#ifdef NON_OPT_COMPILE
     //    printf("Callocing size %d occs %d category %d\n",size,occs,category);
     memcount_gl.num_mem_allocs++;
     SYS_MUTEX_LOCK_NOERROR(MUTEX_MEM);
     pspacesize[category] += length;
 #else
 #ifndef MULTI_THREAD
-    unsigned long length = (size*occs+7) & ~0x7;
     pspacesize[category] += length;
 #endif
 #endif
@@ -236,7 +238,9 @@ void *mem_calloc(unsigned long size, unsigned long occs, int category)
 void *mem_calloc_nocheck(unsigned long size, unsigned long occs, int category)
 {
     byte * ptr;
+#if defined(NON_OPT_COMPILE) || !defined(MULTI_THREAD)  || defined(GENERAL_TAGGING)
     unsigned long length = (size*occs+7) & ~0x7;
+#endif
 
 #ifdef NON_OPT_COMPILE
     //    printf("Callocing size %d occs %d category %d\n",size,occs,category);
