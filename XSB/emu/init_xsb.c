@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.151 2009-03-29 21:40:10 tswift Exp $
+** $Id: init_xsb.c,v 1.152 2009-04-02 11:28:49 ruim Exp $
 ** 
 */
 
@@ -246,7 +246,7 @@ static void init_flags(CTXTdecl)
   flags[THREAD_TCPSIZE] = TCPSTACK_DEFAULT_SIZE;
   flags[THREAD_COMPLSIZE] = COMPLSTACK_DEFAULT_SIZE;
 #ifdef MULTI_THREAD
-  flags[MAX_QUEUE_TERMS] = DEFAULT_MQ_SIZE;
+  flags[MAX_QUEUE_TERMS] = DEFAULT_MQ_SIZE; 
 #endif
 }
 
