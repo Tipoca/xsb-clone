@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.94 2009-04-17 17:39:06 tswift Exp $
+** $Id: parse.P,v 1.95 2009-04-17 17:42:32 tswift Exp $
 ** 
 */
 
@@ -574,6 +574,7 @@ parse_multifile(Skel,QrList,SymTab,ModName) :-
 cond_call_1(current_prolog_flag(Type,_Val)):- 
 	\+ xsb_flag(Type,_).     % XSB flags are fluent as opp. to ISO.
 cond_call_1(predicate_property(_pred,_Val)):- !.
+cond_call_1(xsb_configuration(_pred,_Val)):- !.
 cond_call_1(true).
 cond_call_1(false).
 
