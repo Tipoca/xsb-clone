@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: x_interp.P,v 1.64 2008/10/16 23:51:50 tswift Exp $
+** $Id: x_interp.P,v 1.65 2008/11/12 21:56:52 dwarren Exp $
 ** 
 */
 
@@ -211,12 +211,16 @@ exclude__([V|Vs], PVs) :-
 print_answer([]) :- !.
 print_answer([vv(Name,Val)|Tail]) :-
 	file_nl(STDFDBK), file_write(STDFDBK, Name), 
-	file_write(STDFDBK, ' = '), file_write(STDFDBK, Val),
-	(is_attv(Val) -> portray_attributes(Val) ; true),
+	file_write(STDFDBK, ' = '), 
+	file_write(STDFDBK, Val),
+%	(is_attv(Val) -> portray_attributes(Val) ; true),
 	print_answer(Tail).
 
-:- import get_attributes/2 from machine.
 
+/*********************
+% moved to xsb_writ.P
+
+:- import get_attributes/2 from machine.
 portray_attributes(Var):- 
 	get_attributes(Var,Atts),
 	portray_attributes_1(Atts).
@@ -232,6 +236,7 @@ portray_attributes_1([Mod,Attr|T]):-
 	    file_write(STDFDBK,' } ')
 	 ; true),
 	 portray_attributes_1(T).
+***********************/
 
 %%:- import writeln/1 from standard.
 :- import constraint_portray_hook/4 from machine.

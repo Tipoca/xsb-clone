@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_writ.H,v 1.20 2008/04/02 16:21:18 dwarren Exp $
+** $Id: xsb_writ.H,v 1.21 2008/04/03 19:38:05 tswift Exp $
 ** 
 */
 
@@ -36,10 +36,12 @@
 :- import file_put/2 from file_io.
 :- import file_function/3 from machine.
 :- import integer/1 from standard.
-:- import term_psc/2, psc_arity/2, psc_name/2, term_arg/3, 
-	stat_flag/2,
-	term_type/2, file_puttoken/3, file_writequoted/2
+:- import attribute_portray_hook/3,
+   term_psc/2, psc_arity/2, psc_name/2, term_arg/3, 
+   stat_flag/2,stat_set_flag/2,get_attributes/2,
+   term_type/2, file_puttoken/3, file_writequoted/2
      from machine.
+:- import call/1 from standard.
 
 :- import conget/2, conset/2 from gensym.
 
