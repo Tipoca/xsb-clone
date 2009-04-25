@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.70 2009-01-10 23:37:07 tswift Exp $
+** $Id: macro_xsb.h,v 1.71 2009-04-25 17:24:52 tswift Exp $
 ** 
 */
 
@@ -997,6 +997,9 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 #define subgoal_space_has_been_reclaimed(SUBG_PTR,CS_FRAME) \
         (SUBG_PTR != compl_subgoal_ptr(CS_FRAME))
 
+/* TLS: the "visited" fields are only used by batched, not local.
+   Mainly, the neg_loop field is set to true to indicate that the
+   subgoal will be delayed upon resuming */
 #define mark_delayed(csf1, csf2, susp) { \
 	  compl_visited(csf1) = DELAYED; \
 	  compl_visited(csf2) = DELAYED; \
