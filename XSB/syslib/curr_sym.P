@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.48 2009/03/29 14:52:23 tswift Exp $
+** $Id: curr_sym.P,v 1.49 2009/04/25 19:00:44 tswift Exp $
 ** 
 */
 
@@ -528,7 +528,7 @@ psc_properties(PSC, Property) :-
 	psc_env(PSC, Env),
 	( Env =:= T_EXPORTED -> Property = exported
 	; Env =:= T_LOCAL -> Property = (local)
-	; Env =:= T_IMPORTED -> psc_prop(PSC, ModulePSC), 
+	; Env =:= T_IMPORTED -> psc_mod(PSC, ModulePSC), 
 		       psc_name(ModulePSC, ModuleName), 
 		       Property = imported_from(ModuleName)
 	; Property = global ).

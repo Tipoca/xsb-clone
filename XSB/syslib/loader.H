@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.H,v 1.26 2007/08/30 16:41:31 tswift Exp $
+** $Id: loader.H,v 1.27 2008/07/24 16:50:16 tswift Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@
 :- import term_type/2, term_psc/2, psc_name/2, psc_arity/2, psc_env/2,
 	  psc_type/2, 
           % psc_set_type/2, 
-          psc_prop/2, psc_set_prop/2,
+          psc_mod/2, psc_set_prop/2,
 	  psc_insert/4, psc_import/3, conpsc/2, str_cat/3,
 	  str_match/5,
 	  code_call/3, code_load/3, intern_string/2,

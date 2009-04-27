@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.54 2008/02/16 21:50:00 dwarren Exp $
+** $Id: loader.P,v 1.55 2008/07/24 16:50:07 tswift Exp $
 ** 
 */
 
@@ -287,7 +287,7 @@ load_pred1(PSC) :-
 	psc_env(PSC, Env), 
 	( Env =:= T_UNLOADED
 	->  % is "imported"
-	    psc_prop(PSC, ModPSC),
+	    psc_mod(PSC, ModPSC),
 	    psc_name(ModPSC, ModName),
 	    psc_type(ModPSC, ModType), 
 	    (ModType =:= T_MODU

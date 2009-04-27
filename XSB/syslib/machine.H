@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.90 2008/08/11 12:52:30 tswift Exp $
+** $Id: machine.H,v 1.91 2009/02/21 16:42:52 tswift Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@
 	psc_arity/2, 
 	psc_type/2, 
 	psc_prop/2, 
+	psc_mod/2, 
 	psc_set_type/2, 
 	psc_set_prop/2,
 	psc_set_spy/2,
