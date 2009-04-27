@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.87 2009-01-10 23:37:07 tswift Exp $
+** $Id: builtin.h,v 1.88 2009-04-27 18:32:03 dwarren Exp $
 ** 
 */
 
@@ -97,6 +97,8 @@
 #define SYS_GETHOST		 57
 #define SYS_ERRNO		 58
 #define PUTENV                   59
+
+#define PSC_MOD		 	 60
 
 #define FILE_WRITEQUOTED	 61
 #define GROUND  		 62

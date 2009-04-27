@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.325 2009-01-10 23:37:06 tswift Exp $
+** $Id: builtin.c,v 1.326 2009-04-27 18:32:03 dwarren Exp $
 ** 
 */
 
@@ -929,6 +929,7 @@ void init_builtin_table(void)
   set_builtin_table(PSC_ARITY, "psc_arity");
   set_builtin_table(PSC_TYPE, "psc_type");
   set_builtin_table(PSC_PROP, "psc_prop");
+  set_builtin_table(PSC_MOD, "psc_mod");
   set_builtin_table(PSC_SET_TYPE, "psc_set_type");
   set_builtin_table(PSC_SET_PROP, "psc_set_prop");
   set_builtin_table(CONGET_TERM, "conget");
@@ -1263,6 +1264,19 @@ int builtin_call(CTXTdeclc byte number)
       return FALSE;
     }
     ctop_int(CTXTc 2, (Integer)get_data(psc));
+    break;
+  }
+  case PSC_MOD: {	/* R1: +PSC; R2: -term */
+			/* prop: as a buffer pointer */
+    Psc psc = (Psc)ptoc_addr(1);
+    if ((get_type(psc) == T_PRED || get_type(psc) == T_DYNA) && get_env(psc) != T_IMPORTED) {
+      char str[100];
+      snprintf(str,100,"[psc_mod/2] Cannot get property of predicate: %s/%d\n",
+	      get_name(psc),get_arity(psc));
+      xsb_warn(str);
+      return FALSE;
+    }
+    ctop_int(CTXTc 2, (Integer)(isstring(get_data(psc))?global_mod:get_data(psc)));
     break;
   }
   case PSC_SET_PROP: {	       /* R1: +PSC; R2: +int */
