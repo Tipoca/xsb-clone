@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.49 2009/04/25 19:00:44 tswift Exp $
+** $Id: curr_sym.P,v 1.50 2009/04/27 18:43:15 dwarren Exp $
 ** 
 */
 
@@ -640,10 +640,18 @@ iso_flag(double_quotes,codes).
 /* ===== prolog_commons_flag/2 ========================================== */
 
 prolog_commons_flag(dialect,xsb).
+prolog_commons_flag(version_data,xsb(Maj, Min, 0, _)):-
+        xsb_configuration(major_version,MajAtom),
+        atom_codes(MajAtom, MajCodes),
+        number_codes(Maj, MajCodes),
+        xsb_configuration(minor_version,MinAtom),
+        atom_codes(MinAtom, MinCodes),
+        number_codes(Min, MinCodes).
+/*
 prolog_commons_flag(version_data,xsb(Maj, Min, 0, _)):- 
 	xsb_configuration(major_version,Maj),
 	xsb_configuration(minor_version,Min).
-
+*/
 
 /* ===== xsb_flag/2 ========================================== */
 
