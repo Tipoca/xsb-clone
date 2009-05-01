@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flag_defs_xsb.h,v 1.27 2009-04-27 11:06:22 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.28 2009-05-01 12:54:38 tswift Exp $
 ** 
 */
 
@@ -129,6 +129,7 @@ interrupt flag
 #define RECOMPILE_OVERRIDE        79   /* Allows compilation when more than 1 thread */
 #define PRIVSHAR_DEFAULT          80   /* Default for shared or private predicates */
 #define WARNING_ACTION            81   /* Action to take on warnings: print,silent,exception */
+#define HEAP_GC_MARGIN            82   /* Size of heap overflow margin */
 
 #define MAX_FLAGS		85
 
