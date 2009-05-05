@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.46 2009-04-24 21:30:46 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.47 2009-05-05 14:21:18 dwarren Exp $
 ** 
 */
 
@@ -199,9 +199,9 @@ inline static xsbBool univ_builtin(CTXTdecl)
       head = clref_val(list);
       chead = cell(head);
       XSB_Deref(chead);
+      ctail = cell(head+1);
+      XSB_Deref(ctail);
       if (isatom(chead)) {
-	ctail = cell(head+1);
-	XSB_Deref(ctail);
 	if (isnil(ctail)) {	/* atom construction */
 	  bind_copy((CPtr)term, chead);
 	} else {
