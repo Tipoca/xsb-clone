@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.35 2008/11/05 22:47:16 dwarren Exp $
+** $Id: trace_xsb.c,v 1.36 2009/02/21 16:47:34 tswift Exp $
 ** 
 */
 
@@ -204,13 +204,14 @@ void total_stat(CTXTdeclc double elapstime) {
     if (i != TABLE_SPACE && i != INCR_TABLE_SPACE) pspacetot += pspacesize[i];
 
   total_alloc =
-    pspacetot  +  trieassert_alloc  +  pspacesize[TABLE_SPACE] +
+    pspacetot  +  pspacesize[TABLE_SPACE] +
     pspacesize[INCR_TABLE_SPACE] +
     (pdl.size + glstack.size + tcpstack.size + complstack.size) * K +
     de_space_alloc + dl_space_alloc  + pnde_space_alloc;
 
   total_used  =
-    pspacetot  +  trieassert_used  +  pspacesize[TABLE_SPACE]-(tablespace_alloc-tablespace_used) +
+    pspacetot  +  pspacesize[TABLE_SPACE]-(tablespace_alloc-tablespace_used)
+    - (trieassert_alloc - trieassert_used) +
     pspacesize[INCR_TABLE_SPACE] +
     (glstack.size * K - gl_avail) + (tcpstack.size * K - tc_avail) +
     de_space_used + dl_space_used;
