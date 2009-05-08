@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.169 2009-01-02 17:50:03 tswift Exp $
+** $Id: biassert.c,v 1.170 2009-05-08 17:32:25 dwarren Exp $
 ** 
 */
 
@@ -3517,10 +3517,10 @@ void retractall_prref(CTXTdeclc PrRef prref) {
       buffer = buffers_to_free[--btop];
       switch (ClRefType(buffer)) {
       case SOB_RECORD: 
-	if (another_buff(ClRefJumpInstr(buffer)))
-	  buffers_to_free[btop++] = (ClRef) ClRefFirstIndex(buffer);
 	if (another_buff(ClRefTryInstr(buffer)))
 	  buffers_to_free[btop++] = ClRefNext(buffer);
+	if (another_buff(ClRefJumpInstr(buffer)))
+	  buffers_to_free[btop++] = (ClRef) ClRefFirstIndex(buffer);
 	mem_dealloc((pb)ClRefAddr(buffer),ClRefSize(buffer),ASSERT_SPACE);
 	if (xsb_profiling_enabled)
 	  remove_prog_seg((pb)buffer);
