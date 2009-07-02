@@ -19,13 +19,14 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.56 2008-03-01 02:58:33 dwarren Exp $
+## $Id: Makefile,v 1.57 2009-07-02 16:42:15 dwarren Exp $
 ## 
 ##
 
 OBJEXT=.xwam
 
 ALL = 	aggregs${OBJEXT} array${OBJEXT} assoc_xsb${OBJEXT} \
+	proc_files${OBJEXT} \
 	basic_props${OBJEXT} lists${OBJEXT} constraintLib${OBJEXT} \
 	directry${OBJEXT} foreign${OBJEXT} format${OBJEXT} \
 	intern${OBJEXT} mttestutils${OBJEXT} mutex_xsb${OBJEXT} \
@@ -36,6 +37,7 @@ ALL = 	aggregs${OBJEXT} array${OBJEXT} assoc_xsb${OBJEXT} \
 	ugraphs${OBJEXT} wrapping${OBJEXT} write_term${OBJEXT} \
 	xsb_ciao${OBJEXT} xnmr${OBJEXT} justifyLP${OBJEXT} \
 	xsb_profiling${OBJEXT} xsb_lint_impexp${OBJEXT} \
+	xref${OBJEXT} \
 	globalvar$(OBJEXT) pairlist$(OBJEXT) pretty_print$(OBJEXT)
 
 EMU_INCLUDES = ../emu/builtin.h ../emu/celltags_xsb.h ../emu/flag_defs_xsb.h \
