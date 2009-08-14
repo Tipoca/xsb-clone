@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.38 2009-01-25 00:06:38 tswift Exp $
+** $Id: parse.H,v 1.39 2009-08-14 22:09:12 tswift Exp $
 ** 
 */
 
@@ -46,13 +46,17 @@
      from symtab.
 :- import functor/3, seen/0, file_exists/1, '=..'/2, atom/1, integer/1, 
 	  op/3, (index)/3, (index)/2, real/1, see/1, expand_term/2, (=..)/2,
-	  '\='/2, seeing/1, is_most_general_term/1, number/1, atom_codes/2
+	  '\='/2,
+          % seeing/1, 
+          is_most_general_term/1, number/1, atom_codes/2
      from standard.
-:- import retractall/1, (dynamic)/1 from assert.
+   :- import retractall/1, retract/1, asserta/1, (dynamic)/1 from assert.
 :- import mpa_to_skel/2 from file_op.
 :- import existence_error/4,misc_error/1, syntax_error/1, domain_error/5, 
    type_error/4, check_ground/3
    from error_handler.
+:- import file_names/11 from compile.
+:- import search_module/6 from consult.
 
 :- import spawn_process/5, process_control/2 from shell.
 :- import xsb_configuration/2 from xsb_configuration.
