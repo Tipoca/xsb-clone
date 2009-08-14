@@ -24,6 +24,9 @@ bench_qsort(Type,N,Length):-
 	cputime(T2),T is T2-T1,
 	writeq(datum(Type,T)),writeln('.'),nl.
 
+%SWI
+%cputime(T):- statistics(cputime,T).
+
 main1(N,L) :- repeat(N), qsort(L,_,[]), fail.
 main1(_,_).
 
