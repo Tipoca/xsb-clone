@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.113 2009/02/21 16:42:53 tswift Exp $
+** $Id: std_xsb.P,v 1.114 2009/03/09 13:23:57 dwarren Exp $
 ** 
 */
 
@@ -210,6 +210,7 @@ standard_symbol(hilog_functor, 3, standard).
 standard_symbol(hilog_symbol, 1, curr_sym).
 
 standard_symbol((import), 1, standard).
+standard_symbol(include, 1, usermod).
 standard_symbol((index), 3, standard).
 standard_symbol((index), 2, standard).
 standard_symbol(integer, 1, standard).
