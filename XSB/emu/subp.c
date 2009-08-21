@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.114 2008/10/15 16:41:53 dwarren Exp $
+** $Id: subp.c,v 1.115 2008/10/24 18:55:20 dwarren Exp $
 ** 
 */
 
@@ -299,6 +299,20 @@ void print_statistics(CTXTdeclc int amount) {
     string_table_stats();
     break;
   }
+}
+
+
+
+/*======================================================================*/
+/*  Memory statistics.					*/
+/*======================================================================*/
+/*
+ * Called through builtin statistics/2.
+ */
+void statistics_inusememory(CTXTdeclc int type) {
+  perproc_stat();		/* move max usage into 'ttt' struct variable */
+    stat_inusememory(CTXTc real_time()-realtime_count_gl,type);   /* collect */
+  reset_stat_total(); 	/* reset 'ttt' struct variable (all 0's) */
 }
 
 /*======================================================================*/

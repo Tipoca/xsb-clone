@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.h,v 1.16 2007-09-04 00:49:09 dwarren Exp $
+** $Id: subp.h,v 1.17 2009-08-21 20:09:34 tswift Exp $
 ** 
 */
 
@@ -28,6 +28,7 @@
 extern void intercept(CTXTdeclc Psc);
 extern void init_interrupt(void);
 extern void print_statistics(CTXTdeclc int);
+extern void statistics_inusememory(CTXTdeclc int);
 extern void print_qatom(FILE *, char *);
 extern void print_aqatom(FILE *, char *);
 extern void print_dqatom(FILE *, char *);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_defs_xsb.h,v 1.8 2005/01/14 18:31:33 ruim Exp $
+** $Id: system_defs_xsb.h,v 1.9 2009/02/21 16:47:34 tswift Exp $
 ** 
 */
 
@@ -42,5 +42,16 @@
 
 #define RUNTIME 0
 #define WALLTIME 1
+#define TOTALMEMORY 2
+#define GLMEMORY 3
+#define TCMEMORY 4
+#define TABLESPACE 5
+#define TRIEASSERTMEM 6
+#define HEAPMEM 7
+#define TRAILMEM 8
+#define CPMEM 9 
+#define LOCALMEM 10
+#define OPENTABLECOUNT 11
+#define SHARED_TABLESPACE 12
 
 
