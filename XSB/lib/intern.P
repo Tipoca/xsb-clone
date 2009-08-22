@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.23 2008-03-19 15:51:51 dwarren Exp $
+** $Id: intern.P,v 1.24 2009-08-22 19:00:59 tswift Exp $
 ** 
 */
 
@@ -364,7 +364,7 @@ trie_prge_bulk_insert(Tid,Callable_Term):-
 	    new_i_trie_intern(Tid,TrieTerm,_Leaf,_Flag,NO_CPS_CHECK,DONT_EXPAND_HASHES)
 	; 
 	    call(Callable_Term),
-	    new_i_trie_intern(Tid,TrieTerm,_Leaf,_Flag,NO_CPS_CHECK,DONT_EXPAND_HASHES) ),
+	    new_i_trie_intern(Tid,TrieTerm,_Leaf,_Flag,NO_CPS_CHECK,EXPAND_HASHES) ),
 	fail.    
 trie_prge_bulk_insert(_Trie,_Callable_Term).
 
