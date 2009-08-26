@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_defs_xsb.h,v 1.9 2009/02/21 16:47:34 tswift Exp $
+** $Id: system_defs_xsb.h,v 1.10 2009/08/21 20:09:34 tswift Exp $
 ** 
 */
 
@@ -53,5 +53,6 @@
 #define LOCALMEM 10
 #define OPENTABLECOUNT 11
 #define SHARED_TABLESPACE 12
+#define ATOMMEM 13
 
 
