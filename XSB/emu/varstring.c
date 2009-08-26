@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.21 2008-11-05 22:47:16 dwarren Exp $
+** $Id: varstring.c,v 1.22 2009-08-26 21:21:25 dwarren Exp $
 ** 
 */
 
@@ -212,8 +212,8 @@ static void vs_append(VarString *vstr, char *str)
 }
 
 static inline void vs_appendc(VarString *vstr, char code) {
-  if (vstr->size < vstr->length+1) 
-    vs_adjust_size(vstr,vstr->length+1);
+  if (vstr->size < vstr->length+2) // \0 + new one to add
+    vs_adjust_size(vstr,vstr->length+2);
   *(vstr->string+vstr->length) = code;
   vstr->length++;
   *(vstr->string+vstr->length) = '\0';
@@ -395,7 +395,6 @@ static void vs_adjust_size(VarString *vstr, int minsize)
 
   vstr->size = newsize;
 }
-
 
 
 #ifdef DEBUG_VARSTRING
