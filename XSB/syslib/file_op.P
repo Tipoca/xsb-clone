@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.P,v 1.39 2009/03/09 13:27:11 dwarren Exp $
+** $Id: file_op.P,v 1.40 2009/08/14 14:41:40 dwarren Exp $
 ** 
 */
 
@@ -139,6 +139,7 @@ deactivate_op(T, S) :-
 '_$op1'(1050,xfy,'->').
 '_$op1'(1000,xfy,',').
 '_$op1'(900,fy,not).		% Not in the Prolog standard
+'_$op1'(900,fy,tnot).		% Not in the Prolog standard
 '_$op1'(900,fy,'\+').		% Not in the Prolog standard
 '_$op1'(900,fy,spy).		% Not in the Prolog standard
 '_$op1'(900,fy,nospy).		% Not in the Prolog standard

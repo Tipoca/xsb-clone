@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.39 2008/11/26 16:27:49 tswift Exp $
+** $Id: tables.H,v 1.40 2009/01/08 21:18:19 tswift Exp $
 ** 
 */
 
@@ -47,7 +47,7 @@
       table_state/2,
       table_state/4,
       tfindall/3,
-      tnot/1,
+   (tnot)/1,
       't not'/1,
       (trie_dynamic)/1,
       trie_assert/1,
