@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.38 2009/08/21 20:09:34 tswift Exp $
+** $Id: trace_xsb.c,v 1.39 2009/08/26 23:58:41 tswift Exp $
 ** 
 */
 
@@ -661,6 +661,10 @@ void stat_inusememory(CTXTdeclc double elapstime, int type) {
     case SHARED_TABLESPACE: {
       ctop_int(CTXTc 4, shared_tablespace_alloc);
       ctop_int(CTXTc 5, shared_tablespace_used);
+      break;
+    }
+    case ATOMMEM: {
+      ctop_int(CTXTc 4, pspacesize[ATOM_SPACE]);
       break;
     }
     }
