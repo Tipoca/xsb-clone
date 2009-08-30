@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.58 2009-03-29 16:32:50 tswift Exp $
+** $Id: memory_xsb.c,v 1.59 2009-08-30 19:42:28 tswift Exp $
 ** 
 */
 
@@ -139,12 +139,8 @@ void *mem_alloc(unsigned long size, int category)
 #ifdef NON_OPT_COMPILE
     memcount_gl.num_mem_allocs++;
     SYS_MUTEX_LOCK_NOERROR(MUTEX_MEM);
-    pspacesize[category] += size;
-#else
-#ifndef MULTI_THREAD
-    pspacesize[category] += size;
 #endif
-#endif
+    pspacesize[category] += size;
 
     ptr = (byte *) malloc(size);
 
