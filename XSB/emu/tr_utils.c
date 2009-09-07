@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.176 2009/03/14 22:04:47 tswift Exp $
+** $Id: tr_utils.c,v 1.177 2009/03/29 21:40:10 tswift Exp $
 ** 
 */
 
@@ -3179,7 +3179,7 @@ inline void abolish_table_pred_single(CTXTdeclc TIFptr tif, int cps_check_flag) 
   if (action == CAN_RECLAIM) {
     delete_predicate_table(CTXTc tif,TRUE);
   }
-  else {
+  else if (TIF_Subgoals(tif)) {
     //        fprintf(stderr,"Delaying abolish of table in use: %s/%d\n",
     //        get_name(psc),get_arity(psc));
 #ifndef MULTI_THREAD
