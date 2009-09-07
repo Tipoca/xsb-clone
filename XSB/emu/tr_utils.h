@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.53 2009-03-29 21:40:10 tswift Exp $
+** $Id: tr_utils.h,v 1.54 2009-09-07 21:08:04 tswift Exp $
 ** 
 */
 
@@ -120,6 +120,10 @@ extern void release_all_tabling_resources(CTXTdecl);
 
 // Perhaps this should be in hashtable.h?
 extern void hashtable1_destroy_all(int);
+
+// from sub_delete.c
+extern void delete_subsumptive_call(CTXTdeclc SubProdSF);
+extern void reclaim_deleted_subsumptive_table(CTXTdeclc DelTFptr);
 
 #define MAX_INTERNED_TRIES 2003
 
