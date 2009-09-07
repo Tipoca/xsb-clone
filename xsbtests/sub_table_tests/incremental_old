@@ -1,0 +1,7 @@
+first_p(a,1)
+first_p(b,3)
+first_p(c,5)
+second_p(a,1)
+second_p(b,3)
+second_p(c,5)
+second_p(d,4)
