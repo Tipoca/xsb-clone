@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: symtab.P,v 1.13 2008-05-07 15:12:00 dwarren Exp $
+** $Id: symtab.P,v 1.14 2009-09-25 19:52:35 dwarren Exp $
 ** 
 */
 
@@ -412,7 +412,10 @@ sym_category(sym(_,_,prop(Cat,_,_,_,_,_),_), Cat).
 /*======================================================================*/
 
 sym_type(sym(_,_,prop(_,_,_,_,_,Other),_), tabled(Ind,Arity)) :-
-	member2(tabled(Ind,Arity), Other).
+	member2(tabled(Ind,Arity), Other),
+	!.
+sym_type(sym(_,_,prop(_,_,_,_,_,Other),_), aggregation(Spec)) :-
+	member2(aggregation(Spec), Other).
 
 
 /*======================================================================*/

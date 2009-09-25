@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.H,v 1.22 2009-08-14 22:09:12 tswift Exp $
+** $Id: compile.H,v 1.23 2009-09-25 19:52:35 dwarren Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 :- export file_names/11.
 
 :- import spec/2 from spec.
-:- import cp_opt/2 from cp_opt.
+:- import cp_opt/2, aggregation_transform/2 from cp_opt.
 :- import str_cat/3, stat_flag/2 from machine.
 :- import useinfer/3 from useinfer.
 %%:- import db_optimize/4 from db_opt.
