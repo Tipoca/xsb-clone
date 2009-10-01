@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.P,v 1.20 2007/04/16 16:15:33 tswift Exp $
+** $Id: basics.P,v 1.21 2007/11/20 19:07:22 tswift Exp $
 ** 
 */
 
@@ -274,7 +274,8 @@ subseq([H|T],S,[H|C]) :- subseq(T,S,C).
 
 %---
 % A not so naive reverse
-reverse(L, R) :- reverse_acc(L, [], R).
+reverse(L, R) :- nonvar(L), !, reverse_acc(L, [], R).
+reverse(L, R) :- reverse_acc(R, [], L).
 
 reverse_acc([], Acc, Acc).
 reverse_acc([Head|Tail], Acc, Reversed) :-
