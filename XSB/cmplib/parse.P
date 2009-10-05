@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.99 2009-09-25 19:52:35 dwarren Exp $
+** $Id: parse.P,v 1.100 2009-10-05 16:30:49 dwarren Exp $
 ** 
 */
 
@@ -553,9 +553,9 @@ parse_table_options(Options,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
 
 parse_table_options_1((Option,Options),PredCList,QrList,SymTab,ModName,ModStruct) :- !,
 	parse_table_option(Option,PredCList,QrList,SymTab,ModName,ModStruct),
-	parse_table_options_1(Options,PredCList,QrList,SymTab,ModName,ModStruct).
-parse_table_options_1(Culprit,_PredCList,_QrList,_SymTab,_ModName,_ModStruct) :- 
-	type_error(comma_list,Culprit,(table)/1,1).
+	parse_table_option(Options,PredCList,QrList,SymTab,ModName,ModStruct).
+parse_table_options_1(Option,PredCList,QrList,SymTab,ModName,ModStruct) :- 
+	parse_table_option(Option,PredCList,QrList,SymTab,ModName,ModStruct).
 
 parse_table_option(dynamic,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
 	parse_directive(dynamic(PredCList),QrList,SymTab,ModName,ModStruct).
