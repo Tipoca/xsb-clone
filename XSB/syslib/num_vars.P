@@ -18,11 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: num_vars.P,v 1.7.10.1 2004/09/29 19:44:28 ruim Exp $
+** $Id: num_vars.P,v 1.8 2005/01/14 18:32:01 ruim Exp $
 ** 
 */
 
-:- compiler_options([xpp_on]).
+:- compiler_options([xpp_on,sysmod]).
 
 #include "celltags_xsb.h"
 
@@ -35,6 +35,7 @@
 %   value FirstVar+2, and so on.  The last variable in Term has the value 
 %   LastVar-1.
 
+%:- import writeln/1 from standard.
 numbervars(Y,I,J) :- term_type(Y,T),
 	(T =:= XSB_FREE
 	 ->	Y='$VAR'(I), J is I+1
