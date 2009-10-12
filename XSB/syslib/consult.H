@@ -19,11 +19,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.48 2008/04/27 15:25:56 tswift Exp $
+** $Id: consult.H,v 1.49 2008/09/19 14:28:06 dwarren Exp $
 ** 
 */
 
-:- export 	  add_lib_dir/1,
+:- export 	  add_lib_dir/1, add_lib_dir/2,
 	  compile/1, compile/2, search_module/6,
           consult/1, consult/2, '.'/2, reconsult/1, reconsult/2,
 	  current_loaded_file/1,
