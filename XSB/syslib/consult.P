@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.75 2009/08/14 21:47:58 tswift Exp $
+** $Id: consult.P,v 1.77 2009/10/12 20:43:11 dwarren Exp $
 ** 
 */
 
@@ -513,7 +513,10 @@ load_dyn1(Rfname,Dir) :-
 	),
 	seen,
 	see(OldFile),
-	time_message(T0,(Rfname,' dynamically loaded')).
+	(   banner_control(quietload)
+	->  true
+	;   time_message(T0,(Rfname,' dynamically loaded'))
+	).
 load_dyn1(Rfname,Dir) :- 
 	%% If we are restarting due to gpp, then reset needs_restart.
 	conget(needs_restart,1), conset(needs_restart, 0),
@@ -606,7 +609,10 @@ load_dync1(Rfname,Dir) :-
 	),
 	seen,
 	see(OldFile),
-	time_message(T0,(Rfname,' dynamically loaded')).
+	(   banner_control(quietload)
+	->  true
+	;   time_message(T0,(Rfname,' dynamically loaded'))
+	).
 load_dync1(Rfname,Dir) :- 
 	%% If we are restarting due to gpp, then reset needs_restart.
 	conget(needs_restart,1), conset(needs_restart, 0),
