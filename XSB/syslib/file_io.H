@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.H,v 1.38 2008/03/16 22:19:28 tswift Exp $
+** $Id: file_io.H,v 1.39 2008/03/22 19:23:16 tswift Exp $
 ** 
 */
 
@@ -26,7 +26,7 @@
 
 :- import stat_flag/2, file_function/7, file_function/3,
 	parse_filename/4, is_absolute_filename/1,
-	expand_filename/2,
+	expand_filename/2, getenv/2,
 	sys_system/7, formatted_io/5 
       from machine.
 %%%:- import conpsc/2, psc_set_type/2, psc_set_prop/2 from machine.
