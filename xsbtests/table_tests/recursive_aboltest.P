@@ -9,7 +9,7 @@ test_pred_abolish(0):-!,
 test_pred_abolish(N):- 
 	writeln(got_through_pred(N)),
 	abolish_table_pred(tc_lr_p/2),
-	tc_lr_p(1,_),
+	(tc_lr_p(1,_),fail ; true),
 	N1 is N - 1,
 	test_pred_abolish(N1).
 
@@ -18,7 +18,7 @@ test_subgoal_abolish(0):-!,
 test_subgoal_abolish(N):- 
 	writeln(got_through_subgoal(N)),
 	abolish_table_call(tc_lr_p(1,_)),
-	tc_lr_p(1,_),
+	(tc_lr_p(1,_),fail ; true),
 	N1 is N - 1,
 	test_subgoal_abolish(N1).
 

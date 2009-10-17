@@ -104,3 +104,5 @@ EOF
 #------------------------------------------------- % very simple -- needs more cases.
 ../gentest.sh "$XEMU $options" incremental "test".
 #-------------------------------------------------
+../gentest.sh "$XEMU -l $options" aggregs_test_2 "test."
+#--------------------------------------------------

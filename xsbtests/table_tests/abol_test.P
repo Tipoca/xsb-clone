@@ -1,6 +1,6 @@
 %-------------------------------------------------------------------------
 % Created by Kostis Sagonas to test the basic functionality of tabling
-% built-in predicates abolish_table_pred/1 and abolish_table_call/1.
+% built-in predicates abolish_table_pred/1.
 %-------------------------------------------------------------------------
 
 :- import numbervars/1 from num_vars.
