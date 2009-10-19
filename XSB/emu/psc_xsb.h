@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.33 2008-07-25 22:07:37 tswift Exp $
+** $Id: psc_xsb.h,v 1.34 2009-10-19 16:51:14 dwarren Exp $
 ** 
 */
 
@@ -151,6 +151,7 @@ typedef struct psc_pair *Pair;
 extern Pair link_sym(Psc, Psc);
 extern Pair insert_module(int, char *);
 extern Pair insert(char *, byte, Psc, int *);
+extern void set_psc_ep_to_psc(Psc, Psc);
 
 extern char* string_find(const char*, int);
 

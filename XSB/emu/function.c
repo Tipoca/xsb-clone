@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.25 2009-05-05 14:18:13 dwarren Exp $
+** $Id: function.c,v 1.26 2009-10-19 16:51:14 dwarren Exp $
 ** 
 */
 
@@ -66,6 +66,7 @@
 #define FUN_sign 26
 #define FUN_min  27
 #define FUN_lgamma  28
+#define FUN_erf  29
 
 /* --- returns 1 when succeeds, and returns 0 when there is an error --	*/
 
@@ -314,11 +315,21 @@ int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
     break;
   case FUN_lgamma:
     set_fvalue_from_value;
-#ifdef WIN_NT
+#if defined(WIN_NT)
     xsb_warn("lgamma function NOT defined");
     fvalue = 0.0;
 #else
     fvalue = (Float)lgamma(fvalue);
+#endif
+    bld_boxedfloat(CTXTc regaddr, fvalue);
+    break;
+  case FUN_erf:
+    set_fvalue_from_value;
+#if defined(WIN_NT)
+    xsb_warn("lgamma function NOT defined");
+    fvalue = 0.0;
+#else
+    fvalue = (Float)erf(fvalue);
 #endif
     bld_boxedfloat(CTXTc regaddr, fvalue);
     break;
@@ -609,6 +620,15 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 	  if (strcmp(get_name(op_psc),"exp")==0) {
 	    if (isfiint(fiop1)) set_flt_val(value,(Float)exp((Float)fiint_val(fiop1)));
 	    else set_flt_val(value,(Float)exp(fiflt_val(fiop1)));
+	    break;
+	  } else if (strcmp(get_name(op_psc),"erf")==0) {
+#ifdef WIN_NT
+	    xsb_warn("erf function NOT defined");
+	    set_flt_val(value,0.0);
+#else
+	    if (isfiint(fiop1)) set_flt_val(value,(Float)erf((Float)fiint_val(fiop1)));
+	    else set_flt_val(value,(Float)exp(fiflt_val(fiop1)));
+#endif
 	    break;
 	  } else set_and_return_fail(value);
 

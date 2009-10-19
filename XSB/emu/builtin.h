@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.88 2009-04-27 18:32:03 dwarren Exp $
+** $Id: builtin.h,v 1.89 2009-10-19 16:51:14 dwarren Exp $
 ** 
 */
 
@@ -102,6 +102,7 @@
 
 #define FILE_WRITEQUOTED	 61
 #define GROUND  		 62
+#define PSC_IMPORT_AS		 63
 
 #define INTERN_STRING            65
 #define EXPAND_FILENAME 	 66
