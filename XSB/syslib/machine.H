@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.91 2009/02/21 16:42:52 tswift Exp $
+** $Id: machine.H,v 1.92 2009/04/27 18:43:15 dwarren Exp $
 ** 
 */
 
@@ -79,6 +79,7 @@
         dirname_canonic/2,
 	psc_insert/4, 
 	psc_import/3, 
+	psc_import_as/2, 
 	psc_insertmod/3,
 	substring/4,
 	str_len/2, 
