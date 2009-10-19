@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.P,v 1.65 2009-04-27 18:44:50 dwarren Exp $
+** $Id: builtin.P,v 1.66 2009-10-19 16:52:43 dwarren Exp $
 ** 
 */
 
@@ -118,6 +118,7 @@ inline_builtin(str_match, 5, STR_MATCH).
 inline_builtin(dirname_canonic, 2, DIRNAME_CANONIC).
 inline_builtin(psc_insert, 4, PSC_INSERT).
 inline_builtin(psc_import, 3, PSC_IMPORT).
+inline_builtin(psc_import_as, 2, PSC_IMPORT_AS).
 
 inline_builtin(psc_insertmod, 3, PSC_INSERTMOD).
 
@@ -281,3 +282,4 @@ builtin_function(round, 1, 24).
 builtin_function(ceiling, 1, 25).
 builtin_function(sign, 1, 26).
 builtin_function(lgamma, 1, 28).
+builtin_function(erf, 1, 29).
