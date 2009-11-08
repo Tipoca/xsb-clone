@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.66 2009-01-24 21:57:07 tswift Exp $
+** $Id: tables.c,v 1.67 2009-11-08 18:29:22 tswift Exp $
 ** 
 */
 
@@ -430,7 +430,7 @@ BTNptr table_answer_search(CTXTdeclc VariantSF producer, int size, int attv_num,
     do_delay_stuff(CTXTc (NODEptr)answer, producer, wasFound);
 
     VarEnumerator_trail_top = (CPtr *)(& VarEnumerator_trail[0]) - 1;
-    undo_answer_bindings(CTXT);
+    undo_answer_bindings;
     Trail_Unwind_All;
 
       *is_new = ! wasFound;
@@ -447,7 +447,7 @@ BTNptr table_answer_search(CTXTdeclc VariantSF producer, int size, int attv_num,
 
     do_delay_stuff(CTXTc (NODEptr)answer, producer, wasFound);
 
-    undo_answer_bindings(CTXT);
+    undo_answer_bindings;
 
     *is_new = ! wasFound;
   }

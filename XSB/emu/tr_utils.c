@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.178 2009/09/07 15:58:13 tswift Exp $
+** $Id: tr_utils.c,v 1.179 2009/09/07 21:08:04 tswift Exp $
 ** 
 */
 
@@ -1524,7 +1524,7 @@ int private_trie_interned(CTXTdecl) {
     if ( isref(Leafterm) ) {  
       reg_arrayptr = reg_array -1;
       num_vars_in_var_regs = -1;
-      pushreg(trie_term); 
+      push_reg_array(trie_term); 
       pcreg = (byte *)*trie_root_addr;
       ret_val =  TRUE;
     }
@@ -1556,7 +1556,7 @@ int shas_trie_interned(CTXTdecl) {
     //    if ( isref(Leafterm) ) {  
       reg_arrayptr = reg_array -1;
       num_vars_in_var_regs = -1;
-      pushreg(trie_term); 
+      push_reg_array(trie_term); 
       pcreg = (byte *)*trie_root_addr;
       ret_val =  TRUE;
       //    }

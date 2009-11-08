@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.28 2008-12-31 23:44:42 tswift Exp $
+** $Id: tc_insts_xsb_i.h,v 1.29 2009-11-08 18:29:22 tswift Exp $
 ** 
 */
 
@@ -859,7 +859,7 @@ XSB_Start_Instr(trie_assert_inst,_trie_assert_inst)
     psc_ptr = DecodeTrieFunctor(BTN_Symbol(NodePtr));
     reg_arrayptr = reg_array -1;
     num_vars_in_var_regs = -1;
-    for (i = get_arity(psc_ptr); i >= 1; i--) { pushreg(*(rreg+i)); }
+    for (i = get_arity(psc_ptr); i >= 1; i--) { push_reg_array(*(rreg+i)); }
     lpcreg = (byte *) Child(NodePtr);
 #ifdef MULTI_THREAD_RWL
 /* save choice point for trie_unlock instruction */

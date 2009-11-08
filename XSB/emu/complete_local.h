@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.21 2009-07-30 19:01:28 tswift Exp $
+** $Id: complete_local.h,v 1.22 2009-11-08 18:29:21 tswift Exp $
 **
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -410,7 +410,7 @@ static inline void SetupReturnFromLeader(CTXTdeclc CPtr orig_breg, CPtr cs_ptr,
   reg_arrayptr = reg_array - 1;
   for (tmp = 0; tmp < template_size; tmp++) {
     CPtr cptr = answer_template;
-    pushreg(*cptr);
+    push_reg_array(*cptr);
     answer_template++;
   }
   /* backtrack to prev tabled subgoal after returning answers */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.82 2009/01/06 15:37:10 dwarren Exp $
+** $Id: slginsts_xsb_i.h,v 1.83 2009/02/21 16:47:33 tswift Exp $
 ** 
 */
 
@@ -413,7 +413,7 @@ seq_table_try:
 
       reg_arrayptr = reg_array-1;
       for (i = 0; i < template_size; i++) {
-	pushreg(cell(answer_template-template_size+i));
+	push_reg_array(cell(answer_template-template_size+i));
       }
       delay_it = 1;
       lpcreg = (byte *)subg_ans_root_ptr(producer_sf);
