@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: proc_files.H,v 1.1 2009-07-02 16:42:15 dwarren Exp $
+** $Id: proc_files.H,v 1.2 2009-11-09 16:34:49 dwarren Exp $
 ** 
 */
 
@@ -31,6 +31,7 @@
 :- export copy_dsv/4.
 :- export load_with_header/2.
 :- export file_header/4.
+:- export read_dsv/3.
 
 :- import append/3 from basics.
 :- import length/2 from basics.
