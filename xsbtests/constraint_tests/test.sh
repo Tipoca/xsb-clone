@@ -20,6 +20,7 @@ opts=$2
 ../gentest.sh "$XEMU $opts" test_bounds "test."
 ../gentest.sh "$XEMU $opts" residualAttv "test."
 ../gentest.sh "$XEMU $opts" callsubs_constraints "test."
+../gentest.sh "$XEMU $opts" tab_constraint "test."
 
 # test of C-calling XSB w. constraints.
 ../gentest.sh "$XEMU $opts" cvarconstr_make "test."
