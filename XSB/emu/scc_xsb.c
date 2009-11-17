@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: scc_xsb.c,v 1.8 2007-08-08 17:50:51 dwarren Exp $
+** $Id: scc_xsb.c,v 1.9 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
 #include "register.h"
 #include "psc_xsb.h"
 #include "tries.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "scc_xsb.h"
 
 #if (!defined(LOCAL_EVAL))

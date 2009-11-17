@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.153 2009-05-01 12:54:38 tswift Exp $
+** $Id: init_xsb.c,v 1.154 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -59,7 +59,7 @@
 #include "flags_xsb.h"
 #include "loader_xsb.h"
 #include "extensions_xsb.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "tr_utils.h"
 #include "export.h"
 #include "io_builtins_xsb.h"

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.5 2007-08-08 17:50:50 dwarren Exp $
+** $Id: incr_xsb.c,v 1.6 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -39,7 +39,7 @@
 #include "register.h"
 #include "tries.h"
 #include "trie_internals.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "choice.h"
 #include "subp.h"
 #include "error_xsb.h"

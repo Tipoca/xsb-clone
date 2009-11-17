@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.60 2009-08-30 21:07:09 tswift Exp $
+** $Id: memory_xsb.c,v 1.61 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -55,7 +55,7 @@
 #include "tries.h"     /* needed by "choice.h" */
 #include "choice.h"
 #include "error_xsb.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "thread_xsb.h"
 
 #include "flags_xsb.h"

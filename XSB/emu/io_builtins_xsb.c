@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.77 2009-08-26 21:21:25 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.78 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -51,7 +51,7 @@
 #include "subp.h"
 #include "tries.h"
 #include "choice.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "io_builtins_xsb.h"
 #include "wind2unix.h"
 #include "binding.h"

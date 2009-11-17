@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.170 2009-05-08 17:32:25 dwarren Exp $
+** $Id: biassert.c,v 1.171 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -51,7 +51,7 @@
 #include "loader_xsb.h"
 #include "trie_internals.h"
 #include "choice.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "tr_utils.h"
 #include "trassert.h"
 #include "thread_xsb.h"
@@ -1153,7 +1153,7 @@ static void db_genmvs(CTXTdeclc struct instruction_q *inst_queue, RegStat Reg)
 /*									*/
 /*======================================================================*/
 
-/* Predicate References defined in macro_xsb.h / clause reference in context.h  */
+/* Predicate References defined in tab_structs.h / clause reference in context.h  */
 
 typedef struct ClRefHdrI *ClRefI;
 typedef struct  {

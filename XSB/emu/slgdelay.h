@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.32 2009-02-21 16:47:33 tswift Exp $
+** $Id: slgdelay.h,v 1.33 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -242,7 +242,7 @@ extern xsbBool neg_delay;
  * Procedures used in other parts of the system.
  */
 
-/* TLS: because of include dependencies (context -> macro_xsb ->
+/* TLS: because of include dependencies (context -> tab_structs.h ->
    slgdelay), context.h cannot be included until the code is
    refactored.  Therefore, the CTXT-style declarations cannot yet be
    used. */

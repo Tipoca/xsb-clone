@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.31 2008-12-31 23:44:42 tswift Exp $
+** $Id: tst_utils.c,v 1.32 2009-11-17 14:59:35 tswift Exp $
 ** 
 */
 
@@ -38,7 +38,7 @@
 #include "deref.h"
 #include "trie_internals.h"
 #include "tst_aux.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "choice.h"
 #include "inst_xsb.h"
 #include "error_xsb.h"

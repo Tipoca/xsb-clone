@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.64 2009/02/21 16:47:33 tswift Exp $
+** $Id: slgdelay.c,v 1.65 2009/07/24 10:27:18 alexandrempinto Exp $
 **
 */
 
@@ -41,7 +41,7 @@
 #include "trie_internals.h"
 #include "memory_xsb.h"
 #include "choice.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "tr_utils.h"
 #include "inst_xsb.h"
 #include "error_xsb.h"

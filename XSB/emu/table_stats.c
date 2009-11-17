@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.28 2007-11-20 19:17:21 tswift Exp $
+** $Id: table_stats.c,v 1.29 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
 #include "psc_xsb.h"
 #include "table_stats.h"
 #include "trie_internals.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "error_xsb.h"
 #include "flags_xsb.h"
 #include "debug_xsb.h"

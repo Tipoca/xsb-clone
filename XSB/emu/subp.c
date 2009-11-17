@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.115 2008/10/24 18:55:20 dwarren Exp $
+** $Id: subp.c,v 1.116 2009/08/21 20:09:34 tswift Exp $
 ** 
 */
 
@@ -69,7 +69,7 @@
 #include "token_xsb.h"
 #include "sig_xsb.h"
 #include "inst_xsb.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "table_stats.h"
 #include "unify_xsb.h"
 #include "subp.h"

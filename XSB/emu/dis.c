@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.29 2006-07-14 16:49:36 tswift Exp $
+** $Id: dis.c,v 1.30 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -41,7 +41,7 @@
 #include "memory_xsb.h"
 #include "flags_xsb.h"
 #include "tries.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 
 /* --------------- The following are working variables ----------------	*/
 

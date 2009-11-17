@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.44 2009-10-19 16:51:14 dwarren Exp $
+** $Id: psc_xsb.c,v 1.45 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -37,7 +37,7 @@
 #include "psc_xsb.h"
 #include "tries.h"
 #include "hash_xsb.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "loader_xsb.h"
 #include "flags_xsb.h"
 #include "sig_xsb.h"

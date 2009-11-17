@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.75 2009-02-04 16:17:19 dwarren Exp $
+** $Id: heap_xsb.c,v 1.76 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -148,12 +148,12 @@ unmarking marked strings.
    ------------------------- */
 #include <stdio.h>         /* for printf and friends */
 
-#include "register.h"      /* breg, trreg */
-#include "psc_xsb.h"       /* needed by "tries.h" and "macro_xsb.h" */
-#include "tries.h"         /* needed by "choice.h" */
-#include "choice.h"        /* choice point structures and macros */
-#include "error_xsb.h"     /* xsb_exit() and friends */
-#include "macro_xsb.h"     /* Completion Stack and Subgoal Frame def's */
+#include "register.h"       /* breg, trreg */
+#include "psc_xsb.h"        /* needed by "tries.h" and "tab_structs.h" */
+#include "tries.h"          /* needed by "choice.h" */
+#include "choice.h"         /* choice point structures and macros */
+#include "error_xsb.h"      /* xsb_exit() and friends */
+#include "tab_structs.h"   /* Completion Stack and Subgoal Frame def's */
 #include "realloc.h"       /* Heap - ls reallocation macros */
 #include "flags_xsb.h"     /* for checking whether functionality is enabled */
 #include "heap_xsb.h"

@@ -1,4 +1,4 @@
-/* File:      macro_xsb.h
+/* File:      tab_structs.h
 ** Author(s): Swift, Sagonas, Rao, Freire, Johnson
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: macro_xsb.h,v 1.71 2009-04-25 17:24:52 tswift Exp $
+** $Id: tab_structs.h,v 1.1 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 

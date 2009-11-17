@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.46 2008-12-31 23:44:42 tswift Exp $
+** $Id: debug_xsb.c,v 1.47 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -42,7 +42,7 @@
 #include "deref.h"
 #include "trie_internals.h"
 #include "choice.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "inst_xsb.h"
 #include "debug_xsb.h"
 #include "varstring_xsb.h"

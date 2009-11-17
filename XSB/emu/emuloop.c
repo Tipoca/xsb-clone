@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.199 2009-03-14 22:04:47 tswift Exp $
+** $Id: emuloop.c,v 1.200 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -59,7 +59,7 @@
 #include "trie_internals.h"
 #include "choice.h"
 #include "sw_envs.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "tables.h"
 #include "subinst.h"
 #include "scc_xsb.h"

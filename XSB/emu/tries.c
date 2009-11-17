@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.117 2009-11-16 15:49:21 tswift Exp $
+** $Id: tries.c,v 1.118 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -47,7 +47,7 @@
 #include "register.h"
 #include "binding.h"
 #include "trie_internals.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "choice.h"
 #include "cinterf.h"
 #include "error_xsb.h"

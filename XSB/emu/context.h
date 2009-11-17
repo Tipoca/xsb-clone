@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.68 2009-02-21 16:47:33 tswift Exp $
+** $Id: context.h,v 1.69 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -124,7 +124,7 @@ typedef struct Message_Queue_Cell {
 #include "psc_xsb.h"
 #include "tries.h"
 #include "choice.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "token_defs_xsb.h"
 #include "odbc_def_xsb.h"
 #include "findall.h"

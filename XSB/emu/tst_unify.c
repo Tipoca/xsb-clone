@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_unify.c,v 1.21 2008-03-22 19:17:35 tswift Exp $
+** $Id: tst_unify.c,v 1.22 2009-11-17 14:59:35 tswift Exp $
 ** 
 */
 
@@ -39,7 +39,7 @@
 #include "subp.h"          /* xsbBool unify(Cell, Cell) */
 #include "table_stats.h"
 #include "trie_internals.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "choice.h"
 #include "tst_aux.h"
 #include "tst_utils.h"

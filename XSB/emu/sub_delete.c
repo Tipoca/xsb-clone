@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_delete.c,v 1.19 2009-09-07 21:08:04 tswift Exp $
+** $Id: sub_delete.c,v 1.20 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
 #include "cell_xsb.h"
 #include "psc_xsb.h"
 #include "trie_internals.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "error_xsb.h"
 #include "thread_xsb.h"
 #include "memory_xsb.h"

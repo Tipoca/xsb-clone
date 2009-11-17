@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.328 2009-10-19 16:51:14 dwarren Exp $
+** $Id: builtin.c,v 1.329 2009-11-17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -77,7 +77,7 @@
 #include "flags_xsb.h"
 #include "loader_xsb.h"
 #include "binding.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "builtin.h"
 #include "sig_xsb.h"
 #include "subp.h"

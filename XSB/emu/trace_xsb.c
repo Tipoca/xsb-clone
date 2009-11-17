@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.39 2009/08/26 23:58:41 tswift Exp $
+** $Id: trace_xsb.c,v 1.40 2009/08/29 17:18:08 tswift Exp $
 ** 
 */
 
@@ -38,7 +38,7 @@
 #include "table_stats.h"
 #include "trie_internals.h"
 #include "tries.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 #include "choice.h"
 #include "flags_xsb.h"
 #include "heap_xsb.h"
@@ -51,7 +51,7 @@
 #include "system_defs_xsb.h"
 #include "subp.h"
 #include "error_xsb.h"
-#include "macro_xsb.h"
+#include "tab_structs.h"
 
 /*======================================================================*/
 /* Process-level information: keep this global */
