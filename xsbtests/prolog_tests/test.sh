@@ -85,6 +85,11 @@ options=$2
 #------------------------------------
 ../gentest.sh "$XEMU $options" test_termtoatom "test."
 
+#------------------------------------
+# include/1 test
+#------------------------------------
+../gentest.sh "$XEMU $options" include_test "test."
+
 #------------------------------------------------------------------------
 ../gentest.sh "$XEMU $options" test_cleanup "test."
 
