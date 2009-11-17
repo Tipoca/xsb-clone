@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.69 2009-11-17 14:59:34 tswift Exp $
+** $Id: tables.c,v 1.70 2009-11-17 19:32:08 dwarren Exp $
 ** 
 */
 
@@ -675,7 +675,9 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
       do {
 	if ( is_conditional_answer(ALN_Answer(pALN)) ) {
 	  tag = COND_ANSWERS;
-	  break;
+	}
+	if (hasALNtag(ALN_Answer(pALN))) { /* reset to null */
+	  Child(ALN_Answer(pALN)) = NULL;
 	}
 	pALN = ALN_Next(pALN);
       } while ( IsNonNULL(pALN) );
@@ -690,7 +692,9 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
     do {
       if ( is_conditional_answer(ALN_Answer(pALN)) ) {
 	tag = COND_ANSWERS;
-	break;
+      }
+      if (hasALNtag(ALN_Answer(pALN))) { /* reset to null */
+	Child(ALN_Answer(pALN)) = NULL;
       }
       pALN = ALN_Next(pALN);
     } while ( IsNonNULL(pALN) );
