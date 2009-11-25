@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.45 2009-11-17 14:59:34 tswift Exp $
+** $Id: psc_xsb.c,v 1.46 2009-11-25 16:51:57 dwarren Exp $
 ** 
 */
 
@@ -151,7 +151,7 @@ void set_psc_ep_to_psc(Psc psc_to_set, Psc target_psc) {
     xsb_warn("Psc to set must not already be defined: %s/%d\n",
 	    get_name(psc_to_set),get_arity(psc_to_set));
   } else {
-    set_ep(psc_to_set,get_ep(target_psc));
+    set_ep(psc_to_set,(byte *)&(target_psc->load_inst));
   }
 }
 

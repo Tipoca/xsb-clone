@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_defs.h,v 1.12 2007-11-01 23:46:59 tswift Exp $
+** $Id: psc_defs.h,v 1.13 2009-11-25 16:51:57 dwarren Exp $
 ** 
 */
 
@@ -61,6 +61,7 @@ I've forgotten.  */
 #define T_FORN 13	/* predicate in foreign language */
 
 #define T_DEFI 128      /* bit to pass from compiler to loader that pred has clauses */
+#define T_DEFA 64	/* bit to pass from compiler to loader for import-as (defined-as) */
 /* === loader definitions (module information) ==================== */
 
 #define T_EXPORTED 0
