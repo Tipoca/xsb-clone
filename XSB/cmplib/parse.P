@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.102 2009-10-07 17:40:29 tswift Exp $
+** $Id: parse.P,v 1.103 2009-11-25 16:52:49 dwarren Exp $
 ** 
 */
 
@@ -411,6 +411,14 @@ parse_directive(import(from(X, Mod)), _QrList,SymTab,_ModName,_ModStruct) :- !,
 	 ->	error(('Module cannot be a variable. Importing: ',X))
 	 ;	parse_comma_list(X, SymTab, [im(Mod)], (import)),
 		sym_insert(Mod, 0, [module], SymTab, _)
+	).
+parse_directive(import(as(from(P/A, Mod),P2/A2)), _QrList,SymTab,_ModName,_ModStruct) :- !,
+	(var(Mod)
+	 ->	error(('Module cannot be a variable. Importing: ',P/A))
+	 ; A \== A2
+	 ->	error(('Predicate arities must be the same. Importing: ',P/A,' as ',P2/A2))
+	 ;	sym_insert(Mod, 0, [module,used], SymTab, _),
+		sym_insert(P2,A2,[defined(Mod,P)],SymTab,_)
 	).
 parse_directive(use_module(ModIm,X), _QrList,SymTab,_ModName,_ModStruct) :- !,
 	(var(ModIm)
