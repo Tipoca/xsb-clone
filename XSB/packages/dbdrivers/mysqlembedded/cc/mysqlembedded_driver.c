@@ -53,7 +53,7 @@ struct driverMySQL_preparedresultset* prepQueries[MAX_PREP_QUERIES];
 int numHandles, numQueries;
 int numPrepQueries;
 
-const char* errorMesg;
+static const char* errorMesg;
 const char *server_groups[] = {
   "mysqlembedded_driver_SERVER", "embedded", "server", NULL
 };//used to connect to embedded mysql server. According options must be added into /etc/my.cnf or ~/.my.cnf
@@ -87,7 +87,7 @@ DllExport int call_conv driverMySQLEmbedded_lib_end()
 
   mysql_library_end();
    
-    return TRUE;
+  return TRUE;
 
 }
 
@@ -98,7 +98,7 @@ int driverMySQL_connect(struct xsb_connectionHandle* handle)
 	MYSQL* mysql = mysql_init( NULL );
 	if ( mysql == NULL )
 	{
-		printf("mysql_init() failed\n");	
+		errorMesg = "mysql_init() failed\n";	
 		return FAILURE;
 	}
 	
@@ -294,7 +294,8 @@ int driverMySQL_prepareStatement(struct xsb_queryHandle* handle)
 
 	if ((stmt = mysql_stmt_init(mysql)) == NULL)
 	{
-	  errorMesg = mysql_stmt_error(stmt);
+	  errorMesg = "mysql_stmt_init() failed\n";
+	  //errorMesg = mysql_stmt_error(stmt);
 	  free(sqlQuery);
 	  sqlQuery = NULL;
 		return FAILURE;		

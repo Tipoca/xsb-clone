@@ -24,6 +24,7 @@
 ** This is the driver for connecting to a MySQL database.
 ** This is invoked from the middle_layer module in emu.
 */
+
 #include "xsb_config.h"
 
 #ifdef WIN_NT
@@ -53,7 +54,7 @@ struct driverMySQL_preparedresultset* prepQueries[MAX_PREP_QUERIES];
 int numHandles, numQueries;
 int numPrepQueries;
 
-const char* errorMesg;
+static const char* errorMesg;
 
 
 DllExport int call_conv driverMySQL_initialise()
@@ -73,7 +74,7 @@ int driverMySQL_connect(struct xsb_connectionHandle* handle)
   MYSQL* mysql = mysql_init( NULL );
   if ( mysql == NULL )
     {
-      printf("mysql_init() failed\n");	
+      errorMesg = "mysql_init() failed\n";	
       return FAILURE;
     }
 	
@@ -269,7 +270,8 @@ int driverMySQL_prepareStatement(struct xsb_queryHandle* handle)
 
   if ((stmt = mysql_stmt_init(mysql)) == NULL)
     {
-      errorMesg = mysql_stmt_error(stmt);
+      errorMesg = "mysql_stmt_init() failed\n";
+      //errorMesg = mysql_stmt_error(stmt);
       free(sqlQuery);
       sqlQuery = NULL;
       return FAILURE;		

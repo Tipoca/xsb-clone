@@ -57,7 +57,7 @@ struct xsb_connectionHandle* CHandles[MAX_CONNECTIONS];
 struct xsb_queryHandle* QHandles[MAX_QUERIES];
 struct driver* DBdrivers[MAX_DRIVERS];
 int numDrivers, numCHandles, numQHandles;
-char* errorMesg;
+static char* errorMesg;
 char* errorNumber;
 
 
