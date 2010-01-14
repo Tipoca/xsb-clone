@@ -32,10 +32,10 @@
 #define XSB_DLL
 #endif
 
-#define MAX_CONNECTIONS 100
-#define MAX_HANDLES 100
-#define MAX_DRIVERS 50
-#define MAX_QUERIES 1000
+#define MAX_CONNECTIONS 200
+#define MAX_HANDLES 200
+#define MAX_DRIVERS 100
+#define MAX_QUERIES 2000
 
 #define CONNECT 0 
 #define DISCONNECT 1

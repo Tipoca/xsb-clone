@@ -96,7 +96,7 @@ DllExport int call_conv openConnection(void)
   }
 
   if ( MAX_CONNECTIONS <= numCHandles ){
-    errorMesg = "XSB_DBI ERROR: Max number of connection exceeded";
+    errorMesg = "XSB_DBI ERROR: Too many open connections";
     errorNumber = "XSB_DBI_014";
     return FALSE;
   }
@@ -251,7 +251,7 @@ DllExport int call_conv queryConnection(void)
   }
   else if ((cHandle = isConnectionHandle(chandle)) != NULL) {
     if ( MAX_QUERIES <= numQHandles ){
-      errorMesg = "XSB_DBI ERROR: Max number of prepared queries exceeded";
+      errorMesg = "XSB_DBI ERROR: Too many active prepared queries";
       errorNumber = "XSB_DBI_016";
       return FALSE;
     }
@@ -626,7 +626,7 @@ static int bindReturnList(prolog_term returnList, struct xsb_data** result, stru
 
   if (!is_nil(returnList) && result == NULL && qHandle->state == QUERY_BEGIN) {
     errorMesg = "XSB_DBI_ERROR: Invalid return list in query";
-    errorNumber = "XSB_DBI_012";
+    errorNumber = "XSB_DBI_013";
     rFlag = INVALID_RETURN_LIST;
   }  
   else if (!is_nil(returnList) && result == NULL) {
@@ -686,7 +686,7 @@ static int bindReturnList(prolog_term returnList, struct xsb_data** result, stru
 
   if (result != NULL && qHandle->numResultCols > i) {
     errorMesg = "XSB_DBI ERROR: Number of requested columns is less than the number of returned columns";
-    errorNumber = "XSB_DBI_013";
+    errorNumber = "XSB_DBI_012";
     rFlag = TOO_FEW_RETURN_COLS;
     return rFlag;
   }
@@ -805,7 +805,7 @@ DllExport int call_conv registerXSBDriver(char* drivername, int num)
   }
 
   if ( MAX_DRIVERS <= numDrivers ){
-    errorMesg = "XSB_DBI ERROR: Max number of drivers exceeded";
+    errorMesg = "XSB_DBI ERROR: Too many registered drivers";
     errorNumber = "XSB_DBI_015";
     return FALSE;
   }

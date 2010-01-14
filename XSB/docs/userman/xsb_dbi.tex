@@ -441,6 +441,24 @@ statement.
     db\_prepare})  using a query
   handle that has been in use by another prepared statement and which has
   not been closed. Query handles must be closed before reuse.
+\item {\bf XSB\_DBI\_011: XSB\_DBI ERROR: Number of requested columns exceeds the number of columns in the query}\\
+  This error is thrown when the user {\tt db\_query}  specifies more items to be
+  returned in the last argument than the number of items in the {\tt
+    SELECT} statement in the corresponding query.
+\item {\bf XSB\_DBI\_012: XSB\_DBI ERROR: Number of requested columns is less than the number of columns in the query}\\
+  This error is thrown when the user {\tt db\_query}  specifies fewer items to be
+  returned in the last argument than the number of items in the {\tt
+    SELECT} statement in the corresponding query.
+\item {\bf XSB\_DBI\_013: XSB\_DBI ERROR: Invalid return list in query}\\
+  Something else is wrong with the return list of the query.
+\item {\bf XSB\_DBI\_014: XSB\_DBI ERROR: Too many open connections}\\
+  There is a limit (200) on the number of open connections.
+\item {\bf XSB\_DBI\_015: XSB\_DBI ERROR: Too many registered drivers}\\
+  There is a limit (100) on the number of database drivers that can be
+  registered at the same time.
+\item {\bf XSB\_DBI\_016: XSB\_DBI ERROR: Too many open connections}\\
+  There is a limit (2000) on the number of prepared queries that can remain
+  open at any given time.
 \end{itemize}
 
 \section{Notes on specific drivers}
