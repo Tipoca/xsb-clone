@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.3 2008-02-15 06:48:29 kifer Exp $
+## $Id: configure.in,v 1.4 2010-01-14 05:12:50 kifer Exp $
 ## 
 ##
 
@@ -35,10 +35,19 @@ AC_INIT(odbc_driver_config.P)
 
 SHELL=/bin/sh
 
-AC_ARG_WITH(odbc,
-[  --with-odbc-libdir=DIR	   the directory where the ODBC library lives]
-[  --with-odbc-incdir=DIR	   the directory of ODBC include files]
-   )
+AC_ARG_WITH(odbc-libdir,
+[  --with-odbc-libdir=DIR	   the directory where the ODBC library lives])
+AC_ARG_WITH(odbc-incdir,
+[  --with-odbc-incdir=DIR	   the directory of ODBC include files])
+
+AC_ARG_WITH(mysql-libdir,
+[  --with-mysql-libdir=DIR	   ignored])
+AC_ARG_WITH(mysql-incdir,
+[  --with-mysql-incdir=DIR	   ignored])
+AC_ARG_WITH(mysqlembedded-libdir,
+[  --with-mysqlembedded-libdir=DIR	   ignored])
+AC_ARG_WITH(mysqlembedded-incdir,
+[  --with-mysqlembedded-incdir=DIR	   ignored])
 
 
 
@@ -65,7 +74,7 @@ fi
 # make sure new files are readable 
 umask 022
 
-/bin/rm config.cache
+/bin/rm -f config.cache
 
 with_odbc=
 odbc_error=

@@ -46,7 +46,7 @@ void freePcbValues(SQLINTEGER** pcbValues, int numOfElements);
 struct driverODBC_connectionInfo* odbcHandles[MAX_HANDLES];
 struct driverODBC_queryInfo* odbcQueries[MAX_QUERIES];
 int numHandles, numQueries;
-SQLCHAR* errorMesg;
+static SQLCHAR* errorMesg;
 SQLHENV henv;
 
 DllExport int call_conv driverODBC_initialise()

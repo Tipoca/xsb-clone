@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.3 2008-02-15 23:04:47 kifer Exp $
+## $Id: configure.in,v 1.4 2010-01-14 05:12:50 kifer Exp $
 ## 
 ##
 
@@ -35,10 +35,19 @@ AC_INIT(mysql_driver_config.P)
 
 SHELL=/bin/sh
 
-AC_ARG_WITH(mysql,
-[  --with-mysql-libdir=DIR	   the directory where the MySQL library lives]
-[  --with-mysql-incdir=DIR	   the directory of MySQL include files]
-   )
+AC_ARG_WITH(mysql-libdir,
+[  --with-mysql-libdir=DIR	   the directory where the MySQL library lives])
+AC_ARG_WITH(mysql-incdir,
+[  --with-mysql-incdir=DIR	   the directory of MySQL include files])
+
+AC_ARG_WITH(odbc-libdir,
+[  --with-odbc-libdir=DIR	   ignored])
+AC_ARG_WITH(odbc-incdir,
+[  --with-odbc-incdir=DIR	   ignored])
+AC_ARG_WITH(mysqlembedded-libdir,
+[  --with-mysqlembedded-libdir=DIR	   ignored])
+AC_ARG_WITH(mysqlembedded-incdir,
+[  --with-mysqlembedded-incdir=DIR	   ignored])
 
 
 
@@ -65,7 +74,7 @@ fi
 # make sure new files are readable 
 umask 022
 
-/bin/rm config.cache
+/bin/rm -f config.cache
 
 with_mysql=
 mysql_error=
@@ -115,7 +124,7 @@ echo $incdir
 echo $libdir
 
 AC_CHECK_LIB(mysqlclient, main, , mysql_error=yes)
-AC_CHECK_HEADERS(mysql.h mysql_com.h, with_mysql=yes, mysql_error=yes)
+AC_CHECK_HEADERS(mysql.h , with_mysql=yes, mysql_error=yes)
 
 if test "$mysql_error" = "yes"; then
 echo ""

@@ -95,13 +95,20 @@ DllExport int call_conv openConnection(void)
     return FALSE;
   }
 
+  if ( MAX_CONNECTIONS <= numCHandles ){
+    errorMesg = "XSB_DBI ERROR: Max number of connection exceeded";
+    errorNumber = "XSB_DBI_014";
+    return FALSE;
+  }
+
   if (getDriverFunction(driver, CONNECT) != NULL)
     connectDriver = getDriverFunction(driver, CONNECT)->connectDriver;
   else
     return FALSE;
 
   cHandle = (struct xsb_connectionHandle *)malloc(sizeof(struct xsb_connectionHandle));
-  cHandle->handle = handle;
+  cHandle->handle = (char *)malloc(sizeof(char)*(strlen(handle)+1));
+  strcpy(cHandle->handle,handle);
   cHandle->driver = driver;
   if (strlen(server) == 0) {
     cHandle->dsn = dsn;
@@ -225,20 +232,34 @@ DllExport int call_conv queryConnection(void)
       errorMesg =
 	"XSB DBI ERROR: Same query handle used for different queries";
       errorNumber = "XSB_DBI_010";
-      free(sqlQuery);
+      if (sqlQuery != NULL) {
+	free(sqlQuery);
+	sqlQuery = NULL;
+      }
       return FALSE;
     }
 
-    free(sqlQuery);
+    if (sqlQuery != NULL) {
+      free(sqlQuery);
+      sqlQuery = NULL;
+    }
+
     result = queryDriver(qHandle);
     if (result == NULL && qHandle->state == QUERY_RETRIEVE) {
       closeQueryHandle(qhandle);
     }
   }
   else if ((cHandle = isConnectionHandle(chandle)) != NULL) {
+    if ( MAX_QUERIES <= numQHandles ){
+      errorMesg = "XSB_DBI ERROR: Max number of prepared queries exceeded";
+      errorNumber = "XSB_DBI_016";
+      return FALSE;
+    }
+
     sqlQuery = buildSQLQuery(sqlQueryList);
     qHandle = (struct xsb_queryHandle *)malloc(sizeof(struct xsb_queryHandle));
-    qHandle->handle = qhandle;
+    qHandle->handle = (char *)malloc(sizeof(char)*(strlen(qhandle)+1));
+    strcpy(qHandle->handle,qhandle);
     qHandle->connHandle = cHandle;
     qHandle->query = sqlQuery;
     qHandle->state = QUERY_BEGIN;
@@ -315,12 +336,21 @@ DllExport int call_conv prepareStatement(void)
     return FALSE;
   }
 
+
+  if ( MAX_QUERIES <= numQHandles ){
+    errorMesg = "XSB_DBI ERROR: Max number of prepared queries exceeded";
+    errorNumber = "XSB_DBI_016";
+    return FALSE;
+  }
+
   sqlQuery = buildSQLQuery(sqlQueryList);
 
   qHandle = (struct xsb_queryHandle *)malloc(sizeof(struct xsb_queryHandle));
   qHandle->connHandle = cHandle;
   qHandle->query = sqlQuery;
-  qHandle->handle = qhandle;
+  qHandle->handle = (char *)malloc(sizeof(char)*(strlen(qhandle)+1));
+  strcpy(qHandle->handle,qhandle);
+
   qHandle->state = QUERY_BEGIN;
   
   if (getDriverFunction(cHandle->driver, PREPARE) != NULL)
@@ -547,7 +577,10 @@ static char* buildSQLQuery(prolog_term sqlQueryList)
 	temp[cnt++] = '\'';
 	temp[cnt++] = '\0';
 	strcat(sqlQuery, temp);
-	free(temp);
+	if (temp != NULL) {
+	  free(temp);
+	  temp = NULL;
+	}
       }
       else {
 	strcat(sqlQuery, p2c_string(element));
@@ -556,14 +589,20 @@ static char* buildSQLQuery(prolog_term sqlQueryList)
     else if (is_int(element)) {
       temp = (char *)malloc(ELEMENT_SIZE * sizeof(char));
       sprintf(temp, "%d", p2c_int(element));
-      strcat(sqlQuery, temp);
-      free(temp);
+      strcat(sqlQuery, temp);  
+      if (temp != NULL) {
+	free(temp);
+	temp = NULL;
+      }
     }
     else if (is_float(element)) {
       temp = (char *)malloc(ELEMENT_SIZE * sizeof(char));
       sprintf(temp, "%f", p2c_float(element));			
       strcat(sqlQuery, temp);
-      free(temp);
+      if (temp != NULL) {
+	free(temp);
+	temp = NULL;
+      }
     }
     else if (is_var(element)) {
       errorMesg = "XSB_DBI ERROR: Unbound variable in parameter list";
@@ -624,8 +663,11 @@ static int bindReturnList(prolog_term returnList, struct xsb_data** result, stru
 	    }
 	    temp[strlen(result[i]->val->str_val) - 1] = '\0';
 	    c2p_functor("term", 1, element);
-	    c2p_string(temp, p2p_arg(element, 1));
-	    free(temp);
+	    c2p_string(temp, p2p_arg(element, 1));    
+	    if (temp != NULL) {
+	      free(temp);
+	      temp = NULL;
+	    }
 	  }
 	  else {
 	    c2p_string(result[i]->val->str_val, element);
@@ -665,8 +707,13 @@ static void freeConnectionHandle(struct xsb_connectionHandle* cHandle, int pos)
     free(cHandle->database);
     }
     free(cHandle->user);
-    free(cHandle->password);*/
-  free(cHandle);
+    free(cHandle->password);*/     
+  if (cHandle != NULL) {
+    if (cHandle->handle != NULL) 
+      free(cHandle->handle);
+    free(cHandle);
+    cHandle = NULL;
+  }
   for (j = pos + 1 ; j < numCHandles ; j++)
     CHandles[j-1] = CHandles[j];
   CHandles[numCHandles-1] = NULL;
@@ -709,9 +756,14 @@ static int closeQueryHandle(char* queryHandle)
 static void freeQueryHandle(struct xsb_queryHandle* qHandle, int pos)
 {
   int j;
-  //free(qHandle->handle);
-  free(qHandle->query);
-  free(qHandle);
+  if (qHandle != NULL) {
+    if (qHandle->handle != NULL) 
+      free(qHandle->handle);
+    if (qHandle->query != NULL)
+      free(qHandle->query);
+    free(qHandle);
+    qHandle = NULL;
+  }
   for (j = pos + 1 ; j < numQHandles ; j++)
     QHandles[j-1] = QHandles[j];
   QHandles[numQHandles-1] = NULL;
@@ -751,6 +803,13 @@ DllExport int call_conv registerXSBDriver(char* drivername, int num)
       return -1;
     }
   }
+
+  if ( MAX_DRIVERS <= numDrivers ){
+    errorMesg = "XSB_DBI ERROR: Max number of drivers exceeded";
+    errorNumber = "XSB_DBI_015";
+    return FALSE;
+  }
+
   dr = (struct driver *)malloc(sizeof(struct driver));
   dr->driver = drivername;
   dr->numberFunctions = num;

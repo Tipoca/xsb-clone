@@ -49,8 +49,8 @@ void freeResultset(struct driverMySQL_preparedresultset* rs);
 void freeBind(MYSQL_BIND* bind, int num);
 
 struct driverMySQL_connectionInfo* mysqlHandles[MAX_HANDLES];
-struct driverMySQL_queryInfo* mysqlQueries[MySQL_MAX_QUERIES];
-struct driverMySQL_preparedresultset* prepQueries[MAX_PREP_QUERIES];
+struct driverMySQL_queryInfo* mysqlQueries[MAX_QUERIES];
+struct driverMySQL_preparedresultset* prepQueries[MAX_QUERIES];
 int numHandles, numQueries;
 int numPrepQueries;
 

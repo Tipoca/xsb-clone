@@ -34,10 +34,6 @@
 #include "cinterf.h"
 #include "driver_manager_defs.h"
 
-#define MAX_HANDLES 25
-#define MySQL_MAX_QUERIES 25
-#define MAX_PREP_QUERIES 25
-
 /****** data structures for handles *****/
 
 struct driverMySQL_connectionInfo

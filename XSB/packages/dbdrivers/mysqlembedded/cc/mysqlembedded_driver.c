@@ -48,8 +48,8 @@ void freeResultset(struct driverMySQL_preparedresultset* rs);
 void freeBind(MYSQL_BIND* bind, int num);
 
 struct driverMySQL_connectionInfo* mysqlHandles[MAX_HANDLES];
-struct driverMySQL_queryInfo* mysqlQueries[MySQL_MAX_QUERIES];
-struct driverMySQL_preparedresultset* prepQueries[MAX_PREP_QUERIES];
+struct driverMySQL_queryInfo* mysqlQueries[MAX_QUERIES];
+struct driverMySQL_preparedresultset* prepQueries[MAX_QUERIES];
 int numHandles, numQueries;
 int numPrepQueries;
 
@@ -243,20 +243,19 @@ static struct xsb_data** driverMySQL_getNextRow(struct driverMySQL_queryInfo* qu
 		result[i]->val = (union xsb_value *)malloc(sizeof(union xsb_value));
 		result[i]->type = driverMySQL_getXSBType(mysql_fetch_field_direct(query->resultSet, i));
 
-		switch (result[i]->type)
-		{
-			case INT_TYPE:
-			  result[i]->val->i_val = strtol(row[i],p_temp,10);
-			  break;
+		switch (result[i]->type){
+		  case INT_TYPE:
+		    result[i]->val->i_val = strtol(row[i],p_temp,10);
+		    break;
 
-			case FLOAT_TYPE:
-			  result[i]->val->f_val = strtod(row[i],p_temp);
-					break;
+		  case FLOAT_TYPE:
+		    result[i]->val->f_val = strtod(row[i],p_temp);
+		    break;
 
-			case STRING_TYPE:
-			  result[i]->val->str_val = (char *)malloc((strlen(row[i])+1) * sizeof(char));
-					strcpy(result[i]->val->str_val, (char *)row[i]);
-					break;
+		  case STRING_TYPE:
+		    result[i]->val->str_val = (char *)malloc((strlen(row[i])+1) * sizeof(char));
+		    strcpy(result[i]->val->str_val, (char *)row[i]);
+		    break;
 		}
 	}
 
