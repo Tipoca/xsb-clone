@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.H,v 1.20 2008-03-05 19:41:03 tswift Exp $
+** $Id: aggregs.H,v 1.21 2010-01-15 22:38:17 dwarren Exp $
 ** 
 */
 
@@ -64,12 +64,13 @@
 :- import member/2, copy_term/2 from basics.
 :- import sort/2, findall/3, bagof/3, excess_vars/4 from setof.
 :- import ','/2 from usermod.
-:- import subsumes/2, variant/2 from subsumes.
+:- import variant/2 from subsumes.
 
 :- import delete_return/2,
 	  get_producer_call/3,
 	  get_ptcp/1,
 	  get_returns/3,
+	  '_$$get_returns'/3,
 	  is_incomplete/2,
 	  table_state/4
      from tables.
