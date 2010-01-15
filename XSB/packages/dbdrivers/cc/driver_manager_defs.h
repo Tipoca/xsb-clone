@@ -33,7 +33,6 @@
 #endif
 
 #define MAX_CONNECTIONS 200
-#define MAX_HANDLES 200
 #define MAX_DRIVERS 100
 #define MAX_QUERIES 2000
 

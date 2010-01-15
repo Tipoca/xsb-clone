@@ -43,7 +43,7 @@ void freeQueryInfo(struct driverODBC_queryInfo* query);
 void freeResult(struct xsb_data** result, int numOfElements);
 void freePcbValues(SQLINTEGER** pcbValues, int numOfElements);
     
-struct driverODBC_connectionInfo* odbcHandles[MAX_HANDLES];
+struct driverODBC_connectionInfo* odbcHandles[MAX_CONNECTIONS];
 struct driverODBC_queryInfo* odbcQueries[MAX_QUERIES];
 int numHandles, numQueries;
 static SQLCHAR* errorMesg;
