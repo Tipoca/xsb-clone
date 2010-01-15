@@ -251,7 +251,7 @@ DllExport int call_conv queryConnection(void)
   }
   else if ((cHandle = isConnectionHandle(chandle)) != NULL) {
     if ( MAX_QUERIES <= numQHandles ){
-      errorMesg = "XSB_DBI ERROR: Too many active prepared queries";
+      errorMesg = "XSB_DBI ERROR: Too many active queries";
       errorNumber = "XSB_DBI_016";
       return FALSE;
     }
@@ -338,7 +338,7 @@ DllExport int call_conv prepareStatement(void)
 
 
   if ( MAX_QUERIES <= numQHandles ){
-    errorMesg = "XSB_DBI ERROR: Max number of prepared queries exceeded";
+    errorMesg = "XSB_DBI ERROR: Too many active queries";
     errorNumber = "XSB_DBI_016";
     return FALSE;
   }
