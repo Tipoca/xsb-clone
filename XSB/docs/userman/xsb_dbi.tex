@@ -291,11 +291,13 @@ Direct querying is done by the predicate:
 
 ConnectionHandle is the name of the handle used for the database connection.
 QueryHandle is the name of the \emph{query handle} for this particular query. 
-Currently, the query handle is being used only for prepared queries. 
-However, in future versions, the query handle can be used in direct
-queries to retrieve arbitrary tuples from a result set using cursors.
-Also, it will be possible to combine arbitrary tuples from different 
-queries to the same database using the query handle.
+For prepared queries, the query handle is used both in order to execute the
+query and to close it and free up space. For direct querying,
+the query handle is used only for closing query statements (see below).
+%%However, in future versions, the query handle can be used in direct
+%%queries to retrieve arbitrary tuples from a result set using cursors.
+%%Also, it will be possible to combine arbitrary tuples from different 
+%%queries to the same database using the query handle.
 The SQLQueryList is a list of terms which is used to build the SQL query.
 The terms in this list are ground atoms. ReturnList is a list of 
 variables each of which correspond to a return value in the query.
