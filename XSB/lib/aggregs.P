@@ -219,7 +219,7 @@ bagPO1(PO,Call,Templ,AVars,Agg) :-  % templ is X, Call is pred(A,B,X)
 	POCE = (OAgg == Agg),
 	call(Call),
 	%%nl(userout),writeln(userout,newAnswer(Call,Templ)),
-	excess_vars(Call,Templ,[],AVars),
+	(ground(Call) -> AVars = [] ; excess_vars(Call,Templ,[],AVars)), % optimize common case
 	Templ = Agg,
 	findall([],delete_old_as_nec(POCA,POCB,POCE,VarList,OVarList,AVars,OAVars,Cs,OSkel),Rets),
 	Rets = []. %%, writeln(userout,answerRet(Call,Agg)). % if noone said not to return it, then return this ans
