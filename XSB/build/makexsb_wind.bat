@@ -34,5 +34,9 @@ REM Concatenate MSVC_mkfile.mak & MSVC.dep into emu\MSVC_mkfile.mak
 @nmake /nologo /f NMakefile.mak
 @cd ..\..
 
+@cd curl
+@nmake /nologo /f NMakefile.mak
+@cd ..
+
 @cd ..\build
 

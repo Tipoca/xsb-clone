@@ -1,0 +1,45 @@
+:- import bootstrap_package/2 from packaging.
+
+:- import pl_load_page/1, 
+	pl_allocate_error_term/2,
+	pl_finalize_warn/1, 
+	pl_encode_url/3 from curl2pl.
+
+:- export 
+	load_page/5, encode_url/3.
+
+:- bootstrap_package([curl, cc], curl),
+	[curlconfig].
+
+load_page(Source, Document, Options, [DirEnc, FileUnEnc], Warn) :- 
+	load_page_warn(Source, Document, Options, [DirEnc, FileUnEnc], Warn),
+	pl_finalize_warn(Warn).
+
+load_page_warn(Source, Document, Options, [DirEnc, FileUnEnc], Warn) :-
+	pl_allocate_error_term(Error, Warn),
+	examine_open_options(Options, ValidOptions), 
+        pl_load_page([options(ValidOptions), source(Source), document(Document), encoded(DirEnc, FileUnEnc)]),	
+	throw_error(Error).
+
+encode_url(Url, DirEnc, FileUnEnc) :-
+	pl_encode_url(Url, DirEnc, FileUnEnc).
+
+examine_open_options([], []).
+examine_open_options([redirect(Bool)|T], [redirect(Bool)|Options]):- !,
+	examine_open_options(T, Options).
+examine_open_options([secure(false)|T], [secure(false, '')|Options]):- !,
+	examine_open_options(T, Options).
+examine_open_options([secure(true)|T], Options):- !,
+	examine_open_options([secure(true, '')|T], Options).
+examine_open_options([secure(true, CrtName)|T], [secure(true, CrtName)|Options]):- !,
+	examine_open_options(T, Options).
+examine_open_options([auth(Bool)|T], [auth(Bool)|Options]):-
+	!,
+	examine_open_options(T, Options).
+examine_open_options([Option|T], Options):- 
+	writeln(Option), 
+	examine_open_options(T, Options).
+
+throw_error(Error) :- var(Error), !.
+throw_error(Error) :- throw(Error).
+
