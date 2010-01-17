@@ -3813,7 +3813,6 @@ fi
 
 
 (
-echo ""
 echo "  MySQL support:                                  $support"
 echo "  MySQL library directory:                        $libdir"
 echo "  MySQL header directory:                         $incdir"

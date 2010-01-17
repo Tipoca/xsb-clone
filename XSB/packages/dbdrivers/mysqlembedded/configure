@@ -3810,12 +3810,11 @@ fi
 
 
 (
-echo ""
-echo "  MySQL Embedded Server support:                                  $support"
-echo "  MySQL Embedded Server library directory:                        $libdir"
-echo "  MySQL Embedded Server header directory:                         $incdir"
-echo "  MySQL Embedded Server C Flags:                                  $CFLAGS"
-echo "  MySQL Embedded Server Loader Flags:                             $LDFLAGS"
+echo "  MySQL Embedded Server support:                  $support"
+echo "  MySQL Embedded Server library directory:        $libdir"
+echo "  MySQL Embedded Server header directory:         $incdir"
+echo "  MySQL Embedded Server C Flags:                  $CFLAGS"
+echo "  MySQL Embedded Server Loader Flags:             $LDFLAGS"
 echo ""
 ) | tee Installation_summary
 

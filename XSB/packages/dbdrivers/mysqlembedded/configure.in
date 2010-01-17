@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.4 2010-01-14 05:12:50 kifer Exp $
+## $Id: configure.in,v 1.5 2010-01-17 04:31:40 kifer Exp $
 ## 
 ##
 
@@ -142,12 +142,11 @@ AC_SUBST(LDFLAGS)
 
 
 (
-echo ""
-echo "  MySQL Embedded Server support:                                  $support"
-echo "  MySQL Embedded Server library directory:                        $libdir"
-echo "  MySQL Embedded Server header directory:                         $incdir"
-echo "  MySQL Embedded Server C Flags:                                  $CFLAGS"
-echo "  MySQL Embedded Server Loader Flags:                             $LDFLAGS"
+echo "  MySQL Embedded Server support:                  $support"
+echo "  MySQL Embedded Server library directory:        $libdir"
+echo "  MySQL Embedded Server header directory:         $incdir"
+echo "  MySQL Embedded Server C Flags:                  $CFLAGS"
+echo "  MySQL Embedded Server Loader Flags:             $LDFLAGS"
 echo ""
 ) | tee Installation_summary
 
