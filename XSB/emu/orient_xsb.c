@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.c,v 1.21 2008-04-06 23:04:23 tswift Exp $
+** $Id: orient_xsb.c,v 1.22 2010-01-17 06:30:45 kifer Exp $
 ** 
 */
 
@@ -332,8 +332,11 @@ void transform_cygwin_pathname(char*);
 
 void set_user_home() {
   user_home_gl = (char *) getenv("HOME");
-  if ( user_home_gl == NULL )
-    user_home_gl = install_dir_gl;
+  if ( user_home_gl == NULL ) {
+    user_home_gl = (char *) getenv("USERPROFILE"); /* often used in Windows */
+    if ( user_home_gl == NULL )
+      user_home_gl = install_dir_gl;
+  }
 #ifdef WIN_NT
   transform_cygwin_pathname(user_home_gl);
 #endif
