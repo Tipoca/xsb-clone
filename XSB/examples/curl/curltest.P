@@ -1,0 +1,72 @@
+:- import slash/1 from machine.
+:- import encode_url/3 from curl.
+
+test_all :- 
+	curldir(CurlDir), slash(Slash), 
+	fmt_write_string(OutPath, '%s%sactualoutput', f(CurlDir, Slash)), 
+	(path_sysop(isdir, OutPath); path_sysop(mkdir, OutPath)),
+	fmt_write_string(CertPath, '%s%scertificates', f(CurlDir, Slash)), 
+	test_no_options(OutPath), 
+	test_redir(OutPath), 
+	test_noredir(OutPath), 
+	test_secure(OutPath), 
+	test_secure_crt(OutPath, CertPath), 
+	test_nonsecure(OutPath), 
+	test_encode_url(OutPath).
+
+test_no_options(OutPath) :- 
+	open(url('zend.com'),read, X), 
+	slash(Slash), fmt_write_string(OutFile, '%s%sno_options.html', f(OutPath, Slash)),
+	tell(OutFile), write_page(X), told,  
+	close(X).
+
+test_redir(OutPath) :- 
+	open(url('zend.com'), read, X, [redirect(true)]),
+	slash(Slash), fmt_write_string(OutFile, '%s%sredir.html', f(OutPath, Slash)),
+	tell(OutFile), write_page(X), told,  
+	close(X).
+
+test_noredir(OutPath) :- 
+	open(url('zend.com'), read, X, [redirect(false)]),
+	slash(Slash), fmt_write_string(OutFile, '%s%sno_redir.html', f(OutPath, Slash)),
+	tell(OutFile), write_page(X), told,  
+	close(X).
+
+test_secure(OutPath) :- 
+	open(url('https://webmail.cs.sunysb.edu'), read, X, [secure(true)]),
+	slash(Slash), fmt_write_string(OutFile, '%s%ssecure.html', f(OutPath, Slash)),
+	tell(OutFile), write_page(X), told,  
+	close(X).
+
+test_secure_crt(OutPath, CertPath) :- 
+	slash(Slash), 
+	fmt_write_string(CertFile, '%s%swebmail.cs.sunysb.edu.crt', f(CertPath, Slash)), 
+	open(url('https://webmail.cs.sunysb.edu'), read, X, [secure(true, CertFile)]),
+	fmt_write_string(OutFile, '%s%ssecure_crt.html', f(OutPath, Slash)),
+	tell(OutFile), write_page(X), told,  
+	close(X).
+
+test_nonsecure(OutPath) :- 
+	open(url('https://webmail.cs.sunysb.edu'), read, X, [secure(false)]),
+	slash(Slash), fmt_write_string(OutFile, '%s%snon_secure.html', f(OutPath, Slash)),
+	tell(OutFile), write_page(X), told,  
+	close(X).
+
+test_encode_url(OutPath) :-
+	encode_url('https://webmail.cs.sunysb.edu/cgi-bin/openwebmail/openwebmail.pl', DirEnc, FileUnEnc), 
+	slash(Slash), fmt_write_string(OutFile, '%s%smisc', f(OutPath, Slash)),
+	tell(OutFile), 
+	write(test_encode_url), writeln(' on https://webmail.cs.sunysb.edu/cgi-bin/openwebmail/openwebmail.pl'), 
+	write('Directory = '), writeln(DirEnc), 
+	write('File = '), writeln(FileUnEnc), 
+	told.
+
+write_page(X) :- file_read_line(X, Y), writeln(Y), write_page(X).
+write_page(_) :- !.
+
+curldir(CurlDir) :-
+        xsb_configuration(install_dir, PackDir),
+        slash(Slash),
+        fmt_write_string(CurlDir, '%s%sexamples%scurl',
+        f(PackDir, Slash, Slash)).
+
