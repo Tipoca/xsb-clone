@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.P,v 1.66 2009-10-19 16:52:43 dwarren Exp $
+** $Id: builtin.P,v 1.67 2010-01-18 13:56:58 dwarren Exp $
 ** 
 */
 
@@ -252,6 +252,7 @@ inline_jumpcof_cond(is_attv, 1, IS_ATTV_TEST).
 inline_jumpcof_cond(var, 1, VAR_TEST).
 inline_jumpcof_cond(nonvar, 1, NONVAR_TEST).
 inline_jumpcof_cond(is_number_atom, 1, IS_NUMBER_ATOM_TEST).
+inline_jumpcof_cond(ground_term, 1, GROUND_TEST).
 
 /*======================================================================*/
 /* builtin functions							*/
