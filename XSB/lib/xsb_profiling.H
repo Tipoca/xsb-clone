@@ -41,6 +41,7 @@
 :- import writeln/1 from standard.
 :- import catch/3 from standard.
 :- import throw/1 from standard.
+:- import ground_term/1 from standard.
 :- import call_c/1, (index)/2, arg/3, writeln/2, write/2 from standard.
 
 :- import write_term/2 from write_term.
@@ -52,4 +53,4 @@
 
 :- import (dynamic)/1, retractall/1, assert/1 from assert.
 
-:- import ground/1, member/2 from basics.
+:- import member/2 from basics.

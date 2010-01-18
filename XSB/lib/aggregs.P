@@ -217,16 +217,19 @@ bagPO1(PO,Call,Templ,AVars,Agg) :-  % templ is X, Call is pred(A,B,X)
 		arg(1,POCB,OAgg), arg(2,POCB,Agg)
 	),
 	POCE = (OAgg == Agg),
+	%% following is to avoid building this term for every answer...
+	Delete_old_as_nec_call = delete_old_as_nec(POCA,POCB,POCE,VarList,OVarList,AVars,OAVars,Cs,OSkel),
 	call(Call),
 	%%nl(userout),writeln(userout,newAnswer(Call,Templ)),
-	(ground(VarList) -> AVars = [] ; excess_vars(VarList,Templ,[],AVars)), % optimize common case
+	(ground_term(VarList) -> AVars = [] ; excess_vars(VarList,Templ,[],AVars)), % optimize common case
 	Templ = Agg,
-	findall([],delete_old_as_nec(POCA,POCB,POCE,VarList,OVarList,AVars,OAVars,Cs,OSkel),Rets),
-	Rets = []. %%, writeln(userout,answerRet(Call,Agg)). % if noone said not to return it, then return this ans
+	findall([],Delete_old_as_nec_call,[]).
+%%	Rets = []. %%, writeln(userout,answerRet(Call,Agg)). % if noone said not to return it, then return this ans
 
 delete_old_as_nec(POCA,POCB,POCE,Call,Call,NAVars,OAVars,Cs,OSkel) :-
-	findall(p(OSkel,Leaf),'_$$get_returns'(Cs,OSkel,Leaf),Returns),
-	member(p(OSkel,Leaf),Returns),
+	Template = p(OSkel,Leaf), % to do only once
+	findall(Template,'_$$get_returns'(Cs,OSkel,Leaf),Returns),
+	member(Template,Returns),
 	%%writeln(userout,oldAnswer(Call)),
 	(is_most_general_term(OAVars) % new answer subsumes old
 	 ->	(is_most_general_term(NAVars) % variant

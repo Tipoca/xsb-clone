@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.24 2009-08-22 19:00:59 tswift Exp $
+** $Id: intern.P,v 1.25 2010-01-18 14:01:44 dwarren Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
 % level for each kind of trie
 %------------------------------------------------------------------
 
-:- import ground/1 from basics.
+:- import ground_term/1 from standard.
 :- import misc_error/1 from error_handler.
 
 /* Flag error to support alias-concurrency for shared tries: i.e. an
@@ -123,7 +123,7 @@ trie_delete_1(Tid,Term):-
 	    trie_prge_delete(Tid,Term)
 	 ; (Type == SHAS_TRIE -> 
 	     (Term = pair(Key,Val) -> 
-		(ground(Key) -> 
+		(ground_term(Key) -> 
 		    trie_shas_delete(Tid,Term) 	   
 		 ;  misc_error(['Key value of an assocative pair must be bound in ',
 	                  'argument 2 of a trie_insert']) )
@@ -131,7 +131,7 @@ trie_delete_1(Tid,Term):-
 	               ['Inserted term must be key-value pair in trie',Tid]) )
 	    ; (Type == PRAS_TRIE -> 
    	       (Term = pair(Key,Val) -> 
-		   (ground(Key) -> 
+		   (ground_term(Key) -> 
 		       trie_pras_delete(Tid,Term)
 		   ;   misc_error(['Key value of an assocative pair must be bound in ',
 	                  'argument 2 of a trie_insert']) )
@@ -321,7 +321,7 @@ trie_prge_insert(Root,Term) :-
 % dont need to check cps
 trie_pras_insert(Root,Term) :-
 	(Term = pair(Key,Val) -> 
-  	  (ground(Key) -> 
+  	  (ground_term(Key) -> 
 	      (new_i_trie_interned(Root,pair(Key,_),_Leaf) ->
 		  fail
 		; new_i_trie_intern(Root,pair(Key,Val),_L,_F,NO_CPS_CHECK,EXPAND_HASHES) )
@@ -348,7 +348,7 @@ trie_prge_unify(Root,Term) :-
 	new_i_trie_interned(Root,Term,_Leaf).
 
 trie_pras_unify(Root,pair(Key,Value)) :-
-	(ground(Key) -> 
+	(ground_term(Key) -> 
 	    new_i_trie_interned(Root,pair(Key,Value),_Leaf)
 	   ; misc_error(['Key value of an assocative pair must be bound in ',
 	                  'argument 2 of trie_unify']) ).
@@ -372,7 +372,7 @@ trie_pras_bulk_insert(Tid,Callable_Term):-
 	arg(1,Callable_Term,TrieTerm),
 	call(Callable_Term),
 	(TrieTerm = pair(Key,Val) -> 
-  	  (ground(Key) -> 
+  	  (ground_term(Key) -> 
 	      (new_i_trie_interned(Tid,pair(Key,_),_Leaf) ->
 		  fail
 		; new_i_trie_intern(Tid,pair(Key,Val),_L,_F,NO_CPS_CHECK,EXPAND_HASHES) )
@@ -420,7 +420,7 @@ trie_pras_bulk_delete(_Trie,_Term).
 
 trie_shas_insert(Root,Term) :-
 	(Term = pair(Key,Value) -> 
-  	  (ground(Key) -> 
+  	  (ground_term(Key) -> 
 	      (trie_shas_interned(Root,pair(Key,_V),_Leaf) -> 
 		  fail
   	       ;  true),
@@ -439,7 +439,7 @@ trie_shas_delete(Root,Term) :-
 %----- 
 
 trie_shas_unify(Root,pair(Key,Value)) :-
-	(ground(Key) -> 
+	(ground_term(Key) -> 
 	    trie_shas_interned(Root,pair(Key,Value))
 	   ; misc_error(['Key value of an assocative pair must be bound in ',
 	                  'argument 2 of trie_unify']) ).
@@ -459,7 +459,7 @@ trie_shas_bulk_insert(Tid,Callable_Term):-
 	call(Callable_Term),
 %	new_i_trie_intern(Tid,TrieTerm,_Leaf,_Flag,NO_CPS_CHECK,EXPAND_HASHES),
 	(TrieTerm = pair(Key,Val) -> 
-  	  (ground(Key) -> 
+  	  (ground_term(Key) -> 
 	     (trie_shas_interned_nolock_noleaf(Tid,pair(Key,_)) ->
 		  fail
 		; trie_shas_intern(Tid,pair(Key,Val),_Leaf1,_Flag) )
