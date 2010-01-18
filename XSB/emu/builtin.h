@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.89 2009-10-19 16:51:14 dwarren Exp $
+** $Id: builtin.h,v 1.90 2010-01-18 13:54:51 dwarren Exp $
 ** 
 */
 
@@ -303,6 +303,7 @@
 #define NONVAR_TEST		12
 #define DIRECTLY_CALLABLE_TEST  13
 #define IS_NUMBER_ATOM_TEST	14
+#define GROUND_TEST		15
 
 #define PLUS_FUNCT 1
 #define MINUS_FUNCT 2

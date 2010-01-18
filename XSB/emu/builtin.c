@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.329 2009-11-17 14:59:34 tswift Exp $
+** $Id: builtin.c,v 1.330 2010-01-18 13:54:51 dwarren Exp $
 ** 
 */
 
@@ -738,7 +738,7 @@ Cell  det_val_to_hash(Cell term)
 
 /* -------------------------------------------------------------------- */
 
-static int ground(CTXTdeclc CPtr temp)
+int ground(CPtr temp)
 {
  int j, arity;
  groundBegin:
@@ -755,7 +755,7 @@ static int ground(CTXTdeclc CPtr temp)
     return TRUE;
 
   case XSB_LIST:
-    if (!ground(CTXTc clref_val(temp))) 
+    if (!ground(clref_val(temp))) 
       return FALSE;
     temp = clref_val(temp)+1;
     goto groundBegin;
@@ -764,7 +764,7 @@ static int ground(CTXTdeclc CPtr temp)
     arity = (int) get_arity(get_str_psc(temp));
     if (arity == 0) return TRUE;
     for (j=1; j < arity ; j++) 
-      if (!ground(CTXTc clref_val(temp)+j))
+      if (!ground(clref_val(temp)+j))
 	return FALSE;
     temp = clref_val(temp)+arity;
     goto groundBegin;
@@ -2060,7 +2060,7 @@ int builtin_call(CTXTdeclc byte number)
     break;
   }
   case GROUND:
-    return ground(CTXTc (CPtr)ptoc_tag(CTXTc 1));
+    return ground((CPtr)ptoc_tag(CTXTc 1));
 
   case PSC_GET_SET_ENV_BYTE: { /* reg 1: +PSC, reg 2: +And-bits, reg 3: +Or-bits, reg 4: -Result */
     Psc psc = (Psc)ptoc_addr(1);
