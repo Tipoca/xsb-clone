@@ -18,12 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.H,v 1.13 2007/01/26 18:28:14 dwarren Exp $
+** $Id: basics.H,v 1.14 2007/11/20 19:07:22 tswift Exp $
 ** 
 */
 
 
-:- export append/3, copy_term/2, flatten/2, ground/1, ith/3, length/2, 
+:- export append/3, copy_term/2, flatten/2, ith/3, length/2, 
 	  member/2, memberchk/2, subset/2, subseq/3, reverse/2, select/3, 
    for/3, between/3.
 :- export log_ith/3, log_ith_bound/3.

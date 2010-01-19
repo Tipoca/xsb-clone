@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.H,v 1.40 2009/01/08 21:18:19 tswift Exp $
+** $Id: tables.H,v 1.41 2009/08/28 17:43:09 tswift Exp $
 ** 
 */
 
@@ -68,7 +68,7 @@
      from setof.
 :- import add_trie_index/1
      from file_op.
-:- import copy_term/2, ground/1, member/2
+:- import copy_term/2, member/2
      from basics.
 :- import (dynamic)/1, retract/1, retract_nr/1, retractall/1, t_assert/2
      from assert.

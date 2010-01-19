@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: ccallxsb.H,v 1.3 2008/04/07 00:25:45 tswift Exp $
+** $Id: ccallxsb.H,v 1.4 2008/11/12 21:56:52 dwarren Exp $
 ** 
 */
 
 :- export c_callloop_query_loop/1.
 
 :- import
-   integer/1, close_open_tables/0, stat_flag/2
+   close_open_tables/0, stat_flag/2
    from machine.
 
 :- import file_open/3, file_close/1

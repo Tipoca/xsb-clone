@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.P,v 1.21 2007/11/20 19:07:22 tswift Exp $
+** $Id: basics.P,v 1.22 2009/10/01 15:25:00 dwarren Exp $
 ** 
 */
 
@@ -50,11 +50,6 @@ flatten1([H|T],Flatlist,Flatout):-
 		      flatten1(T,Flatmid,Flatout)
 		; 	Flatlist = [H|Flatmid],
 			flatten1(T,Flatmid,Flatout).
-
-%---
-% ground/1 checks for ground term.
-
-ground(T) :- ground(T).
 
 %---
 % ith/3 that works both ways

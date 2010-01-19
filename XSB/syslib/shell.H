@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: shell.H,v 1.19 2007/08/29 22:13:08 tswift Exp $
+** $Id: shell.H,v 1.20 2009/02/26 16:09:13 tswift Exp $
 ** 
 */
 
@@ -38,7 +38,7 @@
 :- export platform/1.
 
 :- import file_to_list/2 from scrptutl.
-:- import ground/1, append/3, member/2 from basics.
+:- import append/3, member/2 from basics.
 :- import findall/3 from setof.
 :- import path_sysop/2 from file_io.
 :- import check_nonvar/3 from error_handler.

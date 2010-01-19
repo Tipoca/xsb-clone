@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.H,v 1.28 2007/09/07 21:20:39 tswift Exp $
+** $Id: error_handler.H,v 1.29 2008/03/27 19:53:33 tswift Exp $
 ** 
 */
 
@@ -48,7 +48,6 @@
 	      get_backtrace_list/2.
 
  :- import (dynamic)/1,asserta/1 from assert.
- :- import ground/1 from basics.
 %%:- import reset_undef_pred_handlers/0 from loader.
    :- import close_open_tables/0, psc_data/2, psc_name/2, psc_arity/2, ccall_store_error/2,
           stat_flag/2, xsb_backtrace/1 from machine.
