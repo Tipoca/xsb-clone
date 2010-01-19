@@ -35,7 +35,7 @@
 :- import load_chr/1 from chr_pp.
 :- load_chr(timeConstraints).	% get compiled path consistency handler
 
-:- import ground/1, memberchk/2, member/2 from basics.
+:- import memberchk/2, member/2 from basics.
 :- import sort/2, findall/3 from setof.
 
 :- ensure_loaded(constraintLib).
