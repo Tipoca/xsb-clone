@@ -6,7 +6,6 @@
 unifiable/2, freeze/2.
 
 :- import trie_delete/2,trie_create/2, trie_unify/2, trie_insert/2 from intern.
-:- import ground/1 from basics.
 :- import when/2 from constraintLib.
 
 % emulating non-backtrackable "global" variables using private tries.
