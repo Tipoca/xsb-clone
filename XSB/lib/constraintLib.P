@@ -37,7 +37,6 @@
 :- import sort/2 from setof.
 
 :- import check_var/3 from error_handler.
-:- import ground/1 from basics.
 
 :- import gennum/2, conset/2 from gensym.
 

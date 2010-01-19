@@ -7,8 +7,8 @@
 	 predname/1, atm_or_atm_list/1, compat/2, iso/1,
 	 not_further_inst/2, (regtype)/1.
 
-:- import integer/1, number/1, atom/1, call/1, =.. /2, float/1,
-					functor/3, arg/3 from usermod. 
+:- import call/1, =.. /2, float/1,
+	functor/3, arg/3 from usermod. 
 
 % callable/1 is an XSB standard predicate.
 % member/2 is in basics.
