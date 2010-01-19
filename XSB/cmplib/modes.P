@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.P,v 1.12 2010-01-18 13:56:58 dwarren Exp $
+** $Id: modes.P,v 1.13 2010-01-19 22:41:48 dwarren Exp $
 ** 
 */
 
@@ -484,7 +484,7 @@ canon_head_lit(Term, NewTerm, NewLiterals) :-
 
 canonize_args([], [], true).
 canonize_args([X|Xs], [Y|Ys], Lits) :-
-	(ground_term(X) -> Y = g, canonize_args(Xs, Ys, Lits)
+	(ground(X) -> Y = g, canonize_args(Xs, Ys, Lits)
 	;
 	canon_term(Y, X, P),
 	canonize_args(Xs, Ys, NewLits),

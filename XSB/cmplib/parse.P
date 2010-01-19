@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.105 2009-11-30 19:22:11 dwarren Exp $
+** $Id: parse.P,v 1.106 2010-01-19 22:41:48 dwarren Exp $
 ** 
 */
 
@@ -398,10 +398,6 @@ parse_directive(export(X), _QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_comma_list(X, SymTab, [ex], (export)).
 parse_directive(document_export(X), _QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_comma_list(X, SymTab, [docex], (document_export)).
-parse_directive(import(from(P/A, Mod)), _QrList,_SymTab,_ModName,_ModStruct) :-
-	inline_predicate(P, A), \+ standard_symbol(P,A,Mod), !,
-%%	error((P,'/',A,' is an inline predicate, cannot be imported !')).
-	warning((P,'/',A,' is an inline predicate, cannot be imported, ignored !')).
 parse_directive(document_import(from(P/A, _Mod)), _QrList,_SymTab,_ModName,_ModStruct) :-
 	inline_predicate(P, A), !,
 %%	error((P,'/',A,' is an inline predicate, cannot be doc-imported !')).
@@ -409,7 +405,7 @@ parse_directive(document_import(from(P/A, _Mod)), _QrList,_SymTab,_ModName,_ModS
 parse_directive(import(from(X, Mod)), _QrList,SymTab,_ModName,_ModStruct) :- !,
 	(var(Mod)
 	 ->	error(('Module cannot be a variable. Importing: ',X))
-	 ;	parse_comma_list(X, SymTab, [im(Mod)], (import)),
+	 ;	parse_comma_list_import(X, Mod, SymTab),
 		sym_insert(Mod, 0, [module], SymTab, _)
 	).
 parse_directive(import(as(from(PredIn, Mod),PredAs)), _QrList,SymTab,_ModName,_ModStruct) :- !,
@@ -737,6 +733,27 @@ parse_comma_list(Spec, SymTab, SymbolProp, _Directive) :-
 parse_comma_list(X, _, _, Directive) :-
 	error(('Non predicate specification "', X, 
 		 '" found in ', Directive, ' directive. Ignored!')).
+
+parse_comma_list_import((Pred,Preds),Mod,SymTab) :- !,
+	parse_comma_list_import(Pred,Mod,SymTab),
+	parse_comma_list_import(Preds,Mod,SymTab).
+parse_comma_list_import(P/A,Mod,SymTab) :- !,
+	atom(P), integer(A), !,
+	(inline_predicate(P,A), \+ standard_symbol(P,A,Mod)
+	 ->	warning((P,'/',A,' is an inline predicate, cannot be imported, ignored !'))
+	 ;	sym_insert(P,A,[im(Mod)],SymTab, _)
+	).
+parse_comma_list_import(Spec,Mod,SymTab) :- 
+	is_most_general_term(Spec),
+	!,
+	functor(Spec,P,A),
+	(inline_predicate(P,A), \+ standard_symbol(P,A,Mod)
+	 ->	warning((P,'/',A,' is an inline predicate, cannot be imported, ignored !'))
+	 ;	sym_insert(P,A,[im(Mod)],SymTab, _)
+	).
+parse_comma_list_import(X,_Mod,_SymTab) :-
+	error(('Non predicate specification "', X, 
+		 '" found in import directive. Ignored!')).
 
 parse_comma_list_table((Pred, Preds), SymTab) :- 
 	!,
