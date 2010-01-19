@@ -1,4 +1,4 @@
-/*  $Id: bounds.pl,v 1.2 2008-02-13 22:11:45 tswift Exp $
+/*  $Id: bounds.pl,v 1.3 2010-01-19 22:45:11 dwarren Exp $
 
     Part of SWI-Prolog
 
@@ -99,7 +99,7 @@ op(730,yfx,(#\)),
 
 :- import notify/2,subscribe/4,	unsubscribe/2 from clp_events.
 
-:- import member/2, memberchk/2,between/3,ground/1,append/3 from basics.
+:- import member/2, memberchk/2,between/3,append/3 from basics.
 :- import setarg/3,maplist/3,unifiable/2,freeze/2 from swi.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
