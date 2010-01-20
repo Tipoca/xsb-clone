@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.107 2010-01-20 19:51:17 dwarren Exp $
+** $Id: parse.P,v 1.108 2010-01-20 21:16:04 dwarren Exp $
 ** 
 */
 
@@ -930,13 +930,10 @@ trans_goals('\+'(A), not(Goal1), SymTab, VidIn, VidOut) :- !,
 	trans_goals(A, Goal1, SymTab, VidIn, VidOut).
 trans_goals(fail_if(A), not(Goal1), SymTab, VidIn, VidOut) :- !, 
 	trans_goals(A, Goal1, SymTab, VidIn, VidOut).
-trans_goals(once(A), if(Goal1, Goal2), SymTab, VidIn, VidOut) :- !, % optimize once(A) to A->true
-	trans_goals(A, Goal1, SymTab, VidIn, VidMed),
-	trans_goal(true, Goal2, SymTab, VidMed, VidOut).
-trans_goals(forall(A,B), not(and(Goal1,not(Goal2))), SymTab, VidIn, VidOut) :- !,
-				% translate forall(A,B) to \+((A,\+B))
-	trans_goals(A, Goal1, SymTab, VidIn, VidMed),
-	trans_goals(B, Goal2, SymTab, VidMed, VidOut).	
+trans_goals(once(A), Goal1, SymTab, VidIn, VidOut) :- !,
+	trans_goals((A->true;fail), Goal1, SymTab, VidIn, VidOut). % optimize once(A) to A->true;fail
+trans_goals(forall(A,B), Goal1, SymTab, VidIn, VidOut) :- !,
+	trans_goals((\+((A,\+B))), Goal1, SymTab, VidIn, VidOut). % translate forall(A,B) to \+((A,\+B))
 trans_goals(T, Goal, SymTab, VidIn, VidOut) :-
 	trans_goal(T, Goal, SymTab, VidIn, VidOut).
 
