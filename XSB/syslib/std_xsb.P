@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_xsb.P,v 1.116 2010/01/18 14:00:52 dwarren Exp $
+** $Id: std_xsb.P,v 1.117 2010/01/19 22:42:56 dwarren Exp $
 ** 
 */
 
@@ -180,6 +180,9 @@ standard_symbol(fmt_write, 2, file_io).
 standard_symbol(fmt_write, 3, file_io).
 standard_symbol(fmt_write_string, 3, file_io).
 standard_symbol(fmt_write_string, 4, file_io).
+standard_symbol(forall, 2, standard).
+standard_metapredicate(forall, 2, 1).
+standard_metapredicate(forall, 2, 2).
 standard_symbol(functor, 3, standard).
 
 standard_symbol(garbage_collection, 1, curr_sym).

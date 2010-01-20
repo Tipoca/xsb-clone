@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.103 2010/01/18 14:00:52 dwarren Exp $
+** $Id: standard.H,v 1.104 2010/01/19 22:42:56 dwarren Exp $
 **
 */
 
@@ -43,7 +43,7 @@
 	console_write/1, console_writeln/1,
 	error_write/1, error_writeln/1,
 	expand_term/2,	file_exists/1,	fail/0,		fail_if/1,
-	fileerrors/0,	float/1,	functor/3,
+	fileerrors/0,	float/1,	forall/2,	functor/3,
 	gc_dynamic/1,   gc_tables/1,    gc_atoms/0,
 	get/1,		get0/1,		
 	get_char/1,	get_char/2,     get_code/1,	get_code/2,

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.171 2010/01/18 14:00:52 dwarren Exp $
+** $Id: standard.P,v 1.172 2010/01/19 22:42:56 dwarren Exp $
 ** 
 */
 
@@ -1295,6 +1295,9 @@ repeat :- true; repeat.
 '_$cutto'(X) :- '_$cutto'(X).
 
 '_$savecp'(X) :- '_$savecp'(X).
+
+forall(G1,G2) :-
+	\+ (call(G1), \+call(G2)).
 
 %-------------------------------%
 %  Various flavors of Negation  %
