@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.78 2009-11-17 14:59:34 tswift Exp $
+** $Id: io_builtins_xsb.c,v 1.79 2010-01-20 15:32:12 pmoura Exp $
 ** 
 */
 
@@ -339,7 +339,7 @@ xsbBool fmt_write(CTXTdecl)
 no, need more space if no snprintf... */
 #ifdef HAVE_SNPRINTF
 #define SAFE_OUT_SIZE MAX_SPRINTF_STRING_SIZE
-int sprintf(char *s, const char *format, /* args */ ...);
+int (sprintf)(char *s, const char *format, /* args */ ...);
 #else
 #define SAFE_OUT_SIZE MAX_SPRINTF_STRING_SIZE
 #endif
