@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.77 2009/10/12 20:43:11 dwarren Exp $
+** $Id: consult.P,v 1.78 2009/10/15 05:56:48 kifer Exp $
 ** 
 */
 
@@ -591,6 +591,8 @@ load_dync1(Rfname,Dir) :-
 	seeing(OldFile),
 	open_or_xpp_file(Rfname, XPP_process),
 	current_input_port(XPPport),
+	conset('_$load_dync_line_no',0),
+	conset('_$load_dync_error_cnt',0),
 	file_read_canonical(-1000,0,0),	% initialize previous psc
 	(   read_and_assert(XPPport,Dir)
 	%% If needs restart, close old file and skip to the second load_dyn1
@@ -621,6 +623,7 @@ load_dync1(Rfname,Dir) :-
 
 %% This version is used for load_dync1 only!
 read_and_assert(IPort,Dir) :-
+	coninc('_$load_dync_line_no'),
 	file_read_canonical(IPort,Term,Opsc),	% Opsc: Old(Previous) psc
 	(Opsc =\= 0,\+'_$trie_asserted'(Term)
 	 ->	load_dyn_retracted(Opsc,Prref,NArity,Index,Hashsize),
@@ -632,9 +635,26 @@ read_and_assert(IPort,Dir) :-
 	),
 	(Term == end_of_file
 	 ->	!, fail
+	 ; Term == read_canonical_error
+	 ->	conget('_$load_dync_line_no',BadLineNo),
+		file_write0(STDMSG,'     READ_CAN_ERROR at (or about) term (usu. line) number '),
+		file_write0(STDMSG,BadLineNo),
+		file_nl(STDMSG),
+		coninc('_$load_dync_error_cnt',ErrCnt),
+		(ErrCnt > 25
+		 ->	!,
+			file_write0(STDMSG,'TOO MANY READ_CAN_ERRORS, loading aborted'),
+			file_nl(STDMSG)
+		 ;	true
+		),
+		fail
 	 ;	do_assert_and_fail(Term,Dir)
 	).
-read_and_assert(_IPort,_Dir) :- conget(needs_restart,1), !.
+read_and_assert(_IPort,_Dir) :-
+	conget(needs_restart,1), % if needs restart
+	!,			% don't continue to read
+	conset('_$load_dync_line_no',0),
+	conset('_$load_dync_error_cnt',0).
 read_and_assert(IPort,Dir) :- read_and_assert(IPort,Dir).
 
 

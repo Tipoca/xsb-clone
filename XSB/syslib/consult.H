@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.H,v 1.49 2008/09/19 14:28:06 dwarren Exp $
+** $Id: consult.H,v 1.50 2009/10/12 20:36:34 dwarren Exp $
 ** 
 */
 
@@ -59,7 +59,7 @@
 	file_close/1,file_get/2, file_open/3, file_time/2 from file_io.
 :- import '_$index'/3, '_$trie_asserted'/1, mpa_to_skel/2 from file_op.
 :- import compile_cH/6 from foreign.
-:- import conset/2, conget/2, gensym/2  from gensym.
+:- import conset/2, conget/2, coninc/1, coninc/2, gensym/2  from gensym.
 :- import add_hilog_symbol/1 from hilogsym.
 :- import libpath/1 from loader.
 :- import code_load/3, code_call/3, file_read_canonical/3,
