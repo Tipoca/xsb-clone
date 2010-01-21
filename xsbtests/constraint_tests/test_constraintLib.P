@@ -1,7 +1,6 @@
 
 :- import numbervars/1 from num_vars.
 :- import when/2,unifiable/3 from constraintLib.
-:- import ground/1 from basics.
 
 test:- 
 	testwhen,fail.

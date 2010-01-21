@@ -16,7 +16,7 @@
 
 (:-import globalize / 1  ','  var_compare / 3  ','  lookup_variable_id / 2  from  constraintLib).
 
-(:-import ground / 1  ','  length / 2  ','  member / 2  from  basics).
+(:-import length / 2  ','  member / 2  from  basics).
 
 (:-import transl / 4  ','  intersection / 3  ','  equality / 2  ','  shift_interval / 3  ','  bind_value / 3  ','  unique / 1  ','  universal / 3  ','  empty / 2  ','  path1 / 5  from  time).
 
