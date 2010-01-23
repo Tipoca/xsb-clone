@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.22 2009-11-08 18:29:21 tswift Exp $
+** $Id: complete_local.h,v 1.23 2010-01-23 19:03:02 tswift Exp $
 **
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -32,8 +32,8 @@ void makeConsumerFromGenerator(CTXTdeclc VariantSF producer_sf)
 	      breg,nlcp_prevbreg(breg)));
   nlcp_trie_return(breg) = subg_ans_list_ptr(producer_sf);
   nlcp_pcreg(breg) = (pb) &answer_return_inst;
-  nlcp_prevlookup(breg) = subg_asf_list_ptr(producer_sf);
-  subg_asf_list_ptr(producer_sf) = breg;
+  nlcp_prevlookup(breg) = subg_pos_cons(producer_sf);
+  subg_pos_cons(producer_sf) = breg;
 }
 #endif /* LOCAL */
 
@@ -59,7 +59,7 @@ void makeConsumerFromGenerator(CTXTdeclc VariantSF producer_sf)
       } \
       else { \
 	CPtr nsf; \
-	nsf = subg_asf_list_ptr(prof_compl_subg); \
+	nsf = subg_pos_cons(prof_compl_subg); \
 	while (nsf != NULL) { \
 	  num_consumers_in_ascc++; \
 	  nsf = nlcp_prevlookup(nsf); \
@@ -146,7 +146,7 @@ void SpitOutGraph(CPtr cs_ptr)
       } else {
       }
 
-      nsf = subg_asf_list_ptr(prof_compl_subg);
+      nsf = subg_pos_cons(prof_compl_subg);
       while (nsf != NULL) {
 
 	print_sdg_edge(sdg_check_num,1,nlcp_ptcp(nsf),prof_compl_subg);
@@ -384,7 +384,7 @@ static inline void SetupReturnFromLeader(CTXTdeclc CPtr orig_breg, CPtr cs_ptr,
    */
   ebreg = cp_ebreg(tcp_prevbreg(orig_breg));
   hbreg = cp_hreg(tcp_prevbreg(orig_breg));
-  subg_asf_list_ptr(subgoal) = 0;
+  subg_pos_cons(subgoal) = 0;
 
   /* reclaim stacks, including leader */
   openreg = prev_compl_frame(cs_ptr);

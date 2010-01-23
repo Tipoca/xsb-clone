@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.22 2008-09-26 20:32:01 tswift Exp $
+** $Id: schedrev_xsb_i.h,v 1.23 2010-01-23 19:03:03 tswift Exp $
 ** 
 */
 
@@ -53,7 +53,7 @@ static CPtr sched_answers(CTXTdeclc VariantSF producer_sf, CPtr *last_consumer)
   subinst_table[SCHED_ANSWERS][1]++;
 #endif	
   first_sched_cons = last_sched_cons = NULL;
-  consumer_cpf = subg_asf_list_ptr(producer_sf);
+  consumer_cpf = subg_pos_cons(producer_sf);
   //  printf(" scheduling answers for ");
   //  print_subgoal(CTXTc stddbg, producer_sf);printf("first CCP %x\n",consumer_cpf);
 
@@ -171,7 +171,7 @@ static CPtr find_fixpoint(CTXTdeclc CPtr leader_csf, CPtr producer_cpf)
 	 finally correct. */
 
 #ifdef  LOCAL_EVAL
-      tcp_prevbreg(subg_asf_list_ptr(currSubg)) = breg;
+      tcp_prevbreg(subg_pos_cons(currSubg)) = breg;
 #endif
 
     if ((tmp_sched = sched_answers(CTXTc currSubg, &last_cons))) {

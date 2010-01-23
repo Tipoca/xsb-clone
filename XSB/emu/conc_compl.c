@@ -293,7 +293,7 @@ void WakeDependentThreads( th_context * th, VariantSF subg )
     CPtr Cons ;
     th_context *cons_th ;
 	
-    Cons = subg_asf_list_ptr(subg) ;
+    Cons = subg_pos_cons(subg) ;
     while(Cons)
     {
 	if( int_val(nlcp_tid(Cons)) != th->tid )

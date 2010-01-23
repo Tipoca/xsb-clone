@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.2 2009-11-17 19:32:08 dwarren Exp $
+** $Id: tab_structs.h,v 1.3 2010-01-23 19:03:03 tswift Exp $
 ** 
 */
 
@@ -629,7 +629,7 @@ typedef struct subgoal_frame {
   void *next_subgoal;	  
   void *prev_subgoal;
   CPtr  cp_ptr;		  /* Pointer to the Generator CP (pre-compl)*/
-  CPtr asf_list_ptr;	  /* Pointer to list of (CP) active subgoal frames (pre-compl) */
+  CPtr pos_cons;	  /* Pointer to list of (CP) active subgoal frames (pre-compl) */
   CPtr compl_stack_ptr;	  /* Pointer to subgoal's completion stack frame (pre-compl) */
   CPtr compl_suspens_ptr; /* SLGWAM: CP stack ptr (pre-compl)  */
   DelTFptr deltf_ptr;     /* pointer to deltf (post-compl) */
@@ -661,7 +661,7 @@ typedef struct subgoal_frame {
 #define subg_ans_list_tail(b)	( ((VariantSF)(b))->ans_list_tail )
 #define subg_cp_ptr(b)		( ((VariantSF)(b))->cp_ptr )
 #define subg_deltf_ptr(b)     	( ((VariantSF)(b))->deltf_ptr )
-#define subg_asf_list_ptr(b)	( ((VariantSF)(b))->asf_list_ptr )
+#define subg_pos_cons(b)	( ((VariantSF)(b))->pos_cons )
 #define subg_callnode_ptr(b)    ( ((VariantSF)(b))->callnode ) /* incremental evaluation */
 
 /* use this for mark as completed == 0 */

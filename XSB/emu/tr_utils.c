@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.181 2009/11/17 14:59:34 tswift Exp $
+** $Id: tr_utils.c,v 1.182 2009/11/17 19:32:08 dwarren Exp $
 ** 
 */
 
@@ -1194,9 +1194,11 @@ void delete_return(CTXTdeclc BTNptr leaf, VariantSF sg_frame,int eval_method)
       while (ALN_Answer(ALN_Next(n)) != leaf) {
 	n = ALN_Next(n);/* if a is not in that list a core dump will result */
       }
+#ifdef NON_OPT_COMPILE
       if (n == NULL) {
 	xsb_exit(CTXTc "Error in delete_return()");
       }
+#endif
     }
     if (ALN_Next(n) && ALN_Next(ALN_Next(n)) &&
 	hasALNtag(ALN_Answer(ALN_Next(ALN_Next(n))))) {
@@ -1213,7 +1215,7 @@ void delete_return(CTXTdeclc BTNptr leaf, VariantSF sg_frame,int eval_method)
     
     /* Make consumed answer field of consumers point to
        previous sibling if they point to a deleted answer */
-    c = (NLChoice) subg_asf_list_ptr(sg_frame);
+    c = (NLChoice) subg_pos_cons(sg_frame);
     while(c != NULL){
       if(nlcp_trie_return(c) == a){
 	nlcp_trie_return(c) = n;
@@ -3823,6 +3825,8 @@ void release_private_tabling_resources(CTXTdecl) {
   SM_ReleaseResources(*private_smProdSF);
   SM_ReleaseResources(*private_smConsSF);
   SM_ReleaseResources(*private_smASI);
+  mem_dealloc(itrie_array,((max_interned_tries_glc+1) * sizeof(struct interned_trie_t)), TABLE_SPACE);
+  //    mem_calloc(max_interned_tries_glc+1, sizeof(struct interned_trie_t), TABLE_SPACE);
 }
 
 #endif

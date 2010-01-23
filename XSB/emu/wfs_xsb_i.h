@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wfs_xsb_i.h,v 1.19 2006-12-02 19:31:57 ruim Exp $
+** $Id: wfs_xsb_i.h,v 1.20 2010-01-23 19:03:03 tswift Exp $
 ** 
 */
 
@@ -121,7 +121,7 @@ static void reclaim_edge_space(ComplStackFrame csf_ptr)
 /* subgoal dependency graph by looking at different data structures.	*/
 /*----------------------------------------------------------------------*/
 
-#define first_consumer(SUBG,CSF) (subg_asf_list_ptr(SUBG))
+#define first_consumer(SUBG,CSF) (subg_pos_cons(SUBG))
 #define ptcp_of_gen(SUBG,CSF)	 ((VariantSF)(tcp_ptcp(subg_cp_ptr(SUBG))))
 #define ptcp_of_cons(CONS_CP)	 ((VariantSF)(nlcp_ptcp(CONS_CP)))
 #define ptcp_of_csusp(CSUSP_CP)	 ((VariantSF)(csf_ptcp(CSUSP_CP)))

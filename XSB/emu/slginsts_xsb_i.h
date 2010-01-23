@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.83 2009/02/21 16:47:33 tswift Exp $
+** $Id: slginsts_xsb_i.h,v 1.84 2009/11/08 18:29:21 tswift Exp $
 ** 
 */
 
@@ -503,7 +503,7 @@ seq_table_try:
     if (trreg > trfreg) trfreg = trreg;
     if (hfreg < hreg) hfreg = hreg;
     SaveConsumerCPF( consumer_cpf, consumer_sf,
-		     subg_asf_list_ptr(producer_sf), 
+		     subg_pos_cons(producer_sf), 
 		     answer_template);
 
 #ifdef SLG_GC
@@ -516,9 +516,9 @@ seq_table_try:
     if( IsSharedSF(producer_sf) )
 	SYS_MUTEX_LOCK( MUTEX_CONS_LIST ) ;
     /* this is done again to allow to hold the lock for a shorter period */
-    nlcp_prevlookup(consumer_cpf) = subg_asf_list_ptr(producer_sf) ;
+    nlcp_prevlookup(consumer_cpf) = subg_pos_cons(producer_sf) ;
 #endif
-    subg_asf_list_ptr(producer_sf) = consumer_cpf;
+    subg_pos_cons(producer_sf) = consumer_cpf;
 #ifdef CONC_COMPL
     if( IsSharedSF(producer_sf) )
 	SYS_MUTEX_UNLOCK( MUTEX_CONS_LIST ) ;

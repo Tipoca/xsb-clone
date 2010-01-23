@@ -52,7 +52,7 @@ static void ReclaimDSandMarkReset(th_context *th, VariantSF to, int leader)
 		/* Handle early completion */
 		{	subg_grabbed(compl_subgoal_ptr(csf)) = TRUE ;
 			subg_tid(compl_subgoal_ptr(csf)) = leader ;
-    			subg_asf_list_ptr(compl_subgoal_ptr(csf)) = NULL;
+    			subg_pos_cons(compl_subgoal_ptr(csf)) = NULL;
     			subg_compl_susp_ptr(compl_subgoal_ptr(csf)) = NULL;
 		}
         	if( compl_subgoal_ptr(csf) == to ) 

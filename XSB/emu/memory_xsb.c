@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.61 2009-11-17 14:59:34 tswift Exp $
+** $Id: memory_xsb.c,v 1.62 2010-01-23 19:03:02 tswift Exp $
 ** 
 */
 
@@ -474,9 +474,9 @@ Please use -c N or cpsize(N) to start with a larger choice point stack"
        csf_ptr++) {
 
     subg_ptr = compl_subgoal_ptr(csf_ptr);
-    if ( IsNonNULL(subg_asf_list_ptr(subg_ptr)) )
-      subg_asf_list_ptr(subg_ptr) =
-	(CPtr)( (byte *)subg_asf_list_ptr(subg_ptr) + cps_offset );
+    if ( IsNonNULL(subg_pos_cons(subg_ptr)) )
+      subg_pos_cons(subg_ptr) =
+	(CPtr)( (byte *)subg_pos_cons(subg_ptr) + cps_offset );
 
     if ( IsNonNULL(subg_compl_susp_ptr(subg_ptr)) )
       subg_compl_susp_ptr(subg_ptr) =

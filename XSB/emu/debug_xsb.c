@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.47 2009-11-17 14:59:34 tswift Exp $
+** $Id: debug_xsb.c,v 1.48 2010-01-23 19:03:02 tswift Exp $
 ** 
 */
 
@@ -856,7 +856,7 @@ void print_tables(CTXTdecl)
 		 subg_ans_list_ptr(subg), subg_ans_list_tail(subg),
 		 subg_next_subgoal(subg), subg_prev_subgoal(subg), 
 		 subg_cp_ptr(subg));
-      fprintf(stddbg,"  asf_list_ptr = %p,", subg_asf_list_ptr(subg));
+      fprintf(stddbg,"  pos_cons = %p,", subg_pos_cons(subg));
       fprintf(stddbg,"  compl_stk_ptr = %p,  compl_susp_ptr = %p,"
 		 "  nde_list = %p",
 		 subg_compl_stack_ptr(subg), subg_compl_susp_ptr(subg),
