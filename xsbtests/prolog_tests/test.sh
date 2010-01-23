@@ -97,6 +97,9 @@ options=$2
 ../gentest.sh "$XEMU $options" test_importas "test."
 
 #------------------------------------------------------------------------
+../gentest.sh "$XEMU $options" test_forall "test."
+
+#------------------------------------------------------------------------
 # TLS: need to remove dylib/so due to 64/32 bit confusion
 
 rm -f second_foreign.dylib second_foreign.so
