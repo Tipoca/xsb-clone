@@ -4179,6 +4179,7 @@ upon backtracking, a second solution is produced:
     L = [green,black];
 \end{verbatim}
 
+%----------
 
 \isoitem{findall(?Template, +Goal, ?List)}{findall/3}
 Similar to predicate {\tt bagof/3}, except that variables in {\tt
@@ -4204,6 +4205,18 @@ For the predicate {\tt p/3} in the example for {\tt setof/3}, the goal \\
     Val = _h121
     F = [red,green,blue,black,black]
 \end{verbatim}
+
+%----------
+\standarditem{findall(?Template, +Goal, ?List,?Tail)}{findall/4}
+%
+Acts as {\tt findall/3}, but returns the result as the difference-list
+{\tt Bag-Tail}. In fact, the 3-argument version is defined in terms of
+the 4-argument version:
+\begin{verbatim}
+findall(Templ, Goal, Bag) :- findall(Templ, Goal, Bag, [])
+\end{verbatim}
+
+Error cases are the same as {\tt findall/3} (or {\tt call/1}).
 
 \ourstandarditem{tfindall(?Template, +Goal, ?List)}{tfindall/3}{Tabling}
 %

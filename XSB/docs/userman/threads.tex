@@ -198,8 +198,8 @@ mechanisms for read consistency.
 
 Not only can tables depend on thread-shared or thread-private dynamic
 data, but 
-%in the default multi-threaded configuration of XSB, which
-%uses local scheduling for tabled evaluation, 
+%in the default multi-threaded configuration of XSB, which uses local
+%scheduling for tabled evaluation,
 the tables themselves may be thread-shared or thread-private.  Like
 dynamic code, the declaration {\tt table Predspec as shared} allows
 sharing of tables for a predicate evaluated with call-variance to be
@@ -225,21 +225,21 @@ been completely evaluated.  Within this scheduling strategy it is not
 often useful to share answers between tables that have not been
 completed -- as local evaluation would allow these answers to be
 returned only if the tables were in the same SCC.  This leads to a
-concurrency semantics called {\em Shared Completed Tables}.  Shared
-Completed Tables can in fact be supported by a relatively simple
-algorithm for optimistic concurrency control.  If goals to two
-mutually dependent tables $Table_a$ and $Table_b$ are called
-concurrently by two different threads, $Thread_a$ and $Thread_b$,
-nothing is done until it is detected that $Table_a$ and $Table_b$ are
-both incomplete and are contained in the same SCC of the table
-dependency graph.  At that time, one of the threads (e.g. $Thread_a$)
-takes over recomputation of all tables in the SCC, and when the SCC is
-completed, any remaining answers are returned to other threads that
-had invoked goals in the SCC.  While $Thread_a$ is completing this
-computation, $Thread_b$ suspends until the SCC is complete.  Thus the
-semantics of Shared Completed Tables supports concurrency for the
-well-founded semantics, but only supports the most coarse-grained
-parallelism.
+concurrency semantics called {\em Shared Completed
+  Tables}~\cite{Marques07,MarS08,MarS10}.  Shared Completed Tables can
+in fact be supported by a relatively simple algorithm for optimistic
+concurrency control.  If goals to two mutually dependent tables
+$Table_a$ and $Table_b$ are called concurrently by two different
+threads, $Thread_a$ and $Thread_b$, nothing is done until it is
+detected that $Table_a$ and $Table_b$ are both incomplete and are
+contained in the same SCC of the table dependency graph.  At that
+time, one of the threads (e.g. $Thread_a$) takes over recomputation of
+all tables in the SCC, and when the SCC is completed, any remaining
+answers are returned to other threads that had invoked goals in the
+SCC.  While $Thread_a$ is completing this computation, $Thread_b$
+suspends until the SCC is complete.  Thus the semantics of Shared
+Completed Tables supports concurrency for the well-founded semantics,
+but only supports the most coarse-grained parallelism.
 
 Batched evaluation, on the other hand, allows answers to be returned
 outside of an SCC before that SCC has been completed.  Concurrency
