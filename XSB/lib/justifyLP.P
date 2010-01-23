@@ -1,4 +1,3 @@
-
 /* File:      justifyLP.P
 ** Author(s): Hai-Feng Guo
 ** Contact:   lmc@cs.sunysb.edu
@@ -73,13 +72,11 @@ justify_undef(G, (G, undef, Child, nil), T) :-
         ),
 	just(G, undef, 0, -1, [], (G, undef, Child, nil), T).
 
-
-
 just(G, TV, DFS, LastNeg, Ancs, Root, T) :-
 	proved(G, TV, DFS, LastNeg, Ancs, Root, T).
 
-
 %----------------------------------------------------------------
+
 negated_goal(\+(G), G).
 negated_goal(not(G), G).
 negated_goal(tnot(G), G).
@@ -204,7 +201,8 @@ alltrue([G1|Gs], DFS, LastNeg, Ancs, (G1,true,Child,Sibling), Tc1, T) :-
         checkappend(Tc3, Tc2, Tc1).
 
 findonerule_nt(G, DFS, LastNeg, Ancs, Root, TcList, T) :- 
-	get_clause(G, Body),
+        get_clause(G, Body),
+%	rule(G, Body),
         (Body = [] ->  Root = (fact, true)
                     ; alltrue(Body, DFS, LastNeg, Ancs, Root, TcList, T)
         ).
@@ -223,7 +221,6 @@ justall_true([(G, true) | R], DFS, LastNeg, Ancs, T) :-
 just_true_nt(neg(G), DFS, _LastNeg, Ancs, (neg(G), true, (G, false, Child, nil), _), Tc, T) :- !,
 	NDFS is DFS + 1,
 	just_false_nt(G, NDFS, DFS, Ancs, (G, false, Child, nil), Tc, T).
-
 just_true_nt(leaf(G), _, _, _, (leaf(G), true, nil, _), [], _) :- !,
 	leaf_call(leaf(G), true).	
 just_true_nt(G, DFS, LastNeg, Ancs, (G, true, Child, _), Tc, T) :- 
@@ -602,7 +599,7 @@ browser((neg(G), TV, Child, _), H) :- !,
 
 browser((leaf(G), TV, nil, _), _) :- !,
 	write(G), write(' is '), write(TV), nl,
-	write('because it is a build-in predicate'), nl,
+	write('because it is a built-in predicate'), nl,
 	write('Please press a return key to upper level ... '),
 	loop,
 	get0(10), !.
@@ -624,7 +621,7 @@ browser((G, TV, (fact, TV), _), _) :- !,
 browser((G, TV, (TV, TV), _), _) :- !,
 	loop,
 	write(G), write(' is '), write(TV), nl,
-	write('Non-tabled Call: trace -- 1; upper levle -- 0: ?[0/1] '),
+	write('Non-tabled Call: trace -- 1; upper level -- 0: ?[0/1] '),
 	get0(A), get0(_),
 	(A = 48 -> true, !
 		;  %getRealG(G, G1),
