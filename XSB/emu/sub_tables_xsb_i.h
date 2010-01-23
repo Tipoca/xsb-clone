@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.16 2009-11-16 15:49:21 tswift Exp $
+** $Id: sub_tables_xsb_i.h,v 1.17 2010-01-23 18:58:50 tswift Exp $
 ** 
 */
 
@@ -374,12 +374,8 @@ TSTNptr subsumptive_answer_search(CTXTdeclc SubProdSF sf, int nTerms,
 
   TSTNptr root, tstn;
 
-#ifndef MULTI_THREAD
+#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
   NumSubOps_AnswerCheckInsert++;
-#else
-#ifdef NON_OPT_COMPILE
-  NumSubOps_AnswerCheckInsert++;
-#endif
 #endif
 
   AnsVarCtr = 0;
@@ -388,15 +384,11 @@ TSTNptr subsumptive_answer_search(CTXTdeclc SubProdSF sf, int nTerms,
   root = (TSTNptr)subg_ans_root_ptr(sf);
   tstn = subsumptive_tst_search( CTXTc root, nTerms, answerVector, 
 				 (xsbBool)ProducerSubsumesSubgoals(sf), isNew );
-#ifndef MULTI_THREAD
-  if ( *isNew )
-    NumSubOps_AnswerInsert++;
-#else
-#ifdef NON_OPT_COMPILE
-  if ( *isNew )
-    NumSubOps_AnswerInsert++;
+
+#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
+  if ( *isNew )  NumSubOps_AnswerInsert++;
 #endif
-#endif
+
   return tstn;
 }
 
