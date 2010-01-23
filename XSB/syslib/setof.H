@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: setof.H,v 1.8 2006/02/06 20:09:08 tswift Exp $
+** $Id: setof.H,v 1.9 2006/02/09 17:28:57 tswift Exp $
 ** 
 */
 
 
 
-:- export setof/3, bagof/3, findall/3,
+:- export setof/3, bagof/3, findall/3, findall/4,
 	  tsetof/3, tbagof/3,
 	  sort/2, keysort/2, '^'/2, pick/3,
 	  excess_vars/4.
