@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.172 2010/01/19 22:42:56 dwarren Exp $
+** $Id: standard.P,v 1.173 2010/01/20 19:52:04 dwarren Exp $
 ** 
 */
 
@@ -43,7 +43,7 @@
 
 
 :- import (:-)/2 from usermod.
-:- import fmt_write/2, path_sysop/2 from file_io.
+:- import fmt_write/2, path_sysop/2, peek_char/2 from file_io.
 :- import load_page/5 from curl.
 :- import slash/1, str_cat/3 from machine.
 :- import xsb_configuration/2 from xsb_configuration.
@@ -183,7 +183,10 @@ open_url(url(Atom),Mode,Stream,Options) :-
 	open(TmpFile, write, W),
 	write(W, X),
 	close(W),
-	open(TmpFile, read, Stream).
+	open(TmpFile, read, Stream), 
+	(peek_char(Stream, C), C == -1 -> 
+	    close(Stream), permission_error(open,file,url(Atom),open/4)
+	 ;  true).
 
 set_tmp_file(DirEnc, FileUnEnc, TmpFile) :-
 	slash(Slash),

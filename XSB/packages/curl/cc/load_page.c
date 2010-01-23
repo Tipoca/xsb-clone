@@ -100,11 +100,15 @@ load_page (char *source, curl_opt options, char ** source_final)
   curl_easy_setopt (curl, CURLOPT_SSL_VERIFYHOST, options.secure.flag * 2);
   curl_easy_setopt (curl, CURLOPT_CAINFO, options.secure.crt_name);
 
+  /* Authentication */
+  curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+  curl_easy_setopt(curl, CURLOPT_USERPWD, options.auth.usr_pwd);
+
   /* Allow curl to perform the action */
   ret = curl_easy_perform (curl);
 
   curl_easy_getinfo (curl, CURLINFO_EFFECTIVE_URL, &url);
-  *source_final = malloc((strlen(url) + 1)*sizeof(char));
+  *source_final = (char *) malloc ((strlen(url) + 1) * sizeof(char));
   strcpy(*source_final, url);
 
   curl_easy_cleanup (curl);

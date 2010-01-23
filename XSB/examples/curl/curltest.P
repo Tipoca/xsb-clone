@@ -1,5 +1,5 @@
 :- import slash/1 from machine.
-:- import encode_url/3 from curl.
+:- import load_page/5, encode_url/3, encode_url/4 from curl.
 
 test_all :- 
 	curldir(CurlDir), slash(Slash), 
@@ -7,22 +7,18 @@ test_all :-
 	(path_sysop(isdir, OutPath); path_sysop(mkdir, OutPath)),
 	fmt_write_string(CertPath, '%s%scertificates', f(CurlDir, Slash)), 
 	test_no_options(OutPath), 
-	test_redir(OutPath), 
 	test_noredir(OutPath), 
-	test_secure(OutPath), 
+	test_http_redir(OutPath), 
+	test_html_redir(OutPath), 
 	test_secure_crt(OutPath, CertPath), 
 	test_nonsecure(OutPath), 
-	test_encode_url(OutPath).
+	test_auth(OutPath), 
+	test_enc_url_no_opt(OutPath), 
+	test_enc_url(OutPath).
 
 test_no_options(OutPath) :- 
 	open(url('zend.com'),read, X), 
 	slash(Slash), fmt_write_string(OutFile, '%s%sno_options.html', f(OutPath, Slash)),
-	tell(OutFile), write_page(X), told,  
-	close(X).
-
-test_redir(OutPath) :- 
-	open(url('zend.com'), read, X, [redirect(true)]),
-	slash(Slash), fmt_write_string(OutFile, '%s%sredir.html', f(OutPath, Slash)),
 	tell(OutFile), write_page(X), told,  
 	close(X).
 
@@ -32,16 +28,22 @@ test_noredir(OutPath) :-
 	tell(OutFile), write_page(X), told,  
 	close(X).
 
-test_secure(OutPath) :- 
-	open(url('https://webmail.cs.sunysb.edu'), read, X, [secure(true)]),
-	slash(Slash), fmt_write_string(OutFile, '%s%ssecure.html', f(OutPath, Slash)),
+test_http_redir(OutPath) :- 
+	open(url('zend.com'), read, X, [redirect(true)]),
+	slash(Slash), fmt_write_string(OutFile, '%s%shttp_redir.html', f(OutPath, Slash)),
+	tell(OutFile), write_page(X), told,  
+	close(X).
+
+test_html_redir(OutPath) :- 
+	open(url('http://www.cs.sunysb.edu/~cse532/'), read, X, [redirect(true)]),
+	slash(Slash), fmt_write_string(OutFile, '%s%shtml_redir.html', f(OutPath, Slash)),
 	tell(OutFile), write_page(X), told,  
 	close(X).
 
 test_secure_crt(OutPath, CertPath) :- 
 	slash(Slash), 
 	fmt_write_string(CertFile, '%s%swebmail.cs.sunysb.edu.crt', f(CertPath, Slash)), 
-	open(url('https://webmail.cs.sunysb.edu'), read, X, [secure(true, CertFile)]),
+	open(url('https://webmail.cs.sunysb.edu'), read, X, [secure(CertFile)]),
 	fmt_write_string(OutFile, '%s%ssecure_crt.html', f(OutPath, Slash)),
 	tell(OutFile), write_page(X), told,  
 	close(X).
@@ -52,14 +54,49 @@ test_nonsecure(OutPath) :-
 	tell(OutFile), write_page(X), told,  
 	close(X).
 
-test_encode_url(OutPath) :-
-	encode_url('https://webmail.cs.sunysb.edu/cgi-bin/openwebmail/openwebmail.pl', DirEnc, FileUnEnc), 
-	slash(Slash), fmt_write_string(OutFile, '%s%smisc', f(OutPath, Slash)),
+test_auth(OutPath) :- 
+	open(url('http://twitter.com/direct_messages.xml'), read, X, [auth('curl_test', 'test123')]),
+	slash(Slash), fmt_write_string(OutFile, '%s%sauth.html', f(OutPath, Slash)),
+	tell(OutFile), write_page(X), told,  
+	close(X).
+
+test_enc_url_no_opt(OutPath) :-
+	encode_url(url('https://webmail.cs.sunysb.edu/cgi-bin/openwebmail/openwebmail.pl'), DirEnc, FileUnEnc), 
+	slash(Slash), fmt_write_string(OutFile, '%s%senc_no_opt.txt', f(OutPath, Slash)),
 	tell(OutFile), 
-	write(test_encode_url), writeln(' on https://webmail.cs.sunysb.edu/cgi-bin/openwebmail/openwebmail.pl'), 
+	writeln('test_enc_url_no_opt on https://webmail.cs.sunysb.edu/cgi-bin/openwebmail/openwebmail.pl'), 
 	write('Directory = '), writeln(DirEnc), 
 	write('File = '), writeln(FileUnEnc), 
 	told.
+
+test_enc_url(OutPath) :-
+	encode_url(url('http://www.cs.sunysb.edu/~cse532/'), [redirect(true)], DirEnc, FileUnEnc), 
+	slash(Slash), fmt_write_string(OutFile, '%s%senc.txt', f(OutPath, Slash)),
+	tell(OutFile), 
+	write(test_encode_url), writeln(' on http://www.cs.sunysb.edu/~cse532/'), 
+	write('Directory = '), writeln(DirEnc), 
+	write('File = '), writeln(FileUnEnc), 
+	told.
+
+/*Not added to the test suite. This is supposed to throw an error*/
+test_secure :- 
+	curldir(CurlDir), slash(Slash), 
+	fmt_write_string(OutPath, '%s%sactualoutput', f(CurlDir, Slash)), 
+	(path_sysop(isdir, OutPath); path_sysop(mkdir, OutPath)),
+	open(url('https://webmail.cs.sunysb.edu'), read, X),
+	slash(Slash), fmt_write_string(OutFile, '%s%ssecure.html', f(OutPath, Slash)),
+	tell(OutFile), write_page(X), told,  
+	close(X).
+
+/*Not added to the test suite. This is supposed to throw an error*/
+test_wrong_url :- 
+	curldir(CurlDir), slash(Slash), 
+	fmt_write_string(OutPath, '%s%sactualoutput', f(CurlDir, Slash)), 
+	(path_sysop(isdir, OutPath); path_sysop(mkdir, OutPath)),
+	open(url('wrong_url'), read, X),
+	slash(Slash), fmt_write_string(OutFile, '%s%swrong_url.html', f(OutPath, Slash)),
+	tell(OutFile), write_page(X), told,  
+	close(X).
 
 write_page(X) :- file_read_line(X, Y), writeln(Y), write_page(X).
 write_page(_) :- !.

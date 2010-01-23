@@ -23,17 +23,23 @@
 
 
 :- import bootstrap_package/2 from packaging.
+:- import xsb_configuration/2 from xsb_configuration.
+:- import re_match/5, re_substring/4 from regmatch.
 
 :- import pl_load_page/1, 
 	pl_allocate_error_term/2,
-	pl_finalize_warn/1, 
-	pl_encode_url/3 from curl2pl.
+	pl_finalize_warn/1 from curl2pl.
 
 :- export 
-	load_page/5, encode_url/3.
+	load_page/5, encode_url/3, encode_url/4.
+
+:- xsb_configuration(regmatch_support, 'yes'), 
+	bootstrap_package([regmatch, cc], regmatch),
+	[regmtchconfig].
 
 :- bootstrap_package([curl, cc], curl),
 	[curlconfig].
+
 
 load_page(_Source, _Document, _Options, _, _Warn) :- 
 	catch(\+ curl_info:curl_info(support,yes),
@@ -49,28 +55,44 @@ load_page(Source, Document, Options, [DirEnc, FileUnEnc], Warn) :-
 load_page_warn(Source, Document, Options, [DirEnc, FileUnEnc], Warn) :-
 	pl_allocate_error_term(Error, Warn),
 	examine_open_options(Options, ValidOptions), 
-        pl_load_page([options(ValidOptions), source(Source), document(Document), encoded(DirEnc, FileUnEnc)]),	
+        pl_load_page([options(ValidOptions), source(Source), document(DocTemp), encoded(DirEncTemp, FileUnEncTemp)]),
+	handle_html_redir(ValidOptions, Source, DocTemp, DirEncTemp, FileUnEncTemp, Document, DirEnc, FileUnEnc), 
 	throw_error(Error).
 
-encode_url(Url, DirEnc, FileUnEnc) :-
-	pl_encode_url(Url, DirEnc, FileUnEnc).
+handle_html_redir(ValidOptions, _, Document, DirEnc, FileUnEnc, Document, DirEnc, FileUnEnc) :-
+	member(redirect(false), ValidOptions), 
+	!.
+handle_html_redir(ValidOptions, _, DocTemp, _, _, Document, DirEnc, FileUnEnc) :-
+	xsb_configuration(regmatch_support, 'yes'), 
+	re_match('<meta[\n\ ]*http-equiv[^>]*content[\ ]*=[\ ]*\"[0-9]+[\ ]*;[\ ]*URL[\ ]*=[\ ]*(http[^>]*)\">', DocTemp, 0, _, [_, match(St, Fn)]), 
+	re_substring(DocTemp, St, Fn, UrlNew), 
+        pl_load_page([options(ValidOptions), source(url(UrlNew)), document(Document), encoded(DirEnc, FileUnEnc)]), 
+	!.
+handle_html_redir(_, _, Document, DirEnc, FileUnEnc, Document, DirEnc, FileUnEnc) :-
+	!.
+
+encode_url(Source, DirEnc, FileUnEnc) :-
+	!, 
+	encode_url(Source, [], DirEnc, FileUnEnc).
+
+encode_url(Source, Options, DirEnc, FileUnEnc) :-
+	!, 
+	load_page(Source, _, Options, [DirEnc, FileUnEnc], _). 
 
 examine_open_options([], []).
 examine_open_options([redirect(Bool)|T], [redirect(Bool)|Options]):- !,
 	examine_open_options(T, Options).
-examine_open_options([secure(false)|T], [secure(false, '')|Options]):- !,
+examine_open_options([secure(CrtName)|T], [secure(CrtName)|Options]):- !,
 	examine_open_options(T, Options).
-examine_open_options([secure(true)|T], Options):- !,
-	examine_open_options([secure(true, '')|T], Options).
-examine_open_options([secure(true, CrtName)|T], [secure(true, CrtName)|Options]):- !,
-	examine_open_options(T, Options).
-examine_open_options([auth(Bool)|T], [auth(Bool)|Options]):-
+examine_open_options([auth(UserName, Password)|T], [auth(UserName, Password)|Options]):-
 	!,
 	examine_open_options(T, Options).
-examine_open_options([Option|T], Options):- 
-	writeln(Option), 
+examine_open_options([_|T], Options):- 
 	examine_open_options(T, Options).
 
 throw_error(Error) :- var(Error), !.
 throw_error(Error) :- throw(Error).
+
+member(X, [X|_]).
+member(X, [_|L]) :- member(X, L).
 

@@ -104,6 +104,7 @@ make_curlH(CC, CC_opts) :-
     
     %% If Module isn't compiled or is old --- recompile
     ;
+	make_curlH(CC, CC_opts),
 	(running_under(windows) ->
 	    shell(['copy /B /Y ', WindCurlDlls, ' ', ConfigBinDir]),
 	    shell(['copy /B /Y ', WindCurlLibs, ' ', ConfigBinDir]),

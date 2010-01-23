@@ -80,6 +80,7 @@ DllExport int call_conv pl_load_page()
 
   char *functor, *url = NULL, *url_final = NULL, *data = NULL;
   char *dir_enc = NULL, *file = NULL;
+  char *username = NULL, *password = NULL;
 
   curl_opt options = init_options();
 	
@@ -90,7 +91,7 @@ DllExport int call_conv pl_load_page()
 
   while(is_list(tail)){
     
-    head = p2p_car(tail);
+    head = p2p_car(tail); 
     tail = p2p_cdr(tail);
 
     if(is_functor(head)){
@@ -134,17 +135,18 @@ DllExport int call_conv pl_load_page()
 				options.redir_flag = 0;
 		}
 		else if(!strcmp(p2c_functor(term_option), "secure")){
-			options.secure.crt_name = p2c_string(p2p_arg(term_option, 2));
-			if(!strcmp(p2c_string(p2p_arg(term_option, 1)), "true"))
-				options.secure.flag = 1;
-			else
+			if(!strcmp(p2c_string(p2p_arg(term_option, 1)), "false"))
 				options.secure.flag = 0;
+			else
+				options.secure.crt_name = p2c_string(p2p_arg(term_option, 1));
 		}
 		else if(!strcmp(p2c_functor(term_option), "auth")){
-			if(!strcmp(p2c_string(p2p_arg(term_option, 1)), "true"))
-				options.auth.flag = 1;
-			else
-				options.auth.flag = 0;
+			username = p2c_string(p2p_arg(term_option, 1));
+			password = p2c_string(p2p_arg(term_option, 2));
+			options.auth.usr_pwd = (char *) malloc ((strlen(username) + strlen(password) + 2) * sizeof(char));
+			strcpy(options.auth.usr_pwd, username);
+			strcat(options.auth.usr_pwd, ":");
+			strcat(options.auth.usr_pwd, password);			
 		}
 		term_options = p2p_cdr(term_options);
 	}
@@ -198,9 +200,9 @@ curl_opt init_options() {
 
   curl_opt options;
   options.redir_flag = 1;
-  options.secure.flag = 0;
+  options.secure.flag = 1;
   options.secure.crt_name = "";
-  options.auth.flag = 0;
+  options.auth.usr_pwd = "";
 
   return options;
 }

@@ -32,8 +32,6 @@ typedef struct opt
   }secure;
   struct au
   {
-    int flag;
-    char * usr_name;
-    char * password;
+    char * usr_pwd;
   }auth;
 }curl_opt;
