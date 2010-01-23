@@ -4637,6 +4637,15 @@ manipulation of {\tt call/[2-10]} makes it somewhat slower than {\tt
 
     Error cases are the same as {\tt call/1}.
 
+\standarditem{forall(Generate,Test)}{forall/2}
+%
+{\tt forall(Generate, Test)} is true iff for all possible bindings of
+{\tt Generate}, the goal {\tt Test} is true. Procedurally, abstracting
+error checking, the predicate shall behave as being defined by 
+\verb|\+ (call(Generator), \+ call(Test))|.
+
+    Error cases are the same as {\tt call/1}.
+
 \ourstandarditem{table\_once(\#X)}{table\_once/1}{Tabling}
     {\tt table\_once/1} is a weaker form of {\tt once/1}, suitable for
     situations in which a single solution is desired for a
