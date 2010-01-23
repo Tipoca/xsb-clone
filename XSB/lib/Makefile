@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.58 2009-08-06 20:37:07 dwarren Exp $
+## $Id: Makefile,v 1.59 2010-01-23 18:53:20 tswift Exp $
 ## 
 ##
 
@@ -33,7 +33,7 @@ ALL = 	aggregs${OBJEXT} array${OBJEXT} assoc_xsb${OBJEXT} \
 	obsolete${OBJEXT} odbc_call${OBJEXT} \
 	ordsets${OBJEXT} ora_call${OBJEXT} \
 	packaging${OBJEXT} random${OBJEXT} scrptutl${OBJEXT} \
-	socket${OBJEXT} storage${OBJEXT} \
+	socket${OBJEXT} storage${OBJEXT} swi${OBJEXT} \
 	ugraphs${OBJEXT} wrapping${OBJEXT} write_term${OBJEXT} \
 	xsb_ciao${OBJEXT} xnmr${OBJEXT} justifyLP${OBJEXT} \
 	xsb_profiling${OBJEXT} xsb_lint_impexp${OBJEXT} \
