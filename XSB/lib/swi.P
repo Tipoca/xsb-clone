@@ -1,4 +1,6 @@
 
+:- compiler_options([sysmod,optimize]).
+
 :- export atomic_concat/3, nb_delete/1, nb_getval/2, nb_setval/2, 
 	print_message/2, get_single_char/1,
 	  setarg/3, maplist/2, term_variables/2, ignore/1,
@@ -6,6 +8,9 @@
 	  unifiable/2, freeze/2.
 
 /* Should now take out setarg/3 and use one in constraintlib */
+
+:- import call/1,call/2,write/2,get/1,'=..'/2 from standard.
+:- import sort/2 from setof.
 
 :- import trie_delete/2,trie_create/2, trie_unify/2, trie_insert/2 from intern.
 :- import when/2 from constraintLib.
