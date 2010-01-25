@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.H,v 1.22 2009/04/27 18:43:15 dwarren Exp $
+** $Id: curr_sym.H,v 1.23 2009/04/28 17:21:59 tswift Exp $
 ** 
 */
 
@@ -41,9 +41,9 @@
 :- import '_$op'/3, '_$trie_asserted'/1, '_$index'/3 from file_op.
 :- import '_$hilog_symbol'/1 from hilogsym.
 :- import libpath/1 from loader.
-:- import atom_codes/2, number_codes/2 from standard.
+:- import (=..)/2, atom_codes/2, number_codes/2 from standard.
 :- import functor/3, warning/1, abort/1, number/1,integer/1,atom/1,atomic/1 from standard.
-:- import standard_symbol/3 from std_xsb.
+:- import standard_symbol/3, standard_metapredicate/3 from std_xsb.
  :- import psc_name/2, psc_arity/2, psc_prop/2, psc_mod/2, psc_type/2, term_psc/2,
 	  term_type/2, stat_flag/2, stat_set_flag/2, machine_file_exists/1, 
 	  psc_env/2, psc_spy/2, psc_tabled/2, dereference_the_bucket/2,
@@ -57,6 +57,6 @@
           domain_error/5,type_error/4,
           instantiation_error/3, domain_error/4 from error_handler.
 :- import retractall/1, (dynamic)/1, asserta/1 from assert.
-:- import findall/3 from setof.
+:- import findall/3, setof/3 from setof.
 
 /* ----------------- end of file current_sym.H -------------------- */
