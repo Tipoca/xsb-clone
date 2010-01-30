@@ -24,7 +24,7 @@
 #ifndef __ODBC_DEF_XSB_H__
 #define __ODBC_DEF_XSB_H__
 
-struct Cursor;
+struct ODBC_Cursor;
 struct NumberofCursors;
 
 #define ODBC_CONNECT             1

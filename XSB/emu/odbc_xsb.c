@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.70 2008-09-04 14:07:13 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.71 2010-01-30 20:24:32 evansbj Exp $
 **
 */
 
@@ -78,9 +78,9 @@ static long      SQL_NULL_DATAval = SQL_NULL_DATA;
 static HENV henv = NULL;
 /*HDBC hdbc;*/
 
-struct Cursor {
-  struct Cursor *NCursor; /* Next Cursor in cursor chain*/
-  struct Cursor *PCursor; /* Prev Cursor in cursor chain*/
+struct ODBC_Cursor {
+  struct ODBC_Cursor *NCursor; /* Next ODBC_Cursor in cursor chain*/
+  struct ODBC_Cursor *PCursor; /* Prev ODBC_Cursor in cursor chain*/
   HDBC hdbc;            /* connection handle for this cursor*/
   int driver_code;	/* our code for driver, to handle ODBC inconsistencies, set in FindFreeCursor */
 			/* = 0 default, = 1 for MS Access */
@@ -110,8 +110,8 @@ struct NumberofCursors{
 #ifndef MULTI_THREAD
 struct NumberofCursors *FCurNum; /* First in the list of Number of Cursors */
 /* global cursor table*/
-struct Cursor *FCursor;  /* root of curser chain*/
-struct Cursor *LCursor;  /* tail of curser chain*/
+struct ODBC_Cursor *FCursor;  /* root of curser chain*/
+struct ODBC_Cursor *LCursor;  /* tail of curser chain*/
 
 #define MAX_BIND_VALS 30
 char *term_string[MAX_BIND_VALS] = {0};
@@ -366,12 +366,12 @@ int GetInfoTypeType(int SQL_INFO_TYPE)
 /*  FUNCTION NAME:*/
 /*     PrintErrorMsg()*/
 /*  PARAMETERS:*/
-/*     struct Cursor *c - pointer to a cursor, or NULL*/
+/*     struct ODBC_Cursor *c - pointer to a cursor, or NULL*/
 /*  NOTES:*/
 /*     PrintErrorMsg() prints out the error message that associates*/
 /*     with the statement handler of cursor i.*/
 /*-----------------------------------------------------------------------------*/
-Cell PrintErrorMsg(CTXTdeclc struct Cursor *cur)
+Cell PrintErrorMsg(CTXTdeclc struct ODBC_Cursor *cur)
 {
   UCHAR FAR *szsqlstate;
   SDWORD FAR *pfnativeerror;
@@ -419,7 +419,7 @@ Cell GenErrorMsgBall(char *errmsg) {
 }
 
 
-void free_cur_bindlist(struct Cursor *cur, int j) {
+void free_cur_bindlist(struct ODBC_Cursor *cur, int j) {
   if (cur->BindTypes[j] == 0)
     mem_dealloc(cur->BindList[j],sizeof(int),ODBC_SPACE);
   else if (cur->BindTypes[j] == 1)
@@ -430,11 +430,11 @@ void free_cur_bindlist(struct Cursor *cur, int j) {
 /*  FUNCTION NAME:*/
 /*     SetCursorClose()*/
 /*  PARAMETER:*/
-/*     struct Cursor *cur - pointer to current cursor*/
+/*     struct ODBC_Cursor *cur - pointer to current cursor*/
 /*  NOTES:*/
 /*     free all the memory resource allocated for cursor cur*/
 /*-----------------------------------------------------------------------------*/
-void SetCursorClose(struct Cursor *cur)
+void SetCursorClose(struct ODBC_Cursor *cur)
 {
   int j;
 
@@ -578,8 +578,8 @@ void ODBCConnect(CTXTdecl)
 /*-----------------------------------------------------------------------------*/
 void ODBCDisconnect(CTXTdecl)
 {
-  struct Cursor *cur = FCursor;
-  struct Cursor *tcur;
+  struct ODBC_Cursor *cur = FCursor;
+  struct ODBC_Cursor *tcur;
   struct NumberofCursors *numi = FCurNum, *numj = FCurNum;
   HDBC hdbc = (HDBC)ptoc_int(CTXTc 2);
   RETCODE rc;
@@ -624,7 +624,7 @@ void ODBCDisconnect(CTXTdecl)
       else FCursor = cur->NCursor;
       if (cur->NCursor) (cur->NCursor)->PCursor = cur->PCursor;
       else LCursor = cur->PCursor;
-      mem_dealloc(cur,sizeof(struct Cursor),ODBC_SPACE);
+      mem_dealloc(cur,sizeof(struct ODBC_Cursor),ODBC_SPACE);
       /*      (num->CursorCount)-- */
       cur = tcur;
     }
@@ -650,7 +650,7 @@ void ODBCDisconnect(CTXTdecl)
 /*     R1: 7*/
 /*     R2: Connection Handle*/
 /*     R3: SQL Statement*/
-/*     R4: var, in which Cursor addr is returned*/
+/*     R4: var, in which ODBC_Cursor addr is returned*/
 /*     R5: var, Retcode 0->OK, otw error*/
 /*  NOTES:*/
 /*     Find a free statement handler and return its index number into the*/
@@ -665,7 +665,7 @@ void ODBCDisconnect(CTXTdecl)
 /*-----------------------------------------------------------------------------*/
 void FindFreeCursor(CTXTdecl)
 {
-  struct Cursor *curi = FCursor, *curj = NULL, *curk = NULL;
+  struct ODBC_Cursor *curi = FCursor, *curj = NULL, *curk = NULL;
   struct NumberofCursors *num = FCurNum;
   HDBC hdbc = (HDBC)ptoc_int(CTXTc 2);
   char *Sql_stmt = ptoc_longstring(CTXTc 3);
@@ -722,7 +722,7 @@ void FindFreeCursor(CTXTdecl)
 
     if (num->CursorCount < MAXCURSORNUM) { /* allocate a new cursor if allowed*/
     /* problem here: should have numberOfCursors for each connection */
-      curi = (struct Cursor *)mem_calloc(sizeof(struct Cursor),1,ODBC_SPACE);
+      curi = (struct ODBC_Cursor *)mem_calloc(sizeof(struct ODBC_Cursor),1,ODBC_SPACE);
     curi->PCursor = NULL;
     curi->NCursor = FCursor;
     if (FCursor == NULL) LCursor = curi;
@@ -732,7 +732,7 @@ void FindFreeCursor(CTXTdecl)
     rc = SQLAllocStmt(hdbc,&(curi->hstmt));
     if (!((rc==SQL_SUCCESS) ||
 	  (rc==SQL_SUCCESS_WITH_INFO))) {
-      mem_dealloc(curi,sizeof(struct Cursor),ODBC_SPACE);
+      mem_dealloc(curi,sizeof(struct ODBC_Cursor),ODBC_SPACE);
       /*      numberOfCursors--; */
       ctop_int(CTXTc 4, 0);
       unify(CTXTc reg_term(CTXTc 5), GenErrorMsgBall("ERROR while trying to allocate ODBC statement"));
@@ -790,7 +790,7 @@ void FindFreeCursor(CTXTdecl)
 /*     SetBindVarNum() */
 /*  PARAMETERS:*/
 /*     R1: 3*/
-/*     R2: Cursor Address*/
+/*     R2: ODBC_Cursor Address*/
 /*     R3: Number of bind values*/
 /*     R4: RetCode - 0=> OK, otw error */
 /*  NOTES:*/
@@ -804,7 +804,7 @@ void FindFreeCursor(CTXTdecl)
 /*-----------------------------------------------------------------------------*/
 void SetBindVarNum(CTXTdecl)
 {
-  struct Cursor *cur = (struct Cursor *)ptoc_int(CTXTc 2);
+  struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
   int NumBindVars = ptoc_int(CTXTc 3);
 
   if (cur->Status == 2) {
@@ -870,7 +870,7 @@ void string_to_char(Cell list, char **tmp_term_string) {
 /*     SetBindVal()   */
 /*  PARAMETERS:*/
 /*     R1: 6*/
-/*     R2: Cursor Addr*/
+/*     R2: ODBC_Cursor Addr*/
 /*     R3: Bind variable index (starting from 0)*/
 /*     R4: Value to give the bind variable*/
 /*     R5: var, for returned status*/
@@ -881,7 +881,7 @@ void string_to_char(Cell list, char **tmp_term_string) {
 void SetBindVal(CTXTdecl)
 {
   RETCODE rc;
-  struct Cursor *cur = (struct Cursor *)ptoc_int(CTXTc 2);
+  struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
   int j = ptoc_int(CTXTc 3);
   Cell BindVal = ptoc_tag(CTXTc 4);
   char errmsg[200];
@@ -1025,7 +1025,7 @@ void SetBindVal(CTXTdecl)
 void Parse(CTXTdecl)
 {
 int j;
-struct Cursor *cur = (struct Cursor *)ptoc_int(CTXTc 2);
+struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
 RETCODE rc;
   if (cur->Status == 2) { /* reusing opened cursor*/
     rc = SQLFreeStmt(cur->hstmt,SQL_CLOSE);
@@ -1111,7 +1111,7 @@ RETCODE rc;
 /*-----------------------------------------------------------------------------*/
 void ODBCCommit(CTXTdecl)
 {
-  struct Cursor *cur = FCursor;
+  struct ODBC_Cursor *cur = FCursor;
   HDBC hdbc = (HDBC)ptoc_int(CTXTc 2);
   RETCODE rc;
 
@@ -1139,7 +1139,7 @@ void ODBCCommit(CTXTdecl)
 /*-----------------------------------------------------------------------------*/
 void ODBCRollback(CTXTdecl)
 {
-  struct Cursor *cur = FCursor;
+  struct ODBC_Cursor *cur = FCursor;
   HDBC hdbc = (HDBC)ptoc_int(CTXTc 2);
   RETCODE rc;
 
@@ -1161,13 +1161,13 @@ void ODBCRollback(CTXTdecl)
 /*     ODBCColumns()*/
 /*  PARAMETERS:*/
 /*     R1: 12*/
-/*     R2: Cursor Index*/
+/*     R2: ODBC_Cursor Index*/
 /*     R3: Table name*/
 /*     R4: var for returned status: 0 if successful*/
 /*-----------------------------------------------------------------------------*/
 void ODBCColumns(CTXTdecl)
 {
-  struct Cursor *cur = (struct Cursor *)ptoc_int(CTXTc 2);
+  struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
   char tmpstr[255];
   char *str1, *str2, *str3;
   RETCODE rc;
@@ -1201,12 +1201,12 @@ void ODBCColumns(CTXTdecl)
 /*     ODBCTables()*/
 /*  PARAMETERS:*/
 /*     R1: 13*/
-/*     R2: Cursor*/
+/*     R2: ODBC_Cursor*/
 /*     R3: var, returned status: 0 if successful*/
 /*-----------------------------------------------------------------------------*/
 void ODBCTables(CTXTdecl)
 {
-  struct Cursor *cur = (struct Cursor *)ptoc_int(CTXTc 2);
+  struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
   RETCODE rc;
 
   if (cur->Status == 2) { /* reusing opened cursor*/
@@ -1237,12 +1237,12 @@ void ODBCTables(CTXTdecl)
 /*     ODBCUserTables()*/
 /*  PARAMETERS:*/
 /*     R1: 14*/
-/*     R2: Cursor*/
+/*     R2: ODBC_Cursor*/
 /*     R3: var, for returned status: 0 if successful*/
 /*-----------------------------------------------------------------------------*/
 void ODBCUserTables(CTXTdecl)
 {
-  struct Cursor *cur = (struct Cursor *)ptoc_int(CTXTc 2);
+  struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
   UWORD TablePrivilegeExists;
   RETCODE rc;
 
@@ -1411,7 +1411,7 @@ void ODBCDescribeSelect(CTXTdecl)
   SWORD scale;
   SWORD nullable;
   UDWORD collen;
-  struct Cursor *cur = (struct Cursor *)ptoc_int(CTXTc 2);
+  struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
 
   cur->NumCols = 0;
   SQLNumResultCols(cur->hstmt, (SQLSMALLINT*)&(cur->NumCols));
@@ -1497,7 +1497,7 @@ void ODBCDescribeSelect(CTXTdecl)
 /*     FetchNextRow()*/
 /*  PARAMETERS:*/
 /*     R1: 4*/
-/*     R2: Cursor Address*/
+/*     R2: ODBC_Cursor Address*/
 /*     R3: var, for returned status*/
 /*         0 => successful, a row is read and available*/
 /*         1 => successful, no row avaliable*/
@@ -1507,7 +1507,7 @@ void ODBCDescribeSelect(CTXTdecl)
 /*-----------------------------------------------------------------------------*/
 void FetchNextRow(CTXTdecl)
 {
-  struct Cursor *cur = (struct Cursor *)ptoc_int(CTXTc 2);
+  struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
   RETCODE rc;
 
   if (cur->Status == 0) {
@@ -1589,7 +1589,7 @@ Cell build_codes_list(CTXTdeclc byte *charptr) {
 /*     GetColumn() */
 /*  PARAMETERS:*/
 /*     R1: 5*/
-/*     R2: Cursor*/
+/*     R2: ODBC_Cursor*/
 /*     R3: Column Index*/
 /*     R4: Column Value returned*/
 /*     R5: Return Code*/
@@ -1598,7 +1598,7 @@ Cell build_codes_list(CTXTdeclc byte *charptr) {
 /*-----------------------------------------------------------------------------*/
 int GetColumn(CTXTdecl)
 {
-  struct Cursor *cur = (struct Cursor *)ptoc_int(CTXTc 2);
+  struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
   int ColCurNum = ptoc_int(CTXTc 3);
   Cell op = ptoc_tag(CTXTc 4);
   UDWORD len;
@@ -1773,7 +1773,7 @@ void ODBCGetInfo(CTXTdecl)
 /*     ODBCRowCount()								*/
 /*  PARAMETERS:									*/
 /*     R1: 19									*/
-/*     R2: Cursor								*/
+/*     R2: ODBC_Cursor								*/
 /*     R3: returned count							*/
 /*     R4: Return Code								*/
 /*  NOTES:									*/
@@ -1783,7 +1783,7 @@ void ODBCGetInfo(CTXTdecl)
 /*     Return Code is 0 for success, 1 error, ...				*/
 /*------------------------------------------------------------------------------*/
 void ODBCRowCount(CTXTdecl) {
-  struct Cursor *cur = (struct Cursor *)ptoc_int(CTXTc 2);
+  struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
   SQLINTEGER count;
   RETCODE rc;
 
