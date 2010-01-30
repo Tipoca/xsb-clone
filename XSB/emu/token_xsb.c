@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.30 2007-08-16 14:38:28 dwarren Exp $
+** $Id: token_xsb.c,v 1.31 2010-01-30 20:17:37 evansbj Exp $
 ** 
 */
 
@@ -306,8 +306,8 @@ void unGetC(int d, FILE *card, STRFILE *instr)
 */
 
 #ifndef MULTI_THREAD
-struct token_t res_str;
-struct token_t *token = &res_str;
+struct xsb_token_t res_str;
+struct xsb_token_t *token = &res_str;
 
 int     lastc = ' ';    /* previous character */
 char*   strbuff = NULL;             /* Pointer to token buffer; Will be
@@ -535,7 +535,7 @@ void realloc_strbuff(CTXTdeclc char **pstrbuff, char **ps, int *pn)
   return;
 }
 
-struct token_t *GetToken(CTXTdeclc FILE *card, STRFILE *instr, int prevch)
+struct xsb_token_t *GetToken(CTXTdeclc FILE *card, STRFILE *instr, int prevch)
 {
         char *s;
         register int c, d = 0;
@@ -930,7 +930,7 @@ case deleted ****/
 | void main(int arc, char *argv[])
 | {
 |   FILE *card;
-|   struct token_t *res;
+|   struct xsb_token_t *res;
 | 
 |   card = fopen(argv[1], "r");
 |   if (!card) exit(1);

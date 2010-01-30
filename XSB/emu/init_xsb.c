@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.154 2009-11-17 14:59:34 tswift Exp $
+** $Id: init_xsb.c,v 1.155 2010-01-30 20:17:37 evansbj Exp $
 ** 
 */
 
@@ -947,7 +947,7 @@ void init_thread_structures(CTXTdecl)
   rc_vars = (struct vartype *)mem_alloc(MAXVAR*sizeof(struct vartype),OTHER_SPACE);
 
   /* vars for token_xsb_XXX */
-  token = (struct token_t *)mem_alloc(sizeof(struct token_t),OTHER_SPACE);
+  token = (struct xsb_token_t *)mem_alloc(sizeof(struct xsb_token_t),OTHER_SPACE);
   strbuff = NULL;
   lastc = ' ';
   strbuff_len = InitStrLen;
@@ -1141,7 +1141,7 @@ void cleanup_thread_structures(CTXTdecl)
   /* these are allocated in init_thread_structures() */
   mem_dealloc(LSBuff,sizeof(VarString *)*MAXSBUFFS,OTHER_SPACE);
   mem_dealloc(rc_vars,MAXVAR*sizeof(struct vartype),OTHER_SPACE);
-  mem_dealloc(token,sizeof(struct token_t),OTHER_SPACE); 
+  mem_dealloc(token,sizeof(struct xsb_token_t),OTHER_SPACE); 
   mem_dealloc(a_tstCCPStack,sizeof(struct tstCCPStack_t),OTHER_SPACE);
   mem_dealloc(a_variant_cont,sizeof(struct VariantContinuation),OTHER_SPACE);
   mem_dealloc(a_tstCPStack,sizeof(struct tstCPStack_t),OTHER_SPACE);

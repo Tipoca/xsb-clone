@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.330 2010-01-18 13:54:51 dwarren Exp $
+** $Id: builtin.c,v 1.331 2010-01-30 20:17:37 evansbj Exp $
 ** 
 */
 
@@ -132,7 +132,7 @@
 int mem_flag;
 
 /*======================================================================*/
-extern struct token_t *GetToken(CTXTdeclc FILE *, STRFILE *, int);
+extern struct xsb_token_t *GetToken(CTXTdeclc FILE *, STRFILE *, int);
 
 extern int  sys_syscall(CTXTdeclc int);
 extern xsbBool sys_system(CTXTdeclc int);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.69 2009-11-17 14:59:34 tswift Exp $
+** $Id: context.h,v 1.70 2010-01-30 20:17:37 evansbj Exp $
 ** 
 */
 
@@ -44,7 +44,7 @@ typedef struct ClRefHdr
 #define ClRef_Buflen(CLREF)        ( (CLREF)->buflen )
 #define ClRef_Prev(CLREF)          ( (CLREF)->prev )
 
-struct token_t {
+struct xsb_token_t {
   int type;
   char *value;
   int nextch;
@@ -325,7 +325,7 @@ struct opstktype *_opstk;
 struct vartype *_rc_vars;
 
   /********** Global variables for tokenizing **********/
-struct token_t *_token;
+struct xsb_token_t *_token;
 int     _lastc; // = ' ';    /* previous character */
 char*   _strbuff; // = NULL;  /* Pointer to token buffer; Will be allocated on first call to GetToken */
 int     _strbuff_len; // = InitStrLen;  /* first allocation size, doubled on subsequent overflows */
@@ -411,8 +411,8 @@ jmp_buf _xsb_abort_fallback_environment;
  /************ Pointers to cursor information used by
  odbc_xsb.c context-local cursor table ***********/
 
-struct Cursor *_FCursor;  /* root of curser chain*/
-struct Cursor *_LCursor;  /* tail of curser chain*/
+struct ODBC_Cursor *_FCursor;  /* root of curser chain*/
+struct ODBC_Cursor *_LCursor;  /* tail of curser chain*/
 struct NumberofCursors *_FCurNum;
 
 #define MAX_BIND_VALS 30
