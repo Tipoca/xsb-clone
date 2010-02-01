@@ -23,19 +23,15 @@
 
 
 :- import bootstrap_package/2 from packaging.
-:- import xsb_configuration/2 from xsb_configuration.
-:- import re_match/5, re_substring/4 from regmatch.
+:- import member/2 from basics.
+:- import str_match/5, substring/4 from string.
 
 :- import pl_load_page/1, 
 	pl_allocate_error_term/2,
 	pl_finalize_warn/1 from curl2pl.
 
 :- export 
-	load_page/5, encode_url/3, encode_url/4.
-
-:- xsb_configuration(regmatch_support, 'yes'), 
-	bootstrap_package([regmatch, cc], regmatch),
-	[regmtchconfig].
+	load_page/5, properties/2, properties/3.
 
 :- bootstrap_package([curl, cc], curl),
 	[curlconfig].
@@ -48,36 +44,24 @@ load_page(_Source, _Document, _Options, _, _Warn) :-
 	!,
 	throw(error(existence_error, 'Error: open(url(...), ..., ...) - the package Curl is not configured')).
 
-load_page(Source, Document, Options, [DirEnc, FileUnEnc], Warn) :- 
-	load_page_warn(Source, Document, Options, [DirEnc, FileUnEnc], Warn),
+load_page(Source, Document, Options, [DirEnc, FileUnEnc, Size, Time], Warn) :- 
+	load_page_warn(Source, Document, Options, [DirEnc, FileUnEnc, Size, Time], Warn),
 	pl_finalize_warn(Warn).
 
-load_page_warn(Source, Document, Options, [DirEnc, FileUnEnc], Warn) :-
+load_page_warn(Source, Doc, Options, [DirEnc, FileUnEnc, Size, Time], Warn) :-
 	pl_allocate_error_term(Error, Warn),
 	examine_open_options(Options, ValidOptions), 
-        pl_load_page([options(ValidOptions), source(Source), document(DocTemp), encoded(DirEncTemp, FileUnEncTemp)]),
-	handle_html_redir(ValidOptions, Source, DocTemp, DirEncTemp, FileUnEncTemp, Document, DirEnc, FileUnEnc), 
+        pl_load_page([options(ValidOptions), source(Source), document(DocTmp), properties(DirEncTmp, FileUnEncTmp, SizeTmp, TimeTmp)]),
+	handle_html_redir(ValidOptions, DocTmp, DirEncTmp, FileUnEncTmp, SizeTmp, TimeTmp, Doc, DirEnc, FileUnEnc, Size, Time), 
 	throw_error(Error).
 
-handle_html_redir(ValidOptions, _, Document, DirEnc, FileUnEnc, Document, DirEnc, FileUnEnc) :-
-	member(redirect(false), ValidOptions), 
-	!.
-handle_html_redir(ValidOptions, _, DocTemp, _, _, Document, DirEnc, FileUnEnc) :-
-	xsb_configuration(regmatch_support, 'yes'), 
-	re_match('<meta[\n\ ]*http-equiv[^>]*content[\ ]*=[\ ]*\"[0-9]+[\ ]*;[\ ]*URL[\ ]*=[\ ]*(http[^>]*)\">', DocTemp, 0, _, [_, match(St, Fn)]), 
-	re_substring(DocTemp, St, Fn, UrlNew), 
-        pl_load_page([options(ValidOptions), source(url(UrlNew)), document(Document), encoded(DirEnc, FileUnEnc)]), 
-	!.
-handle_html_redir(_, _, Document, DirEnc, FileUnEnc, Document, DirEnc, FileUnEnc) :-
-	!.
-
-encode_url(Source, DirEnc, FileUnEnc) :-
+properties(Url, Properties) :-
 	!, 
-	encode_url(Source, [], DirEnc, FileUnEnc).
+	properties(Url, [], Properties).
 
-encode_url(Source, Options, DirEnc, FileUnEnc) :-
+properties(Url, Options, Properties) :-
 	!, 
-	load_page(Source, _, Options, [DirEnc, FileUnEnc], _). 
+	load_page(Url, _, Options, Properties, _). 
 
 examine_open_options([], []).
 examine_open_options([redirect(Bool)|T], [redirect(Bool)|Options]):- !,
@@ -87,12 +71,62 @@ examine_open_options([secure(CrtName)|T], [secure(CrtName)|Options]):- !,
 examine_open_options([auth(UserName, Password)|T], [auth(UserName, Password)|Options]):-
 	!,
 	examine_open_options(T, Options).
+examine_open_options([timeout(Seconds)|T], [timeout(Seconds)|Options]):-
+	integer(Seconds), 
+	!,
+	examine_open_options(T, Options).
 examine_open_options([_|T], Options):- 
 	examine_open_options(T, Options).
 
+handle_html_redir(ValidOptions, Doc, Dir, FileName, Size, Time, Doc, Dir, FileName, Size, Time) :-
+	member(redirect(false), ValidOptions), 
+	!.
+handle_html_redir(ValidOptions, DocTmp, _, _, _, _, Doc, Dir, FileName, Size, Time) :-
+	get_redir_url(DocTmp, UrlNew), 
+        pl_load_page([options(ValidOptions), source(url(UrlNew)), document(Doc), properties(Dir, FileName, Size, Time)]), 
+	!.
+handle_html_redir(_, Doc, Dir, FileName, Size, Time, Doc, Dir, FileName, Size, Time) :-
+	!.
+
+get_redir_url(Doc, Url) :-
+	str_match('<head>', Doc, forward, XHead, _), 
+	str_match('</head>', Doc, forward, _, YHead), 
+	substring(Doc, XHead, YHead, Head), 
+	get_meta_redir(Head, Meta), 
+	get_url_frm_meta(Meta, Url). 
+
+get_meta_redir(Head, Meta) :-
+	str_match('<meta', Head, forward, XMeta, _),
+	substring(Head, XMeta, _, HeadPart), 
+	str_match('>', HeadPart, forward, _, YMeta),
+	substring(HeadPart, 0, YMeta, MetaTmp), 
+	chk_meta_redir(HeadPart, YMeta, MetaTmp, Meta).
+
+%% The selected Meta is a redirecting meta
+chk_meta_redir(_, _, Meta, Meta) :-
+	is_meta_redir(Meta), !.
+
+%% Try to find another <meta > tag
+chk_meta_redir(HeadPart, YMeta, _, Meta) :-
+	substring(HeadPart, YMeta, _, HeadNew), 
+	get_meta_redir(HeadNew, Meta).
+
+is_meta_redir(Meta) :-
+	str_sub('http-equiv', Meta), 
+	(str_sub('REFRESH', Meta); str_sub('Refresh', Meta)).
+
+%% does this handle correctly things like
+%% content=" 1;URL= http://www.ug.cs.sunysb.edu/~kifer/cse532/ ">
+%% Certainly not  <meta http-equiv="REFRESH"
+%%       content=" 1;URL= ftp://ftp.sunfreeware.com/pub/freeware/ ">
+get_url_frm_meta(Meta, Url) :-
+	str_match('URL', Meta, forward, X, _),
+	substring(Meta, X, _, MetaPart), 
+	str_match('http', MetaPart, forward, UrlSt, _),
+	str_match('\"', MetaPart, forward, _, Y),
+	UrlFn is Y - 1,
+	substring(MetaPart, UrlSt, UrlFn, Url).
+
 throw_error(Error) :- var(Error), !.
 throw_error(Error) :- throw(Error).
-
-member(X, [X|_]).
-member(X, [_|L]) :- member(X, L).
 

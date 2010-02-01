@@ -58,7 +58,7 @@ write_data (void *buffer, size_t size, size_t nmemb, void *userp)
 }
 
 char *
-load_page (char *source, curl_opt options, char ** source_final)
+load_page (char *source, curl_opt options, curl_ret *ret_vals)
 {
   CURL *curl;
   CURLcode ret;
@@ -86,6 +86,9 @@ load_page (char *source, curl_opt options, char ** source_final)
   /* Tell curl the URL of the file we're going to retrieve */
   curl_easy_setopt (curl, CURLOPT_URL, source);
 
+  /* Tell curl to retrieve the filetime */
+  curl_easy_setopt(curl, CURLOPT_FILETIME, 1);
+
   /* Tell curl that we'll receive data to the function write_data, and
    * also provide it with a context pointer for our error return.
    */
@@ -104,12 +107,19 @@ load_page (char *source, curl_opt options, char ** source_final)
   curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
   curl_easy_setopt(curl, CURLOPT_USERPWD, options.auth.usr_pwd);
 
+  /* Timeout */
+  if(options.timeout > 0)
+      curl_easy_setopt(curl, CURLOPT_TIMEOUT, options.timeout);
+
   /* Allow curl to perform the action */
   ret = curl_easy_perform (curl);
 
   curl_easy_getinfo (curl, CURLINFO_EFFECTIVE_URL, &url);
-  *source_final = (char *) malloc ((strlen(url) + 1) * sizeof(char));
-  strcpy(*source_final, url);
+  ret_vals->url_final = (char *) malloc ((strlen(url) + 1) * sizeof(char));
+  strcpy(ret_vals->url_final, url);
+
+  curl_easy_getinfo (curl, CURLINFO_SIZE_DOWNLOAD, &(ret_vals->size));
+  curl_easy_getinfo(curl, CURLINFO_FILETIME, &(ret_vals->modify_time));
 
   curl_easy_cleanup (curl);
 

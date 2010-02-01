@@ -1,0 +1,6 @@
+test_properties on zend.com
+Directory = http%3A%2F%2Fwww%2Ezend%2Ecom%2Fen
+File = index.html
+Size = 19694
+Modified Time = Sun Jan 24 15:32:42 2010
+

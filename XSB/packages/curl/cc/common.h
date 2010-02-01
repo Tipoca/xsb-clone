@@ -24,14 +24,32 @@
 
 typedef struct opt
 {
+
   int redir_flag;
+
   struct sec
   {
     int flag;
-    char * crt_name;
+    char *crt_name;
   }secure;
+
   struct au
   {
-    char * usr_pwd;
+    char *usr_pwd;
   }auth;
+
+  int timeout;
+
 }curl_opt;
+
+typedef struct ret
+{
+
+  char *url_final;
+
+  double size;
+
+  time_t modify_time;
+
+}curl_ret;
+

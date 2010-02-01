@@ -1,0 +1,6 @@
+test_properties_auth on http://twitter.com/direct_messages.xml
+Directory = http%3A%2F%2Ftwitter%2Ecom
+File = direct_messages.xml
+Size = 89
+Modified Time = Sun Jan 24 15:49:58 2010
+

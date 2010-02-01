@@ -83,6 +83,7 @@ DllExport int call_conv pl_load_page()
   char *username = NULL, *password = NULL;
 
   curl_opt options = init_options();
+  curl_ret ret_vals;
 	
   tail = reg_term(1);
   
@@ -110,7 +111,7 @@ DllExport int call_conv pl_load_page()
 	    
 	    term_url = p2p_arg(term_url_func, 1);
 	    url = p2c_string(term_url);
-	    data = load_page(url, options, &url_final);
+	    data = load_page(url, options, &ret_vals);
 	  }
 	  else{
 	    return curl2pl_error(ERR_MISC, "source", term_url);
@@ -148,6 +149,9 @@ DllExport int call_conv pl_load_page()
 			strcat(options.auth.usr_pwd, ":");
 			strcat(options.auth.usr_pwd, password);			
 		}
+		else if(!strcmp(p2c_functor(term_option), "timeout")){
+			options.timeout = p2c_int(p2p_arg(term_option, 1));
+		}
 		term_options = p2p_cdr(term_options);
 	}
 
@@ -156,9 +160,9 @@ DllExport int call_conv pl_load_page()
 
 	result = p2p_arg(head, 1);
       }
-      else if(!strcmp(functor,"encoded")){
+      else if(!strcmp(functor,"properties")){
 
-	encode(url_final, &dir_enc, &file);
+	encode(ret_vals.url_final, &dir_enc, &file);
 	
 	if (strcmp(file, "") == 0)
 	{
@@ -168,6 +172,8 @@ DllExport int call_conv pl_load_page()
 
 	c2p_string(CTXTc dir_enc, p2p_arg(head, 1));
 	c2p_string(CTXTc file, p2p_arg(head, 2));
+	c2p_int(CTXTc (int) ret_vals.size, p2p_arg(head, 3));
+	c2p_string(CTXTc (char *) ctime(&ret_vals.modify_time), p2p_arg(head, 4));
       }
     }
     else{
@@ -203,6 +209,7 @@ curl_opt init_options() {
   options.secure.flag = 1;
   options.secure.crt_name = "";
   options.auth.usr_pwd = "";
+  options.timeout = 0;
 
   return options;
 }
