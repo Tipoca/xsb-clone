@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.203 2010-01-17 04:43:23 kifer Exp $
+## $Id: configure.in,v 1.204 2010-02-01 01:37:37 kifer Exp $
 ##
 ##
 
@@ -112,8 +112,10 @@ AC_ARG_WITH(dynamic-libraries,
                           	run time])
 AC_ARG_WITH(libwww,
 [  --with-libwww=DIR            the libwww library used for Web access is at DIR])
-AC_ARG_WITH(xpath,
-[  --with-xpath=DIR             the libxml2 library used for XPath is at DIR])
+AC_ARG_WITH(xpath-libdir,
+[  --with-xpath-libdir=DIR      the location of the libxml2.so library is at DIR])
+AC_ARG_WITH(xpath-incdir,
+[  --with-xpath-incdir=DIR      the location of the include files for libxml2 is at DIR])
 AC_ARG_WITH(curl-libdir,
 [  --with-curl-libdir=DIR       the location of the libcurl.so is at DIR])
 AC_ARG_WITH(curl-incdir,
@@ -913,10 +915,16 @@ if test -n "$with_libwww" && test -d $topdir/packages/libwww; then
     cd $build_dir
 fi
 
-if test -n "$with_xpath" && test -d $topdir/packages/xpath; then
+if test -d $topdir/packages/xpath; then
    cd $topdir/packages/xpath
    echo "***Configuring XPath"
-    ./configure --prefix="$with_xpath" > /dev/null
+   if test -n "$with_xpath_incdir" ; then
+      xpath_prefix_option="--prefix="$with_xpath_incdir"
+   fi
+   if test -n "$with_xpath_libdir" ; then
+      xpath_exec_prefix_option="--exec-prefix="$with_xpath_libdir"
+   fi
+    ./configure $xpath_exec_prefix_option $xpath_prefix_option > /dev/null
     cd $build_dir
 fi
 
@@ -937,7 +945,7 @@ fi
 if test -d $topdir/packages/curl; then
     cd $topdir/packages/curl
     echo "***Configuring Curl (WWW protocol library)"
-    ./configure > /dev/null
+    ./configure --with-curl-libdir="$with_curl_libdir" --with-curl-incdir="$with_curl_incdir" > /dev/null
     cd $build_dir
 fi
 
@@ -2029,6 +2037,11 @@ echo ""
 if test -n "${with_libwww}" && test -f $topdir/packages/libwww/Installation_summary; then
     cat $topdir/packages/libwww/Installation_summary
 fi
+
+if test -f $topdir/packages/xpath/Installation_summary; then
+    cat $topdir/packages/xpath/Installation_summary
+fi
+
 
 if test -n "${with_dbdrivers}" && test -f $topdir/packages/dbdrivers/Installation_summary; then
     cat $topdir/packages/dbdrivers/Installation_summary

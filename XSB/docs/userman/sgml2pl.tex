@@ -819,20 +819,24 @@ the {\tt .h} files might reside in a separate package
 from the package that contains the actual library. For instance, the
 library ({\tt libxml2.so})  might be in the package called {\tt libxml2}
 (which is usually installed by default),
-while the {\tt .h} files hight be in the package {\tt libxml2-devel}
-(which is usually \emph{not} in a default installation).
+while the {\tt .h} files might be in the package {\tt libxml2-dev}
+(which is usually \emph{not} in default installations).
 
-On Unix-based systems (and MacOS), the package needs to be configured using the
-{\tt configure} script found in the XSB's {\tt packages/xpath} directory.
-The {\tt configure} script has several options such as {\tt --exec-prefix},
-{\tt --prefix}, etc, which may need to be specified if the package {\tt
-  libxml2} is installed in a non-standard place. In this case, {\tt
-  --exec-prefix=}{\em directory-of-libxml2} must specify the directory where the
-{\tt lib/libxml2.so} file is located and {\tt --prefix=}\emph{include-dir} 
-where the {\tt include/libxml2} directory is 
-found. The default {\tt exec-prefix} is {\tt /usr/lib} and {\tt prefix} is
-{\tt /usr}. If the defaults are fine (they would be, if the Gnome desktop
-is installed on your machine), then one can configure the package using
+On Unix-based systems (and MacOS), the package might need to be configured at
+the time XSB is configured using XSB's
+{\tt configure} script found in the XSB's {\tt build} directory.
+Normally, if {\tt libxml2} is installed by a Linux package manager, nothing
+special is required: the package will be configured by default.
+If the library is in a non-standard place, then the configure options
+\texttt{--with-xpath-libdir=}{\em directory-of-libxml2} and
+\texttt{--with-xpath-incdir=}\emph{libxml2-include-dir} must be given. The former
+option must specify the directory of {\tt libxml2.so}  library, while
+the later should specify the directory for the {\tt libxml2} include
+files. It is the directory that contains
+\texttt{include/libxml2}.
+
+Examples: If libxml2 is in a default location, then XSB can be configured
+simply like this:
 %%
 \begin{verbatim}
   ./configure 
@@ -841,7 +845,7 @@ is installed on your machine), then one can configure the package using
 Otherwise, use
 %%
 \begin{verbatim}
-  ./configure --prefix=/usr/share --exec-prefix=/usr/local
+  ./configure --with-xpath-incdir=/usr/share --with-xpath-libdir=/usr/local
 \end{verbatim}
 %%
 if, for example, {\tt libxml2.so} is in {\tt /usr/local/lib/libxml2.so} and
