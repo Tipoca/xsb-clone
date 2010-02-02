@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.171 2009-11-17 14:59:34 tswift Exp $
+** $Id: biassert.c,v 1.172 2010-02-02 14:54:13 dwarren Exp $
 ** 
 */
 
@@ -138,7 +138,10 @@ PrRef dynpredep_to_prref(CTXTdeclc void *pred_ep) {
   else return pred_ep;
 }
 
-/* #define LOG_ASSERT 0 */
+/* To just print assert-generated code: 1. uncomment following define,
+   2. change def of xsb_dbgmsg in debug_xsb to call xsb_dbgmsg1, and
+   3. include def of xsb_dbgmsg1 in error_xsb.c */
+/* #define LOG_ASSERT 0*/
 
 /* #ifdef DEBUG */
 /* I hope we can trust any decent C compiler to compile away
@@ -281,7 +284,7 @@ static inline void dbgen_printinst(Opcode, Arg1, Arg2)
 	dbgen_printinst3(Opcode, Arg1, Arg2, Arg3)
 
 #define dbgen_printinst_macro(Opcode, Arg1, Arg2) \
-	dbgen_printinst(Opcode, Arg1, Arg2)
+        dbgen_printinst(Opcode, Arg1, Arg2)
 
 /* #else  /\* DEBUG *\/ */
 
@@ -3670,6 +3673,8 @@ void db_remove_prref_1( CTXTdeclc Psc psc )
     free_prref(CTXTc (CPtr *)get_ep(psc),psc);
     set_type(psc, T_ORDI);
     set_ep(psc, ((byte *)(&(psc->load_inst))));
+    cell_opcode(&(psc->load_inst)) = load_pred;
+    psc->this_psc = psc;
   }
   SYS_MUTEX_UNLOCK( MUTEX_DYNAMIC );
 }
