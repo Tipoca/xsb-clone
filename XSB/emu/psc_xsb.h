@@ -18,12 +18,16 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.35 2009-11-25 16:51:57 dwarren Exp $
+** $Id: psc_xsb.h,v 1.36 2010-02-06 19:26:56 evansbj Exp $
 ** 
 */
 
 #ifndef __PSC_XSB_H__
 #define __PSC_XSB_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifndef SYMBOL_TABLE_DEFS
 
@@ -212,6 +216,10 @@ extern Psc get_psc_from_ep(void *);
 
 /*----------------------------------------------------------------------*/
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* __PSC_XSB_H__ */
