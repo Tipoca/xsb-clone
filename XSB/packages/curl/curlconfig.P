@@ -32,10 +32,10 @@
 :- import xsb_configuration/2 from xsb_configuration.
 :- import concat_atom/2 from string.
 
-make_curlH(CC, CC_opts) :-
+'_$_curl_make_curlH'(CC, CC_opts) :-
 	slash(Slash),
 	xsb_configuration(configuration, XSBconfiguration),
-	((running_under(unix) ; running_under(darwin)) ->
+	(('_$_curl_running_under'(unix) ; '_$_curl_running_under'(darwin)) ->
 	    xsb_configuration(loader_flags, LoaderFlagsBase), 
 	    concat_atom([LoaderFlagsBase, ' -lcurl'], LoaderFlags),
 	    LD_flags = LoaderFlags
@@ -82,11 +82,11 @@ make_curlH(CC, CC_opts) :-
 		     args(ConfigLibDir,Slash,Basename,XSB_OBJ_EXTENSION_ATOM)),
     fmt_write_string(CC_opts, ' %s -I %s', f(CCflags, ConfigDir)),
     str_cat(Module, XSB_OBJ_EXTENSION_ATOM, Objfile),
-    ((running_under(windows) ; running_under(cygwin))
+    (('_$_curl_running_under'(windows) ; '_$_curl_running_under'(cygwin))
     ->
 	fmt_write_string(ConfigSharedMod,
 			 '%s%s%s.dll', f(ConfigBinDir, Slash, Basename))
-    ; running_under(darwin)
+    ; '_$_curl_running_under'(darwin)
     ->
 	fmt_write_string(ConfigSharedMod,
 			 '%s%s%s.dylib', f(ConfigBinDir, Slash, Basename))
@@ -104,69 +104,69 @@ make_curlH(CC, CC_opts) :-
     
     %% If Module isn't compiled or is old --- recompile
     ;
-	make_curlH(CC, CC_opts),
-	(running_under(windows) ->
+	'_$_curl_make_curlH'(CC, CC_opts),
+	('_$_curl_running_under'(windows) ->
 	    shell(['copy /B /Y ', WindCurlDlls, ' ', ConfigBinDir]),
 	    shell(['copy /B /Y ', WindCurlLibs, ' ', ConfigBinDir]),
 	    [Basename],
-	    (path_sysop(exists,Objfile) -> force_rename(Objfile, LibObjFile)
+	    (path_sysop(exists,Objfile) -> '_$_curl_force_rename'(Objfile, LibObjFile)
 	    ; true
 	    )
 
-	; running_under(cygwin) ->
+	; '_$_curl_running_under'(cygwin) ->
 	    shell(['copy /B /Y ', WindCurlDlls, ' ', ConfigBinDir]),
 	    shell(['copy /B /Y ', WindCurlLibs, ' ', ConfigBinDir]),
 
 	    str_cat(Module, '.dll', SharedLib),
 	    consult(Module, [cc(CC), cc_opts(CC_opts)]),
-	    force_rename(SharedLib, ConfigSharedMod),
-	    force_rename(Objfile, LibObjFile),
+	    '_$_curl_force_rename'(SharedLib, ConfigSharedMod),
+	    '_$_curl_force_rename'(Objfile, LibObjFile),
 	    str_cat(Module, '.o', ObjfileO),
 	    fmt_write_string(LibObjFileO,
 			     '%s%s%s.o', f(ConfigBinDir, Slash, Basename)),
-	    force_rename(ObjfileO, LibObjFileO),
+	    '_$_curl_force_rename'(ObjfileO, LibObjFileO),
 	    str_cat(Module, '.a', ObjfileA),
 	    fmt_write_string(LibObjFileA,
 			     '%s%s%s.a', f(ConfigBinDir, Slash, Basename)),
-	    force_rename(ObjfileA, LibObjFileA),
+	    '_$_curl_force_rename'(ObjfileA, LibObjFileA),
 	    str_cat(Module, '.def', ObjfileDef),
 	    fmt_write_string(LibObjFileDef,
 			     '%s%s%s.def', f(ConfigBinDir, Slash, Basename)),
-	    force_rename(ObjfileDef, LibObjFileDef)
+	    '_$_curl_force_rename'(ObjfileDef, LibObjFileDef)
 
-	; running_under(darwin) ->  %% MacOS
+	; '_$_curl_running_under'(darwin) ->  %% MacOS
 	    consult(Module, [cc(CC), cc_opts(CC_opts)]),
-	    force_rename(Objfile, LibObjFile),
+	    '_$_curl_force_rename'(Objfile, LibObjFile),
 	    str_cat(Module, '.dylib', SharedLib),
-	    force_rename(SharedLib,ConfigSharedMod)
+	    '_$_curl_force_rename'(SharedLib,ConfigSharedMod)
 	; %% Other Unices
 	    consult(Module, [cc(CC), cc_opts(CC_opts)]),
-	    force_rename(Objfile, LibObjFile),
+	    '_$_curl_force_rename'(Objfile, LibObjFile),
 	    str_cat(Module, '.so', SharedLib),
-	    force_rename(SharedLib,ConfigSharedMod)
+	    '_$_curl_force_rename'(SharedLib,ConfigSharedMod)
 	)
     ).
 
 %% Windows semantics for renaming is such that the op fails, 
 %% if the target exists
-force_rename(Orig,Target) :-
+'_$_curl_force_rename'(Orig,Target) :-
 	(path_sysop(unlink,Target), !; true),
 	path_sysop(rename,Orig,Target).
 
 
-running_under(cygwin) :-
+'_$_curl_running_under'(cygwin) :-
 	xsb_configuration(architecture, A),
 	str_sub(cygwin, A),
 	!.
-running_under(windows) :-
+'_$_curl_running_under'(windows) :-
 	xsb_configuration(architecture, A),
 	str_sub(windows, A),
 	!.
-running_under(darwin) :-
+'_$_curl_running_under'(darwin) :-
 	xsb_configuration(architecture, A),
 	str_sub(darwin, A),
 	!.
-running_under(unix) :-
-	\+ running_under(cygwin),
-	\+ running_under(darwin),
-        \+ running_under(windows).
+'_$_curl_running_under'(unix) :-
+	\+ '_$_curl_running_under'(cygwin),
+	\+ '_$_curl_running_under'(darwin),
+        \+ '_$_curl_running_under'(windows).
