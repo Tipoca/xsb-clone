@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.84 2009/11/08 18:29:21 tswift Exp $
+** $Id: slginsts_xsb_i.h,v 1.85 2010/01/23 19:03:03 tswift Exp $
 ** 
 */
 
@@ -609,21 +609,6 @@ seq_table_try:
   }
 XSB_End_Instr()
 
-
-/*
- *  Instruction format:
- *    1st word: opcode X X X
- *
- *  Description:
- *    Returns to a consumer an answer if one is available, otherwise it
- *    suspends.  Answer consumption is effected by unifying the consumer's
- *    answer template with an answer.  This instruction is encountered only
- *    by backtracking into a consumer choice point frame, either as a
- *    result of WAM- style backtracking or having been resumed via a
- *    check-complete instruction.  The CPF field "nlcp-trie-return" points
- *    to the last answer consumed.  If none have yet been consumed, then it
- *    points to the dummy answer.
- */
 
 /* incremental evaluation */
 
