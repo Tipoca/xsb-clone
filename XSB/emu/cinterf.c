@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.90 2008-04-06 23:04:22 tswift Exp $
+** $Id: cinterf.c,v 1.91 2010-02-08 07:01:45 evansbj Exp $
 ** 
 */
 
@@ -788,7 +788,6 @@ static char *ctop_term0(CTXTdeclc char *ptr, char *c_dataptr, char **subformat,
 		subformat[fmtnum] = ptr-2;
 		ptr++;
 		if (*(ptr++) != '(') cppc_error(CTXTc 3);
-		argno = count_arity(CTXTc ptr, ')');
 		fields = count_fields(CTXTc ptr, ')');
 		if (!is_list(variable)) c2p_list(CTXTc variable);
 		cdptr2 = * (char **)(c_dataptr);
