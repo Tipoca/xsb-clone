@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.155 2010-01-30 20:17:37 evansbj Exp $
+** $Id: init_xsb.c,v 1.156 2010-02-10 19:11:12 dwarren Exp $
 ** 
 */
 
@@ -1389,7 +1389,7 @@ Psc make_code_psc_rec(char *name, int arity, Psc mod_psc) {
    ------------------------------- */
 void init_symbols(CTXTdecl)
 {
-  Psc  tables_psc, standard_psc, loader_psc;
+  Psc  tables_psc, standard_psc, loader_psc, setofmod_psc;
   Pair temp, tp;
   int  i, new_indicator;
 #ifdef MULTI_THREAD
@@ -1447,6 +1447,7 @@ void init_symbols(CTXTdecl)
   delay_psc = pair_psc(insert("DL", 3, global_mod, &new_indicator));
 
   standard_psc = pair_psc(insert_module(0, "standard"));	/* unloaded */
+  setofmod_psc = pair_psc(insert_module(0, "setof"));	/* unloaded */
   loader_psc = pair_psc(insert_module(0, "loader"));	/* unloaded */
 
   true_psc = make_code_psc_rec("true", 0, standard_psc);
@@ -1456,6 +1457,9 @@ void init_symbols(CTXTdecl)
   load_undef_psc = make_code_psc_rec("_$load_undef", 1, loader_psc);
   comma_psc = make_code_psc_rec(",", 2, standard_psc);
   colon_psc = make_code_psc_rec(":", 2, standard_psc);
+  caret_psc = make_code_psc_rec("^", 2, setofmod_psc);
+  setof_psc = make_code_psc_rec("setof", 3, setofmod_psc);
+  bagof_psc = make_code_psc_rec("bagof", 3, setofmod_psc);
   cut_psc = make_code_psc_rec("!", 0, standard_psc);
   cond_psc = make_code_psc_rec("->", 2, standard_psc);
 

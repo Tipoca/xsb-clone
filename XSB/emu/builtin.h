@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.90 2010-01-18 13:54:51 dwarren Exp $
+** $Id: builtin.h,v 1.91 2010-02-10 19:11:12 dwarren Exp $
 ** 
 */
 
@@ -226,7 +226,7 @@
 #define IS_MOST_GENERAL_TERM    203
 #define HiLog_ARG		204
 #define HiLog_UNIV		205
-
+#define EXCESS_VARS		206
 #define ATOM_CODES		207
 #define ATOM_CHARS		208
 #define NUMBER_CHARS		209

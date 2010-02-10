@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.331 2010-01-30 20:17:37 evansbj Exp $
+** $Id: builtin.c,v 1.332 2010-02-10 19:11:12 dwarren Exp $
 ** 
 */
 
@@ -862,6 +862,105 @@ int is_most_general_term(Cell term)
   }
 }
 
+struct ltrail {
+  CPtr *ltrail_top;
+  CPtr ltrail_vals[MAX_ARITY];
+};
+
+#define local_bind_var(term,local_trail)	\
+  follow(term) = makenil;			\
+  *(++(local_trail)->ltrail_top) = (CPtr)term;
+
+#define undo_ltrail_bindings(local_trail,lbase)	\
+  while ((local_trail)->ltrail_top != lbase) {	\
+    untrail(*(local_trail)->ltrail_top);	\
+    (local_trail)->ltrail_top--;		\
+    }	
+
+/* bind all the variables in term to nil, local-trailing them */
+int make_ground(Cell term, struct ltrail *templ_trail) {
+ begin_make_ground:
+  XSB_Deref(term);
+  switch (cell_tag(term)) {
+  case XSB_FREE:
+  case XSB_REF1: 
+  case XSB_ATTV:
+    local_bind_var(term,templ_trail);
+    return TRUE;
+  case XSB_STRUCT: {
+    int i, arity;
+    arity = (int) get_arity(get_str_psc(term));
+    for (i = 1; i < arity; i++) {
+      make_ground(cell(clref_val(term)+i), templ_trail);
+    }
+    term = cell(clref_val(term)+arity);
+  }
+    goto begin_make_ground;
+  case XSB_LIST:
+    make_ground(cell(clref_val(term)), templ_trail);
+    term = cell(clref_val(term)+1);
+    goto begin_make_ground;
+  case XSB_FLOAT: 
+  case XSB_STRING: 
+  case XSB_INT: return TRUE;
+  default: xsb_abort("[MAKE_GROUND] Argument of unknown type");
+  }
+  return TRUE;
+}
+
+CPtr excess_vars(CTXTdeclc Cell term, CPtr varlist, struct ltrail *templ_trail, struct ltrail *var_trail) {
+ begin_excess_vars:
+  XSB_Deref(term);
+  switch (cell_tag(term)) {
+  case XSB_FREE:
+  case XSB_REF1: 
+  case XSB_ATTV:
+    cell(varlist) = makelist(hreg);
+    cell(hreg++) = term;
+    local_bind_var(term,var_trail);
+    return (CPtr)hreg++;
+  case XSB_STRUCT: {
+    int i, arity;
+    Psc psc;
+    psc = get_str_psc(term);
+    if (psc == caret_psc) {
+      CPtr *save_templ_base;
+      save_templ_base = templ_trail->ltrail_top;
+      make_ground(cell(clref_val(term)+1), templ_trail);
+      varlist = excess_vars(CTXTc cell(clref_val(term)+2), varlist, templ_trail, var_trail);
+      undo_ltrail_bindings(templ_trail,save_templ_base);
+      return varlist;
+    }
+    if (psc == setof_psc || psc == bagof_psc) {
+      CPtr *save_templ_base;
+      save_templ_base = templ_trail->ltrail_top;
+      make_ground(cell(clref_val(term)+1), templ_trail);
+      varlist = excess_vars(CTXTc cell(clref_val(term)+2),varlist,templ_trail,var_trail);
+      varlist = excess_vars(CTXTc cell(clref_val(term)+3),varlist,templ_trail,var_trail);
+      undo_ltrail_bindings(templ_trail,save_templ_base);
+      return varlist;
+    }
+      arity = (int) get_arity(psc);
+      for (i = 1; i < arity; i++) {
+	varlist = excess_vars(CTXTc cell(clref_val(term)+i), varlist, templ_trail, var_trail);
+      }
+      term = cell(clref_val(term)+arity);
+  }
+    goto begin_excess_vars;
+  case XSB_LIST:
+    varlist = excess_vars(CTXTc cell(clref_val(term)), varlist, templ_trail, var_trail);
+    term = cell(clref_val(term)+1);
+    goto begin_excess_vars;
+  case XSB_FLOAT: 
+  case XSB_STRING: 
+  case XSB_INT: 
+    return varlist;
+  default: xsb_abort("[EXCESS_VARS] Argument of unknown type");
+  }
+  return NULL;
+}
+
+
 int is_number_atom(Cell term) {
   char hack_char;	
   long c;
@@ -1117,6 +1216,7 @@ void init_builtin_table(void)
   set_builtin_table(IS_MOST_GENERAL_TERM, "is_most_general_term");
   set_builtin_table(HiLog_ARG, "hilog_arg");
   set_builtin_table(HiLog_UNIV, "hilog_univ");
+  set_builtin_table(EXCESS_VARS, "excess_vars");
   set_builtin_table(ATOM_CODES, "atom_codes");
   set_builtin_table(ATOM_CHARS, "atom_chars");
   set_builtin_table(NUMBER_CHARS, "number_chars");
@@ -2257,6 +2357,41 @@ case WRITE_OUT_PROFILE:
   case DB_RECLAIM0:
     db_reclaim0(CTXT);
     break;
+
+  case EXCESS_VARS: {
+    Cell term, templ, startvlist, ovar;
+    CPtr anslist, tanslist, tail;
+    struct ltrail templ_trail, var_trail;
+    void *templ_trail_base, *var_trail_base;
+    templ_trail.ltrail_top = templ_trail_base = &(templ_trail.ltrail_vals[0])-1;
+    var_trail.ltrail_top = var_trail_base = &(var_trail.ltrail_vals[0])-1;
+    anslist = tanslist = hreg++;
+    startvlist = ptoc_tag(CTXTc 3);
+    XSB_Deref(startvlist);
+    while (!isnil(startvlist)) {
+      if (islist(startvlist)) {
+	ovar = cell(clref_val(startvlist));
+	XSB_Deref(ovar);
+	if (isref(ovar)) {
+	  cell(tanslist) = makelist(hreg);
+	  bld_ref(hreg++,ovar);
+	  local_bind_var(ovar, &var_trail);
+	  tanslist = hreg++;
+	  startvlist = (Cell) cell(clref_val(startvlist)+1);
+	  XSB_Deref(startvlist);
+	} else {xsb_error("Excess_vars: arg 3 must be a list of variables"); break;}
+      } else {xsb_error("Excess_vars: arg 3 must be a list"); break;}
+    }
+    templ = ptoc_tag(CTXTc 2);
+    make_ground(templ, &var_trail);
+    term = ptoc_tag(CTXTc 1);
+    tail = excess_vars(CTXTc term,tanslist,&templ_trail,&var_trail);
+    cell(tail) = makenil;
+    undo_ltrail_bindings(&templ_trail,templ_trail_base);
+    undo_ltrail_bindings(&var_trail,var_trail_base);
+    return unify(CTXTc (Cell)anslist,ptoc_tag(CTXTc 4));
+  }
+  break;
 
 /*----------------------------------------------------------------------*/
 
