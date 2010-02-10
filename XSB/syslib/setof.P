@@ -18,13 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: setof.P,v 1.5 2005/01/24 15:01:22 dwarren Exp $
+** $Id: setof.P,v 1.6 2006/02/06 20:09:08 tswift Exp $
 ** 
 */
 
 
-:- compiler_options([sysmod]).
+:- compiler_options([sysmod,xpp_on]).
 
+#include "builtin.h"
 
 /*======================================================================*/
 /* setof(?Template, +Call, ?Set)					*/
@@ -102,17 +103,21 @@ decide([], Bag, Key, Key, Bag) :- !.
 decide(_, Bag, Key, Key, Bag).
 decide(Bags, _, _, Key, Bag) :- pick(Bags, Key, Bag).
 
-excess_vars(T,X,L0,L) :- var(T), !,
+%% now use builtin
+excess_vars(_Term,_Tmpl,_PVars,_Vars) :- '_$builtin'(EXCESS_VARS).
+
+
+old_excess_vars(T,X,L0,L) :- var(T), !,
    ( no_occurrence(T,X), !, introduce(T,L0,L)
    ; L = L0 ).
-excess_vars(X^P,Y,L0,L) :- !, excess_vars(P,(X,Y),L0,L).
-excess_vars(setof(X,P,S),Y,L0,L) :- !, excess_vars((P,S),(X,Y),L0,L).
-excess_vars(bagof(X,P,S),Y,L0,L) :- !, excess_vars((P,S),(X,Y),L0,L).
-excess_vars(T,X,L0,L) :- functor(T,_,N), rem_excess_vars(N,T,X,L0,L).
+old_excess_vars(X^P,Y,L0,L) :- !, old_excess_vars(P,(X,Y),L0,L).
+old_excess_vars(setof(X,P,S),Y,L0,L) :- !, old_excess_vars((P,S),(X,Y),L0,L).
+old_excess_vars(bagof(X,P,S),Y,L0,L) :- !, old_excess_vars((P,S),(X,Y),L0,L).
+old_excess_vars(T,X,L0,L) :- functor(T,_,N), rem_excess_vars(N,T,X,L0,L).
 
 rem_excess_vars(N,T,X,L0,L) :-
 	( N =:= 0 -> L0 = L
-	; arg(N,T,T1), excess_vars(T1,X,L0,L1),
+	; arg(N,T,T1), old_excess_vars(T1,X,L0,L1),
 	  N1 is N-1, rem_excess_vars(N1,T,X,L1,L)
 	).
 

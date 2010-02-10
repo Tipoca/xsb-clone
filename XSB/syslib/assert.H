@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.H,v 1.29 2008/07/24 16:35:28 tswift Exp $
+** $Id: assert.H,v 1.30 2008/09/19 14:28:01 dwarren Exp $
 ** 
 */
 
@@ -33,8 +33,9 @@
 :- export clause0/2, clause/2.
 :- export (dynamic)/1.
 :- export t_assert/2.
-   :- export code_to_buff/2. % for message queues
+:- export code_to_buff/2. % for message queues
 :- export exchange_definitions/2.
+:- export update/4, get_fact_clref/2, update_clref/4.  %% hackery...
 
 :- import append/3, memberchk/2 from basics.
 
@@ -73,3 +74,6 @@
 :- import call_xsb_hook/3, xsb_assert_hook/1, xsb_retract_hook/1 from xsb_hook.
  
 :- import obsolete/2 from obsolete.
+
+:- import buff_set_word/3, term_psc/2 from machine.
+:- import call_c/1 from standard.

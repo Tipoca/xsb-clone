@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.P,v 1.47 2008/09/04 19:21:47 tswift Exp $
+** $Id: assert.P,v 1.48 2008/09/19 14:28:02 dwarren Exp $
 ** 
 */
 
@@ -741,3 +741,32 @@ t_assert_2(Clause, Flag) :-
 %	writeln(clause(Clause) +psc(PSC) +arity(Arity) +prref(Prref)),
 	trie_assert_builtin(Clause,PSC,Arity,Prref,Flag).
 
+/* experimental predicates, to allow an update of an integer field in a
+simple fact predicate: Fields must be integer or atom before updated
+argument, and indexed argument cannot be updated.
+E.g. update(p(a,X,_),[2],[NX],(NX is X+1)) updates the second field of the
+p(a,_,_) fact by adding 1 to it.  */
+
+update(Fact,Args,Vals,Exp) :-
+	get_fact_clref(Fact,ClRef),
+	call_c(Exp),
+	update_fields(Args,Vals,ClRef).
+
+get_fact_clref(Fact,ClRef) :-
+	term_psc(Fact,PSC),
+	psc_type(PSC,Type),
+	Type =:= 1,		% T_DYNA
+	psc_ep(PSC,PredEP),
+	PredEP =\= 0,
+	db_clause(Fact,true,PredEP,ClRef).
+
+%% if have the ClRef
+update_clref(ClRef,Args,Vals,Exp) :-
+	call_c(Exp),
+	update_fields(Args,Vals,ClRef).
+
+update_fields([],[],_).
+update_fields([Arg|Args],[Val|Vals],ClRef) :-
+	Disp is (7+2*Arg)*4,
+	buff_set_word(ClRef,Disp,Val),
+	update_fields(Args,Vals,ClRef).
