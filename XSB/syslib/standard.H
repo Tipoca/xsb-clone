@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.104 2010/01/19 22:42:56 dwarren Exp $
+** $Id: standard.H,v 1.105 2010/01/20 19:52:04 dwarren Exp $
 **
 */
 
@@ -54,7 +54,7 @@
 	(use_incremental_tabling)/1,    (use_incremental_dynamic)/1, 
 	(use_opaque_tabling)/1, /* incremental */
 	integer/1,	is/2,		is_attv/1,	is_list/1,
-	is_most_general_term/1,		ground/1,	is_number_atom/1,
+	is_most_general_term/1,		is_number_atom/1,
 	listing/0,	listing/1,	name/2,		nl/0, nl/1,
 	nofileerrors/0, nonvar/1,	(not)/1,	number/1,
 	number_chars/2, number_codes/2, number_digits/2,

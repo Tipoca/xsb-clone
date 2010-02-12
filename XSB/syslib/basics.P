@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basics.P,v 1.22 2009/10/01 15:25:00 dwarren Exp $
+** $Id: basics.P,v 1.23 2010/01/19 22:42:56 dwarren Exp $
 ** 
 */
 
@@ -38,6 +38,9 @@ append([X|L1],L2,[X|L3]) :- append(L1,L2,L3).
 %---
 /* copy_term is an inlined builtin */
 copy_term(Term, Result) :- copy_term(Term, Result).
+
+%---
+ground(X) :- ground(X).
 
 %---
 flatten([],[]).

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: modes.H,v 1.13 2010-01-19 22:41:47 dwarren Exp $
+** $Id: modes.H,v 1.14 2010-02-12 15:40:05 dwarren Exp $
 ** 
 */
 
@@ -40,8 +40,9 @@
 	(index)/3, name/2, nl/0, (not)/1, op/3, read/1, repeat/0,
 	statistics/0, see/1, seeing/1, seen/0, tell/1,
 	telling/1, told/0, write/1, writeln/1, write_canonical/1,
-	writeq/1, ('=..')/2, ground/1
+	writeq/1, ('=..')/2
    from standard.
+:- import ground/1 from basics.
 
 :- import message/1, time_message/2 from auxlry.
 :- import findall/3 from setof.

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: setof.H,v 1.9 2006/02/09 17:28:57 tswift Exp $
+** $Id: setof.H,v 1.10 2010/01/23 18:48:11 tswift Exp $
 ** 
 */
 
@@ -28,6 +28,7 @@
 	  tsetof/3, tbagof/3,
 	  sort/2, keysort/2, '^'/2, pick/3,
 	  excess_vars/4.
+:- export old_excess_vars/4.  %% for awhile till we're sure we're happy with new on
 
 :- import tfindall/3 from tables.
 :- import functor/3, (=..)/2, arg/3, 
