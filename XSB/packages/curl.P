@@ -24,14 +24,14 @@
 
 :- import bootstrap_package/2 from packaging.
 :- import member/2 from basics.
-:- import str_match/5, substring/4 from string.
+:- import str_match/5, substring/4, str_cat/3 from string.
 
 :- import pl_load_page/1, 
 	pl_allocate_error_term/2,
 	pl_finalize_warn/1 from curl2pl.
 
 :- export 
-	load_page/5, properties/2, properties/3.
+	load_page/5, url_properties/2, url_properties/3, get_redir_url/2.
 
 :- bootstrap_package([curl, cc], curl),
 	[curlconfig].
@@ -55,11 +55,11 @@ load_page_warn(Source, Doc, Options, [DirEnc, FileUnEnc, Size, Time], Warn) :-
 	handle_html_redir(ValidOptions, DocTmp, DirEncTmp, FileUnEncTmp, SizeTmp, TimeTmp, Doc, DirEnc, FileUnEnc, Size, Time), 
 	throw_error(Error).
 
-properties(Url, Properties) :-
+url_properties(Url, Properties) :-
 	!, 
-	properties(Url, [], Properties).
+	url_properties(Url, [], Properties).
 
-properties(Url, Options, Properties) :-
+url_properties(Url, Options, Properties) :-
 	!, 
 	load_page(Url, _, Options, Properties, _). 
 
@@ -83,7 +83,7 @@ handle_html_redir(ValidOptions, Doc, Dir, FileName, Size, Time, Doc, Dir, FileNa
 	!.
 handle_html_redir(ValidOptions, DocTmp, _, _, _, _, Doc, Dir, FileName, Size, Time) :-
 	get_redir_url(DocTmp, UrlNew), 
-        pl_load_page([options(ValidOptions), source(url(UrlNew)), document(Doc), properties(Dir, FileName, Size, Time)]), 
+	load_page(url(UrlNew), Doc, ValidOptions, [Dir, FileName, Size, Time], _), 
 	!.
 handle_html_redir(_, Doc, Dir, FileName, Size, Time, Doc, Dir, FileName, Size, Time) :-
 	!.
@@ -91,7 +91,8 @@ handle_html_redir(_, Doc, Dir, FileName, Size, Time, Doc, Dir, FileName, Size, T
 get_redir_url(Doc, Url) :-
 	str_match('<head>', Doc, forward, XHead, _), 
 	str_match('</head>', Doc, forward, _, YHead), 
-	substring(Doc, XHead, YHead, Head), 
+	substring(Doc, XHead, YHead, Head1), 
+	substr_remove(Head1, ' ', Head),   
 	get_meta_redir(Head, Meta), 
 	get_url_frm_meta(Meta, Url). 
 
@@ -115,17 +116,25 @@ is_meta_redir(Meta) :-
 	str_sub('http-equiv', Meta), 
 	(str_sub('REFRESH', Meta); str_sub('Refresh', Meta)).
 
-%% does this handle correctly things like
-%% content=" 1;URL= http://www.ug.cs.sunysb.edu/~kifer/cse532/ ">
-%% Certainly not  <meta http-equiv="REFRESH"
-%%       content=" 1;URL= ftp://ftp.sunfreeware.com/pub/freeware/ ">
 get_url_frm_meta(Meta, Url) :-
 	str_match('URL', Meta, forward, X, _),
 	substring(Meta, X, _, MetaPart), 
-	str_match('http', MetaPart, forward, UrlSt, _),
+	(str_match('http', MetaPart, forward, UrlSt, _); str_match('ftp', MetaPart, forward, UrlSt, _)),
 	str_match('\"', MetaPart, forward, _, Y),
 	UrlFn is Y - 1,
 	substring(MetaPart, UrlSt, UrlFn, Url).
+
+substr_remove(S1, SubStr, S2) :-
+	str_sub(SubStr, S1, Pos),
+	!, 
+	substring(S1, 0, Pos, S1Beg), 
+	str_length(SubStr, SubStrLen), 
+	NewPos is Pos + SubStrLen,  
+	substring(S1, NewPos, _, S1EndRaw), 
+	substr_remove(S1EndRaw, SubStr, S1End), 
+	str_cat(S1Beg, S1End, S2).
+
+substr_remove(S, _, S).
 
 throw_error(Error) :- var(Error), !.
 throw_error(Error) :- throw(Error).

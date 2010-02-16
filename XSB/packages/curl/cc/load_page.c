@@ -118,7 +118,7 @@ load_page (char *source, curl_opt options, curl_ret *ret_vals)
   ret_vals->url_final = (char *) malloc ((strlen(url) + 1) * sizeof(char));
   strcpy(ret_vals->url_final, url);
 
-  curl_easy_getinfo (curl, CURLINFO_SIZE_DOWNLOAD, &(ret_vals->size));
+  curl_easy_getinfo (curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD, &(ret_vals->size));
   curl_easy_getinfo(curl, CURLINFO_FILETIME, &(ret_vals->modify_time));
 
   curl_easy_cleanup (curl);

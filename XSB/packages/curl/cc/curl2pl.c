@@ -173,7 +173,10 @@ DllExport int call_conv pl_load_page()
 	c2p_string(CTXTc dir_enc, p2p_arg(head, 1));
 	c2p_string(CTXTc file, p2p_arg(head, 2));
 	c2p_int(CTXTc (int) ret_vals.size, p2p_arg(head, 3));
-	c2p_string(CTXTc (char *) ctime(&ret_vals.modify_time), p2p_arg(head, 4));
+	if (ctime(&ret_vals.modify_time) == NULL)
+		c2p_string("", p2p_arg(head, 4));
+	else
+		c2p_string(CTXTc (char *) ctime(&ret_vals.modify_time), p2p_arg(head, 4));
       }
     }
     else{
@@ -184,22 +187,6 @@ DllExport int call_conv pl_load_page()
 c2p_string(CTXTc data, result);
 
 return TRUE;
-}
-
-DllExport int call_conv pl_encode_url()
-{
-
-  char	*url; 
-  char *dir_enc, *file;
-
-  url = (char *) extern_ptoc_string(1);
-
-  encode(url, &dir_enc, &file);
-
-  extern_ctop_string(CTXTc 2, dir_enc);
-  extern_ctop_string(CTXTc 3, file);
-
-  return TRUE;
 }
 
 curl_opt init_options() {

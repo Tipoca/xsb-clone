@@ -53,7 +53,7 @@
 	write('%% config:    '), writeln(XSBconfiguration),
 	write('%% CC:        '), writeln(CC),
 	write('%% CC Opts: '), writeln(CC_opts), 
-	writeln(':- export pl_load_page/1, pl_allocate_error_term/2, pl_finalize_warn/1, pl_encode_url/3.'),
+	writeln(':- export pl_load_page/1, pl_allocate_error_term/2, pl_finalize_warn/1.'),
 	write(':- ldoption('''),
 	write(LD_flags),
 	writeln(''').'),
