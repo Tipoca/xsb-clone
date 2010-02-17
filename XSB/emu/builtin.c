@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.332 2010-02-10 19:11:12 dwarren Exp $
+** $Id: builtin.c,v 1.333 2010-02-17 16:09:33 dwarren Exp $
 ** 
 */
 
@@ -792,79 +792,11 @@ int is_proper_list(Cell term)	/* for standard preds */
 }
 
 /* --------------------------------------------------------------------	*/
-
-#define mini_undo_bindings		        \
-    while (mini_trail_top >= mini_trail) {	\
-	untrail(*mini_trail_top);		\
-	mini_trail_top--;			\
-    }	
-
-#define mini_bind_variable(addr)                \
-   follow(addr) = makenil;			\
-   *(++mini_trail_top) = (CPtr)addr;
-
-int is_most_general_term(Cell term)
-{
-  CPtr mini_trail[MAX_ARITY];
-  CPtr *mini_trail_top;
-
-  XSB_Deref(term);
-  switch (cell_tag(term)) {
-  case XSB_STRING:
-    return TRUE;
-  case XSB_STRUCT:
-    {
-      Psc psc;
-      CPtr taddr;
-      int i, arity;
-      register Cell addr;
-
-      mini_trail_top = (CPtr *)(& mini_trail[0]) - 1;
-      psc = get_str_psc(term);
-      taddr = clref_val(term);
-      arity = (int) get_arity(psc);
-
-      for (i = 1; i <= arity ; ++i) {
-	addr = cell(taddr+i);
-	XSB_Deref(addr);
-	if (isnonvar(addr)) {
-	  mini_undo_bindings;
-	  return FALSE;
-	} else {
-	  mini_bind_variable(addr);
-	}
-      }
-      mini_undo_bindings;
-      return TRUE;
-    }
-  case XSB_LIST:
-    {
-      register Cell addr;
-
-      mini_trail_top = (CPtr *) (& mini_trail[0]) -1;
-      while (islist(term)) {
-	addr = cell(clref_val(term));
-	XSB_Deref(addr);
-	if (isnonvar(addr)) {
-	  mini_undo_bindings;
-	  return FALSE;
-	} else {
-	  mini_bind_variable(addr);
-	  term = cell(clref_val(term)+1);
-	  XSB_Deref(term);
-	}
-      }
-      mini_undo_bindings;
-      return isnil(term);
-    }
-  default:
-    return FALSE;
-  }
-}
+#define MAX_LOCAL_TRAIL_SIZE 2048
 
 struct ltrail {
   CPtr *ltrail_top;
-  CPtr ltrail_vals[MAX_ARITY];
+  CPtr ltrail_vals[MAX_LOCAL_TRAIL_SIZE];
 };
 
 #define local_bind_var(term,local_trail)	\
@@ -876,6 +808,102 @@ struct ltrail {
     untrail(*(local_trail)->ltrail_top);	\
     (local_trail)->ltrail_top--;		\
     }	
+
+# define ltrail_base(local_trail) &(local_trail.ltrail_vals[0])-1;
+
+
+int is_most_general_term(Cell term)
+{
+  struct ltrail mini_trail;
+
+  XSB_Deref(term);
+  switch (cell_tag(term)) {
+  case XSB_STRING:
+    return TRUE;
+  case XSB_STRUCT:
+    {
+      Psc psc;
+      CPtr taddr;
+      int i, arity;
+      register Cell addr;
+      void *mini_trail_base;
+
+      mini_trail.ltrail_top = mini_trail_base = ltrail_base(mini_trail);
+      psc = get_str_psc(term);
+      taddr = clref_val(term);
+      arity = (int) get_arity(psc);
+
+      for (i = 1; i <= arity ; ++i) {
+	addr = cell(taddr+i);
+	XSB_Deref(addr);
+	if (isnonvar(addr)) {
+	  undo_ltrail_bindings(&mini_trail,mini_trail_base);
+	  return FALSE;
+	} else {
+	  local_bind_var(addr,&mini_trail);
+	}
+      }
+      undo_ltrail_bindings(&mini_trail,mini_trail_base);
+      return TRUE;
+    }
+  case XSB_LIST:
+    {
+      register Cell addr;
+      void *mini_trail_base;
+
+      mini_trail.ltrail_top = mini_trail_base = ltrail_base(mini_trail);
+      while (islist(term)) {
+	addr = cell(clref_val(term));
+	XSB_Deref(addr);
+	if (isnonvar(addr)) {
+	  undo_ltrail_bindings(&mini_trail,mini_trail_base);
+	  return FALSE;
+	} else {
+	  local_bind_var(addr,&mini_trail);
+	  term = cell(clref_val(term)+1);
+	  XSB_Deref(term);
+	}
+      }
+      undo_ltrail_bindings(&mini_trail,mini_trail_base);
+      return isnil(term);
+    }
+  default:
+    return FALSE;
+  }
+}
+
+int count_variable_occurrences(Cell term) {
+  int count = 0;
+ begin_count_variable_occurrences:
+  XSB_Deref(term);
+  switch (cell_tag(term)) {
+  case XSB_FREE:
+  case XSB_REF1: 
+  case XSB_ATTV:
+    return count + 1;
+  case XSB_STRUCT: {
+    int i, arity;
+    arity = (int) get_arity(get_str_psc(term));
+    if (arity == 0) return count;
+    for (i = 1; i < arity; i++) {
+      count += count_variable_occurrences(cell(clref_val(term)+i));
+    }
+    term = cell(clref_val(term)+arity);
+  }
+    goto begin_count_variable_occurrences;
+  case XSB_LIST:
+    count += count_variable_occurrences(cell(clref_val(term)));
+    term = cell(clref_val(term)+1);
+    goto begin_count_variable_occurrences;
+  case XSB_FLOAT: 
+  case XSB_STRING: 
+  case XSB_INT: 
+    return count;
+  default: xsb_abort("[MAKE_GROUND] Argument of unknown type");
+  }
+  return count; // to quiet compiler
+}
+
 
 /* bind all the variables in term to nil, local-trailing them */
 int make_ground(Cell term, struct ltrail *templ_trail) {
@@ -923,6 +951,8 @@ CPtr excess_vars(CTXTdeclc Cell term, CPtr varlist, struct ltrail *templ_trail, 
     int i, arity;
     Psc psc;
     psc = get_str_psc(term);
+    arity = (int) get_arity(psc);
+    if (arity == 0) return varlist;
     if (psc == caret_psc) {
       CPtr *save_templ_base;
       save_templ_base = templ_trail->ltrail_top;
@@ -940,7 +970,6 @@ CPtr excess_vars(CTXTdeclc Cell term, CPtr varlist, struct ltrail *templ_trail, 
       undo_ltrail_bindings(templ_trail,save_templ_base);
       return varlist;
     }
-      arity = (int) get_arity(psc);
       for (i = 1; i < arity; i++) {
 	varlist = excess_vars(CTXTc cell(clref_val(term)+i), varlist, templ_trail, var_trail);
       }
@@ -2361,11 +2390,18 @@ case WRITE_OUT_PROFILE:
   case EXCESS_VARS: {
     Cell term, templ, startvlist, ovar;
     CPtr anslist, tanslist, tail;
+    int max_num_vars;
     struct ltrail templ_trail, var_trail;
     void *templ_trail_base, *var_trail_base;
-    templ_trail.ltrail_top = templ_trail_base = &(templ_trail.ltrail_vals[0])-1;
-    var_trail.ltrail_top = var_trail_base = &(var_trail.ltrail_vals[0])-1;
+    templ_trail.ltrail_top = templ_trail_base = ltrail_base(templ_trail);
+    var_trail.ltrail_top = var_trail_base = ltrail_base(var_trail);
+
+    max_num_vars = count_variable_occurrences(ptoc_tag(CTXTc 1))+count_variable_occurrences(ptoc_tag(CTXTc 3));
+    if (max_num_vars > MAX_LOCAL_TRAIL_SIZE) xsb_error("Buffer overflow in EXCESS_VARS: %d\n",max_num_vars);
+    check_glstack_overflow(4,pcreg,1+max_num_vars*sizeof(Cell)*2);
+
     anslist = tanslist = hreg++;
+    term = ptoc_tag(CTXTc 1);
     startvlist = ptoc_tag(CTXTc 3);
     XSB_Deref(startvlist);
     while (!isnil(startvlist)) {
