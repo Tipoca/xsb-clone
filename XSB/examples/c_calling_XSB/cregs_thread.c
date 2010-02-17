@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cregs_thread.c,v 1.1 2007-04-03 10:52:15 tswift Exp $
+** $Id: cregs_thread.c,v 1.2 2010-02-17 16:05:11 dwarren Exp $
 ** 
 */
 
@@ -105,8 +105,15 @@ int main(int argc, char *argv[])
  if (rcr == XSB_ERROR) 
    fprintf(stderr,"++Query Error r: %s/%s\n",xsb_get_error_type(r_th),xsb_get_error_message(r_th));
 
+	c2p_functor(p_th,"versionMessage", 0, reg_term(p_th, 1));
+	if (XSB_SUCCESS != (rcp = xsb_command(p_th)))
+		fprintf(stderr,"### Error running versionMessage: result code = %d %s/%s ###\n", rcp, xsb_get_error_type(p_th), xsb_get_error_message(p_th));
+
+
  // xsb_kill_thread(r_th);
 
  xsb_close(xsb_get_main_thread());      /* Close connection */
   return(0);
 }
+
+
