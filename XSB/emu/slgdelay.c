@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.65 2009/07/24 10:27:18 alexandrempinto Exp $
+** $Id: slgdelay.c,v 1.66 2009/11/17 14:59:34 tswift Exp $
 **
 */
 
@@ -199,7 +199,7 @@ unsigned long allocated_de_space(char * current_de_block,int * num_blocks)
   *num_blocks = 0;
   while (t) {
     (*num_blocks)++;
-    size =+ (de_block_size_glc + sizeof(Cell));
+    size += (de_block_size_glc + sizeof(Cell));
     t = *(char **)t;
   }
   return size;
@@ -244,7 +244,7 @@ unsigned long allocated_dl_space(char * current_dl_block,int * num_blocks)
   *num_blocks = 0;
   while (t) {
     (*num_blocks)++;
-    size =+ (dl_block_size_glc + sizeof(Cell));
+    size += (dl_block_size_glc + sizeof(Cell));
     t = *(char **)t;
   }
   return size;
@@ -289,7 +289,7 @@ unsigned long allocated_pnde_space(char * current_pnde_block, int * num_blocks)
   *num_blocks = 0;
   while (t) {
     (*num_blocks)++;
-    size =+ (pnde_block_size_glc + sizeof(Cell));
+    size += (pnde_block_size_glc + sizeof(Cell));
     t = *(char **)t;
   }
   return size;
