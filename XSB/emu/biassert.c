@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.172 2010-02-02 14:54:13 dwarren Exp $
+** $Id: biassert.c,v 1.173 2010-02-20 22:24:45 evansbj Exp $
 ** 
 */
 
@@ -1721,7 +1721,7 @@ static void db_addbuff_i(byte Arity, ClRef Clause, PrRef Pred, int AZ,
   unsigned int ThisTabSize; int Hashval;
 
   SOBbuff = AZ == 0 ? Pred->FirstClRef : Pred->LastClRef ;
-  HashTabSize = ThisTabSize = hash_resize(Pred, SOBbuff, HashTabSize);
+  ThisTabSize = hash_resize(Pred, SOBbuff, HashTabSize);
   
   for (Inum = 1; Inum <= NI; Inum++) {
     SOBbuff = AZ == 0 ? Pred->FirstClRef : Pred->LastClRef ;
