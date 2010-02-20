@@ -628,7 +628,6 @@ int imm_depend_list(CTXTdeclc callnodeptr call1){
   int j, count = 0,arity;
   Psc psc;
   CPtr oldhreg = NULL;
-  Cell term;
   struct hashtable *h;	
   struct hashtable_itr *itr;
   callnodeptr cn;
@@ -654,7 +653,7 @@ int imm_depend_list(CTXTdeclc callnodeptr call1){
 	  oldhreg=hreg-2;
 	  if(arity>0){
 	    sreg = hreg;
-	    follow(oldhreg++) = term = makecs(sreg);
+	    follow(oldhreg++) = makecs(sreg);
 	    hreg += arity + 1;
 	    new_heap_functor(sreg, psc);
 	    for (j = 1; j <= arity; j++) {
