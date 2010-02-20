@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.34 2008-04-06 23:04:23 tswift Exp $
+** $Id: pathname_xsb.c,v 1.35 2010-02-20 20:57:38 evansbj Exp $
 ** 
 */
 
@@ -329,7 +329,7 @@ static char *get_file_extension(char *path) {
   char *ptr, *base=get_file_basename(path);
   ptr = strrchr(base, '.');
   if ((ptr==base) || (ptr==NULL))
-    return "";
+    return NULL;
   else return (ptr+1);
 }
 
@@ -472,8 +472,11 @@ void parse_filename(char *filename, char **dir, char **base, char **extension)
   *dir = get_file_dirname(filename, absolute_dirname);
   *extension = get_file_extension(basename);
   /* cut off the extension from the base */
-  if (*extension != "")
-    *(*extension-1) = '\0'; 
+  if (NULL == *extension)
+    *extension = "";
+  else
+    *(*extension-1) = '\0';
+
   *base = string_find(*base,1);
   *dir = string_find(*dir,1);
   *extension = string_find(*extension,1);
