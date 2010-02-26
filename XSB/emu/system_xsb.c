@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.54 2009-02-21 16:47:34 tswift Exp $
+** $Id: system_xsb.c,v 1.55 2010-02-26 19:03:23 dwarren Exp $
 ** 
 */
 
@@ -978,7 +978,18 @@ static char *get_next_command_argument(char **buffptr, char **cmdlineprt)
 xsbBool file_stat(CTXTdeclc int callno, char *file)
 {
   struct stat stat_buff;
-  int retcode = stat(file, &stat_buff);
+  int retcode;
+#ifdef WIN_NT
+  int filenamelen; // windows doesn't allow trailing slash, others do
+  filenamelen = strlen(file);
+  if (file[filenamelen-1] == '/' || file[filenamelen-1] == '\\') {
+    char ss = file[filenamelen-1];
+    file[filenamelen-1] = '\0';
+    retcode = stat(file, &stat_buff);
+    file[filenamelen-1] = ss;  // reset
+  } else 
+#endif
+  retcode = stat(file, &stat_buff);
 
   switch (callno) {
   case IS_PLAIN_FILE: {
