@@ -81,10 +81,10 @@ test_properties_no_opt(OutPath) :-
 	told.
 
 test_properties(OutPath) :-
-	url_properties(url('zend.com'), [redirect(true)], [DirEnc, FileUnEnc, Size, ModifyTime]), 
+	url_properties(url('http://www.cs.sunysb.edu/~cse532/'), [redirect(false)], [DirEnc, FileUnEnc, Size, ModifyTime]), 
 	slash(Slash), fmt_write_string(OutFile, '%s%sproperties.txt', f(OutPath, Slash)),
 	tell(OutFile), 
-	write(test_url_properties), writeln(' on zend.com'), 
+	write(test_url_properties), writeln(' on http://www.cs.sunysb.edu/~cse532/ where url body is not loaded'), 
 	write('Directory = '), writeln(DirEnc), 
 	write('File = '), writeln(FileUnEnc), 
 	write('Size = '), writeln(Size), 
@@ -103,14 +103,10 @@ test_properties_auth(OutPath) :-
 	told.
 
 test_get_redir_url :-
-	curldir(CurlDir), slash(Slash), 
-	fmt_write_string(OutPath, '%s%sactualoutput', f(CurlDir, Slash)), 
-	(path_sysop(isdir, OutPath); path_sysop(mkdir, OutPath)),
-	open(url('http://www.cs.sunysb.edu/~cse532/'), read, X, [redirect(false)]),
-	file_to_string(X, Y), 
-	get_redir_url(Y, Url), 
-	writeln(Url), 
-	close(X).
+	get_redir_url(url('http://www.cs.sunysb.edu/~cse532/'), UrlNew1), 
+	writeln(UrlNew1), 
+	get_redir_url(file('test.html'), UrlNew2), 
+	writeln(UrlNew2).
 
 /*Not added to the test suite. This is supposed to throw an error*/
 test_secure :- 
@@ -144,9 +140,6 @@ test_timeout_fail :-
 
 write_page(X) :- file_read_line(X, Y), writeln(Y), write_page(X).
 write_page(_) :- !.
-
-file_to_string(X, Y) :- file_read_line(X, Y1), !, file_to_string(X, Y2), str_cat(Y1, Y2, Y).
-file_to_string(_, '').
 
 curldir(CurlDir) :-
         xsb_configuration(install_dir, PackDir),

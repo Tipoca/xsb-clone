@@ -111,6 +111,10 @@ load_page (char *source, curl_opt options, curl_ret *ret_vals)
   if(options.timeout > 0)
       curl_easy_setopt(curl, CURLOPT_TIMEOUT, options.timeout);
 
+  /* Retreive only properties */ 
+  curl_easy_setopt (curl, CURLOPT_HEADER, options.url_prop); 
+  curl_easy_setopt (curl, CURLOPT_NOBODY, options.url_prop);
+
   /* Allow curl to perform the action */
   ret = curl_easy_perform (curl);
 

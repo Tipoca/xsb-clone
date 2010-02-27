@@ -23,7 +23,7 @@
 
 
 :- import bootstrap_package/2 from packaging.
-:- import member/2 from basics.
+:- import member/2, append/3 from basics.
 :- import str_match/5, substring/4, str_cat/3 from string.
 
 :- import pl_load_page/1, 
@@ -57,11 +57,12 @@ load_page_warn(Source, Doc, Options, [DirEnc, FileUnEnc, Size, Time], Warn) :-
 
 url_properties(Url, Properties) :-
 	!, 
-	url_properties(Url, [], Properties).
+	url_properties(Url, [url_prop(true)], Properties).
 
 url_properties(Url, Options, Properties) :-
 	!, 
-	load_page(Url, _, Options, Properties, _). 
+	append(Options, [url_prop(true)], OptionsFinal), 
+	load_page(Url, _, OptionsFinal, Properties, _). 
 
 examine_open_options([], []).
 examine_open_options([redirect(Bool)|T], [redirect(Bool)|Options]):- !,
@@ -75,6 +76,13 @@ examine_open_options([timeout(Seconds)|T], [timeout(Seconds)|Options]):-
 	integer(Seconds), 
 	!,
 	examine_open_options(T, Options).
+
+/* The option 'url_prop' must not be used with open or url_properties predicates. 
+	This is an indicator that the call refers to url properties */
+examine_open_options([url_prop(true)|T], [properties(true)|Options]):-
+	!,
+	examine_open_options(T, Options).
+
 examine_open_options([_|T], Options):- 
 	examine_open_options(T, Options).
 
@@ -88,11 +96,24 @@ handle_html_redir(ValidOptions, DocTmp, _, _, _, _, Doc, Dir, FileName, Size, Ti
 handle_html_redir(_, Doc, Dir, FileName, Size, Time, Doc, Dir, FileName, Size, Time) :-
 	!.
 
+get_redir_url(url(Url), UrlNew) :-
+	!, 
+	load_page(url(Url), Doc, [redirect(false)], _, _), 
+	get_redir_url(Doc, UrlNew).
+
+get_redir_url(file(File), UrlNew) :-
+	!, 
+	open(file(File), read, X), 
+	stream_to_string(X, Doc), 
+	get_redir_url(Doc, UrlNew).
+
 get_redir_url(Doc, Url) :-
 	str_match('<head>', Doc, forward, XHead, _), 
 	str_match('</head>', Doc, forward, _, YHead), 
 	substring(Doc, XHead, YHead, Head1), 
-	substr_remove(Head1, ' ', Head),   
+	substr_remove(Head1, ' ', Head2),   
+	substr_remove(Head2, '\n', Head3), 
+	substr_remove(Head3, '\t', Head), 
 	get_meta_redir(Head, Meta), 
 	get_url_frm_meta(Meta, Url). 
 
@@ -117,12 +138,12 @@ is_meta_redir(Meta) :-
 	(str_sub('REFRESH', Meta); str_sub('Refresh', Meta)).
 
 get_url_frm_meta(Meta, Url) :-
-	str_match('URL', Meta, forward, X, _),
-	substring(Meta, X, _, MetaPart), 
-	(str_match('http', MetaPart, forward, UrlSt, _); str_match('ftp', MetaPart, forward, UrlSt, _)),
+	str_match('URL=', Meta, forward, _, Beg), 
+	str_match('://', Meta, forward, _, _), 
+	substring(Meta, Beg, _, MetaPart), 
 	str_match('\"', MetaPart, forward, _, Y),
-	UrlFn is Y - 1,
-	substring(MetaPart, UrlSt, UrlFn, Url).
+	End is Y - 1,
+	substring(MetaPart, 0, End, Url).
 
 substr_remove(S1, SubStr, S2) :-
 	str_sub(SubStr, S1, Pos),
@@ -135,6 +156,9 @@ substr_remove(S1, SubStr, S2) :-
 	str_cat(S1Beg, S1End, S2).
 
 substr_remove(S, _, S).
+
+stream_to_string(X, Y) :- file_read_line(X, Y1), !, stream_to_string(X, Y2), str_cat(Y1, Y2, Y).
+stream_to_string(_, '').
 
 throw_error(Error) :- var(Error), !.
 throw_error(Error) :- throw(Error).

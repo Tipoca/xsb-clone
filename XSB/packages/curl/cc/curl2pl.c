@@ -152,6 +152,9 @@ DllExport int call_conv pl_load_page()
 		else if(!strcmp(p2c_functor(term_option), "timeout")){
 			options.timeout = p2c_int(p2p_arg(term_option, 1));
 		}
+		else if(!strcmp(p2c_functor(term_option), "url_prop")){
+			options.url_prop = options.redir_flag;
+		}
 		term_options = p2p_cdr(term_options);
 	}
 
@@ -197,6 +200,7 @@ curl_opt init_options() {
   options.secure.crt_name = "";
   options.auth.usr_pwd = "";
   options.timeout = 0;
+  options.url_prop = 0;
 
   return options;
 }

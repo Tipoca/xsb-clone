@@ -40,6 +40,8 @@ typedef struct opt
 
   int timeout;
 
+  int url_prop;
+
 }curl_opt;
 
 typedef struct ret
