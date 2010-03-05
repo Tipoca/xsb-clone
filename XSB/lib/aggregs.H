@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.H,v 1.25 2010-02-28 23:37:20 evansbj Exp $
+** $Id: aggregs.H,v 1.26 2010-03-05 14:07:44 dwarren Exp $
 ** 
 */
 
@@ -59,8 +59,9 @@
 
 :- import apply/2,apply/3,apply/4 from usermod.
 
-:- import arg/3, call/1, call_c/1, atom/1, '=..'/2 
+:- import arg/3, call/1, call_c/1, atom/1, '=..'/2
 	from standard.
+:- import ground/1 from basics.
 :- import call/2, call/3, call/4 from standard.
 :- import member/2, copy_term/2 from basics.
 :- import sort/2, findall/3, bagof/3, excess_vars/4 from setof.
