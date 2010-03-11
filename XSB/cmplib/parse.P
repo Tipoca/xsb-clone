@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.108 2010-01-20 21:16:04 dwarren Exp $
+** $Id: parse.P,v 1.109 2010-03-11 16:56:12 dwarren Exp $
 ** 
 */
 
@@ -795,7 +795,7 @@ get_aggregation_spec([A|Args],Arg) :-
 	 ->	get_aggregation_spec(Args,Arg)
 	 ; A == '^'
 	 ->	get_aggregation_spec(Args,Arg)
-	 ;	\+ (member(B,Args), (nonvar(B) ; B \== '^')),
+	 ;	\+ (member(B,Args), (nonvar(B), B \== '^')),
 		Arg = A
 	).
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.P,v 1.7 2009-10-17 17:45:33 tswift Exp $
+** $Id: cp_opt.P,v 1.8 2010-03-11 16:56:12 dwarren Exp $
 ** 
 */
 
@@ -219,7 +219,7 @@ equate_but_argno([X|PArgs],[Y|P1Args],CurArg,ArgList,VarList,A,B,ArgNo) :-
 extract_aggr_spec(Spec,ArgNo,ExistArgList,OpSpec,OpArity,Iden) :-
 	functor(Spec,_,Arity),
 	get_aggr_spec0(1,Spec,Arity,ExistArgList,ArgNo,OpSpec0),
-	(OpSpec0 = OpSpec-Iden
+	(OpSpec0 = OpSpec*Iden
 	 ->	true
 	 ;	Iden = no_identity,
 		OpSpec = OpSpec0
