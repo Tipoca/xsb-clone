@@ -17,6 +17,6 @@ do
 		    $DIR/shared-local.P $nthreads
 #	./mttest.sh $PREF/bin/xsb-btc-ccmpl \
 #	    $DIR/shared-batched.P $nthreads "$CP"
-	nthreads=$[$nthreads+1]
+	nthreads=$[$nthreads*2]
 done
 
