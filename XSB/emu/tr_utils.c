@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.183 2010/01/23 19:03:03 tswift Exp $
+** $Id: tr_utils.c,v 1.184 2010/03/01 00:26:32 evansbj Exp $
 ** 
 */
 
@@ -615,7 +615,6 @@ void delete_variant_sf_and_answers(CTXTdeclc VariantSF pSF, xsbBool should_warn)
       xsb_warn("abolish_table_call/1 is deleting a table entry for %s/%d with conditional"
                       " answers: delay dependencies may be corrupted.\n",	    
 	       get_name(TIF_PSC(subg_tif_ptr(pSF))),get_arity(TIF_PSC(subg_tif_ptr(pSF))));
-      should_warn = FALSE;
     }
 
   if ( IsNonNULL(subg_ans_root_ptr(pSF)) ) {
@@ -1930,8 +1929,8 @@ static void insertLeaf(IGRptr r, BTNptr leafn)
 
   if(r == NULL)
     return;
-  p = r -> leaves;
 #ifdef UNDEFINED
+  p = r -> leaves;
   while(p != NULL){
     if(p -> leaf == leafn){
       /* The following should be permitted, because we should be able to
@@ -2673,7 +2672,8 @@ int find_answers_for_subgoal(CTXTdeclc VariantSF subgoal) {
     while (trie_op_top >= 0) {
       switch (delete_trie_op[trie_op_top--]) {
       case DT_DS:
-	root = delete_trie_node[trie_node_top--];
+//	root = delete_trie_node[trie_node_top--];   // Don't use root in this case do we?
+		trie_node_top--;
 	break;
       case DT_HT:
 	trie_hh_top--;
@@ -4219,7 +4219,8 @@ void unfounded_component(CTXTdecl) {
   int founded = 0;
   int index;
   int starting_index = 0;
-  int starting_scc = done_answer_stack[starting_index].scc;
+//	int starting_scc = done_answer_stack[starting_index].scc;  This gets done 9 lines from now anyway....
+  int starting_scc;
   DL delayList;
   DE delayElement;
   BTNptr cur_answer = 0;  // TLS: compiler (rightly) complained about it being uninit.
