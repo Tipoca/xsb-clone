@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.175 2010/02/01 22:50:47 kifer Exp $
+** $Id: standard.P,v 1.176 2010/02/12 15:39:07 dwarren Exp $
 ** 
 */
 
@@ -70,6 +70,10 @@ display_current_stream(Pred):-
 see(Var):- var(Var),!,instantiation_error(see/1,1).
 see(userin):- !,	stat_set_flag(CURRENT_INPUT, STDIN).
 see(user):- !,	stat_set_flag(CURRENT_INPUT, STDIN).
+see(url(Url,Options)) :-
+	!,
+	open_url(url(Url),read,Stream,Options),
+	set_input(Stream).
 see(Integer):- 
 	integer(Integer),!,
 	set_input(Integer).
