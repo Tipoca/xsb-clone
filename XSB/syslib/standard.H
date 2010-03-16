@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.105 2010/01/20 19:52:04 dwarren Exp $
+** $Id: standard.H,v 1.106 2010/02/12 15:39:07 dwarren Exp $
 **
 */
 
@@ -68,6 +68,7 @@
 	see/1,		seeing/1,	seen/0,
 	set_input/1,    set_output/1,  
 	demand_once/1,
+	set_tmp_file/3,
 	skip/1,		statistics/1,	statistics/0,	structure/1,
 	tab/1,		tell/1,		telling/1,	time/1,	told/0,true/0,
 	ttywrite/1,	ttywritenl/1,   ttywrite/2,	ttywritenl/2, 
