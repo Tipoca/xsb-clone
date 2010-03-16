@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.H,v 1.30 2008/09/19 14:28:01 dwarren Exp $
+** $Id: assert.H,v 1.31 2010/02/10 19:13:00 dwarren Exp $
 ** 
 */
 
@@ -53,14 +53,14 @@
 :- import psc_ep/2, psc_type/2, psc_set_type/2, psc_arity/2,
 	  conpsc/2, assert_code_to_buff/1, assert_buff_to_clref/6,
           psc_set_ep/2, unload_seg/1, db_build_prref/3, db_get_prref/2,
-	  code_call/3, db_retract0/3, term_set_arg/4
+	  code_call/3, db_retract0/3, term_set_arg/4, term_new_mod/3
      from machine.
 :- import db_get_last_clause/4 from machine.
 :- import dynamic_code_function/5 from machine.
 
 :- import '_$multifile'/1 from standard.
 
- :- import (=..)/2, functor/3, integer/1, callable/1, arg/3,
+:- import (=..)/2, functor/3, integer/1, callable/1, arg/3,
          goal_cut_trans/3, goal_cut_untrans/2, abort/1, check_arity_integer/3,
          is_most_general_term/1, atomic/1, warning/1
      from standard.

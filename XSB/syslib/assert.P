@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.P,v 1.48 2008/09/19 14:28:02 dwarren Exp $
+** $Id: assert.P,v 1.49 2010/02/10 19:13:00 dwarren Exp $
 ** 
 */
 
@@ -173,7 +173,13 @@ assert(Clause,AZL,Index1,ErrPred) :-
 			assert0((NHead:-LBody),1,1,'assert/1')
 		),
 		assert0((LHead:-Body),AZL,Index1,ErrPred)
-	 ;	assert0(Clause,AZL,Index1,ErrPred)
+	 ;	(Head = Mod:BHead
+		 ->	term_new_mod(Mod,BHead,NHead),
+			BHead =.. [_|Args],
+			NHead =.. [_|Args],
+			assert0((NHead:-Body),AZL,Index1,ErrPred)
+		 ;	assert0(Clause,AZL,Index1,ErrPred)
+		)
 	).
 
 /* TLS - arranged this code so that check for trie_asserted is done
