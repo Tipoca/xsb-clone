@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.P,v 1.8 2010-03-11 16:56:12 dwarren Exp $
+** $Id: cp_opt.P,v 1.9 2010-03-16 16:38:32 dwarren Exp $
 ** 
 */
 
@@ -142,8 +142,8 @@ and modifying short_path clauses as:
      '_$short_path'(..) :- short_path_body2.
 
 Legal aggregation specs are of the form:
-   reduceFun(_,_,_)*Identity  which will be transformed as above.
-   reduceFun/3*Identity  which will be transformed similarly
+   reduceFun(_,_,_)-Identity  which will be transformed as above.
+   reduceFun/3-Identity  which will be transformed similarly
    ordRel(_,_)  which will cause a tranformation to (e.g.)
        short_path(A,B,C) :- bagPO(X,'_$short_path'(A,B,X),C,ordRel(_,_)).
    ordRel/2  which will be treated as ordRel(_,_).
@@ -219,7 +219,7 @@ equate_but_argno([X|PArgs],[Y|P1Args],CurArg,ArgList,VarList,A,B,ArgNo) :-
 extract_aggr_spec(Spec,ArgNo,ExistArgList,OpSpec,OpArity,Iden) :-
 	functor(Spec,_,Arity),
 	get_aggr_spec0(1,Spec,Arity,ExistArgList,ArgNo,OpSpec0),
-	(OpSpec0 = OpSpec*Iden
+	(OpSpec0 = OpSpec-Iden
 	 ->	true
 	 ;	Iden = no_identity,
 		OpSpec = OpSpec0
