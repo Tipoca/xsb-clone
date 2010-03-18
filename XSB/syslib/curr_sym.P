@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: curr_sym.P,v 1.52 2009/05/01 12:55:24 tswift Exp $
+** $Id: curr_sym.P,v 1.53 2010/01/25 15:58:13 pmoura Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@
 #include "heap_defs_xsb.h"
 #include "psc_defs.h"
 #include "extensions_xsb.h"
+#include "cinterf_defs.h"
 
 /* ===== current_atom/1 ====================================== */
 
@@ -813,6 +814,12 @@ xsb_flag(warning_action,Action):-
 	  ; (A == SILENT_WARNING -> 
 	      Action = silent_warning
 	     ; A == ERROR_WARNING,Action = error_warning) ).
+xsb_flag(max_table_subgoal_depth,Action):- 
+	stat_flag(MAX_TABLE_SUBGOAL_DEPTH,Action).
+xsb_flag(max_table_subgoal_action, Action) :-!,
+	stat_flag(MAX_TABLE_SUBGOAL_ACTION, A),
+	(A == XSB_ERROR -> Action = error 
+            ; A == XSB_FAILURE, Action = failure).
 
 set_xsb_flag(Type,Val):- 
 	check_nonvar(Type,set_xsb_flag/2,1),
@@ -938,6 +945,15 @@ set_xsb_flag_1(warning_action,Action):- !,
 	        ; domain_error([print_warning,', ',silent_warning,', ',error_warning],
 	                        Action,set_xsb_flag/2,2,'warning_action clause') ) ) ),
 	 stat_set_flag(WARNING_ACTION,A).
+set_xsb_flag_1(max_table_subgoal_depth, Size) :-!,
+	stat_set_flag(MAX_TABLE_SUBGOAL_DEPTH, Size).
+set_xsb_flag_1(max_table_subgoal_action, Action) :-!,
+	(Action == error -> 
+	    stat_set_flag(MAX_TABLE_SUBGOAL_ACTION, XSB_ERROR)
+          ; (Action == failure ->  
+	    stat_set_flag(MAX_TABLE_SUBGOAL_ACTION, XSB_FAILURE)
+            ; domain_error([error,', ',failure],
+                        Action,set_xsb_flag/2,2,'max_table_subgoal_action clause') ) ).
 set_xsb_flag_1(Type, _) :-  
 	domain_error(prolog_flag,Type,set_prolog_flag/2,1).
 
