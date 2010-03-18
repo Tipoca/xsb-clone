@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.118 2009-11-17 14:59:34 tswift Exp $
+** $Id: tries.c,v 1.119 2010-03-18 22:22:17 tswift Exp $
 ** 
 */
 
@@ -1467,6 +1467,15 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
  
 /*----------------------------------------------------------------------*/
 
+#define CHECK_CALL_TERM_DEPTH						\
+  if (--depth_ctr <= 0)	{						\
+    if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_FAILURE) {		\
+      resetpdl;								\
+      return XSB_FAILURE;						\
+    }									\
+    else xsb_abort("Exceeded max call term size (%d)\n",flags[MAX_TABLE_SUBGOAL_DEPTH]); \
+  }
+
 #define recvariant_call(flag,TrieType,xtemp1) {				\
   int  j;								\
 									\
@@ -1492,11 +1501,13 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
       one_node_chk_ins(flag, EncodeTrieConstant(xtemp1), TrieType);	\
       break;								\
     case XSB_LIST:							\
+      CHECK_CALL_TERM_DEPTH;						\
       one_node_chk_ins(flag, EncodeTrieList(xtemp1), TrieType);		\
       pdlpush( cell(clref_val(xtemp1)+1) );				\
       pdlpush( cell(clref_val(xtemp1)) );				\
       break;								\
     case XSB_STRUCT:							\
+      CHECK_CALL_TERM_DEPTH;						\
       psc = (Psc) follow(cs_val(xtemp1));				\
       item = makecs(psc);						\
       one_node_chk_ins(flag, item, TrieType);				\
@@ -1578,7 +1589,7 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
  * the treatment of "cptr" as these terms are inspected.
  */
 
-void variant_call_search(CTXTdeclc TabledCallInfo *call_info,
+int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
 			 CallLookupResults *results)
 {
   Psc  psc;
@@ -1586,7 +1597,7 @@ void variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   int  arity, i, j, flag = 1;
   Cell tag = XSB_FREE, item;
   CPtr cptr, VarPosReg, tVarPosReg;
-  int ctr, attv_ctr;
+  int ctr, attv_ctr, depth_ctr;
   BTNptr Paren, *GNodePtrPtr;
 
 #ifndef MULTI_THREAD
@@ -1602,6 +1613,7 @@ void variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   /* cptr is set to point to the reg_array */
   cptr = CallInfo_Arguments(*call_info);
   tVarPosReg = VarPosReg = CallInfo_VarVectorLoc(*call_info);
+  depth_ctr = flags[MAX_TABLE_SUBGOAL_DEPTH];  
   ctr = attv_ctr = 0;
 
   for (i = 0; i < arity; i++) {
@@ -1733,7 +1745,7 @@ void variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   CallLUR_Subsumer(*results) = CallTrieLeaf_GetSF(Paren);
   CallLUR_VariantFound(*results) = flag;
   CallLUR_VarVector(*results) = VarPosReg;
-  return;
+  return XSB_SUCCESS;
 }
 
 /*----------------------------------------------------------------------*/

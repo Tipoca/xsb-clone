@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.50 2009-11-08 18:29:23 tswift Exp $
+** $Id: tries.h,v 1.51 2010-03-18 22:22:17 tswift Exp $
 ** 
 */
 
@@ -352,7 +352,7 @@ extern void	remove_incomplete_tries(CPtr);
 extern void     init_trie_aux_areas(void);
 extern void     free_trie_aux_areas(void);
 extern void     load_solution_trie(int, int, CPtr, BTNptr);
-extern void     variant_call_search(TabledCallInfo *, CallLookupResults *);
+extern int      variant_call_search(TabledCallInfo *, CallLookupResults *);
 extern BTNptr   one_term_chk_ins(CPtr, BTNptr, int *);
 extern BTNptr   whole_term_chk_ins(Cell, BTNptr *, int *, int, int);
 extern BTNptr	get_next_trie_solution(ALNptr *);

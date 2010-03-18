@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.85 2010/01/23 19:03:03 tswift Exp $
+** $Id: slginsts_xsb_i.h,v 1.86 2010/02/08 16:36:30 tswift Exp $
 ** 
 */
 
@@ -199,7 +199,10 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
    *  CallLUR_VarVector(lookupResults) has the same value as
    *  CallInfo_VarVectorLoc(callInfo).
    */
-  table_call_search(CTXTc &callInfo,&lookupResults);
+   if (table_call_search(CTXTc &callInfo,&lookupResults)) {
+     Fail1;
+     XSB_Next_Instr();
+   }
 
   producer_sf = CallLUR_Subsumer(lookupResults);
   answer_template = CallLUR_VarVector(lookupResults);

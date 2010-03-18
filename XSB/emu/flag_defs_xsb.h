@@ -20,10 +20,10 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 <<<<<<< flag_defs_xsb.h
-** $Id: flag_defs_xsb.h,v 1.30 2009-07-30 19:01:28 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.31 2010-03-18 22:22:17 tswift Exp $
 **
 =======
-** $Id: flag_defs_xsb.h,v 1.30 2009-07-30 19:01:28 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.31 2010-03-18 22:22:17 tswift Exp $
 **
 >>>>>>> 1.28
 */
@@ -137,8 +137,9 @@ interrupt flag
 #define WARNING_ACTION            81   /* Action to take on warnings: print,silent,exception */
 #define HEAP_GC_MARGIN            82   /* Size of heap overflow margin */
 #define ANSWER_COMPLETION         83   /* amp: Incremental Answer Completion switch */   
-
-#define MAX_FLAGS		85
+#define MAX_TABLE_SUBGOAL_DEPTH   84   /* maximum depth for terms in a tabled subgoal */
+#define MAX_TABLE_SUBGOAL_ACTION  85   /* abort/fail/abstract (abstract not yet impld.)*/
+#define MAX_FLAGS		100
 
 #define MAXTOINDEX 5              /* depth in term to go when using deep indexing */
 

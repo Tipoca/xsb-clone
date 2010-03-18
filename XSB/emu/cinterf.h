@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.49 2008-10-07 02:23:23 kifer Exp $
+** $Id: cinterf.h,v 1.50 2010-03-18 22:22:17 tswift Exp $
 ** 
 */
 
@@ -164,10 +164,7 @@ extern "C" {
 #include "export.h"
 #include "varstring_xsb.h"
 
-#define XSB_SUCCESS 0
-#define XSB_FAILURE 1
-#define XSB_ERROR 2
-#define XSB_OVERFLOW 3
+#include "cinterf_defs.h"
 
 #define extern_ctop_abs(reg_num,val) ctop_abs(CTXTc reg_num,val) 
 #define extern_ctop_float(reg_num, val) ctop_float(CTXTc reg_num, val) 

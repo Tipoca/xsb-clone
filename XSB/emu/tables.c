@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.70 2009-11-17 19:32:08 dwarren Exp $
+** $Id: tables.c,v 1.71 2010-03-18 22:22:17 tswift Exp $
 ** 
 */
 
@@ -51,6 +51,7 @@
 /*#include "subp.h"  for exception_handler, used in stack expansion */
 #include "tables.h"
 #include "thread_xsb.h"
+#include "cinterf.h"
 
 #include "sub_tables_xsb_i.h"
 #include "debug_xsb.h"
@@ -190,7 +191,7 @@ inline static  BTNptr newCallTrie(CTXTdeclc Psc predicate) {
  * Assumes that private/shared switch for SMs has been set.
  */
 
-void table_call_search(CTXTdeclc TabledCallInfo *call_info,
+int table_call_search(CTXTdeclc TabledCallInfo *call_info,
 		       CallLookupResults *results) {
 
   TIFptr tif;
@@ -205,12 +206,15 @@ void table_call_search(CTXTdeclc TabledCallInfo *call_info,
   /* for incremental evaluation end */     
 #endif
 
-
   tif = CallInfo_TableInfo(*call_info);
   if ( IsNULL(TIF_CallTrie(tif)) )
     TIF_CallTrie(tif) = newCallTrie(CTXTc TIF_PSC(tif));
   if ( IsVariantPredicate(tif) ){
-    variant_call_search(CTXTc call_info,results);
+    if (variant_call_search(CTXTc call_info,results) == XSB_FAILURE) {
+      //      printf("failing on vcs\n");
+      return XSB_FAILURE;
+    }
+    
 #ifndef MULTI_THREAD
     /* incremental evaluation: checking whether falsecount is zero */
     /*
@@ -309,6 +313,7 @@ void table_call_search(CTXTdeclc TabledCallInfo *call_info,
     /* orig version in tries.c had VarPosReg pointing at Var_{m} */
     CallLUR_VarVector(*results) = CallLUR_VarVector(*results) + size + 1;
   }
+  return XSB_SUCCESS;
 }
 
 
