@@ -214,6 +214,25 @@ threads in the process.
   variable; and {\tt dots} causes $Variable \{ <module_name> : ...\}$
   to be written.  The default behavior is set by the value {\tt
     portray}
+
+\item {\tt max\_table\_subgoal\_action} The action to take when a tabled
+  subgoal of maximum depth is encountered.  To understand the use of
+  this flag, consider that if a predicate such as
+\begin{verbatim}
+p(X):- p(f(X)).
+\end{verbatim}
+  is tabled, it can (semantically) create subgoals of infinite depth.
+  When the maximum subgoal depth is reached, XSB can either throw a
+  miscellaneous error (the default action); or XSB can fail -- an
+  action that may be valid for certain programs.  The action is set to
+  fail by the value {\tt failure} while the action of throwing an
+  error can be (re-)set using the value {\tt error}.
+
+\item {\tt max\_table\_subgoal\_depth} The maximum depth of a subgoal
+  argument that can be added to a table: when the depth is reached, an
+  action is taken as indicated for the previous flag.  The default
+  value is {\tt maximum\_integer}.
+
 \end{itemize}
 
 The following flags affect only the multi-threaded engine.
