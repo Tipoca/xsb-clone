@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.184 2010/03/01 00:26:32 evansbj Exp $
+** $Id: tr_utils.c,v 1.185 2010/03/14 01:47:00 evansbj Exp $
 ** 
 */
 
@@ -943,6 +943,7 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
 	z = CalculateBucketForSymbol((BTHTptr)(*y1),
 				     BTN_Symbol(lowest_node_in_branch));
 //	num_left_in_hash = --BTHT_NumContents((BTHTptr)*y1);
+	--BTHT_NumContents((BTHTptr)*y1);
       }
       else
 	z = y1;
