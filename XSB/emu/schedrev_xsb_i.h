@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.23 2010-01-23 19:03:03 tswift Exp $
+** $Id: schedrev_xsb_i.h,v 1.24 2010-03-26 22:06:48 tswift Exp $
 ** 
 */
 
@@ -171,7 +171,10 @@ static CPtr find_fixpoint(CTXTdeclc CPtr leader_csf, CPtr producer_cpf)
 	 finally correct. */
 
 #ifdef  LOCAL_EVAL
-      tcp_prevbreg(subg_pos_cons(currSubg)) = breg;
+      if (subg_pos_cons(currSubg)) {
+	tcp_prevbreg(subg_pos_cons(currSubg)) = breg;
+      }
+      else xsb_warn("Subgoal without any consumer is in non-trivial SCC in Local\n");
 #endif
 
     if ((tmp_sched = sched_answers(CTXTc currSubg, &last_cons))) {
