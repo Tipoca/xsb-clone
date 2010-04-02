@@ -152,6 +152,7 @@ bagReduce(Template,Call,Res,Op,Id) :-
 :- table bagReduce1/5.
 :- use_variant_tabling bagReduce1(_,_,_,_,_).
 
+:- import '_$$get_returns'/3 from tables.
 bagReduce1(Templ,Call,Res,Op,Id) :-
 	'_$savecp'(Breg),
 	breg_retskel(Breg,5,Skel,Cs),
@@ -168,11 +169,13 @@ bagReduce1(Templ,Call,Res,Op,Id) :-
 		arg(3,Test,Res)
 	),
 	call(OCall),
-	(get_returns(Cs,Oskel,Leaf)
+%	(get_returns(Cs,Oskel,Leaf)
+	('_$$get_returns'(Cs,Oskel,Leaf)
 	 ->	Var1 = ORes, call_c(Test), %Op(ORes,OTempl,Res),
 		Res \== ORes,
 		delete_return(Cs,Leaf)
 	 ;	Var1 = Id, call_c(Test)   %Op(Id,OTempl,Res)
+%	 ;	Res = OTempl
 	).
 
 /*** The following (the else of VarList==[] test below) is a more
