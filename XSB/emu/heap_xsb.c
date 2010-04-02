@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.76 2009-11-17 14:59:34 tswift Exp $
+** $Id: heap_xsb.c,v 1.77 2010-04-02 16:34:56 evansbj Exp $
 ** 
 */
 
@@ -738,8 +738,10 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 	GC_PROFILE_SLIDE_START_TIME;
 	hreg = slide_heap(CTXTc marked) ;
 
+#ifdef DEBUG_VERBOSE
 	if (hreg != (heap_bot+marked))
 	  xsb_dbgmsg((LOG_GC, "heap sliding gc - inconsistent hreg"));
+#endif
 
 #ifdef SLG_GC
 	/* copy hfreg back from the heap */
