@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.185 2010/03/14 01:47:00 evansbj Exp $
+** $Id: tr_utils.c,v 1.186 2010/03/19 18:42:19 tswift Exp $
 ** 
 */
 
@@ -907,8 +907,10 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
     if (is_hash(*y1)) {
       z = CalculateBucketForSymbol((BTHTptr)(*y1),
 				   BTN_Symbol(lowest_node_in_branch));
+#ifdef DEBUG_VERBOSE
       if ( *z != lowest_node_in_branch )
-	xsb_dbgmsg((LOG_DEBUG,"DELETE_BRANCH: trie node not found in hash table"));
+		  xsb_dbgmsg((LOG_DEBUG,"DELETE_BRANCH: trie node not found in hash table"));
+#endif
       *z = NULL;
       num_left_in_hash = --BTHT_NumContents((BTHTptr)*y1);
       if (num_left_in_hash  > 0) {
