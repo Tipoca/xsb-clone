@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_slide.h,v 1.16 2009-03-14 22:04:47 tswift Exp $
+** $Id: gc_slide.h,v 1.17 2010-04-02 16:10:52 evansbj Exp $
 ** 
 */
 
@@ -476,9 +476,10 @@ static CPtr slide_heap(CTXTdeclc int num_marked)
 	  hptr += garbage ;
 	}
       }
-      if (destination != (heap_bot+num_marked))
-	xsb_dbgmsg((LOG_DEBUG, "bad size %p  %p",
-		   destination,heap_bot+num_marked));
+#ifdef DEBUG_VERBOSE
+		if (destination != (heap_bot+num_marked))
+		  xsb_dbgmsg((LOG_DEBUG, "bad size %p  %p", destination,heap_bot+num_marked));
+#endif
 #ifdef INDIRECTION_SLIDE
     }  
 #endif
