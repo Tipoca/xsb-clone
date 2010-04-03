@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.202 2010-01-18 13:54:51 dwarren Exp $
+** $Id: emuloop.c,v 1.203 2010-04-03 18:38:40 tswift Exp $
 ** 
 */
 
@@ -1181,8 +1181,10 @@ contcase:     /* the main loop */
     Op1(get_xxa);
     op2 = (Cell)((Cell)lpcreg + sizeof(Cell)*2);
 /* In the multi-threaded system a signal can be issued be another thread
-   with thread signal anytime */
-#ifndef MULTI_THREAD
+   with thread signal anytime.
+   TLS: changed so that we check this assertion only if we're in debug mode
+ */
+#if !defined(MULTI_THREAD) && NON_OPT_COMPILE
     if (attv_pending_interrupts) printf("Failed assertion try\n");
 #endif
 #if 0
@@ -3245,15 +3247,17 @@ DllExport int call_conv xsb(CTXTdeclc int flag, int argc, char *argv[])
 #endif
 
 #ifdef MULTI_THREAD
-/* this has to be initialized here and not in main_xsb.c because
-   of windows linkage problems for the variable main_thread_gl
- */
-   main_thread_gl = th ;
 extern pthread_mutexattr_t attr_rec_gl ;
 #endif
 
    if (flag == XSB_INIT || flag == XSB_C_INIT) {  /* initialize xsb */
 
+#ifdef MULTI_THREAD
+/* this has to be initialized here and not in main_xsb.c because
+   of windows linkage problems for the variable main_thread_gl
+ */
+   main_thread_gl = th ;
+#endif
      if (flag == XSB_C_INIT) xsb_mode = C_CALLING_XSB;
      else xsb_mode = DEFAULT; /* MAY BE CHANGED LATER */
 
