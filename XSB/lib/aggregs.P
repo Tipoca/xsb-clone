@@ -199,14 +199,15 @@ not 4.
 **************/
 %%:- import writeln/2, nl/1 from standard.
 
-bagPO(Templ,Call,_Res,PO) :- bagPO1(PO,Call,Templ,_,_),fail.
-bagPO(Templ,Call,Res,PO) :- bagPO1(PO,Call,Templ,_,Res1),Res=Res1.
+bagPO(Templ,Call,_Res,PO) :- bagPO1(PO,_,Call,Templ,_),fail.
+bagPO(Templ,Call,Res,PO) :- bagPO1(PO,_,Call,Templ,Res1),Res=Res1.
 
 :- table bagPO1/5.
+
 :- use_variant_tabling bagPO1(_,_,_,_,_).
-bagPO1(PO,Call,Templ,AVars,Agg) :-  % templ is X, Call is pred(A,B,X)
+bagPO1(PO,AVars,Call,Templ,Agg) :-  % templ is X, Call is pred(A,B,X)
 	'_$savecp'(Breg),
-	breg_retskel(Breg,4,Skel,Cs),
+	breg_retskel(Breg,5,Skel,Cs),
 	excess_vars(Call,Templ,[],VarList),
 	copy_term(p(Agg,AVars,VarList,Skel),p(OAgg,OAVars,OVarList,OSkel)),
 	(atom(PO)

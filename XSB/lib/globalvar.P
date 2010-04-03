@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: globalvar.P,v 1.6 2006-06-16 15:46:59 dwarren Exp $
+** $Id: globalvar.P,v 1.7 2010-04-03 15:16:22 dwarren Exp $
 ** 
 */
 
@@ -34,6 +34,7 @@
 :- local '$globalvarmap'/2, '$globalvarindex'/1.
 
 :- dynamic '$globalvarmap'(_,_).
+:- index('$globalvarmap'(_,_),trie).
 :- dynamic '$globalvarindex'(_).
 :- index('$globalvarindex'(_),0).
 
