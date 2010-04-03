@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.119 2010-03-18 22:22:17 tswift Exp $
+** $Id: tries.c,v 1.120 2010-04-03 16:09:43 tswift Exp $
 ** 
 */
 
@@ -64,7 +64,8 @@
 /* The following variables are used in other parts of the system        */
 /*----------------------------------------------------------------------*/
 
-counter subg_chk_ins, subg_inserts, ans_chk_ins, ans_inserts; /* statistics */
+// TLS ans_deletes may be taken out.
+counter subg_chk_ins, subg_inserts, ans_chk_ins, ans_inserts, ans_deletes; /* statistics */
 
 #ifndef MULTI_THREAD
 int  num_heap_term_vars;
@@ -1597,7 +1598,8 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   int  arity, i, j, flag = 1;
   Cell tag = XSB_FREE, item;
   CPtr cptr, VarPosReg, tVarPosReg;
-  int ctr, attv_ctr, depth_ctr;
+  int ctr, attv_ctr;
+  Cell  depth_ctr;
   BTNptr Paren, *GNodePtrPtr;
 
 #ifndef MULTI_THREAD
