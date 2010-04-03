@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.91 2010-02-08 07:01:45 evansbj Exp $
+** $Id: cinterf.c,v 1.92 2010-04-03 23:53:35 evansbj Exp $
 ** 
 */
 
@@ -1489,15 +1489,28 @@ DllExport int call_conv writeln_to_xsb_stdin(char * input){
 #else
 #define EXECUTE_XSB {						\
     if (th != main_thread_gl) {					\
-      pthread_cond_signal(&xsb_started_cond);			\
-      pthread_cond_wait( &xsb_done_cond, &xsb_synch_mut );	\
+      xsb_ready = XSB_IN_Prolog;										\
+      int pthread_cond_wait_err = pthread_cond_signal(&xsb_started_cond);			\
+		if (pthread_cond_wait_err)		\
+			perror("### EXECUTE_XSB signaling xsb_started_cond ###");						\
+      while ((XSB_IN_Prolog == xsb_ready) && (!pthread_cond_wait_err))										\
+      	pthread_cond_wait_err = pthread_cond_wait( &xsb_done_cond, &xsb_synch_mut );	\
+      if (pthread_cond_wait_err)		\
+			perror("### EXECUTE_XSB waiting on condition xsb_done_cond ###");						\
     }								\
     else xsb(CTXTc XSB_EXECUTE,0,0);				\
   }
 #define EXECUTE_XSB_SETUP_X(NR) {				\
     if (th != main_thread_gl) {					\
+      xsb_ready = XSB_IN_Prolog;										\
+      int pthread_cond_wait_err = pthread_cond_signal(&xsb_started_cond);			\
+		if (pthread_cond_wait_err)		\
+			perror("### EXECUTE_XSB_SETUP_X signaling xsb_started_cond ###");						\
       pthread_cond_signal(&xsb_started_cond);			\
-      pthread_cond_wait( &xsb_done_cond, &xsb_synch_mut );	\
+      while ((XSB_IN_Prolog == xsb_ready) && (!pthread_cond_wait_err))										\
+      	pthread_cond_wait_err = pthread_cond_wait( &xsb_done_cond, &xsb_synch_mut );	\
+      if (pthread_cond_wait_err)		\
+			perror("### EXECUTE_XSB_SETUP_X waiting on condition xsb_done_cond ###");						\
     }								\
     else xsb(CTXTc XSB_SETUP_X,NR,0);				\
   }
@@ -1686,7 +1699,13 @@ DllExport int call_conv xsb_query(CTXTdecl)
     UNLOCK_XSB_SYNCH;UNLOCK_XSB_READY;UNLOCK_XSB_QUERY;
     return(XSB_ERROR);
   }
-  if (is_var(reg_term(CTXTc 1))) return(XSB_FAILURE);
+  if (is_var(reg_term(CTXTc 1))) {
+    xsb_inquery = 0;
+    UNLOCK_XSB_SYNCH;
+    UNLOCK_XSB_READY;
+    UNLOCK_XSB_QUERY;
+    return(XSB_FAILURE);
+  }
   xsb_inquery = 1;
   UNLOCK_XSB_SYNCH;UNLOCK_XSB_READY;UNLOCK_XSB_QUERY;
   return(XSB_SUCCESS);

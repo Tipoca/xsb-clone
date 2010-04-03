@@ -739,7 +739,7 @@ call_conv int xsb_ccall_thread_create(th_context *th,th_context **thread_return)
 
   pthread_mutex_unlock( &th_mutex );
 
-  new_th_ctxt->_xsb_ready = 0;  
+  new_th_ctxt->_xsb_ready = XSB_IN_Prolog;  
   pthread_mutex_init( &new_th_ctxt->_xsb_synch_mut, NULL ) ;
   pthread_mutex_lock(&(new_th_ctxt->_xsb_synch_mut));
 
@@ -772,7 +772,7 @@ call_conv int xsb_ccall_thread_create(th_context *th,th_context **thread_return)
       xsb_abort("[THREAD] Failure to create thread: error %d\n",rc);
   }
 
-  while (!(new_th_ctxt->_xsb_ready))
+  while (XSB_IN_Prolog == new_th_ctxt->_xsb_ready)
 	pthread_cond_wait( &new_th_ctxt->_xsb_done_cond, 
 			   &new_th_ctxt->_xsb_synch_mut  );
   pthread_mutex_unlock( &new_th_ctxt->_xsb_synch_mut ) ;

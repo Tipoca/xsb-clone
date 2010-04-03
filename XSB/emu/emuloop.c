@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.203 2010-04-03 18:38:40 tswift Exp $
+** $Id: emuloop.c,v 1.204 2010-04-03 23:53:36 evansbj Exp $
 ** 
 */
 
@@ -2873,9 +2873,14 @@ argument positions.
     current_inst = lpcreg;
 #ifdef MULTI_THREAD
     if (xsb_mode == C_CALLING_XSB && th != main_thread_gl) {
-      pthread_cond_signal(&xsb_done_cond);
-      xsb_ready = 1;
-      pthread_cond_wait( &xsb_started_cond, &xsb_synch_mut );
+      xsb_ready = XSB_IN_C;
+      int pthread_cond_wait_err = pthread_cond_signal(&xsb_done_cond);
+      if (pthread_cond_wait_err)
+			perror("### emuloop signaling xsb_done_cond ###");
+      while ((XSB_IN_C == xsb_ready) && (!pthread_cond_wait_err))
+      	pthread_cond_wait_err = pthread_cond_wait( &xsb_started_cond, &xsb_synch_mut );
+      if (pthread_cond_wait_err)
+			perror("### emuloop waiting on condition xsb_started_cond ###");
     } else  
 #endif
     return(0);	/* not "goto contcase"! */
@@ -3252,14 +3257,18 @@ extern pthread_mutexattr_t attr_rec_gl ;
 
    if (flag == XSB_INIT || flag == XSB_C_INIT) {  /* initialize xsb */
 
+     if (flag == XSB_C_INIT)
+     		xsb_mode = C_CALLING_XSB;
+     else
+     {
+     		xsb_mode = DEFAULT; /* MAY BE CHANGED LATER */
 #ifdef MULTI_THREAD
 /* this has to be initialized here and not in main_xsb.c because
    of windows linkage problems for the variable main_thread_gl
  */
    main_thread_gl = th ;
 #endif
-     if (flag == XSB_C_INIT) xsb_mode = C_CALLING_XSB;
-     else xsb_mode = DEFAULT; /* MAY BE CHANGED LATER */
+     }
 
      //     logfile = fopen("XSB_LOGFILE.txt","w");
      /* Set the name of the executable to the real name.
@@ -3289,7 +3298,7 @@ extern pthread_mutexattr_t attr_rec_gl ;
 	pthread_mutex_init( &(th->_xsb_ready_mut), &attr_rec_gl ) ;
 	pthread_mutex_init( &(th->_xsb_synch_mut), &attr_rec_gl ) ;
 	pthread_mutex_init( &(th->_xsb_query_mut), &attr_rec_gl ) ;
-	xsb_ready = 0;
+	xsb_ready = XSB_IN_Prolog;
 #endif
 
 	init_machine(CTXTc 0, 0, 0, 0);	/* init space, regs, stacks */
