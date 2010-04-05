@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.176 2010/02/12 15:39:07 dwarren Exp $
+** $Id: standard.P,v 1.177 2010/03/16 07:11:33 kifer Exp $
 ** 
 */
 
@@ -178,10 +178,7 @@ file_translate(append_binary,ab):- !.
 file_translate(Mode,_):- 
 	domain_error(file_io_mode,Mode,open/3,2).
 
-open_url(url(Atom),Mode,Stream,Options) :-
-	(Mode == read -> 
-	    true
-	 ;  domain_error(read,Mode,open/3,2) ),
+open_url(url(Atom),read,Stream,Options) :-
 	load_page(url(Atom), X, Options, [DirEnc, FileUnEnc, _, _], _), 
 	set_tmp_file(DirEnc, FileUnEnc, TmpFile), 
 	open(TmpFile, write, W),
@@ -190,7 +187,13 @@ open_url(url(Atom),Mode,Stream,Options) :-
 	open(TmpFile, read, Stream), 
 	(peek_char(Stream, C), C == -1 -> 
 	    close(Stream), permission_error(open,file,url(Atom),open/4)
-	 ;  true).
+	 ;  true
+	).
+
+open_url(url(Atom),write,Stream,_) :-
+	load_page(url(Atom), _, [redirect(false)], [DirEnc, FileUnEnc, _, _], _), 
+	set_tmp_file(DirEnc, FileUnEnc, TmpFile), 
+	open(TmpFile, write, Stream).
 
 set_tmp_file(DirEnc, FileUnEnc, TmpFile) :-
 	slash(Slash),
@@ -269,12 +272,24 @@ close(user_out,_) :- !.
 close(user_input,_) :- !.
 close(user_output,_) :- !.
 close(user_error,_) :- !.
+
+close(S_or_A,url(Atom)) :- 
+	!, 
+	close(S_or_A,url(Atom),[]).
+
 close(S_or_A,Options) :- 
 	check_stream_or_alias(S_or_A,close/1,1,Str),
 	examine_close_options(Options,Action),
 	(Action = false ->      % TLS: want unification.
 	    file_close(Str,NOFORCE_FILE_CLOSE)
 	  ; file_close(Str,FORCE_FILE_CLOSE) ).
+
+close(S_or_A,url(Atom),Options) :- 
+	load_page(url(Atom), X, [post(true)], _, _), 
+	(X == '' -> 
+	    permission_error(close,file,url(Atom),close/3)
+	 ;  true), 
+	close(S_or_A,Options).
 
 examine_close_options(List,Action):-
 	(examine_close_options_1(List,Action) -> 
