@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.93 2010-04-04 04:44:51 evansbj Exp $
+** $Id: cinterf.c,v 1.94 2010-04-05 06:02:32 evansbj Exp $
 ** 
 */
 
@@ -1627,46 +1627,51 @@ DllExport int call_conv xsb_command(CTXTdecl)
 ************************************************************************/
 
 DllExport int call_conv xsb_command_string(CTXTdeclc char *goal)
-{
-#ifndef MULTI_THREAD
-  if (xsb_inquery) {
-    create_ccall_error(CTXTc "permission_error","unable to call xsb_command_string() when a query is open");
-    return(XSB_ERROR);     
-  }
-#endif
-
-  LOCK_XSB_READY;
-  LOCK_XSB_SYNCH;
-  reset_ccall_error(CTXT);
-
-  c2p_string(CTXTc goal,reg_term(CTXTc 1));
-  c2p_int(CTXTc 2,reg_term(CTXTc 3));  /* command for calling a string goal */
-  EXECUTE_XSB;
-  if (ccall_error_thrown(CTXT))  
-    {
-    UNLOCK_XSB_SYNCH;
-    UNLOCK_XSB_READY;
-    return(XSB_ERROR);
-    }
-  if (is_var(reg_term(CTXTc 1))) /* goal failed, so return 1 */
-    {
-    UNLOCK_XSB_SYNCH;
-    UNLOCK_XSB_READY;
-    return(XSB_FAILURE);
-    } 
-  c2p_int(CTXTc 1,reg_term(CTXTc 3));  /* command for next answer */
-  EXECUTE_XSB;
-  if (is_var(reg_term(CTXTc 1))) 
-    {  /* goal succeeded */
-    UNLOCK_XSB_SYNCH;
-    UNLOCK_XSB_READY;
-    return(XSB_SUCCESS);
-    }
-  //  (void) xsb_close_query(CTXT);
-  UNLOCK_XSB_SYNCH;
-  UNLOCK_XSB_READY;
-  return(XSB_ERROR);     // to shut up compiler.
-}
+	{
+	#ifndef MULTI_THREAD
+	if (xsb_inquery) {
+		create_ccall_error(CTXTc "permission_error","unable to call xsb_command_string() when a query is open");
+		return(XSB_ERROR);     
+	}
+	#endif
+	
+	LOCK_XSB_QUERY;
+	LOCK_XSB_READY;
+	LOCK_XSB_SYNCH;
+	reset_ccall_error(CTXT);
+	
+	c2p_string(CTXTc goal,reg_term(CTXTc 1));
+	c2p_int(CTXTc 2,reg_term(CTXTc 3));  /* command for calling a string goal */
+	EXECUTE_XSB;
+	if (ccall_error_thrown(CTXT))  
+	{
+		UNLOCK_XSB_SYNCH;
+		UNLOCK_XSB_READY;
+		UNLOCK_XSB_QUERY;
+		return(XSB_ERROR);
+	}
+	if (is_var(reg_term(CTXTc 1))) /* goal failed, so return 1 */
+	{
+		UNLOCK_XSB_SYNCH;
+		UNLOCK_XSB_READY;
+		UNLOCK_XSB_QUERY;
+		return(XSB_FAILURE);
+	} 
+	c2p_int(CTXTc 1,reg_term(CTXTc 3));  /* command for next answer */
+	EXECUTE_XSB;
+	if (is_var(reg_term(CTXTc 1))) 
+	{  /* goal succeeded */
+		UNLOCK_XSB_SYNCH;
+		UNLOCK_XSB_READY;
+		UNLOCK_XSB_QUERY;
+		return(XSB_SUCCESS);
+	}
+	//  (void) xsb_close_query(CTXT);
+	UNLOCK_XSB_SYNCH;
+	UNLOCK_XSB_READY;
+	UNLOCK_XSB_QUERY;
+	return(XSB_ERROR);     // to shut up compiler.
+	}
 
 DllExport int call_conv xsb_kill_thread(CTXTdecl)
 {
