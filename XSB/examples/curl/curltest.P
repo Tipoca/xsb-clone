@@ -3,6 +3,8 @@
 :- import str_match/5, substring/4, str_cat/3 from string.
 :- import file_seek/4, file_getbuf/4 from file_io.
 
+?- [curl].
+
 test_all :- 
 	curldir(CurlDir), slash(Slash), 
 	fmt_write_string(OutPath, '%s%sactualoutput', f(CurlDir, Slash)), 

@@ -53,7 +53,8 @@ load_page(Source, Document, Options, [DirEnc, FileUnEnc, Size, Time], Warn) :-
 	get_filename(Options, FileBase, Suffix, FileUnEnc), 
 	pl_finalize_warn(Warn).
 
-load_page_warn(Source, Document, [post(true)], _, _) :-
+load_page_warn(Source, Document, Opt, _, _) :-
+	Opt == [post(true)],
 	!, 
 	encode_url(Source, [DirEnc, FileBase, Suffix]), 
 	get_filename([redirect(false)], FileBase, Suffix, FileUnEnc), 
