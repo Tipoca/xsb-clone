@@ -42,6 +42,10 @@ typedef struct opt
 
   int url_prop;
 
+  char *user_agent;
+
+  char *post_data;
+
 }curl_opt;
 
 typedef struct ret

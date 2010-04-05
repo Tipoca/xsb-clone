@@ -24,14 +24,17 @@
 
 :- import bootstrap_package/2 from packaging.
 :- import member/2, append/3 from basics.
+:- import file_seek/4 from file_io.
+:- import set_tmp_file/3 from standard.
 :- import str_match/5, substring/4, str_cat/3 from string.
 
 :- import pl_load_page/1, 
-	pl_allocate_error_term/2,
-	pl_finalize_warn/1 from curl2pl.
+	pl_allocate_error_term/2, 
+	pl_finalize_warn/1, 
+	pl_encode_url/2 from curl2pl.
 
 :- export 
-	load_page/5, url_properties/2, url_properties/3, get_redir_url/2.
+	load_page/5, url_properties/2, url_properties/3, encode_url/2, get_redir_url/2.
 
 :- bootstrap_package([curl, cc], curl),
 	[curlconfig].
@@ -45,14 +48,26 @@ load_page(_Source, _Document, _Options, _, _Warn) :-
 	throw(error(existence_error, 'Error: open(url(...), ..., ...) - the package Curl is not configured')).
 
 load_page(Source, Document, Options, [DirEnc, FileUnEnc, Size, Time], Warn) :- 
-	load_page_warn(Source, Document, Options, [DirEnc, FileUnEnc, Size, Time], Warn),
+	load_page_warn(Source, Document, Options, [Size, Time], Warn),
+	encode_url(Source, [DirEnc, FileBase, Suffix]), 
+	get_filename(Options, FileBase, Suffix, FileUnEnc), 
 	pl_finalize_warn(Warn).
 
-load_page_warn(Source, Doc, Options, [DirEnc, FileUnEnc, Size, Time], Warn) :-
+load_page_warn(Source, Document, [post(true)], _, _) :-
+	!, 
+	encode_url(Source, [DirEnc, FileBase, Suffix]), 
+	get_filename([redirect(false)], FileBase, Suffix, FileUnEnc), 
+	set_tmp_file(DirEnc, FileUnEnc, TmpFile), 
+	open(TmpFile, read, RStream),
+	stream_to_string(RStream, Str), 
+	close(RStream), 
+        pl_load_page([options([post(Str)]), source(Source), document(Document), properties(_, _, _, _)]).
+
+load_page_warn(Source, Doc, Options, [Size, Time], Warn) :-
 	pl_allocate_error_term(Error, Warn),
-	examine_open_options(Options, ValidOptions), 
-        pl_load_page([options(ValidOptions), source(Source), document(DocTmp), properties(DirEncTmp, FileUnEncTmp, SizeTmp, TimeTmp)]),
-	handle_html_redir(ValidOptions, DocTmp, DirEncTmp, FileUnEncTmp, SizeTmp, TimeTmp, Doc, DirEnc, FileUnEnc, Size, Time), 
+	examine_open_options(open, Options, ValidOptions), 
+        pl_load_page([options(ValidOptions), source(Source), document(DocTmp), properties(SizeTmp, TimeTmp)]), 
+	handle_html_redir(ValidOptions, DocTmp, SizeTmp, TimeTmp, Doc, Size, Time), 
 	throw_error(Error).
 
 url_properties(Url, Properties) :-
@@ -63,6 +78,16 @@ url_properties(Url, Options, Properties) :-
 	!, 
 	append(Options, [url_prop(true)], OptionsFinal), 
 	load_page(Url, _, OptionsFinal, Properties, _). 
+
+encode_url(url(Url), [DirEnc, FileUnEnc, Suffix]) :- 
+	pl_encode_url(Url, [Dir, File, Suf]), 
+	validate(Dir, DirEnc), 
+	validate(File, FileUnEnc), 
+	validate(Suf, Suffix).
+
+examine_open_options(open, Options, ValidOptions):-
+	examine_open_options(Options, Options1), 
+	remove(url_prop(true), Options1, ValidOptions).
 
 examine_open_options([], []).
 examine_open_options([redirect(Bool)|T], [redirect(Bool)|Options]):- !,
@@ -76,29 +101,28 @@ examine_open_options([timeout(Seconds)|T], [timeout(Seconds)|Options]):-
 	integer(Seconds), 
 	!,
 	examine_open_options(T, Options).
-
-/* The option 'url_prop' must not be used with open or url_properties predicates. 
-	This is an indicator that the call refers to url properties */
-examine_open_options([url_prop(true)|T], [properties(true)|Options]):-
+examine_open_options([url_prop(true)|T], [url_prop(true)|Options]):-
 	!,
 	examine_open_options(T, Options).
-
+examine_open_options([user_agent(Agent)|T], [user_agent(Agent)|Options]):-
+	!,
+	examine_open_options(T, Options).
 examine_open_options([_|T], Options):- 
 	examine_open_options(T, Options).
 
-handle_html_redir(ValidOptions, Doc, Dir, FileName, Size, Time, Doc, Dir, FileName, Size, Time) :-
+handle_html_redir(ValidOptions, Doc, Size, Time, Doc, Size, Time) :-
 	member(redirect(false), ValidOptions), 
 	!.
-handle_html_redir(ValidOptions, DocTmp, _, _, _, _, Doc, Dir, FileName, Size, Time) :-
+handle_html_redir(ValidOptions, DocTmp, _, _, Doc, Size, Time) :-
 	get_redir_url(DocTmp, UrlNew), 
-	load_page(url(UrlNew), Doc, ValidOptions, [Dir, FileName, Size, Time], _), 
+	load_page_warn(url(UrlNew), Doc, ValidOptions, [Size, Time], _), 
 	!.
-handle_html_redir(_, Doc, Dir, FileName, Size, Time, Doc, Dir, FileName, Size, Time) :-
+handle_html_redir(_, Doc, Size, Time, Doc, Size, Time) :-
 	!.
 
 get_redir_url(url(Url), UrlNew) :-
 	!, 
-	load_page(url(Url), Doc, [redirect(false)], _, _), 
+	load_page_warn(url(Url), Doc, [redirect(false)], _, _), 
 	get_redir_url(Doc, UrlNew).
 
 get_redir_url(file(File), UrlNew) :-
@@ -157,8 +181,32 @@ substr_remove(S1, SubStr, S2) :-
 
 substr_remove(S, _, S).
 
-stream_to_string(X, Y) :- file_read_line(X, Y1), !, stream_to_string(X, Y2), str_cat(Y1, Y2, Y).
-stream_to_string(_, '').
+stream_to_string(X, Y) :- 
+	file_seek(X, 0, 0, _), 
+	stream_to_string_sub(X, Y).
+stream_to_string_sub(X, Y) :- file_read_line(X, Y1), !, stream_to_string_sub(X, Y2), str_cat(Y1, Y2, Y).
+stream_to_string_sub(_, '').
+
+validate('', 'tmp') :- !.
+validate(Name, Name). 
+
+get_filename(Options, FileBase, Suffix, FileName) :-
+	member(redirect(false), Options), 
+	!, 
+	str_cat(FileBase, '-noredirect.', FileBaseDot), 
+	str_cat(FileBaseDot, Suffix, FileName). 
+
+get_filename(_, FileBase, Suffix, FileName) :-
+	str_cat(FileBase, '.', FileBaseRedir), 
+	str_cat(FileBaseRedir, Suffix, FileName). 
+	
+remove(_, [], []).
+remove(X, [X|T1], T2):-
+	!, 
+	remove(X, T1, T2).
+remove(X, [H|T1], [H|T2]):-
+	!, 
+	remove(X, T1, T2).
 
 throw_error(Error) :- var(Error), !.
 throw_error(Error) :- throw(Error).

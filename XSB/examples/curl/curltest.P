@@ -1,6 +1,7 @@
 :- import slash/1 from machine.
-:- import load_page/5, url_properties/2, url_properties/3, get_redir_url/2 from curl.
+:- import load_page/5, url_properties/2, url_properties/3, encode_url/2, get_redir_url/2 from curl.
 :- import str_match/5, substring/4, str_cat/3 from string.
+:- import file_seek/4, file_getbuf/4 from file_io.
 
 test_all :- 
 	curldir(CurlDir), slash(Slash), 
@@ -17,6 +18,9 @@ test_all :-
 	test_properties_no_opt(OutPath), 
 	test_properties(OutPath), 
 	test_properties_auth(OutPath), 
+	test_user_agent(OutPath), 
+	test_post, 
+	test_encode_url(OutPath), 
 	test_timeout(OutPath).
 
 test_no_options(OutPath) :- 
@@ -107,6 +111,27 @@ test_get_redir_url :-
 	writeln(UrlNew1), 
 	get_redir_url(file('test.html'), UrlNew2), 
 	writeln(UrlNew2).
+
+test_user_agent(OutPath) :- 
+	open(url('zend.com'),read, X, [user_agent('http://zend.com')]), 
+	slash(Slash), fmt_write_string(OutFile, '%s%suser_agent.html', f(OutPath, Slash)),
+	tell(OutFile), write_page(X), told,  
+	close(X).
+
+test_post :- 
+	open(url('http://www.ibm.com/us/en/'),write, X), 
+	put_char(X, 'a'), put_char(X, 'b'), 	
+	close(X, url('http://www.ibm.com/us/en/')).
+
+test_encode_url(OutPath) :-
+	encode_url(url('http://www.cs.sunysb.edu/~cse532/first.html'), [Dir, File, Suffix]), 
+	slash(Slash), fmt_write_string(OutFile, '%s%sencode_url.txt', f(OutPath, Slash)),
+	tell(OutFile), 
+	write(test_encode_url), writeln(' on http://www.cs.sunysb.edu/~cse532/first.html'), 
+	write('Directory = '), writeln(Dir), 
+	write('File = '), writeln(File), 
+	write('Suffix = '), writeln(Suffix), 
+	told.
 
 /*Not added to the test suite. This is supposed to throw an error*/
 test_secure :- 

@@ -78,8 +78,7 @@ DllExport int call_conv pl_load_page()
 
   prolog_term head, tail, result = 0;
 
-  char *functor, *url = NULL, *url_final = NULL, *data = NULL;
-  char *dir_enc = NULL, *file = NULL;
+  char *functor, *url = NULL, *data = NULL;
   char *username = NULL, *password = NULL;
 
   curl_opt options = init_options();
@@ -155,6 +154,12 @@ DllExport int call_conv pl_load_page()
 		else if(!strcmp(p2c_functor(term_option), "url_prop")){
 			options.url_prop = options.redir_flag;
 		}
+		else if(!strcmp(p2c_functor(term_option), "user_agent")){
+			options.user_agent = p2c_string(p2p_arg(term_option, 1));
+		}
+		else if(!strcmp(p2c_functor(term_option), "post")){
+			options.post_data = p2c_string(p2p_arg(term_option, 1));
+		}
 		term_options = p2p_cdr(term_options);
 	}
 
@@ -165,21 +170,11 @@ DllExport int call_conv pl_load_page()
       }
       else if(!strcmp(functor,"properties")){
 
-	encode(ret_vals.url_final, &dir_enc, &file);
-	
-	if (strcmp(file, "") == 0)
-	{
-		file = (char*)malloc(11*sizeof(char));
-		strcpy(file, "index.html");	
-	}
-
-	c2p_string(CTXTc dir_enc, p2p_arg(head, 1));
-	c2p_string(CTXTc file, p2p_arg(head, 2));
-	c2p_int(CTXTc (int) ret_vals.size, p2p_arg(head, 3));
+	c2p_int(CTXTc (int) ret_vals.size, p2p_arg(head, 1));
 	if (ctime(&ret_vals.modify_time) == NULL)
-		c2p_string("", p2p_arg(head, 4));
+		c2p_string("", p2p_arg(head, 2));
 	else
-		c2p_string(CTXTc (char *) ctime(&ret_vals.modify_time), p2p_arg(head, 4));
+		c2p_string(CTXTc (char *) ctime(&ret_vals.modify_time), p2p_arg(head, 2));
       }
     }
     else{
@@ -187,9 +182,26 @@ DllExport int call_conv pl_load_page()
     }
   }
 
-c2p_string(CTXTc data, result);
+  c2p_string(CTXTc data, result);
 
 return TRUE;
+}
+
+DllExport int call_conv pl_encode_url()
+{
+
+  char	*url;
+  char *dir, *file_base, *suffix;
+
+  url = (char *) extern_ptoc_string(1);
+ 
+  encode(url, &dir, &file_base, &suffix);
+
+  c2p_string(CTXTdeclc dir, p2p_car(reg_term(2)));
+  c2p_string(CTXTdeclc file_base, p2p_car(p2p_cdr(reg_term(2))));
+  c2p_string(CTXTdeclc suffix, p2p_car(p2p_cdr(p2p_cdr(reg_term(2)))));
+
+  return TRUE;
 }
 
 curl_opt init_options() {
@@ -201,6 +213,8 @@ curl_opt init_options() {
   options.auth.usr_pwd = "";
   options.timeout = 0;
   options.url_prop = 0;
+  options.user_agent = "http://xsb.sourceforge.net/";
+  options.post_data = "";
 
   return options;
 }

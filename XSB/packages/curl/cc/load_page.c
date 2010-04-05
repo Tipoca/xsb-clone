@@ -115,6 +115,13 @@ load_page (char *source, curl_opt options, curl_ret *ret_vals)
   curl_easy_setopt (curl, CURLOPT_HEADER, options.url_prop); 
   curl_easy_setopt (curl, CURLOPT_NOBODY, options.url_prop);
 
+  /* User Agent */
+  curl_easy_setopt(curl, CURLOPT_USERAGENT, options.user_agent);
+
+  /* Post Data */
+  if(strlen(options.post_data)>0)
+	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, options.post_data);
+
   /* Allow curl to perform the action */
   ret = curl_easy_perform (curl);
 
@@ -135,18 +142,37 @@ load_page (char *source, curl_opt options, curl_ret *ret_vals)
 }
 
 void *
-encode (char *url, char **dir, char **file)
+encode (char *url, char **dir, char **file, char **suffix)
 {
   int dir_len = 0;
-  char *dir_enc = NULL;
+  char *dir_enc = NULL, *ptr;
 
-  *file = strrchr (url, '/');
-  if (*file == NULL)
-    *file = url;
+  ptr = strrchr (url, '/');
+  if (ptr == NULL)
+  {
+    *file = (char *) malloc ((strlen(url)+1)*sizeof (char));
+    strcpy(*file, url);
+  }
   else 
   {
-    (*file)++;
+    ptr++;
+    *file = (char *) malloc ((strlen(ptr)+1)*sizeof (char));
+    strcpy(*file, ptr);  
     dir_len = strlen(url) - strlen(*file) - 1;
+  }
+
+  ptr = strrchr (*file, '.');
+  if (ptr == NULL)
+  {
+    *suffix = (char *) malloc (sizeof (char));
+    (*suffix)[0] = '\0';
+  }
+  else
+  {
+    ptr++;
+    *suffix = (char *) malloc ((strlen(ptr)+1)*sizeof (char));
+    strcpy(*suffix, ptr);  
+    (*file)[strlen(*file) - strlen(*suffix) - 1] = '\0';
   }
 
   *dir = (char *) malloc ((dir_len + 1) * sizeof (char));
