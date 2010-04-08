@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.21 2009-03-14 22:04:47 tswift Exp $
+** $Id: std_cases_xsb_i.h,v 1.22 2010-04-08 06:45:24 evansbj Exp $
 ** 
 */
 
@@ -40,7 +40,7 @@
     return isatom(ptoc_tag(CTXTc 1));
     
   case INTEGER:	/* r1: ?term */ {
-      int tag = ptoc_tag(CTXTc 1);
+      Integer tag = ptoc_tag(CTXTc 1);
     printf("integer in std_cases_xsb_i.h This should NOT occur! This code should now be unreachable\n");
       return (isinteger(tag) || isboxedinteger(tag));
   }
