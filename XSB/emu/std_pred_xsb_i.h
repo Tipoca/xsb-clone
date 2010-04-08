@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.47 2009-05-05 14:21:18 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.48 2010-04-08 06:06:07 evansbj Exp $
 ** 
 */
 
@@ -40,10 +40,11 @@ static xsbBool number_to_list(CTXTdeclc int call_type);
 inline static xsbBool functor_builtin(CTXTdecl)
 {
   /* r1: ?term; r2: ?functor; r3: ?arity (int)	*/
-  int  new_indicator, arity, value, disp;
+  int  new_indicator, disp;
+  Integer value;
   Psc psc;
   char *name;
-  Cell functor, term;
+  Cell functor, term, arity;
   Pair sym;
 
   term = ptoc_tag(CTXTc 1);
