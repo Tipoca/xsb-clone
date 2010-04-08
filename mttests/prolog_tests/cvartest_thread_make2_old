@@ -6,10 +6,10 @@ Closed return r c|b|a
 Closed return r c|b|a
 Planned command error p: /
 Planned command error p: instantiation_error/++Error[XSB/Runtime/P]: [Instantiation]  in arg 3 of predicate functor/3
-Planned command error r: type_error/++Error[XSB/Runtime/P]: [Type (a in place of integer)] in arg 3 of predicate functor/3)
-Planned command error r: type_error/++Error[XSB/Runtime/P]: [Type (a in place of integer)] in arg 3 of predicate functor/3)
+Planned command error r: type_error/++Error[XSB/Runtime/P]: [Type (a in place of integer)] in arg 3 of predicate functor/3
+Planned command error r: type_error/++Error[XSB/Runtime/P]: [Type (a in place of integer)] in arg 3 of predicate functor/3
 Planned query Error p: instantiation_error/++Error[XSB/Runtime/P]: [Instantiation]  in arg 3 of predicate functor/3
-Planned query Error r: type_error/++Error[XSB/Runtime/P]: [Type (a in place of integer)] in arg 3 of predicate functor/3)
+Planned query Error r: type_error/++Error[XSB/Runtime/P]: [Type (a in place of integer)] in arg 3 of predicate functor/3
 Pre-err return p a|b|c
 Pre-err return r c|b|a
 Return p 1|2|3
