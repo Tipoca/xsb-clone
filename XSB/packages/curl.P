@@ -211,4 +211,3 @@ remove(X, [H|T1], [H|T2]):-
 
 throw_error(Error) :- var(Error), !.
 throw_error(Error) :- throw(Error).
-
