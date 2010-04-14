@@ -8,6 +8,7 @@
 	retractall_itsobjects/1,
 	retractall_subclasses/1,
 	delete_unattached_ext_things/0,
+	delete_unattached_ext_things/1,
 	delete_all_things_to_delete/0,
 	rename_things/1, rename_things/0.
 
@@ -39,7 +40,7 @@ non-deleted concepts are removed.  It also removes objects that become
 disconnected because they are only members of deleted classes. It
 deletes various relations that reference any deleted class or object
 @em{at the top level}.  NB: References to the deleted classes and
-objects that are embedded in produce classes are @em{not} detected and
+objects that are embedded in product classes are @em{not} detected and
 are thus @em{not} deleted.
 ").
 
@@ -147,6 +148,9 @@ obliterate_extensional_component(Comp) :-
 /* Delete all classes and objects that are not immediately connected
 to the isa hierarchy by an isa_ext fact. */
 delete_unattached_ext_things :-
+	delete_unattached_ext_things(0).
+
+delete_unattached_ext_things(IfWarn) :-
 	retractall(things_to_delete(_)),
 	cdf_term_ext(Term,_Filt),
 	Term \= isa_ext(_,_),
@@ -160,6 +164,10 @@ delete_unattached_ext_things :-
 	\+ system_component(Comp),
 	(structure(Prod)
 	 ->	\+ approx_prod_isa(Id,Prod,Comp)
+	 ;	true
+	),
+	(IfWarn == 1
+	 ->	writeln(userout,'*** WARNING *** Deleting '(SubThing))
 	 ;	true
 	),
 	assert(things_to_delete(SubThing)),
@@ -253,7 +261,6 @@ things_to_delete are deleted. */
 
 %%%:- import conset/2, conget/2, coninc/1 from gensym.
 close_things_to_delete :-
-	write(userout,'closing...'),
 	%%conset(myctr,0),
 	(abolish_table_pred(disconnected(_)),
 	 retractall(things_in_closure(_)),
