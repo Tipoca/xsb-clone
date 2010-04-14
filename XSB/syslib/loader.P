@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.59 2009/12/01 20:59:58 dwarren Exp $
+** $Id: loader.P,v 1.60 2009/12/03 20:36:26 dwarren Exp $
 ** 
 */
 
@@ -489,8 +489,8 @@ app_list([Extension|Extensions],WholePath,[AbsFileName|AbsFileNames]) :-
 system_mod([FileName|_]) :- 
 	stat_flag(INSTALL_DIR,InstallDir1),
 	intern_string(InstallDir1, InstallDir),
-	str_match(InstallDir,FileName,f,0,_). % could probably be =
-	
+	str_match(InstallDir,FileName,f,0,End), End1 is End+1,
+	\+ str_match('packages',FileName,f,End1,_).  % but recompile packages
 
 /*
  *  Used in searching for a file.  Directory paths are returned in the
