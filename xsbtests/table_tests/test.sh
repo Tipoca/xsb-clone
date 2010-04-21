@@ -101,8 +101,10 @@ EOF
 ../gentest.sh "$XEMU $options" bulk_trie_test "test".
 #-------------------------------------------------
 ../gentest.sh "$XEMU $options" test_intern_seq "test".
-#------------------------------------------------- % very simple -- needs more cases.
+#------------------------------------------------- general incremental tests
 ../gentest.sh "$XEMU $options" incremental "test".
+#------------------------------------------------- same as above, but with changed decls.
+../gentest.sh "$XEMU $options" incremental1 "test".
 #-------------------------------------------------
 ../gentest.sh "$XEMU -l $options" aggregs_test_2 "test."
 #--------------------------------------------------
