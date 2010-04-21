@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_op.P,v 1.41 2009/08/28 17:43:08 tswift Exp $
+** $Id: file_op.P,v 1.42 2009/10/19 16:56:42 dwarren Exp $
 ** 
 */
 
@@ -348,16 +348,19 @@ add_incr_table(Spec) :-
 	term_psc(Call,Psc),	
 	psc_set_incr(Psc,1).
 
+% TLS: change to allow "dynamic p/n as incremental" to properly work.
 add_incr_dynamic(Spec) :-
+%	writeln(add_incr_dynamic(Spec)),
 	mpa_to_skel(Spec,Call),
 	term_psc(Call,Psc),
 	psc_set_incr(Psc,1), %% set it as incremental
 %%	psc_set_tabled(Psc,1),
 	psc_type(Psc,SymType),
+%	writeln(psc_type(Psc,SymType)),
 	(SymType \== T_DYNA
 	 ->	psc_set_ep(Psc,4), % set to addr of fail instruction
 		psc_set_type(Psc,T_DYNA)
-	 ;	true
+	 ;	psc_set_ep(Psc,4)  % set to addr of fail instruction  << change tls
 	).
 %%	convert_to_dyna(Call,_,'use_incremental_dynamic/1').  
 
