@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.334 2010-04-18 21:22:08 tswift Exp $
+** $Id: builtin.c,v 1.335 2010-04-21 16:20:35 tswift Exp $
 ** 
 */
 
@@ -2883,30 +2883,36 @@ case WRITE_OUT_PROFILE:
       xsb_type_error(CTXTc "predicate_indicator",term,"set_tabled_eval/2",1);
       break;
     }      
+    /* TLS (April 2010): experimental approach that allows a change in
+       tabling method even if a predicate already has tables.  The
+       idea is that new tables will get the method from the psc or
+       tip, while incomplete tables will get the method from the
+       subgoal frame.  Let's see if it works ...    */
+    /* changing to variant */
     if ((eval_meth == VARIANT_EVAL_METHOD) && (get_tabled(psc) != T_TABLED_VAR)) {
-      /* T_TABLED if the predicate is known to be tabled, but no specific eval method */
-      if (get_tabled(psc) == T_TABLED) set_tabled(psc,T_TABLED_VAR);
-      else xsb_permission_error(CTXTc "change evaluation method","table",reg[2],
-				get_name(psc),get_arity(psc));
-      //      else if (!(TIF_CallTrie(get_tip(CTXTc psc)))) {
-      //	  set_tabled(psc,T_TABLED_VAR);
-      //	  TIF_EvalMethod(get_tip(CTXTc psc)) = VARIANT_EVAL_METHOD;
-      //	}
-      //      else xsb_warn("Cannot change to variant tabling method for %s/%d",get_name(psc),get_arity(psc));
+      set_tabled(psc,T_TABLED_VAR);
+      //      if (get_tabled(psc) == T_TABLED) 
+      if (get_tip(CTXTc psc)) {
+	TIF_EvalMethod(get_tip(CTXTc psc)) = VARIANT_EVAL_METHOD;
+	if (TIF_CallTrie(get_tip(CTXTc psc))) {
+	  xsb_warn("Change to variant tabling method for predicate with tabled subgoals: %s/%d",
+		   get_name(psc),get_arity(psc));
+	}
+      }
     } else if ((eval_meth == SUBSUMPTIVE_EVAL_METHOD) && (get_tabled(psc) != T_TABLED_SUB)) {
-      if (get_tabled(psc) == T_TABLED && !get_incr(psc)) set_tabled(psc,T_TABLED_SUB);
+      if (get_incr(psc))
+	xsb_abort("cannot change %s/%n to use call subsumption as it is tabled incremental\n",
+		  get_name(psc),get_arity(psc));
+      set_tabled(psc,T_TABLED_SUB);
       /* T_TABLED if the predicate is known to be tabled, but no specific eval method */
-      else xsb_permission_error(CTXTc "change evaluation method","table",reg[2],
-				get_name(psc),get_arity(psc));
-    }
-      //      else {
-      //	if (!(TIF_CallTrie(get_tip(CTXTc psc)))) {
-      //	  set_tabled(psc,T_TABLED_SUB);
-      //	  TIF_EvalMethod(get_tip(CTXTc psc)) = SUBSUMPTIVE_EVAL_METHOD;
-      //	}
-      //	else xsb_warn("Cannot change to subsumptive tabling method for %s/%d",get_name(psc),get_arity(psc));
-    //      }
-    //    }
+      if (get_tip(CTXTc psc)) {
+	TIF_EvalMethod(get_tip(CTXTc psc)) = SUBSUMPTIVE_EVAL_METHOD;
+	if (TIF_CallTrie(get_tip(CTXTc psc))) {
+	  xsb_warn("Change to subsumptive tabling method for predicate with tabled subgoals: %s/%d",
+		   get_name(psc),get_arity(psc));
+	}
+      }
+    } 
 
     /***    tif = get_tip(CTXTc psc);
     if ( IsNULL(tif) ) {
