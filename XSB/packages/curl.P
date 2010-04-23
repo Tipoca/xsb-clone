@@ -24,9 +24,10 @@
 
 :- import bootstrap_package/2 from packaging.
 :- import member/2, append/3 from basics.
-:- import file_seek/4 from file_io.
-:- import set_tmp_file/3 from standard.
+:- import file_seek/4, path_sysop/2 from file_io.
 :- import str_match/5, substring/4, str_cat/3 from string.
+:- import slash/1 from machine.
+:- import xsb_configuration/2 from xsb_configuration.
 
 :- import pl_load_page/1, 
 	pl_allocate_error_term/2, 
@@ -34,7 +35,13 @@
 	pl_encode_url/2 from curl2pl.
 
 :- export 
-	load_page/5, url_properties/2, url_properties/3, encode_url/2, get_redir_url/2.
+	load_page/5,
+	url_properties/2,
+	url_properties/3,
+	encode_url/2,
+	www_cache_filename/4,
+	set_tmp_file/3,
+	get_redir_url/2.
 
 :- bootstrap_package([curl, cc], curl),
 	[curlconfig].
@@ -47,22 +54,21 @@ load_page(_Source, _Document, _Options, _, _Warn) :-
 	!,
 	throw(error(existence_error, 'Error: open(url(...), ..., ...) - the package Curl is not configured')).
 
-load_page(Source, Document, Options, [DirEnc, FileUnEnc, Size, Time], Warn) :- 
+load_page(Source, Document, Options, [DirEnc, FileBase, Suffix, Size, Time], Warn) :- 
 	load_page_warn(Source, Document, Options, [Size, Time], Warn),
 	encode_url(Source, [DirEnc, FileBase, Suffix]), 
-	get_filename(Options, FileBase, Suffix, FileUnEnc), 
 	pl_finalize_warn(Warn).
 
 load_page_warn(Source, Document, Opt, _, _) :-
 	Opt == [post(true)],
 	!, 
 	encode_url(Source, [DirEnc, FileBase, Suffix]), 
-	get_filename([redirect(false)], FileBase, Suffix, FileUnEnc), 
+	www_cache_filename([redirect(false)], FileBase, Suffix, FileUnEnc), 
 	set_tmp_file(DirEnc, FileUnEnc, TmpFile), 
 	open(TmpFile, read, RStream),
 	stream_to_string(RStream, Str), 
 	close(RStream), 
-        pl_load_page([options([post(Str)]), source(Source), document(Document), properties(_, _, _, _)]).
+        pl_load_page([options([post(Str)]), source(Source), document(Document), properties(_, _, _, _, _)]).
 
 load_page_warn(Source, Doc, Options, [Size, Time], Warn) :-
 	pl_allocate_error_term(Error, Warn),
@@ -73,12 +79,18 @@ load_page_warn(Source, Doc, Options, [Size, Time], Warn) :-
 
 url_properties(Url, Properties) :-
 	!, 
-	url_properties(Url, [url_prop(true)], Properties).
+	url_properties(Url, [], Properties).
 
 url_properties(Url, Options, Properties) :-
+	atom(Url), 
+	!, 
+	url_properties(url(Url), Options, Properties).
+
+url_properties(url(Url), Options, Properties) :-
+	atom(Url), 
 	!, 
 	append(Options, [url_prop(true)], OptionsFinal), 
-	load_page(Url, _, OptionsFinal, Properties, _). 
+	load_page(url(Url), _, OptionsFinal, Properties, _). 
 
 encode_url(url(Url), [DirEnc, FileUnEnc, Suffix]) :- 
 	pl_encode_url(Url, [Dir, File, Suf]), 
@@ -191,13 +203,13 @@ stream_to_string_sub(_, '').
 validate('', 'tmp') :- !.
 validate(Name, Name). 
 
-get_filename(Options, FileBase, Suffix, FileName) :-
+www_cache_filename(Options, FileBase, Suffix, FileName) :-
 	member(redirect(false), Options), 
 	!, 
-	str_cat(FileBase, '-noredirect.', FileBaseDot), 
+	str_cat(FileBase, '-redir=false.', FileBaseDot), 
 	str_cat(FileBaseDot, Suffix, FileName). 
 
-get_filename(_, FileBase, Suffix, FileName) :-
+www_cache_filename(_, FileBase, Suffix, FileName) :-
 	str_cat(FileBase, '.', FileBaseRedir), 
 	str_cat(FileBaseRedir, Suffix, FileName). 
 	
@@ -211,3 +223,28 @@ remove(X, [H|T1], [H|T2]):-
 
 throw_error(Error) :- var(Error), !.
 throw_error(Error) :- throw(Error).
+
+set_tmp_file(DirEnc, FileUnEnc, TmpFile) :-
+	slash(Slash),
+	xsb_configuration(user_home,UserHome), 
+	str_cat(UserHome, Slash, UserHomeSlash),
+	str_cat(UserHomeSlash, '.xsb', UserXSB),
+	str_cat(UserXSB, Slash, UserXSBSlash),
+	str_cat(UserXSBSlash, 'www_cache', TmpPath), 
+	str_cat(TmpPath, Slash, TmpPathSlash),
+	str_cat(TmpPathSlash, DirEnc, TmpDir), 
+	(path_sysop(isdir, UserXSB), !
+	;
+	    path_sysop(mkdir, UserXSB)
+	), 
+	(path_sysop(isdir, TmpPath), !
+	;
+	    path_sysop(mkdir, TmpPath)
+	), 
+	(path_sysop(isdir, TmpDir), !
+	;
+	    path_sysop(mkdir, TmpDir)
+	), 
+	str_cat(TmpDir, Slash, TmpDirSlash),
+	str_cat(TmpDirSlash, FileUnEnc, TmpFile).
+%-------------------------------------------------

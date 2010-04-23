@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.H,v 1.106 2010/02/12 15:39:07 dwarren Exp $
+** $Id: standard.H,v 1.107 2010/03/16 22:55:07 kifer Exp $
 **
 */
 
@@ -113,6 +113,8 @@
 :- import file_open/3, file_open/4, file_close/2, file_get/2, file_put/2,
   check_stream_or_alias/4, check_open_stream_or_alias/5, add_aliases/4,
   fd2iostream/3      from file_io.
+:- import fmt_write/2 from file_io.
+
 :- import add_ops/3, op_priority/1, op_specifier/1, add_index/3, '_$index'/3,
   add_trie_index/1, add_table/1, add_incr_table/1, add_incr_dynamic/1, add_opaque/1 /* incremental */
      from file_op.
@@ -152,5 +154,8 @@
 :- import xsb_thread_self/1, (thread_shared)/1, (thread_private)/1 from thread.
 :- import findall/3 from setof.
 :- import (use_variant_tabling)/1, (use_subsumptive_tabling)/1 from tables.
+
+:- import (:-)/2 from usermod.
+:- import load_page/5 from curl.
 
 /* --------------------- end of file standard.H ----------------------- */

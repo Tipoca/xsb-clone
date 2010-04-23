@@ -171,10 +171,15 @@ DllExport int call_conv pl_load_page()
       else if(!strcmp(functor,"properties")){
 
 	c2p_int(CTXTc (int) ret_vals.size, p2p_arg(head, 1));
+	/* return modification time as an integer */
+	c2p_int(CTXTc (int) ret_vals.modify_time, p2p_arg(head, 2));
+	/*
 	if (ctime(&ret_vals.modify_time) == NULL)
-		c2p_string("", p2p_arg(head, 2));
+	    c2p_string("", p2p_arg(head, 2));
 	else
-		c2p_string(CTXTc (char *) ctime(&ret_vals.modify_time), p2p_arg(head, 2));
+	    c2p_string(CTXTc (char *) ctime(&ret_vals.modify_time),
+		       p2p_arg(head, 2));
+	*/
       }
     }
     else{
