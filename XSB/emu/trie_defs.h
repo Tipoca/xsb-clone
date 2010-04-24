@@ -21,7 +21,12 @@
 ** 
 */
 
-#define PRIVATE_TRIE(TYPE)         (TYPE < 2)
 #define PRGE_TRIE                  0
 #define PRAS_TRIE                  1
 #define SHAS_TRIE                  2
+#define TRIE_TYPE(PROPS)           (PROPS & 0xf)
+#define PRIVATE_TRIE(PROPS)        ((PROPS & 0xf) < 2)
+
+#define INCREMENTAL_TRIE           0x10
+#define NON_INCREMENTAL_TRIE           0
+#define IS_INCREMENTAL_TRIE(TYPE)     ((TYPE & 0xf0) > 0)

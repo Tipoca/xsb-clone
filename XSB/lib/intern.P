@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.26 2010-01-19 22:43:52 dwarren Exp $
+** $Id: intern.P,v 1.27 2010-04-24 20:47:29 tswift Exp $
 ** 
 */
 
@@ -41,8 +41,9 @@
 /* Flag error to support alias-concurrency for shared tries: i.e. an
    alias is always valid for a trie */
 trie_create( TrieId , Options) :- 
-	check_options_list(Options,Type,Aliases),
-	i_trie_create(TrieId,Type),
+	check_options_list(Options,Type,Aliases,Incremental),
+	merge_properties(Incremental,Type,Properties),
+	i_trie_create(TrieId,Properties),
 	(Aliases = [] -> 
 	    true
 	  ; 
@@ -53,21 +54,23 @@ trie_create( TrieId , Options) :-
 	        i_trie_drop(TrieId),
 		permission_error(create,alias,Aliases,trie_create/2) ) ).
 
-check_options_list(Options,Type,Alias):- 
+check_options_list(Options,Type,Alias,Incremental):- 
 	check_nonvar(Options,trie_create/2,2),
-	check_options_list_1(Options,Type,Alias).
+	check_options_list_1(Options,Type,Alias,Incremental).
 
-check_options_list_1([],Type,[]):- !,
-	(var(Type) -> Type = PRGE_TRIE ; true).
-check_options_list_1([Option|Rest],Type,Alias):- !,
+check_options_list_1([],Type,[],Incr):- !,
+	(var(Type) -> Type = PRGE_TRIE ; true),
+	(var(Incr) -> Incr = NON_INCREMENTAL_TRIE ; true).
+check_options_list_1([Option|Rest],Type,Alias,Incr):- !,
 	check_nonvar(Option,trie_create/2,2),
 	(Option @= type(_) ->  Option = type(T),transform_type(T,T1),
 	                       set_trie_create_arg(T1,Type,type), Alias = R
-          ; (Option @= alias(_) -> 
-	        Option = alias(A),check_atom(A,trie_create/3,3),Alias = [A|R]
-             ; 	domain_error(trie_option,Option,trie_create/3,3,'') ) ),
-       check_options_list_1(Rest,Type,R).
-check_options_list_1(Culprit,_Type,_Alias):- 
+	; (Option = incremental ->  Incr = INCREMENTAL_TRIE, Alias = R
+           ; (Option @= alias(_) -> 
+	         Option = alias(A),check_atom(A,trie_create/3,3),Alias = [A|R]
+             ; 	domain_error(trie_option,Option,trie_create/2,2,'') ) ) ),
+       check_options_list_1(Rest,Type,R,Incr).
+check_options_list_1(Culprit,_Type,_Alias,_Incr):- 
 	type_error(list,Culprit,trie_create/2,2).
 
 set_trie_create_arg(Option,Arg,OptionName):- 
@@ -81,6 +84,8 @@ transform_type(prge,PRGE_TRIE):-!.
 transform_type(pras,PRAS_TRIE):-!.
 transform_type(Type,_):-
 	domain_error(trie_option,Type,trie_create/2,2,'').
+
+merge_properties(Type,Incr,Prop):- Prop is Type \/ Incr.
 
 %----- 
 
@@ -720,5 +725,42 @@ i_trie_interned(Term,Root,Leaf):-
 i_trie_intern(Term,Root,Leaf,Flag,Check,Expand) :-
 	new_i_trie_intern(Root,Term,Leaf,Flag,Check,Expand).
 */
+:- import writeln/1 from standard.
+
+:- export incr_trie_intern/2, incr_trie_uninternall/2.
+:- export incr_trie_intern_inval/2, incr_trie_uninternall_inval/2.
+:- import incr_table_update/0 from increval.
+:- import invalidate_callnode_trie/1 from increval.
+
+incr_trie_intern(Root,Term) :-
+%	check_incremental_trie(Term,dynamic_predicate_not_incremental),
+        trie_intern(Term,Root),
+        invalidate_callnode_trie(Root), /* root -> callnodeptr */
+	incr_table_update.
+
+incr_trie_intern_inval(Root,Term) :-
+%	check_incremental_trie(Term,dynamic_predicate_not_incremental),
+        trie_intern(Term,Root),
+        invalidate_callnode_trie(Root). /* root -> callnodeptr */
+
+incr_trie_uninternall(Root,Term) :-
+%	check_incremental_trie(Term,dynamic_predicate_not_incremental),
+	( trie_interned(Term,Root,Leaf,_S),
+   	  % writeln(private_trie_unintern(Root,Leaf,NO_CPS_CHECK)),
+	  private_trie_unintern(Root,Leaf,NO_CPS_CHECK),
+	  fail
+         ; 
+          invalidate_callnode_trie(Root), /* root -> callnodeptr */
+  	  incr_table_update).
+
+incr_trie_uninternall_inval(Root,Term) :-
+%	check_incremental_trie(Term,dynamic_predicate_not_incremental),
+	( trie_interned(Term,Root,Leaf,_S),
+   	  % writeln(private_trie_unintern(Root,Leaf,NO_CPS_CHECK)),
+	  private_trie_unintern(Root,Leaf,NO_CPS_CHECK),
+	  fail
+         ; 
+          invalidate_callnode_trie(Root)). /* root -> callnodeptr */
+
 end_of_file.
 

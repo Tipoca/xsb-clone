@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.186 2010/03/19 18:42:19 tswift Exp $
+** $Id: tr_utils.c,v 1.187 2010/04/02 17:24:42 evansbj Exp $
 ** 
 */
 
@@ -1386,9 +1386,10 @@ void init_shared_trie_table() {
 /*----------------------------------------------------------------------*/
 // get_trie_type is directly in dynamic_code_function
 
-Integer new_private_trie(CTXTdeclc int type) {
+Integer new_private_trie(CTXTdeclc int props) {
   Integer result = 0;
   Integer index;
+  int type = TRIE_TYPE(props);
 
   if (itrie_array_first_free < 0) {
     xsb_resource_error(CTXTc "interned tries","newtrie",1);
@@ -1409,6 +1410,14 @@ Integer new_private_trie(CTXTdeclc int type) {
     }
     else  itrie_array[index].next_entry = TRIENULL;
     itrie_array_first_trie = index;
+
+    if IS_INCREMENTAL_TRIE(props) {
+	itrie_array[index].callnode = makecallnode(NULL);
+	initoutedges((callnodeptr)itrie_array[index].callnode);
+	itrie_array[index].incremental = 1;
+	//	printf("incremental\n");
+      }
+
     return result;
   }
 }
@@ -1527,6 +1536,18 @@ int private_trie_interned(CTXTdecl) {
   SPLIT_TRIE_ID(Trie_id,index,type);
   trie_root_addr = &(itrie_array[index].root);
 
+  if(IsNonNULL(ptcpreg) && itrie_array[index].incremental) {
+    VariantSF sf;
+    callnodeptr thiscallnode;
+
+    sf=(VariantSF)ptcpreg;
+    if(IsIncrSF(sf)){
+      thiscallnode = itrie_array[index].callnode;
+      if(IsNonNULL(thiscallnode)){
+	addcalledge(thiscallnode,sf->callnode);  
+      }
+    }
+  }
   if ((*trie_root_addr != NULL) && (!((long) *trie_root_addr & 0x3))) {
     XSB_Deref(trie_term);
     XSB_Deref(Leafterm);

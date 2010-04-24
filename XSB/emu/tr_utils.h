@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.54 2009-09-07 21:08:04 tswift Exp $
+** $Id: tr_utils.h,v 1.55 2010-04-24 20:50:43 tswift Exp $
 ** 
 */
 
@@ -31,6 +31,8 @@ struct interned_trie_t {
   BTNptr  root;
   byte    valid;
   byte    type;
+  byte	  incremental;
+  callnodeptr   callnode;	/* for incremental eval */
   int     prev_entry;
   int     next_entry;
 } ;

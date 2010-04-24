@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.71 2010-03-18 22:22:17 tswift Exp $
+** $Id: tables.c,v 1.72 2010-04-24 20:50:43 tswift Exp $
 ** 
 */
 
@@ -627,7 +627,7 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
   /* incremental  evaluation start */
   
   /* 
-     If a new call is complete we should compare that whether its
+     If a new call is complete we should compare whether its
      answer set is equal to the previous answer set. If no_of_answer
      is >0 we know that not all answers are rederived. Also if a new
      answer is added it is already marked as changed (see tries.c,
@@ -645,7 +645,7 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
     pc=producerSF->callnode->prev_call;
     if(IsNonNULL(pc)){
       /* old calls */
-      if (pc->no_of_answers>0)
+      if (pc->no_of_answers>0)    // if some previous answers have not been rederived
 	pc->changed=1;
       if (pc->changed==0){
 	unchanged_call++;

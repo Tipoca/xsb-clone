@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.6 2009-11-17 14:59:34 tswift Exp $
+** $Id: incr_xsb.c,v 1.7 2010-04-24 20:50:42 tswift Exp $
 ** 
 */
 
@@ -200,6 +200,14 @@ xsbBool incr_eval_builtin(CTXTdecl)
     break;
   }
     
+  case INVALIDATE_CALLNODE_TRIE: {
+    
+    const int callreg=2;
+    callnodeptr c = itrie_array[ptoc_int(CTXTc callreg)].callnode;
+    invalidate_call(c); 
+    
+    break;
+  }
 
   default:
     xsb_exit(CTXTc "Unknown Incremental Evaluation Builtin: %d\n.", builtin_number);

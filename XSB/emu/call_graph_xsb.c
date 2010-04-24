@@ -160,10 +160,7 @@ callnodeptr makecallnode(VariantSF sf){
   cn->id=call_count++; 
   cn->outcount=0;
 
-#ifdef INCR_DEBUG1
-  printcall(cn);printf("\n");
-#endif
-
+  //    printcall(cn);printf("\n");
 
   call_node_count++;
 
@@ -355,9 +352,9 @@ void addcalledge(callnodeptr fromcn, callnodeptr tocn){
   SM_AllocateStruct(smKey, k1);
   k1->goal = tocn->id;
   
-#ifdef INCR_DEBUG
-  printf("%d-->%d",fromcn->id,tocn->id);	
-#endif
+  // #ifdef INCR_DEBUG
+  //  printf("%d-->%d",fromcn->id,tocn->id);	
+  // #endif
   
   
   if (NULL == search_some(fromcn->outedges->hasht,k1)) {
