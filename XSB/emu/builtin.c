@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.335 2010-04-21 16:20:35 tswift Exp $
+** $Id: builtin.c,v 1.336 2010-04-25 03:00:20 dwarren Exp $
 ** 
 */
 
@@ -496,7 +496,7 @@ void constructString(CTXTdeclc Cell addr, int ivstr)
   case XSB_REF1:
   case XSB_ATTV:
   case XSB_FLOAT:
-    xsb_abort("[PTOC_LONGSTRING] Argument of unknown type");
+    xsb_abort("[PTOC_LONGSTRING] Argument of unknown type (%p)",addr);
   case XSB_STRUCT:  
     if (get_str_psc(addr) == comma_psc) {
       constructString(CTXTc cell(clref_val(addr)+1),ivstr);
