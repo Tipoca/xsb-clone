@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader.P,v 1.60 2009/12/03 20:36:26 dwarren Exp $
+** $Id: loader.P,v 1.61 2010/04/14 15:21:50 dwarren Exp $
 ** 
 */
 
@@ -410,7 +410,7 @@ load(ModName) :-
 		existence_error(module,ExpandedModName,load,1)
 	).
 
-check_times_and_load(FileName_O,FileName_P,FileName_H,FileName_C,_FileName_CPP,ModName) :-
+check_times_and_load(FileName_O,FileName_P,FileName_H,FileName_C,FileName_CPP,ModName) :-
 	(local_file_exists(FileName_P)
 	 ->	(local_newerthan(FileName_P,FileName_O) % check if source is newer
 		 ->	compile_and_load(FileName_P,ModName)
