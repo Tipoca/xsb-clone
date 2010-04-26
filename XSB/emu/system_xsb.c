@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.55 2010-02-26 19:03:23 dwarren Exp $
+** $Id: system_xsb.c,v 1.56 2010-04-26 18:05:51 dwarren Exp $
 ** 
 */
 
@@ -1016,15 +1016,13 @@ xsbBool file_stat(CTXTdeclc int callno, char *file)
       c2p_int(CTXTc 0xFFFFFF & stat_buff.st_mtime,p2p_arg(reg_term(CTXTc 3),2));
     } else if (!retcode) {
       /* file exists, arg3 non-functor:  issue an error */
-      xsb_warn("Arg 3 (the time argument) must be of the form time(X,Y)");
-      ctop_int(CTXTc 3, (0x7FFFFFF & stat_buff.st_mtime));
+      ctop_int(CTXTc 3, stat_buff.st_mtime);
     } else if (functor_arg3) {
       /* no file, and arg3 is functor: return two 0's */
       c2p_int(CTXTc 0, p2p_arg(reg_term(CTXTc 3),2));
       c2p_int(CTXTc 0, p2p_arg(reg_term(CTXTc 3),1));
     } else {
       /* no file, no functor: return 0 */
-      xsb_warn("Arg 3 (the time argument) must be of the form time(X,Y)");
       ctop_int(CTXTc 3, 0);
     }
     return TRUE;
