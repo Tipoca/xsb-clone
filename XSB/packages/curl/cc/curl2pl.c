@@ -83,6 +83,7 @@ DllExport int call_conv pl_load_page()
 
   curl_opt options = init_options();
   curl_ret ret_vals;
+
 	
   tail = reg_term(1);
   
@@ -171,14 +172,26 @@ DllExport int call_conv pl_load_page()
       else if(!strcmp(functor,"properties")){
 
 	c2p_int(CTXTc (int) ret_vals.size, p2p_arg(head, 1));
+	/* the following code can be used to convert to local/UTC time, if
+	    necessary. Note: XSB uses local time, and ret_vals.modify_time
+	    seems to be local, too.
+
+	    struct tm * timeinfo;
+
+	    timeinfo = gmtime(&(ret_vals.modify_time)); // UTC time
+	    timeinfo = localtime(&(ret_vals.modify_time)); // local time
+	    c2p_int(CTXTc (int) mktime(timeinfo), p2p_arg(head,2));
+	*/
 	/* return modification time as an integer */
-	c2p_int(CTXTc (int) ret_vals.modify_time, p2p_arg(head, 2));
+	c2p_int(CTXTc (int) ret_vals.modify_time, p2p_arg(head,2));
 	/*
-	if (ctime(&ret_vals.modify_time) == NULL)
-	    c2p_string("", p2p_arg(head, 2));
-	else
-	    c2p_string(CTXTc (char *) ctime(&ret_vals.modify_time),
-		       p2p_arg(head, 2));
+	  The following converts time to string - not useful
+
+	  if (ctime(&ret_vals.modify_time) == NULL)
+	      c2p_string("", p2p_arg(head, 2));
+	  else
+	      c2p_string(CTXTc (char *) ctime(&ret_vals.modify_time),
+		         p2p_arg(head, 2));
 	*/
       }
     }
