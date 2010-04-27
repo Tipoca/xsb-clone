@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: assert.P,v 1.49 2010/02/10 19:13:00 dwarren Exp $
+** $Id: assert.P,v 1.50 2010/03/16 16:41:37 dwarren Exp $
 ** 
 */
 
@@ -197,7 +197,7 @@ assert0(Clause, AZL, Index1,_ErrPred) :-
 	  (Clause = (Head:-Body) ->
 	      check_assert_fact(Head, Pred), 
   	      ( check_body(Body) -> true ; type_error(callable,Body,Pred,1)),
-              ('_$trie_asserted'(Head) -> 
+              ('_$trie_asserted'(Head), Body \== true -> 
 		    warning(['Asserting clause with non-empty body for ',Head,
 		             ' which is trie-indexed. ',
 		            'Indexing for this predicate may not be efficient.']) ; true),
@@ -438,9 +438,15 @@ get_dynamic_pred_ep(Head,CallingPred,PredEP,PSC) :-
 /*======================================================================*/
 
 retract(Rule) :-	% changed for multifile predicates (9/2008)
-	(Rule = (Head :- Body)
+	(Rule = (Head0 :- Body)
 	 ->	true
-	 ;	Head = Rule, Body = true
+	 ;	Head0 = Rule, Body = true
+	),
+	(nonvar(Head0),Head0 = Mod:Head1
+	 ->	term_new_mod(Mod,Head1,Head),
+		Head1 =.. [_|Args],
+		Head =.. [_|Args]
+	 ;	Head = Head0
 	),
 	call_xsb_hook(xsb_retract_hook(_),[Head,Body],all),
 	(nonvar(Head), '_$multifile'(Head)
@@ -487,7 +493,13 @@ retract0(Rule) :-	% original retract/1, is used in standard.P
 	get_dynamic_pred_ep(Head,'retract/1',PredEP,PSC),
 	db_retract(Head, Body, PredEP,PSC).
 
-retractall(Fact) :-
+retractall(Fact0) :-
+	(nonvar(Fact0),Fact0 = Mod:Fact1
+	 ->	term_new_mod(Mod,Fact1,Fact),
+		Fact1 =.. [_|Args],
+		Fact =.. [_|Args]
+	 ;	Fact = Fact0
+	),
 	call_xsb_hook(xsb_retract_hook(_),[Fact,true],all),
 	(nonvar(Fact), '_$multifile'(Fact)
 	 ->	do_multifile_retractall(Fact)
