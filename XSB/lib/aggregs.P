@@ -133,27 +133,27 @@ bagOf(Call,List) :- bagof(Var,Call(Var),List).
 % Template,Call,Res are like args for setof; Call may have existentials
 
 bagReduce(Template,Call,Res,Op,Id) :-
-	table_state(bagReduce1(Template,Call,Res,Op,Id),_PT,_,AnsSetStatus),
+	table_state(bagReduce1(Op,Id,Template,Call,Res),_PT,_,AnsSetStatus),
 	(AnsSetStatus == complete
-	 ->	bagReduce1(Template,Call,Res,Op,Id)
+	 ->	bagReduce1(Op,Id,Template,Call,Res)
 	 ; AnsSetStatus == undefined
-	 ->	(bagReduce1(Template,Call,Res,Op,Id),fail
+	 ->	(bagReduce1(Op,Id,Template,Call,Res),fail
 		 ;
 		 bagReduce(Template,Call,Res,Op,Id)
 		)
 	 ; AnsSetStatus == incomplete
 	 ->	get_ptcp(PTCP),
-		get_producer_call(bagReduce1(Template,Call,Res,Op,Id),
+		get_producer_call(bagReduce1(Op,Id,Template,Call,Res),
 		                  SubgPtr,_RetTmplt),
 		is_incomplete(SubgPtr,PTCP),
-		bagReduce1(Template,Call,Res,Op,Id)
+		bagReduce1(Op,Id,Template,Call,Res)
 	).
 
 :- table bagReduce1/5.
 :- use_variant_tabling bagReduce1(_,_,_,_,_).
 
 :- import '_$$get_returns'/3 from tables.
-bagReduce1(Templ,Call,Res,Op,Id) :-
+bagReduce1(Op,Id,Templ,Call,Res) :-
 	'_$savecp'(Breg),
 	breg_retskel(Breg,5,Skel,Cs),
 	excess_vars(Call,Templ,[],VarList),
@@ -188,7 +188,6 @@ v(a,2).  v(b,4).  v(_,3).
 and goal bagPO(Y,v(X,Y),Min,(=<)).
 This implementation gives:
 X = a, Min = 2;
-X = b, Min = 3;
 X = _, Min = 3;
 no
 
@@ -199,36 +198,35 @@ not 4.
 **************/
 %%:- import writeln/2, nl/1 from standard.
 
-bagPO(Templ,Call,_Res,PO) :- bagPO1(PO,_,Call,Templ,_),fail.
-bagPO(Templ,Call,Res,PO) :- bagPO1(PO,_,Call,Templ,Res1),Res=Res1.
+bagPO(Templ,Call,_Res,PO) :- bagPO1(PO,_,Call,Templ),fail.
+bagPO(Templ,Call,Res,PO) :- bagPO1(PO,_,Call,Templ),Res=Templ.
 
-:- table bagPO1/5.
+:- table bagPO1/4.
 
-:- use_variant_tabling bagPO1(_,_,_,_,_).
-bagPO1(PO,AVars,Call,Templ,Agg) :-  % templ is X, Call is pred(A,B,X)
+:- use_variant_tabling bagPO1(_,_,_,_).
+bagPO1(PO,AVars,Call,Templ) :-  % templ is X, Call is pred(A,B,X)
 	'_$savecp'(Breg),
-	breg_retskel(Breg,5,Skel,Cs),
+	breg_retskel(Breg,4,Skel,Cs),
 	excess_vars(Call,Templ,[],VarList),
-	copy_term(p(Agg,AVars,VarList,Skel),p(OAgg,OAVars,OVarList,OSkel)),
+	copy_term(p(Templ,AVars,VarList,Skel),p(OTempl,OAVars,OVarList,OSkel)),
 	(atom(PO)
-	 ->	POCA =.. [PO,Agg,OAgg],
-		POCB =.. [PO,OAgg,Agg]
+	 ->	POCA =.. [PO,Templ,OTempl],
+		POCB =.. [PO,OTempl,Templ]
 	 ; PO = PO1/2
-	 ->	POCA =.. [PO1,Agg,OAgg],
-		POCB =.. [PO1,OAgg,Agg]
+	 ->	POCA =.. [PO1,Templ,OTempl],
+		POCB =.. [PO1,OTempl,Templ]
 	 ;	copy_term(PO,POCA), copy_term(PO,POCB),
-		arg(1,POCA,Agg), arg(2,POCA,OAgg),
-		arg(1,POCB,OAgg), arg(2,POCB,Agg)
+		arg(1,POCA,Templ), arg(2,POCA,OTempl),
+		arg(1,POCB,OTempl), arg(2,POCB,Templ)
 	),
-	POCE = (OAgg == Agg),
+	POCE = (OTempl == Templ),
 	%% following is to avoid building this term for every answer...
 	Delete_old_as_nec_call = delete_old_as_nec(POCA,POCB,POCE,VarList,OVarList,AVars,OAVars,Cs,OSkel),
 	call(Call),
 	%%nl(userout),writeln(userout,newAnswer(Call,Templ)),
 	(ground(VarList) -> AVars = [] ; excess_vars(VarList,Templ,[],AVars)), % optimize common case
-	Templ = Agg,
 	findall([],Delete_old_as_nec_call,[]).
-%%	Rets = []. %%, writeln(userout,answerRet(Call,Agg)). % if noone said not to return it, then return this ans
+%%	Rets = []. %%, writeln(userout,answerRet(Call,Templ)). % if noone said not to return it, then return this ans
 
 delete_old_as_nec(POCA,POCB,POCE,Call,Call,NAVars,OAVars,Cs,OSkel) :-
 	Template = p(OSkel,Leaf), % to do only once
@@ -261,7 +259,7 @@ delete_old_as_nec(POCA,POCB,POCE,Call,Call,NAVars,OAVars,Cs,OSkel) :-
 		 ->	true	% don't return this answer!
 		 ;	fail
 		)
-	 ;	fail % incompatible
+	 ;	fail % incomparable
 	).
 
 /***** for testing:
