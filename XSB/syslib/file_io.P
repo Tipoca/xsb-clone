@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: file_io.P,v 1.59 2009/10/12 20:36:35 dwarren Exp $
+** $Id: file_io.P,v 1.61 2009/10/19 16:56:42 dwarren Exp $
 ** 
 */
 
@@ -268,7 +268,6 @@ copyIOport(_,_).
 
 % TLS: changed to allow users to call with Time either time(A,B) or as var.
 file_time(FileName, Time) :-
-	Time = time(_,_),
 	sys_system(STAT_FILE_TIME,FileName,Time, _,_,_,_).
 
 file_size(FileName, Size) :-
@@ -309,11 +308,11 @@ path_sysop(readable, Path) :- !, sys_access(Path, 'r', Res), Res =:= 0.
 path_sysop(writable, Path) :- !, sys_access(Path, 'w', Res), Res =:= 0.
 path_sysop(executable, Path) :- !, sys_access(Path, 'x', Res), Res =:= 0.
 path_sysop(modtime,Path,Time) :- !,
-	file_time(Path,time(Time1,Time2)), Time = [Time1,Time2], Time \== [0,0].
+	file_time(Path,Time), Time \== 0.
 path_sysop(newerthan,Path1,Path2) :- !,
-	file_time(Path1,time(Time11,Time12)),
-	file_time(Path2,time(Time21,Time22)),
-	time(Time11,Time12) @>= time(Time21,Time22).
+	file_time(Path1,Time1),
+	file_time(Path2,Time2),
+	Time1 >= Time2.
 path_sysop(size,Path,Size) :- !,
 	sys_system(STAT_FILE_SIZE,Path,Size, _,_,_,_).
 path_sysop(tmpfilename,TmpName) :- !,

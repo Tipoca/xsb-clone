@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: consult.P,v 1.78 2009/10/15 05:56:48 kifer Exp $
+** $Id: consult.P,v 1.79 2010/01/21 19:29:54 dwarren Exp $
 ** 
 */
 
@@ -190,28 +190,28 @@ needs_recompile(XSB_SRC_EXTENSION_ATOM_SANS_DOT, Base, Obj) :-
 	)
 	;
 	(str_cat(Base, XSB_HDR_EXTENSION_ATOM, HFileName),
-	  file_time(Obj, time(OTime1,Otime2)),
+	  file_time(Obj, OTime),
 	  %% If no header file exists, then HTime = 0
-	  file_time(HFileName, time(HTime1,HTime2)), 
-	  time(OTime1,Otime2) @=< time(HTime1,HTime2)
+	  file_time(HFileName, HTime), 
+	  OTime =< HTime
 	).	  
 needs_recompile(pl, Base, Obj) :-
 	( str_cat(Base, '.pl', PFileName),
-	  file_time(Obj, time(OTime1,OTime2)), 
-	  file_time(PFileName, time(PTime1,PTime2)),
-	  time(OTime1,OTime2) @=< time(PTime1,PTime2)
+	  file_time(Obj, OTime), 
+	  file_time(PFileName, PTime),
+	  OTime =< PTime
 	)
 	;
 	( str_cat(Base, XSB_HDR_EXTENSION_ATOM, HFileName),
-	  file_time(Obj, time(OTime1,Otime2)),
+	  file_time(Obj, OTime),
 	  %% If no header file exists, then HTime = 0
-	  file_time(HFileName, time(HTime1,HTime2)), 
-	  time(OTime1,Otime2) @=< time(HTime1,HTime2)
+	  file_time(HFileName, HTime), 
+	  OTime =< HTime
 	).	  
 needs_recompile('', Base, Obj) :-
-	file_time(Obj, time(OTime1,OTime2)), 
-	file_time(Base, time(PTime1,PTime2)),
-	time(OTime1,OTime2) @=< time(PTime1,PTime2).
+	file_time(Obj, OTime), 
+	file_time(Base, PTime),
+	OTime =< PTime.
 needs_recompile('c', Base, Obj) :-
 	xsb_configuration(os_type, OS_type),
 	( ( str_sub('solaris', OS_type) -> str_cat(Base, '.so', C_Obj)
@@ -533,9 +533,9 @@ load_dyn1(Rfname,Dir) :-
 
 init_for_load(Filename,Mod) :-
 	conset(needs_restart, 0), conset(xpp_on, 0), % Cleanup before XPP
-	file_time(Filename,time(Time1,Time2)),
+	file_time(Filename,Time),
 	retractall(load_dyn_file_loaded(Filename,_)),
-	assert(load_dyn_file_loaded(Filename,time(Time1,Time2))),
+	assert(load_dyn_file_loaded(Filename,time(Time))),
 	retractall(load_dyn_trie_retracted(_)),
 	retractall(load_dyn_retracted(_,_,_,_,_)),
 	assert(load_dyn_file(Filename)),
@@ -924,9 +924,9 @@ if_should_not_reload(File) :-
 	get_fname(File,SExt,Base,_Mod),
 	get_HRname(SExt,Base,_Hfname,Filename),
 	expand_filename(Filename,AFilename),
-	file_time(AFilename,time(Ctime1,Ctime2)),
-	load_dyn_file_loaded(AFilename,time(Ltime1,Ltime2)),
-	time(Ltime1,Ltime2) @>= time(Ctime1,Ctime2),
+	file_time(AFilename,Ctime),
+	load_dyn_file_loaded(AFilename,time(Ltime)),
+	Ltime >= Ctime,
 	\+ need_more_index(AFilename).
 
 need_more_index(Filename) :-
