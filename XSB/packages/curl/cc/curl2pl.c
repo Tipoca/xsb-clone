@@ -174,10 +174,9 @@ DllExport int call_conv pl_load_page()
 	c2p_int(CTXTc (int) ret_vals.size, p2p_arg(head, 1));
 	/* the following code can be used to convert to local/UTC time, if
 	    necessary. Note: XSB uses local time, and ret_vals.modify_time
-	    seems to be local, too.
+	    is local, too.
 
 	    struct tm * timeinfo;
-
 	    timeinfo = gmtime(&(ret_vals.modify_time)); // UTC time
 	    timeinfo = localtime(&(ret_vals.modify_time)); // local time
 	    c2p_int(CTXTc (int) mktime(timeinfo), p2p_arg(head,2));
