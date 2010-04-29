@@ -50,9 +50,9 @@
 load_page(_Source, _Document, _Options, _, _Warn) :- 
 	catch(\+ curl_info:curl_info(support,yes),
 	      _,
-	      throw(error(existence_error, 'Error: open(url(...), ..., ...) - the package Curl is not configured'))),
+	      throw(error(existence_error, 'Error: open(url(...), ..., ...) - the XSB package Curl has not been configured - see the XSB manual, volume 2'))),
 	!,
-	throw(error(existence_error, 'Error: open(url(...), ..., ...) - the package Curl is not configured')).
+	throw(error(existence_error, 'Error: open(url(...), ..., ...) - the package Curl has not been configured - see the XSB manual, volume 2')).
 
 load_page(Source, Document, Options, [DirEnc, FileBase, Suffix, Size, Time], Warn) :- 
 	load_page_warn(Source, Document, Options, [Size, Time], Warn),
