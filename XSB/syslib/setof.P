@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: setof.P,v 1.6 2006/02/06 20:09:08 tswift Exp $
+** $Id: setof.P,v 1.7 2010/02/10 19:13:00 dwarren Exp $
 ** 
 */
 
@@ -163,15 +163,18 @@ _X^P :- call(P).
 /*	The rest of buffer contains the answer (a list)			*/
 /*======================================================================*/
 
-findall(Template,Goal,List) :- findall(Template,Goal,List,[]).
+findall(Template,Goal,List) :- bfindall(Template,Goal,List,[]).
 
-% findall/4
+findall(Template,Goal,List,Tail) :- bfindall(Template,Goal,List,Tail).
+
+% (dsw renamed to fix tracing, since findall/4 is now standard, 4/30/10)
+% bfindall/4
 % by Bart Demoen - Christmas period 1996
 % inspiration from a very old ALP newsletter and some Portuguese people
 % with a twist for the fact that findalls are not strictly nested due to
 % tabling donated to XSB
 
-findall(Template,Goal,List,Tail) :-
+bfindall(Template,Goal,List,Tail) :-
 	'$$findall_init'(I,Closed),
 	(
 	  call(Goal), '$$findall_add'(Template,I,Closed), fail

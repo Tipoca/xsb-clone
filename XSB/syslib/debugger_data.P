@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debugger_data.P,v 1.12 2008/04/27 15:28:06 tswift Exp $
+** $Id: debugger_data.P,v 1.13 2008/08/25 19:18:04 dwarren Exp $
 ** 
 */
 
@@ -81,7 +81,7 @@ trace_this_noprint(goal_cut_trans, 3).
 %% Trace this standard predicate
 trace_standard_predicate(findall,3).
 %% but control the prompts that are actualy printed
-trace_this_noprint(findall, 4). %% this is an auxiliary pred for findall
+trace_this_noprint(bfindall, 4). %% this is an auxiliary pred for findall
 
 trace_standard_predicate(setof,3).
 trace_standard_predicate(bagof,3).
