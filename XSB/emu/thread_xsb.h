@@ -1,19 +1,19 @@
 /* File:      thread_xsb.h
 ** Author(s): Marques
 ** Contact:   xsb-contact@cs.sunysb.edu
-** 
+**
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
-** 
+**
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
 ** Software Foundation; either version 2 of the License, or (at your option)
 ** any later version.
-** 
+**
 ** XSB is distributed in the hope that it will be useful, but WITHOUT ANY
 ** WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 ** FOR A PARTICULAR PURPOSE.  See the GNU Library General Public License for
 ** more details.
-** 
+**
 ** You should have received a copy of the GNU Library General Public License
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -49,7 +49,7 @@ typedef pthread_t pthread_t_p;
 #define PTHREAD_CANCEL(a) pthread_cancel(a);
 #endif
 
-/* Lower 20 bits of thread are entry, others are incarnation 
+/* Lower 20 bits of thread are entry, others are incarnation
    TLS: problems with INC_MASK_RIGHT and 64-bits? */
 #define INC_MASK_RIGHT			0x3ff
 #define INC_SHIFT			20
@@ -58,20 +58,20 @@ typedef pthread_t pthread_t_p;
 
 #define DEFAULT_MQ_SIZE 1024
 
-#define THREAD_ENTRY(TID)		((TID)&ENTRY_MASK)
+#define THREAD_ENTRY(TID)		((Integer)(TID)&ENTRY_MASK)
 #define THREAD_INCARN(TID)		(((TID)&INC_MASK)>>INC_SHIFT)
 #define SET_THREAD_INCARN(TID,INC)	((TID) = ((TID & ~INC_MASK) |\
 					 (((INC)<<INC_SHIFT) & INC_MASK)))
 
 typedef struct Mutex_Frame {
-  pthread_mutex_t th_mutex; 
+  pthread_mutex_t th_mutex;
   int num_locks;
-  int owner;
+  Integer owner;
 } MutexFrame;
 
 typedef struct Dynamic_Mutex_Frame *DynMutPtr;
 typedef struct Dynamic_Mutex_Frame {
-  pthread_mutex_t th_mutex; 
+  pthread_mutex_t th_mutex;
   int             num_locks;
   int             tot_locks;
   int             owner;
@@ -114,7 +114,7 @@ extern pthread_mutex_t completing_mut;
 extern pthread_cond_t completing_cond;
 
 extern pthread_attr_t detached_attr_gl;
-extern pthread_attr_t normal_attr_gl; 
+extern pthread_attr_t normal_attr_gl;
 
 extern counter max_threads_sofar ;
 
@@ -162,8 +162,8 @@ extern int max_threads_glc ;
 #define SYS_MUTEX_UNLOCK_NOERROR( M )   {pthread_mutex_unlock( MUTARRAY_MUTEX(M) );        \
                                          MUTARRAY_OWNER(M) = -1; }
 #else
-#define SYS_MUTEX_LOCK( M ) 
-#define SYS_MUTEX_LOCK_NOERROR( M ) 
+#define SYS_MUTEX_LOCK( M )
+#define SYS_MUTEX_LOCK_NOERROR( M )
 #define SYS_MUTEX_UNLOCK( M )
 #define SYS_MUTEX_UNLOCK_NOERROR( M )
 #define SYS_MUTEX_INCR( M )

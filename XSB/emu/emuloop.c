@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.204 2010-04-03 23:53:36 evansbj Exp $
+** $Id: emuloop.c,v 1.205 2010-05-02 05:11:26 evansbj Exp $
 ** 
 */
 
@@ -2874,13 +2874,9 @@ argument positions.
 #ifdef MULTI_THREAD
     if (xsb_mode == C_CALLING_XSB && th != main_thread_gl) {
       xsb_ready = XSB_IN_C;
-      int pthread_cond_wait_err = pthread_cond_signal(&xsb_done_cond);
-      if (pthread_cond_wait_err)
-			perror("### emuloop signaling xsb_done_cond ###");
+      int pthread_cond_wait_err = xsb_cond_signal(&xsb_done_cond, "emuloop", __FILE__, __LINE__);
       while ((XSB_IN_C == xsb_ready) && (!pthread_cond_wait_err))
-      	pthread_cond_wait_err = pthread_cond_wait( &xsb_started_cond, &xsb_synch_mut );
-      if (pthread_cond_wait_err)
-			perror("### emuloop waiting on condition xsb_started_cond ###");
+      	pthread_cond_wait_err = xsb_cond_wait(&xsb_started_cond, &xsb_synch_mut, "emuloop", __FILE__, __LINE__);
     } else  
 #endif
     return(0);	/* not "goto contcase"! */

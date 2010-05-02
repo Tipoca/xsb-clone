@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_handler.P,v 1.57 2008/10/16 18:00:02 dwarren Exp $
+** $Id: error_handler.P,v 1.58 2008/11/06 00:10:18 tswift Exp $
 ** 
 */
 
@@ -51,6 +51,10 @@ default_error_handler(Error) :-
 	default_sys_error_handler(Error).
 
 %----
+:- import thread_exit_handler/1 from thread.
+ccall_error_handler(thread_exit(Term)) :-
+	thread_exit_handler(Term),   
+	!.				% cut should be unnecessary, as thread should have exited by here
 
 ccall_error_handler(Error) :- 
 	default_user_error_handler(Error),

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.70 2010-01-30 20:17:37 evansbj Exp $
+** $Id: context.h,v 1.71 2010-05-02 05:11:26 evansbj Exp $
 ** 
 */
 
@@ -424,7 +424,7 @@ Cell _pflags[MAX_PRIVATE_FLAGS];
 
 /* Thread Id (for fast access) */
 
-  int tid;
+  pthread_t tid;
 
 /* stuff for deadlock detection in completion */
 #ifdef SHARED_COMPL_TABLES
@@ -488,7 +488,7 @@ pthread_cond_t * cond_var_ptr ;
 typedef struct th_context th_context ;
 
 
-#define xsb_thread_id           (th -> tid)
+#define xsb_thread_id           (Integer)(th -> tid)
 #define xsb_thread_entry        (THREAD_ENTRY(th -> tid))
 
 #define call_intercept		(th->_call_intercept)

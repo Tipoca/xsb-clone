@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.94 2010-04-05 06:02:32 evansbj Exp $
+** $Id: cinterf.c,v 1.95 2010-05-02 05:11:26 evansbj Exp $
 ** 
 */
 
@@ -703,7 +703,7 @@ static char *ctop_term0(CTXTdeclc char *ptr, char *c_dataptr, char **subformat,
     if (ch=='*') ch = *ptr++;
     switch (ch) {
 	case 'i':			/* int */
-	
+
 	if (!ignore) c2p_int(CTXTc *((int *)(c_dataptr)), variable);
 	c_dataptr_rest = c_dataptr + sizeof(int);
 	break;
@@ -1293,12 +1293,12 @@ struct ccall_error_t ccall_error;
 
 void create_ccall_error(CTXTdeclc char * type, char * message) {
   strncpy(xsb_get_error_type(CTXT),type,ERRTYPELEN);  
-  strncpy(xsb_get_error_message(CTXT),message,ERRMSGLEN);	
+  strncpy(xsb_get_error_message(CTXT),message,ERRMSGLEN);
 }
 
 void reset_ccall_error(CTXTdecl) {	 
     (ccall_error).ccall_error_type[0] = '\0';  
-    (ccall_error).ccall_error_message[0] = '\0';	
+    (ccall_error).ccall_error_message[0] = '\0';
   }
 
 #ifndef MULTI_THREAD
@@ -1490,28 +1490,19 @@ DllExport int call_conv writeln_to_xsb_stdin(char * input){
 #define EXECUTE_XSB {						\
     if (th != main_thread_gl) {					\
       xsb_ready = XSB_IN_Prolog;										\
-      int pthread_cond_wait_err = pthread_cond_signal(&xsb_started_cond);			\
-		if (pthread_cond_wait_err)		\
-			perror("### EXECUTE_XSB signaling xsb_started_cond ###");						\
+      int pthread_cond_wait_err = xsb_cond_signal(&xsb_started_cond, "EXECUTE_XSB", __FILE__, __LINE__);	\
       while ((XSB_IN_Prolog == xsb_ready) && (!pthread_cond_wait_err))										\
-      	pthread_cond_wait_err = pthread_cond_wait( &xsb_done_cond, &xsb_synch_mut );	\
-      if (pthread_cond_wait_err)		\
-			perror("### EXECUTE_XSB waiting on condition xsb_done_cond ###");						\
-    }								\
+      	pthread_cond_wait_err = xsb_cond_wait(&xsb_done_cond, &xsb_synch_mut, "EXECUTE_XSB", __FILE__, __LINE__);	\
+    }	\
     else xsb(CTXTc XSB_EXECUTE,0,0);				\
   }
 #define EXECUTE_XSB_SETUP_X(NR) {				\
     if (th != main_thread_gl) {					\
       xsb_ready = XSB_IN_Prolog;										\
-      int pthread_cond_wait_err = pthread_cond_signal(&xsb_started_cond);			\
-		if (pthread_cond_wait_err)		\
-			perror("### EXECUTE_XSB_SETUP_X signaling xsb_started_cond ###");						\
-      pthread_cond_signal(&xsb_started_cond);			\
+      int pthread_cond_wait_err = xsb_cond_signal(&xsb_started_cond, "EXECUTE_XSB_SETUP_X", __FILE__, __LINE__);	\
       while ((XSB_IN_Prolog == xsb_ready) && (!pthread_cond_wait_err))										\
-      	pthread_cond_wait_err = pthread_cond_wait( &xsb_done_cond, &xsb_synch_mut );	\
-      if (pthread_cond_wait_err)		\
-			perror("### EXECUTE_XSB_SETUP_X waiting on condition xsb_done_cond ###");						\
-    }								\
+      	pthread_cond_wait_err = xsb_cond_wait(&xsb_done_cond, &xsb_synch_mut, "EXECUTE_XSB_SETUP_X", __FILE__, __LINE__);	\
+    }	\
     else xsb(CTXTc XSB_SETUP_X,NR,0);				\
   }
 #endif
@@ -1636,24 +1627,21 @@ DllExport int call_conv xsb_command_string(CTXTdeclc char *goal)
 	#endif
 	
 	LOCK_XSB_QUERY;
-	LOCK_XSB_READY;
 	LOCK_XSB_SYNCH;
 	reset_ccall_error(CTXT);
-	
+
 	c2p_string(CTXTc goal,reg_term(CTXTc 1));
 	c2p_int(CTXTc 2,reg_term(CTXTc 3));  /* command for calling a string goal */
 	EXECUTE_XSB;
 	if (ccall_error_thrown(CTXT))  
 	{
 		UNLOCK_XSB_SYNCH;
-		UNLOCK_XSB_READY;
 		UNLOCK_XSB_QUERY;
 		return(XSB_ERROR);
 	}
 	if (is_var(reg_term(CTXTc 1))) /* goal failed, so return 1 */
 	{
 		UNLOCK_XSB_SYNCH;
-		UNLOCK_XSB_READY;
 		UNLOCK_XSB_QUERY;
 		return(XSB_FAILURE);
 	} 
@@ -1662,35 +1650,42 @@ DllExport int call_conv xsb_command_string(CTXTdeclc char *goal)
 	if (is_var(reg_term(CTXTc 1))) 
 	{  /* goal succeeded */
 		UNLOCK_XSB_SYNCH;
-		UNLOCK_XSB_READY;
 		UNLOCK_XSB_QUERY;
 		return(XSB_SUCCESS);
 	}
 	//  (void) xsb_close_query(CTXT);
 	UNLOCK_XSB_SYNCH;
-	UNLOCK_XSB_READY;
 	UNLOCK_XSB_QUERY;
 	return(XSB_ERROR);     // to shut up compiler.
 	}
 
+//
+//	We call thread_exit/1 in the MT configuration.
+//
+//	This will clean up the resources allocated in the xsb_ccall_thread_create call.
+//
+// It mainly cleans up and disposes of elements in the passed context.
+//
 DllExport int call_conv xsb_kill_thread(CTXTdecl)
 {
-#ifndef MULTI_THREAD
-  if (!xsb_inquery) {
-  LOCK_XSB_QUERY;
-  }
+#ifdef MULTI_THREAD
+  // Make sure that we have thread_exit/1 available to us...
+  if (XSB_SUCCESS == xsb_command_string(CTXTc "import thread_exit/1 from thread."))
+	{
+		c2p_functor(CTXTc "thread_exit", 1, reg_term(CTXTc 1));
+		c2p_int(CTXTc 0, p2p_arg(reg_term(CTXTc 1),1));
+		if (XSB_ERROR == xsb_query(CTXT))
+			printf("### xsb_kill_thread Error r: %s/%s ###\n",xsb_get_error_type(CTXT),xsb_get_error_message(CTXT));
+	
+		mem_dealloc(th,sizeof(th_context),THREAD_SPACE);
+ 	}
+	else
+		printf("### xsb_kill_thread import thread_exit error: %s/%s ###\n",xsb_get_error_type(CTXT),xsb_get_error_message(CTXT));
 #endif
 
-  LOCK_XSB_READY;
-  LOCK_XSB_SYNCH;
+	xsb(CTXTc XSB_SHUTDOWN, 0, 0);
 
-  c2p_int(CTXTc 0,reg_term(CTXTc 3));  /* command for calling a goal */
-  c2p_functor(CTXTc "thread_exit",0,reg_term(CTXTc 1));
-  xsb(CTXTc XSB_SHUTDOWN, 0, 0);
-  UNLOCK_XSB_SYNCH;
-  UNLOCK_XSB_READY;
-  UNLOCK_XSB_QUERY;
-  return(XSB_ERROR);     // to shut up compiler.
+	return(XSB_SUCCESS);
 }
 
 
@@ -1720,7 +1715,6 @@ DllExport int call_conv xsb_query(CTXTdecl)
 #endif
 
   LOCK_XSB_QUERY;
-  LOCK_XSB_READY;
   LOCK_XSB_SYNCH;
 
   reset_ccall_error(CTXT);
@@ -1729,21 +1723,18 @@ DllExport int call_conv xsb_query(CTXTdecl)
   if (ccall_error_thrown(CTXT)) {
     xsb_inquery = 0;
     UNLOCK_XSB_SYNCH;
-    UNLOCK_XSB_READY;
-    UNLOCK_XSB_QUERY;
+        UNLOCK_XSB_QUERY;
     return(XSB_ERROR);
   }
   if (is_var(reg_term(CTXTc 1))) {
     xsb_inquery = 0;
     UNLOCK_XSB_SYNCH;
-    UNLOCK_XSB_READY;
-    UNLOCK_XSB_QUERY;
+        UNLOCK_XSB_QUERY;
     return(XSB_FAILURE);
   }
   xsb_inquery = 1;
   UNLOCK_XSB_SYNCH;
-  UNLOCK_XSB_READY;
-//  UNLOCK_XSB_QUERY;
+  //  UNLOCK_XSB_QUERY;
   return(XSB_SUCCESS);
 }
 
@@ -1778,7 +1769,6 @@ DllExport int call_conv xsb_query_string(CTXTdeclc char *goal)
 #endif
 
   LOCK_XSB_QUERY;
-  LOCK_XSB_READY;
   LOCK_XSB_SYNCH;
 
   reset_ccall_error(CTXT);
@@ -1789,21 +1779,18 @@ DllExport int call_conv xsb_query_string(CTXTdeclc char *goal)
   if (ccall_error_thrown(CTXT)) {
     xsb_inquery = 0;
     UNLOCK_XSB_SYNCH;
-    UNLOCK_XSB_READY;
-    UNLOCK_XSB_QUERY;
+        UNLOCK_XSB_QUERY;
     return(XSB_ERROR);
   }
   if (is_var(reg_term(CTXTc 1))) {
     xsb_inquery = 0;
     UNLOCK_XSB_SYNCH;
-    UNLOCK_XSB_READY;
-    UNLOCK_XSB_QUERY;
+        UNLOCK_XSB_QUERY;
     return(XSB_FAILURE);
   } 
   xsb_inquery = 1;
   UNLOCK_XSB_SYNCH;
-  UNLOCK_XSB_READY;
-  return(XSB_SUCCESS);
+    return(XSB_SUCCESS);
 }
 
 /************************************************************************/
@@ -1894,7 +1881,6 @@ DllExport int call_conv xsb_next(CTXTdecl)
     return(XSB_ERROR);     
   }
 
-  LOCK_XSB_READY;
   LOCK_XSB_SYNCH;
   //  updateWarningStart();
   c2p_int(CTXTc 0,reg_term(CTXTc 3));  /* set command for next answer */
@@ -1902,20 +1888,17 @@ DllExport int call_conv xsb_next(CTXTdecl)
   if (ccall_error_thrown(CTXT)) {
     xsb_inquery = 0;
     UNLOCK_XSB_SYNCH;
-    UNLOCK_XSB_READY;
-    UNLOCK_XSB_QUERY;
+        UNLOCK_XSB_QUERY;
     return(XSB_ERROR);
   }
   if (is_var(reg_term(CTXTc 1))) {
     xsb_inquery = 0;
     UNLOCK_XSB_SYNCH;
-    UNLOCK_XSB_READY;
-    UNLOCK_XSB_QUERY;
+        UNLOCK_XSB_QUERY;
     return(XSB_FAILURE);
   } else {
     UNLOCK_XSB_SYNCH;
-    UNLOCK_XSB_READY;
-    return(XSB_SUCCESS);
+        return(XSB_SUCCESS);
   }
 }
 
@@ -1980,7 +1963,6 @@ DllExport int call_conv xsb_close_query(CTXTdecl)
     			    "unable to call xsb_close_query() when a query is not open");
     return(XSB_ERROR);     
   }
-  LOCK_XSB_READY;
   LOCK_XSB_SYNCH;
   c2p_int(CTXTc 1,reg_term(CTXTc 3));  /* set command for cut */
   //  xsb(CTXTc XSB_EXECUTE,0,0);
@@ -1988,15 +1970,13 @@ DllExport int call_conv xsb_close_query(CTXTdecl)
   if (is_var(reg_term(CTXTc 1))) {
     xsb_inquery = 0;
     UNLOCK_XSB_SYNCH;
-    UNLOCK_XSB_READY;
-    UNLOCK_XSB_QUERY;
+        UNLOCK_XSB_QUERY;
     return(XSB_SUCCESS);
   } else
   {
     xsb_inquery = 0;
   UNLOCK_XSB_SYNCH
-  UNLOCK_XSB_READY;
-  UNLOCK_XSB_QUERY;
+    UNLOCK_XSB_QUERY;
   return(XSB_ERROR);
   }
 }
@@ -2023,7 +2003,6 @@ DllExport int call_conv xsb_close(CTXTdecl)
     LOCK_XSB_QUERY;
   }
 #endif
-    LOCK_XSB_READY;
     LOCK_XSB_SYNCH;
 #ifdef MULTI_THREAD
     main_thread_gl = NULL;
@@ -2034,8 +2013,7 @@ DllExport int call_conv xsb_close(CTXTdecl)
     abolish_wfs_space(CTXT); 
 
     UNLOCK_XSB_SYNCH;
-    UNLOCK_XSB_READY;
-    UNLOCK_XSB_QUERY;
+        UNLOCK_XSB_QUERY;
     return(XSB_SUCCESS);
   }
   else {

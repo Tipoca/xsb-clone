@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.336 2010-04-25 03:00:20 dwarren Exp $
+** $Id: builtin.c,v 1.337 2010-05-02 05:11:26 evansbj Exp $
 ** 
 */
 
@@ -2401,7 +2401,6 @@ case WRITE_OUT_PROFILE:
     check_glstack_overflow(4,pcreg,1+max_num_vars*sizeof(Cell)*2);
 
     anslist = tanslist = hreg++;
-    term = ptoc_tag(CTXTc 1);
     startvlist = ptoc_tag(CTXTc 3);
     XSB_Deref(startvlist);
     while (!isnil(startvlist)) {

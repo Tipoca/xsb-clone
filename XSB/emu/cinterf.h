@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.50 2010-03-18 22:22:17 tswift Exp $
+** $Id: cinterf.h,v 1.51 2010-05-02 05:11:26 evansbj Exp $
 ** 
 */
 
@@ -350,9 +350,6 @@ extern char *p_charlist_to_c_string(CTXTdeclc prolog_term term, VarString *buf,
 #define  UNLOCK_XSB_QUERY 
 #define  LOCK_XSB_QUERY  
 
-#define  UNLOCK_XSB_READY  
-#define  LOCK_XSB_READY  
-
 #define  UNLOCK_XSB_SYNCH  
 #define  LOCK_XSB_SYNCH  
 
@@ -381,14 +378,71 @@ extern char *p_charlist_to_c_string(CTXTdeclc prolog_term term, VarString *buf,
     printf("unlocked synch %s\n",S);	  \
   }
 
-#define  LOCK_XSB_QUERY  pthread_mutex_lock(&xsb_query_mut);
-#define  UNLOCK_XSB_QUERY   pthread_mutex_unlock(&xsb_query_mut);
+#include <errno.h>
+static inline void xsb_lock_mutex(pthread_mutex_t* mut, char* Name, char* File, int Line)
+{
+int returnCode;
+if (0 != (returnCode = pthread_mutex_lock(mut)))
+	{
+	printf("### %s pthread_mutex_lock %s line:%d error (%d) ",Name, File, Line, returnCode);
+	if (EINVAL == returnCode)
+		printf("EINVAL The specified mutex is not an initialised mutex object");
+	else if (EAGAIN == returnCode)
+		printf("EAGAIN The mutex could not be acquired because the maximum number of recursive locks for mutex has been exceeded");
+	else if (EDEADLK == returnCode)
+		printf("EDEADLK A deadlock would occur if the thread blocked waiting for the mutex");
+	else if (EPERM == returnCode)
+		printf("EPERM The thread does not own the mutex");
+	printf(" ###\n");
+	}
+}
 
-#define  LOCK_XSB_READY  pthread_mutex_lock(&xsb_ready_mut);
-#define  UNLOCK_XSB_READY   pthread_mutex_unlock(&xsb_ready_mut);
+static inline void xsb_unlock_mutex(pthread_mutex_t* mut, char* Name, char* File, int Line) {
+int returnCode;
+if (0 != (returnCode = pthread_mutex_unlock(mut)))
+	{
+	printf("### %s pthread_mutex_unlock %s line:%d error (%d) ",Name, File, Line ,returnCode);
+	if (EINVAL == returnCode)
+		printf("EINVAL The specified mutex is not an initialised mutex object");
+	else if (EPERM == returnCode)
+		printf("EPERM The thread does not hold a lock on the mutex");
+	printf(" ###\n");
+	}
+}
 
-#define  UNLOCK_XSB_SYNCH   pthread_mutex_unlock(&xsb_synch_mut);
-#define  LOCK_XSB_SYNCH  pthread_mutex_lock(&xsb_synch_mut);
+static inline int xsb_cond_signal(pthread_cond_t* cond, char* Name, char* File, int Line)
+{
+int returnCode;
+if (0 != (returnCode = pthread_cond_signal(cond)))
+	{
+	printf("### %s pthread_cond_signal %s line:%d error (%d) ",Name, File, Line, returnCode);
+	if (EINVAL == returnCode)
+		printf("EINVAL The specified condition is not an initialised condition object");
+	printf(" ###\n");
+	}
+return(returnCode);
+}
+
+static inline int xsb_cond_wait(pthread_cond_t* cond, pthread_mutex_t* mut, char* Name, char* File, int Line)
+{
+int returnCode;
+if (0 != (returnCode = pthread_cond_wait(cond, mut)))
+	{
+	printf("### %s pthread_cond_wait %s line:%d error (%d) ",Name, File, Line, returnCode);
+	if (EINVAL == returnCode)
+		printf("EINVAL The specified condition or mutex is not an initialised condition/mutex object");
+	else if (EPERM == returnCode) \
+		printf("EPERM The thread does not own the mutex"); \
+	printf(" ###\n");
+	}
+return(returnCode);
+}
+
+#define  LOCK_XSB_QUERY		xsb_lock_mutex(&xsb_query_mut, "LOCK_XSB_QUERY", __FILE__, __LINE__);
+#define  UNLOCK_XSB_QUERY	xsb_unlock_mutex(&xsb_query_mut, "UNLOCK_XSB_QUERY", __FILE__, __LINE__);
+
+#define  LOCK_XSB_SYNCH		xsb_lock_mutex(&xsb_synch_mut, "LOCK_XSB_SYNCH", __FILE__, __LINE__);
+#define  UNLOCK_XSB_SYNCH	xsb_unlock_mutex(&xsb_synch_mut, "UNLOCK_XSB_SYNCH", __FILE__, __LINE__);
 
 #endif
 
