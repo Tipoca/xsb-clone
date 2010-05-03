@@ -1,26 +1,26 @@
 /* File:      cinterf.c
 ** Author(s): Jiyang Xu
 ** Contact:   xsb-contact@cs.sunysb.edu
-** 
+**
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1999
 ** Copyright (C) ECRC, Germany, 1990
-** 
+**
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
 ** Software Foundation; either version 2 of the License, or (at your option)
 ** any later version.
-** 
+**
 ** XSB is distributed in the hope that it will be useful, but WITHOUT ANY
 ** WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 ** FOR A PARTICULAR PURPOSE.  See the GNU Library General Public License for
 ** more details.
-** 
+**
 ** You should have received a copy of the GNU Library General Public License
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.95 2010-05-02 05:11:26 evansbj Exp $
-** 
+** $Id: cinterf.c,v 1.96 2010-05-03 00:17:25 evansbj Exp $
+**
 */
 
 #include "xsb_config.h"
@@ -242,7 +242,7 @@ DllExport void call_conv ensure_heap_space(CTXTdeclc int space, int regcnt) {
   check_glstack_overflow(regcnt,pcreg,space);
 }
 
-DllExport xsbBool call_conv c2p_functor(CTXTdeclc char *functor, int arity, 
+DllExport xsbBool call_conv c2p_functor(CTXTdeclc char *functor, int arity,
 					prolog_term var)
 {
     Cell v = (Cell)var;
@@ -429,7 +429,7 @@ char *p_charlist_to_c_string(CTXTdeclc prolog_term term, VarString *buf,
 }
 
 
-/* convert a C string into a prolog list of characters. 
+/* convert a C string into a prolog list of characters.
    (codelist might be a better suffix.)
    LIST must be a Prolog variable. IN_FUNC is a string that should indicate the
    high-level function from this c_string_to_p_charlist was called.
@@ -463,7 +463,7 @@ void c_string_to_p_charlist(CTXTdeclc char *name, prolog_term list,
       follow(top) = makelist(hreg);
     } follow(top) = makenil;
     unify(CTXTc list, new_list);
-  } 
+  }
 }
 
 
@@ -480,21 +480,21 @@ DllExport xsbBool call_conv is_charlist(prolog_term term, int *size)
 
   list = term;
   *size = 0;
-  
+
   /* apparently, is_nil can be true and is_list false?? */
   if(is_nil(list))
     return TRUE;
 
-  if (!is_list(list)) 
+  if (!is_list(list))
     return FALSE;
 
   while (is_list(list)) {
     if (is_nil(list)) break;
 
     head = p2p_car(list);
-    if (!is_int(head)) 
+    if (!is_int(head))
       return FALSE;
-    
+
     head_char = (char) int_val(head);
     /* ' ' is the lowest printable ascii and '~' is the highest */
     if (! PRINTABLE_OR_ESCAPED_CHAR(head_char) )
@@ -516,7 +516,7 @@ DllExport xsbBool call_conv is_charlist(prolog_term term, int *size)
 	(*size) += 2;
       }
     else
-      if (head_char == '\\') 
+      if (head_char == '\\')
 	escape_mode = TRUE;
       else
 	(*size)++;
@@ -526,7 +526,7 @@ DllExport xsbBool call_conv is_charlist(prolog_term term, int *size)
 }
 
 /* the following two functions were introduced by Luis Castro */
-/* they extend the c interface to allow for an easy interface for 
+/* they extend the c interface to allow for an easy interface for
 lists of characters */
 
 DllExport char *call_conv p2c_chars(CTXTdeclc prolog_term term, char *buf, int bsize)
@@ -534,7 +534,7 @@ DllExport char *call_conv p2c_chars(CTXTdeclc prolog_term term, char *buf, int b
   XSB_StrDefine(bufvar);
 
   p_charlist_to_c_string(CTXTc term, &bufvar, "p2c_chars", "list -> char*");
-  
+
   if ((NULL != bufvar.string) && (strlen(bufvar.string) > (size_t) bsize)) {
     xsb_abort("Buffer overflow in p2c_chars");
   }
@@ -661,7 +661,7 @@ static int count_csize(CTXTdeclc char *ptr, int quote)
 		    ptr += 2;
 		    skip_subfmt(CTXTc ptr, ')');
 		    break;
-		case '[': 
+		case '[':
 		    size += count_csize(CTXTc ++ptr, ']');
 		    skip_subfmt(CTXTc ptr, ']');
 		    break;
@@ -795,7 +795,7 @@ static char *ctop_term0(CTXTdeclc char *ptr, char *c_dataptr, char **subformat,
 		for (i = 1; i <= fields; i++) {
 		    if (*(ptr+1)=='*') ignore = 1;
 		    else { ignore = 0; argno++; }
-		    if (argno==1) 
+		    if (argno==1)
 		       ptr = ctop_term0(CTXTc ptr,cdptr2,subformat,p2p_car(variable),ignore);
 		    else if (argno==2)
 		       ptr = ctop_term0(CTXTc ptr,cdptr2,subformat,p2p_cdr(variable),ignore);
@@ -865,7 +865,7 @@ static char *ptoc_term0(CTXTdeclc char *ptr, char *c_dataptr, char **subformat,
 	case 'c':
 
 	if (!ignore) {
-	    if (is_int(variable)) *((char *)(c_dataptr)) = 
+	    if (is_int(variable)) *((char *)(c_dataptr)) =
 	       (char)p2c_int(variable);
 	    else cppc_error(CTXTc 11);
 	}
@@ -887,7 +887,7 @@ static char *ptoc_term0(CTXTdeclc char *ptr, char *c_dataptr, char **subformat,
 	ch = *ptr++;
 	size = 4 * (ch - '0');
 	if (!ignore) {
-	    if (is_string(variable)) 
+	    if (is_string(variable))
 	       strncpy(c_dataptr, p2c_string(variable), size);
 	    else cppc_error(CTXTc 12);
 	}
@@ -897,7 +897,7 @@ static char *ptoc_term0(CTXTdeclc char *ptr, char *c_dataptr, char **subformat,
 	case 'f':
 
 	if (!ignore) {
-	    if (is_float(variable)) 
+	    if (is_float(variable))
 	      *((float *)(c_dataptr)) = (float)p2c_float(variable);
 	    else cppc_error(CTXTc 13);
 	}
@@ -1083,7 +1083,7 @@ int mustquote(char *atom)
 void printpstring(char *atom, int toplevel, VarString *straddr)
 {
     int i;
-   
+
     if (toplevel || !mustquote(atom)) {
       XSB_StrAppend(straddr,atom);
     } else {
@@ -1097,7 +1097,7 @@ void printpstring(char *atom, int toplevel, VarString *straddr)
       XSB_StrAppend(straddr, "'");
     }
 }
-    
+
 /* calculate approximate length of a printed term.  For space alloc. */
 int clenpterm(prolog_term term)
 {
@@ -1137,11 +1137,11 @@ int clenpterm(prolog_term term)
 char tempstring[MAXBUFSIZE];
 
 /* print a prolog_term into a buffer.
-   Atoms are quoted if !toplevel -- necessary for Prolog reading 
+   Atoms are quoted if !toplevel -- necessary for Prolog reading
    Buffer is a VarString. If the VarString is non-empty, the term is appended
    to the current contents of the VarString.
 */
-DllExport void call_conv print_pterm(CTXTdeclc prolog_term term, int toplevel, 
+DllExport void call_conv print_pterm(CTXTdeclc prolog_term term, int toplevel,
 				     VarString *straddr)
 {
   int i;
@@ -1195,10 +1195,10 @@ DllExport void call_conv print_pterm(CTXTdeclc prolog_term term, int toplevel,
 /*	xsb_answer_string copies an answer from reg 2 into ans.		*/
 /*                                                                      */
 /************************************************************************/
-int xsb_answer_string(CTXTdeclc VarString *ans, char *sep) 
+int xsb_answer_string(CTXTdeclc VarString *ans, char *sep)
 {
   int i;
-  
+
   XSB_StrSet(ans,"");
   if (!is_string(reg_term(CTXTc 2))) {
     for (i=1; i<p2c_arity(reg_term(CTXTc 2)); i++) {
@@ -1222,7 +1222,7 @@ static inline void updateWarningStart(void)
 
 /*********************************************************************************************/
 
-                                                                     
+
 /************************************************************************
 
 Using the API with the MT engine.
@@ -1240,7 +1240,7 @@ to do is to tweak an XSB thread's stacks and then cause the thread to
 execute.  So I use a condition variable to signal to the caller that
 XSB is done with the request, and another to signal to XSB that the
 caller has set it a task.  Possibly this could be done by a mutex
-alone, but I don't understand how to do that right now.  
+alone, but I don't understand how to do that right now.
 
 The calling thread and XSB communicate through xsb_synch_mut, and the
 condition variables xsb_started_cond and xsb_done_cond -- all of which
@@ -1287,17 +1287,17 @@ jmp_buf ccall_init_env;
 struct ccall_error_t init_ccall_error;
 
 #else
-int xsb_inquery = 0;   
+int xsb_inquery = 0;
 struct ccall_error_t ccall_error;
 #endif
 
 void create_ccall_error(CTXTdeclc char * type, char * message) {
-  strncpy(xsb_get_error_type(CTXT),type,ERRTYPELEN);  
+  strncpy(xsb_get_error_type(CTXT),type,ERRTYPELEN);
   strncpy(xsb_get_error_message(CTXT),message,ERRMSGLEN);
 }
 
-void reset_ccall_error(CTXTdecl) {	 
-    (ccall_error).ccall_error_type[0] = '\0';  
+void reset_ccall_error(CTXTdecl) {
+    (ccall_error).ccall_error_type[0] = '\0';
     (ccall_error).ccall_error_message[0] = '\0';
   }
 
@@ -1347,16 +1347,16 @@ DllExport int call_conv xsb_init(int argc, char *argv[])
   int rc = XSB_FAILURE;
   char executable1[MAXPATHLEN];
   char *expfilename;
-  
-  
+
+
 #ifdef MULTI_THREAD
   th_context *th;
-  
+
   if (main_thread_gl == NULL) {
     main_thread_gl = malloc( sizeof( th_context ) ) ;  /* don't use mem_alloc */
   }
   th = main_thread_gl;
-  if (pthread_cond_init( &(th->_xsb_started_cond), NULL )) 
+  if (pthread_cond_init( &(th->_xsb_started_cond), NULL ))
     printf("xsb_started_cond not initialized \n");
   if (pthread_cond_init( &(th->_xsb_done_cond), NULL ))
     printf("xsb_done_cond not initialized \n");
@@ -1364,7 +1364,7 @@ DllExport int call_conv xsb_init(int argc, char *argv[])
 #endif
 
   reset_ccall_error(CTXT);
-  
+
   // updateWarningStart();
   if (!xsb_initted_gl) {
 	/* we rely on the caller to tell us in argv[0]
@@ -1378,7 +1378,7 @@ DllExport int call_conv xsb_init(int argc, char *argv[])
     expfilename = expand_filename(executable1);
     strcpy(executable_path_gl, expfilename);
     mem_dealloc(expfilename,MAXPATHLEN,OTHER_SPACE);
-    
+
     if ((rc = setjmp(ccall_init_env))) return rc;  /* catch XSB_C_INIT exceptions */
 
     if (0 == (rc = xsb(CTXTc XSB_C_INIT,argc,argv)))  {   /* initialize xsb */
@@ -1389,7 +1389,7 @@ DllExport int call_conv xsb_init(int argc, char *argv[])
  }
  else {
    create_ccall_error(CTXTc "permission_error","xsb_init() called when XSB has already been initialized.");
-   return(XSB_ERROR);     
+   return(XSB_ERROR);
   }
 }
 
@@ -1411,7 +1411,7 @@ DllExport int call_conv xsb_init_string(char *cmdline_param) {
   if (!xsb_initted_gl) {
 #ifdef MULTI_THREAD
     th_context * th;
-    main_thread_gl = malloc( sizeof( th_context ) ) ;  
+    main_thread_gl = malloc( sizeof( th_context ) ) ;
     th = main_thread_gl;
 #endif
 
@@ -1449,7 +1449,7 @@ DllExport int call_conv xsb_init_string(char *cmdline_param) {
 #else
     create_ccall_error("permission_error","xsb_init_string() called after XSB has been initialized.");
 #endif
-   return(XSB_ERROR);     
+   return(XSB_ERROR);
   }
 }
 
@@ -1477,8 +1477,8 @@ DllExport int call_conv pipe_xsb_stdin() {
 /************************************************************************/
 DllExport int call_conv writeln_to_xsb_stdin(char * input){
     extern FILE * input_write_stream;
-    fprintf(stdout, "\n"); 
-    fprintf(input_write_stream, "%s\n", input); 
+    fprintf(stdout, "\n");
+    fprintf(input_write_stream, "%s\n", input);
     fflush(input_write_stream);
     return 0;
 }
@@ -1518,7 +1518,7 @@ DllExport int call_conv xsb_query_save(CTXTdeclc int NumRegs) {
 
   LOCK_XSB_SYNCH;
   EXECUTE_XSB_SETUP_X(NumRegs);
-  UNLOCK_XSB_SYNCH; 
+  UNLOCK_XSB_SYNCH;
   return(XSB_SUCCESS);
 }
 
@@ -1529,9 +1529,9 @@ DllExport int call_conv xsb_query_restore(CTXTdecl) {
   LOCK_XSB_SYNCH;
   c2p_int(CTXTc 3,reg_term(CTXTc 3));  /* command for finishing a goal */
   EXECUTE_XSB;
-  if (ccall_error_thrown(CTXT))  
+  if (ccall_error_thrown(CTXT))
     {
-    UNLOCK_XSB_SYNCH;  
+    UNLOCK_XSB_SYNCH;
     return(XSB_ERROR);
     }
   if (is_var(reg_term(CTXTc 2))) { /* goal succeeded */
@@ -1545,9 +1545,9 @@ DllExport int call_conv xsb_query_restore(CTXTdecl) {
 	bld_copy(reg+disp, cell((CPtr)(addr)+disp));
       }
     }
-    UNLOCK_XSB_SYNCH; 
+    UNLOCK_XSB_SYNCH;
     return(XSB_SUCCESS);
-  } 
+  }
   UNLOCK_XSB_SYNCH;
   return(XSB_ERROR);
 }
@@ -1565,7 +1565,7 @@ DllExport int call_conv xsb_query_restore(CTXTdecl) {
  Note that because this command depends on the user mucking about with
  registers via c2p_xxx() it is difficult at best to ensure
  synchronization with the XSB thread that is being manipulated.
-                                                                      
+
 ************************************************************************/
 
 DllExport int call_conv xsb_command(CTXTdecl)
@@ -1574,7 +1574,7 @@ DllExport int call_conv xsb_command(CTXTdecl)
 #ifndef MULTI_THREAD
   if (xsb_inquery) {
     create_ccall_error(CTXTc "permission_error","unable to call xsb_command() when query a query is open");
-    return(XSB_ERROR);     
+    return(XSB_ERROR);
   }
 #endif
 
@@ -1583,7 +1583,7 @@ DllExport int call_conv xsb_command(CTXTdecl)
   LOCK_XSB_SYNCH;
   c2p_int(CTXTc 0,reg_term(CTXTc 3));  /* command for calling a goal */
   EXECUTE_XSB;
-  if (ccall_error_thrown(CTXT))  
+  if (ccall_error_thrown(CTXT))
     {
     UNLOCK_XSB_SYNCH;
     return(XSB_ERROR);
@@ -1592,13 +1592,13 @@ DllExport int call_conv xsb_command(CTXTdecl)
     {
     UNLOCK_XSB_SYNCH;
     return(XSB_FAILURE);
-    } 
+    }
 
   c2p_int(CTXTc 1,reg_term(CTXTc 3));  /* command for next answer */
   EXECUTE_XSB;
-  if (is_var(reg_term(CTXTc 1))) 
+  if (is_var(reg_term(CTXTc 1)))
     {
-    UNLOCK_XSB_SYNCH; 
+    UNLOCK_XSB_SYNCH;
     return(XSB_SUCCESS);
     }  /* goal succeeded */
   //  (void) xsb_close_query(CTXT);
@@ -1608,7 +1608,7 @@ DllExport int call_conv xsb_command(CTXTdecl)
 }
 
 /************************************************************************
-                                                                      
+
  xsb_command_string(char *goal) passes the command (e.g. a query which
  only succeeds or fails) to XSB.  The command must a string passed in
  the argument.  It returns XSB_SUCCESS if it succeeds, XSB_FAILURE if
@@ -1622,10 +1622,10 @@ DllExport int call_conv xsb_command_string(CTXTdeclc char *goal)
 	#ifndef MULTI_THREAD
 	if (xsb_inquery) {
 		create_ccall_error(CTXTc "permission_error","unable to call xsb_command_string() when a query is open");
-		return(XSB_ERROR);     
+		return(XSB_ERROR);
 	}
 	#endif
-	
+
 	LOCK_XSB_QUERY;
 	LOCK_XSB_SYNCH;
 	reset_ccall_error(CTXT);
@@ -1633,7 +1633,7 @@ DllExport int call_conv xsb_command_string(CTXTdeclc char *goal)
 	c2p_string(CTXTc goal,reg_term(CTXTc 1));
 	c2p_int(CTXTc 2,reg_term(CTXTc 3));  /* command for calling a string goal */
 	EXECUTE_XSB;
-	if (ccall_error_thrown(CTXT))  
+	if (ccall_error_thrown(CTXT))
 	{
 		UNLOCK_XSB_SYNCH;
 		UNLOCK_XSB_QUERY;
@@ -1644,10 +1644,10 @@ DllExport int call_conv xsb_command_string(CTXTdeclc char *goal)
 		UNLOCK_XSB_SYNCH;
 		UNLOCK_XSB_QUERY;
 		return(XSB_FAILURE);
-	} 
+	}
 	c2p_int(CTXTc 1,reg_term(CTXTc 3));  /* command for next answer */
 	EXECUTE_XSB;
-	if (is_var(reg_term(CTXTc 1))) 
+	if (is_var(reg_term(CTXTc 1)))
 	{  /* goal succeeded */
 		UNLOCK_XSB_SYNCH;
 		UNLOCK_XSB_QUERY;
@@ -1676,7 +1676,7 @@ DllExport int call_conv xsb_kill_thread(CTXTdecl)
 		c2p_int(CTXTc 0, p2p_arg(reg_term(CTXTc 1),1));
 		if (XSB_ERROR == xsb_query(CTXT))
 			printf("### xsb_kill_thread Error r: %s/%s ###\n",xsb_get_error_type(CTXT),xsb_get_error_message(CTXT));
-	
+
 		mem_dealloc(th,sizeof(th_context),THREAD_SPACE);
  	}
 	else
@@ -1710,7 +1710,7 @@ DllExport int call_conv xsb_query(CTXTdecl)
 #ifndef MULTI_THREAD
   if (xsb_inquery) {
     create_ccall_error(CTXTc "permission_error","unable to call xsb_query() when a query is open");
-    return(XSB_ERROR);     
+    return(XSB_ERROR);
   }
 #endif
 
@@ -1764,7 +1764,7 @@ DllExport int call_conv xsb_query_string(CTXTdeclc char *goal)
 #ifndef MULTI_THREAD
   if (xsb_inquery) {
     create_ccall_error(CTXTc "permission_error","unable to call xsb_query_string() when a query is open");
-    return(XSB_ERROR);     
+    return(XSB_ERROR);
   }
 #endif
 
@@ -1787,7 +1787,7 @@ DllExport int call_conv xsb_query_string(CTXTdeclc char *goal)
     UNLOCK_XSB_SYNCH;
         UNLOCK_XSB_QUERY;
     return(XSB_FAILURE);
-  } 
+  }
   xsb_inquery = 1;
   UNLOCK_XSB_SYNCH;
     return(XSB_SUCCESS);
@@ -1802,11 +1802,11 @@ DllExport int call_conv xsb_query_string(CTXTdeclc char *goal)
 /*                                                                      */
 /************************************************************************/
 
-int call_conv xsb_query_string_string(CTXTdeclc char *goal, 
-				      VarString *ans, char *sep) 
+int call_conv xsb_query_string_string(CTXTdeclc char *goal,
+				      VarString *ans, char *sep)
 {
   int rc;
-  
+
   rc = xsb_query_string(CTXTc goal);
   if (rc != XSB_SUCCESS) return rc;
   else return xsb_answer_string(CTXTc ans,sep);
@@ -1817,7 +1817,7 @@ int call_conv xsb_query_string_string(CTXTdeclc char *goal,
 /*  xsb_query_string_string_b calls xsb_query_string and returns        */
 /*	the answer in a string.  The caller provides a buffer and its   */
 /*      length.  If the answer fits in the buffer, it is returned       */
-/*      there, and its length is returned.  If not, then the length is  */ 
+/*      there, and its length is returned.  If not, then the length is  */
 /*      returned, and the answer can be obtained by calling             */
 /*      xsb_get_last_answer.                                            */
 /*                                                                      */
@@ -1828,12 +1828,12 @@ static XSB_StrDefine(last_answer_lc);
 #endif
 
 int call_conv xsb_query_string_string_b(CTXTdeclc
-	     char *goal, char *buff, int buflen, int *anslen, char *sep) 
+	     char *goal, char *buff, int buflen, int *anslen, char *sep)
 {
   int rc;
-  
+
   XSB_StrSet(last_answer,"");
-  rc = xsb_query_string_string(CTXTc goal,last_answer,sep); 
+  rc = xsb_query_string_string(CTXTc goal,last_answer,sep);
   if (rc != XSB_SUCCESS) return rc;
   XSB_StrNullTerminate(last_answer);
   *anslen = (last_answer->length)+1;  // length does not always include null terminator
@@ -1848,16 +1848,16 @@ int call_conv xsb_query_string_string_b(CTXTdeclc
 /*	xsb_get_last_answer_string returns previous answer.             */
 /*                                                                      */
 /************************************************************************/
-DllExport int call_conv 
+DllExport int call_conv
    xsb_get_last_answer_string(CTXTdeclc char *buff, int buflen, int *anslen) {
 
   *anslen = (last_answer->length)+1;
   if (*anslen <= buflen) {
     strcpy(buff,last_answer->string);
     return XSB_SUCCESS;
-  } else 
+  } else
     return(XSB_OVERFLOW);
-}    
+}
 
 /************************************************************************
 
@@ -1878,7 +1878,7 @@ DllExport int call_conv xsb_next(CTXTdecl)
 {
   if (!xsb_inquery) {
     create_ccall_error(CTXTc "permission_error","unable to call xsb_next() when a query is not open");
-    return(XSB_ERROR);     
+    return(XSB_ERROR);
   }
 
   LOCK_XSB_SYNCH;
@@ -1910,7 +1910,7 @@ DllExport int call_conv xsb_next(CTXTdecl)
 /*                                                                      */
 /************************************************************************/
 
-DllExport int call_conv xsb_next_string(CTXTdeclc VarString *ans, char *sep) 
+DllExport int call_conv xsb_next_string(CTXTdeclc VarString *ans, char *sep)
 {
   int rc = xsb_next(CTXT);
   if (rc > 0) return rc;
@@ -1929,7 +1929,7 @@ DllExport int call_conv xsb_next_string(CTXTdeclc VarString *ans, char *sep)
 /************************************************************************/
 
 DllExport int call_conv xsb_next_string_b(CTXTdeclc
-		     char *buff, int buflen, int *anslen, char *sep) 
+		     char *buff, int buflen, int *anslen, char *sep)
 {
   int rc;
 
@@ -1961,7 +1961,7 @@ DllExport int call_conv xsb_close_query(CTXTdecl)
   if (!xsb_inquery) {
     create_ccall_error(CTXTc "permission_error",
     			    "unable to call xsb_close_query() when a query is not open");
-    return(XSB_ERROR);     
+    return(XSB_ERROR);
   }
   LOCK_XSB_SYNCH;
   c2p_int(CTXTc 1,reg_term(CTXTc 3));  /* set command for cut */
@@ -1989,7 +1989,7 @@ DllExport int call_conv xsb_close_query(CTXTdecl)
 /*                                                                      */
 /************************************************************************/
 
-// TLS: not including tr_utils.h because that would disturb CTXT stuff. 
+// TLS: not including tr_utils.h because that would disturb CTXT stuff.
 extern void release_all_tabling_resources(CTXTdecl);
 extern void hashtable1_destroy_all(int);
 extern void abolish_wfs_space(CTXTdecl);
@@ -1998,27 +1998,25 @@ DllExport int call_conv xsb_close(CTXTdecl)
 {
   //  updateWarningStart();
   if (xsb_initted_gl) {
-#ifndef MULTI_THREAD
+#ifdef MULTI_THREAD
   if (!xsb_inquery) {
     LOCK_XSB_QUERY;
   }
-#endif
     LOCK_XSB_SYNCH;
-#ifdef MULTI_THREAD
     main_thread_gl = NULL;
 #endif
     /* Get rid of any tables */
     hashtable1_destroy_all(0);  /* free all incr hashtables in use */
     release_all_tabling_resources(CTXT);
-    abolish_wfs_space(CTXT); 
+    abolish_wfs_space(CTXT);
 
     UNLOCK_XSB_SYNCH;
-        UNLOCK_XSB_QUERY;
+    UNLOCK_XSB_QUERY;
     return(XSB_SUCCESS);
   }
   else {
     create_ccall_error(CTXTc "permission_error","unable to call xsb_close() when XSB has not been inialized.");
-    return(XSB_ERROR);     
+    return(XSB_ERROR);
   }
 }
 
@@ -2092,6 +2090,6 @@ else
 		}
 	}
 return(rc);
-}    
+}
 
 
