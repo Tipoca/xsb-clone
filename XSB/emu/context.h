@@ -1,25 +1,25 @@
 /* File:      context.h
 ** Contact:   xsb-contact@cs.sunysb.edu
-** 
+**
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
 ** Copyright (C) ECRC, Germany, 1990
-** 
+**
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
 ** Software Foundation; either version 2 of the License, or (at your option)
 ** any later version.
-** 
+**
 ** XSB is distributed in the hope that it will be useful, but WITHOUT ANY
 ** WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 ** FOR A PARTICULAR PURPOSE.  See the GNU Library General Public License for
 ** more details.
-** 
+**
 ** You should have received a copy of the GNU Library General Public License
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.71 2010-05-02 05:11:26 evansbj Exp $
-** 
+** $Id: context.h,v 1.72 2010-05-05 04:45:29 evansbj Exp $
+**
 */
 
 #ifndef __CONTEXT_H__
@@ -50,7 +50,7 @@ struct xsb_token_t {
   int nextch;
 };
 
-struct funstktype {                                         
+struct funstktype {
     char *fun;		/* functor name */
     int funop;	        /* index into opstk of first operand */
     int funtyp; 	/* 0 if functor, 1 if list, 2 if dotted-tail list */
@@ -195,7 +195,7 @@ struct th_context
 
   CPtr _smodels;
   CPtr _api;
-  CPtr _atoms;    
+  CPtr _atoms;
   int _curatom;
   int _totatoms;
 
@@ -225,7 +225,7 @@ struct th_context
   int _addr_stack_pointer;
   CPtr *_Addr_Stack;
   int _addr_stack_size;
-                                                                                
+
   int  _term_stackptr;
   Cell *_term_stack;
   long _term_stacksize;
@@ -236,7 +236,7 @@ struct th_context
   DelTFptr _private_deltf_chain_begin;
   DelCFptr _private_delcf_chain_begin;
 
-  BTNptr  _NodePtr, 
+  BTNptr  _NodePtr,
     _Last_Nod_Sav;
 
   int     _delay_it;
@@ -254,7 +254,7 @@ struct VariantContinuation *_variant_cont;
 struct tstCCPStack_t *_tstCCPStack;
 struct tstCPStack_t *_tstCPStack;
 CPtr *_trail_base;
-CPtr *_orig_trreg;            
+CPtr *_orig_trreg;
 CPtr _orig_hreg;
 CPtr _orig_hbreg;
 CPtr _orig_ebreg;
@@ -265,9 +265,9 @@ DynamicStack  _tstSymbolStack;
 DynamicStack  _tstTrail;
 
   /* Error checking for TST unification */
-  BTNptr _gAnsLeaf;    
-  CPtr _gAnsTmplt;     
-  int _gSizeTmplt;     
+  BTNptr _gAnsLeaf;
+  CPtr _gAnsTmplt;
+  int _gSizeTmplt;
 
   /* delay, simplification, etc. */
   Cell _cell_array[500];
@@ -358,10 +358,10 @@ struct random_seeds_t *_random_seeds;	/* struct containing seeds for random num 
   Structure_Manager *_private_smAssertBTN;
   Structure_Manager *_private_smAssertBTHT;
   Structure_Manager *_private_smTableBTHTArray;
-  Structure_Manager *_private_smTSTN; 
+  Structure_Manager *_private_smTSTN;
   Structure_Manager *_private_smTSTHT;
   Structure_Manager *_private_smTSIN;
-  Structure_Manager *_private_smVarSF; 
+  Structure_Manager *_private_smVarSF;
   Structure_Manager *_private_smProdSF;
   Structure_Manager *_private_smConsSF;
   Structure_Manager *_private_smALN;
@@ -371,22 +371,22 @@ struct random_seeds_t *_random_seeds;	/* struct containing seeds for random num 
   Structure_Manager *_private_smDelCF;
 
   int    _threads_current_sm;
-  
+
   char *_private_current_de_block;
   char *_private_current_dl_block;
   char *_private_current_pnde_block;
 
   DE _private_released_des;
-  DL _private_released_dls;	
+  DL _private_released_dls;
   PNDE _private_released_pndes;
 
-  DE _private_next_free_de;	
-  DL _private_next_free_dl;	
-  PNDE _private_next_free_pnde;	
+  DE _private_next_free_de;
+  DL _private_next_free_dl;
+  PNDE _private_next_free_pnde;
 
-  DE _private_current_de_block_top;     
-  DL _private_current_dl_block_top;     
-  PNDE _private_current_pnde_block_top; 
+  DE _private_current_de_block_top;
+  DL _private_current_dl_block_top;
+  PNDE _private_current_pnde_block_top;
 
   /********** Error handling  **********/
 
@@ -489,7 +489,7 @@ typedef struct th_context th_context ;
 
 
 #define xsb_thread_id           (Integer)(th -> tid)
-#define xsb_thread_entry        (THREAD_ENTRY(th -> tid))
+#define xsb_thread_entry        (Integer)(THREAD_ENTRY(th -> tid))
 
 #define call_intercept		(th->_call_intercept)
 
@@ -624,7 +624,7 @@ typedef struct th_context th_context ;
 #define xsb_query_mut           (th-> _xsb_query_mut)
 #define ccall_error             (th-> _ccall_error)
 
-#define current_mq_cell         (th->_current_mq_cell) 
+#define current_mq_cell         (th->_current_mq_cell)
 
 #define retracted_buffer	(th->_retracted_buffer)
 #define OldestCl		(th->_OldestCl)
@@ -671,7 +671,7 @@ typedef struct th_context th_context ;
 #define private_current_pnde_block  (th-> _private_current_pnde_block)
 
 #define private_released_des       (th-> _private_released_des)
-#define private_released_dls       (th-> _private_released_dls) 
+#define private_released_dls       (th-> _private_released_dls)
 #define private_released_pndes     (th-> _private_released_pndes)
 
 #define private_next_free_de  	   (th-> _private_next_free_de)
