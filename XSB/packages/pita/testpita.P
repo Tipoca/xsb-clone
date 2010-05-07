@@ -1,11 +1,9 @@
 /*
-	LPAD and CP-Logic reasoning suite
-	Copyright (c) 2007, Fabrizio Riguzzi
-
-Test file for lpadsld.pl, case where the body is grounded
+	PITA
+	Copyright (c) 2010, Fabrizio Riguzzi and Terrance Swift
 
 Use
-:-t.
+:-main.
 to execute the test
 
 */
