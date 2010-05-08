@@ -154,7 +154,7 @@ norm. To get back to the Prolog command loop, type {\tt Control-D}
 %%
 \begin{quote}
   \tt
-| ?- flEnd.  
+| ?- \_end.  
 \end{quote}
 %%
 
@@ -173,7 +173,7 @@ It is even possible to tell \FLORA to execute commands on start-up.
 For instance, 
 %%
 \begin{verbatim}
- foo>  runflora -e "flHelp."
+ foo>  runflora -e "_help."
 \end{verbatim}
 %%
 will cause the system to execute the help command right after after the
@@ -187,11 +187,11 @@ initialization. Then the usual \FLORA shell prompt is displayed.
 \end{quote}
 %%
 The demos can be run issuing the command
-``\verb|flDemo(demo-filename).|''
+``\verb|_demo(demo-filename).|''
 at the \FLORA prompt, {\it e.g.},
 %%
 \begin{quote}
- \verb|flora2 ?- flDemo(flogic_basics).|
+ \verb|flora2 ?- _demo(flogic_basics).|
 \end{quote}
 %%
 There is no need to change to the demo directory, as {\tt flDemo} knows
