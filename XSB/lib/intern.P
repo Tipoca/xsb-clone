@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.27 2010-04-24 20:47:29 tswift Exp $
+** $Id: intern.P,v 1.28 2010-05-09 19:33:26 tswift Exp $
 ** 
 */
 
@@ -65,14 +65,21 @@ check_options_list_1([Option|Rest],Type,Alias,Incr):- !,
 	check_nonvar(Option,trie_create/2,2),
 	(Option @= type(_) ->  Option = type(T),transform_type(T,T1),
 	                       set_trie_create_arg(T1,Type,type), Alias = R
-	; (Option = incremental ->  Incr = INCREMENTAL_TRIE, Alias = R
+	; (Option = incremental ->  check_trie_incremental(Incr,INCREMENTAL_TRIE),Alias = R
+	; (Option = nonincremental ->  check_trie_incremental(Incr,NON_INCREMENTAL_TRIE), Alias = R
            ; (Option @= alias(_) -> 
 	         Option = alias(A),check_atom(A,trie_create/3,3),Alias = [A|R]
-             ; 	domain_error(trie_option,Option,trie_create/2,2,'') ) ) ),
+             ; 	domain_error(trie_option,Option,trie_create/2,2,'') ) ) ) ),
        check_options_list_1(Rest,Type,R,Incr).
 check_options_list_1(Culprit,_Type,_Alias,_Incr):- 
 	type_error(list,Culprit,trie_create/2,2).
 
+check_trie_incremental(Incr,Val):- 
+	(var(Incr) -> Incr = Val
+          ; (Incr == Val -> 
+	       true
+	     ; misc_error('Conflicting options in trie_create/2: tries cannot be both incremental and nonincremental' ) ) ).
+	  
 set_trie_create_arg(Option,Arg,OptionName):- 
 	(\+ (Option = Arg) -> 
 	    misc_error(('Conflicting options in trie_create/2: ',
@@ -725,7 +732,7 @@ i_trie_interned(Term,Root,Leaf):-
 i_trie_intern(Term,Root,Leaf,Flag,Check,Expand) :-
 	new_i_trie_intern(Root,Term,Leaf,Flag,Check,Expand).
 */
-:- import writeln/1 from standard.
+%:- import writeln/1 from standard.
 
 :- export incr_trie_intern/2, incr_trie_uninternall/2.
 :- export incr_trie_intern_inval/2, incr_trie_uninternall_inval/2.
