@@ -107,6 +107,8 @@ EOF
 ../gentest.sh "$XEMU $options" incremental1 "test".
 #------------------------------------------------- incremental tests with interned tries
 ../gentest.sh "$XEMU $options" incremental_trie "test".
+#------------------------------------------------- incremental tests with asserted/retracted clauses
+../gentest.sh "$XEMU $options" incremental_rule "test".
 #-------------------------------------------------
 ../gentest.sh "$XEMU -l $options" aggregs_test_2 "test."
 #--------------------------------------------------
