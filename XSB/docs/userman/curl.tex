@@ -87,7 +87,10 @@ The {\it Options} parameter is a list that controls loading. Members of that lis
 
 \subsection{Closing a Web Document}
 
-Web documents opened by the predicates {\bf see/1},  {\bf open/3}, and {\bf open/4} above, can closed by the predicates {\bf close/2} or {\bf close/3}. The data written to the stream is posted to the URL first on a {\bf close/3}. If that succeeds, the stream is closed.
+Web documents opened by the predicates {\bf see/1}, {\bf open/3}, and {\bf
+  open/4} above must be closed by the predicates {\bf close/2} or {\bf
+  close/3}. The data written to the stream is first posted to the URL.
+If that succeeds, the stream is closed. ???? And if it does not suceed????
 
 \begin{description}
 
@@ -96,7 +99,6 @@ Web documents opened by the predicates {\bf see/1},  {\bf open/3}, and {\bf open
   \index{\texttt{close/4}}
 \item[close({\it +Stream, +Source, +Options})]\mbox{}
   \\
-
 {\it Source} can be of the form {\tt url({\it {url}})}. Stream is a file stream. {\it Options} is a list of options supported normally for close.
 
 \end{description}
