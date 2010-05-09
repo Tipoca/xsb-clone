@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.P,v 1.178 2010/04/05 08:06:49 kifer Exp $
+** $Id: standard.P,v 1.179 2010/04/23 05:54:29 kifer Exp $
 ** 
 */
 
@@ -68,6 +68,7 @@ see(url(Url,Options)) :-
 	!,
 	open_url(url(Url),read,Stream,Options),
 	set_input(Stream).
+see(url(Url)) :- !, see(url(Url,[])).
 see(Integer):- 
 	integer(Integer),!,
 	set_input(Integer).
