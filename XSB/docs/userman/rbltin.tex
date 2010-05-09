@@ -899,17 +899,18 @@ update fails, the change is undone. The commit itself may be made
 either by the predicate {\tt storage\_commit/1}, or less cleanly by
 cutting over the update itself.
 
-A storage object $O$ is referred to by a name, which must be a
-Prolog atom.  $O$ can be associated either with a set of facts or a
-set of \emph{key-value pairs}.  Within a given storage object each key
-is associated with a unique value: however since keys and values can
-be arbitrary Prolog terms, this constraint need not be a practical
+A storage object $O$ is referred to by a name, which must be a Prolog
+atom.  $O$ can be associated either with a set of facts or a set of
+\emph{key-value pairs}.  Within a given storage object each key is
+associated with a unique value: however since keys and values can be
+arbitrary Prolog terms, this constraint need not be a practical
 restriction.  A storage object $O$ is created on demand, simply by
 calling (a backtrackable or non-backtrackable) update predicate that
 refers to $O$.  However to reclaim $O$'s space within a running
 thread, the predicate {\tt storage\_reclaim\_space/1} must be called.
-Backtackable non-backtrackable updates can be made to the same storage
-object, although doing so may not always be a good programming practice.
+Both backtackable and non-backtrackable updates can be made to the
+same storage object, although doing so may not always be a good
+programming practice.
 
 If multiple threads are used, each storage object is private to a
 thread, and space for a storage object is reclaimed upon a thread's
