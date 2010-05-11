@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.204 2010-02-01 01:37:37 kifer Exp $
+## $Id: configure.in,v 1.205 2010-05-11 10:05:25 rzf Exp $
 ##
 ##
 
@@ -199,7 +199,9 @@ AC_ARG_ENABLE(profiling,
 [  --enable-profiling           force gcc to generate information for profiling])
 AC_ARG_ENABLE(electric-fence,
 [  --enable-electric-fence      link with the electric fence malloc debugger (currently unsupported)])
-
+AC_ARG_WITH(pita,
+[  --with-pita=DIR       compile XSB with PITA, with CUDD in directory DIR])
+A
 
 # TLS As far as I know, autoconf version 2.59 or so does check various
 # command line values, but if the values are of type --enable-*,
@@ -249,7 +251,7 @@ do
 		--with-optimization* | --with-config-tag* | --with-site-prefix* | --with-includes* | \
 		--with-static-libraries* | --with-dynamic-libraries* | --with-libwww* | --with-xpath* | \
 		--with-dbdrivers | --with-oracle | --with-odbc | --with-iodbc | --with-interprolog | \
-		--with-smodels* | --with-itkwish* )
+		--with-smodels* | --with-itkwish* | --with-pita* )
 		    ;;
 	    *)
 p                    echo "configure: error: uncecognized option: $1"
@@ -914,6 +916,16 @@ if test -n "$with_libwww" && test -d $topdir/packages/libwww; then
     ./configure --with-config="$canonical" --with-libwww="$with_libwww" > /dev/null
     cd $build_dir
 fi
+
+dnl --with-pita=DIR
+if test -n "$with_pita" && test -d $topdir/packages/pita; then
+    cd $topdir/packages/pita
+    echo "***Configuring pita"
+    echo `pwd`
+    ./configure  --with-pita="$with_pita"  > /dev/null
+    cd $build_dir
+fi
+
 
 if test -d $topdir/packages/xpath; then
    cd $topdir/packages/xpath

@@ -833,6 +833,7 @@ enable_fast_floats
 enable_ccmpl
 enable_profiling
 enable_electric_fence
+with_pita
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1555,6 +1556,7 @@ Optional Packages:
                                 path is the path where smodels has
                                 been installed and compiled
   --with-itkwish=DIR		DIR where the itkwish shell is located
+  --with-pita=DIR       compile XSB with PITA, with CUDD in directory DIR
 
 Some influential environment variables:
   CC          C compiler command
@@ -2363,6 +2365,12 @@ if test "${enable_electric_fence+set}" = set; then
 fi
 
 
+# Check whether --with-pita was given.
+if test "${with_pita+set}" = set; then
+  withval=$with_pita;
+fi
+
+A
 
 # TLS As far as I know, autoconf version 2.59 or so does check various
 # command line values, but if the values are of type --enable-*,
@@ -2412,7 +2420,7 @@ do
 		--with-optimization* | --with-config-tag* | --with-site-prefix* | --with-includes* | \
 		--with-static-libraries* | --with-dynamic-libraries* | --with-libwww* | --with-xpath* | \
 		--with-dbdrivers | --with-oracle | --with-odbc | --with-iodbc | --with-interprolog | \
-		--with-smodels* | --with-itkwish* )
+		--with-smodels* | --with-itkwish* | --with-pita* )
 		    ;;
 	    *)
 p                    echo "configure: error: uncecognized option: $1"
@@ -5162,6 +5170,15 @@ if test -n "$with_libwww" && test -d $topdir/packages/libwww; then
     ./configure --with-config="$canonical" --with-libwww="$with_libwww" > /dev/null
     cd $build_dir
 fi
+
+if test -n "$with_pita" && test -d $topdir/packages/pita; then
+    cd $topdir/packages/pita
+    echo "***Configuring pita"
+    echo `pwd`
+    ./configure  --with-pita="$with_pita"  > /dev/null
+    cd $build_dir
+fi
+
 
 if test -d $topdir/packages/xpath; then
    cd $topdir/packages/xpath
@@ -8710,12 +8727,8 @@ fi
 if test "${CC}" = "gcc" -a "${host_os}" != "windows"  ; then
         LD=gcc
     LINKFLAGS="-nodefaultlibs -nostartfiles ${LINKFLAGS}"
-else 
-	if test "${LD}" != ""  ; then
- 	   LD="${LD}"
-	else
-	    LD=ld
-	fi
+else
+    LD=ld
 fi
 
 if test "${CC}" = "sslittle-na-sstrix-gcc"; then
@@ -9983,8 +9996,7 @@ $debug ||
 if test -n "$CONFIG_FILES"; then
 
 
-ac_cr='
-'
+ac_cr=''
 ac_cs_awk_cr=`$AWK 'BEGIN { print "a\rb" }' </dev/null 2>/dev/null`
 if test "$ac_cs_awk_cr" = "a${ac_cr}b"; then
   ac_cs_awk_cr='\\r'
