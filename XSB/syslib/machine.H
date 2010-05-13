@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: machine.H,v 1.92 2009/04/27 18:43:15 dwarren Exp $
+** $Id: machine.H,v 1.93 2009/10/19 16:56:42 dwarren Exp $
 ** 
 */
 
@@ -183,6 +183,8 @@
 :- export set_pil_on/0, set_pil_off/0, set_prof_on/1, set_prof_off/0.
 
 :- export prompt/2, prompt/3.
+
+:- export breg_retskel/4.
 
 /* --------------------- end of file machine.H ------------------------ */
 
