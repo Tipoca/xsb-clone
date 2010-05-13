@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.P,v 1.9 2010-03-16 16:38:32 dwarren Exp $
+** $Id: cp_opt.P,v 1.10 2010-05-13 01:38:35 dwarren Exp $
 ** 
 */
 
@@ -158,8 +158,8 @@ aggr_trans([],[],_SymTab).
 aggr_trans([pred(Sym,Pscs,Oth)|ClList0],ClList,SymTab) :-
 	sym_type(Sym,aggregation(Spec)),
 	!,
-	(extract_aggr_spec(Spec,ArgNo,ExistArgList,OpSpec,OpArity,Iden)
-	 ->	aggr_trans_pred(Sym,Pscs,Oth,ArgNo,ExistArgList,OpSpec,OpArity,Iden,NewClList,SymTab)
+	(extract_aggr_spec(Spec,ArgNo,ExistArgList,AggSpec)
+	 ->	aggr_trans_pred(Sym,Pscs,Oth,ArgNo,ExistArgList,AggSpec,NewClList,SymTab)
 	 ;	warning(('Illegal aggregation specification: ',Spec)),
 		NewClList = [pred(Sym,Pscs,Oth)]
 	),
@@ -168,39 +168,121 @@ aggr_trans([pred(Sym,Pscs,Oth)|ClList0],ClList,SymTab) :-
 aggr_trans([Pred|ClList0],[Pred|ClList],SymTab) :-
 	aggr_trans(ClList0,ClList,SymTab).
 
-%:- import console_writeln/1 from standard.
-
-aggr_trans_pred(Sym,Pscs,Oth,ArgNo,ExistArgList,OpSpec,OpArity,Iden,[pred(Sym1,Pscs,Oth)|ClList2],
-		SymTab) :-
+aggr_trans_pred(Sym,Pscs,Oth,ArgNo,ExistArgList,AggSpec,[pred(Sym1,Pscs,Oth)|ClList2],SymTab) :-
 	sym_name(Sym,Pred,Arity),
-	transform_pred(Pred,Pred1),
-	length(Args,Arity),
-	NewTerm =.. [Pred1|Args],
-	copy_term(OpSpec,OpSpec1),
 	length(PArgs,Arity),
 	length(P1Args,Arity),
 	equate_but_argno(PArgs,P1Args,1,ExistArgList,ExistVarList,Var,Var1,ArgNo),
+	transform_pred(Pred,Pred1),
 	PredTerm =.. [Pred|PArgs], Pred1Term =.. [Pred1|P1Args],
-	(OpArity =:= 2		% bagPO
-	 ->	parse_preddef(PredTerm,
-			      bagPO(Var1,ExistVarList^Pred1Term,Var,OpSpec1),
-			      ClList2,SymTab),
-		ensure_bagPO_defined(SymTab)
-	 ;	check_identity(Iden,Pred,Arity),
-	        (Iden = F/1 -> 
-	           functor(Term,F,1), arg(1,Term,NewId),
-	           Join = (Term , bagReduce(Var1,ExistVarList^Pred1Term,Var,OpSpec1,NewId))
-	         ; Join = bagReduce(Var1,ExistVarList^Pred1Term,Var,OpSpec1,Iden) ),
-	        parse_preddef(PredTerm,Join,ClList2,SymTab),
-		ensure_bagReduce_defined(SymTab)
-	),
+	generate_agg_clauses(AggSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab),
+	length(Args,Arity),
+	NewTerm =.. [Pred1|Args],
+	!,
 	parse_preddef(NewTerm,true,[pred(Sym1,_,_)],SymTab).
 
-:- import syntax_error/1 from error_handler.
-
-check_identity(no_identity,Pred,Arity):- !,
+generate_agg_clauses(po(OpSpec),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab) :- !,
+	(spec_skel(OpSpec,OpSpec1,2)
+	 ->	true
+	 ;	functor(PredTerm,Pred,Arity),
+		syntax_error(['Improper join specification in tabling declaration for ',Pred,'/',Arity])
+	),
+	sym_propin(tabled,Sym),
+	functor(PredTerm,_,Arity),
+	copy_term(OpSpec1,OpSpec2),
+	arg(1,OpSpec1,OVar), arg(2,OpSpec1,Var1),
+	arg(1,OpSpec2,Var1), arg(2,OpSpec2,OVar),
+	Body = ('_$savecp'(Breg),
+		breg_retskel(Breg,Arity,Skel,Cs),
+		(nonvar(Var) -> instantiation_error ; true),
+		excess_vars(Skel,[Var|ExistVarList],[],Vars),
+		copy_term(t(Vars,Skel,Var),t(Vars,OSkel,OVar)),
+		Pred1Term,
+		\+ ('_$$get_returns'(Cs,OSkel,Leaf),
+		    (OVar == Var1 ; OpSpec1)
+		   ),
+		findall(Leaf,('_$$get_returns'(Cs,OSkel,Leaf),OpSpec2),Leaves),
+		(member(Leaf,Leaves),
+		 delete_return(Cs,Leaf),
+		 fail
+		 ;	
+		 Var = Var1
+		)
+	       ),
+	parse_preddef(PredTerm,Body,ClList2,SymTab),
+	ensure_imported(breg_retskel/4,machine,SymTab),
+	ensure_imported(excess_vars/4,setof,SymTab),
+	ensure_imported('_$$get_returns'/3,tables,SymTab),
+	ensure_imported('delete_return'/2,tables,SymTab),
+	ensure_imported('member'/2,basics,SymTab).
+generate_agg_clauses(AggrSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab) :-
+	(AggrSpec = fold(OpSpec,Id)
+	 ;
+	 AggrSpec = lattice(OpSpec), Id = no_identity
+	),
+	!,
+	(spec_skel(OpSpec,OpSpec1,3)
+	 ->	true
+	 ;	functor(PredTerm,Pred,Arity),
+		syntax_error(['Improper join specification in tabling declaration for ',Pred,'/',Arity])
+	),
+	(Id = F/1
+	 ->	GetID =.. [F,OVar],
+		Init = (GetID, OpSpec1)
+	 ; Id == no_identity
+	 ->	Init = (Var1 = Var)
+	 ;	Init = (OVar = Id, OpSpec1)
+	),
+	sym_propin(tabled,Sym),
+	functor(PredTerm,_,Arity),
+	arg(1,OpSpec1,OVar), arg(2,OpSpec1,Var1), arg(3,OpSpec1,Var),
+	Body = ('_$savecp'(Breg),
+		breg_retskel(Breg,Arity,Skel,Cs),
+		(nonvar(Var) -> instantiation_error ; true),
+		excess_vars(Skel,[Var|ExistVarList],[],Vars),
+		copy_term(t(Vars,Skel,Var),t(Vars,OSkel,OVar)),
+		Pred1Term,
+		('_$$get_returns'(Cs,OSkel,Leaf)
+		 ->	OpSpec1,
+			Var \== OVar,
+			delete_return(Cs,Leaf)
+		 ;	Init
+		)
+	       ),
+	parse_preddef(PredTerm,Body,ClList2,SymTab),
+	ensure_imported(breg_retskel/4,machine,SymTab),
+	ensure_imported(excess_vars/4,setof,SymTab),
+	ensure_imported('_$$get_returns'/3,tables,SymTab).
+generate_agg_clauses(intenset,Sym,PredTerm,Var1,[],Pred1Term,Var,ClList2,SymTab) :- !,
+	sym_propin(tabled,Sym),
+	sym_propin((use_subsumptive_tabling),Sym),
+	Body = Pred1Term,
+	excess_vars(Pred1Term,[Var1],[],Vars),
+	copy_term(t(Pred1Term,Var1,Vars),t(Pred1Temp,AbsVar,Vars)),
+	Var = {AbsVar:Pred1Temp},
+	parse_preddef(PredTerm,Body,ClList2,SymTab).
+generate_agg_clauses(OpSpec-Iden,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab) :- !,
+	generate_agg_clauses(fold(OpSpec,Iden),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab).
+generate_agg_clauses(OpSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab) :- !,
+	generate_agg_clauses(po(OpSpec),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab).
+generate_agg_clauses(_OpSpec,_Sym,PredTerm,_Var1,_ExistVarList,_Pred1Term,_Var,_ClList2,_SymTab) :-
+	functor(PredTerm,Pred,Arity),
 	syntax_error(['Improper join specification in tabling declaration for ',Pred,'/',Arity]).
-check_identity(_,_,_).
+	
+
+/*** translates binary relation to call to bagPO, which handles variables... so keep for future
+generate_agg_clauses(OpSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab) :- !,
+	(spec_skel(OpSpec,OpSpec1,2)
+	 ;	sym_name(Sym,Pred,Arity),
+		syntax_error(['Improper join specification in tabling declaration for ',Pred,'/',Arity])
+	),
+	parse_preddef(PredTerm,
+		      bagPO(Var1,ExistVarList^Pred1Term,Var,OpSpec1),
+		      ClList2,SymTab),
+	ensure_imported(bagPO/4,aggregs,SymTab). ***/
+
+spec_skel(F/A,Term,Ar) :- integer(A), nonvar(F), !, Ar = A, functor(Term,F,A).
+spec_skel(Term0,Term,Ar) :- functor(Term0,_,Ar), copy_term(Term0,Term).
 
 equate_but_argno([],[],_,[],[],_,_,_).
 equate_but_argno([X|PArgs],[Y|P1Args],CurArg,ArgList,VarList,A,B,ArgNo) :-
@@ -216,18 +298,9 @@ equate_but_argno([X|PArgs],[Y|P1Args],CurArg,ArgList,VarList,A,B,ArgNo) :-
 	CurArg1 is CurArg + 1,
 	equate_but_argno(PArgs,P1Args,CurArg1,ArgList0,VarList0,A,B,ArgNo).
 
-extract_aggr_spec(Spec,ArgNo,ExistArgList,OpSpec,OpArity,Iden) :-
+extract_aggr_spec(Spec,ArgNo,ExistArgList,AggSpec) :-
 	functor(Spec,_,Arity),
-	get_aggr_spec0(1,Spec,Arity,ExistArgList,ArgNo,OpSpec0),
-	(OpSpec0 = OpSpec-Iden
-	 ->	true
-	 ;	Iden = no_identity,
-		OpSpec = OpSpec0
-	),
-	(OpSpec = _/OpArity
-	 ->	true
-	 ;	functor(OpSpec,_,OpArity)
-	).
+	get_aggr_spec0(1,Spec,Arity,ExistArgList,ArgNo,AggSpec).
 
 get_aggr_spec0(ArgNo,Spec,Arity,ExistArgList,OpArgNo,OpSpec) :-
 	(ArgNo > Arity
@@ -246,13 +319,7 @@ get_aggr_spec0(ArgNo,Spec,Arity,ExistArgList,OpArgNo,OpSpec) :-
 		)
 	).
 
-ensure_bagReduce_defined(SymTab) :-
-	Mod = aggregs,
+ensure_imported(Pred/Arity,Mod,SymTab) :-
 	sym_insert(Mod,0,[module],SymTab,_),
-	sym_insert(bagReduce,5,im(Mod),SymTab,_).
-
-ensure_bagPO_defined(SymTab) :-
-	Mod = aggregs,
-	sym_insert(Mod,0,[module],SymTab,_),
-	sym_insert(bagPO,4,im(Mod),SymTab,_).
+	sym_insert(Pred,Arity,im(Mod),SymTab,_).
 

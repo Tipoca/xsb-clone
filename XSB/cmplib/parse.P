@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.110 2010-03-16 16:38:32 dwarren Exp $
+** $Id: parse.P,v 1.111 2010-05-13 01:38:35 dwarren Exp $
 ** 
 */
 
@@ -780,7 +780,27 @@ parse_comma_list_table(X, _) :-
 is_aggregation_spec(Spec) :-
 	Spec =.. [_|Args],
 	get_aggregation_spec(Args,Arg),
-	(Arg = P/3- _Id, atom(P)
+	is_aggregation_arg_spec(Arg).
+
+is_aggregation_arg_spec(Spec3-_) :- is_spec3(Spec3), !.
+is_aggregation_arg_spec(Spec2) :- is_spec2(Spec2), !.
+is_aggregation_arg_spec(lattice(Spec3)) :- is_spec3(Spec3), !.
+is_aggregation_arg_spec(fold(Spec3,Id)) :- is_spec3(Spec3),is_spec1(Id),!.
+is_aggregation_arg_spec(po(Spec2)) :- is_spec2(Spec2),!.
+is_aggregation_arg_spec(po(Spec2,Spec3)) :- is_spec2(Spec2),is_spec3(Spec3),!.
+is_aggregation_arg_spec(intenset).
+
+is_spec3(P/3) :- atom(P),!.
+is_spec3(Skel) :- functor(Skel,_,3).
+
+is_spec2(P/2) :- atom(P),!.
+is_spec2(Skel) :- functor(Skel,_,2).
+
+is_spec1(Id) :- atom(Id),!.
+is_spec1(P/1) :- atom(P),!.
+is_spec1(Skel) :- functor(Skel,_,1).
+
+/**	(Arg = P/3- _Id, atom(P)
 	 ;
 	 Arg = Skel- _Id, functor(Skel,_,3)
 	 ;
@@ -789,6 +809,7 @@ is_aggregation_spec(Spec) :-
 	 functor(Arg,_,2)
 	),
 	!.
+**/
 
 get_aggregation_spec([A|Args],Arg) :-
 	(var(A)
