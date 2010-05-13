@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_eval.P,v 1.17 2009-08-14 14:38:32 dwarren Exp $
+** $Id: tp_eval.P,v 1.18 2010-05-13 20:13:30 dwarren Exp $
 ** 
 */
 
@@ -423,8 +423,11 @@ eval_var_source(Varocc,Loc,Type0,HoldR,Tin,Tout,EPN) :-
 	vprag_occ(Prag,Occ),
 	((Occ == s ; Occ == l)
 	 ->	vprag_type(Prag,Type),
-		(Type == t -> Type0 = 0 ; Type0 = 1),
-		release_if_done(Vid,Loc,Prag,HoldR,Tmid,Tout)
+		(Type == t
+		 ->	Type0 = 0, % a register, so release if done
+			release_if_done(Vid,Loc,Prag,HoldR,Tmid,Tout)
+		 ;	Type0 = 1, Tout = Tmid  % not a register
+		)
 	 ;	EPN = e(PredSym,NC),
 		sym_name(PredSym, P, A),
 		error('Unbound variable in an arithmetic expression'),
