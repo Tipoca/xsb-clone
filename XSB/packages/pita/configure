@@ -1744,7 +1744,7 @@ ldflags=
 if test -n "$with_pita" ; then
    glib_ld_flags="`pkg-config --libs glib-2.0`"
    ccflags="-I $with_pita/include `pkg-config --cflags glib-2.0`"
-   ldflags="$with_pita/cudd/libcudd.a  $with_pita/mtr/libmtr.a  $with_pita/st/libst.a  $with_pita/util/libutil.a  $with_pita/epd/libepd.a $glib_ld_flags -lm"
+   ldflags="-L$with_pita/cudd -lcudd  -L$with_pita/mtr -lmtr  -L$with_pita/st -lst  -L$with_pita/util -lutil  -L$with_pita/epd -lepd $glib_ld_flags -lm"
 fi
 
 
