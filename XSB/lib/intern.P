@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.29 2010-05-14 19:12:24 tswift Exp $
+** $Id: intern.P,v 1.30 2010-05-14 19:30:32 tswift Exp $
 ** 
 */
 
@@ -723,8 +723,9 @@ trie_retractall(Term,Trie):-
 	fail.
 trie_retractall(_Trie,_Term).
 
-/* Obsolete because want error messages (done in C) to apply to
+/* System predicate because want error messages (done in C) to apply to
    the expected arguments */
+:- export i_trie_interned/3.
 i_trie_interned(Term,Root,Leaf):- 
 	new_i_trie_interned(Root,Term,Leaf).
 
