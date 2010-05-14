@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.28 2010-05-09 19:33:26 tswift Exp $
+** $Id: intern.P,v 1.29 2010-05-14 19:12:24 tswift Exp $
 ** 
 */
 
@@ -593,9 +593,6 @@ get_trie_info(Tid,Type,Index):-
 %-----------
 % Intern
 %-----------
-/* Intern: i_trie_intern is private */
-new_i_trie_intern(_Root,_Term,_Leaf,_Flag,_Check,_Expand) :- '_$builtin'(TRIE_INTERN).
-
 trie_shas_intern(Root,Term,Leaf,Flag) :- 
 	dynamic_code_function(SHAS_TRIE_INTERN,Root,Term,Leaf,Flag).
 
@@ -656,12 +653,15 @@ trie_dispose_nr(_Root, _Leaf) :- '_$builtin'(TRIE_DISPOSE_NR).
 trie_undispose(_Root,_Leaf) :- '_$builtin'(TRIE_UNDISPOSE).
 
 %------------------------------------------------------------------
-% TLS: Obsolescent (as far as I'm concerned)
+% Low Level
 %------------------------------------------------------------------
 
 new_trie(TrieId) :- i_trie_create(TrieId , PRGE_TRIE).
 
 %---------
+/* Intern: i_trie_intern is private */
+new_i_trie_intern(_Root,_Term,_Leaf,_Flag,_Check,_Expand) :- '_$builtin'(TRIE_INTERN).
+
 % no flag
 trie_intern(Term,Root,Leaf,Skel) :- 
 	trie_intern(Term,Root,Leaf,_Flag,Skel). 
@@ -728,32 +728,29 @@ trie_retractall(_Trie,_Term).
 i_trie_interned(Term,Root,Leaf):- 
 	new_i_trie_interned(Root,Term,Leaf).
 
-/*
-i_trie_intern(Term,Root,Leaf,Flag,Check,Expand) :-
-	new_i_trie_intern(Root,Term,Leaf,Flag,Check,Expand).
-*/
-%:- import writeln/1 from standard.
+%-----------------------------------------------------------------------------
+% Incremental Tries
+%-----------------------------------------------------------------------------
 
-:- export incr_trie_intern/2, incr_trie_uninternall/2.
-:- export incr_trie_intern_inval/2, incr_trie_uninternall_inval/2.
+/* So far, these are only implemented for private, general tries */
+
 :- import incr_table_update/0 from increval.
 :- import invalidate_callnode_trie/1 from increval.
 
+:- export incr_trie_intern/2, incr_trie_uninternall/2.
+:- export incr_trie_intern_inval/2, incr_trie_uninternall_inval/2.
+:- export incr_trie_unintern/2, incr_trie_unintern_inval/2.
 incr_trie_intern(Root,Term) :-
-%	check_incremental_trie(Term,dynamic_predicate_not_incremental),
         trie_intern(Term,Root),
         invalidate_callnode_trie(Root), /* root -> callnodeptr */
 	incr_table_update.
 
 incr_trie_intern_inval(Root,Term) :-
-%	check_incremental_trie(Term,dynamic_predicate_not_incremental),
         trie_intern(Term,Root),
         invalidate_callnode_trie(Root). /* root -> callnodeptr */
 
 incr_trie_uninternall(Root,Term) :-
-%	check_incremental_trie(Term,dynamic_predicate_not_incremental),
 	( trie_interned(Term,Root,Leaf,_S),
-   	  % writeln(private_trie_unintern(Root,Leaf,NO_CPS_CHECK)),
 	  private_trie_unintern(Root,Leaf,NO_CPS_CHECK),
 	  fail
          ; 
@@ -761,13 +758,54 @@ incr_trie_uninternall(Root,Term) :-
   	  incr_table_update).
 
 incr_trie_uninternall_inval(Root,Term) :-
-%	check_incremental_trie(Term,dynamic_predicate_not_incremental),
 	( trie_interned(Term,Root,Leaf,_S),
-   	  % writeln(private_trie_unintern(Root,Leaf,NO_CPS_CHECK)),
 	  private_trie_unintern(Root,Leaf,NO_CPS_CHECK),
 	  fail
          ; 
           invalidate_callnode_trie(Root)). /* root -> callnodeptr */
+
+incr_trie_unintern(Root,Term) :-
+          trie_interned(Term,Root,Leaf,_S),
+	  private_trie_unintern(Root,Leaf,NO_CPS_CHECK),
+          invalidate_callnode_trie(Root), /* root -> callnodeptr */
+  	  incr_table_update.
+
+incr_trie_unintern_inval(Root,Term) :-
+	  trie_interned(Term,Root,Leaf,_S),
+	  private_trie_unintern(Root,Leaf,NO_CPS_CHECK),
+          invalidate_callnode_trie(Root). /* root -> callnodeptr */
+
+%---------
+% 4-ary (intended to be used in storage.P)
+%---------
+
+:- export incr_trie_intern/4,incr_trie_intern_inval/4.
+:- export incr_trie_unintern_nr/2, incr_trie_unintern_nr_inval/2.
+
+% incr_trie_intern(+Term,+Root,-Leaf,-Flag)
+% Flag = 0 means the term was new.
+incr_trie_intern(Term,Root,Leaf,Flag) :-
+	new_i_trie_intern(Root,Term,Leaf,Flag,CPS_CHECK,EXPAND_HASHES),
+        invalidate_callnode_trie(Root), /* root -> callnodeptr */
+	incr_table_update.
+
+incr_trie_unintern_nr(Root,Leaf):- 
+        trie_dispose_nr(Root, Leaf),
+        invalidate_callnode_trie(Root), /* root -> callnodeptr */
+	incr_table_update.
+
+incr_trie_intern_inval(Root,Term,Leaf,Flag) :-
+	new_i_trie_intern(Root,Term,Leaf,Flag,CPS_CHECK,EXPAND_HASHES),
+        invalidate_callnode_trie(Root). /* root -> callnodeptr */
+
+incr_trie_unintern_nr_inval(Root,Leaf):- 
+        trie_dispose_nr(Root, Leaf),
+        invalidate_callnode_trie(Root). /* root -> callnodeptr */
+
+end_of_file.
+
+
+%Use also specialized form of trie_interned, with no skel and assuming leaf is a var.
 
 end_of_file.
 
