@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.187 2010/04/02 17:24:42 evansbj Exp $
+** $Id: tr_utils.c,v 1.188 2010/04/24 20:50:43 tswift Exp $
 ** 
 */
 
@@ -67,9 +67,9 @@
 #include "trie_defs.h"
 #include "trassert.h"
 #include "biassert_defs.h"
-
 #include "call_graph_xsb.h" /* incremental evaluation */
 #include "table_inspection_defs.h"
+#include "heap_xsb.h"
 
 /*----------------------------------------------------------------------*/
 
@@ -637,7 +637,7 @@ void delete_variant_sf_and_answers(CTXTdeclc VariantSF pSF, xsbBool should_warn)
 	if ( ! IsLeafNode(rnod) )
 	  push_node(BTN_Child(rnod))
 	  else { /* leaf node */
-	    release_conditional_answer_info(CTXTc rnod);
+	    if (!hasALNtag(rnod)) release_conditional_answer_info(CTXTc rnod);
 	  }
  	SM_DeallocatePossSharedStruct(*smBTN,rnod);
       }
@@ -1165,7 +1165,11 @@ void delete_return(CTXTdeclc BTNptr leaf, VariantSF sg_frame,int eval_method)
   TChoice  tc;
 #endif
 
-    xsb_dbgmsg((LOG_INTERN, "DELETE_NODE: %d - Par: %d", leaf, BTN_Parent(leaf)));
+  //  printf("DELETE_NODE: %d - Par: %d\n", leaf, BTN_Parent(leaf));
+
+#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
+    ans_deletes++;
+#endif
 
     /* deleting an answer makes it false, so we have to deal with 
        delay lists */
@@ -1443,10 +1447,12 @@ Integer new_shared_trie(CTXTdeclc int type) {
 
 /*----------------------------------------------------------------------*/
 
-/* TLS: Shared tries still need more testing, but I hope to have them
-   implemented soon */
+/* The type argument to newtrie() uses bit-mapping to indicate whether
+   the trie to be created 1) is thread-private or thread-shared; 2)
+   can backtrack in a general manner or whether the trie must use a
+   key (term) as in an associateive array; 3) is incremental or not.
+   See trie_defs.h for declarations of the bit-maps. */
 
-//  Legacy API
 #ifdef MULTI_THREAD
 Integer newtrie(CTXTdeclc int type) {
   if (PRIVATE_TRIE(type)) 
@@ -2939,7 +2945,7 @@ void abolish_table_call_transitive(CTXTdeclc VariantSF subgoal) {
     Psc psc;
     int action;
 
-    //    printf("in abolish_table_call_transitive\n");
+       printf("in abolish_table_call_transitive\n");
     tif = subg_tif_ptr(subgoal);
     psc = TIF_PSC(tif);
 
@@ -4147,6 +4153,24 @@ void print_done_answer_stack(CTXTdecl) {
   }
 }
 
+void alt_print_done_answer_stack(CTXTdecl) {
+  int frame = 0;
+  int old_scc = -1; int first_scc = 1;
+  while (frame < done_answer_stack_top) {
+    if (done_answer_stack[frame].answer) {
+      if (old_scc != done_answer_stack[frame].scc) {
+	if (!first_scc) printf("}\n");
+	first_scc = 0; old_scc = done_answer_stack[frame].scc;
+	printf("SCC %d { ",done_answer_stack[frame].scc);       
+      }
+      else printf(", ");
+	print_subgoal(CTXTc stddbg, asi_subgoal((ASI) Child(done_answer_stack[frame].answer)));
+    }
+    frame++;
+  }
+  printf("}\n");
+}
+
 // reset the scratchpad for each answer in done stack
 void reset_done_answer_stack() {
   int frame = 0;
@@ -4368,19 +4392,48 @@ void answer_completion(CTXTdeclc CPtr cs_ptr) {
 }
 
 #endif
+
+extern void ctop_tag(CTXTdeclc int, Cell);
+
 //----------------------------------------------------------------------
 int table_inspection_function( CTXTdecl ) {
   switch (ptoc_int(CTXTc 1)) {
 
   case FIND_COMPONENTS: {
+//    int new;    Psc sccpsc;
+    Cell temp;
+
     dfn = 0;
     component_stack_top = 0;
     done_answer_stack_top = 0;
     table_component_check(CTXTc (NODEptr) ptoc_int(CTXTc 2));
     print_done_answer_stack(CTXT);
+    alt_print_done_answer_stack(CTXT);
     unfounded_component(CTXT);
     printf("done w. unfounded component\n");
     //    print_done_answer_stack(CTXT);
+
+    bind_list(&temp,hreg);                 //[ 
+    bld_list(hreg,hreg+2);    hreg++;      // [
+    new_heap_nil(hreg);                    //]
+    bld_int(hreg,0);  hreg++;              //   0
+    bld_list(hreg,hreg+2); hreg++;         //    ,
+    bld_list(hreg,hreg+2);    hreg++;      //     [
+    bld_list(hreg,hreg+2);    hreg++;      //  
+    new_heap_nil(hreg);                    // ]
+    bld_int(hreg,1);  hreg++;              //      1
+    bld_list(hreg,hreg+2);    hreg++;      //       ,
+    bld_list(hreg,hreg+2);    hreg++;      //         [
+    bld_int(hreg,2);  hreg++;              //          2
+    bld_list(hreg,hreg+2);    hreg++;
+    bld_list(hreg,hreg+2);    hreg++;
+    bld_int(hreg,3);  hreg++;              //          2
+    bld_list(hreg,hreg+2);    hreg++;
+    bld_list(hreg,hreg+2);    hreg++;
+    bld_int(hreg,4);  hreg++;              //          2
+    new_heap_nil(hreg);
+    ctop_tag(CTXTc 3, temp);
+
     break;
   }
 
@@ -4390,6 +4443,7 @@ int table_inspection_function( CTXTdecl ) {
   BTNptr as_leaf, new_answer;
   struct answer_dfn stack_node;
 
+  printf("find foward dependencies \n");
   done_answer_stack_top = 0; dfn = 0;
   as_leaf = (NODEptr) ptoc_int(CTXTc 2);
   if (is_conditional_answer(as_leaf)) {
