@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.188 2010/04/24 20:50:43 tswift Exp $
+** $Id: tr_utils.c,v 1.189 2010/05/20 17:52:18 tswift Exp $
 ** 
 */
 
@@ -734,7 +734,7 @@ static void delete_variant_table(CTXTdeclc BTNptr x, int incr, xsbBool should_wa
 		if ( ! IsLeafNode(rnod) )
 		  push_node(BTN_Child(rnod))
 		else { /* leaf node */
-		  release_conditional_answer_info(CTXTc rnod);
+		  if (!hasALNtag(rnod)) release_conditional_answer_info(CTXTc rnod);
 		}
 		SM_DeallocatePossSharedStruct(*smBTN,rnod);
 	      }
