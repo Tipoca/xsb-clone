@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.h,v 1.6 2005-09-16 00:56:41 tswift Exp $
+** $Id: storage_xsb.h,v 1.7 2010-05-21 23:58:10 kifer Exp $
 ** 
 */
 
@@ -44,7 +44,7 @@ struct storage_handle {
 };
 
 
-extern STORAGE_HANDLE *storage_builtin(CTXTdeclc int builtin_number, Cell storage_name);
+extern STORAGE_HANDLE *storage_builtin(CTXTdeclc int builtin_number, Cell storage_name, CTXTdeclc prolog_term trie_type);
 
 /* 127 is a prime that is close to 2^7 */
 #define STORAGE_TBL_SIZE  127

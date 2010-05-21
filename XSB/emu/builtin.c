@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.337 2010-05-02 05:11:26 evansbj Exp $
+** $Id: builtin.c,v 1.338 2010-05-21 23:58:10 kifer Exp $
 ** 
 */
 
@@ -2846,11 +2846,11 @@ case WRITE_OUT_PROFILE:
 
   case STORAGE_BUILTIN: {
     STORAGE_HANDLE *storage_handle =
-      storage_builtin(CTXTc ptoc_int(CTXTc 1),(Cell)ptoc_tag(CTXTc 2));
+      storage_builtin(CTXTc ptoc_int(CTXTc 1),(Cell)ptoc_tag(CTXTc 2),CTXTc reg_term(CTXTc 3));
     if (storage_handle != NULL) {
-      ctop_int(CTXTc 3, (Integer)storage_handle->handle);
-      ctop_int(CTXTc 4, (Integer)storage_handle->snapshot_number);
-      ctop_int(CTXTc 5, (Integer)storage_handle->changed);
+      ctop_int(CTXTc 4, (Integer)storage_handle->handle);
+      ctop_int(CTXTc 5, (Integer)storage_handle->snapshot_number);
+      ctop_int(CTXTc 6, (Integer)storage_handle->changed);
     }
     break;
   }

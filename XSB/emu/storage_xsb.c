@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.c,v 1.13 2009-11-17 14:59:34 tswift Exp $
+** $Id: storage_xsb.c,v 1.14 2010-05-21 23:58:10 kifer Exp $
 ** 
 */
 
@@ -57,7 +57,7 @@ xsbHashTable bt_storage_hash_table =
   {STORAGE_TBL_SIZE,sizeof(STORAGE_HANDLE),FALSE,NULL};
 #endif
 
-static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name)
+static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name, CTXTdeclc int trie_type)
 {
   STORAGE_HANDLE *handle_cell;
 
@@ -68,7 +68,11 @@ static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name)
     xsb_dbgmsg((LOG_STORAGE,
 	       "GET_STORAGE_HANDLE: New trie created for %s\n", 
 	       string_val(name)));
-    handle_cell->handle= newtrie(CTXTc 0);  /* create as private */
+    if (is_int(trie_type))
+      handle_cell->handle= newtrie(CTXTc p2c_int(trie_type));
+    else
+      xsb_abort("[GET_STORAGE_HANDLE] trie type (3d arg) must be an integer");
+      
     /* Note: not necessary to initialize snapshot_number&changed: handle_cell
        was calloc()'ed 
        handle_cell->snapshot_number=0;
@@ -82,11 +86,11 @@ static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name)
   return handle_cell;
 }
 
-STORAGE_HANDLE *storage_builtin(CTXTdeclc int builtin_number, Cell name)
+STORAGE_HANDLE *storage_builtin(CTXTdeclc int builtin_number, Cell name, CTXTdeclc prolog_term trie_type)
 {
   switch (builtin_number) {
   case GET_STORAGE_HANDLE:
-    return get_storage_handle(CTXTc name);
+    return get_storage_handle(CTXTc name, CTXTc trie_type);
   case INCREMENT_STORAGE_SNAPSHOT:
     return increment_storage_snapshot(CTXTc name);
   case MARK_STORAGE_CHANGED:
