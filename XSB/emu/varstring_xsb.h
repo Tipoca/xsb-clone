@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring_xsb.h,v 1.8 2005-07-07 18:59:43 dwarren Exp $
+** $Id: varstring_xsb.h,v 1.9 2010-05-21 23:31:38 kifer Exp $
 ** 
 */
 
@@ -98,7 +98,7 @@ extern DllExport struct varstr_ops VarStrOps;
    Can't resolve VarStrOps. So, then use XSB_StrCreate() and XSB_StrInit()
 */
 #define XSB_StrDefine(vstr)          VarString vstr = {0,0,0,NULL,&VarStrOps}
-/* Allocates space vor VarString, assigns the pointer to vstr, then initializes
+/* Allocates space for VarString, assigns the pointer to vstr, then initializes
    the VarString */
 #define XSB_StrCreate(vstr)    	     varstring_create(vstr)
 /* Assumes vstr points to an uninitialized VarString. Initializes it. */

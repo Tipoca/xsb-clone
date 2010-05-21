@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.96 2010-05-03 00:17:25 evansbj Exp $
+** $Id: cinterf.c,v 1.97 2010-05-21 23:31:38 kifer Exp $
 **
 */
 
@@ -67,10 +67,10 @@ extern char *expand_filename(char *);
 extern void xsb_sprint_variable(CTXTdeclc char *sptr, CPtr var);
 
 
-char *p_charlist_to_c_string(CTXTdeclc prolog_term term, VarString *buf,
-			     char *in_func, char *where);
-void c_string_to_p_charlist(CTXTdeclc char *name, prolog_term list,
-			    int regs_to_protect, char *in_func, char *where);
+DllExport char *p_charlist_to_c_string(CTXTdeclc prolog_term term, VarString *buf,
+				       char *in_func, char *where);
+DllExport void c_string_to_p_charlist(CTXTdeclc char *name, prolog_term list,
+				      int regs_to_protect, char *in_func, char *where);
 
 #ifndef HAVE_SNPRINTF
 #include <stdarg.h>
@@ -355,8 +355,8 @@ DllExport prolog_term call_conv p2p_deref(prolog_term term)
    This function converts escape sequences in the Prolog string
    (except octal/hexadecimal escapes) into the corresponding real characters.
 */
-char *p_charlist_to_c_string(CTXTdeclc prolog_term term, VarString *buf,
-			     char *in_func, char *where)
+DllExport char *p_charlist_to_c_string(CTXTdeclc prolog_term term, VarString *buf,
+				       char *in_func, char *where)
 {
   Integer head_val;
   char head_char[1];
@@ -436,8 +436,8 @@ char *p_charlist_to_c_string(CTXTdeclc prolog_term term, VarString *buf,
    regs_to_protect is the number of registers with values (needed for stack expansion)
    WHERE is another string with additional info. These two are used to provide
    informative error messages to the user. */
-void c_string_to_p_charlist(CTXTdeclc char *name, prolog_term list,
-			    int regs_to_protect, char *in_func, char *where)
+DllExport void c_string_to_p_charlist(CTXTdeclc char *name, prolog_term list,
+				      int regs_to_protect, char *in_func, char *where)
 {
   Cell new_list;
   CPtr top = 0;

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.51 2010-05-02 05:11:26 evansbj Exp $
+** $Id: cinterf.h,v 1.52 2010-05-21 23:31:38 kifer Exp $
 ** 
 */
 
@@ -338,8 +338,10 @@ DllExport extern int call_conv xsb_kill_thread(CTXTdecl);
 #endif
 
 DllExport extern void call_conv print_pterm(CTXTdeclc Cell, int, VarString*);
-extern char *p_charlist_to_c_string(CTXTdeclc prolog_term term, VarString *buf,
-				    char *in_func, char *where);
+DllExport extern char *p_charlist_to_c_string(CTXTdeclc prolog_term term, VarString *buf,
+					      char *in_func, char *where);
+DllExport extern void c_string_to_p_charlist(CTXTdeclc char *name, prolog_term list,
+				      int regs_to_protect, char *in_func, char *where);
 
 /*******************************************************************************/
 
