@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.190 2010/05/20 18:12:43 tswift Exp $
+** $Id: tr_utils.c,v 1.191 2010/05/21 16:07:55 tswift Exp $
 ** 
 */
 
@@ -4396,6 +4396,7 @@ extern void ctop_tag(CTXTdeclc int, Cell);
 int table_inspection_function( CTXTdecl ) {
   switch (ptoc_int(CTXTc 1)) {
 
+#ifdef UNDEFINED
   case FIND_COMPONENTS: {
 //    int new;    Psc sccpsc;
     Cell temp;
@@ -4433,6 +4434,7 @@ int table_inspection_function( CTXTdecl ) {
 
     break;
   }
+#endif
 
   case FIND_FORWARD_DEPENDENCIES: {
   DL delayList;
