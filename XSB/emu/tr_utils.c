@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.189 2010/05/20 17:52:18 tswift Exp $
+** $Id: tr_utils.c,v 1.190 2010/05/20 18:12:43 tswift Exp $
 ** 
 */
 
@@ -1166,10 +1166,7 @@ void delete_return(CTXTdeclc BTNptr leaf, VariantSF sg_frame,int eval_method)
 #endif
 
   //  printf("DELETE_NODE: %d - Par: %d\n", leaf, BTN_Parent(leaf));
-
-#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
-    ans_deletes++;
-#endif
+  //    ans_deletes++;
 
     /* deleting an answer makes it false, so we have to deal with 
        delay lists */

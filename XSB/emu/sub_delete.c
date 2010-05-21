@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_delete.c,v 1.21 2010-05-20 18:12:43 tswift Exp $
+** $Id: sub_delete.c,v 1.22 2010-05-21 16:07:55 tswift Exp $
 ** 
 */
 
@@ -148,8 +148,10 @@ static void delete_tst_answer_set(CTXTdeclc TSTNptr root) {
     delete_private_tstht(CTXTc hash_hdr);
   }
 
-  else if ( IsLeafNode(root) )		  
-    if (!hasALNtag(root))    release_conditional_answer_info(CTXTc (BTNptr) root);
+  else if ( IsLeafNode(root) )	{	  
+    if (!hasALNtag(root))   
+      release_conditional_answer_info(CTXTc (BTNptr) root);
+  }
 
   else if ( ! IsLeafNode(root) )
     for ( current = TSTN_Child(root);  IsNonNULL(current);
