@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.c,v 1.14 2010-05-21 23:58:10 kifer Exp $
+** $Id: storage_xsb.c,v 1.15 2010-05-22 17:51:53 kifer Exp $
 ** 
 */
 
@@ -57,7 +57,7 @@ xsbHashTable bt_storage_hash_table =
   {STORAGE_TBL_SIZE,sizeof(STORAGE_HANDLE),FALSE,NULL};
 #endif
 
-static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name, CTXTdeclc int trie_type)
+static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name, int trie_type)
 {
   STORAGE_HANDLE *handle_cell;
 
@@ -86,7 +86,7 @@ static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name, CTXTdeclc 
   return handle_cell;
 }
 
-STORAGE_HANDLE *storage_builtin(CTXTdeclc int builtin_number, Cell name, CTXTdeclc prolog_term trie_type)
+STORAGE_HANDLE *storage_builtin(CTXTdeclc int builtin_number, Cell name, prolog_term trie_type)
 {
   switch (builtin_number) {
   case GET_STORAGE_HANDLE:
