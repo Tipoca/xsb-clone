@@ -1,25 +1,25 @@
 /* File:      storage_xsb.c  -- support for the storage.P module
 ** Author(s): Michael Kifer
 ** Contact:   xsb-contact@cs.sunysb.edu
-** 
+**
 ** Copyright (C) The Research Foundation of SUNY, 2001,2002
-** 
+**
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
 ** Software Foundation; either version 2 of the License, or (at your option)
 ** any later version.
-** 
+**
 ** XSB is distributed in the hope that it will be useful, but WITHOUT ANY
 ** WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 ** FOR A PARTICULAR PURPOSE.  See the GNU Library General Public License for
 ** more details.
-** 
+**
 ** You should have received a copy of the GNU Library General Public License
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.c,v 1.15 2010-05-22 17:51:53 kifer Exp $
-** 
+** $Id: storage_xsb.c,v 1.16 2010-05-22 18:38:55 evansbj Exp $
+**
 */
 
 #include "xsb_config.h"
@@ -66,15 +66,15 @@ static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name, int trie_t
   if (handle_cell->handle==(Cell)0) {
     /* initialize new handle */
     xsb_dbgmsg((LOG_STORAGE,
-	       "GET_STORAGE_HANDLE: New trie created for %s\n", 
+	       "GET_STORAGE_HANDLE: New trie created for %s\n",
 	       string_val(name)));
     if (is_int(trie_type))
       handle_cell->handle= newtrie(CTXTc p2c_int(trie_type));
     else
       xsb_abort("[GET_STORAGE_HANDLE] trie type (3d arg) must be an integer");
-      
+
     /* Note: not necessary to initialize snapshot_number&changed: handle_cell
-       was calloc()'ed 
+       was calloc()'ed
        handle_cell->snapshot_number=0;
        handle_cell->changed=FALSE;
     */
@@ -90,7 +90,7 @@ STORAGE_HANDLE *storage_builtin(CTXTdeclc int builtin_number, Cell name, prolog_
 {
   switch (builtin_number) {
   case GET_STORAGE_HANDLE:
-    return get_storage_handle(CTXTc name, CTXTc trie_type);
+    return get_storage_handle(CTXTc name, trie_type);
   case INCREMENT_STORAGE_SNAPSHOT:
     return increment_storage_snapshot(CTXTc name);
   case MARK_STORAGE_CHANGED:
