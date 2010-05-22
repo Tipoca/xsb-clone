@@ -1,26 +1,26 @@
 /* File:      builtin.c
 ** Author(s): Xu, Warren, Sagonas, Swift, Freire, Johnson
 ** Contact:   xsb-contact@cs.sunysb.edu
-** 
+**
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1999
 ** Copyright (C) ECRC, Germany, 1990
-** 
+**
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
 ** Software Foundation; either version 2 of the License, or (at your option)
 ** any later version.
-** 
+**
 ** XSB is distributed in the hope that it will be useful, but WITHOUT ANY
 ** WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 ** FOR A PARTICULAR PURPOSE.  See the GNU Library General Public License for
 ** more details.
-** 
+**
 ** You should have received a copy of the GNU Library General Public License
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.338 2010-05-21 23:58:10 kifer Exp $
-** 
+** $Id: builtin.c,v 1.339 2010-05-22 23:30:51 evansbj Exp $
+**
 */
 
 #include "xsb_config.h"
@@ -49,7 +49,7 @@
 #include "wsipx.h"
 #include <tchar.h>
 #else /* Unix */
-#include <unistd.h> 
+#include <unistd.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
 #include <netdb.h>
@@ -167,10 +167,10 @@ extern void retrieve_prof_table();
 
 // Externs for assert/retract
 extern xsbBool assert_code_to_buff(CTXTdecl), assert_buff_to_clref(CTXTdecl);
-extern xsbBool gen_retract_all(CTXTdecl), db_retract0(CTXTdecl), 
+extern xsbBool gen_retract_all(CTXTdecl), db_retract0(CTXTdecl),
   db_get_clause(CTXTdecl);
 extern xsbBool db_get_last_clause(CTXTdecl);
-extern xsbBool db_build_prref(CTXTdecl), db_abolish0(CTXTdecl), 
+extern xsbBool db_build_prref(CTXTdecl), db_abolish0(CTXTdecl),
 	       db_reclaim0(CTXTdecl), db_get_prref(CTXTdecl);
 extern xsbBool dynamic_code_function(CTXTdecl);
 extern xsbBool table_inspection_function(CTXTdecl);
@@ -230,7 +230,7 @@ DllExport prolog_int call_conv ptoc_int(CTXTdeclc int regnum)
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
    * multi-threaded engine
-   */  
+   */
   register Cell addr = cell(reg+regnum);
 
   /* XSB_Deref and then check the type */
@@ -240,7 +240,7 @@ DllExport prolog_int call_conv ptoc_int(CTXTdeclc int regnum)
   case XSB_STRUCT:
     if (isboxedinteger(addr)) return(boxedint_val(addr));
   case XSB_FREE:
-  case XSB_REF1: 
+  case XSB_REF1:
   case XSB_ATTV:
   case XSB_LIST:
   case XSB_FLOAT: xsb_abort("[PTOC_INT] Integer argument expected, %d tag found\n",cell_tag(addr));
@@ -257,7 +257,7 @@ DllExport prolog_int call_conv iso_ptoc_int(CTXTdeclc int regnum,const char * Pr
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
    * multi-threaded engine
-   */  
+   */
   register Cell addr = cell(reg+regnum);
 
   /* XSB_Deref and then check the type */
@@ -265,7 +265,7 @@ DllExport prolog_int call_conv iso_ptoc_int(CTXTdeclc int regnum,const char * Pr
 
   switch (cell_tag(addr)) {
   case XSB_FREE:
-  case XSB_REF1: 
+  case XSB_REF1:
   case XSB_ATTV: xsb_instantiation_error(CTXTc PredString,regnum);
   case XSB_STRUCT:
     if (isboxedinteger(addr)) return(boxedint_val(addr));
@@ -288,7 +288,7 @@ DllExport prolog_int call_conv iso_ptoc_int_arg(CTXTdeclc int regnum,const char 
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
    * multi-threaded engine
-   */  
+   */
   register Cell addr = cell(reg+regnum);
 
   /* XSB_Deref and then check the type */
@@ -296,7 +296,7 @@ DllExport prolog_int call_conv iso_ptoc_int_arg(CTXTdeclc int regnum,const char 
 
   switch (cell_tag(addr)) {
   case XSB_FREE:
-  case XSB_REF1: 
+  case XSB_REF1:
   case XSB_ATTV: xsb_instantiation_error(CTXTc PredString,arg);
   case XSB_STRUCT:
     if (isboxedinteger(addr)) return(boxedint_val(addr));
@@ -315,7 +315,7 @@ inline Cell iso_ptoc_callable(CTXTdeclc int regnum,const char * PredString)
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
    * multi-threaded engine
-   */  
+   */
   register Cell addr = cell(reg+regnum);
 
   /* XSB_Deref and then check the type */
@@ -336,7 +336,7 @@ inline Cell iso_ptoc_callable_arg(CTXTdeclc int regnum,const int PredString,cons
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
    * multi-threaded engine
-   */  
+   */
   register Cell addr = cell(reg+regnum);
 
   /* XSB_Deref and then check the type */
@@ -365,22 +365,22 @@ DllExport prolog_float call_conv ptoc_float(CTXTdeclc int regnum)
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
    * multi-threaded engine
-   */  
+   */
   register Cell addr = cell(reg+regnum);
 
   /* XSB_Deref and then check the type */
   XSB_Deref( addr );
   switch (cell_tag(addr)) {
   case XSB_FREE:
-  case XSB_REF1: 
-  case XSB_ATTV: 
+  case XSB_REF1:
+  case XSB_ATTV:
   case XSB_LIST:
   case XSB_INT:
   case XSB_STRING:
     xsb_abort("[PTOC_FLOAT] Float argument expected");
-  case XSB_STRUCT: 
+  case XSB_STRUCT:
       if (!isboxedfloat(addr))
-          xsb_abort("[PTOC_FLOAT] Float argument expected");      
+          xsb_abort("[PTOC_FLOAT] Float argument expected");
   case XSB_FLOAT: return (prolog_float)ofloat_val(addr);
   default:
     xsb_abort("[PTOC_FLOAT] Argument of unknown type");
@@ -394,7 +394,7 @@ DllExport char* call_conv iso_ptoc_string(CTXTdeclc int regnum,char * PredString
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
    * multi-threaded engine
-   */  
+   */
   register Cell addr = cell(reg+regnum);
 
   /* XSB_Deref and then check the type */
@@ -402,11 +402,11 @@ DllExport char* call_conv iso_ptoc_string(CTXTdeclc int regnum,char * PredString
 
   switch (cell_tag(addr)) {
   case XSB_FREE:
-  case XSB_REF1: 
+  case XSB_REF1:
   case XSB_ATTV: xsb_instantiation_error(CTXTc PredString,regnum);
   case XSB_STRUCT:
   case XSB_LIST:
-  case XSB_INT: 
+  case XSB_INT:
   case XSB_FLOAT: xsb_type_error(CTXTc "atom",addr,PredString,regnum);
   case XSB_STRING: return string_val(addr);
   default: xsb_abort("[PTOC_INT] Argument of unknown type");
@@ -419,10 +419,10 @@ DllExport char* call_conv ptoc_string(CTXTdeclc int regnum)
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
    * multi-threaded engine
-   */  
+   */
 
   register Cell addr = cell(reg+regnum);
-  
+
   /* XSB_Deref and then check the type */
   XSB_Deref(addr);
   switch (cell_tag(addr)) {
@@ -433,28 +433,28 @@ DllExport char* call_conv ptoc_string(CTXTdeclc int regnum)
   case XSB_FLOAT:
     xsb_abort("[PTOC_STRING] String (atom) argument expected");
   case XSB_STRUCT:  /* tentative approach to fix boxed ints --lfcastro */
-    if (isboxedinteger(addr)) 
+    if (isboxedinteger(addr))
       return (char *)boxedint_val(addr);
     else
       xsb_abort("[PTOC_STRING] String (atom) argument expected");
-  case XSB_INT: 
+  case XSB_INT:
       return (char *)int_val(addr);
-  case XSB_STRING: 
-      return string_val(addr); 
+  case XSB_STRING:
+      return string_val(addr);
   default:
     xsb_abort("[PTOC_STRING] Argument of unknown type");
   }
   return "";
 }
 
-/* Used to pass integer or float values to math functions 
+/* Used to pass integer or float values to math functions
    that do the conversion. */
 DllExport prolog_float call_conv ptoc_number(CTXTdeclc int regnum)
 {
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
    * multi-threaded engine
-   */  
+   */
   register Cell addr = cell(reg+regnum);
 
   /* XSB_Deref and then check the type */
@@ -464,7 +464,7 @@ DllExport prolog_float call_conv ptoc_number(CTXTdeclc int regnum)
     if (isboxedfloat(addr)) return(boxedfloat_val(addr));
     if (isboxedinteger(addr)) return(boxedint_val(addr));
   case XSB_FREE:
-  case XSB_REF1: 
+  case XSB_REF1:
   case XSB_ATTV:
   case XSB_LIST: xsb_abort("[PTOC_NUMBER] Float-convertable argument expected");
   case XSB_FLOAT: return (prolog_float)float_val(addr);
@@ -497,7 +497,7 @@ void constructString(CTXTdeclc Cell addr, int ivstr)
   case XSB_ATTV:
   case XSB_FLOAT:
     xsb_abort("[PTOC_LONGSTRING] Argument of unknown type (%p)",addr);
-  case XSB_STRUCT:  
+  case XSB_STRUCT:
     if (get_str_psc(addr) == comma_psc) {
       constructString(CTXTc cell(clref_val(addr)+1),ivstr);
       addr = cell(clref_val(addr)+2);  /* tail recursion opt */
@@ -507,13 +507,13 @@ void constructString(CTXTdeclc Cell addr, int ivstr)
     constructString(CTXTc cell(clref_val(addr)),ivstr);
     addr = cell(clref_val(addr)+1);  /* tail recursion opt */
     goto constructStringBegin;
-  case XSB_INT: 
+  case XSB_INT:
     val = int_val(addr);
     if (val < 256 && val >= 0) {
       XSB_StrAppendC(LSBuff[ivstr],(char)val);
       return;
     } else xsb_abort("[PTOC_LONGSTRING] Argument of unknown type");
-  case XSB_STRING: 
+  case XSB_STRING:
     if (isnil(addr)) return;
     XSB_StrAppend(LSBuff[ivstr],string_val(addr));
     return;
@@ -527,12 +527,12 @@ DllExport char* call_conv ptoc_longstring(CTXTdeclc int regnum)
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
    * multi-threaded engine
-   */  
+   */
   register Cell addr = cell(reg+regnum);
   XSB_Deref(addr);
   if (isstring(addr)) return string_val(addr);
   if (isinteger(addr)) return (char *)int_val(addr);
-  
+
   if (LSBuff[regnum]==NULL) {
     XSB_StrCreate(&LSBuff[regnum]);
   }
@@ -556,7 +556,7 @@ DllExport char* call_conv ptoc_longstring(CTXTdeclc int regnum)
 DllExport void call_conv ctop_int(CTXTdeclc int regnum, prolog_int value)
 {
   register Cell addr = cell(reg+regnum);
-  
+
   XSB_Deref(addr);
   if (isref(addr)) {
     bind_oint(vptr(addr),value);
@@ -574,7 +574,7 @@ DllExport void call_conv ctop_float(CTXTdeclc int regnum, prolog_float value)
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
    * multi-threaded engine
-   */  
+   */
   register Cell addr = cell(reg+regnum);
 
   XSB_Deref(addr);
@@ -590,7 +590,7 @@ DllExport void call_conv ctop_string(CTXTdeclc int regnum, const char *value)
   /* reg is global array in register.h in the single-threaded engine
    * and is defined as a thread-specific macro in context.h in the
    * multi-threaded engine
-   */  
+   */
   register Cell addr = cell(reg+regnum);
 
   XSB_Deref(addr);
@@ -744,18 +744,18 @@ int ground(CPtr temp)
  groundBegin:
   XSB_CptrDeref(temp);
   switch(cell_tag(temp)) {
-  case XSB_FREE: 
-  case XSB_REF1: 
+  case XSB_FREE:
+  case XSB_REF1:
   case XSB_ATTV:
     return FALSE;
 
-  case XSB_STRING: 
-  case XSB_INT: 
+  case XSB_STRING:
+  case XSB_INT:
   case XSB_FLOAT:
     return TRUE;
 
   case XSB_LIST:
-    if (!ground(clref_val(temp))) 
+    if (!ground(clref_val(temp)))
       return FALSE;
     temp = clref_val(temp)+1;
     goto groundBegin;
@@ -763,7 +763,7 @@ int ground(CPtr temp)
   case XSB_STRUCT:
     arity = (int) get_arity(get_str_psc(temp));
     if (arity == 0) return TRUE;
-    for (j=1; j < arity ; j++) 
+    for (j=1; j < arity ; j++)
       if (!ground(clref_val(temp)+j))
 	return FALSE;
     temp = clref_val(temp)+arity;
@@ -807,7 +807,7 @@ struct ltrail {
   while ((local_trail)->ltrail_top != lbase) {	\
     untrail(*(local_trail)->ltrail_top);	\
     (local_trail)->ltrail_top--;		\
-    }	
+    }
 
 # define ltrail_base(local_trail) &(local_trail.ltrail_vals[0])-1;
 
@@ -878,7 +878,7 @@ int count_variable_occurrences(Cell term) {
   XSB_Deref(term);
   switch (cell_tag(term)) {
   case XSB_FREE:
-  case XSB_REF1: 
+  case XSB_REF1:
   case XSB_ATTV:
     return count + 1;
   case XSB_STRUCT: {
@@ -895,9 +895,9 @@ int count_variable_occurrences(Cell term) {
     count += count_variable_occurrences(cell(clref_val(term)));
     term = cell(clref_val(term)+1);
     goto begin_count_variable_occurrences;
-  case XSB_FLOAT: 
-  case XSB_STRING: 
-  case XSB_INT: 
+  case XSB_FLOAT:
+  case XSB_STRING:
+  case XSB_INT:
     return count;
   default: xsb_abort("[MAKE_GROUND] Argument of unknown type");
   }
@@ -911,7 +911,7 @@ int make_ground(Cell term, struct ltrail *templ_trail) {
   XSB_Deref(term);
   switch (cell_tag(term)) {
   case XSB_FREE:
-  case XSB_REF1: 
+  case XSB_REF1:
   case XSB_ATTV:
     local_bind_var(term,templ_trail);
     return TRUE;
@@ -928,8 +928,8 @@ int make_ground(Cell term, struct ltrail *templ_trail) {
     make_ground(cell(clref_val(term)), templ_trail);
     term = cell(clref_val(term)+1);
     goto begin_make_ground;
-  case XSB_FLOAT: 
-  case XSB_STRING: 
+  case XSB_FLOAT:
+  case XSB_STRING:
   case XSB_INT: return TRUE;
   default: xsb_abort("[MAKE_GROUND] Argument of unknown type");
   }
@@ -941,7 +941,7 @@ CPtr excess_vars(CTXTdeclc Cell term, CPtr varlist, struct ltrail *templ_trail, 
   XSB_Deref(term);
   switch (cell_tag(term)) {
   case XSB_FREE:
-  case XSB_REF1: 
+  case XSB_REF1:
   case XSB_ATTV:
     cell(varlist) = makelist(hreg);
     cell(hreg++) = term;
@@ -980,9 +980,9 @@ CPtr excess_vars(CTXTdeclc Cell term, CPtr varlist, struct ltrail *templ_trail, 
     varlist = excess_vars(CTXTc cell(clref_val(term)), varlist, templ_trail, var_trail);
     term = cell(clref_val(term)+1);
     goto begin_excess_vars;
-  case XSB_FLOAT: 
-  case XSB_STRING: 
-  case XSB_INT: 
+  case XSB_FLOAT:
+  case XSB_STRING:
+  case XSB_INT:
     return varlist;
   default: xsb_abort("[EXCESS_VARS] Argument of unknown type");
   }
@@ -991,16 +991,16 @@ CPtr excess_vars(CTXTdeclc Cell term, CPtr varlist, struct ltrail *templ_trail, 
 
 
 int is_number_atom(Cell term) {
-  char hack_char;	
+  char hack_char;
   long c;
-  
+
   XSB_Deref(term);
   if (!isstring(term)) return FALSE;
   if (sscanf(string_val(term), "%ld%c", &c, &hack_char) == 1) {
     return TRUE;
   } else {
     Float float_temp;
-    //TODO: Refactor the below few lines of code once the "Floats are always double?" 
+    //TODO: Refactor the below few lines of code once the "Floats are always double?"
     //situation is resolved.
 #ifndef FAST_FLOATS
     if (sscanf(string_val(term), "%lf%c", &float_temp, &hack_char) == 1)
@@ -1054,7 +1054,7 @@ void init_builtin_table(void)
   int i;
 
   for (i = 0; i < BUILTIN_TBL_SZ; i++) builtin_table[i][1] = 0;
-  
+
   set_builtin_table(PSC_NAME, "psc_name");
   set_builtin_table(PSC_ARITY, "psc_arity");
   set_builtin_table(PSC_TYPE, "psc_type");
@@ -1294,7 +1294,7 @@ void init_builtin_table(void)
 
 #if defined(PROFILE) && !defined(MULTI_THREAD)
 static void write_out_profile(void)
-{ 
+{
   unsigned long i, isum, ssum, tot;
   double rat1, rat2;
 
@@ -1344,7 +1344,7 @@ static void write_out_profile(void)
     fprintf(stdout,"switch_envs_iter(%d).\n",
 	    num_switch_envs_iter);
   }
-  else 
+  else
     fprintf(stdout,"Instruction profiling not turned On\n");
 }
 #endif
@@ -1461,7 +1461,7 @@ int builtin_call(CTXTdeclc byte number)
     //    SYS_MUTEX_UNLOCK( MUTEX_IO );
     return tmp;
   }
- 
+
   case TERM_PSC:		/* R1: +term; R2: -PSC */
     /* Assumes that `term' is a XSB_STRUCT-tagged Cell. */
     /*    ctop_addr(2, get_str_psc(ptoc_tag(CTXTc 1))); */
@@ -1473,7 +1473,7 @@ int builtin_call(CTXTdeclc byte number)
       if (isstring(term)) {
 	ctop_addr(2, pair_psc(insert(string_val(term), 0, (Psc)flags[CURRENT_MODULE], &new)));
       }
-      else if (isconstr(term)) 
+      else if (isconstr(term))
 	ctop_addr(2, term_psc(term));
       else return FALSE;
       return TRUE;
@@ -1671,7 +1671,7 @@ int builtin_call(CTXTdeclc byte number)
     }
     case XSB_FLOAT:
       bld_float(vptr(addr+disp),(float)ptoc_float(CTXTc 4)); break;
-    case XSB_STRUCT: 
+    case XSB_STRUCT:
       bld_cs(vptr(addr+disp), (Pair)ptoc_int(CTXTc 4)); break;
     case XSB_STRING:
       bld_string(vptr(addr+disp), (char *)ptoc_int(CTXTc 4)); break;
@@ -1696,17 +1696,17 @@ int builtin_call(CTXTdeclc byte number)
     disp *= ZOOM_FACTOR;
     term = ptoc_tag(CTXTc 4);
     bld_free(vptr(addr+disp));
-    if ((Cell)term < (Cell)addr || 
+    if ((Cell)term < (Cell)addr ||
 	(Cell)term > (Cell)addr+ptoc_int(CTXTc 3)) { /* var not in buffer, trail */
       bind_ref(vptr(term), (CPtr)(addr+disp));
     } else {		/* already in buffer */
-      bld_ref(vptr(term), (CPtr)(addr+disp));	
+      bld_ref(vptr(term), (CPtr)(addr+disp));
     }
     break;
   }
   case COPY_TERM: /* R1: +term to copy; R2: -variant */
     return copy_term(CTXT);
-    
+
   case CALL0: {			/* R1: +Term, the call to be made */
     /* Note: this procedure does not save cpreg, hence is more like */
     /* an "execute" instruction, and must be used as the last goal!!!*/
@@ -1810,8 +1810,8 @@ int builtin_call(CTXTdeclc byte number)
     return prolog_code_call(CTXTc term,value);
   }
   case SUBSTRING: /* R1: +String; R2,R3: +begin/end offset; R4: -OutSubstr */
-    return substring(CTXT); 
-  case STRING_SUBSTITUTE: /* R1: +Str, R2: [s(a1,b1),s(a2,b2),...], 
+    return substring(CTXT);
+  case STRING_SUBSTITUTE: /* R1: +Str, R2: [s(a1,b1),s(a2,b2),...],
 			     R3: [str1,str2,...], R4: -OutStr */
     return string_substitute(CTXT);
   case STR_LEN:	{	/* R1: +String; R2: -Length */
@@ -1835,7 +1835,7 @@ int builtin_call(CTXTdeclc byte number)
   case STR_MATCH:
     return str_match(CTXT);
   case INTERN_STRING: /* R1: +String1; R2: -String2 ; Intern string */
-    //    ctop_string(CTXTc 2, string_find(ptoc_string(CTXTc 1), 1)); 
+    //    ctop_string(CTXTc 2, string_find(ptoc_string(CTXTc 1), 1));
     ctop_string(CTXTc 2, ptoc_string(CTXTc 1));  // TLS: let's just intern once
     break;
   case STAT_STA: {		/* R1: +Amount */
@@ -1843,7 +1843,7 @@ int builtin_call(CTXTdeclc byte number)
     print_statistics(CTXTc value);
     break;
   }
-  case STAT_CPUTIME: {	/* R1: -cputime, in miliseconds */	
+  case STAT_CPUTIME: {	/* R1: -cputime, in miliseconds */
     int value = (int)(cpu_time() * 1000);
     ctop_int(CTXTc 1, value);
     break;
@@ -1978,12 +1978,12 @@ int builtin_call(CTXTdeclc byte number)
         case TK_VAR : case TK_VVAR : case TK_VARFUNC : case TK_VVARFUNC :
 	  // TLS 070416 -- change to fix double interning (ctop_string calls string_find)
 	  //	  ctop_string(CTXTc 4, string_find(token->value,1));  // NOW INTERNED, CALLER MUST DO SO SOON!!
-	  ctop_string(CTXTc 4, token->value);  
+	  ctop_string(CTXTc 4, token->value);
 	  break;
         case TK_INT : case TK_INTFUNC :
 	  ctop_int(CTXTc 4, *(long *)(token->value));
 	  break;
-        case TK_REAL : case TK_REALFUNC : 
+        case TK_REAL : case TK_REALFUNC :
 	  ctop_float(CTXTc 4, *(double *)(token->value));
 	  break;
         case TK_PUNC : case TK_HPUNC :
@@ -2026,13 +2026,13 @@ int builtin_call(CTXTdeclc byte number)
       //printf("TK_FLOAT_0 case in put token entered\n");
       float ftmp = (float)ptoc_float(CTXTc 3);
       fix_bb4((byte *)&ftmp);
-      fwrite(&ftmp, 4, 1, fptr); 
-      //printf("TK_FLOAT_0 case in put token left\n"); 
+      fwrite(&ftmp, 4, 1, fptr);
+      //printf("TK_FLOAT_0 case in put token left\n");
       break;
     }
     case TK_DOUBLE_0: {
       double ftmp = ptoc_float(CTXTc 3);
-      fwrite(&ftmp, 8, 1, fptr); 
+      fwrite(&ftmp, 8, 1, fptr);
       break;
     }
     case TK_PREOP  : print_op(fptr, ptoc_string(CTXTc 3), 1); break;
@@ -2173,7 +2173,7 @@ int builtin_call(CTXTdeclc byte number)
     ctop_int(CTXTc 1, errno);
     break;
 
-  case PUTENV: 
+  case PUTENV:
     {
       return !putenv(ptoc_longstring(CTXTc 1));
       break;
@@ -2295,12 +2295,12 @@ int builtin_call(CTXTdeclc byte number)
     int value = ptoc_int(CTXTc 1);
     if ( ((unsigned int)value >= (symbol_table.size - 1)) || (value < 0) )
       ctop_int(CTXTc 2, 0);
-    else 
+    else
       ctop_int(CTXTc 2, (value + 1));
     break;
   }
 
-  case IS_XWAMMODE:     /* R1: -int flag for xwammode */  
+  case IS_XWAMMODE:     /* R1: -int flag for xwammode */
 
     if (xwammode) ctop_int(CTXTc 1,1);
     else ctop_int(CTXTc 1,0);
@@ -2319,7 +2319,7 @@ int builtin_call(CTXTdeclc byte number)
 
   case ZERO_OUT_PROFILE:
 #if defined(PROFILE) && !defined(MULTI_THREAD)
-    { 
+    {
       int i;
       for (i = 0 ; i <= BUILTIN_TBL_SZ ; i++) {
 	inst_table[i][5] = 0;
@@ -2330,14 +2330,14 @@ int builtin_call(CTXTdeclc byte number)
     }
     break;
 #else
-    xsb_abort("Profiling is not enabled for this configuration");  
+    xsb_abort("Profiling is not enabled for this configuration");
 #endif
 case WRITE_OUT_PROFILE:
 #if defined(PROFILE) && !defined(MULTI_THREAD)
     write_out_profile();
     break;
 #else
-    xsb_abort("Profiling is not enabled for this configuration");  
+    xsb_abort("Profiling is not enabled for this configuration");
 #endif
   case ASSERT_CODE_TO_BUFF:
     assert_code_to_buff(CTXT);
@@ -2431,11 +2431,11 @@ case WRITE_OUT_PROFILE:
 /*----------------------------------------------------------------------*/
 
 #include "std_cases_xsb_i.h"
-    
+
 #ifdef ORACLE
 #include "oracle_xsb_i.h"
 #endif
-    
+
 #ifdef XSB_ODBC
 #include "odbc_xsb_i.h"
 #else
@@ -2447,9 +2447,9 @@ case WRITE_OUT_PROFILE:
 #ifdef XSB_INTERPROLOG
 #include "interprolog_xsb_i.h"
 #endif
-    
+
 /*----------------------------------------------------------------------*/
-    
+
   case TABLE_STATUS: {
     /*
      * Given a tabled goal, report on the following attributes:
@@ -2637,9 +2637,9 @@ case WRITE_OUT_PROFILE:
     char *module_name;
 
     module_name = ptoc_string(CTXTc 1);
-    if (!strcmp(module_name,"usermod") || !strcmp(module_name,"global")) 
+    if (!strcmp(module_name,"usermod") || !strcmp(module_name,"global"))
       return abolish_usermod_tables(CTXT);
-    else 
+    else
       return abolish_module_tables(CTXTc module_name);
     break;
   }
@@ -2726,7 +2726,7 @@ case WRITE_OUT_PROFILE:
   }
 
   case TRIE_ASSERT_HDR_INFO: /* r1: 0 -> r2: +TrieNodeAddr, r3: -RootOfCall
-				r1: 1 -> r2: +Clref, r3: -trieNodeAddr, 
+				r1: 1 -> r2: +Clref, r3: -trieNodeAddr,
 					     fail if Clref not for a trie. */
     switch (ptoc_int(CTXTc 1)) {
     case 0:  /* r1: 0 -> r2: +TrieNodeAddr, r3: -RootOfCall */
@@ -2806,7 +2806,7 @@ case WRITE_OUT_PROFILE:
 	complstack_realloc(CTXTc complstack.init_size);
 
     if (glstack.size != glstack.init_size)
-	glstack_realloc(CTXTc glstack.init_size,0);  
+	glstack_realloc(CTXTc glstack.init_size,0);
 
     tstShrinkDynStacks(CTXT);
     break;
@@ -2826,7 +2826,7 @@ case WRITE_OUT_PROFILE:
     trie_dispose_nr(CTXT);
     break;
   case TRIE_UNDISPOSE:
-    trie_undispose(CTXTc iso_ptoc_int(CTXTc 1,"unmark_uninterned_nr/2"), 
+    trie_undispose(CTXTc iso_ptoc_int(CTXTc 1,"unmark_uninterned_nr/2"),
 		   (BTNptr) iso_ptoc_int(CTXTc 2,"unmark_uninterned_nr/2"));
     break;
   case RECLAIM_UNINTERNED_NR:
@@ -2846,7 +2846,7 @@ case WRITE_OUT_PROFILE:
 
   case STORAGE_BUILTIN: {
     STORAGE_HANDLE *storage_handle =
-      storage_builtin(CTXTc ptoc_int(CTXTc 1),(Cell)ptoc_tag(CTXTc 2),CTXTc reg_term(CTXTc 3));
+      storage_builtin(CTXTc ptoc_int(CTXTc 1), (Cell)ptoc_tag(CTXTc 2), reg_term(CTXTc 3));
     if (storage_handle != NULL) {
       ctop_int(CTXTc 4, (Integer)storage_handle->handle);
       ctop_int(CTXTc 5, (Integer)storage_handle->snapshot_number);
@@ -2855,11 +2855,11 @@ case WRITE_OUT_PROFILE:
     break;
   }
 
-  case INCR_EVAL_BUILTIN: {     
+  case INCR_EVAL_BUILTIN: {
     incr_eval_builtin(CTXT);
     break;
   }
-   
+
   case BOTTOM_UP_UNIFY:
     return ( bottom_up_unify(CTXT) );
 
@@ -2881,7 +2881,7 @@ case WRITE_OUT_PROFILE:
     if ( IsNULL(psc) ) {
       xsb_type_error(CTXTc "predicate_indicator",term,"set_tabled_eval/2",1);
       break;
-    }      
+    }
     /* TLS (April 2010): experimental approach that allows a change in
        tabling method even if a predicate already has tables.  The
        idea is that new tables will get the method from the psc or
@@ -2890,7 +2890,7 @@ case WRITE_OUT_PROFILE:
     /* changing to variant */
     if ((eval_meth == VARIANT_EVAL_METHOD) && (get_tabled(psc) != T_TABLED_VAR)) {
       set_tabled(psc,T_TABLED_VAR);
-      //      if (get_tabled(psc) == T_TABLED) 
+      //      if (get_tabled(psc) == T_TABLED)
       if (get_tip(CTXTc psc)) {
 	TIF_EvalMethod(get_tip(CTXTc psc)) = VARIANT_EVAL_METHOD;
 	if (TIF_CallTrie(get_tip(CTXTc psc))) {
@@ -2911,7 +2911,7 @@ case WRITE_OUT_PROFILE:
 		   get_name(psc),get_arity(psc));
 	}
       }
-    } 
+    }
 
     /***    tif = get_tip(CTXTc psc);
     if ( IsNULL(tif) ) {
@@ -2924,7 +2924,7 @@ case WRITE_OUT_PROFILE:
 	       get_name(psc), get_arity(psc), get_name(psc), get_arity(psc));
       return FALSE;
     }
-    TIF_EvalMethod(tif) = (TabledEvalMethod)ptoc_int(CTXTc regTEM); 
+    TIF_EvalMethod(tif) = (TabledEvalMethod)ptoc_int(CTXTc regTEM);
 ***/
     return TRUE;
   }
@@ -2956,10 +2956,10 @@ case WRITE_OUT_PROFILE:
 
   case XSB_BACKTRACE:
     switch (ptoc_int(CTXTc 1)) {
-    case 1: 
+    case 1:
       print_xsb_backtrace(CTXT);
       break;
-    case 2: 
+    case 2:
       return unify(CTXTc ptoc_tag(CTXTc 2),build_xsb_backtrace(CTXT));
       break;
     }
@@ -3003,25 +3003,25 @@ case WRITE_OUT_PROFILE:
     switch((*operator))
     {
     case '+':
-    result = 
+    result =
         (EXTRACT_FLOAT_FROM_16_24_24((ptoc_int(CTXTc 2)), (ptoc_int(CTXTc 3)), (ptoc_int(CTXTc 4))))
         +
         (EXTRACT_FLOAT_FROM_16_24_24((ptoc_int(CTXTc 5)), (ptoc_int(CTXTc 6)), (ptoc_int(CTXTc 7))));
         break;
     case '-':
-    result = 
+    result =
         (EXTRACT_FLOAT_FROM_16_24_24((ptoc_int(CTXTc 2)), (ptoc_int(CTXTc 3)), (ptoc_int(CTXTc 4))))
         -
         (EXTRACT_FLOAT_FROM_16_24_24((ptoc_int(CTXTc 5)), (ptoc_int(CTXTc 6)), (ptoc_int(CTXTc 7))));
         break;
     case '*':
-    result = 
+    result =
         (EXTRACT_FLOAT_FROM_16_24_24((ptoc_int(CTXTc 2)), (ptoc_int(CTXTc 3)), (ptoc_int(CTXTc 4))))
         *
         (EXTRACT_FLOAT_FROM_16_24_24((ptoc_int(CTXTc 5)), (ptoc_int(CTXTc 6)), (ptoc_int(CTXTc 7))));
         break;
     case '/':
-    result = 
+    result =
         (EXTRACT_FLOAT_FROM_16_24_24((ptoc_int(CTXTc 2)), (ptoc_int(CTXTc 3)), (ptoc_int(CTXTc 4))))
         /
         (EXTRACT_FLOAT_FROM_16_24_24((ptoc_int(CTXTc 5)), (ptoc_int(CTXTc 6)), (ptoc_int(CTXTc 7))));
@@ -3033,7 +3033,7 @@ case WRITE_OUT_PROFILE:
     }
     ctop_int(CTXTc 8, ((ID_BOXED_FLOAT << BOX_ID_OFFSET ) | FLOAT_HIGH_16_BITS(result) ));
     ctop_int(CTXTc 9, (FLOAT_MIDDLE_24_BITS(result)));
-    ctop_int(CTXTc 10, (FLOAT_LOW_24_BITS(result)));    
+    ctop_int(CTXTc 10, (FLOAT_LOW_24_BITS(result)));
     return TRUE;
   }
 #endif
@@ -3042,8 +3042,8 @@ case WRITE_OUT_PROFILE:
        builtin code. SEE THE EXAMPLE IN private_builtin.c to UNDERSTAND HOW TO
        DO IT. Note: even though this is a single builtin, YOU CAN SIMULATE ANY
        NUMBER OF BUILTINS WITH IT.  */
-       
-  case PRIVATE_BUILTIN: 
+
+  case PRIVATE_BUILTIN:
   {
     //    private_builtin();
     return TRUE;
@@ -3102,7 +3102,7 @@ case WRITE_OUT_PROFILE:
       break;
     }
 
-    case FINDALL_FREE: 
+    case FINDALL_FREE:
       findall_free(CTXTc ptoc_int(CTXTc 1));
       return TRUE;
       break;
@@ -3116,10 +3116,10 @@ case WRITE_OUT_PROFILE:
       xsb_socket_request_return = xsb_socket_request(CTXT);
       return xsb_socket_request_return;
     }
-#endif /* HAVE_SOCKET */	    
+#endif /* HAVE_SOCKET */
 
 #ifdef WIN_NT
-  case JAVA_INTERRUPT: 
+  case JAVA_INTERRUPT:
     return( startInterruptThread( (SOCKET)ptoc_int(CTXTc 1) ) );
 #endif
 
@@ -3423,7 +3423,7 @@ int print_xsb_backtrace(CTXTdecl) {
     tmp_ereg = ereg;
     tmp_cpreg = cpreg;
     instruction = *(tmp_cpreg-2*sizeof(Cell));
-    while (tmp_cpreg && (instruction == call || instruction == trymeorelse) && 
+    while (tmp_cpreg && (instruction == call || instruction == trymeorelse) &&
 	   (backtrace_length++ < MAX_BACKTRACE_LENGTH)) {
       if (instruction == call) {
 	called_psc = *((Psc *)tmp_cpreg - 1);
@@ -3459,7 +3459,7 @@ int print_xsb_backtrace(CTXTdecl) {
     tmp_cpreg = cpreg;
     if (tmp_cpreg) instruction = *(tmp_cpreg-2*sizeof(Cell));
     else instruction = (unsigned char)fail_inst;
-    while (tmp_cpreg && (instruction == call || instruction == trymeorelse) && 
+    while (tmp_cpreg && (instruction == call || instruction == trymeorelse) &&
 	   (backtrace_length++ < MAX_BACKTRACE_LENGTH)) {
       if (instruction == call) {
 	called_psc = *((Psc *)tmp_cpreg - 1);
@@ -3556,4 +3556,4 @@ prolog_term build_xsb_backtrace(CTXTdecl) {
 
 /*------------------------- end of builtin.c -----------------------------*/
 
- 
+
