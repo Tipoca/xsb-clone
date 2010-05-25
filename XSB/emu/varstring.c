@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.22 2009-08-26 21:21:25 dwarren Exp $
+** $Id: varstring.c,v 1.23 2010-05-25 04:52:24 kifer Exp $
 ** 
 */
 
@@ -99,6 +99,8 @@ static void  vs_prependblk(VarString *vstr,char*,int);
 static void  vs_adjust_size(VarString *vstr, int add_size);
 static inline void vs_null_terminate(VarString *vstr);
 
+/* VarStrOps does not get exported properly in Windows due to the peculiarities
+   of the MS C++ compiler */
 DllExport struct varstr_ops VarStrOps = {vs_set,vs_setv,
 					 vs_append,vs_prepend, 
 					 vs_appendv,vs_appendc,vs_prependv,

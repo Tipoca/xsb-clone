@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.205 2010-05-11 10:05:25 rzf Exp $
+## $Id: configure.in,v 1.206 2010-05-25 04:52:24 kifer Exp $
 ##
 ##
 
@@ -120,6 +120,10 @@ AC_ARG_WITH(curl-libdir,
 [  --with-curl-libdir=DIR       the location of the libcurl.so is at DIR])
 AC_ARG_WITH(curl-incdir,
 [  --with-curl-incdir=DIR       the location of the include files for the Curl library is at DIR])
+AC_ARG_WITH(pcre-libdir,
+[  --with-pcre-libdir=DIR       the location of the libpcre.so is at DIR])
+AC_ARG_WITH(pcre-incdir,
+[  --with-pcre-incdir=DIR       the location of the include files for the PCRE library is at DIR])
 AC_ARG_WITH(dbdrivers,
 [  --with-dbdrivers             configure dbdrivers package])
 AC_ARG_WITH(odbc-libdir,
@@ -961,6 +965,13 @@ if test -d $topdir/packages/curl; then
     cd $build_dir
 fi
 
+# pcre package
+if test -d $topdir/packages/pcre; then
+    cd $topdir/packages/pcre
+    echo "***Configuring PCRE (Perl pattern matching library)"
+    ./configure --with-pcre-libdir="$with_pcre_libdir" --with-pcre-incdir="$with_pcre_incdir" > /dev/null
+    cd $build_dir
+fi
 
 
 
@@ -2061,6 +2072,10 @@ fi
 
 if test -f $topdir/packages/curl/Installation_summary; then
     cat $topdir/packages/curl/Installation_summary
+fi
+
+if test -f $topdir/packages/pcre/Installation_summary; then
+    cat $topdir/packages/pcre/Installation_summary
 fi
 
 if test -n "$javac"; then

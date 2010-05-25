@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.34 2010-01-17 04:43:23 kifer Exp $
+## $Id: Makefile,v 1.35 2010-05-25 04:52:25 kifer Exp $
 ## 
 ##
 
@@ -27,10 +27,10 @@ OBJEXT=.xwam
 ALL = 	slx${OBJEXT} perlmatch${OBJEXT} gap${OBJEXT} \
 	regmatch${OBJEXT} wildmatch${OBJEXT} \
 	xasp${OBJEXT} libwww${OBJEXT} xsbdoc${OBJEXT} \
-	xmc${OBJEXT} justify${OBJEXT} clpr${OBJECT} curl${OBJECT}
+	xmc${OBJEXT} justify${OBJEXT} clpr${OBJECT} curl${OBJECT} pcre${OBJECT}
 
 SUBDIR = flora2 slx perlmatch gap regmatch wildmatch libwww xasp \
-	 xsbdoc xmc justify clpqr curl
+	 xsbdoc xmc justify clpqr curl pcre
 
 Option = [optimize]
 
@@ -117,6 +117,10 @@ justify::
 curl::
 	@echo ""
 	cd curl; make
+
+pcre::
+	@echo ""
+	cd pcre; make
 
 init:
 	/bin/rm -f $(SVFILE)

@@ -801,6 +801,8 @@ with_xpath_libdir
 with_xpath_incdir
 with_curl_libdir
 with_curl_incdir
+with_pcre_libdir
+with_pcre_incdir
 with_dbdrivers
 with_odbc_libdir
 with_odbc_incdir
@@ -1538,6 +1540,8 @@ Optional Packages:
   --with-xpath-incdir=DIR      the location of the include files for libxml2 is at DIR
   --with-curl-libdir=DIR       the location of the libcurl.so is at DIR
   --with-curl-incdir=DIR       the location of the include files for the Curl library is at DIR
+  --with-pcre-libdir=DIR       the location of the libpcre.so is at DIR
+  --with-pcre-incdir=DIR       the location of the include files for the PCRE library is at DIR
   --with-dbdrivers             configure dbdrivers package
   --with-odbc-libdir=DIR       provide info on where the ODBC libraries are
   --with-odbc-incdir=DIR       provide info on where the ODBC include files are
@@ -2185,6 +2189,18 @@ fi
 # Check whether --with-curl-incdir was given.
 if test "${with_curl_incdir+set}" = set; then
   withval=$with_curl_incdir;
+fi
+
+
+# Check whether --with-pcre-libdir was given.
+if test "${with_pcre_libdir+set}" = set; then
+  withval=$with_pcre_libdir;
+fi
+
+
+# Check whether --with-pcre-incdir was given.
+if test "${with_pcre_incdir+set}" = set; then
+  withval=$with_pcre_incdir;
 fi
 
 
@@ -5214,6 +5230,13 @@ if test -d $topdir/packages/curl; then
     cd $build_dir
 fi
 
+# pcre package
+if test -d $topdir/packages/pcre; then
+    cd $topdir/packages/pcre
+    echo "***Configuring PCRE (Perl pattern matching library)"
+    ./configure --with-pcre-libdir="$with_pcre_libdir" --with-pcre-incdir="$with_pcre_incdir" > /dev/null
+    cd $build_dir
+fi
 
 
 
@@ -10696,6 +10719,10 @@ fi
 
 if test -f $topdir/packages/curl/Installation_summary; then
     cat $topdir/packages/curl/Installation_summary
+fi
+
+if test -f $topdir/packages/pcre/Installation_summary; then
+    cat $topdir/packages/pcre/Installation_summary
 fi
 
 if test -n "$javac"; then
