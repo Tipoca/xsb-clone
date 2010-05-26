@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.339 2010-05-22 23:30:51 evansbj Exp $
+** $Id: builtin.c,v 1.340 2010-05-26 20:51:38 tswift Exp $
 **
 */
 
@@ -622,7 +622,7 @@ inline static void ctop_constr(CTXTdeclc int regnum, Pair psc_pair)
  *  Bind the variable pointed to by the "regnum"th argument register to the
  *  term at address "term".  Make an entry in the trail for this binding.
  */
-inline static void ctop_tag(CTXTdeclc int regnum, Cell term)
+inline  void ctop_tag(CTXTdeclc int regnum, Cell term)
 {
   register Cell addr = cell(reg+regnum);
 
@@ -2360,6 +2360,11 @@ case WRITE_OUT_PROFILE:
   }
   case FORMATTED_IO:
     return formatted_io(CTXT);
+
+  case GET_TRIE_LEAF:
+    ctop_int(CTXTc 1, (Integer)Last_Nod_Sav);
+    break;
+
   case FILE_READ_CANONICAL:
     return read_canonical(CTXT);
 

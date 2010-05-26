@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.91 2010-02-10 19:11:12 dwarren Exp $
+** $Id: builtin.h,v 1.92 2010-05-26 20:51:38 tswift Exp $
 ** 
 */
 
@@ -155,6 +155,7 @@
 #define ASSERT_CODE_TO_BUFF	129
 #define ASSERT_BUFF_TO_CLREF	130
 
+#define GET_TRIE_LEAF           132
 #define FILE_READ_CANONICAL	133
 #define GEN_RETRACT_ALL		134
 #define DB_GET_LAST_CLAUSE	135
