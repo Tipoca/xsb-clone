@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.31 2010-05-20 18:20:43 tswift Exp $
+** $Id: intern.P,v 1.32 2010-05-26 20:52:15 tswift Exp $
 ** 
 */
 
@@ -602,8 +602,12 @@ trie_shas_intern(Root,Term,Leaf,Flag) :-
 
 /* Private */
 :- export fast_trie_interned/3.
-fast_trie_interned(_Root,_Term,_Leaf):- 
-	'_$builtin'(TRIE_INTERNED).
+fast_trie_interned(Root,Term,Leaf):- 
+	new_i_trie_interned(Root,Term,_),
+	get_trie_leaf(Leaf).
+
+get_trie_leaf(_Leaf):- 
+	'_$builtin'(GET_TRIE_LEAF).
 
 new_i_trie_interned(_Root,_Term,_Leaf):- 
 	'_$builtin'(TRIE_INTERNED).
