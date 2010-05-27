@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage.P,v 1.15 2010-05-21 23:58:11 kifer Exp $
+** $Id: storage.P,v 1.16 2010-05-27 00:00:21 kifer Exp $
 ** 
 */
 
@@ -35,8 +35,8 @@ storage_builtin(_BuiltinNum,_StorageNam,_TrieType,_Handle,_Snapshot,_Changed) :-
 	'_$builtin'(STORAGE_BUILTIN).
 
 %% Local version of trie_intern
-find_in_trie(Fact,TrieRoot,Leaf) :- intern:trie_interned(Fact,TrieRoot,Leaf,_).
-%%find_in_trie(Fact,TrieRoot,Leaf) :- intern:fast_trie_interned(TrieRoot,Fact,Leaf).
+%%find_in_trie(Fact,TrieRoot,Leaf) :- intern:trie_interned(Fact,TrieRoot,Leaf,_).
+find_in_trie(Fact,TrieRoot,Leaf) :- intern:fast_trie_interned(TrieRoot,Fact,Leaf).
 
 
 %% Inserts facts. On backtracking, the fact is deleted.
