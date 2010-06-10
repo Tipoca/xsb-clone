@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.157 2010-03-18 22:22:17 tswift Exp $
+** $Id: init_xsb.c,v 1.158 2010-06-10 20:18:08 dwarren Exp $
 ** 
 */
 
@@ -855,8 +855,8 @@ static long get_memarea_size( char *s )
      *  an XSB-supplied "server" program is the interpreter file.  Since
      *  it is known where these files exist, the full paths are built.
      */
-    flags[BOOT_MODULE] = (Cell) mem_alloc(strlen_instdir + strlen_initfile + 1,OTHER_SPACE);
-    flags[CMD_LOOP_DRIVER] = (Cell)mem_alloc(strlen_instdir + strlen_2ndfile + 1,OTHER_SPACE);
+    flags[BOOT_MODULE] = (Cell) mem_alloc(strlen_instdir + strlen_initfile + 2,OTHER_SPACE);
+    flags[CMD_LOOP_DRIVER] = (Cell)mem_alloc(strlen_instdir + strlen_2ndfile + 2,OTHER_SPACE);
     sprintf( (char *)flags[BOOT_MODULE],
 	     "%s%s%s",
 	     install_dir_gl, boot_module, XSB_OBJ_EXTENSION_STRING );
