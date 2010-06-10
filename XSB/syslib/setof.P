@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: setof.P,v 1.7 2010/02/10 19:13:00 dwarren Exp $
+** $Id: setof.P,v 1.8 2010/04/30 16:14:45 dwarren Exp $
 ** 
 */
 
@@ -60,10 +60,10 @@ bagof1(Template, Generator, Bag) :-
 	excess_vars(Generator, Template, [], VarList), 
 	(VarList \== []
 	 ->	Key =.. ['$'|VarList],
-		findall(Key-Template, Generator, Bags0, []),
+		bfindall(Key-Template, Generator, Bags0, []),
 		keysort(Bags0, Bags), % This performs the groupby
 		pick(Bags, Key, Bag)
-	 ;	findall(Template, Generator, Bag, []),
+	 ;	bfindall(Template, Generator, Bag, []),
 		Bag \== []	% If Bag=[] then bagof/3 and setof/3 should fail.
 	).
 
