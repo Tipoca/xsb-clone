@@ -2,7 +2,7 @@
 :- import between/3,length/2 from basics.
 
 %:- table distance(X,Y,(<)/2).
-:- table distance(X,Y,min/3-99999999999).
+:- table distance(X,Y,min/3-999999999).
 distance(X,Y,1):- edge(X,Y).
 distance(X,Z,N):- 
 	distance(X,Y,N1),
@@ -11,7 +11,7 @@ distance(X,Z,N):-
 
 %----------
 
-:- table d3(X,Y,min/3-99999999999).
+:- table d3(X,Y,min/3-999999999).
 d3(X,Y,M):- edge(X,Y,M).
 d3(X,Z,N):- 
 	d3(X,Y,N1),
