@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.340 2010-05-26 20:51:38 tswift Exp $
+** $Id: builtin.c,v 1.341 2010-06-14 12:48:38 dwarren Exp $
 **
 */
 
@@ -143,6 +143,8 @@ extern void xsb_segfault_quitter(int err);
 extern void alt_print_cp(CTXTdeclc int);
 extern int xsb_profiling_enabled;
 
+extern char *canonical_term(CTXTdeclc Cell, int);
+
 #ifdef WIN_NT
 extern xsbBool startInterruptThread(SOCKET intSocket);
 #endif
@@ -243,10 +245,11 @@ DllExport prolog_int call_conv ptoc_int(CTXTdeclc int regnum)
   case XSB_REF1:
   case XSB_ATTV:
   case XSB_LIST:
-  case XSB_FLOAT: xsb_abort("[PTOC_INT] Integer argument expected, %d tag found\n",cell_tag(addr));
+  case XSB_FLOAT: xsb_abort("[PTOC_INT] Argument %d of illegal type: %s\n",
+			    regnum, canonical_term(CTXTc addr, 0));
   case XSB_STRING: return (prolog_int)string_val(addr);	/* dsw */
   case XSB_INT: return int_val(addr);
-  default: xsb_abort("[PTOC_INT] Argument of unknown type");
+  default: xsb_abort("[PTOC_INT] Argument %d of unknown type: %d",regnum,cell_tag(addr));
   }
   return FALSE;
 }
@@ -274,7 +277,7 @@ DllExport prolog_int call_conv iso_ptoc_int(CTXTdeclc int regnum,const char * Pr
   case XSB_FLOAT: xsb_type_error(CTXTc "integer",addr,PredString,regnum);
 
   case XSB_INT: return int_val(addr);
-  default: xsb_abort("[PTOC_INT] Argument of unknown type");
+  default: xsb_abort("[PTOC_INT] Argument %d of unknown type: %d",regnum,cell_tag(addr));
   }
   return FALSE;
 }
@@ -305,7 +308,7 @@ DllExport prolog_int call_conv iso_ptoc_int_arg(CTXTdeclc int regnum,const char 
   case XSB_FLOAT: xsb_type_error(CTXTc "integer",addr,PredString,arg);
 
   case XSB_INT: return int_val(addr);
-  default: xsb_abort("[PTOC_INT] Argument of unknown type");
+  default: xsb_abort("[PTOC_INT] Argument of unknown type: %d",cell_tag(addr));
   }
   return FALSE;
 }
@@ -377,13 +380,13 @@ DllExport prolog_float call_conv ptoc_float(CTXTdeclc int regnum)
   case XSB_LIST:
   case XSB_INT:
   case XSB_STRING:
-    xsb_abort("[PTOC_FLOAT] Float argument expected");
+    xsb_abort("[PTOC_FLOAT] Argument %d of illegal type: %s",regnum,canonical_term(CTXTc addr, 0));
   case XSB_STRUCT:
       if (!isboxedfloat(addr))
-          xsb_abort("[PTOC_FLOAT] Float argument expected");
+	xsb_abort("[PTOC_FLOAT] Argument %d of illegal type: %s",regnum,canonical_term(CTXTc addr, 0));
   case XSB_FLOAT: return (prolog_float)ofloat_val(addr);
   default:
-    xsb_abort("[PTOC_FLOAT] Argument of unknown type");
+    xsb_abort("[PTOC_FLOAT] Argument %d of unknown type: %d",regnum,cell_tag(addr));
   }
   return 0.0;
 }
@@ -409,7 +412,7 @@ DllExport char* call_conv iso_ptoc_string(CTXTdeclc int regnum,char * PredString
   case XSB_INT:
   case XSB_FLOAT: xsb_type_error(CTXTc "atom",addr,PredString,regnum);
   case XSB_STRING: return string_val(addr);
-  default: xsb_abort("[PTOC_INT] Argument of unknown type");
+  default: xsb_abort("[PTOC_INT] Argument %d of unknown type: %d",regnum,cell_tag(addr));
   }
   return FALSE;
 }
@@ -431,18 +434,18 @@ DllExport char* call_conv ptoc_string(CTXTdeclc int regnum)
   case XSB_ATTV:
   case XSB_LIST:
   case XSB_FLOAT:
-    xsb_abort("[PTOC_STRING] String (atom) argument expected");
+    xsb_abort("[PTOC_STRING] Argument %d of illegal type: %s",regnum,canonical_term(CTXTc addr, 0));
   case XSB_STRUCT:  /* tentative approach to fix boxed ints --lfcastro */
     if (isboxedinteger(addr))
       return (char *)boxedint_val(addr);
     else
-      xsb_abort("[PTOC_STRING] String (atom) argument expected");
+      xsb_abort("[PTOC_STRING] Argument %d of illegal type: %s",regnum,canonical_term(CTXTc addr, 0));
   case XSB_INT:
       return (char *)int_val(addr);
   case XSB_STRING:
       return string_val(addr);
   default:
-    xsb_abort("[PTOC_STRING] Argument of unknown type");
+    xsb_abort("[PTOC_STRING] Argument %d of unknown type: %d",regnum,cell_tag(addr));
   }
   return "";
 }
@@ -466,11 +469,12 @@ DllExport prolog_float call_conv ptoc_number(CTXTdeclc int regnum)
   case XSB_FREE:
   case XSB_REF1:
   case XSB_ATTV:
-  case XSB_LIST: xsb_abort("[PTOC_NUMBER] Float-convertable argument expected");
+  case XSB_LIST: xsb_abort("[PTOC_NUMBER] Float-convertable argument %d expected, found: %s",
+			   regnum,canonical_term(CTXTc addr, 0));
   case XSB_FLOAT: return (prolog_float)float_val(addr);
   case XSB_STRING: return (prolog_int)string_val(addr);	/* dsw */
   case XSB_INT: return int_val(addr);
-  default: xsb_abort("[PTOC_NUMBER] Argument of unknown type");
+  default: xsb_abort("[PTOC_NUMBER] Argument %d of unknown type: %d",regnum,cell_tag(addr));
   }
   return 0.0;
 }
@@ -496,13 +500,13 @@ void constructString(CTXTdeclc Cell addr, int ivstr)
   case XSB_REF1:
   case XSB_ATTV:
   case XSB_FLOAT:
-    xsb_abort("[PTOC_LONGSTRING] Argument of unknown type (%p)",addr);
+    xsb_abort("[PTOC_LONGSTRING] Argument %d of illegal type: %s",ivstr,canonical_term(CTXTc addr, 0));
   case XSB_STRUCT:
     if (get_str_psc(addr) == comma_psc) {
       constructString(CTXTc cell(clref_val(addr)+1),ivstr);
       addr = cell(clref_val(addr)+2);  /* tail recursion opt */
       goto constructStringBegin;
-    } else xsb_abort("[PTOC_LONGSTRING] Argument of unknown type");
+    } else xsb_abort("[PTOC_LONGSTRING] Argument %d of illegal type: %s",ivstr,canonical_term(CTXTc addr, 0));
   case XSB_LIST:
     constructString(CTXTc cell(clref_val(addr)),ivstr);
     addr = cell(clref_val(addr)+1);  /* tail recursion opt */
@@ -512,13 +516,13 @@ void constructString(CTXTdeclc Cell addr, int ivstr)
     if (val < 256 && val >= 0) {
       XSB_StrAppendC(LSBuff[ivstr],(char)val);
       return;
-    } else xsb_abort("[PTOC_LONGSTRING] Argument of unknown type");
+    } else xsb_abort("[PTOC_LONGSTRING] Argument %d of illegal type: %s",ivstr,canonical_term(CTXTc addr, 0));
   case XSB_STRING:
     if (isnil(addr)) return;
     XSB_StrAppend(LSBuff[ivstr],string_val(addr));
     return;
   default:
-    xsb_abort("[PTOC_LONGSTRING] Argument of unknown type");
+    xsb_abort("[PTOC_LONGSTRING] Argument %d of unknown type: %d",ivstr,cell_tag(addr));
   }
 }
 
@@ -562,9 +566,8 @@ DllExport void call_conv ctop_int(CTXTdeclc int regnum, prolog_int value)
     bind_oint(vptr(addr),value);
   }
   else {
-    if (isstring(addr)) printf("string %s\n",string_val(addr));
-    if (isinteger(addr)) printf("int %d\n",(int) int_val(addr));
-    xsb_abort("[CTOP_INT] Wrong type of argument %lx (Reg = %d)", addr, regnum);
+    xsb_abort("[CTOP_INT] Argument %d of illegal type: %s", 
+	      regnum, canonical_term(CTXTc addr, 0));
   }
 }
 
@@ -581,7 +584,7 @@ DllExport void call_conv ctop_float(CTXTdeclc int regnum, prolog_float value)
   if (isref(addr)) {
     bind_boxedfloat(vptr(addr), (Float)value);
   }
-  else xsb_abort("[CTOP_FLOAT] Wrong type of argument: %lux", addr);
+  else xsb_abort("[CTOP_FLOAT] Argument %d of illegal type: %s",regnum,canonical_term(CTXTc addr, 0));
 }
 
 /* take a C string, form a string node */
@@ -598,7 +601,7 @@ DllExport void call_conv ctop_string(CTXTdeclc int regnum, const char *value)
     bind_string(vptr(addr), string_find(value,1));  //?? did not intern before??
   }
   else
-    xsb_abort("[CTOP_STRING] Wrong type of argument: %lux", addr);
+    xsb_abort("[CTOP_STRING] Argument %d of illegal type: %s",regnum,canonical_term(CTXTc addr, 0));
 }
 
 /* TLS: do not need to intern here, as ctop_string is now interning */
@@ -615,7 +618,7 @@ inline static void ctop_constr(CTXTdeclc int regnum, Pair psc_pair)
   if (isref(addr)) {
     bind_cs(vptr(addr), psc_pair);
   }
-  else xsb_abort("[CTOP_CONSTR] Wrong type of argument: %lux", addr);
+  else xsb_abort("[CTOP_CONSTR] Argument %d of illegal type: %s",regnum,canonical_term(CTXTc addr, 0));
 }
 
 /*
@@ -631,7 +634,7 @@ inline  void ctop_tag(CTXTdeclc int regnum, Cell term)
     bind_copy(vptr(addr), term);
   }
   else
-    xsb_abort("[CTOP_TAG] Wrong type of argument: %lux", addr);
+    xsb_abort("[CTOP_TAG] Argument %d of illegal type: %s",regnum,canonical_term(CTXTc addr, 0));
 }
 
 
@@ -680,7 +683,7 @@ Cell  val_to_hash(Cell term)
     case XSB_STRING:
       value = (Cell)(string_val(term));
       break;
-    default: xsb_abort("[term_hash/3] Indexing on illegal argument");
+    default: xsb_abort("[term_hash/3] Indexing on illegal argument: (%p)",term);
       value = 0;
       break;
   }
@@ -729,7 +732,7 @@ Cell  det_val_to_hash(Cell term)
     case XSB_STRING:
       value = hash(string_val(term),0,4194301);
       break;
-    default: xsb_abort("[term_hash/3] Indexing on illegal argument");
+    default: xsb_abort("[term_hash/3] Indexing on illegal argument: (%p)",term);
       value = 0;
       break;
   }
@@ -899,7 +902,7 @@ int count_variable_occurrences(Cell term) {
   case XSB_STRING:
   case XSB_INT:
     return count;
-  default: xsb_abort("[MAKE_GROUND] Argument of unknown type");
+  default: xsb_abort("[MAKE_GROUND] Argument of unknown type (%p)",term);
   }
   return count; // to quiet compiler
 }
@@ -931,7 +934,7 @@ int make_ground(Cell term, struct ltrail *templ_trail) {
   case XSB_FLOAT:
   case XSB_STRING:
   case XSB_INT: return TRUE;
-  default: xsb_abort("[MAKE_GROUND] Argument of unknown type");
+  default: xsb_abort("[MAKE_GROUND] Argument of unknown type (%p)",term);
   }
   return TRUE;
 }
@@ -984,7 +987,7 @@ CPtr excess_vars(CTXTdeclc Cell term, CPtr varlist, struct ltrail *templ_trail, 
   case XSB_STRING:
   case XSB_INT:
     return varlist;
-  default: xsb_abort("[EXCESS_VARS] Argument of unknown type");
+  default: xsb_abort("[EXCESS_VARS] Argument 1 of unknown type (%p)",term);
   }
   return NULL;
 }
@@ -2043,8 +2046,8 @@ int builtin_call(CTXTdeclc byte number)
     case TK_QSTR   : print_dqatom(fptr, ptoc_string(CTXTc 3)); break;
     case TK_TERML  : print_term_canonical(CTXTc fptr, ptoc_tag(CTXTc 3), 1); break;
     case TK_TERM   : print_term_canonical(CTXTc fptr, ptoc_tag(CTXTc 3), 0); break;
-    default : printf("flg: %ld\n",(long)ptoc_int(CTXTc 2));
-      xsb_abort("[FILE_PUTTOKEN] Unknown token type %d");
+    default : //printf("flg: %ld\n",(long)ptoc_int(CTXTc 2));
+      xsb_abort("[FILE_PUTTOKEN] Unknown token type %ld",(long)ptoc_int(CTXTc 2));
     }
     //    SYS_MUTEX_UNLOCK(MUTEX_IO);
     break;
@@ -2125,7 +2128,7 @@ int builtin_call(CTXTdeclc byte number)
 #ifdef DEMAND
     perform_once();
 #else
-    xsb_abort("This executable was not compiled with support for demand.\n");
+    xsb_abort("This XSB executable was not compiled with support for demand.\n");
 #endif
     break;
   }
@@ -2165,7 +2168,7 @@ int builtin_call(CTXTdeclc byte number)
     memmove(ptoc_longstring(CTXTc 2), hostptr->h_addr, hostptr->h_length);
 #endif
 #else
-    xsb_abort("[SYS_GETHOST] Operation not available for this configuration");
+    xsb_abort("[SYS_GETHOST] Operation not available for this XSB configuration");
 #endif
     break;
   }
@@ -2330,14 +2333,14 @@ int builtin_call(CTXTdeclc byte number)
     }
     break;
 #else
-    xsb_abort("Profiling is not enabled for this configuration");
+    xsb_abort("Profiling is not enabled for this XSB configuration");
 #endif
 case WRITE_OUT_PROFILE:
 #if defined(PROFILE) && !defined(MULTI_THREAD)
     write_out_profile();
     break;
 #else
-    xsb_abort("Profiling is not enabled for this configuration");
+    xsb_abort("Profiling is not enabled for this XSB configuration");
 #endif
   case ASSERT_CODE_TO_BUFF:
     assert_code_to_buff(CTXT);
@@ -2445,7 +2448,7 @@ case WRITE_OUT_PROFILE:
 #include "odbc_xsb_i.h"
 #else
   case ODBC_EXEC_QUERY: {
-    xsb_abort("[ODBC] XSB not compiled with ODBC support.\nRecompile using the option --with-odbc.\n");
+    xsb_abort("[ODBC] XSB not compiled with ODBC support.\nReconfigure using the option --with-odbc and then recompile XSB.\n");
   }
 #endif
 
@@ -3091,7 +3094,7 @@ case WRITE_OUT_PROFILE:
     xsbBool retcode;
     size_var = reg_term(CTXTc 2);
     if (! isref(size_var)) {
-      xsb_abort("[IS_CHARLIST] Arg 2 must be a variable");
+      xsb_abort("[IS_CHARLIST] Arg 2 must be a variable: %s",canonical_term(CTXTc size_var, 0));
     }
     retcode = is_charlist(reg_term(CTXTc 1), &size);
     c2p_int(CTXTc size,size_var);
@@ -3135,7 +3138,7 @@ case WRITE_OUT_PROFILE:
       force_answer_true(as_leaf);
     else if (!strcmp(tmpstr, "false"))
       force_answer_false(as_leaf);
-    else xsb_abort("[FORCE_TRUTH_VALUE] Argument 2 has unknown truth value");
+    else xsb_abort("[FORCE_TRUTH_VALUE] Argument 2 has unknown truth value (%s)",tmpstr);
     break;
   }
 
@@ -3165,7 +3168,7 @@ case WRITE_OUT_PROFILE:
 	bld_copy(hreg, atts); hreg++;
       }
     }
-    else xsb_abort("[PUT_ATTRIBUTES] Argument 1 is nonvar");
+    else xsb_abort("[PUT_ATTRIBUTES] Argument 1 is nonvar: %s",canonical_term(CTXTc attv, 0));
     break;
   }
 
@@ -3179,7 +3182,8 @@ case WRITE_OUT_PROFILE:
       list = (CPtr)dec_addr(attv) + 1;
       ctop_tag(CTXTc 2, cell(list));
     }
-    else xsb_abort("[GET_ATTRIBUTES] Argument 1 is not an attributed variable");
+    else xsb_abort("[GET_ATTRIBUTES] Argument 1 is not an attributed variable: %s",
+		   canonical_term(CTXTc attv, 0));
     break;
   }
 

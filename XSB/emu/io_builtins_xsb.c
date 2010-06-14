@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.79 2010-01-20 15:32:12 pmoura Exp $
+** $Id: io_builtins_xsb.c,v 1.80 2010-06-14 12:48:38 dwarren Exp $
 ** 
 */
 
@@ -1689,7 +1689,7 @@ static Psc dollar_var_psc = NULL;
 #define wcan_atombuff tsgLBuff2
 #define wcan_buff tsgSBuff1
 
-void call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_flag)
+int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_flag)
 {
   XSB_Deref(prologterm);
   switch (cell_tag(prologterm)) 
@@ -1813,49 +1813,71 @@ void call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fl
 	} else XSB_StrAppend(wcan_string,fnname);
 	XSB_StrAppendC(wcan_string,'(');
 	for (i = 1; i < get_arity(get_str_psc(prologterm)); i++) {
-	  write_canonical_term_rec(CTXTc cell(clref_val(prologterm)+i),letter_flag);
+	  if (!write_canonical_term_rec(CTXTc cell(clref_val(prologterm)+i),letter_flag)) {
+	    XSB_StrAppend(wcan_string,"?ERROR?");
+	    return FALSE;
+	  }
 	  XSB_StrAppendC(wcan_string,',');
 	}
-	write_canonical_term_rec(CTXTc cell(clref_val(prologterm)+i),letter_flag);
+	if (!write_canonical_term_rec(CTXTc cell(clref_val(prologterm)+i),letter_flag)) {
+	  XSB_StrAppend(wcan_string,"?ERROR?");
+	  return FALSE;
+	}
 	XSB_StrAppendC(wcan_string,')');
       }
       break;
     case XSB_LIST:
       {Cell tail;
       XSB_StrAppendC(wcan_string,'[');
-      write_canonical_term_rec(CTXTc cell(clref_val(prologterm)),letter_flag);
+      if (!write_canonical_term_rec(CTXTc cell(clref_val(prologterm)),letter_flag)) {
+	XSB_StrAppend(wcan_string,"?ERROR?");
+	return FALSE;
+      }
       tail = cell(clref_val(prologterm)+1);
       XSB_Deref(tail);
       while (islist(tail)) {
 	XSB_StrAppendC(wcan_string,',');
-	write_canonical_term_rec(CTXTc cell(clref_val(tail)),letter_flag);
+	if (!write_canonical_term_rec(CTXTc cell(clref_val(tail)),letter_flag)) {
+	  XSB_StrAppend(wcan_string,"?ERROR?");
+	  return FALSE;
+	}
 	tail = cell(clref_val(tail)+1);
 	XSB_Deref(tail);
       } 
       if (!isnil(tail)) {
 	XSB_StrAppendC(wcan_string,'|');
-	write_canonical_term_rec(CTXTc tail,letter_flag);
+	if (!write_canonical_term_rec(CTXTc tail,letter_flag)) {
+	  XSB_StrAppend(wcan_string,"?ERROR?");
+	  return FALSE;
+	}
       }
       XSB_StrAppendC(wcan_string,']');
       }
       break;
     default:
-      xsb_abort("Unsupported subterm tag");
-      return;
+      return FALSE;
     }
-  return;
+  return TRUE;
 }
 
 DllExport void call_conv write_canonical_term(CTXTdeclc Cell prologterm, int letter_flag)
 {
   XSB_StrSet(wcan_string,"");
   XSB_StrEnsureSize(wcan_buff,40);
+  if (write_canonical_term_rec(CTXTc prologterm, letter_flag)) return;
+  else xsb_abort("[WRITE_CANONICAL_TERM] Illegal Prolog term: %s",wcan_string->string);
+}
+
+/* return a string containing the Prolog term in presented in canonical form */
+char *canonical_term(CTXTdeclc Cell prologterm, int letter_flag) {
+  XSB_StrSet(wcan_string,"");
+  XSB_StrEnsureSize(wcan_buff,40);
   write_canonical_term_rec(CTXTc prologterm, letter_flag);
+  return wcan_string->string;
 }
 
 void print_term_canonical(CTXTdeclc FILE *fptr, Cell prologterm, int letterflag)
 {
-
   write_canonical_term(CTXTc prologterm, letterflag);
   fprintf(fptr, "%s", wcan_string->string);
 }
