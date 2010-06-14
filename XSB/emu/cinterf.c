@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.97 2010-05-21 23:31:38 kifer Exp $
+** $Id: cinterf.c,v 1.98 2010-06-14 12:45:58 dwarren Exp $
 **
 */
 
@@ -1773,7 +1773,8 @@ DllExport int call_conv xsb_query_string(CTXTdeclc char *goal)
 
   reset_ccall_error(CTXT);
 
-  c2p_chars(CTXTc goal,2,reg_term(CTXTc 1));
+  /*  c2p_chars(CTXTc goal,2,reg_term(CTXTc 1)); */
+  c2p_string(CTXTc goal,reg_term(CTXTc 1));
   c2p_int(CTXTc 2,reg_term(CTXTc 3));  /* set command for calling a string goal */
   EXECUTE_XSB;
   if (ccall_error_thrown(CTXT)) {
