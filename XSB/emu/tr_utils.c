@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.191 2010/05/21 16:07:55 tswift Exp $
+** $Id: tr_utils.c,v 1.192 2010/05/21 17:00:53 tswift Exp $
 ** 
 */
 
@@ -2942,7 +2942,7 @@ void abolish_table_call_transitive(CTXTdeclc VariantSF subgoal) {
     Psc psc;
     int action;
 
-       printf("in abolish_table_call_transitive\n");
+    //       printf("in abolish_table_call_transitive\n");
     tif = subg_tif_ptr(subgoal);
     psc = TIF_PSC(tif);
 
@@ -3860,6 +3860,24 @@ void release_private_tabling_resources(CTXTdecl) {
 /* abolish_all_tables() and supporting code */
 /*------------------------------------------------------------------*/
 
+void reinitialize_incremental_tries(CTXTdecl) {
+
+int index =  itrie_array_first_trie;
+
+ if (index >= 0) {
+   do {
+     if (itrie_array[index].callnode != NULL) {
+       //       printf("incremental trie %d\n",index);
+       initoutedges((callnodeptr)itrie_array[index].callnode);
+     }
+     //     printf("next %d\n",itrie_array[index].next_entry);
+     index = itrie_array[index].next_entry;
+   }
+   while (index >= 0);
+ }
+}
+
+
 /*
  * Frees all the tabling space resources (with a hammer)
  * WFS stuff released elsewhere -- including smASI.
@@ -3965,7 +3983,8 @@ void abolish_all_tables(CTXTdecl)
 
   reset_freeze_registers;
   openreg = COMPLSTACKBOTTOM;
-  hashtable1_destroy_all(0);  /* free all incr hashtables in use */
+  hashtable1_destroy_all(0);             /* free all incr hashtables in use */
+  reinitialize_incremental_tries(CTXT);  
   release_all_tabling_resources(CTXT);
   abolish_wfs_space(CTXT); 
 
