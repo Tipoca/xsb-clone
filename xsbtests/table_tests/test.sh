@@ -107,10 +107,16 @@ EOF
 ../gentest.sh "$XEMU $options" incremental1 "test".
 #------------------------------------------------- incremental tests with interned tries
 ../gentest.sh "$XEMU $options" incremental_trie "test".
-#------------------------------------------------- incremental tests with interned tries -- for storage.P
+#------------------------------------------------- incremental tests with trie asserts
+../gentest.sh "$XEMU $options" inc_trie_dyn "test".
+#------------------------------------------------- inc with interned tries - for storage.P
 ../gentest.sh "$XEMU $options" inc_trie_alt "test".
-#------------------------------------------------- incremental tests with asserted/retracted clauses
+#------------------------------------------------- inc with asserted/retracted clauses
 ../gentest.sh "$XEMU $options" incremental_rule "test".
+#------------------------------------------------- inc tests with abolish_all_tables
+../gentest.sh "$XEMU $options" inc_abol "test".
+#------------------------------------------------- inc tests with abolish_table_call
+../gentest.sh "$XEMU $options" inc_atc "test".
 #-------------------------------------------------
 ../gentest.sh "$XEMU -l $options" aggregs_test_2 "test."
 #--------------------------------------------------
