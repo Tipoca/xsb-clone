@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.173 2010-02-20 22:24:45 evansbj Exp $
+** $Id: biassert.c,v 1.174 2010-06-19 13:42:26 spyrosh Exp $
 ** 
 */
 
@@ -4105,6 +4105,82 @@ int trie_assert(CTXTdecl)
    However, I dont presently know why 6 cells must be allocated?
  */
 /*-----------------------------------------------------------------*/
+
+/* Support Graph - renamed from incr_assert */
+int increm_assert(void)
+{
+  Cell Clause;
+  Psc  psc;
+  CPtr Prref;
+#ifdef DEBUG_VERBOSE
+  int  Arity;
+#endif
+  CPtr Trie_Asserted_Clref = NULL;
+  BTNptr inst_node_ptr;
+  int  found = 1;
+
+
+  BTNptr leaf_node;  /* dipti */
+
+  Clause = reg_term(CTXTc 2);
+  psc    = (Psc)ptoc_int(CTXTc 3);
+  Prref  = (CPtr)ptoc_int(CTXTc 5);
+
+#ifdef DEBUG_VERBOSE
+  Arity  = ptoc_int(CTXTc 4);
+  xsb_dbgmsg((LOG_DEBUG,"Prref bytes\n"));
+  if (cur_log_level >= LOG_DEBUG)
+    print_bytes(Prref,-2,2);
+  xsb_dbgmsg((LOG_DEBUG,"Clause :"));
+  dbg_printterm(LOG_DEBUG,stddbg,Clause,24);
+  xsb_dbgmsg((LOG_DEBUG," Arity %d ", Arity));
+  xsb_dbgmsg((LOG_DEBUG," Psc   %d ",(int)psc));
+  xsb_dbgmsg((LOG_DEBUG," Prref %d ",(int)Prref));
+  xsb_dbgmsg((LOG_DEBUG,"\n"));
+#endif
+
+  Trie_Asserted_Clref = trie_asserted_clref(Prref);
+
+  xsb_dbgmsg((LOG_ASSERT, " Trie_Asserted_Clref %p",Trie_Asserted_Clref));
+
+  switch_to_trie_assert;
+  
+  if(Trie_Asserted_Clref == NULL){
+    /*
+     * Allocate the trie node as in old trie assert: put it in a clref
+     * block and pray.
+     */
+    Trie_Asserted_Clref = ((CPtr)mem_alloc(6*sizeof(Cell),ASSERT_SPACE) + 2);
+    *(Trie_Asserted_Clref-2) = 6*sizeof(Cell)+2; /* store size, encode type */
+    *(byte *)(Trie_Asserted_Clref +2) = jump;
+
+    inst_node_ptr = newBasicTrie(EncodeTriePSC(psc),ASSERT_TRIE_TT);
+    Instr(inst_node_ptr) = trie_assert_inst;
+
+    *(Trie_Asserted_Clref +3) = (Cell)inst_node_ptr;
+
+    db_addbuff((byte)(get_arity(psc) + 1),(ClRef)Trie_Asserted_Clref,(PrRef)Prref,1,TRUE,2);
+  }
+  else
+    inst_node_ptr = (BTNptr)*(Trie_Asserted_Clref +3);
+
+  /* dipti start */
+  
+  /* one_term_chk_ins((CPtr)Clause,inst_node_ptr,&found); */
+
+  leaf_node=one_term_chk_ins((CPtr)Clause,inst_node_ptr,&found);
+  if (found==0){
+    leaf_node->ornode = makeornode(leaf_node);
+    no_factnode++;
+    /* strcpy(leaf_node->ornode->name,"fact");*/
+  }
+  
+  /* dipti end */
+
+  switch_from_trie_assert;	
+  ctop_int(6,found);
+  return TRUE;
+}
 
 int trie_retract(CTXTdecl)
 {

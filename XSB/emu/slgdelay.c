@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.c,v 1.66 2009/11/17 14:59:34 tswift Exp $
+** $Id: slgdelay.c,v 1.67 2010/02/20 21:48:13 evansbj Exp $
 **
 */
 
@@ -1149,10 +1149,11 @@ static void handle_empty_dl_creation(CTXTdeclc DL dl)
       }
     }
     /*-- perform early completion if necessary; please preserve invariants --*/
-    if (!is_completed(subgoal) && most_general_answer(as_leaf)) {
-      perform_early_completion(subgoal, subg_cp_ptr(subgoal));
-      subg_compl_susp_ptr(subgoal) = NULL;
-    }
+      /* The following was commented out in Dipti's code */
+    /*      if (!is_completed(subgoal) && most_general_answer(as_leaf)) {
+	perform_early_completion(subgoal, subg_cp_ptr(subgoal));
+	subg_compl_susp_ptr(subgoal) = NULL;
+	}*/ /* until here */
     simplify_neg_succeeds(CTXTc subgoal);
   }
 }

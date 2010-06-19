@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.23 2010-01-23 19:03:02 tswift Exp $
+** $Id: complete_local.h,v 1.24 2010-06-19 13:42:26 spyrosh Exp $
 **
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -378,6 +378,7 @@ static inline void SetupReturnFromLeader(CTXTdeclc CPtr orig_breg, CPtr cs_ptr,
      much can be reclaimed if there are answers to be returned */
   ptcpreg = tcp_ptcp(orig_breg);
   delayreg = tcp_pdreg(orig_breg);
+  supreg = tcp_supreg(orig_breg); /* Support Graph */
   restore_some_wamregs(orig_breg, ereg);
   /* restore_trail_condition_registers - because success path
    * will be followed

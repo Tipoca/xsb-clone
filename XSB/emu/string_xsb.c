@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: string_xsb.c,v 1.20 2007/08/08 17:50:51 dwarren Exp $
+** $Id: string_xsb.c,v 1.21 2009/08/19 22:52:34 tswift Exp $
 ** 
 */
 

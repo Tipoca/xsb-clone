@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_defs_xsb.h,v 1.10 2009/08/21 20:09:34 tswift Exp $
+** $Id: system_defs_xsb.h,v 1.11 2009/08/26 23:58:41 tswift Exp $
 ** 
 */
 

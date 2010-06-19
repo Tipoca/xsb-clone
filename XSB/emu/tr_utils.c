@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.192 2010/05/21 17:00:53 tswift Exp $
+** $Id: tr_utils.c,v 1.193 2010/06/18 17:07:05 tswift Exp $
 ** 
 */
 
@@ -76,7 +76,7 @@
 extern void print_subgoal(CTXTdeclc FILE *, VariantSF);
 
 #define MAX_VAR_SIZE	200
-
+BTNptr *Set_ArrayPtr = NULL;
 #include "ptoc_tag_xsb_i.h"
 #include "term_psc_xsb_i.h"
 
@@ -366,6 +366,135 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
 
     return sf;
   }
+}
+
+/* Support Graph */
+VariantSF get_dirty_count(Cell callTerm,int *dirty_count) {
+
+  Psc  psc;
+  TIFptr tif;
+  int arity;
+  BTNptr root, leaf;
+  VariantSF sf;
+  Cell callVars[MAX_VAR_SIZE + 1];
+
+  
+  psc = term_psc(callTerm);
+  if ( IsNULL(psc) ) {
+    err_handle(TYPE, 1, "get_dirty_count", 3, "callable term", callTerm);
+    return NULL;
+  }
+
+  tif = get_tip(psc);
+  if ( IsNULL(tif) )
+    xsb_abort("Predicate %s/%d is not tabled", get_name(psc), get_arity(psc));
+
+  root = TIF_CallTrie(tif);
+  if ( IsNULL(root) )
+    return NULL;
+
+  arity = get_arity(psc);
+  leaf = variant_trie_lookup(root, arity, clref_val(callTerm) + 1, callVars);
+  if ( IsNULL(leaf) )
+    return NULL;
+  else {
+    sf = CallTrieLeaf_GetSF(leaf);
+    *dirty_count=sf->dirty_count;
+    return sf;
+  }
+}
+
+
+VariantSF get_timestamp(Cell callTerm, int *timestamp,int *dirty_bit1) {
+
+  Psc  psc;
+  TIFptr tif;
+  int arity;
+  BTNptr root, leaf;
+  VariantSF sf;
+  Cell callVars[MAX_VAR_SIZE + 1];
+
+
+  psc = term_psc(callTerm);
+  if ( IsNULL(psc) ) {
+    err_handle(TYPE, 1, "get_timestamp", 3, "callable term", callTerm);
+    return NULL;
+  }
+
+  tif = get_tip(psc);
+  if ( IsNULL(tif) )
+    xsb_abort("Predicate %s/%d is not tabled", get_name(psc), get_arity(psc));
+
+  root = TIF_CallTrie(tif);
+  if ( IsNULL(root) )
+    return NULL;
+
+  arity = get_arity(psc);
+  leaf = variant_trie_lookup(root, arity, clref_val(callTerm) + 1, callVars);
+  if ( IsNULL(leaf) )
+    return NULL;
+  else {
+    sf = CallTrieLeaf_GetSF(leaf);
+    /*  *timestamp=sf->local_timestamp; */
+    *dirty_bit1=sf->dirty_count;
+    return sf;
+  }
+}
+
+
+void incr_trie_dispose(void)
+{
+  BTNptr Leaf;
+  Leaf = (BTNptr)ptoc_int(1);
+  switch_to_trie_assert;
+  delete_branch(Leaf, &(Set_ArrayPtr[0]),VARIANT_EVAL_METHOD);
+  switch_from_trie_assert;
+  orlistptr ptrorlist1=(orlistptr)malloc(sizeof(struct _orlist));
+  ptrorlist1->item = Leaf->ornode;
+  ptrorlist1->next = delta_minus ;     
+  delta_minus = ptrorlist1;
+  
+}
+
+
+
+void fast_intern(prolog_term term){
+  int flag;
+  BTNptr Leaf;
+ 
+  switch_to_trie_assert;
+  Leaf = whole_term_chk_ins(term,&(Set_ArrayPtr[0]),&flag,0,0);
+  if(flag==0)
+    Leaf->ornode=makeornode(Leaf); 
+  
+  
+  add_answer_support(4,Leaf);
+  
+  switch_from_trie_assert;
+}
+
+
+void trie_intern(void)
+{
+  prolog_term term;
+  int RootIndex;
+  int flag;
+  BTNptr Leaf;
+
+  term = ptoc_tag(1);
+  RootIndex = ptoc_int(2);
+
+  xsb_dbgmsg((LOG_INTERN, "Interning "));
+  dbg_printterm(LOG_INTERN,stddbg,term,25);
+  xsb_dbgmsg((LOG_INTERN, "In trie with root %d", RootIndex));
+
+  switch_to_trie_assert;
+  Leaf = whole_term_chk_ins(term,&(Set_ArrayPtr[RootIndex]),&flag,0,0);
+  switch_from_trie_assert;
+  
+  ctop_int(3,(Integer)Leaf);
+  ctop_int(4,flag);
+  xsb_dbgmsg((LOG_INTERN, "Exit flag %d",flag));
 }
 
 /*======================================================================*/

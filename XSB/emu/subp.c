@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.c,v 1.116 2009/08/21 20:09:34 tswift Exp $
+** $Id: subp.c,v 1.117 2009/11/17 14:59:34 tswift Exp $
 ** 
 */
 
@@ -297,6 +297,11 @@ void print_statistics(CTXTdeclc int amount) {
   case 8:              /* print symbol/string statistics */
     symbol_table_stats();
     string_table_stats();
+    break;
+    /* Support Graph */
+  case 9:
+    printf("<%d>\n",sizeof(struct  Basic_Trie_Node));
+    prnt_statistics();
     break;
   }
 }

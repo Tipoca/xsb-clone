@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.39 2008-12-31 23:44:42 tswift Exp $
+** $Id: complete_xsb_i.h,v 1.40 2010-06-19 13:42:26 spyrosh Exp $
 ** 
 */
 
@@ -54,6 +54,7 @@ XSB_Start_Instr(check_complete,_check_complete)
   switch_envs(breg);    /* in CHAT: undo_bindings() */
   ptcpreg = tcp_ptcp(breg);
   delayreg = tcp_pdreg(breg);
+  supreg = tcp_supreg(breg); /* Support Graph */
 
   xsb_dbgmsg((LOG_DEBUG,"Check complete %x",breg));
 

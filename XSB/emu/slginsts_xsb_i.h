@@ -18,14 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.86 2010/02/08 16:36:30 tswift Exp $
+** $Id: slginsts_xsb_i.h,v 1.87 2010/03/18 22:22:17 tswift Exp $
 ** 
 */
 
 
 /* special debug includes */
 #include "debugs/debug_delay.h"
-
+#include "support.h"
 
 #define ARITY	op1	/* register Cell */
 #define Yn	op2	/* register Cell */
@@ -140,6 +140,9 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   CPtr answer_template;
   int template_size, attv_num, tmp;
   TIFptr tip;
+
+  /* Support Graph */
+  int setmode = 0;
 
   int incrflag = 0; /* for incremental evaluation */
   VariantSF parent_table_sf=NULL; /* used for creating call graph */
@@ -352,6 +355,24 @@ seq_table_try:
     }
     /* for incremental evaluation - end */
 
+    /* Support Graph */
+    if(setmode){
+      setsupportlistptr temp;
+      current_ssn->dynamic_answer_subg=producer_sf;
+      temp=producer_sf->sslptr;
+      producer_sf->sslptr=(setsupportlistptr)mymalloc(sizeof(struct _setsupportlist));
+      producer_sf->sslptr->item=current_ssn;
+      producer_sf->sslptr->next=temp;        
+      
+#ifdef DIPTI_DEBUG
+      printf("\t<<");
+      sfPrintGoal(stdout,producer_sf,NO);
+      printf(">>\n");
+#endif
+      current_ssn=NULL;
+    }
+    /* Support Graph Ends */
+
     producer_cpf = answer_template;
     save_find_locx(ereg);
     save_registers(producer_cpf, CallInfo_CallArity(callInfo), rreg);
@@ -374,6 +395,7 @@ seq_table_try:
     subg_cp_ptr(producer_sf) = breg = producer_cpf;
     xsb_dbgmsg((LOG_COMPLETION,"just created tabled cp %x\n",breg));
     delayreg = NULL;
+    supreg = NULL;
     if (root_address == 0)
       root_address = breg;
     hbreg = hreg;
@@ -437,6 +459,11 @@ seq_table_try:
       XSB_Next_Instr();
     }
     else {
+      /* Support Graph */
+      if(setmode==1){
+	deletessnode(producer_sf);
+      }
+      /* Support Graph Ends */
       Fail1;
       XSB_Next_Instr();
     }
@@ -567,6 +594,10 @@ seq_table_try:
 
       table_consume_answer(CTXTc first_answer,template_size,attv_num,answer_template,
 			   CallInfo_TableInfo(callInfo));
+
+      /* Support Graph */
+      add_answer_support(1,first_answer);
+      /* Support Graph Ends */
 
       if (is_conditional_answer(first_answer)) {
 	xsb_dbgmsg((LOG_DELAY,
@@ -735,6 +766,9 @@ XSB_Start_Instr(answer_return,_answer_return)
     switch_envs(breg);
     ptcpreg = nlcp_ptcp(breg);
     delayreg = nlcp_pdreg(breg);
+    /* Support Graph */
+    supreg = nlcp_supreg(breg);
+    /* Support Graph Ends */
     restore_some_wamregs(breg, ereg);
 
     /* Consume the next answer
@@ -754,6 +788,10 @@ XSB_Start_Instr(answer_return,_answer_return)
 
 table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
 			 subg_tif_ptr(consumer_sf));
+/* Support Graph */
+ add_answer_support(2,next_answer);
+ /* Support Graph Ends */
+
 
     if (is_conditional_answer(next_answer)) {
       /*
@@ -907,6 +945,21 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   answer_leaf = table_answer_search( CTXTc producer_sf, template_size, attv_num,
 				     answer_template, &isNewAnswer );
 
+  /* Support Graph */
+  BTN_Parent(subg_ans_root_ptr(producer_sf))=producer_sf; 
+  if(isNewAnswer){  
+    answer_leaf->ornode=makeornode(answer_leaf);
+    get_support(answer_leaf->ornode,subg_ans_root_ptr(producer_sf),1);
+    no_ornode++;
+  }else{
+    get_support(answer_leaf->ornode,subg_ans_root_ptr(producer_sf),0);       
+  } 
+  
+  support_mode=1;
+  supreg = tcp_supreg(producer_cpf);
+
+  /* Support Graph Ends */
+
   if ( isNewAnswer ) {   /* go ahead -- look for more answers */
     /* incremental evaluation */
     if(IsIncrSF(producer_sf))
@@ -1056,6 +1109,9 @@ XSB_Start_Instr(resume_compl_suspension,_resume_compl_suspension)
     ptcpreg = csf_ptcp(csf);
     neg_delay = (csf_neg_loop(csf) != FALSE);
     delayreg = csf_pdreg(csf);
+    /* Support Graph */
+    supreg = csf_supreg(csf);
+    /* Support Graph Ends */
     cpreg = csf_cpreg(csf); 
     ereg = csf_ereg(csf);
     ebreg = csf_ebreg(csf);
@@ -1073,6 +1129,9 @@ XSB_Start_Instr(resume_compl_suspension,_resume_compl_suspension)
     ptcpreg = csf_ptcp(csf);
     neg_delay = (csf_neg_loop(csf) != FALSE);
     delayreg = csf_pdreg(csf);
+    /* Support Graph */
+    supreg = csf_supreg(csf);
+    /* Support Graph Ends */
     cpreg = csf_cpreg(csf); 
     ereg = csf_ereg(csf);
     ebreg = csf_ebreg(csf);

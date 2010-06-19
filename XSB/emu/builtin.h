@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.92 2010-05-26 20:51:38 tswift Exp $
+** $Id: builtin.h,v 1.93 2010-06-19 13:42:26 spyrosh Exp $
 ** 
 */
 
@@ -205,6 +205,7 @@
    IT. Note: even though this is a single builtin, YOU CAN SIMULATE ANY NUMBER
    OF BUILTINS WITH IT.  */
 #define PRIVATE_BUILTIN	        180
+#define SUPPORT_BUILTIN         181
 
 #define SEGFAULT_HANDLER	182
 #define GET_BREG                183

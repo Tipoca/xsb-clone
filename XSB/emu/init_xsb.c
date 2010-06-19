@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.158 2010-06-10 20:18:08 dwarren Exp $
+** $Id: init_xsb.c,v 1.159 2010-06-19 13:42:26 spyrosh Exp $
 ** 
 */
 
@@ -1320,6 +1320,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   reset_freeze_registers;
   openreg = ((CPtr) complstack.high);
   delayreg = NULL;
+  supreg = NULL; /* Support Graph */
 
   /* for incremenatal evaluation */
   affected = eneetq(); 
@@ -1336,6 +1337,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   cp_ereg(breg) = ereg;
   cp_prevbreg(breg) = breg;               /* note ! */
   cp_pdreg(breg) = delayreg;
+  cp_supreg(breg) = supreg; /* Support Graph */
 #ifdef CP_DEBUG
   cp_psc(breg) = 0;
 #endif

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.37 2010-02-10 19:11:12 dwarren Exp $
+** $Id: psc_xsb.h,v 1.38 2010-06-19 13:42:26 spyrosh Exp $
 ** 
 */
 
@@ -84,6 +84,7 @@ struct psc_rec {
   byte entry_type;		/* see psc_defs.h */
   byte arity; 
   char *nameptr;
+  int strata_num;               /* Support Graph */
   struct psc_rec *data;      /* psc of module, if pred; otw data */
   byte *ep;                     /* entry point (initted to next word) */
   word load_inst;               /* byte-code load_pred, or jump, or call_forn */
@@ -127,6 +128,7 @@ typedef struct psc_pair *Pair;
 #define  get_ep(psc)		((psc)->ep)
 #define  get_data(psc)		((psc)->data)
 #define  get_name(psc)		((psc)->nameptr)
+#define  get_strata(psc)	 ((psc)->strata_num) /* Support Graph */
 
 #define  set_type(psc, type)	(psc)->entry_type = type
 #define  set_env(psc, envir)	(psc)->env = ((psc)->env & ~T_ENV) | envir
@@ -141,6 +143,7 @@ typedef struct psc_pair *Pair;
 				    (psc)->this_psc = (void *)val;} while(0)
 #define  set_data(psc, val)     ((psc)->data = val)
 #define  set_name(psc, name)	((psc)->nameptr = name)
+#define  set_strata(psc, num)	((psc)->strata_num = num ) /* Support Graph */
 
 #define set_forn(psc, val) {                   \
     cell_opcode(get_ep(psc)) = call_forn;      \
@@ -158,7 +161,7 @@ extern Pair link_sym(Psc, Psc);
 extern Pair insert_module(int, char *);
 extern Pair insert(char *, byte, Psc, int *);
 extern void set_psc_ep_to_psc(Psc, Psc);
-
+extern Pair search(int, char *, Pair *); /* Support Graph */
 extern char* string_find(const char*, int);
 
 /*======================================================================*/
@@ -179,6 +182,7 @@ extern Psc bagof_psc;
 extern Psc ccall_mod_psc;
 extern Psc c_callloop_psc;
 extern Psc delay_psc;
+extern Psc support_psc; /* Support Graph */
 extern Psc cond_psc;
 extern Psc cut_psc;
 extern Psc load_undef_psc;

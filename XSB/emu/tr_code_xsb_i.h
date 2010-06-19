@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.16 2009-10-22 16:16:03 tswift Exp $
+** $Id: tr_code_xsb_i.h,v 1.17 2010-06-19 13:42:26 spyrosh Exp $
 ** 
 */
 
@@ -101,6 +101,7 @@
 #define proceed_lpcreg {			\
    if( IsInAnswerTrie(NodePtr) && delay_it )	\
      handle_conditional_answers;		\
+   add_answer_support(3,NodePtr);		\
    global_num_vars = num_vars_in_var_regs;	\
    num_vars_in_var_regs = -1;			\
    Last_Nod_Sav = NodePtr;			\
@@ -188,6 +189,7 @@ int     delay_it;
 #define restore_regs_and_vars(tbreg,offset)	\
     undo_bindings(tbreg);			\
     delayreg = cp_pdreg(tbreg);                 \
+    supreg = cp_supreg(tbreg);			\ 
     restore_some_wamregs(tbreg, ereg);	        \
     restore_trie_registers(tbreg + offset) 
 

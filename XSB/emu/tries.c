@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.120 2010-04-03 16:09:43 tswift Exp $
+** $Id: tries.c,v 1.121 2010-06-19 13:42:26 spyrosh Exp $
 ** 
 */
 
@@ -591,7 +591,7 @@ void expand_trie_ht(CTXTdeclc BTHTptr pHT) {
  * Push the symbols along the path from the leaf to the root in a trie
  * onto the termstack.
  */
-static int follow_par_chain(CTXTdeclc BTNptr pLeaf)
+/* static */ int follow_par_chain(CTXTdeclc BTNptr pLeaf)
 {
   int heap_space = 0;
   Cell sym;
@@ -1333,7 +1333,7 @@ static void load_solution_from_trie(CTXTdeclc int arity, CPtr cptr)
  * `term'.  It appears that `term' is expected to be an unbound variable.
  * Also, `Root' does not appear to be used.
  */
-static void bottomupunify(CTXTdeclc Cell term, BTNptr Root, BTNptr Leaf)
+/* static */ void bottomupunify(CTXTdeclc Cell term, BTNptr Root, BTNptr Leaf)
 {
   CPtr Dummy_Addr;
   Cell returned_val, xtemp2;

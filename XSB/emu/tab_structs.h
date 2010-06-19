@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.3 2010-01-23 19:03:03 tswift Exp $
+** $Id: tab_structs.h,v 1.4 2010-06-19 13:42:26 spyrosh Exp $
 ** 
 */
 
@@ -613,6 +613,7 @@ enum SubgoalFrameType {
    Fields marked pre-compl are not needed after completion; post-compl
    are not needed before completion.
    -------------------------------- */
+#include "support.h"
 
 typedef struct subgoal_frame {
   byte sf_type;		  /* The type of subgoal frame */
@@ -646,6 +647,15 @@ typedef struct subgoal_frame {
   
  /* The following field is added for incremental evaluation: */
   callnodeptr callnode;
+
+  /* Support Graph */
+  VariantSF base_sf; 
+  setsupportlistptr sslptr;
+  setsupportlistptr rsslptr;
+  int dirty_count:28;
+  int redcall:1;
+  int support_mode:3;
+  /* Support Graph Ends */
 
 } variant_subgoal_frame;
 

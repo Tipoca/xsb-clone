@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trace_xsb.c,v 1.40 2009/08/29 17:18:08 tswift Exp $
+** $Id: trace_xsb.c,v 1.41 2009/11/17 14:59:34 tswift Exp $
 ** 
 */
 

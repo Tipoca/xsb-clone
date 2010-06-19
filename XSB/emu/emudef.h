@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.74 2010-02-10 19:11:12 dwarren Exp $
+** $Id: emudef.h,v 1.75 2010-06-19 13:42:26 spyrosh Exp $
 ** 
 */
 
@@ -64,6 +64,8 @@ CPtr root_address;
 
 CPtr ptcpreg = NULL;
 CPtr delayreg;
+/* Support Graph */
+CPtr supreg;
 
 #ifdef DEMAND
 /* demand-freeze registers */

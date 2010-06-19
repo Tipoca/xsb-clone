@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.47 2009-11-30 19:19:36 dwarren Exp $
+** $Id: psc_xsb.c,v 1.48 2010-06-19 13:42:26 spyrosh Exp $
 ** 
 */
 
@@ -138,6 +138,7 @@ static Psc make_psc_rec(char *name, char arity) {
   set_data(temp, 0);
   set_ep(temp,(byte *)&(temp->load_inst));
   set_name(temp, string_find(name, 1));
+  set_strata(temp,-1); /* Support Graph */
   cell_opcode(&(temp->load_inst)) = load_pred;
   temp->this_psc = temp;
   return temp;
@@ -281,7 +282,7 @@ static int is_globalmod(Psc mod_psc)
  *  Returns a pointer to the PSC-PAIR structure which points to the
  *  PSC record of the desired symbol.
  */
-static Pair search(int arity, char *name, Pair *search_ptr)
+/* static */ Pair search(int arity, char *name, Pair *search_ptr)
 {
     Psc psc_ptr;
     /*    Pair *init_search_ptr = search_ptr; */
