@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.53 2010-06-19 13:42:26 spyrosh Exp $
+** $Id: tries.h,v 1.54 2010-06-22 23:30:56 spyrosh Exp $
 ** 
 */
 
@@ -29,9 +29,6 @@
 #define PUBLIC_TRIE_DEFS
 
 #include "struct_manager.h"
-
-/* Support Graph */
-#include "support_def.h"
 
 /*===========================================================================*/
 
@@ -166,8 +163,6 @@ typedef struct Basic_Trie_Node {
   BTNptr child;
   BTNptr parent;
   Cell symbol;
-  /* Support Graph */
-  ornodeptr ornode;
 } BasicTrieNode;
 
 /* - - Preferred macros - - - - */
@@ -633,6 +628,3 @@ typedef struct InternGarbageRootFrame{
 } InternGarbageRoot;
 
 #endif
-
-/* Support Graph */
-extern int follow_par_chain(CTXTdeclc BTNptr);

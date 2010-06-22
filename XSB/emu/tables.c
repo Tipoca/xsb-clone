@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.73 2010-06-19 13:42:26 spyrosh Exp $
+** $Id: tables.c,v 1.74 2010-06-22 23:30:55 spyrosh Exp $
 ** 
 */
 
@@ -623,11 +623,7 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
 
       dbg_smPrint(LOG_STRUCT_MANAGER, smTSIN, "  after chain reclamation");
     }
-  /* Support Graph */
-  if(!has_answers(producerSF)) {
-    deletessnode(producerSF);
-  }
-  /* Support Graph Ends */
+
   /* incremental  evaluation start */
   
   /* 
@@ -677,7 +673,7 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
             
     }else /* newly added calls */
       nq(&changed,producerSF->callnode);
-
+    
     if ( has_answers(producerSF) ) {
       pALN = pRealAnsList = subg_answers(producerSF);
       tag = UNCOND_ANSWERS;
