@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop_aux.h,v 1.11 2010-06-22 23:30:55 spyrosh Exp $
+** $Id: emuloop_aux.h,v 1.12 2010-06-22 23:33:31 spyrosh Exp $
 ** 
 */
 

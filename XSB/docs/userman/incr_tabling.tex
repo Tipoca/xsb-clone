@@ -11,7 +11,7 @@ depends.  If tables are thought of as database views, then this
 subsystem enables what is known in the database community as
 incremental view maintenance.
 
-\subsection{Examples} \label{sec:incr_examples}
+\subsection{Examples}
 
 To demonstrate incremental table maintenance, we consider first the
 following simple program that does not use incremental tabling:
@@ -130,23 +130,12 @@ update.  These operations leave the dependent tables unchanged (and
 thus inconsistent.)  Then to update the tables for all the changes
 made, the user should call {\tt incr\_table\_update}.
 
-In the current version of XSB, incremental tabling has not yet been
-ported to the multi-threaded engine.  In addition, incremental tabling
-only works for stratified predicates that do not involve conditional
-answers, and it currently works only for predicates that use both call
-and answer subsumption.  However, incremental tabling does work with
-trie indexed dynamic code (in addition to regular dynamic code) and
-with interned tries as described in
-Section~\ref{sec:incr-update-tries}.  The space reclamation predicates
-{\tt abolish\_all\_tables/0} and {\tt abolish\_table\_call/[1,2]} both
-can be safely used with incremental tables, but {\tt
-  abolish\_table\_pred/[1,2]} if the predicate it abolishes is
-incremental.
 
-\subsection{Predicates for Incremental Table Maintenance} \label{sec:incr-preds1}
 
-The following directives support incremental tabling based on changes
-in dynamic code: \index{tabling!opaque}
+\subsection{Predicates for Incremental Table Maintenance}
+
+The following directives support incremental tabling:
+\index{tabling!opaque}
 
 \begin{description}
 \ourstandarditem{table +PredSpecs as incremental}{table/1}{Tabling} is
@@ -351,107 +340,3 @@ and
 :- dynamic p/3 as tabled.
 \end{verbatim}
 are equivalent.
-
-\subsection{Incremental Tabling using Interned Tries} \label{sec:incr-update-tries}
-%
-\index{tries}
-Sometimes it is more convenient or efficient to maintain facts in
-interned tries rather than as dynamically asserted facts
-(cf. Chapter~\ref{chap:tries}).  Tables based on interned tries can be
-automatically updated when terms are interned or uninterned just as
-they can be automatically updated when a fact is asserted or
-retracted.  Consider the example from Section~\ref{sec:incr_examples}
-rewritten to use interned tries.  As usual, in incrementally updated
-table is declared as such:
-%
-\begin{verbatim}
-:- table p/2 as incremental.
-
-p(X,Y) :- trie_interned(q(X,Y),inctrie),Y =< 5.
-\end{verbatim}
-%
-However, the declaration for dynamic data changes: rather than using
-the declaration {\tt :- dynamic q/2 as incremental}, a trie is
-specified as incremental in its creation.
-%
-\begin{verbatim}
-  trie_create(Trie_handle,[incremental,alias(inctrie)]),
-\end{verbatim}
-%
-As described in Chapter~\ref{chap:tries}, the trie handle returned is
-an integer, but can be aliased just as with any other trie.  The trie
-may then be initially loaded:
-%
-\begin{verbatim}
-	trie_intern(qt(a,1),inctrie),trie_intern(qt(b,3),inctrie),
-	trie_intern(qt(c,5),inctrie),trie_intern(qt(d,7),inctrie).
-\end{verbatim}
-%
-At this stage a query to {\tt p/2} acts as before:
-%
-\begin{verbatim}
-| ?- p(X,Y),writeln([X,Y]),fail.
-[c,5]
-[b,3]
-[a,1]
-\end{verbatim}
-%
-The following sequence ensures that {\tt p/2} is incrementally updated
-as {\tt inctrie} changes:
-%
-\begin{verbatim}
-| ?- import incr_trie_intern/2.
-
-yes
-| ?- incr_trie_intern(inctrie,q(d,4)).
-
-yes
-| ?- p(X,Y),writeln([X,Y]),fail.
-[d,4]
-[c,5]
-[b,3]
-[a,1]
-
-no
-| ?- 
-\end{verbatim}
-%
-
-The following predicates are used for modifying incremental tries, and
-can be freely intermixed with predicates for modifying incremental
-dynamic code, as well as with predicates for invalidating or updating
-tables (Section~\ref{sec:incr-preds1}).
-
-\begin{description}
-\ourmoditem{incr\_trie\_intern(+TrieIdOrAlias,+Term)}{incr\_trie\_intern/2}{intern}
-%
-is a version of {\tt trie\_intern/2} for tries declared as
-incremental.  A call to this predicate interns {\tt Term} in {\tt
-  TrieIdOrAlias} and then updates all incrementally maintained tables
-that depend on this trie.
-
-\ourmoditem{incr\_trie\_uninternall(+TrieIdOrAlias,+Term)}{incr\_trie\_uninternall/2}{intern}
-%
-is a version of {\tt trie\_unintern/2} for tries declared as
-incremental.  A call to this predicate removes all terms unifying with
-{\tt Term} in {\tt TrieIdOrAlias} and then updates all incrementally
-maintained tables that depend on this trie.
-
-\ourmoditem{incr\_trie\_intern\_inval(+TrieIdOrAlias,+Term)}
-{incr\_trie\_intern\_inval/2}{intern}
-%
-works for tries declared as incremental in a similar manner as {\tt
-  incr\_trie\_intern/2} except that it does not update the
-incrementally maintained tables, but only marks them as invalid. The
-tables should be updated by an explicit call to {\tt incr\_table\_update/[0,1,2]}.
-
-\ourmoditem{incr\_trie\_uninternall\_inval(+TrieIdOrAlias,+Term)}
-{incr\_trie\_uninternall\_inval/2}{intern}
-%
-works for tries declared as incremental in a similar manner as {\tt
-  incr\_trie\_uninternall/2} except that it does not update the
-incrementally maintained tables, but only marks them as invalid. The
-tables should be updated by an explicit call to {\tt incr\_table\_update/[0,1,2]}.
-
-\end{description}
-

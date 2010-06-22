@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.94 2010-06-22 23:30:55 spyrosh Exp $
+** $Id: builtin.h,v 1.95 2010-06-22 23:33:31 spyrosh Exp $
 ** 
 */
 

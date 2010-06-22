@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.18 2010-06-22 23:30:55 spyrosh Exp $
+** $Id: tr_code_xsb_i.h,v 1.19 2010-06-22 23:33:31 spyrosh Exp $
 ** 
 */
 
