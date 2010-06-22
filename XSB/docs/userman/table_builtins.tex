@@ -1114,6 +1114,14 @@ no answer in {\tt Pred} is active in the current execution
 environment.  Otherwise, the behavior of {\tt abolish\_table\_pred/1}
 is the same as in the sequential engine.
 
+Finally, {\tt abolish\_table\_pred/1} will throw an error if the
+predicate to be abolished is incremental.  This is because abolishing
+some incremental tables but not others will leave dangling pointers in
+the data structures used for uncremental updates.  Until {\tt
+  abolish\_table\_pred/[1,2]} is extended to support incremental
+tables, use {\tt abolish\_table\_call/[1,2]} or {\tt
+  abolish\_all\_tables/0}.
+
 {\bf Error Cases}
 \bi
 %
@@ -1198,6 +1206,11 @@ environment.  Otherwise, the behavior of {\tt abolish\_table\_call/1}
 is the same as in the sequential engine on tabled predicates that are
 thread-private.
 
+{\tt abolish\_table\_call/[1,2]} also cascades abolishes for
+incremental tables.  If a call $G$ is abolished, all calls that $G$
+depends on will also be abolished, so that the dependency structures
+that support incremental tabling will remain in a consistent state.
+
 {\bf Error Cases}
 \bi
 \item The term spec {\tt CallTerm} does not correspond to a tabled predicate:
@@ -1253,14 +1266,18 @@ in their table is deleted.  {\tt abolish\_all\_tables/0} works
 directly on the memory structures allocated for table space.  This
 makes it very fast for abolishing a large amount of tables, and to
 maintain its speed it throws an error if any completed answer $A$ is
-active in the current execution environment.
+active in the current execution environment.  {\tt
+  abolish\_all\_tables/0} can be used regardless of whether there are
+incremental tables, or tables that use call or answer subsumption.
 
 In the multi-threaded engine {\tt abolish\_all\_tables/0} raises an
 error unless it is called when there is a single active thread.  In
 that case, all shared tables are abolished as well as all private
 tables for the main thread.  An error will be thrown if any completed
 answer $A$ is active in the current environment, regardless of whether
-$A$ is thread-private or thread-shared.
+$A$ is thread-private or thread-shared.  
+
+
 
 {\bf Error Cases}
 \bi
