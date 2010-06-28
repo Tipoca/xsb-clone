@@ -188,6 +188,7 @@ to and loading them from a component.
 	  in_hierarchy/1,
 	  newExtTerm/1,retractallExtTerm/1,
 	  system_component/1,
+	  abolish_cdf_tables/0,
 	  cdf_id_fields/4 from cdf_init_cdf.
 :- import get_component_extensional/2 from cdf_comps_share.
 
@@ -199,7 +200,7 @@ to and loading them from a component.
 :- import allAttr/3, classHasAttr/3, hasAttr/3,
 	   maxAttr/4, minAttr/4 from cdf_init_cdf.
 
-:- import member/2, memberchk/2,length/2,ground/1,append/3  from basics.
+:- import member/2, memberchk/2,length/2,append/3  from basics.
 :- import instantiation_error/3, domain_error/4, misc_error/1,
 	 check_nonvar/3 from error_handler.
 :- import numbervars/1 from num_vars.
@@ -426,11 +427,11 @@ type_table(maxAttr_int(A,B,C,N),check_ind_types(_,maxAttr_int(A,B,C,N),
 				[ [cid,oid], [rid], [cid,oid], posint ] ) ).
 
 type_table(classHasAttr(A,B,C),check_ind_types(_,classHasAttr(A,B,C),
-			[ [cid,rid,crid], [crid,crrid,crcrid], [cid,oid] ] ) ).
+			[ [cid,rid,crid], [crid,crrid,crcrid,crrrid], [cid,oid,rid] ] ) ).
 type_table(classHasAttr_ext(A,B,C),check_ind_types(_,classHasAttr_ext(A,B,C),
-			[ [cid,rid,crid], [crid,crrid,crcrid], [cid,oid] ] ) ).
+			[ [cid,rid,crid], [crid,crrid,crcrid,crrrid], [cid,oid,rid] ] ) ).
 type_table(classHasAttr_int(A,B,C),check_ind_types(_,classHasAttr(A,B,C),
-			[ [cid,rid,crid], [crid,crrid,crcrid], [cid,oid] ] ) ).
+			[ [cid,rid,crid], [crid,crrid,crcrid,crrrid], [cid,oid,rid] ] ) ).
 
 type_table(coversAttr(A,B,C),check_ind_types(_,coversAttr(A,B,C),
 				[ [cid,oid], [rid], [cid,oid] ] ) ).
@@ -454,10 +455,23 @@ cdf_check_identity(Term):-
 check_identity(_,Term):- 
 	check_identity(Term).
 
+/* calling intensional rules may invoke any CDF goal (as body of
+rule), so must abolish all the cdf tables in case of update.  If this
+turns out to be too inefficient, then we might just not check for
+intensional duplicates. */
 check_identity(Term):- 
-	(call0(Term) -> 
-	    fail 
-	  ; (ext_to_int_call(Term, TermInt), call0(TermInt) -> fail ; true)).
+	(call0(Term) 
+	 ->	fail 
+	 ;	ext_to_int_call(Term, TermInt),
+		(\+clause(TermInt,_Bod)
+		 ->	true
+		 ;	(call0(TermInt)  
+			 ->	fail % won't be inserted, so no need to abolish
+			 ;	abolish_cdf_tables % intensional rule can call any cdf term, so must abolish any tables generated
+			)
+		)
+	).
+%% previous, erroneous, else was: (ext_to_int_call(Term, TermInt), call0(TermInt) -> fail ; true)).
 
 ext_to_int_call(isa_ext(A,B), isa_int(A,B)).
 ext_to_int_call(hasAttr_ext(A,B,C), hasAttr_int(A,B,C)).
@@ -878,6 +892,18 @@ dl_type_table(all(R,C),check_ind_types(_,all(R,C),[[rid],[cid]])).
 dl_type_table(atLeast(N,R,C),check_ind_types(_,atLeast(N,R,C),[posint,[rid],[cid]])).
 dl_type_table(atMost(N,R,C),check_ind_types(_,atMost(N,R,C),[posint,[rid],[cid]])).
 dl_type_table(component(Cmpt),isatom2(_,Cmpt)).
+dl_type_table(is(_,_),=(_,_)). % no checking for now
+dl_type_table(dlTable(_N,_),isatom2(_,_N)).
+dl_type_table(dlTable(_N,_,_),isatom2(_,_N)).
+dl_type_table(dlTable(_N,_,_,_),isatom2(_,_N)).
+dl_type_table(dlTable(_N,_,_,_,_),isatom2(_,_N)).
+dl_type_table(dlTable(_N,_,_,_,_,_),isatom2(_,_N)).
+dl_type_table(dlTable(_N,_,_,_,_,_,_),isatom2(_,_N)).
+dl_type_table(dlTable(_N,_,_,_,_,_,_,_),isatom2(_,_N)).
+dl_type_table(dlTable(_N,_,_,_,_,_,_,_,_),isatom2(_,_N)).
+dl_type_table(dlTable(_N,_,_,_,_,_,_,_,_,_),isatom2(_,_N)).
+dl_type_table(dlTable(_N,_,_,_,_,_,_,_,_,_,_),isatom2(_,_N)).
+dl_type_table(trace,=(_,_)). % for debugging
 
 isatom2(Context,Atom) :-
 	(atom(Atom)
