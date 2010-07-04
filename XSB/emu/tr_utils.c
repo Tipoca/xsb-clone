@@ -919,7 +919,11 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
 	 * the same chain.  Therefore we cannot delete the parent, and so
 	 * we're done.
 	 */
-	SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
+	if ( *(((prolog_int *)lowest_node_in_branch)+1) ==  FREE_TRIE_NODE_MARK) 
+	  ;//printf("double deallocation in delete_branch %p\n",lowest_node_in_branch);
+	else{
+	  SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
+	}
 	return;
       }
       else
@@ -929,7 +933,11 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
      *  Remove this node and continue.
      */
     //    printf("deleting %x\n",lowest_node_in_branch->symbol);
-    SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
+    if ( *(((prolog_int *)lowest_node_in_branch)+1) ==  FREE_TRIE_NODE_MARK) 
+      ;//printf("double deallocation in delete_branch %p\n",lowest_node_in_branch);
+    else{
+      SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
+    }
     lowest_node_in_branch = parent_ptr;
   }
 
@@ -958,7 +966,11 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
 	BTN_Instr(prev) -= 2; /* retry -> trust ; try -> nocp */
     }
     //    printf("deleting %x\n",lowest_node_in_branch->symbol);
-    SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
+    if ( *(((prolog_int *)lowest_node_in_branch)+1) ==  FREE_TRIE_NODE_MARK) 
+      ;//      printf("double deallocation in delete_branch %p\n",lowest_node_in_branch);
+    else{
+      SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
+    }
   }
 }
 
