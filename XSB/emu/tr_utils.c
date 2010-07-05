@@ -70,7 +70,7 @@
 #include "call_graph_xsb.h" /* incremental evaluation */
 #include "table_inspection_defs.h"
 #include "heap_xsb.h"
-
+#include "residual.h"
 /*----------------------------------------------------------------------*/
 
 extern void print_subgoal(CTXTdeclc FILE *, VariantSF);
@@ -890,11 +890,12 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
   BTNptr prev, parent_ptr, *y1, *z;
   Structure_Manager *smNODEptr;
 
+  //  printf("delete branch %p %p\n",lowest_node_in_branch,*hook);
+
   if (eval_method == VARIANT_EVAL_METHOD)
     smNODEptr = smBTN;
   else 
     smNODEptr = &smTSTN;
-
   while ( IsNonNULL(lowest_node_in_branch) && 
 	  ( Contains_NOCP_Instr(lowest_node_in_branch) ||
 	    IsTrieRoot(lowest_node_in_branch) ) ) {
@@ -905,6 +906,7 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
      */
     set_parent_and_node_hook(lowest_node_in_branch,hook,&parent_ptr,&y1);
     if (is_hash(*y1)) {
+      //      printf("found hash\n");
       z = CalculateBucketForSymbol((BTHTptr)(*y1),
 				   BTN_Symbol(lowest_node_in_branch));
 #ifdef DEBUG_VERBOSE
@@ -932,10 +934,12 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
     /*
      *  Remove this node and continue.
      */
-    //    printf("deleting %x\n",lowest_node_in_branch->symbol);
-    if ( *(((prolog_int *)lowest_node_in_branch)+1) ==  FREE_TRIE_NODE_MARK) 
-      ;//printf("double deallocation in delete_branch %p\n",lowest_node_in_branch);
+    if ( *(((prolog_int *)lowest_node_in_branch)+1) ==  FREE_TRIE_NODE_MARK)  
+      return;//printf("double deallocation in delete_branch %p\n",lowest_node_in_branch);
     else{
+      //      printf("deleting-1 %p ",lowest_node_in_branch);
+      //      print_trie_atom(lowest_node_in_branch->symbol);printf("\n");
+    
       SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
     }
     lowest_node_in_branch = parent_ptr;
@@ -969,6 +973,8 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
     if ( *(((prolog_int *)lowest_node_in_branch)+1) ==  FREE_TRIE_NODE_MARK) 
       ;//      printf("double deallocation in delete_branch %p\n",lowest_node_in_branch);
     else{
+      //      printf("deleting-2 %p ",lowest_node_in_branch);
+      //      print_trie_atom(lowest_node_in_branch->symbol);printf("\n");
       SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
     }
   }
@@ -1503,7 +1509,7 @@ void private_trie_intern(CTXTdecl) {
   Leaf = whole_term_chk_ins(CTXTc term,&(itrie_array[index].root),
 			    &flag,check_cps_flag,expand_flag);
   switch_from_trie_assert;
-  
+  //  printf("root %p\n",itrie_array[index].root);
   ctop_int(CTXTc 3,(Integer)Leaf);
   ctop_int(CTXTc 4,flag);
 }
