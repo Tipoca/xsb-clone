@@ -170,6 +170,10 @@ incr_assert_inval(Term) :- incr_assert_inval(Term,1,1).
 incr_asserta_inval(Term) :- incr_assert_inval(Term,0,1).
 incr_assertz_inval(Term) :- incr_assert_inval(Term,1,1).
 
+incr_assert(Term,AZL,Index) :-
+	incr_assert_inval(Term,AZL,Index),
+	incr_table_update.
+
 incr_assert_inval(Term,AZL,Index):-
 	(Term = (:-(H,_)) -> Head = H ; Head = Term),
 	check_incremental(Head,dynamic_predicate_not_incremental),
