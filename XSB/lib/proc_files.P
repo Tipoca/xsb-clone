@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: proc_files.P,v 1.4 2010-03-05 14:09:17 dwarren Exp $
+** $Id: proc_files.P,v 1.5 2010-07-12 19:31:51 dwarren Exp $
 ** 
 */
 
@@ -48,9 +48,9 @@ load_dsv(FileName,PSpec,Options) :-
 	 ->	true
 	 ;	Sep = ","
 	),
-	(member(delimiter=Delim,Options)
+	(member(delimiter=[Delim],Options)
 	 ->	true
-	 ;	Delim = """"
+	 ;	Delim = 0'"'
 	),
 	load_dsv(FileName,PSpec,Sep,Delim,Options).
 
@@ -59,9 +59,9 @@ read_dsv(FileName,Options,Term) :-
 	 ->	true
 	 ;	Sep = ","
 	),
-	(member(delimiter=Delim,Options)
+	(member(delimiter=[Delim],Options)
 	 ->	true
-	 ;	Delim = """"
+	 ;	Delim = 0'"'
 	),
 	functor(Term,Pred,Arity),
 	length(Types,Arity),	% no constraints
@@ -276,7 +276,7 @@ next_code_field(Stream,Line,Sep,Delim,Field,Rest) :-
      ;	Line = [C|Cs],
         (C == Delim
          ->	delim_parse_quoted(Stream,Cs,Sep,Delim,OField,Flg,Rest),
-            (var(Flg) -> Field = OField ; Field = [Delim|OField])
+		(var(Flg) -> Field = OField ; Field = [Delim|OField])
          ;	delim_parse_unquoted(Line,Sep,Field,Rest)
         )
     ).
@@ -363,9 +363,9 @@ save_dsv(FileName,PSpec,Options) :-
 	 ->	true
 	 ;	Sep = ","
 	),
-	(member(delimiter=Delim,Options)
+	(member(delimiter=[Delim],Options)
 	 ->	true
-	 ;	Delim = """"
+	 ;	Delim = 0'"'
 	),
 	save_dsv(FileName,PSpec,Sep,Delim,Options).
 
@@ -455,9 +455,9 @@ copy_dsv(InFileName,NumFields,OutFileName,Options) :-
 	 ->	true
 	 ;	InSep = ","
 	),
-	(member(in_delimiter=InDelim,Options)
+	(member(in_delimiter=[InDelim],Options)
 	 ->	true
-	 ;	InDelim = """"
+	 ;	InDelim = 0'"'
 	),
 	(member(out_separator=OutSep,Options)
 	 ->	true
@@ -488,9 +488,9 @@ load_with_header(FileNameList,Options) :-
 	 ->	true
 	 ;	Sep = ","
 	),
-	(member(delimiter=Delim,Options)
+	(member(delimiter=[Delim],Options)
 	 ->	true
-	 ;	Delim = """"
+	 ;	Delim = 0'"'
 	),
 	(flat_member(FileName,FileNameList),
 	 atom_codes(FileName,FileNameCodes),
