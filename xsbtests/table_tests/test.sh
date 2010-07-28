@@ -113,6 +113,8 @@ EOF
 ../gentest.sh "$XEMU $options" inc_trie_alt "test".
 #------------------------------------------------- inc with asserted/retracted clauses
 ../gentest.sh "$XEMU $options" incremental_rule "test".
+#------------------------------------------------- inc_rule with initial empty dyn predicate
+../gentest.sh "$XEMU $options" incremental_rule_alt "test".
 #------------------------------------------------- inc tests with abolish_all_tables
 ../gentest.sh "$XEMU $options" inc_abol "test".
 #------------------------------------------------- inc tests with abolish_table_call
