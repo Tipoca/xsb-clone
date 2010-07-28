@@ -540,6 +540,9 @@ psc_properties(PSC, Property) :-
 	psc_tabled(PSC, Tabled),
 	( Tabled =\= 0 -> Property = tabled ).
 psc_properties(PSC, Property) :- 
+	psc_get_incr(PSC, Incr),
+	( Incr =\= 0 -> Property = incremental ).
+psc_properties(PSC, Property) :- 
 	psc_shared(PSC, Shared),
 	( Shared =\= 0 -> Property = shared ).
 psc_properties(PSC, Property) :-

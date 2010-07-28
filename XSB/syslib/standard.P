@@ -1029,6 +1029,9 @@ exec_table_option(Option,_PredList) :- !,
 use_incremental_tabling((P,Ps)) :- !,
 	use_incremental_tabling(P),
 	use_incremental_tabling(Ps).
+use_incremental_tabling([P|Ps]) :- !,
+	use_incremental_tabling(P),
+	use_incremental_tabling(Ps).
 use_incremental_tabling(Ps) :- 
 	check_nonvar(Ps,(use_incremental_tabling)/1,1),
 	(Ps=P/S

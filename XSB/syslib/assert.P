@@ -348,20 +348,67 @@ cut_transform(Head,Head). /* leave unchanged, Arity is one less */
  code and removing their clauses !?!?!?
 */
 
+:- import check_nonvar/3, domain_error/5,domain_error/4,check_ground/3 from error_handler.
+:- import (use_variant_tabling)/1 from tables.
+:- import (table)/1 from standard.
+:- import (thread_shared)/1, (thread_private)/1 from thread.
+:- import add_incr_dynamic/1 from file_op.
+
 dynamic(Spec):- 
 	(var(Spec) -> 
 	    instantiation_error(dynamic,1,nonvar)
 	 ;  dynamic_1(Spec) ).
 
 % TLS added [H|T] -- it had been core-dumping on this
+dynamic_1(as(Preds,Options)):- !,
+	check_nonvar(Options,(dynamic)/1,1),
+%	set_incremental_for_dynamic(Options,Preds),
+        dynamic_1(Preds),
+	exec_dynamic_options(Options,Preds).
 dynamic_1((P1,P2)) :- !, dynamic(P1), dynamic(P2).
-dynamic_1([P1,P2]) :- !, dynamic(P1), dynamic(P2).
+dynamic_1([P1|P2]) :- !, dynamic(P1), dynamic(P2).
 dynamic_1(Spec) :- 
 	mpa_to_skel(Spec,Head), 
 	dynamic_code_function(CONVERT_TO_DYNA, Head,_Prref,'dynamic/1',1).
 % Not needed: error checking handled through dynamic code function
 %dynamic_1(Spec) :- 
 %	type_error(comma_list_callable,Spec,dynamic,1).
+
+exec_dynamic_options(Options,PredList) :- !,
+	check_ground(Options,(dynamic)/2,2),
+	exec_dynamic_options_1(Options,PredList).
+
+exec_dynamic_options_1((Option,Options),PredList) :- !,
+	exec_dynamic_option(Option,PredList),
+	exec_dynamic_options_1(Options,PredList).
+exec_dynamic_options_1(Option,PredList) :- 
+	atom(Option),!,
+	exec_dynamic_option(Option,PredList).
+exec_dynamic_options_1(Culprit,_PredList) :- 
+	domain_error(comma_list_or_dynamic_options,Culprit,(dynamic)/2,1).
+
+exec_dynamic_option(tabled,PredList) :- !,
+	table(PredList).
+% not yet spported
+%exec_dynamic_option(subsumptive,PredList) :- !,
+%	use_subsumptive_tabling(PredList).
+exec_dynamic_option(incremental,PredList) :- !,
+        set_incremental_for_dynamic(PredList).
+exec_dynamic_option(variant,PredList) :- !,
+	use_variant_tabling(PredList).
+exec_dynamic_option(private,PredList) :- !,
+	thread_private(PredList).
+exec_dynamic_option(shared,PredList) :- !,
+	thread_shared(PredList).
+exec_dynamic_option(Option,_PredList) :- !,
+	domain_error(dynamic_option,Option,(table)/1,1,
+	'must be one of tabled,variant,incremental,private,shared').
+
+set_incremental_for_dynamic((Pred,Preds)):- !,
+	set_incremental_for_dynamic(Pred),
+	set_incremental_for_dynamic(Preds).
+set_incremental_for_dynamic(Pred):- 
+	add_incr_dynamic(Pred).
 
 /* Should no longer be needed now that convert to dyna is in C */
 convert_to_dyna(PHead,Prref,ErrPred) :-

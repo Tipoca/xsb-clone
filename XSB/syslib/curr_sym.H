@@ -58,5 +58,6 @@
           instantiation_error/3, domain_error/4 from error_handler.
 :- import retractall/1, (dynamic)/1, asserta/1 from assert.
 :- import findall/3, setof/3 from setof.
+:- import psc_get_incr/2 from increval.
 
 /* ----------------- end of file current_sym.H -------------------- */
