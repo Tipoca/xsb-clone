@@ -25,6 +25,7 @@
 
 :- compiler_options([xpp_on,sysmod,optimize]).
 #include "psc_defs.h"
+#include "biassert_defs.h"
 
 		/************************************/
 		/*  Querying the Operator Database  */
@@ -361,8 +362,10 @@ add_incr_dynamic(Spec) :-
 	 ->	psc_set_ep(Psc,4), % set to addr of fail instruction
 		psc_set_type(Psc,T_DYNA)
 	 ;	psc_set_ep(Psc,4)  % set to addr of fail instruction  << change tls
-	).
-%%	convert_to_dyna(Call,_,'use_incremental_dynamic/1').  
+	),
+	% TLS: should be dynamic, but this makes sure there is a tabletrysingleanswers 
+	% instruction generated.
+	dynamic_code_function(CONVERT_TO_DYNA, Call,_Prref,add_incr_dynamic,1).
 
 add_opaque(Spec) :-
 	mpa_to_skel(Spec,Call),

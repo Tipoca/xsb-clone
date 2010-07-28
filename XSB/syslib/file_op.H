@@ -39,6 +39,7 @@
 :- import conpsc/2, psc_type/2, term_new/2, psc_insert/4, 
 	term_psc/2, psc_set_tabled/2, psc_set_ep/2, 
 	psc_set_type/2 from machine.
+:- import dynamic_code_function/5 from machine.
 :- import instantiation_error/2 from error_handler.
 
  :- import psc_set_incr/2 from increval. /* incremental */
