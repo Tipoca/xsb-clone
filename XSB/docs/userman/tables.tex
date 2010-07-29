@@ -1364,146 +1364,289 @@ systems that is 10-20 times faster than competing systems
 manual, \cite{CaSW02a} in XSB's packages directory) a consistency
 checker for description logics has also been created \cite{Swif04}.
 
-\section{Tabled Aggregation} \label{sec:table-aggregation}
-\index{tabling!aggregation}
+%----------------------------------------------------------------------
+
+\section{Answer Subsumption}  \label{sec:table-aggregation}
 \index{tabling!answer subsumption}
-\predrefindex{filterReduce/4}
-\predrefindex{filterPO/4}
 
-The following shortest path predicate is a modification of the {\tt
-path/2} predicate of Section \ref{sec:def}:
-\begin{center}
-\begin{minipage}{3.8in}
+%
+By default XSB adds an answer $A$ to a table $T$ only if $A$ is not a
+variant of some other answer already in $T$, a technique termed {\em
+  answer variance}.  While answer variance is sufficient to allow
+tabling to compute the well-founded semantics and to terminate for
+programs with bounded term-depth, other choices of when and how to add
+an answer can be made.  Using {\em partial order answer subsumption},
+$A$ would be added to $T$ only if $A$ is maximal with respect to other
+answers in $T$ according to a given partial order $>_O$. Furthermore
+if $A$ is added, any answers in $T$ that $A$ subsumes (i.e., is
+greater than in $>_O$) are deleted.  When using {\em lattice answer
+  subsumption}, $A$ itself may not be added to $T$, rather the join is
+taken of $A$ and another answer $A'$ in $T$, with $A'$ being deleted.
+Despite its conceptual simplicity, answer subsumption can be a
+powerful tool.  Partial order answer subsumption allows a table to
+retain only answers that are maximal according to a metric or to a
+preference relation; lattice answer subsumption can form the basis of
+multi-valued logics, quantitative logics, and of abstract
+interpretations for programs and process logics.
+%
+
+%------------------------------------------------------------------------
+\subsection{Types of Answer Subsumption}
+
+\subsubsection{Partial Order Answer Subsumption.}
+% 
+We illustrate the use of partial oder answer subsumption through a
+shortest-path predicate (Figure~\ref{fig:sp-preds}) that counts the
+number of edges between two vertices.
+%
+\begin{figure}[htb]
+{\small
 \begin{verbatim}
-:- table path/3.
-path(X,Y,C) :- path(X,Z,C1), edge(Z,Y,C2), C is C1 + C2.
-path(X,Y,C) :- edge(X,Y,C).
-\end{verbatim}						       
-\end{minipage}
-\end{center}
+sp(X,Y,1):- edge(X,Y).
+sp(X,Z,N):- sp(X,Y,N1),edge(Y,Z),N is N1 + 1.
+\end{verbatim}
+} 
+\caption{A Shortest Path Predicate}\label{fig:sp-preds}
+\end{figure}
 
-\begin{exercise}
-{\tt path/3} has a simple declarative meaning: it computes the path
-between two vertices of a graph along with the cost of the path.
-Since {\tt path/3} is tabled would you expect it to terminate?  Try
-the query {\tt ?- path(1,5,X)} over the graph provided in the file
-{\tt table\_examples.P}.
-\end{exercise}
-
-If we could use tabling to compute the path with least cost, or the
-shortest path, the program would not only omit extraneous information,
-but it would also terminate.  Recall that for simple horn programs,
-answer similarity is based on variance of answers.  This ensures
-termination by only returning a given answer $A$ once, and failing on
-subsequent derivations of $A$\@.  If the measure of answer similarity
-could be extended so that the engine only returned a new answer if it
-was minimal (compared to other answers in the table when it was
-derived), termination could be ensured.  The XSB predicate, {\tt
-  filterReduce(?Pred,+Binary\_operator,+Identity,Value)}, does just
-this.
-
-\begin{exercise}
-The use of {\tt filterReduce/4} can be seen most easily through an
-example such as the following, (which uses a closely related predicate
-{\tt filterReduce1/4}).
-\begin{center}
-\begin{minipage}{3.8in}
+As mentioned above, partial-order answer subsumption retains in a
+table $T$ only those answers that are maximal according to a given
+partial order $>_O$.  In the case of the shortest-path predicate of
+Figure~\ref{fig:sp-preds}, $sp(A_1,A_2,A_3) >_O sp(B_1,B_2,B_3)$ if,
+$A_1 = B_1$, $A_2 = B_2$, and $A_3 < B_3$.  Note that that minimal
+distances are maximal in $<_O$, and that $<_O$ is undefined if $A_3$
+or $B_3$ is non-numeric.  In XSB, partial order answer subsumption
+is specified for {\tt sp/3} using the declaration
+%
+{\small
 \begin{verbatim}
-shorter_path(X,Y,C) :- filterReduce1(sp(X,Y),min,infinity,C).
+  :- table sp(_,_,po(</2)).
+\end{verbatim}
+}
+%
+\noindent
+In a given state of computation, only those answers that are maximal
+according to $>_O$ are available for resolution.  Thus, for a finite
+graph with cycles, {\tt sp/3} will terminate using answer subsumption,
+but not with answer variance.  Other partial orders beyond distance
+metrics may be useful.  For instance, $>_O$ may specify a preference
+ordering between derived atoms so that answer subsumption provides an
+alternative to default-based methods for computing preferences.
 
-sp(X,Y,C) :- shorter_path(X,Z,C1),
-             edge(Z,Y,C2),C is C1 + C2.
-sp(X,Y,C) :- edge(X,Y,C).
-
-min(X,Y,Y):- \+ number(X),!.
-min(X,Y,X):- \+ number(Y),!.
-min(One,Two,Min):- One > Two -> Min = Two ; Min = One.
-\end{verbatim}						       
-\end{minipage}
-\end{center}
-Note that the library predicate {\tt filterReduce1/4} is tabled, so
-that neither {\tt sp/3} nor {\tt shorter\_path/3} need be tabled.  Now
-try the query {\tt shorter\_path(1,5,C)}.
-\end{exercise}
-
-{\tt filterReduce1(?Pred,+Binary\_operator,+Identity,Value)}, forms a
-new predicate out of {\tt Pred} and {\tt Value} to get a new predicate
-to call.  {\tt Binary\_Operator} must define a binary function in
-which the first two arguments determine the third.  {\tt Id} must be
-the identity of {\tt Binary\_operator}.  {\tt Value} becomes the
-result of applying {\tt Op} to all the elements in the table that are
-variants of {\tt Pred}.  In our case, when a new answer {\tt
-sp(X,Y,C)} is derived within {\tt filterReduce1/4}, the later
-predicate returns only when {\tt C} is a shorter  path for {\tt X} and
-{\tt Y} than any so far derived.
-
-{\tt shorter\_path/4} terminates under both Local and Batched
-Scheduling.  Under Batched Scheduling, which returns answers as they
-are derived, non-optimal solutions are returned, and these solutions
-can in principle be costly --- \cite{JFLP-Scheduling} cites a case in
-which the shorter path program, which should be less than cubic in the
-number of vertices in a graph, has exponential complexity because of
-the non-optimal solutions that are returned.  Fortunately, this case
-does not arise in Local Scheduling and even for Batched Scheduling
-there is an easy solution.
-
-\begin{exercise}\label{ex:shortestPath}
-The actual {\tt shortest\_path} program has the following definition.
-\begin{center}
-\begin{minipage}{3.8in}
+\subsubsection{Lattice Answer Subsumption.}
+An upper semi-lattice is a partial order for which any two elements
+have a unique least upper bound.  Because the ordering for the third
+argument of {\tt sp/3} is total, it also forms an upper semi-lattice,
+and so can be computed using lattice answer subsumption.
+~\footnote{The terminology lattice answer subsumption is employed even
+  though only the join of the lattice is used.}.  In XSB lattice
+answer subsumption for {\tt sp/3} is declared as
+%
+{\small
 \begin{verbatim}
-filterReduce(Call,Op,Id,Res) :- filterReduce1(Call,Op,Id,Res), fail.
-filterReduce(Call,Op,Id,Res) :- filterReduce1(Call,Op,Id,Res).
+  :- table sp(_,_,lattice(min/3)).
+\end{verbatim}
+}
+%
+\noindent
+with {\tt min/3} defined as {\tt min(X,Y,Z):- Z is min(X,Y).} 
+Operationally, this means that whenever an answer
+$sp(A_1,A_2,A_3)$ is derived, if there is another answer
+$sp(B_1,B_2,B_3)$ where $A_1 = B_1$ and $A_2 = B_2$ the join $J_3$ of
+$A_3$ and $B_3$ is taken, and only $sp(A_1,A_2,J_3)$ is available for
+resolution.  As with a partial order, the join operation
+ensures termination for shortest path over a finite graph with cycles.
 
-shortest_path(X,Y,C) :- filterReduce(sp(X,Y),min,infinity,C).
+As the following proposition shows, lattice answer subsumption can be
+modeled either starting with a lattice, or starting with a function
+with appropriate properties.
+\begin{proposition}
+Let {\em op} be an associative, commutative, and idempotent binary
+function.  Then there is a partial order $P$, such that $P$ is an
+upper semi-lattice with join {\em op}.
+\end{proposition}
+% 
+Conversely, if a function does not have the above properties, it is
+not suitable for lattice answer subsumption.  Accordingly the
+aggregate functions count and sum cannot be computed using lattice
+answer subsumption~\footnote{Since count and sum are not idempotent
+  their semantics is based on multi-sets, rather than sets.
+  Incorporating these as tabling features requires modifying their
+  semantics to be set-based, in a manner similar to aggregation ASP
+  systems.}.
+%
+Lattice answer subsumption has a variety of applications.
+\cite{SwiW10a} shows how it is used for social-network analysis and
+Section~\ref{sec:mv} shows its use for an application of multi-valued
+logics, \cite{Swif99a} describes how a similar formalism can implement
+a quantitative logic, and \cite{RigS10} describes how XSB's {\tt PITA}
+package is based on answer subsumption (see Volume 2 of this manual).
 
-sp(X,Y,C) :- shortest_path(X,Z,C1),
-             edge(Z,Y,C2),C is C1 + C2.
-sp(X,Y,C) :- edge(X,Y,C).
+\subsubsection{Partial Order Answer Subsumption with Abstraction.}
+Computation over an abstract domain may require certain maximal
+answers to be abstracted.  In many cases, abstraction can be modeled
+by a join operation, but in others the abstraction represents an
+implicit induction step in the following sense. Given a set $\cA$ of
+answers, it may be detected that the program computed does not have a
+finite model.  An abstraction operation then is applied so that $\cA$
+and its extensions can be symbolically represented by a single answer
+$A$.  Using answer subsumption, this abstraction can be taken only if
+needed during program execution.  Abstractly, partial order answer
+subsumption with abstraction uses the declaration {\small
+\begin{verbatim}
+:- table p(_,_,po(rel/2,abs/3)).
+\end{verbatim}
+} 
+%
+\noindent
+where {\tt rel/2} is a partial order, and {\tt abs/3} is the
+abstraction operation.  Section~\ref{sec:abs-int} provides a detailed
+example of how such an approach is used to analyze a process logic.
 
-min(X,Y,Y):- \+ number(X),!.
-min(X,Y,X):- \+ number(Y),!.
-min(One,Two,Min):- One > Two -> Min = Two ; Min = One.
-\end{verbatim}						       
-\end{minipage}
-\end{center}
-Once again try the query {\tt shortest\_path(1,5,C)}.
-\end{exercise}
+\subsection{Examples of Answer Subsumption} \label{sec:answer-subsumption-examples}
 
-By simply failing out of {\tt filterReduce1/4} and then rereading the
-maximal value from the table, an efficient {\tt shortest\_path}
-algorithm is derived, whose complexity is roughly cubic in the number
-or vertices of the graph.  This solution is not general for all
-predicates, but does work for deriving the shortest path.
+\subsubsection{Answer Subsumption and Abstract Interpretation} \label{sec:abs-int}
+%
+Net-style formalisms, such as Petri Nets, Workflow Nets, etc. have
+been used extensively for process modeling.  Reachability is a central
+problem in analyzing properties of such nets, to which properties such
+as liveness, deadlock-freedom, and the existence of home states can be
+reduced.  However, many interesting net formalisms cannot guarantee a
+finite number of configurations in a given net, so abstraction methods
+must be applied for their analysis.
 
-{\tt filterReduce/4} is an extremely useful predicate.  It can write
-database aggregation functions, such as min, max, count, sum, and
-average.  However, it can also be used to implement paraconsistent and
-quantitative reasoning through Generalized Annotated Programs
-\cite{KiSu92}, as detailed in the section on GAPs in Volume 2 of this
-manual.
+%\dsw{Should say
+%that a transition removes one token from the places that are the
+%sources of its input edges and adds one token to each place at the
+%target of each of its output edges.  Also I don't see a
+%``configuration'' in figure 7; that should be some number of tokens
+%at each place, no?}
+For instance, the lack of finiteness is a problem in analyzing
+Place/Transition (PT) Nets.  PT nets have no guard conditions or
+after-effects, and do not distinguish between token types.  However,
+PT nets do allow a place to hold more than one token, leading to a
+potentially infinite number of configurations.  This can be seen in
+the simple network of Figure~\ref{fig:ptnet} (from~\cite{DesR98}) in
+which transitions are denoted by squares and places by circles.  Each
+transition removes one token from the places that are the sources
+of its input edges and adds one token to each place at the target of
+each of its output edges.  Starting from the configuration in
+Figure~\ref{fig:ptnet}, repeated application of transition {\tt t1}
+leads to place {\tt s2} containing an unbounded number of tokens;
+repeated application of the sequence {\tt t1,t2,t3,t4} leads to place
+{\tt s4} containing an unbounded number of tokens.
+%
+\begin{figure}
+\centering
+\epsfig{file=omegaNet.eps,width=.5\textwidth}
+\caption{A PT-net and configuration with an infinite number of reachable configurations} 
+\label{fig:ptnet}
+\end{figure}
+%
 
-Several predicates perform tabled aggregation besides {\tt
-filterReduce/4}.  One of these is the predicate {\tt
-filterPO1(?Pred,?Preference\_structure,+Partial\_order)}.  Analogously
-to {\tt filterReduce1/4} if {\tt Pred} is an n-ary predicate, {\tt
-filterPO/4} forms a (n+1)-ary predicate {\tt Pred1} whose last
-argument is {\tt Preference\_structure} and whose functor and all
-other arguments are determined by {\tt Pred}.  {\tt
-filterPO(?Pred,?Preference\_structure,+Partial\_order)}, then calls
-{\tt Pred1} and for each return of {\tt Pred1} fails if there is some
-answer already in the table for {\tt filterPO1/4} such that the first
-n arguments of {\tt Pred} in the tabled answer unify with the first n
-arguments of {\tt Pred} in the return and whose preference structure
-(last argument) is preferred to that of the return.  A case study in
-the use of {\tt filterPO/4} to construct preference logic grammars can
-be found in \cite{CuSW99a}.
+Despite such examples, reachability in PT nets is decidable and can be
+determined using an abstraction method called $\omega$-sequences, (see
+e.g. \cite{DesR98}).  The main idea in determining $\omega$ sequences
+is to define a partial order $\geq_{\omega}$ on configurations as
+follows.  If configurations $C_1$ and $C_2$ are both reachable, $C_1$
+and $C_2$ have tokens in the same set $PL$ of places, $C_1$ has at
+least as many tokens in each place as $C_2$, and there exists a
+non-empty $PL_{sub} \subseteq PL$, such that for each $pl \in
+Pl_{sub}$ $C_1$ has strictly more tokens than $C_2$, then $C_1
+>_{\omega} C_2$.  When evaluating reachability, if $C_2$ is reached
+first, and then $C_1$ was subsequently reached, $C_1$ is abstracted by
+marking each place in $PL_{sub}$ with the special token $\omega$ which
+is taken to be greater than any integer.  If $C_1$ was reached first
+and then $C_2$, $C_2$ is treated as having already been seen.
 
+Tabling combined with partial order answer subsumption requires
+slightly over 100 lines of code to model reachability in PT nets using
+$\omega$-sequences.  Due to space restrictions, the program cannot be
+fully described here, but the top-level reachability predicate is
+shown in Figure~\ref{fig:ptnetcode}.  Despite its succinctness, it can
+evaluate reachability in networks with millions of states in a few
+minutes.  This use of tabling to determine reachability in PT nets can
+be seen as a special case of tabling for abstract interpretation
+(cf. \cite{KaKa93} and other works).  However the framework for answer
+subsumption described here allows tabling to be used to efficiently
+perform abstract interpretation within a general Prolog system
+%
+\begin{figure}
+\begin{verbatim}
+:- table reachable(_,po(omega_gte/2,omega_abs/3)).
+reachable(InConf,NewConf):-
+        reachable(InConf,NewConf),
+        hasTransition(Conf,NewConf).
+reachable(InConf,NewConf):- hasTransition(InConf,NewConf).
+\end{verbatim}
+\caption{Top-level predicate for PT net reachability}
+\label{fig:ptnetcode}
+\end{figure}
+
+\subsubsection{Scalability for multi-valued and quantitative logics} \label{sec:mv}
+%
+The technique of program justification (cf. e.g. \cite{PGDRR04}) has
+been used for debugging tabled programs that cannot be debugged by
+traditional means.  Here, we consider justification in the context of
+the Silk system, currently under development at Vulcan, Inc.  Silk is
+a commercial knowledge representation and rule system built on top of
+Flora-2, which is implemented using XSB.  One of the salient features
+of Silk is its default reasoning, which is based on a parameterized
+argumentation theory evaluated under the well-founded
+semantics~\cite{WGKFL09}.  One issue in using Silk is that knowledge
+engineers must have a way of understanding the reasoning of the
+system, a task complicated by the use of the well-founded semantics
+and the intricacies of the argumentation theory.  We describe an
+experimental approach to justification of Silk-style argumentation
+theories using multi-valued logics.
+
+As noted in~\cite{WGKFL09}, argumentation theories in Silk are usually
+extensions of the default theories of Courteous Logic Programs (CLP)
+and are based on two user-defined predicates: {\tt opposes/2} and {\tt
+  overrides/2}.  Two atoms {\em oppose} each other if no model of a
+program can contain both atoms: an atom and its explicit negation
+oppose each other, but opposition can capture many other types of
+contradictions.  Given two opposing atoms, one atom may {\em override}
+the other, and so be given preference.  For atoms $A_1$ and $A_2$, if
+$A_1$ and $A_2$ are both derivable and oppose each other but neither
+overrides the other, $A_1$ and $A_2$ mutually {\em rebut} each other.
+If in addition $A_1$, say, overrides $A_2$, $A_1$ {\em refutes}
+$A_2$~\footnote{In~\cite{WGKFL09} argumentation theories are built on
+  named rules, here we base them on derived atoms.}.  Within Silk and
+Flora-2, the compilation of an argumentation theory ensures that
+rebutted atoms have an undefined truth value, as do atoms that refute
+themselves (i.e. if the {\tt overrides/2} predicate is cyclic).
+However, for justification, it is meaningful to distinguish those
+facts that are undefined due to a negative loop in the argumentation
+theory from those that are undefined due to a negative loop in the
+program itself.  In addition, it is meaningful to distinguish an atom
+that is true because it overrides some other atom, from an atom whose
+derivation does not depend on the argumentation theory.  Similar
+distinctions can be made for default false literals leading to the
+truth lattice shown in Figure~\ref{fig:courteous}.
+\begin{figure}
+\comment{
+\small{
+\begin{verbatim}
+:- table defeated/1.
+defeated(A):-  defeated_by(A,_B).       defeated(A):-  defeats(A,_B).
+
+defeated_by(A,B):- refutes(B,A),B.      defeats(A,B):- refutes(A,B),B.	        
+defeated_by(A,B):- rebuts(B,A),B.       defeats(A,B):- rebuts(A,B),B.		
+
+refutes(A,B):- conflicts(A,B), overrides(A,B).
+rebuts(A,B):- conflicts(A,B).
+
+conflicts(A,B):- opposes(A,B),A.        conflicts(A,B):- opposes(B,A),A.
+\end{verbatim}
+}}
+\centering
+\epsfig{file=courteous2.eps,width=.45\textwidth}
+\caption{A Truth Lattice for a Simplified Version of Courteous Argumentation Theory} 
+\label{fig:courteous}
+\end{figure}
+%
+
+%--------------------------------------------------------------------
 \input{incr_tabling}
-
-%%% Local Variables: 
-%%% mode: latex
-%%% TeX-master: "manual1"
-%%% End: 
-
 %--------------------------------------------------------------------
