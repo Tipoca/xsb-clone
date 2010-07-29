@@ -42,7 +42,7 @@
 :- import dynamic_code_function/5 from machine.
 :- import instantiation_error/2 from error_handler.
 
- :- import psc_set_incr/2 from increval. /* incremental */
+ :- import psc_set_incr/2 from machine.
 :- index '_$op1'/3-3.
 
 /*

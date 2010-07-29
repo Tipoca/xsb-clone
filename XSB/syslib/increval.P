@@ -25,12 +25,6 @@
 #include "builtin.h"
 #include "incr_xsb_defs.h"
 
-psc_set_incr(PSC, CODE):-
-	incr_eval_builtin(PSC_SET_INCR, PSC, CODE).
-
-psc_get_incr(PSC, CODE):-
-	incr_eval_builtin(PSC_GET_INCR, PSC, CODE).
-
 /***print_call(SF):-
 	incr_eval_builtin(PRINT_CALL, SF).***/
 

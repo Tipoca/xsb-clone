@@ -171,10 +171,12 @@
 	globalvar/1,
         ccall_store_error/2,
    get_breg/1,
+   psc_set_incr/2,psc_get_incr/2,
 	xsb_backtrace/0, xsb_backtrace/1.
 
 :- import assert/1, retract/1, (dynamic)/1 from assert.
 :- import write/1, writeln/1, is_attv/1, warning/1 from standard.
+   :- import incr_eval_builtin/3 from increval.
 
 :- export 
 	file_function/7, file_function/3, conname/2, conpsc/2, 

@@ -36,6 +36,7 @@
 #include "syscall_xsb.h"
 #include "psc_defs.h"
 #include "heap_defs_xsb.h"
+#include "incr_xsb_defs.h"
 
 /*======================================================================*/
 /* This file contains definitions for predicates implemented by the	*/
@@ -95,6 +96,12 @@ psc_set_env(PSC,Bool,Mask) :-
 psc_get_env(PSC,Bool,Mask) :-	% Checks if all bits of Mask are on
 	psc_get_set_env_byte(PSC,255,0,Res), Bool is (Res /\ Mask) // Mask.
 psc_get_set_env_byte(_PSC, _And, _Or, _Res) :- '_$builtin'(PSC_GET_SET_ENV_BYTE).
+
+psc_set_incr(PSC, CODE):-
+	incr_eval_builtin(PSC_SET_INCR, PSC, CODE).
+
+psc_get_incr(PSC, CODE):-
+	incr_eval_builtin(PSC_GET_INCR, PSC, CODE).
 
 term_new_mod(Mod, Term, NewTerm) :- term_new_mod(Mod, Term, NewTerm).
 term_psc(Term, PSC) :- term_psc(Term, PSC).

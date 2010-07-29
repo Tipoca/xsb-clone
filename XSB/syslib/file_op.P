@@ -26,6 +26,7 @@
 :- compiler_options([xpp_on,sysmod,optimize]).
 #include "psc_defs.h"
 #include "biassert_defs.h"
+#include "incr_xsb_defs.h"
 
 		/************************************/
 		/*  Querying the Operator Database  */
@@ -347,14 +348,14 @@ retract_table(Spec) :-
 add_incr_table(Spec) :-
 	mpa_to_skel(Spec,Call),
 	term_psc(Call,Psc),	
-	psc_set_incr(Psc,1).
+	psc_set_incr(Psc,INCREMENTAL).
 
 % TLS: change to allow "dynamic p/n as incremental" to properly work.
 add_incr_dynamic(Spec) :-
 %	writeln(add_incr_dynamic(Spec)),
 	mpa_to_skel(Spec,Call),
 	term_psc(Call,Psc),
-	psc_set_incr(Psc,1), %% set it as incremental
+	psc_set_incr(Psc,INCREMENTAL), %% set it as incremental
 %%	psc_set_tabled(Psc,1),
 	psc_type(Psc,SymType),
 %	writeln(psc_type(Psc,SymType)),
@@ -370,7 +371,7 @@ add_incr_dynamic(Spec) :-
 add_opaque(Spec) :-
 	mpa_to_skel(Spec,Call),
 	term_psc(Call,Psc),
-	psc_set_incr(Psc,2). %% set it as opaque
+	psc_set_incr(Psc,OPAQUE). %% set it as opaque
 
 
 /*======================================================================*/
