@@ -1,4 +1,5 @@
 \chapter{Storing Facts in Tries} \label{chap:tries}
+\index{tries}
 
 XSB offers a mechanism by which large numbers of facts can be directly
 stored and manipulated in {\em tries}, which can either be private to
@@ -224,7 +225,15 @@ present version, {\tt OptionList} may contain the following terms
 \item {\tt alias(Alias)}: Allow trie {\tt TrieId} to be referred to
   via {\tt Alias} in all standard trie predicates.  {\tt Alias}
   remains active for {\tt TrieId} until it is dropped.
-\ei
+%
+\item {\tt incremental}: Allows tables that depend on trie {\tt
+  TrieId} to be automatically updated as information in {\tt TrieId}
+  changes (cf. Section~\ref{sec:incr-update-tries}).
+%
+\item {\tt nonincremental}: Specifies that tables that depend on trie
+  {\tt TrieId} should not be automatically updated as information in
+  {\tt TrieId} changes (cf. Section~\ref{sec:incr-update-tries}).
+\end{itemize}
 %
 {\bf Error Cases}
 \bi
@@ -254,6 +263,7 @@ present version, {\tt OptionList} may contain the following terms
 \item {\tt type\_error(atom,A)}
 \ei
 \ei
+\index{tabling!incremental}
 
 \ourmoditem{trie\_insert(+TrieIdOrAlias,Term)}{trie\_insert/2}{intern}
 %

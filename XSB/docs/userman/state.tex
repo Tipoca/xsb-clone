@@ -642,78 +642,73 @@ module {\tt "usermod"} may be enumerated using:
     categories, and a predicate can have at most one property of each
     category.
 
-    \begin{center}
-    \begin{tabular}{||l|l||}               \hline 
-	{\em Property}		& {\em Explanation} \\ \hline \hline
-	{\tt unclassified}	& 
-		The predicate symbol is not yet classified according  \\
-	&	to this category. This property has various meanings. \\ 
-	&	Usually for exported predicate symbols in system or   \\
-	&	user defined modules it means that the predicate is   \\
-	&	yet unloaded (because it has not been used).	      \\
-	&	In {\tt usermod} it usually means that the predicate \\
-	&	is either a function symbol, or an unloaded predicate \\
-	&	symbol (including constants). \\ \hline
-	{\tt dynamic}	& 
-		The predicate is dynamic. \\ \hline
-	{\tt loaded}		& 
-		The predicate (including internal predicates) is a \\ 
-	&	Prolog predicate loaded into the module in question; \\
-	&	this is always the case for predicates in {\tt usermod}.\\ 
-		\hline
-	{\tt unloaded}		& 
-		The predicate is yet unloaded into the module \\
-	&	in question.\\ \hline
-	{\tt foreign}	& 
-		The predicate is a foreign predicate. This implies that  \\ 
-	&	the predicate is already loaded in the system, because	 \\
-	&	currently there is no way for XSB  to know that a \\
-	&	predicate is a foreign predicate until it is loaded in	 \\
-	&	the system.\\ \hline
-%	{\tt function}	& 
-%		The predicate symbol is declared as a function. \\ \hline
-	\hline
-	{\tt exported}	&
-		The predicate symbol is exported by the module in \\ 
-	&	question; in other words the predicate symbol is \\
-	&	visible to any other module in the system. \\ \hline
-	{\tt local}	& 
-		The predicate symbol is local to the module \\
-	&	in question. \\ \hline
-	{\tt imported\_from(Mod)}	& 
-		The predicate symbol is imported into the module in \\
-	&	question from module {\tt Mod}. \\ \hline
-	\hline
-	{\tt spied}		&
-		The predicate symbol has been declared spied \\
-	&	(either conditionally or unconditionally). \\ \hline
-	\hline
-	{\tt tabled}	& 
-		The predicate has been declared tabled. \\ \hline
-	\hline
-	{\tt shared}	& 
-		The predicate has been declared shared in the \\
-        &       multi-threaded engine.  This means that any dynamic \\
-        &       code or tables for this predicate will be shared among \\
-        &       threads, but it does not affect static, non-tabled code. \\ \hline
-	\hline
-	{\tt xsb\_standard\_pred}	& 
-		The predicate symbol has the same Functor and Arity as  \\
-	&	one of XSB's standard predicates, and is available to \\
-	&	the user without needing to load a file or import the \\
-	&	predicate from a module. \\ \hline
-	\hline
-	{\tt built\_in}	& 
-		Same meaning as the property {\tt xsb\_standard\_pred}. \\
-		This property provides compatibility with other Prolog \\
-		compilers and with forthcoming ISO Prolog standards. \\ \hline
-	\hline
-	{\tt meta\_predicate(Template)}	& 
-		The predicate is a meta-predicate. \\
-		This property provides compatibility with other Prolog \\
-		compilers and with forthcoming ISO Prolog standards. \\ \hline
-    \end{tabular}
-    \end{center}
+\begin{itemize}
+\item{\em Execition Type} which can be one of
+\begin{itemize}
+\item{unclassified} The predicate symbol is not yet classified
+  according to this category. This property has various meanings.
+  Usually for exported predicate symbols in system or user defined
+  modules it means that the predicate is yet unloaded (because it has
+  not been used).  In {\tt usermod} it usually means that the
+  predicate is either a function symbol, or an unloaded predicate
+  symbol (including constants).
+%
+\item{dynamic} The predicate is dynamic.
+%
+\item{\tt loaded} The predicate (including internal predicates) is a
+  Prolog predicate loaded into the module in question; this is always
+  the case for predicates in {\tt usermod}.
+%
+\item{\tt unloaded} The predicate is yet unloaded into the module in
+  question.
+\item{\tt foreign} The predicate is a foreign predicate. This implies
+  that the predicate is already loaded in the system, because
+  currently there is no way for XSB to know that a predicate is a
+  foreign predicate until it is loaded in the system.
+%
+\end{itemize}
+%
+\item{\em Visibility Type}
+\begin{itemize}
+\item{\tt exported} The predicate symbol is exported by the module in
+  question; in other words the predicate symbol is visible to any
+  other module in the system.
+%
+\item{\tt local} The predicate symbol is local to the module in
+  question.
+%
+\item{\tt imported\_from(Mod)} The predicate symbol is imported into
+  the module in question from module {\tt Mod}.
+%
+\end{itemize}
+\item{\tt spied} The predicate symbol has been declared spied (either
+  conditionally or unconditionally).
+%
+\item{\tt tabled} The predicate has been declared tabled.
+%
+\item{\tt incremental} The predicate was declared as either
+  incremental dynamic or as incremental tabled.
+%
+\item{\tt shared} The predicate has been declared shared in the
+  multi-threaded engine.  This means that any dynamic code or tables
+  for this predicate will be shared among threads, but it does not
+  affect static, non-tabled code.  
+%
+\item{\tt built\_in} The predicate symbol has the same
+  Functor and Arity as one of XSB's standard predicates, and is
+  available tothe user without needing to load a file or import
+  th epredicate from a module. 
+%
+%\item{\tt built\_in} Same meaning as the property {\tt
+%  xsb\_standard\_pred}.  This property provides compatibility with
+%  other Prolog compilers and with forthcoming ISO Prolog
+%  standards. 
+%
+\item{\tt meta\_predicate(Template)}  The
+  predicate is a meta-predicate. This property provides
+  compatibility with other Prolog compilers and with forthcoming
+  ISO Prolog standards. 
+\end{itemize}
 
     Finally, since {\tt dynamic} is usually declared as an operator with 
     precedence greater than 999, writing the following:
