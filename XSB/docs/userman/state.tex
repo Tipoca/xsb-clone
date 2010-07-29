@@ -643,7 +643,7 @@ module {\tt "usermod"} may be enumerated using:
     category.
 
 \begin{itemize}
-\item{\em Execition Type} which can be one of
+\item{\em Execition Type} which is one of
 \begin{itemize}
 \item{unclassified} The predicate symbol is not yet classified
   according to this category. This property has various meanings.
@@ -668,7 +668,7 @@ module {\tt "usermod"} may be enumerated using:
 %
 \end{itemize}
 %
-\item{\em Visibility Type}
+\item{\em Visibility Type} which can be one of
 \begin{itemize}
 \item{\tt exported} The predicate symbol is exported by the module in
   question; in other words the predicate symbol is visible to any
@@ -681,12 +681,21 @@ module {\tt "usermod"} may be enumerated using:
   the module in question from module {\tt Mod}.
 %
 \end{itemize}
-\item{\tt spied} The predicate symbol has been declared spied (either
-  conditionally or unconditionally).
 %
-\item{\tt tabled} The predicate has been declared tabled.
+\item{\em Tabling Call Behavior} which can be one of 
+\begin{itemize}
+\item{\tt tabled(variant)} The predicate has been declared tabled and
+  to use call variance.
 %
-\item{\em Incremental Tabling Behavior}
+\item{\tt tabled(subsumptive)} The predicate has been declared tabled and
+  to use call subsumption
+%
+\item{\tt tabled(default)} The predicate has been declared tabled and
+  to use the default tabling strategy of the session, which can be
+  either call variance or call subsumption.
+%
+\end{itemize}
+\item{\em Incremental Tabling Behavior} which can be one of 
 \begin{itemize}
 \item{\tt incremental} The predicate was declared as either
   incremental dynamic or as incremental tabled; or
@@ -694,6 +703,9 @@ module {\tt "usermod"} may be enumerated using:
 \item{\tt opaque} The predicate was declared as opaque to incremental
   updates.
 \end{itemize}
+%
+\item{\tt spied} The predicate symbol has been declared spied (either
+  conditionally or unconditionally).
 %
 \item{\tt shared} The predicate has been declared shared in the
   multi-threaded engine.  This means that any dynamic code or tables
