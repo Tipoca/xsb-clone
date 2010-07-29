@@ -539,7 +539,9 @@ psc_properties(PSC, Property) :-
 	( Spy =\= 0 -> Property = spied ).
 psc_properties(PSC, Property) :- 
 	psc_tabled(PSC, Tabled),
-	( Tabled =\= 0 -> Property = tabled ).
+	( Tabled == T_VARIANT -> Property = tabled(variant)
+         ; Tabled == T_SUBSUMPTIVE -> Property = tabled(subsumptive)
+         ; Tabled == T_TABLED_UNDETERMINED -> Property = tabled(default)).
 psc_properties(PSC, Property) :- 
 	psc_get_incr(PSC, Incr),
 	( Incr == INCREMENTAL -> 

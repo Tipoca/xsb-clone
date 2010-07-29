@@ -86,9 +86,11 @@ psc_set_tabled(PSC, Bool) :-
 	 ->	psc_set_env(PSC, Bool, T_TABLED)
 	 ;	true
 	).
-psc_tabled(PSC, Tabled) :-
-	psc_get_set_env_byte(PSC,255,0,Res), % check if either bit ot T_TABLED is on
-	(Res /\ T_TABLED =\= 0 -> Tabled = 1 ; Tabled = 0).
+
+% TLS: changed to return values (including variant or subsumptive).
+psc_tabled(PSC, Res) :-
+	psc_get_set_env_byte(PSC,255,0,Res). % check if either bit ot T_TABLED is on
+%	(Res /\ T_TABLED =\= 0 -> Tabled = 1 ; Tabled = 0).
 
 psc_set_env(PSC,Bool,Mask) :-
 	Or is Bool*Mask, And is \(Mask),

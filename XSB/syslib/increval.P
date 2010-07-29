@@ -210,7 +210,7 @@ incr_retract_inval(Term):-
 
 check_incrementally_tabled(Term,Msg) :-
 	term_psc(Term,Psc),
-	(psc_tabled(Psc,1)
+	(psc_tabled(Psc,T),T > 0
 	 ->	true
 	 ;	throw(error(table_error(Msg)))
 	),
