@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.87 2010/03/18 22:22:17 tswift Exp $
+** $Id: slginsts_xsb_i.h,v 1.91 2010/06/22 23:50:47 spyrosh Exp $
 ** 
 */
 
@@ -141,6 +141,8 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   int template_size, attv_num, tmp;
   TIFptr tip;
 
+//  printf("tabletry(single)\n");
+
   int incrflag = 0; /* for incremental evaluation */
   VariantSF parent_table_sf=NULL; /* used for creating call graph */
 
@@ -227,7 +229,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       addcalledge(producer_sf->callnode,parent_table_sf->callnode);  
     }else{
       if(!get_opaque(TIF_PSC(CallInfo_TableInfo(callInfo))))
-	xsb_abort("Predicate %s/%d not declared incr_table\n", get_name(TIF_PSC(CallInfo_TableInfo(callInfo))),get_arity(TIF_PSC(CallInfo_TableInfo(callInfo))));       
+	xsb_abort("Predicate %s/%d not declared incr_table: cannot create dependency edge\n", get_name(TIF_PSC(CallInfo_TableInfo(callInfo))),get_arity(TIF_PSC(CallInfo_TableInfo(callInfo))));       
     }
   }
 
@@ -623,7 +625,8 @@ XSB_Start_Instr(tabletrysinglenoanswers,_tabletrysinglenoanswers)
    *  the instruction to be executed should this one fail.
    */
   
-  
+//  printf("tabletrysinglenoanswers\n");
+
   TabledCallInfo callInfo;
   CallLookupResults lookupResults;
   VariantSF  sf;
@@ -669,8 +672,10 @@ XSB_Start_Instr(tabletrysinglenoanswers,_tabletrysinglenoanswers)
      if(IsNonNULL(c)){
        addcalledge(c,sf->callnode);  
      }
-   }else
-     xsb_abort("Predicate %s/%d not declared incr_table\n", get_name(TIF_PSC(subg_tif_ptr(sf))),get_arity(TIF_PSC(subg_tif_ptr(sf))));      
+   }else 
+     if (!get_opaque(TIF_PSC(subg_tif_ptr(sf))))
+       xsb_abort("Parent predicate %s/%d not declared incr_table\n", 
+		 get_name(TIF_PSC(subg_tif_ptr(sf))),get_arity(TIF_PSC(subg_tif_ptr(sf))));      
   }
 
 
