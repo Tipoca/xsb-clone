@@ -119,6 +119,10 @@ EOF
 ../gentest.sh "$XEMU $options" inc_abol "test".
 #------------------------------------------------- inc tests with abolish_table_call
 ../gentest.sh "$XEMU $options" inc_atc "test".
+#------------------------------------------------- testing executable incremental dirs.
+../gentest.sh "$XEMU $options" test_directives "test".
+#------------------------------------------------- testing executable incremental decls.
+../gentest.sh "$XEMU $options" test_declarations "test".
 #-------------------------------------------------
 ../gentest.sh "$XEMU -l $options" aggregs_test_2 "test."
 #--------------------------------------------------

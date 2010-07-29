@@ -1,0 +1,30 @@
+:- dynamic d1/1.
+:- dynamic d2/1 as incremental.
+:- table t1/1.
+:- table t2/1 as incremental.
+:- table t3/1 as opaque.
+
+t1(1).
+t2(1).
+t3(1).
+
+test:- 
+	predicate_property(d1(_X),P),
+	writeln(prop(d1,P)),fail.
+test:- 
+	nl,
+	predicate_property(d2(_X),P),
+	writeln(prop(d2,P)),fail.
+test:- 
+	nl,
+	predicate_property(t1(_X),P),
+	writeln(prop(t1,P)),fail.
+test:- 
+	nl,
+	predicate_property(t2(_X),P),
+	writeln(prop(t2,P)),fail.
+test:- 
+	nl,
+	predicate_property(t3(_X),P),
+	writeln(prop(t3,P)),fail.
+test.
