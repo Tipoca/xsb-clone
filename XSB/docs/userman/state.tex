@@ -686,8 +686,14 @@ module {\tt "usermod"} may be enumerated using:
 %
 \item{\tt tabled} The predicate has been declared tabled.
 %
+\item{\em Incremental Tabling Behavior}
+\begin{itemize}
 \item{\tt incremental} The predicate was declared as either
-  incremental dynamic or as incremental tabled.
+  incremental dynamic or as incremental tabled; or
+%
+\item{\tt opaque} The predicate was declared as opaque to incremental
+  updates.
+\end{itemize}
 %
 \item{\tt shared} The predicate has been declared shared in the
   multi-threaded engine.  This means that any dynamic code or tables
