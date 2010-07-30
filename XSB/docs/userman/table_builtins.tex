@@ -139,16 +139,21 @@ a predicate \code{p} and arity \code{n}, represented as
 
 \ourstandarditem{table(+Operations)}{table/1}{Tabling}
 %
-Used as a compiler declaration, it indicates that each predicate
-denoted by the command is to be compiled using tabling.  Executed as a
-directive in a state of execution where no clauses exist for each
-denoted predicate {\tt table/1} ensures that any clauses asserted
-each predicate use tabling.
-{\tt Operations} can take one of two forms:
+{\tt table/1} can be used either as a compiler declaration or as an
+executable directive.  Used as a compiler declaration, it indicates
+that each predicate denoted by the command is to be compiled using (a
+particular form of) tabling.  Executed as a directive in a state of
+execution where no clauses exist for each denoted predicate {\tt
+  table/1} ensures that any clauses asserted each predicate use
+tabling.  {\tt Operations} can take one of three forms:
 %
 \begin{enumerate}
 \item {\tt Operations} is a predicate indicator, a callable term, or
   a comma-list or list of predicate indicators or callable terms.
+%
+\item {\tt Operations} is a term indicating that a predicate is to be
+  tabled with a particular form of answer subsumption
+  (cf. Section~\ref{sec:table-aggregation}).
 %
 \item {\tt Operations} has the form {\tt Predspec as Options} where
 \bi
@@ -202,6 +207,13 @@ each predicate use tabling.
 \item {\tt Operations} is not ground
 \bi
 \item {\tt instantiation\_error}
+\ei
+\item {\tt Operations} is of the form {\tt PredSpec} or {\tt PredSpec}
+  as {\tt Options} and {\tt PredSpec} is neither a variable, a
+  predicate indicator, a callable term, or a comma-list or list of
+  predicate indicators or callable terms.
+\bi
+\item 	{\tt type\_error(callable,PredSpec)}
 \ei
 \item {\tt Operations} is of the form {\tt PredSpec} as {\tt Options} and 
 \bi

@@ -7,7 +7,7 @@ XSB has two ways of evaluating predicates.  The default is to use
 Prolog-style evaluation, but by using various declarations a
 programmer can also use tabled resolution which can provide a
 different, more declarative programming style than Prolog.  In this
-section we discuss various aspects of tabling and its implementation
+section we discuss various aspects of tabling and their implementation
 in XSB\@.  Our aim in this section is to provide a user with enough
 information to be able to program productively with tables in XSB\@.
 It is best to read this tutorial with a copy of XSB handy, since much
@@ -25,7 +25,7 @@ and practical evaluation strategies for it, are provided
 in~\cite{ChWa96,Swif99b,SaSW99,FSW98}.  The engine of XSB, the
 SLG-WAM, is an extension of the WAM \cite{DHWa83,AitK90}, and is
 described in~\cite{SaSw98,RRSSW98,JFLP-Scheduling,SaSW96,
-  ChSW95,CAT@PLILP-98,TST99,CuSW99b,CuiW00,CaSW02,MarS08b,Swif09a,MarS10}
+  ChSW95,CAT@PLILP-98,TST99,CuSW99b,CuiW00,CaSW02,MarS08b,Swif09a,MarS10,SwiW10a}
 as it is implemented in \version{} and its performance
 analyzed. Examples of large-scale applications that use tabling are
 overviewed in~\cite{syntactica, semantica, CoDS96, DRW96, RRRSSW97,
@@ -33,12 +33,12 @@ overviewed in~\cite{syntactica, semantica, CoDS96, DRW96, RRRSSW97,
 
 %=====================================================================
 
-\section{XSB as a Prolog System}
+\section{Tabling in the Context of a Prolog System}
 \label{tabling_env}
 
 Before describing how to program using tabling it is perhaps
 worthwhile to review some of the goals of XSB's implementation of
-tabling*.  Among them are:
+tabling.  Among them are:
 \begin{enumerate}
 \item	To execute tabled predicates at the speed of compiled Prolog.
 \item	To ensure that the speed of compiled Prolog is not slowed
@@ -80,7 +80,8 @@ tnot/1}).
 
 Definite programs, also called \emph{Horn Clause Programs}, are Prolog
 programs without negation or aggregation.  In XSB, this means without
-the \verb|\+/1|, {\tt fail\_if/1}, {\tt not/1}, {\tt tnot/1} or aggregation 
+the \verb|\+/1|, {\tt fail\_if/1}, {\tt not/1}, {\tt tnot/1}, {\tt
+  setof/3}, {\tt bagof/3}, {\tt tt findall/3} or other aggregation
 operators.  Consider the Prolog program
 \begin{center}
 \begin{minipage}{3.8in}
@@ -116,19 +117,19 @@ associated with $S$ may be used to satisfy $C$.
 %no relation to the use of the term ``answer set'' in the non-monotonic
 %literature.}\@.  
 In such instances, $C$ is resolved against the answers in $\cA$, and
-hence we refer to $C$ as a \emph{consumer}\index{tabling!consumer} of
-$\cA$ (or $S$)\@.  If there is no such $S$, then $C$ is entered into
-the table and is resolved against program clauses as in
-Prolog~---~i.e., using SLD~resolution.  As each answer is derived
-during this process, it is inserted into the table entry associated
-with $C$ if it contains information not already in $\cA$\@.  We hence
-refer to $C$ as a \emph{generator}, or
-\emph{producer}\index{tabling!producer, generator}, as resolution of
-$C$ in this manner produces the answers stored in its table entry.  If
-the answer is in fact added to this set, then it is additionally
-scheduled to be returned to all consumers of $C$\@.  If instead it is
-rejected as redundant, then the evaluation simply fails and backtracks
-to generate more answers.
+hence we refer to the call $C$ as a
+\emph{consumer}\index{tabling!consumer} of $\cA$ (or $S$)\@.  If there
+is no such $S$, then $C$ is entered into the table and is resolved
+against program clauses as in Prolog~---~i.e., using SLD~resolution.
+As each answer is derived during this process, it is inserted into the
+table entry associated with $C$ if it contains information not already
+in $\cA$\@.  In this second case, we refer to $C$ as a
+\emph{generator}, or \emph{producer}\index{tabling!producer,
+  generator}, as resolution of $C$ in this manner produces the answers
+stored in its table entry.  If the answer is in fact added to this
+set, then it is additionally scheduled to be returned to all consumers
+of $C$\@.  If instead it is rejected as redundant, then the evaluation
+simply fails and backtracks to generate more answers.
 
 Notice that since consuming subgoals resolve against unique answers
 rather than repeatedly against program clauses, tabling will terminate
@@ -149,23 +150,28 @@ is the compiler directive \stdrefindex{table/1}
 \[
 	\verb|:- table | P_1, \ldots, P_n.
 \]
-where $P_i$ is a predicate indicator or callable term.  More
-generally as explained below,
+where each $P_i$ is a predicate indicator or callable term.  More
+generally 
 \[
-	\verb|:- table | P_1, \ldots, P_n\ {\tt as\ Options}.
+	\verb|:- table | P_1, \ldots, P_n\ {\tt as\ }Options.
 \]
 allows a user to specify different types of tabling through {\tt
   Options} along with other properties of the designated predicates
 For static predicates, these directives must be added to the file
-containing the clauses of the predicate(s) to be tabled, and compiles
-them to use tabling~\footnote{In \version, tabling does not work
-  together with multi-file predicates.}.  For dynamic predicates, the
-executable directive
+containing the clauses of the predicate(s) to be tabled, and the
+directives cause the predicates to be compiled with
+tabling~\footnote{In \version, tabling does not work together with
+  multi-file predicates.}.  For dynamic predicates, the executable
+directives
 \[
-       \verb| ?- table | p/n.
+       \verb| ?- table | P_1, \ldots P_n.
 \]
-causes {\tt p/n} to be tabled if no clauses have been asserted for
-{\tt p/n}.
+and 
+\[
+	\verb|?- table | P_1, \ldots, P_n\ {\tt as\ }Options.
+\]
+cause a $P_i$ to be tabled (with the appropriate options) if no
+clauses have been asserted for $P_i$.
 
 \paragraph{Exercises}
 Unless otherwise noted, the file
@@ -190,7 +196,7 @@ loop).\fillBox
 
 The return of answers in tabling aids in filtering out redundant
 computations -- indeed it is this property which makes tabling
-terminate for many classes of programs.  The {\em same generation}
+terminate for many classes of programs.  The {\tt same generation}
 program furnishes a case of the usefulness of tabling for optimizing a
 Prolog program.
 
