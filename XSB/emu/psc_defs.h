@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_defs.h,v 1.13 2009-11-25 16:51:57 dwarren Exp $
+** $Id: psc_defs.h,v 1.14 2010-07-31 17:29:09 tswift Exp $
 ** 
 */
 
@@ -69,6 +69,9 @@ I've forgotten.  */
 #define T_IMPORTED 2
 #define T_GLOBAL   4
 
+#define T_VARIANT      8
+#define T_SUBSUMPTIVE  4
+#define T_TABLED_UNDETERMINED 12
 
 /* Global module */
 

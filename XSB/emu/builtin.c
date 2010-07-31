@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.345 2010-06-22 23:50:47 spyrosh Exp $
+** $Id: builtin.c,v 1.346 2010-07-31 17:29:08 tswift Exp $
 **
 */
 
@@ -2215,7 +2215,7 @@ int builtin_call(CTXTdeclc byte number)
   }
   case PSC_TABLED: {	/* reg 1: +PSC; reg 2: -int */
     Psc psc = (Psc)ptoc_addr(1);
-    ctop_int(CTXTc 2, (get_tabled(psc)?TRUE:FALSE));  //(Integer)get_tip(CTXTc psc));
+    ctop_int(CTXTc 2, get_tabled(psc));  // Returns both bits -- subsumptive / variant
     break;
   }
   case PSC_SET_TABLED: {	/* reg 1: +PSC; reg 2: +int */
