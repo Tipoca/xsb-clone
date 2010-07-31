@@ -332,10 +332,16 @@ conv_one_indx(A,Arity,Aout) :-
 		Aout is A1+128
 	).
 
+/* Here, if a predicate is static, and non-tabled we throw an error,
+   otherwise a no-op */
 add_table(Spec) :-
 	mpa_to_skel(Spec,Call),
 	term_psc(Call,Psc),
-	psc_set_tabled(Psc,1).  %% set it as tabled
+	((psc_type(Psc, Type),Type =:= T_PRED) -> /* static and loaded */
+	    ((psc_tabled(Psc, Tabled),Tabled \== 0) ->
+		true
+	      ; permission_error(table,static_code,Spec,(table)/1) )
+	  ; psc_set_tabled(Psc,1)).  %% set it as tabled
 
 retract_table(Spec) :-
 	mpa_to_skel(Spec,Call),
