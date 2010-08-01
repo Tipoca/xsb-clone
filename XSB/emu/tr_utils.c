@@ -4580,8 +4580,17 @@ case CALL_SUBS_SLG_NOT: {
       return TRUE;
     }
   }
-}
+    }
 
+  case GET_PRED_CALLTRIE_PTR: {
+    
+    Psc psc = (Psc)ptoc_int(CTXTc 2);
+    if (get_tip(CTXTc psc))
+      ctop_int(CTXTc 3,(Integer)TIF_CallTrie(get_tip(CTXTc psc)));
+    else 
+      ctop_int(CTXTc 3,0);
+  }
+    
   }
   return TRUE;
 }

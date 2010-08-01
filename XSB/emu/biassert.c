@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.177 2010-06-22 23:50:47 spyrosh Exp $
+** $Id: biassert.c,v 1.178 2010-08-01 22:06:02 tswift Exp $
 ** 
 */
 
@@ -3251,6 +3251,7 @@ static inline void allocate_prref_tab(CTXTdeclc Psc psc, PrRef *prref, pb *new_e
     {
       TIFptr tip;
       CPtr tp;
+      /* PSC is declared tabled in New_TIF */
       tip = New_TIF(CTXTc psc);
       tp  = (CPtr)mem_alloc_nocheck(FIXED_BLOCK_SIZE_FOR_TABLED_PRED,ASSERT_SPACE) ;
       if (tp == NULL) {
@@ -3931,6 +3932,7 @@ xsbBool dynamic_code_function( CTXTdecl )
     //    addr = iso_ptoc_callable_arg(CTXTc 2, ptoc_string(CTXTc 4),ptoc_int(CTXTc 5));
     addr = iso_ptoc_callable_arg(CTXTc 2, 4,5);
     psc = term_psc(addr);
+    //    printf("converting to dyna %s/%d\n",get_name(psc),get_arity(psc));
     termType = get_type(psc);
     //    printf("here %d %d %d\n",addr,psc,termType);
     if ( termType == T_DYNA ) {			             /* already dynamic */

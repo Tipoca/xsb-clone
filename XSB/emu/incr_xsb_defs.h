@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb_defs.h,v 1.4 2010-07-29 17:19:26 tswift Exp $
+** $Id: incr_xsb_defs.h,v 1.5 2010-08-01 22:06:02 tswift Exp $
 ** 
 */
 #define GET_AFFECTED_CALLS      1
@@ -37,5 +37,6 @@
 #define INVALIDATE_CALLNODE_TRIE     14
 
 // for psc hacking
+#define NONINCREMENTAL 0
 #define INCREMENTAL 1
 #define OPAQUE 2

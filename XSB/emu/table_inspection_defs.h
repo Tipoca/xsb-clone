@@ -26,3 +26,4 @@
 #define FIND_BACKWARD_DEPENDENCIES               2
 #define FIND_ANSWERS                             3
 #define CALL_SUBS_SLG_NOT                        4
+#define GET_PRED_CALLTRIE_PTR                    5
