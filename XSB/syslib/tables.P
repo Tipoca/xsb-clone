@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.P,v 1.54 2009/05/28 19:10:13 tswift Exp $
+** $Id: tables.P,v 1.55 2009/09/07 21:09:46 tswift Exp $
 ** 
 */
 
@@ -33,6 +33,7 @@
 #include "table_status_defs.h"
 #include "table_inspection_defs.h"
 #include "heap_defs_xsb.h"
+#include "psc_defs.h"
 
 /*----------------------------------------------------------------------*/
 
@@ -60,6 +61,30 @@ set_tabled_eval_for_pred(PredSpec,Method) :-
 
 set_tabled_eval(Predicate,EvalMethod) :-
 	set_tabled_eval(Predicate,EvalMethod).
+
+/* Here, if a predicate is static, and non-tabled we throw an error,
+   otherwise a no-op */
+add_table(Spec) :-
+	mpa_to_skel(Spec,Call),
+	term_psc(Call,Psc),
+	((psc_type(Psc, Type),Type =:= T_PRED) -> /* static and loaded */
+	    ((psc_tabled(Psc, Tabled),Tabled \== 0) ->
+		true
+	      ; permission_error(table,static_code,Spec,(table)/1) )
+	  ; psc_set_tabled(Psc,1)).  %% set it as tabled
+
+retract_table(Spec) :-
+	mpa_to_skel(Spec,Call),
+	term_psc(Call,Psc),
+	psc_set_tabled(Psc,0).  %% set it as non-tabled
+	
+/* Mode can be INCREMENTAL, NONINCREMENTAL, or OPAQUE */
+add_incr_table(Spec,Mode) :-
+	mpa_to_skel(Spec,Call),
+	term_psc(Call,Psc),	
+	(predicate_has_tables(Psc) ->
+	   permission_error(add_incremental_tabling,predicate_with_tables,Spec,(table)/1) 
+	 ; psc_set_incr(Psc,Mode)).
 
 /*----------------------------------------------------------------------*/
 
@@ -301,6 +326,8 @@ undefined:- tnot(undefined).
  *   reference to the subgoal frame is returned as a handle to the
  *   call's table entry, and the Answer Template is constructed as a
  *   ret/n term in ReturnTemplate.
+ * 
+ * corresponds to TRIE_GET_CALL builtin
  */
 
 get_call(CallTerm, TableEntryHandle, ReturnTemplate) :-
@@ -635,6 +662,12 @@ trie_retract_all(X) :- retractall(X).
 
 force_truth_value(AnsLeafNode,TruthValue) :-
 	force_truth_value(AnsLeafNode,TruthValue).
+
+:- export predicate_has_tables/1.
+predicate_has_tables(Psc):-
+	table_inspection_function(GET_PRED_CALLTRIE_PTR,Psc,Ptr,_,_),
+%	writeln(ptr(Ptr)),
+	Ptr \== 0.
 
 /* ---------------------- end of file tables.P ------------------------ */
 /* 07/05/01  -- work area for functions under development */

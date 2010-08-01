@@ -116,8 +116,11 @@
 :- import fmt_write/2 from file_io.
 
 :- import add_ops/3, op_priority/1, op_specifier/1, add_index/3, '_$index'/3,
-  add_trie_index/1, add_table/1, add_incr_table/1, add_incr_dynamic/1, add_opaque/1 /* incremental */
+  add_trie_index/1,  add_incr_dynamic/1 /* incremental */
      from file_op.
+
+:- import add_table/1, add_incr_table/2 from tables.
+
 :- import '_$hilog_symbol'/1, add_hilog_symbol/1 from hilogsym.
 :- import clause/2, retractall/1 from assert.
 :- import domain_error/4, domain_error/5, check_atom/3, check_nonvar/3,check_var/3, 

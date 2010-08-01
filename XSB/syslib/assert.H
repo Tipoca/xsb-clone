@@ -49,7 +49,7 @@
              type_error/4 from error_handler.
 
 :- import '_$index'/3, '_$trie_asserted'/1, retract_trie_index/1,
-	  retract_index/1, retract_table/1, mpa_to_skel/2  from file_op.
+	  retract_index/1, mpa_to_skel/2  from file_op.
 :- import psc_ep/2, psc_type/2, psc_set_type/2, psc_arity/2,
 	  conpsc/2, assert_code_to_buff/1, assert_buff_to_clref/6,
           psc_set_ep/2, unload_seg/1, db_build_prref/3, db_get_prref/2,
@@ -68,6 +68,8 @@
 :- import get_p_mod/3 from parse.
 
 :- import standard_symbol/3, standard_dynamic_symbol/2 from std_xsb.
+
+:- import retract_table/1 from tables.
 
 :- import xsb_sys_mutex_lock/1, xsb_sys_mutex_unlock/1 from thread.
 

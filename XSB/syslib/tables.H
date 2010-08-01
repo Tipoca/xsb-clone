@@ -26,9 +26,9 @@
 :- export
       abolish_all_tables/0,
       abolish_table_call/1,       abolish_table_call/2, 
-      invalidate_tables_for/2,
       abolish_table_pred/1,      abolish_table_pred/2,
       abolish_module_tables/1,
+   add_incr_table/2, add_table/1,
       delete_return/2,
       force_truth_value/2,
       get_call/3,
@@ -42,7 +42,9 @@
       get_returns/3,
       get_returns_and_dls/3, 
       get_returns_for_call/2,
+      invalidate_tables_for/2,
       is_incomplete/2,
+   retract_table/1,
       sk_not/1,
       table_state/2,
       table_state/4,
@@ -57,7 +59,7 @@
       trie_retract_all/1,
       undefined/0,
       (use_subsumptive_tabling)/1,
-      (use_variant_tabling)/1.
+   (use_variant_tabling)/1.
 
    :- export find_components/1, find_forward_dependencies/1, %%%find_backward_dependencies/1,
    find_answers/1.
@@ -66,7 +68,7 @@
 
 :- import findall/3
      from setof.
-:- import add_trie_index/1
+:- import add_trie_index/1, mpa_to_skel/2
      from file_op.
 :- import copy_term/2, member/2
      from basics.
@@ -74,10 +76,12 @@
      from assert.
 :- import (=..)/2, abort/1, call/1, functor/3, is_attv/1, tcall/1
      from standard.
-   :- import domain_error/5, check_nonvar/3, type_error/4, table_error/1 from error_handler.
+:- import domain_error/5, check_nonvar/3, type_error/4, table_error/1, 
+   permission_error/4 from error_handler.
 
 :- import abolish_table_info/0, delete_attributes/1, table_inspection_function/5,
-   term_psc/2, term_new/2 from machine.
+   term_psc/2, term_new/2, psc_set_tabled/2, psc_tabled/2, psc_type/2 from machine.
+:- import psc_set_incr/2 from machine.
 
 :- import numbervars/3, unnumbervars/2
      from num_vars.

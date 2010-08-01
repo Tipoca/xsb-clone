@@ -332,29 +332,7 @@ conv_one_indx(A,Arity,Aout) :-
 		Aout is A1+128
 	).
 
-/* Here, if a predicate is static, and non-tabled we throw an error,
-   otherwise a no-op */
-add_table(Spec) :-
-	mpa_to_skel(Spec,Call),
-	term_psc(Call,Psc),
-	((psc_type(Psc, Type),Type =:= T_PRED) -> /* static and loaded */
-	    ((psc_tabled(Psc, Tabled),Tabled \== 0) ->
-		true
-	      ; permission_error(table,static_code,Spec,(table)/1) )
-	  ; psc_set_tabled(Psc,1)).  %% set it as tabled
-
-retract_table(Spec) :-
-	mpa_to_skel(Spec,Call),
-	term_psc(Call,Psc),
-	psc_set_tabled(Psc,0).  %% set it as non-tabled
-	
-
 /* incremental evaluation */
-
-add_incr_table(Spec) :-
-	mpa_to_skel(Spec,Call),
-	term_psc(Call,Psc),	
-	psc_set_incr(Psc,INCREMENTAL).
 
 % TLS: change to allow "dynamic p/n as incremental" to properly work.
 add_incr_dynamic(Spec) :-
@@ -373,12 +351,6 @@ add_incr_dynamic(Spec) :-
 	% TLS: should be dynamic, but this makes sure there is a tabletrysingleanswers 
 	% instruction generated.
 	dynamic_code_function(CONVERT_TO_DYNA, Call,_Prref,add_incr_dynamic,1).
-
-add_opaque(Spec) :-
-	mpa_to_skel(Spec,Call),
-	term_psc(Call,Psc),
-	psc_set_incr(Psc,OPAQUE). %% set it as opaque
-
 
 /*======================================================================*/
 /* mpa_to_skel(+MPAorSkel,-Skel) converts M:P/A or P/A to Skel 		*/

@@ -40,7 +40,7 @@
 #include "heap_defs_xsb.h"
 #include "biassert_defs.h"
 #include "system_defs_xsb.h"
-
+#include "incr_xsb_defs.h"
 
 			/************************/
 			/*   INPUT and OUTPUT   */
@@ -1013,6 +1013,8 @@ exec_table_option(variant,PredList) :- !,
 	use_variant_tabling(PredList).
 exec_table_option(incremental,PredList) :- !,
 	use_incremental_tabling(PredList).
+exec_table_option(nonincremental,PredList) :- !,
+	use_nonincremental_tabling(PredList).
 exec_table_option(opaque,PredList) :- !,
 	use_opaque_tabling(PredList).
 exec_table_option(private,PredList) :- !,
@@ -1025,7 +1027,6 @@ exec_table_option(Option,_PredList) :- !,
 
 /* for incremental evaluation: add incremental tabled declaration */
 
-
 use_incremental_tabling((P,Ps)) :- !,
 	use_incremental_tabling(P),
 	use_incremental_tabling(Ps).
@@ -1033,12 +1034,12 @@ use_incremental_tabling([P|Ps]) :- !,
 	use_incremental_tabling(P),
 	use_incremental_tabling(Ps).
 use_incremental_tabling(Ps) :- 
-	check_nonvar(Ps,(use_incremental_tabling)/1,1),
+	check_nonvar(Ps,(table)/1,1),
 	(Ps=P/S
 	 ->	nonvar(P),nonvar(S)
 	 ;	true	
 	),
-	add_incr_table(Ps).
+	add_incr_table(Ps,INCREMENTAL).
 
 use_incremental_dynamic((P,Ps)) :- !,
 	use_incremental_dynamic(P),
@@ -1052,14 +1053,25 @@ use_incremental_dynamic(Ps) :-
 	add_incr_dynamic(Ps).
 
 
-use_opaque_tabling((P,Ps)) :- !,use_opaque_tabling(P),use_opaque_tabling(Ps).
+use_opaque_tabling((P,Ps)) :- !,
+	use_opaque_tabling(P),use_opaque_tabling(Ps).
 use_opaque_tabling(Ps) :- 
-	check_nonvar(Ps,(use_opaque_tabling)/1,1),
+	check_nonvar(Ps,(table)/1,1),
 	(Ps=P/S
 	 ->	nonvar(P),nonvar(S)
 	 ;	true	
 	),
-	add_opaque(Ps).
+	add_incr_table(Ps,OPAQUE).
+
+use_nonincremental_tabling((P,Ps)) :- !,
+	use_nonincremental_tabling(P),use_nonincremental_tabling(Ps).
+use_nonincremental_tabling(Ps) :- 
+	check_nonvar(Ps,(table)/1,1),
+	(Ps=P/S
+	 ->	nonvar(P),nonvar(S)
+	 ;	true	
+	),
+	add_incr_table(Ps,NONINCREMENTAL).
 
 /*------------------------------------------------------------------*/
 
