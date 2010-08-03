@@ -727,7 +727,8 @@ do_assert_and_fail(Term,Dir) :-
 
 multifile_cvt_head(Head,MHead) :-
 	Head =.. [Pred|Args],
-	load_dyn_module(ModName),
+%%	load_dyn_module(ModName),
+	load_dyn_file(ModName),
 	get_p_mod(Pred,ModName,LinkPred),
 	MHead =.. [LinkPred|Args].
 
@@ -808,7 +809,8 @@ proc_directive(Cmd) :-
 multifile_cvt(Ps,Skel) :-
 	mpa_to_skel(Ps,Skel0),
 	('_$multifile'(Skel0)
-	 ->	load_dyn_module(Mod),
+	 ->	%%load_dyn_module(Mod),
+		load_dyn_file(Mod),
 		functor(Skel0,Pred,Arity),
 		get_p_mod(Pred,Mod,P_Mod),
 		functor(Skel,P_Mod,Arity)
@@ -837,7 +839,8 @@ proc_multifile((Spec1,Spec2)) :- !,
 proc_multifile(Spec) :-
 	mpa_to_skel(Spec,Spec1),
 	functor(Spec1,Pred,Arity),
-	load_dyn_module(ModName),
+%%	load_dyn_module(ModName),
+	load_dyn_file(ModName),
 	get_p_mod(Pred,ModName,LinkPred),
 	functor(LinkSkel,LinkPred,Arity),
 	multifile([Pred/Arity,ModName,LinkSkel]).
