@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.41 2010-06-22 23:50:47 spyrosh Exp $
+** $Id: psc_xsb.h,v 1.42 2010-08-07 18:18:26 tswift Exp $
 ** 
 */
 
@@ -133,7 +133,8 @@ typedef struct psc_pair *Pair;
 #define  set_spy(psc, spy)	(psc)->env = ((psc)->env & ~T_SPY) | spy
 #define  set_shared(psc, shar)	(psc)->env = ((psc)->env & ~T_SHARED) | shar
 #define  set_tabled(psc, tab)	(psc)->env = ((psc)->env & ~T_TABLED) | tab
-#define  set_incr(psc,val)      ((psc)->incr = ((psc)->incr & 3) | val)  /* incremental */
+  //#define  set_incr(psc,val)      ((psc)->incr = ((psc)->incr & 3) | val)  /* incremental */
+#define  set_incr(psc,val)      ((psc)->incr = ((psc)->incr & ~3) | val)  /* incremental */
 #define  set_arity(psc, ari)	((psc)->arity = ari)
 #define  set_length(psc, len)	((psc)->length = len)
 #define  set_ep(psc, val)	do {(psc)->ep = val;     \

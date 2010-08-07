@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.111 2010-05-13 01:38:35 dwarren Exp $
+** $Id: parse.P,v 1.112 2010-08-07 18:18:51 tswift Exp $
 ** 
 */
 
@@ -343,8 +343,8 @@ transform_directive(dynamic(Args),ModName,SymTab,dynamic(TArgs)) :- !,
 	transform_slash_to_skel(Args,ModName,SymTab,TArgs).
 transform_directive(multifile(Args),_ModName,_SymTab,multifile(TArgs)) :- !,
 	mpa_to_skel_cl(Args,TArgs).
-transform_directive(use_incremental_dynamic(Args),_ModName,_SymTab,use_incremental_dynamic(TArgs)) :- !,
-	mpa_to_skel_cl(Args,TArgs).
+%transform_directive(use_incremental_dynamic(Args),_ModName,_SymTab,use_incremental_dynamic(TArgs)) :- !,
+%	mpa_to_skel_cl(Args,TArgs).
 transform_directive(use_incremental_tabling(Args),_ModName,_SymTab,use_incremental_tabling(TArgs)) :- !,
 	mpa_to_skel_cl(Args,TArgs).
 transform_directive(use_opaque_tabling(Args),_ModName,_SymTab,use_opaque_tabling(TArgs)) :- !,
@@ -515,9 +515,12 @@ parse_directive(thread_shared(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- 
 	parse_comma_list(PredCList,SymTab,[(thread_shared)],(thread_shared)).
 parse_directive(thread_private(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_comma_list(PredCList,SymTab,[(thread_private)],(thread_private)).
-parse_directive(table(as(PredCList,Options)),QrList,SymTab,ModName,ModStruct) :- !,
+parse_directive(table(as(PredCList,Options)),QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_comma_list_table(PredCList,SymTab),
-	parse_table_options(Options,PredCList,QrList,SymTab,ModName,ModStruct).
+	check_ground(Options,(table)/1,1),
+	check_table_options(Options,PredCList),
+	parse_query(table(as(PredCList,Options)), QrList, SymTab).
+%	parse_table_options(Options,PredCList,QrList,SymTab,ModName,ModStruct).
 parse_directive(table(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_comma_list_table(PredCList,SymTab).
 parse_directive(use_subsumptive_tabling(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- !,
@@ -526,25 +529,18 @@ parse_directive(use_subsumptive_tabling(PredCList),_QrList,SymTab,_ModName,_ModS
 parse_directive(use_variant_tabling(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_comma_list_table(PredCList,SymTab),  % implies tabled
 	parse_comma_list(PredCList,SymTab,[(use_variant_tabling)],(use_variant_tabling)).
-parse_directive(dynamic(as(PredCList,Options)),QrList,SymTab,ModName,ModStruct) :- !,
+parse_directive(dynamic(as(PredCList,Options)),QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_comma_list_dyn(PredCList,SymTab),
-	copy_term(PredCList,PredCListVars),
-	parse_query(dynamic(PredCList), QrList, SymTab),
-	parse_dynamic_options(Options,PredCListVars,QrList,SymTab,ModName,ModStruct).
+%	copy_term(PredCList,PredCListVars),
+	check_ground(Options,(dynamic)/1,1),
+	check_dynamic_options(Options,PredCList),
+	parse_query(dynamic(as(PredCList,Options)), QrList, SymTab).
+%	parse_dynamic_options(Options,PredCListVars,QrList,SymTab,ModName,ModStruct).
 parse_directive(dynamic(Skels),QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_comma_list_dyn(Skels, SymTab),
 	parse_query(dynamic(Skels), QrList, SymTab).
 parse_directive(multifile(Skels),QrList,SymTab,ModName,_ModStruct) :- !,
 	parse_multifile(Skels,QrList,SymTab,ModName).
-parse_directive(use_incremental_dynamic(Skels),QrList,SymTab,_ModName,_ModStruct) :- !,
-	parse_comma_list_dyn(Skels, SymTab),
-	parse_query(use_incremental_dynamic(Skels), QrList, SymTab).
-parse_directive(use_incremental_tabling(Skels),QrList,SymTab,_ModName,_ModStruct) :- !,
-	parse_comma_list(Skels,SymTab,[tabled],(use_incremental_tabling)),
-	parse_query(use_incremental_tabling(Skels), QrList, SymTab).
-parse_directive(use_opaque_tabling(Skels),QrList,SymTab,_ModName,_ModStruct) :- !,
-	parse_comma_list(Skels,SymTab,[tabled],(use_opaque_tabling)),
-	parse_query(use_opaque_tabling(Skels), QrList, SymTab).
 parse_directive(initialization(Q),QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_query(Q,QrList,SymTab).
 parse_directive(Directive,_QrList,_SymTab,_ModName,_ModStruct) :-
@@ -553,50 +549,17 @@ parse_directive(Directive,_QrList,_SymTab,_ModName,_ModStruct) :-
 	!.
 parse_directive(Query,QrList,SymTab,_ModName,_ModStruct) :-  %% else its a query
 	parse_query(Query, QrList, SymTab).
+%parse_directive(use_incremental_dynamic(Skels),QrList,SymTab,_ModName,_ModStruct) :- !,
+%	parse_comma_list_dyn(Skels, SymTab),
+%	parse_query(use_incremental_dynamic(Skels), QrList, SymTab).
+%parse_directive(use_incremental_tabling(Skels),QrList,SymTab,_ModName,_ModStruct) :- !,
+%	parse_comma_list(Skels,SymTab,[tabled],(use_incremental_tabling)),
+%	parse_query(use_incremental_tabling(Skels), QrList, SymTab).
+%parse_directive(use_opaque_tabling(Skels),QrList,SymTab,_ModName,_ModStruct) :- !,
+%	parse_comma_list(Skels,SymTab,[tabled],(use_opaque_tabling)),
+%	parse_query(use_opaque_tabling(Skels), QrList, SymTab).
 
-parse_table_options(Options,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	check_ground(Options,(table)/1,1),
-	parse_table_options_1(Options,PredCList,QrList,SymTab,ModName,ModStruct).
-
-parse_table_options_1((Option,Options),PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_table_option(Option,PredCList,QrList,SymTab,ModName,ModStruct),
-	parse_table_option(Options,PredCList,QrList,SymTab,ModName,ModStruct).
-parse_table_options_1(Option,PredCList,QrList,SymTab,ModName,ModStruct) :- 
-	parse_table_option(Option,PredCList,QrList,SymTab,ModName,ModStruct).
-
-parse_table_option(dynamic,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_directive(dynamic(PredCList),QrList,SymTab,ModName,ModStruct).
-parse_table_option(dyn,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_directive(dynamic(PredCList),QrList,SymTab,ModName,ModStruct).
-parse_table_option(subsumptive,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_directive(use_subsumptive_tabling(PredCList),QrList,SymTab,ModName,ModStruct).
-parse_table_option(variant,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_directive(use_variant_tabling(PredCList),QrList,SymTab,ModName,ModStruct).
-parse_table_option(incremental,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_directive(use_incremental_tabling(PredCList),QrList,SymTab,ModName,ModStruct).
-parse_table_option(opaque,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_directive(use_opaque_tabling(PredCList),QrList,SymTab,ModName,ModStruct).
-parse_table_option(private,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_directive(thread_private(PredCList),QrList,SymTab,ModName,ModStruct).
-parse_table_option(shared,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_directive(thread_shared(PredCList),QrList,SymTab,ModName,ModStruct).
-parse_table_option(Option,_PredCList,_QrList,_SymTab,_ModName,_ModStruct) :- !,
-	domain_error(table_option,Option,(table)/1,1,
-	'must be one of dynamic,dyn,subsumptive,variant,incremental,opaque,private,shared').
-
-parse_dynamic_options((Option,Options),PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_dynamic_options(Option,PredCList,QrList,SymTab,ModName,ModStruct),
-	parse_dynamic_options(Options,PredCList,QrList,SymTab,ModName,ModStruct).
-parse_dynamic_options(tabled,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_directive(table(PredCList),QrList,SymTab,ModName,ModStruct).
-parse_dynamic_options(incremental,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_directive(use_incremental_dynamic(PredCList),QrList,SymTab,ModName,ModStruct).
-parse_dynamic_options(private,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_directive(thread_private(PredCList),QrList,SymTab,ModName,ModStruct).
-parse_dynamic_options(shared,PredCList,QrList,SymTab,ModName,ModStruct) :- !,
-	parse_directive(thread_shared(PredCList),QrList,SymTab,ModName,ModStruct).
-parse_dynamic_options(Option,_PredCList,_QrList,_SymTab,_ModName,_ModStruct) :- !,
-	error((Option,' is an illegal option for the dynamic directive')).
+%--------
 
 parse_multifile((Skel1,Skel2),QrList,SymTab,ModName) :- !,
 	parse_multifile(Skel1,QrList,SymTab,ModName),

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.43 2009-10-07 17:40:29 tswift Exp $
+** $Id: parse.H,v 1.44 2010-08-07 18:18:51 tswift Exp $
 ** 
 */
 
@@ -32,44 +32,56 @@
 	'_$multifile2'/3, '_$apply_arity'/1,
 	'_$multifile_retract'/3.
 
-:- import stat_flag/2, stat_set_flag/2, slash/1 from machine.
-:- import closetail/1 from listutil.
-:- import inline_predicate/2 from builtin.
-:- import singleton_check/2 from singlton.
-:- import add_hilog_symbol/1 from hilogsym.
-:- import conset/2, conget/2 from gensym.
-:- import append/3, memberchk/2, log_ith/3, copy_term/2, member/2 from basics.
+:- import retractall/1, retract/1, asserta/1, (dynamic)/1,  check_dynamic_options/2 from assert.
+
 :- import check_file_compiler_options/1, 
              error/1, message/1, option/1, setoptions1/1, warning/1 from auxlry.
-:- import sym_insert/5, sym_propin/2, sym_complete/1, sym_prop/2,
-	  add_new_clause/2, clause_listify/2
-     from symtab.
-:- import functor/3, seen/0, file_exists/1, '=..'/2, atom/1, integer/1,
-	  op/3, (index)/3, (index)/2, real/1, see/1, expand_term/2, (=..)/2,
-	  '\='/2,
-          % seeing/1, 
-          is_most_general_term/1, number/1, atom_codes/2
-     from standard.
-   :- import retractall/1, retract/1, asserta/1, (dynamic)/1 from assert.
-:- import mpa_to_skel/2 from file_op.
-:- import existence_error/4,misc_error/1, syntax_error/1, domain_error/5, 
-   check_ground/3
-   from error_handler.
+
+:- import append/3, memberchk/2, log_ith/3, member/2 from basics.
+
+:- import inline_predicate/2 from builtin.
+
+:- import included_ciao_directive/1 from ciao_directives.
+
 :- import search_module/6 from consult.
 
-:- import spawn_process/5, process_control/2 from shell.
-:- import xsb_configuration/2 from xsb_configuration.
+:- import current_input_port/1 from curr_sym.
+
+:- import existence_error/4,misc_error/1, syntax_error/1, check_ground/3
+   from error_handler.
 
 :- import fmt_write_string/3, file_close/1 from file_io.
 :- import file_size/2 from file_io.
-:- import concat_atom/2 from string.
+
+:- import mpa_to_skel/2 from file_op.
+
+:- import conset/2, conget/2 from gensym.
+
+:- import add_hilog_symbol/1 from hilogsym.
+
+:- import closetail/1 from listutil.
+
+:- import stat_flag/2, stat_set_flag/2, slash/1 from machine.
+
+:- import findall/3 from setof.
+
+:- import spawn_process/5, process_control/2 from shell.
+
+:- import singleton_check/2 from singlton.
+
+:- import functor/3, seen/0, file_exists/1, '=..'/2, atom/1, integer/1,
+   op/3, (index)/3, (index)/2, real/1, see/1, expand_term/2, (=..)/2,
+   '\='/2, check_table_options/2,
+   is_most_general_term/1, number/1, atom_codes/2
+     from standard.
 
 :- import standard_symbol/3 from std_xsb.
 
-%%:- import windows_os_loader/0 from loader.
+:- import concat_atom/2 from string.
 
-:- import findall/3 from setof.
-:- import current_input_port/1 from curr_sym.
+:- import sym_insert/5, sym_propin/2, sym_complete/1, sym_prop/2,
+	  add_new_clause/2, clause_listify/2
+     from symtab.
 
-:- import included_ciao_directive/1 from ciao_directives.
+:- import xsb_configuration/2 from xsb_configuration.
 
