@@ -15,6 +15,10 @@ test_dirs:-
 	predicate_property(d2(_X),P),
 	write(prop(d2,P)),writeln('.'),fail.
 test_dirs:- 
+	(dynamic d3/1 as nonincremental),
+	predicate_property(d3(_X),P),
+	write(prop(d3,P)),writeln('.'),fail.
+test_dirs:- 
 	(table t1/1),
 	predicate_property(t1(_X),P),
 	write(prop(t1,P)),writeln('.'),fail.
@@ -67,6 +71,10 @@ test_dirs_1:- catch((table p/1 as nonincremental),error(permission_error(_,_,_),
 test_dirs_1:- abolish_table_call(p(_)),fail.
 test_dirs_1:- (table p/1 as nonincremental),predicate_property(p(_),Prop),
 	write(prop(p4,Prop)),writeln('.'),fail.
+test_dirs_1:- (dynamic dd/1 as incremental),predicate_property(dd(_),Prop),
+	write(prop(dd1,Prop)),writeln('.'),fail.
+test_dirs_1:- (dynamic dd/1 as nonincremental),predicate_property(dd(_),Prop),
+	write(prop(dd2,Prop)),writeln('.'),fail.
 test_dirs_1.
 
 

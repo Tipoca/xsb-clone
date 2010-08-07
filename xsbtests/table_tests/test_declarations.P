@@ -9,6 +9,7 @@ test:-
 
 :- dynamic d1/1.
 :- dynamic d2/1 as incremental.
+:- dynamic d3/1 as nonincremental.
 :- table t1/1.
 :- table t2/1 as incremental.
 :- table t3/1 as opaque.
@@ -27,6 +28,9 @@ test_decs:-
 test_decs:- 
 	predicate_property(d2(_X),P),
 	write(prop(d2,P)),writeln('.'),fail.
+test_decs:- 
+	predicate_property(d3(_X),P),
+	write(prop(d3,P)),writeln('.'),fail.
 test_decs:- 
 	predicate_property(t1(_X),P),
 	write(prop(t1,P)),writeln('.'),fail.

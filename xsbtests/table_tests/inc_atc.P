@@ -37,18 +37,14 @@ test2.
 incr_writeln(Term):- write(incr(Term)),writeln('.').
 
 
-%:- table p/2 as incremental.
-:- table p/2.
-:- use_incremental_tabling p/2.
+:- table p/2 as incremental.
 
 p(X,Y) :- q(X,Y),Y =< 5.
 
-:- table n/2.
-:- use_incremental_tabling n/2.
+:- table n/2 as incremental.
 n(X,Y) :- p(X,Y),Y < 5.
 
-:- use_incremental_dynamic q/2.
-:- dynamic q/2.
+:- dynamic q/2 as incremental.
 q(a,1).
 q(b,3).
 q(c,5).

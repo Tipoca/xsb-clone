@@ -46,17 +46,14 @@ incr_writeln(Term):- write(incr(Term)),writeln('.').
 
 %-----------
 
-:- table nat/2.
-:- use_incremental_tabling nat/2.
+:- table nat/2 as incremental.
 nat(X,Y) :- pat(X,Y),Y < 5.
 
-:- table pat/2.
-:- use_incremental_tabling pat/2.
+:- table pat/2 as incremental.
 
 pat(X,Y) :- qat(X,Y),Y =< 5.
 
-:- dynamic qat/2.
+:- dynamic qat/2 as incremental.
 :- index(qat/2,trie).
-:- use_incremental_dynamic(qat/2).
 
 end_of_file.

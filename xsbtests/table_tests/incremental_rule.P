@@ -18,12 +18,10 @@ test_seq:- incr_retract((p(X):- f(1,X))),fail.
 test_seq:- t(X),write(incr(third_t(X))),writeln('.'),fail.
 test_seq.
 
-%:- dynamic p/1 as incremental.
-:- dynamic p/1.
-:- use_incremental_dynamic p/1.
+:- dynamic p/1 as incremental.
 p(1).
 
-:- use_incremental_tabling t/1.
+:- table t/1 as incremental.
 t(X):- p(X).
 
 f(1,2).

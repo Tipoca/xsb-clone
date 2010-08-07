@@ -1,7 +1,5 @@
 
-:- table pt/3.
-:- use_incremental_tabling pt/3.
-
+:- table pt/3 as incremental.
 pt(T,X,Y) :- 
 %	writeln(executing(pt(T,X,Y))),
 	trie_interned(qt(X,Y),T),Y =< 5.

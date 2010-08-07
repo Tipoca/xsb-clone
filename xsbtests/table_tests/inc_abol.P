@@ -1,7 +1,4 @@
 
-:- table pt/3.
-:- use_incremental_tabling pt/3.
-
 :- import trie_create/2, trie_intern/2, incr_trie_intern/2, incr_trie_uninternall/2,
 	incr_trie_intern_inval/2, incr_trie_uninternall_inval/2,
 	trie_interned/2 from intern.
@@ -17,24 +14,20 @@ test:-
 
 %-----------
 
+:- table pt/3 as incremental.
 pt(T,X,Y) :- 
 %	writeln(executing(pt(T,X,Y))),
 	trie_interned(qt(X,Y),T),Y =< 5.
 
 %-----------
 
-:- table n/2.
-:- use_incremental_tabling n/2.
+:- table n/2 as incremental.
 n(X,Y) :- p(X,Y),Y < 5.
 
-:- table p/2.
-:- use_incremental_tabling p/2.
-
+:- table p/2 as incremental.
 p(X,Y) :- q(X,Y),Y =< 5.
 
-
-:- use_incremental_dynamic q/2.
-:- dynamic q/2.
+:- dynamic q/2 as incremental.
 q(a,1).
 q(b,3).
 q(c,5).
@@ -42,13 +35,10 @@ q(d,7).
 
 %-----------
 
-:- dynamic qat/2.
+:- dynamic qat/2 as incremental.
 :- index(qat/2,trie).
-:- use_incremental_dynamic(qat/2).
 
-:- table pat/2.
-:- use_incremental_tabling pat/2.
-
+:- table pat/2 as incremental.
 pat(X,Y) :- qat(X,Y),Y =< 5.
 
 %-----------

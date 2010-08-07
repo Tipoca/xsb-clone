@@ -103,6 +103,8 @@ EOF
 ../gentest.sh "$XEMU $options" test_intern_seq "test".
 #------------------------------------------------- general incremental tests
 ../gentest.sh "$XEMU $options" incremental "test".
+#------------------------------------------------- tests dynamic tables
+../gentest.sh "$XEMU $options" test_dynamic "test".
 #------------------------------------------------- same as above, but with changed decls.
 ../gentest.sh "$XEMU $options" incremental1 "test".
 #------------------------------------------------- incremental tests with interned tries
