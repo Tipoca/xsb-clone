@@ -52,6 +52,7 @@
 	(hilog)/1,	hilog_arg/3,	hilog_functor/3,
 	(index)/3,	(index)/2,      (table)/1,
 	(use_incremental_tabling)/1,    (use_incremental_dynamic)/1, 
+   use_incremental_dynamic_internal/1,
 	(use_opaque_tabling)/1, /* incremental */
 	integer/1,	is/2,		is_attv/1,	is_list/1,
 	is_most_general_term/1,		is_number_atom/1,
@@ -67,7 +68,7 @@
 	real/1,		repeat/0,
 	see/1,		seeing/1,	seen/0,
 	set_input/1,    set_output/1,  
-	demand_once/1,
+   demand_once/1, check_table_options/2,
 	set_tmp_file/3,
 	skip/1,		statistics/1,	statistics/0,	structure/1,
 	tab/1,		tell/1,		telling/1,	time/1,	told/0,true/0,
@@ -103,9 +104,8 @@
    (import)/1,	(multifile)/1, '_$multifile'/1.
 :- export cleanup_handler/2.
 
-
 :- import (dynamic)/1, asserta/1, assert0/4 from assert.
-:- import member/2,append/3 from basics.
+:- import member/2,append/3,comma_member/2 from basics.
 :- import consult/1, reconsult/1 from consult.
 :- import predicate_property/2 from curr_sym.
 :- import dcg/2 from dcg.
@@ -116,8 +116,7 @@
 :- import fmt_write/2 from file_io.
 
 :- import add_ops/3, op_priority/1, op_specifier/1, add_index/3, '_$index'/3,
-  add_trie_index/1,  add_incr_dynamic/1 /* incremental */
-     from file_op.
+   add_trie_index/1  from file_op.
 
 :- import add_table/1, add_incr_table/2 from tables.
 
@@ -127,7 +126,7 @@
 	  check_ground/3,
    type_error/4, permission_error/4, 
    instantiation_error/3, instantiation_error/2, check_nonneg_integer/3, 
-   misc_error/1
+	  misc_error/1, table_error/1
      from error_handler.
 :- import  check_nonvar_list/3 from error_handler.
 :- import '_$load_undef'/1 from loader.

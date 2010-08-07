@@ -28,6 +28,7 @@
 #include "psc_defs.h"
 #include "thread_defs_xsb.h"
 #include "biassert_defs.h"
+#include "incr_xsb_defs.h"
 
 /*======================================================================*/
 /* Predicates to add dynamic clauses in Prolog's database:		*/
@@ -242,8 +243,6 @@ assert0(Clause, AZL, Index1,_ErrPred) :-
 	AZ is AZLI /\ 1,
 	assert_buff_to_clref(Head,NArity,Prref,AZ,Index,HashTabSize) ).
 
-%:- import writeln/1 from standard.
-
 /* Must fail after code is put into buffer, to reset variables bound in 
    the process */
 code_to_buff(Clause,AZ) :-
@@ -340,19 +339,20 @@ cut_transform(Head,Head). /* leave unchanged, Arity is one less */
 /*======================================================================*/
 
 /*
- TLS: went into inf loop when Spec was var and failed when Spec was
- 1.  Note that convert_to_dyna/3 only handles cases where there is a 
- prref and that prref is inconsistent.
+ TLS: rewrite 08/2010.  
 
- There was a problem with dynamic in that it was over-writing static
- code and removing their clauses !?!?!?
+ In principle, all of the checking would be done at the start, as
+ throwing an error midway through leads to a partially executed
+ command.  In any case, I do check that the options are ground and
+ defined,and that the set is not inconsistent.  Checks of the predlist
+ are done within the execution of dyanmic_1.
+
+ Note that in general setting bits in the psc record must be done
+ before convert_to_dynamic, as this latter function sets up the
+ EP-wrapper of the dynamic predicate based on info about whether the
+ dynamic predicate is incremental or tabled.
+
 */
-
-:- import check_nonvar/3, domain_error/5,domain_error/4,check_ground/3 from error_handler.
-:- import (use_variant_tabling)/1 from tables.
-:- import (table)/1 from standard.
-:- import (thread_shared)/1, (thread_private)/1 from thread.
-:- import add_incr_dynamic/1 from file_op.
 
 dynamic(Spec):- 
 	(var(Spec) -> 
@@ -361,10 +361,10 @@ dynamic(Spec):-
 
 % TLS added [H|T] -- it had been core-dumping on this
 dynamic_1(as(Preds,Options)):- !,
-	check_nonvar(Options,(dynamic)/1,1),
-%	set_incremental_for_dynamic(Options,Preds),
-        dynamic_1(Preds),
-	exec_dynamic_options(Options,Preds).
+	check_ground(Options,(dynamic)/2,2),
+	check_dynamic_options(Options,Preds),
+	exec_pre_dynamic_options(Options,Preds),
+        dynamic_1(Preds).
 dynamic_1((P1,P2)) :- !, dynamic(P1), dynamic(P2).
 dynamic_1([P1|P2]) :- !, dynamic(P1), dynamic(P2).
 dynamic_1(Spec) :- 
@@ -374,79 +374,84 @@ dynamic_1(Spec) :-
 %dynamic_1(Spec) :- 
 %	type_error(comma_list_callable,Spec,dynamic,1).
 
-exec_dynamic_options(Options,PredList) :- !,
-	check_ground(Options,(dynamic)/2,2),
-	exec_dynamic_options_1(Options,PredList).
-
-exec_dynamic_options_1((Option,Options),PredList) :- !,
-	exec_dynamic_option(Option,PredList),
-	exec_dynamic_options_1(Options,PredList).
-exec_dynamic_options_1(Option,PredList) :- 
+exec_pre_dynamic_options((Option,Options),PredList) :- !,
+	exec_pre_dynamic_option(Option,PredList),
+	exec_pre_dynamic_options(Options,PredList).
+exec_pre_dynamic_options(Option,PredList) :- 
 	atom(Option),!,
-	exec_dynamic_option(Option,PredList).
-exec_dynamic_options_1(Culprit,_PredList) :- 
+	exec_pre_dynamic_option(Option,PredList).
+exec_pre_dynamic_options(Culprit,_PredList) :- 
 	domain_error(comma_list_or_dynamic_options,Culprit,(dynamic)/2,1).
 
-exec_dynamic_option(tabled,PredList) :- !,
+exec_pre_dynamic_option(tabled,PredList) :- !,
 	table(PredList).
-% not yet spported
-%exec_dynamic_option(subsumptive,PredList) :- !,
-%	use_subsumptive_tabling(PredList).
-exec_dynamic_option(incremental,PredList) :- !,
-        set_incremental_for_dynamic(PredList).
-exec_dynamic_option(variant,PredList) :- !,
+exec_pre_dynamic_option(incremental,PredList) :- !,
+	set_predlist_incremental(PredList,INCREMENTAL).
+exec_pre_dynamic_option(nonincremental,PredList) :- !,
+	set_predlist_incremental(PredList,NONINCREMENTAL).
+%        set_incremental_for_dynamic(PredList,NONINCREMENTAL).
+exec_pre_dynamic_option(variant,PredList) :- !,
 	use_variant_tabling(PredList).
-exec_dynamic_option(private,PredList) :- !,
+exec_pre_dynamic_option(private,PredList) :- !,
 	thread_private(PredList).
-exec_dynamic_option(shared,PredList) :- !,
+exec_pre_dynamic_option(shared,PredList) :- !,
 	thread_shared(PredList).
-exec_dynamic_option(Option,_PredList) :- !,
-	domain_error(dynamic_option,Option,(table)/1,1,
-	'must be one of tabled,variant,incremental,private,shared').
 
-set_incremental_for_dynamic((Pred,Preds)):- !,
-	set_incremental_for_dynamic(Pred),
-	set_incremental_for_dynamic(Preds).
-set_incremental_for_dynamic(Pred):- 
-	add_incr_dynamic(Pred).
+set_predlist_incremental((Pred,Preds),Option):- !,
+	set_predlist_incremental(Pred,Option),
+	set_predlist_incremental(Preds,Option).
+set_predlist_incremental(Pred,Option):- 
+	mpa_to_skel(Pred,Call),
+	term_psc(Call,Psc),
+	psc_set_incr(Psc,Option).
 
-/* Should no longer be needed now that convert to dyna is in C */
-convert_to_dyna(PHead,Prref,ErrPred) :-
-	xsb_sys_mutex_lock(MUTEX_DYNAMIC),
-	conpsc(PHead, PSC),
-	psc_type(PSC, SYMTYPE),
-	( SYMTYPE =:= T_DYNA ->			/* already dynamic */
-	   db_get_prref(PSC,Prref)
-	; SYMTYPE =:= T_ORDI  ->   	     /* undefined, it's first clause */
-		db_new_prref(PSC,PHead,Prref)
-	; SYMTYPE =:= T_UDEF  ->    	     /* unloaded, this is 1st clause */
-		db_new_prref(PSC,PHead,Prref)
-	; SYMTYPE =:= T_PRED ->		     /* compiled, illegal */
-                functor(PHead, F, A),
-		xsb_sys_mutex_unlock(MUTEX_DYNAMIC),
-		permission_error(modify,static,F/A,ErrPred)
-	; 
-		xsb_sys_mutex_unlock(MUTEX_DYNAMIC),
-		type_error(callable,PHead,ErrPred,1)
-	),
-	xsb_sys_mutex_unlock(MUTEX_DYNAMIC).
+check_dynamic_options((Option,Options),PredCList) :- !,
+	check_dynamic_option(Option,Options,PredCList),
+	check_dynamic_options(Options,PredCList).
+check_dynamic_options(Option,PredCList) :- !,
+	check_dynamic_option(Option,Option,PredCList).
 
-/*======================================================================*/
-/* db_new_prref(+PSC,+PHead,-Prref):					*/
-/*	creates an empty Prref, i.e.  one with no clauses in it.  	*/
-/*	If called, it will simply fail.  Prref must be a variable at 	*/
-/*	the time of call.  It points the entry point of the psc record	*/
-/*	pointed to by PSC to this Prref.  So in effect it makes it	*/
-/*	dynamic.	 						*/
-/*	Prref ->:							*/
-/*		-4: Addr of last Clref on ALL chain			*/
-/*		0: BC instruction: fail (if empty),			*/
-/*			jump and save breg (if nonempty)		*/
-/*		4: Addr of first Clref on ALL chain			*/
-/*======================================================================*/
-
-db_new_prref(PSC,_PHead,Prref) :-
-	db_build_prref(PSC, _Tabled, Prref).
+check_dynamic_option(tabled,Options,PredCList) :- !,
+        (comma_member(incremental,Options) -> 
+	    misc_error(('Cannot declare ',PredCList,
+	           ' as dynamic with options incremental and nonincremental'))
+	 ;  true).
+check_dynamic_option(variant,Options,PredCList) :- !,
+        (comma_member(incremental,Options) -> 
+	    misc_error(('Cannot declare ',PredCList,
+	           ' as dynamic with options incremental and nonincremental'))
+	 ;  true).
+check_dynamic_option(shared,Options,PredCList) :- !,
+        (comma_member(private,Options) -> 
+	    misc_error(('Cannot declare ',PredCList,
+	           ' as dynamic with options shared and private'))
+	 ;  true).
+check_dynamic_option(private,Options,PredCList) :- !,
+        (comma_member(shared,Options) -> 
+	    misc_error(('Cannot declare ',PredCList,
+	           ' as dynamic with options private and shared'))
+	 ;  true).
+check_dynamic_option(incremental,Options,PredCList) :- !,
+        (comma_member(nonincremental,Options) -> 
+	    misc_error(('Cannot declare ',PredCList,
+	           ' as dynamic with options incremental and nonincrmental'))
+	 ;  true),
+        (comma_member(tabled,Options) -> 
+	    misc_error(('Cannot currently declare ',PredCList,
+	           ' as dynamic with options incremental and tabled'))
+	 ;  true),
+        (comma_member(variant,Options) -> 
+	    misc_error(('Cannot currently declare ',PredCList,
+	           ' as dynamic with options incremental and tabled'))
+	 ;  true).
+check_dynamic_option(nonincremental,Options,PredCList) :- !,
+        (comma_member(incremental,Options) -> 
+	    misc_error(('Cannot declare ',PredCList,
+	           ' as dynamic with options incremental and nonincremental'))
+	 ;  true).
+check_dynamic_option(Option,_,_PredCList) :- !,
+	domain_error(dynamic_option,Option,(dynamic)/1,1,
+	'must be one of tabled,variant,incremental,nonincremental,private,shared').
 
 /*======================================================================*/
 /* get_dynamic_pred_ep(+PHead,+CallingRef,-PredEP,-PSC):    	        */
@@ -835,3 +840,72 @@ update_fields([Arg|Args],[Val|Vals],ClRef) :-
 	Disp is (7+2*Arg)*4,
 	buff_set_word(ClRef,Disp,Val),
 	update_fields(Args,Vals,ClRef).
+
+%------------------------------------------------------------------------------
+end_of_file.
+%------------------------------------------------------------------------------
+
+/* Should no longer be needed now that convert to dyna is in C */
+% convert_to_dyna(PHead,Prref,ErrPred) :-
+% 	xsb_sys_mutex_lock(MUTEX_DYNAMIC),
+% 	conpsc(PHead, PSC),
+% 	psc_type(PSC, SYMTYPE),
+% 	( SYMTYPE =:= T_DYNA ->			/* already dynamic */
+% 	   db_get_prref(PSC,Prref)
+% 	; SYMTYPE =:= T_ORDI  ->   	     /* undefined, it's first clause */
+% 		db_new_prref(PSC,PHead,Prref)
+% 	; SYMTYPE =:= T_UDEF  ->    	     /* unloaded, this is 1st clause */
+% 		db_new_prref(PSC,PHead,Prref)
+% 	; SYMTYPE =:= T_PRED ->		     /* compiled, illegal */
+%                 functor(PHead, F, A),
+% 		xsb_sys_mutex_unlock(MUTEX_DYNAMIC),
+% 		permission_error(modify,static,F/A,ErrPred)
+% 	; 
+% 		xsb_sys_mutex_unlock(MUTEX_DYNAMIC),
+% 		type_error(callable,PHead,ErrPred,1)
+% 	),
+% 	xsb_sys_mutex_unlock(MUTEX_DYNAMIC).
+
+/*======================================================================*/
+/* db_new_prref(+PSC,+PHead,-Prref):					*/
+/*	creates an empty Prref, i.e.  one with no clauses in it.  	*/
+/*	If called, it will simply fail.  Prref must be a variable at 	*/
+/*	the time of call.  It points the entry point of the psc record	*/
+/*	pointed to by PSC to this Prref.  So in effect it makes it	*/
+/*	dynamic.	 						*/
+/*	Prref ->:							*/
+/*		-4: Addr of last Clref on ALL chain			*/
+/*		0: BC instruction: fail (if empty),			*/
+/*			jump and save breg (if nonempty)		*/
+/*		4: Addr of first Clref on ALL chain			*/
+/*======================================================================*/
+
+%db_new_prref(PSC,_PHead,Prref) :-
+%	db_build_prref(PSC, _Tabled, Prref).
+
+
+%--------
+
+% set_incremental_for_dynamic((Pred,Preds),Option):- !,
+% 	set_incremental_for_dynamic(Pred,Option),
+% 	set_incremental_for_dynamic(Preds,Option).
+% set_incremental_for_dynamic(Pred,Option):- 
+% 	add_incr_dynamic(Pred,Option).
+
+% TLS: change to allow "dynamic p/n as incremental" to properly work.
+% add_incr_dynamic(Spec,Type) :-
+% 	mpa_to_skel(Spec,Call),
+% 	term_psc(Call,Psc),
+% 	psc_set_incr(Psc,Type), %% set it as incremental/non-increental
+%%	psc_set_tabled(Psc,1),
+% 	psc_type(Psc,SymType),
+% %	writeln(psc_type(Psc,SymType)),
+% 	(SymType \== T_DYNA
+% 	 ->	psc_set_ep(Psc,4), % set to addr of fail instruction
+% 		psc_set_type(Psc,T_DYNA)
+% 	 ;	psc_set_ep(Psc,4)  % set to addr of fail instruction  << change tls
+% 	),
+% 	% TLS: should be dynamic, but this makes sure there is a tabletrysingleanswers 
+% 	% instruction generated.
+% 	dynamic_code_function(CONVERT_TO_DYNA, Call,_Prref,add_incr_dynamic,1).
+

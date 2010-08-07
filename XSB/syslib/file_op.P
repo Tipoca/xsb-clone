@@ -332,26 +332,6 @@ conv_one_indx(A,Arity,Aout) :-
 		Aout is A1+128
 	).
 
-/* incremental evaluation */
-
-% TLS: change to allow "dynamic p/n as incremental" to properly work.
-add_incr_dynamic(Spec) :-
-%	writeln(add_incr_dynamic(Spec)),
-	mpa_to_skel(Spec,Call),
-	term_psc(Call,Psc),
-	psc_set_incr(Psc,INCREMENTAL), %% set it as incremental
-%%	psc_set_tabled(Psc,1),
-	psc_type(Psc,SymType),
-%	writeln(psc_type(Psc,SymType)),
-	(SymType \== T_DYNA
-	 ->	psc_set_ep(Psc,4), % set to addr of fail instruction
-		psc_set_type(Psc,T_DYNA)
-	 ;	psc_set_ep(Psc,4)  % set to addr of fail instruction  << change tls
-	),
-	% TLS: should be dynamic, but this makes sure there is a tabletrysingleanswers 
-	% instruction generated.
-	dynamic_code_function(CONVERT_TO_DYNA, Call,_Prref,add_incr_dynamic,1).
-
 /*======================================================================*/
 /* mpa_to_skel(+MPAorSkel,-Skel) converts M:P/A or P/A to Skel 		*/
 /*======================================================================*/

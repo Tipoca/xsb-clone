@@ -972,6 +972,7 @@ index_convert_to_dyna(PHead,Type,Index) :-
 table(Options) :-
 	check_nonvar(Options,(table)/1,1),
 	(Options = as(Ps,List) ->
+	    check_table_options(List,Ps),
 	    table_1(Ps),
 	    exec_table_options(List,Ps)
          ;  table_1(Options)).
@@ -999,79 +1000,165 @@ exec_table_options_1((Option,Options),PredList) :- !,
 	exec_table_options_1(Options,PredList).
 exec_table_options_1(Option,PredList) :- 
 	atom(Option),!,
-	exec_table_option(Option,PredList).
+	exec_table_option_on_predlist(PredList,Option).
 exec_table_options_1(Culprit,_PredList) :- 
 	domain_error(comma_list_or_table_options,Culprit,(table)/1,1).
 
-exec_table_option(dynamic,PredList) :- !,
-	dynamic(PredList).
-exec_table_option(dyn,PredList) :- !,
-	dynamic(PredList).
-exec_table_option(subsumptive,PredList) :- !,
-	use_subsumptive_tabling(PredList).
-exec_table_option(variant,PredList) :- !,
-	use_variant_tabling(PredList).
-exec_table_option(incremental,PredList) :- !,
-	use_incremental_tabling(PredList).
-exec_table_option(nonincremental,PredList) :- !,
-	use_nonincremental_tabling(PredList).
-exec_table_option(opaque,PredList) :- !,
-	use_opaque_tabling(PredList).
-exec_table_option(private,PredList) :- !,
-	thread_private(PredList).
-exec_table_option(shared,PredList) :- !,
-	thread_shared(PredList).
-exec_table_option(Option,_PredList) :- !,
+exec_table_option_on_predlist((P,Ps),Option) :- !,
+	exec_table_option_on_predlist(P,Option),
+	exec_table_option_on_predlist(Ps,Option).  
+exec_table_option_on_predlist(P,Option) :- 
+ 	check_nonvar(P,(table)/1,1),
+ 	(P=Pred/A
+ 	 ->	nonvar(Pred),nonvar(A)
+ 	 ;	true	
+ 	),
+	exec_table_option(Option,P).
+
+exec_table_option(dynamic,Pred) :- !,
+	dynamic(Pred).
+exec_table_option(dyn,Pred) :- !,
+	dynamic(Pred).
+exec_table_option(subsumptive,Pred) :- !,
+	use_subsumptive_tabling(Pred).
+exec_table_option(variant,Pred) :- !,
+	use_variant_tabling(Pred).
+exec_table_option(incremental,Pred) :- !,
+ 	add_incr_table(Pred,INCREMENTAL).
+exec_table_option(nonincremental,Pred) :- !,
+ 	add_incr_table(Pred,NONINCREMENTAL).
+exec_table_option(opaque,Pred) :- !,
+ 	add_incr_table(Pred,OPAQUE).
+exec_table_option(private,Pred) :- !,
+	thread_private(Pred).
+exec_table_option(shared,Pred) :- !,
+	thread_shared(Pred).
+exec_table_option(Option,_Pred) :- !,
 	domain_error(table_option,Option,(table)/1,1,
-	'must be one of dynamic,dyn,subsumptive,variant,incremental,opaque,private,shared').
+	['must be one of ',
+	 'dynamic,dyn,subsumptive,variant,incremental,nonincremental,opaque,private,shared']).
 
-/* for incremental evaluation: add incremental tabled declaration */
+%--------
 
-use_incremental_tabling((P,Ps)) :- !,
-	use_incremental_tabling(P),
-	use_incremental_tabling(Ps).
-use_incremental_tabling([P|Ps]) :- !,
-	use_incremental_tabling(P),
-	use_incremental_tabling(Ps).
-use_incremental_tabling(Ps) :- 
-	check_nonvar(Ps,(table)/1,1),
-	(Ps=P/S
-	 ->	nonvar(P),nonvar(S)
-	 ;	true	
-	),
-	add_incr_table(Ps,INCREMENTAL).
+check_table_options((Option,Options),PredCList) :- !,
+	check_table_option(Option,Options,PredCList),
+	check_table_options(Options,PredCList).
+check_table_options(Option,PredCList) :- 
+	check_table_option(Option,Option,PredCList).
 
-use_incremental_dynamic((P,Ps)) :- !,
-	use_incremental_dynamic(P),
-	use_incremental_dynamic(Ps).
-use_incremental_dynamic(Ps) :- 
-	check_nonvar(Ps,(use_incremental_dynamic)/1,1),
-	(Ps=P/S
-	 ->	nonvar(P),nonvar(S)
-	 ;	true	
-	),
-	add_incr_dynamic(Ps).
+check_table_option(dynamic,Options,PredCList) :- !,
+        (comma_member(incremental,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options dynamic and incremental'))
+	 ;  true),
+        (comma_member(opaque,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options dynamic and opaque'))
+	 ;  true).
+check_table_option(dyn,Options,PredCList) :- !,
+	check_table_option(dynamic,Options,PredCList).
+% Assuming that we'll have subsumptive and opaque soon.
+check_table_option(subsumptive,Options,PredCList) :- !,
+        (comma_member(variant,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options subsumptive and variant'))
+	 ;  true),
+        (comma_member(incremental,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options subsumptive and incremental'))
+	 ;  true),
+        (comma_member(shared,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options subsumptive and shared'))
+	 ;  true).
+check_table_option(variant,Options,PredCList) :- !,
+        (comma_member(subsumptive,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options variant and subsumptive'))
+	 ;  true).
+check_table_option(incremental,Options,PredCList) :- !,
+        (comma_member(nonincremental,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options incremental and nonincremental'))
+	 ;  true),
+        (comma_member(subsumptive,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options incremental and subsumptive'))
+	 ;  true),
+        (comma_member(shared,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options incremental and shared'))
+	 ;  true),
+        (comma_member(opaque,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options incremental and opaque'))
+	 ;  true).
+check_table_option(nonincremental,Options,PredCList) :- !,
+        (comma_member(incremental,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options nonincremental and incremental'))
+	 ;  true),
+        (comma_member(opaque,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options nonincremental and opaque'))
+	 ;  true).
+% TLS: will be allowing subsumptive/opaque
+check_table_option(opaque,Options,PredCList) :- !,
+        (comma_member(incremental,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options opaque and incremental'))
+	 ;  true),
+        (comma_member(nonincremental,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options opaque and nonincremental'))
+	 ;  true),
+        (comma_member(dyn,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options opaque and dynamic'))
+	 ;  true),
+        (comma_member(dynamic,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options opaque and dynamic'))
+	 ;  true).
+% TLS: will be allowing private/incremental
+check_table_option(private,Options,PredCList) :- !,
+        (comma_member(shared,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options private and shared'))
+	 ;  true).
+check_table_option(shared,Options,PredCList) :- !,
+        (comma_member(private,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options shared and private'))
+	 ;  true),
+        (comma_member(subsumptive,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options shared and subsumptive'))
+	 ;  true),
+        (comma_member(incremental,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options shared and incremental'))
+	 ;  true),
+        (comma_member(opaque,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options shared and opaque'))
+	 ;  true).
+check_table_option(Option,_Options,_PredCList) :- !,
+	domain_error(table_option,Option,(table)/1,1,
+	['must be one of ',
+	'dynamic,dyn,subsumptive,variant,incremental,nonincremental,opaque,private,shared']).
 
+use_incremental_tabling(PredList):-
+	abort(['use_incremental_dynamic/1 is now obsolete.  Use table ',
+	       PredList,' as incremental.']).
 
-use_opaque_tabling((P,Ps)) :- !,
-	use_opaque_tabling(P),use_opaque_tabling(Ps).
-use_opaque_tabling(Ps) :- 
-	check_nonvar(Ps,(table)/1,1),
-	(Ps=P/S
-	 ->	nonvar(P),nonvar(S)
-	 ;	true	
-	),
-	add_incr_table(Ps,OPAQUE).
+use_opaque_tabling(PredList):-
+	abort(['use_incremental_dynamic/1 is now obsolete.  Use table ',
+	       PredList,' as opaque.']).
 
-use_nonincremental_tabling((P,Ps)) :- !,
-	use_nonincremental_tabling(P),use_nonincremental_tabling(Ps).
-use_nonincremental_tabling(Ps) :- 
-	check_nonvar(Ps,(table)/1,1),
-	(Ps=P/S
-	 ->	nonvar(P),nonvar(S)
-	 ;	true	
-	),
-	add_incr_table(Ps,NONINCREMENTAL).
+use_incremental_dynamic(PredList):-
+	abort(['use_incremental_dynamic/1 is now obsolete.  Use dynamic ',
+	       PredList,' as incremental.']).
 
 /*------------------------------------------------------------------*/
 
@@ -1966,4 +2053,51 @@ call_attribute_handlers([Mod,Attr|Rest],Value) :-
 */	
 
 /* --------------------- end of file standard.P ----------------------- */
+end_of_file.
+
+/* for incremental evaluation: add incremental tabled declaration */
+% use_incremental_tabling((P,Ps)) :- !,
+% 	use_incremental_tabling(P),
+% 	use_incremental_tabling(Ps).
+% use_incremental_tabling([P|Ps]) :- !,
+% 	use_incremental_tabling(P),
+% 	use_incremental_tabling(Ps).
+% use_incremental_tabling(Ps) :- 
+% 	check_nonvar(Ps,(table)/1,1),
+% 	(Ps=P/S
+% 	 ->	nonvar(P),nonvar(S)
+% 	 ;	true	
+% 	),
+% 	add_incr_table(Ps,INCREMENTAL).
+
+%use_incremental_dynamic((P,Ps)) :- !,
+% 	use_incremental_dynamic(P),
+% 	use_incremental_dynamic(Ps).
+%use_incremental_dynamic(Ps) :- 
+% 	check_nonvar(Ps,(dynamic)/1,1),
+% 	(Ps=P/S
+% 	 ->	nonvar(P),nonvar(S)
+% 	 ;	true	
+% 	),
+% 	add_incr_dynamic(Ps).
+
+% use_opaque_tabling((P,Ps)) :- !,
+% 	use_opaque_tabling(P),use_opaque_tabling(Ps).
+% use_opaque_tabling(Ps) :- 
+% 	check_nonvar(Ps,(table)/1,1),
+% 	(Ps=P/S
+% 	 ->	nonvar(P),nonvar(S)
+% 	 ;	true	
+% 	),
+% 	add_incr_table(Ps,OPAQUE).
+
+% use_nonincremental_tabling((P,Ps)) :- !,
+% 	use_nonincremental_tabling(P),use_nonincremental_tabling(Ps).
+% use_nonincremental_tabling(Ps) :- 
+% 	check_nonvar(Ps,(table)/1,1),
+% 	(Ps=P/S
+% 	 ->	nonvar(P),nonvar(S)
+% 	 ;	true	
+% 	),
+% 	add_incr_table(Ps,NONINCREMENTAL).
 

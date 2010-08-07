@@ -36,46 +36,50 @@
 :- export code_to_buff/2. % for message queues
 :- export exchange_definitions/2.
 :- export update/4, get_fact_clref/2, update_clref/4.  %% hackery...
+:- export check_dynamic_options/2.
 
-:- import append/3, memberchk/2 from basics.
+:- import append/3, memberchk/2,comma_member/2 from basics.
 
 :- import default_assert_size/1 from config.
+
+:- import (thread_shared)/1, (thread_private)/1 from consult.
 
 :- import db_retract/4, db_retractall/3, db_abolish/1, db_clause/4,
   db_retract_nr/4, db_reclaim_space/2
      from dbclause.
 
-:- import instantiation_error/3 , permission_error/4, 
-             type_error/4 from error_handler.
+:- import instantiation_error/3 , permission_error/4, misc_error/1, 
+	  type_error/4 from error_handler.
+:- import domain_error/5,domain_error/4,check_ground/3 from error_handler.
 
 :- import '_$index'/3, '_$trie_asserted'/1, retract_trie_index/1,
 	  retract_index/1, mpa_to_skel/2  from file_op.
+
 :- import psc_ep/2, psc_type/2, psc_set_type/2, psc_arity/2,
 	  conpsc/2, assert_code_to_buff/1, assert_buff_to_clref/6,
-          psc_set_ep/2, unload_seg/1, db_build_prref/3, db_get_prref/2,
-	  code_call/3, db_retract0/3, term_set_arg/4, term_new_mod/3
+          psc_set_ep/2, unload_seg/1, code_call/3, db_retract0/3, term_set_arg/4, term_new_mod/3
      from machine.
 :- import db_get_last_clause/4 from machine.
 :- import dynamic_code_function/5 from machine.
+:- import psc_set_incr/2 from machine.
+:- import buff_set_word/3, term_psc/2 from machine.
 
+:- import obsolete/2 from obsolete.
+
+:- import get_p_mod/3 from parse.
+
+:- import (table)/1 from standard.
 :- import '_$multifile'/1 from standard.
-
+:- import call_c/1 from standard.
 :- import (=..)/2, functor/3, integer/1, callable/1, arg/3,
          goal_cut_trans/3, goal_cut_untrans/2, abort/1, check_arity_integer/3,
          is_most_general_term/1, atomic/1, warning/1
      from standard.
 
-:- import get_p_mod/3 from parse.
-
 :- import standard_symbol/3, standard_dynamic_symbol/2 from std_xsb.
 
+:- import (use_variant_tabling)/1 from tables.
 :- import retract_table/1 from tables.
-
-:- import xsb_sys_mutex_lock/1, xsb_sys_mutex_unlock/1 from thread.
 
 :- import call_xsb_hook/3, xsb_assert_hook/1, xsb_retract_hook/1 from xsb_hook.
  
-:- import obsolete/2 from obsolete.
-
-:- import buff_set_word/3, term_psc/2 from machine.
-:- import call_c/1 from standard.
