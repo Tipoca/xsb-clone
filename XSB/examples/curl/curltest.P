@@ -22,6 +22,7 @@ test_all :-
 	test_properties_auth(OutPath), 
 	test_user_agent(OutPath), 
 	test_post, 
+	test_read_and_close, 
 	test_encode_url(OutPath), 
 	test_timeout(OutPath).
 
@@ -124,9 +125,20 @@ test_user_agent(OutPath) :-
 	close(X).
 
 test_post :- 
+	open(url('http://www.zend.com/en/'),write, X), 
+	put_char(X, 'a'), put_char(X, 'b'), 	
+	close(url('http://www.zend.com/en/')).
+
+test_read_and_close :- 
+	open(url('http://ringlord.com/latex-to-pdf-howto.html'),read, X), 
+	get_char(X, _), 
+	close(url('http://ringlord.com/latex-to-pdf-howto.html')).
+
+/*Not added to the test suite. This is supposed to throw an error*/
+test_post_fail :- 
 	open(url('http://www.ibm.com/us/en/'),write, X), 
 	put_char(X, 'a'), put_char(X, 'b'), 	
-	close(X, url('http://www.ibm.com/us/en/')).
+	close(url('http://www.ibm.com/us/en/')).
 
 test_encode_url(OutPath) :-
 	encode_url(url('http://www.cs.sunysb.edu/~cse532/first.html'), [Dir, File, Suffix]), 

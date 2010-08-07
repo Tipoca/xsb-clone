@@ -41,7 +41,11 @@
 	encode_url/2,
 	www_cache_filename/4,
 	set_tmp_file/3,
-	get_redir_url/2.
+	get_redir_url/2, 
+	post_data/2, 
+	post_us_pair/3, 
+	get_us_pair/3, 
+	delete_us_pair/3.
 
 :- bootstrap_package([curl, cc], curl),
 	[curlconfig].
@@ -247,4 +251,24 @@ set_tmp_file(DirEnc, FileUnEnc, TmpFile) :-
 	), 
 	str_cat(TmpDir, Slash, TmpDirSlash),
 	str_cat(TmpDirSlash, FileUnEnc, TmpFile).
+
+/*Post data if output stream */
+post_data(Atom, write) :- 
+	load_page(url(Atom), X, [post(true)], _, _), 
+	X \= ''.
+
+post_data(_, read).
+
+:- dynamic us_pair/3.
+
+post_us_pair(Atom, Mode, Stream) :- 
+	assert:asserta(us_pair(Atom, Mode, Stream)).
+
+get_us_pair(Atom, Mode, Stream) :- 
+	us_pair(Atom, Mode, Stream).
+
+delete_us_pair(Atom, Mode, Stream) :- 
+	assert:retractall(us_pair(Atom, Mode, Stream)), !.
+delete_us_pair(_, _, _).
+
 %-------------------------------------------------
