@@ -170,7 +170,7 @@ incr_assert(Term,AZL,Index) :-
 
 incr_assert_inval(Term,AZL,Index):-
 	(Term = (:-(H,_)) -> Head = H ; Head = Term),
-	check_incremental(Head,dynamic_predicate_not_incremental),
+	check_incremental(Head,('dynamic predicate ',Head,' is not incremental ',incr_assert/1)),
 	assert(Term,AZL,Index),
 	(get_calls_incr(Head,A),
 	 invalidate_callnode(A),
@@ -226,7 +226,7 @@ check_incremental(Term,Msg) :-
 	psc_get_incr(Psc,INCR),
 	(INCR =:= 1
 	 ->	true
-	 ;	throw(error(table_error(Msg)))
+	 ;	table_error(Msg)
 	).
 
 
