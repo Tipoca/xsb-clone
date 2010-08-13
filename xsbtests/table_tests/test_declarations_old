@@ -6,6 +6,8 @@ prop(d2,incremental).
 prop(d2,tabled(variant)).
 prop(d3,dynamic).
 prop(d3,exported).
+prop(d3,opaque).
+prop(d3,tabled(variant)).
 prop(t1,exported).
 prop(t1,loaded).
 prop(t1,tabled(variant)).

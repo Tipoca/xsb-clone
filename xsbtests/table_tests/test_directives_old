@@ -6,12 +6,15 @@ prop(d2,incremental).
 prop(d2,tabled(variant)).
 prop(d3,dynamic).
 prop(d3,exported).
+prop(d3,opaque).
+prop(d3,tabled(variant)).
 prop(dd1,dynamic).
 prop(dd1,exported).
 prop(dd1,incremental).
 prop(dd1,tabled(variant)).
 prop(dd2,dynamic).
 prop(dd2,exported).
+prop(dd2,opaque).
 prop(dd2,tabled(variant)).
 prop(inc,caught_permission_error_1).
 prop(non_tabled,caught_permission_error_0).

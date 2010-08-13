@@ -9,7 +9,7 @@ test:-
 
 :- dynamic d1/1.
 :- dynamic d2/1 as incremental.
-:- dynamic d3/1 as nonincremental.
+:- dynamic d3/1 as opaque.
 :- table t1/1.
 :- table t2/1 as incremental.
 :- table t3/1 as opaque.
