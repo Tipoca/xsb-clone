@@ -33,7 +33,7 @@
    table_error/1, type_error/4, 
               check_atom/3, check_atom_list/3, check_callable/3,
               check_ground/3, check_integer/3, check_nonneg_integer/3,
-              check_nonvar_list/3, check_nonvar/3, 
+              check_nonvar_list/3, check_nonvar_comma_list/3, check_nonvar/3, 
               check_number/3, check_one_thread/3,
               check_var/3, 
               default_error_handler/1,

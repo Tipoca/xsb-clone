@@ -457,10 +457,34 @@ check_atom_list1([H|T],Predicate,Arg):-
 	; 
 	    instantiation_error(Predicate,Arg)).
 
+%------
+
+% Checks that Term is a comma list containing no variable elements
+check_nonvar_comma_list(Term,Predicate,Arg):- 
+	check_nonvar(Term,Predicate,Arg),
+	(check_nonvar_comma_list_1(Term,Predicate,Arg) -> 
+	    true
+	 ;  type_error(comma_list,Term,Predicate,Arg)).
+
+check_nonvar_comma_list_1((Term,Terms),Predicate,Arg):- !,
+	check_nonvar(Term,Predicate,Arg),
+	(check_nonvar_comma_list_1(Terms,Predicate,Arg) -> 
+	    true
+	 ;  type_error(comma_list,Term,Predicate,Arg)).
+check_nonvar_comma_list_1(Term,Predicate,Arg):- 
+	(nonvar(Term) -> 
+	    true
+	; 
+	    instantiation_error(Predicate,Arg)).
+
+%------
+
 permission_warning(Op,Obj_type,Culprit,Msg,PredInd):- 
 	warningln(('[Permission (Operation) ',Op,' on ',Obj_type,': ',Culprit,'] in ',
 	            PredInd,' ',Msg)).
+
 %-------------
+
 end_of_file.
 
 get_sys_error_description(error(Error,Msg,_Backtrace), ExceptionDesc) :-

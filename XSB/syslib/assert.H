@@ -50,7 +50,10 @@
 
 :- import instantiation_error/3 , permission_error/4, misc_error/1, 
 	  type_error/4 from error_handler.
-:- import domain_error/5,domain_error/4,check_ground/3 from error_handler.
+:- import domain_error/5,domain_error/4,check_callable/3 from error_handler.
+:- import check_nonvar/3 from error_handler.
+:- import check_nonvar_comma_list/3 from error_handler.
+:- import table_error/1 from error_handler.
 
 :- import '_$index'/3, '_$trie_asserted'/1, retract_trie_index/1,
 	  retract_index/1, mpa_to_skel/2  from file_op.
@@ -62,6 +65,7 @@
 :- import db_get_last_clause/4 from machine.
 :- import dynamic_code_function/5 from machine.
 :- import psc_set_incr/2 from machine.
+:- import psc_get_incr/2 from machine.
 :- import buff_set_word/3, term_psc/2 from machine.
 
 :- import obsolete/2 from obsolete.

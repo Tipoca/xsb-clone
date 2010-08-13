@@ -29,6 +29,7 @@
 #include "thread_defs_xsb.h"
 #include "biassert_defs.h"
 #include "incr_xsb_defs.h"
+#include "standard.h"
 
 /*======================================================================*/
 /* Predicates to add dynamic clauses in Prolog's database:		*/
@@ -341,38 +342,58 @@ cut_transform(Head,Head). /* leave unchanged, Arity is one less */
 /*
  TLS: rewrite 08/2010.  
 
- In principle, all of the checking would be done at the start, as
- throwing an error midway through leads to a partially executed
- command.  In any case, I do check that the options are ground and
- defined,and that the set is not inconsistent.  Checks of the predlist
- are done within the execution of dyanmic_1.
+ In principle, all options and other checking would be done at the
+ start, as throwing an error midway through leads to a partially
+ executed command.  In any case, I do check that the options are
+ ground and defined,and that the set is not inconsistent.  Checks of
+ the predlist are done within the execution of dyanmic_1.
 
  Note that in general setting bits in the psc record must be done
  before convert_to_dynamic, as this latter function sets up the
  EP-wrapper of the dynamic predicate based on info about whether the
  dynamic predicate is incremental or tabled.
 
-*/
+ */
 
+:- import check_nonvar/3 from error_handler.
+:- import check_nonvar_comma_list/3 from error_handler.
 dynamic(Spec):- 
-	(var(Spec) -> 
-	    instantiation_error(dynamic,1,nonvar)
-	 ;  dynamic_1(Spec) ).
+	check_nonvar(Spec,(dynamic)/1,1),
+	dynamic_1(Spec).
 
-% TLS added [H|T] -- it had been core-dumping on this
+% Need to check for list, because psc_type for list returns 0 even
+% though lists are callable.
 dynamic_1(as(Preds,Options)):- !,
-	check_ground(Options,(dynamic)/2,2),
+	check_predicate_type(Preds),
 	check_dynamic_options(Options,Preds),
 	exec_pre_dynamic_options(Options,Preds),
-        dynamic_1(Preds).
-dynamic_1((P1,P2)) :- !, dynamic(P1), dynamic(P2).
-dynamic_1([P1|P2]) :- !, dynamic(P1), dynamic(P2).
-dynamic_1(Spec) :- 
+        dynamic_2(Preds).
+dynamic_1(Preds) :-   
+        is_list(Preds),!,
+	domain_error(comma_list_or_non_builtin_callable,Preds,(dynamic)/2,1).
+dynamic_1(Preds) :- 
+	check_nonvar_comma_list(Preds,(dynamic)/1,1),
+	check_predicate_type(Preds),
+        dynamic_2(Preds).
+
+% At this point we know that preds are all ok.
+dynamic_2((P1,P2)) :- !, dynamic_2(P1), dynamic_2(P2).
+dynamic_2(Spec) :- 
 	mpa_to_skel(Spec,Head), 
 	dynamic_code_function(CONVERT_TO_DYNA, Head,_Prref,'dynamic/1',1).
-% Not needed: error checking handled through dynamic code function
-%dynamic_1(Spec) :- 
-%	type_error(comma_list_callable,Spec,dynamic,1).
+
+% Before we do anything, abort if any predicates are static or foreign
+check_predicate_type((Pred,Preds)) :- !,
+	check_predicate_type(Pred),
+	check_predicate_type(Preds).
+check_predicate_type(Pred) :- 
+        check_callable(Pred,'dynamic/1',1),
+	mpa_to_skel(Pred,Call),
+	term_psc(Call,Psc),
+	psc_type(Psc,Type),
+	((Type =:= T_PRED ; Type =:= T_FORN) -> 
+	    permission_error(modify,static,Pred,'dynamic/1')
+	    ; true).
 
 exec_pre_dynamic_options((Option,Options),PredList) :- !,
 	exec_pre_dynamic_option(Option,PredList),
@@ -381,15 +402,14 @@ exec_pre_dynamic_options(Option,PredList) :-
 	atom(Option),!,
 	exec_pre_dynamic_option(Option,PredList).
 exec_pre_dynamic_options(Culprit,_PredList) :- 
-	domain_error(comma_list_or_dynamic_options,Culprit,(dynamic)/2,1).
+	domain_error(comma_list_or_dynamic_option,Culprit,(dynamic)/2,1).
 
 exec_pre_dynamic_option(tabled,PredList) :- !,
 	table(PredList).
 exec_pre_dynamic_option(incremental,PredList) :- !,
 	set_predlist_incremental(PredList,INCREMENTAL).
-exec_pre_dynamic_option(nonincremental,PredList) :- !,
-	set_predlist_incremental(PredList,NONINCREMENTAL).
-%        set_incremental_for_dynamic(PredList,NONINCREMENTAL).
+exec_pre_dynamic_option(opaque,PredList) :- !,
+	set_predlist_incremental(PredList,OPAQUE).
 exec_pre_dynamic_option(variant,PredList) :- !,
 	use_variant_tabling(PredList).
 exec_pre_dynamic_option(private,PredList) :- !,
@@ -400,10 +420,22 @@ exec_pre_dynamic_option(shared,PredList) :- !,
 set_predlist_incremental((Pred,Preds),Option):- !,
 	set_predlist_incremental(Pred,Option),
 	set_predlist_incremental(Preds,Option).
+
 set_predlist_incremental(Pred,Option):- 
 	mpa_to_skel(Pred,Call),
 	term_psc(Call,Psc),
-	psc_set_incr(Psc,Option).
+	psc_type(Psc,Type),
+%	writeln(psc_type(Type)),
+	(Type =:= T_DYNA -> 
+	    psc_get_incr(Psc,Incr),
+%	    writeln(psc_incr(Incr)),
+	    (Incr =:= NONINCREMENTAL -> 
+	       table_error(('Previously defined dynamic predicate ',Pred,
+	                    ' cannot be set to ',Incr))
+	     ; psc_set_incr(Psc,Option) )
+        ;   psc_set_incr(Psc,Option) ).
+
+%---
 
 check_dynamic_options((Option,Options),PredCList) :- !,
 	check_dynamic_option(Option,Options,PredCList),
@@ -414,12 +446,12 @@ check_dynamic_options(Option,PredCList) :- !,
 check_dynamic_option(tabled,Options,PredCList) :- !,
         (comma_member(incremental,Options) -> 
 	    misc_error(('Cannot declare ',PredCList,
-	           ' as dynamic with options incremental and nonincremental'))
+	           ' as dynamic with options tabled and incremental'))
 	 ;  true).
 check_dynamic_option(variant,Options,PredCList) :- !,
         (comma_member(incremental,Options) -> 
 	    misc_error(('Cannot declare ',PredCList,
-	           ' as dynamic with options incremental and nonincremental'))
+	           ' as dynamic with options variant and incremental'))
 	 ;  true).
 check_dynamic_option(shared,Options,PredCList) :- !,
         (comma_member(private,Options) -> 
@@ -432,9 +464,9 @@ check_dynamic_option(private,Options,PredCList) :- !,
 	           ' as dynamic with options private and shared'))
 	 ;  true).
 check_dynamic_option(incremental,Options,PredCList) :- !,
-        (comma_member(nonincremental,Options) -> 
+        (comma_member(opaque,Options) -> 
 	    misc_error(('Cannot declare ',PredCList,
-	           ' as dynamic with options incremental and nonincrmental'))
+	           ' as dynamic with options incremental and opaque'))
 	 ;  true),
         (comma_member(tabled,Options) -> 
 	    misc_error(('Cannot currently declare ',PredCList,
@@ -444,14 +476,14 @@ check_dynamic_option(incremental,Options,PredCList) :- !,
 	    misc_error(('Cannot currently declare ',PredCList,
 	           ' as dynamic with options incremental and tabled'))
 	 ;  true).
-check_dynamic_option(nonincremental,Options,PredCList) :- !,
+check_dynamic_option(opaque,Options,PredCList) :- !,
         (comma_member(incremental,Options) -> 
 	    misc_error(('Cannot declare ',PredCList,
-	           ' as dynamic with options incremental and nonincremental'))
+	           ' as dynamic with options opaque and incremental'))
 	 ;  true).
 check_dynamic_option(Option,_,_PredCList) :- !,
 	domain_error(dynamic_option,Option,(dynamic)/1,1,
-	'must be one of tabled,variant,incremental,nonincremental,private,shared').
+	'must be one of tabled,variant,incremental,opaque,private,shared').
 
 /*======================================================================*/
 /* get_dynamic_pred_ep(+PHead,+CallingRef,-PredEP,-PSC):    	        */
@@ -909,3 +941,28 @@ end_of_file.
 % 	% instruction generated.
 % 	dynamic_code_function(CONVERT_TO_DYNA, Call,_Prref,add_incr_dynamic,1).
 
+/*
+| 	(Option == NONINCREMENTAL -> 
+| 	    dynamic_code_function(CONVERT_TO_NONINCREMENTAL,Psc,_,'dynamic/1',1)
+|	  ; (Option == INCREMENTAL -> 
+| 	       ((psc_type(Psc,SymType),SymType == T_DYNA) ->
+|		   psc_set_ep(Psc,4) % set to addr of fail instruction
+|		 ; true)
+|	     ; true ) ).
+*/
+% TLS: change to allow "dynamic p/n as incremental" to properly work.
+% add_incr_dynamic(Spec,Type) :-
+% 	mpa_to_skel(Spec,Call),
+% 	term_psc(Call,Psc),
+% 	psc_set_incr(Psc,Type), %% set it as incremental/non-increental
+%%	psc_set_tabled(Psc,1),
+% 	psc_type(Psc,SymType),
+% %	writeln(psc_type(Psc,SymType)),
+% 	(SymType \== T_DYNA
+% 	 ->	psc_set_ep(Psc,4), % set to addr of fail instruction
+% 		psc_set_type(Psc,T_DYNA)
+% 	 ;	psc_set_ep(Psc,4)  % set to addr of fail instruction  << change tls
+% 	),
+% 	% TLS: should be dynamic, but this makes sure there is a tabletrysingleanswers 
+% 	% instruction generated.
+% 	dynamic_code_function(CONVERT_TO_DYNA, Call,_Prref,add_incr_dynamic,1).
