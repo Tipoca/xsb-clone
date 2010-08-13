@@ -224,7 +224,7 @@ check_incrementally_tabled(Term,Msg) :-
 check_incremental(Term,Msg) :-
 	term_psc(Term,Psc),
 	psc_get_incr(Psc,INCR),
-	(INCR =:= INCREMENTAL
+	(INCR > NONINCREMENTAL
 	 ->	true
 	 ;	table_error(Msg)
 	).
