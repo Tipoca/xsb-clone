@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slginsts_xsb_i.h,v 1.91 2010/06/22 23:50:47 spyrosh Exp $
+** $Id: slginsts_xsb_i.h,v 1.92 2010/07/29 19:57:47 tswift Exp $
 ** 
 */
 
@@ -625,8 +625,6 @@ XSB_Start_Instr(tabletrysinglenoanswers,_tabletrysinglenoanswers)
    *  the instruction to be executed should this one fail.
    */
   
-//  printf("tabletrysinglenoanswers\n");
-
   TabledCallInfo callInfo;
   CallLookupResults lookupResults;
   VariantSF  sf;
@@ -637,48 +635,42 @@ XSB_Start_Instr(tabletrysinglenoanswers,_tabletrysinglenoanswers)
   xsb_abort("Incremental Maintenance of tables is not available for multithreaded engine.\n");
 #endif  
   
+  //  printf("tabletrysinglenoanswers\n");
+
   xwammode = 1;
   CallInfo_Arguments(callInfo) = reg + 1;
   CallInfo_CallArity(callInfo) = get_xxa; 
   LABEL = (CPtr)((byte *) get_xxxl);  
   Op1(get_xxxxl);
   tip =  (TIFptr) get_xxxxl;
-  
-  SET_TRIE_ALLOCATION_TYPE_TIP(tip); 
 
+  if (get_incr(TIF_PSC(tip))) {
   
-  CallInfo_TableInfo(callInfo) = tip;
+    SET_TRIE_ALLOCATION_TYPE_TIP(tip); 
+
+    CallInfo_TableInfo(callInfo) = tip;
     
-  check_tcpstack_overflow;
-  CallInfo_VarVectorLoc(callInfo) = top_of_cpstack;
+    check_tcpstack_overflow;
+    CallInfo_VarVectorLoc(callInfo) = top_of_cpstack;
 
-  /*
-  if ( this_instr == tabletry ) {
-    continuation = lpcreg;
-  }
-  else 
-    continuation = (pb) &check_complete_inst;
-    
-  check_glstack_overflow(CallInfo_CallArity(callInfo),lpcreg,OVERFLOW_MARGIN);
-  */
-
-
-  table_call_search_incr(CTXTc &callInfo,&lookupResults);
+    table_call_search_incr(CTXTc &callInfo,&lookupResults);
   
-  if(IsNonNULL(ptcpreg)){
-   sf=(VariantSF)ptcpreg;
-   if(IsIncrSF(sf)){
-     c=(callnodeptr)BTN_Child(CallLUR_Leaf(lookupResults));
-     if(IsNonNULL(c)){
-       addcalledge(c,sf->callnode);  
-     }
-   }else 
-     if (!get_opaque(TIF_PSC(subg_tif_ptr(sf))))
-       xsb_abort("Parent predicate %s/%d not declared incr_table\n", 
-		 get_name(TIF_PSC(subg_tif_ptr(sf))),get_arity(TIF_PSC(subg_tif_ptr(sf))));      
+    if(IsNonNULL(ptcpreg)) {
+      sf=(VariantSF)ptcpreg;
+      if(IsIncrSF(sf)){
+	c=(callnodeptr)BTN_Child(CallLUR_Leaf(lookupResults));
+	if(IsNonNULL(c)) {
+	  addcalledge(c,sf->callnode);  
+	}
+      }
+    }
   }
-
-
+#ifdef NON_OPT_COMPILE
+  else  /* not incremental */
+    if (!get_opaque(TIF_PSC(tip)))
+      xsb_abort("Parent predicate %s/%d not declared incr_table\n", 
+		get_name(TIF_PSC(subg_tif_ptr(sf))),get_arity(TIF_PSC(subg_tif_ptr(sf)))); 
+#endif
   ADVANCE_PC(size_xxx);
   lpcreg = *(pb *)lpcreg;
 
