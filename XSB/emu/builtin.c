@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.346 2010-07-31 17:29:08 tswift Exp $
+** $Id: builtin.c,v 1.347 2010-08-17 19:43:21 spyrosh Exp $
 **
 */
 
@@ -138,6 +138,8 @@ extern int  sys_syscall(CTXTdeclc int);
 extern xsbBool sys_system(CTXTdeclc int);
 extern xsbBool formatted_io(CTXTdecl), read_canonical(CTXTdecl);
 extern xsbBool private_builtin(void);
+/* Support Graph */
+extern xsbBool support_builtin(void);
 
 extern void xsb_segfault_quitter(int err);
 extern void alt_print_cp(CTXTdeclc int);
@@ -1226,6 +1228,7 @@ void init_builtin_table(void)
   set_builtin_table(DELETE_ATTRIBUTES, "delete_attributes");
   set_builtin_table(ATTV_UNIFY, "attv_unify");
   set_builtin_table(PRIVATE_BUILTIN, "private_builtin");
+  set_builtin_table(SUPPORT_BUILTIN, "support_builtin");
   set_builtin_table(SEGFAULT_HANDLER, "segfault_handler");
   set_builtin_table(GET_BREG, "get_breg");
 
@@ -2993,7 +2996,7 @@ case WRITE_OUT_PROFILE:
     if (gc & GC_GC_STRINGS) {
       gc &= ~GC_GC_HEAP;
       ret_val |= gc_heap(CTXTc 2,TRUE);
-    }
+    } 
     if (gc & GC_GC_HEAP) ret_val |= gc_heap(CTXTc 2,FALSE);
     if (gc & GC_GC_CLAUSES) ret_val |= gc_dynamic(CTXT);
     if (gc & GC_GC_TABLED_PREDS) ret_val |= gc_tabled_preds(CTXT);
@@ -3056,6 +3059,12 @@ case WRITE_OUT_PROFILE:
     //    private_builtin();
     return TRUE;
   }
+  case SUPPORT_BUILTIN:
+  {
+    support_builtin();
+    return TRUE;
+  }
+
   case SEGFAULT_HANDLER: { /* Set the desired segfault handler:
 			      +Arg1:  none  - don't catch segfaults;
 				      warn  - warn and exit;

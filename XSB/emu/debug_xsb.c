@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.48 2010-01-23 19:03:02 tswift Exp $
+** $Id: debug_xsb.c,v 1.49 2010-08-17 19:43:21 spyrosh Exp $
 ** 
 */
 
@@ -164,8 +164,8 @@ void printterm(FILE *fp, Cell term, int depth) {
 
 /*------------------------------------------------------------------*/
 /* Used to print out call using WAM registers */
-
-static void print_call(CTXTdeclc Psc psc)
+/* Support Graph */
+/* static */ void print_call(CTXTdeclc Psc psc)
 {
   int i, arity;
 

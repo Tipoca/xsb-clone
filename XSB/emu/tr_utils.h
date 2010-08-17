@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.59 2010-06-22 23:50:47 spyrosh Exp $
+** $Id: tr_utils.h,v 1.60 2010-08-17 19:43:21 spyrosh Exp $
 ** 
 */
 
@@ -127,6 +127,8 @@ extern void hashtable1_destroy_all(int);
 extern void delete_subsumptive_call(CTXTdeclc SubProdSF);
 extern void reclaim_deleted_subsumptive_table(CTXTdeclc DelTFptr);
 
+/* Support Graph */
+extern void incr_trie_dispose();
 #define MAX_INTERNED_TRIES 2003
 
 #endif /* __TR_UTILS_H__ */

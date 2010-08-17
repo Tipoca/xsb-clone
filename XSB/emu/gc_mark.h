@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.32 2009-01-06 21:50:37 dwarren Exp $
+** $Id: gc_mark.h,v 1.33 2010-08-17 19:43:21 spyrosh Exp $
 ** 
 */
 
@@ -637,6 +637,12 @@ restart:
       if ((d = cp_pdreg(b)) != NULL) {
 	total_marked += mark_root(CTXTc (Cell)d);
       }
+      /* Support Graph */
+      /* mark the delay list field of all choice points in CP stack too */
+      if ((d = cp_supreg(b)) != NULL) {
+	total_marked += mark_root(CTXTc (Cell)d);
+      }
+
       total_marked += mark_trail_section(CTXTc a,(CPtr) tr);
 
       /* mark the arguments in the choicepoint */
@@ -806,6 +812,9 @@ int mark_heap(CTXTdeclc int arity, int *marked_dregs)
   marked = mark_region(CTXTc reg+1,reg+(slide?(arity-rnum_in_reg_array):arity));
   if (delayreg != NULL) {
     marked += mark_root(CTXTc (Cell)delayreg);
+  } /* Support Graph */
+  if (supreg != NULL) {
+    marked += mark_root(CTXTc (Cell)supreg);
   }
   if (rnum_in_reg_array>0) {
     //    printf("marking reg_array(%d): %p to %p\n",rnum_in_reg_array,reg_array,reg_arrayptr);

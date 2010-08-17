@@ -85,6 +85,7 @@ static void reset_thread( th_context *th, th_context *ctxt, VariantSF sgf,
         switch_envs(tbreg);
   	ptcpreg = tcp_ptcp(tbreg);
   	delayreg = tcp_pdreg(tbreg);
+	supreg = tcp_supreg(tbreg); /* Should be here? Support Graph */
         reclaim_stacks(tbreg) ;
 	restore_some_wamregs(tbreg, ereg);
   	/* restore_trail_condition_registers */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop_aux.h,v 1.13 2010-06-22 23:50:47 spyrosh Exp $
+** $Id: emuloop_aux.h,v 1.14 2010-08-17 19:43:21 spyrosh Exp $
 ** 
 */
 
@@ -74,7 +74,8 @@
   /*  switch_envs(tbreg); */                                              \
   undo_bindings(tbreg);                                                   \
   ptcpreg = cp_ptcp(tbreg);                                               \
-  delayreg = cp_pdreg(tbreg);                                             \
+  delayreg = cp_pdreg(tbreg);						\
+  supreg = cp_supreg(tbreg); /* Support Graph */			  \
   restore_some_wamregs(tbreg, ereg);                                      \
   restore_registers(tbreg, (int)op1, rreg);                               \
   if (restore_type == 1) { /* trust */                                    \
@@ -96,7 +97,8 @@
   /*  switch_envs(tbreg); */                                              \
   undo_bindings(tbreg);                                                   \
   ptcpreg = cp_ptcp(tbreg);                                               \
-  delayreg = cp_pdreg(tbreg);                                             \
+  delayreg = cp_pdreg(tbreg);						\
+  supreg = cp_supreg(tbreg); /* Support Graph */  			\
   restore_some_wamregs(tbreg, ereg);                                      \
   restore_registers(tbreg, (int)op1, rreg);                               \
   if (restore_type == 1) { /* trust */                                    \
@@ -116,7 +118,8 @@
   switch_envs(tbreg);                                                     \
   /* This CP should be used for the dependency graph */                   \
   ptcpreg = tcp_subgoal_ptr(tbreg);                                       \
-  delayreg = NULL;                                                        \
+  delayreg = NULL;							\
+  supreg = NULL; /* Support Graph */                                      \
   restore_some_wamregs(tbreg, ereg);                                      \
   table_restore_registers(tbreg, (int)op1, rreg);                         \
   if (restore_type == 1) {                                                \

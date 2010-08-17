@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.162 2010-06-22 23:50:47 spyrosh Exp $
+** $Id: init_xsb.c,v 1.163 2010-08-17 19:43:21 spyrosh Exp $
 ** 
 */
 
@@ -1320,6 +1320,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   reset_freeze_registers;
   openreg = ((CPtr) complstack.high);
   delayreg = NULL;
+  supreg = NULL; /* Support Graph */
 
   /* for incremenatal evaluation */
   affected = eneetq(); 
@@ -1336,6 +1337,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   cp_ereg(breg) = ereg;
   cp_prevbreg(breg) = breg;               /* note ! */
   cp_pdreg(breg) = delayreg;
+  cp_supreg(breg) = supreg; /* Support Graph */
 #ifdef CP_DEBUG
   cp_psc(breg) = 0;
 #endif
@@ -1447,6 +1449,8 @@ void init_symbols(CTXTdecl)
   box_psc = pair_psc(insert("$BOX$", 3, global_mod, &new_indicator));
 
   delay_psc = pair_psc(insert("DL", 3, global_mod, &new_indicator));
+  /* Support Graph */
+  support_psc = pair_psc(insert("SL", 3, global_mod, &new_indicator));
 
   standard_psc = pair_psc(insert_module(0, "standard"));	/* unloaded */
   setofmod_psc = pair_psc(insert_module(0, "setof"));	/* unloaded */

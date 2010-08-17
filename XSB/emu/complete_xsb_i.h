@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.43 2010-06-22 23:50:47 spyrosh Exp $
+** $Id: complete_xsb_i.h,v 1.44 2010-08-17 19:43:21 spyrosh Exp $
 ** 
 */
 
@@ -54,6 +54,7 @@ XSB_Start_Instr(check_complete,_check_complete)
   switch_envs(breg);    /* in CHAT: undo_bindings() */
   ptcpreg = tcp_ptcp(breg);
   delayreg = tcp_pdreg(breg);
+  supreg = tcp_supreg(breg); /* Support Graph */
 
   xsb_dbgmsg((LOG_DEBUG,"Check complete %x",breg));
 
@@ -129,6 +130,7 @@ XSB_Start_Instr(check_complete,_check_complete)
   switch_envs(breg);    /* in CHAT: undo_bindings() */
   ptcpreg = tcp_ptcp(breg);
   delayreg = tcp_pdreg(breg);
+  supreg = tcp_supreg(breg); /* Should this be set here? */
 
   subgoal = (VariantSF) tcp_subgoal_ptr(breg);	/* subgoal that is checked */
 

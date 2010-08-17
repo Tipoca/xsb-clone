@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.8 2010-07-29 17:19:26 tswift Exp $
+** $Id: incr_xsb.c,v 1.9 2010-08-17 19:43:21 spyrosh Exp $
 ** 
 */
 
@@ -153,7 +153,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
     Psc psc = (Psc)ptoc_addr(2);   
     if (get_tabled(psc) != T_TABLED_SUB) {
       set_incr(psc,ptoc_int(CTXTc 3));
-      //      printf("%s/%d:%u incr set to %d\n",get_name(psc),get_arity(psc),psc,ptoc_int(3));
+    //    printf("%s/%d:%u incr set to %d\n",get_name(psc),get_arity(psc),psc,ptoc_int(3));
     } else {
       xsb_abort("Cannot incrementally maintain a subsumptive table (%s/%d)",get_name(psc),get_arity(psc));
     }
@@ -162,11 +162,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
 
   case PSC_GET_INCR: {
     Psc psc = (Psc)ptoc_addr(2);   
-    if (get_incr(psc))
-	ctop_int(CTXTc 3,INCREMENTAL);
-    else if (get_opaque(psc))
-      ctop_int(CTXTc 3,OPAQUE);
-    else ctop_int(CTXTc 3,0);
+    ctop_int(CTXTc 3,get_incr(psc));
     break;
   }
 

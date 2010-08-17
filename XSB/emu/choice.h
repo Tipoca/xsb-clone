@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.36 2010-06-22 23:50:47 spyrosh Exp $
+** $Id: choice.h,v 1.37 2010-08-17 19:43:21 spyrosh Exp $
 ** 
 */
 #ifndef __CHOICE_H__
@@ -50,6 +50,7 @@ typedef struct choice_point {
     byte *_cpreg;	/* return point of the call to the procedure	*/
     CPtr _ereg;		/* current top of stack */
     CPtr pdreg;		/* value of delay register for the parent subgoal */
+    CPtr supreg;        /* Support Graph */
     CPtr ptcp;          /* pointer to parent tabled CP (subgoal) */
     CPtr prev;		/* dynamic link */
 } *Choice;
@@ -65,6 +66,7 @@ typedef struct choice_point {
 #define cp_prevbreg(b)		((Choice)(b))->prev
 #define cp_pdreg(b)		((Choice)(b))->pdreg
 #define cp_ptcp(b)              ((Choice)(b))->ptcp
+#define cp_supreg(b)            ((Choice)(b))->supreg /* Support Graph */
 
 
 #ifdef SLG_GC
@@ -81,6 +83,7 @@ typedef struct choice_point {
     t_breg -= CP_SIZE; \
     cp_ptcp(t_breg) = ptcpreg; \
     cp_pdreg(t_breg) = delayreg; \
+    cp_supreg(t_breg) = supreg;	/* Support Graph */ 	\
     cp_prevbreg(t_breg) = prev; \
     cp_ereg(t_breg) = t_ereg; \
     cp_cpreg(t_breg) = cpreg; \
@@ -110,6 +113,7 @@ typedef struct tabled_choice_point {
     byte *_cpreg;	/* return point of the call to the procedure */
     CPtr _ereg;		/* current top of stack */
     CPtr pdreg;		/* value of delay register for the parent subgoal */
+    CPtr supreg;	/* Support Graph */
     CPtr ptcp;		/* pointer to parent tabled CP (subgoal) */
     CPtr prev;		/* previous choicepoint */
     CPtr answer_template;
@@ -145,6 +149,7 @@ typedef struct tabled_choice_point {
 #define tcp_pdreg(b)		((TChoice)(b))->pdreg
 #define tcp_ptcp(b)		((TChoice)(b))->ptcp
 #define tcp_subgoal_ptr(b)	((TChoice)(b))->subgoal_ptr
+#define tcp_supreg(b)           ((TChoice)(b))->supreg  /* Support Graph */
 #ifdef CONC_COMPL
 #define tcp_compl_stack_ptr(b) ((TChoice)(b))->compl_stack_ptr
 #endif
@@ -200,6 +205,7 @@ typedef struct tabled_choice_point {
    TopCPS -= TCP_SIZE;					\
    tcp_ptcp(TopCPS) = ptcpreg;				\
    tcp_pdreg(TopCPS) = delayreg;			\
+   tcp_supreg(TopCPS) = supreg; /* Support Graph */	\
    tcp_ereg(TopCPS) = ereg;				\
    tcp_cpreg(TopCPS) = cpreg;				\
    tcp_trreg(TopCPS) = trreg;				\
@@ -248,6 +254,7 @@ typedef struct consumer_choice_point {
     byte *_cpreg;	/* return point of the call to the procedure */
     CPtr _ereg;		/* current top of local stack */
     CPtr pdreg;		/* value of delay register for the parent subgoal */
+    CPtr supreg;        /* Support Graph */
     CPtr ptcp;		/* pointer to parent tabled CP (subgoal) */
     CPtr prev;		/* prev top of choice point stack */
     CPtr answer_template;
@@ -269,6 +276,7 @@ typedef struct consumer_choice_point {
 #define nlcp_ereg(b)		((NLChoice)(b))->_ereg
 #define nlcp_subgoal_ptr(b)	((NLChoice)(b))->subgoal_ptr
 #define nlcp_pdreg(b)		((NLChoice)(b))->pdreg
+#define nlcp_supreg(b)          ((NLChoice)(b))->supreg /* Support Graph */
 #define nlcp_ptcp(b)		((NLChoice)(b))->ptcp
 #define nlcp_prevbreg(b)	((NLChoice)(b))->prev
 #define nlcp_prevlookup(b)	((NLChoice)(b))->prevlookup
@@ -298,6 +306,7 @@ typedef struct consumer_choice_point {
    nlcp_prevlookup(TopCPS) = PrevConsumer;			\
    nlcp_ptcp(TopCPS) = ptcpreg; 				\
    nlcp_pdreg(TopCPS) = delayreg; 				\
+   nlcp_supreg(TopCPS) = supreg; /* Support Graph */		\
    nlcp_prevbreg(TopCPS) = breg; 				\
    nlcp_ereg(TopCPS) = ereg; 					\
    nlcp_cpreg(TopCPS) = cpreg; 					\
@@ -331,6 +340,7 @@ typedef struct compl_susp_frame {
   byte *_cpreg;	/* return point of the call to the procedure */
   CPtr _ereg;		/* current top of stack */
   CPtr pdreg;		/* value of delay register for the parent subgoal */
+  CPtr supreg;  /* Support Graph */
   CPtr ptcp;		/* pointer to parent tabled CP (subgoal) */
   CPtr subgoal_ptr;	/* pointer to the call structure */
   CPtr prevcsf;	/* previous completion suspension frame */
@@ -346,6 +356,7 @@ typedef struct compl_susp_frame {
 #define csf_cpreg(b)		((ComplSuspFrame)(b))->_cpreg
 #define csf_ereg(b)		((ComplSuspFrame)(b))->_ereg
 #define csf_pdreg(b)		((ComplSuspFrame)(b))->pdreg
+#define csf_supreg(b)           ((ComplSuspFrame)(b))->supreg /* Support Graph */
 #define csf_ptcp(b)		((ComplSuspFrame)(b))->ptcp
 #define csf_subgoal_ptr(b)	((ComplSuspFrame)(b))->subgoal_ptr
 #define csf_prevcsf(b)		((ComplSuspFrame)(b))->prevcsf
@@ -377,6 +388,7 @@ typedef struct compl_susp_frame {
     csf_ptcp(t_breg) = t_ptcp; \
     SAVE_CSFPSC(t_breg); \
     csf_pdreg(t_breg) = delayreg; \
+    csf_supreg(t_breg) = supreg; /* Support Graph */ 	\
     csf_subgoal_ptr(t_breg) = subg; \
     csf_ereg(t_breg) = t_ereg; \
     csf_cpreg(t_breg) = CPREG; \
@@ -406,6 +418,7 @@ typedef struct compl_susp_choice_point {
   byte *_cpreg;	/* return point of the call to the procedure */
   CPtr _ereg;		/* current top of stack */
   CPtr pdreg;		/* value of delay register for the parent subgoal */
+  CPtr supreg; /* Support Graph */
   CPtr ptcp;		/* pointer to parent tabled CP (subgoal) */
 #endif
     CPtr prev;		/* lookup: previous choicepoint */
@@ -427,6 +440,7 @@ typedef struct compl_susp_choice_point {
 ((ComplSuspChoice)(t_breg))->_cpreg = cpreg; \
 ((ComplSuspChoice)(t_breg))->_ereg = ereg; \
 ((ComplSuspChoice)(t_breg))->pdreg = delayreg; \
+((ComplSuspChoice)(t_breg))->supreg = supreg; /* Support Graph */ \
 ((ComplSuspChoice)(t_breg))->ptcp = ptcpreg
 #else
 #define SAVE_CSCP_EXTRA(t_breg)
