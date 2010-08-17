@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.30 2010-08-17 20:48:36 spyrosh Exp $
+** $Id: complete_local.h,v 1.31 2010-08-17 21:10:30 spyrosh Exp $
 **
 */
 #ifndef __COMPLETE_LOCAL_H__

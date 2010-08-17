@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.24 2010-08-17 20:48:35 spyrosh Exp $
+** $Id: basictypes.h,v 1.25 2010-08-17 21:10:29 spyrosh Exp $
 ** 
 */
 

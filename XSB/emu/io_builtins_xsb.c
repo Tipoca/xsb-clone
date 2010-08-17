@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.82 2010-08-17 20:48:36 spyrosh Exp $
+** $Id: io_builtins_xsb.c,v 1.83 2010-08-17 21:10:30 spyrosh Exp $
 ** 
 */
 

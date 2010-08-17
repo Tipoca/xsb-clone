@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_delay.h,v 1.18 2010-08-17 20:48:37 spyrosh Exp $
+** $Id: tr_delay.h,v 1.19 2010-08-17 21:10:31 spyrosh Exp $
 ** 
 */
 

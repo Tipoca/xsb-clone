@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.h,v 1.7 2010-08-17 20:48:36 spyrosh Exp $
+** $Id: socket_xsb.h,v 1.8 2010-08-17 21:10:30 spyrosh Exp $
 ** 
 */
 
