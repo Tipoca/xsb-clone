@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_delete.c,v 1.22 2010-05-21 16:07:55 tswift Exp $
+** $Id: sub_delete.c,v 1.23 2010-08-17 20:44:29 spyrosh Exp $
 ** 
 */
 

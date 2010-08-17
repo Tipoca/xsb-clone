@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.48 2010-04-08 06:06:07 evansbj Exp $
+** $Id: std_pred_xsb_i.h,v 1.49 2010-08-17 20:44:28 spyrosh Exp $
 ** 
 */
 

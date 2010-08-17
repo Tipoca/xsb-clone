@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.h,v 1.16 2007-12-16 13:22:31 ruim Exp $
+** $Id: timer_xsb.h,v 1.17 2010-08-17 20:44:29 spyrosh Exp $
 ** 
 */
 

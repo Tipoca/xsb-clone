@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sw_envs.h,v 1.14 2005-10-03 13:26:43 tswift Exp $
+** $Id: sw_envs.h,v 1.15 2010-08-17 20:44:29 spyrosh Exp $
 ** 
 */
 

@@ -37,6 +37,9 @@
  * -------------------------------------------------------------------------- **
  *
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  2004/01/14 20:27:14  dwarren
+ * XSB Prolog Profiling as command line option -p
+ *
  * Revision 4.5  2000/01/08 23:26:49  crh
  * Added ubi_trSplay() macro, which does a type cast for us.
  *
@@ -166,9 +169,9 @@
  */
 
 static char ModuleID[] = "ubi_SplayTree\n\
-\t$Revision: 1.1 $\n\
-\t$Date: 2004-01-14 20:27:14 $\n\
-\t$Author: dwarren $\n";
+\t$Revision: 1.2 $\n\
+\t$Date: 2010-08-17 20:44:29 $\n\
+\t$Author: spyrosh $\n";
 
 
 /* ========================================================================== **

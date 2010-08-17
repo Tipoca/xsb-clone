@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.c,v 1.22 2010-01-17 06:30:45 kifer Exp $
+** $Id: orient_xsb.c,v 1.23 2010-08-17 20:44:28 spyrosh Exp $
 ** 
 */
 

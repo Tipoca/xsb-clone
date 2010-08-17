@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: desc_sli_xsb_i.h,v 1.2 2000-10-03 15:47:37 ejohnson Exp $
+** $Id: desc_sli_xsb_i.h,v 1.3 2010-08-17 20:44:37 spyrosh Exp $
 ** 
 */
 

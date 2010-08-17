@@ -27,6 +27,9 @@
  * -------------------------------------------------------------------------- **
  *
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2005/07/18 21:54:26  crojo
+ * *** empty log message ***
+ *
  * Revision 1.1  2004/01/14 20:27:14  dwarren
  * XSB Prolog Profiling as command line option -p
  *
@@ -189,9 +192,9 @@
  */
 
 static char ModuleID[] = "ubi_BinTree\n\
-\t$Revision: 1.2 $\n\
-\t$Date: 2005-07-18 21:54:26 $\n\
-\t$Author: crojo $\n";
+\t$Revision: 1.3 $\n\
+\t$Date: 2010-08-17 20:44:29 $\n\
+\t$Author: spyrosh $\n";
 
 /* ========================================================================== **
  * Internal (private) functions.

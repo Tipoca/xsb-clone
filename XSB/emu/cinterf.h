@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.52 2010-05-21 23:31:38 kifer Exp $
+** $Id: cinterf.h,v 1.53 2010-08-17 20:44:28 spyrosh Exp $
 ** 
 */
 

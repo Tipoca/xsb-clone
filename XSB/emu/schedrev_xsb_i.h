@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.24 2010-03-26 22:06:48 tswift Exp $
+** $Id: schedrev_xsb_i.h,v 1.25 2010-08-17 20:44:28 spyrosh Exp $
 ** 
 */
 

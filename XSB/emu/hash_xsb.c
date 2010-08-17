@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.18 2009-01-15 22:43:05 dwarren Exp $
+** $Id: hash_xsb.c,v 1.19 2010-08-17 20:44:28 spyrosh Exp $
 ** 
 */
 

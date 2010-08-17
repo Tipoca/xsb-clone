@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.35 2010-02-20 20:57:38 evansbj Exp $
+** $Id: pathname_xsb.c,v 1.36 2010-08-17 20:44:28 spyrosh Exp $
 ** 
 */
 

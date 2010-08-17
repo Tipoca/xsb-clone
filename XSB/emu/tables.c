@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.77 2010-08-17 19:43:21 spyrosh Exp $
+** $Id: tables.c,v 1.78 2010-08-17 20:44:29 spyrosh Exp $
 ** 
 */
 

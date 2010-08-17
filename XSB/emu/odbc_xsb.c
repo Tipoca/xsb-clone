@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.71 2010-01-30 20:24:32 evansbj Exp $
+** $Id: odbc_xsb.c,v 1.72 2010-08-17 20:44:28 spyrosh Exp $
 **
 */
 

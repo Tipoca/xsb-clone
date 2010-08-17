@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.38 2009-01-14 18:40:12 dwarren Exp $
+** $Id: trie_internals.h,v 1.39 2010-08-17 20:44:29 spyrosh Exp $
 ** 
 */
 

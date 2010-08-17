@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: proc.mk,v 1.2 2000-09-27 06:02:45 kifer Exp $
+## $Id: proc.mk,v 1.3 2010-08-17 20:44:28 spyrosh Exp $
 ## 
 ##
 

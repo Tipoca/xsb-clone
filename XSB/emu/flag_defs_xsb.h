@@ -20,10 +20,10 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 <<<<<<< flag_defs_xsb.h
-** $Id: flag_defs_xsb.h,v 1.31 2010-03-18 22:22:17 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.32 2010-08-17 20:44:28 spyrosh Exp $
 **
 =======
-** $Id: flag_defs_xsb.h,v 1.31 2010-03-18 22:22:17 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.32 2010-08-17 20:44:28 spyrosh Exp $
 **
 >>>>>>> 1.28
 */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.79 2010-08-17 19:43:21 spyrosh Exp $
+** $Id: heap_xsb.c,v 1.80 2010-08-17 20:44:28 spyrosh Exp $
 ** 
 */
 

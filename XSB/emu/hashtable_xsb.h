@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hashtable_xsb.h,v 1.5 2007-02-23 20:17:05 tswift Exp $
+** $Id: hashtable_xsb.h,v 1.6 2010-08-17 20:44:28 spyrosh Exp $
 ** 
 */
 
