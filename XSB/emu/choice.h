@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.38 2010-08-17 20:44:28 spyrosh Exp $
+** $Id: choice.h,v 1.39 2010-08-17 20:48:36 spyrosh Exp $
 ** 
 */
 #ifndef __CHOICE_H__

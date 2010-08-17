@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.h,v 1.9 2010-08-17 20:44:29 spyrosh Exp $
+** $Id: token_xsb.h,v 1.10 2010-08-17 20:48:37 spyrosh Exp $
 ** 
 */
 

@@ -37,6 +37,9 @@
  * -------------------------------------------------------------------------- **
  *
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2010/08/17 20:44:29  spyrosh
+ * no message
+ *
  * Revision 1.1  2004/01/14 20:27:14  dwarren
  * XSB Prolog Profiling as command line option -p
  *
@@ -169,8 +172,8 @@
  */
 
 static char ModuleID[] = "ubi_SplayTree\n\
-\t$Revision: 1.2 $\n\
-\t$Date: 2010-08-17 20:44:29 $\n\
+\t$Revision: 1.3 $\n\
+\t$Date: 2010-08-17 20:48:37 $\n\
 \t$Author: spyrosh $\n";
 
 
