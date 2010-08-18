@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.23 2010-08-17 21:10:31 spyrosh Exp $
+** $Id: trie_lookup.c,v 1.24 2010-08-18 03:09:52 spyrosh Exp $
 ** 
 */
 

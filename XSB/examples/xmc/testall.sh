@@ -3,7 +3,7 @@
 ## File:      testall.sh
 ## Author:    Baoqiu Cui (Changed from XSB's testsuites)
 ##
-## $Id: testall.sh,v 1.2 2001-07-01 22:25:25 gmkp Exp $
+## $Id: testall.sh,v 1.3 2010-08-18 03:10:17 spyrosh Exp $
 
 
 echo "-------------------------------------------------------"

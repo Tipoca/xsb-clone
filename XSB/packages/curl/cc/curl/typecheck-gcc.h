@@ -20,7 +20,7 @@
  * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
  * KIND, either express or implied.
  *
- * $Id: typecheck-gcc.h,v 1.1 2010-01-17 04:43:23 kifer Exp $
+ * $Id: typecheck-gcc.h,v 1.2 2010-08-18 03:10:32 spyrosh Exp $
  ***************************************************************************/
 
 /* wraps curl_easy_setopt() with typechecking */

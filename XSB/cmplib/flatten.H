@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: flatten.H,v 1.6 2006-01-17 21:52:35 dwarren Exp $
+** $Id: flatten.H,v 1.7 2010-08-18 03:09:39 spyrosh Exp $
 ** 
 */
 

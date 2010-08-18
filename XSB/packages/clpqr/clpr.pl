@@ -1,4 +1,4 @@
-/*  $Id: clpr.pl,v 1.1 2008-01-26 00:00:43 tswift Exp $
+/*  $Id: clpr.pl,v 1.2 2010-08-18 03:10:31 spyrosh Exp $
 
     Part of CLP(R) (Constraint Logic Programming over Reals)
     

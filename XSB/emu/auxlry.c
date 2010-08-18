@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.c,v 1.22 2010-08-18 03:08:12 spyrosh Exp $
+** $Id: auxlry.c,v 1.23 2010-08-18 03:09:51 spyrosh Exp $
 ** 
 */
 

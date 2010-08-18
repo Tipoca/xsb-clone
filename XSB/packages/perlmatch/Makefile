@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.14 2004-09-26 01:33:34 kifer Exp $
+## $Id: Makefile,v 1.15 2010-08-18 03:10:39 spyrosh Exp $
 ## 
 ##
 

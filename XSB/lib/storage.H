@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage.H,v 1.14 2010-06-23 02:28:37 kifer Exp $
+** $Id: storage.H,v 1.15 2010-08-18 03:10:18 spyrosh Exp $
 ** 
 */
 

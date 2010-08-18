@@ -1,4 +1,4 @@
-/*  $Id: parser.h,v 1.2 2005-03-07 20:31:23 kifer Exp $
+/*  $Id: parser.h,v 1.3 2010-08-18 03:10:39 spyrosh Exp $
 
     Part of SWI-Prolog
 

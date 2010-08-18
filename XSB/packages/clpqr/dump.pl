@@ -1,4 +1,4 @@
-/*  $Id: dump.pl,v 1.4 2008-02-01 00:26:51 tswift Exp $
+/*  $Id: dump.pl,v 1.5 2010-08-18 03:10:31 spyrosh Exp $
 
     Part of CLP(Q,R) (Constraint Logic Programming over Rationals and Reals)
     

@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.64 2007-08-22 19:21:23 tswift Exp $
+## $Id: emuMakefile.in,v 1.65 2010-08-18 03:09:39 spyrosh Exp $
 ##
 
 

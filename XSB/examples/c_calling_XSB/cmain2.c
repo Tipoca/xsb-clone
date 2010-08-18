@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cmain2.c,v 1.6 2000-06-08 06:50:38 kifer Exp $
+** $Id: cmain2.c,v 1.7 2010-08-18 03:10:13 spyrosh Exp $
 ** 
 */
 

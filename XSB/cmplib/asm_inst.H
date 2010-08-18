@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asm_inst.H,v 1.2 2005-01-14 18:30:44 ruim Exp $
+** $Id: asm_inst.H,v 1.3 2010-08-18 03:09:39 spyrosh Exp $
 ** 
 */
 

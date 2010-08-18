@@ -9,7 +9,7 @@
 **   Mats Carlsson, et al.  SICStus Prolog User's Manual.
 **   Swedish Institute of Computer Science, 1995. ISBN 91-630-3648-7
 **
-** $Id: assoc_xsb.P,v 1.6 2009-09-25 19:38:25 dwarren Exp $
+** $Id: assoc_xsb.P,v 1.7 2010-08-18 03:10:18 spyrosh Exp $
 ** 
 */
 

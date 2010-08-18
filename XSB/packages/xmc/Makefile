@@ -2,7 +2,7 @@
 ## Author(s): Yifei Dong
 ## Contact:   lmc@cs.sunysb.edu
 ##
-## $Id: Makefile,v 1.9 2004-09-26 01:33:33 kifer Exp $
+## $Id: Makefile,v 1.10 2010-08-18 03:10:45 spyrosh Exp $
 
 
 OBJEXT=.xwam

@@ -1,4 +1,4 @@
-/*  $Id: c_pairs.pl,v 1.1 2009-07-29 23:14:04 tswift Exp $
+/*  $Id: c_pairs.pl,v 1.2 2010-08-18 03:10:51 spyrosh Exp $
 
     Part of SWI-Prolog
 

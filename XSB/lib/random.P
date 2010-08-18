@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random.P,v 1.6 2008-02-18 19:53:42 tswift Exp $
+** $Id: random.P,v 1.7 2010-08-18 03:10:18 spyrosh Exp $
 ** 
 */
 

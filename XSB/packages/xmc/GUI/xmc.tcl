@@ -1,7 +1,7 @@
 ### xmc.tcl --- XMC GUI in Tcl/Tk
 
 ### Author: Yifei Dong
-### $Id: xmc.tcl,v 1.1 2001-05-31 16:30:38 lfcastro Exp $
+### $Id: xmc.tcl,v 1.2 2010-08-18 03:10:47 spyrosh Exp $
 
 package require Iwidgets 3.0
 

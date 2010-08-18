@@ -1,4 +1,4 @@
-/*  $Id: clp_events.pl,v 1.1 2008-02-13 21:00:06 tswift Exp $
+/*  $Id: clp_events.pl,v 1.2 2010-08-18 03:10:31 spyrosh Exp $
 
     Part of SWI-Prolog
 

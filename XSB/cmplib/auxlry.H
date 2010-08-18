@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.H,v 1.18 2008-04-27 15:29:10 tswift Exp $
+** $Id: auxlry.H,v 1.19 2010-08-18 03:09:39 spyrosh Exp $
 ** 
 */
 

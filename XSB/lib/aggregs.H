@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: aggregs.H,v 1.26 2010-03-05 14:07:44 dwarren Exp $
+** $Id: aggregs.H,v 1.27 2010-08-18 03:10:18 spyrosh Exp $
 ** 
 */
 

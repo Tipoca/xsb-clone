@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xasppkg.c,v 1.9 2009-03-14 20:56:25 tswift Exp $
+** $Id: xasppkg.c,v 1.10 2010-08-18 03:10:42 spyrosh Exp $
 ** 
 */
 

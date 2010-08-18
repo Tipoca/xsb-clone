@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_wildmatch.c,v 1.18 2009-08-19 22:55:22 tswift Exp $
+** $Id: xsb_wildmatch.c,v 1.19 2010-08-18 03:10:42 spyrosh Exp $
 ** 
 */
 

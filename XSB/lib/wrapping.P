@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wrapping.P,v 1.15 2009-11-09 15:51:36 tswift Exp $
+** $Id: wrapping.P,v 1.16 2010-08-18 03:10:18 spyrosh Exp $
 **
 */
 

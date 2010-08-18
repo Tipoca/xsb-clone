@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cvarstring_thread2.c,v 1.1 2007-02-22 00:21:57 tswift Exp $
+** $Id: cvarstring_thread2.c,v 1.2 2010-08-18 03:10:13 spyrosh Exp $
 ** 
 */
 

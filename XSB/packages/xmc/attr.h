@@ -18,7 +18,7 @@
 ** along with XMC; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: attr.h,v 1.2 2001-07-01 21:52:54 gmkp Exp $
+** $Id: attr.h,v 1.3 2010-08-18 03:10:45 spyrosh Exp $
 ** 
 */
 

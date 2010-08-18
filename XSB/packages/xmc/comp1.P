@@ -1,7 +1,7 @@
 %%% File: comp.P	-- XL Optimizing Compiler
 
 %%% Author:	Yifei Dong
-%%% $Id: comp1.P,v 1.1 2001-05-25 19:11:43 lfcastro Exp $
+%%% $Id: comp1.P,v 1.2 2010-08-18 03:10:45 spyrosh Exp $
 
 %% ------------------------------------------------------------------
 

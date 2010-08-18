@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sm_int.H,v 1.4 2007-09-27 17:43:35 tswift Exp $
+** $Id: sm_int.H,v 1.5 2010-08-18 03:10:42 spyrosh Exp $
 ** 
 */
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.26 2007-01-24 22:15:42 dwarren Exp $
+** $Id: odbc_call.H,v 1.27 2010-08-18 03:10:18 spyrosh Exp $
 **
 */
 

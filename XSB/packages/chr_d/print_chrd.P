@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: print_chrd.P,v 1.3 2007-06-21 20:16:00 beatas Exp $
+** $Id: print_chrd.P,v 1.4 2010-08-18 03:10:31 spyrosh Exp $
 ** 
 */
 

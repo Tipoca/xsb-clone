@@ -1,4 +1,4 @@
-/*  $Id: catalog.c,v 1.3 2005-03-07 20:31:24 kifer Exp $
+/*  $Id: catalog.c,v 1.4 2010-08-18 03:10:39 spyrosh Exp $
 
     Part of SWI-Prolog
 

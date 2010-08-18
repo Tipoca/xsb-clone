@@ -21,7 +21,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.5 2007-01-12 23:48:21 tswift Exp $
+## $Id: Makefile,v 1.6 2010-08-18 03:10:13 spyrosh Exp $
 ## 
 
 ##################### You may need to edit some of these!

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: standard.h,v 1.7 1999-11-29 07:59:56 kifer Exp $
+** $Id: standard.h,v 1.8 2010-08-18 03:10:51 spyrosh Exp $
 ** 
 */
 

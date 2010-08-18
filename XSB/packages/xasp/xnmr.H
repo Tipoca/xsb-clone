@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xnmr.H,v 1.3 2003-07-22 19:33:30 lfcastro Exp $
+** $Id: xnmr.H,v 1.4 2010-08-18 03:10:42 spyrosh Exp $
 ** 
 */
 

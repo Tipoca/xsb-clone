@@ -21,6 +21,10 @@
  *
  * History:
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  2002/12/06 20:15:39  tswift
+ *
+ * Initial open-source version
+ *
  * Revision 1.1  2002/09/11 19:52:41  warren
  * Files for reading RDF documents into the OMS.
  * Can read rdf directly and create simple relationship triples, or

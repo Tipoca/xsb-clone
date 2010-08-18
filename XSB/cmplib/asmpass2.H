@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asmpass2.H,v 1.10 2008-02-16 18:03:07 dwarren Exp $
+** $Id: asmpass2.H,v 1.11 2010-08-18 03:09:39 spyrosh Exp $
 ** 
 */
 

@@ -1,4 +1,4 @@
-/*  $Id: geler.pl,v 1.3 2008-02-13 20:56:59 tswift Exp $
+/*  $Id: geler.pl,v 1.4 2010-08-18 03:10:31 spyrosh Exp $
 
     Part of CLP(Q) (Constraint Logic Programming over Rationals)
 

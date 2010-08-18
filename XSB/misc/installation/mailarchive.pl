@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: mailarchive.pl,v 1.1 2000-05-25 22:31:53 kifer Exp $
+## $Id: mailarchive.pl,v 1.2 2010-08-18 03:10:25 spyrosh Exp $
 ## 
 ##
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_util.h,v 1.13 2007-08-09 04:13:41 evansbj Exp $
+** $Id: libwww_util.h,v 1.14 2010-08-18 03:10:37 spyrosh Exp $
 ** 
 */
 

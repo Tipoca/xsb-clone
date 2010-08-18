@@ -1,6 +1,6 @@
 %% Ported to hProlog by Tom Schrijvers, tom.schrijvers@cs.kuleuven.ac.be
 %%
-%% $Id: gauss.chr,v 1.2 2003-10-03 14:50:37 tschrijvers Exp $
+%% $Id: gauss.chr,v 1.3 2010-08-18 03:10:13 spyrosh Exp $
 
 %% Example usage:
 %%

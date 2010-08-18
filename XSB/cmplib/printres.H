@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: printres.H,v 1.3 2005-01-14 18:30:46 ruim Exp $
+** $Id: printres.H,v 1.4 2010-08-18 03:09:40 spyrosh Exp $
 ** 
 */
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: libwww_parse_html.c,v 1.13 2006-08-19 05:35:09 kifer Exp $
+** $Id: libwww_parse_html.c,v 1.14 2010-08-18 03:10:37 spyrosh Exp $
 ** 
 */
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.33 2010-08-17 21:10:30 spyrosh Exp $
+** $Id: dis.c,v 1.34 2010-08-18 03:09:51 spyrosh Exp $
 ** 
 */
 

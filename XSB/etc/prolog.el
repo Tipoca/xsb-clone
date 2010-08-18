@@ -8,7 +8,7 @@
 ;;         (see below for more details)
 ;; Keywords: prolog major mode xsb sicstus swi mercury
 ;;
-;; $Id: prolog.el,v 1.1 2000-05-10 23:01:52 cbaoqiu Exp $
+;; $Id: prolog.el,v 1.2 2010-08-18 03:10:10 spyrosh Exp $
 ;;
 ;; This program is a modified version of prolog.el included in SICStus
 ;; 3.8.  The modifications are made by Baoqiu Cui

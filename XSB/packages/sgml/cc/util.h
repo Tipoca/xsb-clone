@@ -1,4 +1,4 @@
-/*  $Id: util.h,v 1.2 2005-03-03 17:23:07 kifer Exp $
+/*  $Id: util.h,v 1.3 2010-08-18 03:10:40 spyrosh Exp $
 
     Part of SWI-Prolog
 

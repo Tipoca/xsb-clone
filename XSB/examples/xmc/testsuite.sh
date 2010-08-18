@@ -3,7 +3,7 @@
 ## File:      testsuite.sh (for XMC)
 ## Author:    Baoqiu Cui (Changed from XSB's testsuites)
 ##
-## $Id: testsuite.sh,v 1.2 2001-07-01 22:25:25 gmkp Exp $
+## $Id: testsuite.sh,v 1.3 2010-08-18 03:10:17 spyrosh Exp $
 
 #Usage: testsuite.sh [-opts opts] [-exclude exclude_list] \
 #    	     	     [-add add_list] [-only only_list] path
