@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.36 2010-08-18 03:10:25 spyrosh Exp $
+## $Id: Makefile,v 1.37 2010-08-19 15:03:38 spyrosh Exp $
 ## 
 ##
 

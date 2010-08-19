@@ -27,15 +27,6 @@
  * -------------------------------------------------------------------------- **
  *
  * $Log: not supported by cvs2svn $
- * Revision 1.5  2010/08/17 21:10:31  spyrosh
- * no message
- *
- * Revision 1.4  2010/08/17 20:48:37  spyrosh
- * no message
- *
- * Revision 1.3  2010/08/17 20:44:29  spyrosh
- * no message
- *
  * Revision 1.2  2005/07/18 21:54:26  crojo
  * *** empty log message ***
  *
@@ -201,8 +192,8 @@
  */
 
 static char ModuleID[] = "ubi_BinTree\n\
-\t$Revision: 1.6 $\n\
-\t$Date: 2010-08-18 03:09:52 $\n\
+\t$Revision: 1.7 $\n\
+\t$Date: 2010-08-19 15:03:37 $\n\
 \t$Author: spyrosh $\n";
 
 /* ========================================================================== **

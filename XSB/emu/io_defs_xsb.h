@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_defs_xsb.h,v 1.17 2010-08-18 03:09:52 spyrosh Exp $
+** $Id: io_defs_xsb.h,v 1.18 2010-08-19 15:03:36 spyrosh Exp $
 ** 
 */
 

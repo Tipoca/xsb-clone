@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.32 2010-08-18 03:09:51 spyrosh Exp $
+** $Id: complete_local.h,v 1.33 2010-08-19 15:03:36 spyrosh Exp $
 **
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -293,7 +293,7 @@ static inline void CompleteSimplifyAndReclaim(CTXTdeclc CPtr cs_ptr)
   SubConsSF pCons;
   CPtr ComplStkFrame = cs_ptr;
 
-  // printf("Child = %p\n",Child(ALN_Answer(subg_ans_list_ptr(compl_subgoal_ptr(ComplStkFrame)))));
+  //printf("Child = %p\n",Child(ALN_Answer(subg_ans_list_ptr(compl_subgoal_ptr(ComplStkFrame)))));
 
   /* mark all SCC as completed and do simplification also, reclaim
      space for all but the leader */
@@ -302,20 +302,20 @@ static inline void CompleteSimplifyAndReclaim(CTXTdeclc CPtr cs_ptr)
     compl_subg = compl_subgoal_ptr(ComplStkFrame);
     mark_as_completed(compl_subg);
     if (ProducerSubsumesSubgoals(compl_subg)) {
-      // fprintf(stddbg, "Producer:\n  ");
-      // sfPrintGoal(CTXTc stddbg, (VariantSF)compl_subg, YES);
-      // fprintf(stddbg, "\nConsumers:\n");
+      //      fprintf(stddbg, "Producer:\n  ");
+      //      sfPrintGoal(CTXTc stddbg, (VariantSF)compl_subg, YES);
+      //      fprintf(stddbg, "\nConsumers:\n");
       for ( pCons = subg_consumers(compl_subg);  IsNonNULL(pCons);
    	    pCons = conssf_consumers(pCons) ) {
-	// fprintf(stddbg, "  ");
-	// sfPrintGoal(CTXTc stddbg, (VariantSF)pCons, YES);
-	// fprintf(stddbg,": fails %d, nde %p\n",subgoal_fails(pCons),subg_nde_list(pCons));
-	// printAnswerList(CTXTc stddbg, subg_ans_list_ptr(pCons));
-	// fprintf(stddbg,"deleted %x, unique %x\n",
-	//	IsDeletedNode(ALN_Answer(subg_ans_list_ptr(pCons))),
-	//  		ALN_Next(subg_ans_list_ptr(pCons)));
+	//	fprintf(stddbg, "  ");
+	//	sfPrintGoal(CTXTc stddbg, (VariantSF)pCons, YES);
+	//	fprintf(stddbg,": fails %d, nde %p\n",subgoal_fails(pCons),subg_nde_list(pCons));
+	//	printAnswerList(CTXTc stddbg, subg_ans_list_ptr(pCons));
+	//	fprintf(stddbg,"deleted %x, unique %x\n",
+	//		IsDeletedNode(ALN_Answer(subg_ans_list_ptr(pCons))),
+		  //		ALN_Next(subg_ans_list_ptr(pCons)));
 	if (subsumed_neg_simplif_possible(pCons)) {
-	  // printf("initiating simpl from compl "),print_subgoal(stddbg,pCons);printf("\n");
+	  //	  printf("initiating simpl from compl "),print_subgoal(stddbg,pCons);printf("\n");
 	  simplify_neg_fails(CTXTc (VariantSF) pCons);
 	}
       }
@@ -378,7 +378,6 @@ static inline void SetupReturnFromLeader(CTXTdeclc CPtr orig_breg, CPtr cs_ptr,
      much can be reclaimed if there are answers to be returned */
   ptcpreg = tcp_ptcp(orig_breg);
   delayreg = tcp_pdreg(orig_breg);
-  supreg = tcp_supreg(orig_breg); /* Support Graph */
   restore_some_wamregs(orig_breg, ereg);
   /* restore_trail_condition_registers - because success path
    * will be followed

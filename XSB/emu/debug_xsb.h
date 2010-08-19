@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.15 2010-08-18 03:09:51 spyrosh Exp $
+** $Id: debug_xsb.h,v 1.16 2010-08-19 15:03:36 spyrosh Exp $
 ** 
 */
 
@@ -110,10 +110,6 @@ extern void print_delay_list(struct th_context * ,FILE *, CPtr);
       printAnswerTemplate(FP,PAT,S)
 extern void print_completion_stack(void);
 extern void printterm(FILE *, Cell, int);
-/* Support Graph */
-extern void printterm_tostr(char *, Cell, int);
-extern void print_call(Psc);
-extern void printTIF(TIFptr );
 #else
 
 #ifndef MULTI_THREAD

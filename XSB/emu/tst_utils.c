@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.37 2010-08-18 03:09:52 spyrosh Exp $
+** $Id: tst_utils.c,v 1.38 2010-08-19 15:03:37 spyrosh Exp $
 ** 
 */
 
@@ -197,7 +197,7 @@ void printTrieSymbol(FILE *fp, Cell symbol) {
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 void printTrieNode(FILE *fp, BTNptr pTN) {
-  fprintf(fp, "Trie Symbol Type: %d\n", TrieSymbolType(TN_Symbol(pTN)));
+
   fprintf(fp, "Trie Node: Addr(%p)", pTN);
   if ( IsDeletedNode(pTN) )
     fprintf(fp, "  (DELETED)");
@@ -208,8 +208,7 @@ void printTrieNode(FILE *fp, BTNptr pTN) {
 	  stringNodeType(TN_NodeType(pTN)),
 	  stringTrieType(TN_TrieType(pTN)));
   printTrieSymbol(fp, TN_Symbol(pTN));
-  fprintf(fp, ")\n");
-  fprintf(fp, "Trie Symbol Type: %d\n", TrieSymbolType(TN_Symbol(pTN)));
+  fprintf(fp, ")");
   if ( IsInTimeStampedTrie(pTN) )
     fprintf(fp, ", TimeStamp(%ld)", TSTN_TimeStamp((TSTNptr)pTN));
   fprintf(fp, "\n\tParent(%p), Child(%p), Sibling(%p)\n",

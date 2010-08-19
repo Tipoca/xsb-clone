@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.51 2010-08-18 03:09:51 spyrosh Exp $
+** $Id: error_xsb.h,v 1.52 2010-08-19 15:03:36 spyrosh Exp $
 ** 
 */
 
@@ -52,7 +52,7 @@ extern "C" {
 			       OVERFLOW clashes with some C compilers */
 #define RANGE		10
 #define SYNTAX		11
-#define TYPE		12
+  //#define TYPE		12
 #define UNDEFINED_PRED	13
 #define UNDEFINED_VAL	14
 #define XSBUNDERFLOW	15  /* renamed from UNDERFLOW. This def isn't used, but

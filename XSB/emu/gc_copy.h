@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_copy.h,v 1.15 2010-08-18 03:09:51 spyrosh Exp $
+** $Id: gc_copy.h,v 1.16 2010-08-19 15:03:36 spyrosh Exp $
 ** 
 */
 
@@ -300,25 +300,6 @@ static CPtr copy_heap(CTXTdeclc int marked, CPtr begin_new_h, CPtr end_new_h, in
 	    }
         }
     }
-
-    /* Support Graph */
-    { CPtr p;
-
-      if (supreg != NULL)
-	{ 
-	  p = (CPtr)(&supreg);
-	  contents = cell(p) ;
-          q = hp_pointer_from_cell(CTXTc contents,&tag) ;
-          if (!q)
-	    xsb_dbgmsg((LOG_GC, "non null supreg points not in heap"));
-          else
-	    {
-	      if (h_marked(q-heap_bot)) { find_and_copy_block(CTXTc q); }
-	      adapt_external_heap_pointer(p,q,tag);
-	    }
-        }
-    }
-
 
     /* now do the reg_array registers, if nec */
 

@@ -43,15 +43,6 @@
  * -------------------------------------------------------------------------- **
  *
  * $Log: not supported by cvs2svn $
- * Revision 1.4  2010/08/17 21:10:31  spyrosh
- * no message
- *
- * Revision 1.3  2010/08/17 20:48:36  spyrosh
- * no message
- *
- * Revision 1.2  2010/08/17 20:44:29  spyrosh
- * no message
- *
  * Revision 1.1  2004/01/14 20:27:13  dwarren
  * XSB Prolog Profiling as command line option -p
  *

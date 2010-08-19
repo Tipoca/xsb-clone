@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.83 2010-08-18 03:09:51 spyrosh Exp $
+** $Id: emudef.h,v 1.84 2010-08-19 15:03:36 spyrosh Exp $
 ** 
 */
 
@@ -64,8 +64,6 @@ CPtr root_address;
 
 CPtr ptcpreg = NULL;
 CPtr delayreg;
-/* Support Graph */
-CPtr supreg;
 
 #ifdef DEMAND
 /* demand-freeze registers */
@@ -102,7 +100,7 @@ Pair list_pscPair;
 
 Psc list_psc, comma_psc, true_psc, if_psc, colon_psc, caret_psc, ccall_mod_psc, c_callloop_psc;
 Psc tnot_psc, delay_psc, cond_psc, cut_psc, load_undef_psc, setof_psc, bagof_psc;
-Psc box_psc, support_psc; /* Support Graph */
+Psc box_psc;
 
 /*
  * Ret PSC's are used to store substitution factors for subgoal calls

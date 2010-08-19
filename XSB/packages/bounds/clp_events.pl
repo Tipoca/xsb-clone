@@ -1,4 +1,4 @@
-/*  $Id: clp_events.pl,v 1.2 2010-08-18 03:10:31 spyrosh Exp $
+/*  $Id: clp_events.pl,v 1.3 2010-08-19 15:03:38 spyrosh Exp $
 
     Part of SWI-Prolog
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.28 2010-08-18 03:09:51 spyrosh Exp $
+** $Id: cut_xsb.h,v 1.29 2010-08-19 15:03:36 spyrosh Exp $
 ** 
 */
 

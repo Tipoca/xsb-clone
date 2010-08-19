@@ -1,6 +1,6 @@
 # File: XSB/docs/userman/Makefile
 #
-# $Id: Makefile,v 1.6 2010-08-18 03:09:49 spyrosh Exp $
+# $Id: Makefile,v 1.7 2010-08-19 15:03:36 spyrosh Exp $
 
 .PHONY: all manual1 manual2
 

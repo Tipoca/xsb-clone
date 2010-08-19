@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trassert.h,v 1.15 2010-08-18 03:09:52 spyrosh Exp $
+** $Id: trassert.h,v 1.16 2010-08-19 15:03:37 spyrosh Exp $
 ** 
 */
 
@@ -27,7 +27,6 @@
 extern int trie_assert(CTXTdecl);
 extern int trie_retract(CTXTdecl);
 extern int trie_retract_safe(CTXTdecl);
-extern int increm_assert(CTXTdecl);
 
 
 #ifdef MULTI_THREAD

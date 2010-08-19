@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.H,v 1.24 2010-08-18 03:09:39 spyrosh Exp $
+** $Id: compile.H,v 1.25 2010-08-19 15:03:35 spyrosh Exp $
 ** 
 */
 

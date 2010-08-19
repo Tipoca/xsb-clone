@@ -1,4 +1,4 @@
-/*  $Id: c_aggregate.pl,v 1.2 2010-08-18 03:10:51 spyrosh Exp $
+/*  $Id: c_aggregate.pl,v 1.3 2010-08-19 15:03:40 spyrosh Exp $
 
     Part of SWI-Prolog
 

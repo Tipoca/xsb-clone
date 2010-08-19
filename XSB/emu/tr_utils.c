@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.c,v 1.192 2010/05/21 17:00:53 tswift Exp $
+** $Id: tr_utils.c,v 1.193 2010/06/18 17:07:05 tswift Exp $
 ** 
 */
 
@@ -70,13 +70,13 @@
 #include "call_graph_xsb.h" /* incremental evaluation */
 #include "table_inspection_defs.h"
 #include "heap_xsb.h"
-
+#include "residual.h"
 /*----------------------------------------------------------------------*/
 
 extern void print_subgoal(CTXTdeclc FILE *, VariantSF);
 
 #define MAX_VAR_SIZE	200
-BTNptr *Set_ArrayPtr = NULL;
+
 #include "ptoc_tag_xsb_i.h"
 #include "term_psc_xsb_i.h"
 
@@ -366,135 +366,6 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
 
     return sf;
   }
-}
-
-/* Support Graph */
-VariantSF get_dirty_count(Cell callTerm,int *dirty_count) {
-
-  Psc  psc;
-  TIFptr tif;
-  int arity;
-  BTNptr root, leaf;
-  VariantSF sf;
-  Cell callVars[MAX_VAR_SIZE + 1];
-
-  
-  psc = term_psc(callTerm);
-  if ( IsNULL(psc) ) {
-    err_handle(TYPE, 1, "get_dirty_count", 3, "callable term", callTerm);
-    return NULL;
-  }
-
-  tif = get_tip(psc);
-  if ( IsNULL(tif) )
-    xsb_abort("Predicate %s/%d is not tabled", get_name(psc), get_arity(psc));
-
-  root = TIF_CallTrie(tif);
-  if ( IsNULL(root) )
-    return NULL;
-
-  arity = get_arity(psc);
-  leaf = variant_trie_lookup(root, arity, clref_val(callTerm) + 1, callVars);
-  if ( IsNULL(leaf) )
-    return NULL;
-  else {
-    sf = CallTrieLeaf_GetSF(leaf);
-    *dirty_count=sf->dirty_count;
-    return sf;
-  }
-}
-
-
-VariantSF get_timestamp(Cell callTerm, int *timestamp,int *dirty_bit1) {
-
-  Psc  psc;
-  TIFptr tif;
-  int arity;
-  BTNptr root, leaf;
-  VariantSF sf;
-  Cell callVars[MAX_VAR_SIZE + 1];
-
-
-  psc = term_psc(callTerm);
-  if ( IsNULL(psc) ) {
-    err_handle(TYPE, 1, "get_timestamp", 3, "callable term", callTerm);
-    return NULL;
-  }
-
-  tif = get_tip(psc);
-  if ( IsNULL(tif) )
-    xsb_abort("Predicate %s/%d is not tabled", get_name(psc), get_arity(psc));
-
-  root = TIF_CallTrie(tif);
-  if ( IsNULL(root) )
-    return NULL;
-
-  arity = get_arity(psc);
-  leaf = variant_trie_lookup(root, arity, clref_val(callTerm) + 1, callVars);
-  if ( IsNULL(leaf) )
-    return NULL;
-  else {
-    sf = CallTrieLeaf_GetSF(leaf);
-    /*  *timestamp=sf->local_timestamp; */
-    *dirty_bit1=sf->dirty_count;
-    return sf;
-  }
-}
-
-
-void incr_trie_dispose(void)
-{
-  BTNptr Leaf;
-  Leaf = (BTNptr)ptoc_int(CTXTc 2);
-  switch_to_trie_assert;
-  /* is VARIANT_EVAL_METHOD correct here? */
-  delete_branch(Leaf, &(Set_ArrayPtr[0]),VARIANT_EVAL_METHOD);
-  //delete_branch(Leaf, &(Set_ArrayPtr[0]),SUBSUMPTIVE_EVAL_METHOD);
-  switch_from_trie_assert;
-  orlistptr ptrorlist1=(orlistptr)malloc(sizeof(struct _orlist));
-  ptrorlist1->item = Leaf->ornode;
-  ptrorlist1->next = delta_minus ;     
-  delta_minus = ptrorlist1;
-}
-
-
-
-void fast_intern(prolog_term term){
-  int flag;
-  BTNptr Leaf;
- 
-  switch_to_trie_assert;
-  /* are the two last arguments correct here? */
-  Leaf = whole_term_chk_ins(term,&(Set_ArrayPtr[0]),&flag,0,0);
-  if(flag==0)
-    Leaf->ornode=makeornode(Leaf); 
-  
-  add_answer_support(4,Leaf);
-  switch_from_trie_assert;
-}
-
-
-void trie_intern(void)
-{
-  prolog_term term;
-  int RootIndex;
-  int flag;
-  BTNptr Leaf;
-
-  term = ptoc_tag(2);
-  RootIndex = ptoc_int(CTXTc 3);
-
-  xsb_dbgmsg((LOG_INTERN, "Interning "));
-  dbg_printterm(LOG_INTERN,stddbg,term,25);
-  xsb_dbgmsg((LOG_INTERN, "In trie with root %d", RootIndex));
-
-  switch_to_trie_assert;
-  Leaf = whole_term_chk_ins(term,&(Set_ArrayPtr[RootIndex]),&flag,0,0);
-  switch_from_trie_assert;
-  
-  ctop_int(CTXTc 4,(Integer)Leaf);
-  ctop_int(CTXTc 5,flag);
-  xsb_dbgmsg((LOG_INTERN, "Exit flag %d",flag));
 }
 
 /*======================================================================*/
@@ -1019,11 +890,12 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
   BTNptr prev, parent_ptr, *y1, *z;
   Structure_Manager *smNODEptr;
 
+  //  printf("delete branch %p %p\n",lowest_node_in_branch,*hook);
+
   if (eval_method == VARIANT_EVAL_METHOD)
     smNODEptr = smBTN;
   else 
     smNODEptr = &smTSTN;
-
   while ( IsNonNULL(lowest_node_in_branch) && 
 	  ( Contains_NOCP_Instr(lowest_node_in_branch) ||
 	    IsTrieRoot(lowest_node_in_branch) ) ) {
@@ -1034,6 +906,7 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
      */
     set_parent_and_node_hook(lowest_node_in_branch,hook,&parent_ptr,&y1);
     if (is_hash(*y1)) {
+      //      printf("found hash\n");
       z = CalculateBucketForSymbol((BTHTptr)(*y1),
 				   BTN_Symbol(lowest_node_in_branch));
 #ifdef DEBUG_VERBOSE
@@ -1048,7 +921,11 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
 	 * the same chain.  Therefore we cannot delete the parent, and so
 	 * we're done.
 	 */
-	SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
+	if ( *(((prolog_int *)lowest_node_in_branch)+1) ==  FREE_TRIE_NODE_MARK) 
+	  ;//printf("double deallocation in delete_branch %p\n",lowest_node_in_branch);
+	else{
+	  SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
+	}
 	return;
       }
       else
@@ -1057,8 +934,14 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
     /*
      *  Remove this node and continue.
      */
-    //    printf("deleting %x\n",lowest_node_in_branch->symbol);
-    SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
+    if ( *(((prolog_int *)lowest_node_in_branch)+1) ==  FREE_TRIE_NODE_MARK)  
+      return;//printf("double deallocation in delete_branch %p\n",lowest_node_in_branch);
+    else{
+      //      printf("deleting-1 %p ",lowest_node_in_branch);
+      //      print_trie_atom(lowest_node_in_branch->symbol);printf("\n");
+    
+      SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
+    }
     lowest_node_in_branch = parent_ptr;
   }
 
@@ -1087,7 +970,13 @@ void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval
 	BTN_Instr(prev) -= 2; /* retry -> trust ; try -> nocp */
     }
     //    printf("deleting %x\n",lowest_node_in_branch->symbol);
-    SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
+    if ( *(((prolog_int *)lowest_node_in_branch)+1) ==  FREE_TRIE_NODE_MARK) 
+      ;//      printf("double deallocation in delete_branch %p\n",lowest_node_in_branch);
+    else{
+      //      printf("deleting-2 %p ",lowest_node_in_branch);
+      //      print_trie_atom(lowest_node_in_branch->symbol);printf("\n");
+      SM_DeallocateStruct(*smNODEptr,lowest_node_in_branch);
+    }
   }
 }
 
@@ -1620,7 +1509,7 @@ void private_trie_intern(CTXTdecl) {
   Leaf = whole_term_chk_ins(CTXTc term,&(itrie_array[index].root),
 			    &flag,check_cps_flag,expand_flag);
   switch_from_trie_assert;
-  
+  //  printf("root %p\n",itrie_array[index].root);
   ctop_int(CTXTc 3,(Integer)Leaf);
   ctop_int(CTXTc 4,flag);
 }
@@ -3071,7 +2960,7 @@ void abolish_table_call_transitive(CTXTdeclc VariantSF subgoal) {
     Psc psc;
     int action;
 
-       printf("in abolish_table_call_transitive\n");
+    //       printf("in abolish_table_call_transitive\n");
     tif = subg_tif_ptr(subgoal);
     psc = TIF_PSC(tif);
 
@@ -3989,6 +3878,24 @@ void release_private_tabling_resources(CTXTdecl) {
 /* abolish_all_tables() and supporting code */
 /*------------------------------------------------------------------*/
 
+void reinitialize_incremental_tries(CTXTdecl) {
+
+int index =  itrie_array_first_trie;
+
+ if (index >= 0) {
+   do {
+     if (itrie_array[index].callnode != NULL) {
+       //       printf("incremental trie %d\n",index);
+       initoutedges((callnodeptr)itrie_array[index].callnode);
+     }
+     //     printf("next %d\n",itrie_array[index].next_entry);
+     index = itrie_array[index].next_entry;
+   }
+   while (index >= 0);
+ }
+}
+
+
 /*
  * Frees all the tabling space resources (with a hammer)
  * WFS stuff released elsewhere -- including smASI.
@@ -4094,7 +4001,8 @@ void abolish_all_tables(CTXTdecl)
 
   reset_freeze_registers;
   openreg = COMPLSTACKBOTTOM;
-  hashtable1_destroy_all(0);  /* free all incr hashtables in use */
+  hashtable1_destroy_all(0);             /* free all incr hashtables in use */
+  reinitialize_incremental_tries(CTXT);  
   release_all_tabling_resources(CTXT);
   abolish_wfs_space(CTXT); 
 
@@ -4672,8 +4580,17 @@ case CALL_SUBS_SLG_NOT: {
       return TRUE;
     }
   }
-}
+    }
 
+  case GET_PRED_CALLTRIE_PTR: {
+    
+    Psc psc = (Psc)ptoc_int(CTXTc 2);
+    if (get_tip(CTXTc psc))
+      ctop_int(CTXTc 3,(Integer)TIF_CallTrie(get_tip(CTXTc psc)));
+    else 
+      ctop_int(CTXTc 3,0);
+  }
+    
   }
   return TRUE;
 }

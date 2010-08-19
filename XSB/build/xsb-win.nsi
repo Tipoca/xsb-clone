@@ -6,7 +6,7 @@
 ;with gcc and ming-gw (requires cygwin). It also adds shortcuts to the start menu
 ;and desktop. Uninstall is also supported.
 ;
-;$Id: xsb-win.nsi,v 1.3 2010-08-18 03:09:39 spyrosh Exp $
+;$Id: xsb-win.nsi,v 1.4 2010-08-19 15:03:35 spyrosh Exp $
 ;--------------------------------
 SetCompressor zlib
 

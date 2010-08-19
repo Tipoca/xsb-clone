@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_slide.h,v 1.22 2010-08-18 03:09:51 spyrosh Exp $
+** $Id: gc_slide.h,v 1.23 2010-08-19 15:03:36 spyrosh Exp $
 ** 
 */
 
@@ -264,11 +264,11 @@ static void sort_buffer(unsigned long *indata, unsigned long insize)
 #ifdef GC
 
 static CPtr slide_heap(CTXTdeclc int num_marked)
-{ 
+{
   int  tag = 0;  // TLS: to quiet compiler
   Cell contents;
   CPtr p, q ;
-  
+
   /* chain external (to heap) pointers */      
 
     /* chain argument registers */
@@ -281,7 +281,7 @@ static CPtr slide_heap(CTXTdeclc int num_marked)
     /* more precise traversal of trail possible */
 
     { CPtr endtr ;
-      endtr = tr_top ; 
+      endtr = tr_top ;
       for (p = tr_bot; p <= endtr ; p++ ) 
 	{ contents = cell(p) ;
 	  /* TLS: why is the top of trail special? */
@@ -290,7 +290,6 @@ static CPtr slide_heap(CTXTdeclc int num_marked)
 	  continue;
 	tr_clear_mark(p-tr_bot);
 #endif
-
 	  q = hp_pointer_from_cell(CTXTc contents,&tag) ;
 	  if (!q) continue ;
 	  if (! h_marked(q-heap_bot)) {
@@ -304,14 +303,13 @@ static CPtr slide_heap(CTXTdeclc int num_marked)
 
     /* chain choicepoints */
     /* more precise traversal of choice points possible */
-    // brakes after this point
+
     { CPtr endcp ;
       endcp = cp_top ;
       for (p = cp_bot; p >= endcp ; p--)
 	{ contents = cell(p) ;
 	  q = hp_pointer_from_cell(CTXTc contents,&tag) ;
 	  if (!q) continue ;
-	  // breaks in the next operation
 	  if (! h_marked(q-heap_bot))
 	    { xsb_dbgmsg((LOG_DEBUG, "not marked from cp(%p)",p)); continue ; }
 	  if (h_is_chained(q)) cp_set_chained(p) ;
@@ -319,7 +317,7 @@ static CPtr slide_heap(CTXTdeclc int num_marked)
 	  swap_with_tag(CTXTc p,q,tag) ;
 	}
     }
-    // and before this point
+
 
     /* chain local stack */
     /* more precise traversal of local stack possible */

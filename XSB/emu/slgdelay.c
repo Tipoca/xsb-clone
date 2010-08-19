@@ -52,7 +52,6 @@
 #include "dynamic_stack.h"
 #include "tst_aux.h"
 
-
 static void simplify_neg_succeeds(CTXTdeclc VariantSF);
 extern void simplify_pos_unsupported(CTXTdeclc NODEptr);
 static void simplify_pos_unconditional(CTXTdeclc NODEptr);
@@ -357,6 +356,7 @@ void *simpl_var_trie_lookup(CTXTdeclc void *branchRoot, xsbBool *wasFound,
   			   standardizing variables when interned.
   			   This is needed for handling non-linear
   			   variables in construct_ground_term() */
+
   parent = branchRoot;
   std_var_num = Trail_NumBindings;
   while ( ! TermStack_IsEmpty ) {
@@ -374,13 +374,13 @@ void *simpl_var_trie_lookup(CTXTdeclc void *branchRoot, xsbBool *wasFound,
       SearchChainForSymbol(chain,symbol,chain_length);
       if ( IsNonNULL(chain) )
     	  parent = chain;
-      else { 
+      else {
     	  *wasFound = FALSE;
     	  *failedSymbol = symbol;
     	  return NULL;
       }
     }
-  } 
+  }
   *wasFound = TRUE;
   return parent;
 }
@@ -485,7 +485,7 @@ static DE intern_delay_element(CTXTdeclc Cell delay_elem)
   ans_subst = (NODEptr) addr_val(tmp_cell);
   tmp_cell = cell(cptr + 3);
 
-  // fprintf(stddbg,"DE: ");print_delay_element(CTXTc stddbg, delay_elem);fprintf(stddbg,"\n");
+  //  fprintf(stddbg,"DE: ");print_delay_element(CTXTc stddbg, delay_elem);fprintf(stddbg,"\n");
   /*
    * cell(cptr + 3) can be one of the following:
    *   1. integer 0 (NEG_DELAY), for a negative DE;
@@ -798,7 +798,7 @@ void do_delay_stuff_shared(CTXTdeclc NODEptr as_leaf, VariantSF subgoal, xsbBool
     DL dl = NULL;
 
     if (delayreg) {
-      // print_delay_list(CTXTc stddbg,delayreg);fprintf(stddbg,"\n");
+      //      print_delay_list(CTXTc stddbg,delayreg);fprintf(stddbg,"\n");
       SYS_MUTEX_LOCK( MUTEX_DELAY ) ;
       if (!sf_exists || is_conditional_answer(as_leaf)) {
         if ((dl = intern_delay_list(CTXTc delayreg)) != NULL) {
@@ -995,7 +995,7 @@ void *simpl_variant_trie_lookup(CTXTdeclc void *trieRoot, int nTerms, CPtr termV
 
   TermStack_ResetTOS;
   TermStack_PushLowToHighVector(termVector,DynStk_NumFrames(tstSymbolStack));
-    //printSymbolStack(CTXTc stddbg, "tstTermStack", tstTermStack);
+  //  printSymbolStack(CTXTc stddbg, "tstTermStack", tstTermStack);
   trieNode = simpl_var_trie_lookup(CTXTc trieRoot,&wasFound,&symbol);
 
   return trieNode;
@@ -1083,9 +1083,8 @@ void construct_ground_term(CTXTdeclc BTNptr as_leaf,VariantSF subgoal) {
 
 int is_ground_answer(NODEptr as_leaf) {
   while (! IsTrieRoot(as_leaf)) {
-    // printTrieNode(stddbg,as_leaf);
-    if ( IsTrieVar(TN_Symbol(as_leaf) ))
-    // if ( IsTrieVar(as_leaf) )
+    //    printTrieNode(stddbg,as_leaf);
+    if ( IsTrieVar(as_leaf) )
       return 0;
     else as_leaf = TSTN_Parent(as_leaf);
   }
@@ -1104,7 +1103,7 @@ static void handle_empty_dl_creation(CTXTdeclc DL dl)
   NODEptr as_leaf = dl_asl(dl);
   ASI asi = Delay(as_leaf);
   VariantSF subgoal;
-  // printf("is_ground_answer(as_leaf)? (on call): %d\n", is_ground_answer(as_leaf));
+
   /*
    * Only when `as_leaf' is still a conditional answer can we do
    * remove_dl_from_dl_list(), simplify_pos_unconditional(), and
@@ -1119,61 +1118,41 @@ static void handle_empty_dl_creation(CTXTdeclc DL dl)
   if (is_conditional_answer(as_leaf)) {	/* if it is still conditional */
     remove_dl_from_dl_list(CTXTc dl, asi);
     subgoal = asi_subgoal(Delay(as_leaf));
-    // fprintf(stddbg,"in handle empty dl ");
-    // fprintf(stddbg, ">>>> the subgoal is: ");
-    // print_subgoal(stddbg, subgoal); fprintf(stddbg,"\n");
-    // fprintf(stddbg, ">>>> the answer is: ");
-    // printTriePath(CTXTc stddbg, as_leaf, FALSE); fprintf(stddbg,"\n");
-    // printf("dl list %p\n",asi_dl_list(Delay(as_leaf)));
-    
+    //    fprintf(stddbg,"in handle empty dl ");
+    //    fprintf(stddbg, ">>>> the subgoal is: ");
+    //    print_subgoal(stddbg, subgoal); fprintf(stddbg,"\n");		<----
+    //    fprintf(stddbg, ">>>> the answer is: ");
+    //    printTriePath(CTXTc stddbg, as_leaf, FALSE); fprintf(stddbg,"\n");		<----
+    //    printf("dl list %p\n",asi_dl_list(Delay(as_leaf)));
+
     /*
      * simplify_pos_unconditional(as_leaf) will release all other DLs for
      * as_leaf, and mark as_leaf as UNCONDITIONAL.
      */
-    // printf("IsSubProdSF(subgoal)? : %d\n", IsSubProdSF(subgoal));
-    // printf("is_ground_answer(as_leaf)? : %d\n", is_ground_answer(as_leaf));
-    //S printf("where 3\n");
     simplify_pos_unconditional(CTXTc as_leaf);
-    // printf("is_ground_answer(as_leaf)? (on call): %d\n", is_ground_answer(as_leaf));
+
     /* Perform simplify_neg_succeeds() for consumer sfs (producers and
        variants done below) */
-    //S    print_subgoal(stddbg, subgoal); fprintf(stddbg,"\n");
-    //S    printTriePath(CTXTc stddbg, as_leaf, FALSE); fprintf(stddbg,"\n");
- 
-    
-     /* as_leaf is NOT ground in the second call */
-    
-    // printf("IsSubProdSF(subgoal)? : %d\n", IsSubProdSF(subgoal));
-    // printf("is_ground_answer(as_leaf)? : %d\n", is_ground_answer(as_leaf));
-    
     if (IsSubProdSF(subgoal) && is_ground_answer(as_leaf)) {
-      // printf("into if?\n");
       BTNptr leaf;
       Cell callVars[NUM_TRIEVARS];
-
       construct_ground_term(CTXTc as_leaf,subgoal);
 
       leaf = simpl_variant_trie_lookup(CTXTc TIF_CallTrie(subg_tif_ptr(subgoal)),
 				 get_arity(TIF_PSC(subg_tif_ptr(subgoal))),
-				 (CPtr) DynStk_Base(tstSymbolStack),
-				 callVars);
-      // printf("is_ground_answer(leaf)? after created : %d\n", is_ground_answer(leaf));
+				 (CPtr) DynStk_Base(tstSymbolStack), callVars);
       if ( IsNonNULL(leaf) ) {
 	//	printf("found call! %x",leaf);
 	subg_is_complete( (VariantSF) Child(leaf)) = TRUE;
-	// subg_asf_list_ptr( (VariantSF) Child(leaf)) = NULL;
-	//S	printf("here3\n");
+	//	subg_asf_list_ptr( (VariantSF) Child(leaf)) = NULL;
 	simplify_neg_succeeds(CTXTc (VariantSF) Child(leaf));
       }
     }
     /*-- perform early completion if necessary; please preserve invariants --*/
-      /* The following was commented out in Dipti's code */
-    /* in order to get all supports and not just the primary */
-    /*if (!is_completed(subgoal) && most_general_answer(as_leaf)) {
-	perform_early_completion(subgoal, subg_cp_ptr(subgoal));
-	subg_compl_susp_ptr(subgoal) = NULL;
-	}*/ /* until here */
-    //S    printf("here4\n");
+    if (!is_completed(subgoal) && most_general_answer(as_leaf)) {
+      perform_early_completion(subgoal, subg_cp_ptr(subgoal));
+      subg_compl_susp_ptr(subgoal) = NULL;
+    }
     simplify_neg_succeeds(CTXTc subgoal);
   }
 }
@@ -1319,7 +1298,7 @@ static void simplify_pos_unconditional(CTXTdeclc NODEptr as_leaf)
   release_all_dls(CTXTc asi);
   unmark_conditional_answer(as_leaf);
 
-  // print_pdes(asi_pdes(asi));
+  //  print_pdes(asi_pdes(asi));
   while ((pde = asi_pdes(asi))) {
     de = pnde_de(pde);
     dl = pnde_dl(pde);
@@ -1356,7 +1335,8 @@ void simplify_neg_fails(CTXTdeclc VariantSF subgoal)
   DE de;
   DL dl;
 
-  //S printf("in simplify neg fails: ");print_subgoal(stddbg,subgoal),printf("\n");
+  //  printf("in simplify neg fails: ");print_subgoal(stddbg,subgoal),printf("\n");
+
   while ((nde = subg_nde_list(subgoal))) {
     de = pnde_de(nde);
     dl = pnde_dl(nde);
@@ -1366,9 +1346,8 @@ void simplify_neg_fails(CTXTdeclc VariantSF subgoal)
 #endif
       remove_pnde(subg_nde_list(subgoal), nde,released_pndes_gl);
     if (!remove_de_from_dl(CTXTc de, dl))
-      //S      printf("handle 2\n");
       handle_empty_dl_creation(CTXTc dl);
-  } //S printf("exiting simplify neg fails\n");
+  }
 }
 
 /********************************************************************
@@ -1388,14 +1367,13 @@ static void simplify_neg_succeeds(CTXTdeclc VariantSF subgoal)
   DE de, tmp_de;
   ASI used_asi, de_asi;
   NODEptr used_as_leaf;
-  //S    printf("spyros = %d\n", spyros++);
-  //S    printf("in simplify neg succeeds: ");print_subgoal(stddbg,subgoal),printf("\n");
+
+  //  printf("in simplify neg succeeds: ");print_subgoal(stddbg,subgoal),printf("\n");
 
   while ((nde = subg_nde_list(subgoal))) {
     dl = pnde_dl(nde); /* dl: to be removed */
     used_as_leaf = dl_asl(dl);
-    // printf("is_ground_answer(used_as_leaf)? 0 : %d\n", is_ground_answer(used_as_leaf));
-    //S    printf("checking ");printTriePath(CTXTc stddbg, used_as_leaf, FALSE); fprintf(stddbg,"\n");
+    //    printf("checking ");printTriePath(CTXTc stddbg, used_as_leaf, FALSE); fprintf(stddbg,"\n");
     tmp_dl = dl;
     if (IsValidNode(used_as_leaf) && (used_asi = Delay(used_as_leaf)) != NULL) {
       de = dl_de_list(dl); /* to release all DEs in dl */

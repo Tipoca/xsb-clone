@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.30 2010-08-18 03:09:52 spyrosh Exp $
+** $Id: residual.c,v 1.31 2010-08-19 15:03:37 spyrosh Exp $
 ** 
 */
 
@@ -91,7 +91,7 @@ int copy_of_num_heap_term_vars;
  */
 
 void build_delay_list(CTXTdeclc CPtr delay_list, DE de)
-{ 
+{
   Psc  psc;
   int  i, j, arity;
   CPtr head, tail;

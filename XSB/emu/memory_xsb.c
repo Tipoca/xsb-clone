@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.66 2010-08-18 03:09:52 spyrosh Exp $
+** $Id: memory_xsb.c,v 1.67 2010-08-19 15:03:36 spyrosh Exp $
 ** 
 */
 

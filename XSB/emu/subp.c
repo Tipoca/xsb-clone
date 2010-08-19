@@ -298,11 +298,6 @@ void print_statistics(CTXTdeclc int amount) {
     symbol_table_stats();
     string_table_stats();
     break;
-    /* Support Graph */
-  case 9:
-    printf("<%d>\n",sizeof(struct  Basic_Trie_Node));
-    prnt_statistics();
-    break;
   }
 }
 

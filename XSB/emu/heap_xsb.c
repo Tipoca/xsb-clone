@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.83 2010-08-18 03:09:51 spyrosh Exp $
+** $Id: heap_xsb.c,v 1.84 2010-08-19 15:03:36 spyrosh Exp $
 ** 
 */
 
@@ -566,7 +566,7 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
   i = 0;
   while (i < rnum_in_reg_array) {
     cell_ptr = (CPtr *)(reg_array+i);
-    // printf(" reallocate reg_array[%d]=%p\n",i,cell_ptr);
+    //    printf(" reallocate reg_array[%d]=%p\n",i,cell_ptr);
     reallocate_heap_or_ls_pointer(cell_ptr) ;
     i++;
   }
@@ -582,12 +582,9 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
   ereg = (CPtr)ereg + local_offset ;
   ebreg = (CPtr)ebreg + local_offset ;
   efreg = (CPtr)efreg + local_offset ;
+
   if (islist(delayreg))
     delayreg = (CPtr)makelist(clref_val(delayreg) + heap_offset);
-
-  /* Support Graph */
-  if (islist(supreg))
-    supreg = (CPtr)makelist(clref_val(supreg) + heap_offset);
 
   expandtime = cpu_time() - expandtime;
 
@@ -608,7 +605,7 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
 int garbage_collecting = 0;
 
 int gc_heap(CTXTdeclc int arity, int ifStringGC)
-{ 
+{
 #ifdef GC
   CPtr p;
   double  begin_marktime, end_marktime,
@@ -620,7 +617,7 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
   DECL_GC_PROFILE;
   garbage_collecting = 1;  // flag for profiling that we are gc-ing
 
-  // printf("start gc(%ld): e:%p,h:%p,hf:%p\n",(long)(cpu_time()*1000),ereg,hreg,hfreg);
+  //  printf("start gc(%ld): e:%p,h:%p,hf:%p\n",(long)(cpu_time()*1000),ereg,hreg,hfreg);
   INIT_GC_PROFILE;
   if (pflags[GARBAGE_COLLECT] != NO_GC) {
     num_gc++ ;
@@ -654,32 +651,27 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
     /* copy the aregs to the top of the heap - only if sliding */
     /* just hope there is enough space */
     /* this happens best before the stack_boundaries are computed */
-    printf("before if (slide)\n");
     if (slide) {
       if (delayreg != NULL) {
 	arity++;
 	reg[arity] = (Cell)delayreg;
-      } /* Support Graph */
-      if (supreg != NULL) {
-	arity++;
-	reg[arity] = (Cell)supreg;
       }
       for (i = 1; i <= arity; i++) {
-	// printf("reg[%d] to heap: %lx\n",i,(unsigned long)reg[i]);
+	//	printf("reg[%d] to heap: %lx\n",i,(unsigned long)reg[i]);
 	*hreg = reg[i];
 	hreg++;
       }
       arity += rnum_in_reg_array;
       for (i = 0; i < rnum_in_reg_array; i++) {
-	// printf("reg_array[%d] to heap: %lx\n",i,(unsigned long)reg_array[i]);
+	//	printf("reg_array[%d] to heap: %lx\n",i,(unsigned long)reg_array[i]);
 	*hreg = reg_array[i];
 	hreg++;
       }
-      // printf("extended heap: hreg=%p, arity=%d, rnum_in=%d\n",hreg,arity, rnum_in_reg_array);
+      //      printf("extended heap: hreg=%p, arity=%d, rnum_in=%d\n",hreg,arity, rnum_in_reg_array);
 #ifdef SLG_GC
       /* in SLGWAM, copy hfreg to the heap */
-      // printf("hfreg to heap is %p at %p, rnum_in_reg_array=%d,arity=%d,delay=%p\n",hfreg,hreg,rnum_in_reg_array,arity,delayreg);
-       *(hreg++) = (unsigned long) hfreg;
+      //      printf("hfreg to heap is %p at %p, rnum_in_reg_array=%d,arity=%d,delay=%p\n",hfreg,hreg,rnum_in_reg_array,arity,delayreg);
+      *(hreg++) = (unsigned long) hfreg;
 #endif
     }
 
@@ -691,10 +683,10 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
     gc_strings = ifStringGC; /* default */
     gc_strings = should_gc_strings();  // collect strings for any reason?
     marked = mark_heap(CTXTc arity, &marked_dregs);
-
+    
     end_marktime = cpu_time();
-
-    if (fragmentation_only) { 
+    
+    if (fragmentation_only) {
       /* fragmentation is expressed as ratio not-marked/total heap in use
 	 this is internal fragmentation only.  we print marked and total,
 	 so that postprocessing can do what it wants with this info. */
@@ -706,7 +698,7 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 
 #ifdef PRE_IMAGE_TRAIL
       /* re-tag pre image cells in trail */
-      for (p = tr_bot; p <= tr_top ; p++ ) {       
+      for (p = tr_bot; p <= tr_top ; p++ ) {
 	if (tr_pre_marked(p-tr_bot)) {
 	  *p = *p | PRE_IMAGE_MARK;
 	  tr_clear_pre_mark(p-tr_bot);
@@ -729,7 +721,7 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
        ideally this should be user-controlled */
 #if (! defined(GC_TEST))
     if (marked > ((hreg+1-(CPtr)glstack.low)*mark_threshold))
-      { 
+      {
 	GC_PROFILE_QUIT_MSG;
         if (slide)
           hreg -= arity;
@@ -738,22 +730,19 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
         goto free_marks; /* clean-up temp areas and get out of here... */
       }
 #endif
-
+    
     total_collected += (start_heap_size - marked);
-    // reaches here!
+
     if (slide)
-      {     	
+      {
 	GC_PROFILE_SLIDE_START_TIME;
-	// printf("hreg = %p\n", hreg);
-	// printf("heap_bot + marked = %p\n", heap_bot+marked);
-	// printf("marked = %d\n", marked);
-	hreg = slide_heap(CTXTc marked) ; // this is where it breaks!
+	hreg = slide_heap(CTXTc marked) ;
 
 #ifdef DEBUG_VERBOSE
 	if (hreg != (heap_bot+marked))
 	  xsb_dbgmsg((LOG_GC, "heap sliding gc - inconsistent hreg"));
 #endif
-	
+
 #ifdef SLG_GC
 	/* copy hfreg back from the heap */
 	hreg--;
@@ -765,20 +754,17 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 	hbreg = cp_hreg(breg);
 	
 	p = hreg;
-
+	
 	arity -= rnum_in_reg_array;
 	for (i = 1; i <= arity; i++) {
 	  reg[i] = *p++;
-	  // printf("heap to reg[%d]: %lx\n",i,(unsigned long)reg[i]);
+	  //	  printf("heap to reg[%d]: %lx\n",i,(unsigned long)reg[i]);
 	}
 	if (delayreg != NULL)
 	  delayreg = (CPtr)reg[arity--];
-	/* Support Graph */
-	if (supreg != NULL)
-	  supreg = (CPtr)reg[arity--];
 	for (i = 0; i < rnum_in_reg_array; i++) {
 	  reg_array[i] = *p++;
-	  // printf("heap to reg_array[%d]: %lx\n",i,(unsigned long)reg_array[i]);
+	  //	  printf("heap to reg_array[%d]: %lx\n",i,(unsigned long)reg_array[i]);
 	}
 
 	end_slidetime = cpu_time();
@@ -791,7 +777,7 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
     else
       { /* else we call the copying collector a la Cheney */
 	CPtr begin_new_heap, end_new_heap;
-
+	
 	GC_PROFILE_COPY_START_TIME;
 	
 	begin_new_heap = (CPtr)mem_alloc(marked*sizeof(Cell),GC_SPACE);
@@ -817,7 +803,7 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
       }
     
     if (print_on_gc) print_all_stacks(CTXTc arity);
-
+    
     /* get rid of the marking areas - if they exist */
     if (heap_marks)  { 
       check_zero(heap_marks,(heap_top - heap_bot),"heap") ;
@@ -853,7 +839,7 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 #else
   /* for no-GC, there is no gc, but stack expansion can be done */
 #endif
-
+  
 #ifdef GC
  end:
   
@@ -863,12 +849,12 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
   if (flags[NUM_THREADS] == 1) {
 #endif
     if (gc_strings && (flags[STRING_GARBAGE_COLLECT] == 1)) {
-            long beg_string_space_size = pspacesize[STRING_SPACE];
+      //      long beg_string_space_size = pspacesize[STRING_SPACE];
       num_sgc++;
       begin_stringtime = cpu_time();
       mark_nonheap_strings(CTXT);
       free_unused_strings();
-      // printf("String GC reclaimed: %d bytes\n",beg_string_space_size - pspacesize[STRING_SPACE]);
+      //      printf("String GC reclaimed: %d bytes\n",beg_string_space_size - pspacesize[STRING_SPACE]);
       gc_strings = FALSE;
       end_stringtime = cpu_time();
       total_time_gc += end_stringtime - begin_stringtime;
@@ -886,7 +872,8 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
   garbage_collecting = 0;
   
 #endif /* GC */
-  // printf("   end gc(%ld), hf:%p,h:%p, space=%d\n",(long)(cpu_time()*1000),hfreg,hreg,(pb)top_of_localstk - (pb)top_of_heap);
+  //  printf("   end gc(%ld), hf:%p,h:%p, space=%d\n",(long)(cpu_time()*1000),hfreg,hreg,(pb)top_of_localstk - (pb)top_of_heap);
+
   return(TRUE);
 
 } /* gc_heap */

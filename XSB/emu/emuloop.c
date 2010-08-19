@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.210 2010-08-18 03:09:51 spyrosh Exp $
+** $Id: emuloop.c,v 1.211 2010-08-19 15:03:36 spyrosh Exp $
 ** 
 */
 
@@ -506,7 +506,7 @@ contcase:     /* the main loop */
 #endif
   switch (*lpcreg) {
 #endif
-    printf(">>%s\n",*lpcreg); /* Support Graph */
+    
   XSB_Start_Instr(getpvar,_getpvar)  /* PVR */
     Def2ops
     Op1(Variable(get_xvx));
@@ -1323,8 +1323,8 @@ contcase:     /* the main loop */
 	//    printf("t_h %d %p\n",(ereg-hreg),hreg);
 	if (heap_local_overflow((long)op2))
       {
-#endif          printf("from here?\n");         
-	if (gc_heap(CTXTc op1,FALSE)) { /* garbage collection potentially modifies hreg */ 
+#endif
+        if (gc_heap(CTXTc op1,FALSE)) { /* garbage collection potentially modifies hreg */
 	  if (heap_local_overflow((long)op2)) {
 	    if (pflags[STACK_REALLOC]) {
 	      if (glstack_realloc(CTXTc resize_stack(glstack.size,(op2*sizeof(Cell))),op1) != 0) {
@@ -1336,7 +1336,7 @@ contcase:     /* the main loop */
 	    }
 	  }
 	}	/* are there any localy cached quantities that must be reinstalled ? */
-      } else if (force_string_gc) { 
+      } else if (force_string_gc) {
 	  gc_heap(CTXTc op1,TRUE);
 	}
   XSB_End_Instr()
