@@ -537,11 +537,14 @@ psc_properties(PSC, Property) :-
 psc_properties(PSC, Property) :- 
 	psc_spy(PSC, Spy),
 	( Spy =\= 0 -> Property = spied ).
+%:- import tabled/1 from usermod.
 psc_properties(PSC, Property) :- 
 	psc_tabled(PSC, Tabled),
-	( Tabled == T_VARIANT -> Property = tabled(variant)
-         ; Tabled == T_SUBSUMPTIVE -> Property = tabled(subsumptive)
-         ; Tabled == T_TABLED_UNDETERMINED -> Property = tabled(default)).
+	( Tabled =\= 0 -> Property = tabled 
+        ; 
+	 ( Tabled == T_VARIANT -> Property = variant
+         ; Tabled == T_SUBSUMPTIVE -> Property = subsumptive ) ).
+%         ; Tabled == T_TABLED_UNDETERMINED -> Property = tabled(default)).
 psc_properties(PSC, Property) :- 
 	psc_get_incr(PSC, Incr),
 	( Incr == INCREMENTAL -> 
