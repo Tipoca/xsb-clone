@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.85 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: io_builtins_xsb.c,v 1.86 2010-08-20 01:31:36 dwarren Exp $
 ** 
 */
 
@@ -1234,8 +1234,8 @@ Integer read_canonical_term(CTXTdeclc FILE *filep, STRFILE *instr, int return_lo
       }
 
       if (opstk_size > MAX_INIT_STK_SIZE) {
-	mem_dealloc(opstk,opstk_size,READ_CAN_SPACE); opstk = NULL;
-	mem_dealloc(funstk,funstk_size,READ_CAN_SPACE); funstk = NULL;
+	mem_dealloc(opstk,opstk_size*sizeof(struct opstktype),READ_CAN_SPACE); opstk = NULL;
+	mem_dealloc(funstk,funstk_size*sizeof(struct funstktype),READ_CAN_SPACE); funstk = NULL;
 	opstk_size = 0; funstk_size = 0;
       }
       return retpscptr;
