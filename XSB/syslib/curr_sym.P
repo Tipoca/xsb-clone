@@ -541,7 +541,7 @@ psc_properties(PSC, Property) :-
 psc_properties(PSC, Property) :- 
 	psc_tabled(PSC, Tabled),
 %	writeln(tabled(Tabled)),
-	( (Tabled /\ 12 > 0) -> Property = tabled 
+	( (Tabled /\ 12 > 0),Property = tabled 
         ; 
 	 ( Tabled == T_VARIANT -> Property = variant
          ; Tabled == T_SUBSUMPTIVE -> Property = subsumptive ) ).
