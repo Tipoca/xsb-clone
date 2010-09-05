@@ -430,8 +430,11 @@ set_predlist_incremental(Pred,Option):-
 	    psc_get_incr(Psc,Incr),
 %	    writeln(psc_incr(Incr)),
 	    (Incr =:= NONINCREMENTAL -> 
-	       table_error(('Previously defined dynamic predicate ',Pred,
-	                    ' cannot be set to ',Incr))
+		(Option =:= OPAQUE -> New = opaque
+	         ; Option =:= INCREMENTAL -> New = incremental 
+	         ; New = '???'),
+	       table_error(('Dyaamic predicate ',Pred,
+	                    ' previously defined as nonincremental cannot be set to ',New))
 	     ; psc_set_incr(Psc,Option) )
         ;   psc_set_incr(Psc,Option) ).
 
