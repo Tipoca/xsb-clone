@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.184 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: biassert.c,v 1.185 2010-09-05 18:47:17 tswift Exp $
 ** 
 */
 
@@ -3247,7 +3247,7 @@ static inline void allocate_prref_tab(CTXTdeclc Psc psc, PrRef *prref, pb *new_e
   PrRef_Psc(*prref) = psc;        
   PrRef_Mark(*prref) = 0;
   PrRef_DelCF(*prref) = NULL;
-  if ( get_tabled(psc) || get_incr(psc) )  /* incremental evaluation */
+  if ( get_tabled(psc) || !get_nonincremental(psc) )  /* incremental evaluation */
     {
       TIFptr tip;
       CPtr tp;
@@ -3258,8 +3258,8 @@ static inline void allocate_prref_tab(CTXTdeclc Psc psc, PrRef *prref, pb *new_e
 	xsb_exit(CTXTc "[Resource] Out of memory (PrRef)");
       }
       Loc = 0 ;
-      if (get_incr(psc)) { /* incremental evaluation */
-	//printf("%s is incr %p\n",get_name(psc),*prref);
+      if (!get_nonincremental(psc)) { /* incremental evaluation */
+	//	printf("%s is incr %p\n",get_name(psc),*prref);
 	dbgen_inst_ppvww(tabletrysinglenoanswers,get_arity(psc),*prref,tip,tp,&Loc);
       } else {
 	dbgen_inst_ppvww(tabletrysingle,get_arity(psc),(tp+3),tip,tp,&Loc) ;

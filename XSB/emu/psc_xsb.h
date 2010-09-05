@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.48 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: psc_xsb.h,v 1.49 2010-09-05 18:47:17 tswift Exp $
 ** 
 */
 
@@ -52,8 +52,16 @@ extern "C" {
    the predicate is thread-shared or thread-private.  Bit 6 indicates
    the predicate is shared among threads in the MT engine.  Thus, bit
    5 is meaningful only if bit 5 is also set.  
-
    Bits 7 and 8 are used for get_spy.
+
+   [] \   symbol status 
+   [] / 
+   [] \   tabling type
+   [] /
+   [] \   shared/private
+   [] / 
+   [] \   spy (two bits used -- only one needed (I think)   
+   [] /
 
    data: If the psc record indicates a predicate data indicates its
    module; otherwise it contains data, as used in conpsc-style
@@ -65,7 +73,7 @@ extern "C" {
    predicates in the module.  
 
    If the psc record indicates a loaded foreign function ep points to
-   the call_forn instruction, and load_inst is a pointer to the
+   The call_forn instruction, and load_inst is a pointer to the
    function itself.
 
    If the psc record indicates an unloaded predicate/foreign function,
@@ -80,7 +88,7 @@ struct psc_rec {
   byte env;			/* 0&0x3 - visible; 1&0x3 - local; 2&0x3 - unloaded;  */
   				/* 0xc0, 2 bits for spy */
 				/* 0x20 - shared, 0x10 for determined; 0x8 - tabled */
-  byte incr;                    /* 1 is incremental; 0 is non-incremental, 2: opaque, incremental evaluation */
+  byte incr;                    /* Only first 2 bits used: 1 incremental; 0 is non-incremental, 2: opaque */
   byte entry_type;		/* see psc_defs.h */
   byte arity; 
   char *nameptr;
@@ -105,24 +113,26 @@ typedef struct psc_pair *Pair;
 
 /* Type definitions */
 #include "psc_defs.h"
+#include "incr_xsb_defs.h"
 
 /*======================================================================*/
 /* Interface macros (in the following "psc" is typed "Psc")		*/
 /*======================================================================*/
 
-#define  get_type(psc)		((psc)->entry_type)
 #define  get_env(psc)		((psc)->env & T_ENV)
+#define  get_type(psc)		((psc)->entry_type)
 #define  get_spy(psc)		((psc)->env & T_SPY)
-#define  get_shared(psc)	((psc)->env & T_SHARED)
-#define  get_private(psc)	((psc)->env & ~T_SHARED & T_SHARED_DET)
 #define  get_tabled(psc)	((psc)->env & T_TABLED)
-#define  get_incr(psc)          (((psc)->incr & 3) == 1)  /* incremental */
-#define  get_opaque(psc)        (((psc)->incr & 3) == 2)  /* incremental */
-
-// get_xxx_tabled will also succeed if tabling type is not yet known
-// set_shared is also used to set_private
 #define  get_subsumptive_tabled(psc)	((psc)->env & T_TABLED_SUB & ~T_TABLED_VAR)
 #define  get_variant_tabled(psc)	((psc)->env & T_TABLED_VAR & ~T_TABLED_SUB)
+
+#define  get_shared(psc)	((psc)->env & T_SHARED)
+#define  get_private(psc)	((psc)->env & ~T_SHARED & T_SHARED_DET)
+
+#define  get_incr(psc)           (((psc)->incr & T_INCR) == INCREMENTAL)  
+#define  get_opaque(psc)         (((psc)->incr & T_INCR) == OPAQUE)  
+#define  get_nonincremental(psc) (((psc)->incr & T_INCR) == NONINCREMENTAL) 
+
 #define  get_arity(psc)		((psc)->arity)
 #define  get_ep(psc)		((psc)->ep)
 #define  get_data(psc)		((psc)->data)

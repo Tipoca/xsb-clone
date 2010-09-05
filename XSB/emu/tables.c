@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.82 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tables.c,v 1.83 2010-09-05 18:47:17 tswift Exp $
 ** 
 */
 
@@ -795,7 +795,7 @@ inline TIFptr New_TIF(CTXTdeclc Psc pPSC) {
      TIF_EvalMethod(pTIF) = SUBSUMPTIVE_EVAL_METHOD;			
    else {			
      /* incremental evaluation */
-     if(!get_incr(pPSC))					
+     if(get_nonincremental(pPSC))					
        xsb_warn("%s/%d not identified as tabled in .xwam file, Recompile (variant assumed)", \
 		get_name(pPSC),get_arity(pPSC));				
       TIF_EvalMethod(pTIF) = VARIANT_EVAL_METHOD;			

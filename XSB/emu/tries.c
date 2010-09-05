@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.130 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tries.c,v 1.131 2010-09-05 18:47:17 tswift Exp $
 ** 
 */
 
@@ -2220,8 +2220,8 @@ byte * trie_get_calls(CTXTdecl)
 	  predicate has been tabled but a tip has not yet been created
 	  (e.g clauses for a dynamic tabled predicate have not yet
 	  been defined */
-       if (!get_incr(psc_ptr) && !get_tabled(psc_ptr))
-	 xsb_abort("get_calls/3 called with non-tabled predicate: %s/%d",
+       if (!get_tabled(psc_ptr) && get_nonincremental(psc_ptr))
+	 xsb_abort("get_calls/3 called with a non-tabled predicate: %s/%d",
 		   get_name(psc_ptr),get_arity(psc_ptr));
        return (byte *)&fail_inst;
      }
