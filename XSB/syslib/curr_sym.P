@@ -540,7 +540,9 @@ psc_properties(PSC, Property) :-
 %:- import writeln/1 from standard.
 psc_properties(PSC, Property) :- 
 	psc_tabled(PSC, Tabled),
-%	writeln(tabled(Tabled)),
+	(psc_type(PSC, Type),Type =:= T_DYNA -> 
+	    psc_get_incr(PSC,Incr),Incr == NONINCREMENTAL
+	  ; true),  
 	( (Tabled /\ 12 > 0),Property = tabled 
         ; 
 	 ( Tabled == T_VARIANT -> Property = variant
