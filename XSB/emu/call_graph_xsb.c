@@ -431,14 +431,14 @@ callnodeptr dq(calllistptr *cl){
   return c;  
 }
 
-
 void dfs(callnodeptr call1){
   callnodeptr cn;
   struct hashtable *h;	
   struct hashtable_itr *itr;
   
   if(IsNonNULL(call1->goal) && !subg_is_complete((VariantSF)call1->goal)){
-    xsb_warn("Incompleted tabled is invalidated! Unexpected result will occur\n");    
+    xsb_abort("Incremental tabling is trying to invalidate an incomplete table for %s/%d\n",
+	      get_name(TIF_PSC(subg_tif_ptr(call1->goal))),get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
   }
   call1->deleted = 1;
   h=call1->outedges->hasht;
