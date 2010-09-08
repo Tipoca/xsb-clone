@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.61 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: system_xsb.c,v 1.62 2010-09-08 19:38:46 kifer Exp $
 ** 
 */
 
@@ -115,9 +115,17 @@ int sys_syscall(CTXTdeclc int callno)
     xsb_mesg("\nXSB exited with exit code: %d", exit_code);
     exit(exit_code); break;
   }
+  case SYS_getpid :
+#ifndef WIN_NT
+    result = getpid();
+#else
+    result = _getpid();
+#endif
+    break; 
 #if (!defined(WIN_NT))
-  case SYS_getpid : result = getpid(); break; 
-  case SYS_link  : result = link(ptoc_longstring(CTXTc 3), ptoc_longstring(CTXTc 4)); break;
+  case SYS_link  :
+    result = link(ptoc_longstring(CTXTc 3), ptoc_longstring(CTXTc 4));
+    break;
 #endif
   case SYS_mkdir: {
 #ifndef WIN_NT

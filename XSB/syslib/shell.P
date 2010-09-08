@@ -180,7 +180,7 @@ sys_exit(ExitCode) :- sys_syscall(SYS_exit,_,ExitCode,_).
 %% TLS: adding error checking as I get hit.  Shouldn't add perceptable
 %% time,  given that these are system calls.  At some point, should
 %% probably have a typecheck for 'file'.
-%% Get process id -- Unix only
+%% Get process id -- Unix and Windows
 sys_pid(Pid)     	    :-	sys_syscall(SYS_getpid, Pid, _, _).
 %% Link file -- Unix only
 sys_link(Source, Dest, Res) :-	sys_syscall(SYS_link, Res, Source, Dest).

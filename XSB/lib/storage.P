@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage.P,v 1.19 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: storage.P,v 1.20 2010-09-08 19:38:47 kifer Exp $
 ** 
 */
 
@@ -46,6 +46,8 @@ incr_put_in_trie(Fact,Handle,Leaf,Flag) :-
 	intern:incr_trie_intern(Fact,Handle,Leaf,Flag).
 incr_delete_from_trie(Handle,Leaf) :-
 	intern:incr_trie_unintern_nr(Handle,Leaf).
+incr_unmark_uninterned_from_trie(H, Leaf) :-
+	intern:incr_unmark_uninterned_nr(H,Leaf).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%% Insertion %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -189,7 +191,7 @@ incr_storage_delete_fact_bt(StorageName,Fact,Deleted,ForwAction,BackAction) :-
 		storage_handle(StorageName,INCREMENTAL_TRIE,_,NewSnapshot),
 		(NewSnapshot =< Snapshot
 		->
-		    unmark_uninterned_nr(H, Leaf),
+		    incr_unmark_uninterned_from_trie(H, Leaf),
 		    call(BackAction),
 		    fail
 		)
@@ -364,7 +366,7 @@ incr_storage_delete_keypair_bt(StorageName,Key,Deleted,ForwAction,BackAction) :-
 		storage_handle(StorageName,INCREMENTAL_TRIE,_,NewSnapshot),
 		(NewSnapshot =< Snapshot
 		->
-		    unmark_uninterned_nr(H, Leaf),
+		    incr_unmark_uninterned_from_trie(H, Leaf),
 		    call(BackAction),
 		    fail 
 		)
