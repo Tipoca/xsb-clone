@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.H,v 1.9 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: intern.H,v 1.10 2010-09-08 16:12:09 tswift Exp $
 ** 
 */
 
@@ -37,7 +37,8 @@
 	  trie_intern/3, trie_interned/3, trie_unintern/2, delete_trie/1,
 	  trie_set_last_int/2, trie_create/2,
 	  trie_unintern_nr/2, trie_reclaim_uninterned_nr/1, 
-   unmark_uninterned_nr/2.
+   unmark_uninterned_nr/2, incr_unmark_uninterned_nr_inval/2,
+   incr_unmark_uninterned_nr/2.
 
 :- import integer/1, abort/1 from standard.
 :- import call/1, arg/3 from standard.
@@ -50,3 +51,4 @@
 :- import add_aliases_flag_error/4, get_alias/3 from file_io.
 
 %%%:- import buff_word/3, buff_set_word/3  from machine.
+

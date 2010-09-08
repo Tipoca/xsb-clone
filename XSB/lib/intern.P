@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.34 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: intern.P,v 1.35 2010-09-08 16:12:09 tswift Exp $
 ** 
 */
 
@@ -809,6 +809,15 @@ incr_trie_intern_inval(Root,Term,Leaf,Flag) :-
 
 incr_trie_unintern_nr_inval(Root,Leaf):- 
         trie_dispose_nr(Root, Leaf),
+        invalidate_callnode_trie(Root). /* root -> callnodeptr */
+
+incr_unmark_uninterned_nr(Root,Leaf) :- 
+	unmark_uninterned_nr(Root,Leaf),
+        invalidate_callnode_trie(Root), /* root -> callnodeptr */
+	incr_table_update.
+
+incr_unmark_uninterned_nr_inval(Root,Leaf) :- 
+	unmark_uninterned_nr(Root,Leaf),
         invalidate_callnode_trie(Root). /* root -> callnodeptr */
 
 end_of_file.
