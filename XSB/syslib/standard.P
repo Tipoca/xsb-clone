@@ -277,6 +277,7 @@ close(url(Atom),_) :-
 close(S_or_A,Options) :- 
 	check_stream_or_alias(S_or_A,close/1,1,Str),
 	examine_close_options(Options,Action),
+	remove_alias(_Alias,_Type,Str),
 	(Action = false ->      % TLS: want unification.
 	    file_close(Str,NOFORCE_FILE_CLOSE)
 	  ; file_close(Str,FORCE_FILE_CLOSE) ), 
