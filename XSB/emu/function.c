@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.32 2010-09-25 15:59:09 pmoura Exp $
+** $Id: function.c,v 1.33 2010-09-25 16:25:47 pmoura Exp $
 ** 
 */
 
@@ -67,6 +67,7 @@
 #define FUN_min  27
 #define FUN_lgamma  28
 #define FUN_erf  29
+//#define FUN_atan2  30
 
 /* --- returns 1 when succeeds, and returns 0 when there is an error --	*/
 
@@ -401,6 +402,17 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 	      else if (fiflt_val(fiop1) < 0) return 0;
 	      else set_flt_val(value,(Float)pow(fiflt_val(fiop1),fiflt_val(fiop2)));
 	    }
+	    break;
+	  } else set_and_return_fail(value);
+
+	case 'a':
+	  if (strcmp(get_name(op_psc),"atan")==0 || strcmp(get_name(op_psc),"atan2")==0) {
+	    if (isfiint(fiop1)) {
+	      if (isfiint(fiop2)) set_flt_val(value,(Float)atan2((Float)fiint_val(fiop1),(Float)fiint_val(fiop2)));
+	      else set_flt_val(value,(Float)atan2((Float)fiint_val(fiop1),fiflt_val(fiop2)));
+	    } else
+	      if (isfiint(fiop2)) set_flt_val(value,(Float)atan2(fiflt_val(fiop1),(Float)fiint_val(fiop2)));
+	      else set_flt_val(value,(Float)atan2(fiflt_val(fiop1),fiflt_val(fiop2)));
 	    break;
 	  } else set_and_return_fail(value);
 
