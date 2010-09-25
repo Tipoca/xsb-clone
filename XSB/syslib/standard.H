@@ -42,7 +42,7 @@
 	display/1, displayln/1, now/1, datime/1,
 	console_write/1, console_writeln/1,
 	error_write/1, error_writeln/1,
-	expand_term/2,	file_exists/1,	fail/0,		fail_if/1,
+	expand_term/2,	file_exists/1,	fail/0,	false/0,	fail_if/1,
 	fileerrors/0,	float/1,	forall/2,	functor/3,
 	gc_dynamic/1,   gc_tables/1,    gc_atoms/0,
 	get/1,		get0/1,		

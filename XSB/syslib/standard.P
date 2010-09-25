@@ -1447,6 +1447,7 @@ true. 		% including this used to cause compiling error, now not
 otherwise.	% same as true
 
 fail :- fail.
+false :- fail.
 
 halt :- halt.
 

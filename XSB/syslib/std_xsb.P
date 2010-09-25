@@ -154,6 +154,7 @@ standard_symbol(expand_term, 2, standard).
 standard_symbol(exec, 1, shell).
 
 standard_symbol(fail, 0, standard).
+standard_symbol(false, 0, standard).
 standard_symbol(fail_if, 1, standard).
 standard_symbol(file_clone, 3, file_io).
 standard_symbol(file_close, 1, file_io).
