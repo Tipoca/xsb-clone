@@ -240,6 +240,7 @@ close(url(Atom)) :-
 
 close(S_or_A) :- 
 	check_stream_or_alias(S_or_A,close/1,1,Str),
+	remove_alias(_Alias,_Type,Str),
 	file_close(Str,NOFORCE_FILE_CLOSE),
 	%% must check if curl is loaded before calling curl.
 	%% otherwise, it will cause compilation of curl,
