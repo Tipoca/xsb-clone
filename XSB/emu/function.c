@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.31 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: function.c,v 1.32 2010-09-25 15:59:09 pmoura Exp $
 ** 
 */
 
@@ -338,6 +338,15 @@ int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
   }
   return 1;
 }
+
+
+static double xsb_calculate_epsilon(void)
+{
+	double ep = 1.0, one = 1.0 ;
+	for( ; one + ep > one ; ep /= 2 ) ;
+	return ep * 2 ;
+}
+
 
 /* xsb_eval evaluates a Prolog term representing an arithmetic
    expression and returns its value as an integer or float. */
@@ -694,6 +703,8 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
       set_flt_val(value,(const Float)3.1415926535897932384);
     } else if (strcmp(string_val(expr),"e")==0) {
       set_flt_val(value,(const Float)2.7182818284590452354);
+    } else if (strcmp(string_val(expr),"epsilon")==0) {
+      set_flt_val(value,(const Float)xsb_calculate_epsilon());
     } else set_and_return_fail(value);      
   } else set_and_return_fail(value);
   return 1;
