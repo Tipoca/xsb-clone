@@ -30,6 +30,53 @@
 % TLS: just did first pass at metapredicates.  In addition, need to do
 % bagofs, setofs and phrases.
 
+/* PM: work in progress for implementing state-of-the art meta_predicate/1 properties ;-)
+       not sure the list that follows is complete...
+
+standard_metapredicate(abolish(:)).
+standard_metapredicate(abolish_table_call(:)).
+standard_metapredicate(abolish_table_call(:,*)).
+standard_metapredicate(assert(:)).                                  
+standard_metapredicate(asserta(:)).
+standard_metapredicate(assertz(:)).
+standard_metapredicate(call(0)).
+standard_metapredicate(call(1,*)).
+standard_metapredicate(call(2,*,*)).
+standard_metapredicate(call(3,*,*,*)).
+standard_metapredicate(call(4,*,*,*,*)).
+standard_metapredicate(call(5,*,*,*,*,*)).
+standard_metapredicate(call(6,*,*,*,*,*,*)).
+standard_metapredicate(call(7,*,*,*,*,*,*,*)).
+standard_metapredicate(call(8,*,*,*,*,*,*,*,*)).
+standard_metapredicate(call(9,*,*,*,*,*,*,*,*,*)).
+standard_metapredicate(call(10,*,*,*,*,*,*,*,*,*,*)).
+standard_metapredicate(call_cleanup(0,0)).
+standard_metapredicate(catch(0,*,0)).
+standard_metapredicate(clause(:,*)).
+standard_metapredicate(bagof(*,0,*)).
+standard_metapredicate(setof(*,0,*)).
+standard_metapredicate(findall(*,0,*)).
+standard_metapredicate(findall(*,0,*,*)).
+standard_metapredicate(forall(0,0)).
+standard_metapredicate(once(0)).
+standard_metapredicate(retract(:)).
+standard_metapredicate(retractall(:)).
+standard_metapredicate(tfindall(*,0,*)).
+standard_metapredicate(thread_create(0,*,:)).
+standard_metapredicate(thread_create(0,*)).
+standard_metapredicate(thread_create(0)).
+standard_metapredicate(tnot(0)).
+standard_metapredicate('\+'(0)).
+%standard_metapredicate((:),2,2). ???????????
+standard_metapredicate(fail_if(0)).
+standard_metapredicate(not(0)).
+standard_metapredicate(sk_not(0)).
+standard_metapredicate(table_once(0)).
+standard_metapredicate(time(0)).
+standard_metapredicate(thread_signal(*, 0)).
+standard_metapredicate(with_mutex(*, 0)).
+*/
+
 standard_symbol(abort_on_thread_cancel,0,error_handler).
 standard_symbol(abolish, 1, assert).                               % ISO
 standard_metapredicate(abolish,1,1).
