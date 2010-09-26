@@ -559,7 +559,9 @@ psc_properties(PSC, Property) :-
 psc_properties(PSC, Property) :-
 	psc_name(PSC, Functor),		% Finding the Functor and the Arity
 	psc_arity(PSC, Arity),		% twice is silly, isn''t it?
-	(	setof(Meta, standard_metapredicate(Functor, Arity, Meta), Metas),
+	(	%functor(Template, Functor, Arity),		% PM: these two lines will eventually
+		%standard_metapredicate(Template)		% PM: replace the three lines that follows
+		setof(Meta, standard_metapredicate(Functor, Arity, Meta), Metas),
 		psc_meta_predicate_property_args(Metas, 1, Arity, Args),
 		Template =.. [Functor| Args],
 		Property = meta_predicate(Template)

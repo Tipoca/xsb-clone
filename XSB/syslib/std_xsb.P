@@ -30,9 +30,12 @@
 % TLS: just did first pass at metapredicates.  In addition, need to do
 % bagofs, setofs and phrases.
 
-/* PM: work in progress for implementing state-of-the art meta_predicate/1 properties ;-)
+/* PM: work in progress for implementing state-of-the-art meta_predicate/1 properties ;-)
        not sure the list that follows is complete...
 
+standard_metapredicate((0,0)).
+standard_metapredicate((0;0)).
+standard_metapredicate((0->0)).
 standard_metapredicate(abolish(:)).
 standard_metapredicate(abolish_table_call(:)).
 standard_metapredicate(abolish_table_call(:,*)).
