@@ -2516,17 +2516,24 @@ Evaluates to $\pi$ within an arithemetic expression.
 Evaluates to $e$, the base of the natural logarithm, within an
 arithemetic expression.
 
+\ourstandarditem{epsilon}{epsilon/0}{Evaluable Functor}
+% 
+Evaluates to $epsilon$, the difference between the float 1.0 and 
+the first larger floating point number.
+
 \end{description}
 
 \subsubsection{Mathematical Functions from {\tt math.h}}
 \stdrefindex{cos/1} \stdrefindex{sin/1} \stdrefindex{tan/1}
 \stdrefindex{acos/1} \stdrefindex{asin/1} \stdrefindex{atan/1}
-\stdrefindex{log/1} \stdrefindex{log10/1}
+\stdrefindex{log/1} \stdrefindex{log10/1} \stdrefindex{atan/2}
+ \stdrefindex{atan2/2}
 
 XSB also allows as evaluable functors, many of the functions from the
-C library {\tt math.h}.  Functions included in XSB \version{} are {\tt
+C library {\tt math.h}.  Functions included in XSB are {\tt
   cos/1}, {\tt sin/1}, {\tt tan/1}, {\tt acos/1}, {\tt asin/1}, {\tt
-  atan/1}, {\tt log/1} (natural logarithm), and {\tt log10/1}.  For
+  atan/1}, {\tt log/1} (natural logarithm), {\tt log10/1}, and 
+  {\tt atan/2} (also available as {\tt atan2/2}).  For
   their semantics, see documentation to {\tt math.h}.
 
 \section{Convenience} \label{Convenience}
@@ -2544,6 +2551,10 @@ described only briefly.
 \isoitem{fail}{fail/0}
 %\predindex{fail/0~(I)}
     Always fails.
+
+\standarditem{false}{false/0}
+%\predindex{false/0~(B)}
+    Same as {\tt fail/0}.
 
 \end{description}
 
