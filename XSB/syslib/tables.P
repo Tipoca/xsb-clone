@@ -157,7 +157,7 @@ tfindall(T, Call, Result) :-
           ; AnsSetStatus == undefined ->
 	      ( call(Call), fail ; tfindall(T,Call,Result) )
 	  ; AnsSetStatus == incomplete ->
-	      table_error('tfinall/3 is in a possible loop.  Cannot evaluate non-stratified tfindall/3')  
+	      table_error('tfindall/3 is in a possible loop.  Cannot evaluate non-stratified tfindall/3')  
 /*	      get_ptcp(PTCP),
 	      get_producer_call(Call,ProdSF,_CallAT),
 	      is_incomplete(ProdSF,PTCP),
