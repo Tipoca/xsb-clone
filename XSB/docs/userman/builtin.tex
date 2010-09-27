@@ -52,7 +52,7 @@ non-primitive type element.  There is also a product operation ({\tt
 ,}) on type elements, so that {\tt variable, integer or
 not(listOfAtoms)} is a product of the above two types.  
 Satisfiability is extended to complex type elements in the obvious
-manner, and an n-ary typle of terms satisfies a n-ary product type if
+manner, and an n-ary tuple of terms satisfies a n-ary product type if
 each argument in the tuple satisfies the corresponding argument of the
 product type.
 
@@ -696,7 +696,7 @@ Makes {\tt File\_or\_stream} the current input stream.
   a permission error.
 \end{itemize}
 %
-Note that {\tt see/1} is incompatable with ISO aliases -- calling {\tt
+Note that {\tt see/1} is incompatible with ISO aliases -- calling {\tt
   see(Alias)} with an ISO alias will try to open a file named {\tt
   Alias} rather than using the alias.  Also note that different file
 names (that is, names which do not unify) represent different input
@@ -1442,7 +1442,7 @@ additional errors that may arise in stream checking.
 \isoitem{writeq(?Term)}{writeq/1}
 %
 Acts as {\tt write\_term/1} when defined with the options {\tt
-  quoted(true)}, {\tt numbervers(true)}, and {\tt ignore\_ops(false)}.
+  quoted(true)}, {\tt numbervars(true)}, and {\tt ignore\_ops(false)}.
 In other words, atoms and functors are quoted whenever necessary to
 make the result acceptable as input to {\tt read/1} {\tt writeq/1}
 also treats terms of the form \verb|'\VAR'(N)| specially, writing {\tt
@@ -2096,7 +2096,7 @@ concatenated together to form the system call.
 \bi
 \item {\tt type\_error(atom\_or\_list,SystemCall)}
 \ei
-\item {\tt SystemCall} is longer than the maximum command legth
+\item {\tt SystemCall} is longer than the maximum command length
   allowed by {\tt shell/1}
 \bi
 \item {\tt resource\_error(memory)}
@@ -2128,7 +2128,7 @@ the specific return values of {\tt system()} may be platform-dependent.
 \bi
 \item {\tt type\_error(variable,Result)}
 \ei
-\item {\tt SystemCall} is longer than the maximum command legth
+\item {\tt SystemCall} is longer than the maximum command length
   allowed by {\tt shell/2}
 \bi
 \item {\tt resource\_error(memory)}
@@ -2140,7 +2140,7 @@ the specific return values of {\tt system()} may be platform-dependent.
 \standarditem{shell\_to\_list(+SystemCall,-StdOut,-Result)}{shell\_to\_list/3}
 %
 Behaves as {\tt shell/2} in its 1st and 4th arguments, and like {\tt
-  shell/2} always suceeds.  Both {\tt StdOut} and {\tt ErrOut} are
+  shell/2} always succeeds.  Both {\tt StdOut} and {\tt ErrOut} are
 lists of lists: each element of the outer list corresponds to a line
 of output from {\tt SystemCall}, while each element of an inner list
 corresponds to a token in that line.  {\tt shell\_to\_list/3} is thus
@@ -2509,12 +2509,12 @@ equal to 0, and {\tt -1} if {\tt Number} is less than 0.
 
 \ourstandarditem{pi}{pi/0}{Evaluable Functor (ISO)}
 % 
-Evaluates to $\pi$ within an arithemetic expression.
+Evaluates to $\pi$ within an arithmetic expression.
 
 \ourstandarditem{e}{e/0}{Evaluable Functor (ISO)}
 % 
 Evaluates to $e$, the base of the natural logarithm, within an
-arithemetic expression.
+arithmetic expression.
 
 \ourstandarditem{epsilon}{epsilon/0}{Evaluable Functor}
 % 
@@ -2530,7 +2530,7 @@ the first larger floating point number.
  \stdrefindex{atan2/2}
 
 XSB also allows as evaluable functors, many of the functions from the
-C library {\tt math.h}.  Functions included in XSB are {\tt
+C library {\tt math.h}.  Functions included in XSB \version{} are {\tt
   cos/1}, {\tt sin/1}, {\tt tan/1}, {\tt acos/1}, {\tt asin/1}, {\tt
   atan/1}, {\tt log/1} (natural logarithm), {\tt log10/1}, and 
   {\tt atan/2} (also available as {\tt atan2/2}).  For
@@ -3291,7 +3291,7 @@ as arguments, or if {\tt X} is an atom. (It fails if X is a cons node.)
 
 \isoitem{?Term =.. ?List}{=../2}
 %
-Given proper instantition of the arguments, {\tt =../2} (pronounced
+Given proper instantiation of the arguments, {\tt =../2} (pronounced
 {\em univ}) succeeds when (1) {\tt Term} unifies with a compound
 Prolog or HiLog term and {\tt List} unifies with a list whose head is
 the functor of {\tt Term} and whose tail is a list of the arguments of
@@ -3782,7 +3782,7 @@ L = 9
 \ourusage{atom\_concat(?Atom,?Atom,+Atom)}
 \ourusage{atom\_concat(+Atom,+Atom,-Atom)}
 %
-Suceeds if {\tt Atom12} is the concatenation of {\tt Atom1} and {\tt Atom2}.
+Succeeds if {\tt Atom12} is the concatenation of {\tt Atom1} and {\tt Atom2}.
 
 {\bf Examples}
 {\small
@@ -3800,7 +3800,7 @@ X = h
 Y = ello world 
 \end{verbatim}
 }
-The last query will resucceed for all combinations of atoms that
+The last query will re-succeed for all combinations of atoms that
 produce {\tt hello world}.
 
 {\bf Error Cases}
@@ -3959,7 +3959,7 @@ to XSB (see {\em Calling XSB from C} in Volume 2 of this manual).
 %
 \item {\tt ignore\_ops(+Bool)}. If {\tt Bool = true} each compound term
 is output in functional notation; list braces are ignored, as are all
-explicitly defined operators.  If {\tt Bool = canonical}, bracked list
+explicitly defined operators.  If {\tt Bool = canonical}, bracketed list
 notation is used.  Default value is {\tt canonical}.  The
 corresponding value of {\tt false}, that would enable operator
 precedence, is not yet implemented.
@@ -4275,7 +4275,7 @@ in findall-like predicates.  On the other hand, for the program
 }
 %
 the query {\tt t2(X)} will throw a table error, indicating that a call
-to {\tt tfundall/3} is apparently non-stratified~footnote{Detection of
+to {\tt tfindall/3} is apparently non-stratified~footnote{Detection of
   non-stratification is based on the approximate detection of
   dependencies among subgoals maintained by XSB.  This approximation
   is quite close for local evaluation, but is less close for batched
@@ -4324,7 +4324,7 @@ Other differences between predicates {\tt findall/3} and {\tt
     \end{verbatim}
     }
 
-Error cases inclode those of {\tt findall/3} (see above), along with 
+Error cases include those of {\tt findall/3} (see above), along with 
     \begin{description}
     \item[{\tt table\_error}]
 	Upon execution {\tt Goal} is not a subgoal of a tabled predicate.
@@ -4536,8 +4536,8 @@ cut cuts over more than goal to be cleaned, more than one handler will be execut
 
 {\tt call\_cleanup/2} is thus an extremely powerful and flexible
 mechanism when used in a simple manner.  While {\tt Handler} is
-``guarenteed'' to be invoked whenever {\tt Goal} finishes
-execution~\footnote{In fact we don't guarentee anything, see XSB's
+``guaranteed'' to be invoked whenever {\tt Goal} finishes
+execution~\footnote{In fact we don't guarantee anything, see XSB's
   license.}, it may be difficult to predict when {\tt Handler} will be
 invoked, as {\tt Handler} may be invoked because of deeply non-local
 cuts over {\tt Goal}, and even when such cuts are not present, the
