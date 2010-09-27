@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.33 2010-09-25 16:25:47 pmoura Exp $
+** $Id: function.c,v 1.34 2010-09-27 18:03:30 pmoura Exp $
 ** 
 */
 
@@ -601,6 +601,10 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 	    else if (fiflt_val(fiop1) == 0.0) set_int_val(value,0);
 	    else set_int_val(value,-1);
 	    break;
+	  } else if (strcmp(get_name(op_psc),"sinh")==0) {
+	    if (isfiint(fiop1)) set_flt_val(value,(Float)sinh((Float)fiint_val(fiop1)));
+	    else set_flt_val(value,(Float)sinh(fiflt_val(fiop1)));
+	    break;
 	  } else set_and_return_fail(value);
 
 	case 'c':
@@ -611,6 +615,10 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 	  } else if (strcmp(get_name(op_psc),"ceiling")==0) {
 	    if (isfiint(fiop1)) set_int_val(value,fiint_val(fiop1));
 	    else  set_int_val(value,-(Integer)floor(-fiflt_val(fiop1)));
+	    break;
+	  } else if (strcmp(get_name(op_psc),"cosh")==0) {
+	    if (isfiint(fiop1)) set_flt_val(value,(Float)cosh((Float)fiint_val(fiop1)));
+	    else set_flt_val(value,(Float)cosh(fiflt_val(fiop1)));
 	    break;
 	  } else set_and_return_fail(value);
 
@@ -623,6 +631,10 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 	    if (isfiint(fiop1)) set_int_val(value,fiint_val(fiop1));
 	    else if (fiflt_val(fiop1) > 0) set_int_val(value,(Integer)floor(fiflt_val(fiop1)));
 	    else set_int_val(value,-(Integer)floor(-fiflt_val(fiop1)));
+	    break;
+	  } else if (strcmp(get_name(op_psc),"tanh")==0) {
+	    if (isfiint(fiop1)) set_flt_val(value,(Float)tanh((Float)fiint_val(fiop1)));
+	    else set_flt_val(value,(Float)tanh(fiflt_val(fiop1)));
 	    break;
 	  } else set_and_return_fail(value);
 
@@ -694,6 +706,20 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 	      if (fiflt_val(fiop1) >= 0) set_flt_val(value,fiflt_val(fiop1));
 	      else set_flt_val(value,-fiflt_val(fiop1));
 	    break;
+	  } else if (strcmp(get_name(op_psc),"asinh")==0) {
+	    if (isfiint(fiop1)) set_flt_val(value,(Float)asinh((Float)fiint_val(fiop1)));
+	    else set_flt_val(value,(Float)asinh(fiflt_val(fiop1)));
+	    break;
+//		PM: the following two function definitions are incomplete as they need to
+//			handle out of range errors but I haven't figured out yet how to do it!
+//	  } else if (strcmp(get_name(op_psc),"acosh")==0) {
+//	    if (isfiint(fiop1)) set_flt_val(value,(Float)acosh((Float)fiint_val(fiop1)));
+//	    else set_flt_val(value,(Float)acosh(fiflt_val(fiop1)));
+//	    break;
+//	  } else if (strcmp(get_name(op_psc),"atanh")==0) {
+//	    if (isfiint(fiop1)) set_flt_val(value,(Float)atanh((Float)fiint_val(fiop1)));
+//	    else set_flt_val(value,(Float)atanh(fiflt_val(fiop1)));
+//	    break;
 	  } else set_and_return_fail(value);
 
 	case 'r':
