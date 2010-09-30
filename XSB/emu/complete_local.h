@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.33 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: complete_local.h,v 1.34 2010-09-30 22:49:10 tswift Exp $
 **
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -382,8 +382,11 @@ static inline void SetupReturnFromLeader(CTXTdeclc CPtr orig_breg, CPtr cs_ptr,
   /* restore_trail_condition_registers - because success path
    * will be followed
    */
-  ebreg = cp_ebreg(tcp_prevbreg(orig_breg));
-  hbreg = cp_hreg(tcp_prevbreg(orig_breg));
+  /* TLS: provisional change for strict_po 9/30/10 */
+  //    ebreg = cp_ebreg(tcp_prevbreg(orig_breg));
+  //    hbreg = cp_hreg(tcp_prevbreg(orig_breg));
+      ebreg = cp_ebreg(orig_breg);
+      hbreg = cp_hreg(orig_breg);
   subg_pos_cons(subgoal) = 0;
 
   /* reclaim stacks, including leader */
