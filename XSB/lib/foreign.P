@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.62 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: foreign.P,v 1.63 2010-10-07 01:21:40 kifer Exp $
 ** 
 */
 
@@ -282,17 +282,16 @@ compile_H(Modname, Base, Options, ExList, LdOption, CompComm, TempFile) :-
 	    telling(OldTell),
 %%%	    see(HFile),
 	    repeat,
-	    open_or_xpp_file(HFile,CPPprocess),
+	    open_or_xpp_file(HFile,XPP_process),
 %%	    trace,
 %%	    writeln(read_clauses(Modname,ExList,'',LdOption,CompComm,TempFile)),
 	    read_clauses(Modname,ExList,'',LdOption,CompComm,TempFile), !,
-	    (	CPPprocess = none, ! 
-	    ;	
-		process_control(CPPprocess, wait(ExitCode)),
-		(ExitCode==0,!
-		; abort(('Error while preprocessing ', HFile,
-			 '. Dynamic loading aborted.'))
-		),
+	    check_xpp_process_status(HFile,
+				     XPP_process,
+				     'Loading foreign module aborted'),
+	    %% Release the file descriptor used to read from preprocessor
+	    (XPP_process == skip -> true
+	    ;
 		stat_flag(CURRENT_INPUT,FromPort),
 		file_close(FromPort)
 	    ),

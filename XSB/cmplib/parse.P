@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.114 2010-08-19 15:03:35 spyrosh Exp $
+** $Id: parse.P,v 1.115 2010-10-07 01:21:40 kifer Exp $
 ** 
 */
 
@@ -34,17 +34,24 @@
 /*======================================================================*/
 
 %-----------------------------------------------------------------------
-
+:- dynamic gpp_include_dir(_).
+:- dynamic gpp_options(_).
 :- dynamic xpp_include_dir(_).
 :- dynamic xpp_options(_).
 
+:- dynamic
+	preprocessor_registry/2, %% PreprocName, PreprocCmdBuildingCall
+	preprocessor_queue/2.    %% PreprocName, PreprocOptions
+
 %-----------------------------------------------------------------------
+
+?- register_xsb_preprocessor(gpp,make_gpp_command(_,_,_,_)).
 
 /* TLS: not supporting include when compiling from userin */
 parse(Modname, PFile, HFile, Module) :-
 	filestack_reset,
 	stat_flag(CURRENT_INPUT,Str),filestack_push(Str),
-	conset(needs_restart, 0),  % reset, if an error prevented this
+	conset(needs_restart, 0),  % reset, if an error left it dirty
 	(Modname == user
 	 ->	set_symbol_hash_table_size(1,Module0),
 		see(userin), parse_clauses(user, Module0)
@@ -55,11 +62,11 @@ parse(Modname, PFile, HFile, Module) :-
 		 ->	parse1(Modname,HFile,Module0)
 		 ;	Module0 = Module0	% init (lamp variable)
 		),
-%		console_writeln(parsing_pfile),
+%%%	        standard:writeln(parsing_pfile),
 		parse1(Modname,PFile,Module0)
-%%		console_writeln(parse(Module0))
+%%%             standard:writeln(parse(Module0))
 	    ;   existence_error('file/module',PFile,compile/1,1)
-%	 ;	error(('Cannot find the file ', PFile)), fail, Module0=Module0
+%%%	 ;	error(('Cannot find the file ', PFile)), fail, Module0=Module0
 	),
 	conset(needs_restart, 0),  % clean up this var
 	module_close(Module0,Module), 
@@ -72,43 +79,36 @@ set_symbol_hash_table_size(FileSize,module(sym_tab(_,_,HashTab),_,_,_)) :-
 	log_ith(0,HashTab,Prime). % store hashtable size in 0th pos.
 
 parse1(Modname, File, Module) :-
-%        console_writeln(calling_parse1)	,
+%%%     standard:writeln(calling_parse1)	,
 	open_or_xpp_file(File,XPP_process),
 	(parse_clauses(Modname, Module)
 	%% check if must restart
 	 ->	(conget(needs_restart,1)
-		 ->	seen, 
-		        filestack_pop(_OFile),
-			parsing_file(PFile), see(PFile), %console_writeln(needs_restart(OFile,PFile)),
-			fail
-		 ;	!	% doesn't need restart so cut away 2nd parse1 cls.
+		 ->
+		    seen, 
+		    filestack_pop(_OFile),
+		    parsing_file(PFile), see(PFile),
+%%%		    standard:writeln(needs_restart(OFile,PFile)),
+		    fail
+		;   ! % doesn't need a restart so cut away 2nd parse1 cls.
 		)
 	 ;	true
 	),
-	(XPP_process == none
-	 ->	true
-	 ;	%% Wait, if cpp was spawned so as to not leave zombies
-	    (   xsb_configuration(host_os,windows)
-	    -> (process_control(XPP_process,kill);true)
-	    ;  process_control(XPP_process, wait(XPP_status)),
- 	       (   XPP_status == 0
-		->     true
- 	        ;      error(('While preprocessing ', File,
-			      '. Compilation aborted.')),
-		       fail
-	       )
-	    ),
-	    %% Also, release the file descriptor used to read from cpp
-	    current_input_port(FromPort), file_close(FromPort),
-	    %% and reset xpp_on
-	    conset(xpp_on,0),
-	    conset(xpp_dump,0)
+	%% reset xpp_on,xpp_dump,ports
+	(xpp_is_on
+	->  set_xpp_off,
+	    %% release the file descriptor used to read from cpp
+	    %% MK: why is this close necessary in view of the subsequent seen?
+	    current_input_port(FromPort),
+	    close(FromPort)
+	; true
 	),
-	seen, % = close
+	seen,
+	check_xpp_process_status(File,XPP_process),
 	filestack_pop(_OldFile),
 	parsing_file(Prev),
 	see(Prev).
-%        console_writeln(finishing_parse1).
+%%%     standard:writeln(finishing_parse1).
 
 %% When :- compiler_options([xpp_on]) is detected, setoptions1 skips the 
 %% rest of the options and sets needs_restart to 1.
@@ -123,100 +123,332 @@ parse1(Modname, File, Module) :-
 	%% If we are restarting due to gpp, then reset needs_restart.
 	conget(needs_restart,1), conset(needs_restart, 0),
 	parse1(Modname, File, Module).
-%        console_writeln(finishing_parse1).
+%%%     standard:writeln(finishing_parse1).
 
 
-:- import open/3 from standard.
 %% If xpp_on option is not set, just open the file.
 %% Otherwise, pass it through the C preprocessor
-open_or_xpp_file(File, XPP_process) :-
-	(conget(xpp_on,0) -> 
+open_or_xpp_file(File) :- open_or_xpp_file(File,_).
+open_or_xpp_file(File,XPP_process) :-
+	%% sometimes need to clear out xpp_on, esp. when compiling external
+	(\+xpp_is_on, \+xpp_is_off -> set_xpp_off; true), %% clear out xpp
+	(xpp_is_off -> 
 	    open(File,read,Istr),
 	    filestack_push(Istr),
-	    see(Istr), 
-	    XPP_process = none
-%	    console_writeln(seeing(File,Istr))
+	    see(Istr),
+	    XPP_process = skip
 	; 
-	    %% xpp_on is set: use preprocessor
-	    xpp_process_file(File, XPP_process, IOportFromProc),
-	    stat_set_flag(CURRENT_INPUT, IOportFromProc),
-%	    console_writeln(preprocessing),
-	    filestack_push(IOportFromProc)
+	    %% xpp_on is set: use preprocessors in queue
+	    apply_preprocessors(File,IOportFromProc,XPP_process),
+	    (integer(IOportFromProc) ->
+		stat_set_flag(CURRENT_INPUT, IOportFromProc),
+		filestack_push(IOportFromProc)
+	    ;
+		fail
+	    )
 	).
 
+
+%% Make_XPP_Command has the form predicate(File,XPP_Name,Options,XPP_command).
+%% It is supposed to create
+%% the actual shell command that will invoke the preprocessor of choice.
+%%
+%% File is the name of the original file being preprocessed.
+%% XPPName should be replaced with the name of the actual preprocessor.
+%%       In most cases the above two parameters are not used
+%%       by the predicate used in Make_XPP_Command
+%% Options is an argument that may be passed with additional info for
+%%       the creation of XPP_command.
+%% XPP_command should be such that if a file is given as the last arg then
+%%       that file would be  preprocessed by the external preprocessor.
+%%       If no file is given, input stream is going to be processed.
+%%
 %% FileName can either be a string (a file name), an integer (an I/O port),
 %% or a variable.
-%% In the first case, gpp processes the file. In the second, it takes input 
-%% from the port. In the third, it binds variable to the input port of gpp.
+%% In the first case, XPP processes the file. In the second, it takes input 
+%% from the port. In the third, it binds variable to the input port of XPP.
 %% This can then be used, for example, to bind this port to XSB standard 
-%% output (stat_set_flag(CURRENT_OUTPUT,port)
-xpp_process_file(FileName, XPP_process, IOportFromProc) :-
-	make_gpp_command(XPP_command,FileName),
+%% output (stat_set_flag(CURRENT_OUTPUT,port))
+xpp_process_file(FileName,XPP_process,IOportFromProc,Make_XPP_Command) :-
+	%% bind the appropriate arg of the XPP making command to XPP_command
+	get_xpp_call_cmd(Make_XPP_Command,XPP_command),
+	standard:catch(Make_XPP_Command,
+		       error(Error,Message,_),
+		       xpp_error_handler(Make_XPP_Command,Error,Message)),
 	((integer(FileName) ; var(FileName))
 	-> fmt_write_string(FullXPP_command,'%s',arg(XPP_command)),
 	    InputStream = FileName
 	;
-		 fmt_write_string(FullXPP_command,'%s "%s"',args(XPP_command,FileName)),
+	    fmt_write_string(FullXPP_command,'%s "%s"',args(XPP_command,FileName)),
 	    InputStream = block
 	),
+        preprocessor_name(Make_XPP_Command,XPP_Name),
+	get_xpp_call_file(Make_XPP_Command,InitialFile), % the actual file name
+	fmt_write_string(Dump_file,'%s_%s',args(InitialFile,XPP_Name)),
+	fmt_write_string(XPP_dump_msg,
+			 '[%s: Saving postprocessed file in %s]',
+			 args(XPP_Name,Dump_file)),
 #ifdef DEBUG_GPP
 	fmt_write_string(XPP_command_msg, '[%s]', FullXPP_command),
 #else
         ((integer(FileName) ; var(FileName))
-	-> XPP_command_msg = '[Preprocessing input stream]'
-	; fmt_write_string(XPP_command_msg, '[Preprocessing %s]', FileName)
+	-> XPP_command_msg = ('[',XPP_Name,': Preprocessing input stream]')
+	; fmt_write_string(XPP_command_msg,
+			   '[%s: Preprocessing %s]',
+			   args(XPP_Name,FileName))
 	),
 #endif
         %% If --quietload, don't print Preprocessing messages
 	stat_flag(BANNER_CTL,BannerCtl),
-	(   BannerCtl mod QUIETLOAD =:= 0
-	->  true
+	(   BannerCtl mod QUIETLOAD =:= 0 ->  true
 	;   message(XPP_command_msg)
 	),
-	%% Redirect cpp's stderr to XSB's STDWARN
+	%% Redirect xpp's stderr to XSB's STDWARN
 	spawn_process(FullXPP_command, InputStream, IOportFromProc, STDWARN, XPP_process),
-%%	!,  %% why would this cut be needed?
+	(xppdump_is_on ->
+	    file_io:file_open(Dump_file,w,DumpPort),
+	    file_io:copyIOport(IOportFromProc,DumpPort),
+	    close(DumpPort),
+	    file_io:file_reopen(Dump_file,r,IOportFromProc,_),
+	    ( BannerCtl mod QUIETLOAD =:= 0 -> true
+	    ;  message(XPP_dump_msg)
+	    )
+	; true
+	),
 #ifdef DEBUG_GPP
-	message('[Preprocessing done]'),
+	message(('[',XPP_Name,':','Preprocessing done]')),
 #endif
 	true.
 
 
-make_gpp_command(GPP_command,FileName) :-
+%% xpp_process_file/3 is an alias for gpp_process_file.
+%% Used for Flora-2 compatibility
+xpp_process_file(FileName, XPP_process, IOportFromProc) :-
+	gpp_process_file(FileName, XPP_process, IOportFromProc).
+gpp_process_file(FileName, XPP_process, IOportFromProc) :-
+	setup_make_xpp_command_call(FileName, gpp,_, Make_XPP_Cmd),
+	xpp_process_file(FileName,XPP_process,IOportFromProc,Make_XPP_Cmd).
+
+
+apply_preprocessors(File,OutPort,XPP_process) :-
+	InPort = File,
+	pipeline_preprocessors_in_queue(File,InPort,OutPort,XPP_process).
+
+%% InPort - input port to processor's process, can be a file
+%% OutPort - input port from processor's process
+apply_one_preprocessor(File,InPort,OutPort,XPP_process) :-
+	dequeue_preprocessor(XPP_name,XPP_Options),
+	setup_make_xpp_command_call(File,
+				    XPP_name,XPP_Options,
+				    Make_XPP_Cmd_Call),
+	(xpp_process_file(InPort,XPP_process,OutPort,Make_XPP_Cmd_Call),
+	    stat_set_flag(CURRENT_INPUT, OutPort)
+	; XPP_process = error,
+	    preprocessing_error((File, ': Preprocessor "', XPP_name,
+				 '" failed to execute. Perhaps a syntax error.'))
+	).
+
+
+pipeline_preprocessors_in_queue(File,InPort,OutPort,XPP_process) :-
+	apply_one_preprocessor(File,InPort,OutPort1,XPP_process1),
+	(preprocessor_queue(_,_),
+	    (integer(InPort) -> close(InPort)
+	    ; true
+	    ),
+	    true %check_xpp_process_status(File,XPP_process1)
+	-> pipeline_preprocessors_in_queue(File,OutPort1,OutPort,XPP_process)
+	;
+	    OutPort = OutPort1,
+	    XPP_process = XPP_process1,
+	    (integer(InPort) -> close(InPort)
+	    ; true
+	    )
+	).
+
+check_xpp_process_status(File,XPP_process) :-
+	check_xpp_process_status(File,XPP_process,'Compilation aborted').
+check_xpp_process_status(File,XPP_process,Message) :-
+	( XPP_process == skip -> true
+	; XPP_process == error ->
+	    preprocessing_error((File, ': ', Message, '.')),
+	    fail
+	%% Wait or kill, if cpp was spawned so as to not leave zombies
+	; xsb_configuration(host_os,windows) ->
+	    (process_control(XPP_process,kill); true)
+	;
+	    process_control(XPP_process, wait(XPP_status)),
+	    ( XPP_status == 0 -> true
+	    ;
+		preprocessing_error((File, ': ', Message, '.')),
+		fail
+	    )
+	).
+
+
+xpp_error_handler(Make_XPP_Command,Error,[]) :-
+	!,
+	message(('++Error[XSB/Runtime/P]: [Preprocessing] In ',
+		 Make_XPP_Command,
+		 ': ',
+		 Error)),
+	fail.
+xpp_error_handler(Make_XPP_Command,Error,Message) :-
+	!,
+	message(('++Error[XSB/Runtime/P]: [Preprocessing] In ',
+		 Make_XPP_Command,
+		 ': ',
+		 Message,
+		 '\n                                        ',
+		 Error)),
+	fail.
+
+
+%% Make shell command for gpp
+%% DirectCompilerOptions are options included directly in
+%% xpp_on(...,gpp(DirectCompilerOptions),...)
+%% FileName was previously used only in the xpp_dump instruction in order
+%% to construct the name of the dump-file for the preprocessor output, but
+%% now is NO LONGER used.
+%% PreprocessorName is not used. It is bound to the preprocessor name
+%% under which this call is registered.
+make_gpp_command(_FileName,_PreprocessorName,DirectCompilerOptions,GPP_command) :-
 	%% Construct the -Include directories
 	make_include_directive(Directive, '-I'),
 	slash(Slash),
 	xsb_configuration(install_dir, InstallDir),
-	fmt_write_string(IncludeDirs, ' %s "%s%s%semu" "%s%s%sprolog_includes" ',
+	fmt_write_string(IncludeDirs,' %s "%s%s%semu" "%s%s%sprolog_includes" ',
 			 args(Directive,
 			      '-I',InstallDir,Slash,
 			      '-I',InstallDir,Slash)),
 	xsb_configuration(config_bindir, Bindir),
-	(   conget(xpp_dump,1)
-	->  fmt_write_string(DumpDirective, ' -O "%s_gpp" ', arg(FileName))
+	/*
+	(   xppdump_is_on
+	-> 
+	    %% we now do dumping in xpp_process_file automatically
+	    fmt_write_string(DumpDirective, ' -O "%s_gpp" ', arg(_FileName))
 	;   DumpDirective = ' '
 	),
+	*/
 	make_gpp_options(GPP_options),
+	(var(DirectCompilerOptions) -> DirectCompilerOptions = ''
+	; true
+	),
 	%% Construct the gpp command
+	/*
+	%% We now dump directly in xpp_process_file/4 and no longer use
+	%% DumpDirective and the -O option
 	fmt_write_string(GPP_command,
+			 '"%s%sgpp" %s %s %s %s -DXSB_PROLOG ',
+			 args(Bindir,Slash,
+			      DumpDirective,
+			      DirectCompilerOptions,GPP_options,IncludeDirs)).
+	*/
+        fmt_write_string(GPP_command,
 			 '"%s%sgpp" %s %s %s -DXSB_PROLOG ',
-			 args(Bindir,Slash,DumpDirective,
-			      GPP_options,IncludeDirs)).
+			 args(Bindir,Slash,
+			      DirectCompilerOptions,GPP_options,IncludeDirs)).
 
-%% Make an include directive out of the dirs in xpp_include_dir/1
+%% Make an include directive out of the dirs in gpp_include_dir/1
 %% The dirs are supplied by applications that keep include files
 %% in special places
 make_include_directive(Directive, Flag) :-
-	findall(X, xpp_include_dir(X), L),
+	findall(X, gpp_include_dir_aux(X), L),
 	make_include_directive1(Directive, Flag, L).
 make_include_directive1(Directive, Flag, [H|Tail]) :-
 	make_include_directive1(Directive1, Flag, Tail),
 	fmt_write_string(Directive, ' "%s%s" %s', args(Flag, H, Directive1)).
 make_include_directive1(' ',_, []).
 
+gpp_include_dir_aux(X) :- gpp_include_dir(X).
+gpp_include_dir_aux(X) :- xpp_include_dir(X).
 
+make_gpp_options(X) :- gpp_options(X), !.
 make_gpp_options(X) :- xpp_options(X), !.
 make_gpp_options(' -P -m -nostdinc -curdirinclast ').
+
+%% register_xsb_preprocessor(+Name,+CallTemplate)
+%% Call template is supposed to be a template of the form Pred(_,_,_).
+%% Pred is supposed to be a predicate for making preprocessor shell command
+%% (see xpp_process_file).
+%% Arg 2 - finename of the file being processed
+%% Arg 2 - options to pass for creation of that command.
+%% If arg 1 is a variable - ignore.
+%% Arg 2 is the output shell command made by Pred/2.
+register_xsb_preprocessor(Name,_) :-
+	var(Name),
+	error('When registering a preprocessor, the name should be an atom'),
+	!.
+register_xsb_preprocessor(Name,CallTemplate) :-
+	(var(CallTemplate)
+	;
+	    functor(CallTemplate,_,N), N \== 4
+	),
+	error(('Registering preprocessor ', Name, ': the associated call template must have the form "somepred(_,_,_,_)", but "', CallTemplate, '" was given')),
+	!.
+register_xsb_preprocessor(Name,CallTemplate) :-
+	\+ preprocessor_registry(Name,_),
+	!,
+	%% bind the template's preprocessor to the preprocessor
+	%% under which the template is registered
+	get_xpp_call_preprocessor(CallTemplate,Name),
+	asserta(preprocessor_registry(Name,CallTemplate)).
+register_xsb_preprocessor(_,_).
+
+%% Unregister a preprocessor
+unregister_xsb_preprocessor(Name) :-
+	nonvar(Name),
+	retractall(preprocessor_registry(Name,_)).
+
+%% fetch the XPP call from preprocessor_registry and bind
+%% the first argument to the options for that preprocessor
+setup_make_xpp_command_call(File,XPP_name,XPP_Options,Make_XPP_Cmd_Call) :-
+	preprocessor_registry(XPP_name,Make_XPP_Cmd_Call),
+	get_xpp_call_file(Make_XPP_Cmd_Call,File),
+	%% XPP_name is already set by register_xsb_preprocessor/2
+	%%get_xpp_call_preprocessor(Make_XPP_Cmd_Call,XPP_name),
+	get_xpp_call_options(Make_XPP_Cmd_Call,XPP_Options).
+
+preprocessor_name(XPP_Call,Name) :-
+	preprocessor_registry(Name,XPP_Call),
+	!.
+preprocessor_name(XPP_Call,_) :-
+	error(('Something wrong: no preprocessors registered with ',XPP_Call)).
+
+%% maintain preprocessor queue
+%% If preprocessor is on the queue, ignore.
+enqueue_preprocessor(Preprocessor) :-
+	preprocessor_queue(Preprocessor,_),
+	!.
+enqueue_preprocessor(Preprocessor) :-
+	atom(Preprocessor),
+	!,
+	assertz(preprocessor_queue(Preprocessor,_)).
+enqueue_preprocessor(Preprocessor) :-
+	compound(Preprocessor),
+	Preprocessor =.. [Name,Options],
+	!,
+	assertz(preprocessor_queue(Name,Options)).
+enqueue_preprocessor(Preprocessor) :-
+	error(('Invalid preprocesor spec: ', Preprocessor)).
+
+dequeue_preprocessor(Name,Options) :-
+	preprocessor_queue(Name,Options),
+	(preprocessor_registry(Name,_) -> true
+	; error(('Non-registered preprocessor in xpp_on(...)/xpp_dump(...): ',
+		 Name, '(', Options, ')'))
+	),
+	!,
+	retract(preprocessor_queue(Name,Options)).
+
+get_xpp_call_file(XPP_call,File) :- arg(1,XPP_call,File).
+get_xpp_call_preprocessor(XPP_call,Preproc_name) :- arg(2,XPP_call,Preproc_name).
+get_xpp_call_options(XPP_call,Preproc_opts) :- arg(3,XPP_call,Preproc_opts).
+get_xpp_call_cmd(XPP_call,Preproc_cmd) :- arg(4,XPP_call,Preproc_cmd).
+
+xpp_is_off :- conget(xpp_on,0).
+xpp_is_on :- conget(xpp_on,1).
+xppdump_is_on :- conget(xpp_dump,1).
+set_xpp_off :- conset(xpp_on,0), conset(xpp_dump,0).
 
 /*======================================================================*/
 /* parse_clauses(+ModName, #module(#SymTab,#DcList,#ClList,#QrList))	*/
@@ -244,9 +476,9 @@ parse_clauses(ModName, Module) :-
 parse_clauses(M, _) :-	% Under normal conditions this clause is unreachable!
 	syntax_error(('Clauses of ', M, ' cannot be parsed.')).
 
-:- import file_read/3 from xsb_read.
 my_read(Term, Vars) :-
-	stat_flag(CURRENT_INPUT, File), file_read(File, Term, Vars).
+	stat_flag(CURRENT_INPUT, File),
+	file_read(File, Term, Vars).
 
 check_compilable_clause(Cl) :- var(Cl), !, 
 	syntax_error(('Clause expected, variable encountered: ',Cl)),
@@ -381,7 +613,6 @@ transform_slash_to_skel(Spec,ModName,SymTab,Skel) :-
 /*	inserting any symbols to the symbol table (non-backtrackable	*/
 /*	insert).							*/
 /*======================================================================*/
-:- import call/1 from standard.
 parse_directive(if(Condition), _QrList,_SymTab,_ModName,_ModStruct) :- !, 	
         (cond_call(Condition) -> 
           true
@@ -506,7 +737,7 @@ parse_directive(compiler_options(Options),_QrList,_SymTab,_ModName,_ModStruct) :
 	%% compiler options turns xpp_on on. So, we indicate 
 	%% interest in restarting. It might turn into a restart 
 	%% request if xpp_on is subsequently set.
-	(conget(xpp_on, 0) ->  conset(migh_need_restart,1) ;   true),
+	(xpp_is_off ->  conset(migh_need_restart,1) ;   true),
 	check_file_compiler_options(Options),
 	setoptions1(Options).
 parse_directive(comment(_,_),_QrList,_SymTab,_ModName,_ModStruct) :- !.
@@ -579,7 +810,6 @@ parse_multifile(Skel,QrList,SymTab,ModName) :-
 
 %-----------
 % code for conditional compilation
-:- import xsb_flag/2 from curr_sym.
 
 skip_over_condition(N):- 
         my_read(Cl,_),
@@ -1004,12 +1234,18 @@ prime(_).  % to generate an error!
 
 filestack_reset:- retractall(parsing_file(_)).
 filestack_push(File):-
-%	console_writeln(pushing(File)), 
+%%%	standard:writeln(pushing(File)), 
 	asserta(parsing_file(File)).
-%filestack_pop(Str):-  (retract(parsing_file(Str)) -> 
-%		      		      console_writeln(popping(Str))
-%				      ; console_writeln(outofstack)).
-filestack_pop(Str):-  retract(parsing_file(Str)),!.
+/*
+filestack_pop(Str):-
+	(retract(parsing_file(Str)) -> 
+	    standard:writeln(popping(Str))
+	; standard:writeln(outofstack)
+	).
+*/
+filestack_pop(Str):-
+	retract(parsing_file(Str)),
+	!.
 
 end_of_file.
 
@@ -1022,6 +1258,7 @@ get_extension(File,Ext):-
 get_extension_1([46|_],[46]):- !.
 get_extension_1([H|T],[H|T1]):- 
 	get_extension_1(T,T1).
+
 
 
 /* ---------------------- end of file parse.P ------------------------- */

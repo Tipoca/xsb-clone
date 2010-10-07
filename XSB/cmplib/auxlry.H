@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.H,v 1.20 2010-08-19 15:03:35 spyrosh Exp $
+** $Id: auxlry.H,v 1.21 2010-10-07 01:21:40 kifer Exp $
 ** 
 */
 
@@ -44,6 +44,8 @@
 :- import term_psc/2, term_type/2, psc_arity/2, term_arg/3
         from machine.
 :- import misc_error/1 from error_handler.
+
+:- import enqueue_preprocessor/1 from parse.
 
 /* ------------------------ end of file auxlry.H ---------------------- */
 

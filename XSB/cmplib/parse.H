@@ -19,23 +19,40 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.46 2010-08-19 15:03:35 spyrosh Exp $
+** $Id: parse.H,v 1.47 2010-10-07 01:21:40 kifer Exp $
 ** 
 */
 
 
-:- export parse/4, get_symtab/2, parse_preddef/4.
+:- export
+	register_xsb_preprocessor/2,
+	unregister_xsb_preprocessor/1,
+	xppdump_is_on/0,
+	set_xpp_off/0,
+	check_xpp_process_status/2, check_xpp_process_status/3,
+	make_gpp_command/4,
+	parse/4, get_symtab/2, parse_preddef/4.
 :- export get_p_mod/3, %%change_multifile_directive/3, 
-	xpp_process_file/3, open_or_xpp_file/2, xpp_include_dir/1,
+	xpp_process_file/3, xpp_process_file/4, gpp_process_file/3,
+	open_or_xpp_file/1,
+	open_or_xpp_file/2, xpp_include_dir/1,
 	xpp_program/1, xpp_options/1,
+	enqueue_preprocessor/1,
+	dequeue_preprocessor/1,
 	'_$multifile'/1, '_$multifile1'/1,
 	'_$multifile2'/3, '_$apply_arity'/1,
 	'_$multifile_retract'/3.
 
-:- import retractall/1, retract/1, asserta/1, (dynamic)/1,  check_dynamic_options/2 from assert.
+:- import
+	retractall/1, retract/1,
+	asserta/1, assertz/1,
+	(dynamic)/1,
+	check_dynamic_options/2
+   from assert.
 
 :- import check_file_compiler_options/1, 
-             error/1, message/1, option/1, setoptions1/1, warning/1 from auxlry.
+	error/1, message/1, option/1, setoptions1/1, warning/1
+   from auxlry.
 
 :- import append/3, memberchk/2, log_ith/3, member/2 from basics.
 
@@ -45,13 +62,20 @@
 
 :- import search_module/6 from consult.
 
-:- import current_input_port/1 from curr_sym.
+:- import
+	xsb_flag/2,
+	current_input_port/1
+   from curr_sym.
 
-:- import existence_error/4,misc_error/1, syntax_error/1, check_ground/3
+:- import
+	preprocessing_error/1,
+	existence_error/4, misc_error/1, syntax_error/1, check_ground/3
    from error_handler.
 
-:- import fmt_write_string/3, file_close/1 from file_io.
-:- import file_size/2 from file_io.
+:- import
+	file_size/2,
+	fmt_write_string/3
+   from file_io.
 
 :- import mpa_to_skel/2 from file_op.
 
@@ -70,10 +94,16 @@
 :- import singleton_check/2 from singlton.
 
 :- import functor/3, seen/0, file_exists/1, '=..'/2, atom/1, integer/1,
-   op/3, (index)/3, (index)/2, real/1, see/1, expand_term/2, (=..)/2,
-   '\='/2, check_table_options/2,
-   is_most_general_term/1, number/1, atom_codes/2
+          op/3, (index)/3, (index)/2, real/1, see/1, expand_term/2, (=..)/2,
+	  '\='/2, check_table_options/2,
+	  arg/3,
+	  open/3,
+	  close/1,
+	  call/1, compound/1,
+	  is_most_general_term/1, number/1, atom_codes/2
      from standard.
+
+:- import file_read/3 from xsb_read.
 
 :- import standard_symbol/3 from std_xsb.
 

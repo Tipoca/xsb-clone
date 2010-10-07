@@ -28,6 +28,7 @@
    instantiation_error/2,  % obsolescent
    instantiation_error/3,
    misc_error/1,permission_error/4, 
+   preprocessing_error/1,
    representation_error/3, resource_error/2,
    syntax_error/1, system_error/3,
    table_error/1, type_error/4, 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.30 2010-08-19 15:03:35 spyrosh Exp $
+** $Id: auxlry.P,v 1.31 2010-10-07 01:21:40 kifer Exp $
 ** 
 */
 
@@ -99,15 +99,33 @@ setoptions1([Opt|Rest]) :-
 	).
 
 
-
-
 setopt(Opt,Setting) :-
-	( current_option(Opt) -> conset(Opt, Setting),
-	   		 	 (Opt = ciao_directives -> 
-					set_ciao_opts ; true)
+	( current_option(Opt) -> conset(Opt, Setting)
 	; current_option(Opt, NewOpt) -> conset(NewOpt, Setting)
 	; warning(('Unknown compiler option: ', Opt))
-	).
+	),
+	additional_option_settings(Opt).
+
+additional_option_settings(Opt) :-
+	Opt == ciao_directives,
+	!,
+	set_ciao_opts.
+additional_option_settings(Opt) :-
+	(Opt == xpp_on ; Opt == xpp_dump),
+	!,
+	enqueue_preprocessor(gpp).
+additional_option_settings(Opt) :-
+	(functor(Opt,OptName,1), arg(1,Opt,OptList1),   %% unary xpp_on/xpp_dump
+	    (is_list(OptList1) -> OptList = OptList1
+	    ; OptList = [OptList1]
+	    ),
+	    !
+	; Opt =.. [OptName|OptList]                    %% N-ary xpp_on/xpp_dump
+	),
+	(OptName == xpp_on ; OptName == xpp_dump),
+	!,
+	set_preprocessor_queue(OptList).
+additional_option_settings(_).
 
 /* TLS: just want to avoid any more goose chases w. ti_dump.  The
 proble is that the ti_dump option is checked before ti_dump is
@@ -193,8 +211,14 @@ current_option(allow_redefinition).
 
 current_option(ciao_directives).
 
+current_option(Opt,OptName) :-
+	functor(Opt,OptName,_),
+	(OptName == xpp_on ; OptName == xpp_dump),
+	!.
 % TLS: used for backward compatability when options change.
 current_option(_,_):- fail.
+
+
 
 set_ciao_opts:- 
 	op(500,yfx,#),
@@ -202,6 +226,13 @@ set_ciao_opts:-
 	op(978, xfx,(::)).
 %	op(1100,fx,(document_export)),
 %	op(1100,fx,(document_import)).
+
+
+set_preprocessor_queue([]).
+set_preprocessor_queue([PreprocSpec|Rest]) :-
+	enqueue_preprocessor(PreprocSpec),
+	set_preprocessor_queue(Rest).
+
 
 /*================================================================*/
 /*  option(+Option)							*/

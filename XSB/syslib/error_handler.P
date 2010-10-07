@@ -167,6 +167,8 @@ get_sys_error_description(error(instantiation_error,Msg), ExceptionDesc) :-
 	ExceptionDesc = ('++Error[XSB/Runtime/P]: [Instantiation] ', Msg).
 get_sys_error_description(error(misc_error,Msg), ExceptionDesc) :- 
 	ExceptionDesc = ('++Error[XSB/Runtime/P]: [Miscellaneous] ', Msg).
+get_sys_error_description(error(preprocessing_error,Msg), ExceptionDesc) :- 
+	ExceptionDesc = ('++Error[XSB/Runtime/P]: [Preprocessing] ', Msg).
 get_sys_error_description(error(permission_error(Op,Obj_type,Culprit),Msg), 
 	                          ExceptionDesc) :-
 	(Culprit == '' -> 
@@ -318,6 +320,9 @@ instantiation_error(Predicate,Arg,State):-
 misc_error(Message):- 
 	xsb_backtrace(Bt),
 	throw(error(misc_error,Message,Bt)).
+
+preprocessing_error(Message) :-
+	throw(error(preprocessing_error,Message,_)).
 
 %------
 permission_error(Op,Obj_type,Culprit,Predicate):- 

@@ -70,9 +70,13 @@
 	  term_psc/2, psc_set_shared/2, psc_set_private/2, stat_flag/2,
 	  term_new/2
      from machine.
-:- import get_p_mod/3, open_or_xpp_file/2
-     from parse.
-:- import rm/1, sys_link/3, sys_filecopy/3, process_control/2 from shell.
+:- import
+	check_xpp_process_status/3,
+	get_p_mod/3, open_or_xpp_file/2
+   from parse.
+:- import
+	rm/1, sys_link/3, sys_filecopy/3
+   from shell.
 :- import (multifile)/1, '_$multifile'/1 from standard.
 :- import abort/1, call/1, file_exists/1, atom/1, repeat/0,
 	  seeing/1, see/1, seen/0, call/1, goal_cut_trans/3,

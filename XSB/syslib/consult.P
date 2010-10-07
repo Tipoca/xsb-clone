@@ -495,20 +495,16 @@ load_dyn1(Rfname,Dir) :-
 	cputime(T0),
 	seeing(OldFile),
 	open_or_xpp_file(Rfname, XPP_process),
-	current_input_port(XPPport), % port from process, if it was launched
+	current_input_port(XPPport), %% port from process, if it was launched
 	(   read_and_assert(Dir)
 	%% If needs restart, close old file and skip to the second load_dyn1
 	->  ( conget(needs_restart,1) -> seen, see(OldFile), fail ; true)
 	;   conset(needs_restart, 0), conset(xpp_on,0)
 	),
-	(   XPP_process = none, ! 
-	;   %% Wait, if gpp was spawned so as to not leave zombies
-	    process_control(XPP_process, wait(ExitCode)),
-	    (ExitCode==0,!
-	    ; abort(('Error while preprocessing ', Rfname,
-		     '. Dynamic loading aborted.'))
-	    ),
-	    %% Also, release the file descriptor used to read from gpp
+	check_xpp_process_status(Rfname,XPP_process,'Dynamic loading aborted'),
+	%% Release the file descriptor used to read from preprocessor
+	(XPP_process == skip -> true
+	;
 	    file_close(XPPport)
 	),
 	seen,
@@ -599,14 +595,10 @@ load_dync1(Rfname,Dir) :-
 	->  (conget(needs_restart,1) -> seen, see(OldFile), fail ; true)
 	;   conset(needs_restart, 0), conset(xpp_on,0)
 	),
-	(   XPP_process = none, ! 
-	;   %% Wait, if gpp was spawned so as to not leave zombies
-	    process_control(XPP_process, wait(ExitCode)),
-	    (  ExitCode==0,!
-	    ; abort(('Error while preprocessing ', Rfname,
-		     '. Dynamic loading aborted.'))
-	    ),
-	    %% Also, release the file descriptor used to read from gpp
+	check_xpp_process_status(Rfname,XPP_process,'Dynamic loading aborted'),
+	%% Release the file descriptor used to read from preprocessor
+	(XPP_process == skip -> true
+	;
 	    file_close(XPPport)
 	),
 	seen,

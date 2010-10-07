@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.H,v 1.24 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: foreign.H,v 1.25 2010-10-07 01:21:40 kifer Exp $
 ** 
 */
 
@@ -38,14 +38,22 @@
 :- import current_compiled_module/1 from compile.
 :- import engine_mode_magic_num/2 from consult.
 :- import conset/2, conget/2 from gensym.
-:- import file_close/1, fmt_write_string/3, file_put/2 from file_io.
+:- import
+	file_close/1,
+	fmt_write_string/3, file_put/2
+   from file_io.
 :- import attach/2, length/2 from listutil.
-:- import str_len/2, str_cat/3, stat_flag/2 from machine.
+:- import
+	stat_flag/2,
+	str_len/2, str_cat/3
+   from machine.
 :- import substring/4 from machine.
 :- import parse_filename/4 from machine.
-:- import open_or_xpp_file/2 from parse.
+:- import
+	check_xpp_process_status/3,
+	open_or_xpp_file/2
+   from parse.
 :- import shell/1 from shell.
-:- import process_control/2 from shell.
 :- import read/1, see/1, seen/0, open/3, close/1, tell/1, told/0, repeat/0,
 	  write/2, atom/1, file_exists/1, cputime/1, abort/1, seeing/1, telling/1
      from standard.
