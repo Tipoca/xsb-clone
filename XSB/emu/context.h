@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.77 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: context.h,v 1.78 2010-10-07 17:58:03 dwarren Exp $
 **
 */
 
@@ -274,6 +274,11 @@ DynamicStack  _tstTrail;
   CPtr *_copy_of_var_addr;
   int _copy_of_num_heap_term_vars;
 
+#define MAX_SIMPLIFY_NEG_FAILS_STACK 10
+  VariantSF _simplify_neg_fails_stack[MAX_SIMPLIFY_NEG_FAILS_STACK];
+  long _simplify_neg_fails_stack_top;
+  int _in_simplify_neg_fails;
+
   /* Variables for table traversal for abolishing tables */
   int _answer_stack_top;
   BTNptr * _answer_stack;
@@ -424,7 +429,11 @@ Cell _pflags[MAX_PRIVATE_FLAGS];
 
 /* Thread Id (for fast access) */
 
+#ifdef WIN_NT
+  int tid;
+#else
   pthread_t tid;
+#endif
 
 /* stuff for deadlock detection in completion */
 #ifdef SHARED_COMPL_TABLES
@@ -705,6 +714,10 @@ typedef struct th_context th_context ;
 #define  cell_array                         (th->_cell_array)
 #define  copy_of_var_addr                   (th->_copy_of_var_addr)
 #define  copy_of_num_heap_term_vars         (th->_copy_of_num_heap_term_vars)
+
+#define  simplify_neg_fails_stack           (th->_simplify_neg_fails_stack)
+#define  simplify_neg_fails_stack_top       (th->_simplify_neg_fails_stack_top)
+#define  in_simplify_neg_fails              (th->_in_simplify_neg_fails)
 
 #define  answer_stack_top                  (th->_answer_stack_top)
 #define  answer_stack                      (th->_answer_stack)

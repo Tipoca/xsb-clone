@@ -650,7 +650,11 @@ static Integer xsb_thread_setup(th_context *th, int is_detached, int is_aliased)
   pthread_mutex_unlock( &th_mutex );
 
   SET_THREAD_INCARN(id, th_vec[pos].incarn );
+#ifdef WIN_NT
+  new_th_ctxt->tid = (int)id;
+#else
   new_th_ctxt->tid = (pthread_t)id;
+#endif
   //  printf("id is %d ctxt is %p\n",id,new_th_ctxt);
   ctop_int( th, 3, id );
 
@@ -671,7 +675,11 @@ static int xsb_thread_create_1(th_context *th, Cell goal, int glsize, int tcsize
   copy_pflags(new_th_ctxt, th);
   init_machine(new_th_ctxt,glsize,tcsize,complsize,pdlsize);
   new_th_ctxt->_reg[1] = copy_term_from_thread(new_th_ctxt, th, goal);
+#ifdef WIN_NT
+  new_th_ctxt->tid = (int)Id;
+#else
   new_th_ctxt->tid = (pthread_t)Id;
+#endif
   new_th_ctxt->enable_cancel = FALSE;
   new_th_ctxt->to_be_cancelled = FALSE;
   new_th_ctxt->cond_var_ptr = NULL;
@@ -751,7 +759,11 @@ call_conv int xsb_ccall_thread_create(th_context *th,th_context **thread_return)
   new_th_ctxt->cond_var_ptr = NULL;
 
   SET_THREAD_INCARN(id, th_vec[pos].incarn );
+#ifdef WIN_NT
+  new_th_ctxt->tid = (int)id;
+#else
   new_th_ctxt->tid = (pthread_t)id;
+#endif
 
   pthread_cond_init( &new_th_ctxt->_xsb_started_cond, NULL );
   pthread_cond_init( &new_th_ctxt->_xsb_done_cond, NULL );
@@ -795,7 +807,13 @@ void init_system_threads( th_context *ctxt )
   th_vec[pos].valid = TRUE;
   if( pos != 0 )
     SET_THREAD_INCARN(id, th_vec[pos].incarn );
+
+#ifdef WIN_NT
+  ctxt->tid = (int)id;
+#else
   ctxt->tid = (pthread_t)id;
+#endif
+
   if( id != 0 )
 	xsb_abort( "[THREAD] Error initializing thread table" );
 
