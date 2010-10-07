@@ -1585,12 +1585,12 @@ The following options are currently recognized by the compiler:
   rest are ignored!  
 
 
-\item[{\tt xpp\_on/1}]
-\item[{\tt xpp\_dump/1}]
-  \index{GPP!\texttt{xpp\_on/1}}
-  \index{GPP!\texttt{xpp\_dump/1}}
+\item[{\tt xpp\_on/N} and {\tt xpp\_dump/N}]
+  \index{GPP!\texttt{xpp\_on/N}}
+  \index{GPP!\texttt{xpp\_dump/N}}
   %%
-  XSB also allows one to pull program files through a series of external
+  ~\\
+  XSB also allows one to filter program files through a series of external
   preprocessors in addition to or instead of GPP.
   This can be specified with the unary versions of {\tt xpp\_on} and {\tt
     xpp\_dump}:
@@ -1600,25 +1600,27 @@ The following options are currently recognized by the compiler:
      xpp_dump(spec1,...,specN)  
 \end{verbatim}
 %%
-  Each {\tt spec1}, ..., {\tt specN}, is a preprocessor specification of
+  Each {\tt spec1}, ..., {\tt specN} is a preprocessor specification of
   the form {\tt preprocessor\_name} or {\tt preprocessor\_name(options)}.
   The preprocessor name is an atom or a function symbol and {\tt options}
   must be an atom. If {\tt preprocessor\_name} is {\tt gpp}, then the GPP
   preprocessor will be invoked. Note that {\tt gpp} can appear anywhere in
-  the spec-sequence (or not appear at all), so it is possible to preprocess
+  the aforesaid sequence of specs (or not appear at all), so it is possible to preprocess
   XSB files before and/or after (or instead of) GPP. Note that {\tt
-    xpp\_on(gpp)}  and {\tt xpp\_dump(gpp)} are equivalent to {\tt xpp\_on}
+    xpp\_on(gpp)}  and {\tt xpp\_dump(gpp)} are equivalent to the earlier
+  0-ary compiler options {\tt xpp\_on}
   and {\tt xpp\_dump}, respectively. 
 
-  To use a preprocessor other than GPP, two things must be done:
+  To use a preprocessor other than GPP two things must be done:
   %% 
   \begin{itemize}
-  \item  A 4-ary Prolog predicate must be provided, which takes three
+  \item A 4-ary Prolog predicate must be provided, which takes three input
     arguments and produces a syntactically correct shell (Unix or Windows)
-    command for invoking the preprocessor. The preprocessor should be
-    taking its input either from the standard input or from a file and send
-    the post-processed result to the standard output. The arguments to the
-    shell command-producing predicate are as follows:
+    command for invoking the preprocessor in its fourth argument. The
+    preprocessor must be taking its input either from the standard input
+    or from a file and send the post-processed result to the standard
+    output. The arguments to the shell-command-producing predicate are as
+    follows:
     %% 
     \begin{itemize}
     \item   File: this is the XSB input file to be processed. Usually this
@@ -1628,17 +1630,18 @@ The following options are currently recognized by the compiler:
       preprocessor is \emph{registered} (see below). It is the same as
       {\tt processor\_name} referred to above.  This name is  
       up to the programmer; it is
-      to be used to refer to the preprocessor (it does not need to be the
-      same as the shell-command-producing predicate or the name of the
-      preprocessor known to the OS).
-    \item Options: these are the command-line
-      options that the preprocessor might need. If the preprocessor spec
-      mentioned above looks like {\tt foo(bar)}  then the
-      preprocessor name would be bound to {\tt foo}  and Options to {\tt bar}.
+      to be used to refer to the preprocessor (it does not need to be
+      related in any way to
+      the shell-command-producing predicate or to the OS's pathname for the
+      preprocessor).
+    \item Options: these are the command-line options that the preprocessor
+      might need. If the preprocessor spec mentioned above is {\tt
+        foo(bar)} then the preprocessor name (argument 2) would be bound to
+      {\tt foo} and options (argument 3) to {\tt bar}.
     \item Shell command: this is the only output argument. It is supposed
       to be the shell command to be used to invoke the preprocessor.
       The shell command must \emph{not} include the file name to be
-      processed---that name will be added automatically as the last option
+      processed---that name is added automatically as the last option
       to the shell command.
     \end{itemize}
     %%
@@ -1649,26 +1652,26 @@ The following options are currently recognized by the compiler:
      ?- register_xsb_preprocessor(preproc_name,preproc_predicate(_,_,_,_)).
 \end{verbatim}
 %% 
-    Here {\tt preproc\_name} is the user-given name of the preprocessor and
+    Here {\tt preproc\_name} is the user-given name for the preprocessor and
     {\tt preproc\_predicate} is the 4-ary shell-command-producing
     predicate described earlier.
 
-    The registration query must be executed \emph{before} preprocessing 
-    of the file is to start. Clearly, this implies that the
+    The registration query must be executed \emph{before} the start of the
+    preprocessing of the input XSB file. Clearly, this implies that the
     shell-command-producing predicate must be in a different file than the
     one being preprocessed.
 
     Note: one \emph{cannot} register the same preprocessor twice. The
-    second time the same name is used it is ignored. However, it is
+    second time the same name is used, it is ignored. However, it \emph{is}
     possible to register the same shell-command-producing predicate twice,
-    if different preprocessor names are used.
+    if the user registers them under different preprocessor names.
   \end{itemize}
   %% 
 
-  The difference between {\tt xpp\_on/1} and {\tt xpp\_dump/1}  
-  is that the latter also saves the output of each preprocessor in a
+  The difference between {\tt xpp\_on/N} and {\tt xpp\_dump/N}  
+  is that the latter also saves the output of each preprocessing stage in a
   separate file. For instance, if the XSB file to be preprocessed
-  is {\tt abc.P} and the {\tt xpp\_dump} option is
+  is {\tt abc.P} and the {\tt xpp\_dump/N} option has the form
   {\tt xpp\_dump(foo,gpp,bar)} then three files will be produced:
   {\tt abc.P\_foo}, {\tt abc.P\_gpp}, {\tt abc.P\_bar}, each containing the
   result of the respective stage in preprocessing.   
@@ -1690,7 +1693,7 @@ The following options are currently recognized by the compiler:
   Suppose that the file {\tt abc.P} includes the following compiler directive:
   %% 
 \begin{verbatim}
-    :- compiler_options(xpp_on(appendfile('data.P'),gpp)).  
+    :- compiler_options([xpp_on(appendfile('data.P'),gpp)]).  
 \end{verbatim}
   %% 
   If the file {\tt foobar.P} is loaded before compiling {\tt abc.P} then  
@@ -1699,9 +1702,9 @@ The following options are currently recognized by the compiler:
   compiled by XSB.
 
   Note that although the parameters {\tt \_File} and {\tt \_Name} are not
-  used by {\tt make\_append\_cmd/4}, when this predicate is called
-  they will be bound to {\tt foobar.P}  
-  and {\tt appendfile}, respectively, and could be used for various purposes. 
+  used by {\tt make\_append\_cmd/4} in our example, when this predicate is
+  called they will be bound to {\tt foobar.P} and {\tt appendfile},
+  respectively, and could be used for various purposes.
 
 
 
