@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: asmpass2.H,v 1.12 2010-08-19 15:03:35 spyrosh Exp $
+** $Id: asmpass2.H,v 1.13 2010-10-07 14:14:19 dwarren Exp $
 ** 
 */
 
@@ -32,7 +32,7 @@
 :- import asm_inst/4 from asm_inst.
 :- import membercheck/2 from listutil.
 :- import term_hash/3, str_len/2 from machine.
-:- import write/2, integer/1 from standard.
+:- import write/2, integer/1, atom_codes/2 from standard.
 :- import file_put/2 from file_io.
 :- import write_int/2, write_float/2, write_double/2 from xsb_writ.
 :- import member/2 from basics.
