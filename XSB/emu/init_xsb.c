@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.168 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: init_xsb.c,v 1.169 2010-10-07 18:20:11 dwarren Exp $
 ** 
 */
 
@@ -980,6 +980,10 @@ void init_thread_structures(CTXTdecl)
   private_tif_list.last = NULL;
   private_deltf_chain_begin = NULL;
   private_delcf_chain_begin = NULL;
+
+  /* stuff for avoiding recursion in simplification */
+  simplify_neg_fails_stack_top = 0;
+  in_simplify_neg_fails = 0;
 
   /* Stuff for abolishing tables */
   answer_stack_top = 0;

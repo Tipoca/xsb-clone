@@ -1104,6 +1104,8 @@ static void handle_empty_dl_creation(CTXTdeclc DL dl)
   ASI asi = Delay(as_leaf);
   VariantSF subgoal;
 
+  //  fprintf(stderr,"in handle_empty_dl_creation\n");
+
   /*
    * Only when `as_leaf' is still a conditional answer can we do
    * remove_dl_from_dl_list(), simplify_pos_unconditional(), and
@@ -1129,6 +1131,7 @@ static void handle_empty_dl_creation(CTXTdeclc DL dl)
      * simplify_pos_unconditional(as_leaf) will release all other DLs for
      * as_leaf, and mark as_leaf as UNCONDITIONAL.
      */
+    //    fprintf(stderr,"hedc A\n");
     simplify_pos_unconditional(CTXTc as_leaf);
 
     /* Perform simplify_neg_succeeds() for consumer sfs (producers and
@@ -1145,7 +1148,9 @@ static void handle_empty_dl_creation(CTXTdeclc DL dl)
 	//	printf("found call! %x",leaf);
 	subg_is_complete( (VariantSF) Child(leaf)) = TRUE;
 	//	subg_asf_list_ptr( (VariantSF) Child(leaf)) = NULL;
+	//	fprintf(stderr,"hedc B\n");
 	simplify_neg_succeeds(CTXTc (VariantSF) Child(leaf));
+	//	fprintf(stderr,"hedc D\n");
       }
     }
     /*-- perform early completion if necessary; please preserve invariants --*/
@@ -1171,7 +1176,7 @@ void handle_unsupported_answer_subst(CTXTdeclc NODEptr as_leaf)
   VariantSF subsumed_subgoal = NULL;
   BTNptr subgoal_leaf = NULL;
 
-  //  fprintf(stddbg, ">>>> the subgoal is: "); print_subgoal(stddbg, unsup_subgoal); fprintf(stddbg, " >>> the answer is: ");
+  //  fprintf(stddbg, "handle unsupported answer subst; subgoal: "); print_subgoal(stddbg, unsup_subgoal); fprintf(stddbg, " >>> the answer is: ");
   //  printTriePath(CTXTc stddbg, as_leaf, FALSE); fprintf(stddbg,"\n");
   //  printf("dl list %p\n",asi_dl_list(Delay(as_leaf)));
 
@@ -1201,13 +1206,13 @@ void handle_unsupported_answer_subst(CTXTdeclc NODEptr as_leaf)
   simplify_pos_unsupported(CTXTc as_leaf);
   if (is_completed(unsup_subgoal)) {
     if (subgoal_fails(unsup_subgoal)) {
-      simplify_neg_fails(CTXTc unsup_subgoal);
+      simplify_neg_fails(CTXTc unsup_subgoal); // may be recursive
     }
 
     /* Perform simplify_neg_fails() for consumer sfs */
     if ( IsSubProdSF(unsup_subgoal) && IsNonNULL(subgoal_leaf)
 	 && subsumed_subgoal != unsup_subgoal) {
-      simplify_neg_fails(CTXTc subsumed_subgoal);
+      simplify_neg_fails(CTXTc subsumed_subgoal); // IS recursive
     }
   }
 #ifdef MULTI_THREAD
@@ -1329,6 +1334,13 @@ static void simplify_pos_unconditional(CTXTdeclc NODEptr as_leaf)
  * that contain them.
  ******************************************************************/
 
+#ifndef MULTI_THREAD
+#define MAX_SIMPLIFY_NEG_FAILS_STACK 10
+  VariantSF simplify_neg_fails_stack[MAX_SIMPLIFY_NEG_FAILS_STACK];
+  long simplify_neg_fails_stack_top;
+  int in_simplify_neg_fails;
+#endif
+
 void simplify_neg_fails(CTXTdeclc VariantSF subgoal)
 {
   PNDE nde;
@@ -1337,17 +1349,32 @@ void simplify_neg_fails(CTXTdeclc VariantSF subgoal)
 
   //  printf("in simplify neg fails: ");print_subgoal(stddbg,subgoal),printf("\n");
 
-  while ((nde = subg_nde_list(subgoal))) {
-    de = pnde_de(nde);
-    dl = pnde_dl(nde);
+  if (simplify_neg_fails_stack_top < MAX_SIMPLIFY_NEG_FAILS_STACK - 1) {
+    simplify_neg_fails_stack[simplify_neg_fails_stack_top++] = subgoal;
+  } else xsb_abort("Overflow simplify_neg_fails stack");
+  if (in_simplify_neg_fails) {
+    return;
+  }
+  in_simplify_neg_fails = 1;
+  while (simplify_neg_fails_stack_top > 0) {
+    subgoal = simplify_neg_fails_stack[--simplify_neg_fails_stack_top];
+
+    while ((nde = subg_nde_list(subgoal))) {
+      de = pnde_de(nde);
+      dl = pnde_dl(nde);
 #ifdef MULTI_THREAD
-    if (IsPrivateSF(subgoal)) remove_pnde(subg_nde_list(subgoal), nde, private_released_pndes)
-    else
+      if (IsPrivateSF(subgoal)) remove_pnde(subg_nde_list(subgoal), nde, private_released_pndes)
+      else
 #endif
       remove_pnde(subg_nde_list(subgoal), nde,released_pndes_gl);
-    if (!remove_de_from_dl(CTXTc de, dl))
-      handle_empty_dl_creation(CTXTc dl);
+      if (!remove_de_from_dl(CTXTc de, dl)) {
+	//	fprintf(stderr,"snf_while B\n");
+	handle_empty_dl_creation(CTXTc dl);
+	//	fprintf(stderr,"snf_while C\n");
+      }
+    }
   }
+  in_simplify_neg_fails = 0;
 }
 
 /********************************************************************
@@ -1368,7 +1395,7 @@ static void simplify_neg_succeeds(CTXTdeclc VariantSF subgoal)
   ASI used_asi, de_asi;
   NODEptr used_as_leaf;
 
-  //  printf("in simplify neg succeeds: ");print_subgoal(stddbg,subgoal),printf("\n");
+  //  fprintf("in simplify neg succeeds: ");print_subgoal(stddbg,subgoal),printf("\n");
 
   while ((nde = subg_nde_list(subgoal))) {
     dl = pnde_dl(nde); /* dl: to be removed */
@@ -1407,7 +1434,9 @@ static void simplify_neg_succeeds(CTXTdeclc VariantSF subgoal)
 		de = tmp_de; /* next DE */
 	} /* while */
       if (!remove_dl_from_dl_list(CTXTc dl, used_asi)) {
+	//	fprintf(stderr,"isns E\n");
     	  handle_unsupported_answer_subst(CTXTc used_as_leaf);
+	  //	  fprintf(stderr,"isns F\n");
       }
     } /* if */
   } /* while */
@@ -1468,7 +1497,7 @@ void simplify_pos_unsupported(CTXTdeclc NODEptr as_leaf)
 	  release_shared_de_entry(de);
 	de = tmp_de; /* next DE */
       } /* while */
-      if (!remove_dl_from_dl_list(CTXTc dl, used_asi)) {
+    if (!remove_dl_from_dl_list(CTXTc dl, used_asi)) {
 	handle_unsupported_answer_subst(CTXTc used_as_leaf);
       }
     } /* if */
