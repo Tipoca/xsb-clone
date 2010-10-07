@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.47 2010-10-07 01:21:40 kifer Exp $
+** $Id: parse.H,v 1.48 2010-10-07 05:16:48 kifer Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
 	xpp_process_file/3, xpp_process_file/4, gpp_process_file/3,
 	open_or_xpp_file/1,
 	open_or_xpp_file/2, xpp_include_dir/1,
-	xpp_program/1, xpp_options/1,
+	xpp_options/1,
 	enqueue_preprocessor/1,
 	dequeue_preprocessor/1,
 	'_$multifile'/1, '_$multifile1'/1,
