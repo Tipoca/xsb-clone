@@ -1243,7 +1243,7 @@ static and dynamic loading.
 \bi
 \item Although dynamically loaded predicates are compiled into SLG-WAM
   code, compiled static clauses are more optimized than dynamically
-  predicates, particularly when the cloauses have large bodies or when
+  predicates, particularly when the clauses have large bodies or when
   arithmetic is used.  For facts and pure binary predicates (those
   containing a single literal in their body) however, static and
   dynamic byte code is essentially the same.
@@ -1287,6 +1287,7 @@ for the compiler can be found in the XSB system directory
 {\tt cmplib}\index{Compiler!\texttt{cmplib}}.
 %
 \index{GPP}
+\index{preprocessing}
 Prior to compiling, XSB filters the programs through \emph{GPP}, a 
 preprocessor written by Denis Auroux (auroux@math.polytechnique.fr).
 This preprocessor maintains high degree of compatibility with the C
@@ -1297,7 +1298,7 @@ Appendix~\ref{gpp-man}.
 
 XSB also allows the programmer to use preprocessors other than GPP.
 However, the modules that come with XSB distribution require GPP.
-This is explained below (see \verb|xpp_on| compiler option).
+This is explained below (see \verb|xpp_on/1| compiler option).
 
 The following sections describe the various aspects of the compiler 
 in more detail.
@@ -1505,11 +1506,11 @@ The following options are currently recognized by the compiler:
   the source file. See Appendix~\ref{gpp-man} for more details on GPP.
 
   When an \verb|#include "file"| statement is encountered, XSB directs
-  GPP preprocessor to search for the files to include in the
+  the GPP preprocessor to search for the files to include in the
   directories \verb|$XSB_DIR/emu| and
-  \verb|$XSB_DIR/prolog_includes|. \index{GPP!\texttt{xpp\_include\_dir}}
+  \verb|$XSB_DIR/prolog_includes|. \index{GPP!\texttt{gpp\_include\_dir}}
   However, additional directories can be added to this search path by
-  asserting into the predicate \verb|xpp_include_dir/1|, {\bf which
+  asserting into the predicate \verb|gpp_include_dir/1|, {\bf which
     must be imported from module} {\tt parse}~\footnote{For
     compatability, XSB also supports the ISO predicate {\tt include/1}
     which also allows extra files to be included during compilation.}.
@@ -1520,15 +1521,15 @@ The following options are currently recognized by the compiler:
   following statements must be executed:
 %%
 \begin{verbatim}
-    :- import xpp_include_dir/1 from parse.
-    :- assert(xpp_include_dir('some-other-dir')).
+    :- import gpp_include_dir/1 from parse.
+    :- assert(gpp_include_dir('some-other-dir')).
 \end{verbatim}
 %%
   If you want Gpp to search directories in a different order,
-  {\tt xpp\_options/1} can be used (see below).
+  {\tt gpp\_options/1} can be used (see below).
 
    Note: if you assert something into this predicate then you must also {\tt
-    retractall(xpp\_include\_dir(\_))} after that or else subsequent Prolog
+    retractall(gpp\_include\_dir(\_))} after that or else subsequent Prolog
   compilations might not work correctly.
 
   XSB predefines the constant {\tt XSB\_PROLOG}, which can be used for
@@ -1549,31 +1550,9 @@ The following options are currently recognized by the compiler:
   \end{samepage}
   %%
 
-  \index{xpp\_program}
-  %%
-  However, as mentioned earlier, XSB lets the user filter programs (except
-  the programs that belong to XSB distribution) through any preprocessor
-  the user wants. To this end, one only needs to assert the appropriate
-  command into the predicate \verb|xpp_program|, which should be imported
-  from module {\tt parse}. The command should not include the file
-  name---XSB appends the name of the file to be compiled to the command
-  supplied by the user. For instance, executing
-  %%
-  \begin{verbatim}
-   :- assert(xpp_program('/usr/bin/m4 -E -G')).
-  \end{verbatim}
-  %%
-  before calling the compiler will have the effect that the next XSB
-  program passed to the compiler will be first preprocessed by the M4 macro
-  package. Note that the XSB compiler automatically clears out the
-  {\tt xpp\_program} predicate, so there is no need to tidy up each time.
-  But this also means that if you need to compile several programs with a
-  non-standard preprocessor then you must specify that non-standard
-  preprocessor each time the program is compiled.
-  
-\item[{\tt xpp\_options}] \index{GPP!\texttt{xpp\_options}} This dynamic predicate
+\item[{\tt gpp\_options}] \index{GPP!\texttt{gpp\_options}} This dynamic predicate
   must be imported from module {\tt parse}.  If some atom is asserted into
-  {\tt xpp\_options} then this atom is assumed to be the list of command
+  {\tt gpp\_options} then this atom is assumed to be the list of command
   line options to be used by the preprocessor (only the first asserted atom
   is ever considered). If this predicate is empty, then the default list of
   options is used (which is {\tt '-P -m -nostdinc -nocurinc'}, meaning: use
@@ -1584,10 +1563,10 @@ The following options are currently recognized by the compiler:
     -nocurinc} so that Gpp will not search the directory of the parent file. 
   If a particular application requires that the parent file directory
   must be searched, then this can be accomplished by executing 
-  {\tt assert(xpp\_options('-P -m -nostdinc'))}.
+  {\tt assert(gpp\_options('-P -m -nostdinc'))}.
   
   Note: if you assert something into this predicate then you must also {\tt
-    retractall(xpp\_options(\_))} after that or else subsequent Prolog
+    retractall(gpp\_options(\_))} after that or else subsequent Prolog
   compilations might not work correctly.
   
 \item[{\tt xpp\_dump}] \index{GPP!\texttt{xpp\_dump}}
@@ -1600,6 +1579,133 @@ The following options are currently recognized by the compiler:
     xpp\_dump} is specified directly in the file using {\tt
     compiler\_options/1} directive, then it should \emph{not} follow the
   {\tt gpp\_on} option in the list (or else it will be ignored).
+
+  {\bf Note}: multiple occurrences of {\tt xpp\_on} and {\tt xpp\_dump}
+  options are allowed, but only the \emph{first one} takes effect---all the
+  rest are ignored!  
+
+
+\item[{\tt xpp\_on/1}]
+\item[{\tt xpp\_dump/1}]
+  \index{GPP!\texttt{xpp\_on/1}}
+  \index{GPP!\texttt{xpp\_dump/1}}
+  %%
+  XSB also allows one to pull program files through a series of external
+  preprocessors in addition to or instead of GPP.
+  This can be specified with the unary versions of {\tt xpp\_on} and {\tt
+    xpp\_dump}:
+%% 
+\begin{verbatim}
+     xpp_on(spec1,...,specN)  
+     xpp_dump(spec1,...,specN)  
+\end{verbatim}
+%%
+  Each {\tt spec1}, ..., {\tt specN}, is a preprocessor specification of
+  the form {\tt preprocessor\_name} or {\tt preprocessor\_name(options)}.
+  The preprocessor name is an atom or a function symbol and {\tt options}
+  must be an atom. If {\tt preprocessor\_name} is {\tt gpp}, then the GPP
+  preprocessor will be invoked. Note that {\tt gpp} can appear anywhere in
+  the spec-sequence (or not appear at all), so it is possible to preprocess
+  XSB files before and/or after (or instead of) GPP. Note that {\tt
+    xpp\_on(gpp)}  and {\tt xpp\_dump(gpp)} are equivalent to {\tt xpp\_on}
+  and {\tt xpp\_dump}, respectively. 
+
+  To use a preprocessor other than GPP, two things must be done:
+  %% 
+  \begin{itemize}
+  \item  A 4-ary Prolog predicate must be provided, which takes three
+    arguments and produces a syntactically correct shell (Unix or Windows)
+    command for invoking the preprocessor. The preprocessor should be
+    taking its input either from the standard input or from a file and send
+    the post-processed result to the standard output. The arguments to the
+    shell command-producing predicate are as follows:
+    %% 
+    \begin{itemize}
+    \item   File: this is the XSB input file to be processed. Usually this
+      argument is left unused, but might be useful for producing error
+      messages or debugging.
+    \item   Preprocessor name: this is the name under which the
+      preprocessor is \emph{registered} (see below). It is the same as
+      {\tt processor\_name} referred to above.  This name is  
+      up to the programmer; it is
+      to be used to refer to the preprocessor (it does not need to be the
+      same as the shell-command-producing predicate or the name of the
+      preprocessor known to the OS).
+    \item Options: these are the command-line
+      options that the preprocessor might need. If the preprocessor spec
+      mentioned above looks like {\tt foo(bar)}  then the
+      preprocessor name would be bound to {\tt foo}  and Options to {\tt bar}.
+    \item Shell command: this is the only output argument. It is supposed
+      to be the shell command to be used to invoke the preprocessor.
+      The shell command must \emph{not} include the file name to be
+      processed---that name will be added automatically as the last option
+      to the shell command.
+    \end{itemize}
+    %%
+  \item The preprocessor must be \emph{registered} using the following query:
+%% 
+\begin{verbatim}
+     :- import register_xsb_preprocessor/2 from parse.
+     ?- register_xsb_preprocessor(preproc_name,preproc_predicate(_,_,_,_)).
+\end{verbatim}
+%% 
+    Here {\tt preproc\_name} is the user-given name of the preprocessor and
+    {\tt preproc\_predicate} is the 4-ary shell-command-producing
+    predicate described earlier.
+
+    The registration query must be executed \emph{before} preprocessing 
+    of the file is to start. Clearly, this implies that the
+    shell-command-producing predicate must be in a different file than the
+    one being preprocessed.
+
+    Note: one \emph{cannot} register the same preprocessor twice. The
+    second time the same name is used it is ignored. However, it is
+    possible to register the same shell-command-producing predicate twice,
+    if different preprocessor names are used.
+  \end{itemize}
+  %% 
+
+  The difference between {\tt xpp\_on/1} and {\tt xpp\_dump/1}  
+  is that the latter also saves the output of each preprocessor in a
+  separate file. For instance, if the XSB file to be preprocessed
+  is {\tt abc.P} and the {\tt xpp\_dump} option is
+  {\tt xpp\_dump(foo,gpp,bar)} then three files will be produced:
+  {\tt abc.P\_foo}, {\tt abc.P\_gpp}, {\tt abc.P\_bar}, each containing the
+  result of the respective stage in preprocessing.   
+
+  Here is an example. Suppose that {\tt foobar.P} includes the definition of
+  the following predicate
+%% 
+\begin{verbatim}
+    make_append_cmd(_File,_Name,Options,ResultingCmd) :-
+           fmt_write_string(ResultingCmd, '"/bin/cat" "%s"', arg(Options)).
+\end{verbatim}
+%% 
+  and also has the following registration query:
+%% 
+\begin{verbatim}
+    ?- parse:register_xsb_preprocessor(appendfile,make_append_cmd(_,_,_,_)).  
+\end{verbatim}
+%% 
+  Suppose that the file {\tt abc.P} includes the following compiler directive:
+  %% 
+\begin{verbatim}
+    :- compiler_options(xpp_on(appendfile('data.P'),gpp)).  
+\end{verbatim}
+  %% 
+  If the file {\tt foobar.P} is loaded before compiling {\tt abc.P} then  
+  the file {\tt data.P} will be first appended to {\tt foobar.P} and then
+  the result will be processed by GPP. The final result will be parsed and
+  compiled by XSB.
+
+  Note that although the parameters {\tt \_File} and {\tt \_Name} are not
+  used by {\tt make\_append\_cmd/4}, when this predicate is called
+  they will be bound to {\tt foobar.P}  
+  and {\tt appendfile}, respectively, and could be used for various purposes. 
+
+
+
+
 
 \item[{\tt quit\_on\_error}] \index{GPP!\texttt{quit\_on\_error}}
   This causes XSB to exit if compilation of a program end with an error.
@@ -2381,5 +2487,6 @@ the ISO standard for Prolog modules.
 
 %%% Local Variables: 
 %%% mode: latex
+%%% TeX-PDF-mode: t
 %%% TeX-master: "manual1"
 %%% End: 

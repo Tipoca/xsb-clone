@@ -150,7 +150,8 @@
 
 \newcommand{\longline}{\noindent\rule{\textwidth}{.01in}}
 
-    \newcommand{\xsblogo}{\epsfbox{xsb-logo.eps}}
+    %%\newcommand{\xsblogo}{\epsfbox{xsb-logo.eps}}
+    \newcommand{\xsblogo}{{xsb-logo}}
 
 %------------------------------------------------------------
 \input{predindex.sty}
@@ -163,7 +164,8 @@
 \title{\bf The XSB System \\ \version \\ Volume 2: Libraries,
 Interfaces and Packages}
 
-\author{{\epsfxsize=230pt \xsblogo}\\
+%%\author{{\epsfxsize=230pt \xsblogo}\\
+\author{{\includegraphics[width=2.5in]{\xsblogo}}\\
         \ \\ \ \\
 } 
 
@@ -211,3 +213,13 @@ Interfaces and Packages}
 \printindex
 
 \end{document}
+
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% End: 
+

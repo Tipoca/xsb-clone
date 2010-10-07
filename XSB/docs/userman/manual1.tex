@@ -141,7 +141,8 @@
 %\ifpdf
 %    \newcommand{\xsblogo}{\epsfbox{xsb-logo.pdf}}
 %\else
-    \newcommand{\xsblogo}{\epsfbox{xsb-logo.eps}}
+    %%\newcommand{\xsblogo}{\epsfbox{xsb-logo.eps}}
+    \newcommand{\xsblogo}{{xsb-logo}}
 %\fi
 
 
@@ -157,7 +158,7 @@
 
 \title{\bf The XSB System \\ \version \\ Volume 1: Programmer's Manual}
 
-\author{{\epsfxsize=230pt \xsblogo}\\
+\author{{\includegraphics[width=2.5in]{\xsblogo}}\\
         \ \\ \ \\
         {\em Terrance Swift} \ \ \ 
         {\em David S. Warren} \\ 
@@ -225,3 +226,11 @@
 \printindex[pred]
 
 \end{document}
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% End: 
+
