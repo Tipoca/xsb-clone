@@ -48,7 +48,9 @@
    check_nonvar/3, check_atom/3 from error_handler.
 :- import asserta/1, (dynamic)/1, retractall/1, assert/1, retract/1, t_assert/2
      from assert.
-   :- import warning/1, time_message/2, current_xsb_compiler_option/1 from auxlry.
+:- import check_file_compiler_options/1, setoptions1/1 from auxlry.
+:- import warning/1, time_message/2, current_xsb_compiler_option/1 from auxlry.
+:- import xpp_is_off/0 from parse.
 :- import banner_control/1 from banner.
 :- import append/3, memberchk/2 from basics.
 :- import compile/5 from compile.

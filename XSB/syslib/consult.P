@@ -787,11 +787,10 @@ proc_directive(op(P,T,S)) :- !, op(P,T,S).
 proc_directive(hilog(X)) :- !, add_hilog_symbol(X).
 proc_directive(multifile(Specs)) :- !,
 	proc_multifile(Specs).
-proc_directive(compiler_options(L)) :- !,
-	(memberchk(xpp_on,L), conget(xpp_on, 0) 
-	->  conset(needs_restart,1), conset(xpp_on, 1)
-	;   true
-	).
+proc_directive(compiler_options(Options)) :- !,
+	(xpp_is_off ->  conset(migh_need_restart,1) ;   true),
+	check_file_compiler_options(Options),
+	setoptions1(Options).
 proc_directive(Cmd) :-
 	(call(Cmd)
 	 ->	true
