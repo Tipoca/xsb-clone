@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.48 2010-10-07 05:16:48 kifer Exp $
+** $Id: parse.H,v 1.49 2010-10-08 18:03:42 dwarren Exp $
 ** 
 */
 
@@ -28,6 +28,7 @@
 	register_xsb_preprocessor/2,
 	unregister_xsb_preprocessor/1,
 	xppdump_is_on/0,
+	xpp_is_off/0,
 	set_xpp_off/0,
 	check_xpp_process_status/2, check_xpp_process_status/3,
 	make_gpp_command/4,

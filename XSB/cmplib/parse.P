@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.115 2010-10-07 01:21:40 kifer Exp $
+** $Id: parse.P,v 1.116 2010-10-08 18:03:42 dwarren Exp $
 ** 
 */
 
@@ -241,11 +241,11 @@ apply_one_preprocessor(File,InPort,OutPort,XPP_process) :-
 	setup_make_xpp_command_call(File,
 				    XPP_name,XPP_Options,
 				    Make_XPP_Cmd_Call),
-	(xpp_process_file(InPort,XPP_process,OutPort,Make_XPP_Cmd_Call),
-	    stat_set_flag(CURRENT_INPUT, OutPort)
-	; XPP_process = error,
-	    preprocessing_error((File, ': Preprocessor "', XPP_name,
-				 '" failed to execute. Perhaps a syntax error.'))
+	(xpp_process_file(InPort,XPP_process,OutPort,Make_XPP_Cmd_Call)
+	 ->	stat_set_flag(CURRENT_INPUT, OutPort)
+	 ;	XPP_process = error,
+		preprocessing_error((File, ': Preprocessor "', XPP_name,
+				     '" failed to execute. Perhaps a syntax error.'))
 	).
 
 
