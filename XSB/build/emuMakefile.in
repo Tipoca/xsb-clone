@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.66 2010-08-19 15:03:35 spyrosh Exp $
+## $Id: emuMakefile.in,v 1.67 2010-10-08 06:05:14 kifer Exp $
 ##
 
 
@@ -117,7 +117,7 @@ SRCS =	auxlry.c biassert.c builtin.c cinterf.c conc_compl.c \
 	tr_utils.c trace_xsb.c trie_lookup.c trie_search.c tries.c \
 	tst_insert.c tst_retrv.c tst_unify.c tst_utils.c varstring.c \
 	ubi_BinTree.c ubi_SplayTree.c \
- 	hashtable.c hashtable_itr.c \
+	hashtable.c hashtable_itr.c \
 	incr_xsb.c call_graph_xsb.c
 
 
