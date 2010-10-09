@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.14 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: incr_xsb.c,v 1.15 2010-10-09 22:03:25 tswift Exp $
 ** 
 */
 
@@ -151,7 +151,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
   }
   case PSC_SET_INCR: {
     Psc psc = (Psc)ptoc_addr(2);   
-    if (get_tabled(psc) != T_TABLED_SUB) {
+    if (!(get_tabled(psc) == T_TABLED_SUB && ptoc_int(CTXTc 3) == INCREMENTAL)) {
       set_incr(psc,ptoc_int(CTXTc 3));
       //      printf("%s/%d:%u incr set to %d\n",get_name(psc),get_arity(psc),psc,ptoc_int(3));
     } else {
