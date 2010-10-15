@@ -42,7 +42,7 @@ systems to exchange knowledge, such as the OWL standard~\cite{SMVW02}.
 
 The {\em CDF} system allows various sorts of support for management of
 formal ontologies from within XSB.  The full version of CDF is called
-the {\em Coherent Description System} which has been developed largely
+the {\em Coherent Description Framework} which has been developed largely
 by XSB, Inc and has been heavily used in commercial software systems
 that extract information from free text, gather information from the
 world-wide web; and classify input strings according to given
@@ -50,7 +50,7 @@ ontologies.  Many of these applications generate code based on
 information in an ontology, with the result that CDF has formed the
 basis for model-driven commercial architectures.  An open-source
 version of CDF is called {\em Cold Dead Fish} and contains many,
-though not all, of the features of the Coherent Description System.
+though not all, of the features of the Coherent Description Framework.
 %In this manual we describe all of CDF and note in passing which parts
 %of it are open-source and which proprietary.
 
@@ -131,7 +131,7 @@ and assembled in various ways by applications.
 component structure, the {\em concurrency} mechanism for CDF allows
 users to update their own CDF instances and to periodically update a
 common store. Naturally, the various mechanisms in CDF for ensuring
-consistency that are vital to ensuring coherency when users update
+consistency are vital to ensuring coherency when users update
 their systems concurrently.
 %
 \item {\em Database Interfaces}. (Non open-souce) CDF supports various
@@ -144,11 +144,11 @@ of ways.  One of the most convenient is to use a XSB/Java interface
 such as InterProlog~\cite{Cale01} or JAXSB~(see
 \texttt{http://xsb.sourceforge.net}) and then write a user interface in
 Swing or some other Java Graphics library.  One of the easiest ways to
-do this is to make use of the {\em XJ system} which allows Swing Gui
-objects to be represented as Prolog terms (the XJ system is non
+do this is to make use of the {\em XJ system} which allows Swing GUI
+objects to be represented as Prolog terms (the XJ system is
 open-source) From a systems perspective, a graphical interface is then
-written XJ library Swing widgets or specialized XJ-CDF Swing widgets.
-CDF per-se has the following graphical packages and applications.
+written using XJ library Swing widgets or specialized XJ-CDF Swing widgets.
+CDF per se has the following graphical packages and applications.
 %
 \begin{itemize}
 %
@@ -2384,7 +2384,7 @@ rules.
 
 \index{component dependency}
 Given such a partition, a dependency relation between components
-arises in a natural way.  Let $Id: cdf.tex,v 1.4 2010-08-19 15:03:36 spyrosh Exp $ range over CDF identifier functors.
+arises in a natural way.  Let $Id: cdf.tex,v 1.5 2010-10-15 14:06:35 dwarren Exp $ range over CDF identifier functors.
 A component $C_1$ {\em directly depends} on component $C_2$ if {\em
 Id($Nid_2$,$C_2$)} is an argument in a fact or rule head in component
 $C_1$.  In addition, $C_1$ durectly depends on $C_2$ if {\em
