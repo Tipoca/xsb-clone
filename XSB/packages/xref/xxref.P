@@ -21,7 +21,7 @@
 ** 
 */
 
-:- comment(build_ref/0, "@pred{build_ref/0} descends from the current
+:- comment(build_xref/0, "@pred{build_xref/0} descends from the current
 directory and reads every XSB source file found (by the .P suffix).
 It creates a set of predicates that record all predicates defined and
 used in every XSB source file encountered.  It then writes this
@@ -29,18 +29,18 @@ information out to a file named xsb_xref.P, whcih can be later
 dynamically loaded to find where predicates are defined and used.
 ").
 
-:- comment(build_ref/1, "@pred{build_ref/1} is similar to
-@pred{build_ref/0}, but it takes an explicit directory name, and it
+:- comment(dump_xref/0, "@pred(dump_xref/0} writes out information
+gathered by @pred{build_xref/1} to the file named xsb_xref.P into the
+current directory.").
+
+:- comment(build_xref/1, "@pred{build_xref/1} is similar to
+@pred{build_xref/0}, but it takes an explicit directory name, and it
 does not create a file, but only builds the necessary predicates in
 memory.  @pred{dump_xref/0} or @pred{dump_xref/1} can be used to write
 the information out to a file.").
 
-:- comment(dump_xref/0, "@pred(dump_xref/0} writes out information
-gathered by @pred{build_ref/1} to the file named xsb_xref.P into the
-current directory.").
-
 :- comment(dump_xref/1, "@pred(dump_xref/1} writes out information
-gathered by @pred{build_ref/1} to the file named by its argument.").
+gathered by @pred{build_xref/1} to the file named by its argument.").
 
 /* Explore building a simple program to read all Prolog (.P) files in
 a part of the file system and build a table of where predicates are
@@ -229,7 +229,8 @@ read_in_prolog_file(PFileName) :-
 	read_p_file(HFileName,PFilePrefix),
 	read_p_file(PFileName,PFilePrefix),
 	reset_ops,
-	nl.
+	conget('_$lineCnt',NLines),
+	write(NLines),writeln(' lines.').
 
 reset_ops :-
 	ops(Op,OldPrec,Fix),
@@ -270,11 +271,13 @@ read_p_file(FileName,BFileName) :-
 %% maybe try read_canonical if file_size is very large?
 %% Result is a var the first time reading, and bound if already through xpp
 read_p_file_s(IStr,FSize,BFileName,Result) :-
+	conset('_$lineCnt',0),
 	repeat,
 	(FSize > 500000
 	 ->	file_read_canonical(IStr,Term0,_)
 	 ;	catch(file_read(IStr,Term0),Ball,(do_read_error(Ball),fail))
 	),
+	coninc('_$lineCnt'),
 	expand_term(Term0,Term),
 	(Term == end_of_file
 	 ->	!
@@ -368,6 +371,9 @@ process_uses(setof(_,Body,_),BFileName,Pred,Arity) :- !,
 	process_uses(Body,BFileName,Pred,Arity).
 process_uses(bagof(_,Body,_),BFileName,Pred,Arity) :- !,
 	process_uses(Body,BFileName,Pred,Arity).
+process_uses(catch(Call,_Ball,Handler),BFileName,Pred,Arity) :-
+	process_uses(Call,BFileName,Pred,Arity),
+	process_uses(Handler,BFileName,Pred,Arity).
 process_uses(\+(Body),BFileName,Pred,Arity) :- !,
 	process_uses(Body,BFileName,Pred,Arity).
 process_uses(tnot(Body),BFileName,Pred,Arity) :- !,
