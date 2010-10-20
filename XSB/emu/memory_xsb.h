@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.44 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: memory_xsb.h,v 1.45 2010-10-20 19:27:11 tswift Exp $
 ** 
 */
 
@@ -83,6 +83,9 @@ extern System_Stack pdl,            /* PDL                        */
 #define top_of_cpstack   ((breg < bfreg) ? breg : bfreg)
 
 #define top_of_complstk  openreg
+
+#define in_localstack(Addr) ((CPtr)Addr >= top_of_localstk && (CPtr)Addr <= (CPtr)glstack.high)
+#define in_heap(Addr) ((CPtr)Addr <= top_of_heap && (CPtr)Addr >=  ((CPtr)glstack.low + 1))
 
 /* Testing pointer addresses
    ------------------------- */

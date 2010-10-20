@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.54 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: debug_xsb.c,v 1.55 2010-10-20 19:27:11 tswift Exp $
 ** 
 */
 
@@ -910,6 +910,112 @@ void print_delcf_chain() {
   }
   printf("--------------------------------------------------------\n");
 }
+static void print_cell(char *addrtype, CPtr addr, Cell term, char *more_info)
+{
+  switch (cell_tag(term)) {
+  case XSB_REF:
+  case XSB_REF1:
+    printf( "%s %p: XSB_REF (tag=%ld), value=0x%p",
+	    addrtype, addr, cell_tag(term), ref_val(term));
+    break;
+  case XSB_ATTV:
+    printf( "%s %p: XSB_ATTV (tag=%ld), value=0x%p",
+	    addrtype, (CPtr)dec_addr(cell(addr)),
+	    cell_tag(term), ref_val(term));
+    break;
+  case XSB_STRUCT: 
+    if (addr == (CPtr)dec_addr(term) || (CPtr)dec_addr(term) == NULL) {
+      printf( "Possible source of core dump\n");
+      printf( "%s %p: XSB_STRUCT, value=0x%p, hexval=0x%p", 
+	      addrtype, addr, cs_val(term), ref_val(term));
+    }	else {
+      printf( "%s %p: XSB_STRUCT, value=0x%p, hexval=0x%p (%s/%d)", 
+	      addrtype, addr, cs_val(term), ref_val(term),
+	      get_name((struct psc_rec *) follow(cs_val(term))),
+	      get_arity((struct psc_rec *) follow(cs_val(term))));
+    }
+    break;
+  case XSB_INT:
+    printf( "%s %p: XSB_INT, value=%d  hexval=0x%p",
+	    addrtype, addr, int_val(term), ref_val(term));
+    break;
+  case XSB_STRING:
+    if (isnil(term)) 
+      printf( "%s %p: XSB_STRING, hexval=0x%p\t ([])", 
+	      addrtype, addr, ref_val(term));
+    else
+      printf( "%s %p: XSB_STRING, hexval=0x%p\t (%s)", 
+	      addrtype, addr, ref_val(term), string_val(term));
+    break;
+  case XSB_FLOAT:
+    printf( "%s %p: XSB_FLOAT, value=%f, hexval=0x%lx", 
+	    addrtype, addr, float_val(term), dec_addr(term));
+    break;
+  case XSB_LIST:
+    printf( "%s %p: XSB_LIST, clref=%p, hex=%p",
+	    addrtype, addr, clref_val(term), ref_val(term));
+    break;
+  default:
+    printf( "%s %p: tag=%ld, hex=0x%p, cval=%d", 
+	    addrtype, addr, cell_tag(term), ref_val(term), int_val(term));
+    break;
+  }
+  
+  if (more_info != NULL)
+    printf( ",\t(%s)\n", more_info);
+  else printf( "\n");
+}
+
+//---------------------------------------------------------------
+
+void check_trail_ok(CTXTdecl) /* trail grows up */
+{
+  CPtr *i;
+
+  for (i = (top_of_trail); (i > (CPtr *)tcpstack.low + 1); i = i-3)     {
+    if (!in_heap(cell(CPtr)(i-2)) && !in_localstack(cell((CPtr)(i-2)))) {
+      printf("!!! PROBLEM ");
+      print_cell("          Trail variab ", (CPtr)(i-2), cell((CPtr)(i-2)), NULL);
+    }
+  }
+}
+
+void check_backtrack_regs(CTXTdecl) {
+  if (ebreg != cp_ereg(breg)) {
+    printf("!!! PROBLEM EBREG %p cp_ereg %p",ebreg,cp_ereg(breg));
+  }
+  if (hbreg != cp_ereg(breg)) {
+    printf("!!! PROBLEM HBREG %p cp_ereg %p",hbreg,cp_hreg(breg));
+  }
+}
+
+void check_stack_invariants(CTXTdecl) 
+{
+  check_backtrack_regs(CTXT);
+  check_trail_ok(CTXT);
+}
+
+//---------------------------------------------------------------
+
+void quick_print_trail(CTXTdecl)	/* trail grows up */
+{
+
+  CPtr *i;
+
+  for (i = (top_of_trail); (i > (CPtr *)tcpstack.low + 1); i = i-3)     {
+    printf("-------------------------------------------------------------------\n");
+    if ( i == trreg ) printf("trreg");if ( i == trfreg ) printf("trfreg ");
+    if ((CPtr *)cell(CPtr)(i) != i-3) printf("*");
+    print_cell("          Trail parent ", (CPtr)(i), cell((CPtr)(i)), NULL);
+    print_cell("          Trail value  ", (CPtr)(i-1), cell((CPtr)(i-1)), NULL);
+    if (!in_heap(cell(CPtr)(i-2)) && !in_localstack(cell((CPtr)(i-2))))
+      printf("!!! PROBLEM ");
+    print_cell("          Trail variab ", (CPtr)(i-2), cell((CPtr)(i-2)), NULL);
+
+  }
+  printf("trail bottom \n");
+}
+
 
 /*======================================================================*/
 /*  The final set of routines should be useful with the instruction-    */
@@ -1195,62 +1301,6 @@ void debug_inst(CTXTdeclc byte *lpcreg, CPtr le_reg)
       pil_step = 1; debug_interact(CTXT);
     }
   }
-}
-
-static void print_cell(char *addrtype, CPtr addr, Cell term, char *more_info)
-{
-  switch (cell_tag(term)) {
-  case XSB_REF:
-  case XSB_REF1:
-    fprintf(stddbg, "%s %p: XSB_REF (tag=%ld), value=0x%p",
-	    addrtype, addr, cell_tag(term), ref_val(term));
-    break;
-  case XSB_ATTV:
-    fprintf(stddbg, "%s %p: XSB_ATTV (tag=%ld), value=0x%p",
-	    addrtype, (CPtr)dec_addr(cell(addr)),
-	    cell_tag(term), ref_val(term));
-    break;
-  case XSB_STRUCT: 
-    if (addr == (CPtr)dec_addr(term) || (CPtr)dec_addr(term) == NULL) {
-      fprintf(stddbg, "Possible source of core dump\n");
-      fprintf(stddbg, "%s %p: XSB_STRUCT, value=0x%p, hexval=0x%p", 
-	      addrtype, addr, cs_val(term), ref_val(term));
-    }	else {
-      fprintf(stddbg, "%s %p: XSB_STRUCT, value=0x%p, hexval=0x%p (%s/%d)", 
-	      addrtype, addr, cs_val(term), ref_val(term),
-	      get_name((struct psc_rec *) follow(cs_val(term))),
-	      get_arity((struct psc_rec *) follow(cs_val(term))));
-    }
-    break;
-  case XSB_INT:
-    fprintf(stddbg, "%s %p: XSB_INT, value=%d  hexval=0x%p",
-	    addrtype, addr, int_val(term), ref_val(term));
-    break;
-  case XSB_STRING:
-    if (isnil(term)) 
-      fprintf(stddbg, "%s %p: XSB_STRING, hexval=0x%p\t ([])", 
-	      addrtype, addr, ref_val(term));
-    else
-      fprintf(stddbg, "%s %p: XSB_STRING, hexval=0x%p\t (%s)", 
-	      addrtype, addr, ref_val(term), string_val(term));
-    break;
-  case XSB_FLOAT:
-    fprintf(stddbg, "%s %p: XSB_FLOAT, value=%f, hexval=0x%lx", 
-	    addrtype, addr, float_val(term), dec_addr(term));
-    break;
-  case XSB_LIST:
-    fprintf(stddbg, "%s %p: XSB_LIST, clref=%p, hex=%p",
-	    addrtype, addr, clref_val(term), ref_val(term));
-    break;
-  default:
-    fprintf(stddbg, "%s %p: tag=%ld, hex=0x%p, cval=%d", 
-	    addrtype, addr, cell_tag(term), ref_val(term), int_val(term));
-    break;
-  }
-  
-  if (more_info != NULL)
-    fprintf(stddbg, ",\t(%s)\n", more_info);
-  else fprintf(stddbg, "\n");
 }
 
 /*----------------------------------------------------------------------*/ 

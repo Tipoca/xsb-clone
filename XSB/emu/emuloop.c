@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.211 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: emuloop.c,v 1.212 2010-10-20 19:27:11 tswift Exp $
 ** 
 */
 
@@ -132,17 +132,38 @@ int wam_initialized = FALSE ;
 /*----------------------------------------------------------------------*/
 /* indirect threading-related stuff                                     */
 
-#ifdef DEBUG_VM
+/* TLS junk that's been useful for debugging */
+
+#ifdef DEBUG_VM 
+
+int xctr = 0;
+
+void quick_print_trail(int);
+void check_stack_invariants(CTXTdecl);
+
+/*
+    printf("%d %s ereg %p ef %p topl %p > %x trreg %p trefeg %p topt %p opentabs %d \n", \
+           xctr,(char *)inst_table[*t_pcreg][0],                        \
+           t_ereg,efreg,(top_of_localstk),                              \
+           (int)*(CPtr)0x3bebcc,trreg,trfreg,(top_of_trail),            \
+           (int)(((int)COMPLSTACKBOTTOM - (int)top_of_complstk) / sizeof(struct completion_stack_frame))); \
+    if (xctr % 1000 == 0)                                                           \
+      quick_print_trail( (int)(top_of_trail - (CPtr *)tcpstack.low + 1));       \
+  }
+*/
+
+#define debug_inst(t_pcreg, t_ereg) { \
+  }
 
 #define XSB_Debug_Instr                                    \
-   if (flags[PIL_TRACE]) {                                 \
-      debug_inst(CTXTc lpcreg, ereg);                      \
-   }                                                       \
-   xctr++;
+  if (flags[PIL_TRACE]) {                                 \
+    debug_inst(CTXTc lpcreg, ereg);                      \
+    xctr++; \
+  }
 
 #else
 
-#define XSB_Debug_Instr
+#define XSB_Debug_Instr                                   
 
 #endif
 
@@ -374,14 +395,6 @@ extern int is_number_atom(Cell term);
 extern int ground(CPtr term);
 
 extern void log_prog_ctr(byte *);
-
-#ifdef DEBUG_VM
-extern void debug_inst(CTXTdeclc byte *, CPtr);
-#endif
-
-/* TLS: took out unused global.
- * int debug_assert = 0;
- */ 
 
 #ifndef MULTI_THREAD
 xsbBool neg_delay;
