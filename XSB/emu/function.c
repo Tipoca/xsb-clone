@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.34 2010-09-27 18:03:30 pmoura Exp $
+** $Id: function.c,v 1.35 2010-10-28 00:57:15 dwarren Exp $
 ** 
 */
 
@@ -707,8 +707,13 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 	      else set_flt_val(value,-fiflt_val(fiop1));
 	    break;
 	  } else if (strcmp(get_name(op_psc),"asinh")==0) {
+#ifdef WIN_NT
+	    xsb_warn("asinh function NOT defined");
+	    set_flt_val(value,0.0);
+#else
 	    if (isfiint(fiop1)) set_flt_val(value,(Float)asinh((Float)fiint_val(fiop1)));
 	    else set_flt_val(value,(Float)asinh(fiflt_val(fiop1)));
+#endif
 	    break;
 //		PM: the following two function definitions are incomplete as they need to
 //			handle out of range errors but I haven't figured out yet how to do it!
