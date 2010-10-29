@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.P,v 1.14 2010-08-19 15:03:35 spyrosh Exp $
+** $Id: cp_opt.P,v 1.15 2010-10-29 15:49:47 dwarren Exp $
 ** 
 */
 
@@ -212,7 +212,7 @@ generate_agg_clauses(po(OpSpec),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClL
 	parse_preddef(PredTerm,Body,ClList2,SymTab),
 	ensure_imported(breg_retskel/4,machine,SymTab),
 	ensure_imported(excess_vars/4,setof,SymTab),
-	ensure_imported(copy_term/2,basics,SymTab),
+%%	ensure_imported(copy_term/2,basics,SymTab),  % but problems with sysmod?
 	ensure_imported('_$$get_returns'/3,tables,SymTab),
 	ensure_imported('delete_return'/2,tables,SymTab),
 	ensure_imported('member'/2,basics,SymTab).
@@ -253,7 +253,7 @@ generate_agg_clauses(AggrSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClLis
 	parse_preddef(PredTerm,Body,ClList2,SymTab),
 	ensure_imported(breg_retskel/4,machine,SymTab),
 	ensure_imported(excess_vars/4,setof,SymTab),
-	ensure_imported(copy_term/2,basics,SymTab),
+%%	ensure_imported(copy_term/2,basics,SymTab),  %problem with sysmod?
 	ensure_imported('_$$get_returns'/3,tables,SymTab),
 	ensure_imported(delete_return/2,tables,SymTab).
 generate_agg_clauses(intenset,Sym,PredTerm,Var1,[],Pred1Term,Var,ClList2,SymTab) :- !,
