@@ -834,7 +834,7 @@ DllExport int call_conv pl_sgml_parse()
 	  }
 	}
 	else{
-	  return sgml2pl_error( ERR_MISC, "source", "Improper input format");
+	  return sgml2pl_error( ERR_MISC, "source", "Invalid input argument 1");
 	}
       }
       /*Set the content length to parse*/  
