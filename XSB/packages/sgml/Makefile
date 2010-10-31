@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.3 2010-08-19 15:03:39 spyrosh Exp $
+## $Id: Makefile,v 1.4 2010-10-31 04:34:16 kifer Exp $
 ## 
 ##
 
@@ -41,7 +41,7 @@ Prolog = $(XSB) -i -s -m 2000 -c 2000
 
 # Make sure warnings are saved in a file.
 SVFILE = '$(XSBDIR)/build/.sgml_warn.tmp'
-OWRITE = 1
+OWRITE = w
 STDWARN = 3
 STDERR = 2
 HDRMSG = "While compiling XSB/packages/sgml:"
