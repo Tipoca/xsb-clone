@@ -273,7 +273,7 @@ int unify_dtd( prolog_term t, dtd * d)
     {
       c2p_functor( "dtd_struct", 2, tmp1);
       c2p_int( (int) d, p2p_arg( tmp1, 1));
-      c2p_string( d->doctype, p2p_arg( tmp1, 2));
+      c2p_string( (char *) d->doctype, p2p_arg( tmp1, 2));
     }
   /* dtd_struct/1 if no doctype is specified */
   else
@@ -306,7 +306,7 @@ DllExport int call_conv pl_new_dtd()
     return sgml2pl_error(ERR_TYPE, "atom", doctype);
 
   /*Create the dtd*/
-  if ( !(dtd=new_dtd(dt)) )
+  if ( !(dtd=new_dtd((ichar *) dt)) )
     return FALSE;
   
   dtd->references++;
@@ -474,7 +474,7 @@ DllExport int call_conv pl_doctype()
 
   if(is_var(doctype) && dtd->doctype)
     {
-      c2p_string( dtd->doctype, doctype);	
+      c2p_string( (char *) dtd->doctype, doctype);	
     }
   return TRUE;
 }
@@ -625,7 +625,7 @@ DllExport int call_conv pl_set_sgml_parser()
 	    {
 	      if( !(s=p2c_string(temp_term) ))
 		return FALSE;
-	      p->enforce_outer_element = dtd_add_symbol(p->dtd, s);
+	      p->enforce_outer_element = dtd_add_symbol(p->dtd, (ichar *) s);
 
 	    }
                          
@@ -1551,7 +1551,7 @@ put_attribute_name(dtd_parser *p, prolog_term t, dtd_symbol *nm)
     }
   else
     {
-      c2p_string( nm->name, t);	
+      c2p_string( (char *) nm->name, t);	
     }
 }
 
@@ -1577,12 +1577,12 @@ put_attribute_value(dtd_parser *p, prolog_term t, sgml_attribute *a)
 {
   switch(a->definition->type)
     { case AT_CDATA:
-	c2p_string( a->value.cdata, t);
+	c2p_string( (char *) (a->value.cdata), t);
 	break;
     case AT_NUMBER:
       {	
 	if ( a->value.text )
-	  c2p_string( a->value.text, t);
+	  c2p_string( (char *) (a->value.text), t);
 	else
 	  c2p_int( a->value.number, t);
 	break;
@@ -1611,7 +1611,7 @@ put_attribute_value(dtd_parser *p, prolog_term t, sgml_attribute *a)
 		head = p2p_car( tail);
 		tmp = p2p_cdr( tail);
 		tail = tmp;
-		unify_listval(p, head, a->definition->type, e-val, val);
+		unify_listval(p, head, a->definition->type, e-val, (char *) val);
 	      }
 
 	    tmp = p2p_new();
@@ -1623,7 +1623,7 @@ put_attribute_value(dtd_parser *p, prolog_term t, sgml_attribute *a)
 	    head = p2p_car( tail);
 	    tmp = p2p_cdr( tail);
 	    tail = tmp;
-	    unify_listval(p, head, a->definition->type, e-val, val);
+	    unify_listval(p, head, a->definition->type, e-val, (char *) val);
 
 	    c2p_nil( tmp);
 	    p2p_unify( tmp, tail);
@@ -1693,8 +1693,8 @@ on_entity(dtd_parser *p, dtd_entity *e, int chr)
 	  if(e)
 	    {
 			
-	      c2p_functor( "entity", 1 , tmp2);
-	      c2p_string( e->name->name, p2p_arg( tmp2, 1));
+	      c2p_functor( (char *) "entity", 1 , tmp2);
+	      c2p_string( (char *) (e->name->name), p2p_arg( tmp2, 1));
 	      p2p_unify( h, tmp2);
 
 	    }
@@ -1892,7 +1892,7 @@ put_element_name(dtd_parser *p, prolog_term t, dtd_element *e)
 
     }
   else
-    c2p_string ( e->name->name, t);
+    c2p_string ( (char *) (e->name->name), t);
 
   return;
 }

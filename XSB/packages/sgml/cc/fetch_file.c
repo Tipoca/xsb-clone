@@ -336,7 +336,7 @@ int get_file_www(char *server, char *fname, char **source)
 
 	if( (strstr( *source, "Error 503")!= NULL)
 	|| (strstr( *source, "503 Service Unavailable")!=NULL)){
-	  strstr( *source, "503 Service Unavailable") ;
+	  strcpy( *source, "503 Service Unavailable") ;
 	  return FALSE;
 	}
 

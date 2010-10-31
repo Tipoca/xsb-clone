@@ -591,9 +591,9 @@ set_dialect_dtd(dtd *dtd, dtd_dialect dialect)
 	memset(&p, 0, sizeof(p));
 	p.dtd = dtd;
 		
-	for(el = xml_entities; *el; el++)
+	for(el = (char **) xml_entities; *el; el++)
 	  {
-	    process_entity_declaration(&p, *el);
+	    process_entity_declaration(&p, (ichar *) *el);
 	  }	
                                                                                
 	break;
@@ -804,15 +804,15 @@ process_marked_section(dtd_parser *p)
 	  m->parent = p->marked;
 	  p->marked = m;
                                                                                
-	  if ( istrcaseeq(kwd->name, "IGNORE") )
+	  if ( istrcaseeq(kwd->name, (ichar *) "IGNORE") )
 	    m->type = MS_IGNORE;
-	  else if ( istrcaseeq(kwd->name, "INCLUDE") )
+	  else if ( istrcaseeq(kwd->name, (ichar *) "INCLUDE") )
 	    m->type = MS_INCLUDE;
-	  else if ( istrcaseeq(kwd->name, "TEMP") )
+	  else if ( istrcaseeq(kwd->name, (ichar *) "TEMP") )
 	    m->type = MS_INCLUDE;
-	  else if ( istrcaseeq(kwd->name, "CDATA") )
+	  else if ( istrcaseeq(kwd->name, (ichar *) "CDATA") )
 	    m->type = MS_CDATA;
-	  else if ( istrcaseeq(kwd->name, "RCDATA") )
+	  else if ( istrcaseeq(kwd->name, (ichar *) "RCDATA") )
 	    m->type = MS_RCDATA;
 	  else
 	    m->type = MS_INCLUDE;           /* default */
@@ -932,7 +932,7 @@ process_pi(dtd_parser *p, const ichar *decl)
 	      if ( end )
 		{ decl = end;
                                                                                
-		  if ( istrcaseeq(nm->name, "encoding") )
+		  if ( istrcaseeq(nm->name, (ichar *) "encoding") )
 		    set_encoding(p, buf);
                                                                                
 		  continue;
@@ -970,9 +970,9 @@ set_encoding(dtd_parser *p, const ichar *enc)
 { 
   dtd *dtd = p->dtd;
                                                                                
-  if ( istrcaseeq(enc, "iso-8859-1") )
+  if ( istrcaseeq(enc, (ichar *) "iso-8859-1") )
     { dtd->encoding = ENC_ISO_LATIN1;
-    } else if ( istrcaseeq(enc, "utf-8") )
+    } else if ( istrcaseeq(enc, (ichar *) "utf-8") )
     { dtd->encoding = ENC_UTF8;
     } else
     gripe(ERC_EXISTENCE, "character encoding", enc);
@@ -1545,7 +1545,7 @@ putchar_dtd_parser(dtd_parser *p, int chr)
 	if ( f[CF_MDC] == chr )           /* > */
 	  { 
 	    if ( p->on_decl )
-	      (*p->on_decl)(p, "");
+	      (*p->on_decl)(p, (ichar *) "");
 	    p->state = S_PCDATA;
                                                                  
 	  } 
@@ -2131,7 +2131,7 @@ process_entity(dtd_parser *p, const ichar *name)
 	    { locbuf oldloc;
         
 	      push_location(p, &oldloc);
-	      set_src_dtd_parser(p, IN_ENTITY, e->name->name);
+	      set_src_dtd_parser(p, IN_ENTITY, (char *) e->name->name);
 	      empty_icharbuf(p->buffer);            /* dubious */
 	      for(s=text; *s; s++)
 		putchar_dtd_parser(p, *s);
@@ -2907,7 +2907,7 @@ find_map(dtd *dtd, dtd_symbol *name)
     
       if ( !empty )
 	{ empty = sgml_calloc(1, sizeof(*empty));
-	  empty->name = dtd_add_symbol(dtd, "#EMPTY");
+	  empty->name = dtd_add_symbol(dtd, (ichar *) "#EMPTY");
 	  empty->defined = TRUE;
 	}
       
@@ -4380,7 +4380,7 @@ process_entity_declaration(dtd_parser *p, const ichar *decl)
       if ( !(s = isee_identifier(dtd, decl, "#default")) )
 	{      	return gripe(ERC_SYNTAX_ERROR, "Name expected", decl);
 	}
-      id = dtd_add_symbol(dtd, "#DEFAULT");
+      id = dtd_add_symbol(dtd, (ichar *) "#DEFAULT");
       isdef = TRUE;
     }
 
@@ -4531,7 +4531,8 @@ process_entity_declaration(dtd_parser *p, const ichar *decl)
 static ichar *
 baseurl(dtd_parser *p)
 { if ( p->location.type == IN_FILE && p->location.name )
-    { return istrdup(p->location.name);
+    {
+      return istrdup((ichar *) p->location.name);
     }
  
   return NULL;
@@ -4580,8 +4581,9 @@ process_entity_value_declaration(dtd_parser *p,
 	      return decl;
 	    }
 	case ET_LITERAL:
-	  { e->value = istrdup(val);
-	    e->length = strlen(e->value);
+	  {
+	    e->value = istrdup(val);
+	    e->length = strlen((char *) e->value);
 	    return decl;
 	  }
 	default:
@@ -4652,7 +4654,7 @@ expand_pentities(dtd_parser *p, const ichar *in, ichar *out, int len)
 	      
 	      if ( !expand_pentities(p, eval, out, len) )
 		return FALSE;
-	      l = strlen(out);                /* could be better */
+	      l = strlen((char *) out);                /* could be better */
 	      out += l;
 	      len -= l;
 	      
@@ -4794,7 +4796,7 @@ entity_file(dtd *dtd, dtd_entity *e)
       {            
 	if( e->exturl)
 	  {
-	    file = e->exturl;
+	    file = (char *) e->exturl;
 	    	    
       	    return file;
 	  }
@@ -5932,7 +5934,7 @@ process_attributes(dtd_parser *p, dtd_element *e, const ichar *decl,
 		  a->def  = AT_IMPLIED;
 		  add_attribute(dtd, e, a);
 
-		  if ( !e->undefined && !(dtd->dialect != DL_SGML && (istreq("xmlns", nm->name) || istrprefix("xmlns:", nm->name))) )
+		  if ( !e->undefined && !(dtd->dialect != DL_SGML && (istreq("xmlns", nm->name) || istrprefix((ichar *) "xmlns:", nm->name))) )
 		    {	gripe(ERC_NO_ATTRIBUTE, e->name->name, nm->name);				
 		    }
 		}
@@ -6444,7 +6446,7 @@ expand_entities(dtd_parser *p, const ichar *in, ochar *out, int len)
 	{ 
 	  int chr;
 
-	  in = __utf8_get_char(in, &chr);
+	  in = (ichar *) __utf8_get_char((char *) in, &chr);
 	  if ( chr >= OUTPUT_CHARSET_SIZE )
 	    gripe(ERC_REPRESENTATION, "character");
 	  *out++ = chr;
