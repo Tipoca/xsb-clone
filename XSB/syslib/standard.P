@@ -82,7 +82,8 @@ seeing(Str) :-
 
 seen :- stat_flag(CURRENT_INPUT, Str),
 	(Str > 6 -> close(Str) ; true),
-	stat_set_flag(CURRENT_INPUT, STDIN).
+	stat_set_flag(CURRENT_INPUT, STDIN), 
+	delete_curl_pair(_,_,Str).
 
 set_output(Stream):- 
 	check_open_stream_or_alias(Stream,set_output/1,1,output,Stream1),
@@ -91,6 +92,11 @@ set_output(Stream):-
 tell(Var):- var(Var),!,instantiation_error(tell/1,1).
 tell(userout):- !,	stat_set_flag(CURRENT_OUTPUT, STDOUT).
 tell(user):- !,	stat_set_flag(CURRENT_OUTPUT, STDOUT).
+tell(url(Url,Options)) :-
+	!,
+	open_url(url(Url),write,Stream,Options),
+	set_output(Stream).
+tell(url(Url)) :- !, tell(url(Url,[])).
 tell(Integer):- 
 	integer(Integer),!,
 	set_output(Integer).
@@ -101,8 +107,13 @@ tell(File) :-
 
 telling(Str) :- stat_flag(CURRENT_OUTPUT, Str).
 
-told :-    stat_flag(CURRENT_OUTPUT, Str),
-	(Str > 6 -> close(Str) ; true),
+told :- 
+	stat_flag(CURRENT_OUTPUT, Str),
+	( get_curl_pair(Atom,_,Str)
+	-> close(url(Atom))
+	;
+	    (Str > 6 -> close(Str) ; true)
+	), 
 	stat_set_flag(CURRENT_OUTPUT, STDOUT).
 
 %----------------------------------------------------------------------------------------------------
@@ -246,11 +257,7 @@ close(S_or_A) :-
 	%% otherwise, it will cause compilation of curl,
 	%% which will come back here and will keep trying to compile curl
 	%% infinitely
-	(consult:if_file_loaded(curl)
-	-> curl:delete_us_pair(_, _, S_or_A)
-	;
-	    true
-	).
+	delete_curl_pair(_,_,S_or_A).
 
 %----
 
@@ -285,11 +292,7 @@ close(S_or_A,Options) :-
 	%% otherwise, it will cause compilation of curl,
 	%% which will come back here and will keep trying to compile curl
 	%% infinitely
-	(consult:if_file_loaded(curl)
-	-> curl:delete_us_pair(_, _, S_or_A)
-	;
-	    true
-	).
+	delete_curl_pair(_,_,S_or_A).
 
 examine_close_options(List,Action):-
 	(examine_close_options_1(List,Action) -> 
@@ -2066,6 +2069,15 @@ call_attribute_handlers([Mod,Attr|Rest],Value) :-
   	    verify_attribute_handler(Mod,Attr,Value,Handler),
   	    call(Handler)),
 	call_attribute_handlers(Rest,Value).	
+
+delete_curl_pair(X,Y,Z) :-
+	consult:if_file_loaded(curl) -> curl:delete_us_pair(X,Y,Z)
+	; true.
+get_curl_pair(X,Y,Z) :-
+	consult:if_file_loaded(curl), 
+	curl:get_us_pair(X,Y,Z). 
+
+
 /*
 :- import existence_error/4 from error_handler.
 

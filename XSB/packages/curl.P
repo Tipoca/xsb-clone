@@ -47,8 +47,12 @@
 	get_us_pair/3, 
 	delete_us_pair/3.
 
+:- local us_pair/3.
+:- dynamic us_pair/3.
+
 :- bootstrap_package([curl, cc], curl),
-	[curlconfig].
+	[curlconfig],
+	[curl].
 
 
 load_page(_Source, _Document, _Options, _, _Warn) :- 
@@ -258,8 +262,6 @@ post_data(Atom, write) :-
 	X \= ''.
 
 post_data(_, read).
-
-:- dynamic us_pair/3.
 
 post_us_pair(Atom, Mode, Stream) :- 
 	assert:asserta(us_pair(Atom, Mode, Stream)).
