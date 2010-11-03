@@ -51,8 +51,7 @@
 :- dynamic us_pair/3.
 
 :- bootstrap_package([curl, cc], curl),
-	[curlconfig],
-	[curl].
+	[curlconfig].
 
 
 load_page(_Source, _Document, _Options, _, _Warn) :- 
