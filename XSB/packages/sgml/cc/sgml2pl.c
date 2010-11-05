@@ -1,7 +1,7 @@
 /***************************************************************************
  *                           sgml2pl.c
  * This is the main file. It contains the interface to the parser internal
- * functions. It also contains the callback functions which are invoked 
+ * functions. It also contains the callback functions which are invoked
  * when certain parts of the xml document are encountered.
  *
  *************************************************************************/
@@ -12,6 +12,16 @@
 #define XSB_DLL
 #endif
 #include "cinterf.h"
+
+#ifdef MULTI_THREAD
+#define xsb_get_main_thread_macro xsb_get_main_thread()
+#define  check_thread_context \
+	th = xsb_get_main_thread();
+#else
+#define xsb_get_main_thread_macro
+#define check_thread_context
+#endif
+
 #include <stdlib.h>
 #include "dtd.h"
 #include <stdio.h>
@@ -20,7 +30,7 @@
 #include <assert.h>
 #include "fetch_file.c"
 #include "parser.c"
-#include "charmap.c" 
+#include "charmap.c"
 #include "util.c"
 #include "xmlns.c"
 #include "model.c"
@@ -35,13 +45,13 @@
 /*
 #include "socketcall.h"
 */
-                                                                                
+
 #define PD_MAGIC        0x36472ba1      /* just a number */
 
 #define MAX_ERRORS      50
 #define MAX_WARNINGS    50
 #define MAXSTRLEN 256
-                                                                              
+
 
 typedef enum
   { EM_QUIET = 0,                         /* Suppress messages */
@@ -61,18 +71,18 @@ typedef struct _env
 { prolog_term        tail;
   struct _env *parent;
 } env;
-                                                                                
+
 typedef struct _parser_data
 { int         magic;                    /* PD_MAGIC */
   dtd_parser *parser;                   /* parser itself */
-                                                                                
+
   int         warnings;                 /* #warnings seen */
   int         errors;                   /* #errors seen */
   int         max_errors;               /* error limit */
   int         max_warnings;             /* warning limit */
   errormode   error_mode;               /* how to handle errors */
   int         positions;                /* report file-positions */
-                                                                                
+
   predicate_t on_begin;                 /* begin element */
   predicate_t on_end;                   /* end element */
   predicate_t on_cdata;                 /* cdata */
@@ -81,13 +91,13 @@ typedef struct _parser_data
   predicate_t on_urlns;                 /* url --> namespace */
   predicate_t on_error;                 /* errors */
   predicate_t on_decl;                  /* declarations */
-  
+
   stopat      stopat;                   /* Where to stop */
   int         stopped;                  /* Environment is complete */
-  
+
   void*   source;                  /* Where we are reading from */
   int its_a_url;
-  
+
   prolog_term      list;                     /* output term (if any) */
   prolog_term      tail;                     /* tail of the list */
   env        *stack;                    /* environment stack */
@@ -102,7 +112,7 @@ dtd_parser * parser_error = NULL;
 
 dtd *
 new_dtd(const ichar *doctype);
-                                                                                                 
+
 static int
 get_dtd(prolog_term t, dtd **dtdp);
 
@@ -119,16 +129,16 @@ on_begin(dtd_parser *p, dtd_element *e, int argc, sgml_attribute *argv);
 
 static int
 on_end(dtd_parser *p, dtd_element *e);
-                                                                          
+
 static int
 on_entity(dtd_parser *p, dtd_entity *e, int chr);
-                                                                          
+
 static int
 on_pi(dtd_parser *p, const ichar *pi);
-                                                                          
+
 static int
 on_cdata(dtd_parser *p, data_type type, int len, const ochar *data);
-                                                                                
+
 static void
 put_element_name(dtd_parser *p, prolog_term t, dtd_element *e);
 
@@ -143,7 +153,7 @@ put_url(dtd_parser *p, prolog_term t, const ichar *url);
 
 static int
 on_error(dtd_parser *p, dtd_error *error);
-                                                                          
+
 static int
 on_decl(dtd_parser *p, const ichar *decl);
 
@@ -178,18 +188,19 @@ set_option_dtd( dtd *dtd, dtd_option option, char *set);
  **/
 
 DllExport int call_conv pl_new_sgml_parser()
-{ 
+{
   /*Temporary terms to parse the input from prolog side*/
-  prolog_term head, tail, tmp, ref, tmp1;   
+  prolog_term head, tail, tmp, ref, tmp1;
 
   /*Pointer to dtd and parser objects*/
   dtd *dtd = NULL;
   dtd_parser *p;
-	
+
   char *str;
 
-  tail = reg_term(2);
- 
+  check_thread_context
+  tail = reg_term(CTXTc 2);
+
   /*Parsing the options list*/
   while(is_list(tail))
     {
@@ -199,19 +210,19 @@ DllExport int call_conv pl_new_sgml_parser()
       if(is_functor( head))
 	{
 
-	  /*Extract the dtd pointer if present. Otherwise create the 
+	  /*Extract the dtd pointer if present. Otherwise create the
 	    dtd object*/
 	  str = p2c_functor( head);
 	  if(strcmp( str, "dtd_struct"))
 	    {
 	      return FALSE;
-	    }	
+	    }
 	  tmp = p2p_arg(head, 1);
 	  if( is_var( tmp))
 	    {
-	      dtd = new_dtd(NULL);		
+	      dtd = new_dtd(NULL);
 	      dtd->references++;
-	      c2p_int( (int)dtd, tmp);
+	      c2p_int(CTXTc (Integer)dtd, tmp);
 	    }
 	  else
 	    {
@@ -220,9 +231,9 @@ DllExport int call_conv pl_new_sgml_parser()
 
 	    }
 	}
-    } 
-  
-  ref = reg_term(1);
+    }
+
+  ref = reg_term(CTXTc 1);
   p = new_dtd_parser(dtd);
 
   parser_error = p;
@@ -241,14 +252,14 @@ int unify_parser( prolog_term t, dtd_parser *p)
   prolog_term tmp, tmp1;
 
   /*Temporary prolog terms to create the output terms*/
-  tmp1 = p2p_new();
-  tmp = p2p_new();
+  tmp1 = p2p_new(CTXT);
+  tmp = p2p_new(CTXT);
 
-  /*Create the prolog term*/	
-  c2p_functor( "sgml_parser", 1, tmp1);
-  c2p_int( (int) p, p2p_arg( tmp1, 1));
+  /*Create the prolog term*/
+  c2p_functor(CTXTc "sgml_parser", 1, tmp1);
+  c2p_int(CTXTc (Integer) p, p2p_arg( tmp1, 1));
 
-  return p2p_unify( t, tmp1); 
+  return p2p_unify(CTXTc t, tmp1);
 }
 
 
@@ -263,27 +274,27 @@ int unify_dtd( prolog_term t, dtd * d)
   /*Temporary prolog term to create the output term*/
   prolog_term tmp, tmp1, tmp2;
 
-  tmp1 = p2p_new();
-  tmp = p2p_new();
-  tmp2 = p2p_new();
+  tmp1 = p2p_new(CTXT);
+  tmp = p2p_new(CTXT);
+  tmp2 = p2p_new(CTXT);
 
   /*dtd_struct/2 if doctype is specified*/
 
   if(d->doctype)
     {
-      c2p_functor( "dtd_struct", 2, tmp1);
-      c2p_int( (int) d, p2p_arg( tmp1, 1));
-      c2p_string( (char *) d->doctype, p2p_arg( tmp1, 2));
+      c2p_functor(CTXTc "dtd_struct", 2, tmp1);
+      c2p_int(CTXTc (Integer) d, p2p_arg( tmp1, 1));
+      c2p_string(CTXTc (char *) d->doctype, p2p_arg( tmp1, 2));
     }
   /* dtd_struct/1 if no doctype is specified */
   else
     {
-      c2p_functor( "dtd_struct", 1, tmp1);
-      c2p_int( (int) d, tmp);
-      p2p_unify( p2p_arg( tmp1, 1), tmp);
+      c2p_functor(CTXTc "dtd_struct", 1, tmp1);
+      c2p_int(CTXTc (Integer) d, tmp);
+      p2p_unify(CTXTc p2p_arg( tmp1, 1), tmp);
     }
-	
-  return p2p_unify( t, tmp1);
+
+  return p2p_unify(CTXTc t, tmp1);
 }
 
 /**
@@ -298,8 +309,9 @@ DllExport int call_conv pl_new_dtd()
   prolog_term doctype;
   prolog_term ref;
 
-  doctype = reg_term(1);
-  ref = reg_term(2);
+  check_thread_context
+  doctype = reg_term(CTXTc 1);
+  ref = reg_term(CTXTc 2);
 
   /*Extract the doctype*/
   if ( !(dt = p2c_string( doctype) ))
@@ -308,9 +320,9 @@ DllExport int call_conv pl_new_dtd()
   /*Create the dtd*/
   if ( !(dtd=new_dtd((ichar *) dt)) )
     return FALSE;
-  
+
   dtd->references++;
-                                                                              
+
   return unify_dtd(ref, dtd);
 }
 
@@ -322,7 +334,7 @@ DllExport int call_conv pl_new_dtd()
 dtd *
 new_dtd(const ichar *doctype)
 { dtd *dtd = calloc(1, sizeof(*dtd));
-                                                                                
+
   dtd->magic     = SGML_DTD_MAGIC;
   dtd->implicit  = TRUE;
   dtd->dialect   = DL_SGML;
@@ -333,12 +345,12 @@ new_dtd(const ichar *doctype)
   dtd->charfunc  = new_charfunc();
   dtd->charmap   = new_charmap();
   dtd->space_mode = SP_SGML;
-  dtd->ent_case_sensitive = TRUE;      
-  dtd->shorttag    = TRUE;              
+  dtd->ent_case_sensitive = TRUE;
+  dtd->shorttag    = TRUE;
   dtd->number_mode = NU_TOKEN;
   return dtd;
 }
-                                                                               
+
 /**
  * Create a new parser for the specified dtd.
  * This dtd is used to validate the xml document which is parsed by the parser.
@@ -351,11 +363,11 @@ dtd_parser *
 new_dtd_parser(dtd *dtd)
 {
   dtd_parser *p = calloc(1, sizeof(*p));
-  
+
   if ( !dtd )
     dtd = new_dtd(NULL);
   dtd->references++;
-  
+
   p->magic       = SGML_PARSER_MAGIC;
   p->dtd         = dtd;
   p->state       = S_PCDATA;
@@ -366,7 +378,7 @@ new_dtd_parser(dtd *dtd)
   p->cdata       = new_ocharbuf();
   p->event_class = EV_EXPLICIT;
   set_src_dtd_parser(p, IN_NONE, NULL);
-  
+
   return p;
 }
 
@@ -380,7 +392,7 @@ static int
 get_dtd(prolog_term t, dtd **dtdp)
 {
   char * str;
-  
+
   if ( is_functor(t))
     {
       /*Temporary prolog terms to parse the inputs*/
@@ -390,23 +402,23 @@ get_dtd(prolog_term t, dtd **dtdp)
       str = p2c_functor(t);
 
       if(strcmp( str, "dtd_struct"))
-	return FALSE;	    
+	return FALSE;
 
       temp_term = p2p_arg(t, 1);
       /*Extract the dtd object pointer from prolog term*/
       if ((ptr = (void *) p2c_int(temp_term) ))
-	{ 
+	{
 	  dtd *tmp = ptr;
 	  if ( tmp->magic == SGML_DTD_MAGIC )
 	    {
 	      *dtdp = tmp;
-                                                                            
+
 	      return TRUE;
 	    }
 	  return sgml2pl_error(ERR_EXISTENCE, "dtd_struct", t);
 	}
     }
-                                                                         
+
   return sgml2pl_error(ERR_TYPE, "dtd_struct", t);
 }
 
@@ -429,13 +441,13 @@ get_parser(prolog_term parser, dtd_parser **p)
 
       /*Extract the parser object pointer from prolog term*/
       str = p2c_functor( parser);
-   
+
       if(strcmp(str,"sgml_parser"))
 	{
 	  return FALSE;
 	}
       temp_term = p2p_arg( parser, 1);
-	
+
       if( (ptr = (void *) p2c_int(temp_term)))
 	{
 	  dtd_parser *tmp = ptr;
@@ -447,7 +459,7 @@ get_parser(prolog_term parser, dtd_parser **p)
 	  return sgml2pl_error(ERR_EXISTENCE, "sgml_parser", parser);
 	}
     }
- 
+
   return sgml2pl_error(ERR_TYPE, "sgml_parser", parser);
 }
 
@@ -456,15 +468,16 @@ get_parser(prolog_term parser, dtd_parser **p)
  * Input : doctype string, parser prolog term
  * Output : prolog doctype term
  **/
- 
+
 DllExport int call_conv pl_doctype()
 {
   dtd_parser *p;
   prolog_term parser, doctype;
   dtd * dtd;
 
-  parser = reg_term(1);
-  doctype = reg_term(2);
+  check_thread_context
+  parser = reg_term(CTXTc 1);
+  doctype = reg_term(CTXTc 2);
 
 
   /*Extract parser from the parser prolog term*/
@@ -474,7 +487,7 @@ DllExport int call_conv pl_doctype()
 
   if(is_var(doctype) && dtd->doctype)
     {
-      c2p_string( (char *) dtd->doctype, doctype);	
+      c2p_string(CTXTc (char *) dtd->doctype, doctype);
     }
   return TRUE;
 }
@@ -488,24 +501,25 @@ DllExport int call_conv pl_set_sgml_parser()
 {
   dtd_parser *p;
   prolog_term parser, options, temp_term;
+  check_thread_context
 
-  parser = reg_term(1);
-  options = reg_term(2);
+  parser = reg_term(CTXTc 1);
+  options = reg_term(CTXTc 2);
 
   /*Extract the parser object pointer from the prolog term*/
   if ( !get_parser(parser, &p) )
     return FALSE;
 
-  if( is_functor(options)) 
+  if( is_functor(options))
     {
       char *funcname;
-		
+
       funcname = p2c_functor( options);
 
       /*Set the dialect in the parser. Dialect may be xml, xmlns or sgml*/
       if( streq( funcname, "dialect"))
 	{
-	  char *s;		       
+	  char *s;
 	  temp_term = p2p_arg(options, 1);
 	  s=p2c_string( temp_term);
 	  if ( streq(s, "xml") )
@@ -521,14 +535,14 @@ DllExport int call_conv pl_set_sgml_parser()
       else if( streq( funcname, "shorttag"))
 	{
 	  char *booleanstring=NULL;
-	  
+
 	  temp_term = p2p_arg( options, 1);
-	  
+
 	  booleanstring = p2c_string( temp_term);
 	  if( !booleanstring){
 	    return sgml2pl_error(ERR_TYPE, "boolen", temp_term);
 	  }
-	  if( strcmp( booleanstring, "false") && 
+	  if( strcmp( booleanstring, "false") &&
 	      strcmp( booleanstring, "true") &&
 	      strcmp( booleanstring, "FALSE") &&
 	      strcmp( booleanstring, "TRUE"))
@@ -537,13 +551,13 @@ DllExport int call_conv pl_set_sgml_parser()
 	    }
 
 	  set_option_dtd( p->dtd, OPT_SHORTTAG, booleanstring);
-	  
+
 	}
       /*Set the file name which is displayed as the source of errors*/
       else if( streq( funcname, "file"))
 	{
 	  char * file;
-			
+
 	  temp_term = p2p_arg( options, 1);
 	  file=p2c_string( temp_term);
 	  set_src_dtd_parser( p, IN_FILE, file);
@@ -552,16 +566,16 @@ DllExport int call_conv pl_set_sgml_parser()
       else if ( streq( funcname, "line"))
 	{
 	  temp_term = p2p_arg( options, 1);
-			
+
 	  (p->location.line = p2c_int( temp_term));
-	}		
+	}
       /*Set the current character position to parse*/
       else if ( streq( funcname, "charpos"))
 	{
 	  temp_term = p2p_arg( options, 1);
-                                                                              
+
 	  p->location.charpos = p2c_int( temp_term);
-                                                                               
+
 	}
       /*Set the space handling*/
       else if( streq( funcname, "space"))
@@ -569,7 +583,7 @@ DllExport int call_conv pl_set_sgml_parser()
 	  char *s;
 	  temp_term =p2p_arg(options, 1);
 	  s=p2c_string( temp_term);
-	  
+
 	  if ( streq(s, "preserve") )
 	    p->dtd->space_mode = SP_PRESERVE;
 	  else if ( streq(s, "default") )
@@ -578,7 +592,7 @@ DllExport int call_conv pl_set_sgml_parser()
 	    p->dtd->space_mode = SP_REMOVE;
 	  else if ( streq(s, "sgml") )
 	    p->dtd->space_mode = SP_SGML;
-	  else 
+	  else
 	    return FALSE;
 
 	}
@@ -586,7 +600,7 @@ DllExport int call_conv pl_set_sgml_parser()
       else if( streq( funcname, "defaults"))
 	{
 	  int val;
-			
+
 	  temp_term =p2p_arg(options, 1);
 
 	  val=p2c_int( temp_term);
@@ -603,15 +617,15 @@ DllExport int call_conv pl_set_sgml_parser()
 	  char *s;
 	  temp_term = p2p_arg(options, 1);
 	  s=p2c_string( temp_term);
-                                                                               
+
 	  if ( streq(s, "token") )
 	    p->dtd->number_mode = NU_TOKEN;
 	  else if ( streq(s, "integer") )
 	    p->dtd->number_mode = NU_INTEGER;
 
-	  else 
+	  else
 	    return FALSE;
-                                                                               
+
 	}
       /*Set the doctype*/
       else if( streq( funcname, "doctype"))
@@ -628,24 +642,25 @@ DllExport int call_conv pl_set_sgml_parser()
 	      p->enforce_outer_element = dtd_add_symbol(p->dtd, (ichar *) s);
 
 	    }
-                         
-	}	
+
+	}
 
     }
-  return TRUE;	
-	
+  return TRUE;
+
 }
 
 /**
  * Allocate error term on C side
  * Input : Prolog variable
  * Output : none
- **/ 
+ **/
 
 DllExport int call_conv pl_allocate_error_term()
 {
-  global_error_term = reg_term(1);
-  global_warning_term = reg_term(2);
+  check_thread_context
+  global_error_term = reg_term(CTXTc 1);
+  global_warning_term = reg_term(CTXTc 2);
   return TRUE;
 }
 
@@ -657,21 +672,22 @@ DllExport int call_conv pl_finalize_warn()
 {
   /*Temporary prolog terms to iterate the warnings list*/
   prolog_term tmp, tmp1;
+  check_thread_context
 
-  tmp = reg_term(1);
+  tmp = reg_term(CTXTc 1);
   while( is_list( tmp)){
     tmp1 = p2p_cdr( tmp);
     tmp = tmp1;
   }
   if( is_var( tmp)){
-    c2p_nil(tmp);
+    c2p_nil(CTXTc tmp);
   }
   return TRUE;
 }
 
 
 /**
- * This is the main starting function. This function parses the input 
+ * This is the main starting function. This function parses the input
  * options and invokes the parser.
  * Input : Parser, Options
  * Output : The parsed prolog term
@@ -690,9 +706,10 @@ DllExport int call_conv pl_sgml_parse()
   int  recursive, has_content_length = FALSE, content_length = 0, its_a_url = 0, source_len = 0;
 
   char *str, *source=NULL, fname[MAXSTRLEN], *tmpsource=NULL;
-	
-  parser = reg_term(1);
-  options = reg_term(2);
+  check_thread_context
+
+  parser = reg_term(CTXTc 1);
+  options = reg_term(CTXTc 2);
   tail = options;
 
   /*Extract the parser from input prolog term*/
@@ -722,10 +739,10 @@ DllExport int call_conv pl_sgml_parse()
   else
     {
       recursive = FALSE;
-      oldpd = NULL;              
-		
+      oldpd = NULL;
+
       set_mode_dtd_parser(p, DM_DATA);
-		
+
       /*Set the call back functions in the parser*/
       p->on_begin_element = on_begin;
       p->on_end_element   = on_end;
@@ -747,12 +764,12 @@ DllExport int call_conv pl_sgml_parse()
     tmp1 = p2p_cdr(tail);
     tail = tmp1;
 
-	  
+
     if(is_functor( head)){
       str = p2c_functor( head);
 
       /*Assign the output prolog term to the parser object. The parser creates the output in this term*/
-	   	    
+
       if(!strcmp(str,"document")){
 	pd->list = p2p_arg( head, 1);
 	pd->tail = pd->list;
@@ -761,24 +778,24 @@ DllExport int call_conv pl_sgml_parse()
       /*Set the source in the relevant field of the parser*/
       else if(!strcmp(str,"source")){
 	/*Temporary terms used to parse the prolog input*/
-	prolog_term temp_term1, temp_term2 = 0;   
+	prolog_term temp_term1, temp_term2 = 0;
 	char server[MAXSTRLEN], * tmpstr=NULL;
-   
+
 	temp_term1 = p2p_arg( head, 1);
-     
+
 
 	if( is_functor( temp_term1)){
-		
+
 	  tmpstr = p2c_functor( temp_term1);
-	
-	  /*Source is a url*/			
+
+	  /*Source is a url*/
 	  if( !strcmp("url", tmpstr)){
 
 	    temp_term2 = p2p_arg(temp_term1, 1);
 	    tmpsource = p2c_string(temp_term2);
 	    source = malloc( strlen(tmpsource));
 	    strcpy( source, tmpsource);
-	    
+
 	    /*Validate the url*/
 	    if(parse_url( source, server, fname) != FALSE)
 	      {
@@ -818,7 +835,7 @@ DllExport int call_conv pl_sgml_parse()
 	    }
 	    its_a_url = 0;
 	    fstat( fileno( in), &stbuf);
-	    source_len = stbuf.st_size;			
+	    source_len = stbuf.st_size;
 	    set_src_dtd_parser(p, IN_FILE, source);
 	  }
 	  /*Input is a string*/
@@ -837,7 +854,7 @@ DllExport int call_conv pl_sgml_parse()
 	  return sgml2pl_error( ERR_MISC, "source", "Invalid input argument 1");
 	}
       }
-      /*Set the content length to parse*/  
+      /*Set the content length to parse*/
       else if( !strcmp(str,"content_length")){
 	/*Temporary prolog term to parse the options list*/
 	prolog_term temp_term1, temp_term2;
@@ -849,7 +866,7 @@ DllExport int call_conv pl_sgml_parse()
 	tmp = p2c_functor( temp_term2);
 	content_length = p2c_int( temp_term2);
 	has_content_length = TRUE;
-	      
+
       }
       /*Sets how much of the current input should be parsed*/
       else if( !strcmp(str,"parse"))
@@ -883,11 +900,11 @@ DllExport int call_conv pl_sgml_parse()
 	char *s;
 	/*Temporary prolog term to parse the options list*/
 	prolog_term temp_term;
-			  
+
 	temp_term = p2p_arg( head, 1);
-			  
+
 	s = p2c_string(temp_term);
-			  
+
 	if ( streq(s, "quiet") )
 	  pd->error_mode = EM_QUIET;
 	else if ( streq(s, "print") )
@@ -896,7 +913,7 @@ DllExport int call_conv pl_sgml_parse()
 	  pd->error_mode = EM_STYLE;
 	else
 	  return sgml2pl_error(ERR_DOMAIN, "syntax_error", temp_term);
-			  
+
       }
       /*Set the positions option*/
       else if( !strcmp( str, "positions")){
@@ -905,9 +922,9 @@ DllExport int call_conv pl_sgml_parse()
 	prolog_term temp_term = 0;
 
 	temp_term = p2p_arg( head, 1);
-			  
+
 	s = p2c_string(temp_term);
-	      
+
 	if ( streq(s, "true") )
 	  pd->positions = TRUE;
 	else if ( streq(s, "false") )
@@ -915,7 +932,7 @@ DllExport int call_conv pl_sgml_parse()
 	else
 	  return sgml2pl_error(ERR_DOMAIN, "positions", temp_term);
       }
-	    
+
     }
     else{
       return sgml2pl_error(ERR_DOMAIN, "source", head);
@@ -925,7 +942,7 @@ DllExport int call_conv pl_sgml_parse()
 #define CHECKERROR							\
   if ( pd->errors > pd->max_errors && pd->max_errors >= 0 )		\
     return sgml2pl_error(ERR_LIMIT, "max_errors", (long)pd->max_errors);
-	
+
   if ( pd->stopat == SA_CONTENT && p->empty_element )
     goto out;
 
@@ -949,15 +966,15 @@ DllExport int call_conv pl_sgml_parse()
       while( !eof)
 	{
 	  char c=0;
-	  char ateof = FALSE;	
-	
+	  char ateof = FALSE;
+
 	  if ( has_content_length )
 	    {
 	      if ( content_length <= 0 )
 		c = EOF;
 	      else
 		{
-		  if (its_a_url == 1)	
+		  if (its_a_url == 1)
 		    {
 		      c = source[i++];
 		      if (i == source_len)
@@ -968,19 +985,19 @@ DllExport int call_conv pl_sgml_parse()
 		  else if(its_a_url == 0)
 		    {
 		      c = fgetc(in);
-		      source_len=source_len -1;	 
+		      source_len=source_len -1;
 		      if( source_len <= 0)
 			ateof = TRUE;
-		     
+
 		    }
 		}
 
 	      if(!ateof)
 		ateof = (--content_length <= 0);
-					
+
 	    }
 	  else
-	    { 
+	    {
 	      if (its_a_url == 1)
 		{
 		  c = source[i++];
@@ -996,37 +1013,37 @@ DllExport int call_conv pl_sgml_parse()
 		  if( source_len <= 0)
 		    ateof = TRUE;
 
-			
+
 		}
 	    }
 
 	  if(ateof)
 	    {
 	      eof = TRUE;
-	      if ( c == LF )                  /* file ends in LF */	       
-		{	
+	      if ( c == LF )                  /* file ends in LF */
+		{
 		  c = CR;
 		}
 	      else if ( c != CR )             /* file ends in normal char */
-		{ 
+		{
 		  putchar_dtd_parser(p, c);
 		  if ( pd->stopped )
 		    goto stopped;
 		  c = CR;
-				
+
 		}
 	    }
 	  putchar_dtd_parser( p, c);
 	  if ( pd->stopped )
-	    { 
+	    {
 	    stopped:
-        			
+
 	      pd->stopped = FALSE;
 	      if ( pd->stopat != SA_CONTENT )
 		reset_document_dtd_parser(p); /* ensure a clean start */
 	      goto out;
 	    }
-	
+
 	}
       if ( !recursive && pd->stopat != SA_INPUT )
 	end_document_dtd_parser(p);
@@ -1035,8 +1052,8 @@ DllExport int call_conv pl_sgml_parse()
       /*Remove the ununified portions of the output prolog term*/
       if( !is_nil( pd->tail))
 	{
-	  c2p_nil(pd->tail);
-	}                                                                
+	  c2p_nil(CTXTc pd->tail);
+	}
       if ( recursive )
 	{
 	  p->closure = oldpd;
@@ -1045,7 +1062,7 @@ DllExport int call_conv pl_sgml_parse()
 	{
 	  p->closure = NULL;
 	}
-      
+
       pd->magic = 0;                      /* invalidate */
       free(pd);
 
@@ -1058,7 +1075,7 @@ DllExport int call_conv pl_sgml_parse()
 }
 
 /**
- * Open the Dtd specified. The parser uses this dtd to validate the xml 
+ * Open the Dtd specified. The parser uses this dtd to validate the xml
  * while parsing
  * Input : dtd object pointer, parser object pointer
  **/
@@ -1067,21 +1084,22 @@ DllExport int call_conv pl_open_dtd()
 { dtd *dtd;
   dtd_parser *p;
   parser_data *pd;
- 
+
   /*Prolog terms to parse the options list*/
   prolog_term ref, options, tail, head, tmp1;
 
-  FILE * in = NULL;                                          
+  FILE * in = NULL;
 
   char *str, file[MAXSTRLEN], server[MAXSTRLEN], *fname=NULL, *tmpfname=NULL;
   int its_a_url = 0;
   struct stat stbuf;
   int source_len = 0;
+  check_thread_context
 
-  ref = reg_term(1);
-  options = reg_term(2);
+  ref = reg_term(CTXTc 1);
+  options = reg_term(CTXTc 2);
 
-  /*Extract the Dtd*/                                                                           
+  /*Extract the Dtd*/
   if ( !get_dtd(ref, &dtd) )
     return FALSE;
 
@@ -1094,15 +1112,15 @@ DllExport int call_conv pl_open_dtd()
   tail = options;
 
   while(is_list(tail))
-    { 
+    {
       head = p2p_car(tail);
       tmp1 = p2p_cdr(tail);
       tail = tmp1;
-         
+
       /*Go through the list of options*/
       if(is_functor( head)){
 	str = p2c_functor( head);
-	     
+
 
 	if(!strcmp(str,"source")){
 	  /*Temporary prolog terms to parse the options list*/
@@ -1110,16 +1128,16 @@ DllExport int call_conv pl_open_dtd()
 	  char * tmpstr = NULL;
 	  temp_term1 = p2p_arg( head, 1);
 	  tmpstr = p2c_functor(temp_term1);
-	  
+
 
 	  /*The source is a url*/
-	  if(!strcmp( tmpstr, "url")){	 
-	    temp_term2 = p2p_arg(temp_term1, 1);	
+	  if(!strcmp( tmpstr, "url")){
+	    temp_term2 = p2p_arg(temp_term1, 1);
 	    tmpfname = p2c_string(temp_term2);
 	    fname = malloc( strlen(tmpfname));
 	    strcpy( fname, tmpfname);
 	    if( parse_url( fname, server, file) != FALSE) {
-			     
+
 	      source_len = 0;
 
 	      /*The url is of the form file:// */
@@ -1131,7 +1149,7 @@ DllExport int call_conv pl_open_dtd()
 		fstat( fileno( in), &stbuf);
 		source_len = stbuf.st_size;
 	      }
-			 	
+
 	      else{
 		/*Source is a url of the form http://...*/
 		if( get_file_www( server, file, &fname) == FALSE){
@@ -1155,7 +1173,7 @@ DllExport int call_conv pl_open_dtd()
 	    its_a_url = 0;
 	    if(!(in = fopen( fname, "r"))){
 	      return sgml2pl_error(ERR_EXISTENCE, "File", temp_term2);
-			 
+
 	    }
 	    fstat( fileno( in), &stbuf);
 	    source_len = stbuf.st_size;
@@ -1172,20 +1190,20 @@ DllExport int call_conv pl_open_dtd()
 	  }
 	}
       }
-    }	     
+    }
 
-    
 
-  if ( !pd->parser || pd->parser->magic != SGML_PARSER_MAGIC ){ 
+
+  if ( !pd->parser || pd->parser->magic != SGML_PARSER_MAGIC ){
     errno = EINVAL;
     return FALSE;
   }
 
-  if ( (pd->errors > pd->max_errors && pd->max_errors >= 0) || pd->stopped ){ 
+  if ( (pd->errors > pd->max_errors && pd->max_errors >= 0) || pd->stopped ){
     errno = EIO;
     return FALSE;
   }
-  
+
   /*Parse the dtd contents*/
   if (its_a_url == 1) {
     int i = 0;
@@ -1194,14 +1212,14 @@ DllExport int call_conv pl_open_dtd()
     for( i=0; i<source_len ; i++){
       putchar_dtd_parser(pd->parser, fname[i]);
     }
-  }	   
-	  
+  }
+
   else if( its_a_url == 0)
     {
       char c;
       int i = 0;
 
-      for( i=0;i<source_len;i++)	
+      for( i=0;i<source_len;i++)
 	{
 	  c = fgetc(in);
 	  putchar_dtd_parser(pd->parser, c);
@@ -1217,14 +1235,15 @@ DllExport int call_conv pl_open_dtd()
  */
 
 DllExport int call_conv pl_free_sgml_parser()
-{ 
+{
   dtd_parser *p;
   prolog_term parser;
+  check_thread_context
 
-  parser = reg_term(1);
+  parser = reg_term(CTXTc 1);
 
   if ( get_parser(parser, &p) )
-    { 
+    {
       free_dtd_parser(p);
       return TRUE;
     }
@@ -1240,11 +1259,12 @@ DllExport int call_conv pl_free_dtd()
 { dtd *dtd;
 
   prolog_term dtd_term;
+  check_thread_context
 
-  dtd_term  = reg_term(1);
+  dtd_term  = reg_term(CTXTc 1);
 
   if ( get_dtd(dtd_term, &dtd) )
-    { 
+    {
       free_dtd(dtd);
       return TRUE;
     }
@@ -1260,9 +1280,9 @@ DllExport int call_conv pl_free_dtd()
 
 static parser_data *
 new_parser_data(dtd_parser *p)
-{ 
+{
   parser_data *pd;
-                                                                             
+
   pd = calloc(1, sizeof(*pd));
   pd->magic = PD_MAGIC;
   pd->parser = p;
@@ -1270,7 +1290,7 @@ new_parser_data(dtd_parser *p)
   pd->max_warnings = MAX_WARNINGS;
   pd->error_mode = EM_PRINT;
   p->closure = pd;
-  
+
   return pd;
 }
 
@@ -1279,30 +1299,30 @@ new_parser_data(dtd_parser *p)
  **/
 static dtd_srcloc *
 file_location(dtd_parser *p, dtd_srcloc *l)
-{ 
+{
   while(l->parent && l->type != IN_FILE)
     l = l->parent;
-                                                                             
+
   return l;
 }
 
 static int
 can_end_omitted(dtd_parser *p)
 { sgml_environment *env;
-                                                                               
+
   for(env=p->environments; env; env = env->parent)
-    { 
+    {
       dtd_element *e = env->element;
-                                                                               
+
       if ( !(e->structure && e->structure->omit_close) )
 	return FALSE;
     }
-                                                                               
+
   return TRUE;
 }
 
 /**
- * Error handler. This function is called when an error is encountered 
+ * Error handler. This function is called when an error is encountered
  * while parsing
  * Input : Parser object pointer, error string
  * Output : None, unifies the allocated error term with the error
@@ -1313,13 +1333,13 @@ on_error(dtd_parser *p, dtd_error *error)
 {
   parser_data *pd = p->closure;
   const char *severity;
-  
+
   if ( pd->stopped )
     return TRUE;
-	
+
   if ( pd->stopat == SA_ELEMENT &&
        (error->minor == ERC_NOT_OPEN || error->minor == ERC_NOT_ALLOWED) && can_end_omitted(p) )
-    { 
+    {
       end_document_dtd_parser(p);
       sgml_cplocation(&p->location, &p->startloc);
       pd->stopped = TRUE;
@@ -1327,7 +1347,7 @@ on_error(dtd_parser *p, dtd_error *error)
     }
 
   switch(error->severity)
-    { 
+    {
     case ERS_STYLE:
       if ( pd->error_mode != EM_STYLE )
 	return TRUE;
@@ -1349,25 +1369,25 @@ on_error(dtd_parser *p, dtd_error *error)
     {
 
       /*Temporary prolog variables to create the error term*/
-      prolog_term temp_term1 = p2p_new();
-      prolog_term temp_term2 = p2p_new();
+      prolog_term temp_term1 = p2p_new(CTXT);
+      prolog_term temp_term2 = p2p_new(CTXT);
       prolog_term tmptail, tmp;
       dtd_srcloc *l = file_location(p, &p->startloc);
 
 
       /*Create the error term*/
-      c2p_functor( "sgml", 4, temp_term1);
+      c2p_functor(CTXTc "sgml", 4, temp_term1);
       unify_parser(p2p_arg(temp_term1, 1), p);
-      c2p_string( (l->name ? (char*) l->name : "[]"), p2p_arg( temp_term1, 2));
-      c2p_int( l->line, p2p_arg( temp_term1, 3));
-      c2p_string( error->plain_message, p2p_arg( temp_term1, 4));
+      c2p_string(CTXTc (l->name ? (char*) l->name : "[]"), p2p_arg( temp_term1, 2));
+      c2p_int(CTXTc l->line, p2p_arg( temp_term1, 3));
+      c2p_string(CTXTc error->plain_message, p2p_arg( temp_term1, 4));
 
-      c2p_functor( (char*)severity, 1, temp_term2);
-      p2p_unify( temp_term1, p2p_arg( temp_term2, 1));
+      c2p_functor(CTXTc (char*)severity, 1, temp_term2);
+      p2p_unify(CTXTc temp_term1, p2p_arg( temp_term2, 1));
 
       /*Generate an error or a warning based on severity*/
       if(!strcmp(severity, "error")){
-	p2p_unify( global_error_term, temp_term2);
+	p2p_unify(CTXTc global_error_term, temp_term2);
       }
       else
 	{
@@ -1377,8 +1397,8 @@ on_error(dtd_parser *p, dtd_error *error)
 	      tmp = p2p_cdr(tmptail);
 	      tmptail = tmp;
 	    }
-	  c2p_list(tmptail);
-	  p2p_unify( p2p_car(tmptail), temp_term2);
+	  c2p_list(CTXTc tmptail);
+	  p2p_unify(CTXTc p2p_car(tmptail), temp_term2);
 	}
     }
 
@@ -1400,7 +1420,7 @@ on_decl(dtd_parser *p, const ichar *decl)
 
   if ( pd->stopat == SA_DECL )
     pd->stopped = TRUE;
-  
+
   return TRUE;
 
 }
@@ -1416,39 +1436,39 @@ on_begin(dtd_parser *p, dtd_element *e, int argc, sgml_attribute *argv)
 {
   parser_data *pd = p->closure;
   env *env1;
-           
-                                                                     
+
+
   if ( pd->stopped )
     return TRUE;
 
   if(pd->tail)
     {
       /*Prolog term representing the element term created*/
-      prolog_term et = p2p_new();
-	
-      /*Temporary prolog terms to create the output terms*/		       
+      prolog_term et = p2p_new(CTXT);
+
+      /*Temporary prolog terms to create the output terms*/
       prolog_term tmp, content;
 
-      tmp = p2p_new();
+      tmp = p2p_new(CTXT);
 
 
       /*Create an element(...) term in the output*/
-      c2p_functor( "element", 3, et);
-	
+      c2p_functor(CTXTc "element", 3, et);
+
       put_element_name(p, p2p_arg( et, 1) , e);
-	
+
 
       /*Create the attribute list for the element*/
       unify_attribute_list( p, p2p_arg( et, 2), argc, argv);
 
-      c2p_list(tmp);
+      c2p_list(CTXTc tmp);
 
-      if(!p2p_unify( pd->tail, tmp))
+      if(!p2p_unify(CTXTc pd->tail, tmp))
 	return FALSE;
 
       tmp = p2p_car( pd->tail);
 
-      if(!p2p_unify( tmp, et))
+      if(!p2p_unify(CTXTc tmp, et))
 	return FALSE;
 
       content = p2p_arg( tmp, 3);
@@ -1461,8 +1481,8 @@ on_begin(dtd_parser *p, dtd_element *e, int argc, sgml_attribute *argv)
       env1->tail   = pd->tail;
       env1->parent = pd->stack;
       pd->stack   = env1;
-           
-		
+
+
       pd->tail = content;
     }
   return TRUE;
@@ -1487,37 +1507,37 @@ unify_attribute_list(dtd_parser *p, prolog_term alist,
 
   for( i = 0 ; i<argc;  i++)
     {
-      tmp = p2p_new();
-      temp_term[0] = p2p_new();
-      temp_term[1] = p2p_new();
-      tmp1 = p2p_new();
+      tmp = p2p_new(CTXT);
+      temp_term[0] = p2p_new(CTXT);
+      temp_term[1] = p2p_new(CTXT);
+      tmp1 = p2p_new(CTXT);
 
       put_attribute_name(p, temp_term[0], argv[i].definition->name);
       put_attribute_value(p, temp_term[1], &argv[i]);
 
-      /*Create a list of attributes with '=' as functor*/		
-      c2p_functor( "=", 2, tmp);
-      p2p_unify( p2p_arg( tmp, 1), temp_term[0]);
-      p2p_unify( p2p_arg( tmp, 2), temp_term[1]);
-		
-      c2p_list( tmp1);	
+      /*Create a list of attributes with '=' as functor*/
+      c2p_functor(CTXTc "=", 2, tmp);
+      p2p_unify(CTXTc p2p_arg( tmp, 1), temp_term[0]);
+      p2p_unify(CTXTc p2p_arg( tmp, 2), temp_term[1]);
 
-      if( !p2p_unify( tail, tmp1))
+      c2p_list(CTXTc  tmp1);
+
+      if( !p2p_unify(CTXTc tail, tmp1))
 	return FALSE;
 
       tmp1 = p2p_car( tail);
-		
-      if(!p2p_unify( tmp1, tmp))
+
+      if(!p2p_unify(CTXTc tmp1, tmp))
 	return FALSE;
 
-      tmp1 = p2p_cdr(tail);	
-      tail = tmp1;	
+      tmp1 = p2p_cdr(tail);
+      tail = tmp1;
     }
 
-  tmp1 = p2p_new();
-  c2p_nil( tmp1);
-	
-  if(!p2p_unify( tail, tmp1))
+  tmp1 = p2p_new(CTXT);
+  c2p_nil(CTXTc tmp1);
+
+  if(!p2p_unify(CTXTc tail, tmp1))
     return FALSE;
 
   return TRUE;
@@ -1539,19 +1559,19 @@ put_attribute_name(dtd_parser *p, prolog_term t, dtd_symbol *nm)
       if(url)
 	{
 
-	  c2p_functor( ":", 2, t);
+	  c2p_functor(CTXTc ":", 2, t);
 	  put_url(p, p2p_arg( t, 1), url);
-	  c2p_string( (char*)local, p2p_arg( t, 2));
+	  c2p_string(CTXTc (char*)local, p2p_arg( t, 2));
 	}
       else
 	{
-	  c2p_string( (char*)local, t);
+	  c2p_string(CTXTc (char*)local, t);
 	}
 
     }
   else
     {
-      c2p_string( (char *) nm->name, t);	
+      c2p_string(CTXTc (char *) nm->name, t);
     }
 }
 
@@ -1577,18 +1597,18 @@ put_attribute_value(dtd_parser *p, prolog_term t, sgml_attribute *a)
 {
   switch(a->definition->type)
     { case AT_CDATA:
-	c2p_string( (char *) (a->value.cdata), t);
+	c2p_string(CTXTc (char *) (a->value.cdata), t);
 	break;
     case AT_NUMBER:
-      {	
+      {
 	if ( a->value.text )
-	  c2p_string( (char *) (a->value.text), t);
+	  c2p_string(CTXTc (char *) (a->value.text), t);
 	else
-	  c2p_int( a->value.number, t);
+	  c2p_int(CTXTc a->value.number, t);
 	break;
       }
     default:
-      { 
+      {
 	const ichar *val = a->value.text;
 	const ichar *e;
 	prolog_term tmp;
@@ -1596,28 +1616,28 @@ put_attribute_value(dtd_parser *p, prolog_term t, sgml_attribute *a)
 	if ( a->definition->islist )	/* multi-valued attribute */
 	  {
 	    prolog_term tail, head;
-					
+
 	    tail = t;
 	    for(e=istrblank(val); e; val = e+1, e=istrblank(val))
-	      { 
+	      {
 		if ( e == val )
 		  continue;			/* skip spaces */
-				 
-		tmp = p2p_new();
-		c2p_list( tmp);
 
-		p2p_unify( tail, tmp);
-					 
+		tmp = p2p_new(CTXT);
+		c2p_list(CTXTc  tmp);
+
+		p2p_unify(CTXTc tail, tmp);
+
 		head = p2p_car( tail);
 		tmp = p2p_cdr( tail);
 		tail = tmp;
 		unify_listval(p, head, a->definition->type, e-val, (char *) val);
 	      }
 
-	    tmp = p2p_new();
-	    c2p_list( tmp);
+	    tmp = p2p_new(CTXT);
+	    c2p_list(CTXTc  tmp);
 
-	    p2p_unify( tail, tmp);
+	    p2p_unify(CTXTc tail, tmp);
 
 
 	    head = p2p_car( tail);
@@ -1625,44 +1645,44 @@ put_attribute_value(dtd_parser *p, prolog_term t, sgml_attribute *a)
 	    tail = tmp;
 	    unify_listval(p, head, a->definition->type, e-val, (char *) val);
 
-	    c2p_nil( tmp);
-	    p2p_unify( tmp, tail);
+	    c2p_nil(CTXTc tmp);
+	    p2p_unify(CTXTc tmp, tail);
 
 	  }
 	else
-	  c2p_string( (char*)val, t);
+	  c2p_string(CTXTc (char*)val, t);
 
       }
     }
-	
+
 }
 
 static int
 unify_listval(dtd_parser *p,  prolog_term t, attrtype type, int len, const char *text)
-{ 
-  prolog_term tmp = p2p_new();
+{
+  prolog_term tmp = p2p_new(CTXT);
   if ( type == AT_NUMBERS && p->dtd->number_mode == NU_INTEGER )
-    { 
+    {
       char *e;
       long v = strtol(text, &e, 10);
 
       if ( e-text == len && errno != ERANGE )
 	{
-	  c2p_int( v, tmp);
-	  return p2p_unify( t, tmp);
+	  c2p_int(CTXTc v, tmp);
+	  return p2p_unify(CTXTc t, tmp);
 	}
       /* TBD: Error!? */
     }
 
-  c2p_string( (char*)text, tmp);
+  c2p_string(CTXTc (char*)text, tmp);
 
 
-  return p2p_unify( t, tmp);
+  return p2p_unify(CTXTc t, tmp);
 }
 
 /**
  * Handler function which is invoked when an entity is encountered
- * Input : parser object, entity encountered 
+ * Input : parser object, entity encountered
  * Output : none
  **/
 static int
@@ -1677,32 +1697,32 @@ on_entity(dtd_parser *p, dtd_entity *e, int chr)
     {
       /*Temporary prolog terms to parse prolog inputs*/
       prolog_term h, tmp, tmp2, tmp1;
-	
-      tmp1 = p2p_new();
-      c2p_list(tmp1);
+
+      tmp1 = p2p_new(CTXT);
+      c2p_list(CTXTc tmp1);
 
       /*Create a term entity(...) in the output*/
-      if(p2p_unify( pd->tail, tmp1))
+      if(p2p_unify(CTXTc pd->tail, tmp1))
  	{
 	  h = p2p_car(pd->tail);
 	  tmp = p2p_cdr(pd->tail);
 	  pd->tail = tmp;
-	  tmp2 = p2p_new();
-	  
+	  tmp2 = p2p_new(CTXT);
+
 	  /*Creating the output term for the entity*/
 	  if(e)
 	    {
-			
-	      c2p_functor( (char *) "entity", 1 , tmp2);
-	      c2p_string( (char *) (e->name->name), p2p_arg( tmp2, 1));
-	      p2p_unify( h, tmp2);
+
+	      c2p_functor(CTXTc (char *) "entity", 1 , tmp2);
+	      c2p_string(CTXTc (char *) (e->name->name), p2p_arg( tmp2, 1));
+	      p2p_unify(CTXTc h, tmp2);
 
 	    }
 	  else
 	    {
-	      c2p_functor( "entity", 1, tmp2);
-	      c2p_int( chr, p2p_arg( tmp2, 1));
-	      p2p_unify( h, tmp2);
+	      c2p_functor(CTXTc "entity", 1, tmp2);
+	      c2p_int(CTXTc chr, p2p_arg( tmp2, 1));
+	      p2p_unify(CTXTc h, tmp2);
 	    }
   	}
     }
@@ -1710,7 +1730,7 @@ on_entity(dtd_parser *p, dtd_entity *e, int chr)
 }
 
 /**
- * Handler function which is invoked when a processing instruction 
+ * Handler function which is invoked when a processing instruction
  * is encountered
  * Input : parser object pointer, processing instruction
  * Output : none
@@ -1724,25 +1744,25 @@ on_pi(dtd_parser *p, const ichar *pi)
     return TRUE;
 
   if ( pd->tail )
-    { 
-      prolog_term head, tmp1, tmp;	
+    {
+      prolog_term head, tmp1, tmp;
 
-      tmp = p2p_new();
-      c2p_list( tmp);
+      tmp = p2p_new(CTXT);
+      c2p_list(CTXTc  tmp);
 
       /*Create a term of the form pi(...) in the output*/
-      if( p2p_unify(pd->tail, tmp))
+      if( p2p_unify(CTXTc pd->tail, tmp))
 	{
 	  head = p2p_car(pd->tail);
 	  tmp = p2p_cdr(pd->tail);
 	  pd->tail = tmp;
 
-	  tmp1 = p2p_new();
+	  tmp1 = p2p_new(CTXT);
 
-	  c2p_functor("pi", 1, tmp1);
-	  c2p_string( (char*)pi, p2p_arg( tmp1, 1));
+	  c2p_functor(CTXTc "pi", 1, tmp1);
+	  c2p_string(CTXTc (char*)pi, p2p_arg( tmp1, 1));
 
-	  p2p_unify( head, tmp1);
+	  p2p_unify(CTXTc head, tmp1);
 	}
     }
   return TRUE;
@@ -1762,14 +1782,14 @@ on_cdata(dtd_parser *p, data_type type, int len, const ochar *data)
     {
       /*Temporary prolog terms used to create the output terms*/
       prolog_term head, tmp, tmp1;
-                
-      tmp1 = p2p_new();
 
-      tmp = p2p_new();
-      c2p_list( tmp);
+      tmp1 = p2p_new(CTXT);
+
+      tmp = p2p_new(CTXT);
+      c2p_list(CTXTc  tmp);
 
       /*Create cdata(...)/sdata(...)/ndata(...) terms in the output*/
-      if(p2p_unify(pd->tail, tmp))
+      if(p2p_unify(CTXTc pd->tail, tmp))
 	{
 	  head = p2p_car( pd->tail);
 	  tmp = p2p_cdr( pd->tail);
@@ -1778,27 +1798,27 @@ on_cdata(dtd_parser *p, data_type type, int len, const ochar *data)
 	  switch(type)
 	    {
 	    case EC_CDATA:
-	      c2p_string( (char*)data, tmp1);
-	      p2p_unify( tmp1, head);
+	      c2p_string(CTXTc (char*)data, tmp1);
+	      p2p_unify(CTXTc tmp1, head);
 	      break;
 	    case EC_SDATA:
-	      { 
-		prolog_term data_term = p2p_new();
-					
-		c2p_functor( "sdata", 1, data_term);
-		c2p_string( (char*)data, p2p_arg( data_term, 1));
+	      {
+		prolog_term data_term = p2p_new(CTXT);
 
-		rval =  p2p_unify( head, data_term);
+		c2p_functor(CTXTc "sdata", 1, data_term);
+		c2p_string(CTXTc (char*)data, p2p_arg( data_term, 1));
+
+		rval =  p2p_unify(CTXTc head, data_term);
 		break;
 	      }
 	    case EC_NDATA:
-	      { 
-		prolog_term data_term = p2p_new();
-					
-		c2p_functor( "ndata", 1, data_term);
-		c2p_string( (char*)data, p2p_arg( data_term, 1));
+	      {
+		prolog_term data_term = p2p_new(CTXT);
 
-		rval =  p2p_unify( head, data_term);
+		c2p_functor(CTXTc "ndata", 1, data_term);
+		c2p_string(CTXTc (char*)data, p2p_arg( data_term, 1));
+
+		rval =  p2p_unify(CTXTc head, data_term);
 		break;
 	      }
 	    default:
@@ -1810,7 +1830,7 @@ on_cdata(dtd_parser *p, data_type type, int len, const ochar *data)
 	      return TRUE;
 	    }
 	}
-	                                                                      
+
     }
   return FALSE;
 }
@@ -1820,7 +1840,7 @@ on_cdata(dtd_parser *p, data_type type, int len, const ochar *data)
  * Input : parser object pointer, the element
  * Output : none
  **/
-static int 
+static int
 on_end(dtd_parser *p, dtd_element *e)
 {
   parser_data *pd = p->closure;
@@ -1829,8 +1849,8 @@ on_end(dtd_parser *p, dtd_element *e)
     term*/
   prolog_term tmp;
 
-  tmp = p2p_new();
-  c2p_nil(tmp);
+  tmp = p2p_new(CTXT);
+  c2p_nil(CTXTc tmp);
 
   if(pd->stopped)
     return TRUE;
@@ -1839,34 +1859,34 @@ on_end(dtd_parser *p, dtd_element *e)
     {
       if( !is_nil( pd->tail))
 	{
-	  p2p_unify( pd->tail, tmp);
+	  p2p_unify(CTXTc pd->tail, tmp);
 	}
       if ( pd->stack )
-	{ 
+	{
 	  env *parent = pd->stack->parent;
 	  pd->tail = pd->stack->tail;
 	  sgml_free(pd->stack);
 	  pd->stack = parent;
-	} 
+	}
       else
-	{ 
+	{
 	  if ( pd->stopat == SA_CONTENT )
 	    pd->stopped = TRUE;
 	}
     }
-                                                                               
+
   if ( pd->stopat == SA_ELEMENT && !p->environments->parent )
     pd->stopped = TRUE;
-                                                                               
+
   return TRUE;
 }
 
 
 /**
- * Helper functions to create the element(...) term in the output. Also 
+ * Helper functions to create the element(...) term in the output. Also
  * xml namespaces.
- **/                                                                        
-  
+ **/
+
 static void
 put_element_name(dtd_parser *p, prolog_term t, dtd_element *e)
 {
@@ -1880,19 +1900,19 @@ put_element_name(dtd_parser *p, prolog_term t, dtd_element *e)
       if(url)
 	{
 
-	  c2p_functor( ":", 2, t);
+	  c2p_functor(CTXTc ":", 2, t);
 	  put_url(p, p2p_arg( t, 1), url);
-	  c2p_string( (char*)local, p2p_arg( t, 2));
-			
+	  c2p_string(CTXTc (char*)local, p2p_arg( t, 2));
+
 	}
       else
 	{
-	  c2p_string( (char*)local, t);
+	  c2p_string(CTXTc (char*)local, t);
 	}
 
     }
   else
-    c2p_string ( (char *) (e->name->name), t);
+    c2p_string (CTXTc (char *) (e->name->name), t);
 
   return;
 }
@@ -1913,10 +1933,10 @@ static void
 put_url(dtd_parser *p, prolog_term t, const ichar *url)
 {
   parser_data *pd = p->closure;
-	
+
   if ( !pd->on_urlns )
-    { 
-      c2p_string( (char*) url, t);
+    {
+      c2p_string(CTXTc (char*) url, t);
       return;
     }
 }
@@ -1946,7 +1966,7 @@ do_quote(prolog_term in, prolog_term quoted, char **map)
   len = strlen( ins);
 
   if ( len == 0 )
-    return p2p_unify(in, quoted);
+    return p2p_unify(CTXTc in, quoted);
 
   for(s = (unsigned char*)ins ; len-- > 0; s++ )
     { int c = *s;
@@ -1984,11 +2004,11 @@ do_quote(prolog_term in, prolog_term quoted, char **map)
 
   if ( changes > 0 )
     {
-      c2p_string( out, tmp);
-      return p2p_unify( quoted, tmp);
+      c2p_string(CTXTc out, tmp);
+      return p2p_unify(CTXTc quoted, tmp);
     }
   else
-    return p2p_unify(in, quoted);
+    return p2p_unify(CTXTc in, quoted);
 }
 
 /**
@@ -1996,8 +2016,9 @@ do_quote(prolog_term in, prolog_term quoted, char **map)
  **/
 DllExport int call_conv pl_xml_quote_attribute()
 {
-  prolog_term in = reg_term(1);
-  prolog_term out = reg_term(2);
+  check_thread_context
+  prolog_term in = reg_term(CTXTc 1);
+  prolog_term out = reg_term(CTXTc 2);
   static char **map;
 
   if ( !map )
@@ -2024,8 +2045,9 @@ DllExport int call_conv pl_xml_quote_attribute()
  **/
 DllExport int call_conv pl_xml_quote_cdata()
 {
-  prolog_term in = reg_term(1);
-  prolog_term out = reg_term(2);
+  check_thread_context
+  prolog_term in = reg_term(CTXTc 1);
+  prolog_term out = reg_term(CTXTc 2);
   static char **map;
 
   if ( !map )
@@ -2050,7 +2072,8 @@ DllExport int call_conv pl_xml_name()
   unsigned len;
   static dtd_charclass *map;
   unsigned int i;
-  prolog_term in = reg_term(1);
+  check_thread_context
+  prolog_term in = reg_term(CTXTc 1);
 
 
   if ( !map )
