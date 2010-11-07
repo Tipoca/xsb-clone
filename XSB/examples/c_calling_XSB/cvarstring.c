@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cvarstring.c,v 1.4 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: cvarstring.c,v 1.5 2010-11-07 14:56:37 tswift Exp $
 ** 
 */
 
@@ -31,6 +31,7 @@
 
 /* cinterf.h is necessary for the XSB API, as well as the path manipulation routines*/
 #include "cinterf.h"
+#include "varstring_xsb.h"
 extern char *xsb_executable_full_path(char *);
 extern char *strip_names_from_path(char*, int);
 
