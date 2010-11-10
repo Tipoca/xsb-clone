@@ -267,7 +267,12 @@ break :-
 	seen, told,
 	see(InpFile), tell(OutFile).
 
-readl_brklp1 :- 
+readl_brklp1 :-
+	x_interp_repeat,
+	catch(readl_brklp1([]),Ball,(default_error_handler(Ball),fail)),
+	!.
+
+readl_brklp1(_) :- 
 	x_interp_repeat, 
 	conget('_$break_level', Blevel),
 	file_write(STDFDBK, Blevel),
