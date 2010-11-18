@@ -74,6 +74,14 @@ dump :- ll_write('dump not implemented yet').
 trace :- debug, stat_set_flag(TRACE,1).	    	       % trace = 1
 notrace :- stat_set_flag(TRACE,0),	       	       	% trace = 0
 	   nodebug.				% ??dsw added, (no load msgs)
+%% dumps trace into a file
+trace(File) :-
+	dump_trace_to_file(File),
+	trace.
+dump_trace_to_file(File) :-
+	debug_ctl(prompt,off),
+	debug_ctl(profile,on),
+	debug_ctl(redirect,File).
 
 %% Trace control
 debug_ctl(prompt, off)   :- !, leash([]).

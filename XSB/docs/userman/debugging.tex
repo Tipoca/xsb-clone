@@ -14,7 +14,7 @@ when debugging code involving tabled predicates.  If one only creeps
 intend that future versions will have more complete debugging help for
 tabled evaluation.
 
-To turn on tracing, use {\tt trace/0}.  To turn tracing off, use {\tt
+To turn on tracing, use {\tt trace/0} or {\tt trace/1}.  To turn tracing off, use {\tt
 notrace/0}.  
 \begin{description}
 \repeatstandarditem{notrace}{notrace/0}
@@ -87,6 +87,10 @@ character followed by a return, with the following meanings:
   operating system.
 \end{description}
 
+{\tt trace/1} is like {\tt trace/0} except that it is non-interactive.
+The trace log is dumped into the file provided as an argument.
+All Prolog prompts also go into that file until {\tt notrace/0} is typed. 
+
 Other standard predicates that are useful in debugging are:
 
 \begin{description}
@@ -125,7 +129,7 @@ Other standard predicates that are useful in debugging are:
     Turns on debugging mode.
     This causes subsequent execution of predicates with trace or spy
     points to be traced, and is a no-op if there are no such predicates.
-    The predicates {\tt trace/1} and {\tt spy/1} cause debugging mode
+    The predicates {\tt trace/0}, {\tt trace/1},  and {\tt spy/1} cause debugging mode
     to be turned on automatically.
 
 \standarditem{nodebug}{nodebug/0}
@@ -207,6 +211,10 @@ can be activated by invoking the emulator with the {\tt -T} option
 be printed out at every call (including those to system trap
 handlers).  The volume of such trace information can very become large
 very quickly, so this method of tracing is not recommended in general.
+
+\index{trace/1}
+{\tt trace/1} is like {\tt trace/0}, except that it is non-interactive: the
+trace is dumped into the file provided as an argument.  
 
 XSB debugger also provides means for the low-level control of what must be
 traced. Normally, various low-level predicates are masked out from the

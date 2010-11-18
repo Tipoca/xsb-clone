@@ -27,7 +27,8 @@
 /* Trace and Debug package */
 
 :- export debug/0, nodebug/0, dump/0, trace_stack_max/0, notrace_stack_max/0,
-	  (spy)/1, (nospy)/1, trace/0, notrace/0, piltrace/0, hitrace/0,
+	  (spy)/1, (nospy)/1, trace/0, trace/1,
+	  notrace/0, piltrace/0, hitrace/0,
 	  nosimtrace/0, debugging/0, debug_ctl/2.
 :- export '_$deb_trace'/1, '_$deb_spy'/1, '_b_SPY_condition'/1,
 	show/1, leash/1.
