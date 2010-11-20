@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.131 2010-09-05 18:47:17 tswift Exp $
+** $Id: tries.c,v 1.132 2010-11-20 16:37:03 dwarren Exp $
 ** 
 */
 
@@ -1313,13 +1313,12 @@ static void load_solution_from_trie(CTXTdeclc int arity, CPtr cptr)
      XSB_CptrDeref(xtemp1);
      macro_make_heap_term(xtemp1,returned_val,Dummy_Addr);
      if (xtemp1 != (CPtr)returned_val) {
-       if (isref(xtemp1)) {	/* a regular variable */
-	 dbind_ref(xtemp1,returned_val);
-       }
-       else {			/* an XSB_ATTV */
+       if (isattv(xtemp1)) {	/* an XSB_ATTV */
 	 /* Bind the variable part of xtemp1 to returned_val */
 	 add_interrupt(CTXTc cell(((CPtr)dec_addr(xtemp1) + 1)), returned_val); 
 	 dbind_ref((CPtr) dec_addr(xtemp1), returned_val);
+       } else {			/* a regular variable or other?*/
+	 dbind_ref(xtemp1,returned_val);
        }
      }
    }
