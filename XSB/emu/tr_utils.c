@@ -71,6 +71,10 @@
 #include "table_inspection_defs.h"
 #include "heap_xsb.h"
 #include "residual.h"
+#include "basictypes.h"
+
+counter abol_subg_ctr,abol_pred_ctr,abol_all_ctr; /* statistics */
+
 /*----------------------------------------------------------------------*/
 
 extern void print_subgoal(CTXTdeclc FILE *, VariantSF);
@@ -602,6 +606,10 @@ void delete_variant_sf_and_answers(CTXTdeclc VariantSF pSF, xsbBool should_warn)
   BTNptr *freeing_stack = NULL;
   int freeing_stack_size = 0;
 
+#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
+  abol_subg_ctr++;
+#endif
+  
   //  printf("delete_variant_sf %p\n",pSF);
   TRIE_W_LOCK();
   /* TLS: this checks whether any answer for this subgoal has a delay
@@ -667,6 +675,10 @@ static void delete_variant_table(CTXTdeclc BTNptr x, int incr, xsbBool should_wa
   BTNptr *freeing_stack = NULL;
   int freeing_stack_size = 0;
 
+#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
+  abol_pred_ctr++;
+#endif
+  
   if ( IsNULL(x) )
     return;
 
@@ -4272,7 +4284,7 @@ int table_component_check(CTXTdeclc NODEptr from_answer) {
 	  update_minlink_minlink(from_answer_idx,to_answer_idx);
 	} else {
 	  if (!POPPED_ANSWER(to_answer)) {
-	    printf("updating from dfn to_answer %p %x\n",to_answer,asi_scratchpad((ASI) Child(to_answer)));
+	    //	    printf("updating from dfn to_answer %p %x\n",to_answer,asi_scratchpad((ASI) Child(to_answer)));
 	    update_minlink_dfn(from_answer_idx,to_answer_idx);
 	  }
 	}

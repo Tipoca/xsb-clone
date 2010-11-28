@@ -52,6 +52,8 @@
 #include "subp.h"
 #include "error_xsb.h"
 #include "tab_structs.h"
+#include "tr_utils.h"
+#include "loader_xsb.h"
 
 /*======================================================================*/
 /* Process-level information: keep this global */
@@ -402,7 +404,10 @@ void total_stat(CTXTdeclc double elapstime) {
 	 (unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk,
 	 (unsigned long)complstack.size * K -
 	 ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk));
-  if (pspacesize[INCR_TABLE_SPACE] > 0)
+  if (((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk) > 0)
+    printf("        (%ld incomplete table(s))",
+	   ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE));
+  printf("\n");
     printf("  Incr table space                    %12ld in use\n",
 	   pspacesize[INCR_TABLE_SPACE]);
   printf("  SLG table space %12ld bytes: %12ld in use, %12ld free\n",
@@ -447,15 +452,25 @@ void total_stat(CTXTdeclc double elapstime) {
 	   subg_chk_ins, subg_inserts, subg_chk_ins - subg_inserts,
 	   ttl_ops, ttl_ins, ttl_ops - ttl_ins);
   }
-  printf("\n");
 
   if (de_count > 0) {
-    printf(" %6d DEs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
+    printf("  %6d DEs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
 	   de_count, de_space_alloc, de_space_used);
-    printf(" %6d DLs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
+    printf("  %6d DLs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
 	   dl_count, dl_space_alloc, dl_space_used);
     printf("\n");
   }
+
+    if (abol_subg_ctr == 1)
+      printf("  1 tabled subgoal explicitly abolished\n");
+    else if (abol_subg_ctr > 1) 
+      printf("  %lu tabled subgoals explicitly abolished\n",abol_subg_ctr);
+
+    if (abol_pred_ctr == 1) 
+      printf("  1 tabled predicate explicitly abolished\n");
+    else if (abol_pred_ctr > 1) 
+      printf("  %lu tabled predicates explicitly abolished\n",abol_pred_ctr);
+
 #endif
 
 #ifdef GC
@@ -851,6 +866,10 @@ void total_stat(CTXTdeclc double elapstime) {
 	 (unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk,
 	 (unsigned long)complstack.size * K -
 	 ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk));
+  if (((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk) > 0)
+    printf("        (%ld incomplete table(s))",
+	   ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE));
+  printf("\n");
   printf("  Private SLG table space %12ld bytes: %12ld in use, %12ld free\n",
 	 private_tablespace_alloc,private_tablespace_used,
 	 private_tablespace_alloc - private_tablespace_used);
@@ -882,7 +901,6 @@ void total_stat(CTXTdeclc double elapstime) {
 	   subg_chk_ins, subg_inserts, subg_chk_ins - subg_inserts,
 	   ttl_ops, ttl_ins, ttl_ops - ttl_ins);
   }
-  printf("\n");
 
   if (de_count > 0) {
     printf(" %6d DEs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
@@ -891,6 +909,16 @@ void total_stat(CTXTdeclc double elapstime) {
 	   dl_count, dl_space_alloc, dl_space_used);
     printf("\n");
   }
+
+    if (abol_subg_ctr == 1)
+      printf("  1 tabled subgoal explicitly abolished\n");
+    else if (abol_subg_ctr > 1) 
+      printf("  %lu tabled subgoals explicitly abolished\n",abol_subg_ctr);
+
+    if (abol_pred_ctr == 1) 
+      printf("  1 tabled predicate explicitly abolished\n");
+    else if (abol_pred_ctr > 1) 
+      printf("  %lu tabled predicates explicitly abolished\n",abol_pred_ctr);
 
 #endif
 
@@ -924,6 +952,7 @@ void perproc_reset_stat(void)
    reset_maximum_tablespace_stats();
    ans_chk_ins = ans_inserts = 0;
    subg_chk_ins = subg_inserts = 0;
+   abol_subg_ctr = abol_pred_ctr = abol_all_ctr = 0;   
    time_start = cpu_time();
 }
 #else
