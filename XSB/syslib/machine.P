@@ -451,13 +451,21 @@ del_attr(Var,Mod) :-
       ).
  
 :- dynamic verify_attribute_handler(_,_,_,_).
-install_verify_attribute_handler(Mod,Attr,Value,Handler) :-
-      ( retract(verify_attribute_handler(Mod,_,_,_)) ->
-	  warning((' replacing previous verify_attribute_handler for module ',Mod))
+%% WarningFlag=warning_on means: issue warning when replacing the
+%% verify_attribute_handler.
+install_verify_attribute_handler(Mod,Attr,Value,Handler,WarningFlag) :-
+      ( retract(verify_attribute_handler(Mod,_,_,_)),
+	  WarningFlag == warning_on
+      ->
+	  warning((' replacing previous verify_attribute_handler for module ',
+		   Mod))
       ;
               true
       ),
       assert(verify_attribute_handler(Mod,Attr,Value,Handler)).
+%% Version with warnings
+install_verify_attribute_handler(Mod,Attr,Value,Handler) :-
+	install_verify_attribute_handler(Mod,Attr,Value,Handler,warning_on).
 
 %---------------
 

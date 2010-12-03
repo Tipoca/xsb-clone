@@ -242,18 +242,33 @@ error. The previous value of the attribute is removed, if it exists.
 One has to extend the default unification algorithm for used
 attributes by installing a handler in the following way:
 
-\demo{:- install\_verify\_attribute\_handler($+Mod, -AttrValue, -Target, +Handler$)}
+\noindent
+{\tt
+:- install\_verify\_attribute\_handler($+Mod, -AttrValue, -Target, +Handler, +WarningFlag$)}
+\\
+{\tt
+  :- install\_verify\_attribute\_handler($+Mod, -AttrValue, -Target, +Handler$)}
 
 \noindent The
+predicates
+\texttt{install\_verify\_attribute\_handler/5}\index{\texttt{install\_verify\_attribute\_handler/5}}
+and
 \texttt{install\_verify\_attribute\_handler/4}\index{\texttt{install\_verify\_attribute\_handler/4}}
-predicate is defined in module \texttt{machine}. $Mod$ is the
+are defined in module \texttt{machine}. $Mod$ is the
 attribute {\tt Module} and $Handler$ is a term with arguments
 $AttrValue$ and $Target$. The $Handler$ term has to correspond to a
 handler predicate that takes the value of the attribute ($AttrValue$)
 and the term that the attributed value is bound to ($Target$) as
-arguments.  To get good efficiency, it is usually best to keep the
-handlers for each attribute module in separate XSB modules.
+arguments. The argument $WarningFlag$ in the 5-argument version of the
+predicate can be used to suppress the warning issued when replacing the
+{\tt verify\_attribute\_handler} for a module. If the argument is
+{\tt warning\_on} then the warning is issued if a handler for the module
+already exists. Otherwise, the warning is suppressed. 
+The 4-argument version of the predicate does \emph{not} suppress the
+warning. 
 
+To get good efficiency, it is usually best to keep the
+handlers for each attribute module in separate XSB modules.
 The handler is called after the unification of an attributed variable
 with a term or other attributed variable, if the attributed variable
 has an attribute in the corresponding module. The two arguments of the
@@ -3121,5 +3136,7 @@ $100$ and $N$ say $10^4$ this means a factor of two.
   heap in a copying Prolog (which Dec-10 Prolog is not) is 2K+3M
   words.}
 
+%%% Local Variables:
+%%% mode: latex
 %%% TeX-master: "manual2"
-%%% Local Variables: %%% mode: latex %%% TeX-master: "manual2" %%% End:
+%%% End:

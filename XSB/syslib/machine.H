@@ -165,6 +165,7 @@
         get_attr/3,
         del_attr/2,
         install_verify_attribute_handler/4,
+        install_verify_attribute_handler/5,
         install_attribute_portray_hook/3,
         install_constraint_portray_hook/4,
         verify_attribute_handler/4,
