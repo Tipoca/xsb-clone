@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.H,v 1.10 2010-08-19 15:03:35 spyrosh Exp $
+** $Id: cp_opt.H,v 1.11 2010-12-06 16:24:40 dwarren Exp $
 ** 
 */
 
@@ -36,3 +36,4 @@
 :- import warning/1 from auxlry.
 :- import syntax_error/1 from error_handler.
 :- import excess_vars/4 from setof.
+:- import concat_atom/2 from string.

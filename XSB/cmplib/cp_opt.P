@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.P,v 1.15 2010-10-29 15:49:47 dwarren Exp $
+** $Id: cp_opt.P,v 1.16 2010-12-06 16:24:40 dwarren Exp $
 ** 
 */
 
@@ -165,6 +165,12 @@ aggr_trans([pred(Sym,Pscs,Oth)|ClList0],ClList,SymTab) :-
 	),
 	append(NewClList,ClList1,ClList),
 	aggr_trans(ClList0,ClList1,SymTab).
+aggr_trans([pred(Sym,Pscs,Oth)|ClList0],ClList,SymTab) :-
+	sym_type(Sym,subsumption_modes(Modes)),
+	!,
+	subsumption_modes_trans_pred(Sym,Pscs,Oth,Modes,NewClList,SymTab),
+	append(NewClList,ClList1,ClList),
+	aggr_trans(ClList0,ClList1,SymTab).	
 aggr_trans([Pred|ClList0],[Pred|ClList],SymTab) :-
 	aggr_trans(ClList0,ClList,SymTab).
 
@@ -326,3 +332,50 @@ ensure_imported(Pred/Arity,Mod,SymTab) :-
 	sym_insert(Mod,0,[module],SymTab,_),
 	sym_insert(Pred,Arity,im(Mod),SymTab,_).
 
+/* transform predicate for abstracting subsumptive calls. */
+subsumption_modes_trans_pred(Sym,Pscs,Oth,Modes,[pred(Sym1,Pscs,Oth)|NewClList],SymTab) :-
+	sym_name(Sym,Pred,Arity),
+	length(PArgs,Arity),
+	transform_pred(Pred,Pred1),
+	build_subs_abs_clause_body(Modes,Pred,Pred1,PArgs,Body),
+	PredCall =.. [Pred|PArgs],
+	parse_preddef(PredCall,Body,NewClList,SymTab),
+	NewTerm =.. [Pred1|PArgs],
+	parse_preddef(NewTerm,true,[pred(Sym1,_,_)],SymTab),
+	ensure_imported(table_error/1,error_handler,SymTab).
+
+build_subs_abs_clause_body(Modes,Pred,Pred1,PArgs,Body) :-
+	(var(Modes)
+	 ->	length(PArgs,Arity),
+		concat_atom(['Illegal Mode in call to ',Pred,'/',Arity],Message),
+		Body = table_error(Message)
+	 ;	Modes = [Mode|ModeTail],
+		build_nonvar_plus_var_minus_cl(Mode,PArgs,NonVarTests,VarTests),
+		build_plus_orig_minus_equates(Mode,PArgs,VListMNew,EquateList),
+		list_to_commalist(EquateList,EquateVars),
+		PredCall =.. [Pred|VListMNew],
+		Pred1Call =.. [Pred1|PArgs],
+		Body = (NonVarTests -> (VarTests -> Pred1Call ; (PredCall, EquateVars)) ; BodyRest),
+		build_subs_abs_clause_body(ModeTail,Pred,Pred1,PArgs,BodyRest)
+	).
+		 
+build_nonvar_plus_var_minus_cl(Mode,PArgs,NonVarTests,VarTests) :-
+	build_nonvar_plus_var_minus(Mode,PArgs,NonVarTestsL,VarTestsL),
+	list_to_commalist(NonVarTestsL,NonVarTests),
+	list_to_commalist(VarTestsL,VarTests).
+
+build_nonvar_plus_var_minus([],[],[],[]).
+build_nonvar_plus_var_minus([+|Mode],[Var|PArgs],[nonvar(Var)|NVTests],VarTests) :-
+	build_nonvar_plus_var_minus(Mode,PArgs,NVTests,VarTests).
+build_nonvar_plus_var_minus([-|Mode],[Var|PArgs],NVTests,[var(Var)|VarTests]) :-
+	build_nonvar_plus_var_minus(Mode,PArgs,NVTests,VarTests).
+
+list_to_commalist([],true) :- !.
+list_to_commalist([A],A) :- !.
+list_to_commalist([A|B],(A,Bc)) :- list_to_commalist(B,Bc).
+
+build_plus_orig_minus_equates([],[],[],[]).
+build_plus_orig_minus_equates([+|Mode],[Var|PArgs],[Var|VListMNew],EquateList) :-
+	build_plus_orig_minus_equates(Mode,PArgs,VListMNew,EquateList).
+build_plus_orig_minus_equates([-|Mode],[Var|PArgs],[NV|VListMNew],[Var=NV|EquateList]) :-
+	build_plus_orig_minus_equates(Mode,PArgs,VListMNew,EquateList).

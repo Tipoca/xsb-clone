@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.116 2010-10-08 18:03:42 dwarren Exp $
+** $Id: parse.P,v 1.117 2010-12-06 16:24:40 dwarren Exp $
 ** 
 */
 
@@ -755,8 +755,9 @@ parse_directive(table(as(PredCList,Options)),QrList,SymTab,_ModName,_ModStruct) 
 parse_directive(table(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_comma_list_table(PredCList,SymTab).
 parse_directive(use_subsumptive_tabling(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- !,
-	parse_comma_list_table(PredCList,SymTab),  % implies tabled
-	parse_comma_list(PredCList,SymTab,[(use_subsumptive_tabling)],(use_subsumptive_tabling)).
+	parse_subsumptive_modes(PredCList,SymTab,PredCList1), % handle modes and take them out
+	parse_comma_list_table(PredCList1,SymTab),  % implies tabled
+	parse_comma_list(PredCList1,SymTab,[(use_subsumptive_tabling)],(use_subsumptive_tabling)).
 parse_directive(use_variant_tabling(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_comma_list_table(PredCList,SymTab),  % implies tabled
 	parse_comma_list(PredCList,SymTab,[(use_variant_tabling)],(use_variant_tabling)).
@@ -1012,6 +1013,30 @@ get_aggregation_spec([A|Args],Arg) :-
 	 ;	\+ (member(B,Args), (nonvar(B), B \== '^')),
 		Arg = A
 	).
+
+parse_subsumptive_modes((Pred,Preds),SymTab,(FPred,FPreds)) :- !,
+	parse_subsumptive_modes(Pred,SymTab,FPred),
+	parse_subsumptive_modes(Preds,SymTab,FPreds).
+parse_subsumptive_modes(P/A,_,P/A) :- !.
+parse_subsumptive_modes(Spec,SymTab,FSpec) :-
+	(is_most_general_term(Spec)
+	 ->	FSpec = Spec
+	 ;	Spec =.. [Pred|Args],
+		functor(Spec,Pred,Arity),
+		functor(FSpec,Pred,Arity),
+		(is_mode_list(Args)
+		 ->	sym_insert(Pred,Arity,[subsumption_modes(Modes)],SymTab,_),
+			memberchk(Args,Modes)
+		 ;	warning(('Illegal subsumption mode ',Spec,
+				 ' in use_subsumptive_tabling declaration. Ignored!'))
+		)
+	).
+
+is_mode_list([]).
+is_mode_list([M|Ms]) :- is_a_mode(M), is_mode_list(Ms).
+
+is_a_mode('-').
+is_a_mode('+').
 
 parse_comma_list_dyn((Spec,Specs),SymTab) :- !,
 	parse_comma_list_dyn(Spec,SymTab),
