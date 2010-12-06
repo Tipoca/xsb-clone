@@ -956,7 +956,8 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
 
 	perform_early_completion(producer_sf, producer_cpf);
 #if defined(LOCAL_EVAL)
-	//	if (tcp_pcreg(producer_cpf) != (byte *) &answer_return_inst) 
+	/* do not comment following condition: results in unnecessary recomputation (dsw for Pablo Chico) */
+	if (tcp_pcreg(producer_cpf) != (byte *) &answer_return_inst) 
 	  breg = producer_cpf;
 #endif
       }
