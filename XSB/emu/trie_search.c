@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_search.c,v 1.18 2010-12-07 20:55:37 tswift Exp $
+** $Id: trie_search.c,v 1.19 2010-12-07 21:08:02 tswift Exp $
 ** 
 */
 
@@ -51,9 +51,9 @@
 *   of terms using either variant or subsumptive match criteria.
 *
 *     TSTNptr subsumptive_tst_search(TSTNptr,int,CPtr,xsbBool,xsbBool *)
-*     BTNptr  subsumptive_bt_search(BTNptr,int,CPtr,xsbBool *)
-*     TSTNptr variant_tst_search(TSTNptr,int,CPtr,xsbBool,xsbBool *)
-*     BTNptr  variant_bt_search(BTNptr,int,CPtr,xsbBool *)
+*  (Not used)   BTNptr  subsumptive_bt_search(BTNptr,int,CPtr,xsbBool *)
+*  (Not used)   TSTNptr variant_tst_search(TSTNptr,int,CPtr,xsbBool,xsbBool *)
+*  (Not used)   BTNptr  variant_bt_search(BTNptr,int,CPtr,xsbBool *)
 *
 *   They assume they are given a non-NULL trie pointer and accept a
 *   term set as an integer count and an array of terms.
@@ -312,38 +312,40 @@ TSTNptr subsumptive_tst_search(CTXTdeclc TSTNptr tstRoot, int nTerms, CPtr termV
  * information is needed when the term set is inserted.
  */
 
-TSTNptr variant_tst_search(CTXTdeclc TSTNptr tstRoot, int nTerms, CPtr termVector,
-			   xsbBool maintainTSI, xsbBool *isNew) {
-
-  TSTNptr tstn;
-  xsbBool wasFound;
-  Cell symbol;
-
-
-#ifdef DEBUG_ASSERTIONS
-  if ( IsNULL(tstRoot) || (nTerms < 0) )
-    TrieError_InterfaceInvariant("variant_tst_search()");
-#endif
-
-  if ( nTerms > 0 ) {
-    Trail_ResetTOS;
-    TermStack_ResetTOS;
-    TermStack_PushHighToLowVector(termVector,nTerms);
-    if ( IsEmptyTrie(tstRoot) ) {
-      tstn = tst_insert(CTXTc tstRoot,tstRoot,NO_INSERT_SYMBOL,maintainTSI);
-      *isNew = TRUE;
-    }
-    else {
-      tstn = var_trie_lookup(CTXTc tstRoot,&wasFound,&symbol);
-      if ( ! wasFound )
-	tstn = tst_insert(CTXTc tstRoot,tstn,symbol,maintainTSI);
-      *isNew = ( ! wasFound );
-    }
-    Trail_Unwind_All;
-  }
-  else
-    tstn = tst_escape_search(CTXTc tstRoot,isNew);
-  return tstn;
-}
+/*
+| TSTNptr variant_tst_search(CTXTdeclc TSTNptr tstRoot, int nTerms, CPtr termVector,
+| 			   xsbBool maintainTSI, xsbBool *isNew) {
+| 
+|   TSTNptr tstn;
+|   xsbBool wasFound;
+|   Cell symbol;
+| 
+| 
+| #ifdef DEBUG_ASSERTIONS
+|   if ( IsNULL(tstRoot) || (nTerms < 0) )
+|     TrieError_InterfaceInvariant("variant_tst_search()");
+| #endif
+| 
+|   if ( nTerms > 0 ) {
+|     Trail_ResetTOS;
+|     TermStack_ResetTOS;
+|     TermStack_PushHighToLowVector(termVector,nTerms);
+|     if ( IsEmptyTrie(tstRoot) ) {
+|       tstn = tst_insert(CTXTc tstRoot,tstRoot,NO_INSERT_SYMBOL,maintainTSI);
+|       *isNew = TRUE;
+|     }
+|     else {
+|       tstn = var_trie_lookup(CTXTc tstRoot,&wasFound,&symbol);
+|       if ( ! wasFound )
+| 	tstn = tst_insert(CTXTc tstRoot,tstn,symbol,maintainTSI);
+|       *isNew = ( ! wasFound );
+|     }
+|     Trail_Unwind_All;
+|   }
+|   else
+|     tstn = tst_escape_search(CTXTc tstRoot,isNew);
+|   return tstn;
+| }
+*/
 
 /*=========================================================================*/
