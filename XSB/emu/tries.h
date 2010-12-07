@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.62 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tries.h,v 1.63 2010-12-07 20:55:37 tswift Exp $
 ** 
 */
 
@@ -401,20 +401,20 @@ extern void    delete_subsumptive_table(struct th_context *, struct Table_Info_F
 extern void    tstShrinkDynStacks(void);
 
 extern TSTNptr subsumptive_tst_search(TSTNptr, int, CPtr, xsbBool, xsbBool *);
-extern BTNptr  subsumptive_bt_search(BTNptr, int, CPtr, xsbBool *);
+//extern BTNptr  subsumptive_bt_search(BTNptr, int, CPtr, xsbBool *);
 extern TSTNptr variant_tst_search(TSTNptr, int, CPtr, xsbBool, xsbBool *);
-extern BTNptr  variant_bt_search(BTNptr, int, CPtr, xsbBool *);
+// extern BTNptr  variant_bt_search(BTNptr, int, CPtr, xsbBool *);
 #else
 extern void    tstShrinkDynStacks(struct th_context *);
 
 extern TSTNptr subsumptive_tst_search(struct th_context *,
 				TSTNptr, int, CPtr, xsbBool, xsbBool *);
-extern BTNptr  subsumptive_bt_search(struct th_context *,
-				BTNptr, int, CPtr, xsbBool *);
+//extern BTNptr  subsumptive_bt_search(struct th_context *,
+//				BTNptr, int, CPtr, xsbBool *);
 extern TSTNptr variant_tst_search(struct th_context *,
 				TSTNptr, int, CPtr, xsbBool, xsbBool *);
-extern BTNptr  variant_bt_search(struct th_context *,
-				 BTNptr, int, CPtr, xsbBool *);
+// extern BTNptr  variant_bt_search(struct th_context *,
+//				 BTNptr, int, CPtr, xsbBool *);
 #endif
 
 

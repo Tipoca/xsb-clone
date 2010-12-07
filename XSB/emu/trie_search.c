@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_search.c,v 1.17 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: trie_search.c,v 1.18 2010-12-07 20:55:37 tswift Exp $
 ** 
 */
 
@@ -135,44 +135,46 @@ inline static TSTNptr tst_escape_search(CTXTdeclc TSTNptr tstRoot, xsbBool *isNe
 
 /*-------------------------------------------------------------------------*/
 
-BTNptr subsumptive_bt_search(CTXTdeclc BTNptr btRoot, int nTerms, CPtr termVector,
-			     xsbBool *isNew) {
-
-  BTNptr btn;
-  TriePathType path_type;
-
-  
-#ifdef DEBUG_ASSERTIONS
-  if ( IsNULL(btRoot) || (nTerms < 0) )
-    TrieError_InterfaceInvariant("subsumptive_bt_search()");
-#endif
-
-  if ( nTerms > 0 ) {
-    Trail_ResetTOS;
-    TermStack_ResetTOS;
-    TermStack_PushHighToLowVector(termVector,nTerms);
-    if ( IsEmptyTrie(btRoot) ) {
-      btn = bt_insert(CTXTc btRoot,btRoot,NO_INSERT_SYMBOL);
-      *isNew = TRUE;
-    }
-    else {
-      TermStackLog_ResetTOS;
-      btn = iter_sub_trie_lookup(CTXTc btRoot,&path_type);
-      if ( path_type == NO_PATH ) {
-	Trail_Unwind_All;
-	btn = bt_insert(CTXTc btRoot,stl_restore_variant_cont(CTXT),
-			NO_INSERT_SYMBOL);
-	*isNew = TRUE;
-      }
-      else
-	*isNew = FALSE;
-    }
-    Trail_Unwind_All;
-  }
-  else
-    btn = bt_escape_search(CTXTc btRoot,isNew);
-  return btn;
-}
+/* TLS: commenting out until needed.
+| BTNptr subsumptive_bt_search(CTXTdeclc BTNptr btRoot, int nTerms, CPtr termVector,
+| 			     xsbBool *isNew) {
+| 
+|   BTNptr btn;
+|   TriePathType path_type;
+| 
+|   
+| #ifdef DEBUG_ASSERTIONS
+|   if ( IsNULL(btRoot) || (nTerms < 0) )
+|     TrieError_InterfaceInvariant("subsumptive_bt_search()");
+| #endif
+| 
+|   if ( nTerms > 0 ) {
+|     Trail_ResetTOS;
+|     TermStack_ResetTOS;
+|     TermStack_PushHighToLowVector(termVector,nTerms);
+|     if ( IsEmptyTrie(btRoot) ) {
+|       btn = bt_insert(CTXTc btRoot,btRoot,NO_INSERT_SYMBOL);
+|       *isNew = TRUE;
+|     }
+|     else {
+|       TermStackLog_ResetTOS;
+|       btn = iter_sub_trie_lookup(CTXTc btRoot,&path_type);
+|       if ( path_type == NO_PATH ) {
+| 	Trail_Unwind_All;
+| 	btn = bt_insert(CTXTc btRoot,stl_restore_variant_cont(CTXT),
+| 			NO_INSERT_SYMBOL);
+| 	*isNew = TRUE;
+|       }
+|       else
+| 	*isNew = FALSE;
+|     }
+|     Trail_Unwind_All;
+|   }
+|   else
+|     btn = bt_escape_search(CTXTc btRoot,isNew);
+|   return btn;
+| }
+*/
 
 /*-------------------------------------------------------------------------*/
 
@@ -265,39 +267,42 @@ TSTNptr subsumptive_tst_search(CTXTdeclc TSTNptr tstRoot, int nTerms, CPtr termV
 
 /*-------------------------------------------------------------------------*/
 
-BTNptr variant_bt_search(CTXTdeclc BTNptr btRoot, int nTerms, CPtr termVector,
-			 xsbBool *isNew) {
+/* TLS: commenting out until used.
+| BTNptr variant_bt_search(CTXTdeclc BTNptr btRoot, int nTerms, CPtr termVector,
+| 			 xsbBool *isNew) {
+| 
+|   BTNptr btn;
+|   xsbBool wasFound;
+|   Cell symbol;
+| 
+| 
+| #ifdef DEBUG_ASSERTIONS
+|   if ( IsNULL(btRoot) || (nTerms < 0) )
+|     TrieError_InterfaceInvariant("variant_bt_search()");
+| #endif
+| 
+|  if ( nTerms > 0 ) {
+|    Trail_ResetTOS;
+|    TermStack_ResetTOS;
+|    TermStack_PushLowToHighVector(termVector,nTerms);
+|    if ( IsEmptyTrie(btRoot) ) {
+|      btn = bt_insert(CTXTc btRoot,btRoot,NO_INSERT_SYMBOL);
+|      *isNew = TRUE;
+|    }
+|    else {
+|      btn = var_trie_lookup(CTXTc btRoot,&wasFound,&symbol);
+|      if ( ! wasFound )
+|	btn = bt_insert(CTXTc btRoot,btn,symbol);
+|      *isNew = ( ! wasFound );
+|    }
+|    Trail_Unwind_All;
+|  }
+|  else
+|    btn = bt_escape_search(CTXTc btRoot,isNew);
+|  return btn;
+|}
+*/
 
-  BTNptr btn;
-  xsbBool wasFound;
-  Cell symbol;
-
-
-#ifdef DEBUG_ASSERTIONS
-  if ( IsNULL(btRoot) || (nTerms < 0) )
-    TrieError_InterfaceInvariant("variant_bt_search()");
-#endif
-
-  if ( nTerms > 0 ) {
-    Trail_ResetTOS;
-    TermStack_ResetTOS;
-    TermStack_PushLowToHighVector(termVector,nTerms);
-    if ( IsEmptyTrie(btRoot) ) {
-      btn = bt_insert(CTXTc btRoot,btRoot,NO_INSERT_SYMBOL);
-      *isNew = TRUE;
-    }
-    else {
-      btn = var_trie_lookup(CTXTc btRoot,&wasFound,&symbol);
-      if ( ! wasFound )
-	btn = bt_insert(CTXTc btRoot,btn,symbol);
-      *isNew = ( ! wasFound );
-    }
-    Trail_Unwind_All;
-  }
-  else
-    btn = bt_escape_search(CTXTc btRoot,isNew);
-  return btn;
-}
 
 /*-------------------------------------------------------------------------*/
 
