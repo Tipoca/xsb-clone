@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.133 2010-12-09 17:55:53 tswift Exp $
+** $Id: tries.c,v 1.134 2010-12-09 18:40:14 tswift Exp $
 ** 
 */
 
@@ -1204,7 +1204,7 @@ BTNptr delay_chk_insert(CTXTdeclc int arity, CPtr cptr, CPtr *hook)
       /*
        * Notice: the direction of saving the variables in substitution
        * factors has been changed.  Because Prasad saves the substitution
-       * factors in CP stack (--VarPosReg), but I save them in heap
+       * factors in CP stack (--SubsFactReg), but I save them in heap
        * (hreg++).  So (cptr - i) is changed to (cptr + i) in the
        * following line.
        */
@@ -1486,7 +1486,7 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
     case XSB_FREE:							\
     case XSB_REF1:							\
       if (! IsStandardizedVariable(xtemp1)) {				\
-	*(--VarPosReg) = (Cell) xtemp1;					\
+	*(--SubsFactReg) = (Cell) xtemp1;					\
 	StandardizeVariable(xtemp1,ctr);				\
 	one_node_chk_ins(flag,EncodeNewTrieVar(ctr),TrieType);		\
 	ctr++;								\
@@ -1517,7 +1517,7 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
       break;								\
     case XSB_ATTV:							\
       /* Now xtemp1 can only be the first occurrence of an attv */	\
-      *(--VarPosReg) = (Cell) xtemp1;					\
+      *(--SubsFactReg) = (Cell) xtemp1;					\
       xtemp1 = clref_val(xtemp1); /* the VAR part of the attv */	\
       StandardizeVariable(xtemp1, ctr);					\
       one_node_chk_ins(flag, EncodeNewTrieAttv(ctr), TrieType);		\
@@ -1537,11 +1537,13 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
  * 
  * To me it seems this function is written in an overly general way.
  * I dont see a real need to encapsulate all of its input and output
- * as it is only called once, in tabletry.  What's lost is: 
- * cptr is simply a pointer to the reg_array, cptr = reg+1 
- * VarPosReg is top_of_cpstack.  This can cause confusion since later in
- * table_call_search (which calls this function) the substitution
- * factor is copied to the heap.
+ * as it is only called once, in tabletry.  I've changed a few names
+ * to make it more consistent with papers and other parts of the
+ * system.
+ * cptr is simply a pointer to the reg_array, cptr = reg+1
+ * SubsFactReg is top_of_cpstack.  This can cause confusion since
+ * later in table_call_search (which calls this function) the
+ * substitution factor is copied to the heap.
  * 
  * In addition, the manner in which attributed variables are handled
  * gives rise to some special features in the code.  When adding an
@@ -1569,7 +1571,7 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
 /*
  * Searches/inserts a subgoal call structure into a subgoal call trie.
  * During search/insertion, the variables of the subgoal call are
- * pushed on top of the CP stack (through VarPosReg), along with the #
+ * pushed on top of the CP stack (through SubsFactReg), along with the #
  * of variables that were pushed.  This forms the substitution factor.
  * Prolog variables are standardized during this process to recognize
  * multiple (nonlinear) occurences.  They must be reset to an unbound
@@ -1577,7 +1579,7 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
  * 
  * Important variables: 
  * Paren - to be set to point to inserted term's leaf
- * VarPosReg - pointer to top of CPS; place to put the substitution factor
+ * SubsFactReg - pointer to top of CPS; place to put the substitution factor
  *    in high-to-low memory format.
  * GNodePtrPtr - Points to the parent-internal-structure's
  *    "child" or "NODE_link" field.  It's a place to anchor any newly
@@ -1596,24 +1598,20 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   CPtr call_arg;
   int  arity, i, j, flag = 1;
   Cell tag = XSB_FREE, item;
-  CPtr cptr, VarPosReg, tVarPosReg;
+  CPtr cptr, SubsFactReg, tSubsFactReg;
   int ctr, attv_ctr;
   Cell  depth_ctr;
   BTNptr Paren, *GNodePtrPtr;
 
-#ifndef MULTI_THREAD
+#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
   subg_chk_ins++;
-#else
-#ifdef NON_OPT_COMPILE
-  subg_chk_ins++;
-#endif
 #endif
   Paren = TIF_CallTrie(CallInfo_TableInfo(*call_info));
   GNodePtrPtr = &BTN_Child(Paren);
   arity = CallInfo_CallArity(*call_info);
   /* cptr is set to point to the reg_array */
   cptr = CallInfo_Arguments(*call_info);
-  tVarPosReg = VarPosReg = CallInfo_VarVectorLoc(*call_info);
+  tSubsFactReg = SubsFactReg = CallInfo_VarVectorLoc(*call_info);
   depth_ctr = flags[MAX_TABLE_SUBGOAL_DEPTH];  
   ctr = attv_ctr = 0;
 
@@ -1625,7 +1623,7 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
     switch (tag) {
     case XSB_FREE:
     case XSB_REF1:
-      if (! IsStandardizedVariable(call_arg)) {
+      if (! IsStandardizedVariable(call_arg)) { // !derefs to VarEnum array
 
 	/* Call_arg is now a dereferenced register value.  If it
 	 * points to a local variable, make both the local variable
@@ -1636,14 +1634,13 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
 
 	xsb_dbgmsg((LOG_DEBUG,"   new variable ctr = %d)",ctr));
 
-	if (top_of_localstk <= call_arg &&
-	    call_arg <= (CPtr) glstack.high - 1) {
+	if (top_of_localstk <= call_arg && call_arg <= (CPtr) glstack.high - 1) {
 	  bld_free(hreg);
 	  bind_ref(call_arg, hreg);
 	  call_arg = hreg++;
 	}
 	/*
-	 * Make VarPosReg, which points to the top of the choice point
+	 * Make SubsFactReg, which points to the top of the choice point
 	 * stack, point to call_arg, which now points a free variable in the
 	 * heap.  Make that heap free variable point to the
 	 * VarEnumerator array, via StandardizeVariable.   The
@@ -1652,7 +1649,7 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
 	 * not change bindings in the VarEnumerator array -- it just
 	 * changes bindings of heap variables that point into it.
          */
-	*(--VarPosReg) = (Cell) call_arg;	
+	*(--SubsFactReg) = (Cell) call_arg;	
 	StandardizeVariable(call_arg,ctr);
 	one_node_chk_ins(flag,EncodeNewTrieVar(ctr),
 			 CALL_TRIE_TT);
@@ -1683,10 +1680,10 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
       break;
     case XSB_ATTV:
       /* call_arg is derefed register value pointing to heap.  Make
-	 the subst factor CP-stack pointer, VarPosReg, point to it. */
-      *(--VarPosReg) = (Cell) call_arg;
+	 the subst factor CP-stack pointer, SubsFactReg, point to it. */
+      *(--SubsFactReg) = (Cell) call_arg;
       xsb_dbgmsg((LOG_TRIE,"In VSC: attv deref'd reg %x; val: %x into AT: %x",
-		 call_arg,clref_val(call_arg),VarPosReg));
+		 call_arg,clref_val(call_arg),SubsFactReg));
       call_arg = clref_val(call_arg); /* the VAR part of the attv */
       /*
        * Bind the VAR part of this attv to VarEnumerator[ctr], so all the
@@ -1714,38 +1711,34 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
    *  If an insertion was performed, do some maintenance on the new leaf.
    */
   if ( flag == 0 ) {
-#ifndef MULTI_THREAD
+#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
     subg_inserts++;
-#else
-#ifdef NON_OPT_COMPILE
-    subg_inserts++;
-#endif
 #endif
     MakeLeafNode(Paren);
     TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
   }
 
-  cell(--VarPosReg) = makeint(attv_ctr << 16 | ctr);
+  cell(--SubsFactReg) = makeint(attv_ctr << 16 | ctr);
   /* 
    * "Untrail" any variable that used to point to VarEnumerator.  For
-   * variables, note that *VarPosReg is the address of a cell in the
+   * variables, note that *SubsFactReg is the address of a cell in the
    * heap.  To reset that variable, we make that address free.
-   * Similarly, *VarPosReg may contain the (encoded) address of an
+   * Similarly, *SubsFactReg may contain the (encoded) address of an
    * attv on the heap.  In this case, we make the VAR part of that
-   * attv point to itself.  The actual value in VarPosReg (i.e. the
+   * attv point to itself.  The actual value in SubsFactReg (i.e. the
    * of a substitution factor) doesn't change in either case.
    */     
-  while (--tVarPosReg > VarPosReg) {
-    if (isref(*tVarPosReg))	/* a regular variable */
-      ResetStandardizedVariable(*tVarPosReg);
+  while (--tSubsFactReg > SubsFactReg) {
+    if (isref(*tSubsFactReg))	/* a regular variable */
+      ResetStandardizedVariable(*tSubsFactReg);
     else			/* an XSB_ATTV */
-      ResetStandardizedVariable(clref_val(*tVarPosReg));
+      ResetStandardizedVariable(clref_val(*tSubsFactReg));
   }
 
   CallLUR_Leaf(*results) = Paren;
   CallLUR_Subsumer(*results) = CallTrieLeaf_GetSF(Paren);
   CallLUR_VariantFound(*results) = flag;
-  CallLUR_AnsTempl(*results) = VarPosReg;
+  CallLUR_AnsTempl(*results) = SubsFactReg;
   return XSB_SUCCESS;
 }
 
