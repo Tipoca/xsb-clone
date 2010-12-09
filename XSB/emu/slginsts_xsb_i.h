@@ -199,6 +199,10 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
    *  case, (heap - 1) points to the A.T. and
    *  CallLUR_AnsTempl(lookupResults) has the same value as
    *  CallInfo_VarVectorLoc(callInfo).
+   * 
+   *  As of 2010, table_call_search() can return XSB_FAILURE(=1) or
+   *  abort if the term depth of a call is greater than a specified
+   *  amount.
    */
    if (table_call_search(CTXTc &callInfo,&lookupResults)) {
      Fail1;
@@ -587,7 +591,15 @@ XSB_Start_Instr(tabletrysinglenoanswers,_tabletrysinglenoanswers)
     check_tcpstack_overflow;
     CallInfo_VarVectorLoc(callInfo) = top_of_cpstack;
 
-    table_call_search_incr(CTXTc &callInfo,&lookupResults);
+  /* 
+   *  As of 2010, table_call_search() can return XSB_FAILURE(=1) or
+   *  abort if the term depth of a call is greater than a specified
+   *  amount.
+   */
+    if ( table_call_search_incr(CTXTc &callInfo,&lookupResults)) {
+      Fail1;
+      XSB_Next_Instr();
+    }
   
     if(IsNonNULL(ptcpreg)) {
       sf=(VariantSF)ptcpreg;

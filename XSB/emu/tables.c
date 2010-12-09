@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.84 2010-12-09 17:55:53 tswift Exp $
+** $Id: tables.c,v 1.85 2010-12-09 19:15:38 tswift Exp $
 ** 
 */
 
@@ -210,8 +210,8 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
   if ( IsNULL(TIF_CallTrie(tif)) )
     TIF_CallTrie(tif) = newCallTrie(CTXTc TIF_PSC(tif));
   if ( IsVariantPredicate(tif) ){
+    // Return value for term-depth check.
     if (variant_call_search(CTXTc call_info,results) == XSB_FAILURE) {
-      //      printf("failing on vcs\n");
       return XSB_FAILURE;
     }
     
@@ -254,20 +254,20 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
     CallLUR_Subsumer(*results) = CallTrieLeaf_GetSF(Paren);
     CallLUR_VariantFound(*results) = flag;
     /* incremental evaluation: end */
-#endif /* not MULTI_THREAD */
+#endif /* not MULTI_THREAD (incremental evaluation) */
   }
   else
     subsumptive_call_search(CTXTc call_info,results);
   {
     /*
      * Copy substitution factor from CPS to Heap.  The arrangement of
-     * this second s.f.  is similar to that in the CPS: the
-     * size of the vector is now at the high end, but the components
-     * are still arranged from high mem (first) to low (last) -- see
+     * this second subsFact. is similar to that in the CPS: the size
+     * of the vector is now at the high end, but the components are
+     * still arranged from high mem (first) to low (last) -- see
      * picture at beginning of slginsts_xsb_i.h.  At the return of
      * this function, each cell of the heap s.f. will have the same
-     * value as the corresponding cell in the CPS s.g.  This is done so
-     * that attvs can be analyzed upon interning answers -- see
+     * value as the corresponding cell in the CPS s.g.  This is done
+     * so that attvs can be analyzed upon interning answers -- see
      * documentation at the beginning of variant_call_search().
      * 
      * TLS: Copying from the CPS to heap is not good, as 1) the ls may
@@ -310,16 +310,16 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
     hreg += size;
     bld_copy(hreg, cell(CallLUR_AnsTempl(*results)));
     hreg++;
-    /* orig version in tries.c had VarPosReg pointing at Var_{m} */
     CallLUR_AnsTempl(*results) = CallLUR_AnsTempl(*results) + size + 1;
   }
   return XSB_SUCCESS;
 }
 
 
-/* incremental evaluation */
 
-void table_call_search_incr(CTXTdeclc TabledCallInfo *call_info,
+/* --------------- incremental evaluation --------------- */
+
+int table_call_search_incr(CTXTdeclc TabledCallInfo *call_info,
 		       CallLookupResults *results) {
 
   TIFptr tif;
@@ -329,8 +329,10 @@ void table_call_search_incr(CTXTdeclc TabledCallInfo *call_info,
     TIF_CallTrie(tif) = newCallTrie(CTXTc TIF_PSC(tif));
 
   if ( IsVariantPredicate(tif) ){
-    variant_call_search(CTXTc call_info,results);
-    
+    if (variant_call_search(CTXTc call_info,results) == XSB_FAILURE) {
+      return XSB_FAILURE;
+    }
+
     leaf=CallLUR_Leaf(*results);
     if (CallLUR_VariantFound(*results)==0){
       /* new call */      
@@ -387,6 +389,7 @@ void table_call_search_incr(CTXTdeclc TabledCallInfo *call_info,
 |    CallLUR_AnsTempl(*results) = CallLUR_AnsTempl(*results) + size + 1;
     */
   }
+  return XSB_SUCCESS;
 }
 
 

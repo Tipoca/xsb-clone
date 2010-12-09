@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.h,v 1.20 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tables.h,v 1.21 2010-12-09 19:15:38 tswift Exp $
 ** 
 */
 
@@ -36,7 +36,7 @@
  */
 
 int	table_call_search(CTXTdeclc TabledCallInfo *, CallLookupResults *);
-void	table_call_search_incr(CTXTdeclc TabledCallInfo *, CallLookupResults *); /* incremental */
+int	table_call_search_incr(CTXTdeclc TabledCallInfo *, CallLookupResults *); /* incremental */
 BTNptr	table_answer_search(CTXTdeclc VariantSF, int, int, CPtr, xsbBool *);
 void	table_consume_answer(CTXTdeclc BTNptr, int, int, CPtr, TIFptr);
 ALNptr	table_identify_relevant_answers(CTXTdeclc SubProdSF, SubConsSF, CPtr);
