@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.64 2010-12-07 21:08:02 tswift Exp $
+** $Id: tries.h,v 1.65 2010-12-09 17:55:53 tswift Exp $
 ** 
 */
 
@@ -312,7 +312,7 @@ typedef struct Answer_List_Node {
 typedef struct Tabled_Call_Info_Record {
   struct Table_Info_Frame *table_info_record;
   int call_arity;
-  CPtr arg_vector;
+  CPtr arg_vector;         /* input arguments of call (ptr to wam registers) */
   CPtr var_vector_loc;     /* location to store the call var vector */
 } TabledCallInfo;
 
@@ -326,13 +326,13 @@ typedef struct Call_Check_Insert_Results {
   BTNptr call_trie_term;
   struct subgoal_frame *subsumers_sgf;
   int variant_found;
-  CPtr var_vector;         /* pointer to the vector of call variables */
+  CPtr var_vector;         /* pointer to the answer template */
 } CallLookupResults;
 
 #define CallLUR_Leaf(CLUR)		( (CLUR).call_trie_term )
 #define CallLUR_Subsumer(CLUR)		( (CLUR).subsumers_sgf )
 #define CallLUR_VariantFound(CLUR)	( (CLUR).variant_found )
-#define CallLUR_VarVector(CLUR)		( (CLUR).var_vector )
+#define CallLUR_AnsTempl(CLUR)		( (CLUR).var_vector )
 
 /*===========================================================================*/
 

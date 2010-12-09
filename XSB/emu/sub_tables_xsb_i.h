@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.22 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: sub_tables_xsb_i.h,v 1.23 2010-12-09 17:55:53 tswift Exp $
 ** 
 */
 
@@ -162,7 +162,7 @@ inline static  void subsumptive_call_search(CTXTdeclc TabledCallInfo *callStruct
 			      of subterms. */
   SubProdSF sf_with_ans_set;  /* Pointer to a producer; the subgoal from
 				 which the call will consume */
-  TriePathType path_type;
+  TriePathType path_type;    /* VARIANT/SUBSUMPTIVE/NONE */
 
 
 #ifdef DEBUG_CALL_CHK_INS
@@ -207,7 +207,7 @@ inline static  void subsumptive_call_search(CTXTdeclc TabledCallInfo *callStruct
     CallLUR_Leaf(*results) = btn;
     CallLUR_Subsumer(*results) = CallTrieLeaf_GetSF(btn);
     *answer_template = makeint(0);
-    CallLUR_VarVector(*results) = answer_template;
+    CallLUR_AnsTempl(*results) = answer_template;
     return;
   }
 
@@ -241,7 +241,7 @@ inline static  void subsumptive_call_search(CTXTdeclc TabledCallInfo *callStruct
     CallLUR_VariantFound(*results) = NO;
     CallLUR_Leaf(*results) =
       bt_insert(CTXTc btRoot,stl_restore_variant_cont(CTXT),NO_INSERT_SYMBOL);
-    CallLUR_VarVector(*results) =
+    CallLUR_AnsTempl(*results) =
       extract_template_from_insertion(CTXTc answer_template);
     Trail_Unwind_All;
 #ifdef DEBUG_CALL_CHK_INS
@@ -310,7 +310,7 @@ inline static  void subsumptive_call_search(CTXTdeclc TabledCallInfo *callStruct
     CallLUR_Subsumer(*results) = (VariantSF)sf_with_ans_set;
     CallLUR_Leaf(*results) = btn;
     CallLUR_VariantFound(*results) = (path_type == VARIANT_PATH);
-    CallLUR_VarVector(*results) = answer_template;
+    CallLUR_AnsTempl(*results) = answer_template;
 
     /* Conditionally Create Call Entry
        ------------------------------- */

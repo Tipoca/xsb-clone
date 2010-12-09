@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.132 2010-11-20 16:37:03 dwarren Exp $
+** $Id: tries.c,v 1.133 2010-12-09 17:55:53 tswift Exp $
 ** 
 */
 
@@ -1745,7 +1745,7 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   CallLUR_Leaf(*results) = Paren;
   CallLUR_Subsumer(*results) = CallTrieLeaf_GetSF(Paren);
   CallLUR_VariantFound(*results) = flag;
-  CallLUR_VarVector(*results) = VarPosReg;
+  CallLUR_AnsTempl(*results) = VarPosReg;
   return XSB_SUCCESS;
 }
 

@@ -192,12 +192,12 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
    *  Perform a call-check/insert operation on the current call.  The
    *  subterms of this call which form the answer template are
    *  computed and pushed on top of the CP stack, along with its size
-   *  (encoded as a Prolog INT) .  A pointer to this size, followed by
-   *  the reverse template vector (as depicted above), is returned in
-   *  CallLUR_VarVector(lookupResults).  Always (now) the answer
+   *  (encoded as a Prolog INT).  A pointer to this size, followed by
+   *  the answer template (as depicted above), is returned in
+   *  CallLUR_AnsTempl(lookupResults).  Always (now) the answer
    *  template is pushed on the Heap rather than the CPS.  In that
    *  case, (heap - 1) points to the A.T. and
-   *  CallLUR_VarVector(lookupResults) has the same value as
+   *  CallLUR_AnsTempl(lookupResults) has the same value as
    *  CallInfo_VarVectorLoc(callInfo).
    */
    if (table_call_search(CTXTc &callInfo,&lookupResults)) {
@@ -206,7 +206,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
    }
 
   producer_sf = CallLUR_Subsumer(lookupResults);
-  answer_template = CallLUR_VarVector(lookupResults);
+  answer_template = CallLUR_AnsTempl(lookupResults);
 
 #ifdef MULTI_THREAD
   if( !IsNULL(producer_sf) ) UNLOCK_CALL_TRIE();
@@ -252,8 +252,8 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     UNLOCK_CALL_TRIE() ;
 #endif
 
-    /* for incremental evaluation - start */
-    
+/* --------- for incremental evaluation  --------- */
+
     /* table_call_search tried to find the affected call, so if it has
        found the answer table of the new call it is made same as the
        answer table of the old call - so that we can check whether the
@@ -284,7 +284,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 	  xsb_abort("Predicate %s/%d not declared incr_table\n", get_name(TIF_PSC(CallInfo_TableInfo(callInfo))),get_arity(TIF_PSC(CallInfo_TableInfo(callInfo))));       
       }
     }
-    /* for incremental evaluation - end */
+/* --------- end incremental evaluation  --------- */
 
     producer_cpf = answer_template;
     save_find_locx(ereg);

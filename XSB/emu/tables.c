@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.83 2010-09-05 18:47:17 tswift Exp $
+** $Id: tables.c,v 1.84 2010-12-09 17:55:53 tswift Exp $
 ** 
 */
 
@@ -185,7 +185,7 @@ inline static  BTNptr newCallTrie(CTXTdeclc Psc predicate) {
 
 /*
  * Note that the call trie of the TIF is not allocated until the first
- * call is entered.  Upon exit, CallLUR_VarVector(*results) points to
+ * call is entered.  Upon exit, CallLUR_AnsTempl(*results) points to
  * the size of the answer template on the CPS.  See slginsts_xsb_i.h
  * for answer template layout.
  * Assumes that private/shared switch for SMs has been set.
@@ -286,7 +286,7 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
     CPtr tmplt_component, tmplt_var_addr, hrg_addr;
     int size, j;
 
-    tmplt_component = CallLUR_VarVector(*results);
+    tmplt_component = CallLUR_AnsTempl(*results);
     size = int_val(*tmplt_component) & 0xffff;
     xsb_dbgmsg((LOG_TRIE,
 		"done with vcs, answer_template %x\n",tmplt_component));
@@ -308,10 +308,10 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
       bld_copy(hrg_addr, (Cell)(tmplt_var_addr));
     }
     hreg += size;
-    bld_copy(hreg, cell(CallLUR_VarVector(*results)));
+    bld_copy(hreg, cell(CallLUR_AnsTempl(*results)));
     hreg++;
     /* orig version in tries.c had VarPosReg pointing at Var_{m} */
-    CallLUR_VarVector(*results) = CallLUR_VarVector(*results) + size + 1;
+    CallLUR_AnsTempl(*results) = CallLUR_AnsTempl(*results) + size + 1;
   }
   return XSB_SUCCESS;
 }
@@ -357,34 +357,34 @@ void table_call_search_incr(CTXTdeclc TabledCallInfo *call_info,
      * documentation at the beginning of variant_call_search().
      */
     /*
-    CPtr tmplt_component, tmplt_var_addr, hrg_addr;
-    int size, j;
-
-    tmplt_component = CallLUR_VarVector(*results);
-    size = int_val(*tmplt_component) & 0xffff;
-    xsb_dbgmsg((LOG_TRIE,
-		"done with vcs, answer_template %x\n",tmplt_component));
-
-  
-    if ((pb)top_of_localstk < (pb)top_of_heap + size +
-	OVERFLOW_MARGIN) {
-      xsb_abort("{table_call_search} Heap overflow copying answer template");
-    }
-
-    for ( j = size - 1, tmplt_component = tmplt_component + size;
-	  j >= 0;
-	  j--, tmplt_component-- ) {
-      tmplt_var_addr = (CPtr)*tmplt_component;
-      xsb_dbgmsg((LOG_TRIE,"in TSC, copying AT to heap At[%d]: %x val: %x",
-		  (size-(j)),tmplt_component,tmplt_var_addr));
-  
-      hrg_addr = hreg+j;
-      bld_copy(hrg_addr, (Cell)(tmplt_var_addr));
-    }
-    hreg += size;
-    bld_copy(hreg, cell(CallLUR_VarVector(*results)));
-    hreg++;
-    CallLUR_VarVector(*results) = CallLUR_VarVector(*results) + size + 1;
+|    CPtr tmplt_component, tmplt_var_addr, hrg_addr;
+|    int size, j;
+|
+|    tmplt_component = CallLUR_AnsTempl(*results);
+|    size = int_val(*tmplt_component) & 0xffff;
+|    xsb_dbgmsg((LOG_TRIE,
+|		"done with vcs, answer_template %x\n",tmplt_component));
+|
+|  
+|    if ((pb)top_of_localstk < (pb)top_of_heap + size +
+|	OVERFLOW_MARGIN) {
+|      xsb_abort("{table_call_search} Heap overflow copying answer template");
+|    }
+|
+|    for ( j = size - 1, tmplt_component = tmplt_component + size;
+|	  j >= 0;
+|	  j--, tmplt_component-- ) {
+|      tmplt_var_addr = (CPtr)*tmplt_component;
+|      xsb_dbgmsg((LOG_TRIE,"in TSC, copying AT to heap At[%d]: %x val: %x",
+|		  (size-(j)),tmplt_component,tmplt_var_addr));
+|  
+|      hrg_addr = hreg+j;
+|      bld_copy(hrg_addr, (Cell)(tmplt_var_addr));
+|    }
+|    hreg += size;
+|    bld_copy(hreg, cell(CallLUR_AnsTempl(*results)));
+|    hreg++;
+|    CallLUR_AnsTempl(*results) = CallLUR_AnsTempl(*results) + size + 1;
     */
   }
 }
