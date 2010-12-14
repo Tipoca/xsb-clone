@@ -1,6 +1,6 @@
-test_properties on zend.com
-Directory = http%3A%2F%2Fwww%2Ezend%2Ecom%2Fen
-File = index.html
-Size = 19694
-Modified Time = Sun Jan 24 15:32:42 2010
-
+test_url_properties on http://www.cs.sunysb.edu/~cse532/ where url body is not loaded
+Directory = http%3A%2F%2Fwww%2Ecs%2Esunysb%2Eedu%2F%7Ecse532
+FileBase = tmp
+Suffix = tmp
+Size = 153
+Modified Time = -1

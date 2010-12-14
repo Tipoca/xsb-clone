@@ -67,7 +67,7 @@ test_nonsecure(OutPath) :-
 	close(X).
 
 test_auth(OutPath) :- 
-	open(url('http://twitter.com/direct_messages.xml'), read, X, [auth('curl_test', 'test123')]),
+	open(url('http://irisresearch.library.cornell.edu/control/authBasic/authTest/'), read, X, [auth('test', 'this')]),
 	slash(Slash), fmt_write_string(OutFile, '%s%sauth.html', f(OutPath, Slash)),
 	tell(OutFile), write_page(X), told,  
 	close(X).
@@ -103,10 +103,10 @@ test_properties(OutPath) :-
 	told.
 
 test_properties_auth(OutPath) :-
-	url_properties(url('http://twitter.com/direct_messages.xml'), [auth('curl_test', 'test123')], [DirEnc, FileBase, Suffix, Size, ModifyTime]), 
+	url_properties(url('http://browserspy.dk/password-ok.php'), [auth('test', 'test')], [DirEnc, FileBase, Suffix, Size, ModifyTime]), 
 	slash(Slash), fmt_write_string(OutFile, '%s%sprop_auth.txt', f(OutPath, Slash)),
 	tell(OutFile), 
-	write(test_url_properties_auth), writeln(' on http://twitter.com/direct_messages.xml'), 
+	write(test_url_properties_auth), writeln(' on http://browserspy.dk/password-ok.php'), 
 	write('Directory = '), writeln(DirEnc), 
 	write('FileBase = '), writeln(FileBase), 
 	write('Suffix = '), writeln(Suffix), 
