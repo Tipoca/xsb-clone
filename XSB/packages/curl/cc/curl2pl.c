@@ -39,8 +39,6 @@
 #include <sys/stat.h>
 #endif
 
-curl_opt init_options();
-                                                                            
 /**
  * Allocate error term on C side
  * Input : Prolog variable
@@ -219,19 +217,4 @@ DllExport int call_conv pl_encode_url()
   c2p_string(CTXTdeclc suffix, p2p_car(p2p_cdr(p2p_cdr(reg_term(2)))));
 
   return TRUE;
-}
-
-curl_opt init_options() {
-
-  curl_opt options;
-  options.redir_flag = 1;
-  options.secure.flag = 1;
-  options.secure.crt_name = "";
-  options.auth.usr_pwd = "";
-  options.timeout = 0;
-  options.url_prop = 0;
-  options.user_agent = "http://xsb.sourceforge.net/";
-  options.post_data = "";
-
-  return options;
 }

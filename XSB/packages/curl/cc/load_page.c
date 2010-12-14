@@ -186,3 +186,18 @@ encode (char *url, char **dir, char **file, char **suffix)
 
   return 0;
 }
+
+curl_opt init_options() {
+
+  curl_opt options;
+  options.redir_flag = 1;
+  options.secure.flag = 1;
+  options.secure.crt_name = "";
+  options.auth.usr_pwd = "";
+  options.timeout = 0;
+  options.url_prop = 0;
+  options.user_agent = "http://xsb.sourceforge.net/";
+  options.post_data = "";
+
+  return options;
+}

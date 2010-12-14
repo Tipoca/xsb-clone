@@ -10,8 +10,8 @@
 	writeln('***** Compare it with .ok files in the expectedoutput directory'),
 	writeln('***** Note: w3.ok will be slightly different, as this page changes constantly'),
 	(
-		path_sysop( isdir, 'actualoutput') ->true
-		;path_sysop( mkdir, 'actualoutput')
+	  path_sysop( isdir, 'actualoutput') ->true
+	; path_sysop( mkdir, 'actualoutput')
 	),
 	fmt_write_string(TestPath, '%s', f(SgmlDir)),
 	fmt_write_string(TestFile1, '%s%samp.sgml',f(TestPath,Slash)),

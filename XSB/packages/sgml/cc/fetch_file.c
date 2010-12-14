@@ -12,6 +12,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../../curl/cc/load_page.c"
 
 
 #define SA      struct sockaddr
@@ -77,8 +78,8 @@ int parse_url( const char * url, char * server, char *fname)
 	}
     }
   
-  if(!flag)
-    return FALSE;
+/*  if(!flag)
+    return FALSE; */
   
   if( flag_file == 2){
     strcpy( server, "file");
@@ -110,14 +111,32 @@ int parse_url( const char * url, char * server, char *fname)
  **/
 int get_file_www(char *server, char *fname, char **source)
 {
-	int sockfd;
+
+	char *data = NULL;
+	curl_opt options = init_options();
+	curl_ret ret_vals;
+
+	if(*source == NULL)
+	{
+		*source = (char*)malloc(strlen(server)+strlen(fname)+1);
+		strcpy(*source, server);
+		strcat(*source, fname);
+	}
+
+	*source = load_page(*source, options, &ret_vals);
+
+	if(*source == NULL)
+		return FALSE;
+	return TRUE;
+
+/*	int sockfd;
 	struct sockaddr_in	servaddr;
 	struct in_addr		**pptr;
 	struct hostent		*hp;
 	int port = 80, len, i = 0, maxlen = 0;
 	char *tempstr = NULL;
 	
-	/*Special socket handling for windows*/
+	//Special socket handling for windows
 #ifdef WIN_NT
 	int rc;
 	WSADATA wsadata;
@@ -129,7 +148,7 @@ int get_file_www(char *server, char *fname, char **source)
 	  return FALSE;
 	}
 #endif
-	
+
 	if(*source == NULL)
 	{
 		*source = (char*)malloc(MAXSTRLEN);
@@ -145,7 +164,7 @@ int get_file_www(char *server, char *fname, char **source)
 		port = atoi(server + i + 1);
 	  }
 
-	/*Resolve the hostname*/
+	//Resolve the hostname
 	if ( (hp = gethostbyname(server)) == NULL)
 	  {
 	    sprintf(*source, "hostname error for %s", server);
@@ -154,7 +173,7 @@ int get_file_www(char *server, char *fname, char **source)
 	
 	pptr = (struct in_addr **) hp->h_addr_list;
 	
-	/* Open the socket connection */	
+	// Open the socket connection 	
 	for ( ; *pptr != NULL; pptr++) {
 	  
 	  sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -181,7 +200,7 @@ int get_file_www(char *server, char *fname, char **source)
 	len = 0;
 	
 
-	/*Issue the http get filename command*/
+	//Issue the http get filename command
 	//   	printf("Server [%s] Fname [%s]\n", server, fname);	
 	
 	sprintf( *source, "GET %s\n\n", fname);
@@ -192,7 +211,7 @@ int get_file_www(char *server, char *fname, char **source)
 	i=0;
 	maxlen = 0;
 
-	/* Download the file */
+	// Download the file 
 	while( (len != 0)  && ( len != -1)){
 	  *source = (char*) realloc( *source, ((i+1) * MAXSTRLEN) + 1);
 	   tempstr = (*source) + maxlen;
@@ -206,7 +225,7 @@ int get_file_www(char *server, char *fname, char **source)
 	}
 	
 	//        printf("Downloaded [%s]\n", *source);
-	/*Handle http errors*/
+	//Handle http errors
 
 	if( (strstr( *source, "Error 400")!= NULL)
 	    || (strstr( *source, "400 Bad Request")!=NULL)){
@@ -360,4 +379,5 @@ int get_file_www(char *server, char *fname, char **source)
 #endif
 
 	return TRUE;
+*/
 }
