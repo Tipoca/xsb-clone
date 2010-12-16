@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.35 2010-12-16 22:10:24 tswift Exp $
+** $Id: tc_insts_xsb_i.h,v 1.36 2010-12-16 23:38:00 tswift Exp $
 ** 
 */
 
@@ -276,16 +276,16 @@ XSB_Start_Instr(trie_no_cp_var,_trie_no_cp_var)
 	TRIE_R_LOCK();
 //        fprintf(stddbg,"trie_no_cp_var\n");
 	NodePtr = (BTNptr) lpcreg;
-	num_vars_in_var_regs = DecodeTrieVar(opatom);
-        xsb_dbgmsg((LOG_TRIE_INSTR, "symbol number is %d\n",num_vars_in_var_regs));
-	var_regs[num_vars_in_var_regs] = (CPtr) *trieinstr_unif_stkptr;
+	trieinstr_vars_num = DecodeTrieVar(opatom);
+        xsb_dbgmsg((LOG_TRIE_INSTR, "symbol number is %d\n",trieinstr_vars_num));
+	trieinstr_vars[trieinstr_vars_num] = (CPtr) *trieinstr_unif_stkptr;
 #ifdef DEBUG_ASSERTIONS
-        { int i = num_vars_in_var_regs;
-	  if ((isref(var_regs[i])) &&
-            ((var_regs[i] < (CPtr)glstack.low) || (var_regs[i] >= hreg)) &&
-	    ((var_regs[i] < top_of_localstk) || (var_regs[i] >= (CPtr) glstack.high))) {
+        { int i = trieinstr_vars_num;
+	  if ((isref(trieinstr_vars[i])) &&
+            ((trieinstr_vars[i] < (CPtr)glstack.low) || (trieinstr_vars[i] >= hreg)) &&
+	    ((trieinstr_vars[i] < top_of_localstk) || (trieinstr_vars[i] >= (CPtr) glstack.high))) {
 	    xsb_dbgmsg((LOG_DEBUG, "tc_insts_xsb_i.h (no_cp): var reg assigned bad 0x%p %d 0x%p",
-		       hreg, i, var_regs[i])); }
+		       hreg, i, trieinstr_vars[i])); }
 	} 
 #endif
 	trieinstr_unif_stkptr--;
@@ -313,15 +313,15 @@ XSB_Start_Instr(trie_try_var,_trie_try_var)
 #endif
 	breg = tbreg;
 	hbreg = hreg;
-	num_vars_in_var_regs = DecodeTrieVar(opatom);
-	var_regs[num_vars_in_var_regs] = (CPtr) *trieinstr_unif_stkptr;
+	trieinstr_vars_num = DecodeTrieVar(opatom);
+	trieinstr_vars[trieinstr_vars_num] = (CPtr) *trieinstr_unif_stkptr;
 #ifdef DEBUG_ASSERTIONS
-        { int i = num_vars_in_var_regs;
-	  if ((isref(var_regs[i])) &&
-            ((var_regs[i] < (CPtr)glstack.low) || (var_regs[i] >= hreg)) &&
-	    ((var_regs[i] < top_of_localstk) || (var_regs[i] >= (CPtr) glstack.high))) {
+        { int i = trieinstr_vars_num;
+	  if ((isref(trieinstr_vars[i])) &&
+            ((trieinstr_vars[i] < (CPtr)glstack.low) || (trieinstr_vars[i] >= hreg)) &&
+	    ((trieinstr_vars[i] < top_of_localstk) || (trieinstr_vars[i] >= (CPtr) glstack.high))) {
 	    xsb_dbgmsg((LOG_DEBUG, "tc_insts_xsb_i.h (try): var reg assigned bad 0x%p %d 0x%p",
-		       hreg, i, var_regs[i]));
+		       hreg, i, trieinstr_vars[i]));
 	  }
 	} 
 #endif
@@ -337,15 +337,15 @@ XSB_Start_Instr(trie_retry_var,_trie_retry_var)
 	tbreg = breg;
 	restore_regs_and_vars(tbreg, CP_SIZE);
 	cp_pcreg(breg) = (byte *) opfail;
-	num_vars_in_var_regs = DecodeTrieVar(opatom);
-	var_regs[num_vars_in_var_regs] = (CPtr) *trieinstr_unif_stkptr;
+	trieinstr_vars_num = DecodeTrieVar(opatom);
+	trieinstr_vars[trieinstr_vars_num] = (CPtr) *trieinstr_unif_stkptr;
 #ifdef DEBUG_ASSERTIONS
-        { int i = num_vars_in_var_regs;
-	  if ((isref(var_regs[i])) &&
-            ((var_regs[i] < (CPtr)glstack.low) || (var_regs[i] >= hreg)) &&
-	    ((var_regs[i] < top_of_localstk) || (var_regs[i] >= (CPtr) glstack.high))) {
+        { int i = trieinstr_vars_num;
+	  if ((isref(trieinstr_vars[i])) &&
+            ((trieinstr_vars[i] < (CPtr)glstack.low) || (trieinstr_vars[i] >= hreg)) &&
+	    ((trieinstr_vars[i] < top_of_localstk) || (trieinstr_vars[i] >= (CPtr) glstack.high))) {
 	    xsb_dbgmsg((LOG_DEBUG, "tc_insts_xsb_i.h (retry): var reg assigned bad 0x%p %d 0x%p",
-		       hreg, i, var_regs[i]));
+		       hreg, i, trieinstr_vars[i]));
 	  }
 	} 
 #endif
@@ -362,15 +362,15 @@ XSB_Start_Instr(trie_trust_var,_trie_trust_var)
 	restore_regs_and_vars(tbreg, CP_SIZE);
 	breg = cp_prevbreg(breg);	/* Remove this CP */
 	restore_trail_condition_registers(breg);
-	num_vars_in_var_regs = DecodeTrieVar(opatom);
-	var_regs[num_vars_in_var_regs] = (CPtr) *trieinstr_unif_stkptr;
+	trieinstr_vars_num = DecodeTrieVar(opatom);
+	trieinstr_vars[trieinstr_vars_num] = (CPtr) *trieinstr_unif_stkptr;
 #ifdef DEBUG_ASSERTIONS
-        { int i = num_vars_in_var_regs;
-	  if ((isref(var_regs[i])) &&
-            ((var_regs[i] < (CPtr)glstack.low) || (var_regs[i] >= hreg)) &&
-	    ((var_regs[i] < top_of_localstk) || (var_regs[i] >= (CPtr) glstack.high))) {
+        { int i = trieinstr_vars_num;
+	  if ((isref(trieinstr_vars[i])) &&
+            ((trieinstr_vars[i] < (CPtr)glstack.low) || (trieinstr_vars[i] >= hreg)) &&
+	    ((trieinstr_vars[i] < top_of_localstk) || (trieinstr_vars[i] >= (CPtr) glstack.high))) {
 	     xsb_dbgmsg((LOG_DEBUG, "tc_insts_xsb_i.h (trust): var reg assigned bad 0x%p %d 0x%p",
-			hreg, i, var_regs[i]));
+			hreg, i, trieinstr_vars[i]));
 	  }
 	} 
 #endif
@@ -425,14 +425,14 @@ XSB_Start_Instr(trie_no_cp_val,_trie_no_cp_val)
   //  printf("*trieinstr_unif_stkptr %p\n",*trieinstr_unif_stkptr);
   XSB_Deref(*trieinstr_unif_stkptr);    						
   if (isref(*trieinstr_unif_stkptr)) {		                 // case a 
-    cell2deref = (Cell)var_regs[(int)int_val(opatom)];			
+    cell2deref = (Cell)trieinstr_vars[(int)int_val(opatom)];			
     XSB_Deref(cell2deref);	       					
     if (cell2deref != *trieinstr_unif_stkptr)					
       bind_ref((CPtr) *trieinstr_unif_stkptr, cell2deref);			
   }									
   else if (isattv(*trieinstr_unif_stkptr)) {			 // case b 		
     xsb_dbgmsg((LOG_TRIE_INSTR, "symbol number is %d\n",(int)int_val(opatom)));
-    cell2deref = (Cell) var_regs[(int)int_val(opatom)];			
+    cell2deref = (Cell) trieinstr_vars[(int)int_val(opatom)];			
     XSB_Deref(cell2deref);     						
     if (*trieinstr_unif_stkptr != cell2deref) {			// case b.1		
       /* Do not trigger attv interrupt! */			      
@@ -445,7 +445,7 @@ XSB_Start_Instr(trie_no_cp_val,_trie_no_cp_val)
   }									
   else {					      // case c			
     op1 = (Cell)*trieinstr_unif_stkptr;						
-    op2 = (Cell) var_regs[(int)int_val(opatom)];			
+    op2 = (Cell) trieinstr_vars[(int)int_val(opatom)];			
     if (unify(CTXTc op1,op2) == FALSE) {					
       Fail1;								
       XSB_Next_Instr();							
@@ -666,11 +666,11 @@ XSB_End_Instr()
              |trieinstr_unif_stk[0] |_/
              |-------------|
              |      m      |_
-             | var_regs[m] | \
+             | trieinstr_vars[m] | \
              |      .      |  |
              |      .      |  |- Variables encountered so far along trie path
              |      .      |  |   (m is -1 if no variables were encountered)
-             | var_regs[0] |_/
+             | trieinstr_vars[0] |_/
              |=============|
              |      .      |
              |      .      |
@@ -858,7 +858,7 @@ XSB_Start_Instr(trie_assert_inst,_trie_assert_inst)
     TRIE_R_LOCK()
     psc_ptr = DecodeTrieFunctor(BTN_Symbol(NodePtr));
     trieinstr_unif_stkptr = trieinstr_unif_stk -1;
-    num_vars_in_var_regs = -1;
+    trieinstr_vars_num = -1;
     for (i = get_arity(psc_ptr); i >= 1; i--) { push_trieinstr_unif_stk(*(rreg+i)); }
     lpcreg = (byte *) Child(NodePtr);
 #ifdef MULTI_THREAD_RWL

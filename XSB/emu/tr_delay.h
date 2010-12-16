@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_delay.h,v 1.21 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tr_delay.h,v 1.22 2010-12-16 23:38:00 tswift Exp $
 ** 
 */
 
@@ -30,14 +30,14 @@
 
 /*
  * In the execution of trie code, handle_conditional_answers is called
- * (in proceed_lpcreg) when NodePtr is an answer leaf.  If the answer is
- * a conditional one, then call delay_positively() to put it into the
- * delay list of the parent predicate.
+ * (in proceed_lpcreg) when NodePtr is an answer leaf.  If the answer
+ * is a conditional one, then call delay_positively() to put it into
+ * the delay list of the parent predicate.
  *
  * After the execution of trie code, the substitution factor of the
- * _answer_ is stored in array var_regs[], and the number of variables is
- * saved in num_vars_in_var_regs (-1 means there is no variable, 0 means
- * there is one variable, ...)
+ * _answer_ is stored in array trieinstr_vars[], and the number of
+ * variables is saved in trieinstr_vars_num (-1 means there is
+ * no variable, 0 means there is one variable, ...)
  *
  * Instead of saving the substitution factor of the call, we can save
  * the substitution factor of the answer in the delay element.
@@ -56,22 +56,22 @@
       xsb_dbgmsg((LOG_DELAY, " (positively delaying)\n"));		\
       xsb_dbgmsg((LOG_DELAY,                                             \
                       ">>>> In handle_conditional_answers macro: \n"));  \
-      xsb_dbgmsg((LOG_DELAY, ">>>>     num_vars_in_var_regs = %d\n",     \
-                      num_vars_in_var_regs));			        \
-      if (num_vars_in_var_regs == -1) {					\
+      xsb_dbgmsg((LOG_DELAY, ">>>>     trieinstr_vars_num = %d\n",     \
+                      trieinstr_vars_num));			        \
+      if (trieinstr_vars_num == -1) {					\
 	delay_positively(subgoal, NodePtr,				\
 			 makestring(get_ret_string()));			\
       }									\
       else {								\
         /* create the answer subsf ret/n */				\
 	temp_hreg = hreg;						\
-	new_heap_functor(hreg, get_ret_psc(num_vars_in_var_regs + 1));	\
+	new_heap_functor(hreg, get_ret_psc(trieinstr_vars_num + 1));	\
 	{								\
 	  int i;							\
-	  for (i = 0; i < num_vars_in_var_regs + 1; i++) {		\
-	    cell(hreg++) = (Cell) var_regs[i]; /* new */		\
-	    xsb_dbgmsg((LOG_DELAY, ">>>>     var_regs[%d] = ", i));	\
-	    dbg_printterm(LOG_DELAY, stddbg, cell(var_regs[i]), 25);	\
+	  for (i = 0; i < trieinstr_vars_num + 1; i++) {		\
+	    cell(hreg++) = (Cell) trieinstr_vars[i]; /* new */		\
+	    xsb_dbgmsg((LOG_DELAY, ">>>>     trieinstr_vars[%d] = ", i));	\
+	    dbg_printterm(LOG_DELAY, stddbg, cell(trieinstr_vars[i]), 25);	\
 	    xsb_dbgmsg((LOG_DELAY, "\n"));				\
 	  }								\
 	}								\

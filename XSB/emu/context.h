@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.79 2010-12-16 22:10:24 tswift Exp $
+** $Id: context.h,v 1.80 2010-12-16 23:38:00 tswift Exp $
 **
 */
 
@@ -205,8 +205,8 @@ struct th_context
   int  _trieinstr_unif_stk_size;
 
 #define MAX_TRIE_REGS 500
-  CPtr _var_regs[MAX_TRIE_REGS];
-  int  _num_vars_in_var_regs ;
+  CPtr _trieinstr_vars[MAX_TRIE_REGS];
+  int  _trieinstr_vars_num ;
 
   int  _num_heap_term_vars;
   CPtr *_var_addr;
@@ -226,7 +226,7 @@ struct th_context
   Cell *_term_stack;
   long _term_stacksize;
 
-  int _global_num_vars;
+  int _global_trieinstr_vars_num;
 
   struct tif_list _private_tif_list;
   DelTFptr _private_deltf_chain_begin;
@@ -537,8 +537,8 @@ typedef struct th_context th_context ;
 #define trieinstr_unif_stkptr		(th->_trieinstr_unif_stkptr)
 #define trieinstr_unif_stk_size		(th->_trieinstr_unif_stk_size)
 
-#define var_regs		(th->_var_regs)
-#define num_vars_in_var_regs	(th->_num_vars_in_var_regs)
+#define trieinstr_vars		(th->_trieinstr_vars)
+#define trieinstr_vars_num	(th->_trieinstr_vars_num)
 
 #define num_heap_term_vars	(th->_num_heap_term_vars)
 #define var_addr		(th->_var_addr)
@@ -558,7 +558,7 @@ typedef struct th_context th_context ;
 #define term_stack		(th->_term_stack)
 #define term_stacksize		(th->_term_stacksize)
 
-#define global_num_vars		(th->_global_num_vars)
+#define global_trieinstr_vars_num		(th->_global_trieinstr_vars_num)
 
 #define private_tif_list        (th-> _private_tif_list)
 #define private_deltf_chain_begin (th-> _private_deltf_chain_begin)

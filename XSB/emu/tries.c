@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.137 2010-12-16 22:10:24 tswift Exp $
+** $Id: tries.c,v 1.138 2010-12-16 23:38:00 tswift Exp $
 ** 
 */
 
@@ -79,11 +79,11 @@ Cell TrieVarBindings[NUM_TRIEVARS];
 				    cut-over-table check */
 
 /*
- * global_num_vars is a new variable to save the value of variable
- * num_vars_in_var_regs temporarily.
+ * global_trieinstr_vars_num is a new variable to save the value of variable
+ * trieinstr_vars_num temporarily.
  */
 #ifndef MULTI_THREAD
-int global_num_vars;
+int global_trieinstr_vars_num;
 #endif
 
 /*
@@ -1353,16 +1353,16 @@ static void bottomupunify(CTXTdeclc Cell term, BTNptr Root, BTNptr Leaf)
   bld_ref(gen,returned_val);
 
   for(i = 0; i < num_heap_term_vars; i++){
-    var_regs[i] = var_addr[i];
+    trieinstr_vars[i] = var_addr[i];
   }
   /*
-   * global_num_vars is needed by get_lastnode_cs_retskel() (see
+   * global_trieinstr_vars_num is needed by get_lastnode_cs_retskel() (see
    * trie_interned/4 in intern.P).
    *
    * Last_Nod_Sav is also needed by get_lastnode_cs_retskel().  We can
    * set it to Leaf.
    */
-  global_num_vars = num_vars_in_var_regs = num_heap_term_vars - 1;
+  global_trieinstr_vars_num = trieinstr_vars_num = num_heap_term_vars - 1;
   Last_Nod_Sav = Leaf;
 }
 
@@ -1977,16 +1977,16 @@ BTNptr whole_term_chk_ins(CTXTdeclc Cell term, BTNptr *hook, int *flagptr, int c
     }
 
     /*
-     * var_regs[] is used to construct the last argument of trie_intern/5
+     * trieinstr_vars[] is used to construct the last argument of trie_intern/5
      * (Skel).  This is done in construct_ret(), which is called in
      * get_lastnode_cs_retskel().
      */
-    for (j = 0; j < ctr; j++) var_regs[j] = VarEnumerator_trail[j];
+    for (j = 0; j < ctr; j++) trieinstr_vars[j] = VarEnumerator_trail[j];
     /*
-     * Both global_num_vars and Last_Nod_Sav are needed by
+     * Both global_trieinstr_vars_num and Last_Nod_Sav are needed by
      * get_lastnode_cs_retskel() (see trie_intern/5 in intern.P).
      */
-    global_num_vars = num_vars_in_var_regs = ctr - 1;
+    global_trieinstr_vars_num = trieinstr_vars_num = ctr - 1;
     Last_Nod_Sav = Paren;
     undo_answer_bindings;
 
@@ -2132,7 +2132,7 @@ byte *trie_get_returns(CTXTdeclc VariantSF sf, Cell retTerm) {
 
 #ifdef DEBUG_DELAYVAR
   xsb_dbgmsg((LOG_DEBUG,">>>> (at the beginning of trie_get_returns"));
-  xsb_dbgmsg((LOG_DEBUG,">>>> num_vars_in_var_regs = %d)", num_vars_in_var_regs));
+  xsb_dbgmsg((LOG_DEBUG,">>>> trieinstr_vars_num = %d)", trieinstr_vars_num));
 #endif
 
   if ( IsProperlySubsumed(sf) )
@@ -2149,18 +2149,18 @@ byte *trie_get_returns(CTXTdeclc VariantSF sf, Cell retTerm) {
   if ( retSymbol != BTN_Symbol(ans_root_ptr) )
     return (byte *)&fail_inst;
 
-  num_vars_in_var_regs = -1;
+  trieinstr_vars_num = -1;
   if ( isconstr(retTerm) ) {
     int i, arity;
     CPtr cptr;
 
     arity = get_arity(get_str_psc(retTerm));
-    /* Initialize var_regs[] as the attvs in the call. */
+    /* Initialize trieinstr_vars[] as the attvs in the call. */
     for (i = 0, cptr = clref_val(retTerm) + 1;  i < arity;  i++, cptr++) {
       if (isattv(cell(cptr)))
-	var_regs[++num_vars_in_var_regs] = (CPtr) cell(cptr);
+	trieinstr_vars[++trieinstr_vars_num] = (CPtr) cell(cptr);
     }
-    /* now num_vars_in_var_regs should be attv_num - 1 */
+    /* now trieinstr_vars_num should be attv_num - 1 */
 
     trieinstr_unif_stkptr = trieinstr_unif_stk -1;
     for (i = arity, cptr = clref_val(retTerm);  i >= 1;  i--) {
@@ -2223,7 +2223,7 @@ byte * trie_get_calls(CTXTdecl)
      else {
        cptr = (CPtr)cs_val(call_term);
        trieinstr_unif_stkptr = trieinstr_unif_stk-1;
-       num_vars_in_var_regs = -1;
+       trieinstr_vars_num = -1;
        for (i = get_arity(psc_ptr); i>=1; i--) {
 #ifdef DEBUG_DELAYVAR
 	 xsb_dbgmsg((LOG_DEBUG,">>>> push one cell"));
@@ -2272,22 +2272,22 @@ byte * trie_get_calls(CTXTdecl)
  * template (i.e., the return) must be reconstructed based on the
  * original call, the argument "callTerm" below, and the subsuming call
  * in the table.  Otherwise, we return the variables placed in
- * "var_regs[]" during the embedded-trie-code walk.
+ * "trieinstr_vars[]" during the embedded-trie-code walk.
  */
 Cell get_lastnode_cs_retskel(CTXTdeclc Cell callTerm) {
 
   prolog_int arity;
   Cell *vectr;
 
-  arity = global_num_vars + 1;
-  vectr = (Cell *)var_regs;
+  arity = global_trieinstr_vars_num + 1;
+  vectr = (Cell *)trieinstr_vars;
   if ( IsInCallTrie(Last_Nod_Sav) ) {
     VariantSF sf = CallTrieLeaf_GetSF(Last_Nod_Sav);
     if ( IsProperlySubsumed(sf) ) {
       construct_answer_template(CTXTc callTerm, conssf_producer(sf),
-				(Cell *)var_regs);
-      arity = (prolog_int)var_regs[0];
-      vectr = (Cell *)&var_regs[1];
+				(Cell *)trieinstr_vars);
+      arity = (prolog_int)trieinstr_vars[0];
+      vectr = (Cell *)&trieinstr_vars[1];
     }
   }
   return ( build_ret_term(CTXTc arity, vectr) );

@@ -1586,7 +1586,7 @@ int private_trie_interned(CTXTdecl) {
     XSB_Deref(Leafterm);
     if ( isref(Leafterm) ) {  
       trieinstr_unif_stkptr = trieinstr_unif_stk -1;
-      num_vars_in_var_regs = -1;
+      trieinstr_vars_num = -1;
       push_trieinstr_unif_stk(trie_term); 
       pcreg = (byte *)*trie_root_addr;
       ret_val =  TRUE;
@@ -1618,7 +1618,7 @@ int shas_trie_interned(CTXTdecl) {
     XSB_Deref(Leafterm);
     //    if ( isref(Leafterm) ) {  
       trieinstr_unif_stkptr = trieinstr_unif_stk -1;
-      num_vars_in_var_regs = -1;
+      trieinstr_vars_num = -1;
       push_trieinstr_unif_stk(trie_term); 
       pcreg = (byte *)*trie_root_addr;
       ret_val =  TRUE;

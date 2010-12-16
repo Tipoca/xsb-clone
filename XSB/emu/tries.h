@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.67 2010-12-16 22:10:24 tswift Exp $
+** $Id: tries.h,v 1.68 2010-12-16 23:38:00 tswift Exp $
 ** 
 */
 
@@ -437,8 +437,8 @@ extern void *variant_trie_lookup(struct th_context *th, void *root, int, CPtr, C
 /* slg variables */
 #ifndef MULTI_THREAD
 extern CPtr ans_var_pos_reg;
-extern int  num_vars_in_var_regs;
-extern int  global_num_vars;
+extern int  trieinstr_vars_num;
+extern int  global_trieinstr_vars_num;
 #endif
 
 /* used for statistics */
@@ -454,8 +454,8 @@ extern counter subg_chk_ins, subg_inserts, ans_chk_ins, ans_inserts;
 /* trie routine variables */
 extern BTNptr Last_Nod_Sav;
 
-/* registers for trie backtracking */
-extern CPtr trieinstr_unif_stkptr, var_regs[];
+/* stacks for trie backtracking */
+extern CPtr trieinstr_unif_stkptr, trieinstr_vars[];
 #endif
 
 /*----------------------------------------------------------------------*/

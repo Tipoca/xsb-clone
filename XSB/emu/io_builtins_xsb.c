@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.86 2010-08-20 01:31:36 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.87 2010-12-16 23:38:00 tswift Exp $
 ** 
 */
 
@@ -584,7 +584,7 @@ xsbBool fmt_read(CTXTdecl)
       cont = 1; /* don't leave the loop */
       break;
     case '.': /* last format substring (and has no conversion spec) */
-      curr_assignment = fscanf(fptr, current_fmt_spec->fmt);
+      curr_assignment = fscanf(fptr,  current_fmt_spec->fmt);
       if (isref(Arg))
 	xsb_warn("[FMT_READ] More arguments than format specifiers");
       goto EXIT_READ;

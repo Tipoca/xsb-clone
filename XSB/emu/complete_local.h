@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.35 2010-12-16 22:10:24 tswift Exp $
+** $Id: complete_local.h,v 1.36 2010-12-16 23:38:00 tswift Exp $
 **
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -398,16 +398,16 @@ static inline void SetupReturnFromLeader(CTXTdeclc CPtr orig_breg, CPtr cs_ptr,
   answer_template = answer_template - template_size;
 
   /* Now `answer_template' points to the mth term */
-  /* Initialize var_regs[] as the attvs in the call. */
-  num_vars_in_var_regs = -1;
+  /* Initialize trieinstr_vars[] as the attvs in the call. */
+  trieinstr_vars_num = -1;
   if (attv_num > 0) {
     CPtr cptr;
     for (cptr = answer_template + template_size - 1;
 	 cptr >= answer_template; cptr--) {
       if (isattv(cell(cptr)))
-	var_regs[++num_vars_in_var_regs] = (CPtr) cell(cptr);
+	trieinstr_vars[++trieinstr_vars_num] = (CPtr) cell(cptr);
     }
-    /* now num_vars_in_var_regs should be attv_num - 1 */
+    /* now trieinstr_vars_num should be attv_num - 1 */
   }
 
   trieinstr_unif_stkptr = trieinstr_unif_stk - 1;

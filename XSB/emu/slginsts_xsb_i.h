@@ -290,6 +290,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     }
 /* --------- end incremental evaluation  --------- */
 
+
     producer_cpf = answer_template;
     save_find_locx(ereg);
     save_registers(producer_cpf, CallInfo_CallArity(callInfo), rreg);
@@ -331,9 +332,9 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 
       tmp = int_val(cell(answer_template));
       get_var_and_attv_nums(template_size, attv_num, tmp);
-      num_vars_in_var_regs = -1;
+      trieinstr_vars_num = -1;
 
-      /* Initialize var_regs[] as the attvs in the call.  This is
+      /* Initialize trieinstr_vars[] as the attvs in the call.  This is
 	 needed by the trie_xxx_val instructions, and the symbols of
 	 the trie nodes have been set up to account for this in
 	 variant_answer_search() -- see the documentation there.  */
@@ -344,14 +345,14 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 	     cptr >= answer_template - template_size; cptr--) {
 	  // tls changed from 10/05 cptr >= answer_template + template_size; cptr++) 
 	  if (isattv(cell(cptr))) {
-	    var_regs[++num_vars_in_var_regs] = (CPtr) cell(cptr);
-	    xsb_dbgmsg((LOG_TRIE_INSTR, "setting var_regs for attv %d \n",
-			num_vars_in_var_regs));
+	    trieinstr_vars[++trieinstr_vars_num] = (CPtr) cell(cptr);
+	    xsb_dbgmsg((LOG_TRIE_INSTR, "setting trieinstr_vars for attv %d \n",
+			trieinstr_vars_num));
 	  }
 	}
-	/* now num_vars_in_var_regs should be attv_num - 1 */
+	/* now trieinstr_vars_num should be attv_num - 1 */
       }
-      //      printf("nvivrs %d\n",num_vars_in_var_regs);
+      //      printf("nvivrs %d\n",trieinstr_vars_num);
       trieinstr_unif_stkptr = trieinstr_unif_stk-1;
       for (i = 0; i < template_size; i++) {
 	push_trieinstr_unif_stk(cell(answer_template-template_size+i));

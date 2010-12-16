@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.27 2010-12-16 22:10:24 tswift Exp $
+** $Id: tr_code_xsb_i.h,v 1.28 2010-12-16 23:38:00 tswift Exp $
 ** 
 */
 
@@ -101,8 +101,8 @@
 #define proceed_lpcreg {			\
    if( IsInAnswerTrie(NodePtr) && delay_it )	\
      handle_conditional_answers;		\
-   global_num_vars = num_vars_in_var_regs;	\
-   num_vars_in_var_regs = -1;			\
+   global_trieinstr_vars_num = trieinstr_vars_num;	\
+   trieinstr_vars_num = -1;			\
    Last_Nod_Sav = NodePtr;			\
    lpcreg = cpreg;				\
    TRIE_R_UNLOCK();				\
@@ -120,44 +120,46 @@
 
 #ifndef MULTI_THREAD
 
-/* TLS: 08/05 documentation of trieinstr_unif_stk and var_regs.
+/* TLS: 08/05 documentation of trieinstr_unif_stk and trieinstr_vars.
  * 
- * trieinstr_unif_stk is a stack used for unificiation by trie instructions
- * from a completed table and asserted tries.  In the former case, the
- * trieinstr_unif_stk is init'd by tabletry; in the latter by trie_assert_inst.
- * After initialization, the values of trieinstr_unif_stk point to the
- * dereferenced values of the answer_template (for tables) or of the
- * registers of the call (for asserted tries).  These values are
- * placed in trieinstr_unif_stk in reverse order, so that at the end of
- * initialization the first argument of the call or answer template is
- * at the top of the stack.  Actions are then as follows: 
+ * trieinstr_unif_stk is a stack used for unificiation by trie
+ * instructions from a completed table and asserted tries.  In the
+ * former case, the trieinstr_unif_stk is init'd by tabletry; in the
+ * latter by trie_assert_inst.  After initialization, the values of
+ * trieinstr_unif_stk point to the dereferenced values of the
+ * answer_template (for tables) or of the registers of the call (for
+ * asserted tries).  These values are placed in trieinstr_unif_stk in
+ * reverse order, so that at the end of initialization the first
+ * argument of the call or answer template is at the top of the stack.
+ * Actions are then as follows:
  * 
  * 1) When a structure/list is encountered, and the symbol unifies
- * with the top of trieinstr_unif_stk, additional cells are pushed onto
- * trieinstr_unif_stk.  In the case where the trie is unifying with a variable,
- * a WAM build-type operation is performed so that these new trieinstr_unif_stk
- * cells point to new heap cells.  In the case where the trie is
- * unifying with a structure on the heap, the new cells point to the
- * arguments of the structure, in preparation for further
- * unifications. 
+ * with the top of trieinstr_unif_stk, additional cells are pushed
+ * onto trieinstr_unif_stk.  In the case where the trie is unifying
+ * with a variable, a WAM build-type operation is performed so that
+ * these new trieinstr_unif_stk cells point to new heap cells.  In the
+ * case where the trie is unifying with a structure on the heap, the
+ * new cells point to the arguments of the structure, in preparation
+ * for further unifications.
  * 
  * 2) When a constant/number is encountered, an attempt is made to
- * unify this value with the referent of trieinstr_unif_stk.  If it unifies,
- * the cell is popped off of trieinstr_unif_stk, and the algorithm continues.
+ * unify this value with the referent of trieinstr_unif_stk.  If it
+ * unifies, the cell is popped off of trieinstr_unif_stk, and the
+ * algorithm continues.
  * 
  * 3) When a variable is encountered in the trie it is handled like a
- * constant from the perspective of trieinstr_unif_stk, but now the var_regs
- * array comes into play.
+ * constant from the perspective of trieinstr_unif_stk, but now the
+ * trieinstr_vars array comes into play.
  * 
  * Variables in the path of a trie are numbered sequentially in the
  * order of their occurrence in a LR traversal of the trie.  Trie
  * instructions distinguish first occurrences (_vars) from subsequent
  * occurrences (_vals).  When a _var numbered N is encountered while
- * traversing a trie path, the Nth cell of var_regs is set to the
- * value of the top of the trieinstr_unif_stk stack, and the unification
- * (binding) performed.  If a _val N is later encountered, a
- * unification is attempted between the top of the trieinstr_unif_stk stack,
- * and the value of var_regs(N).
+ * traversing a trie path, the Nth cell of trieinstr_vars is set to
+ * the value of the top of the trieinstr_unif_stk stack, and the
+ * unification (binding) performed.  If a _val N is later encountered,
+ * a unification is attempted between the top of the
+ * trieinstr_unif_stk stack, and the value of trieinstr_vars(N).
  */
 
 Cell *trieinstr_unif_stk;
@@ -165,8 +167,8 @@ CPtr trieinstr_unif_stkptr;
 int  trieinstr_unif_stk_size = DEFAULT_ARRAYSIZ;
 
 #define MAX_TRIE_REGS 500
-CPtr var_regs[MAX_TRIE_REGS];
-int  num_vars_in_var_regs = -1;
+CPtr trieinstr_vars[MAX_TRIE_REGS];
+int  trieinstr_vars_num = -1;
 
 BTNptr NodePtr, Last_Nod_Sav;
 
@@ -200,12 +202,12 @@ int     delay_it;
   CPtr temp_arrayptr;						\
   int reg_count = 0, i;						\
 								\
-  i = num_vars_in_var_regs;					\
+  i = trieinstr_vars_num;					\
   while (i >= 0) {						\
-    *(--tbreg) = (Cell)var_regs[i];				\
+    *(--tbreg) = (Cell)trieinstr_vars[i];				\
     i--;							\
   }								\
-  *(--tbreg) = makeint(num_vars_in_var_regs);			\
+  *(--tbreg) = makeint(trieinstr_vars_num);			\
   temp_arrayptr = trieinstr_unif_stkptr;					\
   while (temp_arrayptr >= trieinstr_unif_stk) {				\
  /* INV: temp_array_ptr + reg_count == trieinstr_unif_stkptr */	\
@@ -227,9 +229,9 @@ int     delay_it;
       i--;						\
     }							\
     i = *(++treg);					\
-    num_vars_in_var_regs = int_val(i);			\
-    for (i = 0; i <= num_vars_in_var_regs; i++) {	\
-      var_regs[i] = (CPtr)*(++treg);			\
+    trieinstr_vars_num = int_val(i);			\
+    for (i = 0; i <= trieinstr_vars_num; i++) {	\
+      trieinstr_vars[i] = (CPtr)*(++treg);			\
     }							\
 }
 
@@ -351,13 +353,13 @@ int     delay_it;
   Cell cell2deref;							\
   XSB_Deref(*trieinstr_unif_stkptr);    						\
   if (isref(*trieinstr_unif_stkptr)) {						\
-    cell2deref = (Cell)var_regs[(int)int_val(opatom)];			\
+    cell2deref = (Cell)trieinstr_vars[(int)int_val(opatom)];			\
     XSB_Deref(cell2deref);	       					\
     if (cell2deref != *trieinstr_unif_stkptr)					\
       bind_ref((CPtr) *trieinstr_unif_stkptr, cell2deref);			\
   }									\
   else if (isattv(*trieinstr_unif_stkptr)) {					\
-    cell2deref = (Cell) var_regs[(int)int_val(opatom)];			\
+    cell2deref = (Cell) trieinstr_vars[(int)int_val(opatom)];			\
     XSB_Deref(cell2deref);     						\
     if (*trieinstr_unif_stkptr != cell2deref) {					\
       /* Do not trigger attv interrupt! */				\
@@ -369,7 +371,7 @@ int     delay_it;
   }									\
   else {								\
     op1 = (Cell)*trieinstr_unif_stkptr;						\
-    op2 = (Cell) var_regs[(int)int_val(opatom)];			\
+    op2 = (Cell) trieinstr_vars[(int)int_val(opatom)];			\
     if (unify(CTXTc op1,op2) == FALSE) {				\
       Fail1;								\
       XSB_Next_Instr();							\
@@ -383,7 +385,7 @@ int     delay_it;
 */
 #define unify_with_trie_attv {						\
   XSB_Deref(*trieinstr_unif_stkptr);			       			\
-  num_vars_in_var_regs = (int)int_val(opatom) &0xffff;			\
+  trieinstr_vars_num = (int)int_val(opatom) &0xffff;			\
   if (isref(*trieinstr_unif_stkptr)) {						\
     bind_ref((CPtr) *trieinstr_unif_stkptr, makeattv(hreg));			\
   }									\
@@ -395,7 +397,7 @@ int     delay_it;
     add_interrupt(CTXTc makeattv(hreg+INT_REC_SIZE+1), *trieinstr_unif_stkptr);	\
     bind_copy((hreg+INT_REC_SIZE),*trieinstr_unif_stkptr);			\
   }									\
-  var_regs[num_vars_in_var_regs] = (CPtr) *trieinstr_unif_stkptr;		\
+  trieinstr_vars[trieinstr_vars_num] = (CPtr) *trieinstr_unif_stkptr;		\
   new_heap_free(hreg);							\
   *trieinstr_unif_stkptr = (Cell) hreg;						\
   new_heap_free(hreg);							\
@@ -405,7 +407,7 @@ int     delay_it;
 #ifdef UNDEFINED
 #define unify_with_trie_attv {						\
   XSB_Deref(*trieinstr_unif_stkptr);			       			\
-  num_vars_in_var_regs = (int)int_val(opatom) &0xffff;			\
+  trieinstr_vars_num = (int)int_val(opatom) &0xffff;			\
   if (isref(*trieinstr_unif_stkptr)) {						\
     bind_ref((CPtr) *trieinstr_unif_stkptr, makeattv(hreg));			\
   }									\
@@ -419,7 +421,7 @@ int     delay_it;
     add_interrupt(CTXTc makeattv(hreg+INT_REC_SIZE+1), *trieinstr_unif_stkptr);	\
     bind_copy((hreg+INT_REC_SIZE),*trieinstr_unif_stkptr);			\
   }									\
-  var_regs[num_vars_in_var_regs] = *trieinstr_unif_stkptr;			\
+  trieinstr_vars[trieinstr_vars_num] = *trieinstr_unif_stkptr;			\
   new_heap_free(hreg);							\
   *trieinstr_unif_stkptr = (Cell) hreg;						\
   new_heap_free(hreg);							\

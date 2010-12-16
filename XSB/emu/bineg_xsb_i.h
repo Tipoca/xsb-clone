@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.47 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: bineg_xsb_i.h,v 1.48 2010-12-16 23:38:00 tswift Exp $
 ** 
 */
 
@@ -209,7 +209,7 @@ case IS_INCOMPLETE: {
        * corresponding tabled subgoal call has been completed and so trie
        * code will be used to return the answer (see
        * trie_get_returns()).  After the execution of trie code,
-       * var_regs[] contains the substitution factor of the _answer_ to
+       * trieinstr_vars[] contains the substitution factor of the _answer_ to
        * the call.
        */
       DL dl;
@@ -220,14 +220,14 @@ case IS_INCOMPLETE: {
 
 #ifdef DEBUG_DELAYVAR
       xsb_mesg(">>>> (at the beginning of GET_DELAY_LISTS");
-      xsb_mesg(">>>> global_num_vars = %d)",global_num_vars);
+      xsb_mesg(">>>> global_trieinstr_vars_num = %d)",global_trieinstr_vars_num);
 	
       {
 	int i;
-	for (i = 0; i <= global_num_vars; i++) {
+	for (i = 0; i <= global_trieinstr_vars_num; i++) {
 	  Cell x;
-	  fprintf(stddbg, ">>>> var_regs[%d] =", i);
-	  x = (Cell)var_regs[i];
+	  fprintf(stddbg, ">>>> trieinstr_vars[%d] =", i);
+	  x = (Cell)trieinstr_vars[i];
 	  XSB_Deref(x);
 	  printterm(stddbg, x, 25);
 	  fprintf(stddbg, "\n");
@@ -241,8 +241,8 @@ case IS_INCOMPLETE: {
 	int copy_of_var_addr_arraysz;
 	bind_list((CPtr)delay_lists, hreg);
 	{ /*
-	   * Make copy of var_regs & global_num_vars (after get_returns,
-	   * which calls trie_get_returns).  (global_num_vars +
+	   * Make copy of trieinstr_vars & global_trieinstr_vars_num (after get_returns,
+	   * which calls trie_get_returns).  (global_trieinstr_vars_num +
 	   * 1) is the number of variables left in the answer
 	   * (substitution factor of the answer)
 	   *
@@ -250,14 +250,14 @@ case IS_INCOMPLETE: {
 	   * answer for the head predicate.
 	   */
 	  int i;
-	  if (var_addr_arraysz < global_num_vars+1) 
-	    trie_expand_array(CPtr,var_addr,var_addr_arraysz,global_num_vars+1,"var_addr");
+	  if (var_addr_arraysz < global_trieinstr_vars_num+1) 
+	    trie_expand_array(CPtr,var_addr,var_addr_arraysz,global_trieinstr_vars_num+1,"var_addr");
 	  copy_of_var_addr_arraysz = var_addr_arraysz;
 	  copy_of_var_addr = (CPtr *)mem_calloc(copy_of_var_addr_arraysz, sizeof(CPtr),OTHER_SPACE);
-	  for( i = 0; i <= global_num_vars; i++)
-	    copy_of_var_addr[i] = var_regs[i];
+	  for( i = 0; i <= global_trieinstr_vars_num; i++)
+	    copy_of_var_addr[i] = trieinstr_vars[i];
 	  
-	  copy_of_num_heap_term_vars = global_num_vars + 1;
+	  copy_of_num_heap_term_vars = global_trieinstr_vars_num + 1;
 	}
 
 	for (dl = asi_dl_list((ASI) Delay(as_leaf)); dl != NULL; ) {
@@ -276,10 +276,10 @@ case IS_INCOMPLETE: {
 	   * among delay elements of each delay list, it is not necessary
 	   * to restore this value.
 	   *
-	   * Note that global_num_vars is always set back to
+	   * Note that global_trieinstr_vars_num is always set back to
 	   * copy_of_num_heap_term_vars at the end of build_delay_list().
 	   */
-	  copy_of_num_heap_term_vars = global_num_vars + 1;
+	  copy_of_num_heap_term_vars = global_trieinstr_vars_num + 1;
 	  build_delay_list(CTXTc dls_head, de);  /* BUG may move heap, and so saved dls_tail destroyed */
 	  if ((dl = dl_next(dl)) != NULL) {
 	    bind_list(dls_tail, hreg);

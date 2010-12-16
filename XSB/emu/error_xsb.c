@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.86 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: error_xsb.c,v 1.87 2010-12-16 23:38:00 tswift Exp $
 ** 
 */
 
@@ -140,7 +140,7 @@ DllExport void call_conv xsb_exit(CTXTdeclc  char *description, ...)
    and perhaps shouldn't even be used there.*/
 DllExport void call_conv exit_xsb(char *description)
 {
-  fprintf(stderr, description);
+  fprintf(stderr,"%s", description);
 
   fprintf(stdfdbk, "\nExiting XSB abnormally...\n");
   exit(1);
@@ -850,7 +850,7 @@ DllExport void call_conv abort_xsb(char * description)
 {
   char message[MAXBUFSIZE];
   strcpy(message, "++Error[XSB]: [Runtime/C] ");
-  snprintf(message+strlen(message), (MAXBUFSIZE-strlen(message)), description);
+  snprintf(message+strlen(message), (MAXBUFSIZE-strlen(message)), "%s",description);
   if (message[strlen(message)-1] == '\n')
   {
     message[strlen(message)-1] = 0;
@@ -879,7 +879,7 @@ DllExport void call_conv bug_xsb(char *description)
 {
   char message[MAXBUFSIZE];
   strcpy(message, "++XSB bug: ");
-  snprintf(message+strlen(message), (MAXBUFSIZE-strlen(message)), description);
+  snprintf(message+strlen(message), (MAXBUFSIZE-strlen(message)), "%s",description);
   if (message[strlen(message)-1] != '\n')
     strcat(message, "\n");
 
@@ -968,7 +968,7 @@ DllExport void call_conv xsb_error (char *description, ...)
 DllExport void call_conv error_xsb (char *description)
 {
   fprintf(stderr, "\n++Error[XSB]: [Runtime/C] ");
-  fprintf(stderr, description);
+  fprintf(stderr, "%s",description);
   fprintf(stderr, "\n");
 #if defined(DEBUG_VERBOSE) && defined(CP_DEBUG)
   print_cp_backtrace();
@@ -992,7 +992,7 @@ DllExport void call_conv xsb_warn(char *description, ...)
 DllExport void call_conv warn_xsb(char *description)
 {
   fprintf(stdwarn, "\n++Warning[XSB]: [Runtime/C] ");
-  fprintf(stdwarn, description);
+  fprintf(stdwarn, "%s",description);
   fprintf(stdwarn, "\n");
 #if defined(DEBUG_VERBOSE) && defined(CP_DEBUG)
   print_cp_backtrace();
@@ -1011,7 +1011,7 @@ DllExport void call_conv xsb_mesg(char *description, ...)
 
 DllExport void call_conv mesg_xsb(char *description)
 {
-  fprintf(stdmsg, description);
+  fprintf(stdmsg,"%s", description);
   fprintf(stdmsg, "\n");
 }
 
