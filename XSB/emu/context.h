@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.78 2010-10-07 17:58:03 dwarren Exp $
+** $Id: context.h,v 1.79 2010-12-16 22:10:24 tswift Exp $
 **
 */
 
@@ -199,14 +199,10 @@ struct th_context
   int _curatom;
   int _totatoms;
 
-  /*********** Global Variables for various tries --- some of this may
-  be able to be changed to local variables.  Regarray size is the size
-  of the reg_array, used for expanding the reg_array (and is
-  reset). ***********/
-
-  Cell *_reg_array;
-  CPtr _reg_arrayptr;
-  int  _reg_array_size;
+  /* Used for by trie instructions */
+  Cell *_trieinstr_unif_stk;
+  CPtr _trieinstr_unif_stkptr;
+  int  _trieinstr_unif_stk_size;
 
 #define MAX_TRIE_REGS 500
   CPtr _var_regs[MAX_TRIE_REGS];
@@ -537,9 +533,9 @@ typedef struct th_context th_context ;
 #define asynint_code		(th->_asynint_code)
 #define asynint_val		(th->_asynint_val)
 
-#define reg_array		(th->_reg_array)
-#define reg_arrayptr		(th->_reg_arrayptr)
-#define reg_array_size		(th->_reg_array_size)
+#define trieinstr_unif_stk		(th->_trieinstr_unif_stk)
+#define trieinstr_unif_stkptr		(th->_trieinstr_unif_stkptr)
+#define trieinstr_unif_stk_size		(th->_trieinstr_unif_stk_size)
 
 #define var_regs		(th->_var_regs)
 #define num_vars_in_var_regs	(th->_num_vars_in_var_regs)

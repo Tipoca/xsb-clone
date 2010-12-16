@@ -352,9 +352,9 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 	/* now num_vars_in_var_regs should be attv_num - 1 */
       }
       //      printf("nvivrs %d\n",num_vars_in_var_regs);
-      reg_arrayptr = reg_array-1;
+      trieinstr_unif_stkptr = trieinstr_unif_stk-1;
       for (i = 0; i < template_size; i++) {
-	push_reg_array(cell(answer_template-template_size+i));
+	push_trieinstr_unif_stk(cell(answer_template-template_size+i));
       }
       delay_it = 1;
       lpcreg = (byte *)subg_ans_root_ptr(producer_sf);

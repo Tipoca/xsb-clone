@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.26 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tr_code_xsb_i.h,v 1.27 2010-12-16 22:10:24 tswift Exp $
 ** 
 */
 
@@ -120,33 +120,33 @@
 
 #ifndef MULTI_THREAD
 
-/* TLS: 08/05 documentation of reg_array and var_regs.
+/* TLS: 08/05 documentation of trieinstr_unif_stk and var_regs.
  * 
- * reg_array is a stack used for unificiation by trie instructions
+ * trieinstr_unif_stk is a stack used for unificiation by trie instructions
  * from a completed table and asserted tries.  In the former case, the
- * reg_array is init'd by tabletry; in the latter by trie_assert_inst.
- * After initialization, the values of reg_array point to the
+ * trieinstr_unif_stk is init'd by tabletry; in the latter by trie_assert_inst.
+ * After initialization, the values of trieinstr_unif_stk point to the
  * dereferenced values of the answer_template (for tables) or of the
  * registers of the call (for asserted tries).  These values are
- * placed in reg_array in reverse order, so that at the end of
+ * placed in trieinstr_unif_stk in reverse order, so that at the end of
  * initialization the first argument of the call or answer template is
  * at the top of the stack.  Actions are then as follows: 
  * 
  * 1) When a structure/list is encountered, and the symbol unifies
- * with the top of reg_array, additional cells are pushed onto
- * reg_array.  In the case where the trie is unifying with a variable,
- * a WAM build-type operation is performed so that these new reg_array
+ * with the top of trieinstr_unif_stk, additional cells are pushed onto
+ * trieinstr_unif_stk.  In the case where the trie is unifying with a variable,
+ * a WAM build-type operation is performed so that these new trieinstr_unif_stk
  * cells point to new heap cells.  In the case where the trie is
  * unifying with a structure on the heap, the new cells point to the
  * arguments of the structure, in preparation for further
  * unifications. 
  * 
  * 2) When a constant/number is encountered, an attempt is made to
- * unify this value with the referent of reg_array.  If it unifies,
- * the cell is popped off of reg_array, and the algorithm continues.
+ * unify this value with the referent of trieinstr_unif_stk.  If it unifies,
+ * the cell is popped off of trieinstr_unif_stk, and the algorithm continues.
  * 
  * 3) When a variable is encountered in the trie it is handled like a
- * constant from the perspective of reg_array, but now the var_regs
+ * constant from the perspective of trieinstr_unif_stk, but now the var_regs
  * array comes into play.
  * 
  * Variables in the path of a trie are numbered sequentially in the
@@ -154,15 +154,15 @@
  * instructions distinguish first occurrences (_vars) from subsequent
  * occurrences (_vals).  When a _var numbered N is encountered while
  * traversing a trie path, the Nth cell of var_regs is set to the
- * value of the top of the reg_array stack, and the unification
+ * value of the top of the trieinstr_unif_stk stack, and the unification
  * (binding) performed.  If a _val N is later encountered, a
- * unification is attempted between the top of the reg_array stack,
+ * unification is attempted between the top of the trieinstr_unif_stk stack,
  * and the value of var_regs(N).
  */
 
-Cell *reg_array;
-CPtr reg_arrayptr;
-int  reg_array_size = DEFAULT_ARRAYSIZ;
+Cell *trieinstr_unif_stk;
+CPtr trieinstr_unif_stkptr;
+int  trieinstr_unif_stk_size = DEFAULT_ARRAYSIZ;
 
 #define MAX_TRIE_REGS 500
 CPtr var_regs[MAX_TRIE_REGS];
@@ -206,9 +206,9 @@ int     delay_it;
     i--;							\
   }								\
   *(--tbreg) = makeint(num_vars_in_var_regs);			\
-  temp_arrayptr = reg_arrayptr;					\
-  while (temp_arrayptr >= reg_array) {				\
-    /* INV: temp_array_ptr + reg_count == reg_arrayptr */	\
+  temp_arrayptr = trieinstr_unif_stkptr;					\
+  while (temp_arrayptr >= trieinstr_unif_stk) {				\
+ /* INV: temp_array_ptr + reg_count == trieinstr_unif_stkptr */	\
     *(--tbreg) = *temp_arrayptr;				\
     reg_count++;						\
     temp_arrayptr--;						\
@@ -222,8 +222,8 @@ int     delay_it;
     i = cell(treg);					\
     i = int_val(i);					\
     while (i > 0) {					\
-      reg_arrayptr++;					\
-      *reg_arrayptr = *(++treg);			\
+      trieinstr_unif_stkptr++;					\
+      *trieinstr_unif_stkptr = *(++treg);			\
       i--;						\
     }							\
     i = *(++treg);					\
@@ -236,17 +236,17 @@ int     delay_it;
 /*----------------------------------------------------------------------*/
 
 #define unify_with_trie_numcon {					\
-  XSB_Deref(*reg_arrayptr);					       	\
-  if (isref(*reg_arrayptr)) {						\
-    bind_ref((CPtr)*reg_arrayptr, opatom);				 \
+  XSB_Deref(*trieinstr_unif_stkptr);					       	\
+  if (isref(*trieinstr_unif_stkptr)) {						\
+    bind_ref((CPtr)*trieinstr_unif_stkptr, opatom);				 \
   }									\
-  else if (isattv(*reg_arrayptr)) {					\
+  else if (isattv(*trieinstr_unif_stkptr)) {					\
     attv_dbgmsg(">>>> add_interrupt in unify_with_trie_numcon\n");	\
-    add_interrupt(CTXTc cell(((CPtr)dec_addr(*reg_arrayptr) + 1)), opatom);\
-    bind_int_tagged((CPtr)dec_addr(*reg_arrayptr), opatom);          		\
+    add_interrupt(CTXTc cell(((CPtr)dec_addr(*trieinstr_unif_stkptr) + 1)), opatom);\
+    bind_int_tagged((CPtr)dec_addr(*trieinstr_unif_stkptr), opatom);          		\
   }									\
   else {								\
-    if (*reg_arrayptr != opatom) {					\
+    if (*trieinstr_unif_stkptr != opatom) {					\
       Fail1;								\
       XSB_Next_Instr();							\
     }									\
@@ -257,43 +257,43 @@ int     delay_it;
   Psc psc;							\
   int i, arity;							\
 								\
-  XSB_Deref(*reg_arrayptr);			       		\
+  XSB_Deref(*trieinstr_unif_stkptr);			       		\
   psc = (Psc) cs_val(opatom);					\
   arity = (int) get_arity(psc);					\
-  will_overflow_reg_array(reg_arrayptr + arity);		\
-  if (isref(*reg_arrayptr)) {					\
-    bind_ref((CPtr) *reg_arrayptr, makecs(hreg));		\
-    reg_arrayptr--;						\
+  will_overflow_trieinstr_unif_stk(trieinstr_unif_stkptr + arity);		\
+  if (isref(*trieinstr_unif_stkptr)) {					\
+    bind_ref((CPtr) *trieinstr_unif_stkptr, makecs(hreg));		\
+    trieinstr_unif_stkptr--;						\
     *(hreg++) = (Cell) psc;					\
     for (i = arity; i >= 1; i--) {				\
-      *(reg_arrayptr + i) = (Cell) hreg;			\
+      *(trieinstr_unif_stkptr + i) = (Cell) hreg;			\
       new_heap_free(hreg);					\
     }								\
-    reg_arrayptr += arity;					\
+    trieinstr_unif_stkptr += arity;					\
     check_glstack_overflow(0,pcreg,0);				\
   }								\
-  else if (isattv(*reg_arrayptr)) {				\
+  else if (isattv(*trieinstr_unif_stkptr)) {				\
     attv_dbgmsg(">>>> add_interrupt in unify_with_trie_str\n");	\
-    add_interrupt(CTXTc cell(((CPtr)dec_addr(*reg_arrayptr) + 1)), makecs(hreg+INT_REC_SIZE));	\
-    bind_copy((CPtr)dec_addr(*reg_array), makecs(hreg));        \
-    reg_arrayptr--;						\
+    add_interrupt(CTXTc cell(((CPtr)dec_addr(*trieinstr_unif_stkptr) + 1)), makecs(hreg+INT_REC_SIZE));	\
+    bind_copy((CPtr)dec_addr(*trieinstr_unif_stk), makecs(hreg));        \
+    trieinstr_unif_stkptr--;						\
     *(hreg++) = (Cell) psc;					\
     for (i = arity; i >= 1; i--) {				\
-      *(reg_arrayptr + i) = (Cell) hreg;			\
+      *(trieinstr_unif_stkptr + i) = (Cell) hreg;			\
       new_heap_free(hreg);					\
     }								\
-    reg_arrayptr += arity;					\
+    trieinstr_unif_stkptr += arity;					\
     check_glstack_overflow(0,pcreg,0);				\
   }   								\
   else {							\
-    CPtr temp = (CPtr)*reg_arrayptr;				\
+    CPtr temp = (CPtr)*trieinstr_unif_stkptr;				\
     if ((isconstr(temp)) && (psc == get_str_psc(temp))) {	\
-      reg_arrayptr--;						\
+      trieinstr_unif_stkptr--;						\
       temp = (CPtr)cs_val(temp);				\
       for (i = arity; i >= 1; i--) {				\
-	*(reg_arrayptr+i) = *(temp+arity-i+1);			\
+	*(trieinstr_unif_stkptr+i) = *(temp+arity-i+1);			\
       }								\
-      reg_arrayptr += arity;					\
+      trieinstr_unif_stkptr += arity;					\
     }								\
     else {							\
       Fail1;							\
@@ -303,33 +303,33 @@ int     delay_it;
 }
 
 #define unify_with_trie_list {						\
-  XSB_Deref(*reg_arrayptr);    						\
-  if (isref(*reg_arrayptr)) {						\
-    bind_ref((CPtr) *reg_arrayptr, (Cell) makelist(hreg));		\
-    *reg_arrayptr = (Cell)(hreg+1);         /* head of list */		\
-    will_overflow_reg_array(reg_arrayptr + 1);				\
-    *(++reg_arrayptr) = (Cell) hreg;        /* tail of list */		\
+  XSB_Deref(*trieinstr_unif_stkptr);    						\
+  if (isref(*trieinstr_unif_stkptr)) {						\
+    bind_ref((CPtr) *trieinstr_unif_stkptr, (Cell) makelist(hreg));		\
+    *trieinstr_unif_stkptr = (Cell)(hreg+1);         /* head of list */		\
+    will_overflow_trieinstr_unif_stk(trieinstr_unif_stkptr + 1);				\
+    *(++trieinstr_unif_stkptr) = (Cell) hreg;        /* tail of list */		\
     new_heap_free(hreg);						\
     new_heap_free(hreg);						\
     check_glstack_overflow(0,pcreg,0);					\
   }									\
-  else if (isattv(*reg_arrayptr)) {					\
+  else if (isattv(*trieinstr_unif_stkptr)) {					\
     attv_dbgmsg(">>>> add_interrupt in unify_with_trie_list\n");	\
-    add_interrupt(CTXTc cell(((CPtr)dec_addr(*reg_arrayptr) + 1)), makelist(hreg+INT_REC_SIZE));	\
-    bind_copy((CPtr)dec_addr(*reg_arrayptr), makelist(hreg));       \
-    *reg_arrayptr = (Cell)(hreg+1);         /* tail of list */		\
-    will_overflow_reg_array(reg_arrayptr + 1);				\
-    *(++reg_arrayptr) = (Cell) hreg;        /* head of list */		\
+    add_interrupt(CTXTc cell(((CPtr)dec_addr(*trieinstr_unif_stkptr) + 1)), makelist(hreg+INT_REC_SIZE));	\
+    bind_copy((CPtr)dec_addr(*trieinstr_unif_stkptr), makelist(hreg));       \
+    *trieinstr_unif_stkptr = (Cell)(hreg+1);         /* tail of list */		\
+    will_overflow_trieinstr_unif_stk(trieinstr_unif_stkptr + 1);				\
+    *(++trieinstr_unif_stkptr) = (Cell) hreg;        /* head of list */		\
     new_heap_free(hreg);						\
     new_heap_free(hreg);						\
     check_glstack_overflow(0,pcreg,0);					\
   }									\
   else {								\
-    CPtr temp = (CPtr)*reg_arrayptr;					\
+    CPtr temp = (CPtr)*trieinstr_unif_stkptr;					\
     if (islist(temp)) {							\
-      will_overflow_reg_array(reg_arrayptr + 1);			\
-      *reg_arrayptr++ = (Cell)(clref_val(temp)+1);			\
-      *reg_arrayptr = (Cell)(clref_val(temp));				\
+      will_overflow_trieinstr_unif_stk(trieinstr_unif_stkptr + 1);			\
+      *trieinstr_unif_stkptr++ = (Cell)(clref_val(temp)+1);			\
+      *trieinstr_unif_stkptr = (Cell)(clref_val(temp));				\
     } else {								\
       Fail1;								\
       XSB_Next_Instr();							\
@@ -349,79 +349,79 @@ int     delay_it;
 
 #define unify_with_trie_val {						\
   Cell cell2deref;							\
-  XSB_Deref(*reg_arrayptr);    						\
-  if (isref(*reg_arrayptr)) {						\
+  XSB_Deref(*trieinstr_unif_stkptr);    						\
+  if (isref(*trieinstr_unif_stkptr)) {						\
     cell2deref = (Cell)var_regs[(int)int_val(opatom)];			\
     XSB_Deref(cell2deref);	       					\
-    if (cell2deref != *reg_arrayptr)					\
-      bind_ref((CPtr) *reg_arrayptr, cell2deref);			\
+    if (cell2deref != *trieinstr_unif_stkptr)					\
+      bind_ref((CPtr) *trieinstr_unif_stkptr, cell2deref);			\
   }									\
-  else if (isattv(*reg_arrayptr)) {					\
+  else if (isattv(*trieinstr_unif_stkptr)) {					\
     cell2deref = (Cell) var_regs[(int)int_val(opatom)];			\
     XSB_Deref(cell2deref);     						\
-    if (*reg_arrayptr != cell2deref) {					\
+    if (*trieinstr_unif_stkptr != cell2deref) {					\
       /* Do not trigger attv interrupt! */				\
-      bind_ref(clref_val(*reg_arrayptr), cell2deref);			\
+      bind_ref(clref_val(*trieinstr_unif_stkptr), cell2deref);			\
     }									\
     else {								\
       attv_dbgmsg(">>>> keep old attr in unify_with_trie_val\n");	\
     }									\
   }									\
   else {								\
-    op1 = (Cell)*reg_arrayptr;						\
+    op1 = (Cell)*trieinstr_unif_stkptr;						\
     op2 = (Cell) var_regs[(int)int_val(opatom)];			\
     if (unify(CTXTc op1,op2) == FALSE) {				\
       Fail1;								\
       XSB_Next_Instr();							\
     }									\
   }									\
-  reg_arrayptr--;							\
+  trieinstr_unif_stkptr--;							\
 }
 
 /* TLS: 
-   reg_arrayptr is ptr to the call that we are unifying the answer with
+   trieinstr_unif_stkptr is ptr to the call that we are unifying the answer with
 */
 #define unify_with_trie_attv {						\
-  XSB_Deref(*reg_arrayptr);			       			\
+  XSB_Deref(*trieinstr_unif_stkptr);			       			\
   num_vars_in_var_regs = (int)int_val(opatom) &0xffff;			\
-  if (isref(*reg_arrayptr)) {						\
-    bind_ref((CPtr) *reg_arrayptr, makeattv(hreg));			\
+  if (isref(*trieinstr_unif_stkptr)) {						\
+    bind_ref((CPtr) *trieinstr_unif_stkptr, makeattv(hreg));			\
   }									\
-  else if (isattv(*reg_arrayptr)) {					\
-    add_interrupt(CTXTc cell(((CPtr)dec_addr(*reg_arrayptr) + 1)),makeattv(hreg+INT_REC_SIZE));   \
-    bind_ref((CPtr)dec_addr(*reg_arrayptr), makeattv(hreg));	\
+  else if (isattv(*trieinstr_unif_stkptr)) {					\
+    add_interrupt(CTXTc cell(((CPtr)dec_addr(*trieinstr_unif_stkptr) + 1)),makeattv(hreg+INT_REC_SIZE));   \
+    bind_ref((CPtr)dec_addr(*trieinstr_unif_stkptr), makeattv(hreg));	\
   }									\
   else {								\
-    add_interrupt(CTXTc makeattv(hreg+INT_REC_SIZE+1), *reg_arrayptr);	\
-    bind_copy((hreg+INT_REC_SIZE),*reg_arrayptr);			\
+    add_interrupt(CTXTc makeattv(hreg+INT_REC_SIZE+1), *trieinstr_unif_stkptr);	\
+    bind_copy((hreg+INT_REC_SIZE),*trieinstr_unif_stkptr);			\
   }									\
-  var_regs[num_vars_in_var_regs] = (CPtr) *reg_arrayptr;		\
+  var_regs[num_vars_in_var_regs] = (CPtr) *trieinstr_unif_stkptr;		\
   new_heap_free(hreg);							\
-  *reg_arrayptr = (Cell) hreg;						\
+  *trieinstr_unif_stkptr = (Cell) hreg;						\
   new_heap_free(hreg);							\
   check_glstack_overflow(0,pcreg,0);					\
 }
 
 #ifdef UNDEFINED
 #define unify_with_trie_attv {						\
-  XSB_Deref(*reg_arrayptr);			       			\
+  XSB_Deref(*trieinstr_unif_stkptr);			       			\
   num_vars_in_var_regs = (int)int_val(opatom) &0xffff;			\
-  if (isref(*reg_arrayptr)) {						\
-    bind_ref((CPtr) *reg_arrayptr, makeattv(hreg));			\
+  if (isref(*trieinstr_unif_stkptr)) {						\
+    bind_ref((CPtr) *trieinstr_unif_stkptr, makeattv(hreg));			\
   }									\
-  else if (isattv(*reg_arrayptr)) {					\
-    add_interrupt(CTXTc cell(((CPtr)dec_addr(*reg_arrayptr) + 1)),makeattv(hreg+INT_REC_SIZE));   \
-    bind_ref((CPtr)dec_addr(*reg_arrayptr), makeattv(hreg));	\
+  else if (isattv(*trieinstr_unif_stkptr)) {					\
+    add_interrupt(CTXTc cell(((CPtr)dec_addr(*trieinstr_unif_stkptr) + 1)),makeattv(hreg+INT_REC_SIZE));   \
+    bind_ref((CPtr)dec_addr(*trieinstr_unif_stkptr), makeattv(hreg));	\
   }									\
   else {								\
-    printf("%p >>>> add_interrupt in unify_with_trie_attv\n",*reg_arrayptr);		\
+    printf("%p >>>> add_interrupt in unify_with_trie_attv\n",*trieinstr_unif_stkptr);		\
     makeattv((hreg+INT_REC_SIZE));					\
-    add_interrupt(CTXTc makeattv(hreg+INT_REC_SIZE+1), *reg_arrayptr);	\
-    bind_copy((hreg+INT_REC_SIZE),*reg_arrayptr);			\
+    add_interrupt(CTXTc makeattv(hreg+INT_REC_SIZE+1), *trieinstr_unif_stkptr);	\
+    bind_copy((hreg+INT_REC_SIZE),*trieinstr_unif_stkptr);			\
   }									\
-  var_regs[num_vars_in_var_regs] = *reg_arrayptr;			\
+  var_regs[num_vars_in_var_regs] = *trieinstr_unif_stkptr;			\
   new_heap_free(hreg);							\
-  *reg_arrayptr = (Cell) hreg;						\
+  *trieinstr_unif_stkptr = (Cell) hreg;						\
   new_heap_free(hreg);							\
   check_glstack_overflow(0,pcreg,0);					\
 }

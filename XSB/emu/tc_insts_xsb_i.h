@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.34 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tc_insts_xsb_i.h,v 1.35 2010-12-16 22:10:24 tswift Exp $
 ** 
 */
 
@@ -93,7 +93,7 @@ XSB_Start_Instr(trie_no_cp_numcon,_trie_no_cp_numcon)
 //        fprintf(stddbg, "trie_no_cp_numcon\n");
 	NodePtr = (BTNptr) lpcreg;
 	unify_with_trie_numcon;
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 	non_ftag_lpcreg;
 XSB_End_Instr()
 
@@ -108,7 +108,7 @@ XSB_Start_Instr(trie_no_cp_numcon,_trie_no_cp_numcon)
 	NodePtr = (BTNptr) lpcreg;
 	non_ftag_lpcreg;
 	unify_with_trie_numcon;
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 XSB_End_Instr()
 
 XSB_Start_Instr(trie_no_cp_numcon,_trie_no_cp_numcon)
@@ -116,40 +116,40 @@ XSB_Start_Instr(trie_no_cp_numcon,_trie_no_cp_numcon)
 	xsb_dbgmsg((LOG_TRIE_INSTR, "trie_no_cp_numcon:"));
 	NodePtr = (BTNptr) lpcreg;
 	non_ftag_lpcreg;
-    while (isref(*reg_arrayptr)) {							
-    if (*reg_arrayptr == follow(*reg_arrayptr))						
+    while (isref(*trieinstr_unif_stkptr)) {							
+    if (*trieinstr_unif_stkptr == follow(*trieinstr_unif_stkptr))						
       goto TRIE_NUMCON_VAR;						
-    *reg_arrayptr = follow(*reg_arrayptr);						    
+    *trieinstr_unif_stkptr = follow(*trieinstr_unif_stkptr);						    
   }									
-  if (*reg_arrayptr != opatom) {						    
+  if (*trieinstr_unif_stkptr != opatom) {						    
     Fail1;								
     XSB_Next_Instr();							
   }									
-  reg_arrayptr--;							
+  trieinstr_unif_stkptr--;							
   XSB_Next_Instr();							
 									
 TRIE_NUMCON_VAR:							
-  while (isattv(*reg_arrayptr)) {							
-    if (cell((CPtr) dec_addr(*reg_arrayptr)) == dec_addr(*reg_arrayptr))		     
+  while (isattv(*trieinstr_unif_stkptr)) {							
+    if (cell((CPtr) dec_addr(*trieinstr_unif_stkptr)) == dec_addr(*trieinstr_unif_stkptr))		     
       break; /* end of an attv */					
     else {								
-      *reg_arrayptr = cell((CPtr) dec_addr(*reg_arrayptr));				    
-      while (isref(*reg_arrayptr)) {						
-	if (*reg_arrayptr == follow(*reg_arrayptr))					    
+      *trieinstr_unif_stkptr = cell((CPtr) dec_addr(*trieinstr_unif_stkptr));				    
+      while (isref(*trieinstr_unif_stkptr)) {						
+	if (*trieinstr_unif_stkptr == follow(*trieinstr_unif_stkptr))					    
           break;							
-	*reg_arrayptr = follow(*reg_arrayptr);						
+	*trieinstr_unif_stkptr = follow(*trieinstr_unif_stkptr);						
       }									
     }									
   }									
-  if (isref(*reg_arrayptr)) {							
-    bind_ref((CPtr)*reg_arrayptr, opatom);					    
+  if (isref(*trieinstr_unif_stkptr)) {							
+    bind_ref((CPtr)*trieinstr_unif_stkptr, opatom);					    
   }									
-  else if (isattv(*reg_arrayptr)) {						
+  else if (isattv(*trieinstr_unif_stkptr)) {						
     attv_dbgmsg(">>>> add_interrupt in unify_with_trie_numcon\n");	
-    add_interrupt(CTXTc cell(((CPtr)dec_addr(*reg_arrayptr) + 1)), opatom);	
-    bind_int_tagged((CPtr)dec_addr(*reg_arrayptr), opatom);          		
+    add_interrupt(CTXTc cell(((CPtr)dec_addr(*trieinstr_unif_stkptr) + 1)), opatom);	
+    bind_int_tagged((CPtr)dec_addr(*trieinstr_unif_stkptr), opatom);          		
   }									
-  reg_arrayptr--;							
+  trieinstr_unif_stkptr--;							
   XSB_End_Instr();							
 End of play area
 %---------------------------------------------------------------------
@@ -177,7 +177,7 @@ XSB_Start_Instr(trie_try_numcon,_trie_try_numcon)
 	hbreg = hreg;
 	non_ftag_lpcreg;
 	unify_with_trie_numcon;
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 XSB_End_Instr()
 
 XSB_Start_Instr(trie_retry_numcon,_trie_retry_numcon) 
@@ -190,7 +190,7 @@ XSB_Start_Instr(trie_retry_numcon,_trie_retry_numcon)
 	cp_pcreg(breg) = (byte *) opfail;
 	non_ftag_lpcreg;
 	unify_with_trie_numcon;
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 XSB_End_Instr()
 
 XSB_Start_Instr(trie_trust_numcon,_trie_trust_numcon) 
@@ -204,7 +204,7 @@ XSB_Start_Instr(trie_trust_numcon,_trie_trust_numcon)
 	restore_trail_condition_registers(breg);
 	non_ftag_lpcreg;
 	unify_with_trie_numcon;
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 XSB_End_Instr()
 
 /*----------------------------------------------------------------------*/
@@ -214,7 +214,7 @@ XSB_Start_Instr(trie_no_cp_numcon_succ,_trie_no_cp_numcon_succ)
 	xsb_dbgmsg((LOG_TRIE_INSTR, "trie_no_cp_numcon_succ"));
 	NodePtr = (BTNptr) lpcreg;
 	unify_with_trie_numcon;
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 	proceed_lpcreg;
 XSB_End_Instr()
 
@@ -239,7 +239,7 @@ XSB_Start_Instr(trie_try_numcon_succ,_trie_try_numcon_succ)
 	breg = tbreg;
 	hbreg = hreg;
 	unify_with_trie_numcon;
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 	proceed_lpcreg;
 XSB_End_Instr()
 
@@ -252,7 +252,7 @@ XSB_Start_Instr(trie_retry_numcon_succ,_trie_retry_numcon_succ)
 	restore_regs_and_vars(tbreg, CP_SIZE);
 	cp_pcreg(breg) = (byte *) opfail;
 	unify_with_trie_numcon;
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 	proceed_lpcreg;
 XSB_End_Instr()
 
@@ -266,7 +266,7 @@ XSB_Start_Instr(trie_trust_numcon_succ,_trie_trust_numcon_succ)
 	breg = cp_prevbreg(breg);
 	restore_trail_condition_registers(breg);
 	unify_with_trie_numcon;
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 	proceed_lpcreg;
 XSB_End_Instr()
 
@@ -278,7 +278,7 @@ XSB_Start_Instr(trie_no_cp_var,_trie_no_cp_var)
 	NodePtr = (BTNptr) lpcreg;
 	num_vars_in_var_regs = DecodeTrieVar(opatom);
         xsb_dbgmsg((LOG_TRIE_INSTR, "symbol number is %d\n",num_vars_in_var_regs));
-	var_regs[num_vars_in_var_regs] = (CPtr) *reg_arrayptr;
+	var_regs[num_vars_in_var_regs] = (CPtr) *trieinstr_unif_stkptr;
 #ifdef DEBUG_ASSERTIONS
         { int i = num_vars_in_var_regs;
 	  if ((isref(var_regs[i])) &&
@@ -288,7 +288,7 @@ XSB_Start_Instr(trie_no_cp_var,_trie_no_cp_var)
 		       hreg, i, var_regs[i])); }
 	} 
 #endif
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 	next_lpcreg;
 XSB_End_Instr()
 
@@ -314,7 +314,7 @@ XSB_Start_Instr(trie_try_var,_trie_try_var)
 	breg = tbreg;
 	hbreg = hreg;
 	num_vars_in_var_regs = DecodeTrieVar(opatom);
-	var_regs[num_vars_in_var_regs] = (CPtr) *reg_arrayptr;
+	var_regs[num_vars_in_var_regs] = (CPtr) *trieinstr_unif_stkptr;
 #ifdef DEBUG_ASSERTIONS
         { int i = num_vars_in_var_regs;
 	  if ((isref(var_regs[i])) &&
@@ -325,7 +325,7 @@ XSB_Start_Instr(trie_try_var,_trie_try_var)
 	  }
 	} 
 #endif
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 	next_lpcreg;
 XSB_End_Instr()
 
@@ -338,7 +338,7 @@ XSB_Start_Instr(trie_retry_var,_trie_retry_var)
 	restore_regs_and_vars(tbreg, CP_SIZE);
 	cp_pcreg(breg) = (byte *) opfail;
 	num_vars_in_var_regs = DecodeTrieVar(opatom);
-	var_regs[num_vars_in_var_regs] = (CPtr) *reg_arrayptr;
+	var_regs[num_vars_in_var_regs] = (CPtr) *trieinstr_unif_stkptr;
 #ifdef DEBUG_ASSERTIONS
         { int i = num_vars_in_var_regs;
 	  if ((isref(var_regs[i])) &&
@@ -349,7 +349,7 @@ XSB_Start_Instr(trie_retry_var,_trie_retry_var)
 	  }
 	} 
 #endif
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 	next_lpcreg;
 XSB_End_Instr()
 
@@ -363,7 +363,7 @@ XSB_Start_Instr(trie_trust_var,_trie_trust_var)
 	breg = cp_prevbreg(breg);	/* Remove this CP */
 	restore_trail_condition_registers(breg);
 	num_vars_in_var_regs = DecodeTrieVar(opatom);
-	var_regs[num_vars_in_var_regs] = (CPtr) *reg_arrayptr;
+	var_regs[num_vars_in_var_regs] = (CPtr) *trieinstr_unif_stkptr;
 #ifdef DEBUG_ASSERTIONS
         { int i = num_vars_in_var_regs;
 	  if ((isref(var_regs[i])) &&
@@ -374,7 +374,7 @@ XSB_Start_Instr(trie_trust_var,_trie_trust_var)
 	  }
 	} 
 #endif
-	reg_arrayptr--;
+	trieinstr_unif_stkptr--;
 	next_lpcreg;
 XSB_End_Instr()
 
@@ -398,9 +398,9 @@ an attv; usage 4) a variable in the call that is bound to another
 variable in the call by a binding in the answer.  The routine
 variant_answer_search() generates trie_xxx_val instructions only
 usages 1 and 4 above.  In usages 2 and 3 a trie_xxx_attv instruction
-is generated.  Thus in variant tabling *reg_arrayptr will dereference
+is generated.  Thus in variant tabling *trieinstr_unif_stkptr will dereference
 only to an attv iff trie_xxx_val dereferences to that same attv (case
-b.2 in the code below corresponding to usage 1 ); and reg_arrayptr
+b.2 in the code below corresponding to usage 1 ); and trieinstr_unif_stkptr
 will dereference to a ref vanilla variable iff the associated symbol
 is a ref (case a corresponding to usage 4)
 
@@ -422,36 +422,36 @@ XSB_Start_Instr(trie_no_cp_val,_trie_no_cp_val)
   NodePtr = (BTNptr) lpcreg;
 {
   Cell cell2deref;		
-  //  printf("*reg_arrayptr %p\n",*reg_arrayptr);
-  XSB_Deref(*reg_arrayptr);    						
-  if (isref(*reg_arrayptr)) {		                 // case a 
+  //  printf("*trieinstr_unif_stkptr %p\n",*trieinstr_unif_stkptr);
+  XSB_Deref(*trieinstr_unif_stkptr);    						
+  if (isref(*trieinstr_unif_stkptr)) {		                 // case a 
     cell2deref = (Cell)var_regs[(int)int_val(opatom)];			
     XSB_Deref(cell2deref);	       					
-    if (cell2deref != *reg_arrayptr)					
-      bind_ref((CPtr) *reg_arrayptr, cell2deref);			
+    if (cell2deref != *trieinstr_unif_stkptr)					
+      bind_ref((CPtr) *trieinstr_unif_stkptr, cell2deref);			
   }									
-  else if (isattv(*reg_arrayptr)) {			 // case b 		
+  else if (isattv(*trieinstr_unif_stkptr)) {			 // case b 		
     xsb_dbgmsg((LOG_TRIE_INSTR, "symbol number is %d\n",(int)int_val(opatom)));
     cell2deref = (Cell) var_regs[(int)int_val(opatom)];			
     XSB_Deref(cell2deref);     						
-    if (*reg_arrayptr != cell2deref) {			// case b.1		
+    if (*trieinstr_unif_stkptr != cell2deref) {			// case b.1		
       /* Do not trigger attv interrupt! */			      
       
-      bind_ref(clref_val(*reg_arrayptr), cell2deref);			
+      bind_ref(clref_val(*trieinstr_unif_stkptr), cell2deref);			
     }									
     else {					       // case b.2		
       attv_dbgmsg(">>>> keep old attr in unify_with_trie_val\n");	
     }									
   }									
   else {					      // case c			
-    op1 = (Cell)*reg_arrayptr;						
+    op1 = (Cell)*trieinstr_unif_stkptr;						
     op2 = (Cell) var_regs[(int)int_val(opatom)];			
     if (unify(CTXTc op1,op2) == FALSE) {					
       Fail1;								
       XSB_Next_Instr();							
     }									
   }									
-  reg_arrayptr--;							
+  trieinstr_unif_stkptr--;							
 }
 /*   unify_with_trie_val; */
   next_lpcreg;
@@ -659,11 +659,11 @@ XSB_End_Instr()
              | HASH_IS flag| - var/nonvar status of topmost term
              |-------------|    (the next to be unified with the trie)
              |     n+1     |_
-             |reg_array[n] | \
+             |trieinstr_unif_stk[n] | \
              |      .      |  |
              |      .      |  |- Subterms to be unified with trie
              |      .      |  |
-             |reg_array[0] |_/
+             |trieinstr_unif_stk[0] |_/
              |-------------|
              |      m      |_
              | var_regs[m] | \
@@ -695,7 +695,7 @@ XSB_Start_Instr(hash_opcode,_hash_opcode)
     hash_header = (BTHTptr) lpcreg;
     hash_base = (BTHTptr *) BTHT_BucketArray(hash_header);
 
-	temp_ptr_for_hash = (CPtr)*reg_arrayptr;
+	temp_ptr_for_hash = (CPtr)*trieinstr_unif_stkptr;
         XSB_CptrDeref(temp_ptr_for_hash);
         if (!isref(temp_ptr_for_hash) 
 	    && (*hash_base == NULL)){ 
@@ -761,11 +761,11 @@ if ( int_val(cell(breg + CP_SIZE + 2)) == HASH_IS_NOT_FREE ) {
 	tbreg = breg;
 	restore_regs_and_vars(tbreg, CP_SIZE+3);
       }
-      XSB_Deref(*reg_arrayptr);
-      if (isref(*reg_arrayptr))   /* sanity check */
+      XSB_Deref(*trieinstr_unif_stkptr);
+      if (isref(*trieinstr_unif_stkptr))   /* sanity check */
 	xsb_exit(CTXTc "error_condition in hash_handle\n");
 
-      hash_nonvar_subterm(*reg_arrayptr,hash_hdr,hashed_hash_offset);
+      hash_nonvar_subterm(*trieinstr_unif_stkptr,hash_hdr,hashed_hash_offset);
       if (hash_offset == FIRST_HASH_NODE) {
 	if (*hash_base == NULL) { /* No Variables in hash table */
 	  breg = cp_prevbreg(breg);   /* dealloc this CPF */
@@ -857,9 +857,9 @@ XSB_Start_Instr(trie_assert_inst,_trie_assert_inst)
   if (Child(NodePtr) != NULL) {
     TRIE_R_LOCK()
     psc_ptr = DecodeTrieFunctor(BTN_Symbol(NodePtr));
-    reg_arrayptr = reg_array -1;
+    trieinstr_unif_stkptr = trieinstr_unif_stk -1;
     num_vars_in_var_regs = -1;
-    for (i = get_arity(psc_ptr); i >= 1; i--) { push_reg_array(*(rreg+i)); }
+    for (i = get_arity(psc_ptr); i >= 1; i--) { push_trieinstr_unif_stk(*(rreg+i)); }
     lpcreg = (byte *) Child(NodePtr);
 #ifdef MULTI_THREAD_RWL
 /* save choice point for trie_unlock instruction */

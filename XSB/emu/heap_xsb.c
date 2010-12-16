@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.84 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: heap_xsb.c,v 1.85 2010-12-16 22:10:24 tswift Exp $
 ** 
 */
 
@@ -420,7 +420,7 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
 
   CPtr   *cell_ptr ;
   Cell   cell_val ;
-  int  i, rnum_in_reg_array = (reg_arrayptr-reg_array)+1;
+  int  i, rnum_in_trieinstr_unif_stk = (trieinstr_unif_stkptr-trieinstr_unif_stk)+1;
 
   size_t new_size_in_bytes, new_size_in_cells ; /* what a mess ! */
   double   expandtime ;
@@ -564,9 +564,9 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
   }
 
   i = 0;
-  while (i < rnum_in_reg_array) {
-    cell_ptr = (CPtr *)(reg_array+i);
-    //    printf(" reallocate reg_array[%d]=%p\n",i,cell_ptr);
+  while (i < rnum_in_trieinstr_unif_stk) {
+    cell_ptr = (CPtr *)(trieinstr_unif_stk+i);
+    //    printf(" reallocate trieinstr_unif_stk[%d]=%p\n",i,cell_ptr);
     reallocate_heap_or_ls_pointer(cell_ptr) ;
     i++;
   }
@@ -613,7 +613,7 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
     begin_stringtime, end_stringtime;
   int  marked = 0, marked_dregs = 0, i;
   int  start_heap_size;
-  int  rnum_in_reg_array = (reg_arrayptr-reg_array)+1;
+  int  rnum_in_trieinstr_unif_stk = (trieinstr_unif_stkptr-trieinstr_unif_stk)+1;
   DECL_GC_PROFILE;
   garbage_collecting = 1;  // flag for profiling that we are gc-ing
 
@@ -661,16 +661,16 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 	*hreg = reg[i];
 	hreg++;
       }
-      arity += rnum_in_reg_array;
-      for (i = 0; i < rnum_in_reg_array; i++) {
-	//	printf("reg_array[%d] to heap: %lx\n",i,(unsigned long)reg_array[i]);
-	*hreg = reg_array[i];
+      arity += rnum_in_trieinstr_unif_stk;
+      for (i = 0; i < rnum_in_trieinstr_unif_stk; i++) {
+	//	printf("trieinstr_unif_stk[%d] to heap: %lx\n",i,(unsigned long)trieinstr_unif_stk[i]);
+	*hreg = trieinstr_unif_stk[i];
 	hreg++;
       }
-      //      printf("extended heap: hreg=%p, arity=%d, rnum_in=%d\n",hreg,arity, rnum_in_reg_array);
+      //      printf("extended heap: hreg=%p, arity=%d, rnum_in=%d\n",hreg,arity, rnum_in_trieinstr_unif_stk);
 #ifdef SLG_GC
       /* in SLGWAM, copy hfreg to the heap */
-      //      printf("hfreg to heap is %p at %p, rnum_in_reg_array=%d,arity=%d,delay=%p\n",hfreg,hreg,rnum_in_reg_array,arity,delayreg);
+      //      printf("hfreg to heap is %p at %p, rnum_in_trieinstr_unif_stk=%d,arity=%d,delay=%p\n",hfreg,hreg,rnum_in_trieinstr_unif_stk,arity,delayreg);
       *(hreg++) = (unsigned long) hfreg;
 #endif
     }
@@ -755,16 +755,16 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 	
 	p = hreg;
 	
-	arity -= rnum_in_reg_array;
+	arity -= rnum_in_trieinstr_unif_stk;
 	for (i = 1; i <= arity; i++) {
 	  reg[i] = *p++;
 	  //	  printf("heap to reg[%d]: %lx\n",i,(unsigned long)reg[i]);
 	}
 	if (delayreg != NULL)
 	  delayreg = (CPtr)reg[arity--];
-	for (i = 0; i < rnum_in_reg_array; i++) {
-	  reg_array[i] = *p++;
-	  //	  printf("heap to reg_array[%d]: %lx\n",i,(unsigned long)reg_array[i]);
+	for (i = 0; i < rnum_in_trieinstr_unif_stk; i++) {
+	  trieinstr_unif_stk[i] = *p++;
+	  //	  printf("heap to trieinstr_unif_stk[%d]: %lx\n",i,(unsigned long)trieinstr_unif_stk[i]);
 	}
 
 	end_slidetime = cpu_time();

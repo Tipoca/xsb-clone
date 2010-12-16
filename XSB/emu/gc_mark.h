@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.38 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: gc_mark.h,v 1.39 2010-12-16 22:10:24 tswift Exp $
 ** 
 */
 
@@ -756,7 +756,7 @@ static int mark_hreg_from_choicepoints(CTXTdecl)
 
 int mark_heap(CTXTdeclc int arity, int *marked_dregs)
 {
-  int avail_dreg_marks = 0, marked = 0, rnum_in_reg_array = (reg_arrayptr-reg_array)+1;
+  int avail_dreg_marks = 0, marked = 0, rnum_in_trieinstr_unif_stk = (trieinstr_unif_stkptr-trieinstr_unif_stk)+1;
 
   /* the following seems unnecessary, but it is not !
      mark_heap() may be called directly and not only through gc_heap() */
@@ -803,13 +803,13 @@ int mark_heap(CTXTdeclc int arity, int *marked_dregs)
 		      needed for copying garbage collection see copy_block() */
   
   /* start marking phase */
-  marked = mark_region(CTXTc reg+1,reg+(slide?(arity-rnum_in_reg_array):arity));
+  marked = mark_region(CTXTc reg+1,reg+(slide?(arity-rnum_in_trieinstr_unif_stk):arity));
   if (delayreg != NULL) {
     marked += mark_root(CTXTc (Cell)delayreg);
   }
-  if (rnum_in_reg_array>0) {
-    //    printf("marking reg_array(%d): %p to %p\n",rnum_in_reg_array,reg_array,reg_arrayptr);
-    marked += mark_region(CTXTc reg_array,reg_arrayptr);
+  if (rnum_in_trieinstr_unif_stk>0) {
+    //    printf("marking trieinstr_unif_stk(%d): %p to %p\n",rnum_in_trieinstr_unif_stk,trieinstr_unif_stk,trieinstr_unif_stkptr);
+    marked += mark_region(CTXTc trieinstr_unif_stk,trieinstr_unif_stkptr);
   }
   /* Heap[0] is a global variable */
   marked += mark_region(CTXTc (CPtr)glstack.low, (CPtr)glstack.low+2);

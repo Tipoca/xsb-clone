@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.169 2010-10-07 18:20:11 dwarren Exp $
+** $Id: init_xsb.c,v 1.170 2010-12-16 22:10:24 tswift Exp $
 ** 
 */
 
@@ -1351,7 +1351,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
 #ifdef MULTI_THREAD
   th->trie_locked = 0 ;
 #endif
-  reg_array_size = DEFAULT_ARRAYSIZ;
+  trieinstr_unif_stk_size = DEFAULT_ARRAYSIZ;
   num_vars_in_var_regs = -1;
   init_trie_aux_areas(CTXT);
   tstInitDataStructs(CTXT);

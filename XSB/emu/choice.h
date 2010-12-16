@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.42 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: choice.h,v 1.43 2010-12-16 22:10:24 tswift Exp $
 ** 
 */
 #ifndef __CHOICE_H__
@@ -503,6 +503,6 @@ typedef struct compl_susp_choice_point {
     if (hbreg >= hfreg) hreg = hbreg; else hreg = hfreg; \
     cpreg = cp_cpreg(t_breg); \
     t_ereg = cp_ereg(t_breg); \
-    reg_arrayptr = reg_array - 1
+    trieinstr_unif_stkptr = trieinstr_unif_stk - 1
 
 #endif

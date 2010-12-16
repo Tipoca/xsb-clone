@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.136 2010-12-16 16:47:13 tswift Exp $
+** $Id: tries.c,v 1.137 2010-12-16 22:10:24 tswift Exp $
 ** 
 */
 
@@ -253,9 +253,9 @@ void init_trie_aux_areas(CTXTdecl)
   var_addr_arraysz = 0;
   var_addr = NULL;
 
-  reg_array = NULL;
-  reg_array_size = 0;
-  reg_arrayptr = reg_array -1;
+  trieinstr_unif_stk = NULL;
+  trieinstr_unif_stk_size = 0;
+  trieinstr_unif_stkptr = trieinstr_unif_stk -1;
 
   for (i = 0; i < NUM_TRIEVARS; i++)
     VarEnumerator[i] = (Cell) & (VarEnumerator[i]);
@@ -266,7 +266,7 @@ void free_trie_aux_areas(CTXTdecl)
   mem_dealloc(term_stack,term_stacksize,TABLE_SPACE);
   mem_dealloc(var_addr,var_addr_arraysz,TABLE_SPACE);
   mem_dealloc(Addr_Stack,addr_stack_size,TABLE_SPACE);
-  mem_dealloc(reg_array,reg_array_size,TABLE_SPACE);
+  mem_dealloc(trieinstr_unif_stk,trieinstr_unif_stk_size,TABLE_SPACE);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -982,7 +982,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
 	 * on the substitution factor; variables encountered in an
 	 * answer substitution can be anywhere on the heap.  Also
 	 * note that this function uses the pdl stack rather than
-	 * reg_array, as does vsc().
+	 * trieinstr_unif_stk, as does vsc().
          * The variables will be used in 
 	 * delay_chk_insert() (in function do_delay_stuff()).
 	 */
@@ -1540,7 +1540,7 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
  * as it is only called once, in tabletry.  I've changed a few names
  * to make it more consistent with papers and other parts of the
  * system.
- * cptr is simply a pointer to the reg_array, cptr = reg+1
+ * cptr is simply a pointer to the trieinstr_unif_stk, cptr = reg+1
  * SubsFactReg is top_of_cpstack.  This can cause confusion since
  * later in table_call_search (which calls this function) the
  * substitution factor is copied to the heap.
@@ -1609,7 +1609,7 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   Paren = TIF_CallTrie(CallInfo_TableInfo(*call_info));
   GNodePtrPtr = &BTN_Child(Paren);
   arity = CallInfo_CallArity(*call_info);
-  /* cptr is set to point to the reg_array */
+  /* cptr is set to point to the trieinstr_unif_stk */
   cptr = CallInfo_Arguments(*call_info);
   tSubsFactReg = SubsFactReg = CallInfo_AnsTempl(*call_info);
   depth_ctr = flags[MAX_TABLE_SUBGOAL_DEPTH];  
@@ -2162,9 +2162,9 @@ byte *trie_get_returns(CTXTdeclc VariantSF sf, Cell retTerm) {
     }
     /* now num_vars_in_var_regs should be attv_num - 1 */
 
-    reg_arrayptr = reg_array -1;
+    trieinstr_unif_stkptr = trieinstr_unif_stk -1;
     for (i = arity, cptr = clref_val(retTerm);  i >= 1;  i--) {
-      push_reg_array(cell(cptr+i));
+      push_trieinstr_unif_stk(cell(cptr+i));
     }
   }
 #ifdef DEBUG_DELAYVAR
@@ -2222,13 +2222,13 @@ byte * trie_get_calls(CTXTdecl)
        return (byte *)&fail_inst;
      else {
        cptr = (CPtr)cs_val(call_term);
-       reg_arrayptr = reg_array-1;
+       trieinstr_unif_stkptr = trieinstr_unif_stk-1;
        num_vars_in_var_regs = -1;
        for (i = get_arity(psc_ptr); i>=1; i--) {
 #ifdef DEBUG_DELAYVAR
 	 xsb_dbgmsg((LOG_DEBUG,">>>> push one cell"));
 #endif
-	 push_reg_array(cell(cptr+i));
+	 push_trieinstr_unif_stk(cell(cptr+i));
        }
 #ifdef MULTI_THREAD_RWL
 /* save choice point for trie_unlock instruction */

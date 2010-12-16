@@ -1564,7 +1564,7 @@ int private_trie_interned(CTXTdecl) {
 
   Trie_id = iso_ptoc_int(CTXTc 1,"private_trie_interned/3");
   trie_term =  ptoc_tag(CTXTc 2);
-  Leafterm = ptoc_tag(CTXTc 3);
+ Leafterm = ptoc_tag(CTXTc 3);
 
   SPLIT_TRIE_ID(Trie_id,index,type);
   trie_root_addr = &(itrie_array[index].root);
@@ -1585,9 +1585,9 @@ int private_trie_interned(CTXTdecl) {
     XSB_Deref(trie_term);
     XSB_Deref(Leafterm);
     if ( isref(Leafterm) ) {  
-      reg_arrayptr = reg_array -1;
+      trieinstr_unif_stkptr = trieinstr_unif_stk -1;
       num_vars_in_var_regs = -1;
-      push_reg_array(trie_term); 
+      push_trieinstr_unif_stk(trie_term); 
       pcreg = (byte *)*trie_root_addr;
       ret_val =  TRUE;
     }
@@ -1617,9 +1617,9 @@ int shas_trie_interned(CTXTdecl) {
     XSB_Deref(trie_term);
     XSB_Deref(Leafterm);
     //    if ( isref(Leafterm) ) {  
-      reg_arrayptr = reg_array -1;
+      trieinstr_unif_stkptr = trieinstr_unif_stk -1;
       num_vars_in_var_regs = -1;
-      push_reg_array(trie_term); 
+      push_trieinstr_unif_stk(trie_term); 
       pcreg = (byte *)*trie_root_addr;
       ret_val =  TRUE;
       //    }

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.66 2010-12-16 16:47:13 tswift Exp $
+** $Id: tries.h,v 1.67 2010-12-16 22:10:24 tswift Exp $
 ** 
 */
 
@@ -455,7 +455,7 @@ extern counter subg_chk_ins, subg_inserts, ans_chk_ins, ans_inserts;
 extern BTNptr Last_Nod_Sav;
 
 /* registers for trie backtracking */
-extern CPtr reg_arrayptr, var_regs[];
+extern CPtr trieinstr_unif_stkptr, var_regs[];
 #endif
 
 /*----------------------------------------------------------------------*/
@@ -471,17 +471,17 @@ extern CPtr reg_arrayptr, var_regs[];
       xsb_exit(CTXTc "No More memory for reallocating Array");\
 }
 
-#define will_overflow_reg_array(x) {\
-   if (x >= reg_array+reg_array_size) {\
-     int idx = reg_arrayptr - reg_array;\
-     trie_expand_array(Cell,reg_array,reg_array_size,x-reg_array,"reg_array");\
-     reg_arrayptr = reg_array + idx;\
+#define will_overflow_trieinstr_unif_stk(x) {\
+   if (x >= trieinstr_unif_stk+trieinstr_unif_stk_size) {\
+     int idx = trieinstr_unif_stkptr - trieinstr_unif_stk;\
+     trie_expand_array(Cell,trieinstr_unif_stk,trieinstr_unif_stk_size,x-trieinstr_unif_stk,"trieinstr_unif_stk");\
+     trieinstr_unif_stkptr = trieinstr_unif_stk + idx;\
    }\
 }
 
-#define push_reg_array(X) {\
-   will_overflow_reg_array(reg_arrayptr+1);\
-   (*(++reg_arrayptr)) = (Cell) X;\
+#define push_trieinstr_unif_stk(X) {\
+   will_overflow_trieinstr_unif_stk(trieinstr_unif_stkptr+1);\
+   (*(++trieinstr_unif_stkptr)) = (Cell) X;\
 }
 /*----------------------------------------------------------------------*/
 
@@ -491,8 +491,8 @@ extern int  var_addr_arraysz;
 
 /*----------------------------------------------------------------------*/
 
-extern Cell * reg_array;
-extern int reg_array_size;
+extern Cell * trieinstr_unif_stk;
+extern int trieinstr_unif_stk_size;
 extern int delay_it;
 
 #define NUM_TRIEVARS 400

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.34 2010-09-30 22:49:10 tswift Exp $
+** $Id: complete_local.h,v 1.35 2010-12-16 22:10:24 tswift Exp $
 **
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -410,10 +410,10 @@ static inline void SetupReturnFromLeader(CTXTdeclc CPtr orig_breg, CPtr cs_ptr,
     /* now num_vars_in_var_regs should be attv_num - 1 */
   }
 
-  reg_arrayptr = reg_array - 1;
+  trieinstr_unif_stkptr = trieinstr_unif_stk - 1;
   for (tmp = 0; tmp < template_size; tmp++) {
     CPtr cptr = answer_template;
-    push_reg_array(*cptr);
+    push_trieinstr_unif_stk(*cptr);
     answer_template++;
   }
   /* backtrack to prev tabled subgoal after returning answers */
