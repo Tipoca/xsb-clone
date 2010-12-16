@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.135 2010-12-15 18:57:02 tswift Exp $
+** $Id: tries.c,v 1.136 2010-12-16 16:47:13 tswift Exp $
 ** 
 */
 
@@ -1611,7 +1611,7 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   arity = CallInfo_CallArity(*call_info);
   /* cptr is set to point to the reg_array */
   cptr = CallInfo_Arguments(*call_info);
-  tSubsFactReg = SubsFactReg = CallInfo_VarVectorLoc(*call_info);
+  tSubsFactReg = SubsFactReg = CallInfo_AnsTempl(*call_info);
   depth_ctr = flags[MAX_TABLE_SUBGOAL_DEPTH];  
   ctr = attv_ctr = 0;
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.65 2010-12-09 17:55:53 tswift Exp $
+** $Id: tries.h,v 1.66 2010-12-16 16:47:13 tswift Exp $
 ** 
 */
 
@@ -319,7 +319,7 @@ typedef struct Tabled_Call_Info_Record {
 #define CallInfo_TableInfo(CallInfo)	( (CallInfo).table_info_record )
 #define CallInfo_CallArity(CallInfo)	( (CallInfo).call_arity )
 #define CallInfo_Arguments(CallInfo)	( (CallInfo).arg_vector )
-#define CallInfo_VarVectorLoc(CallInfo)	( (CallInfo).var_vector_loc )
+#define CallInfo_AnsTempl(CallInfo)	( (CallInfo).var_vector_loc )
 
 
 typedef struct Call_Check_Insert_Results {

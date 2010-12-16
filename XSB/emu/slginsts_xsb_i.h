@@ -176,7 +176,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   ADVANCE_PC(size_xxxXX);
 
   check_tcpstack_overflow;
-  CallInfo_VarVectorLoc(callInfo) = top_of_cpstack;
+  CallInfo_AnsTempl(callInfo) = top_of_cpstack;
 
   if ( this_instr == tabletry ) {
     /* lpcreg was left pointing to the next clause, e.g. tableretry */
@@ -198,7 +198,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
    *  template is pushed on the Heap rather than the CPS.  In that
    *  case, (heap - 1) points to the A.T. and
    *  CallLUR_AnsTempl(lookupResults) has the same value as
-   *  CallInfo_VarVectorLoc(callInfo).
+   *  CallInfo_AnsTempl(callInfo).
    * 
    *  As of 2010, table_call_search() can return XSB_FAILURE(=1) or
    *  abort if the term depth of a call is greater than a specified
@@ -589,7 +589,7 @@ XSB_Start_Instr(tabletrysinglenoanswers,_tabletrysinglenoanswers)
     CallInfo_TableInfo(callInfo) = tip;
     
     check_tcpstack_overflow;
-    CallInfo_VarVectorLoc(callInfo) = top_of_cpstack;
+    CallInfo_AnsTempl(callInfo) = top_of_cpstack;
 
   /* 
    *  As of 2010, table_call_search() can return XSB_FAILURE(=1) or

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.23 2010-12-09 17:55:53 tswift Exp $
+** $Id: sub_tables_xsb_i.h,v 1.24 2010-12-16 16:47:13 tswift Exp $
 ** 
 */
 
@@ -183,7 +183,7 @@ inline static  void subsumptive_call_search(CTXTdeclc TabledCallInfo *callStruct
 #endif
 
   btRoot = TIF_CallTrie(CallInfo_TableInfo(*callStruct));
-  answer_template = CallInfo_VarVectorLoc(*callStruct) - 1;
+  answer_template = CallInfo_AnsTempl(*callStruct) - 1;
 
   /* Handle 0-ary Predicates
      ----------------------- */
