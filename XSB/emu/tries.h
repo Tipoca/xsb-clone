@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.69 2010-12-17 22:47:45 tswift Exp $
+** $Id: tries.h,v 1.70 2010-12-17 22:59:58 tswift Exp $
 ** 
 */
 
@@ -436,7 +436,7 @@ extern void *variant_trie_lookup(struct th_context *th, void *root, int, CPtr, C
 
 /* slg variables */
 #ifndef MULTI_THREAD
-/* Pointer to answers subst fact (in heap)
+/* Pointer to answers subst fact (in heap) */
 extern CPtr ans_var_pos_reg;
 
 /* Used by trie instructions */
@@ -492,7 +492,7 @@ extern int  num_heap_term_vars;
 extern CPtr *var_addr;
 extern int  var_addr_arraysz;
 
-/* similar .. used in get_residual (/
+/* similar .. used in get_residual */
 extern CPtr *copy_of_var_addr;
 extern int  copy_of_num_heap_term_vars;
 
@@ -507,6 +507,7 @@ extern int delay_it;
 #define DEFAULT_ARRAYSIZ 16
 
 /*=========================================================================*/
+/* Handling calls in call subsumption. */
 
 struct VariantContinuation {
   BTNptr last_node_matched;
@@ -613,9 +614,8 @@ typedef struct _call2list{
   call2listptr prev;
 }CALL2LIST;
 
-
-
-/* Prasad's changes */
+/*=========================================================================*/
+/* For backtrackable updates*/
 
 typedef struct InternGarbageRootFrame *IGRptr;
 typedef struct InternGarbageLeafFrame *IGLptr;
