@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.68 2010-12-16 23:38:00 tswift Exp $
+** $Id: tries.h,v 1.69 2010-12-17 22:47:45 tswift Exp $
 ** 
 */
 
@@ -436,9 +436,13 @@ extern void *variant_trie_lookup(struct th_context *th, void *root, int, CPtr, C
 
 /* slg variables */
 #ifndef MULTI_THREAD
+/* Pointer to answers subst fact (in heap)
 extern CPtr ans_var_pos_reg;
+
+/* Used by trie instructions */
 extern int  trieinstr_vars_num;
 extern int  global_trieinstr_vars_num;
+extern CPtr trieinstr_unif_stkptr, trieinstr_vars[];
 #endif
 
 /* used for statistics */
@@ -454,8 +458,6 @@ extern counter subg_chk_ins, subg_inserts, ans_chk_ins, ans_inserts;
 /* trie routine variables */
 extern BTNptr Last_Nod_Sav;
 
-/* stacks for trie backtracking */
-extern CPtr trieinstr_unif_stkptr, trieinstr_vars[];
 #endif
 
 /*----------------------------------------------------------------------*/
@@ -485,9 +487,14 @@ extern CPtr trieinstr_unif_stkptr, trieinstr_vars[];
 }
 /*----------------------------------------------------------------------*/
 
+/* used in bottom-up return of answers (e.g. load_solution_trie) */
 extern int  num_heap_term_vars;
 extern CPtr *var_addr;
 extern int  var_addr_arraysz;
+
+/* similar .. used in get_residual (/
+extern CPtr *copy_of_var_addr;
+extern int  copy_of_num_heap_term_vars;
 
 /*----------------------------------------------------------------------*/
 
@@ -498,9 +505,6 @@ extern int delay_it;
 #define NUM_TRIEVARS 400
 //#define DEFAULT_ARRAYSIZ 512 
 #define DEFAULT_ARRAYSIZ 16
-
-extern CPtr *copy_of_var_addr;
-extern int  copy_of_num_heap_term_vars;
 
 /*=========================================================================*/
 
