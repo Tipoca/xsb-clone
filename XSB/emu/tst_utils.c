@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.38 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tst_utils.c,v 1.39 2010-12-17 23:22:29 tswift Exp $
 ** 
 */
 
@@ -219,6 +219,7 @@ void printTrieNode(FILE *fp, BTNptr pTN) {
 
 /*
  *		Trie-Path Printing Using the SymbolStack
+ *              (i.e. tstSymbolStack)
  *		----------------------------------------
  */
 

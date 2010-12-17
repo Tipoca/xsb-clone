@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_aux.h,v 1.16 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tst_aux.h,v 1.17 2010-12-17 23:22:29 tswift Exp $
 ** 
 */
 
@@ -49,11 +49,10 @@
  */
 
 /*---------------------------------------------------------------------------*/
-
 /*
  *  tstTermStack
  *  ------------
- *  For flattening a heap term during processing.
+ *  For flattening a heap term when seaching for a subsuming call
  */
 
 #ifndef MULTI_THREAD
@@ -225,9 +224,53 @@ extern DynamicStack tstTermStackLog;
 /* ------------------------------------------------------------------------- */
 
 /*
- *  tstSymbolStack
- *  ---------------
- *  For constructing terms from the symbols stored along a path in the trie.
+ *  tstTrail
+ *  ---------
+ *  For recording bindings made during processing.  This Trail performs
+ *  simple WAM trailing -- it saves address locations only.
+ */
+
+#ifndef MULTI_THREAD
+extern DynamicStack tstTrail;
+#endif
+#define TST_TRAIL_INITSIZE    20
+
+#define Trail_Top		((CPtr *)DynStk_Top(tstTrail))
+#define Trail_Base		((CPtr *)DynStk_Base(tstTrail))
+#define Trail_NumBindings	DynStk_NumFrames(tstTrail)
+#define Trail_ResetTOS		DynStk_ResetTOS(tstTrail)
+
+#define Trail_Push(Addr) {			\
+   CPtr *nextFrame;				\
+   DynStk_Push(tstTrail,nextFrame);		\
+   *nextFrame = (CPtr)(Addr);			\
+ }
+
+#define Trail_PopAndReset {			\
+   CPtr *curFrame;				\
+   DynStk_BlindPop(tstTrail,curFrame);		\
+   bld_free(*curFrame);				\
+ }
+
+#define Trail_Unwind_All	Trail_Unwind(0)
+
+/*
+ * Untrail down to and including the Index-th element.
+ */
+#define Trail_Unwind(Index) {			\
+   CPtr *unwindBase = Trail_Base + Index;	\
+   while ( Trail_Top > unwindBase )		\
+     Trail_PopAndReset;				\
+ }
+
+/* ------------------------------------------------------------------------- */
+
+/*
+ *  tstSymbolStack 
+ * --------------- 
+ * TLS: I think Ernie Created this for some reason, but I repurposed
+ * it for performing simplification for tables w. call subsumption.
+ *  See slgdelay.c
  */
 
 #ifndef MULTI_THREAD
@@ -271,48 +314,6 @@ extern DynamicStack tstSymbolStack;
 #define SymbolStack_PushPath(Leaf) {  		\
    BTNptr root;					\
    SymbolStack_PushPathRoot(Leaf,root);		\
- }
-
-/* ------------------------------------------------------------------------- */
-
-/*
- *  tstTrail
- *  ---------
- *  For recording bindings made during processing.  This Trail performs
- *  simple WAM trailing -- it saves address locations only.
- */
-
-#ifndef MULTI_THREAD
-extern DynamicStack tstTrail;
-#endif
-#define TST_TRAIL_INITSIZE    20
-
-#define Trail_Top		((CPtr *)DynStk_Top(tstTrail))
-#define Trail_Base		((CPtr *)DynStk_Base(tstTrail))
-#define Trail_NumBindings	DynStk_NumFrames(tstTrail)
-#define Trail_ResetTOS		DynStk_ResetTOS(tstTrail)
-
-#define Trail_Push(Addr) {			\
-   CPtr *nextFrame;				\
-   DynStk_Push(tstTrail,nextFrame);		\
-   *nextFrame = (CPtr)(Addr);			\
- }
-
-#define Trail_PopAndReset {			\
-   CPtr *curFrame;				\
-   DynStk_BlindPop(tstTrail,curFrame);		\
-   bld_free(*curFrame);				\
- }
-
-#define Trail_Unwind_All	Trail_Unwind(0)
-
-/*
- * Untrail down to and including the Index-th element.
- */
-#define Trail_Unwind(Index) {			\
-   CPtr *unwindBase = Trail_Base + Index;	\
-   while ( Trail_Top > unwindBase )		\
-     Trail_PopAndReset;				\
  }
 
 /*=========================================================================*/
