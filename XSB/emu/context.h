@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.80 2010-12-16 23:38:00 tswift Exp $
+** $Id: context.h,v 1.81 2010-12-18 00:01:27 tswift Exp $
 **
 */
 
@@ -218,11 +218,11 @@ struct th_context
   CPtr _VarEnumerator_trail[NUM_TRIEVARS];
   CPtr *_VarEnumerator_trail_top;
 
-  int _addr_stack_pointer;
+  int _addr_stack_index;
   CPtr *_Addr_Stack;
   int _addr_stack_size;
 
-  int  _term_stackptr;
+  int  _term_stack_index;
   Cell *_term_stack;
   long _term_stacksize;
 
@@ -550,11 +550,11 @@ typedef struct th_context th_context ;
 #define VarEnumerator_trail	(th->_VarEnumerator_trail)
 #define VarEnumerator_trail_top	(th->_VarEnumerator_trail_top)
 
-#define addr_stack_pointer	(th->_addr_stack_pointer)
+#define addr_stack_index	(th->_addr_stack_index)
 #define Addr_Stack		(th->_Addr_Stack)
 #define addr_stack_size		(th->_addr_stack_size)
 
-#define term_stackptr		(th->_term_stackptr)
+#define term_stack_index		(th->_term_stack_index)
 #define term_stack		(th->_term_stack)
 #define term_stacksize		(th->_term_stacksize)
 

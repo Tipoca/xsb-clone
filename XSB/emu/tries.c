@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.138 2010-12-16 23:38:00 tswift Exp $
+** $Id: tries.c,v 1.139 2010-12-18 00:01:27 tswift Exp $
 ** 
 */
 
@@ -126,33 +126,33 @@ char *trie_trie_type_table[] = {"call_trie_tt","basic_answer_trie_tt",
  */
 
 #ifndef MULTI_THREAD
-static int addr_stack_pointer = 0;
+static int addr_stack_index = 0;
 static CPtr *Addr_Stack;
 static int addr_stack_size    = DEFAULT_ARRAYSIZ;
 #endif
 
-#define pop_addr Addr_Stack[--addr_stack_pointer]
+#define pop_addr Addr_Stack[--addr_stack_index]
 #define push_addr(X) {\
-    if (addr_stack_pointer == addr_stack_size) {\
+    if (addr_stack_index == addr_stack_size) {\
        trie_expand_array(CPtr, Addr_Stack ,addr_stack_size,0,"Addr_Stack");\
     }\
-    Addr_Stack[addr_stack_pointer++] = ((CPtr) X);\
+    Addr_Stack[addr_stack_index++] = ((CPtr) X);\
 }
 
 /*----------------------------------------------------------------------*/
 /*****************Term Stack*************/
 #ifndef MULTI_THREAD
-static int  term_stackptr = -1;
+static int  term_stack_index = -1;
 static Cell *term_stack;
 static long term_stacksize = DEFAULT_ARRAYSIZ;
 #endif
 
-#define pop_term term_stack[term_stackptr--]
+#define pop_term term_stack[term_stack_index--]
 #define push_term(T) {\
-    if (term_stackptr+1 == term_stacksize) {\
+    if (term_stack_index+1 == term_stacksize) {\
        trie_expand_array(Cell,term_stack,term_stacksize,0,"term_stack");\
     }\
-    term_stack[++term_stackptr] = ((Cell) T);\
+    term_stack[++term_stack_index] = ((Cell) T);\
 }
 
 /*----------------------------------------------------------------------*/
@@ -244,11 +244,11 @@ void init_trie_aux_areas(CTXTdecl)
 
   addr_stack_size = 0;
   Addr_Stack = NULL;
-  addr_stack_pointer = 0;
+  addr_stack_index = 0;
 
   term_stacksize = 0;
   term_stack = NULL;
-  term_stackptr = -1;
+  term_stack_index = -1;
 
   var_addr_arraysz = 0;
   var_addr = NULL;
@@ -596,7 +596,7 @@ static int follow_par_chain(CTXTdeclc BTNptr pLeaf)
   int heap_space = 0;
   Cell sym;
 
-  term_stackptr = -1; /* Forcibly Empty term_stack */
+  term_stack_index = -1; /* Forcibly Empty term_stack */
   while ( IsNonNULL(pLeaf) && (! IsTrieRoot(pLeaf)) ) {
     sym = BTN_Symbol(pLeaf);
     push_term(sym);
@@ -626,7 +626,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
 
 #define rec_macro_make_heap_term(Macro_addr) {				\
   int rj,rArity;							\
-  while(addr_stack_pointer) {						\
+  while(addr_stack_index) {						\
     Macro_addr = (CPtr)pop_addr;					\
     xtemp2 = pop_term;							\
     switch( TrieSymbolType(xtemp2) ) {					\
