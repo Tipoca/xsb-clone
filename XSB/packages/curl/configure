@@ -4572,7 +4572,7 @@ fi
 
 
 (
-echo "  Curl support:                                   $support"
+echo "  Curl support (HTTP protocol library):           $support"
 if test "$support" = "yes"; then
    cat <<EOT
   Curl C flags:        	                          $ccflags

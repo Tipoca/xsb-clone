@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.208 2010-08-19 15:03:35 spyrosh Exp $
+## $Id: configure.in,v 1.209 2010-12-19 04:55:48 kifer Exp $
 ##
 ##
 
@@ -930,20 +930,6 @@ if test -n "$with_pita" && test -d $topdir/packages/pita; then
     cd $build_dir
 fi
 
-
-if test -d $topdir/packages/xpath; then
-   cd $topdir/packages/xpath
-   echo "***Configuring XPath"
-   if test -n "$with_xpath_incdir" ; then
-      xpath_prefix_option="--prefix="$with_xpath_incdir"
-   fi
-   if test -n "$with_xpath_libdir" ; then
-      xpath_exec_prefix_option="--exec-prefix="$with_xpath_libdir"
-   fi
-    ./configure $xpath_exec_prefix_option $xpath_prefix_option > /dev/null
-    cd $build_dir
-fi
-
 if test -n "${with_dbdrivers}" && test -d $topdir/packages/dbdrivers; then
     cd $topdir/packages/dbdrivers
     echo "***Configuring DB drivers"
@@ -964,6 +950,21 @@ if test -d $topdir/packages/curl; then
     ./configure --with-curl-libdir="$with_curl_libdir" --with-curl-incdir="$with_curl_incdir" > /dev/null
     cd $build_dir
 fi
+
+
+if test -d $topdir/packages/xpath; then
+   cd $topdir/packages/xpath
+   echo "***Configuring XPath support"
+   if test -n "$with_xpath_incdir" ; then
+      xpath_prefix_option="--prefix="$with_xpath_incdir"
+   fi
+   if test -n "$with_xpath_libdir" ; then
+      xpath_exec_prefix_option="--exec-prefix="$with_xpath_libdir"
+   fi
+    ./configure $xpath_exec_prefix_option $xpath_prefix_option > /dev/null
+    cd $build_dir
+fi
+
 
 # pcre package
 if test -d $topdir/packages/pcre; then
@@ -2045,7 +2046,8 @@ fi
 echo ""
 echo "  POSIX regexp matching libraries:                $regmatch_support"
 echo "  POSIX wildcard matching libraries:              $wildmatch_support"
-echo "  Perl support:                                   $perl_support"
+echo ""
+echo "  Perl support (DEPRECATED):                      $perl_support"
 
 if test "$perl_support" = "yes"; then
    cat <<EOT
@@ -2061,17 +2063,16 @@ if test -n "${with_libwww}" && test -f $topdir/packages/libwww/Installation_summ
     cat $topdir/packages/libwww/Installation_summary
 fi
 
-if test -f $topdir/packages/xpath/Installation_summary; then
-    cat $topdir/packages/xpath/Installation_summary
-fi
-
-
 if test -n "${with_dbdrivers}" && test -f $topdir/packages/dbdrivers/Installation_summary; then
     cat $topdir/packages/dbdrivers/Installation_summary
 fi
 
 if test -f $topdir/packages/curl/Installation_summary; then
     cat $topdir/packages/curl/Installation_summary
+fi
+
+if test -f $topdir/packages/xpath/Installation_summary; then
+    cat $topdir/packages/xpath/Installation_summary
 fi
 
 if test -f $topdir/packages/pcre/Installation_summary; then

@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.3 2010-08-19 15:03:39 spyrosh Exp $
+## $Id: configure.in,v 1.4 2010-12-19 04:55:48 kifer Exp $
 ## 
 ##
 
@@ -95,7 +95,7 @@ AC_CHECK_HEADERS(pcre.h , with_pcre=yes, pcre=yes)
 if test "$pcre" = "yes"; then
 echo ""
 AC_MSG_WARN([ ****Your system is missing pcre.h, which is required
-    for PCRE to function.
+    for PCRE (Perl pattern matching library) to function.
 ****PCRE support will be disabled. To use PCRE, please install the packages
     libpcre and libpcre-dev.])
 echo ""
@@ -116,7 +116,7 @@ AC_SUBST(ldflags)
 AC_OUTPUT([pcre_info.P:pcre_info.in])
 
 (
-echo "  PCRE support:                                   $support"
+echo "  PCRE (Perl pattern matching) support:           $support"
 if test "$support" = "yes"; then
    cat <<EOT
   PCRE C flags:        	                          $ccflags

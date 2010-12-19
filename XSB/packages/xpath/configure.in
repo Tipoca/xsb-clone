@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.5 2010-08-19 15:03:40 spyrosh Exp $
+## $Id: configure.in,v 1.6 2010-12-19 04:55:48 kifer Exp $
 ## 
 ##
 
@@ -99,11 +99,12 @@ AC_SUBST(ccflags)
 AC_SUBST(ldflags)
 
 (
-echo "  Xpath support:				  $support"
+echo "  XPath support:				  $support"
 if test "$support" = "yes"; then
    cat <<EOT
-  Xpath C flags:				  $ccflags
-  Xpath loader flags:				  $ldflags
+  XPath C flags:				  $ccflags
+  XPath loader flags:				  $ldflags
+
 EOT
 fi
 ) | tee Installation_summary

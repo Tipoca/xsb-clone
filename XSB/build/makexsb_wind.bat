@@ -26,6 +26,11 @@ REM Concatenate MSVC_mkfile.mak & MSVC.dep into emu\MSVC_mkfile.mak
 @nmake /nologo /s /f NMakefile.mak
 @cd ..
 
+REM build curl before sgml and xpath
+@cd curl
+@nmake /nologo /f NMakefile.mak
+@cd ..
+
 @cd sgml\cc
 @nmake /nologo /f NMakefile.mak
 @cd ..\..
@@ -33,10 +38,6 @@ REM Concatenate MSVC_mkfile.mak & MSVC.dep into emu\MSVC_mkfile.mak
 @cd xpath\cc
 @nmake /nologo /f NMakefile.mak
 @cd ..\..
-
-@cd curl
-@nmake /nologo /f NMakefile.mak
-@cd ..
 
 @cd ..\build
 
