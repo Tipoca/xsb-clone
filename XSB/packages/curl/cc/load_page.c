@@ -23,8 +23,9 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <curl/curl.h>
-#include "common.h"
+#include "load_page.h"
 
 struct result_t
 {

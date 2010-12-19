@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sgmlconfig.P,v 1.13 2010-12-14 22:32:29 kifer Exp $
+** $Id: sgmlconfig.P,v 1.14 2010-12-19 04:57:07 kifer Exp $
 ** 
 */
 
@@ -76,7 +76,11 @@
     fmt_write_string(LibObjFile,
 		     '%s%s%s%s',
 		     args(ConfigLibDir,Slash,Basename,XSB_OBJ_EXTENSION_ATOM)),
-    fmt_write_string(CC_opts, ' %s -I %s', f(CCflags, ConfigDir)),
+    fmt_write_string(Curl, '%s%s..%scurl%scc', 
+				 f(SgmlDir, Slash, Slash, Slash)),
+    fmt_write_string(CurlObj, '%s%s..%scurl%scc%sload_page.c', 
+				 f(SgmlDir, Slash, Slash, Slash, Slash)),
+    fmt_write_string(CC_opts, ' %s -I %s -I %s %s', f(CCflags, ConfigDir, Curl, CurlObj)),
     str_cat(Module, XSB_OBJ_EXTENSION_ATOM, Objfile),
     (('_$_sgml_running_under'(windows) ; '_$_sgml_running_under'(cygwin))
     ->

@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include "load_page.c"
+#include "load_page.h"
 #include "error_term.h"
 #include "error.c"
 
@@ -39,13 +39,17 @@
 #include <sys/stat.h>
 #endif
 
+extern char * load_page (char *source, curl_opt options, curl_ret *ret_vals);
+extern void * encode (char *url, char **dir, char **file, char **suffix);
+extern curl_opt init_options();
+
 /**
  * Allocate error term on C side
  * Input : Prolog variable
  * Output : none
  **/ 
 
-DllExport int call_conv pl_allocate_error_term()
+DllExport int call_conv curl_allocate_error_term()
 {
   global_error_term = reg_term(1);
   global_warning_term = reg_term(2);
@@ -56,7 +60,7 @@ DllExport int call_conv pl_allocate_error_term()
  * Remove uninstantiated terms in the warning list at end
  * Input : Warning term
  **/
-DllExport int call_conv pl_finalize_warn()
+DllExport int call_conv curl_finalize_warn()
 {
   /*Temporary prolog term to iterate over the warnings list*/
   prolog_term tmp;

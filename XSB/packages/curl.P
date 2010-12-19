@@ -30,8 +30,8 @@
 :- import xsb_configuration/2 from xsb_configuration.
 
 :- import pl_load_page/1, 
-	pl_allocate_error_term/2, 
-	pl_finalize_warn/1, 
+	curl_allocate_error_term/2, 
+	curl_finalize_warn/1, 
 	pl_encode_url/2 from curl2pl.
 
 :- export 
@@ -64,7 +64,7 @@ load_page(_Source, _Document, _Options, _, _Warn) :-
 load_page(Source, Document, Options, [DirEnc, FileBase, Suffix, Size, Time], Warn) :- 
 	load_page_warn(Source, Document, Options, [Size, Time], Warn),
 	encode_url(Source, [DirEnc, FileBase, Suffix]), 
-	pl_finalize_warn(Warn).
+	curl_finalize_warn(Warn).
 
 load_page_warn(Source, Document, Opt, _, _) :-
 	Opt == [post(true)],
@@ -78,7 +78,7 @@ load_page_warn(Source, Document, Opt, _, _) :-
         pl_load_page([options([post(Str)]), source(Source), document(Document), properties(_, _, _, _, _)]).
 
 load_page_warn(Source, Doc, Options, [Size, Time], Warn) :-
-	pl_allocate_error_term(Error, Warn),
+	curl_allocate_error_term(Error, Warn),
 	examine_open_options(open, Options, ValidOptions), 
         pl_load_page([options(ValidOptions), source(Source), document(DocTmp), properties(SizeTmp, TimeTmp)]), 
 	handle_html_redir(ValidOptions, DocTmp, SizeTmp, TimeTmp, Doc, Size, Time), 

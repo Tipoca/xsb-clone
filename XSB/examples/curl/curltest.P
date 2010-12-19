@@ -55,6 +55,7 @@ test_html_redir(OutPath) :-
 test_secure_crt(OutPath, CertPath) :- 
 	slash(Slash), 
 	fmt_write_string(CertFile, '%s%smail.cs.sunysb.edu.crt', f(CertPath, Slash)), 
+	writeln(aaaa=CertFile),
 	open(url('https://mail.cs.stonybrook.edu'), read, X, [secure(CertFile)]),
 	fmt_write_string(OutFile, '%s%ssecure_crt.html', f(OutPath, Slash)),
 	tell(OutFile), write_page(X), told,  
@@ -67,7 +68,7 @@ test_nonsecure(OutPath) :-
 	close(X).
 
 test_auth(OutPath) :- 
-	open(url('http://irisresearch.library.cornell.edu/control/authBasic/authTest/'), read, X, [auth('test', 'this')]),
+	open(url('http://browserspy.dk/password-ok.php'), read, X, [auth('test', 'test')]),
 	slash(Slash), fmt_write_string(OutFile, '%s%sauth.html', f(OutPath, Slash)),
 	tell(OutFile), write_page(X), told,  
 	close(X).

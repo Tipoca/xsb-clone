@@ -23,6 +23,7 @@
 
 XSBDIR=..\..\..
 MYPROGRAM=curl2pl
+HPROGRAM=load_page
 
 CPP=cl.exe
 OUTDIR=$(XSBDIR)\config\x86-pc-windows\bin
@@ -41,8 +42,12 @@ CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(XSBDIR)\config\x86-pc-windows" \
 		 /D "WIN_NT" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" \
 		 /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /c 
 	
+SOURCE=load_page.c
+"$(INTDIR)\$(HPROGRAM).obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-SOURCE=error.c load_page.c curl2pl.c
+
+SOURCE=error.c curl2pl.c
 "$(INTDIR)\$(MYPROGRAM).obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
@@ -54,7 +59,7 @@ LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib \
 		/machine:I386 /out:"$(OUTDIR)\$(MYPROGRAM).dll" \
 		/libpath:"$(XSBDIR)\config\x86-pc-windows\bin"	\
 		/libpath:.\bin
-LINK32_OBJS=  "$(INTDIR)\$(MYPROGRAM).obj"
+LINK32_OBJS=  "$(INTDIR)\$(HPROGRAM).obj" "$(INTDIR)\$(MYPROGRAM).obj"
 
 "$(OUTDIR)\$(MYPROGRAM).dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
