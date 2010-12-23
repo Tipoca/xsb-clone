@@ -136,7 +136,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   TabledCallInfo callInfo;
   CallLookupResults lookupResults;
   VariantSF producer_sf, consumer_sf;
-  CPtr answer_template;
+  CPtr answer_template_cps, answer_template_heap;
   int template_size, attv_num, tmp;
   TIFptr tip;
 
@@ -210,7 +210,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
    }
 
   producer_sf = CallLUR_Subsumer(lookupResults);
-  answer_template = CallLUR_AnsTempl(lookupResults);
+  answer_template_cps = CallLUR_AnsTempl(lookupResults);
 
 #ifdef MULTI_THREAD
   if( !IsNULL(producer_sf) ) UNLOCK_CALL_TRIE();
@@ -237,7 +237,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 
 /* --------- end incremental evaluation  --------- */
 
-  xsb_dbgmsg((LOG_DEBUG,"After variant call search AT: %x\n",answer_template));
+  xsb_dbgmsg((LOG_DEBUG,"After variant call search AT: %x\n",answer_template_cps));
 
 #ifdef SHARED_COMPL_TABLES
 #include "usurp.h"
@@ -291,7 +291,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 /* --------- end incremental evaluation  --------- */
 
 
-    producer_cpf = answer_template;
+    producer_cpf = answer_template_cps;
     save_find_locx(ereg);
     save_registers(producer_cpf, CallInfo_CallArity(callInfo), rreg);
     SaveProducerCPF(producer_cpf, continuation, producer_sf,
@@ -300,8 +300,8 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     tcp_reset_pcreg(producer_cpf) = inst_addr ;
 #endif
 #ifdef SLG_GC
-    tcp_prevtop(producer_cpf) = answer_template; 
-    /* answer_template points to the previous top, since the A.T. proper
+    tcp_prevtop(producer_cpf) = answer_template_cps; 
+    /* answer_template_cps points to the previous cps, since the A.T. proper
        is now always copied to the heap */
 #endif
     push_completion_frame(producer_sf);
@@ -328,9 +328,9 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       int i;
       //      printf("++Returning answers from COMPLETED table: ");
       //      print_subgoal(stddbg, producer_sf);printf("\n");
-      answer_template = hreg - 1; 
+      answer_template_heap = hreg - 1; 
 
-      tmp = int_val(cell(answer_template));
+      tmp = int_val(cell(answer_template_heap));
       get_var_and_attv_nums(template_size, attv_num, tmp);
       trieinstr_vars_num = -1;
 
@@ -341,9 +341,9 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       if (attv_num > 0) {
 	//	printf("fiddling with attvs\n");
 	CPtr cptr;
-	for (cptr = answer_template - 1;
-	     cptr >= answer_template - template_size; cptr--) {
-	  // tls changed from 10/05 cptr >= answer_template + template_size; cptr++) 
+	for (cptr = answer_template_heap - 1;
+	     cptr >= answer_template_heap - template_size; cptr--) {
+	  // tls changed from 10/05 cptr >= answer_template_heap + template_size; cptr++) 
 	  if (isattv(cell(cptr))) {
 	    trieinstr_vars[++trieinstr_vars_num] = (CPtr) cell(cptr);
 	    xsb_dbgmsg((LOG_TRIE_INSTR, "setting trieinstr_vars for attv %d \n",
@@ -355,7 +355,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       //      printf("nvivrs %d\n",trieinstr_vars_num);
       trieinstr_unif_stkptr = trieinstr_unif_stk-1;
       for (i = 0; i < template_size; i++) {
-	push_trieinstr_unif_stk(cell(answer_template-template_size+i));
+	push_trieinstr_unif_stk(cell(answer_template_heap-template_size+i));
       }
       delay_it = 1;
       lpcreg = (byte *)subg_ans_root_ptr(producer_sf);
@@ -419,19 +419,19 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 #endif
     adjust_level(subg_compl_stack_ptr(producer_sf));
 #ifdef CONC_COMPL
-        consumer_cpf = answer_template;
+        consumer_cpf = answer_template_cps;
     }
     else if( openreg < COMPLSTACKBOTTOM )
-        consumer_cpf = answer_template;
+        consumer_cpf = answer_template_cps;
     else
     {
-	producer_cpf = answer_template;
+	producer_cpf = answer_template_cps;
     	SaveProducerCPF(producer_cpf, (pb)&check_complete_inst, producer_sf,
                     	CallInfo_CallArity(callInfo), (hreg - 1));
 	consumer_cpf = breg = producer_cpf;
     }
 #else
-    consumer_cpf = answer_template;
+    consumer_cpf = answer_template_cps;
 #endif
     save_find_locx(ereg);
 
@@ -439,14 +439,14 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     prev_cptop = consumer_cpf;
 #endif
 
-    answer_template = hreg-1;
+    answer_template_heap = hreg-1;
 
     efreg = ebreg;
     if (trreg > trfreg) trfreg = trreg;
     if (hfreg < hreg) hfreg = hreg;
     SaveConsumerCPF( consumer_cpf, consumer_sf,
 		     subg_pos_cons(producer_sf), 
-		     answer_template);
+		     answer_template_heap);
 
 #ifdef SLG_GC
     nlcp_prevtop(consumer_cpf) = prev_cptop;
@@ -487,7 +487,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 			  first_answer,
 			  (SubConsSF)consumer_sf,
 			  (SubProdSF)producer_sf,
-			  answer_template,
+			  answer_template_heap,
 			  TPA_NoOp,
 			  TPA_NoOp );
 
@@ -496,9 +496,9 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       nlcp_trie_return(consumer_cpf) = answer_continuation; 
       hbreg = hreg;
 
-      tmp = int_val(cell(answer_template));
+      tmp = int_val(cell(answer_template_heap));
       get_var_and_attv_nums(template_size, attv_num, tmp);
-      answer_template--;
+      answer_template_heap--;
 
       /* TLS 060913: need to initialize here, as it doesnt get
 	 initialized in all paths of table_consume_answer */
@@ -506,7 +506,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 
       //      printf("consuming answer attv_num %d\n",attv_num);
 
-      table_consume_answer(CTXTc first_answer,template_size,attv_num,answer_template,
+      table_consume_answer(CTXTc first_answer,template_size,attv_num,answer_template_heap,
 			   CallInfo_TableInfo(callInfo));
 
       if (is_conditional_answer(first_answer)) {

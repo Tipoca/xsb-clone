@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.85 2010-12-09 19:15:38 tswift Exp $
+** $Id: tables.c,v 1.86 2010-12-23 18:12:43 tswift Exp $
 ** 
 */
 
@@ -288,8 +288,8 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
 
     tmplt_component = CallLUR_AnsTempl(*results);
     size = int_val(*tmplt_component) & 0xffff;
-    xsb_dbgmsg((LOG_TRIE,
-		"done with vcs, answer_template %x\n",tmplt_component));
+    //    printf("done with vcs, answer_template info %x lur %x size %d\n",
+    //	   CallLUR_AnsTempl(*results),CallInfo_AnsTempl(*call_info),size);
 
     /* expand heap if there's not enough space */
     if ((pb)top_of_localstk < (pb)top_of_heap + size +
@@ -310,7 +310,15 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
     hreg += size;
     bld_copy(hreg, cell(CallLUR_AnsTempl(*results)));
     hreg++;
+
+    /* CallLUR_AnsTemp pointed to the youngest part of AnsTempl, as it
+     * was set to SubsFactReg at the end of vcs; reset it to the
+     * oldest part of AnsTempl, which will make it =
+     * CallInfo_AnsTempl.  Both still point to CPS.  */
+
     CallLUR_AnsTempl(*results) = CallLUR_AnsTempl(*results) + size + 1;
+    //    printf("at end: answer_template %x / %x size %d\n",CallLUR_AnsTempl(*results),
+    //	   CallInfo_AnsTempl(*call_info),size);
   }
   return XSB_SUCCESS;
 }

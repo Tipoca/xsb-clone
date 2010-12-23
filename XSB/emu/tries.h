@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.70 2010-12-17 22:59:58 tswift Exp $
+** $Id: tries.h,v 1.71 2010-12-23 18:12:43 tswift Exp $
 ** 
 */
 
@@ -321,7 +321,7 @@ typedef struct Tabled_Call_Info_Record {
 #define CallInfo_Arguments(CallInfo)	( (CallInfo).arg_vector )
 #define CallInfo_AnsTempl(CallInfo)	( (CallInfo).var_vector_loc )
 
-
+/* TLS: there isn't any need for AnsTempl (var_vector) here that I can see */
 typedef struct Call_Check_Insert_Results {
   BTNptr call_trie_term;
   struct subgoal_frame *subsumers_sgf;
