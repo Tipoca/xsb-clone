@@ -51,12 +51,12 @@
  *             |             |
  *             |=============|
  *             | Rest of CPF |--- Different for Generator and Consumer
- *             |-------------|_
+ *             |-   -   -   -|_
  *             |   INT: m    | \
  *             |   Term-m    |  |
- *             |      .      |  |- Answer Template
- *             |      .      |  |
- *             |      .      |  |
+ *             |      .      |  |- Answer Template (Note that this is overritten by
+ *             |      .      |  |  Generator or consumer CPS after the A.T. is copied 
+ *             |      .      |  |  to the heap).
  *             |   Term-1    |_/
  *             |=============|
  *             |      .      |
@@ -301,8 +301,9 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 #endif
 #ifdef SLG_GC
     tcp_prevtop(producer_cpf) = answer_template_cps; 
-    /* answer_template_cps points to the previous cps, since the A.T. proper
-       is now always copied to the heap */
+   /* answer_template_cps points to the previous cps, since the
+      A.T. proper has been copied to the heap.  In fact,
+      SaveProducerCPF has already over-written the CPS A.T. */
 #endif
     push_completion_frame(producer_sf);
 #ifdef CONC_COMPL
