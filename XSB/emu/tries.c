@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.139 2010-12-18 00:01:27 tswift Exp $
+** $Id: tries.c,v 1.140 2010-12-23 18:47:55 tswift Exp $
 ** 
 */
 
@@ -1718,7 +1718,8 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
     TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
   }
 
-  cell(--SubsFactReg) = makeint(attv_ctr << 16 | ctr);
+  //  cell(--SubsFactReg) = makeint(attv_ctr << 16 | ctr);
+    cell(--SubsFactReg) = encode_ansTempl_ctrs(attv_ctr,ctr);
   /* 
    * "Untrail" any variable that used to point to VarEnumerator.  For
    * variables, note that *SubsFactReg is the address of a cell in the

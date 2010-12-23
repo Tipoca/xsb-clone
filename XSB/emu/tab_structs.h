@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.13 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tab_structs.h,v 1.14 2010-12-23 18:47:55 tswift Exp $
 ** 
 */
 
@@ -611,7 +611,7 @@ enum SubgoalFrameType {
    safe.
 
    Fields marked pre-compl are not needed after completion; post-compl
-   are not needed before completion.
+   Are not needed before completion.
    -------------------------------- */
 
 typedef struct subgoal_frame {
@@ -1097,6 +1097,8 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 #define get_var_and_attv_nums(var_num, attv_num, tmp_int)	\
   var_num = tmp_int & 0xffff;					\
   attv_num = tmp_int >> 16
+
+#define encode_ansTempl_ctrs(Attvars,Ctr)   makeint(Attvars << 16 | Ctr)
 
 /*----------------------------------------------------------------------*/
 
