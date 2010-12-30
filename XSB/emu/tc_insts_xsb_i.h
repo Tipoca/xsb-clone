@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.36 2010-12-16 23:38:00 tswift Exp $
+** $Id: tc_insts_xsb_i.h,v 1.37 2010-12-30 23:54:57 tswift Exp $
 ** 
 */
 
@@ -420,40 +420,7 @@ XSB_Start_Instr(trie_no_cp_val,_trie_no_cp_val)
   TRIE_R_LOCK();
   xsb_dbgmsg((LOG_TRIE_INSTR, "trie_no_cp_val"));
   NodePtr = (BTNptr) lpcreg;
-{
-  Cell cell2deref;		
-  //  printf("*trieinstr_unif_stkptr %p\n",*trieinstr_unif_stkptr);
-  XSB_Deref(*trieinstr_unif_stkptr);    						
-  if (isref(*trieinstr_unif_stkptr)) {		                 // case a 
-    cell2deref = (Cell)trieinstr_vars[(int)int_val(opatom)];			
-    XSB_Deref(cell2deref);	       					
-    if (cell2deref != *trieinstr_unif_stkptr)					
-      bind_ref((CPtr) *trieinstr_unif_stkptr, cell2deref);			
-  }									
-  else if (isattv(*trieinstr_unif_stkptr)) {			 // case b 		
-    xsb_dbgmsg((LOG_TRIE_INSTR, "symbol number is %d\n",(int)int_val(opatom)));
-    cell2deref = (Cell) trieinstr_vars[(int)int_val(opatom)];			
-    XSB_Deref(cell2deref);     						
-    if (*trieinstr_unif_stkptr != cell2deref) {			// case b.1		
-      /* Do not trigger attv interrupt! */			      
-      
-      bind_ref(clref_val(*trieinstr_unif_stkptr), cell2deref);			
-    }									
-    else {					       // case b.2		
-      attv_dbgmsg(">>>> keep old attr in unify_with_trie_val\n");	
-    }									
-  }									
-  else {					      // case c			
-    op1 = (Cell)*trieinstr_unif_stkptr;						
-    op2 = (Cell) trieinstr_vars[(int)int_val(opatom)];			
-    if (unify(CTXTc op1,op2) == FALSE) {					
-      Fail1;								
-      XSB_Next_Instr();							
-    }									
-  }									
-  trieinstr_unif_stkptr--;							
-}
-/*   unify_with_trie_val; */
+  unify_with_trie_val; 
   next_lpcreg;
 XSB_End_Instr()
 
