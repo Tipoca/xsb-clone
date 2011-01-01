@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.118 2010-12-31 20:45:36 dwarren Exp $
+** $Id: parse.P,v 1.119 2011-01-01 17:33:49 dwarren Exp $
 ** 
 */
 
@@ -982,7 +982,7 @@ is_aggregation_arg_spec(lattice(Spec3)) :- is_spec3(Spec3), !.
 is_aggregation_arg_spec(fold(Spec3,Id)) :- is_spec3(Spec3),is_spec1(Id),!.
 is_aggregation_arg_spec(po(Spec2)) :- is_spec2(Spec2),!.
 is_aggregation_arg_spec(po(Spec2,Spec3)) :- is_spec2(Spec2),is_spec3(Spec3),!.
-is_aggregation_arg_spec(intenset).
+is_aggregation_arg_spec(termset).
 
 is_spec3(P/3) :- atom(P),!.
 is_spec3(Skel) :- functor(Skel,_,3).

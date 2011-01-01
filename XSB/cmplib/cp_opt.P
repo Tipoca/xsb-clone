@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.P,v 1.17 2010-12-31 20:45:36 dwarren Exp $
+** $Id: cp_opt.P,v 1.18 2011-01-01 17:33:49 dwarren Exp $
 ** 
 */
 
@@ -188,19 +188,18 @@ aggr_trans_pred(Sym,Pscs,Oth,ArgNo,ExistArgList,AggSpec,[pred(Sym1,Pscs,Oth)|ClL
 	parse_preddef(NewTerm,true,[pred(Sym1,_,_)],SymTab).
 
 generate_agg_clauses(po(OpSpec),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab) :- !,
+	functor(PredTerm,Pred,Arity),
 	(spec_skel(OpSpec,OpSpec1,2)
 	 ->	true
-	 ;	functor(PredTerm,Pred,Arity),
-		syntax_error(['Improper join specification in tabling declaration for ',Pred,'/',Arity])
+	 ;	syntax_error(['Improper join specification in tabling declaration for ',Pred,'/',Arity])
 	),
 	sym_propin(tabled,Sym),
-	functor(PredTerm,_,Arity),
 	copy_term(OpSpec1,OpSpec2),
 	arg(1,OpSpec1,OVar), arg(2,OpSpec1,Var1),
 	arg(1,OpSpec2,Var1), arg(2,OpSpec2,OVar),
 	Body = ('_$savecp'(Breg),
 		breg_retskel(Breg,Arity,Skel,Cs),
-		(nonvar(Var) -> instantiation_error ; true),
+		(nonvar(Var) -> instantiation_error(Pred/Arity,Arity,var) ; true),
 		excess_vars(Skel,[Var|ExistVarList],[],Vars),
 		copy_term(t(Vars,Skel,Var),t(Vars,OSkel,OVar)),
 		Pred1Term,
@@ -219,6 +218,7 @@ generate_agg_clauses(po(OpSpec),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClL
 	ensure_imported(breg_retskel/4,machine,SymTab),
 	ensure_imported(excess_vars/4,setof,SymTab),
 	ensure_imported(copy_term/2,basics,SymTab),  % but problems with sysmod?
+	ensure_imported(instantiation_error/3,error_handler,SymTab),
 	ensure_imported('_$$get_returns'/3,tables,SymTab),
 	ensure_imported('delete_return'/2,tables,SymTab),
 	ensure_imported('member'/2,basics,SymTab).
@@ -228,10 +228,10 @@ generate_agg_clauses(AggrSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClLis
 	 AggrSpec = lattice(OpSpec), Id = no_identity
 	),
 	!,
+	functor(PredTerm,Pred,Arity),
 	(spec_skel(OpSpec,OpSpec1,3)
 	 ->	true
-	 ;	functor(PredTerm,Pred,Arity),
-		syntax_error(['Improper join specification in tabling declaration for ',Pred,'/',Arity])
+	 ;	syntax_error(['Improper join specification in tabling declaration for ',Pred,'/',Arity])
 	),
 	(Id = F/1
 	 ->	GetID =.. [F,OVar],
@@ -241,11 +241,10 @@ generate_agg_clauses(AggrSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClLis
 	 ;	Init = (OVar = Id, OpSpec1)
 	),
 	sym_propin(tabled,Sym),
-	functor(PredTerm,_,Arity),
 	arg(1,OpSpec1,OVar), arg(2,OpSpec1,Var1), arg(3,OpSpec1,Var),
 	Body = ('_$savecp'(Breg),
 		breg_retskel(Breg,Arity,Skel,Cs),
-		(nonvar(Var) -> instantiation_error ; true),
+		(nonvar(Var) -> instantiation_error(Pred/Arity,Arity,var) ; true),
 		excess_vars(Skel,[Var|ExistVarList],[],Vars),
 		copy_term(t(Vars,Skel,Var),t(Vars,OSkel,OVar)),
 		Pred1Term,
@@ -259,12 +258,13 @@ generate_agg_clauses(AggrSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClLis
 	parse_preddef(PredTerm,Body,ClList2,SymTab),
 	ensure_imported(breg_retskel/4,machine,SymTab),
 	ensure_imported(excess_vars/4,setof,SymTab),
-	ensure_imported(copy_term/2,basics,SymTab),  %problem with sysmod?
+	ensure_imported(copy_term/2,basics,SymTab),
+	ensure_imported(instantiation_error/3,error_handler,SymTab),
 	ensure_imported('_$$get_returns'/3,tables,SymTab),
 	ensure_imported(delete_return/2,tables,SymTab).
-generate_agg_clauses(intenset,Sym,PredTerm,Var1,[],Pred1Term,Var,ClList2,SymTab) :- !,
-	sym_propin(tabled,Sym),
-	sym_propin((use_subsumptive_tabling),Sym),
+generate_agg_clauses(termset,_Sym,PredTerm,Var1,[],Pred1Term,Var,ClList2,SymTab) :- !,
+	functor(Pred1Term,NPred,Arity),
+	sym_insert(NPred,Arity,[tabled,use_subsumptive_tabling],SymTab,_),
 	Body = Pred1Term,
 	excess_vars(Pred1Term,[Var1],[],Vars),
 	copy_term(t(Pred1Term,Var1,Vars),t(Pred1Temp,AbsVar,Vars)),
@@ -330,7 +330,6 @@ get_aggr_spec0(ArgNo,Spec,Arity,ExistArgList,OpArgNo,OpSpec) :-
 
 ensure_imported(Pred/Arity,Mod,SymTab) :-
 	sym_insert(Mod,0,[module],SymTab,_),
-%%	sym_insert(Pred,Arity,im(Mod),SymTab,_).
 	sym_insert(Pred,Arity,[],SymTab,Sym),
 	(sym_prop(global,Sym)
 	 ->	true
