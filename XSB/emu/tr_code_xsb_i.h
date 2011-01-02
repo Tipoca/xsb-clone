@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.28 2010-12-16 23:38:00 tswift Exp $
+** $Id: tr_code_xsb_i.h,v 1.29 2011-01-02 22:16:43 tswift Exp $
 ** 
 */
 
@@ -236,6 +236,11 @@ int     delay_it;
 }
 
 /*----------------------------------------------------------------------*/
+/*
+    printf("in unify_with_trie_numcon %x\n",*reg_arrayptr);		\
+    printf("derefed\n");				\
+    printf(">>>> add_interrupt in unify_with_trie_numcon\n");	\
+*/
 
 #define unify_with_trie_numcon {					\
   XSB_Deref(*trieinstr_unif_stkptr);					       	\
@@ -361,9 +366,42 @@ int     delay_it;
   else if (isattv(*trieinstr_unif_stkptr)) {					\
     cell2deref = (Cell) trieinstr_vars[(int)int_val(opatom)];			\
     XSB_Deref(cell2deref);     						\
-    if (*trieinstr_unif_stkptr != cell2deref) {					\
-      /* Do not trigger attv interrupt! */				\
-      bind_ref(clref_val(*trieinstr_unif_stkptr), cell2deref);			\
+    if (*trieinstr_unif_stkptr != cell2deref) {				\
+      /* Need to trigger attv interrupt */				\
+    add_interrupt(CTXTc cell(((CPtr)dec_addr(*trieinstr_unif_stkptr) + 1)), \
+		  cell2deref);				\
+    bind_ref((CPtr)dec_addr(*trieinstr_unif_stkptr), cell2deref);	\
+    }									\
+    else {								\
+      attv_dbgmsg(">>>> keep old attr in unify_with_trie_val\n");	\
+    }									\
+  }									\
+  else {								\
+    op1 = (Cell)*trieinstr_unif_stkptr;						\
+    op2 = (Cell) trieinstr_vars[(int)int_val(opatom)];			\
+    if (unify(CTXTc op1,op2) == FALSE) {				\
+      Fail1;								\
+      XSB_Next_Instr();							\
+    }									\
+  }									\
+  trieinstr_unif_stkptr--;							\
+}
+
+#define unify_with_variant_trie_val {						\
+  Cell cell2deref;							\
+  XSB_Deref(*trieinstr_unif_stkptr);    						\
+  if (isref(*trieinstr_unif_stkptr)) {						\
+    cell2deref = (Cell)trieinstr_vars[(int)int_val(opatom)];			\
+    XSB_Deref(cell2deref);	       					\
+    if (cell2deref != *trieinstr_unif_stkptr)					\
+      bind_ref((CPtr) *trieinstr_unif_stkptr, cell2deref);			\
+  }									\
+  else if (isattv(*trieinstr_unif_stkptr)) {					\
+    cell2deref = (Cell) trieinstr_vars[(int)int_val(opatom)];			\
+    XSB_Deref(cell2deref);     						\
+    if (*trieinstr_unif_stkptr != cell2deref) {				\
+      /* Specialization: do not need to trigger attv interrupt */	\
+      bind_ref(clref_val(*trieinstr_unif_stkptr), cell2deref);		\
     }									\
     else {								\
       attv_dbgmsg(">>>> keep old attr in unify_with_trie_val\n");	\

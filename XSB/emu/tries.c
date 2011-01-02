@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.140 2010-12-23 18:47:55 tswift Exp $
+** $Id: tries.c,v 1.141 2011-01-02 22:16:43 tswift Exp $
 ** 
 */
 
@@ -450,47 +450,6 @@ BTNptr newBasicTrie(CTXTdeclc Cell symbol, int trie_type) {
    TRIE_W_UNLOCK();							\
 }
 
-/* This functional version of the above code is not used in the system
-   -- but I  use it for debugging (sequential mode) so please leave it around
-
-void fone_node_chk_ins(int Found,Cell item,int TrieType,BTNptr **GNPP,
-		       BTNptr *Parent) {
-									
-   int count = 0;							
-   BTNptr LocalNodePtr;					
-
-   BTNptr *GNodePtrPtr = *GNPP;
-   BTNptr Paren = *Parent;
-									
-   TRIE_W_LOCK();							
-   if ( IsNULL(*GNodePtrPtr) ) {					
-     New_BTN(LocalNodePtr,TrieType,INTERIOR_NT,item,Paren,NULL);	
-     *GNodePtrPtr = Paren = LocalNodePtr;				
-     Found = 0;								
-   }									
-   else if ( IsHashHeader(*GNodePtrPtr) ) {				
-     BTHTptr ht = (BTHTptr)*GNodePtrPtr;				
-     GNodePtrPtr = CalculateBucketForSymbol(ht,item);			
-     IsInsibling(*GNodePtrPtr,count,Found,item,TrieType);		
-     if (!Found) {							
-     MakeHashedNode(LocalNodePtr);					
-       BTHT_NumContents(ht)++;						
-       TrieHT_ExpansionCheck(ht,count);					
-     }									
-   }									
-   else {								
-     BTNptr pParent = Paren;						
-     IsInsibling(*GNodePtrPtr,count,Found,item,TrieType);		
-     if (IsLongSiblingChain(count))					
-//       used to pass in GNodePtrPtr (ptr to hook)		      
-       hashify_children(CTXTc pParent,TrieType);			
-   }									
-   GNodePtrPtr = &(BTN_Child(LocalNodePtr));				
-   *GNPP = GNodePtrPtr;
-   *Parent = Paren;
-}
-*/
-
 /*----------------------------------------------------------------------*/
 
 /* Trie-HashTable maintenance routines.
@@ -732,8 +691,9 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
 
 /*----------------------------------------------------------------------*/
 /* does not save substitution factor so should not be used for copying
-   in answers with delay lists.  I.e. it should be used by
-   delay_chk_insert, asserting tries, and interning tries.
+   in answers with delay lists.  It is currently used for
+   delay_chk_insert, and asserting tries.  (Interning tries use a
+   different routine).
 */
 
 #define recvariant_trie(flag,TrieType) {				\
@@ -1897,7 +1857,7 @@ void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
   resetpdl;								\
 }
 
-BTNptr whole_term_chk_ins(CTXTdeclc Cell term, BTNptr *hook, int *flagptr, int cps_check_flag, int expand_flag)
+BTNptr trie_intern_chk_ins(CTXTdeclc Cell term, BTNptr *hook, int *flagptr, int cps_check_flag, int expand_flag)
 {
     Psc  psc;
     CPtr xtemp1;
@@ -1966,7 +1926,7 @@ BTNptr whole_term_chk_ins(CTXTdeclc Cell term, BTNptr *hook, int *flagptr, int c
       recvariant_trie_intern(flag, INTERN_TRIE_TT);
       break;
     default:
-      xsb_abort("Bad type tag in whole_term_chk_ins()");
+      xsb_abort("Bad type tag in trie_intern_chk_ins()");
     }
 
     /*
@@ -2003,14 +1963,14 @@ BTNptr whole_term_chk_ins(CTXTdeclc Cell term, BTNptr *hook, int *flagptr, int c
 }
 
 /*----------------------------------------------------------------------*/
-/* one_term_chk_ins(termptr,hook,flag)					*/
+/* trie_assert_chk_ins(termptr,hook,flag)					*/
 /*----------------------------------------------------------------------*/
 
 /*
  * For creating asserted tries with builtin "trie_assert".
  */
 
-BTNptr one_term_chk_ins(CTXTdeclc CPtr termptr, BTNptr root, int *flagptr)
+BTNptr trie_assert_chk_ins(CTXTdeclc CPtr termptr, BTNptr root, int *flagptr)
 {
   int  arity;
   CPtr cptr;
@@ -2087,7 +2047,7 @@ BTNptr one_term_chk_ins(CTXTdeclc CPtr termptr, BTNptr root, int *flagptr)
       recvariant_trie(flag, ASSERT_TRIE_TT);
       break;
     default:
-      xsb_abort("Bad type tag in one_term_check_ins()");
+      xsb_abort("Bad type tag in trie_assert_check_ins()");
     }
   }                
   resetpdl;                                                   
@@ -2172,20 +2132,20 @@ byte *trie_get_returns(CTXTdeclc VariantSF sf, Cell retTerm) {
   xsb_dbgmsg((LOG_DEBUG,">>>> The end of trie_get_returns ==> go to answer trie"));
 #endif
   delay_it = 0;  /* Don't delay the answer. */
-#ifdef MULTI_THREAD_RWL
-/* save choice point for trie_unlock instruction */
-//       save_find_locx(ereg);
-//       tbreg = top_of_cpstack;
-#ifdef SLG_GC
-       old_cptop = tbreg;
-#endif
-       save_choicepoint(tbreg,ereg,(byte *)&trie_fail_unlock_inst,breg);
-#ifdef SLG_GC
-       cp_prevtop(tbreg) = old_cptop;
-#endif
-       breg = tbreg;
-       hbreg = hreg;
-#endif
+  //#ifdef MULTI_THREAD_RWL
+  /* save choice point for trie_unlock instruction */
+  //       save_find_locx(ereg);
+  //       tbreg = top_of_cpstack;
+  //#ifdef SLG_GC
+  //       old_cptop = tbreg;
+  //#endif
+  //       save_choicepoint(tbreg,ereg,(byte *)&trie_fail_unlock_inst,breg);
+  //#ifdef SLG_GC
+  //       cp_prevtop(tbreg) = old_cptop;
+  //#endif
+  //       breg = tbreg;
+  //       hbreg = hreg;
+  //#endif
   return (byte *)ans_root_ptr;
 }
 
@@ -2231,20 +2191,20 @@ byte * trie_get_calls(CTXTdecl)
 #endif
 	 push_trieinstr_unif_stk(cell(cptr+i));
        }
-#ifdef MULTI_THREAD_RWL
-/* save choice point for trie_unlock instruction */
-//       save_find_locx(ereg);
-//       tbreg = top_of_cpstack;
-#ifdef SLG_GC
-       old_cptop = tbreg;
-#endif
-       save_choicepoint(tbreg,ereg,(byte *)&trie_fail_unlock_inst,breg);
-#ifdef SLG_GC
-       cp_prevtop(tbreg) = old_cptop;
-#endif
-       breg = tbreg;
-       hbreg = hreg;
-#endif
+       //#ifdef MULTI_THREAD_RWL
+       ///* save choice point for trie_unlock instruction */
+       //       save_find_locx(ereg);
+       //       tbreg = top_of_cpstack;
+       //#ifdef SLG_GC
+       //       old_cptop = tbreg;
+       //#endif
+       //       save_choicepoint(tbreg,ereg,(byte *)&trie_fail_unlock_inst,breg);
+       //#ifdef SLG_GC
+       //       cp_prevtop(tbreg) = old_cptop;
+       //#endif
+       //       breg = tbreg;
+       //       hbreg = hreg;
+       //#endif
 
        return (byte *)call_trie_root;
      }

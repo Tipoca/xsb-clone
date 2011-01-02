@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.185 2010-09-05 18:47:17 tswift Exp $
+** $Id: biassert.c,v 1.186 2011-01-02 22:16:42 tswift Exp $
 ** 
 */
 
@@ -4076,7 +4076,7 @@ int trie_assert(CTXTdecl)
     inst_node_ptr = (BTNptr)*(Trie_Asserted_Clref +3);
 
   SYS_MUTEX_LOCK(MUTEX_TRIE);
-  one_term_chk_ins(CTXTc (CPtr)Clause,inst_node_ptr,&found);
+  trie_assert_chk_ins(CTXTc (CPtr)Clause,inst_node_ptr,&found);
   SYS_MUTEX_UNLOCK(MUTEX_TRIE);
   SYS_MUTEX_UNLOCK( MUTEX_DYNAMIC );
   switch_from_trie_assert;	

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.37 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: inst_xsb.h,v 1.38 2011-01-02 22:16:43 tswift Exp $
 ** 
 */
 
@@ -270,6 +270,11 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define trie_assert_inst	0x7c
 #define trie_root		0x7d
 
+#define variant_trie_no_cp_val        0x86
+#define variant_trie_trust_val        0x87
+#define variant_trie_try_val          0x88
+#define variant_trie_retry_val        0x89
+
 /* to reclaim deleted returns at completion */
 #define trie_no_cp_fail         0x90
 #define trie_trust_fail         0x91
@@ -277,9 +282,7 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define trie_retry_fail         0x93
 
 /* to unlock the trie */
-#define trie_fail_unlock        0x94
-
-/*----------------------------------------------------------------------*/
+//#define trie_fail_unlock        0x94
 
 #define getfloat	0x80
 #define putfloat	0x81
@@ -287,6 +290,8 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define bldfloat	0x83
 #define getdfloat	0x84
 #define putdfloat	0x85
+
+/*----------------------------------------------------------------------*/
 
 /* Non-determinism instructions */
 

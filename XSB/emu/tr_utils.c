@@ -1518,7 +1518,7 @@ void private_trie_intern(CTXTdecl) {
     printf("Inserting into trie with trie_no_cp_fail root\n");
   }
 
-  Leaf = whole_term_chk_ins(CTXTc term,&(itrie_array[index].root),
+  Leaf = trie_intern_chk_ins(CTXTc term,&(itrie_array[index].root),
 			    &flag,check_cps_flag,expand_flag);
   switch_from_trie_assert;
   //  printf("root %p\n",itrie_array[index].root);
@@ -1544,7 +1544,7 @@ void shas_trie_intern(CTXTdecl) {
   }
 
   switch_to_shared_trie_assert(&(shared_itrie_array[index].trie_mutex));
-  Leaf = whole_term_chk_ins(CTXTc term,&(shared_itrie_array[index].root),
+  Leaf = trie_intern_chk_ins(CTXTc term,&(shared_itrie_array[index].root),
 			    &flag,NO_CPS_CHECK,EXPAND_HASHES);
   switch_from_shared_trie_assert(&(shared_itrie_array[index].trie_mutex));
   
@@ -1723,8 +1723,8 @@ int interned_trie_cps_check(CTXTdeclc BTNptr root)
       trieNode = TrieNodeFromCP(cp_top1);
       if (IsInInternTrie(trieNode)) {
 	pLeaf = trieNode;
-	while ( IsNonNULL(pLeaf) && (! IsTrieRoot(pLeaf)) && 
-		((int) TN_Instr(pLeaf) != trie_fail_unlock) ) {
+	while ( IsNonNULL(pLeaf) && (! IsTrieRoot(pLeaf))) {
+		//&& 		((int) TN_Instr(pLeaf) != trie_fail_unlock) ) {
 	  pLeaf = BTN_Parent(pLeaf);
 	}
 	if (pLeaf == root) {
@@ -2167,8 +2167,8 @@ Psc get_psc_for_answer_trie_cp(CTXTdeclc BTNptr pLeaf)
 {
   TIFptr tif_ptr;
 
-  while ( IsNonNULL(pLeaf) && (! IsTrieRoot(pLeaf)) && 
-			       ((int) TN_Instr(pLeaf) != trie_fail_unlock) ) {
+  while ( IsNonNULL(pLeaf) && (! IsTrieRoot(pLeaf))) { 
+    //&& ((int) TN_Instr(pLeaf) != trie_fail_unlock) ) {
     pLeaf = BTN_Parent(pLeaf);
   }
 
@@ -2189,8 +2189,8 @@ Psc get_psc_for_answer_trie_cp(CTXTdeclc BTNptr pLeaf)
 VariantSF get_subgoal_frame_for_answer_trie_cp(CTXTdeclc BTNptr pLeaf) 
 {
 
-  while ( IsNonNULL(pLeaf) && (! IsTrieRoot(pLeaf)) && 
-			       ((int) TN_Instr(pLeaf) != trie_fail_unlock) ) {
+  while ( IsNonNULL(pLeaf) && (! IsTrieRoot(pLeaf)) ) {
+    // &&  ((int) TN_Instr(pLeaf) != trie_fail_unlock) ) {
     pLeaf = BTN_Parent(pLeaf);
   }
 
@@ -2208,8 +2208,8 @@ VariantSF get_subgoal_frame_for_answer_trie_cp(CTXTdeclc BTNptr pLeaf)
 TIFptr get_tif_for_answer_trie_cp(CTXTdeclc BTNptr pLeaf)
 {
 
-  while ( IsNonNULL(pLeaf) && (! IsTrieRoot(pLeaf)) && 
-			       ((int) TN_Instr(pLeaf) != trie_fail_unlock) ) {
+  while ( IsNonNULL(pLeaf) && (! IsTrieRoot(pLeaf)) ) {
+    // &&      ((int) TN_Instr(pLeaf) != trie_fail_unlock) ) {
     pLeaf = BTN_Parent(pLeaf);
   }
   return subg_tif_ptr(TN_Parent(pLeaf));

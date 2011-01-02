@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.43 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: trie_internals.h,v 1.44 2011-01-02 22:16:43 tswift Exp $
 ** 
 */
 
@@ -95,7 +95,7 @@
  */
 
 
-#define TN_SetInstr(pTN,Symbol)					\
+#define TN_SetInstr(pTN,Symbol,TrieType)			\
    switch( TrieSymbolType(Symbol) ) {				\
    case XSB_STRUCT:						\
      TN_Instr(pTN) = (byte)trie_try_str;			\
@@ -110,10 +110,13 @@
        TN_Instr(pTN) = (byte)trie_try_var;			\
      else if (IsNewTrieAttv(Symbol)) {				\
        TN_Instr(pTN) = (byte)trie_try_attv;			\
-     } \
+     }								\
      else {							\
-       TN_Instr(pTN) = (byte)trie_try_val;			\
-     } \
+       if (TrieType == BASIC_ANSWER_TRIE_TT) 			\
+	 TN_Instr(pTN) = (byte)variant_trie_try_val;		\
+       else							\
+	 TN_Instr(pTN) = (byte)trie_try_val;			\
+     }								\
      break;							\
    case XSB_LIST:						\
      TN_Instr(pTN) = (byte)trie_try_list;			\
@@ -442,7 +445,7 @@ extern Cell TrieVarBindings[];
 #define TN_Init(TN,TrieType,NodeType,Symbol,Parent,Sibling) {	\
 								\
    if ( NodeType != TRIE_ROOT_NT ) {				\
-     TN_SetInstr(TN,Symbol);					\
+     TN_SetInstr(TN,Symbol,TrieType);				\
      TN_ResetInstrCPs(TN,Sibling);				\
    }								\
    else								\

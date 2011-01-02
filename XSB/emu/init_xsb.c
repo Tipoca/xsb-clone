@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.171 2010-12-16 23:38:00 tswift Exp $
+** $Id: init_xsb.c,v 1.172 2011-01-02 22:16:43 tswift Exp $
 ** 
 */
 
@@ -155,7 +155,7 @@ Cell check_complete_inst;
 Cell hash_handle_inst;
 Cell fail_inst;
 Cell dynfail_inst;
-Cell trie_fail_unlock_inst;
+//Cell trie_fail_unlock_inst;
 Cell halt_inst;
 Cell proceed_inst;
 byte *check_interrupts_restore_insts_addr;
@@ -1412,7 +1412,7 @@ void init_symbols(CTXTdecl)
   cell_opcode(&proceed_inst) = proceed;         /* returned by load_obj */
   cell_opcode(&fail_inst) = fail;
   cell_opcode(&dynfail_inst) = dynfail;
-  cell_opcode(&trie_fail_unlock_inst) = trie_fail_unlock;
+  //  cell_opcode(&trie_fail_unlock_inst) = trie_fail_unlock;
   cell_opcode(&answer_return_inst) = answer_return;
   cell_opcode(&resume_compl_suspension_inst) = resume_compl_suspension;
   cell_opcode(&resume_compl_suspension_inst2) = resume_compl_suspension;

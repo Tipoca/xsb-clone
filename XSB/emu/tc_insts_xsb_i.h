@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.37 2010-12-30 23:54:57 tswift Exp $
+** $Id: tc_insts_xsb_i.h,v 1.38 2011-01-02 22:16:43 tswift Exp $
 ** 
 */
 
@@ -380,45 +380,48 @@ XSB_End_Instr()
 
 /*----------------------------------------------------------------------*/
 
-/* Documentation on trie_xxx_val instructions (TLS).  Documentation
-   refers to trie_no_cp_val below, but appllies also to
-   unify_with_trie_val macro.
+/* TLS: Trie val instructions were split up in Jan 11 to fix a bug in
+   the handling of attributed variables.  A test case
+   /attv_tests/attv_val_test.P was also added.
 
-These instructions can be somewhat confusing as they are, to some
-extent, overcoded.  They can most easily be explained using reasoning
-by cases.  First, note that tries are used in 3 main ways: a) variant
-tabling, b) subsumptive tabling, and c) asserted tries, and the
-behavior of the val instructions differs somewhat in each case.  
+   Asserted, Interned, and (future) subsumptive tables use
+   trie_xxx_val instructions, while vsriant tables may safely use
+   variant_trie_xxx_val.
 
-a) Variant Tabling.  In this case, the routine variant_answer_search()
-distinguishes between usage 1) an attv of the call that is unchanged
-by the answer; usage 2) an attv of the call that is changed to another
-attv in the answer; usage 3) a variable in the call that is bound to
-an attv; usage 4) a variable in the call that is bound to another
-variable in the call by a binding in the answer.  The routine
-variant_answer_search() generates trie_xxx_val instructions only
-usages 1 and 4 above.  In usages 2 and 3 a trie_xxx_attv instruction
-is generated.  Thus in variant tabling *trieinstr_unif_stkptr will dereference
-only to an attv iff trie_xxx_val dereferences to that same attv (case
-b.2 in the code below corresponding to usage 1 ); and trieinstr_unif_stkptr
-will dereference to a ref vanilla variable iff the associated symbol
-is a ref (case a corresponding to usage 4)
+   In the general case, suppose we have a goal:
 
-b) Subsumptive tabling: need to check
+        when(nonvar(X),X \= 3),when(nonvar(Y),Y \= 1),q(X,Y)
 
-c) Asserted tries.  For asserted tries, the trie_xxx_val instructions
-are generated only for variables (I think) -- but the corresponding
-position can be anything you like: a vanilla variable (case a), an
-attributed variable (case b), or a constant/structure/number/list
-(case c).  Case b.2 will never happen as this depends on the trie
-position being an attv, which, as stated, wont happen.
+   to an asserted trie with fact q(X,X).  In this case, we can
+   represent the trie_xxx_val instruction as unifying call position 2
+   with position 1.  Whenever call position 2 is an attv, and
+   @position 2 is not already equal to @position1, we need to trigger
+   an interrupt after unifying the values.
 
+   (documenation I wrote a while ago -- I don't know if I believe it,
+   but it argues for why trie_xxx_variant_val) does not need the
+   interrupt mentioned above.
+
+   In the case of variant tabels, the routine variant_answer_search()
+   distinguishes between usage 1) an attv of the call that is
+   unchanged by the answer; usage 2) an attv of the call that is
+   changed to another attv in the answer; usage 3) a variable in the
+   call that is bound to an attv; usage 4) a variable in the call that
+   is bound to another variable in the call by a binding in the
+   answer.  The routine variant_answer_search() generates trie_xxx_val
+   instructions only usages 1 and 4 above.  In usages 2 and 3 a
+   trie_xxx_attv instruction is generated.  Thus in variant tabling
+   *trieinstr_unif_stkptr will dereference only to an attv iff
+   trie_xxx_val dereferences to that same attv (case b.2 in the code
+   below corresponding to usage 1 ); and trieinstr_unif_stkptr will
+   dereference to a ref vanilla variable iff the associated symbol is
+   a ref (case a corresponding to usage 4)
 */
 
 XSB_Start_Instr(trie_no_cp_val,_trie_no_cp_val)
   Def2ops
   TRIE_R_LOCK();
-  xsb_dbgmsg((LOG_TRIE_INSTR, "trie_no_cp_val"));
+//  printf("\ntrie_no_cp_val\n");
   NodePtr = (BTNptr) lpcreg;
   unify_with_trie_val; 
   next_lpcreg;
@@ -473,6 +476,67 @@ XSB_Start_Instr(trie_trust_val,_trie_trust_val)
   breg = cp_prevbreg(breg);	/* Remove this CP */
   restore_trail_condition_registers(breg);
   unify_with_trie_val;
+  next_lpcreg;
+XSB_End_Instr()
+
+XSB_Start_Instr(variant_trie_no_cp_val,_variant_trie_no_cp_val)
+  Def2ops
+  TRIE_R_LOCK();
+  //  printf("\nvariant_trie_no_cp_val\n");
+  NodePtr = (BTNptr) lpcreg;
+  unify_with_variant_trie_val; 
+  next_lpcreg;
+XSB_End_Instr()
+
+XSB_Start_Instr(variant_trie_try_val,_variant_trie_try_val) 
+  Def2ops
+  CPtr tbreg;
+#ifdef SLG_GC
+	CPtr old_cptop;
+#endif
+  TRIE_R_LOCK();
+  //  printf("vriant_trie_try_val");
+  NodePtr = (BTNptr) lpcreg;
+  save_find_locx(ereg);
+  tbreg = top_of_cpstack;
+#ifdef SLG_GC
+	old_cptop = tbreg;
+#endif
+  save_trie_registers(tbreg);
+  save_choicepoint(tbreg,ereg,(byte *)opfail,breg);
+#ifdef SLG_GC
+	cp_prevtop(tbreg) = old_cptop;
+#endif
+  breg = tbreg;
+  hbreg = hreg;
+  unify_with_variant_trie_val;
+  next_lpcreg;
+XSB_End_Instr()
+
+XSB_Start_Instr(variant_trie_retry_val,_variant_trie_retry_val) 
+  Def2ops
+  CPtr tbreg;
+  TRIE_R_LOCK();
+  xsb_dbgmsg((LOG_TRIE_INSTR, "trie_retry_val"));
+  NodePtr = (BTNptr) lpcreg;
+  tbreg = breg;
+  restore_regs_and_vars(tbreg, CP_SIZE);
+  cp_pcreg(breg) = (byte *) opfail;
+  unify_with_variant_trie_val;
+  next_lpcreg;
+XSB_End_Instr()
+
+XSB_Start_Instr(variant_trie_trust_val,_variant_trie_trust_val) 
+  Def2ops
+  CPtr tbreg;
+  TRIE_R_LOCK();
+  xsb_dbgmsg((LOG_TRIE_INSTR, "trie_trust_val"));
+  NodePtr = (BTNptr) lpcreg;
+  tbreg = breg;
+  restore_regs_and_vars(tbreg, CP_SIZE);
+  breg = cp_prevbreg(breg);	/* Remove this CP */
+  restore_trail_condition_registers(breg);
+  unify_with_variant_trie_val;
   next_lpcreg;
 XSB_End_Instr()
 
@@ -795,13 +859,13 @@ XSB_Start_Instr(trie_root,_trie_root)      /* A no-op; begin processing with chi
 	lpcreg = (byte *) BTN_Child(NodePtr);
 XSB_End_Instr()
 
-XSB_Start_Instr(trie_fail_unlock,_trie_fail_unlock)
- 	xsb_dbgmsg((LOG_TRIE_INSTR, "trie_fail_unlock"));
-	TRIE_R_UNLOCK()
-        breg = cp_prevbreg(breg);       /* Remove this CP */
-        restore_trail_condition_registers(breg);
-	lpcreg = (byte *) & fail_inst;
-XSB_End_Instr()
+	//XSB_Start_Instr(trie_fail_unlock,_trie_fail_unlock)
+	// 	xsb_dbgmsg((LOG_TRIE_INSTR, "trie_fail_unlock"));
+	//	TRIE_R_UNLOCK()
+	//        breg = cp_prevbreg(breg);       /* Remove this CP */
+	//        restore_trail_condition_registers(breg);
+	//	lpcreg = (byte *) & fail_inst;
+	//XSB_End_Instr()
 /*
  * This is the embedded-trie instruction which is placed in the root of
  * asserted tries.  It looks a lot like both "return_table_code", which
