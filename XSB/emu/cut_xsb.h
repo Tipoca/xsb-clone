@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.29 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: cut_xsb.h,v 1.30 2011-01-05 16:16:19 dwarren Exp $
 ** 
 */
 
@@ -65,15 +65,14 @@
 
 #define CHECK_TABLE_CUT(instruc)       \
   if (IS_TABLE_INSTRUC(instruc) && !is_completed(tcp_subgoal_ptr(breg)))  {\
+          char msg[MAXBUFSIZE];  \
           Psc psc = TIF_PSC(subg_tif_ptr(tcp_subgoal_ptr(breg)));\
           Psc call_psc = *(*((Psc **)ereg-1)-1);  \
-          printf("Illegal cut over incomplete tabled predicate: %s/%d, from within a call to %s/%d\n", \
+	  sprintf(msg,"Illegal cut over incomplete tabled predicate: %s/%d, from within a call to %s/%d", \
 		    get_name(psc), get_arity(psc),          \
 		    get_name(call_psc), get_arity(call_psc));          \
-          xsb_abort("Illegal cut over a tabled predicate: %s/%d, from within a call to %s/%d\n", \
-		    get_name(psc), get_arity(psc),          \
-		    get_name(call_psc), get_arity(call_psc));          \
-      }
+	  xsb_table_error(CTXTc msg);  \
+  }
 
 extern CPtr call_cleanup_gl;
 extern void add_interrupt(CTXTdeclc Cell, Cell);
