@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.84 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: emudef.h,v 1.85 2011-01-07 19:52:01 tswift Exp $
 ** 
 */
 
@@ -143,8 +143,8 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
   else if (isnil(op)) {XSB_Next_Instr();} /* op == [] */		\
   else if (isattv(op)) {						\
     xsb_dbgmsg((LOG_ATTV,">>>> ATTV nunify_with_nil, interrupt needed\n"));	\
-    add_interrupt(CTXTc cell(((CPtr)dec_addr(op1) + 1)),makenil);   	\
-    bind_copy((CPtr)dec_addr(op1), makenil);                  		\
+    add_interrupt(CTXTc cell(((CPtr)dec_addr(op) + 1)),makenil);   	\
+    bind_copy((CPtr)dec_addr(op), makenil);                  		\
   }									\
   else Fail1;	/* op is LIST, INT, or FLOAT */
 
@@ -161,8 +161,8 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
   }									\
   else if (isattv(OP1)) {						\
     xsb_dbgmsg((LOG_ATTV,">>>> ATTV nunify_with_con, interrupt needed\n"));	\
-    add_interrupt(CTXTc cell(((CPtr)dec_addr(op1) + 1)),makestring((char *)OP2));   	\
-    bind_string((CPtr)dec_addr(op1),(char *)OP2);		     	\
+    add_interrupt(CTXTc cell(((CPtr)dec_addr(OP1) + 1)),makestring((char *)OP2));   	\
+    bind_string((CPtr)dec_addr(OP1),(char *)OP2);		     	\
   }									\
   else Fail1;
 
@@ -180,9 +180,9 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
     if (oint_val(OP1) == (Integer)OP2) {XSB_Next_Instr();} else Fail1;	\
   }									\
   else if (isattv(OP1)) {						\
-    xsb_dbgmsg((LOG_ATTV,">>>> ATTV nunify_with_num, interrupt needed\n"));	\
-    add_interrupt(CTXTc cell(((CPtr)dec_addr(op1) + 1)),makeint(OP2));  \
-    bind_oint((CPtr)dec_addr(op1), (Integer)OP2);                 	\
+    /*    printf(">>>> ATTV nunify_with_num, interrupt needed\n");*/	\
+    add_interrupt(CTXTc cell(((CPtr)dec_addr(OP1) + 1)),makeint(OP2));  \
+    bind_oint((CPtr)dec_addr(OP1), (Integer)OP2);                 	\
   }									\
   else Fail1;	/* op1 is STRING, FLOAT, STRUCT, or LIST */
 
