@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.141 2011-01-02 22:16:43 tswift Exp $
+** $Id: tries.c,v 1.142 2011-01-09 00:52:34 tswift Exp $
 ** 
 */
 
@@ -753,14 +753,26 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
 /*----------------------------------------------------------------------*/
 
 /*
- * This is a special version of recvariant_trie(), and it is only used by 
- * variant_answer_search().  The only difference between this and
- * recvariant_trie() is that this version will save the answer
- * substitution factor into the heap (see the following lines):
+ * This is a special version of recvariant_trie(), and it is only used
+ * by variant_answer_search().  The only difference between this and
+ * recvariant_trie() is that this version ensures that all variabes
+ * point into the heap.  The reason for this is that the substitution
+ * factor is in the heap and the copy avoids pointers from the heap
+ * into the local stack.  The differing lines are:
  *
  * 	bld_free(hreg);
  * 	bind_ref(xtemp1, hreg);
  * 	xtemp1 = hreg++;
+ * 
+ * In principle, a check could be made to determine whether these
+ * variables need to be copied.
+ * 
+ * TLS 1/11: I can't see any need for this copy in the recvariant
+ * form, as this is only called if we have encountered a list,
+ * structure, or attv.  So any variables in one of these has to be in
+ * the heap any way.  On the other hand, if I take out the copy,
+ * delay_tests/delay_var breaks.
+ * 
  */
 
 #define recvariant_trie_ans_subsf(flag,TrieType) {			\
@@ -852,12 +864,8 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   byte choicepttype;  /* for incremental evaluation */ 
   byte typeofinstr;   /* for incremental evaluation */ 
 
-#ifndef MULTI_THREAD
+#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
   ans_chk_ins++; /* Counter (answers checked & inserted) */
-#else
-#ifdef NON_OPT_COMPILE
-  ans_chk_ins++; /* Counter (answers checked & inserted) */
-#endif
 #endif
 
   VarEnumerator_trail_top = (CPtr *)(& VarEnumerator_trail[0]) - 1;
@@ -973,6 +981,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
       pdlpush(cell(clref_val(xtemp1)+1));
       pdlpush(cell(clref_val(xtemp1)));
       recvariant_trie_ans_subsf(flag, BASIC_ANSWER_TRIE_TT);
+      //      recvariant_trie(flag, BASIC_ANSWER_TRIE_TT);
       break;
     case XSB_STRUCT:
       psc = (Psc)follow(cs_val(xtemp1));
@@ -982,6 +991,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
 	pdlpush(cell(clref_val(xtemp1)+j));
       }
       recvariant_trie_ans_subsf(flag, BASIC_ANSWER_TRIE_TT);
+      //recvariant_trie(flag, BASIC_ANSWER_TRIE_TT);
       break;
     case XSB_ATTV:
       /* Now xtemp1 can only be the first occurrence of an attv */
@@ -997,6 +1007,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
       attv_ctr++; ctr++;
       pdlpush(cell(xtemp1+1));	/* the ATTR part of the attv */
       recvariant_trie_ans_subsf(flag, BASIC_ANSWER_TRIE_TT);
+      //recvariant_trie(flag, BASIC_ANSWER_TRIE_TT);
       break;
     default:
       xsb_abort("Bad type tag in variant_answer_search()");
@@ -1065,12 +1076,8 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
       if ( flag == 0 ) {
 	MakeLeafNode(Paren);
 	TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
-#ifndef MULTI_THREAD
+#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
 	ans_inserts++;
-#else
-#ifdef NON_OPT_COMPILE
-	ans_inserts++;
-#endif
 #endif
 	
 	New_ALN(subgoal_ptr,answer_node,Paren,NULL);
@@ -1085,12 +1092,8 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   if ( flag == 0 ) {
     MakeLeafNode(Paren);
     TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
-#ifndef MULTI_THREAD
+#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
     ans_inserts++;
-#else
-#ifdef NON_OPT_COMPILE
-    ans_inserts++;
-#endif
 #endif
 
     New_ALN(subgoal_ptr,answer_node,Paren,NULL);
@@ -1272,7 +1275,7 @@ static void load_solution_from_trie(CTXTdeclc int arity, CPtr cptr)
      xtemp1 = (CPtr) (cptr-i);
      XSB_CptrDeref(xtemp1);
      macro_make_heap_term(xtemp1,returned_val,Dummy_Addr);
-     if (xtemp1 != (CPtr)returned_val) {
+     if (xtemp1 != (CPtr)returned_val) {  /* i.e. numcon, no heap term created */
        if (isattv(xtemp1)) {	/* an XSB_ATTV */
 	 /* Bind the variable part of xtemp1 to returned_val */
 	 add_interrupt(CTXTc cell(((CPtr)dec_addr(xtemp1) + 1)), returned_val); 
@@ -1288,11 +1291,10 @@ static void load_solution_from_trie(CTXTdeclc int arity, CPtr cptr)
 /*----------------------------------------------------------------------*/
 
 /*
- * Unifies the path in the interned trie identified by `Leaf' with the term
- * `term'.  It appears that `term' is expected to be an unbound variable.
- * Also, `Root' does not appear to be used.
+ * Unifies the path in the interned trie identified by `Leaf' with the
+ * term `term'.  
  */
-static void bottomupunify(CTXTdeclc Cell term, BTNptr Root, BTNptr Leaf)
+static void bottomupunify(CTXTdeclc Cell term, BTNptr Leaf)
 {
   CPtr Dummy_Addr;
   Cell returned_val, xtemp2;
@@ -1301,7 +1303,7 @@ static void bottomupunify(CTXTdeclc Cell term, BTNptr Root, BTNptr Leaf)
 
 
   num_heap_term_vars = 0;     
-  heap_needed = follow_par_chain(CTXTc Leaf);
+  heap_needed = follow_par_chain(CTXTc Leaf);    /* side-effect: fills termstack */
   if (glstack_overflow(heap_needed*sizeof(Cell))) {
     reg[1] = term;
     check_glstack_overflow(1,pcreg,heap_needed*sizeof(Cell));
@@ -1331,23 +1333,29 @@ static void bottomupunify(CTXTdeclc Cell term, BTNptr Root, BTNptr Leaf)
 /*
  *  Used with tries created via the builtin trie_intern, to access a
  *  trie from a leaf.  Not yet extended to shared tries.
+ * 
+ *  TLS 1/11 This actually looks a little wierd.  bottom_up_unify()
+ *  assumes that the trie stackes are loaded to the right thing, then
+ *  calls macro_make_heap_term to load the stacks into the heap.
+ *  There seem to be no checks on the prolog code to avoid improper
+ *  calls to this predicate.
  */
 
 xsbBool bottom_up_unify(CTXTdecl)
 {
   Cell    term;
-  BTNptr root;
+  //  BTNptr root;
   BTNptr leaf;
-  int     rootidx;
+  //  int     rootidx;
 
   leaf = (BTNptr) ptoc_int(CTXTc 3);   
   if( IsDeletedNode(leaf) )
     return FALSE;
 
   term    = ptoc_tag(CTXTc 1);
-  rootidx = ptoc_int(CTXTc 2);
-  root    = itrie_array[rootidx].root;  
-  bottomupunify(CTXTc term, root, leaf);
+  //  rootidx = ptoc_int(CTXTc 2);
+  //  root    = itrie_array[rootidx].root;  
+  bottomupunify(CTXTc term, leaf);
   return TRUE;
 }
 
@@ -1384,7 +1392,7 @@ void handle_heap_overflow_trie(CTXTdeclc CPtr *cptr, int arity, int heap_needed)
  * and multipling by 8 bytes per word (in case we're in 64-bit mode) moves it up to 2400
  * 
  */
-#define DELAYING_FUDGE_FACTOR 2400
+//#define DELAYING_FUDGE_FACTOR 2400
 
 void load_solution_trie(CTXTdeclc int arity, int attv_num, CPtr cptr, BTNptr TriePtr)
 {
@@ -1403,7 +1411,7 @@ void load_solution_trie(CTXTdeclc int arity, int attv_num, CPtr cptr, BTNptr Tri
 	}
       }
     }
-    heap_needed = follow_par_chain(CTXTc TriePtr);
+    heap_needed = follow_par_chain(CTXTc TriePtr); /* side-effect: fills termstack */
     if (glstack_overflow(heap_needed*sizeof(Cell))) {
       xsb_warn("stack overflow could cause problems for delay lists\n");
       handle_heap_overflow_trie(CTXTc &cptr,arity,heap_needed);
