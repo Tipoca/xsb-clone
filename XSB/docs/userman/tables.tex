@@ -1653,6 +1653,205 @@ conflicts(A,B):- opposes(A,B),A.        conflicts(A,B):- opposes(B,A),A.
 \end{figure}
 %
 
+\subsection{Term-Sets}
+
+XSB provides support for a programming technique for representing sets
+of terms, called term-sets.  (While it is not closely related to
+answer subsumption, it is partially implemented through tabling and a
+table declaration, and so this facility is documented here.)
+
+We begin in an example.  We can represent a set of Prolog terms by
+using a particular term of the form \verb|{Var:Goal}| where Goal has
+(only) \verb|Var| free in it.  Then we will use this \emph{set-term} to
+represent the set of terms obtained by evaluating \verb|Goal| and
+taking the values of \verb|Var| that are obtained.  I.e., they would
+be the terms in the list \verb|L| returned by the Prolog call to
+\verb|setof(Var,Goal,L)|. For example, the set-term:
+\begin{verbatim}
+{X : member(X,[a,b,c])}
+\end{verbatim}
+represents the set of terms \verb|{a,b,c}|.
+
+Now a \emph{term-set} is a Prolog term that may contain set-terms as
+subterms.  For example,
+\begin{verbatim}
+m({X:member(X,[a,b,c])},g(d,{Y:member(Y,[e,f,g])}),h)
+\end{verbatim}
+is a term-set, and it represents the set of terms obtained from it by
+replacing (recursively) any embeded set-term by a term in that
+set-term.  So the above term-set represents the 9 terms:
+\begin{verbatim}
+m(a,g(d,e),h)        m(a,g(d,f),h)        m(a,g(d,g),h)
+m(b,g(d,e),h)        m(b,g(d,f),h)        m(b,g(d,g),h)
+m(c,g(d,e),h)        m(c,g(d,f),h)        m(c,g(d,g),h)
+\end{verbatim}
+This example shows an advantage of this representation.  Say a
+term-set has $k$ sub-set-terms each of which is of the member form in
+this example where each member has a list of atoms of length $n$.  To
+represent this set of terms explicitly takes $O(n^k)$ space, whereas
+to represent them with the term-set takes only $O(n \times k)$ space.  So a
+term-set representation can take exponentially less space than an
+explicit representation.
+
+It is relatively easy to write a predicate, {\tt member\_termset/2},
+which takes a variable and a term-set
+and non\-deterministically generates all concrete terms represented by
+the term-set, called \emph{extensionalizing} the term-set.  Some care
+must be taken since a call to goal to extensionalize a set-term may
+itself return a term-set.  Also term-sets can be self-recursive and
+thus represent infinitely many Prolog terms.  For example, consider
+the term-set:
+\begin{verbatim}
+{X : p(X)} where
+  p(a).
+  p(f({X:p(X)})).
+\end{verbatim}
+This term-set contains the infinitely many terms:
+\begin{verbatim}
+a, f(a), f(f(a)), f(f(f(a))), ...
+\end{verbatim}
+
+A particularly intriguing use of term-sets is in conjuntion with
+tabling.  Consider the term-set \verb|{X:p(1,2,X)}| where {\tt p/3} is
+tabled.  If \verb|p(1,2,_}| has been called and so its table is
+filled, then extensionalizing the previous term-set is just a table
+lookup; in some sense we can think of such a term-set a standing for a
+pointer into a table to a set of terms.  This can be elegantly used to
+solve an important problem in handling parse trees in context-free
+parsing.
+
+Consider the following DCG for the language a*:
+\begin{verbatim}
+:- table a/3.
+a(a(P1,P2)) --> a(P1),a(P2).
+a(a) --> [a].
+\end{verbatim}
+which recognizes a string and constructs its parse trees.
+
+To generate all answers, this DCG will take time exponential in the
+length of the input string; not surprising since there are
+exponentially many parses.  But say we give it an input string of $n$
+{\tt a}'s followed by one {\tt b}.  In this case it will take
+exponential time to fail, since it will construct all the
+exponentially many partial parse trees.  We would like the grammar in
+this case to fail in polynomial time.  By representing the parse trees
+as a term-set, while recognizing the string, and then after the string
+is recognized, extensionalize the set-term representing the parse
+trees, we can get the behavior we want.  The set-term representing the
+parse trees for any grammar will be constructed in polynomial time;
+the extensionalization will take exponential time only if there are
+exponentially many parses.
+
+We can cause XSB to automatically use the term-set representation by
+adding to the above program the declaration:
+\begin{verbatim}
+:- table a(termset,_,_).
+\end{verbatim}
+which tells XSB to use the term-set representation of the first
+argument of {\tt a/3}.
+
+With this declaration, XSB will transform the above program into the
+following:
+\begin{verbatim}
+:- table a/3.
+
+a(a(P1,P2),S0,S) :- '_$a'(P1,S0,S1),'_$a'(P2,S1,S).
+a(a,S0,S1) --> 'C'(S0,a,S1).
+
+:- table '_$a'/3 as subsumptive.
+'_$a'({X:'_$a'(X,S0,S)},S0,S) :- a(_,S0,S).
+\end{verbatim}
+A new predicate {\tt '\_\$a'/3} is introduced, and all calls to the
+original predicate {\tt a/3} are replaced by calls to the new one.  It
+is defined to call the original {\tt a/3} but to return the term-set
+instead of the concrete parse tree in the argument declared to be a
+term-set.
+
+We can see that a call to {\tt a/3} in this new program will have
+exactly as many answers as the corresponding call to {\tt a/2} in the
+original recognizing DCG, since given values for {\tt S0} and {\tt S}, a
+call to {\tt '\_\$a'/2} returns only one value in its first argument.
+So a call to {\tt a/3} with have the polynomial complexity of the
+recognizer.  So now with this representation to get the concrete parse
+tree for a string, one writes, for example:
+\begin{verbatim}
+| ?- a(Pts,[a,a,a,a,a,a,a],[]), member_termset(Parse,Pts).
+\end{verbatim}
+which uses the term-set representation while recognizing the input
+string, and then extensionalizes it to the produce the actual parse
+tree.  With this way of handling parse trees in arbitrary context-free
+grammars, the complexity of parsing to create the term-set is always
+polynomial, and then extensionalizing the term-set may be exponential
+if all parses are desired and there are exponentially many of them.
+Of course, if the parsing call to {\tt a/3} fails, then there is no
+extensionalization to do, and the process is polynomial.
+
+Note that the transformation uses subsumptive tabling for the newly
+introduced auxiliary predicate.  This is important for this example,
+since the parsing calls to {\tt '\_\$a'/3} will normally have {\tt S0}
+bound and {\tt S} free, yet when extensionalizing the constructed
+term-set to obtain the parse trees, the calls will have both {\tt S0}
+and {\tt S} bound.  We do not want to recompute the parse during
+extensionalizion, which would happen were we to be using variant
+tabling, and so we use subsumptive tabling.
+
+Problems in graph traversal provide another example of the effective
+use of term-sets.  For graph reachability, we have the very familiar:
+\begin{verbatim}
+:- table reach/2.
+reach(X,Y) :- edge(X,Y).
+reach(X,Y) :- reach(X,Z), edge(Z,Y).
+\end{verbatim}
+which is linear in the number of edges in the graph.  But say that we
+now want to construct the path from X to Y when Y \emph{is} reachable
+from X.  One simple way to do it (collecting the intermediate nodes in
+the path in reverse order) is:
+\begin{verbatim}
+:- table path/3.
+path(X,Y,[]) :- edge(X,Y).
+path(X,Y,[Z|Path]) :- path(X,Z,Path), edge(Z,Y).
+\end{verbatim}
+For an acyclic edge graph, this works fine, but for a graph with
+cycles, this will go into an infinite loop.  Indeed, it must, since in
+a cyclic graph there \emph{are} infinitely many different paths between
+some nodes.  However, we can use term-set to handle this situation
+more flexibly.  We modify the above program by adding:
+\begin{verbatim}
+:- table path(_,_,termset).
+\end{verbatim}
+With this declaration, every call to {\tt path/3} (for a finite edge
+graph) will terminate in time linear in the number of edges.  And all
+the paths will be presented in the term-set returned in the third
+argument.  Here we have an advantage similar to the one we had in the
+grammar example above: if there is no path from our source to our
+target node, we will find that out in linear time.  Without the
+term-set declaration, this might take exponential time, while the
+program builds all the paths to all the nodes that \emph{are} reachable
+from our source node.  Also, if we want only \emph{one} possible path
+from our source to our target, we can easily retrieve only one member
+of the term-set during extensionalization, and the whole process is
+still linear.
+
+Now consider what happens with when the graph has cycles.  In this
+case, the term-set may be recursive and represent the infinitely many
+paths between nodes.  For example, the term-set representing all paths
+from {\tt a} to {\tt a} in the graph with a single edge from {\tt a} to
+{\tt a} will have the same structure as the example of an infinite
+term-set given at the beginning of this subsection.  Once the path
+term-set is constructed (in time linear in the number of edges for a
+single source), producing paths reduces to processing the term-set
+structure.  For example to generate all paths between nodes which do
+not contain repeated intermediate nodes, one could write an
+extensionalization predicate that passes a list of term-sets in the
+process of being expanded, and refuse to re-expand one currently being
+expanded.  This is the technique often used in Prolog without tabling
+to compute reachability in cyclic graphs.
+
+All of these examples can be seen as special cases of constructing
+proof trees or justifications of goals.  Indeed, term-sets could be
+effectively used in the construction of a justification or explanation
+system.
+
 %--------------------------------------------------------------------
 \input{incr_tabling}
 %--------------------------------------------------------------------
