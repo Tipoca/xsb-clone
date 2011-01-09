@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.38 2011-01-02 22:16:43 tswift Exp $
+** $Id: inst_xsb.h,v 1.39 2011-01-09 21:00:44 dwarren Exp $
 ** 
 */
 
@@ -270,10 +270,10 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define trie_assert_inst	0x7c
 #define trie_root		0x7d
 
-#define variant_trie_no_cp_val        0x86
-#define variant_trie_trust_val        0x87
-#define variant_trie_try_val          0x88
-#define variant_trie_retry_val        0x89
+#define variant_trie_no_cp_val        0x88 /* moved so start on mod 4 */
+#define variant_trie_trust_val        0x89
+#define variant_trie_try_val          0x8a
+#define variant_trie_retry_val        0x8b
 
 /* to reclaim deleted returns at completion */
 #define trie_no_cp_fail         0x90
