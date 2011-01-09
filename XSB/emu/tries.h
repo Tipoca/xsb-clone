@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.72 2011-01-02 22:16:43 tswift Exp $
+** $Id: tries.h,v 1.73 2011-01-09 22:30:16 tswift Exp $
 ** 
 */
 
@@ -347,8 +347,7 @@ extern CPtr *VarEnumerator_trail_top;
 extern BTNptr   newBasicTrie(Cell,int);
 extern byte *	trie_get_calls(void);
 extern Cell	get_lastnode_cs_retskel(Cell);
-extern byte *	trie_get_returns(struct subgoal_frame *, Cell);
-extern void	remove_incomplete_tries(CPtr);
+extern byte *	trie_get_return(struct subgoal_frame *, Cell);
 extern void     init_trie_aux_areas(void);
 extern void     free_trie_aux_areas(void);
 extern void     load_solution_trie(int, int, CPtr, BTNptr);
@@ -370,8 +369,7 @@ extern BTHTptr  New_BTHT(struct th_context *, Structure_Manager *, int);
 extern BTNptr   newBasicTrie(struct th_context *, Cell,int);
 extern byte *	trie_get_calls(struct th_context *);
 extern Cell	get_lastnode_cs_retskel(struct th_context *, Cell);
-extern byte *	trie_get_returns(struct th_context *, struct subgoal_frame *, Cell);
-extern void	remove_incomplete_tries(struct th_context *, CPtr);
+extern byte *	trie_get_return(struct th_context *, struct subgoal_frame *, Cell);
 extern void     init_trie_aux_areas(struct th_context *);
 extern void     free_trie_aux_areas(struct th_context *);
 extern void     load_solution_trie(struct th_context *, int, int, CPtr, BTNptr);

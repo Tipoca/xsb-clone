@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.38 2011-01-02 22:16:43 tswift Exp $
+** $Id: tc_insts_xsb_i.h,v 1.39 2011-01-09 22:30:16 tswift Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 
 XSB_Start_Instr(trie_no_cp_str,_trie_no_cp_str)
 	TRIE_R_LOCK();
-	xsb_dbgmsg((LOG_TRIE_INSTR, "trie_no_cp_str"));
+	//	printf("trie_no_cp_str\n");
 	NodePtr = (BTNptr) lpcreg;
 	unify_with_trie_str;
 	non_ftag_lpcreg;
@@ -482,7 +482,7 @@ XSB_End_Instr()
 XSB_Start_Instr(variant_trie_no_cp_val,_variant_trie_no_cp_val)
   Def2ops
   TRIE_R_LOCK();
-  //  printf("\nvariant_trie_no_cp_val\n");
+  //  printf("variant_trie_no_cp_val\n");
   NodePtr = (BTNptr) lpcreg;
   unify_with_variant_trie_val; 
   next_lpcreg;
@@ -913,7 +913,7 @@ XSB_End_Instr()
 
 XSB_Start_Instr(trie_no_cp_attv,_trie_no_cp_attv)
   TRIE_R_LOCK();
-  xsb_dbgmsg((LOG_TRIE_INSTR, "trie_no_cp_attv"));
+  //  printf("trie_no_cp_attv\n");
   NodePtr = (BTNptr) lpcreg;
   unify_with_trie_attv;
   next_lpcreg

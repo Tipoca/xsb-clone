@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.352 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: builtin.c,v 1.353 2011-01-09 22:30:15 tswift Exp $
 **
 */
 
@@ -2729,7 +2729,7 @@ case WRITE_OUT_PROFILE:
       xsb_instantiation_error(CTXTc "trie_get_return/2",regRetTerm);
       break;
     }
-    pcreg = trie_get_returns(CTXTc sf, retTerm);
+    pcreg = trie_get_return(CTXTc sf, retTerm);
     break;
   }
 

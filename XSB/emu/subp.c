@@ -77,7 +77,7 @@
 #include "debug_xsb.h"
 #include "hash_xsb.h"
 #include "trace_xsb.h"
-
+#include "tr_utils.h"
 /*======================================================================*/
 extern xsbBool quotes_are_needed(char *string);
 

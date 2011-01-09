@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.66 2010-11-28 23:14:14 tswift Exp $
+** $Id: tr_utils.h,v 1.67 2011-01-09 22:30:16 tswift Exp $
 ** 
 */
 
@@ -126,6 +126,8 @@ extern void hashtable1_destroy_all(int);
 // from sub_delete.c
 extern void delete_subsumptive_call(CTXTdeclc SubProdSF);
 extern void reclaim_deleted_subsumptive_table(CTXTdeclc DelTFptr);
+
+extern void	remove_incomplete_tries(CTXTdeclc CPtr);
 
 extern counter abol_subg_ctr,abol_pred_ctr,abol_all_ctr; /* statistics */
 

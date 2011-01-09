@@ -4045,6 +4045,59 @@ void abolish_all_tables(CTXTdecl)
 * }
 */
 
+/*----------------------------------------------------------------------*/
+
+/* TLS: this should be used only for subsumptive tables.  And even so,
+   I think it could probably be replaced by some other deletion
+   routine in tr_utils.c (?) */
+
+static void remove_calls_and_returns(CTXTdeclc VariantSF CallStrPtr)
+{
+  ALNptr pALN;
+
+  /* Delete the call entry
+     --------------------- */
+  SET_TRIE_ALLOCATION_TYPE_SF(CallStrPtr);
+  delete_branch(CTXTc subg_leaf_ptr(CallStrPtr),
+		&TIF_CallTrie(subg_tif_ptr(CallStrPtr)),VARIANT_EVAL_METHOD);
+
+  /* Delete its answers
+     ------------------ */
+  for ( pALN = subg_answers(CallStrPtr);  IsNonNULL(pALN); pALN = ALN_Next(pALN) )
+    delete_branch(CTXTc ALN_Answer(pALN), &subg_ans_root_ptr(CallStrPtr),SUBSUMPTIVE_EVAL_METHOD);
+
+  /* Delete the table entry
+     ---------------------- */
+  free_answer_list(CallStrPtr);
+  FreeProducerSF(CallStrPtr);
+}
+
+void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
+{
+  xsbBool warned = FALSE;
+  VariantSF CallStrPtr;
+  TIFptr tif;
+
+  while (openreg < bottom_parameter) {
+    CallStrPtr = (VariantSF)compl_subgoal_ptr(openreg);
+    if (!is_completed(CallStrPtr)) {
+
+      if (warned == FALSE) {
+	xsb_mesg("Removing incomplete tables...");
+	//	check_table_cut = FALSE;  /* permit cuts over tables */
+	warned = TRUE;
+      }
+      if (IsVariantSF(CallStrPtr)) {
+	SET_TRIE_ALLOCATION_TYPE_SF(CallStrPtr); // set smBTN to private/shared
+	tif = subg_tif_ptr(CallStrPtr);
+	delete_branch(CTXTc CallStrPtr->leaf_ptr, &tif->call_trie,VARIANT_EVAL_METHOD); /* delete call */
+	delete_variant_sf_and_answers(CTXTc CallStrPtr,FALSE); // delete answers + subgoal
+      } else remove_calls_and_returns(CTXTc CallStrPtr);
+    }
+    openreg += COMPLFRAMESIZE;
+  }
+}
+
 //----------------------------------------------------------------------
 // Code from here to end of file is under development -- TLS
 

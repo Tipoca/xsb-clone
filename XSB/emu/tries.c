@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.142 2011-01-09 00:52:34 tswift Exp $
+** $Id: tries.c,v 1.143 2011-01-09 22:30:16 tswift Exp $
 ** 
 */
 
@@ -1712,65 +1712,13 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
 }
 
 /*----------------------------------------------------------------------*/
-
-/* TLS: this should be used only for subsumptive tables.  And even so,
-   I think it could probably be replaced by some other deletion
-   routine in tr_utils.c (?) */
-
-static void remove_calls_and_returns(CTXTdeclc VariantSF CallStrPtr)
-{
-  ALNptr pALN;
-
-  /* Delete the call entry
-     --------------------- */
-  SET_TRIE_ALLOCATION_TYPE_SF(CallStrPtr);
-  delete_branch(CTXTc subg_leaf_ptr(CallStrPtr),
-		&TIF_CallTrie(subg_tif_ptr(CallStrPtr)),VARIANT_EVAL_METHOD);
-
-  /* Delete its answers
-     ------------------ */
-  for ( pALN = subg_answers(CallStrPtr);  IsNonNULL(pALN); pALN = ALN_Next(pALN) )
-    delete_branch(CTXTc ALN_Answer(pALN), &subg_ans_root_ptr(CallStrPtr),SUBSUMPTIVE_EVAL_METHOD);
-
-  /* Delete the table entry
-     ---------------------- */
-  free_answer_list(CallStrPtr);
-  FreeProducerSF(CallStrPtr);
-}
-
-void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
-{
-  xsbBool warned = FALSE;
-  VariantSF CallStrPtr;
-  TIFptr tif;
-
-  while (openreg < bottom_parameter) {
-    CallStrPtr = (VariantSF)compl_subgoal_ptr(openreg);
-    if (!is_completed(CallStrPtr)) {
-
-      if (warned == FALSE) {
-	xsb_mesg("Removing incomplete tables...");
-	//	check_table_cut = FALSE;  /* permit cuts over tables */
-	warned = TRUE;
-      }
-      if (IsVariantSF(CallStrPtr)) {
-	SET_TRIE_ALLOCATION_TYPE_SF(CallStrPtr); // set smBTN to private/shared
-	tif = subg_tif_ptr(CallStrPtr);
-	delete_branch(CTXTc CallStrPtr->leaf_ptr, &tif->call_trie,VARIANT_EVAL_METHOD); /* delete call */
-	delete_variant_sf_and_answers(CTXTc CallStrPtr,FALSE); // delete answers + subgoal
-      } else remove_calls_and_returns(CTXTc CallStrPtr);
-    }
-    openreg += COMPLFRAMESIZE;
-  }
-}
-
-/*----------------------------------------------------------------------*/
 /*
- * For creating interned tries via buitin "trie_intern".
- * These differ from the trie inserts used by tables because there may
- * be failure continuations pointing into the trie -- here we need to
- * take these continuations into account before we hash.  Otherwise
- * they are identical to their non interned versions.
+ * For creating interned tries via buitin "trie_intern".  These differ
+ * from the trie inserts used by tables because there may be failure
+ * continuations pointing into the trie -- here we need to take these
+ * continuations into account before we hash (e.g. via the flags
+ * CPS_CHECK and EXPAND_HASHES).  Otherwise, they are identical to
+ * their non interned versions.
  */
 
 #define one_interned_node_chk_ins(Found,item,TrieType)		{	\
@@ -2087,7 +2035,7 @@ BTNptr trie_assert_chk_ins(CTXTdeclc CPtr termptr, BTNptr root, int *flagptr)
  * This is builtin #150: TRIE_GET_RETURN
  */
 
-byte *trie_get_returns(CTXTdeclc VariantSF sf, Cell retTerm) {
+byte *trie_get_return(CTXTdeclc VariantSF sf, Cell retTerm) {
 
   BTNptr ans_root_ptr;
   Cell retSymbol;
@@ -2100,7 +2048,7 @@ byte *trie_get_returns(CTXTdeclc VariantSF sf, Cell retTerm) {
 
 
 #ifdef DEBUG_DELAYVAR
-  xsb_dbgmsg((LOG_DEBUG,">>>> (at the beginning of trie_get_returns"));
+   xsb_dbgmsg((LOG_DEBUG,">>>> (at the beginning of trie_get_return"));
   xsb_dbgmsg((LOG_DEBUG,">>>> trieinstr_vars_num = %d)", trieinstr_vars_num));
 #endif
 
@@ -2137,7 +2085,7 @@ byte *trie_get_returns(CTXTdeclc VariantSF sf, Cell retTerm) {
     }
   }
 #ifdef DEBUG_DELAYVAR
-  xsb_dbgmsg((LOG_DEBUG,">>>> The end of trie_get_returns ==> go to answer trie"));
+  xsb_dbgmsg((LOG_DEBUG,">>>> The end of trie_get_return ==> go to answer trie"));
 #endif
   delay_it = 0;  /* Don't delay the answer. */
   //#ifdef MULTI_THREAD_RWL

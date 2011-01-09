@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.48 2010-12-16 23:38:00 tswift Exp $
+** $Id: bineg_xsb_i.h,v 1.49 2011-01-09 22:30:15 tswift Exp $
 ** 
 */
 
@@ -208,7 +208,7 @@ case IS_INCOMPLETE: {
        * When GET_DELAY_LISTS is called, we can assume that the
        * corresponding tabled subgoal call has been completed and so trie
        * code will be used to return the answer (see
-       * trie_get_returns()).  After the execution of trie code,
+       * trie_get_return()).  After the execution of trie code,
        * trieinstr_vars[] contains the substitution factor of the _answer_ to
        * the call.
        */
@@ -242,7 +242,7 @@ case IS_INCOMPLETE: {
 	bind_list((CPtr)delay_lists, hreg);
 	{ /*
 	   * Make copy of trieinstr_vars & global_trieinstr_vars_num (after get_returns,
-	   * which calls trie_get_returns).  (global_trieinstr_vars_num +
+	   * which calls trie_get_return).  (global_trieinstr_vars_num +
 	   * 1) is the number of variables left in the answer
 	   * (substitution factor of the answer)
 	   *
