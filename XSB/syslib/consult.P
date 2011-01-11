@@ -496,7 +496,7 @@ load_dyn1(Rfname,Dir) :-
 	seeing(OldFile),
 	open_or_xpp_file(Rfname, XPP_process),
 	current_input_port(XPPport), %% port from process, if it was launched
-	(   read_and_assert(Dir)
+	(   catch(read_and_assert(Dir),Ball,close_and_throw(XPP_process,XPPport,Ball))
 	%% If needs restart, close old file and skip to the second load_dyn1
 	->  ( conget(needs_restart,1) -> seen, see(OldFile), fail ; true)
 	;   conset(needs_restart, 0), conset(xpp_on,0)
@@ -518,6 +518,13 @@ load_dyn1(Rfname,Dir) :-
 	conget(needs_restart,1), conset(needs_restart, 0),
 	load_dyn1(Rfname,Dir).
 
+close_and_throw(XPP_process,XPPport,Ball) :-
+	(XPP_process == skip
+	 ->	true
+	 ;	file_close(XPPport)
+	),
+	seen,
+	throw(Ball).
 
 :- dynamic load_dyn_trie_retracted(_).
 :- dynamic load_dyn_retracted(_,_,_,_,_).
