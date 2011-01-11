@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.353 2011-01-09 22:30:15 tswift Exp $
+** $Id: builtin.c,v 1.354 2011-01-11 14:05:20 dwarren Exp $
 **
 */
 
@@ -3034,6 +3034,20 @@ case WRITE_OUT_PROFILE:
         /
         (EXTRACT_FLOAT_FROM_16_24_24((ptoc_int(CTXTc 5)), (ptoc_int(CTXTc 6)), (ptoc_int(CTXTc 7))));
         break;
+    case 'c': {
+      Cell addr = ptoc_tag(CTXTc 5);
+      if (isref(addr)) {
+	result = ((Float)(EXTRACT_FLOAT_FROM_16_24_24((ptoc_int(CTXTc 2)), (ptoc_int(CTXTc 3)), (ptoc_int(CTXTc 4)))));
+	XSB_Deref(addr);
+	bind_boxedfloat(((CPtr)addr), result);
+      } else {
+	result = ptoc_float(CTXTc 5);
+	ctop_int(CTXTc 2, (FLOAT_HIGH_16_BITS(result)));
+	ctop_int(CTXTc 3, (FLOAT_MIDDLE_24_BITS(result)));
+	ctop_int(CTXTc 4, (FLOAT_LOW_24_BITS(result)));
+      }
+      return TRUE;
+    }
     default:
         result = 0.0;
         xsb_abort("[float_op] unsupported operator: %s\n", operator);
