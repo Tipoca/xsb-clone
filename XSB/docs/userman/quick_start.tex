@@ -342,9 +342,31 @@ to create a console-supported top loop or a DLL by following
 these steps:
 
 \begin{enumerate}
+\item Download the free of charge Microsoft Visual C++ Express Edition from
+%% 
+\begin{verbatim}
+  http://www.microsoft.com/express/vc/ 
+\end{verbatim}
+%% 
+By default, this program is installed in
+\texttt{C:$\backslash$Program Files$\backslash$Microsoft Visual Studio 10.0},
+and we shall assume this
+directory below (at the time of this writing, the latest version was 10.0,
+but the version number may change).
+\item Go to Start Menu then Control Panel then System (depending on your
+version of Windows, the System panel might not be directly inside Control
+Panel, but one or two levels below. Then click ``Change Settings,'' select
+the ``Advanced'' tab, and then click the ``Environment Variables'' button.
+In the panel that is now selected,
+choose the PATH variable and click Edit. At the end of the string that
+represents the value of PATH, add
+%% 
+\begin{verbatim}
+ ;C:\Program Files\Microsoft Visual Studio 10.0\VC\BIN
+\end{verbatim}
 
 \item
-   {\tt cd build}  
+   {\tt cd \$XSB\_DIR$\backslash$build}  
  \item 
    {\tt ./configure --with-wind}   \\
    This step is necessary if you downloaded XSB from CVS. \emph{Note} that to run
