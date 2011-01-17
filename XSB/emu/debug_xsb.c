@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.58 2011-01-09 22:30:16 tswift Exp $
+** $Id: debug_xsb.c,v 1.59 2011-01-17 02:31:33 dwarren Exp $
 ** 
 */
 
@@ -936,7 +936,7 @@ static void print_cell(char *addrtype, CPtr addr, Cell term, char *more_info)
     }
     break;
   case XSB_INT:
-    printf( "%s %p: XSB_INT, value=%ld  hexval=0x%p",
+    printf( "%s %p: XSB_INT, value=%d  hexval=0x%p",
 	    addrtype, addr, int_val(term), ref_val(term));
     break;
   case XSB_STRING:
@@ -956,7 +956,7 @@ static void print_cell(char *addrtype, CPtr addr, Cell term, char *more_info)
 	    addrtype, addr, clref_val(term), ref_val(term));
     break;
   default:
-    printf( "%s %p: tag=%ld, hex=0x%p, cval=%ld", 
+    printf( "%s %p: tag=%ld, hex=0x%p, cval=%d", 
 	    addrtype, addr, cell_tag(term), ref_val(term), int_val(term));
     break;
   }

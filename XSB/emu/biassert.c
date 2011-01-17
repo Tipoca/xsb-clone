@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.186 2011-01-02 22:16:42 tswift Exp $
+** $Id: biassert.c,v 1.187 2011-01-17 02:31:32 dwarren Exp $
 ** 
 */
 
@@ -2810,16 +2810,17 @@ static int really_delete_clause(CTXTdeclc ClRef Clause)
             /* remove it from index chains */
             for( i = NI; i >= 1; i-- ) {
 	      IP = ClRefIndPtr(Clause, i);
-	      if (cell_opcode(IP) == dynnoop) /* deleting last in bucket */
+	      if (cell_opcode(IP) == dynnoop) { /* deleting last in bucket */
 		sob = (SOBRef)IndRefNext(IP); /* so get SOB addr */
+		xsb_dbgmsg((LOG_RETRACT,
+			    "SOB(%d) - hash size %d - %d clauses",
+			    i, ClRefHashSize(sob), ClRefNumNonemptyBuckets(sob) ));
+		xsb_dbgmsg((LOG_RETRACT,
+			    "Addr %p : prev %p : next %p",
+			    sob, ClRefNext(sob), ClRefPrev(sob) ));
+	      }
 	      else sob = NULL;
 
-	      xsb_dbgmsg((LOG_RETRACT,
-			  "SOB(%d) - hash size %d - %d clauses",
-			  i, ClRefHashSize(sob), ClRefNumNonemptyBuckets(sob) ));
-	      xsb_dbgmsg((LOG_RETRACT,
-			  "Addr %p : prev %p : next %p",
-			  sob, ClRefNext(sob), ClRefPrev(sob) ));
 	      delete_from_hashchain(CTXTc Clause,sob,i,NI) ;
 	      if (sob && ClRefNumNonemptyBuckets(sob) == 0) { 
                 /* if emptied bucket, decrement count; if all empty, reclaim SOB */
