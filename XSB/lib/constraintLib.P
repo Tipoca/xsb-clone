@@ -80,11 +80,12 @@
 % Now deals with cyclic terms.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 when(Condition, Goal) :-
-	strip_module(Goal, M, G),
-	trigger(Condition, M:G).
+%	strip_module(Goal, M, G),
+%	writeln(trigger(Condition, M:G)),
+	trigger(Condition, Goal).
 
+/*
 strip_module(RT, M, T) :-
 	strip_module(RT, T, M, usermod).
 
@@ -93,6 +94,7 @@ strip_module(Module:RT2, T, M, _) :-
 	strip_module(RT2, T, M, Module).
 
 strip_module(T, T, M, M).
+*/
 
 trigger(nonvar(X),Goal) :-
 	trigger_nonvar(X,Goal).
