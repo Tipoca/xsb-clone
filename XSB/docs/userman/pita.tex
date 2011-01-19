@@ -126,7 +126,7 @@ the probabilities of A and B
   \end{itemize}
 you can perform faster inference with an optimized version of PITA in package \texttt{pitaprism.P}. It accepts the same commands of \texttt{pita.P}.  \texttt{pitaprism.P} simulates PRISM and does not need CUDD.
 
-Moreover, if you want to compute the Viterbi path and probability of a query (the Viterbi path is the explanation with the highest probability), analogously to predicate \texttt{viterbif/3} of PRISM, you can use package \texttt{pitaprismvit.P}.
+If you want to compute the Viterbi path and probability of a query (the Viterbi path is the explanation with the highest probability) as with the predicate \texttt{viterbif/3} of PRISM, you can use package \texttt{pitaprismvit.P}.
 
 The package \texttt{pitacount.P} can be used to count the explanations for a query, provided that the independence assumption holds. To count the number of explanations for a query use
 \begin{verbatim}
@@ -134,7 +134,8 @@ The package \texttt{pitacount.P} can be used to count the explanations for a que
 \end{verbatim}
 
 \subsubsection{Possibilistic Logic Programming}
-PITA can be used also for answering queries to possibilistic logic program \cite{DBLP:conf/iclp/DuboisLP91}, a form of logic progamming based on possibilistic logic \cite{DubLanPra-poss-94}. The package \texttt{pitaposs.P} provides possibilistic inference. You have to write you possibilistic program as an LPAD in which the rules have a single head whose annotation is the lower bound on the  necessity of the clauses. To compute the highest  lower bound on the necessity of a query
+PITA can be used also for answering queries to possibilistic logic program \cite{DBLP:conf/iclp/DuboisLP91}, a form of logic progamming based on possibilistic logic \cite{DubLanPra-poss-94}. The package \texttt{pitaposs.P} provides possibilistic inference. 
+You have to write the possibilistic program as an LPAD in which the rules have a single head whose annotation is the lower bound on the  necessity of the clauses. To compute the highest  lower bound on the necessity of a query
 use
 \begin{verbatim}
 :- poss(heads(coin),P).
