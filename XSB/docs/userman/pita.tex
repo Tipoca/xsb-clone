@@ -124,7 +124,7 @@ the probability of a disjunction $(A;B)$ is computed as the sum of
 the probabilities of A and B
 (exclusiveness assumption),
   \end{itemize}
-you can perform faster inference with an optimized version of PITA in package \texttt{pitaprism.P}. It accepts the same commands of \texttt{pita.P}.  \texttt{pitaprism.P} simulates PRISM and does not need CUDD.
+you can perform faster inference with an optimized version of PITA in package \texttt{pitaprism.P}. It accepts the same commands of \texttt{pita.P}.  \texttt{pitaprism.P} simulates PRISM and does not need CUDD and GLib.
 
 If you want to compute the Viterbi path and probability of a query (the Viterbi path is the explanation with the highest probability) as with the predicate \texttt{viterbif/3} of PRISM, you can use package \texttt{pitaprismvit.P}.
 
@@ -132,6 +132,7 @@ The package \texttt{pitacount.P} can be used to count the explanations for a que
 \begin{verbatim}
 :- oount(heads(coin),C).
 \end{verbatim}
+\texttt{pitacount.P} does not need CUDD and GLib.
 
 \subsubsection{Possibilistic Logic Programming}
 PITA can be used also for answering queries to possibilistic logic program \cite{DBLP:conf/iclp/DuboisLP91}, a form of logic progamming based on possibilistic logic \cite{DubLanPra-poss-94}. The package \texttt{pitaposs.P} provides possibilistic inference. 
@@ -140,4 +141,4 @@ use
 \begin{verbatim}
 :- poss(heads(coin),P).
 \end{verbatim}
-
+\texttt{pitaposs.P} does not need CUDD and GLib.
