@@ -477,7 +477,7 @@ term_expansion((Head :- Body), Clauses) :-
 	get_next_rule_number(R),
 	get_probs(HeadList,Probs),
 	extract_vars((Head:-Body),[],VC),
-	generate_clause(H,(one(One),Body2),VC,R,Probs,BDDAnd,0,Clauses).
+	generate_clause(H,(myone(One),Body2),VC,R,Probs,BDDAnd,0,Clauses).
 
 
 term_expansion((Head :- Body),Clauses) :- 
@@ -488,7 +488,7 @@ term_expansion((Head :- Body),Clauses) :-
 	process_body(BodyList,One,BDDAnd,BodyList2),
 	list2and(BodyList2,Body2),
 	add_bdd_arg(Head,BDDAnd,Head1),
-	Clauses=(Head1 :- (one(One),Body2)).
+	Clauses=(Head1 :- (myone(One),Body2)).
 	
 
 term_expansion(Head,Clauses) :- 

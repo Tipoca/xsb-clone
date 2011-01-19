@@ -1,4 +1,4 @@
-/* File:      pitaprism.P
+/* File:      pitacount.P
 ** Author(s): Fabrizio Riguzzi
 ** Contact:   fabrizio.riguzzi@unife.it,xsb-contact@cs.sunysb.edu
 ** 
@@ -31,25 +31,23 @@
 :- set_prolog_flag(unknown,fail).
 
 setting(epsilon_parsing, 0.0001).
-%:-yap_flag(unknown,fail).
 setting(compiling,false).
 /* compiling: true, failse */
 setting(tabling_output,video).
 /* video, call */
 
-
 myor(A,B,C):-C is A+B.
 myand(A,B,C):-C is A*B.
 myret_prob(B,B).
-myzero(0.0).
-myone(1.0).
-mybdd_not(A,B):-B is 1-A.
+myzero(0).
+myone(1).
+
 	
 myinit:-
 	retractall(v(_,_,_,_)),
 	abolish_all_tables.
 
-prob(Goal,P):-
+count(Goal,P):-
 	myinit,
 	add_bdd_arg(Goal,BDD,Goal1),
 	(call(Goal1)->
@@ -59,7 +57,7 @@ prob(Goal,P):-
 	).
 
 
-prob(Goal,P,CPUTime1,WallTime1):-
+count(Goal,P,CPUTime1,WallTime1):-
         cputime(CT0),
 	walltime(WT0),
 	myinit,
@@ -81,7 +79,7 @@ s(Goal,P,CPUTime1,0,WallTime1,0):-
         prob(Goal,P,CPUTime1,WallTime1).
 
 load(File):-
-        atom_concat(File,'_prism.P',FileP),
+        atom_concat(File,'_count.P',FileP),
         atom_concat(File,'.cpl',FileCpl),
         parse(FileCpl,FileP),
         consult(FileP).
@@ -119,24 +117,24 @@ get_var_n(R,S,Probs,V):-
 
 generate_rules_fact([],[]).
 
-generate_rules_fact([(Head:P),('':_P2)],[Head1]):-!,
-	add_bdd_arg(Head,P,Head1).
+generate_rules_fact([(Head:_P),('':_P2)],[Head1]):-!,
+	add_bdd_arg(Head,1,Head1).
 
-generate_rules_fact([(Head:P)|T],[Head1|Clauses]):-
-	add_bdd_arg(Head,P,Head1),
+generate_rules_fact([(Head:_P)|T],[Head1|Clauses]):-
+	add_bdd_arg(Head,1,Head1),
 	generate_rules_fact(T,Clauses).
 
-generate_clause(Head,Body,P,BDDAnd,Clause):-
-	add_bdd_arg(Head,BDD,Head1),
-	Clause=(Head1:-(Body,myand(BDDAnd,P,BDD))).
+generate_clause(Head,Body,BDDAnd,Clause):-
+	add_bdd_arg(Head,BDDAnd,Head1),
+	Clause=(Head1:-(Body)).
 
 generate_rules([],_Body,_BDDAnd,[]).
 
-generate_rules([(Head:P),('':_P2)],Body,BDDAnd,[Clause]):-!,
-	generate_clause(Head,Body,P,BDDAnd,Clause).
+generate_rules([(Head:_P),('':_P2)],Body,BDDAnd,[Clause]):-!,
+	generate_clause(Head,Body,BDDAnd,Clause).
 
-generate_rules([(Head:P)|T],Body,BDDAnd,[Clause|Clauses]):-
-	generate_clause(Head,Body,P,BDDAnd,Clause),
+generate_rules([(Head:_P)|T],Body,BDDAnd,[Clause|Clauses]):-
+	generate_clause(Head,Body,BDDAnd,Clause),
 	generate_rules(T,Body,BDDAnd,Clauses).
 
 
@@ -264,42 +262,6 @@ last([H],H):-!.
 last([_H|T],L):-
 	last(T,L).
 
-process_head(HeadList, GroundHeadList) :- 
-	ground_prob(HeadList), !,
-	process_head_ground(HeadList, 0, GroundHeadList).
-	 
-process_head(HeadList, HeadList).
-
-
-
-/* process_head_ground([Head:ProbHead], Prob, [Head:ProbHead|Null])
- * ----------------------------------------------------------------
- */
-process_head_ground([Head:ProbHead], Prob, [Head:ProbHead|Null]) :-!,
-	ProbLast is 1 - Prob - ProbHead,
-	setting(epsilon_parsing, Eps), 
-	EpsNeg is - Eps, 
-	ProbLast > EpsNeg, 
-	(ProbLast > Eps ->
-		Null = ['':ProbLast];
-		Null = []). 
-
-process_head_ground([Head:ProbHead|Tail], Prob, [Head:ProbHead|Next]) :- 
-	ProbNext is Prob + ProbHead, 
-	process_head_ground(Tail, ProbNext, Next).
-
-ground_prob([]).
-
-ground_prob([_Head:ProbHead|Tail]) :- 
-	check_ground(ProbHead,_,_), % Succeeds if there are no free variables in the term ProbHead.
-	ground_prob(Tail).
-
-get_probs([], []).
-
-get_probs([_H:P|T], [P1|T1]) :- 
-	P1 is P, 
-	get_probs(T, T1).
-
 builtin(_A is _B).
 builtin(_A > _B).
 builtin(_A < _B).
@@ -388,8 +350,7 @@ term_expansion((Head :- Body), Clauses):-
 % disjunctive clause with more than one head atom
 	setting(compiling,true),
 	Head = (_;_), !, 
-	list2or(HeadListOr, Head), 
-	process_head(HeadListOr, HeadList), 
+	list2or(HeadList, Head), 
 	list2and(BodyList, Body), 
 	process_body(BodyList,One,BDDAnd,BodyList1),
 	list2and(BodyList1,Body1),
@@ -399,11 +360,11 @@ term_expansion((Head :- Body), Clauses) :-
 % disjunctive clause with a single head atom
 	setting(compiling,true),
 	((Head:-Body) \= ((user:term_expansion(_,_) ):- _ )),
-	Head = (H:P), !, 
+	Head = (H:_P), !, 
 	list2and(BodyList, Body), 
 	process_body(BodyList,One,BDDAnd,BodyList2),
 	list2and(BodyList2,Body2),
-	generate_clause(H,(myone(One),Body2),P,BDDAnd,Clauses).
+	generate_clause(H,(myone(One),Body2),BDDAnd,Clauses).
 
 
 term_expansion((Head :- Body),Clauses) :- 
@@ -421,8 +382,7 @@ term_expansion(Head,Clauses) :-
 % disjunctive fact with more than one head atom
 	setting(compiling,true),
 	Head = (_;_),!, 
-	list2or(HeadListOr, Head), 
-	process_head(HeadListOr, HeadList), 
+	list2or(HeadList, Head), 
 	generate_rules_fact(HeadList,Clauses).
 
 term_expansion(Head,Clause) :- 
