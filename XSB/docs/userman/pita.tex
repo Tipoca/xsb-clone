@@ -13,13 +13,16 @@
 \index{Logic Programs with Annotated Disjunction}
 \index{CP-logic}
 \index{LPADs}
+\index{PRISM}
+\index{Probabilistic Logic Programming}
+\index{Possibilistic Logic Programming}
 
 %\input{pita}
 
 %\ifnum\pdfoutput>0 % pdflatex compilation
 
 
-``Probabilistic  Inference with Tabling and Answer subsumption'' (PITA) \cite{RigSwi10-ICLP10-IC} is a package  for reasoning with Logic Programs with Annotated Disjunctions (LPADs)\cite{VenVer03-TR,VenVer04-ICLP04-IC} and CP-logic programs \cite{VenDenBru-JELIA06,DBLP:journals/tplp/VennekensDB09}.
+``Probabilistic  Inference with Tabling and Answer subsumption'' (PITA) \cite{RigSwi10-ICLP10-IC} is a package for uncertain reasoning. In particular, it allowsvarious forms of Probabilistic Logic Programming and Possibilistic Logic Programming. It accepts the language of Logic Programs with Annotated Disjunctions (LPADs)\cite{VenVer03-TR,VenVer04-ICLP04-IC} and CP-logic programs \cite{VenDenBru-JELIA06,DBLP:journals/tplp/VennekensDB09}.
 
 An example of LPAD/CP-logic program is 
 \begin{eqnarray*}
@@ -91,8 +94,9 @@ toss(coin).
 Subdirectory \texttt{examples} contains other example programs.
 
 \subsection{Use}
-
-First write your program in a file with extension \texttt{.cpl}, then load PITA in XSB with
+\subsubsection{Probabilistic Logic Programming}
+First write your program in a file with extension \texttt{.cpl}.
+If you want to use inference on LPADs load PITA in XSB with
 \begin{verbatim}
 :- [pita].
 \end{verbatim}
@@ -110,4 +114,29 @@ and compute the probability of query atom \texttt{heads(coin)} by
 PITA offers also the predicate \texttt{parse(infile,outfile)} which translates the LPAD in \texttt{infile} into a normal progam and writes it to  \texttt{outfile}.
 
 Moreove, you can use \texttt{prob(goal,P,CPUTime,WallTime)} that returns the probability of goal \texttt{P} together with the CPU and wall time used.
+
+In case the modeling assumptions of PRISM hold, i.e.:
+ \begin{itemize}
+  \item the probability of a conjunction $(A,B)$ is
+computed as the product of the probabilities of A and B (independence assumption),
+\item
+the probability of a disjunction $(A;B)$ is computed as the sum of
+the probabilities of A and B
+(exclusiveness assumption),
+  \end{itemize}
+you can perform faster inference with an optimized version of PITA in package \texttt{pitaprism.P}. It accepts the same commands of \texttt{pita.P}.  \texttt{pitaprism.P} simulates PRISM and does not need CUDD.
+
+Moreover, if you want to compute the Viterbi path and probability of a query (the Viterbi path is the explanation with the highest probability), analogously to predicate \texttt{viterbif\3} of PRISM, you can use package \texttt{pitaprismvit.P}.
+
+The package \texttt{pitacount.P} can be used to count the explanations for a query, provided that the independence assumption holds. To count the number of explanations for a query use
+\begin{verbatim}
+:- oount(heads(coin),C).
+\end{verbatim}
+
+\subsubsection{Possibilistic Logic Programming}
+PITA can be used also for answering queries to possibilistic logic program \cite{DBLP:conf/iclp/DuboisLP91}, a form of logic progamming based on possibilistic logic \cite{DubLanPra-poss-94}. The package \texttt{pitaposs.P} provides possibilistic inference. You have to write you possibilistic program as an LPAD in which the rules have a single head whose annotation is the lower bound on the  necessity of the clauses. To compute the highest  lower bound on the necessity of a query
+use
+\begin{verbatim}
+:- poss(heads(coin),P).
+\end{verbatim}
 
