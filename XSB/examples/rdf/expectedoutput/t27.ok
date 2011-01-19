@@ -1,0 +1,18 @@
+----------RDF----------
+
+[description(description,about(http://www.foo.com/cool.html),[http://purl.org/metadata/dublin_core# : Creator = description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq,id(#CreatorsAlphabeticalBySurname),[rdf : li = literal(Mary Andrew),rdf : li = literal(Jacky Crystal)]),http://purl.org/metadata/dublin_core# : Identifier = description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag,id(#MirroredSites),[rdf : li = description(description,about(http://www.foo.com.au/cool.html),[]),rdf : li = description(description,about(http://www.foo.com.it/cool.html),[])]),http://purl.org/metadata/dublin_core# : Title = description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt,_h1716,[rdf : li = literal(lang(_h2013,The Coolest Web Page)),rdf : li = literal(lang(_h2073,Il Pagio di Web Fuba))])])]
+
+--------Triples--------
+
+{#CreatorsAlphabeticalBySurname, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq}
+{#CreatorsAlphabeticalBySurname, http://www.w3.org/1999/02/22-rdf-syntax-ns#_1, literal(Mary Andrew)}
+{#CreatorsAlphabeticalBySurname, http://www.w3.org/1999/02/22-rdf-syntax-ns#_2, literal(Jacky Crystal)}
+{http://www.foo.com/cool.html, http://purl.org/metadata/dublin_core#Creator, #CreatorsAlphabeticalBySurname}
+{#MirroredSites, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag}
+{#MirroredSites, http://www.w3.org/1999/02/22-rdf-syntax-ns#_1, http://www.foo.com.au/cool.html}
+{#MirroredSites, http://www.w3.org/1999/02/22-rdf-syntax-ns#_2, http://www.foo.com.it/cool.html}
+{http://www.foo.com/cool.html, http://purl.org/metadata/dublin_core#Identifier, #MirroredSites}
+{__Description529, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt}
+{__Description529, http://www.w3.org/1999/02/22-rdf-syntax-ns#_1, literal(lang(_h2013,The Coolest Web Page))}
+{__Description529, http://www.w3.org/1999/02/22-rdf-syntax-ns#_2, literal(lang(_h2073,Il Pagio di Web Fuba))}
+{http://www.foo.com/cool.html, http://purl.org/metadata/dublin_core#Title, __Description529}

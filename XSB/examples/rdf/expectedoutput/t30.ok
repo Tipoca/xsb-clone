@@ -1,0 +1,22 @@
+----------RDF----------
+
+[description(description,about(http://www.dlib.org),[http://purl.org/metadata/dublin_core# : Title = literal(D-Lib Program - Research in Digital Libraries),http://purl.org/metadata/dublin_core# : Description = literal(The D-Lib program supports the community of people
+     with research interests in digital libraries and electronic
+     publishing.),http://purl.org/metadata/dublin_core# : Publisher = literal(Corporation For National Research Initiatives),http://purl.org/metadata/dublin_core# : Date = literal(1995-01-07),http://purl.org/metadata/dublin_core# : Subject = description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag,_h802,[rdf : li = literal(Research; statistical methods),rdf : li = literal(Education, research, related topics),rdf : li = literal(Library use Studies)]),http://purl.org/metadata/dublin_core# : Type = literal(World Wide Web Home Page),http://purl.org/metadata/dublin_core# : Format = literal(text/html),http://purl.org/metadata/dublin_core# : Language = literal(en)])]
+
+--------Triples--------
+
+{http://www.dlib.org, http://purl.org/metadata/dublin_core#Title, literal(D-Lib Program - Research in Digital Libraries)}
+{http://www.dlib.org, http://purl.org/metadata/dublin_core#Description, literal(The D-Lib program supports the community of people
+     with research interests in digital libraries and electronic
+     publishing.)}
+{http://www.dlib.org, http://purl.org/metadata/dublin_core#Publisher, literal(Corporation For National Research Initiatives)}
+{http://www.dlib.org, http://purl.org/metadata/dublin_core#Date, literal(1995-01-07)}
+{__Description532, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag}
+{__Description532, http://www.w3.org/1999/02/22-rdf-syntax-ns#_1, literal(Research; statistical methods)}
+{__Description532, http://www.w3.org/1999/02/22-rdf-syntax-ns#_2, literal(Education, research, related topics)}
+{__Description532, http://www.w3.org/1999/02/22-rdf-syntax-ns#_3, literal(Library use Studies)}
+{http://www.dlib.org, http://purl.org/metadata/dublin_core#Subject, __Description532}
+{http://www.dlib.org, http://purl.org/metadata/dublin_core#Type, literal(World Wide Web Home Page)}
+{http://www.dlib.org, http://purl.org/metadata/dublin_core#Format, literal(text/html)}
+{http://www.dlib.org, http://purl.org/metadata/dublin_core#Language, literal(en)}

@@ -1,0 +1,138 @@
+----------RDF----------
+
+[description(http://www.w3.org/2000/01/rdf-schema#Class,id(#Resource),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h4016,Resource)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h4073,Ressource)),http://www.w3.org/2000/01/rdf-schema# : comment = literal(The most general class)]),description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#type),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h4428,type)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h4485,type)),http://www.w3.org/2000/01/rdf-schema# : comment = literal(Indicates membership of a class),http://www.w3.org/2000/01/rdf-schema# : range = description(description,about(#Class),[])]),description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,id(#comment),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h4972,comment)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h5029,commentaire)),http://www.w3.org/2000/01/rdf-schema# : domain = description(description,about(#Resource),[]),http://www.w3.org/2000/01/rdf-schema# : comment = literal(Use this for descriptions),http://www.w3.org/2000/01/rdf-schema# : range = description(description,about(#Literal),[])]),description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,id(#label),[rdf : type = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property),[]),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h5707,label)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h5764,label)),http://www.w3.org/2000/01/rdf-schema# : domain = description(description,about(#Resource),[]),http://www.w3.org/2000/01/rdf-schema# : comment = literal(Provides a human-readable version of a resource name.),http://www.w3.org/2000/01/rdf-schema# : range = description(description,about(#Literal),[])]),description(http://www.w3.org/2000/01/rdf-schema#Class,id(#Class),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h6313,Class)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h6370,Classe)),http://www.w3.org/2000/01/rdf-schema# : comment = literal(The concept of Class),http://www.w3.org/2000/01/rdf-schema# : subClassOf = description(description,about(#Resource),[])]),description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,id(#subClassOf),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h6863,subClassOf)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h6920,sousClasseDe)),http://www.w3.org/2000/01/rdf-schema# : comment = literal(Indicates membership of a class),http://www.w3.org/2000/01/rdf-schema# : range = description(description,about(#Class),[]),http://www.w3.org/2000/01/rdf-schema# : domain = description(description,about(#Class),[])]),description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,id(#subPropertyOf),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h7515,subPropertyOf)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h7572,sousPropriétéDe)),http://www.w3.org/2000/01/rdf-schema# : comment = literal(Indicates specialization of properties),http://www.w3.org/2000/01/rdf-schema# : range = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property),[]),http://www.w3.org/2000/01/rdf-schema# : domain = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property),[])]),description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,id(#seeAlso),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h8155,seeAlso)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h8212,voirAussi)),http://www.w3.org/2000/01/rdf-schema# : comment = literal(Indicates a resource that provides information about the subject resource.),http://www.w3.org/2000/01/rdf-schema# : range = description(description,about(http://www.w3.org/2000/01/rdf-schema#Resource),[]),http://www.w3.org/2000/01/rdf-schema# : domain = description(description,about(http://www.w3.org/2000/01/rdf-schema#Resource),[])]),description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,id(#isDefinedBy),[rdf : type = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property),[]),http://www.w3.org/2000/01/rdf-schema# : subPropertyOf = description(description,about(#seeAlso),[]),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h8998,isDefinedBy)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h9055,esDéfiniPar)),http://www.w3.org/2000/01/rdf-schema# : comment = literal(Indicates a resource containing and defining the subject resource.),http://www.w3.org/2000/01/rdf-schema# : range = description(description,about(http://www.w3.org/2000/01/rdf-schema#Resource),[]),http://www.w3.org/2000/01/rdf-schema# : domain = description(description,about(http://www.w3.org/2000/01/rdf-schema#Resource),[])]),description(http://www.w3.org/2000/01/rdf-schema#Class,id(#ConstraintResource),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h9630,ConstraintResource)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h9687,RessourceContrainte)),rdf : type = description(description,about(#Class),[]),http://www.w3.org/2000/01/rdf-schema# : subClassOf = description(description,about(#Resource),[]),http://www.w3.org/2000/01/rdf-schema# : comment = literal(Resources used to express RDF Schema constraints.)]),description(http://www.w3.org/2000/01/rdf-schema#Class,id(#ConstraintProperty),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h10265,ConstraintProperty)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h10322,PropriétéContrainte)),http://www.w3.org/2000/01/rdf-schema# : subClassOf = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property),[]),http://www.w3.org/2000/01/rdf-schema# : subClassOf = description(description,about(#ConstraintResource),[]),http://www.w3.org/2000/01/rdf-schema# : comment = literal(Properties used to express RDF Schema constraints.)]),description(http://www.w3.org/2000/01/rdf-schema#ConstraintProperty,id(#domain),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h10899,domain)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h10956,domaine)),http://www.w3.org/2000/01/rdf-schema# : comment = literal(This is how we associate a class with
+  properties that its instances can have)]),description(http://www.w3.org/2000/01/rdf-schema#ConstraintProperty,id(#range),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h11339,range)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h11396,étendue)),http://www.w3.org/2000/01/rdf-schema# : comment = literal(Properties that can be used in a
+  schema to provide constraints),http://www.w3.org/2000/01/rdf-schema# : range = description(description,about(#Class),[]),http://www.w3.org/2000/01/rdf-schema# : domain = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property),[])]),description(http://www.w3.org/2000/01/rdf-schema#Class,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h11913,Property)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h11970,Propriété)),http://www.w3.org/2000/01/rdf-schema# : comment = literal(The concept of a property.),http://www.w3.org/2000/01/rdf-schema# : subClassOf = description(description,about(#Resource),[])]),description(http://www.w3.org/2000/01/rdf-schema#Class,id(#Literal),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h12427,Literal)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h12484,Littéral)),rdf : type = description(description,about(#Class),[]),http://www.w3.org/2000/01/rdf-schema# : comment = literal(This represents the set of atomic values, eg. textual strings.)]),description(http://www.w3.org/2000/01/rdf-schema#Class,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h12908,Statement)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h12965,Déclaration)),http://www.w3.org/2000/01/rdf-schema# : subClassOf = description(description,about(#Resource),[]),http://www.w3.org/2000/01/rdf-schema# : comment = literal(This represents the set of reified statements.)]),description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#subject),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h13416,subject)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h13473,sujet)),http://www.w3.org/2000/01/rdf-schema# : domain = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement),[]),http://www.w3.org/2000/01/rdf-schema# : range = description(description,about(#Resource),[])]),description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h14006,predicate)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h14063,prédicat)),rdf : type = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property),[]),http://www.w3.org/2000/01/rdf-schema# : domain = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement),[]),http://www.w3.org/2000/01/rdf-schema# : range = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property),[])]),description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#object),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h14695,object)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h14752,objet)),http://www.w3.org/2000/01/rdf-schema# : domain = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement),[])]),description(http://www.w3.org/2000/01/rdf-schema#Class,id(#Container),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h15199,Container)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h15256,Enveloppe)),http://www.w3.org/2000/01/rdf-schema# : subClassOf = description(description,about(#Resource),[]),http://www.w3.org/2000/01/rdf-schema# : comment = literal(This represents the set Containers.)]),description(http://www.w3.org/2000/01/rdf-schema#Class,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h15677,Bag)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h15734,Ensemble)),http://www.w3.org/2000/01/rdf-schema# : subClassOf = description(description,about(#Container),[])]),description(http://www.w3.org/2000/01/rdf-schema#Class,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h16141,Sequence)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h16198,Séquence)),http://www.w3.org/2000/01/rdf-schema# : subClassOf = description(description,about(#Container),[])]),description(http://www.w3.org/2000/01/rdf-schema#Class,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h16605,Alt)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h16662,Choix)),http://www.w3.org/2000/01/rdf-schema# : subClassOf = description(description,about(#Container),[])]),description(http://www.w3.org/2000/01/rdf-schema#Class,id(#ContainerMembershipProperty),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h17145,ContainerMembershipProperty)),http://www.w3.org/2000/01/rdf-schema# : subClassOf = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property),[])]),description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#value),[http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h17582,object)),http://www.w3.org/2000/01/rdf-schema# : label = literal(lang(_h17639,value))])]
+
+--------Triples--------
+
+{#Resource, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#Class}
+{#Resource, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h4016,Resource))}
+{#Resource, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h4073,Ressource))}
+{#Resource, http://www.w3.org/2000/01/rdf-schema#comment, literal(The most general class)}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h4428,type))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h4485,type))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#comment, literal(Indicates membership of a class)}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#range, #Class}
+{#comment, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{#comment, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h4972,comment))}
+{#comment, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h5029,commentaire))}
+{#comment, http://www.w3.org/2000/01/rdf-schema#domain, #Resource}
+{#comment, http://www.w3.org/2000/01/rdf-schema#comment, literal(Use this for descriptions)}
+{#comment, http://www.w3.org/2000/01/rdf-schema#range, #Literal}
+{#label, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{#label, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{#label, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h5707,label))}
+{#label, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h5764,label))}
+{#label, http://www.w3.org/2000/01/rdf-schema#domain, #Resource}
+{#label, http://www.w3.org/2000/01/rdf-schema#comment, literal(Provides a human-readable version of a resource name.)}
+{#label, http://www.w3.org/2000/01/rdf-schema#range, #Literal}
+{#Class, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#Class}
+{#Class, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h6313,Class))}
+{#Class, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h6370,Classe))}
+{#Class, http://www.w3.org/2000/01/rdf-schema#comment, literal(The concept of Class)}
+{#Class, http://www.w3.org/2000/01/rdf-schema#subClassOf, #Resource}
+{#subClassOf, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{#subClassOf, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h6863,subClassOf))}
+{#subClassOf, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h6920,sousClasseDe))}
+{#subClassOf, http://www.w3.org/2000/01/rdf-schema#comment, literal(Indicates membership of a class)}
+{#subClassOf, http://www.w3.org/2000/01/rdf-schema#range, #Class}
+{#subClassOf, http://www.w3.org/2000/01/rdf-schema#domain, #Class}
+{#subPropertyOf, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{#subPropertyOf, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h7515,subPropertyOf))}
+{#subPropertyOf, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h7572,sousPropriétéDe))}
+{#subPropertyOf, http://www.w3.org/2000/01/rdf-schema#comment, literal(Indicates specialization of properties)}
+{#subPropertyOf, http://www.w3.org/2000/01/rdf-schema#range, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{#subPropertyOf, http://www.w3.org/2000/01/rdf-schema#domain, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{#seeAlso, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{#seeAlso, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h8155,seeAlso))}
+{#seeAlso, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h8212,voirAussi))}
+{#seeAlso, http://www.w3.org/2000/01/rdf-schema#comment, literal(Indicates a resource that provides information about the subject resource.)}
+{#seeAlso, http://www.w3.org/2000/01/rdf-schema#range, http://www.w3.org/2000/01/rdf-schema#Resource}
+{#seeAlso, http://www.w3.org/2000/01/rdf-schema#domain, http://www.w3.org/2000/01/rdf-schema#Resource}
+{#isDefinedBy, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{#isDefinedBy, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{#isDefinedBy, http://www.w3.org/2000/01/rdf-schema#subPropertyOf, #seeAlso}
+{#isDefinedBy, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h8998,isDefinedBy))}
+{#isDefinedBy, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h9055,esDéfiniPar))}
+{#isDefinedBy, http://www.w3.org/2000/01/rdf-schema#comment, literal(Indicates a resource containing and defining the subject resource.)}
+{#isDefinedBy, http://www.w3.org/2000/01/rdf-schema#range, http://www.w3.org/2000/01/rdf-schema#Resource}
+{#isDefinedBy, http://www.w3.org/2000/01/rdf-schema#domain, http://www.w3.org/2000/01/rdf-schema#Resource}
+{#ConstraintResource, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#Class}
+{#ConstraintResource, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h9630,ConstraintResource))}
+{#ConstraintResource, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h9687,RessourceContrainte))}
+{#ConstraintResource, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, #Class}
+{#ConstraintResource, http://www.w3.org/2000/01/rdf-schema#subClassOf, #Resource}
+{#ConstraintResource, http://www.w3.org/2000/01/rdf-schema#comment, literal(Resources used to express RDF Schema constraints.)}
+{#ConstraintProperty, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#Class}
+{#ConstraintProperty, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h10265,ConstraintProperty))}
+{#ConstraintProperty, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h10322,PropriétéContrainte))}
+{#ConstraintProperty, http://www.w3.org/2000/01/rdf-schema#subClassOf, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{#ConstraintProperty, http://www.w3.org/2000/01/rdf-schema#subClassOf, #ConstraintResource}
+{#ConstraintProperty, http://www.w3.org/2000/01/rdf-schema#comment, literal(Properties used to express RDF Schema constraints.)}
+{#domain, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#ConstraintProperty}
+{#domain, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h10899,domain))}
+{#domain, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h10956,domaine))}
+{#domain, http://www.w3.org/2000/01/rdf-schema#comment, literal(This is how we associate a class with
+  properties that its instances can have)}
+{#range, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#ConstraintProperty}
+{#range, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h11339,range))}
+{#range, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h11396,étendue))}
+{#range, http://www.w3.org/2000/01/rdf-schema#comment, literal(Properties that can be used in a
+  schema to provide constraints)}
+{#range, http://www.w3.org/2000/01/rdf-schema#range, #Class}
+{#range, http://www.w3.org/2000/01/rdf-schema#domain, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Property, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#Class}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Property, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h11913,Property))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Property, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h11970,Propriété))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Property, http://www.w3.org/2000/01/rdf-schema#comment, literal(The concept of a property.)}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Property, http://www.w3.org/2000/01/rdf-schema#subClassOf, #Resource}
+{#Literal, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#Class}
+{#Literal, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h12427,Literal))}
+{#Literal, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h12484,Littéral))}
+{#Literal, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, #Class}
+{#Literal, http://www.w3.org/2000/01/rdf-schema#comment, literal(This represents the set of atomic values, eg. textual strings.)}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#Class}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h12908,Statement))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h12965,Déclaration))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement, http://www.w3.org/2000/01/rdf-schema#subClassOf, #Resource}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement, http://www.w3.org/2000/01/rdf-schema#comment, literal(This represents the set of reified statements.)}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#subject, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#subject, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h13416,subject))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#subject, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h13473,sujet))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#subject, http://www.w3.org/2000/01/rdf-schema#domain, http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#subject, http://www.w3.org/2000/01/rdf-schema#range, #Resource}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h14006,predicate))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h14063,prédicat))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate, http://www.w3.org/2000/01/rdf-schema#domain, http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate, http://www.w3.org/2000/01/rdf-schema#range, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#object, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#object, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h14695,object))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#object, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h14752,objet))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#object, http://www.w3.org/2000/01/rdf-schema#domain, http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement}
+{#Container, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#Class}
+{#Container, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h15199,Container))}
+{#Container, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h15256,Enveloppe))}
+{#Container, http://www.w3.org/2000/01/rdf-schema#subClassOf, #Resource}
+{#Container, http://www.w3.org/2000/01/rdf-schema#comment, literal(This represents the set Containers.)}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#Class}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h15677,Bag))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h15734,Ensemble))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag, http://www.w3.org/2000/01/rdf-schema#subClassOf, #Container}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#Class}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h16141,Sequence))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h16198,Séquence))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq, http://www.w3.org/2000/01/rdf-schema#subClassOf, #Container}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#Class}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h16605,Alt))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h16662,Choix))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt, http://www.w3.org/2000/01/rdf-schema#subClassOf, #Container}
+{#ContainerMembershipProperty, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/2000/01/rdf-schema#Class}
+{#ContainerMembershipProperty, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h17145,ContainerMembershipProperty))}
+{#ContainerMembershipProperty, http://www.w3.org/2000/01/rdf-schema#subClassOf, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#value, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Property}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#value, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h17582,object))}
+{http://www.w3.org/1999/02/22-rdf-syntax-ns#value, http://www.w3.org/2000/01/rdf-schema#label, literal(lang(_h17639,value))}

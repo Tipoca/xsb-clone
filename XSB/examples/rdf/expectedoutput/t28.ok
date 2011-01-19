@@ -1,0 +1,9 @@
+----------RDF----------
+
+[description(description,about(http://www.webnuts.net/Jan97.html),[http://purl.org/metadata/dublin_core# : Subject = description(description,_h627,[http://www.w3.org/1999/02/22-rdf-syntax-ns# : value = literal(020 - Library Science),http://mycorp.com/schemas/my-schema# : Classification = literal(Dewey Decimal Code)])])]
+
+--------Triples--------
+
+{__Description530, http://www.w3.org/1999/02/22-rdf-syntax-ns#value, literal(020 - Library Science)}
+{__Description530, http://mycorp.com/schemas/my-schema#Classification, literal(Dewey Decimal Code)}
+{http://www.webnuts.net/Jan97.html, http://purl.org/metadata/dublin_core#Subject, __Description530}

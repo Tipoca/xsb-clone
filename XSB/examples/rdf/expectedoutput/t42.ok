@@ -1,0 +1,9 @@
+----------RDF----------
+
+[description(description,about(John_Smith),[a1 = literal(John),a2 = description(description,_h603,[v = literal(200)])])]
+
+--------Triples--------
+
+{John_Smith, a1, literal(John)}
+{__Description541, v, literal(200)}
+{John_Smith, a2, __Description541}

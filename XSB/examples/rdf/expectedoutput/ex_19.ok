@@ -1,0 +1,20 @@
+----------RDF----------
+
+[description(description,about(http://example.org/basket),[id(#l1,http://example.org/stuff/1.0/ : hasFruit = collection([description(description,about(http://example.org/banana),[]),description(description,about(http://example.org/apple),[]),description(description,about(http://example.org/pear),[])]))])]
+
+--------Triples--------
+
+{http://example.org/basket, http://example.org/stuff/1.0/hasFruit, __List542}
+{#l1, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement}
+{#l1, http://www.w3.org/1999/02/22-rdf-syntax-ns#subject, http://example.org/basket}
+{#l1, http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate, http://example.org/stuff/1.0/hasFruit}
+{#l1, http://www.w3.org/1999/02/22-rdf-syntax-ns#object, __List542}
+{__List542, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#List}
+{__List542, http://www.w3.org/1999/02/22-rdf-syntax-ns#first, http://example.org/banana}
+{__List542, http://www.w3.org/1999/02/22-rdf-syntax-ns#rest, __List543}
+{__List543, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#List}
+{__List543, http://www.w3.org/1999/02/22-rdf-syntax-ns#first, http://example.org/apple}
+{__List543, http://www.w3.org/1999/02/22-rdf-syntax-ns#rest, __List544}
+{__List544, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#List}
+{__List544, http://www.w3.org/1999/02/22-rdf-syntax-ns#first, http://example.org/pear}
+{__List544, http://www.w3.org/1999/02/22-rdf-syntax-ns#rest, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil}

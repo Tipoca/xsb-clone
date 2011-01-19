@@ -1,0 +1,10 @@
+----------RDF----------
+
+[description(description,about(http://www.swi.psy.uva.nl/projects/xpce/),[http://description.org/schema/ : Creator = description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag,_h610,[rdf : li = literal(Jan Wielemaker),rdf : li = literal(Anjo Anjewierden)])])]
+
+--------Triples--------
+
+{__Description523, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag}
+{__Description523, http://www.w3.org/1999/02/22-rdf-syntax-ns#_1, literal(Jan Wielemaker)}
+{__Description523, http://www.w3.org/1999/02/22-rdf-syntax-ns#_2, literal(Anjo Anjewierden)}
+{http://www.swi.psy.uva.nl/projects/xpce/, http://description.org/schema/Creator, __Description523}

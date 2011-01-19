@@ -1,0 +1,11 @@
+----------RDF----------
+
+[description(description,about(http://x.org/packages/X11),[http://description.org/schema/ : DistributionSite = description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt,_h654,[rdf : li = description(description,about(ftp://ftp.x.org),[]),rdf : li = description(description,about(ftp://ftp.cs.purdue.edu),[]),rdf : li = description(description,about(ftp://ftp.eu.net),[])])])]
+
+--------Triples--------
+
+{__Description527, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt}
+{__Description527, http://www.w3.org/1999/02/22-rdf-syntax-ns#_1, ftp://ftp.x.org}
+{__Description527, http://www.w3.org/1999/02/22-rdf-syntax-ns#_2, ftp://ftp.cs.purdue.edu}
+{__Description527, http://www.w3.org/1999/02/22-rdf-syntax-ns#_3, ftp://ftp.eu.net}
+{http://x.org/packages/X11, http://description.org/schema/DistributionSite, __Description527}

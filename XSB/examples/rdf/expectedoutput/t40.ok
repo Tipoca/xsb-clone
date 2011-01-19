@@ -1,0 +1,10 @@
+----------RDF----------
+
+[description(http://www.mytypes.org/schema/Bicycle,_h526,[wheels = literal(2)]),description(description,_h744,[rdf : type = http://www.mytypes.org/schema/Bicycle,http://www.mytypes.org/schema/ : wheels = literal(2)])]
+
+--------Triples--------
+
+{__Description539, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.mytypes.org/schema/Bicycle}
+{__Description539, wheels, literal(2)}
+{__Description540, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.mytypes.org/schema/Bicycle}
+{__Description540, http://www.mytypes.org/schema/wheels, literal(2)}

@@ -1,0 +1,9 @@
+----------RDF----------
+
+[description(description,about(SWI-prolog),[http://description.org/schema/ : Creator = description(description,about(JW),[sex = literal(male),employed_at = literal(SWI)])])]
+
+--------Triples--------
+
+{JW, sex, literal(male)}
+{JW, employed_at, literal(SWI)}
+{SWI-prolog, http://description.org/schema/Creator, JW}

@@ -1,0 +1,45 @@
+----------RDF----------
+
+[description(description,about(http://www.dlib.org/dlib/may98/miller/05miller.html),[http://purl.org/metadata/dublin_core# : Title = literal(An Introduction to the Resource Description Framework),http://purl.org/metadata/dublin_core# : Creator = literal(Eric J. Miller),http://purl.org/metadata/dublin_core# : Description = literal(The Resource Description Framework (RDF) is an
+     infrastructure that enables the encoding, exchange and reuse of
+     structured metadata. rdf is an application of xml that imposes needed
+     structural constraints to provide unambiguous methods of expressing
+     semantics. rdf additionally provides a means for publishing both
+     human-readable and machine-processable vocabularies designed to
+     encourage the reuse and extension of metadata semantics among
+     disparate information communities. the structural constraints rdf
+     imposes to support the consistent encoding and exchange of
+     standardized metadata provides for the interchangeability of separate
+     packages of metadata defined by different resource description
+     communities. ),http://purl.org/metadata/dublin_core# : Publisher = literal(Corporation for National Research Initiatives),http://purl.org/metadata/dublin_core# : Subject = description(http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag,_h886,[rdf : li = literal(machine-readable catalog record formats),rdf : li = literal(applications of computer file organization and
+	 access methods)]),http://purl.org/metadata/dublin_core# : Rights = literal(Copyright @ 1998 Eric Miller),http://purl.org/metadata/dublin_core# : Type = literal(Electronic Document),http://purl.org/metadata/dublin_core# : Format = literal(text/html),http://purl.org/metadata/dublin_core# : Language = literal(en),http://purl.org/metadata/dublin_core# : Relation = description(description,_h1232,[http://purl.org/metadata/dublin_core_qualifiers# : RelationType = description(description,about(http://purl.org/metadata/dublin_core_qualifiers#IsPartOf),[]),rdf : value = description(description,about(http://www.dlib.org/dlib/may98/05contents.html),[])])])]
+
+--------Triples--------
+
+{http://www.dlib.org/dlib/may98/miller/05miller.html, http://purl.org/metadata/dublin_core#Title, literal(An Introduction to the Resource Description Framework)}
+{http://www.dlib.org/dlib/may98/miller/05miller.html, http://purl.org/metadata/dublin_core#Creator, literal(Eric J. Miller)}
+{http://www.dlib.org/dlib/may98/miller/05miller.html, http://purl.org/metadata/dublin_core#Description, literal(The Resource Description Framework (RDF) is an
+     infrastructure that enables the encoding, exchange and reuse of
+     structured metadata. rdf is an application of xml that imposes needed
+     structural constraints to provide unambiguous methods of expressing
+     semantics. rdf additionally provides a means for publishing both
+     human-readable and machine-processable vocabularies designed to
+     encourage the reuse and extension of metadata semantics among
+     disparate information communities. the structural constraints rdf
+     imposes to support the consistent encoding and exchange of
+     standardized metadata provides for the interchangeability of separate
+     packages of metadata defined by different resource description
+     communities. )}
+{http://www.dlib.org/dlib/may98/miller/05miller.html, http://purl.org/metadata/dublin_core#Publisher, literal(Corporation for National Research Initiatives)}
+{__Description536, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag}
+{__Description536, http://www.w3.org/1999/02/22-rdf-syntax-ns#_1, literal(machine-readable catalog record formats)}
+{__Description536, http://www.w3.org/1999/02/22-rdf-syntax-ns#_2, literal(applications of computer file organization and
+	 access methods)}
+{http://www.dlib.org/dlib/may98/miller/05miller.html, http://purl.org/metadata/dublin_core#Subject, __Description536}
+{http://www.dlib.org/dlib/may98/miller/05miller.html, http://purl.org/metadata/dublin_core#Rights, literal(Copyright @ 1998 Eric Miller)}
+{http://www.dlib.org/dlib/may98/miller/05miller.html, http://purl.org/metadata/dublin_core#Type, literal(Electronic Document)}
+{http://www.dlib.org/dlib/may98/miller/05miller.html, http://purl.org/metadata/dublin_core#Format, literal(text/html)}
+{http://www.dlib.org/dlib/may98/miller/05miller.html, http://purl.org/metadata/dublin_core#Language, literal(en)}
+{__Description537, http://purl.org/metadata/dublin_core_qualifiers#RelationType, http://purl.org/metadata/dublin_core_qualifiers#IsPartOf}
+{__Description537, http://www.w3.org/1999/02/22-rdf-syntax-ns#value, http://www.dlib.org/dlib/may98/05contents.html}
+{http://www.dlib.org/dlib/may98/miller/05miller.html, http://purl.org/metadata/dublin_core#Relation, __Description537}

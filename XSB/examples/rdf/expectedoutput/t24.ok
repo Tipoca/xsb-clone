@@ -1,0 +1,11 @@
+----------RDF----------
+
+[description(description,_h578,[rdf : subject = description(description,about(http://www.w3.org/Home/Lassila),[]),rdf : predicate = description(description,about(http://description.org/schema/Creator),[]),rdf : object = literal(Ora Lassila),rdf : type = description(description,about(http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement),[]),http://description.org/schema/ : attributedTo = literal(Ralph Swick)])]
+
+--------Triples--------
+
+{__Description528, http://www.w3.org/1999/02/22-rdf-syntax-ns#subject, http://www.w3.org/Home/Lassila}
+{__Description528, http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate, http://description.org/schema/Creator}
+{__Description528, http://www.w3.org/1999/02/22-rdf-syntax-ns#object, literal(Ora Lassila)}
+{__Description528, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement}
+{__Description528, http://description.org/schema/attributedTo, literal(Ralph Swick)}
