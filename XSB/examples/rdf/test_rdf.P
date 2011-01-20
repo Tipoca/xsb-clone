@@ -26,6 +26,7 @@
 :- [rdf].
 
 :- use_module(library(sgml), [load_structure/4]).
+:- use_module(rdf, [load_rdf/2, xml_to_rdf/3]).	
 :- use_module(rdf_parser, [xml_to_plrdf/3,make_rdf_state/3]).	
 :- use_module(rdf_triple, [rdf_triples/2, rdf_start_file/2, rdf_end_file/1]).
 :- import slash/1 from machine.
@@ -46,7 +47,20 @@ test_all :-
 	told, 
 	fail.
 
-test_all.
+/*Test for load_rdf and xml_to_rdf*/
+test_all :-
+	rdfdir(RDFDir), slash(Slash), 
+	fmt_write_string(InFile, '%s%ssuite%st1.rdf', f(RDFDir, Slash, Slash)), 
+	fmt_write_string(OutFile1, '%s%sactualoutput%sload_rdf.ok', f(RDFDir, Slash, Slash)), 
+	tell(OutFile1), 
+	load_rdf(file(InFile), Triples1), 
+	writeln(Triples1), 
+	told, 
+	fmt_write_string(OutFile2, '%s%sactualoutput%sxml_to_rdf.ok', f(RDFDir, Slash, Slash)), 
+	tell(OutFile2), 
+	xml_to_rdf(element('http://www.w3.org/1999/02/22-rdf-syntax-ns#' : _,[xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#',xmlns:s='http://description.org/schema/'],[element('http://www.w3.org/1999/02/22-rdf-syntax-ns#' : _,[about='http://www.w3.org/Home/Lassila'],[element('http://description.org/schema/' : 'Creator',[],['Ora Lassila'])])]), Triples2, []), 
+	writeln(Triples2), 
+	told.
 
 test_file(File) :-
 	load_structure(file(File),
@@ -54,11 +68,13 @@ test_file(File) :-
 		       [ dialect(xmlns),
 			 space(sgml)
 		       ], _),
+	writeln('----------sgml----------'), write('\n'), 
+	writeln(RDFElement), 
 	rdf_start_file([], Cleanup),
 	make_rdf_state([base_uri('http://test.org/test/')], State, _),
 	xml_to_plrdf(RDFElement, RDF, State),
 	rdf_end_file(Cleanup),
-	writeln('----------RDF----------'), write('\n'), 
+	write('\n'), writeln('----------RDF----------'), write('\n'), 
 	writeln(RDF), 	
 	rdf_triples(RDF, Triples),
 	write('\n'), writeln('--------Triples--------'), write('\n'), 
