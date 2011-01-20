@@ -52,9 +52,10 @@ test_html_redir(OutPath) :-
 	tell(OutFile), write_page(X), told,  
 	close(X).
 
+/*Always export the certificates with type set to "X.509 Certificate with chain (PEM)*/
 test_secure_crt(OutPath, CertPath) :- 
 	slash(Slash), 
-	fmt_write_string(CertFile, '%s%smail.cs.sunysb.edu.crt', f(CertPath, Slash)), 
+	fmt_write_string(CertFile, '%s%scs.stonybrook.edu.crt', f(CertPath, Slash)), 
 	open(url('https://mail.cs.stonybrook.edu'), read, X, [secure(CertFile)]),
 	fmt_write_string(OutFile, '%s%ssecure_crt.html', f(OutPath, Slash)),
 	tell(OutFile), write_page(X), told,  
