@@ -270,10 +270,10 @@ static void init_mq_table(void)
 #define lock_message_queue(Ptr,String)					\
 { int status;								\
   status = pthread_mutex_lock(&Ptr->mq_mutex);				\
-  if (status) printf("Error (%s) (thread %ld) locking queue %ld in routine %s\n",strerror(status), \
+  if (status) printf("Error (%s) (thread %d) locking queue %d in routine %s\n",strerror(status), \
 		      xsb_thread_entry,Ptr - mq_table,String);		\
   if (Ptr->mutex_owner != -1)						\
-    printf("Error (thread %ld) locking queue %ld in routine %s (owner is %d)\n", \
+    printf("Error (thread %d) locking queue %d in routine %s (owner is %d)\n", \
 	   xsb_thread_entry,Ptr - mq_table,String,Ptr->mutex_owner);			\
   Ptr->mutex_owner = xsb_thread_entry;					\
 }
@@ -281,17 +281,17 @@ static void init_mq_table(void)
 #define unlock_message_queue(Ptr,String)				\
 { int status;								\
   if (Ptr->mutex_owner != xsb_thread_entry)						\
-    printf("Error (thread %ld) unlocking queue %ld in routine %s (owner is %d)\n", \
+    printf("Error (thread %d) unlocking queue %d in routine %s (owner is %d)\n", \
 	   xsb_thread_entry,Ptr - mq_table,String,Ptr->mutex_owner);			\
   Ptr->mutex_owner = -1;						\
   status = pthread_mutex_unlock(&Ptr->mq_mutex);				\
-  if (status) printf("Error %s (thread %ld) unlocking queue %ld in routine %s\n",strerror(status), \
+  if (status) printf("Error %s (thread %d) unlocking queue %d in routine %s\n",strerror(status), \
 		      xsb_thread_entry,Ptr - mq_table,String);		\
 }
 
 #define checklock_message_queue(Ptr,String)					\
   { if (Ptr->mutex_owner != xsb_thread_entry)	{			\
-      printf("Error (thread %ld) accessing queue %ld in routine %s (queue owned by %d)\n",xsb_thread_entry, \
+      printf("Error (thread %d) accessing queue %d in routine %s (queue owned by %d)\n",xsb_thread_entry, \
 	     Ptr - mq_table,String,Ptr->mutex_owner);					\
       lock_message_queue(Ptr,String);					\
     }									\
@@ -299,7 +299,7 @@ static void init_mq_table(void)
 
 #define check_message_queue(Ptr,String)					\
   { if (Ptr->mutex_owner != xsb_thread_entry)	{			\
-      printf("Error (thread %ld) accessing queue %ld in routine %s (queue owned by %d)\n",xsb_thread_entry, \
+      printf("Error (thread %d) accessing queue %d in routine %s (queue owned by %d)\n",xsb_thread_entry, \
 	     Ptr - mq_table,String,Ptr->mutex_owner);					\
     }									\
 }
@@ -330,10 +330,10 @@ void init_message_queue(XSB_MQ_Ptr xsb_mq, int declared_size) {
 
 #ifdef NON_OPT_COMPILE
     status = pthread_mutex_init(&xsb_mq->mq_mutex, &attr_errorcheck_gl );
-    if (status) printf("Error queue initialization: queue %ld\n",xsb_mq-mq_table);
+    if (status) printf("Error queue initialization: queue %d\n",xsb_mq-mq_table);
 #else
     status = pthread_mutex_init(&xsb_mq->mq_mutex, NULL );
-    if (status) printf("Error queue initialization: queue %ld\n",xsb_mq-mq_table);
+    if (status) printf("Error queue initialization: queue %d\n",xsb_mq-mq_table);
 #endif
 
     pthread_cond_init( &xsb_mq->mq_has_free_cells, NULL );
