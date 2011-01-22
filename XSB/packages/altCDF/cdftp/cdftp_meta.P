@@ -98,12 +98,12 @@ meta(all(inv(R),Class),Elt,AbdIn,AbdOut,ConstIn,
 	findall(E1,(abduced(rel(E1,SubRel,Elt),AbdIn),
 	            tp_subclass(SubRel,R)               ),Elts),
 	metaList(Elts,Class,AbdIn,AbdOut,ConstIn,ConstOut),
-            checkatMostInv(Elt,R,AbdOut,ConstOut).
+	checkatMostInv(Elt,R,AbdOut,ConstOut).
 meta(all(R,Class),Elt,AbdIn,AbdOut,ConstIn,[allrel(Elt,R,Class)|ConstOut]):- !,
 	findall(E1,(abduced(rel(Elt,SubRel,E1),AbdIn),
-	            tp_subclass(SubRel,R)               ),Elts),
+	            tp_subclass(SubRel,R)),Elts),
 	metaList(Elts,Class,AbdIn,AbdOut,ConstIn,ConstOut),
-            checkatMost(Elt,R,AbdOut,ConstOut).
+	checkatMost(Elt,R,AbdOut,ConstOut).
 meta(atLeast(N,inv(R),C),Elt,AbdIn,AbdOut,ConstIn,ConstOut):- !,
 	chooseInv(N,Elt,AbdIn,AbdMid,EltSet),
 	metaAtLeastInvRel(EltSet,Elt,R,C,AbdMid,AbdMid1,ConstIn,ConstMid),
@@ -115,18 +115,16 @@ meta(atLeast(N,R,C),Elt,AbdIn,AbdOut,ConstIn,ConstOut):- !,
 	EltSet = [NewElt|_],
 	checkAlls(Elt,R,NewElt,AbdMid1,AbdOut,ConstMid,ConstOut).
 meta(atMost(N,inv(R),C),Elt,AbdIn,AbdIn,Cnst,[atMostInv(Elt,N,R,C)|Cnst]):- !,
-         constrainAtMostInv(atMostInv(Elt,N,R,C),AbdIn).
-meta(atMost(N,R,C),Elt,AbdIn,AbdIn,ConstIn,[atMost(Elt,N,R,C)|ConstIn]):-
-	!,
-         constrainAtMost(atMost(Elt,N,R,C),AbdIn).
-meta(sameAs(R1,C1,R2,C2),Elt,AbdIn,AbdIn,Cnst,
-                                                        [sameAs(Elt,R1,C1,R2,C2)|Cnst]):- !.
+	constrainAtMostInv(atMostInv(Elt,N,R,C),AbdIn).
+meta(atMost(N,R,C),Elt,AbdIn,AbdIn,ConstIn,[atMost(Elt,N,R,C)|ConstIn]):- !,
+	constrainAtMost(atMost(Elt,N,R,C),AbdIn).
+meta(sameAs(R1,C1,R2,C2),Elt,AbdIn,AbdIn,Cnst,[sameAs(Elt,R1,C1,R2,C2)|Cnst]):- !.
 meta(not(Class),Elt,Abd,Abd,ConstIn,ConstOut):- !,
 	constrainNotElt(Class,Elt,Abd,ConstIn,ConstOut).
 meta(component(_),_Elt,Abd,Abd,Const,Const):- !.
 meta(Bot,_Elt,Abd,Abd,Const,Const):- 
-	bottomIdentifier(Bot),
-	!,fail.
+	bottomIdentifier(Bot),!,
+	fail.
 meta(Top,_Elt,Abd,Abd,Const,Const):- 
 	topIdentifier(Top),!.
 % this also handles unique classes.

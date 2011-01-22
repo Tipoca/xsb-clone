@@ -24,6 +24,7 @@
             retractallIntRule/3,
     newDLRule/3,
             retractallDLRule/3,
+    newDLTableFact/2,
     assert_cdf/1, retractall_cdf/1,
     assert_cdf_term/1, retractall_cdf_term/1,
     updateExtTerm/3,
@@ -65,7 +66,7 @@ load_cdf_init_cdf.  % to allow altCDF to force loading of this module.
 :- import component_table_int/3 from usermod.
 
 % For newDLRule/2 etc.
-:- import dlrule_to_cdf/3 from cdftp_rules.
+:- import dlrule_to_cdf/4 from cdftp_rules.
 :- import compdlrule/3 from usermod.
 
 %%%%%%%%%%
@@ -91,6 +92,10 @@ load_cdf_init_cdf.  % to allow altCDF to force loading of this module.
 
 %%%%%%%%%%
 
+:- import add_lib_dir/2 from consult.
+:- import xsb_configuration/2 from xsb_configuration.
+:- xsb_configuration(install_dir,InstallDir),
+	add_lib_dir(InstallDir,'packages/altCDF').
 :- ensure_loaded(cdf_checks).	% since cdf_checks is not a module, and
                 % cdf_init_cdf uses predicates defined
                 % there, it must be explicitly loaded.
@@ -105,7 +110,7 @@ load_cdf_init_cdf.  % to allow altCDF to force loading of this module.
 
 :- import '_$index'/3 from file_op.
 %%%:- import conset/2, conget/2, coninc/1 from gensym.
-:- import ground/1,member/2 from basics.
+:- import member/2 from basics.
 :- import abolish_table_pred/1 from tables.
 :- import concat_atom/2 from string.
 
@@ -116,6 +121,16 @@ load_cdf_init_cdf.  % to allow altCDF to force loading of this module.
 
 cdf_dynamic(compdlrule/3).
 cdf_dynamic(compdltrans/3).
+cdf_dynamic(dlTable/2).
+cdf_dynamic(dlTable/3).
+cdf_dynamic(dlTable/4).
+cdf_dynamic(dlTable/5).
+cdf_dynamic(dlTable/6).
+cdf_dynamic(dlTable/7).
+cdf_dynamic(dlTable/8).
+cdf_dynamic(dlTable/9).
+cdf_dynamic(dlTable/10).
+cdf_dynamic(dlTable/11).
 
 cdf_dynamic(isa_ext/2).
 cdf_dynamic(allAttr_ext/3).
@@ -192,6 +207,12 @@ Includes all relations on object-object relations.  Defined as a root.
 @cindex{CDF Higher-Order (Class-Object)-Object Relations}
 
 Includes all relations on class-object relations.  Defined as a root.
+
+@item @tt{crrrid('CDF Higher-Order (Object-Object)-(Object-Object) Relations',cdf)}:
+@cindex{CDF Higher-Order (Class-Object)-(Object-Object) Relations}
+
+Includes all relations between object-object relations.  Defined as a root.
+
 
 @item @tt{id('CDF Primitive Types',cdfpt)}:
 @cindex{CDF Primitive Types}
@@ -299,6 +320,7 @@ cdf_root(rid('CDF Object-Object Relations',cdf)).
 cdf_root(crid('CDF Class-Object Relations',cdf)).
 cdf_root(crrid('CDF Higher-Order (Object-Object)-Object Relations',cdf)).
 cdf_root(crcrid('CDF Higher-Order (Class-Object)-Object Relations',cdf)).
+cdf_root(crrrid('CDF Higher-Order ((Object-Object)-(Object-Object)) Relations',cdf)).
 
 :- comment(cdf_id_fields/4,
 "@tt{cdf_id_fields(ID,Functor,NatId,Component)} is true if ID is a
@@ -317,6 +339,7 @@ cdf_id_fields1(rid(N,S),rid,N,S).
 cdf_id_fields1(crid(N,S),crid,N,S).
 cdf_id_fields1(crrid(N,S),crrid,N,S).
 cdf_id_fields1(crcrid(N,S),crcrid,N,S).
+cdf_id_fields1(crrrid(N,S),crrrid,N,S).
 cdf_id_fields1(vid(N,S),vid,N,S).
 
 :- index cdf_id_fields2/4-2.
@@ -326,6 +349,7 @@ cdf_id_fields2(rid(N,S),rid,N,S).
 cdf_id_fields2(crid(N,S),crid,N,S).
 cdf_id_fields2(crrid(N,S),crrid,N,S).
 cdf_id_fields2(crcrid(N,S),crcrid,N,S).
+cdf_id_fields2(crrrid(N,S),crrrid,N,S).
 cdf_id_fields2(vid(N,S),vid,N,S).
 
 product_identifier(Id):-
@@ -553,7 +577,7 @@ isa_bf_maybe_table(Sub,Sup):-
 isa_bf_inner(Sub,Sub).
 isa_bf_inner(Sub,Sup):-
     immed_isa1(Sub,Mid),
-    isa_bf_inner(Mid,Sup).
+    isa_bf_inner(Mid,Sup).  % so not tabling... could lead to loop.
 
 %--------------------
 
@@ -1761,7 +1785,7 @@ retractallIntRule_1(_,_,_).
 newDLRule(Head,Body,Name):-
     DLRule = '<='(Head,Body),
     apply_checks(newDLRuleSingle,DLRule),
-    dlrule_to_cdf(DLRule,CDFList,Cmpt),
+    dlrule_to_cdf(DLRule,Name,CDFList,Cmpt),
     asserta(compdlrule(Cmpt,Head,Body)),
     member((:-(H,B)),CDFList),
     (var(Cmpt) -> Cmpt = Name ; true),
@@ -1776,6 +1800,12 @@ newDLRule(Head,Body,Name):-
     fail.
 newDLRule(_Head,_Body,_Name).
 
+%% assert a fact into a dlTable/n predicate.
+newDLTableFact(DLFact,Name) :-
+	DLFact =.. [dlTable|Args],
+	DLFactStored =.. [dlTable,Name|Args],
+	assert(DLFactStored).
+
 %%%%%%%%%%%%%%%%%
 
 retractallDLRule(Head,Body,Name) :-
@@ -1784,7 +1814,7 @@ retractallDLRule(Head,Body,Name) :-
     maybe_invalidate_cache(Flg,Head,retract).
 
 retractallDLRule_1(H,B,Name) :-
-    dlrule_to_cdf('<='(H,B),CDFList,Name),
+    dlrule_to_cdf('<='(H,B),Name,CDFList,Name),
     member((:-(Head,Body)),CDFList),
     transform_intensional_rules(Head,BlankBody,NewHead,Name),
     functor(Head,T,A),
@@ -1892,6 +1922,7 @@ abolish_nec_tables(isa_ext(_,_)) :- !,
     abolish_minAttr_inherits.
 
 abolish_hasAttr_inherits :-
+%%	writeln(userout,abolish_hasAttr_inherits)),
     abolish_table_pred(hasAttr_1fix(_,_,_)),
     abolish_table_pred(hasAttr_12fix(_,_,_)),
     abolish_table_pred(hasAttr_23fix(_,_,_)),
@@ -2086,20 +2117,33 @@ newExtTerm(Context,Term,Upd0,Upd):-
 :- 	   cdf_message('Using XJ').
 :- 	   assert(cdf_configuration(proprietary_features,on)).
 
-maybe_invalidate_cache(Flg,Term,Mode):-
+/***maybe_invalidate_cache(Flg,Term,Mode):-
     (Flg =:= 1
      ->	cache_invalidate_for(Term)
      ;	true
     ),
-    invalidate_tables_for(Term,Mode).
+    invalidate_tables_for(Term,Mode).****/
+maybe_invalidate_cache(Flg,Term,Mode):-
+	(Flg =:= 1
+	 ->	cache_invalidate_for(Term),
+	        invalidate_tables_for(Term,Mode)
+	 ;	true
+	).
 
-cdf_update_term(asserta(Term),CFlg) :-
+/****cdf_update_term(asserta(Term),CFlg) :-
     assert_cdf(Term),
     (CFlg =:= 1
      ->	cache_invalidate_for(Term)
      ;	true
     ),
-    invalidate_tables_for(Term,assert).
+    invalidate_tables_for(Term,assert).*******/
+cdf_update_term(asserta(Term),CFlg) :-
+    assert_cdf(Term),
+    (CFlg =:= 1
+     ->	    cache_invalidate_for(Term),
+	    invalidate_tables_for(Term,assert)    
+     ;	    true
+    ).
 
 cdf_update_term(retractall(Term),CFlg) :-
     retractall_cdf(Term),

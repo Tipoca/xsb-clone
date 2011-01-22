@@ -39,6 +39,7 @@ cdf_flag(retractallExtTermSingle).
 cdf_flag(newIntRuleBatch).
 cdf_flag(newIntRuleSingle).
 cdf_flag(newDLRuleSingle).
+cdf_flag(dlrule).
 
 % initial_cdf_flag/2 facts can be overridden by declaring 
 % corresponding user_cdf_flag/2 facts in $(HOME)/.xsb/xsbrc.P
@@ -125,14 +126,26 @@ component_table_int(retractall_cdf_int(_),null,[]).
 set initial indices for the various types of extensional facts. IThese
 indices can be changed, if necessary to give better performance.  ").
 
-cdf_index(isa_ext,2,[*(1),*(2)]).
+%%cdf_index(isa_ext,2,[*(1),*(2)]).
+cdf_index(isa_ext,2,[*(1),*(2)],65537).
 cdf_index(allAttr_ext,3,[*(1) + *(2),*(1),*(2) + *(3)]).
 %%cdf_index(hasAttr_ext,3,[*(1) + *(2),*(1),*(2) + *(3)]).
-cdf_index(hasAttr_ext,3,[*(1) + *(2) + *(3),*(1) + *(2),*(2) + *(3)]).
+%%cdf_index(hasAttr_ext,3,[*(1) + *(2) + *(3),*(1) + *(2),*(2) + *(3)]).
+cdf_index(hasAttr_ext,3,[*(1) + *(2), *(2) + *(3), *(1), *(2)],65537).
 cdf_index(classHasAttr_ext,3,[*(1) + *(2),*(1),*(2) + *(3)]).
 cdf_index(minAttr_ext,4,[*(1) + *(2),*(1),*(2) + *(3)]).
 cdf_index(maxAttr_ext,4,[*(1) + *(2),*(1),*(2) + *(3)]).
 cdf_index(necessCond_ext,2,[*(1)]).
 cdf_index(coversAttr,3,[*(1) + *(2),*(1),*(2) + *(3)]).
 
+cdf_index(dlTable,2,trie).
+cdf_index(dlTable,3,trie).
+cdf_index(dlTable,4,trie).
+cdf_index(dlTable,5,trie).
+cdf_index(dlTable,6,trie).
+cdf_index(dlTable,7,trie).
+cdf_index(dlTable,8,trie).
+cdf_index(dlTable,9,trie).
+cdf_index(dlTable,10,trie).
+cdf_index(dlTable,11,trie).
 

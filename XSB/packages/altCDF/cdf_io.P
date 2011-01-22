@@ -2,7 +2,7 @@
 
 #include "standard.h"
 
-:- import message/1,messageln/2 from standard.
+:- import message/1,messageln/2,call_c/1 from standard.
 
 %messageln(Message) :- messageln(Message, STDMSG).
 
@@ -11,6 +11,7 @@
 	load_intensional_rules/1,
 	dump_intensional_rules/1, 
 	write_component_intensional/1,
+	write_intensional_dlTables/0,
 	merge_intensional_rules/0,
 	retract_intensional_rules/1,
 	cdf_exists/1,
@@ -31,9 +32,11 @@
 :- import caching_cdf/1 from usermod.
 
 :- import pretty_print/1 from newpp.
-:- import newIntRule/3,newDLRule/3,
+:- import newIntRule/3,newDLRule/3,newDLTableFact/2,
 	 newExtTermBatch/2,transform_intensional_rules/4,
 	 abolish_cdf_tables/0, cdf_id_fields/4 from cdf_init_cdf.
+
+:- import init_dynamic_code/0 from cdf_init_cdf.
 
 :- import  get_intensional_mfile_expansion/2 from cdf_comps_share.
 
@@ -42,7 +45,7 @@
 :- import cdf_fix_dir/2 from cdf_utilities.
 
 :- import existence_error/4, permission_error/4 from error_handler.
-:- import member/2,reverse/2 from basics.
+:- import member/2,reverse/2,for/3,append/3 from basics.
 :- import concat_atom/2 from string.
 %:- import load_dync/2 from consult.
 :- import path_sysop/2 from file_io.
@@ -158,6 +161,26 @@ write_component_intensional(Comp):-
 	write_canonical('<='(DLHead,DLBody)), writeln('.'),
 	fail.
 write_component_intensional(_).
+
+write_intensional_dlTables :-
+	for(Arity,2,11),  %%DSW MAX dlTable
+	functor(DLTableCall,dlTable,Arity),
+	DLTableCall =.. [dlTable,Dir,Name|Args],
+	findall(p(Name,Dir),call_c(DLTableCall),Pairs),
+	sort(Pairs,SPairs),
+	(append(_,[p(N,Dir1),p(N,Dir2)|_],SPairs)
+	 ->	throw(cdf_error(component_dlTables,['Conflict in dlTable names: ',N,''(Dir1,Dir2)]))
+	 ;	true
+	),
+	DLTableWrite =.. [dlTable,Name|Args],
+	member(p(Name,_),SPairs),
+	findall(DLTableWrite,DLTableCall,DLTableEntsU),
+	sort(DLTableEntsU,DLTableEnts),
+	member(DLTableEnt,DLTableEnts),
+	write_canonical(DLTableEnt),
+	writeln('.'),
+	fail.
+write_intensional_dlTables.
 
 % Comp will be var if called from dump -- so don't need to check any
 % components.  It will be an atom if called via  update components 
@@ -321,6 +344,7 @@ read_till_slash_1([H|R],[H|R1]):-
 
 %TLS: dont know if permission error is right here.	   :	
 load_intensional_rules(Path,Name):- 
+	writeln(userout,loading_intensional_rules(Path,Name)),
 	seeing(OldF),
 	retract_intensional_rules(Name),
 	abolish_cdf_tables,
@@ -360,6 +384,10 @@ read_intensional_rules_2((Head :- Body),Name):- !,
 % these should be executable directives ala table.
 read_intensional_rules_2((:-(Query)),_Name):- !,
 	call(Query),
+	fail.
+read_intensional_rules_2(DL_Table_Fact,Name) :-
+	functor(DL_Table_Fact,dlTable,Arity), Arity =< 11, !, % MAX dlTable
+	newDLTableFact(DL_Table_Fact,Name),
 	fail.
 read_intensional_rules_2(Head,Name):- 
 	transform_intensional_rules(Head,BlankBody,NewHead,Name),
