@@ -175,7 +175,6 @@ tnot(Subgoal) :-
 /* Need to Handle module calls (not sure if done properly before) */
 :- import writeln/1 from standard.
 
-
 /* need to refactor to distinguish completed from non-completed with call-entry */
 
 't not'(Subgoal) :-
@@ -477,7 +476,6 @@ get_unifiable_returns_1(TableEntry, Skel, ReturnsList):-
 		'_$$get_returns'(TableEntry,Skel,RetLeaf),
 		ReturnsList).
 
-
 '_$$get_returns'(TableEntry,RetTmplt,RetLeaf) :-
 	trie_get_return(TableEntry,RetTmplt),
 	get_lastnode_cs_retskel(_,RetLeaf,_,_).
@@ -547,10 +545,11 @@ get_residual(CallSkel, DelayList) :-
 	get_delay_lists(Leaf,DLs).
 	
 get_returns_and_dls(CallStr, RetSkel, DLs) :-
-	findall('_$get_returns_and_dls'(CallStr,RetSkel,DLs),
+	'_$$get_returns_and_dls'(CallStr,RetSkel,DLs).
+/*	findall('_$get_returns_and_dls'(CallStr,RetSkel,DLs),
 		'_$$get_returns_and_dls'(CallStr,RetSkel,DLs),
 		List),
-	member('_$get_returns_and_dls'(CallStr,RetSkel,DLs),List).
+	member('_$get_returns_and_dls'(CallStr,RetSkel,DLs),List).*/
 
 get_delay_lists(Leaf, DLs) :- get_delay_lists(Leaf, DLs).
 
@@ -660,6 +659,41 @@ trie_retract_all(X) :- retractall(X).
 /* builtins to get (and change) trie nodes - they belong somewhere else */
 /*======================================================================*/
 
+force_answer_true(Goal) :-
+	findall(Leaf,get_leaves(Goal,Leaf),Leaves),
+	(Leaves == []
+	 ->	permission_error('True forcing','a false goal',Goal,(table)/1)
+	 ;	(member(Leaf,Leaves),
+		 force_truth_value(Leaf,'true'),
+		 fail
+		 ;
+		 true
+		)
+	).
+
+force_answer_false(Goal) :-
+	findall(p(Leaf,DLs),get_leaves_and_dls(Goal,Leaf,DLs),Leaves),
+	(member(p(Leaf,DLs),Leaves),
+	 (DLs == []
+	  ->	 permission_error('False forcing','a true goal',Goal,(table)/1)
+	  ;	 force_truth_value(Leaf,'false'),
+		 fail
+		 ;
+		 true
+		)
+	).
+
+get_leaves(Goal,Leaf) :-
+	get_calls(Goal,CallStr,RetSkel),
+	trie_get_return(CallStr,RetSkel),
+	get_lastnode_cs_retskel(_,Leaf,_,_).
+
+get_leaves_and_dls(Goal,Leaf,DLs) :-
+	get_calls(Goal,CallStr,RetSkel),
+	trie_get_return(CallStr,RetSkel),
+	get_lastnode_cs_retskel(_,Leaf,_,_),
+	get_delay_lists(Leaf,DLs).
+
 force_truth_value(AnsLeafNode,TruthValue) :-
 	force_truth_value(AnsLeafNode,TruthValue).
 
@@ -687,6 +721,7 @@ find_forward_dependencies(Call):-
 find_answers(Pred):- 
 	table_inspection_function(FIND_ANSWERS,Pred,_,_,_).
 
+end_of_file.
 /* Right now, experimental for aggregs.P */
 	
 :- export get_unifiable_returns/3.

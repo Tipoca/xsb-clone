@@ -30,7 +30,7 @@
       abolish_module_tables/1,
    add_incr_table/2, add_table/1,
       delete_return/2,
-      force_truth_value/2,
+      force_truth_value/2, force_answer_true/1, force_answer_false/1,
       get_call/3,
       get_calls/3,
       get_calls_for_table/2,
