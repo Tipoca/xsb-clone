@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.354 2011-01-11 14:05:20 dwarren Exp $
+** $Id: builtin.c,v 1.355 2011-01-22 19:36:51 dwarren Exp $
 **
 */
 
@@ -1889,6 +1889,9 @@ int builtin_call(CTXTdeclc byte number)
 	  NodeStats_SizeUsedNodes(abtn) + HashStats_SizeUsedTotal(abtht);
 	ctop_int(CTXTc 2, (Integer)trieassert_used);
 	}
+      break;
+    case 4: /* current Global Stack size */
+      ctop_int(CTXTc 2, (pb)top_of_heap - (pb)glstack.low);
       break;
     default: xsb_domain_error(CTXTc "xwam_state_case",ptoc_tag(CTXTc 1),"xwam_state/2",1);
     }
