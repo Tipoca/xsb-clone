@@ -124,9 +124,10 @@ the probability of a disjunction $(A;B)$ is computed as the sum of
 the probabilities of A and B
 (exclusiveness assumption),
   \end{itemize}
-you can perform faster inference with an optimized version of PITA in package \texttt{pitaprism.P}. It accepts the same commands of \texttt{pita.P}.  \texttt{pitaprism.P} simulates PRISM and does not need CUDD and GLib.
+you can perform faster inference with an optimized version of PITA in package \texttt{pitaindexc.P}. It accepts the same commands of \texttt{pita.P}.  \texttt{pitaindexc.P} simulates PRISM and does not need CUDD and GLib.
 
-If you want to compute the Viterbi path and probability of a query (the Viterbi path is the explanation with the highest probability) as with the predicate \texttt{viterbif/3} of PRISM, you can use package \texttt{pitaprismvit.P}.
+
+If you want to compute the Viterbi path and probability of a query (the Viterbi path is the explanation with the highest probability) as with the predicate \texttt{viterbif/3} of PRISM, you can use package \texttt{pitavitind.P}.
 
 The package \texttt{pitacount.P} can be used to count the explanations for a query, provided that the independence assumption holds. To count the number of explanations for a query use
 \begin{verbatim}
