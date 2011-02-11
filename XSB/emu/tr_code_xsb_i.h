@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.29 2011-01-02 22:16:43 tswift Exp $
+** $Id: tr_code_xsb_i.h,v 1.30 2011-02-11 15:08:03 tswift Exp $
 ** 
 */
 
@@ -236,11 +236,6 @@ int     delay_it;
 }
 
 /*----------------------------------------------------------------------*/
-/*
-    printf("in unify_with_trie_numcon %x\n",*reg_arrayptr);		\
-    printf("derefed\n");				\
-    printf(">>>> add_interrupt in unify_with_trie_numcon\n");	\
-*/
 
 #define unify_with_trie_numcon {					\
   XSB_Deref(*trieinstr_unif_stkptr);					       	\
@@ -282,7 +277,7 @@ int     delay_it;
   else if (isattv(*trieinstr_unif_stkptr)) {				\
     attv_dbgmsg(">>>> add_interrupt in unify_with_trie_str\n");	\
     add_interrupt(CTXTc cell(((CPtr)dec_addr(*trieinstr_unif_stkptr) + 1)), makecs(hreg+INT_REC_SIZE));	\
-    bind_copy((CPtr)dec_addr(*trieinstr_unif_stk), makecs(hreg));        \
+    bind_copy((CPtr)dec_addr(*trieinstr_unif_stkptr), makecs(hreg));        \
     trieinstr_unif_stkptr--;						\
     *(hreg++) = (Cell) psc;					\
     for (i = arity; i >= 1; i--) {				\
@@ -387,17 +382,17 @@ int     delay_it;
   trieinstr_unif_stkptr--;							\
 }
 
-#define unify_with_variant_trie_val {						\
+#define unify_with_variant_trie_val {					\
   Cell cell2deref;							\
-  XSB_Deref(*trieinstr_unif_stkptr);    						\
-  if (isref(*trieinstr_unif_stkptr)) {						\
-    cell2deref = (Cell)trieinstr_vars[(int)int_val(opatom)];			\
+  XSB_Deref(*trieinstr_unif_stkptr);					\
+  if (isref(*trieinstr_unif_stkptr)) {					\
+    cell2deref = (Cell)trieinstr_vars[(int)int_val(opatom)];		\
     XSB_Deref(cell2deref);	       					\
-    if (cell2deref != *trieinstr_unif_stkptr)					\
-      bind_ref((CPtr) *trieinstr_unif_stkptr, cell2deref);			\
+    if (cell2deref != *trieinstr_unif_stkptr)				\
+      bind_ref((CPtr) *trieinstr_unif_stkptr, cell2deref);		\
   }									\
-  else if (isattv(*trieinstr_unif_stkptr)) {					\
-    cell2deref = (Cell) trieinstr_vars[(int)int_val(opatom)];			\
+  else if (isattv(*trieinstr_unif_stkptr)) {				\
+    cell2deref = (Cell) trieinstr_vars[(int)int_val(opatom)];		\
     XSB_Deref(cell2deref);     						\
     if (*trieinstr_unif_stkptr != cell2deref) {				\
       /* Specialization: do not need to trigger attv interrupt */	\
@@ -408,14 +403,14 @@ int     delay_it;
     }									\
   }									\
   else {								\
-    op1 = (Cell)*trieinstr_unif_stkptr;						\
+    op1 = (Cell)*trieinstr_unif_stkptr;					\
     op2 = (Cell) trieinstr_vars[(int)int_val(opatom)];			\
-    if (unify(CTXTc op1,op2) == FALSE) {				\
+    if (unify(CTXTc op1,op2) == FALSE) {		\
       Fail1;								\
       XSB_Next_Instr();							\
     }									\
   }									\
-  trieinstr_unif_stkptr--;							\
+  trieinstr_unif_stkptr--;						\
 }
 
 /* TLS: 

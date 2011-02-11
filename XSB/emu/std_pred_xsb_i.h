@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.53 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: std_pred_xsb_i.h,v 1.54 2011-02-11 15:08:03 tswift Exp $
 ** 
 */
 
@@ -380,7 +380,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
     mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
     return TRUE;
   } else {	/* use is: ATOM --> CODES/CHARS */
-    if (isstring(term)) {
+    if (isatom(term)) {
       atomname = string_val(term);
       len = strlen(atomname);
       if (len == 0) {
