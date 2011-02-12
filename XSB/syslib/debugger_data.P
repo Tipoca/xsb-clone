@@ -65,6 +65,9 @@ hide_this_hide(consult,1).
 hide_this_hide(reconsult,1).
 hide_this_hide(compile,1).
 
+hide_this_hide(compile_internal,5).
+hide_this_hide(make_gpp_command,4).
+
 hide_this_hide(abolish_table_pred,1).
 hide_this_hide(abolish_table_call,1).
 hide_this_hide(abolish_all_tables,0).
