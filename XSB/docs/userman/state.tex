@@ -209,11 +209,14 @@ threads in the process.
   write/1} portrays attributed variables using module-specific
   routines (cf. Volume 2 of this manual) as $Variable \{ Module :
   PA\_Output\}$ where $PA\_Output$ is the output of the {\tt
-    portray\_attrubutes/2} clause for $Module$.  However the value {\tt
-    ignore} causes an attributed variable to be written simply as a
+    portray\_attrubutes/2} clause for $Module$.  However the value
+  {\tt ignore} causes an attributed variable to be written simply as a
   variable; and {\tt dots} causes $Variable \{ <module_name> : ...\}$
-  to be written.  The default behavior is set by the value {\tt
-    portray}
+  to be written.  Finally, the value {\tt write} causes a variables
+  attribute to be written as a term~\footnote{When writing an
+    attribute, any attributed variables in the attribute itself are
+    written just as variables with their attributes ignored.}.  The
+  default behavior is set to the value {\tt portray}.
 
 \item {\tt max\_table\_subgoal\_action} The action to take when a tabled
   subgoal of maximum depth is encountered.  To understand the use of
