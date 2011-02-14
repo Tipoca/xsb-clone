@@ -18,6 +18,109 @@
 
 <h1>Release Notes</h1>
 
+<h2> Version 3.3 (Beverage TBD)</h2> Version 3.3 is a major rewriting
+of XSB that includes several new packages and significantly improves
+XSB's functionality and stability.  Some of the improvements for
+Version 3.3 are as follows.
+
+<h3>The CURL Package</h3> The curl package is an evolving interface to
+the libcurl library.  libcurl supports numerous protocols, including
+FTP, HTTP, SCP, and many others; it also supports SSL certificates,
+HTTP POST, HTTP PUT, FTP uploading, proxies, cookies, user+password
+authentication (Basic, Digest, NTLM, Negotiate, Kerberos4), file
+transfer resume, http proxy tunneling etc.  The CURL package is also
+now an underpinning for XSB's xpath and sgml packages.
+
+<h3>The PITA Package</h3> <i>Probabilistic Inference with Tabling and
+Answer subsumption (PITA)</i> is a package for uncertain reasoning. In
+particular, it allows various forms of Probabilistic Logic Programming
+and Possibilistic Logic Programming. It accepts the language of Logic
+Programs with Annotated Disjunctions (LPADs) and CP-logic programs,
+along with Prism-style programs.  PITA computes the probability of
+queries by tranforming the input program into a normal logic program
+and then calling a modified version of the query on the transformed
+programs.
+
+<h3>Answer Subsumption</h3>
+Predicates can now be declared to be tabled with answer subsumption
+using arbitrary partial orders or lattices.  In addition to improving
+the interface to answer subsumption the underlying implementation is
+now far faster than in previous versions.
+
+<h3>The RDF Package</h3> RDF is a W3C standard for representing
+meta-data about documents on the Web as well as exchanging frame-based
+data (e.g. ontologies). RDF has a formal data model defined in terms
+of triples. In addition, a graph model is defined for visualization
+and an XML serialization for exchange. The XSB PDF package is an
+adaptation from SWI Prolog.
+
+<h3>Tabling and System Enhancements</h3>
+<ul>
+<li> New
+declarations: <tt>table</tt> <i>preds</i> <tt>as</tt> <i>properties</i>
+and <tt>dynamic</tt> <i>preds</i> <tt>as</tt> <i>properties</i>.
+Since XSB allows a variety of tabling functionalities, new
+declarations have been added to allow users to specify properties more
+succinctly for tabled and dynamic predicates.  Tabling properties can
+now be dynamically changed in certain cases (i.e., from call variance
+to call subsumption and from non-incrmental to incremental).
+</li>
+
+<li> The XSB compiler can now support multiple external preprocessors,
+and so can more easily support language extensions that are translated
+into Prolog.</li>
+
+<li> Incremental tabling is extended so that tables can be updated
+based on changes to trie-interned facts
+</li>
+
+<li> <tt>abolish_table_call/[1,2]</tt> is now implemented for
+predicates that use call subsumption.</li>
+
+<li> A depth check for tabled subgoals, settable by a flag, can help
+catch programs for which XSB's tabling may not terminate.</li>
+</ul>
+
+<h3>The Perl-Compatable Regular Expressions Library (PCRE)</h3> This
+package employs the PCRE library to enable XSB perform pattern
+matching and string substitution based on Perl regular expressions.
+
+<h3>Compatability Improvements</h3>
+Various changes improve XSB's compatability with other Prologs
+
+<ul>
+<li> <i>Support for the Prolog Commons Initiative.</i> Conditional
+compilation is now supported, as is predicate renaming throught
+the <tt>import as</tt> construct.
+</li>
+
+<li> <i>Support for the ISO Core and Core Revision Standards.</i> The
+ISO <tt>include/1</tt> predicate is now supported, <tt>forall/2</tt>
+now implemented, <tt>ground/1</tt> is now standard (and faster), new
+arithmetic functions have also been implemented,
+and <tt>meta_predicate/2</tt> is now supported.
+</li>
+
+<li> <i>Other compatability measures.</i> XSB-specific flags are now
+available as Prolog flags, and new non-ISO flags have been added that
+are common to other Prologs.  <tt>statistics/2</tt> has been
+implemented for various tags, and <tt>findall/4</tt> is now
+implemented and standard.  The functionality
+of <tt>predicate_property/2</tt> has been expanded to include the
+module of a predicate, along with various tabling properties.</li>
+</ul>
+
+<h3>Stability Improvements</h3> Numerous bug fixes and enhancements
+improve the robustness of XSB.  Areas of concentration include: call
+subsumption, attributed variables (tabled and non-tabled),
+multi-threading (including support for XSB packages under
+multi-threading), complex reasoning with tabled negation, incremental
+tabling, the mysql interface, and backtrackable updates.
+
+In addition, various efficiency improvements have been made that
+affect arithmetic expressions, all solutions meta predicates, interned
+tries, and querying XSB as an embedded program.
+
 <h2> Version 3.2 (Kopi Lewak)</h2>
 
 Version 3.2 is a major rewriting of XSB that includes new
@@ -1292,5 +1395,5 @@ The following incompatible changes have been made in XSB Version 2.0:
 
 <hr>
 <address>Email: <a href="mailto:xsb-users@lists.sourceforge.net" >xsb-users@lists.sourceforge.net</a></address>
-<!-- hhmts start -->Last modified: $Id: rel_notes.html,v 1.12 2010-08-19 15:03:36 spyrosh Exp $ <!-- hhmts end -->
+<!-- hhmts start -->Last modified: $Id: rel_notes.html,v 1.13 2011-02-14 15:24:13 tswift Exp $ <!-- hhmts end -->
 </body> </html>
