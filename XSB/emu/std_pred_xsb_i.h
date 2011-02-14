@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.54 2011-02-11 15:08:03 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.55 2011-02-14 20:47:32 dwarren Exp $
 ** 
 */
 
@@ -439,6 +439,7 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
 
 
   term = ptoc_tag(CTXTc 1);
+  XSB_Deref(term);
   list = ptoc_tag(CTXTc 2);
   if (!isnonvar(term)) {	/* use is: CHARS/CODES --> NUMBER */
     term2 = list;
@@ -492,7 +493,7 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
     } while (1);
 
     if (sscanf(str, "%ld%c", &c, &hack_char) == 1) {
-      bind_int((CPtr)(term), c);
+      bind_oint((CPtr)(term), c);
     } else {
       Float float_temp;
       //TODO: Refactor the below few lines of code once the "Floats are always double?" 
