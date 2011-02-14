@@ -23,9 +23,10 @@
 */
 
 
-:- export numbervars/1, numbervars/3.
+:- export numbervars/1, numbervars/3, numbervars/4.
 :- export unnumbervars/2, unnumbervars/3.
 
 :- import term_psc/2, term_type/2, psc_arity/2, term_arg/3, term_new/2
         from machine.
-:- import log_ith/3 from basics.
+:- import log_ith/3,member/2 from basics.
+:- import type_error/4, domain_error/4,instantiation_error/3 from error_handler.
