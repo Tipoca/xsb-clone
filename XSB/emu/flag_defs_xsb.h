@@ -20,10 +20,10 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 <<<<<<< flag_defs_xsb.h
-** $Id: flag_defs_xsb.h,v 1.36 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: flag_defs_xsb.h,v 1.37 2011-02-14 22:29:45 tswift Exp $
 **
 =======
-** $Id: flag_defs_xsb.h,v 1.36 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: flag_defs_xsb.h,v 1.37 2011-02-14 22:29:45 tswift Exp $
 **
 >>>>>>> 1.28
 */
@@ -163,6 +163,5 @@ interrupt flag
 #define WA_PORTRAY           0
 #define WA_DOTS              1
 #define WA_IGNORE            2
-/* In SWI, but Not yet implemented  */
-#define WA_WRITE_TERN        3
+#define WA_WRITE             3
 
