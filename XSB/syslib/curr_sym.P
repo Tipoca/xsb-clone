@@ -705,8 +705,9 @@ prolog_commons_flag(version_data,xsb(Maj, Min, 0, _)):-
 xsb_flag(write_attributes,Value):- 
 	stat_flag(WRITE_ATTRIBUTES, V), 
 	( V =:= WA_IGNORE -> Value = ignore
-	  ;  V =:= WA_DOTS -> Value = dots
-	  ;  V =:= WA_PORTRAY -> Value = portray).
+	  ;  (V =:= WA_DOTS -> Value = dots
+	      ;  (V =:= WA_PORTRAY -> Value = portray
+  	           ;  V =:= WA_WRITE -> Value = write) ) ).
 xsb_flag(write_depth,Depth):- 
 	get_file_write_depth(Depth).
 xsb_flag(backtrace_on_error, BT) :-
@@ -880,7 +881,8 @@ set_xsb_flag_1(write_attributes,Code) :-  !,
 	( Code = ignore -> Flag = WA_IGNORE
 	; Code = dots -> Flag = WA_DOTS
 	; Code = portray -> Flag = WA_PORTRAY
-	; domain_error([ignore,dots,portray],
+	; Code = write -> Flag = WA_WRITE
+	; domain_error([ignore,dots,portray,write],
                        Code,set_xsb_flag/2,2,'write_attributes clause')
 	),
 	stat_set_flag(WRITE_ATTRIBUTES, Flag).
