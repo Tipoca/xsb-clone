@@ -1583,26 +1583,52 @@ TLS I dont think we still need this -- console_write seems better for that.
      \end{verbatim}}
 
 
+\ourmoditem{numbervars(+Term, +FirstN,?LastN,+Options)}{numbervars/4}{num\_vars} 
+%
+This predicate provides a mechanism for grounding a (HiLog) term so
+that it may be analyzed.  Each variable in the (HiLog) term {\tt Term}
+is instantiated to a term of the form \verb|'$VAR'(N)|, where {\tt N}
+is an integer starting from {\tt FirstN}.  {\tt FirstN} is used as the
+value of {\tt N} for the first variable in {\tt Term} (starting from
+the left). The second distinct variable in {\tt Term} is given a value
+of {\tt N} satisfying {\tt "N is FirstN + 1"} and so on.  The last
+variable in {\tt Term} has the value {\tt LastN-1}.
+
+In {\tt numbervars/4}, {\tt Options} can be used to indicate the
+action to take upon encountering an attributed variable.  Currently,
+{\tt Options} must be either be the empty list, or the list {\tt
+  [attvar(Action)]} or the term {\tt attvar(Action)}, where {\tt
+  Action} is 
+\bi
+\item {\tt error} Throw a type error if an attributed variable is
+  encountered.
+\item {\tt bind} Bind attributed variables by unifying them with terms
+  of the form \verb|'$VAR'(N)|.
+\item {\tt skip} Skip over attributed variables, performing no action
+  on these variables.
+\ei
+{\bf Error Cases}
+\bi
+\item 	{\tt Options} is a variable
+\bi
+\item {\tt instantiation\_error}
+\ei
+\item {\tt Options} is not an empty list, the list {\tt
+  [attvar(Action)]} or the term {\tt attvar(Action)} where {\tt
+  Action} is one of {\tt bind}, {\tt error} or {\tt skip}:
+ \bi
+\item 	{\tt domain\_error}
+\ei
+\ei
+
 \ourmoditem{numbervars(+Term, +FirstN, ?LastN)}{numbervars/3}{num\_vars}
-%\predindex{numbervars/3~(L)}
-    This predicate provides a mechanism for grounding a (HiLog) term
-    so that it may be analyzed.  Each variable in the (HiLog) term
-    {\tt Term} is instantiated to a term of the form \verb|'$VAR'(N)|,
-    where {\tt N} is an integer starting from {\tt FirstN}.  
-    {\tt FirstN} is used as the value of {\tt N} for the first
-    variable in {\tt Term} (starting from the left). The second distinct
-    variable in {\tt Term} is given a value of {\tt N} satisfying
-    {\tt "N is FirstN + 1"} and so on.  The last variable in {\tt Term}
-    has the value {\tt LastN-1}.
-% $ for prettyprinter....
+%
+Acts as {\tt numbervars(+Term, +FirstN, ?LastN,attvar(error))}.
 
 \ourmoditem{numbervars(+Term)}{numbervars/1}{num\_vars}
 %\predindex{numbervars/1~(L)}
-    This predicate is defined as:
-    \begin{center}
-    {\tt   numbervars(Term, 0, \_)}.
-    \end{center}
-    It is included solely for convenience.
+    This predicate is defined as: {\tt numbervars(Term, 0, \_)}.  It
+    is included solely for convenience.
 
 \ourmoditem{unnumbervars(+Term, +FirstN, ?Copy)}{unnumbervars/3}{num\_vars}
 %\predindex{unnumbervars/3~(B)}
