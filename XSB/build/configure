@@ -2875,7 +2875,6 @@ if test "${with_pita+set}" = set; then :
   withval=$with_pita;
 fi
 
-A
 
 # TLS As far as I know, autoconf version 2.59 or so does check various
 # command line values, but if the values are of type --enable-*,

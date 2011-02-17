@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.209 2010-12-19 04:55:48 kifer Exp $
+## $Id: configure.in,v 1.210 2011-02-17 06:05:18 kifer Exp $
 ##
 ##
 
@@ -205,7 +205,6 @@ AC_ARG_ENABLE(electric-fence,
 [  --enable-electric-fence      link with the electric fence malloc debugger (currently unsupported)])
 AC_ARG_WITH(pita,
 [  --with-pita=DIR       compile XSB with PITA, with CUDD in directory DIR])
-A
 
 # TLS As far as I know, autoconf version 2.59 or so does check various
 # command line values, but if the values are of type --enable-*,
