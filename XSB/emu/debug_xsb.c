@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.59 2011-01-17 02:31:33 dwarren Exp $
+** $Id: debug_xsb.c,v 1.60 2011-02-23 21:58:22 tswift Exp $
 ** 
 */
 
@@ -82,7 +82,7 @@ static void print_term(FILE *fp, Cell term, byte car, int level)
     fprintf(fp, "_%p", vptr(term));
     return;
   case XSB_ATTV:
-    fprintf(fp, "_%p", (CPtr)dec_addr(term));
+    fprintf(fp, "_%p {...}", (CPtr)dec_addr(term));
     return;
   case XSB_STRUCT:
       //NOTE: Below is a check for boxed numbers. If such is the case, then
@@ -165,7 +165,7 @@ void printterm(FILE *fp, Cell term, int depth) {
 /*------------------------------------------------------------------*/
 /* Used to print out call using WAM registers */
 
-static void print_call(CTXTdeclc Psc psc)
+void print_call(CTXTdeclc Psc psc)
 {
   int i, arity;
 
