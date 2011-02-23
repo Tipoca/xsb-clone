@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.212 2010-10-20 19:27:11 tswift Exp $
+** $Id: emuloop.c,v 1.213 2011-02-23 22:00:34 tswift Exp $
 ** 
 */
 
@@ -87,9 +87,9 @@
 /*
  * Variable ans_var_pos_reg is a pointer to substitution factor of an
  * answer in the heap.  It is used and set in function
- * variant_answer_search().  The name of this variable is from VarPosReg, a
- * variable used in variant_call_search() to save the substitution factor
- * of the call.
+ * variant_answer_search().  The name of this variable is originally
+ * from VarPosReg, a variable used in variant_call_search() to save
+ * the substitution factor of the call.
  */
 #ifndef MULTI_THREAD
 CPtr	ans_var_pos_reg;
