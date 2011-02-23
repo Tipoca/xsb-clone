@@ -195,7 +195,7 @@ l_write(File, Var, _, _D,Flag) :-
 	     portray_attributes(Var,File),
 	     stat_set_flag(WRITE_ATTRIBUTES,Flag)
 	  ; Flag == WA_WRITE -> 
-	     stat_set_flag(WRITE_ATTRIBUTES,WA_IGNORE),
+	     stat_set_flag(WRITE_ATTRIBUTES,WA_DOTS),
 	     recurse_attributes(Var,File),
 	     stat_set_flag(WRITE_ATTRIBUTES,Flag)
 	  ; Flag == WA_DOTS -> 
