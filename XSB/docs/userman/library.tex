@@ -2774,6 +2774,65 @@ based on the transformation
 of a uniformly distributed ranom variable produce by {\tt random/1}.
 This is the same as the Weibull distribution with $k = 1$.
 
+\end{description}
+
+\section{Loading Separated Files}
+
+A common file format uses comma separated values, the so-called csv
+files.  The XSB module, {\tt proc\_files}, supports the loading of
+files in this, and similar, formats to define Prolog predicates.
+
+\begin{description}
+
+\ourmoditem{load\_csv(+FileName,+PredSpec)}{proc\_files} \index{\texttt{load\_csv/2}}
+
+{\tt load\_csv/2} takes a file name and a predicate specification, and
+reads a csv-formatted file into memory, defining the indicated dynamic
+predicate.  The simplest form of {\tt PredSpec} is {\tt
+PredName/Arity}.  In this case the arity must equal the number of
+fields in the csv file, and the predicate must be dynamic.  Each line
+in the file will define one fact of the predicate {\tt
+PredName/Arity}.  Fields in the file enclosed in double quotes will
+be treated as single fields (and thus can contain commas and
+new-lines.)  The dynamic predicate will be emptied before the facts
+from the file are added.  Each field will be loaded as an atom
+(including fields that contain just integers.)
+
+Alternatively, {\tt PredSpec} may be of the form {\tt
+predName(TypeSpec1,...,TypeSpecN)}, where {\tt predName} is the name
+of the dynamic predicate to be defined by the file contents, and each
+{\tt TypeSpecI} indicates the type of the corresponding field in the
+file.  The permitted values of {\tt TypeSpec} are:
+\begin{itemize}
+\item[{\tt atom}] The corresponding field value will become an atom in
+the loaded fact.
+\item[{\tt integer}] The corresponding field value will be converted
+to an integer in the loaded fact.
+\item[{\tt float}] The corresponding field value will be converted to
+a float in the loaded fact.
+\item[{\tt term}] The corresponding field must contain a Prolog term in
+canonical form, and it will be converted to that term in the loaded
+fact. 
+\item[\_\_] (A variable) Treated as {\tt atom}.
+\end{itemize}
+
+\ourmoditem{load\_dsv(+FileName,+PredSpec,+Options)}{proc\_files} \index{\texttt{load\_dsv/3}}
+
+This predicate supports the loading of more general forms of files
+with value-separated fields.  The {\tt FileName} and {\tt PredSpec}
+parameters are exactly as in {\tt load\_csv/2}, as described just
+above.  {\tt Options} is a list of options.  (With an empty list, {\tt
+load\_dsv} acts as {\tt load\_csv/2}.)  The options are:
+\begin{itemize}
+\item[{\tt separator=''Sep''}] which indicates that the character(s) {\tt Sep}
+will be used as the field separator.  There may be one or more
+characters. 
+\item[{\tt delimiter=''C''}] which indicates that the single character {\tt
+C} will be used as the field delimiter (the default being ``'''''',
+and I've yet to find a situation in which I want to change it.)
+\item[{\tt titles}] which indicates that the first line of the file should
+be ignored and not contribute a fact to the dynamic predicate.
+\end{itemize}
 
 \end{description}
 
@@ -3065,7 +3124,7 @@ and back, along with predicates to manipulate the AVL trees.
 By Richard O'Keefe
 
 %
-{Summary from code documentation) {\tt ordset.P} provides an XSB port
+(Summary from code documentation) {\tt ordset.P} provides an XSB port
   of the widely used ordset library, whose summary we paraphrase here.
   In the ordset library, sets are represented by ordered lists with no
   duplicates.  Thus {\em \{c,r,a,f,t\}} is represented as {\tt
