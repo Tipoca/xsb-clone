@@ -1,4 +1,4 @@
-/*  $Id: store_r.P,v 1.3 2010-08-19 15:03:39 spyrosh Exp $
+/*  $Id: store_r.P,v 1.4 2011-03-04 18:11:04 tswift Exp $
 
     Part of CLP(R) (Constraint Logic Programming over Reals)
 
@@ -37,6 +37,9 @@
     invalidate any other reasons why the executable file might be covered by
     the GNU General Public License.
 */
+
+:- compiler_options([xpp_on]).
+#include "quantum.h"
 
 :- module(store_r,
 	[
@@ -151,8 +154,8 @@ add_linear_ffh([l(Y*Ky,OrdY)|Ys],X,Kx,OrdX,Xs,Zs,Ka,Kb) :-
 	(   Rel = (=)
 	->  Kz is Kx*Ka+Ky*Kb,
 	    (   % Kz =:= 0
-		Kz =< 1.0e-10,
-		Kz >= -1.0e-10
+		Kz =< EPSILON,
+		Kz >= NEG_EPSILON
 	    ->  add_linear_ffh(Xs,Ka,Ys,Kb,Zs)
 	    ;   Zs = [l(X*Kz,OrdX)|Ztail],
 		add_linear_ffh(Xs,Ka,Ys,Kb,Ztail)
@@ -197,8 +200,8 @@ add_linear_f1h([l(Y*Ky,OrdY)|Ys],X,Kx,OrdX,Xs,Zs,Ka) :-
 	(   Rel = (=)
 	->  Kz is Kx*Ka+Ky,
 	    (   % Kz =:= 0.0
-		Kz =< 1.0e-10,
-		Kz >= -1.0e-10
+		Kz =< EPSILON,
+		Kz >= NEG_EPSILON
 	    ->  add_linear_f1h(Xs,Ka,Ys,Zs)
 	    ;   Zs = [l(X*Kz,OrdX)|Ztail],
 		add_linear_f1h(Xs,Ka,Ys,Ztail)
@@ -242,8 +245,8 @@ add_linear_11h([l(Y*Ky,OrdY)|Ys],X,Kx,OrdX,Xs,Zs) :-
 	(   Rel = (=)
 	->  Kz is Kx+Ky,
 	    (   % Kz =:= 0.0
-		Kz =< 1.0e-10,
-		Kz >= -1.0e-10
+		Kz =< EPSILON,
+		Kz >= NEG_EPSILON
 	    ->  add_linear_11h(Xs,Ys,Zs)
 	    ;   Zs = [l(X*Kz,OrdX)|Ztail],
 		add_linear_11h(Xs,Ys,Ztail)
@@ -263,8 +266,8 @@ add_linear_11h([l(Y*Ky,OrdY)|Ys],X,Kx,OrdX,Xs,Zs) :-
 
 mult_linear_factor(Lin,K,Mult) :-
 	TestK is K - 1.0,	% K =:= 1
-	TestK =< 1.0e-10,
-	TestK >= -1.0e-10,	% avoid copy
+	TestK =< EPSILON,
+	TestK >= NEG_EPSILON,	% avoid copy
 	!,
 	Mult = Lin.
 mult_linear_factor(Lin,K,Res) :-
@@ -369,11 +372,11 @@ indep(Lin,OrdX) :-
 	OrdX == OrdY,
 	% K =:= 1.0
 	TestK is K - 1.0,
-	TestK =< 1.0e-10,
-	TestK >= -1.0e-10,
+	TestK =< EPSILON,
+	TestK >= NEG_EPSILON,
 	% I =:= 0
-	I =< 1.0e-10,
-	I >= -1.0e-10.
+	I =< EPSILON,
+	I >= NEG_EPSILON.
 
 % nf2sum(Lin,Sofar,Term)
 %
@@ -383,18 +386,18 @@ indep(Lin,OrdX) :-
 nf2sum([],I,I).
 nf2sum([X|Xs],I,Sum) :-
 	(   % I =:= 0.0
-	    I =< 1.0e-10,
-	    I >= -1.0e-10
+	    I =< EPSILON,
+	    I >= NEG_EPSILON
 	->  X = l(Var*K,_),
  	    (   % K =:= 1.0
 		TestK is K - 1.0,
-		TestK =< 1.0e-10,
-		TestK >= -1.0e-10
+		TestK =< EPSILON,
+		TestK >= NEG_EPSILON
 	    ->  hom2sum(Xs,Var,Sum)
 	    ;   % K =:= -1.0
 		TestK is K + 1.0,
-		TestK =< 1.0e-10,
-		TestK >= -1.0e-10
+		TestK =< EPSILON,
+		TestK >= NEG_EPSILON
 	    ->  hom2sum(Xs,-Var,Sum)
 	    ;	hom2sum(Xs,K*Var,Sum)
 	    )
@@ -412,16 +415,16 @@ hom2sum([],Term,Term).
 hom2sum([l(Var*K,_)|Cs],Sofar,Term) :-
 	(   % K =:= 1.0
 	    TestK is K - 1.0,
-	    TestK =< 1.0e-10,
-	    TestK >= -1.0e-10
+	    TestK =< EPSILON,
+	    TestK >= NEG_EPSILON
 	->  Next = Sofar + Var
 	;   % K =:= -1.0
 	    TestK is K + 1.0,
-	    TestK =< 1.0e-10,
-	    TestK >= -1.0e-10
+	    TestK =< EPSILON,
+	    TestK >= NEG_EPSILON
 	->  Next = Sofar - Var
 	;   % K < 0.0
-	    K < -1.0e-10
+	    K < NEG_EPSILON
 	->  Ka is -K,
 	    Next = Sofar - Ka*Var
 	;   Next = Sofar + K*Var

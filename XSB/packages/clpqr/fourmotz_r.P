@@ -1,4 +1,4 @@
-/*  $Id: fourmotz_r.P,v 1.3 2010-08-19 15:03:39 spyrosh Exp $
+/*  $Id: fourmotz_r.P,v 1.4 2011-03-04 18:11:04 tswift Exp $
 
     Part of CLP(R) (Constraint Logic Programming over Reals)
 
@@ -37,7 +37,8 @@
     invalidate any other reasons why the executable file might be covered by
     the GNU General Public License.
 */
-
+:- compiler_options([xpp_on]).
+#include "quantum.h"
 
 :- module(fourmotz_r,
 	[
@@ -266,7 +267,7 @@ crossproduct([B:Kb|Bs],A:Ka) -->
 	    K is -Kb/Ka,
 	    add_linear_f1(LinA,K,LinB,Lin)	% Lin doesn't contain the target variable anymore
 	},
-	(   { K > 1.0e-10 } % K > 0: signs were opposite
+	(   { K > EPSILON } % K > 0: signs were opposite
 	->  { Strict is Sa \/ Sb },
 	    cross_lower(Ta,Tb,K,Lin,Strict),
 	    cross_upper(Ta,Tb,K,Lin,Strict)
@@ -395,7 +396,7 @@ cp_card([B:Kb|Bs],A:Ka,Ci,Co) :-
 	get_attr(B,itf,AttB),
 	arg(2,AttB,type(Tb)),
 	K is -Kb/Ka,
-	(   K > 1.0e-10 % K > 0: signs were opposite
+	(   K > EPSILON % K > 0: signs were opposite
 	->  cp_card_lower(Ta,Tb,Ci,Cii),
 	    cp_card_upper(Ta,Tb,Cii,Ciii)
 	;   flip(Ta,Taf),

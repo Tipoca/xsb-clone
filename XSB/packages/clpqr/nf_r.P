@@ -37,7 +37,8 @@
     invalidate any other reasons why the executable file might be covered by
     the GNU General Public License.
 */
-
+:- compiler_options([xpp_on]).
+#include "quantum.h"
 
 :- module(nf_r,
 	[
@@ -338,12 +339,12 @@ submit_lt([B|Bs],A) :- submit_lt_c(Bs,A,B).
 % c < 0
 submit_lt_b([],I) :- 
 	!,
-	I < -1.0e-10.
+	I < NEG_EPSILON.
 % cX^1 < 0 : if c < 0 then X > 0, else X < 0
 submit_lt_b([X^1],K) :-
 	var(X),
 	!,
-	(   K > 1.0e-10
+	(   K > EPSILON
 	->  ineq_one_s_p_0(X)	% X is strictly negative
 	;   ineq_one_s_n_0(X)	% X is strictly positive
 	).
@@ -398,12 +399,12 @@ submit_le([B|Bs],A) :- submit_le_c(Bs,A,B).
 % c =< 0
 submit_le_b([],I) :- 
 	!,
-	I < 1.0e-10.
+	I < EPSILON.
 % cX^1 =< 0: if c < 0 then X >= 0, else X =< 0
 submit_le_b([X^1],K) :-
   	var(X),
 	!,
-	(   K > 1.0e-10
+	(   K > EPSILON
 	->  ineq_one_n_p_0(X)	% X is non-strictly negative
 	;   ineq_one_n_n_0(X)	% X is non-strictly positive
 	).
@@ -439,7 +440,7 @@ submit_le_c(Rest,A,B) :-
 
 submit_ne(Norm1) :-  
 	(   nf_constant(Norm1,K)
-	->  \+ (K >= -1.0e-10, K =< 1.0e-10) % K =\= 0
+	->  \+ (K >= NEG_EPSILON, K =< EPSILON) % K =\= 0
 	;   linear(Norm1)
 	->  'solve_=\\='(Norm1)
 	;   term_variables(Norm1,Vs),
@@ -513,15 +514,15 @@ nl_invertible(cos(X),X,Y,Res) :- Res is acos(Y).
 nl_invertible(tan(X),X,Y,Res) :- Res is atan(Y).
 nl_invertible(exp(B,C),X,A,Res) :-
 	(   nf_constant(B,Kb)
-	->  A > 1.0e-10,
-	    Kb > 1.0e-10,
+	->  A > EPSILON,
+	    Kb > EPSILON,
 	    TestKb is Kb - 1.0, % Kb =\= 1.0
-	    \+ (TestKb >= -1.0e-10, TestKb =< 1.0e-10),
+	    \+ (TestKb >= NEG_EPSILON, TestKb =< EPSILON),
 	    X = C, % note delayed unification
 	    Res is log(A)/log(Kb)
 	;   nf_constant(C,Kc),
-	    \+ (A >= -1.0e-10, A =< 1.0e-10), % A =\= 0
-	    Kc > 1.0e-10, % Kc > 0
+	    \+ (A >= NEG_EPSILON, A =< EPSILON), % A =\= 0
+	    Kc > EPSILON, % Kc > 0
 	    X = B, % note delayed unification
 	    Res is A**(1.0/Kc)
 	).
@@ -603,7 +604,7 @@ nf(Term,_) :-
 
 nf_number(N,Res) :-
 	number(N),
-	(   (N >= -1.0e-10, N =< 1.0e-10) % N =:= 0
+	(   (N >= NEG_EPSILON, N =< EPSILON) % N =:= 0
 	->  Res = []
 	;   Res = [v(N,[])]
 	).
@@ -656,7 +657,7 @@ monash_constant(X,_) :-
 monash_constant(p,3.14259265).
 monash_constant(pi,3.14259265).
 monash_constant(e,2.71828182).
-monash_constant(zero,1.0e-10).
+monash_constant(zero,EPSILON).
 
 %
 % check if a Nf consists of just a constant
@@ -711,7 +712,7 @@ nf_add_case(>,A,As,Cs,B,Bs,_,_,_) :-
 	nf_add(Bs,A,As,Rest).
 nf_add_case(=,_,As,Cs,_,Bs,Ka,Kb,Pa) :-
 	Kc is Ka + Kb,
-	(   (Kc >= -1.0e-10, Kc =< 1.0e-10) % Kc =:= 0.0
+	(   (Kc >= NEG_EPSILON, Kc =< EPSILON) % Kc =:= 0.0
 	->  nf_add(As,Bs,Cs)
 	;   Cs = [v(Kc,Pa)|Rest],
 	    nf_add(As,Bs,Rest)
@@ -750,7 +751,7 @@ nf_add_2_case(<,Af,Bf,[Af,Bf],_,_,_).
 nf_add_2_case(>,Af,Bf,[Bf,Af],_,_,_).
 nf_add_2_case(=,_, _,Res,Ka,Kb,Pa) :-
 	Kc is Ka + Kb,
-	(   (Kc >= -1.0e-10, Kc =< 1.0e-10) % Kc =:= 0
+	(   (Kc >= NEG_EPSILON, Kc =< EPSILON) % Kc =:= 0
 	->  Res = []
 	;   Res = [v(Kc,Pa)]
 	).
@@ -1048,10 +1049,10 @@ f02t(v(K,P),T) :-
 	    P = []
 	->  T = K
 	;   TestK is K - 1.0, % K =:= 1
-	    (TestK >= -1.0e-10, TestK =< 1.0e-10) 
+	    (TestK >= NEG_EPSILON, TestK =< EPSILON) 
 	->  p2term(P,T)
 	;   TestK is K + 1.0, % K =:= -1
-	    (TestK >= -1.0e-10, TestK =< 1.0e-10)
+	    (TestK >= NEG_EPSILON, TestK =< EPSILON)
 	->  T = -Pt,
 	    p2term(P,Pt)
 	;   T = K*Pt,
@@ -1064,14 +1065,14 @@ f02t(v(K,P),T) :-
 % into a readable term
 fn2t(v(K,P),Term,Op) :-
 	(   TestK is K - 1.0, % K =:= 1
-	    (TestK >= -1.0e-10, TestK =< 1.0e-10)
+	    (TestK >= NEG_EPSILON, TestK =< EPSILON)
 	->  ( Term = Pt,
 	      Op = + )
 	;   TestK is K + 1.0, % K =:= -1
-	    (TestK >= -1.0e-10, TestK =< 1.0e-10)
+	    (TestK >= NEG_EPSILON, TestK =< EPSILON)
 	->  (Term = Pt,
 	     Op = -)
-	;   K < -1.0e-10 % K < 0
+	;   K < NEG_EPSILON % K < 0
 	->  (Kf is -K,
 	    Term = Kf*Pt,
 	    Op = -)

@@ -38,10 +38,12 @@
     the GNU General Public License.
 */
 
+:- compiler_options([xpp_on]).
+#include "quantum.h"
 
 :- module(ineq_r,
 	[
-	    ineq/4,
+    ineq/4,
 	    ineq_one/4,
 	    ineq_one_n_n_0/1,
 	    ineq_one_n_p_0/1,
@@ -100,38 +102,38 @@ ineq_cases([_|_],_,Lin,Strictness,_,_) :-
 %
 % Checks whether a grounded inequality I < 0 or I =< 0 is satisfied.
 
-ineq_ground(strict,I) :- I < -1.0e-10.		% I < 0
-ineq_ground(nonstrict,I) :- I < 1.0e-10.	% I =< 0
+ineq_ground(strict,I) :- I < NEG_EPSILON.		% I < 0
+ineq_ground(nonstrict,I) :- I < EPSILON.	% I =< 0
 
 % ineq_one(Strictness,X,K,I)
 %
 % Solves the inequality K*X + I < 0 or K*X + I =< 0
 
 ineq_one(strict,X,K,I) :-
-	(   K > 1.0e-10 % K > 0.0
-	->  (   I >= -1.0e-10, % I =:= 0.0
-		I =< 1.0e-10
+	(   K > EPSILON % K > 0.0
+	->  (   I >= NEG_EPSILON, % I =:= 0.0
+		I =< EPSILON
 	    ->  ineq_one_s_p_0(X)	% K*X < 0, K > 0 => X < 0
 	    ;   Inhom is I/K,
 		ineq_one_s_p_i(X,Inhom)	% K*X + I < 0, K > 0 => X + I/K < 0
 	    )
-	;   (   I >= -1.0e-10, % I =:= 0.0
-		I =< 1.0e-10
+	;   (   I >= NEG_EPSILON, % I =:= 0.0
+		I =< EPSILON
 	    ->  ineq_one_s_n_0(X)	% K*X < 0, K < 0 => -X < 0
 	    ;   Inhom is -I/K,
 		ineq_one_s_n_i(X,Inhom)	% K*X + I < 0, K < 0 => -X - I/K < 0
 	    )
 	).
 ineq_one(nonstrict,X,K,I) :-
-	(   K > 1.0e-10 % K > 0.0
-	->  (   I >= -1.0e-10,	% I =:= 0
-		I =< 1.0e-10
+	(   K > EPSILON % K > 0.0
+	->  (   I >= NEG_EPSILON,	% I =:= 0
+		I =< EPSILON
 	    ->  ineq_one_n_p_0(X)	% K*X =< 0, K > 0 => X =< 0
 	    ;   Inhom is I/K,
 		ineq_one_n_p_i(X,Inhom)	% K*X + I =< 0, K > 0 => X + I/K =< 0
 	    )
-	;   (   I >= -1.0e-10,	% I =:= 0
-		I =< 1.0e-10
+	;   (   I >= NEG_EPSILON,	% I =:= 0
+		I =< EPSILON
 	    ->  ineq_one_n_n_0(X)	% K*X =< 0, K < 0 => -X =< 0
 	    ;   Inhom is -I/K,
 		ineq_one_n_n_i(X,Inhom)	% K*X + I =< 0, K < 0 => -X - I/K =< 0
@@ -208,7 +210,7 @@ ineq_one_s_n_i(X,I) :- var_intern(t_l(I),X,2). % puts a strict inactive lowerbou
 %
 % Solves the inequality X < 0 where X has linear equation Hom + Inhom
 
-ineq_one_old_s_p_0([],_,Ix) :- Ix < -1.0e-10. % X = I: Ix < 0
+ineq_one_old_s_p_0([],_,Ix) :- Ix < NEG_EPSILON. % X = I: Ix < 0
 ineq_one_old_s_p_0([l(Y*Ky,_)|Tail],X,Ix) :-
 	(   Tail = [] % X = K*Y + I
 	->  Bound is -Ix/Ky,
@@ -225,7 +227,7 @@ ineq_one_old_s_p_0([l(Y*Ky,_)|Tail],X,Ix) :-
 %
 % Solves the inequality X > 0 where X has linear equation Hom + Inhom
 
-ineq_one_old_s_n_0([],_,Ix) :- Ix > 1.0e-10. % X = I: Ix > 0
+ineq_one_old_s_n_0([],_,Ix) :- Ix > EPSILON. % X = I: Ix > 0
 ineq_one_old_s_n_0([l(Y*Ky,_)|Tail], X, Ix) :-
 	(   Tail = []	% X = K*Y + I 
 	->  Coeff is -Ky,
@@ -243,7 +245,7 @@ ineq_one_old_s_n_0([l(Y*Ky,_)|Tail], X, Ix) :-
 %
 % Solves the inequality X + C < 0 where X has linear equation Hom + Inhom
 
-ineq_one_old_s_p_i([],I,_,Ix) :- Ix + I < -1.0e-10. % X = I
+ineq_one_old_s_p_i([],I,_,Ix) :- Ix + I < NEG_EPSILON. % X = I
 ineq_one_old_s_p_i([l(Y*Ky,_)|Tail],I,X,Ix) :-
 	(   Tail = []	% X = K*Y + I
 	->  Bound is -(Ix + I)/Ky,
@@ -261,7 +263,7 @@ ineq_one_old_s_p_i([l(Y*Ky,_)|Tail],I,X,Ix) :-
 %
 % Solves the inequality X  - C > 0 where X has linear equation Hom + Inhom
 
-ineq_one_old_s_n_i([],I,_,Ix) :- -Ix + I < -1.0e-10. % X = I
+ineq_one_old_s_n_i([],I,_,Ix) :- -Ix + I < NEG_EPSILON. % X = I
 ineq_one_old_s_n_i([l(Y*Ky,_)|Tail],I,X,Ix) :-
 	(   Tail = []	% X = K*Y + I
 	->  Coeff is -Ky,
@@ -346,7 +348,7 @@ ineq_one_n_n_i(X,I) :-
 %
 % Solves the inequality X =< 0 where X has linear equation Hom + Inhom
 
-ineq_one_old_n_p_0([],_,Ix) :- Ix < 1.0e-10. % X =I
+ineq_one_old_n_p_0([],_,Ix) :- Ix < EPSILON. % X =I
 ineq_one_old_n_p_0([l(Y*Ky,_)|Tail],X,Ix) :-
 	(   Tail = []	%  X = K*Y + I
 	->  Bound is -Ix/Ky,	
@@ -363,7 +365,7 @@ ineq_one_old_n_p_0([l(Y*Ky,_)|Tail],X,Ix) :-
 %
 % Solves the inequality X >= 0 where X has linear equation Hom + Inhom
 
-ineq_one_old_n_n_0([],_,Ix) :- Ix > -1.0e-10.	% X = I
+ineq_one_old_n_n_0([],_,Ix) :- Ix > NEG_EPSILON.	% X = I
 ineq_one_old_n_n_0([l(Y*Ky,_)|Tail], X, Ix) :-
 	(   Tail = []	% X = K*Y + I
 	->  Coeff is -Ky,
@@ -381,7 +383,7 @@ ineq_one_old_n_n_0([l(Y*Ky,_)|Tail], X, Ix) :-
 %
 % Solves the inequality X  + C =< 0 where X has linear equation Hom + Inhom
 
-ineq_one_old_n_p_i([],I,_,Ix) :- Ix + I < 1.0e-10.	% X = I
+ineq_one_old_n_p_i([],I,_,Ix) :- Ix + I < EPSILON.	% X = I
 ineq_one_old_n_p_i([l(Y*Ky,_)|Tail],I,X,Ix) :-
 	(   Tail = []	% X = K*Y + I
 	->  Bound is -(Ix + I)/Ky,
@@ -399,7 +401,7 @@ ineq_one_old_n_p_i([l(Y*Ky,_)|Tail],I,X,Ix) :-
 %
 % Solves the inequality X  - C >= 0 where X has linear equation Hom + Inhom
 
-ineq_one_old_n_n_i([],I,_,Ix) :- -Ix + I < 1.0e-10. % X = I
+ineq_one_old_n_n_i([],I,_,Ix) :- -Ix + I < EPSILON. % X = I
 ineq_one_old_n_n_i([l(Y*Ky,_)|Tail],I,X,Ix) :-
 	(   Tail = []
 	->  Coeff is -Ky,
@@ -490,7 +492,7 @@ update_indep(strict,X,K,Bound) :-
 	arg(2,Att,type(Type)),
 	arg(3,Att,strictness(Old)),
 	arg(4,Att,lin(Lin)),
-	(   K < -1.0e-10
+	(   K < NEG_EPSILON
 	->  uils(Type,X,Lin,Bound,Old)	% update independent lowerbound strict
 	;   uius(Type,X,Lin,Bound,Old)	% update independent upperbound strict
 	).
@@ -499,7 +501,7 @@ update_indep(nonstrict,X,K,Bound) :-
 	arg(2,Att,type(Type)),
 	arg(3,Att,strictness(Old)),
 	arg(4,Att,lin(Lin)),
-	(   K < -1.0e-10
+	(   K < NEG_EPSILON
 	->  uil(Type,X,Lin,Bound,Old)	% update independent lowerbound nonstrict
 	;   uiu(Type,X,Lin,Bound,Old)	% update independent upperbound nonstrict
 	).
@@ -560,9 +562,9 @@ udl(t_none,X,Lin,Bound,_Sold) :-
 	).
 udl(t_l(L),X,Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true	% new bound is smaller than old one: keep old
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  % new bound is larger than old one: use new and reconsider basis
 	    Strict is Sold /\ 1,
 	    get_attr(X,itf,Att),
@@ -574,9 +576,9 @@ udl(t_l(L),X,Lin,Bound,Sold) :-
 		
 udl(t_u(U),X,Lin,Bound,_Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  fail	% new bound is larger than upperbound: fail
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  % new bound is smaller than upperbound: add new and reconsider basis
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_lu(Bound,U))),
@@ -585,14 +587,14 @@ udl(t_u(U),X,Lin,Bound,_Sold) :-
 	).	
 udl(t_lu(L,U),X,Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true	% smaller than lowerbound: keep 
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  % larger than lowerbound: check upperbound
 	    TestUB is U - Bound,
-	    (   TestUB < -1.0e-10
+	    (   TestUB < NEG_EPSILON
 	    ->  fail	% larger than upperbound: fail
-	    ;   TestUB > 1.0e-10
+	    ;   TestUB > EPSILON
 	    ->  % smaller than upperbound: use new and reconsider basis
 		Strict is Sold /\ 1,
 		get_attr(X,itf,Att),
@@ -632,9 +634,9 @@ udls(t_none,X,Lin,Bound,_Sold) :-
 	).
 udls(t_l(L),X,Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true	% smaller than lowerbound: keep
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  % larger than lowerbound: use new and reconsider basis
 	    Strict is Sold \/ 2,
 	    get_attr(X,itf,Att),
@@ -647,7 +649,7 @@ udls(t_l(L),X,Lin,Bound,Sold) :-
 	    arg(3,Att,strictness(Strict))
 	).
 udls(t_u(U),X,Lin,Bound,Sold) :-
-	U - Bound > 1.0e-10,	% smaller than upperbound: set new bound
+	U - Bound > EPSILON,	% smaller than upperbound: set new bound
 	Strict is Sold \/ 2,
 	get_attr(X,itf,Att),
 	setarg(2,Att,type(t_lu(Bound,U))),
@@ -655,11 +657,11 @@ udls(t_u(U),X,Lin,Bound,Sold) :-
 	reconsider_lower(X,Lin,Bound).
 udls(t_lu(L,U),X,Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true	% smaller than lowerbound: keep
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  % larger than lowerbound: check upperbound and possibly use new and reconsider basis
-	    U - Bound > 1.0e-10,
+	    U - Bound > EPSILON,
 	    Strict is Sold \/ 2,
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_lu(Bound,U))),
@@ -697,9 +699,9 @@ udu(t_none,X,Lin,Bound,_Sold) :-
 	).
 udu(t_u(U),X,Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true	% larger than upperbound: keep
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  % smaller than upperbound: update and reconsider basis
 	    Strict is Sold /\ 2,
 	    get_attr(X,itf,Att),
@@ -710,9 +712,9 @@ udu(t_u(U),X,Lin,Bound,Sold) :-
 	).
 udu(t_l(L),X,Lin,Bound,_Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  fail	% smaller than lowerbound: fail
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  % larger than lowerbound: use new and reconsider basis
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_lu(L,Bound))),
@@ -721,14 +723,14 @@ udu(t_l(L),X,Lin,Bound,_Sold) :-
 	).
 udu(t_lu(L,U),X,Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true	% larger than upperbound: keep
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  % smaller than upperbound: check lowerbound
 	    TestBL is Bound - L,
-	    (   TestBL < -1.0e-10
+	    (   TestBL < NEG_EPSILON
 	    ->  fail	% smaller than lowerbound: fail
-	    ;   TestBL > 1.0e-10
+	    ;   TestBL > EPSILON
 	    ->  % larger than lowerbound: update and reconsider basis
 		Strict is Sold /\ 2,
 		get_attr(X,itf,Att),
@@ -768,9 +770,9 @@ udus(t_none,X,Lin,Bound,_Sold) :-
 	).
 udus(t_u(U),X,Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true	% larger than upperbound: keep
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  % smaller than upperbound: update bound and reconsider basis
 	    Strict is Sold \/ 1,
 	    get_attr(X,itf,Att),
@@ -783,7 +785,7 @@ udus(t_u(U),X,Lin,Bound,Sold) :-
 	    setarg(3,Att,strictness(Strict))
 	).
 udus(t_l(L),X,Lin,Bound,Sold) :-
-	Bound - L > 1.0e-10,	% larger than lowerbound: update and reconsider basis
+	Bound - L > EPSILON,	% larger than lowerbound: update and reconsider basis
 	Strict is Sold \/ 1,
 	get_attr(X,itf,Att),
 	setarg(2,Att,type(t_lu(L,Bound))),
@@ -791,11 +793,11 @@ udus(t_l(L),X,Lin,Bound,Sold) :-
 	reconsider_upper(X,Lin,Bound).
 udus(t_lu(L,U),X,Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true	% larger than upperbound: keep
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  % smaller than upperbound: check lowerbound, possibly update and reconsider basis
-	    Bound - L > 1.0e-10,
+	    Bound - L > EPSILON,
 	    Strict is Sold \/ 1,
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_lu(L,Bound))),
@@ -819,9 +821,9 @@ uiu(t_none,X,_Lin,Bound,_) :-	% X had no bounds
 	setarg(3,Att,strictness(0)).
 uiu(t_u(U),X,_Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true	% larger than upperbound: keep
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  % smaller than upperbound: update.
 	    Strict is Sold /\ 2,	% update strictness: strictness of lowerbound is kept,
 	    				% strictness of upperbound is set to non-strict
@@ -832,9 +834,9 @@ uiu(t_u(U),X,_Lin,Bound,Sold) :-
 	).
 uiu(t_l(L),X,Lin,Bound,_Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  fail	% Lowerbound was smaller than new upperbound: fail
-    	;   TestBL > 1.0e-10
+    	;   TestBL > EPSILON
 	->   % Upperbound is larger than lowerbound: store new bound
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_lu(L,Bound)))
@@ -842,9 +844,9 @@ uiu(t_l(L),X,Lin,Bound,_Sold) :-
 	).
 uiu(t_L(L),X,Lin,Bound,_Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  fail	% Same as for t_l
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  % Same as for t_l (new bound becomes t_Lu)
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_Lu(L,Bound)))
@@ -852,13 +854,13 @@ uiu(t_L(L),X,Lin,Bound,_Sold) :-
 	).
 uiu(t_lu(L,U),X,Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true	% Upperbound was smaller than new bound: keep
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  TestBL is Bound - L,	% Upperbound was larger than new bound: check lowerbound
-	    (   TestBL < -1.0e-10
+	    (   TestBL < NEG_EPSILON
 	    ->	fail	% Lowerbound was larger than new bound: fail
-	    ;   TestBL > 1.0e-10
+	    ;   TestBL > EPSILON
 	    ->  % Lowerbound was smaller than new bound: store new bound
 		Strict is Sold /\ 2,
 		get_attr(X,itf,Att),
@@ -872,13 +874,13 @@ uiu(t_lu(L,U),X,Lin,Bound,Sold) :-
 	).
 uiu(t_Lu(L,U),X,Lin,Bound,Sold) :-	% See t_lu case
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  TestBL is Bound - L,
-	    (   TestBL < -1.0e-10
+	    (   TestBL < NEG_EPSILON
 	    ->  fail
-	    ;   TestBL > 1.0e-10
+	    ;   TestBL > EPSILON
 	    ->  Strict is Sold /\ 2,
 		get_attr(X,itf,Att),
 		setarg(2,Att,type(t_Lu(L,Bound))),
@@ -890,9 +892,9 @@ uiu(t_Lu(L,U),X,Lin,Bound,Sold) :-	% See t_lu case
 	).
 uiu(t_U(U),X,_Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true	% larger than upperbound: keep
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  % smaller than active upperbound: check how much active upperbound can be lowered.
 	    % if enough, just lower bound, otherwise update the bound, make X dependent and reconsider basis 
 	    Strict is Sold /\ 2,
@@ -900,7 +902,7 @@ uiu(t_U(U),X,_Lin,Bound,Sold) :-
 		arg(5,Att,order(OrdX)),
 		arg(6,Att,class(ClassX)),
 		lb(ClassX,OrdX,Vlb-Vb-Lb),
-		Bound - (Lb + U) < 1.0e-10
+		Bound - (Lb + U) < EPSILON
 	    ->  get_attr(X,itf,Att2), % changed?
 		setarg(2,Att2,type(t_U(Bound))),
 		setarg(3,Att2,strictness(Strict)),
@@ -918,20 +920,20 @@ uiu(t_U(U),X,_Lin,Bound,Sold) :-
 	).
 uiu(t_lU(L,U),X,Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true	% larger than upperbound: keep
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  TestBL is Bound-L,
-	    (   TestBL < -1.0e-10
+	    (   TestBL < NEG_EPSILON
 	    ->  fail	% smaller than lowerbound: fail
-	    ;   TestBL > 1.0e-10
+	    ;   TestBL > EPSILON
 	    ->  % larger than lowerbound: see t_U case for rest
 		Strict is Sold /\ 2,
 		(   get_attr(X,itf,Att),
 		    arg(5,Att,order(OrdX)),
 		    arg(6,Att,class(ClassX)),
 		    lb(ClassX,OrdX,Vlb-Vb-Lb),
-		    Bound - (Lb + U) < 1.0e-10
+		    Bound - (Lb + U) < EPSILON
 		->  get_attr(X,itf,Att2), % changed?
 		    setarg(2,Att2,type(t_lU(L,Bound))),
 		    setarg(3,Att2,strictness(Strict)),
@@ -965,9 +967,9 @@ uius(t_none,X,_Lin,Bound,_Sold) :-
 	setarg(3,Att,strictness(1)).
 uius(t_u(U),X,_Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  Strict is Sold \/ 1,
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_u(Bound))),
@@ -977,23 +979,23 @@ uius(t_u(U),X,_Lin,Bound,Sold) :-
 	    setarg(3,Att,strictness(Strict))
 	).
 uius(t_l(L),X,_Lin,Bound,Sold) :-
-	Bound - L > 1.0e-10,
+	Bound - L > EPSILON,
 	Strict is Sold \/ 1,
 	get_attr(X,itf,Att),
 	setarg(2,Att,type(t_lu(L,Bound))),
 	setarg(3,Att,strictness(Strict)).
 uius(t_L(L),X,_Lin,Bound,Sold) :-
-	Bound - L > 1.0e-10,
+	Bound - L > EPSILON,
 	Strict is Sold \/ 1,
 	get_attr(X,itf,Att),
 	setarg(2,Att,type(t_Lu(L,Bound))),
 	setarg(3,Att,strictness(Strict)).
 uius(t_lu(L,U),X,_Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true
-	;   TestUB > 1.0e-10
-	->  Bound - L > 1.0e-10,
+	;   TestUB > EPSILON
+	->  Bound - L > EPSILON,
 	    Strict is Sold \/ 1,
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_lu(L,Bound))),
@@ -1004,10 +1006,10 @@ uius(t_lu(L,U),X,_Lin,Bound,Sold) :-
 	).
 uius(t_Lu(L,U),X,_Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true
-	;   TestUB > 1.0e-10
-	->  Bound - L > 1.0e-10,
+	;   TestUB > EPSILON
+	->  Bound - L > EPSILON,
 	    Strict is Sold \/ 1,
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_Lu(L,Bound))),
@@ -1018,15 +1020,15 @@ uius(t_Lu(L,U),X,_Lin,Bound,Sold) :-
 	).
 uius(t_U(U),X,_Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  Strict is Sold \/ 1,
 	    (   get_attr(X,itf,Att),
 		arg(5,Att,order(OrdX)),
 		arg(6,Att,class(ClassX)),
 		lb(ClassX,OrdX,Vlb-Vb-Lb),
-		Bound - (Lb + U) < 1.0e-10
+		Bound - (Lb + U) < EPSILON
 	    ->  get_attr(X,itf,Att2), % changed?
 		setarg(2,Att2,type(t_U(Bound))),
 		setarg(3,Att2,strictness(Strict)),
@@ -1046,16 +1048,16 @@ uius(t_U(U),X,_Lin,Bound,Sold) :-
 	).
 uius(t_lU(L,U),X,_Lin,Bound,Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  true
-	;   TestUB > 1.0e-10
-	->  Bound - L > 1.0e-10,
+	;   TestUB > EPSILON
+	->  Bound - L > EPSILON,
 	    Strict is Sold \/ 1,
 	    (   get_attr(X,itf,Att),
 		arg(5,Att,order(OrdX)),
 		arg(6,Att,class(ClassX)),
 		lb(ClassX,OrdX,Vlb-Vb-Lb),
-		Bound - (Lb + U) < 1.0e-10
+		Bound - (Lb + U) < EPSILON
 	    ->  get_attr(X,itf,Att2), % changed?
 		setarg(2,Att2,type(t_lU(L,Bound))),
 		setarg(3,Att2,strictness(Strict)),
@@ -1087,9 +1089,9 @@ uil(t_none,X,_Lin,Bound,_Sold) :-
 	setarg(3,Att,strictness(0)).
 uil(t_l(L),X,_Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  Strict is Sold /\ 1,
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_l(Bound))),
@@ -1098,31 +1100,31 @@ uil(t_l(L),X,_Lin,Bound,Sold) :-
 	).
 uil(t_u(U),X,Lin,Bound,_Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  fail
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_lu(Bound,U)))
 	;   solve_bound(Lin,Bound)
 	).
 uil(t_U(U),X,Lin,Bound,_Sold) :-
 	TestUB is U - Bound,
-	(   TestUB < -1.0e-10
+	(   TestUB < NEG_EPSILON
 	->  fail
-	;   TestUB > 1.0e-10
+	;   TestUB > EPSILON
 	->  get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_lU(Bound,U)))
 	;   solve_bound(Lin,Bound)
 	).
 uil(t_lu(L,U),X,Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  TestUB is U - Bound,
-	    (   TestUB < -1.0e-10
+	    (   TestUB < NEG_EPSILON
 	    ->  fail
-	    ;   TestUB > 1.0e-10
+	    ;   TestUB > EPSILON
 	    ->  Strict is Sold /\ 1,
 		get_attr(X,itf,Att),
 		setarg(2,Att,type(t_lu(Bound,U))),
@@ -1134,13 +1136,13 @@ uil(t_lu(L,U),X,Lin,Bound,Sold) :-
 	).
 uil(t_lU(L,U),X,Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  TestUB is U - Bound,
-	    (   TestUB < -1.0e-10
+	    (   TestUB < NEG_EPSILON
 	    ->  fail
-	    ;   TestUB > 1.0e-10
+	    ;   TestUB > EPSILON
 	    ->  Strict is Sold /\ 1,
 		get_attr(X,itf,Att),
 		setarg(2,Att,type(t_lU(Bound,U))),
@@ -1152,15 +1154,15 @@ uil(t_lU(L,U),X,Lin,Bound,Sold) :-
 	).
 uil(t_L(L),X,_Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  Strict is Sold /\ 1,
 	    (   get_attr(X,itf,Att),
 		arg(5,Att,order(OrdX)),
 		arg(6,Att,class(ClassX)),
 		ub(ClassX,OrdX,Vub-Vb-Ub),
-		Bound - (Ub + L) > -1.0e-10
+		Bound - (Ub + L) > NEG_EPSILON
 	    ->  get_attr(X,itf,Att2), % changed?
 		setarg(2,Att2,type(t_L(Bound))),
 		setarg(3,Att2,strictness(Strict)),
@@ -1178,19 +1180,19 @@ uil(t_L(L),X,_Lin,Bound,Sold) :-
 	).
 uil(t_Lu(L,U),X,Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  TestUB is U - Bound,
-	    (   TestUB < -1.0e-10
+	    (   TestUB < NEG_EPSILON
 	    ->  fail
-	    ;   TestUB > 1.0e-10
+	    ;   TestUB > EPSILON
 	    ->  Strict is Sold /\ 1,
 		(   get_attr(X,itf,Att),
 		    arg(5,Att,order(OrdX)),
 		    arg(6,Att,class(ClassX)),
 		    ub(ClassX,OrdX,Vub-Vb-Ub),
-		    Bound - (Ub + L) > -1.0e-10
+		    Bound - (Ub + L) > NEG_EPSILON
 		->  get_attr(X,itf,Att2), % changed?
 		    setarg(2,Att2,t_Lu(Bound,U)),
 		    setarg(3,Att2,strictness(Strict)),
@@ -1222,9 +1224,9 @@ uils(t_none,X,_Lin,Bound,_Sold) :-
 	setarg(3,Att,strictness(2)).
 uils(t_l(L),X,_Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  Strict is Sold \/ 2,
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_l(Bound))),
@@ -1234,23 +1236,23 @@ uils(t_l(L),X,_Lin,Bound,Sold) :-
 	    setarg(3,Att,strictness(Strict))
 	).
 uils(t_u(U),X,_Lin,Bound,Sold) :-
-	U - Bound > 1.0e-10,
+	U - Bound > EPSILON,
 	Strict is Sold \/ 2,
 	get_attr(X,itf,Att),
 	setarg(2,Att,type(t_lu(Bound,U))),
 	setarg(3,Att,strictness(Strict)).
 uils(t_U(U),X,_Lin,Bound,Sold) :-
-	U - Bound > 1.0e-10,
+	U - Bound > EPSILON,
 	Strict is Sold \/ 2,
 	get_attr(X,itf,Att),
 	setarg(2,Att,type(t_lU(Bound,U))),
 	setarg(3,Att,strictness(Strict)).
 uils(t_lu(L,U),X,_Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true
-	;   TestBL > 1.0e-10
-	->  U - Bound > 1.0e-10,
+	;   TestBL > EPSILON
+	->  U - Bound > EPSILON,
 	    Strict is Sold \/ 2,
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_lu(Bound,U))),
@@ -1261,10 +1263,10 @@ uils(t_lu(L,U),X,_Lin,Bound,Sold) :-
 	).
 uils(t_lU(L,U),X,_Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true
-	;   TestBL > 1.0e-10
-	->  U - Bound > 1.0e-10,
+	;   TestBL > EPSILON
+	->  U - Bound > EPSILON,
 	    Strict is Sold \/ 2,
 	    get_attr(X,itf,Att),
 	    setarg(2,Att,type(t_lU(Bound,U))),
@@ -1275,15 +1277,15 @@ uils(t_lU(L,U),X,_Lin,Bound,Sold) :-
 	).
 uils(t_L(L),X,_Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true
-	;   TestBL > 1.0e-10
+	;   TestBL > EPSILON
 	->  Strict is Sold \/ 2,
 	    (   get_attr(X,itf,Att),
 		arg(5,Att,order(OrdX)),
 		arg(6,Att,class(ClassX)),
 		ub(ClassX,OrdX,Vub-Vb-Ub),
-		Bound - (Ub + L) > -1.0e-10
+		Bound - (Ub + L) > NEG_EPSILON
 	    ->  get_attr(X,itf,Att2), % changed?
 		setarg(2,Att2,type(t_L(Bound))),
 		setarg(3,Att2,strictness(Strict)),
@@ -1303,16 +1305,16 @@ uils(t_L(L),X,_Lin,Bound,Sold) :-
 	).
 uils(t_Lu(L,U),X,_Lin,Bound,Sold) :-
 	TestBL is Bound - L,
-	(   TestBL < -1.0e-10
+	(   TestBL < NEG_EPSILON
 	->  true
-	;   TestBL > 1.0e-10
-	->  U - Bound > 1.0e-10,
+	;   TestBL > EPSILON
+	->  U - Bound > EPSILON,
 	    Strict is Sold \/ 2,
 	    (   get_attr(X,itf,Att),
 		arg(5,Att,order(OrdX)),
 		arg(6,Att,class(ClassX)),
 	    	ub(ClassX,OrdX,Vub-Vb-Ub),
-		Bound - (Ub + L) > -1.0e-10
+		Bound - (Ub + L) > NEG_EPSILON
 	    ->  get_attr(X,itf,Att2), % changed?
 		setarg(2,Att2,type(t_Lu(Bound,U))),
 		setarg(3,Att2,strictness(Strict)),
@@ -1341,7 +1343,7 @@ uils(t_Lu(L,U),X,_Lin,Bound,Sold) :-
 % See also rcb/3 in bv.pl
 
 reconsider_upper(X,[I,R|H],U) :-
-	R + I - U > -1.0e-10,	% violation
+	R + I - U > NEG_EPSILON,	% violation
 	!,
 	dec_step(H,Status),	% we want to decrement R
 	rcbl_status(Status,X,[],Binds,[],u(U)),
@@ -1358,7 +1360,7 @@ reconsider_upper( _, _, _).
 % See also rcb/3 in bv.pl
 
 reconsider_lower(X,[I,R|H],L) :-
-	R + I - L < 1.0e-10,	% violation
+	R + I - L < EPSILON,	% violation
 	!,
 	inc_step(H,Status),	% we want to increment R
 	rcbl_status(Status,X,[],Binds,[],l(L)),
@@ -1375,8 +1377,8 @@ reconsider_lower(_,_,_).
 % Lin is the linear equation of X, a variable whose bounds have narrowed to value Bound
 
 solve_bound(Lin,Bound) :-
-	Bound >= -1.0e-10,
-	Bound =< 1.0e-10,
+	Bound >= NEG_EPSILON,
+	Bound =< EPSILON,
 	!,
 	solve(Lin).
 solve_bound(Lin,Bound) :-

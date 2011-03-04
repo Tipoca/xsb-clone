@@ -37,6 +37,8 @@
     invalidate any other reasons why the executable file might be covered by
     the GNU General Public License.
 */
+:- compiler_options([xpp_on]).
+#include "quantum.h"
 
 :- module(itf_r,
 	[
@@ -92,9 +94,9 @@ verify_nonzero(nonzero,Y) :-
 	    ->  setarg(8,Att,nonzero)
 	    ;   put_attr(Y,itf,t(clpr,n,n,n,n,n,n,nonzero,n,n,n))
 	    )
-	;   (   Y < -1.0e-10
+	;   (   Y < NEG_EPSILON
 	    ->	true
-	    ;	Y > 1.0e-10
+	    ;	Y > EPSILON
 	    )
 	).
 verify_nonzero(n,_). % X is not nonzero
@@ -148,14 +150,14 @@ verify_type_nonvar(t_lU(L,U),Value,S) :-
 ilb(S,L,V) :-
 	S /\ 2 =:= 0,
 	!,
-	L - V < 1.0e-10. % non-strict
-ilb(_,L,V) :- L - V < -1.0e-10. % strict
+	L - V < EPSILON. % non-strict
+ilb(_,L,V) :- L - V < NEG_EPSILON. % strict
 
 iub(S,U,V) :-
 	S /\ 1 =:= 0,
 	!,
-	V - U < 1.0e-10. % non-strict
-iub(_,U,V) :- V - U < -1.0e-10. % strict
+	V - U < EPSILON. % non-strict
+iub(_,U,V) :- V - U < NEG_EPSILON. % strict
 
 %
 % Running some goals after X=Y simplifies the coding. It should be possible

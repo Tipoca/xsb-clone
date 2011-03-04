@@ -1,4 +1,4 @@
-/*  $Id: bv_r.P,v 1.4 2011-02-23 21:14:48 tswift Exp $
+/*  $Id: bv_r.P,v 1.5 2011-03-04 18:11:04 tswift Exp $
 
     Part of CLP(R) (Constraint Logic Programming over Reals)
 
@@ -41,6 +41,8 @@
 
 /* TLS: several DCGs changed to handle lists explicitly because of
    XSBs problems with {}/1 in dcgs. */
+:- compiler_options([xpp_on]).
+#include "quantum.h"
 
 :- module(bv_r,
 	[
@@ -231,10 +233,10 @@ var_with_def_assign(Var,Lin) :-
 	;   Hom = [l(V*K,_)|Cs]
 	->  (   Cs = [],
 		TestK is K - 1.0,	% K =:= 1
-		TestK =< 1.0e-10,
-		TestK >= -1.0e-10,
-		I >= -1.0e-010,		% I =:= 0
-		I =< 1.0e-010
+		TestK =< EPSILON,
+		TestK >= NEG_EPSILON,
+		I >= NEG_EPSILON,		% I =:= 0
+		I =< EPSILON
 	    ->	% X=Y
 		Var = V
 	    ;	% general case
@@ -300,8 +302,8 @@ export_binding(Y,X) :-
 	Y = X.
 export_binding(Y,X) :-
 	nonvar(Y),
-  	(   Y >= -1.0e-10,	% Y =:= 0
-	    Y =< 1.0e-10
+  	(   Y >= NEG_EPSILON,	% Y =:= 0
+	    Y =< EPSILON
 	->  X = 0.0
 	;   Y = X
 	).
@@ -323,7 +325,7 @@ export_binding(Y,X) :-
 	Lind = [Inhom,_|Hom],
 	(   Hom = []
 	->  % Lind = Inhom => check Inhom =\= 0
-	    \+ (Inhom >= -1.0e-10, Inhom =< 1.0e-10) % Inhom =\= 0
+	    \+ (Inhom >= NEG_EPSILON, Inhom =< EPSILON) % Inhom =\= 0
 	;   % make new variable Nz = Lind
 	    var_with_def_intern(t_none,Nz,Lind,0),
 	    % make Nz nonzero
@@ -509,7 +511,7 @@ inc_step_cont([l(V*K,OrdV)|Vs],Status,ContIn,ContOut) :-
 	).
 
 dec_step_2_cont(t_U(U),l(V*K,OrdV),Class,Status,ContIn,ContOut) :-
-	K > 1.0e-10,
+	K > EPSILON,
 	(   lb(Class,OrdV,Vub-Vb-_)
 	->  % found a lower bound
 	    Status = applied,
@@ -519,14 +521,14 @@ dec_step_2_cont(t_U(U),l(V*K,OrdV),Class,Status,ContIn,ContOut) :-
 	    ContIn = ContOut
 	).
 dec_step_2_cont(t_lU(L,U),l(V*K,OrdV),Class,applied,ContIn,ContOut) :-
-	K > 1.0e-10,
+	K > EPSILON,
 	Init is L - U,
 	class_basis(Class,Deps),
 	lb(Deps,OrdV,V-t_Lu(L,U)-Init,Vub-Vb-_),
 	pivot_b(Vub,V,Vb,t_lu(L,U)),
 	replace_in_cont(ContIn,Vub,V,ContOut).
 dec_step_2_cont(t_L(L),l(V*K,OrdV),Class,Status,ContIn,ContOut) :-
-	K < -1.0e-10,
+	K < NEG_EPSILON,
 	(   ub(Class,OrdV,Vub-Vb-_)
 	->  Status = applied,
 	    pivot_a(Vub,V,Vb,t_l(L)),
@@ -535,7 +537,7 @@ dec_step_2_cont(t_L(L),l(V*K,OrdV),Class,Status,ContIn,ContOut) :-
 	    ContIn = ContOut
 	).
 dec_step_2_cont(t_Lu(L,U),l(V*K,OrdV),Class,applied,ContIn,ContOut) :-
-	K < -1.0e-10,
+	K < NEG_EPSILON,
 	Init is U - L,
 	class_basis(Class,Deps),
 	ub(Deps,OrdV,V-t_lU(L,U)-Init,Vub-Vb-_),
@@ -546,7 +548,7 @@ dec_step_2_cont(t_none,l(V*_,_),_,unlimited(V,t_none),Cont,Cont).
 
 
 inc_step_2_cont(t_U(U),l(V*K,OrdV),Class,Status,ContIn,ContOut) :-
-	K < -1.0e-10,
+	K < NEG_EPSILON,
 	(   lb(Class,OrdV,Vub-Vb-_)
 	->  Status = applied,
 	    pivot_a(Vub,V,Vb,t_u(U)),
@@ -555,14 +557,14 @@ inc_step_2_cont(t_U(U),l(V*K,OrdV),Class,Status,ContIn,ContOut) :-
 	    ContIn = ContOut
 	).
 inc_step_2_cont(t_lU(L,U),l(V*K,OrdV),Class,applied,ContIn,ContOut) :-
-	K < -1.0e-10,
+	K < NEG_EPSILON,
 	Init is L - U,
 	class_basis(Class,Deps),
 	lb(Deps,OrdV,V-t_Lu(L,U)-Init,Vub-Vb-_),
 	pivot_b(Vub,V,Vb,t_lu(L,U)),
 	replace_in_cont(ContIn,Vub,V,ContOut).
 inc_step_2_cont(t_L(L),l(V*K,OrdV),Class,Status,ContIn,ContOut) :-
-	K > 1.0e-10,
+	K > EPSILON,
 	(   ub(Class,OrdV,Vub-Vb-_)
 	->  Status = applied,
 	    pivot_a(Vub,V,Vb,t_l(L)),
@@ -571,7 +573,7 @@ inc_step_2_cont(t_L(L),l(V*K,OrdV),Class,Status,ContIn,ContOut) :-
 	    ContIn = ContOut
 	).
 inc_step_2_cont(t_Lu(L,U),l(V*K,OrdV),Class,applied,ContIn,ContOut) :-
-	K > 1.0e-10,
+	K > EPSILON,
 	Init is U - L,
 	class_basis(Class,Deps),
 	ub(Deps,OrdV,V-t_lU(L,U)-Init,Vub-Vb-_),
@@ -599,7 +601,7 @@ dec_step([l(V*K,OrdV)|Vs],Status) :-
 	).   
 
 dec_step_2(t_U(U),l(V*K,OrdV),Class,Status) :-
-	K > 1.0e-10,
+	K > EPSILON,
 	(   lb(Class,OrdV,Vub-Vb-_)
 	->  % found a lower bound
 	    Status = applied,
@@ -607,20 +609,20 @@ dec_step_2(t_U(U),l(V*K,OrdV),Class,Status) :-
 	;   Status = unlimited(V,t_u(U))
 	).
 dec_step_2(t_lU(L,U),l(V*K,OrdV),Class,applied) :-
-	K > 1.0e-10,
+	K > EPSILON,
 	Init is L - U,
 	class_basis(Class,Deps),
 	lb(Deps,OrdV,V-t_Lu(L,U)-Init,Vub-Vb-_),
 	pivot_b(Vub,V,Vb,t_lu(L,U)).
 dec_step_2(t_L(L),l(V*K,OrdV),Class,Status) :-
-	K < -1.0e-10,
+	K < NEG_EPSILON,
 	(   ub(Class,OrdV,Vub-Vb-_)
 	->  Status = applied,
 	    pivot_a(Vub,V,Vb,t_l(L))
 	;   Status = unlimited(V,t_l(L))
 	).
 dec_step_2(t_Lu(L,U),l(V*K,OrdV),Class,applied) :-
-	K < -1.0e-10,
+	K < NEG_EPSILON,
 	Init is U - L,
 	class_basis(Class,Deps),
 	ub(Deps,OrdV,V-t_lU(L,U)-Init,Vub-Vb-_),
@@ -638,27 +640,27 @@ inc_step([l(V*K,OrdV)|Vs],Status) :-
 	).
 
 inc_step_2(t_U(U),l(V*K,OrdV),Class,Status) :-
-	K < -1.0e-10,
+	K < NEG_EPSILON,
 	(   lb(Class,OrdV,Vub-Vb-_)
 	->  Status = applied,
 	    pivot_a(Vub,V,Vb,t_u(U))
 	;   Status = unlimited(V,t_u(U))
 	).
 inc_step_2(t_lU(L,U),l(V*K,OrdV),Class,applied) :-
-	K < -1.0e-10,
+	K < NEG_EPSILON,
 	Init is L - U,
 	class_basis(Class,Deps),
 	lb(Deps,OrdV,V-t_Lu(L,U)-Init,Vub-Vb-_),
 	pivot_b(Vub,V,Vb,t_lu(L,U)).
 inc_step_2(t_L(L),l(V*K,OrdV),Class,Status) :-
-	K > 1.0e-10,
+	K > EPSILON,
 	(   ub(Class,OrdV,Vub-Vb-_)
 	->  Status = applied,
 	    pivot_a(Vub,V,Vb,t_l(L))
 	;   Status = unlimited(V,t_l(L))
 	).
 inc_step_2(t_Lu(L,U),l(V*K,OrdV),Class,applied) :-
-	K > 1.0e-10,
+	K > EPSILON,
 	Init is U - L,
 	class_basis(Class,Deps),
 	ub(Deps,OrdV,V-t_lU(L,U)-Init,Vub-Vb-_),
@@ -698,7 +700,7 @@ ub_first([Dep|Deps],OrdX,Tightest) :-
 	    arg(2,Att,type(Type)),
 	    arg(4,Att,lin(Lin)),
 	    ub_inner(Type,OrdX,Lin,W,Ub),
-	    Ub > -1.0e-10 % Ub >= 0
+	    Ub > NEG_EPSILON % Ub >= 0
 	->  ub(Deps,OrdX,Dep-W-Ub,Tightest)
 	;   ub_first(Deps,OrdX,Tightest)
 	).
@@ -715,9 +717,9 @@ ub([Dep|Deps],OrdX,T0,T1) :-
 	    ub_inner(Type,OrdX,Lin,W,Ub),
 	    T0 = _-Ubb,
 	    % Ub < Ubb: tighter upper bound is a smaller one
-	    Ub - Ubb < -1.0e-10,
+	    Ub - Ubb < NEG_EPSILON,
 	    % Ub >= 0: upperbound should be larger than 0; rare failure
-	    Ub > -1.0e-10
+	    Ub > NEG_EPSILON
 	->  ub(Deps,OrdX,Dep-W-Ub,T1)	% tighter bound, use new bound
 	;   ub(Deps,OrdX,T0,T1)	% no tighter bound, keep current one
 	).
@@ -729,18 +731,18 @@ ub([Dep|Deps],OrdX,T0,T1) :-
 ub_inner(t_l(L),OrdX,Lin,t_L(L),Ub) :-
 	nf_rhs_x(Lin,OrdX,Rhs,K), 
 	% Rhs is right hand side of lin. eq. Lin containing term X*K
-	K < -1.0e-10,	% K < 0
+	K < NEG_EPSILON,	% K < 0
 	Ub is (L-Rhs)/K.
 ub_inner(t_u(U),OrdX,Lin,t_U(U),Ub) :-
 	nf_rhs_x(Lin,OrdX,Rhs,K),
- 	K > 1.0e-10,	% K > 0
+ 	K > EPSILON,	% K > 0
 	Ub is (U-Rhs)/K.
 ub_inner(t_lu(L,U),OrdX,Lin,W,Ub) :-
 	nf_rhs_x(Lin,OrdX,Rhs,K),
-	(   K < -1.0e-10 % K < 0, use lowerbound
+	(   K < NEG_EPSILON % K < 0, use lowerbound
 	->  W = t_Lu(L,U),
 	    Ub = (L-Rhs)/K
-	;   K > 1.0e-10 % K > 0, use upperbound
+	;   K > EPSILON % K > 0, use upperbound
 	->  W = t_lU(L,U),
 	    Ub = (U-Rhs)/K
 	).
@@ -772,7 +774,7 @@ lb_first([Dep|Deps],OrdX,Tightest) :-
 	    arg(2,Att,type(Type)),
 	    arg(4,Att,lin(Lin)),
 	    lb_inner(Type,OrdX,Lin,W,Lb),
-	    Lb < 1.0e-10 % Lb =< 0: Lb > 0 means a violated bound
+	    Lb < EPSILON % Lb =< 0: Lb > 0 means a violated bound
 	->  lb(Deps,OrdX,Dep-W-Lb,Tightest)
 	;   lb_first(Deps,OrdX,Tightest)
 	).
@@ -789,9 +791,9 @@ lb([Dep|Deps],OrdX,T0,T1) :-
 	    arg(4,Att,lin(Lin)),
 	    lb_inner(Type,OrdX,Lin,W,Lb),
 	    T0 = _-Lbb,
-	    Lb - Lbb > 1.0e-10,	% Lb > Lbb: choose the least lowering, others
+	    Lb - Lbb > EPSILON,	% Lb > Lbb: choose the least lowering, others
 				% might violate bounds
-	    Lb < 1.0e-10 % Lb =< 0: violation of a bound (without lowering)
+	    Lb < EPSILON % Lb =< 0: violation of a bound (without lowering)
 	->  lb(Deps,OrdX,Dep-W-Lb,T1)
 	;   lb(Deps,OrdX,T0,T1)
 	).
@@ -813,18 +815,18 @@ lb_inner(t_l(L),OrdX,Lin,t_L(L),Lb) :-
 	nf_rhs_x(Lin,OrdX,Rhs,K), % if linear equation Lin contains the term
 				  % X*K, Rhs is the right hand side of that
 				  % equation
-	K > 1.0e-10, % K > 0
+	K > EPSILON, % K > 0
 	Lb is (L-Rhs)/K.
 lb_inner(t_u(U),OrdX,Lin,t_U(U),Lb) :-
 	nf_rhs_x(Lin,OrdX,Rhs,K),
-	K < -1.0e-10, % K < 0
+	K < NEG_EPSILON, % K < 0
 	Lb is (U-Rhs)/K.
 lb_inner(t_lu(L,U),OrdX,Lin,W,Lb) :-
 	nf_rhs_x(Lin,OrdX,Rhs,K),
-	(   K < -1.0e-10
+	(   K < NEG_EPSILON
 	->  W = t_lU(L,U),
 	    Lb is (U-Rhs)/K
-	;   K > 1.0e-10
+	;   K > EPSILON
 	->  W = t_Lu(L,U),
 	    Lb is (L-Rhs)/K
 	).
@@ -848,8 +850,8 @@ solve(Lin) :-
 
 solve([],_,I,Bind0,Bind0) :-
 	!,
-	I >= -1.0e-10, % I =:= 0: redundant or trivially unsat
-	I =< 1.0e-10.
+	I >= NEG_EPSILON, % I =:= 0: redundant or trivially unsat
+	I =< EPSILON.
 solve(H,Lin,_,Bind0,BindT) :-
 	sd(H,[],ClassesUniq,9-9-0,Category-Selected-_,NV,NVT),
 	get_attr(Selected,itf,Att),
@@ -916,8 +918,8 @@ solve_x(Lin,X) :-
 
 solve_x([],_,I,_,Bind0,Bind0) :-
 	!,
-	I >= -1.0e-10, % I =:= 0: redundant or trivially unsat
-	I =< 1.0e-10.
+	I >= NEG_EPSILON, % I =:= 0: redundant or trivially unsat
+	I =< EPSILON.
 
 solve_x(H,Lin,_,X,Bind0,BindT) :-
 	sd(H,[],ClassesUniq,9-9-0,_,NV,NVT),
@@ -949,8 +951,8 @@ solve_ord_x(Lin,OrdX,ClassX) :-
 	export_binding(Bindings).
 
 solve_ord_x([],_,I,_,_,Bind0,Bind0) :-
-	I >= -1.0e-10, % I =:= 0
-	I =< 1.0e-10.
+	I >= NEG_EPSILON, % I =:= 0
+	I =< EPSILON.
 solve_ord_x([_|_],Lin,_,OrdX,ClassX,Bind0,BindT) :-
 	isolate(OrdX,Lin,Lin1),
 	Lin1 = [_,_|H1],
@@ -1117,8 +1119,8 @@ intro_at(X,Value,Type) :-
 	arg(5,Att,order(Ord)),
 	arg(6,Att,class(Class)),
 	setarg(2,Att,type(Type)),
-	(   Value >= -1.0e-10, % Value =:= 0
-	    Value =< 1.0e-010
+	(   Value >= NEG_EPSILON, % Value =:= 0
+	    Value =< EPSILON
 	->  true
 	;   backsubst_delta(Class,Ord,X,Value)
 	).
@@ -1199,9 +1201,9 @@ determine_active(t_l(L),X,_,_) :- intro_at(X,L,t_L(L)).
 determine_active(t_u(U),X,_,_) :- intro_at(X,U,t_U(U)).
 determine_active(t_lu(L,U),X,K,S) :-
 	TestKs is K*S,
-	(   TestKs < -1.0e-10 % K*S < 0
+	(   TestKs < NEG_EPSILON % K*S < 0
 	->  intro_at(X,L,t_Lu(L,U))	
-	;   TestKs > 1.0e-10
+	;   TestKs > EPSILON
 	->  intro_at(X,U,t_lU(L,U))
 	).
 
@@ -1499,20 +1501,20 @@ rcb_cont(X,Status,Violated,ContIn,ContOut) :-
 	arg(4,Att,lin([I,R|H])),
 	(   Type = t_l(L) % case 1: lowerbound: R + I should always be larger
 			  % than the lowerbound
-	->  R + I - L < 1.0e-10,
+	->  R + I - L < EPSILON,
 	    Violated = l(L),
 	    inc_step_cont(H,Status,ContIn,ContOut)
 	;   Type = t_u(U) % case 2: upperbound: R + I should always be smaller
 			  % than the upperbound
-	->  R + I - U  > -1.0e-10,
+	->  R + I - U  > NEG_EPSILON,
 	    Violated = u(U),
 	    dec_step_cont(H,Status,ContIn,ContOut)
 	;   Type = t_lu(L,U) % case 3: check both
 	->  At is R + I,
-	    (   At - L < 1.0e-10
+	    (   At - L < EPSILON
 	    ->	Violated = l(L),
 		inc_step_cont(H,Status,ContIn,ContOut)
-	    ;   At - U > -1.0e-10
+	    ;   At - U > NEG_EPSILON
 	    ->	Violated = u(U),
 		dec_step_cont(H,Status,ContIn,ContOut)
 	    )
@@ -1553,20 +1555,20 @@ rcb(X,Status,Violated) :-
 	arg(4,Att,lin([I,R|H])),
 	(   Type = t_l(L) % case 1: lowerbound: R + I should always be larger
 			  % than the lowerbound
-	->  R + I - L < 1.0e-10, % R + I =< L
+	->  R + I - L < EPSILON, % R + I =< L
 	    Violated = l(L),
 	    inc_step(H,Status)
 	;   Type = t_u(U) % case 2: upperbound: R + I should always be smaller
 			  % than the upperbound
-	->  R + I - U  > -1.0e-10, % R + I >= U
+	->  R + I - U  > NEG_EPSILON, % R + I >= U
 	    Violated = u(U),
 	    dec_step(H,Status)
 	;   Type = t_lu(L,U) % case 3: check both
 	->  At is R + I,
-	    (   At - L < 1.0e-10 % At =< L
+	    (   At - L < EPSILON % At =< L
 	    ->	Violated = l(L),
 		inc_step(H,Status)
-	    ;   At - U > -1.0e-10 % At >= U
+	    ;   At - U > NEG_EPSILON % At >= U
 	    ->	Violated = u(U),
 		dec_step(H,Status)
 	    )
@@ -1596,10 +1598,10 @@ rcbl_opt(l(L),X,Continuation,B0,B1) :-
 	Lin = [I,R|_],
 	Opt is R + I,
 	TestLO is L - Opt,
-	(   TestLO < -1.0e-10 % L < Opt
+	(   TestLO < NEG_EPSILON % L < Opt
 	->  narrow_u(Type,X,Opt), % { X =< Opt }
 	    rcbl(Continuation,B0,B1)
-	;   TestLO =< 1.0e-10, % L = Opt
+	;   TestLO =< EPSILON, % L = Opt
 	    Strict /\ 2 =:= 0, % meets lower
 	    Mop is -Opt,
 	    normalize_scalar(Mop,MopN),
@@ -1618,10 +1620,10 @@ rcbl_opt(u(U),X,Continuation,B0,B1) :-
 	Lin = [I,R|_],
 	Opt is R + I,
 	TestUO is U - Opt,
-	(   TestUO > 1.0e-10 % U > Opt
+	(   TestUO > EPSILON % U > Opt
 	->  narrow_l(Type,X,Opt), % { X >= Opt }
 	    rcbl(Continuation,B0,B1)
-	;   TestUO >= -1.0e-10, % U = Opt
+	;   TestUO >= NEG_EPSILON, % U = Opt
 	    Strict /\ 1 =:= 0, % meets upper
 	    Mop is -Opt,
 	    normalize_scalar(Mop,MopN),
@@ -1639,7 +1641,7 @@ rcbl_opt(u(U),X,Continuation,B0,B1) :-
 rcbl_app(l(L),X,Continuation,B0,B1) :-
 	get_attr(X,itf,Att),
 	arg(4,Att,lin([I,R|H])),
-	(   R + I - L > 1.0e-10 % R+I > L: within bound now
+	(   R + I - L > EPSILON % R+I > L: within bound now
 	->  rcbl(Continuation,B0,B1)
 	;   inc_step(H,Status),
 	    rcbl_status(Status,X,Continuation,B0,B1,l(L))
@@ -1647,7 +1649,7 @@ rcbl_app(l(L),X,Continuation,B0,B1) :-
 rcbl_app(u(U),X,Continuation,B0,B1) :-
 	get_attr(X,itf,Att),
 	arg(4,Att,lin([I,R|H])),
-	(   R + I - U < -1.0e-10 % R+I < U: within bound now
+	(   R + I - U < NEG_EPSILON % R+I < U: within bound now
 	->  rcbl(Continuation,B0,B1)
 	;   dec_step(H,Status),
 	    rcbl_status(Status,X,Continuation,B0,B1,u(U))
@@ -1702,11 +1704,11 @@ dump_var(t_none,V,I,H) -->
 	(   {
 		H = [l(W*K,_)],
 		V == W,
-		I >= -1.0e-10, % I=:=0
-		I =< 1.0e-010,
+		I >= NEG_EPSILON, % I=:=0
+		I =< EPSILON,
 		TestK is K - 1.0, % K=:=1
-		TestK >= -1.0e-10,
-		TestK =< 1.0e-10
+		TestK >= NEG_EPSILON,
+		TestK =< EPSILON
 	    }
 	->  % indep var
 	    []
@@ -1731,7 +1733,7 @@ dump_var(t_l(L),V,I,H) -->
 	    Li is Kr*(L - I),
 	    mult_hom(H,Kr,H1),
 	    nf2sum(H1,0.0,Sum),
-	    (   K > 1.0e-10 % K > 0
+	    (   K > EPSILON % K > 0
 	    ->	dump_strict(Sm,Sum >= Li,Sum > Li,Result)
 	    ;   dump_strict(Sm,Sum =< Li,Sum < Li,Result)
 	    )
@@ -1753,7 +1755,7 @@ dump_var(t_u(U),V,I,H) -->
 	    Ui is Kr*(U-I),
 	    mult_hom(H,Kr,H1),
 	    nf2sum(H1,0.0,Sum),
-	    (   K > 1.0e-10 % K > 0
+	    (   K > EPSILON % K > 0
 	    ->	dump_strict(Sm,Sum =< Ui,Sum < Ui,Result)
 	    ;   dump_strict(Sm,Sum >= Ui,Sum > Ui,Result)
 	    )
@@ -1810,11 +1812,11 @@ dump_var(t_none,V,I,H,F,T) :-
 	!,
 	(H = [l(W*K,_)],
 	 V == W,
-	 I >= -1.0e-10, % I=:=0
-	 I =< 1.0e-010,
+	 I >= NEG_EPSILON, % I=:=0
+	 I =< EPSILON,
 	 TestK is K - 1.0, % K=:=1
-	 TestK >= -1.0e-10,
-	 TestK =< 1.0e-10
+	 TestK >= NEG_EPSILON,
+	 TestK =< EPSILON
 	->  % indep var
 	    F = T
 	;   nf2sum(H,I,Sum),
@@ -1840,7 +1842,7 @@ dump_var(t_l(L),V,I,H,F,T) :-
 	    Li is Kr*(L - I),
 	    mult_hom(H,Kr,H1),
 	    nf2sum(H1,0.0,Sum),
-	    (   K > 1.0e-10 % K > 0
+	    (   K > EPSILON % K > 0
 	    ->	dump_strict(Sm,Sum >= Li,Sum > Li,Result)
 	    ;   dump_strict(Sm,Sum =< Li,Sum < Li,Result)
 	    )
@@ -1860,7 +1862,7 @@ dump_var(t_u(U),V,I,H,F,T) :-
 	    Ui is Kr*(U-I),
 	    mult_hom(H,Kr,H1),
 	    nf2sum(H1,0.0,Sum),
-	    (   K > 1.0e-10 % K > 0
+	    (   K > EPSILON % K > 0
 	    ->	dump_strict(Sm,Sum =< Ui,Sum < Ui,Result)
 	    ;   dump_strict(Sm,Sum >= Ui,Sum > Ui,Result)
 	    )
