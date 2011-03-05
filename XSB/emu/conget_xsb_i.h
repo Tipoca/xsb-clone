@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: conget_xsb_i.h,v 1.9 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: conget_xsb_i.h,v 1.10 2011-03-05 17:26:23 tswift Exp $
 ** 
 */
 
@@ -37,7 +37,8 @@ static inline Integer conget(Cell string)
   str_psc = pair_psc(sym);
 
   if (get_type(str_psc) == T_PRED || get_type(str_psc) == T_DYNA)
-    xsb_abort("[conget] Cannot get data from predicate.\n");
+    xsb_abort("[conget] Cannot get data from callable predicate %s/%d.\n",
+	      get_name(str_psc),get_arity(str_psc));
 
   return (Integer)get_data(str_psc);
 }
@@ -56,7 +57,8 @@ static inline xsbBool conset(Cell string, Integer newval)
   str_psc = pair_psc(sym);
 
   if (get_type(str_psc) == T_PRED || get_type(str_psc) == T_DYNA)
-    xsb_abort("[conget] Cannot set data of predicate.\n");
+    xsb_abort("[conget] Cannot set data of callable predicate %s/%d.\n",
+	      get_name(str_psc),get_arity(str_psc));
 
   set_data(str_psc, (Psc) newval);
   return TRUE;
