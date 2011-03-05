@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.143 2011-01-09 22:30:16 tswift Exp $
+** $Id: tries.c,v 1.144 2011-03-05 19:05:30 tswift Exp $
 ** 
 */
 
@@ -1432,17 +1432,21 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
      load_solution_from_trie(CTXTc arity,cptr);
    }
 }
- 
-/*----------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------*/
 #define CHECK_CALL_TERM_DEPTH						\
   if (--depth_ctr <= 0)	{						\
     if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_FAILURE) {		\
       resetpdl;								\
       return XSB_FAILURE;						\
     }									\
-    else xsb_abort("Exceeded max call term size (%d)\n",flags[MAX_TABLE_SUBGOAL_DEPTH]); \
-  }
+    else {								\
+      print_call(CTXTc TIF_PSC(CallInfo_TableInfo(*call_info)),flags[MAX_TABLE_SUBGOAL_DEPTH]);	\
+      xsb_abort("Exceeded max call term depth of %d in call (%s/%d)\n",	\
+		flags[MAX_TABLE_SUBGOAL_DEPTH],				\
+		get_name(TIF_PSC(CallInfo_TableInfo(*call_info))),arity); \
+    }									\
+}
 
 #define recvariant_call(flag,TrieType,xtemp1) {				\
   int  j;								\

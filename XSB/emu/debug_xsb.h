@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.17 2011-02-23 21:58:22 tswift Exp $
+** $Id: debug_xsb.h,v 1.18 2011-03-05 19:05:30 tswift Exp $
 ** 
 */
 
@@ -66,9 +66,10 @@ typedef struct subgoal_frame *VariantSF;
 #ifndef MULTI_THREAD
 extern void print_delay_list(FILE *, CPtr);
 extern void print_delay_element(FILE *, Cell);
-extern void print_call(Psc);
+extern void print_call(Psc,int);
 #else
 extern void print_delay_list(struct th_context * ,FILE *, CPtr);
+extern void print_call(struct th_context * ,Psc,int);
 #endif
 
 /* dbg_* macros */

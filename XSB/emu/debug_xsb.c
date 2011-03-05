@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.60 2011-02-23 21:58:22 tswift Exp $
+** $Id: debug_xsb.c,v 1.61 2011-03-05 19:05:30 tswift Exp $
 ** 
 */
 
@@ -165,7 +165,7 @@ void printterm(FILE *fp, Cell term, int depth) {
 /*------------------------------------------------------------------*/
 /* Used to print out call using WAM registers */
 
-void print_call(CTXTdeclc Psc psc)
+void print_call(CTXTdeclc Psc psc,int depth)
 {
   int i, arity;
 
@@ -173,7 +173,7 @@ void print_call(CTXTdeclc Psc psc)
   fprintf(stddbg, "(w1) call: %s", get_name(psc));
   if (arity != 0) fprintf(stddbg, "(");
   for (i=1; i <= arity; i++) {
-    printterm(stddbg, cell(reg+i), 3);
+    printterm(stddbg, cell(reg+i), depth);
     fflush(stddbg);
     if (i < arity) fprintf(stddbg, ",");
   }
@@ -196,11 +196,11 @@ int hitrace_suspend_gl = 0;
 void debug_call(CTXTdeclc Psc psc)
 {
   if (call_step_gl || get_spy(psc)) {
-    print_call(CTXTc psc);
+    print_call(CTXTc psc,3);
 #ifdef DEBUG_VM
     debug_interact(CTXT);
 #endif
-  } else if (!hitrace_suspend_gl) print_call(CTXTc psc);
+  } else if (!hitrace_suspend_gl) print_call(CTXTc psc,3);
 }
 
 /*=============================================================================*/
