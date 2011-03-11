@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.172 2011-01-02 22:16:43 tswift Exp $
+** $Id: init_xsb.c,v 1.173 2011-03-11 16:55:17 dwarren Exp $
 ** 
 */
 
@@ -1267,6 +1267,9 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
     xsb_initialization_exit("Not enough core for the Trail and Choice Point Stack!");
   tcpstack.high = tcpstack.low + tcpstack.init_size * K;
   tcpstack.size = tcpstack.init_size;
+#if defined(GENERAL_TAGGING)
+  extend_enc_dec_as_nec(tcpstack.low,tcpstack.high);
+#endif
 
   complstack.low = (byte *)malloc(complstack.init_size * K);
   if (!complstack.low)

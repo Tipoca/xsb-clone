@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.67 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: memory_xsb.c,v 1.68 2011-03-11 16:55:17 dwarren Exp $
 ** 
 */
 
@@ -385,9 +385,8 @@ Please use -c N or cpsize(N) to start with a larger choice point stack"
     new_cps = new_trail + new_size * K;
 
 #if defined(GENERAL_TAGGING)
-    // seems not nec (any tagged pointers into here?)
-    //       printf("tcpstack_realloc %p %p\n",new_trail,new_cps);
-    //       extend_enc_dec_as_nec(new_trail,new_cps);
+    // nec, since GC reverses trail pointers to heap and tags them
+    extend_enc_dec_as_nec(new_trail,new_cps);
 #endif
 
     trail_offset = (long)(new_trail - tcpstack.low);
