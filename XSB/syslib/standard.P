@@ -1000,13 +1000,15 @@ index_convert_to_dyna(PHead,Type,Index) :-
 /* add tabling declaration */
 
 table(Options) :-
-	writeln(userout,calling_table(Options)),
+%	writeln(userout,calling_table(Options)),
 	check_nonvar(Options,(table)/1,1),
 	(Options = as(Ps,List) ->
 	    check_table_options(List,Ps),
 	    table_1(Ps),
 	    exec_table_options(List,Ps)
-         ;  table_1(Options)), writeln(userout,leaving_table(Options)).
+         ;  table_1(Options)).
+
+% writeln(userout,leaving_table(Options)).
 
 table_1((One,Two)):- !,
 	table_1(One),
