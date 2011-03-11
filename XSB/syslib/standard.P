@@ -1000,12 +1000,13 @@ index_convert_to_dyna(PHead,Type,Index) :-
 /* add tabling declaration */
 
 table(Options) :-
+	writeln(userout,calling_table(Options)),
 	check_nonvar(Options,(table)/1,1),
 	(Options = as(Ps,List) ->
 	    check_table_options(List,Ps),
 	    table_1(Ps),
 	    exec_table_options(List,Ps)
-         ;  table_1(Options)).
+         ;  table_1(Options)), writeln(userout,leaving_table(Options)).
 
 table_1((One,Two)):- !,
 	table_1(One),
@@ -1013,11 +1014,7 @@ table_1((One,Two)):- !,
 table_1(Ps):- 
 	(structure(Ps) ; atom(Ps)),
 	\+ is_list(Ps),!,
-	(Ps=P/S,nonvar(P),nonvar(S)
-	 ->	Ps1 = Ps
-	 ;	functor(Ps,P,S), Ps1 = P/S
-	),
-	add_table(Ps1).
+	add_table(Ps).
 table_1(Pred):- 
 	domain_error(comma_list_or_predicate_indicator,Pred,(table)/1,1).
 
