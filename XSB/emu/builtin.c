@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.355 2011-01-22 19:36:51 dwarren Exp $
+** $Id: builtin.c,v 1.356 2011-03-13 15:48:34 tswift Exp $
 **
 */
 
@@ -3176,9 +3176,9 @@ case WRITE_OUT_PROFILE:
       }
       else {			/* update the atts (another copy) */
 	/*** Doesn't work for attv into and out of tables
-	     CPtr attv_attr = ((CPtr)dec_addr(attv))+1;
-	     push_pre_image_trail(attv_attr,atts);
-	     bld_copy(attv_attr,atts);
+|	     CPtr attv_attr = ((CPtr)dec_addr(attv))+1;
+|	     push_pre_image_trail(attv_attr,atts);
+|	     bld_copy(attv_attr,atts);
 	***/
 	bind_attv((CPtr)dec_addr(attv), hreg);
 	bld_free(hreg); hreg++;
@@ -3199,8 +3199,9 @@ case WRITE_OUT_PROFILE:
       list = (CPtr)dec_addr(attv) + 1;
       ctop_tag(CTXTc 2, cell(list));
     }
-    else xsb_abort("[GET_ATTRIBUTES] Argument 1 is not an attributed variable: %s",
-		   canonical_term(CTXTc attv, 0));
+    else return FALSE;
+    //    else xsb_abort("[GET_ATTRIBUTES] Argument 1 is not an attributed variable: %s",
+    //		   canonical_term(CTXTc attv, 0));
     break;
   }
 
