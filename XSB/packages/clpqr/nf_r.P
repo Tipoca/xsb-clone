@@ -289,7 +289,7 @@ submit_eq_c1([], v(K,[X^P]), I) :-
     P =\= 0,
     0 =< (-I/K),
 %    integer(P) =:= P, 
-    P is round(P) mod 2,
+    P is round(P),
 %	0 =:= integer(P) mod 2,
 	0 is round(P) mod 2,
 	!,
