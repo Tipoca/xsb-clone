@@ -2060,6 +2060,7 @@ general_verify_attributes(Atts,Value) :-
  	%file_write(1, [Var|Value]), file_nl(1),
 	call_attribute_handlers(Atts,Value).
 
+/*
 call_attribute_handlers([],_).
 call_attribute_handlers([Mod,Attr|Rest],Value) :-
 	(Mod = call_cleanup_mod -> 
@@ -2068,6 +2069,7 @@ call_attribute_handlers([Mod,Attr|Rest],Value) :-
   	    verify_attribute_handler(Mod,Attr,Value,Handler),
   	    call(Handler)),
 	call_attribute_handlers(Rest,Value).	
+*/
 
 delete_curl_pair(X,Y,Z) :-
 	consult:if_file_loaded(curl) -> curl:delete_us_pair(X,Y,Z)
@@ -2077,19 +2079,18 @@ get_curl_pair(X,Y,Z) :-
 	curl:get_us_pair(X,Y,Z). 
 
 
-/*
 :- import existence_error/4 from error_handler.
 
+call_attribute_handlers([],_).
 call_attribute_handlers([Mod,Attr|Rest],Value) :-
 	(Mod = call_cleanup_mod -> 
 	    call(Attr)
 	 ; 
    	    (verify_attribute_handler(Mod,Attr,Value,Handler) -> 
 		call(Handler)
-	    ; existence_error(attribute_handler,attribute([Mod,Attr|Rest],Value),
+	    ; existence_error('attribute handler for module',Mod,
 	                       call_attribute_handlers/2,1) ) ),
 	call_attribute_handlers(Rest,Value).	
-*/	
 
 /* --------------------- end of file standard.P ----------------------- */
 end_of_file.
