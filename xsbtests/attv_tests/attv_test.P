@@ -2,7 +2,7 @@
 ** Author(s): Baoqiu Cui
 ** 
 ** This file contains some basic tests for attributed variables.
-** $Id: attv_test.P,v 1.8 2007-09-28 20:22:48 dwarren Exp $
+** $Id: attv_test.P,v 1.9 2011-03-13 00:33:51 tswift Exp $
 */
 
 :- import put_attr/3, get_attr/3, install_verify_attribute_handler/4 from machine.
@@ -21,6 +21,9 @@ test :-
 	writeln('PASSED attv_test!').
 
 :- install_verify_attribute_handler(nounif,AttrVal,Targ,dummy_handler(Targ,AttrVal)).
+:- install_verify_attribute_handler(unif,AttrVal,Targ,fail(Targ,AttrVal)).
+
+fail(_,_):- fail.
 
 dummy_handler(Value, Target) :-
 	(var(Target) -> 

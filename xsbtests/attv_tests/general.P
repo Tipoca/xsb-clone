@@ -1,12 +1,12 @@
 /* File:      general.P
 ** Author(s): Baoqiu Cui / Swift
 **
-** $Id: general.P,v 1.6 2005-11-18 21:12:40 tswift Exp $
+** $Id: general.P,v 1.7 2011-03-13 00:33:51 tswift Exp $
 */
 
 :- xsb_flag(verboseness,3).
 
-:- import put_attr/3, get_attr/3 from machine.
+:- import put_attr/3, get_attr/3, install_verify_attribute_handler/4 from machine.
 
 %:- attribute dom/1, name/2.
 
@@ -17,6 +17,10 @@ test :-
 	test4,
 	(test5 ; true),
 	test6.
+
+:- install_verify_attribute_handler(general2,AttrVal,Targ,fail(Targ,AttrVal)).
+
+fail(_,_):- fail.
 
 %-----------------------------------------------------------------------
 % test1: one attv contains two normal vars, so in total there
