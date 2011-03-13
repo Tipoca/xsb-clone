@@ -3,7 +3,7 @@
 %% A simple finite domain constrait solver implemented using the lowlevel 
 %% attributes variables interface.  
 
-:- import put_attr/3, get_attr/3, del_attr/3, 
+:- import put_attr/3, get_attr/3, del_attr/2, 
    install_verify_attribute_handler/4 from machine.
 :- import member/2 from basics.
 
