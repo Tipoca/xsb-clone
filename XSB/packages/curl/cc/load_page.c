@@ -146,7 +146,7 @@ void *
 encode (char *url, char **dir, char **file, char **suffix)
 {
   int dir_len = 0;
-  char *dir_enc = NULL, *ptr;
+  char *dir_enc = NULL, *file_enc = NULL, *suff_enc = NULL, *ptr;
 
   ptr = strrchr (url, '/');
   if (ptr == NULL)
@@ -184,6 +184,16 @@ encode (char *url, char **dir, char **file, char **suffix)
   *dir = realloc (*dir, (strlen(dir_enc) + 1) * sizeof (char));
   strcpy (*dir, dir_enc);
   curl_free (dir_enc);
+
+  file_enc = curl_easy_escape (NULL, *file, 0);
+  *file = realloc (*file, (strlen(file_enc) + 1) * sizeof (char));
+  strcpy (*file, file_enc);
+  curl_free (file_enc);
+
+  suff_enc = curl_easy_escape (NULL, *suffix, 0);
+  *suffix = realloc (*suffix, (strlen(suff_enc) + 1) * sizeof (char));
+  strcpy (*suffix, suff_enc);
+  curl_free (suff_enc);
 
   return 0;
 }

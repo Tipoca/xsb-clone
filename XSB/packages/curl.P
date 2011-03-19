@@ -101,9 +101,9 @@ url_properties(url(Url), Options, Properties) :-
 
 encode_url(url(Url), [DirEnc, FileUnEnc, Suffix]) :- 
 	pl_encode_url(Url, [Dir, File, Suf]), 
-	validate(Dir, DirEnc), 
-	validate(File, FileUnEnc), 
-	validate(Suf, Suffix).
+	validatedir(Dir, DirEnc), 
+	validatefile(File, FileUnEnc), 
+	validatesuffix(Suf, Suffix).
 
 examine_open_options(open, Options, ValidOptions):-
 	examine_open_options(Options, Options1), 
@@ -207,8 +207,12 @@ stream_to_string(X, Y) :-
 stream_to_string_sub(X, Y) :- file_read_line(X, Y1), !, stream_to_string_sub(X, Y2), str_cat(Y1, Y2, Y).
 stream_to_string_sub(_, '').
 
-validate('', 'tmp') :- !.
-validate(Name, Name). 
+validatedir('', 'tmpdir') :- !.
+validatedir(Name, Name). 
+validatefile('', 'tmpfile') :- !.
+validatefile(Name, Name). 
+validatesuffix('', 'tmp') :- !.
+validatesuffix(Name, Name). 
 
 www_cache_filename(Options, FileBase, Suffix, FileName) :-
 	member(redirect(false), Options), 
