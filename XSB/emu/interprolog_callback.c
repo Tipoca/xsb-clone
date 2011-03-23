@@ -247,7 +247,7 @@ xsbBool interprolog_callback(CTXTdecl) {
 	jclass cls;
 	jmethodID mid;
 	int i = 1, size, bsize, newHead, newTail;
-	jbyte *b;
+	jbyte *b, *nb;
 	jbyteArray newBytes, bytes;
 	
 	cls = (*env)->GetObjectClass(env, obj);
@@ -282,30 +282,30 @@ xsbBool interprolog_callback(CTXTdecl) {
 	// Calls the method with bytes, expecting the return in newBytes
 	newBytes = (*env)->CallObjectMethod(env, obj, mid, bytes);
 	size = (*env)->GetArrayLength(env, newBytes);
-	b = (*env)->GetByteArrayElements(env, newBytes, 0);
+	nb = (*env)->GetByteArrayElements(env, newBytes, 0);
 	check_glstack_overflow(3, pcreg, size*8*sizeof(Cell)) ;
 
 	c2p_list(CTXTc reg_term(CTXTc 3));
 	newHead = p2p_car(reg_term(CTXTc 3));
 	newTail = p2p_cdr(reg_term(CTXTc 3));
-	if (b[0]<0) {
-		c2p_int(CTXTc (b[0]+256), newHead);
+	if (nb[0]<0) {
+		c2p_int(CTXTc (nb[0]+256), newHead);
 	} else {
-		c2p_int(CTXTc b[0], newHead);
+		c2p_int(CTXTc nb[0], newHead);
 	}
 	i = 1;
 	while (i < size) {
 		c2p_list(CTXTc newTail);
 		newHead = p2p_car(newTail);
 		newTail = p2p_cdr(newTail);
-		if (b[i]<0) {
-			c2p_int(CTXTc (b[i]+256), newHead);
+		if (nb[i]<0) {
+			c2p_int(CTXTc (nb[i]+256), newHead);
 		} else {
-			c2p_int(CTXTc b[i], newHead);
+			c2p_int(CTXTc nb[i], newHead);
 		}
 		i++;
 	}
-	(*env)->ReleaseByteArrayElements(env, newBytes, b, JNI_ABORT);
+	(*env)->ReleaseByteArrayElements(env, newBytes, nb, JNI_ABORT);
 	c2p_nil(CTXTc newTail);
 	return 1;
 }
