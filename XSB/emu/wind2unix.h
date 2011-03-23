@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wind2unix.h,v 1.9 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: wind2unix.h,v 1.10 2011-03-23 15:45:19 dwarren Exp $
 ** 
 */
 
@@ -56,7 +56,9 @@
 #define dup        _dup
 #define putenv     _putenv
 #define dup2       _dup2
+#ifndef fileno
 #define fileno     _fileno
+#endif
 #define unlink     _unlink
 #define strcasecmp _stricmp
 #define access     _access

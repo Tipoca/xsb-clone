@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.55 2011-02-14 20:47:32 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.56 2011-03-23 15:45:19 dwarren Exp $
 ** 
 */
 
@@ -324,6 +324,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
   char *elt_type = (call_type == ATOM_CODES ? "character code" : "character");
 
   term = ptoc_tag(CTXTc 1);
+  XSB_Deref(term);
   list = ptoc_tag(CTXTc 2);
   if (!isnonvar(term)) {	/* use is: CODES/CHARS --> ATOM */
     atomnameaddr = (char *)mem_alloc(INITIAL_NAMELEN,LEAK_SPACE);

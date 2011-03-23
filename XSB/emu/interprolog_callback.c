@@ -277,6 +277,7 @@ xsbBool interprolog_callback(CTXTdecl) {
 	}
 	bytes = (*env)->NewByteArray(env, bsize);
 	(*env)->SetByteArrayRegion(env, bytes, 0, bsize, b);
+	mem_dealloc(b,bsize,INTERPROLOG_SPACE);
 	
 	// Calls the method with bytes, expecting the return in newBytes
 	newBytes = (*env)->CallObjectMethod(env, obj, mid, bytes);
@@ -287,22 +288,24 @@ xsbBool interprolog_callback(CTXTdecl) {
 	c2p_list(CTXTc reg_term(CTXTc 3));
 	newHead = p2p_car(reg_term(CTXTc 3));
 	newTail = p2p_cdr(reg_term(CTXTc 3));
-	if (b[0]<0)
+	if (b[0]<0) {
 		c2p_int(CTXTc (b[0]+256), newHead);
-	else
+	} else {
 		c2p_int(CTXTc b[0], newHead);
+	}
 	i = 1;
 	while (i < size) {
 		c2p_list(CTXTc newTail);
 		newHead = p2p_car(newTail);
 		newTail = p2p_cdr(newTail);
-		if (b[i]<0)
+		if (b[i]<0) {
 			c2p_int(CTXTc (b[i]+256), newHead);
-		else
+		} else {
 			c2p_int(CTXTc b[i], newHead);
+		}
 		i++;
 	}
-	mem_dealloc(b,bsize,INTERPROLOG_SPACE);
+	(*env)->ReleaseByteArrayElements(env, newBytes, b, JNI_ABORT);
 	c2p_nil(CTXTc newTail);
 	return 1;
 }
