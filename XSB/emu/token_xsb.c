@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.37 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: token_xsb.c,v 1.38 2011-03-24 17:58:47 dwarren Exp $
 ** 
 */
 
@@ -350,8 +350,10 @@ static int read_character(CTXTdeclc register FILE *card,
  
         c = GetC(card,instr);
 BACK:   if (c < 0) {
-          if (c == EOF) /* to mostly handle cygwin stdio.h bug ... */
-READ_ERROR: if (q < 0) {
+          if (c == EOF) { /* to mostly handle cygwin stdio.h bug ... */
+READ_ERROR: if (!instr && ferror(card)) 
+	      xsb_warn("[TOKENIZER] I/O error: %s\n",strerror(errno));
+	    if (q < 0) {
                 SyntaxError(CTXTc "end of file in character constant");
 		//		return -2;		/* encounters EOF */
             } else {
@@ -360,6 +362,7 @@ READ_ERROR: if (q < 0) {
                 SyntaxError(CTXTc message);
 		//		return -2;		/* encounters EOF */
             }
+	  }
           else c = c & 0xff;  /* in which getc returns "signed" char? */
         }
         if (c == q) {
@@ -375,6 +378,8 @@ READ_ERROR: if (q < 0) {
         c = GetC(card,instr);
         switch (c) {
             case EOF:
+	        if (!instr && ferror(card)) 
+		  xsb_warn("[TOKENIZER] I/O error: %s\n",strerror(errno));
 		clearerr(card);
                 goto READ_ERROR;
 	    case 'a':		        /* alarm */
@@ -912,7 +917,11 @@ case deleted ****/
                 goto START;
  
             case EOFCH:
-		if (!instr) clearerr(card);
+	        if (!instr) {
+		  if (ferror(card))
+		    xsb_warn("[TOKENIZER] I/O error: %s\n",strerror(errno));
+		  clearerr(card);
+	        }
 		token->nextch = ' ';
 		token->value = 0;
 		token->type = TK_EOF;
