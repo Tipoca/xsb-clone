@@ -19,18 +19,18 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.356 2011-03-13 15:48:34 tswift Exp $
+** $Id: builtin.c,v 1.357 2011-03-24 17:55:30 dwarren Exp $
 **
 */
 
 #include "xsb_config.h"
+#include <stdio.h>
 #include "xsb_debug.h"
 
 /* Private debugs */
 #include "debugs/debug_delay.h"
 #include "context.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
@@ -1521,8 +1521,10 @@ int builtin_call(CTXTdeclc byte number)
       termpsc = term_psc(term);
     }
     newtermpsc = pair_psc(insert(get_name(termpsc),get_arity(termpsc),modpsc,&new));
-    if (new) set_data(newtermpsc, modpsc);
-    env_type_set(newtermpsc, T_IMPORTED, T_ORDI, (xsbBool)new);
+    if (new) {
+      set_data(newtermpsc, modpsc);
+      env_type_set(newtermpsc, T_IMPORTED, T_ORDI, (xsbBool)new);
+    }
     ctop_constr(CTXTc 3, (Pair)hreg);
     new_heap_functor(hreg, newtermpsc);
     for (disp=1; disp <= get_arity(newtermpsc); disp++) {
@@ -2022,7 +2024,7 @@ int builtin_call(CTXTdeclc byte number)
     }
     case XSB_INT    : fprintf(fptr, "%ld", (long)ptoc_int(CTXTc 3)); break;
     case XSB_STRING : fprintf(fptr, "%s", ptoc_string(CTXTc 3)); break;
-    case XSB_FLOAT  : fprintf(fptr, "%2.4lf", ptoc_float(CTXTc 3)); break;
+    case XSB_FLOAT  : fprintf(fptr, "%2.4f", ptoc_float(CTXTc 3)); break;
     case TK_INT_0  : {
       int tmp = (int) ptoc_int(CTXTc 3);
       fix_bb4((byte *)&tmp);
