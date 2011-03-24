@@ -27,14 +27,19 @@
 /* Trace and Debug package */
 
 :- export debug/0, nodebug/0, dump/0, trace_stack_max/0, notrace_stack_max/0,
-	  (spy)/1, (nospy)/1, trace/0, trace/1,
+	  (spy)/1, (nospy)/1,
+	  trace/0, trace/1, trace/2,
 	  notrace/0, piltrace/0, hitrace/0,
+	  debug_logging_queriable_trace/1,
+	  set_debug_logging_queriable_trace/1,
+	  make_trace_interactive/0,
+	  dump_trace_to_file/1,
 	  nosimtrace/0, debugging/0, debug_ctl/2.
 :- export '_$deb_trace'/1, '_$deb_spy'/1, '_b_SPY_condition'/1,
 	show/1, leash/1.
 
 :- import set_inthandler/2, '_$load_undef'/1, load_pred/1 from loader.
-:- import file_write/2 from xsb_writ.
+:- import file_write/2, file_write_quoted/2 from xsb_writ.
 
 :- import =.. /2, functor/3, atom/1, is_list/1, call/1, cputime/1,
           call/1, see/1, seeing/1, seen/0, repeat/0, read/1, warning/1,
@@ -59,8 +64,10 @@
 :- import hide_this_show/2, hide_this_hide/2, show_this_hide/2,
 	trace_this_print/2, trace_this_noprint/2,
 	is_xpar_call/2,
-	trace_standard_predicate/2, debug_display_call_hook/1, 
+	trace_standard_predicate/2,
 	trace_this_enable_print_on_redo/2,
+	debug_display_call_hook/1, 
+	debug_tracelog_predicate/1, 
 	'_$_deb_user_hidden'/2,
 	'_$_deb_old_show'/1, '_$_debugger_data_loaded'/0,
 	'_$_deb_old_leash'/1, '_$_deb_cputime_stack'/1
@@ -71,7 +78,10 @@
 :- import file_get/2, file_put/2, file_flush/2 from file_io.
 :- import file_reopen/4, file_clone/3 from file_io.
 
-:- dynamic debug_display_call_hook(_), '_$_debugger_data_loaded'/0.
+:- dynamic 
+	debug_display_call_hook(_),
+	debug_tracelog_predicate(_),
+	'_$_debugger_data_loaded'/0.
 :- dynamic '_$_deb_old_leash'/1, '_$_deb_old_show'/1, '_$_deb_cputime_stack'/1.
 :- dynamic '_$_deb_user_hidden'/2.
 :- dynamic hide_this_hide(_,_), hide_this_show(_,_), show_this_hide(_,_).
@@ -79,7 +89,11 @@
 	trace_standard_predicate(_,_), is_xpar_call(_,_),
 	trace_this_enable_print_on_redo(_,_).
 
-:- import conset/2, conget/2 from gensym.
+:- import
+	gensym/2,
+	conset/2,
+	conget/2
+   from gensym.
 
 :- import (:-)/2 from usermod.
 

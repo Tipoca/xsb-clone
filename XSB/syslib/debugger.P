@@ -31,6 +31,18 @@
 #include "standard.h"
 #include "extensions_xsb.h"
 
+#define AtmDBGOUT    '_$_$_stdout_dbg'
+#define AtmDBGDBG    '_$_$_stddbg_dbg'
+#define AtmDBGERR    '_$_$_stderr_dbg'
+#define AtmDBGWARN   '_$_$_stdwarn_dbg'
+
+#define AtmDBGLOG       '_$_$_dbg_log'
+#define TRACELOGPRED    xsb_tracelog
+
+#define CURRENTLYTRACING    '_$_$_currently_tracing'
+
+:- dynamic CURRENTLYTRACING/1.
+
 :- set_inthandler('_$deb_spy'(_), MYSIG_SPY),
    set_inthandler('_$deb_trace'(_), MYSIG_TRACE).
 
@@ -55,10 +67,11 @@ read_debugger_data :-
 	initialize_IO_streams.
 
 initialize_IO_streams :-
-	conset('_$_$_stdout_dbg',STDOUT),
-	conset('_$_$_stddbg_dbg',STDDBG),
-	conset('_$_$_stderr_dbg',STDERR),
-	conset('_$_$_stwarn_dbg',STDWARN).
+	conset(AtmDBGOUT,STDOUT),
+	conset(AtmDBGDBG,STDDBG),
+	conset(AtmDBGERR,STDERR),
+	conset(AtmDBGWARN,STDWARN).
+
 
 /* -- tracing flags setting  -------------------------------------- */
 
@@ -71,17 +84,39 @@ nosimtrace :-
 trace_stack_max :- stat_set_flag(TRACE_STA,1), debug.  % record max space usage
 notrace_stack_max :- stat_set_flag(TRACE_STA,0).       % undo above
 dump :- ll_write('dump not implemented yet').
-trace :- debug, stat_set_flag(TRACE,1).	    	       % trace = 1
-notrace :- stat_set_flag(TRACE,0),	       	       	% trace = 0
-	   nodebug.				% ??dsw added, (no load msgs)
+
+trace :-
+	debug,
+	stat_set_flag(TRACE,1). % trace = 1
+notrace :-
+	stat_set_flag(TRACE,0),	% trace = 0
+	make_trace_interactive,
+	ll_flush,
+	nodebug.		% ??dsw added, (no load msgs)
 %% dumps trace into a file
 trace(File) :-
 	dump_trace_to_file(File),
 	trace.
+%% instead of generating a trace, generate a queriable log
+trace(File,log) :-
+	set_debug_logging_queriable_trace(on),
+	trace(File).
 dump_trace_to_file(File) :-
 	debug_ctl(prompt,off),
 	debug_ctl(profile,on),
-	debug_ctl(redirect,File).
+	(debug_logging_queriable_trace(on)
+	-> debug_ctl(redirectdbg,File)
+	; debug_ctl(redirect,File)
+	).
+
+make_trace_interactive :-
+	debug_ctl(prompt,on),
+	debug_ctl(profile,off),
+	(debug_logging_queriable_trace(on) -> debug_ctl(redirectdbg,tty)
+	; debug_ctl(redirect,tty)
+	),
+	set_debug_logging_queriable_trace(off). % stop logging in prolog form
+
 
 %% Trace control
 debug_ctl(prompt, off)   :- !, leash([]).
@@ -89,19 +124,21 @@ debug_ctl(prompt, on) :- !, leash(['Call','Exit','Redo','Fail']).
 debug_ctl(leash, L)      :- is_list(L), !, leash(L).
 debug_ctl(show, L)       :- is_list(L), !, show(L).
 
-debug_ctl(profile, off)  :- retractall('_$_deb_cputime_stack'(_)).
-debug_ctl(profile, on)   :- cputime_stack(_Rest), !.    % already set-no effect
+debug_ctl(profile, off)  :-
+	!,
+	retractall('_$_deb_cputime_stack'(_)).
+debug_ctl(profile, on)   :-
+	cputime_stack(_Rest), !. % already set-no effect
 debug_ctl(profile, on)   :-
 	!,
 	set_cputime_stack([]).	% initialize stack
 
-
 debug_ctl(redirect,tty) :-
 	!,
-	conget('_$_$_stdout_dbg',OutSaved),
-	conget('_$_$_stddbg_dbg',DbgSaved),
-	conget('_$_$_stderr_dbg',ErrSaved),
-	conget('_$_$_stwarn_dbg',WarnSaved),
+	conget(AtmDBGOUT,OutSaved),
+	conget(AtmDBGDBG,DbgSaved),
+	conget(AtmDBGERR,ErrSaved),
+	conget(AtmDBGWARN,WarnSaved),
 	file_flush(STDDBG,_),
 	file_flush(STDOUT,_),
 	file_flush(STDERR,_),
@@ -114,21 +151,34 @@ debug_ctl(redirect,tty) :-
 debug_ctl(redirect,File) :-
 	!,
 	file_clone(STDOUT,OutSaved,_),
-	conset('_$_$_stdout_dbg',OutSaved),
+	conset(AtmDBGOUT,OutSaved),
 	file_clone(STDDBG,DbgSaved,_),
-	conset('_$_$_stddbg_dbg',DbgSaved),
+	conset(AtmDBGDBG,DbgSaved),
 	file_clone(STDWARN,WarnSaved,_),
-	conset('_$_$_stdwarn_dbg',WarnSaved),
+	conset(AtmDBGWARN,WarnSaved),
 	file_clone(STDERR,ErrSaved,_),
-	conset('_$_$_stderr_dbg',ErrSaved),
+	conset(AtmDBGERR,ErrSaved),
 	file_reopen(File,w,STDDBG,_),
 	file_clone(STDDBG,STDERR,_),
 	file_clone(STDDBG,STDWARN,_),
 	file_clone(STDDBG,STDOUT,_).
 
+%% redirect only STDDBG
+debug_ctl(redirectdbg,tty) :-
+	!,
+	conget(AtmDBGDBG,DbgSaved),
+	file_flush(STDDBG,_),
+	file_clone(DbgSaved,STDDBG,_).
+%% redirect only STDDBG
+debug_ctl(redirectdbg,File) :-
+	!,
+	file_clone(STDDBG,DbgSaved,_),
+	conset(AtmDBGDBG,DbgSaved),
+	file_reopen(File,w,STDDBG,_).
+
 debug_ctl(hide, L)   :-
 	!,
-	user_hide(L).	     % don''t trace inside the predicates in L
+	user_hide(L).	     % do not trace inside the predicates in L
 debug_ctl(unhide, L) :-
 	!,
 	user_unhide(L).			% cancel hide
@@ -138,6 +188,7 @@ debug_ctl(hidden, L) :-
 
 debug_ctl(X,Y) :- abort(('Invalid trace control option `', X,
 		     ''' or bad option value `', Y, '''')).
+
 
 cputime_stack(X) :- '_$_deb_cputime_stack'(X), is_list(X).
 set_cputime_stack(L) :- retractall('_$_deb_cputime_stack'(_)),
@@ -149,6 +200,16 @@ push_cputime :-
 	set_cputime_stack(L).
 push_cputime.
 
+%% return cpu time spent
+pop_cputime(_CallNum,_CallType,Time) :-
+	var(Time),
+	cputime_stack([H|Rest]),
+	!,
+	cputime(T),
+	set_cputime_stack(Rest),
+	Time is T-H.
+
+%% print cpu time spent
 pop_cputime(CallNum,CallType,print) :-
 	cputime_stack([H|Rest]),
 	!,
@@ -159,6 +220,7 @@ pop_cputime(CallNum,CallType,print) :-
 	ll_write(CallType), ll_write(' cpu time: '),
 	Delta is T-H,
 	ll_write(Delta), ll_nl.
+%% just push the stack up
 pop_cputime(_CallNum,_CallType,noprint) :-
 	cputime_stack([_H|Rest]),
 	!,
@@ -321,6 +383,14 @@ indeed_spy(Call) :- \+ (\+ ('_b_SPY_condition'(Call))).
 deb_enterpred(N,PSC,Call,Spy,Tr) :-
 	%%ll_write('enterpred'(Call)),ll_nl,
 	conset('_$_verbose_skip_current_callno', N),
+	(N==0 ->
+	    retractall(CURRENTLYTRACING(_)),
+	    gensym(id,CallId),
+	    assert(CURRENTLYTRACING(CallId))
+	; CURRENTLYTRACING(CallId) -> true
+	; CallId = '???',  %% happens when errors are thrown
+	    assert(CURRENTLYTRACING(CallId))
+	),
 	deb_traceget(N,Spy,'Call',Call,_),
 	push_cputime,		% push cpu time on the stack, if on
 	(   basic_call(Tr,PSC,Call),
@@ -332,6 +402,9 @@ deb_enterpred(N,PSC,Call,Spy,Tr) :-
 		(   still_displaying(Spy)
 		->  conset('_$_verbose_skip_current_callno', N),
 		    deb_traceget(N,Spy,'Exit',Call,_),
+		    (N==0 -> retractall(CURRENTLYTRACING(_))
+		    ; true
+		    ),
 		    restore_leash % restore old leash after Exit
 		;   true
 		),
@@ -340,6 +413,7 @@ deb_enterpred(N,PSC,Call,Spy,Tr) :-
 		stat_set_flag(HIDE_STATE,1),      % hide_state
 		(   still_displaying(Spy)
 		->  conset('_$_verbose_skip_current_callno', N),
+		    assert(CURRENTLYTRACING(CallId)),
 		    deb_traceget(N,Spy,'Redo',Call,_),
 		    push_cputime   % push cpu time on the stack, if on
 		;   true
@@ -355,6 +429,9 @@ deb_enterpred(N,PSC,Call,Spy,Tr) :-
 	    (	still_displaying(Spy) 	           % if still tracing/debugging
 	    ->	conset('_$_verbose_skip_current_callno', N),
 		deb_traceget(N,Spy,'Fail',Call,C2),
+		(N==0 -> retractall(CURRENTLYTRACING(_))
+		; true
+		),
 		restore_leash, % restore the old leash after Fail
 		(   C2=:=CH_r	    	    	   % r: retry; else just fail 
 		->  stat_set_flag(INVOKE_NUM, N),  % reset call number  
@@ -380,6 +457,39 @@ still_displaying(Spy) :-
 deb_retry(Call,inspy)   :- !,'_$deb_spy'(Call).
 deb_retry(Call,intrace) :- '_$deb_trace'(Call).
 
+%% produce a log
+deb_traceget(N,Spy,Type,Call,C) :-
+	debug_logging_queriable_trace(on),
+	!,
+	%% P-pred name, A- arity
+	get_psc_info(Call, _PSC, P, A),
+	set_print_control(P,A,_),
+	C = CH_NEWLINE,
+	(   shown(Type,Spy)
+	->  (	(Type == 'Exit' ; Type == 'Fail')
+	    ->	pop_cputime(N,Type,Time)
+	    ;	Time = 0
+	    ),
+	    (debug_tracelog_predicate(TracelogPredName), atom(TracelogPredName)
+	    -> true
+	    ;  TracelogPredName = TRACELOGPRED
+	    ),
+	    ll_writeq(TracelogPredName),
+	    ll_write('('),
+	    (CURRENTLYTRACING(CallId) -> true
+	    ; CallId = '!!!'   %% should never happen
+	    ),
+	    ll_writeq(CallId), ll_write(','),        %% call Id
+	    ll_write(N), ll_write(','),              %% call number
+	    ll_writeq(Type), ll_write(','),          %% port type: Call/Exit/...
+	    debug_display_call(Call), ll_write(','), %% the actual call
+	    ll_write(Time),                          %% cpu time spent or 0
+	    ll_write(').'), ll_nl
+	; (Type == 'Exit' ; Type == 'Fail') -> pop_cputime(N,Type,_)
+	; true
+	),
+	set_print_control(P,A,Type).
+
 %% Print the type of port, print prompt, get user input (via deb_prompt)
 deb_traceget(N,Spy,Type,Call,C) :-
 	%% P-pred name, A- arity
@@ -402,12 +512,14 @@ deb_traceget(N,Spy,Type,Call,C) :-
 	set_print_control(P,A,Type).
 
 debug_display_call(Call) :- (debug_display_call_hook(Hook)
-			    	-> Invocation =.. [Hook, Call],
-				    %% Prevent backtracking through 
-				    %% the print function hook: succeed 
-				    %% even if the print function doesn''t.
-				   (call(Invocation) -> true; true)
-			    	;  ll_write(Call)
+			    -> Invocation =.. [Hook, Call],
+				%% Prevent backtracking through 
+				%% the print function hook: succeed 
+				%% even if the print function doesn''t.
+				(call(Invocation) -> true; true)
+			    ; debug_logging_queriable_trace(on)
+			    -> ll_writeq(Call)
+			    ; ll_write(Call)
 			    ).
 
 leashable('Call').
@@ -682,11 +794,16 @@ basic_call(I,PSC,Call) :-
 		)
 	).
 
+debug_logging_queriable_trace(on) :- conget(AtmDBGLOG,1).
+debug_logging_queriable_trace(off) :- conget(AtmDBGLOG,0).
+set_debug_logging_queriable_trace(on)  :- conset(AtmDBGLOG,1).
+set_debug_logging_queriable_trace(off) :- conset(AtmDBGLOG,0).
 
 %% need since code_call must be last call in clause.
 code_call_h(Code,Call,Nt) :- code_call(Code,Call,Nt).
 
-ll_write(X) :- file_write(STDDBG, X).
+ll_write(X)  :- file_write(STDDBG, X).
+ll_writeq(X) :- file_write_quoted(STDDBG, X).
 ll_nl :- file_put(STDDBG, CH_NEWLINE).
 ll_flush :- file_flush(STDDBG, _).
 

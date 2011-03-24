@@ -14,10 +14,10 @@ when debugging code involving tabled predicates.  If one only creeps
 intend that future versions will have more complete debugging help for
 tabled evaluation.
 
-To turn on tracing, use {\tt trace/0} or {\tt trace/1}.  To turn tracing off, use {\tt
-notrace/0}.  
+To turn on tracing, use {\tt trace/0}, {\tt trace/1}, or {\tt trace/2}.  To
+turn tracing off, use {\tt notrace/0}.
 \begin{description}
-\repeatstandarditem{notrace}{notrace/0}
+\repeatstandarditem{trace}{trace/0}
 \standarditem{notrace}{notrace/0}
 \end{description}
 %
@@ -87,10 +87,53 @@ character followed by a return, with the following meanings:
   operating system.
 \end{description}
 
+
+\index{trace/1}
+
 {\tt trace/1} is like {\tt trace/0} except that it is non-interactive.
 The trace log is dumped into the file provided as an argument.
-All Prolog prompts also go into that file until {\tt notrace/0} is typed. 
 
+\index{trace/2}
+{\tt trace/2} provides another form of non-interactive tracing.
+It takes a file name in the first argument and an option in the
+second. Currently the only supported option is \texttt{log}. 
+Like \texttt{trace/1}, 
+execution of \texttt{trace(somefile,log)} causes the log to go into the file
+\texttt{somefile}. However, the log is written in the form of Prolog facts,
+which can be loaded queried. The format of the facts is:
+%% 
+\begin{verbatim}
+    xsb_tracelog(CallId,CallNumber,PortType,CurrentCall,Time)
+\end{verbatim}
+%% 
+where \texttt{CallId} is an identifier generated when XSB encounters a
+new top-level call. This identifier remains the same for all subgoals
+called while tracing that top-level call.
+\texttt{CallNumber} is the call number that XSB generates to show the
+nesting of the calls being traced. It is the same number that the user sees when
+tracing interactively.  \texttt{PortType} is \texttt{'Call'},
+\texttt{'Redo'}, \texttt{'Exit'}, or \texttt{'Fail'}.   
+\texttt{CurrentCall} is the call being traced and \texttt{Time} is the CPU time it
+took to execute \texttt{CurrentCall}. On \texttt{'Call'} and \texttt{'Redo'},
+\texttt{Time} is always 0 --- it has a meaningful value only for the
+\texttt{'Exit'} and \texttt{'Fail'} log entries.
+
+The name of the predicate (\texttt{xsb\_tracelog})
+used for logging can be changed by asserting
+it into the predicate \texttt{debug\_tracelog\_predicate/1}, which should be
+imported from \texttt{usermod}. For instance,
+%% 
+\begin{verbatim}
+   :- import debug_tracelog_predicate/1 from usermod.
+   ?- assert(debug_tracelog_predicate(foobar)).
+\end{verbatim}
+%% 
+
+
+
+\bigskip
+
+\noindent
 Other standard predicates that are useful in debugging are:
 
 \begin{description}
@@ -129,7 +172,7 @@ Other standard predicates that are useful in debugging are:
     Turns on debugging mode.
     This causes subsequent execution of predicates with trace or spy
     points to be traced, and is a no-op if there are no such predicates.
-    The predicates {\tt trace/0}, {\tt trace/1},  and {\tt spy/1} cause debugging mode
+    The predicates {\tt trace/0}, {\tt trace/1}, \texttt{trace/2},  and {\tt spy/1} cause debugging mode
     to be turned on automatically.
 
 \standarditem{nodebug}{nodebug/0}
@@ -212,9 +255,7 @@ be printed out at every call (including those to system trap
 handlers).  The volume of such trace information can very become large
 very quickly, so this method of tracing is not recommended in general.
 
-\index{trace/1}
-{\tt trace/1} is like {\tt trace/0}, except that it is non-interactive: the
-trace is dumped into the file provided as an argument.  
+\bigskip
 
 XSB debugger also provides means for the low-level control of what must be
 traced. Normally, various low-level predicates are masked out from the

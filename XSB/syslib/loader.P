@@ -386,7 +386,7 @@ not_handling_undef_pred :- conget('_$_$_undefhook',0).
 load(ModName) :-
 	stat_flag(DEBUG_ON, Debug_on),
 	(Debug_on =:= 1
-	 ->	local_fmt_write(STDDBG, "[ load module %s ]\n", arg(ModName))
+	 ->	local_fmt_write(STDMSG, "[ load module %s ]\n", arg(ModName))
 	 ;	true
 	),
 	(search_file(ModName, [FileName_O,FileName_P,FileName_PL,FileName_H,FileName_C,FileName_CPP],

@@ -361,9 +361,9 @@ print_debug_state :-
 	stat_flag(DEBUG_ON,Debug),
 	stat_flag(QUASI_SKIPPING,QuasiSkip),
 	( (Trace > 0, QuasiSkip =:= 0)
-	  ->	file_write(STDDBG,[trace]), file_nl(STDDBG)
+	  ->	file_write(STDFDBK,[trace]), file_nl(STDFDBK)
 	  ; (Debug > 0; (Trace > 0, QuasiSkip > 0))
-	  ->	file_write(STDDBG,[debug]), file_nl(STDDBG)
+	  ->	file_write(STDFDBK,[debug]), file_nl(STDFDBK)
 	; true
 	).
 
