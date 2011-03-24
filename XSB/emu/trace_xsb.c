@@ -113,7 +113,24 @@ void perproc_stat(void)
 /*======================================================================*/
 /* total_stat()								*/
 /*======================================================================*/
+int count_sccs() {					
+  int ctr = 0;
+  int last_scc = 0;
+  CPtr csf = openreg;
 
+  //    printf("open %x COMPL %x\n",openreg,COMPLSTACKBOTTOM);
+  while (csf < COMPLSTACKBOTTOM) {
+    if (compl_level(csf) != last_scc) {
+      ctr++;
+      last_scc = compl_level(csf);
+      //      printf("ctr: %d\n",ctr);
+    }
+    csf = prev_compl_frame(csf);	       
+    
+  }
+  return ctr;
+}
+    
 /*
  * Prints current memory usage info, operational counts, and, if the
  * "-s" option was given to xsb at invocation, maximum usage from the
@@ -404,9 +421,11 @@ void total_stat(CTXTdeclc double elapstime) {
 	 (unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk,
 	 (unsigned long)complstack.size * K -
 	 ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk));
-  if (((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk) > 0)
-    printf("        (%ld incomplete table(s))",
+  if (((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk) > 0) {
+    printf("        (%ld incomplete table(s)",
 	   ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE));
+    printf(" in %d SCCs)",count_sccs());
+  }
   printf("\n");
     printf("  Incr table space                    %12ld in use\n",
 	   pspacesize[INCR_TABLE_SPACE]);
@@ -866,9 +885,11 @@ void total_stat(CTXTdeclc double elapstime) {
 	 (unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk,
 	 (unsigned long)complstack.size * K -
 	 ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk));
-  if (((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk) > 0)
-    printf("        (%ld incomplete table(s))",
+  if (((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk) > 0) {
+    printf("        (%ld incomplete table(s)",
 	   ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE));
+    printf(" in %d SCCs)",count_sccs());
+  }
   printf("\n");
   printf("  Private SLG table space %12ld bytes: %12ld in use, %12ld free\n",
 	 private_tablespace_alloc,private_tablespace_used,
