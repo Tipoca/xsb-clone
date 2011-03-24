@@ -498,9 +498,10 @@ load_dyn1(Rfname,Dir) :-
 	current_input_port(XPPport), %% port from process, if it was launched
 	(   catch(read_and_assert(Dir),Ball,close_and_throw(XPP_process,XPPport,Ball))
 	%% If needs restart, close old file and skip to the second load_dyn1
-	->  ( conget(needs_restart,1) -> seen, see(OldFile), fail ; !)
+	->  ( conget(needs_restart,1) -> seen, see(OldFile), fail ; true)
 	;   conset(needs_restart, 0), conset(xpp_on,0)
 	),
+	!,
 	check_xpp_process_status(Rfname,XPP_process,'Dynamic loading aborted'),
 	%% Release the file descriptor used to read from preprocessor
 	(XPP_process == skip -> true
@@ -599,9 +600,10 @@ load_dync1(Rfname,Dir) :-
 	file_read_canonical(-1000,0,0),	% initialize previous psc
 	(   read_and_assert(XPPport,Dir)
 	%% If needs restart, close old file and skip to the second load_dyn1
-	->  (conget(needs_restart,1) -> seen, see(OldFile), fail ; !)
+	->  (conget(needs_restart,1) -> seen, see(OldFile), fail ; true)
 	;   conset(needs_restart, 0), conset(xpp_on,0)
 	),
+	!,
 	check_xpp_process_status(Rfname,XPP_process,'Dynamic loading aborted'),
 	%% Release the file descriptor used to read from preprocessor
 	(XPP_process == skip -> true
