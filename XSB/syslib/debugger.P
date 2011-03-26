@@ -479,10 +479,10 @@ deb_traceget(N,Spy,Type,Call,C) :-
 	    (CURRENTLYTRACING(CallId) -> true
 	    ; CallId = '!!!'   %% should never happen
 	    ),
-	    ll_writeq(CallId), ll_write(','),        %% call Id
-	    ll_write(N), ll_write(','),              %% call number
-	    ll_writeq(Type), ll_write(','),          %% port type: Call/Exit/...
-	    debug_display_call(Call), ll_write(','), %% the actual call
+	    ll_writeq(CallId), ll_write(', '),        %% call Id
+	    ll_write(N), ll_write(', '),              %% call number
+	    ll_writeq(Type), ll_write(', '),          %% port type: Call/Exit/...
+	    debug_display_call(Call), ll_write(', '), %% the actual call
 	    ll_write(Time),                          %% cpu time spent or 0
 	    ll_write(').'), ll_nl
 	; (Type == 'Exit' ; Type == 'Fail') -> pop_cputime(N,Type,_)
