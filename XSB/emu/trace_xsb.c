@@ -113,7 +113,7 @@ void perproc_stat(void)
 /*======================================================================*/
 /* total_stat()								*/
 /*======================================================================*/
-int count_sccs() {					
+int count_sccs(CTXTdecl) {					
   int ctr = 0;
   int last_scc = 0;
   CPtr csf = openreg;
@@ -424,7 +424,7 @@ void total_stat(CTXTdeclc double elapstime) {
   if (((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk) > 0) {
     printf("        (%ld incomplete table(s)",
 	   ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE));
-    printf(" in %d SCCs)",count_sccs());
+    printf(" in %d SCCs)",count_sccs(CTXT));
   }
   printf("\n");
     printf("  Incr table space                    %12ld in use\n",
@@ -888,7 +888,7 @@ void total_stat(CTXTdeclc double elapstime) {
   if (((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk) > 0) {
     printf("        (%ld incomplete table(s)",
 	   ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE));
-    printf(" in %d SCCs)",count_sccs());
+    printf(" in %d SCCs)",count_sccs(CTXT));
   }
   printf("\n");
   printf("  Private SLG table space %12ld bytes: %12ld in use, %12ld free\n",
