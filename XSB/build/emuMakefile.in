@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.67 2010-10-08 06:05:14 kifer Exp $
+## $Id: emuMakefile.in,v 1.68 2011-03-28 13:09:03 dwarren Exp $
 ##
 
 
@@ -55,7 +55,7 @@ DYNMOD_LINKFLAGS=@DYNMOD_LINKFLAGS@
 # however for old cygwin versions -dll option is used
 DLLNAME=xsb.dll
 DLL_LIBS=$(LDFLAGS)
-LIB_OBJECTS=xsb.o dllinit_xsb.o
+LIB_OBJECTS=xsb.o
 BASE_FILE=xsb.base
 DEF_FILE=$(arch_config_prefix)/saved.o/xsb.def
 LIB_FILE=libxsb.a
@@ -170,9 +170,10 @@ xsbora:: init $(allORAOBJS)
 # C-drivers that pass queries to XSB
 xsbmod:: $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
 	@echo ""; \
-	   echo "Making a C-callable XSB module $(arch_config_objlibdir)/xsb.o"; \
+	   echo "Making a C-callable XSB module"; \
+	   echo "@LD@ @MEMFLAG@ -o xsb.o $(LINKFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ} ${LDFLAGS}" ; \
 	   echo ""
-	@@LD@ @MEMFLAG@ -o xsb.o $(LINKFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
+	@@LD@ @MEMFLAG@ -o xsb.o $(LINKFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ} ${LDFLAGS}
 	@cp xsb.o $(arch_config_objlibdir) 2> /dev/null || echo ""
 
 xsbdynmod::
@@ -207,16 +208,10 @@ dll: $(DLLTYPE)
 nodll:
 
 cygdll: $(allOBJS) $(HEADERS) xsbmod
-	@chmod ugo+x $(arch_config_prefix)/makedef.sh
-	@$(CC) -I$(arch_config_prefix) -c $(CFLAGS) dllinit_xsb.cc
-	@cp dllinit_xsb.o $(arch_config_objlibdir) 2> /dev/null || echo ""
-	@$(arch_config_prefix)/makedef.sh $(allOBJS) dllinit_xsb.o
-	@mv out.def $(DEF_FILE)
-	@$(CC) -mno-cygwin -shared -o $(DLLNAME) $(LIB_OBJECTS) $(DEF_FILE) -Wl,--out-implib=xsb.a $(DLL_LIBS) -e @$(ENTRY_FUNCTION)
-	@mv $(DLLNAME) $(bindir) 2> /dev/null || echo ""
-	@mv $(LIB_FILE) $(bindir) 2> /dev/null || echo ""
-	@rm -f $(BASE_FILE) 2> /dev/null || echo ""
-	@echo -e "\t[$(CC)] -o $(arch_config_prefix)/bin/xsb.exe"
+	@echo "$(CC) -Wl,--add-stdcall-alias -shared -o $(arch_config_prefix)/bin/$(DLLNAME) $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ} -Wl,--out-implib=xsb.a -Wl,--export-all-symbols -Wl,--enable-auto-import $(DLL_LIBS)"
+	@$(CC) -Wl,--add-stdcall-alias -shared -o $(arch_config_prefix)/bin/$(DLLNAME) $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ} -Wl,--out-implib=xsb.a -Wl,--export-all-symbols -Wl,--enable-auto-import $(DLL_LIBS)
+	@echo "$(CC) -o $(arch_config_prefix)/bin/xsb.exe  $(CFLAGS) -I$(arch_config_prefix) -L$(arch_config_prefix)/bin main_xsb.c $(LINKFLAGS) $(DLL_LIBS) -lxsb"
+	@cp xsb.a $(arch_config_prefix)/bin/xsb.a
 	@$(CC) -o $(arch_config_prefix)/bin/xsb.exe  $(CFLAGS) \
 		-I$(arch_config_prefix) -L$(arch_config_prefix)/bin \
 		main_xsb.c $(LINKFLAGS) $(DLL_LIBS) -lxsb

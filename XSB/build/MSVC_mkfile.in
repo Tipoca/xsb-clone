@@ -352,7 +352,7 @@ DLL_LINK_DEBUG_FLAGS=/incremental:yes /debug
 
 CPP_PROJ=\
 	/nologo /W3 /EHsc /D "WIN32" /D "_CONSOLE" /c /Fp"$(OBJDIR)/xsb.pch" \
-	/Fo"$(OBJDIR)/" \
+	/D "_CRT_SECURE_NO_WARNINGS" /Fo"$(OBJDIR)/" \
 	$(CONFIG_INCLUDE_FLAG) $(ORACLE_FLAG) \
 	$(INTERPROLOG_FLAG) $(DEBUG_CPP_FLAGS) \
 	$(DLL_CPP_FLAGS)
