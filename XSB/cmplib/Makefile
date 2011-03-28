@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.25 2010-08-19 15:03:35 spyrosh Exp $
+## $Id: Makefile,v 1.26 2011-03-28 12:47:32 dwarren Exp $
 ## 
 ##
 
@@ -94,6 +94,7 @@ all: init  $(ALL) finish
 # the right include directories are used if we compile cmplib using an
 # older version of XSB
 init:
+	rm -f $(CMDFILE)
 	rm -f $(SVFILE)
 	@test -d $(OBJFILESAVED) || mkdir $(OBJFILESAVED)
 	@echo "import file_reopen/4, file_flush/2 from file_io." >> $(CMDFILE)
