@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: proc_files.P,v 1.7 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: proc_files.P,v 1.8 2011-03-29 13:32:04 dwarren Exp $
 ** 
 */
 
@@ -33,10 +33,10 @@ Name/Arity or Name(_,_,...,_) of the predicate to load the facts
 into.").
 
 load_csv(FileName,PSpec) :-
-	load_dsv(FileName,PSpec,",","""",[]).
+	load_dsv(FileName,PSpec,",",0'"',[]).
 
 load_psv(FileName,PSpec) :-
-	load_dsv(FileName,PSpec,"|","""",[]).
+	load_dsv(FileName,PSpec,"|",0'"',[]).
 
 :- comment(load_dsv/3, " @pred{load_dsv(FileName,PSpec,Options)} is an
 interface to @pred{load_dsv/5} where the separator is specified in
