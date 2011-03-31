@@ -1626,12 +1626,10 @@ action to take upon encountering an attributed variable.  Currently,
 Acts as {\tt numbervars(+Term, +FirstN, ?LastN,attvar(error))}.
 
 \ourmoditem{numbervars(+Term)}{numbervars/1}{num\_vars}
-%\predindex{numbervars/1~(L)}
     This predicate is defined as: {\tt numbervars(Term, 0, \_)}.  It
     is included solely for convenience.
 
 \ourmoditem{unnumbervars(+Term, +FirstN, ?Copy)}{unnumbervars/3}{num\_vars}
-%\predindex{unnumbervars/3~(B)}
     This predicate is a partial inverse of predicate {\tt
     numbervars/3}.  It creates a copy of Term in which all subterms of
     the form \verb|'$VAR'(<int>)| where \verb|<int>| is not less than
@@ -4442,6 +4440,15 @@ the intended behavior.
 While meta calls are generally fast in XSB, the extra term
 manipulation of {\tt call/[2-10]} makes it somewhat slower than {\tt
   call/1}.
+
+\ourstandarditem{call\_tv(\#Goal,-TV)}{call\_tv/2}{Tabling}
+%
+Calls {\tt Goal} just as with {\tt call/1}, and if {\tt Goal} does not
+fail, instantiates {\tt TV} with either {\tt true} or {\tt undefined},
+depending on the value of {\tt Goal} in the well-founded semantics.
+{\tt Goal} need not be tabled itself.
+
+    Error cases are the same as {\tt call/1}.
 
 \isoitem{once(\#X)}{once/1}
 %
