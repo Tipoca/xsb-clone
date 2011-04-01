@@ -944,7 +944,11 @@ called at that moment.
 \code{PredType} & \code{CallType}       & \code{AnsSetStatus}
                 & \multicolumn{1}{c|}{Description} \\ \hline \hline
         &       & \code{complete}       & Self explanatory. \\ \cline{3-4}
-\code{variant}  & \raisebox{1.5ex}[0ex]{\code{producer}} & \code{incomplete}
+        &       &                       & An incremental table that has been \\
+        & \code{producer}  & {\code{incremental\_needs\_reeval}} 
+                                        & invalidated, and is therefore inconsistent \\
+        &       &                       & with a KB and needs recomputation. \\ \cline{3-4}
+\code{variant}  &   & \code{incomplete}
                 & Self explanatory. \\ \cline{2-4}
         & \code{no\_entry}      & \code{undefined}
                 & The call does not appear in the table. \\ \hline
