@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.357 2011-03-24 17:55:30 dwarren Exp $
+** $Id: builtin.c,v 1.358 2011-04-01 16:36:22 tswift Exp $
 **
 */
 
@@ -2469,7 +2469,7 @@ case WRITE_OUT_PROFILE:
      * 1) Predicate Type: Variant, Subsumptive, or Untabled
      * 2) Goal Type: Producer, Properly Subsumed Consumer, Has No
      *      Call Table Entry, or Undefined
-     * 3) Answer Set Status: Complete, Incomplete, or Undefined.
+     * 3) Answer Set Status: Complete, Incomplete, Undefined or Inremental-needs-reeval
      *
      * Valid combinations reported by this routine:
      * When the predicate is an untabled functor, then only one sequence
@@ -2604,8 +2604,11 @@ case WRITE_OUT_PROFILE:
 #else
     if ( IsNonNULL(subsumerSF) && !subg_grabbed(subsumerSF)) {
 #endif
-      if ( is_completed(subsumerSF) )
-	answer_set_status = COMPLETED_ANSWER_SET;
+      if ( is_completed(subsumerSF) ) {
+	if (subg_callnode_ptr(subsumerSF) && subg_callnode_ptr(subsumerSF)->falsecount!=0)
+	  answer_set_status = INCR_NEEDS_REEVAL;
+	else answer_set_status = COMPLETED_ANSWER_SET;
+      }
       else
 	answer_set_status = INCOMPLETE_ANSWER_SET;
     }
