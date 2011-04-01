@@ -113,27 +113,12 @@ call_type_code(PRODUCER_CALL,  producer).
 call_type_code(SUBSUMED_CALL,  subsumed).
 call_type_code(NO_CALL_ENTRY,  no_entry).
 
+answer_set_status_code(INCR_NEEDS_REEVAL,  incremental_needs_reeval).
 answer_set_status_code(UNDEFINED_ANSWER_SET,  undefined).
 answer_set_status_code(COMPLETED_ANSWER_SET,  complete).
 answer_set_status_code(INCOMPLETE_ANSWER_SET, incomplete).
 
-
-/*
- * For [temporary] backward compatibility, redefine table_state/2 in
- * terms of the newer table_state/4.
- */
-
-table_state(Call, State) :-
-	table_state(Call, PredType, _CallType, AnsSetStatus),
-	(PredType == variant
-         -> ( AnsSetStatus == undefined
-             -> State = no_call_yet
-	     ;  State = AnsSetStatus )
-	 ; PredType == undefined -> State = undef
-        ).
-
 /*----------------------------------------------------------------------*/
-
 /*
  * Builtins for supporting negation and suspensions.
  */
@@ -154,7 +139,7 @@ tfindall(T, Call, Result) :-
 	( PredType \== undefined ->
 	  ( AnsSetStatus == complete ->
 	      findall(T,Call,Result)
-          ; AnsSetStatus == undefined ->
+          ; (AnsSetStatus == undefined ; AnsSetStatus == incremental_needs_reeval) ->
 	      ( call(Call), fail ; tfindall(T,Call,Result) )
 	  ; AnsSetStatus == incomplete ->
 	      table_error('tfindall/3 is in a possible loop.  Cannot evaluate non-stratified tfindall/3')  
@@ -195,7 +180,7 @@ tnot(Subgoal) :-
 
 t_not_variant(Subgoal,AnsSetStatus):- 
 	    get_ptcp(PTCP),
-	    ( AnsSetStatus == UNDEFINED_ANSWER_SET ->
+	    ( AnsSetStatus < 0 ->  % i.e. UNDEFINED_ANSWER_SET or INCR_NEEDS_REEVAL
 	        (tcall(Subgoal), fail 
 	          ;  get_producer_call(Subgoal,ProducerSF,_AnswerTmplt),
 		     is_incomplete(ProducerSF,PTCP),slg_not(ProducerSF) )
@@ -747,3 +732,17 @@ get_unifiable_returns_1(TableEntry, Skel, ReturnsList):-
 		ReturnsList).
 
 
+
+/*
+ * For [temporary] backward compatibility, redefine table_state/2 in
+ * terms of the newer table_state/4.
+ */
+
+table_state(Call, State) :-
+	table_state(Call, PredType, _CallType, AnsSetStatus),
+	(PredType == variant
+         -> ( AnsSetStatus == undefined
+             -> State = no_call_yet
+	     ;  State = AnsSetStatus )
+	 ; PredType == undefined -> State = undef
+        ).

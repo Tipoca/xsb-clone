@@ -46,7 +46,7 @@
       is_incomplete/2,
    retract_table/1,
       sk_not/1,
-      table_state/2,
+%      table_state/2,
       table_state/4,
       tfindall/3,
    (tnot)/1,
