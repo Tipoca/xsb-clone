@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_status_defs.h,v 1.8 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: table_status_defs.h,v 1.9 2011-04-01 18:23:56 tswift Exp $
 ** 
 */
 
@@ -51,6 +51,7 @@
  * set.
  */
 
+#define INCR_NEEDS_REEVAL        -2
 #define UNDEFINED_ANSWER_SET	 -1   /* due to untabled predicate, error,
 				         or the call not having an entry
 				         AND also no subsumer in the table */
