@@ -18,7 +18,18 @@ configdir=../config/x86-pc-windows
 makedepend -w2000 -f ../build/.makedepend.tmp -o.obj -p@@@ -Y -- -I$configdir -- *c 2>&1 \
 	| grep -v "cannot find include" | grep -v "not in"
 
+FROMDOS=`which fromdos`
+U2D=`which unix2dos`
+if test -n "$FROMDOS" ; then
+    UNIX2DOS_CMD=$FROMDOS
+elif test -n "$U2D" ; then
+    UNIX2DOS_CMD=$U2D
+else
+    echo "******* Need 'fromdos' or 'unix2dos' to configure XSB for Windows"
+    exit 1
+fi
+
 # Convert Unix Makefile dependencies to NMAKE format, add ^M at the end
-cat ../build/.makedepend.tmp | sed  -f ../build/MSVC.sed | unix2dos > ../build/MSVC.dep
+cat ../build/.makedepend.tmp | sed  -f ../build/MSVC.sed | $UNIX2DOS_CMD > ../build/MSVC.dep
 
 

@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.210 2011-02-17 06:05:18 kifer Exp $
+## $Id: configure.in,v 1.211 2011-04-09 02:35:58 kifer Exp $
 ##
 ##
 
@@ -2128,8 +2128,7 @@ if test -n "$with_dynamic_libraries"; then
 fi
 
 if test "$with_os" = wind ; then
-  ./MSVC.sh
-  mv MSVC.dep ${arch_config_prefix}
+  ./MSVC.sh && mv MSVC.dep ${arch_config_prefix}
 
   # copy the windows-specific odbc files to the wondows specific directory
   cp odbc/* ${arch_config_prefix} 2> /dev/null
