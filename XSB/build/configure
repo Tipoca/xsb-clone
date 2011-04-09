@@ -8694,7 +8694,8 @@ if test -n "$with_dynamic_libraries"; then
 fi
 
 if test "$with_os" = wind ; then
-  ./MSVC.sh && mv MSVC.dep ${arch_config_prefix}
+  ./MSVC.sh
+  mv MSVC.dep ${arch_config_prefix}
 
   # copy the windows-specific odbc files to the wondows specific directory
   cp odbc/* ${arch_config_prefix} 2> /dev/null

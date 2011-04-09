@@ -25,11 +25,17 @@ if test -n "$FROMDOS" ; then
 elif test -n "$U2D" ; then
     UNIX2DOS_CMD=$U2D
 else
-    echo "******* Need 'fromdos' or 'unix2dos' to configure XSB for Windows"
-    exit 1
+    echo "*** Warning: The commands 'fromdos' and 'unix2dos' are not installed."
+    echo "***          Recompilation under Windows will be slower."
+    UNIX2DOS_CMD=
 fi
 
 # Convert Unix Makefile dependencies to NMAKE format, add ^M at the end
-cat ../build/.makedepend.tmp | sed  -f ../build/MSVC.sed | $UNIX2DOS_CMD > ../build/MSVC.dep
+if test -n "$UNIX2DOS_CMD" ; then
+    cat ../build/.makedepend.tmp | sed  -f ../build/MSVC.sed | $UNIX2DOS_CMD > ../build/MSVC.dep
+else
+    rm -f ../build/MSVC.dep
+    ../build/touch.sh  ../build/MSVC.dep
+fi
 
 
