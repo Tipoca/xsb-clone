@@ -18,14 +18,14 @@ configdir=../config/x86-pc-windows
 makedepend -w2000 -f ../build/.makedepend.tmp -o.obj -p@@@ -Y -- -I$configdir -- *c 2>&1 \
 	| grep -v "cannot find include" | grep -v "not in"
 
-FROMDOS=`which fromdos`
+TODOS=`which todos`
 U2D=`which unix2dos`
-if test -n "$FROMDOS" ; then
-    UNIX2DOS_CMD=$FROMDOS
+if test -n "$TODOS" ; then
+    UNIX2DOS_CMD=$TODOS
 elif test -n "$U2D" ; then
     UNIX2DOS_CMD=$U2D
 else
-    echo "*** Warning: The commands 'fromdos' and 'unix2dos' are not installed."
+    echo "*** Warning: The commands 'todos' and 'unix2dos' are not installed."
     echo "***          Recompilation under Windows will be slower."
     UNIX2DOS_CMD=
 fi
