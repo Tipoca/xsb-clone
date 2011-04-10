@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: chr_interp.P,v 1.7 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: chr_interp.P,v 1.8 2011-04-10 22:50:06 tswift Exp $
 ** 
 */
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,7 +78,6 @@
 	via_1/2,
 	via_2/3,
 	merge/3,
-	term_variables/2,
 	not_locked/1,
 	global_term_ref_1/1,
 	set_global_term_ref_1/1,
@@ -127,6 +126,8 @@
 
 :- import install_verify_attribute_handler/4 from machine.
 
+:- import term_variables/2 from constraintLib.
+
 :- install_verify_attribute_handler(locked,Attr,Value,locked_verify_attributes(Attr,Value)).
 
 /* 
@@ -145,6 +146,7 @@ structure: v(BitMask,CL1,...,CLN)
 */
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/*
 term_variables(Term, Vars) :-
 	listofvars(Term, Vs, []),
 	sort(Vs, Vars).	
@@ -160,7 +162,7 @@ listofvars1([], V, V).
 listofvars1([T|Ts], Vh, Vt) :-
 	listofvars(T, Vh, Vm),
 	listofvars1(Ts, Vm, Vt).
-
+*/
 
 
 %   I N I T I A L I S A T I O N
