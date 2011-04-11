@@ -34,7 +34,7 @@
 :- import append/3, memberchk/2, copy_term/2, length/2 from basics.
 :- import str_len/2 from machine.
 :- import atom/1, atom_codes/2, number/1, integer/1, structure/1, '=..'/2,
-        is_list/1, number_codes/2, float/1 from standard.
+   is_list/1, number_codes/2, float/1, warning/1 from standard.
 :- import file_open/3, file_close/1 from file_io.
 :- import file_read_foe/3 from xsb_read.
 :- import domain_error/4, check_nonvar_list/3 from error_handler.

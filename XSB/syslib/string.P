@@ -64,6 +64,8 @@ c_atom(A,L0,L) :-
 		 ->	atom_codes(A,AC)
 		 ;	number(A)
 		 ->	number_codes(A,AC)
+		 ;	warning(('concat_atom failed due to element: ',A)),
+			fail
 		),
 		(L0 == []
 		 ->	L = AC
