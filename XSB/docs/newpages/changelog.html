@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<link type="text/css" rel="stylesheet" href="xsb.css">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
+<title>Release Notes</title>
+</head>
+
+<body>
+<div class="xsb-menu">
+<p>
+<a href="index.html" >Home</a>
+<a href="research.html" >Research</a>
+<a href="xsbsystem.html" >XSB System</a>
+<a href="contactus.html" >Contact Us</a>
+</p>
+</div>
+
+<h1>ChangeLog</h1>
+
+<h2> Version 3.3.X (Pignoletto)</h2> 
+
+<h3> Version 3.3.1</h3> 
+<ul>
+<li>
+Bug fixes for incremental tabling that arose when explicitly
+ abolishing invalidated incremental tables.  Inclusion of information
+ about incremental tables in statistics when relevant.
+</li>
+</ul>
+
+<h3> Version 3.3.0</h3> 
+<ul>
+<li>
+Bug fixe for incremental tabling when evaluating programs with tabled
+negation.
+</li>
+<li>
+Fix for bug under 32-bit Linuxes when allocating very large chunks of
+memory.
+</li>
+<li>
+Inclusion of number of SCCs of non-completed tabled subgoals into
+XSB's statistics.
+</li>
+<li>
+Fix in proc_files library for loading csv files into Prolog predicates.
+</li>
+<li>
+Fixes for various bugs when using CLP(R) with tabling.  Update of
+CLP(R) package to include newest changes from SWI repository.  Changes
+to CLP(R) package to allow a smaller, and user-defined epsilon.
+</li>
+<li>
+Changes to attribute API to make this XSB's API similar to that of SWI
+and YAP (and perhaps others).
+</li>
+</ul>
+
+
+
+<hr>
+<address>Email: <a href="mailto:xsb-users@lists.sourceforge.net" >xsb-users@lists.sourceforge.net</a></address>
+<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.1 2011-04-12 20:41:55 tswift Exp $ <!-- hhmts end -->
+</body> </html>
