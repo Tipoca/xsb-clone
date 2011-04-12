@@ -32,21 +32,25 @@
 #define OUTEDGE_PER_BLOCK 100
 #define HASH_TABLE_SIZE 1
 
-extern int maximum_dl,factcount;
-extern calllistptr affected,changed,leader;
-extern int no_add_call_edge;
-extern callnodeptr old_call;
-extern int callqptr;
-extern int saved_call,unchanged_call;
-extern BTNptr old_answer_table;
-extern int call_node_count,call_edge_count;
+//leader_gl;
+//extern int no_add_call_edge;
+//extern int saved_call;
+//extern int maximum_dl,factcount;
+//extern int callqptr;
+
+extern calllistptr affected_gl,changed_gl;
+extern int call_node_count_gl,call_edge_count_gl;
+extern BTNptr old_answer_table_gl;
+extern int unchanged_call_gl;
+extern callnodeptr old_call_gl;
+
 extern void initoutedges(callnodeptr cn);
 extern callnodeptr makecallnode(VariantSF);
 extern void deallocatecall(callnodeptr);
 extern void propagate_no_change(callnodeptr);
 extern void addcalledge(callnodeptr,callnodeptr);
 extern void incr_eval_statistics(CTXTdecl);
-extern calllistptr eneetq();
+extern calllistptr empty_calllist();
 extern void invalidate_call(callnodeptr c);
 extern int create_call_list(CTXTdecl);
 extern int create_changed_call_list(CTXTdecl);

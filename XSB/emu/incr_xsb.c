@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.15 2010-10-09 22:03:25 tswift Exp $
+** $Id: incr_xsb.c,v 1.16 2011-04-12 17:31:59 tswift Exp $
 ** 
 */
 
@@ -75,8 +75,8 @@ xsbBool incr_eval_builtin(CTXTdecl)
       affected calls in postorder.     
     */
     int rc = create_call_list(CTXT);
-    affected=eneetq();
-    changed=eneetq();
+    affected_gl=empty_calllist();
+    changed_gl=empty_calllist();
     return rc;
     break;
   }
@@ -91,7 +91,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
     
   case GET_CALL_GRAPH: {
 
-    printf("<%d,%d>",call_node_count,call_edge_count);
+    printf("<%d,%d>",call_node_count_gl,call_edge_count_gl);
     break;  
   }
     

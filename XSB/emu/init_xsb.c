@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.173 2011-03-11 16:55:17 dwarren Exp $
+** $Id: init_xsb.c,v 1.174 2011-04-12 17:31:59 tswift Exp $
 ** 
 */
 
@@ -1329,7 +1329,8 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   delayreg = NULL;
 
   /* for incremenatal evaluation */
-  affected = eneetq(); 
+  affected_gl = empty_calllist(); 
+  changed_gl = empty_calllist(); 
 
   /* Place a base choice point frame on the CP Stack: this choice point
      is needed for cut -- make sure you initialize all its fields.

@@ -160,7 +160,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 #endif
 
   /* incremental evaluation */
-  old_call=NULL;
+  old_call_gl=NULL;
 
   xwammode = 1;
   CallInfo_Arguments(callInfo) = reg + 1;
@@ -264,17 +264,17 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
        answers that will be generated for the new call are same as that for
        the old call */
 
-    if(IsNonNULL(old_call)){
-      producer_sf->callnode->prev_call=old_call;
+    if(IsNonNULL(old_call_gl)){
+      producer_sf->callnode->prev_call=old_call_gl;
 
-	 producer_sf->callnode->outedges=old_call->outedges;
-	 producer_sf->callnode->outcount=old_call->outcount;
+	 producer_sf->callnode->outedges=old_call_gl->outedges;
+	 producer_sf->callnode->outcount=old_call_gl->outcount;
 	 producer_sf->callnode->outedges->callnode=producer_sf->callnode;
-	 producer_sf->ans_root_ptr=old_answer_table;
-	 old_call->falsecount=0; /* this will stop propagation of unmarking */
-	 old_call->deleted=1; 
-	 old_call=NULL;
-	 old_answer_table=NULL;
+	 producer_sf->ans_root_ptr=old_answer_table_gl;
+	 old_call_gl->falsecount=0; /* this will stop propagation of unmarking */
+	 old_call_gl->deleted=1; 
+	 old_call_gl=NULL;
+	 old_answer_table_gl=NULL;
     }else
       if(IsIncrSF(producer_sf))
 	initoutedges(producer_sf->callnode);

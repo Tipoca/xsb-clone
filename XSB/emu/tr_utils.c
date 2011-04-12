@@ -3988,7 +3988,6 @@ inline
 void abolish_all_tables(CTXTdecl)
 {
   TIFptr pTIF;
-  
   check_for_incomplete_tables("abolish_all_shared_tables/0");
 
   if (flags[NUM_THREADS] == 1) {
@@ -4014,6 +4013,8 @@ void abolish_all_tables(CTXTdecl)
   reset_freeze_registers;
   openreg = COMPLSTACKBOTTOM;
   hashtable1_destroy_all(0);             /* free all incr hashtables in use */
+  affected_gl = empty_calllist();
+  changed_gl = empty_calllist();
   reinitialize_incremental_tries(CTXT);  
   release_all_tabling_resources(CTXT);
   abolish_wfs_space(CTXT); 

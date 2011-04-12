@@ -72,31 +72,28 @@
 #define build_subgoal_args(SUBG)	\
 	load_solution_trie(CTXTc arity, 0, &cell_array1[arity-1], subg_leaf_ptr(SUBG))
 
-
-
-int cellarridx;
-int maximum_dl=0;
-
+//int cellarridx_gl;
+//int maximum_dl_gl=0;
 //callnodeptr callq[20000000];
 //int callqptr=0;
-calllistptr affected=NULL,changed=NULL;
-int no_add_call_edge=0;
-callnodeptr old_call=NULL;
-int saved_call=0,unchanged_call=0,call_count=0;
-int call_node_count=0,call_edge_count=0;
-int factcount=0;
+//int no_add_call_edge_gl=0;
+//int saved_call_gl=0,
+//int factcount_gl=0;
 
+int unchanged_call_gl=0;
+calllistptr affected_gl=NULL,changed_gl=NULL;
+callnodeptr old_call_gl=NULL;
+int call_node_count_gl=0,call_edge_count_gl=0;
+int  call_count_gl=0;  // total number of incremental subgoals 
+call2listptr marked_list_gl=NULL; /* required for abolishing incremental calls */ 
+calllistptr assumption_list_gl=NULL;  /* required for abolishing incremental calls */ 
+BTNptr old_answer_table_gl=NULL;
+
+// Maximum arity 
 static Cell cell_array1[500];
 
-call2listptr marked_list=NULL; /* required for abolishing incremental calls */ 
-calllistptr assumption_list=NULL;  /* required for abolishing incremental calls */ 
-
-BTNptr old_answer_table=NULL;
-
 void incr_eval_statistics(CTXTdecl){
-  
-	
-
+  printf("Total number of incremental subgoals created: %d\n",call_count_gl);
 }
 
 
@@ -105,7 +102,6 @@ Structure_Manager smCallList  =  SM_InitDecl(CALLLIST,CALLLIST_PER_BLOCK,"CallLi
 Structure_Manager smCall2List =  SM_InitDecl(CALL2LIST,CALL2LIST_PER_BLOCK,"Call2List");
 Structure_Manager smKey	      =  SM_InitDecl(KEY,KEY_PER_BLOCK,"HashKey");
 Structure_Manager smOutEdge   =  SM_InitDecl(OUTEDGE,OUTEDGE_PER_BLOCK,"Outedge");
-
 
 
 DEFINE_HASHTABLE_INSERT(insert_some, KEY, CALL_NODE);
@@ -157,12 +153,12 @@ callnodeptr makecallnode(VariantSF sf){
   cn->inedges = NULL;
   cn->goal = sf;
   cn->outedges=NULL;
-  cn->id=call_count++; 
+  cn->id=call_count_gl++; 
   cn->outcount=0;
 
   //    printcall(cn);printf("\n");
 
-  call_node_count++;
+  call_node_count_gl++;
 
   return cn;
 }
@@ -184,7 +180,7 @@ void deleteinedges(callnodeptr callnode){
     if (remove_some(hasht,ownkey) == NULL) {
       xsb_abort("BUG: key not found for removal\n");
     }
-    call_edge_count--;
+    call_edge_count_gl--;
     SM_DeallocateStruct(smCallList, in);      
     in = tmpin;
   }
@@ -195,7 +191,7 @@ void deleteinedges(callnodeptr callnode){
 void deletecallnode(callnodeptr callnode){
 
 
-  call_node_count--;
+  call_node_count_gl--;
    
   if(callnode->outcount==0){
     hashtable1_destroy(callnode->outedges->hasht,0);
@@ -241,7 +237,7 @@ void deallocatecall(callnodeptr callnode){
   ownkey->goal=callnode->id;	
 	
   in = callnode->inedges;
-  call_node_count--;
+  call_node_count_gl--;
   
   while(IsNonNULL(in)){
     tmpin = in->next;
@@ -259,7 +255,7 @@ void deallocatecall(callnodeptr callnode){
       xsb_abort("BUG: key not found for removal\n");
     }
     in->prevnode->callnode->outcount--;
-    call_edge_count--;
+    call_edge_count_gl--;
     SM_DeallocateStruct(smCallList, in);      
     in = tmpin;
   }
@@ -371,7 +367,7 @@ void addcalledge(callnodeptr fromcn, callnodeptr tocn){
 #endif
     
     ecall2(&(tocn->inedges),fromcn->outedges);      
-    call_edge_count++;
+    call_edge_count_gl++;
     fromcn->outcount++;
     
 #ifdef INCR_DEBUG		
@@ -403,7 +399,8 @@ void addcalledge(callnodeptr fromcn, callnodeptr tocn){
 
 #define EMPTY NULL
 
-calllistptr eneetq(){ 
+//calllistptr eneetq(){ 
+calllistptr empty_calllist(){ 
   
   calllistptr  temp;
   SM_AllocateStruct(smCallList,temp);
@@ -452,7 +449,7 @@ void dfs(callnodeptr call1){
 	dfs(cn);
     } while (hashtable1_iterator_advance(itr));
   }
-  nq(&affected,call1);		
+  nq(&affected_gl,call1);		
 }
 
 
@@ -481,7 +478,7 @@ int create_call_list(CTXTdecl){
   reg[4] = reg[3] = makelist(hreg);  // reg 3 first not-used, use regs in case of stack expanson
   new_heap_free(hreg);   // make heap consistent
   new_heap_free(hreg);
-  while((call1 = dq(&affected)) != EMPTY){
+  while((call1 = dq(&affected_gl)) != EMPTY){
     subgoal = (VariantSF) call1->goal;      
     if(IsNULL(subgoal)){ /* fact predicates */
       call1->deleted = 0; 
@@ -489,6 +486,8 @@ int create_call_list(CTXTdecl){
     }
     count++;
     tif = (TIFptr) subgoal->tif_ptr;
+    //    if (!(psc = TIF_PSC(tif)))
+    //	xsb_table_error(CTXTc "Cannot access dynamic incremental table\n");	
     psc = TIF_PSC(tif);
     arity = get_arity(psc);
     check_glstack_overflow(4,pcreg,2+arity*200); // don't know how much for build_subgoal_args...
@@ -568,7 +567,7 @@ int create_changed_call_list(CTXTdecl){
   reg[4] = makelist(hreg);
   new_heap_free(hreg);   // make heap consistent
   new_heap_free(hreg);
-  while ((call1 = dq(&changed)) != EMPTY){
+  while ((call1 = dq(&changed_gl)) != EMPTY){
     subgoal = (VariantSF) call1->goal;      
     tif = (TIFptr) subgoal->tif_ptr;
     psc = TIF_PSC(tif);
@@ -772,21 +771,20 @@ which should not be deleted.
 
 */
 
-void mark(callnodeptr);
+void mark_for_incr_abol(callnodeptr);
 void check_assumption_list(void);
 void delete_calls(CTXTdecl);
 call2listptr create_cdbllist(void);
 
 void abolish_incr_call(CTXTdeclc callnodeptr p){
 
-
-  marked_list=create_cdbllist();
+  marked_list_gl=create_cdbllist();
 
 #ifdef INCR_DEBUG1
   printf("marking phase starts\n");
 #endif
   
-  mark(p);
+  mark_for_incr_abol(p);
   check_assumption_list();
 #ifdef INCR_DEBUG1
   printf("assumption check ends \n");
@@ -838,7 +836,7 @@ dependent calls not marked
 
 */
 
-void mark(callnodeptr c){
+void mark_for_incr_abol(callnodeptr c){
   calllistptr in=c->inedges;
   call2listptr markedlistptr;
   callnodeptr c1;
@@ -849,15 +847,15 @@ void mark(callnodeptr c){
 
   
   c->deleted=1;
-  markedlistptr=insert_cdbllist(marked_list,c);
+  markedlistptr=insert_cdbllist(marked_list_gl,c);
   if(c->outcount)
-    ecall3(&assumption_list,markedlistptr);
+    ecall3(&assumption_list_gl,markedlistptr);
     
   while(IsNonNULL(in)){
     c1=in->prevnode->callnode;
     c1->outcount--;
     if(c1->deleted==0){
-      mark(c1);
+      mark_for_incr_abol(c1);
     }
     in=in->next;
   }  
@@ -867,13 +865,13 @@ void mark(callnodeptr c){
 
 void delete_calls(CTXTdecl){
 
-  call2listptr  n=marked_list->next,temp;
+  call2listptr  n=marked_list_gl->next,temp;
   callnodeptr c;
   VariantSF goal;
 
   /* first iteration to delete inedges */
   
-  while(n!=marked_list){    
+  while(n!=marked_list_gl){    
     c=n->item;
     if(c->deleted){
       /* facts are not deleted */       
@@ -886,8 +884,8 @@ void delete_calls(CTXTdecl){
 
   /* second iteration is to delete outedges and callnode */
 
-  n=marked_list->next;
-  while(n!=marked_list){    
+  n=marked_list_gl->next;
+  while(n!=marked_list_gl){    
     temp=n->next;
     c=n->item;
     if(c->deleted){
@@ -904,8 +902,8 @@ void delete_calls(CTXTdecl){
     n=temp;
   }
   
-  SM_DeallocateStruct(smCall2List,marked_list);
-  marked_list=NULL;
+  SM_DeallocateStruct(smCall2List,marked_list_gl);
+  marked_list_gl=NULL;
   return;
 }
 
@@ -936,7 +934,7 @@ void unmark(callnodeptr c){
 
 
 void check_assumption_list(void){
-  calllistptr tempin,in=assumption_list;
+  calllistptr tempin,in=assumption_list_gl;
   call2listptr marked_ptr;
   callnodeptr c;
 
@@ -960,7 +958,7 @@ void check_assumption_list(void){
   }
   
   
-  assumption_list=NULL;
+  assumption_list_gl=NULL;
   return;
 }
 

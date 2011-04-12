@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.86 2010-12-23 18:12:43 tswift Exp $
+** $Id: tables.c,v 1.87 2011-04-12 17:31:59 tswift Exp $
 ** 
 */
 
@@ -228,14 +228,14 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
     */
     flag=CallLUR_VariantFound(*results);
     Paren=CallLUR_Leaf(*results);
-    old_call=NULL;
-    old_answer_table=NULL;
+    old_call_gl=NULL;
+    old_answer_table_gl=NULL;
     if(flag!=0){
       
       sf=CallTrieLeaf_GetSF(Paren);
       c=sf->callnode;
       if(IsNonNULL(c)&&(c->falsecount!=0)){
-	old_call=c;      
+	old_call_gl=c;      
 	flag=0;
 	if ( has_answers(sf) ) {
 	  pALN = subg_answers(sf);
@@ -246,7 +246,7 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
 	  } while ( IsNonNULL(pALN) );
 	}
 	c->aln=subg_answers(sf);
-	old_answer_table=sf->ans_root_ptr;
+	old_answer_table_gl=sf->ans_root_ptr;
 	//reclaim_incomplete_table_structs(sf);
 	CallTrieLeaf_SetSF(Paren,NULL);            
       }
@@ -659,10 +659,10 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
       if (pc->no_of_answers>0)    // if some previous answers have not been rederived
 	pc->changed=1;
       if (pc->changed==0){
-	unchanged_call++;
+	unchanged_call_gl++;
 	propagate_no_change(pc); /* defined in call_graph_xsb.c */
       }else
-	nq(&changed,producerSF->callnode);
+	nq(&changed_gl,producerSF->callnode);
     
       producerSF->callnode->prev_call=NULL;
     	
@@ -683,7 +683,7 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
       deallocatecall(pc);
             
     }else /* newly added calls */
-      nq(&changed,producerSF->callnode);
+      nq(&changed_gl,producerSF->callnode);
     
     if ( has_answers(producerSF) ) {
       pALN = pRealAnsList = subg_answers(producerSF);
