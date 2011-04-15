@@ -3,7 +3,7 @@
 ; A compiled version of XSB must exist in the location pointed by the MyBaseDir variable below.
 
 #define MyAppName "XSB"
-#define MyAppVerName "XSB 3.2"
+#define MyAppVerName "XSB 3.3.1"
 #define MyAppPublisher "XSB"
 #define MyAppURL "http://xsb.sourceforge.net/"
 #define MyAppUrlName "XSB Web Site.url"
@@ -24,12 +24,12 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 LicenseFile={#MyBaseDir}\LICENSE
 InfoBeforeFile={#MyBaseDir}\README
-OutputBaseFilename=xsb-3.2
+OutputBaseFilename=xsb-3.3.1
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=none
 
-VersionInfoVersion=3.2
+VersionInfoVersion=3.3.1
 VersionInfoCopyright=© The Research Foundation of SUNY, 1986, 1993-2002
 
 AllowRootDirectory=yes
@@ -57,7 +57,7 @@ Name: shortcut; Description: "&Create a desktop shortcut to the XSB folder"; Com
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Messages]
-BeveledLabel=XSB 3.2 © The Research Foundation of SUNY, 1986, 1993-2002
+BeveledLabel=XSB 3.3.1 © The Research Foundation of SUNY, 1986, 1993-2002
 
 [Dirs]
 Name: "{userdocs}\XSB uninstaller"
