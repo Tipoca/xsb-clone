@@ -281,6 +281,8 @@ segfault_handler(_Type) :- '_$builtin'(SEGFAULT_HANDLER).
 
 is_charlist(_List, _Size) :- '_$builtin'(IS_CHARLIST).
 
+url_encode_decode(_Type,_UrlIn,_UlrOut) :- '_$builtin'(URL_ENCODE_DECODE).
+
 oracle_query(_A, _B, _C, _D, _E, _F, _G) :- '_$builtin'(ORACLE_QUERY).
 odbc_exec_query(_A, _B, _C, _D, _E, _F) :- '_$builtin'(ODBC_EXEC_QUERY).
 

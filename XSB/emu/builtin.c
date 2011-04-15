@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.358 2011-04-01 16:36:22 tswift Exp $
+** $Id: builtin.c,v 1.359 2011-04-15 03:11:03 kifer Exp $
 **
 */
 
@@ -128,6 +128,7 @@
 #include "call_graph_xsb.h"
 
 #include "table_stats.h"
+#include "url_encode.h"
 
 int mem_flag;
 
@@ -1262,6 +1263,8 @@ void init_builtin_table(void)
   set_builtin_table(SORT, "sort");
   set_builtin_table(KEYSORT, "keysort");
   set_builtin_table(PARSORT, "parsort");
+
+  set_builtin_table(URL_ENCODE_DECODE, "url_encode_decode");
 
   set_builtin_table(ORACLE_QUERY, "oracle_query");
   set_builtin_table(ODBC_EXEC_QUERY, "odbc_exec_query");
@@ -3129,6 +3132,21 @@ case WRITE_OUT_PROFILE:
 
     case TABLE_INSPECTION_FUNCTION: {
       return table_inspection_function(CTXT);
+      break;
+    }
+
+    case URL_ENCODE_DECODE: {
+      Integer url_func_type = ptoc_int(CTXTc 1);
+      char *url_str = ptoc_string(CTXTc 2);
+      char *out_url;
+
+      if (url_func_type == URL_ENCODE)
+	out_url = url_encode(url_str);
+      else
+	out_url = url_decode(url_str);
+
+      ctop_string(CTXTc 3, out_url);
+      return TRUE;
       break;
     }
 

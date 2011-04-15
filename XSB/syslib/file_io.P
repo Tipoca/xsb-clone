@@ -679,3 +679,6 @@ transform_stream_class(TEXT_FILE_STREAM,file).
 transform_stream_class(BINARY_FILE_STREAM,file).
 transform_stream_class(PIPE_STREAM,pipe).
 transform_stream_class(CONSOLE_STREAM,console).
+
+url_encode(In,Out) :- url_encode_decode(URL_ENCODE,In,Out).
+url_decode(In,Out) :- url_encode_decode(URL_DECODE,In,Out).

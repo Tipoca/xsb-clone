@@ -794,6 +794,32 @@ file).
 	{\tt F} is uninstantiated.
     \end{description}
 
+\standarditem{url\_encode(+Filename,-EncodedFilename)}{url\_encode/2}
+   This predicate is useful when one needs to create a file whose name
+   contains forbidden characters, such as \texttt{>}, \texttt{<}, and the
+   like. It takes a string and encodes any forbidden character
+   using an appropriate \%-sequence of characters that is acceptable as a
+   file name in any OS: Unix, Windows, or Mac.
+   For instance, 
+   %% 
+\begin{verbatim}
+   | ?- url_encode('http://foo''>$',X).
+
+   X = http%3a%2f%2ffoo%27%3e%24
+\end{verbatim}
+   %% 
+
+\standarditem{url\_decode(+Filename,-EncodedFilename)}{url\_decode/2}
+   This predicate performs the inverse operation with respect to 
+   \texttt{url\_encode/2}. For instance, 
+   %% 
+\begin{verbatim}
+   | ?- url_decode('http%3a%2f%2ffoo%27%3e%24',X).
+
+   X = http://foo'>$
+\end{verbatim}
+   %% 
+
 \end{description}
 
 

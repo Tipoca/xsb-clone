@@ -177,6 +177,7 @@ CLEAN :
 	-@erase "$(OBJDIR)\heap_xsb.obj"
 	-@erase "$(OBJDIR)\inst_xsb.obj"
 	-@erase "$(OBJDIR)\init_xsb.obj"
+	-@erase "$(OBJDIR)\url_encode.obj"
 	-@erase "$(OBJDIR)\incr_xsb.obj"
 	-@erase "$(OBJDIR)\interprolog_callback.obj"
 	-@erase "$(OBJDIR)\io_builtins_xsb.obj"
@@ -253,6 +254,7 @@ DLL_LINK32_OBJS= \
 	"$(OBJDIR)/hashtable.obj" \
 	"$(OBJDIR)/hashtable_itr.obj" \
 	"$(OBJDIR)/heap_xsb.obj" \
+	"$(OBJDIR)/url_encode.obj" \
 	"$(OBJDIR)/incr_xsb.obj" \
 	"$(OBJDIR)/init_xsb.obj" \
 	"$(OBJDIR)/inst_xsb.obj" \

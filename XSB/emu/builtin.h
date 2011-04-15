@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.102 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: builtin.h,v 1.103 2011-04-15 03:11:03 kifer Exp $
 ** 
 */
 
@@ -249,6 +249,8 @@
    answer completion */
 #define TABLE_INSPECTION_FUNCTION 224
 
+#define URL_ENCODE_DECODE    	  225
+
 #define FINDALL_FREE    	229
 
 #define ORACLE_QUERY		230
@@ -338,3 +340,7 @@
 #define BITSHIFTR_FUNCT 27
 #define UMINUS_FUNCT 28
 
+
+/* URL Encode and Decode sub-builtins */
+#define URL_ENCODE    	  1
+#define URL_DECODE    	  2

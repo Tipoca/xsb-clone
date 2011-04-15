@@ -25,6 +25,7 @@
 :- import (dynamic)/1,asserta/1, retractall/1 from assert.
 
 :- import stat_flag/2, file_function/7, file_function/3,
+	url_encode_decode/3,
 	parse_filename/4, is_absolute_filename/1,
 	expand_filename/2, getenv/2,
 	sys_system/7, formatted_io/5 
@@ -58,7 +59,7 @@
   file_seek/4, file_truncate/3,
   file_pos/2, file_size/2, file_time/2,
   file_open/3, file_open/4, file_close/1, file_close/2,
-              file_get/2, file_put/2,
+	  file_get/2, file_put/2,
 	  file_getbuf/4,
 	  file_getbuf_atom/4, file_getbuf_atom/3,
 	  file_getbuf_list/4, file_getbuf_list/3,
@@ -72,9 +73,11 @@
 	  file_clearerr/1, tmpfile_open/1,
    print_openfiles/0, check_enumerate_stream_or_alias/4, 
    check_stream_or_alias/4, check_open_stream_or_alias/5, 
-   add_aliases/4,add_aliases_flag_error/4,get_alias/3,remove_alias/3,add_alias/4,
+   add_aliases/4, add_aliases_flag_error/4,
+   get_alias/3, remove_alias/3, add_alias/4,
    is_valid_stream/2, peek_code/1, peek_code/2, peek_char/1, peek_char/2,
    at_end_of_stream/1, at_end_of_stream/0, set_stream_position/2,
+   url_encode/2, url_decode/2,
    xsb_stream_lock/1,xsb_stream_unlock/1.   
 
 % ISO predicates (sometimes rewrites of earlier predicates w. more checking).
