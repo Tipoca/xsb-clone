@@ -18,12 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: packaging.H,v 1.8 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: packaging.H,v 1.9 2011-04-15 16:05:00 dwarren Exp $
 ** 
 */
 
 
 :- export bootstrap_package/2, bootstrap_syspackage/2,
+	  ensure_package_bootstrapped/2,
 	  bootstrap_sitepackage/2, bootstrap_userpackage/3,
 	  unload_package/1.
 

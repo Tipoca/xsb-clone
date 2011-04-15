@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.P,v 1.44 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: odbc_call.P,v 1.45 2011-04-15 16:05:00 dwarren Exp $
 **
 */
 
@@ -1373,7 +1373,7 @@ findall_odbc_sql_i(ConnHandle,BindVals,SQLStmt,Result):-
 /* odbc_sql_i(+ConnHandle,+BindVals,+SQLStmt,?Result) */
 /* The most general sql call: */
 odbc_sql_i(ConnHandle,BindVals,SQLStmt,Result) :-
-	%%writeln(odbc_sql_i(ConnHandle,BindVals,SQLStmt,Result)),
+	(odbc_show_query(on) -> writeln(userout,odbc_sql_i(ConnHandle,BindVals,SQLStmt,Result)); true),
 	find_free_cursor(ConnHandle,SQLStmt,Cursor),
 	%%writeln(cursor(Cursor)),
 	(BindVals == []

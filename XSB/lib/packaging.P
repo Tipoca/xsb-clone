@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: packaging.P,v 1.9 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: packaging.P,v 1.10 2011-04-15 16:05:00 dwarren Exp $
 ** 
 */
 
@@ -40,6 +40,12 @@
 %% PackageName is the name given to the package.
 bootstrap_package(PackageDirs, PackageName) :-
 	bootstrap(packagesdir, PackageDirs, PackageName).
+
+ensure_package_bootstrapped(PackageDirs,PackageName) :-
+	(package_configuration(loaded(PackageName),yes)
+	 ->	true
+	 ;	bootstrap_package(PackageDirs,PackageName)
+	).
 
 %% This is for bootstrapping packages installed in the system lib/ directory
 bootstrap_syspackage(PackageDirs, PackageName) :-
@@ -66,8 +72,8 @@ bootstrap1(SysdirPath, PackageDirs, PackageName) :-
     (	package_configuration(loaded(PackageName), yes)
     ->	fail
     ;	
-	assert(package_configuration(loaded(PackageName), yes)),
-	assert_package_dirs(PackageName, SysdirPath, PackageDirs)
+	assert_package_dirs(PackageName, SysdirPath, PackageDirs),
+	assert(package_configuration(loaded(PackageName), yes))
     ).
 
 assert_package_dirs(PackageName, SysdirPath, PackageDirs) :-
@@ -76,9 +82,9 @@ assert_package_dirs(PackageName, SysdirPath, PackageDirs) :-
     ;	
 	PackageDir = PackageDirs, Dirs = []
     ),
-    slash(Slash),
+%%    slash(Slash),
     fmt_write_string(FullPackageDirname,
-		     '%s%s%s', f(SysdirPath, Slash, PackageDir)),
+		     '%s/%s', f(SysdirPath, PackageDir)),
     assert(package_configuration(dir(PackageName), FullPackageDirname)),
     assert(library_directory(FullPackageDirname)),
     put_pkg_dirs_on_libpath(FullPackageDirname,Dirs,ExpandedDirs),

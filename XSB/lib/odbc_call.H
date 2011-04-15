@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_call.H,v 1.28 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: odbc_call.H,v 1.29 2011-04-15 16:05:00 dwarren Exp $
 **
 */
 
@@ -66,7 +66,7 @@
 	retract/1
 	from assert.
 
-:- import writeln/1, write/1 , '=..'/2, atomic/1, atom_codes/2,
+:- import writeln/1, writeln/2, write/1 , '=..'/2, atomic/1, atom_codes/2,
         atom/1, number_codes/2, name/2, number/1, integer/1, nl/0,
 	'\='/2, functor/3, abort/1, structure/1, throw/1
 	from standard.
