@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.87 2010-12-16 23:38:00 tswift Exp $
+** $Id: error_xsb.c,v 1.88 2011-04-16 18:01:35 tswift Exp $
 ** 
 */
 
@@ -725,6 +725,56 @@ void call_conv xsb_table_error(CTXTdeclc char *message)
   bld_copy(tptr,build_xsb_backtrace(CTXT));
   xsb_throw_internal(CTXTc ball_to_throw,ball_len);
 }			       
+
+/**************/
+
+#define MsgBuf (*tsgSBuff1)
+#define FlagBuf (*tsgSBuff2)
+
+void call_conv xsb_new_table_error(CTXTdeclc char *subtype, char *usr_msg,
+					const char *predicate,int arity) 
+{
+  prolog_term ball_to_throw;
+  int isnew;
+  Cell *tptr; char message[ERRMSGLEN];
+  unsigned long ball_len = 10*sizeof(Cell);
+
+  tptr = (Cell *) malloc(1000);
+  if (!tptr) 
+    xsb_exit(CTXTc "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
+  else free(tptr);
+
+  snprintf(message,ERRMSGLEN,"%s in predicate %s/%d)",usr_msg,predicate,arity);
+  XSB_StrSet(&MsgBuf,message);
+  XSB_StrSet(&FlagBuf,subtype);
+
+  tptr =   (Cell *) mem_alloc_nocheck(ball_len,LEAK_SPACE);
+  if (!tptr) 
+    xsb_exit(CTXTc "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
+
+  ball_to_throw = makecs(tptr);
+  bld_functor(tptr, pair_psc(insert("error",3,
+				    (Psc)flags[CURRENT_MODULE],&isnew)));
+  tptr++;
+  bld_cs(tptr,(Cell) (tptr+3));
+  tptr++;
+  //  bld_string(tptr,string_find(message,1));
+  bld_string(tptr,MsgBuf.string);
+  tptr++;
+  bld_copy(tptr,build_xsb_backtrace(CTXT));
+  tptr++;
+  bld_functor(tptr, pair_psc(insert("typed_table_error",1,
+				    (Psc)flags[CURRENT_MODULE],&isnew)));
+  tptr++;
+
+  bld_string(tptr,FlagBuf.string);
+
+  xsb_throw_internal(CTXTc ball_to_throw, ball_len);
+
+}
+
+#undef MsgBuf
+#undef FlagBuf
 
 /**************/
 

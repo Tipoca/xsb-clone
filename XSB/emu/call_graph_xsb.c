@@ -434,8 +434,12 @@ void dfs(callnodeptr call1){
   struct hashtable_itr *itr;
   
   if(IsNonNULL(call1->goal) && !subg_is_complete((VariantSF)call1->goal)){
-    xsb_abort("Incremental tabling is trying to invalidate an incomplete table for %s/%d\n",
-	      get_name(TIF_PSC(subg_tif_ptr(call1->goal))),get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
+    //    xsb_abort("Incremental tabling is trying to invalidate an incomplete table for %s/%d\n",
+    //	      get_name(TIF_PSC(subg_tif_ptr(call1->goal))),get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
+    xsb_new_table_error("incremental_tabling",
+			"Incremental tabling is trying to invalidate an incomplete table",
+			get_name(TIF_PSC(subg_tif_ptr(call1->goal))),
+			get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
   }
   call1->deleted = 1;
   h=call1->outedges->hasht;
