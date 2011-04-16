@@ -192,6 +192,8 @@ get_sys_error_description(error(system_error,Msg), ExceptionDesc) :-
 	ExceptionDesc =   ('++Error[XSB/Runtime/P]: [System] ', Msg).
 get_sys_error_description(error(table_error,Msg), ExceptionDesc) :-
 	ExceptionDesc = ('++Error[XSB/Runtime/P]: [Table] ',Msg).
+get_sys_error_description(error(typed_table_error(Subtype),Msg), ExceptionDesc) :-
+	ExceptionDesc = ('++Error[XSB/Runtime/P]: [Table] (',Subtype,') ',Msg).
 get_sys_error_description(error(thread_cancel,Id), ExceptionDesc) :- 
 	ExceptionDesc = 
              ('++Error[XSB/Runtime/P]: [XSB Thread Cancellation] Thread ',Id).
@@ -351,6 +353,13 @@ system_error(Flag,Predicate,Arg):-
 table_error(Message):- 
 	xsb_backtrace(Bt),
 	throw(error(table_error,Message,Bt)).
+
+%------
+
+table_error(Subtype,Message,Predicate,Arg):- 
+	xsb_backtrace(Bt),
+	throw(error(typed_table_error(Subtype),
+	                        (Message,' in arg ',Arg,' of predicate ',Predicate),Bt)).
 
 %------
 abort_on_thread_cancel:- 
