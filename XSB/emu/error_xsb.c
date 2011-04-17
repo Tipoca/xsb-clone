@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.88 2011-04-16 18:01:35 tswift Exp $
+** $Id: error_xsb.c,v 1.89 2011-04-17 18:25:12 tswift Exp $
 ** 
 */
 
@@ -767,7 +767,7 @@ void call_conv xsb_new_table_error(CTXTdeclc char *subtype, char *usr_msg,
 				    (Psc)flags[CURRENT_MODULE],&isnew)));
   tptr++;
 
-  bld_string(tptr,FlagBuf.string);
+  bld_string(tptr,string_find(FlagBuf.string,1));
 
   xsb_throw_internal(CTXTc ball_to_throw, ball_len);
 
