@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.213 2011-04-17 17:40:16 pmoura Exp $
+## $Id: configure.in,v 1.214 2011-04-17 21:32:23 pmoura Exp $
 ##
 ##
 
@@ -1894,6 +1894,7 @@ AC_SUBST(host_cpu)
 AC_SUBST(compile_mode)
 AC_SUBST(xsb_major_version)
 AC_SUBST(xsb_minor_version)
+AC_SUBST(xsb_patch_version)
 AC_SUBST(xsb_beta_version)
 AC_SUBST(xsb_codename)
 AC_SUBST(release_year)
