@@ -695,8 +695,11 @@ prolog_commons_flag(version_data, xsb(Major, Minor, Patch, _)):-
 %	 ; Min is floor(Min1),get_patch_level(Min1,Patch)).
 
 /* written to work around XSBs comparison operator 
-   At most 100 patches per minor version, which seems reasonable */
-get_patch_level(Min,Patch):- 	% PM: replaced (?) by adding a "patch_version" xsb config
+   At most 100 patches per minor version, which seems reasonable
+
+% PM: replaced (?) by adding a "patch_version" xsb config
+
+get_patch_level(Min,Patch):-
 	Patch1 is Min - floor(Min),
 	Patch2 is Patch1 * 10,
 	Patch3 is Patch2 - floor(Patch2),
@@ -704,6 +707,7 @@ get_patch_level(Min,Patch):- 	% PM: replaced (?) by adding a "patch_version" xsb
 	    Patch is floor(Patch2) 
 	  ; Patch3 is Patch2*10,
 	    Patch is floor(Patch3)).
+*/
 
 /* ===== xsb_flag/2 ========================================== */
 
