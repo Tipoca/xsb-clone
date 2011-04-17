@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.17 2011-04-17 16:31:34 tswift Exp $
+** $Id: incr_xsb.c,v 1.18 2011-04-17 16:57:12 tswift Exp $
 ** 
 */
 
@@ -104,7 +104,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
     const int sfreg=2;
     VariantSF sf=ptoc_addr(sfreg);
     callnodeptr c=subg_callnode_ptr(sf);
-    invalidate_call(c); 
+    invalidate_call(CTXTc c); 
     
     break;
   }
@@ -117,7 +117,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
     
     const int callreg=2;
     callnodeptr c=ptoc_addr(callreg);
-    invalidate_call(c); 
+    invalidate_call(CTXTc c); 
     
     break;
   }
@@ -204,7 +204,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
     
     const int callreg=2;
     callnodeptr c = itrie_array[ptoc_int(CTXTc callreg)].callnode;
-    invalidate_call(c); 
+    invalidate_call(CTXTc c); 
     
     break;
   }

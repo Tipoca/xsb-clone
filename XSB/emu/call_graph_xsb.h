@@ -50,7 +50,7 @@ extern void deallocatecall(callnodeptr);
 extern void propagate_no_change(callnodeptr);
 extern void addcalledge(callnodeptr,callnodeptr);
 extern calllistptr empty_calllist();
-extern void invalidate_call(callnodeptr c);
+extern void invalidate_call(CTXTdeclc callnodeptr c);
 extern int create_call_list(CTXTdecl);
 extern int create_changed_call_list(CTXTdecl);
 extern int imm_depend_list(CTXTdeclc callnodeptr);

@@ -173,7 +173,7 @@ void deleteinedges(callnodeptr callnode){
   while(IsNonNULL(in)){
     tmpin = in->next;
     hasht = in->prevnode->hasht;
-    printf("remove some callnode %x / ownkey %d\n",callnode,ownkey);
+    //    printf("remove some callnode %x / ownkey %d\n",callnode,ownkey);
     if (remove_some(hasht,ownkey) == NULL) {
       xsb_abort("BUG: key not found for removal\n");
     }
@@ -425,7 +425,7 @@ callnodeptr delete_calllist_elt(calllistptr *cl){
   return c;  
 }
 
-void dfs(callnodeptr call1){
+void dfs(CTXTdeclc callnodeptr call1){
   callnodeptr cn;
   struct hashtable *h;	
   struct hashtable_itr *itr;
@@ -433,7 +433,7 @@ void dfs(callnodeptr call1){
   if(IsNonNULL(call1->goal) && !subg_is_complete((VariantSF)call1->goal)){
     //    xsb_abort("Incremental tabling is trying to invalidate an incomplete table for %s/%d\n",
     //	      get_name(TIF_PSC(subg_tif_ptr(call1->goal))),get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
-    xsb_new_table_error("incremental_tabling",
+    xsb_new_table_error(CTXTc "incremental_tabling",
 			"Incremental tabling is trying to invalidate an incomplete table",
 			get_name(TIF_PSC(subg_tif_ptr(call1->goal))),
 			get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
@@ -447,14 +447,14 @@ void dfs(callnodeptr call1){
       cn = hashtable1_iterator_value(itr);
       cn->falsecount++;
       if(cn->deleted==0)
-	dfs(cn);
+	dfs(CTXTc cn);
     } while (hashtable1_iterator_advance(itr));
   }
   add_callnode(&affected_gl,call1);		
 }
 
 
-void invalidate_call(callnodeptr c){
+void invalidate_call(CTXTdeclc callnodeptr c){
 
 #ifdef MULTI_THREAD
   xsb_abort("Incremental Maintenance of tables in not available for multithreaded engine\n");
@@ -462,7 +462,7 @@ void invalidate_call(callnodeptr c){
 
   if(c->deleted==0){
     c->falsecount++;
-    dfs(c);
+    dfs(CTXTc c);
   }
 }
 
