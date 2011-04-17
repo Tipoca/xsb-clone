@@ -1588,17 +1588,17 @@ cputime(X) :- stat_cputime(X0), X is X0/1000.
 
 walltime(X) :- stat_walltime(X0), X is X0/1000.
 
-statistics :- stat_sta(1).
+statistics :- stat_sta(STAT_DEFAULT).
 
 statistics(X) :- 
 	check_statistics_input(X,N),
 	stat_sta(N).
 
 check_statistics_input(X,X):- integer(X),!.
-check_statistics_input(reset,0):-!.
-check_statistics_input(table,2):- !.
-check_statistics_input(mutex,4):- !.
-check_statistics_input(atom,8):- !.
+check_statistics_input(reset,STAT_RESET):-!.
+check_statistics_input(table,STAT_TABLE):- !.
+check_statistics_input(mutex,STAT_MUTEX):- !.
+check_statistics_input(atom,STAT_ATOM):- !.
 check_statistics_input(X,_):-
 	domain_error(statisticsInputDomain,X,statistics/1,1).
 

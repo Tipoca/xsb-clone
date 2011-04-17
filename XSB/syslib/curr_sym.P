@@ -679,18 +679,27 @@ iso_flag(double_quotes,codes).
 /* ===== prolog_commons_flag/2 ========================================== */
 
 prolog_commons_flag(dialect,xsb).
-prolog_commons_flag(version_data,xsb(Maj, Min, 0, _)):-
+prolog_commons_flag(version_data,xsb(Maj, Min, Patch, _)):-
         xsb_configuration(major_version,MajAtom),
         atom_codes(MajAtom, MajCodes),
         number_codes(Maj, MajCodes),
         xsb_configuration(minor_version,MinAtom),
         atom_codes(MinAtom, MinCodes),
-        number_codes(Min, MinCodes).
-/*
-prolog_commons_flag(version_data,xsb(Maj, Min, 0, _)):- 
-	xsb_configuration(major_version,Maj),
-	xsb_configuration(minor_version,Min).
-*/
+        number_codes(Min1, MinCodes),
+	(integer(Min1) -> 
+	   Min = Min1,Patch = 0
+	 ; Min is floor(Min1),get_patch_level(Min1,Patch)).
+
+/* written to work around XSBs comparison operator 
+   At most 100 patches per minor version, which seems reasonable */
+get_patch_level(Min,Patch):- 
+	Patch1 is Min - floor(Min),
+	Patch2 is Patch1 * 10,
+	Patch3 is Patch2 - floor(Patch2),
+        (floor(Patch3) =:= 0.0 -> 
+	    Patch is floor(Patch2) 
+	  ; Patch3 is Patch2*10,
+	    Patch is floor(Patch3)).
 
 /* ===== xsb_flag/2 ========================================== */
 
