@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.16 2011-04-12 17:31:59 tswift Exp $
+** $Id: incr_xsb.c,v 1.17 2011-04-17 16:31:34 tswift Exp $
 ** 
 */
 
@@ -132,10 +132,6 @@ xsbBool incr_eval_builtin(CTXTdecl)
       return FALSE;
     }
     ctop_int(CTXTc regLeafChild, (Integer)BTN_Child(Last_Nod_Sav));    
-    break;
-  }
-  case INCR_STATISTICS: {        
-    printf("Not Implemented\n");
     break;
   }
   case PRINT_CALL: {        

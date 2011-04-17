@@ -140,7 +140,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   int template_size, attv_num, tmp;
   TIFptr tip;
 
-//  printf("tabletry(single)\n");
+  // printf("tabletry(single)\n");
 
   int incrflag = 0; /* for incremental evaluation */
   VariantSF parent_table_sf=NULL; /* used for creating call graph */
@@ -237,7 +237,8 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 
 /* --------- end incremental evaluation  --------- */
 
-  xsb_dbgmsg((LOG_DEBUG,"After variant call search AT: %x\n",answer_template_cps));
+//printf("After variant call search AT: %x\n",answer_template_cps);
+//printf("After variant call search producer_sf: %x\n",producer_sf);
 
 #ifdef SHARED_COMPL_TABLES
 #include "usurp.h"
@@ -322,7 +323,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   }
 
   else if ( is_completed(producer_sf) ) {
-
+    //    printf("is completed\n");
     /* Unify Call with Answer Trie
        --------------------------- */
     if (has_answer_code(producer_sf)) {

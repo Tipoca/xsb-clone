@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.53 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: findall.c,v 1.54 2011-04-17 16:31:34 tswift Exp $
 ** 
 */
 
@@ -757,7 +757,8 @@ static long term_size(CTXTdeclc Cell term)
     CPtr pfirstel ;
     
     pfirstel = clref_val(term) ;
-    term = *pfirstel ; XSB_Deref(term) ;
+    term = *pfirstel ; 
+    XSB_Deref(term) ;
     size += 2 + term_size(CTXTc term) ;
     term = *(pfirstel+1) ; XSB_Deref(term) ;
     goto recur;

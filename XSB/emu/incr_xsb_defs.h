@@ -18,11 +18,11 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb_defs.h,v 1.10 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: incr_xsb_defs.h,v 1.11 2011-04-17 16:31:34 tswift Exp $
 ** 
 */
 #define GET_AFFECTED_CALLS      1
-#define INCR_STATISTICS         2
+
 #define GET_CALL_GRAPH          3
 #define INVALIDATE_CALLNODE     4
 #define PRINT_CALL              5

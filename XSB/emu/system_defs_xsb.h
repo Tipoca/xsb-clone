@@ -40,6 +40,7 @@
 #define LIST_DIRECTORY           13
 #define STATISTICS_2             14
 
+// For statistics/2
 #define RUNTIME 0
 #define WALLTIME 1
 #define TOTALMEMORY 2
@@ -55,4 +56,9 @@
 #define SHARED_TABLESPACE 12
 #define ATOMMEM 13
 
-
+// For statistics/1
+#define STAT_RESET 0
+#define STAT_DEFAULT 1
+#define STAT_TABLE 2
+#define STAT_MUTEX 4
+#define STAT_ATOM 8

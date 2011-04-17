@@ -78,6 +78,7 @@
 #include "hash_xsb.h"
 #include "trace_xsb.h"
 #include "tr_utils.h"
+#include "system_defs_xsb.h"
 /*======================================================================*/
 extern xsbBool quotes_are_needed(char *string);
 
@@ -244,7 +245,7 @@ void print_statistics(CTXTdeclc int amount) {
 
   switch (amount) {
 
-  case 0:		    /* Reset Statistical Parameters */
+  case STAT_RESET:		    /* Reset Statistical Parameters */
 #ifndef MULTI_THREAD
     realtime_count_gl = real_time();
     perproc_reset_stat();	/* reset op-counts, starting time, and 'tds'
@@ -257,13 +258,13 @@ void print_statistics(CTXTdeclc int amount) {
     break;
 #endif
 
-  case 1:		    /* Default use: Print Stack Usage and CPUtime: */
+  case STAT_DEFAULT:		    /* Default use: Print Stack Usage and CPUtime: */
     perproc_stat();		/* move max usage into 'ttt' struct variable */
     total_stat(CTXTc real_time()-realtime_count_gl);   /* print */
     reset_stat_total(); 	/* reset 'ttt' struct variable (all 0's) */
     break;
 
-  case 2:		    /* Print Detailed Table Usage */
+  case STAT_TABLE:		    /* Print Detailed Table Usage */
     print_detailed_tablespace_stats(CTXT);
     break;
 
@@ -279,7 +280,7 @@ void print_statistics(CTXTdeclc int amount) {
     fprintf(stdwarn,"statistics(3) not yet implemented for MT engine\n");
     break;
 #endif
-  case 4:                  /* mutex use (if PROFILE_MUTEXES is defined) */
+  case STAT_MUTEX:                  /* mutex use (if PROFILE_MUTEXES is defined) */
     print_mutex_use();
     print_mem_allocs();
     break;
@@ -294,7 +295,7 @@ void print_statistics(CTXTdeclc int amount) {
     print_cp_backtrace();
     break;
 #endif
-  case 8:              /* print symbol/string statistics */
+  case STAT_ATOM:              /* print symbol/string statistics */
     symbol_table_stats();
     string_table_stats();
     break;

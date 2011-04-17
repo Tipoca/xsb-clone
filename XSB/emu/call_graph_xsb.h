@@ -41,7 +41,7 @@
 extern calllistptr affected_gl,changed_gl;
 extern int call_node_count_gl,call_edge_count_gl;
 extern BTNptr old_answer_table_gl;
-extern int unchanged_call_gl;
+extern int unchanged_call_gl, call_count_gl;
 extern callnodeptr old_call_gl;
 
 extern void initoutedges(callnodeptr cn);
@@ -49,7 +49,6 @@ extern callnodeptr makecallnode(VariantSF);
 extern void deallocatecall(callnodeptr);
 extern void propagate_no_change(callnodeptr);
 extern void addcalledge(callnodeptr,callnodeptr);
-extern void incr_eval_statistics(CTXTdecl);
 extern calllistptr empty_calllist();
 extern void invalidate_call(callnodeptr c);
 extern int create_call_list(CTXTdecl);
@@ -57,7 +56,7 @@ extern int create_changed_call_list(CTXTdecl);
 extern int imm_depend_list(CTXTdeclc callnodeptr);
 extern int imm_dependent_on_list(CTXTdeclc callnodeptr call1);
 extern void print_call_node(callnodeptr);
-extern void nq(calllistptr *,callnodeptr);
+extern void add_callnode(calllistptr *,callnodeptr);
 extern void abolish_incr_call(CTXTdeclc callnodeptr);
 extern void free_incr_hashtables(TIFptr);
 #endif

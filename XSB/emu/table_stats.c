@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.34 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: table_stats.c,v 1.35 2011-04-17 16:31:34 tswift Exp $
 ** 
 */
 
@@ -41,7 +41,7 @@
 #include "thread_xsb.h"
 #include "slgdelay.h"
 #include "memory_xsb.h"
-
+#include "call_graph_xsb.h"
 /*==========================================================================*/
 
 /*
@@ -362,6 +362,12 @@ void print_detailed_tablespace_stats(CTXTdecl) {
 		      sizeof(struct pos_neg_de_list),"Back-pointer Lists");
     if ( NodeStats_NumBlocks(asi) > 0)
       print_NodeStats(asi,"Answer Substitution Frames");
+  }
+
+  if (call_count_gl) {
+    printf("\nTotal number of incremental subgoals created: %d\n",call_count_gl);
+    printf("   Total number of incremental call nodes created: %d\n",call_node_count_gl);
+    printf("   Total number of incremental call edges created: %d\n",call_edge_count_gl);
   }
 
   // Private trie assert space

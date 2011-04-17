@@ -54,6 +54,7 @@
 #include "tab_structs.h"
 #include "tr_utils.h"
 #include "loader_xsb.h"
+#include "call_graph_xsb.h"
 
 /*======================================================================*/
 /* Process-level information: keep this global */
@@ -425,8 +426,9 @@ void total_stat(CTXTdeclc double elapstime) {
     printf("        (%ld incomplete table(s)",
 	   ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE));
     printf(" in %d SCCs)",count_sccs(CTXT));
+    printf("\n");
   }
-  printf("\n");
+  if (pspacesize[INCR_TABLE_SPACE]) 
     printf("  Incr table space                    %12ld in use\n",
 	   pspacesize[INCR_TABLE_SPACE]);
   printf("  SLG table space %12ld bytes: %12ld in use, %12ld free\n",
@@ -479,16 +481,18 @@ void total_stat(CTXTdeclc double elapstime) {
 	   dl_count, dl_space_alloc, dl_space_used);
     printf("\n");
   }
+  if (call_count_gl)
+    printf("Total number of incremental subgoals created: %d\n",call_count_gl);
 
-    if (abol_subg_ctr == 1)
-      printf("  1 tabled subgoal explicitly abolished\n");
-    else if (abol_subg_ctr > 1) 
-      printf("  %lu tabled subgoals explicitly abolished\n",abol_subg_ctr);
+  if (abol_subg_ctr == 1)
+    printf("  1 tabled subgoal explicitly abolished\n");
+  else if (abol_subg_ctr > 1) 
+    printf("  %lu tabled subgoals explicitly abolished\n",abol_subg_ctr);
 
-    if (abol_pred_ctr == 1) 
-      printf("  1 tabled predicate explicitly abolished\n");
-    else if (abol_pred_ctr > 1) 
-      printf("  %lu tabled predicates explicitly abolished\n",abol_pred_ctr);
+  if (abol_pred_ctr == 1) 
+    printf("  1 tabled predicate explicitly abolished\n");
+  else if (abol_pred_ctr > 1) 
+    printf("  %lu tabled predicates explicitly abolished\n",abol_pred_ctr);
 
 #endif
 

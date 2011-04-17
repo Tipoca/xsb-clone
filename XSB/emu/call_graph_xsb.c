@@ -83,19 +83,15 @@
 int unchanged_call_gl=0;
 calllistptr affected_gl=NULL,changed_gl=NULL;
 callnodeptr old_call_gl=NULL;
-int call_node_count_gl=0,call_edge_count_gl=0;
-int  call_count_gl=0;  // total number of incremental subgoals 
 call2listptr marked_list_gl=NULL; /* required for abolishing incremental calls */ 
 calllistptr assumption_list_gl=NULL;  /* required for abolishing incremental calls */ 
 BTNptr old_answer_table_gl=NULL;
 
+int call_node_count_gl=0,call_edge_count_gl=0;
+int  call_count_gl=0;  // total number of incremental subgoals 
+
 // Maximum arity 
 static Cell cell_array1[500];
-
-void incr_eval_statistics(CTXTdecl){
-  printf("Total number of incremental subgoals created: %d\n",call_count_gl);
-}
-
 
 Structure_Manager smCallNode  =  SM_InitDecl(CALL_NODE,CALLNODE_PER_BLOCK,"CallNode");
 Structure_Manager smCallList  =  SM_InitDecl(CALLLIST,CALLLIST_PER_BLOCK,"CallList");
@@ -177,6 +173,7 @@ void deleteinedges(callnodeptr callnode){
   while(IsNonNULL(in)){
     tmpin = in->next;
     hasht = in->prevnode->hasht;
+    printf("remove some callnode %x / ownkey %d\n",callnode,ownkey);
     if (remove_some(hasht,ownkey) == NULL) {
       xsb_abort("BUG: key not found for removal\n");
     }
@@ -411,11 +408,11 @@ calllistptr empty_calllist(){
 }
 
 
-void nq(calllistptr *cl,callnodeptr c){
+void add_callnode(calllistptr *cl,callnodeptr c){
   ecall(cl,c);
 }
 
-callnodeptr dq(calllistptr *cl){   
+callnodeptr delete_calllist_elt(calllistptr *cl){   
   
   calllistptr tmp;
   callnodeptr c;
@@ -453,7 +450,7 @@ void dfs(callnodeptr call1){
 	dfs(cn);
     } while (hashtable1_iterator_advance(itr));
   }
-  nq(&affected_gl,call1);		
+  add_callnode(&affected_gl,call1);		
 }
 
 
@@ -482,7 +479,7 @@ int create_call_list(CTXTdecl){
   reg[4] = reg[3] = makelist(hreg);  // reg 3 first not-used, use regs in case of stack expanson
   new_heap_free(hreg);   // make heap consistent
   new_heap_free(hreg);
-  while((call1 = dq(&affected_gl)) != EMPTY){
+  while((call1 = delete_calllist_elt(&affected_gl)) != EMPTY){
     subgoal = (VariantSF) call1->goal;      
     if(IsNULL(subgoal)){ /* fact predicates */
       call1->deleted = 0; 
@@ -571,7 +568,7 @@ int create_changed_call_list(CTXTdecl){
   reg[4] = makelist(hreg);
   new_heap_free(hreg);   // make heap consistent
   new_heap_free(hreg);
-  while ((call1 = dq(&changed_gl)) != EMPTY){
+  while ((call1 = delete_calllist_elt(&changed_gl)) != EMPTY){
     subgoal = (VariantSF) call1->goal;      
     tif = (TIFptr) subgoal->tif_ptr;
     psc = TIF_PSC(tif);

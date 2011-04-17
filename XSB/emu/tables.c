@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.87 2011-04-12 17:31:59 tswift Exp $
+** $Id: tables.c,v 1.88 2011-04-17 16:31:34 tswift Exp $
 ** 
 */
 
@@ -662,7 +662,7 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
 	unchanged_call_gl++;
 	propagate_no_change(pc); /* defined in call_graph_xsb.c */
       }else
-	nq(&changed_gl,producerSF->callnode);
+	add_callnode(&changed_gl,producerSF->callnode);
     
       producerSF->callnode->prev_call=NULL;
     	
@@ -683,7 +683,7 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
       deallocatecall(pc);
             
     }else /* newly added calls */
-      nq(&changed_gl,producerSF->callnode);
+      add_callnode(&changed_gl,producerSF->callnode);
     
     if ( has_answers(producerSF) ) {
       pALN = pRealAnsList = subg_answers(producerSF);
