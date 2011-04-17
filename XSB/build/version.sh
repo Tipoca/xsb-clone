@@ -2,7 +2,8 @@
 #! /bin/sh
 
 xsb_major_version=3
-xsb_minor_version="3.1"
+xsb_minor_version=3
+xsb_patch_version=1
 #xsb_beta_version=pre"
 #xsb_codename="Skol"        # for Version 2.1
 #xsb_codename="Tsingtao"    # for Version 2.2

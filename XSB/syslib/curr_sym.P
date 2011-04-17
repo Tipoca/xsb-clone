@@ -678,21 +678,25 @@ iso_flag(double_quotes,codes).
 
 /* ===== prolog_commons_flag/2 ========================================== */
 
-prolog_commons_flag(dialect,xsb).
-prolog_commons_flag(version_data,xsb(Maj, Min, Patch, _)):-
-        xsb_configuration(major_version,MajAtom),
-        atom_codes(MajAtom, MajCodes),
-        number_codes(Maj, MajCodes),
-        xsb_configuration(minor_version,MinAtom),
-        atom_codes(MinAtom, MinCodes),
-        number_codes(Min1, MinCodes),
-	(integer(Min1) -> 
-	   Min = Min1,Patch = 0
-	 ; Min is floor(Min1),get_patch_level(Min1,Patch)).
+prolog_commons_flag(dialect, xsb).
+prolog_commons_flag(version_data, xsb(Major, Minor, Patch, _)):-
+        xsb_configuration(major_version, MajorAtom),
+        atom_codes(MajorAtom, MajorCodes),
+        number_codes(Major, MajorCodes),
+        xsb_configuration(minor_version, MinorAtom),
+        atom_codes(MinorAtom, MinorCodes),
+        number_codes(Minor, MinorCodes),
+        xsb_configuration(patch_version, PatchAtom),
+        atom_codes(PatchAtom, PatchCodes),
+        number_codes(Patch, PatchCodes).
+
+%	(integer(Min1) -> 
+%	   Min = Min1,Patch = 0
+%	 ; Min is floor(Min1),get_patch_level(Min1,Patch)).
 
 /* written to work around XSBs comparison operator 
    At most 100 patches per minor version, which seems reasonable */
-get_patch_level(Min,Patch):- 
+get_patch_level(Min,Patch):- 	% PM: replaced (?) by adding a "patch_version" xsb config
 	Patch1 is Min - floor(Min),
 	Patch2 is Patch1 * 10,
 	Patch3 is Patch2 - floor(Patch2),

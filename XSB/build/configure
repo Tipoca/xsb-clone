@@ -2990,7 +2990,7 @@ umask 022
 if test -n "$xsb_beta_version" ; then
     xsb_version=$xsb_major_version.${xsb_minor_version}-b${xsb_beta_version}
 else
-    xsb_version=$xsb_major_version.${xsb_minor_version}
+    xsb_version=$xsb_major_version.${xsb_minor_version}.${xsb_patch_version}
 fi
 
 xsb_full_version_name="${xsb_version} (${xsb_codename})"
