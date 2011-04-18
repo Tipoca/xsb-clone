@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.40 2011-04-18 13:09:14 pmoura Exp $
+** $Id: token_xsb.c,v 1.41 2011-04-18 18:12:36 kifer Exp $
 ** 
 */
 
@@ -396,8 +396,10 @@ READ_ERROR: if (!instr && ferror(card))
 	        return '\n';
             case 'r':		        /* return */
                 return '\r';
-            case 's':		        /* space */
+		/*
+            case 's':		        // space
                 return ' ';
+		*/
             case 't':		        /* tab */
                 return  '\t';
             case 'v': 		      /* vertical tab */
@@ -413,7 +415,8 @@ READ_ERROR: if (!instr && ferror(card))
                     return n & 255;
                 }
             case 'z':
-                return -1;      /* FIXME: this should really be CH_EOF_P from char_defs.h */
+		// FIXME: this should really be CH_EOF_P from char_defs.h
+                return -1;
             case '0': case '1': case '2': case '3':
             case '4': case '5': case '6': case '7':
                 {   int i, n;
