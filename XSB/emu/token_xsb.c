@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.39 2011-03-26 04:00:39 kifer Exp $
+** $Id: token_xsb.c,v 1.40 2011-04-18 13:09:14 pmoura Exp $
 ** 
 */
 
@@ -383,22 +383,24 @@ READ_ERROR: if (!instr && ferror(card))
 		  xsb_warn("[TOKENIZER] I/O error: %s\n",strerror(errno));
 		clearerr(card);
                 goto READ_ERROR;
-	    case 'a':		        /* alarm */
+	          case 'a':		        /* alarm */
                 return  '\a';
             case 'b':		        /* backspace */
                 return  '\b';
             case 'f':		        /* formfeed */
                 return '\f';
-            case '\n':		        /* seeing a newline */
+            case '\n':		      /* seeing a newline */
                 while (IsLayout(c = GetC(card,instr)));
                 goto BACK;
             case 'n':		        /* newline */
 	        return '\n';
             case 'r':		        /* return */
                 return '\r';
+            case 's':		        /* space */
+                return ' ';
             case 't':		        /* tab */
                 return  '\t';
-            case 'v': 		        /* vertical tab */
+            case 'v': 		      /* vertical tab */
                 return '\v';
             case 'x':		        /* hexadecimal */
                 {   int i, n;
@@ -410,6 +412,8 @@ READ_ERROR: if (!instr && ferror(card))
                         }
                     return n & 255;
                 }
+            case 'z':
+                return -1;      /* FIXME: this should really be CH_EOF_P from char_defs.h */
             case '0': case '1': case '2': case '3':
             case '4': case '5': case '6': case '7':
                 {   int i, n;
