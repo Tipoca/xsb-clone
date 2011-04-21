@@ -36,6 +36,7 @@
 	  dump_trace_to_file/1,
 	  nosimtrace/0, debugging/0, debug_ctl/2.
 :- export '_$deb_trace'/1, '_$deb_spy'/1, '_b_SPY_condition'/1,
+	trace_goalstack/2,
 	show/1, leash/1.
 
 :- import set_inthandler/2, '_$load_undef'/1, load_pred/1 from loader.

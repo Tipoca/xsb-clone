@@ -103,20 +103,28 @@ execution of \texttt{trace(somefile,log)} causes the log to go into the file
 which can be loaded queried. The format of the facts is:
 %% 
 \begin{verbatim}
-    xsb_tracelog(CallId,CallNumber,PortType,CurrentCall,Time)
+xsb_tracelog(CallId,CallNum,PortType,ParentCallNum,DepthOfCall,CurrentCall,Time)
 \end{verbatim}
 %% 
 where \texttt{CallId} is an identifier generated when XSB encounters a
 new top-level call. This identifier remains the same for all subgoals
 called while tracing that top-level call.
-\texttt{CallNumber} is the call number that XSB generates to show the
+\texttt{CallNum} is the call number that XSB generates to show the
 nesting of the calls being traced. It is the same number that the user sees when
 tracing interactively.  \texttt{PortType} is \texttt{'Call'},
 \texttt{'Redo'}, \texttt{'Exit'}, or \texttt{'Fail'}.   
+\texttt{ParentCallNum} is the cal number of the parent call.
+\texttt{DepthOfCall} is the nesting depth of the current call with respect
+to its ancestor calls. 
 \texttt{CurrentCall} is the call being traced and \texttt{Time} is the CPU time it
 took to execute \texttt{CurrentCall}. On \texttt{'Call'} and \texttt{'Redo'},
 \texttt{Time} is always 0 --- it has a meaningful value only for the
 \texttt{'Exit'} and \texttt{'Fail'} log entries.
+
+It should be noted that when calls are delayed due to the well-founded
+negation computation of because of the \texttt{when/2} primitive, the
+parent call might be off in some cases. However, the parent property
+repairs itself for subsequent calls. 
 
 The name of the predicate (\texttt{xsb\_tracelog})
 used for logging can be changed by asserting

@@ -36,12 +36,16 @@
 #define AtmDBGERR    '_$_$_stderr_dbg'
 #define AtmDBGWARN   '_$_$_stdwarn_dbg'
 
-#define AtmDBGLOG       '_$_$_dbg_log'
-#define TRACELOGPRED    xsb_tracelog
+#define AtmDBGLOG         '_$_$_dbg_log'
+#define TRACELOGPRED      xsb_tracelog
+#define TRACEGOALSTACK    '_$_$xsb_backtrace_stack'
+#define INITIALGOALSTACK  []
 
 #define CURRENTLYTRACING    '_$_$_currently_tracing'
 
-:- dynamic CURRENTLYTRACING/1.
+:- dynamic
+	TRACEGOALSTACK/2,
+	CURRENTLYTRACING/1.
 
 :- set_inthandler('_$deb_spy'(_), MYSIG_SPY),
    set_inthandler('_$deb_trace'(_), MYSIG_TRACE).
@@ -86,13 +90,15 @@ notrace_stack_max :- stat_set_flag(TRACE_STA,0).       % undo above
 dump :- ll_write('dump not implemented yet').
 
 trace :-
+	init_goalstack,
 	debug,
 	stat_set_flag(TRACE,1). % trace = 1
 notrace :-
 	stat_set_flag(TRACE,0),	% trace = 0
 	make_trace_interactive,
 	ll_flush,
-	nodebug.		% ??dsw added, (no load msgs)
+	nodebug,		% ??dsw added, (no load msgs)
+	clear_goalstack.
 %% dumps trace into a file
 trace(File) :-
 	dump_trace_to_file(File),
@@ -227,6 +233,47 @@ pop_cputime(_CallNum,_CallType,noprint) :-
 	set_cputime_stack(Rest).
 pop_cputime(_CallNum,_CallType,_).
 
+
+init_goalstack :-
+	retractall(TRACEGOALSTACK(_,_)),
+	assert(TRACEGOALSTACK(0,INITIALGOALSTACK)).
+clear_goalstack :-
+	retractall(TRACEGOALSTACK(_,_)).
+%% this is exported
+trace_goalstack(Depth,Stack) :- TRACEGOALSTACK(Depth,Stack).
+
+
+push_goalstack(CallNum) :-
+	debug_logging_queriable_trace(on),
+	!,
+	trace_goalstack(Len,Stack),
+	Len1 is Len+1,
+	Stack1 = [CallNum|Stack],
+	clear_goalstack,
+	assert(TRACEGOALSTACK(Len1,Stack1)).
+push_goalstack(_).
+
+%% search for goal in the stack and pop everything above it
+%% maybe an overkill
+pop_goalstack(CallNum) :-
+	debug_logging_queriable_trace(on),
+	!,
+	trace_goalstack(Len,Stack),
+	pop_goalstack(CallNum,Len,Stack).
+pop_goalstack(_).
+
+%% if didn't find the goal in stack, nothing is popped
+pop_goalstack(_CallNum,_Len,INITIALGOALSTACK) :- !.
+pop_goalstack(_CallNum,0,_) :- !.  %% just a precaution
+pop_goalstack(CallNum,Len,[CallNum|Stack]) :-
+	!,
+	clear_goalstack,
+	Len1 is Len-1,
+	assert(TRACEGOALSTACK(Len1,Stack)).
+pop_goalstack(CallNum,Len,[_|Stack]) :-
+	Len1 is Len-1,
+	pop_goalstack(CallNum,Len1,Stack).
+
 %% Hide (don''t trace) inside the argument predicates
 user_hide([]).
 user_hide([P/A|T]) :-
@@ -292,13 +339,13 @@ debugging :-
 	    ->	basic_call(1,PSC,Call) % and leave tracing off
 	    ;	show_this_hide_call(P,A)
 	    ->	stat_flag(INVOKE_NUM,N),
-		N1 is N+1,stat_set_flag(INVOKE_NUM,N1), % invoke_num++
+		N1 is N+1, stat_set_flag(INVOKE_NUM,N1), % invoke_num++
 		(   S=\=0
 		->  basic_call(1,PSC,Call) % skipping/quasi_skipping, notrace
 		;   deb_enterpred(N, PSC, Call, intrace, 1)
 		)
 	    ;	stat_flag(INVOKE_NUM,N),
-		N1 is N+1,stat_set_flag(INVOKE_NUM,N1), % invoke_num++
+		N1 is N+1, stat_set_flag(INVOKE_NUM,N1), % invoke_num++
 		(   S=\=0
 		->  basic_call(0,PSC,Call) % skipping or quasi_skipping 
 		;   deb_enterpred(N, PSC, Call, intrace, 0)
@@ -372,8 +419,8 @@ set_print_control(Pred, Arity, Type) :-
 %% and disable for others (trace_this_noprint)
 set_print_control(Pred, Arity, _) :-
 	!,
-	(trace_this_print(Pred, Arity) -> restore_shown ; true),
-	(trace_this_noprint(Pred, Arity) -> show_nothing ; true).
+	(trace_this_print(Pred, Arity)   -> restore_shown ; true),
+	(trace_this_noprint(Pred, Arity) -> show_nothing  ; true).
 
 
 indeed_spy(Call) :- \+ (\+ ('_b_SPY_condition'(Call))).
@@ -384,15 +431,18 @@ deb_enterpred(N,PSC,Call,Spy,Tr) :-
 	%%ll_write('enterpred'(Call)),ll_nl,
 	conset('_$_verbose_skip_current_callno', N),
 	(N==0 ->
+	    %% New top-level goal
 	    retractall(CURRENTLYTRACING(_)),
 	    gensym(id,CallId),
+	    init_goalstack,
 	    assert(CURRENTLYTRACING(CallId))
 	; CURRENTLYTRACING(CallId) -> true
 	; CallId = '???',  %% happens when errors are thrown
 	    assert(CURRENTLYTRACING(CallId))
 	),
 	deb_traceget(N,Spy,'Call',Call,_),
-	push_cputime,		% push cpu time on the stack, if on
+	push_goalstack(N),
+	push_cputime,		% push cpu time on the stack
 	(   basic_call(Tr,PSC,Call),
 	    %% Call succeded
 	    (	stat_set_flag(HIDE_STATE,1),      % hide_state
@@ -401,8 +451,11 @@ deb_enterpred(N,PSC,Call,Spy,Tr) :-
 		%%ll_write(exit_call_hs(OV)),ll_nl,
 		(   still_displaying(Spy)
 		->  conset('_$_verbose_skip_current_callno', N),
+		    pop_goalstack(N),
 		    deb_traceget(N,Spy,'Exit',Call,_),
-		    (N==0 -> retractall(CURRENTLYTRACING(_))
+		    (N==0 ->
+			init_goalstack,
+			retractall(CURRENTLYTRACING(_))
 		    ; true
 		    ),
 		    restore_leash % restore old leash after Exit
@@ -415,6 +468,7 @@ deb_enterpred(N,PSC,Call,Spy,Tr) :-
 		->  conset('_$_verbose_skip_current_callno', N),
 		    assert(CURRENTLYTRACING(CallId)),
 		    deb_traceget(N,Spy,'Redo',Call,_),
+		    push_goalstack(N),
 		    push_cputime   % push cpu time on the stack, if on
 		;   true
 		),
@@ -428,8 +482,11 @@ deb_enterpred(N,PSC,Call,Spy,Tr) :-
 	    stat_set_flag(SKIPPING, 0),     	   % quasi_skipping=0
 	    (	still_displaying(Spy) 	           % if still tracing/debugging
 	    ->	conset('_$_verbose_skip_current_callno', N),
+		pop_goalstack(N),
 		deb_traceget(N,Spy,'Fail',Call,C2),
-		(N==0 -> retractall(CURRENTLYTRACING(_))
+		(N==0 ->
+		    init_goalstack,
+		    retractall(CURRENTLYTRACING(_))
 		; true
 		),
 		restore_leash, % restore the old leash after Fail
@@ -454,7 +511,7 @@ still_displaying(Spy) :-
 
 /* retry recursive call-------------------------------------------------*/
 
-deb_retry(Call,inspy)   :- !,'_$deb_spy'(Call).
+deb_retry(Call,inspy)   :- !, '_$deb_spy'(Call).
 deb_retry(Call,intrace) :- '_$deb_trace'(Call).
 
 %% produce a log
@@ -479,9 +536,16 @@ deb_traceget(N,Spy,Type,Call,C) :-
 	    (CURRENTLYTRACING(CallId) -> true
 	    ; CallId = '!!!'   %% should never happen
 	    ),
-	    ll_writeq(CallId), ll_write(', '),        %% call Id
-	    ll_write(N), ll_write(', '),              %% call number
-	    ll_writeq(Type), ll_write(', '),          %% port type: Call/Exit/...
+	    trace_goalstack(Depth,Log),
+	    (Log = [Parent|_] -> true
+	    ; Parent = top
+	    ),
+	    ll_writeq(CallId), ll_write(', '),       %% call Id
+	    ll_write(N), ll_write(', '),             %% call number
+	    ll_writeq(Type), ll_write(', '),         %% port type: Call/Exit/...
+	    ll_writeq(Parent), ll_write(', '),       %% Parent call of this call
+	    ll_writeq(Depth), ll_write(', '),        %% Depth of this call
+
 	    debug_display_call(Call), ll_write(', '), %% the actual call
 	    ll_write(Time),                          %% cpu time spent or 0
 	    ll_write(').'), ll_nl
@@ -655,13 +719,13 @@ deb_getonechar(C) :-
 	ll_flush,
 	file_get(STDIN, C1),
 	(C1=:=CH_NEWLINE
-	 ->	C=C1
-	 ; C1<0
+	->	C=C1
+	;       C1<0
 	 ->	C=CH_e
 	 ;	deb_skiptoaft,
-	    	(C1=:=CH_h /*help*/
-		 ->	deb_printhelp,deb_getonechar(C)
-		 ;	C=C1
+	    	(C1=:=CH_h    %% help
+		->	deb_printhelp, deb_getonechar(C)
+		;	C=C1
 		)
 	).
 	
@@ -716,7 +780,7 @@ spy0((M:T:-B)) :- !,
 	psc_set_spy(Psc, 192),
 	assert0(('_b_SPY_condition'(NewT):-B)).
 spy0((T:-B)) :- !, spy0((usermod:T:-B)).
-spy0(T) :- callable(T),!,spy0((usermod:T:-true)).
+spy0(T) :- callable(T), !, spy0((usermod:T:-true)).
 spy0(T):- type_error(predicate_indicator,T,(spy)/1,1).
 
 make_pretty_list([H],H):-!.
@@ -728,17 +792,18 @@ make_pretty_list_1([H|T],[H,', '|T1]):-
 	make_pretty_list_1(T,T1).
 
 % TLS; if predicate does not exist, no psc record is made for the pred (unlike spy)
-nospy(X) :- var(X),!,warning('Spy specification cannot be a variable. Ignored.').
+nospy(X) :- var(X), !, warning('Spy specification cannot be a variable. Ignored.').
 nospy([Pred|More]) :- !, nospy(Pred),nospy(More).
 nospy([]) :- !.
-nospy(P) :- atom(P),!,
+nospy(P) :- atom(P), !,
 	findall(usermod:P/A,current_predicate(usermod:P/A),Preds),
 	nospy(Preds).
-nospy(M:P) :- atom(P),!,
+nospy(M:P) :- atom(P), !,
 	findall(M:P/A,current_predicate(M:P/A),Preds),
 	nospy(Preds).
-% reports removed, even if spy point does not exist.  To fix, we need a psc_get_spy,
-%  or some other indication of which predicates are spied.
+%% reports removed, even if spy point does not exist. 
+%% To fix, we need a psc_get_spy,
+%% or some other indication of which predicates are spied on
 nospy(M:P/A) :- !,
 	(current_predicate(M:P/A) -> 
 	   spy_psc(M, P, A, NPsc),	psc_set_spy(NPsc, 0),
@@ -749,7 +814,7 @@ nospy(P/A) :- !, nospy(usermod:P/A).
 nospy((M:T:-B)) :- !,
 	term_mod(M:T,Psc,NewT),
 	psc_set_spy(Psc, 192),
-	(retract(('_b_SPY_condition'(NewT):-B)),fail ; true).
+	(retract(('_b_SPY_condition'(NewT):-B)), fail ; true).
 nospy((T:-B)) :- !, nospy((usermod:T:-B)).
 nospy(M:T) :- !,
 	term_mod(M:T,Psc,NewT),
