@@ -51,6 +51,8 @@
 #include "debug_xsb.h"
 #include "dynamic_stack.h"
 #include "tst_aux.h"
+#include "negation_defs.h"
+#include "tries.h"
 
 static void simplify_neg_succeeds(CTXTdeclc VariantSF);
 extern void simplify_pos_unsupported(CTXTdeclc NODEptr);
@@ -1341,6 +1343,21 @@ static void simplify_pos_unconditional(CTXTdeclc NODEptr as_leaf)
   int in_simplify_neg_fails;
 #endif
 
+VariantSF * dyn_simplify_neg_fails_stack;
+int dyn_simplify_neg_fails_stack_index = 0;
+int dyn_simplify_neg_fails_stack_size   = 0;
+
+#define push_neg_simpl(X) {\
+    if (dyn_simplify_neg_fails_stack_index == dyn_simplify_neg_fails_stack_size) {\
+      trie_expand_array(VariantSF, dyn_simplify_neg_fails_stack,	\
+			dyn_simplify_neg_fails_stack_size,0,"dyn_simplify_neg_fails_stack"); \
+    }									\
+    /*    printf("pushing %p\n",subgoal);	*/			\
+    dyn_simplify_neg_fails_stack[dyn_simplify_neg_fails_stack_index++] = ((VariantSF) X);\
+}
+
+#define pop_neg_simpl dyn_simplify_neg_fails_stack[--dyn_simplify_neg_fails_stack_index]
+
 void simplify_neg_fails(CTXTdeclc VariantSF subgoal)
 {
   PNDE nde;
@@ -1349,16 +1366,20 @@ void simplify_neg_fails(CTXTdeclc VariantSF subgoal)
 
   //  printf("in simplify neg fails: ");print_subgoal(stddbg,subgoal),printf("\n");
 
-  if (simplify_neg_fails_stack_top < MAX_SIMPLIFY_NEG_FAILS_STACK - 1) {
-    simplify_neg_fails_stack[simplify_neg_fails_stack_top++] = subgoal;
-  } else xsb_abort("Overflow simplify_neg_fails stack");
+  //  if (simplify_neg_fails_stack_top < MAX_SIMPLIFY_NEG_FAILS_STACK - 1) {
+  //    simplify_neg_fails_stack[simplify_neg_fails_stack_top++] = subgoal;
+  //  } else xsb_abort("Overflow simplify_neg_fails stack");
+  push_neg_simpl(subgoal);
+
   if (in_simplify_neg_fails) {
     return;
   }
   in_simplify_neg_fails = 1;
-  while (simplify_neg_fails_stack_top > 0) {
-    subgoal = simplify_neg_fails_stack[--simplify_neg_fails_stack_top];
-
+  //  while (simplify_neg_fails_stack_top > 0) {
+    //    subgoal = simplify_neg_fails_stack[--simplify_neg_fails_stack_top];
+  while (dyn_simplify_neg_fails_stack_index > 0) {
+    subgoal = pop_neg_simpl;
+    /*    printf("popped %p\n",subgoal);*/
     while ((nde = subg_nde_list(subgoal))) {
       de = pnde_de(nde);
       dl = pnde_dl(nde);
