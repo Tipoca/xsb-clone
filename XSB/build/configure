@@ -638,6 +638,7 @@ xsb_major_version
 compile_mode
 os_type
 os_version
+xsb_build_date
 emumake_goal
 LINKFLAGS
 MEMFLAG
@@ -7211,6 +7212,7 @@ fi
 
 
 # These are used in xsb_configuration.in
+
 
 
 

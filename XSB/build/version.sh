@@ -1,6 +1,8 @@
 
 #! /bin/sh
 
+xsb_build_date=`date`
+
 xsb_major_version=3
 xsb_minor_version=3
 xsb_patch_version=1

@@ -21,7 +21,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_configuration.in,v 1.28 2011-04-17 17:40:16 pmoura Exp $
+** $Id: xsb_configuration.in,v 1.29 2011-04-22 19:14:39 pmoura Exp $
 ** 
 */
 
@@ -43,6 +43,8 @@ xsb_configuration(compiler, '@CC@').
 %% xsb_configuration(cpp, '@xsbCPP@').
 xsb_configuration(compiler_flags, '@CFLAGS@').
 xsb_configuration(loader_flags, '@LDFLAGS@').
+
+xsb_configuration(build_date, '@xsb_build_date@').
 
 /* Packages */
 
