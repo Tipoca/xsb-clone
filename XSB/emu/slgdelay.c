@@ -1358,6 +1358,10 @@ int dyn_simplify_neg_fails_stack_size   = 0;
 
 #define pop_neg_simpl dyn_simplify_neg_fails_stack[--dyn_simplify_neg_fails_stack_index]
 
+  //  if (simplify_neg_fails_stack_top < MAX_SIMPLIFY_NEG_FAILS_STACK - 1) {
+  //    simplify_neg_fails_stack[simplify_neg_fails_stack_top++] = subgoal;
+  //  } else xsb_abort("Overflow simplify_neg_fails stack");
+
 void simplify_neg_fails(CTXTdeclc VariantSF subgoal)
 {
   PNDE nde;
@@ -1366,9 +1370,6 @@ void simplify_neg_fails(CTXTdeclc VariantSF subgoal)
 
   //  printf("in simplify neg fails: ");print_subgoal(stddbg,subgoal),printf("\n");
 
-  //  if (simplify_neg_fails_stack_top < MAX_SIMPLIFY_NEG_FAILS_STACK - 1) {
-  //    simplify_neg_fails_stack[simplify_neg_fails_stack_top++] = subgoal;
-  //  } else xsb_abort("Overflow simplify_neg_fails stack");
   push_neg_simpl(subgoal);
 
   if (in_simplify_neg_fails) {
@@ -1379,7 +1380,7 @@ void simplify_neg_fails(CTXTdeclc VariantSF subgoal)
     //    subgoal = simplify_neg_fails_stack[--simplify_neg_fails_stack_top];
   while (dyn_simplify_neg_fails_stack_index > 0) {
     subgoal = pop_neg_simpl;
-    /*    printf("popped %p\n",subgoal);*/
+    /*    printf("popped %p\n",subgoal);*/ 
     while ((nde = subg_nde_list(subgoal))) {
       de = pnde_de(nde);
       dl = pnde_dl(nde);
