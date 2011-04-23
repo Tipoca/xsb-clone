@@ -51,7 +51,6 @@
 #include "debug_xsb.h"
 #include "dynamic_stack.h"
 #include "tst_aux.h"
-#include "negation_defs.h"
 #include "tries.h"
 
 static void simplify_neg_succeeds(CTXTdeclc VariantSF);
