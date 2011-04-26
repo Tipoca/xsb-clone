@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.41 2011-04-18 18:12:36 kifer Exp $
+** $Id: token_xsb.c,v 1.42 2011-04-26 14:00:31 pmoura Exp $
 ** 
 */
 
@@ -396,10 +396,8 @@ READ_ERROR: if (!instr && ferror(card))
 	        return '\n';
             case 'r':		        /* return */
                 return '\r';
-		/*
             case 's':		        // space
                 return ' ';
-		*/
             case 't':		        /* tab */
                 return  '\t';
             case 'v': 		      /* vertical tab */

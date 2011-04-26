@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.87 2010-12-16 23:38:00 tswift Exp $
+** $Id: io_builtins_xsb.c,v 1.88 2011-04-26 14:00:30 pmoura Exp $
 ** 
 */
 
@@ -1644,6 +1644,7 @@ void double_quotes(char *string, char *new_string)
       char ch = string[ctr+1];
       if (ch == 'a' || ch == 'b' || ch == 'f' || ch == 'n' || 
 	  ch == 'r' || ch == 't' || ch == 'v' || ch == 'x' || 
+	  ch == 's' || ch == 'z' ||
 	  ch == '0' || ch == '1' || ch == '2' || ch == '3' || 
 	  ch == '4' || ch == '5' || ch == '6' || ch == '7' || 
 	  ch == '\\' || ch == '"' || ch == '`') {
