@@ -274,8 +274,8 @@ read_p_file_s(IStr,FSize,BFileName,Result) :-
 	conset('_$lineCnt',0),
 	repeat,
 	(FSize > 500000
-	 ->	file_read_canonical(IStr,Term0,_)
-	 ;	catch(file_read(IStr,Term0),Ball,(do_read_error(Ball),fail))
+	 ->	catch(file_read_canonical(IStr,Term0,_),Ball,(do_read_error(Ball,BFileName),fail))
+	 ;	catch(file_read(IStr,Term0),Ball,(do_read_error(Ball,BFileName),fail))
 	),
 	coninc('_$lineCnt'),
 	expand_term(Term0,Term),
@@ -302,16 +302,22 @@ read_p_file_s(IStr,FSize,BFileName,Result) :-
 		fail
 	).
 
-do_read_error(error(syntax_error,String,_BT)) :-
+:- dynamic files_with_errors/1.
+do_read_error(error(syntax_error,String,_BT),_BFileName) :-
 	atom_codes(String,Codes),  % not preprocessing 
 	append(_,[35,32,32,60,45,45,45,32,72,69,82,69,63|_],Codes),   % hash --> here
 	!,
 	nl, tab(4),
 	write('Preprocessing command ignored').
-do_read_error(Ball) :-
-	nl,
-	tab(4),
-	write(Ball).
+do_read_error(Ball,BFileName) :-
+	(files_with_errors(BFileName)
+	 ->	true
+	 ;	asserta(files_with_errors(BFileName)),
+		nl,
+		tab(4),
+		write(Ball),
+		write('   Any further errors in this file not reported. ')
+	).
 
 process_directive(op(Prec,Fix,Op),_) :- !,
 	('_$op'(OldPrec,OldFix,Op),op_type(Fix,T),op_type(OldFix,T)
