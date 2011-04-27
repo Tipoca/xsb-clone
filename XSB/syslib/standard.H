@@ -41,6 +41,7 @@
 	compound/1,	cputime/1,	
 	directly_callable/1,
 	display/1, displayln/1, now/1, datime/1,
+	get_date/6,
 	console_write/1, console_writeln/1,
 	error_write/1, error_writeln/1,
 	expand_term/2,	file_exists/1,	fail/0,	false/0,	fail_if/1,

@@ -255,7 +255,7 @@ standard_symbol(get_code, 2, standard).		% ISO
 standard_symbol(get_call, 3, tables).
 standard_symbol(get_calls, 3, tables).
 standard_symbol(get_calls_for_table, 2, tables).
-standard_symbol(get_date, 5, standard).
+standard_symbol(get_date, 6, standard).
 standard_symbol(get_producer_call, 3, tables).
 standard_symbol(get_residual, 2, tables).
 standard_symbol(get_returns, 2, tables).
