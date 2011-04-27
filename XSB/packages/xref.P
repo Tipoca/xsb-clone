@@ -1,7 +1,7 @@
-:- import bootstrap_package/2 from packaging.
+:- import ensure_package_bootstrapped/2 from packaging.
 
 init_xref:- 
-	bootstrap_package([xref],'xref'),
+	ensure_package_bootstrapped([xref],'xref'),
 	(import build_xref/0, build_xref/1,
 	        dump_xref/0, dump_xref/1,
 		print_pred/3, print_file/3,
