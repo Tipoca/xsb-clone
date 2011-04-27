@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.105 2011-04-26 21:17:32 kifer Exp $
+** $Id: cinterf.c,v 1.106 2011-04-27 17:11:11 pmoura Exp $
 **
 */
 
@@ -401,17 +401,14 @@ DllExport char *p_charlist_to_c_string(CTXTdeclc prolog_term term, VarString *bu
       case 'r':
 	XSB_StrAppendBlk(buf, "\r", 1);
 	break;
+      case 's':
+	XSB_StrAppendBlk(buf, " ", 2);
+	break;
       case 't':
 	XSB_StrAppendBlk(buf, "\t", 1);
 	break;
       case 'v':
 	XSB_StrAppendBlk(buf, "\v", 1);
-	break;
-      case 's':
-	XSB_StrAppendBlk(buf, " ", 1);
-	break;
-      case 'z':
-	XSB_StrAppendBlk(buf, "\z", 1);
 	break;
       default:
 	XSB_StrAppendBlk(buf, head_char, 1);
@@ -513,10 +510,9 @@ DllExport xsbBool call_conv is_charlist(prolog_term term, int *size)
       case 'f':
       case 'n':
       case 'r':
+      case 's':
       case 't':
       case 'v':
-      case 's':
-      case 'z':
 	(*size)++;
 	escape_mode=FALSE;
 	break;
