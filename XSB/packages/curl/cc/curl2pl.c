@@ -21,6 +21,8 @@
 **
 */
 
+#include "nodeprecate.h"
+
 
 #include "xsb_config.h"
 #ifdef WIN_NT

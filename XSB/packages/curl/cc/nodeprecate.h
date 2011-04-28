@@ -1,9 +1,9 @@
 /*
-** File: packages/curl/cc/load_page.h
-** Author: Aneesh Ali
+** File: packages/curl/cc/load_page.c
+** Author: Michael Kifer
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
-** Copyright (C) The Research Foundation of SUNY, 2010
+** Copyright (C) The Research Foundation of SUNY, 2011
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -22,8 +22,10 @@
 */
 
 
-#include "common.h"
-
-char * load_page (char *source, curl_opt options, curl_ret *ret_vals);
-void * encode (char *url, char **dir, char **file, char **suffix);
-curl_opt init_options();
+#ifdef WIN_NT
+#ifdef _MSC_VER
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS 1
+#endif
+#endif
+#endif

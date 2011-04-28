@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.35 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: gpp.c,v 1.36 2011-04-28 21:59:02 kifer Exp $
 ** 
 */
 
@@ -32,6 +32,16 @@
 #define strcasecmp _stricmp
 #define SLASH '\\'
 #define DEFAULT_CRLF 1
+
+#ifdef _MSC_VER
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS 1
+#endif
+#ifndef _CRT_NONSTDC_NO_DEPRECATE
+#define _CRT_NONSTDC_NO_DEPRECATE 1
+#endif
+#endif
+
 #else                      /* UNIX settings */
 #define SLASH '/'
 #define DEFAULT_CRLF 0

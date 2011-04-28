@@ -10,8 +10,8 @@ NULL=nul
 CPP=cl.exe
 RSC=rc.exe
 
-OUTDIR=..\config\x86-pc-windows\bin
-INTDIR=..\config\x86-pc-windows\saved.o
+OUTDIR=..\config\x86-pc-windows64\bin
+INTDIR=..\config\x86-pc-windows64\saved.o
 
 ALL : "$(OUTDIR)\gpp.exe"
 
@@ -27,7 +27,7 @@ CLEAN :
 "$(INTDIR)" :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
-CPP_PROJ=/nologo /W3 /EHsc /O2 /D "WIN32" /D "WIN_NT" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /c 
+CPP_PROJ=/nologo /W3 /EHsc /O2 /D "WIN64" /D "WIN_NT" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /c 
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\gpp.bsc" 
 BSC32_SBRS= \
