@@ -1,4 +1,4 @@
-## File:      packages/pcre/NMakefile.mak
+## File:      packages/pcre/NMakefile64.mak
 ## Author(s): kifer
 ## Contact:   xsb-contact@cs.sunysb.edu
 ## 
@@ -21,7 +21,7 @@
 
 ALL::
 	cd cc
-	nmake /f NMakefile.mak
+	nmake /f NMakefile64.mak
 	cd ..
 	del pcre_info.P
 	copy Misc\pcre_init-wind.P  pcre_info.P
@@ -29,5 +29,5 @@ ALL::
 
 CLEAN::
 	cd cc
-	nmake /nologo /f NMakefile.mak clean
+	nmake /nologo /f NMakefile64.mak clean
 	cd ..
