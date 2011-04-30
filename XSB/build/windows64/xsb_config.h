@@ -1,7 +1,7 @@
 /* windows64/xsb_config.h.  Generated from def_config.in by configure.  */
 /*  @configure_input@
 **
-**   This file contains definitions for Windows
+**   This file contains definitions for Windows 64
 **
 **   Some variable may have to be changed manually.
 */
