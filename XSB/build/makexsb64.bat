@@ -2,7 +2,7 @@
 REM   makexsb.bat
 REM   Script for compiling XSB under Windows using VC++
 
-set XSBCONFIGdir=..\config\x86-pc-windows64
+set XSBCONFIGdir=..\config\x64-pc-windows
 
 IF NOT EXIST %XSBCONFIGdir%\saved.o MKDIR %XSBCONFIGdir%\saved.o
 IF NOT EXIST %XSBCONFIGdir%\bin mkdir %XSBCONFIGdir%\bin

@@ -5,8 +5,8 @@
 */
 
 #define CC "cl.exe"
-#define CONFIGURATION "x86-pc-windows64"
-#define FULL_CONFIG_NAME "x86-pc-windows64"
+#define CONFIGURATION "x64-pc-windows"
+#define FULL_CONFIG_NAME "x64-pc-windows"
 
 /* The number of bytes in a long.  */
 #define SIZEOF_LONG 8

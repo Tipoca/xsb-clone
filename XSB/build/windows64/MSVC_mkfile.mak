@@ -110,7 +110,7 @@ CPP=cl.exe
 !INCLUDE "custom_directories.mak"
 !ENDIF
 
-CONFIGDIR=..\config\x86-pc-windows64
+CONFIGDIR=..\config\x64-pc-windows
 CONFIG_INCLUDE_FLAG=/I"$(CONFIGDIR)" $(MY_INCLUDE_DIRS)
 SITE_LIBS= $(MY_LIBRARY_DIRS)
 
