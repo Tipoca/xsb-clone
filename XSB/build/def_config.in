@@ -70,7 +70,7 @@
 /* Newer Linux using ELF format */
 #undef LINUX_ELF
 
-/* Use local eval strategy. Default is `batched' */
+/* Use local eval strategy. This is the default. */
 #undef LOCAL_EVAL
 
 /* MIPS based machines, such as old SGI's */

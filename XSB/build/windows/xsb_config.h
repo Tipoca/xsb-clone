@@ -59,7 +59,7 @@
 /* Single precision floats */
 /* #undef FAST_FLOATS */
 
-/* Use local eval strategy. Default is `batched' */
+/* Use local eval strategy. This is the default. */
 #define LOCAL_EVAL 1
 
 /* Define, if XSB is built with support for ORACLE DB */
