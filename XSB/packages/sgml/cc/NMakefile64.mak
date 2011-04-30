@@ -6,7 +6,7 @@ CURLDIR=..\..\curl\cc
 HPROGRAM=load_page
 
 CPP=cl.exe
-OUTDIR=$(XSBDIR)\config\x86-pc-windows64\bin
+OUTDIR=$(XSBDIR)\config\x64-pc-windows\bin
 INTDIR=.
 
 ALL : "$(OUTDIR)\$(MYPROGRAM).dll"
@@ -17,7 +17,7 @@ CLEAN :
 	-@erase "$(INTDIR)\$(MYPROGRAM).exp"
 
 
-CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(XSBDIR)\config\x86-pc-windows64" \
+CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(XSBDIR)\config\x64-pc-windows" \
 		 /I "$(XSBDIR)\emu" /I "$(XSBDIR)\prolog_includes" /I "$(XSBDIR)\packages\curl\cc" \
 		 /I "$(XSBDIR)\packages\sgml\cc"\
 		 /D "WIN_NT" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" \
@@ -38,7 +38,7 @@ LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib \
 		odbc32.lib odbccp32.lib xsb.lib wsock32.lib "$(CURLDIR)\bin\libcurl.lib" curl2pl.lib\
 		/nologo /dll \
 		/machine:I386 /out:"$(OUTDIR)\$(MYPROGRAM).dll" \
-		/libpath:"$(XSBDIR)\config\x86-pc-windows64\bin"	
+		/libpath:"$(XSBDIR)\config\x64-pc-windows\bin"	
 LINK32_OBJS=  "$(CURLDIR)\$(HPROGRAM).obj" "$(INTDIR)\$(MYPROGRAM).obj"
 
 "$(OUTDIR)\$(MYPROGRAM).dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)

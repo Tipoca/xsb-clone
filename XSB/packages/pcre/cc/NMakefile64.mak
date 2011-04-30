@@ -25,7 +25,7 @@ XSBDIR=..\..\..
 MYPROGRAM=pcre4pl
 
 CC=cl.exe
-OUTDIR=$(XSBDIR)\config\x86-pc-windows64\bin
+OUTDIR=$(XSBDIR)\config\x64-pc-windows\bin
 INTDIR=.
 
 ALL : "$(OUTDIR)\$(MYPROGRAM).dll"
@@ -38,7 +38,7 @@ CLEAN :
 ##"$(OUTDIR)" :
 ##    if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
-CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(XSBDIR)\config\x86-pc-windows64" \
+CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(XSBDIR)\config\x64-pc-windows" \
 		 /I "$(XSBDIR)\emu" /I "$(XSBDIR)\prolog_includes" /I "$(XSBDIR)\packages\pcre\cc\pcre" \
 		/D "WIN_NT" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" \
 		/Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /c 
@@ -55,7 +55,7 @@ LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib \
 		odbc32.lib odbccp32.lib xsb.lib pcre.lib \
 		/nologo /dll \
 		/machine:I386 /out:"$(OUTDIR)\$(MYPROGRAM).dll" \
-		/libpath:"$(XSBDIR)\config\x86-pc-windows64\bin" \
+		/libpath:"$(XSBDIR)\config\x64-pc-windows\bin" \
 		/libpath:"$(XSBDIR)\prolog_includes" \
 		/libpath:.\bin64
 

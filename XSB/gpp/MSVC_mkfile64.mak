@@ -10,8 +10,8 @@ NULL=nul
 CPP=cl.exe
 RSC=rc.exe
 
-OUTDIR=..\config\x86-pc-windows64\bin
-INTDIR=..\config\x86-pc-windows64\saved.o
+OUTDIR=..\config\x64-pc-windows\bin
+INTDIR=..\config\x64-pc-windows\saved.o
 
 ALL : "$(OUTDIR)\gpp.exe"
 

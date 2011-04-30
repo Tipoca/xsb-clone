@@ -1,8 +1,8 @@
-## File:      packages/curl/NMakefile.mak
+## File:      packages/curl/NMakefile64.mak
 ## Author(s): Aneesh Ali
 ## Contact:   xsb-contact@cs.sunysb.edu
 ## 
-## Copyright (C) The Research Foundation of SUNY, 2010
+## Copyright (C) The Research Foundation of SUNY, 2010-2011
 ## 
 ## XSB is free software; you can redistribute it and/or modify it under the
 ## terms of the GNU Library General Public License as published by the Free
@@ -26,7 +26,7 @@ MYPROGRAM=curl2pl
 HPROGRAM=load_page
 
 CPP=cl.exe
-OUTDIR=$(XSBDIR)\config\x86-pc-windows64\bin
+OUTDIR=$(XSBDIR)\config\x64-pc-windows\bin
 INTDIR=.
 
 ALL : "$(OUTDIR)\$(MYPROGRAM).dll"
@@ -37,7 +37,7 @@ CLEAN :
 	-@erase "$(INTDIR)\$(MYPROGRAM).exp"
 
 
-CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(XSBDIR)\config\x86-pc-windows" \
+CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(XSBDIR)\config\x64-pc-windows" \
 		 /I "$(XSBDIR)\emu" /I "$(XSBDIR)\prolog_includes" /I "$(XSBDIR)\packages\curl\cc"\
 		 /D "WIN_NT" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" \
 		 /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /c 
@@ -57,7 +57,7 @@ LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib \
 		odbc32.lib odbccp32.lib xsb.lib wsock32.lib libcurl.lib\
 		/nologo /dll \
 		/machine:I386 /out:"$(OUTDIR)\$(MYPROGRAM).dll" \
-		/libpath:"$(XSBDIR)\config\x86-pc-windows64\bin"	\
+		/libpath:"$(XSBDIR)\config\x64-pc-windows\bin"	\
 		/libpath:.\bin64
 LINK32_OBJS=  "$(INTDIR)\$(HPROGRAM).obj" "$(INTDIR)\$(MYPROGRAM).obj"
 

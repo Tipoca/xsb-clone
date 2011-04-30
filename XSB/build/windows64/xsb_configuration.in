@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_configuration.in,v 1.1 2011-04-29 01:05:36 kifer Exp $
+** $Id: xsb_configuration.in,v 1.2 2011-04-30 21:24:24 kifer Exp $
 ** 
 */
 
@@ -74,7 +74,7 @@ xsb_configuration(javac, '').
 %%
 xsb_configuration(os_version, '').
 xsb_configuration(host_vendor, 'pc').
-xsb_configuration(host_cpu,  'x86').
+xsb_configuration(host_cpu,  'x64').
 
 %% Set the right compile mode and XSB scheduling strategy
 xsb_configuration(compile_mode, '@compile_mode@').
@@ -96,9 +96,9 @@ xsb_configuration(release_date,
 		  date(@release_year@, @release_month@, @release_day@)).
 
 %% Configuration looks as follows: machine-vendor-os-tag
-xsb_configuration(configuration, 'x86-pc-windows64').
+xsb_configuration(configuration, 'x64-pc-windows').
 %% Architecture is: machine-vendor-os (like configuration, but no tag)
-xsb_configuration(architecture, 'x86-pc-windows64').
+xsb_configuration(architecture, 'x64-pc-windows').
 
 xsb_configuration(host_os, 'windows').
 xsb_configuration(os_type, 'windows').

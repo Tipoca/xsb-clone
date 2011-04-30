@@ -26,7 +26,6 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xsb_config.h,v 1.1 2011-04-29 01:05:36 kifer Exp $
 **
 */
 

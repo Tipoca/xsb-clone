@@ -12,10 +12,10 @@
 
 XSBDIR=..\..\..\..
 MYPROGRAM=mysql_driver
-DRIVER_MANAGER_LIB="$(XSBDIR)\config\x86-pc-windows64\bin\driver_manager.lib"
+DRIVER_MANAGER_LIB="$(XSBDIR)\config\x64-pc-windows\bin\driver_manager.lib"
 
 CPP=cl.exe
-OUTDIR=$(XSBDIR)\config\x86-pc-windows64\bin
+OUTDIR=$(XSBDIR)\config\x64-pc-windows\bin
 INTDIR=.
 
 ALL : "$(OUTDIR)\$(MYPROGRAM).dll"
@@ -26,7 +26,7 @@ CLEAN :
 	-@erase "$(INTDIR)\$(MYPROGRAM).exp"
 
 
-CPP_PROJ=/nologo /MT /W3 /GX /O2 /I "$(XSBDIR)\config\x86-pc-windows64" \
+CPP_PROJ=/nologo /MT /W3 /GX /O2 /I "$(XSBDIR)\config\x64-pc-windows" \
 		 /I "$(XSBDIR)\emu" /I "$(XSBDIR)\prolog_includes" \
 		 /I "$(XSBDIR)\packages\dbdrivers\cc" \
 		 /I "$(MySQLIncludeDir)" \
