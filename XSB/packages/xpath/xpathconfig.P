@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: xpathconfig.P,v 1.10 2010-12-19 04:57:07 kifer Exp $
+** $Id: xpathconfig.P,v 1.11 2011-05-01 06:00:06 kifer Exp $
 ** 
 */
 
@@ -83,10 +83,13 @@
 
     %% These construct the files where the included Windows copy of
     %% libxml2, iconv, etc., is sitting
+    ('_$_xpath_running_under'(windows64) -> PkgDlls = bin64
+    ; PkgDlls = bin
+    ),
     fmt_write_string(WindXML2Dlls,
-		     '%s%scc%sbin%s*.dll', f(XPathDir,Slash,Slash,Slash)),
+		     '%s%scc%s%s%s*.dll',f(XPathDir,Slash,Slash,PkgDlls,Slash)),
     fmt_write_string(WindXML2Libs,
-		     '%s%scc%sbin%s*.lib', f(XPathDir,Slash,Slash,Slash)),
+		     '%s%scc%s%s%s*.lib',f(XPathDir,Slash,Slash,PkgDlls,Slash)),
 
     fmt_write_string(Module, '%s%scc%s%s', f(XPathDir,Slash,Slash,Basename)),
     fmt_write_string(LibObjFile,
@@ -179,6 +182,11 @@
 '_$_xpath_running_under'(windows) :-
 	xsb_configuration(architecture, A),
 	str_sub(windows, A),
+	!.
+'_$_xpath_running_under'(windows64) :-
+	xsb_configuration(architecture, A),
+	str_sub(windows, A),
+	str_sub(x64, A),
 	!.
 '_$_xpath_running_under'(darwin) :-
 	xsb_configuration(architecture, A),
