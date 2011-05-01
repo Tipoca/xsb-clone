@@ -18,19 +18,23 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.37 2010-08-19 15:03:38 spyrosh Exp $
+## $Id: Makefile,v 1.38 2011-05-01 06:21:22 kifer Exp $
 ## 
 ##
 
 OBJEXT=.xwam
 
-ALL = 	slx${OBJEXT} perlmatch${OBJEXT} gap${OBJEXT} \
+ALL = 	slx${OBJEXT} gap${OBJEXT} \
 	regmatch${OBJEXT} wildmatch${OBJEXT} \
-	xasp${OBJEXT} libwww${OBJEXT} xsbdoc${OBJEXT} \
+	xasp${OBJEXT} xsbdoc${OBJEXT} \
 	xmc${OBJEXT} justify${OBJEXT} clpr${OBJECT} curl${OBJECT} pcre${OBJECT}
+# Perlmatch, libwww - deprecated. Use PCRE, CURL
+#	perlmatch${OBJEXT} libwww${OBJEXT}
 
-SUBDIR = flora2 slx perlmatch gap regmatch wildmatch libwww xasp \
+SUBDIR = flora2 slx gap regmatch wildmatch xasp \
 	 xsbdoc xmc justify clpqr curl pcre
+# Deprecated
+#	perlmatch libwww
 
 Option = [optimize]
 
@@ -82,13 +86,14 @@ iprolog::
 	@echo ""
 	cd iprolog; make
 
-libwww::
-	@echo ""
-	cd libwww; make
-
-perlmatch::
-	@echo ""
-	cd perlmatch; make
+# Deprecated
+#libwww::
+#	@echo ""
+#	cd libwww; make
+#
+#perlmatch::
+#	@echo ""
+#	cd perlmatch; make
 
 xasp::
 	@echo ""

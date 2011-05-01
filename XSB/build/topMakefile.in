@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.59 2010-08-19 15:03:35 spyrosh Exp $
+## $Id: topMakefile.in,v 1.60 2011-05-01 06:21:22 kifer Exp $
 ##
 ##
 
@@ -150,7 +150,7 @@ arch_config_objlibdir=$(src_config_prefix)/saved.o
 emumake_goal=@emumake_goal@
 
 # Normal user
-all: prepare emulator xsbmod xsbdll gpp_exe remake_dot_O_files register emu_clean
+all: prepare emulator xsbmod xsbdll gpp_exe remake_dot_O_files emu_clean
 
 # Developer who just checked out or updated CVS copy
 devel: prepare emulator xsbmod xsbdll gpp_exe remake_dot_O_files emu_clean
