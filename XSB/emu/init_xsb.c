@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.174 2011-04-12 17:31:59 tswift Exp $
+** $Id: init_xsb.c,v 1.175 2011-05-01 09:36:18 kifer Exp $
 ** 
 */
 
@@ -43,6 +43,8 @@
 #include <stddef.h>
 #include <sys/wait.h>
 #endif
+
+#include "wind2unix.h"
 
 #include "auxlry.h"
 #include "context.h"

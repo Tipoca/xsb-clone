@@ -31,24 +31,24 @@ REM Concatenate MSVC_mkfile.mak & MSVC.dep into emu\MSVC_mkfile.mak
 @cd ..\packages
 
 @cd dbdrivers
-@nmake /nologo /s /f NMakefile.mak
+@nmake /nologo /s /f NMakefile.mak %1 %2 %3 %4 %5 %6 %7
 @cd ..
 
 REM build curl before sgml and xpath
 @cd curl
-@nmake /nologo /f NMakefile.mak
+@nmake /nologo /f NMakefile.mak %1 %2 %3 %4 %5 %6 %7
 @cd ..
 
 @cd sgml\cc
-@nmake /nologo /f NMakefile.mak
+@nmake /nologo /f NMakefile.mak %1 %2 %3 %4 %5 %6 %7
 @cd ..\..
 
 @cd xpath\cc
-@nmake /nologo /f NMakefile.mak
+@nmake /nologo /f NMakefile.mak %1 %2 %3 %4 %5 %6 %7
 @cd ..\..
 
 @cd pcre
-@nmake /nologo /f NMakefile.mak
+@nmake /nologo /f NMakefile.mak %1 %2 %3 %4 %5 %6 %7
 @cd ..
 
 @cd ..\build

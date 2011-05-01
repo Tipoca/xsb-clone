@@ -101,13 +101,14 @@ NULL=nul
 # Begin Project
 CPP=cl.exe
 
-### If you have custom directories to use for #include or DLLs,
-### create the file custom_directories.mak and put these lines there
+### If you have custom directories to use for #include commands or DLLs,
+### create the file custom_settings.mak and put these lines there
 ### MY_INCLUDE_DIRS=my_include_directory1 my_include_directory2 ...
 ### MY_LIBRARY_DIRS=my_library_directory1 my_library_directory2 ...
+### XSB_INTERPROLOG=yes should also be specified here, if needed
 
-!IF EXIST("custom_directories.mak")
-!INCLUDE "custom_directories.mak"
+!IF EXIST("..\build\windows\custom_settings.mak")
+!INCLUDE "..\build\windows\custom_settings.mak"
 !ENDIF
 
 CONFIGDIR=..\config\x86-pc-windows
@@ -143,17 +144,10 @@ ORACLE_MSG=with Oracle support
 !ENDIF
 !ENDIF
 
-XSB_INTERPROLOG=@XSB_INTERPROLOG@
 
 !IF  "$(XSB_INTERPROLOG)" != ""
-INTERPRLOG_FLAG=/D "XSB_INTERPROLOG"
+INTERPROLOG_FLAG=/D "XSB_INTERPROLOG"
 INTERPROLOG_MSG=with Interprolog support
-
-#!IF  "$(SITE_LIBS)" == ""
-#!MESSAGE Paths to Java header file must be specified, if building XSB with support for Interprolog using the MSVC compiler
-#!MESSAGE Usage:
-#!ERROR NMAKE /f "MSVC_Mfile.mak" CFG="..." INTERPROLOG=1 SITE_LIBS="interprolog libs"
-#!ENDIF
 !ENDIF
 
 !IF "$(DLL)" == "yes"
@@ -163,79 +157,6 @@ ALL:: "$(OUTDIR)\xsb.exe"
 !ENDIF
 
 SOCKET_LIBRARY=wsock32.lib
-
-CLEAN :
-	-@erase "$(OBJDIR)\gpp.obj"
-	-@erase "$(OBJDIR)\auxlry.obj"
-	-@erase "$(OBJDIR)\biassert.obj"
-	-@erase "$(OBJDIR)\builtin.obj"
-        -@erase "$(OBJDIR)\call_graph_xsb.obj"	
-	-@erase "$(OBJDIR)\cinterf.obj"
-	-@erase "$(OBJDIR)\deadlock.obj"
-	-@erase "$(OBJDIR)\debug_xsb.obj"
-	-@erase "$(OBJDIR)\dis.obj"
-	-@erase "$(OBJDIR)\dynload.obj"
-	-@erase "$(OBJDIR)\dynamic_stack.obj"
-	-@erase "$(OBJDIR)\emuloop.obj"
-	-@erase "$(OBJDIR)\findall.obj"
-	-@erase "$(OBJDIR)\function.obj"
-	-@erase "$(OBJDIR)\hash_xsb.obj"
-	-@erase "$(OBJDIR)\hashtable_xsb.obj"
-	-@erase "$(OBJDIR)\hashtable.obj"
-	-@erase "$(OBJDIR)\hashtable_itr.obj"
-	-@erase "$(OBJDIR)\heap_xsb.obj"
-	-@erase "$(OBJDIR)\inst_xsb.obj"
-	-@erase "$(OBJDIR)\init_xsb.obj"
-	-@erase "$(OBJDIR)\url_encode.obj"
-	-@erase "$(OBJDIR)\incr_xsb.obj"
-	-@erase "$(OBJDIR)\interprolog_callback.obj"
-	-@erase "$(OBJDIR)\io_builtins_xsb.obj"
-	-@erase "$(OBJDIR)\loader_xsb.obj"
-	-@erase "$(OBJDIR)\main_xsb.obj"
-	-@erase "$(OBJDIR)\memory_xsb.obj"
-	-@erase "$(OBJDIR)\orastuff.obj"
-	-@erase "$(OBJDIR)\orient_xsb.obj"
-	-@erase "$(OBJDIR)\psc_xsb.obj"
-	-@erase "$(OBJDIR)\private_builtin.obj"
-	-@erase "$(OBJDIR)\random_xsb.obj"
-	-@erase "$(OBJDIR)\remove_unf.obj"
-	-@erase "$(OBJDIR)\residual.obj"
-	-@erase "$(OBJDIR)\rw_lock.obj"
-	-@erase "$(OBJDIR)\scc_xsb.obj"
-	-@erase "$(OBJDIR)\slgdelay.obj"
-	-@erase "$(OBJDIR)\struct_manager.obj"
-	-@erase "$(OBJDIR)\storage_xsb.obj"
-	-@erase "$(OBJDIR)\sub_delete.obj"
-	-@erase "$(OBJDIR)\subp.obj"
-	-@erase "$(OBJDIR)\system_xsb.obj"
-	-@erase "$(OBJDIR)\table_stats.obj"
-	-@erase "$(OBJDIR)\tables.obj"
-	-@erase "$(OBJDIR)\thread_xsb.obj"
-	-@erase "$(OBJDIR)\timer_xsb.obj"
-	-@erase "$(OBJDIR)\token_xsb.obj"
-	-@erase "$(OBJDIR)\trace_xsb.obj"
-	-@erase "$(OBJDIR)\trie_lookup.obj"
-	-@erase "$(OBJDIR)\trie_search.obj"
-	-@erase "$(OBJDIR)\tries.obj"
-	-@erase "$(OBJDIR)\tr_utils.obj"
-	-@erase "$(OBJDIR)\tst_insert.obj"
-	-@erase "$(OBJDIR)\tst_retrv.obj"
-	-@erase "$(OBJDIR)\tst_unify.obj"
-	-@erase "$(OBJDIR)\tst_utils.obj"
-	-@erase "$(OBJDIR)\pathname_xsb.obj"
-	-@erase "$(OBJDIR)\odbc_xsb.obj"
-	-@erase "$(OBJDIR)\error_xsb.obj"
-	-@erase "$(OBJDIR)\socket_xsb.obj"
-	-@erase "$(OBJDIR)\string_xsb.obj"
-	-@erase "$(OBJDIR)\varstring.obj"
-	-@erase "$(OBJDIR)\ubi_BinTree.obj"
-	-@erase "$(OBJDIR)\ubi_SplayTree.obj"
-	-@erase "$(OBJDIR)\xsb.pch"
-	-@erase "$(OUTDIR)\xsb.exe"
-	-@erase "$(OUTDIR)\xsb.dll"
-	-@erase "$(OUTDIR)\xsb.lib"
-	-@erase "$(OUTDIR)\xsb.exp"
-	-@erase "$(OUTDIR)\gpp.exe"
 
 "$(OUTDIR)" :
 	if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
@@ -442,6 +363,79 @@ DLL_LINK32_FLAGS=\
 
 .cxx{$(CPP_SBRS)}.sbr:
    -@$(CPP) $(CPP_PROJ) $<
+
+CLEAN :
+	-@erase "$(OBJDIR)\gpp.obj"
+	-@erase "$(OBJDIR)\auxlry.obj"
+	-@erase "$(OBJDIR)\biassert.obj"
+	-@erase "$(OBJDIR)\builtin.obj"
+        -@erase "$(OBJDIR)\call_graph_xsb.obj"	
+	-@erase "$(OBJDIR)\cinterf.obj"
+	-@erase "$(OBJDIR)\deadlock.obj"
+	-@erase "$(OBJDIR)\debug_xsb.obj"
+	-@erase "$(OBJDIR)\dis.obj"
+	-@erase "$(OBJDIR)\dynload.obj"
+	-@erase "$(OBJDIR)\dynamic_stack.obj"
+	-@erase "$(OBJDIR)\emuloop.obj"
+	-@erase "$(OBJDIR)\findall.obj"
+	-@erase "$(OBJDIR)\function.obj"
+	-@erase "$(OBJDIR)\hash_xsb.obj"
+	-@erase "$(OBJDIR)\hashtable_xsb.obj"
+	-@erase "$(OBJDIR)\hashtable.obj"
+	-@erase "$(OBJDIR)\hashtable_itr.obj"
+	-@erase "$(OBJDIR)\heap_xsb.obj"
+	-@erase "$(OBJDIR)\inst_xsb.obj"
+	-@erase "$(OBJDIR)\init_xsb.obj"
+	-@erase "$(OBJDIR)\url_encode.obj"
+	-@erase "$(OBJDIR)\incr_xsb.obj"
+	-@erase "$(OBJDIR)\interprolog_callback.obj"
+	-@erase "$(OBJDIR)\io_builtins_xsb.obj"
+	-@erase "$(OBJDIR)\loader_xsb.obj"
+	-@erase "$(OBJDIR)\main_xsb.obj"
+	-@erase "$(OBJDIR)\memory_xsb.obj"
+	-@erase "$(OBJDIR)\orastuff.obj"
+	-@erase "$(OBJDIR)\orient_xsb.obj"
+	-@erase "$(OBJDIR)\psc_xsb.obj"
+	-@erase "$(OBJDIR)\private_builtin.obj"
+	-@erase "$(OBJDIR)\random_xsb.obj"
+	-@erase "$(OBJDIR)\remove_unf.obj"
+	-@erase "$(OBJDIR)\residual.obj"
+	-@erase "$(OBJDIR)\rw_lock.obj"
+	-@erase "$(OBJDIR)\scc_xsb.obj"
+	-@erase "$(OBJDIR)\slgdelay.obj"
+	-@erase "$(OBJDIR)\struct_manager.obj"
+	-@erase "$(OBJDIR)\storage_xsb.obj"
+	-@erase "$(OBJDIR)\sub_delete.obj"
+	-@erase "$(OBJDIR)\subp.obj"
+	-@erase "$(OBJDIR)\system_xsb.obj"
+	-@erase "$(OBJDIR)\table_stats.obj"
+	-@erase "$(OBJDIR)\tables.obj"
+	-@erase "$(OBJDIR)\thread_xsb.obj"
+	-@erase "$(OBJDIR)\timer_xsb.obj"
+	-@erase "$(OBJDIR)\token_xsb.obj"
+	-@erase "$(OBJDIR)\trace_xsb.obj"
+	-@erase "$(OBJDIR)\trie_lookup.obj"
+	-@erase "$(OBJDIR)\trie_search.obj"
+	-@erase "$(OBJDIR)\tries.obj"
+	-@erase "$(OBJDIR)\tr_utils.obj"
+	-@erase "$(OBJDIR)\tst_insert.obj"
+	-@erase "$(OBJDIR)\tst_retrv.obj"
+	-@erase "$(OBJDIR)\tst_unify.obj"
+	-@erase "$(OBJDIR)\tst_utils.obj"
+	-@erase "$(OBJDIR)\pathname_xsb.obj"
+	-@erase "$(OBJDIR)\odbc_xsb.obj"
+	-@erase "$(OBJDIR)\error_xsb.obj"
+	-@erase "$(OBJDIR)\socket_xsb.obj"
+	-@erase "$(OBJDIR)\string_xsb.obj"
+	-@erase "$(OBJDIR)\varstring.obj"
+	-@erase "$(OBJDIR)\ubi_BinTree.obj"
+	-@erase "$(OBJDIR)\ubi_SplayTree.obj"
+	-@erase "$(OBJDIR)\xsb.pch"
+	-@erase "$(OUTDIR)\xsb.exe"
+	-@erase "$(OUTDIR)\xsb.dll"
+	-@erase "$(OUTDIR)\xsb.lib"
+	-@erase "$(OUTDIR)\xsb.exp"
+	-@erase "$(OUTDIR)\gpp.exe"
 
 
 # Local Variables:

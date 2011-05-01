@@ -29,8 +29,9 @@
 #define XSB_DLL
 #include <windows.h>
 #include <malloc.h>
+#ifndef alloca
 #define alloca _malloca
-
+#endif
 #endif
 
 #include <stdio.h>

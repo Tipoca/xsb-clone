@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.106 2011-04-27 17:11:11 pmoura Exp $
+** $Id: cinterf.c,v 1.107 2011-05-01 09:36:18 kifer Exp $
 **
 */
 
@@ -33,6 +33,7 @@
 #include <unistd.h>
 #endif
 #include <errno.h>
+
 
 #include "auxlry.h"
 #include "context.h"
@@ -54,6 +55,11 @@
 #include "loader_xsb.h"
 #include "thread_xsb.h"
 
+#ifdef WIN_NT
+#ifndef fileno
+#define fileno     _fileno
+#endif
+#endif
 
 /*
   This was the old test for being a kosher Prolog string
@@ -2039,9 +2045,9 @@ typedef SSIZE_T	ssize_t;
 #endif
 static inline ssize_t pread(int fd, void *buf, size_t count, long offset)
 {
-if (-1 == lseek(fd,offset,SEEK_SET))
-	return(-1);
-return(read(fd,buf,count));
+  if (-1 == lseek(fd,offset,SEEK_SET))
+    return(-1);
+  return(read(fd,buf,count));
 }
 #else
 //

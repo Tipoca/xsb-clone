@@ -103,7 +103,4 @@
 /* GC on SLG-WAM! ;) */
 #define SLG_GC 1
 
-/* Build for INTERPROLOG */
-/* #undef XSB_INTERPROLOG */
-
 /* #undef NON_OPT_COMPILE */
