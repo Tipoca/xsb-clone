@@ -21,6 +21,8 @@
 **
 */
 
+#include "deprecation.h"
+
 #include "xsb_config.h"
 
 #ifdef WIN_NT
@@ -28,6 +30,7 @@
 #include <windows.h>
 #include <malloc.h>
 #define alloca _malloca
+
 #endif
 
 #include <stdio.h>

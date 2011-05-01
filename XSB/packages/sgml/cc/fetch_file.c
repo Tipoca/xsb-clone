@@ -6,6 +6,8 @@
  *
  ****************************************************************************/
 
+#include "deprecation.h"
+
 #include "xsb_config.h"
 #include "socketcall.h"
 #include <stdio.h>

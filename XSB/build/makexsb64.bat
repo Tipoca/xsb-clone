@@ -47,5 +47,10 @@ REM build curl before sgml and xpath
 @nmake /nologo /f NMakefile64.mak
 @cd ..\..
 
+# We don't have win64 DLLs for PCRE yet
+#@cd pcre
+#@nmake /nologo /f NMakefile64.mak
+#@cd ..
+
 @cd ..\build
 

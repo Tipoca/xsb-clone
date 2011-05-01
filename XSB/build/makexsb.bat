@@ -47,5 +47,9 @@ REM build curl before sgml and xpath
 @nmake /nologo /f NMakefile.mak
 @cd ..\..
 
+@cd pcre
+@nmake /nologo /f NMakefile.mak
+@cd ..
+
 @cd ..\build
 

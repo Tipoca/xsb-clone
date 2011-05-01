@@ -71,10 +71,13 @@
     xsb_configuration(compiler_flags, CCflags),
     xsb_configuration(config_bindir, ConfigBinDir),
 
+    ('_$_curl_running_under'(windows64) -> PkgDlls = bin64
+    ; PkgDlls = bin
+    ),
     fmt_write_string(WindCurlDlls,
-		     '%s%scc%sbin%s*.dll', f(CurlDir,Slash,Slash,Slash)),
+		     '%s%scc%s%s%s*.dll', f(CurlDir,Slash,Slash,PkgDlls,Slash)),
     fmt_write_string(WindCurlLibs,
-		     '%s%scc%sbin%s*.lib', f(CurlDir,Slash,Slash,Slash)),
+		     '%s%scc%s%s%s*.lib', f(CurlDir,Slash,Slash,PkgDlls,Slash)),
 
     fmt_write_string(Module, '%s%scc%s%s', f(CurlDir,Slash,Slash,Basename)),
     fmt_write_string(LibObjFile,
@@ -163,6 +166,11 @@
 '_$_curl_running_under'(windows) :-
 	xsb_configuration(architecture, A),
 	str_sub(windows, A),
+	!.
+'_$_curl_running_under'(windows64) :-
+	xsb_configuration(architecture, A),
+	str_sub(windows, A),
+	str_sub(x64, A),
 	!.
 '_$_curl_running_under'(darwin) :-
 	xsb_configuration(architecture, A),

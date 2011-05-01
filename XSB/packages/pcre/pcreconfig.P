@@ -44,9 +44,9 @@
 	    LD_flags = ' -lpcre'
 	),
 
-	package_configuration(dir(pcre), PcrematchDir),
+	package_configuration(dir(pcre), PcreDir),
 	fmt_write_string(LD_directives_file,
-			 '%s%scc%spcre4pl.H', f(PcrematchDir, Slash, Slash)),
+			 '%s%scc%spcre4pl.H', f(PcreDir, Slash, Slash)),
 	telling(OldTell),
 	tell(LD_directives_file),
 	writeln('%% This file is generated on-the-fly by pcreconfig.P'),
@@ -63,7 +63,7 @@
 
 
 :-
-    package_configuration(dir(pcre), PcrematchDir),  
+    package_configuration(dir(pcre), PcreDir),  
     slash(Slash),
     Basename = pcre4pl,
     xsb_configuration(config_libdir, ConfigLibDir),
@@ -72,12 +72,15 @@
     xsb_configuration(compiler_flags, CCflags),
     xsb_configuration(config_bindir, ConfigBinDir),
 
+    ('_$_pcrematch_running_under'(windows64) -> PkgDlls = bin64
+    ; PkgDlls = bin
+    ),
     fmt_write_string(WindPcrematchDlls,
-		     '%s%scc%spcre%s*.dll', f(PcrematchDir,Slash,Slash,Slash)),
+		     '%s%scc%s%s%s*.dll', f(PcreDir,Slash,Slash,PkgDlls,Slash)),
     fmt_write_string(WindPcrematchLibs,
-		     '%s%scc%spcre%s*.lib', f(PcrematchDir,Slash,Slash,Slash)),
+		     '%s%scc%s%s%s*.lib', f(PcreDir,Slash,Slash,PkgDlls,Slash)),
 
-    fmt_write_string(Module, '%s%scc%s%s', f(PcrematchDir,Slash,Slash,Basename)),
+    fmt_write_string(Module, '%s%scc%s%s', f(PcreDir,Slash,Slash,Basename)),
     fmt_write_string(LibObjFile,
 		     '%s%s%s%s',
 		     args(ConfigLibDir,Slash,Basename,XSB_OBJ_EXTENSION_ATOM)),
@@ -162,6 +165,11 @@
 '_$_pcrematch_running_under'(windows) :-
 	xsb_configuration(architecture, A),
 	str_sub(windows, A),
+	!.
+'_$_pcrematch_running_under'(windows64) :-
+	xsb_configuration(architecture, A),
+	str_sub(windows, A),
+	str_sub(x64, A),
 	!.
 '_$_pcrematch_running_under'(darwin) :-
 	xsb_configuration(architecture, A),

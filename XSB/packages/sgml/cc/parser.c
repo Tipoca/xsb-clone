@@ -5,6 +5,8 @@
  *
  ****************************************************************************/
 
+#include "deprecation.h"
+
 #define DTD_IMPLEMENTATION 1
 
 #include "xsb_config.h"
