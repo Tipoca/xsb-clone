@@ -103,16 +103,18 @@ CPP=cl.exe
 
 ### If you have custom directories to use for #include commands or DLLs,
 ### create the file custom_settings.mak and put these lines there
-### MY_INCLUDE_DIRS=my_include_directory1 my_include_directory2 ...
-### MY_LIBRARY_DIRS=my_library_directory1 my_library_directory2 ...
-### XSB_INTERPROLOG=yes should also be specified here, if needed
+### MY_INCLUDE_DIRS=/I"incdir1" /I"incdir2" ...
+### MY_LIBRARY_DIRS=/LIBPATH:"libdir1" /LIBPATH:"libdir2" ...
+### XSB_INTERPROLOG=yes/true/1 can also be specified here, if needed
+###                 In this case, MY_INCLUDE_DIRS should point to the
+###                 directories that contain jni.h and jni_md.h
 
 !IF EXIST("..\build\windows64\custom_settings.mak")
 !INCLUDE "..\build\windows64\custom_settings.mak"
 !ENDIF
 
 CONFIGDIR=..\config\x64-pc-windows
-CONFIG_INCLUDE_FLAG=/I"$(CONFIGDIR) $(MY_INCLUDE_DIRS)"
+CONFIG_INCLUDE_FLAG=/I"$(CONFIGDIR)" $(MY_INCLUDE_DIRS)
 SITE_LIBS= $(MY_LIBRARY_DIRS)
 
 # Assume we are running NMAKE in the emu directory
@@ -145,7 +147,7 @@ ORACLE_MSG=with Oracle support
 !ENDIF
 
 
-!IF  "$(XSB_INTERPROLOG)" != ""
+!IF  "$(XSB_INTERPROLOG)" == "yes" || "$(XSB_INTERPROLOG)" == "true" || "$(XSB_INTERPROLOG)" == "1"
 INTERPROLOG_FLAG=/D "XSB_INTERPROLOG"
 INTERPROLOG_MSG=with Interprolog support
 !ENDIF
@@ -292,7 +294,7 @@ CPP_PROJ=\
 LINK32_FLAGS=\
 	/nologo \
 	/subsystem:console \
-	/machine:I386 \
+	/machine:x64 \
 	$(LINK_DEBUG_FLAGS) \
 	$(SOCKET_LIBRARY) \
 	$(SITE_LIBS) \
@@ -316,7 +318,7 @@ DLL_LINK32_FLAGS=\
 	/nologo \
 	/subsystem:windows \
 	/dll \
-	/machine:I386 \
+	/machine:x64 \
 	$(SOCKET_LIBRARY) \
 	$(SITE_LIBS) \
 	kernel32.lib \

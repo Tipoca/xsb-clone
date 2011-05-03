@@ -45,7 +45,7 @@ LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib \
 		WS2_32.lib \
 		$(DRIVER_MANAGER_LIB) $(MySQLLib) \
 		/nologo /dll \
-		/machine:I386 /out:"$(OUTDIR)\$(MYPROGRAM).dll"
+		/machine:x64 /out:"$(OUTDIR)\$(MYPROGRAM).dll"
 LINK32_OBJS=  "$(INTDIR)\$(MYPROGRAM).obj"
 
 "$(OUTDIR)\$(MYPROGRAM).dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
