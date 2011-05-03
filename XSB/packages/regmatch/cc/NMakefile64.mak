@@ -36,7 +36,7 @@ LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib \
 		odbc32.lib odbccp32.lib xsb.lib \
 		$(REGMATCH_LIB) \
 		/nologo /dll \
-		/machine:I386 /out:"$(OUTDIR)\$(MYPROGRAM).dll" \
+		/machine:x64 /out:"$(OUTDIR)\$(MYPROGRAM).dll" \
 		/libpath:"$(XSBDIR)\config\x64-pc-windows\bin" \
 		/libpath:"$(REGMATCH_LIB_DIR)
 LINK32_OBJS=  "$(INTDIR)\$(MYPROGRAM).obj"
