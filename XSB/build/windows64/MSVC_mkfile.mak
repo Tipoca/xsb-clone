@@ -112,7 +112,7 @@ CPP=cl.exe
 !ENDIF
 
 CONFIGDIR=..\config\x64-pc-windows
-CONFIG_INCLUDE_FLAG=/I"$(CONFIGDIR)" $(MY_INCLUDE_DIRS)
+CONFIG_INCLUDE_FLAG=/I"$(CONFIGDIR) $(MY_INCLUDE_DIRS)"
 SITE_LIBS= $(MY_LIBRARY_DIRS)
 
 # Assume we are running NMAKE in the emu directory
