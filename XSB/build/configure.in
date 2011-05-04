@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.215 2011-04-22 19:14:39 pmoura Exp $
+## $Id: configure.in,v 1.216 2011-05-04 20:59:57 kifer Exp $
 ##
 ##
 
@@ -64,10 +64,6 @@ AC_ARG_WITH(cc,
 [  --with-cc                    use CC to compile XSB])
 AC_ARG_WITH(acc,
 [  --with-acc                   use ACC to compile XSB])
-AC_ARG_WITH(os,
-[  --with-os=wind               build XSB for Windows XP/NT/98])
-AC_ARG_WITH(wind,
-[  --with-wind                  build XSB for Windows XP/NT/98])
 AC_ARG_WITH(bits64,
 [  --with-bits64                force a 64-bit version of XSB],
    bits64=yes,bits64=no)
@@ -249,15 +245,15 @@ do
 	    esac ;;
 	    --with-* )
 	    case $1 in
-		--with-gcc | --with-cc | --with-acc | --with-os* | \
-		--with-wind | --with-bits64 | --with-bits32 | --with-aout | \
+		--with-gcc | --with-cc | --with-acc | \
+		--with-bits64 | --with-bits32 | --with-aout | \
 		--with-optimization* | --with-config-tag* | --with-site-prefix* | --with-includes* | \
 		--with-static-libraries* | --with-dynamic-libraries* | --with-libwww* | --with-xpath* | \
 		--with-dbdrivers | --with-oracle | --with-odbc | --with-iodbc | --with-interprolog | \
 		--with-smodels* | --with-itkwish* | --with-pita* )
 		    ;;
 	    *)
-p                    echo "configure: error: uncecognized option: $1"
+                    echo "configure: error: uncecognized option: $1"
                     echo "Try 'configure --help' for more information."
                     rm -f  buildxsb.lock
                     exit 1 ;;
@@ -282,12 +278,6 @@ fi
 if test "${with_dwarf_debug}" = "yes" ; then
    enable_debug=yes
    enable_dwarf_debug=yes
-fi
-
-if test "${with_wind+set}" = "set" ; then
-   with_os=wind
-   # suppress config tag
-   config_tag=
 fi
 
 if test "${enable_mt}" = "yes" -o "${enable_ccmpl}" = "yes" ; then
@@ -542,55 +532,31 @@ echo ""
 mno_cyg_inclib=""
 mno_cyg_lib=""
 
-# check for NT configurations
-case "$with_os" in
-  win* | *nt*) dnl Windows
-    canonical=x86-pc-windows
-    host_os=windows
-    os_type=windows
-    os_version=
-    host_vendor=pc
-    host_cpu=x86
-    configuration_templ=xsb_configuration_wind.in
-    config_dot_h_templ=def_config_wind.in
-    echo 'Configuring for host system type... Windows NT/95/98/2000'
-    with_os=wind;
-    ;;
-  *)	dnl check for unknown OS
-    if test -n "$with_os" ; then
-       echo "OS \`$with_os' is not supported"
-       rm -f  buildxsb.lock
-       exit 1
-    fi
-    configuration_templ=xsb_configuration.in
-    config_dot_h_templ=def_config.in
+config_dot_h_templ=def_config.in
 
-    dnl Check configuration for a Unix variant
-    AC_CANONICAL_HOST
-    canonical=$host
-    configuration=${host_alias-${build_alias-$host}}
-    if test "$configuration" = "NONE" -o -z "$configuration" ; then
-        echo '
+dnl Check configuration for a Unix variant
+AC_CANONICAL_HOST
+canonical=$host
+configuration=${host_alias-${build_alias-$host}}
+if test "$configuration" = "NONE" -o -z "$configuration" ; then
+    echo '
 - You did not tell me what kind of host system you want to configure.
 - I will attempt to guess the kind of system this is.
 ' 1>&6
-        canonical=$host
-        configuration=$host_alias
+    canonical=$host
+    configuration=$host_alias
+else
+    canonical=`${CONFIG_SHELL-/bin/sh} ./config.sub $configuration 2>&1`
+
+    if test -n "`echo "$canonical" | sed -e [s/${configuration}//]`" ; then
+	echo $canonical
+	echo ""
+	rm -f  buildxsb.lock
+	exit 1
     else
-        canonical=`${CONFIG_SHELL-/bin/sh} ./config.sub $configuration 2>&1`
-
-        if test -n "`echo "$canonical" | sed -e [s/${configuration}//]`" ; then
-        echo $canonical
-        echo ""
-        rm -f  buildxsb.lock
-        exit 1
-        else
-        AC_MSG_NOTICE([checking host system type... $canonical])
-        fi
+	AC_MSG_NOTICE([checking host system type... $canonical])
     fi
-
-    ;;
-esac
+fi
 
 
 # arch-independent XSB directories
@@ -1115,17 +1081,6 @@ if test "${with_oracle+set}" = "set" ; then
 fi
 
 #if test "${with_oracle+set}" = "set" ; then
-#    if test -n "$with_os" ; then
-#	AC_DEFINE(ORACLE)
-#	cat <<EOT
-#
-#    Building for $with_os with Oracle support.
-#    You must ensure that all the necessary Oracle libraries
-#    are installed on the target machine.
-#
-#EOT
-#
-#    else
 #	cat <<EOT
 #
 #    Checking whether XSB can be compiled with Oracle support.
@@ -1180,56 +1135,14 @@ ODBCSRC=""
 ODBCOBJ=""
 
 if test "${with_odbc+set}" = "set"; then
-    if test -n "$with_os" ; then
-    echo -n ""
-#	AC_DEFINE(XSB_ODBC)
-    cat <<EOT
-#
-#    Building for $with_os with support for ODBC.
-#    You must ensure that the requisite ODBC libraries
-#    are installed on the target machine.
-#
-EOT
-#
-else
-#	cat <<EOT
-#
-#    Checking whether XSB can be built with ODBC support.
-#    If this fails, you will have to use the --with-includes option
-#    of \`configure' to tell where the ODBC .h files live and,
-#    possibly, the --site-libraries option to specify the directory
-#    where ODBC libraries live.
-#
-#EOT
-#	dnl Here we provide additional directories to check headers in
-#	dnl AC_CHECK_HEADERS uses CPPFLAGS to find the include path.
-#	dnl Since these aren't standard headers, we must use --with-includes
-#	saved_cpp_flags="${CPPFLAGS}"
-#	CPPFLAGS="${c_site_includes} ${CPPFLAGS}"
-#	AC_CHECK_HEADERS(odbcinst.h SQL.H SQLEXT.H windows.h, \
-#			 with_odbc=yes, odbc_error=yes)
-#	if test "$odbc_error" = "yes"; then
-#	    echo ""
-#	    AC_MSG_WARN([ ****Your system is missing a .h file required for ODBC support
-#		      ****XSB will be built WITHOUT ODBC support])
-#	    echo ""
-#	    have_warnings=yes
-#	    with_odbc=no
-#	else
-#	    AC_DEFINE(XSB_ODBC)
-        cat <<EOT
+   cat <<EOT
 
 Building with support for ODBC
 
 EOT
-#	fi
-#	dnl restore CPPFLAGS
-#	CPPFLAGS="${saved_cpp_flags}"
 
     ODBCSRC="odbc_xsb.c"
     ODBCOBJ="odbc_xsb.o"
-
-    fi
 fi
 
 if test "${with_odbc+set}" = "set"; then
@@ -1240,78 +1153,12 @@ fi
 win_site_includes=
 win_ld_site_libraries=
 
-if test "$with_os" = wind ; then
-    dnl --with-includes (multiple dirs)
-
-    if test -n "$with_includes"; then
-        echo "    Appending directories to the C library path:"
-        for arg in $with_includes; do
-            arg=`echo "/I\"${arg}\"" | sed 's,\([[^/]]\)/*$,\1,'`
-            win_site_includes="${win_site_includes} $arg"
-            echo "		\"$arg\""
-        done
-    fi
-
-    dnl --site-static-libraries (multiple dirs)
-    if test -n "$with_static_libraries"; then
-        echo "    Appending directories to the C include path:"
-        for arg in $with_static_libraries; do
-            arg=`echo "/LIBPATH:\"${arg}\"" | sed 's,\([[^/]]\)/*$,\1,'`
-            win_ld_site_libraries="${win_ld_site_libraries} $arg"
-            echo "		\"$arg\""
-        done
-    fi
-
-    if test "${enable_mt}" = "yes" -o "${enable_ccmpl}" = "yes" ; then
-        win_ld_site_libraries="pthreadVC1.lib ${win_ld_site_libraries}"
-    fi
-fi
-
-AC_CHECK_PROG(perl_support, perl, "yes", "no")
-
-if test "${perl_support}" = "yes"; then
-    #old versions of perl don't have Config module
-    # so we check for this as well
-    perl_archlib=`perl -MConfig -e 'print $Config{archlib}'` || perl_support=no
-fi
-
-if test "${perl_support}" = "yes"; then
-    perl_cc_compiler=`perl -MConfig -e 'print $Config{cc}'`
-    perl_ccflags=`perl -MConfig -e 'print $Config{ccflags}'`
-    perl_libs=`perl -MConfig -e 'print $Config{libs}'`
-
-    # Perl base revision comes out as 5.0, so we strip .0
-    perl_baserev=`perl -MConfig -e 'print "$Config{baserev}\n"' | sed -e 's/\..*//'`
-    perl_patchlevel=`perl -MConfig -e 'print $Config{patchlevel}'`
-
-   # perl support doesn't work with perl < 5.004
-   if test $[perl_baserev] -lt 5 ; then
-        perl_support=no
-   fi
-
-   if test "$perl_baserev" = "5" -a $[perl_patchlevel] -lt 4  ; then
-        perl_support=no
-   fi
-fi
-
-if test "`echo $perl_libs | sed 's/-lgdbm//'`" != "$perl_libs"; then
-    AC_CHECK_LIB(gdbm, main,, perl_support=no)
-fi
-
-if test "`echo $perl_libs | sed 's/-lndbm//'`" != "$perl_libs"; then
-    AC_CHECK_LIB(ndbm, main,, perl_support=no)
-fi
 
 # Need to re-state the trap since configure resets it occasionally
 trap 'rm buildxsb.lock; exit 1' 1 2 3 15
 
 AC_SUBST(regmatch_support)
 AC_SUBST(wildmatch_support)
-
-AC_SUBST(perl_archlib)
-AC_SUBST(perl_cc_compiler)
-AC_SUBST(perl_ccflags)
-AC_SUBST(perl_libs)
 
 
 # Java support
@@ -1331,6 +1178,10 @@ java_path=`dirname $java_path`
 java_path=`dirname $java_path`
 java_path=$java_path/include
 #java_path=`echo $java_path | sed 's,bin/javac,include,' `
+
+if test -f "$java_path/jni.h" -a -f "$java_path/jni_md.h" ; then
+        with_interprolog=yes
+fi
 
 if test "${with_interprolog}" = "yes"; then
     if test "${java_support}" != "yes"; then
@@ -1353,6 +1204,7 @@ INTERPROLOGOBJ=""
 
 if test "${with_interprolog+set}" = "set"; then
     AC_DEFINE(XSB_INTERPROLOG)
+    AC_SUBST(XSB_INTERPROLOG,1)
     with_interprolog=yes
     INTERPROLOGSRC="interprolog_callback.c"
     INTERPROLOGOBJ="interprolog_callback.o"
@@ -1419,9 +1271,7 @@ if test "${enable_mt}" = "yes" -o "${enable_ccmpl}" = "yes" ; then
     if test "${host_os}" = "cygwin"; then
         LDFLAGS="${LDFLAGS} -lpthreadVSE1"
     else
-        if test "$with_os" != wind ; then
-            LDFLAGS="${LDFLAGS} -lpthread"
-        fi
+	LDFLAGS="${LDFLAGS} -lpthread"
     fi
 
     CFLAGS="${CFLAGS} -D_GNU_SOURCE"
@@ -1575,8 +1425,8 @@ case "$canonical" in
                 CFLAGS="-faltivec -fPIC ${CFLAGS} "
                 AC_DEFINE(DARWIN)
                 AC_DEFINE(FOREIGN_ELF)
-        DYNMOD_LINKFLAGS="-dynamiclib -single_module -nostartfiles"
-        DYNMOD_SHAREDLIB_EXTENSION=jnilib
+        	DYNMOD_LINKFLAGS="-dynamiclib -single_module -nostartfiles"
+        	DYNMOD_SHAREDLIB_EXTENSION=jnilib
         ;;
     *sgi* )     AC_DEFINE(FOREIGN_ELF)
                 if test "${machine64bit}" = yes ; then
@@ -1661,7 +1511,6 @@ case "$canonical" in
                     os_version=
                     host_vendor=pc
                     host_cpu=x86
-                    configuration_templ=xsb_configuration.in
                     config_dot_h_templ=def_config_mnoc.in
                     GPPWNTFLAG="-D WIN_NT"
 
@@ -1687,12 +1536,9 @@ case "$canonical" in
     ;;
 esac
 
-dnl Let autoconf take care of the "inline" and "const" keywords.
-if test -z "$with_os" ; then
-    dnl test for inlining only on Unix
-    dnl hard-set it in xsb_config.h on windows
-    AC_C_INLINE
-fi
+dnl test for inlining only on Unix
+dnl hard-coded it in windows\xsb_config.h on windows
+AC_C_INLINE
 
 # Don't optimize and inline if debugging!!
 if test "${do_debugging}" = "yes"  -o "${disable_optimization}" = "yes" ; then
@@ -1949,6 +1795,10 @@ dnl AC_CONFIG_HEADER(${arch_config_prefix}/xsb_config.h:def_config.in
 dnl ${arch_config_prefix}/xsb_debug.h:def_debug.in])
 
 AC_CONFIG_HEADERS([${arch_config_prefix}/xsb_config.h:${config_dot_h_templ}
+windows/xsb_config.h:windows/def_config.in
+windows/xsb_debug.h:def_debug.in
+windows64/xsb_config.h:windows64/def_config.in
+windows64/xsb_debug.h:def_debug.in
 ${arch_config_prefix}/xsb_debug.h:def_debug.in])
 
 
@@ -1958,14 +1808,20 @@ AC_OUTPUT([ ${arch_config_prefix}/topMakefile:topMakefile.in
         ${arch_config_prefix}/gppMakefile:gppMakefile.in
         ${arch_config_prefix}/smoMakefile:smoMakefile.in
         ${arch_config_prefix}/makedef.sh:makedef.sh.in
-        ${arch_config_file}:${configuration_templ}
+        ${arch_config_file}:xsb_configuration.in
+	windows/xsb_configuration.P:windows/xsb_configuration.in
+	windows64/xsb_configuration.P:windows64/xsb_configuration.in
         makexsb:makexsb.in
         ${emudir}/extensions_xsb.h:extensions_xsb.in
-        ${scriptdir}/xsb${config_tag}:xsb.in
         ${scriptdir}/chr_pp${config_tag}:chr_pp.in
-        ${scriptdir}/xsb.bat:wxsb.in
+        ${scriptdir}/xsb${config_tag}:xsb.in
+        ${scriptdir}/xsb.bat:windows/xsb.in
+        ${scriptdir}/xsb64.bat:windows64/xsb.in
         ${arch_config_prefix}/banner.msg:banner.in
-        ${arch_config_prefix}/MSVC_mkfile.mak:MSVC_mkfile.in
+        windows/banner.msg:windows/banner.in
+        windows64/banner.msg:windows64/banner.in
+        windows/MSVC_mkfile.mak:windows/MSVC_mkfile.in
+        windows64/MSVC_mkfile.mak:windows64/MSVC_mkfile.in
         ${prefix}/packages/xmc/xmc-gui:xmc-gui.in
         ])
 
@@ -2048,17 +1904,6 @@ echo ""
 echo "  POSIX regexp matching libraries:                $regmatch_support"
 echo "  POSIX wildcard matching libraries:              $wildmatch_support"
 echo ""
-echo "  Perl support (DEPRECATED):                      $perl_support"
-
-if test "$perl_support" = "yes"; then
-   cat <<EOT
-  Perl archlib:                                   $perl_archlib/CORE
-  Perl C compiler:                                $perl_cc_compiler
-  Perl C flags:                                   $perl_ccflags
-  Perl loader flags:                              $perl_libs
-EOT
-fi
-echo ""
 
 if test -n "${with_libwww}" && test -f $topdir/packages/libwww/Installation_summary; then
     cat $topdir/packages/libwww/Installation_summary
@@ -2129,13 +1974,8 @@ if test -n "$with_dynamic_libraries"; then
   rm -f ${tempfile}
 fi
 
-if test "$with_os" = wind ; then
-  ./MSVC.sh
-  mv MSVC.dep ${arch_config_prefix}
-
-  # copy the windows-specific odbc files to the wondows specific directory
-  cp odbc/* ${arch_config_prefix} 2> /dev/null
-fi
+dnl produce MSVC.dep
+./MSVC.sh
 
 
 # Now set modes, copy some files
@@ -2146,8 +1986,7 @@ chmod 555 ${scriptdir}/xsb${config_tag}  ${scriptdir}/chr_pp${config_tag}  makex
 chmod 644 ${arch_config_file} \
       ${arch_config_prefix}/xsb_config.h \
       ${arch_config_prefix}/xsb_debug.h \
-      ${arch_config_prefix}/*Makefile \
-      ${arch_config_prefix}/MSVC*
+      ${arch_config_prefix}/*Makefile
 
 
 # phantom private_builtin.c file
@@ -2169,20 +2008,12 @@ if test "$have_warnings" = "yes"; then
     echo ""
 fi
 
-if test "$with_os" = wind ; then
-   xsb_compile_command=makexsb_wind
-else
-   xsb_compile_command=makexsb
-fi
 
 echo ""
 if test -z "$config_tag" ; then
-    echo "***Now compile XSB with:   \`$xsb_compile_command'"
+    echo "***Now compile XSB with:   \`makexsb'"
 else
-    echo "***Now compile XSB with:   \`$xsb_compile_command --config-tag=${config_tag_sans_dash}'"
-fi
-if test "$with_os" = wind ; then
-   echo "***on a windows box."
+    echo "***Now compile XSB with:   \`makexsb --config-tag=${config_tag_sans_dash}'"
 fi
 
 echo ""
