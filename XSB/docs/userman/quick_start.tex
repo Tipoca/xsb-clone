@@ -367,22 +367,15 @@ represents the value of PATH, add
 
 \item
    {\tt cd \$XSB\_DIR/build}  
- \item 
-   {\tt ./configure --with-wind}   \\
-   This step is necessary if you downloaded XSB from CVS. \emph{Note} that to run
-   the configure script you must be in the Cygwin window or booted into
-   Unix (for instance, if the directory where you unpacked XSB is shared
-   between Windows and a Unix system.
-
 \item
   Type:\\
-  {\tt makexsb\_wind ["CFG=option"] ["DLL=yes"] ["ORACLE=yes"] ["SITE\_LIBS=libraries"]}
+  {\tt makexsb ["CFG=option"] ["DLL=yes"] ["ORACLE=yes"] ["SITE\_LIBS=libraries"]}
   %%
   \begin{itemize}
   \item The items in square brackets are optional.
   \item The options for {\tt CFG} are: \emph{release} or \emph{debug}.  The
     latter is used when you want to compile XSB with debugging enabled.
-  \item The other parameters to {\tt makexsb\_wind} are optional. The {\tt DLL}
+  \item The other parameters to {\tt makexsb} are optional. The {\tt DLL}
     parameter tells Visual C++ to compile XSB as a DLL. The {\tt ORACLE}
     parameter compiles XSB with support for Oracle DBMS. If {\tt ORACLE} is
     specified, you {\bf must} also specify the necessary Oracle libraries
@@ -395,16 +388,14 @@ represents the value of PATH, add
 %%
 \[
  \tt
- \$XSB\_DIR\backslash config\backslash \mbox{\tt x86-pc-windows}\backslash bin
- \backslash xsb.exe
+ \$XSB\_DIR\backslash{}config\backslash\texttt{x86-pc-windows}\backslash{}bin\backslash{}xsb.exe
 \]
 %%
-   If you requested to compile XSB as a DLL, then the DLL will be placed in
+If you requested to compile XSB as a DLL, then the DLL will be placed in
 %%
 \[
  \tt
- \$XSB\_DIR\backslash config\backslash \mbox{\tt x86-pc-windows}\backslash
- bin \backslash xsb.dll
+ \$XSB\_DIR\backslash{}config\backslash\texttt{x86-pc-windows}\backslash{}bin\backslash{}xsb.dll
 \]
 %%
 \end{enumerate}
@@ -414,7 +405,7 @@ tree structure. However, if you first compiled  XSB as an executable and
 then want to compile it as a DLL (or vice versa), then you must run 
 %%
 \begin{verbatim}
- makexsb_wind  clean  
+ makexsb  clean  
 \end{verbatim}
 %%
 in between.
@@ -444,8 +435,13 @@ earlier.)
 Under Windows, you should invoke XSB by typing:
 \[
  \tt
- \$XSB\_DIR\backslash config\backslash \mbox{\tt x86-pc-windows}\backslash bin
- \backslash xsb.exe
+ \$XSB\_DIR\backslash{}bin\backslash{}xsb
+\]
+This script tries to find the XSB executable and invoke it. If, for some
+reason, it fails to do so, the user should call the executable directly.
+\[
+ \tt
+ \$XSB\_DIR\backslash{}config\backslash\texttt{x86-pc-windows}\backslash{}bin\backslash{}xsb.exe
 \]
 %%
 
