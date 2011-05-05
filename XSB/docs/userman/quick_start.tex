@@ -338,8 +338,7 @@ available.
 
 
 You can compile XSB under Microsoft Visual C++ compiler 
-to create a console-supported top loop or a DLL by following
-these steps:
+by following these steps:
 
 \begin{enumerate}
 \item Download the free of charge Microsoft Visual C++ Express Edition from
@@ -369,46 +368,44 @@ represents the value of PATH, add
    {\tt cd \$XSB\_DIR/build}  
 \item
   Type:\\
-  {\tt makexsb ["CFG=option"] ["DLL=yes"] ["ORACLE=yes"] ["SITE\_LIBS=libraries"]}
+  {\tt makexsb ["CFG=option"] ["ORACLE=yes"] ["SITE\_LIBS=libraries"]}
   %%
   \begin{itemize}
   \item The items in square brackets are optional.
-  \item The options for {\tt CFG} are: \emph{release} or \emph{debug}.  The
+  \item The options for {\tt CFG} are: \emph{release} (default) or \emph{debug}.  The
     latter is used when you want to compile XSB with debugging enabled.
-  \item The other parameters to {\tt makexsb} are optional. The {\tt DLL}
-    parameter tells Visual C++ to compile XSB as a DLL. The {\tt ORACLE}
-    parameter compiles XSB with support for Oracle DBMS. If {\tt ORACLE} is
+  \item The {\tt ORACLE} parameter (default is ``no'') compiles XSB with
+    native support for Oracle DBMS. If {\tt ORACLE} is
     specified, you {\bf must} also specify the necessary Oracle libraries
     using the parameter {\tt SITE\_LIBS}.
+    Native Oracle support is rarely used and ODBC is the recommended way to
+    connect to databases.
   \end{itemize}
   %%
    
  \item The above command will compile XSB as requested and will put the XSB 
-   executable in:
+   executable and its DLL in:
 %%
 \[
+\begin{array}{l}
  \tt
  \$XSB\_DIR\backslash{}config\backslash\texttt{x86-pc-windows}\backslash{}bin\backslash{}xsb.exe
-\]
-%%
-If you requested to compile XSB as a DLL, then the DLL will be placed in
-%%
-\[
+\\
  \tt
  \$XSB\_DIR\backslash{}config\backslash\texttt{x86-pc-windows}\backslash{}bin\backslash{}xsb.dll
+ \end{array}
 \]
 %%
 \end{enumerate}
 %%
-{\bf Note}: the XSB executable and the DLL can coexist in the same source
-tree structure. However, if you first compiled  XSB as an executable and
-then want to compile it as a DLL (or vice versa), then you must run 
+{\bf Note}: if you compiled XSB with one set of parameters and then want to
+recompile with a different set, it is recommended that you run
 %%
 \begin{verbatim}
  makexsb  clean  
 \end{verbatim}
 %%
-in between.
+in between the compilations.
 
 
 \section{Invoking XSB}
