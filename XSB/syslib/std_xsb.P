@@ -351,6 +351,8 @@ standard_symbol(put_char, 1, standard).		%ISO
 standard_symbol(put_char, 2, standard).		%ISO
 standard_symbol(put_code, 1, standard).		%ISO
 standard_symbol(put_code, 2, standard).		%ISO
+standard_symbol(put_byte, 1, standard).		%ISO
+standard_symbol(put_byte, 2, standard).		%ISO
 
 standard_symbol(read, 1, standard).
 standard_symbol(read, 2, standard).
