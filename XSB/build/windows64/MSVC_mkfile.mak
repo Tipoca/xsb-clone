@@ -105,6 +105,9 @@ CPP=cl.exe
 ### create the file custom_settings.mak and put these lines there
 ### MY_INCLUDE_DIRS=/I"incdir1" /I"incdir2" ...
 ### MY_LIBRARY_DIRS=/LIBPATH:"libdir1" /LIBPATH:"libdir2" ...
+###     For instance, to configure with support for threads, add
+###     /LIBPATH:"pthreadVC1.lib" to MY_LIBRARY_DIRS in custom_settings.mak
+###     and configure with --enable-mt
 ### XSB_INTERPROLOG=yes/true/1 can also be specified here, if needed
 ###                 In this case, MY_INCLUDE_DIRS should point to the
 ###                 directories that contain jni.h and jni_md.h

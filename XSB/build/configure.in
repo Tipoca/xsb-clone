@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.216 2011-05-04 20:59:57 kifer Exp $
+## $Id: configure.in,v 1.217 2011-05-05 00:26:18 kifer Exp $
 ##
 ##
 
@@ -106,8 +106,6 @@ AC_ARG_WITH(dynamic-libraries,
                           	libraries are automatically added to the XSB 
                           	library search path, so they could be loaded at
                           	run time])
-AC_ARG_WITH(libwww,
-[  --with-libwww=DIR            the libwww library used for Web access is at DIR])
 AC_ARG_WITH(xpath-libdir,
 [  --with-xpath-libdir=DIR      the location of the libxml2.so library is at DIR])
 AC_ARG_WITH(xpath-incdir,
@@ -248,7 +246,7 @@ do
 		--with-gcc | --with-cc | --with-acc | \
 		--with-bits64 | --with-bits32 | --with-aout | \
 		--with-optimization* | --with-config-tag* | --with-site-prefix* | --with-includes* | \
-		--with-static-libraries* | --with-dynamic-libraries* | --with-libwww* | --with-xpath* | \
+		--with-static-libraries* | --with-dynamic-libraries* | --with-xpath* | \
 		--with-dbdrivers | --with-oracle | --with-odbc | --with-iodbc | --with-interprolog | \
 		--with-smodels* | --with-itkwish* | --with-pita* )
 		    ;;
@@ -878,13 +876,6 @@ if test -n "$with_includes"; then
     done
 fi
 
-dnl --with-libwww=DIR
-if test -n "$with_libwww" && test -d $topdir/packages/libwww; then
-    cd $topdir/packages/libwww
-    echo "***Configuring Libwww"
-    ./configure --with-config="$canonical" --with-libwww="$with_libwww" > /dev/null
-    cd $build_dir
-fi
 
 dnl --with-pita=DIR
 if test -n "$with_pita" && test -d $topdir/packages/pita; then
@@ -1179,9 +1170,15 @@ java_path=`dirname $java_path`
 java_path=$java_path/include
 #java_path=`echo $java_path | sed 's,bin/javac,include,' `
 
-if test -f "$java_path/jni.h" -a -f "$java_path/jni_md.h" ; then
+java_platform_specific_hdr_path=`ls ${java_path}/*/jni_md.h`
+java_platform_specific_hdr_path=`dirname ${java_platform_specific_hdr_path}`
+
+echo aaaaaaaaaaaa $java_path
+
+if test -f "$java_path/jni.h" -a -f "$java_platform_specific_hdr_path/jni_md.h" ; then
         with_interprolog=yes
 fi
+echo bbbbbbbbbbb $with_interprolog
 
 if test "${with_interprolog}" = "yes"; then
     if test "${java_support}" != "yes"; then
@@ -1191,8 +1188,7 @@ if test "${with_interprolog}" = "yes"; then
         JAVA_PLATFORM_HEADER_PATH=""
     else
         JAVA_HEADER_PATH=${java_path}
-        JAVA_PLATFORM_HEADER_PATH=`ls ${JAVA_HEADER_PATH}/*/jni_md.h`
-        JAVA_PLATFORM_HEADER_PATH=`dirname ${JAVA_PLATFORM_HEADER_PATH}`
+        JAVA_PLATFORM_HEADER_PATH=${java_platform_specific_hdr_path}
     	echo "Obtaining Java header files form ${JAVA_HEADER_PATH} and ${JAVA_PLATFORM_HEADER_PATH}"
     fi
 else
@@ -1872,23 +1868,36 @@ Installation date: ${install_date}
   Demand support:                                 ${demand}"
 
 
+if test -n "${with_dbdrivers}" && test -f $topdir/packages/dbdrivers/Installation_summary; then
+    	  echo ""
+    	  echo "  Details of support for modular database drivers:"
+          cat $topdir/packages/dbdrivers/Installation_summary
+else
+    	  echo ""
+          echo "  Building with modular database drivers:	  no"
+    	  echo "  (these drivers can also be configured later)"
+fi
+
 
 case "$with_oracle" in
-   "yes") echo "  Building with support for ORACLE:		  yes"
+   "yes") echo "  Building with native support for Oracle:	  yes"
     ;;
-   "no")  echo "  Building with support for ORACLE:		  NO"
+   *)     echo "  Building with native support for Oracle:	  no"
     ;;
 esac
 case "$with_odbc" in
-   "yes") echo "  Building with support for ODBC:		  yes"
+   "yes") echo "  Building with support for old ODBC driver:	  yes"
     ;;
-   "no")  echo "  Building with support for ODBC:		  NO"
+   *)     echo "  Building with support for old ODBC driver:	  no"
     ;;
 esac
+
+echo ""
+
 case "$with_interprolog" in
    "yes") echo "  Building with support for InterProlog:	  yes"
     ;;
-   "no")  echo "  Building with support for InterProlog:	  NO"
+   *)     echo "  Building with support for InterProlog:   	  no"
     ;;
 esac
 
@@ -1904,14 +1913,6 @@ echo ""
 echo "  POSIX regexp matching libraries:                $regmatch_support"
 echo "  POSIX wildcard matching libraries:              $wildmatch_support"
 echo ""
-
-if test -n "${with_libwww}" && test -f $topdir/packages/libwww/Installation_summary; then
-    cat $topdir/packages/libwww/Installation_summary
-fi
-
-if test -n "${with_dbdrivers}" && test -f $topdir/packages/dbdrivers/Installation_summary; then
-    cat $topdir/packages/dbdrivers/Installation_summary
-fi
 
 if test -f $topdir/packages/curl/Installation_summary; then
     cat $topdir/packages/curl/Installation_summary
