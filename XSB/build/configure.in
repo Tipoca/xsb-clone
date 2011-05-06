@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.218 2011-05-06 06:52:18 kifer Exp $
+## $Id: configure.in,v 1.219 2011-05-06 21:35:34 kifer Exp $
 ##
 ##
 
@@ -1515,6 +1515,7 @@ case "$canonical" in
 #                    fi
 
                     LDFLAGS="$LDFLAGS -lwsock32 -luser32"
+                    LINKFLAGS="$LDFLAGS -lw32api"
                 fi
         ;;
 esac

@@ -6403,6 +6403,7 @@ case "$canonical" in
 #                    fi
 
                     LDFLAGS="$LDFLAGS -lwsock32 -luser32"
+                    LINKFLAGS="$LDFLAGS -lw32api"
                 fi
         ;;
 esac
