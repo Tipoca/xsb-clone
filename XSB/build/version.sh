@@ -1,7 +1,10 @@
-
 #! /bin/sh
 
+# Do not touch xsb_patch_date! It is updated by CVS.
+xsb_patch_date='$Date: 2011-05-06 06:52:18 $'
+
 xsb_build_date=`date`
+xsb_patch_date=`echo $xsb_patch_date | sed 's,.*D,Patch d,' | sed 's, *\\$,,'`
 
 xsb_major_version=3
 xsb_minor_version=3

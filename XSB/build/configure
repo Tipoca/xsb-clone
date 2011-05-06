@@ -618,6 +618,7 @@ xsb_full_version_name
 xsb_release_date
 site_prefix
 xsb_scheduling_strategy
+xsb_patch_date
 release_day
 release_monthname
 release_month
@@ -6914,6 +6915,7 @@ fi
 
 
 # These are used in xsb_configuration.in
+
 
 
 
