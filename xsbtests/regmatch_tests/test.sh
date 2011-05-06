@@ -10,4 +10,5 @@ options=$2
     # XEMU and options must be together in quotes
 ../gentest.sh "$XEMU $options" regtest "test."
 ../gentest.sh "$XEMU $options" wildtest "test."
-../gentest.sh "$XEMU $options" perltest "test."
+# The perl package is deprecated
+#../gentest.sh "$XEMU $options" perltest "test."
