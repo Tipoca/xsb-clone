@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.70 2011-05-06 21:35:34 kifer Exp $
+## $Id: emuMakefile.in,v 1.71 2011-05-07 00:03:02 kifer Exp $
 ##
 
 
@@ -173,7 +173,7 @@ xsbora:: init $(allORAOBJS)
 xsbmod:: $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
 	@echo ""; \
 	   echo "Making a C-callable XSB module"; \
-	   echo "@LD@ @MEMFLAG@ -o xsb.o $(LINKFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ} ; \
+	   echo "@LD@ @MEMFLAG@ -o xsb.o $(LINKFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}" ; \
 	   echo ""
 	@@LD@ @MEMFLAG@ -o xsb.o $(LINKFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
 	@cp xsb.o $(arch_config_objlibdir) 2> /dev/null || echo ""
