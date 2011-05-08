@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.56 2011-03-23 15:45:19 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.57 2011-05-08 18:59:45 tswift Exp $
 ** 
 */
 
@@ -244,7 +244,8 @@ inline static xsbBool univ_builtin(CTXTdecl)
 	    } else {
 	      hreg = hreg-1;	/* restore hreg */
 	      if (arity > MAX_ARITY)
-		xsb_representation_error(CTXTc "Greater than MAX_ARITY",arity,"=../2",2);
+		xsb_representation_error(CTXTc "less than MAX_ARITY",
+					 makestring(string_find("Length of list",1)),"=../2",2);
 	      else {
 		if (isnonvar(list)) 
 		  xsb_type_error(CTXTc "list",list,"=../2",2);  /* X =.. [foo|Y]. */
