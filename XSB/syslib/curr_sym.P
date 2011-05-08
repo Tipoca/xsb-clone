@@ -537,7 +537,6 @@ psc_properties(PSC, Property) :-
 psc_properties(PSC, Property) :- 
 	psc_spy(PSC, Spy),
 	( Spy =\= 0 -> Property = spied ).
-%:- import writeln/1 from standard.
 psc_properties(PSC, Property) :- 
 	psc_tabled(PSC, Tabled),
 	(psc_type(PSC, Type),Type =:= T_DYNA -> 
@@ -559,11 +558,10 @@ psc_properties(PSC, Property) :-
 psc_properties(PSC, Property) :-
 	psc_name(PSC, Functor),		% Finding the Functor and the Arity
 	psc_arity(PSC, Arity),		% twice is silly, isn''t it?
-	(	%functor(Template, Functor, Arity),		% PM: these two lines will eventually
-		%standard_metapredicate(Template)		% PM: replace the three lines that follows
-		setof(Meta, standard_metapredicate(Functor, Arity, Meta), Metas),
-		psc_meta_predicate_property_args(Metas, 1, Arity, Args),
-		Template =.. [Functor| Args],
+	(	standard_metapredicate_template(Functor,Arity,Template),
+%		setof(Meta, standard_metapredicate(Functor, Arity, Meta), Metas),
+%		psc_meta_predicate_property_args(Metas, 1, Arity, Args),
+%		Template =.. [Functor| Args],
 		Property = meta_predicate(Template)
 	;	standard_symbol(Functor, Arity, _) ->
 		( %	Property = xsb_standard_predicate ; 
@@ -571,6 +569,11 @@ psc_properties(PSC, Property) :-
 		)
 	).
 	% Unfortunately this doesn''t take the Module into account.
+
+%:- import writeln/1 from standard.
+
+/* PM: this code was used in the old implementation of the
+       meta_predicate/1 predicate property:
 
 psc_meta_predicate_property_args([], N, Arity, Args) :-
 	(	N =< Arity ->
@@ -588,7 +591,7 @@ psc_meta_predicate_property_args([Meta| Metas], N, Arity, [Arg| Args]) :-
 	;	Arg = (*),
 		psc_meta_predicate_property_args([Meta| Metas], N2, Arity, Args)
 	).
-
+*/
 
 /* ===== module_property/2 ============================================ */
 
@@ -678,35 +681,18 @@ iso_flag(double_quotes,codes).
 
 /* ===== prolog_commons_flag/2 ========================================== */
 
-prolog_commons_flag(dialect, xsb).
-prolog_commons_flag(version_data, xsb(Major, Minor, Patch, _)):-
-        xsb_configuration(major_version, MajorAtom),
-        atom_codes(MajorAtom, MajorCodes),
-        number_codes(Major, MajorCodes),
-        xsb_configuration(minor_version, MinorAtom),
-        atom_codes(MinorAtom, MinorCodes),
-        number_codes(Minor, MinorCodes),
-        xsb_configuration(patch_version, PatchAtom),
-        atom_codes(PatchAtom, PatchCodes),
-        number_codes(Patch, PatchCodes).
-
-%	(integer(Min1) -> 
-%	   Min = Min1,Patch = 0
-%	 ; Min is floor(Min1),get_patch_level(Min1,Patch)).
-
-/* written to work around XSBs comparison operator 
-   At most 100 patches per minor version, which seems reasonable
-
-% PM: replaced (?) by adding a "patch_version" xsb config
-
-get_patch_level(Min,Patch):-
-	Patch1 is Min - floor(Min),
-	Patch2 is Patch1 * 10,
-	Patch3 is Patch2 - floor(Patch2),
-        (floor(Patch3) =:= 0.0 -> 
-	    Patch is floor(Patch2) 
-	  ; Patch3 is Patch2*10,
-	    Patch is floor(Patch3)).
+prolog_commons_flag(dialect,xsb).
+prolog_commons_flag(version_data,xsb(Maj, Min, 0, _)):-
+        xsb_configuration(major_version,MajAtom),
+        atom_codes(MajAtom, MajCodes),
+        number_codes(Maj, MajCodes),
+        xsb_configuration(minor_version,MinAtom),
+        atom_codes(MinAtom, MinCodes),
+        number_codes(Min, MinCodes).
+/*
+prolog_commons_flag(version_data,xsb(Maj, Min, 0, _)):- 
+	xsb_configuration(major_version,Maj),
+	xsb_configuration(minor_version,Min).
 */
 
 /* ===== xsb_flag/2 ========================================== */
