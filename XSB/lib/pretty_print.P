@@ -18,11 +18,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pretty_print.P,v 1.8 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: pretty_print.P,v 1.9 2011-05-08 18:54:09 tswift Exp $
 ** 
 */
 
 :- export pretty_print/1.
+:- export pretty_print/2.
 
 :- dynamic user_replacement_hook/2.
 :- import user_replacement_hook/2 from usermod.
@@ -40,8 +41,11 @@
 :- import write/1 from standard.
 :- import copy_term/2 from basics.
 
-
-%:- import from lists.
+pretty_print(Stream,List):- 
+	current_output(OldStream),
+	set_output(Stream),
+	pretty_print(List),
+	set_output(OldStream).	
 
 pretty_print([]):- !.
 pretty_print([(Cl,Dict)|T]) :- !,
