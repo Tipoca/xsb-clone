@@ -23,105 +23,63 @@
 ** 
 */
 
-% TLS: in the comments below, ISO means that the predicate is part of
-% the ISO standard.  Unfortunately, it does not mean that the
-% semantics of the predicate exactly *follows* that of the standard. 
-
-% TLS: just did first pass at metapredicates.  In addition, need to do
-% bagofs, setofs and phrases.
-
-/* PM: work in progress for implementing state-of-the-art meta_predicate/1 properties ;-)
-       not sure the list that follows is complete...
-
-standard_metapredicate((0,0)).
-standard_metapredicate((0;0)).
-standard_metapredicate((0->0)).
-standard_metapredicate(abolish(:)).
-standard_metapredicate(abolish_table_call(:)).
-standard_metapredicate(abolish_table_call(:,*)).
-standard_metapredicate(assert(:)).                                  
-standard_metapredicate(asserta(:)).
-standard_metapredicate(assertz(:)).
-standard_metapredicate(call(0)).
-standard_metapredicate(call(1,*)).
-standard_metapredicate(call(2,*,*)).
-standard_metapredicate(call(3,*,*,*)).
-standard_metapredicate(call(4,*,*,*,*)).
-standard_metapredicate(call(5,*,*,*,*,*)).
-standard_metapredicate(call(6,*,*,*,*,*,*)).
-standard_metapredicate(call(7,*,*,*,*,*,*,*)).
-standard_metapredicate(call(8,*,*,*,*,*,*,*,*)).
-standard_metapredicate(call(9,*,*,*,*,*,*,*,*,*)).
-standard_metapredicate(call(10,*,*,*,*,*,*,*,*,*,*)).
-standard_metapredicate(call_tv(*,0)).
-standard_metapredicate(call_cleanup(0,0)).
-standard_metapredicate(catch(0,*,0)).
-standard_metapredicate(clause(:,*)).
-standard_metapredicate(bagof(*,0,*)).
-standard_metapredicate(setof(*,0,*)).
-standard_metapredicate(findall(*,0,*)).
-standard_metapredicate(findall(*,0,*,*)).
-standard_metapredicate(forall(0,0)).
-standard_metapredicate(once(0)).
-standard_metapredicate(retract(:)).
-standard_metapredicate(retractall(:)).
-standard_metapredicate(tfindall(*,0,*)).
-standard_metapredicate(thread_create(0,*,:)).
-standard_metapredicate(thread_create(0,*)).
-standard_metapredicate(thread_create(0)).
-standard_metapredicate(tnot(0)).
-standard_metapredicate('\+'(0)).
-%standard_metapredicate((:),2,2). ???????????
-standard_metapredicate(fail_if(0)).
-standard_metapredicate(not(0)).
-standard_metapredicate(sk_not(0)).
-standard_metapredicate(table_once(0)).
-standard_metapredicate(time(0)).
-standard_metapredicate(thread_signal(*, 0)).
-standard_metapredicate(with_mutex(*, 0)).
-*/
-
-standard_symbol(abort_on_thread_cancel,0,error_handler).
 standard_symbol(abolish, 1, assert).                               % ISO
 standard_metapredicate(abolish,1,1).
 
-standard_symbol(abolish, 2, assert).			
+standard_symbol(abolish, 2, assert).			 %????
+standard_metapredicate_template(abolish,2,(:)).
+
 standard_symbol(abolish_all_tables, 0, tables).		
+
 standard_symbol(abolish_table_call, 1, tables).		
-standard_symbol(abolish_table_call, 2, tables).		
 standard_metapredicate(abolish_table_call,1,1).
+standard_metapredicate_template(abolish_table_call,1,(:)).
+
+standard_symbol(abolish_table_call, 2, tables).		
+standard_metapredicate(abolish_table_call,2,1).
+standard_metapredicate_template(abolish_table_call,2,(:,*)).
 
 standard_symbol(abolish_table_pred, 1, tables).		
 standard_symbol(abolish_table_pred, 2, tables).		
 standard_symbol(abort, 0, standard).
 standard_symbol(abort, 1, standard).
+standard_symbol(abort_on_thread_cancel,0,error_handler).
 standard_symbol(analyze_table, 1, tables).		
 standard_symbol(arg, 3, standard).                                  % ISO
 standard_symbol(arg0, 3, standard).
+
 standard_symbol(assert, 1, assert).                                  % ISO
 standard_metapredicate(assert,1,1).                                  
+standard_metapredicate_template(assert,1,(:)).                                  
 
 standard_symbol(asserta, 1, assert).                                  % ISO
 standard_metapredicate(asserta,1,1).
+standard_metapredicate_template(asserta,1,(:)).
 
 standard_symbol(assertz, 1, assert).                                  %ISO
 standard_metapredicate(assertz,1,1).
+standard_metapredicate_template(assertz,1,(:)).
 
 standard_symbol(at_end_of_stream,0,file_io).                        % ISO
 standard_symbol(at_end_of_stream,1,file_io).                        % ISO 
 
-standard_symbol(atom, 1, standard).                               % ISO
-standard_symbol(atom_concat, 3, standard).                   % ISO
-standard_symbol(atomic, 1, standard).                            % ISO
-standard_symbol(atom_length, 2, standard).                     % ISO
-standard_symbol(atom_chars, 2, standard).                     % ISO
-standard_symbol(atom_codes, 2, standard).                    % ISO
-standard_symbol(bagof, 3, setof).			% ISO
+standard_symbol(atom, 1, standard).                                 % ISO
+standard_symbol(atom_concat, 3, standard).       		    % ISO
+standard_symbol(atomic, 1, standard).                               % ISO
+standard_symbol(atom_length, 2, standard).                     	    % ISO
+standard_symbol(atom_chars, 2, standard).                    	    % ISO
+standard_symbol(atom_codes, 2, standard).                    	    % ISO
+
+standard_symbol(bagof, 3, setof).          	 		    % ISO
+%standard_metapredicate(bagof,3,2).
+standard_metapredicate_template(bagof,3,(*,0,*)).
+
 standard_symbol(bootstrap_package, 2, packaging).
 standard_symbol(bootstrap_syspackage, 2, packaging).
 standard_symbol(bootstrap_sitepackage, 2, packaging).
 standard_symbol(bootstrap_userpackage, 3, packaging).
 standard_symbol(break, 0, x_interp).
+
 standard_symbol('C', 3, dcg).
 
 standard_symbol(call, 1, standard).                                % ISO
@@ -146,10 +104,27 @@ standard_metapredicate(call,8,1).
 standard_metapredicate(call,9,1).
 standard_metapredicate(call,10,1).
 standard_metapredicate(call,11,1).
+standard_metapredicate_template(call,1,(0)).
+standard_metapredicate_template(call,1,(1,*)).
+standard_metapredicate_template(call,2,(2,*,*)).
+standard_metapredicate_template(call,3,(3,*,*,*)).
+standard_metapredicate_template(call,4,(4,*,*,*,*)).
+standard_metapredicate_template(call,5,(5,*,*,*,*,*)).
+standard_metapredicate_template(call,6,(6,*,*,*,*,*,*)).
+standard_metapredicate_template(call,7,(7,*,*,*,*,*,*,*)).
+standard_metapredicate_template(call,8,(8,*,*,*,*,*,*,*,*)).
+standard_metapredicate_template(call,9,(9,*,*,*,*,*,*,*,*,*)).
+standard_metapredicate_template(call,10,(10,*,*,*,*,*,*,*,*,*,*)).
+
 standard_symbol(call_tv, 2, standard).                                
+standard_metapredicate(call_tv, 2, 1). 
+standard_metapredicate_template(call_tv,1,(*,0)).
+
 standard_symbol(call_cleanup, 2, standard).                                % new ISO?
 standard_metapredicate(call_cleanup,2,1).
 standard_metapredicate(call_cleanup,2,2).
+standard_metapredicate_template(call_cleanup,2,(0,0)).
+
 standard_symbol(callable, 1, standard).
 standard_metapredicate(callable,1,1).
 standard_symbol(char_code,2,standard).
@@ -158,10 +133,15 @@ standard_symbol(current_output_port, 1, curr_sym).
 standard_symbol(catch, 3, standard).
 standard_metapredicate(catch,3,1).
 standard_metapredicate(catch,3,3).
+standard_metapredicate_template(catch,3,(0,*,0)).
+
 standard_symbol(cd, 1, shell).
 standard_symbol(cwd, 1, shell).
+
 standard_symbol(clause, 2, assert).                               % ISO
 standard_metapredicate(clause,2,1).
+standard_metapredicate_template(clause,2,(:,*)).
+
 standard_symbol(close, 1, standard).                             % ISO 
 standard_symbol(close, 2, standard).                             % ISO 
 standard_symbol(compare, 3, standard).
@@ -207,7 +187,11 @@ standard_symbol(exec, 1, shell).
 
 standard_symbol(fail, 0, standard).
 standard_symbol(false, 0, standard).
+
 standard_symbol(fail_if, 1, standard).
+standard_metapredicate(fail_if,1,1).
+standard_metapredicate_template(fail_if,1,(0)).
+
 standard_symbol(file_clone, 3, file_io).
 standard_symbol(file_close, 1, file_io).
 standard_symbol(file_exists, 1, standard).
@@ -224,8 +208,10 @@ standard_symbol(file_reopen, 4, file_io).
 standard_symbol(file_write, 2, xsb_writ).
 standard_symbol(findall, 3, setof).
 standard_metapredicate(findall,3,2).
+standard_metapredicate_template(findall,3,(*,0,*)).
 standard_symbol(findall, 4, setof).
 standard_metapredicate(findall,4,2).
+standard_metapredicate_template(findall,4,(*,0,*,*)).
 standard_symbol(float, 1, standard).
 standard_symbol(flush_output,1,file_io).
 standard_symbol(flush_output,0,file_io).
@@ -235,9 +221,12 @@ standard_symbol(fmt_write, 2, file_io).
 standard_symbol(fmt_write, 3, file_io).
 standard_symbol(fmt_write_string, 3, file_io).
 standard_symbol(fmt_write_string, 4, file_io).
+
 standard_symbol(forall, 2, standard).
 standard_metapredicate(forall, 2, 1).
 standard_metapredicate(forall, 2, 2).
+standard_metapredicate_template(forall,2,(0,0)).
+
 standard_symbol(functor, 3, standard).
 
 standard_symbol(garbage_collection, 1, curr_sym).
@@ -317,7 +306,10 @@ standard_symbol(nl, 1, standard).
 standard_symbol(nodebug, 0, debugger).
 standard_symbol(nonvar, 1, standard).
 standard_symbol((nospy), 1, debugger).
+
 standard_symbol((not), 1, standard).
+standard_metapredicate_template((not),1,(0)).
+
 standard_symbol((notrace), 0, debugger).
 standard_symbol(number, 1, standard).
 standard_symbol(number_chars, 2, standard).     % ISO
@@ -326,8 +318,11 @@ standard_symbol(number_digits, 2, standard).    % not ISO
 standard_symbol(numbervars, 3, num_vars).       % ISO draft revision
 
 standard_symbol(obsolete, 2, obsolete).
+
 standard_symbol(once, 1, standard).
 standard_metapredicate(once,1,1).
+standard_metapredicate_template(once,1,(0)).
+
 standard_symbol(op, 3, standard).
 standard_symbol(open, 3, standard).
 standard_symbol(open, 4, standard).
@@ -347,12 +342,12 @@ standard_symbol(predicate_property, 2, curr_sym).
 standard_symbol(proper_hilog, 1, standard).
 standard_symbol(put, 1, standard).		% not ISO
 standard_symbol(put_attr, 3, machine).		
+standard_symbol(put_byte, 1, standard).		%ISO
+standard_symbol(put_byte, 2, standard).		%ISO
 standard_symbol(put_char, 1, standard).		%ISO
 standard_symbol(put_char, 2, standard).		%ISO
 standard_symbol(put_code, 1, standard).		%ISO
 standard_symbol(put_code, 2, standard).		%ISO
-standard_symbol(put_byte, 1, standard).		%ISO
-standard_symbol(put_byte, 2, standard).		%ISO
 
 standard_symbol(read, 1, standard).
 standard_symbol(read, 2, standard).
@@ -364,10 +359,14 @@ standard_symbol(reconsult, 2, consult).
 standard_symbol(rename, 2, shell).		
 standard_symbol(repeat, 0, standard).
 standard_symbol(reset_dcg_mode,0,dcg).
+
 standard_symbol(retract, 1, assert).
 standard_metapredicate(retract,1,1).
+standard_metapredicate_template(retract,1,(:)).
+
 standard_symbol(retractall, 1, assert).
 standard_metapredicate(retractall,1,1).
+standard_metapredicate_template(retractall,1,(:)).
 
 standard_symbol(see, 1, standard).
 standard_symbol(seeing, 1, standard).
@@ -379,13 +378,19 @@ standard_symbol(set_input, 1, standard).	%ISO
 standard_symbol(set_output, 1, standard).	%ISO
 standard_symbol(set_timer, 1, standard).
 standard_symbol(set_stream_position,2,file_io).     % ISO
+
 standard_symbol(setof, 3, setof).
+standard_metapredicate_template(setof,3,(*,0,*)).
+
 standard_symbol(shell, 1, shell).
 standard_symbol(shell, 2, shell).
 standard_symbol(shell, 5, shell).
 standard_symbol(shell_to_list, 3, shell).
 standard_symbol(shell_to_list, 4, shell).
+
 standard_symbol(sk_not, 1, tables).
+standard_metapredicate_template(sk_not,1,(0)).
+
 standard_symbol(sleep, 1, shell).
 standard_symbol(skip, 1, standard).  	 	% TLS do we need this one?
 standard_symbol(sort, 2, setof).
@@ -410,6 +415,8 @@ standard_symbol(sys_exit, 1, shell).
 standard_symbol(tab, 1, standard).
 standard_symbol((table), 1, standard).
 
+standard_metapredicate_template(table_once,1,(0)).
+
 standard_symbol(table_prop, 3, tables).
 standard_symbol(table_prop, 4, tables).
 standard_symbol(tbagof, 3, setof).
@@ -418,15 +425,27 @@ standard_symbol(table_state, 4, tables).
 standard_symbol(tell, 1, standard).
 standard_symbol(telling, 1, standard).
 standard_symbol(term_variables, 2, constraintLib).
-standard_symbol(throw, 1, standard).
+
 standard_symbol(tfindall, 3, tables).
+standard_metapredicate_template(tfindall,3,(*,0,*)).
 standard_metapredicate(tfindall,3,2).
+
+standard_symbol(throw, 1, standard).
+
 standard_symbol((thread_shared), 1, consult).
 standard_symbol((thread_private), 1, consult).
 standard_symbol(thread_cancel,1,thread).
+
 standard_symbol(thread_create,1,thread).
+standard_metapredicate(thread_create,1,1).
+standard_metapredicate_template(thread_create,1,(0)).
+
 standard_symbol(thread_create,2,thread).
+standard_metapredicate_template(thread_create,2,(0,*)).
+
 standard_symbol(thread_create,3,thread).
+standard_metapredicate_template(thread_create,3,(0,*,:)).
+
 standard_symbol(thread_detach,1,thread).
 standard_symbol(thread_exit,1,thread).
 standard_symbol(thread_exit,0,thread).
@@ -434,7 +453,10 @@ standard_symbol(thread_join,2,thread).
 standard_symbol(thread_join,1,thread).
 standard_symbol(thread_property,2,thread).
 standard_symbol(thread_self,1,thread).
+
 standard_symbol(thread_signal,2,thread).
+standard_metapredicate_template(thread_signal,2,(*, 0)).
+
 standard_symbol(thread_sleep,1,thread).
 standard_symbol(thread_yield,0,thread).
 standard_symbol(threads,0,thread).
@@ -448,9 +470,14 @@ standard_symbol(thread_peek_signal,1,  mutex_xsb).
 standard_symbol(thread_send_message,1, mutex_xsb).
 standard_symbol(thread_send_message,2, mutex_xsb).
 
+standard_metapredicate_template(time,1,(0)).
+
 standard_symbol(tmpfile_open, 1, file_io).
+
 standard_symbol(tnot, 1, tables).
 standard_metapredicate(tnot,1,1).
+standard_metapredicate_template(tnot,1,(0)).
+
 standard_symbol(told, 0, standard).
 standard_symbol(tphrase, 1, dcg).
 standard_symbol(tphrase, 2, dcg).
@@ -485,6 +512,9 @@ standard_symbol((use_opaque_tabling), 1, standard).
 standard_symbol(var, 1, standard).
 
 standard_symbol(walltime, 1, standard).
+
+standard_metapredicate_template(with_mutex,2,(*, 0)).
+
 standard_symbol(write, 1, standard).
 standard_symbol(write, 2, standard).
 standard_symbol(write_canonical, 1, standard).
@@ -507,6 +537,8 @@ standard_symbol(('_$cutto'), 1, standard).	% Not ISO
 standard_symbol(('_$savecp'), 1, standard).	% Not ISO
 
 standard_symbol((('\+')), 1, standard).
+standard_metapredicate_template(('\+'),1,(0)).
+
 standard_symbol('!', 0, standard).
 standard_symbol(('=:='), 2, standard).
 standard_symbol(('=\='), 2, standard).
@@ -527,15 +559,37 @@ standard_symbol(('@=<'), 2, standard).
 standard_symbol(('@>='), 2, standard).
 standard_symbol(('.'), 2, consult).
 standard_symbol((';'), 2, standard).
+standard_metapredicate_template((';'),2,(0,0)).
 standard_symbol((','), 2, standard).
+standard_metapredicate_template((','),2,(0,0)).
+
 standard_symbol(('->'), 2, standard).
+standard_metapredicate_template(('->'),2,(0->0)).
+
 standard_symbol((:), 2, standard).
 standard_metapredicate((:),2,2).
-standard_symbol(('^'), 2, setof).
+%standard_metapredicate_template((:),2,2). ???????????
 
+standard_symbol(('^'), 2, setof).
 standard_symbol((:-), 2, usermod).
 standard_symbol((?-), 1, usermod).
 standard_symbol((-->), 2, usermod).
 standard_symbol(('?='),2,standard).
 
+/*
+% PM: keep the old standard_metapredicate/3 predicate for now in
+%     order to avoid breaking any code that might depend on it 
+standard_metapredicate(Functor, Arity, Arg) :-
+	standard_metapredicate_template(Functor,Arity,Template),
+	functor(Template, Functor, Arity),
+	Template =.. [Functor |MArgs],
+	standard_metapredicate_meta_arg(MArgs, 1, Arg).
+
+standard_metapredicate_meta_arg([:| _], Position, Position).
+standard_metapredicate_meta_arg([N| _], Position, Position) :-
+	integer(N).
+standard_metapredicate_meta_arg([_| MArgs], Position0, Position) :-
+	Position1 is Position0 + 1,
+	standard_metapredicate_meta_arg(MArgs, Position1, Position).
+*/
 /* ---------------------- end of file std_xsb.P ----------------------- */

@@ -25,4 +25,8 @@
 
 :- export standard_symbol/3.
 :- export standard_metapredicate/3.
+:- export standard_metapredicate_template/3.
+%:- export standard_metapredicate/1.
 :- export standard_dynamic_symbol/2.
+
+%:- import functor/3, '=..'/2 from standard.
