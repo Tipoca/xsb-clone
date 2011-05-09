@@ -5975,12 +5975,9 @@ java_path=$java_path/include
 java_platform_specific_hdr_path=`ls ${java_path}/*/jni_md.h`
 java_platform_specific_hdr_path=`dirname ${java_platform_specific_hdr_path}`
 
-echo aaaaaaaaaaaa $java_path
-
 if test -f "$java_path/jni.h" -a -f "$java_platform_specific_hdr_path/jni_md.h" ; then
         with_interprolog=yes
 fi
-echo bbbbbbbbbbb $with_interprolog
 
 if test "${with_interprolog}" = "yes"; then
     if test "${java_support}" != "yes"; then
