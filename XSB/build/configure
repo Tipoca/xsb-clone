@@ -5926,7 +5926,8 @@ fi
 
 
 
-# Extract the first word of "javac", so it can be a program name with args.
+if test -z "$JAVA_HOME"; then
+        # Extract the first word of "javac", so it can be a program name with args.
 set dummy javac; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -5967,10 +5968,12 @@ $as_echo "no" >&6; }
 fi
 
 
-java_path=`dirname $java_path`
-java_path=`dirname $java_path`
-java_path=$java_path/include
-#java_path=`echo $java_path | sed 's,bin/javac,include,' `
+    java_path=`dirname $java_path`
+    java_path=`dirname $java_path`
+    java_path=$java_path/include
+else
+    java_path=$JAVA_HOME/include
+fi
 
 java_platform_specific_hdr_path=`ls ${java_path}/*/jni_md.h`
 java_platform_specific_hdr_path=`dirname ${java_platform_specific_hdr_path}`

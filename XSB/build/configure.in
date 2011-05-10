@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.221 2011-05-09 22:56:14 kifer Exp $
+## $Id: configure.in,v 1.222 2011-05-10 01:26:22 kifer Exp $
 ##
 ##
 
@@ -1164,11 +1164,15 @@ fi
 AC_SUBST(javac)
 AC_SUBST(java_support)
 
-AC_PATH_PROG(java_path,javac,no)
-java_path=`dirname $java_path`
-java_path=`dirname $java_path`
-java_path=$java_path/include
-#java_path=`echo $java_path | sed 's,bin/javac,include,' `
+if test -z "$JAVA_HOME"; then
+    dnl try to see if we can derive the java home dir from javac's full name
+    AC_PATH_PROG(java_path,javac,no)
+    java_path=`dirname $java_path`
+    java_path=`dirname $java_path`
+    java_path=$java_path/include
+else
+    java_path=$JAVA_HOME/include
+fi
 
 java_platform_specific_hdr_path=`ls ${java_path}/*/jni_md.h`
 java_platform_specific_hdr_path=`dirname ${java_platform_specific_hdr_path}`
