@@ -1,14 +1,14 @@
 #! /bin/sh
 
 # Do not touch xsb_patch_date! It is updated by CVS.
-xsb_patch_date='$Date: 2011-05-11 01:27:14 $'
+xsb_patch_date='$Date: 2011-05-11 19:14:54 $'
 
 xsb_build_date=`date`
 xsb_patch_date=`echo $xsb_patch_date | sed 's,.*D,Patch d,' | sed 's, *\\$,,'`
 
 xsb_major_version=3
 xsb_minor_version=3
-xsb_patch_version=1
+xsb_patch_version=2
 #xsb_beta_version=pre"
 #xsb_codename="Skol"        # for Version 2.1
 #xsb_codename="Tsingtao"    # for Version 2.2
@@ -26,6 +26,7 @@ xsb_codename="Pignoletto"    # Version 3.3 Italian Beer
 # With this, XSB should become Y2K compliant :-)
 #xsb_release_date=2006-08-07
 #xsb_release_date=2009-03-15
-xsb_release_date=2011-04-12
+#xsb_release_date=2011-04-12
+xsb_release_date=2011-05-11
 
 
