@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.27 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: basictypes.h,v 1.28 2011-05-11 01:27:14 kifer Exp $
 ** 
 */
 
@@ -37,14 +37,14 @@
 typedef long prolog_int ;
 typedef long Integer ;
 typedef unsigned long UInteger ;
-#define MY_MAXINT ((long)0x7fffffffffffff)
+#define XSB_MAXINT ((long)0x7fffffffffffff)
 #else
 typedef int prolog_int ;
 typedef int Integer ;
 typedef unsigned int UInteger ;
-#define MY_MAXINT ((int)0x7fffffff)	/* Modified by Kostis */
+#define XSB_MAXINT ((int)0x7fffffff)	/* Modified by Kostis */
 #endif
-#define MY_MININT (-MY_MAXINT - 1)
+#define XSB_MININT (-XSB_MAXINT - 1)
 typedef double prolog_float;
 
 #ifndef FAST_FLOATS
@@ -54,6 +54,8 @@ typedef float Float;
 #endif
 /*******************************/
 
+#define MY_MAXINT  XSB_MAXINT
+#define MY_MININT  XSB_MININT
 
 typedef int reg_num;
 
