@@ -223,7 +223,9 @@ performing various error checks.
 In the following predicates, {\tt Msg} is either a list of HiLog terms
 or a comma-list of HiLog terms.  Each of the {\tt error/2} terms below
 can also be represented as {\tt error/3} terms, where the third
-argument is instantiated to the representation of a backtrace.
+argument is instantiated to the representation of a
+backtrace~\footnote{If a program catches errors itself, error/3 may
+  need to be imported from {\tt error\_handler}.}.
 
 \begin{description}
 \item [error(domain\_error(Valid\_type,Culprit),Msg)] is the format of
