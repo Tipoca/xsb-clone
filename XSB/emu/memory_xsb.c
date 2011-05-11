@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.69 2011-05-05 16:49:06 tswift Exp $
+** $Id: memory_xsb.c,v 1.70 2011-05-11 17:56:21 tswift Exp $
 ** 
 */
 
@@ -81,11 +81,12 @@ void inline extend_enc_dec_as_nec(void *lptr, void *hptr) {
       if (enc[nibble] == -1) {
 	SYS_MUTEX_LOCK_NOERROR(MUTEX_GENTAG);
 	if (enc[nibble] == -1) { /* be sure not changed since test */
-	  if (next_free_code > 8) // We've done used all the bits there is... 
-	    xsb_resource_error_nopred(CTXTc "memory","running out of tagged address space");
+	  if (next_free_code >= 8) // We've done used all the bits there is... 
+	    //	    xsb_resource_error_nopred(CTXTc "memory","running out of tagged address space");
+	    xsb_exit("UNRECOVERABLE ERROR: Ran our of tagged address space -- aw man!\n");
 	  enc[nibble] = next_free_code << _SHIFT_VALUE;
 	  dec[next_free_code] = nibble << _SHIFT_VALUE;
-	  // printf("recoding %lx to %lx\n",nibble,next_free_code);
+	  //	  printf("recoding %lx to %lx\n",nibble,next_free_code);
 	  next_free_code++;
 	}
 	SYS_MUTEX_UNLOCK_NOERROR(MUTEX_GENTAG);
