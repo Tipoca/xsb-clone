@@ -20,6 +20,49 @@
 
 <h2> Version 3.3.X (Pignoletto)</h2> 
 
+<h3> Version 3.3.2</h3> 
+<ul>
+<li>
+XSB and its packages are now significantly easier to compile on
+Windows using the MSVC compiler.
+</li>
+<li>
+Fix to allow XSB to be compiled on the Mac with very recent changes to
+ Apple's xcode.  These xcode changes broke backwards compatability!
+</li>
+<li> Fix for recently introduced bug that broke XSB embedability into
+C programs on Linux.  In addtion a fix allows XSB to exit cleanly in
+32-bit Linux when tagged address space has been exceeded.
+</li>
+<li>
+<tt> url_encode/2 </tt> and <tt> url_decode/2</tt> are now standard predicates.
+</li>
+<li>A queryable trace log facility is now available do aid debugging.
+<li>
+Minor bug fixes and enhancements: 
+<ul>
+<li>Fixed core dump that arose from poor error handling when
+univ was called using a list whose length was greater
+than <tt>MAX_ARITY.</tt>
+</li>
+<li>
+Simplification stack is now dynamically expandable (this should only
+affect programs that make extremely heavy use of well-founded
+negation).
+</li>
+<li><tt>pretty_print/2</tt> now implemented to pretty print to a stream.</li>
+</li>
+<li>
+XSB now treats <tt>0'\s</tt> as a space to improve compatability with
+some other Prologs.
+</li>
+<li>
+Patch level added into the Prolog commons flag <tt> version_data</tt>;
+patch date is now a part of the XSB banner.
+</li>
+</ul>
+</ul>
+
 <h3> Version 3.3.1</h3> 
 <ul>
 <li>
@@ -62,5 +105,5 @@ in other Prologs.
 
 <hr>
 <address>Email: <a href="mailto:xsb-users@lists.sourceforge.net" >xsb-users@lists.sourceforge.net</a></address>
-<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.2 2011-04-12 20:47:29 tswift Exp $ <!-- hhmts end -->
+<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.3 2011-05-11 20:56:51 tswift Exp $ <!-- hhmts end -->
 </body> </html>
