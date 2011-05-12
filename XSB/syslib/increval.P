@@ -102,12 +102,12 @@ incr_trans_depends(X,Y):-
 	 ;	instantiation_error(incr_trans_depends/2,'1 and 2','at least one nonvar')
 	).
 
-:- table trans_dependent_on_call/2.
 trans_dependent_on_calls(Call,Call2):-
 	abolish_table_pred(trans_dependent_on_call(_,_)),
 	check_incrementally_tabled(Call,predicate_not_tabled),
 	trans_dependent_on_call(Call,Call2).
 
+:- table trans_dependent_on_call/2.
 trans_dependent_on_call(Call1,Call2):-
 	imm_dependent_on_calls(Call1,Call2).
 trans_dependent_on_call(Call1,Call2):-
@@ -135,9 +135,10 @@ invalidate_callnode(CALLNODEPTR):-
 invalidate_callnode_trie(Trie):-
 	incr_eval_builtin(INVALIDATE_CALLNODE_TRIE,Trie).
 
+/*
 invalidate_SF(SF):-
 	incr_eval_builtin(INVALIDATE_SF,SF).
-
+*/
 incr_invalidate_call(Call) :-
 	get_calls(Call,SF,_),
 	incr_eval_builtin(INVALIDATE_SF,SF,Call),
@@ -211,12 +212,12 @@ check_incrementally_tabled(Term,Msg) :-
 	term_psc(Term,Psc),
 	(psc_tabled(Psc,T),T > 0
 	 ->	true
-	 ;	throw(error(table_error(Msg)))
+	 ;	table_error(Msg)
 	),
 	psc_get_incr(Psc,INCR),
 	(INCR =:= INCREMENTAL
 	 ->	true
-	 ;	throw(error(table_error(Msg)))
+	 ;	table_error(Msg)
 	).	 
 
 check_incremental(Term,Msg) :-
