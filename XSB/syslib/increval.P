@@ -140,7 +140,8 @@ invalidate_SF(SF):-
 
 incr_invalidate_call(Call) :-
 	get_calls(Call,SF,_),
-	invalidate_SF(SF),
+	incr_eval_builtin(INVALIDATE_SF,SF,Call),
+%	invalidate_SF(SF),
 	fail.
 incr_invalidate_call(_Call).
 
