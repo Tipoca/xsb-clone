@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.36 2011-05-12 18:45:17 tswift Exp $
+** $Id: intern.P,v 1.37 2011-05-12 18:53:35 tswift Exp $
 ** 
 */
 
@@ -515,8 +515,8 @@ trie_intern(Term,Root,Leaf,Flag,Skel) :-
 	new_i_trie_intern(Root,Term,Leaf,Flag,CPS_CHECK,EXPAND_HASHES),
 	get_lastnode_cs_retskel(_,_,_,Skel1), Skel = Skel1.
 
-trie_intern_deterministic(Term,Root,Leaf,Flag,Skel) :-
-	new_i_trie_intern(Root,Term,Leaf,Flag,NO_CPS_CHECK,EXPAND_HASHES),
+trie_intern_deterministic(Term,Root,Leaf,Skel) :-
+  	new_i_trie_intern(Root,Term,Leaf,_Flag,NO_CPS_CHECK,EXPAND_HASHES),
 	get_lastnode_cs_retskel(_,_,_,Skel1), Skel = Skel1.
 
 /*--------------------------------------------------

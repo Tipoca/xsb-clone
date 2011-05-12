@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.H,v 1.11 2011-05-12 18:45:17 tswift Exp $
+** $Id: intern.H,v 1.12 2011-05-12 18:53:35 tswift Exp $
 ** 
 */
 
@@ -31,7 +31,7 @@
 :- export trie_prge_insert/2, trie_prge_delete/2, trie_prge_unify/2.
 
 % Low-level or obsolete
-:- export new_trie/1, trie_intern/5, trie_intern_deterministic/5, trie_intern/4,
+:- export new_trie/1, trie_intern/5, trie_intern_deterministic/4, trie_intern/4,
    trie_intern/2,trie_interned/2,
    trie_interned/4, trie_retractall/2, bulk_trie_intern/2,
 	  trie_intern/3, trie_interned/3, trie_unintern/2, delete_trie/1,
