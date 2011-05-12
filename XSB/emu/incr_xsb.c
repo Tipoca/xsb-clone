@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.18 2011-04-17 16:57:12 tswift Exp $
+** $Id: incr_xsb.c,v 1.19 2011-05-12 14:26:24 tswift Exp $
 ** 
 */
 
@@ -96,13 +96,14 @@ xsbBool incr_eval_builtin(CTXTdecl)
   }
     
   case INVALIDATE_SF: {
-    /*
-      Find all affected calls and put that in a list.
-
-    */
+    /* Find all affected calls and put that in a list.   */
        
     const int sfreg=2;
     VariantSF sf=ptoc_addr(sfreg);
+    if (!get_incr(TIF_PSC(subg_tif_ptr(sf)))) {
+      xsb_permission_error(CTXTc"invalidate","call to non-incremental predicate",reg[3],
+			   "incr_invalidate_call",1);
+    }
     callnodeptr c=subg_callnode_ptr(sf);
     invalidate_call(CTXTc c); 
     
