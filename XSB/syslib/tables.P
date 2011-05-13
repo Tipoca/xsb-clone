@@ -524,6 +524,15 @@ get_residual(CallSkel, DelayList) :-
 	; member(DelayList, DLs)
 	).
 
+:- export variant_get_residual/2.
+variant_get_residual(CallSkel, DelayList) :-
+	get_call(CallSkel, S, R),
+	get_returns_and_dls(S, R, DLs),
+	( DLs == [] -> DelayList = []
+	; DLs = [DL] -> DelayList = DL
+	; member(DelayList, DLs)
+	).
+
 '_$$get_returns_and_dls'(CallStr,RetSkel,DLs) :-
 	trie_get_return(CallStr,RetSkel),
 	get_lastnode_cs_retskel(_,Leaf,_,_),
