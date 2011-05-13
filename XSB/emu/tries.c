@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.144 2011-03-05 19:05:30 tswift Exp $
+** $Id: tries.c,v 1.145 2011-05-13 16:23:45 tswift Exp $
 ** 
 */
 
@@ -2134,8 +2134,8 @@ byte * trie_get_calls(CTXTdecl)
 	  (e.g clauses for a dynamic tabled predicate have not yet
 	  been defined */
        if (!get_tabled(psc_ptr) && get_nonincremental(psc_ptr))
-	 xsb_abort("get_calls/3 called with a non-tabled predicate: %s/%d",
-		   get_name(psc_ptr),get_arity(psc_ptr));
+	 xsb_permission_error(CTXTc"table access","non-tabled predicate",reg[1],
+			   "get_calls",3);
        return (byte *)&fail_inst;
      }
      call_trie_root = TIF_CallTrie(tip_ptr);
@@ -2169,8 +2169,11 @@ byte * trie_get_calls(CTXTdecl)
        return (byte *)call_trie_root;
      }
    }
-   else
-     return (byte *)&fail_inst;
+   else  if ( IsNULL(psc_ptr) ) {
+    xsb_type_error(CTXTc "callable",call_term,"get_calls/3",1);
+    return (byte *)&fail_inst;
+  }
+    return (byte *)&fail_inst;
 }
 
 /*----------------------------------------------------------------------*/

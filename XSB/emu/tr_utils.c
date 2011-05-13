@@ -340,7 +340,8 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
 
   tif = get_tip(CTXTc psc);
   if ( IsNULL(tif) )
-    xsb_abort("Predicate %s/%d is not tabled", get_name(psc), get_arity(psc));
+    xsb_permission_error(CTXTc "table access","non-tabled predicate",callTerm,
+			   "get_call",3);
 
   root = TIF_CallTrie(tif);
   if ( IsNULL(root) )
