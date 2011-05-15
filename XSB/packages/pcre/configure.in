@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.4 2010-12-19 04:55:48 kifer Exp $
+## $Id: configure.in,v 1.5 2011-05-15 07:24:24 kifer Exp $
 ## 
 ##
 
@@ -116,7 +116,7 @@ AC_SUBST(ldflags)
 AC_OUTPUT([pcre_info.P:pcre_info.in])
 
 (
-echo "  PCRE (Perl pattern matching) support:           $support"
+echo "  PCRE support (Perl pattern matching):           $support"
 if test "$support" = "yes"; then
    cat <<EOT
   PCRE C flags:        	                          $ccflags

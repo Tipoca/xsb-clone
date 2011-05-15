@@ -4572,7 +4572,7 @@ fi
 
 
 (
-echo "  PCRE (Perl pattern matching) support:           $support"
+echo "  PCRE support (Perl pattern matching):           $support"
 if test "$support" = "yes"; then
    cat <<EOT
   PCRE C flags:        	                          $ccflags
