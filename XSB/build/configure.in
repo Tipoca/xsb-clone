@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.223 2011-05-15 07:21:46 kifer Exp $
+## $Id: configure.in,v 1.224 2011-05-15 07:40:23 kifer Exp $
 ##
 ##
 
@@ -1651,11 +1651,11 @@ if test "$interprolog_native_engine" = "yes"; then
     INTERPROLOGOBJ="interprolog_callback.o"
     
     if test -n "$JAVA_HEADER_PATH" ; then
-	loaderCFLAGS="-I${JAVA_HEADER_PATH} ${loaderCFLAGS}"
-	builtinsCFLAGS="-I${JAVA_HEADER_PATH} ${builtinsCFLAGS}"
-	emuloopCFLAGS="-I${JAVA_HEADER_PATH} ${emuloopCFLAGS}"
-	trutilsCFLAGS="-I${JAVA_HEADER_PATH} ${trutilsCFLAGS}"
-	CFLAGS="-I${JAVA_HEADER_PATH} $CFLAGS"
+	loaderCFLAGS=" -I${JAVA_HEADER_PATH} ${loaderCFLAGS}"
+	builtinsCFLAGS=" -I${JAVA_HEADER_PATH} ${builtinsCFLAGS}"
+	emuloopCFLAGS=" -I${JAVA_HEADER_PATH} ${emuloopCFLAGS}"
+	trutilsCFLAGS=" -I${JAVA_HEADER_PATH} ${trutilsCFLAGS}"
+	CFLAGS=" -I${JAVA_HEADER_PATH} $CFLAGS"
     fi
 fi
 

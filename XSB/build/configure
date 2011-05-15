@@ -6805,11 +6805,11 @@ if test "$interprolog_native_engine" = "yes"; then
     INTERPROLOGOBJ="interprolog_callback.o"
 
     if test -n "$JAVA_HEADER_PATH" ; then
-	loaderCFLAGS="-I${JAVA_HEADER_PATH} ${loaderCFLAGS}"
-	builtinsCFLAGS="-I${JAVA_HEADER_PATH} ${builtinsCFLAGS}"
-	emuloopCFLAGS="-I${JAVA_HEADER_PATH} ${emuloopCFLAGS}"
-	trutilsCFLAGS="-I${JAVA_HEADER_PATH} ${trutilsCFLAGS}"
-	CFLAGS="-I${JAVA_HEADER_PATH} $CFLAGS"
+	loaderCFLAGS=" -I${JAVA_HEADER_PATH} ${loaderCFLAGS}"
+	builtinsCFLAGS=" -I${JAVA_HEADER_PATH} ${builtinsCFLAGS}"
+	emuloopCFLAGS=" -I${JAVA_HEADER_PATH} ${emuloopCFLAGS}"
+	trutilsCFLAGS=" -I${JAVA_HEADER_PATH} ${trutilsCFLAGS}"
+	CFLAGS=" -I${JAVA_HEADER_PATH} $CFLAGS"
     fi
 fi
 
