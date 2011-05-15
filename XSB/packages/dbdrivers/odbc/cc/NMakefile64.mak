@@ -16,7 +16,7 @@ CLEAN :
 	-@erase "$(INTDIR)\$(MYPROGRAM).exp"
 
 
-CPP_PROJ=/nologo /MT /W3 /GX /O2 /I "$(XSBDIR)\config\x64-pc-windows" \
+CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(XSBDIR)\config\x64-pc-windows" \
 		 /I "$(XSBDIR)\emu" /I "$(XSBDIR)\prolog_includes" \
 		 /I "$(XSBDIR)\packages\dbdrivers\cc" \
 		 /D "WIN64" /D "WIN_NT" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" \

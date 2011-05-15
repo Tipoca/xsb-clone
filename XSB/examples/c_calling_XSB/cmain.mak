@@ -44,7 +44,7 @@ CLEAN :
 	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(OUTDIR)\cmain.exe"
 
-CPP_PROJ=/nologo /ML /W3 /GX /O2 /I "..\..\emu" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /D "XSB_DLL" /Fp"$(INTDIR)\cmain.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+CPP_PROJ=/nologo /ML /W3 /EHsc /O2 /I "..\..\emu" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /D "XSB_DLL" /Fp"$(INTDIR)\cmain.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\cmain.bsc" 
 BSC32_SBRS= \
@@ -78,7 +78,7 @@ CLEAN :
 	-@erase "$(OUTDIR)\cmain.ilk"
 	-@erase "$(OUTDIR)\cmain.pdb"
 
-CPP_PROJ=/nologo /MLd /W3 /Gm /GX /ZI /Od /I "..\..\emu" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /D "XSB_DLL" /Fp"$(INTDIR)\cmain.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ  /c 
+CPP_PROJ=/nologo /MLd /W3 /Gm /EHsc /ZI /Od /I "..\..\emu" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /D "XSB_DLL" /Fp"$(INTDIR)\cmain.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ  /c 
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\cmain.bsc" 
 BSC32_SBRS= \
