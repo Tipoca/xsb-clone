@@ -603,8 +603,6 @@ xsb_asm_extension_sans_dot
 xsb_obj_extension_sans_dot
 xsb_hdr_extension_sans_dot
 xsb_src_extension_sans_dot
-win_ld_site_libraries
-win_site_includes
 DLLTYPE
 mno_cyg_lib
 mno_cyg_inclib
@@ -653,6 +651,11 @@ topdir
 full_config_name
 canonical
 xsb_version
+JAVA_PLATFORM_HEADER_PATH
+JAVA_HEADER_PATH
+XSB_INTERPROLOG
+java_compiler
+java_path
 smodels_goal
 with_smodels
 smoLIB
@@ -666,12 +669,6 @@ CXX
 DYNMOD_LINKFLAGS
 DYNMOD_SHAREDLIB_EXTENSION
 itkwish_path
-JAVA_PLATFORM_HEADER_PATH
-JAVA_HEADER_PATH
-XSB_INTERPROLOG
-java_path
-javac
-java_support
 wildmatch_support
 regmatch_support
 SET_MAKE
@@ -766,7 +763,6 @@ with_mysqlembedded_incdir
 with_oracle
 with_odbc
 with_iodbc
-with_interprolog
 with_smodels
 with_itkwish
 enable_no_cygwin
@@ -1491,10 +1487,6 @@ Optional Packages:
   --with-oracle                compile with support of Oracle
   --with-odbc                  compile with support for ODBC
   --with-iodbc                 use iODBC driver manager
-  --with-interprolog           compile with support for InterProlog.
-                                You might need to use the --with-includes
-                                option to specify the location of the files
-				jni.h and jni_md.h
   --with-smodels=path          use SMODELS for the XNMR module.
                                 path is the path where smodels has
                                 been installed and compiled
@@ -2728,12 +2720,6 @@ if test "${with_iodbc+set}" = set; then :
 fi
 
 
-# Check whether --with-interprolog was given.
-if test "${with_interprolog+set}" = set; then :
-  withval=$with_interprolog;
-fi
-
-
 # Check whether --with-smodels was given.
 if test "${with_smodels+set}" = set; then :
   withval=$with_smodels;
@@ -2898,7 +2884,7 @@ do
 		--with-bits64 | --with-bits32 | --with-aout | \
 		--with-optimization* | --with-config-tag* | --with-site-prefix* | --with-includes* | \
 		--with-static-libraries* | --with-dynamic-libraries* | --with-xpath* | \
-		--with-dbdrivers | --with-oracle | --with-odbc | --with-iodbc | --with-interprolog | \
+		--with-dbdrivers | --with-oracle | --with-odbc | --with-iodbc | \
 		--with-smodels* | --with-itkwish* | --with-pita* )
 		    ;;
 	    *)
@@ -5867,149 +5853,10 @@ if test "${with_odbc+set}" = "set"; then
     with_odbc=yes
 fi
 
-win_site_includes=
-win_ld_site_libraries=
-
 
 # Need to re-state the trap since configure resets it occasionally
 trap 'rm buildxsb.lock; exit 1' 1 2 3 15
 
-
-
-
-
-# Java support
-# Extract the first word of "javac", so it can be a program name with args.
-set dummy javac; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_prog_java_support+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  if test -n "$java_support"; then
-  ac_cv_prog_java_support="$java_support" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_prog_java_support=""yes""
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_prog_java_support" && ac_cv_prog_java_support=""no""
-fi
-fi
-java_support=$ac_cv_prog_java_support
-if test -n "$java_support"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $java_support" >&5
-$as_echo "$java_support" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-if test "${java_support}" = "yes"; then
-        javac="$as_dir"/javac
-else
-    javac=javac
-fi
-
-
-
-
-if test -z "$JAVA_HOME"; then
-        # Extract the first word of "javac", so it can be a program name with args.
-set dummy javac; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_java_path+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $java_path in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_java_path="$java_path" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_java_path="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_java_path" && ac_cv_path_java_path="no"
-  ;;
-esac
-fi
-java_path=$ac_cv_path_java_path
-if test -n "$java_path"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $java_path" >&5
-$as_echo "$java_path" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-    java_path=`dirname $java_path`
-    java_path=`dirname $java_path`
-    java_path=$java_path/include
-else
-    java_path=$JAVA_HOME/include
-fi
-
-java_platform_specific_hdr_path=`ls ${java_path}/*/jni_md.h`
-java_platform_specific_hdr_path=`dirname ${java_platform_specific_hdr_path}`
-
-if test -f "$java_path/jni.h" -a -f "$java_platform_specific_hdr_path/jni_md.h" ; then
-        with_interprolog=yes
-fi
-
-if test "${with_interprolog}" = "yes"; then
-    if test "${java_support}" != "yes"; then
-        echo "Interprolog not supported due to failure to find Java"
-        with_interprolog=""
-        JAVA_HEADER_PATH=""
-        JAVA_PLATFORM_HEADER_PATH=""
-    else
-        JAVA_HEADER_PATH=${java_path}
-        JAVA_PLATFORM_HEADER_PATH=${java_platform_specific_hdr_path}
-    	echo "Obtaining Java header files form ${JAVA_HEADER_PATH} and ${JAVA_PLATFORM_HEADER_PATH}"
-    fi
-else
-  JAVA_HEADER_PATH=""
-fi
-
-INTERPROLOGSRC=""
-INTERPROLOGOBJ=""
-
-if test "${with_interprolog+set}" = "set"; then
-    $as_echo "#define XSB_INTERPROLOG 1" >>confdefs.h
-
-    XSB_INTERPROLOG=1
-
-    with_interprolog=yes
-    INTERPROLOGSRC="interprolog_callback.c"
-    INTERPROLOGOBJ="interprolog_callback.o"
-    c_site_includes="${c_site_includes} -I${JAVA_HEADER_PATH}"
-        fi
 
 
 
@@ -6852,6 +6699,126 @@ CFLAGS="${c_site_includes} ${c_opt_level} ${c_inline_level} ${CFLAGS}"
 LDFLAGS="${ld_site_libraries} ${LDFLAGS}"
 
 
+####### Java support
+java_compiler=
+interprolog_native_engine=
+JAVA_HEADER_PATH=
+JAVA_PLATFORM_HEADER_PATH=
+
+if test -z "$JAVA_HOME"; then
+        # Extract the first word of "javac", so it can be a program name with args.
+set dummy javac; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_java_path+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $java_path in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_java_path="$java_path" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_java_path="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_java_path" && ac_cv_path_java_path="no"
+  ;;
+esac
+fi
+java_path=$ac_cv_path_java_path
+if test -n "$java_path"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $java_path" >&5
+$as_echo "$java_path" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+    java_path=`dirname $java_path`   # strip /javac
+    java_path=`dirname $java_path`   # strip /bin
+    java_compiler=$java_path/javac
+    java_path=$java_path/include
+else
+    java_path=$JAVA_HOME/include
+    java_compiler=$JAVA_HOME/bin/javac
+fi
+
+java_platform_specific_hdr_path=`ls ${java_path}/*/jni_md.h`
+java_platform_specific_hdr_path=`dirname ${java_platform_specific_hdr_path}`
+
+if test -f "$java_path/jni.h" -a -f "$java_platform_specific_hdr_path/jni_md.h" ; then
+    interprolog_native_engine=yes
+    JAVA_HEADER_PATH=${java_path}
+    JAVA_PLATFORM_HEADER_PATH=${java_platform_specific_hdr_path}
+    echo "Obtaining Java header files form ${JAVA_HEADER_PATH} and ${JAVA_PLATFORM_HEADER_PATH}"
+fi
+
+# If interprolog_native_engine still empty,
+# try to find jni.h and jni_md.h using AC_CHECK_HEADERS
+if test -z "${interprolog_native_engine}" ; then
+    for ac_header in jni.h jni_md.h
+do :
+  as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
+ac_fn_c_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"
+eval as_val=\$$as_ac_Header
+   if test "x$as_val" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define `$as_echo "HAVE_$ac_header" | $as_tr_cpp` 1
+_ACEOF
+ interprolog_native_engine=yes
+else
+  interprolog_native_engine=
+fi
+
+done
+
+    java_compiler=`which javac`
+    if test -n "${interprolog_native_engine}" ; then
+	echo "Found Java header files using CFLAGS"
+    fi
+fi
+
+
+
+INTERPROLOGSRC=""
+INTERPROLOGOBJ=""
+
+if test "$interprolog_native_engine" = "yes"; then
+    $as_echo "#define XSB_INTERPROLOG 1" >>confdefs.h
+
+    XSB_INTERPROLOG=1
+
+    INTERPROLOGSRC="interprolog_callback.c"
+    INTERPROLOGOBJ="interprolog_callback.o"
+
+    if test -n "$JAVA_HEADER_PATH" ; then
+	loaderCFLAGS="-I${JAVA_HEADER_PATH} ${loaderCFLAGS}"
+	builtinsCFLAGS="-I${JAVA_HEADER_PATH} ${builtinsCFLAGS}"
+	emuloopCFLAGS="-I${JAVA_HEADER_PATH} ${emuloopCFLAGS}"
+	trutilsCFLAGS="-I${JAVA_HEADER_PATH} ${trutilsCFLAGS}"
+	CFLAGS="-I${JAVA_HEADER_PATH} $CFLAGS"
+    fi
+fi
+
+
+
+
+####### end of Java support
+
+
 os_version=`echo $host_os | sed -e 's/[^0-9]*//'`
 os_type=`echo $host_os | sed -e 's/[0-9].*$//'`
 
@@ -6916,8 +6883,6 @@ fi
 
 
 # These are used in xsb_configuration.in
-
-
 
 
 
@@ -8318,30 +8283,39 @@ if test -n "${with_dbdrivers}" && test -f $topdir/packages/dbdrivers/Installatio
           cat $topdir/packages/dbdrivers/Installation_summary
 else
     	  echo ""
-          echo "  Building with modular database drivers:	  no"
-    	  echo "  (these drivers can also be configured later)"
+          echo "  Support for modular database drivers: 	  no"
+    	  echo "  -- These drivers can also be configured later."
 fi
 
 
 case "$with_oracle" in
-   "yes") echo "  Building with native support for Oracle:	  yes"
+   "yes") echo "  Native support for Oracle:			  yes"
     ;;
-   *)     echo "  Building with native support for Oracle:	  no"
+   *)     echo "  Native support for Oracle:			  no"
     ;;
 esac
 case "$with_odbc" in
-   "yes") echo "  Building with support for old ODBC driver:	  yes"
+   "yes") echo "  Support for the old ODBC driver:		  yes"
     ;;
-   *)     echo "  Building with support for old ODBC driver:	  no"
+   *)     echo "  Support for the old ODBC driver:		  no"
     ;;
 esac
 
 echo ""
 
-case "$with_interprolog" in
-   "yes") echo "  Building with support for InterProlog:	  yes"
+if test -n "$java_compiler"; then
+   cat <<EOT
+  Java compiler:                                  $java_compiler
+EOT
+fi
+
+case "$interprolog_native_engine" in
+   "yes") echo "  Support for InterProlog's native engine:	  yes"
     ;;
-   *)     echo "  Building with support for InterProlog:   	  no"
+   *)     echo "  Support for InterProlog's native engine:   	  no"
+          echo "  -- JDK may not have been installed or"
+          echo "  -- JAVA_HOME not set. You will still be able"
+	  echo "  -- to use InterProlog's subprocess engine."
     ;;
 esac
 
@@ -8367,12 +8341,6 @@ fi
 
 if test -f $topdir/packages/pcre/Installation_summary; then
     cat $topdir/packages/pcre/Installation_summary
-fi
-
-if test -n "$javac"; then
-   cat <<EOT
-  Java compiler:                                  $javac
-EOT
 fi
 
 

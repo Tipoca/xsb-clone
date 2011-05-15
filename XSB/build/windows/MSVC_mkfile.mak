@@ -6,7 +6,7 @@
 #
 # Where: CFG = release | debug
 #    	 DLL = yes: build as a DLL
-#        ORACLE=yes: build with support for Oracle
+#        ORACLE=yes: build with support for native interface to Oracle
 #        SITE_LIBS=<...> : additional loader libraries (required for Oracle
 #                          and/or InterProlog)
 #
@@ -54,7 +54,7 @@ CFG=release
 !IF "$(ORACLE)" != "yes" && "$(ORACLE)" != "no" && "$(ORACLE)" != ""
 !MESSAGE Invalid macro ORACLE="$(ORACLE)" specified.
 !MESSAGE This macro controls whether you want XSB to be built
-!MESSAGE with support for ORACLE. For example:
+!MESSAGE with support for Oracle native interface. For example:
 !MESSAGE
 !MESSAGE NMAKE /f "MSVC_Mfile.mak" CFG="release" && ORACLE="yes"
 !MESSAGE
@@ -143,7 +143,7 @@ CALL_CONV=XSB_DLL
 ORACLE_FLAG=/D "ORACLE"
 ORACLE_MSG=with Oracle support
 !IF  "$(SITE_LIBS)" == ""
-!MESSAGE Oracle libraries must be specified, if building XSB with support for Oracle
+!MESSAGE Oracle libraries must be specified, if building XSB with support for native interface to Oracle
 !MESSAGE Usage:
 !ERROR NMAKE /f "MSVC_Mfile.mak" CFG="..." ORACLE=yes SITE_LIBS="oracle libs"
 !ENDIF
@@ -152,7 +152,7 @@ ORACLE_MSG=with Oracle support
 
 !IF  "$(XSB_INTERPROLOG)" == "yes" || "$(XSB_INTERPROLOG)" == "true" || "$(XSB_INTERPROLOG)" == "1"
 INTERPROLOG_FLAG=/D "XSB_INTERPROLOG"
-INTERPROLOG_MSG=with Interprolog support
+INTERPROLOG_MSG=with support for InterProlog's native engine
 !ENDIF
 
 !IF "$(DLL)" == "yes"
@@ -248,7 +248,7 @@ LINK32_OBJS=$(LINK32_OBJS) $(OBJDIR)/orastuff.obj
 !ENDIF
 !ENDIF
 
-# Interprolog requires one additional file
+# InterProlog's native engine requires one additional file
 !IF "$(XSB_INTERPROLOG)" != ""
 !IF "$(DLL)" == "yes"
 DLL_LINK32_OBJS=$(DLL_LINK32_OBJS) $(OBJDIR)/interprolog_callback.obj

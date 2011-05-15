@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.222 2011-05-10 01:26:22 kifer Exp $
+## $Id: configure.in,v 1.223 2011-05-15 07:21:46 kifer Exp $
 ##
 ##
 
@@ -138,11 +138,6 @@ AC_ARG_WITH(odbc,
 [  --with-odbc                  compile with support for ODBC])
 AC_ARG_WITH(iodbc,
 [  --with-iodbc                 use iODBC driver manager])
-AC_ARG_WITH(interprolog,
-[  --with-interprolog           compile with support for InterProlog.
-                                You might need to use the --with-includes
-                                option to specify the location of the files
-				jni.h and jni_md.h])
 AC_ARG_WITH(smodels,
 [  --with-smodels=path          use SMODELS for the XNMR module.
                                 path is the path where smodels has
@@ -247,7 +242,7 @@ do
 		--with-bits64 | --with-bits32 | --with-aout | \
 		--with-optimization* | --with-config-tag* | --with-site-prefix* | --with-includes* | \
 		--with-static-libraries* | --with-dynamic-libraries* | --with-xpath* | \
-		--with-dbdrivers | --with-oracle | --with-odbc | --with-iodbc | --with-interprolog | \
+		--with-dbdrivers | --with-oracle | --with-odbc | --with-iodbc | \
 		--with-smodels* | --with-itkwish* | --with-pita* )
 		    ;;
 	    *)
@@ -1141,9 +1136,6 @@ if test "${with_odbc+set}" = "set"; then
     with_odbc=yes
 fi
 
-win_site_includes=
-win_ld_site_libraries=
-
 
 # Need to re-state the trap since configure resets it occasionally
 trap 'rm buildxsb.lock; exit 1' 1 2 3 15
@@ -1152,67 +1144,6 @@ AC_SUBST(regmatch_support)
 AC_SUBST(wildmatch_support)
 
 
-# Java support
-AC_CHECK_PROG(java_support, javac, "yes", "no")
-if test "${java_support}" = "yes"; then
-    dnl after AC_CHECK_PROG, as_dir holds the directory where javac is found
-    javac="$as_dir"/javac
-else
-    javac=javac
-fi
-
-AC_SUBST(javac)
-AC_SUBST(java_support)
-
-if test -z "$JAVA_HOME"; then
-    dnl try to see if we can derive the java home dir from javac's full name
-    AC_PATH_PROG(java_path,javac,no)
-    java_path=`dirname $java_path`
-    java_path=`dirname $java_path`
-    java_path=$java_path/include
-else
-    java_path=$JAVA_HOME/include
-fi
-
-java_platform_specific_hdr_path=`ls ${java_path}/*/jni_md.h`
-java_platform_specific_hdr_path=`dirname ${java_platform_specific_hdr_path}`
-
-if test -f "$java_path/jni.h" -a -f "$java_platform_specific_hdr_path/jni_md.h" ; then
-        with_interprolog=yes
-fi
-
-if test "${with_interprolog}" = "yes"; then
-    if test "${java_support}" != "yes"; then
-        echo "Interprolog not supported due to failure to find Java"
-        with_interprolog=""
-        JAVA_HEADER_PATH=""
-        JAVA_PLATFORM_HEADER_PATH=""
-    else
-        JAVA_HEADER_PATH=${java_path}
-        JAVA_PLATFORM_HEADER_PATH=${java_platform_specific_hdr_path}
-    	echo "Obtaining Java header files form ${JAVA_HEADER_PATH} and ${JAVA_PLATFORM_HEADER_PATH}"
-    fi
-else
-  JAVA_HEADER_PATH=""
-fi
-
-INTERPROLOGSRC=""
-INTERPROLOGOBJ=""
-
-if test "${with_interprolog+set}" = "set"; then
-    AC_DEFINE(XSB_INTERPROLOG)
-    AC_SUBST(XSB_INTERPROLOG,1)
-    with_interprolog=yes
-    INTERPROLOGSRC="interprolog_callback.c"
-    INTERPROLOGOBJ="interprolog_callback.o"
-    c_site_includes="${c_site_includes} -I${JAVA_HEADER_PATH}"
-    dnl also needed to pass jni include file locations
-    dnl to windows make file through --with-includes
-fi
-
-
-AC_SUBST(JAVA_HEADER_PATH)
-AC_SUBST(JAVA_PLATFORM_HEADER_PATH)
 
 # profiling implies debug
 if test "${enable_profile}" = "yes"; then
@@ -1670,6 +1601,70 @@ CFLAGS="${c_site_includes} ${c_opt_level} ${c_inline_level} ${CFLAGS}"
 LDFLAGS="${ld_site_libraries} ${LDFLAGS}"
 
 
+####### Java support
+java_compiler=
+interprolog_native_engine=
+JAVA_HEADER_PATH=
+JAVA_PLATFORM_HEADER_PATH=
+
+if test -z "$JAVA_HOME"; then
+    dnl try to see if we can derive the java home dir from javac's full name
+    AC_PATH_PROG(java_path,javac,no)
+    java_path=`dirname $java_path`   # strip /javac
+    java_path=`dirname $java_path`   # strip /bin
+    java_compiler=$java_path/javac
+    java_path=$java_path/include
+else
+    java_path=$JAVA_HOME/include
+    java_compiler=$JAVA_HOME/bin/javac
+fi
+
+java_platform_specific_hdr_path=`ls ${java_path}/*/jni_md.h`
+java_platform_specific_hdr_path=`dirname ${java_platform_specific_hdr_path}`
+
+if test -f "$java_path/jni.h" -a -f "$java_platform_specific_hdr_path/jni_md.h" ; then
+    interprolog_native_engine=yes
+    JAVA_HEADER_PATH=${java_path}
+    JAVA_PLATFORM_HEADER_PATH=${java_platform_specific_hdr_path}
+    echo "Obtaining Java header files form ${JAVA_HEADER_PATH} and ${JAVA_PLATFORM_HEADER_PATH}"
+fi
+
+# If interprolog_native_engine still empty,
+# try to find jni.h and jni_md.h using AC_CHECK_HEADERS
+if test -z "${interprolog_native_engine}" ; then
+    AC_CHECK_HEADERS([jni.h jni_md.h], interprolog_native_engine=yes, interprolog_native_engine=)
+    java_compiler=`which javac`
+    if test -n "${interprolog_native_engine}" ; then
+	echo "Found Java header files using CFLAGS"
+    fi
+fi
+
+AC_SUBST(java_compiler)
+
+INTERPROLOGSRC=""
+INTERPROLOGOBJ=""
+
+if test "$interprolog_native_engine" = "yes"; then
+    AC_DEFINE(XSB_INTERPROLOG)
+    AC_SUBST(XSB_INTERPROLOG,1)
+    INTERPROLOGSRC="interprolog_callback.c"
+    INTERPROLOGOBJ="interprolog_callback.o"
+    
+    if test -n "$JAVA_HEADER_PATH" ; then
+	loaderCFLAGS="-I${JAVA_HEADER_PATH} ${loaderCFLAGS}"
+	builtinsCFLAGS="-I${JAVA_HEADER_PATH} ${builtinsCFLAGS}"
+	emuloopCFLAGS="-I${JAVA_HEADER_PATH} ${emuloopCFLAGS}"
+	trutilsCFLAGS="-I${JAVA_HEADER_PATH} ${trutilsCFLAGS}"
+	CFLAGS="-I${JAVA_HEADER_PATH} $CFLAGS"
+    fi
+fi
+
+AC_SUBST(JAVA_HEADER_PATH)
+AC_SUBST(JAVA_PLATFORM_HEADER_PATH)
+
+####### end of Java support
+
+
 os_version=`echo $host_os | sed -e 's/[[^0-9]]*//'`
 os_type=`echo $host_os | sed -e 's/[[0-9]].*$//'`
 
@@ -1762,8 +1757,6 @@ AC_SUBST(INTERPROLOGOBJ)
 AC_SUBST(mno_cyg_inclib)
 AC_SUBST(mno_cyg_lib)
 AC_SUBST(DLLTYPE)
-AC_SUBST(win_site_includes)
-AC_SUBST(win_ld_site_libraries)
 
 ## XSB file extensions
 xsb_src_extension_sans_dot=P
@@ -1877,30 +1870,39 @@ if test -n "${with_dbdrivers}" && test -f $topdir/packages/dbdrivers/Installatio
           cat $topdir/packages/dbdrivers/Installation_summary
 else
     	  echo ""
-          echo "  Building with modular database drivers:	  no"
-    	  echo "  (these drivers can also be configured later)"
+          echo "  Support for modular database drivers: 	  no"
+    	  echo "  -- These drivers can also be configured later."
 fi
 
 
 case "$with_oracle" in
-   "yes") echo "  Building with native support for Oracle:	  yes"
+   "yes") echo "  Native support for Oracle:			  yes"
     ;;
-   *)     echo "  Building with native support for Oracle:	  no"
+   *)     echo "  Native support for Oracle:			  no"
     ;;
 esac
 case "$with_odbc" in
-   "yes") echo "  Building with support for old ODBC driver:	  yes"
+   "yes") echo "  Support for the old ODBC driver:		  yes"
     ;;
-   *)     echo "  Building with support for old ODBC driver:	  no"
+   *)     echo "  Support for the old ODBC driver:		  no"
     ;;
 esac
 
 echo ""
 
-case "$with_interprolog" in
-   "yes") echo "  Building with support for InterProlog:	  yes"
+if test -n "$java_compiler"; then
+   cat <<EOT
+  Java compiler:                                  $java_compiler
+EOT
+fi
+
+case "$interprolog_native_engine" in
+   "yes") echo "  Support for InterProlog's native engine:	  yes"
     ;;
-   *)     echo "  Building with support for InterProlog:   	  no"
+   *)     echo "  Support for InterProlog's native engine:   	  no"
+          echo "  -- JDK may not have been installed or"
+          echo "  -- JAVA_HOME not set. You will still be able"
+	  echo "  -- to use InterProlog's subprocess engine."
     ;;
 esac
 
@@ -1927,12 +1929,6 @@ fi
 
 if test -f $topdir/packages/pcre/Installation_summary; then
     cat $topdir/packages/pcre/Installation_summary
-fi
-
-if test -n "$javac"; then
-   cat <<EOT
-  Java compiler:                                  $javac
-EOT
 fi
 
 
