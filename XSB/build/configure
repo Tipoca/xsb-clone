@@ -622,7 +622,7 @@ os_type
 os_version
 xsb_build_date
 emumake_goal
-LINKFLAGS
+XSBMOD_LDFLAGS
 MEMFLAG
 GPPWNTFLAG
 GPPCFLAGS
@@ -657,7 +657,7 @@ XASPLIBNAME
 ac_ct_CXX
 CXXFLAGS
 CXX
-DYNMOD_LINKFLAGS
+DYNMOD_LDFLAGS
 DYNMOD_SHAREDLIB_EXTENSION
 itkwish_path
 wildmatch_support
@@ -6056,7 +6056,7 @@ fi
 
 
 # these are used to set up the xsbdynmod parameters under Unixes and MacOS X
-DYNMOD_LINKFLAGS=-shared
+DYNMOD_LDFLAGS=-shared
 DYNMOD_SHAREDLIB_EXTENSION=so
 
 # Set OS-specific variables for XSB
@@ -6136,7 +6136,7 @@ case "$canonical" in
 
                 $as_echo "#define FOREIGN_ELF 1" >>confdefs.h
 
-        	DYNMOD_LINKFLAGS="-dynamiclib -single_module -nostartfiles"
+        	DYNMOD_LDFLAGS="-dynamiclib -single_module -nostartfiles"
         	DYNMOD_SHAREDLIB_EXTENSION=jnilib
         ;;
     *sgi* )     $as_echo "#define FOREIGN_ELF 1" >>confdefs.h
@@ -6153,7 +6153,7 @@ case "$canonical" in
                     if test ! "$CC" = gcc ; then
                         CFLAGS="${CFLAGS} -64 -OPT:Olimit=9500"
                         LDFLAGS="-64 -lm"
-                        LINKFLAGS="-64"
+                        XSBMOD_LDFLAGS="-64"
                         GPPCFLAGS="-64"
                     fi
                 else
@@ -6241,7 +6241,7 @@ case "$canonical" in
 #                    fi
 
                     LDFLAGS="$LDFLAGS -lwsock32 -luser32"
-                    LINKFLAGS="$LDFLAGS"
+                    XSBMOD_LDFLAGS="$LDFLAGS"
                 fi
         ;;
 esac
@@ -6319,13 +6319,13 @@ if test "${do_debugging}" = "yes" ; then
     else
         CFLAGS="${CFLAGS} -g"
         LDFLAGS=" -g ${LDFLAGS}"
-        LINKFLAGS=" -g ${LINKFLAGS}"
+        XSBMOD_LDFLAGS=" -g ${XSBMOD_LDFLAGS}"
     fi
 fi
 
 if test "${CC}" = "gcc" -a "${host_os}" != "windows"  ; then
         LD=gcc
-    LINKFLAGS="-nodefaultlibs -nostartfiles ${LINKFLAGS}"
+    XSBMOD_LDFLAGS="-nodefaultlibs -nostartfiles ${XSBMOD_LDFLAGS}"
 else
     LD=ld
 fi
@@ -6356,14 +6356,14 @@ fi
 if test "${with_odbc}" = yes ; then
    case "$canonical" in
     *-cygwin*)  LDFLAGS="-lodbc32 ${LDFLAGS}"
-                LINKFLAGS="-lodbc32 ${LINKFLAGS}"
+                XSBMOD_LDFLAGS="-lodbc32 ${XSBMOD_LDFLAGS}"
         ;;
     *)          if test -n "${with_iodbc}"; then
                     LDFLAGS="-liodbc ${LDFLAGS}"
-                    LINKFLAGS="-liodbc ${LINKFLAGS}"
+                    XSBMOD_LDFLAGS="-liodbc ${XSBMOD_LDFLAGS}"
                 else
                     LDFLAGS="-lodbc ${LDFLAGS}"
-                    LINKFLAGS="-lodbc ${LINKFLAGS}"
+                    XSBMOD_LDFLAGS="-lodbc ${XSBMOD_LDFLAGS}"
                 fi
     esac
 fi
@@ -6688,6 +6688,7 @@ emuloopCFLAGS="${c_site_includes} ${emuloop_opt_level} ${c_inline_level} ${CFLAG
 trutilsCFLAGS="${c_site_includes} ${trutils_opt_level} ${c_inline_level} ${CFLAGS}"
 CFLAGS="${c_site_includes} ${c_opt_level} ${c_inline_level} ${CFLAGS}"
 LDFLAGS="${ld_site_libraries} ${LDFLAGS}"
+XSBMOD_LDFLAGS="${ld_site_libraries} ${XSBMOD_LDFLAGS}"
 
 
 ####### Java support

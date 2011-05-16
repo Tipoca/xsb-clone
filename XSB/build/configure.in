@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.225 2011-05-16 01:04:24 kifer Exp $
+## $Id: configure.in,v 1.226 2011-05-16 01:36:27 kifer Exp $
 ##
 ##
 
@@ -1285,7 +1285,7 @@ fi
 
 
 # these are used to set up the xsbdynmod parameters under Unixes and MacOS X
-DYNMOD_LINKFLAGS=-shared
+DYNMOD_LDFLAGS=-shared
 DYNMOD_SHAREDLIB_EXTENSION=so
 
 # Set OS-specific variables for XSB
@@ -1353,7 +1353,7 @@ case "$canonical" in
                 CFLAGS="-faltivec -fPIC ${CFLAGS} "
                 AC_DEFINE(DARWIN)
                 AC_DEFINE(FOREIGN_ELF)
-        	DYNMOD_LINKFLAGS="-dynamiclib -single_module -nostartfiles"
+        	DYNMOD_LDFLAGS="-dynamiclib -single_module -nostartfiles"
         	DYNMOD_SHAREDLIB_EXTENSION=jnilib
         ;;
     *sgi* )     AC_DEFINE(FOREIGN_ELF)
@@ -1368,7 +1368,7 @@ case "$canonical" in
                     if test ! "$CC" = gcc ; then
                         CFLAGS="${CFLAGS} -64 -OPT:Olimit=9500"
                         LDFLAGS="-64 -lm"
-                        LINKFLAGS="-64"
+                        XSBMOD_LDFLAGS="-64"
                         GPPCFLAGS="-64"
                     fi
                 else
@@ -1447,7 +1447,7 @@ case "$canonical" in
 #                    fi
 
                     LDFLAGS="$LDFLAGS -lwsock32 -luser32"
-                    LINKFLAGS="$LDFLAGS"
+                    XSBMOD_LDFLAGS="$LDFLAGS"
                 fi
         ;;
 esac
@@ -1457,7 +1457,7 @@ if test "${general_tagging}" = "yes" ; then
 fi
 
 AC_SUBST(DYNMOD_SHAREDLIB_EXTENSION)
-AC_SUBST(DYNMOD_LINKFLAGS)
+AC_SUBST(DYNMOD_LDFLAGS)
 
 # check for MIPS
 case "$canonical" in
@@ -1484,14 +1484,14 @@ if test "${do_debugging}" = "yes" ; then
     else
         CFLAGS="${CFLAGS} -g"
         LDFLAGS=" -g ${LDFLAGS}"
-        LINKFLAGS=" -g ${LINKFLAGS}"
+        XSBMOD_LDFLAGS=" -g ${XSBMOD_LDFLAGS}"
     fi
 fi
 
 if test "${CC}" = "gcc" -a "${host_os}" != "windows"  ; then
     dnl gcc is smarter when creating dynamic libraries in Unix
     LD=gcc
-    LINKFLAGS="-nodefaultlibs -nostartfiles ${LINKFLAGS}"
+    XSBMOD_LDFLAGS="-nodefaultlibs -nostartfiles ${XSBMOD_LDFLAGS}"
 else
     LD=ld
 fi
@@ -1522,14 +1522,14 @@ fi
 if test "${with_odbc}" = yes ; then
    case "$canonical" in
     *-cygwin*)  LDFLAGS="-lodbc32 ${LDFLAGS}"
-                LINKFLAGS="-lodbc32 ${LINKFLAGS}"
+                XSBMOD_LDFLAGS="-lodbc32 ${XSBMOD_LDFLAGS}"
         ;;
     *)          if test -n "${with_iodbc}"; then
                     LDFLAGS="-liodbc ${LDFLAGS}"
-                    LINKFLAGS="-liodbc ${LINKFLAGS}"
+                    XSBMOD_LDFLAGS="-liodbc ${XSBMOD_LDFLAGS}"
                 else
                     LDFLAGS="-lodbc ${LDFLAGS}"
-                    LINKFLAGS="-lodbc ${LINKFLAGS}"
+                    XSBMOD_LDFLAGS="-lodbc ${XSBMOD_LDFLAGS}"
                 fi
     esac
 fi
@@ -1599,6 +1599,7 @@ trutilsCFLAGS="${c_site_includes} ${trutils_opt_level} ${c_inline_level} ${CFLAG
 dnl Set CFLAGS **after** emuloopCFLAGS, trutilsCFLAGS
 CFLAGS="${c_site_includes} ${c_opt_level} ${c_inline_level} ${CFLAGS}"
 LDFLAGS="${ld_site_libraries} ${LDFLAGS}"
+XSBMOD_LDFLAGS="${ld_site_libraries} ${XSBMOD_LDFLAGS}"
 
 
 ####### Java support
@@ -1712,7 +1713,7 @@ AC_SUBST(MEMFLAG)
 AC_SUBST(CXX)
 AC_SUBST(LDFLAGS)
 dnl used for SGIs only
-AC_SUBST(LINKFLAGS)
+AC_SUBST(XSBMOD_LDFLAGS)
 
 # Just something so we won't forget to set it in the future
 emumake_goal=doodledandy

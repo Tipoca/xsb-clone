@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.71 2011-05-07 00:03:02 kifer Exp $
+## $Id: emuMakefile.in,v 1.72 2011-05-16 01:36:27 kifer Exp $
 ##
 
 
@@ -48,7 +48,7 @@ DLLTYPE=@DLLTYPE@
 JAVA_HEADER_PATH=@JAVA_HEADER_PATH@
 JAVA_PLATFORM_HEADER_PATH=@JAVA_PLATFORM_HEADER_PATH@
 SHAREDLIB_EXTENSION=@DYNMOD_SHAREDLIB_EXTENSION@
-DYNMOD_LINKFLAGS=@DYNMOD_LINKFLAGS@
+DYNMOD_LDFLAGS=@DYNMOD_LDFLAGS@
 
 # For mno-cygwin
 # -mdll option is needed so that MSVC files could link to dll
@@ -64,7 +64,7 @@ ENTRY_FUNCTION=_win_xsbent@12
 
 
 
-LINKFLAGS=@LINKFLAGS@
+XSBMOD_LDFLAGS=@XSBMOD_LDFLAGS@
 
 # Substitute an assignment for the MAKE variable, because
 # BSD doesn't have it as a default.
@@ -173,14 +173,14 @@ xsbora:: init $(allORAOBJS)
 xsbmod:: $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
 	@echo ""; \
 	   echo "Making a C-callable XSB module"; \
-	   echo "@LD@ @MEMFLAG@ -o xsb.o $(LINKFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}" ; \
+	   echo "@LD@ @MEMFLAG@ -o xsb.o $(XSBMOD_LDFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}" ; \
 	   echo ""
-	@@LD@ @MEMFLAG@ -o xsb.o $(LINKFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
+	@@LD@ @MEMFLAG@ -o xsb.o $(XSBMOD_LDFLAGS) -r $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ}
 	@cp xsb.o $(arch_config_objlibdir) 2> /dev/null || echo ""
 
 xsbdynmod::
 	@echo "Making XSB Shared Library $(bindir)/libxsb.$(SHAREDLIB_EXTENSION)"
-	@@LD@ -o libxsb.$(SHAREDLIB_EXTENSION) $(DYNMOD_LINKFLAGS)  -faltivec -fPIC $(LINKFLAGS)  $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ} -lm
+	@@LD@ -o libxsb.$(SHAREDLIB_EXTENSION) $(DYNMOD_LDFLAGS)  -faltivec -fPIC $(XSBMOD_LDFLAGS)  $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ} -lm
 	@cp libxsb.$(SHAREDLIB_EXTENSION) $(bindir) 2>/dev/null || echo ""
 
 # same as xsbmod, but with oracle support
@@ -188,7 +188,7 @@ xsboramod:: $(ORAOBJS)
 	@echo ""; \
 	   echo "Making a C-callable XSB module $(arch_config_objlibdir)/xsb.o with support for Oracle"; \
 	   echo ""
-	@@LD@ -o xsb.o $(LINKFLAGS) -r $(ORAOBJS)
+	@@LD@ -o xsb.o $(XSBMOD_LDFLAGS) -r $(ORAOBJS)
 	@cp xsb.o $(arch_config_objlibdir) 2> /dev/null || echo ""
 
 
@@ -212,11 +212,11 @@ nodll:
 cygdll: $(allOBJS) $(HEADERS) xsbmod
 	@echo "$(CC) -Wl,--add-stdcall-alias -shared -o $(arch_config_prefix)/bin/$(DLLNAME) $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ} -Wl,--out-implib=xsb.a -Wl,--export-all-symbols -Wl,--enable-auto-import $(DLL_LIBS)"
 	@$(CC) -Wl,--add-stdcall-alias -shared -o $(arch_config_prefix)/bin/$(DLLNAME) $(OBJS) ${ODBCOBJ} ${INTERPROLOGOBJ} -Wl,--out-implib=xsb.a -Wl,--export-all-symbols -Wl,--enable-auto-import $(DLL_LIBS)
-	@echo "$(CC) -o $(arch_config_prefix)/bin/xsb.exe  $(CFLAGS) -I$(arch_config_prefix) -L$(arch_config_prefix)/bin main_xsb.c $(LINKFLAGS) $(DLL_LIBS) -lxsb"
+	@echo "$(CC) -o $(arch_config_prefix)/bin/xsb.exe  $(CFLAGS) -I$(arch_config_prefix) -L$(arch_config_prefix)/bin main_xsb.c $(XSBMOD_LDFLAGS) $(DLL_LIBS) -lxsb"
 	@cp xsb.a $(arch_config_prefix)/bin/xsb.a
 	@$(CC) -o $(arch_config_prefix)/bin/xsb.exe  $(CFLAGS) \
 		-I$(arch_config_prefix) -L$(arch_config_prefix)/bin \
-		main_xsb.c $(LINKFLAGS) $(DLL_LIBS) -lxsb
+		main_xsb.c $(XSBMOD_LDFLAGS) $(DLL_LIBS) -lxsb
 
 
 #=======================================================================
