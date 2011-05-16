@@ -593,16 +593,7 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
-xsb_dcl_extension
-xsb_asm_extension
 xsb_obj_extension
-xsb_hdr_extension
-xsb_src_extension
-xsb_dcl_extension_sans_dot
-xsb_asm_extension_sans_dot
-xsb_obj_extension_sans_dot
-xsb_hdr_extension_sans_dot
-xsb_src_extension_sans_dot
 DLLTYPE
 mno_cyg_lib
 mno_cyg_inclib
@@ -6917,25 +6908,7 @@ fi
 
 
 ## XSB file extensions
-xsb_src_extension_sans_dot=P
-xsb_hdr_extension_sans_dot=H
-xsb_obj_extension_sans_dot=xwam
-xsb_asm_extension_sans_dot=A
-xsb_dcl_extension_sans_dot=D
-
-
-
-
-
-xsb_src_extension=.$xsb_src_extension_sans_dot
-xsb_hdr_extension=.$xsb_hdr_extension_sans_dot
-xsb_obj_extension=.$xsb_obj_extension_sans_dot
-xsb_asm_extension=.$xsb_asm_extension_sans_dot
-xsb_dcl_extension=.$xsb_dcl_extension_sans_dot
-
-
-
-
+xsb_obj_extension=.xwam
 
 
 
@@ -6943,7 +6916,7 @@ ac_config_headers="$ac_config_headers ${arch_config_prefix}/xsb_config.h:${confi
 
 
 
-ac_config_files="$ac_config_files ${arch_config_prefix}/topMakefile:topMakefile.in ${arch_config_prefix}/emuMakefile:emuMakefile.in ${arch_config_prefix}/modMakefile:modMakefile.in ${arch_config_prefix}/gppMakefile:gppMakefile.in ${arch_config_prefix}/smoMakefile:smoMakefile.in ${arch_config_prefix}/makedef.sh:makedef.sh.in ${arch_config_file}:xsb_configuration.in windows/xsb_configuration.P:windows/xsb_configuration.in windows64/xsb_configuration.P:windows64/xsb_configuration.in makexsb:makexsb.in ${emudir}/extensions_xsb.h:extensions_xsb.in ${scriptdir}/chr_pp${config_tag}:chr_pp.in ${scriptdir}/xsb${config_tag}:xsb.in ${scriptdir}/xsb.bat:windows/xsb.in ${scriptdir}/xsb64.bat:windows64/xsb.in ${arch_config_prefix}/banner.msg:banner.in windows/banner.msg:windows/banner.in windows64/banner.msg:windows64/banner.in windows/MSVC_mkfile.mak:windows/MSVC_mkfile.in windows64/MSVC_mkfile.mak:windows64/MSVC_mkfile.in ${prefix}/packages/xmc/xmc-gui:xmc-gui.in"
+ac_config_files="$ac_config_files ${arch_config_prefix}/topMakefile:topMakefile.in ${arch_config_prefix}/emuMakefile:emuMakefile.in ${arch_config_prefix}/modMakefile:modMakefile.in ${arch_config_prefix}/gppMakefile:gppMakefile.in ${arch_config_prefix}/smoMakefile:smoMakefile.in ${arch_config_prefix}/makedef.sh:makedef.sh.in ${arch_config_file}:xsb_configuration.in windows/xsb_configuration.P:windows/xsb_configuration.in windows64/xsb_configuration.P:windows64/xsb_configuration.in makexsb:makexsb.in ${scriptdir}/chr_pp${config_tag}:chr_pp.in ${scriptdir}/xsb${config_tag}:xsb.in ${scriptdir}/xsb.bat:windows/xsb.in ${scriptdir}/xsb64.bat:windows64/xsb.in ${arch_config_prefix}/banner.msg:banner.in windows/banner.msg:windows/banner.in windows64/banner.msg:windows64/banner.in windows/MSVC_mkfile.mak:windows/MSVC_mkfile.in windows64/MSVC_mkfile.mak:windows64/MSVC_mkfile.in ${prefix}/packages/xmc/xmc-gui:xmc-gui.in"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -7644,7 +7617,6 @@ do
     "windows/xsb_configuration.P") CONFIG_FILES="$CONFIG_FILES windows/xsb_configuration.P:windows/xsb_configuration.in" ;;
     "windows64/xsb_configuration.P") CONFIG_FILES="$CONFIG_FILES windows64/xsb_configuration.P:windows64/xsb_configuration.in" ;;
     "makexsb") CONFIG_FILES="$CONFIG_FILES makexsb:makexsb.in" ;;
-    "${emudir}/extensions_xsb.h") CONFIG_FILES="$CONFIG_FILES ${emudir}/extensions_xsb.h:extensions_xsb.in" ;;
     "${scriptdir}/chr_pp${config_tag}") CONFIG_FILES="$CONFIG_FILES ${scriptdir}/chr_pp${config_tag}:chr_pp.in" ;;
     "${scriptdir}/xsb${config_tag}") CONFIG_FILES="$CONFIG_FILES ${scriptdir}/xsb${config_tag}:xsb.in" ;;
     "${scriptdir}/xsb.bat") CONFIG_FILES="$CONFIG_FILES ${scriptdir}/xsb.bat:windows/xsb.in" ;;
