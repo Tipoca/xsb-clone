@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.89 2011-04-27 17:11:11 pmoura Exp $
+** $Id: io_builtins_xsb.c,v 1.90 2011-05-16 01:03:30 kifer Exp $
 ** 
 */
 
@@ -518,6 +518,7 @@ xsbBool fmt_read(CTXTdecl)
   int number_of_successes=0, curr_assignment=0;
   int cont; /* continuation indicator */
   int chars_accumulator=0, curr_chars_consumed=0;
+  int dummy; /* to squash return arg warnings */
 
   XSB_StrSet(&FmtBuf,"");
   XSB_StrSet(&StrArgBuf,"");
@@ -578,7 +579,7 @@ xsbBool fmt_read(CTXTdecl)
     case '-':
       /* we had an assignment suppression character: just count how 
 	 many chars were scanned, don't skip to the next scan variable */
-      fscanf(fptr, aux_fmt.string, &curr_chars_consumed);
+      dummy = fscanf(fptr, aux_fmt.string, &curr_chars_consumed);
       curr_assignment = 0;
       i--; /* don't skip scan variable */
       cont = 1; /* don't leave the loop */
@@ -665,7 +666,7 @@ xsbBool fmt_read(CTXTdecl)
     curr_assignment = fscanf(fptr, current_fmt_spec->fmt);
   /* last format substr with assignment suppression (spec size=0) */
   if (current_fmt_spec->size == 0)
-    fscanf(fptr, aux_fmt.string, &curr_chars_consumed);
+    dummy = fscanf(fptr, aux_fmt.string, &curr_chars_consumed);
 
   /* check for end of file */
   if ((number_of_successes == 0) && (curr_assignment < 0))

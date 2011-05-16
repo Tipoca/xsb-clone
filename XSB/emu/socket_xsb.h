@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.h,v 1.10 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: socket_xsb.h,v 1.11 2011-05-16 01:03:30 kifer Exp $
 ** 
 */
 
@@ -38,8 +38,12 @@
 #define IS_IP_ADDR(string)    	   inet_addr(string) != INADDR_NONE
 #define XSB_SOCKET_ERRORCODE	   WSAGetLastError()
 #define FillWithZeros(addr)    	  ZeroMemory(&addr, sizeof(addr));
+#ifndef EINPROGRESS
 #define EINPROGRESS               WSAEINPROGRESS
+#endif
+#ifndef EWOULDBLOCK
 #define EWOULDBLOCK               WSAEWOULDBLOCK
+#endif
 #define SET_SOCKET_BLOCKING(fd, val) (ioctlsocket(fd, FIONBIO, (u_long FAR *)&val) == 0)
 #define GETSOCKOPT(fd,lvl,optname,optval,optlen) getsockopt(fd, lvl, optname, (char *)optval, optlen)
 #define SETSOCKOPT(fd,lvl,optname,optval,optlen) setsockopt(fd, lvl, optname, (char *)optval, optlen)

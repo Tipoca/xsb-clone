@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.61 2011-03-05 19:05:30 tswift Exp $
+** $Id: debug_xsb.c,v 1.62 2011-05-16 01:03:30 kifer Exp $
 ** 
 */
 
@@ -879,8 +879,9 @@ void print_tables(CTXTdecl)
       if (subg != NULL)
 	fprintf(stddbg, EOSUBG);
       if (i == 10) {
+	int dummy;
 	fprintf(stddbg, "more (y/n)?  ");
-	scanf("%c", &ans);
+	dummy = scanf("%c", &ans);
 	skip_to_nl();
 	i = 0;
       }

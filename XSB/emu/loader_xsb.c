@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.89 2011-05-01 09:36:18 kifer Exp $
+** $Id: loader_xsb.c,v 1.90 2011-05-16 01:03:30 kifer Exp $
 ** 
 */
 
@@ -115,10 +115,10 @@ extern char *expand_filename(char *filename);
 #define get_obj_word(x)		(get_obj_data((x),OBJ_WORD_SIZE))
 #define get_obj_string(x,len)	(get_obj_data((x),(len)))
 
-#define get_obj_word_bb(x)    {get_obj_word(x) ; fix_bb(x) ; }
+#define get_obj_word_bb(x)    {int dummy; dummy = get_obj_word(x) ; fix_bb(x) ; }
 #define get_obj_word_bbsig(x) {get_obj_word(x) ; fix_bb4(x) ;\
 			       *(Cell *)(x) = makeint(*(int *)(x));}
-#define get_obj_word_bbsig_notag(x) {get_obj_word(x) ; fix_bb4(x) ; \
+#define get_obj_word_bbsig_notag(x) {int dummy; dummy = get_obj_word(x) ; fix_bb4(x) ; \
 			       *(Integer *)(x) = *(int *)(x);}
                    
 
@@ -245,6 +245,7 @@ static int get_index_tab(CTXTdeclc FILE *fd, int clause_no)
   CPtr label;
   Integer ival;
   Cell val;
+  int dummy; /* used to squash warnings */
 
   size = hsize(clause_no);
 
@@ -255,7 +256,7 @@ static int get_index_tab(CTXTdeclc FILE *fd, int clause_no)
     indextab[j].link = (CPtr)&(indextab[j].link);
   }
   for (j = 0; j < clause_no; j++) {
-    get_obj_byte(&type);
+    dummy = get_obj_byte(&type);
     switch (type) {
     case 'i': get_obj_word_bbsig_notag(&ival);
       hashval = ihash((Cell) ival, size); 
@@ -274,7 +275,7 @@ static int get_index_tab(CTXTdeclc FILE *fd, int clause_no)
       break;
     case 'd': {
       double fval;
-      get_obj_string(&fval,8);
+      dummy = get_obj_string(&fval,8);
 #ifndef FAST_FLOATS
       val = float_val_to_hash(fval);
 #else
@@ -414,6 +415,7 @@ static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
   CPtr inst_addr, end_addr;
   int  current_opcode, oprand;
   Cell tab_config_hold;	/* working pointer */
+  int dummy; /* used to squash warnings */
   
   *current_tab = -1;
   inst_addr = seg_text(current_seg);
@@ -459,7 +461,7 @@ static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
 	inst_addr ++;
 	break;
       case D:				// Double float (32-bit?)
-	get_obj_string(inst_addr,8);
+	dummy = get_obj_string(inst_addr,8);
 	inst_addr += 2;
 	break;
       case B:                       // boxed integer
@@ -489,7 +491,7 @@ static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
 	break;
       case T:	             // tip ptr
 	*current_tab = 1;	/* flag for load index */
-	get_obj_word(&tab_config_hold);          /* space holder */
+	dummy = get_obj_word(&tab_config_hold);          /* space holder */
 	cell(inst_addr) = (Cell)NULL; /* TIFptr will be set later when know PSC */
 	inst_addr ++;
 	break;
@@ -513,10 +515,11 @@ static void load_index(CTXTdeclc FILE *fd, int index_bytes, int table_num)
   byte    index_inst, arity;
   int     temp_space, count = 0;
   CPtr    sob_arg_p, temp_ptr;
+  int dummy; /* used to squash warnings */
 
   while (count < index_bytes) {
-    get_obj_byte(&index_inst);
-    get_obj_byte(&arity);
+    dummy = get_obj_byte(&index_inst);
+    dummy = get_obj_byte(&arity);
     get_obj_word_bb(&index_bno);
     sob_arg_p = index_reloc[index_bno];
     get_obj_word_bb(&clause_no);
@@ -662,8 +665,9 @@ inline static void get_obj_atom(FILE *fd, VarString *atom)
 {
   byte x;
   unsigned int len;
+  int dummy; /* used to squash warnings */
   
-  get_obj_data((&x),1);
+  dummy = get_obj_data((&x),1);
   /* ``x'' gets the length of the string or > SHORT_LDOPTIONLEN.
      The latter means we have a long atom.
      In this case, the length is stored in 4 bytes & we use get_obj_word_bb */
@@ -674,7 +678,7 @@ inline static void get_obj_atom(FILE *fd, VarString *atom)
     len = x;
 
   XSB_StrEnsureSize(atom,len+1);
-  get_obj_string(atom->string, len);
+  dummy = get_obj_string(atom->string, len);
   atom->length = len;
   XSB_StrNullTerminate(atom);
 }
@@ -688,16 +692,18 @@ static xsbBool load_one_sym(FILE *fd, Psc cur_mod, int count, int exp)
   byte t_arity, t_type, t_env, t_defined, t_definedas;
   Pair temp_pair, defas_pair = NULL;
   Psc  mod;
+  int dummy; /* used to squash warnings */
 
-  get_obj_byte(&t_env);
+  dummy = get_obj_byte(&t_env);
   /* this simple check can avoid worse situations in case of compiler bugs */
   if (t_env&0x80)
     xsb_abort("[LOADER] The loaded object file %s%s is corrupted",
 	      cur_mod->nameptr, XSB_OBJ_EXTENSION_STRING);
 
-  get_obj_byte(&t_type);  t_defined = t_type & T_DEFI; t_type = t_type & ~T_DEFI;
+  dummy = get_obj_byte(&t_type);
+  t_defined = t_type & T_DEFI; t_type = t_type & ~T_DEFI;
   t_definedas = t_type & T_DEFA; t_type = t_type & ~T_DEFA;
-  get_obj_byte(&t_arity);
+  dummy = get_obj_byte(&t_arity);
   get_obj_atom(fd, &str);
   if (t_type == T_MODU)
     temp_pair = insert_module(0, str.string);
@@ -706,16 +712,16 @@ static xsbBool load_one_sym(FILE *fd, Psc cur_mod, int count, int exp)
       byte t_modlen;
       char modname[MAXNAME+1];
 
-      get_obj_byte(&t_modlen);
-      get_obj_string(modname, t_modlen);
+      dummy = get_obj_byte(&t_modlen);
+      dummy = get_obj_string(modname, t_modlen);
       modname[t_modlen] = '\0';
       temp_pair = insert_module(0, modname);
       mod = temp_pair->psc_ptr;
       if (t_definedas) {
 	byte t_defaslen;
 	char defasname[MAXNAME+1];
-	get_obj_byte(&t_defaslen);
-	get_obj_string(defasname, t_defaslen);
+	dummy = get_obj_byte(&t_defaslen);
+	dummy = get_obj_string(defasname, t_defaslen);
 	defasname[t_defaslen] = '\0';
 	defas_pair = insert(defasname, t_arity, mod, &def_is_new);
 	if (def_is_new) {
@@ -917,14 +923,15 @@ static byte *loader1(CTXTdeclc FILE *fd, char *filename, int exp)
   Psc cur_mod;
   Pair ptr;
   TIFptr *instruct_tip;
+  int dummy; /* used to squash warnings */
  
   seg_count = 0; first_inst = 0;
-  get_obj_byte(&name_len);
+  dummy = get_obj_byte(&name_len);
 
   if (name_len >= FOREIGN_NAMELEN)
     xsb_abort("[LOADER] Foreign module name is too long");
 
-  get_obj_string(name, name_len);
+  dummy = get_obj_string(name, name_len);
   name[(int)name_len] = 0;
   if (name_len==0) cur_mod = global_mod;
   else {
@@ -941,13 +948,13 @@ static byte *loader1(CTXTdeclc FILE *fd, char *filename, int exp)
     seg_count++;
     /*		xsb_dbgmsg(("Seg count: %d",seg_count)); */
     /* get the header of the segment */
-    get_obj_byte(&arity);
-    get_obj_byte(&name_len);
+    dummy = get_obj_byte(&arity);
+    dummy = get_obj_byte(&name_len);
 
     if (name_len >= FOREIGN_NAMELEN)
       xsb_abort("[LOADER] Module name is too long");
 
-    get_obj_string(name, name_len);
+    dummy = get_obj_string(name, name_len);
     name[(int)name_len] = 0;
     get_obj_word_bb(&text_bytes);
     /*		xsb_dbgmsg(("Text Bytes %x %d",text_bytes,text_bytes));*/
@@ -1066,13 +1073,14 @@ static byte *loader_foreign(char *filename, FILE *fd, int exp)
   unsigned long psc_count;
   Psc  cur_mod;
   Pair ptr;
+  int dummy; /* used to squash warnings */
 
-  get_obj_byte(&name_len);
+  dummy = get_obj_byte(&name_len);
   if (name_len >= FOREIGN_NAMELEN) {
     xsb_error("[LOADER] Foreign module name is too long");
     return FALSE;
   }
-  get_obj_string(name, name_len);
+  dummy = get_obj_string(name, name_len);
   name[name_len] = 0;
   get_obj_atom(fd, &ldoption);
   ptr = insert_module(T_MODU, name);
