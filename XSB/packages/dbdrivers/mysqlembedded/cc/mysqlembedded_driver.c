@@ -25,6 +25,8 @@
 ** This is invoked from the middle_layer module in emu.
 */
 
+#include "../../cc/nodeprecate.h"
+
 #include "xsb_config.h"
 
 #ifdef WIN_NT

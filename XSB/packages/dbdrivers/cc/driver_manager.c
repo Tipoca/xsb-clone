@@ -26,6 +26,8 @@
 ** driver specific C files which are in the packages/dbdrivers/xxx/cc directory.
 */
 
+#include "nodeprecate.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -24,6 +24,8 @@
 ** This is the ODBC driver for connecting to a database.
 */
 
+#include "../../cc/nodeprecate.h"
+
 #include "xsb_config.h"
 
 #ifdef WIN_NT

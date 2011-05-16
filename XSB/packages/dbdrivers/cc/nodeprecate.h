@@ -1,5 +1,5 @@
 /*
-** File: packages/curl/cc/nodeprecate.h
+** File: packages/dbdrivers/cc/nodeprecate.h
 ** Author: Michael Kifer
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
