@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.c,v 1.27 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: orient_xsb.c,v 1.28 2011-05-16 01:34:23 kifer Exp $
 ** 
 */
 
@@ -137,6 +137,7 @@ char *xsb_executable_full_path(char *myname)
   int len, found = 0;
   char *pathcounter, save;
   static char myname_augmented[MAXPATHLEN];
+  char *dummy; /* to squash warnings */
 #ifndef WIN_NT
   int link_len;
 #endif
@@ -177,7 +178,7 @@ char *xsb_executable_full_path(char *myname)
   if (is_absolute_filename(myname_augmented))
     strcpy(executable_path_gl, myname_augmented);
   else {
-    getcwd(current_dir_gl, MAXPATHLEN-1);
+    dummy = getcwd(current_dir_gl, MAXPATHLEN-1);
     snprintf(executable_path_gl, MAXPATHLEN, "%s%c%s", current_dir_gl, SLASH, myname_augmented);
   }
 

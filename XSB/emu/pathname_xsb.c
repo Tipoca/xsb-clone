@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.40 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: pathname_xsb.c,v 1.41 2011-05-16 01:34:23 kifer Exp $
 ** 
 */
 
@@ -202,6 +202,7 @@ char *expand_filename(char *filename) {
   char aux_filename[MAXPATHLEN],
    aux_filename2[MAXPATHLEN];
   char *absolute_filename = mem_alloc(MAXPATHLEN,OTHER_SPACE); // since xsb may not be initialized
+  char *dummy; /* to squash warnings */
 
   if (is_absolute_filename(filename)) {
     return rectify_pathname(filename, absolute_filename);
@@ -211,7 +212,7 @@ char *expand_filename(char *filename) {
     return rectify_pathname(aux_filename, absolute_filename);
 #endif
   } else {
-    getcwd(aux_filename2, MAXPATHLEN-1);
+    dummy = getcwd(aux_filename2, MAXPATHLEN-1);
     snprintf(aux_filename,MAXPATHLEN, "%s%c%s", aux_filename2,
 	    SLASH, filename);
     return rectify_pathname(aux_filename, absolute_filename);
