@@ -2506,6 +2506,17 @@ build_dir="`pwd`"
 # strip the last directory and possibly trailing slashes
 topdir=`echo "${build_dir}" | sed 's,/[^/][^/]*/*$,,'`
 
+topdir_sans_spaces="`echo "$topdir" | sed 's, ,,g'`"
+
+if test "$topdir" != "$topdir_sans_spaces" ;  then
+    echo ""
+    echo "*** XSB cannot be installed in $topdir"
+    echo "*** because the directory path for XSB installation cannot have spaces."
+    echo "*** Please choose a location for XSB that has no whitespace in its name."
+    echo ""
+    exit 1
+fi
+
 ac_aux_dir=
 for ac_dir in "$build_dir" "$srcdir"/"$build_dir"; do
   for ac_t in install-sh install.sh shtool; do

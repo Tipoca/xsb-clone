@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.227 2011-05-17 04:23:42 kifer Exp $
+## $Id: configure.in,v 1.228 2011-05-17 05:08:28 kifer Exp $
 ##
 ##
 
@@ -49,6 +49,17 @@ build_dir="`pwd`"
 
 # strip the last directory and possibly trailing slashes
 topdir=`echo "${build_dir}" | sed 's,/[[^/]][[^/]]*/*$,,'`
+
+topdir_sans_spaces="`echo "$topdir" | sed 's, ,,g'`"
+
+if test "$topdir" != "$topdir_sans_spaces" ;  then
+    echo ""
+    echo "*** XSB cannot be installed in $topdir"
+    echo "*** because the directory path for XSB installation cannot have spaces."
+    echo "*** Please choose a location for XSB that has no whitespace in its name."
+    echo ""
+    exit 1
+fi
 
 AC_CONFIG_AUX_DIR("$build_dir")
 
