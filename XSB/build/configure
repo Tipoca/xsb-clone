@@ -2506,9 +2506,8 @@ build_dir="`pwd`"
 # strip the last directory and possibly trailing slashes
 topdir=`echo "${build_dir}" | sed 's,/[^/][^/]*/*$,,'`
 
-
 ac_aux_dir=
-for ac_dir in $build_dir "$srcdir"/$build_dir; do
+for ac_dir in "$build_dir" "$srcdir"/"$build_dir"; do
   for ac_t in install-sh install.sh shtool; do
     if test -f "$ac_dir/$ac_t"; then
       ac_aux_dir=$ac_dir
@@ -2518,7 +2517,7 @@ for ac_dir in $build_dir "$srcdir"/$build_dir; do
   done
 done
 if test -z "$ac_aux_dir"; then
-  as_fn_error "cannot find install-sh, install.sh, or shtool in $build_dir \"$srcdir\"/$build_dir" "$LINENO" 5
+  as_fn_error "cannot find install-sh, install.sh, or shtool in \"$build_dir\" \"$srcdir\"/\"$build_dir\"" "$LINENO" 5
 fi
 
 # These three variables are undocumented and unsupported,
@@ -3285,48 +3284,48 @@ fi
 
 
 # where binary executables go (this is config-specific)
-arch_bindir=${arch_config_prefix}/bin
+arch_bindir="${arch_config_prefix}/bin"
 
 # where object code goes (we need it only for the source tree)
-arch_config_objlibdir=${arch_config_prefix}/saved.o
+arch_config_objlibdir="${arch_config_prefix}/saved.o"
 
 # where arch-specific XSB .{P,H,O} files go
-arch_config_libdir=${arch_config_prefix}/lib
+arch_config_libdir="${arch_config_prefix}/lib"
 
-arch_config_file=${arch_config_libdir}/xsb_configuration.P
+arch_config_file="${arch_config_libdir}/xsb_configuration.P"
 
 # site-specific directories
 # where the site is
 if test -z "$with_site_prefix" ; then
-   site_prefix=${orig_prefix}/site
+   site_prefix="${orig_prefix}/site"
 else
-   site_prefix=$with_site_prefix
+   site_prefix="$with_site_prefix"
 fi
 
 # site-specific config-independent XSB libraries
-site_libdir=${site_prefix}/lib
+site_libdir="${site_prefix}/lib"
 # site-specific config-dependent stuff goes
-site_config_prefix=${site_prefix}/config/${canonical}
+site_config_prefix="${site_prefix}/config/${canonical}"
 # site-specific config-dependent XSB libraries
-site_config_libdir=${site_config_prefix}/lib
+site_config_libdir="${site_config_prefix}/lib"
 
 # Installation directories: We only check if they exist
-install_libdir=${prefix}/lib
-install_syslibdir=${prefix}/syslib
-install_cmplibdir=${prefix}/cmplib
-install_emudir=${prefix}/emu
-install_scriptdir=${prefix}/bin     # where the xsb invocation script goes
-install_builddir=${prefix}/build    # where the config detection scripts go
-install_prolog_includes=${prefix}/prolog_includes
-install_pkgdir=${prefix}/packages
-install_pkgxmcdir=${prefix}/packages/xmc
-install_examples=${prefix}/examples
-install_etcdir=${prefix}/etc
+install_libdir="${prefix}/lib"
+install_syslibdir="${prefix}/syslib"
+install_cmplibdir="${prefix}/cmplib"
+install_emudir="${prefix}/emu"
+install_scriptdir="${prefix}/bin"     # where the xsb invocation script goes
+install_builddir="${prefix}/build"    # where the config detection scripts go
+install_prolog_includes="${prefix}/prolog_includes"
+install_pkgdir="${prefix}/packages"
+install_pkgxmcdir="${prefix}/packages/xmc"
+install_examples="${prefix}/examples"
+install_etcdir="${prefix}/etc"
 
-arch_install_config_prefix=${install_config_prefix}/${full_config_name}
-arch_install_bindir=${arch_install_config_prefix}/bin
-arch_install_config_libdir=${arch_install_config_prefix}/lib
-arch_install_objdir=${arch_install_config_prefix}/saved.o
+arch_install_config_prefix="${install_config_prefix}/${full_config_name}"
+arch_install_bindir="${arch_install_config_prefix}/bin"
+arch_install_config_libdir="${arch_install_config_prefix}/lib"
+arch_install_objdir="${arch_install_config_prefix}/saved.o"
 
 
 
@@ -3349,21 +3348,21 @@ rm -f .missingdirs.tmp
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $libdir" >&5
 $as_echo_n "checking $libdir... " >&6; } && \
-     (test -d $libdir && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     (test -d "$libdir" && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
         || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; \
               echo "+++Can't find $libdir" >> .missingdirs.tmp)
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $syslibdir" >&5
 $as_echo_n "checking $syslibdir... " >&6; } && \
-     (test -d $syslibdir && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     (test -d "$syslibdir" && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
         || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; \
               echo "+++Can't find $syslibdir" >> .missingdirs.tmp)
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $cmplibdir" >&5
 $as_echo_n "checking $cmplibdir... " >&6; } && \
-     (test -d $cmplibdir && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     (test -d "$cmplibdir" && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
         || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; \
@@ -3376,140 +3375,140 @@ test -f .missingdirs.tmp && \
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $scriptdir" >&5
 $as_echo_n "checking $scriptdir... " >&6; } && \
-     ((test -d $scriptdir || mkdir -p $scriptdir) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$scriptdir" || mkdir -p "$scriptdir") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $scriptdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $arch_bindir" >&5
 $as_echo_n "checking $arch_bindir... " >&6; } && \
-     ((test -d $arch_bindir || mkdir -p $arch_bindir) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$arch_bindir" || mkdir -p "$arch_bindir") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $arch_bindir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $arch_config_libdir" >&5
 $as_echo_n "checking $arch_config_libdir... " >&6; } && \
-     ((test -d $arch_config_libdir || mkdir -p ${arch_config_libdir}) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$arch_config_libdir" || mkdir -p "${arch_config_libdir}") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $arch_config_libdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking ${arch_config_objlibdir}" >&5
 $as_echo_n "checking ${arch_config_objlibdir}... " >&6; } && \
-     ((test -d "${arch_config_objlibdir}" || mkdir -p ${arch_config_objlibdir}) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "${arch_config_objlibdir}" || mkdir -p "${arch_config_objlibdir}") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $arch_config_objlibdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $site_libdir" >&5
 $as_echo_n "checking $site_libdir... " >&6; } && \
-     ((test -d $site_libdir || mkdir -p $site_libdir) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$site_libdir" || mkdir -p "$site_libdir") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $site_libdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $site_config_libdir" >&5
 $as_echo_n "checking $site_config_libdir... " >&6; } && \
-     ((test -d $site_config_libdir || mkdir -p $site_config_libdir) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$site_config_libdir" || mkdir -p "$site_config_libdir") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $site_config_libdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $install_emudir" >&5
 $as_echo_n "checking $install_emudir... " >&6; } && \
-     ((test -d $install_emudir || mkdir -p $install_emudir) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$install_emudir" || mkdir -p "$install_emudir") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $install_emudir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $install_libdir" >&5
 $as_echo_n "checking $install_libdir... " >&6; } && \
-     ((test -d $install_libdir || mkdir -p $install_libdir) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$install_libdir" || mkdir -p "$install_libdir") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $install_libdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $install_syslibdir" >&5
 $as_echo_n "checking $install_syslibdir... " >&6; } && \
-     ((test -d $install_syslibdir || mkdir -p $install_syslibdir) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$install_syslibdir" || mkdir -p "$install_syslibdir") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $install_syslibdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $install_cmplibdir" >&5
 $as_echo_n "checking $install_cmplibdir... " >&6; } && \
-     ((test -d $install_cmplibdir || mkdir -p $install_cmplibdir) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$install_cmplibdir" || mkdir -p "$install_cmplibdir") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $install_cmplibdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $install_scriptdir" >&5
 $as_echo_n "checking $install_scriptdir... " >&6; } && \
-     ((test -d $install_scriptdir || mkdir -p $install_scriptdir) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$install_scriptdir" || mkdir -p "$install_scriptdir") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $install_scriptdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $install_builddir" >&5
 $as_echo_n "checking $install_builddir... " >&6; } && \
-     ((test -d $install_builddir || mkdir -p $install_builddir) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$install_builddir" || mkdir -p "$install_builddir") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $install_builddir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $arch_install_bindir" >&5
 $as_echo_n "checking $arch_install_bindir... " >&6; } && \
-     ((test -d $arch_install_bindir || mkdir -p $arch_install_bindir) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$arch_install_bindir" || mkdir -p "$arch_install_bindir") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $arch_install_bindir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $arch_install_config_libdir" >&5
 $as_echo_n "checking $arch_install_config_libdir... " >&6; } && \
-     ((test -d $arch_install_config_libdir || mkdir -p ${arch_install_config_libdir}) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$arch_install_config_libdir" || mkdir -p "${arch_install_config_libdir}") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $arch_install_config_libdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $arch_install_objdir" >&5
 $as_echo_n "checking $arch_install_objdir... " >&6; } && \
-     ((test -d $arch_install_objdir || mkdir -p ${arch_install_objdir}) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$arch_install_objdir" || mkdir -p "${arch_install_objdir}") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $arch_install_objdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $install_etcdir" >&5
 $as_echo_n "checking $install_etcdir... " >&6; } && \
-     ((test -d $install_etcdir || mkdir -p ${install_etcdir}) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$install_etcdir" || mkdir -p "${install_etcdir}") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $install_etcdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $install_pkgdir" >&5
 $as_echo_n "checking $install_pkgdir... " >&6; } && \
-     ((test -d $install_pkgdir || mkdir -p ${install_pkgdir}) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$install_pkgdir" || mkdir -p "${install_pkgdir}") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $install_pkgdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $install_pkgxmcdir" >&5
 $as_echo_n "checking $install_pkgxmcdir... " >&6; } && \
-     ((test -d $install_pkgxmcdir || mkdir ${install_pkgxmcdir}) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$install_pkgxmcdir" || mkdir "${install_pkgxmcdir}") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $install_pkgxmcdir" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $install_examples" >&5
 $as_echo_n "checking $install_examples... " >&6; } && \
-     ((test -d $install_examples || mkdir -p ${install_examples}) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$install_examples" || mkdir -p "${install_examples}") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create: $install_examples" >> .missingdirs.tmp)
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking $install_prolog_includes" >&5
 $as_echo_n "checking $install_prolog_includes... " >&6; } && \
-     ((test -d $install_prolog_includes || mkdir -p ${install_prolog_includes}) && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
+     ((test -d "$install_prolog_includes" || mkdir -p "${install_prolog_includes}") && { $as_echo "$as_me:${as_lineno-$LINENO}: result: OK" >&5
 $as_echo "OK" >&6; }) \
     || ({ $as_echo "$as_me:${as_lineno-$LINENO}: result: FAILED" >&5
 $as_echo "FAILED" >&6; }; echo "+++Can't create  $install_prolog_includes" >> .missingdirs.tmp)
@@ -8204,7 +8203,7 @@ $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
 
-chmod 644 ${arch_config_file}
+chmod 644 "${arch_config_file}"
 
 # Need to re-state the trap since configure resets it occasionally
 trap 'rm buildxsb.lock; exit 1' 1 2 3 15
