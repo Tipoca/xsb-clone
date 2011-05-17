@@ -8380,6 +8380,8 @@ chmod 644 ${arch_config_file} \
 
 
 # phantom private_builtin.c file
+# this is duplicated in makexsb. We still keep it here so that makedepend will
+# see private_builtin.c in emu and will generate the right dependencies
 test -f ${emudir}/private_builtin.c || \
    cp ${build_dir}/private_builtin.in ${emudir}/private_builtin.c
 

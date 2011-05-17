@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.228 2011-05-17 05:08:28 kifer Exp $
+## $Id: configure.in,v 1.229 2011-05-17 06:16:01 kifer Exp $
 ##
 ##
 
@@ -1982,6 +1982,8 @@ chmod 644 ${arch_config_file} \
 
 
 # phantom private_builtin.c file
+# this is duplicated in makexsb. We still keep it here so that makedepend will
+# see private_builtin.c in emu and will generate the right dependencies
 test -f ${emudir}/private_builtin.c || \
    cp ${build_dir}/private_builtin.in ${emudir}/private_builtin.c
 
