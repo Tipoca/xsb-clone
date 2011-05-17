@@ -167,5 +167,5 @@ Features and packages:
   --enable-debug-oracle      compile with Oracle debugging turned on
   --enable-profile           compile with profiling turned on
   --disable-optimization     compile with no optimization (default: enabled)
-  --enable-local-scheduling  compile using the local scheduling strategy;
-                             default is the batched strategy
+  --enable-batched-scheduling  compile using the batched scheduling strategy;
+                             default is the local strategy

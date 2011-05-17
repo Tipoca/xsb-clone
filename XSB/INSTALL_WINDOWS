@@ -20,7 +20,7 @@ If you don't have one (and don't feel like having it), then
 your next best bet is to download a pre-compiled version of XSB from
 http://xsb.sourceforge.net.
 
-In most cases you do not need to do steps 1 and 2 below.
+In most cases you do not need to perform steps 1 and 2 below.
 
 1. Check the file 
 
@@ -38,41 +38,14 @@ In most cases you do not need to do steps 1 and 2 below.
    The file is commented and the part that might need to be changed is
    clearly marked.
 
-3. IF YOU ARE DEBUGGING:
-   Check the file config\x86-pc-windows\xsb_debug.h
-   and #define the appropriate debugging flags.
-   In particular, the DEBUG flag in config\x86-pc-windows\xsb_debug.h must
-   be set.
-
-4. THIS CAN BE SKIPPED, if appearance does not matter to you.
-   If you change the XSB scheduling strategy (batched to local or vice
-   versa)  in 1 and 2 or if you are changing the compilation mode from
-   DEBUG to optimized, then please also update the file
-
-	 config\x86-pc-windows\banner.msg
-
-   The only purpose of this operation is to ensure that the user doesn't get
-   an incorrect banner message on startup.
-   Changing this files alone won't enable debugging and/or local scheduling 
-   strategy. You must also recompile XSB with these options enabled.
-
-5. If you downloaded a pre-compiled version of XSB, you are done.
+3. If you downloaded a pre-compiled version of XSB, you are done.
    If you need to recompile XSB, then read (6).
 
-6. Compile the .\emu directory.
+4. Compile the .\emu directory.
 
       cd build
       makexsb
-      (if you are debugging then type `makexsb "CFG=debug"')
 
-      Another option is "ORACLE=yes" for native Oracle support, but it is
-      rarely used.
-      In the latter case, you also have to  create a file called
-      custom_settings.mak in the build\windows directory and put
-      the following in it:
-      MY_LIBRARY_DIRS=/LIBPATH:"oracle_library1" /LIBPATH:"oracle_library2" ...
-      where Oracle libraries should be taken from the Oracle manual.
-     
 
 [NOTES on using Microsoft Visual C++:]
 
@@ -81,27 +54,7 @@ variables. Visual C++ has a command file called vcvars32.bat or similar,
 which you should find and drag into the command window (and press Return).
 This will set all the necessary environment variables.
 
-7. The executable will be in
+The executable and the DLL will be in
 
      .\config\x86-pc-windows\bin\xsb.exe
-
-8. NMAKE will put the XSB DLL in:
-
      .\config\x86-pc-windows\bin\xsb.dll
-
-9. If you first compiled XSB as an executable and then want to compile it
-   as a DLL, then you should run
-
-        makexsb clean
-
-   before producing the xsb.dll. This will wipe out the object files from
-   the previous build, but it will leave xsb.exe in place, so you can use
-   both xsb.dll and xsb.exe.
-
-10. If you first compiled XSB as a release version and then decided to
-    create a debug version (or vice versa), you must also run 
-
-        makexsb clean
-
-    in between. However, you should be aware of the fact that the debug
-    version will replace the earlier executable (or the other way around).
