@@ -662,8 +662,8 @@ iso_flag(bounded,true).
 iso_flag(max_integer,Maxint):- 
 	xsb_configuration(word_size,Size),
 	(Size == '64' -> 
-	    Maxint is 16'7fffffffffffff
-	;   Maxint is 16'7fffffff).
+	    Maxint is (2**62 - 1) + 2**62
+	;   Maxint is (2**30 - 1) + 2**30).
 %'
 iso_flag(min_integer,Minint) :- iso_flag(max_integer,Maxint), Minint is -Maxint - 1.
 iso_flag(max_arity,255).
