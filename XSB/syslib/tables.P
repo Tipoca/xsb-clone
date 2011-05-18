@@ -154,8 +154,7 @@ tfindall(T, Call, Result) :-
 tnot(Subgoal) :-
 	ground(Subgoal)
 	-> 't not'(Subgoal)
-	;   abort(['FLOUNDERING: tnot/1 used with a non-ground subgoal: ',
-		   Subgoal]).
+	;   instantiation_error('tnot/1',1).
 
 /* Need to Handle module calls (not sure if done properly before) */
 :- import writeln/1 from standard.
@@ -176,7 +175,7 @@ tnot(Subgoal) :-
 	        ; (AnsSetStatus == COMPLETED_ANSWER_SET -> % has call entry
   	  	      t_not_subsumptive_sf_comp(Subgoal,SF,AnsSetStatus)
 		    ; t_not_subsumptive_sf_incomp(Subgoal,SF,AnsSetStatus) ) )
-	    ; abort(['Illegal (untabled?) subgoal to ''t not''/1: ',Subgoal]) ) ).
+	    ; table_error(['Illegal (untabled?) subgoal to ''t not''/1: ',Subgoal]) ) ).
 
 t_not_variant(Subgoal,AnsSetStatus):- 
 	    get_ptcp(PTCP),
