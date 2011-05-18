@@ -14,6 +14,7 @@ files="./XSB/LICENSE ./XSB/INSTALL ./XSB/INSTALL_PROBLEMS \
 	./XSB/gpp \
 	./XSB/bin \
 	./XSB/prolog_includes \
+	./XSB/prolog-commons \
         ./XSB/etc \
         ./XSB/packages \
         ./XSB/docs/userman/manual?.pdf \
