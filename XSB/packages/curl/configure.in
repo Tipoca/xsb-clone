@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.5 2010-12-19 04:55:48 kifer Exp $
+## $Id: configure.in,v 1.6 2011-05-18 06:15:06 kifer Exp $
 ## 
 ##
 
@@ -41,7 +41,7 @@ topdir=`echo "${build_dir}" | sed 's,/[[^/]][[^/]]*/*/[[^/]][[^/]]*/*$,,'`
 
 
 # Tell where the autoconf scripts are
-AC_CONFIG_AUX_DIR($topdir/build)
+AC_CONFIG_AUX_DIR("$topdir/build")
 
 AC_ARG_WITH(curl-libdir,
 [  --with-curl-libdir=DIR       the location of the libcurl.so is at DIR])

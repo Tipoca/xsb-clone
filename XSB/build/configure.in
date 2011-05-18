@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.229 2011-05-17 06:16:01 kifer Exp $
+## $Id: configure.in,v 1.230 2011-05-18 06:15:06 kifer Exp $
 ##
 ##
 
@@ -55,8 +55,9 @@ topdir_sans_spaces="`echo "$topdir" | sed 's, ,,g'`"
 if test "$topdir" != "$topdir_sans_spaces" ;  then
     echo ""
     echo "*** XSB cannot be installed in $topdir"
-    echo "*** because the directory path for XSB installation cannot have spaces."
-    echo "*** Please choose a location for XSB that has no whitespace in its name."
+    echo "*** on Unix-style systems, as the directory path for XSB"
+    echo "*** installations cannot have spaces (a limitation of GNU Make)."
+    echo "*** Please choose a location that has no whitespaces in its name."
     echo ""
     exit 1
 fi
@@ -883,15 +884,15 @@ fi
 
 
 dnl --with-pita=DIR
-if test -n "$with_pita" && test -d $topdir/packages/pita; then
-    cd $topdir/packages/pita
+if test -n "$with_pita" && test -d "$topdir/packages/pita"; then
+    cd "$topdir/packages/pita"
     echo "***Configuring pita"
     echo `pwd`
     ./configure  --with-pita="$with_pita"  > /dev/null
     cd $build_dir
 fi
 
-if test -n "${with_dbdrivers}" && test -d $topdir/packages/dbdrivers; then
+if test -n "${with_dbdrivers}" && test -d "$topdir/packages/dbdrivers"; then
     cd $topdir/packages/dbdrivers
     echo "***Configuring DB drivers"
     ./run_configure_scripts --with-odbc-libdir="$with_odbc_libdir" \
@@ -905,16 +906,16 @@ if test -n "${with_dbdrivers}" && test -d $topdir/packages/dbdrivers; then
 fi
 
 # curl package
-if test -d $topdir/packages/curl; then
-    cd $topdir/packages/curl
+if test -d "$topdir/packages/curl"; then
+    cd "$topdir/packages/curl"
     echo "***Configuring Curl (WWW protocol library)"
     ./configure --with-curl-libdir="$with_curl_libdir" --with-curl-incdir="$with_curl_incdir" > /dev/null
-    cd $build_dir
+    cd "$build_dir"
 fi
 
 
-if test -d $topdir/packages/xpath; then
-   cd $topdir/packages/xpath
+if test -d "$topdir/packages/xpath"; then
+   cd "$topdir/packages/xpath"
    echo "***Configuring XPath support"
    if test -n "$with_xpath_incdir" ; then
       xpath_prefix_option="--prefix="$with_xpath_incdir"
@@ -923,16 +924,16 @@ if test -d $topdir/packages/xpath; then
       xpath_exec_prefix_option="--exec-prefix="$with_xpath_libdir"
    fi
     ./configure $xpath_exec_prefix_option $xpath_prefix_option > /dev/null
-    cd $build_dir
+    cd "$build_dir"
 fi
 
 
 # pcre package
-if test -d $topdir/packages/pcre; then
-    cd $topdir/packages/pcre
+if test -d "$topdir/packages/pcre"; then
+    cd "$topdir/packages/pcre"
     echo "***Configuring PCRE (Perl pattern matching library)"
     ./configure --with-pcre-libdir="$with_pcre_libdir" --with-pcre-incdir="$with_pcre_incdir" > /dev/null
-    cd $build_dir
+    cd "$build_dir"
 fi
 
 
@@ -1779,34 +1780,34 @@ dnl There probably will be no need to run autoheader any more!
 dnl AC_CONFIG_HEADER(${arch_config_prefix}/xsb_config.h:def_config.in
 dnl ${arch_config_prefix}/xsb_debug.h:def_debug.in])
 
-AC_CONFIG_HEADERS([${arch_config_prefix}/xsb_config.h:${config_dot_h_templ}
+AC_CONFIG_HEADERS(['"${arch_config_prefix}/xsb_config.h"':${config_dot_h_templ}
 windows/xsb_config.h:windows/def_config.in
 windows/xsb_debug.h:def_debug.in
 windows64/xsb_config.h:windows64/def_config.in
 windows64/xsb_debug.h:def_debug.in
-${arch_config_prefix}/xsb_debug.h:def_debug.in])
+'"${arch_config_prefix}/xsb_debug.h"':def_debug.in])
 
 
-AC_OUTPUT([ ${arch_config_prefix}/topMakefile:topMakefile.in
-        ${arch_config_prefix}/emuMakefile:emuMakefile.in
-        ${arch_config_prefix}/modMakefile:modMakefile.in
-        ${arch_config_prefix}/gppMakefile:gppMakefile.in
-        ${arch_config_prefix}/smoMakefile:smoMakefile.in
-        ${arch_config_prefix}/makedef.sh:makedef.sh.in
-        ${arch_config_file}:xsb_configuration.in
+AC_OUTPUT([ '"${arch_config_prefix}/topMakefile"':topMakefile.in
+        '"${arch_config_prefix}/emuMakefile"':emuMakefile.in
+        '"${arch_config_prefix}/modMakefile"':modMakefile.in
+        '"${arch_config_prefix}/gppMakefile"':gppMakefile.in
+        '"${arch_config_prefix}/smoMakefile"':smoMakefile.in
+        '"${arch_config_prefix}/makedef.sh"':makedef.sh.in
+        '"${arch_config_file}"':xsb_configuration.in
 	windows/xsb_configuration.P:windows/xsb_configuration.in
 	windows64/xsb_configuration.P:windows64/xsb_configuration.in
         makexsb:makexsb.in
-        ${scriptdir}/chr_pp${config_tag}:chr_pp.in
-        ${scriptdir}/xsb${config_tag}:xsb.in
-        ${scriptdir}/xsb.bat:windows/xsb.in
-        ${scriptdir}/xsb64.bat:windows64/xsb.in
-        ${arch_config_prefix}/banner.msg:banner.in
+        '"${scriptdir}/chr_pp${config_tag}"':chr_pp.in
+        '"${scriptdir}/xsb${config_tag}"':xsb.in
+        '"${scriptdir}/xsb.bat"':windows/xsb.in
+        '"${scriptdir}/xsb64.bat"':windows64/xsb.in
+        '"${arch_config_prefix}/banner.msg"':banner.in
         windows/banner.msg:windows/banner.in
         windows64/banner.msg:windows64/banner.in
         windows/MSVC_mkfile.mak:windows/MSVC_mkfile.in
         windows64/MSVC_mkfile.mak:windows64/MSVC_mkfile.in
-        ${prefix}/packages/xmc/xmc-gui:xmc-gui.in
+        '"${prefix}/packages/xmc/xmc-gui"':xmc-gui.in
         ])
 
 chmod 644 "${arch_config_file}"
@@ -1856,7 +1857,7 @@ Installation date: ${install_date}
   Demand support:                                 ${demand}"
 
 
-if test -n "${with_dbdrivers}" && test -f $topdir/packages/dbdrivers/Installation_summary; then
+if test -n "${with_dbdrivers}" && test -f "$topdir/packages/dbdrivers/Installation_summary" ; then
     	  echo ""
     	  echo "  Details of support for modular database drivers:"
           cat $topdir/packages/dbdrivers/Installation_summary
@@ -1911,16 +1912,16 @@ echo "  POSIX regexp matching libraries:                $regmatch_support"
 echo "  POSIX wildcard matching libraries:              $wildmatch_support"
 echo ""
 
-if test -f $topdir/packages/curl/Installation_summary; then
-    cat $topdir/packages/curl/Installation_summary
+if test -f "$topdir/packages/curl/Installation_summary" ; then
+    cat "$topdir/packages/curl/Installation_summary"
 fi
 
-if test -f $topdir/packages/xpath/Installation_summary; then
-    cat $topdir/packages/xpath/Installation_summary
+if test -f "$topdir/packages/xpath/Installation_summary" ; then
+    cat "$topdir/packages/xpath/Installation_summary"
 fi
 
-if test -f $topdir/packages/pcre/Installation_summary; then
-    cat $topdir/packages/pcre/Installation_summary
+if test -f "$topdir/packages/pcre/Installation_summary" ; then
+    cat "$topdir/packages/pcre/Installation_summary"
 fi
 
 
@@ -1932,10 +1933,10 @@ echo ""
 
 # This is needed so that *after* XSB is installed in a common directory,
 # users could compile packages that produce arch-specific code.
-chmod 777 ${site_config_libdir};
-chmod a+t ${site_config_libdir};
-chmod 777 ${arch_install_config_libdir};
-chmod a+t ${arch_install_config_libdir};
+chmod 777 "${site_config_libdir}" ;
+chmod a+t "${site_config_libdir}" ;
+chmod 777 "${arch_install_config_libdir}" ;
+chmod a+t "${arch_install_config_libdir}" ;
 
 
 dnl Add site dynamic libraries to XSB library path
@@ -1955,14 +1956,14 @@ if test -n "$with_dynamic_libraries"; then
   echo ""
 
   dnl Append to siteinitrc.P and create it, if necessary
-  test -f ${site_prefix}/siteinitrc.P || ./touch.sh ${site_prefix}/siteinitrc.P
+  test -f "${site_prefix}/siteinitrc.P" || ./touch.sh "${site_prefix}/siteinitrc.P"
 
   dnl delete below the magic line
   sed '/%%[[ \t]]*-[[-]]*[[ \t]]*DO NOT EDIT THIS LINE/,$ d' \
-    ${site_prefix}/siteinitrc.P | \
+    "${site_prefix}/siteinitrc.P" | \
         cat - ${tempfile} > ${tempfile}1
 
-  mv -f ${tempfile}1 ${site_prefix}/siteinitrc.P
+  mv -f ${tempfile}1 "${site_prefix}/siteinitrc.P"
   rm -f ${tempfile}
 fi
 
@@ -1971,21 +1972,21 @@ dnl produce MSVC.dep
 
 
 # Now set modes, copy some files
-chmod 555 ${scriptdir}/xsb${config_tag}  ${scriptdir}/chr_pp${config_tag}  makexsb
+chmod 555 "${scriptdir}/xsb${config_tag}"  "${scriptdir}/chr_pp${config_tag}"  makexsb
 
 # These files should really be read-only, but this causes problems when
 # configuring for Windows over Samba, NFS, etc.
-chmod 644 ${arch_config_file} \
-      ${arch_config_prefix}/xsb_config.h \
-      ${arch_config_prefix}/xsb_debug.h \
-      ${arch_config_prefix}/*Makefile
+chmod 644 "${arch_config_file}" \
+      "${arch_config_prefix}/xsb_config.h" \
+      "${arch_config_prefix}/xsb_debug.h" \
+      "${arch_config_prefix}"/*Makefile
 
 
 # phantom private_builtin.c file
 # this is duplicated in makexsb. We still keep it here so that makedepend will
 # see private_builtin.c in emu and will generate the right dependencies
-test -f ${emudir}/private_builtin.c || \
-   cp ${build_dir}/private_builtin.in ${emudir}/private_builtin.c
+test -f "${emudir}/private_builtin.c" || \
+   cp "${build_dir}/private_builtin.in" "${emudir}/private_builtin.c"
 
 dnl Copying to the installation directory ($prefix) is done in the top
 dnl makefile now!
