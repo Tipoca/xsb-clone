@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.35 2010-10-28 00:57:15 dwarren Exp $
+** $Id: function.c,v 1.36 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -195,7 +195,7 @@ int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
 	  }
 	  else {
 	    ivalue = -fiint_val(fiop1);
-	    bld_int(regaddr,ivalue);
+	    bld_oint(regaddr,ivalue);
 	  }
 	else
 	  if (fiflt_val(fiop1) >= 0) {
@@ -395,10 +395,10 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 	    break;
 	  } else if (strcmp(get_name(op_psc),"**")==0) {
 	    if (isfiint(fiop1)) {
-	      if (isfiint(fiop2)) set_int_val(value,(Integer)pow(fiint_val(fiop1),fiint_val(fiop2)));
-	      else set_flt_val(value,(Float)pow(fiint_val(fiop1),fiflt_val(fiop2)));
+	      if (isfiint(fiop2)) set_int_val(value,(Integer)pow((Float)fiint_val(fiop1),(Float)fiint_val(fiop2)));
+	      else set_flt_val(value,(Float)pow((Float)fiint_val(fiop1),fiflt_val(fiop2)));
 	    } else {
-	      if (isfiint(fiop2)) set_flt_val(value,(Float)pow(fiflt_val(fiop1),fiint_val(fiop2)));
+	      if (isfiint(fiop2)) set_flt_val(value,(Float)pow(fiflt_val(fiop1),(Float)fiint_val(fiop2)));
 	      else if (fiflt_val(fiop1) < 0) return 0;
 	      else set_flt_val(value,(Float)pow(fiflt_val(fiop1),fiflt_val(fiop2)));
 	    }

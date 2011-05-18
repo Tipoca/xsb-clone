@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: storage_xsb.c,v 1.21 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: storage_xsb.c,v 1.22 2011-05-18 19:21:40 dwarren Exp $
 **
 */
 
@@ -57,7 +57,7 @@ xsbHashTable bt_storage_hash_table =
   {STORAGE_TBL_SIZE,sizeof(STORAGE_HANDLE),FALSE,NULL};
 #endif
 
-static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name, int trie_type)
+static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name, prolog_term trie_type)
 {
   STORAGE_HANDLE *handle_cell;
 
@@ -69,7 +69,7 @@ static inline STORAGE_HANDLE *get_storage_handle(CTXTdeclc Cell name, int trie_t
 	       "GET_STORAGE_HANDLE: New trie created for %s\n",
 	       string_val(name)));
     if (is_int(trie_type))
-      handle_cell->handle= newtrie(CTXTc p2c_int(trie_type));
+      handle_cell->handle= newtrie(CTXTc (int)p2c_int(trie_type));
     else
       xsb_abort("[GET_STORAGE_HANDLE] trie type (3d arg) must be an integer");
 

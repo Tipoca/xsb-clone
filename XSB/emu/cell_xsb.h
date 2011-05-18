@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.40 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: cell_xsb.h,v 1.41 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -263,7 +263,7 @@ extern unsigned long enc[], dec[];
 #endif
 
 #define boxedint_val(dcell) \
-       ((Integer)((((unsigned long)int_val(cell(clref_val(dcell)+2))<<24)   \
+       ((Integer)((((UInteger)int_val(cell(clref_val(dcell)+2))<<24)   \
                   | int_val(cell(clref_val(dcell)+3))))) 
        
 #ifndef FAST_FLOATS

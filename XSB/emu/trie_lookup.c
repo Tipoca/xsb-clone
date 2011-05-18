@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.25 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: trie_lookup.c,v 1.26 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -255,10 +255,10 @@ static struct tstCCPStack_t tstCCPStack;
    CPF_AlternateNode = AltNode;			\
    CPF_VariableChain = VarChain;		\
    CPF_TermStackTopIndex =			\
-     TermStack_Top - TermStack_Base + 1;	\
+     (int)(TermStack_Top - TermStack_Base + 1);	\
    CPF_TermStackLogTopIndex =			\
-     TermStackLog_Top - TermStackLog_Base - 1;	\
-   CPF_TrailTopIndex = Trail_Top - Trail_Base;	\
+     (int)(TermStackLog_Top - TermStackLog_Base - 1);	\
+   CPF_TrailTopIndex = (int)(Trail_Top - Trail_Base);	\
    tstCCPStack.top++;				\
  }
 
@@ -1002,7 +1002,7 @@ void *var_trie_lookup(CTXTdeclc void *branchRoot, xsbBool *wasFound,
   Cell symbol = 0;	/* Trie representation of current heap symbol,
 			   used for matching/inserting into a TSTN */
 
-  int std_var_num;	/* Next available TrieVar index; for standardizing
+  size_t std_var_num;	/* Next available TrieVar index; for standardizing
 			   variables when interned */
 
 
@@ -1344,7 +1344,7 @@ static BTNptr rec_sub_trie_lookup(CTXTdeclc BTNptr parent, TriePathType *pathTyp
     xsb_dbgmsg((LOG_TRIE, "  Nonvar Option #1: Find matching symbol in trie"));
     for ( cur = match;  IsNonNULL(cur);  cur = BTN_Sibling(cur) )
       if ( symbol == BTN_Symbol(cur) ) {
-	int origTermStackTopIndex = TermStack_Top - TermStack_Base;
+	size_t origTermStackTopIndex = TermStack_Top - TermStack_Base;
 	xsb_dbgmsg((LOG_TRIE, "  Found matching trie symbol"));
 	TermStack_PushLowToHighVector(args,arity);
 	leaf = rec_sub_trie_lookup(CTXTc cur,pathType);

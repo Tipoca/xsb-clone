@@ -67,7 +67,7 @@ static XSB_StrDefine(output_buffer);
 xsbBool str_cat(CTXTdecl)
 {
   char *str1, *str2, *tmpstr;
-  int tmpstr_len;
+  size_t tmpstr_len;
 
   term = ptoc_tag(CTXTc 1);
   term2 = ptoc_tag(CTXTc 2);
@@ -112,11 +112,11 @@ xsbBool str_cat(CTXTdecl)
 xsbBool str_match(CTXTdecl)
 {
   static char *subptr, *stringptr, *direction, *matchptr;
-  static int substr_beg, substr_end;
+  static size_t substr_beg, substr_end;
   int reverse=TRUE; /* search in reverse */
   int beg_bos_offset=TRUE; /* measure beg offset from the beg of string */
   int end_bos_offset=TRUE; /* measure end offset from the beg of string */
-  int str_len, sub_len; /* length of string and substring */
+  Integer str_len, sub_len; /* length of string and substring */
   Cell beg_offset_term, end_offset_term;
 
   term = ptoc_tag(CTXTc 1);
@@ -189,7 +189,7 @@ xsbBool substring(CTXTdecl)
   prolog_term input_term, output_term;
   prolog_term beg_offset_term, end_offset_term;
   char *input_string=NULL;    /* string where matches are to be found */
-  int beg_offset=0, end_offset=0, input_len=0, substring_len=0;
+  Integer beg_offset=0, end_offset=0, input_len=0, substring_len=0;
   int conversion_required=FALSE;
 
   XSB_StrSet(&output_buffer,"");
@@ -237,7 +237,7 @@ xsbBool substring(CTXTdecl)
 
   /* do the actual replacement */
   substring_len = end_offset-beg_offset;
-  XSB_StrAppendBlk(&output_buffer, input_string+beg_offset, substring_len);
+  XSB_StrAppendBlk(&output_buffer, input_string+beg_offset, (int)substring_len);
   XSB_StrNullTerminate(&output_buffer);
   
   /* get result out */
@@ -272,8 +272,8 @@ xsbBool string_substitute(CTXTdecl)
   char *input_string=NULL;    /* string where matches are to be found */
   char *subst_string=NULL;
   prolog_term beg_term, end_term;
-  int beg_offset=0, end_offset=0, input_len;
-  int last_pos = 0; /* last scanned pos in input string */
+  Integer beg_offset=0, end_offset=0, input_len;
+  Integer last_pos = 0; /* last scanned pos in input string */
   /* the output buffer is made large enough to include the input string and the
      substitution string. */
   int conversion_required=FALSE; /* from C string to Prolog char list */
@@ -351,7 +351,7 @@ xsbBool string_substitute(CTXTdecl)
       xsb_abort("[STRING_SUBSTITUTE] Substitution regions in Arg 2 not sorted");
 
     /* do the actual replacement */
-    XSB_StrAppendBlk(&output_buffer,input_string+last_pos,beg_offset-last_pos);
+    XSB_StrAppendBlk(&output_buffer,input_string+last_pos,(int)(beg_offset-last_pos));
     XSB_StrAppend(&output_buffer, subst_string);
     
     last_pos = end_offset;

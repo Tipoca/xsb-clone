@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.h,v 1.17 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: table_stats.h,v 1.18 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -200,7 +200,7 @@ void update_maximum_tablespace_stats(NodeStats *btn, HashStats *btht,
 /**** querying for these values. ****/
 counter maximum_answer_list_nodes(void);
 counter maximum_timestamp_index_nodes(void);
-unsigned long  maximum_total_tablespace_usage(void);
+size_t  maximum_total_tablespace_usage(void);
 
 /*=========================================================================*/
 

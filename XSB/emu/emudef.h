@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.85 2011-01-07 19:52:01 tswift Exp $
+** $Id: emudef.h,v 1.86 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -124,12 +124,12 @@ int asynint_val = 0;
 #define _FULL_ULONG_BITS 0xffffffff
 #endif
 
-int next_free_code = 0;
-unsigned long enc[16] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,
+Integer next_free_code = 0;
+UInteger enc[16] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,
 			 _FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,
 			 _FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,
 			 _FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS};
-unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,
+UInteger dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,
 			_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS};
 
 /* Replacements for labelled code in emusubs.i */

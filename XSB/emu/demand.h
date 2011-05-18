@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: demand.h,v 1.8 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: demand.h,v 1.9 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -56,7 +56,7 @@ static inline void perform_once(void)
 
   /* extracting and validating argument */
   arg1 = ptoc_int(1);
-  cutpoint = (CPtr) ((unsigned long) tcpstack.high - arg1);
+  cutpoint = (CPtr) ((size_t) tcpstack.high - arg1);
   if (cutpoint < breg) {
     xsb_abort("demand_once/1 called with Breg greater than current.");
   }

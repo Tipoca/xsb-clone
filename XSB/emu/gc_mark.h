@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.39 2010-12-16 22:10:24 tswift Exp $
+** $Id: gc_mark.h,v 1.40 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -185,7 +185,7 @@ static CPtr pointer_from_cell(CTXTdeclc Cell cell, int *tag, int *whereto)
 /*-------------------------------------------------------------------------*/
 
 inline static char * pr_h_marked(CTXTdeclc CPtr cell_ptr)
-{ int i ;
+{ size_t i ;
  i = cell_ptr - heap_bot ;
  if (heap_marks == NULL) return("not_m") ;
  if (h_marked(i) == MARKED) return("marked") ;
@@ -195,7 +195,7 @@ inline static char * pr_h_marked(CTXTdeclc CPtr cell_ptr)
 } /* pr_h_marked */
 
 inline static char * pr_ls_marked(CTXTdeclc CPtr cell_ptr) 
-{ int i ; 
+{ size_t i ; 
  i = cell_ptr - ls_top ;
  if (ls_marks == NULL) return("not_m") ;
  if (ls_marked(i) == MARKED) return("marked") ;
@@ -205,7 +205,7 @@ inline static char * pr_ls_marked(CTXTdeclc CPtr cell_ptr)
 } /* pr_ls_marked */ 
 
 inline static char * pr_cp_marked(CTXTdeclc CPtr cell_ptr) 
-{ int i ; 
+{ size_t i ; 
  i = cell_ptr - cp_top ;
  if (cp_marks == NULL) return("not_m") ;
  if (cp_marked(i) == MARKED) return("marked") ;
@@ -215,7 +215,7 @@ inline static char * pr_cp_marked(CTXTdeclc CPtr cell_ptr)
 } /* pr_cp_marked */ 
 
 inline static char * pr_tr_marked(CTXTdeclc CPtr cell_ptr) 
-{ int i ; 
+{ size_t i ; 
  i = cell_ptr - tr_bot ;
  if (tr_marks == NULL) return("not_m") ;
  if (tr_marked(i) == MARKED) return("marked") ;
@@ -452,11 +452,11 @@ inline static int mark_region(CTXTdeclc CPtr beginp, CPtr endp)
     there won't be a PRE_IMAGE_MARK in the 3-rd cell; otherwise there
     will be. */
  
-inline static unsigned long mark_trail_section(CTXTdeclc CPtr begintr, CPtr endtr)
+inline static size_t mark_trail_section(CTXTdeclc CPtr begintr, CPtr endtr)
 {
   CPtr a = begintr;
   CPtr trailed_cell;
-  unsigned long i=0, marked=0;
+  size_t i=0, marked=0;
 #ifdef PRE_IMAGE_TRAIL
   CPtr pre_value = NULL;
 #endif
@@ -559,7 +559,7 @@ inline static unsigned long mark_trail_section(CTXTdeclc CPtr begintr, CPtr endt
 #endif
 
       /* stop if we're not going anywhere */
-      if ((unsigned long) a == (unsigned long) *a)
+      if ((UInteger) a == (UInteger) *a)
 	break;
 
       /* jump to previous cell */
@@ -577,10 +577,10 @@ inline static unsigned long mark_trail_section(CTXTdeclc CPtr begintr, CPtr endt
  * of breg/bfreg and traversing from there wouldn't amount to the same
  * thing. */
 
-static int mark_query(CTXTdecl)
+static size_t mark_query(CTXTdecl)
 {
   Integer i;
-  int yvar, total_marked = 0 ;
+  int yvar; size_t total_marked = 0 ;
   CPtr b,e,*tr,a,d;
   byte *cp;
   int first_time;
@@ -754,9 +754,9 @@ static int mark_hreg_from_choicepoints(CTXTdecl)
 /*-------------------------------------------------------------------------*/
 
 
-int mark_heap(CTXTdeclc int arity, int *marked_dregs)
+size_t mark_heap(CTXTdeclc int arity, size_t *marked_dregs)
 {
-  int avail_dreg_marks = 0, marked = 0, rnum_in_trieinstr_unif_stk = (trieinstr_unif_stkptr-trieinstr_unif_stk)+1;
+  size_t avail_dreg_marks = 0, marked = 0, rnum_in_trieinstr_unif_stk = (trieinstr_unif_stkptr-trieinstr_unif_stk)+1;
 
   /* the following seems unnecessary, but it is not !
      mark_heap() may be called directly and not only through gc_heap() */
@@ -770,7 +770,7 @@ int mark_heap(CTXTdeclc int arity, int *marked_dregs)
   if (slide) {
 #ifdef INDIRECTION_SLIDE
     /* space for keeping pointers to live data */
-    slide_buf_size = (unsigned long) ((hreg+1-(CPtr)glstack.low)*0.2);
+    slide_buf_size = (UInteger) ((hreg+1-(CPtr)glstack.low)*0.2);
     slide_buf = (CPtr *) mem_calloc_nocheck(slide_buf_size+1, sizeof(CPtr),GC_SPACE);
     if (!slide_buf)
       xsb_exit(CTXTc "Not enough space to allocate slide_buf");
@@ -960,7 +960,7 @@ void mark_code_strings(int pflag, CPtr inst_addr, CPtr end_addr) {
 }
 
 void mark_atom_and_code_strings(CTXTdecl) {
-  unsigned long i;
+  size_t i;
   Pair pair_ptr, mod_pair_ptr;
   PrRef prref;
   ClRef clref;

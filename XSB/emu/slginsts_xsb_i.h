@@ -137,10 +137,8 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   CallLookupResults lookupResults;
   VariantSF producer_sf, consumer_sf;
   CPtr answer_template_cps, answer_template_heap;
-  int template_size, attv_num, tmp;
+  int template_size, attv_num; Integer tmp;
   TIFptr tip;
-
-  // printf("tabletry(single)\n");
 
   int incrflag = 0; /* for incremental evaluation */
   VariantSF parent_table_sf=NULL; /* used for creating call graph */
@@ -210,6 +208,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
    }
 
   producer_sf = CallLUR_Subsumer(lookupResults);
+
   answer_template_cps = CallLUR_AnsTempl(lookupResults);
 
 #ifdef MULTI_THREAD
@@ -323,7 +322,6 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   }
 
   else if ( is_completed(producer_sf) ) {
-    //    printf("is completed\n");
     /* Unify Call with Answer Trie
        --------------------------- */
     if (has_answer_code(producer_sf)) {
@@ -389,12 +387,12 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
        ----------------------------- */
     consumer_sf = CallTrieLeaf_GetSF(CallLUR_Leaf(lookupResults));
 
-  else
-
+  else {
     /* New Properly Subsumed Call
        -------------------------- */
     NewSubConsSF( consumer_sf, CallLUR_Leaf(lookupResults),
 		   CallInfo_TableInfo(callInfo), producer_sf );
+  }
 
   /*
    * The call, represented by "consumer_sf", will consume from an
@@ -494,7 +492,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 			  TPA_NoOp );
 
     if ( IsNonNULL(answer_continuation) ) {
-      int tmp;
+      Integer tmp;
       nlcp_trie_return(consumer_cpf) = answer_continuation; 
       hbreg = hreg;
 
@@ -674,7 +672,7 @@ XSB_Start_Instr(answer_return,_answer_return)
 			TPA_NoOp );
 
   if ( IsNonNULL(answer_continuation)) {
-    int tmp;
+    Integer tmp;
 
     /* Restore Consumer's state
        ------------------------ */
@@ -777,7 +775,7 @@ XSB_End_Instr()
 XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc) 
   Def2ops
   CPtr producer_cpf, producer_csf, answer_template;
-  int template_size, attv_num, tmp;
+  int template_size, attv_num; Integer tmp;
   VariantSF producer_sf;
   xsbBool isNewAnswer = FALSE;
   BTNptr answer_leaf;
@@ -992,8 +990,7 @@ XSB_Start_Instr(resume_compl_suspension,_resume_compl_suspension)
       fprintf(stddbg, ">>>> resume_compl_suspension is called\n");
 #endif
 {
-  if ((unsigned long) csf_pcreg(breg) == 
-      (unsigned long) &resume_compl_suspension_inst) {
+  if (csf_pcreg(breg) == (pb)(&resume_compl_suspension_inst)) {
     CPtr csf = breg;
     
     /* Switches the environment to a frame of a subgoal that was	*/

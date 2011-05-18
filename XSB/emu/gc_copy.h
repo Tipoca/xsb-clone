@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_copy.h,v 1.17 2010-12-16 22:10:24 tswift Exp $
+** $Id: gc_copy.h,v 1.18 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -41,7 +41,7 @@
 /* globals in the two functions below.                        */
 
 #ifndef MULTI_THREAD
-static int gc_offset;
+static Integer gc_offset;
 static CPtr gc_scan, gc_next;
 #endif
 
@@ -84,7 +84,7 @@ static void CHECK(CPtr p)
 
 static void find_and_copy_block(CTXTdeclc CPtr hp)
 {
-    int  i, tag;
+    Integer  i, tag;
     CPtr p, q, addr;
 
     /* copy the block into the new heap area */
@@ -196,7 +196,7 @@ inline static void adapt_hfreg_from_choicepoints(CTXTdeclc CPtr h)
 
 #ifdef GC
 
-static CPtr copy_heap(CTXTdeclc int marked, CPtr begin_new_h, CPtr end_new_h, int arity)
+static CPtr copy_heap(CTXTdeclc size_t marked, CPtr begin_new_h, CPtr end_new_h, int arity)
 {
     CPtr p, q;
     int  tag; 

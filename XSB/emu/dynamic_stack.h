@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynamic_stack.h,v 1.8 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: dynamic_stack.h,v 1.9 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -71,7 +71,7 @@ typedef struct {
    ----------------- */
 extern void dsPrint(DynamicStack, char *);
 extern void dsInit(DynamicStack *, size_t, size_t, char *);
-extern void dsExpand(DynamicStack *, int);
+extern void dsExpand(DynamicStack *, size_t);
 extern void dsShrink(DynamicStack *);
 
 #define DynStk_Init(DS,NumElements,FrameType,Desc)	\

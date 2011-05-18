@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_insert.c,v 1.27 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tst_insert.c,v 1.28 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -278,7 +278,7 @@ void tstnHashifyChildren(CTXTdeclc TSTNptr parent, TSTNptr root, xsbBool createT
   TSTNptr tstn;               /* current child for processing */
   TSTHTptr ht;                /* HT header struct */
   TSTNptr *tablebase;         /* first bucket of allocated HT */
-  unsigned long  hashseed;    /* for hashing symbols of the TSTNs */
+  UInteger  hashseed;    /* for hashing symbols of the TSTNs */
 
 
   New_TSTHT(ht,TSTN_TrieType(root),root);
@@ -536,8 +536,8 @@ TSTNptr tst_insert(CTXTdeclc TSTNptr tstRoot, TSTNptr lastMatch, Cell firstSymbo
 		   xsbBool maintainTSI) {
 
   Cell symbol;
-  int std_var_num,
-      trieType;
+  Integer std_var_num;
+  int trieType;
 
 
   symbol = firstSymbol;
@@ -566,7 +566,7 @@ TSTNptr tst_insert(CTXTdeclc TSTNptr tstRoot, TSTNptr lastMatch, Cell firstSymbo
   update_timestamps(lastMatch,tstRoot,maintainTSI);
   MakeLeafNode(lastMatch);
   TN_UpgradeInstrTypeToSUCCESS(lastMatch,TrieSymbolType(symbol));
-  AnsVarCtr = AnsVarCtr + std_var_num;
+  AnsVarCtr = AnsVarCtr + (int)std_var_num;
   return lastMatch;
 }
 
@@ -576,7 +576,7 @@ TSTNptr tst_insert(CTXTdeclc TSTNptr tstRoot, TSTNptr lastMatch, Cell firstSymbo
 BTNptr bt_insert(CTXTdeclc BTNptr btRoot, BTNptr lastMatch, Cell firstSymbol) {
 
   Cell symbol;
-  int std_var_num;
+  Integer std_var_num;
   int trieType;
 
 

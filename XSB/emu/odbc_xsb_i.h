@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb_i.h,v 1.13 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: odbc_xsb_i.h,v 1.14 2011-05-18 19:21:40 dwarren Exp $
 **
 */
 
@@ -52,7 +52,7 @@ switch (ptoc_int(CTXTc 1)) {
    ODBCDisconnect(CTXT);
    break;
  case ODBC_SET_CURSOR_CLOSE: {
-   Integer i = ptoc_int(CTXTc 2);
+   int i = (int)ptoc_int(CTXTc 2);
    SetCursorClose(i);
    break;
  }

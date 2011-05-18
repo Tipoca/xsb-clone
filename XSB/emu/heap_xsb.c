@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.85 2010-12-16 22:10:24 tswift Exp $
+** $Id: heap_xsb.c,v 1.86 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -179,16 +179,16 @@ static float mark_threshold = 0.9F;
 #ifdef GC_PROFILE
 
 static char count_chains=0, examine_data=0, verbose_gc=0;
-unsigned long chains[64];
-unsigned long tag_examined[9];
-unsigned long deep_mark;
-unsigned long current_mark;
-unsigned long old_gens;
-unsigned long current_gen;
+size_t chains[64];
+size_t tag_examined[9];
+size_t deep_mark;
+size_t current_mark;
+size_t old_gens;
+size_t current_gen;
 CPtr start_hbreg;
-unsigned long functor;
-unsigned long chain_from_ls;
-unsigned long active_cps, frozen_cps;
+size_t functor;
+size_t chain_from_ls;
+size_t active_cps, frozen_cps;
 void print_cpf_pred(CPtr cpf);
 
 #endif /* GC_PROFILE */
@@ -241,8 +241,8 @@ static int print_anyway = 0 ;
 int gc_strings = FALSE;
 
 int force_string_gc = FALSE; /* flag set when string space has expanded a lot */
-long last_string_space_size = 100000;
-long last_assert_space_size = 10000;
+size_t last_string_space_size = 100000;
+size_t last_assert_space_size = 10000;
 #define AUTO_STRING_GC_NTH 10
 
 /******* When to GC string space? *************/
@@ -297,7 +297,7 @@ static CPtr heap_bot,heap_top,
   tr_bot,tr_top,
   cp_bot,cp_top,
   compl_top,compl_bot;
-static unsigned long heap_marks_size;
+static size_t heap_marks_size;
 #endif
 
 
@@ -330,7 +330,7 @@ static unsigned long heap_marks_size;
 
 #ifndef MULTI_THREAD
 static double total_time_gc = 0 ;
-static unsigned long total_collected = 0 ;
+static size_t total_collected = 0 ;
 static int num_gc = 0 ;
 #endif
 
@@ -351,9 +351,9 @@ static char *cp_marks    = NULL ;
 #ifndef MULTI_THREAD
 #ifdef INDIRECTION_SLIDE
 static CPtr *slide_buf= NULL;
-static unsigned long slide_top = 0;
+static size_t slide_top = 0;
 static int slide_buffering = 0;
-static unsigned long slide_buf_size = 0;
+static size_t slide_buf_size = 0;
 #endif
 #endif
 
@@ -410,19 +410,19 @@ void initialize_glstack(CPtr from, CPtr to)
   }
 }
 
-xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
+xsbBool glstack_realloc(CTXTdeclc size_t new_size, int arity)
 {
   CPtr   new_heap_bot ;       /* bottom of new Global Stack area */
   CPtr   new_ls_bot ;         /* bottom of new Local Stack area */
 
-  long   heap_offset ;        /* offsets between the old and new */
-  long   local_offset ;       /* stack bottoms, measured in Cells */
+  size_t heap_offset ;        /* offsets between the old and new */
+  size_t local_offset ;       /* stack bottoms, measured in Cells */
 
   CPtr   *cell_ptr ;
   Cell   cell_val ;
-  int  i, rnum_in_trieinstr_unif_stk = (trieinstr_unif_stkptr-trieinstr_unif_stk)+1;
+  size_t i, rnum_in_trieinstr_unif_stk = (trieinstr_unif_stkptr-trieinstr_unif_stk)+1;
 
-  size_t new_size_in_bytes, new_size_in_cells ; /* what a mess ! */
+  size_t  new_size_in_bytes, new_size_in_cells ; /* what a mess ! */
   double   expandtime ;
 
   if (new_size <= glstack.size) { // asked to shrink
@@ -439,7 +439,7 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
 #ifdef DEBUG_VERBOSE
   if (LOG_REALLOC <= cur_log_level) {
     if (glstack.size == glstack.init_size) {
-      xsb_dbgmsg((LOG_REALLOC,"\tBottom:\t\t%p\t\tInitial Size: %ldK",
+      xsb_dbgmsg((LOG_REALLOC,"\tBottom:\t\t%p\t\tInitial Size: %" Intfmt "K",
 		 glstack.low, glstack.size));
       xsb_dbgmsg((LOG_REALLOC,"\tTop:\t\t%p", glstack.high));
     }
@@ -469,7 +469,7 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
     new_heap_bot = (CPtr)realloc(heap_bot, new_size_in_bytes);
     if (new_heap_bot == NULL) {
       if (2*glstack.size == new_size) { /* if trying to double, try backing off, may not help */
-	int increment = new_size;
+	size_t increment = new_size;
 	while (new_heap_bot == NULL && increment > 40) {
 	  increment = increment/2;
 	  new_size = glstack.size + increment;
@@ -478,11 +478,11 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
 	  new_heap_bot = (CPtr)realloc(heap_bot, new_size_in_bytes);
 	}
 	if (new_heap_bot == NULL) {
-	  xsb_mesg("Not enough core to resize the Heap and Local Stack! (%ld)",new_size_in_bytes);
+	  xsb_mesg("Not enough core to resize the Heap and Local Stack! (%" Intfmt ")",new_size_in_bytes);
 	  return 1; /* return an error output -- will be picked up later */
 	}
       } else {
-	xsb_mesg("Not enough core to resize the Heap and Local Stack! (%ld)",new_size_in_bytes);
+	xsb_mesg("Not enough core to resize the Heap and Local Stack! (%" Intfmt ")",new_size_in_bytes);
 	return 1; /* return an error output -- will be picked up later */
       }
     }
@@ -537,7 +537,7 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
     cell_ptr-- ;
     cell_val = (Cell)*cell_ptr ;
 #ifdef PRE_IMAGE_TRAIL
-    if ((unsigned long) cell_val & PRE_IMAGE_MARK) {
+    if ((size_t) cell_val & PRE_IMAGE_MARK) {
       /* remove tag */
       cell_val = (Cell) ((Cell) cell_val & ~PRE_IMAGE_MARK);
       /* realloc and tag */
@@ -588,7 +588,7 @@ xsbBool glstack_realloc(CTXTdeclc int new_size, int arity)
 
   expandtime = cpu_time() - expandtime;
 
-  xsb_dbgmsg((LOG_REALLOC,"\tNew Bottom:\t%p\t\tNew Size: %ldK",
+  xsb_dbgmsg((LOG_REALLOC,"\tNew Bottom:\t%p\t\tNew Size: %" Intfmt "K",
 	     glstack.low, glstack.size));
   xsb_dbgmsg((LOG_REALLOC,"\tNew Top:\t%p", glstack.high));
   xsb_dbgmsg((LOG_REALLOC,
@@ -611,9 +611,10 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
   double  begin_marktime, end_marktime,
     end_slidetime, end_copy_time,
     begin_stringtime, end_stringtime;
-  int  marked = 0, marked_dregs = 0, i;
-  int  start_heap_size;
-  int  rnum_in_trieinstr_unif_stk = (trieinstr_unif_stkptr-trieinstr_unif_stk)+1;
+  size_t  marked = 0, marked_dregs = 0, i;
+  int ii;
+  size_t  start_heap_size;
+  size_t  rnum_in_trieinstr_unif_stk = (trieinstr_unif_stkptr-trieinstr_unif_stk)+1;
   DECL_GC_PROFILE;
   garbage_collecting = 1;  // flag for profiling that we are gc-ing
 
@@ -656,14 +657,14 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 	arity++;
 	reg[arity] = (Cell)delayreg;
       }
-      for (i = 1; i <= arity; i++) {
-	//	printf("reg[%d] to heap: %lx\n",i,(unsigned long)reg[i]);
-	*hreg = reg[i];
+      for (ii = 1; ii <= arity; ii++) {
+	//	printf("reg[%d] to heap: %lx\n",ii,(size_t)reg[i]);
+	*hreg = reg[ii];
 	hreg++;
       }
-      arity += rnum_in_trieinstr_unif_stk;
+      arity += (int)rnum_in_trieinstr_unif_stk;
       for (i = 0; i < rnum_in_trieinstr_unif_stk; i++) {
-	//	printf("trieinstr_unif_stk[%d] to heap: %lx\n",i,(unsigned long)trieinstr_unif_stk[i]);
+	//	printf("trieinstr_unif_stk[%d] to heap: %lx\n",i,(size_t)trieinstr_unif_stk[i]);
 	*hreg = trieinstr_unif_stk[i];
 	hreg++;
       }
@@ -671,7 +672,7 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 #ifdef SLG_GC
       /* in SLGWAM, copy hfreg to the heap */
       //      printf("hfreg to heap is %p at %p, rnum_in_trieinstr_unif_stk=%d,arity=%d,delay=%p\n",hfreg,hreg,rnum_in_trieinstr_unif_stk,arity,delayreg);
-      *(hreg++) = (unsigned long) hfreg;
+      *(hreg++) = (Cell) hfreg;
 #endif
     }
 
@@ -746,7 +747,7 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 #ifdef SLG_GC
 	/* copy hfreg back from the heap */
 	hreg--;
-	hfreg = (unsigned long*) *hreg;
+	hfreg = (CPtr) *hreg;
 #endif
 
 	/* copy the aregs from the top of the heap back */
@@ -755,16 +756,16 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 	
 	p = hreg;
 	
-	arity -= rnum_in_trieinstr_unif_stk;
-	for (i = 1; i <= arity; i++) {
-	  reg[i] = *p++;
-	  //	  printf("heap to reg[%d]: %lx\n",i,(unsigned long)reg[i]);
+	arity -= (int)rnum_in_trieinstr_unif_stk;
+	for (ii = 1; ii <= arity; ii++) {
+	  reg[ii] = *p++;
+	  //	  printf("heap to reg[%d]: %lx\n",ii,(size_t)reg[i]);
 	}
 	if (delayreg != NULL)
 	  delayreg = (CPtr)reg[arity--];
 	for (i = 0; i < rnum_in_trieinstr_unif_stk; i++) {
 	  trieinstr_unif_stk[i] = *p++;
-	  //	  printf("heap to trieinstr_unif_stk[%d]: %lx\n",i,(unsigned long)trieinstr_unif_stk[i]);
+	  //	  printf("heap to trieinstr_unif_stk[%d]: %lx\n",i,(size_t)trieinstr_unif_stk[i]);
 	}
 
 	end_slidetime = cpu_time();
@@ -849,7 +850,6 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
   if (flags[NUM_THREADS] == 1) {
 #endif
     if (gc_strings && (flags[STRING_GARBAGE_COLLECT] == 1)) {
-      //      long beg_string_space_size = pspacesize[STRING_SPACE];
       num_sgc++;
       begin_stringtime = cpu_time();
       mark_nonheap_strings(CTXT);
@@ -880,7 +880,7 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 
 /*--------------------------------------------------------------------------*/
 
-void glstack_ensure_space(CTXTdeclc int extra, int arity) {
+void glstack_ensure_space(CTXTdeclc size_t extra, int arity) {
   if ((pb)top_of_localstk < (pb)top_of_heap+(256*ZOOM_FACTOR)) {
     xsb_basic_abort("\nFatal ERROR:  -- "
 		    "Local Stack clobbered Heap --\n");

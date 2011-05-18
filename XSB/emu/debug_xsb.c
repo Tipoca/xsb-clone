@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.62 2011-05-16 01:03:30 kifer Exp $
+** $Id: debug_xsb.c,v 1.63 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -93,7 +93,7 @@ static void print_term(FILE *fp, Cell term, byte car, int level)
         return;   
     }
     else if (isboxedinteger(term)) {
-        fprintf(fp, "%ld", (long)boxedint_val(term));
+        fprintf(fp, "%" Intfmt, (Integer)boxedint_val(term));
         return;
     }
     psc = get_str_psc(term);
@@ -115,7 +115,11 @@ static void print_term(FILE *fp, Cell term, byte car, int level)
     fprintf(fp, "\"%s\"", string_val(term));
     break;
   case XSB_INT:
-    fprintf(fp, "%ld", (long)int_val(term));
+#if defined(WIN_NT) && defined(BITS64)
+    fprintf(fp, "%lld", (Integer)int_val(term));
+#else
+    fprintf(fp, "%ld", (Integer)int_val(term));
+#endif
     return;
   case XSB_FLOAT:
     fprintf(fp, "%f", float_val(term));
@@ -347,7 +351,7 @@ static void print_cpf(CPtr cpf_addr, FILE* where) {
 
     print_common_cpf_part(cpf_addr,where);
 
-    num_of_args = (cp_prevtop(cpf_addr) - cpf_addr) - CP_SIZE;
+    num_of_args = (int)((cp_prevtop(cpf_addr) - cpf_addr) - CP_SIZE);
     for (i = 1, arg = cpf_addr + CP_SIZE; i <= num_of_args; i++, arg++)
       fprintf(where,"   CP stack %p:\tpredicate arg #%d:\t0x%p\n",
 		 arg, i, ref_val(*arg));
@@ -371,7 +375,7 @@ static void print_cpf(CPtr cpf_addr, FILE* where) {
     fprintf(where,"   CP stack %p:\tlocal eval trie_return:\t0x%p\n",
 	       &(tcp_trie_return(cpf_addr)), tcp_trie_return(cpf_addr));
 #endif
-    num_of_args = (cp_prevtop(cpf_addr) - cpf_addr) - TCP_SIZE;
+    num_of_args = (int)((cp_prevtop(cpf_addr) - cpf_addr) - TCP_SIZE);
     for (i = 1, arg = cpf_addr + TCP_SIZE; i <= num_of_args; i++, arg++)
       fprintf(where,"   CP stack %p:\tpredicate arg #%d:\t0x%p\n",
 	      arg, i, ref_val(*arg));
@@ -389,7 +393,7 @@ static void print_cpf(CPtr cpf_addr, FILE* where) {
     fprintf(where,"   CP stack %p:\tlocal eval trie_return:\t0x%p\n",
 	       &(nlcp_trie_return(cpf_addr)), nlcp_trie_return(cpf_addr));
 #endif
-    num_of_args = (cp_prevtop(cpf_addr) - cpf_addr) - NLCP_SIZE;
+    num_of_args = (int)((cp_prevtop(cpf_addr) - cpf_addr) - NLCP_SIZE);
     for (i = 1, arg = cpf_addr + NLCP_SIZE; i <= num_of_args; i++, arg++)
       fprintf(where,"   CP stack %p:\tpredicate arg #%d:\t0x%p\n",
 		arg, i, ref_val(*arg));
@@ -403,7 +407,7 @@ static void print_cpf(CPtr cpf_addr, FILE* where) {
 	       &(csf_prevcsf(cpf_addr)), csf_prevcsf(cpf_addr));
     fprintf(where,"   CP stack %p:\tNeg Loop:\t%d\n",
 	    &(csf_neg_loop(cpf_addr)), (int) csf_neg_loop(cpf_addr));
-    num_of_args = (cp_prevtop(cpf_addr) - cpf_addr) - CSF_SIZE;
+    num_of_args = (int)((cp_prevtop(cpf_addr) - cpf_addr) - CSF_SIZE);
     for (i = 1, arg = cpf_addr + CSF_SIZE; i <= num_of_args; i++, arg++)
       fprintf(where,"   CP stack %p:\tpredicate arg #%d:\t0x%p\n",
 		arg, i, ref_val(*arg));
@@ -1615,26 +1619,26 @@ static void print_status(CTXTdecl)
   xsb_dbgmsg((LOG_DEBUG,"\nPDL"));
   xsb_dbgmsg((LOG_DEBUG,"\tlow:       %p", pdl.low));
   xsb_dbgmsg((LOG_DEBUG,"\thigh:      %p", pdl.high));
-  xsb_dbgmsg((LOG_DEBUG,"\tsize:      %ld", pdl.size)); /* JF: long */
-  xsb_dbgmsg((LOG_DEBUG,"\tinit size: %ld", pdl.init_size)); /* JF: long */
+  xsb_dbgmsg((LOG_DEBUG,"\tsize:      %" Intfmt, pdl.size)); /* JF: long */
+  xsb_dbgmsg((LOG_DEBUG,"\tinit size: %" Intfmt, pdl.init_size)); /* JF: long */
 
   xsb_dbgmsg((LOG_DEBUG,"\nGlobal / Local Stack"));
   xsb_dbgmsg((LOG_DEBUG,"\tlow:       %p", glstack.low));
   xsb_dbgmsg((LOG_DEBUG,"\thigh:      %p", glstack.high));
-  xsb_dbgmsg((LOG_DEBUG,"\tsize:      %ld", glstack.size)); /* JF: long */
-  xsb_dbgmsg((LOG_DEBUG,"\tinit size: %ld", glstack.init_size)); /* JF: long */
+  xsb_dbgmsg((LOG_DEBUG,"\tsize:      %" Intfmt, glstack.size)); /* JF: long */
+  xsb_dbgmsg((LOG_DEBUG,"\tinit size: %" Intfmt, glstack.init_size)); /* JF: long */
 
   xsb_dbgmsg((LOG_DEBUG,"\nTrail / Choice Point Stack"));
   xsb_dbgmsg((LOG_DEBUG,"\tlow:       %p", tcpstack.low));
   xsb_dbgmsg((LOG_DEBUG,"\thigh:      %p", tcpstack.high));
-  xsb_dbgmsg((LOG_DEBUG,"\tsize:      %ld", tcpstack.size)); /* JF: long */
-  xsb_dbgmsg((LOG_DEBUG,"\tinit size: %ld", tcpstack.init_size)); /* JF: long */
+  xsb_dbgmsg((LOG_DEBUG,"\tsize:      %" Intfmt, tcpstack.size)); /* JF: long */
+  xsb_dbgmsg((LOG_DEBUG,"\tinit size: %" Intfmt, tcpstack.init_size)); /* JF: long */
 
   xsb_dbgmsg((LOG_DEBUG,"\nCompletion Stack"));
   xsb_dbgmsg((LOG_DEBUG,"\tlow:       %p", complstack.low));
   xsb_dbgmsg((LOG_DEBUG,"\thigh:      %p", complstack.high));
-  xsb_dbgmsg((LOG_DEBUG,"\tsize:      %ld", complstack.size)); /* JF: long */
-  xsb_dbgmsg((LOG_DEBUG,"\tinit size: %ld", complstack.init_size)); /* JF: long */
+  xsb_dbgmsg((LOG_DEBUG,"\tsize:      %" Intfmt, complstack.size)); /* JF: long */
+  xsb_dbgmsg((LOG_DEBUG,"\tinit size: %" Intfmt, complstack.init_size)); /* JF: long */
 }
 
 static void debug_interact(CTXTdecl)

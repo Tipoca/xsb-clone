@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.39 2010-12-17 23:22:29 tswift Exp $
+** $Id: tst_utils.c,v 1.40 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -48,7 +48,11 @@
 extern void printterm(FILE *, Cell, int);   /* prints to stddbg */
 
 #ifdef BITS64
+#ifdef WIN_NT
+#define IntegerFormatString	"%lld"
+#else
 #define IntegerFormatString	"%ld"
+#endif
 #else
 #define IntegerFormatString	"%d"
 #endif

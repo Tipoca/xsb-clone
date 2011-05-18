@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.28 2011-05-11 01:27:14 kifer Exp $
+** $Id: basictypes.h,v 1.29 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -34,10 +34,17 @@
 *   These types should be used in place of 'float' and 'int'
 *******************/
 #ifdef BITS64
+#ifdef WIN_NT
+typedef long long prolog_int ;
+typedef long long Integer ;
+typedef unsigned long long UInteger ;
+#define XSB_MAXINT ((long long)0x7ffffffffff)
+#else
 typedef long prolog_int ;
 typedef long Integer ;
 typedef unsigned long UInteger ;
 #define XSB_MAXINT ((long)0x7fffffffffffff)
+#endif
 #else
 typedef int prolog_int ;
 typedef int Integer ;
@@ -63,15 +70,19 @@ typedef int reg_num;
    However, CELL is used to refer to elements of (slg-)WAM stacks, while
    PROLOG_TERM is used in the C interface to point to a cell containing 
    the outer functor of a prolog term. */
+#if defined(BITS64) && defined(WIN_NT)
+typedef unsigned long long prolog_term;
+#else
 typedef unsigned long prolog_term;
+#endif
 
 typedef short  xsbBool;
 
 #ifndef __RPCNDR_H__
 typedef unsigned char byte;
 #endif
-typedef unsigned long int counter;
-typedef unsigned long word;
+typedef UInteger counter;
+typedef UInteger word;
 typedef byte *pb;
 typedef word *pw;
 typedef int (*PFI)(void);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dis.c,v 1.35 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: dis.c,v 1.36 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -194,7 +194,7 @@ CPtr print_inst(FILE *fd, CPtr inst_ptr)
 	   fprintf(fd, ", %ld", cell(loc_pcreg++));
 	   break;
 	 case B:
-	   fprintf(fd, ", %ld", (long) int_val(cell(loc_pcreg)));
+	   fprintf(fd, ", %" Intfmt, (Integer) int_val(cell(loc_pcreg)));
 	   loc_pcreg++;
 	   break;
 	 case F:

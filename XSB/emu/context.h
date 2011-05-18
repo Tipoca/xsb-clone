@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.81 2010-12-18 00:01:27 tswift Exp $
+** $Id: context.h,v 1.82 2011-05-18 19:21:40 dwarren Exp $
 **
 */
 
@@ -37,7 +37,7 @@
    to access the components, the pointer must be decremented! */
 
 typedef struct ClRefHdr
-{	unsigned long buflen ;
+{	UInteger buflen ;
 	struct ClRefHdr *prev ;
 }	*ClRef, ClRefData, ClRefHdr ;
 
@@ -202,7 +202,7 @@ struct th_context
   /* Used for by trie instructions */
   Cell *_trieinstr_unif_stk;
   CPtr _trieinstr_unif_stkptr;
-  int  _trieinstr_unif_stk_size;
+  Integer  _trieinstr_unif_stk_size;
 
 #define MAX_TRIE_REGS 500
   CPtr _trieinstr_vars[MAX_TRIE_REGS];
@@ -220,11 +220,11 @@ struct th_context
 
   int _addr_stack_index;
   CPtr *_Addr_Stack;
-  int _addr_stack_size;
+  size_t _addr_stack_size;
 
   int  _term_stack_index;
   Cell *_term_stack;
-  long _term_stacksize;
+  size_t _term_stacksize;
 
   int _global_trieinstr_vars_num;
 
@@ -272,7 +272,7 @@ DynamicStack  _tstTrail;
 
 #define MAX_SIMPLIFY_NEG_FAILS_STACK 10
   VariantSF _simplify_neg_fails_stack[MAX_SIMPLIFY_NEG_FAILS_STACK];
-  long _simplify_neg_fails_stack_top;
+  Integer _simplify_neg_fails_stack_top;
   int _in_simplify_neg_fails;
 
   /* Variables for table traversal for abolishing tables */
@@ -331,7 +331,7 @@ int     _lastc; // = ' ';    /* previous character */
 char*   _strbuff; // = NULL;  /* Pointer to token buffer; Will be allocated on first call to GetToken */
 int     _strbuff_len; // = InitStrLen;  /* first allocation size, doubled on subsequent overflows */
 double  _double_v;
-long	_rad_int;
+Integer	_rad_int;
 int _token_too_long_warning;
 
 struct sort_par_spec _par_spec;		/* spec for par_sort */
@@ -451,7 +451,7 @@ pthread_cond_t cond_var ;
 
 int _num_gc;
 double _total_time_gc;
-unsigned long _total_collected;
+UInteger _total_collected;
 
 /* Heap realloc and garbage collection stuff */
 
@@ -466,7 +466,7 @@ CPtr	_cp_top;
 CPtr	_compl_top;
 CPtr	_compl_bot;
 
-unsigned long _heap_marks_size;
+size_t _heap_marks_size;
 
 char	*_heap_marks;
 char	*_ls_marks;
@@ -474,9 +474,9 @@ char	*_tr_marks;
 char	*_cp_marks;
 
 CPtr	 *_slide_buf;
-unsigned long _slide_top;
+UInteger _slide_top;
 int	_slide_buffering;
-unsigned long _slide_buf_size;
+UINteger _slide_buf_size;
 
 int	_gc_offset;
 CPtr	_gc_scan;

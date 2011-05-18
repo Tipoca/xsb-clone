@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.53 2011-04-16 18:01:35 tswift Exp $
+** $Id: error_xsb.h,v 1.54 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -110,7 +110,7 @@ DllExport extern void call_conv dbgmsg1_xsb(int, char *);
 
 extern void arithmetic_abort1(CTXTdeclc char *, Cell);
 extern void arithmetic_abort(CTXTdeclc Cell, char *, Cell);
-extern void arithmetic_comp_abort(CTXTdeclc Cell, char *, int);
+extern void arithmetic_comp_abort(CTXTdeclc Cell, char *, Cell);
 extern void err_handle(CTXTdeclc int, int, char *, int, char *, Cell);
 
 extern FILE *stdmsg;	    	/* Stream for XSB messages     	         */

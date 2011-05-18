@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32_xsb_i.h,v 1.23 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: dynwin32_xsb_i.h,v 1.24 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -59,9 +59,9 @@ xsbBool dummy()
 
 // construct a path to config\bin\cfile_name.dll by removing "lib\xsb_configuration.P"
 // from xsb_config_file location and appending "bin\cfile_name.dll"
-static char *create_bin_dll_path(char *xsb_config_file_location, char *dll_file_name, int *dirlen){
+static char *create_bin_dll_path(char *xsb_config_file_location, char *dll_file_name, size_t *dirlen){
   char *xsb_bin_dir;
-  int char_count;
+  size_t char_count;
   char_count = strlen(xsb_config_file_location)-strlen("lib")-1-strlen("xsb_configuration.P");
   *dirlen = sizeof(char)*(char_count+strlen(dll_file_name)+5); // 5 stands for bin\\ + null
   xsb_bin_dir = mem_alloc(*dirlen,FOR_CODE_SPACE);
@@ -80,7 +80,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   char	*name;
 #ifdef XSB_DLL
   char tempname[128];
-  int  tempsize;
+  size_t  tempsize;
 #endif
   Pair	search_ptr;
   char	sofilename[128];
@@ -90,7 +90,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   xsbBool	dummy();
   char *basename_ptr;
   char *xsb_bin_dir;
-  int dirlen;
+  size_t dirlen;
   
   /* (1) create filename.so */
   

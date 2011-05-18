@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.40 2011-02-11 15:08:03 tswift Exp $
+** $Id: tc_insts_xsb_i.h,v 1.41 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -661,7 +661,7 @@ XSB_Start_Instr(hash_opcode,_hash_opcode)
 #endif
 	BTHTptr hash_header;
 	BTHTptr *hash_base;
-	int hashed_hash_offset;
+	size_t hashed_hash_offset;
 
 	//tciprintf("hash_opcode\n");
    /*
@@ -724,7 +724,7 @@ XSB_End_Instr()
 XSB_Start_Instr(hash_handle,_hash_handle)
     CPtr    tbreg;
     BTHTptr hash_hdr, *hash_base;
-    int     hash_offset, hashed_hash_offset;
+    Integer     hash_offset, hashed_hash_offset;
 
     //tciprintf("hash_handle\n");
     hash_offset = int_val(cell(breg+CP_SIZE));

@@ -70,9 +70,9 @@ Structure_Manager smASI      = SM_InitDecl(ASI_Node, ASIs_PER_BLOCK,
 /* If you change the size of the blocks, please update info in
    trie_internals.h also */
 
-static unsigned long de_block_size_glc = 2048 * sizeof(struct delay_element);
-static unsigned long dl_block_size_glc = 2048 * sizeof(struct delay_list);
-static unsigned long pnde_block_size_glc = 2048 *sizeof(struct pos_neg_de_list);
+static size_t de_block_size_glc = 2048 * sizeof(struct delay_element);
+static size_t dl_block_size_glc = 2048 * sizeof(struct delay_list);
+static size_t pnde_block_size_glc = 2048 *sizeof(struct pos_neg_de_list);
 
 /* Rest of globals protected by MUTEX_DELAY (I hope) */
 char *current_de_block_gl = NULL;
@@ -192,9 +192,9 @@ static PNDE current_pnde_block_top_gl = NULL; /* the top of current PNDE block*/
  */
 
 
-unsigned long allocated_de_space(char * current_de_block,int * num_blocks)
+size_t allocated_de_space(char * current_de_block,size_t * num_blocks)
 {
-  int size = 0;
+  size_t size = 0;
   char *t = current_de_block;
 
   *num_blocks = 0;
@@ -219,7 +219,7 @@ static int released_de_num(DE released_des)
   return(i);
 }
 
-unsigned long unused_de_space(void)
+size_t unused_de_space(void)
 {
   return (current_de_block_top_gl
 	  - next_free_de_gl
@@ -227,7 +227,7 @@ unsigned long unused_de_space(void)
 }
 
 #ifdef MULTI_THREAD
-unsigned long unused_de_space_private(CTXTdecl)
+size_t unused_de_space_private(CTXTdecl)
 {
   return (private_current_de_block_top
 	  - private_next_free_de
@@ -237,9 +237,9 @@ unsigned long unused_de_space_private(CTXTdecl)
 
 /* * * * * */
 
-unsigned long allocated_dl_space(char * current_dl_block,int * num_blocks)
+size_t allocated_dl_space(char * current_dl_block,size_t * num_blocks)
 {
-  int size = 0;
+  size_t size = 0;
   char *t = current_dl_block;
 
   *num_blocks = 0;
@@ -264,7 +264,7 @@ static int released_dl_num(DL released_dls)
   return(i);
 }
 
-unsigned long unused_dl_space(void)
+size_t unused_dl_space(void)
 {
   return (current_dl_block_top_gl
 	  - next_free_dl_gl
@@ -272,7 +272,7 @@ unsigned long unused_dl_space(void)
 }
 
 #ifdef MULTI_THREAD
-unsigned long unused_dl_space_private(CTXTdecl)
+size_t unused_dl_space_private(CTXTdecl)
 {
   return (private_current_dl_block_top
 	  - private_next_free_dl
@@ -282,9 +282,9 @@ unsigned long unused_dl_space_private(CTXTdecl)
 
 /* * * * * */
 
-unsigned long allocated_pnde_space(char * current_pnde_block, int * num_blocks)
+size_t allocated_pnde_space(char * current_pnde_block, size_t * num_blocks)
 {
-  int size = 0;
+  size_t size = 0;
   char *t = current_pnde_block;
 
   *num_blocks = 0;
@@ -309,7 +309,7 @@ static int released_pnde_num(PNDE released_pndes)
   return(i);
 }
 
-unsigned long unused_pnde_space(void)
+size_t unused_pnde_space(void)
 {
   return (current_pnde_block_top_gl
 	  - next_free_pnde_gl
@@ -317,7 +317,7 @@ unsigned long unused_pnde_space(void)
 }
 
 #ifdef MULTI_THREAD
-unsigned long unused_pnde_space_private(CTXTdecl)
+size_t unused_pnde_space_private(CTXTdecl)
 {
   return (private_current_pnde_block_top
 	  - private_next_free_pnde
@@ -359,7 +359,7 @@ void *simpl_var_trie_lookup(CTXTdeclc void *branchRoot, xsbBool *wasFound,
   			   variables in construct_ground_term() */
 
   parent = branchRoot;
-  std_var_num = Trail_NumBindings;
+  std_var_num = (int)Trail_NumBindings;
   while ( ! TermStack_IsEmpty ) {
 
     TermStack_Pop(symbol);
@@ -1085,7 +1085,7 @@ void construct_ground_term(CTXTdeclc BTNptr as_leaf,VariantSF subgoal) {
 int is_ground_answer(NODEptr as_leaf) {
   while (! IsTrieRoot(as_leaf)) {
     //    printTrieNode(stddbg,as_leaf);
-    if ( IsTrieVar(as_leaf) )
+    if ( IsTrieVar(BTN_Symbol(as_leaf)) )
       return 0;
     else as_leaf = TSTN_Parent(as_leaf);
   }
@@ -1141,12 +1141,10 @@ static void handle_empty_dl_creation(CTXTdeclc DL dl)
       BTNptr leaf;
       Cell callVars[NUM_TRIEVARS];
       construct_ground_term(CTXTc as_leaf,subgoal);
-
       leaf = simpl_variant_trie_lookup(CTXTc TIF_CallTrie(subg_tif_ptr(subgoal)),
 				 get_arity(TIF_PSC(subg_tif_ptr(subgoal))),
 				 (CPtr) DynStk_Base(tstSymbolStack), callVars);
       if ( IsNonNULL(leaf) ) {
-	//	printf("found call! %x",leaf);
 	subg_is_complete( (VariantSF) Child(leaf)) = TRUE;
 	//	subg_asf_list_ptr( (VariantSF) Child(leaf)) = NULL;
 	//	fprintf(stderr,"hedc B\n");
@@ -1338,7 +1336,7 @@ static void simplify_pos_unconditional(CTXTdeclc NODEptr as_leaf)
 #ifndef MULTI_THREAD
 #define MAX_SIMPLIFY_NEG_FAILS_STACK 10
   VariantSF simplify_neg_fails_stack[MAX_SIMPLIFY_NEG_FAILS_STACK];
-  long simplify_neg_fails_stack_top;
+  Integer simplify_neg_fails_stack_top;
   int in_simplify_neg_fails;
 #endif
 
@@ -1416,7 +1414,7 @@ static void simplify_neg_succeeds(CTXTdeclc VariantSF subgoal)
   ASI used_asi, de_asi;
   NODEptr used_as_leaf;
 
-  //  fprintf("in simplify neg succeeds: ");print_subgoal(stddbg,subgoal),printf("\n");
+  //  printf("in simplify neg succeeds: ");print_subgoal(stddbg,subgoal),printf("\n");
 
   while ((nde = subg_nde_list(subgoal))) {
     dl = pnde_dl(nde); /* dl: to be removed */

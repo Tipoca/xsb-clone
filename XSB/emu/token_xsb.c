@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.43 2011-04-27 17:11:11 pmoura Exp $
+** $Id: token_xsb.c,v 1.44 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -317,7 +317,7 @@ int     strbuff_len = InitStrLen;   /* length of first allocation will be
 				       InitStrLen; will be doubled on
 				       subsequent overflows */
 double  double_v;
-long	rad_int;
+Integer	rad_int;
 #endif
 
 char    tok2long[]      = "token too long";
@@ -547,7 +547,7 @@ struct xsb_token_t *GetToken(CTXTdeclc FILE *card, STRFILE *instr, int prevch)
 {
         char *s;
         register int c, d = 0;
-        long oldv = 0, newv = 0; 
+        Integer oldv = 0, newv = 0; 
         int n;
 
 	if (strbuff == NULL)
@@ -937,7 +937,7 @@ case deleted ****/
 	return FALSE; /* to pacify the compiler */
 }
 
-/* --- Testing routines (usually commented) ---  
+/* --- Testing routines (usually commented) --- 
 
 | void main(int arc, char *argv[])
 | {
@@ -951,28 +951,28 @@ case deleted ****/
 |     res = GetToken(CTXTc card, NULL, token->nextch);
 |     print_token(res->type, res->value);
 |   } while (res->type != TK_EOF);
-| }
+| } */
 
 void print_token(int token_type, char *ptr)
 {
   switch (token_type) {
-  case TK_PUNC		: printf("TK_PUNC: %c\t", *ptr); break;
-  case TK_VARFUNC	: printf("TK_VARFUNC: %s\t", ptr); break;
-  case TK_VAR		: printf("TK_VAR: %s\t", ptr); break;
-  case TK_FUNC		: printf("TK_FUNC: %s\t", ptr); break;
-  case TK_INT		: printf("TK_INT: %ld\t", *(Integer *)ptr); break;
-  case TK_ATOM		: printf("TK_ATOM: %s\t", ptr); break;
+  case TK_PUNC		: printf("P: %c ", *ptr); break;
+  case TK_VARFUNC	: printf("VF: %s ", ptr); break;
+  case TK_VAR		: printf("V: %s ", ptr); break;
+  case TK_FUNC		: printf("F: %s ", ptr); break;
+  case TK_INT		: printf("I: %" Intfmt " ", *(Integer *)ptr); break;
+  case TK_ATOM		: printf("A: %s ", ptr); break;
   case TK_EOC		: printf("\nTK_EOC\n"); break;
-  case TK_VVAR		: printf("TK_VVAR: %s\t", ptr); break;
-  case TK_VVARFUNC	: printf("TK_VVARFUNC: %s\t", ptr); break;
-  case TK_REAL		: printf("TK_REAL: %f\t", *(double *)ptr); break;
+  case TK_VVAR		: printf("VV: %s ", ptr); break;
+  case TK_VVARFUNC	: printf("VVF: %s ", ptr); break;
+  case TK_REAL		: printf("R: %f ", *(double *)ptr); break;
   case TK_EOF		: printf("\nTK_EOF\n"); break;
-  case TK_STR		: printf("TK_STR: %s\t", ptr); break;
-  case TK_LIST		: printf("TK_LIST: %s\t", ptr); break;
-  case TK_HPUNC		: printf("TK_HPUNC: %c\t", *ptr); break;
-  case TK_INTFUNC	: printf("TK_INTFUNC: %ld\t", *(Integer *)ptr); break;
-  case TK_REALFUNC	: printf("TK_REALFUNC: %f\t", *(double *)ptr); break;
+  case TK_STR		: printf("S: %s ", ptr); break;
+  case TK_LIST		: printf("L: %s ", ptr); break;
+  case TK_HPUNC		: printf("HP: %c ", *ptr); break;
+  case TK_INTFUNC	: printf("IF: %" Intfmt " ", *(Integer *)ptr); break;
+  case TK_REALFUNC	: printf("RF: %f ", *(double *)ptr); break;
   }
 }
 
- ----------------------------------------------- */
+/* ----------------------------------------------- */

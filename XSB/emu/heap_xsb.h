@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.h,v 1.21 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: heap_xsb.h,v 1.22 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -54,9 +54,9 @@
 /*----- The following functions are used in other parts of the system --*/
 
 extern int  gc_heap(CTXTdeclc int, int);
-extern int  mark_heap(CTXTdeclc int,int *);
-extern void glstack_ensure_space(CTXTdeclc int,int);
-extern xsbBool glstack_realloc(CTXTdeclc int,int);
+extern size_t  mark_heap(CTXTdeclc int,size_t *);
+extern void glstack_ensure_space(CTXTdeclc size_t,int);
+extern xsbBool glstack_realloc(CTXTdeclc size_t,int);
 extern char *string_find_safe(char *str);
 extern void initialize_glstack(CPtr, CPtr);
 

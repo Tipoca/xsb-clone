@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_slide.h,v 1.23 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: gc_slide.h,v 1.24 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -162,7 +162,7 @@ inline static void swap_with_tag(CTXTdeclc CPtr p, CPtr q, int tag)
 #ifdef INDIRECTION_SLIDE
 
 #define mem_swap(a,b) \
-{ unsigned long temp; \
+{ size_t temp; \
  temp = *a; \
  *a = *b; \
  *b = temp; \
@@ -178,26 +178,26 @@ Y = size_stack[stack_index]
 #define sort_stack_empty \
 (stack_index == 0)
 
-static void randomize_data(unsigned long *data, unsigned long size)
+static void randomize_data(size_t *data, size_t size)
 {
-  unsigned long i,j;
+  size_t i,j;
 
   for (i=0; i<size; i++) {
-    j = (unsigned long) rand()*(size-1)/RAND_MAX;
+    j = (size_t) rand()*(size-1)/RAND_MAX;
     mem_swap((data+i), (data+j));
   }
 }
 
-static void sort_buffer(unsigned long *indata, unsigned long insize)
+static void sort_buffer(size_t *indata, size_t insize)
 {
-  unsigned long *left, *right, *pivot;
-  unsigned long *data, size;
-  unsigned long *addr_stack[4000];
-  unsigned long size_stack[4000];
+  size_t *left, *right, *pivot;
+  size_t *data, size;
+  size_t *addr_stack[4000];
+  size_t size_stack[4000];
   int stack_index=0;
   Integer leftsize;
 #ifdef GC_PROFILE
-  unsigned long begin_sorting, end_sorting;
+  size_t begin_sorting, end_sorting;
 #endif
   
   randomize_data(indata,insize);
@@ -263,7 +263,7 @@ static void sort_buffer(unsigned long *indata, unsigned long insize)
 
 #ifdef GC
 
-static CPtr slide_heap(CTXTdeclc int num_marked)
+static CPtr slide_heap(CTXTdeclc size_t num_marked)
 {
   int  tag = 0;  // TLS: to quiet compiler
   Cell contents;
@@ -341,7 +341,7 @@ static CPtr slide_heap(CTXTdeclc int num_marked)
     /* if (print_on_gc) print_all_stacks() ; */
 
   { CPtr destination, hptr ;
-    long garbage = 0 ;
+    Integer garbage = 0 ;
     Integer index ;
 
     /* one phase upwards - from top of heap to bottom of heap */
@@ -350,14 +350,14 @@ static CPtr slide_heap(CTXTdeclc int num_marked)
     destination = heap_bot + num_marked - 1 ;
 #ifdef INDIRECTION_SLIDE
     if (slide_buffering) {
-      unsigned long i;
+      size_t i;
 #ifdef GC_PROFILE
       if (verbose_gc) {
 	fprintf(stddbg,"{GC} Using Fast-Slide scheme.\n");
       }
 #endif
       /* sort the buffer */
-      sort_buffer((unsigned long *)slide_buf, slide_top-1);
+      sort_buffer((size_t *)slide_buf, slide_top-1);
 
       /* upwards phase */
       for (i=slide_top; i > 0; i--) {
@@ -424,7 +424,7 @@ static CPtr slide_heap(CTXTdeclc int num_marked)
 
 #ifdef INDIRECTION_SLIDE
     if (slide_buffering) {
-      unsigned long i;
+      size_t i;
       for (i=0; i<slide_top; i++) {
 	hptr = slide_buf[i];
 

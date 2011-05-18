@@ -164,7 +164,7 @@ void stat_inusememory(CTXTdeclc double elapstime, int type) {
     abtht,		/* Asserted Basic Trie Hash Tables */
     tstht;		/* Time Stamp Trie Hash Tables */
   
-  unsigned long
+  size_t
     total_alloc, total_used,
     tablespace_alloc, tablespace_used,
     trieassert_alloc, trieassert_used,
@@ -174,7 +174,7 @@ void stat_inusememory(CTXTdeclc double elapstime, int type) {
     pnde_space_alloc, pnde_space_used,
     pspacetot;
 
-  int
+  size_t
     num_de_blocks, num_dl_blocks, num_pnde_blocks,
     de_count, dl_count, 
     i;
@@ -267,23 +267,23 @@ void stat_inusememory(CTXTdeclc double elapstime, int type) {
       break;
     }
     case HEAPMEM: {
-      ctop_int(CTXTc 4,(long)((top_of_heap - (CPtr)glstack.low + 1)* sizeof(Cell)));
+      ctop_int(CTXTc 4,(Integer)((top_of_heap - (CPtr)glstack.low + 1)* sizeof(Cell)));
       break;
     }
     case CPMEM: {
-      ctop_int(CTXTc 4, (long)(((CPtr)tcpstack.high - top_of_cpstack) * sizeof(Cell)));
+      ctop_int(CTXTc 4, (Integer)(((CPtr)tcpstack.high - top_of_cpstack) * sizeof(Cell)));
       break;
     }
     case TRAILMEM: {
-      ctop_int(CTXTc 4, (long)((top_of_trail - (CPtr *)tcpstack.low + 1) * sizeof(CPtr)));
+      ctop_int(CTXTc 4, (Integer)((top_of_trail - (CPtr *)tcpstack.low + 1) * sizeof(CPtr)));
       break;
     }
     case LOCALMEM: {
-      ctop_int(CTXTc 4, (long)(((CPtr)glstack.high - top_of_localstk) * sizeof(Cell)));
+      ctop_int(CTXTc 4, (Integer)(((CPtr)glstack.high - top_of_localstk) * sizeof(Cell)));
       break;
     }
     case OPENTABLECOUNT: {
-      ctop_int(CTXTc 4, ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk) / 
+      ctop_int(CTXTc 4, (COMPLSTACKBOTTOM - top_of_complstk) / 
 	       sizeof(struct completion_stack_frame));
       break;
     }
@@ -312,7 +312,7 @@ void total_stat(CTXTdeclc double elapstime) {
     abtht,		/* Asserted Basic Trie Hash Tables */
     tstht;		/* Time Stamp Trie Hash Tables */
   
-  unsigned long
+  size_t
     total_alloc, total_used,
     tablespace_alloc, tablespace_used,
     trieassert_alloc, trieassert_used,
@@ -322,7 +322,7 @@ void total_stat(CTXTdeclc double elapstime) {
     pnde_space_alloc, pnde_space_used,
     pspacetot;
 
-  int
+  size_t
     num_de_blocks, num_dl_blocks, num_pnde_blocks,
     de_count, dl_count, 
     i;
@@ -389,49 +389,49 @@ void total_stat(CTXTdeclc double elapstime) {
 
 
   printf("\n");
-  printf("Memory (total)    %12ld bytes: %12ld in use, %12ld free\n",
+  printf("Memory (total)    %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 total_alloc, total_used, total_alloc - total_used);
-  printf("  permanent space %12ld bytes: %12ld in use, %12ld free\n",
+  printf("  permanent space %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 pspacetot + trieassert_alloc, pspacetot + trieassert_used,
 	 trieassert_alloc - trieassert_used);
   if (trieassert_alloc > 0)
-    printf("    trie-asserted                     %12ld         %12ld\n",
+    printf("    trie-asserted                     %15" Intfmt "         %15" Intfmt "\n",
 	   trieassert_used,trieassert_alloc-trieassert_used);
 
   for (i=0; i<NUM_CATS_SPACE; i++) 
     if (pspacesize[i] > 0 && i != TABLE_SPACE && i != INCR_TABLE_SPACE)
-      printf("    %s                      %12ld\n",pspace_cat[i],pspacesize[i]);
+      printf("    %s                      %15" Intfmt "\n",pspace_cat[i],pspacesize[i]);
 
-  printf("  glob/loc space  %12ld bytes: %12ld in use, %12ld free\n",
+  printf("  glob/loc space  %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 glstack.size * K, glstack.size * K - gl_avail, gl_avail);
-  printf("    global                            %12ld bytes\n",
-	 (long)((top_of_heap - (CPtr)glstack.low + 1) * sizeof(Cell)));
-  printf("    local                             %12ld bytes\n",
-	 (long)(((CPtr)glstack.high - top_of_localstk) * sizeof(Cell)));
-  printf("  trail/cp space  %12ld bytes: %12ld in use, %12ld free\n",
+  printf("    global                            %15" Intfmt " bytes\n",
+	 (Integer)((top_of_heap - (CPtr)glstack.low + 1) * sizeof(Cell)));
+  printf("    local                             %15" Intfmt " bytes\n",
+	 (Integer)(((CPtr)glstack.high - top_of_localstk) * sizeof(Cell)));
+  printf("  trail/cp space  %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 tcpstack.size * K, tcpstack.size * K - tc_avail, tc_avail);
-  printf("    trail                             %12ld bytes\n",
-	 (long)((top_of_trail - (CPtr *)tcpstack.low + 1) * sizeof(CPtr)));
-  printf("    choice point                      %12ld bytes\n",
-	 (long)(((CPtr)tcpstack.high - top_of_cpstack) * sizeof(Cell)));
-  printf("  SLG unific. space %10ld bytes: %12ld in use, %12ld free\n",
-	 pdl.size * K, (unsigned long)(pdlreg+1) - (unsigned long)pdl.high,
-	 pdl.size * K - ((unsigned long)(pdlreg+1)-(unsigned long)pdl.high)); 
-  printf("  SLG completion  %12ld bytes: %12ld in use, %12ld free\n",
-	 (unsigned long)complstack.size * K,
-	 (unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk,
-	 (unsigned long)complstack.size * K -
-	 ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk));
-  if (((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk) > 0) {
-    printf("        (%ld incomplete table(s)",
-	   ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE));
+  printf("    trail                             %15" Intfmt " bytes\n",
+	 (Integer)((top_of_trail - (CPtr *)tcpstack.low + 1) * sizeof(CPtr)));
+  printf("    choice point                      %15" Intfmt " bytes\n",
+	 (Integer)(((CPtr)tcpstack.high - top_of_cpstack) * sizeof(Cell)));
+  printf("  SLG unific. space %10" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
+	 pdl.size * K, (size_t)(pdlreg+1) - (size_t)pdl.high,
+	 pdl.size * K - ((size_t)(pdlreg+1)-(size_t)pdl.high)); 
+  printf("  SLG completion  %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
+	 (size_t)complstack.size * K,
+	 (size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk,
+	 (size_t)complstack.size * K -
+	 ((size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk));
+  if (((size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk) > 0) {
+    printf("        (%" Intfmt " incomplete table(s)",
+	   ((size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE));
     printf(" in %d SCCs)",count_sccs(CTXT));
     printf("\n");
   }
   if (pspacesize[INCR_TABLE_SPACE]) 
-    printf("  Incr table space                    %12ld in use\n",
+    printf("  Incr table space                    %15" Intfmt " in use\n",
 	   pspacesize[INCR_TABLE_SPACE]);
-  printf("  SLG table space %12ld bytes: %12ld in use, %12ld free\n",
+  printf("  SLG table space %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 pspacesize[TABLE_SPACE]+pspacesize[INCR_TABLE_SPACE]-trieassert_alloc,  
 	 pspacesize[TABLE_SPACE]+pspacesize[INCR_TABLE_SPACE]-trieassert_alloc-
 	 	(tablespace_alloc-tablespace_used),
@@ -441,16 +441,16 @@ void total_stat(CTXTdeclc double elapstime) {
   if (flags[TRACE_STA]) {
     /* Report Maximum Usages
        --------------------- */
-    printf("  Maximum stack used: global %ld, local %ld, trail %ld, cp %ld,\n",
+    printf("  Maximum stack used: global %" Intfmt ", local %" Intfmt ", trail %" Intfmt ", cp %" Intfmt ",\n",
 	   ttt.maxgstack_count, ttt.maxlstack_count, 
 	   ttt.maxtrail_count, ttt.maxcpstack_count);
-    printf("                      SLG completion %ld (%ld subgoals)\n",
+    printf("                      SLG completion %" Intfmt " (%" Intfmt " subgoals)\n",
 	   ttt.maxopenstack_count,
 	   (ttt.maxopenstack_count/sizeof(struct completion_stack_frame)));
 
     update_maximum_tablespace_stats(&tbtn,&tbtht,&varsf,&prodsf,&conssf,
 				    &aln,&tstn,&tstht,&tsi,&asi);
-    printf("  Maximum table space used:  %ld bytes\n",
+    printf("  Maximum table space used:  %" Intfmt " bytes\n",
 	   maximum_total_tablespace_usage());
     printf("\n");
   }
@@ -465,7 +465,7 @@ void total_stat(CTXTdeclc double elapstime) {
 	 NumSubOps_SubsumedCallEntry,		NumSubOps_CallToCompletedTable,
 	 NumSubOps_IdentifyRelevantAnswers,	NumSubOps_AnswerConsumption);
   {
-    unsigned long ttl_ops = ans_chk_ins + NumSubOps_AnswerCheckInsert,
+    size_t ttl_ops = ans_chk_ins + NumSubOps_AnswerCheckInsert,
 	 	  ttl_ins = ans_inserts + NumSubOps_AnswerInsert;
 
     printf("  %lu variant call check/insert ops: %lu producers, %lu variants.\n"
@@ -534,7 +534,7 @@ void stat_inusememory(CTXTdeclc double elapstime, int type) {
     pri_tbtht,		/* Table Basic Trie Hash Tables */
     pri_tstht;		/* Time Stamp Trie Hash Tables */
   
-  unsigned long
+  size_t
     total_alloc, total_used,
     tablespace_alloc, tablespace_used,
     private_tablespace_alloc, private_tablespace_used,
@@ -676,23 +676,23 @@ void stat_inusememory(CTXTdeclc double elapstime, int type) {
       break;
     }
     case HEAPMEM: {
-      ctop_int(CTXTc 4,(long)((top_of_heap - (CPtr)glstack.low + 1)* sizeof(Cell)));
+      ctop_int(CTXTc 4,(Integer)((top_of_heap - (CPtr)glstack.low + 1)* sizeof(Cell)));
       break;
     }
     case CPMEM: {
-      ctop_int(CTXTc 4, (long)(((CPtr)tcpstack.high - top_of_cpstack) * sizeof(Cell)));
+      ctop_int(CTXTc 4, (Integer)(((CPtr)tcpstack.high - top_of_cpstack) * sizeof(Cell)));
       break;
     }
     case TRAILMEM: {
-      ctop_int(CTXTc 4, (long)((top_of_trail - (CPtr *)tcpstack.low + 1) * sizeof(CPtr)));
+      ctop_int(CTXTc 4, (Integer)((top_of_trail - (CPtr *)tcpstack.low + 1) * sizeof(CPtr)));
       break;
     }
     case LOCALMEM: {
-      ctop_int(CTXTc 4, (long)(((CPtr)glstack.high - top_of_localstk) * sizeof(Cell)));
+      ctop_int(CTXTc 4, (Integer)(((CPtr)glstack.high - top_of_localstk) * sizeof(Cell)));
       break;
     }
     case OPENTABLECOUNT: {
-      ctop_int(CTXTc 4, ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk) / 
+      ctop_int(CTXTc 4, ((size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk) / 
 	       sizeof(struct completion_stack_frame));
       break;
     }
@@ -734,7 +734,7 @@ void total_stat(CTXTdeclc double elapstime) {
     pri_tbtht,		/* Table Basic Trie Hash Tables */
     pri_tstht;		/* Time Stamp Trie Hash Tables */
   
-  unsigned long
+  size_t
     total_alloc, total_used,
     tablespace_alloc, tablespace_used,
     shared_tablespace_alloc, shared_tablespace_used,
@@ -848,54 +848,54 @@ void total_stat(CTXTdeclc double elapstime) {
 
   printf("\n");
   printf("Thread-shared memory for process:\n");
-  printf("  permanent space %12ld bytes: %12ld in use, %12ld free\n",
+  printf("  permanent space %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 pspacetot + trieassert_alloc, pspacetot + trieassert_used,
 	 trieassert_alloc - trieassert_used);
   if (trieassert_alloc > 0)
-    printf("    trie-asserted                     %12ld         %12ld\n",
+    printf("    trie-asserted                     %15" Intfmt "         %15" Intfmt "\n",
 	   trieassert_used,trieassert_alloc-trieassert_used);
   for (i=0; i<NUM_CATS_SPACE; i++) 
     if (pspacesize[i] > 0 && i != TABLE_SPACE)
-      printf("    %s                      %12ld\n",pspace_cat[i],pspacesize[i]);
-  printf("  SLG table space %12ld bytes: %12ld in use, %12ld free\n",
+      printf("    %s                      %15" Intfmt "\n",pspace_cat[i],pspacesize[i]);
+  printf("  SLG table space %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 pspacesize[TABLE_SPACE]-trieassert_alloc,  
 	 pspacesize[TABLE_SPACE]-trieassert_alloc-(tablespace_alloc-tablespace_used),
 	 tablespace_alloc - tablespace_used);
-  printf("  Shared SLG table space %12ld bytes: %12ld in use, %12ld free\n",
+  printf("  Shared SLG table space %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 shared_tablespace_alloc,shared_tablespace_used,
 	 shared_tablespace_alloc - shared_tablespace_used);
-  printf("Total             %12ld bytes: %12ld in use, %12ld free\n",
+  printf("Total             %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 total_alloc, total_used, total_alloc - total_used);
   printf("\n");
 
   printf("Thread-private memory thread %d:\n",xsb_thread_id);
-  printf("  glob/loc space  %12ld bytes: %12ld in use, %12ld free\n",
+  printf("  glob/loc space  %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 glstack.size * K, glstack.size * K - gl_avail, gl_avail);
-  printf("    global                            %12ld bytes\n",
-	 (long)((top_of_heap - (CPtr)glstack.low + 1) * sizeof(Cell)));
-  printf("    local                             %12ld bytes\n",
-	 (long)(((CPtr)glstack.high - top_of_localstk) * sizeof(Cell)));
-  printf("  trail/cp space  %12ld bytes: %12ld in use, %12ld free\n",
+  printf("    global                            %15" Intfmt " bytes\n",
+	 (Integer)((top_of_heap - (CPtr)glstack.low + 1) * sizeof(Cell)));
+  printf("    local                             %15" Intfmt " bytes\n",
+	 (Integer)(((CPtr)glstack.high - top_of_localstk) * sizeof(Cell)));
+  printf("  trail/cp space  %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 tcpstack.size * K, tcpstack.size * K - tc_avail, tc_avail);
-  printf("    trail                             %12ld bytes\n",
-	 (long)((top_of_trail - (CPtr *)tcpstack.low + 1) * sizeof(CPtr)));
-  printf("    choice point                      %12ld bytes\n",
-	 (long)(((CPtr)tcpstack.high - top_of_cpstack) * sizeof(Cell)));
-  printf("  SLG unific. space %10ld bytes: %12ld in use, %12ld free\n",
-	 pdl.size * K, (unsigned long)(pdlreg+1) - (unsigned long)pdl.high,
-	 pdl.size * K - ((unsigned long)(pdlreg+1)-(unsigned long)pdl.high)); 
-  printf("  SLG completion  %12ld bytes: %12ld in use, %12ld free\n",
-	 (unsigned long)complstack.size * K,
-	 (unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk,
-	 (unsigned long)complstack.size * K -
-	 ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk));
-  if (((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk) > 0) {
-    printf("        (%ld incomplete table(s)",
-	   ((unsigned long)COMPLSTACKBOTTOM - (unsigned long)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE));
+  printf("    trail                             %15" Intfmt " bytes\n",
+	 (Integer)((top_of_trail - (CPtr *)tcpstack.low + 1) * sizeof(CPtr)));
+  printf("    choice point                      %15" Intfmt " bytes\n",
+	 (Integer)(((CPtr)tcpstack.high - top_of_cpstack) * sizeof(Cell)));
+  printf("  SLG unific. space %10" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
+	 pdl.size * K, (size_t)(pdlreg+1) - (size_t)pdl.high,
+	 pdl.size * K - ((size_t)(pdlreg+1)-(size_t)pdl.high)); 
+  printf("  SLG completion  %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
+	 (size_t)complstack.size * K,
+	 (size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk,
+	 (size_t)complstack.size * K -
+	 ((size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk));
+  if (((size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk) > 0) {
+    printf("        (%" Intfmt " incomplete table(s)",
+	   ((size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE));
     printf(" in %d SCCs)",count_sccs(CTXT));
   }
   printf("\n");
-  printf("  Private SLG table space %12ld bytes: %12ld in use, %12ld free\n",
+  printf("  Private SLG table space %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 private_tablespace_alloc,private_tablespace_used,
 	 private_tablespace_alloc - private_tablespace_used);
   printf("\n");
@@ -918,7 +918,7 @@ void total_stat(CTXTdeclc double elapstime) {
 	 NumSubOps_SubsumedCallEntry,		NumSubOps_CallToCompletedTable,
 	 NumSubOps_IdentifyRelevantAnswers,	NumSubOps_AnswerConsumption);
   {
-    unsigned long ttl_ops = ans_chk_ins + NumSubOps_AnswerCheckInsert,
+    size_t ttl_ops = ans_chk_ins + NumSubOps_AnswerCheckInsert,
 	  	  ttl_ins = ans_inserts + NumSubOps_AnswerInsert;
 
     printf("  %lu variant call check/insert ops: %lu producers, %lu variants.\n"
@@ -1017,7 +1017,7 @@ extern double realtime_count_gl; /* from subp.c */
 
 void  get_statistics(CTXTdecl) {
   int type;
-  type = ptoc_int(CTXTc 3);
+  type = (int)ptoc_int(CTXTc 3);
   switch (type) {
 // runtime [since start of Prolog,since previous statistics] 
 // CPU time used while executing, excluding time spent

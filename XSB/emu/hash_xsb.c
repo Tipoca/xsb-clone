@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.23 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: hash_xsb.c,v 1.24 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -67,7 +67,7 @@ static unsigned int primes[NUM_OF_PRIMES] =
  *  If no such prime number can be found, compute an approximate one.
  */
 
-unsigned long next_prime(unsigned long some_int) {
+UInteger next_prime(UInteger some_int) {
 
   byte i;
 
@@ -87,9 +87,9 @@ unsigned long next_prime(unsigned long some_int) {
  *  Return a bucket number in the range [0 .. (hash_table_size - 1)].
  */
 
-unsigned long hash(const char *obj_name, byte arity, unsigned long hash_table_size) {
+UInteger hash(const char *obj_name, byte arity, UInteger hash_table_size) {
 
-  unsigned long hashval, temp;
+  UInteger hashval, temp;
   int i, j, k;
 
   hashval = 0;
@@ -144,7 +144,7 @@ void expand_symbol_table() {
 
   Pair *new_table, *bucket_ptr, cur_pair, next_pair;
   Psc cur_psc;
-  unsigned long index, new_size, new_index;
+  size_t index, new_size, new_index;
 
   new_size = next_prime(symbol_table.size);
   new_table = (Pair *)mem_calloc(new_size, sizeof(void *),ATOM_SPACE);
@@ -180,7 +180,7 @@ void expand_string_table() {
 
   void **new_table, **bucket_ptr, **cur_entry, **next_entry;
   char *string;
-  unsigned long index, new_size, new_index;
+  size_t index, new_size, new_index;
 
   new_size = next_prime(string_table.size);
   new_table = (void **)mem_calloc(new_size, sizeof(void *),STRING_SPACE);
@@ -214,9 +214,9 @@ void expand_string_table() {
 
 void symbol_table_stats(CTXTdecl) {
 
-  unsigned long   i, symbols, bucket_contains, used_buckets, unused_buckets,
+  size_t   i, symbols, bucket_contains, used_buckets, unused_buckets,
                   fullest_bucket_size, fullest_bucket_num, last_index;
-  int first_index;
+  size_t first_index;
   Pair pair_ptr;
 
   SYS_MUTEX_LOCK( MUTEX_SYMBOL ) ;
@@ -265,9 +265,9 @@ void symbol_table_stats(CTXTdecl) {
 
 void string_table_stats(CTXTdecl) {
 
-  unsigned long   i, strings, bucket_contains, used_buckets, unused_buckets,
+  size_t   i, strings, bucket_contains, used_buckets, unused_buckets,
                   fullest_bucket_size, fullest_bucket_num, last_index;
-  int first_index;
+  size_t first_index;
   void *ptr;
 
  SYS_MUTEX_LOCK( MUTEX_STRING ) ;
@@ -313,7 +313,7 @@ void string_table_stats(CTXTdecl) {
 }
 
 void free_unused_strings() {
-  unsigned long i;
+  size_t i;
   void *ptr, *prevptr;
   int used = 0, unused = 0;
 

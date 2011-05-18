@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.145 2011-05-13 16:23:45 tswift Exp $
+** $Id: tries.c,v 1.146 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -126,7 +126,7 @@ char *trie_trie_type_table[] = {"call_trie_tt","basic_answer_trie_tt",
  */
 
 #ifndef MULTI_THREAD
-static int addr_stack_index = 0;
+static size_t addr_stack_index = 0;
 static CPtr *Addr_Stack;
 static int addr_stack_size    = DEFAULT_ARRAYSIZ;
 #endif
@@ -144,7 +144,7 @@ static int addr_stack_size    = DEFAULT_ARRAYSIZ;
 #ifndef MULTI_THREAD
 static int  term_stack_index = -1;
 static Cell *term_stack;
-static long term_stacksize = DEFAULT_ARRAYSIZ;
+static size_t term_stacksize = DEFAULT_ARRAYSIZ;
 #endif
 
 #define pop_term term_stack[term_stack_index--]
@@ -467,7 +467,7 @@ void hashify_children(CTXTdeclc BTNptr parent, int trieType) {
   BTNptr btn;			/* current child for processing */
   BTHTptr ht;			/* HT header struct */
   BTNptr *tablebase;		/* first bucket of allocated HT */
-  unsigned long  hashseed;	/* needed for hashing of BTNs */
+  UInteger  hashseed;	/* needed for hashing of BTNs */
 
   ht = New_BTHT(CTXTc smBTHT, trieType);
   children = BTN_Child(parent);
@@ -500,7 +500,7 @@ void hashify_children(CTXTdeclc BTNptr parent, int trieType) {
  *  the lower half of the table.
  */
 
-BTNptr *resize_hash_array(CTXTdeclc BTHTptr pHT, int new_size) {
+BTNptr *resize_hash_array(CTXTdeclc BTHTptr pHT, size_t new_size) {
   BTNptr *bucket_array;     /* base address of resized hash table */
 
   //  printf("resizing hash to %d\n",new_size);
@@ -518,7 +518,7 @@ void expand_trie_ht(CTXTdeclc BTHTptr pHT) {
   BTNptr curNode;           /* TSTN being processed */
   BTNptr nextNode;          /* rest of the TSTNs in a bucket */
 
-  unsigned long  new_size;  /* double duty: new HT size, then hash mask */
+  size_t  new_size;  /* double duty: new HT size, then hash mask */
 
   new_size = TrieHT_NewSize(pHT);
 
@@ -855,8 +855,8 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
 
   Psc   psc;
   CPtr  xtemp1;
-  int   i, j, flag = 1;
-  Cell  tag = XSB_FREE, item, tmp_var;
+  int   i, j, flag = 1, tag = XSB_FREE;
+  Cell  item, tmp_var;
   ALNptr answer_node;
   int ctr, attv_ctr;
   BTNptr Paren, *GNodePtrPtr;
@@ -1441,8 +1441,8 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
       return XSB_FAILURE;						\
     }									\
     else {								\
-      print_call(CTXTc TIF_PSC(CallInfo_TableInfo(*call_info)),flags[MAX_TABLE_SUBGOAL_DEPTH]);	\
-      xsb_abort("Exceeded max call term depth of %d in call (%s/%d)\n",	\
+      print_call(CTXTc TIF_PSC(CallInfo_TableInfo(*call_info)),(int)(flags[MAX_TABLE_SUBGOAL_DEPTH])); \
+      xsb_abort("Exceeded max call term depth of %d in call (%s/%d)\n", \
 		flags[MAX_TABLE_SUBGOAL_DEPTH],				\
 		get_name(TIF_PSC(CallInfo_TableInfo(*call_info))),arity); \
     }									\
@@ -1458,22 +1458,22 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
     case XSB_FREE:							\
     case XSB_REF1:							\
       if (! IsStandardizedVariable(xtemp1)) {				\
-	*(--SubsFactReg) = (Cell) xtemp1;					\
+	*(--SubsFactReg) = (Cell) xtemp1;				\
 	StandardizeVariable(xtemp1,ctr);				\
-	one_node_chk_ins(flag,EncodeNewTrieVar(ctr),TrieType);		\
+	one_node_chk_ins(flag,EncodeNewTrieVar(ctr),TrieType);	\
 	ctr++;								\
       } else{								\
 	one_node_chk_ins(flag, EncodeTrieVar(IndexOfStdVar(xtemp1)),	\
 			 TrieType);					\
       }									\
       break;								\
-    case XSB_STRING:							\
+    case XSB_STRING:						\
     case XSB_INT:							\
     case XSB_FLOAT:							\
       one_node_chk_ins(flag, EncodeTrieConstant(xtemp1), TrieType);	\
       break;								\
     case XSB_LIST:							\
-      CHECK_CALL_TERM_DEPTH;						\
+      CHECK_CALL_TERM_DEPTH;					\
       one_node_chk_ins(flag, EncodeTrieList(xtemp1), TrieType);		\
       pdlpush( cell(clref_val(xtemp1)+1) );				\
       pdlpush( cell(clref_val(xtemp1)) );				\
@@ -2200,7 +2200,7 @@ byte * trie_get_calls(CTXTdecl)
  */
 Cell get_lastnode_cs_retskel(CTXTdeclc Cell callTerm) {
 
-  prolog_int arity;
+  int arity;
   Cell *vectr;
 
   arity = global_trieinstr_vars_num + 1;
@@ -2210,7 +2210,7 @@ Cell get_lastnode_cs_retskel(CTXTdeclc Cell callTerm) {
     if ( IsProperlySubsumed(sf) ) {
       construct_answer_template(CTXTc callTerm, conssf_producer(sf),
 				(Cell *)trieinstr_vars);
-      arity = (prolog_int)trieinstr_vars[0];
+      arity = (int)trieinstr_vars[0];
       vectr = (Cell *)&trieinstr_vars[1];
     }
   }

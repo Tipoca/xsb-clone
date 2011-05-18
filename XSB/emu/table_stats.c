@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.35 2011-04-17 16:31:34 tswift Exp $
+** $Id: table_stats.c,v 1.36 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -225,17 +225,17 @@ void print_HashStats(HashStats hashTab,char * tabName) {
 	     HashStats_TotalOccupancy(hashTab));
 }
 
-void print_wfs_usage(int space_alloc,int space_used, int num_blocks,int frames_per_block,
+void print_wfs_usage(Integer space_alloc,Integer space_used, size_t num_blocks,int frames_per_block,
 		int size_per_block,char * elt_name) {
     printf("    %s (%lu blocks)\n"
 	   "      Allocated:   %10lu  (%8lu bytes)\n"
 	   "      Used:        %10lu  (%8lu bytes)\n"
 	   "      Free:        %10lu  (%8lu bytes)\n",
-	   elt_name,(unsigned long) num_blocks, 
-	   (unsigned long) num_blocks*frames_per_block, (unsigned long) space_alloc, 
-	   (unsigned long) (space_used/size_per_block),  (unsigned long) space_used, 
-	   (unsigned long) (num_blocks*frames_per_block - (space_used/size_per_block)), 
-	   (unsigned long)  (space_alloc - space_used));
+	   elt_name,(UInteger) num_blocks, 
+	   (UInteger) num_blocks*frames_per_block, (UInteger) space_alloc, 
+	   (UInteger) (space_used/size_per_block),  (UInteger) space_used, 
+	   (UInteger) (num_blocks*frames_per_block - (space_used/size_per_block)), 
+	   (UInteger)  (space_alloc - space_used));
 }
 
 #ifndef MULTI_THREAD
@@ -257,14 +257,14 @@ void print_detailed_tablespace_stats(CTXTdecl) {
     btht,		/* Basic Trie Hash Tables */
     tstht;		/* Time Stamp Trie Hash Tables */
   
-  unsigned long
+  size_t
     trieassert_alloc, trieassert_used,
     tablespace_alloc, tablespace_used,
     de_space_alloc, de_space_used,
     dl_space_alloc, dl_space_used,
     pnde_space_alloc, pnde_space_used;
 
-  int num_de_blocks, num_dl_blocks, num_pnde_blocks;
+  size_t num_de_blocks, num_dl_blocks, num_pnde_blocks;
 
 
   btn = node_statistics(&smTableBTN);
@@ -429,7 +429,7 @@ void print_detailed_tablespace_stats(CTXTdecl) {
     pri_assert_btht,	/* Private Basic Trie Hash Tables (Asserts) */
     pri_tstht;		/* Private Time Stamp Trie Hash Tables */
 
-  unsigned long
+  size_t
     tablespace_alloc, tablespace_used,
     pri_tablespace_alloc, pri_tablespace_used,
     shared_tablespace_alloc, shared_tablespace_used,
@@ -678,7 +678,7 @@ void print_detailed_tablespace_stats(CTXTdecl) {
 struct {
   counter tsi;                   /* TS Index Nodes */
   counter alns;                  /* Answer List Nodes */
-  unsigned long  total_bytes;    /* total tablespace in bytes */
+  size_t  total_bytes;    /* total tablespace in bytes */
 } maxTableSpaceUsage = {0,0,0};
 
 
@@ -737,7 +737,7 @@ void update_maximum_tablespace_stats(NodeStats *btn, HashStats *btht,
 				     NodeStats *conssf, NodeStats *aln,
 				     NodeStats *tstn, HashStats *tstht,
 				     NodeStats *tsi,NodeStats *asi) {
-   unsigned long  byte_size;
+   size_t  byte_size;
 
    byte_size = CurrentTotalTableSpaceUsed(*btn,*btht,*varsf,*prodsf,*conssf,
 					  *aln,*tstn,*tstht,*tsi,*asi);
@@ -766,7 +766,7 @@ counter maximum_answer_list_nodes() {
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-unsigned long  maximum_total_tablespace_usage() {
+size_t  maximum_total_tablespace_usage() {
 
   return (maxTableSpaceUsage.total_bytes);
 }

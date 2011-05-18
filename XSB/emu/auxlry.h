@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.33 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: auxlry.h,v 1.34 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -77,4 +77,12 @@ extern void gdb_dummy(void);
 #define ROUND(N,P2)	((N + (P2-1)) & ~(P2-1))
 
 #endif /* __AUXLRY_H__ */
+
+#if defined(WIN_NT) && defined(BITS64)
+#define Intfmt "lld"
+#define Intxfmt "llx"
+#else
+#define Intfmt "ld"
+#define Intxfmt "lx"
+#endif
 

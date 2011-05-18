@@ -85,16 +85,11 @@ Java_com_xsb_interprolog_NativeEngine_put_1bytes
 	int i = 1;
 	int rc;
 	
-	//long T0 = clock(), T1, T2, T3, T4;
 	jbyte *bytes; char *argString;
 	
-	//printf("C:Entering put_bytes - %d mS",T0);
 	check_glstack_overflow(3, pcreg, (size+4)*2*sizeof(Cell)) ;  /* 2 was 8? dsw*/
 	
 	bytes = (*env)->GetByteArrayElements(env, b, 0);
-	
-	//T1 = clock() - T0;
-	//printf("C:got bytes array - %d mS",T1);
 	
 	argString = (char *)((*env)->GetStringUTFChars(env, jStr, 0));
 	c2p_functor(CTXTc argString, args, reg_term(CTXTc 1));
@@ -123,21 +118,13 @@ Java_com_xsb_interprolog_NativeEngine_put_1bytes
 	}
 	c2p_nil(CTXTc tail);
 	
-	//T2 = clock() - T0 ;
-	//printf("C:constructed Prolog list - %d mS",T2);
-
 	theEnv = env;
 	theObj = obj;
 	rc = xsb_query(CTXT);
 	
-	//T3 = clock() - T0;
-	//printf("C:Returned from Prolog - %d mS",T3);
-	
 	(*env)->ReleaseByteArrayElements(env, b, bytes, 0);
 	(*env)->ReleaseStringUTFChars(env,jStr, argString);
 	
-	//T4 = clock() - T0;
-	//printf("C:leaving put_bytes - %d mS\n",T4);
 	return rc;
 }
 

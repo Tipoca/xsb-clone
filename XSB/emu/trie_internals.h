@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.44 2011-01-02 22:16:43 tswift Exp $
+** $Id: trie_internals.h,v 1.45 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -793,8 +793,8 @@ typedef struct TimeStamp_Index_Node {
 typedef struct HashTable_for_TSTNs *TSTHTptr;
 typedef struct HashTable_for_TSTNs {
   InstrPlusType info;
-  unsigned long  numContents;
-  unsigned long  numBuckets;
+  UInteger  numContents;
+  UInteger  numBuckets;
   TSTNptr *pBucketArray;
   TSTHTptr prev, next;
   TSTHTptr internalLink;     /* For reclaimation of TSI Entries w/i a TST. */

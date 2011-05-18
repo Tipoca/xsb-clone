@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.54 2011-04-17 16:31:34 tswift Exp $
+** $Id: findall.c,v 1.55 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -432,7 +432,7 @@ static void findall_untrail(CTXTdecl)
 static int findall_trail(CTXTdeclc CPtr p, Cell val)
 { 
   f_tr_chunk *new_tr_chunk ;
-  int trail_left = cur_tr_limit - cur_tr_top;
+  Integer trail_left = cur_tr_limit - cur_tr_top;
   
   if (trail_left == 0)
     {
@@ -721,7 +721,7 @@ int findall_get_solutions(CTXTdecl)
   }
   
   arg3 = ptoc_tag(CTXTc 3); 
-  cur_f = int_val(arg3) ;
+  cur_f = (int)int_val(arg3) ;
   
   p = findall_solutions + cur_f ;
   
@@ -742,9 +742,9 @@ int findall_get_solutions(CTXTdecl)
 
 /* adapted from findall_copy_template_to_chunck */
 /* returns the number of cells needed for the construction of term */
-static long term_size(CTXTdeclc Cell term)
+static Integer term_size(CTXTdeclc Cell term)
 {
-  long size = 0 ;
+  Integer size = 0 ;
  recur:
   switch(cell_tag(term)) {
   case XSB_FREE:
@@ -1075,7 +1075,7 @@ copy_again : /* for tail recursion optimisation */
 
 int copy_term(CTXTdecl)
 {
-  long size ;
+  size_t size ;
   Cell arg1, arg2, to ;
   CPtr hptr ;
 
@@ -1101,7 +1101,7 @@ int copy_term(CTXTdecl)
   findall_untrail(CTXT) ;
   
   {
-    int size2 = hptr - hreg;
+    size_t size2 = hptr - hreg;
     /* fprintf(stderr,"copied size = %d\n",size2); */
     if (size2 > size)
       fprintf(stderr,"panic after copy_term\n");
@@ -1140,7 +1140,7 @@ void mark_findall_strings(CTXTdecl) {
 #ifdef MULTI_THREAD
 Cell copy_term_from_thread( th_context *th, th_context *from, Cell arg1 )
 {
-  long size ;
+  Integer size ;
   CPtr hptr ;
   Cell to ;
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.73 2011-01-09 22:30:16 tswift Exp $
+** $Id: tries.h,v 1.74 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -195,8 +195,8 @@ typedef struct Basic_Trie_Node *NODEptr;
 typedef struct Basic_Trie_HashTable *BTHTptr;
 typedef struct Basic_Trie_HashTable {
   InstrPlusType info;
-  unsigned long  numContents;
-  unsigned long  numBuckets;
+  UInteger  numContents;
+  UInteger  numBuckets;
   BTNptr *pBucketArray;
   BTHTptr prev, next;		   /* DLL needed for branch deletion */
 } BasicTrieHT;
@@ -252,7 +252,7 @@ typedef struct Basic_Trie_HashTable {
  *  its Sibling field.  Lazy evaluation...
  */
 
-typedef unsigned long  TimeStamp;
+typedef UInteger  TimeStamp;
 
 typedef struct Time_Stamped_Trie_Node *TSTNptr;
 typedef struct Time_Stamped_Trie_Node {
@@ -387,11 +387,11 @@ extern xsbBool  bottom_up_unify(struct th_context *);
 
 #ifndef MULTI_THREAD
 extern void    consume_subsumptive_answer(BTNptr, int, CPtr);
-extern ALNptr  tst_collect_relevant_answers(TSTNptr, TimeStamp, int, CPtr);
+extern ALNptr  tst_collect_relevant_answers(TSTNptr, TimeStamp, size_t, CPtr);
 extern void    delete_subsumptive_table(struct Table_Info_Frame *);
 #else
 extern void    consume_subsumptive_answer(struct th_context *, BTNptr, int, CPtr);
-extern ALNptr  tst_collect_relevant_answers(struct th_context *, TSTNptr, TimeStamp, int, CPtr);
+extern ALNptr  tst_collect_relevant_answers(struct th_context *, TSTNptr, TimeStamp, size_t, CPtr);
 extern void    delete_subsumptive_table(struct th_context *, struct Table_Info_Frame *);
 #endif
 
@@ -462,7 +462,7 @@ extern BTNptr Last_Nod_Sav;
 
 /* expand (or allocate) the array by doubling its size or the size needed, whichever is larger*/
 #define trie_expand_array(ArrType,ArrayNam, ArraySz, NeededSz, Nam) {\
-    int Siz = ArraySz;\
+    Integer Siz = ArraySz;\
     if (Siz == 0) ArraySz = DEFAULT_ARRAYSIZ;\
     else ArraySz = 2 * ArraySz;\
     if (ArraySz < NeededSz) ArraySz = NeededSz;\
@@ -473,7 +473,7 @@ extern BTNptr Last_Nod_Sav;
 
 #define will_overflow_trieinstr_unif_stk(x) {\
    if (x >= trieinstr_unif_stk+trieinstr_unif_stk_size) {\
-     int idx = trieinstr_unif_stkptr - trieinstr_unif_stk;\
+     Integer idx = trieinstr_unif_stkptr - trieinstr_unif_stk;	\
      trie_expand_array(Cell,trieinstr_unif_stk,trieinstr_unif_stk_size,x-trieinstr_unif_stk,"trieinstr_unif_stk");\
      trieinstr_unif_stkptr = trieinstr_unif_stk + idx;\
    }\
@@ -481,7 +481,7 @@ extern BTNptr Last_Nod_Sav;
 
 #define push_trieinstr_unif_stk(X) {\
    will_overflow_trieinstr_unif_stk(trieinstr_unif_stkptr+1);\
-   (*(++trieinstr_unif_stkptr)) = (Cell) X;\
+   (*(++trieinstr_unif_stkptr)) = X;\
 }
 /*----------------------------------------------------------------------*/
 
@@ -497,7 +497,7 @@ extern int  copy_of_num_heap_term_vars;
 /*----------------------------------------------------------------------*/
 
 extern Cell * trieinstr_unif_stk;
-extern int trieinstr_unif_stk_size;
+extern Integer trieinstr_unif_stk_size;
 extern int delay_it;
 
 #define NUM_TRIEVARS 400
@@ -547,8 +547,8 @@ struct tstCCPStack_t {
 
 typedef struct {
   TSTNptr alt_node;	/* sibling of the TSTN whose child ptr we took */
-  int ts_top_index;	/* current top-of-tstTermStack at CP creation */
-  int log_top_index;	/* current top-of-tstTermStackLog at CP creation */
+  size_t ts_top_index;	/* current top-of-tstTermStack at CP creation */
+  size_t log_top_index;	/* current top-of-tstTermStackLog at CP creation */
   CPtr *trail_top;	/* current top-of-trail at CP creation */
   CPtr heap_bktrk;	/* current hbreg at time of CP creation */
 } tstChoicePointFrame;
@@ -624,7 +624,7 @@ typedef struct InternGarbageLeafFrame{
 } InternGarbageLeaf;
 
 typedef struct InternGarbageRootFrame{
-  long root;
+  Integer root;
   IGLptr leaves;
   IGRptr next;
 } InternGarbageRoot;

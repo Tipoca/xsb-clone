@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.h,v 1.21 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: timer_xsb.h,v 1.22 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -66,7 +66,7 @@ struct xsb_timeout_info {
   th_context *th;
 #else /* not multithreaded */
 #ifdef WIN_NT
-  long parent_thread;
+  Integer parent_thread;
 #else /* UNIX */
   /* Nothing currently needed here */
 #endif /* WIN_NT else */
@@ -112,11 +112,21 @@ int make_timed_call(CTXTdeclc xsbTimeout*, void (*) (xsbTimeout*));
 #ifdef WIN_NT
 
 VOID CALLBACK xsb_timer_handler(HWND wind, UINT msg, UINT eventid, DWORD time);
+
+#if defined(WIN_NT) && defined(BITS64)
+_CRTIMP uintptr_t __cdecl _beginthread (_In_ void (__cdecl * _StartAddress) (void *),
+        _In_ unsigned _StackSize, _In_opt_ void * _ArgList);
+#elif defined(CYGWIN)
+unsigned long _beginthread (void (*)(void *), unsigned, void*);
+#else
 unsigned long _beginthread(void(_cdecl *start_address) (void *),
 			   unsigned stack_size,
 			   void *arglist);
+#endif
+
 int message_pump();
-UINT xsb_timer_id; 
+//UINT xsb_timer_id; 
+UINT_PTR xsb_timer_id; 
 
 #define TURNOFFALARM        KillTimer(NULL, xsb_timer_id);
 #define CHECK_TIMER_SET     ((int)pflags[SYS_TIMER] > 0)

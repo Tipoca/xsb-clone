@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.c,v 1.22 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: inst_xsb.c,v 1.23 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -47,8 +47,8 @@ extern void init_builtin_table(void);
 
 Cell inst_table[BUILTIN_TBL_SZ][6];
 
-unsigned long num_switch_envs;
-unsigned long num_switch_envs_iter;
+UInteger num_switch_envs;
+UInteger num_switch_envs_iter;
 
 Cell subinst_table[BUILTIN_TBL_SZ][2];
 

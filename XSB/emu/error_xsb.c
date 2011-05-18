@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.89 2011-04-17 18:25:12 tswift Exp $
+** $Id: error_xsb.c,v 1.90 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -152,7 +152,7 @@ extern void print_cp_backtrace();
 
 /* TLS: now frees Ball, which was assumed to be malloced.  Use
    mem_alloc_nocheck to avoid problems when thowing a memory error. */
-DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, unsigned long Ball_len)
+DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, size_t Ball_len)
 {
   Psc exceptballpsc;
   PrRef Prref;
@@ -162,7 +162,7 @@ DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, unsigned
   prolog_term term_to_assert;
   Cell *space_for_ball_assert;
 
-  unsigned long space_for_ball_assert_len = 3*sizeof(Cell);
+  size_t space_for_ball_assert_len = 3*sizeof(Cell);
 
   space_for_ball_assert = (Cell *) mem_alloc_nocheck(space_for_ball_assert_len,
 						     LEAK_SPACE);
@@ -243,7 +243,7 @@ void call_conv xsb_domain_error(CTXTdeclc char *valid_domain,Cell culprit,
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr; char message[ERRMSGLEN];
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 
   snprintf(message, ERRMSGLEN, "in arg %d of predicate %s)",arg,predicate);
 
@@ -279,7 +279,7 @@ void call_conv xsb_basic_evaluation_error(char *message,int type)
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr;
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 #ifdef MULTI_THREAD
   char mtmessage[MAXBUFSIZE];
   int tid = xsb_thread_self();
@@ -344,7 +344,7 @@ void call_conv xsb_existence_error(CTXTdeclc char *object,Cell culprit,
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr; char message[ERRMSGLEN];
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 
   snprintf(message,ERRMSGLEN,"in arg %d of predicate %s/%d)",arg,predicate,arity);
 
@@ -379,7 +379,7 @@ void call_conv xsb_instantiation_error(CTXTdeclc const char *predicate,int arg) 
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr; char message[ERRMSGLEN];
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 
   snprintf(message,ERRMSGLEN," in arg %d of predicate %s",arg,predicate);
   tptr =   (Cell *) mem_alloc(ball_len,LEAK_SPACE);
@@ -404,7 +404,7 @@ void call_conv xsb_misc_error(CTXTdeclc char *inmsg,const char *predicate,int ar
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr; char message[ERRMSGLEN];
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 
   snprintf(message,ERRMSGLEN," in predicate %s/%d: %s",predicate,arity,inmsg);
 
@@ -441,7 +441,7 @@ void call_conv xsb_permission_error(CTXTdeclc
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr; char message[ERRMSGLEN];
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 
   snprintf(message,ERRMSGLEN,"in predicate %s/%d)",predicate,arity);
 
@@ -478,7 +478,7 @@ void call_conv xsb_representation_error(CTXTdeclc char *inmsg,Cell culprit,const
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr; char message[ERRMSGLEN];
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 
   snprintf(message,ERRMSGLEN,"in arg %d of predicate %s",arity,predicate);
 
@@ -525,7 +525,7 @@ void call_conv xsb_resource_error(CTXTdeclc char *resource,
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr; char message[ERRMSGLEN];
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 
   tptr = (Cell *) malloc(1000);
   if (!tptr) 
@@ -587,7 +587,7 @@ void call_conv xsb_resource_error_nopred(CTXTdeclc char *resource,char *message)
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr; 
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 
   tptr = (Cell *) malloc(1000);
   if (!tptr) 
@@ -633,7 +633,7 @@ void call_conv xsb_syntax_error(CTXTdeclc char *message)
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr;
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 #ifdef MULTI_THREAD
   char mtmessage[MAXBUFSIZE];
   int tid = xsb_thread_self();
@@ -668,7 +668,7 @@ void call_conv xsb_syntax_error_non_compile(CTXTdeclc Cell culprit,
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr; char message[ERRMSGLEN];
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 
   snprintf(message,ERRMSGLEN,"in arg %d of predicate %s",arg,predicate);
 
@@ -699,7 +699,7 @@ void call_conv xsb_table_error(CTXTdeclc char *message)
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr;
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 #ifdef MULTI_THREAD
   char mtmessage[MAXBUFSIZE];
   int tid = xsb_thread_self();
@@ -737,7 +737,7 @@ void call_conv xsb_new_table_error(CTXTdeclc char *subtype, char *usr_msg,
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr; char message[ERRMSGLEN];
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 
   tptr = (Cell *) malloc(1000);
   if (!tptr) 
@@ -784,7 +784,7 @@ void call_conv xsb_type_error(CTXTdeclc char *valid_type,Cell culprit,
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr; char message[ERRMSGLEN];
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 
   snprintf(message,ERRMSGLEN,"in arg %d of predicate %s",arg,predicate);
 
@@ -819,7 +819,7 @@ void call_conv xsb_unrecoverable_error(CTXTdeclc char *message)
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr;
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 #ifdef MULTI_THREAD
   char mtmessage[MAXBUFSIZE];
   int tid = xsb_thread_self();
@@ -851,7 +851,7 @@ void call_conv xsb_basic_abort(char *message)
   prolog_term ball_to_throw;
   int isnew;
   Cell *tptr;
-  unsigned long ball_len = 10*sizeof(Cell);
+  size_t ball_len = 10*sizeof(Cell);
 #ifdef MULTI_THREAD
   char mtmessage[MAXBUFSIZE];
   int tid = xsb_thread_self();
@@ -987,7 +987,7 @@ void arithmetic_abort1(CTXTdeclc char *OP, Cell op)
 #undef str_op
 
 #define str_op1 (*tsgSBuff1)
-void arithmetic_comp_abort(CTXTdeclc Cell op1, char *OP, int op2)
+void arithmetic_comp_abort(CTXTdeclc Cell op1, char *OP, Cell op2)
 {
   XSB_StrSet(&str_op1,"_Var");
   if (! isref(op1)) print_pterm(CTXTc op1, TRUE, &str_op1);

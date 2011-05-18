@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.90 2011-05-16 01:03:30 kifer Exp $
+** $Id: loader_xsb.c,v 1.91 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -78,7 +78,7 @@
 extern TIFptr *get_tip_or_tdisp(Psc);
 
 extern int xsb_profiling_enabled;
-extern void add_prog_seg(Psc, byte *, long);
+extern void add_prog_seg(Psc, byte *, size_t);
 extern void remove_prog_seg(byte *);
 extern void delete_predicate_table(CTXTdeclc TIFptr);
 extern char *expand_filename(char *filename);
@@ -105,7 +105,7 @@ extern char *expand_filename(char *filename);
         (ep)++; }
 
 #define reloc_addr(offset, base) ((CPtr)((offset)<0 ? \
-       		(pb)&fail_inst : ((pb)(base))+(long)(offset)*ZOOM_FACTOR))
+       		(pb)&fail_inst : ((pb)(base))+(Integer)(offset)*ZOOM_FACTOR))
 
 
 /* In the following, y is the number of bytes we want to read from fd   */
@@ -115,10 +115,10 @@ extern char *expand_filename(char *filename);
 #define get_obj_word(x)		(get_obj_data((x),OBJ_WORD_SIZE))
 #define get_obj_string(x,len)	(get_obj_data((x),(len)))
 
-#define get_obj_word_bb(x)    {int dummy; dummy = get_obj_word(x) ; fix_bb(x) ; }
+#define get_obj_word_bb(x)    {Integer dummy; dummy = get_obj_word(x) ; fix_bb(x) ; }
 #define get_obj_word_bbsig(x) {get_obj_word(x) ; fix_bb4(x) ;\
 			       *(Cell *)(x) = makeint(*(int *)(x));}
-#define get_obj_word_bbsig_notag(x) {int dummy; dummy = get_obj_word(x) ; fix_bb4(x) ; \
+#define get_obj_word_bbsig_notag(x) {Integer dummy; dummy = get_obj_word(x) ; fix_bb4(x) ; \
 			       *(Integer *)(x) = *(int *)(x);}
                    
 
@@ -129,7 +129,7 @@ extern char *expand_filename(char *filename);
    next hrec in the bucket chain.  If last, link points to itself */
 
 struct hrec {
-  long l;       
+  Integer l;       
   CPtr link;
 } ;
 
@@ -151,7 +151,7 @@ struct TDispBlkHdr_t tdispblkhdr = {NULL, NULL};
 /* === working variables ==============================================	*/
 
 static pw   *reloc_table = NULL;
-static unsigned long reloc_table_size = 0;
+static size_t reloc_table_size = 0;
 static pseg last_text = NULL;	/* permanent var, chain of text seg */
 static pseg current_seg;	/* starting address -- used for relocation */
 static CPtr *index_reloc;         	/* index relocation table */
@@ -237,15 +237,15 @@ Integer float_val_to_hash(Float Flt) {
    of, the typing is a little unclear).  Each bucket is a list of
    hrecs. */
 
-static int get_index_tab(CTXTdeclc FILE *fd, int clause_no)
+static Integer get_index_tab(CTXTdeclc FILE *fd, int clause_no)
 {
-  long hashval, size, j;
-  long count = 0;
+  Integer hashval, size, j;
+  Integer count = 0;
   byte  type ;
   CPtr label;
   Integer ival;
   Cell val;
-  int dummy; /* used to squash warnings */
+  Integer dummy; /* used to squash warnings */
 
   size = hsize(clause_no);
 
@@ -327,7 +327,7 @@ static int get_index_tab(CTXTdeclc FILE *fd, int clause_no)
 
 /*----------------------------------------------------------------------*/
 
-inline static pindex new_index_seg(int no_cells)
+inline static pindex new_index_seg(Integer no_cells)
 {
   pindex new_i = (pindex)mem_alloc(SIZE_IDX_HDR + sizeof(Cell) * no_cells,COMPILED_SPACE ) ;
  
@@ -377,7 +377,7 @@ static void gen_index(xsbBool tabled, int clause_no, CPtr sob_arg_p, byte arity)
       }
     } else {
       /* otherwise create try/retry/trust instruction */
-      new_i = new_index_seg(2*indextab[j].l+tabled);
+      new_i = (pindex)new_index_seg(2*indextab[j].l+tabled);
       ep2 = i_block(new_i) ;
       cell(ep1) = (Cell) ep2 ;
       temp = (indextab[j].link) ;
@@ -410,12 +410,12 @@ static void gen_index(xsbBool tabled, int clause_no, CPtr sob_arg_p, byte arity)
 *                                                                       *
 ************************************************************************/
 
-static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
+static int load_text(FILE *fd, int seg_num, size_t text_bytes, int *current_tab)
 {
   CPtr inst_addr, end_addr;
   int  current_opcode, oprand;
   Cell tab_config_hold;	/* working pointer */
-  int dummy; /* used to squash warnings */
+  Integer dummy; /* used to squash warnings */
   
   *current_tab = -1;
   inst_addr = seg_text(current_seg);
@@ -471,9 +471,9 @@ static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
       case I:                      // index of sob
 	get_obj_word_bb(inst_addr);
 	if (oprand==2) {	/* second operand of switchonbound */
-	  if (cell(inst_addr) >= (unsigned long)(NUM_INDEX_BLKS*num_index_reloc)) {
+	  if (cell(inst_addr) >= (UInteger)(NUM_INDEX_BLKS*num_index_reloc)) {
 	    int tmp_nir = num_index_reloc;
-	    num_index_reloc = (cell(inst_addr)/NUM_INDEX_BLKS)+1;
+	    num_index_reloc = (int)(cell(inst_addr)/NUM_INDEX_BLKS)+1;
 	    index_reloc = (CPtr *)mem_realloc(index_reloc,tmp_nir,
 					      NUM_INDEX_BLKS*num_index_reloc*sizeof(CPtr),COMPILED_SPACE);
 	    if (!index_reloc) {
@@ -484,7 +484,7 @@ static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
 	  index_reloc[cell(inst_addr)] = (CPtr)inst_addr;
 	}
 	else 		/* third operand of switchonbound */
-	  cell(inst_addr) = hsize(cell(inst_addr));
+	  cell(inst_addr) = hsize((int)cell(inst_addr));
 	inst_addr ++;
 	break;
       case X:                 // arg not used
@@ -509,13 +509,13 @@ static int load_text(FILE *fd, int seg_num, int text_bytes, int *current_tab)
 
 /*----------------------------------------------------------------------*/
 
-static void load_index(CTXTdeclc FILE *fd, int index_bytes, int table_num)
+static void load_index(CTXTdeclc FILE *fd, size_t index_bytes, int table_num)
 {
   Integer index_bno, clause_no, t_len;
   byte    index_inst, arity;
-  int     temp_space, count = 0;
+  Integer temp_space; size_t count = 0;
   CPtr    sob_arg_p, temp_ptr;
-  int dummy; /* used to squash warnings */
+  Integer dummy; /* used to squash warnings */
 
   while (count < index_bytes) {
     dummy = get_obj_byte(&index_inst);
@@ -531,10 +531,10 @@ static void load_index(CTXTdeclc FILE *fd, int index_bytes, int table_num)
     else 
 #endif
        temp_ptr = hptr = (CPtr)mem_alloc(temp_space*sizeof(CPtr),COMPILED_SPACE);
-    t_len = get_index_tab(CTXTc fd, clause_no);
+    t_len = get_index_tab(CTXTc fd, (int)clause_no);
     
-    gen_index((xsbBool)(table_num > 0), clause_no, sob_arg_p, arity);
-    mem_dealloc(indextab,hsize(clause_no)*sizeof(struct hrec),COMPILED_SPACE);
+    gen_index((xsbBool)(table_num > 0), (int)clause_no, sob_arg_p, arity);
+    mem_dealloc(indextab,hsize((int)clause_no)*sizeof(struct hrec),COMPILED_SPACE);
 #ifndef MULTI_THREAD
     if (temp_ptr != hreg) mem_dealloc(temp_ptr,temp_space*sizeof(CPtr),COMPILED_SPACE);
 #else
@@ -546,7 +546,7 @@ static void load_index(CTXTdeclc FILE *fd, int index_bytes, int table_num)
 
 /*== the load_seg function =============================================*/
 
-static pseg load_seg(CTXTdeclc FILE *fd, int seg_num, int text_bytes, int index_bytes)
+static pseg load_seg(CTXTdeclc FILE *fd, int seg_num, size_t text_bytes, size_t index_bytes)
 {
    int current_tab;
 
@@ -664,8 +664,9 @@ unsigned int read_magic(FILE *fd)
 inline static void get_obj_atom(FILE *fd, VarString *atom)
 {
   byte x;
-  unsigned int len;
-  int dummy; /* used to squash warnings */
+  //  unsigned int len;
+  UInteger len; /* dswdswdsw */
+  Integer dummy; /* used to squash warnings */
   
   dummy = get_obj_data((&x),1);
   /* ``x'' gets the length of the string or > SHORT_LDOPTIONLEN.
@@ -677,9 +678,9 @@ inline static void get_obj_atom(FILE *fd, VarString *atom)
   } else
     len = x;
 
-  XSB_StrEnsureSize(atom,len+1);
+  XSB_StrEnsureSize(atom,(int)(len+1));
   dummy = get_obj_string(atom->string, len);
-  atom->length = len;
+  atom->length = (int)len;
   XSB_StrNullTerminate(atom);
 }
 
@@ -692,7 +693,7 @@ static xsbBool load_one_sym(FILE *fd, Psc cur_mod, int count, int exp)
   byte t_arity, t_type, t_env, t_defined, t_definedas;
   Pair temp_pair, defas_pair = NULL;
   Psc  mod;
-  int dummy; /* used to squash warnings */
+  Integer dummy; /* used to squash warnings */
 
   dummy = get_obj_byte(&t_env);
   /* this simple check can avoid worse situations in case of compiler bugs */
@@ -917,13 +918,13 @@ static byte *loader1(CTXTdeclc FILE *fd, char *filename, int exp)
   char name[FOREIGN_NAMELEN], arity;
   byte name_len;
   int  is_new, seg_count;
-  unsigned long psc_count;
+  UInteger psc_count;
   Integer text_bytes, index_bytes;
   pseg seg_first_inst, first_inst;
   Psc cur_mod;
   Pair ptr;
   TIFptr *instruct_tip;
-  int dummy; /* used to squash warnings */
+  Integer dummy; /* used to squash warnings */
  
   seg_count = 0; first_inst = 0;
   dummy = get_obj_byte(&name_len);
@@ -1070,10 +1071,10 @@ static byte *loader_foreign(char *filename, FILE *fd, int exp)
   byte name_len, *instr;
   char name[FOREIGN_NAMELEN];
   static XSB_StrDefine(ldoption);
-  unsigned long psc_count;
+  UInteger psc_count;
   Psc  cur_mod;
   Pair ptr;
-  int dummy; /* used to squash warnings */
+  Integer dummy; /* used to squash warnings */
 
   dummy = get_obj_byte(&name_len);
   if (name_len >= FOREIGN_NAMELEN) {

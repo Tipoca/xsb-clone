@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_print.h,v 1.14 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: gc_print.h,v 1.15 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -70,20 +70,20 @@ static void print_cell(CTXTdeclc FILE *where, CPtr cell_ptr, int fromwhere)
 	    case TO_LS :
 	    case TO_TR :
 	    case TO_CP :
-	      fprintf(where,"%s,%ld).\n",s,(long)index) ;
+	      fprintf(where,"%s,%" Intfmt ").\n",s,index) ;
 	      break ;
 	    case TO_COMPL :
-	      fprintf(where,"%s,%ld).\n",s,(long)index) ;
+	      fprintf(where,"%s,%" Intfmt ").\n",s,index) ;
 	      break ;
 	    case TO_NOWHERE:
 	      if (points_into_heap(p))
 		{
 		  index = (p-heap_bot) ;
-		  fprintf(where,"between_h_ls,'/'(%ld,%p),_) .\n",(long)index,p) ;
+		  fprintf(where,"between_h_ls,'/'(%" Intfmt ",%p),_) .\n",index,p) ;
 		}
 	      else
 		if ((Integer)cell_val < 10000)
-		  fprintf(where,"strange,%ld).\n",(long)cell_val) ;
+		  fprintf(where,"strange,%" Intfmt ").\n",cell_val) ;
 		else
 		  if (fromwhere == FROM_HEAP)
 		    fprintf(where,"funct,'/'('%s',%d)).\n",
@@ -95,8 +95,8 @@ static void print_cell(CTXTdeclc FILE *where, CPtr cell_ptr, int fromwhere)
 			char *s ;
 		        if ((tr_bot < (CPtr)cell_val) &&
 			    ((CPtr)cell_val < cp_bot))
-			  fprintf(where,"between_trail_cp,%ld).\n",
-				  (long)cell_val) ;
+			  fprintf(where,"between_trail_cp,%" Intfmt ").\n",
+				  cell_val) ;
 			else
 			  {
 			    s = code_to_string((byte *)cell_val) ;
@@ -113,17 +113,17 @@ static void print_cell(CTXTdeclc FILE *where, CPtr cell_ptr, int fromwhere)
       
     case XSB_STRUCT :
       if (whereto == TO_NOWHERE)
-	fprintf(where,"'-'(cs,%s),%lx).\n",s,(long)index) ;
+	fprintf(where,"'-'(cs,%s),%" Intxfmt ").\n",s,index) ;
       else
-	fprintf(where,"'-'(cs,%s),%ld).\n",s,(long)index) ;
+	fprintf(where,"'-'(cs,%s),%" Intfmt ").\n",s,index) ;
       break ;
       
     case XSB_LIST :
-      fprintf(where,"'-'(list,%s),%ld).\n",s,(long)index) ;
+      fprintf(where,"'-'(list,%s),%" Intfmt ").\n",s,index) ;
       break ;
       
     case XSB_INT :
-      fprintf(where,"int  ,%ld).\n",(long)int_val(cell_val)) ;
+      fprintf(where,"int  ,%" Intfmt ").\n",int_val(cell_val)) ;
       break ;
       
     case XSB_FLOAT :
@@ -135,7 +135,7 @@ static void print_cell(CTXTdeclc FILE *where, CPtr cell_ptr, int fromwhere)
       break ;
       
     case XSB_ATTV :
-      fprintf(where,"attrv_%s,%ld).\n",s,(long)index) ;
+      fprintf(where,"attrv_%s,%" Intfmt ").\n",s,index) ;
       break ;
 
     default :
@@ -235,7 +235,7 @@ void print_cp(CTXTdeclc int add)
 void print_tr(CTXTdeclc int add)
 {
   CPtr startp, endp ;
-  int  start ;
+  size_t  start ;
   FILE *where ;
   char buf[100] ;
 
@@ -311,30 +311,30 @@ void print_regs(CTXTdeclc int a, int add)
       startp++ ; start++ ;                   
     }
 
-  fprintf(where,"wam_reg(trreg,%ld).\n",(long)((CPtr)trreg-tr_bot)) ;
-  fprintf(where,"wam_reg(breg,%ld).\n",(long)(cp_bot-breg)) ;
-  fprintf(where,"wam_reg(hreg,%ld).\n",(long)(hreg-heap_bot)) ;
-  fprintf(where,"wam_reg(ereg,%ld).\n",(long)(ls_bot-ereg)) ;
+  fprintf(where,"wam_reg(trreg,%" Intfmt ").\n",((CPtr)trreg-tr_bot)) ;
+  fprintf(where,"wam_reg(breg,%" Intfmt ").\n",(cp_bot-breg)) ;
+  fprintf(where,"wam_reg(hreg,%" Intfmt ").\n",(hreg-heap_bot)) ;
+  fprintf(where,"wam_reg(ereg,%" Intfmt ").\n",(ls_bot-ereg)) ;
 
-  fprintf(where,"wam_reg(trfreg,%ld).\n",(long)((CPtr)trfreg-tr_bot)) ;
-  fprintf(where,"wam_reg(bfreg,%ld).\n",(long)(cp_bot-bfreg)) ;
-  fprintf(where,"wam_reg(hfreg,%ld).\n",(long)(hfreg-heap_bot)) ;
-  fprintf(where,"wam_reg(efreg,%ld).\n",(long)(ls_bot-efreg)) ;
+  fprintf(where,"wam_reg(trfreg,%" Intfmt ").\n",((CPtr)trfreg-tr_bot)) ;
+  fprintf(where,"wam_reg(bfreg,%" Intfmt ").\n",(cp_bot-bfreg)) ;
+  fprintf(where,"wam_reg(hfreg,%" Intfmt ").\n",(hfreg-heap_bot)) ;
+  fprintf(where,"wam_reg(efreg,%" Intfmt ").\n",(ls_bot-efreg)) ;
 
-  fprintf(where,"wam_reg(ptcpreg,%ld).\n",(Cell)ptcpreg) ;
+  fprintf(where,"wam_reg(ptcpreg,%" Intfmt ").\n",(Cell)ptcpreg) ;
 
-  fprintf(where,"wam_reg(ebreg,%ld).\n",(long)(ls_bot-ebreg)) ;
-  fprintf(where,"wam_reg(hbreg,%ld).\n",(long)(hbreg-heap_bot)) ;
+  fprintf(where,"wam_reg(ebreg,%" Intfmt ").\n",(ls_bot-ebreg)) ;
+  fprintf(where,"wam_reg(hbreg,%" Intfmt ").\n",(hbreg-heap_bot)) ;
 
-  fprintf(where,"wam_reg(cpreg,%ld).\n",(Cell)cpreg) ;
-  fprintf(where,"wam_reg(pcreg,%ld).\n",(Cell)pcreg) ;
+  fprintf(where,"wam_reg(cpreg,%" Intfmt ").\n",(Cell)cpreg) ;
+  fprintf(where,"wam_reg(pcreg,%" Intfmt ").\n",(Cell)pcreg) ;
 
   if (delayreg)
     {
       fprintf(where,"delayreg(");
       print_cell(CTXTc where,(CPtr)(&delayreg),FROM_AREG);
     }
-  else fprintf(where,"wam_reg(delayreg,%ld).\n",(Cell)delayreg);
+  else fprintf(where,"wam_reg(delayreg,%" Intfmt ").\n",(Cell)delayreg);
 
   fclose(where) ;
 } /* print_regs */

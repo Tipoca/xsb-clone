@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynamic_stack.c,v 1.13 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: dynamic_stack.c,v 1.14 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -93,7 +93,7 @@ void dsInit(DynamicStack *ds, size_t stack_size, size_t frame_size,
  * Here we make sure that the expanded size can accommodate this need.
  */
 
-void dsExpand(DynamicStack *ds, int num_frames) {
+void dsExpand(DynamicStack *ds, size_t num_frames) {
 
   size_t new_size, total_bytes;
   char *new_base;

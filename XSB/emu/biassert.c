@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.187 2011-01-17 02:31:32 dwarren Exp $
+** $Id: biassert.c,v 1.188 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -63,7 +63,7 @@
 extern Cell val_to_hash(Cell);
 
 extern int xsb_profiling_enabled;
-extern void add_prog_seg(Psc, byte *, long);
+extern void add_prog_seg(Psc, byte *, size_t);
 extern void remove_prog_seg(byte *);
 PrRef clref_to_prref(ClRef clref);
 
@@ -153,19 +153,19 @@ static inline void dbgen_printinst3(Opcode, Arg1, Arg2, Arg3)
   switch (Opcode) {
   case getlist_tvar_tvar:
     xsb_dbgmsg((LOG_ASSERT,"getlist_tvar_tvar - %ld %ld %ld\n",
-	       (long)Arg1,(long)Arg2,(long)Arg3)); break;
+	       (Integer)Arg1,(Integer)Arg2,(Integer)Arg3)); break;
   case switchonbound:
     xsb_dbgmsg((LOG_ASSERT,"switchonbound - %ld %lx %ld\n",
-	       (long)Arg1,(long)Arg2,(long)Arg3)); break;
+	       (Integer)Arg1,(Integer)Arg2,(Integer)Arg3)); break;
   case switchon3bound:
     xsb_dbgmsg((LOG_ASSERT,"switchon3bound - %ld %lx %ld\n",
-	       (long)Arg1,(long)Arg2,(long)Arg3)); break;
+	       (Integer)Arg1,(Integer)Arg2,(Integer)Arg3)); break;
   case unitvar_getlist_uninumcon:
     xsb_dbgmsg((LOG_ASSERT,"unitvar_getlist_uninumcon - %ld %ld\n",
-		(long)Arg1,((long)Arg2<<8)+((long)Arg3))); break;
+		(Integer)Arg1,((Integer)Arg2<<8)+((Integer)Arg3))); break;
   case bldtvar_list_numcon:
     xsb_dbgmsg((LOG_ASSERT,"bldtvar_list_numcon - %ld %ld\n",
-		(long)Arg1,((long)Arg2<<8)+((long)Arg3))); break;
+		(Integer)Arg1,((Integer)Arg2<<8)+((Integer)Arg3))); break;
   default: xsb_dbgmsg((LOG_ASSERT,"Unknown instruction in assert %d\n",
 		      Opcode));
   }
@@ -641,7 +641,7 @@ static int is_frozen_var(CTXTdeclc prolog_term T0, int regster, RegStat Reg, int
   if (isconstr(T0) && strcmp(p2c_functor(T0), "$assertVAR")==0 &&
       p2c_arity(T0) == 2) {
     if (isref(p2p_arg(T0,1))) {  /* first occurrence */
-      if ((*occs = int_val(p2p_arg(T0, 2)) - 1)) {
+      if ((*occs = (int)int_val(p2p_arg(T0, 2)) - 1)) {
 	cell(clref_val(T0)+2) = makeint(*occs);
 	*occs = FIRST_OCC_OF_MORE;
 	if (regster < 0) {
@@ -654,15 +654,15 @@ static int is_frozen_var(CTXTdeclc prolog_term T0, int regster, RegStat Reg, int
       }
       c2p_int(CTXTc regster, p2p_arg(T0,1));
     } else {
-      if ((*occs = int_val(p2p_arg(T0, 2)) - 1)) {
+      if ((*occs = (int)int_val(p2p_arg(T0, 2)) - 1)) {
 	cell(clref_val(T0)+2) = makeint(*occs);
 	*occs = SUBSEQUENT_OCC;
       } else {
 	*occs = LAST_OCC;
-	if (regster != NVAR) reg_release_perm(Reg,int_val(p2p_arg(T0, 1)));
+	if (regster != NVAR) reg_release_perm(Reg,(int)int_val(p2p_arg(T0, 1)));
       }
     }
-    return int_val(p2p_arg(T0, 1));
+    return (int)int_val(p2p_arg(T0, 1));
   } else return 0;
 }
 
@@ -832,11 +832,11 @@ static void db_genterms(CTXTdeclc int unibld, struct instruction_q *flatten_queu
 	Rt2 = reg_get(CTXTc Reg, RVAR);
 	freeze_var(CTXTc T2,Rt2,Reg);
 	dbgen_instB3_tv(getlist_tvar_tvar, Argno, Rt1, Rt2);
-	reg_release(Reg,Argno);
+	reg_release(Reg,(int)Argno);
       } else {
 	if (unibld || !istop) {dbgen_instB_ppv(getlist, Argno);}
 	else {dbgen_instB_ppv(putlist, Argno);}    /* putlist */
-	reg_release(Reg,Argno);
+	reg_release(Reg,(int)Argno);
 	flatten_queue->inst_queue_added = 0;
 	db_geninst(CTXTc unibld, p2p_car(T0), FALSE, Reg, flatten_queue);
 	db_geninst(CTXTc unibld, p2p_cdr(T0), TRUE, Reg, flatten_queue);
@@ -845,12 +845,12 @@ static void db_genterms(CTXTdeclc int unibld, struct instruction_q *flatten_queu
     } else if (isconstr(T0)) {
       if (unibld || !istop) {dbgen_instB_ppvw(getstr, Argno, get_str_psc(T0));}   /* getstr */
       else {dbgen_instB_ppvw(putstr, Argno, get_str_psc(T0));}   /* putstr */
-      reg_release(Reg,Argno);
+      reg_release(Reg,(int)Argno);
       flatten_queue->inst_queue_added = 0;
       for (Argno=1; Argno < (int)get_arity(get_str_psc(T0)); Argno++) {
-	db_geninst(CTXTc unibld, p2p_arg(T0,Argno), FALSE, Reg, flatten_queue);
+	db_geninst(CTXTc unibld, p2p_arg(T0,(int)Argno), FALSE, Reg, flatten_queue);
       }
-      db_geninst(CTXTc unibld, p2p_arg(T0,Argno), TRUE, Reg, flatten_queue);
+      db_geninst(CTXTc unibld, p2p_arg(T0,(int)Argno), TRUE, Reg, flatten_queue);
       inst_queue_rotate(flatten_queue);
     }
     else { /* is_attv(T0) */
@@ -918,7 +918,7 @@ static void db_geninst(CTXTdeclc int unibld, prolog_term Sub, int isLast,
     Rt = reg_get(CTXTc Reg, TVAR);
     if (unibld) {
       if (isLast && islist(Sub) && isinteger(p2p_car(Sub))) {
-	int num = int_val(p2p_car(Sub));
+	int num = (int)int_val(p2p_car(Sub));
 	if (num >= 0 && num <= 0xffff) {
 	  dbgen_instB3_tv(unitvar_getlist_uninumcon,Rt,num>>8,num&0xff);
 	  reg_release(Reg,Rt);
@@ -928,7 +928,7 @@ static void db_geninst(CTXTdeclc int unibld, prolog_term Sub, int isLast,
 	} else dbgen_instB_ppv(unitvar, Rt);
     } else {
       if (isLast && islist(Sub) && isinteger(p2p_car(Sub))) {
-	int num = int_val(p2p_car(Sub));
+	int num = (int)int_val(p2p_car(Sub));
 	if (num >= 0 && num <= 0xffff) {
 	  dbgen_instB3_tv(bldtvar_list_numcon,Rt,num>>8,num&0xff);
 	  reg_release(Reg,Rt);
@@ -1037,34 +1037,34 @@ static void db_genmvs(CTXTdeclc struct instruction_q *inst_queue, RegStat Reg)
     inst_queue_rem(inst_queue, &Opcode, &Arg, &T0);	/* T0: target reg */
     switch (Opcode) {
     case puttvar:  
-      if (target_is_not_source(inst_queue,T0))
+      if (target_is_not_source(inst_queue,(int)T0))
 	{dbgen_instB_pvv(Opcode, Arg, T0);}
       else inst_queue_push(inst_queue, Opcode, Arg, T0);
       break;
     case putnil:
-      if (target_is_not_source(inst_queue,T0))
+      if (target_is_not_source(inst_queue,(int)T0))
 	{dbgen_instB_ppv(Opcode, T0);}
       else inst_queue_push(inst_queue, Opcode, Arg, T0);
       break;
     case putcon:
     case putnumcon:
-      if (target_is_not_source(inst_queue,T0))
+      if (target_is_not_source(inst_queue,(int)T0))
 	{dbgen_instB_ppvw(Opcode, T0, Arg);}
       else inst_queue_push(inst_queue, Opcode, Arg, T0);
       break;
     case movreg:
       if (Arg==T0) break;
-      else if (target_is_not_source(inst_queue,T0)) {
+      else if (target_is_not_source(inst_queue,(int)T0)) {
 	dbgen_instB_pvv(movreg, Arg, T0); /* movreg */
-	reg_release(Reg,Arg);
-      } else if (source_is_not_target(inst_queue,Arg)) /* assume target is source */
+	reg_release(Reg,(int)Arg);
+      } else if (source_is_not_target(inst_queue,(int)Arg)) /* assume target is source */
 	inst_queue_push(inst_queue, movreg, Arg, T0);
       /* delay the instruction at the end */
       /* else if (Arg>T0) {dbgen_instB_pvv(movreg,Arg,T0);} movreg */
       else {
 	R0 = reg_get(CTXTc Reg, TVAR);
 	dbgen_instB_pvv(movreg, Arg, R0); /* movreg */
-	reg_release(Reg,Arg);
+	reg_release(Reg,(int)Arg);
 	inst_queue_push(inst_queue, movreg, R0, T0);
 	/* dbgen_instB_pvv(movreg, R0, T0); */ /* movreg */
       }
@@ -1160,7 +1160,7 @@ static void db_genmvs(CTXTdeclc struct instruction_q *inst_queue, RegStat Reg)
 
 typedef struct ClRefHdrI *ClRefI;
 typedef struct  {
-  unsigned long buflen ;
+  UInteger buflen ;
   struct ClRefI *prev ;
   CPtr Instr ;
   struct ClRefI *next ;
@@ -1197,7 +1197,7 @@ typedef ClRef SOBRef ;
 #define INDEXED_CL	3
 
 #define MakeClRef(ptr,Type,NCells)\
-{	long sz = (((NCells)*sizeof(Cell)+sizeof(ClRefHdr) + 7) & ~0x7);\
+{	Integer sz = (((NCells)*sizeof(Cell)+sizeof(ClRefHdr) + 7) & ~0x7);\
   (ptr) = (ClRef)mem_calloc(sz,1,ASSERT_SPACE); /*calloc to mark strs*/	\
 	(ptr)->buflen = ((Type)&3)+sz;					\
 	(ptr)++;							\
@@ -1332,8 +1332,8 @@ void dump_asserted_pred(PrRef prref, char *dumpfilename) {
   fd = fopen(dumpfilename,"w");
 
   fprintf(fd,"PR %p: BR: %lx, Fst: %lx, Lst: %lx\n\n",
-	  prref, *((long unsigned int *)prref), 
-	  *((long unsigned int *)prref+1), *((long unsigned int *)prref+2));
+	  prref, *((UInteger *)prref), 
+	  *((UInteger *)prref+1), *((UInteger *)prref+2));
 
   dump_assert_index_block(fd,*((ClRef *)prref+1),*((ClRef *)prref+2),0);
   fclose(fd);
@@ -1349,12 +1349,12 @@ static void get_indexes( prolog_term prolog_ind, int *Index, int *NI )
 {
   Index[0] = 0;
   if (isinteger(prolog_ind)) {
-    Index[1] = int_val(prolog_ind);
+    Index[1] = (int)int_val(prolog_ind);
     if (Index[1] == 0) *NI = 0; else *NI = 1;
   } else {
     for (*NI = 0; !isnil(prolog_ind); prolog_ind = p2p_cdr(prolog_ind)) {
       (*NI)++;
-      Index[*NI] = int_val(p2p_car(prolog_ind));
+      Index[*NI] = (int)int_val(p2p_car(prolog_ind));
     }
   }
 }
@@ -1371,9 +1371,9 @@ xsbBool assert_buff_to_clref(CTXTdecl /*Head,Arity,Prref,AZ,Indexes,HashTabSize,
   assert_buff_to_clref_p(CTXTc reg_term(CTXTc 1),
 			 (byte)ptoc_int(CTXTc 2),
 			 (PrRef)ptoc_int(CTXTc 3),
-			 ptoc_int(CTXTc 4),
+			 (int)ptoc_int(CTXTc 4),
 			 reg_term(CTXTc 5),
-			 ptoc_int(CTXTc 6),
+			 (int)ptoc_int(CTXTc 6),
 			 &Clref);
   /* ctop_int(7, (Integer Clref)); */
   return TRUE;
@@ -1521,7 +1521,7 @@ static int hash_resize( PrRef Pred, SOBRef SOBrec, unsigned int OldTabSize )
 	      SOBrec, ClRefNumNonemptyBuckets(SOBrec) ) ; */
    /* Compute number of clauses */
    if( PredOpCode(Pred) != fail && ClRefType(SOBrec) == SOB_RECORD ) {
-     ThisTabSize = ClRefHashSize(SOBrec) ;
+     ThisTabSize = (unsigned int)ClRefHashSize(SOBrec) ;
      if (ClRefNumNonemptyBuckets(SOBrec) > (ThisTabSize/4)*3) {
        if (ThisTabSize >= (unsigned int) hashsizes_table[NUMHASHSIZES-1]) {
 	 ThisTabSize = ThisTabSize+2;
@@ -1777,7 +1777,7 @@ static void find_usable_index(prolog_term Head, ClRef *s,
 {    int h, t ;							\
      ClRef cl ;				    			\
      if (ClRefSOBOpCode(sob) != fail) {				\
-       t = ClRefHashSize(sob); 					\
+       t = (int)ClRefHashSize(sob);				\
        h = hash_val( (Ind), (H), t ) ;				\
        cl = (ClRef) ClRefHashTable(sob)[h] ;			\
        if ((pb)cl != (pb)&dynfail_inst)				\
@@ -1972,7 +1972,7 @@ static void delete_from_hashchain(CTXTdeclc ClRef Clause, SOBRef sob, int Ind, i
     CPtr PI = ClRefIndPtr(Clause,Ind) ;
     byte c = cell_opcode(PI) ;
 
-    delete_from_chain(c,PI,((NI-Ind)*4+1)*sizeof(Cell)/2) ;
+    delete_from_chain(c,PI,(byte)(((NI-Ind)*4+1)*sizeof(Cell)/2)) ;
 
     if( cell_opcode(PI) == dynnoop) {
       *IndRefPrev(PI) = (Cell) &dynfail_inst ;
@@ -2831,7 +2831,7 @@ static int really_delete_clause(CTXTdeclc ClRef Clause)
 		  print_clref_sob(sob);
 		  /* memory lost, but try to release what is not needed. */
 		  oldaddr = (pb)ClRefAddr(sob);
-		  if (oldaddr != mem_realloc((pb)ClRefAddr(sob),ClRefSize(sob),4*sizeof(long),ASSERT_SPACE))
+		  if (oldaddr != mem_realloc((pb)ClRefAddr(sob),ClRefSize(sob),4*sizeof(word),ASSERT_SPACE))
 		    xsb_exit(CTXTc "realloc error: not leaving address unchanged when shrinking!");
 		} else {
 		xsb_dbgmsg((LOG_RETRACT,"deleting sob - %p", sob ));
@@ -2935,7 +2935,7 @@ static void mark_for_deletion(CTXTdeclc ClRef Clause)
 #define RETRACT_EXPERIMENT 1
 
 #ifdef RETRACT_EXPERIMENT
-unsigned long retract_num = 0;
+UInteger retract_num = 0;
 
 #define time_to_dyngc	 !(retract_num & 0xff)
 
@@ -3160,8 +3160,8 @@ xsbBool db_get_clause( CTXTdecl /*+CC, ?CI, ?CIL, +PredEP, +Head, +Failed, -Clau
       }
     }
     else
-      {	IndexLevel = ptoc_int(CTXTc 2);  /* which index is used, ith */
-        IndexArg   = ptoc_int(CTXTc 3);  /* index mask */
+      {	IndexLevel = (int)ptoc_int(CTXTc 2);  /* which index is used, ith */
+        IndexArg   = (int)ptoc_int(CTXTc 3);  /* index mask */
 
 	do { /* loop until a clause is found:
 		Retracted if looking for failed; 
@@ -3702,7 +3702,7 @@ xsbBool db_abolish0(CTXTdecl/* R1: +PredEP , R2: +PSC */)
 		    "Cannot abolish tabled predicate when table is incomplete");
     } else {
       tif = get_tip(CTXTc psc);
-      abolish_table_predicate_switch(CTXTc tif, psc, flags[TABLE_GC_ACTION], FALSE);
+      abolish_table_predicate_switch(CTXTc tif, psc, (int)(flags[TABLE_GC_ACTION]), FALSE);
     }
   }
 
@@ -3871,7 +3871,7 @@ xsbBool dynamic_code_function( CTXTdecl )
   case GET_TRIE_INFO: {
     int index, type, tid;
 
-    tid = iso_ptoc_int(CTXTc 2, "get_trie_info/3");
+    tid = (int)iso_ptoc_int(CTXTc 2, "get_trie_info/3");
     SPLIT_TRIE_ID(tid,index,type);
     //    printf("type %d %x\n",type,type);
     ctop_int(CTXTc 3,type);
@@ -3947,9 +3947,9 @@ xsbBool dynamic_code_function( CTXTdecl )
     }
     else if (termType == T_PRED) 
       xsb_permission_error(CTXTc "modify","static",ptoc_tag(CTXTc 2),
-			   ptoc_string(CTXTc 4),ptoc_int(CTXTc 5));
+			   ptoc_string(CTXTc 4),(int)ptoc_int(CTXTc 5));
     else 
-      xsb_type_error(CTXTc "callable",ptoc_tag(CTXTc 2),ptoc_string(CTXTc 4),ptoc_int(CTXTc 5));
+      xsb_type_error(CTXTc "callable",ptoc_tag(CTXTc 2),ptoc_string(CTXTc 4),(int)ptoc_int(CTXTc 5));
   }
     break;
 
@@ -3967,7 +3967,7 @@ xsbBool dynamic_code_function( CTXTdecl )
       }
       else if (termType == T_PRED) 
 	xsb_permission_error(CTXTc "modify","static",ptoc_tag(CTXTc 2),
-			   ptoc_string(CTXTc 4),ptoc_int(CTXTc 5));
+			     ptoc_string(CTXTc 4),(int)ptoc_int(CTXTc 5));
       else return FALSE;
       break;
   }

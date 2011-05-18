@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.47 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: socket_xsb.c,v 1.48 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -192,7 +192,7 @@ int read_select(SOCKET sock_handle, int timeout) {
   tv.tv_usec = 0;
 
   if (tv.tv_sec > 0) {
-    rc = select(sock_handle+1, &fds, NULL, NULL, &tv);
+    rc = select((int)sock_handle+1, &fds, NULL, NULL, &tv);
     if (rc < 0) {
       rc = 0;
     } else {
@@ -220,7 +220,7 @@ int write_select(SOCKET sock_handle, int timeout) {
   tv.tv_usec = 0;
 
   if (tv.tv_sec > 0) {
-    rc = select(sock_handle+1, NULL, &fds, NULL, &tv);
+    rc = select((int)sock_handle+1, NULL, &fds, NULL, &tv);
     if (rc < 0) {
       rc = 0;
     } else {
@@ -239,17 +239,17 @@ int write_select(SOCKET sock_handle, int timeout) {
    error:   SOCK_READMSG_FAILED
    Read message header, then read the message itself.
 */
-static int readmsg(SOCKET sock_handle, char **msg_buff, unsigned long *msg_len)	
+static int readmsg(SOCKET sock_handle, char **msg_buff, UInteger *msg_len)	
 {
-  long actual_len;
+  size_t actual_len;
   /* 4-char buf that keeps the length of the subsequent msg */
   char lenbuf[XSB_MSG_HEADER_LENGTH];
-  unsigned long msglen, net_encoded_len;
+  size_t msglen, net_encoded_len;
 
   actual_len =
     // the MSG_PEEK flag makes it only peek at the first XSB_MSG_HEADER_LENGTH
     // bytes. This is needed in order to talk to datagram sockets.
-    (long)recvfrom(sock_handle,lenbuf,XSB_MSG_HEADER_LENGTH,MSG_PEEK,NULL,0);
+    (size_t)recvfrom(sock_handle,lenbuf,XSB_MSG_HEADER_LENGTH,MSG_PEEK,NULL,0);
 
   if (SOCKET_OP_FAILED(actual_len)) return SOCK_READMSG_FAILED;
   if (actual_len == 0) {
@@ -258,21 +258,21 @@ static int readmsg(SOCKET sock_handle, char **msg_buff, unsigned long *msg_len)
   }
 
   memcpy((void *) &net_encoded_len, (void *) lenbuf, XSB_MSG_HEADER_LENGTH);
-  msglen = ntohl(net_encoded_len)+XSB_MSG_HEADER_LENGTH;
+  msglen = ntohl((u_long)net_encoded_len)+XSB_MSG_HEADER_LENGTH;
   *msg_len = msglen*sizeof(char);
 
   /* the space allocated here for msg_buff is released in the
      "SOCKET_RECV" case of xsb_socket_request */
   *msg_buff=(char *)mem_calloc(msglen,sizeof(char),OTHER_SPACE);
 
-  actual_len = (long)recvfrom(sock_handle,*msg_buff,msglen,0,NULL,0);
+  actual_len = recvfrom(sock_handle,*msg_buff,(int)msglen,0,NULL,0);
   if (SOCKET_OP_FAILED(actual_len)) return SOCK_READMSG_FAILED;
 
   /* The following may arise, if somebody sends messages to XSB not through
      socket_send, but in a home-grown way. In that case, we cannot be sure that
      messages are composed correctly and that the header contains a correct
      length of the message body. */
-  if ((unsigned long)actual_len != msglen) {
+  if (actual_len != msglen) {
     xsb_error("[SOCKET_RECV] Ill-formed message. Its length %ld differs from the header value %ld",
 	      msglen, actual_len);
     return SOCK_HEADER_LEN_MISMATCH;
@@ -298,9 +298,9 @@ static int socket_connect(CTXTdeclc int *rc, int timeout) {
   int domain, portnum;
   SOCKADDR_IN socket_addr;
     
-  domain = ptoc_int(CTXTc 2);
+  domain = (int)ptoc_int(CTXTc 2);
   sock_handle = (SOCKET) ptoc_int(CTXTc 3);
-  portnum = ptoc_int(CTXTc 4);
+  portnum = (int)ptoc_int(CTXTc 4);
 
   /** this may not set domain to a valid value; in this case the connect() will fail */
   translate_domain(domain, &domain);
@@ -363,7 +363,7 @@ static int socket_connect(CTXTdeclc int *rc, int timeout) {
       return NORMAL_TERMINATION; /* Since it didn't time out */
     }
 	  
-    *rc = sock_handle;
+    *rc = (int)sock_handle;
     return NORMAL_TERMINATION;
   } else {
     *rc = connect(sock_handle,(PSOCKADDR)&socket_addr,sizeof(socket_addr));
@@ -371,7 +371,7 @@ static int socket_connect(CTXTdeclc int *rc, int timeout) {
   }
 }
 
-static int socket_recv(CTXTdeclc int *rc, char** buffer, unsigned long *buffer_len, int timeout) {
+static int socket_recv(CTXTdeclc int *rc, char** buffer, size_t *buffer_len, int timeout) {
   SOCKET sock_handle = (SOCKET) ptoc_int(CTXTc 2);
   if (read_select(sock_handle, timeout)) {
     *rc = readmsg(sock_handle, buffer, buffer_len);
@@ -383,7 +383,7 @@ static int socket_recv(CTXTdeclc int *rc, char** buffer, unsigned long *buffer_l
 static int socket_send(CTXTdeclc int *rc, int timeout) {
   SOCKET sock_handle = (SOCKET) ptoc_int(CTXTc 2);
   char *send_msg_aux = ptoc_string(CTXTc 3);
-  unsigned int msg_body_len, full_msg_len, network_encoded_len;
+  size_t msg_body_len, full_msg_len, network_encoded_len;
   char *message_buffer;
 
   if (!write_select(sock_handle, timeout)) {
@@ -398,11 +398,11 @@ static int socket_send(CTXTdeclc int *rc, int timeout) {
   /* We use the first XSB_MSG_HEADER_LENGTH bytes for the message size. */
   message_buffer = mem_calloc(full_msg_len, sizeof(char),LEAK_SPACE);
 
-  network_encoded_len = (unsigned int) htonl((unsigned long int) msg_body_len); 
+  network_encoded_len =  htonl((u_long)msg_body_len); 
   memcpy((void*)(message_buffer), (void *)&network_encoded_len, XSB_MSG_HEADER_LENGTH);
   strcpy(message_buffer+XSB_MSG_HEADER_LENGTH, send_msg_aux);
 
-  *rc = sendto(sock_handle, message_buffer, full_msg_len, 0, NULL, 0);
+  *rc = sendto(sock_handle, message_buffer, (int)full_msg_len, 0, NULL, 0);
   mem_dealloc(message_buffer,full_msg_len*sizeof(char),LEAK_SPACE);
 
   return NORMAL_TERMINATION;
@@ -446,14 +446,14 @@ xsbBool xsb_socket_request(CTXTdecl)
   struct linger sock_linger_opt;
   int rc;
   char *message_buffer = NULL; /* initialized to keep compiler happy */
-  unsigned long msg_len = 0;	  /* initialized to keep compiler happy */
+  size_t msg_len = 0;	  /* initialized to keep compiler happy */
   char char_read;
 
   switch (ptoc_int(CTXTc 1)) {
   case SOCKET_ROOT: /* this is the socket() request */
     /* socket_request(SOCKET_ROOT,+domain,-socket_fd,-Error,_,_,_) 
        Currently only AF_INET domain */
-    domain = ptoc_int(CTXTc 2); 
+    domain = (int)ptoc_int(CTXTc 2); 
     if (!translate_domain(domain, &domain)) {
       return FALSE;
     }
@@ -476,8 +476,8 @@ xsbBool xsb_socket_request(CTXTdecl)
     /* socket_request(SOCKET_BIND,+domain,+sock_handle,+port,-Error,_,_) 
        Currently only supports AF_INET */
     sock_handle = (SOCKET) ptoc_int(CTXTc 3);
-    portnum = ptoc_int(CTXTc 4);
-    domain = ptoc_int(CTXTc 2);
+    portnum = (int)ptoc_int(CTXTc 4);
+    domain = (int)ptoc_int(CTXTc 2);
 
     if (!translate_domain(domain, &domain)) {
       return FALSE;
@@ -506,7 +506,7 @@ xsbBool xsb_socket_request(CTXTdecl)
   case SOCKET_LISTEN: 
     /* socket_request(SOCKET_LISTEN,+sock_handle,+length,-Error,_,_,_) */
     sock_handle = (SOCKET) ptoc_int(CTXTc 2);
-    rc = listen(sock_handle, ptoc_int(CTXTc 3));
+    rc = listen(sock_handle, (int)ptoc_int(CTXTc 3));
 
     /* error handling */
     if (SOCKET_OP_FAILED(rc)) {
@@ -518,7 +518,7 @@ xsbBool xsb_socket_request(CTXTdecl)
     return set_error_code(CTXTc ecode, 4, "SOCKET_LISTEN");
 
   case SOCKET_ACCEPT:
-    timeout_flag = socket_accept(CTXTc &rc, (int)pflags[SYS_TIMER]);
+    timeout_flag = socket_accept(CTXTc (SOCKET *)&rc, (int)pflags[SYS_TIMER]);
 	  
     if (timeout_flag == TIMED_OUT) {
       return set_error_code(CTXTc TIMEOUT_ERR, 4, "SOCKET_SEND");
@@ -681,7 +681,7 @@ xsbBool xsb_socket_request(CTXTdecl)
 
     /* Set the "linger" parameter to a small number of seconds */
     if (0==strcmp(option_name,"linger")) {
-      int  linger_time=ptoc_int(CTXTc 4);
+      int  linger_time=(int)ptoc_int(CTXTc 4);
       
       if (linger_time < 0) {
 	sock_linger_opt.l_onoff = FALSE;
@@ -781,7 +781,7 @@ xsbBool xsb_socket_request(CTXTdecl)
     /* specify the time out */
     timeout_term = reg_term(CTXTc 3);
     if (isinteger(timeout_term)|isboxedinteger(timeout_term)) {
-      timeout = oint_val(timeout_term);
+      timeout = (int)oint_val(timeout_term);
       /* initialize tv */
       tv = (struct timeval *)mem_alloc(sizeof(struct timeval),LEAK_SPACE);
       tv->tv_sec = timeout;
@@ -966,7 +966,7 @@ static xsbBool list_sockfd(prolog_term list, fd_set *fdset, int *max_fd,
 
   while (!isnil(list)) {
     head = p2p_car(list);
-    (*fds)[i++] = p2c_int(head);
+    (*fds)[i++] = (int)p2c_int(head);
     list = p2p_cdr(list);
   }
 

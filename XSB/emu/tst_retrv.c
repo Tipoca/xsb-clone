@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_retrv.c,v 1.31 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tst_retrv.c,v 1.32 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -173,11 +173,11 @@ void initCollectRelevantAnswers(CTXTdecl) {
 }
 
 #define CPStack_PushFrame(AlternateTSTN)				\
-   if ( IsNonNULL(AlternateTSTN) ) {					\
+  if ( IsNonNULL(AlternateTSTN) ) {					\
      CPStack_OverflowCheck						\
      tstCPF_AlternateNode = AlternateTSTN;				\
      tstCPF_TermStackTopIndex = TermStack_Top - TermStack_Base + 1;	\
-     tstCPF_TSLogTopIndex = TermStackLog_Top - TermStackLog_Base;	\
+    tstCPF_TSLogTopIndex = TermStackLog_Top - TermStackLog_Base;	\
      tstCPF_TrailTop = trreg;						\
      tstCPF_HBreg = hbreg;						\
      hbreg = hreg;							\
@@ -336,8 +336,8 @@ static void tstCollectionError(CTXTdeclc char *string, xsbBool cleanup_needed) {
    while ( IsNonNULL(SearchChain) ) {					\
      if ( TrieEncodedSubterm == TSTN_Symbol(SearchChain) ) {		\
        if ( IsValidTS(TSTN_GetTSfromTSIN(SearchChain),TS) ) {		\
-	 Chain_NextValidTSTN(ContChain,TS,TSTN_GetTSfromTSIN);		\
-	 CPStack_PushFrame(ContChain);					\
+	 Chain_NextValidTSTN(ContChain,TS,TSTN_GetTSfromTSIN);	\
+	 CPStack_PushFrame(ContChain);				\
 	 TermStackLog_PushFrame;					\
 	 TermStack_PushOp;						\
 	 Descend_Into_TST_and_Continue_Search;				\
@@ -713,7 +713,7 @@ static void tstCollectionError(CTXTdeclc char *string, xsbBool cleanup_needed) {
  *  However, the log info is, in fact, saved.  */
 
 ALNptr tst_collect_relevant_answers(CTXTdeclc TSTNptr tstRoot, TimeStamp ts,
-				    int numTerms, CPtr termsRev) {
+				    size_t numTerms, CPtr termsRev) {
 
   /* numTerms -- size of Answer Template */
   /* termsRev -- Answer template (on heap) */

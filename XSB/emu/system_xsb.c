@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.62 2010-09-08 19:38:46 kifer Exp $
+** $Id: system_xsb.c,v 1.63 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -75,14 +75,14 @@ static int xsb_spawn (CTXTdeclc char *prog, char *arg[], int callno,
 		      FILE *toprocess_fptr, FILE *fromprocess_fptr,
 		      FILE *fromproc_stderr_fptr);
 static void concat_array(CTXTdeclc char *array[], char *separator,
-			 char *result_str, int maxsize);
+			 char *result_str, size_t maxsize);
 static int get_free_process_cell(void);
 static void init_process_table(void);
 static int process_status(int pid);
 static void split_command_arguments(char *string, char *params[], char *callname);
 static char *get_next_command_argument(char **buffptr, char **cmdlineprt);
 static int file_copy(char *, char *);
-static int copy_file_chunk(FILE *, FILE *, unsigned long);
+static int copy_file_chunk(FILE *, FILE *, size_t);
 #ifndef WIN_NT
 static char *xreadlink(const char *, int *);
 #endif
@@ -111,7 +111,7 @@ int sys_syscall(CTXTdeclc int callno)
   switch (callno) {
   case SYS_exit: {
     int exit_code;
-    exit_code = ptoc_int(CTXTc 3);
+    exit_code = (int)ptoc_int(CTXTc 3);
     xsb_mesg("\nXSB exited with exit code: %d", exit_code);
     exit(exit_code); break;
   }
@@ -220,7 +220,7 @@ xsbBool sys_system(CTXTdeclc int callno)
     return TRUE;
   case SLEEP_FOR_SECS:
 #ifdef WIN_NT
-    Sleep(iso_ptoc_int_arg(CTXTc 2,"sleep/1",1) * 1000);
+    Sleep((int)iso_ptoc_int_arg(CTXTc 2,"sleep/1",1) * 1000);
 #else
     sleep(iso_ptoc_int_arg(CTXTc 2,"sleep/1",1));
 #endif
@@ -472,7 +472,7 @@ xsbBool sys_system(CTXTdeclc int callno)
 
     if (!(isinteger(pid_term)|isboxedinteger(pid_term)))
       xsb_abort("[PROCESS_STATUS] Arg 1 (process id) must be an integer");
-    pid = int_val(pid_term);
+    pid = (int)int_val(pid_term);
 
     if (!isref(status_term))
       xsb_abort("[PROCESS_STATUS] Arg 2 (process status) must be a variable");
@@ -513,7 +513,7 @@ xsbBool sys_system(CTXTdeclc int callno)
 
     if (!(isinteger(pid_term)|isboxedinteger(pid_term)))
       xsb_abort("[PROCESS_CONTROL] Arg 1 (process id) must be an integer");
-    pid = int_val(pid_term);
+    pid = (int)int_val(pid_term);
 
     if (isstring(signal_term) && strcmp(string_val(signal_term), "kill")==0) {
       if (KILL_FAILED(pid)) {
@@ -709,7 +709,7 @@ static int xsb_spawn (CTXTdeclc char *progname, char *argv[], int callno,
          break;
       }
     }
-    pid = _spawnvp(P_NOWAIT, progname, argvQuoted);
+    pid = (int)_spawnvp(P_NOWAIT, progname, argvQuoted); // should pid be Integer?
 #else
     pid = fork();
 #endif
@@ -766,11 +766,11 @@ static int xsb_spawn (CTXTdeclc char *progname, char *argv[], int callno,
 
 /* array is a NULL terminated array of strings. Concat it and return string */
 static void concat_array(CTXTdeclc char *array[], char *separator,
-			 char *result_str, int maxsize)
+			 char *result_str, size_t maxsize)
 {
-  int space_left = maxsize-1, separator_size = strlen(separator);
+  size_t space_left = maxsize-1, separator_size = strlen(separator);
   char *current_pos=result_str;
-  int idx=0, len;
+  size_t idx=0, len;
 
   /* init result_str */
   *current_pos='\0';
@@ -837,8 +837,8 @@ static void init_process_table(void)
 int process_status(int pid)
 {
 #ifdef WIN_NT
-  long status;
-  if (GetExitCodeProcess((HANDLE) pid, &status)) {
+  Integer status;
+  if (GetExitCodeProcess((HANDLE) pid, (LPDWORD)(&status))) {
     if (status == STILL_ACTIVE)
       return RUNNING;
     else if (status == 0)
@@ -880,7 +880,7 @@ int process_status(int pid)
 */
 static void split_command_arguments(char *string, char *params[], char *callname)
 {
-  int buflen = strlen(string);
+  size_t buflen = strlen(string);
   int idx = 0;
   char *buf_ptr, *arg_ptr;
   static char buffer[MAX_CMD_LEN];
@@ -988,7 +988,7 @@ xsbBool file_stat(CTXTdeclc int callno, char *file)
   struct stat stat_buff;
   int retcode;
 #ifdef WIN_NT
-  int filenamelen; // windows doesn't allow trailing slash, others do
+  size_t filenamelen; // windows doesn't allow trailing slash, others do
   filenamelen = strlen(file);
   if (file[filenamelen-1] == '/' || file[filenamelen-1] == '\\') {
     char ss = file[filenamelen-1];
@@ -1020,11 +1020,11 @@ xsbBool file_stat(CTXTdeclc int callno, char *file)
     int functor_arg3 = isconstr(reg_term(CTXTc 3));
     if (!retcode && functor_arg3) {
       /* file exists & arg3 is a term, return 2 words*/
-      c2p_int(CTXTc stat_buff.st_mtime >> 24,p2p_arg(reg_term(CTXTc 3),1));
+      c2p_int(CTXTc (prolog_int)(stat_buff.st_mtime >> 24),p2p_arg(reg_term(CTXTc 3),1));
       c2p_int(CTXTc 0xFFFFFF & stat_buff.st_mtime,p2p_arg(reg_term(CTXTc 3),2));
     } else if (!retcode) {
       /* file exists, arg3 non-functor:  issue an error */
-      ctop_int(CTXTc 3, stat_buff.st_mtime);
+      ctop_int(CTXTc 3, (prolog_int)stat_buff.st_mtime);
     } else if (functor_arg3) {
       /* no file, and arg3 is functor: return two 0's */
       c2p_int(CTXTc 0, p2p_arg(reg_term(CTXTc 3),2));
@@ -1256,7 +1256,7 @@ static int file_copy(char *source, char *dest)
 
 /* Copy CHUNKSIZE bytes (or until EOF if CHUNKSIZE equals -1) from SRC_FILE
  * to DST_FILE.  */
-static int copy_file_chunk(FILE *src_file, FILE *dst_file, unsigned long chunksize)
+static int copy_file_chunk(FILE *src_file, FILE *dst_file, size_t chunksize)
 {
   size_t nread, nwritten, size;
   char buffer[BUFSIZ];

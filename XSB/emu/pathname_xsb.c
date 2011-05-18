@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.41 2011-05-16 01:34:23 kifer Exp $
+** $Id: pathname_xsb.c,v 1.42 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -97,7 +97,7 @@ xsbBool is_absolute_filename(char *filename) {
 */
 char *dirname_canonic(char *filename) {
   char canonicized[MAXPATHLEN];
-  int retcode, len = strlen(filename);
+  int retcode, len = (int)strlen(filename);
   struct stat fileinfo;
   rectify_pathname(filename, canonicized);
   retcode = stat(canonicized, &fileinfo);
@@ -375,7 +375,7 @@ static char *rectify_pathname(char *inpath, char *outpath) {
       inptr2 = inpath_end;
 
     /* skip slashes */
-    if ((length = inptr2 - inptr1) == 0) {
+    if ((length = (int)(inptr2 - inptr1)) == 0) {
       if (inptr2 == inpath_end)
 	break; /* out of the while loop */
       else {
@@ -441,7 +441,7 @@ static char *rectify_pathname(char *inpath, char *outpath) {
 
   for (i=0; i<nameidx; i++) {
     strcpy(outpath+outidx, names[i]);
-    outidx = outidx + strlen(names[i]);
+    outidx = outidx + (int)strlen(names[i]);
     /* put shash in place of '\0', if we are not at the end yet */
     if (i < nameidx-1) {
       outpath[outidx] = SLASH;

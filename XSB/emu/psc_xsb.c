@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.c,v 1.57 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: psc_xsb.c,v 1.58 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -66,8 +66,8 @@ extern Psc synint_proc(Psc, int);
    checking in mem_xxxoc() functions, we'll need to adjust these
    mutexes. */
 
-extern long last_string_space_size;
-extern long last_assert_space_size;
+extern size_t last_string_space_size;
+extern size_t last_assert_space_size;
 #define CHAR_PTR_SIZE  sizeof(char *)
 
 char *string_find(const char *str, int insert) {

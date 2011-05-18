@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.90 2011-05-16 01:03:30 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.91 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -78,7 +78,7 @@ struct fmt_spec {
 };
 
 struct next_fmt_state {
-  int _current_substr_start;
+  size_t _current_substr_start;
   VarString *_workspace;
   char _saved_char;
 };
@@ -110,8 +110,8 @@ char *p_charlist_to_c_string(CTXTdeclc prolog_term, VarString*, char*, char*);
 #ifdef HAVE_SNPRINTF
 /* like PRINT_ARG, but uses snprintf */
 #define SPRINT_ARG(arg) \
-        XSB_StrEnsureSize(&OutString, OutString.length+SAFE_OUT_SIZE); \
-        switch (current_fmt_spec->size) { \
+        XSB_StrEnsureSize(&OutString, OutString.length+SAFE_OUT_SIZE);	\
+        switch (current_fmt_spec->size) {					\
         case 1: bytes_formatted=snprintf(OutString.string+OutString.length, \
 					 SAFE_OUT_SIZE, \
 					 current_fmt_spec->fmt, arg); \
@@ -125,11 +125,11 @@ char *p_charlist_to_c_string(CTXTdeclc prolog_term, VarString*, char*, char*);
 					 current_fmt_spec->fmt, \
 					 width, precision, arg); \
 	        break; \
-	} \
-	if (bytes_formatted >= SAFE_OUT_SIZE) \
-	  xsb_memory_error("memory","Buffer overflow in fmt_write_*"); \
-        OutString.length += bytes_formatted; \
-        XSB_StrNullTerminate(&OutString);
+		}			      \
+  if (bytes_formatted >= SAFE_OUT_SIZE)				       \
+    xsb_memory_error("memory","Buffer overflow in fmt_write_*");       \
+  OutString.length += (int)bytes_formatted;			       \
+  XSB_StrNullTerminate(&OutString);
 
 #else
 /* like PRINT_ARG, but uses sprintf -- used with old compilers that don't have
@@ -154,7 +154,7 @@ char *p_charlist_to_c_string(CTXTdeclc prolog_term, VarString*, char*, char*);
 		bytes_formatted = strlen(OutString.string+OutString.length); \
 	        break; \
 	} \
-        OutString.length += bytes_formatted; \
+  OutString.length += (int)bytes_formatted;	\
         XSB_StrNullTerminate(&OutString);
 #endif
 
@@ -203,7 +203,7 @@ xsbBool fmt_write(CTXTdecl)
   char aux_msg[50];
   prolog_term ValTerm, Arg, Fmt_term;
   int i, Arity=0;
-  long int_arg;     	     	     	      /* holder for int args         */
+  Integer int_arg;     	     	     	      /* holder for int args         */
   double float_arg;    	     	     	      /* holder for float args       */
   struct fmt_spec *current_fmt_spec = (struct fmt_spec *)mem_alloc(sizeof(struct fmt_spec),LEAK_SPACE);
   int width=0, precision=0;    	     	      /* these are used in conjunction
@@ -355,12 +355,12 @@ xsbBool fmt_write_string(CTXTdecl)
   char aux_msg[50];
   prolog_term ValTerm, Arg, Fmt_term;
   int i, Arity;
-  long int_arg;     	     	     	    /* holder for int args     	    */
+  Integer int_arg;     	     	     	    /* holder for int args     	    */
   double float_arg;    	     	     	    /* holder for float args   	    */
   struct fmt_spec *current_fmt_spec = (struct fmt_spec *)mem_alloc(sizeof(struct fmt_spec),LEAK_SPACE);
   int width=0, precision=0;      	    /* these are used in conjunction
 					       with the *.* format     	    */
-  int bytes_formatted=0;       	       	    /* the number of bytes formatted as
+  size_t bytes_formatted=0;       	       	    /* the number of bytes formatted as
 					       returned by sprintf/snprintf */
   XSB_StrSet(&OutString,"");
   XSB_StrSet(&FmtBuf,"");
@@ -510,14 +510,14 @@ xsbBool fmt_read(CTXTdecl)
   char *Fmt=NULL;
   struct next_fmt_state fmt_state;
   prolog_term AnsTerm, Arg, Fmt_term;
-  Integer i ;
-  long int_arg;     	     	     	      /* holder for int args         */
+  int i ;
+  Integer int_arg;     	     	     	      /* holder for int args         */
   float float_arg;    	     	     	      /* holder for float args       */
   struct fmt_spec *current_fmt_spec = (struct fmt_spec *)mem_alloc(sizeof(struct fmt_spec),LEAK_SPACE);
   int Arity=0;
   int number_of_successes=0, curr_assignment=0;
   int cont; /* continuation indicator */
-  int chars_accumulator=0, curr_chars_consumed=0;
+  Integer chars_accumulator=0, curr_chars_consumed=0;
   int dummy; /* to squash return arg warnings */
 
   XSB_StrSet(&FmtBuf,"");
@@ -805,7 +805,7 @@ int read_canonical(CTXTdecl)
 {
   FILE *filep;
   STRFILE *instr;
-  long tempfp;
+  Integer tempfp;
   
   tempfp = ptoc_int(CTXTc 1);
   if (tempfp == -1000) {
@@ -888,8 +888,7 @@ Integer read_canonical_term(CTXTdeclc FILE *filep, STRFILE *instr, int return_lo
 
   prevchar = 10;
   while (1) {
-	token = GetToken(CTXTc filep,instr,prevchar);
-/*	print_token((int)(token-f>type),(char *)(token->value)); */
+    token = GetToken(CTXTc filep,instr,prevchar); // dswdebug
 	prevchar = token->nextch;
 	if (postopreq) {  /* must be an operand follower: , or ) or | or ] */
 	    if (token->type == TK_PUNC) {
@@ -1130,7 +1129,7 @@ Integer read_canonical_term(CTXTdeclc FILE *filep, STRFILE *instr, int return_lo
       case TK_INT:
 	        if (optop >= opstk_size) expand_opstk;
 		opstk[optop].typ = TK_INT;
-		opstk[optop].op = makeint(*(long *)token->value);
+		opstk[optop].op = makeint(*(Integer *)token->value);
 		optop++;
 		postopreq = TRUE;
 		break;
@@ -1259,7 +1258,7 @@ void next_format_substr(CTXTdeclc char *format, struct next_fmt_state *fmt_state
 				    struct fmt_spec *result,
 				    int initialize, int read_op)
 {
-  int pos, keep_going;
+  size_t pos; int keep_going;
   char *ptr;
   //  static struct fmt_spec result;
   char *exclude, *expect; /* characters to exclude or expect */
@@ -1277,7 +1276,7 @@ void next_format_substr(CTXTdeclc char *format, struct next_fmt_state *fmt_state
   result->size = 1;
 
   /* done scanning format string */
-  if (current_substr_start >= workspace.length) {
+  if (current_substr_start >= (size_t) workspace.length) {
     result->type = '.'; /* last substring (and has no conversion spec) */
     result->fmt  = "";
     return;
@@ -1303,7 +1302,7 @@ void next_format_substr(CTXTdeclc char *format, struct next_fmt_state *fmt_state
      ends at a valid conversion character is a conversion specifier. */ 
   keep_going = TRUE;
   expect = exclude = "";
-  while ((pos < workspace.length) && keep_going) {
+  while ((pos < (size_t)workspace.length) && keep_going) {
     if (strchr(exclude, workspace.string[pos]) != NULL) {
       xsb_abort("[FMT_READ/WRITE] Illegal format specifier `%c' in: %s",
 		workspace.string[pos],
@@ -1340,8 +1339,8 @@ void next_format_substr(CTXTdeclc char *format, struct next_fmt_state *fmt_state
       break;
     case 'h':
     case 'l':
-      exclude = "+- #[]hlL";
-      expect = "diouxXn";
+      exclude = "+- #[]hL";  // modified to allow %lld for win64
+      expect = "diouxXnl";
       break;
     case 'L':
       expect = "eEfgG";
@@ -1402,7 +1401,7 @@ void next_format_substr(CTXTdeclc char *format, struct next_fmt_state *fmt_state
 	xsb_abort("[FMT_WRITE] Format specifier [ is invalid for output: %s",
 		  workspace.string+current_substr_start);
       }
-      while ((pos < workspace.length) && (workspace.string[pos++] != ']'));
+      while ((pos < (size_t)workspace.length) && (workspace.string[pos++] != ']'));
       if (workspace.string[pos-1] != ']') {
 	xsb_abort("[FMT_READ] Format specifier [ has no matching ] in: %s",
 		  workspace.string+current_substr_start);
@@ -1667,7 +1666,7 @@ void write_quotedname(FILE *file, char *string)
       fprintf(file,"%s",string);
     }
     else {
-      int neededlen = 2*strlen(string)+1;
+      size_t neededlen = 2*strlen(string)+1;
       if (neededlen < 1000) {
 	char lnew_string[1000];
       	double_quotes(string,lnew_string);
@@ -1696,14 +1695,14 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
   switch (cell_tag(prologterm)) 
     {
     case XSB_INT:
-      sprintf(wcan_buff->string,"%ld",(long)int_val(prologterm));
+      sprintf(wcan_buff->string,"%" Intfmt,int_val(prologterm));
       XSB_StrAppend(wcan_string,wcan_buff->string);
       break;
     case XSB_STRING:
       if (quotes_are_needed(string_val(prologterm))) {
 	if (string_contains_quotes(string_val(prologterm))) {
-	  int len_needed = 2*strlen(string_val(prologterm))+1;
-	  XSB_StrEnsureSize(wcan_atombuff,len_needed);
+	  size_t len_needed = 2*strlen(string_val(prologterm))+1;
+	  XSB_StrEnsureSize(wcan_atombuff,(int)len_needed);
 	  double_quotes(string_val(prologterm),wcan_atombuff->string);
 	  XSB_StrAppendC(wcan_string,'\'');
 	  XSB_StrAppend(wcan_string,wcan_atombuff->string);
@@ -1720,7 +1719,7 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
     case XSB_FLOAT:
       //      sprintf(wcan_buff->string,"%2.4f",float_val(prologterm));
       sprintf(wcan_buff->string,"%1.15g",float_val(prologterm));
-      wcan_buff->length = strlen(wcan_buff->string);
+      wcan_buff->length = (int)strlen(wcan_buff->string);
       if (!strchr(wcan_buff->string,'.')) {
 	char *eloc = strchr(wcan_buff->string,'e');
 	if (!eloc) XSB_StrAppend(wcan_buff,".0");
@@ -1738,15 +1737,15 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
       break;
     case XSB_REF:
     case XSB_REF1: {
-      int varval;
+      size_t varval;
       XSB_StrAppendC(wcan_string,'_');
       if (prologterm >= (Cell)glstack.low && prologterm <= (Cell)top_of_heap) {
 	XSB_StrAppendC(wcan_string,'h');
-	varval = (long) ((prologterm-(Cell)glstack.low+1)/sizeof(CPtr));
+	varval = ((prologterm-(Cell)glstack.low+1)/sizeof(CPtr));
       } else {
 	if (prologterm >= (Cell)top_of_localstk && prologterm <= (Cell)glstack.high) {
 	  XSB_StrAppendC(wcan_string,'l');
-	  varval = (long) (((Cell)glstack.high-prologterm+1)/sizeof(CPtr));
+	  varval = (((Cell)glstack.high-prologterm+1)/sizeof(CPtr));
 	} else varval = prologterm;   /* Should never happen */
       }
       sprintf(wcan_buff->string,"%d",varval);
@@ -1759,7 +1758,7 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
      // do the struct case
      if (isboxedinteger(prologterm))
      {
-      sprintf(wcan_buff->string,"%ld",(long)boxedint_val(prologterm));
+      sprintf(wcan_buff->string,"%" Intfmt,boxedint_val(prologterm));
       XSB_StrAppend(wcan_string,wcan_buff->string);
           break;         
      }
@@ -1767,7 +1766,7 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
      {
        //          sprintf(wcan_buff->string,"%2.4f",boxedfloat_val(prologterm));
        sprintf(wcan_buff->string,"%1.15g",boxedfloat_val(prologterm));
-       wcan_buff->length = strlen(wcan_buff->string);
+       wcan_buff->length = (int)strlen(wcan_buff->string);
        if (!strchr(wcan_buff->string,'.')) {
 	 char *eloc = strchr(wcan_buff->string,'e');
 	 if (!eloc) XSB_StrAppend(wcan_buff,".0");
@@ -1793,7 +1792,7 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
 	Cell tempi = cell(clref_val(prologterm)+1);
 	XSB_Deref(tempi);
 	if (!isinteger(tempi)) xsb_abort("[write_canonical]: illegal $VAR argument");
-	ival = int_val(tempi);
+	ival = (int)int_val(tempi);
 	letter = ival % 26;
 	ival = ival / 26;
 	XSB_StrAppendC(wcan_string,(char)(letter+'A'));
@@ -1805,8 +1804,8 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
 	int i; 
 	char *fnname = get_name(get_str_psc(prologterm));
 	if (quotes_are_needed(fnname)) {
-	  int len_needed = 2*strlen(fnname)+1;
-	  XSB_StrEnsureSize(wcan_atombuff,len_needed);
+	  size_t len_needed = 2*strlen(fnname)+1;
+	  XSB_StrEnsureSize(wcan_atombuff,(int)len_needed);
 	  double_quotes(fnname,wcan_atombuff->string);
 	  XSB_StrAppendC(wcan_string,'\'');
 	  XSB_StrAppend(wcan_string,wcan_atombuff->string);

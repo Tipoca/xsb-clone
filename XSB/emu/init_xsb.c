@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.175 2011-05-01 09:36:18 kifer Exp $
+** $Id: init_xsb.c,v 1.176 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -116,7 +116,7 @@ extern FILE *fdopen(int fildes, const char *type);
 extern void extend_enc_dec_as_nec(void *,void *);
 #endif
 
-long pspacesize[NUM_CATS_SPACE] = {0};	/* actual space dynamically allocated by loader.c */
+size_t pspacesize[NUM_CATS_SPACE] = {0};	/* actual space dynamically allocated by loader.c */
 
 /* The SLG-WAM data regions
    ------------------------ */
@@ -467,9 +467,9 @@ int pipe_input_stream() {
     return 1;
 }
 
-static long get_memarea_size( char *s )
+static size_t get_memarea_size( char *s )
 {
-	long size ;
+	size_t size ;
 	char *endptr ;
 
 	size = strtol( s, &endptr, 0 );
@@ -513,7 +513,7 @@ static long get_memarea_size( char *s )
   */
   char *boot_module, *cmd_loop_driver;
   char cmd_line_goal[MAXBUFSIZE+1] = "";
-  int  strlen_instdir, strlen_initfile, strlen_2ndfile;
+  size_t  strlen_instdir, strlen_initfile, strlen_2ndfile;
 
 #ifdef SHARED_COMPL_TABLES
   num_deadlocks = 0;
@@ -933,10 +933,10 @@ void init_thread_structures(CTXTdecl)
   asynint_code = 0;
   asynint_val = 0;
 
-  pdl.low = NULL; pdl.high = NULL; pdl.size = 0, pdl.init_size = (long) flags[THREAD_PDLSIZE];
-  tcpstack.low = NULL; tcpstack.high = NULL; tcpstack.size = 0, tcpstack.init_size = (long) flags[THREAD_TCPSIZE];
-  glstack.low = NULL; glstack.high = NULL; glstack.size = 0, glstack.init_size = (long) flags[THREAD_GLSIZE];
-  complstack.low = NULL; complstack.high = NULL; complstack.size = 0, complstack.init_size = (long) flags[THREAD_COMPLSIZE];
+  pdl.low = NULL; pdl.high = NULL; pdl.size = 0, pdl.init_size = (size_t) flags[THREAD_PDLSIZE];
+  tcpstack.low = NULL; tcpstack.high = NULL; tcpstack.size = 0, tcpstack.init_size = (size_t) flags[THREAD_TCPSIZE];
+  glstack.low = NULL; glstack.high = NULL; glstack.size = 0, glstack.init_size = (size_t) flags[THREAD_GLSIZE];
+  complstack.low = NULL; complstack.high = NULL; complstack.size = 0, complstack.init_size = (size_t) flags[THREAD_COMPLSIZE];
 
   findall_solutions = NULL;
 

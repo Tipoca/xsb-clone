@@ -502,7 +502,7 @@ void intercept(CTXTdeclc Psc psc) {
 
 #ifndef MULTI_THREAD
   if (flags[TRACE_STA]) {
-    unsigned long  byte_size;
+    size_t  byte_size;
 
     byte_size = (top_of_heap - (CPtr)(glstack.low) + 1) * sizeof(Cell);
     if ( byte_size > tds.maxgstack_count )
@@ -524,7 +524,7 @@ void intercept(CTXTdeclc Psc psc) {
     if ( byte_size > tds.maxopenstack_count )
       tds.maxopenstack_count = byte_size;
 
-    if ((unsigned long)level_num > tds.maxlevel_num)
+    if ((UInteger)level_num > tds.maxlevel_num)
       tds.maxlevel_num = level_num;
   }
 #endif
@@ -583,10 +583,12 @@ inline int sign(Float num)
 /*	However, it should ONLY be used to compare terms that appear	*/
 /*	in the above ordering list.					*/
 /*======================================================================*/
+#define sign_of(exp) (((exp)>0)?1:((exp)<0)?-1:0)
 
 int compare(CTXTdeclc const void * v1, const void * v2)
 {
   int comp;
+  Integer compexp;
   CPtr cptr1, cptr2;
   Cell val1 = (Cell) v1 ;
   Cell val2 = (Cell) v2 ;
@@ -597,8 +599,10 @@ int compare(CTXTdeclc const void * v1, const void * v2)
   switch(cell_tag(val1)) {
   case XSB_FREE:
   case XSB_REF1:
-    if (isattv(val2))
-      return vptr(val1) - (CPtr)dec_addr(val2);
+    if (isattv(val2)) {
+      compexp = (vptr(val1) - (CPtr)dec_addr(val2));
+      return sign_of(compexp);
+    }
     else if (isnonvar(val2)) return -1;
     else { /* in case there exist local stack variables in the	  */
 	   /* comparison, globalize them to guarantee that their  */
@@ -618,20 +622,23 @@ int compare(CTXTdeclc const void * v1, const void * v2)
 	hreg++;
 	val2 = follow(val2);	/* deref again */
       }
-      return vptr(val1) - vptr(val2);
+      compexp = (vptr(val1) - vptr(val2));
+      return sign_of(compexp);
     }
   case XSB_FLOAT:
     if (isref(val2) || isattv(val2)) return 1;
-    else if (isofloat(val2)) 
+    else if (isofloat(val2)) {
       return sign(float_val(val1) - ofloat_val(val2));
-    else return -1;
+    } else return -1;
   case XSB_INT:
     if (isref(val2) || isofloat(val2) || isattv(val2)) return 1;
-    else if (isinteger(val2)) 
-      return int_val(val1) - int_val(val2);
-    else if (isboxedinteger(val2))
-      return int_val(val1) - boxedint_val(val2);
-    else return -1;
+    else if (isinteger(val2)) {
+      compexp = (int_val(val1) - int_val(val2));
+      return sign_of(compexp);
+    } else if (isboxedinteger(val2)) {
+      compexp = (int_val(val1) - boxedint_val(val2));
+      return sign_of(compexp);
+    } else return -1;
   case XSB_STRING:
     if (isref(val2) || isofloat(val2) || isinteger(val2) || isattv(val2)) 
       return 1;
@@ -645,11 +652,13 @@ int compare(CTXTdeclc const void * v1, const void * v2)
     // macros.
     if (isboxedinteger(val1)) {
       if (isref(val2) || isofloat(val2) || isattv(val2)) return 1;
-      else if (isinteger(val2)) 
-	return boxedint_val(val1) - int_val(val2);
-      else if (isboxedinteger(val2))
-	return boxedint_val(val1) - boxedint_val(val2);
-      else return -1;
+      else if (isinteger(val2)) {
+	compexp = (boxedint_val(val1) - int_val(val2));
+	return sign_of(compexp);
+      } else if (isboxedinteger(val2)) {
+	compexp = boxedint_val(val1) - boxedint_val(val2);
+	return sign_of(compexp);
+      } else return -1;
     } else if (isboxedfloat(val1)) {
         if (isref(val2) || isattv(val2)) return 1;
         else if (isofloat(val2)) 
@@ -692,11 +701,13 @@ int compare(CTXTdeclc const void * v1, const void * v2)
     }
     break;
   case XSB_ATTV:
-    if (isattv(val2))
-      return (CPtr)dec_addr(val1) - (CPtr)dec_addr(val2);
-    else if (isref(val2))
-      return (CPtr)dec_addr(val1) - vptr(val2);
-    else
+    if (isattv(val2)) {
+      compexp = (CPtr)dec_addr(val1) - (CPtr)dec_addr(val2);
+      return sign_of(compexp);
+    } else if (isref(val2)) {
+      compexp = (CPtr)dec_addr(val1) - vptr(val2);
+      return sign_of(compexp);
+    } else
       return -1;
   default:
     xsb_abort("Compare (unknown tag %ld); returning 0", cell_tag(val1));
@@ -858,9 +869,9 @@ xsbBool startInterruptThread(SOCKET intSocket)
 #endif
 
 
-extern long if_profiling;
-extern long prof_gc_count;
-extern long prof_int_count;
+extern Integer if_profiling;
+extern Integer prof_gc_count;
+extern Integer prof_int_count;
 extern int garbage_collecting;
 
 void setProfileBit(void *place_holder) {

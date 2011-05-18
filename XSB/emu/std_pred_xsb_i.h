@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.57 2011-05-08 18:59:45 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.58 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -128,7 +128,7 @@ inline static xsbBool arg_builtin(CTXTdecl)
   /* r1: +index (int); r2: +term; r3: ?arg (term) */
   Cell index;
   Cell term;
-  int disp;
+  size_t disp;
 
   index = ptoc_tag(CTXTc 1);
   if (isinteger(index)) {
@@ -280,7 +280,7 @@ inline static xsbBool hilog_arg(CTXTdecl)
 {
   /* r1: +index (int); r2: +term; r3: ?arg (term) */
   Cell index, term;
-  int disp;
+  size_t disp;
 
   index = ptoc_tag(CTXTc 1);
   if (isinteger(index)) {
@@ -312,8 +312,9 @@ inline static xsbBool hilog_arg(CTXTdecl)
 inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 {
   /* r1: ?term; r2: ?character list	*/
-  int i, len;
-  long c;
+  size_t i;
+  size_t len;
+  Integer c;
   char *atomname, *atomnamelast;
   char *atomnameaddr = NULL;
   int atomnamelen;
@@ -352,7 +353,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	  return FALSE;	/* fail */
 	}
 	if (isinteger(heap_addr))
-	  c = int_val(heap_addr);
+	  c = (int)int_val(heap_addr);
 	else /* ATOM CHARS */
 	  c = *string_val(heap_addr);
 
@@ -423,7 +424,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 inline static xsbBool number_to_list(CTXTdeclc int call_type)
 {
   int i, tmpval;
-  long c;
+  Integer c;
   char tmpstr[2], *tmpstr_interned;
   char str[256];	
   int StringLoc = 0;
@@ -466,11 +467,11 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
 	if (call_type==NUMBER_CODES)
 	  c = int_val(heap_addr);
 	else if ((call_type==NUMBER_DIGITS) && (isinteger(heap_addr))) {
-	  tmpval = int_val(heap_addr);
+	  tmpval = (int)int_val(heap_addr);
 	  if ((tmpval < 0) || (tmpval > 9)) {
 	    xsb_type_error(CTXTc elt_type,list,call_name,2); /* number_chars(X,[11]) */
 	  }
-	  c = (long) '0' + int_val(heap_addr);
+	  c = ('0' + int_val(heap_addr));
 	} else if (isstring(heap_addr))
 	  c = *string_val(heap_addr);
 	else {
@@ -494,7 +495,7 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
       }
     } while (1);
 
-    if (sscanf(str, "%ld%c", &c, &hack_char) == 1) {
+    if (sscanf(str, "%" Intfmt "%c", &c, &hack_char) == 1) {
       bind_oint((CPtr)(term), c);
     } else {
       Float float_temp;
@@ -514,13 +515,13 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
     }
   } else {	/* use is: NUMBER --> CHARS/CODES/DIGITS */
     if (isinteger(term)) {
-      sprintf(str, "%ld", (long)int_val(term));
+      sprintf(str, "%" Intfmt, int_val(term));
     } else {
       if (isofloat(term)) {
 	sprintf(str, "%e", ofloat_val(term));
       } else {
 	if (isboxedinteger(term)) {
-	  sprintf(str,"%ld",(long)boxedint_val(term));
+	  sprintf(str,"%" Intfmt, boxedint_val(term));
 	} else {
 	  xsb_type_error(CTXTc "number",term,call_name,1);
 	}
@@ -774,7 +775,7 @@ struct sort_par_spec par_spec;
 #endif
 
 int par_key_compare(CTXTdeclc const void * t1, const void * t2) {
-  long ipar, cmp, ind1, ind2;
+  Integer ipar, cmp, ind1, ind2;
   Cell term1 = (Cell) t1 ;
   Cell term2 = (Cell) t2 ;
 
@@ -789,8 +790,8 @@ int par_key_compare(CTXTdeclc const void * t1, const void * t2) {
       cmp = compare(CTXTc (void*)cell(clref_val(term1)+ind1),
 		          (void*)cell(clref_val(term2)+ind2));
       if (cmp) {
-	if (par_spec.sort_par_dir[ipar]) return cmp;
-	else return -cmp;
+	if (par_spec.sort_par_dir[ipar]) return (int)cmp;
+	else return (int)-cmp;
       } else ipar++;
     }
     return 0;
@@ -814,7 +815,7 @@ inline static xsbBool parsort(CTXTdecl)
   CPtr top = 0;
   char ermsg[50];
 
-  elim_dupls = ptoc_int(CTXTc 3);
+  elim_dupls = (int)ptoc_int(CTXTc 3);
 
   list = ptoc_tag(CTXTc 2);
   term2 = list; par_spec.sort_num_pars = 0;
@@ -838,7 +839,7 @@ inline static xsbBool parsort(CTXTdecl)
 	} else xsb_type_error(CTXTc "asc/1 or desc/1 term",heap_addr,"parsort/4",2);
 	tmp_ind = cell(clref_val(heap_addr)+1); XSB_Deref(tmp_ind);
 	if (!isinteger(tmp_ind)) xsb_type_error(CTXTc "integer arg for asc/1 or desc/1",tmp_ind,"parsort/4",2);
-	i = int_val(tmp_ind);
+	i = (int)int_val(tmp_ind);
 	/* TLS: Should be range below */
 	if (i < 1 || i > 255) xsb_domain_error(CTXTc "arity_sized_integer",tmp_ind,
 					       "parsort/4",2) ;

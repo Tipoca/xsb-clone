@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varstring.c,v 1.28 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: varstring.c,v 1.29 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -172,7 +172,7 @@ static inline void vs_ensure_size(VarString *vstr, int minsize)
 
 static void vs_set(VarString *vstr, char *str)
 {
-  int newlength;
+  size_t newlength;
 
   vs_init(vstr,0); /* conditional init */
 
@@ -188,10 +188,10 @@ static void vs_set(VarString *vstr, char *str)
   newlength = strlen(str);
 
   //  vs_adjust_size(vstr, newlength+1); %% dsw changed to avoid too much realloc
-  vs_ensure_size(vstr, newlength+1);
+  vs_ensure_size(vstr, (int)newlength+1);
 
   strcpy(vstr->string, str);
-  vstr->length=newlength;
+  vstr->length = (int)newlength;
 }
 
 static void vs_setv(VarString *vstr, VarString *vstr1)
@@ -209,7 +209,7 @@ static void vs_append(VarString *vstr, char *str)
     xsb_bug("Appending a NULL string");
 #endif
   }
-  vs_appendblk(vstr, str, strlen(str));
+  vs_appendblk(vstr, str, (int)strlen(str));
   vs_null_terminate(vstr);
 }
 
@@ -231,7 +231,7 @@ static void vs_prepend(VarString *vstr, char *str)
     xsb_bug("Appending a NULL string");
 #endif
   }
-  vs_prependblk(vstr, str, strlen(str));
+  vs_prependblk(vstr, str, (int)strlen(str));
 }
 
 static inline void vs_appendv(VarString *vstr, VarString *vstr1)

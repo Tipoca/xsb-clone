@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.76 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: odbc_xsb.c,v 1.77 2011-05-18 19:21:40 dwarren Exp $
 **
 */
 
@@ -72,8 +72,8 @@ extern xsbBool unify(CTXTdecltypec Cell, Cell);
 
 static Psc     nullFctPsc = NULL;
 /* static int      numberOfCursors = 0; */
-static long      SQL_NTSval = SQL_NTS;
-static long      SQL_NULL_DATAval = SQL_NULL_DATA;
+static SQLLEN      SQL_NTSval = SQL_NTS;
+static SQLLEN      SQL_NULL_DATAval = SQL_NULL_DATA;
 
 static HENV henv = NULL;
 /*HDBC hdbc;*/
@@ -90,11 +90,11 @@ struct ODBC_Cursor {
   int NumBindVars;      /* number of bind values*/
   UCHAR **BindList;     /* pointer to array of pointers to the bind values*/
   int *BindTypes;       /* types of the bind values, 0->int, 1->float, 2->char, 3->nullvalue(anytype)*/
-  SQLINTEGER *BindLens; /* lengths of the bind values that are strings */
+  SQLLEN *BindLens; /* lengths of the bind values that are strings */
   SWORD NumCols;        /* number of columns selected*/
   SWORD *ColTypes;      /* pointer to array of column types*/
-  UDWORD *ColLen;       /* pointer to array of max column lengths*/
-  UDWORD *OutLen;       /* pointer to array of actual column lengths*/
+  SQLULEN *ColLen;       /* pointer to array of max column lengths*/
+  SQLLEN *OutLen;       /* pointer to array of actual column lengths*/
   UCHAR **Data;         /* pointer to array of pointers to data*/
 };
 
@@ -445,7 +445,7 @@ void SetCursorClose(struct ODBC_Cursor *cur)
       if (cur->BindTypes[j] < 2) free_cur_bindlist(cur,j);
     mem_dealloc(cur->BindList,sizeof(UCHAR *) * cur->NumBindVars,ODBC_SPACE);
     mem_dealloc(cur->BindTypes,sizeof(int) * cur->NumBindVars,ODBC_SPACE);
-    mem_dealloc(cur->BindLens,sizeof(SQLINTEGER) * cur->NumBindVars,ODBC_SPACE);
+    mem_dealloc(cur->BindLens,sizeof(SQLLEN) * cur->NumBindVars,ODBC_SPACE);
   }
 
   if (cur->NumCols) {                  /* free the resulting row set*/
@@ -453,8 +453,8 @@ void SetCursorClose(struct ODBC_Cursor *cur)
       mem_dealloc(cur->Data[j],((unsigned) cur->ColLen[j]+1)*sizeof(UCHAR),ODBC_SPACE);
     }
     mem_dealloc(cur->ColTypes,sizeof(SWORD) * cur->NumCols,ODBC_SPACE);
-    mem_dealloc(cur->ColLen,sizeof(UDWORD) * cur->NumCols,ODBC_SPACE);
-    mem_dealloc(cur->OutLen,sizeof(UDWORD) * cur->NumCols,ODBC_SPACE);
+    mem_dealloc(cur->ColLen,sizeof(SQLULEN) * cur->NumCols,ODBC_SPACE);
+    mem_dealloc(cur->OutLen,sizeof(SQLLEN) * cur->NumCols,ODBC_SPACE);
     mem_dealloc(cur->Data,sizeof(char *) * cur->NumCols,ODBC_SPACE);
   }
 
@@ -558,7 +558,7 @@ void ODBCConnect(CTXTdecl)
     }
   }
   
-  ctop_int(CTXTc 6, (long)hdbc);
+  ctop_int(CTXTc 6, (UInteger)hdbc);
   ctop_int(CTXTc 7, 0);
   return;
 }
@@ -690,7 +690,7 @@ void FindFreeCursor(CTXTdecl)
 	      FCursor = curi;
 	    }
 	    curi->Status = 2;
-	    ctop_int(CTXTc 4, (long)curi);
+	    ctop_int(CTXTc 4, (UInteger)curi);
 	    /*printf("reuse cursor: %p\n",curi);*/
 	    ctop_int(CTXTc 5, 0);
 	    return;
@@ -780,7 +780,7 @@ void FindFreeCursor(CTXTdecl)
   }
   strcpy(curi->Sql,Sql_stmt);
   curi->Status = 3;
-  ctop_int(CTXTc 4, (long)curi);
+  ctop_int(CTXTc 4, (UInteger)curi);
   ctop_int(CTXTc 5, 0);
   return;
 }
@@ -805,7 +805,7 @@ void FindFreeCursor(CTXTdecl)
 void SetBindVarNum(CTXTdecl)
 {
   struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
-  int NumBindVars = ptoc_int(CTXTc 3);
+  int NumBindVars = (int)ptoc_int(CTXTc 3);
 
   if (cur->Status == 2) {
     if (cur->NumBindVars != NumBindVars) {
@@ -858,7 +858,7 @@ void string_to_char(Cell list, char **tmp_term_string) {
   while (islist(list)) {
     car = p2p_car(list);
     XSB_Deref(car);
-    *(charptr++) = int_val(car);
+    *(charptr++) = (int)int_val(car);
     list = p2p_cdr(list);
     XSB_Deref(list);
   }
@@ -882,7 +882,7 @@ void SetBindVal(CTXTdecl)
 {
   RETCODE rc;
   struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
-  int j = ptoc_int(CTXTc 3);
+  int j = (int)ptoc_int(CTXTc 3);
   Cell BindVal = ptoc_tag(CTXTc 4);
   char errmsg[200];
 
@@ -906,7 +906,7 @@ void SetBindVal(CTXTdecl)
 	  return;
 	}
       }
-      *((int *)cur->BindList[j]) = oint_val(BindVal);
+      *((int *)cur->BindList[j]) = (int)oint_val(BindVal);
     } else if (isofloat(BindVal)) {
       if (cur->BindTypes[j] != 1) {
 	/*printf("ODBC: Changing Type: flt to %d\n",cur->BindTypes[j]);*/
@@ -968,7 +968,7 @@ void SetBindVal(CTXTdecl)
       unify(CTXTc reg_term(CTXTc 5), GenErrorMsgBall("Not enough memory for an int in SetBindVal"));
       return;
     }
-    *((int *)cur->BindList[j]) = oint_val(BindVal);
+    *((int *)cur->BindList[j]) = (int)oint_val(BindVal);
   } else if (isofloat(BindVal)) {
     cur->BindTypes[j] = 1;
     cur->BindList[j] = (UCHAR *)mem_alloc(sizeof(float),ODBC_SPACE);
@@ -1040,7 +1040,7 @@ RETCODE rc;
       switch (cur->BindTypes[j])
 		{
 		case 2:
-		  cur->BindLens[j] = strlen((char *)cur->BindList[j]);
+		  cur->BindLens[j] = (SQLINTEGER)strlen((char *)cur->BindList[j]);
 		  if (cur->driver_code == 1)
 		    rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0,(char *)cur->BindList[j], 0, &SQL_NTSval);
 		  else rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0,(char *)cur->BindList[j], cur->BindLens[j], &cur->BindLens[j]);
@@ -1283,9 +1283,9 @@ UDWORD DisplayColSize(SWORD coltype, UDWORD collen, UCHAR *colname)
 {
   switch (ODBCToXSBType(coltype)) {
   case SQL_C_SLONG:
-    return sizeof(long *);
+    return sizeof(word *);
   case SQL_C_CHAR: {
-    UDWORD tmp = MAXI(collen+1, strlen((char *) colname));
+    UDWORD tmp = MAXI(collen+1, (UDWORD)strlen((char *) colname));
     if (tmp < MAXVARSTRLEN) return tmp;
     else return MAXVARSTRLEN;
   }
@@ -1337,7 +1337,7 @@ void ODBCDataSources(CTXTdecl)
     SYS_MUTEX_UNLOCK( MUTEX_ODBC) ;
   }
 
-  seq = ptoc_int(CTXTc 2);
+  seq = (int)ptoc_int(CTXTc 2);
   if (seq == 1) {
     rc = SQLDataSources(henv,SQL_FETCH_FIRST,DSN,
 			SQL_MAX_DSN_LENGTH,&dsn_size,
@@ -1410,7 +1410,7 @@ void ODBCDescribeSelect(CTXTdecl)
   SWORD colnamelen;
   SWORD scale;
   SWORD nullable;
-  UDWORD collen;
+  SQLULEN collen;
   struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
 
   cur->NumCols = 0;
@@ -1439,14 +1439,14 @@ void ODBCDescribeSelect(CTXTdecl)
     }
 
     cur->OutLen =
-      (UDWORD *)mem_alloc(sizeof(UDWORD) * cur->NumCols,ODBC_SPACE);
+      (SQLLEN *)mem_alloc(sizeof(UDWORD) * cur->NumCols,ODBC_SPACE);
     if (!cur->OutLen) {
       unify(CTXTc reg_term(CTXTc 3),GenErrorMsgBall("Not enough memory for OutLen!"));
       return;
     }
 
     cur->ColLen =
-      (UDWORD *)mem_alloc(sizeof(UDWORD) * cur->NumCols,ODBC_SPACE);
+      (SQLULEN *)mem_alloc(sizeof(SQLULEN) * cur->NumCols,ODBC_SPACE);
     if (!cur->ColLen) {
       unify(CTXTc reg_term(CTXTc 3),GenErrorMsgBall("Not enough memory for ColLen!"));
       return;
@@ -1461,7 +1461,7 @@ void ODBCDescribeSelect(CTXTdecl)
       if (cur->ColTypes[j] == -9) cur->ColTypes[j] = SQL_VARCHAR;
       colnamelen = (colnamelen > 49) ? 49 : colnamelen;
       colname[colnamelen] = '\0';
-      cur->ColLen[j] = DisplayColSize(cur->ColTypes[j],collen,colname);
+      cur->ColLen[j] = DisplayColSize(cur->ColTypes[j],(UDWORD)collen,colname);
       if (!(cur->ColLen[j])) {
 	/* let SetCursorClose function correctly free all the memory allocated*/
 	/* for Data storage: cur->Data[j]'s*/
@@ -1485,7 +1485,8 @@ void ODBCDescribeSelect(CTXTdecl)
   for (j = 0; j < cur->NumCols; j++) {
     SQLBindCol(cur->hstmt, (short)(j+1),
 	       ODBCToXSBType(cur->ColTypes[j]), cur->Data[j],
-	       cur->ColLen[j], (SDWORD FAR *)(&(cur->OutLen[j])));
+	       //	       cur->ColLen[j], (SDWORD FAR *)(&(cur->OutLen[j])));
+	       cur->ColLen[j], (&(cur->OutLen[j])));
   }
   /*  return 0;*/
   ctop_int(CTXTc 3,0);
@@ -1547,8 +1548,8 @@ void FetchNextRow(CTXTdecl)
 void ODBCConnectOption(CTXTdecl)
 {
   HDBC hdbc = (HDBC)ptoc_int(CTXTc 2);
-  int set = ptoc_int(CTXTc 3);
-  long value = 0;
+  int set = (int)ptoc_int(CTXTc 3);
+  Integer value = 0;
   RETCODE rc;
 
   if (set) {
@@ -1565,7 +1566,7 @@ void ODBCConnectOption(CTXTdecl)
 //extern xsbBool glstack_realloc(CTXTc int,int);
 
 Cell build_codes_list(CTXTdeclc byte *charptr) {
-  int len = strlen(charptr);
+  size_t len = strlen(charptr);
 
   if (len == 0) {
     return makenil;
@@ -1599,9 +1600,9 @@ Cell build_codes_list(CTXTdeclc byte *charptr) {
 int GetColumn(CTXTdecl)
 {
   struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
-  int ColCurNum = ptoc_int(CTXTc 3);
+  int ColCurNum = (int)ptoc_int(CTXTc 3);
   Cell op = ptoc_tag(CTXTc 4);
-  UDWORD len;
+  SQLULEN len;
   if (ColCurNum < 0 || ColCurNum >= cur->NumCols) {
     /* no more columns in the result row*/
     ctop_int(CTXTc 5,1);
@@ -1626,8 +1627,8 @@ int GetColumn(CTXTdecl)
   switch (ODBCToXSBType(cur->ColTypes[ColCurNum])) {
   case SQL_C_CHAR:
     /* convert the column string to a C string */
-    len = ((cur->ColLen[ColCurNum] < cur->OutLen[ColCurNum])?
-	   cur->ColLen[ColCurNum]:cur->OutLen[ColCurNum]);
+    len = ((cur->ColLen[ColCurNum] < (unsigned)cur->OutLen[ColCurNum])?
+	   cur->ColLen[ColCurNum]:(unsigned)cur->OutLen[ColCurNum]);
     *(cur->Data[ColCurNum]+len) = '\0';
 
     /* compare strings here, so don't intern strings unnecessarily*/
@@ -1654,8 +1655,8 @@ int GetColumn(CTXTdecl)
     return TRUE;
   case SQL_C_BINARY:
     /* convert the column string to a C string */
-    len = ((cur->ColLen[ColCurNum] < cur->OutLen[ColCurNum])?
-	   cur->ColLen[ColCurNum]:cur->OutLen[ColCurNum]);
+    len = ((cur->ColLen[ColCurNum] < (unsigned)cur->OutLen[ColCurNum])?
+	   cur->ColLen[ColCurNum]:(SQLULEN)cur->OutLen[ColCurNum]);
     *(cur->Data[ColCurNum]+len) = '\0';
 
     /* compare strings here, so don't intern strings unnecessarily*/
@@ -1681,7 +1682,7 @@ int GetColumn(CTXTdecl)
   case SQL_C_SLONG:
     {
       Cell h;
-      bld_oint(&h,*(long *)(cur->Data[ColCurNum]));
+      bld_oint(&h,*(Integer *)(cur->Data[ColCurNum]));
       return unify(CTXTc op, h);
     }
   case SQL_C_FLOAT:
@@ -1725,7 +1726,7 @@ void ODBCGetInfo(CTXTdecl)
   SQLINTEGER nValue;
   SQLSMALLINT pcbValue;
 
-  short int InfoType = ptoc_int(CTXTc 3);
+  short int InfoType = (int)ptoc_int(CTXTc 3);
   short int InfoTypeType = GetInfoTypeType(InfoType);
 
   /* check to see if SQLGetInfo() is supported */
@@ -1784,7 +1785,7 @@ void ODBCGetInfo(CTXTdecl)
 /*------------------------------------------------------------------------------*/
 void ODBCRowCount(CTXTdecl) {
   struct ODBC_Cursor *cur = (struct ODBC_Cursor *)ptoc_int(CTXTc 2);
-  SQLINTEGER count;
+  SQLLEN count;
   RETCODE rc;
 
   rc = SQLRowCount(cur->hstmt, &count);

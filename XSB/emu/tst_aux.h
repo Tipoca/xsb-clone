@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_aux.h,v 1.17 2010-12-17 23:22:29 tswift Exp $
+** $Id: tst_aux.h,v 1.18 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -119,7 +119,7 @@ extern DynamicStack tstTermStack;
  */
 
 #define TermStack_PushLowToHighVector(pVectorLow,Magnitude) {	\
-   int i, numElements;						\
+   size_t i, numElements;						\
    CPtr pElement;						\
 								\
    numElements = Magnitude;					\
@@ -132,7 +132,7 @@ extern DynamicStack tstTermStack;
  }
    
 #define TermStack_PushHighToLowVector(pVectorHigh,Magnitude) {	\
-   int i, numElements;						\
+   size_t i; size_t numElements;					\
    CPtr pElement;						\
 								\
    numElements = Magnitude;					\
@@ -201,7 +201,7 @@ extern DynamicStack tstTermStackLog;
 #define TermStackLog_PushFrame {				\
    pLogFrame nextFrame;						\
    DynStk_Push(tstTermStackLog,nextFrame);			\
-   LogFrame_Index(nextFrame) = TermStack_Top - TermStack_Base;	\
+   LogFrame_Index(nextFrame) = (int)(TermStack_Top - TermStack_Base);	\
    LogFrame_Value(nextFrame) = *(TermStack_Top);		\
  }
 

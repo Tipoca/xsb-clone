@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.30 2011-02-11 15:08:03 tswift Exp $
+** $Id: tr_code_xsb_i.h,v 1.31 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -65,7 +65,7 @@
  }
 
 #define find_next_nonempty_bucket(pBTHT, pTable, BucketNum) {	\
-   long TableSize = BTHT_NumBuckets(pBTHT);			\
+   Integer TableSize = BTHT_NumBuckets(pBTHT);			\
 								\
    while (TRUE) {						\
      BucketNum++;						\
@@ -164,7 +164,7 @@
 
 Cell *trieinstr_unif_stk;
 CPtr trieinstr_unif_stkptr;
-int  trieinstr_unif_stk_size = DEFAULT_ARRAYSIZ;
+Integer  trieinstr_unif_stk_size = DEFAULT_ARRAYSIZ;
 
 #define MAX_TRIE_REGS 500
 CPtr trieinstr_vars[MAX_TRIE_REGS];
@@ -219,7 +219,7 @@ int     delay_it;
 }
 
 #define restore_trie_registers(temp) {			\
-    int i;						\
+    Integer i;						\
     CPtr treg = temp;					\
     i = cell(treg);					\
     i = int_val(i);					\
@@ -229,9 +229,9 @@ int     delay_it;
       i--;						\
     }							\
     i = *(++treg);					\
-    trieinstr_vars_num = int_val(i);			\
+    trieinstr_vars_num = (int)int_val(i);		\
     for (i = 0; i <= trieinstr_vars_num; i++) {	\
-      trieinstr_vars[i] = (CPtr)*(++treg);			\
+      trieinstr_vars[i] = (CPtr)*(++treg);		\
     }							\
 }
 

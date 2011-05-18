@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.45 2010-10-20 19:27:11 tswift Exp $
+** $Id: memory_xsb.h,v 1.46 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -53,8 +53,8 @@
 typedef struct stack_info {
    byte *low;
    byte *high;
-   long size;
-   long init_size;
+   size_t size;
+   size_t init_size;
 } System_Stack;
 
 
@@ -116,7 +116,7 @@ extern System_Stack pdl,            /* PDL                        */
 /* Calculate New Stack Size
    ------------------------ */
 #define resize_stack(stack_size,min_exp) /*"stack_size" is in K-byte blocks*/\
-   (((unsigned long)stack_size) < (min_exp)/K ? (stack_size) + (min_exp)/K : 2 * (stack_size))
+   ((stack_size) < (min_exp)/K ? (stack_size) + (min_exp)/K : 2 * (stack_size))
 
 
 /* Categories of permanent space use: */
@@ -146,27 +146,27 @@ extern System_Stack pdl,            /* PDL                        */
 
 /* Program and Symbol Tables Space (in Bytes)
    ------------------------------------------ */
-extern long pspacesize[NUM_CATS_SPACE];
+extern size_t pspacesize[NUM_CATS_SPACE];
 
 
 /* Memory Function Prototypes
    -------------------------- */
-extern void *mem_alloc(unsigned long, int);
-extern void *mem_alloc_nocheck(unsigned long, int);
-extern void *mem_calloc(unsigned long, unsigned long, int);
-extern void *mem_calloc_nocheck(unsigned long, unsigned long, int);
-extern void *mem_realloc(void *, unsigned long, unsigned long, int);
-extern void *mem_realloc_nocheck(void *, unsigned long, unsigned long, int);
-extern void mem_dealloc(void *, unsigned long, int);
+extern void *mem_alloc(size_t, int);
+extern void *mem_alloc_nocheck(size_t, int);
+extern void *mem_calloc(size_t, size_t, int);
+extern void *mem_calloc_nocheck(size_t, size_t, int);
+extern void *mem_realloc(void *, size_t, size_t, int);
+extern void *mem_realloc_nocheck(void *, size_t, size_t, int);
+extern void mem_dealloc(void *, size_t, int);
 extern void print_mem_allocs(void);
 #ifndef MULTI_THREAD
-extern void tcpstack_realloc(long);
-extern void complstack_realloc(long);
+extern void tcpstack_realloc(size_t);
+extern void complstack_realloc(size_t);
 extern void handle_tcpstack_overflow(void);
 #else
 struct th_context ;
-extern void tcpstack_realloc(struct th_context *, long);
-extern void complstack_realloc(struct th_context *, long);
+extern void tcpstack_realloc(struct th_context *, size_t);
+extern void complstack_realloc(struct th_context *, size_t);
 extern void handle_tcpstack_overflow(struct th_context *);
 #endif
 
@@ -219,7 +219,7 @@ extern byte *check_interrupts_restore_insts_addr;
 
 #define check_glstack_overflow(arity,PCREG,EXTRA)			      \
   if ((pb)top_of_localstk < (pb)top_of_heap + (OVERFLOW_MARGIN + EXTRA))      \
-    glstack_ensure_space(CTXTc EXTRA,arity)
+     glstack_ensure_space(CTXTc EXTRA,arity)
 
 
 #define check_completion_stack_overflow				\

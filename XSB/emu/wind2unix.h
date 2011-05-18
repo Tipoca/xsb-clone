@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: wind2unix.h,v 1.11 2011-05-01 09:36:18 kifer Exp $
+** $Id: wind2unix.h,v 1.12 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -71,6 +71,7 @@
 #define stricmp   _stricmp 
 #define read      _read    
 #define lseek     _lseek    
+#define chsize    _chsize
 #endif
 
 /* The separator used between pathnames in PATH environment */

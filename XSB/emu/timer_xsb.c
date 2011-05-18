@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: timer_xsb.c,v 1.27 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: timer_xsb.c,v 1.28 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -144,7 +144,7 @@ void init_machine(CTXTdeclc int, int, int, int);
 
 #ifdef WIN_NT
 static int exitFlag = STILL_WAITING;
-static long timedThread;
+static Integer timedThread;
 HANDLE sockEvent = NULL;
 #else /* UNIX */ 
 sigjmp_buf xsb_timer_env;
@@ -288,8 +288,8 @@ int make_timed_call(CTXTdeclc xsbTimeout *pptr,  void (*fptr)(xsbTimeout *))
 #ifdef WIN_NT
   /* create a concurrent timed thread; 
      pptr points to the procedure to be timed */  
-  pptr->timeout_info.parent_thread = (long)GetCurrentThreadId();
-  if((timedThread = _beginthread(fptr,0,(void*)(pptr)))==-1) { 
+  pptr->timeout_info.parent_thread = (Integer)GetCurrentThreadId();
+  if((timedThread = _beginthread((void *)fptr,0,(void*)(pptr)))==-1) { 
     xsb_error("SOCKET_REQUEST: Can't create concurrent timer thread\n");
     return TIMER_SETUP_ERR;
   }

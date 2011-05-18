@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: binding.h,v 1.24 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: binding.h,v 1.25 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -145,7 +145,7 @@
      {Cell temp = makecs(hreg);					 \
       new_heap_functor(hreg,box_psc);				 \
       bld_int(hreg,1); hreg++;					 \
-      bld_int(hreg,(((unsigned long)(val)) >> 24)); hreg++;	 \
+      bld_int(hreg,(((Integer)(val)) >> 24)); hreg++;	 \
       bld_int(hreg,((val) & 0xffffff)); hreg++;			 \
       pushtrail(addr, temp);					 \
       cell(addr) = temp;} */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.h,v 1.12 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: loader_xsb.h,v 1.13 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -32,7 +32,7 @@
 
 struct index_block {
   struct index_block *next ;
-  unsigned long size ;
+  size_t size ;
 } ;
  
 typedef struct index_block index_hdr, * pindex ;
@@ -47,7 +47,7 @@ struct text_segment {
   struct text_segment * next ;
   struct text_segment * prev ;
   pindex index ;
-  unsigned long size ;
+  size_t size ;
 } ;
  
 typedef struct text_segment text_seg, seg_hdr, *pseg ;

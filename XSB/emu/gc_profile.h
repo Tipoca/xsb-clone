@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_profile.h,v 1.15 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: gc_profile.h,v 1.16 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -29,7 +29,7 @@ do { \
   /* first, run the heap & collect info */ \
   if (examine_data) { \
     CPtr cell_ptr; \
-    unsigned long heap_traversed=0; \
+    size_t heap_traversed=0; \
     int i,tag; \
     functor = 0; \
     for (i=0; i<9; i++)  \
@@ -94,9 +94,9 @@ do { \
     chain_from_ls = functor = 0; \
     current_mark = deep_mark=0; \
     start_hbreg = cp_hreg(breg); \
-    old_gens = ((unsigned long) start_hbreg - (unsigned long) glstack.low) /  \
+    old_gens = ((size_t) start_hbreg - (size_t) glstack.low) /  \
       sizeof(CPtr); \
-    current_gen = ((unsigned long) hreg - (unsigned long) start_hbreg) /  \
+    current_gen = ((size_t) hreg - (size_t) start_hbreg) /  \
       sizeof(CPtr); \
     active_cps = 0; \
     frozen_cps = 0; \
@@ -109,7 +109,7 @@ do { \
   count_chains=pflags[COUNT_CHAINS]
 
 #define DECL_GC_PROFILE \
-  unsigned long begin_slidetime, begin_copy_time
+  UInteger begin_slidetime, begin_copy_time
 
 #define GC_PROFILE_START_SUMMARY \
 do { \
@@ -275,7 +275,7 @@ inline static void inspect_ptr(CPtr cell_ptr)
 		*(CPtr*)cell_ptr, (CPtr)cell_ptr);
     } else
       ++tag_examined[tag];
-    if ((unsigned long) cell_ptr < (unsigned long) start_hbreg)
+    if (cell_ptr < start_hbreg)
       ++deep_mark;
     else
       ++current_mark;

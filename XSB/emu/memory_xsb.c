@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.70 2011-05-11 17:56:21 tswift Exp $
+** $Id: memory_xsb.c,v 1.71 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -70,13 +70,13 @@
 #define _SHIFT_VALUE 28
 #endif
 
-extern long int next_free_code;
-extern unsigned long enc[], dec[];
+extern Integer next_free_code;
+extern UInteger enc[], dec[];
 
 void inline extend_enc_dec_as_nec(void *lptr, void *hptr) {
-    unsigned long nibble;
-    unsigned long lnibble = (unsigned long)lptr >> _SHIFT_VALUE;
-    unsigned long hnibble = (unsigned long)hptr >> _SHIFT_VALUE;
+    UInteger nibble;
+    UInteger lnibble = lptr >> _SHIFT_VALUE;
+    UInteger hnibble = hptr >> _SHIFT_VALUE;
     for (nibble = lnibble; nibble <= hnibble; nibble++) {
       if (enc[nibble] == -1) {
 	SYS_MUTEX_LOCK_NOERROR(MUTEX_GENTAG);
@@ -124,7 +124,7 @@ void print_mem_allocs() {
 #endif
 
 //extern FILE *logfile;
-//static long alloc_cnt = 0;  /* DSW for analyzing memory usage */
+//static Integer alloc_cnt = 0;  /* DSW for analyzing memory usage */
 
 /* === alloc permanent memory ============================================== */
 
@@ -133,7 +133,7 @@ void print_mem_allocs() {
    abort after unlocking (when we check -- we're sometimes a little
    sloppy). */
 
-void *mem_alloc(unsigned long size, int category)
+void *mem_alloc(size_t size, int category)
 {
     byte * ptr;
 
@@ -167,7 +167,7 @@ void *mem_alloc(unsigned long size, int category)
 
 /* TLS: does not check returns -- for use in error messages and
    throw */
-void *mem_alloc_nocheck(unsigned long size, int category)
+void *mem_alloc_nocheck(size_t size, int category)
 {
     byte * ptr;
 
@@ -192,12 +192,12 @@ void *mem_alloc_nocheck(unsigned long size, int category)
 
 
 /* === calloc permanent memory ============================================= */
-void *mem_calloc(unsigned long size, unsigned long occs, int category)
+void *mem_calloc(size_t size, size_t occs, int category)
 {
     byte * ptr;
 
     // #if defined(NON_OPT_COMPILE) || !defined(MULTI_THREAD)  || defined(GENERAL_TAGGING)
-    unsigned long length = (size*occs+7) & ~0x7;
+    size_t length = (size*occs+7) & ~0x7;
     // #endif
 
 #ifdef NON_OPT_COMPILE
@@ -225,11 +225,11 @@ void *mem_calloc(unsigned long size, unsigned long occs, int category)
 }
 
 /* same as mem_calloc except return NULL on failure instead of throwing error */
-void *mem_calloc_nocheck(unsigned long size, unsigned long occs, int category)
+void *mem_calloc_nocheck(size_t size, size_t occs, int category)
 {
     byte * ptr;
     // #if defined(NON_OPT_COMPILE) || !defined(MULTI_THREAD)  || defined(GENERAL_TAGGING)
-    unsigned long length = (size*occs+7) & ~0x7;
+    size_t length = (size*occs+7) & ~0x7;
     // #endif
 
 #ifdef NON_OPT_COMPILE
@@ -254,7 +254,7 @@ void *mem_calloc_nocheck(unsigned long size, unsigned long occs, int category)
 
 /* === realloc permanent memory ============================================ */
 
-void *mem_realloc(void *addr, unsigned long oldsize, unsigned long newsize, int category)
+void *mem_realloc(void *addr, size_t oldsize, size_t newsize, int category)
 {
   byte *new_addr;
     newsize = (newsize+7) & ~0x7 ;	      /* round to 8 */
@@ -281,7 +281,7 @@ void *mem_realloc(void *addr, unsigned long oldsize, unsigned long newsize, int 
     return new_addr;
 }
 
-void *mem_realloc_nocheck(void *addr, unsigned long oldsize, unsigned long newsize, int category)
+void *mem_realloc_nocheck(void *addr, size_t oldsize, size_t newsize, int category)
 {
   byte *new_addr;
     newsize = (newsize+7) & ~0x7 ;	      /* round to 8 */
@@ -306,7 +306,7 @@ void *mem_realloc_nocheck(void *addr, unsigned long oldsize, unsigned long newsi
 
 /* === dealloc permanent memory ============================================ */
 
-void mem_dealloc(void *addr, unsigned long size, int category)
+void mem_dealloc(void *addr, size_t size, int category)
 {
   //  int i;
     size = (size+7) & ~0x7 ;	      /* round to 8 */
@@ -332,7 +332,7 @@ void mem_dealloc(void *addr, unsigned long size, int category)
  * to "new_size" K-byte blocks.
  */
 
-void tcpstack_realloc(CTXTdeclc long new_size) {
+void tcpstack_realloc(CTXTdeclc size_t new_size) {
 
   byte *cps_top,         /* addr of topmost byte in old CP Stack */
        *trail_top;       /* addr of topmost frame (link field) in old Trail */
@@ -340,7 +340,7 @@ void tcpstack_realloc(CTXTdeclc long new_size) {
   byte *new_trail,        /* bottom of new trail area */
        *new_cps;          /* bottom of new choice point stack area */
 
-  long trail_offset,      /* byte offsets between the old and new */
+  size_t trail_offset,      /* byte offsets between the old and new */
        cps_offset;        /*   stack bottoms */
 
   CPtr *trail_link;    /* for stepping thru Trail and altering dyn links */
@@ -392,11 +392,11 @@ Please use -c N or cpsize(N) to start with a larger choice point stack"
     extend_enc_dec_as_nec(new_trail,new_cps);
 #endif
 
-    trail_offset = (long)(new_trail - tcpstack.low);
-    cps_offset = (long)(new_cps - tcpstack.high);
+    trail_offset = (new_trail - tcpstack.low);
+    cps_offset = (new_cps - tcpstack.high);
     memmove(cps_top + cps_offset,              /* move to */
 	    cps_top + trail_offset,            /* move from */
-	    (long)(tcpstack.high - cps_top) ); /* number of bytes */
+	    (tcpstack.high - cps_top) ); /* number of bytes */
   }
   /* Compact the Trail / Choice Point Stack Area
      ------------------------------------------- */
@@ -407,11 +407,11 @@ Please use -c N or cpsize(N) to start with a larger choice point stack"
      */
     memmove(cps_top - (tcpstack.size - new_size) * K,  /* move to */
 	    cps_top,                                   /* move from */
-	    (long)(tcpstack.high - cps_top) );         /* number of bytes */
+	    (tcpstack.high - cps_top) );         /* number of bytes */
     new_trail = (byte *)realloc(tcpstack.low, new_size * K);
-    trail_offset = (long)(new_trail - tcpstack.low);
+    trail_offset = (new_trail - tcpstack.low);
     new_cps = new_trail + new_size * K;
-    cps_offset = (long)(new_cps - tcpstack.high);
+    cps_offset = (new_cps - tcpstack.high);
   }
 
   /* Update the Trail links
@@ -526,12 +526,12 @@ void handle_tcpstack_overflow(CTXTdecl)
  * K-byte blocks.
  */
 
-void complstack_realloc (CTXTdeclc long new_size) {
+void complstack_realloc (CTXTdeclc size_t new_size) {
 
   byte *new_top,    /* bottom of new trail area */
   *new_bottom;      /* bottom of new choice point stack area */
 
-  long top_offset,   /* byte offsets between the old and new */
+  size_t top_offset,   /* byte offsets between the old and new */
   bottom_offset;    /*    stack bottoms */
 
   byte *cs_top;     /* ptr to topmost byte on the complstack */
@@ -569,14 +569,14 @@ void complstack_realloc (CTXTdeclc long new_size) {
       xsb_exit(CTXTc "Not enough core to resize the Completion Stack!");
     new_bottom = new_top + new_size * K;
     
-    top_offset = (long)(new_top - complstack.low);
-    bottom_offset = (long)(new_bottom - complstack.high);
+    top_offset = (new_top - complstack.low);
+    bottom_offset = (new_bottom - complstack.high);
     /* the following floats the completion stack from the middle
      * of the re-allocated block of memory to its upper end
      */
     memmove(cs_top + bottom_offset,     /* move to */
 	    cs_top + top_offset,        /* move from */
-	    (long)(complstack.high - cs_top) );
+	    (complstack.high - cs_top) );
   }
   /* Compact the Completion Stack
      ---------------------------- */
@@ -587,11 +587,11 @@ void complstack_realloc (CTXTdeclc long new_size) {
      */
     memmove(cs_top - (complstack.size - new_size) * K,  /* move to */
 	    cs_top,                                     /* move from */
-	    (long)(complstack.high - cs_top) );         /* number of bytes */
+	    (complstack.high - cs_top) );         /* number of bytes */
     new_top = (byte *)realloc(complstack.low, new_size * K);
-    top_offset = (long)(new_top - complstack.low);
+    top_offset = (new_top - complstack.low);
     new_bottom = new_top + new_size * K;
-    bottom_offset = (long)(new_bottom - complstack.high);
+    bottom_offset = (new_bottom - complstack.high);
   }
 
   /* Update subgoals' pointers into the completion stack

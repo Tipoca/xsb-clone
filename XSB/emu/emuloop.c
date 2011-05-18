@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.213 2011-02-23 22:00:34 tswift Exp $
+** $Id: emuloop.c,v 1.214 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -830,40 +830,53 @@ contcase:     /* the main loop */
     //printf("\nPUTFLOAT DONE!\n");
   XSB_End_Instr()
 
+#ifdef BITS64
   XSB_Start_Instr(getdfloat,_getdfloat) /* PPR-D */
     register Cell op1;
     union {
       struct {
-	long int1,int2;
+	Integer int1;
       } intp;
       double fltp;
     } cvtr;
     Op1(Register(get_xxr));
     cvtr.intp.int1 = *(pw)(lpcreg+sizeof(Cell));
-    cvtr.intp.int2 = *(pw)(lpcreg+2*sizeof(Cell));
     ADVANCE_PC(size_xxxXX);
     //    printf("getdfloat: %2.16f\n",cvtr.fltp);
-    nunify_with_float_get(op1,cvtr.fltp);
+    nunify_with_float_get(op1,(Float)cvtr.fltp);
   XSB_End_Instr()
 
-#ifdef BITS64
   XSB_Start_Instr(putdfloat,_putdfloat) /* PPR-D */
     register Cell op1;
     union {
       struct {
-	long int1;
+	Integer int1;
       } intp;
       double fltp;
     } cvtr;
     Op1(get_xxr);
     cvtr.intp.int1 = *(pw)(lpcreg+sizeof(Cell));
-    //    printf("putdfloat: %d %d %d %d\n",sizeof(long),sizeof(double),sizeof(Cell),sizeof(float));
     ADVANCE_PC(size_xxxXX);
-    //    printf("putdfloat: %2.16f %x %p\n",cvtr.fltp,cvtr.intp.int1,cvtr.intp.int1);
     bld_boxedfloat(CTXTc (CPtr)op1, (Float)cvtr.fltp);
   XSB_End_Instr()
 
 #else
+  XSB_Start_Instr(getdfloat,_getdfloat) /* PPR-D */
+    register Cell op1;
+    union {
+      struct {
+	long int1,int2; // ???? for bits64
+      } intp;
+      double fltp;
+    } cvtr;
+    Op1(Register(get_xxr));
+    cvtr.intp.int1 = (long)(*(pw)(lpcreg+sizeof(Cell)));
+    cvtr.intp.int2 = (long)(*(pw)(lpcreg+2*sizeof(Cell)));
+    ADVANCE_PC(size_xxxXX);
+    //    printf("getdfloat: %2.16f\n",cvtr.fltp);
+    nunify_with_float_get(op1,cvtr.fltp);
+  XSB_End_Instr()
+
   XSB_Start_Instr(putdfloat,_putdfloat) /* PPR-D */
     register Cell op1;
     union {
@@ -1245,14 +1258,14 @@ contcase:     /* the main loop */
     Def1op
     Op1(get_xxv);
     ADVANCE_PC(size_xxx);
-    bld_int((CPtr)op1, ((pb)tcpstack.high - (pb)breg));
+    bld_oint((CPtr)op1, ((pb)tcpstack.high - (pb)breg));
   XSB_End_Instr()
 
   XSB_Start_Instr(gettbreg,_gettbreg) /* PPR */
     Def1op
     Op1(get_xxr);
     ADVANCE_PC(size_xxx);
-    bld_int((CPtr)op1, ((pb)tcpstack.high - (pb)breg));
+    bld_oint((CPtr)op1, ((pb)tcpstack.high - (pb)breg));
   XSB_End_Instr()
 
     /* Assertion commented out in MT engine because inter-thread
@@ -1313,7 +1326,7 @@ contcase:     /* the main loop */
   XSB_Start_Instr(jumptbreg,_jumptbreg) /* PPR-L */	/* ??? */
     Def1op
     Op1(get_xxr);
-    bld_int((CPtr)op1, ((pb)tcpstack.high - (pb)breg));
+    bld_oint((CPtr)op1, ((pb)tcpstack.high - (pb)breg));
     lpcreg = *(byte **)(lpcreg+sizeof(Cell));
 #ifdef MULTI_THREAD
     if (i_have_dyn_mutex) xsb_abort("DYNAMIC MUTEX ERROR\n");
@@ -1328,19 +1341,19 @@ contcase:     /* the main loop */
     Op2(get_xxxn);
     ADVANCE_PC(size_xxxX);
 #ifdef GC_TEST
-    if ((infcounter++ > GC_INFERENCES) || heap_local_overflow((long)op2))
+    if ((infcounter++ > GC_INFERENCES) || heap_local_overflow((Integer)op2))
       {
 	infcounter = 0;
         fprintf(stddbg, ".");
 #else
 	//    printf("t_h %d %p\n",(ereg-hreg),hreg);
-	if (heap_local_overflow((long)op2))
+	if (heap_local_overflow((Integer)op2))
       {
 #endif
-        if (gc_heap(CTXTc op1,FALSE)) { /* garbage collection potentially modifies hreg */
-	  if (heap_local_overflow((long)op2)) {
+        if (gc_heap(CTXTc (int)op1,FALSE)) { /* garbage collection potentially modifies hreg */
+	  if (heap_local_overflow((Integer)op2)) {
 	    if (pflags[STACK_REALLOC]) {
-	      if (glstack_realloc(CTXTc resize_stack(glstack.size,(op2*sizeof(Cell))),op1) != 0) {
+	      if (glstack_realloc(CTXTc resize_stack(glstack.size,(op2*sizeof(Cell))),(int)op1) != 0) {
 		xsb_basic_abort(local_global_exception);
 	      }
 	    } else {
@@ -1350,7 +1363,7 @@ contcase:     /* the main loop */
 	  }
 	}	/* are there any localy cached quantities that must be reinstalled ? */
       } else if (force_string_gc) {
-	  gc_heap(CTXTc op1,TRUE);
+	  gc_heap(CTXTc (int)op1,TRUE);
 	}
   XSB_End_Instr()
 
@@ -1526,7 +1539,7 @@ argument positions.
 	      op1 = (Cell)string_val(op1);
 	      break;
             }
-	    j = (j<<1) + ihash((Cell)op1, (Cell)op3);
+	    j = (j<<1) + (int)ihash((Cell)op1, (Cell)op3);
           }
       } else {
 	op1 = opa[i];
@@ -1555,7 +1568,7 @@ argument positions.
 	  xsb_error("Illegal operand in switchon3bound");
 	  break;
         }
-	j = (j<<1) + ihash((Cell)op1, (Cell)op3);
+	j = (j<<1) + (int)ihash((Cell)op1, (Cell)op3);
       }
       }
     }
@@ -1566,9 +1579,9 @@ argument positions.
 #ifdef MULTI_THREAD
     Def1op
     Op1(get_xxxl);
-    if (xsb_thread_entry > *((long *)op1+2)) Fail1;
-    //    fprintf(stderr,"switchonthread to %p\n",(pb)(*((long *)op1+3+(th->tid))));
-    if (!(lpcreg = (pb)(*((long *)op1+3+(xsb_thread_entry))))) Fail1;
+    if (xsb_thread_entry > *((Integer *)op1+2)) Fail1;
+    //    fprintf(stderr,"switchonthread to %p\n",(pb)(*((Integer *)op1+3+(th->tid))));
+    if (!(lpcreg = (pb)(*((Integer *)op1+3+(xsb_thread_entry))))) Fail1;
 #else
     xsb_exit("Not configured for Multithreading");
 #endif
@@ -2321,16 +2334,14 @@ argument positions.
     XSB_Deref(op2);                                                      
     {
 	double b = 0, e = 0, r;
-	int boxed = 0;
 	int e_int = 0, b_int = 0;
 
 	if( isinteger(op2) )
-	{	b = int_val(op2);
+	  {	b = (double)int_val(op2);
 		b_int = 1;
 	}
 	else if( isboxedinteger(op2) )
-	{	b = boxedint_val(op2);
-		boxed = 1;
+	  {	b = (double)boxedint_val(op2);
 		b_int = 1;
 	}
 	else if( isfloat(op2) )
@@ -2351,12 +2362,11 @@ argument positions.
 	}
 
 	if( isinteger(op1) )
-	{	e = int_val(op1);
+	  {	e = (double)int_val(op1);
 		e_int = 1;
 	}
 	else if( isboxedinteger(op1) )
-	{	e = boxedint_val(op1);
-		boxed = 1;
+	  {	e = (double)boxedint_val(op1);
 		e_int = 1;
 	}
 	else if( isfloat(op1) )
@@ -2370,7 +2380,7 @@ argument positions.
 	  FltInt fiop1;
 	  if (xsb_eval(CTXTc op1,&fiop1)) {
 	    if (isfiint(fiop1)) {
-	      e = fiint_val(fiop1);
+	      e = (double)fiint_val(fiop1);
 	      e_int = 1;
 	    } else e = fiflt_val(fiop1);
 	  } else { arithmetic_abort(CTXTc op2, "**", op1); }
@@ -2381,13 +2391,9 @@ argument positions.
 
 	r = pow(b,e);
 
-	if( b_int && e_int )
-	{	if( boxed )
-		{	bld_oint(op3, r);
-		}
-		else
-		{	bld_int(op3, r);
-		}
+	if( b_int && e_int ) 
+	{
+	  bld_oint(op3, r);
 	}
 	else
 	  bld_boxedfloat( CTXTc op3, (Float)r );
@@ -2538,7 +2544,7 @@ argument positions.
     ADVANCE_PC(size_xxxX);
     cpreg = lpcreg;
     psc = (Psc)op1;
-    //    if (flags[PIL_TRACE]) fprintf(logfile,"%ld:call %s/%d (h:%p,e:%p,pc:%p,b:%p,hs:%lx)\n",(long)(cpu_time() * 1000),get_name(psc),get_arity(psc),hreg,ereg,lpcreg,breg,top_of_localstk-hreg);
+    //    if (flags[PIL_TRACE]) fprintf(logfile,"%ld:call %s/%d (h:%p,e:%p,pc:%p,b:%p,hs:%lx)\n",(Integer)(cpu_time() * 1000),get_name(psc),get_arity(psc),hreg,ereg,lpcreg,breg,top_of_localstk-hreg);
 #ifdef CP_DEBUG
     pscreg = psc;
 #endif
@@ -2611,7 +2617,7 @@ argument positions.
     ereg = (CPtr)op1; 
     //    printf("%p,%p\n",ereg,lpcreg);
     {/* initialize all permanent variables not in the first chunk to unbound */
-      int  i = ((Cell)op3) - op2;
+      Integer  i = ((Cell)op3) - op2;
       CPtr p = ((CPtr)op1) - op2;
       while (i--) {
 	bld_free(p);
@@ -2737,7 +2743,7 @@ argument positions.
 #ifdef CP_DEBUG
     pscreg = psc;
 #endif
-    //    if (flags[PIL_TRACE]) fprintf(logfile,"%ld:exec %s/%d (h:%p,e:%p,pc:%p,b:%p,hs:%lx)\n",(long)(cpu_time()*1000),get_name(psc),get_arity(psc),hreg,ereg,lpcreg,breg,top_of_localstk-hreg);
+    //    if (flags[PIL_TRACE]) fprintf(logfile,"%ld:exec %s/%d (h:%p,e:%p,pc:%p,b:%p,hs:%lx)\n",(Integer)(cpu_time()*1000),get_name(psc),get_arity(psc),hreg,ereg,lpcreg,breg,top_of_localstk-hreg);
     call_sub(psc);
   XSB_End_Instr()
 

@@ -180,7 +180,7 @@ VariantSF get_variant_sf(CTXTdeclc Cell callTerm, TIFptr pTIF, Cell *retTerm) {
   if ( IsNULL(leaf) )
     return NULL;
   if ( IsNonNULL(retTerm) )
-    *retTerm = build_ret_term(CTXTc callVars[0], &callVars[1]);
+    *retTerm = build_ret_term(CTXTc (int)callVars[0], &callVars[1]);
   return ( CallTrieLeaf_GetSF(leaf) );
 }
 
@@ -221,7 +221,7 @@ SubProdSF get_subsumer_sf(CTXTdeclc Cell callTerm, TIFptr pTIF, Cell *retTerm) {
     construct_answer_template(CTXTc callTerm, sf, ansTmplt);
   }
   if ( IsNonNULL(retTerm) )
-    *retTerm = build_ret_term(CTXTc ansTmplt[0], &ansTmplt[1]);
+    *retTerm = build_ret_term(CTXTc (int)ansTmplt[0], &ansTmplt[1]);
   return ( sf );
 }
   
@@ -367,7 +367,7 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
       construct_answer_template(CTXTc callTerm, conssf_producer(sf), callVars);
 
 
-    *retTerm = build_ret_term(CTXTc callVars[0],&callVars[1]);
+    *retTerm = build_ret_term(CTXTc (int)callVars[0],&callVars[1]);
 
     return sf;
   }
@@ -396,7 +396,7 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
 
 #define push_node(node) {\
   if (node_stk_top >= freeing_stack_size) {\
-    unsigned long old_freeing_stack_size = freeing_stack_size; \
+    size_t old_freeing_stack_size = freeing_stack_size; \
     freeing_stack_size = freeing_stack_size + freeing_stack_increment;\
     freeing_stack = (BTNptr *)mem_realloc(freeing_stack,old_freeing_stack_size*sizeof(BTNptr),\
 					  freeing_stack_size*sizeof(BTNptr),TABLE_SPACE);\
@@ -899,7 +899,7 @@ static BTNptr get_prev_sibl(BTNptr node)
  */
 void delete_branch(CTXTdeclc BTNptr lowest_node_in_branch, BTNptr *hook,int eval_method) {
 
-  int num_left_in_hash;
+  Integer num_left_in_hash;
   BTNptr prev, parent_ptr, *y1, *z;
   Structure_Manager *smNODEptr;
 
@@ -1322,8 +1322,8 @@ void breg_retskel(CTXTdecl)
     Cell    term;
     VariantSF sg_frame;
     CPtr    tcp, cptr, where;
-    int     i;
-    Integer breg_offset, Nvars;
+    int     i, Nvars;
+    Integer breg_offset;
 
     breg_offset = ptoc_int(CTXTc 1);
     tcp = (CPtr)((Integer)(tcpstack.high) - breg_offset);
@@ -1420,7 +1420,7 @@ void init_shared_trie_table() {
 
 Integer new_private_trie(CTXTdeclc int props) {
   Integer result = 0;
-  Integer index;
+  int index;
   int type = TRIE_TYPE(props);
 
   if (itrie_array_first_free < 0) {
@@ -1508,10 +1508,10 @@ void private_trie_intern(CTXTdecl) {
   int flag, check_cps_flag, expand_flag;
   BTNptr Leaf;
 
-  Trie_id = iso_ptoc_int(CTXTc 1,"trie_intern/2");
+  Trie_id = (int)iso_ptoc_int(CTXTc 1,"trie_intern/2");
   term = ptoc_tag(CTXTc 2);
-  check_cps_flag = ptoc_int(CTXTc 5);
-  expand_flag = ptoc_int(CTXTc 6);
+  check_cps_flag = (int)ptoc_int(CTXTc 5);
+  expand_flag = (int)ptoc_int(CTXTc 6);
 
   switch_to_trie_assert;
   SPLIT_TRIE_ID(Trie_id,index,type);
@@ -1563,7 +1563,7 @@ int private_trie_interned(CTXTdecl) {
   int Trie_id,index,type;
   BTNptr *trie_root_addr;
 
-  Trie_id = iso_ptoc_int(CTXTc 1,"private_trie_interned/3");
+  Trie_id = (int)iso_ptoc_int(CTXTc 1,"private_trie_interned/3");
   trie_term =  ptoc_tag(CTXTc 2);
  Leafterm = ptoc_tag(CTXTc 3);
 
@@ -1582,7 +1582,7 @@ int private_trie_interned(CTXTdecl) {
       }
     }
   }
-  if ((*trie_root_addr != NULL) && (!((long) *trie_root_addr & 0x3))) {
+  if ((*trie_root_addr != NULL) && (!((Integer) *trie_root_addr & 0x3))) {
     XSB_Deref(trie_term);
     XSB_Deref(Leafterm);
     if ( isref(Leafterm) ) {  
@@ -1614,7 +1614,7 @@ int shas_trie_interned(CTXTdecl) {
   SPLIT_TRIE_ID(Trie_id,index,type);
   trie_root_addr = &(shared_itrie_array[index].root);
 
-  if ((*trie_root_addr != NULL) && (!((long) *trie_root_addr & 0x3))) {
+  if ((*trie_root_addr != NULL) && (!(*trie_root_addr & 0x3))) {
     XSB_Deref(trie_term);
     XSB_Deref(Leafterm);
     //    if ( isref(Leafterm) ) {  
@@ -1650,9 +1650,9 @@ void private_trie_unintern(CTXTdecl)
   int Trie_id,index,type;
   BTNptr *trie_root_addr;
 
-  Trie_id = iso_ptoc_int(CTXTc 1,"trie_unintern/2");
+  Trie_id = (int)iso_ptoc_int(CTXTc 1,"trie_unintern/2");
   Leaf = (BTNptr)iso_ptoc_int(CTXTc 2,"trie_unintern/2");
-  disposalType = ptoc_int(CTXTc 3);
+  disposalType = (int)ptoc_int(CTXTc 3);
  
   SPLIT_TRIE_ID(Trie_id,index,type);
   trie_root_addr = &(itrie_array[index].root);
@@ -1834,7 +1834,7 @@ static void shared_trie_drop(CTXTdeclc int i ) {
 void trie_drop(CTXTdecl) {
   int index,type;
 
-  int Trie_id = iso_ptoc_int(CTXTc 2,"trie_drop/1");
+  int Trie_id = (int)iso_ptoc_int(CTXTc 2,"trie_drop/1");
   trie_truncate(CTXTc Trie_id);
   SPLIT_TRIE_ID(Trie_id,index,type);
   if (PRIVATE_TRIE(type)) 
@@ -1864,7 +1864,7 @@ void first_trie_property(CTXTdecl) {
 }
 
 void next_trie_property(CTXTdecl) {
-  int index = ptoc_int(CTXTc 2);
+  int index = (int)ptoc_int(CTXTc 2);
   ctop_int(CTXTc 3, itrie_array[index].type);
   ctop_int(CTXTc 4,itrie_array[index].next_entry);
 }
@@ -1908,7 +1908,7 @@ To reclaim all the garbage associated with a particular root
 static IGRptr IGRhead = NULL;
 #endif
 
-static IGRptr newIGR(long root)
+static IGRptr newIGR(Integer root)
 {
   IGRptr igr;
   
@@ -1929,7 +1929,7 @@ static IGLptr newIGL(BTNptr leafn)
   return igl;
 }
 
-static IGRptr getIGRnode(CTXTdeclc long rootn)
+static IGRptr getIGRnode(CTXTdeclc Integer rootn)
 {
   IGRptr p = IGRhead;  
 
@@ -1948,7 +1948,7 @@ static IGRptr getIGRnode(CTXTdeclc long rootn)
   return p;
 }
 
-static IGRptr getAndRemoveIGRnode(CTXTdeclc long rootn)
+static IGRptr getAndRemoveIGRnode(CTXTdeclc Integer rootn)
 {
   IGRptr p = IGRhead;  
 
@@ -2011,7 +2011,7 @@ static void insertLeaf(IGRptr r, BTNptr leafn)
 /*
   This feature does not yet support shared tries or call subsumption.
  */
-void reclaim_uninterned_nr(CTXTdeclc long rootidx)
+void reclaim_uninterned_nr(CTXTdeclc Integer rootidx)
 {
   IGRptr r = getAndRemoveIGRnode(CTXTc rootidx);
   IGLptr l, p;
@@ -2061,7 +2061,7 @@ void reclaim_uninterned_nr(CTXTdeclc long rootidx)
 void trie_dispose_nr(CTXTdecl)
 {
   BTNptr Leaf;
-  long Rootidx;
+  Integer Rootidx;
 
   Rootidx = iso_ptoc_int(CTXTc 1,"trie_unintern_nr/2");
   Leaf = (BTNptr)iso_ptoc_int(CTXTc 2,"trie_unintern_nr/2");
@@ -2080,7 +2080,7 @@ void trie_dispose_nr(CTXTdecl)
  * This function does not yet support shared tries.
  */
 
-void trie_undispose(CTXTdeclc long rootIdx, BTNptr leafn)
+void trie_undispose(CTXTdeclc Integer rootIdx, BTNptr leafn)
 {
   IGRptr r = getIGRnode(CTXTc rootIdx);
   IGLptr p = r -> leaves;
@@ -2677,7 +2677,7 @@ void reset_answer_stack(CTXTdecl) {
 
 #define push_answer_node(as_leaf) {				                  \
     if (answer_stack_top >= answer_stack_size) {			          \
-      unsigned long old_answer_stack_size = answer_stack_size;		          \
+      size_t old_answer_stack_size = answer_stack_size;		          \
       answer_stack_size = answer_stack_size + answer_stack_increment;	\
       answer_stack = (BTNptr *) mem_realloc(answer_stack,			  \
 					  old_answer_stack_size*sizeof(BTNptr *), \
@@ -2806,7 +2806,7 @@ int done_subgoal_stack_size = 0;
 
 void inline push_done_subgoal_node(CTXTdeclc VariantSF Subgoal) {				
     if (done_subgoal_stack_top >= done_subgoal_stack_size) {		
-      unsigned long old_done_subgoal_stack_size = done_subgoal_stack_size; 
+      size_t old_done_subgoal_stack_size = done_subgoal_stack_size; 
       done_subgoal_stack_size = done_subgoal_stack_size + done_subgoal_stack_increment; 
       done_subgoal_stack = (VariantSF *) mem_realloc(done_subgoal_stack,	
 						    old_done_subgoal_stack_size*sizeof(VariantSF *), 
@@ -3062,7 +3062,7 @@ void unvisit_done_tifs(CTXTdecl) {
 
 void inline push_done_tif_node(CTXTdeclc TIFptr node) {					\
     if (done_tif_stack_top >= done_tif_stack_size) {			\
-      unsigned long old_done_tif_stack_size = done_tif_stack_size;	\
+      size_t old_done_tif_stack_size = done_tif_stack_size;	\
       done_tif_stack_size = done_tif_stack_size + done_tif_stack_increment;	\
       done_tif_stack = (TIFptr *) mem_realloc(done_tif_stack,			  \
 					      old_done_tif_stack_size*sizeof(TIFptr *), \
@@ -3583,7 +3583,7 @@ int gc_tabled_preds(CTXTdecl)
 
 int abolish_usermod_tables(CTXTdecl)
 {
-  unsigned long i;
+  size_t i;
   Pair pair;
   Psc psc;
   TIFptr tif;
@@ -4158,7 +4158,7 @@ int component_stack_size = 0;
 
 #define push_comp_node(as_leaf,index) {				\
   if (component_stack_top >= component_stack_size) {\
-    unsigned long old_component_stack_size = component_stack_size; \
+    size_t old_component_stack_size = component_stack_size; \
     component_stack_size = component_stack_size + component_stack_increment;\
     component_stack = (answerDFN)mem_realloc(component_stack,		\
 					     old_component_stack_size*sizeof(struct answer_dfn), \
@@ -4227,7 +4227,7 @@ int done_answer_stack_size = 0;
 
 #define push_done_node(index,dfn_num) {					\
     if (done_answer_stack_top >= done_answer_stack_size) {				\
-      unsigned long old_done_answer_stack_size = done_answer_stack_size;		\
+      size_t old_done_answer_stack_size = done_answer_stack_size;		\
       done_answer_stack_size = done_answer_stack_size + done_answer_stack_increment; \
       done_answer_stack = (doneAnswerDFN) mem_realloc(done_answer_stack,		\
 					       old_done_answer_stack_size*sizeof(struct done_answer_dfn), \
@@ -4285,7 +4285,7 @@ void reset_done_answer_stack() {
 /* Returns -1 when no answer found (not 0, as 0 can be an index */
 int visited_answer(BTNptr as_leaf) {		
   if (!VISITED_ANSWER(as_leaf)) return -1;
-  else return STACK_INDEX(as_leaf);
+  else return (int)STACK_INDEX(as_leaf);
 }
 
 /* Negative DEs dont have answer pointer -- so need to obtain it from subgoal */
@@ -4618,7 +4618,7 @@ case CALL_SUBS_SLG_NOT: {
   int hasReturn;
 
   producerSF = (VariantSF) ptoc_int(CTXTc 2);
-  hasReturn =  ptoc_int(CTXTc 4);
+  hasReturn =  (int)ptoc_int(CTXTc 4);
   consumerSF = (VariantSF) ptoc_int(CTXTc 5);
 
   if (hasReturn) {

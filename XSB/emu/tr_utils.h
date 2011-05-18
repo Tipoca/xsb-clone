@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.67 2011-01-09 22:30:16 tswift Exp $
+** $Id: tr_utils.h,v 1.68 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -81,7 +81,7 @@ extern void init_private_trie_table(CTXTdecl);
 extern void delete_branch(CTXTdeclc BTNptr, BTNptr *,int);
 extern void safe_delete_branch(BTNptr);
 extern void undelete_branch(BTNptr);
-extern void reclaim_uninterned_nr(CTXTdeclc long rootidx);
+extern void reclaim_uninterned_nr(CTXTdeclc Integer rootidx);
 extern void delete_trie(CTXTdeclc BTNptr);
 extern xsbBool is_completed_table(TIFptr);
 
@@ -99,7 +99,7 @@ extern void private_trie_unintern(CTXTdecl);
 extern void shas_trie_unintern(CTXTdecl);
 extern void trie_dispose_nr(CTXTdecl);
 extern void trie_truncate(CTXTdeclc Integer);
-extern void trie_undispose(CTXTdeclc long, BTNptr);
+extern void trie_undispose(CTXTdeclc Integer, BTNptr);
 extern int interned_trie_cps_check(CTXTdeclc BTNptr);
 
 // extern xsbBool check_table_cut;

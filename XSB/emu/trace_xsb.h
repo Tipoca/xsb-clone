@@ -27,8 +27,8 @@
 #include "basictypes.h"
 
 struct trace_str {		/* for tracing purpose below */
-    unsigned long maxlstack_count, maxgstack_count, maxtrail_count, maxcpstack_count;
-    unsigned long maxopenstack_count, maxlevel_num;
+    size_t maxlstack_count, maxgstack_count, maxtrail_count, maxcpstack_count;
+    size_t maxopenstack_count, maxlevel_num;
     double time_count;
 };
 

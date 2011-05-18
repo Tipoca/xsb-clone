@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.h,v 1.9 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: hash_xsb.h,v 1.10 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -29,8 +29,8 @@
  */
 
 typedef struct hash_table {
-  unsigned long size;
-  unsigned long contains;
+  size_t size;
+  size_t contains;
   void **table;
 } Hash_Table;
 
@@ -94,8 +94,8 @@ extern Hash_Table string_table;
  *  Function prototypes for dynamic hash table use.
  */
 
-unsigned long  next_prime(unsigned long  some_integer);
-unsigned long  hash(const char *atom_name, byte arity, word hash_table_size);
+size_t  next_prime(size_t  some_integer);
+size_t  hash(const char *atom_name, byte arity, size_t hash_table_size);
 void  expand_symbol_table();
 void  expand_string_table();
 void  symbol_table_stats();

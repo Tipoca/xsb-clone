@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.39 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: slgdelay.h,v 1.40 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -263,19 +263,19 @@ extern void simplify_neg_fails(struct th_context *, VariantSF);
 extern void do_delay_stuff(struct th_context *, NODEptr, VariantSF, xsbBool);
 extern void handle_unsupported_answer_subst(struct th_context *, NODEptr);
 #endif
-extern unsigned long unused_de_space(void);
-extern unsigned long unused_dl_space(void);
-extern unsigned long unused_pnde_space(void);
-extern unsigned long allocated_de_space(char *,int * num_blocks);
-extern unsigned long allocated_dl_space(char *,int * num_blocks);
-extern unsigned long allocated_pnde_space(char *,int * num_blocks);
+extern size_t unused_de_space(void);
+extern size_t unused_dl_space(void);
+extern size_t unused_pnde_space(void);
+extern size_t allocated_de_space(char *,size_t * num_blocks);
+extern size_t allocated_dl_space(char *,size_t * num_blocks);
+extern size_t allocated_pnde_space(char *,size_t * num_blocks);
 #ifndef MULTI_THREAD
 extern void simplify_pos_unsupported(NODEptr);
 extern void release_all_dls(ASI);
 #else
-extern unsigned long unused_de_space_private(struct th_context *);
-extern unsigned long unused_dl_space_private(struct th_context *);
-extern unsigned long unused_pnde_space_private(struct th_context *);
+extern size_t unused_de_space_private(struct th_context *);
+extern size_t unused_dl_space_private(struct th_context *);
+extern size_t unused_pnde_space_private(struct th_context *);
 extern void simplify_pos_unsupported(struct th_context *, NODEptr);
 extern void release_all_dls(struct th_context *, ASI);
 #endif

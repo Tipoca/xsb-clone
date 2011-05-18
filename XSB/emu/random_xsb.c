@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random_xsb.c,v 1.18 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: random_xsb.c,v 1.19 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -130,7 +130,7 @@ int getrand(CTXTdecl) {
  */
 void setrand(CTXTdecl) {
   if (!random_seeds) random_seeds = init_random_seeds();
-  random_seeds->IX = ptoc_int(CTXTc 2);
-  random_seeds->IY = ptoc_int(CTXTc 3);
-  random_seeds->IZ = ptoc_int(CTXTc 4);
+  random_seeds->IX = (short)ptoc_int(CTXTc 2);
+  random_seeds->IY = (short)ptoc_int(CTXTc 3);
+  random_seeds->IZ = (short)ptoc_int(CTXTc 4);
 }

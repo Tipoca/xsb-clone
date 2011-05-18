@@ -1347,11 +1347,11 @@ xsbBool xsb_thread_request( CTXTdecl )
 	case XSB_SYS_MUTEX_LOCK:
 	  id = ptoc_int(CTXTc 2);
 #ifdef DEBUG_MUTEXES
-	  fprintf( stddbg, "S LOCK(%ld)\n", (long)id );
+	  fprintf( stddbg, "S LOCK(%" Intfmt ")\n", (Integer)id );
 #endif
 	  rc = pthread_mutex_lock( MUTARRAY_MUTEX(id) );
 #ifdef DEBUG_MUTEXES
-	  fprintf( stddbg, "RC=%ld\n", (long)rc );
+	  fprintf( stddbg, "RC=%" Intfmt "\n", (Integer)rc );
 #endif
 	  break;
 	case XSB_SYS_MUTEX_UNLOCK:
@@ -1398,7 +1398,7 @@ xsbBool xsb_thread_request( CTXTdecl )
 
 	case XSB_THREAD_INTERRUPT: {
 	  th_context *	ctxt_ptr;
-
+o
 	  i = ptoc_int(CTXTc 2);
 	  if( VALID_THREAD(i) ) {
 	    pthread_mutex_lock( &th_mutex );
@@ -1954,7 +1954,7 @@ xsbBool mt_random_request( CTXTdecl )
   switch( request_num )
     {
     case INIT_MT_RANDOM:
-     SRANDOM_CALL(time(0)); 
+      SRANDOM_CALL((unsigned int)time(0)); 
       break;
 
     case MT_RANDOM:
@@ -1965,12 +1965,12 @@ xsbBool mt_random_request( CTXTdecl )
       {
 	UInteger rval;
 	UInteger scale = ptoc_int(CTXTc 2);
-	UInteger interval = ((unsigned long) pow(2,32) - 1) / scale;
+	UInteger interval = ((UInteger) pow(2,32) - 1) / scale;
 	//	printf("max %lx\n",((unsigned long) pow(2,32)-1));
 	//	printf("int %x scale %x s1 %d ex %x\n", interval,scale,scale,16);
 	rval = RANDOM_CALL(); 
 	//	printf("rval %x \n",rval);
-	ctop_int(CTXTc 3,(Integer)floor(rval / interval));
+	ctop_int(CTXTc 3,(Integer)floor((double)rval / interval));
 	break;
       }
 

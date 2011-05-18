@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.27 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: std_cases_xsb_i.h,v 1.28 2011-05-18 19:21:40 dwarren Exp $
 ** 
 */
 
@@ -115,7 +115,7 @@
   case PUT: {	/* r1: +integer	*/
     Cell term = ptoc_tag(CTXTc 1);
     if (isinteger(term)) {
-      putc(int_val(term), fileptr(pflags[CURRENT_OUTPUT]));
+      putc((int)int_val(term), fileptr(pflags[CURRENT_OUTPUT]));
     } else {
       if (isnonvar(term)) xsb_type_error(CTXTc "integer",term,"put/1",1);
       else xsb_instantiation_error(CTXTc "put/1",1);

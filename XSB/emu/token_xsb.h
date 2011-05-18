@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.h,v 1.13 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: token_xsb.h,v 1.14 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -34,7 +34,7 @@
 #define GetC(card,instr) (instr ? strgetc(instr) : getc(card))
 
 struct strbuf {
-  int strcnt;
+  Integer strcnt;
   char *strptr;
   char *strbase;
 #ifdef MULTI_THREAD

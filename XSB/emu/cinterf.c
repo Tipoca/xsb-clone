@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.107 2011-05-01 09:36:18 kifer Exp $
+** $Id: cinterf.c,v 1.108 2011-05-18 19:21:40 dwarren Exp $
 **
 */
 
@@ -450,8 +450,8 @@ DllExport void c_string_to_p_charlist(CTXTdeclc char *name, prolog_term list,
 {
   Cell new_list;
   CPtr top = 0;
-  int i;
-  int len=0;
+  size_t i;
+  size_t len=0;
 
   if (isnonvar(list)) {
     xsb_abort("[%s] A variable expected, %s", in_func, where);
@@ -866,7 +866,7 @@ static char *ptoc_term0(CTXTdeclc char *ptr, char *c_dataptr, char **subformat,
 	case 'i':			/* int */
 
 	if (!ignore) {
-	    if (is_int(variable)) *((int *)(c_dataptr)) = p2c_int(variable);
+	  if (is_int(variable)) *((int *)(c_dataptr)) = (int)p2c_int(variable); /* may lose precision */
 	    else cppc_error(CTXTc 10);
 	}
 	c_dataptr_rest = c_dataptr + sizeof(int);
@@ -1109,9 +1109,10 @@ void printpstring(char *atom, int toplevel, VarString *straddr)
 }
 
 /* calculate approximate length of a printed term.  For space alloc. */
-int clenpterm(prolog_term term)
+size_t clenpterm(prolog_term term)
 {
-  int i, clen;
+  int i;
+  size_t clen;
 
   if (is_var(term)) return 11;
   else if (is_int(term)) return 12;
@@ -2043,11 +2044,11 @@ DllExport int call_conv xsb_close(CTXTdecl)
 #if !defined(CYGWIN)
 typedef SSIZE_T	ssize_t;
 #endif
-static inline ssize_t pread(int fd, void *buf, size_t count, long offset)
+static inline ssize_t pread(int fd, void *buf, size_t count, size_t offset)
 {
-  if (-1 == lseek(fd,offset,SEEK_SET))
+  if (-1 == lseek(fd,(long)offset,SEEK_SET))
     return(-1);
-  return(read(fd,buf,count));
+  return(read(fd,buf,(unsigned int)count));
 }
 #else
 //
@@ -2092,9 +2093,9 @@ else
 				{
 				rc = 0;
 				if (-1 == bytesRead)
-					*anslen = totalBytesRead + 1;
+				  *anslen = (int)totalBytesRead + 1;  // possible loss of precision
 				else
-					*anslen = totalBytesRead;
+				  *anslen = (int)totalBytesRead;   // ditto
 				buff[*anslen] = 0x00;
 				}
 			}

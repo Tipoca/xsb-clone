@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.88 2011-04-17 16:31:34 tswift Exp $
+** $Id: tables.c,v 1.89 2011-05-18 19:21:41 dwarren Exp $
 ** 
 */
 
@@ -107,7 +107,7 @@ Structure_Manager smALN    = SM_InitDecl(AnsListNode, ALNs_PER_BLOCK,
  * SMs when adding answers.
  */
 
-#ifndef WIN32
+#if !defined(WIN_NT)
 inline 
 #endif
 VariantSF NewProducerSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo) {   
@@ -521,7 +521,7 @@ void table_consume_answer(CTXTdeclc BTNptr answer, int size, int attv_num,
 ALNptr table_identify_relevant_answers(CTXTdeclc SubProdSF prodSF, SubConsSF consSF,
 				       CPtr templ) {
 
-  int size;
+  size_t size;
   TimeStamp ts;         /* for selecting answers from subsumer's AnsTbl */
 
   TSTNptr tstRoot;      /* TS answer trie root of subsumer */
