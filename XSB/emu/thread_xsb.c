@@ -1398,7 +1398,6 @@ xsbBool xsb_thread_request( CTXTdecl )
 
 	case XSB_THREAD_INTERRUPT: {
 	  th_context *	ctxt_ptr;
-o
 	  i = ptoc_int(CTXTc 2);
 	  if( VALID_THREAD(i) ) {
 	    pthread_mutex_lock( &th_mutex );

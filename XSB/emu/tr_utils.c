@@ -1614,7 +1614,7 @@ int shas_trie_interned(CTXTdecl) {
   SPLIT_TRIE_ID(Trie_id,index,type);
   trie_root_addr = &(shared_itrie_array[index].root);
 
-  if ((*trie_root_addr != NULL) && (!(*trie_root_addr & 0x3))) {
+  if ((*trie_root_addr != NULL) && (!((UInteger) *trie_root_addr & (UInteger) 0x3))) {
     XSB_Deref(trie_term);
     XSB_Deref(Leafterm);
     //    if ( isref(Leafterm) ) {  

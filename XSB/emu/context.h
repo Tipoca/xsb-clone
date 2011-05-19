@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.82 2011-05-18 19:21:40 dwarren Exp $
+** $Id: context.h,v 1.83 2011-05-19 15:05:05 tswift Exp $
 **
 */
 
@@ -476,7 +476,7 @@ char	*_cp_marks;
 CPtr	 *_slide_buf;
 UInteger _slide_top;
 int	_slide_buffering;
-UINteger _slide_buf_size;
+UInteger _slide_buf_size;
 
 int	_gc_offset;
 CPtr	_gc_scan;
