@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.188 2011-05-18 19:21:40 dwarren Exp $
+** $Id: biassert.c,v 1.189 2011-05-19 16:39:05 tswift Exp $
 ** 
 */
 
@@ -1960,7 +1960,7 @@ ClRef next_clref( PrRef Pred, ClRef Clause, prolog_term Head,
             }                                                           \
             break ;                                                     \
         default:                                                        \
-	  xsb_exit(CTXTc "error removing a clause: %x",c) ;		\
+	  xsb_exit( "error removing a clause: %x",c) ;		\
 	  break ;							\
     }                                                                   \
 }
@@ -2832,7 +2832,7 @@ static int really_delete_clause(CTXTdeclc ClRef Clause)
 		  /* memory lost, but try to release what is not needed. */
 		  oldaddr = (pb)ClRefAddr(sob);
 		  if (oldaddr != mem_realloc((pb)ClRefAddr(sob),ClRefSize(sob),4*sizeof(word),ASSERT_SPACE))
-		    xsb_exit(CTXTc "realloc error: not leaving address unchanged when shrinking!");
+		    xsb_exit( "realloc error: not leaving address unchanged when shrinking!");
 		} else {
 		xsb_dbgmsg((LOG_RETRACT,"deleting sob - %p", sob ));
 		delete_from_sobchain(CTXTc sob) ;
@@ -2844,7 +2844,7 @@ static int really_delete_clause(CTXTdeclc ClRef Clause)
         }
         case SOB_RECORD:
         default :
-	  xsb_exit(CTXTc  "retract internal error!" ) ;
+	  xsb_exit( "retract internal error!" ) ;
     }
     mem_dealloc((pb)ClRefAddr(Clause), ClRefSize(Clause),ASSERT_SPACE);
     if (xsb_profiling_enabled)
@@ -2915,10 +2915,10 @@ static void mark_for_deletion(CTXTdeclc ClRef Clause)
 	  }
 	  break ;
         case SOB_RECORD:
-	  xsb_exit(CTXTc  "retracting indexing record!" ) ;
+	  xsb_exit( "retracting indexing record!" ) ;
 	  break ;
         default :
-	  xsb_exit(CTXTc "retract internal error!" ) ;
+	  xsb_exit( "retract internal error!" ) ;
 	  break ;
     }
     SYS_MUTEX_UNLOCK( MUTEX_DYNAMIC );
@@ -3173,7 +3173,7 @@ xsbBool db_get_clause( CTXTdecl /*+CC, ?CI, ?CIL, +PredEP, +Head, +Failed, -Clau
 set_outputs:
     if( Clause != 0 ) {
       if( ClRefType(Clause) == SOB_RECORD ) {
-	    xsb_exit(CTXTc "Error in get clause");
+	    xsb_exit( "Error in get clause");
       }
       else EntryPoint = get_ClRefEntryPoint(Clause);
     }
@@ -3233,7 +3233,7 @@ static inline void allocate_prref_tab(CTXTdeclc Psc psc, PrRef *prref, pb *new_e
   int Loc;
 
   if (!(*prref = (PrRef)mem_alloc_nocheck(sizeof(PrRefData),ASSERT_SPACE))) 
-    xsb_exit(CTXTc "[Resource] Out of memory (PrRef)");
+    xsb_exit( "[Resource] Out of memory (PrRef)");
   //fprintf(stdout,"build_prref: %s/%d, shared=%d, prref=%p, incr=%d\n",
   //          get_name(psc),get_arity(psc),get_shared(psc),prref,get_incr(psc));
 
@@ -3256,7 +3256,7 @@ static inline void allocate_prref_tab(CTXTdeclc Psc psc, PrRef *prref, pb *new_e
       tip = New_TIF(CTXTc psc);
       tp  = (CPtr)mem_alloc_nocheck(FIXED_BLOCK_SIZE_FOR_TABLED_PRED,ASSERT_SPACE) ;
       if (tp == NULL) {
-	xsb_exit(CTXTc "[Resource] Out of memory (PrRef)");
+	xsb_exit( "[Resource] Out of memory (PrRef)");
       }
       Loc = 0 ;
       if (!get_nonincremental(psc)) { /* incremental evaluation */
@@ -3325,7 +3325,7 @@ PrRef build_prref( CTXTdeclc Psc psc )
     }
     if (dispblk->MaxThread >= xsb_thread_entry) {
       (&(dispblk->Thread0))[xsb_thread_entry] = (CPtr)new_ep;
-    } else xsb_exit(CTXTc "must expand dispatch-block");
+    } else xsb_exit( "must expand dispatch-block");
   } else set_ep(psc,new_ep);
 #else
   set_ep(psc,new_ep);
@@ -3518,7 +3518,7 @@ void retractall_prref(CTXTdeclc PrRef prref) {
     }
     buffers_to_free[btop++] = prref->FirstClRef;
     while (btop > 0) {
-      if (btop >= MAXDYNFREEBUFF) xsb_exit(CTXTc "Too many buffers to retract");
+      if (btop >= MAXDYNFREEBUFF) xsb_exit( "Too many buffers to retract");
       buffer = buffers_to_free[--btop];
       switch (ClRefType(buffer)) {
       case SOB_RECORD: 
@@ -3561,7 +3561,7 @@ void gc_retractall(CTXTdeclc ClRef clref) {
 
     buffers_to_free[btop++] = clref;
     while (btop > 0) {
-      if (btop >= MAXDYNFREEBUFF) xsb_exit(CTXTc "Too many buffers to retract");
+      if (btop >= MAXDYNFREEBUFF) xsb_exit( "Too many buffers to retract");
       buffer = buffers_to_free[--btop];
       switch (ClRefType(buffer)) {
       case SOB_RECORD: 

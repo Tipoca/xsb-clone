@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.62 2011-05-18 19:21:40 dwarren Exp $
+** $Id: io_builtins_xsb_i.h,v 1.63 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -446,7 +446,7 @@ inline static xsbBool file_function(CTXTdecl)
 	int old_len = line_buff_len;
 	line_buff_len = line_buff_disp+MAX_IO_BUFSIZE;
 	if(!(line_buff = mem_realloc(line_buff,old_len,line_buff_len,LEAK_SPACE)))
-	  xsb_exit(CTXTc "No space for line buffer");
+	  xsb_exit("No space for line buffer");
 //	printf("frll: expand buffer line_buff(%p,%d)\n",line_buff,line_buff_len);
       }
       *(line_buff+line_buff_disp) = c = getc(fptr);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.74 2011-05-18 19:21:41 dwarren Exp $
+** $Id: tries.h,v 1.75 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -468,7 +468,7 @@ extern BTNptr Last_Nod_Sav;
     if (ArraySz < NeededSz) ArraySz = NeededSz;\
     ArrayNam = mem_realloc(ArrayNam,Siz*sizeof(ArrType),ArraySz*sizeof(ArrType),TABLE_SPACE);\
     if (ArrayNam == NULL) \
-      xsb_exit(CTXTc "No More memory for reallocating Array");\
+      xsb_exit("No More memory for reallocating Array");\
 }
 
 #define will_overflow_trieinstr_unif_stk(x) {\

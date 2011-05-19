@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.44 2011-05-18 19:21:41 dwarren Exp $
+** $Id: token_xsb.c,v 1.45 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -43,7 +43,7 @@
 
 #define exit_if_null(x) {\
   if(x == NULL){\
-   xsb_exit(CTXTc "Malloc Failed !\n");\
+   xsb_exit( "Malloc Failed !\n");\
   }\
 }
 

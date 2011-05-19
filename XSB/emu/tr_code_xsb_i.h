@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.31 2011-05-18 19:21:41 dwarren Exp $
+** $Id: tr_code_xsb_i.h,v 1.32 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -58,7 +58,7 @@
      break;							\
    default:							\
      fprintf(stderr,"Bad tag :Type %ld ",cell_tag(Subterm));	\
-     xsb_exit(CTXTc "In instruction hash_handle");		\
+     xsb_exit( "In instruction hash_handle");			\
      break;							\
    }								\
    BucketNum = TrieHash(symbol,BTHT_GetHashSeed(pBTHT));	\

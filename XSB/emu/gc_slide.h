@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_slide.h,v 1.24 2011-05-18 19:21:40 dwarren Exp $
+** $Id: gc_slide.h,v 1.25 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -74,7 +74,7 @@ static void unchain(CTXTdeclc CPtr hptr, CPtr destination)
       start = (CPtr)(*hptr) ;
       /* start is for sure a pointer - possibly with a tag */
       pointsto = pointer_from_cell(CTXTc (Cell)start,&tag,&whereto) ;
-      if (pointsto == NULL) xsb_exit(CTXTc "pointsto error during unchaining") ;
+      if (pointsto == NULL) xsb_exit( "pointsto error during unchaining") ;
       switch (whereto)
 	{
 	  case TO_HEAP :
@@ -94,7 +94,7 @@ static void unchain(CTXTdeclc CPtr hptr, CPtr destination)
 	    cp_set_unchained(pointsto) ;
 	    break ;
 	  default :
-	    xsb_exit(CTXTc "pointsto wrong space error during unchaining");
+	    xsb_exit( "pointsto wrong space error during unchaining");
 	    break;
 	}
       *hptr = *pointsto ;
@@ -113,7 +113,7 @@ static void unchain(CTXTdeclc CPtr hptr, CPtr destination)
 	*pointsto = makeattv((Cell)destination);
 	break;
       default :
-	xsb_exit(CTXTc "tag error during unchaining") ;
+	xsb_exit( "tag error during unchaining") ;
       }
     }
   while (continue_after_this) ;
@@ -144,7 +144,7 @@ inline static void swap_with_tag(CTXTdeclc CPtr p, CPtr q, int tag)
    case XSB_ATTV :
      *q = makeattv((Cell)p);
      break;
-   default : xsb_exit(CTXTc "error during swap_with_tag") ;
+   default : xsb_exit( "error during swap_with_tag") ;
    }
 } /* swap_with_tag */
 

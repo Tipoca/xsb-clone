@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.90 2011-05-18 19:21:40 dwarren Exp $
+** $Id: error_xsb.c,v 1.91 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -115,7 +115,7 @@ DllExport void call_conv xsb_initialization_exit(char *description, ...)
 
 void call_conv xsb_unrecoverable_error(CTXTdeclc char *);
 
-DllExport void call_conv xsb_exit(CTXTdeclc  char *description, ...)
+DllExport void call_conv xsb_exit(char *description, ...)
 {
   va_list args;
   char message[MAXBUFSIZE];
@@ -132,7 +132,11 @@ DllExport void call_conv xsb_exit(CTXTdeclc  char *description, ...)
     va_start(args, description);
     vsnprintf(message,MAXBUFSIZE, description, args);
     va_end(args);
-    xsb_unrecoverable_error(CTXTc message);
+#ifdef MULTI_THREAD
+    xsb_unrecoverable_error(find_context(xsb_thread_self()), message);
+#else
+    xsb_unrecoverable_error(message);
+#endif
   }
 }
 
@@ -167,7 +171,7 @@ DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, size_t B
   space_for_ball_assert = (Cell *) mem_alloc_nocheck(space_for_ball_assert_len,
 						     LEAK_SPACE);
   if (!space_for_ball_assert) 
-    xsb_exit(CTXTc "[Resource] Out of memory");
+    xsb_exit("[Resource] Out of memory");
 
   exceptballpsc = pair_psc((Pair)insert("$$exception_ball", (byte)2, 
 					pair_psc(insert_module(0,"standard")), 
@@ -185,7 +189,7 @@ DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, size_t B
   mem_dealloc(cs_val(Ball),Ball_len,LEAK_SPACE);
   mem_dealloc(space_for_ball_assert,space_for_ball_assert_len,LEAK_SPACE);
   /* reset WAM emulator state to Prolog catcher */
-  if (unwind_stack(CTXT)) xsb_exit(CTXTc "Unwind_stack failed in xsb_throw_internal!");
+  if (unwind_stack(CTXT)) xsb_exit("Unwind_stack failed in xsb_throw_internal!");
   /* Resume main emulator instruction loop */
   pcreg = (pb)&fail_inst;
   longjmp(xsb_abort_fallback_environment, XSB_ERROR);
@@ -204,7 +208,7 @@ DllExport void call_conv xsb_throw(CTXTdeclc prolog_term Ball)
   if (!space_for_ball_assert) {
     /* 3 cells needed for term */
     space_for_ball_assert = (Cell *) mem_alloc(3*sizeof(Cell),LEAK_SPACE);
-    if (!space_for_ball_assert) xsb_exit(CTXTc "out of memory in xsb_throw!");
+    if (!space_for_ball_assert) xsb_exit("out of memory in xsb_throw!");
   }
 
   exceptballpsc = pair_psc((Pair)insert("$$exception_ball", (byte)2, 
@@ -222,7 +226,7 @@ DllExport void call_conv xsb_throw(CTXTdeclc prolog_term Ball)
   assert_buff_to_clref_p(CTXTc term_to_assert,3,Prref,0,makeint(0),0,&clause);
   mem_dealloc(space_for_ball_assert,3*sizeof(Cell),LEAK_SPACE);
   /* reset WAM emulator state to Prolog catcher */
-  if (unwind_stack(CTXT)) xsb_exit(CTXTc "Unwind_stack failed in xsb_throw!");
+  if (unwind_stack(CTXT)) xsb_exit( "Unwind_stack failed in xsb_throw!");
 
   /* Resume main emulator instruction loop */
   pcreg = (pb)&fail_inst ;
@@ -529,7 +533,7 @@ void call_conv xsb_resource_error(CTXTdeclc char *resource,
 
   tptr = (Cell *) malloc(1000);
   if (!tptr) 
-    xsb_exit(CTXTc "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
+    xsb_exit("++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
   else free(tptr);
 
   snprintf(message,ERRMSGLEN,"in predicate %s/%d)",predicate,arity);
@@ -538,7 +542,7 @@ void call_conv xsb_resource_error(CTXTdeclc char *resource,
 
   tptr =   (Cell *) mem_alloc_nocheck(ball_len,LEAK_SPACE);
   if (!tptr) 
-    xsb_exit(CTXTc "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
+    xsb_exit( "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
 
   ball_to_throw = makecs(tptr);
   bld_functor(tptr, pair_psc(insert("error",3,
@@ -591,7 +595,7 @@ void call_conv xsb_resource_error_nopred(CTXTdeclc char *resource,char *message)
 
   tptr = (Cell *) malloc(1000);
   if (!tptr) 
-    xsb_exit(CTXTc "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
+    xsb_exit( "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
   else free(tptr);
 
   XSB_StrSet(&MsgBuf,message);
@@ -599,7 +603,7 @@ void call_conv xsb_resource_error_nopred(CTXTdeclc char *resource,char *message)
 
   tptr =   (Cell *) mem_alloc_nocheck(ball_len,LEAK_SPACE);
   if (!tptr) 
-    xsb_exit(CTXTc "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
+    xsb_exit("++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
 
   ball_to_throw = makecs(tptr);
   bld_functor(tptr, pair_psc(insert("error",3,
@@ -741,7 +745,7 @@ void call_conv xsb_new_table_error(CTXTdeclc char *subtype, char *usr_msg,
 
   tptr = (Cell *) malloc(1000);
   if (!tptr) 
-    xsb_exit(CTXTc "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
+    xsb_exit( "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
   else free(tptr);
 
   snprintf(message,ERRMSGLEN,"%s in predicate %s/%d)",usr_msg,predicate,arity);
@@ -750,7 +754,7 @@ void call_conv xsb_new_table_error(CTXTdeclc char *subtype, char *usr_msg,
 
   tptr =   (Cell *) mem_alloc_nocheck(ball_len,LEAK_SPACE);
   if (!tptr) 
-    xsb_exit(CTXTc "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
+    xsb_exit( "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
 
   ball_to_throw = makecs(tptr);
   bld_functor(tptr, pair_psc(insert("error",3,
@@ -1180,7 +1184,7 @@ int unwind_stack(CTXTdecl)
      }
 
    if ( ! e )
-     xsb_exit(CTXTc "Throw failed because no catcher for throw");
+     xsb_exit( "Throw failed because no catcher for throw");
 
    /* now find the corresponding breg */
    b = breg;

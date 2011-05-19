@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.360 2011-05-18 19:21:40 dwarren Exp $
+** $Id: builtin.c,v 1.361 2011-05-19 16:39:06 tswift Exp $
 **
 */
 
@@ -2668,12 +2668,12 @@ case WRITE_OUT_PROFILE:
     if (trie_assert(CTXT))
       return TRUE;
     else
-      xsb_exit(CTXTc "Failure of trie_assert/1");
+      xsb_exit("Failure of trie_assert/1");
   case TRIE_RETRACT:
     if (trie_retract(CTXT))
       return TRUE;
     else
-      xsb_exit(CTXTc "Failure of trie_retract/1");
+      xsb_exit("Failure of trie_retract/1");
 
   case TRIE_RETRACT_SAFE:
     return trie_retract_safe(CTXT);

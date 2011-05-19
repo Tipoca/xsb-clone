@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.71 2011-05-18 19:21:40 dwarren Exp $
+** $Id: memory_xsb.c,v 1.72 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -71,12 +71,12 @@
 #endif
 
 extern Integer next_free_code;
-extern UInteger enc[], dec[];
+extern unsigned long enc[], dec[];
 
 void inline extend_enc_dec_as_nec(void *lptr, void *hptr) {
     UInteger nibble;
-    UInteger lnibble = lptr >> _SHIFT_VALUE;
-    UInteger hnibble = hptr >> _SHIFT_VALUE;
+    UInteger lnibble = (UInteger) lptr >> _SHIFT_VALUE;
+    UInteger hnibble = (UInteger) hptr >> _SHIFT_VALUE;
     for (nibble = lnibble; nibble <= hnibble; nibble++) {
       if (enc[nibble] == -1) {
 	SYS_MUTEX_LOCK_NOERROR(MUTEX_GENTAG);
@@ -352,7 +352,7 @@ void tcpstack_realloc(CTXTdeclc size_t new_size) {
 
 #ifdef CONC_COMPL
   if( flags[NUM_THREADS] > 1 && openreg < COMPLSTACKBOTTOM )
-	xsb_exit(CTXTc "Concurrent Completion doesn't yet support choice point stack expansion\n\
+	xsb_exit("Concurrent Completion doesn't yet support choice point stack expansion\n\
 Please use -c N or cpsize(N) to start with a larger choice point stack"
 	);
 #endif
@@ -384,7 +384,7 @@ Please use -c N or cpsize(N) to start with a larger choice point stack"
      */
     new_trail = (byte *)realloc(tcpstack.low, new_size * K);
     if ( IsNULL(new_trail) )
-      xsb_exit(CTXTc "Not enough core to resize the Trail and Choice Point Stack!");
+      xsb_exit("Not enough core to resize the Trail and Choice Point Stack!");
     new_cps = new_trail + new_size * K;
 
 #if defined(GENERAL_TAGGING)
@@ -515,7 +515,7 @@ void handle_tcpstack_overflow(CTXTdecl)
     tcpstack_realloc(CTXTc resize_stack(tcpstack.size,0));
   }
   else {
-    xsb_exit(CTXTc "Trail/ChoicePoint stack overflow detected but expansion is off");
+    xsb_exit( "Trail/ChoicePoint stack overflow detected but expansion is off");
   }
 }
 
@@ -566,7 +566,7 @@ void complstack_realloc (CTXTdeclc size_t new_size) {
      */
     new_top = (byte *)realloc(complstack.low, new_size * K);
     if ( IsNULL(new_top) )
-      xsb_exit(CTXTc "Not enough core to resize the Completion Stack!");
+      xsb_exit("Not enough core to resize the Completion Stack!");
     new_bottom = new_top + new_size * K;
     
     top_offset = (new_top - complstack.low);

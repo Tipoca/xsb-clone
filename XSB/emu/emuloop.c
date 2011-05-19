@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.214 2011-05-18 19:21:40 dwarren Exp $
+** $Id: emuloop.c,v 1.215 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -3235,7 +3235,7 @@ argument positions.
     {
       char message[80];
       sprintf(message, "Illegal opcode hex %x (& %p)", *lpcreg,lpcreg);
-      xsb_exit(CTXTc message);
+      xsb_exit(message);
     }
 #endif
 

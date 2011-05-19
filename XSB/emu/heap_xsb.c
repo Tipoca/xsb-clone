@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.86 2011-05-18 19:21:40 dwarren Exp $
+** $Id: heap_xsb.c,v 1.87 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -306,8 +306,8 @@ static size_t heap_marks_size;
   ls_top = top_of_localstk - 256;  /* extra space for environment above top */ \
   if (ls_top < heap_top) {						\
     if ((ls_top + 256) < heap_top)				    \
-      xsb_exit(CTXTc "Heap and local stack are clobbered"); \
-    else xsb_exit(CTXTc "Not enough extra space to expand heap/local stacks (lst=%p,ht=%p)",ls_top,heap_top); \
+      xsb_exit( "Heap and local stack are clobbered"); \
+    else xsb_exit("Not enough extra space to expand heap/local stacks (lst=%p,ht=%p)",ls_top,heap_top); \
   } \
   heap_bot = (CPtr)glstack.low ; \
   ls_bot = (CPtr)glstack.high - 1 ; \
@@ -678,7 +678,7 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 
     if (top_of_localstk < hreg) {
       fprintf(stderr,"stack clobbered: no space for gc_heap\n"); 
-      xsb_exit(CTXTc "stack clobbered");
+      xsb_exit( "stack clobbered");
     }
 
     gc_strings = ifStringGC; /* default */
@@ -783,7 +783,7 @@ int gc_heap(CTXTdeclc int arity, int ifStringGC)
 	
 	begin_new_heap = (CPtr)mem_alloc(marked*sizeof(Cell),GC_SPACE);
 	if (begin_new_heap == NULL)
-	  xsb_exit(CTXTc "copying garbage collection could not allocate new heap");
+	  xsb_exit( "copying garbage collection could not allocate new heap");
 	end_new_heap = begin_new_heap+marked;
 
 	hreg = copy_heap(CTXTc marked,begin_new_heap,end_new_heap,arity);

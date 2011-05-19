@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.91 2011-05-18 19:21:40 dwarren Exp $
+** $Id: loader_xsb.c,v 1.92 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -315,7 +315,7 @@ static Integer get_index_tab(CTXTdeclc FILE *fd, int clause_no)
       break; 
     default:
       hashval = 0;
-      xsb_exit(CTXTc "illegal format");
+      xsb_exit( "illegal format");
     }
 
     get_obj_word_bbsig_notag(&label);
@@ -1001,7 +1001,7 @@ static byte *loader1(CTXTdeclc FILE *fd, char *filename, int exp)
 	  snprintf(message,255,
 		   "ERROR: When redefining %s/%d from file %s, freed code is still needed.",
 		   get_name(ptr->psc_ptr),get_arity(ptr->psc_ptr),filename);
-	  xsb_exit(CTXTc message);
+	  xsb_exit( message);
 	}
 	if (isstring(get_data(ptr->psc_ptr)) && 
 	    !has_generated_prefix(name) &&

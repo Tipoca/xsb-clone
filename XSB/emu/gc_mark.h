@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_mark.h,v 1.40 2011-05-18 19:21:40 dwarren Exp $
+** $Id: gc_mark.h,v 1.41 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -773,7 +773,7 @@ size_t mark_heap(CTXTdeclc int arity, size_t *marked_dregs)
     slide_buf_size = (UInteger) ((hreg+1-(CPtr)glstack.low)*0.2);
     slide_buf = (CPtr *) mem_calloc_nocheck(slide_buf_size+1, sizeof(CPtr),GC_SPACE);
     if (!slide_buf)
-      xsb_exit(CTXTc "Not enough space to allocate slide_buf");
+      xsb_exit( "Not enough space to allocate slide_buf");
     slide_top=0;
     if (pflags[GARBAGE_COLLECT] == INDIRECTION_SLIDE_GC)
       slide_buffering=1;
@@ -791,13 +791,13 @@ size_t mark_heap(CTXTdeclc int arity, size_t *marked_dregs)
   cp_marks = (char *)mem_calloc_nocheck(cp_bot - cp_top + 1,1,GC_SPACE);
   tr_marks = (char *)mem_calloc_nocheck(tr_top - tr_bot + 1,1,GC_SPACE);
   if ((! cp_marks) || (! tr_marks))
-    xsb_exit(CTXTc "Not enough core to perform garbage collection chaining phase");
+    xsb_exit( "Not enough core to perform garbage collection chaining phase");
 #endif  
   heap_marks_size = heap_top - heap_bot + 2 + avail_dreg_marks;
   heap_marks = (char * )mem_calloc_nocheck(heap_marks_size,1,GC_SPACE);
   ls_marks   = (char * )mem_calloc_nocheck(ls_bot - ls_top + 1,1,GC_SPACE);
   if ((! heap_marks) || (! ls_marks))
-    xsb_exit(CTXTc "Not enough core to perform garbage collection marking phase");
+    xsb_exit("Not enough core to perform garbage collection marking phase");
   
   heap_marks += 1; /* see its free; also note that heap_marks[-1] = 0 is
 		      needed for copying garbage collection see copy_block() */

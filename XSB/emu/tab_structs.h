@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.15 2011-05-18 19:21:41 dwarren Exp $
+** $Id: tab_structs.h,v 1.16 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -383,7 +383,7 @@ extern TIFptr New_TIF(Psc);
     else {								\
       while  (tTIF != NULL && TIF_NextTIF(tTIF) != (pTIF))		\
 	tTIF =  TIF_NextTIF(tTIF);					\
-      if (!tTIF) xsb_exit(CTXTc "Trying to free nonexistent TIF");	\
+      if (!tTIF) xsb_exit("Trying to free nonexistent TIF");	\
       if ((pTIF) == tif_list.last) tif_list.last = tTIF;		\
       TIF_NextTIF(tTIF) = TIF_NextTIF((pTIF));				\
     }									\
@@ -403,7 +403,7 @@ extern TIFptr New_TIF(Psc);
     else {								\
       while  (tTIF != NULL && TIF_NextTIF(tTIF) != (pTIF))		\
 	tTIF =  TIF_NextTIF(tTIF);					\
-      if (!tTIF) xsb_exit(CTXTc "Trying to free nonexistent TIF");	\
+      if (!tTIF) xsb_exit("Trying to free nonexistent TIF");	\
       if ((pTIF) == private_tif_list.last) private_tif_list.last = tTIF; \
       TIF_NextTIF(tTIF) = TIF_NextTIF((pTIF));				\
     }									\
@@ -1077,7 +1077,7 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 
 #define pdlpush(cell)	*(pdlreg) = cell;				\
                         if (pdlreg-- < (CPtr)pdl.low)	       		\
-			  xsb_exit(CTXTc "PANIC: pdl overflow; large or cyclic structure?")
+			  xsb_exit("PANIC: pdl overflow; large or cyclic structure?")
 
 #define pdlpop		*(++pdlreg)
 
@@ -1085,7 +1085,7 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 
 #define resetpdl \
    if (pdlreg < (CPtr) pdl.low) \
-     xsb_exit(CTXTc "pdlreg grew too much"); \
+     xsb_exit("pdlreg grew too much"); \
    else (pdlreg = (CPtr)(pdl.high) - 1)
 
 #define remove_incomplete_tables_loop(Endpoint) remove_incomplete_tries(Endpoint)

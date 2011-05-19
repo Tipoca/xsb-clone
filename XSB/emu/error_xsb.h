@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.54 2011-05-18 19:21:40 dwarren Exp $
+** $Id: error_xsb.h,v 1.55 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -85,7 +85,7 @@ extern "C" {
 #define THROWPAD 12
 #endif 
 
-DllExport extern void call_conv xsb_exit(CTXTdeclc char *, ...);
+DllExport extern void call_conv xsb_exit(char *, ...);
 DllExport extern void call_conv xsb_initialization_exit(char *, ...);
 DllExport extern void call_conv exit_xsb(char *);
 

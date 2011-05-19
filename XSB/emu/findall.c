@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.55 2011-05-18 19:21:40 dwarren Exp $
+** $Id: findall.c,v 1.56 2011-05-19 16:39:06 tswift Exp $
 ** 
 */
 
@@ -130,7 +130,7 @@ int findall_init_c(CTXTdecl)
 	  p = findall_solutions = (findall_solution_list *)
 			mem_alloc(MAX_FINDALLS*sizeof(findall_solution_list),FINDALL_SPACE) ;
 	  if (findall_solutions == 0)
-	    xsb_exit(CTXTc "init of findall failed") ;
+	    xsb_exit("init of findall failed") ;
 	  for (i = 0 ; i++ < MAX_FINDALLS ; p++)
                 { p->first_chunk = NULL; /* no first chunk */
 		  p->size = i ;
@@ -452,7 +452,7 @@ static int findall_trail(CTXTdeclc CPtr p, Cell val)
 static int init_findall_trail(CTXTdecl)
 {
   if (!(cur_tr_chunk = (f_tr_chunk *)mem_alloc(sizeof(f_tr_chunk),FINDALL_SPACE)))
-    xsb_exit(CTXTc "init_findall_trail failed");
+    xsb_exit("init_findall_trail failed");
   cur_tr_top = cur_tr_chunk->tr ;
   cur_tr_limit = cur_tr_chunk->tr+F_TR_NUM ;
   cur_tr_chunk->previous = 0 ;
@@ -670,7 +670,7 @@ int findall_add(CTXTdecl)
   
   current_findall = findall_solutions + int_val(arg2) ;
   if (current_findall->tail == 0)
-    xsb_exit(CTXTc "internal error 1 in findall") ;
+    xsb_exit("internal error 1 in findall") ;
   
   to = current_findall->top_of_chunk ;
   if ((to+2) > (current_findall->current_chunk + FINDALL_CHUNCK_SIZE -1)) {
