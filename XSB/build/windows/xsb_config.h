@@ -48,8 +48,8 @@
 
 
 #define WIN_NT 1
-#define RELEASE_DATE 2011-05-11
-#define XSB_VERSION "3.3.2 (Pignoletto)"
+#define RELEASE_DATE 2011-05-20
+#define XSB_VERSION "3.3.3 (Pignoletto)"
 
 /* this is used by many to check if config.h was included in proper order */
 #ifndef CONFIG_INCLUDED
@@ -60,7 +60,7 @@
 /* #undef FAST_FLOATS */
 
 /* Use local eval strategy. This is the default. */
-/* #undef LOCAL_EVAL */
+#define LOCAL_EVAL 1
 
 /* Define, if XSB is built with support for ORACLE DB */
 /* #undef ORACLE */
@@ -103,4 +103,4 @@
 /* GC on SLG-WAM! ;) */
 #define SLG_GC 1
 
-/* #undef NON_OPT_COMPILE */
+#define NON_OPT_COMPILE 1

@@ -1,3 +1,3 @@
-XSB Version 3.3.2 (Pignoletto) of May 11, 2011
-[x64-pc-windows; mode: optimal; engine: slg-wam; scheduling: batched]
-[Patch date: 2011/05/17 04:22:52]
+XSB Version 3.3.3 (Pignoletto) of May 20, 2011
+[x64-pc-windows; mode: debug; engine: slg-wam; scheduling: local]
+[Patch date: 2011/05/20 15:48:04]
