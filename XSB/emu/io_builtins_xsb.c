@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.91 2011-05-18 19:21:40 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.92 2011-05-20 20:37:01 tswift Exp $
 ** 
 */
 
@@ -1737,7 +1737,7 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
       break;
     case XSB_REF:
     case XSB_REF1: {
-      size_t varval;
+      UInteger varval;
       XSB_StrAppendC(wcan_string,'_');
       if (prologterm >= (Cell)glstack.low && prologterm <= (Cell)top_of_heap) {
 	XSB_StrAppendC(wcan_string,'h');
@@ -1748,7 +1748,7 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
 	  varval = (((Cell)glstack.high-prologterm+1)/sizeof(CPtr));
 	} else varval = prologterm;   /* Should never happen */
       }
-      sprintf(wcan_buff->string,"%d",varval);
+      sprintf(wcan_buff->string,"%" Intfmt,varval);
       XSB_StrAppend(wcan_string,wcan_buff->string);
     }
       break;
