@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.230 2011-05-18 06:15:06 kifer Exp $
+## $Id: configure.in,v 1.231 2011-05-20 15:48:04 tswift Exp $
 ##
 ##
 
@@ -571,6 +571,7 @@ emudir=${topdir}/emu
 scriptdir=${topdir}/bin   # where the xsb invocationscripts go
 pkgdir=${topdir}/packages
 etcdir=${topdir}/etc
+commonsdir=${topdir}/prolog-commons
 
 src_prolog_includes=${topdir}/prolog_includes
 

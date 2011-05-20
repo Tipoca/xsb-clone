@@ -53,14 +53,14 @@
 
 /* this is used by many to check if config.h was included in proper order */
 #ifndef CONFIG_INCLUDED
-#define CONFIG_INCLUDED 1
+#define CONFIG_INCLUDED
 #endif
 
 /* Single precision floats */
 /* #undef FAST_FLOATS */
 
 /* Use local eval strategy. This is the default. */
-#define LOCAL_EVAL 1
+/* #undef LOCAL_EVAL */
 
 /* Define, if XSB is built with support for ORACLE DB */
 /* #undef ORACLE */

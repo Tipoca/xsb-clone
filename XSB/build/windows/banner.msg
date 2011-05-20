@@ -1,3 +1,3 @@
 XSB Version 3.3.2 (Pignoletto) of May 11, 2011
-[x86-pc-windows; mode: optimal; engine: slg-wam; scheduling: local]
+[x86-pc-windows; mode: optimal; engine: slg-wam; scheduling: batched]
 [Patch date: 2011/05/17 04:22:52]
