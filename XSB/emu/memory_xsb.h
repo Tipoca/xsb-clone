@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.47 2011-05-20 21:26:43 tswift Exp $
+** $Id: memory_xsb.h,v 1.48 2011-05-20 22:00:29 tswift Exp $
 ** 
 */
 
@@ -53,8 +53,8 @@
 typedef struct stack_info {
    byte *low;
    byte *high;
-   size_t size;
-   size_t init_size;
+   UInteger size;
+   UInteger init_size;
 } System_Stack;
 
 

@@ -168,16 +168,13 @@ void stat_inusememory(CTXTdeclc double elapstime, int type) {
     total_alloc, total_used,
     tablespace_alloc, tablespace_used,
     trieassert_alloc, trieassert_used,
-    gl_avail, tc_avail,
-    de_space_alloc, de_space_used,
-    dl_space_alloc, dl_space_used,
-    pnde_space_alloc, pnde_space_used,
-    pspacetot;
+    gl_avail, pnde_space_alloc, pnde_space_used, pspacetot;
+
+  UInteger dl_space_alloc, dl_space_used, dl_count, de_space_alloc, de_space_used, tc_avail;
 
   size_t
     num_de_blocks, num_dl_blocks, num_pnde_blocks,
-    de_count, dl_count, 
-    i;
+    de_count, i;
 
   tbtn = node_statistics(&smTableBTN);
   tbtht = hash_statistics(&smTableBTHT);
@@ -312,20 +309,11 @@ void total_stat(CTXTdeclc double elapstime) {
     abtht,		/* Asserted Basic Trie Hash Tables */
     tstht;		/* Time Stamp Trie Hash Tables */
   
-  size_t
-    total_alloc, total_used,
-    tablespace_alloc, tablespace_used,
-    trieassert_alloc, trieassert_used,
-    gl_avail, tc_avail,
-    de_space_alloc, de_space_used,
-    dl_space_alloc, dl_space_used,
-    pnde_space_alloc, pnde_space_used,
-    pspacetot;
+  size_t pnde_space_alloc, pnde_space_used, num_de_blocks, num_dl_blocks, num_pnde_blocks,    i;
 
-  size_t
-    num_de_blocks, num_dl_blocks, num_pnde_blocks,    i;
-
-  UInteger de_count, dl_count;
+  UInteger de_count, dl_count, de_space_alloc, de_space_used, total_alloc, total_used, 
+    dl_space_alloc, dl_space_used, tablespace_alloc, tablespace_used,  pspacetot,
+    trieassert_alloc, trieassert_used, tc_avail, gl_avail;
 
   tbtn = node_statistics(&smTableBTN);
   tbtht = hash_statistics(&smTableBTHT);
@@ -415,16 +403,16 @@ void total_stat(CTXTdeclc double elapstime) {
   printf("    choice point                      %15" Intfmt " bytes\n",
 	 (Integer)(((CPtr)tcpstack.high - top_of_cpstack) * sizeof(Cell)));
   printf("  SLG unific. space %10" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
-	 pdl.size * K, (size_t)(pdlreg+1) - (size_t)pdl.high,
-	 pdl.size * K - ((size_t)(pdlreg+1)-(size_t)pdl.high)); 
+	 (UInteger) pdl.size * K, (UInteger) ((size_t)(pdlreg+1) - (size_t)pdl.high),
+	 (UInteger) (pdl.size * K - ((size_t)(pdlreg+1)-(size_t)pdl.high))); 
   printf("  SLG completion  %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
-	 (size_t)complstack.size * K,
-	 (size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk,
-	 (size_t)complstack.size * K -
-	 ((size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk));
+	 (UInteger)complstack.size * K,
+	 (UInteger)COMPLSTACKBOTTOM - (UInteger)top_of_complstk,
+	 (UInteger)complstack.size * K -
+	 (UInteger) ((size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk));
   if (((size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk) > 0) {
     printf("        (%" Intfmt " incomplete table(s)",
-	   ((size_t)COMPLSTACKBOTTOM - (size_t)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE));
+	   (UInteger) (((UInteger)COMPLSTACKBOTTOM - (UInteger)top_of_complstk)/(COMPLFRAMESIZE*WORD_SIZE)));
     printf(" in %d SCCs)",count_sccs(CTXT));
     printf("\n");
   }
@@ -475,9 +463,9 @@ void total_stat(CTXTdeclc double elapstime) {
   }
 
   if (de_count > 0) {
-    printf("  %6" Intfmt " DEs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
+    printf("  %6" Intfmt " DEs in the tables (space: %5" Intfmt " bytes allocated, %5" Intfmt" in use)\n",
 	   de_count, de_space_alloc, de_space_used);
-    printf("  %6" Intfmt " DLs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
+    printf("  %6" Intfmt " DLs in the tables (space: %5" Intfmt " bytes allocated, %5" Intfmt" in use)\n",
 	   dl_count, dl_space_alloc, dl_space_used);
     printf("\n");
   }
