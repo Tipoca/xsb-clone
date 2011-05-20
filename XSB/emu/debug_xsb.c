@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.63 2011-05-18 19:21:40 dwarren Exp $
+** $Id: debug_xsb.c,v 1.64 2011-05-20 20:20:26 tswift Exp $
 ** 
 */
 
@@ -115,11 +115,7 @@ static void print_term(FILE *fp, Cell term, byte car, int level)
     fprintf(fp, "\"%s\"", string_val(term));
     break;
   case XSB_INT:
-#if defined(WIN_NT) && defined(BITS64)
-    fprintf(fp, "%lld", (Integer)int_val(term));
-#else
-    fprintf(fp, "%ld", (Integer)int_val(term));
-#endif
+    fprintf(fp, "%" Intfmt, (Integer)int_val(term));
     return;
   case XSB_FLOAT:
     fprintf(fp, "%f", float_val(term));
@@ -920,11 +916,11 @@ static void print_cell(char *addrtype, CPtr addr, Cell term, char *more_info)
   switch (cell_tag(term)) {
   case XSB_REF:
   case XSB_REF1:
-    printf( "%s %p: XSB_REF (tag=%ld), value=0x%p",
+    printf( "%s %p: XSB_REF (tag=%" Intfmt "), value=0x%p",
 	    addrtype, addr, cell_tag(term), ref_val(term));
     break;
   case XSB_ATTV:
-    printf( "%s %p: XSB_ATTV (tag=%ld), value=0x%p",
+    printf( "%s %p: XSB_ATTV (tag=%" Intfmt"), value=0x%p",
 	    addrtype, (CPtr)dec_addr(cell(addr)),
 	    cell_tag(term), ref_val(term));
     break;
@@ -941,7 +937,7 @@ static void print_cell(char *addrtype, CPtr addr, Cell term, char *more_info)
     }
     break;
   case XSB_INT:
-    printf( "%s %p: XSB_INT, value=%d  hexval=0x%p",
+    printf( "%s %p: XSB_INT, value=%" Intfmt  "hexval=0x%p",
 	    addrtype, addr, int_val(term), ref_val(term));
     break;
   case XSB_STRING:
@@ -961,7 +957,7 @@ static void print_cell(char *addrtype, CPtr addr, Cell term, char *more_info)
 	    addrtype, addr, clref_val(term), ref_val(term));
     break;
   default:
-    printf( "%s %p: tag=%ld, hex=0x%p, cval=%d", 
+    printf( "%s %p: tag=%" Intfmt ", hex=0x%p, cval=%" Intfmt, 
 	    addrtype, addr, cell_tag(term), ref_val(term), int_val(term));
     break;
   }

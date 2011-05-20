@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.63 2011-05-19 16:39:06 tswift Exp $
+** $Id: io_builtins_xsb_i.h,v 1.64 2011-05-20 20:20:26 tswift Exp $
 ** 
 */
 
@@ -45,7 +45,7 @@ extern int xsb_intern_fileptr(FILE *, char *, char *, char *);
 
 static FILE *stropen(CTXTdeclc char *str)
 {
-  int i;
+  Integer i;
   size_t  len;
   STRFILE *tmp;
   char *stringbuff;

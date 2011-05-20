@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.34 2011-05-18 19:21:40 dwarren Exp $
+** $Id: auxlry.h,v 1.35 2011-05-20 20:20:26 tswift Exp $
 ** 
 */
 
@@ -81,8 +81,11 @@ extern void gdb_dummy(void);
 #if defined(WIN_NT) && defined(BITS64)
 #define Intfmt "lld"
 #define Intxfmt "llx"
-#else
+#elif defined(BITS64)
 #define Intfmt "ld"
 #define Intxfmt "lx"
+#else 
+#define Intfmt "d"
+#define Intxfmt "x"
 #endif
 
