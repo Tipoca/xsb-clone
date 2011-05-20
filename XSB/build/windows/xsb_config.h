@@ -53,7 +53,7 @@
 
 /* this is used by many to check if config.h was included in proper order */
 #ifndef CONFIG_INCLUDED
-#define CONFIG_INCLUDED
+#define CONFIG_INCLUDED 1
 #endif
 
 /* Single precision floats */
