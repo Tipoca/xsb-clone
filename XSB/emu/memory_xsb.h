@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.46 2011-05-18 19:21:40 dwarren Exp $
+** $Id: memory_xsb.h,v 1.47 2011-05-20 21:26:43 tswift Exp $
 ** 
 */
 
@@ -146,7 +146,7 @@ extern System_Stack pdl,            /* PDL                        */
 
 /* Program and Symbol Tables Space (in Bytes)
    ------------------------------------------ */
-extern size_t pspacesize[NUM_CATS_SPACE];
+extern UInteger pspacesize[NUM_CATS_SPACE];
 
 
 /* Memory Function Prototypes

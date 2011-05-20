@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.25 2011-05-19 15:05:05 tswift Exp $
+** $Id: hash_xsb.c,v 1.26 2011-05-20 21:26:43 tswift Exp $
 ** 
 */
 
@@ -217,7 +217,7 @@ void symbol_table_stats(CTXTdecl) {
 
   size_t   i, symbols, bucket_contains, used_buckets, unused_buckets,
                   fullest_bucket_size, fullest_bucket_num, last_index;
-  size_t first_index;
+  UInteger first_index;
   Pair pair_ptr;
 
   SYS_MUTEX_LOCK( MUTEX_SYMBOL ) ;
@@ -253,7 +253,7 @@ void symbol_table_stats(CTXTdecl) {
   if (symbols != symbol_table.contains)
     printf("Symbol count incorrect in 'symbol_table': %lu\n",
 	   symbol_table.contains);
-  printf("\tused buckets:\t%lu  (range: [%d, %lu])\n", used_buckets,
+  printf("\tused buckets:\t%lu  (range: [%" Intfmt", %lu])\n", used_buckets,
 	 first_index, last_index);
   printf("\tunused buckets:\t%lu\n", unused_buckets);
   printf("\tmaximum bucket size:\t%lu  (#: %lu)\n", fullest_bucket_size, 
@@ -268,7 +268,7 @@ void string_table_stats(CTXTdecl) {
 
   size_t   i, strings, bucket_contains, used_buckets, unused_buckets,
                   fullest_bucket_size, fullest_bucket_num, last_index;
-  size_t first_index;
+  UInteger first_index;
   void *ptr;
 
  SYS_MUTEX_LOCK( MUTEX_STRING ) ;
@@ -303,7 +303,7 @@ void string_table_stats(CTXTdecl) {
   if (strings != string_table.contains)
     printf("String count incorrect in 'string_table': %lu\n",
 	   string_table.contains);
-  printf("\tused buckets:\t%lu  (range: [%d, %lu])\n", used_buckets,
+  printf("\tused buckets:\t%lu  (range: [%" Intfmt ", %lu])\n", used_buckets,
 	 first_index, last_index);
   printf("\tunused buckets:\t%lu\n", unused_buckets);
   printf("\tmaximum bucket size:\t%lu  (#: %lu)\n", fullest_bucket_size, 

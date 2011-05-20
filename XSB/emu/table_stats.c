@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.36 2011-05-18 19:21:41 dwarren Exp $
+** $Id: table_stats.c,v 1.37 2011-05-20 21:26:43 tswift Exp $
 ** 
 */
 
@@ -766,7 +766,7 @@ counter maximum_answer_list_nodes() {
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-size_t  maximum_total_tablespace_usage() {
+UInteger  maximum_total_tablespace_usage() {
 
   return (maxTableSpaceUsage.total_bytes);
 }

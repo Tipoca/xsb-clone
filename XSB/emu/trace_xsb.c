@@ -323,9 +323,9 @@ void total_stat(CTXTdeclc double elapstime) {
     pspacetot;
 
   size_t
-    num_de_blocks, num_dl_blocks, num_pnde_blocks,
-    de_count, dl_count, 
-    i;
+    num_de_blocks, num_dl_blocks, num_pnde_blocks,    i;
+
+  UInteger de_count, dl_count;
 
   tbtn = node_statistics(&smTableBTN);
   tbtht = hash_statistics(&smTableBTHT);
@@ -446,7 +446,7 @@ void total_stat(CTXTdeclc double elapstime) {
 	   ttt.maxtrail_count, ttt.maxcpstack_count);
     printf("                      SLG completion %" Intfmt " (%" Intfmt " subgoals)\n",
 	   ttt.maxopenstack_count,
-	   (ttt.maxopenstack_count/sizeof(struct completion_stack_frame)));
+	   (UInteger) (ttt.maxopenstack_count/sizeof(struct completion_stack_frame)));
 
     update_maximum_tablespace_stats(&tbtn,&tbtht,&varsf,&prodsf,&conssf,
 				    &aln,&tstn,&tstht,&tsi,&asi);
@@ -457,27 +457,27 @@ void total_stat(CTXTdeclc double elapstime) {
 
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
   printf("Tabling Operations\n");
-  printf("  %lu subsumptive call check/insert ops: %lu producers, %lu variants,\n"
-	 "  %lu properly subsumed (%lu table entries), %lu used completed table.\n"
-	 "  %lu relevant answer ident ops.  %lu consumptions via answer list.\n",
+  printf("  %"UIntfmt" subsumptive call check/insert ops: %"UIntfmt" producers, %"UIntfmt" variants,\n"
+	 "  %"UIntfmt" properly subsumed (%"UIntfmt" table entries), %"UIntfmt" used completed table.\n"
+	 "  %"UIntfmt" relevant answer ident ops.  %"UIntfmt" consumptions via answer list.\n",
 	 NumSubOps_CallCheckInsert,		NumSubOps_ProducerCall,
 	 NumSubOps_VariantCall,			NumSubOps_SubsumedCall,
 	 NumSubOps_SubsumedCallEntry,		NumSubOps_CallToCompletedTable,
 	 NumSubOps_IdentifyRelevantAnswers,	NumSubOps_AnswerConsumption);
   {
-    size_t ttl_ops = ans_chk_ins + NumSubOps_AnswerCheckInsert,
-	 	  ttl_ins = ans_inserts + NumSubOps_AnswerInsert;
+    UInteger ttl_ops = ans_chk_ins + NumSubOps_AnswerCheckInsert,
+	 	 ttl_ins = ans_inserts + NumSubOps_AnswerInsert;
 
-    printf("  %lu variant call check/insert ops: %lu producers, %lu variants.\n"
-	   "  %lu answer check/insert ops: %lu unique inserts, %lu redundant.\n",
+    printf("  %" UIntfmt " variant call check/insert ops: %" UIntfmt " producers, %" UIntfmt" variants.\n"
+	   "  %" UIntfmt" answer check/insert ops: %" UIntfmt " unique inserts, %"UIntfmt" redundant.\n",
 	   subg_chk_ins, subg_inserts, subg_chk_ins - subg_inserts,
 	   ttl_ops, ttl_ins, ttl_ops - ttl_ins);
   }
 
   if (de_count > 0) {
-    printf("  %6d DEs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
+    printf("  %6" Intfmt " DEs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
 	   de_count, de_space_alloc, de_space_used);
-    printf("  %6d DLs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
+    printf("  %6" Intfmt " DLs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
 	   dl_count, dl_space_alloc, dl_space_used);
     printf("\n");
   }
@@ -487,12 +487,12 @@ void total_stat(CTXTdeclc double elapstime) {
   if (abol_subg_ctr == 1)
     printf("  1 tabled subgoal explicitly abolished\n");
   else if (abol_subg_ctr > 1) 
-    printf("  %lu tabled subgoals explicitly abolished\n",abol_subg_ctr);
+    printf("  %" UIntfmt " tabled subgoals explicitly abolished\n",abol_subg_ctr);
 
   if (abol_pred_ctr == 1) 
     printf("  1 tabled predicate explicitly abolished\n");
   else if (abol_pred_ctr > 1) 
-    printf("  %lu tabled predicates explicitly abolished\n",abol_pred_ctr);
+    printf("  %" UIntfmt " tabled predicates explicitly abolished\n",abol_pred_ctr);
 
 #endif
 

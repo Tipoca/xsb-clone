@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.75 2011-05-19 16:39:06 tswift Exp $
+** $Id: tries.h,v 1.76 2011-05-20 21:26:43 tswift Exp $
 ** 
 */
 
@@ -500,7 +500,7 @@ extern Cell * trieinstr_unif_stk;
 extern Integer trieinstr_unif_stk_size;
 extern int delay_it;
 
-#define NUM_TRIEVARS 400
+#define NUM_TRIEVARS 500
 //#define DEFAULT_ARRAYSIZ 512 
 #define DEFAULT_ARRAYSIZ 16
 
@@ -580,6 +580,7 @@ typedef struct outedge{
 	callnodeptr callnode;
 }OUTEDGE;
 
+/* tls: this is a callnodeptr */
 typedef struct callnodetag{
   outedgeptr  outedges;
   calllistptr inedges; 

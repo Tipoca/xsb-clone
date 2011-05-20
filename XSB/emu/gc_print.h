@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_print.h,v 1.15 2011-05-18 19:21:40 dwarren Exp $
+** $Id: gc_print.h,v 1.16 2011-05-20 21:26:43 tswift Exp $
 ** 
 */
 
@@ -235,7 +235,7 @@ void print_cp(CTXTdeclc int add)
 void print_tr(CTXTdeclc int add)
 {
   CPtr startp, endp ;
-  size_t  start ;
+  UInteger  start ;
   FILE *where ;
   char buf[100] ;
 
@@ -262,15 +262,15 @@ void print_tr(CTXTdeclc int add)
     if ((*endp) & PRE_IMAGE_MARK) {
       Cell tagged_tr_cell = *endp ;
       cell(endp) = tagged_tr_cell - PRE_IMAGE_MARK ; /* untag tr cell */
-      fprintf(where,"trail(%6d,%s,  tagged,",start,pr_tr_marked(CTXTc endp)) ;
+      fprintf(where,"trail(%6" Intfmt ",%s,  tagged,",start,pr_tr_marked(CTXTc endp)) ;
       print_cell(CTXTc where,endp,FROM_TR) ;
       cell(endp) = tagged_tr_cell ; /* restore trail cell */
       endp-- ; start-- ;
-      fprintf(where,"trail(%6d,%s,pre_imag,",start,pr_tr_marked(CTXTc endp)) ;
+      fprintf(where,"trail(%6" Intfmt ",%s,pre_imag,",start,pr_tr_marked(CTXTc endp)) ;
       print_cell(CTXTc where,endp,FROM_TR) ;
       endp-- ; start-- ;
     } else {
-      fprintf(where,"trail(%6d,%s,untagged,",start,pr_tr_marked(CTXTc endp)) ;
+      fprintf(where,"trail(%6" Intfmt ",%s,untagged,",start,pr_tr_marked(CTXTc endp)) ;
       print_cell(CTXTc where,endp,FROM_TR) ;
       endp-- ; start-- ;
     }

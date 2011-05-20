@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.176 2011-05-18 19:21:40 dwarren Exp $
+** $Id: init_xsb.c,v 1.177 2011-05-20 21:26:43 tswift Exp $
 ** 
 */
 
@@ -116,7 +116,7 @@ extern FILE *fdopen(int fildes, const char *type);
 extern void extend_enc_dec_as_nec(void *,void *);
 #endif
 
-size_t pspacesize[NUM_CATS_SPACE] = {0};	/* actual space dynamically allocated by loader.c */
+UInteger pspacesize[NUM_CATS_SPACE] = {0};	/* actual space dynamically allocated by loader.c */
 
 /* The SLG-WAM data regions
    ------------------------ */
