@@ -899,9 +899,9 @@ void total_stat(CTXTdeclc double elapstime) {
 
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
   printf("Tabling Operations (shared and all private tables)\n");
-  printf("  %lu subsumptive call check/insert ops: %lu producers, %lu variants,\n"
-	 "  %lu properly subsumed (%lu table entries), %lu used completed table.\n"
-	 "  %lu relevant answer ident ops.  %lu consumptions via answer list.\n",
+  printf("  %"UIntfmt" subsumptive call check/insert ops: %"UIntfmt" producers, %"UIntfmt" variants,\n"
+	 "  %"UIntfmt" properly subsumed (%"UIntfmt" table entries), %"UIntfmt" used completed table.\n"
+	 "  %"UIntfmt" relevant answer ident ops.  %"UIntfmt" consumptions via answer list.\n",
 	 NumSubOps_CallCheckInsert,		NumSubOps_ProducerCall,
 	 NumSubOps_VariantCall,			NumSubOps_SubsumedCall,
 	 NumSubOps_SubsumedCallEntry,		NumSubOps_CallToCompletedTable,
@@ -910,16 +910,16 @@ void total_stat(CTXTdeclc double elapstime) {
     size_t ttl_ops = ans_chk_ins + NumSubOps_AnswerCheckInsert,
 	  	  ttl_ins = ans_inserts + NumSubOps_AnswerInsert;
 
-    printf("  %lu variant call check/insert ops: %lu producers, %lu variants.\n"
-	   "  %lu answer check/insert ops: %lu unique inserts, %lu redundant.\n",
+    printf("  %"UIntfmt" variant call check/insert ops: %"UIntfmt" producers, %"UIntfmt" variants.\n"
+	   "  %"UIntfmt" answer check/insert ops: %"UIntfmt" unique inserts, %"UIntfmt" redundant.\n",
 	   subg_chk_ins, subg_inserts, subg_chk_ins - subg_inserts,
 	   ttl_ops, ttl_ins, ttl_ops - ttl_ins);
   }
 
   if (de_count > 0) {
-    printf(" %6"UIntfmt" DEs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
+    printf(" %6"UIntfmt" DEs in the tables (space: %5"UIntfmt" bytes allocated, %5"UIntfmt" in use)\n",
 	   de_count, de_space_alloc, de_space_used);
-    printf(" %6"UIntfmt" DLs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
+    printf(" %6"UIntfmt" DLs in the tables (space: %5"UIntfmt" bytes allocated, %5"UIntfmt" in use)\n",
 	   dl_count, dl_space_alloc, dl_space_used);
     printf("\n");
   }
@@ -927,23 +927,23 @@ void total_stat(CTXTdeclc double elapstime) {
     if (abol_subg_ctr == 1)
       printf("  1 tabled subgoal explicitly abolished\n");
     else if (abol_subg_ctr > 1) 
-      printf("  %lu tabled subgoals explicitly abolished\n",abol_subg_ctr);
+      printf("  %"UIntfmt" tabled subgoals explicitly abolished\n",abol_subg_ctr);
 
     if (abol_pred_ctr == 1) 
       printf("  1 tabled predicate explicitly abolished\n");
     else if (abol_pred_ctr > 1) 
-      printf("  %lu tabled predicates explicitly abolished\n",abol_pred_ctr);
+      printf("  %"UIntfmt" tabled predicates explicitly abolished\n",abol_pred_ctr);
 
 #endif
 
 #ifdef SHARED_COMPL_TABLES
-  printf("%lu thread suspensions have occured\n\n", num_suspends );
-  printf("%lu deadlocks have occured\n\n", num_deadlocks );
+  printf("%"UIntfmt" thread suspensions have occured\n\n", num_suspends );
+  printf("%"UIntfmt" deadlocks have occured\n\n", num_deadlocks );
 #endif
 
-  printf("Peak number of active user threads: %lu\n", max_threads_sofar );
+  printf("Peak number of active user threads: %"UIntfmt"\n", max_threads_sofar );
 
-  printf("%ld active user thread%s.\n",flags[NUM_THREADS],
+  printf("%"UIntfmt" active user thread%s.\n",(UInteger)flags[NUM_THREADS],
 	 (flags[NUM_THREADS]>1?"s":""));
 
   printf("Time: %.3f sec. cputime,  %.3f sec. elapsetime\n",
