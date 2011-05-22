@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.83 2011-05-19 15:05:05 tswift Exp $
+** $Id: context.h,v 1.84 2011-05-22 18:18:54 tswift Exp $
 **
 */
 
@@ -425,15 +425,11 @@ Cell _pflags[MAX_PRIVATE_FLAGS];
 
 /* Thread Id (for fast access) */
 
-#ifdef WIN_NT
-  int tid;
-#else
-  pthread_t tid;
-#endif
+  Thread_T tid;
 
 /* stuff for deadlock detection in completion */
 #ifdef SHARED_COMPL_TABLES
-int waiting_for_tid;
+  Integer waiting_for_tid;
 	int is_deadlock_leader;
 int reset_thread;
 struct th_context *tmp_next;

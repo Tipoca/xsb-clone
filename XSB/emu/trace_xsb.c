@@ -537,7 +537,7 @@ void stat_inusememory(CTXTdeclc double elapstime, int type) {
     private_pnde_space_alloc, private_pnde_space_used,
     pspacetot;
 
-  int
+  size_t
     num_de_blocks, num_dl_blocks, num_pnde_blocks,
     de_count, dl_count, private_de_count, private_dl_count,
     i;
@@ -737,9 +737,10 @@ void total_stat(CTXTdeclc double elapstime) {
     private_pnde_space_alloc, private_pnde_space_used,
     pspacetot;
 
-  int
+  UInteger de_count;
+  size_t
     num_de_blocks,num_dl_blocks,num_pnde_blocks,
-    de_count, dl_count, private_de_count, private_dl_count, 
+    dl_count, private_de_count, private_dl_count, 
     i;
 
   tbtn = node_statistics(&smTableBTN);
@@ -856,7 +857,7 @@ void total_stat(CTXTdeclc double elapstime) {
 	 total_alloc, total_used, total_alloc - total_used);
   printf("\n");
 
-  printf("Thread-private memory thread %d:\n",xsb_thread_id);
+  printf("Thread-private memory thread %"Intfmt":\n",xsb_thread_id);
   printf("  glob/loc space  %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 glstack.size * K, glstack.size * K - gl_avail, gl_avail);
   printf("    global                            %15" Intfmt " bytes\n",
@@ -916,9 +917,9 @@ void total_stat(CTXTdeclc double elapstime) {
   }
 
   if (de_count > 0) {
-    printf(" %6d DEs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
+    printf(" %6"UIntfmt" DEs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
 	   de_count, de_space_alloc, de_space_used);
-    printf(" %6d DLs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
+    printf(" %6"UIntfmt" DLs in the tables (space: %5ld bytes allocated, %5ld in use)\n",
 	   dl_count, dl_space_alloc, dl_space_used);
     printf("\n");
   }

@@ -146,7 +146,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   //  gdb_dummy();
 #ifdef SHARED_COMPL_TABLES
   byte * inst_addr = lpcreg;
-  int table_tid ;
+  Integer table_tid ;
   int grabbed = FALSE;
   th_context * waiting_for_thread;
 #endif

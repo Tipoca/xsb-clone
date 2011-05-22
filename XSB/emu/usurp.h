@@ -12,14 +12,14 @@
         subg_grabbed(producer_sf) = FALSE ;
 	goto seq_table_try;
      }
-     if( !is_completed(producer_sf) && subg_tid(producer_sf) != xsb_thread_id )
+     if( !is_completed(producer_sf) && subg_tid(producer_sf) != (Thread_T) xsb_thread_id )
      {
 	th->reset_thread = FALSE;
      	pthread_mutex_lock(&completing_mut);
      	SYS_MUTEX_INCR( MUTEX_COMPL );
      	while( !is_completed(producer_sf))
      	{  
-	   table_tid = subg_tid(producer_sf) ;
+	  table_tid = (Integer) subg_tid(producer_sf) ;
 	   waiting_for_thread = find_context(table_tid) ;
 	   if( would_deadlock( table_tid, xsb_thread_id ) )
            {       /* code for leader */
@@ -31,7 +31,7 @@
 		   goto seq_table_try;
            }
            th->waiting_for_subgoal = producer_sf ;
-           th->waiting_for_tid = table_tid ;
+           th->waiting_for_tid = (Integer) table_tid ;
 	   th->is_deadlock_leader = FALSE ;
 	   pthread_cond_wait(&TIF_ComplCond(tip),&completing_mut);
            SYS_MUTEX_INCR( MUTEX_COMPL );
@@ -58,7 +58,7 @@ seq_table_try:
     {
       producer_sf = NewProducerSF(CTXTc CallLUR_Leaf(lookupResults),
 				   CallInfo_TableInfo(callInfo));
-      subg_tid(producer_sf) = xsb_thread_id;
+      subg_tid(producer_sf) = (Thread_T) xsb_thread_id;
       subg_grabbed(producer_sf) = FALSE;
       UNLOCK_CALL_TRIE() ;
     }

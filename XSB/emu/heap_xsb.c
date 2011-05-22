@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.87 2011-05-19 16:39:06 tswift Exp $
+** $Id: heap_xsb.c,v 1.88 2011-05-22 18:18:54 tswift Exp $
 ** 
 */
 
@@ -330,7 +330,7 @@ static size_t heap_marks_size;
 
 #ifndef MULTI_THREAD
 static double total_time_gc = 0 ;
-static size_t total_collected = 0 ;
+static UInteger total_collected = 0 ;
 static int num_gc = 0 ;
 #endif
 

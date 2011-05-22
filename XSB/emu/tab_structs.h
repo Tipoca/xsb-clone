@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.16 2011-05-19 16:39:06 tswift Exp $
+** $Id: tab_structs.h,v 1.17 2011-05-22 18:18:54 tswift Exp $
 ** 
 */
 
@@ -634,7 +634,7 @@ typedef struct subgoal_frame {
   CPtr compl_suspens_ptr; /* SLGWAM: CP stack ptr (pre-compl)  */
   DelTFptr deltf_ptr;     /* pointer to deltf (post-compl) */
 #ifdef MULTI_THREAD
-  int tid;		  /* Thread id of the generator thread for this sg */
+  Thread_T tid;	  /* Thread id of the generator thread for this sg */
 #endif
 #ifdef CONC_COMPL
   ALNptr tag;		  /* Tag can't be stored in answer list in conc compl */

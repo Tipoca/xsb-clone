@@ -59,7 +59,7 @@ typedef pthread_t pthread_t_p;
 #define DEFAULT_MQ_SIZE 1024
 
 #define THREAD_ENTRY(TID)		((Integer)(TID)&ENTRY_MASK)
-#define THREAD_INCARN(TID)		(((TID)&INC_MASK)>>INC_SHIFT)
+#define THREAD_INCARN(TID)		((((Integer) TID)&INC_MASK)>>INC_SHIFT)
 #define SET_THREAD_INCARN(TID,INC)	((TID) = ((TID & ~INC_MASK) |\
 					 (((INC)<<INC_SHIFT) & INC_MASK)))
 
@@ -173,7 +173,7 @@ extern int max_threads_glc ;
 void init_system_mutexes( void ) ;
 void init_system_threads( th_context * ctxt ) ;
 
-th_context *find_context( int tid );
+th_context *find_context( Integer tid );
 int valid_tid( int tid );
 #ifdef SHARED_COMPL_TABLES
 int get_waiting_for_tid( int t );

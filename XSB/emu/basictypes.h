@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.29 2011-05-18 19:21:40 dwarren Exp $
+** $Id: basictypes.h,v 1.30 2011-05-22 18:18:54 tswift Exp $
 ** 
 */
 
@@ -120,6 +120,14 @@ typedef union cell_to_bytes_conv {
     
 } CellToBytesConv;
 
+
+#ifdef MULTI_THREAD
+#ifdef WIN_NT
+#define Thread_T Integer
+#else
+#define Thread_T pthread_t
+#endif
+#endif
 
 #endif /* BASIC_TYPES_INCLUDED */
 

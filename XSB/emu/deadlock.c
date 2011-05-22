@@ -19,9 +19,9 @@
 counter num_deadlocks = 0;
 counter num_suspends = 0;
 
-int would_deadlock( int t1, int t2 )
+int would_deadlock( Integer t1, Integer t2 )
 {
-	int t = t1;
+  Integer t = t1;
                                                                                 
         while( valid_tid(t) )
                 if( t == t2 )
@@ -44,14 +44,18 @@ static VariantSF bottom_leader(th_context *th, VariantSF to_sgf)
 	return compl_subgoal_ptr(csf) ;
 }
 
+#ifdef WIN_NT
 static void ReclaimDSandMarkReset(th_context *th, VariantSF to, int leader)
+#else
+static void ReclaimDSandMarkReset(th_context *th, VariantSF to, pthread_t leader)
+#endif
 {
 	CPtr csf = openreg ;
 	for(;;)
 	{	if( !is_completed(compl_subgoal_ptr(csf)))
 		/* Handle early completion */
 		{	subg_grabbed(compl_subgoal_ptr(csf)) = TRUE ;
-			subg_tid(compl_subgoal_ptr(csf)) = leader ;
+		  subg_tid(compl_subgoal_ptr(csf)) = leader ;
     			subg_pos_cons(compl_subgoal_ptr(csf)) = NULL;
     			subg_compl_susp_ptr(compl_subgoal_ptr(csf)) = NULL;
 		}
@@ -75,7 +79,11 @@ static void reset_thread( th_context *th, th_context *ctxt, VariantSF sgf,
 	}
 	sgf = bottom_leader(ctxt, sgf) ;
         *resetsgf = sgf ;
+#ifdef WIN_NT
 	ReclaimDSandMarkReset(ctxt, sgf, xsb_thread_id);
+#else
+	ReclaimDSandMarkReset(ctxt, sgf, (pthread_t) xsb_thread_id);
+#endif
 	/* trick to use other thread's context */
 	th = ctxt ;
         /* reset the stacks by restoring the generator cp of this sg */
@@ -115,9 +123,9 @@ void reset_other_threads( th_context *th, th_context *ctxt, VariantSF sgf )
 	tmp = ctxt;
 	while( tmp != th )
 	{
-		tmp->tmp_next = find_context(tmp->waiting_for_tid) ;
-		tmp->waiting_for_tid = -1 ;
-		tmp = tmp->tmp_next ;
+	  tmp->tmp_next = find_context(tmp->waiting_for_tid) ;
+	  tmp->waiting_for_tid = -1 ;
+	  tmp = tmp->tmp_next ;
 	}
 
 	pthread_mutex_unlock( &completing_mut );

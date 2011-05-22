@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.h,v 1.28 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: struct_manager.h,v 1.29 2011-05-22 18:18:54 tswift Exp $
 ** 
 */
 
@@ -201,7 +201,7 @@ typedef struct Structure_Manager {
     void *pLastStruct;     /* - last struct in current block */
   } cur_block;
   struct {		   /* Structure characteristics: */
-    size_t size;	   /* - size of the structure in bytes */
+    UInteger size;	   /* - size of the structure in bytes */
     counter num;	   /* - number of records per block */
     char *name;		   /* - short description of the struct type */
   } struct_desc;

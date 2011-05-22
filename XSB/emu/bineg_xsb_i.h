@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: bineg_xsb_i.h,v 1.49 2011-01-09 22:30:15 tswift Exp $
+** $Id: bineg_xsb_i.h,v 1.50 2011-05-22 18:18:54 tswift Exp $
 ** 
 */
 
@@ -107,7 +107,7 @@ case IS_INCOMPLETE: {
   const int regRootSubgoal  = 2;  /* in: PTCPreg */
 
 #ifdef SHARED_COMPL_TABLES
-	int table_tid ;
+	Integer table_tid ;
 	th_context *waiting_for_thread ;
 	int table_is_shared ;
 #endif
@@ -130,21 +130,21 @@ case IS_INCOMPLETE: {
 /* This allows sharing of completed tables.  */
      table_is_shared = IsSharedSF(producerSF);
      if( table_is_shared && !is_completed(producerSF) && 
-         subg_tid(producerSF) != xsb_thread_id )
+         subg_tid(producerSF) != (Thread_T) xsb_thread_id )
      {	pthread_mutex_lock(&completing_mut);
      	SYS_MUTEX_INCR( MUTEX_COMPL );
         while( table_is_shared && !is_completed(producerSF) )
         {
-	   table_tid = subg_tid(producerSF) ;
-           waiting_for_thread = find_context(table_tid) ;
-           if( would_deadlock( table_tid, xsb_thread_id ) )
+	  table_tid = (Integer) subg_tid(producerSF) ;
+	  waiting_for_thread = find_context(table_tid) ;
+           if( would_deadlock( (Integer) table_tid, xsb_thread_id ) )
 	   {	/* code for leader */
                 reset_other_threads( th, waiting_for_thread, producerSF );
 		reset_leader( th ) ; /* this unlocks the completing_mut */
 		return TRUE ;
 	   }
 	   th->waiting_for_subgoal = producerSF ;
-           th->waiting_for_tid = table_tid ;
+           th->waiting_for_tid = (Integer) table_tid ;
            pthread_cond_wait(&TIF_ComplCond(subg_tif_ptr(producerSF)),
                              &completing_mut) ;
 	   SYS_MUTEX_INCR( MUTEX_COMPL );

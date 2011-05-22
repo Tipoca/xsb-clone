@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.39 2011-05-22 16:02:22 tswift Exp $
+** $Id: table_stats.c,v 1.40 2011-05-22 18:18:54 tswift Exp $
 ** 
 */
 
@@ -306,8 +306,8 @@ void print_detailed_tablespace_stats(CTXTdecl) {
 	 "Table Space Usage (excluding asserted and interned tries) \n");
   printf("  Current Total Allocation:   %12" UIntfmt"  bytes\n"
   	 "  Current Total Usage:        %12" UIntfmt" bytes\n",
-	 pspacesize[TABLE_SPACE]-trieassert_alloc,  
-	 pspacesize[TABLE_SPACE]-trieassert_alloc-(tablespace_alloc-tablespace_used));
+	 (UInteger) (pspacesize[TABLE_SPACE]-trieassert_alloc),  
+	 (UInteger) (pspacesize[TABLE_SPACE]-trieassert_alloc-(tablespace_alloc-tablespace_used)));
 
   // Basic Trie Stuff
   if ( NodeStats_NumBlocks(btn) > 0 || HashStats_NumBlocks(btht) > 0 || NodeStats_NumBlocks(aln) > 0) {
@@ -441,8 +441,8 @@ void print_detailed_tablespace_stats(CTXTdecl) {
     pri_dl_space_alloc, pri_dl_space_used,
     pri_pnde_space_alloc, pri_pnde_space_used;
 
-  int num_de_blocks, num_dl_blocks, num_pnde_blocks;
-  int pri_num_de_blocks, pri_num_dl_blocks, pri_num_pnde_blocks;
+  size_t num_de_blocks, num_dl_blocks, num_pnde_blocks;
+  size_t pri_num_de_blocks, pri_num_dl_blocks, pri_num_pnde_blocks;
 
   SM_Lock(smTableBTN);
   btn = node_statistics(&smTableBTN);
@@ -577,7 +577,7 @@ void print_detailed_tablespace_stats(CTXTdecl) {
 
   printf("\n --------------------- Private tables ---------------------\n");
   printf("\n"
-	 "Private Table Space Usage for Thread %d (exc"UIntfmt"ding asserted and interned tries) \n"
+	 "Private Table Space Usage for Thread %"Intfmt" (exc"UIntfmt"ding asserted and interned tries) \n"
 	 "  Current Total Allocation:   %12"UIntfmt" bytes\n"
   	 "  Current Total Usage:        %12"UIntfmt" bytes\n",
 	 xsb_thread_id,pri_tablespace_alloc,pri_tablespace_used);
