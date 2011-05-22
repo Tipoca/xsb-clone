@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.37 2011-05-20 21:26:43 tswift Exp $
+** $Id: table_stats.c,v 1.38 2011-05-22 15:12:25 tswift Exp $
 ** 
 */
 
@@ -197,10 +197,10 @@ NodeStats subgoal_statistics(CTXTdeclc Structure_Manager *sm) {
  */
 
 void print_NodeStats(NodeStats node,char * nodeName) {
-      printf("    %s (%lu blocks)\n"
-	     "      Allocated:   %10lu  (%8lu bytes)\n"
-	     "      Used:        %10lu  (%8lu bytes)\n"
-	     "      Free:        %10lu  (%8lu bytes)\n",
+      printf("    %s (%"UIntfmt" blocks)\n"
+	     "      Allocated:   %10"UIntfmt"  (%8"UIntfmt" bytes)\n"
+	     "      Used:        %10"UIntfmt"  (%8"UIntfmt" bytes)\n"
+	     "      Free:        %10"UIntfmt"  (%8"UIntfmt" bytes)\n",
 	     nodeName,NodeStats_NumBlocks(node),
 	     NodeStats_NumAllocNodes(node),  NodeStats_SizeAllocNodes(node),
 	     NodeStats_NumUsedNodes(node),  NodeStats_SizeUsedNodes(node),
@@ -208,14 +208,14 @@ void print_NodeStats(NodeStats node,char * nodeName) {
     }
 
 void print_HashStats(HashStats hashTab,char * tabName) {
-      printf("    %s (%lu blocks)\n"
-	     "      Headers:     %10lu  (%8lu bytes)\n"
-	     "        Used:      %10lu  (%8lu bytes)\n"
-	     "        Free:      %10lu  (%8lu bytes)\n"
-	     "      Buckets:     %10lu  (%8lu bytes)\n"
-	     "        Used:      %10lu\n"
-	     "        Empty:     %10lu\n"
-	     "      Occupancy:   %10lu Elements\n",
+      printf("    %s (%"UIntfmt" blocks)\n"
+	     "      Headers:     %10"UIntfmt"  (%8"UIntfmt" bytes)\n"
+	     "        Used:      %10"UIntfmt"  (%8"UIntfmt" bytes)\n"
+	     "        Free:      %10"UIntfmt"  (%8"UIntfmt" bytes)\n"
+	     "      Buckets:     %10"UIntfmt"  (%8"UIntfmt" bytes)\n"
+	     "        Used:      %10"UIntfmt"\n"
+	     "        Empty:     %10"UIntfmt"\n"
+	     "      Occupancy:   %10"UIntfmt" Elements\n",
 	     tabName,HashStats_NumBlocks(hashTab),
 	     HashStats_NumAllocHeaders(hashTab),  HashStats_SizeAllocHeaders(hashTab),
 	     HashStats_NumUsedHeaders(hashTab),  HashStats_SizeUsedHeaders(hashTab),
@@ -227,10 +227,10 @@ void print_HashStats(HashStats hashTab,char * tabName) {
 
 void print_wfs_usage(Integer space_alloc,Integer space_used, size_t num_blocks,int frames_per_block,
 		int size_per_block,char * elt_name) {
-    printf("    %s (%lu blocks)\n"
-	   "      Allocated:   %10lu  (%8lu bytes)\n"
-	   "      Used:        %10lu  (%8lu bytes)\n"
-	   "      Free:        %10lu  (%8lu bytes)\n",
+    printf("    %s (%"UIntfmt" blocks)\n"
+	   "      Allocated:   %10"UIntfmt"  (%8"UIntfmt" bytes)\n"
+	   "      Used:        %10"UIntfmt"  (%8"UIntfmt" bytes)\n"
+	   "      Free:        %10"UIntfmt"  (%8"UIntfmt" bytes)\n",
 	   elt_name,(UInteger) num_blocks, 
 	   (UInteger) num_blocks*frames_per_block, (UInteger) space_alloc, 
 	   (UInteger) (space_used/size_per_block),  (UInteger) space_used, 
@@ -385,11 +385,11 @@ void print_detailed_tablespace_stats(CTXTdecl) {
     update_maximum_tablespace_stats(&btn,&btht,&varsf,&prodsf,&conssf,
 				    &aln,&tstn,&tstht,&tsi,&asi);
     printf("\n"
-	   "Maximum Total Usage:        %12ld bytes\n",
+	   "Maximum Total Usage:        %12"UIntfmt" bytes\n",
 	   maximum_total_tablespace_usage());
     printf("Maximum Structure Usage:\n"
-	   "  ALNs:            %10lu  (%8lu bytes)\n"
-	   "  TSINs:           %10lu  (%8lu bytes)\n",
+	   "  ALNs:            %10"UIntfmt"  (%8"UIntfmt" bytes)\n"
+	   "  TSINs:           %10"UIntfmt"  (%8"UIntfmt" bytes)\n",
 	   maximum_answer_list_nodes(),
 	   maximum_answer_list_nodes() * NodeStats_NodeSize(aln),
 	   maximum_timestamp_index_nodes(),
@@ -515,17 +515,17 @@ void print_detailed_tablespace_stats(CTXTdecl) {
   trieassert_alloc = NodeStats_SizeAllocNodes(abtn) + HashStats_SizeAllocTotal(abtht);
   trieassert_used = NodeStats_SizeUsedNodes(abtn) + HashStats_SizeUsedTotal(abtht);
 
-  printf("  Current Total Allocation:   %12lu bytes\n"
-  	 "  Current Total Usage:        %12lu bytes\n",
+  printf("  Current Total Allocation:   %12"UIntfmt" bytes\n"
+  	 "  Current Total Usage:        %12"UIntfmt" bytes\n",
 	 pspacesize[TABLE_SPACE]-trieassert_alloc,  
 	 pspacesize[TABLE_SPACE]-trieassert_alloc-(tablespace_alloc-tablespace_used));
 
   //   printf("\n --------------------- Shared tables ---------------------\n");
 
   printf("\n"
-	 "Shared Table Space Usage (excluding asserted and interned tries) \n");
-  printf("  Current Total Allocation:   %12lu bytes\n"
-  	 "  Current Total Usage:        %12lu bytes\n",
+	 "Shared Table Space Usage (exc"UIntfmt"ding asserted and interned tries) \n");
+  printf("  Current Total Allocation:   %12"UIntfmt" bytes\n"
+  	 "  Current Total Usage:        %12"UIntfmt" bytes\n",
 	 shared_tablespace_alloc,shared_tablespace_used);
 
   // Basic Trie Stuff
@@ -577,9 +577,9 @@ void print_detailed_tablespace_stats(CTXTdecl) {
 
   printf("\n --------------------- Private tables ---------------------\n");
   printf("\n"
-	 "Private Table Space Usage for Thread %d (excluding asserted and interned tries) \n"
-	 "  Current Total Allocation:   %12lu bytes\n"
-  	 "  Current Total Usage:        %12lu bytes\n",
+	 "Private Table Space Usage for Thread %d (exc"UIntfmt"ding asserted and interned tries) \n"
+	 "  Current Total Allocation:   %12"UIntfmt" bytes\n"
+  	 "  Current Total Usage:        %12"UIntfmt" bytes\n",
 	 xsb_thread_id,pri_tablespace_alloc,pri_tablespace_used);
 
   // Basic Trie Stuff
@@ -792,25 +792,25 @@ void reset_subsumption_stats() {
 void print_detailed_subsumption_stats() {
 
   printf("Subsumptive Operations\n"
-	 "  Subsumptive call check/insert ops: %8lu\n"
+	 "  Subsumptive call check/insert ops: %8"UIntfmt"\n"
 	 "  * Calls to nonexistent or incomplete tables\n"
-	 "    - Producers:                   %6lu\n"
-	 "    - Variants of producers:       %6lu\n"
-	 "    - Properly subsumed:           %6lu\n"
-	 "        Resulted in call table entry: %lu\n"
-	 "  * Calls to completed tables:     %6lu\n",
+	 "    - Producers:                   %6"UIntfmt"\n"
+	 "    - Variants of producers:       %6"UIntfmt"\n"
+	 "    - Properly subsumed:           %6"UIntfmt"\n"
+	 "        Resulted in call table entry: %"UIntfmt"\n"
+	 "  * Calls to completed tables:     %6"UIntfmt"\n",
 	 NumSubOps_CallCheckInsert, NumSubOps_ProducerCall,
 	 NumSubOps_VariantCall, NumSubOps_SubsumedCall,
 	 NumSubOps_SubsumedCallEntry, NumSubOps_CallToCompletedTable);
-  printf("  Answer check/insert operations:    %8lu\n"
-	 "  * Actual answer inserts:         %6lu\n"
+  printf("  Answer check/insert operations:    %8"UIntfmt"\n"
+	 "  * Actual answer inserts:         %6"UIntfmt"\n"
 	 "  * Derivation ratio (New/Total):    %4.2f\n",
 	 NumSubOps_AnswerCheckInsert, NumSubOps_AnswerInsert,
 	 ( (NumSubOps_AnswerCheckInsert != 0)
 	   ? (float)NumSubOps_AnswerInsert / (float)NumSubOps_AnswerCheckInsert
 	   : 0 ));
-  printf("  Relevant-answer identify ops:      %8lu\n"
-	 "  Answer-list consumption ops:       %8lu\n",
+  printf("  Relevant-answer identify ops:      %8"UIntfmt"\n"
+	 "  Answer-list consumption ops:       %8"UIntfmt"\n",
 	 NumSubOps_IdentifyRelevantAnswers, NumSubOps_AnswerConsumption);
 }
 

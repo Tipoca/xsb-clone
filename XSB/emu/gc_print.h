@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_print.h,v 1.16 2011-05-20 21:26:43 tswift Exp $
+** $Id: gc_print.h,v 1.17 2011-05-22 15:12:25 tswift Exp $
 ** 
 */
 
@@ -83,7 +83,7 @@ static void print_cell(CTXTdeclc FILE *where, CPtr cell_ptr, int fromwhere)
 		}
 	      else
 		if ((Integer)cell_val < 10000)
-		  fprintf(where,"strange,%" Intfmt ").\n",cell_val) ;
+		  fprintf(where,"strange,%" Cellfmt ").\n",cell_val) ;
 		else
 		  if (fromwhere == FROM_HEAP)
 		    fprintf(where,"funct,'/'('%s',%d)).\n",
@@ -95,7 +95,7 @@ static void print_cell(CTXTdeclc FILE *where, CPtr cell_ptr, int fromwhere)
 			char *s ;
 		        if ((tr_bot < (CPtr)cell_val) &&
 			    ((CPtr)cell_val < cp_bot))
-			  fprintf(where,"between_trail_cp,%" Intfmt ").\n",
+			  fprintf(where,"between_trail_cp,%" Cellfmt ").\n",
 				  cell_val) ;
 			else
 			  {
@@ -321,20 +321,20 @@ void print_regs(CTXTdeclc int a, int add)
   fprintf(where,"wam_reg(hfreg,%" Intfmt ").\n",(hfreg-heap_bot)) ;
   fprintf(where,"wam_reg(efreg,%" Intfmt ").\n",(ls_bot-efreg)) ;
 
-  fprintf(where,"wam_reg(ptcpreg,%" Intfmt ").\n",(Cell)ptcpreg) ;
+  fprintf(where,"wam_reg(ptcpreg,%" Cellfmt ").\n",(Cell)ptcpreg) ;
 
   fprintf(where,"wam_reg(ebreg,%" Intfmt ").\n",(ls_bot-ebreg)) ;
   fprintf(where,"wam_reg(hbreg,%" Intfmt ").\n",(hbreg-heap_bot)) ;
 
-  fprintf(where,"wam_reg(cpreg,%" Intfmt ").\n",(Cell)cpreg) ;
-  fprintf(where,"wam_reg(pcreg,%" Intfmt ").\n",(Cell)pcreg) ;
+  fprintf(where,"wam_reg(cpreg,%" Cellfmt ").\n",(Cell)cpreg) ;
+  fprintf(where,"wam_reg(pcreg,%" Cellfmt ").\n",(Cell)pcreg) ;
 
   if (delayreg)
     {
       fprintf(where,"delayreg(");
       print_cell(CTXTc where,(CPtr)(&delayreg),FROM_AREG);
     }
-  else fprintf(where,"wam_reg(delayreg,%" Intfmt ").\n",(Cell)delayreg);
+  else fprintf(where,"wam_reg(delayreg,%" Cellfmt ").\n",(Cell)delayreg);
 
   fclose(where) ;
 } /* print_regs */

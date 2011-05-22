@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.361 2011-05-19 16:39:06 tswift Exp $
+** $Id: builtin.c,v 1.362 2011-05-22 15:12:25 tswift Exp $
 **
 */
 
@@ -1026,10 +1026,10 @@ int is_number_atom(Cell term) {
 inline static void xsb_fprint_variable(CTXTdeclc FILE *fptr, CPtr var)
 {
   if (var >= (CPtr)glstack.low && var <= top_of_heap)
-    fprintf(fptr, "_h%" Intfmt , ((Cell)var-(Cell)glstack.low+1)/sizeof(CPtr));
+    fprintf(fptr, "_h%" Cellfmt , ((Cell)var-(Cell)glstack.low+1)/sizeof(CPtr));
   else {
     if (var >= top_of_localstk && var <= (CPtr)glstack.high)
-      fprintf(fptr, "_l%" Intfmt , ((Cell)glstack.high-(Cell)var+1)/sizeof(CPtr));
+      fprintf(fptr, "_l%" Cellfmt , ((Cell)glstack.high-(Cell)var+1)/sizeof(CPtr));
     else fprintf(fptr, "_%p", var);   /* Should never happen */
   }
 }
@@ -1037,10 +1037,10 @@ inline static void xsb_fprint_variable(CTXTdeclc FILE *fptr, CPtr var)
 void xsb_sprint_variable(CTXTdeclc char *sptr, CPtr var)
 {
   if (var >= (CPtr)glstack.low && var <= top_of_heap)
-    sprintf(sptr, "_h%" Intfmt, ((Cell)var-(Cell)glstack.low+1)/sizeof(CPtr));
+    sprintf(sptr, "_h%" Cellfmt, ((Cell)var-(Cell)glstack.low+1)/sizeof(CPtr));
   else {
     if (var >= top_of_localstk && var <= (CPtr)glstack.high)
-      sprintf(sptr, "_l%" Intfmt, ((Cell)glstack.high-(Cell)var+1)/sizeof(CPtr));
+      sprintf(sptr, "_l%" Cellfmt, ((Cell)glstack.high-(Cell)var+1)/sizeof(CPtr));
     else sprintf(sptr, "_%p", var);   /* Should never happen */
   }
 }

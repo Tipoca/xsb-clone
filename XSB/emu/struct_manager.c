@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.31 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: struct_manager.c,v 1.32 2011-05-22 15:12:25 tswift Exp $
 ** 
 */
 
@@ -59,10 +59,10 @@ void smPrint(Structure_Manager smRecord, char *string) {
 
   fprintf(stddbg,
 	  "  Structure Manager for %s (%s)\n"
-	  "\tCurBlock: %p\t\tTotal Blocks: %lu\n"
+	  "\tCurBlock: %p\t\tTotal Blocks: %"Intfmt"\n"
 	  "\tNextStr:  %p\t\tFree List:   %p\n"
 	  "\tLastStr:  %p\t\tAlloc List:  %p\n"
-	  "\tStructs per block: %lu\t\tStruct size: %u bytes\n",
+	  "\tStructs per block: %"UIntfmt"\t\tStruct size: %u bytes\n",
 	  SM_StructName(smRecord),	string,
 	  SM_CurBlock(smRecord),	nBlocks,
 	  SM_NextStruct(smRecord),	SM_FreeList(smRecord),

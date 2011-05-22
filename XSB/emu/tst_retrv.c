@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_retrv.c,v 1.32 2011-05-18 19:21:41 dwarren Exp $
+** $Id: tst_retrv.c,v 1.33 2011-05-22 15:12:25 tswift Exp $
 ** 
 */
 
@@ -674,7 +674,7 @@ static void tstCollectionError(CTXTdeclc char *string, xsbBool cleanup_needed) {
 									   \
    default:								   \
      fprintf(stderr, "subterm: unbound var (%ld),  symbol: unknown "	   \
-	     "(%ld)\n", cell_tag(Subterm), TrieSymbolType(symbol));	   \
+	     "(%ld)\n", (long) cell_tag(Subterm), (long) TrieSymbolType(symbol)); \
      TST_Collection_Error("Trie symbol with bogus tag!", RequiresCleanup); \
      break;								   \
    }  /* END switch(symbol_tag) */					   \
@@ -893,7 +893,7 @@ ALNptr tst_collect_relevant_answers(CTXTdeclc TSTNptr tstRoot, TimeStamp ts,
       break;
 
     default:
-      fprintf(stderr, "subterm: unknown (%ld),  symbol: ? (%ld)\n",
+      fprintf(stderr, "subterm: unknown (%"Intfmt"),  symbol: ? (%"Intfmt")\n",
 	      cell_tag(subterm), TrieSymbolType(symbol));
       TST_Collection_Error("Trie symbol with bogus tag!", RequiresCleanup);
       break;

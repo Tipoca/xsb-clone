@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.48 2011-05-18 19:21:40 dwarren Exp $
+** $Id: socket_xsb.c,v 1.49 2011-05-22 15:12:25 tswift Exp $
 ** 
 */
 
@@ -371,7 +371,7 @@ static int socket_connect(CTXTdeclc int *rc, int timeout) {
   }
 }
 
-static int socket_recv(CTXTdeclc int *rc, char** buffer, size_t *buffer_len, int timeout) {
+static int socket_recv(CTXTdeclc int *rc, char** buffer, UInteger *buffer_len, int timeout) {
   SOCKET sock_handle = (SOCKET) ptoc_int(CTXTc 2);
   if (read_select(sock_handle, timeout)) {
     *rc = readmsg(sock_handle, buffer, buffer_len);
@@ -446,7 +446,7 @@ xsbBool xsb_socket_request(CTXTdecl)
   struct linger sock_linger_opt;
   int rc;
   char *message_buffer = NULL; /* initialized to keep compiler happy */
-  size_t msg_len = 0;	  /* initialized to keep compiler happy */
+  UInteger msg_len = 0;	  /* initialized to keep compiler happy */
   char char_read;
 
   switch (ptoc_int(CTXTc 1)) {

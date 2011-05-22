@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.40 2011-05-18 19:21:41 dwarren Exp $
+** $Id: tst_utils.c,v 1.41 2011-05-22 15:12:25 tswift Exp $
 ** 
 */
 
@@ -192,7 +192,7 @@ void printTrieSymbol(FILE *fp, Cell symbol) {
       fprintf(fp, "LIST");
       break;
     default:
-      fprintf(fp, "Unknown symbol (tag = %ld)", cell_tag(symbol));
+      fprintf(fp, "Unknown symbol (tag = %" Intfmt")", cell_tag(symbol));
       break;
     }
   }
@@ -214,7 +214,7 @@ void printTrieNode(FILE *fp, BTNptr pTN) {
   printTrieSymbol(fp, TN_Symbol(pTN));
   fprintf(fp, ")");
   if ( IsInTimeStampedTrie(pTN) )
-    fprintf(fp, ", TimeStamp(%ld)", TSTN_TimeStamp((TSTNptr)pTN));
+    fprintf(fp, ", TimeStamp(%" Intfmt, TSTN_TimeStamp((TSTNptr)pTN));
   fprintf(fp, "\n\tParent(%p), Child(%p), Sibling(%p)\n",
 	 TN_Parent(pTN), TN_Child(pTN), TN_Sibling(pTN));
 }
