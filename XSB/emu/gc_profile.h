@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gc_profile.h,v 1.16 2011-05-18 19:21:40 dwarren Exp $
+** $Id: gc_profile.h,v 1.17 2011-05-22 16:02:21 tswift Exp $
 ** 
 */
 
@@ -291,7 +291,7 @@ void print_gc_statistics(CTXTdecl)
 {
   char *which = (slide) ? "sliding" : "copying" ;
 
-  printf("%4d heap (%3d string) garbage collections by %s: collected %ld cells in %lf secs\n\n",
+  printf("%4d heap (%3d string) garbage collections by %s: collected %" UIntfmt " cells in %lf secs\n\n",
 	 num_gc, num_sgc, which, total_collected, total_time_gc);
 }
 

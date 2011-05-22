@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.32 2011-05-22 15:12:25 tswift Exp $
+** $Id: struct_manager.c,v 1.33 2011-05-22 16:02:22 tswift Exp $
 ** 
 */
 
@@ -119,7 +119,7 @@ void smPrintBlocks(Structure_Manager *pSM) {
 
   void *pCurBlock, *pNextBlock;
 
-  printf("blocks for SM %p size %lu\n",pSM,SM_NewBlockSize(*pSM));
+  printf("blocks for SM %p size %" UIntfmt "\n",pSM,SM_NewBlockSize(*pSM));
   pCurBlock = SM_CurBlock(*pSM);
   while ( IsNonNULL(pCurBlock) ) {
     printf("Block %p\n",pCurBlock);

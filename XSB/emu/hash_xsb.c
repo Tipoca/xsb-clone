@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.c,v 1.26 2011-05-20 21:26:43 tswift Exp $
+** $Id: hash_xsb.c,v 1.27 2011-05-22 16:02:22 tswift Exp $
 ** 
 */
 
@@ -215,7 +215,7 @@ void expand_string_table() {
 
 void symbol_table_stats(CTXTdecl) {
 
-  size_t   i, symbols, bucket_contains, used_buckets, unused_buckets,
+  UInteger   i, symbols, bucket_contains, used_buckets, unused_buckets,
                   fullest_bucket_size, fullest_bucket_num, last_index;
   UInteger first_index;
   Pair pair_ptr;
@@ -248,15 +248,15 @@ void symbol_table_stats(CTXTdecl) {
   }
   printf("\nSymbol table statistics:");
   printf("\n------------------------\n");
-  printf("Table Size:\t%lu\n", symbol_table.size);
-  printf("Total Symbols:\t%lu\n", symbols);
+  printf("Table Size:\t%" UIntfmt "\n", symbol_table.size);
+  printf("Total Symbols:\t%" UIntfmt "\n", symbols);
   if (symbols != symbol_table.contains)
-    printf("Symbol count incorrect in 'symbol_table': %lu\n",
+    printf("Symbol count incorrect in 'symbol_table': %" UIntfmt "\n",
 	   symbol_table.contains);
-  printf("\tused buckets:\t%lu  (range: [%" Intfmt", %lu])\n", used_buckets,
+  printf("\tused buckets:\t%" UIntfmt "  (range: [%" Intfmt", %" UIntfmt "])\n", used_buckets,
 	 first_index, last_index);
-  printf("\tunused buckets:\t%lu\n", unused_buckets);
-  printf("\tmaximum bucket size:\t%lu  (#: %lu)\n", fullest_bucket_size, 
+  printf("\tunused buckets:\t%" UIntfmt "\n", unused_buckets);
+  printf("\tmaximum bucket size:\t%" UIntfmt "  (#: %" UIntfmt ")\n", fullest_bucket_size, 
 	 fullest_bucket_num);
 
  SYS_MUTEX_UNLOCK( MUTEX_SYMBOL ) ;
@@ -266,7 +266,7 @@ void symbol_table_stats(CTXTdecl) {
 
 void string_table_stats(CTXTdecl) {
 
-  size_t   i, strings, bucket_contains, used_buckets, unused_buckets,
+  UInteger   i, strings, bucket_contains, used_buckets, unused_buckets,
                   fullest_bucket_size, fullest_bucket_num, last_index;
   UInteger first_index;
   void *ptr;
@@ -298,15 +298,15 @@ void string_table_stats(CTXTdecl) {
   }
   printf("\nString table statistics:");
   printf("\n------------------------\n");
-  printf("Table Size:\t%lu\n", string_table.size);
-  printf("Total Strings:\t%lu\n", strings);
+  printf("Table Size:\t%" UIntfmt "\n", string_table.size);
+  printf("Total Strings:\t%" UIntfmt "\n", strings);
   if (strings != string_table.contains)
-    printf("String count incorrect in 'string_table': %lu\n",
+    printf("String count incorrect in 'string_table': %" UIntfmt "\n",
 	   string_table.contains);
-  printf("\tused buckets:\t%lu  (range: [%" Intfmt ", %lu])\n", used_buckets,
+  printf("\tused buckets:\t%" UIntfmt "  (range: [%" Intfmt ", %" UIntfmt "])\n", used_buckets,
 	 first_index, last_index);
-  printf("\tunused buckets:\t%lu\n", unused_buckets);
-  printf("\tmaximum bucket size:\t%lu  (#: %lu)\n", fullest_bucket_size, 
+  printf("\tunused buckets:\t%" UIntfmt "\n", unused_buckets);
+  printf("\tmaximum bucket size:\t%" UIntfmt "  (#: %" UIntfmt ")\n", fullest_bucket_size, 
 	 fullest_bucket_num);
 
  SYS_MUTEX_UNLOCK( MUTEX_STRING ) ;

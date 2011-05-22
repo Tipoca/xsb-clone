@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: hash_xsb.h,v 1.11 2011-05-19 15:05:05 tswift Exp $
+** $Id: hash_xsb.h,v 1.12 2011-05-22 16:02:22 tswift Exp $
 ** 
 */
 
@@ -29,8 +29,8 @@
  */
 
 typedef struct hash_table {
-  size_t size;
-  size_t contains;
+  UInteger size;
+  UInteger contains;
   void **table;
 } Hash_Table;
 
