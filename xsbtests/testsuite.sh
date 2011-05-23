@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.30 2006-12-14 22:11:24 dwarren Exp $
+## $Id: testsuite.sh,v 1.31 2011-05-23 18:57:01 dwarren Exp $
 ## 
 ##
 
@@ -30,7 +30,7 @@
 #==================================================================
 
 #Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude exclude_list] \
-#    	     	     [-add add_list] [-only test_list] [-mswin] path
+#    	     	     [-add add_list] [-only test_list] [-mswin | -win64] path
 # where: opts         -- options to pass to XSB
 #        tag          -- the configuration tag to use
 #        exclude_list -- the list of tests (in quotes) to NOT run
@@ -40,6 +40,7 @@
 #    	     	     	 both -exclude and -only can be specified at once
 #        path         -- full path name of the XSB installation directory
 #    The -mswin option says to run tests under MS Windows
+#    The -win64 option says to run tests under 64-bit MS Windows 
 #    If tag specified, this is the tag to use to 
 #    locate the XSB executable (e.g., dbg, chat, etc.). 
 #    It is usually specified using the --config-tag option of 'configure'
@@ -99,6 +100,12 @@ do
 	    echo "Running tests under Windows"
 	    ;;
 
+      *-win64*)
+	    shift
+	    win64=true
+	    echo "Running tests under Windows 64bit"
+	    ;;
+
       *)
 	    break
 	    ;;
@@ -137,8 +144,13 @@ fi
 
 # get canonical configuration name
 if test -z "$windows"; then
+if test -z "$win64"; then
 config=`$installdir/build/config.guess`
 canonical=`$installdir/build/config.sub $config`
+else
+config=x64-pc-windows
+canonical=x64-pc-windows
+fi
 else
 config=x86-pc-windows
 canonical=x86-pc-windows

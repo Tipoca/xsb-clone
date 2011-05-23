@@ -60,9 +60,26 @@ scn1_32 :- fmt_read("aaa %s %d k %5f ll\n", a(X,Y,Z), WW),
 scn2_32 :- fmt_read('bbb %s %*d k lll%n %44f ll', a(X,Y,Z), WW),
 	write(f(X,Y,WW)), fmt_write("%2.1f\n", Z).
 
-scn1_64 :- fmt_read("aaa %s %ld k %5f ll\n", a(X,Y,Z), WW),
+scn1_64 :-
+	(xsb_configuration(configuration,'x64-pc-windows')
+	 ->	scn1_win64
+	 ;	scn1_nowin64
+	).
+
+scn2_64 :-
+	(xsb_configuration(configuration,'x64-pc-windows')
+	 ->	scn2_win64
+	 ;	scn2_nowin64
+	).
+
+scn1_nowin64 :- fmt_read("aaa %s %ld k %5f ll\n", a(X,Y,Z), WW),
 	write(f(X,Y,WW)), fmt_write("%2.2f\n", Z).
-scn2_64 :- fmt_read('bbb %s %ld k lll %f ll', a(X,Y,Z), WW),
+scn2_nowin64 :- fmt_read('bbb %s %ld k lll %f ll', a(X,Y,Z), WW),
+	write(f(X,20,2)), fmt_write("%2.1f\n", Z).
+
+scn1_win64 :- fmt_read("aaa %s %lld k %5f ll\n", a(X,Y,Z), WW),
+	write(f(X,Y,WW)), fmt_write("%2.2f\n", Z).
+scn2_win64 :- fmt_read('bbb %s %lld k lll %f ll', a(X,Y,Z), WW),
 	write(f(X,20,2)), fmt_write("%2.1f\n", Z).
 
 
