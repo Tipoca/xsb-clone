@@ -103,7 +103,7 @@ incr_trans_depends(X,Y):-
 	).
 
 trans_dependent_on_calls(Call,Call2):-
-	abolish_table_pred(trans_dependent_on_call(_,_)),
+%	abolish_table_pred(trans_dependent_on_call(_,_)),
 	check_incrementally_tabled(Call,predicate_not_tabled),
 	trans_dependent_on_call(Call,Call2).
 
@@ -115,7 +115,7 @@ trans_dependent_on_call(Call1,Call2):-
 	imm_dependent_on_calls(Call3,Call2).
 
 trans_depend_calls(Call,Call2):-
-	abolish_table_pred(trans_depend_call(_,_)),
+%	abolish_table_pred(trans_depend_call(_,_)),
 	check_incrementally_tabled(Call,predicate_not_tabled),
 	trans_depend_call(Call,Call2).
 
