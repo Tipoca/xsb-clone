@@ -107,7 +107,7 @@ trans_dependent_on_calls(Call,Call2):-
 	check_incrementally_tabled(Call,predicate_not_tabled),
 	trans_dependent_on_call(Call,Call2).
 
-:- table trans_dependent_on_call/2.
+:- table trans_dependent_on_call/2 as variant, incremental.
 trans_dependent_on_call(Call1,Call2):-
 	imm_dependent_on_calls(Call1,Call2).
 trans_dependent_on_call(Call1,Call2):-
@@ -119,7 +119,7 @@ trans_depend_calls(Call,Call2):-
 	check_incrementally_tabled(Call,predicate_not_tabled),
 	trans_depend_call(Call,Call2).
 
-:- table trans_depend_call/2.
+:- table trans_depend_call/2 as variant, incremental.
 trans_depend_call(Call1,Call2):-
 	imm_depend_calls(Call1,Call2).
 trans_depend_call(Call1,Call2):-
