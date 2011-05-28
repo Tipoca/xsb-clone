@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.42 2011-05-19 16:39:06 tswift Exp $
+** $Id: tc_insts_xsb_i.h,v 1.43 2011-05-28 15:18:46 tswift Exp $
 ** 
 */
 
@@ -738,9 +738,10 @@ if ( int_val(cell(breg + CP_SIZE + 2)) == HASH_IS_NOT_FREE ) {
 	restore_regs_and_vars(tbreg, CP_SIZE+3);
       }
       XSB_Deref(*trieinstr_unif_stkptr);
+#ifdef NON_OPT_COMPILE
       if (isref(*trieinstr_unif_stkptr))   /* sanity check */
 	xsb_exit("error_condition in hash_handle\n");
-
+#endif
       hash_nonvar_subterm(*trieinstr_unif_stkptr,hash_hdr,hashed_hash_offset);
       if (hash_offset == FIRST_HASH_NODE) {
 	if (*hash_base == NULL) { /* No Variables in hash table */

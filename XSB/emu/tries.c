@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.146 2011-05-18 19:21:41 dwarren Exp $
+** $Id: tries.c,v 1.147 2011-05-28 15:18:46 tswift Exp $
 ** 
 */
 
@@ -386,13 +386,13 @@ BTNptr newBasicTrie(CTXTdeclc Cell symbol, int trie_type) {
 /*
  *  Insert/find a single symbol in the trie structure 1-level beneath a
  *  parent NODE, pointed to by `Paren', whose child link field is
- *  pointed to by 'GNodePtrPtr'.  (If 'Paren' is NULL, then we are most
+ *  pointed to by 'ChildPtrOfParen'.  (If 'Paren' is NULL, then we are most
  *  likely searching beneath some other structure, like the TIP, and
- *  'GNodePtrPtr' points to its "trie root" field.)  If the symbol
+ *  'ChildPtrOfParen' points to its "trie root" field.)  If the symbol
  *  cannot be found, create a NODE for this symbol and make it the child
- *  of `Paren' by setting the field that 'GNodePtrPtr' points to to this
+ *  of `Paren' by setting the field that 'ChildPtrOfParen' points to to this
  *  new NODE.  Upon exiting this macro, 'Paren' is set to point to the
- *  node containing this symbol and 'GNodePtrPtr' gets the address of
+ *  node containing this symbol and 'ChildPtrOfParen' gets the address of
  *  this nodes' Child field.
 ~ *
  *  Algorithm:
@@ -424,15 +424,15 @@ BTNptr newBasicTrie(CTXTdeclc Cell symbol, int trie_type) {
    BTNptr LocalNodePtr;							\
 									\
    TRIE_W_LOCK();							\
-   if ( IsNULL(*GNodePtrPtr) ) {					\
+   if ( IsNULL(*ChildPtrOfParen) ) {					\
      New_BTN(LocalNodePtr,TrieType,INTERIOR_NT,item,Paren,NULL);	\
-     *GNodePtrPtr = Paren = LocalNodePtr;				\
+     *ChildPtrOfParen = Paren = LocalNodePtr;				\
      Found = 0;								\
    }									\
-   else if ( IsHashHeader(*GNodePtrPtr) ) {				\
-     BTHTptr ht = (BTHTptr)*GNodePtrPtr;				\
-     GNodePtrPtr = CalculateBucketForSymbol(ht,item);			\
-     IsInsibling(*GNodePtrPtr,count,Found,item,TrieType);		\
+   else if ( IsHashHeader(*ChildPtrOfParen) ) {				\
+     BTHTptr ht = (BTHTptr)*ChildPtrOfParen;				\
+     ChildPtrOfParen = CalculateBucketForSymbol(ht,item);			\
+     IsInsibling(*ChildPtrOfParen,count,Found,item,TrieType);		\
      if (!Found) {							\
        MakeHashedNode(LocalNodePtr);					\
        BTHT_NumContents(ht)++;						\
@@ -441,12 +441,12 @@ BTNptr newBasicTrie(CTXTdeclc Cell symbol, int trie_type) {
    }									\
    else {								\
      BTNptr pParent = Paren;						\
-     IsInsibling(*GNodePtrPtr,count,Found,item,TrieType);		\
+     IsInsibling(*ChildPtrOfParen,count,Found,item,TrieType);		\
      if (IsLongSiblingChain(count))					\
-       /* used to pass in GNodePtrPtr (ptr to hook) */			\
+       /* used to pass in ChildPtrOfParen (ptr to hook) */			\
        hashify_children(CTXTc pParent,TrieType);			\
    }									\
-   GNodePtrPtr = &(BTN_Child(LocalNodePtr));				\
+   ChildPtrOfParen = &(BTN_Child(LocalNodePtr));				\
    TRIE_W_UNLOCK();							\
 }
 
@@ -855,11 +855,11 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
 
   Psc   psc;
   CPtr  xtemp1;
-  int   i, j, flag = 1, tag = XSB_FREE;
+  int   i, j, found_flag = 1, tag = XSB_FREE;
   Cell  item, tmp_var;
   ALNptr answer_node;
   int ctr, attv_ctr;
-  BTNptr Paren, *GNodePtrPtr;
+  BTNptr Paren, *ChildPtrOfParen;
 
   byte choicepttype;  /* for incremental evaluation */ 
   byte typeofinstr;   /* for incremental evaluation */ 
@@ -881,7 +881,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
       new_btn(CTXTc BASIC_ANSWER_TRIE_TT, TRIE_ROOT_NT, retSymbol, (BTNptr)subgoal_ptr, (BTNptr)NULL);
   }
   Paren = subg_ans_root_ptr(subgoal_ptr);
-  GNodePtrPtr = &BTN_Child(Paren);
+  ChildPtrOfParen = &BTN_Child(Paren);
 
   /* Documentation rewritten by TLS: 
    * To properly generate instructions for attributed variables, you
@@ -962,36 +962,36 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
 #endif
 	StandardizeAndTrailVariable(xtemp1,ctr);
 	item = EncodeNewTrieVar(ctr);
-	one_node_chk_ins(flag, item, BASIC_ANSWER_TRIE_TT);
+	one_node_chk_ins(found_flag, item, BASIC_ANSWER_TRIE_TT);
 	ctr++;
       } else {
 	item = IndexOfStdVar(xtemp1);
 	item = EncodeTrieVar(item);
-	one_node_chk_ins(flag, item, BASIC_ANSWER_TRIE_TT);
+	one_node_chk_ins(found_flag, item, BASIC_ANSWER_TRIE_TT);
       }
       break;
     case XSB_STRING: 
     case XSB_INT:
     case XSB_FLOAT:
-      one_node_chk_ins(flag, EncodeTrieConstant(xtemp1),
+      one_node_chk_ins(found_flag, EncodeTrieConstant(xtemp1),
 		       BASIC_ANSWER_TRIE_TT);
       break;
     case XSB_LIST:
-      one_node_chk_ins(flag, EncodeTrieList(xtemp1), BASIC_ANSWER_TRIE_TT);
+      one_node_chk_ins(found_flag, EncodeTrieList(xtemp1), BASIC_ANSWER_TRIE_TT);
       pdlpush(cell(clref_val(xtemp1)+1));
       pdlpush(cell(clref_val(xtemp1)));
-      recvariant_trie_ans_subsf(flag, BASIC_ANSWER_TRIE_TT);
-      //      recvariant_trie(flag, BASIC_ANSWER_TRIE_TT);
+      recvariant_trie_ans_subsf(found_flag, BASIC_ANSWER_TRIE_TT);
+      //      recvariant_trie(found_flag, BASIC_ANSWER_TRIE_TT);
       break;
     case XSB_STRUCT:
       psc = (Psc)follow(cs_val(xtemp1));
       item = makecs(psc);
-      one_node_chk_ins(flag, item, BASIC_ANSWER_TRIE_TT);
+      one_node_chk_ins(found_flag, item, BASIC_ANSWER_TRIE_TT);
       for (j = get_arity(psc); j >= 1 ; j--) {
 	pdlpush(cell(clref_val(xtemp1)+j));
       }
-      recvariant_trie_ans_subsf(flag, BASIC_ANSWER_TRIE_TT);
-      //recvariant_trie(flag, BASIC_ANSWER_TRIE_TT);
+      recvariant_trie_ans_subsf(found_flag, BASIC_ANSWER_TRIE_TT);
+      //recvariant_trie(found_flag, BASIC_ANSWER_TRIE_TT);
       break;
     case XSB_ATTV:
       /* Now xtemp1 can only be the first occurrence of an attv */
@@ -1003,11 +1003,11 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
        * (after dereferencing).
        */
       StandardizeAndTrailVariable(xtemp1, ctr);	
-      one_node_chk_ins(flag, EncodeNewTrieAttv(ctr), BASIC_ANSWER_TRIE_TT);
+      one_node_chk_ins(found_flag, EncodeNewTrieAttv(ctr), BASIC_ANSWER_TRIE_TT);
       attv_ctr++; ctr++;
       pdlpush(cell(xtemp1+1));	/* the ATTR part of the attv */
-      recvariant_trie_ans_subsf(flag, BASIC_ANSWER_TRIE_TT);
-      //recvariant_trie(flag, BASIC_ANSWER_TRIE_TT);
+      recvariant_trie_ans_subsf(found_flag, BASIC_ANSWER_TRIE_TT);
+      //recvariant_trie(found_flag, BASIC_ANSWER_TRIE_TT);
       break;
     default:
       xsb_abort("Bad type tag in variant_answer_search()");
@@ -1043,14 +1043,14 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   /* if there is no term to insert, an ESCAPE node has to be created/found */
 
   if (sf_size == 0) {
-    one_node_chk_ins(flag, ESCAPE_NODE_SYMBOL, BASIC_ANSWER_TRIE_TT);
+    one_node_chk_ins(found_flag, ESCAPE_NODE_SYMBOL, BASIC_ANSWER_TRIE_TT);
     Instr(Paren) = trie_proceed;
   }
 
   /* incremental evaluation: reinserting marked deleted node*/ 
   /* If a new answer is inserted, the call is changed */
   if(IsIncrSF(subgoal_ptr)){
-    if((IsNonNULL(subgoal_ptr->callnode->prev_call))&&(flag==0)){
+    if((IsNonNULL(subgoal_ptr->callnode->prev_call))&&(found_flag==0)){
       subgoal_ptr->callnode->prev_call->changed=1;
     }
     
@@ -1058,14 +1058,14 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
        it is generating an old answer. In this case we remove the answer
        marking and reduce no_of_answers */
     
-    if((flag==1)&&(IsDeletedNode(Paren))){
+    if((found_flag==1)&&(IsDeletedNode(Paren))){
       
       choicepttype = 0x3 &  BTN_Instr(Paren);
       typeofinstr = (~0x3) & BTN_Status(Paren);
       BTN_Instr(Paren) = choicepttype | typeofinstr;
-      MakeStatusValid(Paren);
+            MakeStatusValid(Paren);
       
-      flag=0;
+      found_flag=0;
       
       subgoal_ptr->callnode->prev_call->no_of_answers--;
       
@@ -1073,7 +1073,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
       SF_AppendNewAnswer(subgoal_ptr,answer_node);	
       
     }else
-      if ( flag == 0 ) {
+      if ( found_flag == 0 ) {
 	MakeLeafNode(Paren);
 	TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
@@ -1089,7 +1089,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
    *  If an insertion was performed, do some maintenance on the new leaf,
    *  and place the answer handle onto the answer list.
    */
-  if ( flag == 0 ) {
+  if ( found_flag == 0 ) {
     MakeLeafNode(Paren);
     TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
@@ -1100,7 +1100,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
     SF_AppendNewAnswer(subgoal_ptr,answer_node);
   }
 
-  *flagptr = flag;	
+  *flagptr = found_flag;	
   return Paren;
 }
 
@@ -1144,7 +1144,7 @@ BTNptr delay_chk_insert(CTXTdeclc int arity, CPtr cptr, CPtr *hook)
     CPtr xtemp1;
     int  i, j, tag = XSB_FREE, flag = 1;
     int ctr, attv_ctr;
-    BTNptr Paren, *GNodePtrPtr;
+    BTNptr Paren, *ChildPtrOfParen;
  
     VarEnumerator_trail_top = (CPtr *)(& VarEnumerator_trail[0]) - 1;
 #ifdef DEBUG_DELAYVAR
@@ -1154,8 +1154,8 @@ BTNptr delay_chk_insert(CTXTdeclc int arity, CPtr cptr, CPtr *hook)
     Paren = NULL;
 
     if (hook)
-      GNodePtrPtr = (BTNptr *) hook;
-    else GNodePtrPtr = (BTNptr *) NULL;
+      ChildPtrOfParen = (BTNptr *) hook;
+    else ChildPtrOfParen = (BTNptr *) NULL;
 
     ctr = AnsVarCtr;
 
@@ -1553,7 +1553,7 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
  * Paren - to be set to point to inserted term's leaf
  * SubsFactReg - pointer to top of CPS; place to put the substitution factor
  *    in high-to-low memory format.
- * GNodePtrPtr - Points to the parent-internal-structure's
+ * ChildPtrOfParen - Points to the parent-internal-structure's
  *    "child" or "NODE_link" field.  It's a place to anchor any newly
  *    created NODEs.
  * ctr - contains the number of distinct variables found
@@ -1573,13 +1573,13 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   CPtr cptr, SubsFactReg, tSubsFactReg;
   int ctr, attv_ctr;
   Cell  depth_ctr;
-  BTNptr Paren, *GNodePtrPtr;
+  BTNptr Paren, *ChildPtrOfParen;
 
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
   subg_chk_ins++;
 #endif
   Paren = TIF_CallTrie(CallInfo_TableInfo(*call_info));
-  GNodePtrPtr = &BTN_Child(Paren);
+  ChildPtrOfParen = &BTN_Child(Paren);
   arity = CallInfo_CallArity(*call_info);
   /* cptr is set to point to the trieinstr_unif_stk */
   cptr = CallInfo_Arguments(*call_info);
@@ -1731,15 +1731,15 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
    BTNptr LocalNodePtr;							\
 									\
    TRIE_W_LOCK();							\
-   if ( IsNULL(*GNodePtrPtr) ) {					\
+   if ( IsNULL(*ChildPtrOfParen) ) {					\
      New_BTN(LocalNodePtr,TrieType,INTERIOR_NT,item,Paren,NULL);	\
-     *GNodePtrPtr = Paren = LocalNodePtr;				\
+     *ChildPtrOfParen = Paren = LocalNodePtr;				\
      Found = 0;								\
    }									\
-   else if ( IsHashHeader(*GNodePtrPtr) ) {				\
-     BTHTptr ht = (BTHTptr)*GNodePtrPtr;				\
-     GNodePtrPtr = CalculateBucketForSymbol(ht,item);			\
-     IsInsibling(*GNodePtrPtr,count,Found,item,TrieType);		\
+   else if ( IsHashHeader(*ChildPtrOfParen) ) {				\
+     BTHTptr ht = (BTHTptr)*ChildPtrOfParen;				\
+     ChildPtrOfParen = CalculateBucketForSymbol(ht,item);			\
+     IsInsibling(*ChildPtrOfParen,count,Found,item,TrieType);		\
      if (!Found) {							\
        MakeHashedNode(LocalNodePtr);					\
        BTHT_NumContents(ht)++;						\
@@ -1748,7 +1748,7 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
    }									\
    else {								\
      BTNptr pParent = Paren;						\
-     IsInsibling(*GNodePtrPtr,count,Found,item,TrieType);		\
+     IsInsibling(*ChildPtrOfParen,count,Found,item,TrieType);		\
      if (IsLongSiblingChain(count)) {					\
        if (cps_check_flag == CPS_CHECK)					\
 	 expand_flag = interned_trie_cps_check(CTXTc *hook);		\
@@ -1758,8 +1758,8 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
        }								\
      }									\
    }									\
-       /* used to pass in GNodePtrPtr (ptr to hook) */			\
-   GNodePtrPtr = &(BTN_Child(LocalNodePtr));				\
+       /* used to pass in ChildPtrOfParen (ptr to hook) */			\
+   ChildPtrOfParen = &(BTN_Child(LocalNodePtr));				\
    TRIE_W_UNLOCK();							\
 }
 
@@ -1824,13 +1824,13 @@ BTNptr trie_intern_chk_ins(CTXTdeclc Cell term, BTNptr *hook, int *flagptr, int 
     int  j, flag = 1;
     Cell tag = XSB_FREE, item;
     int ctr, attv_ctr;
-    BTNptr Paren, *GNodePtrPtr;
+    BTNptr Paren, *ChildPtrOfParen;
 
 
     if ( IsNULL(*hook) )
       *hook = newBasicTrie(CTXTc EncodeTriePSC(get_intern_psc()),INTERN_TRIE_TT);
     Paren = *hook;
-    GNodePtrPtr = &BTN_Child(Paren);
+    ChildPtrOfParen = &BTN_Child(Paren);
 
     xtemp1 = (CPtr) term;
     XSB_CptrDeref(xtemp1);
@@ -1939,7 +1939,7 @@ BTNptr trie_assert_chk_ins(CTXTdeclc CPtr termptr, BTNptr root, int *flagptr)
   Cell tag = XSB_FREE, item;
   Psc  psc;
   int ctr, attv_ctr;
-  BTNptr Paren, *GNodePtrPtr;
+  BTNptr Paren, *ChildPtrOfParen;
 
   psc = term_psc((prolog_term)termptr);
   arity = get_arity(psc);
@@ -1954,7 +1954,7 @@ BTNptr trie_assert_chk_ins(CTXTdeclc CPtr termptr, BTNptr root, int *flagptr)
    * root needs to persist beyond the life of its body.
    */
   Paren = root;
-  GNodePtrPtr = &BTN_Child(root);
+  ChildPtrOfParen = &BTN_Child(root);
   for (i = 1; i<=arity; i++) {
     xtemp1 = (CPtr) (cptr + i);
     XSB_CptrDeref(xtemp1);
