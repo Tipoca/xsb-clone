@@ -1,0 +1,4 @@
+To compile the installation program under Linux to generate InstallXSB.jar file, type:
+	sh makeinstall.sh
+	
+The InstallXSB.jar will be generated under XSB/
