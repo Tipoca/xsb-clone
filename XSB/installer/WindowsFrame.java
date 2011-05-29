@@ -296,7 +296,7 @@ public class WindowsFrame extends JFrame {
     private JCheckBox getVsPathUseJavaCheckBox() {
 	if(vsPathUseJavaCheckBox == null) {
 	    vsPathUseJavaCheckBox = new JCheckBox();
-	    vsPathUseJavaCheckBox.setText("Check if you require XSB-Java interface");
+	    vsPathUseJavaCheckBox.setText("Check if you require faster XSB-Java interface");
 	    vsPathUseJavaCheckBox.setBounds(30, 240, 300, 30);
 	}
 	return vsPathUseJavaCheckBox;
@@ -715,7 +715,7 @@ public class WindowsFrame extends JFrame {
 			String line = null;
 			try {
 			    while ((line = bufferedReader.readLine()) != null) {
-				if(line.contains("The XSB installation is complete")) {
+				if(line.contains("=== done ===")) {
 				    JOptionPane.showMessageDialog(WindowsFrame.this, "Compilation has finished. Click OK then Next.");
 				    compileNextButton.setEnabled(true);
 				    if(countError==0) {

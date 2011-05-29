@@ -218,7 +218,7 @@ public class LinuxFrame extends JFrame {
 	    String message=	"<html><body>"
 		+"<h1>XSB Installation</h1><br/><br/>"
 		+"<h3>Please choose the features you would like to install XSB with.</h3>"
-		+"<h3>If you need XSB-Java interface, please install JDK and set the JAVA_HOME environment variable.</h3>"
+		+"<h3>If you need faster XSB-Java interface, please install JDK and set the JAVA_HOME environment variable.</h3>"
 		+"</body></html>";
 	    featureLabel.setText(message);
 	    featureLabel.setBounds(30,20,600,150);
@@ -229,7 +229,7 @@ public class LinuxFrame extends JFrame {
     private JCheckBox getDbCheckBox() {
 	if(dbCheckBox == null) {
 	    dbCheckBox = new JCheckBox();
-	    dbCheckBox.setText("Database Drivers");
+	    dbCheckBox.setText("Database drivers");
 	    dbCheckBox.setBounds(30, 200, 190, 30);
 	    if(features[0]==1)
 		{
@@ -242,7 +242,7 @@ public class LinuxFrame extends JFrame {
     private JCheckBox getHttpCheckBox() {
 	if(httpCheckBox == null) {
 	    httpCheckBox = new JCheckBox();
-	    httpCheckBox.setText("HTTP Access");
+	    httpCheckBox.setText("HTTP access");
 	    httpCheckBox.setBounds(30, 250, 190, 30);
 	    if(features[1]==1)
 		{
@@ -255,7 +255,7 @@ public class LinuxFrame extends JFrame {
     private JCheckBox getXmlCheckBox() {
 	if(xmlCheckBox == null) {
 	    xmlCheckBox = new JCheckBox();
-	    xmlCheckBox.setText("XML Parsing");
+	    xmlCheckBox.setText("XML parsing");
 	    xmlCheckBox.setBounds(30, 300, 190, 30);
 	    if(features[2]==1)
 		{
@@ -268,7 +268,7 @@ public class LinuxFrame extends JFrame {
     private JCheckBox getRegCheckBox() {
 	if(regCheckBox == null) {
 	    regCheckBox = new JCheckBox();
-	    regCheckBox.setText("Regular Expressions");
+	    regCheckBox.setText("Regular expressions");
 	    regCheckBox.setBounds(250, 200, 190, 30);
 	    if(features[3]==1)
 		{
@@ -281,7 +281,7 @@ public class LinuxFrame extends JFrame {
     private JCheckBox getJavaCheckBox() {
 	if(javaCheckBox == null) {
 	    javaCheckBox = new JCheckBox();
-	    javaCheckBox.setText("Java Interface");
+	    javaCheckBox.setText("Faster Java interface");
 	    javaCheckBox.setBounds(250, 250, 190, 30);
 	    if(features[4]==1)
 		{
@@ -614,12 +614,12 @@ public class LinuxFrame extends JFrame {
 	    if(javaCheckBox.isSelected()) {
 		Process process;
 		try {
-		    String command="sh install/unixinstall.sh "+osType.toLowerCase()+" checkJava";
+		    String command="sh installer/unixinstall.sh "+osType.toLowerCase()+" checkJava";
 		    process = Runtime.getRuntime().exec(command);
 		    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		    String resultStr=bufferedReader.readLine();
 		    if(resultStr.contains("no")) {
-			JOptionPane.showMessageDialog(LinuxFrame.this, "To use the XSB-Java interface you must install the Java JDK.");
+			JOptionPane.showMessageDialog(LinuxFrame.this, "For faster XSB-Java interface you must install the Java JDK.");
 			return;
 		    }
 		} catch (IOException e) {
@@ -646,7 +646,7 @@ public class LinuxFrame extends JFrame {
 		Process process;
 		needJavaHome=1;
 		try {
-		    String command="sh install/unixinstall.sh "+osType.toLowerCase()+" checkhome";
+		    String command="sh installer/unixinstall.sh "+osType.toLowerCase()+" checkhome";
 		    process = Runtime.getRuntime().exec(command);
 		    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		    String resultStr=bufferedReader.readLine();
@@ -703,7 +703,7 @@ public class LinuxFrame extends JFrame {
 	    Process process;
 	    try {
 		String command=
-		    "sh install/unixinstall.sh "
+		    "sh installer/unixinstall.sh "
 		    +osType.toLowerCase()+" checkhomearg "+homePath;
 		process = Runtime.getRuntime().exec(command);
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -758,8 +758,8 @@ public class LinuxFrame extends JFrame {
 		
 		public void run()
 		{
-		    //sh install/unixinstall.sh ubuntu installFeatures your-password xml reg.....
-		    String command1, command="sh install/unixinstall.sh";
+		    //sh installer/unixinstall.sh ubuntu installFeatures your-password xml reg.....
+		    String command1, command="sh installer/unixinstall.sh";
 		    command1 = command+" "+osType.toLowerCase()+" "+"installFeatures"+" <your password>";
 		    command=command+" "+osType.toLowerCase()+" "+"installFeatures"+" "+password;
 		    System.out.println(command1);
@@ -785,7 +785,7 @@ public class LinuxFrame extends JFrame {
 			    if(s.hasNextLine()){
 				String nextLine=s.nextLine();
 				//With  SwingUtilities.invokeLater it is hard to detect whether the thread ends. We add a sentence in the shell script
-				if(nextLine.contains("The XSB installation has finished")) {
+				if(nextLine.contains("=== done ===")) {
 				    break;
 				}
 				readline=readline+nextLine+"\n";
@@ -809,10 +809,8 @@ public class LinuxFrame extends JFrame {
     private void compilation()
     {
 	readline="";
-	Thread t=new Thread()
-	    {
-		Runnable run = new Runnable()
-		    {
+	Thread t=new Thread() {
+		Runnable run = new Runnable() {
 			public void run() 
 			{
 			    getCompileTextArea().setText(readline);
@@ -823,8 +821,9 @@ public class LinuxFrame extends JFrame {
 		
 		public void run()
 		{
-		    //sh install/unixinstall.sh ubuntu configure1 [path of jdk]
-		    String command="sh install/unixinstall.sh";
+		    //sh installer/unixinstall.sh ubuntu configure1 [path of jdk]
+		    //String command="sh unixinstall.sh";
+		    String command="sh installer/unixinstall.sh";
 		    command=command+" "+osType.toLowerCase()+" ";
 		    
 		    if(features[0]==1 ) {
@@ -845,12 +844,18 @@ public class LinuxFrame extends JFrame {
 			while(true) {
 			    if(s.hasNextLine()) {
 				String nextLine=s.nextLine();
-				if(nextLine.contains("The XSB installation has finished")) {
+				if(nextLine.contains("=== done ===")) {
 				    installSuccess=Tools.fileExist("config/i686-pc-linux-gnu/bin/xsb");
 				    break;
 				}
 				readline=readline+nextLine+"\n\r";
 				SwingUtilities.invokeLater(run);
+			    }
+			    else {
+				System.out.println("Something wrong: no output from shell");
+				readline=readline+"Something wrong: no output from shell\n\r";
+				SwingUtilities.invokeLater(run);
+				break;
 			    }
 			}
 			

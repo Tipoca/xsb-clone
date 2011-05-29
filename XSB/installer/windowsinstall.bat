@@ -16,4 +16,4 @@ cd %currpath%
 @ call %makexsb% clean
 @ call %makexsb%
 cd ..
-echo "The XSB installation has finished"
+echo "======= done ======="

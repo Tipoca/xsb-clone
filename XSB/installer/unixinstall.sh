@@ -1,3 +1,4 @@
+#!/bin/sh
 ############################################################################
 #			XSB Installation
 #File name: 		unixinstall.sh
@@ -13,7 +14,6 @@
 
 ############################################################################
 
-#!/bin/bash
 
 #global variables for all supported Unix systems
 export osUbuntu="ubuntu"
@@ -378,7 +378,7 @@ if [ "$command"x = "configure1"x ] ; then
 
 	echo "The compilation process has finished"
 	echo "\n"
-	echo "The XSB installation has finished"
+	echo "======= done ======="
 fi
 
 #command to run ./configure --with-dbdrivers
@@ -398,7 +398,7 @@ if [ "$command"x = "configure2"x ] ; then
 
 	echo "The compilation process has finished"
 	echo "\n"
-	echo "The XSB installation has finished"
+	echo "======= done ======="
 fi
 
 #command to check whether jdk is installed 
@@ -419,7 +419,7 @@ fi
 if [ "$command"x = "installFeatures"x ] ; then
     if [ $# -le 2 ] ; then
 	echo "No extra features requested.\n"	
-	echo "The XSB installation has finished"
+	echo "======= done ======="
 	exit
     fi
 
@@ -443,7 +443,7 @@ if [ "$command"x = "installFeatures"x ] ; then
 
     installMakedepend
 
-    echo "The XSB installation has finished"
+    echo "======= done ======="
 fi
 
 #command to check whether java home path in JAVA_HOME variable is the right one
