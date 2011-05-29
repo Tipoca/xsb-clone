@@ -41,6 +41,8 @@ public class LinuxFrame extends JFrame {
     private String password;
     private int installSuccess;
     private int needJavaHome=0;
+    private String currentDir="";
+    private String installerShell="";
 	
     private JPanel infoContentPane = null; //Panel for general information
     private JPanel featureContentPane = null; //Panel for user to select feature
@@ -113,6 +115,16 @@ public class LinuxFrame extends JFrame {
 	this.setResizable(false);
 	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	this.setVisible(true);
+	try {
+	    // problem: Linux File manager hides the current dir of the jar file
+	    // so, we get it in a round-about way
+	    // we need to pass currentDir to the shell
+	    currentDir = MainRun.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+	    currentDir=currentDir.substring(0,currentDir.lastIndexOf('/')+1);
+	    installerShell = currentDir + "installer/unixinstall.sh " + currentDir;
+	} catch (java.net.URISyntaxException e) {
+	    e.printStackTrace();
+	}
     }
 	
     private int getFrameHeight() {
@@ -614,7 +626,9 @@ public class LinuxFrame extends JFrame {
 	    if(javaCheckBox.isSelected()) {
 		Process process;
 		try {
-		    String command="sh installer/unixinstall.sh "+osType.toLowerCase()+" checkJava";
+		    String command =
+			"sh " + installerShell + " "
+			+ osType.toLowerCase()+" checkJava";
 		    process = Runtime.getRuntime().exec(command);
 		    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		    String resultStr=bufferedReader.readLine();
@@ -646,7 +660,9 @@ public class LinuxFrame extends JFrame {
 		Process process;
 		needJavaHome=1;
 		try {
-		    String command="sh installer/unixinstall.sh "+osType.toLowerCase()+" checkhome";
+		    String command =
+			"sh " + installerShell + " "
+			+ osType.toLowerCase()+" checkhome";
 		    process = Runtime.getRuntime().exec(command);
 		    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		    String resultStr=bufferedReader.readLine();
@@ -702,9 +718,9 @@ public class LinuxFrame extends JFrame {
 	    //Check whether the JDK path specified by user is legal
 	    Process process;
 	    try {
-		String command=
-		    "sh installer/unixinstall.sh "
-		    +osType.toLowerCase()+" checkhomearg "+homePath;
+		String command =
+		    "sh " + installerShell + " "
+		    + osType.toLowerCase()+" checkhomearg "+homePath;
 		process = Runtime.getRuntime().exec(command);
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		String resultStr=bufferedReader.readLine();
@@ -758,10 +774,10 @@ public class LinuxFrame extends JFrame {
 		
 		public void run()
 		{
-		    //sh installer/unixinstall.sh ubuntu installFeatures your-password xml reg.....
-		    String command1, command="sh installer/unixinstall.sh";
-		    command1 = command+" "+osType.toLowerCase()+" "+"installFeatures"+" <your password>";
-		    command=command+" "+osType.toLowerCase()+" "+"installFeatures"+" "+password;
+		    //sh installer/unixinstall.sh <OS> installFeatures your-password xml reg.....
+		    String command1, command="sh " + installerShell + " ";
+		    command1 = command+osType.toLowerCase()+" "+"installFeatures"+" <your password>";
+		    command=command+osType.toLowerCase()+" "+"installFeatures"+" "+password;
 		    System.out.println(command1);
 		    
 		    if(features[0]==1) {
@@ -782,19 +798,27 @@ public class LinuxFrame extends JFrame {
 			Scanner s = new Scanner(process.getInputStream());
 			
 			while(true){
-			    if(s.hasNextLine()){
+			    if(s.hasNextLine()) {
 				String nextLine=s.nextLine();
-				//With  SwingUtilities.invokeLater it is hard to detect whether the thread ends. We add a sentence in the shell script
+				//With  SwingUtilities.invokeLater it is hard
+				// to detect whether the thread ends. We add a
+				// special string in the shell script
 				if(nextLine.contains("=== done ===")) {
 				    break;
 				}
 				readline=readline+nextLine+"\n";
 				SwingUtilities.invokeLater(run);
 			    }
+			    else {
+				JOptionPane.showMessageDialog(LinuxFrame.this, "Something wrong during package installation: no output from shell");
+				getInstallNextButton().setEnabled(true);
+				return;
+			    }
 			}
-			
+
 			JOptionPane.showMessageDialog(LinuxFrame.this, "The required packages have been installed. Click Next to compile.");
 			getInstallNextButton().setEnabled(true);
+			
 		    } catch (IOException e) {
 			e.printStackTrace();
 		    }
@@ -821,9 +845,10 @@ public class LinuxFrame extends JFrame {
 		
 		public void run()
 		{
-		    //sh installer/unixinstall.sh ubuntu configure1 [path of jdk]
-		    String command="sh installer/unixinstall.sh";
-		    command=command+" "+osType.toLowerCase()+" ";
+		    //sh installer/unixinstall.sh <OS> configure1 [path of jdk]
+		    String command =
+			"sh " + installerShell + " "
+			+ osType.toLowerCase()+" ";
 		    
 		    if(features[0]==1 ) {
 			command=command+"configure2";
@@ -844,22 +869,22 @@ public class LinuxFrame extends JFrame {
 			    if(s.hasNextLine()) {
 				String nextLine=s.nextLine();
 				if(nextLine.contains("=== done ===")) {
-				    installSuccess=Tools.fileExist("config/i686-pc-linux-gnu/bin/xsb");
+				    installSuccess=Tools.fileExist(currentDir+"config/i686-pc-linux-gnu/bin/xsb");
 				    break;
 				}
 				readline=readline+nextLine+"\n\r";
 				SwingUtilities.invokeLater(run);
 			    }
 			    else {
-				System.out.println("Something wrong: no output from shell");
-				readline=readline+"Something wrong: no output from shell\n\r";
-				SwingUtilities.invokeLater(run);
-				break;
+				JOptionPane.showMessageDialog(LinuxFrame.this, "Something wrong during compilation: no output from shell");
+				getCompileNextButton().setEnabled(true);
+				return;
 			    }
 			}
-			
+
 			JOptionPane.showMessageDialog(LinuxFrame.this, "Compilation is complete. Click OK then Next.");
 			getCompileNextButton().setEnabled(true);
+			
 		    } catch (IOException e) {
 			e.printStackTrace();
 		    }

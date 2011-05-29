@@ -29,6 +29,10 @@ export xmlName
 export pcreName
 export makedependName
 
+# $1 is the current directory of the installer
+cd $1
+shift
+
 #store package's name in its corresponding global variable
 getDBName()
 {
