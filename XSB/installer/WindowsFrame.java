@@ -431,7 +431,7 @@ public class WindowsFrame extends JFrame {
 	    compileLabel = new JLabel();
 	    String message =
 		"<html><body>"
-		+"<h1>The system is being compiled ...</h1><br/>"
+		+"<h1>XSB is being compiled ...</h1><br/>"
 		+"</body></html>";
 	    compileLabel.setText(message);
 	    compileLabel.setBounds(30,0,600,50);

@@ -76,7 +76,7 @@ xsb_configuration(host_vendor, 'pc').
 xsb_configuration(host_cpu,  'x64').
 
 %% Set the right compile mode and XSB scheduling strategy
-xsb_configuration(compile_mode, 'debug').
+xsb_configuration(compile_mode, 'optimal').
 xsb_configuration(scheduling_strategy, '(local)').
 xsb_configuration(engine_mode, 'slg-wam').
 xsb_configuration(word_size, '64').

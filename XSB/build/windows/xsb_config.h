@@ -103,4 +103,4 @@
 /* GC on SLG-WAM! ;) */
 #define SLG_GC 1
 
-#define NON_OPT_COMPILE 1
+/* #undef NON_OPT_COMPILE */
