@@ -822,7 +822,6 @@ public class LinuxFrame extends JFrame {
 		public void run()
 		{
 		    //sh installer/unixinstall.sh ubuntu configure1 [path of jdk]
-		    //String command="sh unixinstall.sh";
 		    String command="sh installer/unixinstall.sh";
 		    command=command+" "+osType.toLowerCase()+" ";
 		    
