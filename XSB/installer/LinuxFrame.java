@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
@@ -97,7 +98,8 @@ public class LinuxFrame extends JFrame {
 	super();
 		
 	this.osType=osType;
-	this.features=new int[5]; //Five features xml http db interptolog and regular expression
+	//features: xml http db interptolog and regular expression
+	this.features=new int[5];
 		
 	initialize();
     }
@@ -573,7 +575,7 @@ public class LinuxFrame extends JFrame {
 		"<html><body>"
 		+"<h1>XSB Installation</h1><br/><br/>"
 		+"<h2>The installation was not successful.</h2><br/>"
-		+"<h2>Please check the log for errors.</h2><br/>"
+		+"<h2>Please check XSB/log/linuxlog for errors.</h2><br/>"
 		+"<br/><h2>Click <i>Finish</i> to exit.</h2>"
 		+"</body></html>";
 	    finishFailLabel.setText(message);
@@ -611,8 +613,8 @@ public class LinuxFrame extends JFrame {
 		int result=JOptionPane.showConfirmDialog(LinuxFrame.this, ob, "Password",JOptionPane.CANCEL_OPTION);
 		if (result == JOptionPane.OK_OPTION && inputPassword.getText()!=null && !inputPassword.getText().equals("")) {
 		    password = inputPassword.getText();
-		}
-		else {
+		
+		} else {
 		    return;
 		}
 	    }
@@ -734,7 +736,9 @@ public class LinuxFrame extends JFrame {
 		}
 	    } catch (IOException e) {
 		e.printStackTrace();
+
 	    }
+
 	}
     }
 	
@@ -742,6 +746,7 @@ public class LinuxFrame extends JFrame {
 	public void actionPerformed(ActionEvent arg0) {
 	    LinuxFrame.this.setContentPane(getCompileContentPane());
 	    LinuxFrame.this.validate();
+
 	}
     }
 	
@@ -869,7 +874,17 @@ public class LinuxFrame extends JFrame {
 			    if(s.hasNextLine()) {
 				String nextLine=s.nextLine();
 				if(nextLine.contains("=== done ===")) {
-				    installSuccess=Tools.fileExist(currentDir+"config/i686-pc-linux-gnu/bin/xsb");
+				    Process resultProcess = Runtime.getRuntime().exec("sh "+currentDir+"bin/xsb -v");
+				    try {
+					resultProcess.waitFor();
+			            } catch(InterruptedException e) {
+					e.printStackTrace();
+				    }
+				    if (resultProcess.exitValue()==1) {
+				    	installSuccess=0;
+				    } else {
+					installSuccess=1;
+				    }
 				    break;
 				}
 				readline=readline+nextLine+"\n\r";
@@ -878,13 +893,44 @@ public class LinuxFrame extends JFrame {
 			    else {
 				JOptionPane.showMessageDialog(LinuxFrame.this, "Something wrong during compilation: no output from shell");
 				getCompileNextButton().setEnabled(true);
+				
+				//create log file and log folder: log/linuxlog
+				File dirFile = new File(currentDir+"log");
+				if (!dirFile.exists()) {
+				    dirFile.mkdir();
+				}
+				File file = new File(currentDir+"log/linuxlog");
+				if(!file.exists()) {
+				    file.createNewFile();
+				}
+				  
+				FileOutputStream fw = new FileOutputStream(file);
+				fw.write(readline.getBytes());
+				fw.flush();
+				fw.close();
 				return;
 			    }
 			}
 
 			JOptionPane.showMessageDialog(LinuxFrame.this, "Compilation is complete. Click OK then Next.");
 			getCompileNextButton().setEnabled(true);
+ 			
+			//create log file and log folder: Installer.log
+			File dirFile = new File(currentDir+"log");
+			if (!dirFile.exists()) {
+			    dirFile.mkdir();
+			}
 			
+			File file = new File(currentDir+"log/linuxlog");
+			
+			if (!file.exists()) {
+			    file.createNewFile();
+			}
+			
+			FileOutputStream fw = new FileOutputStream(file);
+			fw.write(readline.getBytes());
+			fw.flush();
+			fw.close();
 		    } catch (IOException e) {
 			e.printStackTrace();
 		    }

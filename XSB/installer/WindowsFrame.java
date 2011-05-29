@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
@@ -31,6 +32,10 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import java.util.Properties;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class WindowsFrame extends JFrame {
 
@@ -42,6 +47,8 @@ public class WindowsFrame extends JFrame {
     private String errorMessage="\n\n\nList of error messages:\n";
     private int countError=0;
     private int installSuccess;
+    private String vsLinkUrl;
+    private String sdkLinkUrl;
 	
     private JPanel infoContentPane = null;
     private JPanel vsPathContentPane = null;
@@ -171,14 +178,25 @@ public class WindowsFrame extends JFrame {
     private JLabel getInfoLinkLabel() {
 	if(infoLinkLabel == null) {
 	    infoLinkLabel = new JLabel();
-	    String message = "<html><body><h3><a href=\"http://www.microsoft.com/express/vc\">http://www.microsoft.com/express/vc</a></body></h3></html>";
+
+	    Properties props = new Properties();
+	    try {
+		InputStream in = Object.class.getResourceAsStream("/link.properties");
+		props.load(in);
+		vsLinkUrl=props.getProperty("visualstudio");
+		System.out.println(vsLinkUrl);
+	    } catch(Exception e) {
+		e.printStackTrace();
+	    }
+
+	    String message = "<html><body><h3><a href=\"\">"+vsLinkUrl+"</a></body></h3></html>";
 	    infoLinkLabel.setText(message);
 	    infoLinkLabel.setBounds(40,300,300,30);
 			
 	    infoLinkLabel.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent e) {
 	                try {
-			    Runtime.getRuntime().exec("cmd.exe /c start " + "http://www.microsoft.com/express/vc");
+			    Runtime.getRuntime().exec("cmd.exe /c start " + WindowsFrame.this.vsLinkUrl);
 	                } catch (Exception ex) {
 	                    ex.printStackTrace();
 	                }
@@ -199,6 +217,16 @@ public class WindowsFrame extends JFrame {
     private JLabel getInfoSDKLinkLabel() {
 	if(infoSDKLinkLabel == null) {
 	    infoSDKLinkLabel = new JLabel();
+
+	    Properties props = new Properties();
+	    try {
+		InputStream in = Object.class.getResourceAsStream("/link.properties");
+		props.load(in);
+		sdkLinkUrl=props.getProperty("sdk");
+	    } catch(Exception e) {
+		e.printStackTrace();
+	    }
+
 	    String message = "<html><body><h3>Since you are using a 64-bit Windows system, you must also install</h3><br/><h3>&nbsp;&nbsp;<a href=\"\">Windows SDK and .Net Framework</a>.</h3></html>";
 	    infoSDKLinkLabel.setText(message);
 	    infoSDKLinkLabel.setBounds(30,350,400,120);
@@ -206,7 +234,7 @@ public class WindowsFrame extends JFrame {
 	    infoSDKLinkLabel.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent e) {
 	                try {
-			    Runtime.getRuntime().exec("cmd.exe /c start " + "http://msdn.microsoft.com/en-us/windows/ff851942");
+			    Runtime.getRuntime().exec("cmd.exe /c start " + WindowsFrame.this.sdkLinkUrl);
 	                } catch (Exception ex) {
 	                    ex.printStackTrace();
 	                }
@@ -532,7 +560,7 @@ public class WindowsFrame extends JFrame {
 		"<html><body>"
 		+"<h1>XSB Installation</h1><br/><br/>"
 		+"<h2>The installation was not successful.</h2><br/>"
-		+"<h2>Please check the log for errors.</h2><br/>"
+		+"<h2>Please check XSB\\log\\winlog.txt for errors.</h2><br/>"
 		+"<br/><h2>Click <i>Finish</i> to exit.</h2>"
 		+"</body></html>";
 	    finishFailLabel.setText(message);
@@ -722,12 +750,40 @@ public class WindowsFrame extends JFrame {
 					errorMessage=errorMessage+"No\n";
 				    }
 				    getCompileTextArea().setText(getCompileTextArea().getText()+errorMessage);
+				    String testSucc;
 				    if(osType.contains("32")) {
-					installSuccess=Tools.fileExist("config\\x86-pc-windows\\bin\\xsb.exe"); 
+					testSucc="bin\\xsb.bat -v";
+				    } else {
+					testSucc="bin\\xsb64.bat -v";
 				    }
-				    else {
-					installSuccess=Tools.fileExist("config\\x64-pc-windows\\bin\\xsb.exe");
+				    Process resultProcess = Runtime.getRuntime().exec(testSucc);
+				    try {
+					resultProcess.waitFor();
+			            } catch(InterruptedException e) {
+					e.printStackTrace();
 				    }
+				    if(resultProcess.exitValue()==1) {
+				    	installSuccess=0;
+				    } else {
+					installSuccess=1;
+				    }
+				    
+				    //create log file Installer.log
+				    File dirFile = new File("log");
+				    if (!dirFile.exists()) {
+				    	dirFile.mkdir();
+				    }
+				    File file = new File("log\\winlog.txt");
+				    if (!file.exists()) {
+				    	file.createNewFile();
+				    }
+				    
+				    String totalMessage=getCompileTextArea().getText();
+				    FileOutputStream fw = new FileOutputStream(file);
+				    fw.write(totalMessage.getBytes());
+				    fw.flush();
+				    fw.close();
+				    
 				    break;
 				}
 				getCompileTextArea().setText(getCompileTextArea().getText()+"\n   >"+line);
@@ -746,10 +802,9 @@ public class WindowsFrame extends JFrame {
 			try {
 			    while ((line = errorReader.readLine()) != null) {
 				System.out.println(line);
-				if(line.contains("Could Not Find") || (line.contains("Microsoft (R) Program Maintenance Utility Version")) || (line.contains("Copyright (C) Microsoft Corporation")))
-				    {
-					continue;
-				    }
+				if(line.contains("Could Not Find") || (line.contains("Microsoft (R) Program Maintenance Utility Version")) || (line.contains("Copyright (C) Microsoft Corporation"))) {
+				    continue;
+				}
 				countError++;
 				errorMessage=errorMessage+"\n"+line;
 			    }
