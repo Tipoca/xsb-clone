@@ -1,7 +1,7 @@
 /* 
 ** Author(s): Miguel Calejo, Vera Pereira
 ** Contact:   interprolog@declarativa.com, http://www.declarativa.com, http://www.xsb.com
-** Copyright (C) XSB Inc., USA, 2001
+** Copyright (C) XSB Inc., USA, 2001; Declarativa Lda., Portugal, 2011
 ** Use and distribution, without any warranties, under the terms of the 
 ** GNU Library General Public License, readable in http://www.fsf.org/copyleft/lgpl.html
 */
@@ -81,17 +81,24 @@ Java_com_xsb_interprolog_NativeEngine_get_1bytes
 JNIEXPORT jint JNICALL 
 Java_com_xsb_interprolog_NativeEngine_put_1bytes
 (JNIEnv *env, jobject obj, jbyteArray b, jint size, jint args, jstring jStr) {
-	int head, tail, newVar, newVar2;
+	// int head, tail, newVar, newVar2;
+	prolog_term head, tail, newVar, newVar2;
 	int i = 1;
 	int rc;
 	
+	//long T0 = clock(), T1, T2, T3, T4;
 	jbyte *bytes; char *argString;
 	
+	if (debug==JNI_TRUE) printf("C:Entering put_bytes\n");
 	check_glstack_overflow(3, pcreg, (size+4)*2*sizeof(Cell)) ;  /* 2 was 8? dsw*/
 	
 	bytes = (*env)->GetByteArrayElements(env, b, 0);
 	
+	//T1 = clock() - T0;
+	//printf("C:got bytes array - %d mS",T1);
+	
 	argString = (char *)((*env)->GetStringUTFChars(env, jStr, 0));
+	if (debug==JNI_TRUE) printf("C:will try to call %s\n",argString);
 	c2p_functor(CTXTc argString, args, reg_term(CTXTc 1));
 	c2p_list(CTXTc p2p_arg(reg_term(CTXTc 1),1));
 	if (args == 3) {
@@ -102,10 +109,11 @@ Java_com_xsb_interprolog_NativeEngine_put_1bytes
 	}
 	head = p2p_car(p2p_arg(reg_term(CTXTc 1),1));
 	tail = p2p_cdr(p2p_arg(reg_term(CTXTc 1),1));
-	if (bytes[0]<0)
+	if (bytes[0]<0){
 		c2p_int(CTXTc (bytes[0]+256), head);
-	else
+	}else{
 		c2p_int(CTXTc bytes[0], head);
+	}
 	while (i < size) {
 		c2p_list(CTXTc tail);
 		head = p2p_car(tail);
@@ -118,13 +126,22 @@ Java_com_xsb_interprolog_NativeEngine_put_1bytes
 	}
 	c2p_nil(CTXTc tail);
 	
+	//T2 = clock() - T0 ;
+	//printf("C:constructed Prolog list - %d mS",T2);
+
 	theEnv = env;
 	theObj = obj;
 	rc = xsb_query(CTXT);
 	
+	//T3 = clock() - T0;
+	//printf("C:Returned from Prolog - %d mS",T3);
+	
 	(*env)->ReleaseByteArrayElements(env, b, bytes, 0);
 	(*env)->ReleaseStringUTFChars(env,jStr, argString);
+	if (debug==JNI_TRUE) printf("C:leaving put_bytes\n");
 	
+	//T4 = clock() - T0;
+	//printf("C:leaving put_bytes - %d mS\n",T4);
 	return rc;
 }
 
@@ -164,7 +181,7 @@ Java_com_xsb_interprolog_NativeEngine_xsb_1init_1internal
 	myargv[0] = XSBPath;
 	myargv[1]="-n";
 	
-	rcode=xsb_init(myargc,myargv);
+	rcode=xsb_init(CTXTc myargc,myargv);
 	(*env)->ReleaseStringUTFChars(env,jXSBPath, XSBPath);
 	if (debug==JNI_TRUE) printf("Exiting Java_com_xsb_interprolog_NativeEngine_xsb_1init_1internal\n");
 	return rcode;
@@ -233,7 +250,8 @@ xsbBool interprolog_callback(CTXTdecl) {
 	jobject obj = theObj;
 	jclass cls;
 	jmethodID mid;
-	int i = 1, size, bsize, newHead, newTail;
+	int i = 1, size, bsize;
+	prolog_term newHead, newTail;
 	jbyte *b, *nb;
 	jbyteArray newBytes, bytes;
 	
