@@ -1,14 +1,14 @@
 #! /bin/sh
 
 # Do not touch xsb_patch_date! It is updated by CVS.
-xsb_patch_date='$Date: 2011-05-29 03:22:15 $'
+xsb_patch_date='$Date: 2011-05-31 15:28:46 $'
 
 xsb_build_date=`date`
 xsb_patch_date=`echo $xsb_patch_date | sed 's,.*D,Patch d,' | sed 's, *\\$,,'`
 
 xsb_major_version=3
 xsb_minor_version=3
-xsb_patch_version=3
+xsb_patch_version=4
 #xsb_beta_version=pre"
 #xsb_codename="Skol"        # for Version 2.1
 #xsb_codename="Tsingtao"    # for Version 2.2
