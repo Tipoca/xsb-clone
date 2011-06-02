@@ -49,6 +49,7 @@ public class WindowsFrame extends JFrame {
     private int installSuccess;
     private String vsLinkUrl;
     private String sdkLinkUrl;
+    private String jdkLinkUrl;
 	
     private JPanel infoContentPane = null;
     private JPanel vsPathContentPane = null;
@@ -367,12 +368,23 @@ public class WindowsFrame extends JFrame {
     private JLabel getJdkPathLabel() {
 	if(jdkPathLabel == null) {
 	    jdkPathLabel = new JLabel();
+
+	    Properties props = new Properties();
+	    try {
+		InputStream in =
+		    Object.class.getResourceAsStream("/link.properties");
+		props.load(in);
+		jdkLinkUrl=props.getProperty("jdk");
+	    } catch(Exception e) {
+		e.printStackTrace();
+	    }
+
 	    String message =
 		"<html><body>"
 		+"<h1>XSB Installation</h1><br/><br/>"
 		+"<h3>The environment variable JAVA_HOME has not been set.</h3><br/>"
 		+"<h3>Make sure that Java JDK (not just JRE!) is installed. If it is not, download it from</h3><br/>"
-		+"<h3>&nbsp;&nbsp;<a href=\"http://www.oracle.com/technetwork/java/javase/downloads/index.html\">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a></h3><br/>"
+		+"<h3>&nbsp;&nbsp;<a href=\"\">"+jdkLinkUrl+"</a></h3><br/>"
 		+"<br/><h3>Once the JDK is installed, please enter the folder where it resides on your system:</h3><br/><br/>"
 		+"</body></html>";
 	    jdkPathLabel.setText(message);
@@ -531,7 +543,8 @@ public class WindowsFrame extends JFrame {
 		message =
 		    "<html><body>"
 		    +"<h1>XSB Installation</h1><br/><br/>"
-		    +"<h2>The installation was successful.</h2><br/>"
+		    +"<h2>The installation was successful. "
+		    +"The log is in XSB\\Installer.log.</h2><br/>"
 		    +"<h3>You can run XSB using:</h3>"
 		    +"<h3>&nbsp;&nbsp;...\\XSB\\bin\\xsb.bat</h3></br>"
 		    +"<br/><h3>Click <i>Finish</i> to exit.</h3>"
@@ -541,7 +554,8 @@ public class WindowsFrame extends JFrame {
 		message =
 		    "<html><body>"
 		    +"<h1>XSB Installation</h1><br/><br/>"
-		    +"<h2>The installation was successful.</h2><br/>"
+		    +"<h2>The installation was successful. "
+		    +"The log is in XSB\\Installer.log.</h2><br/>"
 		    +"<h3>You can run XSB using:</h3>"
 		    +"<h3>&nbsp;&nbsp;...\\XSB\\bin\\xsb64.bat</h3><br/>"
 		    +"<br/><h3>Click <i>Finish</i> to exit.</h3>"
@@ -560,7 +574,7 @@ public class WindowsFrame extends JFrame {
 		"<html><body>"
 		+"<h1>XSB Installation</h1><br/><br/>"
 		+"<h2>The installation was not successful.</h2><br/>"
-		+"<h2>Please check XSB\\log\\winlog.txt for errors.</h2><br/>"
+		+"<h2>Please check XSB\\Installer.log for errors.</h2><br/>"
 		+"<br/><h2>Click <i>Finish</i> to exit.</h2>"
 		+"</body></html>";
 	    finishFailLabel.setText(message);
@@ -744,7 +758,7 @@ public class WindowsFrame extends JFrame {
 			try {
 			    while ((line = bufferedReader.readLine()) != null) {
 				if(line.contains("=== done ===")) {
-				    JOptionPane.showMessageDialog(WindowsFrame.this, "Compilation has finished. Click OK then Next.");
+				    JOptionPane.showMessageDialog(WindowsFrame.this, "Compilation is complete. Click OK then Next.");
 				    compileNextButton.setEnabled(true);
 				    if(countError==0) {
 					errorMessage=errorMessage+"No\n";
@@ -769,11 +783,7 @@ public class WindowsFrame extends JFrame {
 				    }
 				    
 				    //create log file Installer.log
-				    File dirFile = new File("log");
-				    if (!dirFile.exists()) {
-				    	dirFile.mkdir();
-				    }
-				    File file = new File("log\\winlog.txt");
+				    File file = new File("Installer.log");
 				    if (!file.exists()) {
 				    	file.createNewFile();
 				    }

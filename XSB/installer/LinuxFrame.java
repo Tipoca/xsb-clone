@@ -564,7 +564,7 @@ public class LinuxFrame extends JFrame {
 		+"<br/><h3>Click <i>Finish</i> to exit.</h3>"
 		+"</body></html>";
 	    finishSuccessLabel.setText(message);
-	    finishSuccessLabel.setBounds(30,20,600,400);
+	    finishSuccessLabel.setBounds(30,20,670,400);
 	}
 	return finishSuccessLabel;
     }

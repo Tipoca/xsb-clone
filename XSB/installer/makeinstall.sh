@@ -1,7 +1,7 @@
 #!/bin/bash
 make clean
 make 
-jar cfm ../InstallXSB.jar manifest.mf *.class system.properties
+jar cfm ../InstallXSB.jar manifest.mf *.class system.properties link.properties
 make clean
 chmod 700 ../InstallXSB.jar
 

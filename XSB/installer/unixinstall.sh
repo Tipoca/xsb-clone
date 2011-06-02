@@ -486,3 +486,15 @@ if [ "$command"x = "checkhomearg"x ] ; then
     echo "yes"
 fi
 
+
+if [ "$command"x = "checkpassword"x ] ; then
+	password=$3
+
+	test=`echo $password | sudo -S echo "xsb"`
+	
+	if [ "$test"x = "xsb"x ] ; then
+		echo "granted"
+	else
+		echo "access denied"
+	fi
+fi
