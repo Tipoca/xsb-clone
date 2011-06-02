@@ -344,8 +344,8 @@ public class LinuxFrame extends JFrame {
     private JButton getJdkPathChooseButton() {
 	if(jdkPathChooseButton == null) {
 	    jdkPathChooseButton = new JButton();
-	    jdkPathChooseButton.setText("Choose");
-	    jdkPathChooseButton.setBounds(340, 190, 100, 30);
+	    jdkPathChooseButton.setText("Browse");
+	    jdkPathChooseButton.setBounds(340, 250, 100, 30);
 		
 	    jdkPathChooseButton.addActionListener(new JdkPathChooseListener());
 	}
@@ -355,7 +355,7 @@ public class LinuxFrame extends JFrame {
     private JTextField getJdkPathTextField() {
 	if(jdkPathTextField == null) {
 	    jdkPathTextField = new JTextField();
-	    jdkPathTextField.setBounds(30, 190, 300, 30);
+	    jdkPathTextField.setBounds(30, 250, 300, 30);
 	}
 	return jdkPathTextField;
     }
@@ -370,7 +370,7 @@ public class LinuxFrame extends JFrame {
 		+"<h3>Please enter the folder where JDK resides on your system:</h3><br/>"
 		+"</body></html>";
 	    jdkPathLabel.setText(message);
-	    jdkPathLabel.setBounds(30,20,600,120);
+	    jdkPathLabel.setBounds(30,20,600,200);
 	}
 	return jdkPathLabel;
     }
@@ -557,7 +557,8 @@ public class LinuxFrame extends JFrame {
 	    String message=
 		"<html><body>"
 		+"<h1>XSB Installation</h1><br/><br/>"
-		+"<h2>The installation was successful.</h2><br/>"
+		+"<h2>The installation was successful. "
+		+"The log is in XSB/Installer.log.</h2><br/>"
 		+"<h3>You can run XSB using:</h3>"
 		+"<h3>&nbsp;&nbsp;.../XSB/bin/xsb</h3><br/>"
 		+"<br/><h3>Click <i>Finish</i> to exit.</h3>"
@@ -575,7 +576,7 @@ public class LinuxFrame extends JFrame {
 		"<html><body>"
 		+"<h1>XSB Installation</h1><br/><br/>"
 		+"<h2>The installation was not successful.</h2><br/>"
-		+"<h2>Please check XSB/log/linuxlog for errors.</h2><br/>"
+		+"<h2>Please check XSB/Installer.log for errors.</h2><br/>"
 		+"<br/><h2>Click <i>Finish</i> to exit.</h2>"
 		+"</body></html>";
 	    finishFailLabel.setText(message);
@@ -612,9 +613,26 @@ public class LinuxFrame extends JFrame {
 		Object[] ob={message, inputPassword};
 		int result=JOptionPane.showConfirmDialog(LinuxFrame.this, ob, "Password",JOptionPane.CANCEL_OPTION);
 		if (result == JOptionPane.OK_OPTION && inputPassword.getText()!=null && !inputPassword.getText().equals("")) {
-		    password = inputPassword.getText();
-		
+			Process process;
+			try {
+			    String command = "sh " + installerShell + " " + osType.toLowerCase()+" checkpassword "+inputPassword.getText();
+			    process = Runtime.getRuntime().exec(command);
+			    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			    String resultStr=bufferedReader.readLine();
+			    if(resultStr.contains("granted")) {
+				password = inputPassword.getText();
+			    }
+			    else{
+				JOptionPane.showMessageDialog(LinuxFrame.this,
+							      "Invalid password");
+				return;
+			    }
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
 		} else {
+		    JOptionPane.showMessageDialog(LinuxFrame.this,
+						  "Invalid password");
 		    return;
 		}
 	    }
@@ -727,7 +745,8 @@ public class LinuxFrame extends JFrame {
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		String resultStr=bufferedReader.readLine();
 		if(resultStr.contains("no")) {
-		    JOptionPane.showMessageDialog(LinuxFrame.this, "Invalid JDK floder. No javac or jni.h found.");
+		    JOptionPane.showMessageDialog(LinuxFrame.this,
+						  "Invalid JDK folder. No javac or jni.h found.");
 		    homePath=null;
 		    return;
 		}
@@ -748,6 +767,7 @@ public class LinuxFrame extends JFrame {
 	    LinuxFrame.this.validate();
 
 	}
+
     }
 	
     class CompileNextListener implements ActionListener{
@@ -894,12 +914,8 @@ public class LinuxFrame extends JFrame {
 				JOptionPane.showMessageDialog(LinuxFrame.this, "Something wrong during compilation: no output from shell");
 				getCompileNextButton().setEnabled(true);
 				
-				//create log file and log folder: log/linuxlog
-				File dirFile = new File(currentDir+"log");
-				if (!dirFile.exists()) {
-				    dirFile.mkdir();
-				}
-				File file = new File(currentDir+"log/linuxlog");
+				//create log file 
+				File file = new File("Installer.log");
 				if(!file.exists()) {
 				    file.createNewFile();
 				}

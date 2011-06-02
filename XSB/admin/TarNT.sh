@@ -19,6 +19,8 @@ files="./XSB/LICENSE ./XSB/INSTALL ./XSB/INSTALL_PROBLEMS \
         ./XSB/etc \
         ./XSB/packages \
         ./XSB/docs \
+        ./XSB/installer \
+        ./XSB/InstallXSB.jar \
         ./XSB/examples "
 
     cd ../..
