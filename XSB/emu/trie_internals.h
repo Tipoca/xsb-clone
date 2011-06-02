@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.45 2011-05-18 19:21:41 dwarren Exp $
+** $Id: trie_internals.h,v 1.46 2011-06-02 22:29:23 tswift Exp $
 ** 
 */
 
@@ -297,6 +297,15 @@ enum Types_of_Trie_Nodes {
 #define MakeLeafNode(pTN)	\
    TN_NodeType(pTN) = TN_NodeType(pTN) | LEAF_NODE_MASK
 
+#if defined(ISO_INCR_UPDATE) 
+#define MakeTSTNLeafNode(pTN) {				\
+    pTN = (BTNptr) new_tstn_from_btn(CTXTdeclc pTN);	\
+    MakeLeafNode(pTN)		}			
+#else
+#define MakeTSTNLeafNode(pTN)	\
+  MakeLeafNode(pTN)					
+#endif
+
 /*
  *  From an unHASHED-typed node, create a HASHED-typed node, keeping the
  *  LEAF/INTERIOR status in-tact.  Used when converting from a sibling
@@ -375,9 +384,9 @@ enum Types_of_Trie_Nodes {
  */
 
 #ifndef MULTI_THREAD
-extern Cell VarEnumerator[];
 extern Cell TrieVarBindings[];
-
+extern Cell *VarEnumerator;
+extern CPtr *VarEnumerator_trail;
 #endif
 
 #define NEW_TRIEVAR_TAG		0x10000
@@ -394,12 +403,40 @@ extern Cell TrieVarBindings[];
 #define IsNewTrieVar(Symbol)	  ( trievar_val(Symbol) & NEW_TRIEVAR_TAG )
 #define IsNewTrieAttv(Symbol)	  ( trievar_val(Symbol) & NEW_TRIEATTV_TAG)
 
-#define StandardizeVariable(dFreeVar,Index)	\
-   bld_ref((CPtr)dFreeVar,VarEnumerator[Index])
+#define expand_varenumerators	{					\
+    int i;								\
+    size_t old_num_trievars = current_num_trievars;			\
+    size_t offset = VarEnumerator_trail_top - VarEnumerator_trail;	\
+    current_num_trievars = current_num_trievars + DEFAULT_NUM_TRIEVARS;	\
+    VarEnumerator = (Cell *)mem_realloc(VarEnumerator,			\
+					old_num_trievars*sizeof(Cell),	\
+					current_num_trievars*sizeof(Cell),TABLE_SPACE); \
+    VarEnumerator_trail = (CPtr *)mem_realloc(VarEnumerator_trail,	\
+				      old_num_trievars*sizeof(CPtr),	\
+				      current_num_trievars*sizeof(CPtr),TABLE_SPACE); \
+    trieinstr_vars = (CPtr *)mem_realloc(trieinstr_vars,	\
+				      old_num_trievars*sizeof(CPtr),	\
+				      current_num_trievars*sizeof(CPtr),TABLE_SPACE); \
+    if (VarEnumerator == NULL || VarEnumerator_trail == NULL || trieinstr_vars == NULL)		\
+      xsb_exit("No More memory for reallocating VarEnumerators");	\
+    for (i = 0; i < current_num_trievars; i++)				\
+      VarEnumerator[i] = (Cell) & (VarEnumerator[i]);			\
+    VarEnumerator_trail_top = VarEnumerator_trail + offset; \
+  }
+//    printf("resized %p %p %d %p\n",VarEnumerator,VarEnumerator_trail,offset,VarEnumerator_trail_top); 
+
+#define StandardizeVariable(dFreeVar,Index) {		\
+  if (Index < current_num_trievars)			\
+    bld_ref((CPtr)dFreeVar,VarEnumerator[Index]);	\
+  else {						\
+    expand_varenumerators;				\
+    bld_ref((CPtr)dFreeVar,VarEnumerator[Index]);	\
+  }							\
+}
 
 #define IsStandardizedVariable(dFreeVar)			\
    ( ((CPtr)(dFreeVar) >= VarEnumerator) &&			\
-     ((CPtr)(dFreeVar) <= (VarEnumerator + NUM_TRIEVARS - 1)) )
+     ((CPtr)(dFreeVar) <= (VarEnumerator + current_num_trievars - 1)) )
 
 #define ResetStandardizedVariable(VarAddr)	\
    bld_free( ((CPtr)VarAddr) )
@@ -424,7 +461,7 @@ extern Cell TrieVarBindings[];
 
 #define IsUnboundTrieVar(dFreeVar)					\
    ( ((CPtr)(dFreeVar) >= TrieVarBindings) &&				\
-     ((CPtr)(dFreeVar) <= (TrieVarBindings + NUM_TRIEVARS - 1)) )
+     ((CPtr)(dFreeVar) <= (TrieVarBindings + current_num_trievars - 1)) )
 
 /*---------------------------------------------------------------------------*/
 

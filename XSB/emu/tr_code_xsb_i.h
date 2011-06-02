@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.33 2011-05-22 15:12:25 tswift Exp $
+** $Id: tr_code_xsb_i.h,v 1.34 2011-06-02 22:29:23 tswift Exp $
 ** 
 */
 
@@ -165,10 +165,6 @@
 Cell *trieinstr_unif_stk;
 CPtr trieinstr_unif_stkptr;
 Integer  trieinstr_unif_stk_size = DEFAULT_ARRAYSIZ;
-
-#define MAX_TRIE_REGS 500
-CPtr trieinstr_vars[MAX_TRIE_REGS];
-int  trieinstr_vars_num = -1;
 
 BTNptr NodePtr, Last_Nod_Sav;
 

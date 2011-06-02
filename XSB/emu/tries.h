@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.76 2011-05-20 21:26:43 tswift Exp $
+** $Id: tries.h,v 1.77 2011-06-02 22:29:23 tswift Exp $
 ** 
 */
 
@@ -341,7 +341,6 @@ typedef struct Call_Check_Insert_Results {
 
 #ifndef MULTI_THREAD
 extern int AnsVarCtr;
-extern CPtr VarEnumerator_trail[];
 extern CPtr *VarEnumerator_trail_top;
 
 extern BTNptr   newBasicTrie(Cell,int);
@@ -358,7 +357,7 @@ extern BTNptr	get_next_trie_solution(ALNptr *);
 extern BTNptr	variant_answer_search(int, int, CPtr, struct subgoal_frame *,
 				      xsbBool *);
 extern BTNptr   delay_chk_insert(int, CPtr, CPtr *);
-extern void     undo_answer_bindings(void);
+//extern void     undo_answer_bindings(void);
 extern void	load_delay_trie(int, CPtr, BTNptr);
 extern xsbBool  bottom_up_unify(void);
 extern BTHTptr  New_BTHT(Structure_Manager *, int);
@@ -380,7 +379,7 @@ extern BTNptr	get_next_trie_solution(ALNptr *);
 extern BTNptr	variant_answer_search(struct th_context *, int, int, CPtr, 
 				      struct subgoal_frame *, xsbBool *);
 extern BTNptr   delay_chk_insert(struct th_context *, int, CPtr, CPtr *);
-extern void     undo_answer_bindings(struct th_context *);
+//extern void     undo_answer_bindings(struct th_context *);
 extern void	load_delay_trie(struct th_context *, int, CPtr, BTNptr);
 extern xsbBool  bottom_up_unify(struct th_context *);
 #endif
@@ -440,7 +439,8 @@ extern CPtr ans_var_pos_reg;
 /* Used by trie instructions */
 extern int  trieinstr_vars_num;
 extern int  global_trieinstr_vars_num;
-extern CPtr trieinstr_unif_stkptr, trieinstr_vars[];
+extern CPtr trieinstr_unif_stkptr;
+extern CPtr *trieinstr_vars;
 #endif
 
 /* used for statistics */
@@ -500,9 +500,11 @@ extern Cell * trieinstr_unif_stk;
 extern Integer trieinstr_unif_stk_size;
 extern int delay_it;
 
-#define NUM_TRIEVARS 500
 //#define DEFAULT_ARRAYSIZ 512 
 #define DEFAULT_ARRAYSIZ 16
+
+#define DEFAULT_NUM_TRIEVARS 512
+extern size_t current_num_trievars;
 
 /*=========================================================================*/
 /* Handling calls in call subsumption. */
@@ -584,13 +586,15 @@ typedef struct outedge{
 typedef struct callnodetag{
   outedgeptr  outedges;
   calllistptr inedges; 
-  void* goal;
+  void* goal;             // TLS: this is a pointer to the SF for tabled calls.
   unsigned int no_of_answers;
   unsigned int deleted:1, changed:1,falsecount:15,outcount:15;
   callnodeptr prev_call;
   ALNptr aln; 
   int id; 
 }CALL_NODE;
+
+#define callnode_sf(Ptr) ( ((callnodeptr)(Ptr)) -> goal)
 
 typedef struct key{
 	int goal;
@@ -606,6 +610,8 @@ typedef struct _calllist{
   calllistptr next;
 }CALLLIST;
 
+#define calllist_item(Ptr) ( ((calllistptr)(Ptr)) -> item)
+#define calllist_next(Ptr) ( ((calllistptr)(Ptr)) -> next)
 
 typedef struct _call2list{
   callnodeptr item;

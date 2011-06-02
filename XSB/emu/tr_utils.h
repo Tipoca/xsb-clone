@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.68 2011-05-18 19:21:41 dwarren Exp $
+** $Id: tr_utils.h,v 1.69 2011-06-02 22:29:23 tswift Exp $
 ** 
 */
 
@@ -58,6 +58,10 @@ struct shared_interned_trie_t {
 } ;
 
 typedef struct shared_interned_trie_t *ShrTrieTabPtr;
+
+
+#define CAN_RECLAIM 0
+#define CANT_RECLAIM 1
 
 #define TRIE_ID_TYPE_MASK               0xfff00000
 #define TRIE_ID_ID_MASK                 0x000fffff
@@ -115,6 +119,8 @@ extern int abolish_module_tables(CTXTdeclc const char *module_name);
 extern int abolish_table_call_incr(CTXTdeclc VariantSF); /* incremental evaluation */
 extern int gc_tabled_preds(CTXTdecl);
 extern void delete_variant_sf_and_answers(CTXTdeclc VariantSF pSF, xsbBool warn);
+extern int abolish_table_call_cps_check(CTXTdeclc VariantSF);
+extern void check_insert_global_deltf_subgoal(CTXTdeclc VariantSF,xsbBool);
 
 extern void release_any_pndes(CTXTdeclc PNDE firstPNDE);
 extern void delete_delay_trie(CTXTdeclc BTNptr root);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.84 2011-05-22 18:18:54 tswift Exp $
+** $Id: context.h,v 1.85 2011-06-02 22:29:23 tswift Exp $
 **
 */
 
@@ -204,18 +204,18 @@ struct th_context
   CPtr _trieinstr_unif_stkptr;
   Integer  _trieinstr_unif_stk_size;
 
-#define MAX_TRIE_REGS 500
-  CPtr _trieinstr_vars[MAX_TRIE_REGS];
-  int  _trieinstr_vars_num ;
-
   int  _num_heap_term_vars;
   CPtr *_var_addr;
   int  _var_addr_arraysz;
 
-  Cell _VarEnumerator[NUM_TRIEVARS];
-  Cell _TrieVarBindings[NUM_TRIEVARS];
+  Cell *_VarEnumerator;
 
-  CPtr _VarEnumerator_trail[NUM_TRIEVARS];
+  int _current_num_trievars;
+
+  CPtr *_trieinstr_vars;
+  int  _trieinstr_vars_num ;
+
+  CPtr *_VarEnumerator_trail;
   CPtr *_VarEnumerator_trail_top;
 
   int _addr_stack_index;
@@ -227,6 +227,8 @@ struct th_context
   size_t _term_stacksize;
 
   int _global_trieinstr_vars_num;
+
+  Cell _TrieVarBindings[DEFAULT_NUM_TRIEVARS];
 
   struct tif_list _private_tif_list;
   DelTFptr _private_deltf_chain_begin;
@@ -535,6 +537,8 @@ typedef struct th_context th_context ;
 
 #define trieinstr_vars		(th->_trieinstr_vars)
 #define trieinstr_vars_num	(th->_trieinstr_vars_num)
+
+#define current_num_trievars    (th->_current_num_trievars)
 
 #define num_heap_term_vars	(th->_num_heap_term_vars)
 #define var_addr		(th->_var_addr)

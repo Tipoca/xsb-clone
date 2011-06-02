@@ -59,6 +59,8 @@ static void simplify_pos_unconditional(CTXTdeclc NODEptr);
 void print_pdes(PNDE);
 //void simplify_neg_succeeds_for_subsumed_subgoals(NODEptr);
 
+#define NUM_TRIEVARS 512
+
 Structure_Manager smASI      = SM_InitDecl(ASI_Node, ASIs_PER_BLOCK,
 					    "Answer Substitution Info Node");
 

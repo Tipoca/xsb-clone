@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.26 2011-05-18 19:21:41 dwarren Exp $
+** $Id: trie_lookup.c,v 1.27 2011-06-02 22:29:23 tswift Exp $
 ** 
 */
 
@@ -47,7 +47,6 @@
 #if (defined(DEBUG_VERBOSE) || defined(DEBUG_ASSERTIONS))
 #include "tst_utils.h"
 #endif
-
 /****************************************************************************
 
    This file defines a set of functions for searching a trie.  These
@@ -348,7 +347,7 @@ void initSubsumptiveLookup(CTXTdecl) {
     variant_cont.bindings.stack.size = 0;
   
   /* set entries to unbound */
-  for (i = 0; i < NUM_TRIEVARS; i++)
+  for (i = 0; i < DEFAULT_NUM_TRIEVARS; i++)
     TrieVarBindings[i] = (Cell)(TrieVarBindings + i);
 }
 
@@ -1239,7 +1238,7 @@ static BTNptr rec_sub_trie_lookup(CTXTdeclc BTNptr parent, TriePathType *pathTyp
 	  ***********************************************/
 	  if ( are_identical_terms(TrieVarBindings[trievar_index],
 				   subterm) ) {
-	    xsb_dbgmsg((LOG_TRIE, "  Found trivar with identical binding"));
+	    xsb_dbgmsg((LOG_TRIE, "  Found trievar with identical binding"));
 	    leaf = rec_sub_trie_lookup(CTXTc cur,pathType);
 	    if ( IsNonNULL(leaf) ) {
 	      /*
