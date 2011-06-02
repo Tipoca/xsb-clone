@@ -608,7 +608,7 @@ public class LinuxFrame extends JFrame {
 	       || xmlCheckBox.isSelected()
 	       || regCheckBox.isSelected()
 	       || javaCheckBox.isSelected()) {
-		String message="Please enter your user password:";
+		String message="To install the necessary packaged, please enter your user password:";
 		JTextField inputPassword=new JPasswordField();
 		Object[] ob={message, inputPassword};
 		int result=JOptionPane.showConfirmDialog(LinuxFrame.this, ob, "Password",JOptionPane.CANCEL_OPTION);
