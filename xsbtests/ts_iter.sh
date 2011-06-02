@@ -26,6 +26,18 @@ cd ../../tests
 
 sh testsuite.sh -tag "dflt"  $XSBDIR
 
+echo "--------------- 32 test -------------------------"
+
+cd ../XSB/build
+
+rm ../config/*-bits32/saved.o/*.o ; 
+configure --with-bits32 > /tmp/config ; 
+makexsb --config-tag=bits32 ;
+
+cd ../../tests
+
+sh testsuite.sh -tag "bits32"  $XSBDIR
+
  echo "--------------- mt-opt test -------------------------"
  
  cd ../XSB/build
@@ -36,7 +48,7 @@ sh testsuite.sh -tag "dflt"  $XSBDIR
  
  cd ../../tests
  
- sh testsuite.sh -tag mt -exclude regmatch_tests  $XSBDIR
+ sh testsuite.sh -tag mt -exclude "regmatch_tests incremental_tests" $XSBDIR
  
  echo "--------------- mt-dbg test -------------------------"
  
@@ -48,7 +60,7 @@ sh testsuite.sh -tag "dflt"  $XSBDIR
  
  cd ../../tests
  
- sh testsuite.sh -tag dbg-mt -exclude regmatch_tests  $XSBDIR
+ sh testsuite.sh -tag dbg-mt -exclude "regmatch_tests incremental_tests"  $XSBDIR
  
  echo "--------------- batched test -------------------------"
  

@@ -7,6 +7,9 @@ echo "-------------------------------------------------------"
 XEMU=$1
 options=$2
 
+rm -f xeddis.dylib xeddis.so
+$XEMU -e "[compile_xeddis]."
+
 #------------------------------------
 # tests involving standard predicates
 #------------------------------------
@@ -94,9 +97,6 @@ options=$2
 ../gentest.sh "$XEMU $options" test_cleanup "test."
 
 #------------------------------------------------------------------------
-../gentest.sh "$XEMU $options" test_importas "test."
-
-#------------------------------------------------------------------------
 ../gentest.sh "$XEMU $options" test_forall "test."
 
 #------------------------------------------------------------------------
@@ -149,3 +149,6 @@ else
 	rm -f cregs.o c_regs_make$OBJEXT
 	../gentest.sh "$XEMU $options" cregs_make "test."
 fi
+#------------------------------------------------------------------------
+
+../gentest.sh "$XEMU $options" test_importas "test."
