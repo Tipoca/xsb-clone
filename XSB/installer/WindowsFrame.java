@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Map;
+import java.net.URLDecoder;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -47,6 +48,9 @@ public class WindowsFrame extends JFrame {
     private String errorMessage="\n\n\nList of error messages:\n";
     private int countError=0;
     private int installSuccess;
+    private String currentDir="";
+    private String installerShell="";
+    private String installerLog="";
     private String vsLinkUrl;
     private String sdkLinkUrl;
     private String jdkLinkUrl;
@@ -113,6 +117,21 @@ public class WindowsFrame extends JFrame {
 	this.setResizable(false);
 	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	this.setVisible(true);
+	try {
+	    // so, we get the current dir in a round-about way
+	    // we need to pass currentDir to the shell
+	    currentDir = MainRun.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+	    currentDir=currentDir.substring(0,currentDir.lastIndexOf('/')+1);
+	    currentDir = URLDecoder.decode(currentDir, "utf-8");
+	    currentDir = new File(currentDir).getPath();
+
+	    installerShell =
+		currentDir + "\\installer\\windowsinstall.bat \""
+		+ currentDir + "\" ";
+	    installerLog = currentDir+"\\Installer.log";
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
     }
 	
     private int getFrameHeight() {
@@ -393,7 +412,7 @@ public class WindowsFrame extends JFrame {
 	    jdkPathLabel.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent e) {
 	                try {
-			    Runtime.getRuntime().exec("cmd.exe /c start " + "http://www.oracle.com/technetwork/java/javase/downloads/index.html");
+			    Runtime.getRuntime().exec("cmd.exe /c start " + jdkLinkUrl);
 	                } catch (Exception ex) {
 	                    ex.printStackTrace();
 	                }
@@ -538,29 +557,22 @@ public class WindowsFrame extends JFrame {
     private JLabel getFinishSuccessLabel() {
 	if(finishSuccessLabel == null) {
 	    finishSuccessLabel = new JLabel();
-	    String message;
+	    String message, xsbShell;
 	    if(osType.contains("32")) {
-		message =
-		    "<html><body>"
-		    +"<h1>XSB Installation</h1><br/><br/>"
-		    +"<h2>The installation was successful. "
-		    +"The log is in XSB\\Installer.log.</h2><br/>"
-		    +"<h3>You can run XSB using:</h3>"
-		    +"<h3>&nbsp;&nbsp;...\\XSB\\bin\\xsb.bat</h3></br>"
-		    +"<br/><h3>Click <i>Finish</i> to exit.</h3>"
-		    +"</body></html>";
+		xsbShell = "xsb.bat";
+	    } else {
+		xsbShell = "xsb64.bat";
 	    }
-	    else {
-		message =
-		    "<html><body>"
-		    +"<h1>XSB Installation</h1><br/><br/>"
-		    +"<h2>The installation was successful. "
-		    +"The log is in XSB\\Installer.log.</h2><br/>"
-		    +"<h3>You can run XSB using:</h3>"
-		    +"<h3>&nbsp;&nbsp;...\\XSB\\bin\\xsb64.bat</h3><br/>"
-		    +"<br/><h3>Click <i>Finish</i> to exit.</h3>"
-		    +"</body></html>";
-	    }
+	    message =
+		"<html><body>"
+		+"<h1>XSB Installation</h1><br/><br/>"
+		+"<h2>The installation was successful. "
+		+"The log is in " + installerLog + "</h2><br/>"
+		+"<h3>You can run XSB using:</h3>"
+		+"<h3>&nbsp;&nbsp;" + currentDir 
+		+ "\\bin\\" + xsbShell + "</h3></br>"
+		+"<br/><h3>Click <i>Finish</i> to exit.</h3>"
+		+"</body></html>";
 	    finishSuccessLabel.setText(message);
 	    finishSuccessLabel.setBounds(30,20,600,400);
 	}
@@ -574,7 +586,7 @@ public class WindowsFrame extends JFrame {
 		"<html><body>"
 		+"<h1>XSB Installation</h1><br/><br/>"
 		+"<h2>The installation was not successful.</h2><br/>"
-		+"<h2>Please check XSB\\Installer.log for errors.</h2><br/>"
+		+"<h2>Please check " + installerLog + " for errors.</h2><br/>"
 		+"<br/><h2>Click <i>Finish</i> to exit.</h2>"
 		+"</body></html>";
 	    finishFailLabel.setText(message);
@@ -718,16 +730,9 @@ public class WindowsFrame extends JFrame {
 	    
 	try {
 	    System.out.println(vsPath);
-	    String para1=vsPath.substring(0, 2);
-	    String para2;
-    		
-	    Process pathProc= Runtime.getRuntime().exec("cmd /c cd");
-	    BufferedReader pathReader = new BufferedReader(new InputStreamReader(pathProc.getInputStream()));
-	    String resultPath=pathReader.readLine();
-	    para2=resultPath.substring(0,2);
+	    String vsDisk=vsPath.substring(0, 2);
+	    String xsbDisk=currentDir.substring(0,2);
 		
-	    String currPath=resultPath.substring(2, resultPath.length());
-
 	    String makexsb;
 	    String setvcvar;
 	    if(osType.contains("32")) {
@@ -747,7 +752,13 @@ public class WindowsFrame extends JFrame {
 		}
 	    }
 		
-	    Process process = Runtime.getRuntime().exec("cmd /c installer\\windowsinstall.bat \""+vsPath+"\" "+para1+" "+para2+" \""+currPath+"\" "+makexsb+" "+setvcvar);
+	    Process process =
+		Runtime.getRuntime().exec("cmd /c "
+					  + installerShell
+					  + "\""+vsPath+"\" "
+					  +vsDisk + " " + xsbDisk
+					  +" \""+currentDir+"\" "
+					  +makexsb+" "+setvcvar);
         	
 	    final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 	    final BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
@@ -766,9 +777,9 @@ public class WindowsFrame extends JFrame {
 				    getCompileTextArea().setText(getCompileTextArea().getText()+errorMessage);
 				    String testSucc;
 				    if(osType.contains("32")) {
-					testSucc="bin\\xsb.bat -v";
+					testSucc=currentDir+"\\bin\\xsb.bat -v";
 				    } else {
-					testSucc="bin\\xsb64.bat -v";
+					testSucc=currentDir+"\\bin\\xsb64.bat -v";
 				    }
 				    Process resultProcess = Runtime.getRuntime().exec(testSucc);
 				    try {
@@ -782,8 +793,8 @@ public class WindowsFrame extends JFrame {
 					installSuccess=1;
 				    }
 				    
-				    //create log file Installer.log
-				    File file = new File("Installer.log");
+				    //create log file
+				    File file = new File(installerLog);
 				    if (!file.exists()) {
 				    	file.createNewFile();
 				    }

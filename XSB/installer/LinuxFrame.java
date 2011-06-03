@@ -44,6 +44,7 @@ public class LinuxFrame extends JFrame {
     private int needJavaHome=0;
     private String currentDir="";
     private String installerShell="";
+    private String installerLog="";
 	
     private JPanel infoContentPane = null; //Panel for general information
     private JPanel featureContentPane = null; //Panel for user to select feature
@@ -123,7 +124,9 @@ public class LinuxFrame extends JFrame {
 	    // we need to pass currentDir to the shell
 	    currentDir = MainRun.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 	    currentDir=currentDir.substring(0,currentDir.lastIndexOf('/')+1);
-	    installerShell = currentDir + "installer/unixinstall.sh " + currentDir;
+	    installerShell =
+		currentDir + "installer/unixinstall.sh " + currentDir + " ";
+	    installerLog = currentDir+"Installer.log";
 	} catch (java.net.URISyntaxException e) {
 	    e.printStackTrace();
 	}
@@ -558,9 +561,9 @@ public class LinuxFrame extends JFrame {
 		"<html><body>"
 		+"<h1>XSB Installation</h1><br/><br/>"
 		+"<h2>The installation was successful. "
-		+"The log is in XSB/Installer.log.</h2><br/>"
+		+"The log is in " + installerLog + "</h2><br/>"
 		+"<h3>You can run XSB using:</h3>"
-		+"<h3>&nbsp;&nbsp;.../XSB/bin/xsb</h3><br/>"
+		+"<h3>&nbsp;&nbsp;" + currentDir + "bin/xsb</h3><br/>"
 		+"<br/><h3>Click <i>Finish</i> to exit.</h3>"
 		+"</body></html>";
 	    finishSuccessLabel.setText(message);
@@ -576,7 +579,7 @@ public class LinuxFrame extends JFrame {
 		"<html><body>"
 		+"<h1>XSB Installation</h1><br/><br/>"
 		+"<h2>The installation was not successful.</h2><br/>"
-		+"<h2>Please check XSB/Installer.log for errors.</h2><br/>"
+		+"<h2>Please check " + installerLog + " for errors.</h2><br/>"
 		+"<br/><h2>Click <i>Finish</i> to exit.</h2>"
 		+"</body></html>";
 	    finishFailLabel.setText(message);
@@ -615,7 +618,7 @@ public class LinuxFrame extends JFrame {
 		if (result == JOptionPane.OK_OPTION && inputPassword.getText()!=null && !inputPassword.getText().equals("")) {
 			Process process;
 			try {
-			    String command = "sh " + installerShell + " " + osType.toLowerCase()+" checkpassword "+inputPassword.getText();
+			    String command = "sh " + installerShell + osType.toLowerCase()+" checkpassword "+inputPassword.getText();
 			    process = Runtime.getRuntime().exec(command);
 			    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			    String resultStr=bufferedReader.readLine();
@@ -647,8 +650,8 @@ public class LinuxFrame extends JFrame {
 		Process process;
 		try {
 		    String command =
-			"sh " + installerShell + " "
-			+ osType.toLowerCase()+" checkJava";
+			"sh " + installerShell
+			+ osType.toLowerCase() + " checkJava";
 		    process = Runtime.getRuntime().exec(command);
 		    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		    String resultStr=bufferedReader.readLine();
@@ -681,8 +684,8 @@ public class LinuxFrame extends JFrame {
 		needJavaHome=1;
 		try {
 		    String command =
-			"sh " + installerShell + " "
-			+ osType.toLowerCase()+" checkhome";
+			"sh " + installerShell
+			+ osType.toLowerCase() + " checkhome";
 		    process = Runtime.getRuntime().exec(command);
 		    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		    String resultStr=bufferedReader.readLine();
@@ -739,8 +742,8 @@ public class LinuxFrame extends JFrame {
 	    Process process;
 	    try {
 		String command =
-		    "sh " + installerShell + " "
-		    + osType.toLowerCase()+" checkhomearg "+homePath;
+		    "sh " + installerShell
+		    + osType.toLowerCase() + " checkhomearg " + homePath;
 		process = Runtime.getRuntime().exec(command);
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		String resultStr=bufferedReader.readLine();
@@ -800,7 +803,7 @@ public class LinuxFrame extends JFrame {
 		public void run()
 		{
 		    //sh installer/unixinstall.sh <OS> installFeatures your-password xml reg.....
-		    String command1, command="sh " + installerShell + " ";
+		    String command1, command="sh " + installerShell;
 		    command1 = command+osType.toLowerCase()+" "+"installFeatures"+" <your password>";
 		    command=command+osType.toLowerCase()+" "+"installFeatures"+" "+password;
 		    System.out.println(command1);
@@ -872,8 +875,8 @@ public class LinuxFrame extends JFrame {
 		{
 		    //sh installer/unixinstall.sh <OS> configure1 [path of jdk]
 		    String command =
-			"sh " + installerShell + " "
-			+ osType.toLowerCase()+" ";
+			"sh " + installerShell
+			+ osType.toLowerCase() + " ";
 		    
 		    if(features[0]==1 ) {
 			command=command+"configure2";
@@ -915,7 +918,7 @@ public class LinuxFrame extends JFrame {
 				getCompileNextButton().setEnabled(true);
 				
 				//create log file 
-				File file = new File("Installer.log");
+				File file = new File(installerLog);
 				if(!file.exists()) {
 				    file.createNewFile();
 				}
@@ -931,13 +934,8 @@ public class LinuxFrame extends JFrame {
 			JOptionPane.showMessageDialog(LinuxFrame.this, "Compilation is complete. Click OK then Next.");
 			getCompileNextButton().setEnabled(true);
  			
-			//create log file and log folder: Installer.log
-			File dirFile = new File(currentDir+"log");
-			if (!dirFile.exists()) {
-			    dirFile.mkdir();
-			}
-			
-			File file = new File(currentDir+"log/linuxlog");
+			//create log file
+			File file = new File(installerLog);
 			
 			if (!file.exists()) {
 			    file.createNewFile();
