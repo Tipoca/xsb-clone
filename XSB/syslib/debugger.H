@@ -52,6 +52,7 @@
 
 :- import break/0 from x_interp.
 :- import term_psc/2, psc_insert/4, stat_flag/2, stat_set_flag/2, 
+	  xwam_state/2,
 	  psc_name/2, psc_type/2, psc_ep/2, psc_spy/2, psc_set_spy/2,
 	  psc_arity/2, conname/2, code_call/3, term_arg/3, term_type/2,
 	  term_new/2, prompt/3

@@ -567,6 +567,10 @@ deb_traceget(N,Spy,Type,Call,C) :-
 	    ll_write(' ('), ll_write(N), ll_write(') '),
 	    ll_write(Type),ll_write(': '),
 	    debug_display_call(Call),
+	    (Type == 'Exit', xwam_state(2,DelayReg), DelayReg =\= 0
+	    -> ll_write(' - possibly undefined ')
+	    ; true
+	    ),
 	    deb_prompt(Type,Spy,C)
 	;   C = CH_NEWLINE,
 	    (	(Type == 'Exit' ; Type == 'Fail')
