@@ -7,8 +7,19 @@ echo "-------------------------------------------------------"
 XEMU=$1
 options=$2
 
-rm -f xeddis.dylib xeddis.so
-$XEMU -e "[compile_xeddis]."
+u=`uname`;
+echo "uname for this system is $u";
+
+if test $u  != ""; then
+    echo "removing xeddis object files"
+    rm -f xeddis.dylib xeddis.so
+    $XEMU -e "[compile_xeddis]."
+    echo "-------------------------------------------------------"
+    else
+    echo "not removing object files"
+    echo "-------------------------------------------------------"
+fi
+
 
 #------------------------------------
 # tests involving standard predicates
