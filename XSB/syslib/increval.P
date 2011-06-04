@@ -21,7 +21,7 @@
 ** $Id: increval.P,v 1.5 2010/04/24 20:48:50 tswift Exp $
 ** 
 */
-:- compiler_options([xpp_on]).
+:- compiler_options([xpp_on,sysmod]).
 #include "builtin.h"
 #include "incr_xsb_defs.h"
 
