@@ -236,6 +236,61 @@ p(X):- p(f(X)).
   action is taken as indicated for the previous flag.  The default
   value is {\tt maximum\_integer}.
 
+\item {\tt max\_table\_answer\_action} The action to take when a tabled
+  answer of maximum depth is encountered.  To understand the use of
+  this flag, consider the program fragment:
+\begin{verbatim}
+:- table p/1.
+p(f(X)):- p(X).          p(a).
+\end{verbatim}
+  is tabled, the model for the goal {\tt ?- p(X)} is infinite, so that
+  this program will not terminate.  When the maximum answer depth is
+  reached, XSB can either throw a miscellaneous error (the default
+  action); emit a warning; or XSB can fail -- an action that may be
+  valid for certain programs~\footnote{Failure in this case can be
+    seen as an implicit form of answer abstraction.}.  The action is
+  set to fail by the value {\tt failure} while the action of throwing
+  an error can be (re-)set using the value {\tt error}, and the action
+  of warning is set by the value {\tt warning}.
+
+  Note that this flag affects only structures that are not lists
+  (since large lists are more common than other large structures).  
+
+\item {\tt max\_table\_answer\_depth} The maximum depth of an answer
+  argument that can be added to a table: when the depth is reached, an
+  action is taken as indicated for the previous flag.  The default
+  value is {\tt maximum\_integer}.
+
+  {\em Note that this flag affects only structures that are not lists
+    (since large lists are more common than other large structures).
+  }
+
+\item {\tt max\_table\_answer\_list\_action} The action to take when a
+  tabled answer of maximum list depth is encountered.  To understand
+  the use of this flag, consider the program fragment:
+\begin{verbatim}
+:- table l/1.
+l([a|X]):- l(X).          l([a]).
+\end{verbatim}
+  is tabled, the model for the goal {\tt ?- l(X)} is infinite, so that
+  this program will not terminate.  When the maximum answer list depth
+  is reached, XSB can either throw a miscellaneous error (the default
+  action); emit a warning; or XSB can fail -- an action that may be
+  valid for certain programs~\footnote{Failure in this case can be
+    seen as an implicit form of answer abstraction.}.  The action is
+  set to fail by the value {\tt failure} while the action of throwing
+  an error can be (re-)set using the value {\tt error}, and the action
+  of warning is set by the value {\tt warning}.
+
+\item {\tt max\_table\_answer\_list\_depth} The maximum list depth of
+  an answer argument that can be added to a table: when the depth is
+  reached, an action is taken as indicated for the previous flag.  The
+  default value is {\tt maximum\_integer}.
+
+  {\em Note that this flag affects only structures that are lists
+    (since large lists are more common than other large structures).
+  }
+
 \end{itemize}
 
 The following flags affect only the multi-threaded engine.

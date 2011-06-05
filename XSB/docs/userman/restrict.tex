@@ -26,20 +26,19 @@ fix it or to assist you to bypass it.
       files for non-modules can be renamed at will.
 %
 \item XSB allows up to 1 Gigabyte of address space for 32-bit chips.
-      There are various tagging schemes, which depend on the operating
-      system and where in the 32-bit virtual address space it
-      allocates user memory.  The most general tagging scheme (named
-      GENERAL\_TAGGING) adjusts itself to the address space in use.
-      Other more specific tagging schemes are available for specific
-      architectures.  Floating point numbers are by default double
-      precision when computed at runtime.  Floating point numbers in
-      the compiler are only single precision (due to the way they are
-      represented in object byte-code files.)  If {\tt --enable-fast-floats}
-      is specified, then 28-bit floats are used.  For 64-bit
-      platforms, addresses and integers are all stored in 60 bits.
-      However, as the \emph{object} code file format is the same as
-      for the 32-bit versions, compiled constants are subject to
-      32-bit limitations.
+  There are various tagging schemes, which depend on the operating
+  system and where in the 32-bit virtual address space it allocates
+  user memory.  The most general tagging scheme (named
+  GENERAL\_TAGGING) adjusts itself to the address space in use.  Other
+  more specific tagging schemes are available for specific
+  architectures.  Floating point numbers are by default double
+  precision when computed at runtime.  Floating point numbers in the
+  compiler are only single precision (due to the way they are
+  represented in object byte-code files.)  If {\tt
+    --enable-fast-floats} is specified, then 28-bit floats are used.
+  For 64-bit platforms, addresses are stored in 60 bits.  However, as
+  the \emph{object} code file format is the same as for the 32-bit
+  versions, compiled constants are subject to 32-bit limitations.
 %
 \item Indexing on floating-point numbers is suspect, since, as
       implemented in XSB, the semantics of floating-point unification
@@ -58,9 +57,9 @@ fix it or to assist you to bypass it.
       though we will try to amend this restriction in future versions of
       XSB.
 %
-\item Tabled predicates that use call-subsumption may not table
-  attributed variables, and may not use answer subsumption or
-  incremental completion.
+\item Tabled predicates that use call-subsumption do not handle calss
+  that use attributed variables, and may not use answer subsumption or
+  incremental tabling.
 
 \comment{
 Subsumption-based tabled predicates may not be \emph{delayed}.
@@ -91,19 +90,19 @@ Subsumption-based tabled predicates may not be \emph{delayed}.
 %\item Explicit compilation (using {\tt compile/1}) of {\em very} large
 %      files {\em may} cause a core dump due to unfinished memory
 %      management.
-\item Variables that appear in {\em compiled} arithmetic comparison
-      predicates should only be bound to numbers and not evaluable
-      arithmetic expressions.  That is, the variables are not evaluated
-      to obtain an arithmetic value, but the XSB compiler assumes
-      that they are evaluated.  For example, executing compiled code for
-      the following program will cause an {\tt "Arithmetic exception"}
-      error:
-      \begin{verbatim}
-            p(X) :- X =:= 1.
-
-            ?- p(cos(0)).
-      \end{verbatim}
-      This behaviour is only exhibited in {\em compiled} code.
+%\item Variables that appear in {\em compiled} arithmetic comparison
+%      predicates should only be bound to numbers and not evaluable
+%      arithmetic expressions.  That is, the variables are not evaluated
+%      to obtain an arithmetic value, but the XSB compiler assumes
+%      that they are evaluated.  For example, executing compiled code for
+%      the following program will cause an {\tt "Arithmetic exception"}
+%      error:
+%      \begin{verbatim}
+%            p(X) :- X =:= 1.
+%
+%            ?- p(cos(0)).
+%      \end{verbatim}
+%      This behaviour is only exhibited in {\em compiled} code.
 % Currently this solution does not work: kostis
 %     For variables that is not known whether they will always be bound to
 %     numbers, it is advisable that these variables are evaluated
