@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.148 2011-06-02 22:29:23 tswift Exp $
+** $Id: tries.c,v 1.149 2011-06-05 19:24:03 tswift Exp $
 ** 
 */
 
@@ -167,15 +167,6 @@ Cell TrieVarBindings[DEFAULT_NUM_TRIEVARS];
 
 /*----------------------------------------------------------------------*/
 /*********Simpler trails ****************/
-
-#define undo_answer_bindings {						\
-    /*  printf("maybe untrail VET %p VETT %p\n",VarEnumerator_trail,VarEnumerator_trail_top); */ \
-  while (VarEnumerator_trail_top >= VarEnumerator_trail) {	\
-    /*      printf("untrail VET_top %p * %x\n",VarEnumerator_trail_top,*VarEnumerator_trail_top); */ \
-      untrail(*VarEnumerator_trail_top);			\
-      VarEnumerator_trail_top--;			\
-    }	\
-}
 
 #define StandardizeAndTrailVariable(addr,n) {				\
     StandardizeVariable(addr,n);					\
@@ -818,11 +809,58 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
  * 
  */
 
+extern void sprint_call(CTXTdeclc char * buffer,Psc psc,int depth);
+
+#define CHECK_ANSWER_TERM_DEPTH						\
+  if (--depth_ctr <= 0)	{						\
+    if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_WARNING) {		\
+      char buffer[MAXBUFSIZE];						\
+      sprint_call(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
+		 (int)(flags[MAX_TABLE_ANSWER_DEPTH]));		\
+      xsb_warn("Exceeded max answer term depth of %d in call %s\n",	\
+		flags[MAX_TABLE_ANSWER_DEPTH],buffer);			\
+    }									\
+    else if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_FAILURE) {		\
+      resetpdl;								\
+      found_flag = 1;							\
+      return NULL;							\
+    }									\
+    else {								\
+      char buffer[MAXBUFSIZE];						\
+      sprint_call(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
+		 (int)(flags[MAX_TABLE_ANSWER_DEPTH]));		\
+      xsb_abort("Exceeded max answer term depth of %d in call %s\n",	\
+		flags[MAX_TABLE_ANSWER_DEPTH],buffer);			\
+    }									\
+}
+
+#define CHECK_ANSWER_LIST_DEPTH						\
+  if (--list_depth_ctr <= 0)	{						\
+    if (flags[MAX_TABLE_ANSWER_LIST_ACTION] == XSB_WARNING) {		\
+      char buffer[MAXBUFSIZE];						\
+      sprint_call(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
+		 (int)(flags[MAX_TABLE_ANSWER_LIST_DEPTH]));		\
+      xsb_warn("Exceeded max answer list depth of %d in call %s\n",	\
+		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
+    }									\
+    else if (flags[MAX_TABLE_ANSWER_LIST_ACTION] == XSB_FAILURE) {		\
+      resetpdl;								\
+      found_flag = 1;							\
+      return NULL;							\
+    }									\
+    else {								\
+      char buffer[MAXBUFSIZE];						\
+      sprint_call(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
+		 (int)(flags[MAX_TABLE_ANSWER_LIST_DEPTH]));		\
+      xsb_abort("Exceeded max answer list depth of %d in call %s\n",	\
+		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
+    }									\
+}
+
 #define recvariant_trie_ans_subsf(flag,TrieType) {			\
   int  j;								\
 									\
   while (!pdlempty ) {							\
-    /*    printf("RVTAS VarEnum_trail %p top %p %x\n",VarEnumerator_trail,VarEnumerator_trail_top,VarEnumerator_trail_top); */ \
     xtemp1 = (CPtr) pdlpop;						\
     XSB_CptrDeref(xtemp1);						\
     tag = cell_tag(xtemp1);						\
@@ -853,12 +891,13 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
       one_btn_chk_ins(flag, EncodeTrieConstant(xtemp1), TrieType);	\
       break;								\
     case XSB_LIST:							\
-      /*      printf("List %p\n",xtemp1);				*/ \
+      CHECK_ANSWER_LIST_DEPTH;						\
       one_btn_chk_ins(flag, EncodeTrieList(xtemp1), TrieType);		\
       pdlpush(cell(clref_val(xtemp1)+1));				\
       pdlpush(cell(clref_val(xtemp1)));					\
       break;								\
     case XSB_STRUCT:							\
+      CHECK_ANSWER_TERM_DEPTH						\
       psc = (Psc) follow(cs_val(xtemp1));				\
       item = makecs(psc);						\
       one_btn_chk_ins(flag, item, TrieType);				\
@@ -909,6 +948,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   Cell  item, tmp_var;
   ALNptr answer_node;
   int ctr, attv_ctr;
+  Cell depth_ctr,list_depth_ctr;
   BTNptr Paren, *ChildPtrOfParen;
 
   byte choicepttype;  /* for incremental evaluation */ 
@@ -973,6 +1013,8 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   attv_ctr = attv_num;
 
   for (i = 0; i < sf_size; i++) {
+    depth_ctr = flags[MAX_TABLE_ANSWER_DEPTH];  
+    list_depth_ctr = flags[MAX_TABLE_ANSWER_LIST_DEPTH];  
     xtemp1 = (CPtr) (cptr - i); /* One element of VarsInCall.  It might
 				 * have been bound in the answer for
 				 * the call.

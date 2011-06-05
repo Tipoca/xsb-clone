@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.64 2011-05-20 20:20:26 tswift Exp $
+** $Id: debug_xsb.c,v 1.65 2011-06-05 19:24:03 tswift Exp $
 ** 
 */
 
@@ -156,6 +156,179 @@ static void print_term(FILE *fp, Cell term, byte car, int level)
   }
 }
 
+static int sprint_term(char *buffer, int insize, Cell term, byte car, int level)
+{
+  unsigned short i, arity;
+  Psc psc;
+  CPtr cptr;
+  int size = insize;
+
+  if (size > MAXBUFSIZE-22) return size;
+
+  level--;
+  if (level < 0) {
+    sprintf(buffer+size, "...");
+    return size+3;
+  }
+  printderef(term);
+  switch (cell_tag(term)) {
+  case XSB_FREE:
+  case XSB_REF1:
+    sprintf(buffer+size, "_%p", vptr(term));
+    return size+3+sizeof(CPtr);
+  case XSB_ATTV:
+    sprintf(buffer+size, "_%p {...}", (CPtr)dec_addr(term));
+    return size+9+sizeof(CPtr);
+  case XSB_STRUCT:
+      //NOTE: Below is a check for boxed numbers. If such is the case, then
+      //  the behavior is the same as XSB_INT or XSB_FLOAT, but with boxed[X]_val macro
+      //  instead of [X]_val macro
+    if (isboxedfloat(term)) {
+        sprintf(buffer+size, "%15f", boxedfloat_val(term));
+        return size+15;   
+    }
+    else if (isboxedinteger(term)) {
+        sprintf(buffer+size, "%10" Intfmt, (Integer)boxedint_val(term));
+        return size+10;
+    }
+    psc = get_str_psc(term);
+    sprintf(buffer+size, "%s", get_name(psc));
+    size = size + strlen(get_name(psc));
+    arity = get_arity(psc);
+    if ( arity == 0 )   /* constant */
+      return size;
+    /* structure */
+    sprintf(buffer+size, "(");size++;
+    cptr = clref_val(term);
+    for ( i = 1; i <= arity; i++ ) {
+      size = sprint_term(buffer, size,cell(cptr+i), CAR, level);
+      if ( i < arity )
+	sprintf(buffer+size, ",");
+    }
+    sprintf(buffer+size, ")");size++;
+    //    printf("return size %d %s\n",size,buffer);
+    return size;
+  case XSB_STRING:
+    sprintf(buffer+size, "%s", string_val(term));
+    size = size+strlen(string_val(term));
+    return size;
+  case XSB_INT:
+    sprintf(buffer+size, "%10" Intfmt, (Integer)int_val(term));
+    return size+10;
+  case XSB_FLOAT:
+    sprintf(buffer+size, "%10f", float_val(term));
+    sprintf(buffer+size, "%10f", ofloat_val(term));
+    return size+20;
+  case XSB_LIST:
+    cptr = clref_val(term);
+    if ( car ) {
+      sprintf(buffer+size, "[");size++;
+    }
+    size = sprint_term(buffer, size,cell(cptr), CAR, level);
+    //    printf("succeeded size %d\n",size);
+    term = cell(cptr+1);
+    XSB_Deref(term);
+    switch (cell_tag(term)) {
+    case XSB_FREE:
+    case XSB_REF1: 
+    case XSB_ATTV:
+      goto vertbar;
+    case XSB_LIST:
+      sprintf(buffer+size, ",");size++;
+      return sprint_term(buffer, size,term, CDR, level);
+    case XSB_STRING:
+      if (string_val(term) != nil_string)
+	goto vertbar;
+      else {
+	sprintf(buffer+size, "]");size++;
+	return size;
+      }
+    case XSB_STRUCT:
+    case XSB_INT:
+    case XSB_FLOAT:
+    vertbar:
+      sprintf(buffer+size, "|");size++;
+      sprintf(buffer+size, "]");size++;
+    return size + sprint_term(buffer, size,term, CAR, level);
+    }
+  }
+  return size;  // to quiet compiler.
+}
+
+static int sprint_termsize(Cell term, byte car, int level)
+{
+  unsigned short i, arity;
+  Psc psc;
+  CPtr cptr;
+  int size = 0;
+
+  level--;
+  if (level < 0) {
+    return size+3;
+  }
+  printderef(term);
+  switch (cell_tag(term)) {
+  case XSB_FREE:
+  case XSB_REF1:
+    return size+10;
+  case XSB_ATTV:
+    return size+15;
+  case XSB_STRUCT:
+      //NOTE: Below is a check for boxed numbers. If such is the case, then
+      //  the behavior is the same as XSB_INT or XSB_FLOAT, but with boxed[X]_val macro
+      //  instead of [X]_val macro
+    if (isboxedfloat(term)) {
+        return size+10;   
+    }
+    else if (isboxedinteger(term)) {
+        return size+10;
+    }
+    psc = get_str_psc(term);
+    arity = get_arity(psc);
+    size = size + strlen(get_name(psc)) + (arity-1) +2;
+    if ( arity == 0 )   /* constant */
+      return size;
+    /* structure */
+    cptr = clref_val(term);
+    for ( i = 1; i <= arity; i++ ) {
+      size = size + sprint_termsize(cell(cptr+i), CAR, level);
+    }
+    return size;
+  case XSB_STRING:
+    size = size+strlen(string_val(term));
+    break;
+  case XSB_INT:
+    return size+10;
+  case XSB_FLOAT:
+    return size+10;
+  case XSB_LIST:
+    cptr = clref_val(term);
+    size = size + sprint_termsize(cell(cptr), CAR, level) + 2;
+    term = cell(cptr+1);
+    XSB_Deref(term);
+    switch (cell_tag(term)) {
+    case XSB_FREE:
+    case XSB_REF1: 
+    case XSB_ATTV:
+      goto vertbar;
+    case XSB_LIST:
+      return size+sprint_termsize( term, CDR, level);;
+    case XSB_STRING:
+      if (string_val(term) != nil_string)
+	goto vertbar;
+      else {
+	return size;
+      }
+    case XSB_STRUCT:
+    case XSB_INT:
+    case XSB_FLOAT:
+    vertbar:
+    return size + sprint_termsize( term, CAR, level);
+    }
+  }
+  return size;  // to quiet compiler.
+}
+
 void printterm(FILE *fp, Cell term, int depth) {
 
   print_term(fp, term, CAR, depth);
@@ -163,14 +336,43 @@ void printterm(FILE *fp, Cell term, int depth) {
 }
 
 /*------------------------------------------------------------------*/
-/* Used to print out call using WAM registers */
+/* Used to print out call using WAM registers -- print registers*/
 
-void print_call(CTXTdeclc Psc psc,int depth)
-{
+void sprint_callsize(CTXTdeclc Psc psc,int depth) {
+  int i, arity,size;
+
+  size = strlen(get_name(psc));
+  arity = (int)get_arity(psc);
+  size = size + (arity-1) + 2;
+
+  for (i=1; i <= arity; i++) {
+    size = size+sprint_termsize(cell(reg+i), CAR, depth);
+  }
+  printf("size %d\n",size);
+
+}
+
+void sprint_call(CTXTdeclc char * buffer,Psc psc,int depth) {
+  int i, arity,size;
+
+  arity = (int)get_arity(psc);
+
+  sprintf(buffer, "%s", get_name(psc));
+  size = strlen(get_name(psc));
+  if (arity != 0) sprintf(buffer+size, "(");size++;
+  for (i=1; i <= arity; i++) {
+    size = sprint_term(buffer, size, cell(reg+i), CAR, depth);
+    if (i < arity) {sprintf(buffer+size, ",");size++;}
+  }
+  //  printf("grand return %d %s\n",size,buffer);
+  if (arity != 0) sprintf(buffer+size, ")");
+}
+
+void print_call_1(CTXTdeclc Psc psc,int depth) {
   int i, arity;
 
   arity = (int)get_arity(psc);
-  fprintf(stddbg, "(w1) call: %s", get_name(psc));
+  fprintf(stddbg, "%s", get_name(psc));
   if (arity != 0) fprintf(stddbg, "(");
   for (i=1; i <= arity; i++) {
     printterm(stddbg, cell(reg+i), depth);
@@ -180,6 +382,14 @@ void print_call(CTXTdeclc Psc psc,int depth)
   if (arity != 0) fprintf(stddbg, ")\n"); else fprintf(stddbg, "\n");
   fflush(stddbg);
 }
+
+void print_call(CTXTdeclc Psc psc,int depth)
+{
+  fprintf(stddbg, "(w1) call: %s", get_name(psc));
+  print_call_1(CTXTc psc,depth);
+}
+
+
 
 /*------------------------------------------------------------------*/
 /* These variables are global, so in principle, you could run the

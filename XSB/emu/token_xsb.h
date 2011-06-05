@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.h,v 1.14 2011-05-18 19:21:41 dwarren Exp $
+** $Id: token_xsb.h,v 1.15 2011-06-05 19:24:03 tswift Exp $
 ** 
 */
 
@@ -47,7 +47,7 @@ struct strbuf {
 extern STRFILE *iostrs[MAXIOSTRS];
 #define iostrdecode(j) (-1-j)
 #define strfileptr(desc) iostrs[iostrdecode(desc)]
-#define InitStrLen	1000
+#define InitStrLen	10000
 
 #ifndef MULTI_THREAD
 extern struct xsb_token_t *token;

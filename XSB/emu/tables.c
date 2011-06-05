@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.89 2011-05-18 19:21:41 dwarren Exp $
+** $Id: tables.c,v 1.90 2011-06-05 19:24:03 tswift Exp $
 ** 
 */
 
@@ -462,13 +462,12 @@ BTNptr table_answer_search(CTXTdeclc VariantSF producer, int size, int attv_num,
     
     ans_var_pos_reg = hreg++;	/* Leave a cell for functor ret/n */
 
-    answer = variant_answer_search(CTXTc size,attv_num,templ,producer,&wasFound);
-
-    do_delay_stuff(CTXTc (NODEptr)answer, producer, wasFound);
-
-    undo_answer_bindings;
-
-    *is_new = ! wasFound;
+    if (NULL != (answer = variant_answer_search(CTXTc size,attv_num,templ,producer,&wasFound))) {
+      do_delay_stuff(CTXTc (NODEptr)answer, producer, wasFound);
+      *is_new = ! wasFound;
+    }
+      *is_new = ! wasFound;
+      undo_answer_bindings;
   }
   return (BTNptr)answer;
 }

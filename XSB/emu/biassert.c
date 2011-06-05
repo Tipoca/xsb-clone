@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.189 2011-05-19 16:39:05 tswift Exp $
+** $Id: biassert.c,v 1.190 2011-06-05 19:24:03 tswift Exp $
 ** 
 */
 
@@ -1543,6 +1543,7 @@ static int hash_val(int Ind, prolog_term Head, int TabSize )
   int Hashval = 0 ;
   int i, j ;
   prolog_term Arg ;
+  int index_max;
 
   if (Ind <= 0xff) {  /* handle usual case specially */
     Arg = p2p_arg(Head,Ind) ;
@@ -1565,7 +1566,8 @@ static int hash_val(int Ind, prolog_term Head, int TabSize )
 	  argsleft[0] = 1;
 	  term = Head; XSB_Deref(term);
 	  stk[0] = clref_val(term)+ (j - 0x80);
-	  for (k = MAXTOINDEX; k > 0; k--) {
+	  index_max = (int) flags[MAXTOINDEX_FLAG];
+	  for (k = index_max; k > 0; k--) {
 	    /*printf("depth = %d, left = %d\n",depth,argsleft[depth]);*/
 	    if (depth < 0) break; /* out of for */
 	    term = *stk[depth];

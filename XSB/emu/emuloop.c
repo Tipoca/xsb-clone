@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.215 2011-05-19 16:39:06 tswift Exp $
+** $Id: emuloop.c,v 1.216 2011-06-05 19:24:03 tswift Exp $
 ** 
 */
 
@@ -1476,6 +1476,7 @@ argument positions.
     int  i, j = 0;
     int indexreg[3];
     Cell opa[3]; 
+    int index_max;
     /* op1 is register contents, op2 is hash table offset, op3 is modulus */
     indexreg[0] = get_axx;
     indexreg[1] = get_xax;
@@ -1498,7 +1499,8 @@ argument positions.
           stk[0] = &opa[i];
           argsleft[0] = 1;
 
-          for (k = MAXTOINDEX; k > 0; k--) {
+	  index_max = (int) flags[MAXTOINDEX_FLAG];
+          for (k = index_max; k > 0; k--) {
             if (depth < 0) break;
             op1 = *stk[depth];
             argsleft[depth]--;

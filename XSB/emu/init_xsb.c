@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.177 2011-05-20 21:26:43 tswift Exp $
+** $Id: init_xsb.c,v 1.178 2011-06-05 19:24:03 tswift Exp $
 ** 
 */
 
@@ -249,6 +249,11 @@ static void init_flags(CTXTdecl)
   flags[THREAD_COMPLSIZE] = COMPLSTACK_DEFAULT_SIZE;
   flags[MAX_TABLE_SUBGOAL_DEPTH] = MY_MAXINT;
   flags[MAX_TABLE_SUBGOAL_ACTION] = XSB_ERROR;
+  flags[MAX_TABLE_ANSWER_DEPTH] = MY_MAXINT;
+  flags[MAX_TABLE_ANSWER_ACTION] = XSB_ERROR;
+  flags[MAX_TABLE_ANSWER_LIST_DEPTH] = MY_MAXINT;
+  flags[MAX_TABLE_ANSWER_LIST_ACTION] = XSB_ERROR;
+  flags[MAXTOINDEX_FLAG] = 5;
 #ifdef MULTI_THREAD
   flags[MAX_QUEUE_TERMS] = DEFAULT_MQ_SIZE; 
 #endif

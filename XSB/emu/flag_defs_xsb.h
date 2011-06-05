@@ -20,10 +20,10 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 <<<<<<< flag_defs_xsb.h
-** $Id: flag_defs_xsb.h,v 1.37 2011-02-14 22:29:45 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.38 2011-06-05 19:24:03 tswift Exp $
 **
 =======
-** $Id: flag_defs_xsb.h,v 1.37 2011-02-14 22:29:45 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.38 2011-06-05 19:24:03 tswift Exp $
 **
 >>>>>>> 1.28
 */
@@ -139,9 +139,15 @@ interrupt flag
 #define ANSWER_COMPLETION         83   /* amp: Incremental Answer Completion switch */   
 #define MAX_TABLE_SUBGOAL_DEPTH   84   /* maximum depth for terms in a tabled subgoal */
 #define MAX_TABLE_SUBGOAL_ACTION  85   /* abort/fail/abstract (abstract not yet impld.)*/
-#define MAX_FLAGS		100
+#define MAX_TABLE_ANSWER_DEPTH    84   /* maximum depth for non-list terms in a tabled answer */
+#define MAX_TABLE_ANSWER_ACTION   85   /* abort/warn/abstract (abstract not yet impld.)*/
+#define MAX_TABLE_ANSWER_LIST_DEPTH    86   /* maximum depth for lists in a tabled answer */
+#define MAX_TABLE_ANSWER_LIST_ACTION   87   /* abort/warn/abstract (abstract not yet impld.)*/
+#define MAXTOINDEX_FLAG           88   /* Experimental only */             
+#define MAX_FLAGS		 100
 
-#define MAXTOINDEX 5              /* depth in term to go when using deep indexing */
+#define MAXTOINDEX 10              /* maximum depth in term to go when using deep indexing; 
+				      the actual depth is now specified by MAXTOINDEX_FLAG*/
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
