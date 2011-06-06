@@ -13,7 +13,7 @@ echo "uname for this system is $u";
 if test $u  != ""; then
     echo "removing xeddis object files"
     rm -f xeddis.dylib xeddis.so
-    $XEMU -e "[compile_xeddis]."
+    $XEMU -e "catch(consult(compile_xeddis),Ball,(writeln(userout,Ball),halt))."
     echo "-------------------------------------------------------"
     else
     echo "not removing object files"
