@@ -297,8 +297,16 @@ copy_double_quote([C|Cs],[C|Cs0],Cs1) :-
 	).
 
 extern_float_codes(Float,Codes0,Codes) :-
+	(Float < 0.0
+	 ->	PFloat is -Float,
+		Codes0 = [0'-'|Codes1],
+		extern_float_codes1(PFloat,Codes1,Codes)
+	 ;	extern_float_codes1(Float,Codes0,Codes)
+	).
+
+extern_float_codes1(Float,Codes0,Codes) :-
 	Log10 is log(10),
-	Exp is floor(log(Float)/Log10-6), % to get 6 or 7 digits, Put . Exp to left from end
+	Exp is floor(log(Float)/Log10-8), % to get 6 or 7 digits, Put . Exp to left from end
 	DigitsInt is floor(Float/exp(Exp*Log10)),
 	number_codes(DigitsInt,Digits),
 	length(Digits,Length),
