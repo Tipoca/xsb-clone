@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.77 2011-05-18 19:21:40 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.78 2011-06-06 20:20:29 dwarren Exp $
 **
 */
 
@@ -894,7 +894,7 @@ void SetBindVal(CTXTdecl)
   /* if we're reusing an opened cursor w/ the statement number*/
   /* reallocate BindVar if type has changed (May not be such a good idea?)*/
   if (cur->Status == 2) {
-    if (isinteger(BindVal)) {
+    if (isointeger(BindVal)) {
       if (cur->BindTypes[j] != 0) {
 	if (cur->BindTypes[j] < 2) free_cur_bindlist(cur,j);  //((void *)cur->BindList[j]);
 	cur->BindList[j] = (UCHAR *)mem_alloc(sizeof(int),ODBC_SPACE);
@@ -961,7 +961,7 @@ void SetBindVal(CTXTdecl)
   }
 
   /* otherwise, memory needs to be allocated in this case*/
-  if (isinteger(BindVal)) {
+  if (isointeger(BindVal)) {
     cur->BindTypes[j] = 0;
     cur->BindList[j] = (UCHAR *)mem_alloc(sizeof(int),ODBC_SPACE);
     if (!cur->BindList[j]) {

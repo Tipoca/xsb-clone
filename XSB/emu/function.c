@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.36 2011-05-18 19:21:40 dwarren Exp $
+** $Id: function.c,v 1.37 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -72,9 +72,8 @@
 /* --- returns 1 when succeeds, and returns 0 when there is an error --	*/
 
 #define set_fvalue_from_value do {					\
-    if (isinteger(value)) fvalue = (Float) int_val(value);		\
+    if (isointeger(value)) fvalue = (Float) oint_val(value);		\
     else if (isofloat(value)) fvalue = ofloat_val(value);		\
-    else if (isboxedinteger(value)) fvalue = (Float) boxedint_val(value); \
     else {								\
       FltInt fiop1;							\
       if (xsb_eval(CTXTc value, &fiop1)) {				\
@@ -162,26 +161,17 @@ int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
     bld_boxedfloat(CTXTc regaddr, fvalue);
     break;
   case FUN_abs:
-    if (isinteger(value)) {
-      ivalue = int_val(value);
-      if (ivalue > 0) 
-	bld_int(regaddr,ivalue);
-      else bld_int(regaddr,-ivalue);
-    } 
-    else if (isboxedinteger(value)) {
-      ivalue = boxedint_val(value);
-      if (ivalue > 0) 
-	{bld_oint(regaddr,ivalue)}
-      else bld_oint(regaddr,-ivalue);
+    if (isointeger(value)) {
+      ivalue = oint_val(value);
+      if (ivalue > 0) {
+	bld_oint(regaddr,ivalue);
+      } else bld_oint(regaddr,-ivalue);
     } 
     else if (isofloat(value) ) {
       fvalue = ofloat_val(value);
-      if (fvalue > 0)
-      {
+      if (fvalue > 0) {
           bld_boxedfloat(CTXTc regaddr,fvalue);
-      }
-      else 
-      {
+      } else {
           fvalue = -fvalue;
           bld_boxedfloat(CTXTc regaddr,fvalue);
       }
@@ -210,12 +200,8 @@ int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
     }
     break;
   case FUN_truncate:
-    if (isinteger(value)) { 
-      ivalue = int_val(value);
-      bld_int(regaddr,ivalue);
-    }
-    else if (isboxedinteger(value)) { 
-      ivalue = boxedint_val(value);
+    if (isointeger(value)) { 
+      ivalue = oint_val(value);
       bld_oint(regaddr,ivalue);
     }
     else if (isofloat(value)) {
@@ -250,12 +236,8 @@ int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
     }
     break;
   case FUN_round:
-    if (isinteger(value)) { 
-      ivalue = int_val(value);
-      bld_int(regaddr,ivalue);
-    }
-    else if (isboxedinteger(value)) { 
-      ivalue = boxedint_val(value);
+    if (isointeger(value)) { 
+      ivalue = oint_val(value);
       bld_oint(regaddr,ivalue);
     }
     else if (isofloat(value)) {
@@ -277,12 +259,8 @@ int  unifunc_call(CTXTdeclc int funcnum, CPtr regaddr)
     }
     break;
   case FUN_ceiling:
-    if (isinteger(value)) { 
-      ivalue = int_val(value);
-      bld_int(regaddr,ivalue);
-    }
-    else if (isboxedinteger(value)) { 
-      ivalue = boxedint_val(value);
+    if (isointeger(value)) { 
+      ivalue = oint_val(value);
       bld_oint(regaddr,ivalue);
     }
     else if (isofloat(value)) {
@@ -355,13 +333,9 @@ static double xsb_calculate_epsilon(void)
 int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 
   XSB_Deref(expr);
-  if (isinteger(expr)) set_int_val(value,int_val(expr));
-  else if (isboxedfloat(expr)) 
-    set_flt_val(value,boxedfloat_val(expr));
-  else if (isboxedinteger(expr))
-    set_int_val(value,boxedint_val(expr));
-  else if (isboxedfloat(expr))
-    set_flt_val(value,boxedfloat_val(expr));
+  if (isointeger(expr)) set_int_val(value,oint_val(expr));
+  else if (isofloat(expr)) 
+    set_flt_val(value,ofloat_val(expr));
   else if (isconstr(expr)) {
     Psc op_psc = get_str_psc(expr);
     int arity = get_arity(op_psc);

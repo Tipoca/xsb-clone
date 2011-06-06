@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.108 2011-05-18 19:21:40 dwarren Exp $
+** $Id: cinterf.c,v 1.109 2011-06-06 20:20:29 dwarren Exp $
 **
 */
 
@@ -113,7 +113,7 @@ DllExport xsbBool call_conv is_int(prolog_term term)
 {
     Cell t = (Cell)term;
     XSB_Deref(t);
-    return (isinteger(t) | isboxedinteger(t));
+    return (isointeger(t));
 }
 
 DllExport xsbBool call_conv is_float(prolog_term term)

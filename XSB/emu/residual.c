@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.31 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: residual.c,v 1.32 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -55,8 +55,8 @@
    printf("atom(%s)",string_val(X));\
  else if (isconstr(X)) \
    printf("atom(%s/%d)",get_name((Psc)dec_addr(X)),get_arity((Psc)dec_addr(X)));\
- else if (isinteger(X)) \
-   printf("atom(%d)",int_val(X));\
+ else if (isointeger(X)) \
+   printf("atom(%d)",oint_val(X));\
  else if (isboxedinteger(X)) \
    printf("atom(%d)",boxedint_val(X));\
  else if (islist(X))\

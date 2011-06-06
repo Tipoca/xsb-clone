@@ -173,15 +173,11 @@ Java_com_xsb_interprolog_NativeEngine_xsb_1init_1internal
 	char * myargv[2];
 	char *XSBPath = (char *)((*env)->GetStringUTFChars(env, jXSBPath, 0));
 
-#ifdef MULTI_THREAD
-     th = mem_alloc( sizeof( th_context ),THREAD_SPACE ) ;
-#endif
-
 	if (debug==JNI_TRUE) printf("Entering Java_com_xsb_interprolog_NativeEngine_xsb_1init_1internal\n");
 	myargv[0] = XSBPath;
 	myargv[1]="-n";
 	
-	rcode=xsb_init(CTXTc myargc,myargv);
+	rcode=xsb_init(myargc,myargv);
 	(*env)->ReleaseStringUTFChars(env,jXSBPath, XSBPath);
 	if (debug==JNI_TRUE) printf("Exiting Java_com_xsb_interprolog_NativeEngine_xsb_1init_1internal\n");
 	return rcode;
@@ -210,9 +206,6 @@ Java_com_xsb_interprolog_NativeEngine_xsb_1init_1internal_1arg
           parameters[i] = (jstring)(*env)->GetObjectArrayElement(env, jXSBParameters, i);
 	  myargv[i + 2] = (char *)((*env)->GetStringUTFChars(env, parameters[i], 0));
 	}
-#ifdef MULTI_THREAD
-     th = mem_alloc( sizeof( th_context ),THREAD_SPACE ) ;
-#endif
 
 	rcode=xsb_init(myargc,myargv);
 

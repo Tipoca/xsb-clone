@@ -632,15 +632,12 @@ int compare(CTXTdeclc const void * v1, const void * v2)
     } else return -1;
   case XSB_INT:
     if (isref(val2) || isofloat(val2) || isattv(val2)) return 1;
-    else if (isinteger(val2)) {
-      compexp = (int_val(val1) - int_val(val2));
-      return sign_of(compexp);
-    } else if (isboxedinteger(val2)) {
-      compexp = (int_val(val1) - boxedint_val(val2));
+    else if (isointeger(val2)) {
+      compexp = (int_val(val1) - oint_val(val2));
       return sign_of(compexp);
     } else return -1;
   case XSB_STRING:
-    if (isref(val2) || isofloat(val2) || isinteger(val2) || isattv(val2)) 
+    if (isref(val2) || isofloat(val2) || isointeger(val2) || isattv(val2)) 
       return 1;
     else if (isstring(val2)) {
       return strcmp(string_val(val1), string_val(val2));
@@ -652,11 +649,8 @@ int compare(CTXTdeclc const void * v1, const void * v2)
     // macros.
     if (isboxedinteger(val1)) {
       if (isref(val2) || isofloat(val2) || isattv(val2)) return 1;
-      else if (isinteger(val2)) {
-	compexp = (boxedint_val(val1) - int_val(val2));
-	return sign_of(compexp);
-      } else if (isboxedinteger(val2)) {
-	compexp = boxedint_val(val1) - boxedint_val(val2);
+      else if (isointeger(val2)) {
+	compexp = (boxedint_val(val1) - oint_val(val2));
 	return sign_of(compexp);
       } else return -1;
     } else if (isboxedfloat(val1)) {

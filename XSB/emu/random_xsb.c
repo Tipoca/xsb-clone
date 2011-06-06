@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: random_xsb.c,v 1.19 2011-05-18 19:21:40 dwarren Exp $
+** $Id: random_xsb.c,v 1.20 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -106,19 +106,19 @@ int getrand(CTXTdecl) {
   term = ptoc_tag(CTXTc 2);
   if (isref(term))
     ctop_int(CTXTc 2, random_seeds->IX);
-  else if (!isinteger(term) || (oint_val(term) != random_seeds->IX))
+  else if (!isointeger(term) || (oint_val(term) != random_seeds->IX))
     return FALSE;
 
   term = ptoc_tag(CTXTc 3);
   if (isref(term))
     ctop_int(CTXTc 3, random_seeds->IY);
-  else if (!isinteger(term) || (oint_val(term) != random_seeds->IY))
+  else if (!isointeger(term) || (oint_val(term) != random_seeds->IY))
     return FALSE;
 
   term = ptoc_tag(CTXTc 4);
   if (isref(term))
     ctop_int(CTXTc 4, random_seeds->IZ);
-  else if (!isinteger(term) || (oint_val(term) != random_seeds->IZ))
+  else if (!isointeger(term) || (oint_val(term) != random_seeds->IZ))
     return FALSE;
 
   return TRUE;

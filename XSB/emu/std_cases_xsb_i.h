@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.28 2011-05-18 19:21:40 dwarren Exp $
+** $Id: std_cases_xsb_i.h,v 1.29 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -42,7 +42,7 @@
   case INTEGER:	/* r1: ?term */ {
       Integer tag = ptoc_tag(CTXTc 1);
     printf("integer in std_cases_xsb_i.h This should NOT occur! This code should now be unreachable\n");
-      return (isinteger(tag) || isboxedinteger(tag));
+    return (isointeger(tag));
   }
     
   case REAL:		/* r1: ?term */
@@ -114,8 +114,8 @@
     
   case PUT: {	/* r1: +integer	*/
     Cell term = ptoc_tag(CTXTc 1);
-    if (isinteger(term)) {
-      putc((int)int_val(term), fileptr(pflags[CURRENT_OUTPUT]));
+    if (isointeger(term)) {
+      putc((int)oint_val(term), fileptr(pflags[CURRENT_OUTPUT]));
     } else {
       if (isnonvar(term)) xsb_type_error(CTXTc "integer",term,"put/1",1);
       else xsb_instantiation_error(CTXTc "put/1",1);
@@ -124,9 +124,9 @@
   }
   case TAB: {	/* r1: +integer	*/
     Cell term = ptoc_tag(CTXTc 1);
-    if (isinteger(term)) {
-      int  i;
-      for (i=1; i<=int_val(term); i++)
+    if (isointeger(term)) {
+      Integer  i;
+      for (i=1; i<=oint_val(term); i++)
 	putc(' ', fileptr(pflags[CURRENT_OUTPUT]));
     } else {
       if (isnonvar(term)) xsb_type_error(CTXTc "integer",term,"tab/1",1);

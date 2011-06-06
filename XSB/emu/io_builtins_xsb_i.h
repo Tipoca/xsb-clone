@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.64 2011-05-20 20:20:26 tswift Exp $
+** $Id: io_builtins_xsb_i.h,v 1.65 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -510,7 +510,7 @@ inline static xsbBool file_function(CTXTdecl)
     /* file_function(FILE_REOPEN, +Filename,+Mode,+IOport,-ErrorCode) */
     tmpstr = ptoc_string(CTXTc 2);
     pterm = reg_term(CTXTc 3);
-    if (isinteger(pterm)|isboxedinteger(pterm))
+    if (isointeger(pterm))
       mode = (int)oint_val(pterm);
     else if (isstring(pterm)) {
       switch ((string_val(pterm))[0]) {

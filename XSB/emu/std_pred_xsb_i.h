@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.58 2011-05-18 19:21:40 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.59 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -62,8 +62,7 @@ inline static xsbBool functor_builtin(CTXTdecl)
 		 int_unify(CTXTc makeint(0), ptoc_tag(CTXTc 3)));
   } else {	/* term is a variable */
     functor = ptoc_tag(CTXTc 2);
-    if (isstring(functor) || isinteger(functor) || isofloat(functor) ||
-	isboxedinteger(functor) ||
+    if (isstring(functor) || isointeger(functor) || isofloat(functor) ||
 	(isconstr(term) && get_arity(get_str_psc(term)) == 0)) {
       arity = ptoc_tag(CTXTc 3);
       /* tls: added !isnumber conjunct */
@@ -352,8 +351,8 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	  mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
 	  return FALSE;	/* fail */
 	}
-	if (isinteger(heap_addr))
-	  c = (int)int_val(heap_addr);
+	if (isointeger(heap_addr))
+	  c = (int)oint_val(heap_addr);
 	else /* ATOM CHARS */
 	  c = *string_val(heap_addr);
 
@@ -514,17 +513,11 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
       //            else return FALSE;	/* fail */
     }
   } else {	/* use is: NUMBER --> CHARS/CODES/DIGITS */
-    if (isinteger(term)) {
-      sprintf(str, "%" Intfmt, int_val(term));
+    if (isointeger(term)) {
+      sprintf(str, "%" Intfmt, oint_val(term));
     } else {
       if (isofloat(term)) {
 	sprintf(str, "%e", ofloat_val(term));
-      } else {
-	if (isboxedinteger(term)) {
-	  sprintf(str,"%" Intfmt, boxedint_val(term));
-	} else {
-	  xsb_type_error(CTXTc "number",term,call_name,1);
-	}
       }
     }
     new_list = makelist(hreg);

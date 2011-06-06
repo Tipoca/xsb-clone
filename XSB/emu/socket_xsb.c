@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: socket_xsb.c,v 1.49 2011-05-22 15:12:25 tswift Exp $
+** $Id: socket_xsb.c,v 1.50 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -780,7 +780,7 @@ xsbBool xsb_socket_request(CTXTdecl)
     SYS_MUTEX_LOCK(MUTEX_SOCKETS);
     /* specify the time out */
     timeout_term = reg_term(CTXTc 3);
-    if (isinteger(timeout_term)|isboxedinteger(timeout_term)) {
+    if (isointeger(timeout_term)) {
       timeout = (int)oint_val(timeout_term);
       /* initialize tv */
       tv = (struct timeval *)mem_alloc(sizeof(struct timeval),LEAK_SPACE);
@@ -884,7 +884,7 @@ static xsbBool set_error_code(CTXTdeclc int ErrCode, int ErrCodeArgNumber, char 
   
   ecode_value_term = reg_term(CTXTc ErrCodeArgNumber);
   if (!isref(ecode_value_term) && 
-      !(isinteger(ecode_value_term)|isboxedinteger(ecode_value_term)))
+      !(isointeger(ecode_value_term)))
     xsb_abort("[%s] Arg %d (the error code) must be a variable or an integer!",
 	      Where, ErrCodeArgNumber);
 
@@ -1059,7 +1059,7 @@ static int getsize (prolog_term list)
 
   while (!isnil(list)) {
     head = p2p_car(list);
-    if(!(isinteger(head)|isboxedinteger(head))) 
+    if(!(isinteger(head)))
       xsb_abort("A non-integer socket descriptor encountered in a socket operation");
     list = p2p_cdr(list);
     size++;

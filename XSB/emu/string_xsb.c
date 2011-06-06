@@ -139,13 +139,13 @@ xsbBool str_match(CTXTdecl)
   str_len=strlen(stringptr);
   sub_len=strlen(subptr);
 
-  if (isinteger(beg_offset_term)|isboxedinteger(beg_offset_term)) {
-    if (int_val(beg_offset_term) < 0) {
+  if (isointeger(beg_offset_term)) {
+    if (oint_val(beg_offset_term) < 0) {
       beg_bos_offset = FALSE;
     }
   }
-  if (isinteger(end_offset_term)|isboxedinteger(end_offset_term)) {
-    if (int_val(end_offset_term) < 0) {
+  if (isointeger(end_offset_term)) {
+    if (oint_val(end_offset_term) < 0) {
       end_bos_offset = FALSE;
     }
   }
@@ -208,9 +208,9 @@ xsbBool substring(CTXTdecl)
 
   /* arg 2: beginning offset */
   beg_offset_term = reg_term(CTXTc 2);
-  if (! (isinteger(beg_offset_term)|isboxedinteger(beg_offset_term)))
+  if (! (isointeger(beg_offset_term)))
     xsb_abort("[SUBSTRING] Arg 2 (the beginning offset) must be an integer");
-  beg_offset = int_val(beg_offset_term);
+  beg_offset = oint_val(beg_offset_term);
   if (beg_offset < 0)
     beg_offset = 0;
   else if (beg_offset > input_len)
@@ -220,9 +220,9 @@ xsbBool substring(CTXTdecl)
   end_offset_term = reg_term(CTXTc 3);
   if (isref(end_offset_term))
     end_offset = input_len;
-  else if (! (isinteger(end_offset_term)|isboxedinteger(end_offset_term)))
+  else if (! (isointeger(end_offset_term)))
     xsb_abort("[SUBSTRING] Arg 3 (the end offset) must be integer or _");
-  else end_offset = int_val(end_offset_term);
+  else end_offset = oint_val(end_offset_term);
 
   if (end_offset < 0)
     end_offset = input_len + 1 + end_offset;
@@ -337,12 +337,12 @@ xsbBool string_substitute(CTXTdecl)
     beg_term = p2p_arg(subst_reg_term,1);
     end_term = p2p_arg(subst_reg_term,2);
 
-    if (!(isinteger(beg_term)|isboxedinteger(beg_term)) || 
-	!(isinteger(end_term)|isboxedinteger(end_term)))
+    if (!(isointeger(beg_term)) || 
+	!(isointeger(end_term)))
       xsb_abort("[STRING_SUBSTITUTE] Non-integer in Arg 2");
     else{
-      beg_offset = int_val(beg_term);
-      end_offset = int_val(end_term);
+      beg_offset = oint_val(beg_term);
+      end_offset = oint_val(end_term);
     }
     /* -1 means end of string */
     if (end_offset < 0)

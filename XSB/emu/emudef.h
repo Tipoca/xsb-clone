@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.87 2011-05-19 16:39:06 tswift Exp $
+** $Id: emudef.h,v 1.88 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -179,7 +179,7 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
     /* op1 is FREE */							\
     bind_oint((CPtr)(OP1), (Integer)OP2);                 		\
   }									\
-  else if (isinteger(OP1)) {						\
+  else if (isointeger(OP1)) {						\
     if (oint_val(OP1) == (Integer)OP2) {XSB_Next_Instr();} else Fail1;	\
   }									\
   else if (isattv(OP1)) {						\
@@ -254,8 +254,8 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
     Cell ignore_addr;							\
     if (isfloat(OP1)) 							\
       bld_boxedfloat(CTXTc &ignore_addr, float_val(OP1));		\
-    else if (isinteger(OP1)) 						\
-      {bld_oint(&ignore_addr, int_val(OP1));}				\
+    else if (isointeger(OP1)) 						\
+      {bld_oint(&ignore_addr, oint_val(OP1));}				\
     flag = READFLAG;							\
     sreg = hreg - 3;							\
   } else if (isattv(OP1)) {						\

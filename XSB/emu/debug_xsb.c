@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.65 2011-06-05 19:24:03 tswift Exp $
+** $Id: debug_xsb.c,v 1.66 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -193,7 +193,7 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, int level)
     }
     psc = get_str_psc(term);
     sprintf(buffer+size, "%s", get_name(psc));
-    size = size + strlen(get_name(psc));
+    size = size + (int)strlen(get_name(psc));
     arity = get_arity(psc);
     if ( arity == 0 )   /* constant */
       return size;
@@ -210,7 +210,7 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, int level)
     return size;
   case XSB_STRING:
     sprintf(buffer+size, "%s", string_val(term));
-    size = size+strlen(string_val(term));
+    size = size+(int)strlen(string_val(term));
     return size;
   case XSB_INT:
     sprintf(buffer+size, "%10" Intfmt, (Integer)int_val(term));
@@ -285,7 +285,7 @@ static int sprint_termsize(Cell term, byte car, int level)
     }
     psc = get_str_psc(term);
     arity = get_arity(psc);
-    size = size + strlen(get_name(psc)) + (arity-1) +2;
+    size = size + (int)strlen(get_name(psc)) + (arity-1) +2;
     if ( arity == 0 )   /* constant */
       return size;
     /* structure */
@@ -295,7 +295,7 @@ static int sprint_termsize(Cell term, byte car, int level)
     }
     return size;
   case XSB_STRING:
-    size = size+strlen(string_val(term));
+    size = size+(int)strlen(string_val(term));
     break;
   case XSB_INT:
     return size+10;
@@ -341,7 +341,7 @@ void printterm(FILE *fp, Cell term, int depth) {
 void sprint_callsize(CTXTdeclc Psc psc,int depth) {
   int i, arity,size;
 
-  size = strlen(get_name(psc));
+  size = (int)strlen(get_name(psc));
   arity = (int)get_arity(psc);
   size = size + (arity-1) + 2;
 
@@ -358,7 +358,7 @@ void sprint_call(CTXTdeclc char * buffer,Psc psc,int depth) {
   arity = (int)get_arity(psc);
 
   sprintf(buffer, "%s", get_name(psc));
-  size = strlen(get_name(psc));
+  size = (int)strlen(get_name(psc));
   if (arity != 0) sprintf(buffer+size, "(");size++;
   for (i=1; i <= arity; i++) {
     size = sprint_term(buffer, size, cell(reg+i), CAR, depth);
@@ -779,7 +779,7 @@ void print_delay_element(CTXTdeclc FILE *fp, Cell del_elem)
     tmp_cell = cell(cptr + 2);
     fprintf(fp, "%p", (BTNptr) addr_val(tmp_cell)); fprintf(fp, ",");
     tmp_cell = cell(cptr + 3);
-    if (isinteger(tmp_cell)) {
+    if (isointeger(tmp_cell)) {
       fprintf(fp, "NEG");
     }
     else {

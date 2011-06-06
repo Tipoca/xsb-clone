@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sp_unify_xsb_i.h,v 1.9 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: sp_unify_xsb_i.h,v 1.10 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -32,7 +32,9 @@ static inline xsbBool int_unify(CTXTdeclc Cell op1, Cell op2)
     bind_copy((CPtr)(op2), op1);
     return TRUE;
   }
-  return (op1 == op2);
+  if (isointeger(op2)) {
+    return (oint_val(op1) == oint_val(op2));
+  } else return FALSE;
 }
 
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.41 2011-05-18 19:21:40 dwarren Exp $
+** $Id: cell_xsb.h,v 1.42 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -250,6 +250,7 @@ extern unsigned long enc[], dec[];
 	  && int_val(dcell) <= MAX_ARITY)
             
 #define isboxedinteger(dcell) (isboxed(dcell) && box_has_id(dcell, ID_BOXED_INT))
+#define isointeger(dcell) (isinteger(dcell) || isboxedinteger(dcell))
 
 #ifndef FAST_FLOATS
 #define isboxedfloat(dcell) (isboxed(dcell) && box_has_id(dcell, ID_BOXED_FLOAT))

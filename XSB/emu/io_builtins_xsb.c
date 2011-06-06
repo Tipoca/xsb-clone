@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.92 2011-05-20 20:37:01 tswift Exp $
+** $Id: io_builtins_xsb.c,v 1.93 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -234,7 +234,7 @@ xsbBool fmt_write(CTXTdecl)
     c2p_functor(CTXTc "arg", 1, TmpValTerm);
     if (isstring(ValTerm))
       c2p_string(CTXTc string_val(ValTerm), p2p_arg(TmpValTerm,1));
-    else if (isinteger(ValTerm)|isboxedinteger(ValTerm))
+    else if (isointeger(ValTerm))
       c2p_int(CTXTc oint_val(ValTerm), p2p_arg(TmpValTerm,1));
      else if (isofloat(ValTerm))
       c2p_float(CTXTc ofloat_val(ValTerm), p2p_arg(TmpValTerm,1));
@@ -292,7 +292,7 @@ xsbBool fmt_write(CTXTdecl)
       sprintf(aux_msg, "argument %d", i);
       str_arg = p_charlist_to_c_string(CTXTc Arg, &StrArgBuf, "FMT_WRITE", aux_msg);
       PRINT_ARG(str_arg);
-    } else if (isinteger(Arg)|isboxedinteger(Arg)) {
+    } else if (isointeger(Arg)) {
       TYPE_ERROR_CHK('i', "FMT_WRITE");
       int_arg = oint_val(Arg);
       PRINT_ARG(int_arg);
@@ -393,7 +393,7 @@ xsbBool fmt_write_string(CTXTdecl)
     c2p_functor(CTXTc "arg", 1, TmpValTerm);
     if (isstring(ValTerm))
       c2p_string(CTXTc string_val(ValTerm), p2p_arg(TmpValTerm,1));
-    else if (isinteger(ValTerm)|isboxedinteger(ValTerm))
+    else if (isointeger(ValTerm))
       c2p_int(CTXTc oint_val(ValTerm), p2p_arg(TmpValTerm,1));
     else if (isofloat(ValTerm))
       c2p_float(CTXTc ofloat_val(ValTerm), p2p_arg(TmpValTerm,1));
@@ -453,7 +453,7 @@ xsbBool fmt_write_string(CTXTdecl)
       str_arg = p_charlist_to_c_string(CTXTc Arg, &StrArgBuf,
 				       "FMT_WRITE_STRING", aux_msg);
       SPRINT_ARG(str_arg);
-    } else if (isinteger(Arg)|isboxedinteger(Arg)) {
+    } else if (isointeger(Arg)) {
       TYPE_ERROR_CHK('i', "FMT_WRITE_STRING");
       int_arg = oint_val(Arg);
       SPRINT_ARG(int_arg);
@@ -1207,7 +1207,7 @@ Integer read_canonical_term(CTXTdeclc FILE *filep, STRFILE *instr, int return_lo
 
 	XSB_Deref(prologvar);
 	term = (prolog_term) prologvar;
-	if ((isinteger(term)|isboxedinteger(term)) || 
+	if (isointeger(term) || 
 	    isofloat(term) || 
 	    isstring(term) ||
 	    varfound) {
@@ -1791,7 +1791,7 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
 	int ival, letter;
 	Cell tempi = cell(clref_val(prologterm)+1);
 	XSB_Deref(tempi);
-	if (!isinteger(tempi)) xsb_abort("[write_canonical]: illegal $VAR argument");
+	if (!isointeger(tempi)) xsb_abort("[write_canonical]: illegal $VAR argument");
 	ival = (int)int_val(tempi);
 	letter = ival % 26;
 	ival = ival / 26;

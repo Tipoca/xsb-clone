@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.63 2011-05-18 19:21:40 dwarren Exp $
+** $Id: system_xsb.c,v 1.64 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -330,14 +330,14 @@ xsbBool sys_system(CTXTdeclc int callno)
 
     /* if any of the arg streams is already used by XSB, then don't create
        pipes --- use these streams instead. */
-    if (isinteger(reg_term(CTXTc 3))|isboxedinteger(reg_term(CTXTc 3))) {
-      SET_FILEPTR(toprocess_fptr, int_val(reg_term(CTXTc 3)));
+    if (isointeger(reg_term(CTXTc 3))) {
+      SET_FILEPTR(toprocess_fptr, oint_val(reg_term(CTXTc 3)));
     }
-    if (isinteger(reg_term(CTXTc 4))|isboxedinteger(reg_term(CTXTc 4))) {
-      SET_FILEPTR(fromprocess_fptr, int_val(reg_term(CTXTc 4)));
+    if (isointeger(reg_term(CTXTc 4))) {
+      SET_FILEPTR(fromprocess_fptr, oint_val(reg_term(CTXTc 4)));
     }
-    if (isinteger(reg_term(CTXTc 5))|isboxedinteger(reg_term(CTXTc 5))) {
-      SET_FILEPTR(fromproc_stderr_fptr, int_val(reg_term(CTXTc 5)));
+    if (isointeger(reg_term(CTXTc 5))) {
+      SET_FILEPTR(fromproc_stderr_fptr, oint_val(reg_term(CTXTc 5)));
     }
 
     if (!isref(reg_term(CTXTc 6)))
@@ -470,9 +470,9 @@ xsbBool sys_system(CTXTdeclc int callno)
 
     init_process_table();
 
-    if (!(isinteger(pid_term)|isboxedinteger(pid_term)))
+    if (!(isointeger(pid_term)))
       xsb_abort("[PROCESS_STATUS] Arg 1 (process id) must be an integer");
-    pid = (int)int_val(pid_term);
+    pid = (int)oint_val(pid_term);
 
     if (!isref(status_term))
       xsb_abort("[PROCESS_STATUS] Arg 2 (process status) must be a variable");
@@ -511,9 +511,9 @@ xsbBool sys_system(CTXTdeclc int callno)
     SYS_MUTEX_LOCK( MUTEX_SYS_SYSTEM );
     init_process_table();
 
-    if (!(isinteger(pid_term)|isboxedinteger(pid_term)))
+    if (!(isointeger(pid_term)))
       xsb_abort("[PROCESS_CONTROL] Arg 1 (process id) must be an integer");
-    pid = (int)int_val(pid_term);
+    pid = (int)oint_val(pid_term);
 
     if (isstring(signal_term) && strcmp(string_val(signal_term), "kill")==0) {
       if (KILL_FAILED(pid)) {

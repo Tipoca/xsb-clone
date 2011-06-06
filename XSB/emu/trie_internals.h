@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_internals.h,v 1.46 2011-06-02 22:29:23 tswift Exp $
+** $Id: trie_internals.h,v 1.47 2011-06-06 20:20:29 dwarren Exp $
 ** 
 */
 
@@ -404,7 +404,7 @@ extern CPtr *VarEnumerator_trail;
 #define IsNewTrieAttv(Symbol)	  ( trievar_val(Symbol) & NEW_TRIEATTV_TAG)
 
 #define expand_varenumerators	{					\
-    int i;								\
+    UInteger i;								\
     size_t old_num_trievars = current_num_trievars;			\
     size_t offset = VarEnumerator_trail_top - VarEnumerator_trail;	\
     current_num_trievars = current_num_trievars + DEFAULT_NUM_TRIEVARS;	\
@@ -426,7 +426,7 @@ extern CPtr *VarEnumerator_trail;
 //    printf("resized %p %p %d %p\n",VarEnumerator,VarEnumerator_trail,offset,VarEnumerator_trail_top); 
 
 #define StandardizeVariable(dFreeVar,Index) {		\
-  if (Index < current_num_trievars)			\
+    if ((signed)Index < (signed)current_num_trievars)	\
     bld_ref((CPtr)dFreeVar,VarEnumerator[Index]);	\
   else {						\
     expand_varenumerators;				\

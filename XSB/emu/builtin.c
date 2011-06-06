@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.362 2011-05-22 15:12:25 tswift Exp $
+** $Id: builtin.c,v 1.363 2011-06-06 20:20:29 dwarren Exp $
 **
 */
 
@@ -536,7 +536,7 @@ DllExport char* call_conv ptoc_longstring(CTXTdeclc int regnum)
   register Cell addr = cell(reg+regnum);
   XSB_Deref(addr);
   if (isstring(addr)) return string_val(addr);
-  if (isinteger(addr)) return (char *)int_val(addr);
+  if (isointeger(addr)) return (char *)oint_val(addr);
 
   if (LSBuff[regnum]==NULL) {
     XSB_StrCreate(&LSBuff[regnum]);
@@ -550,7 +550,7 @@ DllExport char* call_conv ptoc_longstring(CTXTdeclc int regnum)
  *  For decoding object pointers, like PSC, PSC-PAIR and Subgoal frames.
  */
 #define ptoc_addr(regnum)	(void *)ptoc_int(CTXTc regnum)
-#define is_encoded_addr(term)	(isinteger(term) || isboxedinteger(term))
+#define is_encoded_addr(term)	(isointeger(term))
 #define decode_addr(term)	(void *)oint_val(term)
 
 
@@ -1827,9 +1827,9 @@ int builtin_call(CTXTdeclc byte number)
     Cell num = ptoc_tag(CTXTc 2);
     if (isstring(term)) {
       char *addr = string_val(term);
-      if (isref(num) || (isinteger(num) && int_val(num) >= 0))
+      if (isref(num) || (isointeger(num) && oint_val(num) >= 0))
 	return int_unify(CTXTc makeint(strlen(addr)), num);
-      else if (!isinteger(num)) xsb_type_error(CTXTc "integer",num,"atom_length/2",2);
+      else if (!isointeger(num)) xsb_type_error(CTXTc "integer",num,"atom_length/2",2);
       else xsb_domain_error(CTXTc "not_less_than_zero",num,"atom_length/2",2);
     } else if (isref(term)) xsb_instantiation_error(CTXTc "atom_length/2",1);
       else xsb_type_error(CTXTc "atom",term,"atom_length/2",1);
