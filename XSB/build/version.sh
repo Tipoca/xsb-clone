@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # Do not touch xsb_patch_date! It is updated by CVS.
-xsb_patch_date='$Date: 2011-06-06 20:24:03 $'
+xsb_patch_date='$Date: 2011-06-07 21:29:24 $'
 
 xsb_build_date=`date`
 xsb_patch_date=`echo $xsb_patch_date | sed 's,.*D,Patch d,' | sed 's, *\\$,,'`
@@ -29,5 +29,3 @@ xsb_codename="Pignoletto"    # Version 3.3 Italian Beer
 #xsb_release_date=2011-04-12
 #xsb_release_date=2011-05-11
 xsb_release_date=2011-05-21
-
-    
