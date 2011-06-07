@@ -19,12 +19,12 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varproc.P,v 1.12 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: varproc.P,v 1.13 2011-06-07 21:26:38 dwarren Exp $
 ** 
 */
 
 %%%:- import writeq/1,writeln/1,tell/1,telling/1 from standard.
-%%%:- import writeln/2 from standard.
+%%:- import writeln/2 from standard.
 
 varproc(VarListTab, VarTab, PvarCount) :-
 	get_lastchunk(VarTab, LastChunk, []),
@@ -305,13 +305,16 @@ collect_type2([varocc(Vid,Prag)|Rest],CkId,VarListTab,LastChunk) :-
 	),
 	(vprag_level(Prag,s)
 	 ->	OKt = 1
+	 ; vprag_level(Prag,sc)
+	 ->	OKt = 1
 	 ;	true
 	),
 	vprag_occ(Prag,Occ),
 	(Occ == f	  % determine if the variable is safe when pval in the last goal
 	 ->	((vprag_context(Prag, b) ; vprag_context(Prag, i)),
-		 vprag_level(Prag, t)
+		 \+vprag_level(Prag, s) % unsafe if top(t) or subterm in conditional(sc)
 		 ->	Safe = 0	% unsafe 
+%%		        ,(vprag_level(Prag,sc)->writeln(userout,newly_unsafe(Vid,Prag)) ; true)
 		 ;	true
 		),		% determine if the variable must be permanent
 		(vprag_context(Prag, h)
