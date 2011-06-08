@@ -1361,8 +1361,10 @@ call_goal_cut_transform1((A->B),(Na->Nb),Cutpoint) :-
 	call_goal_cut_transform(A,Na,Condcutpoint),
 	call_goal_cut_transform(B,Nb,Cutpoint).
 
+hack_consult([X],consult(X)) :- var(X),!.
 hack_consult([-X],reconsult(X)) :- !.
 hack_consult([X],consult(X)) :- !.
+hack_consult([X|Y],(consult(X),Z)) :- var(X),!,hack_consult(Y,Z).
 hack_consult([-X|Y],(reconsult(X),Z)) :- !,hack_consult(Y,Z).
 hack_consult([X|Y],(consult(X),Z)) :- !,hack_consult(Y,Z).
 
