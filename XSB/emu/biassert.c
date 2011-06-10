@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.191 2011-06-06 20:20:29 dwarren Exp $
+** $Id: biassert.c,v 1.192 2011-06-10 17:17:38 dwarren Exp $
 ** 
 */
 
@@ -870,8 +870,8 @@ static void db_geninst(CTXTdeclc int unibld, prolog_term Sub, int isLast,
   int Rt, occs;
   
  begin_db_geninst:
-  if (isointeger(Sub)) {
-    if (unibld) {dbgen_instB_pppw(uninumcon, oint_val(Sub));}
+  if (isinteger(Sub)) /* NOT isointeger; boxed *must* be handled as structures here! */ {
+    if (unibld) {dbgen_instB_pppw(uninumcon, int_val(Sub));}
     else {dbgen_instB_pppw(bldnumcon, int_val(Sub));}
   } else if (isstring(Sub)) {
     if (unibld) {dbgen_instB_pppw(unicon, (Cell)p2c_string(Sub));}
