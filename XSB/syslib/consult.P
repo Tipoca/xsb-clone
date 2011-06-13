@@ -626,7 +626,7 @@ load_dync1(Rfname,Dir) :-
 read_and_assert(IPort,Dir) :-
 	coninc('_$load_dync_line_no'),
 	file_read_canonical(IPort,Term,Opsc),	% Opsc: Old(Previous) psc
-	(Opsc =\= 0,\+'_$trie_asserted'(Term)
+	(Opsc =\= 0,\+not_asserted_term(Term)
 	 ->	load_dyn_retracted(Opsc,Prref,NArity,Index,Hashsize),
 		assert_code_to_buff(Term),
 		(Term = (Head:-_) -> true ; Head = Term),
@@ -659,10 +659,18 @@ read_and_assert(_IPort,_Dir) :-
 read_and_assert(IPort,Dir) :- read_and_assert(IPort,Dir).
 
 
+not_asserted_term(:-(_)).
+not_asserted_term(?-(_)).
+not_asserted_term(Term) :- '_$trie_asserted'(Term).
+
 do_assert_and_fail([],_) :- !, fail.  %% ?? maybe holdover from previous multifile processing?
 do_assert_and_fail(Term,Dir) :-	
 	(Term = (:-Cmd)
 	 ->	proc_directive(Cmd),fail
+	 ;	true
+	),
+	(Term = (?-Cmd)
+	 ->	(call(Cmd) -> fail ; warning('Command failed.'), fail)
 	 ;	true
 	),
 	(Term = (Head :- _)
