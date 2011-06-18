@@ -179,10 +179,12 @@ public class LinuxFrame extends JFrame {
 	    String message=
 		"<html><body>"
 		+"<h1>XSB Installation</h1><br/><br/>"
-		+"<h3>Before continuing, please confirm that your username is in the sudoer list.</h3>"
-		+"<h3>Open the file /etc/sudoers and put the line:</h3><"
-		+"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;your-user-name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ALL=(ALL)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ALL</h3>"
-		+"<h3>if it is not there. You must login as root to change the file.</h3><br/>"
+		+"<h2>Selecting features:</h2>"
+		+"<p>On the next page you will be offered several options for XSB installation. Some of these options may require installing additional packages for your system. In turn, this requires that your username is in the <i>sudoer list</i>. To confirm this, open the file <u>/etc/sudoers</u> and verify that the line:</p><"
+		+"<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>your-user-name</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ALL=(ALL)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ALL</h3>"
+		+"<p>is there. If not, you will have to login as <u>root</u> and add the above line to that file.</p><br/>"
+		+"<h2>No root access:</h2>"
+		+"<p>If the above steps cannot be performed because you are not a sudoer and have no root access, XSB will be installed with whatever features are possible given your configuration. Note: all the features on the next page are <i>optional</i>, so you will be getting a functioning copy of XSB in any case.</p><br/>"
 		+"</body></html>";
 	    infoLabel.setText(message);
 	    infoLabel.setBounds(30,20,650,400);
