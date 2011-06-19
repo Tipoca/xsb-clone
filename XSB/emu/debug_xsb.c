@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.66 2011-06-06 20:20:29 dwarren Exp $
+** $Id: debug_xsb.c,v 1.67 2011-06-19 03:10:17 kifer Exp $
 ** 
 */
 
@@ -112,7 +112,7 @@ static void print_term(FILE *fp, Cell term, byte car, int level)
     fprintf(fp, ")");
     return;
   case XSB_STRING:
-    fprintf(fp, "\"%s\"", string_val(term));
+    fprintf(fp, "'%s'", string_val(term));
     break;
   case XSB_INT:
     fprintf(fp, "%" Intfmt, (Integer)int_val(term));
@@ -385,7 +385,7 @@ void print_call_1(CTXTdeclc Psc psc,int depth) {
 
 void print_call(CTXTdeclc Psc psc,int depth)
 {
-  fprintf(stddbg, "(w1) call: %s", get_name(psc));
+  fprintf(stddbg, "(w1) call: %s\n", get_name(psc));
   print_call_1(CTXTc psc,depth);
 }
 
