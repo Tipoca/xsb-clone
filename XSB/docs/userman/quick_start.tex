@@ -364,14 +364,22 @@ represents the value of PATH, add
  ;C:\Program Files\Microsoft Visual Studio 10.0\VC\BIN
 \end{verbatim}
 
+Visual C++ has a command file called \texttt{vcvars32.bat}  or similar,
+which you should find and drag into the command window (and press Return).
+This will set all the necessary environment variables. On a 64 bit machine,
+this command file is called \texttt{vcvarsx86\_amd64.bat} or 
+\texttt{vcvarsx86\_ia64.bat} ---
+whichever is appropriate for your configuration.
+
 \item
-   {\tt cd \$XSB\_DIR/build}  
+   {\tt cd \$XSB\_DIR$\backslash$build}  
 \item
-  Type:\\
+  On a 32 bit machine, type:\\
   {\tt makexsb ["CFG=option"] ["ORACLE=yes"] ["SITE\_LIBS=libraries"]}
   %%
   \begin{itemize}
-  \item The items in square brackets are optional.
+  \item The items in square brackets are optional and usually are not
+    necessary.
   \item The options for {\tt CFG} are: \emph{release} (default) or \emph{debug}.  The
     latter is used when you want to compile XSB with debugging enabled.
   \item The {\tt ORACLE} parameter (default is ``no'') compiles XSB with
@@ -395,6 +403,20 @@ represents the value of PATH, add
  \$XSB\_DIR\backslash{}config\backslash\texttt{x86-pc-windows}\backslash{}bin\backslash{}xsb.dll
  \end{array}
 \]
+
+\item On a 64 bit machine, use \texttt{makexsb64} instead of
+  \texttt{makexsb}. The compiled code will be installed   in
+  %%
+\[
+\begin{array}{l}
+ \tt
+ \$XSB\_DIR\backslash{}config\backslash\texttt{x64-pc-windows}\backslash{}bin\backslash{}xsb.exe
+\\
+ \tt
+ \$XSB\_DIR\backslash{}config\backslash\texttt{x64-pc-windows}\backslash{}bin\backslash{}xsb.dll
+ \end{array}
+\]
+
 %%
 \end{enumerate}
 %%
@@ -405,7 +427,7 @@ recompile with a different set, it is recommended that you run
  makexsb  clean  
 \end{verbatim}
 %%
-in between the compilations.
+in between the compilations (or \texttt{makexsb64 clean}, if applicable).  
 
 
 \section{Invoking XSB}

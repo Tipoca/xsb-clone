@@ -45,6 +45,7 @@ In most cases you do not need to perform steps 1 and 2 below.
 
       cd build
       makexsb
+      (or makexsb64 on a 64 bit machine)
 
 
 [NOTES on using Microsoft Visual C++:]
@@ -52,9 +53,16 @@ In most cases you do not need to perform steps 1 and 2 below.
 To compile from the command line, you should set some environment
 variables. Visual C++ has a command file called vcvars32.bat or similar,
 which you should find and drag into the command window (and press Return).
-This will set all the necessary environment variables.
+This will set all the necessary environment variables. On a 64 bit machine,
+this command file is called vcvarsx86_amd64.bat or vcvarsx86_ia64.bat -
+whichever is appropriate for your configuration.
 
 The executable and the DLL will be in
 
      .\config\x86-pc-windows\bin\xsb.exe
      .\config\x86-pc-windows\bin\xsb.dll
+
+or, for a 64 bit machine, in
+
+     .\config\x64-pc-windows\bin\xsb.exe
+     .\config\x64-pc-windows\bin\xsb.dll
