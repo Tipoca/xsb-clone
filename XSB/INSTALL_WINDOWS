@@ -66,3 +66,14 @@ or, for a 64 bit machine, in
 
      .\config\x64-pc-windows\bin\xsb.exe
      .\config\x64-pc-windows\bin\xsb.dll
+
+5. If you compile for 32 bits and would like to recompile for 64, run
+
+     makexsb clean
+
+   before recompilation. Likewise, to recompile for 32 bits after
+   previously compiling for 64 bits, run
+
+     makexsb64 clean
+
+   in-between.
