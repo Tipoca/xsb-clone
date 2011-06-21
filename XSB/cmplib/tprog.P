@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tprog.P,v 1.24 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: tprog.P,v 1.25 2011-06-21 17:58:26 dwarren Exp $
 ** 
 */
 
@@ -36,9 +36,10 @@
 /*	     is being compiled.						*/
 /* 	Refer to the file Format for the format of InClause.		*/
 /*======================================================================*/
-
+%%:- import writeln/2 from standard.
 compile_clause(Sym, Clause, PilCode, PilCodeR, NC) :-
 	flatten(Clause, FlatClause),
+%%	writeln(userout,''),writeln(userout,pre(Clause)),writeln(userout,pst(FlatClause)),
 	inprog(Sym, FlatClause, InClause),
 	!,	% needed to cut unnecessary choice points... (bmd & kostis)
 	tclause(Sym, InClause, PilCode, PilCodeR, NC).
@@ -133,7 +134,6 @@ theadpars([Par|Rest], N, Pil, Pilr, TRin, TRout) :-
 /*		we are processing an or-branch);			*/
 /*		if "yes", this would be a nested or-branch.		*/
 /*======================================================================*/
-
 tbody(and(Goal,Goals),A,Pil,Pilr,Tin,Tout,Meet,_,HoldRegs,Tabled,Tabar,EPN) :-
     tbody(Goal,A,Pil,Pil1,Tin,Tmid,midgoal,no,HoldRegs,Tabled,Tabar,EPN),
     !,
@@ -160,6 +160,9 @@ tbody(or(Goal,Goals),A,Pil,Pilr,Tin,[],Meet,Nested,HoldRegs,Tabled,Tabar,EPN) :-
 tbody(if_then_else(inlinegoal(fail,0,[]),_,FGoal),A,Pil,Pilr,Tin,Tout,M,N,
       HoldRegs,Tabled,Tabar,EPN) :- !,  % to handle test of fail
     tbody(FGoal,A,Pil,Pilr,Tin,Tout,M,N,HoldRegs,Tabled,Tabar,EPN).
+tbody(if_then_else(inlinegoal(true,0,[]),TGoal,_),A,Pil,Pilr,Tin,Tout,M,N,
+      HoldRegs,Tabled,Tabar,EPN) :- !,  % to handle test of true
+    tbody(TGoal,A,Pil,Pilr,Tin,Tout,M,N,HoldRegs,Tabled,Tabar,EPN).
 tbody(if_then_else(Test,TGoal,FGoal),A,Pil,Pilr,Tin,Tout,M,_,
       HoldRegs0,Tabled,Tabar,EPN) :-
     gennum(TLabId), TLabel = label(then,(disj,TLabId)),

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: listutil.P,v 1.4 2010-08-19 15:03:35 spyrosh Exp $
+** $Id: listutil.P,v 1.5 2011-06-21 17:58:26 dwarren Exp $
 ** 
 */
 
@@ -32,7 +32,7 @@ attach(X, Y) :- (var(Y), Y = [X|_]) ;
 
 
 merge([], L1, L1).
-merge([H|T], L1, L3) :- (member(H, L1), merge(T, L1, L3)) ;
+merge([H|T], L1, L3) :- (member(H, L1), merge(T, L1, L3)), ! ;
 			(L3 = [H | L4], merge(T, L1, L4)).
 
 

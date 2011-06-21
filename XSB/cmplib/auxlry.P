@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.31 2010-10-07 01:21:40 kifer Exp $
+** $Id: auxlry.P,v 1.32 2011-06-21 17:58:26 dwarren Exp $
 ** 
 */
 
@@ -177,6 +177,7 @@ current_option(xpp_dump).
 
 /* parse */
 current_option(quit_on_error).
+current_option(canonical).
 
 /* CRs mode inferencing */
 current_option(modeinfer).

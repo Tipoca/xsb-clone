@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.120 2011-01-22 21:19:37 dwarren Exp $
+** $Id: parse.P,v 1.121 2011-06-21 17:58:26 dwarren Exp $
 ** 
 */
 
@@ -478,7 +478,11 @@ parse_clauses(M, _) :-	% Under normal conditions this clause is unreachable!
 
 my_read(Term, Vars) :-
 	stat_flag(CURRENT_INPUT, File),
-	file_read(File, Term, Vars).
+	(option(canonical)
+	 ->	file_read_canonical(File,Term,_),
+		Vars = []
+	 ;	file_read(File, Term, Vars)
+	).
 
 check_compilable_clause(Cl) :- var(Cl), !, 
 	syntax_error(('Clause expected, variable encountered: ',Cl)),

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.49 2010-10-08 18:03:42 dwarren Exp $
+** $Id: parse.H,v 1.50 2011-06-21 17:58:26 dwarren Exp $
 ** 
 */
 
@@ -87,6 +87,7 @@
 :- import closetail/1 from listutil.
 
 :- import stat_flag/2, stat_set_flag/2, slash/1 from machine.
+:- import file_read_canonical/3 from machine.
 
 :- import findall/3 from setof.
 
