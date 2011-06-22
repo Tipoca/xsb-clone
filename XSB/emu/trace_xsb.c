@@ -111,9 +111,14 @@ void perproc_stat(void)
 }
 #endif
 
-/*======================================================================*/
-/* total_stat()								*/
-/*======================================================================*/
+#ifndef MULTI_THREAD
+void print_abolish_table_statistics() {
+  
+  if (total_table_gc_time > 0)
+    printf("\n   %.3f seconds spent in table abolishing",total_table_gc_time);
+}
+#endif
+
 int count_sccs(CTXTdecl) {					
   int ctr = 0;
   int last_scc = 0;
@@ -144,6 +149,10 @@ char *pspace_cat[NUM_CATS_SPACE] =
    "mt-private  ","buffer      ","gc temp     ","hash        ",
    "interprolog ","thread      ","read canon  ","leaking...  ",
    "special     ","other       ","incr table  ","odbc        "};
+
+/*======================================================================*/
+/* total_stat()								*/
+/*======================================================================*/
 
 #ifndef MULTI_THREAD
 void stat_inusememory(CTXTdeclc double elapstime, int type) {
@@ -481,13 +490,11 @@ void total_stat(CTXTdeclc double elapstime) {
     printf("  1 tabled predicate explicitly abolished\n");
   else if (abol_pred_ctr > 1) 
     printf("  %" UIntfmt " tabled predicates explicitly abolished\n",abol_pred_ctr);
+  print_abolish_table_statistics();
 
 #endif
 
-#ifdef GC
-  printf("\n");
-  print_gc_statistics();
-#endif
+  printf("\n");  print_gc_statistics();
 
   printf("Time: %.3f sec. cputime,  %.3f sec. elapsetime\n",
 	 ttt.time_count, elapstime);

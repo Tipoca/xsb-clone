@@ -84,6 +84,24 @@ extern void print_subgoal(CTXTdeclc FILE *, VariantSF);
 #include "ptoc_tag_xsb_i.h"
 #include "term_psc_xsb_i.h"
 
+#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
+double total_table_gc_time = 0;
+
+#define start_table_gc_time(MARK) {					\
+    MARK = cpu_time();							\
+}
+
+#define end_table_gc_time(MARK) {					\
+    total_table_gc_time =  total_table_gc_time + (cpu_time() - MARK);	\
+  }
+#else
+
+#define start_table_gc_time(MARK) 
+#define end_table_gc_time(MARK) 
+
+#endif
+
+
 /*----------------------------------------------------------------------*/
 /* various utility predicates and macros */
 /*----------------------------------------------------------------------*/
@@ -1040,7 +1058,6 @@ void undelete_branch(BTNptr lowest_node_in_branch) {
 /*----------------------------------------------------------------------*/
 
 #define DELETE_TRIE_STACK_INIT 100
-#define MAX_DELETE_TRIE_STACK_SIZE 1000
 #define DT_NODE 0
 #define DT_DS 1
 #define DT_HT 2
@@ -2628,9 +2645,15 @@ void unmark_cp_tabled_subgoals(CTXTdecl)
 
 /* incremental */
 int abolish_table_call_incr(CTXTdeclc VariantSF subgoal) {
+  double timer;
+
+  start_table_gc_time(timer);
+  
   if(IsIncrSF(subgoal))
     abolish_incr_call(CTXTc subgoal->callnode);
   
+  end_table_gc_time(timer);
+    
   return TRUE;
 }
 
@@ -3020,6 +3043,10 @@ xsb_flag) as well as an option set by the options list, if any.
 */
 
 void abolish_table_call(CTXTdeclc VariantSF subgoal, int invocation_flag) {
+  double timer;
+
+  start_table_gc_time(timer);
+
   //  printf("in abolish_table_call\n");
   if (IsVariantSF(subgoal) 
       &&  (varsf_has_conditional_answer(subgoal) 
@@ -3033,6 +3060,9 @@ void abolish_table_call(CTXTdeclc VariantSF subgoal, int invocation_flag) {
     //    printf("calling ats\n");
     abolish_table_call_single(CTXTc subgoal);
   }
+
+  end_table_gc_time(timer);
+
 }
 
 /*------------------------------------------------------------------*/
@@ -3325,8 +3355,12 @@ inline void abolish_table_predicate_switch(CTXTdeclc TIFptr tif, Psc psc, int in
 
 /* When calling a_t_p_switch, cps_check_flag is set to true, to ensure a check. 
  invocation_flag (default, transitive) has been set on Prolog side. */
+
 inline void abolish_table_predicate(CTXTdeclc Psc psc, int invocation_flag) {
   TIFptr tif;
+  double timer;
+
+  start_table_gc_time(timer);
 
   tif = get_tip(CTXTc psc);
 
@@ -3337,6 +3371,9 @@ inline void abolish_table_predicate(CTXTdeclc Psc psc, int invocation_flag) {
   }
 
   abolish_table_predicate_switch(CTXTc tif, psc, invocation_flag, TRUE);
+
+  end_table_gc_time(timer);
+
 }
 
 /*------------------------------------------------------------------*/
@@ -3587,6 +3624,9 @@ int abolish_usermod_tables(CTXTdecl)
   Pair pair;
   Psc psc;
   TIFptr tif;
+  double timer;
+
+  start_table_gc_time(timer);
 
   mark_cp_tabled_preds(CTXT);
 
@@ -3609,6 +3649,8 @@ int abolish_usermod_tables(CTXTdecl)
 
   unmark_cp_tabled_preds(CTXT);
 
+  end_table_gc_time(timer);
+
   return TRUE;
 }
 
@@ -3620,6 +3662,9 @@ int abolish_module_tables(CTXTdeclc const char *module_name)
   byte type;
   Psc psc, module;
   TIFptr tif;
+  double timer;
+
+  start_table_gc_time(timer);
   
   mark_cp_tabled_preds(CTXT);
   modpair = (Pair) flags[MOD_LIST];
@@ -3648,6 +3693,8 @@ int abolish_module_tables(CTXTdeclc const char *module_name)
     pair = pair_next(pair);
   }
   unmark_cp_tabled_preds(CTXT);
+
+  end_table_gc_time(timer);
   return TRUE;
 }
 
@@ -3743,7 +3790,9 @@ int abolish_mt_tables_cps_check(CTXTdecl,xsbBool isPrivate)
 /* will not reclaim space if more than one thread */
 void abolish_shared_tables(CTXTdecl) {
   TIFptr abol_tif;
+  double timer;
 
+  start_table_gc_time(timer);
   mark_cp_tabled_preds(CTXT);
 
   for (abol_tif = tif_list.first ; abol_tif != NULL
@@ -3752,12 +3801,16 @@ void abolish_shared_tables(CTXTdecl) {
   }
 
   unmark_cp_tabled_preds(CTXT);
+  end_table_gc_time(timer);
 
 }
 
 /* will not reclaim space if more than one thread (via fast_atp) */
 void abolish_all_shared_tables(CTXTdecl) {
   TIFptr pTIF;
+  double timer;
+
+  start_table_gc_time(timer);
 
   // FALSE means we found a shared table
   if (flags[NUM_THREADS] != 1) {
@@ -3786,10 +3839,15 @@ void abolish_all_shared_tables(CTXTdecl) {
       abolish_wfs_space(CTXT);
     }
   }
+  end_table_gc_time(timer);
+
 }
 
 void abolish_private_tables(CTXTdecl) {
   TIFptr abol_tif;
+  double timer;
+
+  start_table_gc_time(timer);
 
   mark_cp_tabled_preds(CTXT);
 
@@ -3801,11 +3859,14 @@ void abolish_private_tables(CTXTdecl) {
 
   unmark_cp_tabled_preds(CTXT);
 
+  end_table_gc_time(timer);
 }
 
 void abolish_all_private_tables(CTXTdecl) {
-
   TIFptr pTIF;
+  double timer;
+
+  start_table_gc_time(timer);
 
   check_for_incomplete_tables("abolish_all_private_tables/0");
 
@@ -3835,7 +3896,9 @@ void abolish_all_private_tables(CTXTdecl) {
     SM_ReleaseResources(*private_smASI);
 
     abolish_private_wfs_space(CTXT);
+
   }
+  end_table_gc_time(timer);
 }
 
 extern struct TDispBlkHdr_t tdispblkhdr; // defined in loader
@@ -3986,9 +4049,12 @@ void abolish_all_tables_cps_check(CTXTdecl)
 #if !defined(WIN_NT) || defined(CYGWIN) 
 inline 
 #endif
-void abolish_all_tables(CTXTdecl)
-{
+void abolish_all_tables(CTXTdecl) {
+  double timer;
   TIFptr pTIF;
+
+  start_table_gc_time(timer);
+
   check_for_incomplete_tables("abolish_all_shared_tables/0");
 
   if (flags[NUM_THREADS] == 1) {
@@ -4020,6 +4086,7 @@ void abolish_all_tables(CTXTdecl)
   release_all_tabling_resources(CTXT);
   abolish_wfs_space(CTXT); 
 
+  end_table_gc_time(timer);
 }
 
 /*

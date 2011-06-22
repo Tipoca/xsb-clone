@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.69 2011-06-02 22:29:23 tswift Exp $
+** $Id: tr_utils.h,v 1.70 2011-06-22 21:27:53 tswift Exp $
 ** 
 */
 
@@ -121,6 +121,8 @@ extern int gc_tabled_preds(CTXTdecl);
 extern void delete_variant_sf_and_answers(CTXTdeclc VariantSF pSF, xsbBool warn);
 extern int abolish_table_call_cps_check(CTXTdeclc VariantSF);
 extern void check_insert_global_deltf_subgoal(CTXTdeclc VariantSF,xsbBool);
+extern double total_table_gc_time;
+
 
 extern void release_any_pndes(CTXTdeclc PNDE firstPNDE);
 extern void delete_delay_trie(CTXTdeclc BTNptr root);
