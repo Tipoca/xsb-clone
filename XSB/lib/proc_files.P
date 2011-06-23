@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: proc_files.P,v 1.8 2011-03-29 13:32:04 dwarren Exp $
+** $Id: proc_files.P,v 1.9 2011-06-23 01:22:51 dwarren Exp $
 ** 
 */
 
@@ -201,6 +201,10 @@ cvt_types([F|Fs],[T|Ts],[A|As],Fields) :-
 		)
 	 ; T == term
 	 ->	atom_to_term(F,A)
+	 ; T == string
+	 ->	atom_codes(F,A)
+	 ;	warning(('Unknown field type: ',T)),
+		A = F
 	),
 	cvt_types(Fs,Ts,As,Fields).
 	
