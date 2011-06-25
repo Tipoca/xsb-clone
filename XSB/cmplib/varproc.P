@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varproc.P,v 1.14 2011-06-25 02:54:47 dwarren Exp $
+** $Id: varproc.P,v 1.15 2011-06-25 11:55:06 dwarren Exp $
 ** 
 */
 
@@ -559,10 +559,10 @@ vprag_type(vrec(_,_,_,_,v(C,_,_,_),_), C).
 /* The following information is filled by alloc_vars/2.	*/
 /*------------------------------------------------------*/
 
-%vprag_loc(vrec(_,_,_,_,v(_,C,_,_),_), C).
-	% for temp var, the register number; for perm var, numbered from 1
-vprag_loc(vrec(_,_,_,_,v(_,Loc,_,_),_), C) :-
-	last_on_opentailed(Loc,C).
+% for temp var, the register number; (If nonvoid, extensible list of nums)
+% for perm var, numbered from 1
+vprag_loc(vrec(_,_,_,_,v(T,Loc,_,_),_), C) :-
+	(T == t -> last_on_opentailed(Loc,C) ; C = Loc).
 
 last_on_opentailed([C0|T],C) :-
 	(var(T)
