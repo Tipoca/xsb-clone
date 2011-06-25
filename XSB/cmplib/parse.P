@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.121 2011-06-21 17:58:26 dwarren Exp $
+** $Id: parse.P,v 1.122 2011-06-25 02:54:47 dwarren Exp $
 ** 
 */
 
@@ -645,7 +645,7 @@ parse_directive(import(from(X, Mod)), _QrList,SymTab,_ModName,_ModStruct) :- !,
 	).
 parse_directive(import(as(from(PredIn, Mod),PredAs)), _QrList,SymTab,_ModName,_ModStruct) :- !,
 	(var(Mod)
-	 ->	error(('Module cannot be a variable. Importing: ',P/A))
+	 ->	error(('Module cannot be a variable. Importing: ',PredIn))
 	 ; PredIn = P/A, PredAs = P2/A2
 	 ->	(\+ (atom(P),integer(A))
 		 ->	error(('Predicate specifier must be of the form PredName/Arity. Importing: ',(PredIn)))
@@ -804,9 +804,9 @@ parse_multifile(Skel,QrList,SymTab,ModName) :-
 	functor(Skel,Pred,Arity),
 	sym_insert(Pred,Arity,[(multifile)],SymTab,Sym),
 	(sym_prop((dynamic),Sym)
-	 ->	SymPar = [(dynamic)], DPar = dyn
+	 ->	SymPar = [(dynamic)]  %, DPar = dyn DSW unused, Why?
 	 ;	sym_propin((dynamic),Sym),
-		SymPar = [], DPar = unk
+		SymPar = []  %, DPar = unk
 	),
 	get_p_mod(Pred,ModName,LinkPred),
 	functor(LinkSkel,LinkPred,Arity),

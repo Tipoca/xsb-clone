@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: varproc.H,v 1.9 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: varproc.H,v 1.10 2011-06-25 02:54:47 dwarren Exp $
 ** 
 */
 
@@ -27,7 +27,7 @@
 
 :- export force_varproc_loaded/0.
 :- export varproc/3, vprag_common/2, vprag_argno/2, vprag_level/2,
-	  vprag_context/2, vprag_loc/2, vprag_occ/2, vprag_type/2, 
+   vprag_context/2, vprag_loc/2, vprag_locnew/2, vprag_occ/2, vprag_type/2, 
 	  vprag_use/2, vprag_nouse/2, vprag_lastchunk/2, vprag_type1/2.
 :- export addkey/4, find/3, leaflist/2, updatevs/5.
 

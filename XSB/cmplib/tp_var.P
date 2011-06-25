@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tp_var.P,v 1.17 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: tp_var.P,v 1.18 2011-06-25 02:54:47 dwarren Exp $
 ** 
 */
 
@@ -228,8 +228,15 @@ alloc_reg(VPrag,Tin,Tout) :-
 	vprag_type(VPrag, t),
 	vprag_occ(VPrag, Occ), ( Occ == f; Occ == v ),
 	!,
-	vprag_loc(VPrag, R),
-	( var(R) -> computil_find_reg(VPrag,Tin,R) ; true ),
+	vprag_loc(VPrag, R0),
+	(var(R0)
+	 ->	R = R0, computil_find_reg(VPrag,Tin,R)
+	 ; memberchk(R0,Tin)
+	 ->	%%writeln(userout,register_reallocation(VPrag,R0,Tin)),
+		vprag_locnew(VPrag,R),
+		computil_find_reg(VPrag,Tin,R)
+	 ;	R0 = R
+	),
 	hold(R, Tin, Tout).
 alloc_reg(_Prag,T,T).
 

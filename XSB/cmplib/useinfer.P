@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: useinfer.P,v 1.9 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: useinfer.P,v 1.10 2011-06-25 02:54:47 dwarren Exp $
 ** 
 */
 
@@ -160,11 +160,11 @@ infer_usage_of_symbol(Sym, InList, OutList, Module,Ps_or_real) :-
 	    	( member(pred(Sym,Cls,_), ClList) ->
 			check_pred(Cls, SymTab, InList, OutList)
 		; ( sym_prop(im(Mod), Sym) ->
-			sym_insert(Mod, 0, [used], SymTab, _ModSym)
+			sym_insert(Mod, 0, [used], SymTab, _)
 		  ; sym_prop(docim(Mod), Sym) ->
-			sym_insert(Mod, 0, [used], SymTab, _ModSym)
+			sym_insert(Mod, 0, [used], SymTab, _)
 		  ; pred_implicitly_imported_from(Sym, Mod) ->
-			sym_insert(Mod, 0, [module,used], SymTab, _ModSym),
+			sym_insert(Mod, 0, [module,used], SymTab, _),
 			(Ps_or_real == real -> 
 				sym_propin(im(Mod), Sym)
 			 ; 	true)
