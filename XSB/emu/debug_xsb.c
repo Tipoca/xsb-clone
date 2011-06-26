@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.68 2011-06-26 21:01:13 tswift Exp $
+** $Id: debug_xsb.c,v 1.69 2011-06-26 21:24:43 tswift Exp $
 ** 
 */
 
@@ -800,7 +800,7 @@ static void print_term_of_subgoal(CTXTdeclc FILE *fp, int *i)
   }
 }
 
-static int sprint_term_of_subgoal(CTXTdeclc char *buffer, int size,int *i)
+static int sprint_term_of_subgoal(CTXTdeclc char *buffer, int size,byte car, int *i)
 {
   Cell term;
   int  j, args;
@@ -830,19 +830,42 @@ static int sprint_term_of_subgoal(CTXTdeclc char *buffer, int size,int *i)
     if (args > 0) {sprintf(buffer+size, "(");size++;}
     for (j = args; j > 0; j--) {
       (*i)--;
-      size = sprint_term_of_subgoal(CTXTc buffer,size, i);
+      size = sprint_term_of_subgoal(CTXTc buffer,size, CAR, i);
       if (j > 1) {sprintf(buffer+size, ",");size++;}
     }
     if (args > 0) {sprintf(buffer+size, ")");size++;}
     break;
-  case XSB_LIST:	/* the list [a,b(1),c] is stored as . . . [] c b 1 a */
-    sprintf(buffer+size, "[");size++;
+  case XSB_LIST:
+    if ( car ) { sprintf(buffer+size, "["); size++;}
     (*i)--;
-    size = sprint_term_of_subgoal(CTXTc buffer,size, i);
+    size = sprint_term_of_subgoal(CTXTc buffer,size, CAR, i);
     (*i)--;
-    size = sprint_term_of_subgoal(CTXTc buffer,size, i);
-    sprintf(buffer+size, "]");size++;
-    break;
+    term = cell_array[*i];
+  switch (cell_tag(term)) {
+    case XSB_FREE:
+    case XSB_REF1: 
+    case XSB_ATTV:
+      goto vertbar;
+    case XSB_LIST:
+      sprintf(buffer+size, ",");size++;
+      size = sprint_term_of_subgoal(buffer, size, CDR, i);
+      return size;
+    case XSB_STRING:
+      if (string_val(term) != nil_string)
+	goto vertbar;
+      else {
+	sprintf(buffer+size, "]");
+	return size+1;
+      }
+    case XSB_STRUCT:
+    case XSB_INT:
+    case XSB_FLOAT:
+    vertbar:
+      sprintf(buffer+size, "|");size++;
+      size = sprint_term_of_subgoal(buffer,size, CDR, i);
+      sprintf(buffer+size, "]");size++;
+    return size;
+    }
   case XSB_STRING:
     size = sprint_quotedname(buffer,size,string_val(term));
     break;
@@ -901,7 +924,7 @@ void sprint_subgoal(CTXTdeclc char *buffer,  VariantSF subg)
   if (get_arity(psc) > 0) {
     sprintf(buffer+size, "(");size++;
     for (i = i-2; i >= 0 ; i--) {
-      size = sprint_term_of_subgoal(CTXTc buffer, size, &i);
+      size = sprint_term_of_subgoal(CTXTc buffer, size, CAR,&i);
       if (i > 0) {sprintf(buffer+size, ",");size++;}
     }
     sprintf(buffer+size,")");size++;
