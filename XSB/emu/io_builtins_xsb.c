@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.93 2011-06-06 20:20:29 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.94 2011-06-26 21:02:10 tswift Exp $
 ** 
 */
 
@@ -1632,7 +1632,8 @@ xsbBool string_contains_quotes(char *string) {
   return TRUE;
 }
 
-void double_quotes(char *string, char *new_string)
+// TLS: changed return val to int so I can use it w. sprintf.
+int double_quotes(char *string, char *new_string)
 {
   int ctr = 0, nctr = 0;
 
@@ -1655,6 +1656,7 @@ void double_quotes(char *string, char *new_string)
     nctr++; ctr++;
   }
   new_string[nctr] = '\0';
+  return nctr;
 }
 
 void write_quotedname(FILE *file, char *string)

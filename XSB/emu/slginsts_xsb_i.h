@@ -116,6 +116,8 @@
 #define UNLOCK_CALL_TRIE()
 #endif
 
+extern void sprint_subgoal(CTXTdeclc char *,  VariantSF );
+
 /*
  *  Instruction format:
  *    1st word: opcode X X pred_arity
@@ -184,6 +186,16 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     continuation = (pb) &check_complete_inst;
 
   check_glstack_overflow(CallInfo_CallArity(callInfo),lpcreg,OVERFLOW_MARGIN);
+
+  if (flags[CTRACE_CALLS])  { 
+    char buffera[MAXTERMBUFSIZE];
+    char bufferb[MAXTERMBUFSIZE];
+    sprint_registers(CTXTc  buffera,TIF_PSC(tip),flags[MAX_TABLE_SUBGOAL_DEPTH]);
+    if (ptcpreg) 
+      sprint_subgoal(bufferb,(VariantSF)ptcpreg);     
+    else sprintf(bufferb,"null");
+    fprintf(stdout,"tc(%s,%s).\n",buffera,bufferb);
+  }
 
   LOCK_CALL_TRIE();
   /*
@@ -772,6 +784,7 @@ XSB_End_Instr()
  *    current subgoal before proceeding.
  */
 
+
 XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc) 
   Def2ops
   CPtr producer_cpf, producer_csf, answer_template;
@@ -788,6 +801,16 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   xsb_dbgmsg((LOG_COMPLETION,"starting new_answer breg %x\n",breg));
   producer_sf = (VariantSF)cell(ereg-Yn);
   producer_cpf = subg_cp_ptr(producer_sf);
+
+  if (flags[CTRACE_CALLS])  { 
+    char buffera[MAXTERMBUFSIZE];
+    char bufferb[MAXTERMBUFSIZE];
+    sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),flags[MAX_TABLE_SUBGOAL_DEPTH]);
+    if (ptcpreg)
+      sprint_subgoal(bufferb,(VariantSF)producer_sf);     
+    else sprintf(bufferb,"null");
+    fprintf(stdout,"ar(%s,%s).\n",buffera,bufferb);
+  }
 
 #ifdef DEBUG_DELAYVAR
   xsb_dbgmsg((LOG_DEBUG,">>>> New answer for %s subgoal: ",

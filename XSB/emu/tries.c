@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.149 2011-06-05 19:24:03 tswift Exp $
+** $Id: tries.c,v 1.150 2011-06-26 21:02:10 tswift Exp $
 ** 
 */
 
@@ -809,13 +809,11 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
  * 
  */
 
-extern void sprint_call(CTXTdeclc char * buffer,Psc psc,int depth);
-
 #define CHECK_ANSWER_TERM_DEPTH						\
   if (--depth_ctr <= 0)	{						\
     if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_WARNING) {		\
       char buffer[MAXBUFSIZE];						\
-      sprint_call(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
+      sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
 		 (int)(flags[MAX_TABLE_ANSWER_DEPTH]));		\
       xsb_warn("Exceeded max answer term depth of %d in call %s\n",	\
 		flags[MAX_TABLE_ANSWER_DEPTH],buffer);			\
@@ -827,7 +825,7 @@ extern void sprint_call(CTXTdeclc char * buffer,Psc psc,int depth);
     }									\
     else {								\
       char buffer[MAXBUFSIZE];						\
-      sprint_call(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
+      sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
 		 (int)(flags[MAX_TABLE_ANSWER_DEPTH]));		\
       xsb_abort("Exceeded max answer term depth of %d in call %s\n",	\
 		flags[MAX_TABLE_ANSWER_DEPTH],buffer);			\
@@ -838,7 +836,7 @@ extern void sprint_call(CTXTdeclc char * buffer,Psc psc,int depth);
   if (--list_depth_ctr <= 0)	{						\
     if (flags[MAX_TABLE_ANSWER_LIST_ACTION] == XSB_WARNING) {		\
       char buffer[MAXBUFSIZE];						\
-      sprint_call(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
+      sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
 		 (int)(flags[MAX_TABLE_ANSWER_LIST_DEPTH]));		\
       xsb_warn("Exceeded max answer list depth of %d in call %s\n",	\
 		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
@@ -850,7 +848,7 @@ extern void sprint_call(CTXTdeclc char * buffer,Psc psc,int depth);
     }									\
     else {								\
       char buffer[MAXBUFSIZE];						\
-      sprint_call(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
+      sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
 		 (int)(flags[MAX_TABLE_ANSWER_LIST_DEPTH]));		\
       xsb_abort("Exceeded max answer list depth of %d in call %s\n",	\
 		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
@@ -1538,10 +1536,10 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
       return XSB_FAILURE;						\
     }									\
     else {								\
-      print_call(CTXTc TIF_PSC(CallInfo_TableInfo(*call_info)),(int)(flags[MAX_TABLE_SUBGOAL_DEPTH])); \
-      xsb_abort("Exceeded max call term depth of %d in call (%s/%d)\n", \
-		flags[MAX_TABLE_SUBGOAL_DEPTH],				\
-		get_name(TIF_PSC(CallInfo_TableInfo(*call_info))),arity); \
+      char buffer[MAXBUFSIZE];						\
+      sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),(int)(flags[MAX_TABLE_SUBGOAL_DEPTH])); \
+      xsb_abort("Exceeded max call term depth of %d in call %s\n",	\
+		flags[MAX_TABLE_SUBGOAL_DEPTH],	buffer);		\
     }									\
 }
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.h,v 1.21 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: io_builtins_xsb.h,v 1.22 2011-06-26 21:02:10 tswift Exp $
 ** 
 */
 
@@ -80,7 +80,7 @@ extern int xsb_intern_fileptr(FILE *file,char *c,char *c2,char *c3);
 extern int xsb_intern_file(char *c1,char *c2,int *i,char *strmode,int opennew);
 
 extern void write_quotedname(FILE *file, char *string);
-extern void double_quotes(char *string, char *new_string);
+extern int double_quotes(char *string, char *new_string);
 extern xsbBool quotes_are_needed(char *string);
 
 Integer read_canonical_term(CTXTdeclc FILE *, STRFILE *, int);
