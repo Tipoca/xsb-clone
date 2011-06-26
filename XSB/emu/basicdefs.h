@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basicdefs.h,v 1.9 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: basicdefs.h,v 1.10 2011-06-26 21:01:13 tswift Exp $
 ** 
 */
 
@@ -57,6 +57,7 @@
 #ifndef MAXBUFSIZE
 #define MAXBUFSIZE   1024  /* used when a large string buffer is needed */
 #endif
+#define MAXTERMBUFSIZE   16384  /* Terms may be big...*/
 
 #define MAX_IO_BUFSIZE  4096 /* 1 page */
 

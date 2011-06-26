@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.67 2011-06-19 03:10:17 kifer Exp $
+** $Id: debug_xsb.c,v 1.68 2011-06-26 21:01:13 tswift Exp $
 ** 
 */
 
@@ -29,6 +29,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 #include "auxlry.h"
 #include "context.h"
@@ -64,7 +65,10 @@
 #define CAR		1
 #define CDR		0
 
-static void print_term(FILE *fp, Cell term, byte car, int level)
+#define MAXFLOATLEN 24
+#define MAXINTLEN 21
+
+static void print_term(FILE *fp, Cell term, byte car, long level)
 {
   unsigned short i, arity;
   Psc psc;
@@ -156,14 +160,42 @@ static void print_term(FILE *fp, Cell term, byte car, int level)
   }
 }
 
-static int sprint_term(char *buffer, int insize, Cell term, byte car, int level)
+int sprint_quotedname(char *buffer, int size,char *string)
+{
+  int dlength = 0;
+
+  if (*string == '\0')  {
+   sprintf(buffer+size,"''");
+   return size + 2;
+  }
+  else {
+    if (!quotes_are_needed(string)) {
+      sprintf(buffer+size, "%s", string);
+      return size + strlen(string);
+    }
+    else {
+      sprintf(buffer+size,"\'");
+      dlength = double_quotes(string,buffer+size+1);
+      sprintf(buffer+size+ dlength + 1,"\'");
+      return size + dlength + 2;
+    }
+  }
+}
+
+inline int get_int_print_width(Integer num) {
+  if (abs(num) < 100) return 2;
+  else if (abs(num) < 10000) return 4;
+  else return MAXINTLEN;
+}
+
+static int sprint_term(char *buffer, int insize, Cell term, byte car, UInteger level)
 {
   unsigned short i, arity;
   Psc psc;
   CPtr cptr;
   int size = insize;
 
-  if (size > MAXBUFSIZE-22) return size;
+  if (size > MAXTERMBUFSIZE-MAXFLOATLEN) return size;
 
   level--;
   if (level < 0) {
@@ -180,20 +212,28 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, int level)
     sprintf(buffer+size, "_%p {...}", (CPtr)dec_addr(term));
     return size+9+sizeof(CPtr);
   case XSB_STRUCT:
-      //NOTE: Below is a check for boxed numbers. If such is the case, then
-      //  the behavior is the same as XSB_INT or XSB_FLOAT, but with boxed[X]_val macro
-      //  instead of [X]_val macro
+    /* NOTE: Below is a check for boxed numbers. If such is the case,
+       then the behavior is the same as XSB_INT or XSB_FLOAT, but with
+       boxed[X]_val macro instead of [X]_val macro.  Also note, that
+       in order to attain a predictable width for the sprintf I
+       converted things to decimal.  Perhaps there's some way of
+       printing out the integer part of float in a fixed width, but I
+       don't know how. 
+    */
     if (isboxedfloat(term)) {
-        sprintf(buffer+size, "%15f", boxedfloat_val(term));
-        return size+15;   
+      float val = boxedfloat_val(term);
+      int width = get_int_print_width(floor(val));
+      sprintf(buffer+size, "%*d.%4d", width,(int)floor(val),(int)((val-floor(val))*10000));
+      return size + width + 5;   
     }
     else if (isboxedinteger(term)) {
-        sprintf(buffer+size, "%10" Intfmt, (Integer)boxedint_val(term));
-        return size+10;
+      Integer val = boxedint_val(term);
+      int width = get_int_print_width(val);
+      sprintf(buffer+size, "%*" Intfmt, width, (Integer)boxedint_val(term));
+      return size+width;
     }
     psc = get_str_psc(term);
-    sprintf(buffer+size, "%s", get_name(psc));
-    size = size + (int)strlen(get_name(psc));
+    size = sprint_quotedname(buffer, size, get_name(psc));
     arity = get_arity(psc);
     if ( arity == 0 )   /* constant */
       return size;
@@ -206,26 +246,25 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, int level)
 	sprintf(buffer+size, ",");
     }
     sprintf(buffer+size, ")");size++;
-    //    printf("return size %d %s\n",size,buffer);
     return size;
   case XSB_STRING:
-    sprintf(buffer+size, "%s", string_val(term));
-    size = size+(int)strlen(string_val(term));
+    size = sprint_quotedname(buffer, size, string_val(term));
     return size;
-  case XSB_INT:
-    sprintf(buffer+size, "%10" Intfmt, (Integer)int_val(term));
-    return size+10;
+  case XSB_INT: {
+    int width = get_int_print_width((Integer)int_val(term));
+    sprintf(buffer+size, "%*" Intfmt, width, (Integer)int_val(term));
+    return size+width;
+  }
   case XSB_FLOAT:
-    sprintf(buffer+size, "%10f", float_val(term));
-    sprintf(buffer+size, "%10f", ofloat_val(term));
-    return size+20;
+    sprintf(buffer+size, "%f", float_val(term));
+    sprintf(buffer+size, "%f", ofloat_val(term));
+    return size+MAXFLOATLEN;
   case XSB_LIST:
     cptr = clref_val(term);
     if ( car ) {
       sprintf(buffer+size, "[");size++;
     }
     size = sprint_term(buffer, size,cell(cptr), CAR, level);
-    //    printf("succeeded size %d\n",size);
     term = cell(cptr+1);
     XSB_Deref(term);
     switch (cell_tag(term)) {
@@ -329,7 +368,7 @@ static int sprint_termsize(Cell term, byte car, int level)
   return size;  // to quiet compiler.
 }
 
-void printterm(FILE *fp, Cell term, int depth) {
+void printterm(FILE *fp, Cell term, long depth) {
 
   print_term(fp, term, CAR, depth);
   fflush(fp); 
@@ -352,7 +391,7 @@ void sprint_callsize(CTXTdeclc Psc psc,int depth) {
 
 }
 
-void sprint_call(CTXTdeclc char * buffer,Psc psc,int depth) {
+void sprint_registers(CTXTdeclc char * buffer,Psc psc,UInteger depth) {
   int i, arity,size;
 
   arity = (int)get_arity(psc);
@@ -368,28 +407,21 @@ void sprint_call(CTXTdeclc char * buffer,Psc psc,int depth) {
   if (arity != 0) sprintf(buffer+size, ")");
 }
 
-void print_call_1(CTXTdeclc Psc psc,int depth) {
+void print_registers(CTXTdeclc FILE *fp, Psc psc,long depth) {
   int i, arity;
 
   arity = (int)get_arity(psc);
-  fprintf(stddbg, "%s", get_name(psc));
-  if (arity != 0) fprintf(stddbg, "(");
+  fprintf(fp, "%s", get_name(psc));
+  if (arity != 0) fprintf(fp, "(");
   for (i=1; i <= arity; i++) {
-    printterm(stddbg, cell(reg+i), depth);
-    fflush(stddbg);
-    if (i < arity) fprintf(stddbg, ",");
+    printterm(fp, cell(reg+i), depth);
+    //    fflush(fp);
+    if (i < arity) fprintf(fp, ",");
   }
-  if (arity != 0) fprintf(stddbg, ")\n"); else fprintf(stddbg, "\n");
-  fflush(stddbg);
+  //  if (arity != 0) fprintf(fp, ")\n"); else fprintf(fp, "\n");
+  if (arity != 0) fprintf(fp, ")"); 
+  //  fflush(fp);
 }
-
-void print_call(CTXTdeclc Psc psc,int depth)
-{
-  fprintf(stddbg, "(w1) call: %s\n", get_name(psc));
-  print_call_1(CTXTc psc,depth);
-}
-
-
 
 /*------------------------------------------------------------------*/
 /* These variables are global, so in principle, you could run the
@@ -406,11 +438,15 @@ int hitrace_suspend_gl = 0;
 void debug_call(CTXTdeclc Psc psc)
 {
   if (call_step_gl || get_spy(psc)) {
-    print_call(CTXTc psc,3);
+    fprintf(stddbg, "(w1) call: "); print_registers(CTXTc stddbg,psc,3);
+    fprintf(stddbg,"\n");
 #ifdef DEBUG_VM
     debug_interact(CTXT);
 #endif
-  } else if (!hitrace_suspend_gl) print_call(CTXTc psc,3);
+  } else if (!hitrace_suspend_gl) {
+    fprintf(stddbg, "(w1) call: ");    print_registers(CTXTc stddbg,psc,3);
+    fprintf(stddbg,"\n");
+  }
 }
 
 /*=============================================================================*/
@@ -676,12 +712,38 @@ void alt_dis(CTXTdecl)
   fclose(where) ;
 } /* print_cp */
 
-/*----- For table debugging --------------------------------------------*/ 
+/*----- For table debugging --------------------------------------------
+
+  Among other functionality, the following routines allow subgoals to
+  be printed when given a pointer to a variant subgoal frame.  For
+  boxed integers and floats, the boxed terms, which are entered into
+  the trie as structures, must be interpreted in a special manner to
+  be printed out, as the information is kept in a cell array rather
+  than in the heap..  Special macros are used for this --
+  trie_boxed_int() and trie_boxed_float().
+
+-----------------------------------------------------------------------*/
+
+
+
 
 #ifndef MULTI_THREAD
 static Cell cell_array[500];
 #endif
 
+#define trie_boxedfloat_val(i)				\
+    (                                                   \
+     (Float)(    EXTRACT_FLOAT_FROM_16_24_24(           \
+					     (int_val(cell_array[(*i)-1])), \
+					     (int_val(cell_array[(*i)-2])), \
+					     (int_val(cell_array[(*i)-3])) \
+							)		\
+		 )							\
+							)
+
+#define trie_boxedint_val(i) \
+  ((Integer) ((UInteger)int_val(cell_array[(*i)-2])<<24 | int_val(cell_array[(*i)-3])))
+       
 static void print_term_of_subgoal(CTXTdeclc FILE *fp, int *i)
 {
   Cell term;
@@ -738,6 +800,71 @@ static void print_term_of_subgoal(CTXTdeclc FILE *fp, int *i)
   }
 }
 
+static int sprint_term_of_subgoal(CTXTdeclc char *buffer, int size,int *i)
+{
+  Cell term;
+  int  j, args;
+
+  term = cell_array[*i];
+  switch (cell_tag(term)) {
+  case XSB_TrieVar:
+    sprintf(buffer, "_v%d", ((int) int_val(term) & 0xffff));size=size+4;
+    break;
+  case XSB_STRUCT:
+    if (isboxedTrieSym(term) && ((int_val(cell_array[(*i)-1]) >> 16) == ID_BOXED_FLOAT)) {
+      float val = trie_boxedfloat_val(i);
+      int width = get_int_print_width(floor(val));
+      sprintf(buffer+size, "%*d.%4d", width,(int)floor(val),(int)((val-floor(val))*10000));
+      *i = (*i) -3;
+      return size+width+5;   
+    }
+    else if (isboxedTrieSym(term) && ((int_val(cell_array[(*i)-1]) >> 16) == ID_BOXED_INT)) {
+      Integer val = boxedint_val(term);
+      int width = get_int_print_width(val);
+      sprintf(buffer+size, "%*" Intfmt, width, (Integer)trie_boxedint_val(i));
+      *i = (*i) -3;
+      return size+width;
+    }
+    args = get_arity((Psc)cs_val(term));
+    size = sprint_quotedname(buffer, size, get_name((Psc)cs_val(term)));
+    if (args > 0) {sprintf(buffer+size, "(");size++;}
+    for (j = args; j > 0; j--) {
+      (*i)--;
+      size = sprint_term_of_subgoal(CTXTc buffer,size, i);
+      if (j > 1) {sprintf(buffer+size, ",");size++;}
+    }
+    if (args > 0) {sprintf(buffer+size, ")");size++;}
+    break;
+  case XSB_LIST:	/* the list [a,b(1),c] is stored as . . . [] c b 1 a */
+    sprintf(buffer+size, "[");size++;
+    (*i)--;
+    size = sprint_term_of_subgoal(CTXTc buffer,size, i);
+    (*i)--;
+    size = sprint_term_of_subgoal(CTXTc buffer,size, i);
+    sprintf(buffer+size, "]");size++;
+    break;
+  case XSB_STRING:
+    size = sprint_quotedname(buffer,size,string_val(term));
+    break;
+  case XSB_INT: {
+    int length = get_int_print_width((Integer)int_val(term));
+    sprintf(buffer+size, "%*" Intfmt, length, (Integer)int_val(term));
+    return size+length;
+    break;
+  }
+  case XSB_FLOAT:
+    //    fprintf(fp, "%.5g", float_val(term));
+    sprintf(buffer+size, "%10f", float_val(term));
+    size = size+10;
+    break;
+  default:
+    xsb_error("Term with unknown tag (%d) in print_subgoal()",
+	      (int)cell_tag(term));
+    break;
+  }
+  return size;
+}
+
 /*----------------------------------------------------------------------*/
 
 void print_subgoal(CTXTdeclc FILE *fp, VariantSF subg)
@@ -758,6 +885,26 @@ void print_subgoal(CTXTdeclc FILE *fp, VariantSF subg)
       if (i > 0) fprintf(fp, ", ");
     }
     fprintf(fp, ")");
+  }
+}
+
+void sprint_subgoal(CTXTdeclc char *buffer,  VariantSF subg)
+{
+  BTNptr leaf;
+  int  i = 0; int size = 0;
+  Psc  psc = TIF_PSC(subg_tif_ptr(subg));
+
+  for (leaf = subg_leaf_ptr(subg); leaf != NULL; leaf = Parent(leaf)) {
+    cell_array[i++] = BTN_Symbol(leaf);
+  }
+  size = sprint_quotedname(buffer, size, get_name(psc));
+  if (get_arity(psc) > 0) {
+    sprintf(buffer+size, "(");size++;
+    for (i = i-2; i >= 0 ; i--) {
+      size = sprint_term_of_subgoal(CTXTc buffer, size, &i);
+      if (i > 0) {sprintf(buffer+size, ",");size++;}
+    }
+    sprintf(buffer+size,")");size++;
   }
 }
 

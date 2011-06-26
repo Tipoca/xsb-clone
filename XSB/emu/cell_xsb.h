@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.42 2011-06-06 20:20:29 dwarren Exp $
+** $Id: cell_xsb.h,v 1.43 2011-06-26 21:01:13 tswift Exp $
 ** 
 */
 
@@ -238,6 +238,7 @@ extern unsigned long enc[], dec[];
 #define isboxed(term) (isconstr(term) && get_str_psc(term) == box_psc )
 #define box_has_id(dcell, box_identifier) (int_val(cell(clref_val(dcell)+1))>>16 == box_identifier)
 
+#define isboxedTrieSym(term) ((Psc)cs_val(term) == box_psc)
 /*======================================================================*/
 /* Miscellaneous							*/
 /*======================================================================*/
