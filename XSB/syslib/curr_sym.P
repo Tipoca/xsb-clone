@@ -1011,6 +1011,10 @@ set_xsb_flag_1(max_table_answer_list_action, Action) :-!,
 	    stat_set_flag(MAX_TABLE_ANSWER_LIST_ACTION, XSB_FAILURE)
             ; domain_error([error,', ',warning,', ',failure],
                         Action,set_xsb_flag/2,2,'max_table_answer_list_action clause') ) ) ).
+set_xsb_flag_1(ctrace, OnOff) :-!,
+	(OnOff == on -> 
+	    stat_set_flag(CTRACE_CALLS, 1)
+	 ;  stat_set_flag(CTRACE_CALLS, 0)).
 set_xsb_flag_1(Type, _) :-  
 	domain_error(prolog_flag,Type,set_prolog_flag/2,1).
 
