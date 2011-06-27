@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basicdefs.h,v 1.10 2011-06-26 21:01:13 tswift Exp $
+** $Id: basicdefs.h,v 1.11 2011-06-27 15:47:30 dwarren Exp $
 ** 
 */
 
@@ -55,7 +55,7 @@
 #endif
 
 #ifndef MAXBUFSIZE
-#define MAXBUFSIZE   1024  /* used when a large string buffer is needed */
+#define MAXBUFSIZE   2048  /* used when a large string buffer is needed */
 #endif
 #define MAXTERMBUFSIZE   16384  /* Terms may be big...*/
 
