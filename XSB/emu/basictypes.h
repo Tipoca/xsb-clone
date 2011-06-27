@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.30 2011-05-22 18:18:54 tswift Exp $
+** $Id: basictypes.h,v 1.31 2011-06-27 15:49:04 dwarren Exp $
 ** 
 */
 
@@ -38,12 +38,12 @@
 typedef long long prolog_int ;
 typedef long long Integer ;
 typedef unsigned long long UInteger ;
-#define XSB_MAXINT ((long long)0x7ffffffffff)
+#define XSB_MAXINT ((long long)0x7fffffffffffffff)
 #else
 typedef long prolog_int ;
 typedef long Integer ;
 typedef unsigned long UInteger ;
-#define XSB_MAXINT ((long)0x7fffffffffffff)
+#define XSB_MAXINT ((long)0x7fffffffffffffff)
 #endif
 #else
 typedef int prolog_int ;
