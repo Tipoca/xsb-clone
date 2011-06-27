@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.65 2011-06-06 20:20:29 dwarren Exp $
+** $Id: io_builtins_xsb_i.h,v 1.66 2011-06-27 15:52:24 dwarren Exp $
 ** 
 */
 
@@ -305,7 +305,8 @@ inline static xsbBool file_function(CTXTdecl)
 	if ((rtrn = fclose(fptr))) {
 	  if (ptoc_int(CTXTc 3) == NOFORCE_FILE_CLOSE) {
 	    XSB_STREAM_UNLOCK(io_port);
-	    xsb_permission_error(CTXTc "fclose","file",reg[2],"file_close",1); 
+	    //	    xsb_permission_error(CTXTc "fclose","file",reg[2],"file_close",1); 
+	    xsb_permission_error(CTXTc strerror(errno),"file",reg[2],"file_close",1); 
 	  }
 	}
 	open_files[io_port].file_ptr = NULL;
