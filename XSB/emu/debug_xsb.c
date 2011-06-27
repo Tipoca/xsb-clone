@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.69 2011-06-26 21:24:43 tswift Exp $
+** $Id: debug_xsb.c,v 1.70 2011-06-27 15:56:07 dwarren Exp $
 ** 
 */
 
@@ -171,7 +171,7 @@ int sprint_quotedname(char *buffer, int size,char *string)
   else {
     if (!quotes_are_needed(string)) {
       sprintf(buffer+size, "%s", string);
-      return size + strlen(string);
+      return size + (int)strlen(string);
     }
     else {
       sprintf(buffer+size,"\'");
@@ -183,8 +183,8 @@ int sprint_quotedname(char *buffer, int size,char *string)
 }
 
 inline int get_int_print_width(Integer num) {
-  if (abs(num) < 100) return 2;
-  else if (abs(num) < 10000) return 4;
+  if (abs((int)num) < 100) return 2;
+  else if (abs((int)num) < 10000) return 4;
   else return MAXINTLEN;
 }
 
@@ -221,8 +221,8 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, UInteger l
        don't know how. 
     */
     if (isboxedfloat(term)) {
-      float val = boxedfloat_val(term);
-      int width = get_int_print_width(floor(val));
+      Float val = boxedfloat_val(term);
+      int width = get_int_print_width((Integer)floor(val));
       sprintf(buffer+size, "%*d.%4d", width,(int)floor(val),(int)((val-floor(val))*10000));
       return size + width + 5;   
     }
@@ -812,8 +812,8 @@ static int sprint_term_of_subgoal(CTXTdeclc char *buffer, int size,byte car, int
     break;
   case XSB_STRUCT:
     if (isboxedTrieSym(term) && ((int_val(cell_array[(*i)-1]) >> 16) == ID_BOXED_FLOAT)) {
-      float val = trie_boxedfloat_val(i);
-      int width = get_int_print_width(floor(val));
+      Float val = trie_boxedfloat_val(i);
+      int width = get_int_print_width((Integer)floor(val));
       sprintf(buffer+size, "%*d.%4d", width,(int)floor(val),(int)((val-floor(val))*10000));
       *i = (*i) -3;
       return size+width+5;   
@@ -848,7 +848,7 @@ static int sprint_term_of_subgoal(CTXTdeclc char *buffer, int size,byte car, int
       goto vertbar;
     case XSB_LIST:
       sprintf(buffer+size, ",");size++;
-      size = sprint_term_of_subgoal(buffer, size, CDR, i);
+      size = sprint_term_of_subgoal(CTXTc buffer, size, CDR, i);
       return size;
     case XSB_STRING:
       if (string_val(term) != nil_string)
@@ -862,7 +862,7 @@ static int sprint_term_of_subgoal(CTXTdeclc char *buffer, int size,byte car, int
     case XSB_FLOAT:
     vertbar:
       sprintf(buffer+size, "|");size++;
-      size = sprint_term_of_subgoal(buffer,size, CDR, i);
+      size = sprint_term_of_subgoal(CTXTc buffer,size, CDR, i);
       sprintf(buffer+size, "]");size++;
     return size;
     }

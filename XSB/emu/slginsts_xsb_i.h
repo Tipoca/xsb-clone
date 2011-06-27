@@ -116,8 +116,6 @@
 #define UNLOCK_CALL_TRIE()
 #endif
 
-extern void sprint_subgoal(CTXTdeclc char *,  VariantSF );
-
 /*
  *  Instruction format:
  *    1st word: opcode X X pred_arity
@@ -192,7 +190,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     char bufferb[MAXTERMBUFSIZE];
     sprint_registers(CTXTc  buffera,TIF_PSC(tip),flags[MAX_TABLE_SUBGOAL_DEPTH]);
     if (ptcpreg) 
-      sprint_subgoal(bufferb,(VariantSF)ptcpreg);     
+      sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
     else sprintf(bufferb,"null");
     fprintf(stdout,"tc(%s,%s).\n",buffera,bufferb);
   }
@@ -807,7 +805,7 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
     char bufferb[MAXTERMBUFSIZE];
     sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),flags[MAX_TABLE_SUBGOAL_DEPTH]);
     if (ptcpreg)
-      sprint_subgoal(bufferb,(VariantSF)producer_sf);     
+      sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
     else sprintf(bufferb,"null");
     fprintf(stdout,"ar(%s,%s).\n",buffera,bufferb);
   }

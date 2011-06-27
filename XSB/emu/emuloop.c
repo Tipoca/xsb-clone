@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.217 2011-06-06 20:20:29 dwarren Exp $
+** $Id: emuloop.c,v 1.218 2011-06-27 15:56:07 dwarren Exp $
 ** 
 */
 
@@ -395,6 +395,8 @@ extern int is_number_atom(Cell term);
 extern int ground(CPtr term);
 
 extern void log_prog_ctr(byte *);
+
+extern void sprint_subgoal(CTXTdeclc char *,  VariantSF );
 
 #ifndef MULTI_THREAD
 xsbBool neg_delay;
