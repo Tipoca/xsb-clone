@@ -177,8 +177,6 @@ assert(Clause,AZL,Index1,ErrPred) :-
 		assert0((LHead:-Body),AZL,Index1,ErrPred)
 	 ;	(Head = Mod:BHead
 		 ->	term_new_mod(Mod,BHead,NHead),
-			BHead =.. [_|Args],
-			NHead =.. [_|Args],
 			assert0((NHead:-Body),AZL,Index1,ErrPred)
 		 ;	assert0(Clause,AZL,Index1,ErrPred)
 		)
