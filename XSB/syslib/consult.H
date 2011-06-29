@@ -29,11 +29,12 @@
 	  current_loaded_file/1,
           engine_mode_magic_num/2,
 	  ensure_dyn_loaded/1, ensure_dync_loaded/1,
-	  ensure_loaded/1, ensure_loaded/2,
+	  ensure_dyn_loaded/3, ensure_dync_loaded/3,
+	  ensure_loaded/1, ensure_loaded/2, ensure_loaded/3,
           get_magic_num/2,
-	  load_dyn/1, load_dyn/2, 
+	  load_dyn/1, load_dyn/2, load_dyn/3,
 	  load_dyn_module/1,
-	  load_dync/1, load_dync/2, 
+	  load_dync/1, load_dync/2, load_dync/3,
           read_canonical/1,read_canonical/2,
           if_file_loaded/1,
           (thread_shared)/1,
@@ -70,7 +71,7 @@
 	  conpsc/2, psc_type/2, slash/1, psc_arity/2, 
 	  existing_file_extension/2, almost_search_module/5, db_get_prref/2,
 	  term_psc/2, psc_set_shared/2, psc_set_private/2, stat_flag/2,
-	  term_new/2
+	  term_new/2, term_new_mod/3, stat_set_flag/2, psc_insertmod/3
      from machine.
 :- import
 	check_xpp_process_status/3,
