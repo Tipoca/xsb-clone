@@ -64,6 +64,7 @@ hide_this_hide(nospy,1).
 hide_this_hide(consult,1).
 hide_this_hide(reconsult,1).
 hide_this_hide(compile,1).
+hide_this_hide(call_goal_cut_trans,3).
 
 hide_this_hide(compile_internal,5).
 hide_this_hide(make_gpp_command,4).

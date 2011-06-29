@@ -472,6 +472,8 @@ deb_enterpred(N,PSC,Call,Spy,Tr) :-
 		    push_cputime   % push cpu time on the stack, if on
 		;   true
 		),
+		get_psc_info(Call,_,P,A),
+		show_this_hide_call(P,A),         % fail keeping state hidden
 		stat_set_flag(HIDE_STATE,0),      % un-hide_state
 		fail
 	    )
