@@ -1,6 +1,6 @@
 		  XSB Prolog Distribution Directory
 
-** Last update: Nov 13, 2009 (3.2 Kopi Lewak)
+** Last update: July 2, 2011 (3.3.X Pignoletto)
 
 WEB-HOME
 ========
@@ -16,8 +16,7 @@ DOCUMENTATION
 =============
 
 A 2-volume manual in pdf format is distributed with XSB binaries or
-source files.  In addition, the XSB homepage contains an html version
-of both volumes of the manual.
+source files.  
 
 DIRECTORIES
 ===========
@@ -38,6 +37,7 @@ The XSB source tree consists of a number of directories including:
 	dbdrivers   Various interfaces for ODBC and mysql
 	justify	    A justification-based debugger for tabled programs
 	perlmatch   Perl-style string matching routines
+	pita	    Probabilistic Logic Programming in XSB
 	regmatch    Regular-expression matching routines
 	sgml	    parses html, xml, and sgml documents
 	xasp	    XSB Answer Set Programming package
