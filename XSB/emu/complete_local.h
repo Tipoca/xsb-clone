@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.36 2010-12-16 23:38:00 tswift Exp $
+** $Id: complete_local.h,v 1.37 2011-07-02 14:27:38 tswift Exp $
 **
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -287,6 +287,8 @@ static inline CPtr ProcessSuspensionFrames(CTXTdeclc CPtr cc_tbreg_in,
   return cc_tbreg;
 }
 
+extern int  ctrace_ctr;
+
 static inline void CompleteSimplifyAndReclaim(CTXTdeclc CPtr cs_ptr)
 {
   VariantSF compl_subg;
@@ -301,6 +303,13 @@ static inline void CompleteSimplifyAndReclaim(CTXTdeclc CPtr cs_ptr)
   while (ComplStkFrame >= openreg) {
     compl_subg = compl_subgoal_ptr(ComplStkFrame);
     mark_as_completed(compl_subg);
+    if (flags[CTRACE_CALLS])  { 
+      char bufferb[MAXTERMBUFSIZE];
+      sprint_subgoal(CTXTc bufferb,compl_subg);     
+      fprintf(stdout,"cmp(%s,%d,%d).\n",bufferb,compl_level(ComplStkFrame),ctrace_ctr++);
+  }
+
+
     if (ProducerSubsumesSubgoals(compl_subg)) {
       //      fprintf(stddbg, "Producer:\n  ");
       //      sfPrintGoal(CTXTc stddbg, (VariantSF)compl_subg, YES);

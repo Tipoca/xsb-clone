@@ -192,7 +192,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     if (ptcpreg) 
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
     else sprintf(bufferb,"null");
-    fprintf(stdout,"tc(%s,%s).\n",buffera,bufferb);
+    fprintf(stdout,"tc(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
 
   LOCK_CALL_TRIE();
@@ -807,7 +807,7 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
     if (ptcpreg)
       sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
     else sprintf(bufferb,"null");
-    fprintf(stdout,"ar(%s,%s).\n",buffera,bufferb);
+    fprintf(stdout,"ar(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
 
 #ifdef DEBUG_DELAYVAR

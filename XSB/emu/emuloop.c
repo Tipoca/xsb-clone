@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.218 2011-06-27 15:56:07 dwarren Exp $
+** $Id: emuloop.c,v 1.219 2011-07-02 14:27:38 tswift Exp $
 ** 
 */
 
@@ -407,6 +407,8 @@ int  xwammode, level_num;
 int  xctr;
 #endif
 
+int  ctrace_ctr=0;
+
 /*----------------------------------------------------------------------*/
 
 #include "schedrev_xsb_i.h"
@@ -461,6 +463,7 @@ char *xsb_segfault_message;
  * (In 64-bit machines there are 4 bytes of extra padding space for each 
  *  instruction)
  */
+
 
 int emuloop(CTXTdeclc byte *startaddr)
 {
