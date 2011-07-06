@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.72 2011-07-06 18:49:49 tswift Exp $
+** $Id: debug_xsb.c,v 1.73 2011-07-06 20:19:52 tswift Exp $
 ** 
 */
 
@@ -206,8 +206,8 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, UInteger l
   switch (cell_tag(term)) {
   case XSB_FREE:
   case XSB_REF1:
-    sprintf(buffer+size, "_%p", vptr(term));
-    return size+3+sizeof(CPtr);
+    sprintf(buffer+size, "_v%"Intfmt, (UInteger)vptr(term));
+    return size+2+sizeof(UInteger);
   case XSB_ATTV:
     sprintf(buffer+size, "_%p {...}", (CPtr)dec_addr(term));
     return size+9+sizeof(CPtr);
