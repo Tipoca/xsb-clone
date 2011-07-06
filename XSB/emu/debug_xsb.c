@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.71 2011-07-06 15:43:18 tswift Exp $
+** $Id: debug_xsb.c,v 1.72 2011-07-06 18:49:49 tswift Exp $
 ** 
 */
 
@@ -809,7 +809,7 @@ static int sprint_term_of_subgoal(CTXTdeclc char *buffer, int size,byte car, int
   term = cell_array[*i];
   switch (cell_tag(term)) {
   case XSB_TrieVar:
-    sprintf(buffer, "_v%d", ((int) int_val(term) & 0xffff));size=size+4;
+    sprintf(buffer+size, "_v%d", ((int) int_val(term) & 0xffff));size=size+3;
     break;
   case XSB_STRUCT:
     if (isboxedTrieSym(term) && ((int_val(cell_array[(*i)-1]) >> 16) == ID_BOXED_FLOAT)) {
