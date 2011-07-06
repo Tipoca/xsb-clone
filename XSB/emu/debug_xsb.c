@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.70 2011-06-27 15:56:07 dwarren Exp $
+** $Id: debug_xsb.c,v 1.71 2011-07-06 15:43:18 tswift Exp $
 ** 
 */
 
@@ -242,8 +242,9 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, UInteger l
     cptr = clref_val(term);
     for ( i = 1; i <= arity; i++ ) {
       size = sprint_term(buffer, size,cell(cptr+i), CAR, level);
-      if ( i < arity )
-	sprintf(buffer+size, ",");
+      if ( i < arity ) {
+	sprintf(buffer+size, ",");size++;
+      }
     }
     sprintf(buffer+size, ")");size++;
     return size;
