@@ -92,7 +92,7 @@ xsb_configuration(version, '3.3.4').
 
 xsb_configuration(codename, 'Pignoletto').
 xsb_configuration(release_date,
-		  date(2011, 5, 21)).
+		  date(2011, 7, 2)).
 
 %% Configuration looks as follows: machine-vendor-os-tag
 xsb_configuration(configuration, 'x64-pc-windows').
