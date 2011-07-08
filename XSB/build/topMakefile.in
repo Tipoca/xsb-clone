@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.61 2011-05-15 07:21:46 kifer Exp $
+## $Id: topMakefile.in,v 1.62 2011-07-08 04:32:07 kifer Exp $
 ##
 ##
 
@@ -191,7 +191,7 @@ prepare:
 emulator: ${src_config_prefix}/xsb_config.h ${src_config_prefix}/xsb_debug.h
 	@echo ""; echo "Making emulator..." ; \
 		cd ${src_emudir} ; \
-		makedepend || echo "*** Warning: The command 'makedepend' is not installed. Install it to speed up compilation of XSB." ; \
+		make depend 2>/dev/null || echo "*** Warning: The command 'makedepend' is not installed. Install it to speed up compilation of XSB." ; \
 		rm -f $(srcdir)/build/.xsb_build_failed; \
 		(make EXECUTABLE="$(EXECUTABLE)" $(emumake_goal) || \
 			$(srcdir)/build/touch.sh $(srcdir)/build/.xsb_build_failed) \
@@ -232,7 +232,7 @@ xsbdynmod: ${src_config_prefix}/xsb_config.h ${src_config_prefix}/xsb_debug.h
 		make $(emumake_goal)dynmod
 
 xsbdll: ${src_config_prefix}/xsb_config.h ${src_config_prefix}/xsb_debug.h
-	@echo ""; echo "Making DLL..."
+	@echo ""; echo "Making DLL... (if Cygwin)"
 	@cd ${src_emudir}; make dll
 
 loccygdll: ${src_config_prefix}/xsb_config.h ${src_config_prefix}/xsb_debug.h
