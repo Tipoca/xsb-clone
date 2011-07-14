@@ -1947,7 +1947,8 @@ catch(Goal,_Catcher,_Handler) :-
 	get_breg(BregBefore),
         '$$set_scope_marker',  % should not be called in any other place but immediately
                                % before call because it remembers the pcreg
-	call_expose(Goal),
+%	call_expose(Goal),
+	call(Goal),
 %	get_breg(B1),write(before_cob(B1)),
         '$$clean_up_block'(BregBefore). % if no choicepoints in call(Goal) cleans up one
 %        '$$clean_up_block'. % if no choicepoints in call(Goal) cleans up one
