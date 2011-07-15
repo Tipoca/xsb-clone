@@ -652,7 +652,7 @@ read_and_assert(IPort,Dir) :-
 		(Term = (Head:-_) -> true ; Head = Term),
 		assert_buff_to_clref(Head,NArity,Prref,Dir,Index,Hashsize),
 		fail
-	 ;	Prref=_,NArity=_,Index=_,Hashsize=_	 
+	 ;	true
 	),
 	(Term == end_of_file
 	 ->	!, fail
@@ -699,13 +699,13 @@ do_assert_and_fail(Term,Dir) :-
 	 ->	true
 	 ;	Head0 = Term
 	),
-	(predicate_property(Head0,built_in)
-	 ->	warning('Cannot assert to builtin'(Head0)),fail
-	 ;	true
-	),
 	(Head0 = Mod:Head1
 	 ->	term_new_mod(Mod,Head1,Head)
 	 ;	Head = Head0, Mod = usermod
+	),
+	(predicate_property(Head,built_in)
+	 ->	warning('Cannot assert to builtin'(Head)),fail
+	 ;	true
 	),
 	('_$multifile'(Head)
 	 ->	(functor(Head,apply,AArity)
