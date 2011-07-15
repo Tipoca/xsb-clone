@@ -36,3 +36,4 @@
 :- import integer/1, is_list/1 from standard.
 :- import arg/3, functor/3 from standard.
 :- import check_integer/3 from error_handler.
+:- import check_nonneg_integer/3 from error_handler.

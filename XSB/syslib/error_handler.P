@@ -399,9 +399,13 @@ check_integer(Term,Predicate,Arg) :-
 
 %-------------
 check_nonneg_integer(Term,Predicate,Arg) :- 
-	(integer(Term), Term >= 0 -> 
-	    true
-	 ;  domain_error(nonNegativeInteger,Term,Predicate,Arg) ).
+	(integer(Term)
+	 ->	(Term >= 0
+		 ->	true
+		 ;	domain_error(not_less_than_zero,Term,Predicate,Arg)
+		)
+	 ;	type_error(integer,Term,Predicate,Arg)
+	).
 
 %-------------
 check_callable(Term,Predicate,Arg):- 

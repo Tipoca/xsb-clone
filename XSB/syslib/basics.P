@@ -235,9 +235,11 @@ ktree0(K,I,T,E,N) :-
 %---
 % length/2 that works both ways
 length(L,N) :-
-	var(N)
+	(var(N)
 	 ->	length1(L,0,N)
-	 ;	length2(L,N).
+	 ;	check_nonneg_integer(N,length/2,2),
+		length2(L,N)
+	).
 
 length1([],N,N).
 length1([_|R],N0,N) :- N1 is N0+1, length1(R,N1,N).
@@ -301,6 +303,7 @@ fordown(H,H,L) :- H >= L.
 fordown(I,H,L) :- H > L, H1 is H-1, fordown(I,H1,L).
 
 % Compatability w. SWI and others (also error checking)
+% add check on third argument, if bound as non-integer
 between(L,U,B):- 
 	check_integer(L,between/3,1),
 	check_integer(U,between/3,2),
