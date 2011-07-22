@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.90 2011-06-05 19:24:03 tswift Exp $
+** $Id: tables.c,v 1.91 2011-07-22 21:39:35 tswift Exp $
 ** 
 */
 
@@ -137,7 +137,7 @@ VariantSF NewProducerSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo) {
      pNewSF = memset(pNewSF,0,sizeof(subsumptive_producer_sf));		    
      subg_sf_type(pNewSF) = SUBSUMPTIVE_PRODUCER_SFT;			    
    }
-   subg_deltf_ptr(pNewSF) = NULL;
+/*   subg_deltf_ptr(pNewSF) = NULL; now this is a union type */
    subg_tif_ptr(pNewSF) = TableInfo;					    
    subg_dll_add_sf(pNewSF,TIF_Subgoals(TableInfo),TIF_Subgoals(TableInfo)); 
    subg_leaf_ptr(pNewSF) = Leaf;					    
@@ -772,6 +772,7 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
 	SM_DeallocateStruct(subsumptive_smALN,subg_ans_list_ptr(pSF))
       dbg_smPrint(LOG_STRUCT_MANAGER, smALN, "  after chain reclamation");
 
+      // This sets deltf to NULL which is what we want.
       subg_ans_list_ptr(pSF) = subg_ans_list_tail(pSF) = NULL;
       pSF = conssf_consumers(pSF);
     }

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.17 2011-05-22 18:18:54 tswift Exp $
+** $Id: tab_structs.h,v 1.18 2011-07-22 21:39:35 tswift Exp $
 ** 
 */
 
@@ -624,7 +624,10 @@ typedef struct subgoal_frame {
   BTNptr leaf_ptr;	  /* Handle for call in the CallTrie */
   BTNptr ans_root_ptr;	  /* Root of the return trie */
   ALNptr ans_list_ptr;	  /* Pointer to the list of returns in the ret trie (pre-compl)*/
-  ALNptr ans_list_tail;	  /* pointer to the tail of the answer list (pre-compl) */
+  union{
+    ALNptr ans_list_tail;   /* pointer to the tail of the answer list (pre-compl) */
+    DelTFptr deltf_ptr;     /* pointer to deltf (post-compl) */
+  };
   PNDE nde_list;	  /* pointer to a list of negative DEs */
   void *next_subgoal;	  
   void *prev_subgoal;
@@ -632,7 +635,6 @@ typedef struct subgoal_frame {
   CPtr pos_cons;	  /* Pointer to list of (CP) active subgoal frames (pre-compl) */
   CPtr compl_stack_ptr;	  /* Pointer to subgoal's completion stack frame (pre-compl) */
   CPtr compl_suspens_ptr; /* SLGWAM: CP stack ptr (pre-compl)  */
-  DelTFptr deltf_ptr;     /* pointer to deltf (post-compl) */
 #ifdef MULTI_THREAD
   Thread_T tid;	  /* Thread id of the generator thread for this sg */
 #endif
@@ -661,6 +663,8 @@ typedef struct subgoal_frame {
 #define subg_ans_list_tail(b)	( ((VariantSF)(b))->ans_list_tail )
 #define subg_cp_ptr(b)		( ((VariantSF)(b))->cp_ptr )
 #define subg_deltf_ptr(b)     	( ((VariantSF)(b))->deltf_ptr )
+/*#define subg_deltf_ptr(b)     	( (DelTFptr)((VariantSF)(b))->ans_list_tail )*/
+
 #define subg_pos_cons(b)	( ((VariantSF)(b))->pos_cons )
 #define subg_callnode_ptr(b)    ( ((VariantSF)(b))->callnode ) /* incremental evaluation */
 
