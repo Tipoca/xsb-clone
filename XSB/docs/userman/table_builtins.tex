@@ -1025,6 +1025,81 @@ called at that moment.
 \end{small}
 \end{center}
 
+\ourrepeatmoditem{table\_dump(\#Term,+OptionList)}{table\_dump/2}{dump\_table}
+%
+\ourmoditem{table\_dump(+Stream,\#Term,+OptionList)}{table\_dump/3}{dump\_table}
+%
+{\tt table\_dump/2} provides an easy method to view subgoals and
+answers that are present in a table.  Given an input {\tt Term}, {\tt
+  table\_dump} provides information about all tabled subgoals that are
+subsumed by {\tt Term}; if {\tt Term} is a variable, information about
+all tables is provided.
+
+The information is provided at two levels of aggregation.  If {\tt
+  info(summary)} is an element of {\tt OptionList}, the aggregate
+number of subgoals and answers are given that are subsumed by {\tt
+  Term}. If {\tt info(details)} the actual subgoals are returned along
+with the number of answers and their listing is also returned.  In
+either case, if {\tt Term} is a variable this information is broken
+down by tabled predicates.
+
+By default {\tt table\_dump/2} writes to the current output stream.
+If {\tt results(X)} is in {\tt OptionList}, {\tt X} is instantiated to
+a list of terms representing summary and/or detail information.  {\tt
+  table\_dump/3} provides for output to be written to a given stream.
+
+{\bf Example}  Consider the program:
+\begin{verbatim}
+:- table p/2.
+p(1,a).
+p(1,b) :- p(2,b).
+p(2,b) :- p(1,a).
+p(3,X) :- q(X).
+
+:- table q/1.
+q(1).              q(2).
+
+:- table r/1.
+r(a).
+
+:- table s/2.
+s(1,a).            s(2,b).           s(1,a1).            s(2,b1).
+\end{verbatim}
+and suppose the top-level query {\tt ?- p(X,Y)} has been made.  Then
+{\tt table\_dump/2} provides the following information (slightly
+reformatted for readability):
+%
+\begin{verbatim}
+| ?- table_dump(_X,[info(summary)]).
+
+summary = q(A) - subgoals(0) - returns(0).
+summary = r(A) - subgoals(0) - returns(0).
+summary = p(A,B) - subgoals(0) - returns(0).
+summary = s(A,B) - subgoals(0) - returns(0).
+
+yes
+| ?- table_dump(_X,[info(details)]).
+
+details - undefined - subgoals(0) - answers_for_subgoals([]).
+details - q(A) - subgoals(1) - answers_for_subgoals([q(B) - 2 - [q(2),q(1)]]).
+details - r(A) - subgoals(0) - answers_for_subgoals([]).
+details - p(A,B) - subgoals(3) - answers_for_subgoals([p(C,D) - 5 - 
+      [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)],p(2,b) - 
+      2 - [p(2,b),p(2,b)],p(1,a) - 2 - [p(1,a),p(1,a)]]).
+details - s(A,B) - subgoals(0) - answers_for_subgoals([]).
+
+yes
+\end{verbatim}
+
+{\bf Error Cases}
+\bi
+\item {\tt OptionList} contains an element, {\tt O}, that is not a
+  valid {\tt table\_dump\_option}, i.e., {\tt info(summary)}, {\tt
+    info(details)} or {\tt results(Var)} 
+\bi
+\item {\tt domain\_error(table\_dump\_option,O)}
+\ei
+\ei
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \comment{
