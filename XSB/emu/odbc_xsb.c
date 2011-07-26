@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.78 2011-06-06 20:20:29 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.79 2011-07-26 17:27:49 dwarren Exp $
 **
 */
 
@@ -420,10 +420,11 @@ Cell GenErrorMsgBall(char *errmsg) {
 
 
 void free_cur_bindlist(struct ODBC_Cursor *cur, int j) {
-  if (cur->BindTypes[j] == 0)
-    mem_dealloc(cur->BindList[j],sizeof(int),ODBC_SPACE);
-  else if (cur->BindTypes[j] == 1)
-    mem_dealloc(cur->BindList[j],sizeof(float),ODBC_SPACE);
+  if (cur->BindTypes[j] == 0) {
+    mem_dealloc(cur->BindList[j],sizeof(Integer),ODBC_SPACE);
+  } else if (cur->BindTypes[j] == 1) {
+    mem_dealloc(cur->BindList[j],sizeof(Float),ODBC_SPACE);
+  }
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -441,8 +442,9 @@ void SetCursorClose(struct ODBC_Cursor *cur)
   SQLFreeStmt(cur->hstmt, SQL_CLOSE);    /* free statement handler*/
 
   if (cur->NumBindVars) {                 /* free bind variable list*/
-    for (j = 0; j < cur->NumBindVars; j++)
+    for (j = 0; j < cur->NumBindVars; j++) {
       if (cur->BindTypes[j] < 2) free_cur_bindlist(cur,j);
+    }
     mem_dealloc(cur->BindList,sizeof(UCHAR *) * cur->NumBindVars,ODBC_SPACE);
     mem_dealloc(cur->BindTypes,sizeof(int) * cur->NumBindVars,ODBC_SPACE);
     mem_dealloc(cur->BindLens,sizeof(SQLLEN) * cur->NumBindVars,ODBC_SPACE);
@@ -455,11 +457,13 @@ void SetCursorClose(struct ODBC_Cursor *cur)
     mem_dealloc(cur->ColTypes,sizeof(SWORD) * cur->NumCols,ODBC_SPACE);
     mem_dealloc(cur->ColLen,sizeof(SQLULEN) * cur->NumCols,ODBC_SPACE);
     mem_dealloc(cur->OutLen,sizeof(SQLLEN) * cur->NumCols,ODBC_SPACE);
-    mem_dealloc(cur->Data,sizeof(char *) * cur->NumCols,ODBC_SPACE);
+    mem_dealloc(cur->Data,sizeof(UCHAR *) * cur->NumCols,ODBC_SPACE);
   }
 
   /* free memory for the sql statement associated w/ this cursor*/
-  if (cur->Sql) mem_dealloc(cur->Sql,strlen(cur->Sql)+1,ODBC_SPACE);
+  if (cur->Sql) {
+    mem_dealloc(cur->Sql,strlen(cur->Sql)+1,ODBC_SPACE);
+  }
   /* initialize the variables.  set them to the right value*/
   cur->Sql = 0;
   cur->NumCols =
@@ -827,7 +831,7 @@ void SetBindVarNum(CTXTdecl)
     unify(CTXTc reg_term(CTXTc 4), GenErrorMsgBall("Not enough memory for cur->BindTypes!"));
     return;
   }
-  cur->BindLens = mem_alloc(sizeof(SQLINTEGER) * NumBindVars,ODBC_SPACE);
+  cur->BindLens = mem_alloc(sizeof(SQLLEN) * NumBindVars,ODBC_SPACE);
   if (!cur->BindLens) {
     unify(CTXTc reg_term(CTXTc 4), GenErrorMsgBall("Not enough memory for cur->BindLens!"));
     return;
@@ -899,28 +903,28 @@ void SetBindVal(CTXTdecl)
 	if (cur->BindTypes[j] < 2) free_cur_bindlist(cur,j);  //((void *)cur->BindList[j]);
 	cur->BindList[j] = (UCHAR *)mem_alloc(sizeof(int),ODBC_SPACE);
 	cur->BindTypes[j] = 0;
-	rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER, 0, 0, (int *)(cur->BindList[j]), 0, NULL);
+	rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER, 0, 0, (Integer *)(cur->BindList[j]), 0, NULL);
 	if (rc != SQL_SUCCESS) {
 	  unify(CTXTc reg_term(CTXTc 5),PrintErrorMsg(CTXTc cur));
 	  SetCursorClose(cur);
 	  return;
 	}
       }
-      *((int *)cur->BindList[j]) = (int)oint_val(BindVal);
+      *((Integer *)cur->BindList[j]) = oint_val(BindVal);
     } else if (isofloat(BindVal)) {
       if (cur->BindTypes[j] != 1) {
 	/*printf("ODBC: Changing Type: flt to %d\n",cur->BindTypes[j]);*/
 	if (cur->BindTypes[j] < 2) free_cur_bindlist(cur,j);
-	cur->BindList[j] = (UCHAR *)mem_alloc(sizeof(float),ODBC_SPACE);
+	cur->BindList[j] = (UCHAR *)mem_alloc(sizeof(Float),ODBC_SPACE);
 	cur->BindTypes[j] = 1;
-	rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_FLOAT, SQL_FLOAT, 0, 0, (float *)(cur->BindList[j]), 0, NULL);
+	rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_FLOAT, SQL_FLOAT, 0, 0, (Float *)(cur->BindList[j]), 0, NULL);
 	if (rc != SQL_SUCCESS) {
 	  unify(CTXTc reg_term(CTXTc 5),PrintErrorMsg(CTXTc cur));
 	  SetCursorClose(cur);
 	  return;
 	}
       }
-      *((float *)cur->BindList[j]) = (float)ofloat_val(BindVal);
+      *((Float *)cur->BindList[j]) = ofloat_val(BindVal);
     } else if (isstring(BindVal)) {
       if (cur->BindTypes[j] != 2) {
 	/*printf("ODBC: Changing Type: str to %d\n",cur->BindTypes[j]);*/
@@ -928,7 +932,7 @@ void SetBindVal(CTXTdecl)
 	cur->BindTypes[j] = 2;
 	/* SQLBindParameter will be done later in parse for char variables*/
       }
-      cur->BindList[j] = string_val(BindVal);
+      cur->BindList[j] = string_val(BindVal);  // wont be freed since type=2
     } else if (isconstr(BindVal) && get_str_psc(BindVal) == nullFctPsc) {
       if (cur->BindTypes[j] < 2) free_cur_bindlist(cur,j);
       cur->BindTypes[j] = 3;
@@ -963,12 +967,12 @@ void SetBindVal(CTXTdecl)
   /* otherwise, memory needs to be allocated in this case*/
   if (isointeger(BindVal)) {
     cur->BindTypes[j] = 0;
-    cur->BindList[j] = (UCHAR *)mem_alloc(sizeof(int),ODBC_SPACE);
+    cur->BindList[j] = (UCHAR *)mem_alloc(sizeof(Integer),ODBC_SPACE);
     if (!cur->BindList[j]) {
       unify(CTXTc reg_term(CTXTc 5), GenErrorMsgBall("Not enough memory for an int in SetBindVal"));
       return;
     }
-    *((int *)cur->BindList[j]) = (int)oint_val(BindVal);
+    *((Integer *)cur->BindList[j]) = (Integer)oint_val(BindVal);
   } else if (isofloat(BindVal)) {
     cur->BindTypes[j] = 1;
     cur->BindList[j] = (UCHAR *)mem_alloc(sizeof(float),ODBC_SPACE);
@@ -976,7 +980,7 @@ void SetBindVal(CTXTdecl)
       unify(CTXTc reg_term(CTXTc 5), GenErrorMsgBall("Not enough memory for a float in SetBindVal"));
       return;
     }
-    *((float *)cur->BindList[j]) = (float)ofloat_val(BindVal);
+    *((Float *)cur->BindList[j]) = (Float)ofloat_val(BindVal);
   } else if (isstring(BindVal)) {
     cur->BindTypes[j] = 2;
     cur->BindList[j] = string_val(BindVal);
@@ -1064,10 +1068,10 @@ RETCODE rc;
       switch (cur->BindTypes[j])
 		{
 		case 0:
-			rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER, 0, 0, (int *)(cur->BindList[j]), 0, NULL);
+			rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER, 0, 0, (Integer *)(cur->BindList[j]), 0, NULL);
 			break;
 		case 1:
-			rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_FLOAT, SQL_FLOAT, 0, 0, (float *)cur->BindList[j], 0, NULL);
+			rc = SQLBindParameter(cur->hstmt, (short)(j+1), SQL_PARAM_INPUT, SQL_C_FLOAT, SQL_FLOAT, 0, 0, (Float *)cur->BindList[j], 0, NULL);
 			break;
 		case 2:
 			/* we're sloppy here.  it's ok for us to use the default values*/
@@ -1432,14 +1436,14 @@ void ODBCDescribeSelect(CTXTdecl)
     }
 
     cur->Data =
-      (UCHAR **)mem_alloc(sizeof(char *) * cur->NumCols,ODBC_SPACE);
+      (UCHAR **)mem_alloc(sizeof(UCHAR *) * cur->NumCols,ODBC_SPACE);
     if (!cur->Data) {
       unify(CTXTc reg_term(CTXTc 3),GenErrorMsgBall("Not enough memory for Data!"));
       return;
     }
 
     cur->OutLen =
-      (SQLLEN *)mem_alloc(sizeof(UDWORD) * cur->NumCols,ODBC_SPACE);
+      (SQLLEN *)mem_alloc(sizeof(SQLLEN) * cur->NumCols,ODBC_SPACE);
     if (!cur->OutLen) {
       unify(CTXTc reg_term(CTXTc 3),GenErrorMsgBall("Not enough memory for OutLen!"));
       return;
@@ -1472,7 +1476,7 @@ void ODBCDescribeSelect(CTXTdecl)
 	return;
       }
       cur->Data[j] =
-	(UCHAR *) mem_alloc(((unsigned) cur->ColLen[j]+1)*sizeof(UCHAR),ODBC_SPACE);
+	(UCHAR *) mem_alloc(sizeof(UCHAR)*((unsigned) cur->ColLen[j]+1),ODBC_SPACE);
       if (!cur->Data[j]) {
 	char errmsg[200];
 	sprintf(errmsg,"Not enough memory for Data[%d]!",j);

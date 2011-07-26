@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.45 2011-05-19 16:39:06 tswift Exp $
+** $Id: token_xsb.c,v 1.46 2011-07-26 17:27:49 dwarren Exp $
 ** 
 */
 
@@ -417,8 +417,9 @@ READ_ERROR: if (!instr && ferror(card))
                 {   int i, n;
                     for (n = c-'0', i = 2; --i >= 0; n = (n<<3) + DigVal(c))
                         if (DigVal(c = GetC(card,instr)) >= 8) {
-                            if (c < 0) goto READ_ERROR;
-                            (void) unGetC(c, card, instr);
+			  // if (c < 0) goto READ_ERROR;
+			  // (void) unGetC(c, card, instr);
+			  if (c != '\\') goto READ_ERROR; // more standardish
                             break;
                         }
                     return n & 255;
