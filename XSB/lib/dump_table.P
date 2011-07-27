@@ -1,139 +1,79 @@
-:- export table_dump/0,table_dump/1,table_dump/2, table_dump/3, table_dump_file/0, table_dump_file/1.
+%:- compiler_options([sysmod]).
 
-:- import domain_error/4 from error_handler.
+:- export table_dump/0,table_dump/1,table_dump/2, table_dump/3.
+% table_dump_file/0, table_dump_file/1.
+
+:- import domain_error/4,check_nonvar_list/3 from error_handler.
 :- import numbervars/1 from num_vars.
 :- import member/2,length/2 from basics.
 :- import get_calls_for_table/2 from tables.
 :- import subsumes_chk/2 from subsumes.
-:- import concat_atom/3 from string.
 :- import parsort/4 from machine.
-%:- import variant/2 from subsumes.
-%:- import shell_to_list/3, sys_pid/2 from shell.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% table_dump/0 shows summary and details of #subgoals and #returns for all tabled predicates.
-% table_dump(Pred,Options) writes to current_output depending on what is in the list of Options:
-%   info(summary) shows summary and details of #subgoals and #returns for all subgoals that are subsumed by Pred.
-%   info(details) shows details of #subgoals and #returns for all subgoals that are subsumed by Pred.
-%   results(Results) does not write output, instead it binds Results to a list of the results that would have otherwise been output.
-%table_dump(Stream, Pred, Options) performs like table_dump/2, except it writes output to stream, even if results(Results) is in the Options list.
-%
-% These utilities are also available but are not exported
-% table_dump_f/0 writes to generated filename the summary and details for all tabled predicates.
-% table_dump_f(File) appends to File the summary and details for all tabled predicates.
-%    The contents of the file can be read by prolog or parsed by tools such as Perl or Awk
-%
-% format_table_dump_file(File) will format the contents of a table dump file and write it to current_output.
-% format_table_dump_file(InFile,OutFile) will format the contents of a table dump file InFile and write it to OutFile.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% options: 
-%info(summary), info(details), info(allreturns),   -- info(summary) is default
-%format(flora), format(prolog)   -- format(prolog) is default 
-%results(R) - if present R is bound to the output instead of writing to stdout. If a stream is given as arg1 of table_dump/3, output is also written to that stream. 
-
-table_dump_file :- gentdfile(File), table_dump_f(File).
-table_dump_file(File) :- open(File,append,Stream), 
-	reset_current_output(Stream,Old),table_dump,reset_current_output(Old,_),close(Stream).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% table_dump/0   table dump all tabled predicates.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 :- import sort/2 from setof.
 
-table_dump :- findall(Pred,predicate_property(Pred,tabled),Preds),
-	      sort(Preds,PredList),member(P,PredList),nl,table_dump(P,[info(summary)]),
-	      table_dump(P,[info(allreturns)]),fail.
-table_dump.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% table_dump/1 calls table_dump/2 with default details
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-table_dump(Pred) :- table_dump(Pred,[]).
-
-% main form: 
-% if results(R) in Options, then do not write out unless Stream has been suppled
-:- dynamic nowriteit/1.
-:- dynamic results/1.
-process_options(Options) :- 
-	check_options(Options),
-	retractall(tdformatterm(_)),
-	retractall(tdformat(_)),(member(format(P),Options) -> assert(tdformat(P));assert(tdformat(prolog))), %default format is prolog
-	retractall(nowriteit(_))  ,(member(results(_),Options) -> assert(nowriteit(_)); true).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% table_dump/0 shows summary and details of #subgoals and #returns for
+% all tabled predicates.
+%
+% table_dump(Pred,Options) writes to current_output depending on what
+% is in the list of Options: info(summary) shows summary and details
+% of #subgoals and #returns for all subgoals that are subsumed by
+% Pred.  info(details) shows details of #subgoals and #returns for all
+% subgoals that are subsumed by Pred.  results(Results) does not write
+% output, instead it binds Results to a list of the results that would
+% have otherwise been output. 
+%
+% table_dump(Stream, Pred, Options) performs like table_dump/2, except
+% it writes output to stream, even if results(Results) is in the
+% Options list.  
+%
+% These following utilities are also available but are not exported
+% table_dump_f/0 writes to generated filename the summary and details
+% for all tabled predicates.  table_dump_f(File) appends to File the
+% summary and details for all tabled predicates.  The contents of the
+% file can be read by prolog or parsed by tools such as Perl or Awk
+% format_table_dump_file(File) will format the contents of a
+% table_dump file and write it to current_output.
+% format_table_dump_file(InFile,OutFile) will format the contents of a
+% table dump file InFile and write it to OutFile.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % table_dump/3 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-:- dynamic writetostream(_).
-table_dump(Stream,Pred,Options) :- assert(writetostream(_)),reset_current_output(Stream,Oldstream),table_dump(Pred,Options),reset_current_output(Oldstream,_),retract(writetostream(_)).
 
-table_dump(Pred,Options) :-  process_options(Options), nl,table_dump_1(Pred,Options), gathertdformatterms(Options).
+table_dump(Stream,Pred,Options) :- 
+	check_options(Options,Details,Summary,ResultsIn,Output), 
+	(ResultsIn = results(Results) -> true ; ResultsIn = Results),
+	(Summary == y -> table_dump_summary(Pred,Stream,Results,Results1,Output) ; Results = Results1),
+	(Details == y -> 
+	    table_dump_details(Pred,Stream,Results1,Output) 
+         ;  (var(Results1) -> Results1 = [] ; true)).
 
-%table_dump(Pred,Options) :- gentdstamp(Stamp),writeit(Stamp),fail.
-table_dump_1(Pred,Options) :- \+ member(info(_),Options), table_dump_summary(Pred),!. %default is summary
-table_dump_1(Pred,Options) :- member(info(summary),Options), table_dump_summary(Pred),fail.
-table_dump_1(Pred,Options) :- member(info(details),Options), table_dump_details(Pred),fail.
-table_dump_1(Pred,Options) :- member(info(allreturns),Options), table_dump_allreturns(Pred),fail.
-table_dump_1(_,_):- retractall(tdformat(_)).
+table_dump_summary(Pred,Stream,ResultsIn,ResultsOut,Output):-
+	all_call_returns_for_atom_list(Pred,NumCalls, List), 
+	sumreturns(List,NumReturns),
+	(var(ResultsIn) ->
+	      ResultsIn = [summary =  Pred - subgoals(NumCalls) - returns(NumReturns)|ResultsOut]
+	    ; ResultsOut = n),
+	(Output = y -> 
+	    writeit_prolog(Stream,summary =  Pred - subgoals(NumCalls) - returns(NumReturns)),nl
+	 ;  true).
 
-%table_dump(Pred) :- table_dump(Pred,summary),fail. % need to do this because numbervars causes unification in Pred, so backtrack removes numbervars
-%table_dump(Pred) :- table_dump(Pred,details).
-
-table_dump_summary(Pred):-
-	td(Pred,NumCalls,NumReturns),
-	writeit(summary =  Pred - subgoals(NumCalls) - returns(NumReturns)).
-	 
-table_dump_details(Pred):- all_call_returns_for_atomlw(Pred).
-table_dump_allreturns(Pred):- table_dump_details(Pred). %all_call_all_returns_for_atomlw(Pred).
-
-reset_current_output(New,Old) :- current_output(Old),set_output(New).  %TODO: error: New is ground and checkfor domain error(stream or variable,Stream)
-
-% Summary for Pred: , number of calls, #answers 
-td(Pred,NumCalls,NumReturns) :- 
-	all_call_returns_for_atoml(Pred,NumCalls, List), 
-	sumreturns(List,NumReturns).
-
-sumreturns([],0).
-sumreturns([_-N-_L|Rs],NumReturns) :- sumreturns(Rs,NR), NumReturns is N + NR.
-
-check_options(Options):- member(O,Options),
-	               (option(O) -> true 
-		        ;  domain_error('[info(summary),info(details),results(X)]',O,table_dump/2,2) ),
-		       fail.
-check_options(_).
-
-/* TLS: 
-badoptions([O|Options]) :- 
-     option(O)-> 
-	badoptions(Options)
-    ;   (concat_atom(['Unknown Option ',O,' for table_dump.'],' ',A),write(A),nl).
-*/
-
-option(info(summary)).
-option(info(details)).
-option(info(allreturns)). % currently = details
-option(results(_)).
-option(format(prolog)).
-option(format(xsb)).
-option(format(flora)). %future expansion
-
-
-% details for Pred Pattern- number of subcalls, #answers for each subcalls
-% all_call_returns_for_atomlw calls all_call_returns_for_atoml/3 and writes out pattern(Pred,called(NumCalls),answers_for_calls(List of each call and how many answers it has))). 
-all_call_returns_for_atomlw(Pred) :-
-	all_call_returns_for_atoml(Pred,NumCalls, List),
-	writeit( details- Pred - subgoals(NumCalls) - answers_for_subgoals(List)). 
+table_dump_details(Pred,Stream,ResultsIn,Output):-
+	all_call_returns_for_atom_list(Pred,NumCalls, List), 
+	(var(ResultsIn) ->
+	    ResultsIn = [details- Pred - subgoals(NumCalls) - answers_for_subgoals(List)]
+          ; true),
+        (Output = y -> 
+	    writeit_prolog(Stream,details- Pred - subgoals(NumCalls) - answers_for_subgoals(List))
+	  ; true).
 
 %all_call_returns_for_atoml(+Pred,?NumCalls,?List) is true when
 %NumCalls is the number of calls for tabled predicate Pred that are
 %subsumed by Pred, and List is the list of list of answers for those
 %calls.
-% TLS: changed to allow variable input (might help with Hilog too?)
-all_call_returns_for_atoml(Pred,NumCalls, Slist) :-
+all_call_returns_for_atom_list(Pred,NumCalls, Slist) :-
 	findall(Pred,predicate_property(Pred,tabled),PredList_1),
 	sort(PredList_1,PredList),
 	(PredList = [] -> 
@@ -163,20 +103,100 @@ getvarsig(Term,Sig) :- compound(Term),!,Term =.. Terms, getvarsig(Terms,Sig).
 
 bindtosig(Sig,Ret) :- Ret=..[ret|Sig]. %must have same number of vars   (?? if not variant)
 
+sumreturns([],0).
+sumreturns([_-N-_L|Rs],NumReturns) :- sumreturns(Rs,NR), NumReturns is N + NR.
+
+writeit_prolog(Stream,Term) :- numbervars(Term), 
+	writeq(Stream,Term), 
+	write(Stream,'.'),nl(Stream),fail. %fail to remove effect of numbervars
+writeit_prolog(_,_).
+
+%--------
+
+check_options(Options,Details,Summary,ResultList,Output):-
+	check_nonvar_list(Options,'table_dump/[2,3]','[2,3]'),
+	(Options == [] -> 
+	    Details = n,Summary = y,ResultList = n,Output = y
+	 ;  check_options_1(Options,Details,Summary,ResultList,Output)).
+
+check_options_1([],D,S,R,O):-
+	(var(D) -> D = n ; true),
+	(var(S) -> S = y ; true),  % summary true by default
+	(var(R) -> R = n ; true),
+	(var(O) -> O = y ; true).
+check_options_1([details(Bool)|T],D,S,R,O):-!,
+	(Bool == true -> 
+	    D = y 
+	 ;  (Bool == false -> 
+	        D = n
+	    ; 	domain_error('[summary(<true/False>),details(<true/false>),results(Var),output(<true/false>)]',
+	             Bool,'table_dump/[2,3]','[2,3]') ) ),
+	check_options_1(T,D,S,R,O).
+check_options_1([summary(Bool)|T],D,S,R,O):-!,
+	(Bool == true -> 
+	    S = y 
+	 ;  (Bool == false -> 
+	        S = n
+	    ; 	domain_error('[summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)]',
+	             Bool,'table_dump/[2,3]','[2,3]') ) ),
+	check_options_1(T,D,S,R,O).
+check_options_1([results(X)|T],D,S,results(X),O):-!,
+	(var(X) -> 
+	    true
+	 ;  domain_error('[summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)]',
+	             X,'table_dump/[2,3]','[2,3]') ),
+	check_options_1(T,D,S,results(X),O).
+check_options_1([output(Bool)|T],D,S,R,O):-!,
+	(Bool == true -> 
+	    S = y 
+	 ;  (Bool == false -> 
+	        S = n
+	    ; 	domain_error('[summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)]',
+	             Bool,'table_dump/[2,3]','[2,3]') ) ),
+	check_options_1(T,D,S,R,O).
+check_options_1([Culprit|_],_D,_S,_,_):-
+	domain_error('[details(<true/False>),details(<true/false>),results(<var>),output(<true/false>)]',
+	             Culprit,'table_dump/[2,3]','[2,3]').
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Convenience
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% table_dump/0   table dump all tabled predicates.
+
+table_dump(Pred,Options):- table_dump(userout,Pred,Options).
+
+table_dump(Pred) :- table_dump(userout,Pred,[info(summary)]).
+
+table_dump :- findall(Pred,predicate_property(Pred,tabled),Preds),
+	      sort(Preds,PredList),member(P,PredList),nl,table_dump(P,[info(summary)]),
+	      table_dump(P,[info(details)]),fail.
+table_dump.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+end_of_file.
+
+% details for Pred Pattern- number of subcalls, #answers for each subcalls
+% all_call_returns_for_atomlw calls all_call_returns_for_atoml/3 and writes out pattern(Pred,called(NumCalls),answers_for_calls(List of each call and how many answers it has))). 
+all_call_returns_for_atomlw(Pred) :-
+	all_call_returns_for_atoml(Pred,NumCalls, List),
+	writeit( details- Pred - subgoals(NumCalls) - answers_for_subgoals(List)). 
+
 :- dynamic tdformat/1.
 :- dynamic tdformatterm/1.
 
-
 writeit(Term) :- assert(tdformatterm(Term)),fail.
 writeit(_) :- nowriteit(_),(\+ writetostream(_)),!.
-writeit(Term) :- tdformat(prolog) -> writeit_prolog(Term) ; writeit_flora(Term).
+% commenting out the flora stuff for now.
+%writeit(Term) :- tdformat(prolog) -> writeit_prolog(Term) ; writeit_flora(Term).
+writeit(Term) :- writeit_prolog(Term).
 
-writeit_prolog(Term) :- numbervars(Term), writeq(Term), write('.'),nl,fail. %fail to remove effect of numbervars
-writeit_prolog(_).
-writeit_flora(Term) :- convert_to_flora(Term,FloraTerm), writeq(FloraTerm), write('.'),nl,fail. %fail to remove effect of numbervars
-writeit_flora(_).
-
-convert_to_flora(_Term,_FloraTerm) :- write(' Sorry, FLORA syntax for table_dump not yet implemented. '),nl,fail.
+%writeit_flora(Term) :- 
+%		    convert_to_flora(Term,FloraTerm), 
+%		    writeq(FloraTerm), write('.'),nl,fail. %fail to remove effect of numbervars
+%writeit_flora(_).
+%
+%convert_to_flora(_Term,_FloraTerm) :- 
+%	write(' Sorry, FLORA syntax for table_dump not yet implemented. '),nl,fail.
 
 gathertdformatterms(Options) :- member(results(Terms),Options), !, (findall(Term, tdformatterm(Term), Terms) -> true;Terms=[]), retractall(tdformatterm(_)).
 gathertdformatterms(_). %facts not requested
@@ -219,10 +239,21 @@ gentdstamp(table_dump-DateAtom) :-
 	concat_atom([DateL],'-',DateAtom).
 writeit_flora(_,_).
 
-
 */
 
-end_of_file.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% options: 
+%info(summary), info(details), info(allreturns),   -- info(summary) is default
+%format(flora), format(prolog)   -- format(prolog) is default 
+%results(R) - if present R is bound to the output instead of writing to stdout. If a stream is given as arg1 of table_dump/3, output is also written to that stream. 
+
+table_dump_file :- gentdfile(File), table_dump_f(File).
+table_dump_file(File) :- open(File,append,Stream), 
+	reset_current_output(Stream,Old),table_dump,reset_current_output(Old,_),close(Stream).
+
+
 /* Right now, experimental for aggregs.P */
 	
 :- export get_unifiable_returns/3.
