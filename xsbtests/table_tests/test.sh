@@ -110,6 +110,8 @@ EOF
 #--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" test_calldepth "test."
 #--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_answerdepth "test."
+#--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" get_resid "test."
 #--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" test_trievars "test."
