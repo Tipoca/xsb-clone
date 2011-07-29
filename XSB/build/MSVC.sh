@@ -7,10 +7,10 @@ EOF
 
 cd ../emu
 
-DEPEND=`which makedepend`
+DEPEND=`which makedepend 2> /dev/null`
 
-TODOS=`which todos`
-U2D=`which unix2dos`
+TODOS=`which todos 2> /dev/null`
+U2D=`which unix2dos 2> /dev/null`
 if test -z "$DEPEND" ; then
     echo "*** Warning: The command 'makedepend' is not installed."
     echo "***          Install it to speed up compilation of XSB."

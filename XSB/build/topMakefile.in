@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: topMakefile.in,v 1.62 2011-07-08 04:32:07 kifer Exp $
+## $Id: topMakefile.in,v 1.63 2011-07-29 05:13:28 kifer Exp $
 ##
 ##
 
@@ -76,6 +76,8 @@ prefix=@prefix@
 
 srcdir=@topdir@
 VPATH=$(srcdir)
+
+link_cmd=@config_ln_command@
 
 # where XSB lib directory lives
 install_libdir=$(prefix)/lib
@@ -181,11 +183,11 @@ prepare:
 	@echo ""; echo "Preparing..."
 	@cd $(src_emudir); \
 	  rm -f *.o Makefile  2> /dev/null || echo "" ; \
-	  ln -s ${src_config_objlibdir}/*.o . 2> /dev/null || echo "" ; \
-	  ln -s ${src_config_prefix}/emuMakefile ./Makefile
+	  ${link_cmd} ${src_config_objlibdir}/*.o . 2> /dev/null || echo "" ; \
+	  ${link_cmd} ${src_config_prefix}/emuMakefile ./Makefile
 	@cd $(srcdir)/gpp; \
 	  rm -f *.o Makefile ; \
-	  ln -s ${src_config_prefix}/gppMakefile ./Makefile
+	  ${link_cmd} ${src_config_prefix}/gppMakefile ./Makefile
 	@rm -f $(srcdir)/build/.*.tmp
 
 emulator: ${src_config_prefix}/xsb_config.h ${src_config_prefix}/xsb_debug.h
@@ -208,7 +210,7 @@ xasp:
 	@cd $(src_pkgdir)/xasp; \
 	  echo "Compiling xasp interface"; \
 	  rm -f *.o Makefile *.h *$(xsb_obj_extension) *.so 2>/dev/null || echo ""; \
-	  ln -s ${src_config_prefix}/smoMakefile ./Makefile; \
+	  ${link_cmd} ${src_config_prefix}/smoMakefile ./Makefile; \
 	  make CROSS_SIMULATOR=@CROSS_SIMULATOR@ XSB=$(src_scriptdir)/xsb$(config_tag) @smodels_goal@ 2>&1\
 		 | tee -a ../../build/Installation_summary
 

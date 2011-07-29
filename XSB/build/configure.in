@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.231 2011-05-20 15:48:04 tswift Exp $
+## $Id: configure.in,v 1.232 2011-07-29 05:13:28 kifer Exp $
 ##
 ##
 
@@ -54,10 +54,12 @@ topdir_sans_spaces="`echo "$topdir" | sed 's, ,,g'`"
 
 if test "$topdir" != "$topdir_sans_spaces" ;  then
     echo ""
-    echo "*** XSB cannot be installed in $topdir"
-    echo "*** on Unix-style systems, as the directory path for XSB"
-    echo "*** installations cannot have spaces (a limitation of GNU Make)."
+    echo "*** XSB cannot be compiled in $topdir"
+    echo "*** on Unix-style systems:  The directory path for XSB"
+    echo "*** configurations cannot have spaces (a limitation of GNU Make)."
     echo "*** Please choose a location that has no whitespaces in its name."
+    echo "*** If you configure XSB using the --prefix=DIR option, you can later"
+    echo "*** move XSB to DIR using the \`./makexsb install' command."
     echo ""
     exit 1
 fi
@@ -877,6 +879,7 @@ dnl --with-includes (multiple dirs)
 if test -n "$with_includes"; then
     echo "    Appending directories to the C include path:"
     for arg in $with_includes; do
+        dnl strip trailing slashes
         arg=`echo "-I${arg}" | sed 's,\([[^/]]\)/*$,\1,'`
         c_site_includes="${c_site_includes} $arg"
         echo "		$arg"
@@ -1300,6 +1303,11 @@ fi
 DYNMOD_LDFLAGS=-shared
 DYNMOD_SHAREDLIB_EXTENSION=so
 
+# Normally we link Makefiles, *o etc in emu/ symbolically.
+# But some CYGWIN versions running on virtual machines
+# do not work right with symlinks. So, for CYGWIN we use cp -pf
+config_ln_command="ln -s "
+
 # Set OS-specific variables for XSB
 case "$canonical" in
     *alpha*)    AC_DEFINE(FOREIGN_ELF)
@@ -1461,6 +1469,8 @@ case "$canonical" in
                     LDFLAGS="$LDFLAGS -lwsock32 -luser32"
                     XSBMOD_LDFLAGS="$LDFLAGS"
                 fi
+
+                config_ln_command="cp -fp "
         ;;
 esac
 
@@ -1470,6 +1480,7 @@ fi
 
 AC_SUBST(DYNMOD_SHAREDLIB_EXTENSION)
 AC_SUBST(DYNMOD_LDFLAGS)
+AC_SUBST(config_ln_command)
 
 # check for MIPS
 case "$canonical" in
@@ -1623,22 +1634,22 @@ JAVA_PLATFORM_HEADER_PATH=
 if test -z "$JAVA_HOME"; then
     dnl try to see if we can derive the java home dir from javac's full name
     AC_PATH_PROG(java_path,javac,no)
-    java_path=`dirname $java_path`   # strip /javac
-    java_path=`dirname $java_path`   # strip /bin
-    java_compiler=$java_path/javac
-    java_path=$java_path/include
+    java_path=`dirname "$java_path"`   # strip /javac
+    java_path=`dirname "$java_path"`   # strip /bin
+    java_compiler="$java_path/javac"
+    java_path="$java_path/include"
 else
-    java_path=$JAVA_HOME/include
-    java_compiler=$JAVA_HOME/bin/javac
+    java_path="$JAVA_HOME/include"
+    java_compiler="$JAVA_HOME/bin/javac"
 fi
 
-java_platform_specific_hdr_path=`ls ${java_path}/*/jni_md.h`
-java_platform_specific_hdr_path=`dirname ${java_platform_specific_hdr_path}`
+java_platform_specific_hdr_path="`ls "${java_path}/"*/jni_md.h`"
+java_platform_specific_hdr_path="`dirname "${java_platform_specific_hdr_path}"`"
 
 if test -f "$java_path/jni.h" -a -f "$java_platform_specific_hdr_path/jni_md.h" ; then
     interprolog_native_engine=yes
-    JAVA_HEADER_PATH=${java_path}
-    JAVA_PLATFORM_HEADER_PATH=${java_platform_specific_hdr_path}
+    JAVA_HEADER_PATH="${java_path}"
+    JAVA_PLATFORM_HEADER_PATH="${java_platform_specific_hdr_path}"
     echo "Obtaining Java header files form ${JAVA_HEADER_PATH} and ${JAVA_PLATFORM_HEADER_PATH}"
 fi
 
@@ -1646,7 +1657,7 @@ fi
 # try to find jni.h and jni_md.h using AC_CHECK_HEADERS
 if test -z "${interprolog_native_engine}" ; then
     AC_CHECK_HEADERS([jni.h jni_md.h], interprolog_native_engine=yes, interprolog_native_engine=)
-    java_compiler=`which javac`
+    java_compiler=`which javac 2> /dev/null`
     if test -n "${interprolog_native_engine}" ; then
 	echo "Found Java header files using CFLAGS"
     fi
@@ -2007,9 +2018,9 @@ fi
 
 echo ""
 if test -z "$config_tag" ; then
-    echo "***Now compile XSB with:   \`makexsb'"
+    echo "***Now compile XSB with:   \`./makexsb'"
 else
-    echo "***Now compile XSB with:   \`makexsb --config-tag=${config_tag_sans_dash}'"
+    echo "***Now compile XSB with:   \`./makexsb --config-tag=${config_tag_sans_dash}'"
 fi
 
 echo ""
