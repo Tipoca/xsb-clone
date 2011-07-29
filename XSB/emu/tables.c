@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.91 2011-07-22 21:39:35 tswift Exp $
+** $Id: tables.c,v 1.92 2011-07-29 22:56:04 tswift Exp $
 ** 
 */
 
@@ -133,10 +133,10 @@ VariantSF NewProducerSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo) {
   }
 #endif
     else {								    
-     SM_AllocateStruct(smProdSF,pNewSF);				    
-     pNewSF = memset(pNewSF,0,sizeof(subsumptive_producer_sf));		    
-     subg_sf_type(pNewSF) = SUBSUMPTIVE_PRODUCER_SFT;			    
-   }
+      SM_AllocateStruct(smProdSF,pNewSF);				    
+      pNewSF = memset(pNewSF,0,sizeof(subsumptive_producer_sf));		    
+      subg_sf_type(pNewSF) = SUBSUMPTIVE_PRODUCER_SFT;			    
+    }
 /*   subg_deltf_ptr(pNewSF) = NULL; now this is a union type */
    subg_tif_ptr(pNewSF) = TableInfo;					    
    subg_dll_add_sf(pNewSF,TIF_Subgoals(TableInfo),TIF_Subgoals(TableInfo)); 
@@ -144,6 +144,7 @@ VariantSF NewProducerSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo) {
    CallTrieLeaf_SetSF(Leaf,pNewSF);					    
    subg_ans_list_ptr(pNewSF) = empty_return_handle(pNewSF);		     
    subg_compl_stack_ptr(pNewSF) = openreg - COMPLFRAMESIZE;		    
+   INIT_SUBGOAL_CALLSTO_NUMBER(pNewSF);
    ((VariantSF) pNewSF)->visited = 0;
 /* incremental evaluation start */
 if((get_incr(TIF_PSC(TableInfo))) &&(IsVariantPredicate(TableInfo))){

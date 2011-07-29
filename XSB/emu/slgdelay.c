@@ -883,7 +883,7 @@ void do_delay_stuff(CTXTdeclc NODEptr as_leaf, VariantSF subgoal, xsbBool sf_exi
 
 /*----------------------------------------------------------------------*/
 
-xsbBool answer_is_junk(CTXTdeclc CPtr dlist)	  /* assumes that dlist != NULL */
+xsbBool answer_is_unsupported(CTXTdeclc CPtr dlist)	  /* assumes that dlist != NULL */
 {
     CPtr    cptr;
     VariantSF subgoal;

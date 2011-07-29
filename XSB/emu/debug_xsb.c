@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.73 2011-07-06 20:19:52 tswift Exp $
+** $Id: debug_xsb.c,v 1.74 2011-07-29 22:56:04 tswift Exp $
 ** 
 */
 
@@ -1227,7 +1227,7 @@ void print_tables(CTXTdecl)
       fprintf(stddbg, "%p:\n", subg);
       fprintf(stddbg,"  sf_type = %s,  is_complete = %s,  is_reclaimed = %s,",
 		 stringSubgoalFrameType(subg_sf_type(subg)),
-		 (subg_is_complete(subg) ? "YES" : "NO"),
+		 (subg_is_completed(subg) ? "YES" : "NO"),
 		 (subg_is_reclaimed(subg) ? "YES" : "NO"));
       fprintf(stddbg,"  tif_ptr = %p,  leaf_ptr = %p,  ans_root_ptr = %p,\n"
 		 "  ans_list_ptr = %p,   ans_list_tail = %p,\n"

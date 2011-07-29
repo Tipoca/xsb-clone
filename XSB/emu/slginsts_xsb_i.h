@@ -138,7 +138,12 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   VariantSF producer_sf, consumer_sf;
   CPtr answer_template_cps, answer_template_heap;
   int template_size, attv_num; Integer tmp;
+#ifdef CALL_ABSTRACTION
+  int abstr_size;
+#endif
   TIFptr tip;
+
+  //  printf("starting breg is %x %x\n",breg,((pb)tcpstack.high - (pb)breg));
 
   int incrflag = 0; /* for incremental evaluation */
   VariantSF parent_table_sf=NULL; /* used for creating call graph */
@@ -189,8 +194,9 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     char buffera[MAXTERMBUFSIZE];
     char bufferb[MAXTERMBUFSIZE];
     sprint_registers(CTXTc  buffera,TIF_PSC(tip),flags[MAX_TABLE_SUBGOAL_DEPTH]);
-    if (ptcpreg) 
+    if (ptcpreg) {
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
+    }
     else sprintf(bufferb,"null");
     fprintf(stdout,"tc(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
@@ -202,12 +208,11 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
    *  computed and pushed on top of the CP stack, along with its size
    *  (encoded as a Prolog INT).  A pointer to this size, followed by
    *  the answer template (as depicted above), is returned in
-   *  CallLUR_AnsTempl(lookupResults).  Always (now) the answer
-   *  template is pushed on the Heap rather than the CPS.  In that
-   *  case, (heap - 1) points to the A.T. and
-   *  CallLUR_AnsTempl(lookupResults) has the same value as
-   *  CallInfo_AnsTempl(callInfo).
-   * 
+   *  CallLUR_AnsTempl(lookupResults).  The template is also copied               
+   *  from the CPS to the heap, where (heap - 1) points to the A.T.               
+   *  Meanwhile, CallLUR_AnsTempl(lookupResults) and                              
+   *  CallInfo_AnsTempl(callInfo) both point to the A.T. on the CPS.              
+   *                                                                  
    *  As of 2010, table_call_search() can return XSB_FAILURE(=1) or
    *  abort if the term depth of a call is greater than a specified
    *  amount.
@@ -266,7 +271,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     UNLOCK_CALL_TRIE() ;
 #endif
 
-/* --------- for incremental evaluation  --------- */
+/* --------- for new producer incremental evaluation  --------- */
 
     /* table_call_search tried to find the affected call, so if it has
        found the answer table of the new call it is made same as the
@@ -298,9 +303,18 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 	  xsb_abort("Predicate %s/%d not declared incr_table\n", get_name(TIF_PSC(CallInfo_TableInfo(callInfo))),get_arity(TIF_PSC(CallInfo_TableInfo(callInfo))));       
       }
     }
-/* --------- end incremental evaluation  --------- */
+/* --------- end new producer incremental evaluation  --------- */
 
-
+#ifdef CALL_ABSTRACTION
+    answer_template_heap = hreg - 1;
+    tmp = int_val(cell(answer_template_heap));
+    get_var_and_attv_nums(template_size, attv_num, abstr_size,tmp);
+    //    printf("there are %d abstactions %d vars %d attvs\n",abstr_size,template_size,attv_num);   
+//    printf("about to create new producer \n");                              
+//    print_AbsStack();                                                       
+//    print_callRegs(CallInfo_CallArity(callInfo));                           
+//    if (abstr_size > 0) copy_abstractions_to_cps(answer_template_cps,abstr_size);              
+#endif
     producer_cpf = answer_template_cps;
     save_find_locx(ereg);
     save_registers(producer_cpf, CallInfo_CallArity(callInfo), rreg);
@@ -322,6 +336,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 #endif
     ptcpreg = (CPtr)producer_sf;
     subg_cp_ptr(producer_sf) = breg = producer_cpf;
+    //    printf("new breg is %x %x\n",breg,((pb)tcpstack.high - (pb)breg));
     xsb_dbgmsg((LOG_COMPLETION,"just created tabled cp %x\n",breg));
     delayreg = NULL;
     if (root_address == 0)
@@ -329,11 +344,12 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     hbreg = hreg;
     lpcreg = (byte *) LABEL;	/* branch to program clause */
     XSB_Next_Instr();
-  }
+  } /* end new producer case */
 
   else if ( is_completed(producer_sf) ) {
     /* Unify Call with Answer Trie
        --------------------------- */
+    SUBG_INCREMENT_CALLSTO_SUBGOAL(producer_sf);
     if (has_answer_code(producer_sf)) {
       int i;
       //      printf("++Returning answers from COMPLETED table: ");
@@ -341,8 +357,16 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       answer_template_heap = hreg - 1; 
 
       tmp = int_val(cell(answer_template_heap));
+#ifdef CALL_ABSTRACTION
+      get_var_and_attv_nums(template_size, attv_num, abstr_size,tmp);
+      //      print_AbsStack();                                                   
+      //      print_callRegs(CallInfo_CallArity(callInfo));                       
+      trieinstr_vars_num = -1;
+      unify_abstractions_from_absStk();
+#else
       get_var_and_attv_nums(template_size, attv_num, tmp);
       trieinstr_vars_num = -1;
+#endif
 
       /* Initialize trieinstr_vars[] as the attvs in the call.  This is
 	 needed by the trie_xxx_val instructions, and the symbols of
@@ -391,19 +415,23 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     }
   }
 
-  else if ( CallLUR_VariantFound(lookupResults) )
+  else if ( CallLUR_VariantFound(lookupResults) ) {
 
     /* Previously Seen Subsumed Call
        ----------------------------- */
-    consumer_sf = CallTrieLeaf_GetSF(CallLUR_Leaf(lookupResults));
-
+    consumer_sf = CallTrieLeaf_GetSF(CallLUR_Leaf(lookupResults)); 
+    SUBG_INCREMENT_CALLSTO_SUBGOAL(producer_sf);
+  }
   else {
     /* New Properly Subsumed Call
        -------------------------- */
     NewSubConsSF( consumer_sf, CallLUR_Leaf(lookupResults),
 		   CallInfo_TableInfo(callInfo), producer_sf );
-  }
+    SUBG_INCREMENT_CALLSTO_SUBGOAL(producer_sf);
 
+}
+
+  
   /*
    * The call, represented by "consumer_sf", will consume from an
    * incomplete producer, represented by "producer_sf".
@@ -450,7 +478,12 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 #endif
 
     answer_template_heap = hreg-1;
-
+#ifdef CALL_ABSTRACTION
+    //    printf("answer_template_heap %x\n",answer_template_heap);               
+    tmp = int_val(cell(answer_template_heap));
+    get_var_and_attv_nums(template_size, attv_num, abstr_size,tmp);
+    //    printf("++there are %d abstactions %d vars %d attvs\n",abstr_size,templ    ate_size,attv_num);   
+#endif
     efreg = ebreg;
     if (trreg > trfreg) trfreg = trreg;
     if (hfreg < hreg) hfreg = hreg;
@@ -502,12 +535,17 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 			  TPA_NoOp );
 
     if ( IsNonNULL(answer_continuation) ) {
+#ifdef CALL_ABSTRACTION
+      get_var_and_attv_nums(template_size, attv_num, abstr_size,
+                            int_val(cell(answer_template_heap)));
+#else
       Integer tmp;
+      tmp = int_val(cell(answer_template_heap));
+      get_var_and_attv_nums(template_size, attv_num, tmp);
+#endif
       nlcp_trie_return(consumer_cpf) = answer_continuation; 
       hbreg = hreg;
 
-      tmp = int_val(cell(answer_template_heap));
-      get_var_and_attv_nums(template_size, attv_num, tmp);
       answer_template_heap--;
 
       /* TLS 060913: need to initialize here, as it doesnt get
@@ -519,6 +557,17 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       table_consume_answer(CTXTc first_answer,template_size,attv_num,answer_template_heap,
 			   CallInfo_TableInfo(callInfo));
 
+#ifdef CALL_ABSTRACTION
+      if (abstr_size > 0) {
+        if (!unify_abstractions_from_AT((answer_template_heap-(template_size+2*ab\
+							       str_size)), abstr_size)) {
+          printf("failing\n");
+	  breg = nlcp_prevbreg(consumer_cpf);
+	  Fail1;
+	}
+	printf("succeeding\n");
+      }
+#endif
       if (is_conditional_answer(first_answer)) {
 	xsb_dbgmsg((LOG_DELAY,
 		"! POSITIVELY DELAYING in lay active (delayreg = %p)\n",
@@ -662,6 +711,9 @@ XSB_Start_Instr(answer_return,_answer_return)
   BTNptr next_answer;
   CPtr answer_template;
   int template_size, attv_num;
+#ifdef CALL_ABSTRACTION
+  int abstr_size;
+#endif
 
   /* Locate relevant answers
      ----------------------- */
@@ -695,7 +747,11 @@ XSB_Start_Instr(answer_return,_answer_return)
        ----------------------- */
     nlcp_trie_return(breg) = answer_continuation;   /* update */
     tmp = int_val(cell(answer_template));
+#ifdef CALL_ABSTRACTION
+    get_var_and_attv_nums(template_size, attv_num, abstr_size,tmp);
+#else
     get_var_and_attv_nums(template_size, attv_num, tmp);
+#endif
     answer_template--;
 
     //    printf("answer_template %x size %d\n",answer_template,template_size);
@@ -708,6 +764,20 @@ XSB_Start_Instr(answer_return,_answer_return)
 
 table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
 			 subg_tif_ptr(consumer_sf));
+
+#ifdef CALL_ABSTRACTION
+ printf("ansret abstrsize %d\n",abstr_size);
+ if (abstr_size > 0) {
+   if (!unify_abstractions_from_AT((answer_template-(template_size+2*abstr_s\
+						     ize)), abstr_size)) {
+     printf("failing\n");
+     //      breg = nlcp_prevbreg(consumer_cpf);                             
+     Fail1;
+     XSB_Next_Instr();
+   }
+   printf("succeeding\n");
+ }
+#endif
 
     if (is_conditional_answer(next_answer)) {
       /*
@@ -787,6 +857,9 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   Def2ops
   CPtr producer_cpf, producer_csf, answer_template;
   int template_size, attv_num; Integer tmp;
+#ifdef CALL_ABSTRCTION
+  int abstr_size;
+#endif
   VariantSF producer_sf;
   xsbBool isNewAnswer = FALSE;
   BTNptr answer_leaf;
@@ -800,19 +873,9 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   producer_sf = (VariantSF)cell(ereg-Yn);
   producer_cpf = subg_cp_ptr(producer_sf);
 
-  if (flags[CTRACE_CALLS])  { 
-    char buffera[MAXTERMBUFSIZE];
-    char bufferb[MAXTERMBUFSIZE];
-    sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),flags[MAX_TABLE_SUBGOAL_DEPTH]);
-    if (ptcpreg)
-      sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
-    else sprintf(bufferb,"null");
-    fprintf(stdout,"ar(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
-  }
-
 #ifdef DEBUG_DELAYVAR
-  xsb_dbgmsg((LOG_DEBUG,">>>> New answer for %s subgoal: ",
-	     (is_completed(producer_sf) ? "completed" : "incomplete")));
+  printf(">>>> New answer for %s subgoal: ",
+	 (is_completed(producer_sf) ? "completed" : "incomplete"));
   fprintf(stddbg, ">>>> ");
   dbg_print_subgoal(LOG_DEBUG, stddbg, producer_sf);
   xsb_dbgmsg((LOG_DEBUG,">>>> has delayreg = %p", delayreg));
@@ -824,35 +887,46 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
    * from the stacks, access to its relevant information (e.g. to its
    * substitution factor) in the stacks is not safe, so better not
    * try to add this answer; it is a redundant one anyway...
+   *
+   * TLS: change to simply check whether the subgoal was complete
+   * which means that AR for EC'd subgoals will not get past here.
    */
-  if ((subgoal_space_has_been_reclaimed(producer_sf,producer_csf)) ||
-      (IsNonNULL(delayreg) && answer_is_junk(CTXTc delayreg))) {
+  //  if ((subgoal_space_has_been_reclaimed(producer_sf,producer_csf)) ||
+  if ((subg_is_completed(producer_sf)) ||
+	(IsNonNULL(delayreg) && answer_is_unsupported(CTXTc delayreg))) {
     Fail1;
     XSB_Next_Instr();
   }
 
+  if (flags[CTRACE_CALLS])  { 
+    char buffera[MAXTERMBUFSIZE];
+    char bufferb[MAXTERMBUFSIZE];
+    sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),flags[MAX_TABLE_SUBGOAL_DEPTH]);
+    if (ptcpreg)
+      sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
+    else sprintf(bufferb,"null");
+    fprintf(stdout,"na(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+  }
 
   /* answer template is now in the heap for generators */
   answer_template = tcp_template(subg_cp_ptr(producer_sf));
   tmp = int_val(cell(answer_template));
+#ifdef CALL_ABSTRACTION
+  get_var_and_attv_nums(template_size, attv_num, abstr_size,tmp);
+#else
   get_var_and_attv_nums(template_size, attv_num, tmp);
-  answer_template--;
-
-#ifdef DEBUG_DELAYVAR
-  xsb_dbgmsg(LOG_DEBUG,">>>> ARITY = %d; Yn = %d", (int)ARITY, (int)Yn);
 #endif
+  answer_template--;
 
   xsb_dbgmsg((LOG_DELAY, "\t--> This answer for "));
   dbg_print_subgoal(LOG_DELAY, stddbg, producer_sf);
 #ifdef DEBUG_VERBOSE
-  if (LOG_DELAY <= cur_log_level) {
     if (delayreg != NULL) {
       fprintf(stddbg, " has delay list = ");
       print_delay_list(stddbg, delayreg);
     } else {
       fprintf(stddbg, " has no delay list\n");
     }
-  }
 #endif
 
 #ifdef DEBUG_DELAYVAR
@@ -873,6 +947,7 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
 				     answer_template, &isNewAnswer );
 
   if ( isNewAnswer ) {   /* go ahead -- look for more answers */
+    SUBG_INCREMENT_ANSWER_CTR(producer_sf);
     /* incremental evaluation */
     if(IsIncrSF(producer_sf))
       subg_callnode_ptr(producer_sf)->no_of_answers++;
@@ -908,7 +983,7 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
 #endif /* ! LOCAL_EVAL */
     }
     else {
-      if (template_size == 0) {
+      if (template_size == 0 || subg_is_ec_scheduled(producer_sf) ) {
 	/*
 	 *  The table is for a ground call which we just proved true.
 	 *  (We entered an ESCAPE Node, above, to note this fact in the
@@ -918,9 +993,9 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
 	 *  the CPF to a check_complete instr.
 	 *
 	 */
-	//	printf("performing early completion for: ");
-	//	print_subgoal(CTXTc stddbg, producer_sf);
-	//	printf("(breg: %x pcpf %x\n",breg,producer_cpf);alt_print_cp(CTXT);
+		printf("performing early completion for: ");
+		print_subgoal(CTXTc stddbg, producer_sf);
+		//	printf("(breg: %x pcpf %x\n",breg,producer_cpf);alt_print_cp(CTXT);
 
 	perform_early_completion(producer_sf, producer_cpf);
 #if defined(LOCAL_EVAL)

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.37 2011-07-02 14:27:38 tswift Exp $
+** $Id: complete_local.h,v 1.38 2011-07-29 22:56:04 tswift Exp $
 **
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -380,6 +380,9 @@ static inline void SetupReturnFromLeader(CTXTdeclc CPtr orig_breg, CPtr cs_ptr,
 {
   CPtr answer_template;
   int template_size, attv_num;
+#ifdef CALL_ABSTRACTION
+  int abstr_size;
+#endif  
   Integer tmp;
 
   switch_envs(orig_breg);
@@ -403,8 +406,14 @@ static inline void SetupReturnFromLeader(CTXTdeclc CPtr orig_breg, CPtr cs_ptr,
   reclaim_stacks(orig_breg);
   answer_template = tcp_template(breg);
   tmp = int_val(cell(answer_template));
+#ifdef CALL_ABSTRACTION
+  get_var_and_attv_nums(template_size, attv_num, abstr_size, tmp);
+  answer_template = answer_template - template_size;
+  unify_abstractions_from_AT((answer_template-(2*abstr_size)),abstr_size);
+#else
   get_var_and_attv_nums(template_size, attv_num, tmp);
   answer_template = answer_template - template_size;
+#endif
 
   /* Now `answer_template' points to the mth term */
   /* Initialize trieinstr_vars[] as the attvs in the call. */

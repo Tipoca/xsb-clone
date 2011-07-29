@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.18 2011-07-22 21:39:35 tswift Exp $
+** $Id: tab_structs.h,v 1.19 2011-07-29 22:56:04 tswift Exp $
 ** 
 */
 
@@ -635,6 +635,7 @@ typedef struct subgoal_frame {
   CPtr pos_cons;	  /* Pointer to list of (CP) active subgoal frames (pre-compl) */
   CPtr compl_stack_ptr;	  /* Pointer to subgoal's completion stack frame (pre-compl) */
   CPtr compl_suspens_ptr; /* SLGWAM: CP stack ptr (pre-compl)  */
+  long calls_ans_ctr; 
 #ifdef MULTI_THREAD
   Thread_T tid;	  /* Thread id of the generator thread for this sg */
 #endif
@@ -645,7 +646,10 @@ typedef struct subgoal_frame {
   byte grabbed; 	  /* Subgoal is marked to be computed for leader in
 			     deadlock detection */
 #endif
-  
+#ifndef BITS_64
+  long callsto_number;    /* if 64 bits double-use call_ans_ctr */
+#endif
+
  /* The following field is added for incremental evaluation: */
   callnodeptr callnode;
 
@@ -672,10 +676,12 @@ typedef struct subgoal_frame {
 #define subg_compl_stack_ptr(b)	( ((VariantSF)(b))->compl_stack_ptr )
 #define subg_compl_susp_ptr(b)	( ((VariantSF)(b))->compl_suspens_ptr )
 #define subg_nde_list(b)	( ((VariantSF)(b))->nde_list )
+#define subg_call_ans_ctr(b)	( ((VariantSF)(b))->calls_ans_ctr )
 
 #define subg_tid(b)		( ((VariantSF)(b))->tid )
 #define subg_tag(b)		( ((VariantSF)(b))->tag )
 #define subg_grabbed(b)		( ((VariantSF)(b))->grabbed )
+#define subg_callsto_number(b)		( ((VariantSF)(b))->callsto_number )
 
 /* The subgoal visited field can be used for both marking during GC
    (the GC_MARK mask) and during table traversal to transitively remove
@@ -695,6 +701,28 @@ typedef struct subgoal_frame {
 
 #define DELETED_SUBGOAL_FRAME(subgoal)  ((subgoal->visited) & DELETED_SUBGOAL_MASK)
 #define DELETE_SUBGOAL_FRAME(subgoal) {(subgoal->visited) = DELETED_SUBGOAL_MASK | (subgoal->visited);}
+
+#define is_completed(SUBG_PTR)		(subg_is_complete(SUBG_PTR) == TRUE)
+#define subg_is_completed(SUBG_PTR)		(subg_is_complete(SUBG_PTR) == TRUE)
+
+#define subg_is_ec_scheduled(SUBG_PTR)		(subg_is_complete(SUBG_PTR) == 2)
+#define schedule_ec(SUBG_PTR)                   (subg_is_complete(SUBG_PTR) = 2)
+
+
+#ifdef BITS64
+#define SUBG_INCREMENT_CALLSTO_SUBGOAL(subgoal)  \
+  subg_call_ans_ctr(subgoal) =  subg_call_ans_ctr(subgoal) + 0x100000000
+#define get_subgoal_callsto_number(subgoal) (subg_call_ans_ctr(subgoal_frame) >> 32)
+#define INIT_SUBGOAL_CALLSTO_NUMBER(pNewSF)  subg_call_ans_ctr(pNewSF) = 0x100000000
+#define get_subgoal_answer_number(subgoal) (subg_call_ans_ctr(subgoal) & 0xffffffff)
+#else
+#define SUBG_INCREMENT_CALLSTO_SUBGOAL(subgoal)  (subgoal -> callsto_number)++
+#define get_subgoal_callsto_number(subgoal) (subgoal -> callsto_number)
+#define INIT_SUBGOAL_CALLSTO_NUMBER(subgoal) subg_callsto_number(subgoal)  = 1
+#define get_subgoal_answer_number(subgoal) subg_call_ans_ctr(subgoal)
+#endif
+
+#define SUBG_INCREMENT_ANSWER_CTR(subgoal) subg_call_ans_ctr(subgoal)++
 
 
 /* Subsumptive Producer Subgoal Frame
@@ -989,10 +1017,6 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 
 /*----------------------------------------------------------------------*/
 
-#define is_completed(SUBG_PTR)		subg_is_complete(SUBG_PTR)
-
-#define structs_are_reclaimed(SUBG_PTR) subg_is_reclaimed(SUBG_PTR)
-
 #ifndef MULTI_THREAD   
 #define mark_as_completed(SUBG_PTR) {		\
           subg_is_complete(SUBG_PTR) = TRUE;	\
@@ -1027,16 +1051,16 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 
 #ifndef MULTI_THREAD
 #define reclaim_incomplete_table_structs(SUBG_PTR) {	\
-   if ( ! structs_are_reclaimed(SUBG_PTR) ) {		\
+   if ( ! subg_is_reclaimed(SUBG_PTR) ) {		\
      table_complete_entry(SUBG_PTR);			\
-     structs_are_reclaimed(SUBG_PTR) = TRUE;		\
+     subg_is_reclaimed(SUBG_PTR) = TRUE;		\
    }							\
  }
 #else
 #define reclaim_incomplete_table_structs(SUBG_PTR) {	\
-   if ( ! structs_are_reclaimed(SUBG_PTR) ) {		\
-     table_complete_entry(th, SUBG_PTR);			\
-     structs_are_reclaimed(SUBG_PTR) = TRUE;		\
+   if ( ! subg_is_reclaimed(SUBG_PTR) ) {		\
+     table_complete_entry(th, SUBG_PTR);		\
+     subg_is_reclaimed(SUBG_PTR) = TRUE;		\
    }							\
  }
 #endif

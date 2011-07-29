@@ -27,3 +27,6 @@
 #define FIND_ANSWERS                             3
 #define CALL_SUBS_SLG_NOT                        4
 #define GET_PRED_CALLTRIE_PTR                    5
+#define GET_CALLSTO_NUMBER                       6
+#define GET_ANSWER_NUMBER                        7
+#define EARLY_COMPLETE_ON_NTH                    8

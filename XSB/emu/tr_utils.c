@@ -135,7 +135,7 @@ xsbBool varsf_has_conditional_answer(VariantSF subg)
 
   ALNptr node_ptr = subg_answers(subg);
  
-  if (subg_is_complete(subg)) 
+  if (subg_is_completed(subg)) 
 #ifndef CONC_COMPL
     return (node_ptr == COND_ANSWERS);
 #else
@@ -4651,7 +4651,38 @@ int table_inspection_function( CTXTdecl ) {
   else  printf("found unconditional answer %p\n",as_leaf);
     break;
   }
-  
+
+  case GET_CALLSTO_NUMBER: {
+    VariantSF subgoal_frame;
+    subgoal_frame = (VariantSF) ptoc_int(CTXTc 2);
+    ctop_int(CTXTc 3, get_subgoal_callsto_number(subgoal_frame));
+    break;
+  }
+
+  case GET_ANSWER_NUMBER: {
+    VariantSF subgoal_frame;
+    subgoal_frame = (VariantSF) ptoc_int(CTXTc 2);
+    ctop_int(CTXTc 3, get_subgoal_answer_number(subgoal_frame));
+    break;
+  }
+
+  case EARLY_COMPLETE_ON_NTH: {
+    VariantSF subgoal;
+    Integer breg_offset;
+    CPtr tcp;
+
+    breg_offset = ptoc_int(CTXTc 2);
+    tcp = (CPtr)((Integer)(tcpstack.high) - breg_offset);
+    subgoal = (VariantSF)(tcp_subgoal_ptr(tcp));
+    //    subgoal = (VariantSF) ptoc_int(CTXTc 2);
+    //    printf("san %d\n",get_subgoal_answer_number(subgoal));
+    if ( get_subgoal_answer_number(subgoal) >= ptoc_int(CTXTc 3)) {
+      printf("scheduling ec\n");
+       schedule_ec(subgoal); 
+    }
+    break;
+  }
+
   case FIND_ANSWERS: {
     return find_pred_backward_dependencies(CTXTc get_tip(CTXTc term_psc(ptoc_tag(CTXTc 2))));
 

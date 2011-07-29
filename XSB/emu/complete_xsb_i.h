@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.49 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: complete_xsb_i.h,v 1.50 2011-07-29 22:56:04 tswift Exp $
 ** 
 */
 
@@ -54,8 +54,6 @@ XSB_Start_Instr(check_complete,_check_complete)
   switch_envs(breg);    /* in CHAT: undo_bindings() */
   ptcpreg = tcp_ptcp(breg);
   delayreg = tcp_pdreg(breg);
-
-  xsb_dbgmsg((LOG_DEBUG,"Check complete %x",breg));
 
   cs_ptr = tcp_compl_stack_ptr(breg);
   if (prev_compl_frame(cs_ptr) < COMPLSTACKBOTTOM && !is_leader(cs_ptr))
@@ -124,6 +122,8 @@ XSB_Start_Instr(check_complete,_check_complete)
   CPtr    orig_breg = breg;
   xsbBool leader = FALSE;
   VariantSF subgoal;
+
+//  printf("Check complete \n");
 
   /* this CP has exhausted program resolution -- backtracking occurs */
   switch_envs(breg);    /* in CHAT: undo_bindings() */
