@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_mnoc.in,v 1.18 2011-04-30 21:57:29 kifer Exp $
+** $Id: def_config_mnoc.in,v 1.19 2011-07-29 06:25:51 kifer Exp $
 **
 */
 
@@ -55,6 +55,7 @@
 
 
 #define WIN_NT 1
+#define NO_CYGWIN 1
 #define CC "cl.exe"
 #define RELEASE_DATE @xsb_release_date@
 #define XSB_VERSION "@xsb_full_version_name@"
