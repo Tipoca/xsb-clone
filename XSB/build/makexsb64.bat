@@ -36,15 +36,16 @@ REM Concatenate MSVC_mkfile.mak & MSVC.dep into emu\MSVC_mkfile.mak
 @nmake /nologo /s /f NMakefile64.mak %1 %2 %3 %4 %5 %6 %7
 @cd ..
 
-REM build curl before sgml and xpath
+REM Must build curl before sgml and xpath
 @cd curl
 @nmake /nologo /f NMakefile64.mak %1 %2 %3 %4 %5 %6 %7
 @cd ..
 
-REM @cd sgml\cc
-REM @nmake /nologo /f NMakefile64.mak %1 %2 %3 %4 %5 %6 %7
-REM @cd ..\..
+@cd sgml\cc
+@nmake /nologo /f NMakefile64.mak %1 %2 %3 %4 %5 %6 %7
+@cd ..\..
 
+REM We don't have win64 binaries for libxml2.dll and iconv.dll
 REM @cd xpath\cc
 REM @nmake /nologo /f NMakefile64.mak %1 %2 %3 %4 %5 %6 %7
 REM @cd ..\..

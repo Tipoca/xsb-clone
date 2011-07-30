@@ -9,6 +9,7 @@ OUTDIR=$(XSBDIR)\config\x64-pc-windows\bin
 INTDIR=.
 
 ALL : "$(OUTDIR)\$(MYPROGRAM).dll"
+	nmake /f NMakefile64.mak clean
 
 CLEAN :
 	-@erase "$(INTDIR)\$(MYPROGRAM).obj"

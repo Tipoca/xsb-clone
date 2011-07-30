@@ -35,7 +35,7 @@ SOURCE=fetch_file.c xpathparser.c
 LINK32=link.exe
 LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib \
 		advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib \
-		odbc32.lib odbccp32.lib xsb.lib wsock32.lib libxml2.lib "$(CURLDIR)\bin\libcurl.lib" curl2pl.lib\
+		odbc32.lib odbccp32.lib xsb.lib wsock32.lib libxml2.lib "$(CURLDIR)\bin64\libcurl.lib" curl2pl.lib\
 		/nologo /dll \
 		/machine:x64 /out:"$(OUTDIR)\$(MYPROGRAM).dll" \
 		/libpath:"$(XSBDIR)\config\x64-pc-windows\bin"	\
