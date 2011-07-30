@@ -49,10 +49,9 @@ REM @cd xpath\cc
 REM @nmake /nologo /f NMakefile64.mak %1 %2 %3 %4 %5 %6 %7
 REM @cd ..\..
 
-REM We don't have win64 DLLs for PCRE yet
-REM @cd pcre
-REM @nmake /nologo /f NMakefile64.mak %1 %2 %3 %4 %5 %6 %7
-REM @cd ..
+@cd pcre
+@nmake /nologo /f NMakefile64.mak %1 %2 %3 %4 %5 %6 %7
+@cd ..
 
 @cd ..\build
 
