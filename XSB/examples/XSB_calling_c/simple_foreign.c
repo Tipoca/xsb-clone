@@ -1,11 +1,19 @@
+#include "xsb_config.h"
+
 #include <stdio.h>
 #include <string.h>
-#include <alloca.h>
+#include <stdlib.h>
 #include <math.h>
 
-#include "cinterf.h"
+
+#ifdef WIN_NT
+#define XSB_DLL
+#endif
+
+#include "auxlry.h"
 /* context.h is necessary for the type of a thread context. */
 #include "context.h"
+#include "cinterf.h"
 
 /* call as: change_char(+String,+CharPos,+ReplacementString,-ResultString)
    Will take String and replace the character at position CharPos with the
@@ -19,7 +27,7 @@ DllExport int call_conv change_char(CTXTdecl)
    char *c, *str_out;
 
 	str_in = (char *) extern_ptoc_string(1);
-	str_out = (char *) alloca(strlen(str_in)+1);
+	str_out = (char *) malloc(strlen(str_in)+1);
 	strcpy(str_out, str_in);
 	pos = extern_ptoc_int(2);
 	c = (char *) extern_ptoc_string(3);
@@ -39,7 +47,7 @@ DllExport int call_conv change_char(CTXTdecl)
 	return TRUE;
 }
 
-int my_sqrt(CTXTdecl)
+DllExport int call_conv  my_sqrt(CTXTdecl)
 {
    int i = extern_ptoc_int(1);
 
