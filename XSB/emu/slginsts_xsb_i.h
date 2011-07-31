@@ -894,18 +894,9 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   //  if ((subgoal_space_has_been_reclaimed(producer_sf,producer_csf)) ||
   if ((subg_is_completed(producer_sf)) ||
 	(IsNonNULL(delayreg) && answer_is_unsupported(CTXTc delayreg))) {
+    printf("completed\n");
     Fail1;
     XSB_Next_Instr();
-  }
-
-  if (flags[CTRACE_CALLS])  { 
-    char buffera[MAXTERMBUFSIZE];
-    char bufferb[MAXTERMBUFSIZE];
-    sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),flags[MAX_TABLE_SUBGOAL_DEPTH]);
-    if (ptcpreg)
-      sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
-    else sprintf(bufferb,"null");
-    fprintf(stdout,"na(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
 
   /* answer template is now in the heap for generators */
@@ -947,6 +938,17 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
 				     answer_template, &isNewAnswer );
 
   if ( isNewAnswer ) {   /* go ahead -- look for more answers */
+
+  if (flags[CTRACE_CALLS])  { 
+    char buffera[MAXTERMBUFSIZE];
+    char bufferb[MAXTERMBUFSIZE];
+    sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),flags[MAX_TABLE_SUBGOAL_DEPTH]);
+    if (ptcpreg)
+      sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
+    else sprintf(bufferb,"null");
+    fprintf(stdout,"na(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+  }
+
     SUBG_INCREMENT_ANSWER_CTR(producer_sf);
     /* incremental evaluation */
     if(IsIncrSF(producer_sf))
@@ -993,9 +995,9 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
 	 *  the CPF to a check_complete instr.
 	 *
 	 */
-		printf("performing early completion for: ");
-		print_subgoal(CTXTc stddbg, producer_sf);
-		//	printf("(breg: %x pcpf %x\n",breg,producer_cpf);alt_print_cp(CTXT);
+	//	printf("performing early completion for: (%d)",subg_is_complete(producer_sf));
+	print_subgoal(CTXTc stddbg, producer_sf);
+	//	printf("(breg: %x pcpf %x\n",breg,producer_cpf);alt_print_cp(CTXT);
 
 	perform_early_completion(producer_sf, producer_cpf);
 #if defined(LOCAL_EVAL)
