@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.232 2011-07-29 05:13:28 kifer Exp $
+## $Id: configure.in,v 1.233 2011-07-31 20:20:56 kifer Exp $
 ##
 ##
 
@@ -1812,8 +1812,6 @@ AC_OUTPUT([ '"${arch_config_prefix}/topMakefile"':topMakefile.in
         makexsb:makexsb.in
         '"${scriptdir}/chr_pp${config_tag}"':chr_pp.in
         '"${scriptdir}/xsb${config_tag}"':xsb.in
-        '"${scriptdir}/xsb.bat"':windows/xsb.in
-        '"${scriptdir}/xsb64.bat"':windows64/xsb.in
         '"${arch_config_prefix}/banner.msg"':banner.in
         windows/banner.msg:windows/banner.in
         windows64/banner.msg:windows64/banner.in

@@ -1,6 +1,5 @@
 @echo off
-REM Script for running XSB when built natively on Windows
-REM @configure_input@
+REM Script for running XSB when built natively on Windows x64
 
 set BINDIR=%0\..\..
 
