@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: foreign.P,v 1.63 2010-10-07 01:21:40 kifer Exp $
+** $Id: foreign.P,v 1.64 2011-07-31 02:07:06 kifer Exp $
 ** 
 */
 
@@ -235,7 +235,7 @@ compile_c(Modname, Base, Ext, Options, Dir, LdOption, CompComm, TempFile) :-
 		xsb_configuration(config_bindir,BINDIR),
 		fmt_write_string(DLLbin, '%s\%s.dll', arg(BINDIR,Modname)),
 		((file_exists(DLLhere) ; file_exists(DLLbin)) -> true
-		; warning(('You must create the ', Modname,'.dll'))
+		; warning(('You must create the DLL ', Modname,'.dll first'))
 		)
 	    ;	shell([CC_Name, ' -c ', Base, Ext, TempFile, ' ', CC_Opts]),
 	        /* The following is here because C compilers usually put 
