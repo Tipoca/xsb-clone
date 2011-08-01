@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.36 2011-04-28 21:59:02 kifer Exp $
+** $Id: gpp.c,v 1.37 2011-08-01 20:08:14 kifer Exp $
 ** 
 */
 
@@ -565,27 +565,43 @@ void parseCmdlineDefine(char *s)
   m->macrotext=strdup(s+l);
 }
 
+/* reads the mode description for -M or -U. Any item of the form " in
+   subparameters (eg -U '"' '"' ... or -M '"' '"' ...) is
+   is regarded as an empty string. This is because it is difficult to pass
+   an empty string to gpp by calling it through the shell from another C
+   program. The upshot is that one is not allowed to start or end
+   macros with an '"': hardly an issue.
+*/
 int readModeDescription(char **args,struct MODE *mode,int ismeta)
 {
   if (!(*(++args))) return 0;
-  mode->mStart=strnl(*args);
+  if (!strcmp(*args,"\"")) mode->mStart=strnl("");
+  else mode->mStart=strnl(*args);
   if (!(*(++args))) return 0;
-  mode->mEnd=strnl(*args);
+  if (!strcmp(*args,"\"")) mode->mEnd=strnl("");
+  else mode->mEnd=strnl(*args);
   if (!(*(++args))) return 0;
-  mode->mArgS=strnl(*args); 
+  if (!strcmp(*args,"\"")) mode->mArgS=strnl("");
+  else mode->mArgS=strnl(*args); 
   if (!(*(++args))) return 0;
-  mode->mArgSep=strnl(*args); 
+  if (!strcmp(*args,"\"")) mode->mArgSep=strnl("");
+  else mode->mArgSep=strnl(*args); 
   if (!(*(++args))) return 0;
-  mode->mArgE=strnl(*args); 
+  if (!strcmp(*args,"\"")) mode->mArgE=strnl("");
+  else mode->mArgE=strnl(*args); 
   if (!(*(++args))) return 0;
-  mode->stackchar=strnl(*args); 
+  if (!strcmp(*args,"\"")) mode->stackchar=strnl("");
+  else mode->stackchar=strnl(*args); 
   if (!(*(++args))) return 0;
-  mode->unstackchar=strnl(*args); 
+  if (!strcmp(*args,"\"")) mode->unstackchar=strnl("");
+  else mode->unstackchar=strnl(*args); 
   if (ismeta) return 1;
   if (!(*(++args))) return 0;
-  mode->mArgRef=strnl(*args); 
+  if (!strcmp(*args,"\"")) mode->mArgRef=strnl("");
+  else mode->mArgRef=strnl(*args); 
   if (!(*(++args))) return 0;
-  mode->quotechar=**args;
+  if (!strcmp(*args,"\"")) mode->quotechar='\0';
+  else mode->quotechar=**args;
   return 1;
 }
 
