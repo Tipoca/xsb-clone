@@ -894,7 +894,7 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   //  if ((subgoal_space_has_been_reclaimed(producer_sf,producer_csf)) ||
   if ((subg_is_completed(producer_sf)) ||
 	(IsNonNULL(delayreg) && answer_is_unsupported(CTXTc delayreg))) {
-    printf("completed\n");
+    //    printf("completed\n");
     Fail1;
     XSB_Next_Instr();
   }
@@ -996,7 +996,7 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
 	 *
 	 */
 	//	printf("performing early completion for: (%d)",subg_is_complete(producer_sf));
-	print_subgoal(CTXTc stddbg, producer_sf);
+	//	print_subgoal(CTXTc stddbg, producer_sf);
 	//	printf("(breg: %x pcpf %x\n",breg,producer_cpf);alt_print_cp(CTXT);
 
 	perform_early_completion(producer_sf, producer_cpf);
