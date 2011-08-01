@@ -17,9 +17,9 @@ ALL : "$(OUTDIR)\gpp.exe"
 
 
 CLEAN :
-	-@erase "$(INTDIR)\gpp.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(OUTDIR)\gpp.exe"
+	-@if exist "$(INTDIR)\gpp.obj" erase "$(INTDIR)\gpp.obj"
+	-@if exist "$(INTDIR)\vc60.idb" erase "$(INTDIR)\vc60.idb"
+	-@if exist "$(OUTDIR)\gpp.exe" erase "$(OUTDIR)\gpp.exe"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"

@@ -33,9 +33,9 @@ ALL : "$(OUTDIR)\$(MYPROGRAM).dll"
 	nmake /f NMakefile.mak clean
 
 CLEAN :
-	-@erase "$(INTDIR)\$(MYPROGRAM).obj"
-	-@erase "$(INTDIR)\$(MYPROGRAM).dll"
-	-@erase "$(INTDIR)\$(MYPROGRAM).exp"
+	-@if exist "$(INTDIR)\$(MYPROGRAM).obj" erase "$(INTDIR)\$(MYPROGRAM).obj"
+	-@if exist "$(INTDIR)\$(MYPROGRAM).dll" erase "$(INTDIR)\$(MYPROGRAM).dll"
+	-@if exist "$(INTDIR)\$(MYPROGRAM).exp" erase "$(INTDIR)\$(MYPROGRAM).exp"
 
 
 CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(XSBDIR)\config\x86-pc-windows" \

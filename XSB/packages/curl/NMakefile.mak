@@ -23,7 +23,7 @@ ALL::
 	cd cc
 	nmake /nologo /f NMakefile.mak
 	cd ..
-	del curl_info.P
+	if exist curl_info.P del curl_info.P
 	copy Misc\curl_init-wind.P  curl_info.P
 	cd ..
 

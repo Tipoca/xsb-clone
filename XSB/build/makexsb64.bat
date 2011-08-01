@@ -25,7 +25,7 @@ REM Concatenate MSVC_mkfile.mak & MSVC.dep into emu\MSVC_mkfile.mak
 
 @nmake /nologo /f "MSVC_mkfile.mak" %1 %2 %3 %4 %5 %6 %7
 
-@del MSVC_mkfile.mak
+@if exist MSVC_mkfile.mak del MSVC_mkfile.mak
 
 @cd ..\gpp
 @nmake /nologo /s /f "MSVC_mkfile64.mak" %1 %2 %3 %4 %5 %6 %7

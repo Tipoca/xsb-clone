@@ -23,7 +23,7 @@ ALL::
 	cd cc
 	nmake /f NMakefile.mak
 	cd ..
-	del pcre_info.P
+	if exist pcre_info.P del pcre_info.P
 	copy Misc\pcre_init-wind.P  pcre_info.P
 	cd ..
 
