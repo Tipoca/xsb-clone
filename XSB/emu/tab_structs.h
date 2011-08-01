@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.19 2011-07-29 22:56:04 tswift Exp $
+** $Id: tab_structs.h,v 1.20 2011-08-01 13:24:31 dwarren Exp $
 ** 
 */
 
@@ -635,7 +635,7 @@ typedef struct subgoal_frame {
   CPtr pos_cons;	  /* Pointer to list of (CP) active subgoal frames (pre-compl) */
   CPtr compl_stack_ptr;	  /* Pointer to subgoal's completion stack frame (pre-compl) */
   CPtr compl_suspens_ptr; /* SLGWAM: CP stack ptr (pre-compl)  */
-  long calls_ans_ctr; 
+  Integer calls_ans_ctr; 
 #ifdef MULTI_THREAD
   Thread_T tid;	  /* Thread id of the generator thread for this sg */
 #endif
