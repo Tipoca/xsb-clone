@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_aux.h,v 1.18 2011-05-18 19:21:41 dwarren Exp $
+** $Id: tst_aux.h,v 1.19 2011-08-03 18:12:54 tswift Exp $
 ** 
 */
 
@@ -102,12 +102,29 @@ extern DynamicStack tstTermStack;
    TermStack_PushLowToHighVector( clref_val(CS_Cell) + 1,    \
 				  get_arity((Psc)*clref_val(CS_Cell)) )
 
+#define TermStack_PushAbstractFunctorArgs(CS_Cell)                   \
+  TermStack_PushAbstractLowToHighVector( (clref_val(CS_Cell) + 1),      \
+					 get_arity((Psc)*clref_val(CS_Cell)) )
+
+// Used for subsumptive answer trie      
 #define TermStack_PushListArgs(LIST_Cell) {	\
    CPtr pListHeadCell = clref_val(LIST_Cell);	\
    DynStk_ExpandIfOverflow(tstTermStack,2);	\
    TermStack_BlindPush( *(pListHeadCell + 1) );	\
    TermStack_BlindPush( *(pListHeadCell) );	\
  }
+
+// Used for subsumptive call trie                                                                                           
+#define TermStack_PushAbstractListArgs(LIST_Cell) {                     \
+    CPtr pListHeadCell = clref_val(LIST_Cell);                          \
+    DynStk_ExpandIfOverflow(tstTermStack,2);                            \
+    if (isattv((*(pListHeadCell + 1))))                                 \
+      *(pListHeadCell + 1) = (dec_addr((*(pListHeadCell + 1))) | XSB_REF); \
+    TermStack_BlindPush( *(pListHeadCell + 1) );                        \
+    if (isattv((*pListHeadCell)))                                       \
+      *pListHeadCell = (dec_addr((*pListHeadCell)) | XSB_REF);          \
+    TermStack_BlindPush( *(pListHeadCell) );                            \
+  }
 
 /*
  * The following macros enable the movement of an argument vector to
@@ -131,6 +148,23 @@ extern DynamicStack tstTermStack;
    }								\
  }
    
+
+// Used for subsumptive call trie                                                           
+#define TermStack_PushAbstractLowToHighVector(pVectorLow,Magnitude) {   \
+    int i, numElements;                                          \
+    CPtr pElement;                                               \
+                                                                \
+    numElements = Magnitude;                                     \
+    pElement = pVectorLow + numElements;                         \
+    DynStk_ExpandIfOverflow(tstTermStack,numElements);           \
+    for (i = 0; i < numElements; i++) {                          \
+      pElement--;                                                \
+      if (isattv(*pElement))                                     \
+	*pElement = (dec_addr(*pElement) | XSB_REF);           \
+      TermStack_BlindPush(*pElement);                            \
+    }                                                            \
+  }
+
 #define TermStack_PushHighToLowVector(pVectorHigh,Magnitude) {	\
    size_t i; size_t numElements;					\
    CPtr pElement;						\
@@ -383,6 +417,55 @@ extern DynamicStack tstSymbolStack;
      TrieError_UnknownSubtermTag(subterm);			\
    }								\
  }
+
+                       
+/*=========================================================================*/
+
+#define ProcessAbstractNextSubtermFromTrieStacks(Symbol,StdVarNum) {    \
+                                                                \
+    Cell subterm;                                                \
+                                                                \
+    TermStack_Pop(subterm);                                      \
+    XSB_Deref(subterm);                                          \
+    /*   fprintf(stddbg,"ProcessNext ");printterm(stddbg,subterm,25);fprintf(stddbg,"\n"); */ \
+    switch ( cell_tag(subterm) ) {                               \
+    case XSB_ATTV:                                               \
+      subterm = (dec_addr(subterm) | XSB_REF);                   \
+    case XSB_REF:                                                \
+    case XSB_REF1:                                               \
+      /*     fprintf(stddbg,"  ProcessNext: variable VE %p\n",VarEnumerator);*/ \
+      if ( ! IsStandardizedVariable(subterm) ) {                 \
+	StandardizeVariable(subterm, StdVarNum);                 \
+	Trail_Push(subterm);                                     \
+	Symbol = EncodeNewTrieVar(StdVarNum);                    \
+	StdVarNum++;                                             \
+	/*       fprintf(stddbg,"  Var: standardized variable %p %p %d\n",subterm,*(CPtr) subterm,StdVarNum); */ \
+      }                                                          \
+      else                                                       \
+	Symbol = EncodeTrieVar(IndexOfStdVar(subterm));          \
+      break;                                                     \
+    case XSB_STRING:                                             \
+    case XSB_INT:                                                \
+    case XSB_FLOAT:                                              \
+      /*     printf("found constant ");printterm(stddbg,subterm,25);fprintf(stddbg,"\n");*/ \
+      Symbol = EncodeTrieConstant(subterm);                      \
+      break;                                                     \
+    case XSB_STRUCT:                                             \
+      /*     printf("found struct ");printterm(stddbg,subterm,25);fprintf(stddbg,"\n");*/ \
+      Symbol = EncodeTrieFunctor(subterm);                       \
+      TermStack_PushAbstractFunctorArgs(subterm);                \
+      break;                                                     \
+    case XSB_LIST:                                               \
+      /*     printf("found list ");printterm(stddbg,subterm,25);fprintf(stddbg,"\n"); */ \
+      Symbol = EncodeTrieList(subterm);                          \
+      TermStack_PushAbstractListArgs(subterm);                   \
+      break;                                                     \
+    default:                                                     \
+      Symbol = 0;  /* avoid "uninitialized" compiler warning */  \
+      TrieError_UnknownSubtermTag(subterm);                      \
+    }                                                            \
+  }
+
 
 /*=========================================================================*/
 

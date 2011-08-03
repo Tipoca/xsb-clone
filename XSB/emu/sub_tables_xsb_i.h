@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.25 2010-12-23 18:47:55 tswift Exp $
+** $Id: sub_tables_xsb_i.h,v 1.26 2011-08-03 18:12:54 tswift Exp $
 ** 
 */
 
@@ -26,6 +26,8 @@
 #include "tst_aux.h"
 #include "deref.h"
 
+extern void print_TermStack();
+extern void print_AbsStack();
 
 /*=========================================================================*/
 
@@ -33,7 +35,6 @@
  *		  Subsumptive Call Check/Insert Operation
  *		  =======================================
  */
-
 
 /*-------------------------------------------------------------------------*/
 
@@ -54,6 +55,7 @@
  */
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* Used when this call finds a subsuming call that is a producer */
 
 inline static  CPtr extract_template_from_lookup(CTXTdeclc CPtr ans_tmplt) {
 
@@ -64,10 +66,14 @@ inline static  CPtr extract_template_from_lookup(CTXTdeclc CPtr ans_tmplt) {
     *ans_tmplt-- = TrieVarBindings[i++];
   //  *ans_tmplt = makeint(i);
   *ans_tmplt = encode_ansTempl_ctrs(0,i);   // no attvars
+  /* Call Abstraction 
+   *ans_tmplt = encode_ansTempl_ctrs(0,callAbsStk_index,i);   // no attvars   
+   */
   return ans_tmplt;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* Used when this call finds a subsuming call that is itself consumed */
 
 inline static
 CPtr reconstruct_template_for_producer(CTXTdeclc TabledCallInfo *call_info,
@@ -87,7 +93,7 @@ CPtr reconstruct_template_for_producer(CTXTdeclc TabledCallInfo *call_info,
    */
   TermStack_ResetTOS;
   TermStack_PushLowToHighVector(CallInfo_Arguments(*call_info),
-			        CallInfo_CallArity(*call_info))
+			        CallInfo_CallArity(*call_info));
 
   /*
    * Create the answer template while we process.  Since we know we have a
@@ -111,11 +117,15 @@ CPtr reconstruct_template_for_producer(CTXTdeclc TabledCallInfo *call_info,
   }
   //  *ans_tmplt = makeint(sizeAnsTmplt);
   *ans_tmplt = encode_ansTempl_ctrs(0,sizeAnsTmplt);  // no attvars
+  /* Call abstraction 
+  *ans_tmplt = encode_ansTempl_ctrs(0,callAbsStk_index,sizeAnsTmplt);  // no attvars    
+  */
 
   return ans_tmplt;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* Call is new -- no subsumer. */
 
 inline static  CPtr extract_template_from_insertion(CTXTdeclc CPtr ans_tmplt) {
 
@@ -126,7 +136,43 @@ inline static  CPtr extract_template_from_insertion(CTXTdeclc CPtr ans_tmplt) {
     *ans_tmplt-- = (Cell)Trail_Base[i++];
   //  *ans_tmplt = makeint(i);
   *ans_tmplt = encode_ansTempl_ctrs(0,i);   // no attvars
+  /* Call abstraction 
+  *ans_tmplt = encode_ansTempl_ctrs(0,callAbsStk_index,i);   // no attvars      
+  */
   return ans_tmplt;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+inline static void  init_termstack_for_subsumptive_check_ins(CTXTdeclc CPtr pVectorLow,int Magnitude) {
+
+  int i, numElements;
+  CPtr pElement;
+  Cell newElement;
+
+  //   printf("initting termstack %d\n",Magnitude);                                                                        
+  numElements = Magnitude;
+  pElement = pVectorLow + numElements;
+  DynStk_ExpandIfOverflow(tstTermStack,numElements);
+  for (i = 0; i < numElements; i++) {
+    pElement--;
+    //     printf("*pElement %x\n",*pElement);                                                                             
+    XSB_Deref(*pElement);
+    if (isattv(*pElement)) {
+      /* Abstract out attributed variables */
+      newElement = (Cell) hreg;new_heap_free(hreg);
+      //       printf("newElement %p @newElement %x\n",newElement,*(CPtr)newElement);                                      
+      push_AbsStk(*pElement,newElement);
+
+      *pElement = newElement;
+      TermStack_BlindPush(newElement);
+      //       *pElement = newElement;                                                                                     
+    }
+    else {TermStack_BlindPush(*pElement);
+    }
+  }
+  //   print_TermStack();                                                                                                  
+  //   print_AbsStack();                                                                                                   
+  //   printf("out of init_termstack_for_subsumptive_ci\n");                                                               
 }
 
 /*-------------------------------------------------------------------------*/
@@ -220,8 +266,16 @@ inline static  void subsumptive_call_search(CTXTdeclc TabledCallInfo *callStruct
   TermStack_ResetTOS;
   TermStackLog_ResetTOS;
   Trail_ResetTOS;
+
+#ifdef CALL_ABSTRACTION
+  CallAbsStk_ResetTOS;
+
+  init_termstack_for_subsumptive_check_ins(CallInfo_Arguments(*callStruct),
+					   CallInfo_CallArity(*callStruct));
+#else
   TermStack_PushLowToHighVector(CallInfo_Arguments(*callStruct),
 				CallInfo_CallArity(*callStruct));
+#endif
 
   btn = iter_sub_trie_lookup(CTXTc btRoot, &path_type);
 
@@ -243,6 +297,7 @@ inline static  void subsumptive_call_search(CTXTdeclc TabledCallInfo *callStruct
     Trail_Unwind_All;
     CallLUR_Subsumer(*results) = NULL;  /* no SF found, so no subsumer */
     CallLUR_VariantFound(*results) = NO;
+    /* Insertoin of new branch is done here! */
     CallLUR_Leaf(*results) =
       bt_insert(CTXTc btRoot,stl_restore_variant_cont(CTXT),NO_INSERT_SYMBOL);
     CallLUR_AnsTempl(*results) =

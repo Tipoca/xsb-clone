@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.77 2011-06-02 22:29:23 tswift Exp $
+** $Id: tries.h,v 1.78 2011-08-03 18:12:54 tswift Exp $
 ** 
 */
 
@@ -340,6 +340,10 @@ typedef struct Call_Check_Insert_Results {
 /*-- exported trie functions ------------------------------------------*/
 
 #ifndef MULTI_THREAD
+extern int unify_abstractions_from_AT(CPtr , int);
+extern void unify_abstractions_from_absStk(void);
+extern void copy_abstractions_to_AT(CPtr ,int);
+
 extern int AnsVarCtr;
 extern CPtr *VarEnumerator_trail_top;
 
@@ -363,6 +367,10 @@ extern xsbBool  bottom_up_unify(void);
 extern BTHTptr  New_BTHT(Structure_Manager *, int);
 #else
 struct th_context ;
+
+extern int unify_abstractions_from_AT(struct th_context *, CPtr , int);
+extern void unify_abstractions_from_absStk(struct th_context *);
+extern void copy_abstractions_to_AT(CPtr ,int);
 
 extern BTHTptr  New_BTHT(struct th_context *, Structure_Manager *, int);
 extern BTNptr   newBasicTrie(struct th_context *, Cell,int);
@@ -505,6 +513,30 @@ extern int delay_it;
 
 #define DEFAULT_NUM_TRIEVARS 512
 extern size_t current_num_trievars;
+
+/*=========================================================================*/
+
+typedef struct Abstraction_Frame {
+  CPtr originalTerm;
+  CPtr abstractedTerm;
+} AbstractionFrame;
+
+extern int callAbsStk_index;
+extern AbstractionFrame *callAbsStk;
+extern int callAbsStk_size;
+
+#define pop_AbsStk callAbsStk[--callAbsStk_index]
+
+#define push_AbsStk(Orig,Abs) {                 \
+    if (callAbsStk_index == callAbsStk_size) {\
+      trie_expand_array(CPtr, callAbsStk ,callAbsStk_size,0,"callAbsStk");\
+    }\
+    callAbsStk[callAbsStk_index].originalTerm = ((CPtr) Orig);\
+    callAbsStk[callAbsStk_index].abstractedTerm = ((CPtr) Abs);\
+    callAbsStk_index++; \
+  }
+
+#define  CallAbsStk_ResetTOS callAbsStk_index = 0;
 
 /*=========================================================================*/
 /* Handling calls in call subsumption. */

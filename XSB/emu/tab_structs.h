@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.20 2011-08-01 13:24:31 dwarren Exp $
+** $Id: tab_structs.h,v 1.21 2011-08-03 18:12:54 tswift Exp $
 ** 
 */
 
@@ -1122,11 +1122,25 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 
 /*----------------------------------------------------------------------*/
 
+#ifdef CALL_ABSTRACTION
+#define get_var_and_attv_nums(var_num, attv_num, abstr_size, tmp_int)   \
+  var_num = tmp_int & 0x7ff;                                            \
+  abstr_size = (tmp_int & 0x3ff800) >>11;                               \
+  attv_num = tmp_int >> 22
+
+#define get_template_size(var_num,tmp_int)   var_num = tmp_int & 0x7ff
+
+#define encode_ansTempl_ctrs(Attvars,AbstractSize,Ctr)   \
+  makeint((Attvars << 22) | (AbstractSize << 11) | Ctr)
+#else
 #define get_var_and_attv_nums(var_num, attv_num, tmp_int)	\
   var_num = (int) (tmp_int & 0xffff);				\
   attv_num = (int)(tmp_int >> 16)
 
 #define encode_ansTempl_ctrs(Attvars,Ctr)   makeint(Attvars << 16 | Ctr)
+#endif
+
+
 
 /*----------------------------------------------------------------------*/
 

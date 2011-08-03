@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.92 2011-07-29 22:56:04 tswift Exp $
+** $Id: tables.c,v 1.93 2011-08-03 18:12:54 tswift Exp $
 ** 
 */
 
@@ -285,18 +285,32 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
      *
      */
     CPtr tmplt_component, tmplt_var_addr, hrg_addr;
+    //    int size, j,attv_num,abstr_size;  /* call abstraction */
     int size, j;
 
     tmplt_component = CallLUR_AnsTempl(*results);
     size = int_val(*tmplt_component) & 0xffff;
+    /* Call abstraction   get_var_and_attv_nums(size, attv_num, abstr_size, int_val(*tmplt_component)); */
     //    printf("done with vcs, answer_template info %x lur %x size %d\n",
     //	   CallLUR_AnsTempl(*results),CallInfo_AnsTempl(*call_info),size);
 
     /* expand heap if there's not enough space */
-    if ((pb)top_of_localstk < (pb)top_of_heap + size +
-	OVERFLOW_MARGIN) {
+    if ((pb)top_of_localstk < (pb)top_of_heap + size + 	OVERFLOW_MARGIN) {
+      /*    if ((pb)top_of_localstk < (pb)top_of_heap + size + 	OVERFLOW_MARGIN + 2*abstr_size) { */
       xsb_abort("{table_call_search} Heap overflow copying answer template");
     }
+
+#ifdef CALL_ABSTRACTION
+    //    printf("in TSC %p\n",hreg);                                                                 
+    //    print_AbsStack();                                                                            
+    // Need to copy abstractions except where we're using a completed table.                         
+    if (abstr_size > 0 && (CallLUR_Subsumer(*results) == NULL
+                           || !is_completed(CallLUR_Subsumer(*results)))) {
+      //      printf("copying abstractions to AT\n");                                                
+      copy_abstractions_to_AT(hreg,abstr_size);
+      hreg = hreg + 2*abstr_size;
+    }
+#endif
 
     for ( j = size - 1, tmplt_component = tmplt_component + size;
 	  j >= 0;

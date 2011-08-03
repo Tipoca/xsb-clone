@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.27 2011-06-02 22:29:23 tswift Exp $
+** $Id: trie_lookup.c,v 1.28 2011-08-03 18:12:54 tswift Exp $
 ** 
 */
 
@@ -76,7 +76,44 @@
    function.
     
 ****************************************************************************/
+#ifdef CALL_ABSTRACTION
+void print_TermStack(CTXTdecl) {
+  int i;
+  CPtr termptr;
 
+  printf("-------------\n");
+  printf("TermStack size %ld\n",TermStack_Top - TermStack_Base );
+  for ( termptr = TermStack_Base, i = 0;
+        termptr < TermStack_Top;
+        termptr++, i++ ) {
+    printf("   TermStack[%d] = %x %x\n",i,(int) *termptr,(int) cell_tag(*termptr));
+  }
+}
+
+void print_AbsStack() {
+  int i;
+
+  printf("-------------\n");
+  printf("AbsStack size %d\n",callAbsStk_index);
+  for ( i = 0; i < callAbsStk_index; i++) {
+    printf("   AbsStack[%d]: %p -a-> %p/*(%p)\n",i,
+           callAbsStk[i].originalTerm,callAbsStk[i].abstractedTerm,
+           (void *)*(callAbsStk[i].abstractedTerm));
+  }
+  printf("-------------\n");
+}
+
+#include "register.h"
+void print_callRegs(CTXTdeclc int arity) {
+  int i;
+
+  printf("-------------\n");
+  for ( i = 1; i <= arity; i++) {
+    printf("   reg[%d]: %lx\n",i,reg[i]);
+  }
+  printf("-------------\n");
+}
+#endif
 
 /*=========================================================================*/
 
@@ -807,6 +844,12 @@ void *iter_sub_trie_lookup(CTXTdeclc void *trieNode, TriePathType *pathType) {
 
     /* SUBTERM IS AN UNBOUND VARIABLE
        ------------------------------ */
+#ifdef CALL_ABSTRACTION
+    case XSB_ATTV:
+      //      printf("before subterm %x tag %d\n",subterm,cell_tag(subterm));                                               
+      subterm = (dec_addr(subterm) | XSB_REF);
+      //      printf("after subterm %x tag %d\n",subterm,cell_tag(subterm)); 
+#endif
     case XSB_REF:
     case XSB_REF1:
       /*
@@ -853,7 +896,7 @@ void *iter_sub_trie_lookup(CTXTdeclc void *trieNode, TriePathType *pathType) {
 	  variableChain = pCurrentBTN;
 
 	if ( ! PrologVar_IsMarked(subterm) ) {
-	  AnsVarCtr++;
+	  AnsVarCtr++; // used by delay trie
 	  /*
 	   *  The subterm is a call variable that has not yet been seen
 	   *  (and hence is not tagged).  Therefore, it can only be paired
