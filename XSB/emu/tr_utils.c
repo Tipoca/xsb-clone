@@ -4676,8 +4676,9 @@ int table_inspection_function( CTXTdecl ) {
     subgoal = (VariantSF)(tcp_subgoal_ptr(tcp));
     //    subgoal = (VariantSF) ptoc_int(CTXTc 2);
     //    printf("san %d\n",get_subgoal_answer_number(subgoal));
-    if ( get_subgoal_answer_number(subgoal) >= ptoc_int(CTXTc 3)) {
-      printf("scheduling ec\n");
+    if ( get_subgoal_answer_number(subgoal) +1 >= ptoc_int(CTXTc 3) &&
+	 !subg_is_completed(subgoal)) {
+      //      printf("scheduling ec\n");
        schedule_ec(subgoal); 
     }
     break;
