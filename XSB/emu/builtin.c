@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.364 2011-06-22 21:27:53 tswift Exp $
+** $Id: builtin.c,v 1.365 2011-08-03 18:05:34 tswift Exp $
 **
 */
 
@@ -3010,7 +3010,9 @@ case WRITE_OUT_PROFILE:
     if (gc & GC_GC_HEAP) ret_val |= gc_heap(CTXTc 2,FALSE);
     if (gc & GC_GC_CLAUSES) ret_val |= gc_dynamic(CTXT);
     if (gc & GC_GC_TABLED_PREDS) {
+#ifndef MULTI_THREAD
       double timer = cpu_time();
+#endif
       int local_ret_val = 0;
 
       local_ret_val = gc_tabled_preds(CTXT);
