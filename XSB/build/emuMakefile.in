@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.73 2011-07-29 05:13:28 kifer Exp $
+## $Id: emuMakefile.in,v 1.74 2011-08-03 19:16:37 kifer Exp $
 ##
 
 
@@ -193,7 +193,7 @@ xsboramod:: $(ORAOBJS)
 
 
 depend::
-	@$(DEPEND) $(DEPENDFLAGS) -- -I$(arch_config_prefix)  -I$(JAVA_PLATFORM_HEADER_PATH) -I$(JAVA_HEADER_PATH) $(CFLAGS) -- $(SRCS) $(ODBCSRC)
+	@$(DEPEND) $(DEPENDFLAGS) -- -I$(arch_config_prefix)  -- $(SRCS) $(ODBCSRC)
 #	@$(DEPEND) $(DEPENDFLAGS) -- -I$(arch_config_prefix)  -I$(JAVA_PLATFORM_HEADER_PATH) -I$(JAVA_HEADER_PATH) $(CFLAGS) -- $(SRCS) $(ODBCSRC) ${INTERPROLOGSRC}
 
 #
