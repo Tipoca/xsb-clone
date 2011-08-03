@@ -2,7 +2,7 @@
 ## Author(s): Aneesh Ali
 ## Contact:   xsb-contact@cs.sunysb.edu
 ## 
-## Copyright (C) The Research Foundation of SUNY, 2010
+## Copyright (C) The Research Foundation of SUNY, 2010-2011
 ## 
 ## XSB is free software; you can redistribute it and/or modify it under the
 ## terms of the GNU Library General Public License as published by the Free
@@ -23,46 +23,47 @@
 
 XSBDIR=..\..\..
 MYPROGRAM=curl2pl
-HPROGRAM=load_page
 
 CPP=cl.exe
-OUTDIR=$(XSBDIR)\config\x86-pc-windows\bin
+OUTDIR=$(XSBDIR)\config\x86-pc-windows
+OUTBINDIR=$(OUTDIR)\bin
+OUTOBJDIR=$(OUTDIR)\saved.o
 INTDIR=.
 
-ALL : "$(OUTDIR)\$(MYPROGRAM).dll"
-	nmake /f NMakefile.mak clean
+ALL : "$(OUTBINDIR)\$(MYPROGRAM).dll"
 
 CLEAN :
-	-@if exist "$(INTDIR)\$(MYPROGRAM).obj" erase "$(INTDIR)\$(MYPROGRAM).obj"
-	-@if exist "$(INTDIR)\$(MYPROGRAM).dll" erase "$(INTDIR)\$(MYPROGRAM).dll"
-	-@if exist "$(INTDIR)\$(MYPROGRAM).exp" erase "$(INTDIR)\$(MYPROGRAM).exp"
+	-@if exist "$(INTDIR)\*.obj" erase "$(INTDIR)\*.obj"
+	-@if exist "$(INTDIR)\*.dll" erase "$(INTDIR)\*.dll"
+	-@if exist "$(INTDIR)\*.exp" erase "$(INTDIR)\*.exp"
 
 
-CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(XSBDIR)\config\x86-pc-windows" \
-		 /I "$(XSBDIR)\emu" /I "$(XSBDIR)\prolog_includes" /I "$(XSBDIR)\packages\curl\cc"\
-		 /D "WIN_NT" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" \
-		 /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /c 
+CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(OUTDIR)" \
+	/I "$(XSBDIR)\emu" /I "$(XSBDIR)\prolog_includes" \
+	/I "$(XSBDIR)\packages\curl\cc"\
+	/D "WIN_NT" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" \
+	/Fo"$(OUTOBJDIR)\\" /Fd"$(OUTOBJDIR)\\" /c 
 	
 SOURCE=load_page.c
-"$(INTDIR)\$(HPROGRAM).obj" : $(SOURCE) "$(INTDIR)"
+"$(OUTOBJDIR)\load_page.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
 SOURCE=error.c curl2pl.c
-"$(INTDIR)\$(MYPROGRAM).obj" : $(SOURCE) "$(INTDIR)"
+"$(OUTOBJDIR)\$(MYPROGRAM).obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 LINK32=link.exe
 LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib \
 		advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib \
-		odbc32.lib odbccp32.lib xsb.lib wsock32.lib libcurl.lib\
+		odbc32.lib odbccp32.lib xsb.lib wsock32.lib libcurl.lib \
 		/nologo /dll \
-		/machine:I386 /out:"$(OUTDIR)\$(MYPROGRAM).dll" \
-		/libpath:"$(XSBDIR)\config\x86-pc-windows\bin"	\
+		/machine:I386 /out:"$(OUTBINDIR)\$(MYPROGRAM).dll" \
+		/libpath:"$(OUTBINDIR)"	\
 		/libpath:.\bin
-LINK32_OBJS=  "$(INTDIR)\$(HPROGRAM).obj" "$(INTDIR)\$(MYPROGRAM).obj"
+LINK32_OBJS=  "$(OUTOBJDIR)\load_page.obj" "$(OUTOBJDIR)\$(MYPROGRAM).obj"
 
-"$(OUTDIR)\$(MYPROGRAM).dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
+"$(OUTBINDIR)\$(MYPROGRAM).dll" : "$(OUTBINDIR)" $(LINK32_OBJS)
     $(LINK32) @<<
   $(LINK32_FLAGS) $(LINK32_OBJS)
 <<

@@ -22,10 +22,9 @@
 ALL::
 	cd cc
 	nmake /nologo /f NMakefile64.mak
-	cd ..
-	if exist curl_info.P del curl_info.P
-	copy Misc\curl_init-wind.P  curl_info.P
-	cd ..
+	if exist ..\curl_info.P del ..\curl_info.P
+	copy ..\Misc\curl_init-wind.P  ..\curl_info.P
+	cd ..\..
 
 CLEAN::
 	cd cc
