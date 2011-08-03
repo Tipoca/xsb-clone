@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32_xsb_i.h,v 1.24 2011-05-18 19:21:40 dwarren Exp $
+** $Id: dynwin32_xsb_i.h,v 1.25 2011-08-03 07:54:15 kifer Exp $
 ** 
 */
 
@@ -129,6 +129,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   
   while (search_ptr) {
     name = get_name(search_ptr->psc_ptr);
+#ifndef WIN64
 #ifdef XSB_DLL
     tempname[0] = '_';
     /*    tempname[1] = '_'; */
@@ -142,6 +143,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
 #endif
     tempname[tempsize++] = '\0';
     name = tempname;
+#endif
 #endif
     if (get_type(search_ptr->psc_ptr) == T_FORN) {
       if ((funcep = (int (*)) GetProcAddress(handle, name)) == NULL) {
