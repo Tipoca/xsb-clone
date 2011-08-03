@@ -1,0 +1,15 @@
+
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+results_1([summary = p(A,B) - subgoals(3) - returns(9)])
+results_3([summary = p(A,B) - subgoals(3) - returns(9)|C])
+test 1 
+test 2 ----------------------
+test 3 
+test 4 results_2(A)
+test 5 
+test 5 caughtit_2(domain_error([summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)],badopt))

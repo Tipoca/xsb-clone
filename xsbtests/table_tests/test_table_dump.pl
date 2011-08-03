@@ -33,6 +33,7 @@ s(1,a1).
 s(2,b1).
 
 test :- p(X,Y),fail.
+test:- test_1.
 
 test_1 :-
 	table_dump(p(_,_),[summary(true)]),
