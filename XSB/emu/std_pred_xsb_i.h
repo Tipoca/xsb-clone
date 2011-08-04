@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.60 2011-08-04 19:52:57 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.61 2011-08-04 20:49:51 tswift Exp $
 ** 
 */
 
@@ -1061,30 +1061,30 @@ typedef struct TermTraversalFrame{
 } Term_Traversal_Frame ;
 
 typedef Term_Traversal_Frame *TTFptr;
-//      printf("reallocing to %d %d\n",term_stack_size, term_stack_size*sizeof(Term_Traversal_Frame)); 
+//      printf("reallocing to %d %d\n",term_traversal_stack_size, term_traversal_stack_size*sizeof(Term_Traversal_Frame)); 
 
 #define push_term(Term) { 						\
-    if (  ++term_stack_top == term_stack_size) {			\
-      TTFptr old_term_stack = term_stack;				\
-      term_stack = mem_realloc(old_term_stack,				\
-			       term_stack_size*sizeof(Term_Traversal_Frame), \
-			       2*term_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE); \
-      term_stack_size = 2*term_stack_size;				\
+    if (  ++term_traversal_stack_top == term_traversal_stack_size) {			\
+      TTFptr old_term_traversal_stack = term_traversal_stack;				\
+      term_traversal_stack = mem_realloc(old_term_traversal_stack,				\
+			       term_traversal_stack_size*sizeof(Term_Traversal_Frame), \
+			       2*term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE); \
+      term_traversal_stack_size = 2*term_traversal_stack_size;				\
     }									\
     if (cell_tag(Term) == XSB_STRUCT) {					\
-      term_stack[term_stack_top].arity =  (byte) get_arity(get_str_psc(Term)); \
-      term_stack[term_stack_top].arg_num =  1;				\
-      term_stack[term_stack_top].parent =  Term;			\
+      term_traversal_stack[term_traversal_stack_top].arity =  (byte) get_arity(get_str_psc(Term)); \
+      term_traversal_stack[term_traversal_stack_top].arg_num =  1;				\
+      term_traversal_stack[term_traversal_stack_top].parent =  Term;			\
     } else {						/* list */	\
-      term_stack[term_stack_top].arity =  1;				\
-      term_stack[term_stack_top].arg_num =  0;				\
-      term_stack[term_stack_top].parent =  Term;			\
+      term_traversal_stack[term_traversal_stack_top].arity =  1;				\
+      term_traversal_stack[term_traversal_stack_top].arg_num =  0;				\
+      term_traversal_stack[term_traversal_stack_top].parent =  Term;			\
     }									\
   }
 
 #define pop_term(Term) {			\
-    term_stack_top--;				\
-    Term = term_stack[term_stack_top].parent;	\
+    term_traversal_stack_top--;				\
+    Term = term_traversal_stack[term_traversal_stack_top].parent;	\
   }
 
 /**************************************************** */
@@ -1095,10 +1095,10 @@ int term_depth(CTXTdeclc Cell Term) {
 
   int maxsofar = 0;
   int cur_depth = 0;
-  int term_stack_top = -1;
-  int term_stack_size = TERM_TRAVERSAL_STACK_INIT;
+  int term_traversal_stack_top = -1;
+  int term_traversal_stack_size = TERM_TRAVERSAL_STACK_INIT;
 
-  TTFptr term_stack = (TTFptr) mem_alloc(term_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+  TTFptr term_traversal_stack = (TTFptr) mem_alloc(term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
 
   XSB_Deref(Term);
 
@@ -1106,14 +1106,14 @@ int term_depth(CTXTdeclc Cell Term) {
 	
   push_term(Term);   cur_depth++;		
 
-  while (term_stack_top >= 0) {
+  while (term_traversal_stack_top >= 0) {
 
-    if (term_stack[term_stack_top].arg_num > term_stack[term_stack_top].arity) {
+    if (term_traversal_stack[term_traversal_stack_top].arg_num > term_traversal_stack[term_traversal_stack_top].arity) {
       pop_term(Term);cur_depth--;
     }
     else {
-      Term = (Cell) (clref_val(term_stack[term_stack_top].parent) + term_stack[term_stack_top].arg_num);
-      term_stack[term_stack_top].arg_num++;
+      Term = (Cell) (clref_val(term_traversal_stack[term_traversal_stack_top].parent) + term_traversal_stack[term_traversal_stack_top].arg_num);
+      term_traversal_stack[term_traversal_stack_top].arg_num++;
       XSB_Deref(Term);
       if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) {	
 	if (cur_depth +1 > maxsofar) maxsofar = cur_depth+1;
@@ -1123,7 +1123,7 @@ int term_depth(CTXTdeclc Cell Term) {
       }
     }
   }
-  mem_dealloc(term_stack,term_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+  mem_dealloc(term_traversal_stack,term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
   return maxsofar;
 }
   
