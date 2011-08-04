@@ -19,6 +19,11 @@ fix it or to assist you to bypass it.
 \item The maximum length of atoms that can be stored in an XSB
       \emph{object} code file is in principle $2^{32}-1$.
 %
+\index{cyclic terms}
+\item XSB's tabling and builtins currently do not take account of
+  cyclic terms, so using them may lead to XSB hanging or crashing.
+  Cyclic terms can be checked using the predicate {\tt is\_cyclic/1}.
+%
 \item In the current version, you should never try to rename a byte code 
       file generated for a module, though you can move it around in your 
       file system.  Since the module name is stored in the file, renaming it
@@ -57,7 +62,7 @@ fix it or to assist you to bypass it.
       though we will try to amend this restriction in future versions of
       XSB.
 %
-\item Tabled predicates that use call-subsumption do not handle calss
+\item Tabled predicates that use call-subsumption do not handle calls
   that use attributed variables, and may not use answer subsumption or
   incremental tabling.
 
@@ -84,8 +89,8 @@ Subsumption-based tabled predicates may not be \emph{delayed}.
 
 \begin{itemize}
 %
-\item Currently the C foreign language interface does not work when
-      XSB is {\em also} compiled with the Oracle interface on Solaris.
+%\item Currently the C foreign language interface does not work when
+%      XSB is {\em also} compiled with the Oracle interface on Solaris.
 % I think this is mostly fixed: tls
 %\item Explicit compilation (using {\tt compile/1}) of {\em very} large
 %      files {\em may} cause a core dump due to unfinished memory

@@ -3490,6 +3490,30 @@ precisely,
                    Y = f(a,_599112)
      \end{verbatim}}
 
+\index{term depth!definition}
+\index{cyclic terms}
+\standarditem{term\_depth(+Term, -Depth)}{term\_depth/2}
+%
+    {\tt term\_depth/2} provides an efficient way to find the maximal
+    depth of a term.  Term depth is defined recursively as follows:
+%
+\bi
+\item The depth of a structure is defined as 1 + the maximal depth of
+  any argument of that structure.
+\item The depth of a list {\tt [H|T]} is defined as 1 + the maximal
+  depth of {\tt H} and {\tt T}.
+\item The depth of any other element is 1.
+\ei
+%
+Note that according to this definition, the depth of the list {\tt
+  [a,b]} is 3, since the list is equivalent to the structure {\tt
+  .(a,.(b,[]))} whose depth is 3.  Also, this definition treats
+attributed variables as having depth of 1, regardless of the depth of
+their attribute.
+
+{\tt term\_depth/2} does not check for cyclic structures, so it must
+be ensured that {\tt Term} is acyclic.
+
 \end{description}
 
 %-----------------------------------------------------------------------------------------------
