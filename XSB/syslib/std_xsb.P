@@ -426,6 +426,7 @@ standard_symbol(table_state, 4, tables).
 standard_symbol(tell, 1, standard).
 standard_symbol(telling, 1, standard).
 standard_symbol(term_variables, 2, constraintLib).
+standard_symbol(term_depth, 2, machine).
 
 standard_symbol(tfindall, 3, tables).
 standard_metapredicate_template(tfindall,3,(*,0,*)).
