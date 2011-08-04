@@ -74,7 +74,7 @@
 
 union xsb_value
 {
-  int i_val;
+  Integer i_val;
   double f_val;
   char* str_val;
 };
@@ -82,7 +82,7 @@ union xsb_value
 struct xsb_data
 {
   int type;
-  int length;
+  size_t length;
   union xsb_value* val;
 };
 

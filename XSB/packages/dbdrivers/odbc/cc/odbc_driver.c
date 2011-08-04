@@ -43,7 +43,8 @@ static void driverODBC_error(SQLSMALLINT handleType, SQLHANDLE handle);
 static struct xsb_data** driverODBC_getNextRow(struct driverODBC_queryInfo* query, int direct);
 void freeQueryInfo(struct driverODBC_queryInfo* query);
 void freeResult(struct xsb_data** result, int numOfElements);
-void freePcbValues(SQLINTEGER** pcbValues, int numOfElements);
+//void freePcbValues(SQLINTEGER** pcbValues, int numOfElements);
+void freePcbValues(SQLLEN** pcbValues, int numOfElements);
     
 struct driverODBC_connectionInfo* odbcHandles[MAX_CONNECTIONS];
 struct driverODBC_queryInfo* odbcQueries[MAX_QUERIES];
@@ -225,12 +226,14 @@ struct xsb_data** driverODBC_query(struct xsb_queryHandle* handle)
 static struct xsb_data** driverODBC_getNextRow(struct driverODBC_queryInfo* query, int direct)
 {
   struct xsb_data** result;
-  SQLINTEGER** pcbValues;
+  //  SQLINTEGER** pcbValues;
+  SQLLEN** pcbValues;
   SQLRETURN val;
   int i;
 
   result = (struct xsb_data **)malloc(query->resultmeta->numCols * sizeof(struct xsb_data *));
-  pcbValues = (SQLINTEGER **)malloc(query->resultmeta->numCols * sizeof(SQLINTEGER *));
+  //  pcbValues = (SQLINTEGER **)malloc(query->resultmeta->numCols * sizeof(SQLINTEGER *));
+  pcbValues = (SQLLEN **)malloc(query->resultmeta->numCols * sizeof(SQLINTEGER *));
   for (i = 0; i<query->resultmeta->numCols; i++){ 
     result[i] = NULL;
     pcbValues[i] = NULL;
@@ -238,7 +241,8 @@ static struct xsb_data** driverODBC_getNextRow(struct driverODBC_queryInfo* quer
   for (i = 0 ; i < query->resultmeta->numCols ; i++) {
     result[i] = (struct xsb_data *)malloc(sizeof(struct xsb_data));
     result[i]->val = (union xsb_value *)malloc(sizeof(union xsb_value));
-    pcbValues[i] = (SQLINTEGER *)malloc(sizeof(SQLINTEGER));
+    //    pcbValues[i] = (SQLINTEGER *)malloc(sizeof(SQLINTEGER));
+    pcbValues[i] = (SQLLEN *)malloc(sizeof(SQLINTEGER));
     if (driverODBC_getXSBType(query->resultmeta->types[i]->type) == STRING_TYPE) {
       result[i]->type = STRING_TYPE;
       result[i]->length = query->resultmeta->types[i]->length + 1;
@@ -644,7 +648,8 @@ void freeResult(struct xsb_data** result, int numOfElements)
 }
 
 
-void freePcbValues(SQLINTEGER** pcbValues, int numOfElements)
+//void freePcbValues(SQLINTEGER** pcbValues, int numOfElements)
+void freePcbValues(SQLLEN** pcbValues, int numOfElements)
 {
   int i;
   if (pcbValues == NULL)
