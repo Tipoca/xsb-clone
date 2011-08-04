@@ -696,6 +696,18 @@ predicate_has_tables(Psc):-
 %	writeln(ptr(Ptr)),
 	Ptr \== 0.
 
+get_callsto_number(SubgoalFrame,Number):- 
+	table_inspection_function(GET_CALLSTO_NUMBER,SubgoalFrame,Number,_,_).
+
+get_answer_number(SubgoalFrame,Number):- 
+	table_inspection_function(GET_ANSWER_NUMBER,SubgoalFrame,Number,_,_).
+
+:- export early_complete_on_nth/2.
+early_complete_on_nth(SubgoalFrame,Number):- 
+	table_inspection_function(EARLY_COMPLETE_ON_NTH,SubgoalFrame,Number,_,_).
+
+end_of_file.
+
 /* ---------------------- end of file tables.P ------------------------ */
 /* 07/05/01  -- work area for functions under development */
 
@@ -713,16 +725,6 @@ find_forward_dependencies(Call):-
 
 find_answers(Pred):- 
 	table_inspection_function(FIND_ANSWERS,Pred,_,_,_).
-
-get_callsto_number(SubgoalFrame,Number):- 
-	table_inspection_function(GET_CALLSTO_NUMBER,SubgoalFrame,Number,_,_).
-
-get_answer_number(SubgoalFrame,Number):- 
-	table_inspection_function(GET_ANSWER_NUMBER,SubgoalFrame,Number,_,_).
-
-:- export early_complete_on_nth/2.
-early_complete_on_nth(SubgoalFrame,Number):- 
-	table_inspection_function(EARLY_COMPLETE_ON_NTH,SubgoalFrame,Number,_,_).
 
 end_of_file.
 /* Right now, experimental for aggregs.P */
