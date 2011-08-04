@@ -296,12 +296,15 @@ copy_double_quote([C|Cs],[C|Cs0],Cs1) :-
 	 ;	copy_double_quote(Cs,Cs0,Cs1)
 	).
 
+%TLS: changed to avoid calling log(0) below.
 extern_float_codes(Float,Codes0,Codes) :-
 	(Float < 0.0
 	 ->	PFloat is -Float,
 		Codes0 = [0'-'|Codes1],
 		extern_float_codes1(PFloat,Codes1,Codes)
-	 ;	extern_float_codes1(Float,Codes0,Codes)
+	 ;	(Float =:= 0.0 -> 
+	           Codes0 = [48,46,48,48,48,48,48,48,48,48],Codes = []
+	 	 ; extern_float_codes1(Float,Codes0,Codes) )
 	).
 
 extern_float_codes1(Float,Codes0,Codes) :-
