@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.59 2011-06-06 20:20:29 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.60 2011-08-04 19:52:57 tswift Exp $
 ** 
 */
 
@@ -1013,7 +1013,121 @@ xsbBool unify_with_occurs_check(CTXTdeclc Cell Term1, Cell Term2) {
     }
   return TRUE;  /* hush, little compiler */
   }
+
+/*
+int term_depth(CTXTdeclc Cell Term1,int indepth) { 
+
+  XSB_Deref(Term1);
+  switch (cell_tag(Term1)) {
+    //  case XSB_ATTV: 
+  case XSB_REF: 
+  case XSB_REF1: 
+  case XSB_INT:
+  case XSB_STRING:
+  case XSB_FLOAT: 
+    return indepth+1;
+
+  case XSB_LIST: {
+    int car_depth = 0;
+    int cdr_depth = 0;
+    
+    car_depth = term_depth(CTXTc (Cell) clref_val(Term1), indepth+1);
+    cdr_depth = term_depth(CTXTc (Cell) (clref_val(Term1) + 1),indepth+1);
+    return car_depth > cdr_depth ? car_depth : cdr_depth;
+  }
+
+  case XSB_STRUCT: {
+    int max_depth = 0;
+    int arity = get_arity(get_str_psc(Term1)); 
+    int arg_depth, i;
+    for (i = 1; i <= arity; i++) {
+      arg_depth = term_depth(CTXTc (Cell) (clref_val(Term1) + i),indepth+1);
+      if (arg_depth > max_depth) max_depth = arg_depth;
+    }
+    return max_depth;
+  }
+  }
+    return 0;
+}
+*/
+
+/**************************************************** */
+#define TERM_TRAVERSAL_STACK_INIT 100000
+
+typedef struct TermTraversalFrame{
+  byte arg_num;
+  byte arity;
+  Cell parent;
+} Term_Traversal_Frame ;
+
+typedef Term_Traversal_Frame *TTFptr;
+//      printf("reallocing to %d %d\n",term_stack_size, term_stack_size*sizeof(Term_Traversal_Frame)); 
+
+#define push_term(Term) { 						\
+    if (  ++term_stack_top == term_stack_size) {			\
+      TTFptr old_term_stack = term_stack;				\
+      term_stack = mem_realloc(old_term_stack,				\
+			       term_stack_size*sizeof(Term_Traversal_Frame), \
+			       2*term_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE); \
+      term_stack_size = 2*term_stack_size;				\
+    }									\
+    if (cell_tag(Term) == XSB_STRUCT) {					\
+      term_stack[term_stack_top].arity =  (byte) get_arity(get_str_psc(Term)); \
+      term_stack[term_stack_top].arg_num =  1;				\
+      term_stack[term_stack_top].parent =  Term;			\
+    } else {						/* list */	\
+      term_stack[term_stack_top].arity =  1;				\
+      term_stack[term_stack_top].arg_num =  0;				\
+      term_stack[term_stack_top].parent =  Term;			\
+    }									\
+  }
+
+#define pop_term(Term) {			\
+    term_stack_top--;				\
+    Term = term_stack[term_stack_top].parent;	\
+  }
+
+/**************************************************** */
+
+/* Did not want to use recursion to avoid problems with C-stack for
+   large terms (esp. in MT engine). */
+int term_depth(CTXTdeclc Cell Term) { 
+
+  int maxsofar = 0;
+  int cur_depth = 0;
+  int term_stack_top = -1;
+  int term_stack_size = TERM_TRAVERSAL_STACK_INIT;
+
+  TTFptr term_stack = (TTFptr) mem_alloc(term_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+
+  XSB_Deref(Term);
+
+  if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) return 1;
+	
+  push_term(Term);   cur_depth++;		
+
+  while (term_stack_top >= 0) {
+
+    if (term_stack[term_stack_top].arg_num > term_stack[term_stack_top].arity) {
+      pop_term(Term);cur_depth--;
+    }
+    else {
+      Term = (Cell) (clref_val(term_stack[term_stack_top].parent) + term_stack[term_stack_top].arg_num);
+      term_stack[term_stack_top].arg_num++;
+      XSB_Deref(Term);
+      if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) {	
+	if (cur_depth +1 > maxsofar) maxsofar = cur_depth+1;
+      }
+      else {
+	push_term(Term);   cur_depth++;		
+      }
+    }
+  }
+  mem_dealloc(term_stack,term_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+  return maxsofar;
+}
   
+
 /* a new function, not yet used, intended to implement \= without a choicepoint */
 xsbBool unifiable(CTXTdeclc Cell Term1, Cell Term2) {
   CPtr *start_trreg = trreg;

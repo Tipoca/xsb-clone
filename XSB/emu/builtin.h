@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.103 2011-04-15 03:11:03 kifer Exp $
+** $Id: builtin.h,v 1.104 2011-08-04 19:52:57 tswift Exp $
 ** 
 */
 
@@ -237,6 +237,7 @@
 #define IS_CHARLIST		213
 #define NUMBER_DIGITS		214
 #define IS_NUMBER_ATOM		215
+#define TERM_DEPTH              216
 
 #define SORT			220
 #define KEYSORT			221

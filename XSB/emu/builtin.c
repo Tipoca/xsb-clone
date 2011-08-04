@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.365 2011-08-03 18:05:34 tswift Exp $
+** $Id: builtin.c,v 1.366 2011-08-04 19:52:57 tswift Exp $
 **
 */
 
@@ -1257,6 +1257,7 @@ void init_builtin_table(void)
   set_builtin_table(IS_CHARLIST, "is_charlist");
   set_builtin_table(NUMBER_DIGITS, "number_digits");
   set_builtin_table(IS_NUMBER_ATOM, "is_number_atom");
+  set_builtin_table(TERM_DEPTH, "term_depth");
 
   set_builtin_table(PUT, "put");
   set_builtin_table(TAB, "tab");
