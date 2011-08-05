@@ -17,10 +17,11 @@ justify_pred(q).
 p:- tnot(q).
 q:- tnot(p).
 
+% abnormal -> abby_normal to avoid spurious output for testsuite.
 justify_pred(dies(_,_,_,_)).
 justify_pred(occurs(_,_,_)).
 justify_pred(river(_)).
-justify_pred(abnormal(_)).
+justify_pred(abby_normal(_)).
 justify_pred(fishPopulationOf(_,_,_,_)).
 
 %:- table dies/4.
@@ -35,12 +36,12 @@ river('Squamish').
 
 fishPopulationOf(1,'Squamish',trout,400).
 
-:- table abnormal/1.
-abnormal(foo).
+:- table abby_normal/1.
+abby_normal(foo).
 
 occurs(1,toxicDischarge,'Squamish'):- 
         river(River),
-         tnot(abnormal(River)).
+         tnot(abby_normal(River)).
 
 
 %:- export dies/4.
