@@ -90,7 +90,7 @@ DllExport int call_conv pl_trymatch()
 	int rc;
 	int firstmatch;	
 	int options, start_offset;
-	int substring_length;
+	size_t substring_length;
 	int findall;	
 	
 	
@@ -319,7 +319,7 @@ DllExport int call_conv pl_substitute()
 	int firstmatch;	
 	int options, start_offset;
 	int substring_length;
-	int copyIndex;
+	size_t copyIndex;
 	
 	prolog_term term_subject, term_regex, term_subst, term_op;
 	char *subject, *pattern, *subst;
@@ -444,7 +444,7 @@ DllExport int call_conv pl_substitute()
 		temp = (char *)alloca(strlen(subject)*sizeof(char));
 		strcpy(temp,subject+ovector[0]+substring_length);
 		strcpy(subject,temp);
-		subject_length=strlen(subject);
+		subject_length=(int)strlen(subject);
 	}	
 	
 	strncpy(op+copyIndex,subject,strlen(subject));

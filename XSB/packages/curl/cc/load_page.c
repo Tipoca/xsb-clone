@@ -147,7 +147,7 @@ load_page (char *source, curl_opt options, curl_ret *ret_vals)
 void *
 encode (char *url, char **dir, char **file, char **suffix)
 {
-  int dir_len = 0;
+  size_t dir_len = 0;
   char *dir_enc = NULL, *file_enc = NULL, *suff_enc = NULL, *ptr;
 
   ptr = strrchr (url, '/');

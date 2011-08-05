@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.37 2011-08-01 20:08:14 kifer Exp $
+** $Id: gpp.c,v 1.38 2011-08-05 09:10:53 kifer Exp $
 ** 
 */
 
@@ -165,7 +165,8 @@ struct SPECS *S;
 
 typedef struct MACRO {
   char *username,*macrotext,**argnames;
-  int macrolen,nnamedargs;
+  int macrolen;
+  int nnamedargs;
   struct SPECS *define_specs;
   int defined_in_comment;
 } MACRO;
@@ -197,14 +198,16 @@ int file_and_stdout = 0;
 
 typedef struct OUTPUTCONTEXT {
   char *buf;
-  int len,bufsize;
+  int len;
+  int bufsize;
   FILE *f;
 } OUTPUTCONTEXT;
 
 typedef struct INPUTCONTEXT {
   char *buf;
   char *malloced_buf; /* what was actually malloc-ed (buf may have shifted) */
-  int len,bufsize;
+  int len;
+  int bufsize;
   int lineno;
   char *filename;
   FILE *in;
@@ -321,7 +324,7 @@ void PopSpecs(void)
 void usage(void) {
   fprintf(stderr,"GPP Version 2.1.2 - Generic Preprocessor - (c) Denis Auroux 1996-2002\n");
   fprintf(stderr,"Usage : gpp [-{o|O} outfile] [-I/include/path] [-Dname=val ...] [-z] [-x] [-m]\n");
-  fprintf(stderr,"            [-n] [-C | -T | -H | -P | -U ... [-M ...]] [+c<n> str1 str2]\n");
+  fprintf(stderr,"            [-n] [-C | -T | -H | -P | -F | -L | -U ... [-M ...]] [+c<n> str1 str2]\n");
   fprintf(stderr,"            [+s<n> str1 str2 c] [infile]\n\n");
   fprintf(stderr,"      default:    #define x y           macro(arg,...)\n");
   fprintf(stderr," -C : maximum cpp compatibility (includes -n, +c, +s, ...)\n");
@@ -329,6 +332,7 @@ void usage(void) {
   fprintf(stderr," -H : HTML-like   <#define x|y>         <#macro arg|...>\n");
   fprintf(stderr," -P : Prolog compatible cpp-like mode\n");
   fprintf(stderr," -F : Flora compatible cpp-like mode\n");
+  fprintf(stderr," -L : PathLP compatible cpp-like mode\n");
   fprintf(stderr," -U : user-defined syntax (specified in 9 following args; see manual)\n");
   fprintf(stderr," -M : user-defined syntax for meta-macros (specified in 7 following args)\n\n");
   fprintf(stderr," -o : output to outfile\n");
@@ -394,12 +398,13 @@ struct MACRO *newmacro(char *s,int len,int hasspecs,int h)
 
 void lookupArgRefs(struct MACRO *m)
 {
-  int i,l;
+  int i;
+  int l;
   char *p;
   
   if (m->argnames!=NULL) return; /* don't mess with those */
   m->nnamedargs=-1;
-  l=strlen(S->User.mArgRef);
+  l = (int)strlen(S->User.mArgRef);
   for (i=0,p=m->macrotext;i<m->macrolen;i++,p++) {
     if ((*p!=0)&&(*p==S->User.quotechar)) { i++; p++; }
     else if (!strncmp(p,S->User.mArgRef,l))
@@ -561,8 +566,8 @@ void parseCmdlineDefine(char *s)
   /* the macro definition afterwards ! */
   if (s[l]=='=') l++;
   else if (s[l]!=0) bug("invalid syntax in -D declaration");
-  m->macrolen=strlen(s+l);
-  m->macrotext=strdup(s+l);
+  m->macrolen = (int)strlen(s+l);
+  m->macrotext = strdup(s+l);
 }
 
 /* reads the mode description for -M or -U. Any item of the form " in
@@ -1125,109 +1130,121 @@ void initthings(int argc, char **argv)
       if (C->in==NULL) bug("Cannot open input file");
     }
     else switch((*arg)[1]) {
-    case 'I':
-      if (nincludedirs==MAXINCL) 
-	bug("too many include directories");
-      if ((*arg)[2]==0) {
-	if (!(*(++arg))) usage();
-	includedir[nincludedirs++]=strdup(*arg);
-      }
-      else includedir[nincludedirs++]=strdup((*arg)+2);
-      break;
-    case 'C':
-      ishelp|=ismode|hasmeta|usrmode; ismode=1;
-      S->User=KUser; S->Meta=KMeta;
-      S->preservelf=1;
-      add_comment(S,"ccc",strdup("/*"),strdup("*/"),0,0);
-      add_comment(S,"ccc",strdup("//"),strdup("\n"),0,0);
-      add_comment(S,"ccc",strdup("\\\n"),strdup(""),0,0);
-      add_comment(S,"sss",strdup("\""),strdup("\""),'\\','\n');
-      add_comment(S,"sss",strdup("'"),strdup("'"),'\\','\n');
-      break;
-    case 'P':
-      ishelp|=ismode|hasmeta|usrmode; ismode=1;
-      S->User=KUser; S->Meta=KMeta;
-      S->preservelf=1;
-      S->op_set=PrologOp;
-      add_comment(S,"css",strdup("\213/*"),strdup("*/"),0,0); /* \!o */
-      add_comment(S,"cii",strdup("\\\n"),strdup(""),0,0);
-      add_comment(S,"css",strdup("%"),strdup("\n"),0,0);
-      add_comment(S,"sss",strdup("\""),strdup("\""),0,'\n');
-      add_comment(S,"sss",strdup("\207'"),strdup("'"),0,'\n'); /* \!# */
-      break;
-    case 'F':
-      ishelp|=ismode|hasmeta|usrmode; ismode=1;
-      S->User=KUser; S->Meta=KMeta;
-      S->preservelf=1;
-      S->op_set=FloraOp;
-      add_comment(S,"css",strdup("\213/*"),strdup("*/"),0,0); /* \!o */
-      add_comment(S,"cii",strdup("\\\n"),strdup(""),0,0);
-      add_comment(S,"css",strdup("//"),strdup("\n"),0,0);
-      add_comment(S,"sss",strdup("\""),strdup("\""),'\\','\n');
-      add_comment(S,"sss",strdup("\207'"),strdup("'"),'\\','\n'); /* \!# */
-      break;
-    case 'T':
-      ishelp|=ismode|hasmeta|usrmode; ismode=1;
-      S->User=S->Meta=Tex;
-      break;
-    case 'H':
-      ishelp|=ismode|hasmeta|usrmode; ismode=1;
-      S->User=S->Meta=Html;
-      break;
-    case 'U':
-      ishelp|=ismode|usrmode; usrmode=1;
-      if (!readModeDescription(arg,&(S->User),0))
+      case 'I':
+	if (nincludedirs==MAXINCL) 
+	  bug("too many include directories");
+	if ((*arg)[2]==0) {
+	  if (!(*(++arg))) usage();
+	  includedir[nincludedirs++]=strdup(*arg);
+	}
+	else includedir[nincludedirs++]=strdup((*arg)+2);
+	break;
+      case 'C':
+	ishelp|=ismode|hasmeta|usrmode; ismode=1;
+	S->User=KUser; S->Meta=KMeta;
+	S->preservelf=1;
+	add_comment(S,"ccc",strdup("/*"),strdup("*/"),0,0);
+	add_comment(S,"ccc",strdup("//"),strdup("\n"),0,0);
+	add_comment(S,"ccc",strdup("\\\n"),strdup(""),0,0);
+	add_comment(S,"sss",strdup("\""),strdup("\""),'\\','\n');
+	add_comment(S,"sss",strdup("'"),strdup("'"),'\\','\n');
+	break;
+      case 'P': /* Prolog mode */
+	ishelp|=ismode|hasmeta|usrmode; ismode=1;
+	S->User=KUser; S->Meta=KMeta;
+	S->preservelf=1;
+	S->op_set=PrologOp;
+	add_comment(S,"css",strdup("\213/*"),strdup("*/"),0,0); /* \!o */
+	add_comment(S,"cii",strdup("\\\n"),strdup(""),0,0);
+	add_comment(S,"css",strdup("%"),strdup("\n"),0,0);
+	add_comment(S,"sss",strdup("\""),strdup("\""),0,'\n');
+	add_comment(S,"sss",strdup("\207'"),strdup("'"),0,'\n'); /* \!# */
+	break;
+      case 'F': /* FLORA-2 mode */
+	ishelp|=ismode|hasmeta|usrmode; ismode=1;
+	S->User=KUser; S->Meta=KMeta;
+	S->preservelf=1;
+	S->op_set=FloraOp;
+	add_comment(S,"css",strdup("\213/*"),strdup("*/"),0,0); /* \!o */
+	add_comment(S,"cii",strdup("\\\n"),strdup(""),0,0);
+	add_comment(S,"css",strdup("//"),strdup("\n"),0,0);
+	add_comment(S,"sss",strdup("\""),strdup("\""),'\\','\n');
+	add_comment(S,"sss",strdup("\207'"),strdup("'"),'\\','\n'); /* \!# */
+	break;
+      case 'T':
+	ishelp|=ismode|hasmeta|usrmode; ismode=1;
+	S->User=S->Meta=Tex;
+	break;
+      case 'H':
+	ishelp|=ismode|hasmeta|usrmode; ismode=1;
+	S->User=S->Meta=Html;
+	break;
+      case 'U':
+	ishelp|=ismode|usrmode; usrmode=1;
+	if (!readModeDescription(arg,&(S->User),0))
 	  usage();
-      arg+=9;
-      if (!hasmeta) S->Meta=S->User;
-      break;
-    case 'M':
-      ishelp|=ismode|hasmeta; hasmeta=1;
-      if (!readModeDescription(arg,&(S->Meta),1))
+	arg+=9;
+	if (!hasmeta) S->Meta=S->User;
+	break;
+      case 'M':
+	ishelp|=ismode|hasmeta; hasmeta=1;
+	if (!readModeDescription(arg,&(S->Meta),1))
 	  usage();
-      arg+=7;
-      break;
-    case 'O':
-      file_and_stdout = 1;
-    case 'o':
-      if (!(*(++arg)))
-	  usage();
-      ishelp|=isoutput; isoutput=1;
-      C->out->f=fopen(*arg,"w");
-      if (C->out->f==NULL) bug("Cannot create output file");
-      break;
-    case 'D':
-      if ((*arg)[2]==0) {
+	arg+=7;
+	break;
+      case 'L': /* PathLP mode */
+	ishelp|=ismode|hasmeta|usrmode; ismode=1;
+	S->User=KUser; S->Meta=KMeta;
+	S->preservelf=1;
+	S->op_set=PrologOp;
+	// skip /* */ comments, \o removed as wrong
+	add_comment(S,"ccc",strdup("/*"),strdup("*/"),0,0);
+	// allow # directives continuing using \ at end of line
+	add_comment(S,"cii",strdup("\\\n"),strdup(""),0,0);
+	// allow string looks as # directives using " ", \n removed as wrong
+	add_comment(S,"sss",strdup("\""),strdup("\""),0,0);
+	break;
+      case 'O':
+	file_and_stdout = 1;
+      case 'o':
 	if (!(*(++arg)))
 	  usage();
-	s=strnl0(*arg);
-      }
-      else s=strnl0((*arg)+2);
-      parseCmdlineDefine(s); free(s); break;
-    case 'x':
-      execallowed=1;
-      break;
-    case 'n':
-      S->preservelf=1;
-      break;
-    case 'z':
-      dosmode=1;
-      break;
-    case 'c':
-    case 's':
-      if (!(*(++arg)))
+	ishelp|=isoutput; isoutput=1;
+	C->out->f=fopen(*arg,"w");
+	if (C->out->f==NULL) bug("Cannot create output file");
+	break;
+      case 'D':
+	if ((*arg)[2]==0) {
+	  if (!(*(++arg)))
+	    usage();
+	  s=strnl0(*arg);
+	}
+	else s=strnl0((*arg)+2);
+	parseCmdlineDefine(s); free(s); break;
+      case 'x':
+	execallowed=1;
+	break;
+      case 'n':
+	S->preservelf=1;
+	break;
+      case 'z':
+	dosmode=1;
+	break;
+      case 'c':
+      case 's':
+	if (!(*(++arg)))
 	  usage();
-      delete_comment(S,strnl(*arg));
-      break;
-    case 'm':
-      autoswitch=1; break;
-    default:
-      ishelp=1;
-    }
+	delete_comment(S,strnl(*arg));
+	break;
+      case 'm':
+	autoswitch=1; break;
+      default:
+	ishelp=1;
+      }
     if (hasmeta&&!usrmode) usage();
     if (ishelp) usage();
   }
-
+  
 #ifndef WIN_NT
   if ((nincludedirs==0) && !NoStdInc) {
     includedir[0]=strdup("/usr/include");
@@ -1507,23 +1524,30 @@ char *ProcessFastDefinition(char *buf,int l,char **argnames)
 
 int SpliceInfix(char *buf,int pos1,int pos2,char *sep,int *spl1,int *spl2)
 {
-  int pos,numpar,l;
+  int pos, numpar;
+  int l;
   char *p;
   
-  numpar=0; l=strlen(sep);
+  numpar = 0;
+  l = (int)strlen(sep);
   for (pos=pos2-1,p=buf+pos;pos>=pos1;pos--,p--) {
     if (*p==')') numpar++;
     if (*p=='(') numpar--;
     if (numpar<0) return 0;
-    if ((numpar==0)&&(pos2-pos>=l)&&!strncmp(p,sep,l))
-      { *spl1=pos; *spl2=pos+l; return 1; }
+    if ((numpar==0)&&(pos2-pos>=l)&&!strncmp(p,sep,l)) {
+      *spl1=pos;
+      *spl2=pos+l;
+      return 1;
+    }
   }
   return 0;
 }
 
 int DoArithmEval(char *buf,int pos1,int pos2,int *result)
 {
-  int spl1,spl2,result1,result2,l;
+  int spl1,spl2;
+  int l;
+  int result1, result2;
   char c,*p;
   
   while ((pos1<pos2)&&iswhite(buf[pos1])) pos1++;
@@ -1708,7 +1732,7 @@ int DoArithmEval(char *buf,int pos1,int pos2,int *result)
   /* add the length() builtin to measure the length of the macro expansion */
   if (strncmp(buf+pos1,"length(",strlen("length("))==0) {
     if (buf[pos2-1]!=')') return 0;
-    *result=pos2-pos1-strlen("length()");
+    *result=pos2-pos1-(int)strlen("length()");
     return 1;
   }
   
@@ -1746,15 +1770,16 @@ void delete_macro(int h,int i)
 char *ArithmEval(int pos1,int pos2)
 {
   char *s,*t;
-  int i,h;
+  int h;
+  int i;
   struct MACRO *m;
   
   /* first define the defined(...) operator */
   h=-1;
-  i=findIdent("defined",strlen("defined"),&h);
+  i=findIdent("defined",(int)strlen("defined"),&h);
   if (i>=0) warning("the defined(...) macro is already defined");
   else {
-    m=newmacro("defined",strlen("defined"),1,h);
+    m=newmacro("defined",(int)strlen("defined"),1,h);
     m->macrolen=0;
     m->macrotext=malloc(1);
     m->macrotext[0]=0;
@@ -1764,13 +1789,13 @@ char *ArithmEval(int pos1,int pos2)
   s=ProcessText(C->buf+pos1,pos2-pos1,FLAG_META);
   /* undefine the defined(...) operator */
   if (i<0) {
-    i=findIdent("defined",strlen("defined"),&h);
+    i=findIdent("defined",(int)strlen("defined"),&h);
     if ((i<0)||(macros[h][i].nnamedargs!=-2))
       warning("the defined(...) macro was redefined in expression");
     else delete_macro(h,i);
   }
 
-  if (!DoArithmEval(s,0,strlen(s),&i)) return s; /* couldn't compute */
+  if (!DoArithmEval(s,0,(int)strlen(s),&i)) return s; /* couldn't compute */
   t=malloc(MAX_GPP_NUM_SIZE);
   sprintf(t,"%d",i);
   free(s);
@@ -1835,6 +1860,7 @@ void SetStandardMode(struct SPECS *P,char *opt)
     P->User=CUser; P->Meta=CMeta;
     P->preservelf=0;
   }
+  /* Prolog mode */
   else if (!strcmp(opt,"Prolog")||!strcmp(opt,"prolog")) {
     P->User=KUser; P->Meta=KMeta;
     P->preservelf=1;
@@ -1845,6 +1871,7 @@ void SetStandardMode(struct SPECS *P,char *opt)
     add_comment(P,"sss",strdup("\""),strdup("\""),0,'\n');
     add_comment(P,"sss",strdup("\207'"),strdup("'"),0,'\n');   /* \!# */
   }
+  /* FLORA-2 mode */
   else if (!strcmp(opt,"Flora")||!strcmp(opt,"flora")) {
     P->User=KUser; P->Meta=KMeta;
     P->preservelf=1;
@@ -1854,6 +1881,15 @@ void SetStandardMode(struct SPECS *P,char *opt)
     add_comment(P,"css",strdup("//"),strdup("\n"),0,0);
     add_comment(P,"sss",strdup("\""),strdup("\""),0,'\n');
     add_comment(P,"sss",strdup("\207'"),strdup("'"),0,'\n');   /* \!# */
+  }
+  /* PathLP mode */
+  else if (!strcmp(opt,"PathLP")||!strcmp(opt,"pathlp")) {
+    P->User=KUser; P->Meta=KMeta;
+    P->preservelf=1;
+    P->op_set=PrologOp;
+    add_comment(P,"ccc",strdup("/*"),strdup("*/"),0,0);
+    add_comment(P,"cii",strdup("\\\n"),strdup(""),0,0);
+    add_comment(P,"sss",strdup("\""),strdup("\""),0,0);
   }
   else bug("unknown standard mode");
 }
@@ -2081,7 +2117,7 @@ int ParsePossibleMeta()
       if (nparam==1) { p2end=p2start=p1end; }
       replace_definition_with_blank_lines(C->buf+1,C->buf+p2end,S->preservelf);
       m->macrotext=remove_comments(p2start,p2end,FLAG_META);
-      m->macrolen=strlen(m->macrotext);
+      m->macrolen = (int)strlen(m->macrotext);
       m->defined_in_comment=C->in_comment;
 
       if (argc) {
@@ -2178,7 +2214,7 @@ int ParsePossibleMeta()
       if (nparam==2 && WarningLevel > 0)
         warning("Extra argument to #include ignored");
       temp = ProcessText(C->buf+p1start, p1end-p1start, FLAG_META);
-      pos1 = 0; pos2 = strlen(temp)-1;
+      pos1 = 0; pos2 = (int)strlen(temp)-1;
       while ((pos1<=pos2)&&iswhite(temp[pos1])) pos1++;
       while ((pos1<=pos2)&&iswhite(temp[pos2])) pos2--;
       if (pos1>pos2) bug("Missing file name in #include");
@@ -2283,7 +2319,7 @@ int ParsePossibleMeta()
 	s=ProcessText(C->buf+p1start,p1end-p1start,FLAG_META);
 	if (nparam==2) {
 	  t=ProcessText(C->buf+p2start,p2end-p2start,FLAG_META);
-	  i=strlen(s);
+	  i=(int)strlen(s);
 	  s=realloc(s,i+strlen(t)+2);
 	  s[i]=' ';
 	  strcpy(s+i+1,t);
@@ -2312,7 +2348,7 @@ int ParsePossibleMeta()
       if (nparam==1) { p2end=p2start=p1end; }
       replace_definition_with_blank_lines(C->buf+1,C->buf+p2end,S->preservelf);
       m->macrotext=tmpbuf;
-      m->macrolen=strlen(m->macrotext);
+      m->macrolen = (int)strlen(m->macrotext);
       m->defined_in_comment=C->in_comment;
 
       if (argc) {
@@ -2442,7 +2478,7 @@ int ParsePossibleMeta()
       if (nparam==1) { p2end=p2start=p1end; }
       replace_definition_with_blank_lines(C->buf+1,C->buf+p2end,S->preservelf);
       m->macrotext=tmpbuf;
-      m->macrolen=strlen(m->macrotext);
+      m->macrolen = (int)strlen(m->macrotext);
       m->defined_in_comment=C->in_comment;
       m->argnames=NULL;
       m->nnamedargs=-3; /* special value */
@@ -2473,7 +2509,7 @@ int ParsePossibleUser(void)
   if ((sh_end>=0)&&(C->namedargs!=NULL)) {
     i=findNamedArg(C->buf+idstart,idend-idstart);
     if (i>=0) {
-      if (i<C->argc) sendout(C->argv[i],strlen(C->argv[i]),0);
+      if (i<C->argc) sendout(C->argv[i],(int)strlen(C->argv[i]),0);
       shiftIn(sh_end);
       return 0;
     }
@@ -2491,7 +2527,7 @@ int ParsePossibleUser(void)
     if (*s!=0) while ((t!=s)&&iswhite(*t)) *(t--)=0;
     t=s; while (iswhite(*t)) t++;
     h=-1;
-    if (findIdent(t,strlen(t),&h)>=0) outchar('1');
+    if (findIdent(t,(int)strlen(t),&h)>=0) outchar('1');
     else outchar('0');
     free(s);
     shiftIn(macend);
@@ -2510,7 +2546,7 @@ int ParsePossibleUser(void)
     char *s;
     for (s=m->macrotext;*s!=0;s++) {
       if (*s>=1 && *s<=8)
-        { if (*s-1<argc) sendout(argv[*s-1],strlen(argv[*s-1]),0); }
+        { if (*s-1<argc) sendout(argv[*s-1],(int)strlen(argv[*s-1]),0); }
       else { if (!commented[iflevel]) outchar(*s); }
     }
     for (i=0;i<argc;i++) free(argv[i]);
@@ -2531,13 +2567,14 @@ int ParsePossibleUser(void)
   if ((m->nnamedargs==-1)&&(lg_end>=0)&&
       (m->define_specs->User.mEnd[0]==0)) {
     /* build an aliased macro call */
-    l=strlen(m->macrotext)+2
-      +strlen(m->define_specs->User.mArgS)
-      +strlen(m->define_specs->User.mArgE)
-      +(argc-1)*strlen(m->define_specs->User.mArgSep);
-    for (i=0;i<argc;i++) l+=strlen(argv[i]);
+    l = (int) (strlen(m->macrotext)+2
+	       +strlen(m->define_specs->User.mArgS)
+	       +strlen(m->define_specs->User.mArgE)
+	       +(argc-1)*strlen(m->define_specs->User.mArgSep));
+    for (i=0;i<argc;i++)
+      l += (int)strlen(argv[i]);
     C->buf=C->malloced_buf=malloc(l);
-    l=strlen(m->macrotext)+1;
+    l = (int)strlen(m->macrotext)+1;
     C->buf[0]='\n';
     strcpy(C->buf+1,m->macrotext);
     while ((l>1)&&iswhite(C->buf[l-1])) l--;
@@ -2554,7 +2591,7 @@ int ParsePossibleUser(void)
     C->buf[0]='\n';
     strcpy(C->buf+1,m->macrotext);
   }
-  C->len=strlen(C->buf);
+  C->len=(int)strlen(C->buf);
   C->bufsize=C->len+1;
   C->eof=0;
   C->namedargs=m->argnames;
@@ -2593,7 +2630,7 @@ void ParseText(void)
           if (p->flags[C->ambience]&PARSE_MACROS) {
             C->in_comment=1;
             s=ProcessText(C->buf+cs,ce-cs,C->ambience);
-            if (p->flags[C->ambience]&OUTPUT_TEXT) sendout(s,strlen(s),0);
+            if (p->flags[C->ambience]&OUTPUT_TEXT) sendout(s,(int)strlen(s),0);
             C->in_comment=0;
             free(s);
           } 
@@ -2617,7 +2654,7 @@ void ParseText(void)
     if ((c>='1')&&(c<='9')) {
       c=c-'1';
       if (c<C->argc)
-        sendout(C->argv[(int)c],strlen(C->argv[(int)c]),0);
+        sendout(C->argv[(int)c],(int)strlen(C->argv[(int)c]),0);
       shiftIn(l+1);
       return;
     }
@@ -2644,7 +2681,7 @@ static void getDirname(char *fname, char *dirname)
 {
   int i;
 
-  for (i = strlen(fname)-1; i>=0; i--) {
+  for (i = (int)strlen(fname)-1; i>=0; i--) {
     if (fname[i] == SLASH)
       break;
   }
@@ -2743,7 +2780,7 @@ void escape_backslashes(char *instr, char **outstr)
 void construct_include_directive_marker(char **include_directive_marker,
 					char *includemarker_input)
 {
-  int len = strlen(includemarker_input);
+  int len = (int)strlen(includemarker_input);
   char ch;
   int in_idx=0, out_idx=0;
   int quoted = 0, num_repl = 0;

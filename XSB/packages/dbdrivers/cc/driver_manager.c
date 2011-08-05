@@ -590,7 +590,7 @@ static char* buildSQLQuery(prolog_term sqlQueryList)
     }
     else if (is_int(element)) {
       temp = (char *)malloc(ELEMENT_SIZE * sizeof(char));
-      sprintf(temp, "%d", p2c_int(element));
+      sprintf(temp, "%d", (int)p2c_int(element));
       strcat(sqlQuery, temp);  
       if (temp != NULL) {
 	free(temp);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynwin32_xsb_i.h,v 1.25 2011-08-03 07:54:15 kifer Exp $
+** $Id: dynwin32_xsb_i.h,v 1.26 2011-08-05 09:10:52 kifer Exp $
 ** 
 */
 
@@ -78,9 +78,11 @@ static char *create_bin_dll_path(char *xsb_config_file_location, char *dll_file_
 static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
 {
   char	*name;
+#ifndef WIN64
 #ifdef XSB_DLL
   char tempname[128];
   size_t  tempsize;
+#endif
 #endif
   Pair	search_ptr;
   char	sofilename[128];

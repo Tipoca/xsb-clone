@@ -34,6 +34,7 @@
 	told,
 	fmt_write_string(OutFile4, 'actualoutput%sbat.ok', f(Slash)),
 	tell(OutFile4),
+	%% from here on it does not run on Win64
         fmt_write_string(TestFile4, '%s%sbat.sgml',f(TestPath,Slash)),
 	catch( load_sgml_structure(file(TestFile4),O4, W4),
 	       error(E),error_handler( error(E))), 

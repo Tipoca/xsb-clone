@@ -39,7 +39,7 @@
 struct driverODBC_columnmeta
 {
 	SQLSMALLINT type;
-	SQLUINTEGER length;
+	SQLULEN length;
 };
 
 struct driverODBC_meta
