@@ -33,7 +33,7 @@
 %% extensive information on how XSB was built.
 %%
 
-:- export xsb_configuration/2, windows_os/0.
+:- export xsb_configuration/2, windows_os/0, windows_os64/0.
 
 :- import stat_flag/2, intern_string/2, slash/1
    from machine.
@@ -41,6 +41,7 @@
    from file_io.
 
 windows_os.
+windows_os64 :- fail.
 
 xsb_configuration(compiler, 'cl.exe').
 

@@ -13,7 +13,10 @@ compiled (in most cases) with:
 :- import fibr/2 from fibr.  %% foreign code to handle recursive case
 :- import for/3 from basics.
 
-:- (windows_os -> shell('nmake /f MakefileFibp') ; true).
+:- (windows_os64 -> shell('nmake /f MakefileFibp_w64')
+   ; windows_os -> shell('nmake /f MakefileFibp')
+   ; true
+   ).
 
 :- [fibr].  %% be sure foreign code is compiled and loaded.
 
