@@ -36,24 +36,25 @@ test :- p(X,Y),fail.
 test:- test_1.
 
 test_1 :-
+	write('test 1 '),
 	table_dump(p(_,_),[summary(true)]),
 	writeln('----------------------'),
-	write('test 1 '),
+	write('test 2 '),
 	table_dump(p(_,_),[details(true)]),
 	writeln('----------------------'),
-	write('test 2 '),
+	write('test 3 '),
 	table_dump(p(_,_),[details(true),summary(false)]),
 	writeln('----------------------'),
-	write('test 3 '),
-	table_dump(p(_,_),[results(Results)]),numbervars(Results),writeln(results_1(Results)),
-	writeln('----------------------'),
 	write('test 4 '),
-	table_dump(p(_,_),[details(true),summary(false),results(R2)]),numbervars(R2),writeln(results_2(R2)),
+	table_dump(p(_,_),[results(Results)]),numbervars(Results),writeln(results_4(Results)),
 	writeln('----------------------'),
 	write('test 5 '),
-	table_dump(p(_,_),[details(true),summary(true),results(R3)]),numbervars(R3),writeln(results_3(R3)),
+	table_dump(p(_,_),[details(true),summary(false),results(R2)]),numbervars(R2),writeln(results_3(R2)),
 	writeln('----------------------'),
-	write('test 5 '),
+	write('test 6 '),
+	table_dump(p(_,_),[details(true),summary(true),results(R3)]),numbervars(R3),writeln(results_4(R3)),
+	writeln('----------------------'),
+	write('test 7 '),
 	catch(table_dump(p(_,_),[badopt]),error(A,B,C),writeln(caughtit_2(A))),
 	writeln('----------------------').
 

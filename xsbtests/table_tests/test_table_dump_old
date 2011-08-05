@@ -1,15 +1,15 @@
-
 ----------------------
 ----------------------
 ----------------------
 ----------------------
 ----------------------
 ----------------------
-results_1([summary = p(A,B) - subgoals(3) - returns(9)])
-results_3([summary = p(A,B) - subgoals(3) - returns(9)|C])
+results_4([summary = p(A,B) - subgoals(3) - returns(9),details - p(A,B) - subgoals(3) - answers_for_subgoals([p(C,D) - 5 - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)],p(2,b) - 2 - [p(2,b),p(2,b)],p(1,b) - 2 - [p(1,b),p(1,b)]])])
+results_4([summary = p(A,B) - subgoals(3) - returns(9)])
 test 1 
-test 2 ----------------------
-test 3 
-test 4 results_2(A)
-test 5 
-test 5 caughtit_2(domain_error([summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)],badopt))
+test 2 
+test 3 ----------------------
+test 4 
+test 5 results_3([details - p(A,B) - subgoals(3) - answers_for_subgoals([p(C,D) - 5 - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)],p(2,b) - 2 - [p(2,b),p(2,b)],p(1,b) - 2 - [p(1,b),p(1,b)]])])
+test 6 
+test 7 caughtit_2(domain_error([summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)],badopt))
