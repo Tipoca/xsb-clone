@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.31 2011-05-23 18:57:01 dwarren Exp $
+## $Id: testsuite.sh,v 1.32 2011-08-05 09:35:01 kifer Exp $
 ## 
 ##
 
@@ -30,7 +30,7 @@
 #==================================================================
 
 #Usage: testsuite.sh [-opts opts] [-tag tag] [-exclude exclude_list] \
-#    	     	     [-add add_list] [-only test_list] [-mswin | -win64] path
+#    	     	     [-add add_list] [-only test_list] [-mswin|-mswin64] path
 # where: opts         -- options to pass to XSB
 #        tag          -- the configuration tag to use
 #        exclude_list -- the list of tests (in quotes) to NOT run
@@ -40,7 +40,7 @@
 #    	     	     	 both -exclude and -only can be specified at once
 #        path         -- full path name of the XSB installation directory
 #    The -mswin option says to run tests under MS Windows
-#    The -win64 option says to run tests under 64-bit MS Windows 
+#    The -mswin64 says to run tests under MS Windows 64 bit
 #    If tag specified, this is the tag to use to 
 #    locate the XSB executable (e.g., dbg, chat, etc.). 
 #    It is usually specified using the --config-tag option of 'configure'
@@ -94,16 +94,16 @@ do
 	    shift
 	    ;;
 
+      *-mswin64*)
+	    shift
+	    windows64=true
+	    echo "Running tests under Windows x64"
+	    ;;
+
       *-mswin*)
 	    shift
 	    windows=true
-	    echo "Running tests under Windows"
-	    ;;
-
-      *-win64*)
-	    shift
-	    win64=true
-	    echo "Running tests under Windows 64bit"
+	    echo "Running tests under Windows x86"
 	    ;;
 
       *)
@@ -143,27 +143,32 @@ fi
 
 
 # get canonical configuration name
-if test -z "$windows"; then
-if test -z "$win64"; then
-config=`$installdir/build/config.guess`
-canonical=`$installdir/build/config.sub $config`
-else
-config=x64-pc-windows
-canonical=x64-pc-windows
-fi
-else
+if test -n "$windows"; then
 config=x86-pc-windows
 canonical=x86-pc-windows
+xsbexe=xsb.exe
+xsbscript=xsb.bat
+elif test -n "$windows64"; then
+config=x64-pc-windows
+canonical=x64-pc-windows
+xsbexe=xsb.exe
+xsbscript=xsb64.bat
+else
+config=`$installdir/build/config.guess`
+canonical=`$installdir/build/config.sub $config`
+xsbexe=xsb
+xsbscript=xsb
 fi
 
-XEMU=$installdir/config/$canonical$config_tag/bin/xsb
+#XEMU=$installdir/bin/$xsbscript
+XEMU=$installdir/config/$canonical$config_tag/bin/$xsbexe
 
 GREP="grep -i"
 MSG_FILE=/tmp/xsb_test_msg.$USER
 LOG_FILE=/tmp/xsb_test_log.$USER
 RES_FILE=/tmp/xsb_test_res.$USER
 
-if test ! -x "$XEMU"; then
+if test ! -x "$XEMU" -a -z "$windows" -a -z "$windows64"; then
     echo "Can't execute $XEMU"
     echo "aborting..."
     echo "Can't execute $XEMU" >$MSG_FILE
@@ -171,7 +176,7 @@ if test ! -x "$XEMU"; then
     echo "Aborted testsuite on $HOSTNAME..." >> $MSG_FILE
     # Mail does not work on the HP
     #	Mail -s "Testsuite aborted" $USER@cs.sunysb.edu < $MSG_FILE
-    mail $USER < $MSG_FILE
+    #mail $USER < $MSG_FILE
     rm -f $MSG_FILE
     exit
 fi
