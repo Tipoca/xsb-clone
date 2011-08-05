@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.50 2011-06-21 17:58:26 dwarren Exp $
+** $Id: parse.H,v 1.51 2011-08-05 18:11:14 kifer Exp $
 ** 
 */
 
@@ -43,6 +43,7 @@
 	'_$multifile'/1, '_$multifile1'/1,
 	'_$multifile2'/3, '_$apply_arity'/1,
 	'_$multifile_retract'/3.
+:- export parsing_file/1.
 
 :- import
 	retractall/1, retract/1,
