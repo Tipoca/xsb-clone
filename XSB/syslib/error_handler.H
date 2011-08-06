@@ -50,7 +50,7 @@
 
  :- import (dynamic)/1,asserta/1 from assert.
 %%:- import reset_undef_pred_handlers/0 from loader.
-   :- import close_open_tables/0, psc_data/2, psc_name/2, psc_arity/2, ccall_store_error/2,
+   :- import close_open_tables/1, psc_data/2, psc_name/2, psc_arity/2, ccall_store_error/2,
           stat_flag/2, xsb_backtrace/1 from machine.
 
 :- import ','/2 from standard.

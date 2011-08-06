@@ -41,7 +41,7 @@
    handle_interrupts/1
      from standard.
 :- import '$$exception_ball'/2 from standard.
-:- import close_open_tables/0,
+:- import close_open_tables/1,
           is_xwammode/1, 
 	  stat_flag/2, stat_set_flag/2,
 	  slash/1, trimcore/0,

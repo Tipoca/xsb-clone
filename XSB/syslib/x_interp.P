@@ -147,7 +147,7 @@ process_query(X, Vars) :-
 process_query1(X, []) :-	%% no printable variables appeared in the input
 	!,
 	call_query(X),
-	close_open_tables,
+	close_open_tables(non_memory_error),
 	!,
 	xwam_state(2,DelayReg),
 	(DelayReg =:= 0
@@ -172,7 +172,7 @@ process_query1(X, Vars) :-
 	file_write(STDFDBK, MorePrompt),
 	file_flush(STDFDBK, _),
 	no_more,
-	close_open_tables,
+	close_open_tables(non_memory_error),
 	!,
 	file_nl(STDFDBK), file_write(STDFDBK, yes), file_nl(STDFDBK),
 	fail.

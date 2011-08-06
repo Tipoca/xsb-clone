@@ -223,7 +223,12 @@ pair_psc(Pair, PSC) :- pair_psc(Pair, PSC).
 pair_next(Pair, Next_Pair) :- pair_next(Pair, Next_Pair).
 next_bucket(Bucket, Next_Bucket) :- next_bucket(Bucket, Next_Bucket).
 
-close_open_tables :- close_open_tables.
+close_open_tables(memory_error):-!,
+    close_open_tables_1(MEMORY_ERROR).
+close_open_tables(_non_memory_error):-
+    close_open_tables_1(NON_MEMORY_ERROR).
+
+close_open_tables_1(_Error_Type) :- '_$builtin'(CLOSE_OPEN_TABLES).
 
 file_function(Function, A, B, C, D, E, F) :-
 	file_function(Function, A, B, C, D, E, F).

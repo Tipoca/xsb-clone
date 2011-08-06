@@ -117,7 +117,7 @@
 	pair_next/2, 
 	next_bucket/2,
 	is_xwammode/1, 
-	close_open_tables/0, 
+	close_open_tables/1, 
 	abolish_table_info/0,
 	zero_out_profile/0, 
 	write_out_profile/0,
