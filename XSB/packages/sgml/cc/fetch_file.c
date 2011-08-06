@@ -37,7 +37,7 @@ int get_file_www(char *server, char * fname, char **buf);
 int parse_url( const char * url, char * server, char *fname)
 {
   int i,j;
-  int len = strlen(url);
+  size_t len = strlen(url);
   char temp[MAXSTRLEN];
   
   int flag = 0, flag_file = 0;

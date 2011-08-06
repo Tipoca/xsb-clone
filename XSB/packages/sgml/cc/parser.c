@@ -207,10 +207,10 @@ static dtd_symbol_table *
 new_symbol_table();
 
 static int
-expand_pentities(dtd_parser *p, const ichar *in, ichar *out, int len);
+expand_pentities(dtd_parser *p, const ichar *in, ichar *out, size_t len);
 
 static const ichar *
-entity_value(dtd_parser *p, dtd_entity *e, int *len);
+entity_value(dtd_parser *p, dtd_entity *e, size_t *len);
 
                                                                                
 static const ichar *
@@ -232,7 +232,7 @@ end_document_dtd_parser_(dtd_parser *p);
 int
 end_document_dtd_parser(dtd_parser *p);
 int
-sgml_process_stream(dtd_parser *p, char * buf, unsigned flags, int source_len);
+sgml_process_stream(dtd_parser *p, char * buf, unsigned flags, size_t source_len);
 
 static const ichar *
 itake_url(dtd *dtd, const ichar *in, ichar **out);
@@ -340,8 +340,8 @@ process_attlist_declaraction(dtd_parser *p, const ichar *decl);
 static int
 process_pi(dtd_parser *p, const ichar *decl);
 
-static int
-match_map(dtd *dtd, dtd_map *map, int len, ichar *data);
+static Integer
+match_map(dtd *dtd, dtd_map *map, Integer len, ichar *data);
 
 typedef enum
   { IE_NORMAL,
@@ -535,7 +535,7 @@ static char *xml_entities[] =
  * Output : none
  **/
 static __inline void
-setlocation(dtd_srcloc *d, dtd_srcloc *loc, int line, int lpos)
+setlocation(dtd_srcloc *d, dtd_srcloc *loc, int line, Integer lpos)
 { d->line    = line;
   d->linepos = lpos;
   d->charpos = loc->charpos - 1;
@@ -627,7 +627,7 @@ add_cdata(dtd_parser *p, int chr)
 
       if ( chr == '\n' )                  /* insert missing CR */
 	{ 
-	  int sz;
+	  Integer sz;
                                                                                
 	  if ( (sz=buf->size) == 0 || buf->data[sz-1] != CR )
 	    add_cdata(p, CR);
@@ -642,7 +642,7 @@ add_cdata(dtd_parser *p, int chr)
 		
       if ( chr == '\n' )                  /* dubious.  Whould we do that */
 	{
-	  int sz;                           /* here or in space-handling? */
+	  Integer sz;                           /* here or in space-handling? */
 	  if ( (sz=buf->size) > 1 &&
 	       buf->data[sz-1] == LF &&
 	       buf->data[sz-2] == CR )
@@ -659,8 +659,8 @@ add_cdata(dtd_parser *p, int chr)
 /**
  * Internal SWI functions which aid in parsing shortrefs in xml document
  **/
-static int
-match_map(dtd *dtd, dtd_map *map, int len, ichar *data)
+static Integer
+match_map(dtd *dtd, dtd_map *map, Integer len, ichar *data)
 { ichar *e = data+len-1;
   ichar *m = map->from+map->len-1;
                                                                                
@@ -702,7 +702,7 @@ match_shortref(dtd_parser *p)
                                                                                
   for(map = p->map->map; map; map = map->next)
     { 
-      int len;
+      Integer len;
                                                                                
       if ( (len=match_map(p->dtd, map,
 			  p->cdata->size, (ichar *)p->cdata->data)) )
@@ -1085,7 +1085,7 @@ putchar_dtd_parser(dtd_parser *p, int chr)
   dtd *dtd = p->dtd;
   const ichar *f = dtd->charfunc->func;
   int line = p->location.line;
-  int lpos = p->location.linepos;
+  Integer lpos = p->location.linepos;
 
 
   /*Adjust the current line and character position*/
@@ -1957,10 +1957,10 @@ format_location(char *s, dtd_srcloc *l)
 	{ case IN_NONE:
 	    assert(0);
 	case IN_FILE:
-	  sprintf(s, "%s:%d:%d", l->name, l->line, l->linepos);
+	  sprintf(s, "%s:%d:%d", l->name, (int) l->line, (int) l->linepos);
 	  break;
 	case IN_ENTITY:
-	  sprintf(s, "&%s;%d:%d", l->name, l->line, l->linepos);
+	  sprintf(s, "&%s;%d:%d", l->name, (int) l->line, (int) l->linepos);
 	  break;
 	}
       s += strlen(s);
@@ -1985,7 +1985,7 @@ static void
 format_message(dtd_error *e)
 { char buf[1024];
   char *s;
-  int prefix_len;
+  Integer prefix_len;
                                                                                
   switch(e->severity)
     { case ERS_ERROR:
@@ -2074,7 +2074,7 @@ process_entity(dtd_parser *p, const ichar *name)
       dtd_symbol *id;
       dtd_entity *e;
       dtd *dtd = p->dtd;
-      int len;
+      size_t len;
       const ichar *text;
       const ichar *s;
       int   chr;
@@ -2196,7 +2196,7 @@ sgml_process_file(dtd_parser *p, const char *file, unsigned flags)
   
   char * buf = NULL;
 
-  int n= 0;
+  size_t n= 0;
 
   push_location(p, &oldloc);
   set_src_dtd_parser(p, IN_FILE, file);
@@ -2232,7 +2232,7 @@ sgml_process_file(dtd_parser *p, const char *file, unsigned flags)
  * Helper function to download remote files which contain entity declarations.
  **/                                                    
 int
-sgml_process_stream(dtd_parser *p, char *buf, unsigned flags, int source_len)
+sgml_process_stream(dtd_parser *p, char *buf, unsigned flags, size_t source_len)
 { int p0, p1, i=0 ;
                                                                                
   if ( (p0 = buf[i]) == EOF )
@@ -4627,7 +4627,7 @@ itake_url(dtd *dtd, const ichar *in, ichar **out)
  * Output : expanded entity, TRUE on success/ FALSE on failure
  **/
 static int
-expand_pentities(dtd_parser *p, const ichar *in, ichar *out, int len)
+expand_pentities(dtd_parser *p, const ichar *in, ichar *out, size_t len)
 { dtd *dtd = p->dtd;
   int pero = dtd->charfunc->func[CF_PERO]; /* % */
   int ero = dtd->charfunc->func[CF_ERO]; /* & */
@@ -4640,7 +4640,7 @@ expand_pentities(dtd_parser *p, const ichar *in, ichar *out, int len)
 	  if ( (s = itake_entity_name(dtd, in+1, &id)) )
 	    { dtd_entity *e = find_pentity(dtd, id);
 	      const ichar *eval;
-	      int l;
+	      size_t l;
 	      
 	      in = s;
 	      if ( (s=isee_func(dtd, s, CF_ERC)) ) /* ; is not obligatory? */
@@ -4768,7 +4768,7 @@ char_entity_value(const ichar *decl)
 }
 
 static const ichar *
-entity_value(dtd_parser *p, dtd_entity *e, int *len)
+entity_value(dtd_parser *p, dtd_entity *e, size_t *len)
 { const char *file;
  
   if ( !e->value && (file=entity_file(p->dtd, e)) )
@@ -5287,7 +5287,7 @@ int
 load_dtd_from_file(dtd_parser *p, const char *file)
 { 
   int rval;
-  int n=0;
+  size_t n=0;
 
   char fname[MAXSTRLEN];
   char server[MAXSTRLEN];

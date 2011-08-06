@@ -4,6 +4,10 @@
  *
  ****************************************************************************/
 
+#include "xsb_config.h"
+#include "context.h"
+
+
 #ifndef DTD_H_INCLUDED
 #define DTD_H_INCLUDED
 #include "sgmldefs.h"
@@ -231,8 +235,8 @@ typedef struct _dtd_srcloc
 { input_type  type;			/* type of input */
   const char *name;			/* name of the file */
   int	      line;			/* 1-based Line no */
-  int	      linepos;			/* 1-based char  */
-  long	      charpos;			/* 0-based file char  */
+  Integer     linepos;			/* 1-based char  */
+  Integer     charpos;			/* 0-based file char  */
   struct _dtd_srcloc *parent;		/* parent location */
 } dtd_srcloc;
 
@@ -272,7 +276,7 @@ typedef struct _dtd_entity
   entity_type type;			/* ET_* */
   data_type content;			/* EC_* */
   int catalog_location;			/* what catalog to use for lookup */
-  int length;				/* size of literal value */
+  size_t length;			/* size of literal value */
   ichar *value;				/* literal value */
   ichar *extid;				/* external identifier */
   ichar *exturl;			/* url to fetch from */
@@ -353,7 +357,7 @@ typedef struct _dtd_edef
 
 typedef struct _dtd_map
 { ichar	       *from;			/* mapped text */
-  int		len;			/* length of mapped text */
+  size_t	len;			/* length of mapped text */
   dtd_symbol   *to;			/* name of symbol mapped onto */
   struct _dtd_map *next;		/* next in shortref map */
 } dtd_map;

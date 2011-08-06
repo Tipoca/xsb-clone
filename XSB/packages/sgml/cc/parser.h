@@ -1,4 +1,4 @@
-/*  $Id: parser.h,v 1.4 2010-08-19 15:03:39 spyrosh Exp $
+/*  $Id: parser.h,v 1.5 2011-08-06 05:54:39 kifer Exp $
 
     Part of SWI-Prolog
 
@@ -52,7 +52,7 @@ typedef int (*sgml_begin_element_f)(dtd_parser_p parser,
 typedef int (*sgml_end_element_f)(dtd_parser_p parser,
 				  dtd_element *e);
 typedef int (*sgml_data_f)(dtd_parser_p parser,
-			   data_type type, int len, const ochar *text);
+			   data_type type, size_t len, const ochar *text);
 typedef int (*sgml_entity_f)(dtd_parser_p parser,
 			     dtd_entity *entity,
 			     int chr);
@@ -181,7 +181,7 @@ typedef struct _dtd_parser
   int	   blank_cdata;			/* CDATA is all blank */
   int	   cdata_must_be_empty;		/* Only shortrefs allowed here */
   const ichar *etag;			/* name of end-tag in CDATA */
-  int	   etaglen;			/* length of end-tag */
+  size_t   etaglen;			/* length of end-tag */
   int	   grouplevel;			/* [..] level in declaration */
   int	   saved;			/* saved character */
   dtdstate lit_saved_state;		/* literal saved-state */

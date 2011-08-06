@@ -1,4 +1,4 @@
-/*  $Id: util.c,v 1.5 2011-05-01 05:46:13 kifer Exp $
+/*  $Id: util.c,v 1.6 2011-08-06 05:54:39 kifer Exp $
 
     Part of SWI-Prolog
 
@@ -95,7 +95,7 @@ istreq(const ichar *s1, const ichar *s2)
 }
 */
 int
-istrncaseeq(const ichar *s1, const ichar *s2, int len)
+istrncaseeq(const ichar *s1, const ichar *s2, size_t len)
 { while(--len >= 0 && tolower(*s1) == tolower(*s2))
     s1++, s2++;
   
@@ -428,14 +428,14 @@ and end.
 #endif
 
 ichar *
-load_sgml_file_to_charp(const char *file, int normalise_rsre, int *length)
+load_sgml_file_to_charp(const char *file, int normalise_rsre, size_t *length)
 { int fd;
 
   if ( (fd = open(file, O_RDONLY|O_BINARY)) >= 0 )
   { struct stat buf;
 
     if ( fstat(fd, &buf) == 0 )
-    { long len = buf.st_size;
+    { int len = buf.st_size;
       char *r = sgml_malloc(len+1);
 
       if ( r )
@@ -454,7 +454,7 @@ load_sgml_file_to_charp(const char *file, int normalise_rsre, int *length)
 	  s += n;
 	}
 
-	len = s-r;
+	len = (int) (s-r);
 	*s = '\0';			/* ensure closing EOS */
 	close(fd);
 
@@ -481,7 +481,7 @@ load_sgml_file_to_charp(const char *file, int normalise_rsre, int *length)
 	      } else
 		*t++ = *s;
 	    }
-            len = t-r2;
+            len = (int) (t-r2);
 	    *t = '\0';
 	    sgml_free(r);
 	    r = r2;

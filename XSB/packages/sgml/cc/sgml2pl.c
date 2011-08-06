@@ -139,7 +139,7 @@ static int
 on_pi(dtd_parser *p, const ichar *pi);
 
 static int
-on_cdata(dtd_parser *p, data_type type, int len, const ochar *data);
+on_cdata(dtd_parser *p, data_type type, size_t len, const ochar *data);
 
 static void
 put_element_name(dtd_parser *p, prolog_term t, dtd_element *e);
@@ -170,7 +170,7 @@ static ichar *
 istrblank(const ichar *s);
 
 static int
-unify_listval(dtd_parser *p,  prolog_term t, attrtype type, int len, const char *text);
+unify_listval(dtd_parser *p,  prolog_term t, attrtype type, Integer len, const char *text);
 
 static dtd_srcloc *
 file_location(dtd_parser *p, dtd_srcloc *l);
@@ -473,7 +473,7 @@ get_parser(prolog_term parser, dtd_parser **p)
 
 DllExport int call_conv pl_doctype()
 {
-  dtd_parser *p;
+  dtd_parser *p = NULL;
   prolog_term parser, doctype;
   dtd * dtd;
 
@@ -501,7 +501,7 @@ DllExport int call_conv pl_doctype()
 
 DllExport int call_conv pl_set_sgml_parser()
 {
-  dtd_parser *p;
+  dtd_parser *p = NULL;
   prolog_term parser, options, temp_term;
   check_thread_context
 
@@ -697,7 +697,7 @@ DllExport int call_conv pl_finalize_warn()
 
 DllExport int call_conv pl_sgml_parse()
 {
-  dtd_parser *p;
+  dtd_parser *p = NULL;
   parser_data *pd;
   parser_data *oldpd;
   /*Temporary prolog terms to parse the options list*/
@@ -705,7 +705,9 @@ DllExport int call_conv pl_sgml_parse()
   FILE *in = NULL;
   struct stat stbuf;
 
-  int  recursive, has_content_length = FALSE, content_length = 0, its_a_url = 0, source_len = 0;
+  int  recursive, has_content_length = FALSE, its_a_url = 0;
+  size_t source_len = 0;
+  size_t content_length = 0;
 
   char *str, *source=NULL, fname[MAXSTRLEN], *tmpsource=NULL;
   check_thread_context
@@ -1083,7 +1085,7 @@ DllExport int call_conv pl_sgml_parse()
  **/
 
 DllExport int call_conv pl_open_dtd()
-{ dtd *dtd;
+{ dtd *dtd = NULL;
   dtd_parser *p;
   parser_data *pd;
 
@@ -1095,7 +1097,7 @@ DllExport int call_conv pl_open_dtd()
   char *str, file[MAXSTRLEN], server[MAXSTRLEN], *fname=NULL, *tmpfname=NULL;
   int its_a_url = 0;
   struct stat stbuf;
-  int source_len = 0;
+  size_t source_len = 0;
   check_thread_context
 
   ref = reg_term(CTXTc 1);
@@ -1238,7 +1240,7 @@ DllExport int call_conv pl_open_dtd()
 
 DllExport int call_conv pl_free_sgml_parser()
 {
-  dtd_parser *p;
+  dtd_parser *p = NULL;
   prolog_term parser;
   check_thread_context
 
@@ -1258,7 +1260,7 @@ DllExport int call_conv pl_free_sgml_parser()
  * Input : dtd object
  */
 DllExport int call_conv pl_free_dtd()
-{ dtd *dtd;
+{ dtd *dtd = NULL;
 
   prolog_term dtd_term;
   check_thread_context
@@ -1660,7 +1662,7 @@ put_attribute_value(dtd_parser *p, prolog_term t, sgml_attribute *a)
 }
 
 static int
-unify_listval(dtd_parser *p,  prolog_term t, attrtype type, int len, const char *text)
+unify_listval(dtd_parser *p,  prolog_term t, attrtype type, Integer len, const char *text)
 {
   prolog_term tmp = p2p_new(CTXT);
   if ( type == AT_NUMBERS && p->dtd->number_mode == NU_INTEGER )
@@ -1776,7 +1778,7 @@ on_pi(dtd_parser *p, const ichar *pi)
  * Output : none
  **/
 static int
-on_cdata(dtd_parser *p, data_type type, int len, const ochar *data)
+on_cdata(dtd_parser *p, data_type type, size_t len, const ochar *data)
 {
   parser_data *pd = p->closure;
   int rval=0;
@@ -1953,12 +1955,12 @@ put_url(dtd_parser *p, prolog_term t, const ichar *url)
 static int
 do_quote(prolog_term in, prolog_term quoted, char **map)
 { char *ins;
-  unsigned len;
+  size_t len;
   unsigned  char *s;
   char outbuf[1024];
   char *out = outbuf;
   int outlen = sizeof(outbuf);
-  int o = 0;
+  size_t o = 0;
   int changes = 0;
 
   prolog_term tmp = 0;
@@ -1974,7 +1976,7 @@ do_quote(prolog_term in, prolog_term quoted, char **map)
     { int c = *s;
 
       if ( map[c] )
-	{ int l = strlen(map[c]);
+	{ size_t l = strlen(map[c]);
 	  if ( o+l >= outlen )
 	    { outlen *= 2;
 
@@ -2071,7 +2073,7 @@ DllExport int call_conv pl_xml_quote_cdata()
 
 DllExport int call_conv pl_xml_name()
 { char *ins;
-  unsigned len;
+  size_t len;
   static dtd_charclass *map;
   unsigned int i;
   check_thread_context

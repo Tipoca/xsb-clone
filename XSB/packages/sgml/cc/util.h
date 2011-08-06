@@ -1,4 +1,4 @@
-/*  $Id: util.h,v 1.4 2010-08-19 15:03:39 spyrosh Exp $
+/*  $Id: util.h,v 1.5 2011-08-06 05:54:39 kifer Exp $
 
     Part of SWI-Prolog
 
@@ -31,6 +31,9 @@
 #include <malloc.h>
 #endif
 
+#include "xsb_config.h"
+#include "context.h"
+
 typedef struct 
 { int allocated;
   int size;
@@ -39,7 +42,7 @@ typedef struct
 
 typedef struct 
 { int allocated;
-  int size;
+  Integer size;
   ochar *data;
 } ocharbuf;
 
@@ -51,7 +54,7 @@ ichar *		istrlower(ichar *s);
 int             istrprefix(const ichar *pref, const ichar *s);
 int             istreq(const ichar *s1, const ichar *s2);
 int             istrcaseeq(const ichar *s1, const ichar *s2);
-int		istrncaseeq(const ichar *s1, const ichar *s2, int len);
+int		istrncaseeq(const ichar *s1, const ichar *s2, size_t len);
 int             istrhash(const ichar *t, int tsize);
 int             istrcasehash(const ichar *t, int tsize);
 ichar *		istrchr(const ichar *s, int c);
@@ -98,7 +101,7 @@ const char *	str_summary(const char *s, int len);
 char *		str2ring(const char *in);
 char *		ringallo(size_t);
 ichar *		load_sgml_file_to_charp(const char *file, int normalise_rsre,
-					int *len);
+					size_t *len);
 
 #if defined(USE_STRING_FUNCTIONS) && !defined(UTIL_H_IMPLEMENTATION)
 
