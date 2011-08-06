@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: pathname_xsb.c,v 1.42 2011-05-18 19:21:40 dwarren Exp $
+** $Id: pathname_xsb.c,v 1.43 2011-08-06 04:17:23 kifer Exp $
 ** 
 */
 
@@ -338,7 +338,7 @@ static char *get_file_extension(char *path) {
 
 /* 
 ** Go over path name and get rid of `..', `.', and multiple slashes 
-** Won't delete leading `..'.
+** Won't delete the leading `..'.
 ** Expects two strings (with allocated storage) as params: the input path and
 ** the output path. Returns the second argument.
 */
@@ -439,10 +439,11 @@ static char *rectify_pathname(char *inpath, char *outpath) {
     outidx++;
   }
 
+  if (nameidx==0) outpath[outidx] = '\0';
   for (i=0; i<nameidx; i++) {
     strcpy(outpath+outidx, names[i]);
     outidx = outidx + (int)strlen(names[i]);
-    /* put shash in place of '\0', if we are not at the end yet */
+    /* put slash in place of '\0', if we are not at the end yet */
     if (i < nameidx-1) {
       outpath[outidx] = SLASH;
       outidx++;
@@ -496,8 +497,10 @@ void transform_cygwin_pathname(char *filename)
   int diff;
 
   if (filename[0] == '/') {
-    if (filename[1] == '/') diff = 1;
-    else if (filename[2] == 0) diff = 1;
+    /* MK: unclear what this was supposed to do in case of the files starting
+       with // or files of the form /Letter. Changed this to no-op. */
+    if (filename[1] == '/') return; /* diff = 1; */
+    else if (filename[2] == '\0') return; /* diff = 1; */
     else if (filename[1] == 'c' &&
 	     filename[2] == 'y' &&
 	     filename[3] == 'g' &&
