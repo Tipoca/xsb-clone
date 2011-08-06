@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.P,v 1.70 2010-08-19 15:03:35 spyrosh Exp $
+** $Id: builtin.P,v 1.71 2011-08-06 19:16:45 tswift Exp $
 ** 
 */
 
@@ -160,7 +160,7 @@ inline_builtin(pair_next, 2, PAIR_NEXT).
 inline_builtin(next_bucket, 2, NEXT_BUCKET).
 
 inline_builtin(is_xwammode, 1, IS_XWAMMODE).
-inline_builtin(close_open_tables, 0, CLOSE_OPEN_TABLES).
+inline_builtin(close_open_tables, 1, CLOSE_OPEN_TABLES).
 
 inline_builtin(file_function, 7, FILE_FUNCTION).
 inline_builtin(file_function, 3, FILE_FUNCTION).
