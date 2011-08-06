@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.91 2011-05-19 16:39:06 tswift Exp $
+** $Id: error_xsb.c,v 1.92 2011-08-06 19:14:20 tswift Exp $
 ** 
 */
 
@@ -580,12 +580,67 @@ void call_conv xsb_memory_error(char *resource,char *message)
 }
 #else
 void call_conv xsb_memory_error(char *resource,char *message) {
-  xsb_resource_error_nopred(CTXTdeclc resource,message);
+  xsb_resource_error_nopred(resource,message);
 }
 #endif
 
 /* Like xsb_resource_error(), but does not include predicate and
    argument information. */
+
+void call_conv xsb_resource_error_nopred(char *resource, char *description,...)
+{
+  prolog_term ball_to_throw;
+  int isnew;
+  Cell *tptr; 
+  size_t ball_len = 10*sizeof(Cell);
+  char message[MAXBUFSIZE];
+  va_list args;
+#ifdef MULTI_THREAD
+  int tid = xsb_thread_self();
+  th_context *th;
+  th = find_context(tid);
+#endif
+
+  va_start(args, description);
+  strcpy(message, " ");
+  vsnprintf(message+strlen(message), (MAXBUFSIZE-strlen(message)), description, args);
+  if (message[strlen(message)-1] == '\n') message[strlen(message)-1] = 0;
+  va_end(args);
+
+  tptr = (Cell *) malloc(1000);
+  if (!tptr) 
+    xsb_exit( "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
+  else free(tptr);
+
+  XSB_StrSet(&MsgBuf,message);
+  XSB_StrSet(&FlagBuf,resource);
+
+  tptr =   (Cell *) mem_alloc_nocheck(ball_len,LEAK_SPACE);
+  if (!tptr) 
+    xsb_exit("++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
+
+  ball_to_throw = makecs(tptr);
+  bld_functor(tptr, pair_psc(insert("error",3,
+				    (Psc)flags[CURRENT_MODULE],&isnew)));
+  tptr++;
+  bld_cs(tptr,(Cell) (tptr+3));
+  tptr++;
+  //  bld_string(tptr,string_find(message,1));
+  bld_string(tptr,MsgBuf.string);
+  tptr++;
+  bld_copy(tptr,makenil);
+  tptr++;
+  //  bld_functor(tptr, pair_psc(insert("resource_error",1,    (Psc)flags[CURRENT_MODULE],&isnew)));
+  bld_functor(tptr, pair_psc(insert("resource_error",1,    global_mod,&isnew)));
+  tptr++;
+
+  bld_string(tptr,FlagBuf.string);
+
+  xsb_throw_internal(CTXTc ball_to_throw, ball_len);
+
+}
+
+/*
 void call_conv xsb_resource_error_nopred(CTXTdeclc char *resource,char *message)
 {
   prolog_term ball_to_throw;
@@ -625,7 +680,7 @@ void call_conv xsb_resource_error_nopred(CTXTdeclc char *resource,char *message)
   xsb_throw_internal(CTXTc ball_to_throw, ball_len);
 
 }
-
+*/
 #undef MsgBuf
 #undef FlagBuf
 

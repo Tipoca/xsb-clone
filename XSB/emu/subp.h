@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.h,v 1.22 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: subp.h,v 1.23 2011-08-06 19:14:20 tswift Exp $
 ** 
 */
 
@@ -33,7 +33,7 @@ extern void print_qatom(FILE *, char *);
 extern void print_aqatom(FILE *, char *);
 extern void print_dqatom(FILE *, char *);
 extern void print_op(FILE *, char *, int);
-extern void remove_incomplete_tables_reset_freezes(CTXTdecl);
+extern void remove_incomplete_tables_reset_freezes(CTXTdeclc int);
 
 extern xsbBool unify(CTXTdeclc Cell, Cell);
 extern xsbBool are_identical_terms(Cell, Cell);

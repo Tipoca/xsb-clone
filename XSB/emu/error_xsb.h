@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.55 2011-05-19 16:39:06 tswift Exp $
+** $Id: error_xsb.h,v 1.56 2011-08-06 19:14:20 tswift Exp $
 ** 
 */
 
@@ -145,7 +145,7 @@ DllExport extern void call_conv xsb_misc_error(CTXTdeclc char*,const char*,int) 
 DllExport extern void call_conv xsb_permission_error(CTXTdeclc char *,char *,Cell,const char *,int) ;
 DllExport extern void call_conv xsb_resource_error(CTXTdeclc char *,const char *, int) ;
 DllExport extern void call_conv xsb_representation_error(CTXTdeclc char*,Cell, const char*,int) ; 
-DllExport extern void call_conv xsb_resource_error_nopred(CTXTdeclc char *,char *) ;
+ DllExport extern void call_conv xsb_resource_error_nopred(char *,char *,...) ;
 DllExport extern void call_conv xsb_syntax_error(CTXTdeclc char *) ;
 DllExport extern void call_conv xsb_syntax_error_non_compile(CTXTdeclc Cell,
 							     const char *,int) ;

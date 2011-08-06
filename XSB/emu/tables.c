@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.93 2011-08-03 18:12:54 tswift Exp $
+** $Id: tables.c,v 1.94 2011-08-06 19:14:20 tswift Exp $
 ** 
 */
 
@@ -807,7 +807,7 @@ inline TIFptr New_TIF(CTXTdeclc Psc pPSC) {
 
    pTIF = (TIFptr)mem_alloc(sizeof(TableInfoFrame),TABLE_SPACE);	
    if ( IsNULL(pTIF) )							
-     xsb_abort("Ran out of memory in allocation of TableInfoFrame");	
+     xsb_resource_error_nopred("memory", "Ran out of memory in allocation of TableInfoFrame");	
    TIF_PSC(pTIF) = pPSC;						
    if (get_tabled(pPSC)==T_TABLED) {					
      TIF_EvalMethod(pTIF) = (TabledEvalMethod)pflags[TABLING_METHOD];	

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: dynamic_stack.c,v 1.14 2011-05-18 19:21:40 dwarren Exp $
+** $Id: dynamic_stack.c,v 1.15 2011-08-06 19:14:20 tswift Exp $
 ** 
 */
 
@@ -77,7 +77,7 @@ void dsInit(DynamicStack *ds, size_t stack_size, size_t frame_size,
   if (total_bytes > 0) {
     DynStk_Base(*ds) = mem_alloc(total_bytes,TABLE_SPACE);
     if ( IsNULL(DynStk_Base(*ds)) )
-      xsb_abort("Ran out of memory in allocation of %s", DynStk_Name(*ds));
+      xsb_resource_error_nopred("memory","Ran out of memory in allocation of %s", DynStk_Name(*ds));
   } else DynStk_Base(*ds) = NULL;
   DynStk_Top(*ds) = DynStk_Base(*ds);
   DynStk_Ceiling(*ds) = (char *)DynStk_Base(*ds) + total_bytes;
@@ -114,7 +114,7 @@ void dsExpand(DynamicStack *ds, size_t num_frames) {
   total_bytes = new_size * DynStk_FrameSize(*ds);
   new_base = mem_realloc(DynStk_Base(*ds),DynStk_CurSize(*ds)*DynStk_FrameSize(*ds),total_bytes,TABLE_SPACE);
   if ( IsNULL(new_base) && total_bytes > 0)
-    xsb_abort("Ran out of memory during expansion of %s", DynStk_Name(*ds));
+    xsb_resource_error_nopred("memory","Ran out of memory during expansion of %s", DynStk_Name(*ds));
   DynStk_Top(*ds) =
     new_base + ((char *)DynStk_Top(*ds) - (char *)DynStk_Base(*ds));
   DynStk_Base(*ds) = new_base;
@@ -145,7 +145,7 @@ void dsShrink(DynamicStack *ds) {
 	     DynStk_CurSize(*ds), DynStk_InitSize(*ds)));
 
   if ( IsNULL(new_base) && total_bytes > 0 )
-    xsb_abort("Ran out of memory during expansion of %s", DynStk_Name(*ds));
+    xsb_resource_error_nopred("memory","Ran out of memory during expansion of %s", DynStk_Name(*ds));
   DynStk_Top(*ds) =
     new_base + ((char *)DynStk_Top(*ds) - (char *)DynStk_Base(*ds));
   DynStk_Base(*ds) = new_base;

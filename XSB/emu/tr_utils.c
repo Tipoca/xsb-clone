@@ -2257,7 +2257,7 @@ DelTFptr inline New_DelTF_Pred(CTXTdeclc TIFptr pTIF, DelTFptr *chain_begin, xsb
   
   pDTF = (DelTFptr)mem_alloc(sizeof(DeletedTableFrame),TABLE_SPACE);	
   if ( IsNULL(pDTF) )							
-    xsb_abort("Ran out of memory in allocation of DeletedTableFrame");	
+    xsb_resource_error_nopred("memory" "Ran out of memory in allocation of DeletedTableFrame","");  
    DTF_CallTrie(pDTF) = TIF_CallTrie(pTIF);				
    DTF_Subgoals(pDTF) = TIF_Subgoals(pTIF);				
    DTF_Type(pDTF) = DELETED_PREDICATE;					
@@ -2279,8 +2279,8 @@ DelTFptr inline New_DelTF_Subgoal(CTXTdeclc TIFptr pTIF, VariantSF pSubgoal,
   DelTFptr pDTF;
 
   pDTF = (DelTFptr)mem_alloc(sizeof(DeletedTableFrame),TABLE_SPACE);	
-   if ( IsNULL(pDTF) )							
-     xsb_abort("Ran out of memory in allocation of DeletedTableFrame");	
+   if ( IsNULL(pDTF) )			
+     xsb_resource_error_nopred("memory", "Ran out of memory in allocation of DeletedTableFrame");
    DTF_CallTrie(pDTF) = NULL;						
    DTF_Subgoal(pDTF) = pSubgoal;					
    DTF_Type(pDTF) = DELETED_SUBGOAL;					
@@ -4049,21 +4049,23 @@ void abolish_all_tables_cps_check(CTXTdecl)
 #if !defined(WIN_NT) || defined(CYGWIN) 
 inline 
 #endif
-void abolish_all_tables(CTXTdecl) {
+void abolish_all_tables(CTXTdeclc int action) {
   double timer;
   TIFptr pTIF;
 
   start_table_gc_time(timer);
 
-  check_for_incomplete_tables("abolish_all_shared_tables/0");
+  if (action == ERROR_ON_INCOMPLETES) {
+    check_for_incomplete_tables("abolish_all_shared_tables/0");
 
-  if (flags[NUM_THREADS] == 1) {
-    abolish_all_tables_cps_check(CTXT) ;
-  } else {
-    xsb_table_error(CTXTc 
-		    "abolish_all_tables/1 called with more than one active thread.");
+    if (flags[NUM_THREADS] == 1) {
+      abolish_all_tables_cps_check(CTXT) ;
+    } else {
+      xsb_table_error(CTXTc 
+		      "abolish_all_tables/1 called with more than one active thread.");
+    }
   }
-   
+
   for ( pTIF = tif_list.first; IsNonNULL(pTIF); pTIF = TIF_NextTIF(pTIF) ) {
     TIF_CallTrie(pTIF) = NULL;
     TIF_Subgoals(pTIF) = NULL;

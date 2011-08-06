@@ -79,6 +79,7 @@
 #include "trace_xsb.h"
 #include "tr_utils.h"
 #include "system_defs_xsb.h"
+#include "builtin.h"
 /*======================================================================*/
 extern xsbBool quotes_are_needed(char *string);
 
@@ -797,9 +798,14 @@ void print_op(FILE *file, char *string, int pos)
 
 /* ----- The following is also called from the Prolog level ----------- */
 
-void remove_incomplete_tables_reset_freezes(CTXTdecl)
+void remove_incomplete_tables_reset_freezes(CTXTdeclc int memory_flag)
 {
+  if (memory_flag == NON_MEMORY_ERROR) {
     remove_incomplete_tables();
+  }
+  else {
+    abolish_all_tables(CTXTc ABOLISH_INCOMPLETES);
+  }
     reset_freeze_registers;
 }
 

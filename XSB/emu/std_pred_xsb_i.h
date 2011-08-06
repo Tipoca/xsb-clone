@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.61 2011-08-04 20:49:51 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.62 2011-08-06 19:14:20 tswift Exp $
 ** 
 */
 
@@ -670,7 +670,7 @@ inline static xsbBool sort(CTXTdecl)
     if (len > SHORTLISTLEN) cell_tbl = (Cell *)mem_alloc((len * sizeof(Cell)),LEAK_SPACE);
     else cell_tbl = &cell_tbl_array[0];
     if (!cell_tbl)
-      xsb_abort("Cannot allocate temporary memory for sort/2");
+      xsb_resource_error(CTXTc "memory", "sort",2);
     for (i=0 ; i < len ; ++i) {
       XSB_Deref(term2);	/* Necessary for correctness.	*/
       heap_addr = cell(clref_val(term2)); XSB_Deref(heap_addr);
@@ -739,7 +739,7 @@ inline static xsbBool keysort(CTXTdecl)
     if (len > SHORTLISTLEN) cell_tbl = (Cell *)mem_alloc((len * sizeof(Cell)),LEAK_SPACE);
     else cell_tbl = &cell_tbl_array[0];
     if (!cell_tbl)
-      xsb_abort("Cannot allocate temporary memory for keysort/2");
+      xsb_resource_error(CTXTc "memory","keysort",2);
     for (i=0 ; i < len ; ++i) {
       XSB_Deref(term2);	/* Necessary for correctness.	*/
       heap_addr = cell(clref_val(term2)); XSB_Deref(heap_addr);
@@ -874,7 +874,7 @@ inline static xsbBool parsort(CTXTdecl)
     term2 = list;
     cell_tbl = (Cell *)mem_alloc(len * sizeof(Cell),LEAK_SPACE);
     if (!cell_tbl)
-      xsb_abort("Cannot allocate temporary memory for parsort/4");
+      xsb_resource_error(CTXTc "memory","parsort",4);
     for (i=0 ; i < len ; ++i) {
       XSB_Deref(term2);	/* Necessary for correctness.	*/
       heap_addr = cell(clref_val(term2)); XSB_Deref(heap_addr);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.104 2011-08-04 19:52:57 tswift Exp $
+** $Id: builtin.h,v 1.105 2011-08-06 19:14:20 tswift Exp $
 ** 
 */
 
@@ -345,3 +345,9 @@
 /* URL Encode and Decode sub-builtins */
 #define URL_ENCODE    	  1
 #define URL_DECODE    	  2
+
+#define MEMORY_ERROR      1
+#define NON_MEMORY_ERROR  2
+
+#define ABOLISH_INCOMPLETES  1
+#define ERROR_ON_INCOMPLETES 2
