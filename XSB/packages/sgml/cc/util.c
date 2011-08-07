@@ -1,4 +1,4 @@
-/*  $Id: util.c,v 1.6 2011-08-06 05:54:39 kifer Exp $
+/*  $Id: util.c,v 1.7 2011-08-07 08:47:36 kifer Exp $
 
     Part of SWI-Prolog
 
@@ -464,41 +464,41 @@ load_sgml_file_to_charp(const char *file, int normalise_rsre, size_t *length)
 
 	  last_is_lf = (s > 0 && s[-1] == '\n');
 
-	  for(s=r, nl=0; *s; s++)
-	  { if ( *s == '\n' && s>r && s[-1] != '\r' )
+	  for(s=r, nl=0; *s; s++) {
+	    if ( *s == '\n' && s>r && s[-1] != '\r' )
 	      nl++;
 	  }
 
-	  if ( nl > 0 )
-	  { char *r2 = sgml_malloc(len+nl+1);
+	  if ( nl > 0 ) {
+	    char *r2 = sgml_malloc(len+nl+1);
 	    char *t;
 
-	    for(s=r, t=r2; *s; s++)
-	    { if ( *s == '\n' )
-	      { if ( s>r && s[-1] != '\r' )
+	    for(s=r, t=r2; *s; s++) {
+	      if ( *s == '\n' )
+		if ( s>r && s[-1] != '\r' ) {
 		  *t++ = CR;
-		*t++ = LF;
-	      } else
-		*t++ = *s;
+		  *t++ = LF;
+		} else
+		  *t++ = *s;
 	    }
             len = (int) (t-r2);
 	    *t = '\0';
 	    sgml_free(r);
 	    r = r2;
 	  }
-
+	  
 	  if ( last_is_lf )
 	    r[--len] = '\0';		/* delete last LF */
 	}
 	
 	if ( length )
 	  *length = len;
-
+	
 	return (ichar *)r;
       }
     }
   }
-
+  
   return NULL;
 }
 

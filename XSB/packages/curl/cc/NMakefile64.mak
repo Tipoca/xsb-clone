@@ -21,6 +21,8 @@
 
 # Make file for curl2pl.dll
 
+#DEBUG_FLAG=/D "DEBUG"
+
 XSBDIR=..\..\..
 MYPROGRAM=curl2pl
 
@@ -41,7 +43,7 @@ CLEAN :
 CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(OUTDIR)" \
 	/I "$(XSBDIR)\emu" /I "$(XSBDIR)\prolog_includes" \
 	/I "$(XSBDIR)\packages\curl\cc"\
-	/D "WIN64" /D "WIN_NT" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" \
+	/D "WIN64" /D "WIN_NT" $(DEBUG_FLAG) /D "_WINDOWS" /D "_MBCS" \
 	/Fo"$(OUTOBJDIR)\\" /Fd"$(OUTOBJDIR)\\" /c 
 	
 SOURCE=load_page.c

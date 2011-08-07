@@ -1,5 +1,7 @@
 # Makefile for sgml2pl.dll
 
+#DEBUG_FLAG=/D "DEBUG"
+
 XSBDIR=..\..\..
 MYPROGRAM=sgml2pl
 CURLDIR=..\..\curl\cc
@@ -22,7 +24,7 @@ CPP_PROJ=/nologo /MT /W3 /EHsc /O2 /I "$(OUTDIR)" \
 	 /I "$(XSBDIR)\emu" /I "$(XSBDIR)\prolog_includes" \
 	 /I "$(XSBDIR)\packages\curl\cc" \
 	 /I "$(XSBDIR)\packages\sgml\cc"\
-	 /D "WIN_NT" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" \
+	 /D "WIN_NT" /D "WIN64" $(DEBUG_FLAG) /D "_WINDOWS" /D "_MBCS" \
 	 /Fo"$(OUTOBJDIR)\\" /Fd"$(OUTOBJDIR)\\" /c 
 	
 SOURCE="$(CURLDIR)\load_page.c"

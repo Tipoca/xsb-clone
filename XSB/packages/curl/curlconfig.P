@@ -102,8 +102,16 @@
     (   %% avoid recompilation
 	search_module(Basename,Dir,_Mod,_Ext,BaseDir,ModuleO),
 	str_cat(Module, '.c', ModuleSourceFile),
+	str_cat(ConfigBinDir, 'libcurl.dll', LibcurlDLL),
+	str_cat(ConfigBinDir, 'curl2pl.dll', Curl2plDLL),
 	path_sysop(newerthan,ModuleO,ModuleSourceFile),
-	path_sysop(newerthan,ConfigSharedMod,ModuleSourceFile)
+	path_sysop(newerthan,ConfigSharedMod,ModuleSourceFile),
+	(('_$_curl_running_under'(windows)
+	 ; '_$_curl_running_under'(windows))
+	->
+	    path_sysop(exists,LibcurlDLL)
+	; true
+	)
     %% module compiled and is current, so just load
     -> [Basename]
     

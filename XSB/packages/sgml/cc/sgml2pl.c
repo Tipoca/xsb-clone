@@ -721,8 +721,7 @@ DllExport int call_conv pl_sgml_parse()
     return FALSE;
 
 
-  if( p->closure)
-    {
+  if( p->closure) {
       recursive = TRUE;
       oldpd = p->closure;
 
@@ -739,9 +738,7 @@ DllExport int call_conv pl_sgml_parse()
       else if( its_a_url == 0)
 	in = pd->source;
 
-    }
-  else
-    {
+  } else {
       recursive = FALSE;
       oldpd = NULL;
 
@@ -756,14 +753,14 @@ DllExport int call_conv pl_sgml_parse()
       p->on_error         = on_error;
       p->on_decl          = on_decl;
       pd = new_parser_data(p);
-    }
+  }
 
 
   /*Validate the options list*/
   if(!is_list(tail))
     return sgml2pl_error( ERR_DOMAIN, "source", tail);
 
-  while(is_list(tail)){
+  while (is_list(tail)) {
     head = p2p_car(tail);
     tmp1 = p2p_cdr(tail);
     tail = tmp1;
@@ -774,13 +771,13 @@ DllExport int call_conv pl_sgml_parse()
 
       /*Assign the output prolog term to the parser object. The parser creates the output in this term*/
 
-      if(!strcmp(str,"document")){
+      if (!strcmp(str,"document")) { 
 	pd->list = p2p_arg( head, 1);
 	pd->tail = pd->list;
 	pd->stack = NULL;
       }
       /*Set the source in the relevant field of the parser*/
-      else if(!strcmp(str,"source")){
+      else if (!strcmp(str,"source")) {
 	/*Temporary terms used to parse the prolog input*/
 	prolog_term temp_term1, temp_term2 = 0;
 	char server[MAXSTRLEN], * tmpstr=NULL;
@@ -788,12 +785,12 @@ DllExport int call_conv pl_sgml_parse()
 	temp_term1 = p2p_arg( head, 1);
 
 
-	if( is_functor( temp_term1)){
+	if ( is_functor( temp_term1)) {
 
 	  tmpstr = p2c_functor( temp_term1);
 
 	  /*Source is a url*/
-	  if( !strcmp("url", tmpstr)){
+	  if ( !strcmp("url", tmpstr)){
 
 	    temp_term2 = p2p_arg(temp_term1, 1);
 	    tmpsource = p2c_string(temp_term2);
@@ -801,10 +798,10 @@ DllExport int call_conv pl_sgml_parse()
 	    strcpy( source, tmpsource);
 
 	    /*Validate the url*/
-	    if(parse_url( source, server, fname) != FALSE)
+	    if (parse_url( source, server, fname) != FALSE)
 	      {
 		/*Url is of the form file:// */
-		if( !strcmp( server, "file")){
+		if ( !strcmp( server, "file")){
 		  if(!(in = fopen( fname, "rb"))){
 		    return sgml2pl_error(ERR_EXISTENCE, "file", temp_term2);
 		  }
@@ -849,17 +846,15 @@ DllExport int call_conv pl_sgml_parse()
 	    source = p2c_string( temp_term2);
 	    source_len = strlen( source);
 	    its_a_url = 1;
-	  }
-	  else{
+	  } else{
 	    return sgml2pl_error( ERR_MISC, "source", temp_term2);
 	  }
-	}
-	else{
+	} else{
 	  return sgml2pl_error( ERR_MISC, "source", "Invalid input argument 1");
 	}
       }
       /*Set the content length to parse*/
-      else if( !strcmp(str,"content_length")){
+      else if ( !strcmp(str,"content_length")) {
 	/*Temporary prolog term to parse the options list*/
 	prolog_term temp_term1, temp_term2;
 	char * tmp;
@@ -873,8 +868,7 @@ DllExport int call_conv pl_sgml_parse()
 
       }
       /*Sets how much of the current input should be parsed*/
-      else if( !strcmp(str,"parse"))
-	{
+      else if( !strcmp(str,"parse")) {
 	  char *s;
 	  /*Temporary prolog terms to parse the options list*/
 	  prolog_term temp_term;
@@ -893,14 +887,13 @@ DllExport int call_conv pl_sgml_parse()
 	    pd->stopat = SA_INPUT;
 	  else if ( streq(s, "declaration") )
 	    pd->stopat = SA_DECL;
-	  else
-	    {
+	  else {
 	      return sgml2pl_error(ERR_DOMAIN, "parse", temp_term);
-	    }
+	  }
 
-	}
+      }
       /*Set how the syntax errors should be handled*/
-      else if( !strcmp( str, "syntax_errors")){
+      else if ( !strcmp( str, "syntax_errors")) {
 	char *s;
 	/*Temporary prolog term to parse the options list*/
 	prolog_term temp_term;
@@ -937,8 +930,7 @@ DllExport int call_conv pl_sgml_parse()
 	  return sgml2pl_error(ERR_DOMAIN, "positions", temp_term);
       }
 
-    }
-    else{
+    } else {
       return sgml2pl_error(ERR_DOMAIN, "source", head);
     }
   }
@@ -950,9 +942,7 @@ DllExport int call_conv pl_sgml_parse()
   if ( pd->stopat == SA_CONTENT && p->empty_element )
     goto out;
 
-
-  if(in || its_a_url)
-    {
+  if (in || its_a_url) {
       int eof = FALSE;
       int i = 0;
 
@@ -967,105 +957,79 @@ DllExport int call_conv pl_sgml_parse()
 	    pd->source = in;
 	}
       /*Read the source character by character and parse xml*/
-      while( !eof)
-	{
+      while( !eof) {
 	  char c=0;
 	  char ateof = FALSE;
 
-	  if ( has_content_length )
-	    {
-	      if ( content_length <= 0 )
-		c = EOF;
-	      else
-		{
-		  if (its_a_url == 1)
-		    {
-		      c = source[i++];
-		      if (i == source_len)
-			{
-			  ateof = TRUE;
-			}
-		    }
-		  else if(its_a_url == 0)
-		    {
-		      c = fgetc(in);
-		      source_len=source_len -1;
-		      if( source_len <= 0)
-			ateof = TRUE;
-
-		    }
+	  if ( has_content_length ) {
+	    if ( content_length <= 0 )
+	      c = EOF;
+	    else {
+	      if (its_a_url == 1) {
+		c = source[i++];
+		if (i == source_len) {
+		  ateof = TRUE;
 		}
-
-	      if(!ateof)
-		ateof = (--content_length <= 0);
-
+	      } else if(its_a_url == 0) {
+		c = fgetc(in);
+		source_len=source_len -1;
+		if( source_len <= 0)
+		  ateof = TRUE;
+	      }
 	    }
-	  else
-	    {
-	      if (its_a_url == 1)
-		{
-		  c = source[i++];
-		  if (i == source_len)
-		    {
-		      ateof = TRUE;
-		    }
-		}
-	      else if( its_a_url ==0)
-		{
-		  c = fgetc(in);
-		  source_len=source_len -1;
-		  if( source_len <= 0)
-		    ateof = TRUE;
+	    
+	    if(!ateof)
+	      ateof = (--content_length <= 0);
 
-
-		}
+	  } else {
+	    if (its_a_url == 1) {
+	      c = source[i++];
+	      if (i == source_len) {
+		ateof = TRUE;
+	      }
+	    } else if( its_a_url ==0) {
+	      c = fgetc(in);
+	      source_len=source_len -1;
+	      if( source_len <= 0)
+		ateof = TRUE;
 	    }
+	  }
 
-	  if(ateof)
-	    {
+	  if (ateof) {
 	      eof = TRUE;
-	      if ( c == LF )                  /* file ends in LF */
-		{
-		  c = CR;
-		}
-	      else if ( c != CR )             /* file ends in normal char */
-		{
-		  putchar_dtd_parser(p, c);
-		  if ( pd->stopped )
-		    goto stopped;
-		  c = CR;
-
-		}
-	    }
+	      if ( c == LF )                  /* file ends in LF */ {
+		c = CR;
+	      } else if ( c != CR )  {        /* file ends in normal char */
+		putchar_dtd_parser(p, c);
+		if ( pd->stopped )
+		  goto stopped;
+		c = CR;
+	      }
+	  }
 	  putchar_dtd_parser( p, c);
-	  if ( pd->stopped )
-	    {
-	    stopped:
+	  if ( pd->stopped ) {
+	  stopped:
+	    pd->stopped = FALSE;
+	    if ( pd->stopat != SA_CONTENT )
+	      reset_document_dtd_parser(p); /* ensure a clean start */
+	    goto out;
+	  }
 
-	      pd->stopped = FALSE;
-	      if ( pd->stopat != SA_CONTENT )
-		reset_document_dtd_parser(p); /* ensure a clean start */
-	      goto out;
-	    }
-
-	}
+      }
+      
       if ( !recursive && pd->stopat != SA_INPUT )
 	end_document_dtd_parser(p);
-
-    out:
+      
+  out:
       /*Remove the ununified portions of the output prolog term*/
-      if( !is_nil( pd->tail))
-	{
-	  c2p_nil(CTXTc pd->tail);
-	}
-      if ( recursive )
-	{
-	  p->closure = oldpd;
-	}
-      else
-	{
-	  p->closure = NULL;
-	}
+      if( !is_nil( pd->tail)) {
+	c2p_nil(CTXTc pd->tail);
+      }
+      if ( recursive ) {
+	p->closure = oldpd;
+      } else {
+	p->closure = NULL;
+      }
 
       pd->magic = 0;                      /* invalidate */
       free(pd);
@@ -1849,8 +1813,7 @@ on_end(dtd_parser *p, dtd_element *e)
 {
   parser_data *pd = p->closure;
 
-  /*Temporary prolog terms used to delete the ununified parts of the output
-    term*/
+  /* Temp prolog terms used to delete the ununified parts of the output term */
   prolog_term tmp;
 
   tmp = p2p_new(CTXT);
@@ -1859,29 +1822,25 @@ on_end(dtd_parser *p, dtd_element *e)
   if(pd->stopped)
     return TRUE;
 
-  if ( pd->tail && !pd->stopped )
-    {
-      if( !is_nil( pd->tail))
-	{
-	  p2p_unify(CTXTc pd->tail, tmp);
-	}
-      if ( pd->stack )
-	{
-	  env *parent = pd->stack->parent;
-	  pd->tail = pd->stack->tail;
-	  sgml_free(pd->stack);
-	  pd->stack = parent;
-	}
-      else
-	{
-	  if ( pd->stopat == SA_CONTENT )
-	    pd->stopped = TRUE;
-	}
-    }
-
+  if ( pd->tail && !pd->stopped ) {
+      if ( !is_nil( pd->tail)) {
+	p2p_unify(CTXTc pd->tail, tmp);
+      }
+      if ( pd->stack ) {
+	env *parent = pd->stack->parent;
+	pd->tail = pd->stack->tail;
+	/* win64 crashes here on examples/sgml/files/bat.sgml */
+	sgml_free(pd->stack);
+	pd->stack = parent;
+      } else {
+	if ( pd->stopat == SA_CONTENT )
+	  pd->stopped = TRUE;
+      }
+  }
+  
   if ( pd->stopat == SA_ELEMENT && !p->environments->parent )
     pd->stopped = TRUE;
-
+  
   return TRUE;
 }
 

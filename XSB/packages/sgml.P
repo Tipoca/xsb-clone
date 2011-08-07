@@ -113,7 +113,7 @@ load_structure_warn(Source, Term, Options, Warn) :-
         (
 	  \+var(Options) -> true
 	;
-	  abort('++Abort[sgml]> The options list should not be a variable')
+	  abort('++Abort[sgml]> The options list cannot be a variable')
 	),
 	pl_allocate_error_term(Error, Warn),
 	select_dtd(Options, DTD, Doctype, ExplicitDTD),
