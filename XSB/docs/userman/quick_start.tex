@@ -364,18 +364,57 @@ represents the value of PATH, add
  ;C:\Program Files\Microsoft Visual Studio 10.0\VC\BIN
 \end{verbatim}
 
-Visual C++ has a command file called \texttt{vcvars32.bat}  or similar,
+On a 64-bit machine, add both of these:
+%% 
+\begin{verbatim}
+ ;C:\Program Files\Microsoft SDKs\Windows\v7.1\bin
+ ;C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\BIN
+\end{verbatim}
+
+Note: to compile XSB as 64 bit application you must install Microsoft
+Windows SDK found at
+\url{http://msdn.microsoft.com/en-us/windows/bb980924.aspx}.
+The version numbers, \texttt{v7.1} and \texttt{10.0}, may vary, of course. 
+
+Visual C++ has a command file called \texttt{vcvars32.bat},
 which you should find and drag into the command window (and press Return).
 This will set all the necessary environment variables. On a 64 bit machine,
 this command file is called \texttt{vcvarsx86\_amd64.bat} or 
 \texttt{vcvarsx86\_ia64.bat} ---
-whichever is appropriate for your configuration.
+whichever is appropriate for your configuration. 
+In Visual Studio Express 9.0, these files are in
+%% 
+\begin{verbatim}
+ C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\BIN\vcvars32.bat
+ C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\BIN\ia64\vcvarsx86_ia64.bat
+ C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\BIN\amd64\vcvarsx86_amd64.bat
+\end{verbatim}
+%% 
+At some point, Microsoft eliminated \texttt{vcvarsx86\_*} in Visual Studio 10.0
+and introduced
+\texttt{SetEnv.cmd} instead, requiring the users to download Microsoft
+Windows SDK. This command file is usually found in 
+%% 
+\begin{verbatim}
+ C:\Program Files\Microsoft SDKs\Windows\v7.1\bib\SetEnv.cmd
+\end{verbatim}
+%% 
+As far as we know, \texttt{SetEnv.cmd} is the only file from the entire
+SDK that is necessary to build XSB as a 64-bit application.
+For 32 bit applications, the file
+%% 
+\begin{verbatim}
+C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\BIN\vcvars32.bat 
+\end{verbatim}
+%% 
+is still there and installation does not require the Windows SDK.
+
 
 \item
    {\tt cd \$XSB\_DIR$\backslash$build}  
 \item
   On a 32 bit machine, type:\\
-  {\tt makexsb ["CFG=option"] ["ORACLE=yes"] ["SITE\_LIBS=libraries"]}
+  {\tt makexsb ["CFG=opt"] ["ORACLE=yes"] ["MY\_LIBRARY\_DIRS=libs"] ["MY\_INCLUDE\_DIRS=opts"]}
   %%
   \begin{itemize}
   \item The items in square brackets are optional and usually are not
@@ -388,8 +427,31 @@ whichever is appropriate for your configuration.
     using the parameter {\tt SITE\_LIBS}.
     Native Oracle support is rarely used and ODBC is the recommended way to
     connect to databases.
+  \item \texttt{MY\_LIBRARY\_DIRS} is used to specify the external
+    libraries and \texttt{libs} there has the form  \texttt{/LIBPATH:"libdir1"
+    /LIBPATH:"libdir2" ...}.  
+  \item \texttt{MY\_INCLUDE\_DIRS} is used to specify additional
+    directories for included files. Here \texttt{opts} has the form
+    \texttt{/I"incdir1" /I"incdir2" ...}.  
   \end{itemize}
   %%
+  Instead of specifying the options on command line,
+  it might be more convenient, however, to create the file
+  %% 
+\begin{verbatim}
+  XSB\build\windows\custom_settings.mak  
+\end{verbatim}
+  %% 
+  and put the options there. For instance,
+  %% 
+\begin{verbatim}
+XSB_INTERPROLOG=yes 
+MY_INCLUDE_DIRS=/I"C:\Program Files\Java\jdk1.6.0_26\include" \
+      /I"C:\Program Files\Java\jdk1.6.0_26\include\win32" 
+MY_LIBRARY_DIRS=/LIBPATH:"C:\pthreads\pthreadVC1.lib" /libpath:"C:\oracle"
+ORACLE=yes
+\end{verbatim}
+  %% 
    
  \item The above command will compile XSB as requested and will put the XSB 
    executable and its DLL in:
@@ -419,6 +481,15 @@ whichever is appropriate for your configuration.
 %%
 \end{enumerate}
 %%
+The \texttt{custom\_settings.mak} file must be in
+%% 
+\begin{verbatim}
+  XSB\build\windows64\custom_settings.mak  
+\end{verbatim}
+%% 
+Make sure you do not misspell the name of that file or else none of the
+specified options will take effect!
+
 {\bf Note}: if you compiled XSB with one set of parameters and then want to
 recompile with a different set, it is recommended that you run
 %%
@@ -426,7 +497,8 @@ recompile with a different set, it is recommended that you run
  makexsb  clean  
 \end{verbatim}
 %%
-in between the compilations (or \texttt{makexsb64 clean}, if applicable).  
+in between the compilations (or \texttt{makexsb64 clean} in the 64-bit
+case).  
 This also applies to recompilations for 32/64 bits.
 
 
