@@ -163,9 +163,9 @@ check_options_1([Culprit|_],_D,_S,_,_):-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % table_dump/0   table dump all tabled predicates.
 
-table_dump(Pred,Options):- table_dump(userout,Pred,Options).
+table_dump(Pred,Options):- current_output(Stream),table_dump(Stream,Pred,Options).
 
-table_dump(Pred) :- table_dump(userout,Pred,[summary(true)]).
+table_dump(Pred) :- table_dump(Pred,[summary(true)]).
 
 table_dump :- findall(Pred,predicate_property(Pred,tabled),Preds),
 	      sort(Preds,PredList),member(P,PredList),nl,
