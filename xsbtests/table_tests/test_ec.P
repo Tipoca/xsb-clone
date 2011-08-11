@@ -1,0 +1,64 @@
+%:- compiler_options([spec_off]).
+%?- set_prolog_flag(ctrace,on).
+%:- import get_answer_number/2 from tables.
+:- import conset/2, coninc/2 from gensym.
+
+max(X,Y,Z):- X > Y -> Z = X ; Z = Y.
+
+%-----------
+
+:- table zeno(max/3-0).
+
+zeno(0.5):- conset('_$zeno',1).
+zeno(X):- 
+	zeno(Y),
+	X is Y + 0.5*(1 - Y),
+	coninc('_$zeno',New),
+	writeln(zeno(New,X)).
+
+%-----------
+
+:- table zeno_1(max/3-0) as approximate(use_first(10)).
+
+zeno_1(0.5):- conset('_$zeno_1',1).
+zeno_1(X):- 
+	zeno_1(Y),
+	X is Y + 0.5*(1 - Y),
+	coninc('_$zeno_1',New),
+	writeln(zeno_1(New,X)).
+
+%-----------
+
+:- table zeno_2(max/3-0) as approximate(epsilon(0.0005)).
+
+zeno_2(0.5):- conset('_$zeno_2',1).
+zeno_2(X):- 
+	zeno_2(Y),
+	X is Y + 0.5*(1 - Y),
+	coninc('_$zeno_2',New),
+	writeln(zeno_2(New,X)).
+
+%-----------
+
+:- table p/1  as approximate(use_first(10)).
+%:- table p/1.
+p(s(X)):- p(X).
+p(0).
+
+%-----------
+/* TLS: abolishing */
+
+test:- p(_X),fail.
+test:- abolish_all_tables,fail.
+test:- zeno(_X),fail.
+test:- abolish_all_tables,fail.
+test:- zeno_1(_X),fail.
+test:- abolish_all_tables,fail.
+test:- zeno_2(_X),fail.
+test.
+
+
+/*
+:- import early_complete_on_nth/2 from tables.
+:- import get_breg/1 from machine.
+*/
