@@ -57,7 +57,7 @@ table_dump_summary(Pred,Stream,ResultsIn,ResultsOut,Output):-
 	      ResultsIn = [summary =  Pred - subgoals(NumCalls) - returns(NumReturns)|ResultsOut]
 	    ; ResultsOut = n),
 	(Output = y -> 
-	    writeit_prolog(Stream,summary =  Pred - subgoals(NumCalls) - returns(NumReturns)),nl
+	    nl,writeit_prolog(Stream,summary =  Pred - subgoals(NumCalls) - returns(NumReturns))
 	 ;  true).
 
 table_dump_details(Pred,Stream,ResultsIn,Output):-
@@ -91,9 +91,10 @@ all_call_returns_for_atom(Pred,C,NR,RSs) :-
 	 findall(Atom,(get_returns(TH,RS),bindreturn(C,RS,Atom)),RSs),
 	 length(RSs,NR).
 
-bindreturn(Pred,Ret,Pred):- ground(Ret),ground(Pred).
-bindreturn(Pred,Ret,Pred):-
-	getvarsig(Pred,Sig-[]),
+bindreturn(Pred,Ret,Pred):- ground(Ret),ground(Pred),!.
+bindreturn(Pred,Ret,FreshPred):-
+	copy_term(Pred,FreshPred),
+	getvarsig(FreshPred,Sig-[]),
         bindtosig(Sig,Ret).
 
 getvarsig(Term,[Sig|End]-End) :- var(Term),!,Term=Sig.
