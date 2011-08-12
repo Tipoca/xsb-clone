@@ -5,11 +5,14 @@
 
 :- import domain_error/4,check_nonvar_list/3 from error_handler.
 :- import numbervars/1 from num_vars.
-:- import member/2,length/2 from basics.
-:- import get_calls_for_table/2 from tables.
+:- import member/2, length/2, copy_term/2 from basics.
+:- import get_calls_for_table/2, get_call/3 from tables.
 :- import subsumes_chk/2 from subsumes.
 :- import parsort/4 from machine.
 :- import sort/2 from setof.
+:- import write/2, writeq/2, nl/0, nl/1, '=..'/2, (',')/2 from standard.
+:- import current_output/1, predicate_property/2 from curr_sym.
+:- import findall/3 from setof.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % table_dump/0 shows summary and details of #subgoals and #returns for
