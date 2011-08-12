@@ -629,10 +629,14 @@ abolish_table_call_bi(_Handle,_Action) :-
  */
 
 delete_return(TableEntryHandle,ReturnHandle) :-
-	trie_delete_return(TableEntryHandle,ReturnHandle).
+	trie_delete_return(TableEntryHandle,ReturnHandle,ANSWER_SUBSUMPTION).
 
-trie_delete_return(SubgoalFrame,AnswerTrieLeaf) :-
-	trie_delete_return(SubgoalFrame,AnswerTrieLeaf).
+:- export delete_return/3.
+delete_return(SubgoalFrame,AnswerTrieLeaf,Type) :-
+	trie_delete_return(SubgoalFrame,AnswerTrieLeaf,Type).
+
+trie_delete_return(_SubgoalFrame,_AnswerTrieLeaf,_Type) :-
+	'_$builtin'(TRIE_DELETE_RETURN).
 
 
 /*----------------------------------------------------------------------*/
@@ -705,6 +709,12 @@ get_answer_number(SubgoalFrame,Number):-
 :- export early_complete_on_nth/2.
 early_complete_on_nth(SubgoalFrame,Number):- 
 	table_inspection_function(EARLY_COMPLETE_ON_NTH,SubgoalFrame,Number,_,_).
+
+:- export early_complete_on_delta/4.
+early_complete_on_delta(SubgoalFrame,New,Old,Epsilon):- 
+	(New - Old < Epsilon ->
+	    table_inspection_function(EARLY_COMPLETE,SubgoalFrame,_,_,_)
+	 ;  true).
 
 end_of_file.
 

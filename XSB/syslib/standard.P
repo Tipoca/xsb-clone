@@ -1030,6 +1030,7 @@ exec_table_options_1((Option,Options),PredList) :- !,
 exec_table_options_1(Option,PredList) :- 
 	atom(Option),!,
 	exec_table_option_on_predlist(PredList,Option).
+exec_table_options_1(approximate(_),_PredList):-!.
 exec_table_options_1(Culprit,_PredList) :- 
 	domain_error(comma_list_or_table_options,Culprit,(table)/1,1).
 
@@ -1065,9 +1066,10 @@ exec_table_option(shared,Pred) :- !,
 exec_table_option(Option,_Pred) :- !,
 	domain_error(table_option,Option,(table)/1,1,
 	['must be one of ',
-	 'dynamic,dyn,subsumptive,variant,incremental,nonincremental,opaque,private,shared']).
+	 'dynamic,dyn,subsumptive,variant,incremental,nonincremental,opaque,private,shared,approximate']).
 
 %--------
+:- import approximate/1 from usermod.
 
 check_table_options((Option,Options),PredCList) :- !,
 	check_table_option(Option,Options,PredCList),
@@ -1099,6 +1101,19 @@ check_table_option(subsumptive,Options,PredCList) :- !,
         (comma_member(shared,Options) -> 
 	    table_error(('Cannot declare ',PredCList,
 	           ' as tabled with options subsumptive and shared'))
+	 ;  true),
+        (comma_member(approximate(_),Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options subsumptive and approximate'))
+	 ;  true).
+check_table_option(approximate(_),Options,PredCList) :- !,
+        (comma_member(incremental,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options approximate and incremental'))
+	 ;  true),
+        (comma_member(subsumptive,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options subsumptive and approximate'))
 	 ;  true).
 check_table_option(variant,Options,PredCList) :- !,
         (comma_member(subsumptive,Options) -> 
@@ -1121,6 +1136,10 @@ check_table_option(incremental,Options,PredCList) :- !,
         (comma_member(opaque,Options) -> 
 	    table_error(('Cannot declare ',PredCList,
 	           ' as tabled with options incremental and opaque'))
+	 ;  true),
+        (comma_member(approximate(_),Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options subsumptive and approximate'))
 	 ;  true).
 check_table_option(nonincremental,Options,PredCList) :- !,
         (comma_member(incremental,Options) -> 
@@ -1175,7 +1194,7 @@ check_table_option(shared,Options,PredCList) :- !,
 check_table_option(Option,_Options,_PredCList) :- !,
 	domain_error(table_option,Option,(table)/1,1,
 	['must be one of ',
-	'dynamic,dyn,subsumptive,variant,incremental,nonincremental,opaque,private,shared']).
+	'dynamic,dyn,subsumptive,variant,incremental,nonincremental,opaque,private,shared,approximate']).
 
 use_incremental_tabling(PredList):-
 	abort(['use_incremental_dynamic/1 is now obsolete.  Use table ',

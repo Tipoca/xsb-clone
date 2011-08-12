@@ -29,7 +29,7 @@
    abolish_table_pred/1,      abolish_table_pred/2,
    abolish_module_tables/1,
    add_incr_table/2, add_table/1,
-   delete_return/2,
+   delete_return/2, delete_return/3,
    force_truth_value/2, force_answer_true/1, force_answer_false/1,
    get_answer_number/2,
    get_call/3,

@@ -223,6 +223,9 @@ pair_psc(Pair, PSC) :- pair_psc(Pair, PSC).
 pair_next(Pair, Next_Pair) :- pair_next(Pair, Next_Pair).
 next_bucket(Bucket, Next_Bucket) :- next_bucket(Bucket, Next_Bucket).
 
+:- export close_open_tables/0.
+close_open_tables:- close_open_tables(non_memory_error).
+
 close_open_tables(memory_error):-!,
     close_open_tables_1(MEMORY_ERROR).
 close_open_tables(_non_memory_error):-
