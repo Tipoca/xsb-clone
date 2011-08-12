@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.151 2011-08-03 18:12:54 tswift Exp $
+** $Id: tries.c,v 1.152 2011-08-12 15:17:13 tswift Exp $
 ** 
 */
 
@@ -813,7 +813,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
 #define CHECK_ANSWER_TERM_DEPTH						\
   if (--depth_ctr <= 0)	{						\
     if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_WARNING) {		\
-      char buffer[MAXBUFSIZE];						\
+      char buffer[MAXTERMBUFSIZE];						\
       sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
 		 (int)(flags[MAX_TABLE_ANSWER_DEPTH]));		\
       xsb_warn("Exceeded max answer term depth of %d in call %s\n",	\
@@ -825,7 +825,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
       return NULL;							\
     }									\
     else {								\
-      char buffer[MAXBUFSIZE];						\
+      char buffer[MAXTERMBUFSIZE];						\
       sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
 		 (int)(flags[MAX_TABLE_ANSWER_DEPTH]));		\
       xsb_abort("Exceeded max answer term depth of %d in call %s\n",	\
@@ -836,7 +836,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
 #define CHECK_ANSWER_LIST_DEPTH						\
   if (--list_depth_ctr <= 0)	{						\
     if (flags[MAX_TABLE_ANSWER_LIST_ACTION] == XSB_WARNING) {		\
-      char buffer[MAXBUFSIZE];						\
+      char buffer[MAXTERMBUFSIZE];						\
       sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
 		 (int)(flags[MAX_TABLE_ANSWER_LIST_DEPTH]));		\
       xsb_warn("Exceeded max answer list depth of %d in call %s\n",	\
@@ -848,7 +848,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
       return NULL;							\
     }									\
     else {								\
-      char buffer[MAXBUFSIZE];						\
+      char buffer[MAXTERMBUFSIZE];						\
       sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
 		 (int)(flags[MAX_TABLE_ANSWER_LIST_DEPTH]));		\
       xsb_abort("Exceeded max answer list depth of %d in call %s\n",	\

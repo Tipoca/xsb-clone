@@ -30,3 +30,8 @@
 #define GET_CALLSTO_NUMBER                       6
 #define GET_ANSWER_NUMBER                        7
 #define EARLY_COMPLETE_ON_NTH                    8
+#define EARLY_COMPLETE                           9
+
+// For delete return
+#define ANSWER_SUBSUMPTION   0
+#define USER_DELETE          1

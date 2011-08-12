@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.74 2011-07-29 22:56:04 tswift Exp $
+** $Id: debug_xsb.c,v 1.75 2011-08-12 15:17:13 tswift Exp $
 ** 
 */
 
@@ -188,7 +188,7 @@ inline int get_int_print_width(Integer num) {
   else return MAXINTLEN;
 }
 
-static int sprint_term(char *buffer, int insize, Cell term, byte car, UInteger level)
+static int sprint_term(char *buffer, int insize, Cell term, byte car, int level)
 {
   unsigned short i, arity;
   Psc psc;
@@ -196,7 +196,6 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, UInteger l
   int size = insize;
 
   if (size > MAXTERMBUFSIZE-MAXFLOATLEN) return size;
-
   level--;
   if (level < 0) {
     sprintf(buffer+size, "...");
@@ -392,7 +391,7 @@ void sprint_callsize(CTXTdeclc Psc psc,int depth) {
 
 }
 
-void sprint_registers(CTXTdeclc char * buffer,Psc psc,UInteger depth) {
+void sprint_registers(CTXTdeclc char * buffer,Psc psc,int depth) {
   int i, arity,size;
 
   arity = (int)get_arity(psc);

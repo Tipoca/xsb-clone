@@ -658,13 +658,16 @@ void delete_variant_sf_and_answers(CTXTdeclc VariantSF pSF, xsbBool should_warn)
 	}
 	free_trie_ht(CTXTc ht);
       }
-      else {
-	if (BTN_Sibling(rnod)) 
-	  push_node(BTN_Sibling(rnod));
-	if ( ! IsLeafNode(rnod) )
-	  push_node(BTN_Child(rnod))
-	  else { /* leaf node */
-	    if (!hasALNtag(rnod)) release_conditional_answer_info(CTXTc rnod);
+      /* It can be that a table is in an inconsistent state when we
+      abolish it, if we are doing so as exception handling for some
+      sort of term depth limit.  Hence, the isNonNulls below.    */
+      else { 
+	if (BTN_Sibling(rnod) && IsNonNULL(BTN_Sibling(rnod)))
+	  { push_node(BTN_Sibling(rnod)); }
+	if ( !IsLeafNode(rnod) && IsNonNULL(BTN_Child(rnod))) {
+	  push_node(BTN_Child(rnod)) } 
+	else { /* leaf node */
+	  if (!hasALNtag(rnod)) release_conditional_answer_info(CTXTc rnod);
 	  }
  	SM_DeallocatePossSharedStruct(*smBTN,rnod);
       }
@@ -4668,6 +4671,7 @@ int table_inspection_function( CTXTdecl ) {
     break;
   }
 
+    /* TLS: for answer subsumption, can simply use SF */
   case EARLY_COMPLETE_ON_NTH: {
     VariantSF subgoal;
     Integer breg_offset;
@@ -4680,8 +4684,25 @@ int table_inspection_function( CTXTdecl ) {
     //    printf("san %d\n",get_subgoal_answer_number(subgoal));
     if ( get_subgoal_answer_number(subgoal) +1 >= ptoc_int(CTXTc 3) &&
 	 !subg_is_completed(subgoal)) {
-      //      printf("scheduling ec\n");
        schedule_ec(subgoal); 
+       //       printf("scheduling ec\n");
+    }
+    break;
+  }
+
+    /* TLS: for answer subsumption, can simply use SF */
+  case EARLY_COMPLETE: {
+    VariantSF subgoal;
+    Integer breg_offset;
+    CPtr tcp;
+
+    //    printf("uncond ec\n");
+    breg_offset = ptoc_int(CTXTc 2);
+    tcp = (CPtr)((Integer)(tcpstack.high) - breg_offset);
+    subgoal = (VariantSF)(tcp_subgoal_ptr(tcp));
+    if (!subg_is_completed(subgoal)) {
+      schedule_ec(subgoal); 
+       //       printf("scheduling ec\n");
     }
     break;
   }

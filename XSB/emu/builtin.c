@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.367 2011-08-06 19:14:19 tswift Exp $
+** $Id: builtin.c,v 1.368 2011-08-12 15:17:13 tswift Exp $
 **
 */
 
@@ -129,6 +129,7 @@
 
 #include "table_stats.h"
 #include "url_encode.h"
+#include "table_inspection_defs.h"
 
 int mem_flag;
 
@@ -2680,43 +2681,40 @@ case WRITE_OUT_PROFILE:
     return trie_retract_safe(CTXT);
 
   case TRIE_DELETE_RETURN: {
-    const int Arity = 2;
-    const int regTableEntry = 1;   /* in: subgoal frame ref */
+    const int regSF = 1;   /* in: subgoal frame ref */
     const int regReturnNode = 2;   /* in: answer trie node */
+    //    const int Arity = 2;
     VariantSF sf;
     BTNptr leaf;
-    /*
-     * The primary purpose of this builtin is for the support of HiLog
-     * aggregation predicates, which are based upon variant tabling.
-     * So we currently disallow its use on subsumptive predicates.
-     */
-    sf = ptoc_addr(regTableEntry);
-#ifdef DEBUG_ASSERTIONS
-  /* Need to change for MT: smVarSF can be private or shared
-|    if ( smIsValidStructRef(smProdSF,sf) ||
-|	 smIsValidStructRef(smConsSF,sf) )
-|      xsb_abort("Invalid Table Entry Handle: Subsumptive table entry"
-|		"\n\t Argument %d of %s/%d\n\t Answers for subsumptive"
-|		" subgoals may not be deleted",
-|		regTableEntry, BuiltinName(TRIE_DELETE_RETURN), Arity);
-|    if ( ! smIsValidStructRef(smVarSF,sf) )
-|      xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
-|		regTableEntry, BuiltinName(TRIE_DELETE_RETURN), Arity);
-  */
-#endif
+
+    sf = ptoc_addr(regSF);
+
     leaf = ptoc_addr(regReturnNode);
 
     if (IsVariantSF(sf)) {
+      /*
+	| 	if ( ! smIsValidStructRef(*smBTN,leaf) )
+	| 	  xsb_abort("Invalid Return Handle\n\t Argument %d of %s/%d",
+	| 		    regReturnNode, BuiltinName(TRIE_DELETE_RETURN), Arity);
+	| 	if ( (! smIsAllocatedStruct(*smBTN,leaf)) ||
+	| 	     (subg_ans_root_ptr(sf) != get_trie_root(leaf)) ||
+	|	     (! IsLeafNode(leaf)) )
+      */
+      /*      if ( (! smIsAllocatedStruct(*smBTN,leaf)) ||
+	   (subg_ans_root_ptr(sf) != get_trie_root(leaf)) ||
+	   (! IsLeafNode(leaf)) )
+	   return FALSE;*/
+
+      if (!subg_is_completed(sf) || ptoc_int(CTXTc 3) == USER_DELETE) {
+	//	printf("subg is not ec-scheduled %d\n",subg_is_completed(sf));
 	SET_TRIE_ALLOCATION_TYPE_SF(sf); /* set to private/shared SM */
-	if ( ! smIsValidStructRef(*smBTN,leaf) )
-	  xsb_abort("Invalid Return Handle\n\t Argument %d of %s/%d",
-		    regReturnNode, BuiltinName(TRIE_DELETE_RETURN), Arity);
-	if ( (! smIsAllocatedStruct(*smBTN,leaf)) ||
-	     (subg_ans_root_ptr(sf) != get_trie_root(leaf)) ||
-	     (! IsLeafNode(leaf)) )
-	  return FALSE;
 	delete_return(CTXTc leaf,sf,VARIANT_EVAL_METHOD);
       }
+      else {
+	//	printf("subg is ec-scheduled\n");
+	return FALSE;
+      }
+    }
       else delete_return(CTXTc leaf,sf,SUBSUMPTIVE_EVAL_METHOD);
     break;
   }
