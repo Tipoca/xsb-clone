@@ -1,0 +1,4 @@
+caught_p( Exceeded max answer term depth of 25 in call p(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(...)))))))))))))))))))))))))))
+caught_r( Exceeded max answer term depth of 25 in call r( 0))
+caught_s_1( Exceeded max call term depth of 25 in call s(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(...)))))))))))))))))))))))))))
+caught_s_2( Exceeded max call term depth of 25 in call s(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(...)))))))))))))))))))))))))))

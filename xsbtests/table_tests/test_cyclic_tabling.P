@@ -1,0 +1,23 @@
+
+?- set_prolog_flag(max_table_answer_depth,25).
+?- set_prolog_flag(max_table_subgoal_depth,25).
+
+:- table p/1.
+p(X):- X = f(X).
+
+:- table r/1.
+r(X):- make_term(100,X).
+
+make_term(0,0):-!.
+make_term(N,f(X)):-
+	N1 is N - 1,
+	make_term(N1,X).
+
+test:- catch(r(X),error(_Type,Msg,_),writeln(caught_r(Msg))),fail.
+test:- catch(p(X),error(_Type,Msg,_),writeln(caught_p(Msg))),fail.
+test:- X = f(X),catch(s(X),error(_Type,Msg,_),writeln(caught_s_1(Msg))),fail.
+test:- make_term(100,X),catch(s(X),error(_Type,Msg,_),writeln(caught_s_2(Msg))),fail.
+test.
+
+:- table s/1.
+s(_).
