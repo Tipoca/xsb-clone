@@ -18,13 +18,13 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.H,v 1.12 2010-12-31 20:45:35 dwarren Exp $
+** $Id: cp_opt.H,v 1.13 2011-08-12 15:14:16 tswift Exp $
 ** 
 */
 
 
 :- export cp_opt/2.
-:- export aggregation_transform/2.
+:- export perform_tabling_transforms/2.
 
 :- import nthmember/3 from listutil.
 :- import parse_preddef/4 from parse.

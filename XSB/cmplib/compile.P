@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.P,v 1.37 2011-06-25 02:54:46 dwarren Exp $
+** $Id: compile.P,v 1.38 2011-08-12 15:14:16 tswift Exp $
 ** 
 */
 
@@ -166,13 +166,14 @@ table_process(ModuleIn, ModuleOut, SFile) :-
 		supplementary_tabling(ModuleIn, ModuleMid)
 	; ModuleMid = ModuleIn
 	),
-	aggregation_transform(ModuleMid,ModuleMid1),
+	perform_tabling_transforms(ModuleMid,ModuleMid1),
 	conget('table #', Tables),
+	( option(table_dump) -> dump_module(SFile, ModuleMid1) ; true ),
 	( Tables =:= 0 -> ModuleOut = ModuleMid1
 	; cp_opt(ModuleMid1, ModuleOut)
           %%,( option(no_check) -> true ; build_graph(ModuleOut) )
-	),
-	( option(table_dump) -> dump_module(SFile, ModuleOut) ; true ).
+	).
+%	( option(table_dump) -> dump_module(SFile, ModuleOut) ; true ).
 
 /*======================================================================*/
 /* specialise(+ModuleIn, -ModuleOut, +SpecFile)				*/

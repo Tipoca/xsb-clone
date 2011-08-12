@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: symtab.P,v 1.18 2010-12-06 16:24:40 dwarren Exp $
+** $Id: symtab.P,v 1.19 2011-08-12 15:14:17 tswift Exp $
 ** 
 */
 
@@ -418,6 +418,8 @@ sym_type(sym(_,_,prop(_,_,_,_,_,Other),_), tabled(Ind,Arity)) :-
 	!.
 sym_type(sym(_,_,prop(_,_,_,_,_,Other),_), aggregation(Spec)) :-
 	member2(aggregation(Spec), Other).
+sym_type(sym(_,_,prop(_,_,_,_,_,Other),_), approximation(Spec)) :-
+	member2(approximation(Spec), Other).
 sym_type(sym(_,_,prop(_,_,_,_,_,Other),_), subsumption_modes(Modes)) :-
 	member2(subsumption_modes(Modes), Other). % Modes is an open-tailed list
 

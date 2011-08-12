@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.124 2011-07-26 17:57:50 dwarren Exp $
+** $Id: parse.P,v 1.125 2011-08-12 15:14:16 tswift Exp $
 ** 
 */
 
@@ -611,6 +611,8 @@ transform_slash_to_skel(Spec,ModName,SymTab,Skel) :-
 	 ;	Skel = Skel0
 	).
 
+:- import console_writeln/1 from standard.
+
 /*======================================================================*/
 /* parse_directive(+Directive, #Symbol_Table,ModName)			*/
 /*	Processes the given directive and updates the symbol table	*/
@@ -754,19 +756,18 @@ parse_directive(thread_shared(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- 
 parse_directive(thread_private(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_comma_list(PredCList,SymTab,[(thread_private)],(thread_private)).
 parse_directive(table(as(PredCList,Options)),QrList,SymTab,_ModName,_ModStruct) :- !,
-	parse_comma_list_table(PredCList,SymTab),
+	parse_comma_list_table(PredCList,SymTab,Options),
 	check_ground(Options,(table)/1,1),
 	check_table_options(Options,PredCList),
 	parse_query(table(as(PredCList,Options)), QrList, SymTab).
-%	parse_table_options(Options,PredCList,QrList,SymTab,ModName,ModStruct).
 parse_directive(table(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- !,
-	parse_comma_list_table(PredCList,SymTab).
+	parse_comma_list_table(PredCList,SymTab,no_options).
 parse_directive(use_subsumptive_tabling(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_subsumptive_modes(PredCList,SymTab,PredCList1), % handle modes and take them out
-	parse_comma_list_table(PredCList1,SymTab),  % implies tabled
+	parse_comma_list_table(PredCList1,SymTab,subsumptive),  % implies tabled
 	parse_comma_list(PredCList1,SymTab,[(use_subsumptive_tabling)],(use_subsumptive_tabling)).
 parse_directive(use_variant_tabling(PredCList),_QrList,SymTab,_ModName,_ModStruct) :- !,
-	parse_comma_list_table(PredCList,SymTab),  % implies tabled
+	parse_comma_list_table(PredCList,SymTab,variant),  % implies tabled
 	parse_comma_list(PredCList,SymTab,[(use_variant_tabling)],(use_variant_tabling)).
 parse_directive(dynamic(as(PredCList,Options)),QrList,SymTab,_ModName,_ModStruct) :- !,
 	parse_comma_list_dyn(PredCList,SymTab),
@@ -956,25 +957,36 @@ parse_comma_list_import(X,_Mod,_SymTab) :-
 	error(('Non predicate specification "', X, 
 		 '" found in import directive. Ignored!')).
 
-parse_comma_list_table((Pred, Preds), SymTab) :- 
+:- import comma_member/2 from basics.
+% who knows, there could be more...
+insert_compiler_based_options(Options,P/A,SymTab):-
+	comma_member(approximate(Cond),Options) -> 
+%	        console_writeln(approximate(Cond)),
+		sym_insert(P, A, [approximation(Cond)], SymTab, _)
+	;       true.
+
+parse_comma_list_table((Pred, Preds), SymTab,Options) :- 
 	!,
-	parse_comma_list_table(Pred, SymTab),
-	parse_comma_list_table(Preds, SymTab).
-parse_comma_list_table(P/A, SymTab) :- 
+	parse_comma_list_table(Pred, SymTab,Options),
+	parse_comma_list_table(Preds, SymTab,Options).
+parse_comma_list_table(P/A, SymTab,Options) :- 
 	atom(P), integer(A), 
 	!,
-	sym_insert(P, A, [tabled], SymTab, _).
-parse_comma_list_table(Spec, SymTab) :- 
+	sym_insert(P, A, [tabled], SymTab, _),
+	insert_compiler_based_options(Options,P/A,SymTab).
+parse_comma_list_table(Spec, SymTab,Options) :- 
 	is_most_general_term(Spec),
 	!,
 	functor(Spec,P,A),
-	sym_insert(P, A, [tabled], SymTab, _).
-parse_comma_list_table(Spec, SymTab) :- 
+	sym_insert(P, A, [tabled], SymTab, _),
+	insert_compiler_based_options(Options,P/A,SymTab).
+parse_comma_list_table(Spec, SymTab,Options) :- 
 	is_aggregation_spec(Spec),
 	!,
 	functor(Spec,P,A),
-	sym_insert(P, A, [aggregation(Spec)], SymTab, _).
-parse_comma_list_table(X, _) :-
+	sym_insert(P, A, [aggregation(Spec)], SymTab, _),
+ 	insert_compiler_based_options(Options,P/A,SymTab).
+parse_comma_list_table(X, _Symtab,_Options) :-
 	warning(('Non predicate specification "', X, 
 		 '" found in table directive. Ignored!')).
 
