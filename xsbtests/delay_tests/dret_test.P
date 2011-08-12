@@ -1,5 +1,8 @@
+:- compiler_options([xpp_on]).
 
-:- import get_call/3, get_returns/3, delete_return/2 from tables.
+#include "table_inspection_defs.h"
+
+:- import get_call/3, get_returns/3, delete_return/3 from tables.
 
 :- table undefined/2,undefined/1,undefined1/2.
 
@@ -12,7 +15,7 @@ undefined(X):- tnot(undefined(X)).
 delete_undefined(X):-
 	get_call(undefined(X),Subg_ptr,Temp),
 	get_returns(Subg_ptr,Temp,Leaf),
-	delete_return(Subg_ptr,Leaf).
+	delete_return(Subg_ptr,Leaf,USER_DELETE).
 
 test:- 
 	check_neg_fails,
