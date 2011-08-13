@@ -28,7 +28,7 @@
 /* NOTE: This file BETTER be always compiled with the "sysmod" option.	*/
 /*----------------------------------------------------------------------*/
 
-:- compiler_options([sysmod,optimize,xpp_on]).
+:- compiler_options([sysmod,optimize,xpp_on,spec_off]).
 
 #include "builtin.h"
 #include "celltags_xsb.h"
@@ -227,11 +227,13 @@ next_bucket(Bucket, Next_Bucket) :- next_bucket(Bucket, Next_Bucket).
 close_open_tables:- close_open_tables(non_memory_error).
 
 close_open_tables(memory_error):-!,
+%    writeln(cot(memory_error)),
     close_open_tables_1(MEMORY_ERROR).
 close_open_tables(_non_memory_error):-
+%    writeln(cot(non_memory_error)),
     close_open_tables_1(NON_MEMORY_ERROR).
 
-close_open_tables_1(_Error_Type) :- '_$builtin'(CLOSE_OPEN_TABLES).
+close_open_tables_1(_Error_Type) :-    '_$builtin'(CLOSE_OPEN_TABLES).
 
 file_function(Function, A, B, C, D, E, F) :-
 	file_function(Function, A, B, C, D, E, F).
@@ -295,6 +297,7 @@ oracle_query(_A, _B, _C, _D, _E, _F, _G) :- '_$builtin'(ORACLE_QUERY).
 odbc_exec_query(_A, _B, _C, _D, _E, _F) :- '_$builtin'(ODBC_EXEC_QUERY).
 
 term_depth(_Term,_Depth):- '_$builtin'(TERM_DEPTH).
+is_cyclic(_Term):- '_$builtin'(IS_CYCLIC).
 
 '$$set_scope_marker':- '$$set_scope_marker'.
 '$$unwind_stack':- '$$unwind_stack'.
