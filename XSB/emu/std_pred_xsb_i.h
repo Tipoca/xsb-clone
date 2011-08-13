@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.62 2011-08-06 19:14:20 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.63 2011-08-13 19:56:20 tswift Exp $
 ** 
 */
 
@@ -1087,7 +1087,45 @@ typedef Term_Traversal_Frame *TTFptr;
     Term = term_traversal_stack[term_traversal_stack_top].parent;	\
   }
 
+/*
+int term_traversal_template(CTXTdeclc Cell Term) { 
+
+  int term_traversal_stack_top = -1;
+  int term_traversal_stack_size = TERM_TRAVERSAL_STACK_INIT;
+
+  TTFptr term_traversal_stack = (TTFptr) mem_alloc(term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+
+  XSB_Deref(Term);
+
+  if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) return 1;
+	
+  push_term(Term);   
+
+  while (term_traversal_stack_top >= 0) {
+
+    if (term_traversal_stack[term_traversal_stack_top].arg_num > term_traversal_stack[term_traversal_stack_top].arity) {
+      pop_term(Term);
+    }
+    else {
+      Term = (Cell) (clref_val(term_traversal_stack[term_traversal_stack_top].parent) + term_traversal_stack[term_traversal_stack_top].arg_num);
+      term_traversal_stack[term_traversal_stack_top].arg_num++;
+      XSB_Deref(Term);
+      if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) {	
+      }
+      else {
+	push_term(Term);   
+      }
+    }
+  }
+  mem_dealloc(term_traversal_stack,term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+  return 
+}
+*/
+
 /**************************************************** */
+
+/* Did not want to use recursion to avoid problems with C-stack for
+   large terms (esp. in MT engine). */
 
 /* Did not want to use recursion to avoid problems with C-stack for
    large terms (esp. in MT engine). */
@@ -1127,6 +1165,97 @@ int term_depth(CTXTdeclc Cell Term) {
   return maxsofar;
 }
   
+/**************************************************** */
+
+typedef struct CycleTrailFrame {
+  CPtr cell_addr;
+  Cell value;
+  byte arg_num;
+  byte arity;
+  Cell parent;
+} Cycle_Trail_Frame ;
+
+typedef Cycle_Trail_Frame *CTptr;
+
+#define push_cycle_trail(Term) {					\
+    if (  ++cycle_trail_top == cycle_trail_size) {			\
+      CTptr old_cycle_trail = cycle_trail;				\
+      cycle_trail = mem_realloc(old_cycle_trail,				\
+			       cycle_trail_size*sizeof(Cycle_Trail_Frame), \
+			       2*cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE); \
+      cycle_trail_size = 2*cycle_trail_size;				\
+    }									\
+    if (cell_tag(Term) == XSB_STRUCT) {					\
+      cycle_trail[cycle_trail_top].arity =  (byte) get_arity(get_str_psc(Term)); \
+      cycle_trail[cycle_trail_top].arg_num =  1;				\
+      cycle_trail[cycle_trail_top].parent =  Term;			\
+    } else {						/* list */	\
+      cycle_trail[cycle_trail_top].arity =  1;				\
+      cycle_trail[cycle_trail_top].arg_num =  0;			\
+      cycle_trail[cycle_trail_top].parent =  Term;			\
+    }									\
+    cycle_trail[cycle_trail_top].cell_addr = clref_val(Term);		\
+    cycle_trail[cycle_trail_top].value =  *clref_val(Term);		\
+  }
+
+#define pop_cycle_trail(Term) {						\
+    * (CPtr) cycle_trail[cycle_trail_top].cell_addr = cycle_trail[cycle_trail_top].value; \
+    cycle_trail_top--;							\
+    Term = cycle_trail[cycle_trail_top].parent;				\
+  }
+
+#define unwind_cycle_trail {			\
+    while (cycle_trail_top >= 0) {		\
+      pop_cycle_trail(Term);			\
+    }						\
+}
+
+int is_cyclic(CTXTdeclc Cell Term) { 
+  Cell visited_string;
+  int cycle_trail_top = -1;
+  int cycle_trail_size = TERM_TRAVERSAL_STACK_INIT;
+
+  XSB_Deref(Term);
+  if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) return FALSE;
+
+  CTptr cycle_trail = (CTptr) mem_alloc(cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE);
+  visited_string = makestring(string_find("_$visited",1));
+
+  push_cycle_trail(Term);	
+  *clref_val(Term) = visited_string;
+
+  while (cycle_trail_top >= 0) {
+
+    if (cycle_trail[cycle_trail_top].arg_num > cycle_trail[cycle_trail_top].arity) {
+      pop_cycle_trail(Term);	
+    }
+    else {
+      if (cycle_trail[cycle_trail_top].arg_num == 0) {
+	Term = cycle_trail[cycle_trail_top].value;
+      }
+      else {
+	//	printf("examining struct %p %d\n",clref_val(cycle_trail[cycle_trail_top].parent),cycle_trail[cycle_trail_top].arg_num);
+	Term = (Cell) (clref_val(cycle_trail[cycle_trail_top].parent) + cycle_trail[cycle_trail_top].arg_num);
+      }
+      cycle_trail[cycle_trail_top].arg_num++;
+      //      printf("Term1 before %x\n",Term);
+      XSB_Deref(Term);
+      //      printf("Term1 after %x\n",Term);
+      if (cell_tag(Term) == XSB_LIST || cell_tag(Term) == XSB_STRUCT) {	
+	if (*clref_val(Term) == visited_string) {
+	  unwind_cycle_trail;
+	  return TRUE;
+	}
+	else {
+	  push_cycle_trail(Term);	
+	  *clref_val(Term) = visited_string;
+	}
+      }
+    }
+  }
+  mem_dealloc(cycle_trail,cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE);
+  return FALSE;
+}
 
 /* a new function, not yet used, intended to implement \= without a choicepoint */
 xsbBool unifiable(CTXTdeclc Cell Term1, Cell Term2) {

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.105 2011-08-06 19:14:20 tswift Exp $
+** $Id: builtin.h,v 1.106 2011-08-13 19:56:20 tswift Exp $
 ** 
 */
 
@@ -238,6 +238,7 @@
 #define NUMBER_DIGITS		214
 #define IS_NUMBER_ATOM		215
 #define TERM_DEPTH              216
+#define IS_CYCLIC               217
 
 #define SORT			220
 #define KEYSORT			221
