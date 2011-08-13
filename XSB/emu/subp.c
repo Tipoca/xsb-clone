@@ -800,11 +800,13 @@ void print_op(FILE *file, char *string, int pos)
 
 void remove_incomplete_tables_reset_freezes(CTXTdeclc int memory_flag)
 {
-  if (memory_flag == NON_MEMORY_ERROR) {
-    remove_incomplete_tables();
+  if (memory_flag == MEMORY_ERROR) {
+    //    printf("memory\n");
+    abolish_all_tables(CTXTc ABOLISH_INCOMPLETES);
   }
   else {
-    abolish_all_tables(CTXTc ABOLISH_INCOMPLETES);
+    //    printf("non_memory\n");
+    remove_incomplete_tables();
   }
     reset_freeze_registers;
 }
