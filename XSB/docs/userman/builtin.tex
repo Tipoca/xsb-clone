@@ -3491,7 +3491,7 @@ precisely,
      \end{verbatim}}
 
 \index{term depth!definition}
-\index{cyclic terms}
+\index{terms!cyclic}
 \standarditem{term\_depth(+Term, -Depth)}{term\_depth/2}
 %
     {\tt term\_depth/2} provides an efficient way to find the maximal
@@ -3513,7 +3513,46 @@ their attribute.
 
 {\tt term\_depth/2} does not check for cyclic structures, so it must
 be ensured that {\tt Term} is acyclic.
+\end{description}
 
+%-----------------------------------------------------------------------------------------------
+\section{Cyclic Terms}\label{sec:cyclic}
+\index{terms!cyclic}
+
+    Cyclic terms are created when Prolog unifies two terms whose
+    variables have not been standardized apart: for instance
+\[
+    X = f(X)
+\]
+    will produce the cyclic term f(f(f(f(f(f(...)))))) -- in other
+    words, a term with an ``infinite'' depth.  These cyclic terms
+    arise from Prolog's standard use of a unification algorithm that
+    is linear in the size of the terms to be unified, rather than a
+    general unification algorithm that is exponential in the size of
+    these terms.  If full unification is desired, this can be done via
+    the predicate {\tt unify\_with\_occurs\_check/2}.
+
+    While some operations are safe for cyclic terms, they can cause
+    problems in XSB for builtins or predicates that require term
+    traversal.  For instance the builtins {\tt numbervars/[1,2,3]} or
+    {\tt term\_depth/1}; or the library predicates {\tt length/2} and
+    {\tt append/2} may go into infinite loops with cyclic terms.  More
+    importantly, the XSB heap garbage collector is not guarenteed to
+    be safe for cyclic terms.  At the same time, predicates like {\tt
+      functor/3}, or {\tt =../2} do not require term traversal and
+    happen to be safe.  A few builtins that require term-traversal are
+    ``safe'' for cyclic terms.  For instance writing in XSB is subject
+    to a depth check, which terminates for cyclic terms.  Similarly
+    tabling can safely abort on cyclic terms if the flags {\tt
+      max\_table\_subgoal\_depth}, {\tt max\_table\_answer\_depth},
+    {\tt max\_table\_answer\_list\_depth} are set to relatively low
+    numbers.  Of course the creation of cyclic terms should be avoided
+    if possible, although these routines, as well as the following
+    predicate, can help debug when cyclic terms are created.
+
+\begin{description}
+\isoitem{is\_cyclic(?X)}{is\_cyclic/1}
+    Succeeds if {\tt X} is a cyclic term.  
 \end{description}
 
 %-----------------------------------------------------------------------------------------------

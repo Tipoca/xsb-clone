@@ -19,10 +19,11 @@ fix it or to assist you to bypass it.
 \item The maximum length of atoms that can be stored in an XSB
       \emph{object} code file is in principle $2^{32}-1$.
 %
-\index{cyclic terms}
+\index{terms!cyclic}
 \item XSB's tabling and builtins currently do not take account of
-  cyclic terms, so using them may lead to XSB hanging or crashing.
-  Cyclic terms can be checked using the predicate {\tt is\_cyclic/1}.
+  cyclic terms, so using them may lead to XSB hanging or crashing
+  (cf. Section~\ref{sec:cyclic}).  Cyclic terms can be checked using
+  the predicate {\tt is\_cyclic/1}.
 %
 \item In the current version, you should never try to rename a byte code 
       file generated for a module, though you can move it around in your 
