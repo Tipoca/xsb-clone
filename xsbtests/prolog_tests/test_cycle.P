@@ -1,0 +1,16 @@
+:- import numbervars/1 from num_vars.
+
+/**/
+test:- X = f(X),output(X),fail.
+test:- X = f(Y),output(X),fail.
+test:- X = [X,a],output(X),fail.
+test:- X = [Y,a],output(X),fail.
+test:- X = [a,X],output(X),fail.
+test:- X = [a,Y],output(X),fail.
+test:- X = g(f(1,[X,a])),output(X),fail.
+test:- X = g(f(1,[Y,a])),output(X),fail.
+test:- X = g(f(X)),output(X),fail.
+test.
+
+
+output(X):- is_cyclic(X) -> writeln(cyclic(X)) ; numbervars(X),writeln(acyclic(X)).
