@@ -3534,21 +3534,34 @@ be ensured that {\tt Term} is acyclic.
 
     While some operations are safe for cyclic terms, they can cause
     problems in XSB for builtins or predicates that require term
-    traversal.  For instance the builtins {\tt numbervars/[1,2,3]} or
-    {\tt term\_depth/1}; or the library predicates {\tt length/2} and
-    {\tt append/2} may go into infinite loops with cyclic terms.  More
-    importantly, the XSB heap garbage collector is not guarenteed to
-    be safe for cyclic terms.  At the same time, predicates like {\tt
-      functor/3}, or {\tt =../2} do not require term traversal and
-    happen to be safe.  A few builtins that require term-traversal are
-    ``safe'' for cyclic terms.  For instance writing in XSB is subject
-    to a depth check, which terminates for cyclic terms.  Similarly
-    tabling can safely abort on cyclic terms if the flags {\tt
-      max\_table\_subgoal\_depth}, {\tt max\_table\_answer\_depth},
-    {\tt max\_table\_answer\_list\_depth} are set to relatively low
-    numbers.  Of course the creation of cyclic terms should be avoided
-    if possible, although these routines, as well as the following
-    predicate, can help debug when cyclic terms are created.
+    traversal.  For instance the builtin predicates {\tt
+      numbervars/[1,3,4]} or {\tt term\_depth/1}; or the library
+    predicates {\tt length/2} and {\tt append/2} currently go into
+    infinite loops with cyclic terms~\footnote{In addition to those
+      already mentioned, a {\tt partial} list of those predicates
+      includes various predicates for asserting (but not those for
+      retracting); {\tt bagof/3}; {\tt copy\_term/2}; various table
+      inspection builtins based on {\tt get\_call/2} or similar
+      routines (including {\tt get\_residual/2}); {\tt setof/2}; {\tt
+        subsumes/2}; {\tt subsumes\_chk/2}; {\tt table\_dump/2}; {\tt
+        term\_to\_atom/[2,3]}; {\tt term\_to\_codes/[2,3]}; {\tt
+        variant/2}: trie interning predicates; {\tt unifiable/2}.}.
+
+    At the same time, most predicates like {\tt functor/3}, or {\tt
+      =../2} that either take non-compound terms or that do not
+    require term traversal are safe.  A few builtins that require
+    term-traversal are ``safe'' for cyclic terms.  For instance
+    writing in XSB is subject to a depth check, which terminates for
+    cyclic terms.  Similarly tabling can safely abort on cyclic terms
+    if the flags {\tt max\_table\_subgoal\_depth}, {\tt
+      max\_table\_answer\_depth}, {\tt
+      max\_table\_answer\_list\_depth} are set to relatively low
+    numbers.  Most importantly, the XSB heap garbage collector is
+    guarenteed to be safe for cyclic terms.
+
+    However, programs should not intentionally create cyclic terms,
+    and the above routines, as well as the following predicate, can
+    help debug when cyclic terms are created.
 
 \begin{description}
 \isoitem{is\_cyclic(?X)}{is\_cyclic/1}
@@ -3557,6 +3570,11 @@ be ensured that {\tt Term} is acyclic.
 
 %-----------------------------------------------------------------------------------------------
 \section{Manipulation of Atomic Terms}
+
+This section lists some of XSB's standard predicates for manipulating
+atomic terms.  See also in Volume 2, Section 1.5 for other library
+predicates. Section 7 for wildcard matching, and Section 8 for an
+interfae to the PCRE library.
 
 \begin{description}
 
@@ -3891,6 +3909,30 @@ L = 9
 \end{itemize}
 \end{itemize}
 
+\ourmoditem{concat\_atom(+AtomList,?Atom)}{concat\_atom/2}{string}
+%
+{\tt AtomList} must be a list structure containing atoms, integers
+and/or floats.  This predicate flattens {\tt AtomList} and
+concatenates the atoms and integers into a single atom, returned in
+{\tt Atom}.  Integers and floats are converted to character strings
+using {\tt number\_codes/2}.
+
+This is a somewhat more general predicate than the ISO {\tt
+  atom\_concat/2} described below, and can be more efficient if
+numerous atoms are to be concatenated together.
+
+\ourmoditem{concat\_atom(+AtomList,+Sep,?Atom)}{concat\_atom/3}{string}
+
+{\tt AtomList} must be a list containing atoms, integers and/or
+floats, and {\tt Sep} must be an atom.  This predicate concatenates
+the atoms and integers into a single atom, separating each by {\tt
+Sep}, return the resulting atom in {\tt Atom}.  Integers and floats
+are converted to character strings using {\tt number\_codes/2}.
+
+This is a somewhat more general predicate than the ISO {\tt
+  atom\_concat/2} described below, and can be more efficient if
+numerous atoms are to be concatenated together.
+
 \ourisousageitem{atom\_concat(Atom1,Atom2,Atom3)}{atom\_concat/3}
 \ourusage{atom\_concat(?Atom,?Atom,+Atom)}
 \ourusage{atom\_concat(+Atom,+Atom,-Atom)}
@@ -4054,6 +4096,61 @@ CA = r;
 \item  {\tt  domain\_error(not\_less\_than\_zero, RightLength)}
 \ei
 \ei
+
+\ourmoditem{string\_substitute(+InpStr, +SubstrList, +SubstitutionList, -OutStr)}{string\_substitute/4}{string}
+
+
+{\tt InputStr} can an atom or a list of characters.  {\tt SubstrList} must
+be a list of terms of the form {\tt s(BegOffset, EndOffset)}, where the
+name of the functor is immaterial.  The meaning of the offsets is the same
+as for {\tt substring/4}. (In particular, negative offsets represent
+offsets from the first character past the end of {\tt String}.)  Each such
+term specifies a substring (between {\tt BegOffset} and {\tt EndOffset};
+negative {\tt EndOffset} stands for the end of string) to be replaced.
+{\tt SubstitutionList} must be a list of atoms or character lists.
+
+Offsets start from 0, as in C/Java.
+
+This predicate replaces the substrings specified in {\tt SubstrList} with
+the corresponding strings from {\tt SubstitutionList}.  The result is
+returned in {\tt OutStr}. {\tt OutStr} is a list of characters, if so is
+{\tt InputStr}; otherwise, it is an atom.
+
+If {\tt SubstitutionList} is shorter than {\tt SubstrList} then the last
+string in {\tt SubstitutionList} is used for substituting the extra
+substrings specified in {\tt SubstitutionList}. As a special case, this
+makes it possible to replace all specified substrings with a single string.
+
+As in the case of {\tt re\_substring/4}, if {\tt OutStr} is an atom, it is
+not interned.  The user should either intern this string or convert it into
+a list, as explained previously.
+
+The \verb|string_substitute/4| predicate always succeeds.
+
+Here are some examples:
+%%
+\begin{verbatim}
+| ?- string_substitute('qaddf', [s(2,4)], ['123'] ,L).
+
+L = qa123f
+
+| ?- string_substitute('qaddf', [s(2,-1)], ['123'] ,L).
+
+L = qa123
+
+| ?- string_substitute("abcdefg", [s(4,-1)], ["123"],L).
+
+L = [97,98,99,100,49,50,51]
+
+| ?- string_substitute('1234567890123', [f(1,5),f(5,7),f(9,-2)], ["pppp", lll],X).
+
+X = 1pppplll89lll
+
+| ?- string_substitute('1234567890123', [f(1,5),f(6,7),f(9,-2)], ['---'],X).
+
+X = 1---6---89---
+\end{verbatim}
+%%
 
 \ourmoditem{term\_to\_atom(+Term,-Atom,+Options)}{term\_to\_atom/3}{string}
 %
