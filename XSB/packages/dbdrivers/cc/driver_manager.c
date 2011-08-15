@@ -554,7 +554,8 @@ static char* buildSQLQuery(prolog_term sqlQueryList)
   prolog_term element;
   char* sqlQuery;
   char* temp;
-  int i, cnt;
+  int cnt;
+  size_t i;
 
   sqlQuery = (char *)malloc(QUERY_SIZE * sizeof(char)+1);
   sqlQuery[0] = '\0';
@@ -660,7 +661,7 @@ static int bindReturnList(prolog_term returnList, struct xsb_data** result, stru
 	  c = result[i]->val->str_val[0];
 	  if (c == DB_INTERFACE_TERM_SYMBOL) {
 	    temp = (char *)malloc(strlen(result[i]->val->str_val) * sizeof(char));
-	    for (j = 1 ; j < strlen(result[i]->val->str_val) ; j++) {
+	    for (j = 1 ; j < (int)strlen(result[i]->val->str_val) ; j++) {
 	      temp[j-1] = result[i]->val->str_val[j];
 	    }
 	    temp[strlen(result[i]->val->str_val) - 1] = '\0';
