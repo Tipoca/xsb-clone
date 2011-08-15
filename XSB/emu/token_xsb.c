@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.46 2011-07-26 17:27:49 dwarren Exp $
+** $Id: token_xsb.c,v 1.47 2011-08-15 15:10:25 dwarren Exp $
 ** 
 */
 
@@ -419,7 +419,7 @@ READ_ERROR: if (!instr && ferror(card))
                         if (DigVal(c = GetC(card,instr)) >= 8) {
 			  // if (c < 0) goto READ_ERROR;
 			  // (void) unGetC(c, card, instr);
-			  if (c != '\\') goto READ_ERROR; // more standardish
+			  if (c != '\\') (void) unGetC(c,card,instr); // more standardish
                             break;
                         }
                     return n & 255;

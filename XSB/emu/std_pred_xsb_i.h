@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.63 2011-08-13 19:56:20 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.64 2011-08-15 15:10:25 dwarren Exp $
 ** 
 */
 
@@ -1214,11 +1214,12 @@ int is_cyclic(CTXTdeclc Cell Term) {
   Cell visited_string;
   int cycle_trail_top = -1;
   int cycle_trail_size = TERM_TRAVERSAL_STACK_INIT;
+  CTptr cycle_trail;
 
   XSB_Deref(Term);
   if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) return FALSE;
 
-  CTptr cycle_trail = (CTptr) mem_alloc(cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE);
+  cycle_trail = (CTptr) mem_alloc(cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE);
   visited_string = makestring(string_find("_$visited",1));
 
   push_cycle_trail(Term);	

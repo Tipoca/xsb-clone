@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.369 2011-08-13 19:56:20 tswift Exp $
+** $Id: builtin.c,v 1.370 2011-08-15 15:10:25 dwarren Exp $
 **
 */
 
@@ -2323,7 +2323,7 @@ int builtin_call(CTXTdeclc byte number)
 
   case CLOSE_OPEN_TABLES:	
     //    printf("close open tables... %d\n",ptoc_int(CTXTc 1));
-    remove_incomplete_tables_reset_freezes(CTXTc ptoc_int(CTXTc 1));
+    remove_incomplete_tables_reset_freezes(CTXTc (int)ptoc_int(CTXTc 1));
 #ifdef MULTI_THREAD
     release_held_mutexes(CTXT);
 #endif

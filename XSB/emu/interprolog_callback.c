@@ -53,8 +53,8 @@ Java_com_xsb_interprolog_NativeEngine_get_1bytes
 		int i = 1;
 		jbyteArray bytes;
 
-		jsize size = p2p_arg(reg_term(CTXTc 1), 3);
-		int newHead, newTail;
+		jsize size = (int)p2p_arg(reg_term(CTXTc 1), 3);
+		prolog_term newHead, newTail;
 		jbyte *b;
 
 		if (size == -1) {
@@ -64,10 +64,10 @@ Java_com_xsb_interprolog_NativeEngine_get_1bytes
 		b = (jbyte *) mem_alloc(size,INTERPROLOG_SPACE);
 		newHead = p2p_car(p2p_arg(reg_term(CTXTc 1), 2));
 		newTail = p2p_cdr(p2p_arg(reg_term(CTXTc 1), 2));
-		b[i-1] = p2c_int(newHead);
+		b[i-1] = (int)p2c_int(newHead);
 		while(is_nil(newTail) == 0) { 
 			newHead = p2p_car(newTail);
-			b[i] = p2c_int(newHead);
+			b[i] = (int)p2c_int(newHead);
 			newTail = p2p_cdr(newTail);
 			i++;
 		}
@@ -243,7 +243,8 @@ xsbBool interprolog_callback(CTXTdecl) {
 	jobject obj = theObj;
 	jclass cls;
 	jmethodID mid;
-	int i = 1, size, bsize;
+	int i = 1; 
+	jsize size,bsize;
 	prolog_term newHead, newTail;
 	jbyte *b, *nb;
 	jbyteArray newBytes, bytes;
@@ -261,15 +262,15 @@ xsbBool interprolog_callback(CTXTdecl) {
 	}
 	//printf("Got the method\n");
 	
-	bsize = p2c_int(reg_term(CTXTc 1));
+	bsize = (int)p2c_int(reg_term(CTXTc 1));
 
 	b = (jbyte *) mem_alloc(bsize,INTERPROLOG_SPACE);
 	newHead = p2p_car(reg_term(CTXTc 2));
 	newTail = p2p_cdr(reg_term(CTXTc 2));
-	b[i-1] = p2c_int(newHead);
+	b[i-1] = (int)p2c_int(newHead);
 	while(is_nil(newTail) == 0) { 
 		newHead = p2p_car(newTail);
-		b[i] = p2c_int(newHead);
+		b[i] = (int)p2c_int(newHead);
 		newTail = p2p_cdr(newTail);
 		i++;
 	}

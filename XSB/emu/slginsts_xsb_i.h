@@ -193,7 +193,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   if (flags[CTRACE_CALLS])  { 
     char buffera[MAXTERMBUFSIZE];
     char bufferb[MAXTERMBUFSIZE];
-    sprint_registers(CTXTc  buffera,TIF_PSC(tip),flags[MAX_TABLE_SUBGOAL_DEPTH]);
+    sprint_registers(CTXTc  buffera,TIF_PSC(tip),(int)flags[MAX_TABLE_SUBGOAL_DEPTH]);
     if (ptcpreg) {
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
     }
@@ -942,7 +942,7 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   if (flags[CTRACE_CALLS])  { 
     char buffera[MAXTERMBUFSIZE];
     char bufferb[MAXTERMBUFSIZE];
-    sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),flags[MAX_TABLE_SUBGOAL_DEPTH]);
+    sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),(int)flags[MAX_TABLE_SUBGOAL_DEPTH]);
     if (ptcpreg)
       sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
     else sprintf(bufferb,"null");
