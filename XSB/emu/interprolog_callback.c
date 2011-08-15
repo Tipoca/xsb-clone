@@ -243,8 +243,8 @@ xsbBool interprolog_callback(CTXTdecl) {
 	jobject obj = theObj;
 	jclass cls;
 	jmethodID mid;
-	int i = 1; 
-	jsize size,bsize;
+	int i = 1;
+	jsize size, bsize;
 	prolog_term newHead, newTail;
 	jbyte *b, *nb;
 	jbyteArray newBytes, bytes;
@@ -262,7 +262,7 @@ xsbBool interprolog_callback(CTXTdecl) {
 	}
 	//printf("Got the method\n");
 	
-	bsize = (int)p2c_int(reg_term(CTXTc 1));
+	bsize = (jsize)p2c_int(reg_term(CTXTc 1));
 
 	b = (jbyte *) mem_alloc(bsize,INTERPROLOG_SPACE);
 	newHead = p2p_car(reg_term(CTXTc 2));
