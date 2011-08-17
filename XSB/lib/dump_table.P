@@ -91,7 +91,9 @@ all_call_returns_for_atom(Pred,C,NR,RSs) :-
 	 get_calls_for_table(Pred,C),
 	 get_call(C,TH,RS),
 	 subsumes_chk(Pred,C),
-	 findall(Atom,(get_returns(TH,RS),bindreturn(C,RS,Atom)),RSs),
+	 copy_term(C,C1),
+%	 writeln(copy_term(C,C1)),
+	 findall(Atom,(get_returns(TH,RS),bindreturn(C1,RS,Atom)),RSs),
 	 length(RSs,NR).
 
 bindreturn(Pred,Ret,Pred):- ground(Ret),ground(Pred),!.
