@@ -1458,6 +1458,31 @@ with
 %
 \ei
 
+{\bf Example}
+An example of using {\tt statistics/2} to check CPU time is as follows:
+
+\begin{verbatim}
+?- statistics(runtime,[BeforeCumu,BeforeIncr]),spin(100000000),
+   statistics(runtime,[AfterCumu,AfterIncr]).
+
+BeforeCumu = 5.0167
+BeforeIncr = 5.0167
+AfterCumu = 9.6498
+AfterIncr = 4.6331
+\end{verbatim}
+Note that {\tt statistics/2} can provide either cumulative or
+ incremental times; here
+\[
+ AfterCumu - BeforeCumu = AfterIncr
+\]
+Checking wall time is done similarly.
+\begin{verbatim}
+?- statistics(walltime,Before),sleep(1),statistics(walltime,After).
+
+Before = [35.0651,35.0651]
+After = [36.0652,1.0001]
+\end{verbatim}
+
 {\bf Error Cases}
 \bi
 \item {\tt Key} not a valid atom for input to {\tt statistics/1} 
