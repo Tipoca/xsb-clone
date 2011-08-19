@@ -716,6 +716,12 @@ early_complete_on_delta(SubgoalFrame,New,Old,Epsilon):-
 	    table_inspection_function(EARLY_COMPLETE,SubgoalFrame,_,_,_)
 	 ;  true).
 
+:- export trace_forest/1.
+trace_forest(Call):- 
+	start_forest_view(userout),
+	call(Call),
+	stop_forest_view.
+
 :- import set_prolog_flag/2 from curr_sym.
 :- export start_forest_view/1, stop_forest_view/0.
 start_forest_view(File):-
