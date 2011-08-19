@@ -4156,6 +4156,7 @@ void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
     CallStrPtr = (VariantSF)compl_subgoal_ptr(openreg);
     if (!is_completed(CallStrPtr)) {
 
+      //      print_subgoal(CTXTc stdout, CallStrPtr)
       if (warned == FALSE) {
 	xsb_mesg("Removing incomplete tables...");
 	//	check_table_cut = FALSE;  /* permit cuts over tables */
@@ -4782,7 +4783,10 @@ case CALL_SUBS_SLG_NOT: {
   }
  
   case START_FOREST_VIEW: {
-    fview_ptr = fopen(ptoc_string(CTXTc 2),"w");
+    char *filename = ptoc_string(CTXTc 2);
+    if (!(strcmp(filename,"userout")))
+      fview_ptr = stdout; 
+    else fview_ptr = fopen(ptoc_string(CTXTc 2),"w");
     break;
   }
 

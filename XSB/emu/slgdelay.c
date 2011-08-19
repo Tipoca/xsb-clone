@@ -1134,7 +1134,7 @@ static void handle_empty_dl_creation(CTXTdeclc DL dl)
      * simplify_pos_unconditional(as_leaf) will release all other DLs for
      * as_leaf, and mark as_leaf as UNCONDITIONAL.
      */
-    //    fprintf(stderr,"hedc A\n");
+  //    fprintf(stderr,"hedc A\n");
     simplify_pos_unconditional(CTXTc as_leaf);
 
     /* Perform simplify_neg_succeeds() for consumer sfs (producers and
@@ -1156,7 +1156,7 @@ static void handle_empty_dl_creation(CTXTdeclc DL dl)
     }
     /*-- perform early completion if necessary; please preserve invariants --*/
     if (!is_completed(subgoal) && most_general_answer(as_leaf)) {
-      perform_early_completion(subgoal, subg_cp_ptr(subgoal));
+      perform_early_completion(CTXTc subgoal, subg_cp_ptr(subgoal));
       subg_compl_susp_ptr(subgoal) = NULL;
     }
     simplify_neg_succeeds(CTXTc subgoal);

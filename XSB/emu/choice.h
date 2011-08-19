@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.43 2010-12-16 22:10:24 tswift Exp $
+** $Id: choice.h,v 1.44 2011-08-19 21:44:14 tswift Exp $
 ** 
 */
 #ifndef __CHOICE_H__
@@ -179,22 +179,6 @@ typedef struct tabled_choice_point {
     ((cp_pcreg(b) == (byte *) &check_complete_inst) ||	\
      (cell_opcode(cp_pcreg(b)) == tabletrust) ||	\
      (cell_opcode(cp_pcreg(b)) == tableretry))
-
-/* The following macro is used to perform early completion */
-#ifdef CONC_COMPL
-/* can't perform early completion for CONC_COMPL shared tables */
-#define perform_early_completion(ProdSF,ProdCPF)	    	\
-    if( IsPrivateSF(ProdSF) )					\
-    {   if (tcp_pcreg(ProdCPF) != (byte *) &answer_return_inst) \
-      	    tcp_pcreg(ProdCPF) = (byte *) &check_complete_inst; \
-        mark_as_completed(ProdSF)				\
-    }
-#else
-#define perform_early_completion(ProdSF,ProdCPF)	    	\
-    if (tcp_pcreg(ProdCPF) != (byte *) &answer_return_inst) 	\
-      tcp_pcreg(ProdCPF) = (byte *) &check_complete_inst;   	\
-    mark_as_completed(ProdSF)
-#endif
 
 #define _SaveProducerCPF_common(TopCPS, Cont, pSF) {    \
    TopCPS -= TCP_SIZE;					\

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.24 2011-08-19 18:26:30 tswift Exp $
+** $Id: debug_xsb.h,v 1.25 2011-08-19 21:44:15 tswift Exp $
 ** 
 */
 
@@ -75,6 +75,8 @@ extern void print_registers(struct th_context * ,FILE *,Psc,long);
 extern void sprint_registers(struct th_context *,char *,Psc,long);
 extern void sprint_subgoal(struct th_context *, char *,  VariantSF );
 #endif
+
+extern int ctrace_ctr;
 
 /* dbg_* macros */
 #ifdef DEBUG_VERBOSE

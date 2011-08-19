@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.94 2011-08-06 19:14:20 tswift Exp $
+** $Id: tables.c,v 1.95 2011-08-19 21:44:15 tswift Exp $
 ** 
 */
 
@@ -57,6 +57,7 @@
 #include "debug_xsb.h"
 #include "call_graph_xsb.h" /* for incremental evaluation */
 #include "tr_utils.h"  /* for incremental evaluation */
+#include "choice.h"
 
 /*=========================================================================
      This file contains the interface functions to the tabling subsystem
@@ -889,3 +890,34 @@ VariantSF tnotNewSubConsSF(CTXTdeclc BTNptr Leaf,TIFptr TableInfo,VariantSF prod
 }
 
 /*=========================================================================*/
+
+#if !defined(WIN_NT)
+inline 
+#endif
+#ifdef CONC_COMPL
+/* can't perform early completion for CONC_COMPL shared tables */
+void perform_early_completion(CTXTdeclc VariantSF ProdSF,CPtr ProdCPF) {
+    if( IsPrivateSF(ProdSF) )			
+    {   if (tcp_pcreg(ProdCPF) != (byte *) &answer_return_inst) 
+      	    tcp_pcreg(ProdCPF) = (byte *) &check_complete_inst; 
+        mark_as_completed(ProdSF)				
+    }
+#else
+void perform_early_completion(CTXTdeclc VariantSF ProdSF,CPtr ProdCPF) {
+  if (tcp_pcreg(ProdCPF) != (byte *) &answer_return_inst) 	
+    tcp_pcreg(ProdCPF) = (byte *) &check_complete_inst;   	
+  mark_as_completed(ProdSF);					
+    if (flags[CTRACE_CALLS])  { 
+      char bufferb[MAXTERMBUFSIZE];
+      sprint_subgoal(CTXTc bufferb,ProdSF);     
+      fprintf(fview_ptr,"cmp(%s,ec,%d).\n",bufferb,ctrace_ctr++);
+  }
+  /*
+  if (flags[EC_REMOVE_SCC] && is_leader(ProdSF)) {		
+    printf("is leader\n");
+    remove_incomplete_tries(subg_compl_stack_ptr(CTXTc subg_compl_stack_ptr(ProdCPF)));
+    //also get rid of CCFs and Susp Fs.
+  }
+    */
+}
+#endif
