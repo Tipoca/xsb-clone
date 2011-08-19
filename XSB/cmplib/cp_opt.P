@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.P,v 1.19 2011-08-12 15:14:16 tswift Exp $
+** $Id: cp_opt.P,v 1.20 2011-08-19 21:46:12 tswift Exp $
 ** 
 */
 
@@ -69,8 +69,9 @@ cp_opt0([One|Rest],[One|Rest1],Symtab):-
 
 cp_opt_block(pred(Sym,Pscs,Oth),pred(Sym1,Pscs1,Oth1),Symtab,BigPicture):-
 	have_hardcut(Pscs,Hc),
-	must_keep_tabpoint(Sym,Pscs,Res),
-	BigPicture is Hc + Res,
+	multiple_index_groups(Sym,Pscs,Mult),
+	uses_approx(Sym,Approx),
+	BigPicture is Hc + Mult + Approx,
 	cp_opt_block1(BigPicture,
 		      pred(Sym,Pscs,Oth),pred(Sym1,Pscs1,Oth1),Symtab).
 
@@ -133,7 +134,7 @@ bind_args(N,Head,Body):-
 	N1 is N - 1,
 	bind_args(N1,Head,Body).	
 
-must_keep_tabpoint(Sym, Pscs, Res):-
+multiple_index_groups(Sym, Pscs, Res):-
 	sym_name(Sym,_Pred,Arity),
 	( Arity =:= 0 -> Res = 0
 	; sym_index(Sym, Narg),
@@ -141,7 +142,6 @@ must_keep_tabpoint(Sym, Pscs, Res):-
 	  index_split(Argpat,Groups),
 	  ( member(arglabel(g,_,_),Groups) -> Res = 1 ; Res = 0 )
 	).
-
 
 cpo_index_argpats([],_,[]).
 cpo_index_argpats([clause(Arglist,_,_)|CRest], N, 
@@ -158,6 +158,11 @@ cpo_index_argpat(varocc(_), v, v).
 cpo_index_argpat(string(_), l, l).
 cpo_index_argpat(structure(Sym,_), l,l) :- sym_name(Sym, '.', 2).
 cpo_index_argpat(structure(Sym,_), s,Sym).
+
+uses_approx(Sym,Approx):- 
+	sym_type(Sym,approximation(_ApproxSpec)),
+	\+ sym_type(Sym,aggregation(_AggSpec))
+	-> Approx = 1 ; Approx = 0.
 
 /************************************************************************/
 /* Given an aggregate declaration, now of the form, e.g.
