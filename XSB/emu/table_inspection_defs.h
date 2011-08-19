@@ -31,6 +31,8 @@
 #define GET_ANSWER_NUMBER                        7
 #define EARLY_COMPLETE_ON_NTH                    8
 #define EARLY_COMPLETE                           9
+#define START_FOREST_VIEW                        10
+#define STOP_FOREST_VIEW                         11
 
 // For delete return
 #define ANSWER_SUBSUMPTION   0

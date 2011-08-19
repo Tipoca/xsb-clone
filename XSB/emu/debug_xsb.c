@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.75 2011-08-12 15:17:13 tswift Exp $
+** $Id: debug_xsb.c,v 1.76 2011-08-19 18:26:30 tswift Exp $
 ** 
 */
 
@@ -188,7 +188,7 @@ inline int get_int_print_width(Integer num) {
   else return MAXINTLEN;
 }
 
-static int sprint_term(char *buffer, int insize, Cell term, byte car, int level)
+static int sprint_term(char *buffer, int insize, Cell term, byte car, long level)
 {
   unsigned short i, arity;
   Psc psc;
@@ -391,12 +391,29 @@ void sprint_callsize(CTXTdeclc Psc psc,int depth) {
 
 }
 
-void sprint_registers(CTXTdeclc char * buffer,Psc psc,int depth) {
+/* cf. tst_utils.c */
+void sprint_answer_template(CTXTdeclc char * buffer, CPtr pAnsTmplt, int template_size,long depth) {
+
+  int i,size;
+
+  sprintf(buffer,"["); size = 1;
+  if (template_size > 0) {
+    for (i = 1; i < template_size; i++) {
+      //      sprint_term(fp, *pAnsTmplt--, CAR,depth);
+      size = sprint_term(buffer, size, *pAnsTmplt--, CAR,depth);
+      sprintf(buffer+size, ",");size++;
+    }
+    size = sprint_term(buffer, size, *pAnsTmplt, CAR,depth);
+  }
+  sprintf(buffer+size,"]"); 
+}
+
+void sprint_registers(CTXTdeclc char * buffer,Psc psc,long depth) {
   int i, arity,size;
 
   arity = (int)get_arity(psc);
 
-  sprintf(buffer, "%s", get_name(psc));
+   sprintf(buffer, "%s", get_name(psc));
   size = (int)strlen(get_name(psc));
   if (arity != 0) sprintf(buffer+size, "(");size++;
   for (i=1; i <= arity; i++) {

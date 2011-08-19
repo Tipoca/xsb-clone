@@ -4568,6 +4568,7 @@ void answer_completion(CTXTdeclc CPtr cs_ptr) {
 
 extern void ctop_tag(CTXTdeclc int, Cell);
 
+FILE * fview_ptr;
 //----------------------------------------------------------------------
 int table_inspection_function( CTXTdecl ) {
   switch (ptoc_int(CTXTc 1)) {
@@ -4779,7 +4780,18 @@ case CALL_SUBS_SLG_NOT: {
     else 
       ctop_int(CTXTc 3,0);
   }
-    
+ 
+  case START_FOREST_VIEW: {
+    fview_ptr = fopen(ptoc_string(CTXTc 2),"w");
+    break;
+  }
+
+  case STOP_FOREST_VIEW: {
+    fflush(fview_ptr);
+    fclose(fview_ptr);
+    break;
+  }
+
   }
   return TRUE;
 }

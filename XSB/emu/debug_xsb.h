@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.23 2011-08-13 20:13:41 tswift Exp $
+** $Id: debug_xsb.h,v 1.24 2011-08-19 18:26:30 tswift Exp $
 ** 
 */
 
@@ -67,12 +67,12 @@ typedef struct subgoal_frame *VariantSF;
 extern void print_delay_list(FILE *, CPtr);
 extern void print_delay_element(FILE *, Cell);
 extern void print_registers(FILE *,Psc,long);
-extern void sprint_registers(char *,Psc,int);
+extern void sprint_registers(char *,Psc,long);
 extern void sprint_subgoal(char *,  VariantSF );
 #else
 extern void print_delay_list(struct th_context * ,FILE *, CPtr);
 extern void print_registers(struct th_context * ,FILE *,Psc,long);
-extern void sprint_registers(struct th_context *,char *,Psc,int);
+extern void sprint_registers(struct th_context *,char *,Psc,long);
 extern void sprint_subgoal(struct th_context *, char *,  VariantSF );
 #endif
 

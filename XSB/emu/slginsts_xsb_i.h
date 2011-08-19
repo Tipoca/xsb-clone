@@ -190,17 +190,18 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 
   check_glstack_overflow(CallInfo_CallArity(callInfo),lpcreg,OVERFLOW_MARGIN);
 
+/*
   if (flags[CTRACE_CALLS])  { 
     char buffera[MAXTERMBUFSIZE];
     char bufferb[MAXTERMBUFSIZE];
-    sprint_registers(CTXTc  buffera,TIF_PSC(tip),(int)flags[MAX_TABLE_SUBGOAL_DEPTH]);
+    sprint_registers(CTXTc  buffera,TIF_PSC(tip),(long)(flags[MAX_TABLE_SUBGOAL_DEPTH]));
     if (ptcpreg) {
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
     }
     else sprintf(bufferb,"null");
-    fprintf(stdout,"tc(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+    fprintf(fview_ptr,"tc(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
-
+*/
   LOCK_CALL_TRIE();
   /*
    *  Perform a call-check/insert operation on the current call.  The
@@ -264,6 +265,18 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     CPtr producer_cpf;
     producer_sf = NewProducerSF(CTXTc CallLUR_Leaf(lookupResults),
 				 CallInfo_TableInfo(callInfo));
+
+  if (flags[CTRACE_CALLS])  { 
+    char buffera[MAXTERMBUFSIZE];
+    char bufferb[MAXTERMBUFSIZE]; 
+    sprint_subgoal(CTXTc buffera,(VariantSF)producer_sf);     
+    if (ptcpreg) {
+      sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
+    }
+    else sprintf(bufferb,"null");
+    fprintf(fview_ptr,"tc(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+  }
+
 #endif /* !SHARED_COMPL_TABLES */
 #ifdef CONC_COMPL
     subg_tid(producer_sf) = xsb_thread_id;
@@ -347,6 +360,17 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   } /* end new producer case */
 
   else if ( is_completed(producer_sf) ) {
+
+  if (flags[CTRACE_CALLS])  { 
+    char buffera[MAXTERMBUFSIZE];
+    char bufferb[MAXTERMBUFSIZE];
+    sprint_subgoal(CTXTc buffera,(VariantSF)producer_sf);     
+    if (ptcpreg) {
+      sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
+    }
+    else sprintf(bufferb,"null");
+    fprintf(fview_ptr,"tc(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+  }
     /* Unify Call with Answer Trie
        --------------------------- */
     SUBG_INCREMENT_CALLSTO_SUBGOAL(producer_sf);
@@ -416,6 +440,17 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   }
 
   else if ( CallLUR_VariantFound(lookupResults) ) {
+
+  if (flags[CTRACE_CALLS])  { 
+    char buffera[MAXTERMBUFSIZE];
+    char bufferb[MAXTERMBUFSIZE];
+    sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
+    if (ptcpreg) {
+      sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
+    }
+    else sprintf(bufferb,"null");
+    fprintf(fview_ptr,"tc(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+  }
 
     /* Previously Seen Subsumed Call
        ----------------------------- */
@@ -940,13 +975,15 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   if ( isNewAnswer ) {   /* go ahead -- look for more answers */
 
   if (flags[CTRACE_CALLS])  { 
-    char buffera[MAXTERMBUFSIZE];
-    char bufferb[MAXTERMBUFSIZE];
-    sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),(int)flags[MAX_TABLE_SUBGOAL_DEPTH]);
+    char buffera[MAXTERMBUFSIZE]; bzero(buffera,MAXTERMBUFSIZE);
+    char bufferb[MAXTERMBUFSIZE]; bzero(bufferb,MAXTERMBUFSIZE);
+    //    sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),flags[MAX_TABLE_SUBGOAL_DEPTH]);
+    //    printAnswerTemplate(stddbg,answer_template ,(int) template_size);
+    sprint_answer_template(CTXTc buffera, answer_template, template_size,flags[MAX_TABLE_ANSWER_DEPTH]);
     if (ptcpreg)
       sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
     else sprintf(bufferb,"null");
-    fprintf(stdout,"na(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+    fprintf(fview_ptr,"na(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
 
     SUBG_INCREMENT_ANSWER_CTR(producer_sf);

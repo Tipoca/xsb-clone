@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.71 2011-08-06 19:14:20 tswift Exp $
+** $Id: tr_utils.h,v 1.72 2011-08-19 18:26:30 tswift Exp $
 ** 
 */
 
@@ -138,6 +138,7 @@ extern void reclaim_deleted_subsumptive_table(CTXTdeclc DelTFptr);
 extern void	remove_incomplete_tries(CTXTdeclc CPtr);
 
 extern counter abol_subg_ctr,abol_pred_ctr,abol_all_ctr; /* statistics */
+extern FILE * fview_ptr;
 
 #define MAX_INTERNED_TRIES 2003
 

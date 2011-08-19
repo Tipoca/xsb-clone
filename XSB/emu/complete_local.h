@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.38 2011-07-29 22:56:04 tswift Exp $
+** $Id: complete_local.h,v 1.39 2011-08-19 18:26:30 tswift Exp $
 **
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -306,7 +306,7 @@ static inline void CompleteSimplifyAndReclaim(CTXTdeclc CPtr cs_ptr)
     if (flags[CTRACE_CALLS])  { 
       char bufferb[MAXTERMBUFSIZE];
       sprint_subgoal(CTXTc bufferb,compl_subg);     
-      fprintf(stdout,"cmp(%s,%d,%d).\n",bufferb,compl_level(ComplStkFrame),ctrace_ctr++);
+      fprintf(fview_ptr,"cmp(%s,%d,%d).\n",bufferb,compl_level(ComplStkFrame),ctrace_ctr++);
   }
 
 
