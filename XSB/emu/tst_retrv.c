@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_retrv.c,v 1.33 2011-05-22 15:12:25 tswift Exp $
+** $Id: tst_retrv.c,v 1.34 2011-08-20 21:36:49 tswift Exp $
 ** 
 */
 
@@ -378,7 +378,7 @@ static void tstCollectionError(CTXTdeclc char *string, xsbBool cleanup_needed) {
  *  the major loop of the algorithm.  Otherwise the chain is searched to
  *  completion, exiting the block when cur_chain is NULL.
  */
-
+// TLS: not attv safe
 #define SearchChain_UnifyWithConstant(Chain,Subterm,TS,Get_TS_Op) {	\
    Chain_NextValidTSTN(Chain,TS,Get_TS_Op);				\
    while ( IsNonNULL(Chain) ) {						\
@@ -434,7 +434,7 @@ static void tstCollectionError(CTXTdeclc char *string, xsbBool cleanup_needed) {
  *  the major loop of the algorithm.  Otherwise the chain is searched to
  *  completion, exiting the block when cur_chain is NULL.
  */
-
+// TLS: not attv safe
 #define SearchChain_UnifyWithFunctor(Chain,Subterm,TS,Get_TS_Op) {	  \
 									  \
    Cell sym_tag;							  \
@@ -520,7 +520,7 @@ static void tstCollectionError(CTXTdeclc char *string, xsbBool cleanup_needed) {
  *  the major loop of the algorithm.  Otherwise the chain is searched to
  *  completion, exiting the block when cur_chain is NULL.
  */
-
+// TLS: not attv safe
 #define SearchChain_UnifyWithList(Chain,Subterm,TS,Get_TS_Op) {		\
 									\
    Cell sym_tag;							\

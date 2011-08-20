@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.43 2011-05-28 15:18:46 tswift Exp $
+** $Id: tc_insts_xsb_i.h,v 1.44 2011-08-20 21:36:49 tswift Exp $
 ** 
 */
 
@@ -673,7 +673,7 @@ XSB_Start_Instr(hash_opcode,_hash_opcode)
 
 	temp_ptr_for_hash = (CPtr)*trieinstr_unif_stkptr;
         XSB_CptrDeref(temp_ptr_for_hash);
-        if (!isref(temp_ptr_for_hash) 
+        if (!is_attv_or_ref(temp_ptr_for_hash)
 	    && (*hash_base == NULL)){ 
             /* Ground call and no variables in hash table */
 	    hash_nonvar_subterm(temp_ptr_for_hash,hash_header,
@@ -692,7 +692,7 @@ XSB_Start_Instr(hash_opcode,_hash_opcode)
 	  old_cptop = tbreg;
 #endif
 	  save_trie_registers(tbreg);
-	  if (isref(temp_ptr_for_hash))
+	  if (is_attv_or_ref(temp_ptr_for_hash))
 	    cell(--tbreg) = makeint(HASH_IS_FREE);
 	  else 
 	    cell(--tbreg) = makeint(HASH_IS_NOT_FREE);

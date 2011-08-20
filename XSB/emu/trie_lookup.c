@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.28 2011-08-03 18:12:54 tswift Exp $
+** $Id: trie_lookup.c,v 1.29 2011-08-20 21:36:49 tswift Exp $
 ** 
 */
 
@@ -1168,6 +1168,7 @@ void *variant_trie_lookup(CTXTdeclc void *trieRoot, int nTerms, CPtr termVector,
  * VarEnumerator[].
  */
 
+// TLS not attv safe
 static BTNptr rec_sub_trie_lookup(CTXTdeclc BTNptr parent, TriePathType *pathType) {
 
   Cell subterm, symbol;

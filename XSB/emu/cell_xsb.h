@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.43 2011-06-26 21:01:13 tswift Exp $
+** $Id: cell_xsb.h,v 1.44 2011-08-20 21:36:49 tswift Exp $
 ** 
 */
 
@@ -206,12 +206,16 @@ extern unsigned long enc[], dec[];
 /* tls -- this bld_copy wont work for VARASINDEX */
 #define bld_free(addr) cell(addr) = (Cell)(addr) /* CPtr => XSB_FREE cell */
 
+#define isref(cell)  (!((word)(cell)&0x3))    // NOTE not sat. by attvar.
+#define isnonvar(cell) ((word)(cell)&0x3)		/* dcell -> xsbBool */
 #define isinteger(dcell) (cell_tag(dcell)==XSB_INT)	/* dcell -> xsbBool */
 //Note: See section 'Miscellaneous' for implementation of isboxedfloat.
 #define isfloat(dcell) (cell_tag(dcell)==XSB_FLOAT)	/* dcell -> xsbBool */
 #define isconstr(dcell) (cell_tag(dcell)==XSB_STRUCT)	/* dcell -> xsbBool */
 #define islist(dcell) (cell_tag(dcell)==XSB_LIST)	/* dcell -> xsbBool */
 #define isattv(dcell) (cell_tag(dcell)==XSB_ATTV)	/* dcell -> xsbBool */
+
+#define is_attv_or_ref(cell) (isref(cell) || isattv(cell))
 
 #define iscallable(op2) ((isconstr(op2) && !isboxed(op2)) || isstring(op2) || islist(op2))
 

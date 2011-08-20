@@ -1576,7 +1576,7 @@ void shas_trie_intern(CTXTdecl) {
 #endif
 
 /*----------------------------------------------------------------------*/
-
+// TLS: check to see if attv safe
 int private_trie_interned(CTXTdecl) {
   int ret_val = FALSE;
   Cell Leafterm, trie_term;
