@@ -4,7 +4,7 @@
 % table_dump_file/0, table_dump_file/1.
 
 :- import domain_error/4,check_nonvar_list/3 from error_handler.
-:- import numbervars/1 from num_vars.
+:- import numbervars/4 from num_vars.
 :- import member/2, length/2, copy_term/2 from basics.
 :- import get_calls_for_table/2, get_call/3 from tables.
 :- import subsumes_chk/2 from subsumes.
@@ -112,7 +112,7 @@ bindtosig(Sig,Ret) :- Ret=..[ret|Sig]. %must have same number of vars   (?? if n
 sumreturns([],0).
 sumreturns([_-N-_L|Rs],NumReturns) :- sumreturns(Rs,NR), NumReturns is N + NR.
 
-writeit_prolog(Stream,Term) :- numbervars(Term), 
+writeit_prolog(Stream,Term) :- numbervars(Term,0,_,[attvar(bind)]), 
 	writeq(Stream,Term), 
 	write(Stream,'.'),nl(Stream),fail. %fail to remove effect of numbervars
 writeit_prolog(_,_).
