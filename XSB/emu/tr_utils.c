@@ -4771,6 +4771,7 @@ case CALL_SUBS_SLG_NOT: {
       return TRUE;
     }
   }
+  break;
     }
 
   case GET_PRED_CALLTRIE_PTR: {
@@ -4780,13 +4781,15 @@ case CALL_SUBS_SLG_NOT: {
       ctop_int(CTXTc 3,(Integer)TIF_CallTrie(get_tip(CTXTc psc)));
     else 
       ctop_int(CTXTc 3,0);
+    break;
   }
  
   case START_FOREST_VIEW: {
     char *filename = ptoc_string(CTXTc 2);
-    if (!(strcmp(filename,"userout")))
+    /*    if (!(strcmp(filename,"userout")))
       fview_ptr = stdout; 
-    else fview_ptr = fopen(ptoc_string(CTXTc 2),"w");
+      else */
+    fview_ptr = fopen(ptoc_string(CTXTc 2),"w");
     break;
   }
 
