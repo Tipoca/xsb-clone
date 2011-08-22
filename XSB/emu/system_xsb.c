@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.65 2011-08-06 05:19:19 kifer Exp $
+** $Id: system_xsb.c,v 1.66 2011-08-22 16:15:24 dwarren Exp $
 ** 
 */
 
@@ -390,16 +390,16 @@ xsbBool sys_system(CTXTdeclc int callno)
       return FALSE;
     }
 
-    /* params[0] is the progname */
+      /* params[0] is the progname */
     pid_or_status = xsb_spawn(CTXTc params[0], params, callno,
 			      (toproc_needed ? pipe_to_proc : NULL),
 			      (fromproc_needed ? pipe_from_proc : NULL),
 			      (fromstderr_needed ? pipe_from_stderr : NULL),
 			      toprocess_fptr, fromprocess_fptr,
 			      fromproc_stderr_fptr);
-
+      
     if (pid_or_status < 0) {
-      xsb_warn("[%s] Subprocess creation failed", callname);
+      xsb_warn("[%s] Subprocess creation failed, Error: %d, errno: %d, Cmd: %s", callname,pid_or_status,errno,params[0]);
       SYS_MUTEX_UNLOCK( MUTEX_SYS_SYSTEM );
       return FALSE;
     }

@@ -975,11 +975,13 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   if ( isNewAnswer ) {   /* go ahead -- look for more answers */
 
   if (flags[CTRACE_CALLS])  { 
-    char buffera[MAXTERMBUFSIZE]; bzero(buffera,MAXTERMBUFSIZE);
-    char bufferb[MAXTERMBUFSIZE]; bzero(bufferb,MAXTERMBUFSIZE);
+    char buffera[MAXTERMBUFSIZE];
+    char bufferb[MAXTERMBUFSIZE]; 
+    memset(bufferb,0,MAXTERMBUFSIZE);
+    memset(buffera,0,MAXTERMBUFSIZE);
     //    sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),flags[MAX_TABLE_SUBGOAL_DEPTH]);
     //    printAnswerTemplate(stddbg,answer_template ,(int) template_size);
-    sprint_answer_template(CTXTc buffera, answer_template, template_size,flags[MAX_TABLE_ANSWER_DEPTH]);
+    sprint_answer_template(CTXTc buffera, answer_template, template_size,(long)flags[MAX_TABLE_ANSWER_DEPTH]);
     if (ptcpreg)
       sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
     else sprintf(bufferb,"null");

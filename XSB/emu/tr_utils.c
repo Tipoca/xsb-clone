@@ -4789,7 +4789,7 @@ case CALL_SUBS_SLG_NOT: {
     /*    if (!(strcmp(filename,"userout")))
       fview_ptr = stdout; 
       else */
-    fview_ptr = fopen(ptoc_string(CTXTc 2),"w");
+    fview_ptr = fopen(filename,"w");
     break;
   }
 

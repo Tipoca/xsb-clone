@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.192 2011-06-10 17:17:38 dwarren Exp $
+** $Id: biassert.c,v 1.193 2011-08-22 16:15:24 dwarren Exp $
 ** 
 */
 
@@ -816,6 +816,7 @@ static void db_genterms(CTXTdeclc int unibld, struct instruction_q *flatten_queu
   prolog_term T0, T1, T2;
   Cell Argno;
   xsbBool istop;
+  int Arity;
 
   istop = TRUE;
   
@@ -847,10 +848,13 @@ static void db_genterms(CTXTdeclc int unibld, struct instruction_q *flatten_queu
       else {dbgen_instB_ppvw(putstr, Argno, get_str_psc(T0));}   /* putstr */
       reg_release(Reg,(int)Argno);
       flatten_queue->inst_queue_added = 0;
-      for (Argno=1; Argno < (int)get_arity(get_str_psc(T0)); Argno++) {
-	db_geninst(CTXTc unibld, p2p_arg(T0,(int)Argno), FALSE, Reg, flatten_queue);
+      Arity = (int)get_arity(get_str_psc(T0));
+      if (Arity > 0) {
+	for (Argno=1; Argno < (int)get_arity(get_str_psc(T0)); Argno++) {
+	  db_geninst(CTXTc unibld, p2p_arg(T0,(int)Argno), FALSE, Reg, flatten_queue);
+	}
+	db_geninst(CTXTc unibld, p2p_arg(T0,(int)Argno), TRUE, Reg, flatten_queue);
       }
-      db_geninst(CTXTc unibld, p2p_arg(T0,(int)Argno), TRUE, Reg, flatten_queue);
       inst_queue_rotate(flatten_queue);
     }
     else { /* is_attv(T0) */

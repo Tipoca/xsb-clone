@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.370 2011-08-15 15:10:25 dwarren Exp $
+** $Id: builtin.c,v 1.371 2011-08-22 16:15:24 dwarren Exp $
 **
 */
 
@@ -1833,8 +1833,11 @@ int builtin_call(CTXTdeclc byte number)
 	return int_unify(CTXTc makeint(strlen(addr)), num);
       else if (!isointeger(num)) xsb_type_error(CTXTc "integer",num,"atom_length/2",2);
       else xsb_domain_error(CTXTc "not_less_than_zero",num,"atom_length/2",2);
-    } else if (isref(term)) xsb_instantiation_error(CTXTc "atom_length/2",1);
-      else xsb_type_error(CTXTc "atom",term,"atom_length/2",1);
+    } else if (isref(term)) {
+      xsb_instantiation_error(CTXTc "atom_length/2",1);
+    } else {
+      xsb_type_error(CTXTc "atom",term,"atom_length/2",1);
+    }
     return FALSE;
   }
   case STR_CAT:		/* R1: +Str1; R2: +Str2: R3: -Str3 */

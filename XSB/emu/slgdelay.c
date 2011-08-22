@@ -52,6 +52,7 @@
 #include "dynamic_stack.h"
 #include "tst_aux.h"
 #include "tries.h"
+#include "tables.h"
 
 static void simplify_neg_succeeds(CTXTdeclc VariantSF);
 extern void simplify_pos_unsupported(CTXTdeclc NODEptr);
