@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.125 2011-08-12 15:14:16 tswift Exp $
+** $Id: parse.P,v 1.126 2011-08-24 15:48:05 kifer Exp $
 ** 
 */
 
@@ -50,7 +50,9 @@
 /* TLS: not supporting include when compiling from userin */
 parse(Modname, PFile, HFile, Module) :-
 	filestack_reset,
-	stat_flag(CURRENT_INPUT,Str),filestack_push(Str),
+	stat_flag(CURRENT_INPUT,Str),
+	filestack_push(Str),
+	filename_push(PFile),
 	conset(needs_restart, 0),  % reset, if an error left it dirty
 	(Modname == user
 	 ->	set_symbol_hash_table_size(1,Module0),
@@ -86,7 +88,8 @@ parse1(Modname, File, Module) :-
 	 ->	(conget(needs_restart,1)
 		 ->
 		    seen, 
-		    filestack_pop(_OFile),
+		    filestack_pop(_),
+		    filename_pop(_),
 		    parsing_file(PFile), see(PFile),
 %%%		    standard:writeln(needs_restart(OFile,PFile)),
 		    fail
@@ -105,7 +108,8 @@ parse1(Modname, File, Module) :-
 	),
 	seen,
 	check_xpp_process_status(File,XPP_process),
-	filestack_pop(_OldFile),
+	filestack_pop(_),
+	filename_pop(_),
 	parsing_file(Prev),
 	see(Prev).
 %%%     standard:writeln(finishing_parse1).
@@ -611,7 +615,6 @@ transform_slash_to_skel(Spec,ModName,SymTab,Skel) :-
 	 ;	Skel = Skel0
 	).
 
-:- import console_writeln/1 from standard.
 
 /*======================================================================*/
 /* parse_directive(+Directive, #Symbol_Table,ModName)			*/
@@ -961,7 +964,7 @@ parse_comma_list_import(X,_Mod,_SymTab) :-
 % who knows, there could be more...
 insert_compiler_based_options(Options,P/A,SymTab):-
 	comma_member(approximate(Cond),Options) -> 
-%	        console_writeln(approximate(Cond)),
+%	        standard:console_writeln(approximate(Cond)),
 		sym_insert(P, A, [approximation(Cond)], SymTab, _)
 	;       true.
 
@@ -1274,21 +1277,32 @@ prime(13107229).
 prime(24999983).
 prime(_).  % to generate an error!
 
+%% This is a stack of file descriptors
 :- dynamic parsing_file/1.
+%% This is a stack of file name
+:- dynamic parsing_file_name/1.
 
-filestack_reset:- retractall(parsing_file(_)).
-filestack_push(File):-
-%%%	standard:writeln(pushing(File)), 
-	asserta(parsing_file(File)).
+filestack_reset:-
+	retractall(parsing_file(_)),
+	retractall(parsing_file_name(_)).
+filestack_push(FileDescr):-
+%%%	standard:writeln(pushing(FileDescr)), 
+	asserta(parsing_file(FileDescr)).
 /*
-filestack_pop(Str):-
-	(retract(parsing_file(Str)) -> 
-	    standard:writeln(popping(Str))
+filestack_pop(FileDescr):-
+	(retract(parsing_file(FileDescr)) -> 
+	    standard:writeln(popping(FileDescr))
 	; standard:writeln(outofstack)
 	).
 */
-filestack_pop(Str):-
-	retract(parsing_file(Str)),
+filestack_pop(FileDescr):-
+	retract(parsing_file(FileDescr)),
+	!.
+
+filename_push(File):-
+	asserta(parsing_file_name(File)).
+filename_pop(File):-
+	retract(parsing_file_name(File)),
 	!.
 
 end_of_file.
