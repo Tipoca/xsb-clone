@@ -190,18 +190,6 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 
   check_glstack_overflow(CallInfo_CallArity(callInfo),lpcreg,OVERFLOW_MARGIN);
 
-/*
-  if (flags[CTRACE_CALLS])  { 
-    char buffera[MAXTERMBUFSIZE];
-    char bufferb[MAXTERMBUFSIZE];
-    sprint_registers(CTXTc  buffera,TIF_PSC(tip),(long)(flags[MAX_TABLE_SUBGOAL_DEPTH]));
-    if (ptcpreg) {
-      sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
-    }
-    else sprintf(bufferb,"null");
-    fprintf(fview_ptr,"tc(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
-  }
-*/
   LOCK_CALL_TRIE();
   /*
    *  Perform a call-check/insert operation on the current call.  The
@@ -603,6 +591,17 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 	printf("succeeding\n");
       }
 #endif
+
+ if (flags[CTRACE_CALLS])  { 
+    char buffera[MAXTERMBUFSIZE];
+    char bufferb[MAXTERMBUFSIZE];
+    char bufferc[MAXTERMBUFSIZE];
+    sprint_answer_template(CTXTc buffera, answer_template_heap, template_size,flags[MAX_TABLE_ANSWER_DEPTH]);
+    sprint_subgoal(CTXTc bufferb,(VariantSF)consumer_sf);     
+    sprint_subgoal(CTXTc bufferc,(VariantSF)ptcpreg);     
+    fprintf(fview_ptr,"ar(%s,%s,%s,%d).\n",buffera,bufferb,bufferc,ctrace_ctr++);
+  }
+
       if (is_conditional_answer(first_answer)) {
 	xsb_dbgmsg((LOG_DELAY,
 		"! POSITIVELY DELAYING in lay active (delayreg = %p)\n",
@@ -756,8 +755,8 @@ XSB_Start_Instr(answer_return,_answer_return)
   consumer_sf = (VariantSF)nlcp_subgoal_ptr(breg);
   answer_template = nlcp_template(breg);
   
-  //  fprintf(stddbg,"Starting answer return %x (%x) (prev %x) aln %x\n",
-  //	  breg,*lpcreg,nlcp_prevbreg(breg),answer_continuation); 
+  //    fprintf(stddbg,"Starting answer return %x (%x) (prev %x) aln %x\n",
+  //  	  breg,*lpcreg,nlcp_prevbreg(breg),answer_continuation); 
 
   table_pending_answer( nlcp_trie_return(breg),
 			answer_continuation,
@@ -814,6 +813,16 @@ table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
  }
 #endif
 
+ if (flags[CTRACE_CALLS])  { 
+    char buffera[MAXTERMBUFSIZE];
+    char bufferb[MAXTERMBUFSIZE];
+    char bufferc[MAXTERMBUFSIZE];
+    sprint_answer_template(CTXTc buffera, answer_template, template_size,flags[MAX_TABLE_ANSWER_DEPTH]);
+    sprint_subgoal(CTXTc bufferb,(VariantSF)consumer_sf);     
+    sprint_subgoal(CTXTc bufferc,(VariantSF)ptcpreg);     
+    fprintf(fview_ptr,"ar(%s,%s,%s,%d).\n",buffera,bufferb,bufferc,ctrace_ctr++);
+  }
+
     if (is_conditional_answer(next_answer)) {
       /*
        * After load_solution_trie(), the substitution factor of the
@@ -839,6 +848,7 @@ table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
 	delay_positively(consumer_sf, next_answer,
 			 makestring(get_ret_string()));
 #endif /* IGNORE_DELAYVAR */
+
       }
     }
     lpcreg = cpreg;
@@ -1034,12 +1044,13 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
 	 *  the CPF to a check_complete instr.
 	 *
 	 */
-	//	printf("performing early completion for: (%d)",subg_is_complete(producer_sf));
-	//	print_subgoal(CTXTc stddbg, producer_sf);
-	//	printf("(breg: %x pcpf %x\n",breg,producer_cpf);alt_print_cp(CTXT);
-
+	/*		printf("performing early completion for: (%d)",subg_is_complete(producer_sf));
+		print_subgoal(CTXTc stddbg, producer_sf);
+		printf("(breg: %x pcpf %x\n",breg,producer_cpf);alt_print_cp(CTXTc"ec");
+	*/
 	perform_early_completion(CTXTc producer_sf, producer_cpf);
 #if defined(LOCAL_EVAL)
+	flags[PIL_TRACE] = 1;
 	/* do not comment following condition: results in unnecessary recomputation (dsw for Pablo Chico) */
 	if (tcp_pcreg(producer_cpf) != (byte *) &answer_return_inst) 
 	  breg = producer_cpf;

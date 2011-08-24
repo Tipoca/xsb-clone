@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.26 2011-08-22 16:15:24 dwarren Exp $
+** $Id: debug_xsb.h,v 1.27 2011-08-24 21:58:08 tswift Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 
 #define EOS	"--------------------BOTTOM_OF_STACK--------------------\n"
 #define EOFR	"--------------------------------------------\n"
-#define EOSUBG	"------------------------------------------------------------\n"
+#define EOSUBG	"\n------------------------------------------------------------\n"
 
 /* extern int cur_log_level; */
 #define cur_log_level pflags[VERBOSENESS_LEVEL]

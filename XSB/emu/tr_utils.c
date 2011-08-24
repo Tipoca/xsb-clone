@@ -2963,6 +2963,12 @@ void abolish_table_call_single(CTXTdeclc VariantSF subgoal) {
       action = abolish_table_call_cps_check(CTXTc subgoal);
     } else action = CANT_RECLAIM;
 
+      if (flags[CTRACE_CALLS])  { 
+	char buffera[MAXTERMBUFSIZE];
+	sprint_subgoal(CTXTc buffera,(VariantSF)subgoal);     
+	fprintf(fview_ptr,"ta(subg(%s),%d).\n",buffera,ctrace_ctr++);
+      }
+
     SET_TRIE_ALLOCATION_TYPE_SF(subgoal); // set smBTN to private/shared
     if (action == CAN_RECLAIM) {
       delete_branch(CTXTc subgoal->leaf_ptr, &tif->call_trie,VARIANT_EVAL_METHOD); /* delete call */
@@ -3017,6 +3023,13 @@ void abolish_table_call_transitive(CTXTdeclc VariantSF subgoal) {
       //      printf(" abolishing ");
       //      print_subgoal(CTXTc stddbg, done_subgoal_stack[done_subgoal_stack_top]);  printf("\n");
       tif = subg_tif_ptr(subgoal);
+
+      if (flags[CTRACE_CALLS])  { 
+	char buffera[MAXTERMBUFSIZE];
+	sprint_subgoal(CTXTc buffera,(VariantSF)subgoal);     
+	fprintf(fview_ptr,"ta(subg(%s),%d).\n",buffera,ctrace_ctr++);
+      }
+
       if (action == CAN_RECLAIM && !GC_MARKED_SUBGOAL(subgoal) ) {
 	//	printf("really abolishing\n");
 	delete_branch(CTXTc subgoal->leaf_ptr, &tif->call_trie,VARIANT_EVAL_METHOD); /* delete call */
@@ -3271,6 +3284,10 @@ inline void abolish_table_pred_single(CTXTdeclc TIFptr tif, int cps_check_flag) 
 		" of predicate %s/%d\n", get_name(TIF_PSC(tif)), get_arity(TIF_PSC(tif)));
   }
 
+ if (flags[CTRACE_CALLS])  { 
+    fprintf(fview_ptr,"ta(pred(%s/%d),%d).\n",get_name(TIF_PSC(tif)), get_arity(TIF_PSC(tif)),ctrace_ctr++);
+  }
+
   if (flags[NUM_THREADS] == 1 || !get_shared(TIF_PSC(tif))) {
     if (cps_check_flag) action = abolish_table_pred_cps_check(CTXTc TIF_PSC(tif));
     else action = TIF_Mark(tif);  /* 1 = CANT_RECLAIM; 0 = CAN_RECLAIM */
@@ -3317,6 +3334,10 @@ inline void abolish_table_pred_transitive(CTXTdeclc TIFptr tif, int cps_check_fl
     if ( ! is_completed_table(tif) ) 
       xsb_abort("[abolish_table_pred] Cannot abolish incomplete table"
 		" of predicate %s/%d\n", get_name(TIF_PSC(tif)), get_arity(TIF_PSC(tif)));
+
+ if (flags[CTRACE_CALLS])  { 
+    fprintf(fview_ptr,"ta(pred(%s/%d),%d).\n",get_name(TIF_PSC(tif)), get_arity(TIF_PSC(tif)),ctrace_ctr++);
+  }
 
     //        printf(" abolishing %s/%d\n",get_name(TIF_PSC(tif)),get_arity(TIF_PSC(tif)));
     if (action == CAN_RECLAIM && !TIF_Mark(tif) ) {
@@ -4082,6 +4103,9 @@ void abolish_all_tables(CTXTdeclc int action) {
     }
 #endif
 
+ if (flags[CTRACE_CALLS])  { 
+    fprintf(fview_ptr,"ta(all,%d).\n",ctrace_ctr++);
+  }
   reset_freeze_registers;
   openreg = COMPLSTACKBOTTOM;
   hashtable1_destroy_all(0);             /* free all incr hashtables in use */
@@ -4786,16 +4810,17 @@ case CALL_SUBS_SLG_NOT: {
  
   case START_FOREST_VIEW: {
     char *filename = ptoc_string(CTXTc 2);
-    /*    if (!(strcmp(filename,"userout")))
+    if (!(strcmp(filename,"userout")))
       fview_ptr = stdout; 
-      else */
-    fview_ptr = fopen(filename,"w");
+    else fview_ptr = fopen(filename,"w");
     break;
   }
 
   case STOP_FOREST_VIEW: {
-    fflush(fview_ptr);
-    fclose(fview_ptr);
+    if (fview_ptr != stdout) {
+      fflush(fview_ptr);
+      fclose(fview_ptr);
+    }
     break;
   }
 

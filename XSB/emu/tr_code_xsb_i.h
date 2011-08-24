@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.34 2011-06-02 22:29:23 tswift Exp $
+** $Id: tr_code_xsb_i.h,v 1.35 2011-08-24 21:58:08 tswift Exp $
 ** 
 */
 
@@ -57,7 +57,7 @@
      symbol = EncodeTrieFunctor(Subterm);			\
      break;							\
    default:							\
-     fprintf(stderr,"Bad tag :Type %lu",(long unsigned)cell_tag(Subterm)); \
+     fprintf(stderr,"Bad tag :Type %lu ",(long unsigned)cell_tag(Subterm)); \
      xsb_exit( "In instruction hash_handle");			\
      break;							\
    }								\

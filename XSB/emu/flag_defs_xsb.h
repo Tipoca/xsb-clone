@@ -20,10 +20,10 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 <<<<<<< flag_defs_xsb.h
-** $Id: flag_defs_xsb.h,v 1.40 2011-07-29 22:56:04 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.41 2011-08-24 21:58:08 tswift Exp $
 **
 =======
-** $Id: flag_defs_xsb.h,v 1.40 2011-07-29 22:56:04 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.41 2011-08-24 21:58:08 tswift Exp $
 **
 >>>>>>> 1.28
 */
@@ -145,6 +145,7 @@ interrupt flag
 #define MAX_TABLE_ANSWER_LIST_ACTION   87   /* abort/warn/abstract (abstract not yet impld.)*/
 #define MAXTOINDEX_FLAG           88   /* Experimental only */             
 #define CTRACE_CALLS              89
+#define EC_REMOVE_SCC             90
 #define MAX_FLAGS		 100
 
 #define MAXTOINDEX 10              /* maximum depth in term to go when using deep indexing; 

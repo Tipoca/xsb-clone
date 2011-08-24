@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.76 2011-08-19 18:26:30 tswift Exp $
+** $Id: debug_xsb.c,v 1.77 2011-08-24 21:58:08 tswift Exp $
 ** 
 */
 
@@ -578,7 +578,7 @@ static void print_common_cpf_part(CPtr cpf_addr, FILE* where) {
 	     &(cp_pdreg(cpf_addr)), cp_pdreg(cpf_addr));
   fprintf(where,"   CP stack %p:\troot subgoal:\t%p\n", 
 	     &(cp_ptcp(cpf_addr)), cp_ptcp(cpf_addr));
-  fprintf(where,"   CP stack %p:\tdynamic link:\t\t%p\n", 
+  fprintf(where,"   CP stack %p:\tscheduling link:\t\t%p\n", 
 	     &(cp_prevbreg(cpf_addr)), cp_prevbreg(cpf_addr));
  }
 
@@ -679,7 +679,7 @@ static void print_cpf(CPtr cpf_addr, FILE* where) {
 
 static int alt_printnum = 0 ;
 
-void alt_print_cp(CTXTdecl)
+void alt_print_cp(CTXTdeclc char * title)
 {
   CPtr startp, endp ;
   char buf[100] ;
@@ -698,6 +698,7 @@ void alt_print_cp(CTXTdecl)
   startp = (CPtr)tcpstack.high - 1 ; 
   endp = top_of_cpstack ; 
 
+  fprintf(where,"%s breg: %p bfreg %p\n",title,breg,bfreg);
   while ( startp > endp )
   { fflush(where);
     start++ ;
@@ -1055,11 +1056,11 @@ void subg_dll_length(VariantSF dll, counter *forward, counter *back) {
   *back = b;
 }
 
-void printTIF(TIFptr tif) {
+void printTIF(FILE * where,TIFptr tif) {
 
   counter forward, back;
 
-  printf("TableInfoFrame  %p\n"
+  fprintf(where,"TableInfoFrame  %p\n"
 	 "{ psc_ptr = %p  (%s/%d)\n"
 	 "  call_trie = %p\n"
 	 "  del_tf_ptr = %p\n"
@@ -1072,10 +1073,10 @@ void printTIF(TIFptr tif) {
 	 TIF_Subgoals(tif));
   subg_dll_length(TIF_Subgoals(tif),&forward,&back);
   if ( forward == back )
-    printf("(%d total)", (int) forward);
+    fprintf(where,"(%d total)", (int) forward);
   else
-    printf("(chain length mismatch: %d forward, %d back)", (int) forward, (int) back);
-  printf("\n  next_tif = %p }\n", TIF_NextTIF(tif));
+    fprintf(where,"(chain length mismatch: %d forward, %d back)", (int) forward, (int) back);
+  fprintf(where,"\n  next_tif = %p }\n", TIF_NextTIF(tif));
 }
 
 void printDelTF(DelTFptr dtf) {
@@ -1129,10 +1130,10 @@ static char *compl_stk_frame_field[] = {
 };
 
 
-void print_subg_header(CTXTdeclc VariantSF SUBG) {			    
-    fprintf(stddbg, "=== Frame for "); print_subgoal(CTXTc stddbg, SUBG); 
-    if (is_completed(SUBG)) fprintf(stddbg, " (completed) ===\n"); 
-    else fprintf(stddbg, " (incomplete) ===\n"); }
+void print_subg_header(CTXTdeclc FILE * where,VariantSF SUBG) {			    
+    fprintf(where, "=== Frame for "); print_subgoal(CTXTc where, SUBG); 
+    if (is_completed(SUBG)) fprintf(where, " (completed) ===\n"); 
+    else fprintf(where, " (incomplete) ===\n"); }
 
 void print_completion_stack(CTXTdecl)
 {
@@ -1146,7 +1147,7 @@ void print_completion_stack(CTXTdecl)
     if ((i % COMPLFRAMESIZE) == 0) {
       fprintf(stddbg,EOFR);	/* end of frame */
       subg = (VariantSF) *temp;
-      print_subg_header(CTXTc subg);
+      print_subg_header(CTXTc stddbg, subg);
     }
     fprintf(stddbg,"Completion Stack %p: %lx\t(%s)",
 	    temp, *temp, compl_stk_frame_field[(i % COMPLFRAMESIZE)]);
@@ -1235,11 +1236,11 @@ void print_tables(CTXTdecl)
   for ( tif = tif_list.first;  IsNonNULL(tif) && (ans == 'y');
 	tif = TIF_NextTIF(tif) ) {
     fprintf(stddbg,EOSUBG);
-    printTIF(tif);
+    printTIF(stddbg,tif);
     subg = TIF_Subgoals(tif);
     while ( IsNonNULL(subg) && (ans == 'y') ) {
       i++;
-      print_subg_header(CTXTc subg);
+      print_subg_header(CTXTc stddbg,subg);
       fprintf(stddbg, "%p:\n", subg);
       fprintf(stddbg,"  sf_type = %s,  is_complete = %s,  is_reclaimed = %s,",
 		 stringSubgoalFrameType(subg_sf_type(subg)),
@@ -1287,6 +1288,86 @@ void print_tables(CTXTdecl)
   }
   fprintf(stddbg, EOS);
 }
+
+static int table_printnum = 0 ;
+
+void file_print_tables(CTXTdeclc char * message,int number)
+{
+  int i = 0;
+  TIFptr tif;
+  VariantSF subg;
+  SubConsSF cons;
+
+  char buf[100] ;
+  FILE *where ;
+
+  sprintf(buf,"TABLES%d",table_printnum) ;
+  table_printnum++ ;
+  where = fopen(buf,"w") ;
+
+  fprintf(where,"%s: %d\n",message,number);
+  i = count_producer_subgoals(CTXT);
+  xsb_dbgmsg((LOG_DEBUG,"\t There are %d producer subgoal structures...", i));
+
+  i = 0;
+  SYS_MUTEX_LOCK( MUTEX_TABLE );
+  for ( tif = tif_list.first;  IsNonNULL(tif);
+	tif = TIF_NextTIF(tif) ) {
+    fprintf(where,EOSUBG);
+    printTIF(where,tif);
+    subg = TIF_Subgoals(tif);
+    while ( IsNonNULL(subg)  ) {
+      i++;
+      print_subg_header(CTXTc where,subg);
+      fprintf(where, "%p:\n", subg);
+      fprintf(where,"  sf_type = %s,  is_complete = %s,  is_reclaimed = %s,",
+		 stringSubgoalFrameType(subg_sf_type(subg)),
+		 (subg_is_completed(subg) ? "YES" : "NO"),
+		 (subg_is_reclaimed(subg) ? "YES" : "NO"));
+      fprintf(where,"  tif_ptr = %p,  leaf_ptr = %p,  ans_root_ptr = %p,\n"
+		 "  ans_list_ptr = %p,   ans_list_tail = %p,\n"
+		 "  next_subgoal = %p,  prev_subgoal = %p,  cp_ptr = %p",
+		 subg_tif_ptr(subg), subg_leaf_ptr(subg),
+		 subg_ans_root_ptr(subg),
+		 subg_ans_list_ptr(subg), subg_ans_list_tail(subg),
+		 subg_next_subgoal(subg), subg_prev_subgoal(subg), 
+		 subg_cp_ptr(subg));
+      fprintf(where,"  pos_cons = %p,", subg_pos_cons(subg));
+      fprintf(where,"  compl_stk_ptr = %p,  compl_susp_ptr = %p,"
+		 "  nde_list = %p",
+		 subg_compl_stack_ptr(subg), subg_compl_susp_ptr(subg),
+		 subg_nde_list(subg));
+      if ( IsSubProdSF(subg) ) {
+	fprintf(where,"  consumers = %p", subg_consumers(subg));
+	for ( cons = subg_consumers(subg);  IsNonNULL(cons);
+	      cons = conssf_consumers(cons) )
+	  fprintf(where,"Consumer  %p\n"
+		     "  sf_type = %11s,  tif_ptr = %p,         leaf_ptr = %p\n"
+		     "  producer = %10p,  ans_list_ptr = %p,"
+		     "  ans_list_tail = %p\n"
+		     "  ts = %ul,  consumers = %p",
+		  cons, stringSubgoalFrameType(subg_sf_type(cons)), subg_tif_ptr(cons),
+		  subg_leaf_ptr(cons), conssf_producer(cons),
+		  subg_ans_list_ptr(cons), subg_ans_list_tail(cons),
+		  (int) conssf_timestamp(cons), conssf_consumers(cons));
+      }
+      subg = subg_next_subgoal(subg);
+      if (subg != NULL)
+	fprintf(where, EOSUBG);
+      /*
+      if (i == 10) {
+	int dummy;
+	fprintf(where, "more (y/n)?  ");
+	dummy = scanf("%c", &ans);
+	skip_to_nl();
+	i = 0;
+	} */
+    }
+  SYS_MUTEX_UNLOCK( MUTEX_TABLE );
+  }
+  fprintf(where, EOS);
+  fclose(where) ;
+} /* file_print_tables() */
 
 /*----------------------------------------------------------------------*/ 
 extern DelCFptr delcf_chain_begin;
@@ -1513,7 +1594,7 @@ void print_completion_stack(CTXTdecl)
     if ((i % COMPLFRAMESIZE) == 0) {
       fprintf(stddbg,EOFR);
       subg = (VariantSF) *temp;
-      print_subg_header(subg);
+      print_subg_header(stddbg,subg);
     }
     fprintf(stddbg,"Completion Stack %p: %lx\t(%s)",
 	    temp, *temp, compl_stk_frame_field[(i % COMPLFRAMESIZE)]);
