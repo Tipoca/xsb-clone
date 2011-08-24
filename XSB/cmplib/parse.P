@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.126 2011-08-24 15:48:05 kifer Exp $
+** $Id: parse.P,v 1.127 2011-08-24 19:02:31 kifer Exp $
 ** 
 */
 
@@ -1280,11 +1280,16 @@ prime(_).  % to generate an error!
 %% This is a stack of file descriptors
 :- dynamic parsing_file/1.
 %% This is a stack of file name
-:- dynamic parsing_file_name/1.
+:- dynamic filename_stack/1.
+
+parsing_file_name(X) :-
+	(filename_stack(X) -> true
+	; X = usermod
+	).
 
 filestack_reset:-
 	retractall(parsing_file(_)),
-	retractall(parsing_file_name(_)).
+	retractall(filename_stack(_)).
 filestack_push(FileDescr):-
 %%%	standard:writeln(pushing(FileDescr)), 
 	asserta(parsing_file(FileDescr)).
@@ -1300,9 +1305,11 @@ filestack_pop(FileDescr):-
 	!.
 
 filename_push(File):-
-	asserta(parsing_file_name(File)).
+	asserta(filename_stack(File)).
 filename_pop(File):-
-	retract(parsing_file_name(File)),
+	(retract(filename_stack(File)) -> true
+	; true
+	),
 	!.
 
 end_of_file.
