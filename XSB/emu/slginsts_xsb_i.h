@@ -596,7 +596,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     char buffera[MAXTERMBUFSIZE];
     char bufferb[MAXTERMBUFSIZE];
     char bufferc[MAXTERMBUFSIZE];
-    sprint_answer_template(CTXTc buffera, answer_template_heap, template_size,flags[MAX_TABLE_ANSWER_DEPTH]);
+    sprint_answer_template(CTXTc buffera, answer_template_heap, template_size,(long)flags[MAX_TABLE_ANSWER_DEPTH]);
     sprint_subgoal(CTXTc bufferb,(VariantSF)consumer_sf);     
     sprint_subgoal(CTXTc bufferc,(VariantSF)ptcpreg);     
     fprintf(fview_ptr,"ar(%s,%s,%s,%d).\n",buffera,bufferb,bufferc,ctrace_ctr++);
@@ -817,7 +817,7 @@ table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
     char buffera[MAXTERMBUFSIZE];
     char bufferb[MAXTERMBUFSIZE];
     char bufferc[MAXTERMBUFSIZE];
-    sprint_answer_template(CTXTc buffera, answer_template, template_size,flags[MAX_TABLE_ANSWER_DEPTH]);
+    sprint_answer_template(CTXTc buffera, answer_template, template_size,(long)flags[MAX_TABLE_ANSWER_DEPTH]);
     sprint_subgoal(CTXTc bufferb,(VariantSF)consumer_sf);     
     sprint_subgoal(CTXTc bufferc,(VariantSF)ptcpreg);     
     fprintf(fview_ptr,"ar(%s,%s,%s,%d).\n",buffera,bufferb,bufferc,ctrace_ctr++);
