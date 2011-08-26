@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.77 2011-08-24 21:58:08 tswift Exp $
+** $Id: debug_xsb.c,v 1.78 2011-08-26 01:42:02 tswift Exp $
 ** 
 */
 
@@ -205,11 +205,15 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
   switch (cell_tag(term)) {
   case XSB_FREE:
   case XSB_REF1:
+    //    sprintf(buffer+size, "_v%"Intfmt, (UInteger)vptr(term));
     sprintf(buffer+size, "_v%"Intfmt, (UInteger)vptr(term));
     return size+2+sizeof(UInteger);
   case XSB_ATTV:
-    sprintf(buffer+size, "_%p {...}", (CPtr)dec_addr(term));
-    return size+9+sizeof(CPtr);
+    sprintf(buffer+size, "_attv%p {...} ", (CPtr)dec_addr(term));
+    printf("cp %d\n",sizeof(CPtr));
+    return size+15+sizeof(CPtr);
+    //    sprintf(buffer+size, "_%p {...}", (CPtr)dec_addr(term));
+    //    return size+9+sizeof(CPtr);
   case XSB_STRUCT:
     /* NOTE: Below is a check for boxed numbers. If such is the case,
        then the behavior is the same as XSB_INT or XSB_FLOAT, but with
@@ -287,8 +291,9 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
     case XSB_FLOAT:
     vertbar:
       sprintf(buffer+size, "|");size++;
+      size = sprint_term(buffer, size,term, CAR, level);
       sprintf(buffer+size, "]");size++;
-    return size + sprint_term(buffer, size,term, CAR, level);
+      return size;
     }
   }
   return size;  // to quiet compiler.
