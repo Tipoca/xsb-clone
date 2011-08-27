@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.78 2011-08-26 01:42:02 tswift Exp $
+** $Id: debug_xsb.c,v 1.79 2011-08-27 21:03:12 tswift Exp $
 ** 
 */
 
@@ -210,7 +210,7 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
     return size+2+sizeof(UInteger);
   case XSB_ATTV:
     sprintf(buffer+size, "_attv%p {...} ", (CPtr)dec_addr(term));
-    printf("cp %d\n",sizeof(CPtr));
+    //    printf("cp %d\n",sizeof(CPtr));
     return size+15+sizeof(CPtr);
     //    sprintf(buffer+size, "_%p {...}", (CPtr)dec_addr(term));
     //    return size+9+sizeof(CPtr);
