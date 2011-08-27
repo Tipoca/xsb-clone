@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.152 2011-08-12 15:17:13 tswift Exp $
+** $Id: tries.c,v 1.153 2011-08-27 20:58:51 tswift Exp $
 ** 
 */
 
@@ -1564,7 +1564,7 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
       return XSB_FAILURE;						\
     }									\
     else {								\
-      char buffer[MAXBUFSIZE];						\
+      char buffer[MAXTERMBUFSIZE];						\
       sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),(int)(flags[MAX_TABLE_SUBGOAL_DEPTH])); \
       xsb_abort("Exceeded max call term depth of %d in call %s\n",	\
 		flags[MAX_TABLE_SUBGOAL_DEPTH],	buffer);		\
