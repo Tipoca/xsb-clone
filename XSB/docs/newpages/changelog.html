@@ -20,6 +20,29 @@
 
 <h2> Version 3.3.X (Pignoletto)</h2> 
 
+<h3> Version 3.3.5</h3> 
+<ul>
+<li> The port of XSB to 64-bit Windows has been hardened so that XSB
+can call external C functions, and its configuration process improved.
+</li>
+<li> The initial version of a new tracing facility for computations,
+called <i>forest logging</i> is now available for use.
+</li>
+<li> A new predicate, called <tt>table_dump/[1,2,3]</tt> allows easy
+introspection of XSB's tables.  In addition, new builtins 
+<tt>is_cyclic/1</tt> and <tt>term_depth/2</tt> are now available.
+</li> 
+<li> Configuration of the latest version of XSB on the latest version
+of Cygwin is now working again.
+</li>
+<li> Numerous bug fixes and specialized enhancements, the most
+  widespread of which were: Improving the module inferencing used by
+  XSB's compiler; improving XSB's exception handling when large
+  computations use all available memory; improved messages for term
+  depth exceptions.
+</li>
+</ul>
+
 <h3> Version 3.3.4</h3> 
 <ul>
 <li> XSB now includes a Java-based installer for Windows 32- and
@@ -155,5 +178,5 @@ in other Prologs.
 
 <hr>
 <address>Email: <a href="mailto:xsb-users@lists.sourceforge.net" >xsb-users@lists.sourceforge.net</a></address>
-<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.5 2011-07-14 21:56:56 tswift Exp $ <!-- hhmts end -->
+<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.6 2011-08-27 20:55:06 tswift Exp $ <!-- hhmts end -->
 </body> </html>
