@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.219 2011-07-02 14:27:38 tswift Exp $
+** $Id: emuloop.c,v 1.220 2011-08-31 22:25:10 tswift Exp $
 ** 
 */
 
@@ -1339,11 +1339,12 @@ contcase:     /* the main loop */
 	  if (heap_local_overflow((Integer)op2)) {
 	    if (pflags[STACK_REALLOC]) {
 	      if (glstack_realloc(CTXTc resize_stack(glstack.size,(op2*sizeof(Cell))),(int)op1) != 0) {
+		xsb_memory_error("memory","Cannot Expand Local and Global Stacks");
 		xsb_basic_abort(local_global_exception);
 	      }
 	    } else {
 	      xsb_warn("Reallocation is turned OFF !");
-              xsb_basic_abort(local_global_exception);
+	      xsb_memory_error("memory","Cannot Expand Local and Global Stacks");
 	    }
 	  }
 	}	/* are there any localy cached quantities that must be reinstalled ? */
@@ -2404,11 +2405,11 @@ argument positions.
 	if (heap_local_overflow(2000)) {
 	  if (pflags[STACK_REALLOC]) {
 	    if (glstack_realloc(CTXTc resize_stack(glstack.size,OVERFLOW_MARGIN),(int)op1) != 0) {
-	      xsb_basic_abort(local_global_exception);
+	      xsb_memory_error("memory","Cannot Expand Local and Global Stacks");
 	    }
 	  } else {
 	    xsb_warn("Reallocation is turned OFF !");
-	    xsb_basic_abort(local_global_exception);
+	    xsb_memory_error("memory","Cannot Expand Local and Global Stacks");
 	  }
 	}
       }
@@ -2430,11 +2431,11 @@ argument positions.
 	if (heap_local_overflow(2000)) {
 	  if (pflags[STACK_REALLOC]) {
 	    if (glstack_realloc(CTXTc resize_stack(glstack.size,OVERFLOW_MARGIN),0) != 0) {
-	      xsb_basic_abort(local_global_exception);
+	      xsb_memory_error("memory","Cannot Expand Local and Global Stacks");
 	    }
 	  } else {
 	    xsb_warn("Reallocation is turned OFF !");
-	    xsb_basic_abort(local_global_exception);
+	    xsb_memory_error("memory","Cannot Expand Local and Global Stacks");
 	  }
 	}
       }

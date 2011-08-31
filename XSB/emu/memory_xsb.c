@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.72 2011-05-19 16:39:06 tswift Exp $
+** $Id: memory_xsb.c,v 1.73 2011-08-31 22:25:10 tswift Exp $
 ** 
 */
 
@@ -384,7 +384,8 @@ Please use -c N or cpsize(N) to start with a larger choice point stack"
      */
     new_trail = (byte *)realloc(tcpstack.low, new_size * K);
     if ( IsNULL(new_trail) )
-      xsb_exit("Not enough core to resize the Trail and Choice Point Stack!");
+      xsb_memory_error("memory","Cannot Expand Trail and Choice Point Stacks");
+      //      xsb_exit("Not enough core to resize the Trail and Choice Point Stack!");
     new_cps = new_trail + new_size * K;
 
 #if defined(GENERAL_TAGGING)
