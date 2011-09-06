@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.P,v 1.38 2011-08-12 15:14:16 tswift Exp $
+** $Id: compile.P,v 1.39 2011-09-06 17:12:27 dwarren Exp $
 ** 
 */
 
@@ -47,7 +47,6 @@ compile(Modname,Basename,Extensions,Options,ExportList):-
 	catch(compile_internal(Modname,Basename,Extensions,Options,ExportList),E,
 	      (handle_compile_error(Basename,IStr,OStr),throw(E))).
 
-:- import tell/1 from standard.
 % Close current stream (i.e. the file we were compiling) if it is not
 % equal to whatever the current stream was before we started compiling.
 handle_compile_error(Basename,IStr,OStr):- 	      
