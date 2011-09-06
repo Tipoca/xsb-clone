@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: useinfer.P,v 1.11 2011-07-26 17:57:51 dwarren Exp $
+** $Id: useinfer.P,v 1.12 2011-09-06 17:33:46 dwarren Exp $
 ** 
 */
 
@@ -53,10 +53,12 @@ useinfer(Module, IsModule, ExportList) :-
 	Module = module(SymTab,_DcList,ClList,_QrList),
 	extract_symlist(ex, ExSymList, SymTab),
 	sym_insert('_$main', 0, [], SymTab, SymMain),
+	extract_syms(ClList,ClSyms),
+	build_bt(ClSyms,ClBT),	% build binary tree for lookup performance
 	( ExSymList == [] -> 
 		IsModule = 0,		% No export list, is a global module
 		sym_propin(global, SymMain), 
-		infer_export_fill(SymTab, SymTab, ClList, global),
+		infer_export_fill(SymTab, SymTab, ClBT, global),
        		extract_symlist(docex, DocExSymList, SymTab),
 %		message(DocExSymList),
 	        (DocExSymList == [] -> 
@@ -66,12 +68,16 @@ useinfer(Module, IsModule, ExportList) :-
 	; IsModule = 1,
 	  ( sym_prop(im(_Mod),SymMain) -> true ; sym_propin((local),SymMain) ),
 	  infer_usage([SymMain|ExSymList], Module,real),
-	  infer_export_fill(SymTab, SymTab, ClList, (local)),
+	  infer_export_fill(SymTab, SymTab, ClBT, (local)),
 	  infer_fillunused(SymTab)
 	),
 %%	retractall('_$multifile'(_)),
 %%	retractall('_$multifile2'(_,_,_)),
 	get_sym_names(ExSymList, ExportList).
+
+extract_syms([],[]).
+extract_syms([pred(Sym,_,_)|Ps],[Sym|Syms]) :-
+	extract_syms(Ps,Syms).
 
 /*
 useinfer(Module, IsModule, ExportList) :-
@@ -94,12 +100,12 @@ useinfer(Module, IsModule, ExportList) :-
 */
 
 /*======================================================================*/
-/* infer_export_fill(#SymTab, #SymTab, ClList, ex/local/global)		*/
+/* infer_export_fill(#SymTab, #SymTab, ClBT, ex/local/global)		*/
 /* 	Mark all symbols that do not have an environment field yet,	*/
 /*	and they are not standard predicates by ex/local/global.	*/
 /*======================================================================*/
 
-infer_export_fill(RestTab, SymTab, ClList, Domain) :-
+infer_export_fill(RestTab, SymTab, ClBT, Domain) :-
 	sym_scan(Sym, RestTab, RestTab2),
 	sym_env(Sym, Dom),
 	( nonvar(Dom) -> true
@@ -107,7 +113,7 @@ infer_export_fill(RestTab, SymTab, ClList, Domain) :-
 		(sym_prop((multifile),Sym)
                  ->     Dom = global
                         % multifile predicates are assumed global
-		; member(pred(Sym,_,_), ClList) -> Dom = Domain
+		; find_in_bt(Sym, ClBT) -> Dom = Domain
 		; pred_implicitly_imported_from(Sym, Mod) ->
 			sym_insert(Mod, 0, [module,used], SymTab, _ModSym),
 			Dom = im(Mod)
@@ -117,8 +123,8 @@ infer_export_fill(RestTab, SymTab, ClList, Domain) :-
 		)
 	; Dom = global	% function symbols are assumed global; temporarily
 	),
-	infer_export_fill(RestTab2, SymTab, ClList, Domain).
-infer_export_fill(_RestTab, _SymTab, _ClList, _Domain).
+	infer_export_fill(RestTab2, SymTab, ClBT, Domain).
+infer_export_fill(_RestTab, _SymTab, _ClBT, _Domain).
 
 
 /*======================================================================*/

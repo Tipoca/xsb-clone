@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.H,v 1.13 2011-08-12 15:14:16 tswift Exp $
+** $Id: cp_opt.H,v 1.14 2011-09-06 17:33:45 dwarren Exp $
 ** 
 */
 
@@ -27,7 +27,6 @@
 :- export perform_tabling_transforms/2.
 
 :- import nthmember/3 from listutil.
-:- import parse_preddef/4 from parse.
 :- import have_hardcut/2 from preproc.
 :- import index_split/2 from tp_index.
 :- import member/2, append/3, length/2, copy_term/2 from basics.
@@ -37,3 +36,6 @@
 :- import syntax_error/1 from error_handler.
 :- import excess_vars/4 from setof.
 :- import concat_atom/2 from string.
+:- import trans_head/5, trans_goals/5 from parse.
+:- import memberchk/2 from basics.
+

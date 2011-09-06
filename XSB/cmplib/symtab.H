@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: symtab.H,v 1.12 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: symtab.H,v 1.13 2011-09-06 17:33:46 dwarren Exp $
 ** 
 */
 
@@ -30,7 +30,7 @@
 	  sym_count/2, sort_by_index/2, sym_complete/1, sym_index/2,
 	  sym_pass_thru/1, typ_prop/1, env_prop/1, dispose_symtab/1.
 :- export add_new_clause/2, clause_listify/2.
-
+:- export add_new_clause/3.
 :- import memberchk/2, member/2 from basics.
 :- import log_ith/3 from basics.
 :- import error/1 from auxlry.

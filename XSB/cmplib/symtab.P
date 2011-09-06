@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: symtab.P,v 1.19 2011-08-12 15:14:17 tswift Exp $
+** $Id: symtab.P,v 1.20 2011-09-06 17:33:46 dwarren Exp $
 ** 
 */
 
@@ -74,6 +74,7 @@ sym_insert(Name, Arity, Prop, SymTab, Sym) :-
 	log_ith(0,HashTab,HashSize),
 	term_hash(Name, HashSize, Hash0), Hash is Hash0+1,
 	log_ith(Hash, HashTab, Symlist),
+%%	(nonvar(_Completed) -> standard:writeln(userout,add_after_complete(Name,Arity));true),
 	sym_inserti(Name, Arity, Prop, Symlist, Sym, Index),
 	( var(Index) ->	% First time we encounter the symbol.
 		Index = Count,
@@ -83,7 +84,7 @@ sym_insert(Name, Arity, Prop, SymTab, Sym) :-
 	).
 
 %   for indexed insertion both into an uncompleted and a completed symbol table
-sym_inserti(Name, Arity, Prop, [Sym|_], Sym, Index) :- 
+sym_inserti(Name, Arity, Prop, [Sym|_], Sym, Index) :-
 	Sym = sym(Name,Arity,PropList,Index),
 	!,
 	sym_propin(Prop, PropList, Name, Arity).
@@ -118,7 +119,6 @@ get_end_ith_bucket(BucketList, NextBucketList) :-
 	; BucketList = [_|More],
 	  get_end_ith_bucket(More, NextBucketList)
 	).
-
 
 /*======================================================================*/
 /*  sym_count(+SymTab, -NumberOfSymbols).				*/
@@ -446,35 +446,41 @@ sym_pass_thru(sym(pass_thru,-1,prop(junk,internal,junk,used,junk,[]),-1)).
 /* 	Routines to handle clauses.					*/
 /*======================================================================*/
 
-add_new_clause(New,[X|L]) :- 
-	var(X)
-	 ->	X=New	% first element
-	 ;	add_new_clause1(New,L,0).
+add_new_clause(New,Clauses) :-
+	add_new_clause(New,Clauses,_).
 
-add_new_clause1(New,[_|L],N) :- 
+add_new_clause(New,[X|L],K) :- 
+	var(X)
+	 ->	X=New,K=1	% first element
+	 ;	add_new_clause1(New,L,0,K).
+
+add_new_clause1(New,[_|L],N,K) :- 
 	L = [Y|_], nonvar(Y), !,
-	N1 is N+1, add_new_clause1(New,L,N1).
-add_new_clause1(New,[X|L1],N) :-	% X is last bound on list
-	(add_tree(New,X,N)
-	 ->	true
+	N1 is N+1, add_new_clause1(New,L,N1,K).
+add_new_clause1(New,[X|L1],N,K) :-	% X is last bound on list
+	(add_tree(New,X,N,K2)
+	 ->	K is 2** (N+1)-1+K2
 	 ;	L1=[Y|_],
 		N1 is N+1,
-		add_tree(New,Y,N1)
+		add_tree(New,Y,N1,K2),
+		K is 2** (N+2)
 	).
 
-add_tree(New,[X|Y],N) :-
+add_tree(New,[X|Y],N,K) :-
 	(N =:= 0
 	 ->	(var(X)
-		 ->	X=New
-		 ;	var(Y),	Y=New
+		 ->	X=New, K=1
+		 ;	var(Y),	Y=New, K=2
 		)
 	 ;	N1 is N-1,
 		(var(Y)
-		 ->	(add_tree(New,X,N1)
-			 ->	true
-			 ;	add_tree(New,Y,N1)
+		 ->	(add_tree(New,X,N1,K1)
+			 ->	K = K1
+			 ;	add_tree(New,Y,N1,K1),
+				K is 2**N+1
 			)
-		 ;	add_tree(New,Y,N1)
+		 ;	add_tree(New,Y,N1,K1),
+			K is 2**N+K1
 		)
 	).
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.H,v 1.52 2011-08-24 15:48:05 kifer Exp $
+** $Id: parse.H,v 1.53 2011-09-06 17:33:46 dwarren Exp $
 ** 
 */
 
@@ -32,7 +32,7 @@
 	set_xpp_off/0,
 	check_xpp_process_status/2, check_xpp_process_status/3,
 	make_gpp_command/4,
-	parse/4, get_symtab/2, parse_preddef/4.
+        parse/4, get_symtab/2, trans_goals/5, trans_head/5.
 :- export get_p_mod/3, %%change_multifile_directive/3, 
 	xpp_process_file/3, xpp_process_file/4, gpp_process_file/3,
 	open_or_xpp_file/1,
@@ -113,8 +113,9 @@
 :- import concat_atom/2 from string.
 
 :- import sym_insert/5, sym_propin/2, sym_complete/1, sym_prop/2,
-	  add_new_clause/2, clause_listify/2
+	  add_new_clause/3, clause_listify/2
      from symtab.
 
 :- import xsb_configuration/2 from xsb_configuration.
 
+:- import sort/2 from setof.

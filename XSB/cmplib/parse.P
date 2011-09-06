@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.127 2011-08-24 19:02:31 kifer Exp $
+** $Id: parse.P,v 1.128 2011-09-06 17:33:46 dwarren Exp $
 ** 
 */
 
@@ -900,10 +900,9 @@ parse_preddef(H, B, List, SymTab) :-
 	parse_preddef_sym(H, B, List, PredSym, SymTab).
 
 parse_preddef_sym(H, B, List, PredSym, SymTab) :- 
-	memberchk(pred(PredSym,PCs,_), List),
 	trans_head(H, goal(_, ArgList), SymTab, 0, VidMed),
 	trans_goals(B, Body, SymTab, VidMed, _VidOut),
-	add_new_clause(clause(ArgList, Body, _), PCs),
+	add_new_clause(clause(PredSym,K,ArgList, Body), List,K),
 	sym_propin(pred, PredSym).
 
 /*======================================================================*/
@@ -1101,16 +1100,37 @@ parse_list_element(X, _, _, Directive) :-
 module_close(module(SymTab,DcList,ClList0,QrList0),
 	     module(SymTab,DcList,ClList,QrList)) :-
 	closetail(DcList), 
-	clauselist_straight(ClList0,ClList), 
+	closeup_cllist(ClList0,ClList),
 	parse_preddef('_$main', true, QrList0, SymTab),
-	clauselist_straight(QrList0,QrList), 
+	closeup_cllist(QrList0,QrList),
 	sym_complete(SymTab),
-	!.
+	!. %, standard:writeln(userout,module(SymTab,DcList,ClList,QrList)).
 
-clauselist_straight([],[]).
-clauselist_straight([pred(Sym,Cls,P)|Rest0],[pred(Sym,Lcls,P)|Rest]) :-
-	clause_listify(Cls,Lcls),
-	clauselist_straight(Rest0,Rest).
+closeup_cllist(ClList0,ClList) :-
+	clause_listify(ClList0,AllClauses),
+	sort(AllClauses,SortClauses), % pull clauses for same pred together
+	(SortClauses = [clause(PredSym,K,ArgList,Body)|Clauses]
+	 ->	ClList2 = [pred(K,PredSym,[clause(ArgList,Body,_)|Tail],_)|ClList1],
+		accumulate_clauses(Clauses,PredSym,Tail,ClList1),
+		sort(ClList2,ClList3), % reorder predicates in order of first appearance
+		filter_out_number(ClList3,ClList)
+	 ;	ClList = []
+	).
+	
+
+accumulate_clauses([],_PredSym0,[],[]).
+accumulate_clauses([clause(PredSym,K,ArgList,Body)|Clauses],PredSym0,Tail,ClList) :-
+	(PredSym == PredSym0
+	 ->	Tail = [clause(ArgList,Body,_)|NTail],
+		accumulate_clauses(Clauses,PredSym0,NTail,ClList)
+	 ;	Tail = [],
+		ClList = [pred(K,PredSym,[clause(ArgList,Body,_)|NTail],_)|ClList0],
+		accumulate_clauses(Clauses,PredSym,NTail,ClList0)
+	).
+
+filter_out_number([],[]).
+filter_out_number([pred(_,PS,CS,T)|Prs],[pred(PS,CS,T)|FPrs]) :-
+	filter_out_number(Prs,FPrs).
 
 /*======================================================================*/
 /* auxiliary routines							*/
@@ -1238,7 +1258,7 @@ trans_arg('$$var'(ID), varocc(ID), _SymTab, VidIn, VidIn) :- integer(ID), !.
 	% when compiling this module, '$$var' may mean a structure!
 trans_arg(RawArg, integer(RawArg), _SymTab, VidIn, VidIn) :- integer(RawArg), !.
 trans_arg(RawArg, real(RawArg), _SymTab, VidIn, VidIn) :- real(RawArg), !.
-trans_arg(RawArg, constant(Sym), SymTab, VidIn, VidIn) :- atom(RawArg), !,
+trans_arg(RawArg, constant(Sym), SymTab, VidIn, VidIn) :- atom(RawArg), functor(RawArg,RawArg,0), !,
 	sym_insert(RawArg, 0, _Prop, SymTab, Sym).
 %%trans_arg(RawArg, list_of_atoms(Sym,RawArg), SymTab, VidIn,VidIn) :- is_list_of_atoms(RawArg), !,
 %%	sym_insert('.', 2, _Prop, SymTab, Sym).

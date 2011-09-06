@@ -18,13 +18,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.P,v 1.20 2011-08-19 21:46:12 tswift Exp $
+** $Id: cp_opt.P,v 1.21 2011-09-06 17:33:46 dwarren Exp $
 ** 
 */
 
 
 cp_opt(module(Symtab,DcList,ClList,QrList),
        module(Symtab,DcList,ClList1,QrList)) :-
+%%	standard:writeln(userout,ClList),
 	cp_opt0(ClList, ClList1, Symtab).
 
 cp_opt0([], [],_Symtab).
@@ -82,7 +83,7 @@ cp_opt_block1(_,pred(Sym,_Pscs,_Oth),pred(Sym1,Pscs1,Oth1),Symtab):-
 	functor(Head,Pred,Arity),      % p(...)
 	functor(NewCall,Pred1,Arity),     % '_$p'(...)
 	bind_args(Arity,Head,NewCall),
-	parse_preddef(NewCall,Head, ClList1, Symtab),
+	parse_preddef_closed(NewCall,Head, ClList1, Symtab),
 	ClList1 =[pred(Sym1,_Pscs1,_Oth1)|_T],
 %	parse_preddef(Head, NewCall, ClList, Symtab),
 	cp_opt_table_body(Sym,Head, NewCall,ClList, Symtab),
@@ -100,7 +101,7 @@ cp_opt_block1(_,pred(Sym,_Pscs,_Oth),pred(Sym1,Pscs1,Oth1),Symtab):-
 	parse_preddef(Head, Body, ClList, Symtab),
 	ClList =[pred(_Sym1,Pscs1,Oth1)|_T].
 */
-:- import console_writeln/1 from standard.
+%:- import console_writeln/1 from standard.
 cp_opt_table_body(Sym,_,_,ClList1, Symtab):-
 	sym_type(Sym,approximation(ApproxSpec)),!,
 	sym_name(Sym,Pred,Arity),
@@ -109,16 +110,14 @@ cp_opt_table_body(Sym,_,_,ClList1, Symtab):-
 	functor(NewCall,Pred1,Arity),     % '_$p'(...)
 	bind_args(Arity,Head,NewCall),
 	get_calling_proc(ApproxSpec,Breg,ApproxCall),
-	parse_preddef(Head, (get_breg(Breg),
+	parse_preddef_closed(Head, (get_breg(Breg),
 	               NewCall,
 		       ApproxCall),ClList1, Symtab),
 	ensure_imported(get_breg/1,machine,Symtab),
 	ensure_imported(early_complete_on_nth/2,tables,Symtab).
 %        console_writeln(ClList1).
 cp_opt_table_body(_Sym,Head,NewCall, ClList1, Symtab):-
-	parse_preddef(Head, NewCall,ClList1, Symtab).
-
-%	parse_preddef(PredTerm,Body,ClList2,SymTab),
+	parse_preddef_closed(Head, NewCall,ClList1, Symtab).
 
 get_calling_proc(use_first(N),Breg,early_complete_on_nth(Breg,N)).
 
@@ -230,7 +229,7 @@ aggr_trans_pred(Sym,Pscs,Oth,ArgNo,ExistArgList,AggSpec,[pred(Sym1,Pscs,Oth)|ClL
 	length(Args,Arity),
 	NewTerm =.. [Pred1|Args],
 	!,
-	parse_preddef(NewTerm,true,[pred(Sym1,_,_)],SymTab).
+	parse_preddef_closed(NewTerm,true,[pred(Sym1,_,_)],SymTab).
 
 generate_agg_clauses(po(OpSpec),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab) :- !,
 	functor(PredTerm,Pred,Arity),
@@ -259,7 +258,7 @@ generate_agg_clauses(po(OpSpec),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClL
 		 Var = Var1
 		)
 	       ),
-	parse_preddef(PredTerm,Body,ClList2,SymTab),
+	parse_preddef_closed(PredTerm,Body,ClList2,SymTab),
 	ensure_imported(breg_retskel/4,machine,SymTab),
 	ensure_imported(excess_vars/4,setof,SymTab),
 	ensure_imported(copy_term/2,basics,SymTab),  % but problems with sysmod?
@@ -302,7 +301,7 @@ generate_agg_clauses(AggrSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClLis
 		 ;	Init
 		)
 	       ),
-	parse_preddef(PredTerm,Body,ClList2,SymTab),
+	parse_preddef_closed(PredTerm,Body,ClList2,SymTab),
 	ensure_imported(breg_retskel/4,machine,SymTab),
 	ensure_imported(excess_vars/4,setof,SymTab),
 	ensure_imported(copy_term/2,basics,SymTab),
@@ -319,7 +318,7 @@ generate_agg_clauses(termset,_Sym,PredTerm,Var1,[],Pred1Term,Var,ClList2,SymTab)
 	excess_vars(Pred1Term,[Var1],[],Vars),
 	copy_term(t(Pred1Term,Var1,Vars),t(Pred1Temp,AbsVar,Vars)),
 	Var = {AbsVar:Pred1Temp},
-	parse_preddef(PredTerm,Body,ClList2,SymTab).
+	parse_preddef_closed(PredTerm,Body,ClList2,SymTab).
 generate_agg_clauses(OpSpec-Iden,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab) :- !,
 	generate_agg_clauses(fold(OpSpec,Iden),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab).
 generate_agg_clauses(OpSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab) :- !,
@@ -401,9 +400,9 @@ subsumption_modes_trans_pred(Sym,Pscs,Oth,Modes,[pred(Sym1,Pscs,Oth)|NewClList],
 	transform_pred(Pred,Pred1),
 	build_subs_abs_clause_body(Modes,Pred,Pred1,PArgs,Body),
 	PredCall =.. [Pred|PArgs],
-	parse_preddef(PredCall,Body,NewClList,SymTab),
+	parse_preddef_closed(PredCall,Body,NewClList,SymTab),
 	NewTerm =.. [Pred1|PArgs],
-	parse_preddef(NewTerm,true,[pred(Sym1,_,_)],SymTab),
+	parse_preddef_closed(NewTerm,true,[pred(Sym1,_,_)],SymTab),
 	ensure_imported(table_error/1,error_handler,SymTab).
 
 build_subs_abs_clause_body(Modes,Pred,Pred1,PArgs,Body) :-
@@ -441,6 +440,18 @@ build_plus_orig_minus_equates([+|Mode],[Var|PArgs],[Var|VListMNew],EquateList) :
 	build_plus_orig_minus_equates(Mode,PArgs,VListMNew,EquateList).
 build_plus_orig_minus_equates([-|Mode],[Var|PArgs],[NV|VListMNew],[Var=NV|EquateList]) :-
 	build_plus_orig_minus_equates(Mode,PArgs,VListMNew,EquateList).
+
+parse_preddef_closed(Head,Body,PredList,SymTab) :-
+	functor(Head, Pred, Arity),
+	sym_insert(Pred, Arity, [defined], SymTab, PredSym),
+	memberchk(pred(PredSym,Clauses,_), PredList),
+	trans_head(Head, goal(_, ArgList), SymTab, 0, VidMed),
+	trans_goals(Body, BodyForm, SymTab, VidMed, _VidOut),
+	add_tail(clause(ArgList, BodyForm, _), Clauses),
+	sym_propin(pred, PredSym).
+
+add_tail(Clause,Clauses) :- var(Clauses), !, Clauses=[Clause|_].
+add_tail(Clause,[_|Clauses]) :- add_tail(Clause,Clauses).
 
 end_of_file.
 

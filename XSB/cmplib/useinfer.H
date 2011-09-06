@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: useinfer.H,v 1.8 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: useinfer.H,v 1.9 2011-09-06 17:33:46 dwarren Exp $
 ** 
 */
 
@@ -33,4 +33,5 @@
 :- import sym_propin/2, sym_prop/2, sym_insert/5, sym_scan/3,
 	  extract_symlist/3, sym_env/2, sym_name/3
     from symtab.
+:- import find_in_bt/2, build_bt/2 from listutil.
 
