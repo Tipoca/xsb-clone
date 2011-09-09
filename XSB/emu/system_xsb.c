@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.66 2011-08-22 16:15:24 dwarren Exp $
+** $Id: system_xsb.c,v 1.67 2011-09-09 21:44:52 dwarren Exp $
 ** 
 */
 
@@ -841,7 +841,7 @@ static void init_process_table(void)
 int process_status(int pid)
 {
 #ifdef WIN_NT
-  Integer status;
+  unsigned long status;  // what a DWORD is... and LPDWORD is a pointer to one
   if (GetExitCodeProcess((HANDLE) pid, (LPDWORD)(&status))) {
     if (status == STILL_ACTIVE)
       return RUNNING;
