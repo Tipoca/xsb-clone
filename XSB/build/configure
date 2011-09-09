@@ -6773,11 +6773,18 @@ fi
 
 java_platform_specific_hdr_path="`ls "${java_path}/"*/jni_md.h`"
 java_platform_specific_hdr_path="`dirname "${java_platform_specific_hdr_path}"`"
+java_platform_specific_hdr_path_alt="`ls "${java_path}/"jni_md.h`"
+java_platform_specific_hdr_path_alt="`dirname "${java_platform_specific_hdr_path_alt}"`"
 
 if test -f "$java_path/jni.h" -a -f "$java_platform_specific_hdr_path/jni_md.h" ; then
     interprolog_native_engine=yes
     JAVA_HEADER_PATH="${java_path}"
     JAVA_PLATFORM_HEADER_PATH="${java_platform_specific_hdr_path}"
+    echo "Obtaining Java header files form ${JAVA_HEADER_PATH} and ${JAVA_PLATFORM_HEADER_PATH}"
+elif test -f "$java_path/jni.h" -a -f "$java_platform_specific_hdr_path_alt/jni_md.h" ; then
+    interprolog_native_engine=yes
+    JAVA_HEADER_PATH="${java_path}"
+    JAVA_PLATFORM_HEADER_PATH="${java_platform_specific_hdr_path_alt}"
     echo "Obtaining Java header files form ${JAVA_HEADER_PATH} and ${JAVA_PLATFORM_HEADER_PATH}"
 fi
 
