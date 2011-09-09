@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.128 2011-09-06 17:33:46 dwarren Exp $
+** $Id: parse.P,v 1.129 2011-09-09 14:00:27 dwarren Exp $
 ** 
 */
 
@@ -465,8 +465,12 @@ parse_clauses(ModName, Module) :-
 	singleton_check(Clause, VariableList),
 	check_compilable_clause(Clause),
 	expand_term(Clause, Expanded_Clause),
-	(Expanded_Clause == end_of_file
-	 ->	true
+%%	(Clause \== Expanded_Clause -> standard:writeln(userout,expanded(Clause,Expanded_Clause)) ; true),
+	(Clause == end_of_file
+	 ->	(Expanded_Clause \== end_of_file
+		 ->	parse_clause(Expanded_Clause,Module,ModName)
+		 ;	true
+		)
 	 ;	!,
 		parse_clause(Expanded_Clause, Module,ModName),
 		%% stop parsing clauses, if needs_restart parsing
