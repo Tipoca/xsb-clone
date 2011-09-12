@@ -27,7 +27,7 @@
 	  member/2, memberchk/2, subset/2, subseq/3, reverse/2, select/3, 
    for/3, between/3.
 :- export ground/1.
-:- export log_ith/3, log_ith_bound/3.
+:- export log_ith/3, log_ith_bound/3, log_ith_to_list/2.
 :- export logk_ith/4.
 :- export comma_memberchk/2, abscomma_memberchk/2, comma_to_list/2,
 	  comma_length/2, comma_member/2, comma_append/3.

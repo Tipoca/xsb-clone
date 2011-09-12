@@ -195,6 +195,33 @@ bintree3(K,[L|R],E,N) :-
 	 K is K1 + N2
 	).
 
+%% convert a log_ith structure to a list of nonempty elements
+log_ith_to_list(T,L) :- log_ith_to_list(T,0,L,[]).
+
+log_ith_to_list(T,K,L0,L) :-
+	(var(T)
+	 ->	L = L0
+	 ;	T = [F|R],
+		log_ith_to_list_btree(F,K,L0,L1),
+		K1 is K+1,
+		log_ith_to_list(R,K1,L1,L)
+	).
+
+log_ith_to_list_btree(T,K,L0,L) :-
+	(var(T)
+	 ->	L = L0
+	 ; K =:= 0
+	 ->	L0 = [T|L]
+	 ;	T = [TL|TR],
+		K1 is K-1,
+		log_ith_to_list_btree(TL,K1,L0,L1),
+		log_ith_to_list_btree(TR,K1,L1,L)
+	).
+
+	
+	
+
+
 /* logk_ith(+KBase,+Index,?ListStr,?Element) is similar log_ith/3
 except it uses a user specified base of KBase, which must be between 2
 and 255.  log_ith uses binary trees with a list cons at each node;
