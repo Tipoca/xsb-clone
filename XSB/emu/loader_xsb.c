@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.92 2011-05-19 16:39:06 tswift Exp $
+** $Id: loader_xsb.c,v 1.93 2011-09-14 18:24:26 dwarren Exp $
 ** 
 */
 
@@ -327,10 +327,10 @@ static Integer get_index_tab(CTXTdeclc FILE *fd, int clause_no)
 
 /*----------------------------------------------------------------------*/
 
-inline static pindex new_index_seg(Integer no_cells)
+inline static pindex new_index_seg(Integer no_cells, Pair ptr)
 {
   pindex new_i = (pindex)mem_alloc(SIZE_IDX_HDR + sizeof(Cell) * no_cells,COMPILED_SPACE ) ;
- 
+
   //  printf("Allocated index seg: %p-%p(%x)\n",new_i,(pb)new_i+SIZE_IDX_HDR + sizeof(Cell) * no_cells,
   //	 SIZE_IDX_HDR + sizeof(Cell) * no_cells);
 
@@ -342,6 +342,10 @@ inline static pindex new_index_seg(Integer no_cells)
   *index_block_chain = new_i ;
   index_block_chain = &i_next(new_i) ;
 
+  if (xsb_profiling_enabled) {
+    add_prog_seg(ptr->psc_ptr, (pb)new_i, SIZE_IDX_HDR + sizeof(Cell) * no_cells);
+  }
+
   return new_i ;
 }
 
@@ -350,14 +354,14 @@ inline static pindex new_index_seg(Integer no_cells)
 /* Once the indextab is set up (via get_index_tab()) traverse it to
    set up the try/retry/trust instructions using the l pointers */
 
-static void gen_index(xsbBool tabled, int clause_no, CPtr sob_arg_p, byte arity)
+static void gen_index(xsbBool tabled, int clause_no, CPtr sob_arg_p, byte arity, Pair ptr)
 {
   pindex new_i;
   CPtr   ep1, ep2, temp;
   int    j, size; 
  
   size = hsize(clause_no);
-  new_i = new_index_seg(size);
+  new_i = new_index_seg(size,ptr);
 
   ep1 = i_block(new_i) ;
   cell(sob_arg_p) = (Cell)ep1 ;
@@ -369,7 +373,7 @@ static void gen_index(xsbBool tabled, int clause_no, CPtr sob_arg_p, byte arity)
 	cell(ep1) = *(indextab[j].link);
       } else {  /* create tabletrysingle */
 	cell(ep1) = cell(indextab[j].link);
-	new_i = new_index_seg(3);
+	new_i = new_index_seg(3,ptr);
 	ep2 = i_block(new_i);
 	cell(ep1) = (Cell) ep2;
 	temp = indextab[j].link;
@@ -377,7 +381,7 @@ static void gen_index(xsbBool tabled, int clause_no, CPtr sob_arg_p, byte arity)
       }
     } else {
       /* otherwise create try/retry/trust instruction */
-      new_i = (pindex)new_index_seg(2*indextab[j].l+tabled);
+      new_i = (pindex)new_index_seg(2*indextab[j].l+tabled,ptr);
       ep2 = i_block(new_i) ;
       cell(ep1) = (Cell) ep2 ;
       temp = (indextab[j].link) ;
@@ -509,7 +513,7 @@ static int load_text(FILE *fd, int seg_num, size_t text_bytes, int *current_tab)
 
 /*----------------------------------------------------------------------*/
 
-static void load_index(CTXTdeclc FILE *fd, size_t index_bytes, int table_num)
+static void load_index(CTXTdeclc FILE *fd, size_t index_bytes, int table_num, Pair ptr)
 {
   Integer index_bno, clause_no, t_len;
   byte    index_inst, arity;
@@ -533,7 +537,7 @@ static void load_index(CTXTdeclc FILE *fd, size_t index_bytes, int table_num)
        temp_ptr = hptr = (CPtr)mem_alloc(temp_space*sizeof(CPtr),COMPILED_SPACE);
     t_len = get_index_tab(CTXTc fd, (int)clause_no);
     
-    gen_index((xsbBool)(table_num > 0), (int)clause_no, sob_arg_p, arity);
+    gen_index((xsbBool)(table_num > 0), (int)clause_no, sob_arg_p, arity, ptr);
     mem_dealloc(indextab,hsize((int)clause_no)*sizeof(struct hrec),COMPILED_SPACE);
 #ifndef MULTI_THREAD
     if (temp_ptr != hreg) mem_dealloc(temp_ptr,temp_space*sizeof(CPtr),COMPILED_SPACE);
@@ -546,7 +550,7 @@ static void load_index(CTXTdeclc FILE *fd, size_t index_bytes, int table_num)
 
 /*== the load_seg function =============================================*/
 
-static pseg load_seg(CTXTdeclc FILE *fd, int seg_num, size_t text_bytes, size_t index_bytes)
+static pseg load_seg(CTXTdeclc FILE *fd, int seg_num, size_t text_bytes, size_t index_bytes, Pair ptr)
 {
    int current_tab;
 
@@ -554,6 +558,7 @@ static pseg load_seg(CTXTdeclc FILE *fd, int seg_num, size_t text_bytes, size_t 
 
    /* Allocate first chunk of index_reloc */
    index_reloc = (CPtr *)mem_alloc(NUM_INDEX_BLKS*sizeof(CPtr),COMPILED_SPACE);
+
    if (!index_reloc) {
      xsb_error("Couldn't allocate index relocation space");
      return NULL;
@@ -572,7 +577,7 @@ static pseg load_seg(CTXTdeclc FILE *fd, int seg_num, size_t text_bytes, size_t 
      return NULL;
    }
    index_block_chain = &seg_index(current_seg);
-   load_index(CTXTc fd, index_bytes, current_tab);
+   load_index(CTXTc fd, index_bytes, current_tab, ptr);
    mem_dealloc(index_reloc,NUM_INDEX_BLKS*sizeof(CPtr),COMPILED_SPACE);
    
    /* set text-index segment chain */
@@ -957,17 +962,18 @@ static byte *loader1(CTXTdeclc FILE *fd, char *filename, int exp)
 
     dummy = get_obj_string(name, name_len);
     name[(int)name_len] = 0;
+
+    ptr = insert(name, arity, cur_mod, &is_new);
+
     get_obj_word_bb(&text_bytes);
     /*		xsb_dbgmsg(("Text Bytes %x %d",text_bytes,text_bytes));*/
     get_obj_word_bb(&index_bytes);
     /* load the text-index segment */
-    seg_first_inst = load_seg(CTXTc fd,seg_count,text_bytes,index_bytes);
+    seg_first_inst = load_seg(CTXTc fd,seg_count,text_bytes,index_bytes,ptr);
     if (!seg_first_inst) return FALSE;
     if (seg_count == 1) first_inst = seg_first_inst;
     /* 1st inst of file */
     /* set the entry point of the predicate */
-    ptr = insert(name, arity, cur_mod, &is_new);
-    //    printf("created setep %s:%s/%d n=%d, psc=%p\n",get_name(cur_mod),get_name(ptr->psc_ptr),get_arity(ptr->psc_ptr),is_new,ptr->psc_ptr);
 
     switch (get_type(ptr->psc_ptr)) {
     case T_ORDI:
@@ -975,8 +981,9 @@ static byte *loader1(CTXTdeclc FILE *fd, char *filename, int exp)
       if (strcmp(name, "_$main")!=0) {
 	set_type(ptr->psc_ptr, T_PRED);
 	set_ep(ptr->psc_ptr, (pb)seg_first_inst);
-	if (xsb_profiling_enabled)
-	  add_prog_seg(ptr->psc_ptr, (pb)seg_first_inst, text_bytes);
+	if (xsb_profiling_enabled) {
+	  add_prog_seg(ptr->psc_ptr, (pb)seg_first_inst, /*text_bytes*/ seg_size(seg_first_inst)-SIZE_SEG_HDR);
+	}
       }
       if (get_data(ptr->psc_ptr) == global_mod) {
 	set_data(ptr->psc_ptr,(struct psc_rec *)makestring(filename)); // filename already interned
@@ -1017,8 +1024,9 @@ static byte *loader1(CTXTdeclc FILE *fd, char *filename, int exp)
 	}
 	unload_seg((pseg)get_ep(ptr->psc_ptr));
 	set_ep(ptr->psc_ptr, (pb)seg_first_inst);
-	if (xsb_profiling_enabled)
-	  add_prog_seg(ptr->psc_ptr, (pb)seg_first_inst, text_bytes);
+	if (xsb_profiling_enabled) {
+	  add_prog_seg(ptr->psc_ptr, (pb)seg_first_inst, /*text_bytes*/ seg_size(seg_first_inst)-SIZE_SEG_HDR);
+	}
       }
       instruct_tip = get_tip_or_tdisp(ptr->psc_ptr);
       if (instruct_tip != NULL) {
