@@ -157,7 +157,6 @@ tnot(Subgoal) :-
 	;   instantiation_error('tnot/1',1).
 
 /* Need to Handle module calls (not sure if done properly before) */
-:- import writeln/1 from standard.
 
 /* need to refactor to distinguish completed from non-completed with call-entry */
 
@@ -182,13 +181,15 @@ t_not_variant(Subgoal,AnsSetStatus):-
 	    ( AnsSetStatus < 0 ->  % i.e. UNDEFINED_ANSWER_SET or INCR_NEEDS_REEVAL
 	        (tcall(Subgoal), fail 
 	          ;  get_producer_call(Subgoal,ProducerSF,_AnswerTmplt),
-		     is_incomplete(ProducerSF,PTCP),slg_not(ProducerSF) )
+		     is_incomplete(ProducerSF,PTCP),
+		     slg_not(ProducerSF) 
+		 )
           ;  get_producer_call(Subgoal,ProducerSF,_AnswerTmplt),
 	     is_incomplete(ProducerSF,PTCP),slg_not(ProducerSF) ).
 
 % needs to be optimized!
 t_not_subsumptive_sf_comp(Subgoal,SF,_):- 
-	mywriteln(t_not_subsumptive_sf_comp(Subgoal)),
+%	mywriteln(t_not_subsumptive_sf_comp(Subgoal)),
 	get_producer_call(Subgoal,ProducerSF,AnswerTmplt),
 	(get_returns(ProducerSF,AnswerTmplt, RetLeaf) -> 
 	    table_inspection_function(CALL_SUBS_SLG_NOT,ProducerSF,RetLeaf,1,SF)
@@ -196,7 +197,7 @@ t_not_subsumptive_sf_comp(Subgoal,SF,_):-
 
 t_not_subsumptive_sf_incomp(Subgoal,ConsumerSF,AnsSetStatus) :-
 	get_ptcp(PTCP),
-	mywriteln(t_not_subsumptive_sf_incomp(Subgoal,ConsumerSF,PTCP,AnsSetStatus)),
+%	mywriteln(t_not_subsumptive_sf_incomp(Subgoal,ConsumerSF,PTCP,AnsSetStatus)),
         ( AnsSetStatus == UNDEFINED_ANSWER_SET ->
 	    (   tcall(Subgoal), fail 
 	      ; t_not_subsumptive_sf_incomp_1(Subgoal,ConsumerSF,PTCP) )
@@ -205,7 +206,7 @@ t_not_subsumptive_sf_incomp(Subgoal,ConsumerSF,AnsSetStatus) :-
 /* Succeed if no answers; SLG_NOT_CREATE_SF fails if unconditional
    answer: otherwise it creates a new SF and delays negatively */
 t_not_subsumptive_no_sf_comp(Subgoal):- 
-	mywriteln(t_not_subsumptive_no_sf_comp(Subgoal)),
+%	mywriteln(t_not_subsumptive_no_sf_comp(Subgoal)),
 	get_producer_call(Subgoal,ProducerSF,Answertmplt),
 	(get_returns(ProducerSF,Answertmplt, RetLeaf) -> 
 	    table_inspection_function(CALL_SUBS_SLG_NOT,ProducerSF,RetLeaf,1,0)
@@ -223,7 +224,7 @@ t_not_subsumptive_no_sf_incomp(Subgoal) :-
 */
 
 t_not_subsumptive_no_sf_incomp(Subgoal) :-
-	mywriteln(t_not_subsumptive_no_sf_incomp(Subgoal)),
+%	mywriteln(t_not_subsumptive_no_sf_incomp(Subgoal)),
 	get_ptcp(PTCP),
         (   tcall(Subgoal), fail 
           ; %table_status(Subgoal,_PredType,_CallType,_AnsSetStatus,ConsumerSF),
@@ -233,9 +234,9 @@ t_not_subsumptive_no_sf_incomp(Subgoal) :-
 	get_producer_call(Subgoal,ProducerSF,Answertmplt),
 	    is_incomplete(ProducerSF,PTCP),
 	    (get_returns(ProducerSF,Answertmplt, RetLeaf) -> 
-		mywriteln(slgnot_with_return(Subgoal)),
+%		mywriteln(slgnot_with_return(Subgoal)),
 		table_inspection_function(CALL_SUBS_SLG_NOT,ProducerSF,RetLeaf,1,ConsumerSF)
-	    ;	mywriteln(slgnot_without_return(Subgoal)),
+	    ;	%mywriteln(slgnot_without_return(Subgoal)),
 	        table_inspection_function(CALL_SUBS_SLG_NOT,ProducerSF,RetLeaf,0,ConsumerSF) ) ).
 
 t_not_subsumptive_sf_incomp_1(Subgoal,ConsumerSF,PTCP):- 
@@ -269,9 +270,12 @@ t_not(Subgoal,PredType,PTCP) :-
 	 ).
 */
 
+/*
+:- import writeln/1 from standard.
 writeit(0).
 %writeit(1).
 mywriteln(Term):- writeit(If),(If =:= 1 -> writeln(Term); true).
+*/
 
 %% skolemized tnot.  Variables temporarily changed to ground and tnot 
 %% call is made.  Should give existential semantics to nonground negative
@@ -716,11 +720,29 @@ early_complete_on_delta(SubgoalFrame,New,Old,Epsilon):-
 	    table_inspection_function(EARLY_COMPLETE,SubgoalFrame,_,_,_)
 	 ;  true).
 
-:- export trace_forest/1.
-trace_forest(Call):- 
+:- export log_forest/1, log_forest/2.
+log_forest(Call):- 
 	start_forest_view(userout),
 	call(Call),
 	stop_forest_view.
+
+log_forest(Call,Options):- 
+	check_log_forest_options(Options,File),
+	start_forest_view(File),
+	call(Call),
+	stop_forest_view.
+
+check_log_forest_options(Options,_File):- 
+	check_nonvar(Options,log_forest/2,2),
+	fail.
+check_log_forest_options([],File):-
+	(var(File) -> File = userout ; true).
+check_log_forest_options([Option|_Rest],File):- !,
+	check_nonvar(Option,log_forest/2,2),
+	(Option = file(LogFile) -> File = LogFile
+	     ; domain_error([file/1],Option,log_forest/2,2,'') ).
+check_log_forest_options(Culprit,_File):- 
+	type_error(list,Culprit,log_forest/2,2).
 
 :- import set_prolog_flag/2 from curr_sym.
 :- export start_forest_view/1, stop_forest_view/0.
@@ -730,8 +752,16 @@ start_forest_view(File):-
 
 stop_forest_view:-
 	table_inspection_function(STOP_FOREST_VIEW,_,_,_,_),
-	set_prolog_flag(ctrace,on).
+	set_prolog_flag(ctrace,off).
 
+:- import load_dync/2 from consult.
+:- export load_forest_log/1.
+load_forest_log(File):- 
+	index(tc/3,[1,2]),
+	index(na/2,[2]),
+	index(ar/4,[2,3]),
+	index(at/2,[1,2]),
+	load_dync(File,a).
 
 end_of_file.
 

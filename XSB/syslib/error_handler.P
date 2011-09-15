@@ -89,10 +89,15 @@ default_sys_error_handler(error(Error,Msg,Backtrace)) :-
 default_sys_error_handler(error(thread_cancel,_)) :- !.
 default_sys_error_handler(error(Error,Msg)) :-
 	get_sys_error_description(error(Error,Msg),NewMsg),
-	messageln(NewMsg,STDERR),!.
-
+	messageln(NewMsg,STDERR),
+	flush_all_open_streams,!.
 default_sys_error_handler(X) :-
-	messageln(('++Error[XSB/Runtime] Unhandled Exception: ',X),STDERR).
+	messageln(('++Error[XSB/Runtime] Unhandled Exception: ',X),STDERR),
+	flush_all_open_streams.
+
+flush_all_open_streams:- 
+	stream_property(S,mode(X)),(X = append ; X = write),flush_output(S),fail.
+flush_all_open_streams.
 
 :- import atom_codes/2 from standard.
 default_sys_error_handler_main(resource_error(E),_BT,_Backtrace):- 
