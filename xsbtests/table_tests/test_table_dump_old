@@ -4,12 +4,20 @@
 ----------------------
 ----------------------
 ----------------------
-results_4([summary = p(A,B) - subgoals(3) - returns(9),details - p(A,B) - subgoals(3) - answers_for_subgoals([p(C,D) - 5 - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)],p(2,b) - 2 - [p(2,b),p(2,b)],p(1,b) - 2 - [p(1,b),p(1,b)]])])
-results_4([summary = p(A,B) - subgoals(3) - returns(9)])
+----------------------
+details - p(A,B) - subgoals(3) - details([p(C,D) - calls_to(1) - answers(5) - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)],p(2,b) - calls_to(1) - answers(1) - [p(2,b)],p(1,b) - calls_to(1) - answers(1) - [p(1,b)]]).
+details - p(A,B) - subgoals(3) - details([p(C,D) - calls_to(1) - answers(5) - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)],p(2,b) - calls_to(1) - answers(1) - [p(2,b)],p(1,b) - calls_to(1) - answers(1) - [p(1,b)]]).
+results_3([details - p(A,B) - subgoals(3) - details([p(C,D) - calls_to(1) - answers(5) - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)],p(2,b) - calls_to(1) - answers(1) - [p(2,b)],p(1,b) - calls_to(1) - answers(1) - [p(1,b)]])])
+results_4([summary = p(A,B) - subgoals(3) - total_times_called(3) - total_answers(7),details - p(A,B) - subgoals(3) - details([p(C,D) - calls_to(1) - answers(5) - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)],p(2,b) - calls_to(1) - answers(1) - [p(2,b)],p(1,b) - calls_to(1) - answers(1) - [p(1,b)]])])
+results_4([summary = p(A,B) - subgoals(3) - total_times_called(3) - total_answers(7)])
+summary = p(A,B) - subgoals(3) - total_times_called(3) - total_answers(7).
+summary = p(A,B) - subgoals(3) - total_times_called(3) - total_answers(7).
+summary = p(A,B) - subgoals(3) - total_times_called(3) - total_answers(7).
+summary = p(A,B) - subgoals(3) - total_times_called(3) - total_answers(7).
 test 1 
 test 2 
-test 3 ----------------------
+test 3 details - p(A,B) - subgoals(3) - details([p(C,D) - calls_to(1) - answers(5) - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)],p(2,b) - calls_to(1) - answers(1) - [p(2,b)],p(1,b) - calls_to(1) - answers(1) - [p(1,b)]]).
 test 4 
-test 5 results_3([details - p(A,B) - subgoals(3) - answers_for_subgoals([p(C,D) - 5 - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)],p(2,b) - 2 - [p(2,b),p(2,b)],p(1,b) - 2 - [p(1,b),p(1,b)]])])
+test 5 details - p(A,B) - subgoals(3) - details([p(C,D) - calls_to(1) - answers(5) - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)],p(2,b) - calls_to(1) - answers(1) - [p(2,b)],p(1,b) - calls_to(1) - answers(1) - [p(1,b)]]).
 test 6 
 test 7 caughtit_2(domain_error([summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)],badopt))
