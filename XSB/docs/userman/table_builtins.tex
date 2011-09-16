@@ -1041,7 +1041,8 @@ of the information is determined by the options in {\tt OptionsList}.
 \begin{itemize}
 \item If the option {\tt summary(true)} is set, the aggregate number
   of subgoals and answers that are subsumed by {\tt Term} is
-  collected.  If {\tt Term} is a variable this information is broken
+  collected, along with the aggregate number of calls {\bf to} these
+  subgoals.  If {\tt Term} is a variable this information is broken
   down by tabled predicates.
 %
 \item If {\tt details(true)} is set, the actual subgoals are collected
@@ -1084,21 +1085,23 @@ reformatted for readability):
 \begin{verbatim}
 | ?- table_dump(_X,[summary(true)]).
 
-summary = q(A) - subgoals(0) - returns(0).
-summary = r(A) - subgoals(0) - returns(0).
-summary = p(A,B) - subgoals(0) - returns(0).
-summary = s(A,B) - subgoals(0) - returns(0).
+summary = p(A,B) - subgoals(0) - total_times_called(1) - total_answers(5)
+
+X = p(_h243,_h244);
+
+summary = q(A) - subgoals(0) - total_times_called(1) - total_answers(2)
 
 yes
 | ?- table_dump(_X,[details(true)]).
 
-details - undefined - subgoals(0) - answers_for_subgoals([]).
-details - q(A) - subgoals(1) - answers_for_subgoals([q(B) - 2 - [q(2),q(1)]]).
-details - r(A) - subgoals(0) - answers_for_subgoals([]).
-details - p(A,B) - subgoals(3) - answers_for_subgoals([p(C,D) - 5 - 
-      [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)],p(2,b) - 
-      2 - [p(2,b),p(2,b)],p(1,a) - 2 - [p(1,a),p(1,a)]]).
-details - s(A,B) - subgoals(0) - answers_for_subgoals([]).
+summary = p(A,B) - subgoals(1) - total_times_called(1) - total_answers(5)
+details - p(A,B) - subgoals(1) - details([p(C,D) - calls_to(1) - answers(5) 
+            - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)]])
+
+X = p(_h232,_h233);
+
+ummary = q(A) - subgoals(1) - total_times_called(1) - total_answers(2)
+details - q(A) - subgoals(1) - details([q(B) - calls_to(1) - answers(2) - [q(2),q(1)]])
 
 yes
 \end{verbatim}
