@@ -1,4 +1,4 @@
-%:- compiler_options([sysmod]).
+:- compiler_options([sysmod,optimize]).
 
 :- export table_dump/0,table_dump/1,table_dump/2, table_dump/3.
 % table_dump_file/0, table_dump_file/1.
@@ -145,7 +145,7 @@ check_options_1([details(Bool)|T],D,S,R,O):-!,
 	    D = y 
 	 ;  (Bool == false -> 
 	        D = n
-	    ; 	domain_error('[summary(<true/False>),details(<true/false>),results(Var),output(<true/false>)]',
+	    ; 	domain_error('[summary(<true/false>),details(<true/false>),results(Var),output(<true/false>)]',
 	             Bool,'table_dump/[2,3]','[2,3]') ) ),
 	check_options_1(T,D,S,R,O).
 check_options_1([summary(Bool)|T],D,S,R,O):-!,
@@ -164,9 +164,9 @@ check_options_1([results(X)|T],D,S,results(X),O):-!,
 	check_options_1(T,D,S,results(X),O).
 check_options_1([output(Bool)|T],D,S,R,O):-!,
 	(Bool == true -> 
-	    0 = y 
+	    O = y 
 	 ;  (Bool == false -> 
-	        0 = n
+	        O = n
 	    ; 	domain_error('[summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)]',
 	             Bool,'table_dump/[2,3]','[2,3]') ) ),
 	check_options_1(T,D,S,R,O).
