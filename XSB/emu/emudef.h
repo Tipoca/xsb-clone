@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.88 2011-06-06 20:20:29 dwarren Exp $
+** $Id: emudef.h,v 1.89 2011-09-23 18:36:07 tswift Exp $
 ** 
 */
 
@@ -337,7 +337,7 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
     }									\
     else {								\
       if (asynint_val) {						\
-	if (asynint_val & KEYINT_MARK) {				\
+      if (asynint_val & KEYINT_MARK) {					\
         synint_proc(CTXTc PSC, MYSIG_KEYB);	                      	\
         lpcreg = pcreg;							\
         asynint_val = asynint_val & ~KEYINT_MARK;			\
@@ -351,8 +351,13 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
         intercept(CTXTc PSC);						\
         lpcreg = pcreg;							\
       } else if (asynint_val & THREADINT_MARK) {			\
-	/*printf("Entered thread cancel: call_sub\n");*/		\
         synint_proc(CTXTc PSC, THREADSIG_CANCEL);			\
+        lpcreg = pcreg;							\
+        asynint_val = 0;						\
+        asynint_code = 0;						\
+      } else if (asynint_val & TIMER_MARK) {				\
+	/*	printf("Entered timer handle: call_sub\n");	*/	\
+	synint_proc(CTXTc PSC, TIMER_INTERRUPT);			\
         lpcreg = pcreg;							\
         asynint_val = 0;						\
         asynint_code = 0;						\
@@ -385,6 +390,12 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
      } else if (asynint_val & THREADINT_MARK) {				\
        /*printf("Entered thread cancel: proceed\n");*/			\
         synint_proc(CTXTc true_psc, THREADSIG_CANCEL);			\
+        lpcreg = pcreg;							\
+        asynint_val = 0;						\
+        asynint_code = 0;						\
+      } else if (asynint_val & TIMER_MARK) {				\
+	/*	printf("Entered timer handle: call_sub\n");	*/	\
+	synint_proc(CTXTc true_psc, TIMER_INTERRUPT);			\
         lpcreg = pcreg;							\
         asynint_val = 0;						\
         asynint_code = 0;						\

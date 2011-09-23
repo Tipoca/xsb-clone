@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.h,v 1.23 2011-08-06 19:14:20 tswift Exp $
+** $Id: subp.h,v 1.24 2011-09-23 18:36:07 tswift Exp $
 ** 
 */
 
@@ -37,6 +37,7 @@ extern void remove_incomplete_tables_reset_freezes(CTXTdeclc int);
 
 extern xsbBool unify(CTXTdeclc Cell, Cell);
 extern xsbBool are_identical_terms(Cell, Cell);
+extern xsbBool startSleeperThread(int);
 
 /* don't use Cell declarations here, to avoid gcc compiler warnings;
    However, this causes warnings under Windows */

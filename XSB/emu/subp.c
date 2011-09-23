@@ -382,6 +382,7 @@ Psc synint_proc(CTXTdeclc Psc psc, int intcode)
     case MYSIG_KEYB:		/*  1 */
     case MYSIG_SPY:		/*  3 */
     case MYSIG_TRACE:		/*  4 */
+    case TIMER_INTERRUPT:		/* d */
     case THREADSIG_CANCEL:		/* f */
     case MYSIG_CLAUSE:		/* 16 */
       if (psc) bld_cs(reg+1, build_call(CTXTc psc));
@@ -920,3 +921,59 @@ xsbBool startProfileThread()
 #endif
   return TRUE;
 }
+
+#ifndef MULTI_THREAD
+
+int sleep_interval;
+
+// TLS: For some embarassing reason, I don't seem to be able to pass a
+// parameter to the thread function executeSleeperTHread() (?!?) So
+// I'm using a global.
+void executeSleeperThread(void * interval) {
+  //  long *i1;
+  //  i1 = (long *) interval;
+  int i;
+  i = sleep_interval;
+  //  printf("found sleeper thread %p %d\n",i1, *(long *)i1);
+  //  printf("found sleeper thread %d\n",i);
+#ifdef WIN_NT
+  Sleep(i);
+#else
+  usleep(1000*i);  // want milliseconds
+#endif
+  //  printf("slept for %p %d usecs\n",i,*i);
+  //  printf("slept for %d usecs (%d)\n",i,TIMER_INTERRUPT);
+  asynint_val |= TIMER_MARK;
+}
+
+// TLS, copied thread start for windows from startProfileThread()
+xsbBool startSleeperThread(int interval) {
+  //  struct sched_param param;
+
+  //  printf("interval %d\n",interval);
+  int i = interval;
+  //  printf("interval %d\n",i);
+  sleep_interval = interval;
+  //  printf("i %p %d\n",&i,*&i);
+#ifdef WIN_NT
+  HANDLE sleeper_thread;
+  sleeper_thread = (HANDLE)_beginthread(setProfileBit,0,NULL);
+  SetThreadPriority(Thread,THREAD_PRIORITY_HIGHEST/*_ABOVE_NORMAL*/);
+#else
+  pthread_t         sleeper_thread;
+  struct sched_param param;
+
+  pthread_create(&sleeper_thread, NULL, (void*)&executeSleeperThread,(void *) &i);
+  param.sched_priority = sched_get_priority_max(SCHED_OTHER);
+  pthread_setschedparam(sleeper_thread, SCHED_OTHER, &param);
+  pthread_detach(sleeper_thread);
+#endif
+  //  pthread_create(&a_thread, NULL, (void*)&executeSleeperThread,NULL);
+  //  printf("i %p %d\n",&i,*&i);
+  //  param.sched_priority = sched_get_priority_max(SCHED_OTHER);
+  //  pthread_setschedparam(a_thread, SCHED_OTHER, &param);
+
+    return TRUE;
+  
+}
+#endif

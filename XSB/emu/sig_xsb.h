@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sig_xsb.h,v 1.10 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: sig_xsb.h,v 1.11 2011-09-23 18:36:07 tswift Exp $
 ** 
 */
 
@@ -36,15 +36,16 @@
 #define MYSIG_SPY      3		/* spy point */
 #define MYSIG_TRACE    4	       	/* trace point */
 #define MYSIG_ATTV     8		/* attributed var interrupt */
-#define MYSIG_PSC     14                /* new PSC creation interrupt */
+#define TIMER_INTERRUPT    0xd
+#define MYSIG_PSC          0xe                /* new PSC creation interrupt */
 #define THREADSIG_CANCEL   0xf
 #define MYSIG_CLAUSE  16	       	/* clause interrupt */
 
-#define KEYINT_MARK 0x80		/* keyboard interrupt ^C */
-#define ATTVINT_MARK 0x40		/* attributed var interrupt */
 
-#define MSGINT_MARK 0x20		/* software message interrupt */
 #define PROFINT_MARK 0x10		/* XSB Profiling interrupt */
-
+#define MSGINT_MARK  0x20		/* software message interrupt */
+#define ATTVINT_MARK 0x40		/* attributed var interrupt */
+#define KEYINT_MARK  0x80		/* keyboard interrupt ^C */
+#define TIMER_MARK   0x100
 #define THREADINT_MARK 0x1000
 
