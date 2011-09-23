@@ -4636,6 +4636,92 @@ depending on the value of {\tt Goal} in the well-founded semantics.
 
     Error cases are the same as {\tt call/1}.
 
+\ourstandarditem{timed\_call(\#Goal,+Interval,\#Handler)}{timed\_call/3}{}
+%
+This predicate calls {\tt Goal} and, if {\tt Goal} is still being
+evaluated after {\tt Interval} milliseconds, {\tt Goal} will be
+interrupted and {\tt Handler} executed.  In the case where {\tt
+  Handler} succeeds or fails, the execution of {\tt Goal} will be
+continued; if {\tt Handler} throws an uncaught exception the execution
+of {\tt Goal} may be aborted. In this way {\tt timed\_call/3} can be
+used enforce a time-out on {\tt Goal}.  Nested calls to {\tt
+  timed\_call/3} are not allowed: but otherwise {\tt Handler} can be
+any XSB predicate.
+
+{\tt Interval} can be either a positive integer or the term {\tt
+  repeating(Int)} where {\tt Int} is a non-negative integer.  In this
+latter case, {\tt Goal} is interrupted every {\tt Int} milliseconds
+until it terminates (whether by normal termination or by {\tt Handler}
+throwing an exception).  In the case of repeated interrupts, the time
+taken to execute {\tt Handler} is not counted as part of {\tt
+  Interval} milliseconds.
+
+As an implementation note, {\tt timed\_call/3} is based on XSB's
+internal interrupt mechanism, used for attributed variable handlers
+and thread signalling.  As such, the ability to execute complex
+actions upon interrupt and to resume is very robust.  However, checks
+for interrupts are only made whenever XSB's SLG-WAM engine is
+executing.  Because of this, if XSB is suspended on I/O, calling a C
+or java function, or otherwise outside of its virtual machine, the
+interrupt will not be executed until computation is back under the
+control of XSB's engine.
+
+{\tt timed\_call/3} is not yet implemented for the multi-threaded
+engine as its functionality is easily duplicated using thread
+signalling (Section`\ref{sec:thread-signals}).
+
+{\bf Examples}
+Consider the simple (and non-tabled) program fragment
+\begin{verbatim}
+loop :- loop.
+\end{verbatim}
+which goes into an infinite loop on the query {\tt ?- loop.}  However,
+the query
+\begin{verbatim}
+timed_call(loop,repeating(500),abort).
+\end{verbatim}
+will interrupt {\tt loop} and abort its computation after 500
+milliseconds.  Alternately, the query
+\begin{verbatim}
+timed_call(loop,500,statistics).
+\end{verbatim}
+will interrupt the computation after 500 seconds, print out
+statistics, and resume the computation where it left off.
+\begin{verbatim}
+timed_call(loop,repeating(500),statistics).
+\end{verbatim}
+will interrupt the computation every 500 milliconds tp print
+statistics.  More sophisticated interrupt handlers could introspect a
+computation (e.g., using {\tt statistics/2} or {\tt table\_dump/[1,3]})
+and possibly modify parameters of the computation when possible (e.g.,
+by changing one form of tabling to another, when permitted).
+
+{\bf Error Cases} 
+%
+Error cases are the same as in {\tt call/1} for the first and third
+arguments of {\tt timed\_call/3}, along with these other errors.
+%
+\begin{description}
+\item {\tt Interval} is not an integer
+\bi
+\item {\tt type\_error(integer,Interval)}
+\ei
+\item {\tt Interval} is not a positive integer
+\bi
+\item {\tt domain\_error(positive\_integer,Interval)}
+\ei
+\item A call {\tt C} to {\tt timed\_call/3} is made within the scope
+  of some other call to {\tt timed\_call/3}
+%
+\bi
+\item {\tt permission\_error(nested\_call,predicate,{\tt Goal})}
+\ei
+\item {\tt timed\_call/3} is called from the multi-threaded engine
+\bi
+\item {\tt misc\_error}
+\ei
+\end{description}
+
 \isoitem{once(\#X)}{once/1}
 %
     {\tt once/1} is defined as {\tt once(X):- call(X),!.}  {\tt
