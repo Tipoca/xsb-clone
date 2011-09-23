@@ -2120,7 +2120,34 @@ call_attribute_handlers([Mod,Attr|Rest],Value) :-
 		call(Handler)
 	    ; existence_error('attribute handler for module',Mod,
 	                       call_attribute_handlers/2,1) ) ),
-	call_attribute_handlers(Rest,Value).	
+call_attribute_handlers(Rest,Value).	
+
+:- dynamic '_$timed_call_handler'/2.
+:- export  '_$timed_call_handler'/2.
+timed_call(Call,Interval,Handler):- 
+	(integer(Interval),Interval > 0 -> 
+	    timed_call_1(Call,Interval,Handler,0)
+	  ; (nonvar(Interval),Interval = repeating(Int) -> 
+	       timed_call_1(Call,Int,Handler,Int)
+	     ; check_pos_integer(Interval,timed_call/3,2) ) ).
+
+% need to make assert faster.
+timed_call_1(Call,Interval,Handler,Repeating):- 
+	('_$timed_call_handler'(_,_) -> 
+   	    permission_error(nested_call,predicate,timed_call(Call),'timed_call/3')
+	  ; 
+	    assert('_$timed_call_handler'(Handler,Repeating)),
+	    start_sleeper_thread(Interval),
+	    call_cleanup(Call,retractall('_$timed_call_handler'(_Handler,_Interval))) ).
+
+check_pos_integer(Term,Predicate,Arg) :- 
+	(integer(Term)
+	 ->	(Term > 0
+		 ->	true
+		 ;	domain_error(greater_than_zero,Term,Predicate,Arg)
+		)
+	 ;	type_error(integer,Term,Predicate,Arg)
+	).
 
 /* --------------------- end of file standard.P ----------------------- */
 end_of_file.

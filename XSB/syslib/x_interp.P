@@ -42,6 +42,7 @@ interpreter :-
         set_inthandler('_$keyboard_int'(_,_), MYSIG_KEYB),
 	set_inthandler('_$attv_int'(_,_), MYSIG_ATTV),
 	set_inthandler('_$thread_int'(_,_), THREADSIG_CANCEL),
+	set_inthandler('_$timer_int'(_,_), TIMER_INTERRUPT),
 	( banner_control(nobanner)
 	->  true		% don't print banner
 	;   version_message
@@ -307,6 +308,23 @@ execute_messages_on_signale_queue:-
 	    call(Message),
 	    fail
 	 ;  true),!.
+
+%:- import writeln/1 from standard.
+:- import '_$timed_call_handler'/2 from standard.
+:- import start_sleeper_thread/1 from machine.
+'_$timer_int'(One,_Two) :- 
+	'_$timed_call_handler'(Handler,Interval),!,
+%	writeln(calling(Handler)),
+	call_handler(Handler),
+	(Interval > 0 -> 
+   	    start_sleeper_thread(Interval)	
+	  ; true),
+	call_c(One).
+'_$timer_int'(One,_Two) :- 
+	call_c(One).
+
+call_handler(Handler):- call(Handler),!.
+call_handler(_).
 
 '_$attv_int'(Intlist, Call) :-
 % 	file_write(1, '.... in _$attv_int/2'), file_nl(1),

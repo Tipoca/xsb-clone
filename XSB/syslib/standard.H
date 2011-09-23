@@ -86,6 +86,7 @@
         '@>='/2,	';'/2,		','/2,		'->'/2,         '?='/2,
 	':'/2,		'_$cutto'/1,	'_$savecp'/1.	
 :- export handle_interrupts/1.
+:- export timed_call/3.
 
    :- export expand_atom/2.
 
@@ -161,5 +162,7 @@
 
 :- import (:-)/2 from usermod.
 :- import load_page/5 from curl.
+:- import start_sleeper_thread/1 from machine.
+:- import assert/1 from assert.
 
 /* --------------------- end of file standard.H ----------------------- */
