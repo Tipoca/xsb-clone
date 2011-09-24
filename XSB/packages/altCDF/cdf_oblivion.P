@@ -146,10 +146,12 @@ obliterate_extensional_component(Comp) :-
 
 
 /* Delete all classes and objects that are not immediately connected
-to the isa hierarchy by an isa_ext fact. */
+to the isa hierarchy by an isa_ext fact. (or attach them at a fixed place) */
 delete_unattached_ext_things :-
 	delete_unattached_ext_things(0).
 
+%% if IfWarn is a cid node, then instead of deleting, attach
+%% unattached things there.
 delete_unattached_ext_things(IfWarn) :-
 	retractall(things_to_delete(_)),
 	cdf_term_ext(Term,_Filt),
@@ -168,14 +170,16 @@ delete_unattached_ext_things(IfWarn) :-
 	),
 	(IfWarn == 1
 	 ->	writeln(userout,'*** WARNING *** Deleting '(SubThing))
-	 ;	true
+	 ; IfWarn @= cid(_,_)
+	 ->	newExtTerm(isa_ext(SubThing,IfWarn)),
+		fail
 	),
 	assert(things_to_delete(SubThing)),
 	fail.
-delete_unattached_ext_things :-
+delete_unattached_ext_things(_IfWarn) :-
 	delete_all_things_to_delete,
 	fail.
-delete_unattached_ext_things :-
+delete_unattached_ext_things(_IfWarn) :-
 	abolish_table_pred(local_tabled_isa(_)).
 
 approx_prod_isa(Id,Prod,Comp) :-
@@ -193,7 +197,7 @@ local_tabled_isa(AbsThing) :- isa_ext(AbsThing,_).
 /*									*/
 /* Caller should assert Oids, Cids, etc. to dynamic predicate		*/
 /* things_to_delete/1, and call delete_all_things_to_delete/0.		*/
-/* It will delete all facts in the extensional database that contains	*/
+/* It will delete all facts in the extensional database that contain	*/
 /* any class/reln/object in things_to_delete/1.				*/
 /*									*/
 /************************************************************************/
