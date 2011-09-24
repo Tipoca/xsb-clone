@@ -6,7 +6,7 @@
     cdf_id_fields/4,
     cdf_root/1,
     concrete_component/1,
-    initialize_state/0, system_component/1, initialize_cdf/0,
+    initialize_state/0, system_component/1, initialize_cdf/0, init_dynamic_code/0,
     initialize_state_nl/0,
     necessCond/2, immed_necessCond/2,
     explosive_isa/2,
@@ -18,7 +18,7 @@
     classHasAttr/3, immed_classHasAttr/3,
     coversAttr/3, immed_coversAttr/3,
     in_hierarchy/1,
-    newExtTerm/1, newExtTerm/2, newExtTermBatch/2,
+    newExtTerm/1, newExtTerm/2, newExtTermBatch/2, newExtTermCheck/1,
             retractallExtTerm/1, retracteachExtTerm/1,
     newIntRule/3, newIntRule/4, newIntRuleBatch/4,
             retractallIntRule/3,
@@ -113,6 +113,7 @@ load_cdf_init_cdf.  % to allow altCDF to force loading of this module.
 :- import member/2 from basics.
 :- import abolish_table_pred/1 from tables.
 :- import concat_atom/2 from string.
+:- import call_c/1 from standard.
 
 %%%%%%%%%%%%% Core Declarations
 
@@ -269,7 +270,7 @@ initialize_cdf_flags.
 automatically upon loading CDF at the start of a session.  The routine
 @pred{initialize_state/0} should be called only when a state is to be
 reinitialized during a session.  This predicate removes all data in
-extensional and intensional forat, and reasserts the basic CDF classes
+extensional and intensional format, and reasserts the basic CDF classes
 and relations, and resets internal state variables to values in the
 CDF configuration file. ").
 
@@ -511,10 +512,10 @@ immed_isa(SubCid,SupCid) :-
     immed_isa1(SubCid,SupCid).
 
 immed_isa1(SubCid,SupCid) :-
+    isa_int(SubCid,SupCid).
+immed_isa1(SubCid,SupCid) :-
 %	writeln(	isa_ext(SubCid,SupCid)),
     isa_ext(SubCid,SupCid).
-immed_isa1(SubCid,SupCid) :-
-    isa_int(SubCid,SupCid).
 
 %------------------------------------
 
@@ -1597,7 +1598,9 @@ are of the proper type and are consistent.  This can be turned off by
 @item Checks may also be made that @tt{Term} is not already implied by
 the ontology before it can be added.  The default is not to make such
 checks, but only to check that @tt{Term} is not extensionally present
-before it can be added.
+before it can be added.  (Note, this test has been removed for
+efficiency reasons.  Use newExtTermCheck if you want the system to do
+this check for you.)
 
 @item Conformability checks.
 @end{itemize}
@@ -1614,6 +1617,16 @@ newExtTerm(newExtTermSingle,Term):-
 newExtTerm(newExtTermBatch,Term):-
     caching_cdf(Flg),
     newExtTermBatch(Term,Flg).
+
+%% Check that is not already stored extensionally
+newExtTermCheck(Term) :-
+    (apply_checks(newExtTermSingle,Term), \+call_c(Term)
+     ->	    caching_cdf(Flg),
+	    assert_cdf(Term),
+	    maybe_invalidate_cache(Flg,Term,assert)
+     ;	    true
+    ).
+
 
 % Should be called only by load_extensional_facts etc.
 % This could probably be optimized a little by changing assert_cdf_term/1
