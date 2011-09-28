@@ -89,11 +89,14 @@ default_sys_error_handler(error(Error,Msg,Backtrace)) :-
 default_sys_error_handler(error(thread_cancel,_)) :- !.
 default_sys_error_handler(error(Error,Msg)) :-
 	get_sys_error_description(error(Error,Msg),NewMsg),
+	flush_all_open_streams,
 	messageln(NewMsg,STDERR),
-	flush_all_open_streams,!.
+	flush_output(STDERR),
+	!.
 default_sys_error_handler(X) :-
+	flush_all_open_streams,
 	messageln(('++Error[XSB/Runtime] Unhandled Exception: ',X),STDERR),
-	flush_all_open_streams.
+	flush_output(STDERR).
 
 flush_all_open_streams:- 
 	stream_property(S,mode(X)),(X = append ; X = write),flush_output(S),fail.

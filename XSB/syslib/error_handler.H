@@ -48,6 +48,8 @@
 	      get_backtrace/2,
 	      get_backtrace_list/2.
 
+:- export flush_all_open_streams/1.
+
  :- import (dynamic)/1,asserta/1 from assert.
 %%:- import reset_undef_pred_handlers/0 from loader.
    :- import close_open_tables/1, psc_data/2, psc_name/2, psc_arity/2, ccall_store_error/2,
