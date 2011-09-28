@@ -106,6 +106,29 @@ test:-
         ;   writeln('f(N) = f([A,N]) fails') ),
 	fail.
 
+test:- 
+	(unify_with_occurs_check(f(a),b) -> 
+	    writeln('f(a) = b succeeds')
+        ;   writeln('f(a) = b fails') ),
+	fail.
+
+test:- 
+	(unify_with_occurs_check([a],b) -> 
+	    writeln('[a] = b succeeds')
+        ;   writeln('[a] = b fails') ),
+	fail.
+
+test:- 
+	(unify_with_occurs_check(b,f(a)) -> 
+	    writeln('b = f(a) succeeds')
+        ;   writeln('b = f(a) fails') ),
+	fail.
+
+test:- 
+	(unify_with_occurs_check(b,[a]) -> 
+	    writeln('b = [a] succeeds')
+        ;   writeln('b = [a] fails') ),
+	fail.
 
 /* Succeeding tests */
 
