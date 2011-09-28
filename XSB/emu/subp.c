@@ -951,17 +951,18 @@ xsbBool startSleeperThread(int interval) {
   //  struct sched_param param;
 
   //  printf("interval %d\n",interval);
-  int i = interval;
+  //  int i = interval;
   //  printf("interval %d\n",i);
-  sleep_interval = interval;
   //  printf("i %p %d\n",&i,*&i);
 #ifdef WIN_NT
   HANDLE sleeper_thread;
-  sleeper_thread = (HANDLE)_beginthread(setProfileBit,0,NULL);
-  SetThreadPriority(Thread,THREAD_PRIORITY_HIGHEST/*_ABOVE_NORMAL*/);
+  sleep_interval = interval;
+  sleeper_thread = (HANDLE)_beginthread(executeSleeperThread,0,NULL);
+  SetThreadPriority(sleeper_thread,THREAD_PRIORITY_HIGHEST/*_ABOVE_NORMAL*/);
 #else
   pthread_t         sleeper_thread;
   struct sched_param param;
+  sleep_interval = interval;
 
   pthread_create(&sleeper_thread, NULL, (void*)&executeSleeperThread,(void *) &i);
   param.sched_priority = sched_get_priority_max(SCHED_OTHER);

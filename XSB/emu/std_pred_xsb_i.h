@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.66 2011-09-28 16:32:15 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.67 2011-09-28 21:14:51 dwarren Exp $
 ** 
 */
 
@@ -914,6 +914,7 @@ inline static xsbBool parsort(CTXTdecl)
 
 /* Assumes that first arg is a derefed var */
 static inline xsbBool not_occurs_in(Cell Var, Cell Term) {
+ rec_not_occurs_in:
   XSB_Deref(Term);
 
   switch (cell_tag(Term)) {
@@ -928,19 +929,20 @@ static inline xsbBool not_occurs_in(Cell Var, Cell Term) {
     return TRUE;
   }
   case XSB_LIST: {
-    return (not_occurs_in(Var,(Cell) clref_val(Term) )
-	    & not_occurs_in(Var, (Cell) (clref_val(Term) + 1)));
+    if (not_occurs_in(Var,(Cell) clref_val(Term))) {
+      Term = (Cell)(clref_val(Term) + 1);
+      goto rec_not_occurs_in;
+    } else return FALSE;
   }
   case XSB_STRUCT: {
-    xsbBool Res = TRUE;
-    int i;
-    CPtr arg;
-
-    for (i = 1; i <= get_arity(get_str_psc(Term)); i++) {
-      arg = clref_val(Term) + i;
-      Res = Res & not_occurs_in(Var,(Cell) (clref_val(Term) +i));
+    int i, arity;
+    arity = get_arity(get_str_psc(Term));
+    if (arity == 0) return TRUE;
+    for (i = 1; i < arity; i++) {
+      if (!not_occurs_in(Var,(Cell) (clref_val(Term) +i))) return FALSE;
     }
-    return Res;    
+    Term = (Cell)(clref_val(Term)+arity);
+    goto rec_not_occurs_in;
   }
   }
   return TRUE;  /* hush, little compiler */
@@ -948,8 +950,8 @@ static inline xsbBool not_occurs_in(Cell Var, Cell Term) {
   
 xsbBool unify_with_occurs_check(CTXTdeclc Cell Term1, Cell Term2) { 
   //  printf("  Term2 %x, cs_val %x\n",Term2,cs_val(Term2));
-  xsbBool Res = TRUE;
 
+ rec_unify_with_occurs_check:
   XSB_Deref(Term1);
   XSB_Deref(Term2);
   switch (cell_tag(Term1)) {
@@ -977,12 +979,12 @@ xsbBool unify_with_occurs_check(CTXTdeclc Cell Term1, Cell Term2) {
 	return unify(CTXTc Term1,Term2);
       else return FALSE;
     case XSB_LIST: {
-      Res = (Res  
-	     & unify_with_occurs_check(CTXTc (Cell) clref_val(Term1) , 
-				       (Cell) clref_val(Term2) )
-	     & unify_with_occurs_check(CTXTc (Cell) (clref_val(Term1) + 1), 
-				       (Cell) (clref_val(Term2) + 1)) );
-      return Res;
+      if (unify_with_occurs_check(CTXTc (Cell) clref_val(Term1) , 
+				  (Cell) clref_val(Term2) )) {
+	Term1 = (Cell)(clref_val(Term1) + 1);
+	Term2 = (Cell)(clref_val(Term2) + 1);
+	goto rec_unify_with_occurs_check;
+      } else return FALSE;
     }
     default: 
       return FALSE;
@@ -999,15 +1001,19 @@ xsbBool unify_with_occurs_check(CTXTdeclc Cell Term1, Cell Term2) {
       else return FALSE;
     case XSB_STRUCT: {
       int i;
-      int arity = get_arity(get_str_psc(Term1)); 
-      if (arity == get_arity(get_str_psc(Term2))) {
-	for (i = 1; i <= arity; i++) {
-	  Res = Res & unify_with_occurs_check(CTXTc (Cell) (clref_val(Term1) + i), 
-					      (Cell) (clref_val(Term2) + i));
+      int arity;
+      if (get_str_psc(Term1) == get_str_psc(Term2)) {
+	arity = get_arity(get_str_psc(Term1)); 
+	if (arity == 0) return TRUE;
+	for (i = 1; i < arity; i++) {
+	  if (!unify_with_occurs_check(CTXTc (Cell) (clref_val(Term1) + i), 
+				       (Cell) (clref_val(Term2) + i)))
+	    return FALSE;
 	}
-	return Res;
-      }
-      else return FALSE;
+	Term1 = (Cell)(clref_val(Term1)+arity);
+	Term2 = (Cell)(clref_val(Term2)+arity);
+	goto rec_unify_with_occurs_check;
+      } else return FALSE;
     }
     default: 
       return FALSE;
