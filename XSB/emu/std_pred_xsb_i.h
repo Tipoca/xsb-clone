@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.65 2011-08-22 16:15:24 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.66 2011-09-28 16:32:15 tswift Exp $
 ** 
 */
 
@@ -1009,6 +1009,8 @@ xsbBool unify_with_occurs_check(CTXTdeclc Cell Term1, Cell Term2) {
       }
       else return FALSE;
     }
+    default: 
+      return FALSE;
     }
   }
     }
