@@ -800,6 +800,7 @@ predicate is called.
 
 There are several command line options for the emulator. The general 
 synopsis obtained by the command {\tt \$XSB\_DIR/bin/xsb --help} is: 
+\index{tabling!call subsumption}
 {\small 
 \begin{verbatim}
 xsb [flags] [-l] 
@@ -966,6 +967,8 @@ So that XSB can be used to write reasonable scripts.
     N} threads that are active, or that are inactive, non-detached,
   and not yet joined.  Has no effect if the engine has been configured
   without multi-threading.
+\index{tabling!call subsumption}
+\index{tabling!shared}
 \item[{\tt -S}] Indicates that tabled predicates are to be evaluated
   using subsumption-based tabling as a default for tabled predicates
   whose tabling method is not specified by using {\tt table Predspec

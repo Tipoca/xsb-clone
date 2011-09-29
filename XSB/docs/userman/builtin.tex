@@ -190,6 +190,15 @@ uses to print results, errors, debugging info, etc. The descriptors
 are described in the file {\tt prolog\_includes/standard.h}. This file
 provides the following symbolic definitions:
 %%
+\index{streams!system}
+\index{streams!STDDBG}
+\index{streams!STDERR}
+\index{streams!STDFDBK}
+\index{streams!STDIN}
+\index{streams!STDOUT}
+\index{streams!STDWARN}
+\index{streams!STDMSG}
+\index{streams!system}
 \begin{verbatim}
     #define STDIN            0
     #define STDOUT           1
@@ -552,6 +561,8 @@ placed from the origin.
 \ei
 \ei
 
+
+
 \isoitem{at\_end\_of\_stream(+Stream\_or\_alias)}{at\_end\_of\_stream/1}
 %
 Succeeds if {\tt Stream\_or\_alias} has position at or past the end of
@@ -676,6 +687,18 @@ file\_truncate/2} on different platforms.
 \standarditem{tmpfile\_open(-Stream)}{tmpfile\_open/1}
     Opens a temporary file with a unique filename. The file is deleted
     when it is closed or when the program terminates.
+
+\ourmoditem{flush\_all\_output\_streams}{flush\_all\_output\_streams/0}{error\_handler}
+\index{streams!system} 
+%
+Flushes output streams, both user and system {\tt STDOUT}, {\tt
+  STDERR}, etc.  This convenience predicate is written as
+%
+\begin{verbatim}
+flush_all_open_streams:- 
+        stream_property(S,mode(X)),(X = append ; X = write),flush_output(S),fail.
+flush_all_open_streams.
+\end{verbatim}
 
 \end{description}
 
@@ -1190,7 +1213,7 @@ file indicator.
 Reads a term that is in canonical format from the current input stream
 and returns it in {\tt Term}. On end-of-file, it returns the atom {\tt
 end\_of\_file}.  If it encounters an error, it prints an error message
-on stderr and returns the atom {\tt read\_canonical\_error}. This is
+on STDERR and returns the atom {\tt read\_canonical\_error}. This is
 significantly faster than {\tt read/1}, but requires the input to be
 in canonical form.
 
@@ -1668,6 +1691,7 @@ Acts as {\tt numbervars(+Term, +FirstN, ?LastN,attvar(error))}.
 
 \subsubsection{Term Writing to Designated I/O Streams}
 %
+\index{streams!STDOUT}
 While XSB has standard I/O streams for errors, warnings, messages, and
 feedback (cf. Section~\ref{sec:IO-streams}), the predicates above
 write to {\tt STDOUT} which is the standard output for the process.
@@ -1679,6 +1703,7 @@ be useful to ensure that output goes to one of the other I/O streams.
 
 \begin{description}
 
+\index{streams!STDERR}
 \ourrepeatmoditem{error\_write(?Message)}{error\_write/1}{standard}
 \ourmoditem{error\_writeln(?Message)}{error\_writeln/1}{standard}
 %
@@ -1689,11 +1714,13 @@ list, the elements in the comma list are output as if they were
 concatenated together.  Each of these predicates must be imported from
 the module {\tt standard}.
 
+\index{streams!STDFDBK}
 \ourrepeatmoditem{console\_write(?Message)}{console\_write/1}{standard}
 \ourmoditem{console\_writeln(?Message)}{console\_writeln/1}{standard}
 %
 As above, but writes to {\tt STDFDBK}, the console feedback stream.
 
+\index{streams!STDWARN}
 \ourmoditem{warning(?Message)}{warning/1}{standard}
 %\ourmoditem{warningln(?Message)}{warningln/1}{standard}
 %
@@ -1712,6 +1739,7 @@ which performs no action when {\tt warning/1} is called. or {\tt
 The default behavior can be restored by setting {\tt warning\_action}
 to {\tt print\_warning}.
 
+\index{streams!STDMSG}
 \ourrepeatmoditem{message(?Message)}{message/1}{standard}
 \ourmoditem{messageln(?Message)}{messageln/1}{standard}
 %

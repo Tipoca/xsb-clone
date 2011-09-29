@@ -138,6 +138,7 @@ settable.
 Non-standard flag names may be specific to XSB or may be common to XSB
 and certain other Prolog.  These flag names are:
 \begin{itemize}
+\index{streams!STDERR}
 %
 \item {\tt backtrace\_on\_error} {\tt on} iff system-handled errors
 automatically print out the trace of the execution stack where the
@@ -648,6 +649,10 @@ Functor/Arity} and visible from the calling context of  {\tt current\_index/2}.
     Generates (through backtracking) all currently known atoms, and unifies
     each in turn with {\tt Atom\_Indicator}. 
 
+\index{tabling!call subsumption}
+\index{tabling!call variance}
+\index{tabling!answer subsumption}
+\index{tabling!incremental}
 %??? need to define visible.
 \label{PredProp}
 \standarditem{predicate\_property(?Term\_Indicator, ?Property)}
@@ -1153,6 +1158,9 @@ copying garbage collector will be used; or it may be the atom
 collector will be used.
 }
 
+\index{tabling!call subsumption}
+\index{tabling!call variance}
+\index{tabling!incremental}
 \standarditem{statistics}{statistics/0}
 %
 Displays usage information on the current output stream, including: 

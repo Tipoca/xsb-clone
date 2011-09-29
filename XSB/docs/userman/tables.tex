@@ -304,6 +304,9 @@ table to optimize data-oriented queries.  Both are explained in
 \subsection{Call Variance vs. Call Subsumption}
 \label{sec:SimilarityMeasures}
 \index{tabling!similarity measures}
+\index{tabling!call subsumption}
+\index{tabling!answer subsumption}
+\index{tabling!call variance}
 
 The above description gives a general characterization of tabled
 evaluation for definite programs but glosses over certain details.  In
@@ -392,6 +395,7 @@ variables or answer subsumption~\footnote{Beginning with Version 3.2,
   XSB supports attributed variables in answers under call subsumption,
   although not in calls.}.
 
+\index{tabling!call subsumption}
 \begin{example} \rm 
 The terms $T_1$: {\tt p(f(Y),X,1)} and $T_2$:~{\tt p(f(Z),U,1)} are
 \emph{variants} as one can be made to look like the other by a
@@ -462,6 +466,7 @@ call to \code{p(1,5)} is made.  If the order of these queries were
 reversed, one would find that the same entries would be present in
 this table as the one constructed under variant-based evaluation.
 
+\index{tabling!call subsumption}
 \paragraph{Declarations for Call Variance and Call Subsumption}
 By default tabled predicate use call variance.  However, call
 subsumption can be made the default by giving XSB the \verb|-S| option
@@ -834,7 +839,7 @@ behavior intuitive or not?\fillBox
 %=====================================================================
 
 \section{Normal Programs}
-
+\index{tabling!negation}
 Normal programs extend definite programs to include default negation,
 which posits a fact as false if all attempts to prove it fail.  As
 shown in Example \ref{ex:Russell}, which presented one of Russell's
@@ -1398,6 +1403,7 @@ interpretations for programs and process logics.
 
 %------------------------------------------------------------------------
 \subsection{Types of Answer Subsumption}
+\index{tabling!answer subsumption}
 
 \subsubsection{Partial Order Answer Subsumption.}
 % 
@@ -1440,6 +1446,7 @@ ordering between derived atoms so that answer subsumption provides an
 alternative to default-based methods for computing preferences.
 
 \subsubsection{Lattice Answer Subsumption.}
+\index{tabling!answer subsumption}
 An upper semi-lattice is a partial order for which any two elements
 have a unique least upper bound.  Because the ordering for the third
 argument of {\tt sp/3} is total, it also forms an upper semi-lattice,
@@ -1489,6 +1496,7 @@ a quantitative logic, and \cite{RigS10} describes how XSB's {\tt PITA}
 package is based on answer subsumption (see Volume 2 of this manual).
 
 \subsubsection{Partial Order Answer Subsumption with Abstraction.}
+\index{tabling!answer subsumption}
 Computation over an abstract domain may require certain maximal
 answers to be abstracted.  In many cases, abstraction can be modeled
 by a join operation, but in others the abstraction represents an
@@ -1510,6 +1518,7 @@ abstraction operation.  Section~\ref{sec:abs-int} provides a detailed
 example of how such an approach is used to analyze a process logic.
 
 \subsection{Examples of Answer Subsumption} \label{sec:answer-subsumption-examples}
+\index{tabling!answer subsumption}
 
 \subsubsection{Answer Subsumption and Abstract Interpretation} \label{sec:abs-int}
 %
@@ -1590,6 +1599,7 @@ reachable(InConf,NewConf):- hasTransition(InConf,NewConf).
 \end{figure}
 
 \subsubsection{Scalability for multi-valued and quantitative logics} \label{sec:mv}
+\index{tabling!answer subsumption}
 %
 The technique of program justification (cf. e.g. \cite{PGDRR04}) has
 been used for debugging tabled programs that cannot be debugged by
@@ -1855,6 +1865,11 @@ system.
 %--------------------------------------------------------------------
 \input{incr_tabling}
 %--------------------------------------------------------------------
+
+\index{tabling!call subsumption}
+\index{tabling!call variance}
+\index{tabling!answer subsumption}
+\index{tabling!incremental}
 
 \section{Compatability of Tabling Modes and Predicate Attributes}
 %

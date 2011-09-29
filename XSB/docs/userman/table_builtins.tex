@@ -137,6 +137,15 @@ a predicate \code{p} and arity \code{n}, represented as
 \begin{description}
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+\index{tabling!call subsumption}
+\index{tabling!call variance}
+\index{tabling!answer subsumption}
+\index{tabling!incremental}
+\index{tabling!dynamic predicates}
+\index{tabling!private}
+\index{tabling!shared}
+\index{tabling!opaque}
+
 \ourstandarditem{table(+Operations)}{table/1}{Tabling}
 %
 {\tt table/1} can be used either as a compiler declaration or as an
@@ -312,6 +321,8 @@ form {\tt PredSpec} or {\tt PredSpec} as {\tt Options}.  Then if
 \subsection{Predicates for Table Inspection}
 \label{sec:TablePred:Inspection}
 \index{tabling!table inspection}
+\index{tabling!call subsumption}
+\index{tabling!call variance}
 
 The user should be aware that skeletons that are dynamically created
 (e.g., by \code{functor/3}) are located in {\tt usermod} (refer to
@@ -393,6 +404,8 @@ the subgoal \code{q(X,Y)}\@.
 \ourstandarditem{get\_call(+CallTerm,-TableEntryHandle,-ReturnTemplate)}{get\_call/3}{Tabling}
 
 %
+\index{tabling!call subsumption}
+\index{tabling!call variance}
 If call variance is used for the predicate corresponding to {\tt
   CallTerm}, then this predicate searches the table for an entry whose
 subgoal is a \emph{variant} of \code{CallTerm}.  If subsumption is

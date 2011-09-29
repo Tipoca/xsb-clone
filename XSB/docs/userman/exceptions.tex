@@ -469,10 +469,11 @@ close open tables and release mutexes held by the calling thread, but
 does not attempt to clean up other system level resources, which is
 left to the handler.
 %
+
 \ourrepeatmoditem{error\_write(?Message)}{error\_write/1}{standard}
-
 \ourmoditem{error\_writeln(?Message)}{error\_writeln/1}{standard}
-
+\index{streams!STDERR}
+%
 Utility routines for user-defined error catching.  These predicates
 output {\tt Message} to XSB's {\tt STDERR} stream, rather than to
 XSB's {\tt STDOUT} stream, as does {\tt write/1} and {\tt writeln/1}.
