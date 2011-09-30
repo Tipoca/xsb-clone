@@ -582,8 +582,8 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 
 #ifdef CALL_ABSTRACTION
       if (abstr_size > 0) {
-        if (!unify_abstractions_from_AT((answer_template_heap-(template_size+2*ab\
-							       str_size)), abstr_size)) {
+        if (!unify_abstractions_from_AT((answer_template_heap-(template_size+2*abstr_size)), 
+					abstr_size)) {
           printf("failing\n");
 	  breg = nlcp_prevbreg(consumer_cpf);
 	  Fail1;
@@ -802,8 +802,8 @@ table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
 #ifdef CALL_ABSTRACTION
  printf("ansret abstrsize %d\n",abstr_size);
  if (abstr_size > 0) {
-   if (!unify_abstractions_from_AT((answer_template-(template_size+2*abstr_s\
-						     ize)), abstr_size)) {
+   if (!unify_abstractions_from_AT((answer_template-(template_size+2*abstr_size)), 
+				   abstr_size)) {
      printf("failing\n");
      //      breg = nlcp_prevbreg(consumer_cpf);                             
      Fail1;
@@ -902,7 +902,7 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   Def2ops
   CPtr producer_cpf, producer_csf, answer_template;
   int template_size, attv_num; Integer tmp;
-#ifdef CALL_ABSTRCTION
+#ifdef CALL_ABSTRACTION
   int abstr_size;
 #endif
   VariantSF producer_sf;

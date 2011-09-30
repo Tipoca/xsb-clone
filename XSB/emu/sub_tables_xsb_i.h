@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.26 2011-08-03 18:12:54 tswift Exp $
+** $Id: sub_tables_xsb_i.h,v 1.27 2011-09-30 17:18:51 tswift Exp $
 ** 
 */
 
@@ -65,10 +65,11 @@ inline static  CPtr extract_template_from_lookup(CTXTdeclc CPtr ans_tmplt) {
   while ( TrieVarBindings[i] != (Cell) (& TrieVarBindings[i]) )
     *ans_tmplt-- = TrieVarBindings[i++];
   //  *ans_tmplt = makeint(i);
-  *ans_tmplt = encode_ansTempl_ctrs(0,i);   // no attvars
-  /* Call Abstraction 
+#ifdef CALL_ABSTRACTION
    *ans_tmplt = encode_ansTempl_ctrs(0,callAbsStk_index,i);   // no attvars   
-   */
+#else
+  *ans_tmplt = encode_ansTempl_ctrs(0,i);   // no attvars
+#endif
   return ans_tmplt;
 }
 
@@ -115,12 +116,12 @@ CPtr reconstruct_template_for_producer(CTXTdeclc TabledCallInfo *call_info,
     else if ( IsTrieList(symbol) )
       TermStack_PushListArgs(subterm)
   }
+#ifdef CALL_ABSTRACTION
   //  *ans_tmplt = makeint(sizeAnsTmplt);
-  *ans_tmplt = encode_ansTempl_ctrs(0,sizeAnsTmplt);  // no attvars
-  /* Call abstraction 
   *ans_tmplt = encode_ansTempl_ctrs(0,callAbsStk_index,sizeAnsTmplt);  // no attvars    
-  */
-
+#else
+  *ans_tmplt = encode_ansTempl_ctrs(0,sizeAnsTmplt);  // no attvars
+#endif
   return ans_tmplt;
 }
 
@@ -135,10 +136,11 @@ inline static  CPtr extract_template_from_insertion(CTXTdeclc CPtr ans_tmplt) {
   while ( i < (int) Trail_NumBindings )
     *ans_tmplt-- = (Cell)Trail_Base[i++];
   //  *ans_tmplt = makeint(i);
-  *ans_tmplt = encode_ansTempl_ctrs(0,i);   // no attvars
-  /* Call abstraction 
+#ifdef CALL_ABSTRACTION
   *ans_tmplt = encode_ansTempl_ctrs(0,callAbsStk_index,i);   // no attvars      
-  */
+#else
+  *ans_tmplt = encode_ansTempl_ctrs(0,i);   // no attvars
+#endif
   return ans_tmplt;
 }
 
