@@ -964,7 +964,7 @@ xsbBool startSleeperThread(int interval) {
   struct sched_param param;
   sleep_interval = interval;
 
-  pthread_create(&sleeper_thread, NULL, (void*)&executeSleeperThread,(void *) &i);
+  pthread_create(&sleeper_thread, NULL, (void*)&executeSleeperThread,(void *) &sleep_interval);
   param.sched_priority = sched_get_priority_max(SCHED_OTHER);
   pthread_setschedparam(sleeper_thread, SCHED_OTHER, &param);
   pthread_detach(sleeper_thread);
