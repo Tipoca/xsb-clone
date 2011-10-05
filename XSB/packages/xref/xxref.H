@@ -11,7 +11,7 @@
 :- import append/3, member/2 from basics.
 :- import file_read_canonical/3 from machine.
 :- import expand_term/2 from standard.
-:- import conget/2, coninc/1, conset/2 from gensym.
+:- import conget/2, coninc/1, coninc/2, conset/2 from gensym.
 
 :- import xsb_defined/3 from usermod.
 :- import xsb_used/5 from usermod.
