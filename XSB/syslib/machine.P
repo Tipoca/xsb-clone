@@ -296,6 +296,7 @@ url_encode_decode(_Type,_UrlIn,_UlrOut) :- '_$builtin'(URL_ENCODE_DECODE).
 oracle_query(_A, _B, _C, _D, _E, _F, _G) :- '_$builtin'(ORACLE_QUERY).
 odbc_exec_query(_A, _B, _C, _D, _E, _F) :- '_$builtin'(ODBC_EXEC_QUERY).
 
+term_size(_Term,_Depth):- '_$builtin'(TERM_SIZE).
 term_depth(_Term,_Depth):- '_$builtin'(TERM_DEPTH).
 is_cyclic(_Term):- '_$builtin'(IS_CYCLIC).
 

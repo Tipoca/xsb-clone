@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.372 2011-09-23 18:36:07 tswift Exp $
+** $Id: builtin.c,v 1.373 2011-10-05 19:16:10 waltergwilson Exp $
 **
 */
 
@@ -1259,6 +1259,7 @@ void init_builtin_table(void)
   set_builtin_table(NUMBER_DIGITS, "number_digits");
   set_builtin_table(IS_NUMBER_ATOM, "is_number_atom");
   set_builtin_table(TERM_DEPTH, "term_depth");
+  set_builtin_table(TERM_SIZE, "term_sizew");
 
   set_builtin_table(PUT, "put");
   set_builtin_table(TAB, "tab");

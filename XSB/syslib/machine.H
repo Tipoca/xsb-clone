@@ -147,6 +147,7 @@
 	is_cyclic/1,
 	trimcore/0,
    term_depth/2,
+   term_size/2,
         '$$set_scope_marker'/0,
         '$$unwind_stack'/0,
         '$$clean_up_block'/1,

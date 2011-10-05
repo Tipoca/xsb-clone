@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.67 2011-09-28 21:14:51 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.68 2011-10-05 19:15:02 waltergwilson Exp $
 ** 
 */
 
@@ -395,14 +395,14 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	  return isnil(list);
 	}
       } else {
-	/* check that there is enough space on the heap! */
+	/* check that there is enough space on the heap! */  /* HERE WGW*/
 	check_glstack_overflow(2, pcreg, 2*len*sizeof(Cell)) ;
 	list = ptoc_tag(CTXTc 2);   /* in case it changed */
 
 	new_list = makelist(hreg);
 	for (i = 0; i < len; i++) {
  	  if (call_type==ATOM_CODES)
-	    follow(hreg++) = makeint(*(unsigned char *)atomname);
+	    follow(hreg++) = makeint(*(unsigned char *)atomname); /*bld_copy(hreg++, var) where var is the variable found , in loop where list is beng built*/
 	  else {
 	    tmpstr[0]=*atomname;
 	    tmpstr[1]='\0';
@@ -1173,7 +1173,43 @@ int term_depth(CTXTdeclc Cell Term) {
   mem_dealloc(term_traversal_stack,term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
   return maxsofar;
 }
-  
+/**************************************************** */
+
+ int term_sizew(CTXTdeclc Cell Term) { 
+
+  int cur_size= 0;
+  int term_traversal_stack_top = -1;
+  int term_traversal_stack_size = TERM_TRAVERSAL_STACK_INIT;
+
+  TTFptr term_traversal_stack = (TTFptr) mem_alloc(term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+
+  XSB_Deref(Term);
+
+  if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) return 1;
+	
+  push_term(Term);   cur_size++;  /* add the current fuctor to the count	*/	
+
+  while (term_traversal_stack_top >= 0) {
+
+    if (term_traversal_stack[term_traversal_stack_top].arg_num > term_traversal_stack[term_traversal_stack_top].arity) {
+      pop_term(Term);
+    }
+    else {
+      Term = (Cell) (clref_val(term_traversal_stack[term_traversal_stack_top].parent) + term_traversal_stack[term_traversal_stack_top].arg_num);
+      term_traversal_stack[term_traversal_stack_top].arg_num++;
+      XSB_Deref(Term);
+      if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) {	  /* add 1 for a non compound */
+	cur_size++;
+      }
+      else {
+	push_term(Term);   cur_size++;		/* add one for functor of current arg */
+      }
+    }
+  }
+  mem_dealloc(term_traversal_stack,term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+  return cur_size;
+}
+ 
 /**************************************************** */
 
 typedef struct CycleTrailFrame {
