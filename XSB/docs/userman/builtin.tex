@@ -3541,6 +3541,25 @@ their attribute.
 
 {\tt term\_depth/2} does not check for cyclic structures, so it must
 be ensured that {\tt Term} is acyclic.
+
+\index{term size!definition}
+\index{terms!cyclic}
+\standarditem{term\_size(+Term, -Size)}{term\_size/2}
+%
+{\tt term\_size/2} provides an efficient way to find the total number
+of constituents of a term. Term size is defined recursively as
+follows:
+\begin{itemize}
+\item The size of a non-compound term is 1.
+\item The size of a compound term is defined as 1 + the sum of the
+  sizes of all arguments of that term.  
+\item The size of a list {\tt [H|T]} is defined as the size of the
+  term {\tt '.'(H,T)}.
+\end{itemize}
+Note that this definition treats attributed variables as having size
+of 1, regardless of the size of their attribute.  {\tt term\_size/2}
+does not check for cyclic structures, so it must be ensured that {\tt
+  Term} is acyclic.
 \end{description}
 
 %-----------------------------------------------------------------------------------------------
