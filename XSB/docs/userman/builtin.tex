@@ -4606,6 +4606,24 @@ Error cases include those of {\tt findall/3} (see above), along with
 Within {\tt setof/3}, {\tt bagof/3} and the like, the {\tt \^\ /2}
 operator means there exists an {\tt X} such that {\tt Goal} is true.
 
+\ourmoditem{excess\_vars(+Term, +ExistVarTerm, +AddVarList, -VarList)}{excess\_vars/4}{setof}
+Returns in {\tt VarList} the list of (free) variables found in {\tt
+Term} concatenated to the end of {\tt AddVarList}.  (In normal usage
+{\tt AddVarList} is passed in as an empty list.)  {\tt ExistVarTerm}
+is a term containing variables assumed to be quantified in {\tt Term}
+so none of these variables are returned in the resulting list (unless
+they are in {\tt AddVarList}.)  Subterms of {\tt Term} of the form
+{\tt (VarTerm \^\ SubTerm)} are treated specially: all variables in {\tt VarTerm} are
+assumed to be quantified in {\tt SubTerm}, and so no occurrence of these
+variables in {\tt SubTerm} is collected into the resulting list.
+
+{\bf Error Cases}
+    \begin{description}
+    \item[{\tt type\_error}]
+	{\tt AddVarList} is not a list of variables
+     \item[{\tt memory}]
+	Not enough memory to collect the variables.
+    \end{description}
 \end{description}
 
 %\input{aggreates}
