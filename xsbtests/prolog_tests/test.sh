@@ -116,6 +116,8 @@ fi
 ../gentest.sh "$XEMU $options" test_term_depth "test."
 #------------------------------------------------------------------------
 ../gentest.sh "$XEMU $options" test_cycle "test."
+#------------------------------------------------------------------------
+../gentest.sh "$XEMU $options" test_term_size "test."
 
 #------------------------------------------------------------------------
 # TLS: need to remove dylib/so due to 64/32 bit confusion
