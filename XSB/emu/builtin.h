@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.108 2011-10-05 21:29:09 tswift Exp $
+** $Id: builtin.h,v 1.109 2011-10-09 19:39:06 waltergwilson Exp $
 ** 
 */
 
@@ -241,6 +241,7 @@
 #define TERM_DEPTH              216
 #define IS_CYCLIC               217
 #define TERM_SIZE               218
+#define TERM_SIZE_LIMIT         219
 
 #define SORT			220
 #define KEYSORT			221

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.68 2011-10-05 19:15:02 waltergwilson Exp $
+** $Id: std_pred_xsb_i.h,v 1.69 2011-10-09 19:40:45 waltergwilson Exp $
 ** 
 */
 
@@ -395,7 +395,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	  return isnil(list);
 	}
       } else {
-	/* check that there is enough space on the heap! */  /* HERE WGW*/
+	/* check that there is enough space on the heap! */  
 	check_glstack_overflow(2, pcreg, 2*len*sizeof(Cell)) ;
 	list = ptoc_tag(CTXTc 2);   /* in case it changed */
 
@@ -1174,8 +1174,10 @@ int term_depth(CTXTdeclc Cell Term) {
   return maxsofar;
 }
 /**************************************************** */
+/* int term_sizew(CTXTdeclc Cell Term) { */
+/* size = #functors + #non-compounds + Size of attributes for any attributed vars*/
 
- int term_sizew(CTXTdeclc Cell Term) { 
+int term_sizew(CTXTdeclc Cell Term) { 
 
   int cur_size= 0;
   int term_traversal_stack_top = -1;
@@ -1185,9 +1187,16 @@ int term_depth(CTXTdeclc Cell Term) {
 
   XSB_Deref(Term);
 
-  if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) return 1;
-	
-  push_term(Term);   cur_size++;  /* add the current fuctor to the count	*/	
+/*  if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT && !is_attv(Term)) return 1;*/
+  if (!(is_attv(Term) || is_functor(Term) || is_list(Term))) return 1; /*TODO: WGW why not set output arg and return TRUE? */
+
+  if (is_attv(Term)) {
+     push_term(cell((CPtr)dec_addr(Term) + 1)) ;  
+     cur_size++;
+  } else { 
+      push_term(Term);
+     };   
+  cur_size++;  /* add the current functor or attributed variable to the count	*/	
 
   while (term_traversal_stack_top >= 0) {
 
@@ -1198,16 +1207,105 @@ int term_depth(CTXTdeclc Cell Term) {
       Term = (Cell) (clref_val(term_traversal_stack[term_traversal_stack_top].parent) + term_traversal_stack[term_traversal_stack_top].arg_num);
       term_traversal_stack[term_traversal_stack_top].arg_num++;
       XSB_Deref(Term);
-      if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) {	  /* add 1 for a non compound */
+      if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT && !is_attv(Term)) {	  /* add 1 for a non compound */ /*and not XSB_ATTR*/
 	cur_size++;
       }
       else {
-	push_term(Term);   cur_size++;		/* add one for functor of current arg */
+       if (is_attv(Term)) {
+          push_term(cell((CPtr)dec_addr(Term) + 1)) ; 
+          cur_size++;
+       } else { 
+           push_term(Term);
+          };   
+       cur_size++;  /* add the current fuctor to the count	*/	
       }
     }
   }
   mem_dealloc(term_traversal_stack,term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
   return cur_size;
+}
+
+/*
+term_size(X,SX),put_attr(X,wgw,a),term_size(X,Sal),put_attr(X,wgw2,b),term_size(X,Sb).
+
+*/
+ 
+
+/***************************************************** */
+/* TODO: dealloc if return FALSE?. */
+xsbBool term_size_limit(CTXTdeclc) { 
+  /* WGW check 2nd arg is integer, call it LIMIT*/
+/* 
+  if (!(is_int(Limit)) xsb_instantiation_error(CTXTc "term_size_limit",2,2,XSB_INT);
+*/
+
+  int cur_size= 0;
+  int term_traversal_stack_top = -1;
+  int term_traversal_stack_size = TERM_TRAVERSAL_STACK_INIT;
+  Cell Term;
+  int Limit;
+  Term = ptoc_tag(CTXTc 1);
+  Limit = ptoc_int(CTXTdeclc 2);
+
+  TTFptr term_traversal_stack = (TTFptr) mem_alloc(term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+
+  XSB_Deref(Term);
+
+ if (!(is_attv(Term) || is_functor(Term) || is_list(Term)) && Limit > 0) {
+   goto truereturn ; /*TODO: WGW why not set output arg and return TRUE? */
+ } 
+
+ if (!(is_attv(Term) || is_functor(Term) || is_list(Term)) && Limit < 2) {
+   goto falsereturn ; /*TODO: WGW why not set output arg and return TRUE? */
+ } 
+
+ if (is_attv(Term)) {
+     push_term(cell((CPtr)dec_addr(Term) + 1)) ;  
+     cur_size++;
+     if (cur_size > Limit) goto falsereturn;
+  } else { 
+      push_term(Term);
+     };   
+  cur_size++;  /* add the current functor or attributed variable to the count	*/	
+  if (cur_size > Limit) goto falsereturn;
+
+  while (term_traversal_stack_top >= 0) {
+
+    if (term_traversal_stack[term_traversal_stack_top].arg_num > term_traversal_stack[term_traversal_stack_top].arity) {
+      pop_term(Term);
+    }
+    else {
+      Term = (Cell) (clref_val(term_traversal_stack[term_traversal_stack_top].parent) + term_traversal_stack[term_traversal_stack_top].arg_num);
+      term_traversal_stack[term_traversal_stack_top].arg_num++;
+      XSB_Deref(Term);
+      if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT && !is_attv(Term)) {	  /* add 1 for a non compound */ /*and not XSB_ATTR*/
+	cur_size++;
+        if (cur_size > Limit) goto falsereturn;
+      }
+      else {
+       if (is_attv(Term)) {
+          push_term(cell((CPtr)dec_addr(Term) + 1)) ; 
+          cur_size++;
+          if (cur_size > Limit) goto falsereturn;
+       } else { 
+           push_term(Term);
+          };   
+       cur_size++;  /* add the current fuctor to the count	*/	
+       if (cur_size > Limit) goto falsereturn;
+      }
+    }
+  }
+//printf("*********** %d \n",cur_size);
+if (cur_size > Limit) goto falsereturn;
+truereturn:  
+//  printf("***** truereturn \n");
+  mem_dealloc(term_traversal_stack,term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+  return TRUE;
+falsereturn: 
+//  printf("***** falsereturn \n");
+//  mem_dealloc(term_traversal_stack,term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+  mem_dealloc(term_traversal_stack,term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+  return FALSE;
 }
  
 /**************************************************** */

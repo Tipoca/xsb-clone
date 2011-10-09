@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.32 2011-10-05 19:15:34 waltergwilson Exp $
+** $Id: std_cases_xsb_i.h,v 1.33 2011-10-09 19:41:13 waltergwilson Exp $
 ** 
 */
 
@@ -113,6 +113,11 @@
     
    case TERM_SIZE: {
      ctop_int(CTXTc 2, term_sizew(CTXTc ptoc_tag(CTXTc 1)));
+     break;
+   }
+
+   case TERM_SIZE_LIMIT: {
+     return(term_size_limit(CTXT));
      break;
    }
 
