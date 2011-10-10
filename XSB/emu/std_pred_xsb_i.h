@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.69 2011-10-09 19:40:45 waltergwilson Exp $
+** $Id: std_pred_xsb_i.h,v 1.70 2011-10-10 01:14:21 waltergwilson Exp $
 ** 
 */
 
@@ -1149,7 +1149,10 @@ int term_depth(CTXTdeclc Cell Term) {
 
   XSB_Deref(Term);
 
-  if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) return 1;
+  if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT)  {
+    mem_dealloc(term_traversal_stack,term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+    return 1;
+  }
 	
   push_term(Term);   cur_depth++;		
 
@@ -1188,7 +1191,10 @@ int term_sizew(CTXTdeclc Cell Term) {
   XSB_Deref(Term);
 
 /*  if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT && !is_attv(Term)) return 1;*/
-  if (!(is_attv(Term) || is_functor(Term) || is_list(Term))) return 1; /*TODO: WGW why not set output arg and return TRUE? */
+  if (!(is_attv(Term) || is_functor(Term) || is_list(Term))) {
+     mem_dealloc(term_traversal_stack,term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+     return 1; /*TODO: WGW why not set output arg and return TRUE? */
+  }
 
   if (is_attv(Term)) {
      push_term(cell((CPtr)dec_addr(Term) + 1)) ;  
@@ -1303,7 +1309,6 @@ truereturn:
   return TRUE;
 falsereturn: 
 //  printf("***** falsereturn \n");
-//  mem_dealloc(term_traversal_stack,term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
   mem_dealloc(term_traversal_stack,term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
   return FALSE;
 }
