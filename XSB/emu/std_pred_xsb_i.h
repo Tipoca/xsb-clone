@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.70 2011-10-10 01:14:21 waltergwilson Exp $
+** $Id: std_pred_xsb_i.h,v 1.71 2011-10-10 18:59:22 dwarren Exp $
 ** 
 */
 
@@ -1249,11 +1249,12 @@ xsbBool term_size_limit(CTXTdeclc) {
   int term_traversal_stack_top = -1;
   int term_traversal_stack_size = TERM_TRAVERSAL_STACK_INIT;
   Cell Term;
-  int Limit;
+  Integer Limit;
+  TTFptr term_traversal_stack;
   Term = ptoc_tag(CTXTc 1);
-  Limit = ptoc_int(CTXTdeclc 2);
+  Limit = (Integer)ptoc_int(CTXTdeclc 2);
 
-  TTFptr term_traversal_stack = (TTFptr) mem_alloc(term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
+  term_traversal_stack = (TTFptr) mem_alloc(term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
 
   XSB_Deref(Term);
 
