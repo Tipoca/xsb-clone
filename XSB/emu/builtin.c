@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.375 2011-10-09 19:38:37 waltergwilson Exp $
+** $Id: builtin.c,v 1.376 2011-10-12 17:18:54 dwarren Exp $
 **
 */
 
@@ -1906,6 +1906,14 @@ int builtin_call(CTXTdeclc byte number)
     case 4: /* current Global Stack size */
       ctop_int(CTXTc 2, (pb)top_of_heap - (pb)glstack.low);
       break;
+    case 5: { /* current approximate memory usage */
+      Integer pspacetot = 0;
+      int i;
+      for (i=0; i<NUM_CATS_SPACE; i++) pspacetot += pspacesize[i];
+      // ignoring de, dl, pnde space for now...
+      ctop_int(CTXTc 2, pspacetot + (pdl.size + glstack.size + tcpstack.size + complstack.size) * K);
+      break;
+    }
     default: xsb_domain_error(CTXTc "xwam_state_case",ptoc_tag(CTXTc 1),"xwam_state/2",1);
     }
     break;
