@@ -87,6 +87,7 @@
 	':'/2,		'_$cutto'/1,	'_$savecp'/1.	
 :- export handle_interrupts/1.
 :- export timed_call/3.
+:- export memory_bounded_call/3.
 
    :- export expand_atom/2.
 

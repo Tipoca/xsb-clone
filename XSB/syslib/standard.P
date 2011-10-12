@@ -2149,6 +2149,18 @@ check_pos_integer(Term,Predicate,Arg) :-
 	 ;	type_error(integer,Term,Predicate,Arg)
 	).
 
+memory_bounded_call(Goal,MaxMemorySize,Handler) :-
+	timed_call(Goal,repeating(1000),handle_timer_interrupt(MaxMemorySize,Handler)).
+
+handle_timer_interrupt(MaxMemorySize,Handler) :-
+	xwam_state(5,CurMemorySize),
+	writeln(userout,memsize=CurMemorySize),
+	(CurMemorySize > MaxMemorySize
+	 ->	call(Handler)
+	 ;	true
+	).
+
+
 /* --------------------- end of file standard.P ----------------------- */
 end_of_file.
 
