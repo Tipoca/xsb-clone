@@ -2,6 +2,7 @@
 :- import {}/1 from clpr.
 :- import dump/3 from dump.
 
+
 test:- {X < 10},p1(X),fail.
 test:- {X < 9},p2(X).
 
