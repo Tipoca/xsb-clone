@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.32 2011-08-05 09:35:01 kifer Exp $
+## $Id: testsuite.sh,v 1.33 2011-10-16 19:25:25 tswift Exp $
 ## 
 ##
 
@@ -259,6 +259,7 @@ $GREP "bus" $LOG_FILE >> $RES_FILE
 $GREP "missing" $LOG_FILE >> $RES_FILE
 # for wrong results
 $GREP "differ!" $LOG_FILE >> $RES_FILE
+$GREP "differ (using call abstraction)" $LOG_FILE >> $RES_FILE
 $GREP "different!" $LOG_FILE >> $RES_FILE
 # when xsb aborts... it writes something like ! Aborting...
 $GREP "abort" $LOG_FILE >> $RES_FILE
