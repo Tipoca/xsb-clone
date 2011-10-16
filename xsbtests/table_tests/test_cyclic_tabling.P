@@ -1,6 +1,7 @@
 
 ?- set_prolog_flag(max_table_answer_depth,25).
 ?- set_prolog_flag(max_table_subgoal_depth,25).
+?- set_prolog_flag(max_table_subgoal_action,error).
 
 :- table p/1.
 p(X):- X = f(X).
