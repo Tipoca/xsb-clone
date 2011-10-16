@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.41 2011-05-22 15:12:25 tswift Exp $
+** $Id: tst_utils.c,v 1.42 2011-10-16 19:20:34 tswift Exp $
 ** 
 */
 
@@ -371,15 +371,15 @@ void printAnswerTemplate(FILE *fp, CPtr pAnsTmplt, int size) {
 
   int i;
 
-  fprintf(fp, "Answer Template:\n\tret(");
+  fprintf(fp, "Answer Template %p:\n\tret(",pAnsTmplt);
   if (size > 0) {
     for (i = 1; i < size; i++) {
-      printterm(fp, *pAnsTmplt--, 10);
-      fprintf(fp, ",");
+      printf("\t");printterm(fp, *pAnsTmplt--, 10);fprintf(stddbg,"-%p/%p",(void *)*(pAnsTmplt+1));
+      fprintf(fp, ",\n");
     }
-    printterm(fp, *pAnsTmplt, 10);
+    printf("\t");printterm(fp, *pAnsTmplt, 10);fprintf(stddbg,"-%p",(void *)*(pAnsTmplt));
   }
-  fprintf(fp, ")\n");
+  fprintf(fp, "\t\n");
 }
 
 /*-------------------------------------------------------------------------*/

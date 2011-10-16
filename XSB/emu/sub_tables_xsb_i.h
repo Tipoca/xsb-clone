@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sub_tables_xsb_i.h,v 1.27 2011-09-30 17:18:51 tswift Exp $
+** $Id: sub_tables_xsb_i.h,v 1.28 2011-10-16 19:20:34 tswift Exp $
 ** 
 */
 
@@ -68,7 +68,7 @@ inline static  CPtr extract_template_from_lookup(CTXTdeclc CPtr ans_tmplt) {
 #ifdef CALL_ABSTRACTION
    *ans_tmplt = encode_ansTempl_ctrs(0,callAbsStk_index,i);   // no attvars   
 #else
-  *ans_tmplt = encode_ansTempl_ctrs(0,i);   // no attvars
+   *ans_tmplt = encode_ansTempl_ctrs(0,i);   // no attvars
 #endif
   return ans_tmplt;
 }
@@ -269,7 +269,7 @@ inline static  void subsumptive_call_search(CTXTdeclc TabledCallInfo *callStruct
   TermStackLog_ResetTOS;
   Trail_ResetTOS;
 
-#ifdef CALL_ABSTRACTION
+#ifdef CALL_ABSTRACTION_FOR_SUBSUMPTION
   CallAbsStk_ResetTOS;
 
   init_termstack_for_subsumptive_check_ins(CallInfo_Arguments(*callStruct),

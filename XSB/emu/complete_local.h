@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_local.h,v 1.40 2011-08-19 21:44:15 tswift Exp $
+** $Id: complete_local.h,v 1.41 2011-10-16 19:20:34 tswift Exp $
 **
 */
 #ifndef __COMPLETE_LOCAL_H__
@@ -305,6 +305,7 @@ static inline void CompleteSimplifyAndReclaim(CTXTdeclc CPtr cs_ptr)
       char bufferb[MAXTERMBUFSIZE];
       sprint_subgoal(CTXTc bufferb,compl_subg);     
       fprintf(fview_ptr,"cmp(%s,%d,%d).\n",bufferb,compl_level(ComplStkFrame),ctrace_ctr++);
+      //      file_print_tables("CompleteSimplifyAndReclaim",ctrace_ctr);
   }
 
    if (ProducerSubsumesSubgoals(compl_subg)) {
@@ -404,9 +405,23 @@ static inline void SetupReturnFromLeader(CTXTdeclc CPtr orig_breg, CPtr cs_ptr,
   answer_template = tcp_template(breg);
   tmp = int_val(cell(answer_template));
 #ifdef CALL_ABSTRACTION
+  /* As when tabletry calls a completed table, we simply perform the
+     post-unification before branching into the trie. The trie
+     instructions will fail if the call doesn't unify -- the
+     implementation of call subsumption has already ensured that this
+     failure will occur correctly. */
   get_var_and_attv_nums(template_size, attv_num, abstr_size, tmp);
   answer_template = answer_template - template_size;
-  unify_abstractions_from_AT((answer_template-(2*abstr_size)),abstr_size);
+#ifdef ABSTRACTION_DEBUG
+  printf("compl AT %p ABS %p\n",answer_template,answer_template-(2*abstr_size));
+  print_heap_abstraction(answer_template-(2*abstr_size),abstr_size);
+  printAnswerTemplate(stddbg, answer_template+template_size, template_size);
+#endif
+  unify_abstractions_from_AT(CTXTc (answer_template-(2*abstr_size)),abstr_size);
+#ifdef ABSTRACTION_DEBUG
+  printAnswerTemplate(stddbg, answer_template+template_size, template_size);
+  print_registers(stddbg,TIF_PSC(subg_tif_ptr(subgoal)),20); 
+#endif
 #else
   get_var_and_attv_nums(template_size, attv_num, tmp);
   answer_template = answer_template - template_size;

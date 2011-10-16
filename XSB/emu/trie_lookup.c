@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.30 2011-09-30 17:18:51 tswift Exp $
+** $Id: trie_lookup.c,v 1.31 2011-10-16 19:20:34 tswift Exp $
 ** 
 */
 
@@ -76,7 +76,7 @@
    function.
     
 ****************************************************************************/
-#ifdef CALL_ABSTRACTION
+#ifdef DEBUG_ABSTRACTION
 void print_TermStack(CTXTdecl) {
   int i;
   CPtr termptr;
@@ -96,9 +96,23 @@ void print_AbsStack() {
   printf("-------------\n");
   printf("AbsStack size %d\n",callAbsStk_index);
   for ( i = 0; i < callAbsStk_index; i++) {
-    printf("   AbsStack[%d]: %p -a-> %p/*(%p)\n",i,
-           callAbsStk[i].originalTerm,callAbsStk[i].abstractedTerm,
+    printf("   AbsStack[%d]: %p (",i,callAbsStk[i].originalTerm);
+    printterm(stddbg,callAbsStk[i].originalTerm,25);
+    printf(")  -a-> %p/*(%p)\n",callAbsStk[i].abstractedTerm,
            (void *)*(callAbsStk[i].abstractedTerm));
+  }
+  printf("-------------\n");
+}
+
+void print_heap_abstraction(CPtr abstr_templ_ptr,int abstr_num) {
+  int i;
+
+  printf("-------------\n");
+  printf("Heap abs start %p size %d \n",abstr_templ_ptr,abstr_num);
+  for (i = 0 ; i < abstr_num; i = i+2) {
+    printf("   abstraction[%d]: %p (",i,(abstr_templ_ptr + i));
+    printterm(stddbg,*(abstr_templ_ptr  +i),20);
+    printf(")  -a-> %p/*(%p)\n",(abstr_templ_ptr + (i+1)),*(abstr_templ_ptr + (i+1)));
   }
   printf("-------------\n");
 }
@@ -844,10 +858,10 @@ void *iter_sub_trie_lookup(CTXTdeclc void *trieNode, TriePathType *pathType) {
 
     /* SUBTERM IS AN UNBOUND VARIABLE
        ------------------------------ */
-#ifdef CALL_ABSTRACTION
-    case XSB_ATTV:
+#ifdef CALL_ABSTRACTION_FOR_SUBSUMPTION
+      //    case XSB_ATTV:
       //      printf("before subterm %x tag %d\n",subterm,cell_tag(subterm));                                               
-      subterm = (dec_addr(subterm) | XSB_REF);
+      //      subterm = (dec_addr(subterm) | XSB_REF);
       //      printf("after subterm %x tag %d\n",subterm,cell_tag(subterm)); 
 #endif
     case XSB_REF:
@@ -964,12 +978,10 @@ void *iter_sub_trie_lookup(CTXTdeclc void *trieNode, TriePathType *pathType) {
 	variableChain = BTN_Sibling(variableChain);
       }
       break;
-#ifndef CALL_ABSTRACTION
     case XSB_ATTV:
       xsb_table_error(CTXTc 
 	      "Attributed variables not yet implemented in calls to subsumptive tables.");
       break;
-#endif
     /* SUBTERM HAS UNKNOWN CELL TAG
        ---------------------------- */
     default:

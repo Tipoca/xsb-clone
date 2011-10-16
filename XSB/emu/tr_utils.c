@@ -1342,22 +1342,29 @@ void breg_retskel(CTXTdecl)
     Cell    term;
     VariantSF sg_frame;
     CPtr    tcp, cptr, where;
-    int     i, Nvars;
+    int     i, Nvars,template_size,attv_num,abstr_size;
     Integer breg_offset;
 
     breg_offset = ptoc_int(CTXTc 1);
     tcp = (CPtr)((Integer)(tcpstack.high) - breg_offset);
     sg_frame = (VariantSF)(tcp_subgoal_ptr(tcp));
     where = tcp_template(tcp);
-    Nvars = int_val(cell(where)) & 0xffff;
-    cptr = where - Nvars - 1;
-    if (Nvars == 0) {
+    //    Nvars = int_val(cell(where)) & 0xffff;
+    //    cptr = where - Nvars - 1;
+#ifdef CALL_ABSTRACTION
+    get_var_and_attv_nums(template_size, attv_num, abstr_size,int_val(cell(where)));
+#else
+    get_var_and_attv_nums(template_size, attv_num, int_val(cell(where)));
+#endif
+    //    cptr = where - (template_size + 2*abstr_size) - 1;
+    cptr = where - (template_size) - 1;
+    if (template_size == 0) {
       ctop_string(CTXTc 3, get_ret_string());
     } else {
       bind_cs((CPtr)ptoc_tag(CTXTc 3), hreg);
-      psc = get_ret_psc((byte)Nvars);
+      psc = get_ret_psc((byte)template_size);
       new_heap_functor(hreg, psc);
-      for (i = Nvars; i > 0; i--) {
+      for (i = template_size; i > 0; i--) {
 	term = (Cell)(*(CPtr)(cptr+i));
         nbldval(term);
       }

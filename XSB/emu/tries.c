@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.153 2011-08-27 20:58:51 tswift Exp $
+** $Id: tries.c,v 1.154 2011-10-16 19:20:34 tswift Exp $
 ** 
 */
 
@@ -1530,34 +1530,52 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
 }
 
 /*----------------------------------------------------------------------*/
+// cant abstract if we're in the middle of an attvar.
+#ifndef MULTI_THREAD
+int can_abstract;
+#endif
+
 #ifdef CALL_ABSTRACTION
-#define CHECK_CALL_TERM_DEPTH(xtemp1)                                   \
+#define CHECK_CALL_TERM_DEPTH(xtemp1)					\
   if (--depth_ctr <= 0) {                                               \
-    if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_ABSTRACT) {              \
+    if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_ABSTRACT && can_abstract == TRUE) { \
       Cell newElement;                                                  \
       CPtr pElement = xtemp1;                                           \
-      printf("begin abs reg1 ");printterm(stddbg,reg[1],8);printf("\n"); \
-      printf("abstracting %p @ %x\n",pElement,*pElement);               \
-      XSB_Deref(*pElement);                                             \
+      /*      printf("begin abs reg1 dc %d ",depth_ctr);printterm(stddbg,reg[1],8);printf("\n"); */ \
+      /*      printf("abstracting %p @ %p\n",pElement,*pElement);		*/ \
+      XSB_Deref(*pElement);						\
       newElement = (Cell) hreg;new_heap_free(hreg);                     \
       hbreg = hreg;                                                     \
-      printf("newElement %p @newElement %x\n",newElement,*(CPtr)newElement); \
-      push_AbsStk(pElement,newElement);                         \
+      /*      printf("1) newElement %p @newElement %x\n",newElement,*(CPtr)newElement);	*/ \
+      push_AbsStk(*pElement,newElement);				\
+      /*                 CPtr tempElement = (CPtr) *pElement;		*/ \
+		 /*          printterm(stddbg,tempElement,8);printf("-3\n"); */	\
+		 /*           printf("trailing %p/%p\n",tempElement, newElement);	*/ \
+      push_pre_image_trail0(pElement, newElement);			 \
+      /*            printf("2) newElement %p @newElement %x\n",newElement,*(CPtr)newElement); */ \
       *pElement = newElement;                                           \
+      /*            printterm(stddbg,pElement,8);printf("-4\n");	*/ \
       *(--SubsFactReg) = (Cell) newElement;                             \
       StandardizeVariable(newElement,ctr);                              \
-      one_node_chk_ins(flag,EncodeNewTrieVar(ctr),CALL_TRIE_TT);        \
+      /*            printf("3) newElement %p @newElement %x\n",newElement,*(CPtr)newElement); */ \
+      one_btn_chk_ins(flag,EncodeNewTrieVar(ctr),CALL_TRIE_TT);        \
       ctr++;                                                            \
-      printf("end abs reg1 ");printterm(stddbg,reg[1],8);printf("\n");  \
+      /*            printf("end abs reg1 ");printterm(stddbg,reg[1],8);printf("\n"); */	\
+      /*            print_AbsStack();						*/ \
     }                                                                   \
     else if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_FAILURE) {          \
       resetpdl;                                                         \
       return XSB_FAILURE;                                               \
     }                                                                   \
-    else xsb_abort("Exceeded max call term size (%d)\n",flags[MAX_TABLE_SUBGOAL_DEPTH]); \
-  } 
+    else if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_ERROR) {		\
+      char buffer[MAXTERMBUFSIZE];						\
+      sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),(int)(flags[MAX_TABLE_SUBGOAL_DEPTH])); \
+      xsb_abort("Exceeded max call term depth of %d in call %s\n",	\
+		flags[MAX_TABLE_SUBGOAL_DEPTH],	buffer);		\
+    }									\
+  } else
 #else
-#define CHECK_CALL_TERM_DEPTH						\
+#define CHECK_CALL_TERM_DEPTH(dummy)					\
   if (--depth_ctr <= 0)	{						\
     if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_FAILURE) {		\
       resetpdl;								\
@@ -1569,16 +1587,19 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
       xsb_abort("Exceeded max call term depth of %d in call %s\n",	\
 		flags[MAX_TABLE_SUBGOAL_DEPTH],	buffer);		\
     }									\
-}
+  };
 #endif
 
+/* xtemp1 is a register */
 #define recvariant_call(flag,TrieType,xtemp1) {				\
   int  j;								\
 									\
   while (!pdlempty) {							\
     xtemp1 = (CPtr) pdlpop;						\
+    CPtr xtemp_bak = xtemp1;						\
     XSB_CptrDeref(xtemp1);						\
-    /* CALL ABSTRACTiON   CPtr xtemp_bak = xtemp1;*/ 			\
+    /*    printf("xtemp_bak %p xtemp1 %p ",xtemp_bak,xtemp1);		*/ \
+    /*    printterm(stddbg,xtemp_bak,20);printf("\n");			*/ \
     switch(tag = cell_tag(xtemp1)) {					\
     case XSB_FREE:							\
     case XSB_REF1:							\
@@ -1598,29 +1619,31 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
       one_btn_chk_ins(flag, EncodeTrieConstant(xtemp1), TrieType);	\
       break;								\
     case XSB_LIST:							\
-      /* CALL ABSTRACTION */						\
-      /* CHECK_CALL_TERM_DEPTH(xtemp_bak);	*/			\
-      /*      if (depth_ctr > 0) {       */				\
-      CHECK_CALL_TERM_DEPTH;						\
-      one_btn_chk_ins(flag, EncodeTrieList(xtemp1), TrieType);		\
-      pdlpush( cell(clref_val(xtemp1)+1) );				\
-      pdlpush( cell(clref_val(xtemp1)) );				\
-      /* } */								\
+      CHECK_CALL_TERM_DEPTH(xtemp_bak)					\
+      {       							\
+	one_btn_chk_ins(flag, EncodeTrieList(xtemp1), TrieType);	\
+	/*	pdlpush( cell(clref_val(xtemp1)+1) );			\
+		pdlpush( cell(clref_val(xtemp1)) );				*/ \
+	/*	printf("pushing L1 %p\n",clref_val(xtemp1)+1);		*/ \
+	/*	printf("pushing L2 %p\n",clref_val(xtemp1));			*/ \
+	pdlpush( (Cell) (clref_val(xtemp1)+1) );			\
+	pdlpush( (Cell) clref_val(xtemp1) );				\
+      } 								\
       break;								\
     case XSB_STRUCT:							\
-      /* CALL ABSTRACTION */						\
-      /* CHECK_CALL_TERM_DEPTH(xtemp_bak);	*/			\
-      /*      if (depth_ctr > 0) {       */				\
-      CHECK_CALL_TERM_DEPTH;						\
-      psc = (Psc) follow(cs_val(xtemp1));				\
-      item = makecs(psc);						\
-      one_btn_chk_ins(flag, item, TrieType);				\
-      for (j=get_arity(psc); j>=1; j--) {				\
-	pdlpush(cell(clref_val(xtemp1)+j));				\
-      }									\
-      /* } */								\
+      CHECK_CALL_TERM_DEPTH(xtemp_bak)  /* no semi-colon here */	\
+      {									\
+	psc = (Psc) follow(cs_val(xtemp1));				\
+	item = makecs(psc);						\
+	one_btn_chk_ins(flag, item, TrieType);				\
+	for (j=get_arity(psc); j>=1; j--) {				\
+	  /*	  pdlpush(cell(clref_val(xtemp1)+j));			*/ \
+	  pdlpush( (Cell) (clref_val(xtemp1)+j));			\
+	}								\
+      } 								\
       break;								\
     case XSB_ATTV:							\
+      can_abstract = FALSE;						\
       /* Now xtemp1 can only be the first occurrence of an attv */	\
       *(--SubsFactReg) = (Cell) xtemp1;					\
       xtemp1 = clref_val(xtemp1); /* the VAR part of the attv */	\
@@ -1710,7 +1733,6 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   Cell  depth_ctr;
   BTNptr Paren, *ChildPtrOfParen;
 
-  //  CallAbsStk_ResetTOS; /* Call Abstraction */
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
   subg_chk_ins++;
 #endif
@@ -1718,14 +1740,15 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   ChildPtrOfParen = &BTN_Child(Paren);
   arity = CallInfo_CallArity(*call_info);
   /* cptr is set to point to the trieinstr_unif_stk */
-  cptr = CallInfo_Arguments(*call_info);
+  cptr = CallInfo_Arguments(*call_info);     /* i.e. reg[1] */
   tSubsFactReg = SubsFactReg = CallInfo_AnsTempl(*call_info);
-  depth_ctr = flags[MAX_TABLE_SUBGOAL_DEPTH];  
   ctr = attv_ctr = 0;
 
   for (i = 0; i < arity; i++) {
-    xsb_dbgmsg((LOG_DEBUG,">>>> (argument %d)",i+1));
-    call_arg = (CPtr) (cptr + i);            /* Note! */
+    can_abstract = TRUE;
+    depth_ctr = flags[MAX_TABLE_SUBGOAL_DEPTH];  
+    //    printf(">>>> (argument %d)",i+1);
+    call_arg = (CPtr) (cptr + i);            /* Note! start with reg[1] */
     XSB_CptrDeref(call_arg);
     tag = cell_tag(call_arg);
     switch (tag) {
@@ -1773,8 +1796,10 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
       break;
     case XSB_LIST:
       one_btn_chk_ins(flag, EncodeTrieList(call_arg), CALL_TRIE_TT);
-      pdlpush(cell(clref_val(call_arg)+1));
-      pdlpush(cell(clref_val(call_arg)));
+      /*      pdlpush(cell(clref_val(call_arg)+1));
+	      pdlpush(cell(clref_val(call_arg)));*/
+	pdlpush( (Cell) (clref_val(call_arg)+1) );			
+	pdlpush( (Cell) clref_val(call_arg) );				
       recvariant_call(flag,CALL_TRIE_TT,call_arg);
       break;
     case XSB_STRUCT:
@@ -1782,7 +1807,8 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
       item = makecs(psc);
       one_btn_chk_ins(flag, item, CALL_TRIE_TT);
       for (j=get_arity(psc); j>=1 ; j--) {
-	pdlpush(cell(clref_val(call_arg)+j));
+	//	pdlpush(cell(clref_val(call_arg)+j));
+	pdlpush((Cell) (clref_val(call_arg)+j));
       }
       recvariant_call(flag,CALL_TRIE_TT,call_arg);
       break;
@@ -1807,6 +1833,7 @@ if (ABSTRACTING_ATTVARS) {
       }
       else{
       */
+      can_abstract = FALSE;						
       *(--SubsFactReg) = (Cell) call_arg;
       xsb_dbgmsg((LOG_TRIE,"In VSC: attv deref'd reg %x; val: %x into AT: %x",
 		 call_arg,clref_val(call_arg),SubsFactReg));
@@ -1845,8 +1872,11 @@ if (ABSTRACTING_ATTVARS) {
     TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
   }
 
+#ifdef CALL_ABSTRACTION
+    cell(--SubsFactReg) = encode_ansTempl_ctrs(attv_ctr,callAbsStk_index,ctr);  
+#else
     cell(--SubsFactReg) = encode_ansTempl_ctrs(attv_ctr,ctr);
-//    cell(--SubsFactReg) = encode_ansTempl_ctrs(attv_ctr,callAbsStk_index,ctr);  Call abstraction
+#endif
   /* 
    * "Untrail" any variable that used to point to VarEnumerator.  For
    * variables, note that *SubsFactReg is the address of a cell in the
@@ -1857,11 +1887,14 @@ if (ABSTRACTING_ATTVARS) {
    * of a substitution factor) doesn't change in either case.
    */     
   while (--tSubsFactReg > SubsFactReg) {
+    //    printf("vc untrail %p/%p\n",tSubsFactReg,*tSubsFactReg);
     if (isref(*tSubsFactReg))	/* a regular variable */
       ResetStandardizedVariable(*tSubsFactReg);
     else			/* an XSB_ATTV */
       ResetStandardizedVariable(clref_val(*tSubsFactReg));
   }
+
+  //  printf("end untrail ");printterm(stddbg,reg[1],8);printf("\n");  
 
   CallLUR_Leaf(*results) = Paren;
   CallLUR_Subsumer(*results) = CallTrieLeaf_GetSF(Paren);
@@ -2401,6 +2434,7 @@ int callAbsStk_size    = 0;
 
 void unify_abstractions_from_absStk(CTXTdecl) {
   int i;
+
   for (i = 0 ; i < callAbsStk_index; i++) {
     unify(CTXTc (Cell)callAbsStk[i].originalTerm,(Cell) callAbsStk[i].abstractedTerm);
   }
@@ -2410,34 +2444,44 @@ int unify_abstractions_from_AT(CTXTdeclc CPtr abstr_templ_ptr,int abstr_num) {
   int i;
   int unifies = 1;
 
-  for (i = 0 ; i < abstr_num; i++) {
-    /*    printf("unifying %p/%x with %p/%x\n",
-           (abstr_templ_ptr - i),*(abstr_templ_ptr - i),
-           (abstr_templ_ptr - (i+1)),*(abstr_templ_ptr - (i+1)));
-    */
-    unifies = unifies & unify(CTXTc *(abstr_templ_ptr - i),*(abstr_templ_ptr - (i + 1)));
+  for (i = 0 ; i < 2*abstr_num; i = i+2) {
+#ifdef DEBUG_ABSTRACTION    
+    printf("unifying ");printterm(stddbg,abstr_templ_ptr + i,8);
+    printf(" with %p/%x  \n",(abstr_templ_ptr + i+1),*(abstr_templ_ptr + i+1));
+#endif
+    unifies = unifies & unify(CTXTc *(abstr_templ_ptr + i),*(abstr_templ_ptr + i + 1));
   }
   return unifies;
 }
 
-void copy_abstractions_to_AT(CPtr abstr_templ_ptr,int abstr_num) {
-  int i = 0;
+void copy_abstractions_to_AT(CTXTdeclc CPtr abstr_templ_ptr,int abstr_num) {
+  int i = 0, j = 0;
+
+#ifdef DEBUG_ABSTRACTION
+  printf("copy to AT: AAT start %p size %d\n",abstr_templ_ptr,abstr_num);
+#endif
 
   while ( i <  abstr_num*2) {
-    *(abstr_templ_ptr + i) = (Cell) callAbsStk[i].originalTerm;
-    *(abstr_templ_ptr + (i+1)) = (Cell) callAbsStk[i].abstractedTerm;
+    *(abstr_templ_ptr + i) = (Cell) callAbsStk[j].originalTerm;
+    *(abstr_templ_ptr + (i+1)) = (Cell) callAbsStk[j].abstractedTerm;
     i = i +2;
+    j = j +1;
   }
 
   i = 0;
+
+#ifdef DEBUG_ABSTRACTION
   while ( i <  abstr_num*2) {
-    /*    printf("AbsTempl: orig %p/%x -a-> abs %p/%x\n",
-           (abstr_templ_ptr + i),*(abstr_templ_ptr + i),
-           (abstr_templ_ptr + (i+1)),*(abstr_templ_ptr + (i+1)));
-    */
+    printf(" orig %p (",(abstr_templ_ptr + i));
+    printterm(stddbg,*(abstr_templ_ptr + i),25);
+    printf(") -a-> abs %p/%p\n",(abstr_templ_ptr + (i+1)),*(abstr_templ_ptr + (i+1)));
+
     i = i+2;
   }
+#endif
+
 }
 
 
 #endif
+

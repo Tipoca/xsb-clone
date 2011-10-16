@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.178 2011-06-05 19:24:03 tswift Exp $
+** $Id: init_xsb.c,v 1.179 2011-10-16 19:20:34 tswift Exp $
 ** 
 */
 
@@ -247,8 +247,12 @@ static void init_flags(CTXTdecl)
   flags[THREAD_GLSIZE] = GLSTACK_DEFAULT_SIZE;
   flags[THREAD_TCPSIZE] = TCPSTACK_DEFAULT_SIZE;
   flags[THREAD_COMPLSIZE] = COMPLSTACK_DEFAULT_SIZE;
+
   flags[MAX_TABLE_SUBGOAL_DEPTH] = MY_MAXINT;
   flags[MAX_TABLE_SUBGOAL_ACTION] = XSB_ERROR;
+  //  flags[MAX_TABLE_SUBGOAL_ACTION] = XSB_ABSTRACT;
+  //  flags[MAX_TABLE_SUBGOAL_DEPTH] = 4;
+
   flags[MAX_TABLE_ANSWER_DEPTH] = MY_MAXINT;
   flags[MAX_TABLE_ANSWER_ACTION] = XSB_ERROR;
   flags[MAX_TABLE_ANSWER_LIST_DEPTH] = MY_MAXINT;
@@ -394,7 +398,7 @@ static int process_long_option(char *option,int *ctr,char *argv[],int argc)
       (*ctr)++;
       sscanf(argv[*ctr], "%d", &max_interned_tries_glc);
     }
-    else xsb_warn("Missing size value for --max_triess");
+    else xsb_warn("Missing size value for --max_tries");
   } else if (0==strcmp(option, "max_mqueues")) {
     if ((int) (*ctr) < argc) {
       (*ctr)++;
@@ -403,8 +407,38 @@ static int process_long_option(char *option,int *ctr,char *argv[],int argc)
 #endif
     }
     else xsb_warn("Missing size value for --max_mqueues");
+  } else if (!strcmp(option,"max_subgoal_depth")) {
+    if ((int) (*ctr) < argc) {
+      (*ctr)++;
+      if (sscanf(argv[*ctr], "%d", (int*) &flags[MAX_TABLE_SUBGOAL_DEPTH]) < 1)
+	xsb_warn("Invalid depth value for --max_subgoal_depth");
+    }
+    else xsb_warn("Missing depth value for --max_subgoal_depth");
   }
-
+  else if (!strcmp(option,"max_subgoal_action")) {
+    char action;
+    if ((int) (*ctr) < argc) {
+      (*ctr)++;
+      sscanf(argv[*ctr], "%c", &action);
+      switch (action) {
+      case 'a':  {
+	flags[MAX_TABLE_SUBGOAL_ACTION] = XSB_ABSTRACT;
+	break;
+      }
+      case 'e':  {
+	flags[MAX_TABLE_SUBGOAL_ACTION] = XSB_ERROR;
+	break;
+      }
+      case 'f':  {
+	flags[MAX_TABLE_SUBGOAL_ACTION] = XSB_FAILURE;
+	break;
+      }
+      default: xsb_warn("Invalid action for (%c) for --max_subgoal_action "
+			"values can be (a)bstract (e)rror or (f)ail",action);
+      }
+    }
+    else xsb_warn("Missing depth value for --max_subgoal_depth");
+  } 
   else xsb_warn("Unknown option --%s",option);
 
   return(0);
@@ -1126,6 +1160,10 @@ void init_thread_structures(CTXTdecl)
       term_string[i] = NULL;
     }
   }
+  
+  callAbsStk_index = 0;
+  callAbsStk_size    = 0;
+
   /***************/
 
 /* This is here just for the first thread - others initialize its xsb tid

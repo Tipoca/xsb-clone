@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.71 2011-10-10 18:59:22 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.72 2011-10-16 19:20:34 tswift Exp $
 ** 
 */
 
@@ -1239,7 +1239,7 @@ term_size(X,SX),put_attr(X,wgw,a),term_size(X,Sal),put_attr(X,wgw2,b),term_size(
 
 /***************************************************** */
 /* TODO: dealloc if return FALSE?. */
-xsbBool term_size_limit(CTXTdeclc) { 
+xsbBool term_size_limit(CTXTdecl) { 
   /* WGW check 2nd arg is integer, call it LIMIT*/
 /* 
   if (!(is_int(Limit)) xsb_instantiation_error(CTXTc "term_size_limit",2,2,XSB_INT);
@@ -1252,7 +1252,7 @@ xsbBool term_size_limit(CTXTdeclc) {
   Integer Limit;
   TTFptr term_traversal_stack;
   Term = ptoc_tag(CTXTc 1);
-  Limit = (Integer)ptoc_int(CTXTdeclc 2);
+  Limit = (Integer)ptoc_int(CTXTc 2);
 
   term_traversal_stack = (TTFptr) mem_alloc(term_traversal_stack_size*sizeof(Term_Traversal_Frame),OTHER_SPACE);
 

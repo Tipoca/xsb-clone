@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.95 2011-08-19 21:44:15 tswift Exp $
+** $Id: tables.c,v 1.96 2011-10-16 19:20:34 tswift Exp $
 ** 
 */
 
@@ -208,6 +208,10 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
   /* for incremental evaluation end */     
 #endif
 
+#ifdef CALL_ABSTRACTION
+  CallAbsStk_ResetTOS; 
+#endif
+
   tif = CallInfo_TableInfo(*call_info);
   if ( IsNULL(TIF_CallTrie(tif)) )
     TIF_CallTrie(tif) = newCallTrie(CTXTc TIF_PSC(tif));
@@ -286,15 +290,19 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
      *
      */
     CPtr tmplt_component, tmplt_var_addr, hrg_addr;
-    //    int size, j,attv_num,abstr_size;  /* call abstraction */
+#ifdef CALL_ABSTRACTION
+    int size, j,attv_num,abstr_size;  /* call abstraction */
+#else
     int size, j;
+#endif
 
     tmplt_component = CallLUR_AnsTempl(*results);
     size = int_val(*tmplt_component) & 0xffff;
-    /* Call abstraction   get_var_and_attv_nums(size, attv_num, abstr_size, int_val(*tmplt_component)); */
+#ifdef CALL_ABSTRACTION
+    get_var_and_attv_nums(size, attv_num, abstr_size, int_val(*tmplt_component)); 
     //    printf("done with vcs, answer_template info %x lur %x size %d\n",
     //	   CallLUR_AnsTempl(*results),CallInfo_AnsTempl(*call_info),size);
-
+#endif
     /* expand heap if there's not enough space */
     if ((pb)top_of_localstk < (pb)top_of_heap + size + 	OVERFLOW_MARGIN) {
       /*    if ((pb)top_of_localstk < (pb)top_of_heap + size + 	OVERFLOW_MARGIN + 2*abstr_size) { */
@@ -308,33 +316,41 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
     if (abstr_size > 0 && (CallLUR_Subsumer(*results) == NULL
                            || !is_completed(CallLUR_Subsumer(*results)))) {
       //      printf("copying abstractions to AT\n");                                                
-      copy_abstractions_to_AT(hreg,abstr_size);
+#ifdef DEBUG_ABSTRACTION
+      printf("abstr size %d\n",abstr_size);
+      print_AbsStack();
+#endif
+      copy_abstractions_to_AT(CTXTc hreg,abstr_size);
+#ifdef ABSTRACTION_DEBUG
+      print_heap_abstraction(hreg,abstr_size);
+#endif
       hreg = hreg + 2*abstr_size;
     }
 #endif
 
+    /* tmplt_component is CPS address */
     for ( j = size - 1, tmplt_component = tmplt_component + size;
 	  j >= 0;
 	  j--, tmplt_component-- ) {
       tmplt_var_addr = (CPtr)*tmplt_component;
-      xsb_dbgmsg((LOG_TRIE,"in TSC, copying AT to heap At[%d]: %x val: %x",
-		  (size-(j)),tmplt_component,tmplt_var_addr));
+      //      printf("in TSC, copying AT to heap At[%d]: %p val: %p",
+      //		  (size-(j)),tmplt_component,tmplt_var_addr));
       /* Now we are sure that tmplt_var_addr is a var on the heap */
       hrg_addr = hreg+j;
       bld_copy(hrg_addr, (Cell)(tmplt_var_addr));
     }
     hreg += size;
-    bld_copy(hreg, cell(CallLUR_AnsTempl(*results)));
+    bld_copy(hreg, cell(CallLUR_AnsTempl(*results)));  // copy size map
     hreg++;
-
+    //    printf("hreg after AT %p\n",hreg);
     /* CallLUR_AnsTemp pointed to the youngest part of AnsTempl, as it
      * was set to SubsFactReg at the end of vcs; reset it to the
      * oldest part of AnsTempl, which will make it =
      * CallInfo_AnsTempl.  Both still point to CPS.  */
 
     CallLUR_AnsTempl(*results) = CallLUR_AnsTempl(*results) + size + 1;
-    //    printf("at end: answer_template %x / %x size %d\n",CallLUR_AnsTempl(*results),
-    //	   CallInfo_AnsTempl(*call_info),size);
+    //    printf("at end: answer_template %p / %p size %d\n",CallLUR_AnsTempl(*results),
+    //   CallInfo_AnsTempl(*call_info),size);
   }
   return XSB_SUCCESS;
 }
@@ -907,17 +923,16 @@ void perform_early_completion(CTXTdeclc VariantSF ProdSF,CPtr ProdCPF) {
   if (tcp_pcreg(ProdCPF) != (byte *) &answer_return_inst) 	
     tcp_pcreg(ProdCPF) = (byte *) &check_complete_inst;   	
   mark_as_completed(ProdSF);					
-    if (flags[CTRACE_CALLS])  { 
-      char bufferb[MAXTERMBUFSIZE];
-      sprint_subgoal(CTXTc bufferb,ProdSF);     
-      fprintf(fview_ptr,"cmp(%s,ec,%d).\n",bufferb,ctrace_ctr++);
+  if (flags[CTRACE_CALLS])  { 
+    char bufferb[MAXTERMBUFSIZE];
+    sprint_subgoal(CTXTc bufferb,ProdSF);     
+    fprintf(fview_ptr,"cmp(%s,ec,%d).\n",bufferb,ctrace_ctr++);
   }
-  /*
-  if (flags[EC_REMOVE_SCC] && is_leader(ProdSF)) {		
-    printf("is leader\n");
-    remove_incomplete_tries(subg_compl_stack_ptr(CTXTc subg_compl_stack_ptr(ProdCPF)));
-    //also get rid of CCFs and Susp Fs.
+  if ( flags[EC_REMOVE_SCC] &&
+       (is_leader(ProdSF) || prev_compl_frame(subg_compl_stack_ptr(ProdSF)) >= COMPLSTACKBOTTOM)) { 
+    remove_incomplete_tries(CTXTc subg_compl_stack_ptr(ProdSF));
+    subg_pos_cons(ProdSF) = 0;
+    subg_compl_susp_ptr(ProdSF) = 0;  /* ec'd -- neg must fail */
   }
-    */
 }
 #endif

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.78 2011-08-03 18:12:54 tswift Exp $
+** $Id: tries.h,v 1.79 2011-10-16 19:20:34 tswift Exp $
 ** 
 */
 
@@ -370,7 +370,7 @@ struct th_context ;
 
 extern int unify_abstractions_from_AT(struct th_context *, CPtr , int);
 extern void unify_abstractions_from_absStk(struct th_context *);
-extern void copy_abstractions_to_AT(CPtr ,int);
+extern void copy_abstractions_to_AT(struct th_context *, CPtr, int);
 
 extern BTHTptr  New_BTHT(struct th_context *, Structure_Manager *, int);
 extern BTNptr   newBasicTrie(struct th_context *, Cell,int);

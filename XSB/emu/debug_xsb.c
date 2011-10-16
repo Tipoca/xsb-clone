@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.79 2011-08-27 21:03:12 tswift Exp $
+** $Id: debug_xsb.c,v 1.80 2011-10-16 19:20:34 tswift Exp $
 ** 
 */
 
@@ -623,7 +623,7 @@ static void print_cpf(CPtr cpf_addr, FILE* where) {
   case GENERATOR_CP_FRAME:
     fprintf(where,"Generator Choice Point Frame:\n");
     print_common_cpf_part(cpf_addr,where);
-    fprintf(where,"   CP stack %p:\ttemplate:\t0x%p", 
+    fprintf(where,"   CP stack %p:\ttemplate:\t0x%p\n", 
 	       &(tcp_template(cpf_addr)), tcp_template(cpf_addr));
     fprintf(where,"   CP stack %p:\tsubgoal frame ptr:\t0x%p\n", 
 	       &(tcp_subgoal_ptr(cpf_addr)), tcp_subgoal_ptr(cpf_addr));
@@ -647,7 +647,7 @@ static void print_cpf(CPtr cpf_addr, FILE* where) {
   case CONSUMER_CP_FRAME:
     fprintf(where,"Consumer Choice Point Frame:\n");
     print_common_cpf_part(cpf_addr,where);
-    fprintf(where,"   CP stack %p:\ttemplate:\t0x%p", 
+    fprintf(where,"   CP stack %p:\ttemplate:\t0x%p\n", 
 	       &(nlcp_template(cpf_addr)), nlcp_template(cpf_addr));
     fprintf(where,"   CP stack %p:\tsubgoal frame ptr:\t0x%p\n", 
 	       &(nlcp_subgoal_ptr(cpf_addr)), nlcp_subgoal_ptr(cpf_addr));

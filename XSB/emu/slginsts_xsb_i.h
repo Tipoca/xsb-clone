@@ -178,6 +178,12 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   CallInfo_TableInfo(callInfo) = tip;
   ADVANCE_PC(size_xxxXX);
 
+#ifdef DEBUG_ABSTRACTION
+  printf("tabletry -- ");
+  print_registers(stddbg,TIF_PSC(tip),20); 
+  printf("\n");
+#endif
+
   check_tcpstack_overflow;
   CallInfo_AnsTempl(callInfo) = top_of_cpstack;
 
@@ -262,8 +268,9 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
     }
     else sprintf(bufferb,"null");
-    fprintf(fview_ptr,"tc(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+    fprintf(fview_ptr,"tc-new(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
+
 
 #endif /* !SHARED_COMPL_TABLES */
 #ifdef CONC_COMPL
@@ -310,11 +317,17 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     answer_template_heap = hreg - 1;
     tmp = int_val(cell(answer_template_heap));
     get_var_and_attv_nums(template_size, attv_num, abstr_size,tmp);
-    //    printf("there are %d abstactions %d vars %d attvs\n",abstr_size,template_size,attv_num);   
-//    printf("about to create new producer \n");                              
-//    print_AbsStack();                                                       
-//    print_callRegs(CallInfo_CallArity(callInfo));                           
-//    if (abstr_size > 0) copy_abstractions_to_cps(answer_template_cps,abstr_size);              
+#ifdef DEBUG_ABSTRACTION
+    printf("AT (new) %p\n",answer_template_heap-1);
+    printterm(stddbg,reg[1],8);printf("\n");	
+    printAnswerTemplate(stddbg,answer_template_heap-1,template_size);
+    printf("about to create new producer \n");                              
+    print_AbsStack();                                                       
+    print_callRegs(CallInfo_CallArity(callInfo));                           
+#endif
+/*    obsolete
+  if (abstr_size > 0) copy_abstractions_to_cps(CTXTc answer_template_cps,abstr_size);              
+*/
 #endif
     producer_cpf = answer_template_cps;
     save_find_locx(ereg);
@@ -357,7 +370,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
     }
     else sprintf(bufferb,"null");
-    fprintf(fview_ptr,"tc(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+    fprintf(fview_ptr,"tc-comp(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
     /* Unify Call with Answer Trie
        --------------------------- */
@@ -369,15 +382,24 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       answer_template_heap = hreg - 1; 
 
       tmp = int_val(cell(answer_template_heap));
+      trieinstr_vars_num = -1;
+
 #ifdef CALL_ABSTRACTION
       get_var_and_attv_nums(template_size, attv_num, abstr_size,tmp);
-      //      print_AbsStack();                                                   
-      //      print_callRegs(CallInfo_CallArity(callInfo));                       
-      trieinstr_vars_num = -1;
-      unify_abstractions_from_absStk();
+#ifdef DEBUG_ABSTRACTION
+      print_AbsStack();                                                   
+#endif
+      /* As in SetupReturnfromLeader we simply perform the
+	 post-unification before branching into the trie. The trie
+	 instructions will fail if the call doesn't unify -- the
+	 implementation of call subsumption has already ensured that
+	 this failure will occur correctly. */
+      unify_abstractions_from_absStk(CTXT);
+#ifdef DEBUG_ABSTRACTION
+      print_callRegs(CallInfo_CallArity(callInfo));                       
+#endif
 #else
       get_var_and_attv_nums(template_size, attv_num, tmp);
-      trieinstr_vars_num = -1;
 #endif
 
       /* Initialize trieinstr_vars[] as the attvs in the call.  This is
@@ -385,7 +407,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 	 the trie nodes have been set up to account for this in
 	 variant_answer_search() -- see the documentation there.  */
       if (attv_num > 0) {
-	//	printf("fiddling with attvs\n");
+	printf("fiddling with attvs\n");
 	CPtr cptr;
 	for (cptr = answer_template_heap - 1;
 	     cptr >= answer_template_heap - template_size; cptr--) {
@@ -437,7 +459,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
     }
     else sprintf(bufferb,"null");
-    fprintf(fview_ptr,"tc(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+    fprintf(fview_ptr,"tc-cons(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
 
     /* Previously Seen Subsumed Call
@@ -506,6 +528,12 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     tmp = int_val(cell(answer_template_heap));
     get_var_and_attv_nums(template_size, attv_num, abstr_size,tmp);
     //    printf("++there are %d abstactions %d vars %d attvs\n",abstr_size,templ    ate_size,attv_num);   
+#ifdef DEBUG_ABSTRACTION
+    printf("AT (cons) %p @%p\n",answer_template_heap-1,*(answer_template_heap-1));
+    printterm(stddbg,reg[1],8);printf("-- AT cons\n");	
+    printAnswerTemplate(stddbg,answer_template_heap-1,template_size);
+    print_heap_abstraction(answer_template_heap-(template_size+2*abstr_size),abstr_size);
+#endif
 #endif
     efreg = ebreg;
     if (trreg > trfreg) trfreg = trreg;
@@ -570,7 +598,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       hbreg = hreg;
 
       answer_template_heap--;
-
+      //      printf("answer_template_heap %p\n",answer_template_heap);
       /* TLS 060913: need to initialize here, as it doesnt get
 	 initialized in all paths of table_consume_answer */
       num_heap_term_vars = 0;
@@ -581,15 +609,20 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 			   CallInfo_TableInfo(callInfo));
 
 #ifdef CALL_ABSTRACTION
+#ifdef DEBUG_ABSTRACTION
+      printf("about to post-unify\n");
+      printAnswerTemplate(stddbg,answer_template_heap,template_size);
+      print_heap_abstraction(answer_template_heap+1-(template_size+2*abstr_size),abstr_size);
+#endif
       if (abstr_size > 0) {
-        if (!unify_abstractions_from_AT((answer_template_heap-(template_size+2*abstr_size)), 
-					abstr_size)) {
-          printf("failing\n");
+	if (!unify_abstractions_from_AT(CTXTc (answer_template_heap+1-(template_size+2*abstr_size)), 
+				      abstr_size)) {
+          printf("failing at new subgoal CCP\n");
 	  breg = nlcp_prevbreg(consumer_cpf);
 	  Fail1;
 	}
-	printf("succeeding\n");
-      }
+	//	printf("unify_abstractions (cons) succeeding\n");
+    }
 #endif
 
  if (flags[CTRACE_CALLS])  { 
@@ -754,7 +787,8 @@ XSB_Start_Instr(answer_return,_answer_return)
   answer_continuation = ALN_Next(nlcp_trie_return(breg)); /* step to next answer */
   consumer_sf = (VariantSF)nlcp_subgoal_ptr(breg);
   answer_template = nlcp_template(breg);
-  
+
+  //  printf("Starting answer return\n");
   //    fprintf(stddbg,"Starting answer return %x (%x) (prev %x) aln %x\n",
   //  	  breg,*lpcreg,nlcp_prevbreg(breg),answer_continuation); 
 
@@ -800,16 +834,16 @@ table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
 			 subg_tif_ptr(consumer_sf));
 
 #ifdef CALL_ABSTRACTION
- printf("ansret abstrsize %d\n",abstr_size);
+// printf("ansret abstrsize %d\n",abstr_size);
  if (abstr_size > 0) {
-   if (!unify_abstractions_from_AT((answer_template-(template_size+2*abstr_size)), 
+   if (!unify_abstractions_from_AT(CTXTc (answer_template+1-(template_size+2*abstr_size)), 
 				   abstr_size)) {
-     printf("failing\n");
+     printf("failing in answer return\n");
      //      breg = nlcp_prevbreg(consumer_cpf);                             
      Fail1;
      XSB_Next_Instr();
    }
-   printf("succeeding\n");
+   //   printf("succeeding\n");
  }
 #endif
 
@@ -949,6 +983,7 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   tmp = int_val(cell(answer_template));
 #ifdef CALL_ABSTRACTION
   get_var_and_attv_nums(template_size, attv_num, abstr_size,tmp);
+//  printf("na template %d attv %d abstr %d\n",template_size, attv_num, abstr_size);
 #else
   get_var_and_attv_nums(template_size, attv_num, tmp);
 #endif
@@ -997,6 +1032,12 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
     else sprintf(bufferb,"null");
     fprintf(fview_ptr,"na(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
+#ifdef DEBUG_ABSTRACTION
+  printf("AT (na) %p size %d\n",answer_template,template_size);
+  print_heap_abstraction(answer_template-2*(abstr_size)-(template_size-1),abstr_size);
+  printAnswerTemplate(stddbg,answer_template,template_size);
+  print_registers(stddbg, TIF_PSC(subg_tif_ptr(producer_sf)),flags[MAX_TABLE_SUBGOAL_DEPTH]);
+#endif
 
     SUBG_INCREMENT_ANSWER_CTR(producer_sf);
     /* incremental evaluation */
@@ -1044,10 +1085,11 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
 	 *  the CPF to a check_complete instr.
 	 *
 	 */
-	/*		printf("performing early completion for: (%d)",subg_is_complete(producer_sf));
+	/*		
+		printf("performing early completion for: (%d)",subg_is_complete(producer_sf));
 		print_subgoal(CTXTc stddbg, producer_sf);
 		printf("(breg: %x pcpf %x\n",breg,producer_cpf);alt_print_cp(CTXTc"ec");
-	*/
+	 */
 	perform_early_completion(CTXTc producer_sf, producer_cpf);
 #if defined(LOCAL_EVAL)
 	flags[PIL_TRACE] = 1;
