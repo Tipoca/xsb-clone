@@ -850,7 +850,8 @@ xsb_flag(max_table_subgoal_depth,Action):-
 xsb_flag(max_table_subgoal_action, Action) :-
 	stat_flag(MAX_TABLE_SUBGOAL_ACTION, A),
 	(A == XSB_ERROR -> Action = error 
-            ; A == XSB_FAILURE, Action = failure).
+	    ; (A == XSB_ABSTRACT -> Action = abstract 
+               ; A == XSB_FAILURE, Action = failure) ).
 xsb_flag(max_table_answer_depth,Action):- 
 	stat_flag(MAX_TABLE_ANSWER_DEPTH,Action).
 xsb_flag(max_table_answer_action, Action) :-
@@ -998,8 +999,10 @@ set_xsb_flag_1(max_table_subgoal_action, Action) :-!,
 	    stat_set_flag(MAX_TABLE_SUBGOAL_ACTION, XSB_ERROR)
           ; (Action == failure ->  
 	    stat_set_flag(MAX_TABLE_SUBGOAL_ACTION, XSB_FAILURE)
+          ; (Action == abstract ->  
+	    stat_set_flag(MAX_TABLE_SUBGOAL_ACTION, XSB_ABSTRACT)
             ; domain_error([error,', ',failure],
-                        Action,set_xsb_flag/2,2,'max_table_subgoal_action clause') ) ).
+                        Action,set_xsb_flag/2,2,'max_table_subgoal_action clause') ) ) ).
 set_xsb_flag_1(max_table_answer_depth, Size) :-!,
 	stat_set_flag(MAX_TABLE_ANSWER_DEPTH, Size).
 set_xsb_flag_1(max_table_answer_action, Action) :-!,

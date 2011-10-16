@@ -415,6 +415,7 @@ standard_symbol(sub_atom, 5, sub_atom).
 standard_symbol(sys_exit, 1, shell).
 
 standard_symbol(tab, 1, standard).
+standard_symbol(table_dump, 0, dump_table).
 standard_symbol((table), 1, standard).
 standard_symbol(timed_call,3,standard).
 
