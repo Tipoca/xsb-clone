@@ -1,9 +1,15 @@
+%:- import start_forest_view/1 from tables.
+%?- start_forest_view(userout).
+
 :- import bagReduce/4, bagPO/3, bagPOv/2, bagOf/2, 
 	bagMin/2, bagMax/2, bagSum/2, bagCount/2, bagAvg/2, bagPO/4,
 	filterReduce/4, filterPO/3, filterPO/2, filterPOA/4,
 	filterMin/2, filterMax/2 from aggregs.
 :- import subsumes_chk/2,variant/2 from subsumes.
 :- import numbervars/3, numbervars/1 from num_vars.
+
+% Don't abstract -- no finite model.
+?- set_prolog_flag(max_table_subgoal_depth,10).
 
 /***********************************************************************/
 :- import abolish_table_info/0 from machine.
@@ -17,7 +23,6 @@ at :- abolish_table_info.
 
 /* test data and query: test. */
 test :- at,fail.
-
 test :- 
 	ainterp(app([a,b],[c,d],R),V),
 	writeln([R,V]),fail.
