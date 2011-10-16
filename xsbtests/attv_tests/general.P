@@ -1,7 +1,7 @@
 /* File:      general.P
 ** Author(s): Baoqiu Cui / Swift
 **
-** $Id: general.P,v 1.7 2011-03-13 00:33:51 tswift Exp $
+** $Id: general.P,v 1.8 2011-10-16 19:26:50 tswift Exp $
 */
 
 :- xsb_flag(verboseness,3).
@@ -10,8 +10,10 @@
 
 %:- attribute dom/1, name/2.
 
-test :-
-	test1,
+/* tests 1 and 2 rely on get_calls.  */
+:- set_prolog_flag(max_table_subgoal_depth,20).
+
+test :- test1,
 	test2,
 	(test3 ; true),
 	test4,
