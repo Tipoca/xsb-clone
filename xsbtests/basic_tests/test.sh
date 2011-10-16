@@ -53,7 +53,7 @@ options=$2
 #------------------------------------
 # interpreter series.
 #------------------------------------
-../gentest.sh "$XEMU $options" interp "tinterp."
+../gentest.sh "$XEMU $options" interp "test."
 #------------------------------------
 # tabletrysingle tests.
 #------------------------------------
