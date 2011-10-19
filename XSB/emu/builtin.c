@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.376 2011-10-12 17:18:54 dwarren Exp $
+** $Id: builtin.c,v 1.377 2011-10-19 22:51:28 tswift Exp $
 **
 */
 
@@ -3299,6 +3299,14 @@ case WRITE_OUT_PROFILE:
     break;
   }
   case UNWIND_STACK: {
+    if (flags[CTRACE_CALLS])  { 
+      char buffera[MAXTERMBUFSIZE];
+      if (ptcpreg) 
+	sprint_subgoal(CTXTc buffera, (VariantSF)ptcpreg); 
+      else sprintf(buffera,"null");
+      fprintf(fview_ptr,"err(%s,%d).\n",buffera,ctrace_ctr++);
+    }
+
     if (unwind_stack(CTXT)) return TRUE; else return FALSE;
     break;
   }

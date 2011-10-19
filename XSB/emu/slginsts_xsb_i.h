@@ -268,7 +268,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
     }
     else sprintf(bufferb,"null");
-    fprintf(fview_ptr,"tc-new(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+    fprintf(fview_ptr,"tc(%s,%s,new,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
 
 
@@ -370,7 +370,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
     }
     else sprintf(bufferb,"null");
-    fprintf(fview_ptr,"tc-comp(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+    fprintf(fview_ptr,"tc(%s,%s,comp,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
     /* Unify Call with Answer Trie
        --------------------------- */
@@ -407,7 +407,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 	 the trie nodes have been set up to account for this in
 	 variant_answer_search() -- see the documentation there.  */
       if (attv_num > 0) {
-	printf("fiddling with attvs\n");
+	//	printf("fiddling with attvs\n");
 	CPtr cptr;
 	for (cptr = answer_template_heap - 1;
 	     cptr >= answer_template_heap - template_size; cptr--) {
@@ -459,7 +459,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
     }
     else sprintf(bufferb,"null");
-    fprintf(fview_ptr,"tc-cons(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+    fprintf(fview_ptr,"tc(%s,%s,incmp,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
 
     /* Previously Seen Subsumed Call

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.154 2011-10-16 19:20:34 tswift Exp $
+** $Id: tries.c,v 1.155 2011-10-19 22:51:29 tswift Exp $
 ** 
 */
 
@@ -1595,8 +1595,9 @@ int can_abstract;
   int  j;								\
 									\
   while (!pdlempty) {							\
+    CPtr xtemp_bak;							\
     xtemp1 = (CPtr) pdlpop;						\
-    CPtr xtemp_bak = xtemp1;						\
+    xtemp_bak = xtemp1;						\
     XSB_CptrDeref(xtemp1);						\
     /*    printf("xtemp_bak %p xtemp1 %p ",xtemp_bak,xtemp1);		*/ \
     /*    printterm(stddbg,xtemp_bak,20);printf("\n");			*/ \

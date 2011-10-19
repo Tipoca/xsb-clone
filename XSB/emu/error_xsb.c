@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.92 2011-08-06 19:14:20 tswift Exp $
+** $Id: error_xsb.c,v 1.93 2011-10-19 22:51:29 tswift Exp $
 ** 
 */
 
@@ -173,6 +173,14 @@ DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, size_t B
   if (!space_for_ball_assert) 
     xsb_exit("[Resource] Out of memory");
 
+  if (flags[CTRACE_CALLS])  { 
+    char buffera[MAXTERMBUFSIZE];
+    if (ptcpreg) 
+      sprint_subgoal(CTXTc buffera, (VariantSF)ptcpreg); 
+    else sprintf(buffera,"null");
+    fprintf(fview_ptr,"err(%s,%d).\n",buffera,ctrace_ctr++);
+  }
+
   exceptballpsc = pair_psc((Pair)insert("$$exception_ball", (byte)2, 
 					pair_psc(insert_module(0,"standard")), 
 					&isnew));
@@ -209,6 +217,14 @@ DllExport void call_conv xsb_throw(CTXTdeclc prolog_term Ball)
     /* 3 cells needed for term */
     space_for_ball_assert = (Cell *) mem_alloc(3*sizeof(Cell),LEAK_SPACE);
     if (!space_for_ball_assert) xsb_exit("out of memory in xsb_throw!");
+  }
+
+  if (flags[CTRACE_CALLS])  { 
+    char buffera[MAXTERMBUFSIZE];
+    if (ptcpreg) 
+      sprint_subgoal(CTXTc buffera, (VariantSF)ptcpreg); 
+    else sprintf(buffera,"null");
+    fprintf(fview_ptr,"err(%s,%d).\n",buffera,ctrace_ctr++);
   }
 
   exceptballpsc = pair_psc((Pair)insert("$$exception_ball", (byte)2, 
