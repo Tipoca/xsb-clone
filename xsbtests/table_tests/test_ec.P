@@ -1,4 +1,4 @@
-%:- compiler_options([spec_off]).
+:- compiler_options([spec_off]).
 %?- set_prolog_flag(ctrace,on).
 %:- import get_answer_number/2 from tables.
 :- import conset/2, coninc/2 from gensym.
@@ -45,6 +45,22 @@ zeno_2(X):-
 p(s(X)):- p(X).
 p(0).
 
+
+%-----------
+% tests a different path in the compiler
+
+:- table b/2, c/2.
+:- table a/2 as approximate(use_first(2)).
+
+a(X,Y):- b(X,Y).
+a(a1,a2).
+
+b(X,Y):- c(X,Y).
+b(b1,b2).
+
+c(X,Y):- a(X,Y).
+c(c1,c2).
+
 %-----------
 /* TLS: abolishing */
 
@@ -55,6 +71,7 @@ test:- abolish_all_tables,fail.
 test:- zeno_1(_X),fail.
 test:- abolish_all_tables,fail.
 test:- zeno_2(_X),fail.
+test:- a(X,Y),writeln(a(X,Y)),fail.
 test.
 
 
