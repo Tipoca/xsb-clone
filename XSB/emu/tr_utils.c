@@ -1342,7 +1342,8 @@ void breg_retskel(CTXTdecl)
     Cell    term;
     VariantSF sg_frame;
     CPtr    tcp, cptr, where;
-    int     i, Nvars,template_size,attv_num,abstr_size;
+    int     i, template_size,attv_num,abstr_size;
+    //    int     Nvars;
     Integer breg_offset;
 
     breg_offset = ptoc_int(CTXTc 1);
