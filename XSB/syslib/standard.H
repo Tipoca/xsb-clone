@@ -127,7 +127,7 @@
 :- import '_$hilog_symbol'/1, add_hilog_symbol/1 from hilogsym.
 :- import clause/2, retractall/1 from assert.
 :- import domain_error/4, domain_error/5, check_atom/3, check_nonvar/3,check_var/3, 
-	  check_ground/3,
+	  check_ground/3,resource_error/2,
    type_error/4, permission_error/4, 
    instantiation_error/3, instantiation_error/2, check_nonneg_integer/3, 
 	  misc_error/1, table_error/1

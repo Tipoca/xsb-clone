@@ -419,6 +419,15 @@ check_nonneg_integer(Term,Predicate,Arg) :-
 	 ;	type_error(integer,Term,Predicate,Arg)
 	).
 
+check_pos_integer(Term,Predicate,Arg) :- 
+	(integer(Term)
+	 ->	(Term > 0
+		 ->	true
+		 ;	domain_error(greater_than_zero,Term,Predicate,Arg)
+		)
+	 ;	type_error(integer,Term,Predicate,Arg)
+	).
+
 %-------------
 check_callable(Term,Predicate,Arg):- 
 	(callable(Term) -> 

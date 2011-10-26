@@ -2124,6 +2124,8 @@ call_attribute_handlers(Rest,Value).
 
 :- dynamic '_$timed_call_handler'/2.
 :- export  '_$timed_call_handler'/2.
+:- import check_pos_integer/3 from error_handler.
+
 timed_call(Call,Interval,Handler):- 
 	(integer(Interval),Interval > 0 -> 
 	    timed_call_1(Call,Interval,Handler,0)
@@ -2140,14 +2142,41 @@ timed_call_1(Call,Interval,Handler,Repeating):-
 	    start_sleeper_thread(Interval),
 	    call_cleanup(Call,retractall('_$timed_call_handler'(_Handler,_Interval))) ).
 
-check_pos_integer(Term,Predicate,Arg) :- 
-	(integer(Term)
-	 ->	(Term > 0
-		 ->	true
-		 ;	domain_error(greater_than_zero,Term,Predicate,Arg)
-		)
-	 ;	type_error(integer,Term,Predicate,Arg)
+:- export bounded_call/4.
+bounded_call(Goal,MaxMemory,MaxTime,Handler):-
+	check_pos_integer(MaxMemory,bounded_call/4,2),
+	check_pos_integer(MaxTime,bounded_call/4,3),
+	cputime(Before),
+	timed_call(Goal,repeating(1000),bounded_call_handler(MaxMemory,Before,MaxTime,Handler)).
+
+:- export bounded_call/3.
+bounded_call(Goal,MaxMemory,MaxTime):-
+	check_pos_integer(MaxMemory,bounded_call/3,2),
+	check_pos_integer(MaxTime,bounded_call/3,3),
+	cputime(Before),
+	timed_call(Goal,repeating(1000),bounded_call_abort(MaxMemory,Before,MaxTime)).
+
+bounded_call_abort(MaxMemory,Before,MaxTime) :-
+	sys_syscall(STATISTICS_2,_RES,TOTALMEMORY,Alloc,_Used),
+	(Alloc > MaxMemory
+	 ->	resource_error(memory,Goal)
+	 ;	cputime(Now),
+	        (Now - Before > MaxTime -> 
+		   resource_error(cputime,Goal)
+		 ; true )     
 	).
+
+bounded_call_handler(MaxMemory,Before,MaxTime,Handler) :-
+	sys_syscall(STATISTICS_2,_RES,TOTALMEMORY,Alloc,_Used),
+	(Alloc > MaxMemory
+	 ->	call(Handler)
+	 ;	cputime(Now),
+	        (Now - Before > MaxTime -> 
+		   call(Handler)
+		 ; true )     
+	).
+
+%-----------------
 
 memory_bounded_call(Goal,MaxMemorySize,Handler) :-
 	timed_call(Goal,repeating(1000),handle_timer_interrupt(MaxMemorySize,Handler)).
