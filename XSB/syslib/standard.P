@@ -1973,14 +1973,14 @@ catch(Goal,_Catcher,_Handler) :-
 %        '$$clean_up_block'. % if no choicepoints in call(Goal) cleans up one
 %	get_breg(B2),write(after_cob(B2)).
 catch(_Goal,Catcher,Handler) :-
-%	writeln(second_clause),
 	xsb_thread_self(T),
         '$$exception_ball'(T,Ball),  %% only ever one fact here so no CP
         (
             Ball = Catcher ->
-            retractall('$$exception_ball'(T,_)),
+%            retractall('$$exception_ball'(T,_)),
+            retractall('$$exception_ball'(_,_)),
 %%	    close_open_tables,  %% leave to catcher... 
-%%            writeln(calling(Handler)),
+%            writeln(calling(Handler)),
             call_expose(Handler)  %not quite right, see after failure even if skipping
         ;
             '$$unwind_stack'  % unwind_stack xsb_exits if no catcher was found
