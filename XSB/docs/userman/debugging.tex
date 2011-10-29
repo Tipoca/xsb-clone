@@ -416,12 +416,18 @@ Currently, \ctrace{} captures the following actions.
 \bi
 \item {\em A call to a tabled subgoal}~ If a call to a tabled subgoal
   $S_1$ is made from a tree for $S_2$ a Prolog-readable fact of the
-  form {\tt tc(S1,S2,Counter)} is logged, where {\em Counter} is
-  the ordinal number of the fact.  For instance, in the above example,
-  node 3 would be represented as {\tt tc(reach(2,Y),reach(1,Y),2)}
-  (the reason for using the counter value of 2 rather than 3 is
-  explained below).  If $S_1$ is the first tabled subgoal in an
-  evaluation, $S_2$ is the atom {\em null}.
+  form {\tt tc(S1,S2,Stage,Counter)} is logged, where {\em Counter} is
+  the ordinal number of the fact, and {\tt Stage} is
+\bi
+\item {\tt new} if $S_1$ is a new subgoal
+\item {\tt cmp} if $S_1$ is not a new subgoal but has been completed
+\item {\tt incmp} if $S_1$ is not a new subgoal but has {\em not} been
+  completed \ei
+%
+  For instance, in the above example, node 3 would be represented as
+  {\tt tc(reach(2,Y),reach(1,Y),2)} (the reason for using the counter
+  value of 2 rather than 3 is explained below).  If $S_1$ is the first
+  tabled subgoal in an evaluation, $S_2$ is the atom {\em null}.
 
 \item {\em Derivation of a new answer}~ When a new answer $A$ is
   derived for subgoal $S$ and added to the table (i.e. $A$ is not
@@ -463,7 +469,11 @@ Currently, \ctrace{} captures the following actions.
 \item When all tables are abolished, a fact of the form {\tt ta(all,Counter)} is logged.
 \ei
 %
-\ei
+\item {\em Location of errors} Whenever an error is thrown and the
+  execution is in a tree for a subgoal $S$, a Prolog-readable fact of
+  the form {\tt err(SCounter)} is logged, where {\em Counter} is the
+  ordinal number of the fact.  The primary purpose of this fact is to
+  indicate the nearest tabled call that gave rise to an uncaughterror.  \ei
 
 {\tt logforest} does {\em not} contain
 

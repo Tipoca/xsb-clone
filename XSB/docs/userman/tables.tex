@@ -252,7 +252,7 @@ and retry the \code{path/2} query.\fillBox
 \end{exercise}
 }
 %-------------------------------------------------------------------------
-
+\index{termination}
 The examples stress two differences between tabling and SLD resolution
 beyond termination properties.  First, that each solution to a tabled
 subgoal is returned only once~---~a property that is helpful not only
@@ -285,6 +285,7 @@ In general, as long as the directive {\tt table/1} is executed before
 asserting (or dynamically loading) the predicates referred to in the
 directive, any dynamic predicate can be tabled.
 
+\index{termination}
 \paragraph*{Letting XSB Decide What to Table}
 Other tabling declarations are also provided.  Often it is tedious to
 decide which predicates must be tabled.  To address this, XSB can
@@ -394,6 +395,7 @@ subsumption does not yet support calls with tabled attributed
 variables or answer subsumption~\footnote{Beginning with Version 3.2,
   XSB supports attributed variables in answers under call subsumption,
   although not in calls.}.
+\index{attributed variables}
 
 \index{tabling!call subsumption}
 \begin{example} \rm 
@@ -1469,6 +1471,7 @@ $sp(B_1,B_2,B_3)$ where $A_1 = B_1$ and $A_2 = B_2$ the join $J_3$ of
 $A_3$ and $B_3$ is taken, and only $sp(A_1,A_2,J_3)$ is available for
 resolution.  As with a partial order, the join operation
 ensures termination for shortest path over a finite graph with cycles.
+\index{termination!answer subsumption}
 
 As the following proposition shows, lattice answer subsumption can be
 modeled either starting with a lattice, or starting with a function
@@ -1529,6 +1532,7 @@ as liveness, deadlock-freedom, and the existence of home states can be
 reduced.  However, many interesting net formalisms cannot guarantee a
 finite number of configurations in a given net, so abstraction methods
 must be applied for their analysis.
+\index{answer abstraction}
 
 %\dsw{Should say
 %that a transition removes one token from the places that are the
@@ -1862,6 +1866,112 @@ proof trees or justifications of goals.  Indeed, term-sets could be
 effectively used in the construction of a justification or explanation
 system.
 
+\index{termination!subgoal abstraction}
+\section{Subgoal Abstraction}
+%
+As noted throughout this manual, tabling adds important termination
+properties to programs and queries.  In this section we state more
+precisely what these termination properties are, and how the
+properties can be strengthened through {\em subgoal abstraction}
+declarations and settings.
+
+Consider a pure definite program in which every predicate is tabled.
+Such a program would call each tabled subgoal (up to variance) exactly
+once if call variance were used, and at most once if call subsumption
+were used.  In addition, tabling guarantees that each answer will be
+returned to each call to a tabled subgoal at most once.  This means
+that there are two sources of non-termination.  Either there can be an
+infinite number of subgoals, or there can be an infinite number of
+answers.  Apart from these two cases, a tabled evaluation will be
+finite and so will terminate.  Of course this is a theoretical
+argument, and termination could require a long time or a lot of
+memory; furthermore we are not considering issues with builtins,
+arithmetic, etc.~\footnote{Using the forest of trees model of tabling
+  (cf. Section~\ref{sec:forest-trace}) non-termination requires that
+  there are an infinite number of trees or that at least one tree have
+  infinite size.}.  For normal programs, the causes of non-termination
+turn out to be basically the same as for definite programs.
+
+If a program produces an infinite number of subgoals {\em but} has a
+finite number of answers, the program can be made to terminate by
+abstracting the subgoal.  For instance, consider the program fragment:
+%
+\begin{verbatim}
+p(X) :- p(f(X)).
+\end{verbatim}
+%
+The goal {\tt ?- p(1)} can create an infinite number of variant tabled
+subgoals: {\tt p(f(1))}, {\tt p(f(f(1)))}, {\tt p(f(f(f(1))))} and so
+on.  Subgoal abstraction allows a goal, like {\tt p(f(f(f(1))))} to be
+rewritten as {\tt p(f(f(X))),X = f(1)}.  If all subgoals that have a
+term depth (or term size) over a given finite threshold are
+abstracted, any query can produce only a finite number of subgoals
+(since there are a finite number of predicate, function and constant
+symbols in any program). If a program is definite, it can be shown
+that any query to a program will terminate if that program uses
+subgoal abstraction~\cite{TaSa86}.  Subgoal abstraction is done
+automatically by XSB's engine under the conditions described below.
+
+Of course, subgoal abstraction can't handle cases where there are an
+infinite number of answers, as in the program fragment:
+%
+\begin{verbatim}
+p(f(X)) :- p(X).
+\end{verbatim}
+%
+when givne the query {\tt p(X)}.  Subgoal abstraction can also cause
+problems if used indiscriminately.  if the second argument of the subgoal
+%
+\begin{verbatim}
+?- member(e,[a,b,c,d,e])
+\end{verbatim}
+%
+is abstracted forming the goal
+%
+\begin{verbatim}
+?- member(e,[a,b,c,X])
+\end{verbatim}
+%
+a goal that terminates without abstraction will not terminate after
+abstraction.  Note that any program containing {\tt member/2} and at
+least one constant does not have a finite model.  While an experienced
+programmer would never want to table {\tt member/2}, he well may want
+to table a grammar or other program that performs recursion through a
+finite structure.
+
+The implementation of subgoal abstraction in XSB is still in progress.
+Abstraction is not currently performed for goals called negatively
+including {\tt tnot/1} and {\tt sk\_not/1}; rather, such goals will throw
+an exception if they surpass the specified depth.
+
+\subsection{Declaring Subgoal Abstraction}
+%
+Subgoal abstraction can be declared to work by default or to work on a
+specific predicate, or both.  It is important to note that only tabled
+predicates are affected~\footnote{Currently subgoal abstraction is
+  implemented only for call variance}.  
+
+Default subgoal abstraction can be declared by setting the XSB flags
+%
+\bi
+\item {\tt MAX\_TABLE\_SUBGOAL\_DEPTH} to the desired maximal depth; and
+\item {\tt MAX\_TABLE\_SUBGOAL\_ACTION} to {\tt abstract}
+\ei
+%
+(cf. pg. \pageref{prolog-flags}). 
+
+Unless otherwise specified, XSB starts up with {\tt
+  MAX\_TABLE\_SUBGOAL\_ACTION} is set {\tt error} and {\tt
+  MAX\_TABLE\_SUBGOAL\_DEPTH} is set to the maximum integer possible
+on the platform on which XSB is installed.  Under this default
+behavior, XSB will throw an error if a subgoal has depth greater than
+{\tt MAX\_TABLE\_SUBGOAL\_DEPTH}.  As an alternate to setting flags,
+XSB can be called with the arguments {\tt --max\_subgoal\_action a}
+and {\tt --max\_subgoal\_depth n} where {\tt n} is the size of the
+desired depth.
+
+{\sc Predicate-level subgoal abstraction is not yet implemented}.
+
 %--------------------------------------------------------------------
 \input{incr_tabling}
 %--------------------------------------------------------------------
@@ -1896,6 +2006,7 @@ residual program), and safe space reclamation.  The exceptions are
 that neither incremental tabling nor answer subsumption support non
 lrd-stratified programs; and call subsumption does not yet support
 attributed variables in calls.
+\index{attributed variables}
 
 \begin{table}
 \begin{center}

@@ -1430,6 +1430,7 @@ additions.
 \ei
 \ei
 
+\index{attributed variables}
 \isoitem{write(?Term)}{write/1}
 % 
 Semantically, {\tt write/1} behaves as if {\tt write\_term/1} were
@@ -1548,6 +1549,7 @@ as \verb|'.'(foo,'.'(bar,[]))|).
 
 Finally, {\tt write canonical/2} writes attributed variables as simple
 variables.
+\index{attributed variables}
 
 \compatability
 %
@@ -1643,6 +1645,7 @@ the left). The second distinct variable in {\tt Term} is given a value
 of {\tt N} satisfying {\tt "N is FirstN + 1"} and so on.  The last
 variable in {\tt Term} has the value {\tt LastN-1}.
 
+\index{attributed variables}
 In {\tt numbervars/4}, {\tt Options} can be used to indicate the
 action to take upon encountering an attributed variable.  Currently,
 {\tt Options} must be either be the empty list, or the list {\tt
@@ -2975,6 +2978,7 @@ compatibility with earlier versions of XSB.
     Works as above, but also returns the length of that string in the second
     argument, which must be a variable.
 
+\index{attributed variables}
 \standarditem{is\_attv(+Term)}{is\_attv/1}
     Succeeds is {\tt Term} is an attributed variable, and fails otherwise.
 
@@ -3520,6 +3524,7 @@ precisely,
 
 \index{term depth!definition}
 \index{terms!cyclic}
+\index{attributed variables}
 \standarditem{term\_depth(+Term, -Depth)}{term\_depth/2}
 %
     {\tt term\_depth/2} provides an efficient way to find the maximal
@@ -3528,6 +3533,8 @@ precisely,
 \bi
 \item The depth of a structure is defined as 1 + the maximal depth of
   any argument of that structure.
+\item The depth of an attributed variable is the depth of the
+  attribute structure associated with that variable.
 \item The depth of a list {\tt [H|T]} is defined as 1 + the maximal
   depth of {\tt H} and {\tt T}.
 \item The depth of any other element is 1.
@@ -3535,31 +3542,34 @@ precisely,
 %
 Note that according to this definition, the depth of the list {\tt
   [a,b]} is 3, since the list is equivalent to the structure {\tt
-  .(a,.(b,[]))} whose depth is 3.  Also, this definition treats
-attributed variables as having depth of 1, regardless of the depth of
-their attribute.
+  .(a,.(b,[]))} whose depth is 3.  
+%Also, this definition treats attributed variables as having depth of
+%1, regardless of the depth of their attribute.
 
 {\tt term\_depth/2} does not check for cyclic structures, so it must
 be ensured that {\tt Term} is acyclic.
 
 \index{term size!definition}
 \index{terms!cyclic}
+\index{attributed variables}
 \standarditem{term\_size(+Term, -Size)}{term\_size/2}
 %
 {\tt term\_size/2} provides an efficient way to find the total number
 of constituents of a term. Term size is defined recursively as
 follows:
 \begin{itemize}
+\item The size of an attributed variable is 1 (the variable size) +
+  the size of the attribute structure.
 \item The size of a non-compound term is 1.
 \item The size of a compound term is defined as 1 + the sum of the
   sizes of all arguments of that term.  
 \item The size of a list {\tt [H|T]} is defined as the size of the
   term {\tt '.'(H,T)}.
 \end{itemize}
-Note that this definition treats attributed variables as having size
-of 1, regardless of the size of their attribute.  {\tt term\_size/2}
-does not check for cyclic structures, so it must be ensured that {\tt
-  Term} is acyclic.
+%Note that this definition treats attributed variables as having size
+%of 1, regardless of the size of their attribute.  
+{\tt term\_size/2} does not check for cyclic structures, so it must be
+ensured that {\tt Term} is acyclic.
 \end{description}
 
 %-----------------------------------------------------------------------------------------------
@@ -4727,9 +4737,9 @@ and thread signalling.  As such, the ability to execute complex
 actions upon interrupt and to resume is very robust.  However, checks
 for interrupts are only made whenever XSB's SLG-WAM engine is
 executing.  Because of this, if XSB is suspended on I/O, calling a C
-or java function, or otherwise outside of its virtual machine, the
-interrupt will not be executed until computation is back under the
-control of XSB's engine.
+or java function, in a C-implemented builtin, or otherwise outside of
+its virtual machine, the interrupt will not be executed until
+computation is back within XSB's virtual machine.
 
 {\tt timed\_call/3} is not yet implemented for the multi-threaded
 engine as its functionality is easily duplicated using thread
@@ -4784,6 +4794,51 @@ arguments of {\tt timed\_call/3}, along with these other errors.
 \item {\tt timed\_call/3} is called from the multi-threaded engine
 \bi
 \item {\tt misc\_error}
+\ei
+\end{description}
+
+\ourrepeatmoditem{bounded\_call(\#Goal,+MaxMemory,+MaxCPU,\#Handler)}{bounded\_call/4}{standard}
+\ourmoditem{bounded\_call(\#Goal,+MaxMemory,+MaxCPU)}{bounded\_call/3}{standard}
+%
+These predicates call {\tt Goal} and check once per second
+whether the total CPU time to execute {\tt Goal} is greater than {\tt
+  MaxCPU} seconds, and whether the total memory taken by XSB is
+greater than {\tt MaxMemory} bytes.  Under {\tt bounded\_call/4} if
+either of these conditions arise, {\tt Handler} is called; under {\tt
+  bounded\_call/3} a resource exception is thrown for memory or CPU
+time.  
+
+These predicates are implemented directly using {\tt timed\_call/3}
+and inherit the advantages and limitations of these predicates.  As an
+advantage, the ability to execute complex actions upon interrupt and
+to resume is very robust.  However, checks for interrupts are only
+made whenever XSB's SLG-WAM engine is executing.  Because of this, if
+XSB is suspended on I/O, calling a C or java function, in a
+C-implemented builtin, or otherwise outside of its virtual machine,
+the interrupt will not be executed until computation is back within
+XSB's virtual machine.
+
+{\tt Handler} cannot cause {\tt timed\_call/3} to be executed as a subgoal; but
+otherwise {\tt Handler} has no restrictions.
+
+{\tt bounded\_call/[3,4]} is not yet implemented for the
+multi-threaded engine as its functionality is easily duplicated using
+thread signalling (Section`\ref{sec:thread-signals}).
+
+{\bf Error Cases} 
+%
+Error cases are the same as in {\tt call/1} for the first argument of
+{\tt bounded\_call/3}, and are the same as that of {\tt timed\_call}
+for {\tt Handler}.  
+%
+\begin{description}
+\item {\tt MaxCPU} or {\tt MaxMemory} is not an integer
+\bi
+\item {\tt type\_error(integer)}
+\ei
+\item {\tt MaxCPU} or {\tt MaxMemory}  is not a positive integer
+\bi
+\item {\tt domain\_error(positive\_integer)}
 \ei
 \end{description}
 

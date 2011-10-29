@@ -80,6 +80,7 @@ In XSB {\tt current\_input/1} does not throw an error if {\tt Stream}
 is not a current input stream, but quietly fails instead.
 
 \index{Prolog-commons}
+\label{prolog-flags}
 \isoitem{current\_prolog\_flag(?Flag\_Name, ?Value)}{current\_prolog\_flag/2}
 %
 {\tt current\_prolog\_flag/2} allows the user to examine both dynamic
@@ -146,7 +147,7 @@ error arose, {\tt off} otherwise. Default is {\tt on}.  In the
 multi-threaded engine, this flag is thread-specific and controls
 whether the backtrace for a current execution will be printed to {\tt
   STDERR}.
-%
+%\
 \item {\tt dcg\_style}  the DCG style currently used; {\tt xsb} or {\tt
   standard} (standard is used in Quintus, SICSTUS, etc.).  See
 Section~\ref{sec-dcg-differences} for more details. Default is {\tt
