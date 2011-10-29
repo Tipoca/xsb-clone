@@ -1,7 +1,7 @@
 #! /bin/sh
 
 echo "-------------------------------------------------------"
-echo "--- Running delay_tests/test.sh                     ---"
+echo "--- Running delay_tests/test.sh (using call subsumption) ---"
 echo "-------------------------------------------------------"
 
 XEMU=$1
