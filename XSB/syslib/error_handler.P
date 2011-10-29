@@ -31,6 +31,7 @@
 #include "standard.h"
 #include "char_defs.h"
 #include "thread_defs_xsb.h"
+#include "builtin.h"
 
 :- import default_user_error_handler/1 from usermod.
 :- dynamic default_user_error_handler/1.
@@ -342,16 +343,19 @@ preprocessing_error(Message) :-
 permission_error(Op,Obj_type,Culprit,Predicate):- 
 	xsb_backtrace(Bt),
 	throw(error(permission_error(Op,Obj_type,Culprit),(' in ',Predicate),Bt)).
+
 %------
 representation_error(Flag,Predicate,Arg):- 
 	xsb_backtrace(Bt),
 	throw(error(representation_error(Flag),
 	                             (' in arg ',Arg,' of predicate ',Predicate),Bt)).
 %------
+
 resource_error(Flag,Predicate):- 
 	xsb_backtrace(Bt),
 	throw(error(resource_error(Flag),
 	                             (' in predicate ',Predicate),Bt)).
+
 %------
 syntax_error(Message):- 
 	xsb_backtrace(Bt),
@@ -398,16 +402,19 @@ check_atom(Term,Predicate,Arg) :-
 	 ;  type_error(atom,Term,Predicate,Arg) ).
 
 %-------------
-check_number(Term,Predicate,Arg) :- 
-	(number(Term) -> 
-	    true
-	 ;  type_error(number,Term,Predicate,Arg) ).
+check_cyclic(_Term,_Pred,_Arg):- '_$builtin'(CHECK_CYCLIC).
 
 %-------------
 check_integer(Term,Predicate,Arg) :- 
 	(integer(Term) -> 
 	    true
 	 ;  type_error(integer,Term,Predicate,Arg) ).
+
+%-------------
+check_number(Term,Predicate,Arg) :- 
+	(number(Term) -> 
+	    true
+	 ;  type_error(number,Term,Predicate,Arg) ).
 
 %-------------
 check_nonneg_integer(Term,Predicate,Arg) :- 

@@ -269,6 +269,9 @@ dynamic_code_function(_Switch,_One,_Two,_Three,_Four):- '_$builtin'(DYNAMIC_CODE
 
 table_inspection_function(_Switch,_One,_Two,_Three,_Four):- 
 	'_$builtin'(TABLE_INSPECTION_FUNCTION).
+
+table_inspection_function(_Switch,_One,_Two,_Three,_Four,_Five,_Six):- 
+	'_$builtin'(TABLE_INSPECTION_FUNCTION).
 	
 formatted_io(_OPnumber, _FileOrString,_Format,_ArgTerm,_RetCode) :-
 	'_$builtin'(FORMATTED_IO).

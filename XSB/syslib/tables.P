@@ -151,41 +151,35 @@ tfindall(T, Call, Result) :-
 	; abort(['Illegal (untabled?) subgoal to tfindall/3: ', Call])
 	).
 
-tnot(Subgoal) :-
-	ground(Subgoal)
-	-> 't not'(Subgoal)
-	;   instantiation_error('tnot/1',1).
-
 /* Need to Handle module calls (not sure if done properly before) */
-
 /* need to refactor to distinguish completed from non-completed with call-entry */
-
-'t not'(Subgoal) :-
-	table_status(Subgoal,PredType,CallType,AnsSetStatus,SF),
-%	table_state(Subgoal, PredType1, CallType1, AnsSetStatus1),
-%	mywriteln(table_state(Subgoal, PredType1, CallType1, AnsSetStatus1,SF)),
+%:- import writeln/1 from standard.
+tnot(Subgoal) :-
+	table_inspection_function(TNOT_SETUP,Subgoal,PredType,CallType,AnsSetStatus,SF,PTCP),
+%	writeln(table_inspection_function(TNOT_SETUP,Subgoal,PredType,CallType,AnsSetStatus,SF,PTCP)),
+%	table_status(Subgoal,PredType,CallType,AnsSetStatus,SF),
 	(PredType == VARIANT_EVAL_METHOD -> 
-	    t_not_variant(Subgoal,AnsSetStatus)
-	 ;  (PredType == SUBSUMPTIVE_EVAL_METHOD -> 
+	    t_not_variant(Subgoal,AnsSetStatus,SF,PTCP)
+	 ;  % PredType == SUBSUMPTIVE_EVAL_METHOD ->
 	      (CallType == NO_CALL_ENTRY -> 
 		  (AnsSetStatus == COMPLETED_ANSWER_SET -> 
 		      t_not_subsumptive_no_sf_comp(Subgoal)
 		    ; t_not_subsumptive_no_sf_incomp(Subgoal) )
 	        ; (AnsSetStatus == COMPLETED_ANSWER_SET -> % has call entry
   	  	      t_not_subsumptive_sf_comp(Subgoal,SF,AnsSetStatus)
-		    ; t_not_subsumptive_sf_incomp(Subgoal,SF,AnsSetStatus) ) )
-	    ; table_error(['Illegal (untabled?) subgoal to ''t not''/1: ',Subgoal]) ) ).
+		    ; t_not_subsumptive_sf_incomp(Subgoal,SF,AnsSetStatus) ) ) ).
 
-t_not_variant(Subgoal,AnsSetStatus):- 
-	    get_ptcp(PTCP),
+t_not_variant(Subgoal,AnsSetStatus,SF,PTCP):- 
+%	writeln(t_not_variant(Subgoal,AnsSetStatus,SF,PTCP)),
+%	    get_ptcp(PTCP),
 	    ( AnsSetStatus < 0 ->  % i.e. UNDEFINED_ANSWER_SET or INCR_NEEDS_REEVAL
 	        (tcall(Subgoal), fail 
 	          ;  get_producer_call(Subgoal,ProducerSF,_AnswerTmplt),
 		     is_incomplete(ProducerSF,PTCP),
 		     slg_not(ProducerSF) 
 		 )
-          ;  get_producer_call(Subgoal,ProducerSF,_AnswerTmplt),
-	     is_incomplete(ProducerSF,PTCP),slg_not(ProducerSF) ).
+          ;  %get_producer_call(Subgoal,ProducerSF,_AnswerTmplt),
+	     is_incomplete(SF,PTCP),slg_not(SF) ).
 
 % needs to be optimized!
 t_not_subsumptive_sf_comp(Subgoal,SF,_):- 
@@ -288,11 +282,13 @@ mywriteln(Term):- writeit(If),(If =:= 1 -> writeln(Term); true).
 
 :- table tunnumcall/1.
 :- use_variant_tabling tunnumcall(_).
+:- import is_cyclic/1 from machine.
 
 sk_not(Goal) :-
+	check_cyclic(Goal,'sk_not/1',1),
 	copy_term(Goal,Goal1),
 	numbervars(Goal1,0,_),  % is now ground, so no check necessary
-	't not'(tunnumcall(Goal1)).
+	tnot(tunnumcall(Goal1)).
 
 tunnumcall(GGoal) :-
 	unnumbervars(GGoal,VGoal),
@@ -607,6 +603,7 @@ abolish_table_call(Call) :-
    calls. get_calls/3 automatically finds all producers, so there is
    no action we need to take for consumer calls. */
 abolish_table_call_internal(Call,Action) :-
+	check_cyclic(Call,'abolish_table_call/1',1),
 	get_calls(Call,Handle,_Template),
 	table_state(Handle,_PredType,CallType,AnsSetStatus),
 	CallType \== subsumed,
