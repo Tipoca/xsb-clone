@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: trie_lookup.c,v 1.31 2011-10-16 19:20:34 tswift Exp $
+** $Id: trie_lookup.c,v 1.32 2011-10-29 23:27:59 tswift Exp $
 ** 
 */
 
@@ -1076,7 +1076,7 @@ void *var_trie_lookup(CTXTdeclc void *branchRoot, xsbBool *wasFound,
     {
       BTNptr chain;
       int chain_length;
-      if ( IsHashHeader(BTN_Child(parent)) ) {
+      if ( BTN_Child(parent) && IsHashHeader(BTN_Child(parent)) ) {
 	BTHTptr ht = BTN_GetHashHdr(parent);
 	chain = *CalculateBucketForSymbol(ht,symbol);
       }

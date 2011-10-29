@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.27 2011-08-24 21:58:08 tswift Exp $
+** $Id: debug_xsb.h,v 1.28 2011-10-29 23:27:58 tswift Exp $
 ** 
 */
 
@@ -78,6 +78,7 @@ extern void sprint_subgoal(struct th_context *, char *,  VariantSF );
 extern void sprint_answer_template(struct th_context *, char *, CPtr, int, long);
 #endif
 
+extern void sprintTerm(char *, Cell, long);
 extern int ctrace_ctr;
 
 /* dbg_* macros */

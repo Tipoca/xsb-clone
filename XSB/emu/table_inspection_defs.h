@@ -33,6 +33,7 @@
 #define EARLY_COMPLETE                           9
 #define START_FOREST_VIEW                        10
 #define STOP_FOREST_VIEW                         11
+#define TNOT_SETUP                               12
 
 // For delete return
 #define ANSWER_SUBSUMPTION   0

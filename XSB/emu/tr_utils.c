@@ -1343,7 +1343,6 @@ void breg_retskel(CTXTdecl)
     VariantSF sg_frame;
     CPtr    tcp, cptr, where;
     int     i, template_size,attv_num,abstr_size;
-    //    int     Nvars;
     Integer breg_offset;
 
     breg_offset = ptoc_int(CTXTc 1);
@@ -4205,6 +4204,153 @@ void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
   }
 }
 
+
+#define is_encoded_addr(term)	(isointeger(term))
+#define decode_addr(term)	(void *)oint_val(term)
+#define ctop_addr(regnum, val)    ctop_int(CTXTc regnum, (prolog_int)val)
+
+#ifndef MULTI_THREAD
+extern int vcs_tnot_call;
+#endif
+    /*
+     * Given a tabled goal, report on the following attributes:
+     * 1) Predicate Type: Variant, Subsumptive, or Untabled
+     * 2) Goal Type: Producer, Properly Subsumed Consumer, Has No
+     *      Call Table Entry, or Undefined
+     * 3) Answer Set Status: Complete, Incomplete, Undefined or Inremental-needs-reeval
+     *
+     * Valid combinations reported by this routine:
+     * When the predicate is an untabled functor, then only one sequence
+     *   is generated:  Untabled,Undefined,Undefined
+     * Otherwise the following combinations are possible:
+     *
+     * GoalType    AnsSetStatus   Meaning
+     * --------    ------------   -------
+     * producer    complete       call exists; it is a completed producer.
+     *             incomplete     call exists; it is an incomplete producer.
+     *
+     * subsumed    complete       call exists; it's properly subsumed by a
+     *                              completed producer.
+     *             incomplete     call exists; it's properly subsumed by an
+     *                              incomplete producer.
+     *
+     * no_entry    undefined      is a completely new call, not subsumed by
+     *                              any other -> if this were to be called
+     *                              right now, it would be a producing call.
+     *             complete       there is no entry for this call, but if it
+     *                              were to be called right now, it would
+     *                              consume from a completed producer.
+     *                              (The call is properly subsumed.)
+     *             incomplete     same as previous, except the subsuming
+     *                              producer is incomplete.
+     *
+     * Notice that not only can these combinations describe the
+     * characteristics of a subgoal in the table, but they are also
+     * equipped to predict how a new goal would have been treated had it
+     * really been called.
+     */
+
+int table_status(CTXTdeclc Cell goalTerm, TableStatusFrame* ResultsFrame) {
+  int pred_type, goal_type, answer_set_status;
+  VariantSF goalSF = NULL, subsumerSF;
+
+  if ( is_encoded_addr(goalTerm) ) {
+    goalSF = (VariantSF)decode_addr(goalTerm);
+  if ( IsProperlySubsumed(goalSF) )
+    subsumerSF = (VariantSF)conssf_producer(goalSF);
+  else
+    subsumerSF = goalSF;
+  pred_type = TIF_EvalMethod(subg_tif_ptr(subsumerSF));
+  }
+  else {   /* Regular term: Not SF ptr */
+    Psc psc;   TIFptr tif;
+    
+    psc = term_psc(goalTerm);
+    if ( IsNULL(psc) ) {
+      xsb_type_error(CTXTc "callable",goalTerm,"table_status/4",1);
+      return 0;
+      }
+    tif = get_tip(CTXTc psc);
+    if ( IsNULL(tif) ) {
+      TableStatusFrame_pred_type(*ResultsFrame) = UNTABLED_PREDICATE;
+      TableStatusFrame_goal_type(*ResultsFrame) = UNDEFINED_CALL;
+      TableStatusFrame_answer_set_status(*ResultsFrame) = UNDEFINED_ANSWER_SET;
+      TableStatusFrame_subgoal(*ResultsFrame) = goalSF;
+      return TRUE;
+    }
+    pred_type = TIF_EvalMethod(tif);
+    if ( IsVariantPredicate(tif) )
+      goalSF = subsumerSF = get_variant_sf(CTXTc goalTerm, tif, NULL);
+      else {
+	BTNptr root, leaf;
+	TriePathType path_type;
+
+	root = TIF_CallTrie(tif);
+	if ( IsNonNULL(root) )
+	  leaf = subsumptive_trie_lookup(CTXTc root, get_arity(psc),
+					 clref_val(goalTerm) + 1,
+					 &path_type, NULL);
+	else {
+	  leaf = NULL;
+	  path_type = NO_PATH;
+	}
+	if ( path_type == NO_PATH )
+	  goalSF = subsumerSF = NULL;
+	else if ( path_type == VARIANT_PATH ) {
+	  goalSF = CallTrieLeaf_GetSF(leaf);
+	  if ( IsProperlySubsumed(goalSF) )
+	    subsumerSF = (VariantSF)conssf_producer(goalSF);
+	  else
+	    subsumerSF = goalSF;
+	}
+	else {
+	  goalSF = NULL;
+	  subsumerSF = CallTrieLeaf_GetSF(leaf);
+	  if ( IsProperlySubsumed(subsumerSF) )
+	    subsumerSF = (VariantSF)conssf_producer(subsumerSF);
+	}
+      }
+    }
+    /*
+     * Now both goalSF and subsumerSF should be set for all cases.
+     * Determine status values based on these pointers.
+     */
+#ifndef SHARED_COMPL_TABLES
+    if ( IsNonNULL(goalSF) ) {
+#else
+    if ( IsNonNULL(goalSF) && !subg_grabbed(goalSF)) {
+#endif
+      if ( goalSF == subsumerSF )
+	goal_type = PRODUCER_CALL;
+      else
+	goal_type = SUBSUMED_CALL;
+    }
+    else
+      goal_type = NO_CALL_ENTRY;
+
+#ifndef SHARED_COMPL_TABLES
+    if ( IsNonNULL(subsumerSF) ) {
+#else
+    if ( IsNonNULL(subsumerSF) && !subg_grabbed(subsumerSF)) {
+#endif
+      if ( is_completed(subsumerSF) ) {
+	if (subg_callnode_ptr(subsumerSF) && subg_callnode_ptr(subsumerSF)->falsecount!=0)
+	  answer_set_status = INCR_NEEDS_REEVAL;
+	else answer_set_status = COMPLETED_ANSWER_SET;
+      }
+      else
+	answer_set_status = INCOMPLETE_ANSWER_SET;
+    }
+    else
+      answer_set_status = UNDEFINED_ANSWER_SET;
+
+    TableStatusFrame_pred_type(*ResultsFrame) = pred_type;
+    TableStatusFrame_goal_type(*ResultsFrame) = goal_type;
+    TableStatusFrame_answer_set_status(*ResultsFrame) = answer_set_status;
+    TableStatusFrame_subgoal(*ResultsFrame) = goalSF;
+    return TRUE;
+}
+
 //----------------------------------------------------------------------
 // Code from here to end of file is under development -- TLS
 
@@ -4601,6 +4747,10 @@ void answer_completion(CTXTdeclc CPtr cs_ptr) {
 
 extern void ctop_tag(CTXTdeclc int, Cell);
 
+        int pred_type, goal_type, answer_set_status;
+    VariantSF goalSF = NULL, subsumerSF;
+    Cell goalTerm;
+
 FILE * fview_ptr;
 //----------------------------------------------------------------------
 int table_inspection_function( CTXTdecl ) {
@@ -4832,7 +4982,38 @@ case CALL_SUBS_SLG_NOT: {
     break;
   }
 
-  }
+  case TNOT_SETUP: {
+    Cell goalTerm;
+    TableStatusFrame TSF;
+
+    goalTerm = ptoc_tag(CTXTc 2);
+    if ( isref(goalTerm) ) {
+      xsb_instantiation_error(CTXTc "table_status/4",1);
+      break;
+    }
+
+    table_status(CTXTc goalTerm, &TSF);
+
+    if (TableStatusFrame_pred_type(TSF) < 0) {
+      char buffer[2*MAXTERMBUFSIZE];						
+      sprintTerm(buffer, ptoc_tag(CTXTc 2), MAXTERMBUFSIZE);
+      xsb_abort("Illegal (non-tabled?) subgoal in tnot/1: %s\n", buffer);		
+    }	
+
+    if (TableStatusFrame_pred_type(TSF) == VARIANT_EVAL_METHOD 
+	&& TableStatusFrame_answer_set_status(TSF) < 0) {
+      vcs_tnot_call = 1;
+    }
+
+    ctop_int(CTXTc 3,TableStatusFrame_pred_type(TSF));
+    ctop_int(CTXTc 4,TableStatusFrame_goal_type(TSF));
+    ctop_int(CTXTc 5,TableStatusFrame_answer_set_status(TSF));
+    ctop_addr(6, TableStatusFrame_subgoal(TSF));
+    ctop_addr(7, ptcpreg);
+    break;
+  } 
+  } /* switch */
+
   return TRUE;
 }
 

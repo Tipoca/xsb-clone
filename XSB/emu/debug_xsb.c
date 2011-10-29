@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.80 2011-10-16 19:20:34 tswift Exp $
+** $Id: debug_xsb.c,v 1.81 2011-10-29 23:27:58 tswift Exp $
 ** 
 */
 
@@ -379,6 +379,10 @@ void printterm(FILE *fp, Cell term, long depth) {
   fflush(fp); 
 }
 
+void sprintTerm(char *buffer, Cell term, long level) {
+  sprint_term(buffer, 0, term, CAR, level);
+}
+
 /*------------------------------------------------------------------*/
 /* Used to print out call using WAM registers -- print registers*/
 
@@ -412,6 +416,22 @@ void sprint_answer_template(CTXTdeclc char * buffer, CPtr pAnsTmplt, int templat
   }
   sprintf(buffer+size,"]"); 
 }
+
+//-----------
+extern xsbBool is_cyclic(CTXTdeclc Cell);
+
+xsbBool cyclic_registers(CTXTdeclc Psc psc) {
+  int i, arity;
+
+  arity = (int)get_arity(psc);
+  if (arity == 0) return FALSE;
+  for (i = 1; i <= arity; i++) {
+    if (is_cyclic(CTXTc cell(reg+i))) return TRUE;
+  }
+  return FALSE;
+ }
+
+//-----------
 
 void sprint_registers(CTXTdeclc char * buffer,Psc psc,long depth) {
   int i, arity,size;

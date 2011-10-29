@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.155 2011-10-19 22:51:29 tswift Exp $
+** $Id: tries.c,v 1.156 2011-10-29 23:27:59 tswift Exp $
 ** 
 */
 
@@ -813,11 +813,11 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
 #define CHECK_ANSWER_TERM_DEPTH						\
   if (--depth_ctr <= 0)	{						\
     if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_WARNING) {		\
-      char buffer[MAXTERMBUFSIZE];						\
+      char buffer[2*MAXTERMBUFSIZE];					\
       sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
-		 (int)(flags[MAX_TABLE_ANSWER_DEPTH]));		\
+		       MAXTERMBUFSIZE);					\
       xsb_warn("Exceeded max answer term depth of %d in call %s\n",	\
-		flags[MAX_TABLE_ANSWER_DEPTH],buffer);			\
+	       (int)flags[MAX_TABLE_ANSWER_DEPTH],buffer);		\
     }									\
     else if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_FAILURE) {		\
       resetpdl;								\
@@ -825,20 +825,20 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
       return NULL;							\
     }									\
     else {								\
-      char buffer[MAXTERMBUFSIZE];						\
+      char buffer[2*MAXTERMBUFSIZE];					\
       sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
-		 (int)(flags[MAX_TABLE_ANSWER_DEPTH]));		\
+		       MAXTERMBUFSIZE);					\
       xsb_abort("Exceeded max answer term depth of %d in call %s\n",	\
-		flags[MAX_TABLE_ANSWER_DEPTH],buffer);			\
+		(int)flags[MAX_TABLE_ANSWER_DEPTH],buffer);		\
     }									\
 }
 
 #define CHECK_ANSWER_LIST_DEPTH						\
   if (--list_depth_ctr <= 0)	{						\
     if (flags[MAX_TABLE_ANSWER_LIST_ACTION] == XSB_WARNING) {		\
-      char buffer[MAXTERMBUFSIZE];						\
+      char buffer[2*MAXTERMBUFSIZE];						\
       sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
-		 (int)(flags[MAX_TABLE_ANSWER_LIST_DEPTH]));		\
+		       MAXTERMBUFSIZE);					\
       xsb_warn("Exceeded max answer list depth of %d in call %s\n",	\
 		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
     }									\
@@ -848,9 +848,9 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
       return NULL;							\
     }									\
     else {								\
-      char buffer[MAXTERMBUFSIZE];						\
+      char buffer[2*MAXTERMBUFSIZE];						\
       sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
-		 (int)(flags[MAX_TABLE_ANSWER_LIST_DEPTH]));		\
+		       MAXTERMBUFSIZE);					\
       xsb_abort("Exceeded max answer list depth of %d in call %s\n",	\
 		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
     }									\
@@ -1533,12 +1533,14 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
 // cant abstract if we're in the middle of an attvar.
 #ifndef MULTI_THREAD
 int can_abstract;
+int vcs_tnot_call = 0;
 #endif
+extern xsbBool is_cyclic(CTXTdeclc Cell);
 
-#ifdef CALL_ABSTRACTION
 #define CHECK_CALL_TERM_DEPTH(xtemp1)					\
   if (--depth_ctr <= 0) {                                               \
-    if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_ABSTRACT && can_abstract == TRUE) { \
+    if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_ABSTRACT && can_abstract == TRUE \
+	&& !vcs_tnot_call) {								\
       Cell newElement;                                                  \
       CPtr pElement = xtemp1;                                           \
       /*      printf("begin abs reg1 dc %d ",depth_ctr);printterm(stddbg,reg[1],8);printf("\n"); */ \
@@ -1567,28 +1569,25 @@ int can_abstract;
       resetpdl;                                                         \
       return XSB_FAILURE;                                               \
     }                                                                   \
-    else if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_ERROR) {		\
-      char buffer[MAXTERMBUFSIZE];						\
-      sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),(int)(flags[MAX_TABLE_SUBGOAL_DEPTH])); \
-      xsb_abort("Exceeded max call term depth of %d in call %s\n",	\
-		flags[MAX_TABLE_SUBGOAL_DEPTH],	buffer);		\
+    else /* if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_ERROR) */ {	\
+      char buffer[2*MAXTERMBUFSIZE];					\
+      sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),MAXTERMBUFSIZE); \
+      safe_delete_branch(Paren);					\
+      if (vcs_tnot_call) {						\
+	vcs_tnot_call = 0;						\
+	if (is_cyclic(CTXTc (Cell)call_arg))				\
+	xsb_abort("Cyclic term in arg %d of tabled subgoal tnot(%s)\n",i+1,buffer);	\
+	else xsb_abort("Exceeded max table subgoal depth of %d in arg %i in tnot(%s)\n", \
+		  (int) flags[MAX_TABLE_SUBGOAL_DEPTH],i+1,buffer);	\
+      }									\
+      else {								\
+	if (is_cyclic(CTXTc (Cell) call_arg))				\
+	xsb_abort("Cyclic term in arg %d of tabled subgoal %s\n",i+1,buffer);	\
+	else xsb_abort("Exceeded max table subgoal depth of %d in arg %i in %s\n", \
+		  (int) flags[MAX_TABLE_SUBGOAL_DEPTH],i+1,buffer);	\
+      }									\
     }									\
   } else
-#else
-#define CHECK_CALL_TERM_DEPTH(dummy)					\
-  if (--depth_ctr <= 0)	{						\
-    if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_FAILURE) {		\
-      resetpdl;								\
-      return XSB_FAILURE;						\
-    }									\
-    else {								\
-      char buffer[MAXTERMBUFSIZE];						\
-      sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),(int)(flags[MAX_TABLE_SUBGOAL_DEPTH])); \
-      xsb_abort("Exceeded max call term depth of %d in call %s\n",	\
-		flags[MAX_TABLE_SUBGOAL_DEPTH],	buffer);		\
-    }									\
-  };
-#endif
 
 /* xtemp1 is a register */
 #define recvariant_call(flag,TrieType,xtemp1) {				\
@@ -1872,6 +1871,14 @@ if (ABSTRACTING_ATTVARS) {
     MakeLeafNode(Paren);
     TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
   }
+
+  if (vcs_tnot_call && ctr > 0) {
+      char buffer[2*MAXTERMBUFSIZE];						
+      sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),MAXTERMBUFSIZE); 
+      xsb_abort("Floundering goal in tnot/1 %s\n",buffer);
+  }
+    
+  vcs_tnot_call = 0;
 
 #ifdef CALL_ABSTRACTION
     cell(--SubsFactReg) = encode_ansTempl_ctrs(attv_ctr,callAbsStk_index,ctr);  

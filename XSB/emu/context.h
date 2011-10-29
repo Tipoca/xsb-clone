@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.86 2011-10-16 19:20:34 tswift Exp $
+** $Id: context.h,v 1.87 2011-10-29 23:27:58 tswift Exp $
 **
 */
 
@@ -203,6 +203,7 @@ struct th_context
   AbstractionFrame *_callAbsStk;
   int _callAbsStk_size;
   int _can_abstract;
+  int _vcs_tnot_call;
 
   /* Used for by trie instructions */
   Cell *_trieinstr_unif_stk;
@@ -544,6 +545,7 @@ typedef struct th_context th_context ;
 #define callAbsStk                (th->_callAbsStk)
 #define callAbsStk_size           (th-> _callAbsStk_size)
 #define can_abstract              (th-> _can_abstract)
+#define vcs_tnot_call             (th-> _vcs_tnot_call)
 
 #define trieinstr_vars		(th->_trieinstr_vars)
 #define trieinstr_vars_num	(th->_trieinstr_vars_num)

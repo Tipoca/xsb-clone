@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.72 2011-08-19 18:26:30 tswift Exp $
+** $Id: tr_utils.h,v 1.73 2011-10-29 23:27:59 tswift Exp $
 ** 
 */
 
@@ -141,6 +141,20 @@ extern counter abol_subg_ctr,abol_pred_ctr,abol_all_ctr; /* statistics */
 extern FILE * fview_ptr;
 
 #define MAX_INTERNED_TRIES 2003
+
+typedef struct Table_Status_Frame {
+  int pred_type;
+  int goal_type;
+  int answer_set_status;
+  VariantSF subgoal;
+} TableStatusFrame;
+
+#define TableStatusFrame_pred_type(TSF) ( (TSF).pred_type )
+#define TableStatusFrame_goal_type(TSF) ( (TSF).goal_type )
+#define TableStatusFrame_answer_set_status(TSF) ( (TSF).answer_set_status )
+#define TableStatusFrame_subgoal(TSF) ( (TSF).subgoal )
+
+extern int table_status(CTXTdeclc Cell, TableStatusFrame*);
 
 #endif /* __TR_UTILS_H__ */
 

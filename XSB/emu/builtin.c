@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.377 2011-10-19 22:51:28 tswift Exp $
+** $Id: builtin.c,v 1.378 2011-10-29 23:27:58 tswift Exp $
 **
 */
 
@@ -1270,6 +1270,7 @@ void init_builtin_table(void)
   set_builtin_table(PARSORT, "parsort");
 
   set_builtin_table(URL_ENCODE_DECODE, "url_encode_decode");
+  set_builtin_table(CHECK_CYCLIC, "check_cyclic");
 
   set_builtin_table(ORACLE_QUERY, "oracle_query");
   set_builtin_table(ODBC_EXEC_QUERY, "odbc_exec_query");
@@ -2486,163 +2487,24 @@ case WRITE_OUT_PROFILE:
 /*----------------------------------------------------------------------*/
 
   case TABLE_STATUS: {
-    /*
-     * Given a tabled goal, report on the following attributes:
-     * 1) Predicate Type: Variant, Subsumptive, or Untabled
-     * 2) Goal Type: Producer, Properly Subsumed Consumer, Has No
-     *      Call Table Entry, or Undefined
-     * 3) Answer Set Status: Complete, Incomplete, Undefined or Inremental-needs-reeval
-     *
-     * Valid combinations reported by this routine:
-     * When the predicate is an untabled functor, then only one sequence
-     *   is generated:  Untabled,Undefined,Undefined
-     * Otherwise the following combinations are possible:
-     *
-     * GoalType    AnsSetStatus   Meaning
-     * --------    ------------   -------
-     * producer    complete       call exists; it is a completed producer.
-     *             incomplete     call exists; it is an incomplete producer.
-     *
-     * subsumed    complete       call exists; it's properly subsumed by a
-     *                              completed producer.
-     *             incomplete     call exists; it's properly subsumed by an
-     *                              incomplete producer.
-     *
-     * no_entry    undefined      is a completely new call, not subsumed by
-     *                              any other -> if this were to be called
-     *                              right now, it would be a producing call.
-     *             complete       there is no entry for this call, but if it
-     *                              were to be called right now, it would
-     *                              consume from a completed producer.
-     *                              (The call is properly subsumed.)
-     *             incomplete     same as previous, except the subsuming
-     *                              producer is incomplete.
-     *
-     * Notice that not only can these combinations describe the
-     * characteristics of a subgoal in the table, but they are also
-     * equipped to predict how a new goal would have been treated had it
-     * really been called.
-     */
-    const int regGoalHandle   = 1;   /* in:  either a term or a SF ptr */
-    const int regPredType     = 2;   /* out: status (as INT) */
-    const int regGoalType     = 3;   /* out: status (as INT) */
-    const int regAnsSetStatus = 4;   /* out: status (as INT) */
-
-    int pred_type, goal_type, answer_set_status;
-    VariantSF goalSF = NULL, subsumerSF;
     Cell goalTerm;
+    TableStatusFrame TSF;
 
-    goalTerm = ptoc_tag(CTXTc regGoalHandle);
+    goalTerm = ptoc_tag(CTXTc 1);
     if ( isref(goalTerm) ) {
-      xsb_instantiation_error(CTXTc "table_status/4",regGoalHandle);
+      xsb_instantiation_error(CTXTc "table_status/4",1);
       break;
     }
-    if ( is_encoded_addr(goalTerm) ) {
-      goalSF = (VariantSF)decode_addr(goalTerm);
-#ifdef DEBUG_ASSERTIONS
-  /* Need to change for MT: smVarSF can be private or shared
-|      if ( ! smIsValidStructRef(smVarSF,goalSF) &&
-|	   ! smIsValidStructRef(smProdSF,goalSF) &&
-|	   ! smIsValidStructRef(smConsSF,goalSF) )
-|	xsb_abort("Invalid Table Entry Handle\n\t Argument %d of %s/%d",
-|		  regGoalHandle, BuiltinName(TABLE_STATUS), Arity);
-  */
-#endif
-      if ( IsProperlySubsumed(goalSF) )
-	subsumerSF = (VariantSF)conssf_producer(goalSF);
-      else
-	subsumerSF = goalSF;
-      pred_type = TIF_EvalMethod(subg_tif_ptr(subsumerSF));
-    }
-    else {   /* Regular term: Not SF ptr */
-      Psc psc;
-      TIFptr tif;
 
-      psc = term_psc(goalTerm);
+    // table_status() now also used by tnot/1
+    table_status(CTXTc goalTerm, &TSF);
 
-      if ( IsNULL(psc) ) {
-	xsb_type_error(CTXTc "callable",goalTerm,"table_status/4",regGoalHandle);
-	break;
-      }
-      tif = get_tip(CTXTc psc);
-      if ( IsNULL(tif) ) {
-	ctop_int(CTXTc regPredType, UNTABLED_PREDICATE);
-	ctop_int(CTXTc regGoalType, UNDEFINED_CALL);
-	ctop_int(CTXTc regAnsSetStatus, UNDEFINED_ANSWER_SET);
-	return TRUE;
-      }
-      pred_type = TIF_EvalMethod(tif);
-      if ( IsVariantPredicate(tif) )
-	goalSF = subsumerSF = get_variant_sf(CTXTc goalTerm, tif, NULL);
-      else {
-	BTNptr root, leaf;
-	TriePathType path_type;
-
-	root = TIF_CallTrie(tif);
-	if ( IsNonNULL(root) )
-	  leaf = subsumptive_trie_lookup(CTXTc root, get_arity(psc),
-					 clref_val(goalTerm) + 1,
-					 &path_type, NULL);
-	else {
-	  leaf = NULL;
-	  path_type = NO_PATH;
-	}
-	if ( path_type == NO_PATH )
-	  goalSF = subsumerSF = NULL;
-	else if ( path_type == VARIANT_PATH ) {
-	  goalSF = CallTrieLeaf_GetSF(leaf);
-	  if ( IsProperlySubsumed(goalSF) )
-	    subsumerSF = (VariantSF)conssf_producer(goalSF);
-	  else
-	    subsumerSF = goalSF;
-	}
-	else {
-	  goalSF = NULL;
-	  subsumerSF = CallTrieLeaf_GetSF(leaf);
-	  if ( IsProperlySubsumed(subsumerSF) )
-	    subsumerSF = (VariantSF)conssf_producer(subsumerSF);
-	}
-      }
-    }
-    /*
-     * Now both goalSF and subsumerSF should be set for all cases.
-     * Determine status values based on these pointers.
-     */
-#ifndef SHARED_COMPL_TABLES
-    if ( IsNonNULL(goalSF) ) {
-#else
-    if ( IsNonNULL(goalSF) && !subg_grabbed(goalSF)) {
-#endif
-      if ( goalSF == subsumerSF )
-	goal_type = PRODUCER_CALL;
-      else
-	goal_type = SUBSUMED_CALL;
-    }
-    else
-      goal_type = NO_CALL_ENTRY;
-
-#ifndef SHARED_COMPL_TABLES
-    if ( IsNonNULL(subsumerSF) ) {
-#else
-    if ( IsNonNULL(subsumerSF) && !subg_grabbed(subsumerSF)) {
-#endif
-      if ( is_completed(subsumerSF) ) {
-	if (subg_callnode_ptr(subsumerSF) && subg_callnode_ptr(subsumerSF)->falsecount!=0)
-	  answer_set_status = INCR_NEEDS_REEVAL;
-	else answer_set_status = COMPLETED_ANSWER_SET;
-      }
-      else
-	answer_set_status = INCOMPLETE_ANSWER_SET;
-    }
-    else
-      answer_set_status = UNDEFINED_ANSWER_SET;
-
-    ctop_int(CTXTc regPredType, pred_type);
-    ctop_int(CTXTc regGoalType, goal_type);
-    ctop_int(CTXTc regAnsSetStatus, answer_set_status);
-    ctop_addr(5, goalSF);
+    ctop_int(CTXTc 2,TableStatusFrame_pred_type(TSF));
+    ctop_int(CTXTc 3,TableStatusFrame_goal_type(TSF));
+    ctop_int(CTXTc 4,TableStatusFrame_answer_set_status(TSF));
+    ctop_addr(5, TableStatusFrame_subgoal(TSF));
     return TRUE;
-  }
+  } 
 
   case ABOLISH_TABLE_PREDICATE: {
     const int regTerm = 1;   /* in: tabled predicate as term */
@@ -3176,6 +3038,16 @@ case WRITE_OUT_PROFILE:
 	out_url = url_decode(url_str);
 
       ctop_string(CTXTc 3, out_url);
+      return TRUE;
+      break;
+    }
+
+    case CHECK_CYCLIC: {
+      if (is_cyclic(CTXTc (Cell) ptoc_tag(CTXTc 1))) {
+	char buffer[2*MAXTERMBUFSIZE]; 
+	sprintTerm(buffer, (Cell) ptoc_tag(CTXTc 1), MAXTERMBUFSIZE);
+	xsb_abort("Illegal cyclic term in arg %d of %s: %s\n",ptoc_int(CTXTc 3),ptoc_string(CTXTc 2),buffer);
+      }
       return TRUE;
       break;
     }
