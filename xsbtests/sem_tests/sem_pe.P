@@ -61,7 +61,7 @@ simplify(Tree, UglyExpr, PrettyExpr) :-
 
 fp_reduce(X, Y) :-
 	tc_reduce(X, Y),
-	't not'(reducible(Y)),
+	sk_not(reducible(Y)),
 	fail_if(contains_builtin(Y)).
 
 :- table tc_reduce/2.
