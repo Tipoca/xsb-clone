@@ -151,6 +151,9 @@ tfindall(T, Call, Result) :-
 	; abort(['Illegal (untabled?) subgoal to tfindall/3: ', Call])
 	).
 
+:- export 't not'/1.
+'t not'(Goal):- tnot(Goal).
+
 /* Need to Handle module calls (not sure if done properly before) */
 /* need to refactor to distinguish completed from non-completed with call-entry */
 %:- import writeln/1 from standard.
@@ -282,7 +285,6 @@ mywriteln(Term):- writeit(If),(If =:= 1 -> writeln(Term); true).
 
 :- table tunnumcall/1.
 :- use_variant_tabling tunnumcall(_).
-:- import is_cyclic/1 from machine.
 
 sk_not(Goal) :-
 	check_cyclic(Goal,'sk_not/1',1),
