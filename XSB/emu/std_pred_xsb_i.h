@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.72 2011-10-16 19:20:34 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.73 2011-11-04 15:31:07 dwarren Exp $
 ** 
 */
 
@@ -175,7 +175,7 @@ inline static xsbBool univ_builtin(CTXTdecl)
     if (!isref(list) && !islist(list))
       xsb_type_error(CTXTc "list",list,"=../2",2);  /* f(a) =.. 3. */
     new_list = makelist(hreg);
-    if (isstring(term) || isinteger(term) || isboxedinteger(term)) { follow(hreg++) = term; top = hreg++; }
+    if (isstring(term) || isointeger(term)) { follow(hreg++) = term; top = hreg++; }
     else if (isconstr(term)) {
       arity = (get_arity(get_str_psc(term)));
       follow(hreg++) = makestring(get_name(get_str_psc(term)));

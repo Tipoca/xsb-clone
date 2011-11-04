@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.220 2011-08-31 22:25:10 tswift Exp $
+** $Id: emuloop.c,v 1.221 2011-11-04 15:31:07 dwarren Exp $
 ** 
 */
 
@@ -2651,7 +2651,7 @@ argument positions.
       jump_cond_fail(isatomic(op2) || isboxedinteger(op2) || isboxedfloat(op2));
       break;
     case COMPOUND_TEST:
-      jump_cond_fail(((isconstr(op2) && get_arity(get_str_psc(op2))) ||
+      jump_cond_fail(((isconstr(op2) && get_arity(get_str_psc(op2)) && (get_str_psc(op2) != box_psc)) ||
 		      (islist(op2))));
       break;
     case CALLABLE_TEST:
