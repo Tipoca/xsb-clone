@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.110 2011-10-29 23:27:58 tswift Exp $
+** $Id: builtin.h,v 1.111 2011-11-04 23:21:11 tswift Exp $
 ** 
 */
 
@@ -256,6 +256,7 @@
 
 #define URL_ENCODE_DECODE    	  225
 #define CHECK_CYCLIC              226
+#define IS_ACYCLIC                227
 
 #define FINDALL_FREE    	229
 

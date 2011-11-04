@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.33 2011-10-09 19:41:13 waltergwilson Exp $
+** $Id: std_cases_xsb_i.h,v 1.34 2011-11-04 23:21:10 tswift Exp $
 ** 
 */
 
@@ -111,26 +111,6 @@
   case NUMBER_DIGITS:	/* r1: ?term; r2: ?digit list	*/
     return number_to_list(CTXTc NUMBER_DIGITS);
     
-   case TERM_SIZE: {
-     ctop_int(CTXTc 2, term_sizew(CTXTc ptoc_tag(CTXTc 1)));
-     break;
-   }
-
-   case TERM_SIZE_LIMIT: {
-     return(term_size_limit(CTXT));
-     break;
-   }
-
-   case TERM_DEPTH: {
-     ctop_int(CTXTc 2, term_depth(CTXTc ptoc_tag(CTXTc 1)));
-     break;
-   }
-
-   case IS_CYCLIC: {
-     return is_cyclic(CTXTc (Cell) (reg + 1));
-     break;
-   }
-
   case PUT: {	/* r1: +integer	*/
     Cell term = ptoc_tag(CTXTc 1);
     if (isointeger(term)) {
@@ -154,6 +134,26 @@
     break;
   }
 
+   case IS_CYCLIC: {
+     return is_cyclic(CTXTc (Cell) (reg + 1));
+     break;
+   }
+
+   case TERM_SIZE: {
+     ctop_int(CTXTc 2, term_sizew(CTXTc ptoc_tag(CTXTc 1)));
+     break;
+   }
+
+   case TERM_SIZE_LIMIT: {
+     return(term_size_limit(CTXT));
+     break;
+   }
+
+   case TERM_DEPTH: {
+     ctop_int(CTXTc 2, term_depth(CTXTc ptoc_tag(CTXTc 1)));
+     break;
+   }
+
   case SORT:		/* r1: +list of terms; r2: ?sorted list of terms */
   return sort(CTXT);
     
@@ -165,4 +165,9 @@
     /* r2: +list of sort paramater specs			*/
     /* r3: ?sorted list of terms			*/
    return parsort(CTXT);
+
+   case IS_ACYCLIC: {
+     return !(is_cyclic(CTXTc (Cell) (reg + 1)));
+     break;
+   }
 
