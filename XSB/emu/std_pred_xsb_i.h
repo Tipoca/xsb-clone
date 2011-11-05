@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.73 2011-11-04 15:31:07 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.74 2011-11-05 15:11:20 tswift Exp $
 ** 
 */
 
@@ -1349,8 +1349,8 @@ typedef Cycle_Trail_Frame *CTptr;
 
 #define pop_cycle_trail(Term) {						\
     * (CPtr) cycle_trail[cycle_trail_top].cell_addr = cycle_trail[cycle_trail_top].value; \
-    cycle_trail_top--;							\
     Term = cycle_trail[cycle_trail_top].parent;				\
+    cycle_trail_top--;							\
   }
 
 #define unwind_cycle_trail {			\
