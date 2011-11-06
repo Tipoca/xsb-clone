@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.222 2011-11-05 15:11:20 tswift Exp $
+** $Id: emuloop.c,v 1.223 2011-11-06 20:30:42 tswift Exp $
 ** 
 */
 
@@ -95,7 +95,6 @@
 CPtr	ans_var_pos_reg;
 #endif
 
-//#define FAIL_ON_CYCLES 1
 //#define MULTI_THREAD_LOGGING
 #ifdef MULTI_THREAD_LOGGING
 /* To help debug multithreaded applications: 
@@ -569,14 +568,8 @@ contcase:     /* the main loop */
     Op1(Variable(get_xvx));
     Op2(Register(get_xxr));
     ADVANCE_PC(size_xxx);
-#ifdef FAIL_ON_CYCLES
-    if (is_cyclic(op1) || is_cyclic(op2)) {
-      Fail1;
-    } else unify_xsb(_getpval);
-#else
-    {unify_xsb(_getpval);}
-#endif
-  XSB_End_Instr()
+    unify_xsb(_getpval);
+ XSB_End_Instr()
 
   XSB_Start_Instr(getstrv,_getstrv) /* PPV-S */
     Def2ops
@@ -591,13 +584,7 @@ contcase:     /* the main loop */
     Op1(Register(get_xrx));
     Op2(Register(get_xxr));
     ADVANCE_PC(size_xxx);
-#ifdef FAIL_ON_CYCLES
-    if (is_cyclic(op1) || is_cyclic(op2)) {
-      Fail1;
-    } else {unify_xsb(_gettval);}
-#else
     unify_xsb(_gettval);
-#endif
   XSB_End_Instr()
 
   XSB_Start_Instr(getcon,_getcon) /* PPR-C */
@@ -693,13 +680,7 @@ contcase:     /* the main loop */
     } 
     else {
       op2 = *(sreg++);
-#ifdef FAIL_ON_CYCLES
-    if (is_cyclic(op1) || is_cyclic(op2)) {
-      Fail1;
-    } else {unify_xsb(_unipval);}
-#else
       unify_xsb(_unipval);
-#endif
     } 
   XSB_End_Instr()
 
@@ -766,13 +747,7 @@ contcase:     /* the main loop */
     }
     else {
       op2 = *(sreg++);
-#ifdef FAIL_ON_CYCLES
-    if (is_cyclic(op1) || is_cyclic(op2)) {
-      Fail1;
-    } else {unify_xsb(_unitval);}
-#else
       unify_xsb(_unitval);
-#endif
     } 
   XSB_End_Instr()
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.31 2011-06-27 15:49:04 dwarren Exp $
+** $Id: basictypes.h,v 1.32 2011-11-06 20:30:42 tswift Exp $
 ** 
 */
 
@@ -120,6 +120,16 @@ typedef union cell_to_bytes_conv {
     
 } CellToBytesConv;
 
+
+typedef struct CycleTrailFrame {
+  CPtr cell_addr;
+  Cell value;
+  byte arg_num;
+  byte arity;
+  Cell parent;
+} Cycle_Trail_Frame ;
+
+typedef Cycle_Trail_Frame *CTptr;
 
 #ifdef MULTI_THREAD
 #ifdef WIN_NT
