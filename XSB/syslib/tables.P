@@ -132,7 +132,6 @@ slg_not(ProducerSF) :- slg_not(ProducerSF).
 %lrd_success(ProducerSF,Subgoal) :- lrd_success(ProducerSF,Subgoal).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-:- import table_error/1 from error_handler.
 
 tfindall(T, Call, Result) :-
 	table_state(Call,PredType,_CallType,AnsSetStatus),
@@ -381,7 +380,6 @@ were instantiated and so it subsumes the call in the table.
 
  */
 
-:- import term_new_mod/3 from machine.
 
 get_calls(CallTerm, Handle, Template) :-
 	(CallTerm = M:Goal -> term_new_mod(M,Goal,NewGoal) ; CallTerm = NewGoal),
@@ -440,14 +438,9 @@ get_returns(TableEntry, ReturnTemplate) :-
 	change_attv_to_var(ReturnTemplate),
 	member('_$get_returns'(TableEntry,ReturnTemplate),ReturnsList).
 
-:- export get_unifiable_returns/3.
 
-:- import t_assert_2/2 from assert.
-:- import (index)/2 from standard.
 :- dynamic '_$return'/1.
 :- index('_$return'/1,trie).
-:- import system_retract_fact/1 from assert.
-
 
 get_unifiable_returns(TableEntry,Skel, Leaf) :-
 	\+ \+ (get_unifiable_returns_1(TableEntry, Skel, ReturnList),
@@ -525,7 +518,6 @@ get_residual(CallSkel, DelayList) :-
 	; member(DelayList, DLs)
 	).
 
-:- export variant_get_residual/2.
 variant_get_residual(CallSkel, DelayList) :-
 	get_call(CallSkel, S, R),
 	get_returns_and_dls(S, R, DLs),
@@ -634,7 +626,6 @@ abolish_table_call_bi(_Handle,_Action) :-
 delete_return(TableEntryHandle,ReturnHandle) :-
 	trie_delete_return(TableEntryHandle,ReturnHandle,ANSWER_SUBSUMPTION).
 
-:- export delete_return/3.
 delete_return(SubgoalFrame,AnswerTrieLeaf,Type) :-
 	trie_delete_return(SubgoalFrame,AnswerTrieLeaf,Type).
 
@@ -697,7 +688,6 @@ get_leaves_and_dls(Goal,Leaf,DLs) :-
 force_truth_value(AnsLeafNode,TruthValue) :-
 	force_truth_value(AnsLeafNode,TruthValue).
 
-:- export predicate_has_tables/1.
 predicate_has_tables(Psc):-
 	table_inspection_function(GET_PRED_CALLTRIE_PTR,Psc,Ptr,_,_),
 %	writeln(ptr(Ptr)),
@@ -709,17 +699,26 @@ get_callsto_number(SubgoalFrame,Number):-
 get_answer_number(SubgoalFrame,Number):- 
 	table_inspection_function(GET_ANSWER_NUMBER,SubgoalFrame,Number,_,_).
 
-:- export early_complete_on_nth/2.
 early_complete_on_nth(SubgoalFrame,Number):- 
 	table_inspection_function(EARLY_COMPLETE_ON_NTH,SubgoalFrame,Number,_,_).
 
-:- export early_complete_on_delta/4.
 early_complete_on_delta(SubgoalFrame,New,Old,Epsilon):- 
 	(New - Old < Epsilon ->
 	    table_inspection_function(EARLY_COMPLETE,SubgoalFrame,_,_,_)
 	 ;  true).
 
-:- export log_forest/1, log_forest/2.
+log_all_forest_start :-
+	start_forest_view(userout).
+
+log_all_forest_start(Options):- 
+	check_log_forest_options(Options,File),
+	start_forest_view(File).
+
+%% it is defined to stop log forest, since we have no Call passed in
+%% it is necessary in order to stop it
+log_all_forest_end :-
+	stop_forest_view.
+
 log_forest(Call):- 
 	start_forest_view(userout),
 	call(Call),
@@ -743,8 +742,6 @@ check_log_forest_options([Option|_Rest],File):- !,
 check_log_forest_options(Culprit,_File):- 
 	type_error(list,Culprit,log_forest/2,2).
 
-:- import set_prolog_flag/2 from curr_sym.
-:- export start_forest_view/1, stop_forest_view/0.
 start_forest_view(File):-
 	table_inspection_function(START_FOREST_VIEW,File,_,_,_),
 	set_prolog_flag(ctrace,on).
@@ -753,8 +750,6 @@ stop_forest_view:-
 	table_inspection_function(STOP_FOREST_VIEW,_,_,_,_),
 	set_prolog_flag(ctrace,off).
 
-:- import load_dync/2 from consult.
-:- export load_forest_log/1.
 load_forest_log(File):- 
 	index(tc/3,[1,2]),
 	index(na/2,[2]),
@@ -785,13 +780,9 @@ find_answers(Pred):-
 end_of_file.
 /* Right now, experimental for aggregs.P */
 	
-:- export get_unifiable_returns/3.
 
-:- import t_assert_2/2 from assert.
-:- import (index)/2 from standard.
 :- dynamic '_$return'/1.
 :- index('_$return'/1,trie).
-:- import system_retract_fact/1 from assert.
 
 
 get_unifiable_returns(TableEntry,Skel, Leaf) :-

@@ -63,8 +63,26 @@
    (use_subsumptive_tabling)/1,
    (use_variant_tabling)/1.
 
-   :- export find_components/1, find_forward_dependencies/1, %%%find_backward_dependencies/1,
-   find_answers/1.
+:- export
+	find_components/1,
+	find_forward_dependencies/1,
+	%%%find_backward_dependencies/1,
+	find_answers/1.
+
+:- export start_forest_view/1, stop_forest_view/0.
+:- export load_forest_log/1.
+:- export log_forest/1, log_forest/2.
+:- export 
+	log_all_forest_start/0, 
+	log_all_forest_end/0, 
+	log_all_forest_start/1.
+
+
+:- export get_unifiable_returns/3.
+:- export variant_get_residual/2.
+:- export predicate_has_tables/1.
+:- export early_complete_on_nth/2.
+:- export early_complete_on_delta/4.
 
 :- export '_$$get_returns'/3.
 
@@ -74,23 +92,36 @@
      from file_op.
 :- import copy_term/2, member/2
      from basics.
-:- import (dynamic)/1, retract/1, retract_nr/1, retractall/1, t_assert/2
-     from assert.
-:- import (=..)/2, abort/1, call/1, functor/3, is_attv/1, tcall/1
-     from standard.
-:- import domain_error/5, check_nonvar/3, type_error/4, table_error/1, 
-   permission_error/4 , check_cyclic/3
-   %,instantiation_error/2 
+:- import
+	(dynamic)/1,
+	retract/1, retract_nr/1, retractall/1,
+	system_retract_fact/1,
+	t_assert/2,
+	t_assert_2/2
+   from assert.
+:- import
+	(=..)/2, abort/1, call/1,
+	functor/3, is_attv/1, tcall/1,
+	(index)/2
+   from standard.
+:- import
+	domain_error/5, check_nonvar/3, type_error/4, table_error/1, 
+	%%instantiation_error/2,
+	permission_error/4 , check_cyclic/3
    from error_handler.
 
 :- import abolish_table_info/0, delete_attributes/1, 
    table_inspection_function/5, table_inspection_function/7,
-   term_psc/2, term_new/2, psc_set_tabled/2, psc_tabled/2, psc_type/2 from machine.
+   term_psc/2, term_new/2, psc_set_tabled/2, psc_tabled/2, psc_type/2
+   from machine.
 :- import psc_set_incr/2 from machine.
+:- import term_new_mod/3 from machine.
 
 :- import numbervars/3, unnumbervars/2
      from num_vars.
 
 :- import invalidate_table_for/2 from usermod.
+:- import set_prolog_flag/2 from curr_sym.
+:- import load_dync/2 from consult.
 
 /* ------------------- end of file tables.H --------------------------- */
