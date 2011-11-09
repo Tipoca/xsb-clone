@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.156 2011-10-29 23:27:59 tswift Exp $
+** $Id: tries.c,v 1.157 2011-11-09 02:28:19 dwarren Exp $
 ** 
 */
 
@@ -815,7 +815,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
     if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_WARNING) {		\
       char buffer[2*MAXTERMBUFSIZE];					\
       sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
-		       MAXTERMBUFSIZE);					\
+		       (long)flags[MAX_TABLE_ANSWER_DEPTH]);		\
       xsb_warn("Exceeded max answer term depth of %d in call %s\n",	\
 	       (int)flags[MAX_TABLE_ANSWER_DEPTH],buffer);		\
     }									\
@@ -827,32 +827,32 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
     else {								\
       char buffer[2*MAXTERMBUFSIZE];					\
       sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
-		       MAXTERMBUFSIZE);					\
+		       (long)flags[MAX_TABLE_ANSWER_DEPTH]);		\
       xsb_abort("Exceeded max answer term depth of %d in call %s\n",	\
 		(int)flags[MAX_TABLE_ANSWER_DEPTH],buffer);		\
     }									\
 }
 
 #define CHECK_ANSWER_LIST_DEPTH						\
-  if (--list_depth_ctr <= 0)	{						\
+  if (--list_depth_ctr <= 0)	{					\
     if (flags[MAX_TABLE_ANSWER_LIST_ACTION] == XSB_WARNING) {		\
-      char buffer[2*MAXTERMBUFSIZE];						\
+      char buffer[2*MAXTERMBUFSIZE];					\
       sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
-		       MAXTERMBUFSIZE);					\
+		       (long)flags[MAX_TABLE_ANSWER_LIST_DEPTH]);	\
       xsb_warn("Exceeded max answer list depth of %d in call %s\n",	\
-		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
+		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);		\
     }									\
-    else if (flags[MAX_TABLE_ANSWER_LIST_ACTION] == XSB_FAILURE) {		\
+    else if (flags[MAX_TABLE_ANSWER_LIST_ACTION] == XSB_FAILURE) {	\
       resetpdl;								\
       found_flag = 1;							\
       return NULL;							\
     }									\
     else {								\
-      char buffer[2*MAXTERMBUFSIZE];						\
+      char buffer[2*MAXTERMBUFSIZE];					\
       sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
-		       MAXTERMBUFSIZE);					\
+		       (long)flags[MAX_TABLE_ANSWER_LIST_DEPTH]);	\
       xsb_abort("Exceeded max answer list depth of %d in call %s\n",	\
-		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
+		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);		\
     }									\
 }
 
@@ -1571,7 +1571,8 @@ extern xsbBool is_cyclic(CTXTdeclc Cell);
     }                                                                   \
     else /* if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_ERROR) */ {	\
       char buffer[2*MAXTERMBUFSIZE];					\
-      sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),MAXTERMBUFSIZE); \
+      sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)), \
+		       (long)flags[MAX_TABLE_SUBGOAL_DEPTH]);		\
       safe_delete_branch(Paren);					\
       if (vcs_tnot_call) {						\
 	vcs_tnot_call = 0;						\
@@ -1874,7 +1875,8 @@ if (ABSTRACTING_ATTVARS) {
 
   if (vcs_tnot_call && ctr > 0) {
       char buffer[2*MAXTERMBUFSIZE];						
-      sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),MAXTERMBUFSIZE); 
+      sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),
+		       (long)flags[MAX_TABLE_SUBGOAL_DEPTH]); 
       xsb_abort("Floundering goal in tnot/1 %s\n",buffer);
   }
     

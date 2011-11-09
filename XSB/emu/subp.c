@@ -164,9 +164,174 @@ Cell build_interrupt_chain(CTXTdecl) {
 }
 
 
+
+
+
+
+
 /*======================================================================*/
 /*  Unification routines.						*/
 /*======================================================================*/
+
+/* DSW (11/7/2011): This is a unify routine (copied from the
+   unify_xsb(_) macro and modified) to unify cyclic terms.  It uses
+   pointer changing and preimage trailing.  The third argument,
+   op1loc, is a pointer to the memory location where the op1 pointer
+   was loaded from.  It uses this to change that address to point to
+   op2 if they are potentially matching structures.  But op1loc may be
+   a small integer (under 100 and > 0), in which case the pointer
+   swizzling is not done and recursive calls reduce it by one.  So
+   calling it with op1loc = 10, e.g., causes it not to do the pointer
+   swizzling until it gets 10 levels deep in the recursion.  This
+   allows it to avoid somewhat expensive pre-image trailing for most
+   acyclic unifications, and yet catch them all, albeit later. */
+
+xsbBool unify_rat(CTXTdeclc Cell rop1, Cell rop2, CPtr op1loc) {
+  register Cell op1, op2;
+  op1 = rop1; op2 = rop2;
+
+ tail_recursion:
+  XSB_Deref2(op1, goto label_op1_free);
+  XSB_Deref2(op2, goto label_op2_free);
+
+  if (isattv(op1)) goto label_op1_attv;
+  if (isattv(op2)) goto label_op2_attv;
+
+  if (isfloat(op2) && isboxedfloat(op1) ) {
+    if ( float_val(op2) == (float)boxedfloat_val(op1))
+      {return 1;}
+    else
+      {return 0;}
+  }
+  if (isfloat(op1) && isboxedfloat(op2) ) {
+    if ( float_val(op1) == (float)boxedfloat_val(op2))
+      {return 1;}
+    else
+      {return 0;}
+  }
+
+  if (cell_tag(op1) != cell_tag(op2))
+    {return 0;}
+
+  if (isconstr(op1)) goto label_both_struct;
+  if (islist(op1)) goto label_both_list;
+  /* now they are both atomic */
+  if (op1 == op2) {return 1;}
+  return 0;
+
+ label_op1_free:
+  XSB_Deref2(op2, goto label_both_free);
+  bind_copy((CPtr)(op1), op2);
+  return 1;
+
+ label_op2_free:
+  bind_copy((CPtr)(op2), op1);
+  return 1;
+
+ label_both_free:
+  if ( (CPtr)(op1) == (CPtr)(op2) ) {return 1;}
+  if ( (CPtr)(op1) < (CPtr)(op2) )
+    {
+      if (COND1)
+	/* op1 not in local stack */
+	{ bind_ref((CPtr)(op2), (CPtr)(op1)); }
+      else  /* op1 points to op2 */
+	{ bind_ref((CPtr)(op1), (CPtr)(op2)); }
+      }
+  else
+    { /* op1 > op2 */
+      if (COND2)
+	{ bind_ref((CPtr)(op1), (CPtr)(op2)); }
+      else
+	{ bind_ref((CPtr)(op2), (CPtr)(op1)); }
+    }
+  return 1;
+
+ label_both_list:
+  if (op1 == op2) {return 1;}
+
+  if ((char *)op1loc > (char *)100) {
+    //    printf("ppil\n");
+    push_pre_image_trail(op1loc,op2);
+    cell(op1loc) = op2;
+  }
+
+  op1 = (Cell)(clref_val(op1));
+  op2 = (Cell)(clref_val(op2));
+  if ( !unify_rat(CTXTc cell((CPtr)op1), cell((CPtr)op2),
+		  (((op1loc==0||((char *)op1loc>(char *)100)))?((CPtr)op1):((CPtr)((char *)op1loc-1)))))
+    { return 0; }
+  if ((op1loc==0||((char *)op1loc>(char *)100))) op1loc = ((CPtr)op1+1);
+  else op1loc = ((CPtr)((char *)op1loc-1));
+  op1 = cell((CPtr)op1+1);
+  op2 = cell((CPtr)op2+1);
+  goto tail_recursion;
+
+ label_both_struct:
+  if (op1 == op2) {return 1;}
+
+  /* a != b */
+  op1 = (Cell)(clref_val(op1));
+  op2 = (Cell)(clref_val(op2));
+  if (((Pair)(CPtr)op1)->psc_ptr!=((Pair)(CPtr)op2)->psc_ptr)
+    {
+      /* 0(a) != 0(b) */
+      return 0;
+    }
+  {
+    int arity = get_arity(((Pair)(CPtr)op1)->psc_ptr);
+    if (arity == 0) {return 1;}
+
+    if ((char *)op1loc>(char *)100) {
+      //      printf("ppif\n");
+      push_pre_image_trail(op1loc,makecs(op2));
+      cell(op1loc) = makecs(op2);
+    }
+    while (--arity)
+      {
+	op1 = (Cell)((CPtr)op1+1); op2 = (Cell)((CPtr)op2+1);
+	if (!unify_rat(CTXTc cell((CPtr)op1), cell((CPtr)op2),
+		       (((op1loc==0||((char *)op1loc>(char *)100)))?((CPtr)op1):((CPtr)((char *)op1loc-1)))))
+	  {
+	    return 0;
+	  }
+      }
+    if ((op1loc==0||((char *)op1loc>(char *)100))) op1loc = ((CPtr)op1+1);
+    else op1loc = ((CPtr)((char *)op1loc-1));
+    op1 = cell((CPtr)op1+1); 				
+    op2 = cell((CPtr)op2+1);			
+    goto tail_recursion;
+  }
+
+  /* if the order of the arguments in add_interrupt */
+  /* is not important, the following three can actually */
+  /* be collapsed into one; loosing some meaningful */
+  /* attv_dbgmsg - they have been lost partially */
+  /* already */
+
+ label_op1_attv:
+  if (isattv(op2)) goto label_both_attv;
+  attv_dbgmsg(">>>> ATTV = something, interrupt needed\n");
+  add_interrupt(CTXTc cell(((CPtr)dec_addr(op1) + 1)),op2);
+  bind_copy((CPtr)dec_addr(op1), op2);
+  return 1;
+
+ label_op2_attv:
+  attv_dbgmsg(">>>> something = ATTV, interrupt needed\n");
+  add_interrupt(CTXTc cell(((CPtr)dec_addr(op2) + 1)),op1);
+  bind_copy((CPtr)dec_addr(op2), op1);
+  return 1;
+
+ label_both_attv:
+  if (op1 != op2)
+    {
+      attv_dbgmsg(">>>> ATTV = ???, interrupt needed\n");
+      add_interrupt(CTXTc cell(((CPtr)dec_addr(op1) + 1)),op2);
+      bind_copy((CPtr)dec_addr(op1), op2);
+    }
+  return 1;
+}
+
 /* the follow redefinitions change how the unify_xsb() macro below works! */
 #undef IFTHEN_FAILED
 #define IFTHEN_FAILED	return 0
@@ -659,7 +824,7 @@ int compare(CTXTdeclc const void * v1, const void * v2)
         if (isref(val2) || isattv(val2)) return 1;
         else if (isofloat(val2)) 
           return sign(boxedfloat_val(val1) - ofloat_val(val2));
-        else return -1;            
+        else return -1; 
     } else if (cell_tag(val2) != XSB_STRUCT && cell_tag(val2) != XSB_LIST) return 1;
     else {
       int arity1, arity2;

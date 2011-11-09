@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: subp.h,v 1.24 2011-09-23 18:36:07 tswift Exp $
+** $Id: subp.h,v 1.25 2011-11-09 02:28:19 dwarren Exp $
 ** 
 */
 
@@ -36,6 +36,7 @@ extern void print_op(FILE *, char *, int);
 extern void remove_incomplete_tables_reset_freezes(CTXTdeclc int);
 
 extern xsbBool unify(CTXTdeclc Cell, Cell);
+extern xsbBool unify_rat(CTXTdeclc Cell, Cell, CPtr);
 extern xsbBool are_identical_terms(Cell, Cell);
 extern xsbBool startSleeperThread(int);
 

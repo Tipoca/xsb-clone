@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify_xsb.h,v 1.13 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: unify_xsb.h,v 1.14 2011-11-09 02:28:19 dwarren Exp $
 ** 
 */
 
@@ -35,8 +35,21 @@
 
 #define attv_dbgmsg(String) xsb_dbgmsg((LOG_ATTV,String))
 
+/* DSW (11/7/2011): changed unify_xsb to call unify_rat to handle
+   cyclic terms. unify_rat is defined in subp.c and changes pointers
+   (and uses pre-image trailing) to avoid inifinite loops.  The calls
+   here pass a third argument to unify_rat, which is a (small) number
+   indicating how many levels to recurse before using pointer changing
+   and pre-image trailing.  It is set to 20 here after simple
+   experiments: If it is 0, running the entire testsuite causes ~1.2M
+   preimage trailings; if it is 20, it causes ~930.  So this should
+   have smaller effect on performance, and yet still catch infinite
+   loops (of course after deeper, unnecessary, recursion in cyclic
+   terms.)  My thought is that since cyclic terms are unusual, this
+   should be a reasonable tradeoff. */
+#define DEPTH_TILL_CYCLE_CHECK 20
+
 #define unify_xsb(loc)                                       \
- loc##_tail_recursion:                                       \
   XSB_Deref2(op1, goto loc##_label_op1_free);                \
   XSB_Deref2(op2, goto loc##_label_op2_free);                \
                                                              \
@@ -98,11 +111,14 @@
                                                              \
   op1 = (Cell)(clref_val(op1));                              \
   op2 = (Cell)(clref_val(op2));                              \
-  if ( !unify(CTXTc cell((CPtr)op1), cell((CPtr)op2)))       \
+  if ( !unify_rat(CTXTc cell((CPtr)op1), cell((CPtr)op2),    \
+		  (CPtr)DEPTH_TILL_CYCLE_CHECK))	     \
     { IFTHEN_FAILED; }                                       \
   op1 = (Cell)((CPtr)op1+1);                                 \
   op2 = (Cell)((CPtr)op2+1);                                 \
-  goto loc##_tail_recursion;                                 \
+  if ( unify_rat(CTXTc cell((CPtr)op1), cell((CPtr)op2),     \
+		 (CPtr)DEPTH_TILL_CYCLE_CHECK))		     \
+    {IFTHEN_SUCCEED;} else { IFTHEN_FAILED; }		     \
                                                              \
  loc##_label_both_struct:                                    \
   if (op1 == op2) {IFTHEN_SUCCEED;}                          \
@@ -118,16 +134,16 @@
   {                                                          \
     int arity = get_arity(((Pair)(CPtr)op1)->psc_ptr);       \
     if (arity == 0) {IFTHEN_SUCCEED;}			     \
-    while (--arity)                                          \
+    while (arity--)                                          \
       {                                                      \
 	op1 = (Cell)((CPtr)op1+1); op2 = (Cell)((CPtr)op2+1);\
-	if (!unify(CTXTc cell((CPtr)op1), cell((CPtr)op2)))  \
+	if (!unify_rat(CTXTc cell((CPtr)op1), cell((CPtr)op2), \
+                       (CPtr)DEPTH_TILL_CYCLE_CHECK))	     \
 	  {                                                  \
 	    IFTHEN_FAILED;                                   \
 	  }                                                  \
       }                                                      \
-    op1 = (Cell)((CPtr)op1+1); op2 = (Cell)((CPtr)op2+1);    \
-    goto loc##_tail_recursion;                               \
+    IFTHEN_SUCCEED;                                          \
   }                                                          \
                                                              \
   /* if the order of the arguments in add_interrupt */       \
