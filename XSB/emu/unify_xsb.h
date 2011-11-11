@@ -22,7 +22,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: unify_xsb.h,v 1.14 2011-11-09 02:28:19 dwarren Exp $
+** $Id: unify_xsb.h,v 1.15 2011-11-11 18:21:39 dwarren Exp $
 ** 
 */
 
@@ -35,6 +35,40 @@
 
 #define attv_dbgmsg(String) xsb_dbgmsg((LOG_ATTV,String))
 
+/* Assumes that first arg is a derefed var */
+static inline xsbBool not_occurs_in(Cell Var, Cell Term) {
+ rec_not_occurs_in:
+  XSB_Deref(Term);
+
+  switch (cell_tag(Term)) {
+  case XSB_ATTV: 
+  case XSB_REF: 
+  case XSB_REF1: 
+    if (Var == Term) return FALSE; else return TRUE;
+  case XSB_INT:
+  case XSB_STRING:
+  case XSB_FLOAT:
+    return TRUE;
+  case XSB_LIST: {
+    if (not_occurs_in(Var,(Cell) clref_val(Term))) {
+      Term = (Cell)(clref_val(Term) + 1);
+      goto rec_not_occurs_in;
+    } else return FALSE;
+  }
+  case XSB_STRUCT: {
+    int i, arity;
+    arity = get_arity(get_str_psc(Term));
+    if (arity == 0) return TRUE;
+    for (i = 1; i < arity; i++) {
+      if (!not_occurs_in(Var,(Cell) (clref_val(Term) +i))) return FALSE;
+    }
+    Term = (Cell)(clref_val(Term)+arity);
+    goto rec_not_occurs_in;
+  }
+  }
+  return TRUE;  /* hush, little compiler */
+}
+  
 /* DSW (11/7/2011): changed unify_xsb to call unify_rat to handle
    cyclic terms. unify_rat is defined in subp.c and changes pointers
    (and uses pre-image trailing) to avoid inifinite loops.  The calls
@@ -80,12 +114,24 @@
                                                              \
  loc##_label_op1_free:                                       \
   XSB_Deref2(op2, goto loc##_label_both_free);               \
-  bind_copy((CPtr)(op1), op2);                               \
-  IFTHEN_SUCCEED;                                            \
+  if (flags[UNIFY_WITH_OCCURS_CHECK_FLAG] &&                      \
+      (isconstr(op2) || islist(op2)) &&                      \
+      (COND1) && !not_occurs_in(op1,op2)) {		     \
+    IFTHEN_FAILED;                                           \
+  } else {                                                   \
+    bind_copy((CPtr)(op1), op2);                             \
+    IFTHEN_SUCCEED;                                          \
+  }                                                          \
                                                              \
  loc##_label_op2_free:                                       \
-  bind_copy((CPtr)(op2), op1);                               \
-  IFTHEN_SUCCEED;                                            \
+  if (flags[UNIFY_WITH_OCCURS_CHECK_FLAG] &&                      \
+      (isconstr(op1) || islist(op1)) &&                      \
+      (COND2) && !not_occurs_in(op2,op1)) {		     \
+    IFTHEN_FAILED;                                           \
+  } else {                                                   \
+    bind_copy((CPtr)(op2), op1);                             \
+    IFTHEN_SUCCEED;                                          \
+  }                                                          \
                                                              \
  loc##_label_both_free:                                      \
   if ( (CPtr)(op1) == (CPtr)(op2) ) {IFTHEN_SUCCEED;}        \

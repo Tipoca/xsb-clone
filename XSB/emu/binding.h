@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: binding.h,v 1.25 2011-05-18 19:21:40 dwarren Exp $
+** $Id: binding.h,v 1.26 2011-11-11 18:21:39 dwarren Exp $
 ** 
 */
 
@@ -237,14 +237,30 @@
 
 #define efreg_on_top(t_ereg) efreg < ebreg  && efreg < t_ereg
 
+
 /* --- for building vals on the heap ---------------------------------- */
 
 #define nbldval(OP1) {							  \
-   XSB_Deref(OP1);								  \
+   XSB_Deref(OP1);							  \
    if ( isnonvar(OP1) ||						  \
 	( /* (CPtr)(OP1) >= glstack.low && */				  \
 	  (CPtr)(OP1) <= top_of_heap ) ) {			 	  \
-     new_heap_node(hreg, OP1);						  \
+     if (flags[UNIFY_WITH_OCCURS_CHECK_FLAG] &&                    	\
+         (isconstr(OP1) || islist(OP1)) &&				\
+         occurs_in_list_or_struc((Cell)hreg,OP1)) Fail1;		\
+     else new_heap_node(hreg, OP1);					\
+   }									  \
+   else {  /* local stack vars point to heap vars and not vice-versa! */  \
+     bind_ref((CPtr)(OP1), hreg);					  \
+     new_heap_free(hreg);						  \
+   }									  \
+}
+
+#define nbldval_safe(OP1) {						  \
+   XSB_Deref(OP1);							  \
+   if ( isnonvar(OP1) ||						  \
+	(CPtr)(OP1) <= top_of_heap ) {					  \
+      new_heap_node(hreg, OP1);						  \
    }									  \
    else {  /* local stack vars point to heap vars and not vice-versa! */  \
      bind_ref((CPtr)(OP1), hreg);					  \

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.379 2011-11-09 02:28:19 dwarren Exp $
+** $Id: builtin.c,v 1.380 2011-11-11 18:21:39 dwarren Exp $
 **
 */
 
@@ -130,6 +130,8 @@
 #include "table_stats.h"
 #include "url_encode.h"
 #include "table_inspection_defs.h"
+
+#include "unify_xsb.h"
 
 int mem_flag;
 
@@ -1538,7 +1540,7 @@ int builtin_call(CTXTdeclc byte number)
     new_heap_functor(hreg, newtermpsc);
     for (disp=1; disp <= get_arity(newtermpsc); disp++) {
       arg = cell(clref_val(term)+disp);
-      nbldval(arg);
+      nbldval_safe(arg); /* but really isnt.  should change to nbldval and resolve issues. */
     }
   }
   break;

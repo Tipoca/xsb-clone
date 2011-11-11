@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.75 2011-11-06 20:30:42 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.76 2011-11-11 18:21:39 dwarren Exp $
 ** 
 */
 
@@ -912,42 +912,6 @@ inline static xsbBool parsort(CTXTdecl)
   return unify(CTXTc list, term);
 }
 
-/* Assumes that first arg is a derefed var */
-static inline xsbBool not_occurs_in(Cell Var, Cell Term) {
- rec_not_occurs_in:
-  XSB_Deref(Term);
-
-  switch (cell_tag(Term)) {
-  case XSB_ATTV: 
-  case XSB_REF: 
-  case XSB_REF1: {
-    if (Var == Term) return FALSE; else return TRUE;
-  }
-  case XSB_INT:
-  case XSB_STRING:
-  case XSB_FLOAT: {
-    return TRUE;
-  }
-  case XSB_LIST: {
-    if (not_occurs_in(Var,(Cell) clref_val(Term))) {
-      Term = (Cell)(clref_val(Term) + 1);
-      goto rec_not_occurs_in;
-    } else return FALSE;
-  }
-  case XSB_STRUCT: {
-    int i, arity;
-    arity = get_arity(get_str_psc(Term));
-    if (arity == 0) return TRUE;
-    for (i = 1; i < arity; i++) {
-      if (!not_occurs_in(Var,(Cell) (clref_val(Term) +i))) return FALSE;
-    }
-    Term = (Cell)(clref_val(Term)+arity);
-    goto rec_not_occurs_in;
-  }
-  }
-  return TRUE;  /* hush, little compiler */
-}
-  
 xsbBool unify_with_occurs_check(CTXTdeclc Cell Term1, Cell Term2) { 
   //  printf("  Term2 %x, cs_val %x\n",Term2,cs_val(Term2));
 

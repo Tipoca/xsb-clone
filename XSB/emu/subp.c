@@ -221,12 +221,24 @@ xsbBool unify_rat(CTXTdeclc Cell rop1, Cell rop2, CPtr op1loc) {
 
  label_op1_free:
   XSB_Deref2(op2, goto label_both_free);
-  bind_copy((CPtr)(op1), op2);
-  return 1;
+  if (flags[UNIFY_WITH_OCCURS_CHECK_FLAG] &&
+      (isconstr(op2) || islist(op2)) &&
+      (COND1) && !not_occurs_in(op1,op2)) {
+    return 0;
+  } else {
+    bind_copy((CPtr)(op1), op2);
+    return 1;
+  }
 
  label_op2_free:
-  bind_copy((CPtr)(op2), op1);
-  return 1;
+  if (flags[UNIFY_WITH_OCCURS_CHECK_FLAG] &&
+      (isconstr(op1) || islist(op1)) &&
+      (COND2) && !not_occurs_in(op2,op1)) {
+    return 0;
+  } else {
+    bind_copy((CPtr)(op2), op1);
+    return 1;
+  }
 
  label_both_free:
   if ( (CPtr)(op1) == (CPtr)(op2) ) {return 1;}
@@ -521,7 +533,7 @@ Pair build_call(CTXTdeclc Psc psc)
   new_heap_functor(hreg, psc); /* set str psc ptr */
   for (i=1; i <= (int)get_arity(psc); i++) {
     arg = cell(reg+i);
-    nbldval(arg);
+    nbldval_safe(arg);
   }
   return callstr;
 }

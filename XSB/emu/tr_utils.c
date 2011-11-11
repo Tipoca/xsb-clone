@@ -279,7 +279,7 @@ Cell build_ret_term(CTXTdeclc int arity, Cell termVector[]) {
     sym_psc = get_ret_psc((byte)arity);
     new_heap_functor(hreg, sym_psc);
     for ( i = 0; i < arity; i++ )
-      nbldval(termVector[i]);
+      nbldval_safe(termVector[i]);
     return makecs(ret_term);  /* return as a term */
   }
 }
@@ -1366,7 +1366,7 @@ void breg_retskel(CTXTdecl)
       new_heap_functor(hreg, psc);
       for (i = template_size; i > 0; i--) {
 	term = (Cell)(*(CPtr)(cptr+i));
-        nbldval(term);
+        nbldval_safe(term);
       }
     }
     ctop_int(CTXTc 4, (Integer)sg_frame);

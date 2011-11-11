@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.223 2011-11-06 20:30:42 tswift Exp $
+** $Id: emuloop.c,v 1.224 2011-11-11 18:21:39 dwarren Exp $
 ** 
 */
 
@@ -424,6 +424,39 @@ int  ctrace_ctr=0;
 char *xsb_default_segfault_msg =
      "\n++Memory violation occurred during evaluation.\n++Please report this problem using the XSB bug tracking system accessible from\n++\t http://sourceforge.net/projects/xsb\n++Please supply the steps necessary to reproduce the bug.\n";
 
+static inline xsbBool occurs_in_list_or_struc(Cell Var, Cell Term) {
+ rec_occurs_in:
+  XSB_Deref(Term);
+  //  printf("enter occurs_in_list_or_struc %p %p\n",Var,Term);
+
+  switch (cell_tag(Term)) {
+  case XSB_ATTV: 
+  case XSB_REF: 
+  case XSB_REF1: 
+  case XSB_INT:
+  case XSB_STRING:
+  case XSB_FLOAT:
+    return FALSE;
+  case XSB_LIST: {
+    if (Var == (Cell)clref_val(Term) || Var == (Cell)clref_val(Term)+1) return TRUE;
+    if (occurs_in_list_or_struc(Var,(Cell)clref_val(Term))) return TRUE;
+    Term = (Cell)(clref_val(Term) + 1);
+    goto rec_occurs_in;
+  }
+  case XSB_STRUCT: {
+    int i, arity;
+    arity = get_arity(get_str_psc(Term));
+    if (arity == 0) return FALSE;
+    if (Var > (Cell)clref_val(Term) && Var <= (Cell)((CPtr)clref_val(Term)+arity)) return TRUE;
+    for (i = 1; i < arity; i++) {
+      if (occurs_in_list_or_struc(Var,(Cell) (clref_val(Term) +i))) return TRUE;
+    }
+    Term = (Cell)(clref_val(Term)+arity);
+    goto rec_occurs_in;
+  }
+  }
+  return TRUE;  
+  }
 
 #ifndef MULTI_THREAD
 jmp_buf xsb_abort_fallback_environment;

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.180 2011-11-06 20:30:42 tswift Exp $
+** $Id: init_xsb.c,v 1.181 2011-11-11 18:21:39 dwarren Exp $
 ** 
 */
 
@@ -262,6 +262,7 @@ static void init_flags(CTXTdecl)
   flags[MAX_QUEUE_TERMS] = DEFAULT_MQ_SIZE; 
 #endif
   flags[HEAP_GC_MARGIN] = 8192 * ZOOM_FACTOR;
+  flags[UNIFY_WITH_OCCURS_CHECK_FLAG] = 0;
 }
 
 /*==========================================================================*/

@@ -20,10 +20,10 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 <<<<<<< flag_defs_xsb.h
-** $Id: flag_defs_xsb.h,v 1.42 2011-10-16 19:20:34 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.43 2011-11-11 18:21:39 dwarren Exp $
 **
 =======
-** $Id: flag_defs_xsb.h,v 1.42 2011-10-16 19:20:34 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.43 2011-11-11 18:21:39 dwarren Exp $
 **
 >>>>>>> 1.28
 */
@@ -146,6 +146,7 @@ interrupt flag
 #define EC_REMOVE_SCC             90
 #define MAX_TABLE_ANSWER_DEPTH    91   /* maximum depth for non-list terms in a tabled answer */
 #define MAX_TABLE_ANSWER_ACTION   92   /* abort/warn/abstract (abstract not yet impld.)*/
+#define UNIFY_WITH_OCCURS_CHECK_FLAG 93   /* make all unifications use occur_check, under development by DSW */
 #define MAX_FLAGS		 100
 
 #define MAXTOINDEX 10              /* maximum depth in term to go when using deep indexing; 
