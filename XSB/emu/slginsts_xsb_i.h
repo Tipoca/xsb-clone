@@ -454,7 +454,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   if (flags[CTRACE_CALLS])  { 
     char buffera[MAXTERMBUFSIZE];
     char bufferb[MAXTERMBUFSIZE];
-    sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
+    sprint_subgoal(CTXTc buffera,(VariantSF)producer_sf);     
     if (ptcpreg) {
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
     }
