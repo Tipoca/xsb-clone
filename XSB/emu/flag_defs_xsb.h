@@ -19,13 +19,9 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-<<<<<<< flag_defs_xsb.h
-** $Id: flag_defs_xsb.h,v 1.43 2011-11-11 18:21:39 dwarren Exp $
 **
-=======
-** $Id: flag_defs_xsb.h,v 1.43 2011-11-11 18:21:39 dwarren Exp $
+** $Id: flag_defs_xsb.h,v 1.44 2011-11-12 21:23:29 kifer Exp $
 **
->>>>>>> 1.28
 */
 
 
