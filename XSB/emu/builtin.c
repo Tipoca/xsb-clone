@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.380 2011-11-11 18:21:39 dwarren Exp $
+** $Id: builtin.c,v 1.381 2011-11-12 00:33:31 tswift Exp $
 **
 */
 
@@ -2714,7 +2714,7 @@ case WRITE_OUT_PROFILE:
     ctop_int(CTXTc 1,newtrie(CTXTc (int)ptoc_int(CTXTc 2)));
     break;
   case TRIE_INTERN:
-    private_trie_intern(CTXT);
+    return(private_trie_intern(CTXT));
     break;
   case TRIE_INTERNED:
     return(private_trie_interned(CTXT));

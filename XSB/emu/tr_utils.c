@@ -1529,7 +1529,7 @@ Integer newtrie(CTXTdeclc int type) {
 * set to tell us whether we can expand or not.
 */
 
-void private_trie_intern(CTXTdecl) {
+int private_trie_intern(CTXTdecl) {
   prolog_term term;
   int Trie_id,index,type;
   int flag, check_cps_flag, expand_flag;
@@ -1547,15 +1547,19 @@ void private_trie_intern(CTXTdecl) {
   }
 
   Leaf = trie_intern_chk_ins(CTXTc term,&(itrie_array[index].root),
-			    &flag,check_cps_flag,expand_flag);
+				 &flag,check_cps_flag,expand_flag);
   switch_from_trie_assert;
   //  printf("root %p\n",itrie_array[index].root);
-  ctop_int(CTXTc 3,(Integer)Leaf);
-  ctop_int(CTXTc 4,flag);
+  if (Leaf) {
+    ctop_int(CTXTc 3,(Integer)Leaf);
+    ctop_int(CTXTc 4,flag);
+    return(TRUE);
+  }
+  else return(FALSE);
 }
 
 #ifdef MULTI_THREAD
-void shas_trie_intern(CTXTdecl) {
+int shas_trie_intern(CTXTdecl) {
   prolog_term term;
   int Trie_id,index,type;
   BTNptr Leaf;
@@ -1576,8 +1580,12 @@ void shas_trie_intern(CTXTdecl) {
 			    &flag,NO_CPS_CHECK,EXPAND_HASHES);
   switch_from_shared_trie_assert(&(shared_itrie_array[index].trie_mutex));
   
-  ctop_int(CTXTc 4,(Integer)Leaf);
-  ctop_int(CTXTc 5,flag);
+  if (Leaf) {
+    ctop_int(CTXTc 4,(Integer)Leaf);
+    ctop_int(CTXTc 5,flag);
+    return(TRUE);
+  }
+  else return(FALSE);
 
 }
 #endif

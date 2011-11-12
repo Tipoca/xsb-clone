@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.73 2011-10-29 23:27:59 tswift Exp $
+** $Id: tr_utils.h,v 1.74 2011-11-12 00:33:31 tswift Exp $
 ** 
 */
 
@@ -95,8 +95,8 @@ extern void    next_trie_property(CTXTdecl);
 
 extern Integer newtrie(CTXTdeclc int);
 extern void trie_drop(CTXTdecl);
-extern void private_trie_intern(CTXTdecl);
-extern void shas_trie_intern(CTXTdecl);
+extern int private_trie_intern(CTXTdecl);
+extern int shas_trie_intern(CTXTdecl);
 extern int  private_trie_interned(CTXTdecl);
 extern int  shas_trie_interned(CTXTdecl);
 extern void private_trie_unintern(CTXTdecl);
