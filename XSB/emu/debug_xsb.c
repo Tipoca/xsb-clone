@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.81 2011-10-29 23:27:58 tswift Exp $
+** $Id: debug_xsb.c,v 1.82 2011-11-13 18:18:31 tswift Exp $
 ** 
 */
 
@@ -188,6 +188,69 @@ inline int get_int_print_width(Integer num) {
   else return MAXINTLEN;
 }
 
+#ifndef MULTI_THREAD
+extern CTptr cycle_trail;
+extern int cycle_trail_size;
+extern  int cycle_trail_top;
+Cell visited_string; 
+#endif
+
+#define pop_cycle_trail_keep_mark(Term) {						\
+    if ( * (CPtr) cycle_trail[cycle_trail_top].cell_addr != visited_string) \
+      * (CPtr) cycle_trail[cycle_trail_top].cell_addr = cycle_trail[cycle_trail_top].value; \
+    Term = cycle_trail[cycle_trail_top].parent;				\
+    cycle_trail_top--;							\
+  }
+
+/*
+void mark_cyclic(CTXTdeclc Cell Term) { 
+  int cycle_trail_top = -1;
+
+  XSB_Deref(Term);
+  if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) return;
+
+  if (cycle_trail == (CTptr) 0){
+    cycle_trail_size = TERM_TRAVERSAL_STACK_INIT;
+    cycle_trail = (CTptr) mem_alloc(cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE);
+    }
+
+  visited_string = makestring(string_find("_$visited",1));;
+
+  push_cycle_trail(Term);	
+  *clref_val(Term) = visited_string;
+
+  while (cycle_trail_top >= 0) {
+
+    if (cycle_trail[cycle_trail_top].arg_num > cycle_trail[cycle_trail_top].arity) {
+      pop_cycle_trail(Term);	
+    }
+    else {
+      if (cycle_trail[cycle_trail_top].arg_num == 0) {
+	Term = cycle_trail[cycle_trail_top].value;
+      }
+      else {
+	printf("examining struct %p %d\n",clref_val(cycle_trail[cycle_trail_top].parent),cycle_trail[cycle_trail_top].arg_num);
+	Term = (Cell) (clref_val(cycle_trail[cycle_trail_top].parent) + cycle_trail[cycle_trail_top].arg_num);
+      }
+      cycle_trail[cycle_trail_top].arg_num++;
+      printf("Term1 before %x\n",Term);
+      XSB_Deref(Term);
+      printf("Term1 after %x\n",Term);
+      if (cell_tag(Term) == XSB_LIST || cell_tag(Term) == XSB_STRUCT) {	
+	printf("found struct or list\n");
+	if (*clref_val(Term) != visited_string) {
+	  push_cycle_trail(Term);	
+	  *clref_val(Term) = visited_string;
+	  printf("marking %p as visited\n",clref_val(Term));
+	}
+      }
+    }
+  }
+  //  mem_dealloc(cycle_trail,cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE);
+  return;
+}
+*/
+
 static int sprint_term(char *buffer, int insize, Cell term, byte car, long level)
 {
   unsigned short i, arity;
@@ -209,11 +272,14 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
     sprintf(buffer+size, "_v%"Intfmt, (UInteger)vptr(term));
     return size+2+sizeof(UInteger);
   case XSB_ATTV:
-    sprintf(buffer+size, "_attv%p {...} ", (CPtr)dec_addr(term));
-    //    printf("cp %d\n",sizeof(CPtr));
-    return size+15+sizeof(CPtr);
-    //    sprintf(buffer+size, "_%p {...}", (CPtr)dec_addr(term));
-    //    return size+9+sizeof(CPtr);
+    if (flags[WRITE_ATTRIBUTES] == WA_DOTS) {
+      sprintf(buffer+size, "_attv%p {...} ", (CPtr)dec_addr(term));
+      return size+15+sizeof(CPtr);
+    }
+    else {
+      sprintf(buffer+size, "_attv%p ", (CPtr)dec_addr(term));
+      return size+9+sizeof(CPtr);
+    }
   case XSB_STRUCT:
     /* NOTE: Below is a check for boxed numbers. If such is the case,
        then the behavior is the same as XSB_INT or XSB_FLOAT, but with
@@ -382,6 +448,12 @@ void printterm(FILE *fp, Cell term, long depth) {
 void sprintTerm(char *buffer, Cell term, long level) {
   sprint_term(buffer, 0, term, CAR, level);
 }
+/*
+void sprintCyclicTerm(char *buffer, Cell Term, long level) {
+  mark_cyclic(Term);
+  sprint_term(buffer, 0, Term, CAR, level);
+}
+*/
 
 /*------------------------------------------------------------------*/
 /* Used to print out call using WAM registers -- print registers*/
