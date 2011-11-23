@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.76 2011-11-11 18:21:39 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.77 2011-11-23 14:31:57 dwarren Exp $
 ** 
 */
 
@@ -165,7 +165,7 @@ inline static xsbBool univ_builtin(CTXTdecl)
   int i, arity;
   int  new_indicator;
   char *name;
-  Cell list, new_list, term, chead, ctail;
+  Cell list, new_list, term, chead, ctail, new_term;
   CPtr head, top = 0;
   Pair sym;
 
@@ -219,7 +219,7 @@ inline static xsbBool univ_builtin(CTXTdecl)
 	    }
 	  }
 	  if (list_construction) { /* no errors can occur */
-	    bind_list((CPtr)term, hreg);
+	    new_term = makelist(hreg);
 	    list = ctail;
 	    bld_copy(hreg, cell(clref_val(list))); hreg++;
 	    list = cell(clref_val(list)+1);
@@ -227,7 +227,8 @@ inline static xsbBool univ_builtin(CTXTdecl)
 	    bld_copy(hreg, cell(clref_val(list))); hreg++;
 	  } else { /* compound term construction */
 	    sreg = hreg;
-	    bind_cs((CPtr)term, sreg); hreg = sreg; sreg++;
+	    new_term = makecs(hreg);
+	    hreg = sreg; sreg++;
 	    for (arity = 0, list = ctail; ;
 		 arity++, list = cell(clref_val(list)+1)) {
 	      XSB_Deref(list); /* necessary */
@@ -254,7 +255,7 @@ inline static xsbBool univ_builtin(CTXTdecl)
 	      }
 	    }
 	  }
-	} return TRUE;
+	} return unify(term,new_term);
       }
       if ((xsb_isnumber(chead) || isboxedinteger(chead)) && isnil(ctail)) { /* list=[num] */
 	bind_copy((CPtr)term, chead);	 /* term<-num  */

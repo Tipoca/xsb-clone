@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.224 2011-11-11 18:21:39 dwarren Exp $
+** $Id: emuloop.c,v 1.225 2011-11-23 14:31:56 dwarren Exp $
 ** 
 */
 
@@ -438,7 +438,7 @@ static inline xsbBool occurs_in_list_or_struc(Cell Var, Cell Term) {
   case XSB_FLOAT:
     return FALSE;
   case XSB_LIST: {
-    if (Var == (Cell)clref_val(Term) || Var == (Cell)clref_val(Term)+1) return TRUE;
+    if (Var == (Cell)clref_val(Term) || Var == (Cell)((CPtr)clref_val(Term)+1)) return TRUE;
     if (occurs_in_list_or_struc(Var,(Cell)clref_val(Term))) return TRUE;
     Term = (Cell)(clref_val(Term) + 1);
     goto rec_occurs_in;
