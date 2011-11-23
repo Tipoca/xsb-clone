@@ -9,7 +9,7 @@
 **   Mats Carlsson, et al.  SICStus Prolog User's Manual.
 **   Swedish Institute of Computer Science, 1995. ISBN 91-630-3648-7
 **
-** $Id: assoc_xsb.P,v 1.8 2010-08-19 15:03:38 spyrosh Exp $
+** $Id: assoc_xsb.P,v 1.9 2011-11-23 19:54:30 dwarren Exp $
 ** 
 */
 
@@ -24,6 +24,7 @@
 
 :- export
 	assoc_to_list/2,		% Assoc -> List
+	assoc_vals_to_list/2,		% Assoc -> List
 	empty_assoc/1,			% -> Assoc
 	del_assoc/4,			% Key x Assoc x Val -> Assoc
 	del_max_assoc/4,		% Assoc -> Key x Val x Assoc
@@ -100,6 +101,21 @@ assoc_to_list(t(K,V,_,L,R)) -->
 	assoc_to_list(L),
 	[K-V],
 	assoc_to_list(R).
+
+%   assoc_vals_to_list(+Assoc, ?List)
+%   assumes that Assoc is a proper AVL tree, and is true when
+%   List is a list of Values in ascending order of Key with no
+%   duplicate keys.
+%   Use this to generate a list of the Values in an Assoc.
+
+assoc_vals_to_list(Assoc, List) :-
+	assoc_vals_to_list(Assoc, List, []).	% in Compiler/comp_sup.pl
+
+assoc_vals_to_list(t) --> [].
+assoc_vals_to_list(t(_K,V,_,L,R)) -->
+	assoc_vals_to_list(L),
+	[V],
+	assoc_vals_to_list(R).
 
 %   is_assoc(+Assoc)
 %   is true when Assoc is a (proper) AVL tree.  It checks both that the keys 
