@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.77 2011-11-23 14:31:57 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.78 2011-11-25 21:42:54 dwarren Exp $
 ** 
 */
 
@@ -204,7 +204,7 @@ inline static xsbBool univ_builtin(CTXTdecl)
       XSB_Deref(ctail);
       if (isatom(chead)) {
 	if (isnil(ctail)) {	/* atom construction */
-	  bind_copy((CPtr)term, chead);
+	  new_term = chead;
 	} else {
 	  xsbBool list_construction = FALSE;
 	  name = string_val(chead);
@@ -255,7 +255,8 @@ inline static xsbBool univ_builtin(CTXTdecl)
 	      }
 	    }
 	  }
-	} return unify(term,new_term);
+	} 
+	return unify(term,new_term);
       }
       if ((xsb_isnumber(chead) || isboxedinteger(chead)) && isnil(ctail)) { /* list=[num] */
 	bind_copy((CPtr)term, chead);	 /* term<-num  */
