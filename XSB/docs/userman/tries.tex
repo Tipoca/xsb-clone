@@ -1,6 +1,7 @@
 \chapter{Storing Facts in Tries} \label{chap:tries}
 \index{tries}
 
+\index{indexing!trie-based}
 XSB offers a mechanism by which large numbers of facts can be directly
 stored and manipulated in {\em tries}, which can either be private to
 a thread or shared among threads.  The mechanism described in this
@@ -40,7 +41,7 @@ standard dynamic code, no ordering is preserved among the facts; and
 third, duplicate facts are not supported.
 
 In \version{} of XSB, tries that store facts may have the following
-forms~\footnote{Future versions may support more types of tries}:
+forms:
 %
 \bi
 \item {\em Private, general} tries allow arbitrary terms to be
@@ -265,6 +266,7 @@ present version, {\tt OptionList} may contain the following terms
 \ei
 \index{tabling!incremental}
 
+\index{terms!cyclic}
 \ourmoditem{trie\_insert(+TrieIdOrAlias,Term)}{trie\_insert/2}{intern}
 %
 Inserts {\tt Term} into the trie denoted by {\tt TrieIdOrAlias}.  If
@@ -275,6 +277,14 @@ the predicate fails (as the same term cannot be inserted multiple
 times in the same trie).  Similarly, if {\tt TrieIdOrAlias} is an
 associative trie and already contains a value for {\tt Key} the
 predicate fails.
+
+Insertion of tries can be controlled by the flags {\tt
+  max\_answer\_term\_depth}, {\tt max\_answer\_list\_depth}, {\tt
+  max\_answer\_term\_action}, and {\tt max\_answer\_list\_action},
+which are also used to control additions of answers to tables.  Using
+these flags, if a term to be inserted is cyclic and exceeds a stated
+depth, trie insertion may either fail or throw an error depending on
+the associated action: see pg. \pageref{prolog-flags}.
 
 {\bf Error Cases}
 \bi
@@ -293,6 +303,10 @@ predicate fails.
 \ei
 \item 	{\tt TrieIdOrAlias} denotes an associative array, 
   {\tt Term = pair(Key,Value)} but {\tt Key} is not ground 
+\bi
+\item 	{\tt misc\_error}
+\ei
+\item {\tt Key} or {\tt Value} is a cyclic term, or exceeds the depth 
 \bi
 \item 	{\tt misc\_error}
 \ei
@@ -450,8 +464,13 @@ will add $N^3$ terms to {\tt Trie}.
 \bi
 \item 	{\tt misc\_error}
 \ei
+\item {\tt Key} or {\tt Value} is a cyclic term
+\bi
+\item 	{\tt misc\_error}
+\ei
 \ei
 
+\index{terms!cyclic}
 \ourmoditem{trie\_bulk\_delete(+TrieIdOrAlias,Term)}{trie\_bulk\_delete/2}{intern}
 % 
 Deletes all terms that unify with {\tt Term} from {\tt TrieIdOrAlias}.

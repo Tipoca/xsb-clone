@@ -506,6 +506,11 @@ these predicates must be imported from the module {\tt
 Checks that {\tt Term} is an atom.  If so, the predicate succeeds;
 if not it throws a type error.
 
+\ourmoditem{check\_acyclic(?Term,+Predicate,+Arg)}{check\_acyclic/3}{error\_handler}
+%
+Checks that {\tt Term} is acyclic.  If so, the predicate succeeds;
+if not it throws a miscellaneous error.
+
 \ourmoditem{check\_ground(?Term,+Predicate,+Arg)}{check\_ground/3}{error\_handler}
 %
 Checks that {\tt Term} is ground.  If so, the predicate succeeds;
@@ -557,11 +562,13 @@ In the single-threaded engine this predicate always succeeds.
 \label{sec:backtrace}
 \index{permanent variables}
 
+\index{Prolog flags!{\tt backtrace\_on\_error}} 
+%
 Displaying a backtrace of the calling context of an error in addition
 to an error message can greatly expedite debugging.  For XSB's default
 error handler, backtraces are printed out by default, a behavior that
 can be overridden for a given thread by the command: {\tt
-  set\_xsb\_flag(backtrace\_on\_error,off)}.  For users who write
+  set\_prolog\_flag(backtrace\_on\_error,off)}.  For users who write
 their own error handlers, the following predicates can be used to
 manipulate backtraces.
 

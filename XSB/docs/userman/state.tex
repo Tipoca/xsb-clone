@@ -80,6 +80,7 @@ In XSB {\tt current\_input/1} does not throw an error if {\tt Stream}
 is not a current input stream, but quietly fails instead.
 
 \index{Prolog-commons}
+\index{Prolog flags}
 \label{prolog-flags}
 \isoitem{current\_prolog\_flag(?Flag\_Name, ?Value)}{current\_prolog\_flag/2}
 %
@@ -91,6 +92,15 @@ XSB-specific flags.
 
 ISO and Prolog-commons flags are as follows:
 
+\index{Prolog flags!{\tt bounded}}
+\index{Prolog flags!{\tt min\_integer}}
+\index{Prolog flags!{\tt max\_integer}}
+\index{Prolog flags!{\tt integer\_rounding\_function}}
+\index{Prolog flags!{\tt debug}}
+\index{Prolog flags!{\tt unknown}}
+\index{Prolog flags!{\tt double\_quotes}}
+\index{Prolog flags!{\tt dialect}}
+\index{Prolog flags!{\tt version\_data}}
 \begin{itemize}
 \item {\tt bounded} Indicates whether integers in XSB are bounded.
   This flag always has the value {\tt true}
@@ -100,9 +110,6 @@ ISO and Prolog-commons flags are as follows:
 %
 \item {\tt max\_arity} Indicates the maximum arity of terms in XSB.
   This flag always has the value {\tt 255}
-%
-\item {\tt integer\_rounding\_function} This flag always has the value
-  {\tt toward\_zero}
 %
 \item {\tt integer\_rounding\_function} This flag always has the value
   {\tt toward\_zero}
@@ -136,6 +143,14 @@ strings as lists of character codes, so that the value of the flag
 {\tt double\_quotes} is always {\tt codes}, and this flag is not
 settable.
 
+\index{Prolog flags!{\tt backtrace\_on\_error}}
+\index{Prolog flags!{\tt dcg\_style}}
+\index{Prolog flags!{\tt heap\_garbage\_collection}}
+\index{Prolog flags!{\tt heap\_margin}}
+\index{Prolog flags!{\tt clause\_garbage\_collection}}
+\index{Prolog flags!{\tt atom\_garbage\_collection}}
+\index{Prolog flags!{\tt table\_gc\_action}}
+\index{Prolog flags!{\tt goal}}
 Non-standard flag names may be specific to XSB or may be common to XSB
 and certain other Prolog.  These flag names are:
 \begin{itemize}
@@ -152,10 +167,6 @@ whether the backtrace for a current execution will be printed to {\tt
   standard} (standard is used in Quintus, SICSTUS, etc.).  See
 Section~\ref{sec-dcg-differences} for more details. Default is {\tt
   xsb}. This flag affects all threads in the process.
-%
-% Subsumed by ISO flag
-%\item {\tt debugging}  {\tt on} iff debug mode is on; {\tt off} otherwise.
-%This flag affects all threads in the process. 
 %
 \index{garbage collection}
 \item {\tt heap\_garbage\_collection}  {\tt indirection}, {\tt none}, {\tt
@@ -192,6 +203,10 @@ collection will only be invoked if there is a single active thread.)
 switch; `{\tt true.}' if nothing is passed.  This flag may be
 examined, but not set. 
 %
+\index{Prolog flags!{\tt tracing}}
+\index{Prolog flags!{\tt warning\_action}}
+\index{Prolog flags!{\tt write\_depth}}
+\index{Prolog flags!{\tt write\_attributes}}
 \item {\tt tracing}  {\tt on} iff trace mode is on; {\tt off}
 otherwise. This flag affects all threads in the process. 
 %
@@ -221,7 +236,13 @@ threads in the process.
   default behavior is set to the value {\tt portray}.
 
 \index{term depth}
-
+\index{Prolog flags!{\tt max\_table\_subgoal\_action}}
+\index{Prolog flags!{\tt max\_answer\_term\_action}}
+\index{Prolog flags!{\tt max\_answer\_list\_action}}
+\index{Prolog flags!{\tt max\_table\_subgoal\_depth}}
+\index{Prolog flags!{\tt max\_answer\_term\_depth}}
+\index{Prolog flags!{\tt max\_answer\_list\_depth}}
+%
 \item {\tt max\_table\_subgoal\_action} The action to take when a tabled
   subgoal of maximum depth is encountered.  To understand the use of
   this flag, consider that if a predicate such as
@@ -299,6 +320,10 @@ l([a|X]):- l(X).          l([a]).
 
 The following flags affect only the multi-threaded engine.
 
+\index{Prolog flags!{\tt thread\_glsize}}
+\index{Prolog flags!{\tt thread\_tcpsize}}
+\index{Prolog flags!{\tt thread\_complsize}}
+\index{Prolog flags!{\tt thread\_pdlsize}}
 \begin{itemize}
 \item {\tt thread\_glsize} In the multi-threaded engine, the initial
   size, in kbytes, of the global and local stack area of a newly
@@ -332,6 +357,10 @@ The following flags affect only the multi-threaded engine.
   modified at any time by resetting the flag.  This flag affects a
   thread created by any thread in the process.
 
+\index{Prolog flags!{\tt thread\_detached}}
+\index{Prolog flags!{\tt max\_threads}}
+\index{Prolog flags!{\tt max\_queue\_size}}
+\index{Prolog flags!{\tt shared\_predicates}}
 \item {\tt thread\_detached} In the multi-threaded engine, this
   specifies whether threads are to be created as detached or joinable
   if no explicit option is passed.  A value of {\tt true} indicates
@@ -398,7 +427,7 @@ Dynamic XSB settings can also be changed, as described in {\tt
 %
 \item 	{\tt Flag\_Name} is not the name of a recognized Prolog flag.
 \bi
-\item 	{\tt domain\_error(xsb\_flag,Flag\_Name)}
+\item 	{\tt domain\_error(prolog\_flag,Flag\_Name)}
 \ei
 \ei
 
@@ -1139,10 +1168,11 @@ interpreter level for any thread created through
 
 \standarditem{gc\_heap}{gc\_heap/0}
 \index{garbage collection!heap}
+\index{Prolog flags!{\tt heap\_garbage\_collection}}
 %
 Explicitly invokes the garbage collector for a thread's heap. By
 default, heap garbage collection is called automatically for each
-thread upon stack expansion, unless the {\tt xsb\_flag} {\tt
+thread upon stack expansion, unless the Prolog flag {\tt
   heap\_garbage\_collection} is set to {\tt none}.  Automatic heap
 garbage collection should rarely need to be turned off, and should
 rarely need to be invoked manually.

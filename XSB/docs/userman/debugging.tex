@@ -311,19 +311,19 @@ Chapter~\ref{chap:TablingOverview}, tabling can be used to find the
 least fixed point of mutually recursive predicates.  Operationally,
 this requires the ability to suspend one computation path and to
 resume another.  The addition of tabled negation for the well-founded
-semantics also requires the ability to delay negative goals whose
+semantics also requires the ability to delay negative goals whose only
 proof may be involved in a loop through negation and to simplify these
 goals once their truth value has become known. Furthermore, a tabled
-subgoal has different states: it may be incomplete so that new answers
-might be derived for it, or completed so that the answers may simply
-be read from the table.  In short, tabling, which can execute much
-more general programs than Prolog and can use the stronger
-well-founded semantics, requires a more complex set of operations than
-Prolog's SLDNF so that debugging and tracing is correspondingly more
-complex.  Thus, while the 4-port debugger may be useful for programs
-that involve just a few tabled predicates, it may not be useful for
-programs that heavily use tabling for complex recursions,
-non-monotinic reasoning or other purposes.
+subgoal has different states: it may be {\em new}; it may be {\em
+  incomplete} so that new answers might be derived for it; or {\em
+  completed} so that the answers may simply be read from the table.
+In short, tabling, which can execute much more general programs than
+Prolog and can use the stronger well-founded semantics, requires a
+more complex set of operations than Prolog's SLDNF so that debugging
+and tracing is correspondingly more complex.  Thus, while the 4-port
+debugger may be useful for programs that involve just a few tabled
+predicates, it may not be useful for programs that heavily use tabling
+for complex recursions, non-monotinic reasoning or other purposes.
 
 There is currently no standard approach to debugging tabled programs.
 One possible approach would be to extend the 4-port debugger to
@@ -370,7 +370,8 @@ not tabled (e.g. children of nodes 2 and 18 in the tree for {\tt
 \centering
 \mbox{
 {\epsfig{file=slg-forest-local.eps,width=.99\textwidth}}}
-\caption{A program $P_{Rrec}$ and SLG forest for evaluation of {\tt ?- reach(1,Y)}} \label{fig:local}
+\caption{A program $P_{Rrec}$ and SLG forest for (local) evaluation of
+  {\tt ?- reach(1,Y)}} \label{fig:local}
 \end{figure}
 %
 Note that the evaluation keeps track of each tabled subgoal $S$ that
@@ -384,7 +385,7 @@ backtracked through all answers available for $S$ in the current
 state, the computation path will suspend, and resume after further
 answers are found.  Thus a tabled evaluation is a fixed point
 computation for a set of interdependent subgoals.  When it is
-determined that a (perhaps singleton) set of subgoal can produce no
+etermined that a (perhaps singleton) set of subgoals can produce no
 more answers, the subgoals are completed.
 \end{example}
 
@@ -420,7 +421,7 @@ Currently, \ctrace{} captures the following actions.
   the ordinal number of the fact, and {\tt Stage} is
 \bi
 \item {\tt new} if $S_1$ is a new subgoal
-\item {\tt cmp} if $S_1$ is not a new subgoal but has been completed
+\item {\tt cmp} if $S_1$ is not a new subgoal and has been completed
 \item {\tt incmp} if $S_1$ is not a new subgoal but has {\em not} been
   completed \ei
 %
@@ -433,8 +434,8 @@ Currently, \ctrace{} captures the following actions.
   derived for subgoal $S$ and added to the table (i.e. $A$ is not
   already an answer for $S$) a fact of the form {\tt na(A,S,Counter)}
   is logged.  In the above example, the answer node 9 would be
-  represented as {\tt na([2],reach(2,\_\$1),4)} where the first argument
-  is a list of substitutions for the variables {\em \$1,...,\$n} in
+  represented as {\tt na([2],reach(2,\_v1),4)} where the first argument
+  is a list of substitutions for the variables {\em \_v1,...,\_vn} in
   $S$.
 
 \item {\em Return of an answer to a consuming subgoal}~When an answer
@@ -449,9 +450,10 @@ Currently, \ctrace{} captures the following actions.
   evaluated and is completed, a fact of the form {\tt
     cmp(S,SCCNum,Counter)} is logged for each $S \in \cS$.  Here
   $SCCNum$ is simply a number giving an ordinal value that can be used
-  to group subgoals into SCCs, i.e. the {\em SCCNum} of each $S \in
-  \cS$ has the same value, but that value is not used for a completion
-  fact of any subgoal not in $\cS$.
+  to group subgoals into mutually dependent sets of subgoals or SCCs,
+  i.e. the {\em SCCNum} of each $S \in \cS$ has the same value, but
+  that value is not used for a completion fact of any subgoal not in
+  $\cS$.
 %
 \item When a subgoal $\cS$ is {\em early completed}, i.e. it is
   determined that no more answers for $S$ are possile or are desired a
@@ -471,7 +473,7 @@ Currently, \ctrace{} captures the following actions.
 %
 \item {\em Location of errors} Whenever an error is thrown and the
   execution is in a tree for a subgoal $S$, a Prolog-readable fact of
-  the form {\tt err(SCounter)} is logged, where {\em Counter} is the
+  the form {\tt err(S,Counter)} is logged, where {\em Counter} is the
   ordinal number of the fact.  The primary purpose of this fact is to
   indicate the nearest tabled call that gave rise to an uncaughterror.  \ei
 
@@ -489,10 +491,14 @@ Currently, \ctrace{} captures the following actions.
   clause resolution.  
  \ei
 
+\index{attributed variables}
+\noindent
 The inclusion of the above two features in {\tt logforest} would
 significantly slow down execution of XSB.  However, future versions of
 {\tt logforest} may include expanded logging features for negation,
-for call and answer subsumption and for incremental tabling.
+for call and answer subsumption and for incremental
+tabling~\footnote{Currently, attributes of attributed variables are
+  not printed out.}.
 
 \begin{example}
 The forest for {\tt reach(1,Y)} in the foregoing example has the log
@@ -501,27 +507,27 @@ file as shown in Table~\ref{tab:fview}.
 \begin{table}[htbp]
 \begin{tabular}{lll}               \\ \hline  
 Log File                                     & Forest & Explanation\\ \hline 
-tc(reach( 1,\_v0),null,0)                   & node 1 & \\
+tc(reach( 1,\_v0),null,new,0)                & node 1 & \\
                                              & node 2 & created by program clause resol. \\
                                              & node 3 & created by program clause resol. \\
-tc(reach( 2,\_v0),reach( 1,\_v0),1)         & node 4 & \\
+tc(reach( 2,\_v0),reach( 1,\_v0),new,1)      & node 4 & \\
                                              & node 5 & created by program clause resol.\\
                                              & node 6 & created by program clause resol. \\
-tc(reach( 2,\_v0),reach( 2,\_v0),2)         &        & repeated subgoal registered\\
+tc(reach( 2,\_v0),reach( 2,\_v0),incmp,2)    &        & repeated subgoal registered\\
                                              & node 7 & created by program clause resol. \\
                                              & node 8 & created by program clause resol. \\
-na([ 2],reach( 2,\_v0),3)                   & node 8 & registered as answer\\
-ar([ 2],reach( 2,\_v0),reach( 2,\_v0),4)      & node 9 & created by answer resol.\\
-cmp(reach( 2,\_v0),2,5)                     &    9a   & {\tt reach(2,\_v0)} completed \\
+na([ 2],reach( 2,\_v0),3)                    & node 8 & registered as answer\\
+ar([ 2],reach( 2,\_v0),reach( 2,\_v0),4)     & node 9 & created by answer resol.\\
+cmp(reach( 2,\_v0),2,5)                      &    9a   & {\tt reach(2,\_v0)} completed \\
                                              & node 10 & created by return from completed table \\
 na([ 2],reach( 1,\_v0),6)                    & node 10 & registered as an answer\\
                                              & node 11 & created by program clause resol. \\
-tc(reach( 3,\_v0),reach( 1,\_v0),7)           & node 12 & \\
+tc(reach( 3,\_v0),reach( 1,\_v0),new,7)      & node 12 & \\
                                              & node 13 & created by program clause resol. \\
                                              & node 14 & created by program clause resol. \\
-tc(reach( 3,\_v0),reach( 3,\_v0),8)         & node 14 & repeated subgoal registered \\
-ar([ 2],reach( 1,\_v0),reach( 3,\_v0),9)      & node 15 & created by answer resol. \\
-na([ 2],reach( 3,\_v0),10)                  & node 15 & registered as an answer \\
+tc(reach( 1,\_v0),reach( 3,\_v0),incmp,8)    & node 14 & repeated subgoal registered \\
+ar([ 2],reach( 1,\_v0),reach( 3,\_v0),9)     & node 15 & created by answer resol. \\
+na([ 2],reach( 3,\_v0),10)                   & node 15 & registered as an answer \\
                                              & node 16 & created by program clause resol. \\
                                              & node 17 & created by program clause resol. \\
 na([ 1],reach( 3,\_v0),11)                   & node 17 & registered as an answer \\
@@ -529,13 +535,13 @@ na([ 1],reach( 3,\_v0),11)                   & node 17 & registered as an answer
                                              & node 19 & created by program clause resol. (repeated answer)\\
                                              & node 20 & created by program clause resol.\\
 na([ 3],reach( 1,\_v0),12)                   & node 20 & registered as an answer\\
-ar([ 3],reach( 1,\_v0),reach( 3,\_v0),13)     & node 21 & created by answer return\\
+ar([ 3],reach( 1,\_v0),reach( 3,\_v0),13)    & node 21 & created by answer return\\
 na([ 3],reach( 3,\_v0),14)                   & node 21 & registered as an answer\\
-ar([ 2],reach( 3,\_v0),reach( 1,\_v0),15)     & node 22 & created by answer resol.\\
-ar([ 1],reach( 3,\_v0),reach( 1,\_v0),16)     & node 23 & created by answer resol.\\
+ar([ 2],reach( 3,\_v0),reach( 1,\_v0),15)    & node 22 & created by answer resol.\\
+ar([ 1],reach( 3,\_v0),reach( 1,\_v0),16)    & node 23 & created by answer resol.\\
 na([ 1],reach( 1,\_v0),17)                   & node 23 & registered as an answer \\
-ar([ 3],reach( 3,\_v0),reach( 1,\_v0),18)     & node 24 & created by answer resol. \\
-ar([ 1],reach( 1,\_v0),reach( 3,\_v0),19)     & node 25 & created by answer resol.v \\
+ar([ 3],reach( 3,\_v0),reach( 1,\_v0),18)    & node 24 & created by answer resol. \\
+ar([ 1],reach( 1,\_v0),reach( 3,\_v0),19)    & node 25 & created by answer resol.v \\
 cmp(reach( 1,\_v0),1,20)                     &  & \\
 cmp(reach( 3,\_v0),1,21)   & & \\ \hline
 \end{tabular}
@@ -554,6 +560,7 @@ empty list or if {\tt log\_forest/1} is called, the log will be sent
 to standard output~\footnote{Future options will be able to turn on
   and off the logging of various types of facts.}.
 
+\index{indexing}
 \ourmoditem{load\_forest\_log(+File)}{load\_forest\_log/1}{tables}
 %
 The log produced by {\tt log\_forest/[1,2]} is a Prolog file that can

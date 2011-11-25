@@ -93,6 +93,7 @@ returns a status term indicating whether the goal to thread {\tt Id}
 succeeded, failed, exited with an error term, or was cancelled (in
 this case {\tt Id} succeeded).
 
+\index{Prolog flags!{\tt max\_threads}}
 So far, we've introduced a few concepts that have not been fully
 discussed.  First is the concept of an {\em XSB thread id}: XSB
 manages up to $M$ active threads using XSB thread ids.  The default
@@ -100,7 +101,7 @@ for $M$ in \version{} is 1024, but $M$ can be reset via the {\tt
   max\_threads} command line option to XSB
 (cf. Section~\ref{sec:EmuOptions}).  Once XSB is initialized, the
 maximum number of threads for an XSB session can be obtained at run
-time via the XSB flag {\tt max\_threads} (cf. Section~\ref{State}).
+time via the Prolog flag {\tt max\_threads} (cf. Section~\ref{State}).
 It should be noted that the XSB thread id of a thread is different
 from the identifier of the underlying Pthread.  An XSB thread id is a
 Prolog term, and unlike POSIX thread ids, XSB thread ids can be
@@ -475,7 +476,7 @@ public queues, a size argument can be passed using the predicate {\tt
   message\_queue\_create/2} (See Section~\ref{sec:mt-threading}).  For
 private queues, and for public queues created with {\tt
   message\_queue\_create/1}, the value for $size$ is taken from the
-settable XSB flag {\tt max\_queue\_terms}.  The default value for {\tt
+settable Prolog flag {\tt max\_queue\_terms}.  The default value for {\tt
   max\_queue\_terms} is currently 100.
 
 \section{Thread Cancellation and Signalling} \label{sec:thread-signals}
@@ -780,39 +781,45 @@ threads to be created on a given hardware platform.  Also note that
 only XSB stacks are affected, the stack size of the underlying Pthread
 remains unaltered.
 %
+\index{Prolog flags!{\tt thread\_glsize}}
+\index{Prolog flags!{\tt thread\_tcpsize}}
+\index{Prolog flags!{\tt thread\_complsize}}
+\index{Prolog flags!{\tt thread\_pdlsize}}
 \bi
+
 \item {\tt glsize(N)}: create thread with global (heap) plus local
   stack size initially set to {\tt N} kbytes.  If not specified, the
   default size is used.  The default size can be set at the command
   line (cf. Section~\ref{sec:EmuOptions}), and altered at run time by
-  the XSB flag {\tt thread\_glsize} (cf. Section~\ref{State}).
+  the Prolog flag {\tt thread\_glsize} (cf. Section~\ref{State}).
 %
 \item {\tt tcpsize(N)}: create thread with trail plus choice point
   stack size initially set to {\tt N} kbytes.  If not specified, the
   default size is used (cf. Section~\ref{sec:EmuOptions}).  The
   default size can be set at the command line
   (cf. Section~\ref{sec:EmuOptions}), and altered at run time by the
-  XSB flag {\tt thread\_tcpsize} (cf. Section~\ref{State}).
+  Prolog flag {\tt thread\_tcpsize} (cf. Section~\ref{State}).
 %
 \item {\tt complsize(N)}: create thread with completion stack size
   initially set to {\tt N} kbytes. If not specified, the default size
   is used (cf. Section~\ref{sec:EmuOptions}).  The default size can be
   set at the command line (cf. Section~\ref{sec:EmuOptions}), and
-  altered at run time by the XSB flag {\tt thread\_complsize}
+  altered at run time by the Prolog flag {\tt thread\_complsize}
   (cf. Section~\ref{State}).
 %
 \item {\tt pdlsize(N)}: create thread with {\tt N} kbytes of
   unification stack.  If not specified, the default size is used
   (cf. Section~\ref{sec:EmuOptions}).  The default size can be set at
   the command line (cf. Section~\ref{sec:EmuOptions}), and altered at
-  run time by the XSB flag {\tt thread\_pdlsize}
+  run time by the Prolog flag {\tt thread\_pdlsize}
   (cf. Section~\ref{State}).
 %
+\index{Prolog flags!{\tt thread\_detached}}
 \item {\tt detached(Boolean)}: if {\tt Boolean} is true, creates
   detached thread.  If {\tt Boolean} is false, the thread created will
   be joinable, while if no option is given the default will be used.
   In \version{} threads are created joinable by default, but this
-  default can be altered at run time by the XSB flag {\tt
+  default can be altered at run time by the Prolog flag {\tt
     thread\_default} (cf. Section~\ref{State}).
 %
 \item {\tt on\_exit(Handler)}: Ensures that {\tt Handler} is called
@@ -828,7 +835,7 @@ remains unaltered.
 
 Finally, each thread is created with a signal queue and a private
 message queue, so these queues do not need to be explicitly created.
-Their size is obtained through the settable XSB flag {\tt
+Their size is obtained through the settable Prolog flag {\tt
   max\_queue\_terms}.
 
 {\bf Error Cases}
@@ -1260,7 +1267,7 @@ number of terms in the queue, and for aliases of the queue.
 \item {\tt max\_terms(N)}: create queue so that it can contain at most
   {\tt N} terms before writes to the queue block.  If not specified,
   the default size is used.  This default can be queried and altered
-  at run time via the XSB flag {\tt queue\_max\_terms}.
+  at run time via the Prolog flag {\tt queue\_max\_terms}.
   (cf. Section~\ref{State}).  If the flag {\tt queue\_max\_terms} is
   set to 0, the queue size will be bounded only by available memory.
 %

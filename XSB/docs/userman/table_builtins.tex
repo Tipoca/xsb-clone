@@ -1228,12 +1228,13 @@ answers to the answers that are conditional on them are taken into
 account for table deletion: thus the deletion {\tt r(a,X)} deletes
 {\tt p(a,X)}, but not {\tt undef}.
 
+\index{Prolog flags!{\tt table\_gc\_action}}
 Users with programs that give rise to conditional answers in completed
 tables are encouraged to maintain this default behavior.  However the
-default behavior may be changed either by setting an XSB flag:
+default behavior may be changed either by setting a Prolog flag:
 %
 \begin{verbatim}
-?- set_xsb_flag(table_gc_action,abolish_tables_singly).
+?- set_prolog_flag(table_gc_action,abolish_tables_singly).
 \end{verbatim}
 %
 or by calling a 2-ary abolish command with {\tt abolish\_tables\_singly}
@@ -1317,10 +1318,11 @@ enviornment, {\tt Pred} space reclamation for the {\tt Pred} tables
 will be delayed until $A$ is no longer active; otherwise the space for
 the {\tt Pred} tables will be reclaimed immediately.  
 
+\index{Prolog flags!{\tt table\_gc\_action}}
 If {\tt Pred} has a subgoal that contains a conditional answer, the
 default behavior will be to transitively abolish any tabled predicates
 with subgoals having answers that depend on any conditional answers of
-$S$.  This default may be changed either by setting an XSB flag:
+$S$.  This default may be changed either by setting a Prolog flag:
 %
 \begin{verbatim}
 ?- set_xsb_flag(table_gc_action,abolish_tables_singly).
@@ -1375,6 +1377,7 @@ tables, use {\tt abolish\_table\_call/[1,2]} or {\tt
 %
 \ei
 
+\index{Prolog flags!{\tt table\_gc\_action}}
 \ourstandarditem{abolish\_table\_pred(+CallTerm,+Options)}{abolish\_table\_pred/2}{Tabling}
 %
 Behaves as {abolish\_table\_pred/1}, but allows the default {\tt
@@ -1408,6 +1411,7 @@ contains an answer $A$ that is active in the current enviornment, the
 table entry for $S$ will not be reclaimed until $A$ is no longer
 active; otherwise the space for $S$ will be reclaimed immediately.
 
+\index{Prolog flags!{\tt table\_gc\_action}}
 If $S$ contains a conditional answer, the default behavior will be to
 transitively abolish any subgoals that depend on any conditional
 answers of $S$.  This default may be changed either by setting an XSB
@@ -1460,6 +1464,7 @@ that support incremental tabling will remain in a consistent state.
 \ei
 %
 
+\index{Prolog flags!{\tt table\_gc\_action}}
 \ourstandarditem{abolish\_table\_call(+CallTerm,+Options)}{abolish\_table\_call/2}{Tabling}
 %
 Behaves as {abolish\_table\_call/1}, but allows the default {\tt

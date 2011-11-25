@@ -1431,12 +1431,13 @@ additions.
 \ei
 
 \index{attributed variables}
+\index{Prolog flags!{\tt write\_attributes}}
 \isoitem{write(?Term)}{write/1}
 % 
 Semantically, {\tt write/1} behaves as if {\tt write\_term/1} were
 invoked using {\tt quoted(false)}, {\tt ignore\_ops(false)}, and {\tt
   numbervars(false)}.  Attributed variables are written according to
-the value of the Prolog flag {\tt write\_attributes/2} (cf. {\tt
+the value of the Prolog flag {\tt write\_attributes} (cf. {\tt
   current\_prolog\_flag/2}).
 
 The HiLog term {\tt Term} is written to the current output stream,
@@ -1724,6 +1725,7 @@ the module {\tt standard}.
 As above, but writes to {\tt STDFDBK}, the console feedback stream.
 
 \index{streams!STDWARN}
+\index{Prolog flags!{\tt warning\_action}}
 \ourmoditem{warning(?Message)}{warning/1}{standard}
 %\ourmoditem{warningln(?Message)}{warningln/1}{standard}
 %
@@ -1735,7 +1737,7 @@ they were concatenated together.  Each of these predicates must be
 imported from the module {\tt standard}.
 
 The default behavior for warnings can be altered by setting the value
-of the XSB flag {\tt warning\_action} to either {\tt silent\_warning}
+of the Prolog flag {\tt warning\_action} to either {\tt silent\_warning}
 which performs no action when {\tt warning/1} is called. or {\tt
   error\_warning} which throws a miscellaneous exception when {\tt
   warning/1} is called (WARNING: this includes compiler warnings).
@@ -3575,6 +3577,12 @@ ensured that {\tt Term} is acyclic.
 %-----------------------------------------------------------------------------------------------
 \section{Cyclic Terms}\label{sec:cyclic}
 \index{terms!cyclic}
+\index{Prolog flags!{\tt max\_table\_subgoal\_depth}}
+\index{Prolog flags!{\tt max\_answer\_term\_depth}}
+\index{Prolog flags!{\tt max\_answer\_list\_depth}}
+\index{Prolog flags!{\tt max\_table\_subgoal\_action}}
+\index{Prolog flags!{\tt max\_answer\_term\_action}}
+\index{Prolog flags!{\tt max\_answer\_list\_action}}
 
     Cyclic terms are created when Prolog unifies two terms whose
     variables have not been standardized apart: for instance
@@ -3583,46 +3591,79 @@ ensured that {\tt Term} is acyclic.
 \]
     will produce the cyclic term f(f(f(f(f(f(...)))))) -- in other
     words, a term with an ``infinite'' depth.  These cyclic terms
-    arise from Prolog's standard use of a unification algorithm that
-    is linear in the size of the terms to be unified, rather than a
-    general unification algorithm that is exponential in the size of
+    arise arise from Prolog's standard use of a unification algorithm
+    that is linear in the size of the terms to be unified, rather than
+    a general unification algorithm that is exponential in the size of
     these terms.  If full unification is desired, this can be done via
-    the predicate {\tt unify\_with\_occurs\_check/2}.
+    the predicate {\tt unify\_with\_occurs\_check/2}.  Much of the
+    time, the creation of cyclic terms through unification is a
+    mistake, but cyclic terms also can sometimes arise in attributes
+    that are created through constraint libraries.
 
-    While some operations are safe for cyclic terms, they can cause
-    problems in XSB for builtins or predicates that require term
-    traversal.  For instance the builtin predicates {\tt
-      numbervars/[1,3,4]} or {\tt term\_depth/1}; or the library
-    predicates {\tt length/2} and {\tt append/2} currently go into
-    infinite loops with cyclic terms~\footnote{In addition to those
-      already mentioned, a {\tt partial} list of those predicates
-      includes various predicates for asserting (but not those for
-      retracting); {\tt bagof/3}; {\tt copy\_term/2}; various table
-      inspection builtins based on {\tt get\_call/2} or similar
-      routines (including {\tt get\_residual/2}); {\tt setof/2}; {\tt
-        subsumes/2}; {\tt subsumes\_chk/2}; {\tt table\_dump/2}; {\tt
-        term\_to\_atom/[2,3]}; {\tt term\_to\_codes/[2,3]}; {\tt
-        variant/2}: trie interning predicates; {\tt unifiable/2}.}.
+    XSB is in the process of being made cycle-safe in the following
+    sense: the creation of cyclic terms per se will not create
+    infinite loops in XSB's tabling or XSB's builtins.  Like some
+    other Prologs, XSB supports unification of cyclic terms.  In
+    addition, most predicates like {\tt functor/3}, or {\tt =../2}
+    that either take non-compound terms or that do not require term
+    traversal are safe.  A few builtins that require term-traversal
+    are ``safe'' for cyclic terms.  For instance writing in XSB is
+    subject to a depth check, which terminates for cyclic terms.  Most
+    importantly, the XSB heap garbage collector is guarenteed to be
+    safe for cyclic terms.
 
-    At the same time, most predicates like {\tt functor/3}, or {\tt
-      =../2} that either take non-compound terms or that do not
-    require term traversal are safe.  A few builtins that require
-    term-traversal are ``safe'' for cyclic terms.  For instance
-    writing in XSB is subject to a depth check, which terminates for
-    cyclic terms.  Similarly tabling can safely abort on cyclic terms
-    if the flags {\tt max\_table\_subgoal\_depth}, {\tt
+    Variant tabling can also handle cyclic terms if the proper flags
+    are set.  These flags are {\tt max\_table\_subgoal\_depth} which
+    determines the maximal ``reasonable'' depth of a subgoal; and {\tt
       max\_table\_answer\_depth}, {\tt
-      max\_table\_answer\_list\_depth} are set to relatively low
-    numbers.  Most importantly, the XSB heap garbage collector is
-    guarenteed to be safe for cyclic terms.
+      max\_table\_answer\_list\_depth} which determine the maximal
+    ``reasonable'' depth for non-list terms or lists (respectively) in
+    answers.  These last two flags also determine a ``reasonable''
+    depth for interned tries.  Each of these depth flags have an
+    associated answer flag: {\tt max\_table\_subgoal\_action}, {\tt
+      max\_table\_answer\_action} and {\tt
+      max\_table\_answer\_list\_action} respectively.  The actions can
+    be of three types: {\tt error} which throws an error if a term
+    with a certain depth is encountered as a tabled subgoal or answer
+    (regardless of whether that term is tabled); {\tt failure} which
+    causes failure for these cases; and {\tt fail\_on\_cycles} which
+    fails on cyclic terms, and otherwise throws an error for a term of
+    a certain depth~\footnote{We hope to efficiently integrate cycle
+      checking into XSB's tabling in the reasonably near future.}.
 
-    However, programs should not intentionally create cyclic terms,
-    and the above routines, as well as the following predicate, can
-    help debug when cyclic terms are created.
+    While the above operations are safe for cyclic terms, they can
+    cause problems in XSB for builtins or predicates that require term
+    traversal.  For instance the library predicates {\tt length/2} and
+    {\tt append/2} currently go into infinite loops with cyclic terms;
+    unless otherwise specified it is the user's responsibility to
+    check library predicates (as opposed to standard builtins) for
+    acyclicity using {\tt is\_acyclic/1} or {\tt is\_cyclic/1}.  In
+    addition the following XSB builtins are {\tt not} cycle-safe:
+
+\bi
+\item {\tt bagof/3}, {\tt copy\_term/2}, {\tt ground/1} {\tt
+  numbervars/[1,3,4]}, {\tt setof/3}, {\tt subsumes/2}, {\tt
+  subsumes\_chk/2}, {\tt term\_depth/2}, {\tt term\_size/2},
+  {term\_to\_atom/[2,3]}, {\tt term\_to\_codes/[2,3]}, {\tt
+      term\_variables/2}, {\tt unifiable/2} and {\tt variant/2}.
+%
+\item Various table inspection builtins based on {\tt
+        get\_call/2} or similar routines (including {\tt
+        get\_residual/2}).
+\ei
+
+    In general, programs should not intentionally create cyclic terms,
+    and the above flags, as well as the following predicates, can help
+    debug when cyclic terms are created.
 
 \begin{description}
 \isoitem{is\_cyclic(?X)}{is\_cyclic/1}
     Succeeds if {\tt X} is a cyclic term.  
+\end{description}
+
+\begin{description}
+\isoitem{is\_acyclic(?X)}{is\_acyclic/1}
+    Succeeds if {\tt X} is not a cyclic term.  
 \end{description}
 
 %-----------------------------------------------------------------------------------------------
@@ -4317,25 +4358,25 @@ numbervars(false)}.
 
 \standarditem{gc\_atoms}{gc\_atoms/0}
 \index{garbage collection!atoms}
+\index{Prolog flags!{\tt atom\_garbage\_collection}}
 %
 Explicitly invokes the garbage collector for atoms that are created,
 but no longer needed.  By default, {\tt gc\_atoms/1} is called
-automatically, unless the {\tt xsb\_flag} {\tt
-  atom\_garbage\_collection} is set to {\tt false}, or if more than
-one thread is active.  However there are reasons why a user may need
-to invoke atom table garbage collection.  First, in \version{}, if
-atom table garbage collection is invoked automatically, it occurs
-periodically on heap garbage collection, or if numerous asserts and
-retracts have taken place.  These heuristics overlook certain cases
-where numerous atoms may be created without invoking the garbage
-collector -- e.g. through repeated uses of {\tt
-  format\_write\_string/3}.  In addition if user-defined C code
-contains pointers to XSB's atom table, atom table garbage collection
-will be unsafe, as \version{} of XSB does not detect such pointers in
-external code.  In such cases, atom table garbage collection should be
-turned off via the {\tt xsb\_flag} {\tt atom\_garbage\_collection},
-and reinvoked at a point where the external pointers are no longer
-used.
+automatically, unless the Prolog\_flag {\tt atom\_garbage\_collection}
+is set to {\tt false}, or if more than one thread is active.  However
+there are reasons why a user may need to invoke atom table garbage
+collection.  First, in \version{}, if atom table garbage collection is
+invoked automatically, it occurs periodically on heap garbage
+collection, or if numerous asserts and retracts have taken place.
+These heuristics overlook certain cases where numerous atoms may be
+created without invoking the garbage collector -- e.g. through
+repeated uses of {\tt format\_write\_string/3}.  In addition if
+user-defined C code contains pointers to XSB's atom table, atom table
+garbage collection will be unsafe, as \version{} of XSB does not
+detect such pointers in external code.  In such cases, atom table
+garbage collection should be turned off via the Prolog flag {\tt
+  atom\_garbage\_collection}, and reinvoked at a point where the
+external pointers are no longer used.
 
 \end{description}
 
@@ -4400,8 +4441,11 @@ returns a single solution:
 \end{verbatim}
 
 If {\tt Height} is removed from the sequence of existential variables, so
-that the goal becomes:\\
-\verb|?- setof(Color,Val^p(Color,Height,Val),List)}|, the first solution is:
+that the goal becomes:
+\begin{verbatim}
+?- setof(Color,Val^p(Color,Height,Val),List)
+\end{verbatim}
+the first solution is:
 \begin{verbatim}
     Color = _h73
     Val = _h87
@@ -4742,7 +4786,7 @@ its virtual machine, the interrupt will not be executed until
 computation is back within XSB's virtual machine.
 
 {\tt timed\_call/3} is not yet implemented for the multi-threaded
-engine as its functionality is easily duplicated using thread
+engine but its functionality is easily duplicated using thread
 signalling (Section`\ref{sec:thread-signals}).
 
 {\bf Examples}
@@ -4809,7 +4853,7 @@ either of these conditions arise, {\tt Handler} is called; under {\tt
 time.  
 
 These predicates are implemented directly using {\tt timed\_call/3}
-and inherit the advantages and limitations of these predicates.  As an
+and inherit the advantages and limitations of that predicate.  As an
 advantage, the ability to execute complex actions upon interrupt and
 to resume is very robust.  However, checks for interrupts are only
 made whenever XSB's SLG-WAM engine is executing.  Because of this, if
@@ -4818,11 +4862,11 @@ C-implemented builtin, or otherwise outside of its virtual machine,
 the interrupt will not be executed until computation is back within
 XSB's virtual machine.
 
-{\tt Handler} cannot cause {\tt timed\_call/3} to be executed as a subgoal; but
-otherwise {\tt Handler} has no restrictions.
+{\tt Handler} cannot cause {\tt timed\_call/3} to be executed as a
+subgoal; but otherwise {\tt Handler} has no restrictions.
 
 {\tt bounded\_call/[3,4]} is not yet implemented for the
-multi-threaded engine as its functionality is easily duplicated using
+multi-threaded engine but its functionality is easily duplicated using
 thread signalling (Section`\ref{sec:thread-signals}).
 
 {\bf Error Cases} 

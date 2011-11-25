@@ -520,6 +520,7 @@ For clarity, we state a few consequences of these rules.
   compile-time and abort the compilation.
 %
 % Perhaps discuss symbols, if that isn't too confusing.
+\index{Prolog flags!{\tt unknown}}
 \item If a module {\tt m1} imports a predicate {\tt p/n} from a module
   {\tt m2}, but {\tt m2} does not export {\tt p/n}, nothing is
   detected at the time of compilation.  As discussed above, if {\tt
@@ -1066,7 +1067,7 @@ still fit in system memory.  When a thread is created within an XSB
 process, the size of the thread's execution stacks may be set by {\tt
   thread\_create/3}, otherwise the default values indicated in
 Section~\ref{sec:EmuOptions} are used.  Once XSB is running, these
-default values may be modified using the appropriate XSB flags (see
+default values may be modified using the appropriate Prolog flags (see
 Section~\ref{State}).  In addition, whenever a thread exits, memory
 specific to that thread is reclaimed.
 
@@ -1449,7 +1450,7 @@ In the cases below, {\tt File} refers to an element of {\tt Files} if
 \end{description}
 
 \subsection{Compiler Options}\label{sec:CompilerOptions}
-\index{Compiler!options}\index{options!Compiler}
+\index{Compiler!options}\index{options!compiler}
 %=================================================
 
 Compiler options can be set in three ways: from a global list of

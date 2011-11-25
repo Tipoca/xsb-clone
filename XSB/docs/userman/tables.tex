@@ -1,4 +1,4 @@
-%=====================================================================
+%====================================================================
 
 \chapter{Using Tabling in XSB: A Tutorial Introduction} 
 \label{chap:TablingOverview}
@@ -1951,21 +1951,23 @@ specific predicate, or both.  It is important to note that only tabled
 predicates are affected~\footnote{Currently subgoal abstraction is
   implemented only for call variance}.  
 
-Default subgoal abstraction can be declared by setting the XSB flags
+\index{Prolog flags!{\tt max\_table\_subgoal\_action}}
+\index{Prolog flags!{\tt max\_table\_subgoal\_depth}}
+Default subgoal abstraction can be declared by setting the Prolog flags
 %
 \bi
-\item {\tt MAX\_TABLE\_SUBGOAL\_DEPTH} to the desired maximal depth; and
-\item {\tt MAX\_TABLE\_SUBGOAL\_ACTION} to {\tt abstract}
+\item {\tt max\_table\_subgoal\_depth} to the desired maximal depth; and
+\item {\tt max\_table\_subgoal\_action} to {\tt abstract}
 \ei
 %
 (cf. pg. \pageref{prolog-flags}). 
 
 Unless otherwise specified, XSB starts up with {\tt
-  MAX\_TABLE\_SUBGOAL\_ACTION} is set {\tt error} and {\tt
-  MAX\_TABLE\_SUBGOAL\_DEPTH} is set to the maximum integer possible
+  max\_table\_subgoal\_action} is set {\tt error} and {\tt
+  max\_table\_subgoal\_depth} is set to the maximum integer possible
 on the platform on which XSB is installed.  Under this default
 behavior, XSB will throw an error if a subgoal has depth greater than
-{\tt MAX\_TABLE\_SUBGOAL\_DEPTH}.  As an alternate to setting flags,
+{\tt max\_table\_subgoal\_depth}.  As an alternate to setting flags,
 XSB can be called with the arguments {\tt --max\_subgoal\_action a}
 and {\tt --max\_subgoal\_depth n} where {\tt n} is the size of the
 desired depth.

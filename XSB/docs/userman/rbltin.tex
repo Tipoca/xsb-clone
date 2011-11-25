@@ -2,6 +2,7 @@
 
 \section{Asserting, Retracting, and Other Database Modifications} \label{sec:assert}
 
+\index{indexing}
 XSB provides an array of features for modifying the dynamic database.
 As a default, using {\tt assert/1}, clauses can be asserted using
 first-argument indexing in a manner that is now standard to Prolog
@@ -74,6 +75,7 @@ of issuing an {\sf ``Undefined predicate''} error message.
 
 \begin{description}
 %
+\index{indexing}
 \isoitem{asserta(+Clause)}{ISO}{asserta/1}
 %
 If the index specification for the predicate is not {\tt trie}, this
@@ -110,6 +112,7 @@ containing this operator requires an extra set of parentheses: {\tt
 %
 \ei
 
+\index{indexing}
 \isoitem{assertz(+Clause)}{assertz/1}
 %
 If the index specification for the predicate is not {\tt trie}, this
@@ -124,6 +127,7 @@ Note that because of the precedence of {\tt :-/2}, asserting a clause
 containing this operator requires an extra set of parentheses: {\tt
   assert((Head :- Body))}.
 
+\index{indexing}
 \isoitem{assert(+Clause)}{assert/1}
 %
 If the index specification for the predicate is not {\tt trie}, this
@@ -137,6 +141,7 @@ Note that because of the precedence of {\tt :-/2}, asserting a clause
 containing this operator requires an extra set of parentheses: {\tt
   assert((Head :- Body))}.
 
+\index{indexing}
 \standarditem{assert(+Clause,+AorZandVar,+Index)}{assert/3}
 This is a lower-level interface to (non-trie-indexed) assert.  It is
 normally not needed except in one particular situation, when assert
@@ -424,6 +429,7 @@ hashing.  We still are supporting it, but we don't need to encourage it
 
 }
 
+\index{indexing}
 \standarditem{index(+PredSpec, +IndexSpec)}{index/2}
 \label{index_dynamic} \index{indexing!dynamic predicates}
 %
@@ -443,6 +449,7 @@ existing predicate; however for dynamic predicates {\tt index/2} does
 affect the index for clauses asserted after the directive has been
 given.
 
+\index{indexing!hash-based}
 \begin{itemize}
 \item {\em Hash-based Indexing} 
 \begin{itemize}
@@ -513,9 +520,13 @@ If we want to use similar indexing on {\tt p/5} of the previous
 example, except say argument 1 takes on complex term values and we
 want to index on more of those terms, we might specify the index as
 {\tt index(p/5,[*(1)+2,*(1),4])}.
+\index{indexing!star}
+\index{indexing!multiple-argument}
+\index{indexing!composite}
 
 \end{itemize}
 
+\index{indexing!trie-based}
 \item {\em Trie-based Indexing} 
 %
 If {\tt Predspec} is dynamic, the executable directive {\tt
