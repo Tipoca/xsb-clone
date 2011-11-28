@@ -866,6 +866,9 @@ xsb_flag(max_table_answer_list_action, Action) :-!,
 	(A == XSB_ERROR -> Action = error 
 	; (A == XSB_FAILURE -> Action = failure 
             ; A == XSB_WARNING, Action = warning)).
+xsb_flag(unify_with_occurs_check, Mode) :-!,	
+stat_flag(UNIFY_WITH_OCCURS_CHECK_FLAG, Flag),
+	( Flag =:= 0 -> Mode = off ; Mode = on ).
 
 set_xsb_flag(Type,Val):- 
 	check_nonvar(Type,set_xsb_flag/2,1),
@@ -1029,6 +1032,10 @@ set_xsb_flag_1(ctrace, OnOff) :-!,
 	(OnOff == on -> 
 	    stat_set_flag(CTRACE_CALLS, 1)
 	 ;  stat_set_flag(CTRACE_CALLS, 0)).
+set_xsb_flag_1(unify_with_occurs_check, OnOff) :-!,
+	(OnOff == on -> 
+	    stat_set_flag(UNIFY_WITH_OCCURS_CHECK_FLAG, 1)
+	 ;  stat_set_flag(UNIFY_WITH_OCCURS_CHECK_FLAG, 0)).
 set_xsb_flag_1(Type, _) :-  
 	domain_error(prolog_flag,Type,set_prolog_flag/2,1).
 
