@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.82 2011-11-13 18:18:31 tswift Exp $
+** $Id: debug_xsb.c,v 1.83 2011-11-28 01:17:39 tswift Exp $
 ** 
 */
 
@@ -192,20 +192,26 @@ inline int get_int_print_width(Integer num) {
 extern CTptr cycle_trail;
 extern int cycle_trail_size;
 extern  int cycle_trail_top;
-Cell visited_string; 
 #endif
 
 #define pop_cycle_trail_keep_mark(Term) {						\
-    if ( * (CPtr) cycle_trail[cycle_trail_top].cell_addr != visited_string) \
-      * (CPtr) cycle_trail[cycle_trail_top].cell_addr = cycle_trail[cycle_trail_top].value; \
+    if (* (CPtr) cycle_trail[cycle_trail_top].cell_addr != (Cell) cyclic_string) { \
+      * (CPtr) cycle_trail[cycle_trail_top].cell_addr = cycle_trail[cycle_trail_top].value; } \
     Term = cycle_trail[cycle_trail_top].parent;				\
     cycle_trail_top--;							\
   }
 
-/*
-void mark_cyclic(CTXTdeclc Cell Term) { 
-  int cycle_trail_top = -1;
+/* mark_cyclic() traverses a term, eewriting all cyclic elements using
+   the string '<cyclic>' and otherwise not affecting the term.  The
+   destructive assignment is pre-image trailed, so you get the cyclic
+   term back upon backtracing.
+*/
 
+void mark_cyclic(CTXTdeclc Cell Term) { 
+  Cell visited_string; 
+  Cell preTerm;
+
+  cycle_trail_top = -1;
   XSB_Deref(Term);
   if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) return;
 
@@ -217,31 +223,39 @@ void mark_cyclic(CTXTdeclc Cell Term) {
   visited_string = makestring(string_find("_$visited",1));;
 
   push_cycle_trail(Term);	
+  //  printf("Term starting %x\n",Term);
   *clref_val(Term) = visited_string;
 
   while (cycle_trail_top >= 0) {
 
     if (cycle_trail[cycle_trail_top].arg_num > cycle_trail[cycle_trail_top].arity) {
-      pop_cycle_trail(Term);	
+      pop_cycle_trail_keep_mark(Term);	
     }
     else {
       if (cycle_trail[cycle_trail_top].arg_num == 0) {
-	Term = cycle_trail[cycle_trail_top].value;
+	preTerm = Term = cycle_trail[cycle_trail_top].value;
       }
       else {
-	printf("examining struct %p %d\n",clref_val(cycle_trail[cycle_trail_top].parent),cycle_trail[cycle_trail_top].arg_num);
-	Term = (Cell) (clref_val(cycle_trail[cycle_trail_top].parent) + cycle_trail[cycle_trail_top].arg_num);
+	//	printf("examining struct %p @%p %d\n",clref_val(cycle_trail[cycle_trail_top].parent),
+	//	       *(CPtr)clref_val(cycle_trail[cycle_trail_top].parent),cycle_trail[cycle_trail_top].arg_num);
+	preTerm = Term = (Cell) (clref_val(cycle_trail[cycle_trail_top].parent) + cycle_trail[cycle_trail_top].arg_num);
       }
       cycle_trail[cycle_trail_top].arg_num++;
-      printf("Term1 before %x\n",Term);
+      //      printf("Term1 before %p %p\n",Term,*(CPtr) Term);
       XSB_Deref(Term);
-      printf("Term1 after %x\n",Term);
+      //      printf("Term1 after %p\n",Term);
       if (cell_tag(Term) == XSB_LIST || cell_tag(Term) == XSB_STRUCT) {	
-	printf("found struct or list\n");
+	//	printf("found struct or list %p %p\n",*clref_val(Term),visited_string);
 	if (*clref_val(Term) != visited_string) {
+	  //	  printf("setting visited string\n");
 	  push_cycle_trail(Term);	
 	  *clref_val(Term) = visited_string;
-	  printf("marking %p as visited\n",clref_val(Term));
+	  //	  printf("marking %p as visited\n",clref_val(Term));
+	}
+	else {
+	  push_pre_image_trail0((CPtr) preTerm, makestring(cyclic_string));	
+	  *(CPtr)preTerm = makestring(cyclic_string);
+	  //	  printf("marking %p as cyclic %p\n",preTerm,makecs(cyclic_string));
 	}
       }
     }
@@ -249,7 +263,7 @@ void mark_cyclic(CTXTdeclc Cell Term) {
   //  mem_dealloc(cycle_trail,cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE);
   return;
 }
-*/
+
 
 static int sprint_term(char *buffer, int insize, Cell term, byte car, long level)
 {
@@ -289,6 +303,7 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
        printing out the integer part of float in a fixed width, but I
        don't know how. 
     */
+    //    printf("printing %p %p\n",term,clref_val(term));
     if (isboxedfloat(term)) {
       Float val = boxedfloat_val(term);
       int width = get_int_print_width((Integer)floor(val));
@@ -448,12 +463,17 @@ void printterm(FILE *fp, Cell term, long depth) {
 void sprintTerm(char *buffer, Cell term, long level) {
   sprint_term(buffer, 0, term, CAR, level);
 }
-/*
-void sprintCyclicTerm(char *buffer, Cell Term, long level) {
-  mark_cyclic(Term);
+
+void sprintCyclicTerm(CTXTdeclc char *buffer, Cell Term, long level) {
+  mark_cyclic(CTXTc Term);
   sprint_term(buffer, 0, Term, CAR, level);
 }
-*/
+
+int sprintCyclicTerm_1(CTXTdeclc char *buffer, Cell Term, long level) {
+  mark_cyclic(CTXTc Term);
+  return sprint_term(buffer, 0, Term, CAR, level);
+}
+
 
 /*------------------------------------------------------------------*/
 /* Used to print out call using WAM registers -- print registers*/
@@ -515,6 +535,22 @@ void sprint_registers(CTXTdeclc char * buffer,Psc psc,long depth) {
   if (arity != 0) sprintf(buffer+size, "(");size++;
   for (i=1; i <= arity; i++) {
     size = sprint_term(buffer, size, cell(reg+i), CAR, depth);
+    if (i < arity) {sprintf(buffer+size, ",");size++;}
+  }
+  //  printf("grand return %d %s\n",size,buffer);
+  if (arity != 0) sprintf(buffer+size, ")");
+}
+
+void sprint_cyclic_registers(CTXTdeclc char * buffer,Psc psc,long depth) {
+  int i, arity,size;
+
+  arity = (int)get_arity(psc);
+
+   sprintf(buffer, "%s", get_name(psc));
+  size = (int)strlen(get_name(psc));
+  if (arity != 0) sprintf(buffer+size, "(");size++;
+  for (i=1; i <= arity; i++) {
+    size = sprintCyclicTerm_1(CTXTc buffer, cell(reg+i), depth-size);
     if (i < arity) {sprintf(buffer+size, ",");size++;}
   }
   //  printf("grand return %d %s\n",size,buffer);

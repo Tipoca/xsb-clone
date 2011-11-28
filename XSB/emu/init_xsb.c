@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.181 2011-11-11 18:21:39 dwarren Exp $
+** $Id: init_xsb.c,v 1.182 2011-11-28 01:17:39 tswift Exp $
 ** 
 */
 
@@ -1042,6 +1042,7 @@ void init_thread_structures(CTXTdecl)
 
   cycle_trail = 0;
   cycle_trail_size = 0;
+  cycle_trail_top = -1;
 
   /******** Initialize Private structure managers ********/
 
@@ -1512,6 +1513,7 @@ void init_symbols(CTXTdecl)
   true_psc = make_code_psc_rec("true", 0, standard_psc);
   true_string = get_name(true_psc);
   cut_string = string_find("!",1);
+  cyclic_string = (char *) makestring(string_find("<cyclic>",1));;
 
   load_undef_psc = make_code_psc_rec("_$load_undef", 1, loader_psc);
   comma_psc = make_code_psc_rec(",", 2, standard_psc);

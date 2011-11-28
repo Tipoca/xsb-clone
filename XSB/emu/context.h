@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.88 2011-11-12 00:33:31 tswift Exp $
+** $Id: context.h,v 1.89 2011-11-28 01:17:39 tswift Exp $
 **
 */
 
@@ -207,6 +207,7 @@ struct th_context
 
   CTptr _cycle_trail;
   int _cycle_trail_size;
+  int _cycle_trail_top;
 
   /* Used for by trie instructions */
   Cell *_trieinstr_unif_stk;
@@ -552,6 +553,7 @@ typedef struct th_context th_context ;
 
 #define cycle_trail               (th-> _cycle_trail)
 #define cycle_trail_size          (th-> _cycle_trail_size)
+#define cycle_trail_top           (th-> _cycle_trail_top)
 
 #define trieinstr_vars		(th->_trieinstr_vars)
 #define trieinstr_vars_num	(th->_trieinstr_vars_num)

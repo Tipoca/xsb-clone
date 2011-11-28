@@ -273,7 +273,7 @@ static void init_mq_table(void)
   if (status) printf("Error (%s) (thread %"Intfmt") locking queue %"Intfmt" in routine %s\n",strerror(status), \
 		      xsb_thread_entry,Ptr - mq_table,String);		\
   if (Ptr->mutex_owner != -1)						\
-    printf("Error (thread %"Intfmt") locking queue %"Intfmt" in routine %s (owner is %"Intfmt")\n", \
+    printf("Error (thread %"Intfmt") locking queue %"Intfmt" in routine %s (owner is %d)\n", \
 	   xsb_thread_entry,Ptr - mq_table,String,Ptr->mutex_owner);			\
   Ptr->mutex_owner = xsb_thread_entry;					\
 }

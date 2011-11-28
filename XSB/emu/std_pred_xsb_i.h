@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.78 2011-11-25 21:42:54 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.79 2011-11-28 01:17:39 tswift Exp $
 ** 
 */
 
@@ -256,7 +256,7 @@ inline static xsbBool univ_builtin(CTXTdecl)
 	    }
 	  }
 	} 
-	return unify(term,new_term);
+	return unify(CTXTc term,new_term);
       }
       if ((xsb_isnumber(chead) || isboxedinteger(chead)) && isnil(ctail)) { /* list=[num] */
 	bind_copy((CPtr)term, chead);	 /* term<-num  */
@@ -1282,49 +1282,14 @@ falsereturn:
  
 /**************************************************** */
 
-#define push_cycle_trail(Term) {					\
-    if (  ++cycle_trail_top == cycle_trail_size) {			\
-      CTptr old_cycle_trail = cycle_trail;				\
-      /*      printf("starting realloc %p %d\n",cycle_trail,cycle_trail_size); */ \
-      cycle_trail = mem_realloc(old_cycle_trail,			\
-			       cycle_trail_size*sizeof(Cycle_Trail_Frame), \
-			       2*cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE); \
-      cycle_trail_size = 2*cycle_trail_size;				\
-      /*      printf("done w. realloc\n");			*/	\
-    }									\
-    if (cell_tag(Term) == XSB_STRUCT) {					\
-      cycle_trail[cycle_trail_top].arity =  (byte) get_arity(get_str_psc(Term)); \
-      cycle_trail[cycle_trail_top].arg_num =  1;				\
-      cycle_trail[cycle_trail_top].parent =  Term;			\
-    } else {						/* list */	\
-      cycle_trail[cycle_trail_top].arity =  1;				\
-      cycle_trail[cycle_trail_top].arg_num =  0;			\
-      cycle_trail[cycle_trail_top].parent =  Term;			\
-    }									\
-    cycle_trail[cycle_trail_top].cell_addr = clref_val(Term);		\
-    cycle_trail[cycle_trail_top].value =  *clref_val(Term);		\
-  }
-
-#define pop_cycle_trail(Term) {						\
-    * (CPtr) cycle_trail[cycle_trail_top].cell_addr = cycle_trail[cycle_trail_top].value; \
-    Term = cycle_trail[cycle_trail_top].parent;				\
-    cycle_trail_top--;							\
-  }
-
-#define unwind_cycle_trail {			\
-    while (cycle_trail_top >= 0) {		\
-      pop_cycle_trail(Term);			\
-    }						\
-}
-
 #ifndef MULTI_THREAD
 CTptr cycle_trail = 0;
 int cycle_trail_size = 0;
+  int cycle_trail_top = -1;
 #endif
 
 int is_cyclic(CTXTdeclc Cell Term) { 
   Cell visited_string;
-  int cycle_trail_top = -1;
 
   XSB_Deref(Term);
   if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) return FALSE;

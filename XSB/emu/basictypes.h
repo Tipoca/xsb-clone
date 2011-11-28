@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basictypes.h,v 1.32 2011-11-06 20:30:42 tswift Exp $
+** $Id: basictypes.h,v 1.33 2011-11-28 01:17:39 tswift Exp $
 ** 
 */
 
@@ -130,6 +130,43 @@ typedef struct CycleTrailFrame {
 } Cycle_Trail_Frame ;
 
 typedef Cycle_Trail_Frame *CTptr;
+
+#define pop_cycle_trail(Term) {						\
+    * (CPtr) cycle_trail[cycle_trail_top].cell_addr = cycle_trail[cycle_trail_top].value; \
+    Term = cycle_trail[cycle_trail_top].parent;				\
+    cycle_trail_top--;							\
+  }
+
+#define push_cycle_trail(Term) {					\
+    if (  ++cycle_trail_top == cycle_trail_size) {			\
+      CTptr old_cycle_trail = cycle_trail;				\
+      /*      printf("starting realloc %p %d\n",cycle_trail,cycle_trail_size); */ \
+      cycle_trail = mem_realloc(old_cycle_trail,			\
+			       cycle_trail_size*sizeof(Cycle_Trail_Frame), \
+			       2*cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE); \
+      cycle_trail_size = 2*cycle_trail_size;				\
+      /*      printf("done w. realloc\n");			*/	\
+    }									\
+    if (cell_tag(Term) == XSB_STRUCT) {					\
+      cycle_trail[cycle_trail_top].arity =  (byte) get_arity(get_str_psc(Term)); \
+      cycle_trail[cycle_trail_top].arg_num =  1;				\
+      cycle_trail[cycle_trail_top].parent =  Term;			\
+    } else {						/* list */	\
+      cycle_trail[cycle_trail_top].arity =  1;				\
+      cycle_trail[cycle_trail_top].arg_num =  0;			\
+      cycle_trail[cycle_trail_top].parent =  Term;			\
+    }									\
+    cycle_trail[cycle_trail_top].cell_addr = clref_val(Term);		\
+    cycle_trail[cycle_trail_top].value =  *clref_val(Term);		\
+  }
+
+#define unwind_cycle_trail {			\
+    while (cycle_trail_top >= 0) {		\
+      pop_cycle_trail(Term);			\
+    }						\
+}
+
+#define TERM_TRAVERSAL_STACK_INIT 100000
 
 #ifdef MULTI_THREAD
 #ifdef WIN_NT
