@@ -1042,11 +1042,11 @@ called at that moment.
 %
 \ourmoditem{table\_dump(+Stream,\#Term,+OptionList)}{table\_dump/3}{dump\_table}
 %
-{\tt table\_dump/2} provides an easy method to view subgoals and
+{\tt table\_dump/[2,3]} provides an easy method to view subgoals and
 answers that are present in a table.  Given an input {\tt Term}, {\tt
-  table\_dump} provides information about all tabled subgoals that are
-subsumed by {\tt Term}; if {\tt Term} is a variable, information about
-all tables is provided.
+  table\_dump/[2,3]} provides information about all tabled subgoals
+that are subsumed by {\tt Term}; if {\tt Term} is a variable,
+information about all tables is provided.
 
 The information is provided at two levels of aggregation, and the form
 of the information is determined by the options in {\tt OptionsList}.
@@ -1092,32 +1092,104 @@ r(a).
 s(1,a).            s(2,b).           s(1,a1).            s(2,b1).
 \end{verbatim}
 and suppose the top-level query {\tt ?- p(X,Y)} has been made.  Then
-{\tt table\_dump/2} provides the following information (slightly
-reformatted for readability):
+{\tt table\_dump/2} provides the following information {\bf
+ (reformatted for readability)}:
 %
+{\small
 \begin{verbatim}
 | ?- table_dump(_X,[summary(true)]).
 
-summary = p(A,B) - subgoals(0) - total_times_called(1) - total_answers(5)
+summary = p(A,B) - subgoals(3) - total_times_called(4) - total_answers(7)
 
 X = p(_h243,_h244);
 
-summary = q(A) - subgoals(0) - total_times_called(1) - total_answers(2)
+summary = q(A) - subgoals(1) - total_times_called(1) - total_answers(2).
+
+X = q(_h228)
 
 yes
 | ?- table_dump(_X,[details(true)]).
 
-summary = p(A,B) - subgoals(1) - total_times_called(1) - total_answers(5)
-details - p(A,B) - subgoals(1) - details([p(C,D) - calls_to(1) - answers(5) 
-            - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)]])
+summary = p(A,B) - subgoals(3) - total_times_called(4) - total_answers(7).
+details = p(A,B) - subgoals(3) - details([
+    p(C,D) - times_called(1) - answers(5) - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)] - completed,
+    p(1,a) - times_called(2) - answers(1) - [p(1,a)]                             - completed,
+    p(2,b) - times_called(1) - answers(1) - [p(2,b)]                             - completed]).
 
 X = p(_h232,_h233);
 
-ummary = q(A) - subgoals(1) - total_times_called(1) - total_answers(2)
-details - q(A) - subgoals(1) - details([q(B) - calls_to(1) - answers(2) - [q(2),q(1)]])
+summary = q(A) - subgoals(1) - total_times_called(1) - total_answers(2).
+details = q(A) - subgoals(1) - details([
+     q(B) - times_called(1) - answers(2) - [q(2),q(1)] - completed]).
+
+X = q(_h232)
 
 yes
 \end{verbatim}
+}
+
+As the above example shows, each line of the summary has the form:
+
+\begin{tabbing}
+fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
+%
+{\em   summary = } \\
+\> {\em Pred/Goal  - subgoals($N_{subgoals}$) - total\_times\_called($N_{called}$) - total\_answers($N_{answers}$)}
+%
+\end{tabbing}
+where 
+\bi
+\item $Pred/Goal$ is either a term indicator, if the {\tt Term}
+  argument of {\tt table\_dump/[2,3]} was a variable (to indicate there
+  should be no filtering of tabled calls); or {\tt Term} itself.
+%
+\item $N_{subgoals}$ are the total number tabled subgoals that are
+  subsumed by $Pred/Goal$ (perhaps including $Pred/Goal$ itself).
+%
+\item $N_{called}$ is the total number of times all subgoals subsumed
+  by $Pred/Goal$ have been called.
+%
+\item $N_{answers}$ is the total number of answers currently derived
+  by all subgoals subsumed by $Pred/Goal$.
+\ei
+
+Each line of details has the form:
+
+\begin{tabbing}
+fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
+%
+{\em   details = } \\
+\> {\em Pred/Goal  - subgoals($N_{subgoals}$) - details(List)}
+%
+\end{tabbing}
+%
+where {\em Pred/Goal} and $N_{subgoals}$ are as above and $List$ has teh form 
+%
+\begin{tabbing}
+fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
+%
+\>  Subgoal - times\_called($N_{called}$) - answers($N_{answers}$) - status - List\_of\_Answers
+%
+\end{tabbing}
+%
+for each $Subgoal$ in the table subsumed by $Pred/Goal$.  $N_{called}$
+and $N_{answers}$ are as above, while {\em List\_of\_Answers} contains
+all those answers currently derived for $Subgoal$.  Finally $status$ is
+%
+\bi
+\item {\tt completed} if $Subgoal$ has been completed; and
+%
+\item {\tt scc($N_{SCC}$}) if $Subgoal$ is incomplete.  $N_{SCC}$ is
+  relative: if $N_{SCC}$ is greater than $M_{SCC}$ then $N_{SCC}$ is a
+  descendent of $M_{SCC}$: i.e., subgoals in SCC $M_{SCC}$ depend on
+  subgoals in SCC $N_{SCC}$.  However, these numbers should only be
+  used relatively: at a given state in the computation there may be
+  fewer than $M_{SCC}$ Sccs~\footnote{XSB keeps track of SCCs through
+    an algorithm similar to depth-first search: the numbers associated
+    with subgoals are the depth-first numbers of the minimal
+    back-dependency of a subgoal (cf.~\cite{SaSw98})}.
+\ei
+
 
 {\bf Error Cases}
 \bi
@@ -1135,6 +1207,43 @@ yes
 \item {\tt domain\_error(table\_dump\_option,O)}
 \ei
 \ei
+
+\ourmoditem{print\_completion\_stack}{print\_completion\_stack/0}{tables}
+%
+This predicate, which can be useful for debugging purposes, prints out
+to {\tt stddbg} each subgoal in XSB's completion stack, followed by
+the ordinal number of the subgoal.  The completion stack gives a
+notion of the dependencies among tabled predicates.  In local
+evaluation (the default evaluation method for XSB) all predicates in
+SCC $m$ depend on predicates in SCC $n$ if $m < n$~\footnote{This
+  assumes that there is no early completion, which can remove
+  dependencies. In batched evaluation, the dependencies are less exact
+  -- see \cite{SaSw98} for details, as SCCs represent a dag of
+  dependencies rather than a chain as in local evaluation.}.
+
+{\bf Example:} For the program
+%
+\begin{verbatim}
+:- table q/2.
+q(0,_):- !,print_completion_stack.
+q(3,A):- q(5,A).
+q(N,A):- N1 is N - 1,q(N1,A).
+\end{verbatim}
+the goal {\tt ?- q(5,foo)} will produce the output 
+%
+{\small
+\begin{verbatim}
+q(5, foo)- scc(1).
+q(4, foo)- scc(1).
+q(3, foo)- scc(1).
+q(2, foo)- scc(2).
+q(1, foo)- scc(3).
+q(0, foo)- scc(4).
+\end{verbatim}
+}
+%
+Note that in addition to the dependencies discussed above, all
+subgoals in SCC 1 depend on one another.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1217,7 +1326,7 @@ has changed).  From an implementation perspective, if space for {\tt
 may core dump, even if there are no choice points for completed tables
 anywhere in the choice point stack.  To address this problem, by
 default abolishing a subgoal $S$ (predicate $P$) will abolish all
-subgoals (predicates) that (transtively) depend on $S$
+`vsubgoals (predicates) that (transtively) depend on $S$
 ($P$)~\footnote{Dao Tran Minh contributed to implementing this
   functionality.}.  In this case the goal {\tt
   abolish\_table\_call(r(a,X))} would cause the deletion of {\tt
