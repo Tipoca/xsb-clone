@@ -908,10 +908,13 @@ ok_op(OP) :- atom(OP), OP \== ','.
 /* add index declaration */
 index(Ps,Arg,S) :- 
 	check_nonvar(Ps,(index)/2,1),
-	check_nonneg_integer(S,(index)/3,3),
 	check_ground(Arg,(index)/3,2),
-	check_index(Ps,Arg),
-	add_index(Ps,Arg,S),!.
+	(Arg == trie
+	 ->	add_trie_index(Ps)
+	 ;	check_nonneg_integer(S,(index)/3,3),
+		check_index(Ps,Arg),
+		add_index(Ps,Arg,S)
+	),!.
 index(Ps,_Arg,_S) :-
 	type_error(predicate_or_term_indicator,Ps,(index)/3,1).
 
