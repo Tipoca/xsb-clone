@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.193 2011-08-22 16:15:24 dwarren Exp $
+** $Id: biassert.c,v 1.194 2011-12-05 15:00:44 dwarren Exp $
 ** 
 */
 
@@ -1538,7 +1538,11 @@ static int hash_resize( PrRef Pred, SOBRef SOBrec, unsigned int OldTabSize )
      }
      return xsb_max(ThisTabSize, OldTabSize) ;
    }
-   else return OldTabSize ;
+   else {
+     for (i=0; i<NUMHASHSIZES; i++) 
+       if ((unsigned int) hashsizes_table[i] >= OldTabSize) break; 
+     return hashsizes_table[i];
+   }
 }
 
 static int hash_val(int Ind, prolog_term Head, int TabSize )
