@@ -1208,14 +1208,15 @@ all those answers currently derived for $Subgoal$.  Finally $status$ is
 \ei
 \ei
 
-\ourmoditem{print\_completion\_stack}{print\_completion\_stack/0}{tables}
+\ourmoditem{print\_incomplete\_tables}{print\_incomplete\_tables/0}{tables}
 %
 This predicate, which can be useful for debugging purposes, prints out
-to {\tt stddbg} each subgoal in XSB's completion stack, followed by
-the ordinal number of the subgoal.  The completion stack gives a
-notion of the dependencies among tabled predicates.  In local
-evaluation (the default evaluation method for XSB) all predicates in
-SCC $m$ depend on predicates in SCC $n$ if $m < n$~\footnote{This
+to {\tt stddbg} each incomplete subgoal in the current state, followed
+by the ordinal number of the SCC to which that subgoal belongs.  This
+information describes the dependencies among tabled predicates.  In
+local evaluation (the default evaluation method for XSB) all subgoals
+in SCC $m$ depend on all subgoals in SCC $n$ if $m < n$.  Furthermore,
+all subgoals in a given SCC depend on one another~\footnote{This
   assumes that there is no early completion, which can remove
   dependencies. In batched evaluation, the dependencies are less exact
   -- see \cite{SaSw98} for details, as SCCs represent a dag of
@@ -1225,7 +1226,7 @@ SCC $m$ depend on predicates in SCC $n$ if $m < n$~\footnote{This
 %
 \begin{verbatim}
 :- table q/2.
-q(0,_):- !,print_completion_stack.
+q(0,_):- !,print_incomplete_tables.
 q(3,A):- q(5,A).
 q(N,A):- N1 is N - 1,q(N1,A).
 \end{verbatim}
@@ -1242,8 +1243,6 @@ q(0, foo)- scc(4).
 \end{verbatim}
 }
 %
-Note that in addition to the dependencies discussed above, all
-subgoals in SCC 1 depend on one another.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
