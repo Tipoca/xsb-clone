@@ -36,6 +36,7 @@
    get_calls/3,
    get_calls_for_table/2,
    get_callsto_number/2,
+   get_current_scc/2,
    get_lastnode_cs_retskel/4, /* because it is used in intern.P */
    get_producer_call/3,
    get_ptcp/1,
@@ -46,6 +47,7 @@
    get_returns_for_call/2,
    invalidate_tables_for/2,
    is_incomplete/2,
+   print_incomplete_tables/0,
    retract_table/1,
    sk_not/1,
 %      table_state/2,

@@ -693,6 +693,9 @@ predicate_has_tables(Psc):-
 %	writeln(ptr(Ptr)),
 	Ptr \== 0.
 
+get_current_scc(SubgoalFrame,Number):-
+	table_inspection_function(GET_CURRENT_SCC,SubgoalFrame,Number,_,_).
+
 get_callsto_number(SubgoalFrame,Number):- 
 	table_inspection_function(GET_CALLSTO_NUMBER,SubgoalFrame,Number,_,_).
 
@@ -706,6 +709,9 @@ early_complete_on_delta(SubgoalFrame,New,Old,Epsilon):-
 	(New - Old < Epsilon ->
 	    table_inspection_function(EARLY_COMPLETE,SubgoalFrame,_,_,_)
 	 ;  true).
+
+print_incomplete_tables:- 
+	table_inspection_function(PRINT_COMPLETION_STACK,_,_,_,_).
 
 log_all_forest_start :-
 	start_forest_view(userout).
