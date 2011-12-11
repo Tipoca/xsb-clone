@@ -34,6 +34,8 @@
 #define START_FOREST_VIEW                        10
 #define STOP_FOREST_VIEW                         11
 #define TNOT_SETUP                               12
+#define GET_CURRENT_SCC                          13
+#define PRINT_COMPLETION_STACK                   14
 
 // For delete return
 #define ANSWER_SUBSUMPTION   0
