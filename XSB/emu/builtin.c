@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.381 2011-11-12 00:33:31 tswift Exp $
+** $Id: builtin.c,v 1.382 2011-12-11 23:07:25 dwarren Exp $
 **
 */
 
@@ -148,6 +148,8 @@ extern void alt_print_cp(CTXTdeclc int);
 extern int xsb_profiling_enabled;
 
 extern char *canonical_term(CTXTdeclc Cell, int);
+
+int is_cyclic(CTXTdeclc Cell);
 
 #ifdef WIN_NT
 extern xsbBool startInterruptThread(SOCKET intSocket);
@@ -1784,7 +1786,7 @@ int builtin_call(CTXTdeclc byte number)
 	for (i = 1; i <= k; i++) {
 	  bld_copy(reg+i,cell(reg+i+1));
 	}
-      } else if (arity > 1) {
+      } else if (arity >= 1) {
 	for (i = k+1; i > 1; i--) {
 	  bld_copy(reg+i+arity-1,cell(reg+i));
 	}
@@ -1795,6 +1797,7 @@ int builtin_call(CTXTdeclc byte number)
       }
       goalname = get_name(psc);
       if (!modpsc) modpsc = (Psc)flags[CURRENT_MODULE];
+      if (!modpsc) modpsc = global_mod;
       newpsc = pair_psc(insert(goalname,(byte)(arity+k),modpsc,&new));
       if (new) {
 	set_data(newpsc, modpsc);

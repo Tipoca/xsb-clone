@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.94 2011-06-26 21:02:10 tswift Exp $
+** $Id: io_builtins_xsb.c,v 1.95 2011-12-11 23:07:25 dwarren Exp $
 ** 
 */
 
@@ -1685,11 +1685,32 @@ void write_quotedname(FILE *file, char *string)
 }
 
 /********************** write_canonical ****************/
-
 static Psc dollar_var_psc = NULL;
 #define wcan_string tsgLBuff1
 #define wcan_atombuff tsgLBuff2
 #define wcan_buff tsgSBuff1
+
+char *cvt_float_to_str(Float floatval) {
+  sprintf(wcan_buff->string,"%1.18g",floatval);
+  wcan_buff->length = (int)strlen(wcan_buff->string);
+  if (!strchr(wcan_buff->string,'.')) {
+    char *eloc = strchr(wcan_buff->string,'e');
+    if (!eloc) XSB_StrAppend(wcan_buff,".0");
+    else {	
+      char exp[5],fstr[30];
+      //	  printf("massage float %s\n", wcan_buff->string);
+      strcpy(exp,eloc);
+      eloc[0] = 0;
+      strcpy(fstr,wcan_buff->string);
+      XSB_StrSet(wcan_buff,fstr);
+      XSB_StrAppend(wcan_buff,".0");
+      XSB_StrAppend(wcan_buff,exp);
+    }
+  } 
+  return wcan_buff->string;
+}
+
+
 
 int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_flag)
 {
@@ -1719,23 +1740,7 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
       }
       break;
     case XSB_FLOAT:
-      //      sprintf(wcan_buff->string,"%2.4f",float_val(prologterm));
-      sprintf(wcan_buff->string,"%1.15g",float_val(prologterm));
-      wcan_buff->length = (int)strlen(wcan_buff->string);
-      if (!strchr(wcan_buff->string,'.')) {
-	char *eloc = strchr(wcan_buff->string,'e');
-	if (!eloc) XSB_StrAppend(wcan_buff,".0");
-	else {	
-	  char exp[5],fstr[30];
-	  strcpy(exp,eloc);
-	  eloc[0] = 0;
-	  strcpy(fstr,wcan_buff->string);
-	  XSB_StrSet(wcan_buff,fstr);
-	  XSB_StrAppend(wcan_buff,".0");
-	  XSB_StrAppend(wcan_buff,exp);
-	}
-      }
-      XSB_StrAppend(wcan_string,wcan_buff->string);
+      XSB_StrAppend(wcan_string, cvt_float_to_str(ofloat_val(prologterm)));
       break;
     case XSB_REF:
     case XSB_REF1: {
@@ -1766,7 +1771,6 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
      }
      else if (isboxedfloat(prologterm))
      {
-       //          sprintf(wcan_buff->string,"%2.4f",boxedfloat_val(prologterm));
        sprintf(wcan_buff->string,"%1.15g",boxedfloat_val(prologterm));
        wcan_buff->length = (int)strlen(wcan_buff->string);
        if (!strchr(wcan_buff->string,'.')) {

@@ -333,7 +333,7 @@ real_search_module(ModName, Dir, Base, Ext) :-
 /*======================================================================*/
 
 load_exec(File, ModName) :-	
-
+	cputime(LoadStartTime),
 	code_load(File, Init, 1),	% use the changed C loader.
 	% jf: for Windows a valid segment pointer might be negative
 	( Init =\= 0			% load succeeded
@@ -343,8 +343,15 @@ load_exec(File, ModName) :-
 	!,
 	(   banner_control(quietload)
 	->  true
-	;   file_write0(STDMSG, '['), file_write0(STDMSG, ModName),
-	    file_write0(STDMSG, ' loaded]'), file_nl(STDMSG)
+	;   cputime(LoadFinishTime), LoadTime is LoadFinishTime-LoadStartTime,
+	    file_write0(STDMSG, '['), file_write0(STDMSG, ModName),
+	    (LoadStartTime =:= LoadFinishTime
+	     ->	    true
+	     ;	    file_write0(STDMSG, ' loaded, cpu time used: '),
+		    file_write0(STDMSG, LoadTime),
+		    file_write0(STDMSG, ' seconds')
+	    ),
+	    file_write0(STDMSG,']'), file_nl(STDMSG)
 	),
 	(Init =\= 4			% Prolog byte code loaded
                                         % Do not check Init > 4 as valid segment pointers may be negative.

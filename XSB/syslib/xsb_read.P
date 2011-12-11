@@ -239,8 +239,12 @@ read5(func(Functor), [punc(CH_LPAREN)|S1], Precedence, Answer, S) :-
 %	b) Term ::= Prolog_Symbol '(' Arg, Args ')' .... '(' Arg, Args ')'
 read5(func(Functor), [punc(CH_LPAREN)|S1], Precedence, Answer, S) :-
 	!,
-	read4(S1, 999, Arg1, S2),
-	rest_read_structure(Functor, Arg1, S2, Precedence, Answer, S).
+	(S1 = [punc(CH_RPAREN)|S2] % support p() syntax for 0-ary structure symbols (not strings)
+	 ->	'read=..'(Term,[Functor]),
+		read_exprtl0(S2,Term,Precedence,Answer,S)
+	 ;	read4(S1, 999, Arg1, S2),
+		rest_read_structure(Functor, Arg1, S2, Precedence, Answer, S)
+	).
 
 % Term ::= PreOp Term
 read5(atom(Functor), S0, Precedence, Answer, S) :-

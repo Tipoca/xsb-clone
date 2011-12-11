@@ -188,18 +188,7 @@ l_write(File, Var, _, _D,Flag) :-
 	Type =:= XSB_ATTV,
 	!, 
 	file_puttoken(File, Type, Var),
-	(Flag == WA_IGNORE -> 
-	    true
-	  ; Flag == WA_PORTRAY -> 
-	     stat_set_flag(WRITE_ATTRIBUTES,WA_IGNORE),
-	     portray_attributes(Var,File),
-	     stat_set_flag(WRITE_ATTRIBUTES,Flag)
-	  ; Flag == WA_WRITE -> 
-	     stat_set_flag(WRITE_ATTRIBUTES,WA_DOTS),
-	     recurse_attributes(Var,File),
-	     stat_set_flag(WRITE_ATTRIBUTES,Flag)
-	  ; Flag == WA_DOTS -> 
-	     dot_attributes(Var,File)).	     
+	l_writeattrvar(File,Var,Flag).
 l_write(File, '$VAR'(N), _, D,Flag) :- 
 	!,
 	D1 is D - 1,
@@ -219,6 +208,7 @@ l_write(File, T, Prec, D,Flag) :- 	% functor(T, OP, N),
 	OP = Name,
 	D1 is D - 1,
 	( N=:=0 -> file_puttoken(File, TK_ATOM, Name)
+		    ,file_put(File,CH_LPAREN),file_put(File,CH_RPAREN) % e.g. p()?
 	; N=:=1 ->
 		( '_$op'(Opprec, fx, OP) ->
 			Nprec is Opprec-1, 
@@ -276,6 +266,21 @@ l_writevar(File, N, Quoted, D,Flag) :-
 	        file_put(File, CH_LPAREN),
 	        l_write(File, N, 999, D,Flag),
 	        file_put(File, CH_RPAREN) ).
+
+l_writeattrvar(File,Var,Flag) :-
+	(Flag == WA_IGNORE -> 
+	    true
+	  ; Flag == WA_PORTRAY -> 
+	     stat_set_flag(WRITE_ATTRIBUTES,WA_IGNORE),
+	     portray_attributes(Var,File),
+	     stat_set_flag(WRITE_ATTRIBUTES,Flag)
+	  ; Flag == WA_WRITE -> 
+	     stat_set_flag(WRITE_ATTRIBUTES,WA_DOTS),
+	     recurse_attributes(Var,File),
+	     stat_set_flag(WRITE_ATTRIBUTES,Flag)
+	  ; Flag == WA_DOTS -> 
+	     dot_attributes(Var,File)).
+
 
 l_writestr(File, Name, N, Term, D,Flag) :-
 	file_puttoken(File, TK_ATOM, Name), 
@@ -361,10 +366,18 @@ l_writetail(File, _, 0,_Flag) :-
 %TLS: need to change
 l_writetail(File, Var, _D,_Flag) :- 
 	term_type(Var, Type),
-	(Type =:= XSB_FREE; Type =:= XSB_ATTV),
+	Type =:= XSB_FREE,
 	!, 
 	file_put(File, 124), 		% '|'
 	file_puttoken(File, Type, Var), 
+	file_put(File, 93).		% ']'
+l_writetail(File, Var, _D,Flag) :- 
+	term_type(Var, Type),
+	Type =:= XSB_ATTV,
+	!, 
+	file_put(File, 124), 		% '|'
+	file_puttoken(File,XSB_ATTV,Var),
+	l_writeattrvar(File,Var,Flag),
 	file_put(File, 93).		% ']'
 l_writetail(File, [X|Y], D,Flag) :- 
 	!, 
@@ -593,6 +606,7 @@ l_write_quoted(File, T, Prec) :- 	% functor(T, OP, N),
 	psc_name(PSC, Name),
 	OP = Name,
 	( N=:=0 -> file_writequoted(File, Name)
+		   ,file_put(File,CH_LPAREN),file_put(File,CH_RPAREN) % e.g. p()?
 	; N=:=1 ->
 		( '_$op'(Opprec, fx, OP) ->
 			Nprec is Opprec-1, 

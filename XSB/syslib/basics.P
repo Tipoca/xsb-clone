@@ -268,7 +268,12 @@ length(L,N) :-
 		length2(L,N)
 	).
 
-length1([],N,N).
+length1([],N,M) :-
+	(var(M)
+	 ->	N=M
+	 ;	check_nonneg_integer(M,length/2,2),
+		N=M
+	).
 length1([_|R],N0,N) :- N1 is N0+1, length1(R,N1,N).
 
 length2(L,N) :-

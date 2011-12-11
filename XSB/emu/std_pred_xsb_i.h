@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.79 2011-11-28 01:17:39 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.80 2011-12-11 23:07:25 dwarren Exp $
 ** 
 */
 
@@ -366,6 +366,10 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	  return FALSE;	/* keep compiler happy */
 	}
 	if (atomname >= atomnamelast) {
+	  if (is_cyclic(CTXTc term2)) {
+	    mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
+	    xsb_type_error(CTXT "list",makestring("infinite list(?)"),call_name,2);
+	  }
 	  atomnameaddr = (char *)mem_realloc(atomnameaddr,atomnamelen,(atomnamelen << 1),LEAK_SPACE);
 	  atomname = atomnameaddr + (atomnamelen - 1);
 	  atomnamelen = atomnamelen << 1;
@@ -375,9 +379,9 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	*atomname++ = (char)c;
 	term2 = cell(clref_val(term2)+1);
       } else {
+	mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
 	if (isref(term2)) xsb_instantiation_error(CTXTc call_name,2);
 	else xsb_type_error(CTXTc "list",term2,call_name,2);  /* atom_chars(X,[1]) */
-	mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
 	return FALSE;	/* fail */
       }
     } while (1);
@@ -423,6 +427,8 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
   return TRUE;
 }
 
+char *cvt_float_to_str(Float);
+
 inline static xsbBool number_to_list(CTXTdeclc int call_type)
 {
   int i, tmpval;
@@ -431,7 +437,8 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
   char str[256];	
   int StringLoc = 0;
   Cell heap_addr, term, term2;
-  Cell list, new_list;
+  Cell list;
+  CPtr new_list;
   char hack_char;	
   CPtr top = 0;
   char *call_name =
@@ -446,7 +453,8 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
   term = ptoc_tag(CTXTc 1);
   XSB_Deref(term);
   list = ptoc_tag(CTXTc 2);
-  if (!isnonvar(term)) {	/* use is: CHARS/CODES --> NUMBER */
+  XSB_Deref(list);
+  if (islist(list) || isnil(list)) { /* use is: CHARS/CODES --> NUMBER */
     term2 = list;
     do {
       XSB_Deref(term2);
@@ -457,14 +465,11 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
       if (islist(term2)) {
 	heap_addr = cell(clref_val(term2)); XSB_Deref(heap_addr);
 	if (((call_type==NUMBER_CODES) && (!isinteger(heap_addr)))
-	    || ((call_type==NUMBER_CHARS) && !isstring(heap_addr))
+	    || ((call_type==NUMBER_CHARS) && (!isstring(heap_addr) || isnil(heap_addr)))
 	    || ((call_type==NUMBER_DIGITS)
 		&& !isstring(heap_addr)
 		&& !isinteger(heap_addr))) {
-	  if (isnonvar(heap_addr))
-	    xsb_type_error(CTXTc elt_type,list,call_name,2); /* number_chars(X,[a]) */
-	  else xsb_instantiation_error(CTXTc call_name,2);
-	  return FALSE;	/* fail */
+	  xsb_type_error(CTXTc elt_type,list,call_name,2); /* number_chars(X,[a]) */
 	}
 	if (call_type==NUMBER_CODES)
 	  c = int_val(heap_addr);
@@ -482,10 +487,8 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
 
 	if (c < 0 || c > 255) {
 	  xsb_representation_error(CTXTc "character code",heap_addr,call_name,2);
-	  //	  err_handle(CTXTc RANGE, 2, call_name, 2, "ASCII code", heap_addr);
-	  return FALSE;	/* fail */
 	}
-	if (StringLoc > 200) return FALSE;
+	if (StringLoc > 200) xsb_type_error(CTXT "list",makestring("infinite list(?)"),call_name,2);
 	str[StringLoc++] = (char)c;
 	term2 = cell(clref_val(term2)+1);
       } else {
@@ -498,7 +501,10 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
     } while (1);
 
     if (sscanf(str, "%" Intfmt "%c", &c, &hack_char) == 1) {
-      bind_oint((CPtr)(term), c);
+      if (isointeger(term)) {
+	if (oint_val(term) != c) return FALSE;
+      } else if (isref(term)) {bind_oint((CPtr)(term), c);}
+      else return FALSE;
     } else {
       Float float_temp;
       //TODO: Refactor the below few lines of code once the "Floats are always double?" 
@@ -509,21 +515,24 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
       if (sscanf(str, "%f%c", &float_temp, &hack_char) == 1)
 #endif
 	{
-	  bind_boxedfloat((CPtr)(term), float_temp);
+	  if (isofloat(term)) {
+	    if (ofloat_val(term) != float_temp) return FALSE;
+	  } else if (isref(term)) {bind_boxedfloat((CPtr)(term), float_temp);}
+	  else return FALSE;
 	}
       // TLS: changed to fail to syntax error to conform w. ISO.  
       else xsb_syntax_error_non_compile(CTXTc list,call_name,2);
       //            else return FALSE;	/* fail */
     }
   } else {	/* use is: NUMBER --> CHARS/CODES/DIGITS */
-    if (isointeger(term)) {
+    if (isref(term)) {
+      xsb_instantiation_error(CTXTc call_name,1);
+    } else if (isointeger(term)) {
       sprintf(str, "%" Intfmt, oint_val(term));
-    } else {
-      if (isofloat(term)) {
-	sprintf(str, "%e", ofloat_val(term));
-      }
-    }
-    new_list = makelist(hreg);
+    } else if (isofloat(term)) {
+	strncpy(str,cvt_float_to_str(ofloat_val(term)),256);
+    } else xsb_type_error(CTXTc "number",term,call_name,1);
+    new_list = hreg;
     for (i=0; str[i] != '\0'; i++) {
       if (call_type==NUMBER_CODES)
 	follow(hreg++) = makeint((unsigned char)str[i]);
@@ -546,7 +555,8 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
       top = hreg++;
       follow(top) = makelist(hreg);
     } follow(top) = makenil;
-    return unify(CTXTc list, new_list);
+    if (isref(list)) {bind_list((CPtr)list,new_list);}
+    else xsb_type_error(CTXTc "list",term,call_name,2);
   }
   return TRUE;
 }

@@ -23,7 +23,7 @@
 */
 
 
-:- export subsumes_chk/2, variant/2, subsumes/2.
+:- export subsumes_chk/2, subsumes_term/2, variant/2, subsumes/2.
 
 %%:- import numbervars/1 from num_vars.
 %%:- import conset/2, conget/2 from gensym.

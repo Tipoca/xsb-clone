@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.37 2011-06-06 20:20:29 dwarren Exp $
+** $Id: function.c,v 1.38 2011-12-11 23:07:25 dwarren Exp $
 ** 
 */
 
@@ -369,6 +369,19 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 	    break;
 	  } else if (strcmp(get_name(op_psc),"**")==0) {
 	    if (isfiint(fiop1)) {
+	      if (isfiint(fiop2)) set_flt_val(value,(Float)pow((Float)fiint_val(fiop1),(Float)fiint_val(fiop2)));
+	      else set_flt_val(value,(Float)pow((Float)fiint_val(fiop1),fiflt_val(fiop2)));
+	    } else {
+	      if (isfiint(fiop2)) set_flt_val(value,(Float)pow(fiflt_val(fiop1),(Float)fiint_val(fiop2)));
+	      else if (fiflt_val(fiop1) < 0) return 0;
+	      else set_flt_val(value,(Float)pow(fiflt_val(fiop1),fiflt_val(fiop2)));
+	    }
+	    break;
+	  } else set_and_return_fail(value);
+
+	case '^':
+	  if (strcmp(get_name(op_psc),"^")==0) {
+	    if (isfiint(fiop1)) {
 	      if (isfiint(fiop2)) set_int_val(value,(Integer)pow((Float)fiint_val(fiop1),(Float)fiint_val(fiop2)));
 	      else set_flt_val(value,(Float)pow((Float)fiint_val(fiop1),fiflt_val(fiop2)));
 	    } else {
@@ -401,6 +414,14 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 	    break;
 	  } else set_and_return_fail(value);
 
+	case 'd':
+	  if (strcmp(get_name(op_psc),"div")==0) {
+	    if (isfiint(fiop1) && isfiint(fiop2)) {
+	      set_int_val(value,(Integer)floor((Float)fiint_val(fiop1) / (Float)fiint_val(fiop2)));
+	    } else return 0;
+	    break;
+	  } else set_and_return_fail(value);
+	  
 	case 'm':
 	  if (strcmp(get_name(op_psc),"mod")==0) {
 	    if (isfiint(fiop1)) {
@@ -552,6 +573,13 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 
 	case '\\':
 	  if (strcmp(get_name(op_psc),"\\")==0) {
+	    if (isfiint(fiop1)) set_int_val(value,~fiint_val(fiop1));
+	    else set_int_val(value,~((Integer)fiint_val(fiop1)));
+	    break;
+	  } else set_and_return_fail(value);
+
+	case 'x':
+	  if (strcmp(get_name(op_psc),"xor")==0) {
 	    if (isfiint(fiop1)) set_int_val(value,~fiint_val(fiop1));
 	    else set_int_val(value,~((Integer)fiint_val(fiop1)));
 	    break;

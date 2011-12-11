@@ -144,7 +144,7 @@
 	segfault_handler/1,
 	is_charlist/2,
 	is_charlist/1,
-	is_cyclic/1,is_acyclic/1,
+	is_cyclic/1,is_acyclic/1,acyclic_term/1,
 	trimcore/0,
    term_depth/2,
    term_size/2,

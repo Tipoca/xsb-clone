@@ -36,6 +36,10 @@
 subsumes_chk(General, Specific) :-
 	\+ \+ subsumes(General,Specific).
 
+% ISO
+subsumes_term(General, Specific) :-
+	\+ \+ subsumes(General,Specific).
+
 
 %   subsumes(General, Specific)
 %   is true when Specific is an instance of General. Unlike subsumes_chk/2
