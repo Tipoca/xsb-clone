@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.38 2011-12-11 23:07:25 dwarren Exp $
+** $Id: function.c,v 1.39 2011-12-12 00:07:23 dwarren Exp $
 ** 
 */
 
@@ -527,6 +527,13 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 	    } else return 0;
 	    break;
 	  } else set_and_return_fail(value);
+	case 'x':
+	  if (strcmp(get_name(op_psc),"xor")==0) {
+	    if (isfiint(fiop1) && isfiint(fiop2)) {
+	      set_int_val(value,fiint_val(fiop1) ^ fiint_val(fiop2));
+	    } else return 0;
+	    break;
+	  } else set_and_return_fail(value);
 	default:
 	  set_and_return_fail(value);
 	} /* end switch */
@@ -573,13 +580,6 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 
 	case '\\':
 	  if (strcmp(get_name(op_psc),"\\")==0) {
-	    if (isfiint(fiop1)) set_int_val(value,~fiint_val(fiop1));
-	    else set_int_val(value,~((Integer)fiint_val(fiop1)));
-	    break;
-	  } else set_and_return_fail(value);
-
-	case 'x':
-	  if (strcmp(get_name(op_psc),"xor")==0) {
 	    if (isfiint(fiop1)) set_int_val(value,~fiint_val(fiop1));
 	    else set_int_val(value,~((Integer)fiint_val(fiop1)));
 	    break;
