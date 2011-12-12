@@ -346,12 +346,12 @@ load_exec(File, ModName) :-
 	;   cputime(LoadFinishTime), LoadTime is LoadFinishTime-LoadStartTime,
 	    file_write0(STDMSG, '['), file_write0(STDMSG, ModName),
 	    (LoadStartTime =:= LoadFinishTime
-	     ->	    true
+	     ->	    file_write0(STDMSG, ' loaded]')
 	     ;	    file_write0(STDMSG, ' loaded, cpu time used: '),
 		    file_write0(STDMSG, LoadTime),
-		    file_write0(STDMSG, ' seconds')
+		    file_write0(STDMSG, ' seconds]')
 	    ),
-	    file_write0(STDMSG,']'), file_nl(STDMSG)
+	    file_nl(STDMSG)
 	),
 	(Init =\= 4			% Prolog byte code loaded
                                         % Do not check Init > 4 as valid segment pointers may be negative.
