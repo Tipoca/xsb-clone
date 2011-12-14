@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: function.c,v 1.39 2011-12-12 00:07:23 dwarren Exp $
+** $Id: function.c,v 1.40 2011-12-14 22:40:26 dwarren Exp $
 ** 
 */
 
@@ -418,7 +418,7 @@ int xsb_eval(CTXTdeclc Cell expr, FltInt *value) {
 	  if (strcmp(get_name(op_psc),"div")==0) {
 	    if (isfiint(fiop1) && isfiint(fiop2)) {
 	      set_int_val(value,(Integer)floor((Float)fiint_val(fiop1) / (Float)fiint_val(fiop2)));
-	    } else return 0;
+	    } else arithmetic_abort(CTXTc op2,"div",op1);
 	    break;
 	  } else set_and_return_fail(value);
 	  

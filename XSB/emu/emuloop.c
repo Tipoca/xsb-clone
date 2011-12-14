@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.225 2011-11-23 14:31:56 dwarren Exp $
+** $Id: emuloop.c,v 1.226 2011-12-14 22:40:26 dwarren Exp $
 ** 
 */
 
@@ -2047,6 +2047,43 @@ argument positions.
 	      Integer temp = fiint_val(fiop2) / oint_val(op1);
 	      bld_oint(op3,temp);
 	    } else { arithmetic_abort(CTXTc op2, "//", op1); }
+	  }
+        } else {
+	  err_handle(CTXTc ZERO_DIVIDE, 2,
+		     "arithmetic expression involving is/2 or eval/2",
+		     2, "non-zero number", op1);
+	  lpcreg = pcreg;
+        }
+      }
+    else {
+      FltInt fiop1,fiop2;
+      if (xsb_eval(CTXTc op1,&fiop1) && isfiint(fiop1)
+	  && xsb_eval(CTXTc op2,&fiop2) && isfiint(fiop2)) {
+	Integer temp = fiint_val(fiop1) / fiint_val(fiop2);
+	bld_oint(op3,temp);
+      } else { arithmetic_abort(CTXTc op2, "//", op1); }
+    }
+  XSB_End_Instr() 
+
+  XSB_Start_Instr(fdivreg,_fdivreg) /* PRR */
+    Def3ops
+    Op1(Register(get_xrx));
+    Op3(get_xxr);
+    ADVANCE_PC(size_xxx);
+    op2 = *(op3);
+    XSB_Deref(op1);
+    XSB_Deref(op2);
+      if (isointeger(op1)) {
+        if (oint_val(op1) != 0) {
+          if (isointeger(op2)) {
+            Integer temp = oint_val(op2) / oint_val(op1);
+            bld_oint(op3, temp); 
+          } else { 
+	    FltInt fiop2;
+	    if (xsb_eval(CTXTc op2, &fiop2) && isfiint(fiop2)) {
+	      Integer temp = (Integer)floor((Float)fiint_val(fiop2) / (Float)oint_val(op1));
+	      bld_oint(op3,temp);
+	    } else { arithmetic_abort(CTXTc op2, "div", op1); }
 	  }
         } else {
 	  err_handle(CTXTc ZERO_DIVIDE, 2,

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.40 2011-05-18 19:21:40 dwarren Exp $
+** $Id: inst_xsb.h,v 1.41 2011-12-14 22:40:26 dwarren Exp $
 ** 
 */
 
@@ -332,6 +332,7 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 
 #define restore_dealloc_proceed 0xbc    /* for special interrupt handling */
 
+#define fdivreg			0xbd    /* for div operation, floor toward -inf */
 /* Tabling instructions --- they should really be changed to be as shown */
 
 #define tabletrysingle		0xc0
