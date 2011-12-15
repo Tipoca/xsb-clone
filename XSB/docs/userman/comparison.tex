@@ -189,8 +189,9 @@ variables. Associated hooks are not executed~\footnote{In \version ,
     not work as described if {\tt Term1} and {\tt Term2} share common
     variables.
 
-\ourmoditem{subsumes\_chk(+Term1, +Term2)}{subsumes\_chk/2}{subsumes}
-%\predindex{subsumes\_chk/2~(L)}
+\ourrepeatmoditem{subsumes\_chk(+Term1, +Term2)}{subsumes\_chk/2}{subsumes}%
+\isoitem{subsumes\_term(+Term1, +Term2)}{subsumes\_term/2}
+%
     The {\tt subsumes\_chk/2} predicate is true when {\tt Term1} subsumes 
     {\tt Term2}; that is, when {\tt Term2} is already an instance of
     {\tt Term1}.  This predicate simply checks for subsumption and 

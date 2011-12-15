@@ -2425,7 +2425,8 @@ If {\tt +Expr1} evaluates to {\tt Number1}, and {\tt Expr2} evaluates
 to {\tt Number2}, returns {\tt Number1 / Number2} (i.e. divides
 them), performing any necessary type conversions.
 
-\ourstandarditem{//(+Expr1,Expr2)}{'//'/2}{Evaluable Functor (ISO)}
+\isorepeatitem{div(+Expr1,Expr2)}{div/2}
+\ourstandarditem{//(+Expr1,Expr2)}{'//'/2}{Evaluable Functor}
 If {\tt +Expr1} evaluates to {\tt Number1}, and {\tt Expr2} evaluates
 to {\tt Number2}, returns {\tt Number1 // Number2} (i.e. integer
 division), performing any necessary type conversions, and rounding to
@@ -2481,7 +2482,8 @@ If {\tt +Expr1} evaluates to {\tt Number1}, and {\tt Expr2}
 evaluates to {\tt Number2}, returns the logical shift left of 
 {\tt Number1}, {\tt Number2} places.
 
-\ourstandarditem{'><'(+Expr1,+Expr2)}{'><'/2}{Evaluable Functor (ISO)}
+\isorepeatitem{xor(+Expr1,+Expr2)}{xor/2}
+\ourstandarditem{'><'(+Expr1,+Expr2)}{'><'/2}{Evaluable Functor}
 %
 If {\tt +Expr1} evaluates to {\tt Number1}, and {\tt Expr2}
 evaluates to {\tt Number2}, returns the bitwise exclusive or of 
@@ -2566,12 +2568,22 @@ If {\tt +Expr} evaluates to {\tt Number}, {\tt round(Number)} returns
 the nearest integer to {\tt Number} if {\tt Number} is a float, and
 {\tt Number} itself if {\tt Number} is an integer.
 
+%\newcommand{\ourstandarditem}[3]{\item[{\mbox{\tt #1}}  ] \index[pred]{\texttt{#2}} \index{\texttt{#2}} \hspace*{\fill}{\mbox{\sf #3}}\ \\}
+%\ourstandarditem{\mbox{ \verb|^| }(+Expr1,+Expr2)}{\verb|^|/2}{Evaluable Functor (ISO)}
+
+%@@
+\item \verb|^/2| \index[pred]{\^\ /2} \index{\^\ /2} \hspace*{\fill}{\mbox{\sf Evaluable Functor (ISO)}} \\
+%
+If {\tt Expr1} and {\tt Expr2} both evaluate to numbers, the infix
+function \verb|^/2| raises {\tt Expr1} to the {\tt Expr2} power.  If
+{\tt Expr1} and {\tt Expr2} both evaluate to integers, an integer is
+returned; otherwise a float is returned.
+
 \ourstandarditem{'**'(+Expr1,+Expr2)}{**/2}{Evaluable Functor (ISO)}
 %
 If {\tt Expr1} and {\tt Expr2} both evaluate to numbers, the infix
-function {\tt **/2} raises {\tt Expr1} to the {\tt Expr2} power.  If
-{\tt Expr1} and {\tt Expr2} both evaluate to integers, an integer is
-returned; otherwise a float is returned.
+function {\tt **/2} raises {\tt Expr1} to the {\tt Expr2} power.  A
+floating-point number is always returned.
 
 \ourstandarditem{sqrt(+Expr)}{sqrt/1}{Evaluable Functor (ISO)}
 %
@@ -3429,7 +3441,7 @@ precisely,
 {\bf Error Cases}
 \begin{itemize}
 \item {\tt Term} is a variable and {\tt List} is a variable, a partial list,
-  or a list whose head is a variable
+a  or a list whose head is a variable
 \bi
 \item {\tt instantiation\_error}
 \ei
@@ -3518,7 +3530,7 @@ precisely,
                    X = _598948
                    Y = _598904
 
-                   | ?- copy_term(f(a,X), Y).
+rr                   | ?- copy_term(f(a,X), Y).
 
                    X = _598892
                    Y = f(a,_599112)
@@ -3657,12 +3669,13 @@ ensured that {\tt Term} is acyclic.
     debug when cyclic terms are created.
 
 \begin{description}
-\isoitem{is\_cyclic(?X)}{is\_cyclic/1}
+\standarditem{is\_cyclic(?X)}{is\_cyclic/1}
     Succeeds if {\tt X} is a cyclic term.  
 \end{description}
 
 \begin{description}
-\isoitem{is\_acyclic(?X)}{is\_acyclic/1}
+\repeatstandarditem{is\_acyclic(?X)}{is\_acyclic/1}
+\isoitem{acyclic\_term(?X)}{acyclic\_term/1}
     Succeeds if {\tt X} is not a cyclic term.  
 \end{description}
 
