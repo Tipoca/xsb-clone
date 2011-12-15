@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.44 2011-08-20 21:36:49 tswift Exp $
+** $Id: cell_xsb.h,v 1.45 2011-12-15 21:06:15 kifer Exp $
 ** 
 */
 
@@ -111,7 +111,7 @@ extern inline int sign(Float);
 /*======================================================================*/
 /*======================================================================*/
 
-#if (defined(HP700) || defined(IBM) || defined(MIPS_BASED) || defined(SOLARIS_x86))
+#if (defined(HP700) || defined(IBM) || defined(MIPS_BASED) || defined(SOLARIS_x86) || defined(LINUX))
 #define GENERAL_TAGGING
 #endif
 

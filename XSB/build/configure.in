@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.234 2011-09-09 10:18:44 kifer Exp $
+## $Id: configure.in,v 1.235 2011-12-15 21:06:14 kifer Exp $
 ##
 ##
 
@@ -165,8 +165,9 @@ AC_ARG_ENABLE(no-cygwin,
 AC_ARG_ENABLE(general-tagging,
 [  --enable-general-tagging     When this option is enabled XSB will determine
                                which bits in the address to tag during
-                               runtime. This option is required for Linux
-                               kernels > 2.6], general_tagging=yes)
+                               runtime. This option is the last resort, if
+			       XSB cannot figure out the appropriate tagging
+			       schema for your architecture],general_tagging=yes)
 AC_ARG_ENABLE(debug,
 [  --enable-debug               compile with debugging turned on])
 AC_ARG_ENABLE(debug-verbose,
@@ -786,12 +787,12 @@ AC_AIX
 AC_CHECK_PROG(has_gcc, gcc, "yes", "no")
 
 AC_MSG_CHECKING(whether we are using SunPro C)
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #ifndef __SUNPRO_C
 #error Not a  SunPro compiler :-(
 ******* ======= ******** &&&&&&&&
 #endif
-], __sunpro_c=yes, __sunpro_c=no)
+])], __sunpro_c=yes, __sunpro_c=no)
 AC_MSG_RESULT($__sunpro_c)
 
 dnl set some basic flags
@@ -1289,7 +1290,7 @@ LDFLAGS="-Wl,-export-dynamic"
 AC_MSG_CHECKING([whether loader understands -Wl,-export-dynamic])
 # Ideally we should use AC_LINK_IFELSE instead of the obsolete AC_TRY_LINK
 #AC_TRY_LINK([],[], __export_dynamic=yes, __export_dynamic=no)
-AC_LINK_IFELSE([[main(){return 0;}]], __export_dynamic=yes, __export_dynamic=no)
+AC_LINK_IFELSE([AC_LANG_SOURCE([[main(){return 0;}]])], __export_dynamic=yes, __export_dynamic=no)
 AC_MSG_RESULT($__export_dynamic)
 LDFLAGS=$TEMP_LDFLAGS
 ####### End of test for -export-dynamic option of ld
@@ -1317,12 +1318,6 @@ case "$canonical" in
         ;;
     *linux*)    AC_DEFINE(LINUX)
                 AC_DEFINE(_GNU_SOURCE)
-
-                if test "`uname -r | cut -d "." -f "1 2"`" = "2.6" \
-			-a "$machine64bit" != yes ; then
-                    echo "Guessing the tagging for this version of Linux"
-                    AC_DEFINE(GENERAL_TAGGING)
-                fi
 
                 case "${canonical}" in
                     *ppc* | *powerpc* | *m68k* ) AC_DEFINE(MKLINUX_PPC)
