@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.382 2011-12-11 23:07:25 dwarren Exp $
+** $Id: builtin.c,v 1.383 2011-12-16 21:57:11 dwarren Exp $
 **
 */
 
@@ -908,7 +908,7 @@ int count_variable_occurrences(Cell term) {
   case XSB_STRING:
   case XSB_INT:
     return count;
-  default: xsb_abort("[MAKE_GROUND] Argument of unknown type (%p)",term);
+  default: xsb_abort("[COUNT_VARIABLE_OCCURRENCES] Argument of unknown type (%p)",term);
   }
   return count; // to quiet compiler
 }
@@ -921,9 +921,13 @@ int make_ground(Cell term, struct ltrail *templ_trail) {
   switch (cell_tag(term)) {
   case XSB_FREE:
   case XSB_REF1:
-  case XSB_ATTV:
     local_bind_var(term,templ_trail);
     return TRUE;
+  case XSB_ATTV: {
+    CPtr var = (CPtr)dec_addr(term);
+    local_bind_var(var,templ_trail);
+    return TRUE;
+  }
   case XSB_STRUCT: {
     int i, arity;
     arity = (int) get_arity(get_str_psc(term));
@@ -951,11 +955,17 @@ CPtr excess_vars(CTXTdeclc Cell term, CPtr varlist, struct ltrail *templ_trail, 
   switch (cell_tag(term)) {
   case XSB_FREE:
   case XSB_REF1:
-  case XSB_ATTV:
     cell(varlist) = makelist(hreg);
     cell(hreg++) = term;
     local_bind_var(term,var_trail);
     return (CPtr)hreg++;
+  case XSB_ATTV: {
+    CPtr var = (CPtr)dec_addr(term);
+    cell(varlist) = makelist(hreg);
+    cell(hreg++) = (Cell)var;
+    local_bind_var(var,var_trail);
+    return (CPtr)hreg++;
+  }
   case XSB_STRUCT: {
     int i, arity;
     Psc psc;
@@ -2452,6 +2462,14 @@ case WRITE_OUT_PROFILE:
 	  cell(tanslist) = makelist(hreg);
 	  bld_ref(hreg++,ovar);
 	  local_bind_var(ovar, &var_trail);
+	  tanslist = hreg++;
+	  startvlist = (Cell) cell(clref_val(startvlist)+1);
+	  XSB_Deref(startvlist);
+	} else if (isattv(ovar)) {
+	  CPtr var = (CPtr)dec_addr(ovar);
+	  cell(tanslist) = makelist(hreg);
+	  bld_ref(hreg++,var);
+	  local_bind_var(var, &var_trail);
 	  tanslist = hreg++;
 	  startvlist = (Cell) cell(clref_val(startvlist)+1);
 	  XSB_Deref(startvlist);
