@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.34 2011-11-04 23:21:10 tswift Exp $
+** $Id: std_cases_xsb_i.h,v 1.35 2011-12-19 21:40:25 waltergwilson Exp $
 ** 
 */
 
@@ -111,6 +111,12 @@
   case NUMBER_DIGITS:	/* r1: ?term; r2: ?digit list	*/
     return number_to_list(CTXTc NUMBER_DIGITS);
     
+
+   case GROUND_CYC: {
+     return ground_cyc(CTXTc (Cell) (reg + 1));
+     break;
+   }
+
   case PUT: {	/* r1: +integer	*/
     Cell term = ptoc_tag(CTXTc 1);
     if (isointeger(term)) {

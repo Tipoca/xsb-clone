@@ -152,6 +152,7 @@ standard_symbol(consult, 1, consult).
 standard_symbol(consult, 2, consult).
 standard_symbol(copy_term, 2, basics).                          % ISO
 standard_symbol(ground, 1, basics).                          % ISO
+standard_symbol(ground_cyc, 1, machine).                          % checks cycles
 standard_symbol(cputime, 1, standard).
 standard_symbol(current_atom, 1, curr_sym).
 standard_symbol(current_functor, 1, curr_sym).

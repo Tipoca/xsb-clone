@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.384 2011-12-17 12:44:43 dwarren Exp $
+** $Id: builtin.c,v 1.385 2011-12-19 21:39:25 waltergwilson Exp $
 **
 */
 
@@ -150,6 +150,7 @@ extern int xsb_profiling_enabled;
 extern char *canonical_term(CTXTdeclc Cell, int);
 
 int is_cyclic(CTXTdeclc Cell);
+int ground_cyc(CTXTdeclc Cell);
 
 #ifdef WIN_NT
 extern xsbBool startInterruptThread(SOCKET intSocket);
@@ -1267,6 +1268,7 @@ void init_builtin_table(void)
   set_builtin_table(IS_NUMBER_ATOM, "is_number_atom");
   set_builtin_table(TERM_DEPTH, "term_depth");
   set_builtin_table(IS_CYCLIC, "is_cyclic");
+  set_builtin_table(GROUND_CYC, "ground_cyc");
   set_builtin_table(TERM_SIZE, "term_sizew");
   set_builtin_table(TERM_SIZE_LIMIT, "term_size_limit");
 

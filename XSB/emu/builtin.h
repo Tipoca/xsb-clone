@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.111 2011-11-04 23:21:11 tswift Exp $
+** $Id: builtin.h,v 1.112 2011-12-19 21:39:46 waltergwilson Exp $
 ** 
 */
 
@@ -103,7 +103,7 @@
 #define FILE_WRITEQUOTED	 61
 #define GROUND  		 62
 #define PSC_IMPORT_AS		 63
-
+#define GROUND_CYC               64
 #define INTERN_STRING            65
 #define EXPAND_FILENAME 	 66
 #define TILDE_EXPAND_FILENAME    67
@@ -257,6 +257,7 @@
 #define URL_ENCODE_DECODE    	  225
 #define CHECK_CYCLIC              226
 #define IS_ACYCLIC                227
+/*#define GROUND_CYC              228 */
 
 #define FINDALL_FREE    	229
 
