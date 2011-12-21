@@ -1,18 +1,17 @@
 :- compiler_options([sysmod,optimize]).
 
 :- export table_dump/0,table_dump/1,table_dump/2, table_dump/3.
-% table_dump_file/0, table_dump_file/1.
 
 :- import domain_error/4,check_nonvar_list/3 from error_handler.
 :- import numbervars/4 from num_vars.
 :- import member/2, length/2, copy_term/2 from basics.
-:- import get_calls_for_table/2, get_call/3,get_callsto_number/2 from tables.
+:- import get_calls_for_table/2, get_call/3,get_callsto_number/2,get_current_scc/2 from tables.
 :- import subsumes_chk/2 from subsumes.
 :- import parsort/4 from machine.
 :- import sort/2 from setof.
 :- import write/2, writeq/2, nl/0, nl/1,
 	'\='/2,
-	'=..'/2, (',')/2
+	'=..'/2, (',')/2, walltime/1, writeln/1,writeln/2, write/1
    from standard.
 :- import current_output/1, predicate_property/2 from curr_sym.
 :- import findall/3 from setof.
@@ -33,47 +32,69 @@
 % it writes output to stream, even if results(Results) is in the
 % Options list.  
 %
-% These following utilities are also available but are not exported
-% table_dump_f/0 writes to generated filename the summary and details
-% for all tabled predicates.  table_dump_f(File) appends to File the
-% summary and details for all tabled predicates.  The contents of the
-% file can be read by prolog or parsed by tools such as Perl or Awk
-% format_table_dump_file(File) will format the contents of a
-% table_dump file and write it to current_output.
-% format_table_dump_file(InFile,OutFile) will format the contents of a
-% table dump file InFile and write it to OutFile.
+% Each line of the summary has the form:
+%
+%   summary = <Pred or Goal> - subgoals(<# of subgoals subsumed>) - total_times_called(Num1) - total_answers(Num2)
+%
+%   where <Pred or Goal> is either a predicate identifier, if table_dump
+%   was called with a variable to indicate there should be no filtering;
+%   or the term with which table_dump was called.  total_times_called
+%   and total_answers are called for all tables subsumed by <Pred or Goal>
+%
+% Each line of the details has the form:
+%
+%   details = <Pred or Goal> - subgoals(<# of subgoals subsumed>) - details(List)
+%
+%   where the details List has the form
+%
+%   Subgoal - times_called(Num1) - answers(Num2) - <status> - List_of_Answers
+%
+%   <status> is 'completed' if Subgoal is completed, and the term
+%   scc(M) where M is a number indicating the SCC number for an
+%   incomplete Subgoal.  This number is relative: if n1 is greater
+%   than n2, then the n1th SCC is a descendent of the n2th SCC, but
+%   there may not currently be n1 or n2 different SCCs.  
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % table_dump/3 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+/*
+table_dump(Stream,Pred,Options) :- 
+ 	 walltime(Before),
+	 table_dump_1(Stream,Pred,Options),
+	 walltime(After),Time is After - Before,
+	 write(table_dump(elapsed_time,Time)),writeln('.').
+*/
+
 table_dump(Stream,Pred,Options) :- 
 	check_options(Options,Details,Summary,ResultsIn,Output), 
 	(ResultsIn = results(Results) -> true ; ResultsIn = Results),
-	(Summary == y -> table_dump_summary(Pred,Stream,Results,Results1,Output) ; Results = Results1),
+	all_call_returns_for_atom_list(Pred,NumCalls,List), 
+	(Summary == y -> table_dump_summary(Pred,NumCalls,List,Stream,Results,Results1,Output) 
+	  ;              Results = Results1),
 	(Details == y -> 
-	    table_dump_details(Pred,Stream,Results1,Output) 
+	    table_dump_details(Pred,NumCalls,List,Stream,Results1,Output) 
          ;  (var(Results1) -> Results1 = [] ; true)).
 
-table_dump_summary(Pred,Stream,ResultsIn,ResultsOut,Output):-
-	all_call_returns_for_atom_list(Pred,NumCalls, List), 
+table_dump_summary(Pred,NumCalls,List,Stream,ResultsIn,ResultsOut,Output):-
 	sumlist(List,NumCallsTo,NumReturns),
 	(var(ResultsIn) ->
-	      ResultsIn = [summary =  Pred - subgoals(NumCalls) - total_times_called(NumCallsTo) - total_answers(NumReturns)|ResultsOut]
+	      ResultsIn = [summary = Pred - subgoals(NumCalls) - total_times_called(NumCallsTo) - total_answers(NumReturns)|ResultsOut]
 	    ; ResultsOut = n),
 	(Output = y -> 
-	    nl,writeit_prolog(Stream,summary =  Pred - subgoals(NumCalls) - total_times_called(NumCallsTo) - total_answers(NumReturns))
+	    nl,writeit_prolog(Stream,summary = Pred - subgoals(NumCalls) - total_times_called(NumCallsTo) - total_answers(NumReturns))
 	 ;  true).
 
-table_dump_details(Pred,Stream,ResultsIn,Output):-
-	all_call_returns_for_atom_list(Pred,NumCalls, List), 
+table_dump_details(Pred,NumCalls,List,Stream,ResultsIn,Output):-
 	annotate_list(List,AList),
 	(var(ResultsIn) ->
-	    ResultsIn = [details- Pred - subgoals(NumCalls) - details(AList)]
+	    ResultsIn = [details = Pred - subgoals(NumCalls) - details(AList)]
           ; true),
         (Output = y -> 
-	    writeit_prolog(Stream,details- Pred - subgoals(NumCalls) - details(AList))
+	    writeit_prolog(Stream,details = Pred - subgoals(NumCalls) - details(AList))
 	  ; true).
 
 %all_call_returns_for_atom_list(+Pred,?NumCalls,?List) is true when
@@ -86,24 +107,27 @@ all_call_returns_for_atom_list(Pred,NumCalls, Slist) :-
 	(PredList = [] -> 
 	    (NumCalls=0,Slist=[]) 
 	 ;  member(Pred,PredList),
-  	    findall(C-CallsTo-NR-RSs,all_call_returns_for_atom(Pred,C,NR,CallsTo,RSs),List),List \= [],
+  	    findall(C-CallsTo-NR-Rets-Scc,all_call_returns_for_atom(Pred,C,NR,CallsTo,Rets,Scc),List),List \= [],
 	    parsort(List,[desc(2),asc(1)],0, Slist),
 	    length(List,NumCalls)
 	).
 
-annotate_list([],[]).
-annotate_list([_Term-NC-NR-_List|R],[_Term-calls_to(NC)-answers(NR)-_List|R1]):- 
-	annotate_list(R,R1).
+:- import is_cyclic/1 from machine.
 
-all_call_returns_for_atom(Pred,C,NR,CallsTo,RSs) :-
+all_call_returns_for_atom(Pred,C,NR,CallsTo,Rets,Scc) :-
 	 get_calls_for_table(Pred,C),
-	 get_call(C,SF,RS),
-	 subsumes_chk(Pred,C),
-	 copy_term(C,C1),
-%	 writeln(copy_term(C,C1)),
-	 findall(Atom,(get_returns(SF,RS),bindreturn(C1,RS,Atom)),RSs),
+	 (is_cyclic((Pred,C)) -> writeln(2,cyclic((Pred,C))) ; true),
+	 get_call(C,SF,RetStruct),
+	 (is_cyclic((C,RetStruct)) -> writeln(2,cyclic((C,RetStruct))) ; true),
+	 copy_term((Pred,C),(_Pred,C1)),
+	 writeln(2,abouttosubsume(Pred,C)),
+	 (is_cyclic(C) -> writeln(2,cyclic(C)) ; true),
+	 (is_cyclic(C1) -> writeln(2,cyclic(C1)) ; true),
+	 subsumes_chk(Pred,C1),
+	 findall(Atom,(get_returns(SF,RetStruct),bindreturn(C1,RetStruct,Atom)),Rets),
 	 get_callsto_number(SF,CallsTo),
-	 length(RSs,NR).
+	 (get_current_scc(SF,Number) -> Scc = scc(Number) ; Scc = completed),
+	 length(Rets,NR).
 
 bindreturn(Pred,Ret,Pred):- ground(Ret),ground(Pred),!.
 bindreturn(Pred,Ret,FreshPred):-
@@ -119,8 +143,12 @@ getvarsig(Term,Sig) :- compound(Term),!,Term =.. Terms, getvarsig(Terms,Sig).
 bindtosig(Sig,Ret) :- Ret=..[ret|Sig]. %must have same number of vars   (?? if not variant)
 
 sumlist([],0,0).
-sumlist([_-NC-NR-_L|Rs],NumCalls,NumReturns) :- 
+sumlist([_-NC-NR-_Rets-_Scc|Rs],NumCalls,NumReturns) :- 
 	sumlist(Rs,NCL,NRL), NumReturns is NR + NRL, NumCalls is NC + NCL.
+
+annotate_list([],[]).
+annotate_list([Term-NC-NR-Rets-Scc|R],[Term-times_called(NC)-answers(NR)-Rets-Scc|R1]):- 
+	annotate_list(R,R1).
 
 writeit_prolog(Stream,Term) :- numbervars(Term,0,_,[attvar(bind)]), 
 	writeq(Stream,Term), 
@@ -174,6 +202,7 @@ check_options_1([Culprit|_],_D,_S,_,_):-
 	domain_error('[summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)]',
 	             Culprit,'table_dump/[2,3]','[2,3]').
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Convenience
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -193,19 +222,27 @@ end_of_file.
 
 % details for Pred Pattern- number of subcalls, #answers for each subcalls
 % all_call_returns_for_atomlw calls all_call_returns_for_atoml/3 and writes out pattern(Pred,called(NumCalls),answers_for_calls(List of each call and how many answers it has))). 
-all_call_returns_for_atomlw(Pred) :-
-	all_call_returns_for_atoml(Pred,NumCalls, List),
-	writeit( details- Pred - subgoals(NumCalls) - answers_for_subgoals(List)). 
-
-:- dynamic tdformat/1.
-:- dynamic tdformatterm/1.
-
-writeit(Term) :- assert(tdformatterm(Term)),fail.
-writeit(_) :- nowriteit(_),(\+ writetostream(_)),!.
+%all_call_returns_for_atomlw(Pred) :-
+%	all_call_returns_for_atoml(Pred,NumCalls, List),
+%	writeit( details- Pred - subgoals(NumCalls) - answers_for_subgoals(List)). 
+%
+%:- dynamic tdformat/1.
+%:- dynamic tdformatterm/1.
+%
+%writeit(Term) :- assert(tdformatterm(Term)),fail.
+%writeit(_) :- nowriteit(_),(\+ writetostream(_)),!.
 % commenting out the flora stuff for now.
 %writeit(Term) :- tdformat(prolog) -> writeit_prolog(Term) ; writeit_flora(Term).
-writeit(Term) :- writeit_prolog(Term).
-
+%writeit(Term) :- writeit_prolog(Term).
+%
+%gathertdformatterms(Options) :- member(results(Terms),Options), !, (findall(Term, tdformatterm(Term), Terms) -> true;Terms=[]), retractall(tdformatterm(_)).
+%gathertdformatterms(_). %facts not requested
+%
+%gentdfile(File) :- 
+%	shell_to_list(date,DateLL,_),DateLL = [DateL],
+%	concat_atom([table_dump|DateL],'-',File).
+%
+%
 %writeit_flora(Term) :- 
 %		    convert_to_flora(Term,FloraTerm), 
 %		    writeq(FloraTerm), write('.'),nl,fail. %fail to remove effect of numbervars
@@ -214,12 +251,7 @@ writeit(Term) :- writeit_prolog(Term).
 %convert_to_flora(_Term,_FloraTerm) :- 
 %	write(' Sorry, FLORA syntax for table_dump not yet implemented. '),nl,fail.
 
-gathertdformatterms(Options) :- member(results(Terms),Options), !, (findall(Term, tdformatterm(Term), Terms) -> true;Terms=[]), retractall(tdformatterm(_)).
-gathertdformatterms(_). %facts not requested
 
-gentdfile(File) :- 
-	shell_to_list(date,DateLL,_),DateLL = [DateL],
-	concat_atom([table_dump|DateL],'-',File).
 
 /*	
 These predicates are not used by any of the exported predicates.
@@ -265,9 +297,9 @@ writeit_flora(_,_).
 %format(flora), format(prolog)   -- format(prolog) is default 
 %results(R) - if present R is bound to the output instead of writing to stdout. If a stream is given as arg1 of table_dump/3, output is also written to that stream. 
 
-table_dump_file :- gentdfile(File), table_dump_f(File).
-table_dump_file(File) :- open(File,append,Stream), 
-	reset_current_output(Stream,Old),table_dump,reset_current_output(Old,_),close(Stream).
+%table_dump_file :- gentdfile(File), table_dump_f(File).
+%table_dump_file(File) :- open(File,append,Stream), 
+%	reset_current_output(Stream,Old),table_dump,reset_current_output(Old,_),close(Stream).
 
 
 /* Right now, experimental for aggregs.P */
@@ -311,5 +343,32 @@ table_state(Call, State) :-
         ).
 
 
+/*
+table_dump_summary(Pred,Stream,ResultsIn,ResultsOut,Output):-
+	all_call_returns_for_atom_list(Pred,NumCalls, List), 
+	sumlist(List,NumCallsTo,NumReturns),
+	(var(ResultsIn) ->
+	      ResultsIn = [summary =  Pred - subgoals(NumCalls) - total_times_called(NumCallsTo) - total_answers(NumReturns)|ResultsOut]
+	    ; ResultsOut = n),
+	(Output = y -> 
+	    nl,writeit_prolog(Stream,summary =  Pred - subgoals(NumCalls) - total_times_called(NumCallsTo) - total_answers(NumReturns))
+	 ;  true).
+*/
 
+/*
+table_dump_details(Pred,Stream,ResultsIn,Output):-
+	all_call_returns_for_atom_list(Pred,NumCalls, List), 
+	annotate_list(List,AList),
+	(var(ResultsIn) ->
+	    ResultsIn = [details- Pred - subgoals(NumCalls) - details(AList)]
+          ; true),
+        (Output = y -> 
+	    writeit_prolog(Stream,details- Pred - subgoals(NumCalls) - details(AList))
+	  ; true).
+*/
 
+% These following utilities are also available but are not exported
+% table_dump_f/0 writes to generated filename the summary and details
+% for all tabled predicates.  table_dump_f(File) appends to File the
+% summary and details for all tabled predicates.  The contents of the
+% file can be read by prolog or parsed by tools such as Perl or Awk
