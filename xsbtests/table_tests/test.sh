@@ -122,6 +122,8 @@ EOF
 #--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" test_cyclic_tabling "test."
 #--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_cyclic_tries "test."
+#--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" test_tda "test."
 #--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" test_negcycle "test."

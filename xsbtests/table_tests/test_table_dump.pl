@@ -6,9 +6,6 @@
 :- import shell_to_list/3 from shell.
 :- import numbervars/1 from num_vars.
 
-%:- ['../../XSB/lib/dump_table.P'].
-%:- ['../../XSB/lib/table_dump.P'].
-%:- ['/TECH/PROLOG/xsb/ubuntu/XSB/lib/table_dump.P'].
 :- table p/2.
 :- dynamic p/2.
 p(1,a).
@@ -32,8 +29,10 @@ s(2,b).
 s(1,a1).
 s(2,b1).
 
-test :- p(X,Y),fail.
-test:- test_1.
+test :- p(_X,_Y),fail.
+test:- test_1,fail.
+%test:- test_2,fail.
+test.
 
 test_1 :-
 	write('test 1 '),
@@ -58,6 +57,12 @@ test_1 :-
 	catch(table_dump(p(_,_),[badopt]),error(A,B,C),writeln(caughtit_2(A))),
 	writeln('----------------------').
 
+:- table inc/1.
+inc(_X):- table_dump(inc(_),[details(true)]).
+
+test_2:- inc(_X).
+
+end_of_file.
 
 test_2:-
 	writeln('----------------------'),
