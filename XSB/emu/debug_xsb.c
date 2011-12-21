@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.83 2011-11-28 01:17:39 tswift Exp $
+** $Id: debug_xsb.c,v 1.84 2011-12-21 21:27:51 tswift Exp $
 ** 
 */
 
@@ -906,6 +906,14 @@ static void print_term_of_subgoal(CTXTdeclc FILE *fp, int *i)
     fprintf(fp, "_v%d", ((int) int_val(term) & 0xffff));
     break;
   case XSB_STRUCT:
+    if (isboxedfloat(term)) {
+        fprintf(fp, "%f", boxedfloat_val(term));
+        return;   
+    }
+    else if (isboxedinteger(term)) {
+        fprintf(fp, "%" Intfmt, (Integer)boxedint_val(term));
+        return;
+    }
     args = get_arity((Psc)cs_val(term));
     write_quotedname(fp,     get_name((Psc)cs_val(term)));
     /*    fprintf(fp, "%s", get_name((Psc)cs_val(term))); */
@@ -1079,6 +1087,27 @@ void sprint_subgoal(CTXTdeclc char *buffer,  VariantSF subg)
       if (i > 0) {sprintf(buffer+size, ",");size++;}
     }
     sprintf(buffer+size,")");size++;
+  }
+}
+
+/*----------------------------------------------------------------------*/
+
+void print_completion_stack(CTXTdecl)
+{
+  int SCCnum = 1; int lastSCCnum;
+  VariantSF subg;
+  CPtr temp = COMPLSTACKBOTTOM-COMPLFRAMESIZE;
+
+  lastSCCnum = compl_level(temp);
+
+ while (temp >= openreg) {
+   if (compl_level(temp) != lastSCCnum) {
+     SCCnum++; lastSCCnum = compl_level(temp);
+   }
+   subg = (VariantSF) *temp;
+   print_subgoal(CTXTc stddbg,subg);
+   fprintf(stddbg," - scc(%d).\n",SCCnum);
+   temp = next_compl_frame(temp);
   }
 }
 
@@ -1262,13 +1291,12 @@ static char *compl_stk_frame_field[] = {
 #endif
 };
 
-
 void print_subg_header(CTXTdeclc FILE * where,VariantSF SUBG) {			    
     fprintf(where, "=== Frame for "); print_subgoal(CTXTc where, SUBG); 
     if (is_completed(SUBG)) fprintf(where, " (completed) ===\n"); 
     else fprintf(where, " (incomplete) ===\n"); }
 
-void print_completion_stack(CTXTdecl)
+void debug_print_completion_stack(CTXTdecl)
 {
   int i = 0;
   EPtr eptr;
