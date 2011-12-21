@@ -1,0 +1,22 @@
+:- compiler_options([spec_off]).
+
+:- import print_incomplete_tables/0 from tables.
+:- import table_dump/2 from dump_table.
+
+test:- p(5,foo(a)),fail.
+test:- q(5,foo(a)),fail.
+test.
+
+:- table p/2.
+
+p(0,_):- !,table_dump(p(_,_),[details(true)]).
+p(3,A):- p(5,A).
+p(N,A):- N1 is N - 1,p(N1,A).
+
+
+:- table q/2.
+
+q(0,_):- !,print_incomplete_tables.
+q(3,A):- q(5,A).
+q(N,A):- N1 is N - 1,q(N1,A).
+
