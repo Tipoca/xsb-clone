@@ -120,7 +120,7 @@ all_call_returns_for_atom(Pred,C,NR,CallsTo,Rets,Scc) :-
 	 get_call(C,SF,RetStruct),
 	 (is_cyclic((C,RetStruct)) -> writeln(2,cyclic((C,RetStruct))) ; true),
 	 copy_term((Pred,C),(_Pred,C1)),
-	 writeln(2,abouttosubsume(Pred,C)),
+%	 writeln(2,abouttosubsume(Pred,C)),
 	 (is_cyclic(C) -> writeln(2,cyclic(C)) ; true),
 	 (is_cyclic(C1) -> writeln(2,cyclic(C1)) ; true),
 	 subsumes_chk(Pred,C1),
