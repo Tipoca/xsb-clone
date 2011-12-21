@@ -4944,7 +4944,6 @@ case CALL_SUBS_SLG_NOT: {
     }
     else {
     /* Return with conditional answer: propagate delay */
-      //      fprintf(stddbg,"delaying (w) : ");print_subgoal(stddbg,consumerSF),printf("\n");
       if (IsNonNULL(consumerSF)) delay_negatively(consumerSF)
       else delay_negatively(producerSF);
       return TRUE;
@@ -5020,8 +5019,21 @@ case CALL_SUBS_SLG_NOT: {
     ctop_addr(7, ptcpreg);
     break;
   } 
-  } /* switch */
 
+  case GET_CURRENT_SCC: {
+    VariantSF subgoal_frame;
+    subgoal_frame = (VariantSF) ptoc_int(CTXTc 2);
+    if (subg_is_complete(subgoal_frame)) return FALSE;
+    ctop_int(CTXTc 3, compl_level(subg_compl_stack_ptr(subgoal_frame)));
+    break;
+  }
+
+  case PRINT_COMPLETION_STACK: {
+    print_completion_stack(CTXT);
+    break;
+  }
+
+  } /* switch */
   return TRUE;
 }
 
