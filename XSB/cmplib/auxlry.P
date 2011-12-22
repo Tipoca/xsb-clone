@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.P,v 1.32 2011-06-21 17:58:26 dwarren Exp $
+** $Id: auxlry.P,v 1.33 2011-12-22 21:24:46 tswift Exp $
 ** 
 */
 
@@ -156,7 +156,7 @@ current_option(verbo).
 /* tabling */
 current_option(auto_table).
 current_option(suppl_table).
-current_option(table_dump).
+%current_option(table_dump).
 current_option(suppl_fold_off).
 
 /* specialization */
