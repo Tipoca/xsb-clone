@@ -22,6 +22,7 @@
 ** 
 */
 
+:- compiler_options([sysmod,optimize]).
 
 %   subsumes_chk(General, Specific)
 %   is true when Specific is an instance of General. However, this
