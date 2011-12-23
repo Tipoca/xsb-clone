@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.81 2011-12-19 21:40:39 waltergwilson Exp $
+** $Id: std_pred_xsb_i.h,v 1.82 2011-12-23 22:42:18 tswift Exp $
 ** 
 */
 
@@ -368,7 +368,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	if (atomname >= atomnamelast) {
 	  if (is_cyclic(CTXTc term2)) {
 	    mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
-	    xsb_type_error(CTXT "list",makestring("infinite list(?)"),call_name,2);
+	    xsb_type_error(CTXTc "list",makestring("infinite list(?)"),call_name,2);
 	  }
 	  atomnameaddr = (char *)mem_realloc(atomnameaddr,atomnamelen,(atomnamelen << 1),LEAK_SPACE);
 	  atomname = atomnameaddr + (atomnamelen - 1);
@@ -488,7 +488,7 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
 	if (c < 0 || c > 255) {
 	  xsb_representation_error(CTXTc "character code",heap_addr,call_name,2);
 	}
-	if (StringLoc > 200) xsb_type_error(CTXT "list",makestring("infinite list(?)"),call_name,2);
+	if (StringLoc > 200) xsb_type_error(CTXTc "list",makestring("infinite list(?)"),call_name,2);
 	str[StringLoc++] = (char)c;
 	term2 = cell(clref_val(term2)+1);
       } else {
@@ -1349,9 +1349,9 @@ int is_cyclic(CTXTdeclc Cell Term) {
 // visit term, fail if encounter a var
 int ground_cyc(CTXTdeclc Cell Term) { 
   Cell visited_string;
-  int cycle_trail_top = -1;
-  int cycle_trail_size = TERM_TRAVERSAL_STACK_INIT;
-  CTptr cycle_trail;
+  //  int cycle_trail_top = -1;
+  //  int cycle_trail_size = TERM_TRAVERSAL_STACK_INIT;
+  //  CTptr cycle_trail;
 
   XSB_Deref(Term);
   if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) {
