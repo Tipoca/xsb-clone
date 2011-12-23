@@ -316,6 +316,12 @@ l([a|X]):- l(X).          l([a]).
     (since large lists are more common than other large structures).
   }
 
+\index{Prolog flags!{\tt max\_memory}}
+\item {\tt max\_memory} The maximum amount of memory (in kilobytes)
+  that XSB can use for its execution stacks, program space, tables, or
+  any other purpose.  If a query exceeds this amount, XSB will abort
+  the query with a resource exception and then try to reclaim space
+  used by the query.
 \end{itemize}
 
 The following flags affect only the multi-threaded engine.

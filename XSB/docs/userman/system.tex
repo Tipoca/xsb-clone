@@ -836,29 +836,27 @@ cmd_loop_driver:
          -h, --help : print this help message
 
 Flags: 
-        memory management flags:
+               -e goal : evaluate goal when XSB starts up
+                    -p : enable Prolog profiling through use of profile_call/1
+                    -l : the interpreter prints unbound variables using letters
+            --nobanner : don't show the XSB banner on startup
+           --quietload : don't show the `module loaded' messages
+            --noprompt : don't show prompt (for non-interactive use)
+                    -S : set default tabling method to call-subsumption
+ --max_subgoal_depth N : set maximum tabled subgoal depth to N (default is maximum integer)
+--max_subgoal_action A : set action on maximum subgoal depth: e(rror)/a(bstract)/w(arn)
+         --max_tries N : allow up to N tries for interning terms
+       --max_threads N : maintain information for up to N threads (MT engine only)
+       --max_mqueues N : allow up to N message queues (MT engine only)
+   --shared_predicates : make predicates thread-shared by default
+            -g gc_type : choose heap garbage collection ("indirection","none" or "copying")
+           -c N [unit] : initially allocate N units (default KB) for the trail/choice-point stack
+           -m N [unit] : initially allocate N units (default KB) for the local/global stack
+           -o N [unit] : initially allocate N units (default KB) for the SLG completion stack
+                    -r : turn off automatic stack expansion
+                    -T : print a trace of each called predicate
 
-             -c tcpsize [unit] | -m glsize [unit] | -o complsize [unit] 
-             | -u pdlsize [unit] | -r | -g gc_type
           unit: k/K memory in kilobytes; m/M in megabytes; g/G in gigabytes
-
-            -e goal : evaluate goal when XSB starts up
-                 -p : enable Prolog profiling through use of profile_call/1
-                 -l : the interpreter prints unbound variables using letters
-         --nobanner : don't show the XSB banner on startup
-        --quietload : don't show the `module loaded' messages
-         --noprompt : don't show prompt (for non-interactive use)
-    --max_threads N : maintain information for up to N threads
-                 -S : set default tabling method to call-subsumption
---shared_predicates : make predicates thread-shared by default
-         -g gc_type : choose heap garbage collection ("indirection","none" or "copying") 
-         -c N [unit]: allocate N units (def. KB) for the trail/choice-point stack
-         -m N [unit]: allocate N units (def. KB) for the local/global stack
-         -o N [unit]: allocate N units (def. KB) for the SLG completion stack
-         -u N [unit]: allocate N units (def. KB) for the SLG unification stack
-                 -r : turn off automatic stack expansion
-                 -s : maintain detailed statistical information
-                 -T : print a trace of each called predicate
 \end{verbatim}
 }
 
@@ -980,61 +978,7 @@ So that XSB can be used to write reasonable scripts.
 \item[{\tt --shared\_predicates}] In the multi-threaded engine, makes
     all predicates thread-shared by default; has no effect in the
     single-threaded engine.
-\end{description}
-\item {\bf Memory Management Flags}
-\begin{description}
-\index{garbage collection}
-\item[{\tt -g gc\_type}] Chooses the heap garbage collection strategy
-  that is employed; choice of the strategy is between the default {\tt
-    "indirection"}, {\tt ``copying''} which should be regarded as
-  experimental, or {\tt ``none''}. (See \cite{CaSC01} for a
-  description of the indirection garbage collector, and
-  \cite{CATmem@ISMM-98} for the copying garbage collector.
 %
-\item[{\tt -c} {\em size [units]}] Allocates {\em initial size\/} units of
-  space to the trail/choice-point stack area.  The trail stack grows
-  upward from the bottom of the region, and the choice point stack
-  grows downward from the top of the region.  If units is not provided
-  or is {\tt k} or {\tt K}, the size is allocated in kilobytes; if
-  {\tt m} or {\tt M} in megabytes; and if {\tt g} or {\tt G} in
-  gigabytes.  Because this region is expanded automatically from
-  Version 1.6.0 onward, this option is rarely needed.  If this option
-  is not speficied the default initial size is 768 KBytes.
-%
-\item[{\tt -m} {\em size [units]}] Allocates {\em initial size\/}
-  units of space to the local/global stack area.  The global stack
-  grows upward from the bottom of the region, and the local stack
-  grows downward from the top of the region.  If units is not provided
-  or is {\tt k} or {\tt K}, the size is allocated in kilobytes; if
-  {\tt m} or {\tt M} in megabytes; and if {\tt g} or {\tt G} in
-  gigabytes.  Because this region is expanded automatically from
-  Version 1.6.0 onward, this option is rarely needed.  If this option
-  is not specified the default initial size is 768 KBytes.
-%
-\item[{\tt -o} {\em size [units]}] Allocates {\em initial size\/} units of
-  space to the completion stack area.  If units is not provided or is
-  {\tt k} or {\tt K}, the size is allocated in kilobytes; if {\tt m}
-  or {\tt M} in megabytes; and if {\tt g} or {\tt G} in gigabytes.
-  Because this region is expanded automatically from Version 1.6.0
-  onward, this option is rarely needed. If this option is not
-  specified the default initial size is 768 KBytes.  
-\item[{\tt -u} {\em size [units]}] Allocates {\em initial size} KBytes of
-  space to the unification (and table copy) stack.  If units is not
-  provided or is {\tt k} or {\tt K}, the size is allocated in
-  kilobytes; if {\tt m} or {\tt M} in megabytes; and if {\tt g} or
-  {\tt G} in gigabytes.  Default 64 KBytes.  (This option is rarely
-  needed.)
-\item[{\tt -r}] Turns off automatic stack expansion.  This can
-  occasionally be useful for isolating memory management problems.
-\end{description}
-\item {\bf Obsolete or obsolescent options} While sometimes useful, these
-  options may not be fully supported in future versions, or are
-  provided only for backward compatability.
-\begin{description}
-\item[{\tt -s}] Maintains information on the size of program stacks
-  for the predicate {\tt statistics/0}.  This option may be expected
-  to slow execution by around 10\%.  Default: off.  Note: this option
-  is not available with the multi-threaded engine.
 \item[{\tt -T}] Generates a trace at entry to each called predicate
     (both system and user-defined).  This option is available mainly
     for people who want to modify and/or extend XSB, and it is
@@ -1044,44 +988,101 @@ So that XSB can be used to write reasonable scripts.
     Note: This option is not available when the system is being used
     at the non-tracing mode (see Section~\ref{debugging}).
 %
-\item[{\tt -i}] Brings up the XSB interpreter.  This is the normal
-  use, and the option is kept only for backward compatability.
+\item[{\tt --max\_subgoal\_depth} {\em N}] : set maximum tabled subgoal
+  depth to {\em N} (default is maximum integer).  This flag sets the
+  depth of a subgoal upon which an action may be taken (such as
+  throwing an error, abstracting, or issuing a warning.
 %
-\item[{\tt -n}] Formerly used in conjunction when XSB was called from
-  C.  This option is used only for backward compatability.
+\item[{\tt --max\_subgoal\_action} {\em A}] : set action on maximum
+  subgoal depth: e(rror)/a(bstract)/w(arn)
+\end{description}
+%
+\item {\bf Memory Management Flags}
+\begin{description}
+\index{garbage collection}
+\item[{\tt -g gc\_type}] Chooses the heap garbage collection strategy
+  that is employed; choice of the strategy is between the default {\tt
+    indirection}; {\tt copying}, which is not fully supported; or {\tt
+    none}. See \cite{CaSC01} for a description of the indirection
+  garbage collector, and \cite{CATmem@ISMM-98} for the copying garbage
+  collector.
+%
+\item[{\tt -c} {\em size [units]}] Allocates {\em initial size\/}
+  units of space to the trail/choice-point stack area.  The trail
+  stack grows upward from the bottom of the region, and the choice
+  point stack grows downward from the top of the region.  If units is
+  not provided or is {\tt k} or {\tt K}, the size is allocated in
+  kilobytes; if {\tt m} or {\tt M} in megabytes; and if {\tt g} or
+  {\tt G} in gigabytes.  Because this region is expanded
+  automatically, this option is rarely needed.  If this option is not
+  speficied the default initial size is 768 KBytes.
+%
+\item[{\tt -m} {\em size [units]}] Allocates {\em initial size\/}
+  units of space to the local/global stack area.  The global stack
+  grows upward from the bottom of the region, and the local stack
+  grows downward from the top of the region.  If units is not provided
+  or is {\tt k} or {\tt K}, the size is allocated in kilobytes; if
+  {\tt m} or {\tt M} in megabytes; and if {\tt g} or {\tt G} in
+  gigabytes.  Because this region is expanded automatically, this
+  option is rarely needed.  If this option is not specified the
+  default initial size is 768 KBytes.
+%
+\item[{\tt -o} {\em size [units]}] Allocates {\em initial size\/}
+  units of space to the completion stack area.  If units is not
+  provided or is {\tt k} or {\tt K}, the size is allocated in
+  kilobytes; if {\tt m} or {\tt M} in megabytes; and if {\tt g} or
+  {\tt G} in gigabytes.  Because this region is expanded
+  automatically, this option is rarely needed. If this option is not
+  specified the default initial size is 768 KBytes.
+\item[{\tt -r}] Turns off automatic stack expansion.  This can
+  occasionally be useful for isolating memory management problems.
+%
+% \item[{\tt -u} {\em size [units]}] Allocates {\em initial size} KBytes of
+%   space to the unification (and table copy) stack.  If units is not
+%   provided or is {\tt k} or {\tt K}, the size is allocated in
+%   kilobytes; if {\tt m} or {\tt M} in megabytes; and if {\tt g} or
+%   {\tt G} in gigabytes.  Default 64 KBytes.  (This option is rarely
+%   needed.)
+%
+%\item[{\tt -i}] Brings up the XSB interpreter.  This is the normal
+%  use, and the option is kept only for backward compatability.
+%
+%\item[{\tt -n}] Formerly used in conjunction when XSB was called from
+%  C.  This option is used only for backward compatability.
 \end{description}
 \end{description}
 
 \section{Memory Management}\label{memory_management}
 \index{memory management} \index{garbage collection}
 %===================================================
+
 All execution stacks are automatically expanded in \version{},
 including the local stack/heap region, the trail/choice point region,
-and the completion stack region.  For the main thread, each of these
-regions begin with an initial value set by the user at the
-command-line or with a default value (see
-Section~\ref{sec:EmuOptions}).  Execution stacks increase their size
+and the completion stack region.  Execution stacks increase their size
 until it is not possible to do so with available system memory.  At
 that point XSB tries to find the maximal amount of space that will
-still fit in system memory.  When a thread is created within an XSB
+still fit in system memory.  For the main thread, each of these
+regions begin with an initial value set by the user at the
+command-line or with a default value (see
+Section~\ref{sec:EmuOptions}).  When a thread is created within an XSB
 process, the size of the thread's execution stacks may be set by {\tt
   thread\_create/3}, otherwise the default values indicated in
 Section~\ref{sec:EmuOptions} are used.  Once XSB is running, these
 default values may be modified using the appropriate Prolog flags (see
 Section~\ref{State}).  In addition, whenever a thread exits, memory
-specific to that thread is reclaimed.
+specific to that thread is reclaimed.  
 
 Heap garbage collection is automatically included in XSB
 \cite{CaSC01,CATmem@ISMM-98}.  (To change the algorithm used for heap
 garbage collection or to turn it off altogether, see the predicate
 {\tt garbage\_collection/1} or Section~\ref{sec:EmuOptions} for
 command-line options).  In \version{} the default behavior is indirect
-garbage collection.  Starting with Version 3g.0, heap garbage collection
-may automatically invokes garbage collection of XSB's atom table,
-which stores Prolog's atomic constants.  Expansion and garbage
-collection of execution stacks can occur when multiple threads are
-active; however atom garbage collection will not be invoked if there
-is more than one active XSB thread.
+garbage collection.  Starting with Version 3.0, heap garbage
+collection may automatically invokes garbage collection of XSB's
+``string'' table, which stores Prolog's atomic constants.  Expansion
+and garbage collection of execution stacks can occur when multiple
+threads are active; however atom garbage collection will not be
+invoked if there is more than one active XSB thread.
 
 The program area (the area into which XSB byte-code is loaded) is also
 dynamically expanded as needed.  For dynamic code (created using {\tt
@@ -1104,8 +1105,32 @@ through use of {\tt abolish\_all\_tables/0}, {\tt
 predicates.  As with dynamic code, space for tables may be reclaimed
 immediately or marked for later garbage collection depending on
 whether choice points may backtrack into the abolished tables, on the
-number of active threads, etc.  See
+number of active threads, etc.  Tabling also includes various stacks
+used to copy information into or out of tables, most of which are
+dynamically allocated and expanded.  These stacks may be
+thread-private or shared among threads: space for thread-private
+stacks is reclaimed when a thread exits.  See
 Section~\ref{sec:TablePred:Deleting} for details.
+
+\index{Prolog flags!{\tt max\_memory}}
+\index{\texttt{bounded\_call/4}}
+Perhaps more than a standard Prolog system, XSB is used to evaluate
+queries in knowledge representation languages that have a higher level
+of declarativity than Prolog and as a result may consume a great deal
+of space.  If XSB needs memory that is unobtainable from the operating
+sytsem, it will usually abort with a resource error, and become ready
+for a new query from its command line or API.  In such a case, a user
+or program can use {\tt statistics/[0,1,2]} to investigate whether and
+how XSB is consuming memory.  Other options to bounding memory include
+the use of {\tt bounded\_call/4} or the use of the {\tt max\_memory}
+flag.  Use of the {\tt max\_memory} flag is recommended in cases where
+XSB is embedded in a C program through the C/XSB interface, or is
+embedded in or communicating with a java program through Interprolog.
+In such a case, XSB will abort with a resource error whenever a memory
+allocation would exceed the user-defined threshold~\footnote{In rare
+  cases, XSB will exit if the inability to allocate more memory will
+  leave it in an inconsistent state (e.g. if XSB cannot allocate
+  needed memory during heap garbage collection).}.
 
 \section{Compiling, Consulting, and Loading} \label{Consulting}
 %====================================================
