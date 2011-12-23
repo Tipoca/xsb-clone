@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.95 2011-12-11 23:07:25 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.96 2011-12-23 23:24:48 tswift Exp $
 ** 
 */
 
@@ -1690,7 +1690,7 @@ static Psc dollar_var_psc = NULL;
 #define wcan_atombuff tsgLBuff2
 #define wcan_buff tsgSBuff1
 
-char *cvt_float_to_str(Float floatval) {
+char *cvt_float_to_str(CTXTdeclc Float floatval) {
   sprintf(wcan_buff->string,"%1.18g",floatval);
   wcan_buff->length = (int)strlen(wcan_buff->string);
   if (!strchr(wcan_buff->string,'.')) {
@@ -1740,7 +1740,7 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
       }
       break;
     case XSB_FLOAT:
-      XSB_StrAppend(wcan_string, cvt_float_to_str(ofloat_val(prologterm)));
+      XSB_StrAppend(wcan_string, cvt_float_to_str(CTXTc ofloat_val(prologterm)));
       break;
     case XSB_REF:
     case XSB_REF1: {
