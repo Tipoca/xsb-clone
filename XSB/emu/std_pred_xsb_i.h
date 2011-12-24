@@ -1,6 +1,4 @@
 /*      std_pred_xsb_i.h
-** Author(s): Kostis F. Sagonas
-** Modified by Swift 
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
@@ -19,7 +17,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.82 2011-12-23 22:42:18 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.83 2011-12-24 20:45:12 tswift Exp $
 ** 
 */
 
@@ -427,7 +425,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
   return TRUE;
 }
 
-char *cvt_float_to_str(Float);
+char *cvt_float_to_str(CTXTdeclc Float);
 
 inline static xsbBool number_to_list(CTXTdeclc int call_type)
 {
@@ -530,7 +528,7 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
     } else if (isointeger(term)) {
       sprintf(str, "%" Intfmt, oint_val(term));
     } else if (isofloat(term)) {
-	strncpy(str,cvt_float_to_str(ofloat_val(term)),256);
+      strncpy(str,cvt_float_to_str(CTXTc ofloat_val(term)),256);
     } else xsb_type_error(CTXTc "number",term,call_name,1);
     new_list = hreg;
     for (i=0; str[i] != '\0'; i++) {

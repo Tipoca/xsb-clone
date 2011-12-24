@@ -87,6 +87,8 @@ extern void print_subgoal(CTXTdeclc FILE *, VariantSF);
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
 double total_table_gc_time = 0;
 
+#define declare_timer double timer;
+
 #define start_table_gc_time(MARK) {					\
     MARK = cpu_time();							\
 }
@@ -96,6 +98,7 @@ double total_table_gc_time = 0;
   }
 #else
 
+#define declare_timer
 #define start_table_gc_time(MARK) 
 #define end_table_gc_time(MARK) 
 
@@ -2663,7 +2666,7 @@ void unmark_cp_tabled_subgoals(CTXTdecl)
 
 /* incremental */
 int abolish_table_call_incr(CTXTdeclc VariantSF subgoal) {
-  double timer;
+  declare_timer
 
   start_table_gc_time(timer);
   
@@ -3074,7 +3077,7 @@ xsb_flag) as well as an option set by the options list, if any.
 */
 
 void abolish_table_call(CTXTdeclc VariantSF subgoal, int invocation_flag) {
-  double timer;
+  declare_timer
 
   start_table_gc_time(timer);
 
@@ -3397,7 +3400,7 @@ inline void abolish_table_predicate_switch(CTXTdeclc TIFptr tif, Psc psc, int in
 
 inline void abolish_table_predicate(CTXTdeclc Psc psc, int invocation_flag) {
   TIFptr tif;
-  double timer;
+  declare_timer
 
   start_table_gc_time(timer);
 
@@ -3663,7 +3666,7 @@ int abolish_usermod_tables(CTXTdecl)
   Pair pair;
   Psc psc;
   TIFptr tif;
-  double timer;
+  declare_timer
 
   start_table_gc_time(timer);
 
@@ -3701,7 +3704,7 @@ int abolish_module_tables(CTXTdeclc const char *module_name)
   byte type;
   Psc psc, module;
   TIFptr tif;
-  double timer;
+  declare_timer
 
   start_table_gc_time(timer);
   
@@ -3829,7 +3832,7 @@ int abolish_mt_tables_cps_check(CTXTdecl,xsbBool isPrivate)
 /* will not reclaim space if more than one thread */
 void abolish_shared_tables(CTXTdecl) {
   TIFptr abol_tif;
-  double timer;
+  declare_timer
 
   start_table_gc_time(timer);
   mark_cp_tabled_preds(CTXT);
@@ -3847,7 +3850,7 @@ void abolish_shared_tables(CTXTdecl) {
 /* will not reclaim space if more than one thread (via fast_atp) */
 void abolish_all_shared_tables(CTXTdecl) {
   TIFptr pTIF;
-  double timer;
+  declare_timer
 
   start_table_gc_time(timer);
 
@@ -3884,7 +3887,7 @@ void abolish_all_shared_tables(CTXTdecl) {
 
 void abolish_private_tables(CTXTdecl) {
   TIFptr abol_tif;
-  double timer;
+  declare_timer
 
   start_table_gc_time(timer);
 
@@ -3903,7 +3906,7 @@ void abolish_private_tables(CTXTdecl) {
 
 void abolish_all_private_tables(CTXTdecl) {
   TIFptr pTIF;
-  double timer;
+  declare_timer
 
   start_table_gc_time(timer);
 
@@ -4089,7 +4092,7 @@ void abolish_all_tables_cps_check(CTXTdecl)
 inline 
 #endif
 void abolish_all_tables(CTXTdeclc int action) {
-  double timer;
+  declare_timer
   TIFptr pTIF;
 
   start_table_gc_time(timer);
