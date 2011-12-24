@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.88 2011-05-22 18:18:54 tswift Exp $
+** $Id: heap_xsb.c,v 1.89 2011-12-24 21:09:10 tswift Exp $
 ** 
 */
 
@@ -410,9 +410,13 @@ void initialize_glstack(CPtr from, CPtr to)
   }
 }
 
+// flags[MAX_MEMORY] is in kbytes
+#define USER_MEMORY_LIMIT_EXHAUSTED(newSize)				\
+  (flags[MAX_MEMORY] && (pspace_tot_gl/K - glstack.size + newSize > flags[MAX_MEMORY]))
+
 xsbBool glstack_realloc(CTXTdeclc size_t new_size, int arity)
 {
-  CPtr   new_heap_bot ;       /* bottom of new Global Stack area */
+  CPtr   new_heap_bot=NULL ;       /* bottom of new Global Stack area */
   CPtr   new_ls_bot ;         /* bottom of new Local Stack area */
 
   size_t heap_offset ;        /* offsets between the old and new */
@@ -466,7 +470,8 @@ xsbBool glstack_realloc(CTXTdeclc size_t new_size, int arity)
     new_ls_bot = new_heap_bot + new_size_in_cells - 1 ;
     local_offset = new_ls_bot - ls_bot ;
   } else { // expanding
-    new_heap_bot = (CPtr)realloc(heap_bot, new_size_in_bytes);
+    if (!USER_MEMORY_LIMIT_EXHAUSTED(new_size)) 
+      new_heap_bot = (CPtr)realloc(heap_bot, new_size_in_bytes);
     if (new_heap_bot == NULL) {
       if (2*glstack.size == new_size) { /* if trying to double, try backing off, may not help */
 	size_t increment = new_size;
@@ -475,10 +480,12 @@ xsbBool glstack_realloc(CTXTdeclc size_t new_size, int arity)
 	  new_size = glstack.size + increment;
 	  new_size_in_bytes = new_size*K ;
 	  new_size_in_cells = new_size_in_bytes/sizeof(Cell) ;
-	  new_heap_bot = (CPtr)realloc(heap_bot, new_size_in_bytes);
+	  if (!USER_MEMORY_LIMIT_EXHAUSTED(new_size))
+	    new_heap_bot = (CPtr)realloc(heap_bot, new_size_in_bytes);
 	}
 	if (new_heap_bot == NULL) {
-	  xsb_mesg("Not enough core to resize the Heap and Local Stack! (%" Intfmt ")",new_size_in_bytes);
+	  //	  xsb_mesg("Not enough core to resize the Heap/Local Stack! (current: %"Intfmt"; resize %"Intfmt")",
+	  //   glstack.size*K,new_size_in_bytes);
 	  return 1; /* return an error output -- will be picked up later */
 	}
       } else {
@@ -486,6 +493,7 @@ xsbBool glstack_realloc(CTXTdeclc size_t new_size, int arity)
 	return 1; /* return an error output -- will be picked up later */
       }
     }
+    //    printf("realloced heap %d -> %d\n",glstack.size,new_size);
     heap_offset = new_heap_bot - heap_bot ;
     new_ls_bot = new_heap_bot + new_size_in_cells - 1 ;
     local_offset = new_ls_bot - ls_bot ;
@@ -574,6 +582,7 @@ xsbBool glstack_realloc(CTXTdeclc size_t new_size, int arity)
   /* Update the system variables */
   glstack.low = (byte *)new_heap_bot ;
   glstack.high = (byte *)(new_ls_bot + 1) ;
+  pspace_tot_gl = pspace_tot_gl + (new_size - glstack.size)*K;
   glstack.size = new_size ;
 
   hreg = (CPtr)hreg + heap_offset ;

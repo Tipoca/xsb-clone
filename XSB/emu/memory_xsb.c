@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.75 2011-12-12 00:07:23 dwarren Exp $
+** $Id: memory_xsb.c,v 1.76 2011-12-24 21:09:11 tswift Exp $
 ** 
 */
 
@@ -61,6 +61,7 @@
 #include "flags_xsb.h"
 #include "subp.h"
 #include "debug_xsb.h"
+#include "trace_xsb.h"
 
 #if defined(GENERAL_TAGGING)
 
@@ -128,10 +129,18 @@ void print_mem_allocs() {
 
 /* === alloc permanent memory ============================================== */
 
+UInteger pspace_tot_gl = 0;
+
+#define encode_memory_error(category,limit_type) (category << 2 | limit_type)
+
 /* TLS: NOERROR locking done in mem_xxxoc() will not cause concurrency
    problems -- we just need to check for null ptr values and possibly
    abort after unlocking (when we check -- we're sometimes a little
    sloppy). */
+
+/* nochecks do not check for user defined limits -- so that there are
+   cases where we really dont check for them.  These seem pretty
+   small, overall however. */
 
 void *mem_alloc(size_t size, int category)
 {
@@ -143,8 +152,10 @@ void *mem_alloc(size_t size, int category)
     memcount_gl.num_mem_allocs++;
     SYS_MUTEX_LOCK_NOERROR(MUTEX_MEM);
 #endif
-    pspacesize[category] += size;
 
+    if ((int) flags[MAX_MEMORY] && (pspace_tot_gl + size)/K > (int) flags[MAX_MEMORY]) {
+      xsb_throw_memory_error(encode_memory_error(category,USER_MEMORY_LIMIT));
+    }
     ptr = (byte *) malloc(size);
 
 #if defined(GENERAL_TAGGING)
@@ -156,17 +167,18 @@ void *mem_alloc(size_t size, int category)
 #endif
 
     if (ptr == NULL && size > 0) {
-      char msgstring[40];
-      sprintf(msgstring,"memory [%s]",pspace_cat[category]);
-      xsb_memory_error(msgstring,"mem_alloc()");
+      xsb_throw_memory_error(encode_memory_error(category,SYSTEM_MEMORY_LIMIT));
     }
-    //    fprintf(logfile,"alloc(mem_alloc,%ld,'%p',%ld,%d).\n",alloc_cnt++,ptr,size,category);
+    else { 
+      pspacesize[category] += size;
+      pspace_tot_gl += size;
+    }
+
+    //    printf("mem_alloced %d for tot %d (%s)\n",size,pspace_tot_gl,pspace_cat[category]);
     return ptr;
 }
 
-
-/* TLS: does not check returns -- for use in error messages and
-   throw */
+/* TLS: does not check returns -- for use in error messages and throw */
 void *mem_alloc_nocheck(size_t size, int category)
 {
     byte * ptr;
@@ -176,20 +188,24 @@ void *mem_alloc_nocheck(size_t size, int category)
     memcount_gl.num_mem_allocs++;
     SYS_MUTEX_LOCK_NOERROR(MUTEX_MEM);
 #endif
-    pspacesize[category] += size;
 
     ptr = (byte *) malloc(size);
+
+    if (ptr) {
+      pspacesize[category] += size;
+      pspace_tot_gl += size;
+    }
+
+    //    printf("mem_alloced (nocheck) %d for tot %d\n",size,pspace_tot_gl);
+
 #if defined(GENERAL_TAGGING)
-    //    printf("mem_alloc %x %x\n",ptr,ptr+size);
     extend_enc_dec_as_nec(ptr,ptr+size);
 #endif
 #ifdef NON_OPT_COMPILE
     SYS_MUTEX_UNLOCK_NOERROR(MUTEX_MEM);
 #endif
-    //    fprintf(logfile,"alloc(mem_alloc_nocheck,%ld,'%p',%ld,%d).\n",alloc_cnt++,ptr,size,category);
     return ptr;
 }
-
 
 /* === calloc permanent memory ============================================= */
 void *mem_calloc(size_t size, size_t occs, int category)
@@ -201,26 +217,33 @@ void *mem_calloc(size_t size, size_t occs, int category)
     // #endif
 
 #ifdef NON_OPT_COMPILE
-    //    printf("Callocing size %d occs %d category %d\n",size,occs,category);
     memcount_gl.num_mem_allocs++;
     SYS_MUTEX_LOCK_NOERROR(MUTEX_MEM);
 #endif
-    pspacesize[category] += length;
+
+    if ((int) flags[MAX_MEMORY] && (pspace_tot_gl + length)/K > (int) flags[MAX_MEMORY]) {
+      xsb_throw_memory_error(encode_memory_error(category,USER_MEMORY_LIMIT));
+
+    }
 
     ptr = (byte *) calloc(size,occs);
 #if defined(GENERAL_TAGGING)
-    //    printf("mem_calloc %x %x\n",ptr,ptr+length);
     extend_enc_dec_as_nec(ptr,ptr+length);
 #endif
 #ifdef NON_OPT_COMPILE
     SYS_MUTEX_UNLOCK_NOERROR(MUTEX_MEM);
 #endif
+
     if (ptr == NULL && size > 0 && occs > 0) {
-      char msgstring[40];
-      sprintf(msgstring,"memory [%s]",pspace_cat[category]);
-      xsb_memory_error(msgstring,"mem_calloc()");
+      xsb_throw_memory_error(encode_memory_error(category,SYSTEM_MEMORY_LIMIT));
     }
-    //    fprintf(logfile,"alloc(mem_calloc,%ld,'%p',%ld,%d).\n",alloc_cnt++,ptr,length,category);
+    else {
+      pspacesize[category] += length;
+      pspace_tot_gl += length;
+    }
+
+    //    printf("mem_calloced %d for tot %d (%s)\n",length,pspace_tot_gl,pspace_cat[category]);
+
     return ptr;
 }
 
@@ -237,17 +260,22 @@ void *mem_calloc_nocheck(size_t size, size_t occs, int category)
     memcount_gl.num_mem_allocs++;
     SYS_MUTEX_LOCK_NOERROR(MUTEX_MEM);
 #endif
-    pspacesize[category] += length;
 
     ptr = (byte *) calloc(size,occs);
+
+    if (ptr) {
+      pspacesize[category] += length;
+      pspace_tot_gl += length;
+    }
+
+    //    printf("mem_calloced %d for tot %d (%s)\n",length,pspace_tot_gl,pspace_cat[category]);
+
 #if defined(GENERAL_TAGGING)
-    //    printf("mem_calloc %x %x\n",ptr,ptr+length);
     extend_enc_dec_as_nec(ptr,ptr+length);
 #endif
 #ifdef NON_OPT_COMPILE
     SYS_MUTEX_UNLOCK_NOERROR(MUTEX_MEM);
 #endif
-    //    fprintf(logfile,"alloc(mem_calloc_nocheck,%ld,'%p',%ld,%d).\n",alloc_cnt++,ptr,length,category);
     return ptr;
 }
 
@@ -259,10 +287,15 @@ void *mem_realloc(void *addr, size_t oldsize, size_t newsize, int category)
   byte *new_addr;
     newsize = (newsize+7) & ~0x7 ;	      /* round to 8 */
     oldsize = (oldsize+7) & ~0x7 ;	      /* round to 8 */
+
 #ifdef NON_OPT_COMPILE
     memcount_gl.num_mem_reallocs++;
     SYS_MUTEX_LOCK_NOERROR(MUTEX_MEM);
 #endif
+    if ((int) flags[MAX_MEMORY] && (pspace_tot_gl + newsize)/K > (int) flags[MAX_MEMORY]) {
+      xsb_throw_memory_error(encode_memory_error(category,USER_MEMORY_LIMIT));
+    }
+
     pspacesize[category] = pspacesize[category] - oldsize + newsize;
 
     new_addr = (byte *) realloc(addr,newsize);
@@ -273,36 +306,38 @@ void *mem_realloc(void *addr, size_t oldsize, size_t newsize, int category)
     SYS_MUTEX_UNLOCK_NOERROR(MUTEX_MEM);
 #endif
     if (new_addr == NULL && newsize > 0) {
-      char msgstring[40];
-      sprintf(msgstring,"memory [%s]",pspace_cat[category]);
-      xsb_memory_error(msgstring,"mem_realloc()");
+      xsb_throw_memory_error(encode_memory_error(category,USER_MEMORY_LIMIT));
     }
-    //    fprintf(logfile,"alloc(mem_realloc,%ld,'%p','%p',%ld,%ld,%d).\n",alloc_cnt++,addr,new_addr,oldsize,newsize,category);
+    else { 
+      pspacesize[category] = pspacesize[category] -oldsize + newsize;
+      pspace_tot_gl =  pspace_tot_gl -oldsize + newsize;
+    }
+
+    //    printf("mem_realloced %d -> %d for tot %d\n",oldsize,newsize,pspace_tot_gl);
+
     return new_addr;
 }
 
-void *mem_realloc_nocheck(void *addr, size_t oldsize, size_t newsize, int category)
-{
-  byte *new_addr;
-    newsize = (newsize+7) & ~0x7 ;	      /* round to 8 */
-    oldsize = (oldsize+7) & ~0x7 ;	      /* round to 8 */
-#ifdef NON_OPT_COMPILE
-    memcount_gl.num_mem_reallocs++;
-    SYS_MUTEX_LOCK_NOERROR(MUTEX_MEM);
-#endif
-    pspacesize[category] = pspacesize[category] - oldsize + newsize;
-
-    new_addr = (byte *) realloc(addr,newsize);
-#if defined(GENERAL_TAGGING)
-    extend_enc_dec_as_nec(new_addr,new_addr+newsize);
-#endif
-#ifdef NON_OPT_COMPILE
-    SYS_MUTEX_UNLOCK_NOERROR(MUTEX_MEM);
-#endif
-    //    fprintf(logfile,"alloc(mem_realloc_nocheck,%ld,'%p','%p',%ld,%ld,%d).\n",alloc_cnt++,addr,new_addr,oldsize,newsize,category);
-    return new_addr;
+ void *mem_realloc_nocheck(void *addr, size_t oldsize, size_t newsize, int category)
+ {
+   byte *new_addr;
+     newsize = (newsize+7) & ~0x7 ;	      /* round to 8 */
+     oldsize = (oldsize+7) & ~0x7 ;	      /* round to 8 */
+ #ifdef NON_OPT_COMPILE
+     memcount_gl.num_mem_reallocs++;
+     SYS_MUTEX_LOCK_NOERROR(MUTEX_MEM);
+ #endif
+     pspacesize[category] = pspacesize[category] - oldsize + newsize;
+ 
+     new_addr = (byte *) realloc(addr,newsize);
+ #if defined(GENERAL_TAGGING)
+     extend_enc_dec_as_nec(new_addr,new_addr+newsize);
+ #endif
+ #ifdef NON_OPT_COMPILE
+     SYS_MUTEX_UNLOCK_NOERROR(MUTEX_MEM);
+ #endif
+     return new_addr;
 }
-
 
 /* === dealloc permanent memory ============================================ */
 
@@ -317,6 +352,7 @@ void mem_dealloc(void *addr, size_t size, int category)
 #endif
     pspacesize[category] -= size;
     //    fbprintf(logfile,"alloc(mem_dealloc,%ld,'%p',%ld,%d).\n",alloc_cnt++,addr,size,category);
+    pspace_tot_gl -= size;
 
     free(addr);
 #ifdef NON_OPT_COMPILE
@@ -332,13 +368,16 @@ void mem_dealloc(void *addr, size_t size, int category)
  * to "new_size" K-byte blocks.
  */
 
+#define STACK_USER_MEMORY_LIMIT_OVERFLOW(oldSize, newSize)			\
+  (flags[MAX_MEMORY] && (pspace_tot_gl/1024 - oldSize + newSize > flags[MAX_MEMORY]))
+
 void tcpstack_realloc(CTXTdeclc size_t new_size) {
 
   byte *cps_top,         /* addr of topmost byte in old CP Stack */
        *trail_top;       /* addr of topmost frame (link field) in old Trail */
 
-  byte *new_trail,        /* bottom of new trail area */
-       *new_cps;          /* bottom of new choice point stack area */
+  byte *new_trail;        /* bottom of new trail area */
+  byte *new_cps;          /* bottom of new choice point stack area */
 
   size_t trail_offset,      /* byte offsets between the old and new */
        cps_offset;        /*   stack bottoms */
@@ -382,9 +421,16 @@ Please use -c N or cpsize(N) to start with a larger choice point stack"
      *   from where it was moved and push it to the high end of the newly
      *   allocated region.
      */
-    new_trail = (byte *)realloc(tcpstack.low, new_size * K);
-    if ( IsNULL(new_trail) )
-      xsb_memory_error("memory","Cannot Expand Trail and Choice Point Stacks");
+    if (!STACK_USER_MEMORY_LIMIT_OVERFLOW(tcpstack.size, new_size))
+      new_trail = (byte *)realloc(tcpstack.low, new_size * K);
+    else {
+      //      printf("new size would be %"Intfmt"\n",pspace_tot_gl + (new_size - tcpstack.size)*K);
+      xsb_throw_memory_error(encode_memory_error(TCP_SPACE,USER_MEMORY_LIMIT));
+    }
+    if ( IsNULL(new_trail) ) {
+      xsb_throw_memory_error(encode_memory_error(TCP_SPACE,USER_MEMORY_LIMIT));
+    }
+      //      xsb_memory_error("memory","Cannot Expand Trail and Choice Point Stacks");
       //      xsb_exit("Not enough core to resize the Trail and Choice Point Stack!");
     new_cps = new_trail + new_size * K;
 
@@ -493,6 +539,7 @@ Please use -c N or cpsize(N) to start with a larger choice point stack"
      --------------------------- */
   tcpstack.low = new_trail;
   tcpstack.high = new_cps;
+  pspace_tot_gl = pspace_tot_gl + (new_size - tcpstack.size)*K;
   tcpstack.size = new_size;
   
   trreg = (CPtr *)((byte *)trreg + trail_offset);
@@ -506,6 +553,7 @@ Please use -c N or cpsize(N) to start with a larger choice point stack"
 	     tcpstack.low, tcpstack.size));
   xsb_dbgmsg((LOG_DEBUG, "\tNew Top:\t%p\n", tcpstack.high));
 }
+
 
 /* ------------------------------------------------------------------------- */
 
@@ -529,8 +577,8 @@ void handle_tcpstack_overflow(CTXTdecl)
 
 void complstack_realloc (CTXTdeclc size_t new_size) {
 
-  byte *new_top,    /* bottom of new trail area */
-  *new_bottom;      /* bottom of new choice point stack area */
+  byte *new_top = NULL;    /* bottom of new trail area */
+  byte *new_bottom;      /* bottom of new choice point stack area */
 
   size_t top_offset,   /* byte offsets between the old and new */
   bottom_offset;    /*    stack bottoms */
@@ -544,7 +592,7 @@ void complstack_realloc (CTXTdeclc size_t new_size) {
   byte **cp_ptr ;
 #endif
 
-  
+  printf("reallocing complstack\n");
   if (new_size == complstack.size)
     return;
   
@@ -565,9 +613,15 @@ void complstack_realloc (CTXTdeclc size_t new_size) {
      * Increase the size of the data area and push the Completion Stack
      * to its high-memory end.
      */
-    new_top = (byte *)realloc(complstack.low, new_size * K);
-    if ( IsNULL(new_top) )
-      xsb_exit("Not enough core to resize the Completion Stack!");
+    //if (!STACK_USER_MEMORY_LIMIT_OVERFLOW(complstack.size, new_size))
+      new_top = (byte *)realloc(complstack.low, new_size * K);
+    if ( IsNULL(new_top) ) {
+      //      printf("new size would be %"Intfmt"\n",pspace_tot_gl + (new_size - complstack.size)*K);
+      if (STACK_USER_MEMORY_LIMIT_OVERFLOW(complstack.size, new_size))
+	xsb_throw_memory_error(encode_memory_error(COMPL_SPACE,USER_MEMORY_LIMIT));
+      else 
+	xsb_throw_memory_error(encode_memory_error(COMPL_SPACE,SYSTEM_MEMORY_LIMIT));
+    }
     new_bottom = new_top + new_size * K;
     
     top_offset = (new_top - complstack.low);
@@ -626,6 +680,7 @@ void complstack_realloc (CTXTdeclc size_t new_size) {
      --------------------------- */
   complstack.low = new_top;
   complstack.high = new_bottom;
+  pspace_tot_gl = pspace_tot_gl + (new_size - complstack.size)*K;
   complstack.size = new_size;
   
   openreg = (CPtr)((byte *)openreg + bottom_offset);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.93 2011-10-19 22:51:29 tswift Exp $
+** $Id: error_xsb.c,v 1.94 2011-12-24 21:09:10 tswift Exp $
 ** 
 */
 
@@ -197,6 +197,29 @@ DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, size_t B
   mem_dealloc(cs_val(Ball),Ball_len,LEAK_SPACE);
   mem_dealloc(space_for_ball_assert,space_for_ball_assert_len,LEAK_SPACE);
   /* reset WAM emulator state to Prolog catcher */
+  if (unwind_stack(CTXT)) xsb_exit("Unwind_stack failed in xsb_throw_internal!");
+  /* Resume main emulator instruction loop */
+  pcreg = (pb)&fail_inst;
+  longjmp(xsb_abort_fallback_environment, XSB_ERROR);
+}
+
+DllExport void call_conv xsb_throw_memory_error(int type)
+{
+#ifdef MULTI_THREAD
+  int tid = xsb_thread_self();
+  th_context *th;
+  th = find_context(tid);
+#endif
+
+  if (flags[CTRACE_CALLS])  { 
+    char buffera[MAXTERMBUFSIZE];
+    if (ptcpreg) 
+      sprint_subgoal(CTXTc buffera, (VariantSF)ptcpreg); 
+    else sprintf(buffera,"null");
+    fprintf(fview_ptr,"err(%s,%d).\n",buffera,ctrace_ctr++);
+  }
+
+  flags[MEMORY_ERROR_FLAG] = type;
   if (unwind_stack(CTXT)) xsb_exit("Unwind_stack failed in xsb_throw_internal!");
   /* Resume main emulator instruction loop */
   pcreg = (pb)&fail_inst;
@@ -581,24 +604,9 @@ void call_conv xsb_resource_error(CTXTdeclc char *resource,
 
 }
 
-/* TLS: exiting in MT engine because I haven't yet put contexts into
-   mem_xxxocs.  And, I'm not sure whether this is a good idea. */
-
-#ifdef MULTI_THREAD
-void call_conv xsb_memory_error(char *resource,char *message)
-{
-  char exit_message[ERRMSGLEN];
-
-  snprintf(exit_message,ERRMSGLEN,
-	  "++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory (%s)",
-	  message);
-  exit_xsb(exit_message);
-}
-#else
 void call_conv xsb_memory_error(char *resource,char *message) {
   xsb_resource_error_nopred(resource,message);
 }
-#endif
 
 /* Like xsb_resource_error(), but does not include predicate and
    argument information. */

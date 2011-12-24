@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.182 2011-11-28 01:17:39 tswift Exp $
+** $Id: init_xsb.c,v 1.183 2011-12-24 21:09:10 tswift Exp $
 ** 
 */
 
@@ -262,7 +262,7 @@ static void init_flags(CTXTdecl)
   flags[MAX_QUEUE_TERMS] = DEFAULT_MQ_SIZE; 
 #endif
   flags[HEAP_GC_MARGIN] = 8192 * ZOOM_FACTOR;
-  flags[UNIFY_WITH_OCCURS_CHECK_FLAG] = 0;
+  //  flags[UNIFY_WITH_OCCURS_CHECK_FLAG] = 0;
 }
 
 /*==========================================================================*/
@@ -1299,12 +1299,14 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
     xsb_initialization_exit("Not enough core for the PDL Stack!");
   pdl.high = pdl.low + pdl.init_size * K;
   pdl.size = pdl.init_size;
+  pspace_tot_gl = pspace_tot_gl + pdl.init_size*K;
 
   glstack.low = (byte *)malloc(glstack.init_size * K);
   if (!glstack.low)
     xsb_initialization_exit("Not enough core for the Global and Local Stacks!");
   glstack.high = glstack.low + glstack.init_size * K;
   glstack.size = glstack.init_size;
+  pspace_tot_gl = pspace_tot_gl + glstack.init_size*K;
 
 #if defined(GENERAL_TAGGING)
   extend_enc_dec_as_nec(glstack.low,glstack.high);
@@ -1317,6 +1319,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
     xsb_initialization_exit("Not enough core for the Trail and Choice Point Stack!");
   tcpstack.high = tcpstack.low + tcpstack.init_size * K;
   tcpstack.size = tcpstack.init_size;
+  pspace_tot_gl = pspace_tot_gl + tcpstack.init_size*K;
 #if defined(GENERAL_TAGGING)
   extend_enc_dec_as_nec(tcpstack.low,tcpstack.high);
 #endif
@@ -1326,6 +1329,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
     xsb_initialization_exit("Not enough core for the Completion Stack!");
   complstack.high = complstack.low + complstack.init_size * K;
   complstack.size = complstack.init_size;
+  pspace_tot_gl = pspace_tot_gl + complstack.init_size;
 
   /* -------------------------------------------------------------------
      So, the layout of the memory looks as follows:

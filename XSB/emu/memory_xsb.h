@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.48 2011-05-20 22:00:29 tswift Exp $
+** $Id: memory_xsb.h,v 1.49 2011-12-24 21:09:11 tswift Exp $
 ** 
 */
 
@@ -47,6 +47,9 @@
 
 #ifndef _MEMORY_XSB_H_
 #define _MEMORY_XSB_H_
+
+#include "memory_defs.h"
+#define encode_memory_error(category,limit_type) (category << 2 | limit_type)
 
 /* Info Structure for the Data Regions
    ----------------------------------- */
@@ -119,35 +122,10 @@ extern System_Stack pdl,            /* PDL                        */
    ((stack_size) < (min_exp)/K ? (stack_size) + (min_exp)/K : 2 * (stack_size))
 
 
-/* Categories of permanent space use: */
-#define ATOM_SPACE		0
-#define STRING_SPACE		1
-#define ASSERT_SPACE		2
-#define COMPILED_SPACE		3
-#define FOR_CODE_SPACE		4
-#define TABLE_SPACE		5
-#define FINDALL_SPACE		6
-#define PROFILE_SPACE		7
-#define MT_PRIVATE_SPACE	8
-#define BUFF_SPACE		9
-#define GC_SPACE		10
-#define HASH_SPACE		11
-#define INTERPROLOG_SPACE	12
-#define THREAD_SPACE		13
-#define READ_CAN_SPACE		14
-#define LEAK_SPACE		15
-#define SPECIAL_SPACE		16
-#define OTHER_SPACE		17
-#define INCR_TABLE_SPACE	18
-#define ODBC_SPACE		19
-// VARSTRING_SPACE??  some other to thread?
-
-#define NUM_CATS_SPACE		20
-
 /* Program and Symbol Tables Space (in Bytes)
    ------------------------------------------ */
 extern UInteger pspacesize[NUM_CATS_SPACE];
-
+extern UInteger pspace_tot_gl;
 
 /* Memory Function Prototypes
    -------------------------- */

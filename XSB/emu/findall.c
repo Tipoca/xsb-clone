@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.56 2011-05-19 16:39:06 tswift Exp $
+** $Id: findall.c,v 1.57 2011-12-24 21:09:10 tswift Exp $
 ** 
 */
 
@@ -47,6 +47,7 @@
 #include "findall.h"
 #include "thread_xsb.h"
 #include "debug_xsb.h"
+#include "flag_defs_xsb.h"
 
 #ifndef MULTI_THREAD
 findall_solution_list *findall_solutions = NULL;
@@ -90,7 +91,7 @@ void release_and_throw_error(CTXTdeclc char *mem_call) {
       (findall_solutions+i)->first_chunk = NULL;
     }
   }
-  xsb_memory_error("memory [findall]",mem_call); // throw error
+  xsb_throw_memory_error(encode_memory_error(FINDALL_SPACE,SYSTEM_MEMORY_LIMIT)); 
 }
 
 /* malloc a new chunck and link it in in the current findall */

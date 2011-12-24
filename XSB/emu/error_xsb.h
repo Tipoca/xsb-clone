@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.56 2011-08-06 19:14:20 tswift Exp $
+** $Id: error_xsb.h,v 1.57 2011-12-24 21:09:10 tswift Exp $
 ** 
 */
 
@@ -154,6 +154,7 @@ DllExport extern void call_conv xsb_new_table_error(CTXTdeclc char *, char *,con
 DllExport extern void call_conv xsb_type_error(CTXTdeclc char *,Cell , const char *,int) ;
 
 extern void call_conv xsb_memory_error(char *, char *);
+extern void call_conv xsb_throw_memory_error(int);
 
 DllExport void call_conv xsb_throw(CTXTdeclc prolog_term);
 

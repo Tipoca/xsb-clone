@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_manager.c,v 1.35 2011-08-06 19:14:20 tswift Exp $
+** $Id: struct_manager.c,v 1.36 2011-12-24 21:09:11 tswift Exp $
 ** 
 */
 
@@ -75,17 +75,18 @@ void smPrint(Structure_Manager smRecord, char *string) {
 /*
  *  Allocate a new block from the system and place it at the head of
  *  the block list in the Structure Manager.
+ *  
+ *  TLS: changed to a regular calloc for user-limited memory.
  */
 
 void smAllocateBlock(Structure_Manager *pSM) {
 
   void *pNewBlock;
 
-  //  smPrint(*pSM,"before block allocation");
-  pNewBlock = mem_calloc_nocheck(SM_NewBlockSize(*pSM),1,TABLE_SPACE);  // counted in table-stats
-  if ( IsNULL(pNewBlock) )
-    xsb_resource_error_nopred("memory","[smAllocateBlock] Out of memory in allocation of %s block\n",
-			      SM_StructName(*pSM));
+  pNewBlock = mem_calloc(SM_NewBlockSize(*pSM),1,TABLE_SPACE);  
+  //  if ( IsNULL(pNewBlock) )
+  //    xsb_resource_error_nopred("memory","[smAllocateBlock] Out of memory in allocation of %s block\n",
+  //			      SM_StructName(*pSM));
   SMBlk_NextBlock(pNewBlock) = SM_CurBlock(*pSM);
   SM_CurBlock(*pSM) = pNewBlock;
   SM_NextStruct(*pSM) = SMBlk_FirstStruct(pNewBlock);
