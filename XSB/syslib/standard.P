@@ -1977,7 +1977,8 @@ catch(Goal,_Catcher,_Handler) :-
 %	get_breg(B2),write(after_cob(B2)).
 catch(_Goal,Catcher,Handler) :-
 	xsb_thread_self(T),
-        '$$exception_ball'(T,Ball),  %% only ever one fact here so no CP
+%        '$$exception_ball'(T,Ball),  %% only ever one fact here so no CP
+        get_exception_ball(T,Ball),
         (
             Ball = Catcher ->
 %            retractall('$$exception_ball'(T,_)),
@@ -1993,6 +1994,14 @@ throw(Ball) :-
 	xsb_thread_self(T),
         asserta('$$exception_ball'(T,Ball)),
         '$$unwind_stack'. % unwind_stack xsb_exits if no catcher was found
+
+:- import return_memory_exception/2 from error_handler.
+get_exception_ball(T,Ball):- '$$exception_ball'(T,Ball),!.
+get_exception_ball(_T,E):- 
+%	stat_flag(MEMORY_ERROR_FLAG,Flag),
+	stat_flag(95,Flag),
+	Flag > 0,
+	return_memory_exception(Flag,E).
 
 ?- dynamic_code_function(INIT_STANDARD_CGC_BLOCKS,_,_,_,_).
 

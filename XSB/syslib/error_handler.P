@@ -32,6 +32,7 @@
 #include "char_defs.h"
 #include "thread_defs_xsb.h"
 #include "builtin.h"
+#include "memory_defs.h"
 
 :- import default_user_error_handler/1 from usermod.
 :- dynamic default_user_error_handler/1.
@@ -104,9 +105,12 @@ flush_all_open_streams:-
 flush_all_open_streams.
 
 :- import atom_codes/2 from standard.
+:- import stat_set_flag/2 from machine.
+:- import writeln/1 from standard.
 default_sys_error_handler_main(resource_error(E),_BT,_Backtrace):- 
 	% !(*$&$n module system!
 	atom_codes(E,Elist),atom_codes(memory,Elist),!,
+	stat_set_flag(MEMORY_ERROR_FLAG,0),
 	close_open_tables(memory_error),fail.
 default_sys_error_handler_main(_Error,BT,Backtrace):- 
 	(BT == on,Backtrace \== [] -> print_backtrace(Backtrace) ; true),
@@ -529,6 +533,39 @@ permission_warning(Op,Obj_type,Culprit,Msg,PredInd):-
 	warningln(('[Permission (Operation) ',Op,' on ',Obj_type,': ',Culprit,'] in ',
 	            PredInd,' ',Msg)).
 
+:- export return_memory_exception/2.
+return_memory_exception(Flag,error(resource_error(memory),[Limit_Msg,Memory_Msg],[])):-
+	Limit_Type is Flag /\ 3,
+	Memory_Type is Flag >> 2,
+	(Limit_Type = SYSTEM_MEMORY_LIMIT -> 
+		    Limit_Msg = 'Query exhausted system memory'
+		  ; Limit_Msg = 'Query exhausted user-set memory limit'),
+	memory_type(Memory_Type,Memory_Msg).
+
+memory_type(ATOM_SPACE,' (currently expanding atom space)').
+memory_type(STRING_SPACE,' (currently expanding string space)').
+memory_type(ASSERT_SPACE,' (currently expanding assert space)').
+memory_type(COMPILED_SPACE,' (currently expanding compiled space)').
+memory_type(FOR_CODE_SPACE,' (currently expanding foreign-code space)').
+memory_type(TABLE_SPACE,' (currently expanding table space)').
+memory_type(FINDALL_SPACE,' (currently expanding findall space)').
+memory_type(PROFILE_SPACE,' (currently expanding profile space)').
+memory_type(MT_PRIVATE_SPACE,' (currently expanding mt private space)').
+memory_type(BUFF_SPACE,' (currently expanding buffer space)').
+memory_type(GC_SPACE,' (currently expanding gc space)').
+memory_type(HASH_SPACE,' (currently expanding hash space)').
+memory_type(INTERPROLOG_SPACE,' (currently expanding interprolog space)').
+memory_type(THREAD_SPACE,' (currently expanding thread  space)').
+memory_type(READ_CAN_SPACE,' (currently expanding canonical i/o space)').
+memory_type(LEAK_SPACE,' (currently expanding leak space)').
+memory_type(SPECIAL_SPACE,' (currently expanding special space)').
+memory_type(OTHER_SPACE,' (currently expanding other space)').
+memory_type(INCR_TABLE_SPACE,' (currently expanding incremental tabling space)').
+memory_type(ODBC_SPACE,' (currently expanding odbc space)').
+% These next are not categories at the C level
+memory_type(TCP_SPACE,' (currently expanding trail/choice point stack space)').
+memory_type(COMPL_SPACE,' (currently expanding completion stack space)').
+
 %-------------
 
 end_of_file.
@@ -573,3 +610,4 @@ get_sys_error_description(error(Error,Msg,_Backtrace), ExceptionDesc) :-
 | get_sys_error_description('_$abort_ball'(_Backtrace), 'Aborting...'). 
 */
 
+rend
