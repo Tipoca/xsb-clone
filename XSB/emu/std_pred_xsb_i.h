@@ -17,7 +17,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.83 2011-12-24 20:45:12 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.84 2011-12-26 19:27:25 tswift Exp $
 ** 
 */
 
@@ -1347,28 +1347,24 @@ int is_cyclic(CTXTdeclc Cell Term) {
 // visit term, fail if encounter a var
 int ground_cyc(CTXTdeclc Cell Term) { 
   Cell visited_string;
-  //  int cycle_trail_top = -1;
-  //  int cycle_trail_size = TERM_TRAVERSAL_STACK_INIT;
-  //  CTptr cycle_trail;
 
   XSB_Deref(Term);
   if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) {
-	//printf("not a structure \n");
     if (!isnonvar(Term) || is_attv(Term) ) { return FALSE; } else { return TRUE; }
   }
 
-	//printf("IS a structure \n");
-  cycle_trail = (CTptr) mem_alloc(cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE);
+  if (cycle_trail == (CTptr) 0) {
+    cycle_trail_size = TERM_TRAVERSAL_STACK_INIT;
+    cycle_trail = (CTptr) mem_alloc(cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE);
+  }
   visited_string = makestring(string_find("_$visited",1));
 
-	//printf("PUSHin structure \n");
   push_cycle_trail(Term);	
   *clref_val(Term) = visited_string;
 
   while (cycle_trail_top >= 0) {
 
     if (cycle_trail[cycle_trail_top].arg_num > cycle_trail[cycle_trail_top].arity) {
-	//printf("POPin structure \n");
       pop_cycle_trail(Term);	
     }
     else {
@@ -1384,10 +1380,7 @@ int ground_cyc(CTXTdeclc Cell Term) {
       XSB_Deref(Term);
            //printf("Term1 after %p\n",Term);
       if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) {
-	//printf("not a structure \n");
-	//printf("var or attv %d\n",(!isnonvar(Term) || is_attv(Term)));
         if (!isnonvar(Term) || is_attv(Term) ) { 
-                // printf("returnng FALSE \n");
                 unwind_cycle_trail;
                 return FALSE; 
         }   
@@ -1397,8 +1390,8 @@ int ground_cyc(CTXTdeclc Cell Term) {
 	if (*clref_val(Term) == visited_string) {
            // printf("unwind_cycle_trail\n");
 	  unwind_cycle_trail;
-	  // return TRUE;
-          return FALSE;
+	  return TRUE;
+          //return FALSE;
 	}
 	else {
            // printf("push_cycle_trail\n");
@@ -1409,7 +1402,7 @@ int ground_cyc(CTXTdeclc Cell Term) {
        }
      }
     }
-  mem_dealloc(cycle_trail,cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE);
+  //  mem_dealloc(cycle_trail,cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE);
   return TRUE;
 }
 

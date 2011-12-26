@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.22 2011-10-21 14:17:15 dwarren Exp $
+** $Id: tab_structs.h,v 1.23 2011-12-26 19:27:25 tswift Exp $
 ** 
 */
 
@@ -1105,7 +1105,7 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 
 #define pdlpush(cell)	*(pdlreg) = cell;				\
                         if (pdlreg-- < (CPtr)pdl.low)	       		\
-			  xsb_exit("PANIC: pdl overflow; large or cyclic structure?")
+			  xsb_abort("PANIC: pdl overflow; large or cyclic structure?")
 
 #define pdlpop		*(++pdlreg)
 
