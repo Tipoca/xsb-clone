@@ -2138,17 +2138,22 @@ call_attribute_handlers(Rest,Value).
 :- export  '_$timed_call_handler'/2.
 :- import check_pos_integer/3 from error_handler.
 
-timed_call(Call,Interval,Handler):- 
+timed_call(Call,Interval,Handler):- timed_call(Call,Interval,Handler,nonesting).
+
+timed_call(Call,Interval,Handler,Options):- 
+	(Options == nesting -> Nesting = true ; Nesting = false),
 	(integer(Interval),Interval > 0 -> 
-	    timed_call_1(Call,Interval,Handler,0)
+	    timed_call_1(Call,Interval,Handler,0,Nesting)
 	  ; (nonvar(Interval),Interval = repeating(Int) -> 
-	       timed_call_1(Call,Int,Handler,Int)
+	       timed_call_1(Call,Int,Handler,Int,Nesting)
 	     ; check_pos_integer(Interval,timed_call/3,2) ) ).
 
 % need to make assert faster.
-timed_call_1(Call,Interval,Handler,Repeating):- 
+timed_call_1(Call,Interval,Handler,Repeating,Nesting):- 
 	('_$timed_call_handler'(_,_) -> 
-   	    permission_error(nested_call,predicate,timed_call(Call),'timed_call/3')
+   	    (Nesting == true -> 
+	          call(Call)
+              ;   permission_error(nested_call,predicate,timed_call(Call),'timed_call/3'))
 	  ; 
 	    assert('_$timed_call_handler'(Handler,Repeating)),
 	    start_sleeper_thread(Interval),
