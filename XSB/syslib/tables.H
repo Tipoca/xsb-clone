@@ -47,7 +47,7 @@
    get_returns_for_call/2,
    invalidate_tables_for/2,
    is_incomplete/2,
-   print_incomplete_tables/0,
+   print_incomplete_tables/0,print_incomplete_tables/1,
    retract_table/1,
    sk_not/1,
 %      table_state/2,
@@ -102,15 +102,12 @@
 	t_assert_2/2
    from assert.
 :- import
-	(=..)/2, abort/1, call/1,
-	functor/3, is_attv/1, tcall/1,
-	(index)/2
-   from standard.
-:- import
 	domain_error/5, check_nonvar/3, type_error/4, table_error/1, 
 	%%instantiation_error/2,
 	permission_error/4 , check_cyclic/3
    from error_handler.
+
+:- import check_open_stream_or_alias/5 from file_io.
 
 :- import abolish_table_info/0, delete_attributes/1, 
    table_inspection_function/5, table_inspection_function/7,
@@ -121,6 +118,11 @@
 
 :- import numbervars/3, unnumbervars/2
      from num_vars.
+:- import
+	(=..)/2, abort/1, call/1,
+	functor/3, is_attv/1, tcall/1,
+	(index)/2
+   from standard.
 
 :- import invalidate_table_for/2 from usermod.
 :- import set_prolog_flag/2 from curr_sym.
