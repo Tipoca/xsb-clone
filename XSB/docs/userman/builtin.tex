@@ -4768,6 +4768,7 @@ depending on the value of {\tt Goal} in the well-founded semantics.
 
     Error cases are the same as {\tt call/1}.
 
+\ourrepeatstandarditem{timed\_call(\#Goal,+Interval,\#Handler,+Option)}{timed\_call/4}{}
 \ourstandarditem{timed\_call(\#Goal,+Interval,\#Handler)}{timed\_call/3}{}
 %
 This predicate calls {\tt Goal} and, if {\tt Goal} is still being
@@ -4776,9 +4777,7 @@ interrupted and {\tt Handler} executed.  In the case where {\tt
   Handler} succeeds or fails, the execution of {\tt Goal} will be
 continued; if {\tt Handler} throws an uncaught exception the execution
 of {\tt Goal} may be aborted. In this way {\tt timed\_call/3} can be
-used enforce a time-out on {\tt Goal}.  Nested calls to {\tt
-  timed\_call/3} are not allowed: but otherwise {\tt Handler} can be
-any XSB predicate.
+used enforce a time-out on {\tt Goal}.  
 
 {\tt Interval} can be either a positive integer or the term {\tt
   repeating(Int)} where {\tt Int} is a non-negative integer.  In this
@@ -4788,7 +4787,20 @@ throwing an exception).  In the case of repeated interrupts, the time
 taken to execute {\tt Handler} is not counted as part of {\tt
   Interval} milliseconds.
 
-As an implementation note, {\tt timed\_call/3} is based on XSB's
+Nested calls to {\tt timed\_call/3} are not allowed unless {\tt
+  Option} is set to {\tt nested}.
+%
+\begin{itemize}
+\item If {\tt Option} is not equal to {\tt nested}, or if {\tt
+  timed\_call/3} is used, then a nested call to {\tt timed\_call/4}
+  will throw a permission error.
+\item If {\tt Option} is equal to {\tt nested} then the nested timed
+  call is simply treated as a call to {\tt Goal}: in other words the
+  interval and handler for the nested call is ignored.
+\end{itemize}
+%
+
+As an implementation note, {\tt timed\_call/[3,4]} is based on XSB's
 internal interrupt mechanism, used for attributed variable handlers
 and thread signalling.  As such, the ability to execute complex
 actions upon interrupt and to resume is very robust.  However, checks
