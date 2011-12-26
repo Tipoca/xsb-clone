@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.85 2011-12-26 16:58:18 tswift Exp $
+** $Id: debug_xsb.c,v 1.86 2011-12-26 21:08:44 tswift Exp $
 ** 
 */
 
@@ -895,7 +895,7 @@ static Cell cell_array[500];
 #define trie_boxedint_val(i) \
   ((Integer) ((UInteger)int_val(cell_array[(*i)-2])<<24 | int_val(cell_array[(*i)-3])))
        
-static void print_term_of_subgoal(CTXTdeclc FILE *fp, int *i)
+static void print_term_of_subgoal(CTXTdeclc FILE *fp, byte car, int *i)
 {
   Cell term;
   int  j, args;
@@ -906,13 +906,16 @@ static void print_term_of_subgoal(CTXTdeclc FILE *fp, int *i)
     fprintf(fp, "_v%d", ((int) int_val(term) & 0xffff));
     break;
   case XSB_STRUCT:
-    if (isboxedfloat(term)) {
-        fprintf(fp, "%f", boxedfloat_val(term));
-        return;   
+    if (isboxedTrieSym(term) && ((int_val(cell_array[(*i)-1]) >> 16) == ID_BOXED_FLOAT)) {
+      Float val = trie_boxedfloat_val(i);
+      fprintf(fp, "%d.%4d",(int)floor(val),(int)((val-floor(val))*10000));
+      *i = (*i) -3;
+      break;
     }
-    else if (isboxedinteger(term)) {
-        fprintf(fp, "%" Intfmt, (Integer)boxedint_val(term));
-        return;
+    else if (isboxedTrieSym(term) && ((int_val(cell_array[(*i)-1]) >> 16) == ID_BOXED_INT)) {
+      fprintf(fp, "%" Intfmt, (Integer)trie_boxedint_val(i));
+      *i = (*i) -3;
+      break;
     }
     args = get_arity((Psc)cs_val(term));
     write_quotedname(fp,     get_name((Psc)cs_val(term)));
@@ -920,28 +923,43 @@ static void print_term_of_subgoal(CTXTdeclc FILE *fp, int *i)
     if (args > 0) fprintf(fp, "(");
     for (j = args; j > 0; j--) {
       (*i)--;
-      print_term_of_subgoal(CTXTc fp, i);
+      print_term_of_subgoal(CTXTc fp, car,i);
       if (j > 1) fprintf(fp, ",");
     }
     if (args > 0) fprintf(fp, ")");
     break;
-  case XSB_LIST:	/* the list [a,b(1),c] is stored as . . . [] c b 1 a */
-    /*
-     * This is the old version, which does not work anymore.
-     *
-     * if (isnil(cell_array[(*i)-1])) {
-     *   (*i) -= 2;
-     *   print_term_of_subgoal(fp, i);
-     *   fprintf(fp, "]");
-     * } else xsb_error("Non-single element list in print_subgoal()");
-     */
-    fprintf(fp, "[");
+  case XSB_LIST:
+    if ( car ) { fprintf(fp, "["); }
     (*i)--;
-    print_term_of_subgoal(CTXTc fp, i);
+    print_term_of_subgoal(CTXTc fp, CAR, i);
     (*i)--;
-    print_term_of_subgoal(CTXTc fp, i);
-    fprintf(fp, "]");
-    break;
+    term = cell_array[*i];
+  switch (cell_tag(term)) {
+    case XSB_FREE:
+    case XSB_REF1: 
+    case XSB_ATTV:
+      goto vertbar;
+    case XSB_LIST:
+      fprintf(fp, ",");
+      print_term_of_subgoal(CTXTc fp, CDR, i);
+      break;
+    case XSB_STRING:
+      if (string_val(term) != nil_string)
+	goto vertbar;
+      else {
+	fprintf(fp, "]");
+	break;
+      }
+    case XSB_STRUCT:
+    case XSB_INT:
+    case XSB_FLOAT:
+    vertbar:
+      fprintf(fp, "|");
+      print_term_of_subgoal(CTXTc fp, CDR, i);
+      fprintf(fp, "]");
+      break;
+  }
+  break;
   case XSB_STRING:
     write_quotedname(fp,string_val(term));
   /*    fprintf(fp, "%s", string_val(term));*/
@@ -1024,7 +1042,7 @@ static int sprint_term_of_subgoal(CTXTdeclc char *buffer, int size,byte car, int
       size = sprint_term_of_subgoal(CTXTc buffer,size, CDR, i);
       sprintf(buffer+size, "]");size++;
     return size;
-    }
+  }
   case XSB_STRING:
     size = sprint_quotedname(buffer,size,string_val(term));
     break;
@@ -1063,7 +1081,7 @@ void print_subgoal(CTXTdeclc FILE *fp, VariantSF subg)
   if (get_arity(psc) > 0) {
     fprintf(fp, "(");
     for (i = i-2; i >= 0 ; i--) {
-      print_term_of_subgoal(CTXTc fp, &i);
+      print_term_of_subgoal(CTXTc fp, CAR, &i);
       if (i > 0) fprintf(fp, ", ");
     }
     fprintf(fp, ")");
