@@ -1209,11 +1209,12 @@ all those answers currently derived for $Subgoal$.  Finally $status$ is
 \ei
 \ei
 
+\ourrepeatmoditem{print\_incomplete\_tables(+Stream\_or\_alias)}{print\_incomplete\_tables/1}{tables}
 \ourmoditem{print\_incomplete\_tables}{print\_incomplete\_tables/0}{tables}
 %
-This predicate, which can be useful for debugging purposes, prints out
-to {\tt stddbg} each incomplete subgoal in the current state, followed
-by the ordinal number of the SCC to which that subgoal belongs.  This
+These predicates, which can be useful for debugging purposes, print
+out each incomplete subgoal in the current state, followed by the
+ordinal number of the SCC to which that subgoal belongs.  This
 information describes the dependencies among tabled predicates.  In
 local evaluation (the default evaluation method for XSB) all subgoals
 in SCC $m$ depend on all subgoals in SCC $n$ if $m < n$.  Furthermore,
@@ -1222,6 +1223,9 @@ all subgoals in a given SCC depend on one another~\footnote{This
   dependencies. In batched evaluation, the dependencies are less exact
   -- see \cite{SaSw98} for details, as SCCs represent a dag of
   dependencies rather than a chain as in local evaluation.}.
+
+In {\tt print\_incomplete\_tables/0}, the information is output to
+{\tt stddbg}.
 
 {\bf Example:} For the program
 %
@@ -1244,6 +1248,23 @@ q(0, foo)- scc(4).
 \end{verbatim}
 }
 %
+{\bf Error Cases ({\tt print\_incomplete\_tables/1})}
+\bi
+\item 	{\tt Stream\_or\_alias} is a variable
+\bi
+\item {\tt instantiation\_error}
+\ei
+\item {\tt Stream\_or\_alias} is neither a variable, nor a stream term
+  nor an alias.  
+\bi
+\item 	{\tt domain\_error(stream\_or\_alias,Stream\_or\_alias)}
+\ei
+\item 	{\tt Stream\_or\_alias} is not associated with an open stream
+\bi
+\item 	{\tt existence\_error(stream,Stream\_or\_alias)}
+\ei
+\ei
+
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
