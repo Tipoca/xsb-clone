@@ -146,7 +146,7 @@
 	is_charlist/1,
 	is_cyclic/1,is_acyclic/1,acyclic_term/1,
 	trimcore/0,
-	ground_cyc/1,
+	ground_or_cyclic/1,
    term_depth/2,
    term_size/2,
    term_size_limit/2,

@@ -305,7 +305,7 @@ term_depth(_Term,_Depth):- '_$builtin'(TERM_DEPTH).
 is_cyclic(_Term):- '_$builtin'(IS_CYCLIC).
 is_acyclic(_Term):- '_$builtin'(IS_ACYCLIC).
 acyclic_term(_Term) :- '_$builtin'(IS_ACYCLIC).
-ground_cyc(_Term):- '_$builtin'(GROUND_CYC).
+ground_or_cyclic(_Term):- '_$builtin'(GROUND_CYC).
 
 '$$set_scope_marker':- '$$set_scope_marker'.
 '$$unwind_stack':- '$$unwind_stack'.
