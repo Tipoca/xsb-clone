@@ -5032,7 +5032,12 @@ case CALL_SUBS_SLG_NOT: {
   }
 
   case PRINT_COMPLETION_STACK: {
-    print_completion_stack(CTXT);
+    int stream;
+
+    if (0 > (stream = ptoc_int(CTXTc 2)))
+      print_completion_stack(CTXTc stddbg);
+    else 
+      print_completion_stack(CTXTc open_files[stream].file_ptr);
     break;
   }
 

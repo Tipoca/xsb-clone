@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.30 2011-12-24 20:47:12 tswift Exp $
+** $Id: debug_xsb.h,v 1.31 2011-12-26 16:58:18 tswift Exp $
 ** 
 */
 
@@ -72,7 +72,7 @@ extern void sprint_cyclic_registers(char *,Psc,long);
 extern void sprint_subgoal(char *,  VariantSF );
 extern void sprint_answer_template(char *, CPtr, int, long);
 extern void sprintCyclicTerm(char *, Cell, long);
-extern void print_completion_stack();
+extern void print_completion_stack(FILE*);
 #else
 extern void print_delay_list(struct th_context * ,FILE *, CPtr);
 extern void print_registers(struct th_context * ,FILE *,Psc,long);
@@ -81,7 +81,7 @@ extern void sprint_cyclic_registers(struct th_context *,char *,Psc,long);
 extern void sprint_subgoal(struct th_context *, char *,  VariantSF );
 extern void sprint_answer_template(struct th_context *, char *, CPtr, int, long);
 extern void sprintCyclicTerm(struct th_context *, char *, Cell, long);
-extern void print_completion_stack(struct th_context *);
+extern void print_completion_stack(struct th_context *,FILE*);
 #endif
 
 extern void sprintTerm(char *, Cell, long);

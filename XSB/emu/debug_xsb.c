@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.84 2011-12-21 21:27:51 tswift Exp $
+** $Id: debug_xsb.c,v 1.85 2011-12-26 16:58:18 tswift Exp $
 ** 
 */
 
@@ -1092,7 +1092,7 @@ void sprint_subgoal(CTXTdeclc char *buffer,  VariantSF subg)
 
 /*----------------------------------------------------------------------*/
 
-void print_completion_stack(CTXTdecl)
+void print_completion_stack(CTXTdeclc FILE *fptr)
 {
   int SCCnum = 1; int lastSCCnum;
   VariantSF subg;
@@ -1105,8 +1105,8 @@ void print_completion_stack(CTXTdecl)
      SCCnum++; lastSCCnum = compl_level(temp);
    }
    subg = (VariantSF) *temp;
-   print_subgoal(CTXTc stddbg,subg);
-   fprintf(stddbg," - scc(%d).\n",SCCnum);
+   print_subgoal(CTXTc fptr,subg);
+   fprintf(fptr," - scc(%d).\n",SCCnum);
    temp = next_compl_frame(temp);
   }
 }
