@@ -171,11 +171,27 @@ variables. Associated hooks are not executed~\footnote{In \version ,
     Thus {\tt compare(=, T1, T2)} is equivalent to {\tt T1==T2}.
     Predicate {\tt compare/3} has no associated error conditions.
 
+\index{terms!cyclic}
 \standarditem{ground(+X)}{ground/1}
-    Succeeds if {\tt X} is currently instantiated to a term that is 
-    completely bound (has no uninstantiated variables in it); 
-    otherwise it fails.  Predicate {\tt ground/1} has no associated 
-    error conditions.
+%
+Succeeds if {\tt X} is currently instantiated to a term that is
+completely bound (has no uninstantiated variables in it); otherwise it
+fails.  While {\tt ground/1} has no associated error conditions, it is
+not safe for cyclic terms: if cyclic terms may be an issue use {\tt
+  ground\_or\_cyclic/1}.
+
+\standarditem{ground\_or\_cyclic(+X)}{ground\_or\_cyclic/1} 
+%
+Succeeds if {\tt X} is currently instantiated to a term that is
+completely bound (has no uninstantiated variables in it) {\em or} is a
+cyclic term; otherwise it fails.  The predicate has no associated
+error conditions.
+
+{\tt ground\_or\_cyclic/1} is written to be as efficient as possible,
+and requres a single traversal of a term, regardless of whether the
+term is ground, nonground or cyclic.  However, due to the nature of
+checking for cyclicity, {\tt ground\_or\_cyclic/1} is slower than the
+unsafe {\tt ground/1}.
 
 \ourmoditem{subsumes(?Term1, +Term2)}{subsumes/2}{subsumes}
 %\predindex{subsumes/2~(L)}
