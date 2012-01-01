@@ -21,7 +21,7 @@ Usage:	xsb [flags] [-l]
 	     The top-level command loop driver to be used instead of the
 	     standard one.  Usually needed when XSB is run as a server.
 
-                   -B : specify the boot module to use in lieu of the standard loader
+                    -B : specify the boot module to use in lieu of the standard loader
                     -D : Sets top-level command loop driver to replace the default
                     -t : trace execution at the SLG-WAM instruction level
                          (for this to work, build XSB with the --debug option)
