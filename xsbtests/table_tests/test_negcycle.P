@@ -3,6 +3,7 @@
 p(_X).
 
 % error -- "deep" terms
+test:- set_prolog_flag(unify_with_occurs_check,off),fail.
 test:- set_prolog_flag(max_table_subgoal_action,error),set_prolog_flag(max_table_subgoal_depth,2),fail.
 test:- catch(p(f(f(f(1)))),_E,(writeln(error(e1)),fail)),writeln(success(e1)),fail.
 test:- abolish_table_pred(p/1),fail.

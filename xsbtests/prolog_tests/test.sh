@@ -118,6 +118,10 @@ fi
 ../gentest.sh "$XEMU $options" test_cycle "test."
 #------------------------------------------------------------------------
 ../gentest.sh "$XEMU $options" test_term_size "test."
+#------------------------------------------------------------------------
+../gentest.sh "$XEMU $options" test_memory_ovrflw_1 "first_test."
+#------------------------------------------------------------------------
+../gentest.sh "$XEMU $options" test_memory_ovrflw_2 "second_test."
 
 #------------------------------------------------------------------------
 # TLS: need to remove dylib/so due to 64/32 bit confusion
@@ -167,5 +171,5 @@ else
 	../gentest.sh "$XEMU $options" cregs_make "test."
 fi
 #------------------------------------------------------------------------
-
 ../gentest.sh "$XEMU $options" test_importas "test."
+
