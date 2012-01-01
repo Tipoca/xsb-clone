@@ -322,6 +322,25 @@ l([a|X]):- l(X).          l([a]).
   any other purpose.  If a query exceeds this amount, XSB will abort
   the query with a resource exception and then try to reclaim space
   used by the query.
+
+\index{Prolog flags!{\tt unify\_with\_occurs\_check}}
+\index{occurs check}
+\index{terms!cyclic}
+\item {\tt unify\_with\_occurs\_check} If set to {\tt on}, perform all
+  unification using an occurs check, which makes unification
+  mathematically correct, but computationally complex.  Without the occurs
+  check, the unification 
+\[
+   X = f(X)
+\]
+  will produce a cyclic term {\tt X = f(f(f(f(...))))}; with the
+  occurs check this unification will fail.  Setting the flag to {\tt
+    on} may slow down programs, perhaps drastically, and may be
+  incompatable with some constraint libraries such as CHR.  An
+  alternate to this flag is the ISO predicate {\tt
+    unify\_with\_occurs\_check/2}: see Section~\ref{sec:cyclic} for
+    further discussion.  The default for this flag is {\tt off}.
+%
 \end{itemize}
 
 The following flags affect only the multi-threaded engine.

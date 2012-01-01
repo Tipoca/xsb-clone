@@ -7,8 +7,9 @@ comparison of terms~\footnote{Arithmetic comparison predicates that
 may evaluate terms before comparing them are described in
 Section~\ref{sec:arith-eval}.}.
 
-\index{terms!cyclic}
 \index{occurs check}
+\index{terms!cyclic}
+\index{Prolog flags!{\tt unify\_with\_occurs\_check}}
 Like most Prologs, default unification in XSB does not perform a
 so-called {\em occurs check} --- it does not handle situations where a
 variable {\tt X} may be bound to a structure containing {\tt X} as a
@@ -22,12 +23,14 @@ perform unification without occurs check since without occurs check
 unification is linear in the size of the largest term to be unified,
 while unification with occurs check may be exponential in the size of
 the largest term to be unified.  Most Prolog programmers will rarely,
-if ever, need to concern themselves with cyclic terms or unification
-with occurs check.  However, unification with occurs check can be
-important for certain applications, in particular when Prolog is used
-to implement theorem provers or sophisticated constraint handlers.  As
-a result XSB provides an ISO-style implementation of the predicate
-{\tt unify\_with\_occurs\_check/2} described below.
+need to concern themselves with cyclic terms or unification with
+occurs check.  However, unification with occurs check can be important
+for certain applications, in particular when Prolog is used to
+implement theorem provers or sophisticated constraint handlers.  As a
+result XSB provides an ISO-style implementation of the predicate {\tt
+  unify\_with\_occurs\_check/2} described below, as well as a Prolog
+flag {\tt unify\_with\_occurs\_check} that changes the behavior of
+unification in XSB's engine.
 
 As opposed to unification predicates, term comparison predicates
 described below take into account a standard total ordering of terms,
