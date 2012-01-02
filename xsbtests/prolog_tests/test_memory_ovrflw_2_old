@@ -1,0 +1,3 @@
+ Cannot Expand Local and Global Stacks
+[Query exhausted user-set memory limit, (currently expanding assert space)]
+[Query exhausted user-set memory limit, (currently expanding trail/choice point stack space)]
