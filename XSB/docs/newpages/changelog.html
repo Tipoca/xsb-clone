@@ -20,6 +20,72 @@
 
 <h2> Version 3.3.X (Pignoletto)</h2> 
 
+<h3> Version 3.3.6</h3> 
+<ul>
+<li><b>New features</b></li>
+<ul>
+<li> Call Abstraction is now fully implemented for fixed-order
+stratified programs.  The use of call abstraction can ensure
+termination for <i>all</i> programs with finite models.</li>
+
+<li> A new flag <tt>unify_with_occurs_check</tt> can be set so that
+XSB's core engine performs full unification for all resolution
+operations (including tabling).
+
+<li> A new predicate, <tt>timed_call/3</tt>, allows a goal to be
+executed and repeatedly interrupted every <i>n</i> milliseconds with a
+handler.  During a long computation <tt>timed_call/3</tt> can be used
+to repeatedly reporte on the system state, to dynamically alter
+heuristics, or to enforce resource limits (a more specialized
+predicate, <tt>bounded_call/[3,4]</tt> is also available.)
+</li>
+
+<li> Added predicates and evaluable functions to support the draft ISO
+core revision including <tt>^/2</tt>,<tt>div/2</tt>,
+<tt>xor/2</tt>, <tt>acyclic_term/1</tt>
+and <tt>subsumes_term/2</tt>. (XSB already had most, but not all, of
+these predicates and functions under non-ISO names.)</li>
+
+<li> Another new flag can be used to limit XSB's memory consumption to
+a preset amount.  Using an internally set memory limit, rather than
+the system memory limit, can be important when XSB is used with Java
+through Interprolog or is embedded into a C or Java program.
+
+<li> Various other new predicates have been added to
+XSB.  <tt>print_incomplete_tables/[0,1]</tt> can be used to aid
+debugging.  <tt>term_size/2</tt> and <tt>term_size_limit/2</tt>
+efficiently determine the size of a term..  The various forms of
+the <tt>table_dump</tt> predicate now display the number of calls to a
+tabled subgoal along with SCC information for non-completed
+subgoals.</li>
+</ul>
+
+<li><b> Important bug fixes and enhancements </b></li>
+<ul>
+<li> Fixed issue where XSB was not being configured correctly for Linux kernals 3.*
+</li>
+<li> XSB now performs unification of cyclic terms.  In addition, <tt>
+tnot/1</tt>, <tt>sk_not/1</tt>, <tt>
+abolish_table_call/1</tt>, <tt>atom_chars/2</tt>,
+and <tt>atom_codes/2</tt> are now cycle safe.  The
+predicate <tt>ground_or_cyclic/1</tt> provides a cycle-safe groundness
+check.
+</li>
+<li> Improvided compilation time for files with very large numbers of
+predicates.  Improved performance times
+for <tt>tnot/1</tt>, <tt>is_<a>cyclic/1</tt>,
+and <tt>subsumes_term/2</tt>.
+</li>
+<li> Added optional depth check for interned tries.  Improved
+robustness of exception handling for depth-checks in tables and tries
+and for memory-overflow exceptions.  Made exception handling for
+several ISO predicates more consistent with ISO specifications.
+
+<li> Profiling is now enabled for 64-bit Windows.
+</ul>
+
+</ul>
+
 <h3> Version 3.3.5</h3> 
 <ul>
 <li> The port of XSB to 64-bit Windows has been hardened so that XSB
@@ -180,5 +246,5 @@ in other Prologs.
 
 <hr>
 <address>Email: <a href="mailto:xsb-users@lists.sourceforge.net" >xsb-users@lists.sourceforge.net</a></address>
-<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.7 2011-09-14 22:05:59 tswift Exp $ <!-- hhmts end -->
+<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.8 2012-01-02 20:55:19 tswift Exp $ <!-- hhmts end -->
 </body> </html>
