@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: schedrev_xsb_i.h,v 1.29 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: schedrev_xsb_i.h,v 1.30 2012-01-04 23:19:35 tswift Exp $
 ** 
 */
 
@@ -35,6 +35,9 @@
  * into the scheduling chain.
  */
 
+/* Define COMPL_COND_OFF to turn off completion conditions (in case of emergency :-) */
+//define COMPL_COND_OFF
+
 #define ScheduleConsumer(Consumer,First,Last) {		\
    if ( IsNonNULL(Last) )				\
      nlcp_prevbreg(Last) = Consumer;			\
@@ -44,6 +47,8 @@
  }
 
 #define ANSWER_TEMPLATE nlcp_template(consumer_cpf)
+
+//------------------------------------------------------------------------------------
 
 static CPtr sched_answers(CTXTdeclc VariantSF producer_sf, CPtr *last_consumer)
 {
@@ -55,7 +60,7 @@ static CPtr sched_answers(CTXTdeclc VariantSF producer_sf, CPtr *last_consumer)
   first_sched_cons = last_sched_cons = NULL;
   consumer_cpf = subg_pos_cons(producer_sf);
   //  printf(" scheduling answers for ");
-  //  print_subgoal(CTXTc stddbg, producer_sf);printf("first CCP %x\n",consumer_cpf);
+  //  print_subgoal(CTXTc stddbg, producer_sf);printf(" first CCP %x\n",consumer_cpf);
 
     /**** The producer has answers and consuming calls ****/  
   if ( has_answers(producer_sf) && IsNonNULL(consumer_cpf) 
@@ -81,30 +86,71 @@ static CPtr sched_answers(CTXTdeclc VariantSF producer_sf, CPtr *last_consumer)
 	  ScheduleConsumer(consumer_cpf,first_sched_cons,last_sched_cons);
 	consumer_cpf = nlcp_prevlookup(consumer_cpf);
       }
-    else {
+#ifndef COMPL_COND_OFF
+/*************** with ec optimization **************/
+
+    else {  /* variant case with completion condition checks*/
+      CPtr last_perm_cpf = (CPtr) &(subg_pos_cons(producer_sf));
       while ( IsNonNULL(consumer_cpf) ) {
-	//      printf("  CCP %x\n",consumer_cpf);
 #ifdef CONC_COMPL
 	if( int_val(nlcp_tid(consumer_cpf)) != xsb_thread_id )
 		;
 	else
 #endif
 	  if ( IsNonNULL(ALN_Next(nlcp_trie_return(consumer_cpf))) ) {
-	    xsb_dbgmsg((LOG_SCHED,"Scheduling Answer for: consumer_cpf=%x\n",
-	       (int)consumer_cpf));
+	    VariantSF consumer_sf;
+	    consumer_sf = (VariantSF)nlcp_ptcp(consumer_cpf);
+	    if (subg_is_complete(consumer_sf)) {
+	      //	      printf(" Unchaining ");  print_subgoal(stdout,consumer_sf);   printf(" in ");
+	      //	      print_subgoal(stdout,producer_sf); printf("\n");
+	      //	      printf("  setting @%p to %p\n",last_perm_cpf,nlcp_prevlookup(consumer_cpf));
+	      if (last_perm_cpf == (CPtr) &(subg_pos_cons(producer_sf)))
+		last_perm_cpf = nlcp_prevlookup(consumer_cpf);
+	      else
+		nlcp_prevlookup(last_perm_cpf) = nlcp_prevlookup(consumer_cpf);
+	    }
+	    else {
+	      last_perm_cpf = nlcp_prevlookup(consumer_cpf);
+	      //	      printf(" scheduling answer from "); print_subgoal(stdout,producer_sf); printf(" to ");
+	      //	      print_subgoal(stdout,consumer_sf); printf("\n");
+	      ScheduleConsumer(consumer_cpf,first_sched_cons,last_sched_cons); 
+	    }
+	  }
+	consumer_cpf = nlcp_prevlookup(consumer_cpf);
+      }
+    }
+    if (subg_is_completed(producer_sf))
+      subg_pos_cons(producer_sf) = NULL;
+//------------------/------------------/------------------/------------------/------------------
+#else     
+/*************** without ec optimization **************/
+    else {
+      while ( IsNonNULL(consumer_cpf) ) {
+#ifdef CONC_COMPL
+	if( int_val(nlcp_tid(consumer_cpf)) != xsb_thread_id )
+		;
+	else
+#endif
+	  //	  if (subg_is_complete((VariantSF)nlcp_ptcp(consumer_cpf))) pprintf("checking completed\n");
+	  if ( IsNonNULL(ALN_Next(nlcp_trie_return(consumer_cpf))) ) {
+	VariantSF consumer_sf;
+	consumer_sf = (VariantSF)nlcp_ptcp(consumer_cpf);
+	//	printf(" scheduling answer from"); print_subgoal(stdout,producer_sf); printf(" to ");
+	//	print_subgoal(stdout,consumer_sf); printf("\n");
 	    ScheduleConsumer(consumer_cpf,first_sched_cons,last_sched_cons); 
 	  }
 	consumer_cpf = nlcp_prevlookup(consumer_cpf);
       }
     }
+#endif
+//------------------/------------------/------------------/------------------/------------------
     if( last_consumer )
       *last_consumer = last_sched_cons;
     if( last_sched_cons ) {
       /* by default the schain points to the leader */
       nlcp_prevbreg(last_sched_cons) = breg ;
-      xsb_dbgmsg((LOG_SCHED, 
-		  "scheduling fixed point base for last %x at %x @breg %x\n",
-		  last_sched_cons,breg,*tcp_pcreg(breg)));
+      //      printf("scheduling fixed point base for last %x at %x @breg %x\n",
+      //	     last_sched_cons,breg,*tcp_pcreg(breg));
     }
   } /* if any answers and active nodes */
 
@@ -174,7 +220,9 @@ static CPtr find_fixpoint(CTXTdeclc CPtr leader_csf, CPtr producer_cpf)
       if (subg_pos_cons(currSubg)) {
 	tcp_prevbreg(subg_pos_cons(currSubg)) = breg;
       }
+#ifdef COMPL_COND_OFF
       else xsb_warn("Subgoal without any consumer is in non-trivial SCC in Local\n");
+#endif
 #endif
 
     if ((tmp_sched = sched_answers(CTXTc currSubg, &last_cons))) {
