@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.P,v 1.21 2011-09-06 17:33:46 dwarren Exp $
+** $Id: cp_opt.P,v 1.22 2012-01-06 15:40:10 tswift Exp $
 ** 
 */
 
@@ -364,6 +364,7 @@ equate_but_argno([X|PArgs],[Y|P1Args],CurArg,ArgList,VarList,A,B,ArgNo) :-
 	CurArg1 is CurArg + 1,
 	equate_but_argno(PArgs,P1Args,CurArg1,ArgList0,VarList0,A,B,ArgNo).
 
+%:- import console_writeln/1 from standard.
 extract_aggr_spec(Spec,ArgNo,ExistArgList,AggSpec) :-
 	functor(Spec,_,Arity),
 	get_aggr_spec0(1,Spec,Arity,ExistArgList,ArgNo,AggSpec).
@@ -373,7 +374,7 @@ get_aggr_spec0(ArgNo,Spec,Arity,ExistArgList,OpArgNo,OpSpec) :-
 	 ->	ExistArgList = []
 	 ;	arg(ArgNo,Spec,ArgVal),
 		ArgNo1 is ArgNo+1,
-		(nonvar(ArgVal)
+		(non_cpopt_var(ArgVal)
 		 ->	(ArgVal == '^'
 			 ->	ExistArgList = [ArgNo|EAL1],
 				get_aggr_spec0(ArgNo1,Spec,Arity,EAL1,OpArgNo,OpSpec)
@@ -384,6 +385,8 @@ get_aggr_spec0(ArgNo,Spec,Arity,ExistArgList,OpArgNo,OpSpec) :-
 		 ;	get_aggr_spec0(ArgNo1,Spec,Arity,ExistArgList,OpArgNo,OpSpec)
 		)
 	).
+
+non_cpopt_var(Term):- nonvar(Term),Term \= '$$var'(_).
 
 ensure_imported(Pred/Arity,Mod,SymTab) :-
 	sym_insert(Mod,0,[module],SymTab,_),
