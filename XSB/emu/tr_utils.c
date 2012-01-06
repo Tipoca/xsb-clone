@@ -1312,10 +1312,12 @@ void  reclaim_del_ret_list(CTXTdeclc VariantSF sg_frame) {
   ALNptr x,y;
 
   x = compl_del_ret_list(subg_compl_stack_ptr(sg_frame));
+  //  printf("reclaim del ret list for "); print_subgoal(stddbg,sg_frame); printf("\n");
   
   while (x != NULL) {
     y = x;
     x = ALN_Next(x);
+    //    printf("x %p y %p\n",x,y);
 /*      delete_branch(ALN_Answer(y), &subg_ans_root_ptr(sg_frame)); */
 #ifndef MULTI_THREAD
     SM_DeallocateStruct(smALN,y);
@@ -1327,6 +1329,7 @@ void  reclaim_del_ret_list(CTXTdeclc VariantSF sg_frame) {
    }
 #endif
   }
+  compl_del_ret_list(subg_compl_stack_ptr(sg_frame)) = NULL;
 }
  
 /*----------------------------------------------------------------------*/
