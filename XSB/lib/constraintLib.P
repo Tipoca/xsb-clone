@@ -88,28 +88,21 @@ when(Condition, Goal) :-
 /*
 strip_module(RT, M, T) :-
 	strip_module(RT, T, M, usermod).
-
 strip_module(Module:RT2, T, M, _) :-
 	atom(Module), !,
 	strip_module(RT2, T, M, Module).
-
 strip_module(T, T, M, M).
 */
 
-trigger(nonvar(X),Goal) :-
-	trigger_nonvar(X,Goal).
+trigger(nonvar(X),Goal) :-	trigger_nonvar(X,Goal).
 
-trigger(ground(X),Goal) :-
-	trigger_ground(X,Goal).
+trigger(ground(X),Goal) :-	trigger_ground(X,Goal).
 
-trigger(?=(X,Y),Goal) :-
-	trigger_determined(X,Y,Goal).
+trigger(?=(X,Y),Goal) :-	trigger_determined(X,Y,Goal).
 
-trigger((G1,G2),Goal) :-
-	trigger_conj(G1,G2,Goal).
+trigger((G1,G2),Goal) :- 	trigger_conj(G1,G2,Goal).
 
-trigger((G1;G2),Goal) :-
-	trigger_disj(G1,G2,Goal).
+trigger((G1;G2),Goal) :-	trigger_disj(G1,G2,Goal).
 
 trigger_nonvar(X,Goal) :-
 	( nonvar(X) ->
@@ -141,7 +134,6 @@ check_disj(Disj,Goal) :-
 		true
 	).
 
-
 trigger_determined(X,Y,Goal) :-
 	unifiable(X,Y,Unifier),
 	!,
@@ -151,10 +143,7 @@ trigger_determined(X,Y,Goal) :-
 		put_attr(Det,when,det(trigger_determined(X,Y,Goal))),
 		suspend_list(Unifier,wake_det(Det))
 	).
-	
-trigger_determined(_,_,Goal) :-
-	call(Goal).
-
+trigger_determined(_,_,Goal) :- call(Goal).
 
 wake_det(Det) :-
 	( var(Det) ->
@@ -173,15 +162,12 @@ suspend_list([V=W|Unifier],Goal) :-
 	( var(W) -> suspend(W,Goal) ; true),
 	suspend_list(Unifier,Goal).
 
-
-
 suspend(V,Goal) :-
 	( get_attr(V,when,List) ->
 		put_attr(V,when,[Goal|List])
 	;
 		put_attr(V,when,[Goal])
 	).
-
 
 :- install_verify_attribute_handler(when,Attr,Other,attr_unify_hook(Attr,Other)).
 
@@ -192,7 +178,6 @@ attr_unify_hook(List,Other) :-
 	attr_unify_hook1(Other,List2),
 	call_list(List),
 	call_list(List2).
-
 attr_unify_hook(_Attr,_Other).
 
 attr_unify_hook1(Other,List) :-
@@ -200,7 +185,6 @@ attr_unify_hook1(Other,List) :-
 	get_attr(Other,when,List),
 	del_attr(Other,when),
 	!.	
-
 attr_unify_hook1(_Other,[]).
 
 :- install_attribute_portray_hook(when,Attr,portray_when(Attr)).
@@ -221,7 +205,6 @@ portray_trigger(trigger_ground(V,Constraint)):- !,
 	    write('trigger '),write(Constraint),write(' when ground'(V)).
 
 call_list([]) :- !.
-
 call_list([G|Gs]) :-
 	call(G),
 	!,
@@ -234,6 +217,24 @@ call_list([G|Gs]) :-
 %call_list([_G|Gs]) :-
 %	call_list(Gs).
 
+:- export get_trigger_goal/2.
+get_trigger_goal(trigger_nonvar(_,Trigger),Goal) :-
+       !,
+       get_trigger_goal(Trigger,Goal).
+get_trigger_goal(trigger_ground(_,Trigger),Goal) :-
+       !,
+       get_trigger_goal(Trigger,Goal).
+get_trigger_goal(trigger(_,Trigger),Goal) :-
+       !,
+       get_trigger_goal(Trigger,Goal).
+get_trigger_goal(check_disj(Det,Trigger),Goal) :-
+       !,
+       %% note: if Det is nonvar, the trigger's goal has already been used
+       %% so we just fail
+       var(Det),
+       Det = (-),
+       get_trigger_goal(Trigger,Goal).
+get_trigger_goal(Trigger,Trigger).
 
 /*****************************************************/
 
