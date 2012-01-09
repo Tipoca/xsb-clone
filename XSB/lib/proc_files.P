@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: proc_files.P,v 1.9 2011-06-23 01:22:51 dwarren Exp $
+** $Id: proc_files.P,v 1.10 2012-01-09 21:37:13 dwarren Exp $
 ** 
 */
 
@@ -50,7 +50,7 @@ load_dsv(FileName,PSpec,Options) :-
 	),
 	(member(delimiter=[Delim],Options)
 	 ->	true
-	 ;	Delim = 0'"'
+	 ;	Delim = 0'"' %"
 	),
 	load_dsv(FileName,PSpec,Sep,Delim,Options).
 
@@ -61,7 +61,7 @@ read_dsv(FileName,Options,Term) :-
 	),
 	(member(delimiter=[Delim],Options)
 	 ->	true
-	 ;	Delim = 0'"'
+	 ;	Delim = 0'"' %"
 	),
 	functor(Term,Pred,Arity),
 	length(Types,Arity),	% no constraints
@@ -109,6 +109,7 @@ load_dsv(FileName,PSpec,Sep,Delim,Options) :-
 load_dsv(FileName,PSpec,Sep,Delim,Options,Types,Args) :-
 	cputime(T0),
 	conset('__errcnt',0),
+	conset('__recsread',0),
 	conset('__linesread',0),
 	file_open(FileName,read,Stream),
 	(member(returns=Returns,Options)
@@ -120,11 +121,11 @@ load_dsv(FileName,PSpec,Sep,Delim,Options,Types,Args) :-
 	(CodeFields == end_of_file
 	 ->	!,
 		file_close(Stream),
-		conget('__linesread',LinesRead),
-		time_message(T0,(FileName,' loaded (delimited) ',LinesRead,' records')),
+		conget('__recsread',RecsRead),
+		time_message(T0,(FileName,' loaded (delimited) ',RecsRead,' records')),
 		fail
-	 ;	coninc('__linesread',LinesRead),
-		(LinesRead =:= 1,member(titles,Options)
+	 ;	coninc('__recsread',RecsRead),
+		(RecsRead =:= 1,member(titles,Options)
 		 ->	fail
 		 ;	 atom_codes_list(Fields,CodeFields),
 			(atom(PSpec)
@@ -157,7 +158,9 @@ cvt_types([],[],[],_) :- !.
 cvt_types([],_,_,Fields) :- !,
 	coninc('__errcnt',ECnt),
 	(ECnt < 10
-	 ->	write(userout,'ERROR: Wrong length line: '),
+	 ->	write(userout,'ERROR: Wrong length line '),
+		conget('__linesread',LinesRead),
+		write(userout,''(LinesRead)),write(userout,': '),
 		writeq(userout,Fields),nl(userout),
 		writeln('Fields from line extended with variables'),nl
 	 ;	ECnt =:= 10
@@ -167,7 +170,9 @@ cvt_types([],_,_,Fields) :- !,
 cvt_types(_,_,[],Fields) :- !,
 	coninc('__errcnt',ECnt),
 	(ECnt < 10
-	 ->	write(userout,'ERROR: Wrong length line: '),
+	 ->	write(userout,'ERROR: Wrong length line '),
+		conget('__linesread',LinesRead),
+		write(userout,''(LinesRead)),write(userout,': '),
 		writeq(userout,Fields),nl(userout),
 		writeln('Extra fields in line truncated'),nl
 	 ;	ECnt =:= 10
@@ -211,11 +216,13 @@ cvt_types([F|Fs],[T|Ts],[A|As],Fields) :-
 	
 delim_file_process(Stream,Sep,Delim,CodeFields):-
 	(file_read_line_list(Stream,List)
-	 ->	(break_into_code_fields(Stream,CodeFields,List,Sep,Delim)
+	 ->	coninc('__linesread'),
+		(break_into_code_fields(Stream,CodeFields,List,Sep,Delim)
 		 ;
 		 repeat,
 		 (file_read_line_list(Stream,CList)
-		  ->	 break_into_code_fields(Stream,CodeFields,CList,Sep,Delim)
+		  ->	 coninc('__linesread'),
+			 break_into_code_fields(Stream,CodeFields,CList,Sep,Delim)
 		  ;	 !,
 			 CodeFields = end_of_file
 		 )
@@ -238,7 +245,8 @@ delim_file_process_fixed(Stream,Sep,Delim,Returns,NumFields,Fields) :-
 
 delim_file_process_fixed(Stream,Sep,Delim,Returns,NumFields,PrevFields,Fields) :-
 	(file_read_line_list(Stream,List)
-	 ->	break_into_code_fields(Stream,CodeFields,List,Sep,Delim),
+	 ->	coninc('__linesread'),
+		break_into_code_fields(Stream,CodeFields,List,Sep,Delim),
 		(NumFields > 0
 		 ->	length(CodeFields,Len),
 			(Len < NumFields
@@ -287,20 +295,20 @@ next_code_field(Stream,Line,Sep,Delim,Field,Rest) :-
 
 delim_parse_quoted(Stream,[13,10],Sep,Delim,[13,10|TRest],Flg,Out):-!,
     (file_read_line_list(Stream,NextLine)
-     ->
-     delim_parse_quoted(Stream,NextLine,Sep,Delim,TRest,Flg,Out)
-     ;
-     warning(('Unexpected end-of-file')),
-     TRest=[],
-     Out=[]).
+     ->	    coninc('__linesread'),
+	    delim_parse_quoted(Stream,NextLine,Sep,Delim,TRest,Flg,Out)
+     ;	    warning(('Unexpected end-of-file')),
+	    TRest=[],
+	    Out=[]
+    ).
 delim_parse_quoted(Stream,[10],Sep,Delim,[10|TRest],Flg,Out):-!,
     (file_read_line_list(Stream,NextLine)
-     ->
-     delim_parse_quoted(Stream,NextLine,Sep,Delim,TRest,Flg,Out)
-     ;
-     warning(('Unexpected end-of-file')),
-     TRest=[],
-     Out=[]).
+     ->	    coninc('__linesread'),
+	    delim_parse_quoted(Stream,NextLine,Sep,Delim,TRest,Flg,Out)
+     ;	    warning(('Unexpected end-of-file')),
+	    TRest=[],
+	    Out=[]
+    ).
 delim_parse_quoted(_,[Delim,13,10],_,Delim,[],_,[]):-!.
 delim_parse_quoted(_,[Delim,10],_,Delim,[],_,[]):-!.
 delim_parse_quoted(_,[Delim|Sep],Sep,Delim,[],_,[13,10]):-!. % eol without marker (eof), so add it
