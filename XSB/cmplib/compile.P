@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: compile.P,v 1.40 2011-12-22 21:24:46 tswift Exp $
+** $Id: compile.P,v 1.41 2012-01-11 19:27:58 dwarren Exp $
 ** 
 */
 
@@ -159,7 +159,7 @@ abort_if_syntax_errors(Modname) :-
 /*	Performs necessary module-level analyses for tabling.		*/
 /*============================================================*/
 
-table_process(ModuleIn, ModuleOut, SFile) :-
+table_process(ModuleIn, ModuleOut, _SFile) :-
 	( option(auto_table) -> perform_auto_table(ModuleIn) ; true ),
 	( option(suppl_table) ->
 		supplementary_tabling(ModuleIn, ModuleMid)
