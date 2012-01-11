@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.130 2011-10-21 14:19:06 dwarren Exp $
+** $Id: parse.P,v 1.131 2012-01-11 17:32:25 tswift Exp $
 ** 
 */
 
@@ -619,6 +619,7 @@ transform_slash_to_skel(Spec,ModName,SymTab,Skel) :-
 	 ;	Skel = Skel0
 	).
 
+%:- import console_writeln/1 from standard.
 
 /*======================================================================*/
 /* parse_directive(+Directive, #Symbol_Table,ModName)			*/
