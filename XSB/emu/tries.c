@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.159 2011-11-28 01:17:39 tswift Exp $
+** $Id: tries.c,v 1.160 2012-01-12 14:36:40 dwarren Exp $
 ** 
 */
 
@@ -844,7 +844,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
   if (--list_depth_ctr <= 0)	{						\
     if (flags[MAX_TABLE_ANSWER_LIST_ACTION] == XSB_WARNING) {		\
       char buffer[2*MAXTERMBUFSIZE];						\
-      sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
+      sprint_cyclic_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
 		       MAXTERMBUFSIZE);					\
       xsb_warn("Exceeded max answer list depth of %d in call %s\n",	\
 		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
@@ -856,7 +856,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
     }									\
     else {								\
       char buffer[2*MAXTERMBUFSIZE];						\
-      sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
+      sprint_cyclic_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
 		       MAXTERMBUFSIZE);					\
       xsb_abort("Exceeded max answer list depth of %d in call %s\n",	\
 		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
@@ -1892,7 +1892,7 @@ if (ABSTRACTING_ATTVARS) {
 
   if (vcs_tnot_call && ctr > 0) {
       char buffer[2*MAXTERMBUFSIZE];						
-      sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),MAXTERMBUFSIZE); 
+      sprint_cyclic_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),MAXTERMBUFSIZE); 
       xsb_abort("Floundering goal in tnot/1 %s\n",buffer);
   }
     
@@ -2041,7 +2041,7 @@ if (ABSTRACTING_ATTVARS) {
     }									\
     else {								\
       char buffer[2*MAXTERMBUFSIZE];					\
-      sprintTerm( buffer,term,MAXTERMBUFSIZE);			\
+      sprintCyclicTerm(CTXTc buffer,term,MAXTERMBUFSIZE);		\
       safe_delete_branch(Paren);					\
       if (is_cyclic(CTXTc term))					\
 	xsb_abort("Cyclic term in term to be trie-interned %s\n",buffer); \
@@ -2059,7 +2059,7 @@ if (ABSTRACTING_ATTVARS) {
     }									\
     else {								\
       char buffer[2*MAXTERMBUFSIZE];					\
-      sprintTerm(buffer,term,MAXTERMBUFSIZE);			\
+      sprintCyclicTerm(buffer,term,MAXTERMBUFSIZE);			\
       safe_delete_branch(Paren);					\
       if (is_cyclic(CTXTc term))					\
 	xsb_abort("Cyclic term in term to be trie-interned %s\n",buffer); \
