@@ -5009,7 +5009,7 @@ case CALL_SUBS_SLG_NOT: {
 
     if (TableStatusFrame_pred_type(TSF) < 0) {
       char buffer[2*MAXTERMBUFSIZE];						
-      sprintTerm(buffer, ptoc_tag(CTXTc 2),(long)flags[MAX_TABLE_ANSWER_DEPTH]);
+      sprintCyclicTerm(buffer, ptoc_tag(CTXTc 2),(long)flags[MAX_TABLE_ANSWER_DEPTH]);
       xsb_abort("Illegal (non-tabled?) subgoal in tnot/1: %s\n", buffer);		
     }	
 
