@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.87 2012-01-04 23:19:35 tswift Exp $
+** $Id: debug_xsb.c,v 1.88 2012-01-12 14:33:07 dwarren Exp $
 ** 
 */
 
@@ -284,15 +284,15 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
   case XSB_REF1:
     //    sprintf(buffer+size, "_v%"Intfmt, (UInteger)vptr(term));
     sprintf(buffer+size, "_v%"Intfmt, (UInteger)vptr(term));
-    return size+2+sizeof(UInteger);
+    return size+2+3*sizeof(UInteger);
   case XSB_ATTV:
     if (flags[WRITE_ATTRIBUTES] == WA_DOTS) {
       sprintf(buffer+size, "_attv%p {...} ", (CPtr)dec_addr(term));
-      return size+15+sizeof(CPtr);
+      return size+15+2*sizeof(CPtr);
     }
     else {
       sprintf(buffer+size, "_attv%p ", (CPtr)dec_addr(term));
-      return size+9+sizeof(CPtr);
+      return size+9+2*sizeof(CPtr);
     }
   case XSB_STRUCT:
     /* NOTE: Below is a check for boxed numbers. If such is the case,
