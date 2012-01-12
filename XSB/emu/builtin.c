@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.385 2011-12-19 21:39:25 waltergwilson Exp $
+** $Id: builtin.c,v 1.386 2012-01-12 14:27:36 dwarren Exp $
 **
 */
 
@@ -3056,7 +3056,7 @@ case WRITE_OUT_PROFILE:
     case CHECK_CYCLIC: {
       if (is_cyclic(CTXTc (Cell) ptoc_tag(CTXTc 1))) {
 	char buffer[2*MAXTERMBUFSIZE]; 
-	sprintTerm(buffer, (Cell) ptoc_tag(CTXTc 1), (long)flags[MAX_TABLE_SUBGOAL_DEPTH]);
+	sprintCyclicTerm(buffer, (Cell) ptoc_tag(CTXTc 1), (long)flags[MAX_TABLE_SUBGOAL_DEPTH]);
 	xsb_abort("Illegal cyclic term in arg %d of %s: %s\n",ptoc_int(CTXTc 3),ptoc_string(CTXTc 2),buffer);
       }
       return TRUE;
