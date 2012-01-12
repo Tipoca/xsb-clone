@@ -496,9 +496,9 @@ X = f(_h245)
 If {\tt X} and {\tt Y} can unify, succeeds unifying {\tt Unifier} with
 a list of terms of the form {\tt Var = Value} representing a most
 general unifier of {\tt X} and {\tt Y}.\  {\tt unifiable/3} can handle
-cyclic terms. Attributed variables are handles as normal
+cyclic terms. Attributed variables are handled as normal
 variables. Associated hooks are not executed~\footnote{In \version ,
-  {\tt unifiable/3} is written as a Prolog predicate and so is slower
+  {\tt unifiable/3} is implemented as a Prolog predicate and so is slower
   than many of the predicates in this section.}.
 
 \ourmoditem{setarg(+Index,+Term,+Value)}{constraintLib}\index{\texttt{setarg/3}}
