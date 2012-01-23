@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.89 2012-01-23 02:37:08 tswift Exp $
+** $Id: debug_xsb.c,v 1.90 2012-01-23 14:25:28 dwarren Exp $
 ** 
 */
 
@@ -277,7 +277,7 @@ CTptr_2 cycle_trail_2;
 #define is_marked_cyclic(Term) (*clref_val(Term) == makestring(cyclic_string))
 
 void mark_cyclic(CTXTdeclc Cell Term) { 
-  Cell preTerm;
+  Cell preTerm, visited_string;
 
   cycle_trail_top = -1;
 
@@ -291,7 +291,7 @@ void mark_cyclic(CTXTdeclc Cell Term) {
 
   //  printf("visited %p %s\n",visited_psc,get_name(visited_psc));
   //  printf("cyclic_string %p\n",cyclic_string);
-  Cell visited_string = makestring(string_find("_$visited",1));
+  visited_string = makestring(string_find("_$visited",1));
 
   push_cycle_trail(Term);	
   //  printf("Term starting %p\n",Term);print_cell_tag(Term);
@@ -555,18 +555,18 @@ void printterm(FILE *fp, Cell term, long depth) {
 
 void printCyclicTerm(CTXTdeclc Cell term) {
   mark_cyclic(CTXTc term);
-  printterm(stddbg, term, flags[WRITE_DEPTH]);	       
+  printterm(stddbg, term, (long)flags[WRITE_DEPTH]);	       
 }
 
 /* Assumes MAXTERMBUFSIZE */
 void sprintCyclicTerm(CTXTdeclc char *buffer, Cell Term) {
   mark_cyclic(CTXTc Term);
-  sprint_term(buffer, 0, Term, CAR, flags[WRITE_DEPTH]);
+  sprint_term(buffer, 0, Term, CAR, (long)flags[WRITE_DEPTH]);
   unwind_cycle_trail;
 }
 
 void sprintTerm(char *buffer, Cell Term) {
-  sprint_term(buffer, 0, Term, CAR, flags[WRITE_DEPTH]);
+  sprint_term(buffer, 0, Term, CAR, (long)flags[WRITE_DEPTH]);
 }
 
 static int sprint_cyclic_term_nonvoid(CTXTdeclc char *buffer, int size, Cell Term,long depth) {
