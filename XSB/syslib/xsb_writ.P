@@ -116,16 +116,10 @@ write_double(Str,Num) :-
 	xsb_stream_unlock(Str).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+/*
 :- local '_$lwrite_depth_level'.
 :- conset('_$lwrite_depth_level', 64).
-
-set_file_write_depth(X) :-
-	conset('_$lwrite_depth_level',X).
-
-get_file_write_depth(X) :-
-	conget('_$lwrite_depth_level',X).
-
+*/
 
 dot_attributes(Var,Str):- 
 	get_attributes(Var,Atts),
@@ -171,7 +165,8 @@ portray_attributes_1([Mod,Attr|T],File):-
 	 portray_attributes_1(T,File).
 
 l_write(File,T,Prec) :-
-	conget('_$lwrite_depth_level',Level),
+        stat_flag(WRITE_DEPTH,Level),
+%	conget('_$lwrite_depth_level',Level),
 	stat_flag(WRITE_ATTRIBUTES,AttrAct),
 	l_write(File,T,Prec,Level,AttrAct).
 

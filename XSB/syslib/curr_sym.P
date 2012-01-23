@@ -723,7 +723,7 @@ xsb_flag(write_attributes,Value):-
 	      ;  (V =:= WA_PORTRAY -> Value = portray
   	           ;  V =:= WA_WRITE -> Value = write) ) ).
 xsb_flag(write_depth,Depth):- 
-	get_file_write_depth(Depth).
+	stat_flag(WRITE_DEPTH, Depth).
 xsb_flag(backtrace_on_error, BT) :-
 	stat_flag(BACKTRACE, Value), 
 	( Value =:= 0 -> BT = off ; BT = on ).
@@ -879,7 +879,9 @@ set_xsb_flag(Type,Val):-
 	set_xsb_flag_1(Type,Val).
 
 set_xsb_flag_1(write_depth, Depth) :- !, 
-	set_file_write_depth(Depth).
+	(integer(Depth) -> 
+	    stat_set_flag(WRITE_DEPTH, Depth)
+	;   type_error(integer,Depth,set_xsb_flag/2,2) ).
 set_xsb_flag_1(backtrace_on_error, BT) :-  !, 
 	(BT == off -> Value = 0 ; Value = 1),
 	stat_set_flag(BACKTRACE, Value). 
@@ -1039,7 +1041,6 @@ set_xsb_flag_1(unify_with_occurs_check, OnOff) :-!,
 	(OnOff == on -> 
 	    stat_set_flag(UNIFY_WITH_OCCURS_CHECK_FLAG, 1)
 	 ;  stat_set_flag(UNIFY_WITH_OCCURS_CHECK_FLAG, 0)).
-:- import writeln/1 from standard.
 set_xsb_flag_1(max_memory,Max):-!,
 	(integer(Max),Max > 0 -> 
 	    stat_set_flag(MAX_MEMORY,Max)
