@@ -5009,7 +5009,7 @@ case CALL_SUBS_SLG_NOT: {
 
     if (TableStatusFrame_pred_type(TSF) < 0) {
       char buffer[2*MAXTERMBUFSIZE];						
-      sprintCyclicTerm(buffer, ptoc_tag(CTXTc 2),(long)flags[MAX_TABLE_ANSWER_DEPTH]);
+      sprintCyclicTerm(CTXTc buffer, ptoc_tag(CTXTc 2));
       xsb_abort("Illegal (non-tabled?) subgoal in tnot/1: %s\n", buffer);		
     }	
 
@@ -5043,6 +5043,17 @@ case CALL_SUBS_SLG_NOT: {
       print_completion_stack(CTXTc open_files[stream].file_ptr);
     break;
   }
+
+  case PRINT_CYCLIC_TERM: {
+    printCyclicTerm(CTXTc ptoc_tag(CTXTc 2));
+    break;		    
+  }
+
+  case MARK_TERM_CYCLIC_1: {
+    mark_cyclic(CTXTc ptoc_tag(CTXTc 2));
+    return TRUE;
+  }
+
 
   } /* switch */
   return TRUE;

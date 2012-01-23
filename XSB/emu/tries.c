@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.160 2012-01-12 14:36:40 dwarren Exp $
+** $Id: tries.c,v 1.161 2012-01-23 02:37:08 tswift Exp $
 ** 
 */
 
@@ -816,8 +816,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
   if (--depth_ctr <= 0)	{						\
     if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_WARNING) {		\
       char buffer[2*MAXTERMBUFSIZE];					\
-      sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
-		       MAXTERMBUFSIZE);					\
+      sprintCyclicRegisters(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)));	\
       xsb_warn("Exceeded max answer term depth of %d in call %s\n",	\
 	       (int)flags[MAX_TABLE_ANSWER_DEPTH],buffer);		\
     }									\
@@ -828,8 +827,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
     }									\
     else {								\
       char buffer[2*MAXTERMBUFSIZE];					\
-      sprint_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
-		       MAXTERMBUFSIZE);					\
+      sprintCyclicRegisters(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr))); \
       safe_delete_branch(Paren);					\
       if (is_cyclic(CTXTc (Cell) (cptr -i))) {				\
 	xsb_abort("Cyclic term in arg %d of tabled subgoal %s\n",i+1,buffer); \
@@ -844,8 +842,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
   if (--list_depth_ctr <= 0)	{						\
     if (flags[MAX_TABLE_ANSWER_LIST_ACTION] == XSB_WARNING) {		\
       char buffer[2*MAXTERMBUFSIZE];						\
-      sprint_cyclic_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
-		       MAXTERMBUFSIZE);					\
+      sprintCyclicRegisters(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)));	\
       xsb_warn("Exceeded max answer list depth of %d in call %s\n",	\
 		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
     }									\
@@ -856,8 +853,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
     }									\
     else {								\
       char buffer[2*MAXTERMBUFSIZE];						\
-      sprint_cyclic_registers(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)),	\
-		       MAXTERMBUFSIZE);					\
+      sprintCyclicRegisters(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)));	\
       xsb_abort("Exceeded max answer list depth of %d in call %s\n",	\
 		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
     }									\
@@ -1584,22 +1580,22 @@ int vcs_tnot_call = 0;
       if (vcs_tnot_call) {						\
 	vcs_tnot_call = 0;						\
 	if (is_cyclic(CTXTc (Cell)call_arg)) {				\
-	  sprint_cyclic_registers(CTXTc buffer, TIF_PSC(CallInfo_TableInfo(*call_info)), MAXTERMBUFSIZE); \
+	  sprintCyclicRegisters(CTXTc buffer, TIF_PSC(CallInfo_TableInfo(*call_info))); \
 	  xsb_abort("Cyclic term in arg %d of tabled subgoal tnot(%s)\n",i+1,buffer); \
 	}                            					\
 	else {								\
-	  sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),MAXTERMBUFSIZE); \
+	  sprintNonCyclicRegisters(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info))); \
 	  xsb_abort("Exceeded max table subgoal depth of %d in arg %i in tnot(%s)\n", \
 		    (int) flags[MAX_TABLE_SUBGOAL_DEPTH],i+1,buffer);	\
 	}								\
       }									\
       else {								\
 	if (is_cyclic(CTXTc (Cell) call_arg)) {				\
-	  sprint_cyclic_registers(CTXTc buffer, TIF_PSC(CallInfo_TableInfo(*call_info)), MAXTERMBUFSIZE); \
+	  sprintCyclicRegisters(CTXTc buffer, TIF_PSC(CallInfo_TableInfo(*call_info))); \
 	  xsb_abort("Cyclic term in arg %d of tabled subgoal %s\n",i+1,buffer);	\
 	}								\
 	else {								\
-	  sprint_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),MAXTERMBUFSIZE); \
+	  sprintNonCyclicRegisters(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info))); \
 	  xsb_abort("Exceeded max table subgoal depth of %d in arg %i in %s\n",	\
 		  (int) flags[MAX_TABLE_SUBGOAL_DEPTH],i+1,buffer);	\
 	}								\
@@ -1892,7 +1888,7 @@ if (ABSTRACTING_ATTVARS) {
 
   if (vcs_tnot_call && ctr > 0) {
       char buffer[2*MAXTERMBUFSIZE];						
-      sprint_cyclic_registers(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info)),MAXTERMBUFSIZE); 
+      sprintCyclicRegisters(CTXTc buffer,TIF_PSC(CallInfo_TableInfo(*call_info))); 
       xsb_abort("Floundering goal in tnot/1 %s\n",buffer);
   }
     
@@ -2041,7 +2037,7 @@ if (ABSTRACTING_ATTVARS) {
     }									\
     else {								\
       char buffer[2*MAXTERMBUFSIZE];					\
-      sprintCyclicTerm(CTXTc buffer,term,MAXTERMBUFSIZE);		\
+      sprintCyclicTerm(CTXTc buffer,term);				\
       safe_delete_branch(Paren);					\
       if (is_cyclic(CTXTc term))					\
 	xsb_abort("Cyclic term in term to be trie-interned %s\n",buffer); \
@@ -2054,12 +2050,13 @@ if (ABSTRACTING_ATTVARS) {
 #define CHECK_TRIE_INTERN_LIST_DEPTH					\
   if (--list_depth_ctr <= 0)	{					\
     if (flags[MAX_TABLE_ANSWER_LIST_ACTION] == XSB_FAILURE) {		\
+      /*      printCyclicTerm(CTXTc term);				*/ \
       safe_delete_branch(Paren);					\
       return(NULL);							\
     }									\
     else {								\
       char buffer[2*MAXTERMBUFSIZE];					\
-      sprintCyclicTerm(buffer,term,MAXTERMBUFSIZE);			\
+      sprintCyclicTerm(CTXTc buffer,term);				\
       safe_delete_branch(Paren);					\
       if (is_cyclic(CTXTc term))					\
 	xsb_abort("Cyclic term in term to be trie-interned %s\n",buffer); \

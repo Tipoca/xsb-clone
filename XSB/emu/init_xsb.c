@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.183 2011-12-24 21:09:10 tswift Exp $
+** $Id: init_xsb.c,v 1.184 2012-01-23 02:37:08 tswift Exp $
 ** 
 */
 
@@ -88,8 +88,8 @@
 #define COMPLSTACK_DEFAULT_SIZE  (8*2)
 #else /* SEQUENTIAL OR CONC_COMPL */
 #define PDL_DEFAULT_SIZE         (64*2)
-#define GLSTACK_DEFAULT_SIZE    (768*2)
-#define TCPSTACK_DEFAULT_SIZE   (768*2)
+#define GLSTACK_DEFAULT_SIZE    (K*2)
+#define TCPSTACK_DEFAULT_SIZE   (K*2)
 #define COMPLSTACK_DEFAULT_SIZE  (64*2)
 #endif /* SHARED_COMPL_TABLES */
 #else /* 32 BIT */
@@ -100,8 +100,8 @@
 #define COMPLSTACK_DEFAULT_SIZE  8
 #else /* SEQUENTIAL OR CONC_COMPL*/
 #define PDL_DEFAULT_SIZE         64
-#define GLSTACK_DEFAULT_SIZE    768
-#define TCPSTACK_DEFAULT_SIZE   768
+#define GLSTACK_DEFAULT_SIZE    K
+#define TCPSTACK_DEFAULT_SIZE   K
 #define COMPLSTACK_DEFAULT_SIZE  64
 #endif
 #endif
@@ -262,6 +262,7 @@ static void init_flags(CTXTdecl)
   flags[MAX_QUEUE_TERMS] = DEFAULT_MQ_SIZE; 
 #endif
   flags[HEAP_GC_MARGIN] = 8192 * ZOOM_FACTOR;
+  flags[WRITE_DEPTH] = 64;
   //  flags[UNIFY_WITH_OCCURS_CHECK_FLAG] = 0;
 }
 
@@ -1517,7 +1518,10 @@ void init_symbols(CTXTdecl)
   true_psc = make_code_psc_rec("true", 0, standard_psc);
   true_string = get_name(true_psc);
   cut_string = string_find("!",1);
-  cyclic_string = (char *) makestring(string_find("<cyclic>",1));;
+  cyclic_string = (char *) string_find("<cyclic>",1);
+
+  visited_psc = make_code_psc_rec("_$visited", 0, standard_psc);
+  //  cyclic_psc = make_code_psc_rec("_$cyclic", 0, standard_psc);
 
   load_undef_psc = make_code_psc_rec("_$load_undef", 1, loader_psc);
   comma_psc = make_code_psc_rec(",", 2, standard_psc);

@@ -20,7 +20,7 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **
-** $Id: flag_defs_xsb.h,v 1.45 2011-12-24 21:09:10 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.46 2012-01-23 02:37:08 tswift Exp $
 **
 */
 
@@ -145,6 +145,7 @@ interrupt flag
 #define UNIFY_WITH_OCCURS_CHECK_FLAG 93   /* make all unifications use occur_check, under development by DSW */
 #define MAX_MEMORY                94
 #define MEMORY_ERROR_FLAG         95
+#define WRITE_DEPTH               96
 #define MAX_FLAGS		 100
 
 #define MAXTOINDEX 10              /* maximum depth in term to go when using deep indexing; 

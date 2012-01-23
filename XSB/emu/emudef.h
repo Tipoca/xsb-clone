@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emudef.h,v 1.90 2011-11-28 01:17:39 tswift Exp $
+** $Id: emudef.h,v 1.91 2012-01-23 02:37:08 tswift Exp $
 ** 
 */
 
@@ -100,7 +100,7 @@ Pair list_pscPair;
 
 Psc list_psc, comma_psc, true_psc, if_psc, colon_psc, caret_psc, ccall_mod_psc, c_callloop_psc;
 Psc tnot_psc, delay_psc, cond_psc, cut_psc, load_undef_psc, setof_psc, bagof_psc;
-Psc box_psc;
+Psc box_psc, visited_psc;
 /*
  * Ret PSC's are used to store substitution factors for subgoal calls
  * or answers.  A psc with a new arity will be created when needed,

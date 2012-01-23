@@ -629,7 +629,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     char buffera[MAXTERMBUFSIZE];
     char bufferb[MAXTERMBUFSIZE];
     char bufferc[MAXTERMBUFSIZE];
-    sprint_answer_template(CTXTc buffera, answer_template_heap, template_size,(long)flags[MAX_TABLE_ANSWER_DEPTH]);
+    sprintAnswerTemplate(CTXTc buffera, answer_template_heap, template_size);
     sprint_subgoal(CTXTc bufferb,(VariantSF)consumer_sf);     
     sprint_subgoal(CTXTc bufferc,(VariantSF)ptcpreg);     
     fprintf(fview_ptr,"ar(%s,%s,%s,%d).\n",buffera,bufferb,bufferc,ctrace_ctr++);
@@ -851,7 +851,7 @@ table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
     char buffera[MAXTERMBUFSIZE];
     char bufferb[MAXTERMBUFSIZE];
     char bufferc[MAXTERMBUFSIZE];
-    sprint_answer_template(CTXTc buffera, answer_template, template_size,(long)flags[MAX_TABLE_ANSWER_DEPTH]);
+    sprintAnswerTemplate(CTXTc buffera, answer_template, template_size);
     sprint_subgoal(CTXTc bufferb,(VariantSF)consumer_sf);     
     sprint_subgoal(CTXTc bufferc,(VariantSF)ptcpreg);     
     fprintf(fview_ptr,"ar(%s,%s,%s,%d).\n",buffera,bufferb,bufferc,ctrace_ctr++);
@@ -1026,7 +1026,7 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
     memset(buffera,0,MAXTERMBUFSIZE);
     //    sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),flags[MAX_TABLE_SUBGOAL_DEPTH]);
     //    printAnswerTemplate(stddbg,answer_template ,(int) template_size);
-    sprint_answer_template(CTXTc buffera, answer_template, template_size,(long)flags[MAX_TABLE_ANSWER_DEPTH]);
+    sprintAnswerTemplate(CTXTc buffera, answer_template, template_size);
     if (ptcpreg)
       sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
     else sprintf(bufferb,"null");

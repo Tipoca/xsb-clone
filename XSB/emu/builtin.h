@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.112 2011-12-19 21:39:46 waltergwilson Exp $
+** $Id: builtin.h,v 1.113 2012-01-23 02:37:08 tswift Exp $
 ** 
 */
 
@@ -200,6 +200,7 @@
 #define DELETE_ATTRIBUTES	174
 #define ATTV_UNIFY		175
 #define START_SLEEPER_THREAD    176
+#define MARK_TERM_CYCLIC        177
 
 /* This is the builtin where people should put their private, experimental
    builtin code. SEE THE EXAMPLE IN private_builtin.c to UNDERSTAND HOW TO DO
