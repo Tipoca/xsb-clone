@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.226 2011-12-14 22:40:26 dwarren Exp $
+** $Id: emuloop.c,v 1.227 2012-01-25 22:14:08 tswift Exp $
 ** 
 */
 
@@ -2468,11 +2468,11 @@ argument positions.
     cpreg = *((byte **)ereg-1);
     ereg = *(CPtr *)ereg;
     /* following required for recursive loops that build structure on way back up. */
-    if (heap_local_overflow(2000)) { 
+    if (heap_local_overflow(OVERFLOW_MARGIN)) { 
       Def1op
       Op1((lpcreg[-1]));  // already advanced pc, so look back
       if (gc_heap(CTXTc (int)op1,FALSE)) { // no regs, garbage collection potentially modifies hreg 
-	if (heap_local_overflow(2000)) {
+	if (heap_local_overflow(OVERFLOW_MARGIN)) {
 	  if (pflags[STACK_REALLOC]) {
 	    if (glstack_realloc(CTXTc resize_stack(glstack.size,OVERFLOW_MARGIN),(int)op1) != 0) {
 	      xsb_memory_error("memory","Cannot Expand Local and Global Stacks");
@@ -2496,9 +2496,9 @@ argument positions.
 
   XSB_Start_Instr(proceed_gc,_proceed_gc) /* PPP */
     /* following required for recursive loops that build structure on way back up. */
-    if (heap_local_overflow(2000)) { 
+    if (heap_local_overflow(OVERFLOW_MARGIN)) { 
       if (gc_heap(CTXTc 0,FALSE)) { // no regs, garbage collection potentially modifies hreg 
-	if (heap_local_overflow(2000)) {
+	if (heap_local_overflow(OVERFLOW_MARGIN)) {
 	  if (pflags[STACK_REALLOC]) {
 	    if (glstack_realloc(CTXTc resize_stack(glstack.size,OVERFLOW_MARGIN),0) != 0) {
 	      xsb_memory_error("memory","Cannot Expand Local and Global Stacks");

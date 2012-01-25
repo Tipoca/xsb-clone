@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.49 2011-12-24 21:09:11 tswift Exp $
+** $Id: memory_xsb.h,v 1.50 2012-01-25 22:14:08 tswift Exp $
 ** 
 */
 
@@ -113,7 +113,7 @@ extern System_Stack pdl,            /* PDL                        */
  */
 //#define OVERFLOW_MARGIN	(2048 * ZOOM_FACTOR)
 //#define OVERFLOW_MARGIN	(8192 * ZOOM_FACTOR)
-#define OVERFLOW_MARGIN	flags[HEAP_GC_MARGIN]
+#define OVERFLOW_MARGIN	((Integer)flags[HEAP_GC_MARGIN])
 
 
 /* Calculate New Stack Size
