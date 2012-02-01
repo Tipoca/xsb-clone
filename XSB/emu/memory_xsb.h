@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.50 2012-01-25 22:14:08 tswift Exp $
+** $Id: memory_xsb.h,v 1.51 2012-02-01 22:03:13 dwarren Exp $
 ** 
 */
 
@@ -119,7 +119,7 @@ extern System_Stack pdl,            /* PDL                        */
 /* Calculate New Stack Size
    ------------------------ */
 #define resize_stack(stack_size,min_exp) /*"stack_size" is in K-byte blocks*/\
-   ((stack_size) < (min_exp)/K ? (stack_size) + (min_exp)/K : 2 * (stack_size))
+  ((stack_size) < (unsigned int)(min_exp)/K ? (stack_size) + (min_exp)/K : 2 * (stack_size))
 
 
 /* Program and Symbol Tables Space (in Bytes)
