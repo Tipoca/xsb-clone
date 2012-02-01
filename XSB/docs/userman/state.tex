@@ -175,12 +175,17 @@ strategy that is currently being employed (see also
 Section~\ref{sec:EmuOptions}).  Default is {\tt indirection}.  This
 flag is private to each thread.  
 %
-\item {\tt heap\_margin} Specifies the size of the margin used to
-  determine whether to perform heap garbage collection or reallocation
-  of the environment stack.  Usually this field does not need ot be
-  set, but there may be cases in which XSB's memory management does
-  not properly handle creation of a very large term on the heap (we
-  hope there are very few such cases).
+\item {\tt heap\_margin} Specifies the size {\em in bytes} of the
+  margin used to determine whether to perform heap garbage collection
+  or reallocation of the environment stack.  The default is 8192 (8K)
+  bytes for 32-bit platforms 16384 (16K) for 64-bit platforms.
+  Setting this field to a large value (e.g. in the megabyte range) can
+  cause XSB to be more aggressive in terms of expanding heap and local
+  stack and to do fewer heap garbage collections than with the default
+  value.  However {\tt heap\_margin} should not be set {\em lower}
+  than its default, as this may prevent XSB from properly creating
+  large terms on the heap.
+
 %
 \item {\tt clause\_garbage\_collection}  {\tt on} if garbage collection for
 retracted clauses is allowed, and off otherwise. Default is {\tt
@@ -317,11 +322,16 @@ l([a|X]):- l(X).          l([a]).
   }
 
 \index{Prolog flags!{\tt max\_memory}}
-\item {\tt max\_memory} The maximum amount of memory (in kilobytes)
-  that XSB can use for its execution stacks, program space, tables, or
-  any other purpose.  If a query exceeds this amount, XSB will abort
-  the query with a resource exception and then try to reclaim space
-  used by the query.
+\item {\tt max\_memory} The maximum amount of memory {\em in
+  kilobytes} that an XSB thread (in the single-threaded engine) or all
+  XSB threads (in the multi threaded engine) can use for their
+  combined execution stacks, program space, tables, or any other
+  purpose.  If a query exceeds this amount, XSB will abort the query
+  with a resource exception and then try to reclaim space used by the
+  query.  As with other flags, this flag can be set during an XSB
+  session.  The value of 0 effectively disables the flag, allowing XSB
+  to allocate as much memory as the underlying OS will grant.  The
+  default value is 0, so that the flag is disabled.
 
 \index{Prolog flags!{\tt unify\_with\_occurs\_check}}
 \index{occurs check}
