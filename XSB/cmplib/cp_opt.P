@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.P,v 1.22 2012-01-06 15:40:10 tswift Exp $
+** $Id: cp_opt.P,v 1.23 2012-02-01 20:06:42 dwarren Exp $
 ** 
 */
 
@@ -264,8 +264,7 @@ generate_agg_clauses(po(OpSpec),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClL
 	ensure_imported(copy_term/2,basics,SymTab),  % but problems with sysmod?
 	ensure_imported(instantiation_error/3,error_handler,SymTab),
 	ensure_imported('_$$get_returns'/3,tables,SymTab),
-	ensure_imported('delete_return'/2,tables,SymTab),
-	ensure_imported('member'/2,basics,SymTab).
+	ensure_imported('delete_return'/2,tables,SymTab).
 generate_agg_clauses(AggrSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClList2,SymTab) :-
 	(AggrSpec = fold(OpSpec,Id)
 	 ;
