@@ -788,10 +788,17 @@ XSB_Start_Instr(answer_return,_answer_return)
   consumer_sf = (VariantSF)nlcp_subgoal_ptr(breg);
   answer_template = nlcp_template(breg);
 
-  //  printf("Starting answer return\n");
   //    fprintf(stddbg,"Starting answer return %x (%x) (prev %x) aln %x\n",
   //  	  breg,*lpcreg,nlcp_prevbreg(breg),answer_continuation); 
 
+  /* TLS: put this in so that timed_call will exit on this sort of loop */
+  if (asynint_val & TIMER_MARK) {					
+	synint_proc(CTXTc TIF_PSC(subg_tif_ptr(consumer_sf)), TIMER_INTERRUPT);	   
+        lpcreg = pcreg;							
+	asynint_val = asynint_val & ~TIMER_MARK;	
+        asynint_code = 0;						
+    }
+  else {
   table_pending_answer( nlcp_trie_return(breg),
 			answer_continuation,
 			next_answer,
@@ -886,7 +893,7 @@ table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
       }
     }
     lpcreg = cpreg;
-  }
+    }
 
   else {
 
@@ -898,6 +905,7 @@ table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
     restore_trail_condition_registers(breg);
     if (hbreg >= hfreg) hreg = hbreg; else hreg = hfreg;
     Fail1;
+  }
   }
 XSB_End_Instr()
 
