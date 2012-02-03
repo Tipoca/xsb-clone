@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.76 2011-12-24 21:09:11 tswift Exp $
+** $Id: memory_xsb.c,v 1.77 2012-02-03 20:38:52 tswift Exp $
 ** 
 */
 
@@ -592,7 +592,7 @@ void complstack_realloc (CTXTdeclc size_t new_size) {
   byte **cp_ptr ;
 #endif
 
-  printf("reallocing complstack\n");
+  //  printf("reallocing complstack\n");
   if (new_size == complstack.size)
     return;
   
