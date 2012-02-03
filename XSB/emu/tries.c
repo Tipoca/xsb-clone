@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.161 2012-01-23 02:37:08 tswift Exp $
+** $Id: tries.c,v 1.162 2012-02-03 21:53:09 tswift Exp $
 ** 
 */
 
@@ -821,6 +821,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
 	       (int)flags[MAX_TABLE_ANSWER_DEPTH],buffer);		\
     }									\
     else if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_FAILURE) {		\
+      safe_delete_branch(Paren);					\
       resetpdl;								\
       found_flag = 1;							\
       return NULL;							\
@@ -847,6 +848,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
 		flags[MAX_TABLE_ANSWER_LIST_DEPTH],buffer);			\
     }									\
     else if (flags[MAX_TABLE_ANSWER_LIST_ACTION] == XSB_FAILURE) {		\
+      safe_delete_branch(Paren);					\
       resetpdl;								\
       found_flag = 1;							\
       return NULL;							\
