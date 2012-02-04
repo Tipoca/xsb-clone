@@ -5038,7 +5038,7 @@ case CALL_SUBS_SLG_NOT: {
     int stream;
 
     if (0 > (stream = (int)ptoc_int(CTXTc 2)))
-      print_completion_stack(CTXTc stddbg);
+      print_completion_stack(CTXTc open_files[(int) pflags[CURRENT_OUTPUT]].file_ptr);
     else 
       print_completion_stack(CTXTc open_files[stream].file_ptr);
     break;
