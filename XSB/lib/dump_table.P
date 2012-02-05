@@ -5,7 +5,8 @@
 :- import domain_error/4,check_nonvar_list/3 from error_handler.
 :- import numbervars/4 from num_vars.
 :- import member/2, length/2, copy_term/2 from basics.
-:- import get_calls_for_table/2, get_call/3,get_callsto_number/2,get_current_scc/2 from tables.
+:- import get_calls_for_table/2, get_call/3,get_callsto_number/2,get_current_scc/2,
+	  get_answer_number/2 from tables.
 :- import subsumes_chk/2 from subsumes.
 :- import parsort/4 from machine.
 :- import sort/2 from setof.
@@ -73,14 +74,14 @@ table_dump(Stream,Pred,Options) :-
 table_dump(Stream,Pred,Options) :- 
 	check_options(Options,Details,Summary,ResultsIn,Output), 
 	(ResultsIn = results(Results) -> true ; ResultsIn = Results),
-	all_call_returns_for_atom_list(Pred,NumCalls,List), 
+	all_call_returns_for_atom_list(Details,Pred,NumCalls,List), 
 	(Summary == y -> table_dump_summary(Pred,NumCalls,List,Stream,Results,Results1,Output) 
 	  ;              Results = Results1),
-	(Details == y -> 
-	    table_dump_details(Pred,NumCalls,List,Stream,Results1,Output) 
+	(Details \== no_details -> 
+	    table_dump_details(Details,Pred,NumCalls,List,Stream,Results1,Output) 
          ;  (var(Results1) -> Results1 = [] ; true)).
 
-table_dump_summary(Pred,NumCalls,List,Stream,ResultsIn,ResultsOut,Output):-
+table_dump_summary(Pred,NumCalls,List,Stream,ResultsIn,ResultsOut,Output):-!,
 	sumlist(List,NumCallsTo,NumReturns),
 	(var(ResultsIn) ->
 	      ResultsIn = [summary = Pred - subgoals(NumCalls) - total_times_called(NumCallsTo) - total_answers(NumReturns)|ResultsOut]
@@ -89,8 +90,16 @@ table_dump_summary(Pred,NumCalls,List,Stream,ResultsIn,ResultsOut,Output):-
 	    nl,writeit_prolog(Stream,summary = Pred - subgoals(NumCalls) - total_times_called(NumCallsTo) - total_answers(NumReturns))
 	 ;  true).
 
-table_dump_details(Pred,NumCalls,List,Stream,ResultsIn,Output):-
-	annotate_list(List,AList),
+table_dump_details(answers,Pred,NumCalls,List,Stream,ResultsIn,Output):-
+	annotate_list_answers(List,AList),
+	(var(ResultsIn) ->
+	    ResultsIn = [details = Pred - subgoals(NumCalls) - details(AList)]
+          ; true),
+        (Output = y -> 
+	    writeit_prolog(Stream,details = Pred - subgoals(NumCalls) - details(AList))
+	  ; true).
+table_dump_details(subgoals,Pred,NumCalls,List,Stream,ResultsIn,Output):-
+	annotate_list_no_answers(List,AList),
 	(var(ResultsIn) ->
 	    ResultsIn = [details = Pred - subgoals(NumCalls) - details(AList)]
           ; true),
@@ -98,37 +107,62 @@ table_dump_details(Pred,NumCalls,List,Stream,ResultsIn,Output):-
 	    writeit_prolog(Stream,details = Pred - subgoals(NumCalls) - details(AList))
 	  ; true).
 
-%all_call_returns_for_atom_list(+Pred,?NumCalls,?List) is true when
-%NumCalls is the number of calls for tabled predicate Pred that are
-%subsumed by Pred, and List is the list of list of answers for those
-%calls.
-all_call_returns_for_atom_list(Pred,NumCalls, Slist) :-
+% all_call_returns_for_atom_list(+Pred,?NumCalls,?List) is true when
+% NumCalls is the number of calls for tabled predicate Pred that are
+% subsumed by Pred, and List is the list of list of answers for those
+% calls.
+all_call_returns_for_atom_list(answers,Pred,NumCalls,Slist) :- !,
 	findall(Pred,predicate_property(Pred,tabled),PredList_1),
 	sort(PredList_1,PredList),
 	(PredList = [] -> 
 	    (NumCalls=0,Slist=[]) 
 	 ;  member(Pred,PredList),
-  	    findall(C-CallsTo-NR-Rets-Scc,all_call_returns_for_atom(Pred,C,NR,CallsTo,Rets,Scc),List),List \= [],
+  	    findall(C-CallsTo-NR-Rets-Scc,
+	            subgoal_properties_w_answers(Pred,C,NR,CallsTo,Rets,Scc),List),List \= [],
+	    parsort(List,[desc(2),asc(1)],0, Slist),
+	    length(List,NumCalls)
+	).
+all_call_returns_for_atom_list(_,Pred,NumCalls, Slist) :-
+	findall(Pred,predicate_property(Pred,tabled),PredList_1),
+	sort(PredList_1,PredList),
+	(PredList = [] -> 
+	    (NumCalls=0,Slist=[]) 
+	 ;  member(Pred,PredList),
+  	    findall(C-CallsTo-NR-Rets-Scc,
+	            subgoal_properties_wo_answers(Pred,C,NR,CallsTo,Rets,Scc),List),List \= [],
 	    parsort(List,[desc(2),asc(1)],0, Slist),
 	    length(List,NumCalls)
 	).
 
 :- import is_cyclic/1 from machine.
 
-all_call_returns_for_atom(Pred,C,NR,CallsTo,Rets,Scc) :-
+subgoal_properties_w_answers(Pred,C,NR,CallsTo,Rets,Scc) :-
 	 get_calls_for_table(Pred,C),
-	 (is_cyclic((Pred,C)) -> writeln(2,cyclic((Pred,C))) ; true),
+%	 (is_cyclic((Pred,C)) -> writeln(2,cyclic((Pred,C))) ; true),
 	 get_call(C,SF,RetStruct),
-	 (is_cyclic((C,RetStruct)) -> writeln(2,cyclic((C,RetStruct))) ; true),
+%	 (is_cyclic((C,RetStruct)) -> writeln(2,cyclic((C,RetStruct))) ; true),
 	 copy_term((Pred,C),(_Pred,C1)),
 %	 writeln(2,abouttosubsume(Pred,C)),
-	 (is_cyclic(C) -> writeln(2,cyclic(C)) ; true),
-	 (is_cyclic(C1) -> writeln(2,cyclic(C1)) ; true),
+%	 (is_cyclic(C) -> writeln(2,cyclic(C)) ; true),
+%	 (is_cyclic(C1) -> writeln(2,cyclic(C1)) ; true),
 	 subsumes_chk(Pred,C1),
 	 findall(Atom,(get_returns(SF,RetStruct),bindreturn(C1,RetStruct,Atom)),Rets),
 	 get_callsto_number(SF,CallsTo),
 	 (get_current_scc(SF,Number) -> Scc = scc(Number) ; Scc = completed),
 	 length(Rets,NR).
+subgoal_properties_wo_answers(Pred,C,NR,CallsTo,no_list,Scc) :-
+	 get_calls_for_table(Pred,C),
+%	 (is_cyclic((Pred,C)) -> writeln(2,cyclic((Pred,C))) ; true),
+	 get_call(C,SF,_RetStruct),
+%	 (is_cyclic((C,RetStruct)) -> writeln(2,cyclic((C,RetStruct))) ; true),
+	 copy_term((Pred,C),(_Pred,C1)),
+%	 writeln(2,abouttosubsume(Pred,C)),
+%	 (is_cyclic(C) -> writeln(2,cyclic(C)) ; true),
+%	 (is_cyclic(C1) -> writeln(2,cyclic(C1)) ; true),
+	 subsumes_chk(Pred,C1),
+	 get_answer_number(SF,NR),
+	 get_callsto_number(SF,CallsTo),
+	 (get_current_scc(SF,Number) -> Scc = scc(Number) ; Scc = completed).
 
 bindreturn(Pred,Ret,Pred):- ground(Ret),ground(Pred),!.
 bindreturn(Pred,Ret,FreshPred):-
@@ -147,9 +181,15 @@ sumlist([],0,0).
 sumlist([_-NC-NR-_Rets-_Scc|Rs],NumCalls,NumReturns) :- 
 	sumlist(Rs,NCL,NRL), NumReturns is NR + NRL, NumCalls is NC + NCL.
 
-annotate_list([],[]).
-annotate_list([Term-NC-NR-Rets-Scc|R],[Term-times_called(NC)-answers(NR)-Rets-Scc|R1]):- 
-	annotate_list(R,R1).
+annotate_list_answers([],[]).
+annotate_list_answers([Term-NC-NR-Rets-Scc|R],
+	              [Term-times_called(NC)-answers(NR)-Rets-Scc|R1]):- 
+	annotate_list_answers(R,R1).
+
+annotate_list_no_answers([],[]).
+annotate_list_no_answers([Term-NC-NR-_Rets-Scc|R],
+	                 [Term-times_called(NC)-answers(NR)-Scc|R1]):- 
+	annotate_list_no_answers(R,R1).
 
 writeit_prolog(Stream,Term) :- numbervars(Term,0,_,[attvar(bind)]), 
 	writeq(Stream,Term), 
@@ -165,17 +205,20 @@ check_options(Options,Details,Summary,ResultList,Output):-
 	 ;  check_options_1(Options,Details,Summary,ResultList,Output)).
 
 check_options_1([],D,S,R,O):-
-	(var(D) -> D = n ; true),
+	(var(D) -> D = no_details ; true),
 	(var(S) -> S = y ; true),  % summary true by default
 	(var(R) -> R = n ; true),
 	(var(O) -> O = y ; true).
 check_options_1([details(Bool)|T],D,S,R,O):-!,
-	(Bool == true -> 
-	    D = y 
+	((Bool == true ; Bool == answers) -> 
+	    D = answers
 	 ;  (Bool == false -> 
-	        D = n
-	    ; 	domain_error('[summary(<true/false>),details(<true/false>),results(Var),output(<true/false>)]',
-	             Bool,'table_dump/[2,3]','[2,3]') ) ),
+	        D = no_details
+		; ( Bool == subgoals -> 
+		     D = subgoals
+	    ; 	domain_error('[summary(<true/false>),details(<subgoals/answers/false>),
+	                       results(Var),output(<true/false>)]',
+	             Bool,'table_dump/[2,3]','[2,3]') ) ) ),
 	check_options_1(T,D,S,R,O).
 check_options_1([summary(Bool)|T],D,S,R,O):-!,
 	(Bool == true -> 
