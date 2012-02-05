@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.113 2012-01-23 02:37:08 tswift Exp $
+** $Id: builtin.h,v 1.114 2012-02-05 16:44:58 tswift Exp $
 ** 
 */
 
@@ -359,3 +359,6 @@
 
 #define ABOLISH_INCOMPLETES  1
 #define ERROR_ON_INCOMPLETES 2
+
+#define CYCLIC_SUCCEED 1
+#define CYCLIC_FAIL    2

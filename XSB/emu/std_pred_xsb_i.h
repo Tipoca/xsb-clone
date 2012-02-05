@@ -17,7 +17,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.84 2011-12-26 19:27:25 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.85 2012-02-05 16:44:58 tswift Exp $
 ** 
 */
 
@@ -1345,7 +1345,7 @@ int is_cyclic(CTXTdeclc Cell Term) {
 }
 
 // visit term, fail if encounter a var
-int ground_cyc(CTXTdeclc Cell Term) { 
+int ground_cyc(CTXTdeclc Cell Term, int cycle_action) { 
   Cell visited_string;
 
   XSB_Deref(Term);
@@ -1390,8 +1390,9 @@ int ground_cyc(CTXTdeclc Cell Term) {
 	if (*clref_val(Term) == visited_string) {
            // printf("unwind_cycle_trail\n");
 	  unwind_cycle_trail;
-	  return TRUE;
-          //return FALSE;
+	  if (cycle_action == CYCLIC_SUCCEED) 
+	    return TRUE;
+	  else return FALSE;
 	}
 	else {
            // printf("push_cycle_trail\n");
@@ -1405,6 +1406,7 @@ int ground_cyc(CTXTdeclc Cell Term) {
   //  mem_dealloc(cycle_trail,cycle_trail_size*sizeof(Cycle_Trail_Frame),OTHER_SPACE);
   return TRUE;
 }
+
 
 
 /* a new function, not yet used, intended to implement \= without a choicepoint */

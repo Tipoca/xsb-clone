@@ -302,10 +302,16 @@ odbc_exec_query(_A, _B, _C, _D, _E, _F) :- '_$builtin'(ODBC_EXEC_QUERY).
 term_size_limit(_Term,_Depth):- '_$builtin'(TERM_SIZE_LIMIT).
 term_size(_Term,_Depth):- '_$builtin'(TERM_SIZE).
 term_depth(_Term,_Depth):- '_$builtin'(TERM_DEPTH).
+
 is_cyclic(_Term):- '_$builtin'(IS_CYCLIC).
 is_acyclic(_Term):- '_$builtin'(IS_ACYCLIC).
 acyclic_term(_Term) :- '_$builtin'(IS_ACYCLIC).
-ground_or_cyclic(_Term):- '_$builtin'(GROUND_CYC).
+ground_or_cyclic(Term):- ground_cycle_internal(Term,CYCLIC_SUCCEED).
+ground_and_acyclic(Term):- ground_cycle_internal(Term,CYCLIC_FAIL).
+
+ground_cycle_internal(_Term,_Action):- '_$builtin'(GROUND_CYC).
+
+mark_term_cyclic(_Term):- '_$builtin'(MARK_TERM_CYCLIC).
 
 '$$set_scope_marker':- '$$set_scope_marker'.
 '$$unwind_stack':- '$$unwind_stack'.

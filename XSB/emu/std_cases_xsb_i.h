@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_cases_xsb_i.h,v 1.35 2011-12-19 21:40:25 waltergwilson Exp $
+** $Id: std_cases_xsb_i.h,v 1.36 2012-02-05 16:44:58 tswift Exp $
 ** 
 */
 
@@ -113,7 +113,7 @@
     
 
    case GROUND_CYC: {
-     return ground_cyc(CTXTc (Cell) (reg + 1));
+     return ground_cyc(CTXTc (Cell) (reg + 1),ptoc_int(CTXTc 2));
      break;
    }
 

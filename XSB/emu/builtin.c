@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.387 2012-01-23 02:37:08 tswift Exp $
+** $Id: builtin.c,v 1.388 2012-02-05 16:44:58 tswift Exp $
 **
 */
 
@@ -150,7 +150,7 @@ extern int xsb_profiling_enabled;
 extern char *canonical_term(CTXTdeclc Cell, int);
 
 int is_cyclic(CTXTdeclc Cell);
-int ground_cyc(CTXTdeclc Cell);
+int ground_cyc(CTXTdeclc Cell, int);
 
 #ifdef WIN_NT
 extern xsbBool startInterruptThread(SOCKET intSocket);
