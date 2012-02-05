@@ -183,17 +183,21 @@ fails.  While {\tt ground/1} has no associated error conditions, it is
 not safe for cyclic terms: if cyclic terms may be an issue use {\tt
   ground\_or\_cyclic/1}.
 
+\repeatstandarditem{ground\_and\_acyclic(+X)}{ground\_and\_acyclic/1} 
 \standarditem{ground\_or\_cyclic(+X)}{ground\_or\_cyclic/1} 
 %
-Succeeds if {\tt X} is currently instantiated to a term that is
-completely bound (has no uninstantiated variables in it) {\em or} is a
-cyclic term; otherwise it fails.  The predicate has no associated
-error conditions.
+{\tt ground\_or\_cyclic/1} succeeds if {\tt X} is currently
+instantiated to a term that is completely bound (has no uninstantiated
+variables in it) {\em or} is a cyclic term; otherwise it fails.
+Alternately, {\tt ground\_and\_acyclic/1} succeeds if {\tt X} is
+currently instantiated to an acyclic term that is completely bound
+(has no uninstantiated variables in it).  Neither predicate has no
+associated error conditions.
 
-{\tt ground\_or\_cyclic/1} is written to be as efficient as possible,
-and requres a single traversal of a term, regardless of whether the
-term is ground, nonground or cyclic.  However, due to the nature of
-checking for cyclicity, {\tt ground\_or\_cyclic/1} is slower than the
+Both predicates are written to be as efficient as possible, and each
+requres a single traversal of a term, regardless of whether the term
+is ground, nonground or cyclic.  However, due to the nature of
+checking for cyclicity, these predicates are somewhat slower than the
 unsafe {\tt ground/1}.
 
 \ourmoditem{subsumes(?Term1, +Term2)}{subsumes/2}{subsumes}
