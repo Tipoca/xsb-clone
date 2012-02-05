@@ -1048,7 +1048,7 @@ answers that are present in a table.  Given an input {\tt Term}, {\tt
 that are subsumed by {\tt Term}; if {\tt Term} is a variable,
 information about all tables is provided.
 
-The information is provided at two levels of aggregation, and the form
+The information is provided at three levels of aggregation, and the form
 of the information is determined by the options in {\tt OptionsList}.
 %
 \begin{itemize}
@@ -1058,10 +1058,23 @@ of the information is determined by the options in {\tt OptionsList}.
   subgoals.  If {\tt Term} is a variable this information is broken
   down by tabled predicates.
 %
-\item If {\tt details(true)} is set, the actual subgoals are collected
-  along with the number of answers and their listing.  If {\tt Term}
-  is a variable this information is broken down by tabled predicates.
-  If {\tt details(false)} is set, this information is not collected.
+\begin{itemize}
+\item If {\tt details(answers)} is set, a list is collected of all
+  subgoals $S$ such that $S$ is subsumed by {\tt Term} along with the
+  number of answers for each $S$ and a list of those answers.  If {\tt
+    Term} is a variable this information is broken down by tabled
+  predicates.
+%
+\item If {\tt details(subgoals)} is set, a list is collected of all
+  subgoals $S$ such that $S$ is subsumed by {\tt Term} along with the
+  number of answers for each $S$.  However, unlike the action for {\tt
+    details(answers)} the actual list of answers for $S$ is not
+  returned.  If {\tt Term} is a variable this information is broken
+  down by tabled predicates.
+%
+\item If {\tt details(false)} is set, no detail information is
+  provided for the actual subgoals or their answers.
+\end{itemize}
 %
 \item If {\tt OptionsList} contains the option {\tt results(X)} for
   some variable {\tt X}, {\tt X} is instantiated to a list containing
@@ -1108,7 +1121,7 @@ summary = q(A) - subgoals(1) - total_times_called(1) - total_answers(2).
 X = q(_h228)
 
 yes
-| ?- table_dump(_X,[details(true)]).
+| ?- table_dump(_X,[details(answers)]).
 
 summary = p(A,B) - subgoals(3) - total_times_called(4) - total_answers(7).
 details = p(A,B) - subgoals(3) - details([
@@ -1158,24 +1171,35 @@ Each line of details has the form:
 \begin{tabbing}
 fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
 %
-{\em   details = } \\
+{\em   Details = } \\
 \> {\em Pred/Goal  - subgoals($N_{subgoals}$) - details(List)}
 %
 \end{tabbing}
 %
-where {\em Pred/Goal} and $N_{subgoals}$ are as above and 
+where {\em Pred/Goal} and $N_{subgoals}$ are as above.  If {\tt
+  details(answers)} was an input option
 %
 \begin{tabbing}
 fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
 %
 {\em List = }\\
-\>  {\em Subgoal - times\_called($N_{called}$) - answers($N_{answers}$) - List\_of\_Answers - status}
+\>  {\em Subgoal - times\_called($N_{called}$) - answers($N_{answers}$) - List\_of\_Answers - Status}
 %
 \end{tabbing}
 %
 for each $Subgoal$ in the table subsumed by $Pred/Goal$.  $N_{called}$
 and $N_{answers}$ are as above, while {\em List\_of\_Answers} contains
-all those answers currently derived for $Subgoal$.  Finally $status$ is
+all those answers currently derived for $Subgoal$.  On the other hand,
+if {\tt details(subgoals)} was an input option 
+\begin{tabbing}
+fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
+%
+{\em List = }\\
+\>  {\em Subgoal - times\_called($N_{called}$) - answers($N_{answers}$) - Status}
+%
+\end{tabbing}
+%
+where all elements are as before.  Finally $Status$ is
 %
 \bi
 \item {\tt completed} if $Subgoal$ has been completed; and
