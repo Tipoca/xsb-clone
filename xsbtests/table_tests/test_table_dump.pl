@@ -31,7 +31,9 @@ s(2,b1).
 
 test :- p(_X,_Y),fail.
 test:- test_1,fail.
-%test:- test_2,fail.
+test:- test_6,fail.
+test:- writeln('----------------------'),fail.
+test:- test_7,fail.
 test.
 
 test_1 :-
@@ -41,6 +43,9 @@ test_1 :-
 	write('test 2 '),
 	table_dump(p(_,_),[details(true)]),
 	writeln('----------------------'),
+	write('test 2a '),
+	table_dump(p(_,_),[details(subgoals)]),
+	writeln('----------------------'),
 	write('test 3 '),
 	table_dump(p(_,_),[details(true),summary(false)]),
 	writeln('----------------------'),
@@ -48,11 +53,14 @@ test_1 :-
 	table_dump(p(_,_),[results(Results)]),numbervars(Results),writeln(results_4(Results)),
 	writeln('----------------------'),
 	write('test 5 '),
-	table_dump(p(_,_),[details(true),summary(false),results(R2)]),numbervars(R2),writeln(results_3(R2)),
-	writeln('----------------------'),
+	table_dump(p(_,_),[details(true),summary(false),results(R2)]),numbervars(R2),writeln(results_5(R2)),
+	writeln('----------------------').
+
+test_6:- 
 	write('test 6 '),
-	table_dump(p(_,_),[details(true),summary(true),results(R3)]),numbervars(R3),writeln(results_4(R3)),
-	writeln('----------------------'),
+	table_dump(p(_,_),[details(true),summary(true),results(R3)]),numbervars(R3),writeln(results_6(R3)).
+
+test_7:- 
 	write('test 7 '),
 	catch(table_dump(p(_,_),[badopt]),error(A,B,C),writeln(caughtit_2(A))),
 	writeln('----------------------').
