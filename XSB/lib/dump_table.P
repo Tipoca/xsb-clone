@@ -70,16 +70,18 @@ table_dump(Stream,Pred,Options) :-
 	 walltime(After),Time is After - Before,
 	 write(table_dump(elapsed_time,Time)),writeln('.').
 */
+:- import writeln/1 from standard.
 
 table_dump(Stream,Pred,Options) :- 
 	check_options(Options,Details,Summary,ResultsIn,Output), 
-	(ResultsIn = results(Results) -> true ; ResultsIn = Results),
+	(ResultsIn = results(Result) -> true ; ResultsIn = Result),
 	all_call_returns_for_atom_list(Details,Pred,NumCalls,List), 
 	(Summary == y -> table_dump_summary(Pred,NumCalls,List,Stream,Results,Results1,Output) 
 	  ;              Results = Results1),
 	(Details \== no_details -> 
-	    table_dump_details(Details,Pred,NumCalls,List,Stream,Results1,Output) 
-         ;  (var(Results1) -> Results1 = [] ; true)).
+	    table_dump_details(Details,Pred,NumCalls,List,Stream,Results1,_OutList) 
+         ;  (var(Results1) -> Results1 = [] ; true)),
+	(ResultsIn = results(_) -> member(Result,Results) ; true).
 
 table_dump_summary(Pred,NumCalls,List,Stream,ResultsIn,ResultsOut,Output):-!,
 	sumlist(List,NumCallsTo,NumReturns),
@@ -153,8 +155,7 @@ subgoal_properties_w_answers(Pred,C,NR,CallsTo,Rets,Scc) :-
 subgoal_properties_wo_answers(Pred,C,NR,CallsTo,no_list,Scc) :-
 	 get_calls_for_table(Pred,C),
 %	 (is_cyclic((Pred,C)) -> writeln(2,cyclic((Pred,C))) ; true),
-	 get_call(C,SF,_RetStruct),
-%	 (is_cyclic((C,RetStruct)) -> writeln(2,cyclic((C,RetStruct))) ; true),
+	 get_call(C,SF,_RetStruct), (is_cyclic((C,RetStruct)) -> writeln(2,cyclic((C,RetStruct))) ; true),
 	 copy_term((Pred,C),(_Pred,C1)),
 %	 writeln(2,abouttosubsume(Pred,C)),
 %	 (is_cyclic(C) -> writeln(2,cyclic(C)) ; true),
