@@ -2248,24 +2248,26 @@ no
 %==============================
 
 XSB can provide Prolog-level profiling for Prolog programs, which
-allows the Prolog programmer to determine what proportion of time is
-spent executing code for each predicate.  To enable profiling, XSB
-must be started with the command line parameter of -p.  The module
-{\tt xsb\_profiling} contains the predicate {\tt profile\_call/1} that
-invokes profiling~\footnote{The profiling library should only be used
-  with the single-threaded engine in \version{}.}.
+allows the Prolog programmer to estimate what proportion of time is
+spent executing code for each predicate, and also what modes have been
+used to call a given predicate.  To enable profiling, XSB must be
+started with the command line parameter of {\tt -p}.  The module {\tt
+  xsb\_profiling} contains the predicate {\tt profile\_call/1} that
+invokes profiling.  The profiling library should only be used with the
+single-threaded engine in \version{}.
 
 \begin{description}
 \ourmoditem{profile\_call(+Goal)}{xsb\_profiling}\index{profile\_call/1}
 
-Calls the goal {\tt Goal}, and when it first returns, prints out (on
-userout) a table of predicate names indicating for each, the
-percentage of time spent executing that predicate's code.  XSB must
-have been started with the -p command line parameter to obtain this
-table.  The percentages are accumulated by module.  {\tt Goal} may
+Calls {\tt Goal}, and when it first succeeds, prints to {\tt userout}
+a table of predicate names indicating for each, the percentage of time
+spent executing that predicate's code.  Within the table, the sum of
+the predicate times for each module is also given.  {\tt Goal} may
 backtrack, but profiling is done only for the time to the first
-success.  So it is most appropriate to profile succeeding
-deterministic goals.
+success, so it is most appropriate to profile succeeding deterministic
+goals~\footnote{This includes tabled subgoals under Local Evaluation,
+  as such as goal will only succeed after deriving all of its
+  answers.}.
 \end{description}
 
 Profiling works by starting another thread that interrupts every 100th
@@ -2277,14 +2279,17 @@ predicate is printed only if its code was interrupted at least once.
 The numbers will be meaningful only for relatively long-running
 predicates, taking more than a couple of seconds.
 
-When an interrupt occurs, the {\bf next} WAM call, execute, proceed or
-trust instruction to be executed will log its associated predicate.
-The system does not keep track of code addresses for tries (used to
-represent the results of completed tables, and trie-indexed asserted
-code), so for some interrupts the associated executing predicate
-cannot be determined.  In these cases the interrupt is charged against
-an ``unknown/?'' pseudo-predicate, and this count is included in the
-output.
+\index{interrupt instruction} 
+%
+When an interrupt occurs, the {\bf next} {\em interrupt instruction}
+to be executed -- a WAM {\sf call}, {\sf execute}, {\sf proceed} or
+{\sf trust} instruction -- will charge its associated predicate by
+logging that predicate to a table.  The system does not keep track of
+code addresses for tries (used to represent the results of completed
+tables, and trie-indexed asserted code), so for some interrupts the
+associated executing predicate cannot be determined.  In these cases
+the interrupt is charged against an ``unknown/?''  pseudo-predicate,
+and this count is included in the output.
 
 Profiling does not give the context from which the predicate is
 called, so you may want to make renamed copies of basic predicates to
@@ -2296,18 +2301,24 @@ misleading results under profiling.  Note that all system predicates
 option, by default.  That option causes tail-recursive predicates to
 use a ``jump'' instruction rather than an ``execute'' instruction to
 make the recursive call, and so an interrupt in such a loop will not
-be charged until the next {\bf logging} instruction is executed.  If
-much time is spent in the recursion, this might not be for a long
-time, and the interrupt might ultimately be charged to another
-predicate.  (If an interrupt has not been charged by the time of the
-next interrupt, it is lost.)
+be charged until the next interrupt instruction is executed.  If much
+time is spent in the recursion, this might not be for a long time, and
+the interrupt might ultimately be charged to another predicate.  (If
+an interrupt has not been charged by the time of the next interrupt,
+it is lost.)
 
-Profiling currently works under Windows, and somewhat under Linux.
-For the profiling algorithm to work, the thread that wakes and sets
-the interrupt flag must be of high priority and given the CPU when it
-wants it.  I haven't figured out how to get this scheduling on some
-machines, so if you want profiling to work somewhere it doesn't, maybe
-you can help figure out how to get appropriate scheduling.
+Profiling is currently available under Windows, Mac OS X, and Linux.
+However, for the profiling algorithm to provide a good estimation, the
+thread that wakes and sets the interrupt flag must be of high priority
+and given the CPU when it wants it.  Accordingly, the estimates may be
+better or worse depending on the scheduling strategy of a given
+platform~\footnote{Windows and Mac OS X 10.6 provide good estimates.
+  Some Linuxes however, do not charge about 20\% of their interrupts
+  due to thread scheduling issues.  This loss of interrupts makes the
+  profile estimate inefficient, but does not bias the estimate.  We
+  haven't figured out how to get priority scheduling for interrupts on
+  all machines, so if you want profiling to work more efficiently,
+  maybe you can help figure out how to get appropriate scheduling.}.
 
 The profiling module also provides some support for determining the
 modes in which a predicate is called.  This can be used to determine
