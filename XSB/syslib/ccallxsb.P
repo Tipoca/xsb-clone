@@ -50,7 +50,7 @@ c_callloop_query_loop0(Regs) :-
 %	set_xsb_ready,
  	set_inthandler('_$attv_int'(_,_), MYSIG_ATTV),
 	repeat,
-	get_from_caller(Par,VarTerm,Command),
+	suspend_on_forign_function(Par,VarTerm,Command),
 	(\+integer(Command)
 	 ->	file_write(STDERR,'C command error; must be an integer; is '),
 		file_write(STDERR,Command),
@@ -63,7 +63,7 @@ c_callloop_query_loop0(Regs) :-
 		do_pcall(Par,VarTerm)
 	 ; Command =:= 3	/* query_finish: succeed and return from XSB*/
 	 ->	!,
-		get_from_caller(Regs,_,_)
+		suspend_on_forign_function(Regs,_,_)
 	 ; Command =:= 2	/* string_call */
 	 ->	
 	    string_to_term(Par,Goal),
@@ -75,7 +75,8 @@ c_callloop_query_loop0(Regs) :-
 	 ; fail
 	).
 
-get_from_caller(_,_,_) :- halt.		% halt returns to caller
+% Used both to return to C and to call C functions.
+suspend_on_forign_function(_,_,_) :- halt.		% halt returns to caller
 
 do_pcall(Call,VarTerm) :-
 	%% ccall_error_handler fails
@@ -89,7 +90,7 @@ do_pcall(Call,VarTerm) :-
 
 call_and_get(Call,VarTerm,Command) :-
 	'_$call'(Call),
-	get_from_caller(Call,VarTerm,Command).
+	suspend_on_forign_function(Call,VarTerm,Command).
 
 % hidden version of call
 '_$call'(Y) :- 
