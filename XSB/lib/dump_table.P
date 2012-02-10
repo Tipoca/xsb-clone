@@ -79,7 +79,7 @@ table_dump(Stream,Pred,Options) :-
 	(Summary == y -> table_dump_summary(Pred,NumCalls,List,Stream,Results,Results1,Output) 
 	  ;              Results = Results1),
 	(Details \== no_details -> 
-	    table_dump_details(Details,Pred,NumCalls,List,Stream,Results1,_OutList) 
+	    table_dump_details(Details,Pred,NumCalls,List,Stream,Results1,Output) 
          ;  (var(Results1) -> Results1 = [] ; true)),
 	(ResultsIn = results(_) -> member(Result,Results) ; true).
 
@@ -226,13 +226,13 @@ check_options_1([summary(Bool)|T],D,S,R,O):-!,
 	    S = y 
 	 ;  (Bool == false -> 
 	        S = n
-	    ; 	domain_error('[summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)]',
+	    ; 	domain_error('[summary(<true/False>),details(<subgoals/answers/false>),results(<var>),output(<true/false>)]',
 	             Bool,'table_dump/[2,3]','[2,3]') ) ),
 	check_options_1(T,D,S,R,O).
 check_options_1([results(X)|T],D,S,results(X),O):-!,
 	(var(X) -> 
 	    true
-	 ;  domain_error('[summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)]',
+	 ;  domain_error('[summary(<true/False>),details(<subgoals/answers/false>),results(<var>),output(<true/false>)]',
 	             X,'table_dump/[2,3]','[2,3]') ),
 	check_options_1(T,D,S,results(X),O).
 check_options_1([output(Bool)|T],D,S,R,O):-!,
@@ -240,11 +240,11 @@ check_options_1([output(Bool)|T],D,S,R,O):-!,
 	    O = y 
 	 ;  (Bool == false -> 
 	        O = n
-	    ; 	domain_error('[summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)]',
+	    ; 	domain_error('[summary(<true/False>),details(<subgoals/answers/false>),results(<var>),output(<true/false>)]',
 	             Bool,'table_dump/[2,3]','[2,3]') ) ),
 	check_options_1(T,D,S,R,O).
 check_options_1([Culprit|_],_D,_S,_,_):-
-	domain_error('[summary(<true/False>),details(<true/false>),results(<var>),output(<true/false>)]',
+	domain_error('[summary(<true/False>),details(<subgoals/answers/false>),results(<var>),output(<true/false>)]',
 	             Culprit,'table_dump/[2,3]','[2,3]').
 
 
