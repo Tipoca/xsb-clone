@@ -136,7 +136,8 @@ all_call_returns_for_atom_list(_,Pred,NumCalls, Slist) :-
 	    length(List,NumCalls)
 	).
 
-:- import is_cyclic/1 from machine.
+%:- import is_cyclic/1 from machine.
+:- import functor/3 from standard.
 
 subgoal_properties_w_answers(Pred,C,NR,CallsTo,Rets,Scc) :-
 	 get_calls_for_table(Pred,C),
@@ -153,14 +154,16 @@ subgoal_properties_w_answers(Pred,C,NR,CallsTo,Rets,Scc) :-
 	 (get_current_scc(SF,Number) -> Scc = scc(Number) ; Scc = completed),
 	 length(Rets,NR).
 subgoal_properties_wo_answers(Pred,C,NR,CallsTo,no_list,Scc) :-
+	 functor(Pred,_,A),
 	 get_calls_for_table(Pred,C),
 %	 (is_cyclic((Pred,C)) -> writeln(2,cyclic((Pred,C))) ; true),
-	 get_call(C,SF,_RetStruct), (is_cyclic((C,RetStruct)) -> writeln(2,cyclic((C,RetStruct))) ; true),
+	 get_call(C,SF,_RetStruct), 
+%        (is_cyclic((C,RetStruct)) -> writeln(2,cyclic((C,RetStruct))) ; true),
 	 copy_term((Pred,C),(_Pred,C1)),
 %	 writeln(2,abouttosubsume(Pred,C)),
 %	 (is_cyclic(C) -> writeln(2,cyclic(C)) ; true),
 %	 (is_cyclic(C1) -> writeln(2,cyclic(C1)) ; true),
-	 subsumes_chk(Pred,C1),
+	 (A =:= 0 -> true ; subsumes_chk(Pred,C1)),
 	 get_answer_number(SF,NR),
 	 get_callsto_number(SF,CallsTo),
 	 (get_current_scc(SF,Number) -> Scc = scc(Number) ; Scc = completed).
