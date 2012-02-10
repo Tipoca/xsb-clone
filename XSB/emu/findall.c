@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: findall.c,v 1.57 2011-12-24 21:09:10 tswift Exp $
+** $Id: findall.c,v 1.58 2012-02-10 22:02:39 tswift Exp $
 ** 
 */
 
@@ -771,9 +771,12 @@ static Integer term_size(CTXTdeclc Cell term)
     pfirstel = (CPtr)cs_val(term) ;
     a = get_arity((Psc)(*pfirstel)) ;
     size += a + 1 ;
-    while( --a ) {
-      term = *++pfirstel ; XSB_Deref(term) ;
-      size += term_size( CTXTc term ) ;
+    if (a) {  
+      while( --a ) {
+	term = *++pfirstel ; 
+	XSB_Deref(term) ;
+	size += term_size( CTXTc term ) ;
+      }
     }
     term = *++pfirstel ; XSB_Deref(term) ;
     goto recur;
