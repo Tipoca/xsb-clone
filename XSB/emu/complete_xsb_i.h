@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: complete_xsb_i.h,v 1.50 2011-07-29 22:56:04 tswift Exp $
+** $Id: complete_xsb_i.h,v 1.51 2012-02-12 22:49:12 tswift Exp $
 ** 
 */
 
@@ -38,8 +38,7 @@
 #define check_fixpoint(sg, b)    find_fixpoint(CTXTc sg, b)
 
 #define find_leader(cs_ptr)						\
-  while (!(prev_compl_frame(cs_ptr) >= COMPLSTACKBOTTOM			\
-	   || is_leader(cs_ptr))) {					\
+  while (!(is_leader(cs_ptr))) {					\
     cs_ptr = prev_compl_frame(cs_ptr);					\
       }
 
@@ -51,13 +50,13 @@ XSB_Start_Instr(check_complete,_check_complete)
   CPtr	new_leader;
   CPtr	tmp_breg ;
   int busy ;
-  switch_envs(breg);    /* in CHAT: undo_bindings() */
+  switch_envs(breg);    
   ptcpreg = tcp_ptcp(breg);
   delayreg = tcp_pdreg(breg);
 
   cs_ptr = tcp_compl_stack_ptr(breg);
-  if (prev_compl_frame(cs_ptr) < COMPLSTACKBOTTOM && !is_leader(cs_ptr))
-		breg = tcp_prevbreg(breg); 
+  if (!is_leader(cs_ptr)) 
+    breg = tcp_prevbreg(breg); 
   else
   {     pthread_mutex_lock(&completing_mut);
         SYS_MUTEX_INCR( MUTEX_COMPL );
@@ -123,8 +122,6 @@ XSB_Start_Instr(check_complete,_check_complete)
   xsbBool leader = FALSE;
   VariantSF subgoal;
 
-//  printf("Check complete \n");
-
   /* this CP has exhausted program resolution -- backtracking occurs */
   switch_envs(breg);    /* in CHAT: undo_bindings() */
   ptcpreg = tcp_ptcp(breg);
@@ -132,11 +129,13 @@ XSB_Start_Instr(check_complete,_check_complete)
 
   subgoal = (VariantSF) tcp_subgoal_ptr(breg);	/* subgoal that is checked */
 
-/*   print_subgoal(stderr, subgoal);  */
+//gccp(CTXT);
+
+//  printf("Check complete for ");print_subgoal(stderr, subgoal);printf("\n");
 
   cs_ptr = subg_compl_stack_ptr(subgoal);
 
-  if ((prev_compl_frame(cs_ptr) >= COMPLSTACKBOTTOM || is_leader(cs_ptr))) {
+  if ( is_leader(cs_ptr)) {
     leader = 1;
   }
   
@@ -147,7 +146,6 @@ XSB_Start_Instr(check_complete,_check_complete)
  * to see whether its inclusion makes any difference 
  */
   FailIfAnswersFound(sched_answers(CTXTc subgoal, NULL));
-
   if (leader) {
     
     //    printf("leader scheduling answers breg %x\n",breg);
@@ -178,7 +176,6 @@ XSB_Start_Instr(check_complete,_check_complete)
     pthread_mutex_unlock(&completing_mut);
 #endif
 */
-
     /* TLS: not sure about condition: how could subg_answers be true
        and has_answer_code be false? */
       /* leader has non-returned answers? */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.30 2011-01-05 16:16:19 dwarren Exp $
+** $Id: cut_xsb.h,v 1.31 2012-02-12 22:49:12 tswift Exp $
 ** 
 */
 
@@ -60,6 +60,11 @@
    (instruc == check_complete || 		\
     instruc == resume_compl_suspension ||	\
     instruc == answer_return ||			\
+    instruc == tabletrust ||			\
+    instruc == tableretry )	       
+
+#define IS_GENERATOR_CP(instruc)		\
+   (instruc == check_complete || 		\
     instruc == tabletrust ||			\
     instruc == tableretry )	       
 

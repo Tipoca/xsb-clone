@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.94 2011-12-24 21:09:10 tswift Exp $
+** $Id: error_xsb.c,v 1.95 2012-02-12 22:49:12 tswift Exp $
 ** 
 */
 
@@ -1248,35 +1248,46 @@ int set_scope_marker(CTXTdecl)
 int unwind_stack(CTXTdecl)
 {
    byte *cp, *cpmark;
-   CPtr e,b, xtemp1, xtemp2;
-   CPtr tmp_compl_frm = NULL;
+   CPtr e,b, xtemp1, xtemp2; CPtr last_leader = NULL;
+   int between_sccs = 1;
 
+   //   printf("unwind_stack b/%p e/%p\n",breg,ereg);
    cpmark = catch_scope_marker;
    /* first find the right environment */
    e = ereg;
    cp = cpreg; /* apparently not pcreg ... maybe not good in general */
    while ( (cp != cpmark) && e )
-     {
-       /*            printf("cp %d x%x\n",cp,cp);*/
+     {        //    printf("cp x%p\n",cp);
        cp = (byte *)e[-1];
        e = (CPtr)e[0];
      }
-
-   if ( ! e )
-     xsb_exit( "Throw failed because no catcher for throw");
+   //   printf("unwound e to %p\n",e);
+   if ( ! e ) xsb_exit( "Throw failed because no catcher for throw");
 
    /* now find the corresponding breg */
    b = breg;
-   while (cp_ereg(b) <= e) {
-     //     if (IS_TABLE_INSTRUC(*cp_pcreg(b))) 
-       //       tmp_compl_frm = subg_compl_stack_ptr(tcp_subgoal_ptr(b));
+   while (cp_ereg(b) <= e || between_sccs == 0) {
+     if (IS_TABLE_INSTRUC(*cp_pcreg(b))) {
+       //       printf("found tab inst %p\n",b);
+       if (IS_GENERATOR_CP(*cp_pcreg(b)) && is_leader(subg_compl_stack_ptr(tcp_subgoal_ptr(b)))) {
+	 between_sccs = 1; 	 last_leader = b; 
+       }
+       else
+	 between_sccs = 0;
+     }
      b = cp_prevbreg(b);
    }
-   if (IS_TABLE_INSTRUC(*cp_pcreg(b))) 
-     tmp_compl_frm = subg_compl_stack_ptr(tcp_subgoal_ptr(b));
+   if (IS_TABLE_INSTRUC(*cp_pcreg(b))) {
+     last_leader = b;
+     printf("!$!$ uh-oh\n");
+   }
    breg = b;
-   if (tmp_compl_frm != NULL) {
-     remove_incomplete_tries(CTXTc prev_compl_frame(tmp_compl_frm));
+   //   printf("breg unwound to %p\n",breg);
+
+   if (last_leader != NULL) {
+     if (IS_GENERATOR_CP(*cp_pcreg(last_leader))) reclaim_stacks(last_leader);
+     remove_incomplete_tries(CTXTc 
+			     prev_compl_frame(subg_compl_stack_ptr(tcp_subgoal_ptr(last_leader))));
    }
    unwind_trail(breg,xtemp1,xtemp2);
 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.90 2012-01-23 14:25:28 dwarren Exp $
+** $Id: debug_xsb.c,v 1.91 2012-02-12 22:49:12 tswift Exp $
 ** 
 */
 
@@ -819,7 +819,7 @@ static void print_common_cpf_part(CPtr cpf_addr, FILE* where) {
 	     &(cp_trreg(cpf_addr)), cp_trreg(cpf_addr));
   fprintf(where,"   CP stack %p:\tcontinuation pointer:\t%p\n", 
 	     &(cp_cpreg(cpf_addr)), cp_cpreg(cpf_addr));
-  fprintf(where,"   CP stack %p:\ttop of local stack:\t%p\n", 
+  fprintf(where,"   CP stack %p:\tereg:\t%p\n", 
 	     &(cp_ereg(cpf_addr)), cp_ereg(cpf_addr));
   fprintf(where,"   CP stack %p:\tparent subgoal dreg:\t%p\n", 
 	     &(cp_pdreg(cpf_addr)), cp_pdreg(cpf_addr));
@@ -863,7 +863,8 @@ static void print_cpf(CPtr cpf_addr, FILE* where) {
 		 arg, i, ref_val(*arg));
     break;
   case GENERATOR_CP_FRAME:
-    fprintf(where,"Generator Choice Point Frame:\n");
+    fprintf(where,"Generator Choice Point Frame: ");
+    print_subgoal(where, (VariantSF) tcp_subgoal_ptr(cpf_addr));fprintf(where,"\n");
     print_common_cpf_part(cpf_addr,where);
     fprintf(where,"   CP stack %p:\ttemplate:\t0x%p\n", 
 	       &(tcp_template(cpf_addr)), tcp_template(cpf_addr));
@@ -887,7 +888,8 @@ static void print_cpf(CPtr cpf_addr, FILE* where) {
 	      arg, i, ref_val(*arg));
     break;
   case CONSUMER_CP_FRAME:
-    fprintf(where,"Consumer Choice Point Frame:\n");
+    fprintf(where,"Consumer Choice Point Frame: ");
+    print_subgoal(where, (VariantSF) nlcp_subgoal_ptr(cpf_addr));fprintf(where,"\n");
     print_common_cpf_part(cpf_addr,where);
     fprintf(where,"   CP stack %p:\ttemplate:\t0x%p\n", 
 	       &(nlcp_template(cpf_addr)), nlcp_template(cpf_addr));

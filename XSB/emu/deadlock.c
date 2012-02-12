@@ -39,7 +39,7 @@ static VariantSF bottom_leader(th_context *th, VariantSF to_sgf)
 {
 	CPtr csf = subg_compl_stack_ptr(to_sgf) ;
 
-	while( prev_compl_frame(csf) < COMPLSTACKBOTTOM && !is_leader(csf) )
+	while(!is_leader(csf) )
 		csf = prev_compl_frame(csf) ;
 	return compl_subgoal_ptr(csf) ;
 }

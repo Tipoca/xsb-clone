@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.388 2012-02-05 16:44:58 tswift Exp $
+** $Id: builtin.c,v 1.389 2012-02-12 22:49:12 tswift Exp $
 **
 */
 
@@ -144,7 +144,7 @@ extern xsbBool formatted_io(CTXTdecl), read_canonical(CTXTdecl);
 extern xsbBool private_builtin(void);
 
 extern void xsb_segfault_quitter(int err);
-extern void alt_print_cp(CTXTdeclc int);
+extern void alt_print_cp(CTXTdeclc char *);
 extern int xsb_profiling_enabled;
 
 extern char *canonical_term(CTXTdeclc Cell, int);
@@ -2876,7 +2876,7 @@ case WRITE_OUT_PROFILE:
   case PRINT_LS: print_ls(CTXTc 1) ; return TRUE ;
   case PRINT_TR: print_tr(CTXTc 1) ; return TRUE ;
   case PRINT_HEAP: print_heap(CTXTc 0,2000,1) ; return TRUE ;
-  case PRINT_CP: alt_print_cp(CTXTc 1) ; return TRUE ;
+  case PRINT_CP: alt_print_cp(CTXTc ptoc_string(CTXTc 1)) ; return TRUE ;
   case PRINT_REGS: print_regs(CTXTc 10,1) ; return TRUE ;
   case PRINT_ALL_STACKS: print_all_stacks(CTXTc 10) ; return TRUE ;
   case EXP_HEAP: glstack_realloc(CTXTc glstack.size + 1,0) ; return TRUE ;

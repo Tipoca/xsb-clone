@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.96 2011-10-16 19:20:34 tswift Exp $
+** $Id: tables.c,v 1.97 2012-02-12 22:49:12 tswift Exp $
 ** 
 */
 
@@ -928,8 +928,7 @@ void perform_early_completion(CTXTdeclc VariantSF ProdSF,CPtr ProdCPF) {
     sprint_subgoal(CTXTc bufferb,ProdSF);     
     fprintf(fview_ptr,"cmp(%s,ec,%d).\n",bufferb,ctrace_ctr++);
   }
-  if ( flags[EC_REMOVE_SCC] &&
-       (is_leader(ProdSF) || prev_compl_frame(subg_compl_stack_ptr(ProdSF)) >= COMPLSTACKBOTTOM)) { 
+  if ( flags[EC_REMOVE_SCC] && is_leader(ProdSF)) { 
     remove_incomplete_tries(CTXTc subg_compl_stack_ptr(ProdSF));
     subg_pos_cons(ProdSF) = 0;
     subg_compl_susp_ptr(ProdSF) = 0;  /* ec'd -- neg must fail */
