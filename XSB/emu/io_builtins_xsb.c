@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.96 2011-12-23 23:24:48 tswift Exp $
+** $Id: io_builtins_xsb.c,v 1.97 2012-02-14 21:09:43 dwarren Exp $
 ** 
 */
 
@@ -1029,6 +1029,7 @@ Integer read_canonical_term(CTXTdeclc FILE *filep, STRFILE *instr, int return_lo
 			opstk[optop-1].op = makefloat((float)-float_temp); // lose precision FIX!!
 #else
 			ensure_term_space(h,4); // size of boxfloat
+			size +=4; 
 			opstk[optop-1].typ = TK_FUNC;
 			bld_boxedfloat_here(CTXTc &h, &opstk[optop-1].op, -float_temp);
 #endif
@@ -1118,10 +1119,12 @@ Integer read_canonical_term(CTXTdeclc FILE *filep, STRFILE *instr, int return_lo
 #ifdef FAST_FLOATS		
 		opstk[optop].typ = TK_REAL;
 		opstk[optop].op = makefloat((float)float_temp); // lose precision  FIX!!
+		size += 1;
 #else
 		ensure_term_space(h,4); // size of boxfloat
 		opstk[optop].typ = TK_FUNC;
 		bld_boxedfloat_here(CTXTc &h, &opstk[optop].op, float_temp);
+		size += 4; 
 #endif
 		optop++;
 		postopreq = TRUE;
@@ -1195,7 +1198,7 @@ Integer read_canonical_term(CTXTdeclc FILE *filep, STRFILE *instr, int return_lo
 	  xsb_abort("[READ_CANONICAL] Argument must be a variable");
 	term = opstk[0].op;
 	
-	check_glstack_overflow(5, pcreg, (size+1)*sizeof(Cell)) ;
+	check_glstack_overflow(5, pcreg, (size+200)*sizeof(Cell)) ;
 	/* get return location again, in case it moved, whole reasong for r_c_r_v */
 	prologvar = read_canonical_return_var(CTXTc return_location_code); 
 	gl_bot = (CPtr)glstack.low; gl_top = (CPtr)glstack.high;
