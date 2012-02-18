@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.95 2012-02-12 22:49:12 tswift Exp $
+** $Id: error_xsb.c,v 1.96 2012-02-18 04:46:54 kifer Exp $
 ** 
 */
 
@@ -1285,7 +1285,9 @@ int unwind_stack(CTXTdecl)
    //   printf("breg unwound to %p\n",breg);
 
    if (last_leader != NULL) {
-     if (IS_GENERATOR_CP(*cp_pcreg(last_leader))) reclaim_stacks(last_leader);
+     if (IS_GENERATOR_CP(*cp_pcreg(last_leader))) {
+       reclaim_stacks(last_leader);
+     }
      remove_incomplete_tries(CTXTc 
 			     prev_compl_frame(subg_compl_stack_ptr(tcp_subgoal_ptr(last_leader))));
    }

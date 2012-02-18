@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.77 2012-02-03 20:38:52 tswift Exp $
+** $Id: memory_xsb.c,v 1.78 2012-02-18 04:46:54 kifer Exp $
 ** 
 */
 
@@ -142,7 +142,7 @@ UInteger pspace_tot_gl = 0;
    cases where we really dont check for them.  These seem pretty
    small, overall however. */
 
-void *mem_alloc(size_t size, int category)
+DllExport void* call_conv mem_alloc(size_t size, int category)
 {
     byte * ptr;
 
@@ -282,7 +282,7 @@ void *mem_calloc_nocheck(size_t size, size_t occs, int category)
 
 /* === realloc permanent memory ============================================ */
 
-void *mem_realloc(void *addr, size_t oldsize, size_t newsize, int category)
+DllExport void* call_conv mem_realloc(void *addr, size_t oldsize, size_t newsize, int category)
 {
   byte *new_addr;
     newsize = (newsize+7) & ~0x7 ;	      /* round to 8 */

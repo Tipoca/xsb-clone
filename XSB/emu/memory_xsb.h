@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.51 2012-02-01 22:03:13 dwarren Exp $
+** $Id: memory_xsb.h,v 1.52 2012-02-18 04:46:54 kifer Exp $
 ** 
 */
 
@@ -49,6 +49,8 @@
 #define _MEMORY_XSB_H_
 
 #include "memory_defs.h"
+#include "export.h"
+
 #define encode_memory_error(category,limit_type) (category << 2 | limit_type)
 
 /* Info Structure for the Data Regions
@@ -129,11 +131,11 @@ extern UInteger pspace_tot_gl;
 
 /* Memory Function Prototypes
    -------------------------- */
-extern void *mem_alloc(size_t, int);
+DllExport extern void* call_conv mem_alloc(size_t, int);
 extern void *mem_alloc_nocheck(size_t, int);
 extern void *mem_calloc(size_t, size_t, int);
 extern void *mem_calloc_nocheck(size_t, size_t, int);
-extern void *mem_realloc(void *, size_t, size_t, int);
+DllExport extern void* call_conv mem_realloc(void *, size_t, size_t, int);
 extern void *mem_realloc_nocheck(void *, size_t, size_t, int);
 extern void mem_dealloc(void *, size_t, int);
 extern void print_mem_allocs(void);

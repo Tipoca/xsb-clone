@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.h,v 1.57 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: cinterf.h,v 1.58 2012-02-18 04:46:54 kifer Exp $
 ** 
 */
 
@@ -238,7 +238,7 @@ DllExport extern void  call_conv extern_ctop_string(CTXTdeclc reg_num, const cha
   //DllExport extern int   call_conv ctop_abs(reg_num, char*);
 
 // These are not in the manual, if they are included make them DllExport, etc
-extern char* string_find(const char*, int);		/* defined in psc.c	*/
+DllExport extern char* call_conv string_find(const char*, int);	/* defined in psc.c	*/
 extern int   ctop_term(CTXTdeclc char*, char*, reg_num);
 extern int   ptoc_term(CTXTdeclc char*, char*, reg_num);
 

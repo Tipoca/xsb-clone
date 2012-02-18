@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: psc_xsb.h,v 1.51 2012-01-23 02:37:08 tswift Exp $
+** $Id: psc_xsb.h,v 1.52 2012-02-18 04:46:55 kifer Exp $
 ** 
 */
 
@@ -114,6 +114,8 @@ typedef struct psc_pair *Pair;
 /* Type definitions */
 #include "psc_defs.h"
 #include "incr_xsb_defs.h"
+#include "export.h"
+
 
 /*======================================================================*/
 /* Interface macros (in the following "psc" is typed "Psc")		*/
@@ -170,7 +172,7 @@ extern Pair insert_module(int, char *);
 extern Pair insert(char *, byte, Psc, int *);
 extern void set_psc_ep_to_psc(Psc, Psc);
 
-extern char* string_find(const char*, int);
+DllExport extern char* call_conv string_find(const char*, int);
 
 /*======================================================================*/
 /*  Special instance (0-arity interface functions)			*/
