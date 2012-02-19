@@ -1,38 +1,51 @@
 \chapter{Exception Handling}\label{chap:exception}
 \index{exceptions}
 
-We use the term {\em exceptions} to define errors in program execution
-that are handled by a non-local change in execution state.  The
-preferred mechanism for dealing with exceptions in XSB is to use the
-predicates {\tt catch/3}, {\tt throw/1}, and {\tt
-default\_user\_error\_handler/1} together.  These predicates are
+We define the term {\em exceptions} as errors in program execution
+that are handled by a non-local change in execution state.  Exception
+handling in XSB is ISO-compatable, and has been extended to handle
+tabled evaluations.  
+
+\section{The Mechanics of Exception Handling}
+%
+We address the case of non-tabled evaluations before discussing the
+extensions for tabling.
+
+\subsection{Exception Handling in Non-Tabled Evaluations}
+%
+The preferred mechanism for dealing with exceptions in XSB is to use
+the predicates {\tt catch/3}, {\tt throw/1}, and {\tt
+  default\_user\_error\_handler/1} together.  These predicates are
 ISO-compatable, and their use can give a great deal of control to
 exception handling.  At a high level, when an exception is encountered
-an error term $T$ is {\em thrown}.  Throwing an error term $T$ causes
-XSB to examine its choice point stack until it finds a {\em catcher}
-that unifies with $T$.  This catcher then calls a {\em handler}.  If
-no explicit catcher for $T$ exists, a default handler is invoked,
-which usually results in an abort, and returns execution to the
-top-level of the interpreter, or to the calling C function.
+an error term $T$ is {\em thrown}.  In a Prolog program, throwing an
+error term $T$ causes XSB to examine its choice point stack until it
+finds a {\em catcher} that unifies with $T$.  This catcher then calls
+a {\em handler}.  If no explicit catcher for $T$ exists, a default
+handler is invoked, which usually results in an abort, and returns
+execution to the top-level of the interpreter, or to the calling C
+function.
 
-More precisely, a handler is set up when {\tt
-  catch(Goal,Catcher,Handler)} is called.  At this point a
-continuation is saved (i.e. a Prolog choice point), and {\tt Goal} is
-called.  If no exceptions are encountered, answers for {\tt Goal} are
-obtained as usual.  Within the execution of {\tt Goal}, an exception
-can be signaled by a call to {\tt throw(Error)}, or by a predicate in
-the {\tt error\_handler} module that calls {\tt throw/1}.  {\tt
-  throw/1} searches for an ancestor of the current environment called
-by {\tt catch/3} and whose catcher (second argument) unifies with {\tt
-  Error}.  If such an ancestor is found, program execution reverts to
-the ancestor and all intervening choice points are removed.  The
-catcher's handler (third argument) is called and the exception is
-thereby handled.  On the other hand, if no ancestor was called using
-{\tt catch/3} the system checks whether a clause with head {\tt
-  default\_user\_error\_handler(Term)} has been asserted, such that
-{\tt Term} unifies with {\tt Error}.  If so, this handler is executed.
-If not, XSB's default system error handler in invoked an error message
-is output and execution returns to the top level of the interpreter.
+A handler is set up when {\tt catch(Goal,Catcher,Handler)} is called.
+At this point a continuation is saved (i.e. a Prolog choice point),
+and {\tt Goal} is called.  If no exceptions are encountered, answers
+for {\tt Goal} are obtained as usual.  Within the execution of {\tt
+  Goal}, an exception is usually thrown by calling a Prolog predicate
+in the {\tt error\_handler} module, or by executing a C-level error
+function.  However, if a user-defined error type is desired, the
+Prolog predicate {\tt throw/1} can also be called directly.  As
+mentioned above, {\tt throw/1} searches for an ancestor of the current
+environment called by {\tt catch/3} and whose catcher (second
+argument) unifies with {\tt Error}.  If such an ancestor is found,
+program execution reverts to the ancestor and all intervening choice
+points are removed.  The catcher's {\tt Handler} goal is called and
+the exception is thereby handled.  On the other hand, if no ancestor
+was called using {\tt catch/3} the system checks whether a clause with
+head {\tt default\_user\_error\_handler(Term)} has been asserted, such
+that {\tt Term} unifies with {\tt Error}.  If so, this handler is
+executed.  If not, XSB's default system error handler in invoked an
+error message is output and execution returns to the top level of the
+interpreter.
 
 The following, somewhat fanciful example, helps clarify these
 concepts~\footnote{Code for this example can be found in {\tt
@@ -190,18 +203,140 @@ Aborting: division by 0 in: userdiv / 1
 The actions of {\tt catch/3} and {\tt throw/1} resemble that of the
 Prolog cut in that they remove choice points that lie between a call
 to {\tt throw/1} and the matching {\tt catch/3} that serves as its
-ancestor.  However, if this process encounters a choice point for an
-incomplete table, execution is aborted to the top user level.
+ancestor. 
+
+% However, if this process encounters a choice point for an
+%incomplete table, execution is aborted to the top user level.
 
 The predicate {\tt call\_cleanup/2}
 (cf. Section~\ref{meta_predicates}) can be used with {\tt catch/3},
-since {\tt call\_cleanup(Goal,Cleanup)} executes {\tt Cleanup}
-whenever computation of {\tt Goal} is completed, whether because {\tt
-  Goal} has thrown an exception, has failed, or has succeeded with its
-last answer.  {\tt call\_cleanup/2} can thus be used to release
-resources created by {\tt Goal} (such as streams, mutexes, database
-cursors, etc.).  However, if {\tt Goal} throws an exception, {\tt
-  call\_cleanup/2} will re-throw the exception after executing cleanup.
+since the goal {\tt call\_cleanup(Goal,Cleanup)} executes {\tt
+  Cleanup} whenever computation of {\tt Goal} is completed, whether
+because {\tt Goal} has thrown an exception, has failed, or has
+succeeded with its last answer.  {\tt call\_cleanup/2} can thus be
+used to release resources created by {\tt Goal} (such as streams,
+mutexes, database cursors, etc.).  However, if {\tt Goal} throws an
+exception, {\tt call\_cleanup/2} will re-throw the exception after
+executing cleanup.
+
+\index{tabling!and exceptions}
+\index{strongly connected components (SCCs)}
+\subsection{Exception Handling in Tabled Evaluation}
+%
+The exception handling as previously described requires extensions in
+order to work well with tabled predicates.  First, if an {\em
+  unhandled} exception is thrown duing evaluation of a tabled subgoal
+$S$ and $S$ is not completed, the table for $S$ is not meaningful and
+should be removed.  (Tables that have been completed are not affected
+by exceptions.)  Accordingly, the user will sometimes see the message:
+%
+\begin{verbatim}
+   Removing incomplete tables...
+\end{verbatim}
+%
+written to standard feedback.  But what about exceptions that are {\em
+  caught} during the computation of $S$?
+
+The proper action to take in such a case is complicated by the
+scheduling mechanism of tabling which, as discussed in
+Chapter~\ref{chap:TablingOverview}, is more complex than in Prolog.
+Rather than a simple depth-first search, as in Prolog, tabled
+evaluations effectively perform a series of fixed-point computations
+for various sets of mutually dependent subgoals, which are termed {\em
+  SCCs}~\footnote{This term is used since sets of mutually dependent
+  subgoals are formally modelled as (approximate) {\em Strongly
+    Connected Components} within a dependency graph.}.  In fact, a
+tabled evaluation can be seen as a tree of SCCs (in batched
+evaluation) or a chain of SCCs (in local evaluation).  In a tabled
+evalution XSB's throw mechanism searches for the nearest catcher $C$
+among its ancestors
+%
+\begin{itemize}
+\item whose {\tt Catchterm} unifies with the thrown error; and
+\item where $C$ is between SCCs: that is where the set of subgoals
+  that depend on $C$ is disjoint from the set of subgoals upon which
+  $C$ depends.  We term this the {\em SCC restriction} for exception
+  handling.
+\end{itemize}
+%
+
+This behavior can be best understood by an example.  Consider the
+query {\tt a(X)} to the program in Figure~\ref{fig:tab_except} which
+has the following output:
+%
+%-------------------------------------------------------------------------------
+\begin{figure}[bhtp]
+\longline
+\begin{small}
+\begin{verbatim}
+:- table a/1, b/1, c/1,d/1.
+a(X):- writeln(a_calling_b),b(X).
+
+b(X):- writeln(b_calling_a),a(X).
+b(X):- writeln(b_calling_c),catch(c(X),_,(writeln(handled_1),fail)).
+
+c(X):- writeln(c_calling_d),d(X).
+c(X):- writeln(c_aborting),abort.
+d(X):- writeln(d_calling_c),catch(c(X),_,(writeln(handled_2),fail)).
+\end{verbatim}
+\end{small}
+\caption{A program to illustrate exception handling in tabled evaluations} \label{fig:tab_except}
+\longline
+\end{figure}
+%------------------------------------------------------------------------------
+
+\begin{small}
+\begin{verbatim}
+   | ?- a(X).
+   a_calling_b
+   b_calling_a
+   b_calling_c
+   c_calling_d
+   d_calling_c
+   c_aborting
+   Removing incomplete tables...
+   handled_1
+\end{verbatim}
+\end{small}
+%
+Note that there are 2 SCCs, $\{a(X),b(X)\}$ and $\{c(X),d(X)\}$.  When
+the {\tt abort} is called in the body of {\tt c(X)} the catch in the
+body of {\tt d(X)} is its nearest ancestor; however this catch is
+skipped over, and the catch in the body of {\tt b(X)} takes effect.
+This catch is between the SCCs -- the first SCC depends on it, but the
+second doesn't.
+%
+Due to the SCC restriction, the actual behavior of exception handling
+with tabling is thus somewhat less intuitive than in Prolog.  If this
+restriction were lifted, there would be no guarantee that there
+existed a unique catch that was the closest ancestor of an exception.
+
+While the above mechanism offers a great deal of flexibility, for many
+cases the best approach to exception handling is to keep it simple.
+%
+\begin{enumerate}
+\item Use catches when there will be no tabled subgoal between an
+  exception and its catcher.  For instance, sometimes it may be
+  annoying to have {\tt atom\_codes/2} throw an exception rather than
+  failing, if given an integer in its first argument.  This can be
+  addressed by the predicate
+%
+\begin{verbatim}
+my_atom_codes(X,Y):- 
+   catch(atom_codes(1,B),error(type_error(A,B),C,D),writeln(E)).
+\end{verbatim}
+%
+which, for a type error, does not interact with tabling in any way.  
+%
+\item Similarly, if only subgoals to {\em completed} tables occur
+  between an exception and its catcher, exception handling behaves
+  just as in case 1).
+%
+\item Otherwise, abort the entire tabled computation and handle it
+  from there.
+\end{enumerate}
+%
+
 
 \section{Representations of ISO Errors} \label{sec:iso-errors}
 \index{ISO!errors}
