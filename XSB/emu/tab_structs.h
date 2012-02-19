@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.24 2012-02-12 22:49:12 tswift Exp $
+** $Id: tab_structs.h,v 1.25 2012-02-19 19:17:55 tswift Exp $
 ** 
 */
 
@@ -633,7 +633,9 @@ typedef struct subgoal_frame {
   void *prev_subgoal;
   CPtr  cp_ptr;		  /* Pointer to the Generator CP (pre-compl)*/
   CPtr pos_cons;	  /* Pointer to list of (CP) active subgoal frames (pre-compl) */
-  CPtr compl_stack_ptr;	  /* Pointer to subgoal's completion stack frame (pre-compl) */
+  union{
+    CPtr compl_stack_ptr;	  /* Pointer to subgoal's completion stack frame (pre-compl) */
+    long visitors;};
   CPtr compl_suspens_ptr; /* SLGWAM: CP stack ptr (pre-compl)  */
   Integer calls_ans_ctr; 
 #ifdef MULTI_THREAD
@@ -682,6 +684,7 @@ typedef struct subgoal_frame {
 #define subg_tag(b)		( ((VariantSF)(b))->tag )
 #define subg_grabbed(b)		( ((VariantSF)(b))->grabbed )
 #define subg_callsto_number(b)		( ((VariantSF)(b))->callsto_number )
+#define subg_visitors(b)		( ((VariantSF)(b))->visitors )
 
 /* The subgoal visited field can be used for both marking during GC
    (the GC_MARK mask) and during table traversal to transitively remove

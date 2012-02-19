@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.41 2011-12-14 22:40:26 dwarren Exp $
+** $Id: inst_xsb.h,v 1.42 2012-02-19 19:17:55 tswift Exp $
 ** 
 */
 
@@ -281,8 +281,7 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 #define trie_try_fail           0x92
 #define trie_retry_fail         0x93
 
-/* to unlock the trie */
-//#define trie_fail_unlock        0x94
+#define trie_fail       0x94
 
 #define getfloat	0x80
 #define putfloat	0x81

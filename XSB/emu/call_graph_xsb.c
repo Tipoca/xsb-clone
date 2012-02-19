@@ -67,7 +67,6 @@
 
 #define INCR_DEBUG2
 
-
 /********************** STATISTICS *****************************/
 #define build_subgoal_args(SUBG)	\
 	load_solution_trie(CTXTc arity, 0, &cell_array1[arity-1], subg_leaf_ptr(SUBG))
@@ -155,7 +154,7 @@ callnodeptr makecallnode(VariantSF sf){
   //    printcall(cn);printf("\n");
 
   call_node_count_gl++;
-
+  //  printf("makecallnode %p sf %p\n",cn,sf);
   return cn;
 }
 
@@ -416,10 +415,11 @@ callnodeptr delete_calllist_elt(calllistptr *cl){
   
   calllistptr tmp;
   callnodeptr c;
-  
+
   c = (*cl)->item;
   tmp = *cl;
   *cl = (*cl)->next;
+  //  printf("calllist %p item %p next %p\n",tmp,c,*cl);
   SM_DeallocateStruct(smCallList, tmp);      
   
   return c;  
@@ -430,7 +430,7 @@ void dfs(CTXTdeclc callnodeptr call1){
   struct hashtable *h;	
   struct hashtable_itr *itr;
   
-  if(IsNonNULL(call1->goal) && !subg_is_complete((VariantSF)call1->goal)){
+  if(IsNonNULL(call1->goal) && !subg_is_completed((VariantSF)call1->goal)){
     //    xsb_abort("Incremental tabling is trying to invalidate an incomplete table for %s/%d\n",
     //	      get_name(TIF_PSC(subg_tif_ptr(call1->goal))),get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
     xsb_new_table_error(CTXTc "incremental_tabling",
@@ -454,6 +454,7 @@ void dfs(CTXTdeclc callnodeptr call1){
 }
 
 
+
 void invalidate_call(CTXTdeclc callnodeptr c){
 
 #ifdef MULTI_THREAD
@@ -466,6 +467,7 @@ void invalidate_call(CTXTdeclc callnodeptr c){
   }
 }
 
+#define WARN_ON_UNSAFE_UPDATE 1
 
 int create_call_list(CTXTdecl){
 
@@ -475,7 +477,24 @@ int create_call_list(CTXTdecl){
   int j,count=0,arity;
   Psc psc;
   CPtr oldhreg=NULL;
-  
+
+  //  calllistptr affected_ptr = affected_gl;
+
+  /*
+  do {
+    //    printf("item %p sf %p\n",calllist_item(affected_ptr)),callnode_sf(calllist_item(affected_ptr)));
+    //    printf("next %p\n",calllist_next(affected_ptr));  
+    if (callnode_sf(calllist_item(affected_ptr)) != NULL) {
+      //      print_subgoal(stddbg, callnode_sf(calllist_item(affected_ptr)));printf("\n");
+      if (abolish_table_call_cps_check(callnode_sf(calllist_item(affected_ptr))) == CANT_RECLAIM) {
+	printf("!!!! adding to gc\n");
+	//	check_insert_global_deltf_subgoal(CTXTc subgoal,TRUE);
+      }
+    }
+      affected_ptr = (calllistptr) calllist_next(affected_ptr);
+  } while ( calllist_next(affected_ptr) != NULL) ;
+  */
+
   reg[4] = reg[3] = makelist(hreg);  // reg 3 first not-used, use regs in case of stack expanson
   new_heap_free(hreg);   // make heap consistent
   new_heap_free(hreg);
@@ -483,6 +502,18 @@ int create_call_list(CTXTdecl){
     subgoal = (VariantSF) call1->goal;      
     if(IsNULL(subgoal)){ /* fact predicates */
       call1->deleted = 0; 
+      continue;
+    }
+    if (subg_visitors(subgoal)) {
+      char buffer[2*MAXTERMBUFSIZE];					\
+      sprint_subgoal(CTXTc buffer,subgoal);
+#ifdef WARN_ON_UNSAFE_UPDATE
+      xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update\n",
+	       subg_visitors(subgoal),buffer);
+#else
+      xsb_abort("%d Choice point(s) exist to the table for %s -- cannot incrementally update\n",
+	       subg_visitors(subgoal),buffer);
+#endif
       continue;
     }
     count++;

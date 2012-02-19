@@ -37,7 +37,8 @@
 #define GET_CURRENT_SCC                          13
 #define PRINT_COMPLETION_STACK                   14
 #define PRINT_CYCLIC_TERM                        15
-#define MARK_TERM_CYCLIC_1                        16
+#define MARK_TERM_CYCLIC_1                       16
+#define GET_VISITORS_NUMBER                      17
 
 // For delete return
 #define ANSWER_SUBSUMPTION   0

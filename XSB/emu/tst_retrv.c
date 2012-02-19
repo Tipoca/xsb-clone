@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_retrv.c,v 1.34 2011-08-20 21:36:49 tswift Exp $
+** $Id: tst_retrv.c,v 1.35 2012-02-19 19:17:56 tswift Exp $
 ** 
 */
 
@@ -44,8 +44,8 @@
 #include "table_stats.h"
 #include "trie_internals.h"
 #include "choice.h"
-#include "cut_xsb.h"	   /* trail frame field access macros */
 #include "tab_structs.h"
+#include "cut_xsb.h"	   /* trail frame field access macros */
 #include "tst_aux.h"
 #include "tst_utils.h"
 #include "debug_xsb.h"

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.92 2012-02-18 04:46:54 kifer Exp $
+** $Id: debug_xsb.c,v 1.93 2012-02-19 19:17:55 tswift Exp $
 ** 
 */
 
@@ -56,6 +56,8 @@
 #if (defined(DEBUG_VERBOSE) || defined(DEBUG_VM))
 #include "subp.h"
 #endif
+
+void print_subgoal(CTXTdeclc FILE *, VariantSF);
 
 /*=============================================================================*/
 /*  The first section of predicates are used for tracing as well as by XSB     */
@@ -829,7 +831,7 @@ static void print_common_cpf_part(CPtr cpf_addr, FILE* where) {
 	     &(cp_prevbreg(cpf_addr)), cp_prevbreg(cpf_addr));
  }
 
-static void print_cpf(CPtr cpf_addr, FILE* where) {
+static void print_cpf(CTXTdeclc CPtr cpf_addr, FILE* where) {
 
   CPtr arg;
   int i, num_of_args, cp_type = 0;
@@ -864,7 +866,7 @@ static void print_cpf(CPtr cpf_addr, FILE* where) {
     break;
   case GENERATOR_CP_FRAME:
     fprintf(where,"Generator Choice Point Frame: ");
-    print_subgoal(where, (VariantSF) tcp_subgoal_ptr(cpf_addr));fprintf(where,"\n");
+    print_subgoal(CTXTc where, (VariantSF) tcp_subgoal_ptr(cpf_addr));fprintf(where,"\n");
     print_common_cpf_part(cpf_addr,where);
     fprintf(where,"   CP stack %p:\ttemplate:\t0x%p\n", 
 	       &(tcp_template(cpf_addr)), tcp_template(cpf_addr));
@@ -889,7 +891,7 @@ static void print_cpf(CPtr cpf_addr, FILE* where) {
     break;
   case CONSUMER_CP_FRAME:
     fprintf(where,"Consumer Choice Point Frame: ");
-    print_subgoal(where, (VariantSF) nlcp_subgoal_ptr(cpf_addr));fprintf(where,"\n");
+    print_subgoal(CTXTc where, (VariantSF) nlcp_subgoal_ptr(cpf_addr));fprintf(where,"\n");
     print_common_cpf_part(cpf_addr,where);
     fprintf(where,"   CP stack %p:\ttemplate:\t0x%p\n", 
 	       &(nlcp_template(cpf_addr)), nlcp_template(cpf_addr));
@@ -951,7 +953,7 @@ void alt_print_cp(CTXTdeclc char * title)
   while ( startp > endp )
   { fflush(where);
     start++ ;
-    print_cpf(endp, where );
+    print_cpf(CTXTc endp, where );
 
     endp = cp_prevtop(endp);
   }
@@ -2272,7 +2274,7 @@ static void print_cpfs(CTXTdeclc int overlap)
       if ( cpf == bfreg )
 	xsb_dbgmsg((LOG_DEBUG,"bfreg"));
       //      analyze_cpf(cpf, &length, &type);  // not defined...
-      //      print_cpf(cpf, length, type);  // wrong num of args, figure out later
+      //      print_cpf(CTXTc cpf, length, type);  // wrong num of args, figure out later
       cpf = cpf + length;
     }
     if (cpf < cp_stack_bottom) {

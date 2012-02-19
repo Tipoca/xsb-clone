@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.96 2012-02-18 04:46:54 kifer Exp $
+** $Id: error_xsb.c,v 1.97 2012-02-19 19:17:55 tswift Exp $
 ** 
 */
 
@@ -1244,6 +1244,60 @@ int set_scope_marker(CTXTdecl)
 } /* set_scope_marker */
 
 
+/* call_cleanup_gl -- the address of the retry for call_cleanup, is
+   set up when standard.P is loaded -- this would need to be checked
+   if we mess around with choice points.  handler is a pointer to the
+   cleanup obtained via an argument register of the choice point.  The
+   handler is put into a list [call_cleanup_mod,<handler>] and added
+   to the interrupt chain. 
+
+   Once the choice point segment has been traversed and any handlers
+   are added to the interrupt chain, cut_code() will call
+   allocate_env_and_call_check_ints().  Thus this routine could be
+   called twice in a cut.  The first time to check attv interrupts,
+   before the choice point segment is traversed; and the second, here,
+   to execute a series of cleanup handlers.
+*/   
+
+inline void  CHECK_CALL_CLEANUP(CTXTdeclc CPtr CurBreg) {	
+  CPtr handler;
+  Cell temp;
+
+  if ((CPtr) *CurBreg == call_cleanup_gl) {				      
+    handler = CurBreg + CP_SIZE;
+    //    printf("found a call cleanup cp %x -- need to set interrupt array %x %d\n",
+    //                 CurBreg,handler,CP_SIZE); 
+    XSB_CptrDeref(handler);
+    //    printterm(stdout,handler,7);
+    // bld_ref(reg+1, handler);
+    //    printterm(stdout,reg+1,7);
+    bld_list(&temp,hreg);
+    bld_string(hreg++,string_find("call_cleanup_mod",1));     
+    bld_list(hreg,hreg+1);
+    hreg++;
+    bld_ref(hreg++,handler);
+    bld_nil(hreg++);
+    //    printterm(stdout,temp,7);
+    add_interrupt(CTXTc temp,makenil);
+    //    pcreg = get_ep(call_list_psc);
+  }
+}
+
+#ifdef COUNT_TRIE_VISITORS
+inline void  CHECK_TRIE_ROOT(CTXTdeclc CPtr CurBreg) {	
+  //  printf("breg instr %x\n",*cp_pcreg(CurBreg));
+  if (*cp_pcreg(CurBreg) == trie_fail) {
+    BTNptr Nodeptr;
+    Nodeptr = (BTNptr) int_val((*(CurBreg + CP_SIZE)));
+    //    printf("found_trie_root %p\n",Nodeptr);
+    subg_visitors(BTN_Parent(Nodeptr)) = subg_visitors(BTN_Parent(Nodeptr)) - 1;
+  }
+}
+#else
+inline void  CHECK_TRIE_ROOT(CTXTdeclc CPtr CurBreg) {	
+}
+#endif
+
 
 int unwind_stack(CTXTdecl)
 {
@@ -1276,6 +1330,8 @@ int unwind_stack(CTXTdecl)
 	 between_sccs = 0;
      }
      b = cp_prevbreg(b);
+     CHECK_TRIE_ROOT(CTXTc b);
+     CHECK_CALL_CLEANUP(CTXTc b);
    }
    if (IS_TABLE_INSTRUC(*cp_pcreg(b))) {
      last_leader = b;

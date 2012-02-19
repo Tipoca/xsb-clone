@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cut_xsb.h,v 1.31 2012-02-12 22:49:12 tswift Exp $
+** $Id: cut_xsb.h,v 1.32 2012-02-19 19:17:55 tswift Exp $
 ** 
 */
 
@@ -68,6 +68,9 @@
     instruc == tabletrust ||			\
     instruc == tableretry )	       
 
+#define IS_INCR_TRIE_ROOT(instruc)		\
+  (instruc == trie_root)
+
 #define CHECK_TABLE_CUT(instruc)       \
   if (IS_TABLE_INSTRUC(instruc) && !is_completed(tcp_subgoal_ptr(breg)))  {\
           char msg[MAXBUFSIZE];  \
@@ -82,45 +85,20 @@
 extern CPtr call_cleanup_gl;
 extern void add_interrupt(CTXTdeclc Cell, Cell);
 #include "deref.h"
+extern void CHECK_CALL_CLEANUP(CTXTdeclc CPtr);
+extern void CHECK_TRIE_ROOT(CTXTdeclc CPtr);
 
-/* call_cleanup_gl -- the address of the retry for call_cleanup, is
-   set up when standard.P is loaded -- this would need to be checked
-   if we mess around with choice points.  handler is a pointer to the
-   cleanup obtained via an argument register of the choice point.  The
-   handler is put into a list [call_cleanup_mod,<handler>] and added
-   to the interrupt chain. 
+/* TLS: this creates a root choice point when backtracking through a
+   completed answer trie.  The choice point increments/decrements the
+   "visitors" to the trie, and this "visitors" field is used to
+   determine whether the table can be incrementally updated.
 
-   Once the choice point segment has been traversed and any handlers
-   are added to the interrupt chain, cut_code() will call
-   allocate_env_and_call_check_ints().  Thus this routine could be
-   called twice in a cut.  The first time to check attv interrupts,
-   before the choice point segment is traversed; and the second, here,
-   to execute a series of cleanup handlers.
-*/   
+   Undefining this prevents the choice point from being created, but
+   means that we may core dump when updating incremental tables that
+   have choice points pointing into them.
+*/
 
-static inline void  CHECK_CALL_CLEANUP(CTXTdeclc CPtr CurBreg) {	
-  CPtr handler;
-  Cell temp;
-
-  if ((CPtr) *CurBreg == call_cleanup_gl) {				      
-    handler = CurBreg + CP_SIZE;
-    //    printf("found a call cleanup cp %x -- need to set interrupt array %x %d\n",
-    //                 CurBreg,handler,CP_SIZE); 
-    XSB_CptrDeref(handler);
-    //    printterm(stdout,handler,7);
-    // bld_ref(reg+1, handler);
-    //    printterm(stdout,reg+1,7);
-    bld_list(&temp,hreg);
-    bld_string(hreg++,string_find("call_cleanup_mod",1));     
-    bld_list(hreg,hreg+1);
-    hreg++;
-    bld_ref(hreg++,handler);
-    bld_nil(hreg++);
-    //    printterm(stdout,temp,7);
-    add_interrupt(CTXTc temp,makenil);
-    //    pcreg = get_ep(call_list_psc);
-  }
-}
+#define COUNT_TRIE_VISITORS 1
 
 #ifdef BITS64
 #define PAD64	4
@@ -139,12 +117,14 @@ static inline void  CHECK_CALL_CLEANUP(CTXTdeclc CPtr CurBreg) {
      if (breg != cut_breg) { /* not cutting back to the current CP */\
 	while (cp_prevbreg(breg) != cut_breg) {			\
 	  CHECK_CALL_CLEANUP(CTXTc breg);				\
+	  CHECK_TRIE_ROOT(CTXTc breg);					\
            inst_cut_over = *cp_pcreg(breg);                     \
            CHECK_TABLE_CUT(inst_cut_over) ;                     \
 	   breg = cp_prevbreg(breg);				\
 	}							\
         inst_cut_over = *cp_pcreg(breg);                        \
         CHECK_TABLE_CUT(inst_cut_over) ;                        \
+	CHECK_TRIE_ROOT(CTXTc breg);				\
 	CHECK_CALL_CLEANUP(CTXTc breg);				\
         unwind_trail(breg,xtemp1,xtemp2);			\
 	breg = cut_breg;					\

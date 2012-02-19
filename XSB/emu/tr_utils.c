@@ -4200,13 +4200,12 @@ void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
   while (openreg < bottom_parameter) {
     CallStrPtr = (VariantSF)compl_subgoal_ptr(openreg);
     if (!is_completed(CallStrPtr)) {
-
-      //      print_subgoal(CTXTc stdout, CallStrPtr)
       if (warned == FALSE) {
 	xsb_mesg("Removing incomplete tables...");
 	//	check_table_cut = FALSE;  /* permit cuts over tables */
 	warned = TRUE;
       }
+      //      printf("---- ");print_subgoal(CTXTc stdout, CallStrPtr) ; printf("\n");
       if (IsVariantSF(CallStrPtr)) {
 	SET_TRIE_ALLOCATION_TYPE_SF(CallStrPtr); // set smBTN to private/shared
 	tif = subg_tif_ptr(CallStrPtr);
@@ -4907,7 +4906,6 @@ int table_inspection_function( CTXTdecl ) {
 
   case FIND_ANSWERS: {
     return find_pred_backward_dependencies(CTXTc get_tip(CTXTc term_psc(ptoc_tag(CTXTc 2))));
-
   }
 
 /********************************************************************
@@ -5054,6 +5052,12 @@ case CALL_SUBS_SLG_NOT: {
     return TRUE;
   }
 
+  case GET_VISITORS_NUMBER: {
+    VariantSF subgoal_frame;
+    subgoal_frame = (VariantSF) ptoc_int(CTXTc 2);
+    ctop_int(CTXTc 3, subg_visitors(subgoal_frame));
+    break;
+  }
 
   } /* switch */
   return TRUE;

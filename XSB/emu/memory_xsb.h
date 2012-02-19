@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.h,v 1.52 2012-02-18 04:46:54 kifer Exp $
+** $Id: memory_xsb.h,v 1.53 2012-02-19 19:17:55 tswift Exp $
 ** 
 */
 
@@ -161,7 +161,7 @@ extern byte *current_inst;
 
 extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
 	    resume_compl_suspension_inst, fail_inst, dynfail_inst, 
-  	    halt_inst, proceed_inst, 
+  halt_inst, proceed_inst, trie_fail_inst,
             resume_compl_suspension_inst2,
             reset_inst, trie_fail_unlock_inst;
 extern byte *check_interrupts_restore_insts_addr;

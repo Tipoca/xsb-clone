@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.97 2012-02-12 22:49:12 tswift Exp $
+** $Id: tables.c,v 1.98 2012-02-19 19:17:56 tswift Exp $
 ** 
 */
 
@@ -666,8 +666,8 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
       dbg_smPrint(LOG_STRUCT_MANAGER, smTSIN, "  after chain reclamation");
     }
 
+  subg_visitors(producerSF) = 0;    /* was compl_stack_ptr */
   /* incremental  evaluation start */
-  
   /* 
      If a new call is complete we should compare whether its
      answer set is equal to the previous answer set. If no_of_answer
