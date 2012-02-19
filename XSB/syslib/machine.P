@@ -230,7 +230,7 @@ close_open_tables(memory_error):-!,
 %    writeln(cot(memory_error)),
     close_open_tables_1(MEMORY_ERROR).
 close_open_tables(_non_memory_error):-
-%    writeln(cot(non_memory_error)),
+%    writeln(cot(_non_memory_error)),
     close_open_tables_1(NON_MEMORY_ERROR).
 
 close_open_tables_1(_Error_Type) :-    '_$builtin'(CLOSE_OPEN_TABLES).
@@ -323,7 +323,7 @@ float_op(c, _L1, _L2, _L3, _R1):- '_$builtin'(FLOAT_OP).
 print_ls :- print_ls.
 print_tr :- print_tr.
 print_heap(X,Y) :- print_heap(X,Y).
-print_cp :- print_cp.
+print_cp(_Title) :- '_$builtin'(PRINT_CP).
 print_regs :- print_regs.
 print_all_stacks :- print_all_stacks.
 expand_heap :- expand_heap.

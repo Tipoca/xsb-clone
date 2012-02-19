@@ -45,6 +45,7 @@
    get_returns/3,
    get_returns_and_dls/3, 
    get_returns_for_call/2,
+   get_visitors_number/2,
    invalidate_tables_for/2,
    is_incomplete/2,
    print_incomplete_tables/0,print_incomplete_tables/1,

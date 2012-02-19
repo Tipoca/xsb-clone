@@ -702,6 +702,9 @@ get_callsto_number(SubgoalFrame,Number):-
 get_answer_number(SubgoalFrame,Number):- 
 	table_inspection_function(GET_ANSWER_NUMBER,SubgoalFrame,Number,_,_).
 
+get_visitors_number(SubgoalFrame,Number):- 
+	table_inspection_function(GET_VISITORS_NUMBER,SubgoalFrame,Number,_,_).
+
 early_complete_on_nth(SubgoalFrame,Number):- 
 	table_inspection_function(EARLY_COMPLETE_ON_NTH,SubgoalFrame,Number,_,_).
 
@@ -787,7 +790,7 @@ find_forward_dependencies(Call):-
 find_answers(Pred):- 
 	table_inspection_function(FIND_ANSWERS,Pred,_,_,_).
 
-end_of_file.
+
 /* Right now, experimental for aggregs.P */
 	
 
