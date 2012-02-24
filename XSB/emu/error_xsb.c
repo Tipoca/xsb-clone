@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.99 2012-02-24 21:06:49 dwarren Exp $
+** $Id: error_xsb.c,v 1.100 2012-02-24 22:02:48 dwarren Exp $
 ** 
 */
 
@@ -53,6 +53,7 @@
 #include "thread_xsb.h"
 #include "emuloop.h"
 #include "orient_xsb.h"
+#include "wind2unix.h"
 
 extern void remove_incomplete_tries(CTXTdeclc CPtr);
 extern PrRef get_prref(CTXTdeclc Psc psc);
@@ -1309,7 +1310,7 @@ void print_incomplete_tables_on_abort(CTXTdecl) {
 
   if (openreg < COMPLSTACKBOTTOM && flags[ABORT_PRE_ACTION]  ) {
     snprintf(etcdir,MAXPATHLEN,"%s%cetc",install_dir_gl,SLASH);
-    tempnamptr = _tempnam(etcdir,"scc_dump_"); // posix name, OK for linux?
+    tempnamptr = tempnam(etcdir,"scc_dump_");
     strncpy(abort_file_gl,tempnamptr,2*MAXPATHLEN);
     free(tempnamptr);
     //    printf("abort file %s\n",abort_file_gl);
