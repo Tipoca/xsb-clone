@@ -871,6 +871,11 @@ xsb_flag(unify_with_occurs_check, Mode) :-
 	( Flag =:= 0 -> Mode = off ; Mode = on ).
 xsb_flag(max_memory, Max) :-
 	stat_flag(MAX_MEMORY, Max).
+xsb_flag(exception_pre_action, Mode) :-
+	stat_flag(ABORT_PRE_ACTION, Flag),
+	( Flag =:= PRINT_INCOMPLETE_ON_ABORT -> 
+	  Mode = print_incomplete_tables 
+	; Mode = none ).
 
 
 set_xsb_flag(Type,Val):- 
@@ -1045,6 +1050,13 @@ set_xsb_flag_1(max_memory,Max):-!,
 	(integer(Max),Max > 0 -> 
 	    stat_set_flag(MAX_MEMORY,Max)
 	 ;  domain_error(positive_integer,Max,set_prolog_flag/2,2,max_memory_clause) ).
+set_xsb_flag_1(exception_pre_action, Mode) :- !,
+         (Mode = print_incomplete_tables-> 
+	  stat_set_flag(ABORT_PRE_ACTION, PRINT_INCOMPLETE_ON_ABORT)
+	; (Mode = none ->
+    	      stat_set_flag(ABORT_PRE_ACTION, 0)
+	    ; domain_error([print_incomplete_tables,none],
+                        Mode,set_prolog_flag/2,2,'exception_pre_action clause') ) ).
 set_xsb_flag_1(Type, _) :-  
 	domain_error(prolog_flag,Type,set_prolog_flag/2,1).
 

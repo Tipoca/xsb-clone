@@ -770,6 +770,9 @@ load_forest_log(File):-
 	index(at/2,[1,2]),
 	load_dync(File,a).
 
+get_scc_dumpfile(F):- 
+	table_inspection_function(GET_SCC_DUMPFILE,F,_,_,_).
+
 end_of_file.
 
 /* ---------------------- end of file tables.P ------------------------ */

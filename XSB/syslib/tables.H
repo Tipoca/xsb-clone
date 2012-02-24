@@ -79,6 +79,7 @@
 	log_all_forest_start/0, 
 	log_all_forest_end/0, 
 	log_all_forest_start/1.
+:- export get_scc_dumpfile/1.
 
 
 :- export get_unifiable_returns/3.
