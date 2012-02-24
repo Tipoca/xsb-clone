@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.98 2012-02-24 17:37:21 tswift Exp $
+** $Id: error_xsb.c,v 1.99 2012-02-24 21:06:49 dwarren Exp $
 ** 
 */
 
@@ -1309,7 +1309,7 @@ void print_incomplete_tables_on_abort(CTXTdecl) {
 
   if (openreg < COMPLSTACKBOTTOM && flags[ABORT_PRE_ACTION]  ) {
     snprintf(etcdir,MAXPATHLEN,"%s%cetc",install_dir_gl,SLASH);
-    tempnamptr = tempnam(etcdir,"scc_dump_");
+    tempnamptr = _tempnam(etcdir,"scc_dump_"); // posix name, OK for linux?
     strncpy(abort_file_gl,tempnamptr,2*MAXPATHLEN);
     free(tempnamptr);
     //    printf("abort file %s\n",abort_file_gl);
