@@ -1289,6 +1289,35 @@ q(0, foo)- scc(4).
 %\ei
 %\ei
 
+\index{Prolog flags!{\tt exception\_pre\_action}}
+\index{strongly connected components (SCCs)}
+\index{tabling!and exceptions}
+\ourmoditem{get\_scc\_dumpfile(-Filename)}{get\_scc\_dumpfile/1}{tables}
+%
+If the Prolog flag {\tt exception\_pre\_action} is set to {\tt
+  print\_incomplete\_tables} (its default setting is {\tt none}), then
+when an exception is thrown, incomplete tables and their SCC
+information are printed to a ``SCC dumpfile'' via {\tt
+  print\_incomplete\_tables/1}.  (No file is generated unless
+  the exception is thrown over at least one incomplete table.)
+
+This predicate returns the name of the last such file generated and
+fails if there is no such file.  Files are written to the {\tt
+  \$XSBDIR/etc} directory with the prefix {\tt scc\_dump\_}.  Users
+are responsible for removing these files.
+
+Note that XSB backtraces (Section~\ref{sec:backtrace}) provide
+information about the context in which an exception is thrown, but the
+SCC dumpfile provides explicit SCC information along with parameter
+values for tabled predicates.
+
+{\bf Error Cases}
+\bi
+\item {\tt Filename} is a not a variable
+\bi
+\item {\tt instantiation\_error}
+\ei
+\ei
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

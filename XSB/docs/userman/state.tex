@@ -351,10 +351,22 @@ l([a|X]):- l(X).          l([a]).
     unify\_with\_occurs\_check/2}: see Section~\ref{sec:cyclic} for
     further discussion.  The default for this flag is {\tt off}.
 %
+\item {\tt exception\_pre\_action} If set to {\tt
+  print\_incomplete\_tables}, the predicate {\tt
+  print\_incomplete\_tables/0} is called {\em before} throwing an
+  exception, and this information can be used to help understand the
+  context in which the exception arose.  Only exceptions that are
+  thrown over at least one incomplete table will cause the file to be
+  created.  (Figure out about file).  The default for this flag is
+  {\tt off}.
+%
 \end{itemize}
 
 The following flags affect only the multi-threaded engine.
 
+\index{Prolog flags!{\tt exception\_pre\_action}}
+\index{tabling!and exceptions}
+\index{\texttt{print\_incomplete\_tables/0}}
 \index{Prolog flags!{\tt thread\_glsize}}
 \index{Prolog flags!{\tt thread\_tcpsize}}
 \index{Prolog flags!{\tt thread\_complsize}}

@@ -1,4 +1,6 @@
 \chapter{Multi-Threaded Programming in XSB} \label{chap:threads}
+\index{multi-threading|(}
+
 id with Version 3.0, XSB supports the use of POSIX threads to
 perform separable computations, and in certain cases to parallelize
 them.  POSIX threads have a simple and clear API, and are available on
@@ -386,7 +388,7 @@ section are fully described in Section~\ref{sec:mt-threading}.
 
 \section{Prolog Message Queues}
 %
-\index{Message Queues}
+\index{message queues}
 While Prolog predicates can communicate through shared dynamic code
 and tables, message queues provide a useful mechanism for one thread
 to pass a command to another or to synchronize on the return of data.
@@ -1442,7 +1444,7 @@ Acts as {\tt thread\_peek\_message/2}, but on a thread's private queue.
 
 \subsubsection{User-defined Mutexes}~\label{sec:mutexes}
 %
-\index{Mutexes!User defined}
+\index{mutexes!user defined}
 
 Usually, running multi-threaded evaluations does not requre a user to
 set any mutexes -- necessary mutexes are handled by XSB itself (we
@@ -1733,3 +1735,4 @@ mutex_statistics not yet implemented.
 }
 %--------------------------------------------------------------------
 
+\index{multi-threading|)}
