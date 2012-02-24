@@ -5059,6 +5059,18 @@ case CALL_SUBS_SLG_NOT: {
     break;
   }
 
+  case GET_SCC_DUMPFILE: {
+  Cell addr = cell(reg+2);
+  XSB_Deref(addr);
+  if (!isref(addr))  xsb_instantiation_error(CTXTc "get_scc_dumpfile/1",1);
+  else {
+    if (!abort_file_gl[0]) return FALSE; 
+    ctop_string(CTXTc 2,abort_file_gl);
+  }
+    break;
+  }
+
+
   } /* switch */
   return TRUE;
 }

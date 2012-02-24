@@ -20,7 +20,7 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **
-** $Id: flag_defs_xsb.h,v 1.46 2012-01-23 02:37:08 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.47 2012-02-24 17:37:21 tswift Exp $
 **
 */
 
@@ -146,6 +146,7 @@ interrupt flag
 #define MAX_MEMORY                94
 #define MEMORY_ERROR_FLAG         95
 #define WRITE_DEPTH               96
+#define ABORT_PRE_ACTION          97
 #define MAX_FLAGS		 100
 
 #define MAXTOINDEX 10              /* maximum depth in term to go when using deep indexing; 
@@ -154,6 +155,8 @@ interrupt flag
 #define SYSTEM_MEMORY_LIMIT        1
 #define USER_MEMORY_LIMIT          2
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+#define PRINT_INCOMPLETE_ON_ABORT  1
 
 /* Banner control values recognized on the Prolog side.
    MUST BE PRIME NUMBERS */

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: orient_xsb.h,v 1.9 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: orient_xsb.h,v 1.10 2012-02-24 17:37:21 tswift Exp $
 ** 
 */
 
@@ -31,4 +31,5 @@ extern void  set_config_file(void);
 extern void  set_user_home(void);
 extern char *xsb_executable_full_path(char *);
 extern char  executable_path_gl[];
+extern char *install_dir_gl; 			/* installation directory */
 

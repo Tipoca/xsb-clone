@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.185 2012-02-19 19:17:55 tswift Exp $
+** $Id: init_xsb.c,v 1.186 2012-02-24 17:37:21 tswift Exp $
 ** 
 */
 
@@ -76,6 +76,7 @@
 #include "deadlock.h"
 #include "cinterf.h"
 #include "storage_xsb.h"
+#include "orient_xsb.h"
 /*-----------------------------------------------------------------------*/
 
 /* Sizes of the Data Regions in K-byte blocks
@@ -170,7 +171,6 @@ extern double realtime_count_gl;
 extern int max_interned_tries_glc;
 
 /* these three are from orient_xsb.c */
-extern char *install_dir_gl; 
 extern char *xsb_config_file_gl; /* configuration.P */
 extern char *user_home_gl; /* the user HOME dir or install dir, if HOME is null */
 
