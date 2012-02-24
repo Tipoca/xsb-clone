@@ -196,8 +196,8 @@ term_to_codes(Term,Structure,Var0,Var,Codes0,Codes) :-
 	 ->	Var = Var0,
 		extern_float_codes(Term,Codes0,Codes)
 	 ;	is_list(Term)
-             ->	Term=[Term1|Terms],
-	            get_listcode(Term1,Terms,Structure,Var0,Var,Codes0,Codes)
+         ->	Term=[Term1|Terms],
+	        get_listcode(Term1,Terms,Structure,Var0,Var,Codes0,Codes)
 	 ;	structure(Term)
 	 ->	Term =.. [Fun,Arg1|Args],
 		extern_atom_codes(Fun,Structure,Codes0,[0'(|Codes2]),
@@ -303,7 +303,7 @@ extern_float_codes(Float,Codes0,Codes) :-
 		Codes0 = [0'-'|Codes1],
 		extern_float_codes1(PFloat,Codes1,Codes)
 	 ;	(Float =:= 0.0 -> 
-	           Codes0 = [48,46,48,48,48,48,48,48,48,48],Codes = []
+	           Codes0 = [48,46,48,48,48,48,48,48,48,48|Codes]
 	 	 ; extern_float_codes1(Float,Codes0,Codes) )
 	).
 
