@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testsuite.sh,v 1.33 2011-10-16 19:25:25 tswift Exp $
+## $Id: testsuite.sh,v 1.34 2012-02-26 21:31:52 kifer Exp $
 ## 
 ##
 
@@ -262,7 +262,7 @@ $GREP "differ!" $LOG_FILE >> $RES_FILE
 $GREP "differ (using call abstraction)" $LOG_FILE >> $RES_FILE
 $GREP "different!" $LOG_FILE >> $RES_FILE
 # when xsb aborts... it writes something like ! Aborting...
-$GREP "abort" $LOG_FILE >> $RES_FILE
+$GREP "abort" $LOG_FILE | $GREP -v "on_abort" >> $RES_FILE
 # for overflows (check for Overflow & overflow)
 $GREP "overflow" $LOG_FILE >> $RES_FILE
 # for ... missing command...
@@ -305,7 +305,7 @@ if test -s $RES_FILE; then
 	echo "    Summary of the problems:" >> $MSG_FILE
 	echo "" >> $MSG_FILE
 	cat $RES_FILE >> $MSG_FILE
-	mail $USER < $MSG_FILE
+	#mail $USER < $MSG_FILE
 	rm -f $MSG_FILE
 else
 	echo "PASSED testsuite for $XEMU on $HOSTNAME"
