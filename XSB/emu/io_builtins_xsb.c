@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.97 2012-02-14 21:09:43 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.98 2012-02-26 22:29:13 kifer Exp $
 ** 
 */
 
@@ -110,26 +110,30 @@ char *p_charlist_to_c_string(CTXTdeclc prolog_term, VarString*, char*, char*);
 #ifdef HAVE_SNPRINTF
 /* like PRINT_ARG, but uses snprintf */
 #define SPRINT_ARG(arg) \
-        XSB_StrEnsureSize(&OutString, OutString.length+SAFE_OUT_SIZE);	\
-        switch (current_fmt_spec->size) {					\
-        case 1: bytes_formatted=snprintf(OutString.string+OutString.length, \
-					 SAFE_OUT_SIZE, \
+        switch (current_fmt_spec->size) {	\
+	/* the 1st snprintf in each case finds the #bytes to be formatted */ \
+        case 1: bytes_formatted=snprintf(NULL,0,current_fmt_spec->fmt,arg); \
+		XSB_StrEnsureSize(&OutString,OutString.length+bytes_formatted+1);\
+	        bytes_formatted=snprintf(OutString.string+OutString.length, \
+					 bytes_formatted+1, \
 					 current_fmt_spec->fmt, arg); \
 	        break; \
-	case 2: bytes_formatted=snprintf(OutString.string+OutString.length, \
-					 SAFE_OUT_SIZE, \
+	case 2: bytes_formatted=snprintf(NULL,0,current_fmt_spec->fmt,width,arg); \
+		XSB_StrEnsureSize(&OutString,OutString.length+bytes_formatted+1);\
+	        bytes_formatted=snprintf(OutString.string+OutString.length,\
+					 bytes_formatted+1, \
 					 current_fmt_spec->fmt, width, arg); \
 	        break; \
-	case 3: bytes_formatted=snprintf(OutString.string+OutString.length, \
-					 SAFE_OUT_SIZE, \
+	case 3: bytes_formatted=snprintf(NULL,0,current_fmt_spec->fmt,width,precision,arg); \
+		XSB_StrEnsureSize(&OutString,OutString.length+bytes_formatted+1);\
+                bytes_formatted=snprintf(OutString.string+OutString.length, \
+					 bytes_formatted+1, \
 					 current_fmt_spec->fmt, \
 					 width, precision, arg); \
 	        break; \
-		}			      \
-  if (bytes_formatted >= SAFE_OUT_SIZE)				       \
-    xsb_memory_error("memory","Buffer overflow in fmt_write_*");       \
-  OutString.length += (int)bytes_formatted;			       \
-  XSB_StrNullTerminate(&OutString);
+	}			      \
+        OutString.length += (int)bytes_formatted;		\
+        XSB_StrNullTerminate(&OutString);
 
 #else
 /* like PRINT_ARG, but uses sprintf -- used with old compilers that don't have
@@ -154,7 +158,9 @@ char *p_charlist_to_c_string(CTXTdeclc prolog_term, VarString*, char*, char*);
 		bytes_formatted = strlen(OutString.string+OutString.length); \
 	        break; \
 	} \
-  OutString.length += (int)bytes_formatted;	\
+        if (bytes_formatted >= SAFE_OUT_SIZE)				      \
+	    xsb_memory_error("memory","Buffer overflow in fmt_write_string"); \
+        OutString.length += (int)bytes_formatted;	\
         XSB_StrNullTerminate(&OutString);
 #endif
 
