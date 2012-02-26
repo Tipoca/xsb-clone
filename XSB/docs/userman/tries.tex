@@ -573,4 +573,192 @@ Currently {\tt Property} can have the form
 %
 \end{description}
 
+\section{Low-level Trie Manipulation Utilities}
+
+The previous sections indicate how tries can be used as an efficient
+mechanism to store thread-private and thread-shared terms.  In this
+section we describe lower-level trie manipulation predicates that are
+suitable for implemeting XSB libraries~\footnote{Flora-2, XASP, XSB's
+  {\tt storage} library and others use these predicates.}.  As with
+other tries, these utilities are suitable for storing terms rather
+than exectuable clauses, use a set based semantics, and do not
+maintain an ordering among these terms.  In addition
+%
+\bi
+\item These predicates create and maintain thread-private, general
+  tries.
+%
+\item These predicates do not always perform error checking.  If not
+  explicitly specified in the description of the predicate, errors
+  returned may be confusing, and calling with improper arguments may
+  even cause memory violations.  
+%
+\item For historical reasons, the ordering of arguments in these
+  predicates is not consistent.
+\ei
+%
+Despite (and sometimes because of) these limitations, the trie
+manipulation facilities can be extremely fast, so that interning and
+uninterning terms in a trie may be much faster than assert and retract
+in XSB or in any other Prolog.
+
+\subsection{A Low-Level API for Interned Tries} \label{sec:intern-basic}
+%%
+\begin{description}
+\ourmoditem{new\_trie(-Root)}{new\_trie/1}{intern} {\tt Root} is
+instantiated to a handle for a new private, general trie.
+
+
+\ourrepeatmoditem{trie\_intern(+Term,+Root)}{trie\_intern/2}{intern}
+%
+\ourmoditem{trie\_intern(+Term,+Root,-Leaf,-Flag,-Skel)}{trie\_intern/5}{intern}
+% 
+{\tt trie\_intern/2} effectively asserts \texttt{Term} by interning
+into the trie designated by {\tt Root}.  If a variant of {\tt Term} is
+already in {\tt Root} the predicate succeeds, but a new copy of {\tt
+  Term} is not added to the trie.
+
+{\tt trie\_intern/5} acts as {\tt trie\_intern/2} but returns
+additional information: {\tt Leaf} is the handle for the interned {\tt
+  Term} in the trie.  {\tt Flag} is 1 if the term is ``old'' (already
+exists in the trie); it is 0, if the term is newly inserted.  {\tt
+  Skel} represents the collection of all the variables in {\tt
+  Term}. It has the form {\tt ret(V1,V2,...,VN)}, exactly as in {\tt
+  get\_calls} (see Vol. 1 of the XSB manual).
+
+{\bf Error Cases}
+\begin{itemize}
+\item 	{\tt Root} is uninstantiated
+\bi
+\item 	 {\tt instantiation\_error}
+\ei
+\item 	{\tt Root} is instantiated, but not an integer (trie handle)
+\bi
+\item 	 {\tt type\_error(integer,Root)}
+\ei
+\end{itemize}
+%%
+
+\ourrepeatmoditem{trie\_interned(?Term,+Root)}{trie\_interned/2}{intern}
+%%
+\ourmoditem{trie\_interned(?Term,+Root,?Leaf,-Skel)}{trie\_interned/4}{intern}
+%%
+{\tt trie\_interned/2} backtracks through the terms that unify with
+{\tt Term} and that are interned into the trie represented by the
+handle {\tt Root}.  {\tt Term} may be free, or partially bound.
+
+If {\tt Leaf} is a free variable, {\tt trie\_interned/5} works as {\tt
+  trie\_interned/2}: it backtracks through the terms that unify with
+{\tt Term} interned into the trie represented by the handle {\tt
+  Root}.  In addition it returns {\tt Leaf} as the handle for each
+such term and returns in {\tt Skel} the collection of all the
+variables in {\tt Term} using the form {\tt ret(V1,...,Vn)}.
+Otherwise, if {\tt Leaf} is bound, {\tt trie\_interned/5} will unify
+{\tt Term} with the term in the trie designated by {\tt Leaf}, 
+returning a vector of variables in {\tt Skel}.
+
+{\bf Error Cases}
+\begin{itemize}
+\item 	{\tt Root} is uninstantiated
+\bi
+\item 	 {\tt instantiation\_error}
+\ei
+\item 	{\tt Root} is instantiated, but not an integer (trie handle)
+\bi
+\item 	 {\tt type\_error(integer,Root)}
+\ei
+\end{itemize}
+%%
+
+\ourrepeatmoditem{trie\_unintern(+Root,+Leaf)}{trie\_unintern2}{intern}
+\ourmoditem{trie\_unintern\_nr(+Root,+Leaf)}{trie\_unintern\_nr/2}{intern}
+%%
+{\tt trie\_unintern(+Root,+Leaf)} deletes a term from a trie using the
+handle {\tt Leaf}, as obtained from {\tt trie\_intern/[2,4]} or {\tt
+  trie\_interned/[2,4]}.  Space is reclaimed for the term only if it
+is safe to do so -- if there are no failure continuations that may
+consume the term.
+
+{\tt trie\_unintern\_nr/2} does not perform space reclamation and as a
+result requires no garbage collection -- it simply marks a term as
+``deleted''.  This makes {\tt trie\_unintern\_nr/2} suitable if trie
+garbage collection may be an issue, and also allows it to be used in
+libraries that support backtrackable updates, such as XSB's {\tt
+  storage} library.
+
+{\bf Error Cases}
+\begin{itemize}
+\item 	{\tt Root} or {\tt Leaf} is uninstantiated
+\bi
+\item 	 {\tt instantiation\_error}
+\ei
+\item 	{\tt Root} or {\tt Leaf} is instantiated, but not an integer
+  (trie handle or trie leaf) 
+\bi
+\item 	 {\tt type\_error(integer,Root)} or {\tt type\_error(integer,Leaf)}
+\ei
+\end{itemize}
+%%
+
+\ourmoditem{reclaim\_uninterned\_nr(+Root)}{reclaim\_uninterned\_rn/1}{intern}
+%%
+Runs through the chain of leaves of the trie {\tt Root} and deletes
+the terms that have been marked for deletion by {\tt
+  trie\_unintern\_nr/2}. This can be viewed either as a garbage
+collection step or as a commit.
+
+{\bf Error Cases}
+\begin{itemize}
+\item 	{\tt Root} is uninstantiated
+\bi
+\item 	 {\tt instantiation\_error}
+\ei
+\item 	{\tt Root} is instantiated, but not an integer (trie handle)
+\bi
+\item 	 {\tt type\_error(integer,Root)}
+\ei
+\end{itemize}
+\ourmoditem{unmark\_uninterned\_nr(+Root,+Leaf)}{unmark\_uninterned\_nr/2}{intern}
+The term pointed to by {\tt Leaf} should have been previously marked
+for deletion using {\tt trie\_unintern\_nr/2}. This term is then
+``unmarked'' (or undeleted) and becomes again a normal interned term.
+
+{\bf Error Cases}
+\begin{itemize}
+\item 	{\tt Root} or {\tt Leaf} is uninstantiated
+\bi
+\item 	 {\tt instantiation\_error}
+\ei
+\item 	{\tt Root} or {\tt Leaf} is instantiated, but not an integer
+  (trie handle or trie leaf) 
+\bi
+\item 	 {\tt type\_error(integer,Root)} or {\tt type\_error(integer,Leaf)}
+\ei
+\end{itemize}
+%%
+\ourmoditem{delete\_trie(+Root)}{delete\_trie/1}{intern} 
+%%
+Deletes all the terms in the trie pointed to by {\tt Root}.  Garbage
+collection ensures that space reclamation is performed only if it is
+safe to do so.
+
+{\bf Error Cases}
+\begin{itemize}
+\item 	{\tt Root} is uninstantiated
+\bi
+\item 	 {\tt instantiation\_error}
+\ei
+\item 	{\tt Root} is instantiated, but not an integer (trie handle)
+\bi
+\item 	 {\tt type\_error(integer,Root)}
+\ei
+\item 	Failure continuations point to one or more nodes in the trie with root {\tt Root}
+\bi
+\item 	{\tt misc\_error}
+\ei
+\end{itemize}
+%%
+
+\end{description}
+
 \index{tries|)}
