@@ -1491,7 +1491,7 @@ system error handler) when the interpreter level is resumed.
 \subsubsection{Table Deletion Predicates}
 
 \begin{description}
-
+\index{tabling!incremental}
 \ourstandarditem{abolish\_table\_pred(+Pred)}{abolish\_table\_pred/1}{Tabling}
 %
 Invalidates all tabled subgoals for the predicate denoted by the
@@ -1547,8 +1547,9 @@ tables, use {\tt abolish\_table\_call/[1,2]} or {\tt
  \item 	{\tt domain\_error(predicate\_or\_term\_indicator,Pred)}
  \ei
 %
-\item {\tt PredSpec} does not indicate a tabled predicate
- \bi
+\item {\tt PredSpec} does not indicate a tabled predicate or indicates
+  an incrementally tabled predicate.
+  \bi
  \item 	{\tt table\_error}
  \ei
 %

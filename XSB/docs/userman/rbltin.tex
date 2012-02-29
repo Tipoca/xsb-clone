@@ -449,6 +449,7 @@ existing predicate; however for dynamic predicates {\tt index/2} does
 affect the index for clauses asserted after the directive has been
 given.
 
+\index{tries!asserted}
 \index{indexing!hash-based}
 \begin{itemize}
 \item {\em Hash-based Indexing} 
@@ -526,6 +527,7 @@ want to index on more of those terms, we might specify the index as
 
 \end{itemize}
 
+\index{tries!asserted!indexing}
 \index{indexing!trie-based}
 \item {\em Trie-based Indexing} 
 %
@@ -999,6 +1001,7 @@ is consulted (action is the same as {\tt ensure\_loaded/1}).
 \index{transaction logic}
 \subsection{The {\tt storage} Module: Associative Arrays and Backtrackable Updates}
 \label{storage module}
+\index{backtrackable updates|(}
 
 XSB provides a high-level interface that allows the creation of
 ``objects'' that efficiently manage the storage of facts or of
@@ -1143,6 +1146,7 @@ typically called just before returning to the top level.
 %%
 \end{description}
 
+\index{backtrackable updates|)}
 
 
 %%% Local Variables: 
