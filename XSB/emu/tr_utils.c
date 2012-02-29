@@ -3290,9 +3290,9 @@ inline void abolish_table_pred_single(CTXTdeclc TIFptr tif, int cps_check_flag) 
   int action;
 
   if(get_incr(TIF_PSC(tif))) {  /* incremental */
-    xsb_warn("[abolish_table_predicate] Abolish incremental table"
-	     " of predicate %s/%d. This can cause unexpected behavior.\n", 
-	     get_name(TIF_PSC(tif)), get_arity(TIF_PSC(tif)));
+      xsb_abort("[abolish_table_predicate] Cannot abolish incremental tables for "
+		  "predicate  %s/%d.  Either abolish table calls or abolish_all_tables.",
+	       get_name(TIF_PSC(tif)), get_arity(TIF_PSC(tif)));
     free_incr_hashtables(tif);
   }
 
@@ -3346,8 +3346,8 @@ inline void abolish_table_pred_transitive(CTXTdeclc TIFptr tif, int cps_check_fl
     tif = done_tif_stack[done_tif_stack_top];
 
     if(get_incr(TIF_PSC(tif))) {     /* incremental */
-      xsb_warn("[abolish_table_predicate] Abolish incremental table"
-	       " of predicate %s/%d. This can cause unexpected behavior.\n", 
+      xsb_abort("[abolish_table_predicate] Cannot abolish incremental tables for "
+		  "predicate  %s/%d.  Either abolish table calls or abolish_all_tables.",
 	       get_name(TIF_PSC(tif)), get_arity(TIF_PSC(tif)));
       free_incr_hashtables(tif);
     }
