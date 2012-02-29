@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.186 2012-02-24 17:37:21 tswift Exp $
+** $Id: init_xsb.c,v 1.187 2012-02-29 15:34:19 tswift Exp $
 ** 
 */
 
@@ -1422,6 +1422,7 @@ void init_machine(CTXTdeclc int glsize, int tcpsize,
   total_time_gc = 0;
   total_collected = 0;
   num_gc = 0;
+  vcs_tnot_call = 0;
 
   heap_marks = NULL;
   ls_marks = NULL;
