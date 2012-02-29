@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: choice.h,v 1.44 2011-08-19 21:44:14 tswift Exp $
+** $Id: choice.h,v 1.45 2012-02-29 16:20:37 tswift Exp $
 ** 
 */
 #ifndef __CHOICE_H__
@@ -316,9 +316,9 @@ typedef struct compl_susp_frame {
   CPtr _ereg;		/* current top of stack */
   CPtr pdreg;		/* value of delay register for the parent subgoal */
   CPtr ptcp;		/* pointer to parent tabled CP (subgoal) */
-  CPtr subgoal_ptr;	/* pointer to the call structure */
   CPtr prevcsf;	/* previous completion suspension frame */
   Cell neg_loop;	/* !0 if the suspension is not LRD stratified */
+  CPtr subgoal_ptr;	/* pointer to the call structure */
 } *ComplSuspFrame;
 
 #define CSF_SIZE	(sizeof(struct compl_susp_frame)/sizeof(CPtr))
