@@ -33,3 +33,8 @@ options=$2
 ../gentest.sh "$XEMU $options" test_directives "test".
 #------------------------------------------------- testing executable incremental decls.
 ../gentest.sh "$XEMU $options" test_declarations "test".
+#------------------------------------------------- testing executable incremental decls.
+../gentest.sh "$XEMU $options" test_tc "test".
+#--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_visitors "test."
+#--------------------------------------------------
