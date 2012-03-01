@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.22 2011-05-19 16:39:06 tswift Exp $
+** $Id: incr_xsb.c,v 1.23 2012-03-01 21:26:49 tswift Exp $
 ** 
 */
 
@@ -172,7 +172,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
     const int sfreg=2;
     VariantSF sf=ptoc_addr(sfreg);
 
-    return(imm_depend_list(CTXTc sf->callnode));
+    return(immediate_depend_list(CTXTc sf->callnode));
       
     break;
   }
@@ -181,7 +181,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
   case IMM_DEPENDENT_ON_LIST: {
     const int sfreg=2;
     VariantSF sf=ptoc_addr(sfreg);
-    return imm_dependent_on_list(CTXTc sf->callnode);
+    return immediate_dependent_on_list(CTXTc sf->callnode);
     
     break;
   }
@@ -211,6 +211,13 @@ xsbBool incr_eval_builtin(CTXTdecl)
     break;
   }
 
+  case DFS_INEDGES: {
+    VariantSF sf=ptoc_addr(2);
+
+    dfs_inedges(subg_callnode_ptr(sf));
+    break;
+  }
+    
   default:
     xsb_exit("Unknown Incremental Evaluation Builtin: %d\n.", builtin_number);
     break;

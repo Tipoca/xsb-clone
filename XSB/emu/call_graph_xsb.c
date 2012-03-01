@@ -67,6 +67,11 @@
 
 #define INCR_DEBUG2
 
+/* 
+Terminology: outedge -- pointer to calls that depend on call
+             inedge  -- pointer to calls on which call depends
+*/
+
 /********************** STATISTICS *****************************/
 #define build_subgoal_args(SUBG)	\
 	load_solution_trie(CTXTc arity, 0, &cell_array1[arity-1], subg_leaf_ptr(SUBG))
@@ -79,15 +84,25 @@
 //int saved_call_gl=0,
 //int factcount_gl=0;
 
-int unchanged_call_gl=0;
-calllistptr affected_gl=NULL,changed_gl=NULL;
+// affected_gl drives create_call_list and updtes
+calllistptr affected_gl=NULL;
+// derives create_changed_call_list which reports those calls changed in last update
+calllistptr changed_gl=NULL;
+
+// used to compare new to previous tables.
 callnodeptr old_call_gl=NULL;
-call2listptr marked_list_gl=NULL; /* required for abolishing incremental calls */ 
-calllistptr assumption_list_gl=NULL;  /* required for abolishing incremental calls */ 
+// is this needed?  Can we use the root ptr from SF?
 BTNptr old_answer_table_gl=NULL;
 
+call2listptr marked_list_gl=NULL; /* required for abolishing incremental calls */ 
+calllistptr assumption_list_gl=NULL;  /* required for abolishing incremental calls */ 
+
+// current number of incremental subgoals / edges
 int call_node_count_gl=0,call_edge_count_gl=0;
-int  call_count_gl=0;  // total number of incremental subgoals 
+// total number of incremental subgoals in session.
+int  call_count_gl=0;  
+// not used much -- for statistics
+int unchanged_call_gl=0;
 
 // Maximum arity 
 static Cell cell_array1[500];
@@ -133,7 +148,6 @@ void printcall(callnodeptr c){
 /******************** GENERATION OF CALLED_BY GRAPH ********************/
 
 /* Creates a call node */
-
 callnodeptr makecallnode(VariantSF sf){
   
   callnodeptr cn;
@@ -184,8 +198,8 @@ void deleteinedges(callnodeptr callnode){
   return;
 }
 
+/* used for abolishes -- its known that outcount is 0 */
 void deletecallnode(callnodeptr callnode){
-
 
   call_node_count_gl--;
    
@@ -200,29 +214,7 @@ void deletecallnode(callnodeptr callnode){
 }
 
 
-
-
-
-
-
-void initoutedges(callnodeptr cn){
-
-	
-  outedgeptr out;
-
-#ifdef INCR_DEBUG
-	printf("Initoutedges %d\n",cn->id);
-#endif
-
-  SM_AllocateStruct(smOutEdge,out);
-  cn->outedges = out;
-  out->callnode = cn; 	  
-  out->hasht =create_hashtable1(HASH_TABLE_SIZE, hashfromkey, equalkeys);
-  return;
-}
-
-
-void deallocatecall(callnodeptr callnode){
+void deallocate_previous_call(callnodeptr callnode){
   
   calllistptr tmpin,in;
   
@@ -260,6 +252,21 @@ void deallocatecall(callnodeptr callnode){
   SM_DeallocateStruct(smKey, ownkey);      
 }
 
+void initoutedges(callnodeptr cn){
+  outedgeptr out;
+
+#ifdef INCR_DEBUG
+	printf("Initoutedges %d\n",cn->id);
+#endif
+
+  SM_AllocateStruct(smOutEdge,out);
+  cn->outedges = out;
+  out->callnode = cn; 	  
+  out->hasht =create_hashtable1(HASH_TABLE_SIZE, hashfromkey, equalkeys);
+  return;
+}
+
+
 /*
 propagate_no_change(c)
 	for c->c'
@@ -268,23 +275,17 @@ propagate_no_change(c)
 	       c'->falsecount--
 	       if(c'->falsecount==0)
 		 propagate_no_change(c')		
-*/
-
-/*
 
 When invalidation is done a parameter 'falsecount' is maintained with
 each call which signifies that these many predecessor calls have been
 affected. So if a call A has two pred node B and C and both of them
 are affected then A's falsecount is 2. Now when B is reevaluated and
-turns out it has not been changed (its old and new answer table is
+turns out it has not been changed (its old and new answer table is the
 same) completion of B calls propagate_no_change(B) which reduces the
 falsecount of A by 1. If for example turns out that C was also not
-changed falsecount of A is going to be reduced to 0. Now when call A
-is executed it's just going to do answer clause resolution.
-
+changed the falsecount of A is going to be reduced to 0. Now when call
+A is executed it's just going to do answer clause resolution.
 */
-
-
 void propagate_no_change(callnodeptr c){
   callnodeptr cn;
   struct hashtable *h;	
@@ -307,10 +308,8 @@ void propagate_no_change(callnodeptr c){
   }		
 }
 
-
 /* Enter a call to calllist */
-
-static void inline ecall(calllistptr *list, callnodeptr item){
+static void inline add_callnode_sub(calllistptr *list, callnodeptr item){
   calllistptr  temp;
   SM_AllocateStruct(smCallList,temp);
   temp->item=item;
@@ -408,7 +407,7 @@ calllistptr empty_calllist(){
 
 
 void add_callnode(calllistptr *cl,callnodeptr c){
-  ecall(cl,c);
+  add_callnode_sub(cl,c);
 }
 
 callnodeptr delete_calllist_elt(calllistptr *cl){   
@@ -425,7 +424,7 @@ callnodeptr delete_calllist_elt(calllistptr *cl){
   return c;  
 }
 
-void dfs(CTXTdeclc callnodeptr call1){
+void dfs_outedges(CTXTdeclc callnodeptr call1){
   callnodeptr cn;
   struct hashtable *h;	
   struct hashtable_itr *itr;
@@ -447,23 +446,46 @@ void dfs(CTXTdeclc callnodeptr call1){
       cn = hashtable1_iterator_value(itr);
       cn->falsecount++;
       if(cn->deleted==0)
-	dfs(CTXTc cn);
+	dfs_outedges(CTXTc cn);
     } while (hashtable1_iterator_advance(itr));
   }
   add_callnode(&affected_gl,call1);		
 }
 
 
+void dfs_inedges(CTXTdeclc callnodeptr call1){
+  calllistptr call_list;
+  VariantSF subgoal;
+
+  if(IsNonNULL(call1->goal) && !subg_is_completed((VariantSF)call1->goal)){
+    xsb_new_table_error(CTXTc "incremental_tabling",
+			"Incremental tabling is trying to invalidate an incomplete table",
+			get_name(TIF_PSC(subg_tif_ptr(call1->goal))),
+			get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
+  }
+  call_list= call1-> inedges;
+  while(IsNonNULL(call_list)){
+    subgoal = (VariantSF) call_list->prevnode->callnode->goal;
+    if(IsNonNULL(subgoal)){/* fact check */
+      print_subgoal(stddbg,subgoal);printf("\n");
+      //      count++;
+      dfs_inedges(call_list->prevnode->callnode);
+    }
+    call_list=call_list->next;
+  }
+}
+  
+
 
 void invalidate_call(CTXTdeclc callnodeptr c){
 
-#ifdef MULTI_THREAD
-  xsb_abort("Incremental Maintenance of tables in not available for multithreaded engine\n");
-#endif
+  //#ifdef MULTI_THREAD
+  //  xsb_abort("Incremental Maintenance of tables in not available for multithreaded engine\n");
+  //#endif
 
   if(c->deleted==0){
     c->falsecount++;
-    dfs(CTXTc c);
+    dfs_outedges(CTXTc c);
   }
 }
 
@@ -478,23 +500,16 @@ int create_call_list(CTXTdecl){
   Psc psc;
   CPtr oldhreg=NULL;
 
-  //  calllistptr affected_ptr = affected_gl;
-
-  /*
+  /*  calllistptr affected_ptr = affected_gl;
   do {
-    //    printf("item %p sf %p\n",calllist_item(affected_ptr)),callnode_sf(calllist_item(affected_ptr)));
-    //    printf("next %p\n",calllist_next(affected_ptr));  
+    printf("item %p sf %p\n",calllist_item(affected_ptr),callnode_sf(calllist_item(affected_ptr)));
+    printf("next %p\n",calllist_next(affected_ptr));  
     if (callnode_sf(calllist_item(affected_ptr)) != NULL) {
-      //      print_subgoal(stddbg, callnode_sf(calllist_item(affected_ptr)));printf("\n");
-      if (abolish_table_call_cps_check(callnode_sf(calllist_item(affected_ptr))) == CANT_RECLAIM) {
-	printf("!!!! adding to gc\n");
-	//	check_insert_global_deltf_subgoal(CTXTc subgoal,TRUE);
+      print_subgoal(stddbg, callnode_sf(calllist_item(affected_ptr)));printf("\n");
       }
-    }
-      affected_ptr = (calllistptr) calllist_next(affected_ptr);
+    affected_ptr = (calllistptr) calllist_next(affected_ptr);
   } while ( calllist_next(affected_ptr) != NULL) ;
   */
-
   reg[4] = reg[3] = makelist(hreg);  // reg 3 first not-used, use regs in case of stack expanson
   new_heap_free(hreg);   // make heap consistent
   new_heap_free(hreg);
@@ -516,6 +531,8 @@ int create_call_list(CTXTdecl){
 #endif
       continue;
     }
+    fprintf(stddbg,"incrementally updating table for ");print_subgoal(stdout,subgoal);printf("\n");
+
     count++;
     tif = (TIFptr) subgoal->tif_ptr;
     //    if (!(psc = TIF_PSC(tif)))
@@ -647,9 +664,7 @@ int create_changed_call_list(CTXTdecl){
 }
 
 
-int imm_depend_list(CTXTdeclc callnodeptr call1){
-
-
+int immediate_depend_list(CTXTdeclc callnodeptr call1){
  
   VariantSF subgoal;
   TIFptr tif;
@@ -712,17 +727,11 @@ int imm_depend_list(CTXTdeclc callnodeptr call1){
 }
 
 
-
 /*
-
-Finds for a callnode call1 the list of callnode on which call1
-depends.
-
-
+For a callnode call1 returns a Prolog list of callnode on which call1
+immediately depends.
 */
-
-
-int imm_dependent_on_list(CTXTdeclc callnodeptr call1){
+int immediate_dependent_on_list(CTXTdeclc callnodeptr call1){
 
   VariantSF subgoal;
   TIFptr tif;
@@ -800,7 +809,6 @@ As cyclicity check has to be done we have a two phase algorithm to
 deal with this problem. In the first phase we mark all the calls that
 can be potentially deleted. In the next phase we unmarking the calls -
 which should not be deleted. 
-
 */
 
 void mark_for_incr_abol(callnodeptr);

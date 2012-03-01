@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.99 2012-03-01 16:40:09 tswift Exp $
+** $Id: tables.c,v 1.100 2012-03-01 21:26:49 tswift Exp $
 ** 
 */
 
@@ -668,21 +668,21 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
     }
 
   subg_visitors(producerSF) = 0;    /* was compl_stack_ptr */
+
   /* incremental  evaluation start */
   /* 
-     If a new call is complete we should compare whether its
-     answer set is equal to the previous answer set. If no_of_answer
-     is >0 we know that not all answers are rederived. Also if a new
-     answer is added it is already marked as changed (see tries.c,
-     variant_answer_search). If both the conditions are not met that
-     means the call is unchanged i.e it produced the same set of
-     answers. This information has to be propagated to the calls
-     dependent on this call whose falsecount needs to be updated
-     (propagate_no_change). Also answers that are still marked are
-     deleted as those are not answers of the new call.
-     
+     If a new call is complete we should compare whether its answer
+     set is equal to the previous answer set. If no_of_answer is > 0
+     we know that not all answers are rederived so the extension has
+     changed.  However, if a new answer was added the callnodepointer
+     is already marked as changed (see tries.c:
+     variant_answer_search). Otherwise, the call is unchanged i.e it
+     produced the same set of answers. This information has to be
+     propagated to the calls dependent on this call whose falsecount
+     needs to be updated (propagate_no_change). Also answers that are
+     still marked are deleted as those are not answers of the new
+     call.
   */
-
   if(IsIncrSF(producerSF)){
     callnodeptr pc;
     pc=producerSF->callnode->prev_call;
@@ -693,7 +693,7 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
       if (pc->changed==0){
 	unchanged_call_gl++;
 	propagate_no_change(pc); /* defined in call_graph_xsb.c */
-      }else
+      } else
 	add_callnode(&changed_gl,producerSF->callnode);
     
       producerSF->callnode->prev_call=NULL;
@@ -705,16 +705,16 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
 	    delete_branch(CTXTc ALN_Answer(pALN),&subg_ans_root_ptr(producerSF),VARIANT_EVAL_METHOD);
 	  pALN = ALN_Next(pALN);
 	}
-      }else{
-	/* There is some memory leak here: I have to delete the answer
+      } else{
+	/* There is a memory leak here: I have to delete the answer
 	   table here: iterating delete_branch thru the answer trie
 	   gives error while deleting the last branch */
 	
 	producerSF->ans_root_ptr=NULL; 
       }
-      deallocatecall(pc);
+      deallocate_previous_call(pc);
             
-    }else /* newly added calls */
+    } else /* newly added calls */
       add_callnode(&changed_gl,producerSF->callnode);
     
     if ( has_answers(producerSF) ) {

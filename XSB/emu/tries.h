@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.79 2011-10-16 19:20:34 tswift Exp $
+** $Id: tries.h,v 1.80 2012-03-01 21:26:49 tswift Exp $
 ** 
 */
 
@@ -614,14 +614,20 @@ typedef struct outedge{
 	callnodeptr callnode;
 }OUTEDGE;
 
-/* tls: this is a callnodeptr */
+/* tls: this is a callnodeptr;
+   goal --          For tabled calls, this is a pointer to the SF; null for dynamics
+   no_of_answers -- Used as estimate of whether the answers in the subgoal have changed. 
+   deleted --       This callnodeptr refers to an affected call that is being/has been updated.
+   changed --       This call has updated its answers.
+   prev_call --     When reevaluating an affected call, used to compare this to prev.
+*/
 typedef struct callnodetag{
   outedgeptr  outedges;
   calllistptr inedges; 
-  void* goal;             // TLS: this is a pointer to the SF for tabled calls.
+  void* goal;  
   unsigned int no_of_answers;
   unsigned int deleted:1, changed:1,falsecount:15,outcount:15;
-  callnodeptr prev_call;
+  callnodeptr prev_call;  
   ALNptr aln; 
   int id; 
 }CALL_NODE;
