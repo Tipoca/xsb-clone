@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.98 2012-02-19 19:17:56 tswift Exp $
+** $Id: tables.c,v 1.99 2012-03-01 16:40:09 tswift Exp $
 ** 
 */
 
@@ -186,6 +186,7 @@ inline static  BTNptr newCallTrie(CTXTdeclc Psc predicate) {
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /*
+ * used in tabletrysinglenoanswers 
  * Note that the call trie of the TIF is not allocated until the first
  * call is entered.  Upon exit, CallLUR_AnsTempl(*results) points to
  * the size of the answer template on the CPS.  See slginsts_xsb_i.h
@@ -194,13 +195,12 @@ inline static  BTNptr newCallTrie(CTXTdeclc Psc predicate) {
  */
 
 int table_call_search(CTXTdeclc TabledCallInfo *call_info,
-		       CallLookupResults *results) {
-
+ 		       CallLookupResults *results) {
   TIFptr tif;
 
 #ifndef MULTI_THREAD
   /* for incremental evaluation begin */ 
-  int flag;
+  int call_found_flag;
   callnodeptr c;
   VariantSF sf;
   ALNptr pALN;
@@ -232,17 +232,18 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
       should fetch answers from the earlier answer table as any
       completed call would do.
     */
-    flag=CallLUR_VariantFound(*results);
+    call_found_flag=CallLUR_VariantFound(*results);
     Paren=CallLUR_Leaf(*results);
-    old_call_gl=NULL;
-    old_answer_table_gl=NULL;
-    if(flag!=0){
+
+    if(call_found_flag!=0){
+      old_call_gl=NULL;
+      old_answer_table_gl=NULL;
       
       sf=CallTrieLeaf_GetSF(Paren);
       c=sf->callnode;
       if(IsNonNULL(c)&&(c->falsecount!=0)){
 	old_call_gl=c;      
-	flag=0;
+	call_found_flag=0;  /* treat as a new call */
 	if ( has_answers(sf) ) {
 	  pALN = subg_answers(sf);
 	  do {
@@ -258,7 +259,7 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
       }
     }
     CallLUR_Subsumer(*results) = CallTrieLeaf_GetSF(Paren);
-    CallLUR_VariantFound(*results) = flag;
+    CallLUR_VariantFound(*results) = call_found_flag;
     /* incremental evaluation: end */
 #endif /* not MULTI_THREAD (incremental evaluation) */
   }
