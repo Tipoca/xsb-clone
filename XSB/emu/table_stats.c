@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.40 2011-05-22 18:18:54 tswift Exp $
+** $Id: table_stats.c,v 1.41 2012-03-01 15:43:04 tswift Exp $
 ** 
 */
 
@@ -366,7 +366,7 @@ void print_detailed_tablespace_stats(CTXTdecl) {
 
   if (call_count_gl) {
     printf("\nTotal number of incremental subgoals created: %d\n",call_count_gl);
-    printf("   Total number of incremental call nodes created: %d\n",call_node_count_gl);
+    printf("   Current number of incremental call nodesd: %d\n",call_node_count_gl);
     printf("   Total number of incremental call edges created: %d\n",call_edge_count_gl);
   }
 

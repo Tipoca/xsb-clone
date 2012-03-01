@@ -478,8 +478,14 @@ void total_stat(CTXTdeclc double elapstime) {
 	   dl_count, dl_space_alloc, dl_space_used);
     printf("\n");
   }
-  if (call_count_gl)
+
+  if (call_count_gl) {
     printf("Total number of incremental subgoals created: %d\n",call_count_gl);
+    if (call_node_count_gl) {
+      printf("Currently %d incremental subgoals, %d dependency edges\n",
+	     call_node_count_gl,call_edge_count_gl);
+	}
+  }
 
   if (abol_subg_ctr == 1)
     printf("  1 tabled subgoal explicitly abolished\n");
