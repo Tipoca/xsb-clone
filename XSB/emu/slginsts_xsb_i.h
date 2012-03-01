@@ -145,10 +145,10 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 
   //  printf("starting breg is %x %x\n",breg,((pb)tcpstack.high - (pb)breg));
 
+  old_call_gl=NULL;   /* incremental evaluation */
   int incrflag = 0; /* for incremental evaluation */
   VariantSF parent_table_sf=NULL; /* used for creating call graph */
 
-  //  gdb_dummy();
 #ifdef SHARED_COMPL_TABLES
   byte * inst_addr = lpcreg;
   Integer table_tid ;
@@ -161,9 +161,6 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   CPtr old_cptop;
 #endif
 #endif
-
-  /* incremental evaluation */
-  old_call_gl=NULL;
 
   xwammode = 1;
   CallInfo_Arguments(callInfo) = reg + 1;
@@ -218,9 +215,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
    }
 
   producer_sf = CallLUR_Subsumer(lookupResults);
-
   answer_template_cps = CallLUR_AnsTempl(lookupResults);
-
 #ifdef MULTI_THREAD
   if( !IsNULL(producer_sf) ) UNLOCK_CALL_TRIE();
 #endif
@@ -230,20 +225,23 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 /* Get parent table subgoalframe from ptcpreg */
   if(IsNonNULL(ptcpreg)){
     parent_table_sf=(VariantSF)ptcpreg;
-    if(IsIncrSF(parent_table_sf))
+    if(IsIncrSF(parent_table_sf)) {
       incrflag=1;
-  }
- 
-/* adding called-by graph edge */
-  if((incrflag)&&(IsNonNULL(producer_sf))){
-    if(IsIncrSF(producer_sf)){
-      addcalledge(producer_sf->callnode,parent_table_sf->callnode);  
-    }else{
-      if(!get_opaque(TIF_PSC(CallInfo_TableInfo(callInfo))))
-	xsb_abort("Predicate %s/%d not declared incr_table: cannot create dependency edge\n", get_name(TIF_PSC(CallInfo_TableInfo(callInfo))),get_arity(TIF_PSC(CallInfo_TableInfo(callInfo))));       
+      /* adding called-by graph edge */
+      if(IsNonNULL(producer_sf)){
+	if(IsIncrSF(producer_sf)){
+	  addcalledge(producer_sf->callnode,parent_table_sf->callnode);  
+	} 
+	else{
+	  if(!get_opaque(TIF_PSC(CallInfo_TableInfo(callInfo))))
+	    xsb_abort("Predicate %s/%d not declared incr_table: cannot create dependency edge\n", 
+		      get_name(TIF_PSC(CallInfo_TableInfo(callInfo))),
+		      get_arity(TIF_PSC(CallInfo_TableInfo(callInfo))));       
+	}
+      }
     }
   }
-
+ 
 /* --------- end incremental evaluation  --------- */
 
 //printf("After variant call search AT: %x\n",answer_template_cps);
@@ -270,8 +268,6 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
     else sprintf(bufferb,"null");
     fprintf(fview_ptr,"tc(%s,%s,new,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
-
-
 #endif /* !SHARED_COMPL_TABLES */
 #ifdef CONC_COMPL
     subg_tid(producer_sf) = xsb_thread_id;
@@ -280,7 +276,6 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 #endif
 
 /* --------- for new producer incremental evaluation  --------- */
-
     /* table_call_search tried to find the affected call, so if it has
        found the answer table of the new call it is made same as the
        answer table of the old call - so that we can check whether the
@@ -696,9 +691,9 @@ XSB_Start_Instr(tabletrysinglenoanswers,_tabletrysinglenoanswers)
   TIFptr tip;
   callnodeptr c;
 
-#ifdef MULTI_THREAD
-  xsb_abort("Incremental Maintenance of tables is not available for multithreaded engine.\n");
-#endif  
+    //#ifdef MULTI_THREAD
+    //  xsb_abort("Incremental Maintenance of tables is not available for multithreaded engine.\n");
+    //#endif  
   
   //  printf("tabletrysinglenoanswers\n");
 
