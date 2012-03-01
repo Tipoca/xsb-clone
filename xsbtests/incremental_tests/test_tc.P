@@ -1,0 +1,37 @@
+
+/* Not a test of incremental tabling, but put here so its not tested by mt engine */
+
+:- import timed_call/3 from standard.
+:- import conset/2, conget/2 from machine.
+
+
+test:- catch(tc_1,error(E,M,_),writeln(caught(E,M))),fail.
+test:- catch(tc_2,error(E,M,_),writeln(caught(E,M))),fail.
+test:- catch(tc_nest,error(E,M,_),writeln(caught(E,M))),fail.
+test.
+
+tc_1:- 
+       timed_call(loop,200,mycall).
+
+mycall:- writeln('mycall!!!'),abort.
+
+tc_2:- conset(mycall_number,0),
+	timed_call(loop,repeating(200),mycall1).
+
+mycall1:- update_mycall_number(N),
+	  (N >= 5 -> 
+	    abort(enough_of_this)
+	  ; 
+	    writeln(interrupt(N)) ).
+
+update_mycall_number(N1):-
+	conget(mycall_number,N),
+	N1 is N + 1,
+	conset(mycall_number,N1).
+	
+tc_nest:- timed_call(
+	            timed_call(writeln(nested_call),1000,writeln(nested_handler)),
+		    1000,
+		    writeln(outer_call)).
+
+loop:- loop.
