@@ -145,9 +145,9 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 
   //  printf("starting breg is %x %x\n",breg,((pb)tcpstack.high - (pb)breg));
 
-  old_call_gl=NULL;   /* incremental evaluation */
   int incrflag = 0; /* for incremental evaluation */
   VariantSF parent_table_sf=NULL; /* used for creating call graph */
+  old_call_gl=NULL;   /* incremental evaluation */
 
 #ifdef SHARED_COMPL_TABLES
   byte * inst_addr = lpcreg;
