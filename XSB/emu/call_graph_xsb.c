@@ -469,7 +469,7 @@ void dfs_inedges(CTXTdeclc callnodeptr call1){
     if(IsNonNULL(subgoal)){/* fact check */
       print_subgoal(stddbg,subgoal);printf("\n");
       //      count++;
-      dfs_inedges(call_list->prevnode->callnode);
+      dfs_inedges(CTXTc call_list->prevnode->callnode);
     }
     call_list=call_list->next;
   }
@@ -489,7 +489,7 @@ void invalidate_call(CTXTdeclc callnodeptr c){
   }
 }
 
-#define WARN_ON_UNSAFE_UPDATE 1
+//#define WARN_ON_UNSAFE_UPDATE 1
 
 int create_call_list(CTXTdecl){
 
