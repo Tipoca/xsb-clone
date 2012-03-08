@@ -1047,7 +1047,7 @@ set_xsb_flag_1(unify_with_occurs_check, OnOff) :-!,
 	    stat_set_flag(UNIFY_WITH_OCCURS_CHECK_FLAG, 1)
 	 ;  stat_set_flag(UNIFY_WITH_OCCURS_CHECK_FLAG, 0)).
 set_xsb_flag_1(max_memory,Max):-!,
-	(integer(Max),Max > 0 -> 
+	(integer(Max),Max >= 0 -> 
 	    stat_set_flag(MAX_MEMORY,Max)
 	 ;  domain_error(positive_integer,Max,set_prolog_flag/2,2,max_memory_clause) ).
 set_xsb_flag_1(exception_pre_action, Mode) :- !,
