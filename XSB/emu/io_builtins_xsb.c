@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.98 2012-02-26 22:29:13 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.99 2012-03-09 18:21:45 kifer Exp $
 ** 
 */
 
@@ -130,6 +130,34 @@ char *p_charlist_to_c_string(CTXTdeclc prolog_term, VarString*, char*, char*);
 					 bytes_formatted+1, \
 					 current_fmt_spec->fmt, \
 					 width, precision, arg); \
+	        break; \
+	}			      \
+        OutString.length += (int)bytes_formatted;		\
+        XSB_StrNullTerminate(&OutString);
+
+#elif defined(WIN_NT)
+        switch (current_fmt_spec->size) {	\
+        case 1: bytes_formatted=_scprintf(current_fmt_spec->fmt,arg); \
+		XSB_StrEnsureSize(&OutString,OutString.length+bytes_formatted+1);\
+	        _snprintf_s(OutString.string+OutString.length, \
+			    bytes_formatted+1,		       \
+			    _TRUNCATE,				\
+			    current_fmt_spec->fmt, arg);	\
+	        break; \
+	case 2: bytes_formatted=_scprintf(current_fmt_spec->fmt,width,arg); \
+		XSB_StrEnsureSize(&OutString,OutString.length+bytes_formatted+1);\
+	        _snprintf_s(OutString.string+OutString.length,\
+			    bytes_formatted+1,		      \
+			    _TRUNCATE,					\
+			    current_fmt_spec->fmt, width, arg);		\
+	        break; \
+	case 3: bytes_formatted=_scprintf(current_fmt_spec->fmt,width,precision,arg); \
+		XSB_StrEnsureSize(&OutString,OutString.length+bytes_formatted+1);\
+                _snprintf_s(OutString.string+OutString.length, \
+			    bytes_formatted+1,		       \
+			    _TRUNCATE,				 \
+			    current_fmt_spec->fmt,		 \
+			    width, precision, arg);		 \
 	        break; \
 	}			      \
         OutString.length += (int)bytes_formatted;		\
