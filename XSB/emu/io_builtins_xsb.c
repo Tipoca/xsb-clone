@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.99 2012-03-09 18:21:45 kifer Exp $
+** $Id: io_builtins_xsb.c,v 1.100 2012-03-10 19:18:28 kifer Exp $
 ** 
 */
 
@@ -136,6 +136,7 @@ char *p_charlist_to_c_string(CTXTdeclc prolog_term, VarString*, char*, char*);
         XSB_StrNullTerminate(&OutString);
 
 #elif defined(WIN_NT)
+#define SPRINT_ARG(arg) \
         switch (current_fmt_spec->size) {	\
         case 1: bytes_formatted=_scprintf(current_fmt_spec->fmt,arg); \
 		XSB_StrEnsureSize(&OutString,OutString.length+bytes_formatted+1);\
