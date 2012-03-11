@@ -43,6 +43,7 @@ interpreter :-
 	set_inthandler('_$attv_int'(_,_), MYSIG_ATTV),
 	set_inthandler('_$thread_int'(_,_), THREADSIG_CANCEL),
 	set_inthandler('_$timer_int'(_,_), TIMER_INTERRUPT),
+	set_inthandler('_$lazy_reeval_int'(_,_), LAZY_REEVAL_INTERRUPT),
 	( banner_control(nobanner)
 	->  true		% don't print banner
 	;   version_message
@@ -323,6 +324,10 @@ execute_messages_on_signale_queue:-
 '_$timer_int'(One,_Two) :- 
 	call_c(One).
 
+:- import lazy_reeval_trap/1 from increval.
+'_$lazy_reeval_int'(One,_Two):- 
+	lazy_reeval_trap(One).
+
 call_handler(Handler):- call(Handler),!.
 call_handler(_).
 
@@ -333,7 +338,6 @@ call_handler(_).
 	handle_interrupts(Intlist),
 %	file_write(1, '.... leaving _$attv_int/2'), file_nl(1),
 	call_c(Call).
-
 
 /* === version message ================================================= */
 

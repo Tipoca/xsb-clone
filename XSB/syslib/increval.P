@@ -51,20 +51,35 @@ reeval(Calls) :-
 	).
 
 call_if_affected(C) :-
-	get_call(C,SF,_),
-	(incr_eval_builtin(IS_AFFECTED,SF)
-	 ->	(call_c(C), fail
-		 ;	
-		 true
-		)
-	 ;	
-	 true
-	).
+	incr_eval_builtin(CALL_IF_AFFECTED,C,_).
 
 /* Filt is a list of skeletons of goals to include in returned list.
 If Filt is [], then return ALL changed subgoals */
 get_changed_calls(Filt,X) :-
 	incr_eval_builtin(GET_CHANGED_CALLS, Filt, X).
+
+:- import call_c/1 from standard.
+:- import reverse/2 from basics.
+:- export lazy_reeval/1, lazy_reeval_trap/1.
+lazy_reeval(Call):- 
+	create_lazy_call_list(Call,CALL_LIST_CREATE_EVAL,List),
+	reverse(List,ListR),
+	lazy_reeval_1(ListR),
+	call_c(Call).
+
+lazy_reeval_1([_Call]):- !.
+lazy_reeval_1([Call|Rest]):- 
+	(call_if_affected(Call),fail ; true),
+	lazy_reeval_1(Rest).	
+
+lazy_reeval_trap(Call):- 
+	create_lazy_call_list(Call,CALL_LIST_EVAL,List),
+	reverse(List,ListR),
+	lazy_reeval_1(ListR),
+	call_c(Call).
+
+create_lazy_call_list(Call,Flag,List) :-
+	incr_eval_builtin(CREATE_LAZY_CALL_LIST,Call,Flag,List).
 
 %--------
 
@@ -168,7 +183,7 @@ incr_assert(Term,AZL,Index) :-
 
 incr_assert_inval(Term,AZL,Index):-
 	(Term = (:-(H,_)) -> Head = H ; Head = Term),
-%	check_incremental(Head,('dynamic predicate ',Head,' is not incremental ',incr_assert/1)),
+	check_incremental(Head,dynamic_incremental_predicate,incr_assert,1),
 	assert(Term,AZL,Index),
 	(get_calls_incr(Head,A),
 	 invalidate_callnode(A),
@@ -182,7 +197,7 @@ incr_retractall(Term) :-
 	incr_table_update.
 
 incr_retractall_inval(Term):-
-	check_incremental(Term,dynamic_predicate_not_incremental),
+	check_incremental(Term,dynamic_incremental_predicate,incr_retractall,1),
 	retractall(Term),
 	(get_calls_incr(Term,A),
 	 invalidate_callnode(A),
@@ -197,7 +212,7 @@ incr_retract(Term) :-
 
 incr_retract_inval(Term):-
 	(Term = (:-(H,_)) -> Head = H ; Head = Term),
-	check_incremental(Head,dynamic_predicate_not_incremental),
+	check_incremental(Head,dynamic_incremental_predicate,incr_retract,1),
 	retract(Term),
 	(get_calls_incr(Head,A),
 	 invalidate_callnode(A),
@@ -220,13 +235,8 @@ check_incrementally_tabled(Term,Msg) :-
 	 ;	table_error(Msg)
 	).	 
 
-check_incremental(Term,Msg) :-
-	term_psc(Term,Psc),
-	psc_get_incr(Psc,INCR),
-	(INCR > NONINCREMENTAL
-	 ->	true
-	 ;	table_error(Msg)
-	).
+check_incremental(Term,Type,Pred,Arity):- 
+	incr_eval_builtin(CHECK_INCREMENTAL,Term,Type,Pred,Arity).
 
 %-----------
 
@@ -253,6 +263,14 @@ incr_eval_builtin(_BuiltinNo, _A) :-
 incr_eval_builtin(_BuiltinNo, _A, _B) :-
 	'_$builtin'(INCR_EVAL_BUILTIN).
 	
+incr_eval_builtin(_BuiltinNo, _A, _B, _C) :-
+	'_$builtin'(INCR_EVAL_BUILTIN).
+
+incr_eval_builtin(_BuiltinNo, _A, _B, _C, _D) :-
+	'_$builtin'(INCR_EVAL_BUILTIN).
+
+end_of_file.
+==========================================================================================
 /*
 %incr_eval_builtin(_BuiltinNo) :-
 %	'_$builtin'(INCR_EVAL_BUILTIN).
@@ -271,4 +289,31 @@ incr_eval_builtin(_BuiltinNo, _A, _B, _C, _D, _E) :-
 get_call_graph:-
 	incr_eval_builtin(GET_CALL_GRAPH).
 ***/
+
+The following were rewritten in C.
+/*
+call_if_affected(C) :-
+	get_call(C,SF,_),
+	(incr_eval_builtin(IS_AFFECTED,SF)
+	 ->	(call_c(C), fail
+		 ;	
+		 true
+		)
+	 ;	
+	 true
+	).
+:- import writeln/1 from standard.
+call_if_affected(C) :- call_if_affected_internal(C),fail.
+*/
+
+
+/*
+check_incremental(Term,Msg) :-
+	term_psc(Term,Psc),
+	psc_get_incr(Psc,INCR),
+	(INCR > NONINCREMENTAL
+	 ->	true
+	 ;	table_error(Msg)
+	).
+*/
 
