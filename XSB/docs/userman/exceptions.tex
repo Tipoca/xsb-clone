@@ -73,7 +73,7 @@ userdiv1(X,Ans):-
         write('Enter a number: '),read(Y),
         (number(Y) -> true ; throw(mydiv1(error1(Y)))),
         (Y < 0 -> throw(mydiv1(error2(Y))); true),
-        (Y =:= 0 -> throw(error(zerodivision,userdiv/1)); true),
+        (Y =:= 0 -> throw(error(zerodivision,userdiv/1,[])); true),
         Ans is X/Y.
 
 handleUserdiv(error1(Y),_X):- 
@@ -354,7 +354,7 @@ The file may be obtained through the predicate {\tt
 generated unless the exception is thrown over at least one incomplete
 table.
 
-\section{Representations of ISO Errors} \label{sec:iso-errors}
+\section{Representation of ISO Errors} \label{sec:iso-errors}
 \index{ISO!errors}
 
 All exceptions that occur during the execution of an XSB program can
@@ -365,11 +365,9 @@ Standard for defining classes of Prolog errors \cite{ISO-Prolog}.
 While the ISO standard defines various types of errors and how they
 should arise during execution of ISO Prolog predicates, it does not
 define the actual error terms a system should use.  Accordingly, we
-define the formats for various ISO errors~\footnote{We note that XSB's
-  system predicates are in the process of being updated to handle
-  these errors.}.  Below, in Section~\ref{sec:errorpredicates} we
-provide convenience predicates for throwing various ISO errors and
-performing various error checks.
+define the formats for various ISO errors.  Below, in
+Section~\ref{sec:errorpredicates} we provide predicates for throwing
+various ISO errors and performing various error checks.
 
 In the following predicates, {\tt Msg} is either a list of HiLog terms
 or a comma-list of HiLog terms.  Each of the {\tt error/2} terms below
@@ -390,7 +388,8 @@ backtrace~\footnote{If a program catches errors itself, error/3 may
 %
 \item [error(existence\_error(Type,Culprit),Msg)] is the format of an
   ISO type error, where {\tt Type} is the type of a resource and {\tt
-    Culprit} is the term observed.
+    Culprit} is the term observed (e.g., a predicate, stream,
+  attribute handler, etc.).
 %
 \item[error(instantiation\_error,Msg))] is the format of an ISO
   instantiation error.
@@ -400,13 +399,14 @@ backtrace~\footnote{If a program catches errors itself, error/3 may
   object of type {\tt Obj\_type}, where {\tt Culprit} was observed.
 %
 \item[error(representation\_error(Flag).Msg)] is the format of an ISO
-  representation error (e.g. the maximum arity of a predicate has been
-  exceeded), and {\tt Flag} is the type of representation error
+  representation error (e.g., the maximum arity of a predicate has
+  been exceeded), and {\tt Flag} is the type of representation error
   encountered.
 %
 \item[error(resource\_error(Flag).Msg)] is the format of an ISO
-  resource error (e.g. too many files are opened), and {\tt Flag} is
-  the type of resource error encountered.
+  resource error (e.g. allowed memory has been used, or too many files
+  have been opened), and {\tt Flag} is the type of resource error
+  encountered.
 %
 \item[error(syntax\_error,Msg)] and {\tt
   error(syntax\_error(Culprit),Msg)} are alternate formats of an ISO
@@ -423,8 +423,8 @@ backtrace~\footnote{If a program catches errors itself, error/3 may
 %
 \end{description}
 
-In addition, XSB's engine also makes use of some other types of
-errors.
+\noindent
+In addition, XSB also makes use of some other types of errors.
 %
 \begin{description}
 \item[error(table\_error,Msg)] is the format of an error arising when
@@ -441,15 +441,17 @@ errors.
 
 In \version{} of XSB, errors for ISO predicates usually, but not not
 always ISO-compliant.  First, when XSB determines it is out of
-available memory, recovering from such an error may be difficult at
-best.  Accordingly the computation is aborted in the sequential
-engine, or XSB exits in the multi-threaded engine.  Second, errors in
-XSB code sometimes arise as miscellaneous errors rather than as a
-designated ISO-error type.  We are, however, in the process of
-reclassifying errors to their ISO types.
+available system memory, recovering from such an error may be
+difficult at best.  Accordingly the computation is aborted in the
+sequential engine, or XSB exits in the multi-threaded
+engine~\footnote{This does not include overflowaing a memory limit
+  specified by the flag {\tt max\_memory}.}.  Second, errors in XSB
+code sometimes arise as miscellaneous errors rather than as a
+designated ISO-error type.
 
-When XSB generates a memory exception, it prints out a backtrace and
-exits.  This should be caused only by a bug in XSB or included code.
+When XSB generates a memory exception {\em at the OS level} (e.g., a
+segmentation violation or bus error) it prints out a backtrace and
+exits.  This should be caused only by a bug in XSB or included C code.
 The first predicate in the backtrace that is printed in these
 circumstances may be incorrect or redundant.  This is because the
 memory structures used to generate the backtrace are not always
@@ -464,8 +466,10 @@ result in the use of somewhat inconsistent information.
 
 XSB provides a variety of predicates that throw errors~\footnote{C
   functions for throwing terms and ISO-style errors are described in
-  Volume 2, Chapter 3 {\em Foreign Language Interface}.}. Those likely
-to be of interest to users are:
+  Volume 2, Chapter 3 {\em Foreign Language Interface}.}. In general,
+we recommend the use of predicates such as {\tt domain\_error/4} over
+the direct use of {\tt throw/1} when possible.
+%
 \begin{description}
 \isoitem{throw(+ErrorTerm)}{\tt throw/1}
 %
@@ -621,9 +625,9 @@ does not attempt to clean up other system level resources, which is
 left to the handler.
 %
 
+\index{streams!STDERR}
 \ourrepeatmoditem{error\_write(?Message)}{error\_write/1}{standard}
 \ourmoditem{error\_writeln(?Message)}{error\_writeln/1}{standard}
-\index{streams!STDERR}
 %
 Utility routines for user-defined error catching.  These predicates
 output {\tt Message} to XSB's {\tt STDERR} stream, rather than to
@@ -635,11 +639,10 @@ these predicates must be implicitly from the module {\tt standard}.
 \ourmoditem{close\_open\_tables}{close\_open\_tables/0}{machine}
 %
 Removes table data structures for all incomplete tables, but does not
-affect any incomplete tables.  In \version{} this predicate should
-only be used to handle exceptions in {\tt
-  default\_user\_error\_handler/1}.  In addition, for the
-multi-threaded engine, this predicate unlocks any system mutexes held
-by the thread calling this predicate.
+affect any complete tables.  In \version{} this predicate should only
+be used to handle exceptions in {\tt default\_user\_error\_handler/1}.
+In addition, for the multi-threaded engine, this predicate unlocks any
+system mutexes held by the thread calling this predicate.
 
 \end{description}
 
@@ -647,20 +650,26 @@ by the thread calling this predicate.
 \section{Convenience Predicates}
 
 The following convenience predicates are provided to make a commonly
-used check and throw an ISO error if the check is not satisfied.  All
-these predicates must be imported from the module {\tt
-  error\_handler}.
+used check and to throw an ISO error if the check is not satisfied;
+some are written directly in C for speed.  All these predicates must
+be imported from the module {\tt error\_handler}, which also contains
+provides a few other specialized checks.
 
 \begin{description}
+\ourmoditem{check\_acyclic(?Term,+Predicate,+Arg)}{check\_acyclic/3}{error\_handler}
+%
+Checks that {\tt Term} is acyclic.  If so, the predicate succeeds;
+if not it throws a miscellaneous error.
+
 \ourmoditem{check\_atom(?Term,+Predicate,+Arg)}{check\_atom/3}{error\_handler}
 %
 Checks that {\tt Term} is an atom.  If so, the predicate succeeds;
 if not it throws a type error.
 
-\ourmoditem{check\_acyclic(?Term,+Predicate,+Arg)}{check\_acyclic/3}{error\_handler}
+\ourmoditem{check\_callable(?Term,+Predicate,+Arg)}{check\_callable/3}{error\_handler}
 %
-Checks that {\tt Term} is acyclic.  If so, the predicate succeeds;
-if not it throws a miscellaneous error.
+Checks that {\tt Term} is callable.  If so, the predicate succeeds; if
+not it throws a type error.
 
 \ourmoditem{check\_ground(?Term,+Predicate,+Arg)}{check\_ground/3}{error\_handler}
 %
@@ -677,23 +686,12 @@ if not it throws a type error.
 Checks that {\tt Term} is not a variable.  If not, the predicate succeeds;
 if {\tt Term} is a variable,  it throws an instantiation error.
 
-\ourmoditem{check\_var(?Term,+Predicate,+Arg)}{check\_var/3}{error\_handler}
-%
-Checks that {\tt Term} is a variable.  If so, the predicate succeeds;
-if not it throws an instantiation error.
-
 \ourmoditem{check\_nonvar\_list(?Term,+Predicate,+Arg)}{check\_nonvar\_list/3}{error\_handler}
-
+%
 Checks that {\tt Term} is a list, each of whose elements is ground.
 If so, the predicate succeeds; if not it throws an instantiation
 error.
 	    
-\ourmoditem{check\_stream(?Stream,+Predicate,+Arg)}{check\_stream/3}{error\_handler}
-%
-Checks that {\tt Stream} is a stream.  If so, the predicate succeeds;
-if not it throws an instantiation error~\footnote{The representation
-of streams in XSB is subject to change.}.
-
 \ourmoditem{check\_one\_thread(+Operation,+Object\_Type,+Predicate)}{check\_one\_thread/3}{error\_handler}
 %
 In the multi-threaded engine, {\tt check\_one\_thread/3} checks that
@@ -705,6 +703,17 @@ certain operations that are difficult to make thread-safe by other
 means.
 
 In the single-threaded engine this predicate always succeeds.
+
+\ourmoditem{check\_stream(?Stream,+Predicate,+Arg)}{check\_stream/3}{error\_handler}
+%
+Checks that {\tt Stream} is a stream.  If so, the predicate succeeds;
+if not it throws an instantiation error~\footnote{The representation
+of streams in XSB is subject to change.}.
+
+\ourmoditem{check\_var(?Term,+Predicate,+Arg)}{check\_var/3}{error\_handler}
+%
+Checks that {\tt Term} is a variable.  If so, the predicate succeeds;
+if not it throws an instantiation error.
 
 \end{description}
 
