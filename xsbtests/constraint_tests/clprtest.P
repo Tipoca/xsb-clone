@@ -45,6 +45,11 @@ test:- test29.
 test:- test30.
 test:- test31.
 test:- test32.
+test:- test33.
+test:- test34.
+test:- test35.
+test:- test36.
+test:- test37.
 test.
 
 test0:- {X > 3},X = 4,writeln(test0('{X > 3},X = 4 succeeded')),fail.
@@ -101,6 +106,14 @@ test31:-{ 2*X+Y >= 16, X+2*Y >= 11,X+3*Y >= 15, Z = 30*X+50*Y}, inf(Z,Sup),
 	member(C,D),writeln(test31(C)),fail.
 test32:-{ 2*X+Y >= 16, X+2*Y >= 11,X+3*Y >= 15, Z = 30*X+50*Y}, minimize(Z),
 	writeln(test32(X,Y,Z)),fail.
+
+% TLS: added with nf_r change of 03/12.
+test33:- {1 = cos(X)}, writeln(test33(X)),fail.
+test34:- {-1 = cos(X)}, writeln(test34(X)),fail.
+test35:- {1 = -cos(X)}, writeln(test35(X)),fail.
+% TLS: these two should not fire.
+test36:- { -25 = _X^(-2.5) }, writeln(test36(X)),fail.
+test37:- { -25 = _X^2.5 }, writeln(test37(X)),fail.
 
 /* Below are copied out of Sicstus manual */
 /* Newton method for square root of 2 */
