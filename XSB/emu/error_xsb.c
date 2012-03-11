@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.100 2012-02-24 22:02:48 dwarren Exp $
+** $Id: error_xsb.c,v 1.101 2012-03-11 00:55:47 tswift Exp $
 ** 
 */
 
@@ -1342,7 +1342,8 @@ int unwind_stack(CTXTdecl)
 
    /* now find the corresponding breg */
    b = breg;
-   while (cp_ereg(b) <= e || between_sccs == 0) {
+   while (cp_ereg(b) <= e || between_sccs == 0 || IS_TABLE_INSTRUC(*cp_pcreg(b))) {
+     //     printf("unwind %p\n",b);
      if (IS_TABLE_INSTRUC(*cp_pcreg(b))) {
        //       printf("found tab inst %p\n",b);
        if (IS_GENERATOR_CP(*cp_pcreg(b)) && is_leader(subg_compl_stack_ptr(tcp_subgoal_ptr(b)))) {
@@ -1351,13 +1352,13 @@ int unwind_stack(CTXTdecl)
        else
 	 between_sccs = 0;
      }
-     b = cp_prevbreg(b);
      CHECK_TRIE_ROOT(CTXTc b);
      CHECK_CALL_CLEANUP(CTXTc b);
+     b = cp_prevbreg(b);
    }
    if (IS_TABLE_INSTRUC(*cp_pcreg(b))) {
      last_leader = b;
-     printf("!$!$ uh-oh\n");
+     printf("!$!$ uh-oh %x\n",*cp_pcreg(b));;
    }
    breg = b;
    //   printf("breg unwound to %p\n",breg);

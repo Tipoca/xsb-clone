@@ -38,7 +38,7 @@
 //extern int maximum_dl,factcount;
 //extern int callqptr;
 
-extern calllistptr affected_gl,changed_gl;
+extern calllistptr affected_gl,changed_gl, lazy_affected;
 extern int call_node_count_gl,call_edge_count_gl;
 extern BTNptr old_answer_table_gl;
 extern int unchanged_call_gl, call_count_gl;
@@ -59,4 +59,6 @@ extern void print_call_node(callnodeptr);
 extern void add_callnode(calllistptr *,callnodeptr);
 extern void abolish_incr_call(CTXTdeclc callnodeptr);
 extern void free_incr_hashtables(TIFptr);
+extern int  create_lazy_call_list(CTXTdeclc  callnodeptr);
+extern int  dfs_inedges(CTXTdeclc  callnodeptr, calllistptr *, int);
 #endif

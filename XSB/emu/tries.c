@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.162 2012-02-03 21:53:09 tswift Exp $
+** $Id: tries.c,v 1.163 2012-03-11 00:55:47 tswift Exp $
 ** 
 */
 
@@ -1165,7 +1165,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
       choicepttype = 0x3 &  BTN_Instr(Paren);
       typeofinstr = (~0x3) & BTN_Status(Paren);
       BTN_Instr(Paren) = choicepttype | typeofinstr;
-            MakeStatusValid(Paren);
+      MakeStatusValid(Paren);
       
       found_flag=0;
       
@@ -1174,7 +1174,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
       New_ALN(subgoal_ptr,answer_node,Paren,NULL);
       SF_AppendNewAnswer(subgoal_ptr,answer_node);	
       
-    }else
+    } else
       if ( found_flag == 0 ) {
 	MakeTSTNLeafNode(Paren);
 	TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
@@ -1832,22 +1832,22 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
       /* call_arg is derefed register value pointing to heap.  Make
 	 the subst factor CP-stack pointer, SubsFactReg, point to it. */
       /*
-if (ABSTRACTING_ATTVARS) {
-        Cell newElement;
-        CPtr pElement = cptr + i;
-
-        //      printf("abstracting\n");                                                                                    
-        XSB_Deref(*pElement);
-        newElement = (Cell) hreg;new_heap_free(hreg);
-        //      printf("newElement %p @newElement %x\n",newElement,*(CPtr)newElement);                                      
-        push_AbsStk(*pElement,newElement);
-        *pElement = newElement;
-        *(--SubsFactReg) = (Cell) newElement;
-	StandardizeVariable(newElement,ctr);
-        one_node_chk_ins(flag,EncodeNewTrieVar(ctr),CALL_TRIE_TT);
-        ctr++;
-      }
-      else{
+| if (ABSTRACTING_ATTVARS) {
+|         Cell newElement;
+|         CPtr pElement = cptr + i;
+| 
+|         //      printf("abstracting\n");                                                                                    
+|         XSB_Deref(*pElement);
+|         newElement = (Cell) hreg;new_heap_free(hreg);
+|         //      printf("newElement %p @newElement %x\n",newElement,*(CPtr)newElement);                                      
+|         push_AbsStk(*pElement,newElement);
+|         *pElement = newElement;
+|         *(--SubsFactReg) = (Cell) newElement;
+| 	StandardizeVariable(newElement,ctr);
+|         one_btn_chk_ins(flag,EncodeNewTrieVar(ctr),CALL_TRIE_TT);
+|         ctr++;
+|       }
+|       else{
       */
       can_abstract = FALSE;						
       *(--SubsFactReg) = (Cell) call_arg;
@@ -2388,7 +2388,7 @@ byte * trie_get_calls(CTXTdecl)
 	  (e.g clauses for a dynamic tabled predicate have not yet
 	  been defined */
        if (!get_tabled(psc_ptr) && get_nonincremental(psc_ptr))
-	 xsb_permission_error(CTXTc"table access","non-tabled predicate",reg[1],
+	 xsb_permission_error(CTXTc"table access","non-tabled or non incremental predicate",reg[1],
 			   "get_calls",3);
        return (byte *)&fail_inst;
      }

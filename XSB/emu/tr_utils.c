@@ -79,8 +79,6 @@ counter abol_subg_ctr,abol_pred_ctr,abol_all_ctr; /* statistics */
 
 extern void print_subgoal(CTXTdeclc FILE *, VariantSF);
 
-#define MAX_VAR_SIZE	200
-
 #include "ptoc_tag_xsb_i.h"
 #include "term_psc_xsb_i.h"
 
@@ -343,6 +341,7 @@ void construct_answer_template(CTXTdeclc Cell callTerm, SubProdSF producer,
  * the location pointed to by the second argument.
  */
 
+// If passed a NULL retTerm, dont bother to build it
 VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
 
   Psc  psc;
@@ -387,8 +386,8 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
     if ( IsProperlySubsumed(sf) )
       construct_answer_template(CTXTc callTerm, conssf_producer(sf), callVars);
 
-
-    *retTerm = build_ret_term(CTXTc (int)callVars[0],&callVars[1]);
+    if (retTerm) 
+      *retTerm = build_ret_term(CTXTc (int)callVars[0],&callVars[1]);
 
     return sf;
   }

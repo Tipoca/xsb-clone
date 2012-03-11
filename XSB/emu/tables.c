@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.100 2012-03-01 21:26:49 tswift Exp $
+** $Id: tables.c,v 1.101 2012-03-11 00:55:47 tswift Exp $
 ** 
 */
 
@@ -241,26 +241,41 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
       
       sf=CallTrieLeaf_GetSF(Paren);
       c=sf->callnode;
-      if(IsNonNULL(c)&&(c->falsecount!=0)){
-	old_call_gl=c;      
-	call_found_flag=0;  /* treat as a new call */
-	if ( has_answers(sf) ) {
-	  pALN = subg_answers(sf);
-	  do {
-	    leaf=ALN_Answer(pALN);
-	    safe_delete_branch(leaf);      
-	    pALN = ALN_Next(pALN);
-	  } while ( IsNonNULL(pALN) );
+
+      /* TLS: if falsecount == 0 && call_found_flag, we know that call
+         is complete.  Otherwise, dfs_outedges would have aborted */
+
+      if(IsNonNULL(c) && (c->falsecount!=0)){
+	//	  printf("   recomputing (bit = %d) ",c->recomputable);
+	//	  print_subgoal(stddbg,sf);printf("\n");
+	if (c->recomputable == COMPUTE_DEPENDENCIES_FIRST) {
+	  lazy_affected = empty_calllist();
+	  if ( !dfs_inedges(CTXTc c,  &lazy_affected, CALL_LIST_EVAL) ) {
+	    CallLUR_Subsumer(*results) = CallTrieLeaf_GetSF(Paren);
+	    return XSB_SPECIAL_RETURN;
+	  } /* otherwise if dfs_inedges, treat as falsecount = 0, use completed table */
 	}
-	c->aln=subg_answers(sf);
-	old_answer_table_gl=sf->ans_root_ptr;
-	//reclaim_incomplete_table_structs(sf);
-	CallTrieLeaf_SetSF(Paren,NULL);            
+	else {    /* COMPUTE_DIRECTLY */
+	  old_call_gl=c;      
+	  call_found_flag=0;  /* treat as a new call */
+	  if ( has_answers(sf) ) {
+	    pALN = subg_answers(sf);
+	    do {
+	      leaf=ALN_Answer(pALN);
+	      safe_delete_branch(leaf);      
+	      pALN = ALN_Next(pALN);
+	    } while ( IsNonNULL(pALN) );
+	  }
+	  c->aln=subg_answers(sf);
+	  old_answer_table_gl=sf->ans_root_ptr;
+	  //reclaim_incomplete_table_structs(sf);
+	  CallTrieLeaf_SetSF(Paren,NULL);            
+	}
       }
     }
-    CallLUR_Subsumer(*results) = CallTrieLeaf_GetSF(Paren);
-    CallLUR_VariantFound(*results) = call_found_flag;
-    /* incremental evaluation: end */
+      CallLUR_Subsumer(*results) = CallTrieLeaf_GetSF(Paren);
+      CallLUR_VariantFound(*results) = call_found_flag;
+      /* incremental evaluation: end */
 #endif /* not MULTI_THREAD (incremental evaluation) */
   }
   else
@@ -685,6 +700,7 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
   */
   if(IsIncrSF(producerSF)){
     callnodeptr pc;
+    producerSF->callnode->recomputable = COMPUTE_DEPENDENCIES_FIRST;
     pc=producerSF->callnode->prev_call;
     if(IsNonNULL(pc)){
       /* old calls */

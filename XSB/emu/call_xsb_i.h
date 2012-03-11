@@ -19,14 +19,14 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: call_xsb_i.h,v 1.16 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: call_xsb_i.h,v 1.17 2012-03-11 00:55:47 tswift Exp $
 ** 
 */
 
 
 /* load argument registers with fields of a term, and set pcreg to
    term's entry point, to effect an execute */
-static inline int prolog_call0(CTXTdeclc Cell term)
+inline int prolog_call0(CTXTdeclc Cell term)
 {
     Psc  psc;
     if (isconstr(term)) {
@@ -59,7 +59,7 @@ static inline int prolog_call0(CTXTdeclc Cell term)
 
 /* fill argument registers with subfields of a term, to prepare for an
    execute */
-static inline int prolog_code_call(CTXTdeclc Cell term, int value)
+inline int prolog_code_call(CTXTdeclc Cell term, int value)
 {
   Psc  psc;
   if (isconstr(term)) {

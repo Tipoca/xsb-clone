@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.80 2012-03-01 21:26:49 tswift Exp $
+** $Id: tries.h,v 1.81 2012-03-11 00:55:47 tswift Exp $
 ** 
 */
 
@@ -618,6 +618,7 @@ typedef struct outedge{
    goal --          For tabled calls, this is a pointer to the SF; null for dynamics
    no_of_answers -- Used as estimate of whether the answers in the subgoal have changed. 
    deleted --       This callnodeptr refers to an affected call that is being/has been updated.
+                    used for cycles in dfs_outedges.
    changed --       This call has updated its answers.
    prev_call --     When reevaluating an affected call, used to compare this to prev.
 */
@@ -626,7 +627,7 @@ typedef struct callnodetag{
   calllistptr inedges; 
   void* goal;  
   unsigned int no_of_answers;
-  unsigned int deleted:1, changed:1,falsecount:15,outcount:15;
+  unsigned int deleted:1, changed:1,recomputable:1,falsecount:14,outcount:15;
   callnodeptr prev_call;  
   ALNptr aln; 
   int id; 
@@ -642,7 +643,7 @@ typedef struct key{
 typedef struct _calllist{
   union{
     callnodeptr item;  /* when used in list as in nq */
-    outedgeptr prevnode; /* when used in inedges */
+    outedgeptr inedge_node; /* when used in inedges */
     call2listptr item2; /* when used in abolishing*/
   };
   calllistptr next;

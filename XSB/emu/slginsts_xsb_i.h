@@ -142,10 +142,13 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   int abstr_size;
 #endif
   TIFptr tip;
+  int ret;
 
   //  printf("starting breg is %x %x\n",breg,((pb)tcpstack.high - (pb)breg));
 
-  int incrflag = 0; /* for incremental evaluation */
+  old_call_gl=NULL;   /* incremental evaluation */
+  int parent_table_is_incr = 0; /* for incremental evaluation */
+
   VariantSF parent_table_sf=NULL; /* used for creating call graph */
   old_call_gl=NULL;   /* incremental evaluation */
 
@@ -209,9 +212,20 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
    *  abort if the term depth of a call is greater than a specified
    *  amount.
    */
-   if (table_call_search(CTXTc &callInfo,&lookupResults)) {
-     Fail1;
-     XSB_Next_Instr();
+if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
+     if (ret == XSB_FAILURE) {
+       Fail1;
+       XSB_Next_Instr();
+     }
+     else { /* ret == XSB_SPECIAL_RETURN: needs incr reeval */
+       //       printf("setting up lazy reeval for ");
+       //       print_subgoal(stddbg,CallLUR_Subsumer(lookupResults));printf("\n");
+       bld_cs(reg+1, build_call(CTXTc TIF_PSC(tip)));
+       bld_int(reg+2, 0);
+       Psc psc = (Psc) pflags[LAZY_REEVAL_INTERRUPT+INT_HANDLERS_FLAGS_START];
+       lpcreg = get_ep(psc);
+       XSB_Next_Instr();
+     }
    }
 
   producer_sf = CallLUR_Subsumer(lookupResults);
@@ -226,7 +240,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   if(IsNonNULL(ptcpreg)){
     parent_table_sf=(VariantSF)ptcpreg;
     if(IsIncrSF(parent_table_sf)) {
-      incrflag=1;
+      parent_table_is_incr = 1;
       /* adding called-by graph edge */
       if(IsNonNULL(producer_sf)){
 	if(IsIncrSF(producer_sf)){
@@ -284,21 +298,21 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 
     if(IsNonNULL(old_call_gl)){
       producer_sf->callnode->prev_call=old_call_gl;
-
-	 producer_sf->callnode->outedges=old_call_gl->outedges;
-	 producer_sf->callnode->outcount=old_call_gl->outcount;
-	 producer_sf->callnode->outedges->callnode=producer_sf->callnode;
-	 producer_sf->ans_root_ptr=old_answer_table_gl;
-	 old_call_gl->falsecount=0; /* this will stop propagation of unmarking */
-	 old_call_gl->deleted=1; 
-	 old_call_gl=NULL;
-	 old_answer_table_gl=NULL;
-    }else
+      producer_sf->callnode->outedges=old_call_gl->outedges;
+      producer_sf->callnode->outcount=old_call_gl->outcount;
+      producer_sf->callnode->outedges->callnode=producer_sf->callnode;
+      producer_sf->ans_root_ptr=old_answer_table_gl;
+      old_call_gl->falsecount=0; /* this will stop propagation of unmarking */
+      old_call_gl->deleted=1; 
+      old_call_gl=NULL;
+      old_answer_table_gl=NULL;
+    } 
+    else {
       if(IsIncrSF(producer_sf))
 	initoutedges(producer_sf->callnode);
-    
-    /* adding called-by graph edge for new call */
-    if(incrflag){
+    }
+
+    if(parent_table_is_incr){  
       if(IsIncrSF(producer_sf)){
 	addcalledge(producer_sf->callnode,parent_table_sf->callnode);  
       }else{
@@ -306,6 +320,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 	  xsb_abort("Predicate %s/%d not declared incr_table\n", get_name(TIF_PSC(CallInfo_TableInfo(callInfo))),get_arity(TIF_PSC(CallInfo_TableInfo(callInfo))));       
       }
     }
+
 /* --------- end new producer incremental evaluation  --------- */
 
 #ifdef CALL_ABSTRACTION

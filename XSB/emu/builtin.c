@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.389 2012-02-12 22:49:12 tswift Exp $
+** $Id: builtin.c,v 1.390 2012-03-11 00:55:47 tswift Exp $
 **
 */
 
@@ -148,6 +148,8 @@ extern void alt_print_cp(CTXTdeclc char *);
 extern int xsb_profiling_enabled;
 
 extern char *canonical_term(CTXTdeclc Cell, int);
+extern int prolog_call0(CTXTdeclc Cell);
+extern int prolog_code_call(CTXTdeclc Cell, int);
 
 int is_cyclic(CTXTdeclc Cell);
 int ground_cyc(CTXTdeclc Cell, int);
@@ -1377,7 +1379,7 @@ static void write_out_profile(void)
 
 /* inlined functions for prolog standard builtins */
 #include "std_pred_xsb_i.h"
-#include "call_xsb_i.h"
+//#include "call_xsb_i.h"
 
 /* --- built in predicates --------------------------------------------	*/
 

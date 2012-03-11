@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.23 2012-03-01 21:26:49 tswift Exp $
+** $Id: incr_xsb.c,v 1.24 2012-03-11 00:55:47 tswift Exp $
 ** 
 */
 
@@ -62,6 +62,7 @@
  ** Builtin for handling incremental evaluation 
  *******/
 extern TIFptr get_tip(CTXTdeclc Psc);
+extern int prolog_call0(CTXTdeclc Cell);
 
 xsbBool incr_eval_builtin(CTXTdecl)
 {
@@ -107,26 +108,18 @@ xsbBool incr_eval_builtin(CTXTdecl)
       xsb_permission_error(CTXTc"invalidate","call to non-incremental predicate",reg[3],
 			   "incr_invalidate_call",1);
     }
-    
     break;
   }
-  case INVALIDATE_CALLNODE: {
-    /*
-      Find all affected calls and put that in a list.
 
-    */
-    
+  case INVALIDATE_CALLNODE: {
+    /* Find all affected calls and put that in a list.    */
     
     const int callreg=2;
     callnodeptr c=ptoc_addr(callreg);
     invalidate_call(CTXTc c); 
-    
     break;
   }
   
-  
-
-    
   case  GET_CALLNODEPTR_INCR:{
     const int regLeafChild=3; 
     if(IsNULL(BTN_Child(Last_Nod_Sav))){
@@ -203,21 +196,75 @@ xsbBool incr_eval_builtin(CTXTdecl)
   }
     
   case INVALIDATE_CALLNODE_TRIE: {
-    
     const int callreg=2;
+
     callnodeptr c = itrie_array[ptoc_int(CTXTc callreg)].callnode;
     invalidate_call(CTXTc c); 
     
     break;
   }
 
-  case DFS_INEDGES: {
-    VariantSF sf=ptoc_addr(2);
+  /*  This builtin creates a (prolog) list which contains all the 
+      affected calls that the input call depends on, in postorder.         */
+  case CREATE_LAZY_CALL_LIST: {
+    VariantSF sf;
+    int rc = 0, flag, dfs_ret;
 
-    dfs_inedges(subg_callnode_ptr(sf));
+    sf = get_call(CTXTc ptoc_tag(CTXTc 2), NULL);
+
+    // maybe check callnodeptr here.
+    if (IsNonNULL(sf))  {
+      flag = ptoc_int(CTXTc 3);
+      if (flag == CALL_LIST_EVAL) {
+	rc = create_lazy_call_list(CTXTc sf->callnode);
+	return rc;
+      }
+      else if (flag == CALL_LIST_CREATE_EVAL) {
+	lazy_affected = empty_calllist();
+	dfs_ret = dfs_inedges(CTXTc subg_callnode_ptr(sf),  &lazy_affected, CALL_LIST_EVAL);
+	//	fprintf(stddbg,"dfs returned %d flag = %d\n",dfs_ret,flag);
+	if (!dfs_ret ) 
+	  rc = create_lazy_call_list(CTXTc sf->callnode);
+	else rc = FALSE;
+	return rc;
+      }
+      else if (flag == CALL_LIST_INSPECT)  {
+	lazy_affected = empty_calllist();
+	dfs_ret = dfs_inedges(CTXTc subg_callnode_ptr(sf),  &lazy_affected, CALL_LIST_INSPECT);
+	//	fprintf(stddbg,"dfs returned %d flag = %d\n",dfs_ret,flag);
+	rc = create_lazy_call_list(CTXTc sf->callnode);
+	return rc;
+      }
+    }
+    // TLS: error on null sf
     break;
   }
-    
+
+  // Will not call incremental facts.
+  case CALL_IF_AFFECTED: {
+  VariantSF sf;
+  Cell callTerm;
+
+  callTerm = ptoc_tag(CTXTc 2);
+
+  sf = get_call(CTXTc callTerm, NULL);
+
+  if(IsNonNULL(sf)){
+    callnodeptr c=sf->callnode;
+    if(IsNonNULL(c)&&(c->falsecount!=0))
+      return prolog_call0(CTXTc callTerm);
+  }
+  return FALSE;
+  }
+
+  case CHECK_INCREMENTAL: {
+    if (!get_nonincremental(term_psc((Cell)(ptoc_tag(CTXTc 2)))))
+      return TRUE;
+    else xsb_type_error(CTXTc ptoc_string(CTXTc 3),ptoc_tag(CTXTc 2), 
+			ptoc_string(CTXTc 4), ptoc_int(CTXTc 5));
+    break;
+  }
+
   default:
     xsb_exit("Unknown Incremental Evaluation Builtin: %d\n.", builtin_number);
     break;

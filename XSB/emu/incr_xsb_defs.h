@@ -18,26 +18,40 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb_defs.h,v 1.12 2012-03-01 21:26:49 tswift Exp $
+** $Id: incr_xsb_defs.h,v 1.13 2012-03-11 00:55:47 tswift Exp $
 ** 
 */
-#define GET_AFFECTED_CALLS      1
+#define GET_AFFECTED_CALLS         1
 
-#define GET_CALL_GRAPH          3
-#define INVALIDATE_CALLNODE     4
-#define PRINT_CALL              5
-#define GET_CHANGED_CALLS       6
-#define PSC_SET_INCR            7 
-#define GET_CALLNODEPTR_INCR    8
-#define INVALIDATE_SF           9
-#define IMM_DEPEND_LIST         10
-#define IMM_DEPENDENT_ON_LIST   11
-#define IS_AFFECTED             12
-#define PSC_GET_INCR            13
-#define INVALIDATE_CALLNODE_TRIE     14
-#define DFS_INEDGES             15
+#define GET_CALL_GRAPH             3
+#define INVALIDATE_CALLNODE        4
+#define PRINT_CALL                 5
+#define GET_CHANGED_CALLS          6
+#define PSC_SET_INCR               7 
+#define GET_CALLNODEPTR_INCR       8
+#define INVALIDATE_SF              9
+#define IMM_DEPEND_LIST           10
+#define IMM_DEPENDENT_ON_LIST     11
+#define IS_AFFECTED               12
+#define PSC_GET_INCR              13
+#define INVALIDATE_CALLNODE_TRIE  14
+#define CREATE_LAZY_CALL_LIST     15
+#define CALL_IF_AFFECTED          16
+#define CHECK_INCREMENTAL         17
 
 // for psc hacking
 #define NONINCREMENTAL 0
 #define INCREMENTAL 1
 #define OPAQUE 2
+
+/* callnode-> recomputable values */
+#define COMPUTE_DEPENDENCIES_FIRST 0
+#define COMPUTE_DIRECTLY           1
+
+/* Used for lazy call_list */
+#define CALL_LIST_EVAL             0
+#define CALL_LIST_INSPECT          1
+#define CALL_LIST_CREATE_EVAL      2
+  
+/* dfs_inedges */
+#define CANNOT_UPDATE              1

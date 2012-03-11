@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.74 2011-11-12 00:33:31 tswift Exp $
+** $Id: tr_utils.h,v 1.75 2012-03-11 00:55:47 tswift Exp $
 ** 
 */
 
@@ -155,6 +155,8 @@ typedef struct Table_Status_Frame {
 #define TableStatusFrame_subgoal(TSF) ( (TSF).subgoal )
 
 extern int table_status(CTXTdeclc Cell, TableStatusFrame*);
+
+#define MAX_VAR_SIZE	200
 
 #endif /* __TR_UTILS_H__ */
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: sig_xsb.h,v 1.11 2011-09-23 18:36:07 tswift Exp $
+** $Id: sig_xsb.h,v 1.12 2012-03-11 00:55:47 tswift Exp $
 ** 
 */
 
@@ -41,6 +41,7 @@
 #define THREADSIG_CANCEL   0xf
 #define MYSIG_CLAUSE  16	       	/* clause interrupt */
 
+#define LAZY_REEVAL_INTERRUPT 0xc
 
 #define PROFINT_MARK 0x10		/* XSB Profiling interrupt */
 #define MSGINT_MARK  0x20		/* software message interrupt */

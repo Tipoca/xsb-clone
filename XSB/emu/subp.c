@@ -544,6 +544,7 @@ Pair build_call(CTXTdeclc Psc psc)
 /* raising a trap.							*/
 /* Note that the interrupt handlers referred to by flags array values   */
 /* are set up on the Prolog side via set_inthandler/2                   */
+/* PSC value is value of continuation                                   */
 /*======================================================================*/
 
 Psc synint_proc(CTXTdeclc Psc psc, int intcode)

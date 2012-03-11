@@ -86,6 +86,8 @@ Terminology: outedge -- pointer to calls that depend on call
 
 // affected_gl drives create_call_list and updtes
 calllistptr affected_gl=NULL;
+calllistptr lazy_affected= NULL;
+
 // derives create_changed_call_list which reports those calls changed in last update
 calllistptr changed_gl=NULL;
 
@@ -157,6 +159,7 @@ callnodeptr makecallnode(VariantSF sf){
   cn->changed = 0;
   cn->no_of_answers = 0;
   cn->falsecount = 0;
+  cn->recomputable = COMPUTE_DEPENDENCIES_FIRST;
   cn->prev_call = NULL;
   cn->aln = NULL;
   cn->inedges = NULL;
@@ -185,7 +188,7 @@ void deleteinedges(callnodeptr callnode){
   
   while(IsNonNULL(in)){
     tmpin = in->next;
-    hasht = in->prevnode->hasht;
+    hasht = in->inedge_node->hasht;
     //    printf("remove some callnode %x / ownkey %d\n",callnode,ownkey);
     if (remove_some(hasht,ownkey) == NULL) {
       xsb_abort("BUG: key not found for removal\n");
@@ -219,7 +222,7 @@ void deallocate_previous_call(callnodeptr callnode){
   calllistptr tmpin,in;
   
   KEY *ownkey;
-  /*  callnodeptr  prevnode; */
+  /*  callnodeptr  inedge_node; */
   struct hashtable* hasht;
   SM_AllocateStruct(smKey, ownkey);
   ownkey->goal=callnode->id;	
@@ -229,7 +232,7 @@ void deallocate_previous_call(callnodeptr callnode){
   
   while(IsNonNULL(in)){
     tmpin = in->next;
-    hasht = in->prevnode->hasht;
+    hasht = in->inedge_node->hasht;
     if (remove_some(hasht,ownkey) == NULL) {
       /*
       prevnode=in->prevnode->callnode;
@@ -242,7 +245,7 @@ void deallocate_previous_call(callnodeptr callnode){
       */
       xsb_abort("BUG: key not found for removal\n");
     }
-    in->prevnode->callnode->outcount--;
+    in->inedge_node->callnode->outcount--;
     call_edge_count_gl--;
     SM_DeallocateStruct(smCallList, in);      
     in = tmpin;
@@ -315,12 +318,13 @@ static void inline add_callnode_sub(calllistptr *list, callnodeptr item){
   temp->item=item;
   temp->next=*list;
   *list=temp;  
+  //  printf("added list %p @list %p\n",list,*list);
 }
 
 static void inline ecall2(calllistptr *list, outedgeptr item){
   calllistptr  temp;
   SM_AllocateStruct(smCallList,temp);
-  temp->prevnode=item;
+  temp->inedge_node=item;
   temp->next=*list;
   *list=temp;  
 }
@@ -355,7 +359,7 @@ void addcalledge(callnodeptr fromcn, callnodeptr tocn){
     printf("Inedges of %d = ",tocn->id);
     temp=tocn->inedges;
     while(temp!=NULL){
-      printf("\t%d",temp->prevnode->callnode->id);
+      printf("\t%d",temp->inedge_node->callnode->id);
       temp=temp->next;
     }
     printf("\n");
@@ -385,7 +389,7 @@ void addcalledge(callnodeptr fromcn, callnodeptr tocn){
 	printf("Inedges of %d = ",tocn->id);
 	temp=tocn->inedges;
 	while(temp!=NULL){
-		printf("\t%d",temp->prevnode->callnode->id);
+		printf("\t%d",temp->inedge_node->callnode->id);
 		temp=temp->next;
 	}
 	printf("\n---------------------------------\n");
@@ -424,14 +428,28 @@ callnodeptr delete_calllist_elt(calllistptr *cl){
   return c;  
 }
 
+/* Used to deallocate dfs-created call lists when encountering
+   visitors or incomlete tables. */
+void deallocate_call_list(calllistptr cl)  {
+    callnodeptr tmp_call;
+
+    //    fprintf(stddbg," in deallocate call list \n");
+    while ((tmp_call = delete_calllist_elt(&cl)) != EMPTY){
+      ;
+    }
+    //    SM_DeallocateStruct(smCallList, cl);      
+  }
+
 void dfs_outedges(CTXTdeclc callnodeptr call1){
   callnodeptr cn;
   struct hashtable *h;	
   struct hashtable_itr *itr;
-  
+
+  //  if (call1->goal) {
+  //    printf("dfs outedges "); print_subgoal(stddbg,call1->goal);printf("\n");
+  //  }
   if(IsNonNULL(call1->goal) && !subg_is_completed((VariantSF)call1->goal)){
-    //    xsb_abort("Incremental tabling is trying to invalidate an incomplete table for %s/%d\n",
-    //	      get_name(TIF_PSC(subg_tif_ptr(call1->goal))),get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
+    deallocate_call_list(affected_gl);
     xsb_new_table_error(CTXTc "incremental_tabling",
 			"Incremental tabling is trying to invalidate an incomplete table",
 			get_name(TIF_PSC(subg_tif_ptr(call1->goal))),
@@ -452,31 +470,59 @@ void dfs_outedges(CTXTdeclc callnodeptr call1){
   add_callnode(&affected_gl,call1);		
 }
 
-
-void dfs_inedges(CTXTdeclc callnodeptr call1){
-  calllistptr call_list;
+/* If ret != 0 (= CANNOT_UPDATE) then we'll use the old table, and we
+   wont lazily update at all. */
+int dfs_inedges(CTXTdeclc callnodeptr call1, calllistptr * lazy_affected, int flag ){
+  calllistptr inedge_list;
   VariantSF subgoal;
+  int ret = 0;
 
-  if(IsNonNULL(call1->goal) && !subg_is_completed((VariantSF)call1->goal)){
-    xsb_new_table_error(CTXTc "incremental_tabling",
-			"Incremental tabling is trying to invalidate an incomplete table",
-			get_name(TIF_PSC(subg_tif_ptr(call1->goal))),
-			get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
-  }
-  call_list= call1-> inedges;
-  while(IsNonNULL(call_list)){
-    subgoal = (VariantSF) call_list->prevnode->callnode->goal;
-    if(IsNonNULL(subgoal)){/* fact check */
-      print_subgoal(stddbg,subgoal);printf("\n");
-      //      count++;
-      dfs_inedges(CTXTc call_list->prevnode->callnode);
+  if(IsNonNULL(call1->goal)) {
+    if (!subg_is_completed((VariantSF)call1->goal)){
+      deallocate_call_list(*lazy_affected);
+      xsb_new_table_error(CTXTc "incremental_tabling",
+			  "Incremental tabling is trying to invalidate an incomplete table",
+			  get_name(TIF_PSC(subg_tif_ptr(call1->goal))),
+			  get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
     }
-    call_list=call_list->next;
+    if (subg_visitors(call1->goal)) {
+      deallocate_call_list(*lazy_affected);
+      char buffer[2*MAXTERMBUFSIZE];		
+      sprint_subgoal(CTXTc buffer,call1->goal);
+      xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update\n",
+	       subg_visitors(call1->goal),buffer);
+      return CANNOT_UPDATE;
+    }
   }
+  // TLS: handles dags&cycles -- no need to traverse more than once.
+  if (call1 -> recomputable == COMPUTE_DEPENDENCIES_FIRST)
+    call1 -> recomputable = COMPUTE_DIRECTLY;
+  else {     //    printf("found directly computable call \n");
+    return 0;
+  }
+  //  printf(" dfs_i affected "); print_subgoal(stddbg,call1->goal);printf("\n");
+  inedge_list= call1-> inedges;
+  while(IsNonNULL(inedge_list) && !ret){
+    subgoal = (VariantSF) inedge_list->inedge_node->callnode->goal;
+    if(IsNonNULL(subgoal)){ /* fact check */
+      //      count++;
+      if (inedge_list->inedge_node->callnode->falsecount > 0)  {
+	ret = ret | dfs_inedges(CTXTc inedge_list->inedge_node->callnode, lazy_affected,flag);
+      }
+      else {
+	; //	printf(" dfs_i non_affected "); print_subgoal(stddbg,subgoal);printf("\n");
+      }
+    }
+    inedge_list = inedge_list->next;
+  }
+  if(IsNonNULL(call1->goal) & !ret){ /* fact check */
+    //    printf(" dfs_i adding "); print_subgoal(stddbg,call1->goal);printf("\n");
+    add_callnode(lazy_affected,call1);		
+  }
+  return ret;
 }
-  
 
-
+ 
 void invalidate_call(CTXTdeclc callnodeptr c){
 
   //#ifdef MULTI_THREAD
@@ -489,10 +535,23 @@ void invalidate_call(CTXTdeclc callnodeptr c){
   }
 }
 
+void print_call_list(calllistptr affected_ptr) {
+
+  do {
+    printf("item %p sf %p ",calllist_item(affected_ptr),callnode_sf(calllist_item(affected_ptr)));
+    printf("next %p ",calllist_next(affected_ptr));  
+    if (callnode_sf(calllist_item(affected_ptr)) != NULL) {
+      print_subgoal(stddbg, callnode_sf(calllist_item(affected_ptr)));
+      }
+    printf("\n");
+    affected_ptr = (calllistptr) calllist_next(affected_ptr);
+  } while ( calllist_next(affected_ptr) != NULL) ;
+
+}
+
 //#define WARN_ON_UNSAFE_UPDATE 1
 
 int create_call_list(CTXTdecl){
-
   callnodeptr call1;
   VariantSF subgoal;
   TIFptr tif;
@@ -500,16 +559,8 @@ int create_call_list(CTXTdecl){
   Psc psc;
   CPtr oldhreg=NULL;
 
-  /*  calllistptr affected_ptr = affected_gl;
-  do {
-    printf("item %p sf %p\n",calllist_item(affected_ptr),callnode_sf(calllist_item(affected_ptr)));
-    printf("next %p\n",calllist_next(affected_ptr));  
-    if (callnode_sf(calllist_item(affected_ptr)) != NULL) {
-      print_subgoal(stddbg, callnode_sf(calllist_item(affected_ptr)));printf("\n");
-      }
-    affected_ptr = (calllistptr) calllist_next(affected_ptr);
-  } while ( calllist_next(affected_ptr) != NULL) ;
-  */
+  //  print_call_list(affected_gl);
+
   reg[4] = reg[3] = makelist(hreg);  // reg 3 first not-used, use regs in case of stack expanson
   new_heap_free(hreg);   // make heap consistent
   new_heap_free(hreg);
@@ -578,6 +629,84 @@ int create_call_list(CTXTdecl){
     }
   printf("-----------------------------\n");
   */
+}
+
+//---------------------------------------------------------------------------
+
+int create_lazy_call_list(CTXTdeclc  callnodeptr call1){
+  VariantSF subgoal;
+  TIFptr tif;
+  int j,count=0,arity; 
+  Psc psc;
+  CPtr oldhreg=NULL;
+
+  //  print_call_list(lazy_affected);
+
+  reg[6] = reg[5] = makelist(hreg);  // reg 5 first not-used, use regs in case of stack expanson
+  new_heap_free(hreg);   // make heap consistent
+  new_heap_free(hreg);
+  while((call1 = delete_calllist_elt(&lazy_affected)) != EMPTY){
+    subgoal = (VariantSF) call1->goal;      
+    //    fprintf(stddbg,"  considering ");print_subgoal(stdout,subgoal);printf("\n");
+    if(IsNULL(subgoal)){ /* fact predicates */
+      call1->deleted = 0; 
+      continue;
+    }
+    if (subg_visitors(subgoal)) {
+      char buffer[2*MAXTERMBUFSIZE];					\
+      sprint_subgoal(CTXTc buffer,subgoal);
+#ifdef WARN_ON_UNSAFE_UPDATE
+      xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update\n",
+	       subg_visitors(subgoal),buffer);
+#else
+      xsb_abort("%d Choice point(s) exist to the table for %s -- cannot incrementally update\n",
+	       subg_visitors(subgoal),buffer);
+#endif
+      continue;
+    }
+    //    fprintf(stddbg,"adding dependency for ");print_subgoal(stdout,subgoal);printf("\n");
+
+    count++;
+    tif = (TIFptr) subgoal->tif_ptr;
+    //    if (!(psc = TIF_PSC(tif)))
+    //	xsb_table_error(CTXTc "Cannot access dynamic incremental table\n");	
+    psc = TIF_PSC(tif);
+    arity = get_arity(psc);
+    check_glstack_overflow(6,pcreg,2+arity*200); // don't know how much for build_subgoal_args...
+    oldhreg = clref_val(reg[6]);  // maybe updated by re-alloc
+    if(arity>0){
+      sreg = hreg;
+      follow(oldhreg++) = makecs(sreg);
+      hreg += arity + 1;  // had 10, why 10?  why not 3? 2 for list, 1 for functor (dsw)
+      new_heap_functor(sreg, psc);
+      for (j = 1; j <= arity; j++) {
+	new_heap_free(sreg);
+	cell_array1[arity-j] = cell(sreg-1);
+      }
+      build_subgoal_args(subgoal);		
+    } else {
+      follow(oldhreg++) = makestring(get_name(psc));
+    }
+    reg[6] = follow(oldhreg) = makelist(hreg);
+    new_heap_free(hreg);
+    new_heap_free(hreg);
+  }
+  if(count > 0) {
+    follow(oldhreg) = makenil;
+    hreg -= 2;  /* take back the extra words allocated... */
+  } else
+    reg[5] = makenil;
+    
+  return unify(CTXTc reg_term(CTXTc 4),reg_term(CTXTc 5));
+
+  /*int i;
+    for(i=0;i<callqptr;i++){
+      if(IsNonNULL(callq[i]) && (callq[i]->deleted==1)){
+    sfPrintGoal(stdout,(VariantSF)callq[i]->goal,NO);
+    printf(" %d %d\n",callq[i]->falsecount,callq[i]->deleted);
+    }
+    }
+  printf("-----------------------------\n");   */
 }
 
 
@@ -747,7 +876,7 @@ int immediate_dependent_on_list(CTXTdeclc callnodeptr call1){
     cl= call1->inedges;
     
     while(IsNonNULL(cl)){
-      subgoal = (VariantSF) cl->prevnode->callnode->goal;    
+      subgoal = (VariantSF) cl->inedge_node->callnode->goal;    
       if(IsNonNULL(subgoal)){/* fact check */
 	count++;
 	tif = (TIFptr) subgoal->tif_ptr;
@@ -892,7 +1021,7 @@ void mark_for_incr_abol(callnodeptr c){
     ecall3(&assumption_list_gl,markedlistptr);
     
   while(IsNonNULL(in)){
-    c1=in->prevnode->callnode;
+    c1=in->inedge_node->callnode;
     c1->outcount--;
     if(c1->deleted==0){
       mark_for_incr_abol(c1);
@@ -960,7 +1089,7 @@ void unmark(callnodeptr c){
   
   c->deleted=0;
   while(IsNonNULL(in)){
-    c1=in->prevnode->callnode;
+    c1=in->inedge_node->callnode;
     c1->outcount++;
     if(c1->deleted)
       unmark(c1);
