@@ -316,8 +316,10 @@ submit_eq_c1([], v(_K,[X^_P]), _I) :-
 % case c11e: fail for { -25 = _X^2.5 } and { -25 = _X^(-2.5) } and may be others!
 %			 if you uncomment this case { -25 = _X^2.5 } throw an error(evaluation_error(undefined))
 %			 and { -25 = _X^(-2.5) } succeed with an unbound X
+% TLS: added extra check so that {1 = -cos(X)} will run.
 submit_eq_c1([], v(K,[X^P]), I) :-
     nonvar(X),
+    X = exp(_,_),   % TLS added 03/12
     1 is abs(P),
     0 >= I,
     0 >= K,
