@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.25 2012-02-19 19:17:55 tswift Exp $
+** $Id: tab_structs.h,v 1.26 2012-03-14 19:22:46 tswift Exp $
 ** 
 */
 
@@ -497,8 +497,8 @@ struct ascc_edge {
 
 struct completion_stack_frame {
   VariantSF subgoal_ptr;
-  int     _level_num;
   ALNptr  del_ret_list;   /* to reclaim deleted returns */
+  int     _level_num;
   int     visited;
 #ifndef LOCAL_EVAL
   EPtr    DG_edges;
@@ -1023,14 +1023,18 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 
 #ifndef MULTI_THREAD   
 #define mark_as_completed(SUBG_PTR) {		\
-          subg_is_complete(SUBG_PTR) = TRUE;	\
-          reclaim_del_ret_list(SUBG_PTR);	\
-        }
+    if (  subg_is_complete(SUBG_PTR) != TRUE) { \
+      subg_is_complete(SUBG_PTR) = TRUE;	\
+      reclaim_del_ret_list(SUBG_PTR);		\
+    }						\
+  }
 #else
 #define mark_as_completed(SUBG_PTR) {		\
+    if (  subg_is_complete(SUBG_PTR) != TRUE) { \
           subg_is_complete(SUBG_PTR) = TRUE;	\
           reclaim_del_ret_list(th, SUBG_PTR);	\
-        }
+    }						\
+  }
 #endif
 
 #define subgoal_space_has_been_reclaimed(SUBG_PTR,CS_FRAME) \
