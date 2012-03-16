@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.390 2012-03-11 00:55:47 tswift Exp $
+** $Id: builtin.c,v 1.391 2012-03-16 19:25:59 tswift Exp $
 **
 */
 
@@ -2766,7 +2766,7 @@ case WRITE_OUT_PROFILE:
   }
 
   case INCR_EVAL_BUILTIN: {
-    incr_eval_builtin(CTXT);
+    return(incr_eval_builtin(CTXT));
     break;
   }
 
