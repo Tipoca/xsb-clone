@@ -550,7 +550,7 @@ void print_call_list(calllistptr affected_ptr) {
 
 }
 
-//#define WARN_ON_UNSAFE_UPDATE 1
+#define WARN_ON_UNSAFE_UPDATE 1
 
 int create_call_list(CTXTdecl){
   callnodeptr call1;
@@ -583,7 +583,7 @@ int create_call_list(CTXTdecl){
 #endif
       continue;
     }
-    fprintf(stddbg,"incrementally updating table for ");print_subgoal(stdout,subgoal);printf("\n");
+    //    fprintf(stddbg,"incrementally updating table for ");print_subgoal(stdout,subgoal);printf("\n");
 
     count++;
     tif = (TIFptr) subgoal->tif_ptr;
