@@ -60,7 +60,6 @@ get_changed_calls(Filt,X) :-
 
 :- import call_c/1 from standard.
 :- import reverse/2 from basics.
-:- export lazy_reeval/1, lazy_reeval_trap/1.
 lazy_reeval(Call):- 
 	create_lazy_call_list(Call,CALL_LIST_CREATE_EVAL,List),
 	reverse(List,ListR),
@@ -85,79 +84,70 @@ create_lazy_call_list(Call,Flag,List) :-
 
 incr_directly_depends(X,Y):-	
 	(nonvar(X),var(Y)
-	 ->	imm_dependent_on_calls(X,Y)
+	 ->	immed_depends(X,Y)
 	 ; nonvar(Y),var(X)
-	 ->	imm_depend_calls(Y,X)
+	 ->	immed_affects(Y,X)
 	 ; nonvar(X),nonvar(Y)
-	 ->	imm_depend_calls(Y,Z),
-		Z=X
+	 ->	immed_depends(X,Z),
+		Z=Y
 	 ;	instantiation_error(incr_directly_depends/2,'1 and 2','at least one nonvar')
 	).
 
-imm_depend_calls(Call,Call2):-
-	get_call(Call,SF,_),
-	incr_eval_builtin(IMM_DEPEND_LIST, SF, CallList),
+immed_depends(Call,Call2):-
+	incr_eval_builtin(IMMED_DEPENDS_LIST, Call, CallList),
 	member(Call2,CallList).		
 
-imm_dependent_on_calls(Call,Call2):-
-	get_call(Call,SF,_),
-	incr_eval_builtin(IMM_DEPENDENT_ON_LIST, SF, CallList),
+immed_affects(Call,Call2):-
+	incr_eval_builtin(IMMED_AFFECTS_LIST, Call, CallList),
 	member(Call2,CallList).		
 
 %--------
+:- import abolish_table_call/1 from tables.
 
 incr_trans_depends(X,Y):-
 	(nonvar(X),var(Y)
-	 ->	trans_dependent_on_calls(X,Y)
-	 ; nonvar(Y),var(X)
-	 ->	trans_depend_calls(Y,X)
+	 ->	check_incrementally_tabled(X,predicate_not_icrementally_tabled),
+	        abolish_table_call(trans_depends(X,Y)),
+	 	trans_depends(X,Y)
+	 ; var(X),nonvar(Y)
+	 ->	check_incrementally_tabled(Y,predicate_not_icrementally_tabled),
+	        abolish_table_call(trans_affects(Y,X)),
+	 	trans_affects(Y,X)
 	 ; nonvar(X),nonvar(Y)
-	 ->	trans_depend_calls(Y,Z),
-		Z=X
+	 ->	check_incrementally_tabled(X,predicate_not_icrementally_tabled),
+	 	check_incrementally_tabled(Y,predicate_not_icrementally_tabled),
+	        abolish_table_call(trans_depends(X,Z)),
+	        trans_depends(X,Z),
+		Z=Y
 	 ;	instantiation_error(incr_trans_depends/2,'1 and 2','at least one nonvar')
 	).
 
-trans_dependent_on_calls(Call,Call2):-
-%	abolish_table_pred(trans_dependent_on_call(_,_)),
-	check_incrementally_tabled(Call,predicate_not_tabled),
-	trans_dependent_on_call(Call,Call2).
+:- table trans_affects/2 as variant, incremental.
+trans_affects(Call1,Call2):-
+	immed_affects(Call1,Call2).
+trans_affects(Call1,Call2):-
+	trans_affects(Call1,Call3),
+	immed_affects(Call3,Call2).
 
-:- table trans_dependent_on_call/2 as variant, incremental.
-trans_dependent_on_call(Call1,Call2):-
-	imm_dependent_on_calls(Call1,Call2).
-trans_dependent_on_call(Call1,Call2):-
-	trans_dependent_on_call(Call1,Call3),
-	imm_dependent_on_calls(Call3,Call2).
-
-trans_depend_calls(Call,Call2):-
-%	abolish_table_pred(trans_depend_call(_,_)),
-	check_incrementally_tabled(Call,predicate_not_tabled),
-	trans_depend_call(Call,Call2).
-
-:- table trans_depend_call/2 as variant, incremental.
-trans_depend_call(Call1,Call2):-
-	imm_depend_calls(Call1,Call2).
-trans_depend_call(Call1,Call2):-
-	trans_depend_call(Call1,Call3),
-	imm_depend_calls(Call3,Call2).
+:- table trans_depends/2 as variant, incremental.
+trans_depends(Call1,Call2):-
+	immed_depends(Call1,Call2).
+trans_depends(Call1,Call2):-
+	trans_depends(Call1,Call3),
+	immed_depends(Call3,Call2).
 
 %--------
 
 invalidate_callnode(CALLNODEPTR):-
 	incr_eval_builtin(INVALIDATE_CALLNODE,CALLNODEPTR).
 
-:- export invalidate_callnode_trie/1.
 invalidate_callnode_trie(Trie):-
 	incr_eval_builtin(INVALIDATE_CALLNODE_TRIE,Trie).
 
-/*
-invalidate_SF(SF):-
-	incr_eval_builtin(INVALIDATE_SF,SF).
-*/
+%TLS shd. be invalidate call*s*
 incr_invalidate_call(Call) :-
 	get_calls(Call,SF,_),
 	incr_eval_builtin(INVALIDATE_SF,SF,Call),
-%	invalidate_SF(SF),
 	fail.
 incr_invalidate_call(_Call).
 
@@ -235,11 +225,12 @@ check_incrementally_tabled(Term,Msg) :-
 	 ;	table_error(Msg)
 	).	 
 
+% Succeeds if Term is incremental or opaque
 check_incremental(Term,Type,Pred,Arity):- 
 	incr_eval_builtin(CHECK_INCREMENTAL,Term,Type,Pred,Arity).
 
 %-----------
-
+% returns callnodeptr as handle
 get_calls_incr(CallTerm, Handle) :-
 	findall(get_calls_incr(CallTerm,Handle),
 		get_calls_incr_each(CallTerm,Handle),
@@ -317,3 +308,7 @@ check_incremental(Term,Msg) :-
 	).
 */
 
+/*
+invalidate_SF(SF):-
+	incr_eval_builtin(INVALIDATE_SF,SF).
+*/
