@@ -321,7 +321,7 @@ static void inline add_callnode_sub(calllistptr *list, callnodeptr item){
   //  printf("added list %p @list %p\n",list,*list);
 }
 
-static void inline ecall2(calllistptr *list, outedgeptr item){
+static void inline add_calledge(calllistptr *list, outedgeptr item){
   calllistptr  temp;
   SM_AllocateStruct(smCallList,temp);
   temp->inedge_node=item;
@@ -336,10 +336,6 @@ static void inline ecall3(calllistptr *list, call2listptr item){
   temp->next=*list;
   *list=temp;  
 }
-
-
-
-
 
 void addcalledge(callnodeptr fromcn, callnodeptr tocn){
   
@@ -365,7 +361,7 @@ void addcalledge(callnodeptr fromcn, callnodeptr tocn){
     printf("\n");
 #endif
     
-    ecall2(&(tocn->inedges),fromcn->outedges);      
+    add_calledge(&(tocn->inedges),fromcn->outedges);      
     call_edge_count_gl++;
     fromcn->outcount++;
     
@@ -445,13 +441,18 @@ void dfs_outedges(CTXTdeclc callnodeptr call1){
   struct hashtable *h;	
   struct hashtable_itr *itr;
 
-  //  if (call1->goal) {
-  //    printf("dfs outedges "); print_subgoal(stddbg,call1->goal);printf("\n");
-  //  }
+  //    if (call1->goal) {
+  //      printf("dfs outedges "); print_subgoal(stddbg,call1->goal);printf("\n");
+  //    }
   if(IsNonNULL(call1->goal) && !subg_is_completed((VariantSF)call1->goal)){
+    char buffera[MAXTERMBUFSIZE]; 
+    char bufferb[MAXTERMBUFSIZE]; 
+
     deallocate_call_list(affected_gl);
-    xsb_new_table_error(CTXTc "incremental_tabling",
-			"Incremental tabling is trying to invalidate an incomplete table",
+    sprint_subgoal(CTXTc buffera,(VariantSF)call1->goal);     
+    sprintf(bufferb,"Incremental tabling is trying to invalidate an incomplete table \n %s\n",
+	    buffera);
+    xsb_new_table_error(CTXTc "incremental_tabling",bufferb,
 			get_name(TIF_PSC(subg_tif_ptr(call1->goal))),
 			get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
   }
@@ -793,7 +794,7 @@ int create_changed_call_list(CTXTdecl){
 }
 
 
-int immediate_depend_list(CTXTdeclc callnodeptr call1){
+int immediate_outedges_list(CTXTdeclc callnodeptr call1){
  
   VariantSF subgoal;
   TIFptr tif;
@@ -860,7 +861,7 @@ int immediate_depend_list(CTXTdeclc callnodeptr call1){
 For a callnode call1 returns a Prolog list of callnode on which call1
 immediately depends.
 */
-int immediate_dependent_on_list(CTXTdeclc callnodeptr call1){
+int immediate_inedges_list(CTXTdeclc callnodeptr call1){
 
   VariantSF subgoal;
   TIFptr tif;

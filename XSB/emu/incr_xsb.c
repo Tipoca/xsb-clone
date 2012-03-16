@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.24 2012-03-11 00:55:47 tswift Exp $
+** $Id: incr_xsb.c,v 1.25 2012-03-16 19:37:28 tswift Exp $
 ** 
 */
 
@@ -67,52 +67,51 @@ extern int prolog_call0(CTXTdeclc Cell);
 xsbBool incr_eval_builtin(CTXTdecl)
 {
   int builtin_number = (int)ptoc_int(CTXTc 1);
-
   
   switch(builtin_number) {
+
   case GET_AFFECTED_CALLS: {
-    /*
-      This builtin creates a (prolog) list which contains all the
-      affected calls in postorder.     
-    */
+    /* This builtin creates a (prolog) list which contains all the
+      affected calls in postorder.     */
     int rc = create_call_list(CTXT);
     affected_gl=empty_calllist();
     changed_gl=empty_calllist();
     return rc;
     break;
   }
+
   case GET_CHANGED_CALLS: {
-    /*
-      This builtin creates a (prolog) list which contains all the
-      changed calls.     
-    */
+    /* This builtin creates a (prolog) list which contains all the
+      changed calls.          */
+
     return create_changed_call_list(CTXT);    
     break;
   }
     
-  case GET_CALL_GRAPH: {
-
-    printf("<%d,%d>",call_node_count_gl,call_edge_count_gl);
-    break;  
-  }
+/*  
+| case GET_CALL_GRAPH: {
+|     printf("<%d,%d>",call_node_count_gl,call_edge_count_gl);
+|     break;  
+|   }
+*/
     
   case INVALIDATE_SF: {
-    /* Find all affected calls and put that in a list.   */
+  /* Find all affected calls and add to affected_gl.    */
        
     const int sfreg=2;
     VariantSF sf=ptoc_addr(sfreg);
-    callnodeptr c=subg_callnode_ptr(sf);
-    invalidate_call(CTXTc c); 
-
     if (!get_incr(TIF_PSC(subg_tif_ptr(sf)))) {
       xsb_permission_error(CTXTc"invalidate","call to non-incremental predicate",reg[3],
 			   "incr_invalidate_call",1);
     }
+    callnodeptr c=subg_callnode_ptr(sf);
+    invalidate_call(CTXTc c); 
+
     break;
   }
 
   case INVALIDATE_CALLNODE: {
-    /* Find all affected calls and put that in a list.    */
+  /* Find all affected calls and add to affected_gl.    */
     
     const int callreg=2;
     callnodeptr c=ptoc_addr(callreg);
@@ -129,17 +128,20 @@ xsbBool incr_eval_builtin(CTXTdecl)
     ctop_int(CTXTc regLeafChild, (Integer)BTN_Child(Last_Nod_Sav));    
     break;
   }
+
+    /*
   case PRINT_CALL: {        
     const int regSF=2;
     VariantSF sf=ptoc_addr(regSF);
     if(IsIncrSF(sf))
       print_call_node(sf->callnode);
-    else{
+    else {
       sfPrintGoal(stdout,sf,NO);printf(" is not incrementally tabled\n"); 
     }
-      
     break;
-  }
+}
+    */
+
   case PSC_SET_INCR: {
     Psc psc = (Psc)ptoc_addr(2);   
     if (!(get_tabled(psc) == T_TABLED_SUB && ptoc_int(CTXTc 3) == INCREMENTAL)) {
@@ -161,24 +163,25 @@ xsbBool incr_eval_builtin(CTXTdecl)
     break;
   }
 
-  case IMM_DEPEND_LIST: {
-    const int sfreg=2;
-    VariantSF sf=ptoc_addr(sfreg);
+  case IMMED_DEPENDS_LIST: {
+    VariantSF sf;
 
-    return(immediate_depend_list(CTXTc sf->callnode));
-      
+    sf = get_call(CTXTc ptoc_tag(CTXTc 2), NULL);
+    if (IsNonNULL(sf)) 
+      return(immediate_inedges_list(CTXTc sf->callnode));
+    else return FALSE;
     break;
   }
 
+  case IMMED_AFFECTS_LIST: {
+    VariantSF sf;
 
-  case IMM_DEPENDENT_ON_LIST: {
-    const int sfreg=2;
-    VariantSF sf=ptoc_addr(sfreg);
-    return immediate_dependent_on_list(CTXTc sf->callnode);
-    
+    sf  = get_call(CTXTc ptoc_tag(CTXTc 2), NULL);
+    if (IsNonNULL(sf)) 
+    return immediate_outedges_list(CTXTc sf->callnode);
+    else return FALSE;
     break;
   }
-
 
   case IS_AFFECTED: {
     const int sfreg=2;
@@ -189,7 +192,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
 	return TRUE;
       else
 	return FALSE;
-    }else
+    } else
       return FALSE;
     
     break;
@@ -200,7 +203,6 @@ xsbBool incr_eval_builtin(CTXTdecl)
 
     callnodeptr c = itrie_array[ptoc_int(CTXTc callreg)].callnode;
     invalidate_call(CTXTc c); 
-    
     break;
   }
 
