@@ -570,16 +570,22 @@ isa_bf(Sub,Sup):-
 isa_bf_maybe_table(Sub,Sup):-
     nonvar(Sup),
     isa_int(Sub,Sup).
+isa_bf_maybe_table(Sub,Sub).
 isa_bf_maybe_table(Sub,Sup):-
     (   immed_isa1(Sub,Mid)
       ; implicit_isa_bf(Sub,Mid) ),
-    isa_bf_inner(Mid,Sup).
+    isa_bf_maybe_table(Mid,Sup).
 
-isa_bf_inner(Sub,Sub).
+/*isa_bf_maybe_table(Sub,Sup):-
+    (   immed_isa1(Sub,Mid)
+      ; implicit_isa_bf(Sub,Mid) ),
+    isa_bf_inner(Mid,Sup). **/
+
+/**isa_bf_inner(Sub,Sub).
 isa_bf_inner(Sub,Sup):-
     immed_isa1(Sub,Mid),
     isa_bf_inner(Mid,Sup).  % so not tabling... could lead to loop.
-
+***/
 %--------------------
 
 % Here implicit would fail; just do immediate, and look down.
@@ -1680,12 +1686,16 @@ assert_cdf_term(Term) :-
 assert_cdf_term(Term) :-
     assert_cdf_ext(Term).
 
+:- import call_c/1 from standard.
 assert_cdf_ext(Term):-
-    asserta(Term),
-    get_component_extensional(Term,Name),
-    (cdf_flags(dirty,Name)
-     ->	true
-     ;	make_cdf_dirty(Name)
+    (call_c(Term) % already there, don't readd
+     ->	    true
+     ;	    asserta(Term),
+	    get_component_extensional(Term,Name),
+	    (cdf_flags(dirty,Name)
+	     ->	    true
+	     ;	    make_cdf_dirty(Name)
+	    )
     ).
 
 :- comment(hide,retractall_cdf/1).
