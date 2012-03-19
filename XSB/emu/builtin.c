@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.391 2012-03-16 19:25:59 tswift Exp $
+** $Id: builtin.c,v 1.392 2012-03-19 15:19:58 dwarren Exp $
 **
 */
 
@@ -1379,7 +1379,6 @@ static void write_out_profile(void)
 
 /* inlined functions for prolog standard builtins */
 #include "std_pred_xsb_i.h"
-//#include "call_xsb_i.h"
 
 /* --- built in predicates --------------------------------------------	*/
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.25 2012-03-16 19:37:28 tswift Exp $
+** $Id: incr_xsb.c,v 1.26 2012-03-19 15:19:59 dwarren Exp $
 ** 
 */
 
@@ -100,11 +100,12 @@ xsbBool incr_eval_builtin(CTXTdecl)
        
     const int sfreg=2;
     VariantSF sf=ptoc_addr(sfreg);
+    callnodeptr c;
     if (!get_incr(TIF_PSC(subg_tif_ptr(sf)))) {
       xsb_permission_error(CTXTc"invalidate","call to non-incremental predicate",reg[3],
 			   "incr_invalidate_call",1);
     }
-    callnodeptr c=subg_callnode_ptr(sf);
+    c=subg_callnode_ptr(sf);
     invalidate_call(CTXTc c); 
 
     break;
@@ -216,7 +217,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
 
     // maybe check callnodeptr here.
     if (IsNonNULL(sf))  {
-      flag = ptoc_int(CTXTc 3);
+      flag = (int)ptoc_int(CTXTc 3);
       if (flag == CALL_LIST_EVAL) {
 	rc = create_lazy_call_list(CTXTc sf->callnode);
 	return rc;
@@ -263,7 +264,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
     if (!get_nonincremental(term_psc((Cell)(ptoc_tag(CTXTc 2)))))
       return TRUE;
     else xsb_type_error(CTXTc ptoc_string(CTXTc 3),ptoc_tag(CTXTc 2), 
-			ptoc_string(CTXTc 4), ptoc_int(CTXTc 5));
+			ptoc_string(CTXTc 4), (int)ptoc_int(CTXTc 5));
     break;
   }
 

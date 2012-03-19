@@ -487,8 +487,8 @@ int dfs_inedges(CTXTdeclc callnodeptr call1, calllistptr * lazy_affected, int fl
 			  get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
     }
     if (subg_visitors(call1->goal)) {
-      deallocate_call_list(*lazy_affected);
       char buffer[2*MAXTERMBUFSIZE];		
+      deallocate_call_list(*lazy_affected);
       sprint_subgoal(CTXTc buffer,call1->goal);
       xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update\n",
 	       subg_visitors(call1->goal),buffer);

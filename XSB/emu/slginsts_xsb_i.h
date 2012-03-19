@@ -143,13 +143,11 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
 #endif
   TIFptr tip;
   int ret;
+  int parent_table_is_incr = 0; /* for incremental evaluation */
+  VariantSF parent_table_sf=NULL; /* used for creating call graph */
 
   //  printf("starting breg is %x %x\n",breg,((pb)tcpstack.high - (pb)breg));
 
-  old_call_gl=NULL;   /* incremental evaluation */
-  int parent_table_is_incr = 0; /* for incremental evaluation */
-
-  VariantSF parent_table_sf=NULL; /* used for creating call graph */
   old_call_gl=NULL;   /* incremental evaluation */
 
 #ifdef SHARED_COMPL_TABLES
@@ -218,11 +216,11 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
        XSB_Next_Instr();
      }
      else { /* ret == XSB_SPECIAL_RETURN: needs incr reeval */
+       Psc psc = (Psc) pflags[LAZY_REEVAL_INTERRUPT+INT_HANDLERS_FLAGS_START];
        //       printf("setting up lazy reeval for ");
        //       print_subgoal(stddbg,CallLUR_Subsumer(lookupResults));printf("\n");
        bld_cs(reg+1, build_call(CTXTc TIF_PSC(tip)));
        bld_int(reg+2, 0);
-       Psc psc = (Psc) pflags[LAZY_REEVAL_INTERRUPT+INT_HANDLERS_FLAGS_START];
        lpcreg = get_ep(psc);
        XSB_Next_Instr();
      }

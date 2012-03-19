@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: system_xsb.c,v 1.67 2011-09-09 21:44:52 dwarren Exp $
+** $Id: system_xsb.c,v 1.68 2012-03-19 15:19:59 dwarren Exp $
 ** 
 */
 
@@ -226,11 +226,7 @@ xsbBool sys_system(CTXTdeclc int callno)
 #endif
     return TRUE;
   case GET_TMP_FILENAME:
-#ifdef WIN_NT
-    ctop_string(CTXTc 2,_tempnam(NULL,NULL));
-#else
-    ctop_string(CTXTc 2,tmpnam(NULL));
-#endif
+    ctop_string(CTXTc 2,tempnam(NULL,NULL));
     return TRUE;
   case IS_PLAIN_FILE:
   case IS_DIRECTORY:
