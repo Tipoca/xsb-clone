@@ -201,7 +201,7 @@ phrase(Phrase_Type, List) :-
 phrase(Phrase_Type, List, Rest) :-
 	( nonvar(Phrase_Type) ->
 		dcg_body_nonvar(Phrase_Type, List, Rest, Goal),
-		reset_dcg_mode,
+		%%reset_dcg_mode,
 		call(Goal)
 	; abort('Uninstantiated argument 1 of phrase/3')
 	).
