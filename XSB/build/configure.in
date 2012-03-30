@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.235 2011-12-15 21:06:14 kifer Exp $
+## $Id: configure.in,v 1.236 2012-03-30 22:02:00 kifer Exp $
 ##
 ##
 
@@ -252,7 +252,7 @@ do
 	    esac ;;
 	    --with-* )
 	    case $1 in
-		--with-gcc | --with-cc | --with-acc | \
+		--with-gcc | --with-cc* | --with-acc | \
 		--with-bits64 | --with-bits32 | --with-aout | \
 		--with-optimization* | --with-config-tag* | --with-site-prefix* | --with-includes* | \
 		--with-static-libraries* | --with-dynamic-libraries* | --with-xpath* | \
