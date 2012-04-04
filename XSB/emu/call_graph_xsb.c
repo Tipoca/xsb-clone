@@ -490,7 +490,7 @@ int dfs_inedges(CTXTdeclc callnodeptr call1, calllistptr * lazy_affected, int fl
       char buffer[2*MAXTERMBUFSIZE];		
       deallocate_call_list(*lazy_affected);
       sprint_subgoal(CTXTc buffer,call1->goal);
-      xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update\n",
+      xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update (dfs_inedges)\n",
 	       subg_visitors(call1->goal),buffer);
       return CANNOT_UPDATE;
     }
@@ -571,17 +571,19 @@ int create_call_list(CTXTdecl){
       call1->deleted = 0; 
       continue;
     }
+    //    fprintf(stddbg,"incrementally updating table for ");print_subgoal(stdout,subgoal);printf("\n");
     if (subg_visitors(subgoal)) {
       char buffer[2*MAXTERMBUFSIZE];					\
       sprint_subgoal(CTXTc buffer,subgoal);
 #ifdef WARN_ON_UNSAFE_UPDATE
-      xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update\n",
+      xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create_call_list)\n",
 	       subg_visitors(subgoal),buffer);
 #else
-      xsb_abort("%d Choice point(s) exist to the table for %s -- cannot incrementally update\n",
+      xsb_abort("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create call list)\n",
 	       subg_visitors(subgoal),buffer);
 #endif
-      continue;
+      //      continue;
+      break;
     }
     //    fprintf(stddbg,"incrementally updating table for ");print_subgoal(stdout,subgoal);printf("\n");
 
@@ -657,10 +659,10 @@ int create_lazy_call_list(CTXTdeclc  callnodeptr call1){
       char buffer[2*MAXTERMBUFSIZE];					\
       sprint_subgoal(CTXTc buffer,subgoal);
 #ifdef WARN_ON_UNSAFE_UPDATE
-      xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update\n",
+      xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create_lazy_call_list)\n",
 	       subg_visitors(subgoal),buffer);
 #else
-      xsb_abort("%d Choice point(s) exist to the table for %s -- cannot incrementally update\n",
+      xsb_abort("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create_lazy_call_list)\n",
 	       subg_visitors(subgoal),buffer);
 #endif
       continue;
