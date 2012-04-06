@@ -1110,8 +1110,17 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
 #if defined(LOCAL_EVAL)
 	flags[PIL_TRACE] = 1;
 	/* do not comment following condition: results in unnecessary recomputation (dsw for Pablo Chico) */
-	if (tcp_pcreg(producer_cpf) != (byte *) &answer_return_inst) 
-	  breg = producer_cpf;
+	if (tcp_pcreg(producer_cpf) != (byte *) &answer_return_inst) {
+          CPtr b = breg;
+	  //          printf("+++ ec breg: %p, producer %p\n",b,producer_cpf);
+          while (b < producer_cpf) {
+	    //            printf("+++ unwind %p\n",b);
+            CHECK_TRIE_ROOT(CTXTc b);
+            CHECK_CALL_CLEANUP(CTXTc b);
+            b = cp_prevbreg(b);
+          }
+          breg = producer_cpf;
+        }
 #endif
       }
     }
