@@ -6,15 +6,15 @@
 XSB allows the user to declare that the system should incrementally
 maintain particular tables.  A table $T$ is {\em incremental} if XSB
 ensures that its answers are consistent with all dynamic facts and
-rules upon whihc $T$ depends (subject to transactionality conditions
+rules upon which $T$ depends (subject to transactionality conditions
 explained below).  After a database update or series of updates
-$\Delta$, $T$ may be updated
+$\Delta$, a table $T$ that depends on $\Delta$ may be updated
 \begin{itemize}
-\item {\em Eagerly}: by updating all tables that depend on $\Delta$; or
+\item {\em Eagerly}: by issuing a command to update all tables that
+  depend on $\Delta$; or
 %
 \item {\em Lazily}: by updating $T$ and all tables upon which $T$
-  depends the next time that $T$ is called (assuming that $T$ depends
-  on $\Delta$).
+  depends the next time that $T$ is called.
 \end{itemize}
 %
 In either case, if tables are thought of as database views, then the
@@ -56,7 +56,7 @@ no
 %
 Here we see that the table for {\tt p/2} depends on the contents of
 the dynamic predicate {\tt q/2}.  We first evaluate a query, {\tt
-  p(X,Y)}, which creates a table.  Then we use {\tt assert} to add a
+  p(X,Y)}, which creates a table.  Then we use {\tt assert/1} to add a
 fact to the {\tt q/2} predicate and re-evaluate the query.  We see
 that the answers haven't changed, and this is because the table is
 already created and the second query just retrieves answers directly
@@ -64,14 +64,14 @@ from that existing table.  But in this case we have answers that are
 inconsistent with the current definition of {\tt p/2}.  I.e., if the
 table didn't exist (e.g. if {\tt p/2} weren't tabled), we would get a
 different answer to our {\tt p(X,Y)} query, this time including the
-[d,4] answer.  Without incremental table maintenance, the only
+{\tt [d,4]} answer.  Without incremental table maintenance, the only
 solution to this problem is for the XSB programmer to explicitly
 abolish a table whenever changing (with assert or retract) a predicate
 on which the table depends.
 
 By declaring that the tables for {\tt p/2} should be incrementally
-maintained, and using specific dynamic predicate update operations,
-the system will automatically keep the tables for {\tt p/2} correct.
+maintained, XSB will automatically keep the tables for {\tt p/2}
+correct.
 
 \paragraph{A Quasi Forward-Chaining Approach}
 Consider a slight rewrite of the above program:
@@ -124,19 +124,25 @@ depend on what other tabled goals and (incremental) dynamic goals, and
 tries to minimize the amount of recomputation necessary.
 Incrementally tabled predicates may depend on other tabled predicates.
 In this case, those tabled predicates must also be declared as
-incremental (or opaque).  The algorithm used is described
+incremental (or opaque)~\footnote{An {\em opaque} predicate $P$ is
+  tabled and is used in the definition of some incrementally tabled
+  predicate but should not be maintained incrementally.  In this case
+  the system assumes that the programmer will abolish tables for $P$
+  in such a way so that re-calling it will always give semantically
+  correct answers.}.  The algorithm used is described
 in~\cite{SaRa05,Saha06}.
 
 \paragraph{An Eager Updating Approach}
 %
-We note that there is a more efficient way to program incremental
-updates when there are several changes made to the base predicates at
-one time.  In this case the {\tt incr\_assert\_inval/1} and {\tt
+There is a more efficient way to program incremental updates when
+there are several changes made to the base predicates at one time.  In
+this case the {\tt incr\_assert\_inval/1} and {\tt
   incr\_retract(all)\_inval/1} predicates should be used for each
 individual update.  These operations leave the dependent tables
 unchanged (and thus inconsistent.)  When the updates are finished, the
-user should call {\tt incr\_table\_update/0}.  which updates all
-tables that depend on any changed dynamic rules or facts.  The following execution for our running program shows an example of this.
+user then calls {\tt incr\_table\_update/0}.  which updates all tables
+that depend on any changed dynamic rules or facts.  The following
+execution for our running program shows an example of this.
 
 \begin{verbatim}
 | ?- import incr_assert_inval/1, incr_table_update/0 from increval.
@@ -184,13 +190,14 @@ before inspecting the tables.
 
 \subsubsection{Declaring Predicates to be Incremental}
 %
-In XSB, tables can have numerous properties: subsumptive, variant,
-incremental, opaque, dynamic, private, and shared, and can use answer
-subsumption or call abstraction.  XSB also has variations in forms of
-dynamic predicates: tabled, incremental, private, and shared.  XSB
-extends the {\tt table} and {\tt dynamic} compiler and executable
-directives with modifiers that allow users to indicate the kind of
-tabled or dynamic predicate they want.  For example,
+In XSB, tables can have numerous properties: {\em subsumptive,
+  variant, incremental, opaque, dynamic, private}, and {\em shared},
+and can use answer subsumption or call abstraction.  XSB also has
+variations in forms of dynamic predicates: {\em tabled, incremental,
+  private}, and {\em shared}.  XSB extends the {\tt table} and {\tt
+  dynamic} compiler and executable directives with modifiers that
+allow users to indicate the kind of tabled or dynamic predicate they
+want.  For example,
 %
 \begin{verbatim}
 :- table p/3,s/1 as subsumptive,private.
@@ -279,8 +286,8 @@ no
 There are also {\tt incr\_trie\_intern\_inval/2}, and {\tt
   incr\_trie\_unintern\_inval/2} predicates which do not immediately
 update dependent tables.  Lazy incremental table maintenance works for
-changes made to interned tries just as it does to regular dynamic
-code, and trie-indexed dynamic code.
+changes made to interned tries just as it does for regular dynamic
+code and for trie-indexed dynamic code.
 
 
 \subsection{View Consistency} \label{sec:view-consistency}
@@ -292,8 +299,8 @@ to an issue of view consistency, even within a single-threaded
 computation.  Suppose that a user
 %
 \begin{enumerate}
-\item Makes a query to a tabled subgoal $Q$.  
-\item $Q$ has more than one solution and the first one is returned,
+\item Makes a query to a completed incrementally tabled subgoal $Q$.
+  $Q$ has more than one solution and the first one is returned,
   leaving a choice point into the table for $Q$.
 \item Makes an update to dynamic code upon which $Q$ depends
 \item Makes another query to $Q$
@@ -301,25 +308,29 @@ computation.  Suppose that a user
 %
 What is the relation between the queries and the update.  Presumably,
 the first query in step 1) should not reflect the changes made in step
-2) if a user backtracks for further answers to that query. However it
-is less clear whether the second query to $Q$ in step 4) should return
-the same answers as the first query in step 1), or whether the second
-query should reflect the database update.  Arguments can be made for
-either approach.  
+2) if a user backtracks for further answers to that query -- this can
+be seen as ensuring view consistency.. However it is less clear
+whether the second query to $Q$ in step 4) should return the same
+answers as the first query in step 1), or whether the second query
+should reflect the database update.  Arguments can be made for either
+approach.
 %
 \begin{itemize}
-\item If the second query reflects the database change, it is
-  consistent with the database, but is not consistent with the first
-  query; 
-\item If the second query does not reflect the dynamic code change, it
-  is consistent with the first query but not with the dynamic code
-  change.
+\item {\em Prolog-style semantics} If the second query reflects the
+  database change, it is consistent with the database, but is not
+  consistent with the first query~\footnote{This approach could be
+    viewed as an extension of the ISO semantics for dynamic code in
+    Prolog, which XSB does not currently support.};
+\item {\em Delayed update semantics} If the second query does not
+  reflect the dynamic code change, it is consistent with the first
+  query but not with the dynamic code change.
 \end{itemize}
 %
 XSB chooses the latter of these approaches.  If a user has failure
 continuations into a query $Q$, then $Q$ and all tables that depend on
 $Q$ will not be updated until these failure continuations have been
-exhausted or removed.
+exhausted or removed.  However, all updates are ensured to be applied
+once this is the failure continuations are removed.
 
 \subsection{Summary and Implementation Status}
 %
@@ -346,6 +357,20 @@ can be safely used with incremental tables, but {\tt
 incremental.
 
 \subsection{Predicates for Incremental Table Maintenance} \label{sec:incr-preds1}
+
+\paragraph{A Note on Terminology}
+%
+Suppose {\tt p/1} and {\tt q/1} are incrementally tabled, and that
+there is a clause
+%
+\begin{verbatim}
+p(X):- q(X).
+\end{verbatim}
+%
+In this case we say that {\tt p(X)} {\em depends\_on} {\tt q(X)} and
+that {\tt q(X)} {\em affects} {\tt p(X)}.  A recursive predicate both
+depends on and affects itself.
+
 
 \paragraph{Declarations} The following directives support incremental
 tabling based on changes in dynamic code: 
@@ -378,28 +403,28 @@ tables.
 
 \ourstandarditem{dynamic +PredSpecs as incremental}{dynamic/1}{Tabling}
 %
-is an executable predicate that indicates that a predicate is dynamic
-and used to define an incrementally tabled predicate and will be
-updated using {\tt incr\_assert/1} and/or {\tt incr\_retractall/1} (or
-relatives.)  This predicate, when called as a compiler directive,
-implies that its arguments are dynamic predicates.  See page
-\pageref{dynamic-declaration} for further discussion of dynamic
-options.
+is an executable predicate that indicates that each predicate in {\tt
+  PredSpecs} is dynamic and used to define an incrementally tabled
+predicate and will be updated using {\tt incr\_assert/1} and/or {\tt
+  incr\_retractall/1} (or relatives.)  This predicate, when called as
+a compiler directive, implies that its arguments are dynamic
+predicates.  See page \pageref{dynamic-declaration} for further
+discussion of dynamic options.
 
 \ourstandarditem{table +PredSpecs as opaque}{table/1}{Tabling} 
 %
-is an executable predicate that indicates that a predicate is tabled
-and is used in the definition of some incrementally tabled predicate
-but it should not be maintained incrementally.  In this case the
-system assumes that the programmer will abolish tables for this
-predicate in such a way so that re-calling it will always give
-semantically correct answers.  So instead of maintaining information
-to support incremental table maintenance, the system re-calls the
-opaque predicate whenever its results are required to recompute an
-answer.  One example of an appropriate use of opaque is for tabled
-predicates in a DCG used to parse some string.  Rather than
-incrementally maintain all dependencies on all input strings, the user
-can declare these intermediate tables as opaque and abolish them
+is an executable predicate that indicates that each predicate $P$ in
+{\tt PredSpecs} is tabled and is used in the definition of some
+incrementally tabled predicate but should not be maintained
+incrementally.  In this case the system assumes that the programmer
+will abolish tables for $P$ in such a way so that re-calling it will
+always give semantically correct answers.  In other words, instead of
+maintaining information to support incremental table maintenance, the
+system re-calls the opaque predicate whenever its results are required
+to recompute an answer.  One example of an appropriate use of opaque
+is for tabled predicates in a DCG used to parse some string.  Rather
+than incrementally maintain all dependencies on all input strings, the
+user can declare these intermediate tables as opaque and abolish them
 before any call to the DCG.  This predicate, when called as a compiler
 directive, implies that its arguments are tabled predicates.
 
@@ -440,10 +465,10 @@ and {\tt retractall/1} with the additional error condition:
 %
 are versions of {\tt assert/1} and other standard Prolog predicates.
 They modify dymamic code just as their Prolog counterparts, and mark
-any incrementally maintained tables as invalid (in need of updating).
-The tables may be updated by an explicit call to {\tt
-  incr\_table\_update/[0,1,2]}, or the table will be dynamically
-recomputed when a query is made to it.    
+any incrementally maintained tables that depend on the modification as
+invalid (in need of updating).  The tables may be updated by an
+explicit call to {\tt incr\_table\_update/[0,1,2]}, or the table will
+be dynamically recomputed when a query is made to it.
 
 \ourmoditem{incr\_table\_update}{incr\_table\_update/0}{increval} may
 be called after base predicates have been changed (by {\tt
@@ -455,8 +480,10 @@ separated from the operations that change the base predicates ({\tt
   incr\_assert\_inval/1} and {\tt incr\_retractall\_inval/1}) so that
 a set of base predicate changes can be processed all at once, which
 may be much more efficient that updating the tables at every base
-update.  Beginning with \version{}, this predicate need not be called,
-however, as tables will be incrementally updated upon demand.
+update.  Beginning with Version 3.3.7, it is not absolutely necessary
+to call this predicate, as tables will be incrementally updated upon
+demand.  However, using this predicate allows a choice of incurring
+the cost of update at a time other than querying an updated goal.
 
 {\bf Error Cases}
 \bi
@@ -470,8 +497,8 @@ however, as tables will be incrementally updated upon demand.
 \ourmoditem{incr\_table\_update(-GoalList)}{incr\_table\_update/1}{increval}
 acts as {\tt incr\_table\_update/0} in its action to update the
 incrementally maintained tables after changes to base predicates.  It
-returns the list of goals to incrementally maintained tables whose
-tables were changed in the update process.
+returns the list of goals whose tables were changed in the update
+process.
 
 \ourmoditem{incr\_table\_update(+SkelList,-GoalList)}{incr\_table\_update/2}{increval}
 acts as {\tt incr\_table\_update/1} in its action to update
@@ -487,18 +514,19 @@ goals are returned in {\tt GoalList}.
 \ourmoditem{incr\_invalidate\_call(+Goal)}{incr\_invalidate\_call/1}{increval}
 is used to directly invalidate a call to an incrementally maintained
 table, {\tt Goal}.  A subsequent invocation of {\tt
-  incr\_table\_update} will cause {\tt Goal} to be recomputed {\em and
-  all incrementally maintained tables depending on that goal will be
-  updated}; similarly, a call to {\tt Goal} will automatically perform
-incremental updating for {\tt Goal} and for all tables that it depends
-on..  This predicate can be used if a tabled predicate depends on some
-external data and not (only) on dynamic incremental predicates.  If,
-for example, an incrementally maintained predicate depends on a
-relation stored in an external relational database (perhaps accessed
-through the ODBC interface), then this predicate can be used to
-invalidate the table when the external relation changes.  The
-application programmer must know when the external relation changes
-and invoke this predicate as necessary.
+  incr\_table\_update/[0,1,2]} will cause {\tt Goal} to be recomputed
+{\em and all incrementally maintained tables that {\tt Goal} affects
+  will be updated}; similarly, a call to {\tt Goal} will automatically
+perform incremental updating for {\tt Goal} along with any tables that
+{\tt Goal} depends on that are in need of updating.  This predicate can
+be used if a tabled predicate depends on some external data and not
+(only) on dynamic incremental predicates.  If, for example, an
+incrementally maintained predicate depends on a relation stored in an
+external relational database (perhaps accessed through the ODBC
+interface), then this predicate can be used to invalidate the table
+when the external relation changes.  The application programmer must
+know when the external relation changes and invoke this predicate as
+necessary.
 
 {\bf Error Cases}
 \bi
@@ -508,16 +536,19 @@ and invoke this predicate as necessary.
 \ei
 \ei
 
-\ourmoditem{incr\_directly\_depends(?DependentGoal,?Goal)}{incr\_directly\_depends/2}{increval}
+\ourmoditem{incr\_directly\_depends(?Goal$_1$,?Goal$_2$)}{incr\_directly\_depends/2}{increval}
 accesses the dependency structures used by the incremental table
 maintenance subsystem to provide information about which incremental
-table calls depend on which others.  At least one of {\tt
-  DependentGoal} and {\tt Goal} must be bound.  If {\tt DependentGoal}
-is bound, then this predicate will return in {\tt Goal} through
-backtracking the goals for all incrementally maintained tables that
-directly depend on {\tt Goal}.  If {\tt Goal} is bound, then it
-returns the directly dependent tabled goals in {\tt DependentGoal}.
-At least one of the two arguments must be bound.
+table calls depend on which others.  At least one of {\tt Goal$_1$}
+and {\tt Goal$_2$} must be bound.
+\begin{itemize}
+\item If {\tt Goal$_1$} is bound, then this predicate will return in
+  {\tt Goal$_2$} through backtracking the goals for all incrementally
+  maintained tables on which {\tt Goal$_1$} directly depends.
+\item If {\tt Goal$_2$} is bound, then it returns in {\tt Goal$_2$}
+  through backtracking the goals for all incrementally maintained
+  tables that {\tt Goal$_2$} directly affects -- in other words all
+  goals that directly depend on {\tt Goal$_2$}.  \ei
 
 {\bf Error Cases}
 \bi
@@ -525,12 +556,18 @@ At least one of the two arguments must be bound.
 \bi
 \item 	{\tt instatiation\_error}
 \ei
+\item {\tt Goal} or {\tt DependentGoal} is bound, but is not
+  incrementally tabled
+\bi
+\item 	{\tt table\_error}
+\ei
 \ei
 
-\ourmoditem{incr\_trans\_depends(?DependentGoal,?Goal)}{incr\_trans\_depends/2}{increval}
-is similar to {\tt incr\_directly\_depends} except that it returns
+\ourmoditem{incr\_trans\_depends(?Goal$_1$,?Goal$_2$}{incr\_trans\_depends/2}{increval}
+is similar to {\tt incr\_directly\_depends/2} except that it returns
 goals according to the transitive closure of the ``directly depends''
-relation.
+relation.  Error conditions are the same as {\tt
+  incr\_directly\_depends/2}.
 \end{description}
 
 \paragraph{Incremental Maintenance using Interned Tries}
