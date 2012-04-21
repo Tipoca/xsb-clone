@@ -9,14 +9,69 @@
 :- import random/1, random/3 from random.
 :- import member/2,flatten/2 from basics.
 :- import datime_setrand/0 from random.
+:- import trie_create/2, trie_intern/2,fast_trie_interned/3 from intern.
 
 ?- datime_setrand.
 
 :- dynamic edge/2.
 :- dynamic edge/3.
+
 %----------------------------------
 
-%Generate a random graph with NumNodes and NumEdges into File.  Not every node will necessarily get an edge.
+genTrieTriplesH(NumEdges,NumNodes,NumRels):- 
+	trie_create(Trie,[]),
+	genTrieTriplesH_1(Trie,NumEdges,NumNodes,NumRels).
+
+genTrieTriplesH_1(Trie,NumEdges,NumNodes,NumRels):- 
+	between(1,NumEdges,_),
+	genTrieTripleH(Trie,NumNodes,NumRels),
+	fail.
+genTrieTriplesH_1(_Trie,_NumEdges,_NumNodes,_NumRels).
+
+genTrieTripleH(Trie,NumNodes,NumRels):- 
+        repeat,
+	random(1,NumNodes,From),
+	random(1,NumNodes,To),
+	From \== To,
+	number_codes(To,ToList),atom_codes(Toa,[111|ToList]),
+	number_codes(From,FromList),atom_codes(Froma,[111|FromList]),
+	random(1,NumRels,Rel),
+	number_codes(Rel,RelList),atom_codes(Rela,[111|RelList]),
+	Triple = apply(Rela,Froma,Toa),
+	\+ fast_trie_interned(Trie,Triple,_Leaf),
+	trie_intern(Triple,Trie),
+	!.
+
+%----------------------------------
+
+genTrieTriples(NumEdges,NumNodes,NumRels):- 
+	trie_create(Trie,[]),
+	genTrieTriples_1(Trie,NumEdges,NumNodes,NumRels).
+
+genTrieTriples_1(Trie,NumEdges,NumNodes,NumRels):- 
+	between(1,NumEdges,_),
+	genTrieTriple(Trie,NumNodes,NumRels),
+	fail.
+genTrieTriples_1(_Trie,_NumEdges,_NumNodes,_NumRels).
+
+genTrieTriple(Trie,NumNodes,NumRels):- 
+        repeat,
+	random(1,NumNodes,From),
+	random(1,NumNodes,To),
+	From \== To,
+	number_codes(To,ToList),atom_codes(Toa,[111|ToList]),
+	number_codes(From,FromList),atom_codes(Froma,[111|FromList]),
+	random(1,NumRels,Rel),
+	number_codes(Rel,RelList),atom_codes(Rela,[111|RelList]),
+	Triple =.. [Rela,Froma,Toa],
+	\+ fast_trie_interned(Trie,Triple,_Leaf),
+	trie_intern(Triple,Trie),
+	!.
+
+%----------------------------------
+
+%Generate a random graph with NumNodes and NumEdges and write into
+% File.  Not every node will necessarily get an edge.
 
 wrgp(NumNodes,NumEdges,File):- 
    open(File,write,Str),
@@ -49,7 +104,8 @@ genEdge(NumNodes1,Str):-
 
 %----------------------------------
 
-%Generate a random graph with NumNodes and NumEdges into File.  Edge has a randomly generated weight in its 3rd argument.  
+%Generate a random graph with NumNodes and NumEdges into File.  Edge
+% has a randomly generated weight in its 3rd argument.
 
 wrgp3(NumNodes,NumEdges,File):- 
    open(File,write,Str),
