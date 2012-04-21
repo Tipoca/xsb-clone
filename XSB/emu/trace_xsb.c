@@ -392,24 +392,24 @@ void total_stat(CTXTdeclc double elapstime) {
 	 pspacetot + trieassert_alloc, pspacetot + trieassert_used,
 	 trieassert_alloc - trieassert_used);
   if (trieassert_alloc > 0)
-    printf("    trie-asserted                     %15" Intfmt "         %15" Intfmt "\n",
+    printf("    trie-asserted                        %15" Intfmt " in use, %15" Intfmt "\n",
 	   trieassert_used,trieassert_alloc-trieassert_used);
 
   for (i=0; i<NUM_CATS_SPACE; i++) 
     if (pspacesize[i] > 0 && i != TABLE_SPACE && i != INCR_TABLE_SPACE)
-      printf("    %s                           %15" Intfmt "\n",pspace_cat[i],pspacesize[i]);
+      printf("    %s                         %15" Intfmt "\n",pspace_cat[i],pspacesize[i]);
 
   printf("  glob/loc space  %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 glstack.size * K, glstack.size * K - gl_avail, gl_avail);
-  printf("    global                                 %15" Intfmt "\n",
+  printf("    global                               %15" Intfmt "\n",
 	 (Integer)((top_of_heap - (CPtr)glstack.low + 1) * sizeof(Cell)));
-  printf("    local                                  %15" Intfmt "\n",
+  printf("    local                                %15" Intfmt "\n",
 	 (Integer)(((CPtr)glstack.high - top_of_localstk) * sizeof(Cell)));
   printf("  trail/cp space  %15" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 tcpstack.size * K, tcpstack.size * K - tc_avail, tc_avail);
-  printf("    trail                                  %15" Intfmt "\n",
+  printf("    trail                                %15" Intfmt "\n",
 	 (Integer)((top_of_trail - (CPtr *)tcpstack.low + 1) * sizeof(CPtr)));
-  printf("    choice point                           %15" Intfmt "\n",
+  printf("    choice point                         %15" Intfmt "\n",
 	 (Integer)(((CPtr)tcpstack.high - top_of_cpstack) * sizeof(Cell)));
   printf("  SLG unific. space    %10" Intfmt " bytes: %15" Intfmt " in use, %15" Intfmt " free\n",
 	 (UInteger) pdl.size * K, (UInteger) ((size_t)(pdlreg+1) - (size_t)pdl.high),
