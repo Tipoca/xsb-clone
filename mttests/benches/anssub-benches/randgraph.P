@@ -11,10 +11,47 @@
 :- import datime_setrand/0 from random.
 :- import trie_create/2, trie_intern/2,fast_trie_interned/3 from intern.
 
+:- compiler_options([sysmod,xpp_on]).
+
+#include "trie_defs.h"
+#include "biassert_defs.h"
+
 ?- datime_setrand.
 
 :- dynamic edge/2.
 :- dynamic edge/3.
+
+%----------------------------------
+:- import file_read_canonical/3 from machine.
+
+read_trie(File):-
+	trie_create(Trie,[]),
+	see(File),
+	current_input_port(S),
+	read_trie_1(S,Trie),
+	seen.
+
+read_trie_1(S,Trie):- 
+	repeat,
+	file_read_canonical(S,Term,_),
+	(Term == end_of_file -> 
+	   true
+         ; scary_trie_intern(Term,Trie),
+	   fail).
+
+:- import new_i_trie_intern/6 from intern.
+
+scary_trie_intern(Term,Root) :-
+	new_i_trie_intern(Root,Term,_Leaf,_Flag,NO_CPS_CHECK,EXPAND_HASHES).
+
+
+write_trie(File):-
+	tell(File),
+%	write((':-'(index(app/3,trie)))),writeln('.'),
+	fast_trie_interned(1,Triple,_L),
+	write_canonical(Triple),writeln('.'),
+	fail.
+write_trie(_):- told.
 
 %----------------------------------
 
@@ -37,7 +74,33 @@ genTrieTripleH(Trie,NumNodes,NumRels):-
 	number_codes(From,FromList),atom_codes(Froma,[111|FromList]),
 	random(1,NumRels,Rel),
 	number_codes(Rel,RelList),atom_codes(Rela,[111|RelList]),
-	Triple = apply(Rela,Froma,Toa),
+	Triple = app(Rela,Froma,Toa),
+	\+ fast_trie_interned(Trie,Triple,_Leaf),
+	trie_intern(Triple,Trie),
+	!.
+
+%----------------------------------
+
+genTrieTriplesHi(NumEdges,NumNodes,NumRels):- 
+	trie_create(Trie,[]),
+	genTrieTriplesHi_1(Trie,NumEdges,NumNodes,NumRels).
+
+genTrieTriplesHi_1(Trie,NumEdges,NumNodes,NumRels):- 
+	between(1,NumEdges,_),
+	genTrieTripleHi(Trie,NumNodes,NumRels),
+	fail.
+genTrieTriplesHi_1(_Trie,_NumEdges,_NumNodes,_NumRels).
+
+genTrieTripleHi(Trie,NumNodes,NumRels):- 
+        repeat,
+	random(1,NumNodes,From),
+	random(1,NumNodes,To),
+	From \== To,
+%	number_codes(To,ToList),atom_codes(Toa,[111|ToList]),
+%	number_codes(From,FromList),atom_codes(Froma,[111|FromList]),
+	random(1,NumRels,Rel),
+%	number_codes(Rel,RelList),atom_codes(Rela,[111|RelList]),
+	Triple = app(Rel,From,To),
 	\+ fast_trie_interned(Trie,Triple,_Leaf),
 	trie_intern(Triple,Trie),
 	!.
