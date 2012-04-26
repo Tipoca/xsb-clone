@@ -56,7 +56,7 @@
 
 static void simplify_neg_succeeds(CTXTdeclc VariantSF);
 extern void simplify_pos_unsupported(CTXTdeclc NODEptr);
-static void simplify_pos_unconditional(CTXTdeclc NODEptr);
+void simplify_pos_unconditional(CTXTdeclc NODEptr);
 void print_pdes(PNDE);
 //void simplify_neg_succeeds_for_subsumed_subgoals(NODEptr);
 
@@ -816,6 +816,8 @@ void do_delay_stuff_shared(CTXTdeclc NODEptr as_leaf, VariantSF subgoal, xsbBool
     /*
      * Check for the derivation of an unconditional answer.
      */
+    //    printf("sf %d is_cond %d delayreg %d\n",sf_exists,is_conditional_answer(as_leaf),delayreg);
+
     if (sf_exists && is_conditional_answer(as_leaf) &&
 	(!delayreg || !dl)) {
       /*
@@ -1293,7 +1295,7 @@ void release_all_dls(CTXTdeclc ASI asi)
  * delay lists that contain them.
  *******************************************************************/
 
-static void simplify_pos_unconditional(CTXTdeclc NODEptr as_leaf)
+void simplify_pos_unconditional(CTXTdeclc NODEptr as_leaf)
 {
   ASI asi = Delay(as_leaf);
   PNDE pde;

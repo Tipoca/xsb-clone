@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.163 2012-03-11 00:55:47 tswift Exp $
+** $Id: tries.c,v 1.164 2012-04-26 18:19:27 tswift Exp $
 ** 
 */
 
@@ -925,10 +925,68 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
   resetpdl;								\
 }
 
-
 #include "term_psc_xsb_i.h"
 #include "ptoc_tag_xsb_i.h"
+extern void abolish_release_all_dls(CTXTdeclc ASI);
 
+inline void handle_incrementally_rederived_answer(CTXTdeclc VariantSF subgoal_ptr,BTNptr Paren,
+						  ALNptr answer_node,int tag,
+						  xsbBool found_flag,xsbBool * uncond_or_hasASI) {
+
+  byte choicepttype;  /* for incremental evaluation */ 
+  byte typeofinstr;   /* for incremental evaluation */ 
+
+  /* If a new answer is inserted, the call is changed */
+    if((IsNonNULL(subgoal_ptr->callnode->prev_call))&&(found_flag==0)){
+      subgoal_ptr->callnode->prev_call->changed=1;
+    }
+
+    /* The answer already exists and is marked deleted, which means it
+       is generating an old answer. In this case we remove the
+       deletion marking and reduce no_of_answers.
+
+       If the answer is conditional, we need to remove its delay
+       lists: we'll regenerate them again.  uncond_or_hasASI is a new
+       flag to ensure that do_delay_stuff() traverses the correct
+       paths, adding delay lists and/or simplifying
+    */
+    if((found_flag==1) && (IsDeletedNode(Paren))){
+      
+      if (is_conditional_answer(Paren) && delayreg) {
+	abolish_release_all_dls(CTXTc Delay(Paren));
+	//	print_pdes(asi_pdes(Delay(Paren)));
+	asi_dl_list(Delay(Paren)) = NULL;
+      }
+
+      // uncond_or_hasASI is true by default
+      if (!is_conditional_answer(Paren) || delayreg)  {
+	*uncond_or_hasASI = FALSE;	
+      } 
+
+      choicepttype = 0x3 &  BTN_Instr(Paren);
+      typeofinstr = (~0x3) & BTN_Status(Paren);
+      BTN_Instr(Paren) = choicepttype | typeofinstr;
+      MakeStatusValid(Paren);
+      
+      found_flag=0;
+
+      subgoal_ptr->callnode->prev_call->no_of_answers--;
+      
+      New_ALN(subgoal_ptr,answer_node,Paren,NULL);
+      SF_AppendNewAnswer(subgoal_ptr,answer_node);	
+      
+    } else
+      if ( found_flag == 0 ) {
+	MakeTSTNLeafNode(Paren);
+	TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
+#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
+	ans_inserts++;
+#endif
+	New_ALN(subgoal_ptr,answer_node,Paren,NULL);
+	SF_AppendNewAnswer(subgoal_ptr,answer_node);
+      }
+}
+    
 
 /*
  * Called in SLG instruction `new_answer_dealloc', variant_answer_search()
@@ -944,7 +1002,8 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
  */
 
 BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
-			     VariantSF subgoal_ptr, xsbBool *flagptr) {
+			     VariantSF subgoal_ptr, xsbBool *flagptr,
+			     xsbBool *uncond_or_hasASI) {
 
   Psc   psc;
   CPtr  xtemp1;
@@ -954,9 +1013,6 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   int ctr, attv_ctr;
   Cell depth_ctr,list_depth_ctr;
   BTNptr Paren, *ChildPtrOfParen;
-
-  byte choicepttype;  /* for incremental evaluation */ 
-  byte typeofinstr;   /* for incremental evaluation */ 
 
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
   ans_chk_ins++; /* Counter (answers checked & inserted) */
@@ -1116,9 +1172,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   }
   resetpdl;                                                   
 
-#ifndef IGNORE_DELAYVAR
-  /*
-   * Put the substitution factor of the answer into a term ret/n (if 
+  /* Put the substitution factor of the answer into a term ret/n (if 
    * the sf_size of the substitution factor is 0, then put integer 0
    * into cell ans_var_pos_reg).
    *
@@ -1132,62 +1186,22 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   else	
     bld_functor(ans_var_pos_reg, get_ret_psc(ctr));
 
-#else /* IGNORE_DELAYVAR */
-  undo_answer_bindings(CTXT);
-#endif
-
-  /*
-     * Save the number of variables in the answer, i.e. the sf_size of
-     * the substitution factor of the answer, into `AnsVarCtr'.
-     */
+  /* Save the number of variables in the answer, i.e. the sf_size of
+   * the substitution factor of the answer, into `AnsVarCtr'.
+   */
   AnsVarCtr = ctr;		
-
+  
   /* if there is no term to insert, an ESCAPE node has to be created/found */
-
   if (sf_size == 0) {
     one_btn_chk_ins(found_flag, ESCAPE_NODE_SYMBOL, BASIC_ANSWER_TRIE_TT);
     Instr(Paren) = trie_proceed;
   }
-
-  /* incremental evaluation: reinserting marked deleted node*/ 
-  /* If a new answer is inserted, the call is changed */
+ 
   if(IsIncrSF(subgoal_ptr)){
-    if((IsNonNULL(subgoal_ptr->callnode->prev_call))&&(found_flag==0)){
-      subgoal_ptr->callnode->prev_call->changed=1;
-    }
-    
-    /* If the answer already exists and is marked deleted, which means
-       it is generating an old answer. In this case we remove the answer
-       marking and reduce no_of_answers */
-    
-    if((found_flag==1)&&(IsDeletedNode(Paren))){
-      
-      choicepttype = 0x3 &  BTN_Instr(Paren);
-      typeofinstr = (~0x3) & BTN_Status(Paren);
-      BTN_Instr(Paren) = choicepttype | typeofinstr;
-      MakeStatusValid(Paren);
-      
-      found_flag=0;
-      
-      subgoal_ptr->callnode->prev_call->no_of_answers--;
-      
-      New_ALN(subgoal_ptr,answer_node,Paren,NULL);
-      SF_AppendNewAnswer(subgoal_ptr,answer_node);	
-      
-    } else
-      if ( found_flag == 0 ) {
-	MakeTSTNLeafNode(Paren);
-	TN_UpgradeInstrTypeToSUCCESS(Paren,tag);
-#if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
-	ans_inserts++;
-#endif
-	New_ALN(subgoal_ptr,answer_node,Paren,NULL);
-	SF_AppendNewAnswer(subgoal_ptr,answer_node);
-      }
-  }else
-    /* incremental eval end */
-  /*
-   *  If an insertion was performed, do some maintenance on the new leaf,
+    handle_incrementally_rederived_answer(CTXTc subgoal_ptr,Paren,answer_node,tag,found_flag,
+					  uncond_or_hasASI);
+  } else
+  /*  If an insertion was performed, do some maintenance on the new leaf,
    *  and place the answer handle onto the answer list.
    */
   if ( found_flag == 0 ) {
@@ -1196,7 +1210,6 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
     ans_inserts++;
 #endif
-
     New_ALN(subgoal_ptr,answer_node,Paren,NULL);
     SF_AppendNewAnswer(subgoal_ptr,answer_node);
   }

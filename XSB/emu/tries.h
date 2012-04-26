@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.81 2012-03-11 00:55:47 tswift Exp $
+** $Id: tries.h,v 1.82 2012-04-26 18:19:27 tswift Exp $
 ** 
 */
 
@@ -66,6 +66,8 @@
 #define TN_Status(pTN)		TSC_Status(pTN)
 #define TN_TrieType(pTN)	TSC_TrieType(pTN)
 #define TN_NodeType(pTN)	TSC_NodeType(pTN)
+#define TN_IncrMarking(pTN)	TSC_IncrMarking(pTN)
+
 #define TN_Parent(pTN)		( (pTN)->parent )
 #define TN_Child(pTN)		( (pTN)->child )
 #define TN_Sibling(pTN)		( (pTN)->sibling )
@@ -75,6 +77,7 @@
 #define TSC_Status(pTSC)	IPT_Status((pTSC)->info)
 #define TSC_TrieType(pTSC)	IPT_TrieType((pTSC)->info)
 #define TSC_NodeType(pTSC)	IPT_NodeType((pTSC)->info)
+#define TSC_IncrMarking(pTSC)	IPT_IncrMarking((pTSC)->info)
 
 
 #define TN_SetHashHdr(pTN,pTHT)		TN_Child(pTN) = (void *)(pTHT)
@@ -108,7 +111,8 @@ typedef struct InstructionPlusTypeFrame {
   byte instr;		/* contains compiled trie code */
   byte status;		/* whether the node has been deleted */
   byte trie_type;	/* global info: what type of trie is this? */
-  byte node_type;	/* local info: what is the role of this struct? */
+  byte node_type:6;	/* local info: what is the role of this struct? */
+  byte incr_marking:2;	/* local info: what is the role of this struct? */
 #ifdef BITS64
   byte padding[4];
 #endif
@@ -118,9 +122,12 @@ typedef struct InstructionPlusTypeFrame {
 #define IPT_Status(IPT)		((IPT).status)
 #define IPT_TrieType(IPT)	((IPT).trie_type)
 #define IPT_NodeType(IPT)	((IPT).node_type)
+#define IPT_IncrMarking(IPT)	((IPT).incr_marking)
 
 extern char *trie_node_type_table[9];
 extern char *trie_trie_type_table[6];
+
+#define PREVIOUSLY_UNCONDITIONAL 1
 
 /* Information for initializing dynamic trie structure managers */
 
@@ -170,6 +177,7 @@ typedef struct Basic_Trie_Node {
 #define BTN_Status(pBTN)	TN_Status(pBTN)
 #define BTN_TrieType(pBTN)	TN_TrieType(pBTN)
 #define BTN_NodeType(pBTN)	TN_NodeType(pBTN)
+#define BTN_IncrMarking(pBTN)	TN_IncrMarking(pBTN)
 #define BTN_Parent(pBTN)	TN_Parent(pBTN)
 #define BTN_Child(pBTN)		TN_Child(pBTN)
 #define BTN_Sibling(pBTN)	TN_Sibling(pBTN)
@@ -359,7 +367,7 @@ extern BTNptr   trie_assert_chk_ins(CPtr, BTNptr, int *);
 extern BTNptr   trie_intern_chk_ins(Cell, BTNptr *, int *, int, int);
 extern BTNptr	get_next_trie_solution(ALNptr *);
 extern BTNptr	variant_answer_search(int, int, CPtr, struct subgoal_frame *,
-				      xsbBool *);
+				      xsbBool *,xsbBool *);
 extern BTNptr   delay_chk_insert(int, CPtr, CPtr *);
 //extern void     undo_answer_bindings(void);
 extern void	load_delay_trie(int, CPtr, BTNptr);
@@ -385,7 +393,7 @@ extern BTNptr   trie_assert_chk_ins(struct th_context *, CPtr, BTNptr, int *);
 extern BTNptr   trie_intern_chk_ins(struct th_context *, Cell, BTNptr *, int *, int, int);
 extern BTNptr	get_next_trie_solution(ALNptr *);
 extern BTNptr	variant_answer_search(struct th_context *, int, int, CPtr, 
-				      struct subgoal_frame *, xsbBool *);
+				      struct subgoal_frame *, xsbBool *, xsbBool *);
 extern BTNptr   delay_chk_insert(struct th_context *, int, CPtr, CPtr *);
 //extern void     undo_answer_bindings(struct th_context *);
 extern void	load_delay_trie(struct th_context *, int, CPtr, BTNptr);
@@ -622,6 +630,7 @@ typedef struct outedge{
    changed --       This call has updated its answers.
    prev_call --     When reevaluating an affected call, used to compare this to prev.
 */
+
 typedef struct callnodetag{
   outedgeptr  outedges;
   calllistptr inedges; 
@@ -631,9 +640,11 @@ typedef struct callnodetag{
   callnodeptr prev_call;  
   ALNptr aln; 
   int id; 
+  //  unsigned int no_of_undefs;
 }CALL_NODE;
 
 #define callnode_sf(Ptr) ( ((callnodeptr)(Ptr)) -> goal)
+#define callnode_no_undefs(Ptr)  ( ((callnodeptr)(Ptr)) -> no_of_undefs)
 
 typedef struct key{
 	int goal;

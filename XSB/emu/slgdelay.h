@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: slgdelay.h,v 1.41 2011-07-29 22:56:04 tswift Exp $
+** $Id: slgdelay.h,v 1.42 2012-04-26 18:19:27 tswift Exp $
 ** 
 */
 
@@ -252,6 +252,7 @@ extern xsbBool neg_delay;
 extern xsbBool answer_is_unsupported(CPtr);
 extern void abolish_wfs_space(void);
 extern void simplify_neg_fails(VariantSF);
+extern void simplify_pos_unconditional(NODEptr);
 extern void do_delay_stuff(NODEptr, VariantSF, xsbBool);
 extern void handle_unsupported_answer_subst(NODEptr);
 #else
@@ -260,6 +261,7 @@ extern xsbBool answer_is_unsupported(struct th_context *,CPtr);
 extern void abolish_wfs_space(struct th_context *);
 extern void abolish_private_wfs_space(struct th_context *);
 extern void simplify_neg_fails(struct th_context *, VariantSF);
+extern void simplify_pos_unconditional(struct th_context *, NODEptr);
 extern void do_delay_stuff(struct th_context *, NODEptr, VariantSF, xsbBool);
 extern void handle_unsupported_answer_subst(struct th_context *, NODEptr);
 #endif

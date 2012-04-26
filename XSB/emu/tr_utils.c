@@ -1307,12 +1307,28 @@ void delete_return(CTXTdeclc BTNptr leaf, VariantSF sg_frame,int eval_method)
  * completion stack), and reclaim the leaves and corresponding branches
  *----------------------------------------------------------------------*/
 
+//int myctr = 0;
+
 void  reclaim_del_ret_list(CTXTdeclc VariantSF sg_frame) {
   ALNptr x,y;
 
   x = compl_del_ret_list(subg_compl_stack_ptr(sg_frame));
-  //  printf("reclaim del ret list for "); print_subgoal(stddbg,sg_frame); printf("\n");
+
+  /*
+  myctr++;
+
+  if (myctr >= 50000 && myctr%20000 == 0) {
+    ALNptr temp = 0x103cfa2e3;
+    printf("%d: oreg %p complstk %p bot %p -- %p\n",myctr,openreg,complstack,COMPLSTACKBOTTOM,*temp);
+  }
   
+  if (x != NULL) {
+    printf("openreg %p bot %p\n",openreg,COMPLSTACKBOTTOM );
+    printf("%d: reclaim del ret list %p (%p @%p) for ",myctr,subg_compl_stack_ptr(sg_frame),
+	   &compl_del_ret_list(subg_compl_stack_ptr(sg_frame)),x); 
+    print_subgoal(stddbg,sg_frame); printf("\n");
+  }
+  */
   while (x != NULL) {
     y = x;
     x = ALN_Next(x);

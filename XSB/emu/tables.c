@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.101 2012-03-11 00:55:47 tswift Exp $
+** $Id: tables.c,v 1.102 2012-04-26 18:19:27 tswift Exp $
 ** 
 */
 
@@ -262,6 +262,11 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
 	    pALN = subg_answers(sf);
 	    do {
 	      leaf=ALN_Answer(pALN);
+
+	      if (!is_conditional_answer(leaf)) {
+		BTN_IncrMarking(leaf) = PREVIOUSLY_UNCONDITIONAL;
+	      }
+		
 	      safe_delete_branch(leaf);      
 	      pALN = ALN_Next(pALN);
 	    } while ( IsNonNULL(pALN) );
@@ -480,6 +485,7 @@ BTNptr table_answer_search(CTXTdeclc VariantSF producer, int size, int attv_num,
 
   void *answer;
   xsbBool wasFound = TRUE;
+  xsbBool hasASI = TRUE;
 
   if ( IsSubsumptiveProducer(producer) ) {
 
@@ -510,12 +516,23 @@ BTNptr table_answer_search(CTXTdeclc VariantSF producer, int size, int attv_num,
     
     ans_var_pos_reg = hreg++;	/* Leave a cell for functor ret/n */
 
-    if (NULL != (answer = variant_answer_search(CTXTc size,attv_num,templ,producer,&wasFound))) {
-      do_delay_stuff(CTXTc (NODEptr)answer, producer, wasFound);
-      *is_new = ! wasFound;
+    if (NULL != (answer = variant_answer_search(CTXTc size,attv_num,templ,producer,&wasFound,
+						&hasASI))) {
+      if (!IsIncrSF(producer)) {
+	//	printf("wasFound %d delay %p\n",wasFound,delayreg);
+	do_delay_stuff(CTXTc (NODEptr)answer, producer, wasFound);
+	*is_new = ! wasFound;
+      }
+      else {
+	//	printf("hasASI %d delay %p\n",hasASI,delayreg);
+	do_delay_stuff(CTXTc (NODEptr)answer, producer, (hasASI & wasFound));
+	*is_new = ! wasFound;
+      }
     }
-      *is_new = ! wasFound;
-      undo_answer_bindings;
+
+    *is_new = ! wasFound;
+    undo_answer_bindings;
+
   }
   return (BTNptr)answer;
 }
@@ -699,12 +716,35 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
      call.
   */
   if(IsIncrSF(producerSF)){
-    callnodeptr pc;
+    callnodeptr pc;  int fewer_true_answers = FALSE;
     producerSF->callnode->recomputable = COMPUTE_DEPENDENCIES_FIRST;
-    pc=producerSF->callnode->prev_call;
+    pc = producerSF->callnode->prev_call;
+
     if(IsNonNULL(pc)){
+      //      printf("has prev call ");print_subgoal(stddbg,producerSF);
+      //      printf(" visitors %ld / %p",producerSF->visitors,producerSF);printf("\n");
+      
+      if ( has_answers(producerSF) ) {
+	pALN = pc->aln;
+	while(IsNonNULL(pALN)) {
+	  if (is_conditional_answer(ALN_Answer(pALN)) 
+	      && BTN_IncrMarking(ALN_Answer(pALN)) == PREVIOUSLY_UNCONDITIONAL)
+	    fewer_true_answers = TRUE;
+	  BTN_IncrMarking(ALN_Answer(pALN)) = 0;
+	  if (IsDeletedNode(ALN_Answer(pALN)))
+	    delete_branch(CTXTc ALN_Answer(pALN),&subg_ans_root_ptr(producerSF),VARIANT_EVAL_METHOD);
+	  pALN = ALN_Next(pALN);
+	}
+      } else {
+	/* There is a memory leak here: I have to delete the answer
+	   table here: iterating delete_branch thru the answer trie
+	   gives error while deleting the last branch */
+	
+	producerSF->ans_root_ptr=NULL; 
+      }
+
       /* old calls */
-      if (pc->no_of_answers>0)    // if some previous answers have not been rederived
+      if (pc->no_of_answers>0 || fewer_true_answers)    // if some previous answers have not been rederived
 	pc->changed=1;
       if (pc->changed==0){
 	unchanged_call_gl++;
@@ -714,20 +754,6 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
     
       producerSF->callnode->prev_call=NULL;
     	
-      if ( has_answers(producerSF) ) {
-	pALN = pc->aln;
-	while(IsNonNULL(pALN)) {
-	  if(IsDeletedNode(ALN_Answer(pALN)))
-	    delete_branch(CTXTc ALN_Answer(pALN),&subg_ans_root_ptr(producerSF),VARIANT_EVAL_METHOD);
-	  pALN = ALN_Next(pALN);
-	}
-      } else{
-	/* There is a memory leak here: I have to delete the answer
-	   table here: iterating delete_branch thru the answer trie
-	   gives error while deleting the last branch */
-	
-	producerSF->ans_root_ptr=NULL; 
-      }
       deallocate_previous_call(pc);
             
     } else /* newly added calls */
@@ -937,6 +963,7 @@ void perform_early_completion(CTXTdeclc VariantSF ProdSF,CPtr ProdCPF) {
     }
 #else
 void perform_early_completion(CTXTdeclc VariantSF ProdSF,CPtr ProdCPF) {
+  //  printf("performing ec for ");print_subgoal(stddbg,ProdSF);printf("\n");
   if (tcp_pcreg(ProdCPF) != (byte *) &answer_return_inst) 	
     tcp_pcreg(ProdCPF) = (byte *) &check_complete_inst;   	
   mark_as_completed(ProdSF);					
