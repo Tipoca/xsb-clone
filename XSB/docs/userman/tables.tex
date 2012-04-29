@@ -2005,13 +2005,12 @@ computations only in the sequential engine).  The compatabilities are
 listed in Table~\ref{table:table}.  Further combinations will be
 supported in future versions of XSB as resources allow.
 
-The combinations that are supported generally allow full well-founded
+The combinations in Table~\ref{table:table} allow full well-founded
 computation, constrained variables in calls and answers (including the
-residual program), and safe space reclamation.  The exceptions are
-that neither incremental tabling nor answer subsumption support non
-lrd-stratified programs; and call subsumption does not yet support
-attributed variables in calls.
-\index{attributed variables}
+residual program), and safe space reclamation, with the following
+exceptions.  Answer subsumption does support non lrd-stratified
+programs; and call subsumption does not yet support attributed
+variables in calls.  \index{attributed variables}
 
 \begin{table}
 \begin{center}

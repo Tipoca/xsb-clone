@@ -188,6 +188,60 @@ using table inspection predicates on incrementally maintained tables,
 the user should ensure that {\tt incr\_table\_update/0} is called
 before inspecting the tables.
 
+\paragraph{Updating conditional answers}
+%
+As discussed earlier in this chapter, answers that are undefined in
+the well-founded semantics are represented as conditional answers.
+Beginning with version 3.3.7, incremental updates work correctly with
+conditional answers (before this version they only worked correctly on
+stratified tables: those with only unconditional answers).  No special
+care needs to be taken for conditional answers, and they can be
+updated through any of the previously described methods.  The
+following example illustrates one such approach.  
+
+Consider the program
+%
+\begin{verbatim}
+:- dynamic data/1 as incremental.
+
+:- table opaque_undef/0 as opaque.
+opaque_undef:- tnot(opaque_undef).
+
+:- table p/1 as incremental.
+p(_X):- opaque_undef.
+p(X):- data(X).
+\end{verbatim}
+%
+Note that {\tt opaque\_undef/1} upon which {\tt p/1} depends is
+explicitly declared as opaque.  When the above program is loaded, XSB
+will behave as follows.
+%
+{\small
+\begin{verbatim}
+| ?- p1(1).
+
+undefined
+| ?- incr_assert(data(1)).
+
+yes
+| ?- p1(1).
+
+yes
+| ?- incr_retract(data(1)).
+
+yes
+| ?- p1(1).
+
+undefined
+| ?- get_residual(p1(1),C).
+
+C = [opaque_undef]
+\end{verbatim}
+}
+%
+
+
+
 \subsubsection{Declaring Predicates to be Incremental}
 %
 In XSB, tables can have numerous properties: {\em subsumptive,
@@ -345,11 +399,10 @@ whenever they are re-queried.
 
 In the current version of XSB, incremental tabling has not yet been
 ported to the multi-threaded engine.  In addition, incremental tabling
-only works for stratified predicates that do not involve conditional
-answers, and it currently works only for predicates that use both call
-and answer variance.  However, incremental tabling does work with
-trie indexed dynamic code (in addition to regular dynamic code) and
-with interned tries as described in
+only works for predicates that use both call and answer variance.
+However, incremental tabling does work with for the full well-founded
+semantics, for trie indexed dynamic code (in addition to regular
+dynamic code) and with interned tries as described in
 Section~\ref{sec:incr-update-tries}.  The space reclamation predicates
 {\tt abolish\_all\_tables/0} and {\tt abolish\_table\_call/[1,2]} both
 can be safely used with incremental tables, but {\tt
