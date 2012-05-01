@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.164 2012-04-26 18:19:27 tswift Exp $
+** $Id: tries.c,v 1.165 2012-05-01 21:21:10 dwarren Exp $
 ** 
 */
 
@@ -930,11 +930,12 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
 extern void abolish_release_all_dls(CTXTdeclc ASI);
 
 inline void handle_incrementally_rederived_answer(CTXTdeclc VariantSF subgoal_ptr,BTNptr Paren,
-						  ALNptr answer_node,int tag,
+						  int tag,
 						  xsbBool found_flag,xsbBool * uncond_or_hasASI) {
 
   byte choicepttype;  /* for incremental evaluation */ 
   byte typeofinstr;   /* for incremental evaluation */ 
+  ALNptr answer_node;
 
   /* If a new answer is inserted, the call is changed */
     if((IsNonNULL(subgoal_ptr->callnode->prev_call))&&(found_flag==0)){
@@ -1198,7 +1199,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   }
  
   if(IsIncrSF(subgoal_ptr)){
-    handle_incrementally_rederived_answer(CTXTc subgoal_ptr,Paren,answer_node,tag,found_flag,
+    handle_incrementally_rederived_answer(CTXTc subgoal_ptr,Paren,tag,found_flag,
 					  uncond_or_hasASI);
   } else
   /*  If an insertion was performed, do some maintenance on the new leaf,
