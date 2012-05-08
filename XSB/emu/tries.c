@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.165 2012-05-01 21:21:10 dwarren Exp $
+** $Id: tries.c,v 1.166 2012-05-08 15:00:28 tswift Exp $
 ** 
 */
 
@@ -776,7 +776,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
       /* Now xtemp1 can only be the first occurrence of an attv */	\
       xtemp1 = clref_val(xtemp1); /* the VAR part of the attv */	\
       StandardizeAndTrailVariable(xtemp1, ctr);				\
-      one_btn_chk_ins(flag, EncodeNewTrieAttv(ctr), INTERN_TRIE_TT);	\
+      one_btn_chk_ins(flag, EncodeNewTrieAttv(ctr), TrieType);		\
       attv_ctr++; ctr++;						\
       pdlpush(cell(xtemp1+1));	/* the ATTR part of the attv */		\
       break;								\
