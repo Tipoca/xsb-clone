@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.P,v 1.23 2012-02-01 20:06:42 dwarren Exp $
+** $Id: cp_opt.P,v 1.24 2012-05-08 14:58:40 tswift Exp $
 ** 
 */
 
@@ -307,6 +307,7 @@ generate_agg_clauses(AggrSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClLis
 	ensure_imported(instantiation_error/3,error_handler,SymTab),
 	ensure_imported('_$$get_returns'/3,tables,SymTab),
 	ensure_imported(delete_return/2,tables,SymTab),
+	ensure_imported(member/2,basics,SymTab),
 	% TLS: for approximations (whether or not used)
 	ensure_imported(early_complete_on_nth/2,tables,SymTab),
 	ensure_imported(early_complete_on_delta/4,tables,SymTab).
