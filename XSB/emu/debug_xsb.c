@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.94 2012-02-24 21:06:49 dwarren Exp $
+** $Id: debug_xsb.c,v 1.95 2012-05-11 15:51:45 tswift Exp $
 ** 
 */
 
@@ -377,9 +377,10 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
   switch (cell_tag(term)) {
   case XSB_FREE:
   case XSB_REF1:
-    //    sprintf(buffer+size, "_v%"Intfmt, (UInteger)vptr(term));
-    sprintf(buffer+size, "_v%"Intfmt, (UInteger)vptr(term));
-    return size+2+3*sizeof(UInteger);
+    //    sprintf(buffer+size, "_v%"Intfmt, (UInteger)vptr(term));                
+    //    sprintf(buffer+size, "_v%p",vptr(term));                                
+    //    return size+4+2*sizeof(void *);                                         
+    return size+sprintf(buffer+size, "_v%p",vptr(term));
   case XSB_ATTV:
     if (flags[WRITE_ATTRIBUTES] == WA_DOTS) {
       sprintf(buffer+size, "_attv%p {...} ", (CPtr)dec_addr(term));
