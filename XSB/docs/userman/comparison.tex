@@ -252,6 +252,64 @@ unsafe {\tt ground/1}.
     variables; an assumption that holds for most (reasonable) uses of
     {\tt variant/2}.
 
+\ourrepeatmoditem{check\_variant(?Term1)}{check\_variant/1}{tables}
+\ourmoditem{check\_variant(+Term1,+DontCares)}{check\_variant/2}{tables}
+%
+ {\tt check\_variant/[1,2]} provide efficient means of checking
+ whether the variant of a term has been asserted to a trie indexed
+ predicate.  A call {\tt ?- check\_variant(Term)} thus succeeds if a
+ variant of {\tt Term} has been trie indexed and asseerted, and fails
+ otherwise; the check performs no unification, and no backtracking is
+ possible.
+
+{\tt check\_variant/2} allows the user to specify that the last $n$
+arguments of {\tt Term} are not to be checked for variance.  This {\tt
+  check\_variant(Term,N)} succeeds of there is a trie indexed term
+whose first $arity - n$ arguments are variants of those in term.
+
+These predicates exploit the trie data structure to obtain their
+efficiency; as a result our implementation does not allow don't care
+arguments apart from the final $n$ arguments.  {\bf {\em More
+    importantly, for efficiency, no check is made to determine whether
+    a predicate has been trie-indexed.}}  If unsure, the user should
+call {\tt current\_index/2}.
+%
+\begin{example}
+\begin{small}
+\begin{verbatim}
+ ?- import check_variant/1 from tables.
+
+yes
+ ?- index(cmp/3, trie).
+
+yes
+| ?- assert(cmp(a,b,c)),assertcmp(d,e,f)).
+
+yes
+| ?- check_variant(cmp(a,b,c)).
+
+yes
+| ?- check_variant(cmp(a,b,1)).
+
+no
+| ?- check_variant(cmp(a,b,X)).
+
+no
+| ?- check_variant(cmp(a,b,X),1).
+
+X = _h183
+\end{verbatim}
+\end{small}
+\end{example}
+
+{\bf Error Cases}
+     \begin{description}
+     \item[{\tt type\_error}]
+	Argument 1 of {\tt check\_variant/[1,2]} is not a callable structure.
+     \item[{\tt type\_error}]
+	Argument 2 of {\tt check\_variant/[2]} is not an integer
+     \end{description}
+
 \end{description}
 
 \subsection{Sorting of Terms}
