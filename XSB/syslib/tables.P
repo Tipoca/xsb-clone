@@ -702,6 +702,15 @@ get_callsto_number(SubgoalFrame,Number):-
 get_answer_number(SubgoalFrame,Number):- 
 	table_inspection_function(GET_ANSWER_NUMBER,SubgoalFrame,Number,_,_).
 
+:- export subg_get_visitors_number/1.
+:- import writeln/1 from standard.
+subg_get_visitors_number(Subg):- 
+	get_call(Subg, SubgoalFrame,_),
+	get_visitors_number(SubgoalFrame,Number),
+	writeln(visitors_nbr(Subg,Number)),
+	fail.
+subg_get_visitors_number(_Subg).
+
 get_visitors_number(SubgoalFrame,Number):- 
 	table_inspection_function(GET_VISITORS_NUMBER,SubgoalFrame,Number,_,_).
 
@@ -768,10 +777,19 @@ load_forest_log(File):-
 	index(na/2,[2]),
 	index(ar/4,[2,3]),
 	index(at/2,[1,2]),
+%	index(cmp/3.[1,2]),
+	index(cmp/3.trie),
 	load_dync(File,a).
 
 get_scc_dumpfile(F):- 
 	table_inspection_function(GET_SCC_DUMPFILE,F,_,_,_).
+
+:- export check_variant/1,  check_variant/2. 
+check_variant(Term):- 
+	table_inspection_function(CHECK_VARIANT,Term,0,_,_).
+
+check_variant(Term,DontCares):- 
+	table_inspection_function(CHECK_VARIANT,Term,DontCares,_,_).
 
 end_of_file.
 
