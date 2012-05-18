@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.194 2011-12-05 15:00:44 dwarren Exp $
+** $Id: biassert.c,v 1.195 2012-05-18 20:35:41 tswift Exp $
 ** 
 */
 
@@ -3948,7 +3948,7 @@ xsbBool dynamic_code_function( CTXTdecl )
     //    printf("here %d %d %d\n",addr,psc,termType);
     if ( termType == T_DYNA ) {			             /* already dynamic */
       ctop_int(CTXTc 3,(Integer)get_prref(CTXTc psc));
-      //      printf("prref %d\n",get_prref(psc));
+      //      printf("psc %p prref %p\n",psc,get_prref(psc));
     }
     else if (termType == T_ORDI || termType == T_UDEF) {     /* undefined, it's first clause */
       SYS_MUTEX_LOCK( MUTEX_DYNAMIC);
@@ -3993,7 +3993,7 @@ xsbBool dynamic_code_function( CTXTdecl )
 /* Trie Assert and Retract                                       */
 /*===============================================================*/
 
-static inline CPtr trie_asserted_clref(CPtr prref)
+inline CPtr trie_asserted_clref(CPtr prref)
 {
   CPtr Clref;
 

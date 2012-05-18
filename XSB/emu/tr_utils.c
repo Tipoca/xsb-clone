@@ -4781,6 +4781,9 @@ extern void ctop_tag(CTXTdeclc int, Cell);
 
 FILE * fview_ptr;
 //----------------------------------------------------------------------
+extern CPtr trie_asserted_clref(CPtr);
+extern PrRef get_prref(CTXTdeclc Psc psc);
+
 int table_inspection_function( CTXTdecl ) {
   switch (ptoc_int(CTXTc 1)) {
 
@@ -4962,7 +4965,7 @@ case CALL_SUBS_SLG_NOT: {
       return FALSE;
     }
     else {
-    /* Return with conditional answer: propagate delay */
+    /* Return with conditional answer - propagate delay */
       if (IsNonNULL(consumerSF)) delay_negatively(consumerSF)
       else delay_negatively(producerSF);
       return TRUE;
@@ -5085,6 +5088,31 @@ case CALL_SUBS_SLG_NOT: {
     break;
   }
 
+
+  case CHECK_VARIANT: {
+    //    CPtr addr, val;
+    Psc psc;
+    Cell term, dont_cares;
+    PrRef prref;
+    BTNptr Paren, leaf;
+    term = ptoc_tag(CTXTc 2);
+    dont_cares = ptoc_int(CTXTc 3);
+    if (isconstr(term)) {
+      psc = get_str_psc(term);
+    }
+    else {
+      xsb_type_error(CTXTc "callable structure",term,"check_variant/[1,2]",1);
+    }
+    prref = get_prref(CTXTc psc);
+    // prref points to a clref which *then* points to the root of the trie.
+    Paren = (BTNptr)*(trie_asserted_clref((CPtr) prref) + 3);
+    //    printf("new psc %p, prref %p parent %p\n",psc,get_prref(CTXTc psc),Paren);
+    //    val = (CPtr) *(reg+2);
+    //    XSB_Deref_with_address(val,addr);
+    leaf = variant_trie_lookup(CTXTc Paren, get_arity(psc)-dont_cares, 
+				      clref_val(term)+1, NULL);
+    return (leaf != NULL);
+  }
 
   } /* switch */
   return TRUE;
