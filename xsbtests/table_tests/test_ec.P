@@ -47,6 +47,18 @@ p(0).
 
 
 %-----------
+% tests fix of a compiler bug.
+:- table zeno_3(_,max/3-0) as approximate(use_first(10)).
+
+zeno_3(_,0.5):- conset('_$zeno_3',1).
+zeno_3(A,X):- 
+	zeno_3(A,Y),
+	X is Y + 0.5*(1 - Y),
+	coninc('_$zeno_3',New),
+	writeln(zeno_3(A,New,X)).
+
+
+%-----------
 % tests a different path in the compiler
 
 :- table b/2, c/2.
@@ -71,6 +83,9 @@ test:- abolish_all_tables,fail.
 test:- zeno_1(_X),fail.
 test:- abolish_all_tables,fail.
 test:- zeno_2(_X),fail.
+test:- abolish_all_tables,fail.
+test:- zeno_3(a,_X),fail.
+test:- abolish_all_tables,fail.
 test:- a(X,Y),writeln(a(X,Y)),fail.
 test.
 

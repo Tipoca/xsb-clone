@@ -6,4 +6,10 @@ q(2, foo(a)) - scc(2).
 q(3, foo(a)) - scc(1).
 q(4, foo(a)) - scc(1).
 q(5, foo(a)) - scc(1).
+r(0,scc(a)) - scc(4)
+r(1,scc(a)) - scc(3)
+r(2,scc(a)) - scc(2)
+r(3,scc(a)) - scc(1)
+r(4,scc(a)) - scc(1)
+r(5,scc(a)) - scc(1)
 summary = p(A,B) - subgoals(6) - total_times_called(7) - total_answers(0).
