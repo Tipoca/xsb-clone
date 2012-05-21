@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: spec.P,v 1.10 2010-08-19 15:03:36 spyrosh Exp $
+** $Id: spec.P,v 1.11 2012-05-21 20:44:44 dwarren Exp $
 ** 
 */
 
@@ -228,8 +228,7 @@ umnl_chk(structure(Sym,Args), HeadArg) :-
 
 
 /*======================================================================*/
-/* merge_calls(+CallList, -MergedCallList)				*/
-/*	MergedList is a simplified version of CallList, where all calls	*/
+/* merge_calls(+CallList, -/*	MergedList is a simplified version of CallList, where all calls	*/
 /*	that select the same clauses are merged together.  This is done	*/
 /*	since all these calls can use the same specialisation of the	*/
 /*	predicate and the same representative.				*/
@@ -293,17 +292,22 @@ specialise([pi_calls(Sym,Calls,Representable)|PICs], SymTab, CLin, CLout) :-
 specialise_pred(Sym, Calls, Representable, SymTab, CLin, CLout) :-
 	sym_name(Sym, N, A),
 	( sym_type(Sym,tabled(_,_)) -> Tabled = 1 ; Tabled = 0 ),
-	( ( \+ option(spec_repr), Representable = 0
-	  ; non_overlapping_selection(Calls), Representable = 1
+	( ( \+sym_type(Sym,aggregation(_)),
+	    ( \+ option(spec_repr), Representable = 0
+	    ; non_overlapping_selection(Calls), Representable = 1
+	    )
 	  ) ->
 		message(('% Specialising partially instantiated calls to ',
 			 N, '/', A)),
 		'specialise pred'(Calls, N, A, Tabled, SymTab, CLin, CLout)
 	; CLout = CLin, Representable = 0,
-	  warning(('Calls select overlapping clause blocks of predicate ',
-		   N, '/', A)),
-	  message(('           ',
-		   '(specialisation with representation cannot be performed!)'))
+	  (sym_type(Sym,aggregation(_))
+	   ->	  message(('% specialization of aggregate predicate not performed: ',N,'/',A))
+	   ;	  warning(('Calls select overlapping clause blocks of predicate ',
+			   N, '/', A)),
+	   	  message(('           ',
+		    '(specialisation with representation cannot be performed!)'))
+	  )
 	).
 
 :- mode 'specialise pred'(+,+,+,+,?,?,?).
@@ -605,7 +609,7 @@ singleton_special_call([CArg|CArgs], [HArg|HArgs], Body, SpecCall) :-
 
 new_clause_list([], CL, CL).
 new_clause_list([pi_calls(Sym,Calls,Representable)|PICs], CLin, CLout) :-
-	( ( \+ option(spec_repr) ; Representable =:= 1 ) ->
+	( \+sym_type(Sym,aggregation(_)), ( \+ option(spec_repr) ; Representable =:= 1 ) ->
 		'new clause list'(Calls, Sym, Representable, CLin, CLmid)
 	; CLmid = CLin
 	),
