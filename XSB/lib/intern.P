@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.P,v 1.37 2011-05-12 18:53:35 tswift Exp $
+** $Id: intern.P,v 1.38 2012-05-22 12:39:59 tswift Exp $
 ** 
 */
 
@@ -196,8 +196,9 @@ trie_drop(Tid):-
 	(integer(Tid) -> 
 	    i_trie_drop(Tid)
         ;  (atom(Tid) -> 
-	       get_trie_alias_error(Tid,Tid_1,trie_drop/2,1),
-	       i_trie_drop(Tid_1)
+		get_alias(Tid,TRIE_ALIAS,Tid_1) ->
+		remove_alias(Tid,TRIE_ALIAS,Tid_1),
+		i_trie_drop(Tid_1)
 	    ;   (var(Tid) -> 
 	           instantiation_error(trie_drop/2,1,ground)
 	        ;  domain_error(trie_or_alias,Tid,trie_drop/2,1,'') ) ) ).

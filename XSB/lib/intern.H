@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: intern.H,v 1.12 2011-05-12 18:53:35 tswift Exp $
+** $Id: intern.H,v 1.13 2012-05-22 12:40:00 tswift Exp $
 ** 
 */
 
@@ -48,7 +48,7 @@
 :- import dynamic_code_function/5 from machine.
 :- import domain_error/5, type_error/4, check_atom/3, check_nonvar/3, check_var/3, 
    permission_error/4, instantiation_error/3, existence_error/4  from error_handler.
-:- import add_aliases_flag_error/4, get_alias/3 from file_io.
+   :- import add_aliases_flag_error/4, get_alias/3, remove_alias/3 from file_io.
 
 %%%:- import buff_word/3, buff_set_word/3  from machine.
 
