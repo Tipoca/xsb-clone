@@ -838,7 +838,8 @@ int compare(CTXTdeclc const void * v1, const void * v2)
         else if (isofloat(val2)) 
           return sign(boxedfloat_val(val1) - ofloat_val(val2));
         else return -1; 
-    } else if (cell_tag(val2) != XSB_STRUCT && cell_tag(val2) != XSB_LIST) return 1;
+    } else if ((cell_tag(val2) != XSB_STRUCT && cell_tag(val2) != XSB_LIST)
+	       || isboxedinteger(val2) || isboxedfloat(val2))  return 1;
     else {
       int arity1, arity2;
       Psc ptr1 = get_str_psc(val1);
