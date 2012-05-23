@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.95 2012-05-11 15:51:45 tswift Exp $
+** $Id: debug_xsb.c,v 1.96 2012-05-23 14:21:19 dwarren Exp $
 ** 
 */
 
@@ -103,7 +103,11 @@ static void print_term(FILE *fp, Cell term, byte car, long level)
         return;
     }
     psc = get_str_psc(term);
-    fprintf(fp, "%s", get_name(psc));
+    if (quotes_are_needed(get_name(psc))) {
+      fprintf(fp, "'%s'", get_name(psc));
+    } else {
+      fprintf(fp, "%s", get_name(psc));
+    }
     arity = get_arity(psc);
     if ( arity == 0 )   /* constant */
       return;
@@ -118,7 +122,11 @@ static void print_term(FILE *fp, Cell term, byte car, long level)
     fprintf(fp, ")");
     return;
   case XSB_STRING:
-    fprintf(fp, "'%s'", string_val(term));
+    if (quotes_are_needed(string_val(term))) {
+      fprintf(fp, "'%s'", string_val(term));
+    } else {
+      fprintf(fp, "%s", string_val(term));
+    }
     break;
   case XSB_INT:
     fprintf(fp, "%" Intfmt, (Integer)int_val(term));
