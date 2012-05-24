@@ -180,6 +180,33 @@ yes
 
 \end{example}
 
+\section{Space Management for Tries}~\label{sec:trie-gc}
+%
+When creating or adding terms to an interned trie, XSB manages all
+space necessary for the terms and their indexes.  However, when
+removing a term from a trie an issue may arise if there is a
+possibility of backtracking into the term to be removed; this issue
+also arises for retracting dynamic code.  In the sequential engine and
+in private tries XSB's dynamic clause garbage collector handles space
+reclamation when terms are removed from a trie through {\tt
+  trie\_delete/2} or similar low-level predicates.  However, in the
+case of {\tt trie\_truncate/1} or {\tt trie\_drop/1}, an exception is
+thrown if there are active choice points to terms in a trie that is to
+be truncated or dropped.
+
+In the multi-threaded engine the space reclamation problem becomes
+even more difficult for tries that can be shared among threads.  In
+this case, no garbage collection is performed until there is a single
+active thread.  
+
+These space reclamation issues arise for non-associative tries only.
+Associative triesessentially contain key-value pairs, and so may have
+their space reclaimed upon deletion of a term, or upon truncation or
+dropping their trie, regardless of the number of active
+threads~\footnote{Future versions of XSB may extend garbage collection
+  to handle trie truncation, trie dropping and better space
+  reclamation in the multi-threaded engine.}.
+
 \section{Predicates for Tries} 
 %
 The following subsections describe predicates for inserting terms into
@@ -381,6 +408,8 @@ preicate fails.
 Removes all terms from {\tt TrieIdOrAlias}, but does not change any of
 its properties (e.g. the type of the trie or its aliases).  
 
+@@
+
 {\bf Error Cases}
 \bi
 \item 	{\tt TrieIdOrAlias} is a variable
@@ -390,6 +419,11 @@ its properties (e.g. the type of the trie or its aliases).
 \item 	{\tt TrieIdOrAlias} is not a trie id or alias
 \bi
 \item 	{\tt domain\_error(trie\_id\_or\_alias,TrieIdOrAlias)}
+\ei
+\item There are active failure continuations to terms in {\tt
+  TrieIdOrAlias}
+\bi
+\item 	{\tt miscellaneous\_error}
 \ei
 \ei
 
@@ -409,7 +443,12 @@ type and any aliases the trie may have.
 \bi
 \item 	{\tt domain\_error(trie\_id\_or\_alias,TrieIdOrAlias)}
 \ei
+\item There are active failure continuations to terms in {\tt
+  TrieIdOrAlias}
+\bi
+\item 	{\tt miscellaneous\_error}
 \ei
+ \ei
 
 \ourmoditem{trie\_bulk\_insert(+TrieIdOrAlias,+Generator)}{trie\_bulk\_insert/2}{intern}
 % 
@@ -677,7 +716,7 @@ returning a vector of variables in {\tt Skel}.
 handle {\tt Leaf}, as obtained from {\tt trie\_intern/[2,4]} or {\tt
   trie\_interned/[2,4]}.  Space is reclaimed for the term only if it
 is safe to do so -- if there are no failure continuations that may
-consume the term.
+consume the term (cf. Section~\ref{sec:trie-gc}).
 
 {\tt trie\_unintern\_nr/2} does not perform space reclamation and as a
 result requires no garbage collection -- it simply marks a term as
