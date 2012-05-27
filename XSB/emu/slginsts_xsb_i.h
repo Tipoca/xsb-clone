@@ -378,7 +378,7 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
     }
     else sprintf(bufferb,"null");
-    fprintf(fview_ptr,"tc(%s,%s,comp,%d).\n",buffera,bufferb,ctrace_ctr++);
+    fprintf(fview_ptr,"tc(%s,%s,cmp,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
     /* Unify Call with Answer Trie
        --------------------------- */
