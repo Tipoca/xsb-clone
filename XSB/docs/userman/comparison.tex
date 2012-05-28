@@ -342,26 +342,29 @@ collection, or other reasons.
 	Argument 1 of {\tt sort/2} is a variable or is not a proper list.
     \end{description}
 
-\standarditem{keysort(+L1, ?L2)}{keysort/2}
-    The list {\tt L1} must consist of elements of the form \verb'Key-Value'.
-    These elements are sorted into order according to the value of {\tt Key},
-    yielding the list~{\tt L2}.  The elements of list {\tt L1} are scanned
-    from left to right.  Unlike {\tt sort/2}, in {\tt keysort/2} no
-    merging of multiple occurring elements takes place.  The time to perform
-    the sorting is $O(n log n)$ where $n$ is the length of list {\tt L1}.  
-    Note that the elements of {\tt L1} are sorted only according to the
-    value of {\tt Key}, not according to the value of {\tt Value}.  The 
-    sorting of elements in {\tt L1} is not guaranteed to be stable.
+\standarditem{keysort(+L1, ?L2)}{keysort/2} 
+%
+The list {\tt L1} must consist of elements of the form
+\verb'Key-Value'.  These elements are sorted into order according to
+the value of {\tt Key}, yielding the list~{\tt L2}.  The elements of
+list {\tt L1} are scanned from left to right.  Unlike {\tt sort/2}, in
+{\tt keysort/2} no merging of multiple occurring elements takes place.
+The time to perform the sorting is ${\cal O}(n \log n)$ where $n$ is the
+length of list {\tt L1}.  Note that the elements of {\tt L1} are
+sorted only according to the value of {\tt Key}, not according to the
+value of {\tt Value}.  The sorting of elements in {\tt L1} is not
+guaranteed to be stable in the presence of uninstantiated variables..
 
-    Examples:
+{\bf    Example:}
     {\footnotesize
      \begin{verbatim}
                 | ?- keysort([3-a,1-b,2-c,1-a,3-a], L).
 
-                L = [1-b,1-a,2-c,3-a,3-a];
+                L = [1-b,1-a,2-c,3-a,3-a]
 
-                no \end{verbatim}}
-     Exceptions: 
+                yes
+     \end{verbatim}}
+{\bf Error Cases:}
 \begin{description} 
 \item[{\tt instantiation\_error}]
      {\tt L1} {\tt keysort/2} is a variable or is not a proper
@@ -397,7 +400,7 @@ collection, or other reasons.
     guaranteed to be stable. {\tt parsort/4} must be imported from
     module {\tt machine}.
 
-    Examples:
+{\bf     Example:}
     {\footnotesize
      \begin{verbatim}
             | ?- parsort([f(3,1),f(3,2),f(2,1),f(2,2),f(1,3),f(1,4),f(3,1)],

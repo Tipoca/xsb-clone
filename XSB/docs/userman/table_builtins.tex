@@ -1247,7 +1247,11 @@ all subgoals in a given SCC depend on one another~\footnote{This
   assumes that there is no early completion, which can remove
   dependencies. In batched evaluation, the dependencies are less exact
   -- see \cite{SaSw98} for details, as SCCs represent a dag of
-  dependencies rather than a chain as in local evaluation.}.
+  dependencies rather than a chain as in local evaluation.}.  As its
+name implies, {\tt print\_incomplete\_tables/[0,1]} print out SCC
+information only for incomplete tables; for full information about the
+SCCs of a computation, forest logging must be used
+(cf. Section~\ref{sec:forest-trace}).
 
 In {\tt print\_incomplete\_tables/0}, the information is output to
 {\tt stdout}.

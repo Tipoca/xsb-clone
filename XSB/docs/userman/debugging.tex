@@ -1,4 +1,4 @@
-\chapter{Debugging} \label{debugging}
+\chapter{Debugging and Profiling} \label{debugging}
 %====================================
 \index{debugger}
 \index{tracing|(}
@@ -304,26 +304,27 @@ before the moment when XSB shows its first prompt.
 
 \section{Analyzing the Execution of Tabled Programs} \label{sec:forest-trace}
 %
-The sort of tracing and debugging described in previous sections has
-proven useful for Prolog programs for 30 or more years.  However, when
+The tracing and debugging described in previous sections has proven
+useful for Prolog programs for 30 or more years.  However, when
 tabling is added to Prolog, things change.  First, as described in
 Chapter~\ref{chap:TablingOverview}, tabling can be used to find the
 least fixed point of mutually recursive predicates.  Operationally,
 this requires the ability to suspend one computation path and to
-resume another.  The addition of tabled negation for the well-founded
-semantics also requires the ability to delay negative goals whose only
-proof may be involved in a loop through negation and to simplify these
-goals once their truth value has become known. Furthermore, a tabled
-subgoal has different states: it may be {\em new}; it may be {\em
-  incomplete} so that new answers might be derived for it; or {\em
-  completed} so that the answers may simply be read from the table.
-In short, tabling, which can execute much more general programs than
-Prolog and can use the stronger well-founded semantics, requires a
-more complex set of operations than Prolog's SLDNF so that debugging
-and tracing is correspondingly more complex.  Thus, while the 4-port
-debugger may be useful for programs that involve just a few tabled
-predicates, it may not be useful for programs that heavily use tabling
-for complex recursions, non-monotinic reasoning or other purposes.
+resume another.  Second, the addition of tabled negation for the
+well-founded semantics requires the ability to delay negative goals
+whose only proof may be involved in a loop through negation and to
+simplify these goals once their truth value has become
+known. Furthermore, a tabled subgoal has different states: it may be
+{\em new}; it may be {\em incomplete} so that new answers might be
+derived for it; or {\em completed} so that the answers may simply be
+read from the table.  In short, tabling, which can execute much more
+general programs than Prolog and which can use the stronger
+well-founded semantics, requires a more complex set of operations than
+Prolog's SLDNF.  Accordingsly, debugging and tracing is
+correspondingly more complex.  Thus, while Prolog's 4-port debugger
+may be useful for programs that involve just a few tabled predicates,
+it may not be useful for programs that heavily use tabling for complex
+recursions, non-monotinic reasoning or other purposes.
 
 There is currently no standard approach to debugging tabled programs.
 One possible approach would be to extend the 4-port debugger to
@@ -456,6 +457,7 @@ Currently, \ctrace{} captures the following actions.
   that value is not used for a completion fact of any subgoal not in
   $\cS$.
 %
+\index{early completion of subgoals}
 \item When a subgoal $\cS$ is {\em early completed}, i.e. it is
   determined that no more answers for $S$ are possile or are desired a
   fact of the form {\tt cmp(S,ec,Counter)} is logged.  If $S$ belonged
@@ -575,8 +577,267 @@ declarations can greately improve query time.  The simple predicate,
 
 \index{tracing|)}
 
+\subsection{Analyzing the log; seeing the forest through the trees} \label{sec:forest-log-anal}
+%
+As previously described, forest logging is based on the formal
+operational semantics of SLG, and as a result the log can be analyzed
+to query any result that can be modelled by the theory.  But despite
+the power of forest logging, it can be difficult to use.  Not all
+users have the background to fully understand the operational
+semantics of SLG.  Even those users with a formal background may find
+it difficult to write efficient analysis routines for logs of large
+computations~\footnote{I find it difficult myself!}.  Accordingly, XSB
+provides routines that analyze logs and display information about a
+computation.  These routines can answer many questions about a
+computation and can provide the starting point for further
+exploration.  We introduce these routines via an extended example.
 
+\begin{example} \rm \label{ex:scc-anal}
+%
+This example arises from the actual use of forest logging to
+understand a Flora-2 computation, in which the Cyc reasoner
+(cf. http://www.cyc.com) was translated into Silk
+(cf. http://silk.semwebcentral.org) and used to answer various
+questions in biology.  Silk itself compiles into Flora=2~\cite{YaKZ05}
+which in turn compiles into XSB~\footnote{This example was run in 2012
+  using a 64-bit server with a large amount of RAM.}.  After
+translation, query answering took more resources than expected, and
+users wanted to determine why.  Using the features of \version{}, the
+first step is to call {\tt statistics/0} at the end of the
+computation.  The statistics indicated that the computation took about
+30 seconds of CPU time and 300 megabytes of table space, while XSB's
+trail had allocated over 1 gigabyte of space.  The call to {\tt
+  statistics/0} also showed the following information:
+%
+\begin{verbatim}
+  8678944 variant call check/insert ops: 615067 producers, 8063877 variants.
+  317346 answer check/insert ops: 304899 unique inserts, 12447 redundant.
+\end{verbatim}
+In other words, there were nearly 10 million tabled subgoals that were
+called, indicating that this computation was heavily tabled (a
+characteristic of most Flora-2 comptuations), It also shows that the
+average number of answers per tabled subgoal is rather small.
 
+This basic information leads to several questions.  Why were there so
+many tabled subgoals?  Did the tabling have anything to do with the
+large amount of choice-point/trail space that was allocated?  Which
+tabled subgoals had answers?  How many times did a given tabled
+predicate call another tabled predicate?
+
+\index{\texttt{table\_dump/2}}\index{\texttt{table\_dump/3}} Some of
+these questions can be answered by {\tt table\_dump/[2,3]}:
+particularly what tabled subgoals were called, and which had answers.
+However {\tt table\_dump/[2,3]} cannot provide other information, such
+as the dependencies of given tabled subgoals on other tabled subgoals.
+From a formal perspective, {\tt table\_dump/[2,3]} does not allow a
+user to analyze an entire SLG forest: only the ``table'', i.e., the
+subgoals in the forest and the set of its answers.  Indeed, from an
+implementational level the table omits the order of answers (which
+would mean the table would have to maintain a bag rather than a set)
+as well as that of all other nodes; and the table omits any
+information about interior nodes or completion information.  Such
+information is useful in analyzing most computations, but is
+especially important in Flora-2 computations such as this one, that
+make heavy use of HiLog.  This use of HiLog means that the
+dependencies of tabled predicates on one another is not at all
+obvious, and may not easily be determined by static analysis.
+
+The next step, therefore, in analyzing this computation is to rerun it
+with forest logging.  For this computation forest logging has no
+impact on memory usage, but increases the time of the computation from
+about 30 seconds to about 52 seconds --- around 73\% in other words.
+It is worthwhile noting that the actual overhead of forest logging
+varies depending on how heavily the computation is tabled.  The log
+itself had slightly over 14 million entries which were loaded into XSB
+via {\tt load\_forest\_log/1}.  The log took about 140 seconds to load
+and about 7.8 Gbytes of space for the log facts and their multiple and
+trie indexes~\footnote{The load time for this example, about 100,000
+  facts/second is typical for 2012 CPUs; the size of the loaded code
+  is larger than usual, due in part to the expansion in size caused by
+  the HiLog encoding.}.
+
+The easiest way to start the analysis is to ask the query {\tt ?-
+  forest\_logl\_overview}, which for this example gives:
+%
+\begin{verbatim}
+There were 613496 subgoals in 463330 (completed) SCCs.  
+93918 subgoals were early-completed.  
+0 subgoals were not completed in the log.
+There were a total of 8670043 tabled subgoal calls:
+    613496 were calls to new subgoals
+    4467747 were calls to incomplete subgoals
+    3588800 were calls to complete subgoals
+
+Number of SCCs with 1 subgoals is 463322
+Number of SCCs with 4 subgoals is 1
+Number of SCCs with 7 subgoals is 1
+Number of SCCs with 52 subgoals is 1
+Number of SCCs with 110 subgoals is 4
+Number of SCCs with 149671 subgoals is 1
+\end{verbatim}
+%
+\index{early completion of subgoals} 
+%
+The overview extends the information shown by {\tt
+  statistics/0}.  First, the total number of completed and
+non-completed SCCs is given along with a count of how many of the
+completed subgoals were early completed.  Information about
+non-completed SCCs is useful, since the forest log may be analyzed for
+a computation that does not terminate.  Since this computation did
+terminate, all subgoals in the log were completed~\footnote{The slight
+  difference between the number of subgoals shown here and the number
+  shown by {\tt statistics/0} is due to the use of tabling in the
+  Flora compiler.}.  Note that there is also a breakdown of calls to
+tabled subgoals that distinguishes whether the tabled subgoal was new,
+completed, or incomplete.  Recall that calls to completed tabled
+subgoals essentialy treat the answers in the table as facts, so that
+these calls are efficient.  Making a call to an incomplete subgoals on
+the other hand means that the calling and called subgoals are mutually
+recursive~\footnote{This statement is true in local evaluation but not
+  in batched evaluation.} and execution of recursive sets of subgoals
+can be expensive, especially in terms of space.
+
+Finally, the overview report provides the distributions of tabled
+subgoals across SCCs.  While most of the SCCs were small there was a
+large one, with nearly 150,000 mutually dependent subgoals.  Clearly
+the large SCC should be examimed.  The first step is to obtain its
+index.  The query
+%
+\begin{verbatim}
+get_scc_length(scc(S,Index)), Index > 1000.
+\end{verbatim}
+%
+returns the information that the index of the large SCC was 39.  The
+query {\tt analyze\_an\_scc(39)} then provides the following
+information.
+%
+\begin{verbatim}
+There are 149671 subgoals and 4461290 links (average of 30.8073 edges per subgoal) 
+      within the SCC
+
+There are 2 subgoals in the SCC for the predicate backchainForbidden / 0
+There are 2 subgoals in the SCC for the predicate 
+                   http://www.cyc.com/silk/implementation/transformationPredicate / 0
+:
+There are 15613 subgoals in the SCC for the predicate gpLookupSentence / 3
+There are 15613 subgoals in the SCC for the predicate removalSentence / 3
+There are 18770 subgoals in the SCC for the predicate forwardSentence / 3
+There are 18771 subgoals in the SCC for the predicate lookupSentence / 3
+
+Calls from assertedSentence/3 to lookupSentence/3 : 32
+Calls from backchainForbidden/0 to 'http://www.cyc.com/silk/implementation/transformationPredicate'/0 : 2
+:
+Calls from transformationSentence/2 to sbhlSentence/3 : 5479
+Calls from tvaSentence/3 to removalSentence/3 : 7695
+\end{verbatim}
+%
+It is evident from the first line in this report that the vast
+majority of the calls to incomplete tables during this computation
+occur in the SCC under investigation.  Since information on incomplete
+tables is kept in XSB's choice point stack (cf. \cite{SaSw98}), the
+evaluation of SCC 39 is the likely culprit behind the large amount of
+stack space required.  The subgoals in the SCC are first broken out by
+their predicate name and arity, then the edges within the SCC are
+broken out by the predicates of their caller and called subgoals.  At
+this point a programmer can review the various rules for {\tt
+  lookupSentence/3}, {\tt forwardSentence/3} and other predicates to
+determine whether the recursion is intended and if so, whether it can
+be simplified.
+%
+\end{example}
+
+\subsubsection{Using abstraction in the analysis}
+%
+Within the SCC analysis, information about a given tabled subgoal $S$
+was abstracted to the functor and arity of $S$.  For this example,
+abstraction was necessary, as reporting 150,000 subgoals or 4,000,000+
+would not provide useful information for a human being.  However, it
+could be the case that seeing the tabled subgoals themselves would be
+useful for a smaller SCC.  Even for an SCC of this size, different
+levels of abstraction could be useful: mode information or type
+information might be useful in a given circumstance.  
+
+\begin{example} \label{ex:moded-scc-anal} \rm
+%
+Making the call {\tt ?-
+  analyze\_an\_scc(39,userout,abstract\_modes(\_,\_)} applies the
+predicate {\tt abstract\_modes/2} to each term, producing an output of
+the form:
+%
+\begin{verbatim}
+There are 149671 subgoals and 4461290 links (average of 30.8073 edges per subgoal) 
+           within the SCC
+
+There are 3 subgoals in the SCC for the predicate backchainRequired(g,g)
+There are 2 subgoals in the SCC for the predicate backchainForbidden(g,g)
+:
+There are 29254 subgoals in the SCC for the predicate gpLookupSentence(g,g)
+There are 29254 subgoals in the SCC for the predicate removalSentence(g,g)
+
+Calls from assertedSentence(g,g) to lookupSentence(g,g) : 10
+Calls from assertedSentence(m,g) to lookupSentence(m,g) : 22
+:
+Calls from transformationSentence(m,g) to sbhlSentence(m,g) : 741
+Calls from tvaSentence(g,g) to removalSentence(g,g) : 7695
+\end{verbatim}
+%
+{\tt abstract\_modes(In,Out)} simply goes through each argument of
+{\tt In} and unifies the corresponding argument of {\tt Out} with a
+{\tt v} if the argument is a variable, a {\tt g} if the argument is
+ground, and {\tt m} otherwise.  
+\end{example}
+%
+{\tt abstract\_modes/2} is simply an example: any term-abstraction
+predicate may be passed into the last argument of {\tt
+  analyze\_an\_scc/3}~\footnote{Because of the special representation
+  of Flora-2 terms, abstraction was used to produce the output of
+  Example~\ref{ex:moded-scc-anal}, while a more sophisticated version
+  of {\tt abstract\_modes/2} was used in
+  Example~\ref{ex:moded-scc-anal}.}.
+
+\subsection{Discussion}
+%
+Using log forest imposes a relatively minimal overhead on computation,
+considering the information it can provide, and loading and analysis
+is relatively quick.  For this example, the top level analysis took
+around 10 seconds, and analysing SCC 39 took about 20 seconds in
+Example~\ref{ex:scc-anal} and about 60 seconds in
+Example~\ref{ex:moded-scc-anal}.  
+
+\subsection{Predicates for Forest Logging}
+
+\begin{description}
+\ourmoditem{forest\_log\_overview}{forest\_log\_overview/0}{tables}
+%
+Provides an overview of subgoals, calls, and SCCs in the forest log as
+indicated in Section~\ref{sec:forest-log-anal}.
+
+\ourmoditem{get\_scc\_length(?Index,?Length)}{get\_scc\_length/3}{tables}
+%
+This simple predicate  determines the indices of SCCs
+whose length is {\tt Length}, for user in {\tt analyze\_an\_scc/[2,3]}.
+
+\ourrepeatmoditem{analyze\_an\_scc(+Index,+File)}{analyze\_an\_scc/2}{tables}
+\ourmoditem{analyze\_an\_scc(+Index,+File,+Abstraction)}{analyze\_an\_scc/3}{tables}
+%
+These predicates can be used to analyze the SCC indexed by {\tt Index}
+in a forest log, as explained in Section~\ref{sec:forest-log-anal}.
+The output is written to {\tt File}; calling the predicate with {\tt
+  File} set to {\tt userout} causes the output to be written to the
+console.  In {\tt analyze\_an\_scc/2}, tabled subgoals are abstracted
+to predicate indicators, in {\tt analyze\_an\_scc/3}, a two-ary
+abstraction predicate in {\tt usermod} is called.
+
+Error conditions on {\tt File} are the same as {\tt tell/1}.
+
+\ourmoditem{abstract\_modes(Term,AbstractedTerm)}{abstract\_modes/2}{usermod}
+%
+{\tt abstract\_modes(In,Out)} simply goes through each argument of
+{\tt Term} and unifies the corresponding argument of {\tt Abstracted}
+with a {\tt v} if the argument is a variable, a {\tt g} if the
+argument is ground, and {\tt m} otherwise.
+
+\end{description}
 
 %%% Local Variables: 
 %%% mode: latex
