@@ -841,7 +841,7 @@ total_noncompleted_subgoals(0).
 %----------------
 
 report_sccs:- 
-	setof(scc(Len,SCC),get_scc_length(scc(SCC,Len)),SCCs),
+	setof(scc(Len,SCC),get_scc_length(SCC,Len),SCCs),
 	bagof(SCC,member(scc(Len,SCC),SCCs),LenList),
 	length(LenList,Length),
 	write('Number of SCCs with '),write(Len),write(' subgoals is '),writeln(Length),
@@ -849,7 +849,7 @@ report_sccs:-
 	fail.
 report_sccs.
 
-get_scc_length(scc(SCC,Len)):- 
+get_scc_length(SCC,Len):- 
 	bagof(Goal,Ctr^(cmp(Goal,SCC,Ctr),SCC \== ec),Goals),
 	length(Goals,Len).
 %	writeln(scc(SCC,Len)),
