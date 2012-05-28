@@ -89,13 +89,8 @@
 :- export early_complete_on_delta/4.
 
 :- export '_$$get_returns'/3.
+:- export analyze_an_scc/2, analyze_an_scc/3, forest_log_overview/0.
 
-:- import findall/3
-     from setof.
-:- import add_trie_index/1, mpa_to_skel/2
-     from file_op.
-:- import copy_term/2, member/2
-     from basics.
 :- import
 	(dynamic)/1,
 	retract/1, retract_nr/1, retractall/1,
@@ -103,6 +98,14 @@
 	t_assert/2,
 	t_assert_2/2
    from assert.
+
+:- import copy_term/2, member/2
+     from basics.
+:- import  member/2, length/2 from basics.
+
+:- import set_prolog_flag/2 from curr_sym.
+:- import load_dync/2 from consult.
+
 :- import
 	domain_error/5, check_nonvar/3, type_error/4, table_error/1, 
 	%%instantiation_error/2,
@@ -110,6 +113,9 @@
    from error_handler.
 
 :- import check_open_stream_or_alias/5 from file_io.
+:- import add_trie_index/1, mpa_to_skel/2
+     from file_op.
+:- import format/2 from format.
 
 :- import abolish_table_info/0, delete_attributes/1, 
    table_inspection_function/5, table_inspection_function/7,
@@ -117,17 +123,22 @@
    from machine.
 :- import psc_set_incr/2 from machine.
 :- import term_new_mod/3 from machine.
+:- import term_arg/3, parsort/4 from machine.
 
 :- import numbervars/3, unnumbervars/2
      from num_vars.
+
+:- import setof/3, bagof/3 from setof.
+:- import findall/3
+     from setof.
+
 :- import
 	(=..)/2, abort/1, call/1,
 	functor/3, is_attv/1, tcall/1,
 	(index)/2
    from standard.
+:- import call_c/1,nl/0,write/1, tell/1, told/0, '\='/2, arg/3 from standard.
 
 :- import invalidate_table_for/2 from usermod.
-:- import set_prolog_flag/2 from curr_sym.
-:- import load_dync/2 from consult.
 
 /* ------------------- end of file tables.H --------------------------- */

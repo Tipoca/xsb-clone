@@ -729,6 +729,22 @@ print_incomplete_tables(Stream):-
 	check_open_stream_or_alias(Stream,print_incomplete_tables/1,1,output,Stream1),
 	table_inspection_function(PRINT_COMPLETION_STACK,Stream1,_,_,_).
 
+get_scc_dumpfile(F):- 
+	table_inspection_function(GET_SCC_DUMPFILE,F,_,_,_).
+
+:- export check_variant/1,  check_variant/2. 
+check_variant(Term):- 
+	table_inspection_function(CHECK_VARIANT,Term,0,_,_).
+
+check_variant(Term,DontCares):- 
+	table_inspection_function(CHECK_VARIANT,Term,DontCares,_,_).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Forest Logging
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+:- import ensure_loaded/1 from consult.
+:- ensure_loaded(term_abstract).
+
 log_all_forest_start :-
 	start_forest_view(userout).
 
@@ -773,23 +789,217 @@ stop_forest_view:-
 	set_prolog_flag(ctrace,off).
 
 load_forest_log(File):- 
-	index(tc/3,[1,2]),
+	index(tc/4,[*(1),*(2)]),
 	index(na/2,[2]),
 	index(ar/4,[2,3]),
-	index(at/2,[1,2]),
-%	index(cmp/3.[1,2]),
-	index(cmp/3.trie),
+	index(ta/2,[1,2]),
+%	index(cmp/3,[*(1),2]),
+	index(cmp/3,trie),
 	load_dync(File,a).
 
-get_scc_dumpfile(F):- 
-	table_inspection_function(GET_SCC_DUMPFILE,F,_,_,_).
+:- import tc/4, cmp/3 from usermod.
 
-:- export check_variant/1,  check_variant/2. 
-check_variant(Term):- 
-	table_inspection_function(CHECK_VARIANT,Term,0,_,_).
+forest_log_overview:- 
+	total_subgoals(TotSubg),total_sccs(TotSCCs),
+	format("There were ~1D subgoals in ~1D (completed) SCCs.~n",[TotSubg,TotSCCs]),
+	count_ecs(Len),
+	format("   ~1D subgoals were early-completed.~n",[Len]),
+	total_noncompleted_subgoals(NonComp),
+	format("   ~1D subgoals were not completed in the log.~n",[NonComp]),
+	count_calls(Calls,New,Incomplete,Completed),
+	format("   There were a total of ~1D tabled subgoal calls:~n",[Calls]),
+	format("      ~1D were calls to new subgoals~n",[New]),
+	format("      ~1D were calls to incomplete subgoals~n",[Incomplete]),
+	format("      ~1D were calls to complete subgoals~n",[Completed]),
+	nl,
+	report_sccs.
 
-check_variant(Term,DontCares):- 
-	table_inspection_function(CHECK_VARIANT,Term,DontCares,_,_).
+count_calls(Calls,New,Incomplete,Complete):- 
+	findall(1,tc(_,_,_,_),CallList),length(CallList,Calls),
+	findall(1,tc(_,_,new,_),NewList),length(NewList,New),
+	findall(1,tc(_,_,incmp,_),IncmpList),length(IncmpList,Incomplete),
+	findall(1,tc(_,_,comp,_),CmpList),length(CmpList,Complete).
+
+count_ecs(Len):- 
+	findall(1,cmp(_,ec,_),L),
+	length(L,Len).
+
+total_sccs(N):-
+	setof(SCC,Term^Ctr^(cmp(Term,SCC,Ctr),SCC \= ec),SCClist),
+	length(SCClist,N).
+
+total_subgoals(N):-
+	setof(Ctr,Term^SCC^(cmp(Term,SCC,Ctr),SCC \= ec),Goallist),
+	length(Goallist,N).
+
+total_noncompleted_subgoals(N):- 
+	setof(Ctr1,S1^S2^(tc(S1,S2,new,Ctr1),
+	                 \+ check_variant(cmp(S1,_SCC,_Ctr2),2)),Goallist),!,	
+	length(Goallist,N).
+total_noncompleted_subgoals(0).
+
+%----------------
+
+report_sccs:- 
+	setof(scc(Len,SCC),get_scc_length(scc(SCC,Len)),SCCs),
+	bagof(SCC,member(scc(Len,SCC),SCCs),LenList),
+	length(LenList,Length),
+	write('Number of SCCs with '),write(Len),write(' subgoals is '),writeln(Length),
+%	writeln(scc(Len,Length)),
+	fail.
+report_sccs.
+
+get_scc_length(scc(SCC,Len)):- 
+	bagof(Goal,Ctr^(cmp(Goal,SCC,Ctr),SCC \== ec),Goals),
+	length(Goals,Len).
+%	writeln(scc(SCC,Len)),
+%	fail.
+
+%----------------
+
+analyze_an_scc(Scc,File):-
+	count_subgoals_in_scc(Scc,Subgoals),
+	count_backlinks_in_scc(Scc,Links),
+	Density is (Subgoals+Links)/Subgoals,
+	format("There are ~1D subgoals and ~1D links (average of ~f edges per subgoal) within the SCC~n",[Subgoals,Links,Density]),
+	nl,count_preds(Scc),
+	nl,report_links(Scc,File).
+
+analyze_an_scc(Scc,File,Abstraction):-
+	count_subgoals_in_scc(Scc,Subgoals),
+	count_backlinks_in_scc(Scc,Links),
+	Density is (Subgoals+Links)/Subgoals,
+	format("There are ~1D subgoals and ~1D links (average of ~f edges per subgoal) within the SCC~n",[Subgoals,Links,Density]),
+	nl,count_preds(Scc,Abstraction),
+	nl,report_links(Scc,File,Abstraction).
+
+count_subgoals_in_scc(Scc,Num):-
+	findall(1,cmp(_T,Scc,_),Ones),
+	length(Ones,Num).
+
+count_backlinks_in_scc(SCC,Dens):-
+	findall(1,backlink_in_scc(_,SCC),Ones),
+	length(Ones,Dens).
+
+backlink_in_scc(T1,Scc):- 
+	tc(T1,_T2,incmp,_),check_variant(cmp(T1,Scc,_),1).
+
+%----------------
+
+count_preds(S):- 
+	setof(pred(C,P),count_preds_1(S,P,C),Preds),
+	member(pred(C,P),Preds),
+	format("There are ~1D subgoals in the SCC for the predicate ",[C]),
+	P = F/A,
+	write(F),write('/'),writeln(A),
+%	writeln(Thre are pred(P,C)),
+	fail.
+count_preds(_).
+
+count_preds(S,Abstraction):- 
+	setof(pred(C,P),count_preds_1(S,P,C,Abstraction),Preds),
+	member(pred(C,P),Preds),
+	format("There are ~1D subgoals in the SCC for the predicate ~q~n",[C,P]),
+	fail.
+count_preds(_,_).
+
+count_preds_1(S,F/A,C):- 
+	bagof(F1/A1,Term^Ctr^(cmp(Term,S,Ctr), 
+  	             get_functor(Term,F/A),
+		     F1 = F,A1 = A),
+	        Fs),
+	length(Fs,C).
+
+count_preds_1(S,New,C,Abstraction):- 
+	bagof(New1,Term^Ctr^(cmp(Term,S,Ctr), 
+	                     abstract_term(Term,New,Abstraction),
+	                     New = New1),
+	      As),
+	length(As,C).
+
+abstract_term(Term,Abs,Abstraction):-
+	copy_term(Abstraction,Abstraction1),
+	arg(1,Abstraction1,Term),
+	call_c(usermod:Abstraction1),
+	arg(2,Abstraction1,Abs).
+
+%----------------
+
+report_links(S,File):-
+	bagof(Link,count_links_1(S,Link),List),
+	parsort(List,[asc(1),asc(2)],0,List1),
+	count_occs(List1,Occs),
+	report_links_1(Occs,File).
+
+report_links(S,File,Abstraction):-
+	bagof(Link,count_links_1(S,Link,Abstraction),List),
+	parsort(List,[asc(1),asc(2)],0,List1),
+	count_occs(List1,Occs),
+	report_links_1(Occs,File).
+
+report_links_1(Occs,File):-
+	tell(File),
+	(  member((From,To)-Count,Occs),
+	   write('Calls from '),write(From),write(' to '),write(To),
+	   format(" : ~1D~n",[Count]),
+	   fail
+	 ; 
+	   true),
+	told.
+
+count_links_1(S,(F1/A1,F2/A2)):- 
+	tc(T1,T2,State,_Ctr),State \= cmp,
+	check_variant(cmp(T1,S,_),1),
+	check_variant(cmp(T2,S,_),1),
+	get_functor(T1,F1/A1),
+	get_functor(T2,F2/A2).
+
+count_links_1(S,(Abstr1,Abstr2),Abstraction):- 
+	tc(T1,T2,State,_Ctr),State \= cmp,
+	check_variant(cmp(T1,S,_),1),
+	check_variant(cmp(T2,S,_),1),
+	copy_term(Abstraction,Abstraction1),
+	copy_term(Abstraction,Abstraction2),
+	abstract_term(T1,Abstr1,Abstraction1),
+	abstract_term(T2,Abstr2,Abstraction2).
+/*
+	arg(1,Abstraction1,T1),
+	call_c(usermod:Abstraction1),
+	arg(2,Abstraction1,Abstr1),
+	arg(1,Abstraction2,T2),
+	call_c(usermod:Abstraction2),
+	arg(2,Abstraction2,Abstr2).
+*/
+count_occs(L,[H-Occs|Rest]):-
+	count_occs_1(L,Rem,H,Occs),
+	(Rem = [] -> 
+		Rest = []
+	     ;  count_occs(Rem,Rest)).
+	
+count_occs_1(L,Rem,H,Occs):-
+	L = [H|T],
+	count_occs_2(T,H,Rem,1,Occs).
+
+count_occs_2([],_H,[],Occs,Occs).
+count_occs_2([H|T],H,Rem,OccsIn,Occs):-!,
+	OccsMid is OccsIn + 1,
+	count_occs_2(T,H,Rem,OccsMid,Occs).
+count_occs_2(L,_H,L,Occs,Occs).
+
+%----------------
+% Including some very simple flora translations.
+
+get_functor(T,F/Outarg):-
+        functor(T, '_$_$_flora''mod''main''tblflapply',_Arg),!,
+	term_arg(T,1,F),
+	term_arg(T,2,App),
+%	arg(1,T,F),
+%	arg(2,T,App),
+	nonvar(App),functor(App,_,Outarg).
+get_functor(T,F/Arg):-
+        functor(T,F,Arg).
+
+%----------------
 
 end_of_file.
 
