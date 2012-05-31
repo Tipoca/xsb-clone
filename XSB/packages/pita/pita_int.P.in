@@ -24,6 +24,7 @@
 */
 
 :- consult(pita_lib, [cc_opts('@ccflags@')]).
+
 :- import length/2,append/3 from lists.
 :- import ret_prob/2,init/1,end/0,and/3,or/3,bdd_not/2,zero/1,one/1,add_var/3,equality/3 from pita_lib.
 :- import check_ground/3 from error_handler.
@@ -37,8 +38,8 @@ rule_n(1).
 setting(epsilon_parsing, 0.0001).
 setting(compiling,false).
 /* compiling: true, failse */
-/* setting(tabling_output,video).
- video, call */
+setting(tabling_output,no).
+/* no, video, file */
 
 setting(reordering_method,'CUDD_REORDER_NONE').
 
@@ -46,6 +47,48 @@ get_next_rule_number(R):-
 	retract(rule_n(R)),
 	R1 is R+1,
 	assert(rule_n(R1)).
+
+condprob(Goals,Evidence,P,CPUTime1,WallTime1):-
+       	cputime(CT0),
+	walltime(WT0),
+	 myinit,
+	myone(One),
+	derive_ev(Evidence,One,BE),
+	ret_prob(BE,PE),
+	derive_go(Goals,BE,PE,P),
+        myend,
+	cputime(CT1),
+	CPUTime1 is CT1-CT0,
+	walltime(WT1),
+	WallTime1 is WT1-WT0.
+
+
+condprob(Goals,Evidence,P):-
+        myinit,
+	myone(One),
+	derive_ev(Evidence,One,BE),
+	ret_prob(BE,PE),
+	derive_go(Goals,BE,PE,P),
+        myend.
+
+derive_go([],_BE,_PE,[]).
+
+derive_go([H|T],BE,PE,[P|T1]):-
+	add_bdd_arg(H,B1,Goal),
+	call(Goal),
+	myand(BE,B1,B),
+	ret_prob(B,PGE),
+	P is PGE/PE,
+	derive_go(T,BE,PE,T1).
+
+
+derive_ev([],B,B).
+
+derive_ev([H|T],B0,B):-
+	add_bdd_arg(H,B1,Goal),
+	call(Goal),
+	myand(B0,B1,B2),
+	derive_ev(T,B2,B).
 
 prob(Goal,P):-
 	myinit,
@@ -96,7 +139,17 @@ parse(FileIn,FileOut):-
 	set(compiling,false),
 	open(FileOut,write,SO),
 	findall(p(P,A),'$p'(P,A),L),
-	write_tab_dir(L,SO),
+	setting(tabling_output,TO),
+	(TO=file->
+		write_tab_dir(L,SO)
+	;
+		(TO=video->
+			write_tab_dir(L,user_output)
+	
+		;
+			true
+		)
+	),
 	write_clauses(C1,SO),
 	close(SO).
 
@@ -447,7 +500,7 @@ builtin(nth0(_, _, _)).
 builtin(nth(_, _, _)).
 builtin(eraseall(_Id)).
 builtin(recordzifnot(_Id, _Item, _)).
-
+builtin(storage_insert_keypair(_,_,_,_)).
 
 /* term_expansion clauses */
 term_expansion((Head :- Body), Clauses):-
@@ -494,6 +547,7 @@ term_expansion((Head :- Body),Clauses) :-
 term_expansion(Head,Clauses) :- 
 % disjunctive fact with more than one head atom
 	setting(compiling,true),
+	Head \= (:- _),
 	Head = (_;_),!, 
 	list2or(HeadListOr, Head), 
 	process_head(HeadListOr, HeadList), 
@@ -506,6 +560,7 @@ term_expansion(Head,Clause) :-
 % disjunctive fact with a single head atom
 	setting(compiling,true),
 	(Head \= ((term_expansion(_,_)) :- _ )),
+	Head \= (:- _),
 	Head = (H:_), !, 
 	list2or(HeadListOr, Head), 
 	process_head(HeadListOr, HeadList),
@@ -519,6 +574,7 @@ term_expansion(Head, (Head1:-myone(One))) :-
 % definite fact
 	setting(compiling,true),
 	(Head \= ((term_expansion(_,_) ):- _ )),
+	Head \= (:- _),
 	Head \= (:- table _ ),
 	Head \= (:- import _),
 	(Head\= end_of_file),!,
