@@ -38,7 +38,7 @@ rule_n(1).
 setting(epsilon_parsing, 0.0001).
 setting(compiling,false).
 /* compiling: true, failse */
-setting(tabling_output,no).
+setting(tabling_output,file).
 /* no, video, file */
 
 setting(reordering_method,'CUDD_REORDER_NONE').

@@ -31,7 +31,7 @@ Use
 to execute the tests
 
 */
-:-[pitaprismvit].
+:-[pitavitind].
 
 epsilon(0.0001).
 
