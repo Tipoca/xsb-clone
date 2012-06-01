@@ -19,7 +19,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: Makefile,v 1.62 2011-08-11 02:43:20 kifer Exp $
+## $Id: Makefile,v 1.63 2012-06-01 16:34:49 tswift Exp $
 ## 
 ##
 
@@ -37,7 +37,7 @@ ALL = 	aggregs${OBJEXT} array${OBJEXT} assoc_xsb${OBJEXT} \
 	ugraphs${OBJEXT} wrapping${OBJEXT} write_term${OBJEXT} \
 	xsb_ciao${OBJEXT} xnmr${OBJEXT} justifyLP${OBJEXT} \
 	xsb_profiling${OBJEXT} xsb_lint_impexp${OBJEXT} \
-	dump_table${OBJEXT} \
+	dump_table${OBJEXT} term_abstract${OBJEXT} \
 	globalvar$(OBJEXT) pairlist$(OBJEXT) pretty_print$(OBJEXT)
 
 EMU_INCLUDES = ../emu/builtin.h ../emu/celltags_xsb.h ../emu/flag_defs_xsb.h \
