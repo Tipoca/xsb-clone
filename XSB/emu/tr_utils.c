@@ -1815,7 +1815,7 @@ void private_trie_truncate(CTXTdeclc struct interned_trie_t* trie_root_addr,
 	delete_trie(CTXTc trie_root_addr->root);
 	switch_from_trie_assert;
       }
-      else xsb_abort("[DELETE_TRIE] Backtracking through trie to be abolished.");
+      else xsb_abort("Backtracking through trie to be abolished (in trie_drop/1, trie_truncate/1 or retractall/1 for trie-asserted code).");
     } else delete_trie(CTXTc trie_root_addr->root);
     trie_root_addr->root = NULL;
   }

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.82 2012-04-26 18:19:27 tswift Exp $
+** $Id: tries.h,v 1.83 2012-06-03 17:27:01 tswift Exp $
 ** 
 */
 
@@ -472,7 +472,9 @@ extern counter subg_chk_ins, subg_inserts, ans_chk_ins, ans_inserts;
 /* trie routine variables */
 extern BTNptr Last_Nod_Sav;
 
+extern int vcs_tnot_call;
 #endif
+
 
 /*----------------------------------------------------------------------*/
 

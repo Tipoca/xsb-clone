@@ -116,6 +116,19 @@
 #define UNLOCK_CALL_TRIE()
 #endif
 
+#define  LOG_TABLE_CALL \
+  if (flags[CTRACE_CALLS])  {			\
+    char buffera[MAXTERMBUFSIZE];		\
+    char bufferb[MAXTERMBUFSIZE];				\
+    sprint_subgoal(CTXTc buffera,(VariantSF)producer_sf);	\
+    if (ptcpreg) {						\
+      sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);		\
+    }								\
+    else sprintf(bufferb,"null");					\
+    fprintf(fview_ptr,"tc(%s,%s,incmp,%d).\n",buffera,bufferb,ctrace_ctr++); \
+  }
+
+
 /*
  *  Instruction format:
  *    1st word: opcode X X pred_arity
@@ -137,7 +150,7 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
   CallLookupResults lookupResults;
   VariantSF producer_sf, consumer_sf;
   CPtr answer_template_cps, answer_template_heap;
-  int template_size, attv_num; Integer tmp;
+  int template_size, attv_num, is_neg_call; Integer tmp;
 #ifdef CALL_ABSTRACTION
   int abstr_size;
 #endif
@@ -210,6 +223,9 @@ XSB_Start_Instr(tabletrysingle,_tabletrysingle)
    *  abort if the term depth of a call is greater than a specified
    *  amount.
    */
+
+is_neg_call = vcs_tnot_call;
+
 if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
      if (ret == XSB_FAILURE) {
        Fail1;
@@ -270,16 +286,7 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
     producer_sf = NewProducerSF(CTXTc CallLUR_Leaf(lookupResults),
 				 CallInfo_TableInfo(callInfo));
 
-  if (flags[CTRACE_CALLS])  { 
-    char buffera[MAXTERMBUFSIZE];
-    char bufferb[MAXTERMBUFSIZE]; 
-    sprint_subgoal(CTXTc buffera,(VariantSF)producer_sf);     
-    if (ptcpreg) {
-      sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
-    }
-    else sprintf(bufferb,"null");
-    fprintf(fview_ptr,"tc(%s,%s,new,%d).\n",buffera,bufferb,ctrace_ctr++);
-  }
+    LOG_TABLE_CALL;
 #endif /* !SHARED_COMPL_TABLES */
 #ifdef CONC_COMPL
     subg_tid(producer_sf) = xsb_thread_id;
@@ -370,16 +377,8 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
 
   else if ( is_completed(producer_sf) ) {
 
-  if (flags[CTRACE_CALLS])  { 
-    char buffera[MAXTERMBUFSIZE];
-    char bufferb[MAXTERMBUFSIZE];
-    sprint_subgoal(CTXTc buffera,(VariantSF)producer_sf);     
-    if (ptcpreg) {
-      sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
-    }
-    else sprintf(bufferb,"null");
-    fprintf(fview_ptr,"tc(%s,%s,cmp,%d).\n",buffera,bufferb,ctrace_ctr++);
-  }
+    LOG_TABLE_CALL;
+
     /* Unify Call with Answer Trie
        --------------------------- */
     SUBG_INCREMENT_CALLSTO_SUBGOAL(producer_sf);
@@ -459,16 +458,7 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
 
   else if ( CallLUR_VariantFound(lookupResults) ) {
 
-  if (flags[CTRACE_CALLS])  { 
-    char buffera[MAXTERMBUFSIZE];
-    char bufferb[MAXTERMBUFSIZE];
-    sprint_subgoal(CTXTc buffera,(VariantSF)producer_sf);     
-    if (ptcpreg) {
-      sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);     
-    }
-    else sprintf(bufferb,"null");
-    fprintf(fview_ptr,"tc(%s,%s,incmp,%d).\n",buffera,bufferb,ctrace_ctr++);
-  }
+    LOG_TABLE_CALL;
 
     /* Previously Seen Subsumed Call
        ----------------------------- */
