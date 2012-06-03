@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cp_opt.P,v 1.24 2012-05-08 14:58:40 tswift Exp $
+** $Id: cp_opt.P,v 1.25 2012-06-03 23:14:19 tswift Exp $
 ** 
 */
 
@@ -251,7 +251,7 @@ generate_agg_clauses(po(OpSpec),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClL
 		    (OVar == Var1 ; OpSpec1)
 		   ),
 		findall(Leaf,('_$$get_returns'(Cs,OSkel,Leaf),OpSpec2),Leaves),
-		(member(Leaf,Leaves),
+		('_$member'(Leaf,Leaves),
 		 delete_return(Cs,Leaf),
 		 fail
 		 ;	
@@ -261,6 +261,7 @@ generate_agg_clauses(po(OpSpec),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClL
 	parse_preddef_closed(PredTerm,Body,ClList2,SymTab),
 	ensure_imported(breg_retskel/4,machine,SymTab),
 	ensure_imported(excess_vars/4,setof,SymTab),
+	ensure_imported('_$member'/2,basics,SymTab),
 	ensure_imported(copy_term/2,basics,SymTab),  % but problems with sysmod?
 	ensure_imported(instantiation_error/3,error_handler,SymTab),
 	ensure_imported('_$$get_returns'/3,tables,SymTab),
@@ -307,7 +308,7 @@ generate_agg_clauses(AggrSpec,Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClLis
 	ensure_imported(instantiation_error/3,error_handler,SymTab),
 	ensure_imported('_$$get_returns'/3,tables,SymTab),
 	ensure_imported(delete_return/2,tables,SymTab),
-	ensure_imported(member/2,basics,SymTab),
+	ensure_imported('_$member'/2,basics,SymTab),
 	% TLS: for approximations (whether or not used)
 	ensure_imported(early_complete_on_nth/2,tables,SymTab),
 	ensure_imported(early_complete_on_delta/4,tables,SymTab).
