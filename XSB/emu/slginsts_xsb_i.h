@@ -116,7 +116,7 @@
 #define UNLOCK_CALL_TRIE()
 #endif
 
-#define  LOG_TABLE_CALL \
+#define  LOG_TABLE_CALL(state)			\
   if (flags[CTRACE_CALLS])  {			\
     char buffera[MAXTERMBUFSIZE];		\
     char bufferb[MAXTERMBUFSIZE];				\
@@ -125,7 +125,10 @@
       sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);		\
     }								\
     else sprintf(bufferb,"null");					\
-    fprintf(fview_ptr,"tc(%s,%s,incmp,%d).\n",buffera,bufferb,ctrace_ctr++); \
+    if (is_neg_call)							\
+      fprintf(fview_ptr,"nc(%s,%s,%s,%d).\n",buffera,bufferb,state,ctrace_ctr++); \
+    else								\
+      fprintf(fview_ptr,"tc(%s,%s,%s,%d).\n",buffera,bufferb,state,ctrace_ctr++); \
   }
 
 
@@ -286,7 +289,7 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
     producer_sf = NewProducerSF(CTXTc CallLUR_Leaf(lookupResults),
 				 CallInfo_TableInfo(callInfo));
 
-    LOG_TABLE_CALL;
+    LOG_TABLE_CALL("new");
 #endif /* !SHARED_COMPL_TABLES */
 #ifdef CONC_COMPL
     subg_tid(producer_sf) = xsb_thread_id;
@@ -377,7 +380,7 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
 
   else if ( is_completed(producer_sf) ) {
 
-    LOG_TABLE_CALL;
+    LOG_TABLE_CALL("cmp");
 
     /* Unify Call with Answer Trie
        --------------------------- */
@@ -458,7 +461,7 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
 
   else if ( CallLUR_VariantFound(lookupResults) ) {
 
-    LOG_TABLE_CALL;
+    LOG_TABLE_CALL("incmp");
 
     /* Previously Seen Subsumed Call
        ----------------------------- */
