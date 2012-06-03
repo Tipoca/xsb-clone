@@ -287,6 +287,10 @@ length2(L,N) :-
 member(X,[X|_]).
 member(X,[_|L]) :- member(X,L).
 
+:- export '_$member'/2.
+'_$member'(X,[X|_]).
+'_$member'(X,[_|L]) :- '_$member'(X,L).
+
 %---
 memberchk(X,[X|_]) :- !.
 memberchk(X,[_|L]) :- memberchk(X,L).
