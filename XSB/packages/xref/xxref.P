@@ -226,8 +226,7 @@ read_in_prolog_file(PFileName) :-
 	write(PFilePrefix),write(' ...'),
 	append(PFilePrefixCodes,".H",HFileNameCodes),
 	atom_codes(HFileName,HFileNameCodes),
-	read_p_file(HFileName,PFilePrefix),
-	read_p_file(PFileName,PFilePrefix),
+	catch((read_p_file(HFileName,PFilePrefix),read_p_file(PFileName,PFilePrefix)),_Ball,true), %ignore
 	reset_ops,
 	conget('_$lineCnt',NLines),
 	write(NLines),writeln(' lines.').
@@ -258,7 +257,9 @@ read_p_file(FileName,BFileName) :-
 			read_p_file_s(NIStr,FSize,BFileName,do_xpp),
 			process_control(XPP_process, wait(ExitCode)),
 			(ExitCode==0,!
-			 ;	abort(('Error while preprocessing ', FileName,
+			 ;	file_close(NIStr),
+				cd(OldDir),
+				abort(('Error while preprocessing ', FileName,
 				       '. Dynamic loading aborted.'))
 			),
 			file_close(NIStr),
