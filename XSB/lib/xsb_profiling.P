@@ -173,3 +173,33 @@ gen_mode_term(Arity,Term,ModeTerm) :-
 		Arity1 is Arity-1,
 		gen_mode_term(Arity1,Term,ModeTerm)
 	).
+
+
+%profile_unindexed_calls(X): X=off, X=on, X=once, X=Skel
+profile_unindexed_calls(off) :- !,
+	stat_set_flag(98,0).  % set off
+profile_unindexed_calls(on) :- !,
+	stat_set_flag(98,2).
+profile_unindexed_calls(once) :- !,
+	stat_set_flag(98,1).
+profile_unindexed_calls(M:P/A) :- !,
+	functor(Term,P,A),
+	term_new_mod(M,Term,MTerm),
+	term_psc(MTerm,PSC),
+	stat_set_flag(98,PSC).
+profile_unindexed_calls(P/A) :- !,
+	functor(Term,P,A),
+	term_psc(Term,PSC),
+	stat_set_flag(98,PSC).
+profile_unindexed_calls(M:Term) :- !,
+	term_new_mod(M,Term,MTerm),
+	term_psc(MTerm,PSC),
+	stat_set_flag(98,PSC).
+profile_unindexed_calls(Term) :-
+	compound(Term),	% cant index 0-ary predicate
+	!,
+	term_psc(Term,PSC),
+	stat_set_flag(98,PSC).
+profile_unindexed_calls(Term) :-
+	warning(('Illegal parameter to profile_unindexed_calls: ',
+		 Term,'; must be (off,on,once,term_spec)')).

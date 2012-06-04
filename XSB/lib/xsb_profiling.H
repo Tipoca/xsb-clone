@@ -26,10 +26,13 @@
 
 :- export profile_mode_init/0, profile_mode_call/1, profile_mode_dump/0.
 
+:- export profile_unindexed_calls/1.
+
 :- import parsort/4 from machine.
 :- import psc_name/2 from machine. 
 :- import psc_arity/2 from machine.
-:- import term_psc/2, term_new/2, psc_arity/2 from machine.
+:- import term_psc/2, term_new/2, psc_arity/2, stat_set_flag/2, 
+   term_new_mod/3 from machine.
 
 :- import call/1 from standard.
 :- import cputime/1 from standard.
@@ -43,6 +46,8 @@
 :- import throw/1 from standard.
 :- import ground_term/1 from standard.
 :- import call_c/1, (index)/2, arg/3, writeln/2, write/2 from standard.
+:- import functor/3 from standard.
+:- import warning/1 from standard.
 
 :- import write_term/2 from write_term.
 
@@ -54,3 +59,4 @@
 :- import (dynamic)/1, retractall/1, assert/1 from assert.
 
 :- import member/2 from basics.
+

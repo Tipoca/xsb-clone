@@ -273,7 +273,7 @@ XSB_INST(0xf3, jumplt, _jumplt, PP, R, L,X);
 XSB_INST(0xf4, jumple, _jumple, PP, R, L,X);
 XSB_INST(0xf5, jumpgt, _jumpgt, PP, R, L,X);
 XSB_INST(0xf6, jumpge, _jumpge, PP, R, L,X);
-XSB_INST(0xf7, no_inst, _no_inst, PPP,X,X,X);
+XSB_INST(0xf7, sob_jump_out, _sob_jump_out, PPP,L,X,X);
 XSB_INST(0xf8, fail, _fail, PPP,X, X,X);
 XSB_INST(0xf9, noop, _noop, PP, A, X,X);
 XSB_INST(0xfa, halt, _halt, PPP,X, X,X);

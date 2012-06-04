@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.227 2012-01-25 22:14:08 tswift Exp $
+** $Id: emuloop.c,v 1.228 2012-06-04 15:59:24 dwarren Exp $
 ** 
 */
 
@@ -423,6 +423,27 @@ int  ctrace_ctr=0;
 /* place for a meaningful message when segfault is detected */
 char *xsb_default_segfault_msg =
      "\n++Memory violation occurred during evaluation.\n++Please report this problem using the XSB bug tracking system accessible from\n++\t http://sourceforge.net/projects/xsb\n++Please supply the steps necessary to reproduce the bug.\n";
+
+extern int xsb_profiling_enabled;
+extern Psc psc_from_code_addr(byte *);
+extern void printterm(FILE *, Cell, long);
+
+Integer length_dyntry_chain(byte *codeptr) {
+  Integer chainlen = 0;
+  while (codeptr != NULL) {
+    switch (*codeptr) {
+    case dyntrymeelse:
+    case dynretrymeelse:
+      chainlen++;
+      codeptr = (*((byte **)(codeptr)+1));
+      break;
+    default:
+      return ++chainlen;
+    }
+  }
+  return chainlen;
+}
+
 
 static inline xsbBool occurs_in_list_or_struc(Cell Var, Cell Term) {
  rec_occurs_in:
@@ -2920,6 +2941,40 @@ argument positions.
       } else { arithmetic_abort1(CTXTc "'\\'", op1); }
     }
   XSB_End_Instr() 
+
+/** Execution of the sob_jump_out instruction  -- **Ken **/
+  /** when we reach here, we are falling through a switch on bound
+   * instruction and should build an index using the new DI scheme **/
+  XSB_Start_Instr(sob_jump_out, _sob_jump_out) /* PPL */
+    if (flags[LOG_UNINDEXED]) {
+      Integer chainlen;
+      if (flags[LOG_UNINDEXED] == 1) *lpcreg = jump; // change inst so unindex test is done only once
+      chainlen = length_dyntry_chain(*(((byte **)(lpcreg))+1));
+      if (chainlen > 20) {  /* only if chain is > 20 long */
+	if (xsb_profiling_enabled) {
+	  int i;
+	  Psc psc = psc_from_code_addr(lpcreg);
+	  printf("%s/%d searched %d unindexed clauses\n",get_name(psc),get_arity(psc),chainlen);
+	  printf("  %s(",get_name(psc));
+	  for (i=1; i<=get_arity(psc); i++) {
+	    if (isref(reg[i])) {
+	      fprintf(stdout,"_");  // dont care what vars
+	    } else {
+	      printterm(stdout,reg[i],10);
+	    }
+	    if (i<get_arity(psc)) printf(",");
+	  }
+	  printf(")\n");
+	  if ((Psc)flags[LOG_UNINDEXED] == psc) print_xsb_backtrace(CTXT);
+	} else {
+	  printf("Unknown predicate searched %d unindexed clauses\n",chainlen);
+	}
+      }
+      lpcreg = (byte *)get_xxxl;
+    } else {
+      lpcreg = (byte *)get_xxxl;  // do jump
+    }
+  XSB_End_Instr()
 
 #ifndef JUMPTABLE_EMULOOP
   default: {

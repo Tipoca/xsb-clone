@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.195 2012-05-18 20:35:41 tswift Exp $
+** $Id: biassert.c,v 1.196 2012-06-04 15:59:24 dwarren Exp $
 ** 
 */
 
@@ -1706,7 +1706,8 @@ static void addto_allchain( int AZ, ClRef Clause, SOBRef SOBrec, byte Arity)
     Loc = 0;
     dbgen_inst_ppv(dynnoop,sizeof(Cell)/2,Clause,&Loc);
     Loc = 0 ;
-    dbgen_inst_pppw(jump,Clause,ClRefPrRef(SOBrec),&Loc);
+    //    dbgen_inst_pppw(jump,Clause,ClRefPrRef(SOBrec),&Loc);
+    dbgen_inst_pppw(sob_jump_out,Clause,ClRefPrRef(SOBrec),&Loc);
     ClRefLastIndex(SOBrec) = (Cell) Clause ;
     ClRefPrev(Clause) = SOBrec ;
     SetClRefNext(Clause, SOBrec);
@@ -1731,10 +1732,12 @@ static void db_addbuff_i(byte Arity, ClRef Clause, PrRef Pred, int AZ,
   unsigned int ThisTabSize; int Hashval;
 
   SOBbuff = AZ == 0 ? Pred->FirstClRef : Pred->LastClRef ;
-  ThisTabSize = hash_resize(Pred, SOBbuff, HashTabSize);
+
+  ThisTabSize = hash_resize(Pred, SOBbuff, HashTabSize);  // dsw could move to below
   
   for (Inum = 1; Inum <= NI; Inum++) {
     SOBbuff = AZ == 0 ? Pred->FirstClRef : Pred->LastClRef ;
+    //    ThisTabSize = hash_resize(Pred, SOBbuff, HashTabSize); // ?? could move here from above, but more smaller sobs
     Ind = Index[Inum];
     Hashval = hash_val(Ind, Head, ThisTabSize) ;
     if (Hashval < 0) {Hashval = 0; ThisTabSize = 1;}

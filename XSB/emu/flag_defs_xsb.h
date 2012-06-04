@@ -20,7 +20,7 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **
-** $Id: flag_defs_xsb.h,v 1.47 2012-02-24 17:37:21 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.48 2012-06-04 15:59:24 dwarren Exp $
 **
 */
 
@@ -122,7 +122,7 @@ interrupt flag
 #define STRING_GARBAGE_COLLECT    70   /* Turn string gc on or off */
 #define TABLE_GC_ACTION           71   /* Action for recl. of tables with cond answers */
 #define THREAD_GLSIZE             72   /* Initial GLSize for created thread */
-#define THREAD_TCPSIZE             73   /* Initial TCSize for created thread */
+#define THREAD_TCPSIZE            73   /* Initial TCSize for created thread */
 #define THREAD_COMPLSIZE          74   /* Initial COMPLSize for created thread */
 #define THREAD_PDLSIZE            75   /* Initial PDLSize for created thread */
 #define THREAD_DETACHED           76   /* Initial Detached flag for created thread */
@@ -147,9 +147,11 @@ interrupt flag
 #define MEMORY_ERROR_FLAG         95
 #define WRITE_DEPTH               96
 #define ABORT_PRE_ACTION          97
+#define LOG_UNINDEXED		  98  /* 0 no logging; 1 log first time only; 2 log every time; 
+					>2 is psc to print backtrace on unindexed access to that psc, every time. */ 
 #define MAX_FLAGS		 100
 
-#define MAXTOINDEX 10              /* maximum depth in term to go when using deep indexing; 
+#define MAXTOINDEX 20              /* maximum depth in term to go when using deep indexing; 
 				      the actual depth is now specified by MAXTOINDEX_FLAG*/
 
 #define SYSTEM_MEMORY_LIMIT        1

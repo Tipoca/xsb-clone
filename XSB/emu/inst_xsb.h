@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.42 2012-02-19 19:17:55 tswift Exp $
+** $Id: inst_xsb.h,v 1.43 2012-06-04 15:59:24 dwarren Exp $
 ** 
 */
 
@@ -403,7 +403,8 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 
 /* Miscellaneous instructions */
 
-#define cases		0xf7
+//  #define cases		0xf7 %??
+#define sob_jump_out 	0xf7
 #define fail            0xf8
 #define noop            0xf9
 #define halt            0xfa
