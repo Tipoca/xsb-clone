@@ -5092,11 +5092,12 @@ case CALL_SUBS_SLG_NOT: {
   case CHECK_VARIANT: {
     //    CPtr addr, val;
     Psc psc;
-    Cell term, dont_cares;
+    Cell term;
+    int dont_cares;
     PrRef prref;
     BTNptr Paren, leaf;
     term = ptoc_tag(CTXTc 2);
-    dont_cares = ptoc_int(CTXTc 3);
+    dont_cares = (int)ptoc_int(CTXTc 3);
     if (isconstr(term)) {
       psc = get_str_psc(term);
     }
