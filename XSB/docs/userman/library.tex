@@ -2250,7 +2250,9 @@ no
 XSB can provide Prolog-level profiling for Prolog programs, which
 allows the Prolog programmer to estimate what proportion of time is
 spent executing code for each predicate, and also what modes have been
-used to call a given predicate.  To enable profiling, XSB must be
+used to call a given predicate.  It also helps to find unindexed
+accesses to dynamic predicates which may be the cause of poor
+performance.  To enable profiling, XSB must be
 started with the command line parameter of {\tt -p}.  The module {\tt
   xsb\_profiling} contains the predicate {\tt profile\_call/1} that
 invokes profiling.  The profiling library should only be used with the
@@ -2320,10 +2322,12 @@ platform~\footnote{Windows and Mac OS X 10.6 provide good estimates.
   all machines, so if you want profiling to work more efficiently,
   maybe you can help figure out how to get appropriate scheduling.}.
 
-The profiling module also provides some support for determining the
-modes in which a predicate is called.  This can be used to determine
-whether indexing is appropriately declared for important dynamic
-predicates.  This is a primitive facility, but has been found useful.
+The profiling module also provides support for determining when a
+dynamic predicate is invoked in a mode that isn't supported by any
+index.  The XSB programmer can set a flag that will cause a message to
+be printed when a dynamic predicate is invoked, no index is
+applicable, and there are more than 20 potentially matching clauses.
+See {\tt profile\_unindexed\_calls/1} below for details.
 
 \begin{description}
 \ourmoditem{profile\_mode\_call(+Goal)}{xsb\_profiling}\index{profile\_mode\_call/1}
@@ -2352,6 +2356,24 @@ Clears the table that accumulates counts of calls in particular modes
 (done by\\ {\tt profile\_mode\_call(+Goal)}.
 \end{description}
 
+\begin{description}
+\ourmoditem{profile\_unindexed\_calls(+Par)}{xsb\_profiling}\index{profile\_unindexed\_calls/1}
+
+Sets the kind of unindexed profiling to perform.  If {\tt Par} is 0 no
+unindexed logging will be done.  (This is the default.)  If {\tt Par}
+is 1 each call to a dynamic predicate that cannot use any index (and
+would backtrack through more than 20 clauses) will generate a log
+message to userout.  Each unindexed call to a predicate will be logged
+only once; after logging is done, the log instruction is changed to a
+branch, so it will never produce another log message for that dynamic
+code.  If {\tt Par} is 2, logging is done as for 1, except every
+unindexed call to any dynamic predicate will be logged; i.e. the
+logging instruction is not changed after logging.  If {\tt Par} is a
+predicate specification (of the form Pred/Arity, Module:Pred/Arity,
+Term, or Module:Term), only unindexed calls to the indicated goal will
+be logged, and when each is logged a back-trace will be printed.  This
+allows the programmer to find the location of an unindexed call.
+\end{description}
 
 %----------------------------------------------------------------------
 \comment{
