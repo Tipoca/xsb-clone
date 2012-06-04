@@ -75,6 +75,15 @@ hide_this_hide(abolish_all_tables,0).
 
 %% trace inside these standard predicates
 trace_standard_predicate(call,1).
+trace_standard_predicate(call,2).
+trace_standard_predicate(call,3).
+trace_standard_predicate(call,4).
+trace_standard_predicate(call,5).
+trace_standard_predicate(call,6).
+trace_standard_predicate(call,7).
+trace_standard_predicate(call,8).
+trace_standard_predicate(call,9).
+trace_standard_predicate(call,10).
 %% but control debugger prompts that are actually printed
 %% trace inside call_c and print debugger prompts (but not call_c itself)
 trace_this_print(call_c, 1).
