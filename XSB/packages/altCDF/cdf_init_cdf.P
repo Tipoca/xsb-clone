@@ -417,11 +417,13 @@ implicit_isa(SubCid,SupCid) :-
          implicit_isa_bf(SubCid,SupCid)).
 
 implicit_isa_bf(SubCid,SupCid):-
-        skeleton(SubCid,SubSkel),
-    immed_isa(SubSkel,_),
+    \+cdf_flags(implicit_isa,off),
+    skeleton(SubCid,SubSkel),
+    immed_isa(SubSkel,_),  % does an unindexed lookup, when SubCid is ground?? for parameterized types?
     term_isa(SubCid,SubSkel),
     SubCid \== SubSkel,
-    SupCid = SubSkel.
+    SupCid = SubSkel,
+    writeln(userout,'Logging: Implicit isa for parameterized types is used for '(SubCid)).
 
 implicit_isa_bb(SubCid,SupCid) :-
     SubCid \== SupCid,
