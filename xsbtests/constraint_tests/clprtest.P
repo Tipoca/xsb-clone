@@ -97,7 +97,7 @@ test26:- root(3,R),writeln(test26(R)),fail.
 test27:- e(8,E),writeln(test27(E)),fail.
 test28:- mg(P,12,0.01,B,Mp), dump([P,B,Mp],[p,b,mp],F),writeln(test28(F)),fail.
 test29:- conv_hull([ [1,1], [2,0], [3,0], [1,2], [2,2] ], [X,Y]),dump([X,Y],[x,y],F),
-	writeln(test29(F)),fail.
+	sort(F,F1),writeln(test29(F1)),fail.
 test30:-{ 2*X+Y >= 16, X+2*Y >= 11,X+3*Y >= 15, Z = 30*X+50*Y}, inf(Z,Sup,[X,Y],Vertex),
         dump([X,Y,Z],[x,y,z],D),writeln(test30(Sup,Vertex)),
 	member(C,D),writeln(test30(C)),fail.
