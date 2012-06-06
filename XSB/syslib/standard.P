@@ -1486,6 +1486,7 @@ false :- fail.
 
 halt :- halt.
 
+halt(Code) :- sys_exit(Code).
 
 			/***********************/
 			/*   TERM COMPARISON   */

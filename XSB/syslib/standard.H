@@ -50,7 +50,7 @@
 	get/1,		get0/1,		
 	get_char/1,	get_char/2,     get_code/1,	get_code/2,
 	get_byte/1,	get_byte/2,     peek_byte/1, peek_byte/2,	put_byte/1, put_byte/2,
-	halt/0,		
+	halt/0,	halt/1,	
 	(hilog)/1,	hilog_arg/3,	hilog_functor/3,
 	(index)/3,	(index)/2,      (table)/1,
 	(use_incremental_tabling)/1,    (use_incremental_dynamic)/1, 
@@ -167,5 +167,7 @@
 :- import load_page/5 from curl.
 :- import start_sleeper_thread/1 from machine.
 :- import assert/1 from assert.
+
+:- import sys_exit/1 from shell.
 
 /* --------------------- end of file standard.H ----------------------- */
