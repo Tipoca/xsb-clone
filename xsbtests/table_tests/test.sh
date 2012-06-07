@@ -131,4 +131,8 @@ EOF
 ../gentest.sh "$XEMU -l $options" test_td_incomp "test."
 #--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" test_check_variant "test."
+
+#--------------------------------------------------
+# gentest.sh doesn't quite work to test forest view.
+bash ./test_forest_view.sh "$XEMU -l $options" 
 #--------------------------------------------------
