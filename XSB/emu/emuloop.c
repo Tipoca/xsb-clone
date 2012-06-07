@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.228 2012-06-04 15:59:24 dwarren Exp $
+** $Id: emuloop.c,v 1.229 2012-06-07 19:37:42 tswift Exp $
 ** 
 */
 
@@ -396,7 +396,7 @@ extern int ground(CPtr term);
 
 extern void log_prog_ctr(byte *);
 
-extern void sprint_subgoal(CTXTdeclc char *,  VariantSF );
+extern int sprint_subgoal(CTXTdeclc char *,  VariantSF );
 
 #ifndef MULTI_THREAD
 xsbBool neg_delay;
@@ -2954,8 +2954,8 @@ argument positions.
 	if (xsb_profiling_enabled) {
 	  int i;
 	  Psc psc = psc_from_code_addr(lpcreg);
-	  printf("%s/%d searched %d unindexed clauses\n",get_name(psc),get_arity(psc),chainlen);
-	  printf("  %s(",get_name(psc));
+	  //	  printf("%s/%d searched %d unindexed clauses\n",get_name(psc),get_arity(psc),chainlen);
+	  //	  printf("  %s(",get_name(psc));
 	  for (i=1; i<=get_arity(psc); i++) {
 	    if (isref(reg[i])) {
 	      fprintf(stdout,"_");  // dont care what vars
@@ -2967,7 +2967,7 @@ argument positions.
 	  printf(")\n");
 	  if ((Psc)flags[LOG_UNINDEXED] == psc) print_xsb_backtrace(CTXT);
 	} else {
-	  printf("Unknown predicate searched %d unindexed clauses\n",chainlen);
+	  //	  printf("Unknown predicate searched %d unindexed clauses\n",chainlen);
 	}
       }
       lpcreg = (byte *)get_xxxl;

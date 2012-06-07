@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.h,v 1.13 2010-08-19 15:03:37 spyrosh Exp $
+** $Id: tst_utils.h,v 1.14 2012-06-07 19:37:42 tswift Exp $
 ** 
 */
 
@@ -31,6 +31,7 @@ extern char *stringTrieType(byte);
 extern void printTrieSymbol(FILE *, Cell);
 extern void printTrieNode(FILE *, BTNptr);
 extern void printTriePath(FILE *, BTNptr, xsbBool);
+extern int sprintTriePath(CTXTdeclc char *, BTNptr);
 
 extern void printAnswerTemplate(FILE *, CPtr, int);
 

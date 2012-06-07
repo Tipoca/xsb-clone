@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.43 2011-10-29 23:27:59 tswift Exp $
+** $Id: tst_utils.c,v 1.44 2012-06-07 19:37:42 tswift Exp $
 ** 
 */
 
@@ -174,7 +174,7 @@ void printTrieSymbol(FILE *fp, Cell symbol) {
       fprintf(fp, "%s", string_val(symbol));
       break;
     case XSB_TrieVar:
-      fprintf(fp, "V" IntegerFormatString, DecodeTrieVar(symbol));
+      fprintf(fp, "_V" IntegerFormatString, DecodeTrieVar(symbol));
       break;
     case XSB_STRUCT:
       {
@@ -193,6 +193,46 @@ void printTrieSymbol(FILE *fp, Cell symbol) {
       break;
     default:
       fprintf(fp, "Unknown symbol (tag = %" Intfmt")", cell_tag(symbol));
+      break;
+    }
+  }
+}
+
+int sprintTrieSymbol(char * buffer, Cell symbol) {
+
+  if ( symbol == ESCAPE_NODE_SYMBOL )
+    return sprintf(buffer, "%lu [ESCAPE_NODE_SYMBOL]", ESCAPE_NODE_SYMBOL);
+  else {
+    switch(TrieSymbolType(symbol)) {
+    case XSB_INT:
+      return sprintf(buffer, IntegerFormatString, int_val(symbol));
+      break;
+    case XSB_FLOAT:
+      return sprintf(buffer, "%f", float_val(symbol));
+      break;
+    case XSB_STRING:
+      return sprintf(buffer, "%s", string_val(symbol));
+      break;
+    case XSB_TrieVar:
+      return sprintf(buffer, "_V" IntegerFormatString, DecodeTrieVar(symbol));
+      break;
+    case XSB_STRUCT:
+      {
+	Psc psc;
+	if (isboxedfloat(symbol))
+          {
+              return sprintf(buffer, "%lf", boxedfloat_val(symbol));
+              break;              
+          }
+	psc = DecodeTrieFunctor(symbol);
+	return sprintf(buffer, "%s/%d", get_name(psc), get_arity(psc));
+      }
+      break;
+    case XSB_LIST:
+      return sprintf(buffer, "LIST");
+      break;
+    default:
+      return sprintf(buffer, "Unknown symbol (tag = %" Intfmt")", cell_tag(symbol));
       break;
     }
   }
@@ -266,7 +306,7 @@ static void symstkPrintNextTerm(CTXTdeclc FILE *fp, xsbBool list_recursion) {
     if ( list_recursion )
       fprintf(fp, "|V" IntegerFormatString "]", DecodeTrieVar(symbol));
     else
-      fprintf(fp, "V" IntegerFormatString, DecodeTrieVar(symbol));
+      fprintf(fp, "_V" IntegerFormatString, DecodeTrieVar(symbol));
     break;
   case XSB_STRUCT:
     {
@@ -307,6 +347,89 @@ static void symstkPrintNextTerm(CTXTdeclc FILE *fp, xsbBool list_recursion) {
     fprintf(fp, "<unknown symbol>");
     break;
   }
+}
+
+static int symstkSPrintNextTerm(CTXTdeclc char * buffer, xsbBool list_recursion) {
+  int ctr = 0;
+  Cell symbol;
+
+  if ( SymbolStack_IsEmpty ) {
+    //    fprintf(fp, "<no subterm>");
+    return 0;
+  }
+  SymbolStack_Pop(symbol);
+  switch ( TrieSymbolType(symbol) ) {
+  case XSB_INT:
+    if ( list_recursion )
+      ctr = ctr + sprintf(buffer+ctr, "|" IntegerFormatString "]", int_val(symbol));
+    else
+      ctr = ctr + sprintf(buffer+ctr, IntegerFormatString, int_val(symbol));
+    break;
+  case XSB_FLOAT:
+    if ( list_recursion )
+      ctr = ctr + sprintf(buffer+ctr, "|%f]", float_val(symbol));
+    else
+      ctr = ctr + sprintf(buffer+ctr, "%f", float_val(symbol));
+    break;
+  case XSB_STRING:
+    {
+      char *string = string_val(symbol);
+      if ( list_recursion ) {
+	if ( string == nil_string )
+	  ctr = ctr + sprintf(buffer+ctr, "]");
+	else
+	  ctr = ctr + sprintf(buffer+ctr, "|%s]", string);
+      }
+      else
+	ctr = ctr + sprintf(buffer+ctr, "%s", string);
+    }
+    break;
+  case XSB_TrieVar:
+    if ( list_recursion )
+      ctr = ctr + sprintf(buffer+ctr, "|V" IntegerFormatString "]", DecodeTrieVar(symbol));
+    else
+      ctr = ctr + sprintf(buffer+ctr, "_V" IntegerFormatString, DecodeTrieVar(symbol));
+    break;
+  case XSB_STRUCT:
+    {
+      Psc psc;
+      int i;
+      if (isboxedfloat(symbol))
+      {
+        if ( list_recursion ) 
+	  ctr = ctr + sprintf(buffer+ctr, "|%lf]", boxedfloat_val(symbol));
+        else
+          ctr = ctr + sprintf(buffer+ctr, "%lf", boxedfloat_val(symbol));
+        break;         
+      }
+
+      if ( list_recursion )
+	ctr = ctr + sprintf(buffer+ctr, "|");
+      psc = DecodeTrieFunctor(symbol);
+      ctr = ctr + sprintf(buffer+ctr, "%s(", get_name(psc));
+      for (i = 1; i < (int)get_arity(psc); i++) {
+	ctr = ctr + symstkSPrintNextTerm(CTXTc buffer+ctr,FALSE);
+	ctr = ctr + sprintf(buffer+ctr, ",");
+      }
+      ctr = ctr + symstkSPrintNextTerm(CTXTc buffer+ctr,FALSE);
+      ctr = ctr + sprintf(buffer+ctr, ")");
+      if ( list_recursion )
+	ctr = ctr + sprintf(buffer+ctr, "]");
+    }
+    break;
+  case XSB_LIST:
+    if ( list_recursion )
+      ctr = ctr + sprintf(buffer+ctr, ",");
+    else
+      ctr = ctr + sprintf(buffer+ctr, "[");
+    ctr = ctr + symstkSPrintNextTerm(CTXTc buffer+ctr,FALSE);
+    ctr = ctr + symstkSPrintNextTerm(CTXTc buffer+ctr,TRUE);
+    break;
+  default:
+    ctr = ctr + sprintf(buffer+ctr, "<unknown symbol>");
+    break;
+  }
+  return ctr;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -354,6 +477,57 @@ void printTriePath(CTXTdeclc FILE *fp, BTNptr pLeaf, xsbBool printLeafAddr) {
     }
     fprintf(fp, ")");
   }
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+int sprintTriePath(CTXTdeclc char * buffer, BTNptr pLeaf) {
+
+  BTNptr pRoot;
+  int ctr = 0;
+
+  if ( IsNULL(pLeaf) ) {
+    return sprintf(buffer, "NULL");
+  }
+
+  if ( ! IsLeafNode(pLeaf) ) {
+    fprintf(stderr, "printTriePath() called with non-Leaf node!\n");
+    printTrieNode(stderr, pLeaf);
+    return -1;
+  }
+
+  if  (IsEscapeNode(pLeaf) ) {
+    //    printf("escape\n");
+    pRoot = BTN_Parent(pLeaf);
+    if ( IsNonNULL(pRoot) ) {
+      ctr = ctr + sprintTrieSymbol(buffer+ctr, BTN_Symbol(pRoot));
+      return ctr;
+    }
+    else {
+      fprintf(stderr, "ESCAPE node");
+      return 0;
+    }
+  }
+
+  SymbolStack_ResetTOS;
+  SymbolStack_PushPathRoot(pLeaf,pRoot);
+  if ( IsTrieFunctor(BTN_Symbol(pRoot)) ) {
+    //    printf("tf\n");
+    SymbolStack_Push(BTN_Symbol(pRoot));
+    ctr = ctr + symstkSPrintNextTerm(CTXTc buffer+ctr,FALSE);
+  }
+  else {
+    //    printf("nontf\n");
+    ctr = ctr + sprintTrieSymbol(buffer+ctr,BTN_Symbol(pRoot));
+    ctr = ctr + sprintf(buffer+ctr, "(");
+    ctr = ctr + symstkSPrintNextTerm(CTXTc buffer+ctr,FALSE);
+    while ( ! SymbolStack_IsEmpty ) {
+      ctr = ctr + sprintf(buffer+ctr, ",");
+      ctr = ctr + symstkSPrintNextTerm(CTXTc buffer+ctr,FALSE);
+    }
+        ctr = ctr + sprintf(buffer+ctr, ")");
+  }
+  return ctr;
 }
 
 /*-----------------------------------------------------------------------*/

@@ -131,6 +131,19 @@
       fprintf(fview_ptr,"tc(%s,%s,%s,%d).\n",buffera,bufferb,state,ctrace_ctr++); \
   }
 
+#define LOG_ANSWER_RETURN(answer,template_ptr)		\
+  if (flags[CTRACE_CALLS])  {			\
+    char buffera[MAXTERMBUFSIZE];		\
+    char bufferb[MAXTERMBUFSIZE];		\
+    char bufferc[MAXTERMBUFSIZE];					\
+    sprintAnswerTemplate(CTXTc buffera, template_ptr, template_size);	\
+    sprint_subgoal(CTXTc bufferb,(VariantSF)consumer_sf);		\
+    sprint_subgoal(CTXTc bufferc,(VariantSF)ptcpreg);			\
+    if (is_conditional_answer(answer))					\
+      fprintf(fview_ptr,"dar(%s,%s,%s,%d).\n",buffera,bufferb,bufferc,ctrace_ctr++); \
+    else								\
+      fprintf(fview_ptr,"ar(%s,%s,%s,%d).\n",buffera,bufferb,bufferc,ctrace_ctr++); \
+  }
 
 /*
  *  Instruction format:
@@ -289,13 +302,13 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
     producer_sf = NewProducerSF(CTXTc CallLUR_Leaf(lookupResults),
 				 CallInfo_TableInfo(callInfo));
 
-    LOG_TABLE_CALL("new");
 #endif /* !SHARED_COMPL_TABLES */
 #ifdef CONC_COMPL
     subg_tid(producer_sf) = xsb_thread_id;
     subg_tag(producer_sf) = INCOMP_ANSWERS;
     UNLOCK_CALL_TRIE() ;
 #endif
+    LOG_TABLE_CALL("new");
 
 /* --------- for new producer incremental evaluation  --------- */
     /* table_call_search tried to find the affected call, so if it has
@@ -626,15 +639,7 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
     }
 #endif
 
- if (flags[CTRACE_CALLS])  { 
-    char buffera[MAXTERMBUFSIZE];
-    char bufferb[MAXTERMBUFSIZE];
-    char bufferc[MAXTERMBUFSIZE];
-    sprintAnswerTemplate(CTXTc buffera, answer_template_heap, template_size);
-    sprint_subgoal(CTXTc bufferb,(VariantSF)consumer_sf);     
-    sprint_subgoal(CTXTc bufferc,(VariantSF)ptcpreg);     
-    fprintf(fview_ptr,"ar(%s,%s,%s,%d).\n",buffera,bufferb,bufferc,ctrace_ctr++);
-  }
+      LOG_ANSWER_RETURN(first_answer,answer_template_heap);
 
       if (is_conditional_answer(first_answer)) {
 	xsb_dbgmsg((LOG_DELAY,
@@ -855,15 +860,7 @@ table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
  }
 #endif
 
- if (flags[CTRACE_CALLS])  { 
-    char buffera[MAXTERMBUFSIZE];
-    char bufferb[MAXTERMBUFSIZE];
-    char bufferc[MAXTERMBUFSIZE];
-    sprintAnswerTemplate(CTXTc buffera, answer_template, template_size);
-    sprint_subgoal(CTXTc bufferb,(VariantSF)consumer_sf);     
-    sprint_subgoal(CTXTc bufferc,(VariantSF)ptcpreg);     
-    fprintf(fview_ptr,"ar(%s,%s,%s,%d).\n",buffera,bufferb,bufferc,ctrace_ctr++);
-  }
+ LOG_ANSWER_RETURN(next_answer,answer_template);
 
     if (is_conditional_answer(next_answer)) {
       /*
@@ -1031,15 +1028,22 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   if (flags[CTRACE_CALLS])  { 
     char buffera[MAXTERMBUFSIZE];
     char bufferb[MAXTERMBUFSIZE]; 
+    char bufferc[MAXTERMBUFSIZE]; 
     memset(bufferb,0,MAXTERMBUFSIZE);
     memset(buffera,0,MAXTERMBUFSIZE);
+    memset(bufferc,0,MAXTERMBUFSIZE);
     //    sprint_registers(CTXTc  buffera,TIF_PSC(subg_tif_ptr(producer_sf)),flags[MAX_TABLE_SUBGOAL_DEPTH]);
     //    printAnswerTemplate(stddbg,answer_template ,(int) template_size);
     sprintAnswerTemplate(CTXTc buffera, answer_template, template_size);
     if (ptcpreg)
       sprint_subgoal(CTXTc bufferb,(VariantSF)producer_sf);     
     else sprintf(bufferb,"null");
-    fprintf(fview_ptr,"na(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
+    if (delayreg) {
+      sprint_delay_list(CTXTc bufferc, delayreg);
+      fprintf(fview_ptr,"nda(%s,%s,%s,%d).\n",buffera,bufferb,bufferc,ctrace_ctr++);
+    }
+    else 
+      fprintf(fview_ptr,"na(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++);
   }
 #ifdef DEBUG_ABSTRACTION
   printf("AT (na) %p size %d\n",answer_template,template_size);

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.32 2012-01-23 02:37:08 tswift Exp $
+** $Id: debug_xsb.h,v 1.33 2012-06-07 19:37:42 tswift Exp $
 ** 
 */
 
@@ -67,7 +67,7 @@ typedef struct subgoal_frame *VariantSF;
 extern void print_delay_list(FILE *, CPtr);
 extern void print_delay_element(FILE *, Cell);
 extern void print_registers(FILE *,Psc,long);
-extern void sprint_subgoal(char *,  VariantSF );
+extern int sprint_subgoal(char *,  VariantSF );
 extern void sprintAnswerTemplate(char *, CPtr, int);
 extern void sprintNonCyclicRegisters(char *,Psc);
 extern void sprintCyclicRegisters(char *,Psc);
@@ -75,10 +75,11 @@ extern void sprintCyclicTerm(char *, Cell);
 extern void print_completion_stack(FILE*);
 extern void printCyclicTerm(Cell);
 extern void mark_cyclic(Cell);
+extern int sprint_delay_list(char *, CPtr);
 #else
 extern void print_delay_list(struct th_context * ,FILE *, CPtr);
 extern void print_registers(struct th_context * ,FILE *,Psc,long);
-extern void sprint_subgoal(struct th_context *, char *,  VariantSF );
+extern int sprint_subgoal(struct th_context *, char *,  VariantSF );
 extern void sprintAnswerTemplate(struct th_context *, char *, CPtr, int);
 extern void sprintCyclicTerm(struct th_context *, char *, Cell);
 extern void sprintCyclicRegisters(struct th_context *,char *,Psc);
@@ -86,9 +87,10 @@ extern void sprintNonCyclicRegisters(struct th_context *,char *,Psc);
 extern void print_completion_stack(struct th_context *,FILE*);
 extern void printCyclicTerm(struct th_context *,Cell);
 extern void mark_cyclic(struct th_context *,Cell);
+extern int sprint_delay_list(struct th_context *, char *, CPtr);
 #endif
 
-extern void sprintTerm(char *, Cell);
+extern int sprintTerm(char *, Cell);
 extern int ctrace_ctr;
 
 /* dbg_* macros */

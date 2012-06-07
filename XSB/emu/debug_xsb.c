@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.96 2012-05-23 14:21:19 dwarren Exp $
+** $Id: debug_xsb.c,v 1.97 2012-06-07 19:37:41 tswift Exp $
 ** 
 */
 
@@ -52,6 +52,7 @@
 #include "io_builtins_xsb.h"
 #include "thread_defs_xsb.h"
 #include "thread_xsb.h"
+#include "tst_utils.h"
 
 #if (defined(DEBUG_VERBOSE) || defined(DEBUG_VM))
 #include "subp.h"
@@ -576,8 +577,8 @@ void sprintCyclicTerm(CTXTdeclc char *buffer, Cell Term) {
   unwind_cycle_trail;
 }
 
-void sprintTerm(char *buffer, Cell Term) {
-  sprint_term(buffer, 0, Term, CAR, (long)flags[WRITE_DEPTH]);
+int sprintTerm(char *buffer, Cell Term) {
+  return sprint_term(buffer, 0, Term, CAR, (long)flags[WRITE_DEPTH]);
 }
 
 static int sprint_cyclic_term_nonvoid(CTXTdeclc char *buffer, int size, Cell Term,long depth) {
@@ -1175,15 +1176,15 @@ static int sprint_term_of_subgoal(CTXTdeclc char *buffer, int size,byte car, int
     size = sprint_quotedname(buffer,size,string_val(term));
     break;
   case XSB_INT: {
-    int length = get_int_print_width((Integer)int_val(term));
-    sprintf(buffer+size, "%*" Intfmt, length, (Integer)int_val(term));
-    return size+length;
+    //    int length = get_int_print_width((Integer)int_val(term));
+    //    size = size + sprintf(buffer+size, "%*" Intfmt, length, (Integer)int_val(term));
+    //    return size+length;
+    size = size + sprintf(buffer+size, "%" Intfmt, (Integer)int_val(term));
+    return size;
     break;
   }
   case XSB_FLOAT:
-    //    fprintf(fp, "%.5g", float_val(term));
-    sprintf(buffer+size, "%10f", float_val(term));
-    size = size+10;
+    size = size + sprintf(buffer+size, "%10f", float_val(term));
     break;
   default:
     xsb_error("Term with unknown tag (%d) in print_subgoal()",
@@ -1217,10 +1218,11 @@ void print_subgoal(CTXTdeclc FILE *fp, VariantSF subg)
 }
 
 /* Assumes MAXTERMBUFSIZE */
-void sprint_subgoal(CTXTdeclc char *buffer,  VariantSF subg)
+int sprint_subgoal(CTXTdeclc char *buffer,  VariantSF subg)
 {
   BTNptr leaf;
   int  i = 0; int size = 0;
+
   Psc  psc = TIF_PSC(subg_tif_ptr(subg));
 
   for (leaf = subg_leaf_ptr(subg); leaf != NULL; leaf = Parent(leaf)) {
@@ -1235,6 +1237,7 @@ void sprint_subgoal(CTXTdeclc char *buffer,  VariantSF subg)
     }
     sprintf(buffer+size,")");size++;
   }
+  return size;
 }
 
 /*----------------------------------------------------------------------*/
@@ -1269,6 +1272,7 @@ void print_delay_element(CTXTdeclc FILE *fp, Cell del_elem)
   char *name;
 
   if ((psc = get_str_psc(del_elem)) == delay_psc) {
+    
     fprintf(fp, "%s(", get_name(psc));
     cptr = (CPtr)cs_val(del_elem);
     tmp_cell = cell(cptr + 1);
@@ -1303,6 +1307,68 @@ void print_delay_element(CTXTdeclc FILE *fp, Cell del_elem)
   }
 }
 
+/* This does a more thorough job of printing out delay elements than
+   print_delay_element(), which I haven't updated */
+int sprint_delay_element(CTXTdeclc char * buffer, Cell del_elem) {
+  Psc  psc = 0;
+  CPtr cptr;
+  Cell tmp_cell;
+  int ctr = 0;
+  //  int arity, i;  char *name;
+
+  if ((psc = get_str_psc(del_elem)) == delay_psc) {
+    cptr = (CPtr)cs_val(del_elem);
+    /* If NDE, only worry about first cell (cf. delay_negatively) */
+    if (cell(cptr + 3) == makeaddr(0)) {
+      ctr = ctr + sprintf(buffer+ctr,"tnot(");
+      tmp_cell = cell(cptr + 1);
+      ctr = ctr + sprint_subgoal(CTXTc buffer+ctr, (VariantSF) addr_val(tmp_cell)); 
+      ctr = ctr + sprintf(buffer+ctr,")");
+    }
+    else {     /* If PDE */
+      ctr =  ctr + sprintf(buffer+ctr,"de(");
+      tmp_cell = cell(cptr + 1);
+      ctr = ctr + sprint_subgoal(CTXTc buffer+ctr, (VariantSF) addr_val(tmp_cell)); 
+      tmp_cell = cell(cptr + 2);
+      ctr = ctr + sprintf(buffer+ctr, ",");
+      //      printTriePath(CTXTc stdout, (BTNptr)  addr_val(tmp_cell), NO);printf("\n");
+      ctr = ctr + sprintTriePath(CTXTc buffer+ctr, (BTNptr) addr_val(tmp_cell)); 
+      ctr = ctr + sprintf(buffer+ctr, ")");
+
+      //      ctr = ctr + sprintf(buffer+ctr, "%p", (BTNptr) addr_val(tmp_cell)); 
+      //      ctr = ctr + sprintf(buffer+ctr, ",");
+      //      tmp_cell = cell(cptr + 3);
+      //      printf("tmp_cell %x\n",tmp_cell);
+      //      if (isointeger(tmp_cell)) {
+      //	ctr = ctr + sprintf(buffer+ctr, "NEG");
+      //      }
+      //      else {
+      //	if (isstring(tmp_cell)) {
+      //  arity = 0;
+      //  name = string_val(tmp_cell);
+      //}
+      //	else {
+      //  psc = get_str_psc(cell(cptr + 3));
+      //  arity = get_arity(psc);
+      //  name = get_name(psc);
+      //} 
+      //ctr = ctr + sprintf(buffer+ctr, "%s", name);
+      //if (arity > 0) {
+      //  ctr = ctr + sprintf(buffer+ctr, "(");
+      //  cptr = (CPtr) cs_val(cell(cptr + 3));
+      //  for (i = 0; i < arity; i++)
+      //    ctr = ctr + sprintTerm(buffer+ctr, cell(cptr + 1 + i));
+      //  ctr = ctr + sprintf(buffer+ctr, ")");
+      //}
+    }
+    return ctr;
+  }
+  else {
+    xsb_abort("Unknown delay list element in print_delay_element()");
+    return 0; // quiet compiler.
+  }
+}
+
 /*----------------------------------------------------------------------*/
 
 void print_delay_list(CTXTdeclc FILE *fp, CPtr dlist)
@@ -1329,6 +1395,38 @@ void print_delay_list(CTXTdeclc FILE *fp, CPtr dlist)
       xsb_abort("Delay list with unknown type in print_delay_list()");
     }
   }
+}
+
+int sprint_delay_list(CTXTdeclc char *buffer, CPtr dlist)
+{
+  CPtr cptr;
+  int ctr = 0;
+
+  if (dlist == NULL) {
+    return sprintf(buffer, "[]"); 
+  } else {
+    if (islist(dlist) || isnil(dlist)) {
+      ctr = ctr + sprintf(buffer, "["); 
+      cptr = dlist;
+      while (islist(cptr)) {
+	cptr = clref_val(cptr);
+	ctr = ctr + sprint_delay_element(CTXTc buffer+ctr, cell(cptr));
+	cptr = (CPtr)cell(cptr+1);
+	if (islist(cptr)) {
+	  sprintf(buffer, ", "); ctr = ctr + 2;
+	}
+      }
+      if (isnil(cptr)) {
+	sprintf(buffer+ctr, "]"); 
+	return ctr+1;
+      } else {
+	xsb_abort("Delay list with unknown tail type in print_delay_list()");
+      }
+    } else {
+      xsb_abort("Delay list with unknown type in print_delay_list()");
+    }
+  }
+      return 0; // quiet compiler.
 }
 
 /*-------------------------------------------------------------------------*/

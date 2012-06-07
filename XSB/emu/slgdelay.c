@@ -29,6 +29,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* special debug includes */
 #include "debugs/debug_delay.h"
@@ -53,6 +54,8 @@
 #include "tst_aux.h"
 #include "tries.h"
 #include "tables.h"
+#include "flags_xsb.h"
+#include "tst_utils.h"
 
 static void simplify_neg_succeeds(CTXTdeclc VariantSF);
 extern void simplify_pos_unsupported(CTXTdeclc NODEptr);
@@ -1126,18 +1129,17 @@ static void handle_empty_dl_creation(CTXTdeclc DL dl)
   if (is_conditional_answer(as_leaf)) {	/* if it is still conditional */
     remove_dl_from_dl_list(CTXTc dl, asi);
     subgoal = asi_subgoal(Delay(as_leaf));
-    //    fprintf(stddbg,"in handle empty dl ");
-    //    fprintf(stddbg, ">>>> the subgoal is: ");
-    //    print_subgoal(stddbg, subgoal); fprintf(stddbg,"\n");		<----
-    //    fprintf(stddbg, ">>>> the answer is: ");
-    //    printTriePath(CTXTc stddbg, as_leaf, FALSE); fprintf(stddbg,"\n");		<----
-    //    printf("dl list %p\n",asi_dl_list(Delay(as_leaf)));
 
-    /*
-     * simplify_pos_unconditional(as_leaf) will release all other DLs for
-     * as_leaf, and mark as_leaf as UNCONDITIONAL.
-     */
-  //    fprintf(stderr,"hedc A\n");
+    // fprintf(stddbg,"in handle empty dl ");
+    // fprintf(stddbg, ">>>> the subgoal is: ");
+    //  print_subgoal(stddbg, subgoal); fprintf(stddbg,"\n");	
+    //  fprintf(stddbg, ">>>> the answer is: ");
+    //  printTriePath(CTXTc stddbg, as_leaf, FALSE); fprintf(stddbg,"\n");	
+    //  printf("dl list %p\n",asi_dl_list(Delay(as_leaf)));
+
+    /** simplify_pos_unconditional(as_leaf) will release all other DLs for
+     * as_leaf, and mark as_leaf as UNCONDITIONAL.*/
+
     simplify_pos_unconditional(CTXTc as_leaf);
 
     /* Perform simplify_neg_succeeds() for consumer sfs (producers and
@@ -1309,6 +1311,24 @@ void simplify_pos_unconditional(CTXTdeclc NODEptr as_leaf)
 
   //  print_pdes(asi_pdes(asi));
   while ((pde = asi_pdes(asi))) {
+
+    if (flags[CTRACE_CALLS])  {				
+      char buffera[MAXTERMBUFSIZE];			
+      char bufferb[MAXTERMBUFSIZE];			
+      char bufferc[MAXTERMBUFSIZE];			
+      char bufferd[MAXTERMBUFSIZE];			
+      memset(bufferb,0,MAXTERMBUFSIZE);
+      memset(buffera,0,MAXTERMBUFSIZE);
+      memset(bufferc,0,MAXTERMBUFSIZE);
+      memset(bufferd,0,MAXTERMBUFSIZE);
+      sprintTriePath(CTXTc buffera, as_leaf);
+      sprint_subgoal(CTXTc bufferb, asi_subgoal(asi));
+      sprintTriePath(CTXTc bufferc, dl_asl(pnde_dl(pde)));
+      sprint_subgoal(CTXTc bufferd, asi_subgoal(Delay(dl_asl(pnde_dl(pde)))));
+      //      print_subgoal(stdout, asi_subgoal(Delay(dl_asl(pnde_dl(pde)))));printf("\n");
+      fprintf(fview_ptr,"puc_smpl(%s,%s,%s,%s,%d).\n",buffera,bufferb,bufferc,bufferd,ctrace_ctr++); 
+    }
+
     de = pnde_de(pde);
     dl = pnde_dl(pde);
 #ifdef MULTI_THREAD
@@ -1370,8 +1390,6 @@ void simplify_neg_fails(CTXTdeclc VariantSF subgoal)
   DE de;
   DL dl;
 
-  //  printf("in simplify neg fails: ");print_subgoal(stddbg,subgoal),printf("\n");
-
   push_neg_simpl(subgoal);
 
   if (in_simplify_neg_fails) {
@@ -1386,6 +1404,17 @@ void simplify_neg_fails(CTXTdeclc VariantSF subgoal)
     while ((nde = subg_nde_list(subgoal))) {
       de = pnde_de(nde);
       dl = pnde_dl(nde);
+
+    if (flags[CTRACE_CALLS])  {				
+      char buffera[MAXTERMBUFSIZE];			
+      char bufferb[MAXTERMBUFSIZE];			
+      memset(bufferb,0,MAXTERMBUFSIZE);
+      memset(buffera,0,MAXTERMBUFSIZE);
+      sprint_subgoal(CTXTc buffera, subgoal);
+      sprint_subgoal(CTXTc bufferb, asi_subgoal(Delay(dl_asl(dl))));
+      fprintf(fview_ptr,"nf_smpl(tnot(%s),%s,%d).\n",buffera,bufferb,ctrace_ctr++); 
+    }
+
 #ifdef MULTI_THREAD
       if (IsPrivateSF(subgoal)) remove_pnde(subg_nde_list(subgoal), nde, private_released_pndes)
       else
@@ -1422,6 +1451,17 @@ static void simplify_neg_succeeds(CTXTdeclc VariantSF subgoal)
   //  printf("in simplify neg succeeds: ");print_subgoal(stddbg,subgoal),printf("\n");
 
   while ((nde = subg_nde_list(subgoal))) {
+
+    if (flags[CTRACE_CALLS])  {				
+      char buffera[MAXTERMBUFSIZE];			
+      char bufferb[MAXTERMBUFSIZE];			
+      memset(bufferb,0,MAXTERMBUFSIZE);
+      memset(buffera,0,MAXTERMBUFSIZE);
+      sprint_subgoal(CTXTc buffera, subgoal);
+      sprint_subgoal(CTXTc bufferb, asi_subgoal(Delay(dl_asl(pnde_dl(nde)))));
+      fprintf(fview_ptr,"ns_smpl(tnot(%s),%s,%d).\n",buffera,bufferb,ctrace_ctr++); 
+    }
+
     dl = pnde_dl(nde); /* dl: to be removed */
     used_as_leaf = dl_asl(dl);
     //    printf("checking ");printTriePath(CTXTc stddbg, used_as_leaf, FALSE); fprintf(stddbg,"\n");
@@ -1483,7 +1523,27 @@ void simplify_pos_unsupported(CTXTdeclc NODEptr as_leaf)
   ASI used_asi, de_asi;
   NODEptr used_as_leaf;
 
+  //  printf("in simplify pos unsupported... ");print_subgoal(stddbg,asi_subgoal(Delay(as_leaf)));;
+
   while ((pde = asi_pdes(asi))) {
+    //    printf("here\n");
+
+    // TLS: seems to be a problem with printing out as_leaf in this case.
+    if (flags[CTRACE_CALLS])  {				
+      char buffera[MAXTERMBUFSIZE];			
+      char bufferb[MAXTERMBUFSIZE];			
+      char bufferc[MAXTERMBUFSIZE];			
+      memset(bufferb,0,MAXTERMBUFSIZE);
+      memset(buffera,0,MAXTERMBUFSIZE);
+      memset(bufferc,0,MAXTERMBUFSIZE);
+      //      printTriePath(CTXTc buffera, as_leaf);
+      //      sprintTriePath(CTXTc buffera, as_leaf);
+      sprint_subgoal(CTXTc buffera, asi_subgoal(Delay(as_leaf)));
+      sprintTriePath(CTXTc bufferb, dl_asl(pnde_dl(pde)));
+      sprint_subgoal(CTXTc bufferc, asi_subgoal(Delay(dl_asl(pnde_dl(pde)))));
+      fprintf(fview_ptr,"pus_smpl(%s,%s,%s,%d).\n",buffera,bufferb,bufferc,ctrace_ctr++); 
+    }
+
     dl = pnde_dl(pde); /* dl: to be removed */
 
     if (!dl) return; // amp: necessary check for Answer Completion
