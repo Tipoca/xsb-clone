@@ -41,6 +41,7 @@
 #define GET_VISITORS_NUMBER                      17
 #define GET_SCC_DUMPFILE                         18
 #define CHECK_VARIANT                            19
+#define IS_CONDITIONAL_ANSWER                    20
 
 // For delete return
 #define ANSWER_SUBSUMPTION   0

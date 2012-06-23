@@ -5115,6 +5115,15 @@ case CALL_SUBS_SLG_NOT: {
     return (leaf != NULL);
   }
 
+  case IS_CONDITIONAL_ANSWER: {
+    NODEptr as_leaf;
+    as_leaf = (NODEptr) ptoc_int(CTXTc 2);
+    if (is_conditional_answer(as_leaf))
+      ctop_int(CTXTc 3,TRUE);
+    else ctop_int(CTXTc 3,FALSE);
+    break;
+  }
+
   } /* switch */
   return TRUE;
 }
