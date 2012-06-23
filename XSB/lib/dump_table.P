@@ -6,7 +6,7 @@
 :- import numbervars/4 from num_vars.
 :- import member/2, length/2, copy_term/2 from basics.
 :- import get_calls_for_table/2, get_call/3,get_callsto_number/2,get_current_scc/2,
-	  get_answer_number/2 from tables.
+   get_returns_and_tvs/3, get_answer_number/2  from tables.
 :- import subsumes_chk/2 from subsumes.
 :- import parsort/4 from machine.
 :- import sort/2 from setof.
@@ -70,7 +70,7 @@ table_dump(Stream,Pred,Options) :-
 	 walltime(After),Time is After - Before,
 	 write(table_dump(elapsed_time,Time)),writeln('.').
 */
-:- import writeln/1 from standard.
+%:- import writeln/1 from standard.
 
 table_dump(Stream,Pred,Options) :- 
 	check_options(Options,Details,Summary,ResultsIn,Output), 
@@ -149,7 +149,8 @@ subgoal_properties_w_answers(Pred,C,NR,CallsTo,Rets,Scc) :-
 %	 (is_cyclic(C) -> writeln(2,cyclic(C)) ; true),
 %	 (is_cyclic(C1) -> writeln(2,cyclic(C1)) ; true),
 	 subsumes_chk(Pred,C1),
-	 findall(Atom,(get_returns(SF,RetStruct),bindreturn(C1,RetStruct,Atom)),Rets),
+%	 findall(Atom,(get_returns(SF,RetStruct),bindreturn(C1,RetStruct,Atom)),Rets),
+	 findall(Atom-TV,(get_returns_and_tvs(SF,RetStruct,TV),bindreturn(C1,RetStruct,Atom)),Rets),
 	 get_callsto_number(SF,CallsTo),
 	 (get_current_scc(SF,Number) -> Scc = scc(Number) ; Scc = completed),
 	 length(Rets,NR).
