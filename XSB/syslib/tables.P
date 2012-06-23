@@ -540,6 +540,30 @@ get_returns_and_dls(CallStr, RetSkel, DLs) :-
 
 get_delay_lists(Leaf, DLs) :- get_delay_lists(Leaf, DLs).
 
+%------------
+
+:- export get_returns_and_tvs/3.
+
+get_returns_and_tvs(TableEntry, ReturnTemplate,TV) :-
+	findall('_$$get_returns_and_tvs'(TableEntry,ReturnTemplate,TV),
+	        '_$$get_returns_and_tvs'(TableEntry,ReturnTemplate,TV),
+	      	ReturnsList),
+	% As ReturnTemplate may contain attributed variables (from the
+	% call), which may have been changed in the answer, directly
+	% calling member/2 may trigger attv interrupts.  To avoid this,
+	% we need to change all attributed variables in ReturnTemplate
+	% to free regular variables.
+	change_attv_to_var(ReturnTemplate),
+	member('_$$get_returns_and_tvs'(TableEntry,ReturnTemplate,TV),ReturnsList).
+
+'_$$get_returns_and_tvs'(CallStr,RetSkel,TV) :-
+	trie_get_return(CallStr,RetSkel),
+	get_lastnode_cs_retskel(_,Leaf,_,_),
+	is_conditional_answer(Leaf,IsCond),
+	(IsCond = 1 -> TV = u ; TV = t).
+	
+is_conditional_answer(Leaf,IsCond):-
+	table_inspection_function(IS_CONDITIONAL_ANSWER,Leaf,IsCond,_,_).
 
 /*----------------------------------------------------------------------*/
 /* Predicates to remove information from tables.			*/
