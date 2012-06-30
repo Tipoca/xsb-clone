@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.236 2012-03-30 22:02:00 kifer Exp $
+## $Id: configure.in,v 1.237 2012-06-30 00:59:34 kifer Exp $
 ##
 ##
 
@@ -955,8 +955,8 @@ dnl	   AC_TRY_RUN called without default to allow cross compiling
 dnl This warning is really a buglet in the AC_CHECK_SIZEOF macro:
 dnl it invokes AC_TRY_RUN without specifying an action for cross-compilation,
 dnl if the second arg to AC_CHECK_SIZEOF is not given.
-AC_CHECK_SIZEOF(long,4)
-if test "${ac_cv_sizeof_long}" = 0; then
+AC_CHECK_SIZEOF([long int])
+if test "${ac_cv_sizeof_long_int}" = 0; then
     echo ""
     echo "*** PANIC!!! Configure tests are not working - compiler $CC is broken!"
     echo "*** $CC says that sizeof(long)=0 !!!"
@@ -966,7 +966,7 @@ if test "${ac_cv_sizeof_long}" = 0; then
     exit 1
 fi
 
-if (test "${ac_cv_sizeof_long}" = 8 -o "$bits64" = "yes") && test "$bits32" = "no"; then
+if (test "${ac_cv_sizeof_long_int}" = 8 -o "$bits64" = "yes") && test "$bits32" = "no"; then
     AC_DEFINE(BITS64)
     machine64bit=yes
     echo ""

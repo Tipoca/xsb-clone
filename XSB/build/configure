@@ -5132,36 +5132,36 @@ fi
 # version HP92453-01 B.11.11.23709.GP, which incorrectly rejects
 # declarations like `int a3[[(sizeof (unsigned char)) >= 0]];'.
 # This bug is HP SR number 8606223364.
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking size of long" >&5
-$as_echo_n "checking size of long... " >&6; }
-if test "${ac_cv_sizeof_long+set}" = set; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking size of long int" >&5
+$as_echo_n "checking size of long int... " >&6; }
+if test "${ac_cv_sizeof_long_int+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  if ac_fn_c_compute_int "$LINENO" "(long int) (sizeof (long))" "ac_cv_sizeof_long"        "$ac_includes_default"; then :
+  if ac_fn_c_compute_int "$LINENO" "(long int) (sizeof (long int))" "ac_cv_sizeof_long_int"        "$ac_includes_default"; then :
 
 else
-  if test "$ac_cv_type_long" = yes; then
+  if test "$ac_cv_type_long_int" = yes; then
      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error 77 "cannot compute sizeof (long)
+as_fn_error 77 "cannot compute sizeof (long int)
 See \`config.log' for more details" "$LINENO" 5 ; }
    else
-     ac_cv_sizeof_long=0
+     ac_cv_sizeof_long_int=0
    fi
 fi
 
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_sizeof_long" >&5
-$as_echo "$ac_cv_sizeof_long" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_sizeof_long_int" >&5
+$as_echo "$ac_cv_sizeof_long_int" >&6; }
 
 
 
 cat >>confdefs.h <<_ACEOF
-#define SIZEOF_LONG $ac_cv_sizeof_long
+#define SIZEOF_LONG_INT $ac_cv_sizeof_long_int
 _ACEOF
 
 
-if test "${ac_cv_sizeof_long}" = 0; then
+if test "${ac_cv_sizeof_long_int}" = 0; then
     echo ""
     echo "*** PANIC!!! Configure tests are not working - compiler $CC is broken!"
     echo "*** $CC says that sizeof(long)=0 !!!"
@@ -5171,7 +5171,7 @@ if test "${ac_cv_sizeof_long}" = 0; then
     exit 1
 fi
 
-if (test "${ac_cv_sizeof_long}" = 8 -o "$bits64" = "yes") && test "$bits32" = "no"; then
+if (test "${ac_cv_sizeof_long_int}" = 8 -o "$bits64" = "yes") && test "$bits32" = "no"; then
     $as_echo "#define BITS64 1" >>confdefs.h
 
     machine64bit=yes
