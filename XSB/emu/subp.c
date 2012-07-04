@@ -680,34 +680,6 @@ void intercept(CTXTdeclc Psc psc) {
   if (flags[HITRACE])
     debug_call(CTXTc psc);
 
-#ifndef MULTI_THREAD
-  if (flags[TRACE_STA]) {
-    size_t  byte_size;
-
-    byte_size = (top_of_heap - (CPtr)(glstack.low) + 1) * sizeof(Cell);
-    if ( byte_size > tds.maxgstack_count )
-      tds.maxgstack_count = byte_size;
-
-    byte_size = ((CPtr)glstack.high - top_of_localstk) * sizeof(Cell);
-    if ( byte_size > tds.maxlstack_count )
-      tds.maxlstack_count = byte_size;
-
-    byte_size = (top_of_trail - (CPtr *)tcpstack.low + 1) * sizeof(CPtr);
-    if ( byte_size > tds.maxtrail_count )
-      tds.maxtrail_count = byte_size;
-
-    byte_size = ((CPtr)tcpstack.high - top_of_cpstack) * sizeof(Cell);
-    if ( byte_size > tds.maxcpstack_count )
-      tds.maxcpstack_count = byte_size;
-
-    byte_size = ((CPtr)complstack.high - top_of_complstk) * sizeof(Cell);
-    if ( byte_size > tds.maxopenstack_count )
-      tds.maxopenstack_count = byte_size;
-
-    if ((UInteger)level_num > tds.maxlevel_num)
-      tds.maxlevel_num = level_num;
-  }
-#endif
 }
 
 /*======================================================================*/

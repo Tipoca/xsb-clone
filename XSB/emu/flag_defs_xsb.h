@@ -20,7 +20,7 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **
-** $Id: flag_defs_xsb.h,v 1.48 2012-06-04 15:59:24 dwarren Exp $
+** $Id: flag_defs_xsb.h,v 1.49 2012-07-04 15:10:46 tswift Exp $
 **
 */
 
@@ -74,7 +74,7 @@ interrupt flag
 
 /* Thread shared flags */
 
-#define TRACE_STA	42	/* 1 = keep max stack size stats	YW */
+#define MAX_USAGE	42	/* 1 = keep max tablespace usage        YW */
 #define CURRENT_MODULE	43	/* current module. USERMOD_PSC=usermod  YW */
 #define MOD_LIST	44	/* the list of module (Psc) entries	YR */
 #define BANNER_CTL      45      /* Controls whether banner, "loaded" msgs

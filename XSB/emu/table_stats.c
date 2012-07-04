@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: table_stats.c,v 1.41 2012-03-01 15:43:04 tswift Exp $
+** $Id: table_stats.c,v 1.42 2012-07-04 15:10:46 tswift Exp $
 ** 
 */
 
@@ -379,7 +379,7 @@ void print_detailed_tablespace_stats(CTXTdecl) {
       print_HashStats(abtht,"Basic Trie Hash Tables (Assert)");
   }
 
-  if (flags[TRACE_STA]) {
+  if (flags[MAX_USAGE]) {
     /* Report Maximum Usages
        --------------------- */
     update_maximum_tablespace_stats(&btn,&btht,&varsf,&prodsf,&conssf,

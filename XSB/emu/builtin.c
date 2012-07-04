@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.392 2012-03-19 15:19:58 dwarren Exp $
+** $Id: builtin.c,v 1.393 2012-07-04 15:10:46 tswift Exp $
 **
 */
 
@@ -1607,7 +1607,7 @@ int builtin_call(CTXTdeclc byte number)
     if (flagname < MAX_PRIVATE_FLAGS )
     	pflags[flagname] = flagval;
     else flags[flagname] = flagval;
-    if (flags[DEBUG_ON]||flags[TRACE_STA]||flags[HITRACE]||pflags[CLAUSE_INT])
+    if (flags[DEBUG_ON]||flags[HITRACE]||pflags[CLAUSE_INT])
       asynint_val |= MSGINT_MARK;
     else asynint_val &= ~MSGINT_MARK;
     break;

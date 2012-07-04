@@ -67,7 +67,7 @@ static double last_wall = 0;      /* time from which stats started being collect
 struct trace_str tds;			/* trace datastructure */
 struct trace_str ttt;			/* trace total */
 struct trace_str trace_init = {		/* initial value for a trace str */
-    0, 0, 0, 0, 0, 0, 0.0
+0
    };
 #else 
 double time_count = 0;
@@ -81,27 +81,13 @@ double time_count = 0;
  * Moves values from 'tds' into 'ttt' for reporting in total_stat().
  * (Since 'ttt' is always reset when the builtin statistics/1
  *  (statistics/0 calls statistics(1)) is called, 'ttt' always gets *
- *  what's in 'tds'.  The *real* check for max usage occurs in *
- *  subp.c::intercept(), which compares current usage to previous max *
- *  values held in 'tds'.)
+ *  what's in 'tds'.  
  */
 
 #ifndef MULTI_THREAD
 void perproc_stat(void)
 {
   tds.time_count = cpu_time() - time_start;
-  if (ttt.maxgstack_count < tds.maxgstack_count) 
-     ttt.maxgstack_count = tds.maxgstack_count;
-  if (ttt.maxlstack_count < tds.maxlstack_count) 
-     ttt.maxlstack_count = tds.maxlstack_count;
-  if (ttt.maxtrail_count < tds.maxtrail_count)
-     ttt.maxtrail_count = tds.maxtrail_count;
-  if (ttt.maxcpstack_count < tds.maxcpstack_count)
-     ttt.maxcpstack_count = tds.maxcpstack_count;
-  if (ttt.maxopenstack_count < tds.maxopenstack_count)
-     ttt.maxopenstack_count = tds.maxopenstack_count;
-  if (ttt.maxlevel_num < tds.maxlevel_num)
-     ttt.maxlevel_num = tds.maxlevel_num;
   ttt.time_count += tds.time_count;
 }
 #else
@@ -435,16 +421,9 @@ void total_stat(CTXTdeclc double elapstime) {
 	 tablespace_alloc - tablespace_used);
   printf("\n");
 
-  if (flags[TRACE_STA]) {
+  if (flags[MAX_USAGE]) {
     /* Report Maximum Usages
        --------------------- */
-    printf("  Maximum stack used: global %" Intfmt ", local %" Intfmt ", trail %" Intfmt ", cp %" Intfmt ",\n",
-	   ttt.maxgstack_count, ttt.maxlstack_count, 
-	   ttt.maxtrail_count, ttt.maxcpstack_count);
-    printf("                      SLG completion %" Intfmt " (%" Intfmt " subgoals)\n",
-	   ttt.maxopenstack_count,
-	   (UInteger) (ttt.maxopenstack_count/sizeof(struct completion_stack_frame)));
-
     update_maximum_tablespace_stats(&tbtn,&tbtht,&varsf,&prodsf,&conssf,
 				    &aln,&tstn,&tstht,&tsi,&asi);
     printf("  Maximum table space used:  %" Intfmt " bytes\n",

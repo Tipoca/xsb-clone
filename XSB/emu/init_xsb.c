@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.187 2012-02-29 15:34:19 tswift Exp $
+** $Id: init_xsb.c,v 1.188 2012-07-04 15:10:46 tswift Exp $
 ** 
 */
 
@@ -727,15 +727,6 @@ static size_t get_memarea_size( char *s )
 	  xsb_warn("Missing size value for -o");
       }
       break;
-    case 's':
-#ifndef MULTI_THREAD
-      flags[TRACE_STA] = 1;
-      asynint_val |= MSGINT_MARK;
-      break;
-#else
-      xsb_warn("-s option not available with multi-threaded engine.");
-      break;
-#endif
     case 'S':
       pflags[TABLING_METHOD] = SUBSUMPTIVE_EVAL_METHOD;
       break;

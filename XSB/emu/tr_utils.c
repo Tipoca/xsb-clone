@@ -5103,6 +5103,7 @@ case CALL_SUBS_SLG_NOT: {
     }
     else {
       xsb_type_error(CTXTc "callable structure",term,"check_variant/[1,2]",1);
+      return 0; /* purely to quiet compiler */
     }
     prref = get_prref(CTXTc psc);
     // prref points to a clref which *then* points to the root of the trie.

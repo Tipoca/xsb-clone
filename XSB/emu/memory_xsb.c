@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: memory_xsb.c,v 1.78 2012-02-18 04:46:54 kifer Exp $
+** $Id: memory_xsb.c,v 1.79 2012-07-04 15:10:46 tswift Exp $
 ** 
 */
 
@@ -426,6 +426,7 @@ Please use -c N or cpsize(N) to start with a larger choice point stack"
     else {
       //      printf("new size would be %"Intfmt"\n",pspace_tot_gl + (new_size - tcpstack.size)*K);
       xsb_throw_memory_error(encode_memory_error(TCP_SPACE,USER_MEMORY_LIMIT));
+      return;
     }
     if ( IsNULL(new_trail) ) {
       xsb_throw_memory_error(encode_memory_error(TCP_SPACE,USER_MEMORY_LIMIT));
