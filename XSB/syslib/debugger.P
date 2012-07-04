@@ -85,8 +85,8 @@ hitrace :- stat_set_flag(HITRACE,1),debug.		% call level sim trace
 nosimtrace :-
 	stat_set_flag(HITRACE,0), 
 	stat_set_flag(PIL_TRACE,0).	    	       % undo the above two
-trace_stack_max :- stat_set_flag(TRACE_STA,1), debug.  % record max space usage
-notrace_stack_max :- stat_set_flag(TRACE_STA,0).       % undo above
+%trace_stack_max :- stat_set_flag(TRACE_STA,1), debug.  % record max space usage
+%notrace_stack_max :- stat_set_flag(TRACE_STA,0).       % undo above
 dump :- ll_write('dump not implemented yet').
 
 trace :-
@@ -311,7 +311,7 @@ debugging :-
     ll_write('  Tracing:     '), stat_flag(TRACE,X2), ll_write(X2), ll_nl,
     ll_write('  Hi Tracing:  '), stat_flag(HITRACE,X3), ll_write(X3), ll_nl,
     ll_write('  PIL Tracing: '), stat_flag(PIL_TRACE,X4), ll_write(X4), ll_nl,
-    ll_write('  StackTracing:'), stat_flag(TRACE_STA,X5), ll_write(X5), ll_nl,
+%    ll_write('  StackTracing:'), stat_flag(TRACE_STA,X5), ll_write(X5), ll_nl,
     ll_write('  Skipping:    '), stat_flag(SKIPPING,X6), ll_write(X6), ll_nl,
     ll_write('  Q-Skipping:  '),
     stat_flag(QUASI_SKIPPING,X7), ll_write(X7), ll_nl,
