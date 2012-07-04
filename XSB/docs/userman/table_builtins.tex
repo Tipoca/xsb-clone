@@ -4,7 +4,7 @@
 
 %--------------------------------------------------------------------------
 
-\section{Tabled Predicate Manipulations} \label{sec:TablingPredicates}
+\section{Tabling Declarations and Builtins} \label{sec:TablingPredicates}
 
 In XSB, tables are designed so that they can be used transparently by
 computations.  However, it is necessary to first inform the system of
@@ -702,8 +702,6 @@ The supplied values for the entry handle and return skeleton should be
 obtained from some previous invocation of a table-inspection
 predicate.
 
-\comment{See \code{get\_returns/3} for error conditions.}
-
 \begin{minipage}{6in}
 \begin{example}\ \\
 \\
@@ -771,6 +769,17 @@ no
 \end{tabular}
 \end{example}
 \end{minipage} \\
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\ourstandarditem{get\_returns\_and\_tvs(+TableEntryHandle,\#ReturnSkeleton,-TruthValue)}{get\_returns\_and\_tvs/3}{Tabling}
+%
+Identical to \code{get\_returns/2}, but also obtains the truth value
+of a given answer, setting {\tt TruthValue} to {\tt t} if the answer
+is unconditional and to {\tt u} if it is conditional.  If a
+conditional answer has multiple delay lists, this predicate will
+succeed only once, so that using this predicate may be more efficient
+than {\tt get\_residual/2} (although less informative).
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1047,24 +1056,25 @@ called at that moment.
 answers that are present in a table.  Given an input {\tt Term}, {\tt
   table\_dump/[2,3]} provides information about all tabled subgoals
 that are subsumed by {\tt Term}; if {\tt Term} is a variable,
-information about all tables is provided.
+information is provided about all tables.
 
 The information is provided at three levels of aggregation, and the form
 of the information is determined by the options in {\tt OptionsList}.
 %
 \begin{itemize}
-\item If the option {\tt summary(true)} is set, the aggregate number
+\item If the option {\tt summary(true)} is set, the aggregate sum
   of subgoals and answers that are subsumed by {\tt Term} is
-  collected, along with the aggregate number of calls {\bf to} these
+  collected, along with the aggregate sum of calls {\bf to} these
   subgoals.  If {\tt Term} is a variable this information is broken
   down by tabled predicates.
 %
 \begin{itemize}
-\item If {\tt details(answers)} is set, a list is collected of all
-  subgoals $S$ such that $S$ is subsumed by {\tt Term} along with the
-  number of answers for each $S$ and a list of those answers.  If {\tt
-    Term} is a variable this information is broken down by tabled
-  predicates.
+\item If {\tt details(answers)} is set, a list is collected of every
+  tabled subgoal $S$ such that $S$ is subsumed by {\tt Term} along
+  with the number of answers for each $S$ and a list of those answers
+  and the truth value of each answer ({\tt t} if true and {\tt u} if
+  undefined).  If {\tt Term} is a variable this information is broken
+  down by tabled predicates.
 %
 \item If {\tt details(subgoals)} is set, a list is collected of all
   subgoals $S$ such that $S$ is subsumed by {\tt Term} along with the
@@ -1126,15 +1136,16 @@ yes
 
 summary = p(A,B) - subgoals(3) - total_times_called(4) - total_answers(7).
 details = p(A,B) - subgoals(3) - details([
-    p(C,D) - times_called(1) - answers(5) - [p(3,1),p(3,2),p(2,b),p(1,b),p(1,a)] - completed,
-    p(1,a) - times_called(2) - answers(1) - [p(1,a)]                             - completed,
-    p(2,b) - times_called(1) - answers(1) - [p(2,b)]                             - completed]).
+    p(C,D) - times_called(1) - answers(5) - [p(3,1)-t,p(3,2)-t,p(2,b)-t,p(1,b)-t,p(1,a)-t] 
+                                          - completed,
+    p(1,a) - times_called(2) - answers(1) - [p(1,a)-t]                         - completed,
+    p(2,b) - times_called(1) - answers(1) - [p(2,b)-t]                         - completed]).
 
 X = p(_h232,_h233);
 
 summary = q(A) - subgoals(1) - total_times_called(1) - total_answers(2).
 details = q(A) - subgoals(1) - details([
-     q(B) - times_called(1) - answers(2) - [q(2),q(1)] - completed]).
+     q(B) - times_called(1) - answers(2) - [q(2)-t,q(1)-t] - completed]).
 
 X = q(_h232)
 
@@ -1190,8 +1201,9 @@ fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
 %
 for each $Subgoal$ in the table subsumed by $Pred/Goal$.  $N_{called}$
 and $N_{answers}$ are as above, while {\em List\_of\_Answers} contains
-all those answers currently derived for $Subgoal$.  On the other hand,
-if {\tt details(subgoals)} was an input option 
+$A-TV$ for each answer $A$ with truth value $TV$ that is currently
+derived for $Subgoal$.  On the other hand, if {\tt details(subgoals)}
+was an input option
 \begin{tabbing}
 fooo\=foo\=foo\=foo\=fooooooooooooooooooooooooooooooo\=ooooooooooooo\=\kill
 %

@@ -951,6 +951,17 @@ termed {\em not\_yet\_called}.  XSB contains predicates that allow a
 user to examine the state of a given table (Section
 \ref{sec:TablingPredicates}).
 
+\index{tabling!early completion of subgoals} 
+There are in fact two ways that a tabled subgoal $S$ can be determined
+to be completely evaluated.  If $S$ is part of an SCC $\cS$, (a
+mutually recorsive component), then $S$ can be completed once it is
+ensure that all resolution steps have been done to all subgoals in
+$\cS$.  Otherwise, if there is a derivation of an answer that is
+identical to $S$, $S$ can be completed before the rest of the subgoals
+in $\cS$ since further evaluation of $S$ itself will not produce
+useful information.  In this case, we sometimes say that $S$ is {\em
+  early completed}.
+
 Using these concepts, we can overview how tabled negation is evaluated
 for stratified programs.  If a literal {\tt tnot(S)} is called, where
 {\tt S} is a tabled subgoal, the evaluation checks the state of {\tt
@@ -967,7 +978,6 @@ may produce behavior unexpected by the user.
 \paragraph*{{\tt tnot/1} vs. \not }
 \predrefindex{tnot/1}
 \index{\texttt{$\backslash$+/1}}
-
 Subject to some semantic restrictions, an XSB programmer can intermix
 the use of tabled negation ({\tt tnot/1}) with Prolog's negation
 (\not, or equivalently {\tt fail\_if/1} or {\tt not/1}).  These

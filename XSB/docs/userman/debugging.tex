@@ -298,8 +298,6 @@ and retracts. Second, {\tt -T} can be used when the error occurs early on,
 before the moment when XSB shows its first prompt.
 
 %-----------------------------------------------------------------------------
-\newcommand{\mif}{\mbox{ :- }}
-\newcommand{\cS}{{\cal S}}
 \newcommand{\ctrace}{{\tt logforest}}
 
 \section{Analyzing the Execution of Tabled Programs} \label{sec:forest-trace}
@@ -316,12 +314,12 @@ whose only proof may be involved in a loop through negation and to
 simplify these goals once their truth value has become
 known. Furthermore, a tabled subgoal has different states: it may be
 {\em new}; it may be {\em incomplete} so that new answers might be
-derived for it; or {\em completed} so that the answers may simply be
-read from the table.  In short, tabling, which can execute much more
-general programs than Prolog and which can use the stronger
-well-founded semantics, requires a more complex set of operations than
-Prolog's SLDNF.  Accordingsly, debugging and tracing is
-correspondingly more complex.  Thus, while Prolog's 4-port debugger
+derived for it; or {\em completed} (completely evaluated) so that the
+answers may simply be read from the table.  In short, tabling, which
+can execute much more general programs than Prolog and which can use
+the stronger well-founded semantics, requires a more complex set of
+operations than Prolog's SLDNF.  Accordingsly, debugging and tracing
+is correspondingly more complex.  Thus, while Prolog's 4-port debugger
 may be useful for programs that involve just a few tabled predicates,
 it may not be useful for programs that heavily use tabling for complex
 recursions, non-monotinic reasoning or other purposes.
@@ -446,18 +444,19 @@ Currently, \ctrace{} captures the following actions.
   made only if the table for $S$ is incomplete (see the explanation
   below).
 
+\index{strongly donnected somponents (SCCs)}
 \item {\em Subgoal completion}
 \bi
 \item When a set $\cS$ of subgoals is determined to be completely
   evaluated and is completed, a fact of the form {\tt
     cmp(S,SCCNum,Counter)} is logged for each $S \in \cS$.  Here
   $SCCNum$ is simply a number giving an ordinal value that can be used
-  to group subgoals into mutually dependent sets of subgoals or SCCs,
-  i.e. the {\em SCCNum} of each $S \in \cS$ has the same value, but
-  that value is not used for a completion fact of any subgoal not in
-  $\cS$.
+  to group subgoals into mutually dependent sets of subgoals (here
+  called {\em Strongly Conneced Components} or {\em SCCs}), i.e. the
+  {\em SCCNum} of each $S \in \cS$ has the same value, but that value
+  is not used for a completion fact of any subgoal not in $\cS$.
 %
-\index{early completion of subgoals}
+\index{tabling!early completion of subgoals}
 \item When a subgoal $\cS$ is {\em early completed}, i.e. it is
   determined that no more answers for $S$ are possile or are desired a
   fact of the form {\tt cmp(S,ec,Counter)} is logged.  If $S$ belonged
@@ -595,19 +594,19 @@ exploration.  We introduce these routines via an extended example.
 \begin{example} \rm \label{ex:scc-anal}
 %
 This example arises from the actual use of forest logging to
-understand a Flora-2 computation, in which the Cyc reasoner
-(cf. http://www.cyc.com) was translated into Silk
+understand a Flora-2 computation~\cite{YaKZ05}, in which the Cyc
+reasoner (cf. http://www.cyc.com) was translated into Silk
 (cf. http://silk.semwebcentral.org) and used to answer various
-questions in biology.  Silk itself compiles into Flora=2~\cite{YaKZ05}
-which in turn compiles into XSB~\footnote{This example was run in 2012
-  using a 64-bit server with a large amount of RAM.}.  After
-translation, query answering took more resources than expected, and
-users wanted to determine why.  Using the features of \version{}, the
-first step is to call {\tt statistics/0} at the end of the
-computation.  The statistics indicated that the computation took about
-30 seconds of CPU time and 300 megabytes of table space, while XSB's
-trail had allocated over 1 gigabyte of space.  The call to {\tt
-  statistics/0} also showed the following information:
+questions in biology.  Silk itself compiles into Flora-2 which in turn
+compiles into XSB~\footnote{This example was run in 2012 using a
+  64-bit server with a large amount of RAM.}.  After translation,
+query answering took more resources than expected, and users wanted to
+determine why.  Using the features of \version{}, the first step is to
+call {\tt statistics/0} at the end of the computation.  The statistics
+indicated that the computation took about 30 seconds of CPU time and
+300 megabytes of table space, while XSB's trail had allocated over 1
+gigabyte of space.  The call to {\tt statistics/0} also showed the
+following information:
 %
 \begin{verbatim}
   8678944 variant call check/insert ops: 615067 producers, 8063877 variants.
@@ -626,38 +625,36 @@ predicate call another tabled predicate?
 
 \index{\texttt{table\_dump/2}}\index{\texttt{table\_dump/3}} Some of
 these questions can be answered by {\tt table\_dump/[2,3]}:
-particularly what tabled subgoals were called, and which had answers.
+particularly, what tabled subgoals were called, and which had answers.
 However {\tt table\_dump/[2,3]} cannot provide other information, such
-as the dependencies of given tabled subgoals on other tabled subgoals.
-From a formal perspective, {\tt table\_dump/[2,3]} does not allow a
-user to analyze an entire SLG forest: only the ``table'', i.e., the
-subgoals in the forest and the set of its answers.  Indeed, from an
-implementational level the table omits the order of answers (which
-would mean the table would have to maintain a bag rather than a set)
-as well as that of all other nodes; and the table omits any
-information about interior nodes or completion information.  Such
-information is useful in analyzing most computations, but is
-especially important in Flora-2 computations such as this one, that
-make heavy use of HiLog.  This use of HiLog means that the
-dependencies of tabled predicates on one another is not at all
-obvious, and may not easily be determined by static analysis.
+as the dependencies of given tabled subgoals on other tabled subgoals
+or the order in which operations occurred.  From a formal perspective,
+{\tt table\_dump/[2,3]} does not allow a user to analyze an entire SLG
+forest: only the ``table'', i.e., the subgoals in the forest and the
+unordered set of its answers.  The table omits any information about
+interior nodes or completion information, both of which are used to
+compute dependency information.  Dependencies are useful in analyzing
+most computations, but is especially important in Flora-2 computations
+such as this one, that make heavy use of HiLog.  This use of HiLog
+means that the dependencies of tabled predicates on one another is not
+at all obvious, and may not easily be determined by static analysis.
 
 The next step, therefore, in analyzing this computation is to rerun it
 with forest logging.  For this computation forest logging has no
 impact on memory usage, but increases the time of the computation from
-about 30 seconds to about 52 seconds --- around 73\% in other words.
-It is worthwhile noting that the actual overhead of forest logging
-varies depending on how heavily the computation is tabled.  The log
-itself had slightly over 14 million entries which were loaded into XSB
-via {\tt load\_forest\_log/1}.  The log took about 140 seconds to load
-and about 7.8 Gbytes of space for the log facts and their multiple and
+about 30 seconds to about 52 seconds --- around 73\% in this case.  It
+is worthwhile noting that the actual overhead of forest logging varies
+depending on how heavily the computation is tabled.  The log itself
+had slightly over 14 million entries which were loaded into XSB via
+{\tt load\_forest\_log/1}.  The log took about 140 seconds to load and
+about 7.8 Gbytes of space for the log facts and their multiple and
 trie indexes~\footnote{The load time for this example, about 100,000
   facts/second is typical for 2012 CPUs; the size of the loaded code
-  is larger than usual, due in part to the expansion in size caused by
-  the HiLog encoding.}.
+  is larger than usual, due in part to the expansion in the size of
+  terms caused by the HiLog encoding.}.
 
 The easiest way to start the analysis is to ask the query {\tt ?-
-  forest\_logl\_overview}, which for this example gives:
+  forest\_log\_overview}, which for this example gives:
 %
 \begin{verbatim}
 There were 613496 subgoals in 463330 (completed) SCCs.  
@@ -676,7 +673,8 @@ Number of SCCs with 110 subgoals is 4
 Number of SCCs with 149671 subgoals is 1
 \end{verbatim}
 %
-\index{early completion of subgoals} 
+\index{tabling!complete evaluation}
+\index{tabling!early completion of subgoals} 
 %
 The overview extends the information shown by {\tt
   statistics/0}.  First, the total number of completed and
@@ -704,11 +702,11 @@ the large SCC should be examimed.  The first step is to obtain its
 index.  The query
 %
 \begin{verbatim}
-get_scc_length(scc(S,Index)), Index > 1000.
+get_scc_size(SCC,Index)), Index > 1000.
 \end{verbatim}
 %
 returns the information that the index of the large SCC was 39.  The
-query {\tt analyze\_an\_scc(39)} then provides the following
+query {\tt analyze\_an\_scc(39,userout)} then provides the following
 information.
 %
 \begin{verbatim}
@@ -795,14 +793,68 @@ predicate may be passed into the last argument of {\tt
   of {\tt abstract\_modes/2} was used in
   Example~\ref{ex:moded-scc-anal}.}.
 
+\subsubsection{Analyzing Negation}
+%
+Many programs that use negation are stratified in such a way that they
+do not require the use of {\sc Delaying} and {\sc Simplification}
+operations, and the routines described in the previous section are
+sufficient for these programs.  However if a program does not have a
+two-valued well-founded model, a user would often like to understand
+why.  Even in a program that is two-valued, the heavy use of {\sc
+  Delaying} and {\sc Simplification} can indicate that some rules may
+need to be optimized by having their literals reordered.
+
+As indicated previously, the forest log overview includes a total
+count of {\sc Delaying} and {\sc Simplification} operations, as well
+as a count of conditional answers.  In addition, SCC analysis counts
+negative as well as positive links within the SCC.  The current
+version of forest logging also provides a means to examine the causes
+of answers that have an undefined truth value.  Recall from
+Example~\ref{ex:neg} that there are two types of causes of an
+undefined truth value: either 1) a negative literal explicitly
+undergoes a {\sc Delaying} operation; or 2) a conditional answer may
+be used to resolve a literal.  It can be shown that in local
+evaluation, a conditional answer $A$ will never be returned out of an
+SCC if $A$ is successful or failed in the well-founded model of a
+program.  This means that if an answer for $S$ is undefined, then it
+would be caused operationally by a {\sc Delaying} operation within the
+SCC of $S$ or within some other SCC on which $S$ depends.  So to
+understand why an atom is undefined it can be useful understand the
+``root causes'' of the delay: to examine SCCs in which {\sc Delaying}
+operations were executed and conditional answers were derived, but the
+answers could not be simplified.
+% into unconditional answers.
+
+\begin{example}
+As a use case, logging was made of execution of a Flora-2 program that
+tested out a new defeasibility theory.  The forest log overview
+indicated that the top-level query was undefined: 
+%
+\begin{small}
+\begin{verbatim}
+:
+There were a total of 55 negative delays
+There were a total of 0 simplifications
+There were a total of 695 unconditional answers derived:
+There were a total of 66 conditional answers derived:
+\end{verbatim}
+\end{small}
+%
+The analysis predicate {\tt three\_valued\_scc(List)} produces a list
+of all SCC indices in which {\sc Delaying} caused the derivation of
+conditional answers.  These SCCs can then be analyzed as discussed in
+the previous section.
+\end{example}
+
 \subsection{Discussion}
 %
-Using log forest imposes a relatively minimal overhead on computation,
-considering the information it can provide, and loading and analysis
-is relatively quick.  For this example, the top level analysis took
-around 10 seconds, and analysing SCC 39 took about 20 seconds in
-Example~\ref{ex:scc-anal} and about 60 seconds in
-Example~\ref{ex:moded-scc-anal}.  
+Using log forest imposes a relatively minimal overhead on most
+computations, considering the information it can provide, and loading
+and analysis is relatively quick.  For this example, the top level
+analysis took around 10 seconds, and analysing SCC 39 took about 20
+seconds in Example~\ref{ex:scc-anal} and about 60 seconds in
+Example~\ref{ex:moded-scc-anal}.  For more information,
+see~\cite{Swif12a}.
 
 \subsection{Predicates for Forest Logging}
 
@@ -812,10 +864,17 @@ Example~\ref{ex:moded-scc-anal}.
 Provides an overview of subgoals, calls, and SCCs in the forest log as
 indicated in Section~\ref{sec:forest-log-anal}.
 
-\ourmoditem{get\_scc\_length(?Index,?Length)}{get\_scc\_length/3}{tables}
+\ourmoditem{get\_scc\_size(?Index,?Size)}{get\_scc\_size/3}{tables}
 %
-This simple predicate  determines the indices of SCCs
-whose length is {\tt Length}, for user in {\tt analyze\_an\_scc/[2,3]}.
+This simple predicate determines the indices of SCCs whose size is
+{\tt Size}, for use with {\tt analyze\_an\_scc/[2,3]}.
+
+\ourmoditem{three\_valued\_sccs(List)}{three\_valued\_scc/1}{tables}
+%
+If there are any SCCs in the log where delay is performed, causing
+conditional answers to be added that were not simplified into
+unconditional answers, unifies {\tt List} with the index of all such
+SCCs.
 
 \ourrepeatmoditem{analyze\_an\_scc(+Index,+File)}{analyze\_an\_scc/2}{tables}
 \ourmoditem{analyze\_an\_scc(+Index,+File,+Abstraction)}{analyze\_an\_scc/3}{tables}
