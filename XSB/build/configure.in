@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.237 2012-06-30 00:59:34 kifer Exp $
+## $Id: configure.in,v 1.238 2012-07-07 01:55:25 kifer Exp $
 ##
 ##
 
@@ -77,6 +77,9 @@ AC_ARG_WITH(cc,
 [  --with-cc                    use CC to compile XSB])
 AC_ARG_WITH(acc,
 [  --with-acc                   use ACC to compile XSB])
+AC_ARG_WITH(cilk,
+[  --with-cilk                force a cilk compiled version of XSB],
+   cilk=yes,cilk=no)
 AC_ARG_WITH(bits64,
 [  --with-bits64                force a 64-bit version of XSB],
    bits64=yes,bits64=no)
@@ -252,7 +255,7 @@ do
 	    esac ;;
 	    --with-* )
 	    case $1 in
-		--with-gcc | --with-cc* | --with-acc | \
+		--with-gcc | --with-cc* | --with-cilk | --with-acc | \
 		--with-bits64 | --with-bits32 | --with-aout | \
 		--with-optimization* | --with-config-tag* | --with-site-prefix* | --with-includes* | \
 		--with-static-libraries* | --with-dynamic-libraries* | --with-xpath* | \
@@ -481,6 +484,10 @@ if test -z "${with_config_tag}" ; then
     dnl add -bits64 to the config tag, if --with-bits64 is set on command line
     if test "$bits64" = yes ; then
        config_tag="${config_tag}-bits64"
+    fi
+    dnl add -cilk to the config tag, if --with-cilk is set on command line
+    if test "$cilk" = yes ; then
+       config_tag="${config_tag}-cilk"
     fi
     dnl add -bits32 to the config tag, if --with-bits32 is set on command line
     if test "$bits32" = yes ; then
@@ -971,6 +978,13 @@ if (test "${ac_cv_sizeof_long_int}" = 8 -o "$bits64" = "yes") && test "$bits32" 
     machine64bit=yes
     echo ""
     echo "    Configuring XSB for a 64 bit machine"
+    echo ""
+fi
+
+if test "$cilk" = "yes"; then 
+   AC_DEFINE(CILK)
+    echo ""
+    echo "    Configuring XSB for a cilk compiler"
     echo ""
 fi
 

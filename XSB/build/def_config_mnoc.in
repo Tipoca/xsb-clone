@@ -25,7 +25,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: def_config_mnoc.in,v 1.19 2011-07-29 06:25:51 kifer Exp $
+** $Id: def_config_mnoc.in,v 1.20 2012-07-07 01:55:25 kifer Exp $
 **
 */
 
@@ -169,6 +169,9 @@
 /* Defined if 64 bit machine */
 #undef BITS64
 
+/* Defined if cilk compile */
+#undef CILK
+
 /* this is used by many to check if config.h was included in proper order */
 #ifndef CONFIG_INCLUDED
 #define CONFIG_INCLUDED
@@ -192,7 +195,7 @@
 /* Newer Linux using ELF format */
 #undef LINUX_ELF
 
-/* Use local eval strategy. Default is `batched' */
+/* Use local eval strategy. This is the default. */
 #undef LOCAL_EVAL
 
 /* MIPS based machines, such as old SGI's */

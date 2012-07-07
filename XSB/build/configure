@@ -730,6 +730,7 @@ enable_option_checking
 with_gcc
 with_cc
 with_acc
+with_cilk
 with_bits64
 with_bits32
 with_aout
@@ -1434,6 +1435,7 @@ Optional Packages:
   --with-gcc                   use GCC to compile XSB
   --with-cc                    use CC to compile XSB
   --with-acc                   use ACC to compile XSB
+  --with-cilk                force a cilk compiled version of XSB
   --with-bits64                force a 64-bit version of XSB
   --with-bits32                force a 32-bit version of XSB
   --with-aout                  build XSB for a Unix system with .aout binary format
@@ -2580,6 +2582,14 @@ if test "${with_acc+set}" = set; then :
 fi
 
 
+# Check whether --with-cilk was given.
+if test "${with_cilk+set}" = set; then :
+  withval=$with_cilk; cilk=yes
+else
+  cilk=no
+fi
+
+
 # Check whether --with-bits64 was given.
 if test "${with_bits64+set}" = set; then :
   withval=$with_bits64; bits64=yes
@@ -2894,7 +2904,7 @@ do
 	    esac ;;
 	    --with-* )
 	    case $1 in
-		--with-gcc | --with-cc* | --with-acc | \
+		--with-gcc | --with-cc* | --with-cilk | --with-acc | \
 		--with-bits64 | --with-bits32 | --with-aout | \
 		--with-optimization* | --with-config-tag* | --with-site-prefix* | --with-includes* | \
 		--with-static-libraries* | --with-dynamic-libraries* | --with-xpath* | \
@@ -3132,6 +3142,9 @@ if test -z "${with_config_tag}" ; then
     config_tag=
         if test "$bits64" = yes ; then
        config_tag="${config_tag}-bits64"
+    fi
+        if test "$cilk" = yes ; then
+       config_tag="${config_tag}-cilk"
     fi
         if test "$bits32" = yes ; then
        config_tag="${config_tag}-bits32"
@@ -5177,6 +5190,14 @@ if (test "${ac_cv_sizeof_long_int}" = 8 -o "$bits64" = "yes") && test "$bits32" 
     machine64bit=yes
     echo ""
     echo "    Configuring XSB for a 64 bit machine"
+    echo ""
+fi
+
+if test "$cilk" = "yes"; then
+   $as_echo "#define CILK 1" >>confdefs.h
+
+    echo ""
+    echo "    Configuring XSB for a cilk compiler"
     echo ""
 fi
 
