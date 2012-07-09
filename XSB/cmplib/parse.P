@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.131 2012-01-11 17:32:25 tswift Exp $
+** $Id: parse.P,v 1.132 2012-07-09 13:32:24 pmoura Exp $
 ** 
 */
 
@@ -635,6 +635,8 @@ parse_directive(if(Condition), _QrList,_SymTab,_ModName,_ModStruct) :- !,
           true
 	; skip_over_condition(1)).
 % if reading the elseif from normal parsing, we've already taken another branch.
+parse_directive(elif(Condition), QrList,SymTab,ModName,ModStruct):- !,
+	parse_directive(elseif(Condition), QrList,SymTab,ModName,ModStruct).
 parse_directive(elseif(_), _QrList,_SymTab,_ModName,_ModStruct):- !,
 	skip_over_condition(1).
 parse_directive(endif, _QrList,_SymTab,_ModName,_ModStruct):- !.
@@ -829,14 +831,17 @@ parse_multifile(Skel,QrList,SymTab,ModName) :-
 % code for conditional compilation
 
 skip_over_condition(N):- 
-        my_read(Cl,_),
-	(Cl = (':-'(endif)) -> 
-	    true
-	  ; (Cl = (':-'(elseif(Condition))),cond_call(Condition) -> 
-     	        true    
-	        ;  (Cl = (':-'(if(_Call)))) -> 
-     	               misc_error('XSB does not support nested conditional compilation.')
-		     ; skip_over_condition(N))).
+	my_read(Cl, _),
+	(	Cl = (':-'(endif)) ->
+		true
+	;	Cl = (':-'(elseif(Condition))), cond_call(Condition) ->
+		true
+	;	Cl = (':-'(elif(Condition))), cond_call(Condition) ->
+		true
+	;	Cl = (':-'(if(_Call))) -> 
+		misc_error('XSB does not support nested conditional compilation.')
+	;	skip_over_condition(N)
+	).
 
 cond_call(Call):- 
 	check_cond_call(Call),
