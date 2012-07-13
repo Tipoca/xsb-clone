@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.97 2012-06-07 19:37:41 tswift Exp $
+** $Id: debug_xsb.c,v 1.98 2012-07-13 22:51:50 tswift Exp $
 ** 
 */
 
@@ -938,7 +938,7 @@ static void print_cpf(CTXTdeclc CPtr cpf_addr, FILE* where) {
   }
 }
 
-static int alt_printnum = 0 ;
+int alt_printnum = 0 ;
 
 void alt_print_cp(CTXTdeclc char * title)
 {
@@ -1901,6 +1901,133 @@ void quick_print_trail(CTXTdecl)	/* trail grows up */
   printf("trail bottom \n");
 }
 
+static void fprint_cp_cell(FILE * output,char *addrtype, CPtr addr, Cell term)
+{
+  if ((ref_val(term) != NULL) && (cell_tag(term) == term)) {
+    fprintf(output, "NULL cell in %s %p: tag=%ld, value=0x%p\n",
+	    addrtype, addr, cell_tag(term), ref_val(term));
+  } else {  
+    switch (cell_tag(term)) {
+    case XSB_REF: 
+    case XSB_REF1:
+      fprintf(output, "%s %p: XSB_REF (tag=%ld), value=0x%p\n",
+	      addrtype, addr, cell_tag(term), ref_val(term));
+      break;
+    case XSB_ATTV:
+      fprintf(output, "%s %p: XSB_ATTV (tag=%ld), value=0x%p\n",
+	      addrtype, (CPtr)dec_addr(cell(addr)),
+	      cell_tag(term), ref_val(term));
+      break;
+    case XSB_STRUCT:
+            fprintf(output, "%s %p: XSB_STRUCT, value=0x%p, hexval=0x%p (%s/%d)\n", 
+	      addrtype, addr, cs_val(term), ref_val(term),
+	      get_name((struct psc_rec *) follow(cs_val(term))),
+	      get_arity((struct psc_rec *) follow(cs_val(term))));
+      
+	    /*      fprintf(output, "%s %p: XSB_STRUCT, value=0x%p, hexval=0x%p \n", 
+		    addrtype, addr, cs_val(term), ref_val(term));*/
+      break;
+    case XSB_INT:
+      fprintf(output, "%s %p: XSB_INT, value=%ld, hexval=0x%p\n",
+	      addrtype, addr, int_val(term), ref_val(term));
+      break;
+    case XSB_STRING:
+      fprintf(output, "%s %p: XSB_STRING, hexval=0x%p (%s)\n", 
+	      addrtype, addr, ref_val(term), string_val(term));
+      break;
+    case XSB_FLOAT:
+      fprintf(output, "%s %p: XSB_FLOAT, value=%f, hexval=0x%lx\n", 
+	      addrtype, addr, float_val(term), dec_addr(term));
+      break;
+    case XSB_LIST:
+      fprintf(output, "%s %p: XSB_LIST, value=%p\n",
+	      addrtype, addr, ref_val(term));
+      break;
+    default:
+      fprintf(output, "%s %p: tag=%ld, value=0x%p\n", 
+	      addrtype, addr, cell_tag(term), ref_val(term));
+      break;
+    }
+  }
+}
+
+void print_cp_cell(char *addrtype, CPtr addr, Cell term)
+{
+  fprint_cp_cell(stddbg,addrtype, addr, term);
+}
+
+
+/*
+ * Local Stack grows from high to low memory.
+ */
+void print_local_stack_nonintr(CTXTdeclc char * string)
+{
+  int i;
+  CPtr cell_ptr,
+    local_stack_bottom = (CPtr) glstack.high;
+  char buf[100] ;
+  FILE * where;
+
+  sprintf(buf,"LS%d",alt_printnum) ;
+  where = fopen(buf,"w") ;
+
+  fprintf(where,"%s\n",string);
+  if (ereg_on_top(ereg)) {
+    cell_ptr = ereg;
+    fprintf(where, "ereg on top\n");
+  }
+  else {
+    cell_ptr = ebreg;
+    fprintf(where, "ebreg on top\n");
+  }
+  for (i = -20; i < 0; i++) {
+    if ( cell_ptr+i == efreg ) fprintf(where, "efreg\n");
+    fprint_cp_cell(where,"Local Stack", cell_ptr+i, cell(cell_ptr+i));
+  }
+  fprintf(where, "top\n");
+
+  for (i=0; (cell_ptr < local_stack_bottom); i++) {
+    if (cell_ptr == ebreg) fprintf(where, "ebreg\n");
+    if (cell_ptr == ereg)  fprintf(where, "ereg\n");
+    if (cell_ptr == efreg) fprintf(where, "efreg\n");
+    fprint_cp_cell(where,"Local Stack", cell_ptr, cell(cell_ptr));
+    cell_ptr++;
+    }
+    fprintf(where, EOS);
+    fclose(where) ;
+}
+
+/*----------------------------------------------------------------------*/ 
+
+void terry_print_heap(CTXTdeclc char * string)	/* Heap grows up */
+{
+  CPtr topofheap;
+  CPtr cell_ptr;
+  CPtr heap_bottom = (CPtr)(glstack.low); 
+  char buf[100] ;
+  FILE * where;
+
+  sprintf(buf,"HEAP%d",alt_printnum) ;
+  where = fopen(buf,"w") ;
+
+  if (hfreg > hreg) topofheap = hfreg; else topofheap = hreg;
+  if (hbreg > topofheap) topofheap = hbreg;
+
+  for (cell_ptr = topofheap; cell_ptr >= heap_bottom; cell_ptr--) {
+    if (cell_ptr == hreg) fprintf(where,"hreg\n");
+    if (cell_ptr == hfreg) fprintf(where,"hbreg\n");
+    if (cell_ptr == hbreg) fprintf(where,"hfreg\n");
+    fprint_cp_cell(where,"Heap", cell_ptr, cell(cell_ptr));
+  }
+  fprintf(where, EOS);
+  fclose(where) ;
+}
+
+void terry_print_stacks(CTXTdeclc char * string) {
+  terry_print_heap(CTXTc string);
+  print_local_stack_nonintr(CTXTc string);
+  alt_printnum++;
+}
 
 /*======================================================================*/
 /*  The final set of routines should be useful with the instruction-    */
@@ -2174,99 +2301,6 @@ void debug_inst(CTXTdeclc byte *lpcreg, CPtr le_reg)
 
 /*----------------------------------------------------------------------*/ 
 
-static void print_cp_cell(char *addrtype, CPtr addr, Cell term)
-{
-  if ((ref_val(term) != NULL) && (cell_tag(term) == term)) {
-    fprintf(stddbg, "NULL cell in %s %p: tag=%ld, value=0x%p\n",
-	    addrtype, addr, cell_tag(term), ref_val(term));
-  } else {  
-    switch (cell_tag(term)) {
-    case XSB_REF: 
-    case XSB_REF1:
-      fprintf(stddbg, "%s %p: XSB_REF (tag=%ld), value=0x%p\n",
-	      addrtype, addr, cell_tag(term), ref_val(term));
-      break;
-    case XSB_ATTV:
-      fprintf(stddbg, "%s %p: XSB_ATTV (tag=%ld), value=0x%p\n",
-	      addrtype, (CPtr)dec_addr(cell(addr)),
-	      cell_tag(term), ref_val(term));
-      break;
-    case XSB_STRUCT:
-      fprintf(stddbg, "%s %p: XSB_STRUCT, value=0x%p, hexval=0x%p (%s/%d)\n", 
-	      addrtype, addr, cs_val(term), ref_val(term),
-	      get_name((struct psc_rec *) follow(cs_val(term))),
-	      get_arity((struct psc_rec *) follow(cs_val(term))));
-      break;
-    case XSB_INT:
-      fprintf(stddbg, "%s %p: XSB_INT, value=%d, hexval=0x%p\n",
-	      addrtype, addr, int_val(term), ref_val(term));
-      break;
-    case XSB_STRING:
-      fprintf(stddbg, "%s %p: XSB_STRING, hexval=0x%p (%s)\n", 
-	      addrtype, addr, ref_val(term), string_val(term));
-      break;
-    case XSB_FLOAT:
-      fprintf(stddbg, "%s %p: XSB_FLOAT, value=%f, hexval=0x%lx\n", 
-	      addrtype, addr, float_val(term), dec_addr(term));
-      break;
-    case XSB_LIST:
-      fprintf(stddbg, "%s %p: XSB_LIST, value=%p\n",
-	      addrtype, addr, ref_val(term));
-      break;
-    default:
-      fprintf(stddbg, "%s %p: tag=%ld, value=0x%p\n", 
-	      addrtype, addr, cell_tag(term), ref_val(term));
-      break;
-    }
-  }
-}
-
-/*
- * Local Stack grows from high to low memory.
- */
-
-static void print_local_stack(CTXTdeclc int overlap)
-{
-  int i;
-  CPtr cell_ptr,
-    local_stack_bottom = (CPtr) glstack.high;
-  char ans = 'y';
-
-  if (ereg_on_top(ereg)) {
-    cell_ptr = ereg;
-    fprintf(stddbg, "ereg on top\n");
-  }
-  else {
-    cell_ptr = ebreg;
-    fprintf(stddbg, "ebreg on top\n");
-  }
-  for (i = -overlap; i < 0; i++) {
-    if ( cell_ptr+i == efreg ) fprintf(stddbg, "efreg\n");
-    print_cp_cell("Local Stack", cell_ptr+i, cell(cell_ptr+i));
-  }
-  fprintf(stddbg, "top\n");
-  do {
-    for (i=0; (i < STRIDESIZE) && (cell_ptr < local_stack_bottom); i++) {
-      if (cell_ptr == ebreg)
-	fprintf(stddbg, "ebreg\n");
-      if (cell_ptr == ereg)
-	fprintf(stddbg, "ereg\n");
-      if (cell_ptr == efreg) fprintf(stddbg, "efreg\n");
-      print_cp_cell("Local Stack", cell_ptr, cell(cell_ptr));
-      cell_ptr++;
-    }
-    if (cell_ptr < local_stack_bottom) {
-      fprintf(stddbg, "more (y/n)?  ");
-      scanf("%c", &ans);
-      skip_to_nl();
-    }
-    else {
-      fprintf(stddbg, EOS);
-      ans = 'n';
-    }
-  } while (ans == 'y');
-}
-
 /*----------------------------------------------------------------------*/ 
 
 static void print_trail(CTXTdeclc int overlap)	/* trail grows up */
@@ -2297,25 +2331,6 @@ static void print_trail(CTXTdeclc int overlap)	/* trail grows up */
     fprintf(stddbg, "more (y/n)?  ");
     scanf("%c", &ans);
     skip_to_nl();
-  }
-}
-
-/*----------------------------------------------------------------------*/ 
-
-/* Needs to change when new xwam stacks are introduced.  */
-static void terry_print_heap(CTXTdeclc int overlap)	/* Heap grows up */
-{
-  int i = 0;
- 
-  for (i = -overlap; i < 0 ; i++) {
-    print_cp_cell("CP stack", bfreg+i, cell(bfreg+i));
-    if ( (bfreg + i) == breg ) xsb_dbgmsg((LOG_DEBUG,"breg"));
-  }
-  xsb_dbgmsg((LOG_DEBUG,"bfreg"));
-  for (i = 0; (i <= STRIDESIZE && bfreg+i<=(CPtr)tcpstack.high); i++){
-    if ( (bfreg + i) == breg ) xsb_dbgmsg((LOG_DEBUG,"breg"));
-    print_cp_cell("CP stack", bfreg+i, cell(bfreg+i));
-    if ( (bfreg + i) == (CPtr) tcpstack.high ) fprintf(stddbg, EOS);
   }
 }
 

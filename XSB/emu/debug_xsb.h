@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.33 2012-06-07 19:37:42 tswift Exp $
+** $Id: debug_xsb.h,v 1.34 2012-07-13 22:51:51 tswift Exp $
 ** 
 */
 
@@ -76,6 +76,7 @@ extern void print_completion_stack(FILE*);
 extern void printCyclicTerm(Cell);
 extern void mark_cyclic(Cell);
 extern int sprint_delay_list(char *, CPtr);
+void print_local_stack_nonintr(char *);
 #else
 extern void print_delay_list(struct th_context * ,FILE *, CPtr);
 extern void print_registers(struct th_context * ,FILE *,Psc,long);
@@ -88,6 +89,7 @@ extern void print_completion_stack(struct th_context *,FILE*);
 extern void printCyclicTerm(struct th_context *,Cell);
 extern void mark_cyclic(struct th_context *,Cell);
 extern int sprint_delay_list(struct th_context *, char *, CPtr);
+void print_local_stack_nonintr(struct th_context *,char *);
 #endif
 
 extern int sprintTerm(char *, Cell);

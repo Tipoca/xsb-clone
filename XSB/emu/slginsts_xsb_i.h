@@ -1198,17 +1198,21 @@ XSB_End_Instr()
 /*-------------------------------------------------------------------------*/
 
 XSB_Start_Instr(resume_compl_suspension,_resume_compl_suspension)
-#ifdef DEBUG_DELAYVAR
-      fprintf(stddbg, ">>>> resume_compl_suspension is called\n");
-#endif
+
+  //       printf(">>>> resume_compl_suspension is called %d\n",infcounter);
+  //      print_local_stack_nonintr(CTXTc "resume_cs");
+  //       print_instr = 1;
+  //   alt_dis();
 {
   if (csf_pcreg(breg) == (pb)(&resume_compl_suspension_inst)) {
     CPtr csf = breg;
     
+    //     printf(">>>> csf\n");
+
     /* Switches the environment to a frame of a subgoal that was	*/
     /* suspended on completion, and sets the continuation pointer.	*/
     check_glstack_overflow(0,lpcreg,OVERFLOW_MARGIN);
-    freeze_and_switch_envs(csf, COMPL_SUSP_CP_SIZE);
+    freeze_and_switch_envs(csf, CSF_SIZE);
     ptcpreg = csf_ptcp(csf);
     neg_delay = (csf_neg_loop(csf) != FALSE);
     delayreg = csf_pdreg(csf);
@@ -1221,6 +1225,7 @@ XSB_Start_Instr(resume_compl_suspension,_resume_compl_suspension)
     breg = csf_prevcsf(csf);
     lpcreg = cpreg;
   } else {
+    //     printf(">>>> csp\n");
     CPtr csf = cs_compsuspptr(breg);
     /* Switches the environment to a frame of a subgoal that was	*/
     /* suspended on completion, and sets the continuation pointer.	*/
@@ -1242,6 +1247,8 @@ XSB_Start_Instr(resume_compl_suspension,_resume_compl_suspension)
     }
     lpcreg = cpreg;
   }
+  //  print_local_stack_nonintr(CTXTc "resume_cs");
+
 }
 XSB_End_Instr()
 

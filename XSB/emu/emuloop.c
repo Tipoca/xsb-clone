@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.229 2012-06-07 19:37:42 tswift Exp $
+** $Id: emuloop.c,v 1.230 2012-07-13 22:51:51 tswift Exp $
 ** 
 */
 
@@ -228,6 +228,8 @@ void check_stack_invariants(CTXTdecl);
 #ifdef JUMPTABLE_EMULOOP
 
 static void *instr_addr_table[256];
+//int print_instr = 0;
+//if (print_instr) {print_inst(stddbg, lpcreg); printf(" ere %p\n",ereg); } 
 
 #define XSB_End_Instr()                                      \
                    XSB_Debug_Instr                           \
