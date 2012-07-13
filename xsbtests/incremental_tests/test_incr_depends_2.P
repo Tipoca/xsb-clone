@@ -1,15 +1,24 @@
 
 :- import incr_directly_depends/2,incr_trans_depends/2 from increval.
+:- import numbervars/1 from num_vars.
 
 test:- t_inc_5(_X),fail.
-test:- incr_directly_depends(t_inc_5(X),Y),writeln(incr_directly_depends(t_inc_5(X),Y)),fail.
-test:- incr_directly_depends(Y,t_inc_5(X)),writeln(incr_directly_depends(Y,t_inc_5(X))),fail.
-test:- incr_directly_depends(t_inc_1(X),Y),writeln(incr_directly_depends(t_inc_1(X),Y)),fail.
-test:- incr_directly_depends(Y,t_inc_1(X)),writeln(incr_directly_depends(Y,t_inc_1(X))),fail.
-test:- incr_trans_depends(t_inc_5(X),Y),writeln(incr_trans_depends(t_inc_5(X),Y)),fail.
-test:- incr_trans_depends(Y,t_inc_5(X)),writeln(incr_trans_depends(Y,t_inc_5(X))),fail.
-test:- incr_trans_depends(t_inc_1(X),Y),writeln(incr_trans_depends(t_inc_1(X),Y)),fail.
-test:- incr_trans_depends(Y,t_inc_1(X)),writeln(incr_trans_depends(Y,t_inc_1(X))),fail.
+test:- incr_directly_depends(t_inc_5(X),Y),
+       numbervars(incr_directly_depends(t_inc_5(X),Y)), writeln(incr_directly_depends(t_inc_5(X),Y)),fail.
+test:- incr_directly_depends(Y,t_inc_5(X)),
+       numbervars(incr_directly_depends(Y,t_inc_5(X))),writeln(incr_directly_depends(Y,t_inc_5(X))),fail.
+test:- incr_directly_depends(t_inc_1(X),Y),
+       numbervars(incr_directly_depends(t_inc_1(X),Y)),writeln(incr_directly_depends(t_inc_1(X),Y)),fail.
+test:- incr_directly_depends(Y,t_inc_1(X)),
+       numbervars(incr_directly_depends(Y,t_inc_1(X))),writeln(incr_directly_depends(Y,t_inc_1(X))),fail.
+test:- incr_trans_depends(t_inc_5(X),Y),
+       numbervars(incr_trans_depends(Y,t_inc_5(X))),writeln(incr_trans_depends(t_inc_5(X),Y)),fail.
+test:- incr_trans_depends(Y,t_inc_5(X)),
+       numbervars(incr_trans_depends(Y,t_inc_5(X))),writeln(incr_trans_depends(Y,t_inc_5(X))),fail.
+test:- incr_trans_depends(t_inc_1(X),Y),
+       numbervars(incr_trans_depends(Y,t_inc_5(X))),writeln(incr_trans_depends(t_inc_1(X),Y)),fail.
+test:- incr_trans_depends(Y,t_inc_1(X)),
+       numbervars(incr_trans_depends(Y,t_inc_5(X))),writeln(incr_trans_depends(Y,t_inc_1(X))),fail.
 test.
 
 :- dynamic p/1 as incremental.

@@ -2,7 +2,7 @@
 
 :- dynamic data/1 as incremental.
 
-:- table opaque_undef/0 as incremental.
+:- table opaque_undef/0 as opaque.
 opaque_undef:- tnot(opaque_undef).
 
 :- table pd/1,pd_caller/1 as incremental.
@@ -161,9 +161,11 @@ test3_prop:- abolish_all_tables,retractall(data(_)),
 	fail.
 
 %---------------------------------------------------------------
+:- import numbervars/1 from num_vars.
 
 write_answers(Tag,Goal):- 
 	get_residual(Goal,R),
+	numbervars(get_residual(Goal,R)),
 	write(Tag),write(' : '),write(Goal), write(' <- '),writeln(R),
 	fail.
 write_answers(_,_).
