@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.196 2012-06-04 15:59:24 dwarren Exp $
+** $Id: biassert.c,v 1.197 2012-07-17 16:12:43 dwarren Exp $
 ** 
 */
 
@@ -1513,8 +1513,8 @@ static void db_addbuff(byte Arity, ClRef Clause, PrRef Pred, int AZ, int ifSOB, 
 
 #define NUMHASHSIZES 16
 /* some primes for hash table sizes */
-static int hashsizes_table[NUMHASHSIZES] = {17,503,5003,49999,200003,400009,700001,1000003,
-        1000033,1000037,1000039,1000081,1000099,1000117,1000121,1000133}; 
+static int hashsizes_table[NUMHASHSIZES] = {17,389,6151,49157,196613,393241,786433,1572869,
+        3145739,3145739,3145739,3145739,3145739,3145739,3145739,3145739}; 
 
 static int hash_resize( PrRef Pred, SOBRef SOBrec, unsigned int OldTabSize )
 {
@@ -1541,7 +1541,8 @@ static int hash_resize( PrRef Pred, SOBRef SOBrec, unsigned int OldTabSize )
    else {
      for (i=0; i<NUMHASHSIZES; i++) 
        if ((unsigned int) hashsizes_table[i] >= OldTabSize) break; 
-     return hashsizes_table[i];
+     if (i < NUMHASHSIZES) return hashsizes_table[i];
+     else return hashsizes_table[NUMHASHSIZES-1];
    }
 }
 
@@ -1734,7 +1735,7 @@ static void db_addbuff_i(byte Arity, ClRef Clause, PrRef Pred, int AZ,
   SOBbuff = AZ == 0 ? Pred->FirstClRef : Pred->LastClRef ;
 
   ThisTabSize = hash_resize(Pred, SOBbuff, HashTabSize);  // dsw could move to below
-  
+
   for (Inum = 1; Inum <= NI; Inum++) {
     SOBbuff = AZ == 0 ? Pred->FirstClRef : Pred->LastClRef ;
     //    ThisTabSize = hash_resize(Pred, SOBbuff, HashTabSize); // ?? could move here from above, but more smaller sobs
