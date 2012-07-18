@@ -79,7 +79,9 @@ initialize_IO_streams :-
 
 /* -- tracing flags setting  -------------------------------------- */
 
-nodebug :- stat_set_flag(DEBUG_ON,0).		        % debug_on = 0
+nodebug :- stat_set_flag(DEBUG_ON,0),		        % debug_on = 0
+	stat_set_flag(SKIPPING,0),
+	stat_set_flag(QUASI_SKIPPING,0).
 piltrace :- stat_set_flag(PIL_TRACE,1), hitrace.	% pil level tracing 
 hitrace :- stat_set_flag(HITRACE,1),debug.		% call level sim trace
 nosimtrace :-
