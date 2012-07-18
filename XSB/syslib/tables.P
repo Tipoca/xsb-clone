@@ -767,7 +767,6 @@ check_variant(Term,DontCares):-
 %% Forest Logging
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 :- import ensure_loaded/1 from consult.
-:- ensure_loaded(term_abstract).
 
 log_all_forest_start :-
 	start_forest_view(userout).
@@ -813,6 +812,7 @@ stop_forest_view:-
 	set_prolog_flag(ctrace,off).
 
 load_forest_log(File):- 
+	ensure_loaded(term_abstract),
 	index(tc/4,[*(1),*(2)]),
 	index(na/2,[2]),
 	index(ar/4,[2,3]),
