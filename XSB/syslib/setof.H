@@ -29,6 +29,7 @@
 	  sort/2, keysort/2, '^'/2, pick/3,
 	  excess_vars/4.
 :- export old_excess_vars/4.  %% for awhile till we're sure we're happy with new on
+:- export find_n/4, n_times/2.
 
 :- import tfindall/3 from tables.
 :- import functor/3, (=..)/2, arg/3, 
@@ -39,3 +40,4 @@
     '$$findall_get_solutions'/4
      from machine.
 :- import variant/2 from subsumes.
+:- import gensym/2, conset/2, coninc/2 from gensym.

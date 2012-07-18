@@ -182,6 +182,22 @@ bfindall(Template,Goal,List,Tail) :-
 	  '$$findall_get_solutions'(L,T,I,Closed), List = L , Tail = T
 	) .
 
+
+find_n(N,Template,Goal,List) :-
+	findall(Template,n_times(N,Goal),List).
+
+n_times(N,Goal) :-
+	integer(N),
+	N > 0,
+	gensym(n_times_cnt_,Sym),
+	conset(Sym,0),
+	call(Goal),
+	coninc(Sym,CCnt),
+	(CCnt < N
+	 ->	true
+	 ;	!
+	).
+
 /*
 TLS: would like to make findall catch errors gracefully, as in this code, 
 suggested by Bart.  The problem is that it breaks the ret_attv test?!?! and 
