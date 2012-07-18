@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.103 2012-07-04 15:10:46 tswift Exp $
+** $Id: tables.c,v 1.104 2012-07-18 21:26:53 tswift Exp $
 ** 
 */
 
@@ -774,10 +774,20 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
     }
   }    /* incremental  evaluation end */
   else
-  /* Reclaim Producer's Answer List
-     ------------------------------ */
-  if ( has_answers(producerSF) ) {
-    pALN = pRealAnsList = subg_answers(producerSF);
+  /* ------------------------------
+
+     Reclaim Producer's Answer List.  In general, we want to reclaim
+     the answer list, but let subg_answers(SF) indicate whether a goal
+     has some answer and whether that answer is conditional or not. 
+
+     TLS: July/12.  There was a problem with slg_not using has_answers
+     when all answers for a subgoal have been removed via delay
+     (surprisingly this case had not been tested).  So we only want an
+     XXX_ANSWERS tag if the subg_ans_root_ptr is null; otherwise we
+     handle the reclamantion in the else associated with this if...
+  */
+    if ( has_answers(producerSF) && subg_ans_root_ptr(producerSF) != NULL) {
+      pALN = pRealAnsList = subg_answers(producerSF);
     tag = UNCOND_ANSWERS;
     do {
       if ( is_conditional_answer(ALN_Answer(pALN)) ) {
@@ -814,13 +824,21 @@ void table_complete_entry(CTXTdeclc VariantSF producerSF) {
       subg_ans_list_tail(producerSF) = NULL;
     }
 #else
-      SM_DeallocateStructList(smALN,pRealAnsList,
+    SM_DeallocateStructList(smALN,pRealAnsList,
 			      subg_ans_list_tail(producerSF));
     subg_ans_list_tail(producerSF) = NULL;
 #endif
 
     dbg_smPrint(LOG_STRUCT_MANAGER, smALN, "  after chain reclamation");
-  }
+    }
+    else {
+      if ( has_answers(producerSF) && subg_ans_root_ptr(producerSF) == NULL) {
+	SM_DeallocateStructList(smALN,ALN_Next(subg_ans_list_ptr(producerSF)),
+				subg_ans_list_tail(producerSF));
+	subg_ans_list_tail(producerSF) = NULL;
+	subg_answers(producerSF) = NULL;
+      }
+    }
 
   /* Process its Consumers
      --------------------- */
