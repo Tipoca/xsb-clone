@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.101 2012-03-19 15:19:59 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.102 2012-07-20 16:31:30 tswift Exp $
 ** 
 */
 
@@ -1729,7 +1729,8 @@ static Psc dollar_var_psc = NULL;
 #define wcan_buff tsgSBuff1
 
 char *cvt_float_to_str(CTXTdeclc Float floatval) {
-  sprintf(wcan_buff->string,"%1.18g",floatval);
+  //  sprintf(wcan_buff->string,"%1.18g",floatval);
+  sprintf(wcan_buff->string,"%g",floatval);
   wcan_buff->length = (int)strlen(wcan_buff->string);
   if (!strchr(wcan_buff->string,'.')) {
     char *eloc = strchr(wcan_buff->string,'e');
