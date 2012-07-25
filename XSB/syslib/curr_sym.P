@@ -850,15 +850,16 @@ xsb_flag(max_table_subgoal_depth,Action):-
 xsb_flag(max_table_subgoal_action, Action) :-
 	stat_flag(MAX_TABLE_SUBGOAL_ACTION, A),
 	(A == XSB_ERROR -> Action = error 
-	    ; (A == XSB_ABSTRACT -> Action = abstract 
-               ; A == XSB_FAILURE, Action = failure) ).
+          ; (A == XSB_ABSTRACT -> Action = abstract 
+            ; A == XSB_FAILURE, Action = failure) ).
 xsb_flag(max_table_answer_depth,Action):- 
 	stat_flag(MAX_TABLE_ANSWER_DEPTH,Action).
 xsb_flag(max_table_answer_action, Action) :-
 	stat_flag(MAX_TABLE_ANSWER_ACTION, A),
 	(A == XSB_ERROR -> Action = error 
-	; (A == XSB_FAILURE -> Action = failure 
-            ; A == XSB_WARNING, Action = warning)).
+         ; (A == XSB_BRAT -> Action = bounded_rationality 
+	   ; (A == XSB_FAILURE -> Action = failure 
+              ; A == XSB_WARNING, Action = warning)) ).
 xsb_flag(max_table_answer_list_depth,Action):- 
 	stat_flag(MAX_TABLE_ANSWER_LIST_DEPTH,Action).
 xsb_flag(max_table_answer_list_action, Action) :-
@@ -1026,10 +1027,13 @@ set_xsb_flag_1(max_table_answer_action, Action) :-!,
 	    stat_set_flag(MAX_TABLE_ANSWER_ACTION, XSB_ERROR)
           ; (Action == warning ->  
 	    stat_set_flag(MAX_TABLE_ANSWER_ACTION, XSB_WARNING)
+          ; (Action == bounded_rationality ->  
+	    stat_set_flag(MAX_TABLE_ANSWER_ACTION, XSB_BRAT),
+	    ensure_loaded(xsbbrat)
           ; (Action == failure ->  
 	    stat_set_flag(MAX_TABLE_ANSWER_ACTION, XSB_FAILURE)
-            ; domain_error([error,', ',warning,', ',failure],
-                        Action,set_xsb_flag/2,2,'max_table_answer_action clause') ) ) ).
+            ; domain_error([error,', ',warning,', ',failure,', ',bounded_rationality],
+                        Action,set_xsb_flag/2,2,'max_table_answer_action clause') ) ) ) ).
 set_xsb_flag_1(max_table_answer_list_depth, Size) :-!,
 	stat_set_flag(MAX_TABLE_ANSWER_LIST_DEPTH, Size).
 set_xsb_flag_1(max_table_answer_list_action, Action) :-!,
