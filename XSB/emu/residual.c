@@ -18,10 +18,9 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: residual.c,v 1.32 2011-06-06 20:20:29 dwarren Exp $
+** $Id: residual.c,v 1.33 2012-07-25 22:53:42 tswift Exp $
 ** 
 */
-
 
 #include "xsb_config.h"
 #include "xsb_debug.h"
@@ -105,7 +104,7 @@ void build_delay_list(CTXTdeclc CPtr delay_list, DE de)
  
   i = 0;
   if (de != NULL && !isnil(de)) {
-    
+    //    printf("bdl: var_addr %p copy %p\n",var_addr,copy_of_var_addr);
     tail = hreg+1;
     bind_list(delay_list, hreg);
     hreg = hreg + 3; 
@@ -258,6 +257,15 @@ void build_delay_list(CTXTdeclc CPtr delay_list, DE de)
 	for (i = 0; i < num_heap_term_vars; i++)
 	  xsb_dbgmsg((LOG_DEBUG,">>>> var_addr[%d] = %x",i, (int)var_addr[i]));
 #endif
+
+	/* TLS: Need to set copy_of_var_addr back to addr.  Most of
+	   the time, they will be equal, as cova was set to va.
+	   However, var_addr might have been expanded during
+	   load_delay_trie().  If so, then the values will be
+	   different, and the deallocation of cova in the builtin
+	   build_delay_lists will abort */
+
+	copy_of_var_addr = var_addr;
 	var_addr = tmp_var_addr;
       }
     }
