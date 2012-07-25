@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.166 2012-05-08 15:00:28 tswift Exp $
+** $Id: tries.c,v 1.167 2012-07-25 23:17:37 tswift Exp $
 ** 
 */
 
@@ -122,6 +122,7 @@ static int addr_stack_size    = DEFAULT_ARRAYSIZ;
 #define pop_Addr_Stack Addr_Stack[--addr_stack_index]
 #define push_Addr_Stack(X) {\
     if (addr_stack_index == addr_stack_size) {\
+      printf("expanding addr stack %p\n",Addr_Stack);			\
        trie_expand_array(CPtr, Addr_Stack ,addr_stack_size,0,"Addr_Stack");\
     }\
     Addr_Stack[addr_stack_index++] = ((CPtr) X);\
@@ -812,32 +813,107 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
  * 
  */
 
-#define CHECK_ANSWER_TERM_DEPTH						\
-  if (--depth_ctr <= 0)	{						\
-    if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_WARNING) {		\
-      char buffer[2*MAXTERMBUFSIZE];					\
-      sprintCyclicRegisters(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)));	\
-      xsb_warn("Exceeded max answer term depth of %d in call %s\n",	\
-	       (int)flags[MAX_TABLE_ANSWER_DEPTH],buffer);		\
+/* Need to be able to expand */
+int depth_stack[100];
+
+#if defined(BOUNDED_RATIONALITY)
+#define depth_stack_push(Num) {			\
+    depth_ctr++;				\
+    depth_stack[depth_ctr] = Num;	\
+  }
+
+#define depth_stack_pop {			\
+    if (depth_ctr > 0) {					\
+      depth_stack[depth_ctr]--;					\
+      while (depth_stack[depth_ctr] == 0 && depth_ctr > 0) {	\
+	depth_ctr--;					\
+	depth_stack[depth_ctr]--;			\
+      }							\
+    }							\
+  }
+#else
+#define depth_stack_push(Num)    depth_ctr++;				
+
+#define depth_stack_pop
+
+#endif
+
+#define apply_answer_depth_rationality(flag)  {	      \
+    int j, isNew;				      \
+    Pair undefPair;				      \
+    struct Table_Info_Frame * Utip;		      \
+    						      \
+    psc = (Psc) follow(cs_val(xtemp1));					\
+    item = makecs(psc);							\
+    one_btn_chk_ins(flag, item, BASIC_ANSWER_TRIE_TT);			\
+    for (j = get_arity(psc); j>=1 ; j--) {				\
+      bld_free(hreg);							\
+      /*  bind_ref(xtemp1, hreg);						*/ \
+      xtemp1 = hreg++;							\
+      StandardizeAndTrailVariable(xtemp1,ctr);				\
+      /*    printf("standardizing VET_T %p\n",VarEnumerator_trail_top);	*/ \
+      one_btn_chk_ins(flag,EncodeNewTrieVar(ctr),BASIC_ANSWER_TRIE_TT);	\
+      /* printf("standardized VET_T %p\n",VarEnumerator_trail_top);*/	\
+      ctr++;								\
+      /*      depth_stack_pop;						*/ \
+    /*    pdlreg++;	*/						\
+  }									\
+    /*  printf("after ");  pdlprint;				*/	\
+    if (!bratted) {							\
+      undefPair = insert("brat_undefined", 0, pair_psc(insert_module(0,"xsbbrat")), &isNew); \
+      Utip = get_tip(CTXTc pair_psc(undefPair));			\
+      delay_negatively(TIF_Subgoals(Utip));				\
+      bratted = 1;							\
     }									\
-    else if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_FAILURE) {		\
-      safe_delete_branch(Paren);					\
-      resetpdl;								\
-      found_flag = 1;							\
-      return NULL;							\
-    }									\
-    else {								\
-      char buffer[2*MAXTERMBUFSIZE];					\
-      sprintCyclicRegisters(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr))); \
-      safe_delete_branch(Paren);					\
-      if (is_cyclic(CTXTc (Cell) (cptr -i))) {				\
-	xsb_abort("Cyclic term in arg %d of tabled subgoal %s\n",i+1,buffer); \
+  }
+
+#define CHECK_ANSWER_TERM_DEPTH	{					\
+    if (depth_ctr >= depth_limit)	{				\
+      if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_WARNING) {		\
+	char buffer[2*MAXTERMBUFSIZE];					\
+	sprintCyclicRegisters(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)));	\
+	xsb_warn("Exceeded max answer term depth of %d in call %s\n",	\
+		 (int)flags[MAX_TABLE_ANSWER_DEPTH],buffer);		\
+	psc = (Psc) follow(cs_val(xtemp1));				\
+	depth_stack_push(get_arity(psc));				\
+	item = makecs(psc);						\
+	one_btn_chk_ins(found_flag, item, BASIC_ANSWER_TRIE_TT);	\
+	for (j = get_arity(psc); j>=1 ; j--) {				\
+	  pdlpush(cell(clref_val(xtemp1)+j));				\
+	}								\
       }									\
-      else								\
-	xsb_abort("Exceeded max answer term depth of %d in call %s\n",	\
-		  (int)flags[MAX_TABLE_ANSWER_DEPTH],buffer);		\
+      else if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_FAILURE) {		\
+	safe_delete_branch(Paren);					\
+	resetpdl;							\
+	found_flag = 1;							\
+	return NULL;							\
+      }									\
+      else if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_BRAT) {		\
+	apply_answer_depth_rationality(found_flag);			\
+      }									\
+      else {								\
+	char buffer[2*MAXTERMBUFSIZE];					\
+	sprintCyclicRegisters(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr))); \
+	safe_delete_branch(Paren);					\
+	if (is_cyclic(CTXTc (Cell) (cptr -i))) {			\
+	  xsb_abort("Cyclic term in arg %d of tabled subgoal %s\n",i+1,buffer); \
+	}								\
+	else								\
+	  xsb_abort("Exceeded max answer term depth of %d in call %s\n", \
+		    (int)flags[MAX_TABLE_ANSWER_DEPTH],buffer);		\
+      }									\
     }									\
-}
+    else 	{							\
+      psc = (Psc) follow(cs_val(xtemp1));				\
+      depth_stack_push(get_arity(psc));					\
+      item = makecs(psc);						\
+      one_btn_chk_ins(found_flag, item, BASIC_ANSWER_TRIE_TT);		\
+      for (j = get_arity(psc); j>=1 ; j--) {				\
+	pdlpush(cell(clref_val(xtemp1)+j));				\
+      }									\
+    }									\
+  }
+
 
 #define CHECK_ANSWER_LIST_DEPTH						\
   if (--list_depth_ctr <= 0)	{						\
@@ -865,12 +941,16 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
   int  j;								\
 									\
   while (!pdlempty ) {							\
+    /*    printf("rv ");  pdlprint;				*/	\
     xtemp1 = (CPtr) pdlpop;						\
     XSB_CptrDeref(xtemp1);						\
+    /*    printf("rv depth c %d i %d",depth_ctr,depth_ctr);	
+	  printterm(stddbg,xtemp1,10);printf("\n");			*/ \
     tag = cell_tag(xtemp1);						\
     switch (tag) {							\
     case XSB_FREE:							\
     case XSB_REF1:							\
+      depth_stack_pop;							\
       /*      printf("ctr %d xtemp1 %p\n",ctr,xtemp1);			*/ \
       if (! IsStandardizedVariable(xtemp1)){				\
 	bld_free(hreg);							\
@@ -892,6 +972,7 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
     case XSB_STRING:							\
     case XSB_INT:							\
     case XSB_FLOAT:							\
+      depth_stack_pop;							\
       one_btn_chk_ins(flag, EncodeTrieConstant(xtemp1), TrieType);	\
       break;								\
     case XSB_LIST:							\
@@ -902,12 +983,6 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
       break;								\
     case XSB_STRUCT:							\
       CHECK_ANSWER_TERM_DEPTH;						\
-      psc = (Psc) follow(cs_val(xtemp1));				\
-      item = makecs(psc);						\
-      one_btn_chk_ins(flag, item, TrieType);				\
-      for (j = get_arity(psc); j>=1 ; j--) {				\
-	pdlpush(cell(clref_val(xtemp1)+j));				\
-      }									\
       break;								\
     case XSB_ATTV:							\
       /* Now xtemp1 can only be the first occurrence of an attv */	\
@@ -1014,7 +1089,8 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   int ctr, attv_ctr;
   Cell depth_ctr,list_depth_ctr;
   BTNptr Paren, *ChildPtrOfParen;
-
+  int bratted = 0, depth_limit = flags[MAX_TABLE_ANSWER_DEPTH];
+  
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
   ans_chk_ins++; /* Counter (answers checked & inserted) */
 #endif
@@ -1073,8 +1149,10 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   }
   attv_ctr = attv_num;
 
+  //  printf("\n");
   for (i = 0; i < sf_size; i++) {
-    depth_ctr = flags[MAX_TABLE_ANSWER_DEPTH];  
+    //    printf("starting again i %d\n",i);
+    depth_ctr = 0;  
     list_depth_ctr = flags[MAX_TABLE_ANSWER_LIST_DEPTH];  
     xtemp1 = (CPtr) (cptr - i); /* One element of VarsInCall.  It might
 				 * have been bound in the answer for
@@ -1083,6 +1161,8 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
     //    printf("VAS-for %p\n",VarEnumerator_trail_top);
     XSB_CptrDeref(xtemp1);
     tag = cell_tag(xtemp1);
+    //    printf("vas depth c %d i %d ",depth_ctr,depth_stack_index);	
+    //    printterm(stddbg,xtemp1,10);printf("\n");			
     switch (tag) {
     case XSB_FREE: 
     case XSB_REF1:
@@ -1139,17 +1219,16 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
       pdlpush(cell(clref_val(xtemp1)+1));
       pdlpush(cell(clref_val(xtemp1)));
       recvariant_trie_ans_subsf(found_flag, BASIC_ANSWER_TRIE_TT);
-      //      recvariant_trie(found_flag, BASIC_ANSWER_TRIE_TT);
       break;
     case XSB_STRUCT:
       psc = (Psc)follow(cs_val(xtemp1));
       item = makecs(psc);
+      depth_stack_push(get_arity(psc));;
       one_btn_chk_ins(found_flag, item, BASIC_ANSWER_TRIE_TT);
       for (j = get_arity(psc); j >= 1 ; j--) {
 	pdlpush(cell(clref_val(xtemp1)+j));
       }
       recvariant_trie_ans_subsf(found_flag, BASIC_ANSWER_TRIE_TT);
-      //recvariant_trie(found_flag, BASIC_ANSWER_TRIE_TT);
       break;
     case XSB_ATTV:
       /* Now xtemp1 can only be the first occurrence of an attv */
@@ -1274,11 +1353,10 @@ BTNptr delay_chk_insert(CTXTdeclc int arity, CPtr cptr, CPtr *hook)
 
     ctr = AnsVarCtr;
 
-#ifdef DEBUG_DELAYVAR
-    printf(">>>> [D1] AnsVarCtr = %d ", AnsVarCtr);printf("\n");
-#endif
+    //    printf(">>>> [D1] AnsVarCtr = %d ", AnsVarCtr);printf("\n");
 
     for (i = 0; i<arity; i++) {
+      //      printf("arity_i is %d\n",i);
       /*
        * Notice: the direction of saving the variables in substitution
        * factors has been changed.  Because Prasad saves the substitution
@@ -1539,6 +1617,7 @@ void load_solution_trie(CTXTdeclc int arity, int attv_num, CPtr cptr, BTNptr Tri
 
 void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
 {
+
    if (arity) {
      int heap_needed;
      heap_needed = follow_par_chain(CTXTc TriePtr);

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.26 2012-03-14 19:22:46 tswift Exp $
+** $Id: tab_structs.h,v 1.27 2012-07-25 23:17:37 tswift Exp $
 ** 
 */
 
@@ -1123,6 +1123,14 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
    if (pdlreg < (CPtr) pdl.low) \
      xsb_exit("pdlreg grew too much"); \
    else (pdlreg = (CPtr)(pdl.high) - 1)
+
+#define pdlprint  {				\
+    CPtr temp_pdlreg = pdlreg;				\
+    while (!(temp_pdlreg == (CPtr)(pdl.high) - 1)) {			\
+      print_cp_cell("pdl", temp_pdlreg, *(temp_pdlreg+1));		\
+      temp_pdlreg++;								\
+    }						  \
+  }						 
 
 #define remove_incomplete_tables_loop(Endpoint) remove_incomplete_tries(Endpoint)
 

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.h,v 1.83 2012-06-03 17:27:01 tswift Exp $
+** $Id: tries.h,v 1.84 2012-07-25 23:17:37 tswift Exp $
 ** 
 */
 
@@ -501,6 +501,16 @@ extern int vcs_tnot_call;
    will_overflow_trieinstr_unif_stk(trieinstr_unif_stkptr+1);\
    (*(++trieinstr_unif_stkptr)) = X;\
 }
+
+#define trieinstr_unif_stack_print  {					\
+    CPtr temp_reg = trieinstr_unif_stkptr; ;				\
+    while (!(temp_reg == trieinstr_unif_stk)) {				\
+      print_cp_cell("trieinstr", temp_reg, *temp_reg);			\
+      temp_reg--;							\
+    }						  \
+  }						 
+
+
 /*----------------------------------------------------------------------*/
 
 /* used in bottom-up return of answers (e.g. load_solution_trie) */

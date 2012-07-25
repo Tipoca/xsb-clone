@@ -20,7 +20,7 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **
-** $Id: flag_defs_xsb.h,v 1.49 2012-07-04 15:10:46 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.50 2012-07-25 23:17:37 tswift Exp $
 **
 */
 
@@ -182,3 +182,4 @@ interrupt flag
 
 /* for  MAX_TABLE_SUBGOAL_DEPTH and call abstraction */
 #define XSB_ABSTRACT         4
+#define XSB_BRAT             5
