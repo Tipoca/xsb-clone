@@ -152,3 +152,7 @@ opts=$2
 ../gentest.sh "$XEMU $opts" dret_test "test."
 
 ../gentest.sh "$XEMU $opts" tabsimp_seq "test(20000)."
+#----------------------------------------------------------------------
+# Test of tnot
+#----------------------------------------------------------------------
+../gentest.sh "$XEMU $opts" wmay_winbug "test."
