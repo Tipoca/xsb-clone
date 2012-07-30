@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.167 2012-07-25 23:17:37 tswift Exp $
+** $Id: tries.c,v 1.168 2012-07-30 13:36:02 dwarren Exp $
 ** 
 */
 
@@ -868,7 +868,7 @@ int depth_stack[100];
   }
 
 #define CHECK_ANSWER_TERM_DEPTH	{					\
-    if (depth_ctr >= depth_limit)	{				\
+    if (depth_ctr >= depth_limit) {					\
       if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_WARNING) {		\
 	char buffer[2*MAXTERMBUFSIZE];					\
 	sprintCyclicRegisters(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)));	\
@@ -1089,7 +1089,8 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   int ctr, attv_ctr;
   Cell depth_ctr,list_depth_ctr;
   BTNptr Paren, *ChildPtrOfParen;
-  int bratted = 0, depth_limit = flags[MAX_TABLE_ANSWER_DEPTH];
+  int bratted = 0;
+  UInteger depth_limit = flags[MAX_TABLE_ANSWER_DEPTH];
   
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
   ans_chk_ins++; /* Counter (answers checked & inserted) */
