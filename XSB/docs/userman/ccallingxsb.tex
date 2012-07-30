@@ -718,6 +718,12 @@ thread in the course of executing a command or query.  See {\tt
   \$XSB\_DIR/examples/c\_calling\_xsb/cregs\_thread2.c} for an example
 of how mutexes can be used to protect XSB threads.
 
+When writing multi-threaded applications in XSB, be sure to be aware
+of how multiple threads share (and do not share) dynamic data and
+tables.  By default dynamic predicates (and tables) are unique to a
+given thread.  For data to be shared by multiple threads, a predicate
+must be declared to be {\tt shared}.  See section \ref{sec:shared} for
+details.
 
 \section{A C API for XSB} \label{sec:CAPI}
 %
