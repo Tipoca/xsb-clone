@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.98 2012-07-13 22:51:50 tswift Exp $
+** $Id: debug_xsb.c,v 1.99 2012-08-02 19:38:13 tswift Exp $
 ** 
 */
 
@@ -285,7 +285,15 @@ CTptr_2 cycle_trail_2;
 #define has_been_visited(Term)	(*clref_val(Term) == (Cell) visited_string \
 				 || *clref_val(Term) == (Cell) visited_psc)
 
-#define is_marked_cyclic(Term) (*clref_val(Term) == makestring(cyclic_string))
+#define is_marked_cyclic(Term) (*(CPtr)(Term) == makestring(cyclic_string))
+#define is_marked_cyclic_clref(Term) (*clref_val(Term) == makestring(cyclic_string))
+
+#define mark_with_cyclic_string(preTerm) {				\
+  if (cell_tag(preTerm) == XSB_LIST || cell_tag(preTerm) == XSB_STRUCT) \
+    *clref_val(preTerm) = makestring(cyclic_string);			\
+  else									\
+    *(CPtr)preTerm = makestring(cyclic_string);				\
+  }
 
 void mark_cyclic(CTXTdeclc Cell Term) { 
   Cell preTerm, visited_string;
@@ -340,13 +348,13 @@ void mark_cyclic(CTXTdeclc Cell Term) {
       XSB_Deref(Term);
       //      printf("Term after %p\n",Term);print_cell_tag(Term);
       if (cell_tag(Term) == XSB_LIST || cell_tag(Term) == XSB_STRUCT) {
-	if (is_marked_cyclic(Term) && !is_marked_cyclic(preTerm)) {
+	if (is_marked_cyclic_clref(Term) && !is_marked_cyclic(preTerm)) {
 	    push_pre_image_trail0((CPtr) preTerm, makestring(cyclic_string));	
 	    *clref_val(preTerm) = makestring(cyclic_string);
 	    //	    printf("marking %p @%p as cyclic %p\n",preTerm,*(CPtr)preTerm,
 	    //		   makestring(cyclic_string));
 	}
-	else if (!is_marked_cyclic(Term)) {
+	else if (!is_marked_cyclic_clref(Term)) {
 	  if (!has_been_visited(Term)) {
 	    //	    printf("setting visited string for struct\n");
 	    push_cycle_trail(Term);	
@@ -355,7 +363,7 @@ void mark_cyclic(CTXTdeclc Cell Term) {
 	  }
 	  else {
 	    push_pre_image_trail0((CPtr) preTerm, makestring(cyclic_string));	
-	    *clref_val(preTerm) = makestring(cyclic_string);
+	    mark_with_cyclic_string(preTerm);
 	    //	    printf("marking %p @%p as cyclic %p\n",preTerm,*(CPtr)preTerm,
 	    //   makestring(cyclic_string));
 	  }
