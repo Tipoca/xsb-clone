@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.45 2012-02-19 19:17:56 tswift Exp $
+** $Id: tc_insts_xsb_i.h,v 1.46 2012-08-02 21:58:56 tswift Exp $
 ** 
 */
 
@@ -832,7 +832,8 @@ XSB_Start_Instr(trie_root,_trie_root)
    old_cptop = tbreg;	
 #endif
    //   save_trie_registers(tbreg);
-   *(--tbreg) = (Cell) makeint(NodePtr);
+   //   *(--tbreg) = (Cell) makeint(NodePtr);
+   *(--tbreg) = NodePtr;
    save_choicepoint(tbreg,ereg,(byte *)&trie_fail_inst,breg);  
 #ifdef SLG_GC
    cp_prevtop(tbreg) = old_cptop;
@@ -847,7 +848,8 @@ XSB_Start_Instr(trie_fail,_trie_fail)
   CPtr tbreg;
  TRIE_R_UNLOCK()
  tbreg = breg;
- NodePtr = (BTNptr) int_val((*(tbreg + CP_SIZE)));
+ // NodePtr = (BTNptr) int_val((*(tbreg + CP_SIZE)));
+ NodePtr = (BTNptr) *(tbreg + CP_SIZE);
  trie_instr_print_2( "--trie_fail %p\n",NodePtr);
  //    restore_regs_and_vars(tbreg, CP_SIZE);
  breg = cp_prevbreg(breg);       /* Remove this CP */

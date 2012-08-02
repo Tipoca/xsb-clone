@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.101 2012-03-11 00:55:47 tswift Exp $
+** $Id: error_xsb.c,v 1.102 2012-08-02 21:58:56 tswift Exp $
 ** 
 */
 
@@ -1290,7 +1290,8 @@ inline void  CHECK_TRIE_ROOT(CTXTdeclc CPtr CurBreg) {
   //  printf("breg instr %x\n",*cp_pcreg(CurBreg));
   if (*cp_pcreg(CurBreg) == trie_fail) {
     BTNptr Nodeptr;
-    Nodeptr = (BTNptr) int_val((*(CurBreg + CP_SIZE)));
+    //    Nodeptr = (BTNptr) int_val((*(CurBreg + CP_SIZE)));
+    Nodeptr = (BTNptr) (*(CurBreg + CP_SIZE));
     //    printf("found_trie_root %p\n",Nodeptr);
     subg_visitors(BTN_Parent(Nodeptr)) = subg_visitors(BTN_Parent(Nodeptr)) - 1;
   }
