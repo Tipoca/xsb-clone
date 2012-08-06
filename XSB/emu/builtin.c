@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.393 2012-07-04 15:10:46 tswift Exp $
+** $Id: builtin.c,v 1.394 2012-08-06 13:40:02 dwarren Exp $
 **
 */
 
@@ -3173,7 +3173,7 @@ case WRITE_OUT_PROFILE:
     startSleeperThread(CTXTc (int)ptoc_int(CTXTc 1));
 #else
     xsb_abort("timed_call/3 not implemented for multi-threaded engine.  Please use "
-              "thread sgnalling");
+              "thread signalling");
 #endif
     break; 
 }
