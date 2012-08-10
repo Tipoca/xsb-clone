@@ -4737,6 +4737,12 @@ variables in {\tt SubTerm} is collected into the resulting list.
      \item[{\tt memory}]
 	Not enough memory to collect the variables.
     \end{description}
+
+\ourmoditem{find\_n(+N,?Template, +Goal, ?List)}{find\_n/4}{setof}
+%
+Acts as {\tt findall/3} but returns only the first {\tt N} bindings of
+{\tt Template} to {\tt List}.
+
 \end{description}
 
 %\input{aggreates}
