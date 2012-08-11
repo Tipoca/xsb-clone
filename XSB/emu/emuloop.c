@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.231 2012-07-18 14:21:08 dwarren Exp $
+** $Id: emuloop.c,v 1.232 2012-08-11 21:41:46 tswift Exp $
 ** 
 */
 
@@ -2956,7 +2956,7 @@ argument positions.
 	if (xsb_profiling_enabled) {
 	  int i;
 	  Psc psc = psc_from_code_addr(lpcreg);
-	  fprintf(stdout,"%s/%d searched %d unindexed clauses\n",get_name(psc),get_arity(psc),chainlen);
+	  fprintf(stdout,"%s/%d searched %"Intfmt" unindexed clauses\n",get_name(psc),get_arity(psc),chainlen);
 	  fprintf(stdout,"  %s(",get_name(psc));
 	  for (i=1; i<=get_arity(psc); i++) {
 	    if (isref(reg[i])) {

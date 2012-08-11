@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.168 2012-07-30 13:36:02 dwarren Exp $
+** $Id: tries.c,v 1.169 2012-08-11 21:41:46 tswift Exp $
 ** 
 */
 
@@ -122,7 +122,6 @@ static int addr_stack_size    = DEFAULT_ARRAYSIZ;
 #define pop_Addr_Stack Addr_Stack[--addr_stack_index]
 #define push_Addr_Stack(X) {\
     if (addr_stack_index == addr_stack_size) {\
-      printf("expanding addr stack %p\n",Addr_Stack);			\
        trie_expand_array(CPtr, Addr_Stack ,addr_stack_size,0,"Addr_Stack");\
     }\
     Addr_Stack[addr_stack_index++] = ((CPtr) X);\
