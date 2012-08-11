@@ -542,8 +542,6 @@ get_delay_lists(Leaf, DLs) :- get_delay_lists(Leaf, DLs).
 
 %------------
 
-:- export get_returns_and_tvs/3.
-
 get_returns_and_tvs(TableEntry, ReturnTemplate,TV) :-
 	findall('_$$get_returns_and_tvs'(TableEntry,ReturnTemplate,TV),
 	        '_$$get_returns_and_tvs'(TableEntry,ReturnTemplate,TV),
@@ -726,6 +724,7 @@ get_callsto_number(SubgoalFrame,Number):-
 get_answer_number(SubgoalFrame,Number):- 
 	table_inspection_function(GET_ANSWER_NUMBER,SubgoalFrame,Number,_,_).
 
+/* Purely for testing */
 :- export subg_get_visitors_number/1.
 :- import writeln/1 from standard.
 subg_get_visitors_number(Subg):- 
@@ -756,7 +755,6 @@ print_incomplete_tables(Stream):-
 get_scc_dumpfile(F):- 
 	table_inspection_function(GET_SCC_DUMPFILE,F,_,_,_).
 
-:- export check_variant/1,  check_variant/2. 
 check_variant(Term):- 
 	table_inspection_function(CHECK_VARIANT,Term,0,_,_).
 

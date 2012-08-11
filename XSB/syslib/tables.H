@@ -29,27 +29,35 @@
    abolish_table_pred/1,      abolish_table_pred/2,
    abolish_module_tables/1,
    add_incr_table/2, add_table/1,
+   analyze_an_scc/2, analyze_an_scc/3,
+   check_variant/1,  check_variant/2,
    delete_return/2, delete_return/3,
    force_truth_value/2, force_answer_true/1, force_answer_false/1,
-   get_answer_number/2,
+   forest_log_overview/0,
+   get_answer_number/2,       /* table_dump */
    get_call/3,
    get_calls/3,
-   get_calls_for_table/2,
-   get_callsto_number/2,
-   get_current_scc/2,
+   get_calls_for_table/2,     /* table_dump and others */
+   get_callsto_number/2,      /* table_dump */
+   get_current_scc/2,         /* table_dump */
    get_lastnode_cs_retskel/4, /* because it is used in intern.P */
    get_producer_call/3,
    get_ptcp/1,
    get_residual/2,
-   get_returns/2,
-   get_returns/3,
+   get_returns/2,   get_returns/3,
    get_returns_and_dls/3, 
+   get_returns_and_tvs/3,     /* table_dump */
    get_returns_for_call/2,
+   get_unifiable_returns/3,
    get_visitors_number/2,
    invalidate_tables_for/2,
    is_incomplete/2,
+   load_forest_log/1,
+   log_all_forest_start/0, log_all_forest_start/1,
+   log_all_forest_end/0, 
+   log_forest/1, log_forest/2,
    print_incomplete_tables/0,print_incomplete_tables/1,
-   retract_table/1,
+   retract_table/1,          /* abolish/1 */
    sk_not/1,
 %      table_state/2,
    table_state/4,
@@ -57,39 +65,27 @@
    (tnot)/1,
    't not'/1,
    (trie_dynamic)/1,
-   trie_assert/1,
-   trie_assert/2,
-   trie_retract/1,
-   trie_retract_nr/1,
+   trie_assert/1,   trie_assert/2,
+   trie_retract/1,   trie_retract_nr/1,
    trie_retract_all/1,
    undefined/0,
    (use_subsumptive_tabling)/1,
-   (use_variant_tabling)/1.
+   (use_variant_tabling)/1,
+   variant_get_residual/2.
 
-:- export
-	find_components/1,
+/****** Experimental ********/
+:- export find_components/1,
 	find_forward_dependencies/1,
 	%%%find_backward_dependencies/1,
 	find_answers/1.
-
-:- export start_forest_view/1, stop_forest_view/0.
-:- export load_forest_log/1.
-:- export log_forest/1, log_forest/2.
-:- export 
-	log_all_forest_start/0, 
-	log_all_forest_end/0, 
-	log_all_forest_start/1.
-:- export get_scc_dumpfile/1.
-
-
-:- export get_unifiable_returns/3.
-:- export variant_get_residual/2.
-:- export predicate_has_tables/1.
 :- export early_complete_on_nth/2.
 :- export early_complete_on_delta/4.
+:- export get_scc_dumpfile/1.
 
+/***** Other ******/
+:- export start_forest_view/1, stop_forest_view/0.
 :- export '_$$get_returns'/3.
-:- export analyze_an_scc/2, analyze_an_scc/3, forest_log_overview/0.
+:- export predicate_has_tables/1.
 
 :- import
 	(dynamic)/1,
