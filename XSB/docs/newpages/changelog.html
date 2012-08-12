@@ -20,6 +20,89 @@
 
 <h2> Version 3.3.X (Pignoletto)</h2> 
 
+<h3> Version 3.3.7</h3> 
+<ul>
+<li><b> Enhancements </b></li>
+<ul>
+<li>The incremental tabling subsystem have been improved in various
+ways.  The subsystem now fully supports handling of conditional
+answers (i.e., answers that are undefined in WFS).  Updates of
+incremental tables can now be done lazily whenever a tabled subgoal is
+re-called: an explicit call to a table update routine is no longer
+necessary.  In addition, the XSB API has been restructured to be more
+consistent, and several of the API routines have been moved into
+C.</li>
+
+<li> XSB's profiler now supports detection of calls that do not
+properly use a predicate's indexing.</li>
+
+<li> XSB's forest logging now profiles tabled negation, including
+delaying and simplification.  In addition, several new routines have
+been implemented that provide in-depth analysis of the logs.
+
+<li>A new XSB flag allows information about incomplete tabled subgoals
+and their SCCs to be written to a file upon throwing an exception,
+which can aid in debugging.</li>
+
+<li> Several new built-ins have been added.  
+<ul>
+<li>  <tt>ground_and_acyclic/1</tt> is now available.  
+<li>  <tt>check_variant/1</tt> can efficiently check whether the
+variant of a goal exists in trie-indexed dynamic predicates.
+<li> <tt>find_n/4</tt> acts as <tt>findall/3</tt> but returns only the
+first <i>n</i> solutions to a goal.
+</ul>
+
+<li> XSB's <tt>table_dump</tt> library now distinguishes between
+answers whose truth value is "true" and those whose truth value is
+"undefined".
+
+<li>Error handling routines have been improved, especially when
+printing out cyclic or large terms.</li>
+
+<li>XSB's configuration now supports compilation with cilk.
+</ul>
+
+<li><b> Bug fixes </b></li>
+<ul>
+<li> On Windows, XSB is automatically configured so that Windows
+allocates a larger default call stack, removing a class of
+Windows-specific errors.</li>
+
+<li>
+A number of bugs have been fixed that together make XSB more robust
+for very large and heavily tabled computations.  Among these, XSB
+better manages when an exception is thrown over the point of creation
+of an incomplete table: previously this could cause a core dump under
+certain situations, while now all such situations are detected and
+handled properly.  </li>
+
+<li>XSB handles updates to an incemental table that has active choice
+points without core-dumping, as it sometimes did in previous
+versions.  </li>
+
+<li> <tt>call_cleanup/3</tt> is now properly called when an
+exception is thrown over a goal to be cleaned up, or when early
+completing a tabled subgoal. </li>
+
+<li>Bugs in cyclic term handling that were present on 32-bit Linux are
+now fixed.</li>
+
+<li> Other bug fixes include the following.  There were various fixes
+to small bugs in answer subsumption, particularly relating to
+compilation.  A fix was made to tabled negation when all conditional
+answers to a goal have been removed by simplification.  Handling of
+floats by <tt>number_codes/chars</tt> was improved.  A bug
+in <tt>get_residual</tt> was fixed, which arose when displaying a
+conditional answer with a large number of variables in its delay list.
+Finally, a number of small bugs in handling large (boxed) integers have
+been fixed.</li>
+
+</ul>
+
+
+</ul>
+
 <h3> Version 3.3.6</h3> 
 <ul>
 <li><b>New features</b></li>
@@ -246,5 +329,5 @@ in other Prologs.
 
 <hr>
 <address>Email: <a href="mailto:xsb-users@lists.sourceforge.net" >xsb-users@lists.sourceforge.net</a></address>
-<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.9 2012-01-11 18:24:52 tswift Exp $ <!-- hhmts end -->
+<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.10 2012-08-12 15:10:11 tswift Exp $ <!-- hhmts end -->
 </body> </html>
