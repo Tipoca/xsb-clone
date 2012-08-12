@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.169 2012-08-11 21:41:46 tswift Exp $
+** $Id: tries.c,v 1.170 2012-08-12 18:04:58 tswift Exp $
 ** 
 */
 
@@ -811,6 +811,9 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
  * delay_tests/delay_var breaks.
  * 
  */
+
+
+#define BOUNDED_RATIONALITY 1
 
 /* Need to be able to expand */
 int depth_stack[100];
