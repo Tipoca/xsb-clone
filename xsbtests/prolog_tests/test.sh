@@ -6,11 +6,17 @@ echo "-------------------------------------------------------"
 
 XEMU=$1
 options=$2
+valgrind=$3
+
+if test "$valgrind" = "true"; then
+    echo "valgrind = $valgrind"
+fi
 
 u=`uname`;
 echo "uname for this system is $u";
 
-if test $u  != ""; then
+#VALGRIND
+if test $u  != "" && test "$valgrind" != "true"; then
     echo "removing xeddis object files"
     rm -f xeddis.dylib xeddis.so
     $XEMU -e "catch(consult(compile_xeddis),Ball,(writeln(userout,Ball),halt))."
@@ -20,6 +26,10 @@ if test $u  != ""; then
     echo "-------------------------------------------------------"
 fi
 
+# Doing this here to support valgrind testing.
+rm unsafe1.xwam
+rm unsafe2.xwam
+rm varcond.xwam
 
 #------------------------------------
 # tests involving standard predicates
@@ -123,32 +133,23 @@ fi
 #------------------------------------------------------------------------
 ../gentest.sh "$XEMU $options" test_memory_ovrflw_2 "second_test."
 
-#------------------------------------------------------------------------
-# TLS: need to remove dylib/so due to 64/32 bit confusion
-
-rm -f second_foreign.dylib second_foreign.so
-
-../gentest.sh "$XEMU $options" cinter3 "test."
-
-rm -f fibr.dylib fibr.so
-
-../gentest.sh "$XEMU $options" fibp "test."
-
 #------------------------------------
 # test call/n
 #------------------------------------
 #------------------------------------------------------------------------
 ../gentest.sh "$XEMU $options" call_tests "test."
 
+
 #------------------------------------------------------------------------
 # Test Prolog calling C: the .so or .o file needs to be created each time
 # (actually, mac / others do not create .so)
 #------------------------------------------------------------------------
 
+# VALGRIND doesn't seem to work on these tests (its Valgrind and not XSB).
 OBJEXT=.xwam
 os_type=`uname -s`
 echo "config tag is $config_tag"
-if test "$os_type" = "HP-UX" || test "$config_tag" = "-mt"; then
+if test "$os_type" = "HP-UX" || test "$config_tag" = "-mt" || test "$valgrind" = "true"; then
 	echo "Foreign language interface tests bypassed"
 else
 #------------------------------------------------------------------------
@@ -170,6 +171,22 @@ else
 	rm -f cregs.o c_regs_make$OBJEXT
 	../gentest.sh "$XEMU $options" cregs_make "test."
 fi
+
+
+if test "$valgrind" = "true"; then
+	echo "Skipping foreign compilation"
+else
+#------------------------------------------------------------------------
+# TLS: need to remove dylib/so due to 64/32 bit confusion
+
+rm -f second_foreign.dylib second_foreign.so
+
+../gentest.sh "$XEMU $options" cinter3 "test."
+
+rm -f fibr.dylib fibr.so
+
+../gentest.sh "$XEMU $options" fibp "test."
+
 #------------------------------------------------------------------------
 ../gentest.sh "$XEMU $options" test_importas "test."
-
+fi

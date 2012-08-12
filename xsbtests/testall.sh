@@ -20,7 +20,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: testall.sh,v 1.23 2011-10-16 19:25:25 tswift Exp $
+## $Id: testall.sh,v 1.24 2012-08-12 14:58:22 tswift Exp $
 ## 
 ##
 
@@ -50,6 +50,10 @@ do
      *-only*)
 	    shift
 	    only_tests=$1
+	    shift
+	    ;;
+     *-valgrind*)
+	    valgrind="true"
 	    shift
 	    ;;
       *)
@@ -109,7 +113,7 @@ for tst in $testlist ; do
     if test -f core ; then
 	rm -f core
     fi
-    ./test.sh "$XEMU" "-e segfault_handler(warn). $options"
+    ./test.sh "$XEMU" "-e segfault_handler(warn). $options" $valgrind
     cd ..
   fi
 done
@@ -141,6 +145,6 @@ for tst in $abstestlist ; do
     if test -f core ; then
 	rm -f core
     fi
-    ./atest.sh "$XEMU"  "-e segfault_handler(warn). --max_subgoal_action a --max_subgoal_depth 4  $options"
+    ./atest.sh "$XEMU"  "-e segfault_handler(warn). --max_subgoal_action a --max_subgoal_depth 4  $options" $valgrind
     cd ..
 done

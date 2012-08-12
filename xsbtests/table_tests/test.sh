@@ -6,6 +6,7 @@ echo "-------------------------------------------------------"
 
 XEMU=$1
 options=$2
+valgrind=$3
 
 #========================================================================
 # Force some files to be compiled before running the tests.  cycle.P
@@ -106,8 +107,6 @@ EOF
 #-------------------------------------------------
 ../gentest.sh "$XEMU -l $options" aggregs_test_2 "test."
 #--------------------------------------------------
-../gentest.sh "$XEMU -l $options" test_just "test."
-#--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" test_calldepth "test."
 #--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" test_answerdepth "test."
@@ -128,11 +127,21 @@ EOF
 #--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" test_negcycle "test."
 #--------------------------------------------------
-../gentest.sh "$XEMU -l $options" test_td_incomp "test."
-#--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" test_check_variant "test."
+#--------------------------------------------------
+#../gentest.sh "$XEMU -l $options" test_brat_ansdepth "test."
+
+#VALGRIND
+if test "$valgrind" = "true"; then
+	echo "Skipping test_just and test_td_incomp in table_tests"
+else
+#--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_just "test."
+#--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_td_incomp "test."
+fi
 
 #--------------------------------------------------
 # gentest.sh doesn't quite work to test forest view.
-bash ./test_forest_view.sh "$XEMU -l $options" 
+#bash ./test_forest_view.sh "$XEMU -l $options" 
 #--------------------------------------------------

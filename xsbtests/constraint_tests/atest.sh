@@ -11,6 +11,7 @@ echo "-------------------------------------------------------"
 
 XEMU=$1
 opts=$2
+valgrind=$3
 
 ../agentest.sh "$XEMU $opts" testsetarg "test."
 ../agentest.sh "$XEMU $opts" test_constraintLib "test."
@@ -23,5 +24,10 @@ opts=$2
 ../agentest.sh "$XEMU $opts" tab_constraint "test."
 ../agentest.sh "$XEMU $opts" testlightmeal "test."
 
+# VALGRIND
+if test "$valgrind" = "true"; then
+	echo "Skipping cvarconstr_make in table_tests"
+else
 # test of C-calling XSB w. constraints.
 ../agentest.sh "$XEMU $opts" cvarconstr_make "test."
+fi

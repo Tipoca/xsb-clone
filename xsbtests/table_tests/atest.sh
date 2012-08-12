@@ -6,7 +6,7 @@ echo "-------------------------------------------------------"
 
 XEMU=$1
 options=$2
-
+valgrind=$3
 #========================================================================
 # Force some files to be compiled before running the tests.  cycle.P
 # will always be compiled, because there was a bug on Linux in compiling
@@ -106,8 +106,6 @@ EOF
 #-------------------------------------------------
 ../agentest.sh "$XEMU -l $options" aggregs_test_2 "test."
 #--------------------------------------------------
-../agentest.sh "$XEMU -l $options" test_just "test."
-#--------------------------------------------------
 ../agentest.sh "$XEMU -l $options" test_calldepth "test."
 #--------------------------------------------------
 ../agentest.sh "$XEMU -l $options" test_answerdepth "test."
@@ -122,3 +120,10 @@ EOF
 #--------------------------------------------------
 ../agentest.sh "$XEMU -l $options" test_cyclic_tabling "test."
 #--------------------------------------------------
+
+if test "$valgrind" = "true"; then
+	echo "Skipping test_just in call abstraction"
+else
+../agentest.sh "$XEMU -l $options" test_just "test."
+#--------------------------------------------------
+fi
