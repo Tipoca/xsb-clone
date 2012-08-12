@@ -1336,6 +1336,42 @@ values for tabled predicates.
 \ei
 \ei
 
+\ourmoditem{explain\_u\_val(+Answer,?Reason,?Type)}{explain\_u\_value/3}{tables}
+%
+{\tt explain\_u\_val/3} can be used to query why {\tt Answer} is
+undefined.  {\tt Reason} may be either {\tt bounded\_rationality} or
+{\tt negative\_loops}.  {\tt Type} may be either {\tt direct} or {\tt
+  indirect}.  {\tt bounded\_rationality} is considered direct if {\tt
+  Answer} itself has been abstracted; otherwise it is indirect.  {\tt
+  negative\_loops} is considered direct if {\tt Answer} is involved in
+a loop through negation based on delay dependencies; otherwise it is
+considered direct.  Thus, the predicate may succeed for more than one
+reason, but for each reason there is at most one type,
+
+\begin{example} \rm
+After executing the query {\tt m} to the program
+%
+\begin{verbatim}
+:- table m/0, p/0, q/0, r/0, s/1.
+m:- p.
+
+p:- q,tnot p.                 p:- s(f(f(f(f(0))))).
+
+q:- tnot r.                   r:- tnot q.
+
+s(f(X)):- s(X).               s(0).
+\end{verbatim}
+%
+where the bounded rationality depth has been set to 3.  the query {\tt
+ explain\_u\_value(p,Reason,Type)} will bind {\tt Reason} to {\tt
+ negative\_loops} and {\tt Type} to {\tt direct} and also {\tt Reason}
+ to {\tt bounded\_rationality} and {\tt Type} to {\tt indirect}.  Note
+ that {\tt p} also indirectly depends on {\tt q} which is itself
+ involved in a loop through negation.
+\end{example}
+
+
+
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \comment{

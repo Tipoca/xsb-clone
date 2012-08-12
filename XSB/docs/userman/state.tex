@@ -247,6 +247,8 @@ threads in the process.
 \index{Prolog flags!{\tt max\_table\_subgoal\_depth}}
 \index{Prolog flags!{\tt max\_answer\_term\_depth}}
 \index{Prolog flags!{\tt max\_answer\_list\_depth}}
+\index{termination!subgoal abstraction}
+\index{termination!bounded rationality}
 %
 \item {\tt max\_table\_subgoal\_action} The action to take when a tabled
   subgoal of maximum depth is encountered.  To understand the use of
@@ -275,25 +277,33 @@ p(f(X)):- p(X).          p(a).
 \end{verbatim}
   is tabled, the model for the goal {\tt ?- p(X)} is infinite, so that
   this program will not terminate.  When the maximum answer depth is
-  reached, XSB can either throw a miscellaneous error (the default
-  action); emit a warning; or XSB can fail -- an action that may be
-  valid for certain programs~\footnote{Failure in this case can be
-    seen as an implicit form of answer abstraction.}.  The action is
-  set to fail by the value {\tt failure} while the action of throwing
-  an error can be (re-)set using the value {\tt error}, and the action
-  of warning is set by the value {\tt warning}.
-
-  Note that this flag affects only structures that are not lists
-  (since large lists are more common than other large structures).  
+  reached, XSB can either 
+\begin{enumerate}
+\item Throw a miscellaneous error, set using the value {\tt error}.
+  This is the default action.
+%
+\item Apply bounded rationality by abstracting the answer with a truth
+  value of {\em undefined}; settable using the value {\tt
+    bounded\_rationality}.
+%
+\item Issue a warning, settable using the value {\tt warning}.
+%
+\item Fail the answer addition, an action that may be valid for
+  certian programs, settable using the value {\tt fail}.
+%
+\end{enumerate}
+%
+{\bf {\em Note that this flag affects only structures that are not lists (since
+large lists are more common than other large structures).}}
 
 \item {\tt max\_table\_answer\_depth} The maximum depth of an answer
   argument that can be added to a table: when the depth is reached, an
   action is taken as indicated for the previous flag.  The default
   value is {\tt maximum\_integer}.
 
-  {\em Note that this flag affects only structures that are not lists
+{\bf  {\em Note that this flag affects only structures that are not lists
     (since large lists are more common than other large structures).
-  }
+  }}
 
 \item {\tt max\_table\_answer\_list\_action} The action to take when a
   tabled answer of maximum list depth is encountered.  To understand

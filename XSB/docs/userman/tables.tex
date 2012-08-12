@@ -29,7 +29,7 @@ described in~\cite{SaSw98,RRSSW98,JFLP-Scheduling,SaSW96,
 as it is implemented in \version{} and its performance
 analyzed. Examples of large-scale applications that use tabling are
 overviewed in~\cite{syntactica, semantica, CoDS96, DRW96, RRRSSW97,
-  Boul97,CuSW99a,GSTPD00,SwiW09}.
+  Boul97,CuSW99a,GSTPD00,SwiW12}.
 
 %=====================================================================
 
@@ -1882,51 +1882,66 @@ effectively used in the construction of a justification or explanation
 system.
 
 \index{termination!subgoal abstraction}
-\section{Subgoal Abstraction}
+\index{termination!bounded rationality}
+\section{Tabling for Termination}
 %
 As noted throughout this manual, tabling adds important termination
 properties to programs and queries.  In this section we state more
 precisely what these termination properties are, and how the
-properties can be strengthened through {\em subgoal abstraction}
-declarations and settings.
+properties can be strengthened through declarations and settings for
+{\em subgoal abstraction} and for bounded rationality through {\em
+  answer abstraction}.
 
-Consider a pure definite program in which every predicate is tabled.
-Such a program would call each tabled subgoal (up to variance) exactly
-once if call variance were used, and at most once if call subsumption
-were used.  In addition, tabling guarantees that each answer will be
-returned to each call to a tabled subgoal at most once.  This means
-that there are two sources of non-termination.  Either there can be an
-infinite number of subgoals, or there can be an infinite number of
-answers.  Apart from these two cases, a tabled evaluation will be
-finite and so will terminate.  Of course this is a theoretical
-argument, and termination could require a long time or a lot of
-memory; furthermore we are not considering issues with builtins,
-arithmetic, etc.~\footnote{Using the forest of trees model of tabling
-  (cf. Section~\ref{sec:forest-trace}) non-termination requires that
-  there are an infinite number of trees or that at least one tree have
-  infinite size.}.  For normal programs, the causes of non-termination
-turn out to be basically the same as for definite programs.
+Before doing so, it is important to set the context for where issues
+of termination may arise.  Consider first a pure normal program in
+which every predicate is tabled.  This means a program where rules may
+only call other rules, possibly through negation ({\tt tnot/1} or {\tt
+  sk\_not/1} in XSB); but where there are no calls to builtins for
+arithmetic, all-solutions predicates, or other built-ins.  If such a
+fully-tabled pure normal program does not have function symbols, XSB
+will always terminate for any query.  For instance, XSB will terminate
+for fully tabled pure datalog programs -- even if the head of a rule
+is ``unsafe'' in that it contains variables that do not occur in the
+body of that rule~\footnote{Evaluations that call non-ground negative
+  literals will terminate through floundering, although this can be
+  avoided in most cases by using {\tt sk\_not/1}.}.
 
-If a program produces an infinite number of subgoals {\em but} has a
-finite number of answers, the program can be made to terminate by
-abstracting the subgoal.  For instance, consider the program fragment:
+While datalog programs are useful for certain kinds of knowledge
+representation, they are not powerful enough for general programming
+as they do not allow recursive structures such as lists.  Thus, for
+the rest of this section we consider pure programs that may contain
+function symbols.  Consider a pure definite program in which every
+predicate is tabled.  Such a program would call each tabled subgoal
+(up to variance) exactly once if call variance were used, and at most
+once if call subsumption were used.  In addition, tabling guarantees
+that each answer will be returned to each call to a tabled subgoal at
+most once.  This means that there are two sources of non-termination.
+Either there can be an infinite number of subgoals, or there can be an
+infinite number of answers~\footnote{Using the forest of trees model
+  of tabling (cf. Section~\ref{sec:forest-trace}) non-termination
+  requires that there are an infinite number of trees or that at least
+  one tree have infinite size.}.
+
+\paragraph{An Infinite Number of Subgoals}
+%
+If a definite program produces an infinite number of subgoals {\em
+  but} has a finite number of answers, the program can be made to
+terminate by abstracting the subgoal.  For instance, consider the
+program fragment:
 %
 \begin{verbatim}
+:- table p/1.
 p(X) :- p(f(X)).
 \end{verbatim}
 %
-The goal {\tt ?- p(1)} can create an infinite number of variant tabled
+The goal {\tt ?- p(1)} can create an infinite number of tabled
 subgoals: {\tt p(f(1))}, {\tt p(f(f(1)))}, {\tt p(f(f(f(1))))} and so
-on.  Subgoal abstraction allows a goal, like {\tt p(f(f(f(1))))} to be
-rewritten as {\tt p(f(f(X))),X = f(1)}.  If all subgoals that have a
-term depth (or term size) over a given finite threshold are
-abstracted, any query can produce only a finite number of subgoals
-(since there are a finite number of predicate, function and constant
-symbols in any program). If a program is definite, it can be shown
-that any query to a program will terminate if that program uses
-subgoal abstraction~\cite{TaSa86}.  Subgoal abstraction is done
-automatically by XSB's engine under the conditions described below.
+on.  Note that since all of the subgoals are ground, none subsume one
+another, so that call subsumption will not help here, (although it
+would help if the goal were {\tt ?- p(X)}).
 
+\paragraph*{Infinite Answers}
+%
 Of course, subgoal abstraction can't handle cases where there are an
 infinite number of answers, as in the program fragment:
 %
@@ -1934,8 +1949,37 @@ infinite number of answers, as in the program fragment:
 p(f(X)) :- p(X).
 \end{verbatim}
 %
-when givne the query {\tt p(X)}.  Subgoal abstraction can also cause
-problems if used indiscriminately.  if the second argument of the subgoal
+when given the query {\tt p(X)}.  
+
+We consider each case in turn.
+
+\subsection{Subgoal Abstraction}
+%
+In a nutshell, subgoal abstraction allows a goal like {\tt
+  p(f(f(f(1))))} to be rewritten as 
+
+{\tt p(f(f(X))),X = f(1)}.  
+
+\noindent
+If all subgoals that have a term depth (or term size) over a given
+finite threshold are abstracted, any query can produce only a finite
+number of subgoals (since there are a finite number of predicate,
+function and constant symbols in any program). If a program is
+definite, it can be shown that any query to a program will terminate
+if that program uses subgoal abstraction~\cite{TaSa86}.
+%
+For normal programs, the situation is not much different at a
+conceptual level.  A goal such as {\tt tnot(p(f(f(f(1))))} would
+execute as {\tt p(f(f(X)))} and then ensure that none of the answers
+to this goal have a binding for {\tt X} that allows it to unify with
+{\tt f(1)}.  Using this intuition, it can be shown that if a program
+has a two-valued well-founded model and a finite number of true
+answers it will terminate using tabling with subgoal
+abstraction~\cite{RigS11b}.
+
+Despite its theoretical power, subgoal abstraction can also cause
+problems if used indiscriminately.  if the second argument of the
+subgoal
 %
 \begin{verbatim}
 ?- member(e,[a,b,c,d,e])
@@ -1944,27 +1988,25 @@ problems if used indiscriminately.  if the second argument of the subgoal
 is abstracted forming the goal
 %
 \begin{verbatim}
-?- member(e,[a,b,c,X])
+?- member(e,[a,b,c|X])
 \end{verbatim}
 %
-a goal that terminates without abstraction will not terminate after
-abstraction.  Note that any program containing {\tt member/2} and at
-least one constant does not have a finite model.  While an experienced
-programmer would never want to table {\tt member/2}, he well may want
-to table a grammar or other program that performs recursion through a
-finite structure.
+leading to an infinite number of answers.  a goal that terminates
+without abstraction will not terminate after abstraction.  Note that
+any program containing {\tt member/2} and at least one constant does
+not have a finite model.  While an experienced programmer would never
+want to table {\tt member/2}, he well may want to table a grammar or
+other program that performs recursion through a finite structure.
 
-The implementation of subgoal abstraction in XSB is still in progress.
-Abstraction is not currently performed for goals called negatively
-including {\tt tnot/1} and {\tt sk\_not/1}; rather, such goals will throw
-an exception if they surpass the specified depth.
-
-\subsection{Declaring Subgoal Abstraction}
+\subsubsection{Declaring Subgoal Abstraction}
 %
-Subgoal abstraction can be declared to work by default or to work on a
-specific predicate, or both.  It is important to note that only tabled
-predicates are affected~\footnote{Currently subgoal abstraction is
-  implemented only for call variance}.  
+The implementation of subgoal abstraction in XSB is still in progress.
+Abstraction can be performed for goals called positively; but not for
+goals called negatively including {\tt tnot/1} and {\tt sk\_not/1};
+rather, such goals will throw an exception if they surpass the
+specified depth.  Subgoal abstraction is only implemented for call
+variance, and currently is only settable globally, and not on a
+predicate-by-predicate basis.
 
 \index{Prolog flags!{\tt max\_table\_subgoal\_action}}
 \index{Prolog flags!{\tt max\_table\_subgoal\_depth}}
@@ -1976,18 +2018,155 @@ Default subgoal abstraction can be declared by setting the Prolog flags
 \ei
 %
 (cf. pg. \pageref{prolog-flags}). 
-
+%
 Unless otherwise specified, XSB starts up with {\tt
-  max\_table\_subgoal\_action} is set {\tt error} and {\tt
-  max\_table\_subgoal\_depth} is set to the maximum integer possible
-on the platform on which XSB is installed.  Under this default
-behavior, XSB will throw an error if a subgoal has depth greater than
-{\tt max\_table\_subgoal\_depth}.  As an alternate to setting flags,
-XSB can be called with the arguments {\tt --max\_subgoal\_action a}
-and {\tt --max\_subgoal\_depth n} where {\tt n} is the size of the
-desired depth.
+  max\_table\_subgoal\_action} set to {\tt error} and {\tt
+  max\_table\_subgoal\_depth} set to the maximum integer possible
+under the compilation method for which XSB has been configured.  Under
+this default behavior, XSB will throw an error if a subgoal has depth
+greater than {\tt max\_table\_subgoal\_depth}.  As an alternate to
+setting flags, XSB can be called with the command-line arguments {\tt
+  --max\_subgoal\_action a} and {\tt --max\_subgoal\_depth n} where
+{\tt n} is the size of the desired depth.
 
-{\sc Predicate-level subgoal abstraction is not yet implemented}.
+\subsection{Bounded Rationality through Answer Abstraction}
+%
+In XSB, a programmer can use a form of answer abstraction called {\em
+  bounded-rationality} to ensure that only a finite number of answers
+are generated by a query.  For instance if the query {\tt p(X)} to the
+program
+%
+\begin{verbatim}
+p(f(X)) :- p(X).  
+p(0).
+\end{verbatim}
+%
+were evaluated using this approach with a depth limit of 3, the
+answers, {\tt p(0)}, {\tt p(f(0))}, {\tt p(f(f(0)))} and {\tt
+  p(f(f(f(X))))} would be generated, {\em however} {\tt p(f(f(f(X))))}
+would have the truth value of {\em undefined}.  Note that by doing
+things in this way, both of the goals {\tt p(f(f(f(0))))}, and {\tt
+  p(f(f(f(1))))} will unify with {\tt p(f(f(f(X))))} and so will
+succeed with a truth value of {\em undefined}.  Similarly {\tt
+  tnot(p(f(f(f(0)))))}, and {\tt tnot(p(f(f(f(1)))))} will both
+succeed with a value of {\em undefined} (perhaps better called {\em
+  unknown} in this context).
+%
+Since all predicates and function symbols have a maximum arity (256 in
+XSB) bounding the depth of an answer ensures that only a finite number
+of answers are returned
+\footnote{If a program has a infinite number of true answers and a
+  finite numebr of false answers, one possible approach might be to
+  ``dualize'' the program so that only false answers are computed.
+  However, since most programs with function symbols have an infinite
+  number of both true and false answers, this approach won't work in
+  general.}.
+
+
+Semantically XSB is computing an approximation to the three-valued
+well-founded model of a program, called a {\em bounded model}.  To see
+this, suppose the proof of a query $Q$ does not depend on negation.
+If $Q$ has a derivation that does not require any answers whose depth
+is more than $n$, it is proven as usual.  Similarly, if $Q$ is false
+in the well-founded model of a program, and none of the subgoals
+explored in the derivation of $Q$ derive answers whose depth is
+greater than $n$, XSB will derive that $Q$ is false.  Thus, the
+approximation that XSB computes is {\em informationally sound} in the
+sense that no incorrect answer will be derived, although sone answers
+won't be known that might have been if the depth bound had been set
+lower.  Due to the halting problem, there is no way to know in general
+what depth to set for answer abstraction, or whether any bound needs
+to be set at all.
+
+If a bounded model is derived, answers that are undefined in the
+well-founded model can be distinguished from answers that are
+undefined through bounded rationality.  If an answer $A$ was
+abstracted due to a depth check (and for no other reason), the query
+{\tt get\_residual(A,Delay)} would bind {\tt Delay} to {\tt
+  [brat\_undefined]}, where {\tt brat\_undefined/0} is simply a predicate defined as
+
+{\tt brat\_undefined:- tnot(brat\_undefined)}
+
+\noindent
+which in a delay list indicates that an answer was made undefined
+through bounded-rationality based answer abstraction.
+
+\index{\texttt{explain\_u\_value/3}}
+The XSB predicate
+
+{\tt explain\_u\_val(+Answer,?Reason,?Type)}
+
+\noindent
+can be used to query why {\tt Answer} is undefined.  {\tt Reason} may
+be either {\tt bounded\_rationality} or {\tt negative\_loops}.  {\tt
+  Type} may be either {\tt direct} or {\tt indirect}.  {\tt
+  bounded\_rationality} is considered direct if {\tt Answer} itself
+has been abstracted; otherwise it is indirect.  {\tt negative\_loops}
+is considered direct if {\tt Answer} is involved in a loop through
+negation based on delay dependencies; otherwise it is considered
+direct.  Thus, the predicate may succeed for more than one reason, but
+for each reason there is at most one type,
+
+\begin{example} \rm
+After executing the query {\tt m} to the program
+%
+\begin{verbatim}
+:- table m/0, p/0, q/0, r/0, s/1.
+m:- p.
+
+p:- q,tnot p.                 p:- s(f(f(f(f(0))))).
+
+q:- tnot r.                   r:- tnot q.
+
+s(f(X)):- s(X).               s(0).
+\end{verbatim}
+%
+where the bounded rationality depth has been set to 3.  the query {\tt
+ explain\_u\_value(p,Reason,Type)} will bind {\tt Reason} to {\tt
+ negative\_loops} and {\tt Type} to {\tt direct} and also {\tt Reason}
+ to {\tt bounded\_rationality} and {\tt Type} to {\tt indirect}.  Note
+ that {\tt p} also indirectly depends on {\tt q} which is itself
+ involved in a loop through negation.
+\end{example}
+
+\subsubsection{Using Bounded Rationality}
+%
+Bounded rationality is currently implemented only for tabling with
+call variance, and lists are not currently included in the depth
+check.  At this point bounded rationality is only settable globally,
+and not on a predicate-by-predicate basis.
+
+\index{Prolog flags!{\tt max\_table\_answer\_action}}
+\index{Prolog flags!{\tt max\_table\_answer\_depth}}
+%
+Unless otherwise specified, XSB starts up with {\tt
+  max\_table\_answer\_action} and {\tt
+  max\_table\_answer\_list\_action} set to {\tt error} and {\tt
+  max\_table\_answer\_depth} and {\tt max\_table\_answer\_depth} set
+to the maximum integer possible under the compilation method for which
+XSB has been configured.  Under this default behavior, XSB will throw
+an error if a subgoal has depth greater than {\tt
+  max\_table\_subgoal\_depth}.  Bounded rationality can be declared by
+setting the Prolog flags
+%
+\bi
+\item {\tt max\_table\_answer\_depth} to the desired maximal depth; and
+\item {\tt max\_table\_answer\_action} to {\tt bounded\_rationality}.  
+\ei
+%
+(cf. pg. \pageref{prolog-flags}). {\tt bounded\_rationality} is not
+currently an accepted value for the flag {\tt
+  max\_table\_answer\_list\_action}.
+
+%\subsection{Summary of Techniques for Termination}
+%
+%%Apart from these two cases, a tabled evaluation will be finite and so
+%will terminate.  Of course this is a theoretical argument, and
+%termination could require a long time or a lot of memory.  For normal
+%programs, the causes of non-termination turn out to be basically the
+%same as for definite programs.  The causes of non-termination for
+%programs that contain arithmetic builtins are more complex, and may
+%depend on the behavior of the constraint domain used.
 
 %--------------------------------------------------------------------
 \input{incr_tabling}
