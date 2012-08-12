@@ -27,9 +27,9 @@ if test $u  != "" && test "$valgrind" != "true"; then
 fi
 
 # Doing this here to support valgrind testing.
-rm unsafe1.xwam
-rm unsafe2.xwam
-rm varcond.xwam
+rm -f unsafe1.xwam
+rm -f unsafe2.xwam
+rm -f varcond.xwam
 
 #------------------------------------
 # tests involving standard predicates
