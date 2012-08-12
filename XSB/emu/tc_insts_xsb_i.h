@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tc_insts_xsb_i.h,v 1.46 2012-08-02 21:58:56 tswift Exp $
+** $Id: tc_insts_xsb_i.h,v 1.47 2012-08-12 14:52:36 tswift Exp $
 ** 
 */
 
@@ -833,7 +833,7 @@ XSB_Start_Instr(trie_root,_trie_root)
 #endif
    //   save_trie_registers(tbreg);
    //   *(--tbreg) = (Cell) makeint(NodePtr);
-   *(--tbreg) = NodePtr;
+   *(--tbreg) = (Cell) NodePtr;
    save_choicepoint(tbreg,ereg,(byte *)&trie_fail_inst,breg);  
 #ifdef SLG_GC
    cp_prevtop(tbreg) = old_cptop;

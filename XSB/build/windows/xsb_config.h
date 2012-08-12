@@ -48,8 +48,8 @@
 
 
 #define WIN_NT 1
-#define RELEASE_DATE 2012-01-02
-#define XSB_VERSION "3.3.6 (Pignoletto)"
+#define RELEASE_DATE 2012-08-25
+#define XSB_VERSION "3.3.7 (Pignoletto)"
 
 /* this is used by many to check if config.h was included in proper order */
 #ifndef CONFIG_INCLUDED

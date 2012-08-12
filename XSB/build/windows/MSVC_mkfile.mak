@@ -233,6 +233,7 @@ CPP_PROJ=\
 
 LINK32_FLAGS=\
 	/nologo \
+	/STACK:8388608 \
 	/subsystem:console \
 	/machine:I386 \
 	$(LINK_DEBUG_FLAGS) \
@@ -256,6 +257,7 @@ LINK32_FLAGS=\
 DLL_CPP_PROJ=$(CPP_PROJ) /D "_WINDOWS"
 DLL_LINK32_FLAGS=\
 	/nologo \
+	/STACK:8388608 \
 	/subsystem:windows \
 	/dll \
 	/machine:I386 \

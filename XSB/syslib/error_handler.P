@@ -106,7 +106,7 @@ flush_all_open_streams.
 
 :- import atom_codes/2 from standard.
 :- import stat_set_flag/2 from machine.
-:- import writeln/1 from standard.
+%:- import writeln/1 from standard.
 default_sys_error_handler_main(resource_error(E),_BT,_Backtrace):- 
 	% !(*$&$n module system!
 	atom_codes(E,Elist),atom_codes(memory,Elist),!,
