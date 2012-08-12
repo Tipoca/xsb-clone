@@ -811,15 +811,28 @@ stop_forest_view:-
 
 load_forest_log(File):- 
 	ensure_loaded(term_abstract),
+	dynamic(pus_smpl/4), 
+	dynamic(puc_smpl/5), 
+	dynamic(ns_smpl/3),
+	dynamic(nf_smpl/3),
+	dynamic(cmp/3),
+	dynamic(del/3),
+	dynamic(nc/4),
+	dynamic(nda/4),
 	index(tc/4,[*(1),*(2)]),
+	index(nc/4,[*(1),*(2)]),
 	index(na/2,[2]),
+	index(nda/2,[2]),
 	index(ar/4,[2,3]),
+	index(dar/4,[2,3]),
 	index(ta/2,[1,2]),
 %	index(cmp/3,[*(1),2]),
 	index(cmp/3,trie),
 	load_dync(File,a).
 
-:- import tc/4, cmp/3 from usermod.
+:- import tc/4, cmp/3, nc/4, del/3  from usermod.
+:- import ns_smpl/3, nf_smpl/3, pus_smpl/4, puc_smpl/5 from usermod.
+:- import na/3, nda/4 from usermod.
 
 forest_log_overview:- 
 	total_subgoals(TotSubg),total_sccs(TotSCCs),
@@ -828,37 +841,97 @@ forest_log_overview:-
 	format("   ~1D subgoals were early-completed.~n",[Len]),
 	total_noncompleted_subgoals(NonComp),
 	format("   ~1D subgoals were not completed in the log.~n",[NonComp]),
-	count_calls(Calls,New,Incomplete,Completed),
-	format("   There were a total of ~1D tabled subgoal calls:~n",[Calls]),
+	count_pos_calls(Calls,New,Incomplete,Completed),
+	format("   There were a total of ~1D positive tabled subgoal calls:~n",[Calls]),
 	format("      ~1D were calls to new subgoals~n",[New]),
 	format("      ~1D were calls to incomplete subgoals~n",[Incomplete]),
 	format("      ~1D were calls to complete subgoals~n",[Completed]),
+	count_neg_calls(NCalls,NNew,NIncomplete,NCompleted),
+	format("   There were a total of ~1D negative tabled subgoal calls:~n",[NCalls]),
+	format("      ~1D were calls to new subgoals~n",[NNew]),
+	format("      ~1D were calls to incomplete subgoals~n",[NIncomplete]),
+	format("      ~1D were calls to complete subgoals~n",[NCompleted]),
+	count_delays_and_simpls(NDelays,NSimpl),
+	format("There were a total of ~1D negative delays~n",[NDelays]),
+	format("There were a total of ~1D simplifications~n",[NSimpl]),
+	count_answers(NU,NC),
+	format("There were a total of ~1D unconditional answers derived:~n",[NU]),
+	format("There were a total of ~1D conditional answers derived:~n",[NC]),
 	nl,
 	report_sccs.
 
-count_calls(Calls,New,Incomplete,Complete):- 
+:- export forest_log_overview_1/1.
+forest_log_overview_1(CondLen):-
+	findall(1,unsimplified(_A,_B), Conds),
+	length(Conds,CondLen).
+
+three_valued_sccs(L):-
+	setof(Scc,B^S^S1^Ct^(unsimplified(B,S),cmp(S1,Scc,Ct),variant(S,S1)),L).
+
+:- import variant/2 from subsumes.
+unsimplified(_Binding,Subgoal):- 
+	del(Subgoald,_caller,_DelCtr),
+	nda([],Subgoal,_Delays,Ctr),
+	variant(Subgoald,Subgoal),
+	\+ (	na([],Subgoal1,Ctr1),
+		Ctr1 > Ctr,
+%		variant(Binding,Binding1),
+		variant(Subgoal,Subgoal1) ).
+
+count_pos_calls(Calls,New,Incomplete,Complete):- 
 	findall(1,tc(_,_,_,_),CallList),length(CallList,Calls),
 	findall(1,tc(_,_,new,_),NewList),length(NewList,New),
 	findall(1,tc(_,_,incmp,_),IncmpList),length(IncmpList,Incomplete),
-	findall(1,tc(_,_,comp,_),CmpList),length(CmpList,Complete).
+	findall(1,tc(_,_,cmp,_),CmpList),length(CmpList,Complete).
+
+count_neg_calls(Calls,New,Incomplete,Complete):- 
+	findall(1,nc(_,_,_,_),CallList),length(CallList,Calls),
+	findall(1,nc(_,_,new,_),NewList),length(NewList,New),
+	findall(1,nc(_,_,incmp,_),IncmpList),length(IncmpList,Incomplete),
+	findall(1,nc(_,_,cmp,_),CmpList),length(CmpList,Complete).
 
 count_ecs(Len):- 
 	findall(1,cmp(_,ec,_),L),
 	length(L,Len).
 
 total_sccs(N):-
-	setof(SCC,Term^Ctr^(cmp(Term,SCC,Ctr),SCC \= ec),SCClist),
+	setof(SCC,Term^Ctr^(cmp(Term,SCC,Ctr),SCC \= ec),SCClist),!,
 	length(SCClist,N).
+total_sccs(0).
 
 total_subgoals(N):-
 	setof(Ctr,Term^SCC^(cmp(Term,SCC,Ctr),SCC \= ec),Goallist),
-	length(Goallist,N).
+	length(Goallist,N),!.
+total_subgoals(0).
 
 total_noncompleted_subgoals(N):- 
-	setof(Ctr1,S1^S2^(tc(S1,S2,new,Ctr1),
-	                 \+ check_variant(cmp(S1,_SCC,_Ctr2),2)),Goallist),!,	
-	length(Goallist,N).
+	cmp_defined,
+	setof(Ctr1,S1^S2^_SCC^_Ctr2^((tc(S1,S2,new,Ctr1) ; nc(S1,S2,new,Ctr1)),
+	                 \+ check_variant(cmp(S1,_SCC,_Ctr2),2)),GoalList),!,
+	length(GoalList,N).
+total_noncompleted_subgoals(N):- 
+	\+ cmp(_,_,_),
+	setof(Ctr1,S1^S2^((tc(S1,S2,new,Ctr1) ; nc(S1,S2,new,Ctr1))),GoalList),
+	length(GoalList,N).
 total_noncompleted_subgoals(0).
+
+cmp_defined:- cmp(_,_,_),!.
+
+count_delays_and_simpls(LenD,LenS):- 
+	findall(1,del(_,_,_),LD),	length(LD,LenD),
+	findall(1,some_simplification(_) ,LS),
+	length(LS,LenS).
+
+some_simplification(Ctr):- ns_smpl(_,_,Ctr).
+some_simplification(Ctr):- nf_smpl(_,_,Ctr).
+some_simplification(Ctr):- pus_smpl(_,_,_,Ctr) .
+some_simplification(Ctr):- puc_smpl(_,_,_,_,Ctr).
+
+count_answers(LenU,LenC):- 
+	findall(1,na(_,_,_),LU),
+	length(LU,LenU),
+	findall(1,nda(_,_,_,_) ,LC),
+	length(LC,LenC).
 
 %----------------
 
@@ -881,17 +954,33 @@ get_scc_length(SCC,Len):-
 
 analyze_an_scc(Scc,File):-
 	count_subgoals_in_scc(Scc,Subgoals),
-	count_backlinks_in_scc(Scc,Links),
+	count_backlinks_in_scc(Scc,Links,Ninks),
+	TotLinks is Subgoals+Links+Ninks-1,
 	Density is (Subgoals+Links)/Subgoals,
-	format("There are ~1D subgoals and ~1D links (average of ~f edges per subgoal) within the SCC~n",[Subgoals,Links,Density]),
+	format("There are ~1D subgoals and ~1D links (average of ~f edges per subgoal) within the SCC~n",
+		[Subgoals,TotLinks,Density]),
+	count_delays(Scc,Delays),
+	format("There are ~1D negative edges resulting in ~1D delays and 0 simplifications~n",
+		[Ninks,Delays]),
 	nl,count_preds(Scc),
 	nl,report_links(Scc,File).
 
+count_delays(Scc,Len):- 
+	findall(1,scc_has_delay(Scc),List),
+	length(List,Len).
+
+scc_has_delay(Scc):- 
+	del(_Called,Caller,_Ctr),
+	check_variant(cmp(Caller,Scc,_Ctr1),1).
+
 analyze_an_scc(Scc,File,Abstraction):-
 	count_subgoals_in_scc(Scc,Subgoals),
-	count_backlinks_in_scc(Scc,Links),
+	count_backlinks_in_scc(Scc,Links,Ninks),
 	Density is (Subgoals+Links)/Subgoals,
-	format("There are ~1D subgoals and ~1D links (average of ~f edges per subgoal) within the SCC~n",[Subgoals,Links,Density]),
+	format("There are ~1D subgoals and ~1D links (average of ~f edges per subgoal) within the SCC~n",
+		[Subgoals,Links,Density]),
+	format("There are ~1D negative edges resulting in 0 delays and 0 simplifications~n",
+		[Ninks]),
 	nl,count_preds(Scc,Abstraction),
 	nl,report_links(Scc,File,Abstraction).
 
@@ -899,12 +988,16 @@ count_subgoals_in_scc(Scc,Num):-
 	findall(1,cmp(_T,Scc,_),Ones),
 	length(Ones,Num).
 
-count_backlinks_in_scc(SCC,Dens):-
-	findall(1,backlink_in_scc(_,SCC),Ones),
-	length(Ones,Dens).
+count_backlinks_in_scc(SCC,Lnum,Nnum):-
+	findall(1,backlink_in_scc(_,SCC),Links),
+	findall(1,negbacklink_in_scc(_,SCC),Ninks),
+	length(Links,Lnum),
+	length(Ninks,Nnum).
 
 backlink_in_scc(T1,Scc):- 
-	tc(T1,_T2,incmp,_),check_variant(cmp(T1,Scc,_),1).
+	(tc(T1,_T2,incmp,_) ; nc(T1,_T2,incmp,_)),check_variant(cmp(T1,Scc,_),1).
+negbacklink_in_scc(T1,Scc):- 
+	nc(T1,_T2,State,_),State \== cmp, check_variant(cmp(T1,Scc,_),1).
 
 %----------------
 
@@ -970,14 +1063,14 @@ report_links_1(Occs,File):-
 	told.
 
 count_links_1(S,(F1/A1,F2/A2)):- 
-	tc(T1,T2,State,_Ctr),State \= cmp,
+	(tc(T1,T2,State,_Ctr),State \= cmp ; nc(T1,T2,State,_Ctr),State \= cmp),
 	check_variant(cmp(T1,S,_),1),
 	check_variant(cmp(T2,S,_),1),
 	get_functor(T1,F1/A1),
 	get_functor(T2,F2/A2).
 
 count_links_1(S,(Abstr1,Abstr2),Abstraction):- 
-	tc(T1,T2,State,_Ctr),State \= cmp,
+	(tc(T1,T2,State,_Ctr),State \= cmp ; nc(T1,T2,State,_Ctr),State \= cmp),
 	check_variant(cmp(T1,S,_),1),
 	check_variant(cmp(T2,S,_),1),
 	copy_term(Abstraction,Abstraction1),
@@ -992,6 +1085,8 @@ count_links_1(S,(Abstr1,Abstr2),Abstraction):-
 	call_c(usermod:Abstraction2),
 	arg(2,Abstraction2,Abstr2).
 */
+
+
 count_occs(L,[H-Occs|Rest]):-
 	count_occs_1(L,Rem,H,Occs),
 	(Rem = [] -> 
@@ -1002,7 +1097,7 @@ count_occs_1(L,Rem,H,Occs):-
 	L = [H|T],
 	count_occs_2(T,H,Rem,1,Occs).
 
-count_occs_2([],_H,[],Occs,Occs).
+count_occs_2([],_H,[],Occs,Occs):- !.
 count_occs_2([H|T],H,Rem,OccsIn,Occs):-!,
 	OccsMid is OccsIn + 1,
 	count_occs_2(T,H,Rem,OccsMid,Occs).
