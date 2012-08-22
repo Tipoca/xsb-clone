@@ -30,6 +30,7 @@ standard_symbol(abolish, 2, assert).			 %????
 standard_metapredicate_template(abolish,2,(:)).
 
 standard_symbol(abolish_all_tables, 0, tables).		
+standard_symbol(abolish_all_private_tables, 0, thread).		
 
 standard_symbol(abolish_table_call, 1, tables).		
 standard_metapredicate(abolish_table_call,1,1).
