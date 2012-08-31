@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.198 2012-08-31 21:14:23 dwarren Exp $
+** $Id: biassert.c,v 1.199 2012-08-31 21:22:21 dwarren Exp $
 ** 
 */
 
@@ -1658,7 +1658,7 @@ static SOBRef new_SOBblock(int ThisTabSize, int Ind, Psc psc )
    return NewSOB ;
 }
 
-static void addto_hashchain( int AZ, int Hashval, SOBRef SOBrec, CPtr NewInd,
+static void addto_hashchain( int AZ, Integer Hashval, SOBRef SOBrec, CPtr NewInd,
 			     int Arity )
 {
     CPtr *Bucketaddr = (CPtr *) (ClRefHashTable(SOBrec) + Hashval);
@@ -1731,7 +1731,7 @@ static void db_addbuff_i(byte Arity, ClRef Clause, PrRef Pred, int AZ,
 			 int *Index, int NI, prolog_term Head, int HashTabSize)
 { SOBRef SOBbuff ;
   int Inum, Ind;
-  unsigned int ThisTabSize; int Hashval;
+  unsigned int ThisTabSize; Integer Hashval;
 
   SOBbuff = AZ == 0 ? Pred->FirstClRef : Pred->LastClRef ;
 
