@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.197 2012-07-17 16:12:43 dwarren Exp $
+** $Id: biassert.c,v 1.198 2012-08-31 21:14:23 dwarren Exp $
 ** 
 */
 
@@ -1514,7 +1514,7 @@ static void db_addbuff(byte Arity, ClRef Clause, PrRef Pred, int AZ, int ifSOB, 
 #define NUMHASHSIZES 16
 /* some primes for hash table sizes */
 static int hashsizes_table[NUMHASHSIZES] = {17,389,6151,49157,196613,393241,786433,1572869,
-        3145739,3145739,3145739,3145739,3145739,3145739,3145739,3145739}; 
+		     3145739,6291469,12582917,25165843,50331653,50331653,50331653,50331653}; 
 
 static int hash_resize( PrRef Pred, SOBRef SOBrec, unsigned int OldTabSize )
 {
@@ -1623,6 +1623,7 @@ static int hash_val(int Ind, prolog_term Head, int TabSize )
 	}
       }
     }
+    if (Hashval < 0) Hashval = -Hashval;
     Hashval %= TabSize;
   }
   return Hashval ;
@@ -1741,7 +1742,7 @@ static void db_addbuff_i(byte Arity, ClRef Clause, PrRef Pred, int AZ,
     //    ThisTabSize = hash_resize(Pred, SOBbuff, HashTabSize); // ?? could move here from above, but more smaller sobs
     Ind = Index[Inum];
     Hashval = hash_val(Ind, Head, ThisTabSize) ;
-    if (Hashval < 0) {Hashval = 0; ThisTabSize = 1;}
+    if (Hashval == -1) {Hashval = 0; ThisTabSize = 1;}
     if (PredOpCode(Pred) == fail || ClRefType(SOBbuff) != SOB_RECORD
 	|| ClRefHashSize(SOBbuff) != ThisTabSize
 	|| ClRefSOBArg(SOBbuff,1) != (byte)(Ind>>16)  /* for byte-back */
