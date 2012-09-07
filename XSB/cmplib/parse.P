@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.133 2012-07-09 13:38:41 pmoura Exp $
+** $Id: parse.P,v 1.134 2012-09-07 21:52:35 pmoura Exp $
 ** 
 */
 
@@ -573,6 +573,12 @@ parse_clause(Cl, module(SymTab,DcList,ClList,QrList),ModName) :-
 /* transform_directive(+Directive, +ModName, +SymTab, -TDirective)	*/
 /*======================================================================*/
 
+% PM: the definition of the infix operator as/2 dictates that this extended tabling
+% directive should be parsed as as(table(Args),Options) but this file originally had
+% table(as(Args,Options)); nevertheless, I left the original code in-place for the
+% original author to review
+transform_directive(as(table(Args),Options),_ModName,_SymTab,table(as(TArgs,Options))) :- !,
+	mpa_to_skel_cl(Args,TArgs).
 transform_directive(table(as(Args,Options)),_ModName,_SymTab,table(as(TArgs,Options))) :- !,
 	mpa_to_skel_cl(Args,TArgs).
 transform_directive(table(Args),_ModName,_SymTab,table(TArgs)) :- !,
