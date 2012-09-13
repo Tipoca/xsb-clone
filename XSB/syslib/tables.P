@@ -567,7 +567,13 @@ is_conditional_answer(Leaf,IsCond):-
 /* Predicates to remove information from tables.			*/
 /*----------------------------------------------------------------------*/
 
-abolish_all_tables :- abolish_table_info.
+:- import brat_undefined/0 from xsbbrat.
+:- import current_prolog_flag/2 from curr_sym.
+abolish_all_tables :- 
+	   abolish_table_info,
+	   (current_prolog_flag(max_table_answer_action,bounded_rationality) -> 
+   		   (brat_undefined,fail ; true)
+		    ; true).		   
 
 abolish_table_pred(Spec,Options) :-
 	check_nonvar(Spec,abolish_table_pred/1,1),
@@ -760,6 +766,19 @@ check_variant(Term):-
 
 check_variant(Term,DontCares):- 
 	table_inspection_function(CHECK_VARIANT,Term,DontCares,_,_).
+
+:- export set_tif_property/3, get_tif_property/3.
+
+get_tif_property(Term,Property,Value):- 
+	tif_translate(Property,Prop),
+	table_inspection_function(GET_TIF_PROPERTY,Term,Prop,Value,_).
+
+set_tif_property(Term,Property,Value):- 
+	tif_translate(Property,Prop),
+	table_inspection_function(SET_TIF_PROPERTY,Term,Prop,Value,_).
+
+tif_translate(subgoal_depth,SUBGOAL_DEPTH).
+tif_translate(answer_depth,ANSWER_DEPTH).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Forest Logging
