@@ -3055,7 +3055,7 @@ if test "$prefix" = "NONE" -o -z "$prefix" ; then
 else
         prefix=`echo "${prefix}" | sed 's,\([^/]\)/*$,\1,'`
     orig_prefix=$prefix
-    prefix="$prefix"/"$xsb_version"
+    prefix="$prefix"/xsb-"$xsb_version"
 fi
 
 if test -n "$enable_debugging" && test -n "$enable_debug" ; then
@@ -5917,14 +5917,11 @@ Building with support for ODBC
 
 EOT
 
-    ODBCSRC="odbc_xsb.c"
-    ODBCOBJ="odbc_xsb.o"
-fi
-
-if test "${with_odbc+set}" = "set"; then
     $as_echo "#define XSB_ODBC 1" >>confdefs.h
 
     with_odbc=yes
+    ODBCSRC="odbc_xsb.c"
+    ODBCOBJ="odbc_xsb.o"
 fi
 
 

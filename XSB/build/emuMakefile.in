@@ -25,7 +25,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: emuMakefile.in,v 1.74 2011-08-03 19:16:37 kifer Exp $
+## $Id: emuMakefile.in,v 1.75 2012-09-27 02:25:57 kifer Exp $
 ##
 
 
@@ -42,6 +42,7 @@ CPPFLAGS=@CPPFLAGS@
 LDFLAGS=@LDFLAGS@
 ODBCSRC=@ODBCSRC@
 ODBCOBJ=@ODBCOBJ@
+ODBC_CFLAGS=@ODBC_CFLAGS@
 INTERPROLOGSRC=@INTERPROLOGSRC@
 INTERPROLOGOBJ=@INTERPROLOGOBJ@
 DLLTYPE=@DLLTYPE@
@@ -259,6 +260,11 @@ loader_xsb.o: loader_xsb.c
 	@echo -e "\t[$(CC)] loader_xsb.c using $(loaderCFLAGS)"
 	@$(CC) -I$(arch_config_prefix)  -c $(loaderCFLAGS) loader_xsb.c
 	@cp loader_xsb.o $(arch_config_objlibdir) 2> /dev/null || echo ""
+
+odbc_xsb.o: odbc_xsb.c
+	@echo -e "\t[$(CC)] odbc_xsb.c"
+	@$(CC) -I$(arch_config_prefix)  -c $(ODBC_CFLAGS) $(CFLAGS) odbc_xsb.c
+	@cp odbc_xsb.o $(arch_config_objlibdir) 2> /dev/null || echo ""
 
 .c.o:
 	@echo -e "\t[$(CC)] $*.c"

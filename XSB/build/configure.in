@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.240 2012-09-20 12:35:58 kifer Exp $
+## $Id: configure.in,v 1.241 2012-09-27 02:25:57 kifer Exp $
 ##
 ##
 
@@ -396,7 +396,7 @@ else
     dnl strip any trailing slashes in prefix
     prefix=`echo "${prefix}" | sed 's,\([[^/]]\)/*$,\1,'`
     orig_prefix=$prefix
-    prefix="$prefix"/"$xsb_version"
+    prefix="$prefix"/xsb-"$xsb_version"
 fi
 
 if test -n "$enable_debugging" && test -n "$enable_debug" ; then
@@ -1158,13 +1158,10 @@ Building with support for ODBC
 
 EOT
 
-    ODBCSRC="odbc_xsb.c"
-    ODBCOBJ="odbc_xsb.o"
-fi
-
-if test "${with_odbc+set}" = "set"; then
     AC_DEFINE(XSB_ODBC)
     with_odbc=yes
+    ODBCSRC="odbc_xsb.c"
+    ODBCOBJ="odbc_xsb.o"
 fi
 
 
