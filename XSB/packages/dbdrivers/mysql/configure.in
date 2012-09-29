@@ -18,7 +18,7 @@
 ## along with XSB; if not, write to the Free Software Foundation,
 ## Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ##
-## $Id: configure.in,v 1.8 2012-09-27 02:25:58 kifer Exp $
+## $Id: configure.in,v 1.9 2012-09-29 02:08:27 kifer Exp $
 ## 
 ##
 
@@ -137,8 +137,8 @@ else
 support=yes
 fi
 
-CFLAGS="`mysql_config --cflags`"
-LDFLAGS="`mysql_config --libs`"
+CFLAGS="`mysql_config --cflags 2> /dev/null`"
+LDFLAGS="`mysql_config --libs 2> /dev/null`"
 
 AC_SUBST(support)
 AC_SUBST(libdir)

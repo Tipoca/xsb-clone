@@ -3480,8 +3480,8 @@ else
 support=yes
 fi
 
-CFLAGS="`mysql_config --cflags`"
-LDFLAGS="`mysql_config --libs`"
+CFLAGS="`mysql_config --cflags 2> /dev/null`"
+LDFLAGS="`mysql_config --libs 2> /dev/null`"
 
 
 

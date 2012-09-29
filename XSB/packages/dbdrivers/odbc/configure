@@ -3035,7 +3035,7 @@ fi
 # If any of the headers is not in a standard place, use --with-odbc-incdir
 if test -n "${with_odbc_incdir}"; then
    CPPFLAGS="-I${with_odbc_incdir} ${CPPFLAGS}"
-   CFLAGS="-I${with_odbc_incdir} ${CPFLAGS}"
+   CFLAGS="-I${with_odbc_incdir} ${CFLAGS}"
 fi
 
 ac_ext=c
@@ -3453,9 +3453,9 @@ done
 
 if test "$odbc_error" = "yes"; then
 echo ""
-{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  ****Your system is missing sql.h, sqlext.h, or sqltypes.h, which are required for ODBC support
+{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  ****Your system is missing libodbc, sql.h, sqlext.h, or sqltypes.h, which are required for ODBC support
 ****ODBC driver will be disabled" >&5
-$as_echo "$as_me: WARNING:  ****Your system is missing sql.h, sqlext.h, or sqltypes.h, which are required for ODBC support
+$as_echo "$as_me: WARNING:  ****Your system is missing libodbc, sql.h, sqlext.h, or sqltypes.h, which are required for ODBC support
 ****ODBC driver will be disabled" >&2;}
 echo ""
 
@@ -3464,8 +3464,8 @@ else
 support=yes
 fi
 
-CFLAGS="`odbc_config --cflags`"
-LDFLAGS="`odbc_config --libs`"
+CFLAGS="`odbc_config --cflags 2> /dev/null`"
+LDFLAGS="`odbc_config --libs 2> /dev/null`"
 
 
 
