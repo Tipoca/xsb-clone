@@ -288,7 +288,8 @@ mywriteln(Term):- writeit(If),(If =:= 1 -> writeln(Term); true).
 sk_not(Goal) :-
 	check_cyclic(Goal,'sk_not/1',1),
 	copy_term(Goal,Goal1),
-	numbervars(Goal1,0,_),  % is now ground, so no check necessary
+	numbervars(Goal1,0,_,[attvar(bind)]), 
+	%% is now ground, so no check necessary
 	tnot(tunnumcall(Goal1)).
 
 tunnumcall(GGoal) :-

@@ -122,12 +122,10 @@
 :- import term_new_mod/3 from machine.
 :- import term_arg/3, parsort/4 from machine.
 
-:- import numbervars/3, unnumbervars/2
-     from num_vars.
+:- import numbervars/4, unnumbervars/2 from num_vars.
 
 :- import setof/3, bagof/3 from setof.
-:- import findall/3
-     from setof.
+:- import findall/3 from setof.
 
 :- import
 	(=..)/2, abort/1, call/1,
