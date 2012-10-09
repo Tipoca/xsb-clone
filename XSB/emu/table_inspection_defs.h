@@ -42,7 +42,13 @@
 #define GET_SCC_DUMPFILE                         18
 #define CHECK_VARIANT                            19
 #define IS_CONDITIONAL_ANSWER                    20
+#define SET_TIF_PROPERTY                         21 
+#define GET_TIF_PROPERTY                         22
 
 // For delete return
 #define ANSWER_SUBSUMPTION   0
 #define USER_DELETE          1
+
+// For xxx_tif_property
+#define SUBGOAL_DEPTH  0
+#define ANSWER_DEPTH   1
