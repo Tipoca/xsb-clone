@@ -1003,7 +1003,6 @@ index_convert_to_dyna(PHead,Type,Index) :-
 /* add tabling declaration */
 
 table(Options) :-
-%	writeln(userout,calling_table(Options)),
 	check_nonvar(Options,(table)/1,1),
 	(Options = as(Ps,List) ->
 	    check_table_options(List,Ps),
@@ -1033,7 +1032,10 @@ exec_table_options_1((Option,Options),PredList) :- !,
 exec_table_options_1(Option,PredList) :- 
 	atom(Option),!,
 	exec_table_option_on_predlist(PredList,Option).
-exec_table_options_1(approximate(_),_PredList):-!.
+exec_table_options_1(subgoal_abstract(Val),PredList):- !,
+	exec_table_option_on_predlist(PredList,subgoal_abstract(Val)).
+exec_table_options_1(answer_abstract(Val),PredList):- !,
+	exec_table_option_on_predlist(PredList,answer_abstract(Val)).
 exec_table_options_1(Culprit,_PredList) :- 
 	domain_error(comma_list_or_table_options,Culprit,(table)/1,1).
 
@@ -1056,6 +1058,12 @@ exec_table_option(subsumptive,Pred) :- !,
 	use_subsumptive_tabling(Pred).
 exec_table_option(variant,Pred) :- !,
 	use_variant_tabling(Pred).
+exec_table_option(subgoal_abstract(Val),PredSpec) :- !,
+	( PredSpec = P/N -> functor(Term,P,N); Term = PredSpec ),
+	set_tif_property(Term,subgoal_depth,Val).
+exec_table_option(answer_abstract(Val),PredSpec) :- !,
+	( PredSpec = P/N -> functor(Term,P,N); Term = PredSpec ),
+	set_tif_property(Term,answer_depth,Val).
 exec_table_option(incremental,Pred) :- !,
  	add_incr_table(Pred,INCREMENTAL).
 exec_table_option(nonincremental,Pred) :- !,
@@ -1073,6 +1081,9 @@ exec_table_option(Option,_Pred) :- !,
 
 %--------
 :- import approximate/1 from usermod.
+:- import answer_abstract/1 from usermod.
+:- import subgoal_abstract(_) from usermod.
+:- import set_tif_property/3 from tables.
 
 check_table_options((Option,Options),PredCList) :- !,
 	check_table_option(Option,Options,PredCList),
@@ -1080,6 +1091,11 @@ check_table_options((Option,Options),PredCList) :- !,
 check_table_options(Option,PredCList) :- 
 	check_table_option(Option,Option,PredCList).
 
+check_table_option(subgoal_abstract(_),Options,PredCList) :- !,
+        (comma_member(subsumptive,Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options subgoal_abstract(_) and subsumptive'))
+	 ;  true).
 check_table_option(dynamic,Options,PredCList) :- !,
         (comma_member(incremental,Options) -> 
 	    table_error(('Cannot declare ',PredCList,
@@ -1108,6 +1124,10 @@ check_table_option(subsumptive,Options,PredCList) :- !,
         (comma_member(approximate(_),Options) -> 
 	    table_error(('Cannot declare ',PredCList,
 	           ' as tabled with options subsumptive and approximate'))
+	 ;  true),
+        (comma_member(subgoal_abstract(_),Options) -> 
+	    table_error(('Cannot declare ',PredCList,
+	           ' as tabled with options subsumptive and subgoal_abstract'))
 	 ;  true).
 check_table_option(approximate(_),Options,PredCList) :- !,
         (comma_member(incremental,Options) -> 
@@ -1194,10 +1214,11 @@ check_table_option(shared,Options,PredCList) :- !,
 	    table_error(('Cannot declare ',PredCList,
 	           ' as tabled with options shared and opaque'))
 	 ;  true).
+check_table_option(answer_abstract(_),_Options,_PredCList) :- !. % should work with anything.
 check_table_option(Option,_Options,_PredCList) :- !,
 	domain_error(table_option,Option,(table)/1,1,
 	['must be one of ',
-	'dynamic,dyn,subsumptive,variant,incremental,nonincremental,opaque,private,shared,approximate']).
+	'answer_abstract,subgoal_abstract,approximate,dyn,dynamic,subsumptive,variant,incremental,nonincremental,opaque,private,shared']).
 
 use_incremental_tabling(PredList):-
 	abort(['use_incremental_dynamic/1 is now obsolete.  Use table ',
