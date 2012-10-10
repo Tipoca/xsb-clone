@@ -70,7 +70,7 @@
 	real/1,		repeat/0,
 	see/1,		seeing/1,	seen/0,
 	set_input/1,    set_output/1,  
-   demand_once/1, check_table_options/2,
+   demand_once/1, check_table_options/3,
 	set_tmp_file/3,
 	skip/1,		statistics/1,	statistics/0,	structure/1,
 	tab/1,		tell/1,		telling/1,	time/1,	told/0,true/0,
