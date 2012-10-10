@@ -152,12 +152,12 @@ a predicate \code{p} and arity \code{n}, represented as
 {\tt table/1} can be used either as a compiler declaration or as an
 executable directive.  Used as a compiler declaration, it indicates
 that each predicate denoted by the command is to be compiled using (a
-particular form of) tabling, and may indicate that a predicate is
-dynamic or thread-shared or thread-private.  Executed as a directive
-in a state of execution where no clauses exist for each denoted
-predicate {\tt table/1} ensures that any clauses asserted for each
-predicate use tabling and may indicate the mode of tabling to be used.
-{\tt Operations} can take one of three forms:
+particular form of) tabling, and may indicate that the predicate
+itself is dynamic or thread-shared or thread-private.  Executed as a
+directive in a state of execution where no clauses exist for each
+denoted predicate {\tt table/1} ensures that any clauses asserted for
+each predicate use tabling and may indicate the mode of tabling to be
+used.  The parameter {\tt Operations} can take one of three forms:
 %
 \begin{enumerate}
 \item {\tt Operations} is a predicate indicator, a callable term, or
@@ -169,7 +169,7 @@ predicate use tabling and may indicate the mode of tabling to be used.
 %
 \item {\tt Operations} has the form {\tt Predspec as Options} where
 \bi
-\item {\tt PredSpec} is a predicate indicator, a callable term, or p
+\item {\tt PredSpec} is a predicate indicator, a callable term, or a
   comma-list or list of predicate indicators or callable terms.
 %
 \item {\tt Options} is either a table option or a list of table
@@ -199,6 +199,12 @@ predicate use tabling and may indicate the mode of tabling to be used.
 %
 \item {\tt shared} which causes the predicate(s) to be treated as
   thread shared in addition to being tabled.
+%
+\item {\tt subgoal\_abstract(n)}  which enables depth-n subgoal abstraction for the predicate(s).
+%
+\item {\tt answer\_abstract(n)} which enables depth-n answer
+  abstraction for the predicate(s).
+%
 \ei
 \ei
 \end{enumerate}
@@ -237,15 +243,16 @@ properties).  {\tt Options} is throws a table error in the following
 cases:
 %
 \bi
-\item {\tt Options} contains {\tt dynamic} and {\tt tabled} or {\tt
-  variant} and {\tt opaque} or {\tt incremental}.  Tabled dynamic
-  incremental code is not yet supported in XSB.
+\item {\tt Options} contains {\tt dynamic} and either {\tt opaque} or
+  {\tt incremental}.  Tabled dynamic incremental code is not yet
+  supported in XSB.
 
-\item {\tt Options} contains {\tt incremental} or {\tt opaque} and {\tt subsumptive} or {\tt shared} 
+\item {\tt Options} contains ({\tt incremental} or {\tt opaque}) and
+  ({\tt subsumptive} or {\tt shared})
 
-\item {\tt Options} contains both {\tt subsumptive} and {\tt shared}
-%
-\item {\tt Options} contains both {\tt variant} and {\tt subsumptive}
+\item {\tt Options} contains {\tt subsumptive} and ({\tt variant} or
+  {\tt shared} or {\tt subgoal\_abstract/1} or {\tt
+    answer\_abstract/1})
 %
 \item {\tt Options} contains both {\tt private} and {\tt shared}
 %

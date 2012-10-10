@@ -1883,6 +1883,8 @@ system.
 
 \index{termination!subgoal abstraction}
 \index{termination!bounded rationality}
+\index{abstraction!subgoal}
+\index{abstraction!answer}
 \section{Tabling for Termination}
 %
 As noted throughout this manual, tabling adds important termination
@@ -2001,33 +2003,53 @@ other program that performs recursion through a finite structure.
 \subsubsection{Declaring Subgoal Abstraction}
 %
 The implementation of subgoal abstraction in XSB is still in progress.
-Abstraction can be performed for goals called positively; but not for
-goals called negatively including {\tt tnot/1} and {\tt sk\_not/1};
-rather, such goals will throw an exception if they surpass the
-specified depth.  Subgoal abstraction is only implemented for call
-variance, and currently is only settable globally, and not on a
-predicate-by-predicate basis.
+and may be changed in future versions as we gain experience in how
+subgoal abstraction is best used in practice.  Abstraction is
+performed for goals called positively; but not for goals called
+negatively including {\tt tnot/1} and {\tt sk\_not/1}; rather, such
+goals will throw an exception if they surpass the specified depth.  In
+addition, subgoal abstraction is only implemented for call variance,
+{\em and applies equally all terms, whether they are lists or
+  non-lists}.
 
-\index{Prolog flags!{\tt max\_table\_subgoal\_action}}
-\index{Prolog flags!{\tt max\_table\_subgoal\_depth}}
-Default subgoal abstraction can be declared by setting the Prolog flags
+\index{Prolog flags!{\tt max\_table\_subgoal\_action}} 
+\index{Prolog  flags!{\tt max\_table\_subgoal\_depth}} 
+
+Subgoal abstraction can be declared by setting a value for the maximum
+depth of a subgoal and for the action to take when a subgoal is
+encountered that reaches that depth.
 %
 \bi
-\item {\tt max\_table\_subgoal\_depth} to the desired maximal depth; and
-\item {\tt max\_table\_subgoal\_action} to {\tt abstract}
+\item {\bf depth} The maximum depth can be set to $n$ for a set of
+  predicates $\langle PredSpec \rangle$ via including the specifier
+  {\tt subgoal\_abstract(n)} as part of the tabling declaration
+
+{\tt :- table $\langle PredSpec\rangle$  as ...,subgoal\_abstract(n),...}
+
+  Specifying {\tt subgoal\_abstract(0)} turns abstraction off for
+  predicates in $\langle PredSpec \rangle$.  The depth can also be set
+  globally by seting the flag {\tt max\_table\_subgoal\_depth} to the
+  desired maximal depth.  If the subgoal depth has been set of a given
+  predicate via a tabling declaration the declared depth will override
+  the global depth.
+
+\item {\bf action} When a subgoal is encountered of maximum depth,
+  abstraction is enabled if the Prolog flag {\tt
+    max\_table\_subgoal\_action} to {\tt abstract}.  Other possible
+  values for the action are {\tt error} and {\tt fail} (cf. pg. \pageref{prolog-flags}).
 \ei
-%
-(cf. pg. \pageref{prolog-flags}). 
-%
+
+\noindent
 Unless otherwise specified, XSB starts up with {\tt
   max\_table\_subgoal\_action} set to {\tt error} and {\tt
   max\_table\_subgoal\_depth} set to the maximum integer possible
 under the compilation method for which XSB has been configured.  Under
 this default behavior, XSB will throw an error if a subgoal has depth
-greater than {\tt max\_table\_subgoal\_depth}.  As an alternate to
-setting flags, XSB can be called with the command-line arguments {\tt
-  --max\_subgoal\_action a} and {\tt --max\_subgoal\_depth n} where
-{\tt n} is the size of the desired depth.
+greater than {\tt max\_table\_subgoal\_depth}.  As an alternative to
+setting flags, call abstraction can be set by calling XSB with the
+command-line arguments {\tt --max\_subgoal\_action a} and {\tt
+  --max\_subgoal\_depth n} where {\tt n} is the size of the desired
+depth.
 
 \subsection{Bounded Rationality through Answer Abstraction}
 %
@@ -2068,16 +2090,16 @@ Semantically XSB is computing an approximation to the three-valued
 well-founded model of a program, called a {\em bounded model}.  To see
 this, suppose the proof of a query $Q$ does not depend on negation.
 If $Q$ has a derivation that does not require any answers whose depth
-is more than $n$, it is proven as usual.  Similarly, if $Q$ is false
-in the well-founded model of a program, and none of the subgoals
+is greater than $n$, it is proven as usual.  Similarly, if $Q$ is
+false in the well-founded model of a program, and none of the subgoals
 explored in the derivation of $Q$ derive answers whose depth is
 greater than $n$, XSB will derive that $Q$ is false.  Thus, the
 approximation that XSB computes is {\em informationally sound} in the
-sense that no incorrect answer will be derived, although some answers
-won't be known that might have been if the depth bound had been set
-lower.  Due to the halting problem, there is no way to know in general
-what depth to set for answer abstraction, or whether any bound needs
-to be set at all.
+sense that no incorrect answer will be derived, although the truth
+value of some atoms won't be known that might have been if the depth
+bound had been set higher.  Due to the halting problem, there is no
+way to know in general what depth to set for answer abstraction, or
+whether any bound needs to be set at all.
 
 If a bounded model is derived, answers that are undefined in the
 well-founded model can be distinguished from answers that are
@@ -2133,13 +2155,38 @@ which is itself involved in a loop through negation.
 %
 Bounded rationality is currently implemented only for tabling with
 call variance, and lists are not currently included in the depth
-check.  At this point bounded rationality is only settable globally,
-and not on a predicate-by-predicate basis.
+check.  
+%
+Similarly to the use of subgal abstraction, answer abstraction can be
+declared by setting a value for the maximum depth of an answer and for
+the action to take when an answer is encountered that reaches that
+depth.
+%
+\bi
+\item {\bf depth} The maximum depth can be set to {\tt n} for a set of
+  predicates via including the specifier {\tt answer\_abstract(n)} as
+  part of their tabling declaration
 
+{\tt :- table $<PredSpec>$ as ...,answer\_abstract(n),...}
+
+  Specifying {\tt answer\_abstract(0)} turns answer abstraction off
+  for predicates in $<PredSpec>$.  The depth can also be set globally
+  by seting the flag {\tt max\_table\_answer\_depth} to the desired
+  maximal depth.  If the answer depth of a given predicate has been
+  set via a tabling declaration, the predicate-specific declared depth
+  will override the global depth.
+
+\item {\bf action} When an answer is encountered of maximum depth,
+  abstraction is enabled if the Prolog flag {\tt
+    max\_table\_answer\_action} to {\tt abstract}.  Other possible
+  values for the action are {\tt error} and {\tt fail}
+  (cf. pg. \pageref{prolog-flags}).  
+\ei
+
+Unless otherwise specified, XSB starts up with 
 \index{Prolog flags!{\tt max\_table\_answer\_action}}
 \index{Prolog flags!{\tt max\_table\_answer\_depth}}
 %
-Unless otherwise specified, XSB starts up with 
 \begin{itemize}
 \item {\tt   max\_table\_answer\_action} and 
 \item {\tt max\_table\_answer\_list\_action}
@@ -2149,27 +2196,7 @@ set to {\tt error} and {\tt max\_table\_answer\_depth} and {\tt
   max\_table\_answer\_depth} set to the maximum integer possible under
 the compilation method for which XSB has been configured.  Under this
 default behavior, XSB will throw an error if a subgoal has depth
-greater than {\tt max\_table\_subgoal\_depth}.  Bounded rationality
-can be declared by setting the Prolog flags
-%
-\bi
-\item {\tt max\_table\_answer\_depth} to the desired maximal depth; and
-\item {\tt max\_table\_answer\_action} to {\tt bounded\_rationality}.  
-\ei
-%
-(cf. pg. \pageref{prolog-flags}). {\tt bounded\_rationality} is not
-currently an accepted value for the flag {\tt
-  max\_table\_answer\_list\_action}.
-
-%\subsection{Summary of Techniques for Termination}
-%
-%%Apart from these two cases, a tabled evaluation will be finite and so
-%will terminate.  Of course this is a theoretical argument, and
-%termination could require a long time or a lot of memory.  For normal
-%programs, the causes of non-termination turn out to be basically the
-%same as for definite programs.  The causes of non-termination for
-%programs that contain arithmetic builtins are more complex, and may
-%depend on the behavior of the constraint domain used.
+greater than {\tt max\_table\_subgoal\_depth}.  %
 
 %--------------------------------------------------------------------
 \input{incr_tabling}
@@ -2208,7 +2235,7 @@ variables in calls.  \index{attributed variables}
 
 \begin{table}
 \begin{center}
-{\small
+{\footnotesize
 \begin{tabular}{llllll}\hline \hline
 %variant/subsumptive & dynamic/static & shared/private & incremental/opaque  & answer subsumption  \\
 variant &	    static & 	   private &	  nonincremental &      no answer subsumption  &  yes \\
