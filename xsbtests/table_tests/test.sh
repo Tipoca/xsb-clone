@@ -130,6 +130,12 @@ EOF
 ../gentest.sh "$XEMU -l $options" test_check_variant "test."
 #--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" test_brat_ansdepth "test."
+#--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_answerdepth_i "test."
+#--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_tda_i "test."
+#--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_brat_ansdepth_i "test."
 
 #VALGRIND
 if test "$valgrind" = "true"; then
