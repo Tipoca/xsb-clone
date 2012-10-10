@@ -5143,7 +5143,7 @@ case CALL_SUBS_SLG_NOT: {
       xsb_type_error(CTXTc "predicate_indicator",term,"set_tabled_eval/2",1);
       break;
     }
-    if ((tip = get_tip(psc)) ) {
+    if ((tip = get_tip(CTXTc psc)) ) {
       if (property == SUBGOAL_DEPTH) 
 	TIF_SubgoalDepth(tip) = val;
       else if (property == ANSWER_DEPTH) 
@@ -5172,7 +5172,7 @@ case CALL_SUBS_SLG_NOT: {
       xsb_type_error(CTXTc "predicate_indicator",term,"set_tabled_eval/2",1);
       break;
     }
-    if ((tip = get_tip(psc)) ) {
+    if ((tip = get_tip(CTXTc psc)) ) {
       if (property == SUBGOAL_DEPTH) 
 	ctop_int(CTXTc 4,TIF_SubgoalDepth(tip));
       else if (property == ANSWER_DEPTH) 
