@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tables.c,v 1.104 2012-07-18 21:26:53 tswift Exp $
+** $Id: tables.c,v 1.105 2012-10-10 19:18:39 tswift Exp $
 ** 
 */
 
@@ -911,6 +911,8 @@ inline TIFptr New_TIF(CTXTdeclc Psc pPSC) {
    TIF_DelTF(pTIF) = NULL;						
    TIF_Subgoals(pTIF) = NULL;						
    TIF_NextTIF(pTIF) = NULL;						
+   TIF_SubgoalDepth(pTIF) = 0;						
+   TIF_AnswerDepth(pTIF) = 0;						
 #ifdef MULTI_THREAD
    /* The call trie lock is also initialized for private TIFs,
       just in case they ever change to shared */

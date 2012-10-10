@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.170 2012-08-12 18:04:58 tswift Exp $
+** $Id: tries.c,v 1.171 2012-10-10 19:18:39 tswift Exp $
 ** 
 */
 
@@ -875,7 +875,7 @@ int depth_stack[100];
 	char buffer[2*MAXTERMBUFSIZE];					\
 	sprintCyclicRegisters(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)));	\
 	xsb_warn("Exceeded max answer term depth of %d in call %s\n",	\
-		 (int)flags[MAX_TABLE_ANSWER_DEPTH],buffer);		\
+		 (int)depth_limit,buffer);				\
 	psc = (Psc) follow(cs_val(xtemp1));				\
 	depth_stack_push(get_arity(psc));				\
 	item = makecs(psc);						\
@@ -902,7 +902,7 @@ int depth_stack[100];
 	}								\
 	else								\
 	  xsb_abort("Exceeded max answer term depth of %d in call %s\n", \
-		    (int)flags[MAX_TABLE_ANSWER_DEPTH],buffer);		\
+		    (int)depth_limit,buffer);				\
       }									\
     }									\
     else 	{							\
@@ -1092,7 +1092,11 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
   Cell depth_ctr,list_depth_ctr;
   BTNptr Paren, *ChildPtrOfParen;
   int bratted = 0;
-  UInteger depth_limit = flags[MAX_TABLE_ANSWER_DEPTH];
+  UInteger depth_limit;
+
+  if (TIF_AnswerDepth(subg_tif_ptr(subgoal_ptr))) 
+    depth_limit = (UInteger) (TIF_AnswerDepth(subg_tif_ptr(subgoal_ptr)));
+  else depth_limit = (UInteger) flags[MAX_TABLE_ANSWER_DEPTH];  
   
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
   ans_chk_ins++; /* Counter (answers checked & inserted) */
@@ -1842,7 +1846,7 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   Cell tag = XSB_FREE, item;
   CPtr cptr, SubsFactReg, tSubsFactReg;
   int ctr, attv_ctr;
-  Cell  depth_ctr;
+  Cell  depth_ctr,pred_depth;
   BTNptr Paren, *ChildPtrOfParen;
 
 #if !defined(MULTI_THREAD) || defined(NON_OPT_COMPILE)
@@ -1856,9 +1860,14 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   tSubsFactReg = SubsFactReg = CallInfo_AnsTempl(*call_info);
   ctr = attv_ctr = 0;
 
+  if (TIF_SubgoalDepth(CallInfo_TableInfo(*call_info))) 
+    pred_depth = (Cell) TIF_SubgoalDepth(CallInfo_TableInfo(*call_info));
+  else pred_depth = flags[MAX_TABLE_SUBGOAL_DEPTH];  
+
   for (i = 0; i < arity; i++) {
     can_abstract = TRUE;
-    depth_ctr = flags[MAX_TABLE_SUBGOAL_DEPTH];  
+
+    depth_ctr = pred_depth;
     //    printf(">>>> (argument %d)",i+1);
     call_arg = (CPtr) (cptr + i);            /* Note! start with reg[1] */
     XSB_CptrDeref(call_arg);

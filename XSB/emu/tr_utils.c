@@ -4941,7 +4941,7 @@ a return has been found, and handle our cases separately.
 A separate case is that we may not have a consumer subgoal frame if
 Subgoal is subsumed by Producer and Producer is completed (the call
 subsumption algorithm does not create a subgoal frame in this case).
-So we have to handle that situation also.  For now, if we don't have a
+So we have to handle that situation also.  For now, if we dont have a
 consumer SF, I add tnot(Producer) to the delay list -- although
 creating a new consumer SF so that we can add tnot(Consumer) might be
 better.
@@ -5122,6 +5122,65 @@ case CALL_SUBS_SLG_NOT: {
     if (is_conditional_answer(as_leaf))
       ctop_int(CTXTc 3,TRUE);
     else ctop_int(CTXTc 3,FALSE);
+    break;
+  }
+
+  case SET_TIF_PROPERTY: { 
+      /* reg 2=psc, reg 3 = property to set, reg 4 = val */
+    Psc psc;
+    TIFptr tip;
+
+    Cell term = ptoc_tag(CTXTc 2);
+    int property = (int)ptoc_int(CTXTc 3);
+    int val = (int)ptoc_int(CTXTc 4);
+
+    if ( isref(term) ) {
+      xsb_instantiation_error(CTXTc "set_tif_property/3",1);
+      break;
+    }
+    psc = term_psc(term);
+    if ( IsNULL(psc) ) {
+      xsb_type_error(CTXTc "predicate_indicator",term,"set_tabled_eval/2",1);
+      break;
+    }
+    if ((tip = get_tip(psc)) ) {
+      if (property == SUBGOAL_DEPTH) 
+	TIF_SubgoalDepth(tip) = val;
+      else if (property == ANSWER_DEPTH) 
+	TIF_AnswerDepth(tip) = val;
+    }
+    else  /* cant find tip */
+      xsb_permission_error(CTXTc "set peroperty","tif",term,
+			   "set_tif_property",3);
+    break;
+  }
+
+  case GET_TIF_PROPERTY: { 
+      /* reg 2=psc, reg 3 = property to set, reg 4 = val */
+    Psc psc;
+    TIFptr tip;
+
+    Cell term = ptoc_tag(CTXTc 2);
+    int property = (int)ptoc_int(CTXTc 3);
+
+    if ( isref(term) ) {
+      xsb_instantiation_error(CTXTc "set_tif_property/3",1);
+      break;
+    }
+    psc = term_psc(term);
+    if ( IsNULL(psc) ) {
+      xsb_type_error(CTXTc "predicate_indicator",term,"set_tabled_eval/2",1);
+      break;
+    }
+    if ((tip = get_tip(psc)) ) {
+      if (property == SUBGOAL_DEPTH) 
+	ctop_int(CTXTc 4,TIF_SubgoalDepth(tip));
+      else if (property == ANSWER_DEPTH) 
+	ctop_int(CTXTc 4,TIF_AnswerDepth(tip));
+    }
+    else  /* cant find tip */
+      return FALSE;
+
     break;
   }
 
