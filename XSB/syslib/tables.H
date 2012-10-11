@@ -69,10 +69,11 @@
    trie_assert/1,   trie_assert/2,
    trie_retract/1,   trie_retract_nr/1,
    trie_retract_all/1,
-   undefined/0,
+   undefined/0, 
    (use_subsumptive_tabling)/1,
    (use_variant_tabling)/1,
    variant_get_residual/2.
+:- export floundered_undefined/0.
 
 /****** Experimental ********/
 :- export find_components/1,

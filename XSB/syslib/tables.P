@@ -27,7 +27,7 @@
 /* NOTE: This file HAS TO be compiled with the "sysmod" option.         */
 /*----------------------------------------------------------------------*/
 
-:- compiler_options([sysmod,optimize,xpp_on]).
+:- compiler_options([sysmod,optimize,xpp_on,spec_off]).
 
 #include "builtin.h"
 #include "table_status_defs.h"
@@ -273,6 +273,21 @@ writeit(0).
 mywriteln(Term):- writeit(If),(If =:= 1 -> writeln(Term); true).
 */
 
+:- export u_not/1.
+:- import ground_and_acyclic/1 from machine.
+
+:- table floundered/1.
+floundered(Goal):- floundered_undefined(a).
+
+u_not(Goal) :-
+	(ground_and_acyclic(Goal) ->
+	   tnot(Goal)
+	 ; check_cyclic(Goal,'u_not/1',1),
+	   floundered(Goal)).
+
+:- table tunnumcall/1.
+:- use_variant_tabling tunnumcall(_).
+
 %% skolemized tnot.  Variables temporarily changed to ground and tnot 
 %% call is made.  Should give existential semantics to nonground negative
 %% calls.  That is
@@ -281,9 +296,6 @@ mywriteln(Term):- writeit(If),(If =:= 1 -> writeln(Term); true).
 %%	... :- tnot(pp),...
 %%	pp :- p(X).
 %% where pp is a new proposition.
-
-:- table tunnumcall/1.
-:- use_variant_tabling tunnumcall(_).
 
 sk_not(Goal) :-
 	check_cyclic(Goal,'sk_not/1',1),
@@ -299,6 +311,12 @@ tunnumcall(GGoal) :-
 % we've got true and fail -- why not this?
 :- table undefined/0.
 undefined:- tnot(undefined).
+
+:- table floundered_undefined/1.
+floundered_undefined(a) :- tnot(floundered_undefined(a)).
+
+%:- table floundered_undefined/0.
+%floundered_undefined :- tnot(floundered_undefined).
 
 /*----------------------------------------------------------------------*/
 /* Predicates to retrieve information out of tables.                    */
