@@ -246,11 +246,13 @@ file_exists_here_or_configbin_or_configlib(C_Obj,CC_Obj) :-
 	    (
 	      xsb_configuration(config_bindir,ConfigBinDir),
 	      str_cat(ConfigBinDir,ObjFileTail,BindirObjfile),
-	      file_exists(BindirObjfile)
+	      file_exists(BindirObjfile),
+	      CC_Obj = BindirObjfile
 	    ;
 	      xsb_configuration(config_libdir,ConfigLibDir),
 	      str_cat(ConfigLibDir,ObjFileTail,LibdirObjfile),
-	      file_exists(LibdirObjfile)
+	      file_exists(LibdirObjfile),
+	      CC_Obj = LibdirObjfile
 	    )
 	).
 
