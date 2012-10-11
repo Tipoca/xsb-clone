@@ -1,0 +1,2 @@
+test(p(1),[floundered(q(A))])
+test(r(1),[floundered(q(1))])

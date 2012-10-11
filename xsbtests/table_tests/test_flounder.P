@@ -1,0 +1,21 @@
+
+:- import u_not/1 from tables.
+:- import numbervars/1 from num_vars.
+
+test:- p(_X),get_residual(p(1),R),numbervars(R),writeln(test(p(1),R)),fail.
+test:- r(_X),get_residual(r(1),R),numbervars(R),writeln(test(r(1),R)),fail.
+test.
+
+
+:- table p/1.
+p(1):- u_not(q(_X)).
+
+:- table r/1.
+r(1):- u_not(q(X)),s(X).
+
+:- table q/1.
+q(1).
+
+s(1).
+
+
