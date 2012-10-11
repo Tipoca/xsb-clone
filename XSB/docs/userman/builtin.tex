@@ -2729,6 +2729,8 @@ Section~\ref{meta_predicates}).
 \ei
 \end{itemize}
 
+%---------------------------------------------------------------------------------------
+\index{floundering}
 \ourstandarditem{sk\_not(+P)}{sk\_not/1}{Tabling} 
 %% 
 If {\tt +P} is a tabled predicate, {\tt sk\_not/1} acts as {\tt
@@ -2770,6 +2772,74 @@ level (e.g. using {\tt abolish\_table\_pred/1} or similar predicates),
      \item {\tt type\_error(callable,P)}
 \ei
 \end{itemize}
+
+%---------------------------------------------------------------------------------------
+\index{floundering}
+\ourmoditem{u\_not(+P)}{u\_not/1}{tables} 
+%% 
+{\tt u\_not/1} provides an alternative to {\tt tnot/1} and {\tt
+  sk\_not/1} for handling non-ground negated subgoals.  If {\tt P} is
+ground (or cyclic), {\tt u\_not(P)} is equivalent to {\tt tnot(P)};
+but if {\tt P} is not ground, {\tt u\_not(P)} delays the goal {\tt P},
+indicating that the default negation of {\tt P} is floundered.  This
+action is safe because any answer that relies on {\em not P} will be
+undefined, rather than true or false.  A current limitation of {\tt
+  u\_not/1} is that while floundering correctly causes a literal to be
+delayed, no simplification is ever performed if that ever becomes
+bound (see the example below).
+
+Thus, if an error should be thrown for a non-ground negative subgoal,
+{\tt tnot/1} should be used; if it is semantically correct to
+skolemize if {\tt P} is not ground or if {\tt P} may not be tabled,
+{\tt sk\_not/1} should be used; if {\tt P} is tabled and it is
+semantically correct to treat the truth value of the negative subgoal
+as undefined, {\tt u\_not/1} should be used.  From the perspective of
+performance, {\tt tnot/1} is fastest followed by {\tt u\_not/1} and
+then {\tt sk\_not/1}.
+
+The following examples should clarify the behavior of {\tt u\_not/1}.
+For the program fragment:
+\begin{verbatim}
+:- table p/1,q/1.
+p(1):- u_not(q(X)).
+q(1).
+\end{verbatim}
+the goal {\tt p(V)} returns 
+\begin{verbatim}
+V = 1 undefined
+\end{verbatim}
+Examining this answer shows the following:
+\begin{verbatim}
+| ?- get_residual(p(1),Res).
+
+Res = [floundered(q(_h258))].
+\end{verbatim}
+The program fragment
+\begin{verbatim}
+:- table r/1,q/1.
+r(1):- u_not(q(X)),s(X).
+q(1).
+s(1).
+\end{verbatim}
+shows a limitation in the current implementation of {\tt u\_not/1}.
+The goal {\tt r(V)} returns
+\begin{verbatim}
+V = 1 undefined
+\end{verbatim}
+as before.  However, examining the answer shows
+\begin{verbatim}
+| ?- get_residual(r(1),Res
+
+Res = [floundered(q(1))]
+\end{verbatim}
+Note that the binding {\em X=1} is propagated to the delayed literal
+after the resulution of {\tt s(X)}.  However, the call {\tt
+  tnot(q(1))} is not made once X is bound, so that the delayed literal
+does not fail.
+
+{\bf Error Cases} are the same as for {\tt tnot/1}.
+
+%-----------------------------
 
 \ournewitem{P -> Q ; R}{ISO}\index{\texttt{->/2}} 
     Analogous to if {\tt P} then {\tt Q} else {\tt R}, i.e.\ defined as 
