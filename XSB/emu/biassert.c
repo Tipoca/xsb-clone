@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.199 2012-08-31 21:22:21 dwarren Exp $
+** $Id: biassert.c,v 1.200 2012-10-12 16:42:57 tswift Exp $
 ** 
 */
 
@@ -3244,7 +3244,7 @@ xsbBool db_retract0( CTXTdecl /* ClRef, retract_nr */ )
 /* TLS: changed mem_alloc to nocheck as xsb_throw() depends on this
    predicate.  So if we're out of memory here, we're sunk. */
 
-static inline void allocate_prref_tab(CTXTdeclc Psc psc, PrRef *prref, pb *new_ep) {
+static inline void allocate_prref_tab_and_tif(CTXTdeclc Psc psc, PrRef *prref, pb *new_ep) {
   int Loc;
 
   if (!(*prref = (PrRef)mem_alloc_nocheck(sizeof(PrRefData),ASSERT_SPACE))) 
@@ -3304,7 +3304,7 @@ PrRef build_prref( CTXTdeclc Psc psc )
   if (get_data(psc) == NULL) 
     set_data(psc,global_mod);
     
-  allocate_prref_tab(CTXTc psc,&p,&new_ep);
+  allocate_prref_tab_and_tif(CTXTc psc,&p,&new_ep);
   p->psc = psc;
   p-> mark = 0;
 
@@ -3366,7 +3366,7 @@ PrRef get_prref(CTXTdeclc Psc psc) {
     if (!prref) {
       pb new_ep;
       struct DispBlk_t *dispblk = ((struct DispBlk_t **)get_ep(psc))[1];
-      allocate_prref_tab(CTXTc psc,&prref,&new_ep);
+      allocate_prref_tab_and_tif(CTXTc psc,&prref,&new_ep);
       (&(dispblk->Thread0))[xsb_thread_entry] = (CPtr) new_ep;
     }
 #endif

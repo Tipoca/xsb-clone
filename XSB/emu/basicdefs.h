@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basicdefs.h,v 1.12 2012-01-23 02:37:08 tswift Exp $
+** $Id: basicdefs.h,v 1.13 2012-10-12 16:42:57 tswift Exp $
 ** 
 */
 
@@ -50,8 +50,8 @@
 #define MAXPATHLEN   1024  /* SYSV */
 #endif
 
-#ifndef MAXNAME
-#define MAXNAME   255  /* SYSV */
+#ifndef MAXFILENAME
+#define MAXFILENAME   255  /* SYSV */
 #endif
 
 #ifndef MAXBUFSIZE
