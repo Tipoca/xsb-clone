@@ -256,6 +256,7 @@ standard_symbol(get_returns, 3, tables).
 standard_symbol(get_returns_for_call, 2, tables).
 
 standard_symbol(halt, 0, standard).
+standard_symbol(halt, 1, standard).
 standard_symbol((hilog), 1, standard).
 standard_symbol(hilog_arg, 3, standard).
 standard_symbol(hilog_functor, 3, standard).
