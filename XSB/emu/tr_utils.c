@@ -394,12 +394,10 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
 }
 
 /*======================================================================*/
-
 /*
  *                     D E L E T I N G   T R I E S
  *                     ===========================
  */
-
 
 /*----------------------------------------------------------------------*/
 /* delete_predicate_table(), reclaim_deleted_predicate_table() 
@@ -430,11 +428,9 @@ VariantSF get_call(CTXTdeclc Cell callTerm, Cell *retTerm) {
   node = freeing_stack[node_stk_top];\
 }
 
-
 /* TLS: since this deallocates from smBTHT, make sure
    trie_allocation_type is set to private/shared before using this
    function. */
-
 static void free_trie_ht(CTXTdeclc BTHTptr ht) {
 #ifdef MULTI_THREAD
   if (BTHT_NumBuckets(ht) == TrieHT_INIT_SIZE 
@@ -609,13 +605,13 @@ void release_conditional_answer_info(CTXTdeclc BTNptr node) {
   }
 }
 
-/* delete_variant_sf_and_answers deletes and reclaims space for
-   answers and their subgoal frame in a variant table, and is used by
-   abolish_table_call (which does not work on subsumptive table).  It
-   copies code from delete_variant_table, but uses its own stack.
-   (Not easy to integrate due to macro usage.) */
-
 /* 
+ * delete_variant_sf_and_answers deletes and reclaims space for
+ *  answers and their subgoal frame in a variant table, and is used by
+ *  abolish_table_call (which does not work on subsumptive table).  It
+ *  copies code from delete_variant_table, but uses its own stack.
+ *  (Not easy to integrate due to macro usage.) 
+ * 
  * TLS: since this deallocates from SMs, make sure
  * trie_allocation_type is set before using.
  */
@@ -682,7 +678,7 @@ void delete_variant_sf_and_answers(CTXTdeclc VariantSF pSF, xsbBool should_warn)
   //  printf("leaving delete_variant\n");
   }
 
-
+/* Code to abolish tables for a variant predicate */
 /* Incremental recomputation seems to be implemented only for
    abolishing predicates, but not subgoals */
 
@@ -1900,6 +1896,8 @@ void trie_drop(CTXTdecl) {
 #endif
 }
 
+/* * * * * * * * * * * * * * * * * * */
+
 void first_trie_property(CTXTdecl) {
   int index,type;
   Integer Trie_id;
@@ -2103,9 +2101,7 @@ void reclaim_uninterned_nr(CTXTdeclc Integer rootidx)
     switch_from_trie_assert;
     l = p;
   }
-
 }
-
 
 /*----------------------------------------------------------------------*/
 /*
@@ -2721,7 +2717,6 @@ visited subgoals, while the answer_stack contains all conditional
 answers for all visited subgoals.
 
 -----------------------------------------------------------------*/
-
 // Answer stack utilities -------------------------------------
 
 #ifndef MULTI_THREAD
@@ -2734,7 +2729,6 @@ int answer_stack_size = 0;
 
 void reset_answer_stack(CTXTdecl) {
   answer_stack_top = 0;
-  //  answer_stack_current_pos = 0;
 }
 
 #define push_answer_node(as_leaf) {				                  \
@@ -5183,6 +5177,7 @@ case CALL_SUBS_SLG_NOT: {
 
     break;
   }
+
 
   } /* switch */
   return TRUE;

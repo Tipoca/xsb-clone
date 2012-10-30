@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.75 2012-03-11 00:55:47 tswift Exp $
+** $Id: tr_utils.h,v 1.76 2012-10-30 23:16:01 tswift Exp $
 ** 
 */
 
@@ -148,6 +148,14 @@ typedef struct Table_Status_Frame {
   int answer_set_status;
   VariantSF subgoal;
 } TableStatusFrame;
+
+typedef struct scc_node {
+  CPtr node;
+  int dfn;
+  int component;
+  int low;
+  int stack;
+} SCCNode;
 
 #define TableStatusFrame_pred_type(TSF) ( (TSF).pred_type )
 #define TableStatusFrame_goal_type(TSF) ( (TSF).goal_type )

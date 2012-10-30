@@ -123,6 +123,11 @@ DEFINE_HASHTABLE_ITERATOR_SEARCH(search_itr_some, KEY);
 
 
 /*****************************************************************************/
+static unsigned int hashid(void *ky)
+{
+    return (long int)ky;
+}
+
 static unsigned int hashfromkey(void *ky)
 {
     KEY *k = (KEY *)ky;
@@ -858,6 +863,89 @@ int immediate_outedges_list(CTXTdeclc callnodeptr call1){
   return unify(CTXTc reg_term(CTXTc 3),reg_term(CTXTc 4));
 }
 
+int get_outedges_num(CTXTdeclc callnodeptr call1) {
+  struct hashtable *h;	
+  struct hashtable_itr *itr;
+
+  h=call1->outedges->hasht;
+  itr = hashtable1_iterator(h);       
+  return hashtable1_count(h);
+}
+
+int immediate_affects_ptrlist(CTXTdeclc callnodeptr call1){
+ 
+  VariantSF subgoal;
+  int count = 0;
+  CPtr oldhreg = NULL;
+  struct hashtable *h;	
+  struct hashtable_itr *itr;
+  callnodeptr cn;
+    
+  reg[4] = makelist(hreg);
+  new_heap_free(hreg);
+  new_heap_free(hreg);
+  
+  if(IsNonNULL(call1)){ /* This can be called from some non incremental predicate */
+    h=call1->outedges->hasht;
+    
+    itr = hashtable1_iterator(h);       
+    if (hashtable1_count(h) > 0){
+      do {
+	cn = hashtable1_iterator_value(itr);
+	if(IsNonNULL(cn->goal)){
+	  count++;
+	  subgoal = (VariantSF) cn->goal;      
+	  check_glstack_overflow(4,pcreg,2); 
+	  oldhreg=hreg-2;
+          follow(oldhreg++) = makeint(subgoal);
+	  follow(oldhreg) = makelist(hreg);
+	  new_heap_free(hreg);
+	  new_heap_free(hreg);
+	}
+      } while (hashtable1_iterator_advance(itr));
+    }
+    if (count>0)
+      follow(oldhreg) = makenil;
+    else
+      reg[4] = makenil;
+  }
+  return unify(CTXTc reg_term(CTXTc 3),reg_term(CTXTc 4));
+}
+
+int immediate_depends_ptrlist(CTXTdeclc callnodeptr call1){
+
+  VariantSF subgoal;
+  int  count = 0;
+  CPtr oldhreg = NULL;
+  calllistptr cl;
+
+  reg[4] = makelist(hreg);
+  new_heap_free(hreg);
+  new_heap_free(hreg);
+  if(IsNonNULL(call1)){ /* This can be called from some non incremental predicate */
+    cl= call1->inedges;
+    
+    while(IsNonNULL(cl)){
+      subgoal = (VariantSF) cl->inedge_node->callnode->goal;    
+      if(IsNonNULL(subgoal)){/* fact check */
+	count++;
+	check_glstack_overflow(4,pcreg,2); 
+	oldhreg = hreg-2;
+	follow(oldhreg++) = makeint(subgoal);
+	follow(oldhreg) = makelist(hreg);
+	new_heap_free(hreg);
+	new_heap_free(hreg);
+      }
+      cl=cl->next;
+    }
+    if (count>0)
+      follow(oldhreg) = makenil;
+    else
+      reg[4] = makenil;
+  }
+  return unify(CTXTc reg_term(CTXTc 3),reg_term(CTXTc 4));
+}
+
 
 /*
 For a callnode call1 returns a Prolog list of callnode on which call1
@@ -1136,5 +1224,163 @@ void check_assumption_list(void){
 
 void free_incr_hashtables(TIFptr tif) {
   printf("free incr hash tables not implemented, memory leak\n");
+}
+
+extern void *hashtable1_iterator_key(struct hashtable_itr *);
+
+void xsb_compute_scc(SCCNode * ,int * ,int,int *,struct hashtable*,int *,int * );
+int return_scc_list(CTXTdeclc SCCNode *, int);
+
+int  get_incr_sccs(CTXTdeclc CPtr listptr) {
+    CPtr orig_listptr;     Cell node;
+    long int node_num=0;
+    int i = 0, dfn, component = 1;     int * dfn_stack; int dfn_top = 0, ret;
+    SCCNode * nodes;
+    struct hashtable_itr *itr;     struct hashtable* hasht; 
+
+    hasht = create_hashtable1(HASH_TABLE_SIZE, hashid, equalkeys);
+    orig_listptr = listptr;
+    //    printf("listptr %p @%p\n",listptr,(CPtr) int_val(*listptr));
+    insert_some(hasht,(void *) int_val(*listptr),(void *) node_num);
+    node_num++; 
+
+    listptr = listptr + 1;
+    while (!isnil(*listptr)) {
+      listptr = listptr + 1;
+      node = int_val(*clref_val(listptr));
+      if (NULL == search_some(hasht, (void *)node)) {
+	insert_some(hasht,(void *)node,(void *)node_num);
+	node_num++;
+      }
+      listptr = listptr + 1;
+    }
+    nodes = (SCCNode *) mem_calloc(node_num, sizeof(SCCNode),OTHER_SPACE); 
+    dfn_stack = (int *) mem_alloc(node_num*sizeof(int),OTHER_SPACE); 
+    listptr = orig_listptr;; 
+    //printf("listptr %p @%p\n",listptr,(void *)int_val(*(listptr)));
+    nodes[0].node = (CPtr) int_val(*(listptr));
+    listptr = listptr + 1;
+    i = 1;
+    while (!isnil(*listptr)) {
+      listptr = listptr + 1;
+      node = int_val(*clref_val(listptr));
+      nodes[i].node = (CPtr) node;
+      listptr = listptr + 1;
+      i++;
+    }
+    itr = hashtable1_iterator(hasht);       
+    //    do {
+    //      printf("k %p val %p\n",hashtable1_iterator_key(itr),hashtable1_iterator_value(itr));
+    //    } while (hashtable1_iterator_advance(itr));
+
+    listptr = orig_listptr;
+    //    printf("2: k %p v %p\n",(void *) int_val(*listptr),
+    //	   search_some(hasht,(void *) int_val(*listptr)));
+    listptr = listptr + 1;
+    //    while (!isnil(*listptr)) {
+    //      listptr = listptr + 1;
+    //      node = int_val(*clref_val(listptr));
+    //      printf("2: k %p v %p\n",(CPtr) node,search_some(hasht,(void *) node));
+    //      listptr = listptr + 1;
+    //    }
+    dfn = 1;
+    for (i = 0; i < node_num; i++) {
+      if (nodes[i].dfn == 0) 
+	xsb_compute_scc(nodes,dfn_stack,i,&dfn_top,hasht,&dfn,&component);
+      //      printf("++component for node %d is %d (high %d)\n",i,nodes[i].component,component);
+    }
+    ret = return_scc_list(CTXTc  nodes, node_num);
+    hashtable1_destroy(hasht,0);
+    mem_dealloc(nodes,node_num*sizeof(SCCNode),OTHER_SPACE); 
+    mem_dealloc(dfn_stack,node_num*sizeof(int),OTHER_SPACE); 
+    return ret;
+}
+
+void xsb_compute_scc(SCCNode * nodes,int * dfn_stack,int node_from, int * dfn_top,
+		     struct hashtable* hasht,int * dfn,int * component ) {
+  struct hashtable_itr *itr;
+  struct hashtable* edges_hash;
+  CPtr sf;     int node_to; int j;
+
+  //  printf("xsb_compute_scc for %d %p %s/%d dfn %d dfn_top %d\n",
+  //	 node_from,nodes[node_from].node,
+  //	 get_name(TIF_PSC(subg_tif_ptr(nodes[node_from].node))),
+  //	 get_arity(TIF_PSC(subg_tif_ptr(nodes[node_from].node))),*dfn,*dfn_top);
+  nodes[node_from].low = nodes[node_from].dfn = (*dfn)++;
+  dfn_stack[*dfn_top] = node_from;
+  nodes[node_from].stack = *dfn_top;
+  (*dfn_top)++;
+  edges_hash = subg_callnode_ptr(nodes[node_from].node)->outedges->hasht;
+  itr = hashtable1_iterator(edges_hash);       
+  if (hashtable1_count(edges_hash) > 0) {
+    //    printf("found %d edges\n",hashtable1_count(edges_hash));
+    do {
+      sf = ((callnodeptr) hashtable1_iterator_value(itr))-> goal;
+      node_to = (int) search_some(hasht, (void *)sf);
+      //      printf("edge from %p to %p (%d)\n",(void *)nodes[node_from].node,sf,node_to);
+      if (nodes[node_to].dfn == 0) {
+	xsb_compute_scc(nodes,dfn_stack,node_to, dfn_top,hasht,dfn,component );
+	if (nodes[node_to].low < nodes[node_from].low) 
+	  nodes[node_from].low = nodes[node_to].low;
+	}	  
+	else if (nodes[node_to].dfn < nodes[node_from].dfn  && nodes[node_to].component == 0) {
+	  if (nodes[node_to].low < nodes[node_from].low) { nodes[node_from].low = nodes[node_to].low; }
+	}
+      } while (hashtable1_iterator_advance(itr));
+    //    printf("nodes[%d] low %d dfn %d\n",node_from,nodes[node_from].low, nodes[node_from].dfn);
+    if (nodes[node_from].low == nodes[node_from].dfn) {
+      for (j = (*dfn_top)-1 ; j >= nodes[node_from].stack ; j--) {
+	//	printf(" pop %d and assign %d\n",j,*component);
+	nodes[dfn_stack[j]].component = *component;
+      }
+      (*component)++;       *dfn_top = j+1;
+    }
+  } 
+  else nodes[node_from].component = (*component)++;
+}
+
+
+int return_scc_list(CTXTdeclc SCCNode * nodes, int num_nodes){
+ 
+  VariantSF subgoal;
+  TIFptr tif;
+  int cur_node = 0,arity, j;
+  Psc psc;
+  CPtr oldhreg = NULL;
+
+  reg[4] = makelist(hreg);
+  new_heap_free(hreg);  new_heap_free(hreg);
+  do {
+    subgoal = (VariantSF) nodes[cur_node].node;
+    tif = (TIFptr) subgoal->tif_ptr;
+    psc = TIF_PSC(tif);
+    arity = get_arity(psc);
+    //    printf("subgoal %p, %s/%d\n",subgoal,get_name(psc),arity);
+    check_glstack_overflow(4,pcreg,2+arity*200); // don't know how much for build_subgoal_args..
+    oldhreg=hreg-2;                          // ptr to car
+    if(arity>0){
+      sreg = hreg;
+      follow(oldhreg++) = makecs(sreg);      
+      new_heap_functor(sreg,get_ret_psc(2)); //  car pts to ret/2  psc
+      hreg += 3;                             //  hreg pts past ret/2
+      sreg = hreg;
+      follow(hreg-1) = makeint(nodes[cur_node].component);  // arg 2 of ret/2 pts to component
+      follow(hreg-2) = makecs(sreg);         
+      new_heap_functor(sreg, psc);           //  arg 1 of ret/2 pts to goal psc
+      hreg += arity + 1;
+      for (j = 1; j <= arity; j++) {
+	new_heap_free(sreg);
+	cell_array1[arity-j] = cell(sreg-1);
+      }
+      build_subgoal_args(subgoal);		
+    } else{
+      follow(oldhreg++) = makestring(get_name(psc));
+    }
+    follow(oldhreg) = makelist(hreg);        // cdr points to next car
+    new_heap_free(hreg); new_heap_free(hreg);
+    cur_node++;
+  } while (cur_node  < num_nodes);
+  follow(oldhreg) = makenil;                // cdr points to next car
+  return unify(CTXTc reg_term(CTXTc 3),reg_term(CTXTc 4));
 }
 
