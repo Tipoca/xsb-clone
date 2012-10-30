@@ -589,38 +589,6 @@ necessary.
 \ei
 \ei
 
-\ourmoditem{incr\_directly\_depends(?Goal$_1$,?Goal$_2$)}{incr\_directly\_depends/2}{increval}
-accesses the dependency structures used by the incremental table
-maintenance subsystem to provide information about which incremental
-table calls depend on which others.  At least one of {\tt Goal$_1$}
-and {\tt Goal$_2$} must be bound.
-\begin{itemize}
-\item If {\tt Goal$_1$} is bound, then this predicate will return in
-  {\tt Goal$_2$} through backtracking the goals for all incrementally
-  maintained tables on which {\tt Goal$_1$} directly depends.
-\item If {\tt Goal$_2$} is bound, then it returns in {\tt Goal$_2$}
-  through backtracking the goals for all incrementally maintained
-  tables that {\tt Goal$_2$} directly affects -- in other words all
-  goals that directly depend on {\tt Goal$_2$}.  \ei
-
-{\bf Error Cases}
-\bi
-\item 	Neither {\tt Goal} nor {\tt DependentGoal} is bound
-\bi
-\item 	{\tt instatiation\_error}
-\ei
-\item {\tt Goal} or {\tt DependentGoal} is bound, but is not
-  incrementally tabled
-\bi
-\item 	{\tt table\_error}
-\ei
-\ei
-
-\ourmoditem{incr\_trans\_depends(?Goal$_1$,?Goal$_2$}{incr\_trans\_depends/2}{increval}
-is similar to {\tt incr\_directly\_depends/2} except that it returns
-goals according to the transitive closure of the ``directly depends''
-relation.  Error conditions are the same as {\tt
-  incr\_directly\_depends/2}.
 \end{description}
 
 \paragraph{Incremental Maintenance using Interned Tries}
@@ -661,5 +629,116 @@ works for tries declared as incremental in a similar manner as {\tt
 incrementally maintained tables, but only marks them as invalid. The
 tables may be updated by an explicit call to {\tt
   incr\_table\_update/[0,1,2]} or updated lazily.
+\end{description}
+
+\paragraph{Introspecting Dependencies among Incremental Subgoals}
+%
+In order to efficiently perform incremental updates, each
+incrementally tabled subgoal $S$ contains information about other
+subgoals upon which $S$ directly depends or which $S$ directly
+affects.  These relations form a labelled directed graph for which the
+nodes are incrementally tabled subgoals present in XSB; a given
+subgoal in the graph may or may not have been completed.  In addition,
+there is an edge from $S_1$ to $S_2$ labelled depends (affects) if
+$S_1$ directly depends on (affects) $S_2$.  We call this graph the
+{\em incrementally tabled subgoal dependency graph}, or just the
+dependency graph if the context is clear.  The predicates in this
+section allow a user to inspect properties of the dependency graph
+that can be useful in debugging or profiling a computation.
+
+As explained below, nodes for the dependency graph can be accessed via
+{\tt is\_incremental\_subgoal/1}, while edges can be accessed via {\tt
+  incr\_directly\_depends/2}.  {\tt get\_incr\_scc/[1,2]} can be also
+used to produce SCC information for the dependency graph.
+
+\begin{description}
+
+\ourmoditem{is\_incremental\_subgoal(?Subgoal)}{is\_incremental\_subgoal/1}{increval}
+%
+This predicate non-deterministically unifies {\tt Subgoal} with
+incrementally tabled subgoals that are currently table entries.
+
+\ourmoditem{incr\_directly\_depends(?Goal$_1$,?Goal$_2$)}{incr\_directly\_depends/2}{increval}
+accesses the dependency structures used by the incremental table
+maintenance subsystem to provide information about which incremental
+table calls depend on which others.  At least one of {\tt Goal$_1$}
+and {\tt Goal$_2$} must be bound.
+\begin{itemize}
+\item If {\tt Goal$_1$} is bound, then this predicate will return in
+  {\tt Goal$_2$} through backtracking the goals for all incrementally
+  maintained tables on which {\tt Goal$_1$} directly depends.
+\item If {\tt Goal$_2$} is bound, then it returns in {\tt Goal$_2$}
+  through backtracking the goals for all incrementally maintained
+  tables that {\tt Goal$_2$} directly affects -- in other words all
+  goals that directly depend on {\tt Goal$_2$}.  \ei
+
+{\bf Error Cases}
+\bi
+\item 	Neither {\tt Goal} nor {\tt DependentGoal} is bound
+\bi
+\item 	{\tt instatiation\_error}
+\ei
+\item {\tt Goal} or {\tt DependentGoal} is bound, but is not
+  incrementally tabled
+\bi
+\item 	{\tt table\_error}
+\ei
+\ei
+
+\ourmoditem{incr\_trans\_depends(?Goal$_1$,?Goal$_2$}{incr\_trans\_depends/2}{increval}
+is similar to {\tt incr\_directly\_depends/2} except that it returns
+goals according to the transitive closure of the ``directly depends''
+relation.  Error conditions are the same as {\tt
+  incr\_directly\_depends/2}.
+
+\ourrepeatmoditem{get\_incr\_sccs(?SCCList)}{get\_incr\_sccs/1}{increval}
+\ourrepeatmoditem{get\_incr\_sccs\_with\_deps(?SCCList,?DepList)}{get\_incr\_sccs\_with\_deps/2}{increval}
+\ourrepeatmoditem{get\_incr\_sccs(+SubgoalList,?SCCList)}{get\_incr\_sccs/2}{increval}
+\ourmoditem{get\_incr\_sccs\_with\_deps(+SubgoalList,?SCCList,?DepList)}{get\_incr\_sccs\_with\_deps/3}{increval}
+%
+Most algorithms for SCC detection over a graph use destructive
+assignment on a stack to maintain information about the connecteness
+of a component; as a result such algorithms are difficult to write
+efficiently in Prolog.
+
+{\tt get\_incr\_sccs/1} unifies {\tt SCCList} with SCC information for
+the dependency graph that is represented as a list whose elements are
+of the form
+\begin{center}
+{\tt ret(Subgoal,SCC)}.
+\end{center}
+{\tt SCC} is a numerical index for the SCCs of Subgoal. Two subgoals
+are in the same SCC iff they have the same index, however no other
+dependency information can be otherwise directly inferred from the
+index.
+
+If dependency information is also desired, {\tt
+  get\_incr\_scc\_with\_dependencies/2} should be called.  In addition
+to the SCC information as above, {\tt DepList} is unified with a list
+of dependency terms of the form
+\begin{center}
+{\tt depends(SCC1,SCC2)}
+\end{center}
+for each pair {\tt SCC1} and {\tt SCC1} such that some subgoal with
+index {\tt SCC1} directly depends on some subgoal with index {\tt
+  SCC1}.
+
+Ordinarily a user will want to see the entire dependency graph and in
+such a case the predicates described above should be used.  However,
+note that if the dependency graph is the result of several
+indepdendent queries it may not be connected.  {\tt get\_incr\_scc/2}
+takes as input a list of incremental subgoals, {\tt SubgoalList}.  For
+each {\tt Subgoal} in {\tt SubgoalList}, this predicate finds the set
+of subgoals connected to {\tt Subgoal} by any mixture of depends and
+affects relations, unions these sets together, and finds the SCCs of
+all subgoals in the unioned set.
+
+{\bf Error Cases}
+\bi
+\item {\tt SCCList} contains a predicate that is not tabled
+\bi
+\item 	{\tt permission\_error}
+\ei
+\ei
 \end{description}
 
