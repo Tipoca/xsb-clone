@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.111 2011-07-29 06:25:51 kifer Exp $
+** $Id: cinterf.c,v 1.112 2012-11-01 15:53:04 dwarren Exp $
 **
 */
 
@@ -1156,7 +1156,9 @@ DllExport void call_conv print_pterm(CTXTdeclc prolog_term term, int toplevel,
 				     VarString *straddr)
 {
   int i;
+  Integer close_paren_count = 0, cpi;
 
+ begin_print_pterm:
   if (is_var(term)) {
     xsb_sprint_variable(CTXTc tempstring, (CPtr) term);
     XSB_StrAppend(straddr,tempstring);
@@ -1191,16 +1193,20 @@ DllExport void call_conv print_pterm(CTXTdeclc prolog_term term, int toplevel,
     printpstring(p2c_functor(term),FALSE,straddr);
     if (p2c_arity(term) > 0) {
       XSB_StrAppend(straddr, "(");
-      print_pterm(CTXTc p2p_arg(term,1),FALSE,straddr);
-      for (i = 2; i <= p2c_arity(term); i++) {
-	XSB_StrAppend(straddr, ",");
+      for (i = 1; i < p2c_arity(term); i++) {
 	print_pterm(CTXTc p2p_arg(term,i),FALSE,straddr);
+	XSB_StrAppend(straddr, ",");
       }
-      XSB_StrAppend(straddr, ")");
+      close_paren_count++;
+      term = p2p_arg(term,i);
+      toplevel = FALSE;
+      goto begin_print_pterm;
     }
   } else xsb_warn("[PRINT_PTERM] Unrecognized prolog term type");
+  for (cpi=1; cpi<=close_paren_count; cpi++) {
+      XSB_StrAppend(straddr, ")");
+  }
 }
-
 /************************************************************************/
 /*                                                                      */
 /*	xsb_answer_string copies an answer from reg 2 into ans.		*/
@@ -1406,7 +1412,7 @@ DllExport int call_conv xsb_init(int argc, char *argv[])
 
 /************************************************************************/
 /*								        */
-/*  int xsb_init_string(char *cmdline, char **argv) takes a		*/
+/*  int xsb_init_string(char *cmdline) takes a				*/
 /*  command line string in cmdline, and parses it to return an argv	*/
 /*  vector in its second argument, and the argc count as the value of   */
 /*	the function.  (Will handle a max of 19 args.)			*/
