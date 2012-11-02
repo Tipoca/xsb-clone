@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.232 2012-08-11 21:41:46 tswift Exp $
+** $Id: emuloop.c,v 1.233 2012-11-02 19:57:23 dwarren Exp $
 ** 
 */
 
@@ -1575,15 +1575,15 @@ argument positions.
 		depth++;
 		argsleft[depth] = get_arity(get_str_psc(op1));
 		stk[depth] = clref_val(op1)+1;
-		//op1 = (Cell)get_str_psc(op1);
-		op1 = struct_hash_value(op1);
+		op1 = (Cell)get_str_psc(op1);
+		//op1 = struct_hash_value(op1); // already handled boxes
 	      }
 	      break;
 	    case XSB_STRING:
 	      op1 = (Cell)string_val(op1);
 	      break;
             }
-	    j = (j<<1) + (int)ihash((Cell)op1, (Cell)op3);
+	    j += j + ihash(op1, (int)op3);
           }
       } else {
 	op1 = opa[i];
@@ -1612,11 +1612,12 @@ argument positions.
 	  xsb_error("Illegal operand in switchon3bound");
 	  break;
         }
-	j = (j<<1) + (int)ihash((Cell)op1, (Cell)op3);
+	j += j + (int)ihash(op1, (int)op3);
       }
       }
     }
-    lpcreg = *(byte **)((byte *)op2 + ((j % (Cell)op3) * sizeof(Cell)));
+    if (j < 0) j = -j;
+    lpcreg = *(byte **)((byte *)op2 + ((j % (int)op3) * sizeof(Cell)));
   XSB_End_Instr()
 
   XSB_Start_Instr(switchonthread,_switchonthread) /* PPP-L */
