@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.171 2012-10-10 19:18:39 tswift Exp $
+** $Id: tries.c,v 1.172 2012-11-15 22:23:20 tswift Exp $
 ** 
 */
 
@@ -816,13 +816,13 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
 #define BOUNDED_RATIONALITY 1
 
 /* Need to be able to expand */
-int depth_stack[100];
-
+/*****************Term Stack*************/
 #if defined(BOUNDED_RATIONALITY)
-#define depth_stack_push(Num) {			\
-    depth_ctr++;				\
-    depth_stack[depth_ctr] = Num;	\
-  }
+
+#ifndef MULTI_THREAD
+static size_t depth_stacksize = 0;
+static int *depth_stack = NULL;
+#endif
 
 #define depth_stack_pop {			\
     if (depth_ctr > 0) {					\
@@ -833,6 +833,21 @@ int depth_stack[100];
       }							\
     }							\
   }
+
+#define depth_stack_push(Num) {\
+    if (depth_ctr+1 >= depth_stacksize) {\
+      printf("expanding depth stack\n");				\
+       trie_expand_array(int,depth_stack,depth_stacksize,0,"depth_stack");\
+    }\
+    depth_stack[++depth_ctr] = Num;\
+}
+
+//int depth_stack[1000];
+//#define depth_stack_push(Num) {		
+//    depth_ctr++;				
+//    depth_stack[depth_ctr] = Num;		
+//  }
+
 #else
 #define depth_stack_push(Num)    depth_ctr++;				
 
