@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.172 2012-11-15 22:23:20 tswift Exp $
+** $Id: tries.c,v 1.173 2012-11-15 23:01:01 tswift Exp $
 ** 
 */
 
@@ -113,6 +113,16 @@ char *trie_trie_type_table[] = {"call_trie_tt","basic_answer_trie_tt",
  structure.  Its also used by table predicates to get delay lists.
  */
 
+#define BOUNDED_RATIONALITY 1
+
+#if defined(BOUNDED_RATIONALITY)
+
+#ifndef MULTI_THREAD
+static size_t depth_stacksize;
+static int *depth_stack;
+#endif
+#endif
+
 #ifndef MULTI_THREAD
 static size_t addr_stack_index = 0;
 static CPtr *Addr_Stack;
@@ -130,9 +140,9 @@ static int addr_stack_size    = DEFAULT_ARRAYSIZ;
 /*----------------------------------------------------------------------*/
 /*****************Term Stack*************/
 #ifndef MULTI_THREAD
-static int  term_stack_index = -1;
+static int  term_stack_index;
 static Cell *term_stack;
-static size_t term_stacksize = DEFAULT_ARRAYSIZ;
+static size_t term_stacksize;
 #endif
 
 #define pop_Term_Stack term_stack[term_stack_index--]
@@ -259,6 +269,9 @@ void init_trie_aux_areas(CTXTdecl)
   term_stacksize = 0;
   term_stack = NULL;
   term_stack_index = -1;
+
+  depth_stacksize = 0;
+  depth_stack = NULL;
 
   var_addr_arraysz = 0;
   var_addr = NULL;
@@ -813,15 +826,13 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
  */
 
 
-#define BOUNDED_RATIONALITY 1
-
 /* Need to be able to expand */
 /*****************Term Stack*************/
 #if defined(BOUNDED_RATIONALITY)
 
 #ifndef MULTI_THREAD
-static size_t depth_stacksize = 0;
-static int *depth_stack = NULL;
+static size_t depth_stacksize;
+static int *depth_stack;
 #endif
 
 #define depth_stack_pop {			\
