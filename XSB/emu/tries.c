@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.173 2012-11-15 23:01:01 tswift Exp $
+** $Id: tries.c,v 1.174 2012-11-16 21:50:18 tswift Exp $
 ** 
 */
 
@@ -270,8 +270,10 @@ void init_trie_aux_areas(CTXTdecl)
   term_stack = NULL;
   term_stack_index = -1;
 
+#if defined(BOUNDED_RATIONALITY)
   depth_stacksize = 0;
   depth_stack = NULL;
+#endif
 
   var_addr_arraysz = 0;
   var_addr = NULL;
@@ -847,7 +849,7 @@ static int *depth_stack;
 
 #define depth_stack_push(Num) {\
     if (depth_ctr+1 >= depth_stacksize) {\
-      printf("expanding depth stack\n");				\
+      /*      printf("expanding depth stack from %d to %d\n",depth_stacksize,2*depth_stacksize); */ \
        trie_expand_array(int,depth_stack,depth_stacksize,0,"depth_stack");\
     }\
     depth_stack[++depth_ctr] = Num;\
@@ -972,8 +974,9 @@ static int *depth_stack;
     /*    printf("rv ");  pdlprint;				*/	\
     xtemp1 = (CPtr) pdlpop;						\
     XSB_CptrDeref(xtemp1);						\
-    /*    printf("rv depth c %d i %d",depth_ctr,depth_ctr);	
-	  printterm(stddbg,xtemp1,10);printf("\n");			*/ \
+    /*    if (ctrace_ctr >= 4191) {					\
+      printf("rv depth c %d i %d",depth_ctr,depth_ctr);			\
+      printterm(stddbg,xtemp1,10);printf("\n");	} */			\
     tag = cell_tag(xtemp1);						\
     switch (tag) {							\
     case XSB_FREE:							\
