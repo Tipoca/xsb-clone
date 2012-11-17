@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.102 2012-08-02 21:58:56 tswift Exp $
+** $Id: error_xsb.c,v 1.103 2012-11-17 18:05:00 tswift Exp $
 ** 
 */
 
@@ -167,6 +167,17 @@ DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, size_t B
   Cell *tptr;
   prolog_term term_to_assert;
   Cell *space_for_ball_assert;
+
+  if (flags[CTRACE_CALLS])  {			
+    char buffera[MAXTERMBUFSIZE];		
+    char bufferb[MAXTERMBUFSIZE];		
+    sprintCyclicTerm(CTXTc buffera, Ball);
+    if (ptcpreg) {						
+      sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);		
+    }								
+    else sprintf(bufferb,"null");					
+    fprintf(fview_ptr,"throw(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++); 
+  }
 
   size_t space_for_ball_assert_len = 3*sizeof(Cell);
 

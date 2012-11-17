@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.174 2012-11-16 21:50:18 tswift Exp $
+** $Id: tries.c,v 1.175 2012-11-17 18:05:00 tswift Exp $
 ** 
 */
 
@@ -1708,6 +1708,14 @@ int vcs_tnot_call = 0;
     else /* if (flags[MAX_TABLE_SUBGOAL_ACTION] == XSB_ERROR) */ {	\
       char buffer[2*MAXTERMBUFSIZE];					\
       safe_delete_branch(Paren);					\
+      resetpdl;								\
+      while (--tSubsFactReg > SubsFactReg) {				\
+	/*    printf("vc untrail %p/%p\n",tSubsFactReg,*tSubsFactReg);	*/ \
+	if (isref(*tSubsFactReg))	/* a regular variable */	\
+	  ResetStandardizedVariable(*tSubsFactReg);			\
+	else			/* an XSB_ATTV */			\
+	  ResetStandardizedVariable(clref_val(*tSubsFactReg));		\
+      }									\
       if (vcs_tnot_call) {						\
 	vcs_tnot_call = 0;						\
 	if (is_cyclic(CTXTc (Cell)call_arg)) {				\

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.99 2012-08-02 19:38:13 tswift Exp $
+** $Id: debug_xsb.c,v 1.100 2012-11-17 18:05:00 tswift Exp $
 ** 
 */
 
@@ -1015,7 +1015,7 @@ void alt_dis(CTXTdecl)
 
 
 #ifndef MULTI_THREAD
-static Cell cell_array[500];
+static Cell cell_array[MAXTERMBUFSIZE];
 #endif
 
 #define trie_boxedfloat_val(i)				\

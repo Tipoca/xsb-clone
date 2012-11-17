@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.90 2012-11-15 23:00:59 tswift Exp $
+** $Id: context.h,v 1.91 2012-11-17 18:05:00 tswift Exp $
 **
 */
 
@@ -27,6 +27,7 @@
 
 #include "cell_def_xsb.h"
 #include "basictypes.h"
+#include "basicdefs.h"
 
 #include "setjmp_xsb.h"
 #include "flag_defs_xsb.h"
@@ -281,7 +282,7 @@ DynamicStack  _tstTrail;
   int _gSizeTmplt;
 
   /* delay, simplification, etc. */
-  Cell _cell_array[500];
+  Cell _cell_array[MAXTERMBUFSIZE];
   CPtr *_copy_of_var_addr;
   int _copy_of_num_heap_term_vars;
 
