@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.394 2012-08-06 13:40:02 dwarren Exp $
+** $Id: builtin.c,v 1.395 2012-11-21 14:20:58 tswift Exp $
 **
 */
 
@@ -804,7 +804,8 @@ int is_proper_list(Cell term)	/* for standard preds */
 }
 
 /* --------------------------------------------------------------------	*/
-#define MAX_LOCAL_TRAIL_SIZE 2048
+//  Need to expand this.
+#define MAX_LOCAL_TRAIL_SIZE 32*K
 
 struct ltrail {
   CPtr *ltrail_top;
