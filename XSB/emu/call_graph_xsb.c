@@ -73,8 +73,6 @@ Terminology: outedge -- pointer to calls that depend on call
 */
 
 /********************** STATISTICS *****************************/
-#define build_subgoal_args(SUBG)	\
-	load_solution_trie(CTXTc arity, 0, &cell_array1[arity-1], subg_leaf_ptr(SUBG))
 
 //int cellarridx_gl;
 //int maximum_dl_gl=0;
@@ -1344,6 +1342,7 @@ int return_scc_list(CTXTdeclc SCCNode * nodes, int num_nodes){
  
   VariantSF subgoal;
   TIFptr tif;
+
   int cur_node = 0,arity, j;
   Psc psc;
   CPtr oldhreg = NULL;
