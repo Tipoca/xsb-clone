@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_utils.h,v 1.76 2012-10-30 23:16:01 tswift Exp $
+** $Id: tr_utils.h,v 1.77 2012-11-28 16:39:29 tswift Exp $
 ** 
 */
 
@@ -165,6 +165,10 @@ typedef struct scc_node {
 extern int table_status(CTXTdeclc Cell, TableStatusFrame*);
 
 #define MAX_VAR_SIZE	200
+
+#define build_subgoal_args(SUBG)					\
+	load_solution_trie(CTXTc arity, 0, &cell_array1[arity-1], subg_leaf_ptr(SUBG))
+
 
 #endif /* __TR_UTILS_H__ */
 
