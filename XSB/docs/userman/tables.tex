@@ -1269,7 +1269,7 @@ answer completion will be included at some level in future versions of
 XSB\@.
 
 \subsection{On Beyond Zebra: Implementing Other Semantics for
-Non-stratified Programs}
+Non-stratified Programs} \label{sec:non-strat}
 \index{stable models}
 
 The Well-founded semantics is not the only semantics for
@@ -1295,6 +1295,8 @@ Every stable model of a program contains the well-founded partial
 model as a submodel.  As a result, the XSB can be used to evaluate
 stable model semantics through the {\em residual program}, to which we
 now turn.
+
+\index{residual program}
 
 \paragraph*{The Residual Program}
 
@@ -1885,7 +1887,7 @@ system.
 \index{termination!bounded rationality}
 \index{abstraction!subgoal}
 \index{abstraction!answer}
-\section{Tabling for Termination}
+\section{Tabling for Termination} \label{sec:tabling-termination}
 %
 As noted throughout this manual, tabling adds important termination
 properties to programs and queries.  In this section we state more
@@ -2115,6 +2117,7 @@ predicate defined as
 which in a delay list indicates that an answer was made undefined
 through bounded-rationality based answer abstraction.
 
+\comment{
 \index{\texttt{explain\_u\_value/3}}
 The XSB predicate
 
@@ -2150,7 +2153,7 @@ where the bounded rationality depth has been set to 3, the query {\tt
   indirect}.  Note that {\tt p} also indirectly depends on {\tt q}
 which is itself involved in a loop through negation.
 \end{example}
-
+}
 \subsubsection{Using Bounded Rationality}
 %
 Bounded rationality is currently implemented only for tabling with
