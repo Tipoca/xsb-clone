@@ -72,6 +72,8 @@
 #include "heap_xsb.h"
 #include "residual.h"
 #include "basictypes.h"
+#include "hashtable.h"
+#include "hashtable_itr.h"
 
 counter abol_subg_ctr,abol_pred_ctr,abol_all_ctr; /* statistics */
 
@@ -681,8 +683,6 @@ void delete_variant_sf_and_answers(CTXTdeclc VariantSF pSF, xsbBool should_warn)
 /* Code to abolish tables for a variant predicate */
 /* Incremental recomputation seems to be implemented only for
    abolishing predicates, but not subgoals */
-
-extern void hashtable1_destroy(void *, int);
 
 static void delete_variant_table(CTXTdeclc BTNptr x, int incr, xsbBool should_warn) {
 
@@ -4764,14 +4764,201 @@ void answer_completion(CTXTdeclc CPtr cs_ptr) {
   }
 
 }
-
 #endif
+
+/*****************************************************************************/
+static unsigned int hashid(void *ky)
+{
+    return (long int)ky;
+}
+
+static int equalkeys(void *k1, void *k2)
+{
+    return (0 == memcmp(k1,k2,sizeof(KEY)));
+}
+
+static Cell cell_array1[500];
+
+int return_ans_depends_scc_list(CTXTdeclc SCCNode * nodes, int num_nodes){
+ 
+  VariantSF subgoal;
+  TIFptr tif;
+  BTNptr ansLeaf;
+  int cur_node = 0,arity, j;
+  Psc psc;
+  CPtr oldhreg = NULL;
+
+  reg[4] = makelist(hreg);
+  new_heap_free(hreg);  new_heap_free(hreg);
+  do {
+    subgoal = asi_subgoal((ASI)Child((BTNptr) nodes[cur_node].node));
+    ansLeaf = (BTNptr) nodes[cur_node].node;
+    tif = (TIFptr) subgoal->tif_ptr;
+    psc = TIF_PSC(tif);
+    arity = get_arity(psc);
+    //    printf("subgoal %p, %s/%d\n",subgoal,get_name(psc),arity);
+    check_glstack_overflow(4,pcreg,2+arity*200); // don't know how much for build_subgoal_args..
+    oldhreg=hreg-2;                          // ptr to car
+    sreg = hreg;
+    follow(oldhreg++) = makecs(sreg);      
+    new_heap_functor(sreg,get_ret_psc(3)); //  car pts to ret/2  psc
+    hreg += 4;                             //  hreg pts past ret/2
+    sreg = hreg;
+    follow(hreg-1) = makeint(nodes[cur_node].component);  // arg 3 of ret/2 pts to component
+    follow(hreg-2) = makeint(ansLeaf);  // arg 2 of ret/2 pts to answer leaf
+    if(arity>0){
+      follow(hreg-3) = makecs(sreg);         
+      new_heap_functor(sreg, psc);           //  arg 1 of ret/2 pts to goal psc
+      hreg += arity + 1;
+      for (j = 1; j <= arity; j++) {
+	new_heap_free(sreg);
+	cell_array1[arity-j] = cell(sreg-1);
+      }
+      build_subgoal_args(subgoal);		
+    }
+    else {
+      follow(hreg-3) = makestring(get_name(psc));
+      follow(hreg-2) = makeint(0);
+    }
+    follow(oldhreg) = makelist(hreg);        // cdr points to next car
+    new_heap_free(hreg); new_heap_free(hreg);
+    cur_node++;
+  } while (cur_node  < num_nodes);
+  follow(oldhreg) = makenil;                // cdr points to next car
+  return unify(CTXTc reg_term(CTXTc 3),reg_term(CTXTc 4));
+}
+
+extern void *  search_some(struct hashtable*, void *);
+extern int insert_some(struct hashtable*, void *, void *);
+
+void xsb_compute_ans_depends_scc(SCCNode * nodes,int * dfn_stack,int node_from, 
+				 int * dfn_top,struct hashtable* hasht,int * dfn,
+				 int * component ) {
+  int node_to; int j;
+  ASI asi; BTNptr ansLeaf;
+  DL current_dl;     DE current_de;
+
+  //  printf("xsb_compute_scc for %d %p", node_from,nodes[node_from].node);
+  //  printf(" %s/%d dfn %d dfn_top %d \n",
+  //	 get_name(TIF_PSC(subg_tif_ptr(asi_subgoal((ASI)Child((BTNptr)(nodes[node_from].node)))))),
+  //	 get_arity(TIF_PSC(subg_tif_ptr(asi_subgoal((ASI)Child((BTNptr)(nodes[node_from].node)))))),
+  //	 *dfn,*dfn_top);
+  nodes[node_from].low = nodes[node_from].dfn = (*dfn)++;
+  dfn_stack[*dfn_top] = node_from;
+  nodes[node_from].stack = *dfn_top;
+  (*dfn_top)++;
+  asi = (ASI) Child( (BTNptr) nodes[node_from].node);
+  current_dl = asi_dl_list(asi);
+  while (current_dl != NULL) {
+    //    printf("DL: %p\n",current_dl);
+    current_de = dl_de_list(current_dl);
+    while (current_de != NULL) {
+      if (de_ans_subst(current_de)) {
+	//	printf("  DE: %p SF %p Ans %p %ld\n",current_de,de_subgoal(current_de),
+	//               de_ans_subst(current_de),(long) de_ans_subst(current_de));
+	ansLeaf = de_ans_subst(current_de);
+      }
+      else {
+	//	printf("  DE: %p SF %p Ans %p %ld\n",current_de,de_subgoal(current_de),
+	//	       Child(subg_ans_root_ptr(de_subgoal(current_de))),
+	//     (long) Child(subg_ans_root_ptr(de_subgoal(current_de))));
+	ansLeaf = Child(subg_ans_root_ptr(de_subgoal(current_de)));
+      }
+      node_to = (int) search_some(hasht, (void *)ansLeaf);
+      //      printf("edge from %p to %p (%d)\n",(void *)nodes[node_from].node,sf,node_to);
+      if (nodes[node_to].dfn == 0) {
+	xsb_compute_ans_depends_scc(nodes,dfn_stack,node_to, dfn_top,hasht,dfn,component );
+	if (nodes[node_to].low < nodes[node_from].low) 
+	  nodes[node_from].low = nodes[node_to].low;
+	}	  
+	else if (nodes[node_to].dfn < nodes[node_from].dfn  && nodes[node_to].component == 0) {
+	  if (nodes[node_to].low < nodes[node_from].low) { nodes[node_from].low = nodes[node_to].low; }
+	}
+      current_de = de_next(current_de);
+    }
+    //    printf("nodes[%d] low %d dfn %d\n",node_from,nodes[node_from].low, nodes[node_from].dfn);
+    if (nodes[node_from].low == nodes[node_from].dfn) {
+      for (j = (*dfn_top)-1 ; j >= nodes[node_from].stack ; j--) {
+	//	printf(" pop %d and assign %d\n",j,*component);
+	nodes[dfn_stack[j]].component = *component;
+      }
+      (*component)++;       *dfn_top = j+1;
+    }
+    current_dl = dl_next(current_dl);
+  }
+}
+
+int  get_residual_sccs(CTXTdeclc CPtr listptr) {
+    CPtr orig_listptr;     Cell node;
+    long int node_num=0;
+    int i = 0, dfn, component = 1;     int * dfn_stack; int dfn_top = 0, ret;
+    SCCNode * nodes;
+    struct hashtable* hasht; 
+
+    hasht = create_hashtable1(HASH_TABLE_SIZE, hashid, equalkeys);
+    orig_listptr = listptr;
+    //    printf("listptr %p @%p\n",listptr,(CPtr) int_val(*listptr));
+    insert_some(hasht,(void *) int_val(*listptr),(void *) node_num);
+    node_num++; 
+
+    listptr = listptr + 1;
+    while (!isnil(*listptr)) {
+      listptr = listptr + 1;
+      node = int_val(*clref_val(listptr));
+      if (NULL == search_some(hasht, (void *)node)) {
+	insert_some(hasht,(void *)node,(void *)node_num);
+	node_num++;
+      }
+      listptr = listptr + 1;
+    }
+    nodes = (SCCNode *) mem_calloc(node_num, sizeof(SCCNode),OTHER_SPACE); 
+    dfn_stack = (int *) mem_alloc(node_num*sizeof(int),OTHER_SPACE); 
+    listptr = orig_listptr;; 
+    //    printf("listptr %p @%p\n",listptr,(void *)int_val(*(listptr)));
+    nodes[0].node = (CPtr) int_val(*(listptr));
+    listptr = listptr + 1;
+    i = 1;
+    while (!isnil(*listptr)) {
+      listptr = listptr + 1;
+      node = int_val(*clref_val(listptr));
+      nodes[i].node = (CPtr) node;
+      listptr = listptr + 1;
+      i++;
+    }
+    //     struct hashtable_itr *itr = hashtable1_iterator(hasht);       
+    //       do {
+	 //         printf("k %p val %p\n",hashtable1_iterator_key(itr),
+         //     hashtable1_iterator_value(itr));
+    //        } while (hashtable1_iterator_advance(itr));
+
+    listptr = orig_listptr;
+    //       printf("2: k %p v %p\n",(void *) int_val(*listptr),
+    //       search_some(hasht,(void *) int_val(*listptr)));
+    listptr = listptr + 1;
+        while (!isnil(*listptr)) {
+         listptr = listptr + 1;
+         node = int_val(*clref_val(listptr));
+	 //         printf("2: k %p v %p\n",(CPtr) node,search_some(hasht,(void *) node));
+         listptr = listptr + 1;
+       }
+    dfn = 1;
+    for (i = 0; i < node_num; i++) {
+      if (nodes[i].dfn == 0) 
+	xsb_compute_ans_depends_scc(nodes,dfn_stack,i,&dfn_top,hasht,&dfn,&component);
+      //      printf("++component for node %d is %d (high %d)\n",i,nodes[i].component,component);
+    }
+    ret = return_ans_depends_scc_list(CTXTc  nodes, node_num);
+    hashtable1_destroy(hasht,0);
+    mem_dealloc(nodes,node_num*sizeof(SCCNode),OTHER_SPACE); 
+    mem_dealloc(dfn_stack,node_num*sizeof(int),OTHER_SPACE); 
+    return ret;
+}
 
 extern void ctop_tag(CTXTdeclc int, Cell);
 
-        int pred_type, goal_type, answer_set_status;
-    VariantSF goalSF = NULL, subsumerSF;
-    Cell goalTerm;
+ int pred_type, goal_type, answer_set_status;
+ VariantSF goalSF = NULL, subsumerSF;
+ Cell goalTerm;
 
 FILE * fview_ptr;
 //----------------------------------------------------------------------
@@ -5178,6 +5365,60 @@ case CALL_SUBS_SLG_NOT: {
     break;
   }
 
+  case IMMED_ANS_DEPENDS_PTRLIST: {
+    ASI asi;
+    DL current_dl;
+    DE current_de;
+    CPtr oldhreg = NULL;
+    int  count = 0;
+
+    reg[4] = makelist(hreg);
+    new_heap_free(hreg);  new_heap_free(hreg);
+    asi = (ASI) Child( (BTNptr) ptoc_int(CTXTc 2));
+    current_dl = asi_dl_list(asi);
+    while (current_dl != NULL) {
+      //      printf("DL: %p\n",current_dl);
+      current_de = dl_de_list(current_dl);
+      while (current_de != NULL) {
+	//	print_subgoal(stddbg, de_subgoal(current_de));
+	count++;
+	check_glstack_overflow(4,pcreg,2); 
+	oldhreg = hreg-2;
+	sreg = hreg;
+	follow(oldhreg++) = makecs(sreg);      
+	new_heap_functor(sreg,get_ret_psc(2)); //  car pts to ret/2  psc
+	hreg += 3;
+	if (de_ans_subst(current_de)) {
+	  //	  printf("  DE: %p SF %p Ans %p %ld\n",current_de,de_subgoal(current_de),
+	  //   de_ans_subst(current_de),(long) de_ans_subst(current_de));
+	  follow(hreg-2) = makeint(de_ans_subst(current_de));
+	  follow(hreg-1) = makeint(IS_ASI);
+	}
+	else {
+	  //	  printf("  DE: %p SF %p Ans %p %ld\n",current_de,de_subgoal(current_de),
+	  //		 Child(subg_ans_root_ptr(de_subgoal(current_de))),
+	  // (long) Child(subg_ans_root_ptr(de_subgoal(current_de))));
+	  follow(hreg-2) = makeint(Child(subg_ans_root_ptr(de_subgoal(current_de))));
+	  follow(hreg-1) = makeint(IS_SUBGOAL_FRAME);
+	}
+	follow(oldhreg) = makelist(hreg);
+	new_heap_free(hreg);	new_heap_free(hreg);
+	current_de = de_next(current_de);
+      }
+      current_dl = dl_next(current_dl);
+    }
+    if (count>0)
+      follow(oldhreg) = makenil;
+    else
+      reg[3] = makenil;
+  return unify(CTXTc reg_term(CTXTc 3),reg_term(CTXTc 4));
+  break;
+  }
+  
+  case GET_RESIDUAL_SCCS: {
+
+    return get_residual_sccs(CTXTc clref_val(ptoc_tag(CTXTc 2)));
+  }
 
   } /* switch */
   return TRUE;

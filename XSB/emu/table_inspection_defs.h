@@ -44,6 +44,8 @@
 #define IS_CONDITIONAL_ANSWER                    20
 #define SET_TIF_PROPERTY                         21 
 #define GET_TIF_PROPERTY                         22
+#define IMMED_ANS_DEPENDS_PTRLIST                23
+#define GET_RESIDUAL_SCCS                        24
 
 // For delete return
 #define ANSWER_SUBSUMPTION   0
@@ -52,3 +54,6 @@
 // For xxx_tif_property
 #define SUBGOAL_DEPTH  0
 #define ANSWER_DEPTH   1
+
+#define IS_SUBGOAL_FRAME 0
+#define IS_ASI           1

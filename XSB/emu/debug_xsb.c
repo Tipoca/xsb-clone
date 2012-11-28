@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.100 2012-11-17 18:05:00 tswift Exp $
+** $Id: debug_xsb.c,v 1.101 2012-11-28 17:33:47 tswift Exp $
 ** 
 */
 
@@ -181,14 +181,17 @@ int sprint_quotedname(char *buffer, int size,char *string)
   }
   else {
     if (!quotes_are_needed(string)) {
-      sprintf(buffer+size, "%s", string);
-      return size + (int)strlen(string);
+      return size + snprintf(buffer+size,MAXTERMBUFSIZE-size-1, "%s", string);
+      //      return size + sprintf(buffer+size,"%s", string);
     }
     else {
-      sprintf(buffer+size,"\'");
-      dlength = double_quotes(string,buffer+size+1);
-      sprintf(buffer+size+ dlength + 1,"\'");
-      return size + dlength + 2;
+      if (MAXTERMBUFSIZE - (size + 2*strlen(string) + 2) > 0) {
+	sprintf(buffer+size,"\'");
+	dlength = double_quotes(string,buffer+size+1);
+	sprintf(buffer+size+ dlength + 1,"\'");
+	return size + dlength + 2;
+      }
+      else return size; 
     }
   }
 }
@@ -376,7 +379,6 @@ void mark_cyclic(CTXTdeclc Cell Term) {
   return;
   }
 
-
 static int sprint_term(char *buffer, int insize, Cell term, byte car, long level)
 {
   unsigned short i, arity;
@@ -394,18 +396,15 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
   switch (cell_tag(term)) {
   case XSB_FREE:
   case XSB_REF1:
-    //    sprintf(buffer+size, "_v%"Intfmt, (UInteger)vptr(term));                
-    //    sprintf(buffer+size, "_v%p",vptr(term));                                
-    //    return size+4+2*sizeof(void *);                                         
     return size+sprintf(buffer+size, "_v%p",vptr(term));
   case XSB_ATTV:
     if (flags[WRITE_ATTRIBUTES] == WA_DOTS) {
-      sprintf(buffer+size, "_attv%p {...} ", (CPtr)dec_addr(term));
-      return size+15+2*sizeof(CPtr);
+      return size + sprintf(buffer+size, "_attv%p {...} ", (CPtr)dec_addr(term));
+      //      return size+15+2*sizeof(CPtr);
     }
     else {
-      sprintf(buffer+size, "_attv%p ", (CPtr)dec_addr(term));
-      return size+9+2*sizeof(CPtr);
+      return size + sprintf(buffer+size, "_attv%p ", (CPtr)dec_addr(term));
+      //      return size+9+2*sizeof(CPtr);
     }
   case XSB_STRUCT:
     /* NOTE: Below is a check for boxed numbers. If such is the case,
@@ -416,18 +415,16 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
        printing out the integer part of float in a fixed width, but I
        don't know how. 
     */
-    //    printf("printing %p %p\n",term,clref_val(term));
     if (isboxedfloat(term)) {
       Float val = boxedfloat_val(term);
-      int width = get_int_print_width((Integer)floor(val));
-      sprintf(buffer+size, "%*d.%4d", width,(int)floor(val),(int)((val-floor(val))*10000));
-      return size + width + 5;   
+      //      int width = get_int_print_width((Integer)floor(val));
+      return size + sprintf(buffer+size, "%" Intfmt ".%4d",(Integer)floor(val),(int)((val-floor(val))*10000));
     }
     else if (isboxedinteger(term)) {
       Integer val = boxedint_val(term);
       int width = get_int_print_width(val);
-      sprintf(buffer+size, "%*" Intfmt, width, (Integer)boxedint_val(term));
-      return size+width;
+      return size + sprintf(buffer+size, "%*" Intfmt, width, (Integer)boxedint_val(term));
+      //      return size+width;
     }
     psc = get_str_psc(term);
     size = sprint_quotedname(buffer, size, get_name(psc));
@@ -446,17 +443,17 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
     sprintf(buffer+size, ")");size++;
     return size;
   case XSB_STRING:
-    size = sprint_quotedname(buffer, size, string_val(term));
-    return size;
+    return sprint_quotedname(buffer, size, string_val(term));
   case XSB_INT: {
-    int width = get_int_print_width((Integer)int_val(term));
-    sprintf(buffer+size, "%*" Intfmt, width, (Integer)int_val(term));
-    return size+width;
+    //    int width = get_int_print_width((Integer)int_val(term));
+    //    return size + sprintf(buffer+size, "%*" Intfmt, width, (Integer)int_val(term));
+    return size + sprintf(buffer+size, "%" Intfmt, (Integer)int_val(term));
   }
   case XSB_FLOAT:
-    sprintf(buffer+size, "%f", float_val(term));
-    sprintf(buffer+size, "%f", ofloat_val(term));
-    return size+MAXFLOATLEN;
+    printf("here\n");
+    size = size + sprintf(buffer+size, "%f", float_val(term));
+    return size + sprintf(buffer+size, "%f", ofloat_val(term));
+    //    return size+MAXFLOATLEN;
   case XSB_LIST:
     cptr = clref_val(term);
     if ( car ) {
