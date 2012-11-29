@@ -63,8 +63,6 @@ void simplify_pos_unconditional(CTXTdeclc NODEptr);
 void print_pdes(PNDE);
 //void simplify_neg_succeeds_for_subsumed_subgoals(NODEptr);
 
-#define NUM_TRIEVARS 512
-
 Structure_Manager smASI      = SM_InitDecl(ASI_Node, ASIs_PER_BLOCK,
 					    "Answer Substitution Info Node");
 
@@ -1055,9 +1053,9 @@ void answerStack_copyTermPtr(CTXTdeclc CPtr symbolPtr) {
 void construct_ground_term(CTXTdeclc BTNptr as_leaf,VariantSF subgoal) {
   Cell symbol = (Cell) NULL;
   int maxvar = -1;
-  CPtr aliasArray[NUM_TRIEVARS];
+  CPtr aliasArray[DEFAULT_NUM_TRIEVARS];
   int i;
-  for(i = 0; i < NUM_TRIEVARS; i++) aliasArray[i] = NULL;
+  for(i = 0; i < DEFAULT_NUM_TRIEVARS; i++) aliasArray[i] = NULL;
 
   DynStk_ResetTOS(simplAnsStack);
   SimplStack_PushPathRoot(simplAnsStack,as_leaf,subg_ans_root_ptr(subgoal));
@@ -1146,7 +1144,7 @@ static void handle_empty_dl_creation(CTXTdeclc DL dl)
        variants done below) */
     if (IsSubProdSF(subgoal) && is_ground_answer(as_leaf)) {
       BTNptr leaf;
-      Cell callVars[NUM_TRIEVARS];
+      Cell callVars[DEFAULT_NUM_TRIEVARS];
       construct_ground_term(CTXTc as_leaf,subgoal);
       leaf = simpl_variant_trie_lookup(CTXTc TIF_CallTrie(subg_tif_ptr(subgoal)),
 				 get_arity(TIF_PSC(subg_tif_ptr(subgoal))),
@@ -1190,7 +1188,7 @@ void handle_unsupported_answer_subst(CTXTdeclc NODEptr as_leaf)
      done before delete_branch) from the simplification itself (which
      must be done after delete_branch). */
   if (IsSubProdSF(unsup_subgoal) && is_ground_answer(as_leaf)) {
-    Cell callVars[NUM_TRIEVARS];
+    Cell callVars[DEFAULT_NUM_TRIEVARS];
     construct_ground_term(CTXTc as_leaf,unsup_subgoal);
 
     subgoal_leaf = simpl_variant_trie_lookup(CTXTc TIF_CallTrie(subg_tif_ptr(unsup_subgoal)),
