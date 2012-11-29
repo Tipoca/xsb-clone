@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.176 2012-11-29 17:49:26 tswift Exp $
+** $Id: tries.c,v 1.177 2012-11-29 18:19:43 tswift Exp $
 ** 
 */
 
@@ -2603,7 +2603,7 @@ Cell get_lastnode_cs_retskel(CTXTdeclc Cell callTerm) {
   if (arity > MAX_ARITY)
     xsb_representation_error(CTXTc "less than MAX_ARITY",
 			     makestring(string_find("Arity needed for return template",1)),
-			     "trie_intern/4 or other tabling routine",4);
+			     "trie_intern/4 or other tabling routine",4); 
   vectr = (Cell *)trieinstr_vars;
   if ( IsInCallTrie(Last_Nod_Sav) ) {
     VariantSF sf = CallTrieLeaf_GetSF(Last_Nod_Sav);
