@@ -40,4 +40,13 @@ XSB/packages/flora.*  mail -s "FLORA-1 commit: %{}" xsb-commits@lists.sourceforg
 XSB/build  mail -s "XSB commit: %{}" xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu luis@cs.stonybrook.edu
 XSB/admin  mail -s "XSB commit: %{}" xsb-commits@lists.sourceforge.net kifer@cs.stonybrook.edu luis@cs.stonybrook.edu
 
-DEFAULT $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net
+#DEFAULT $CVSROOT/CVSROOT/syncmail -u %{sVv} xsb-commits@lists.sourceforge.net
+
+# This line sends all changes to the CVSROOT module to the user specified
+# by USERNAME. It is recommended that someone be watching this module
+# as it shouldn't need to be modified very often.
+CVSROOT /cvsroot/sitedocs/CVSROOT/cvstools/syncmail %{sVv} tswift@users.sourceforge.net
+# This sends mail to a mailing list, defined by the PROJECTNAME-LISTNAME
+# value. Any changes to any modules in the project will thus generate an
+# email message to the mailing list specified.
+DEFAULT /cvsroot/sitedocs/CVSROOT/cvstools/syncmail %{sVv} xsb-commits@lists.sourceforge.net
