@@ -21,10 +21,10 @@
 # XSB/admin           	mail -s "XSB commit: %{}" kifer@cs.stonybrook.edu
 #XSB/packages/flora.*    mail -s "XSB commit: %{}" kifer@cs.stonybrook.edu guizyang@cs.stonybrook.edu
 # 
-# XSB/emu	       	        mail -s "XSB commit: %{}" kostis@csd.uu.se tswift@cs.stonybrook.edu luis@cs.stonybrook.edu
-# XSB/syslib	        mail -s "XSB commit: %{}" kostis@csd.uu.se tswift@cs.stonybrook.edu luis@cs.stonybrook.edu
-# XSB/lib	            	mail -s "XSB commit: %{}" kostis@csd.uu.se tswift@cs.stonybrook.edu luis@cs.stonybrook.edu
-# XSB/cmplib	      	mail -s "XSB commit: %{}" kostis@csd.uu.se tswift@cs.stonybrook.edu luis@cs.stonybrook.edu
+# XSB/emu	       	        mail -s "XSB commit: %{}" kostis@csd.uu.se tswift@cs.stonybrook.edu 
+# XSB/syslib	        mail -s "XSB commit: %{}" kostis@csd.uu.se tswift@cs.stonybrook.edu 
+# XSB/lib	            	mail -s "XSB commit: %{}" kostis@csd.uu.se tswift@cs.stonybrook.edu 
+# XSB/cmplib	      	mail -s "XSB commit: %{}" kostis@csd.uu.se tswift@cs.stonybrook.edu 
 # 
 # DEFAULT		(echo ""; whoami; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
 
