@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_aux.h,v 1.19 2011-08-03 18:12:54 tswift Exp $
+** $Id: tst_aux.h,v 1.20 2012-11-29 18:08:11 tswift Exp $
 ** 
 */
 
@@ -274,7 +274,7 @@ extern DynamicStack tstTrail;
 #define Trail_NumBindings	DynStk_NumFrames(tstTrail)
 #define Trail_ResetTOS		DynStk_ResetTOS(tstTrail)
 
-#define Trail_Push(Addr) {			\
+#define tstTrail_Push(Addr) {			\
    CPtr *nextFrame;				\
    DynStk_Push(tstTrail,nextFrame);		\
    *nextFrame = (CPtr)(Addr);			\
@@ -372,7 +372,7 @@ extern DynamicStack tstSymbolStack;
      /*     fprintf(stddbg,"  ProcessNext: variable VE %p\n",VarEnumerator);*/ \
      if ( ! IsStandardizedVariable(subterm) ) {			\
        StandardizeVariable(subterm, StdVarNum);			\
-       Trail_Push(subterm);					\
+       tstTrail_Push(subterm);					\
        Symbol = EncodeNewTrieVar(StdVarNum);			\
        StdVarNum++;						\
        /*       fprintf(stddbg,"  Var: standardized variable %p %p %d\n",subterm,*(CPtr) subterm,StdVarNum); */	\
@@ -403,7 +403,7 @@ extern DynamicStack tstSymbolStack;
        /*       fprintf(stddbg,"  Attv Standardizing %p %p",subterm,clref_val(subterm));printterm(stddbg,subterm,25);fprintf(stddbg,"\n"); */ \
        StandardizeVariable(clref_val(subterm), StdVarNum);		\
        /*       fprintf(stddbg,"  Attv Standardized (VE) %p (Num)%d (subterm) %x (@subterm) %p clref %p @clref%x\n",VarEnumerator,StdVarNum,subterm,*(CPtr) subterm,clref_val(subterm),*clref_val(subterm)); */	\
-       Trail_Push(clref_val(subterm));				\
+       tstTrail_Push(clref_val(subterm));				\
        Symbol = EncodeNewTrieAttv(StdVarNum);			\
        StdVarNum++;						\
        /*       fprintf(stddbg,"  Attv attribute %p",clref_val(subterm)+1);printterm(stddbg,*(clref_val(subterm)+1),25);fprintf(stddbg,"\n"); */ \
@@ -436,7 +436,7 @@ extern DynamicStack tstSymbolStack;
       /*     fprintf(stddbg,"  ProcessNext: variable VE %p\n",VarEnumerator);*/ \
       if ( ! IsStandardizedVariable(subterm) ) {                 \
 	StandardizeVariable(subterm, StdVarNum);                 \
-	Trail_Push(subterm);                                     \
+	tstTrail_Push(subterm);                                     \
 	Symbol = EncodeNewTrieVar(StdVarNum);                    \
 	StdVarNum++;                                             \
 	/*       fprintf(stddbg,"  Var: standardized variable %p %p %d\n",subterm,*(CPtr) subterm,StdVarNum); */ \
