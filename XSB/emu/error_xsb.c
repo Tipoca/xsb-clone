@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.103 2012-11-17 18:05:00 tswift Exp $
+** $Id: error_xsb.c,v 1.104 2012-12-12 14:32:30 tswift Exp $
 ** 
 */
 
@@ -168,6 +168,8 @@ DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, size_t B
   prolog_term term_to_assert;
   Cell *space_for_ball_assert;
 
+  size_t space_for_ball_assert_len = 3*sizeof(Cell);
+
   if (flags[CTRACE_CALLS])  {			
     char buffera[MAXTERMBUFSIZE];		
     char bufferb[MAXTERMBUFSIZE];		
@@ -178,8 +180,6 @@ DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, size_t B
     else sprintf(bufferb,"null");					
     fprintf(fview_ptr,"throw(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++); 
   }
-
-  size_t space_for_ball_assert_len = 3*sizeof(Cell);
 
   space_for_ball_assert = (Cell *) mem_alloc_nocheck(space_for_ball_assert_len,
 						     LEAK_SPACE);
