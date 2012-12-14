@@ -415,34 +415,51 @@ correctness, to optimize performance and so on.  Because \ctrace{}
 Currently, \ctrace{} captures the following actions.
 
 \bi
-\item {\em A call to a tabled subgoal}~ If a call to a tabled subgoal
-  $S_1$ is made from a tree for $S_2$ a Prolog-readable fact of the
-  form {\tt tc(S1,S2,Stage,Counter)} is logged, where {\em Counter} is
-  the ordinal number of the fact, and {\tt Stage} is
+\item {\em A call to a tabled subgoal}~ If a positive call to a tabled
+  subgoal $S_1$ is made from a tree for $S_2$ a Prolog-readable fact
+  of the form {\tt tc(S1,S2,Stage,Counter)} is logged, where {\em
+    Counter} is the ordinal number of the fact, and {\tt Stage} is
 \bi
 \item {\tt new} if $S_1$ is a new subgoal
 \item {\tt cmp} if $S_1$ is not a new subgoal and has been completed
 \item {\tt incmp} if $S_1$ is not a new subgoal but has {\em not} been
-  completed \ei
+  completed 
+\ei 
 %
+If the call is negative a fact of the form {\tt
+  nc(S1,S2,Stage,Counter)} is logged, where all arguments are as
+above.
+
   For instance, in the above example, node 3 would be represented as
   {\tt tc(reach(2,Y),reach(1,Y),2)} (the reason for using the counter
   value of 2 rather than 3 is explained below).  If $S_1$ is the first
   tabled subgoal in an evaluation, $S_2$ is the atom {\em null}.
 
-\item {\em Derivation of a new answer}~ When a new answer $A$ is
-  derived for subgoal $S$ and added to the table (i.e. $A$ is not
-  already an answer for $S$) a fact of the form {\tt na(A,S,Counter)}
-  is logged.  In the above example, the answer node 9 would be
-  represented as {\tt na([2],reach(2,\_v1),4)} where the first argument
-  is a list of substitutions for the variables {\em \_v1,...,\_vn} in
-  $S$.
+\item {\em Derivation of a new answer}~ When a new {\em unconditional}
+  answer $A$ is derived for subgoal $S$ and added to the table
+  (i.e. $A$ is not already an answer for $S$) a fact of the form {\tt
+    na(A,S,Counter)} is logged.  In the above example, the answer node
+  9 would be represented as {\tt na([2],reach(2,\_v1),4)} where the
+  first argument is a list of substitutions for the variables {\em
+    \_v1,...,\_vn} in $S$.
 
-\item {\em Return of an answer to a consuming subgoal}~When an answer
-  $A$ is returned to a consuming subgoal $S$ in a tree for $S_T$, a
-  fact of the form {\tt ar(A,S,ST,Counter)} is logged.  A log entry is
-  made only if the table for $S$ is incomplete (see the explanation
-  below).
+  When a new {\em conditional} answer $A \mif D|$, with substitution
+  $A$ and delayed literals $D$. is derived for subgoal $S$ and added
+  to the table a fact of the form {\tt nda(A,S,D,Counter)} is logged.
+
+\item {\em Return of an answer to a consuming subgoal}~When an
+  unconditional answer $A$ is returned to a consuming subgoal $S$ in a
+  tree for $S_T$, a fact of the form {\tt ar(A,S,ST,Counter)} is
+  logged.  A log entry is made only if the table for $S$ is incomplete
+  (see the explanation below).
+
+  If the answer $A$ is conditional, the fact has the form {\tt
+    dar(A,S,ST,Counter)}, where each argument is as above.
+
+\item {\em Delaying a selected negative literal}.  If a selected
+  negative literal $L$ of a node $N$ is delayed, because it is
+  involved in a loop through negation, and $N$ is in a tree for $S_T$,
+  a fact of the form {\tt dly(L,$S_T$,Counter)} is logged.
 
 \index{strongly donnected components (SCCs)}
 \item {\em Subgoal completion}
@@ -803,6 +820,55 @@ two-valued well-founded model, a user would often like to understand
 why.  Even in a program that is two-valued, the heavy use of {\sc
   Delaying} and {\sc Simplification} can indicate that some rules may
 need to be optimized by having their literals reordered.
+
+\begin{example} \label{ex:neg} \rm
+Figure~\ref{fig:neg} shows a program with negation and illustrates SLG
+resolution for the query {\em p(c)} to the program.  The nodes in
+Figure~\ref{fig:neg} have been annotated with the order in which they
+were created under local scheduling. In the formalism used by
+Figure~\ref{fig:neg}, the symbol $|$ in a node separates the
+unresolved goals to the right from the delayed goals to the left.  In
+the evaluation state where nodes 1 through 10 have been created, {\em
+  p(b)} has been completed, and {\em p(a)} and {\em p(c)} are in the
+same SCC.  There are no more clauses or answers to resolve, but {\em
+  p(a)} is involved in a loop through negation in node 5, and nodes 2
+and 10 involve {\em p(a)} and {\em p(c)} in a negative
+loop~\footnote{In this example, we ignore the effects of early
+  completion which would complete {\em p(b)} immediately upon creation
+  of node 8, obviating the need to create node 9.}.
+
+In situations such as this, where all resolution has been performed
+for nodes in an SCC, an evaluation may have to apply a {\sc Delaying}
+operation to a negative literal such as {\em not(p(a))}, in order to
+explore whether other literals to its right might fail. 
+% In cases such as this, 
+When multiple literals can be delayed, an arbitrary one is chosen to
+be delayed first.  So the evaluation delays the selected literal of
+node 2 to generate node 12 producing a {\em conditional answer} -- an
+answer with a non-empty delay list
+(cf. Section~\ref{sec:conditional-answers} for an overview of how XSB
+computes and allows inspection of delayed literals).  Next, {\em not
+  p(a)} in node 5 is delayed, failing that computation path, and {\em
+  not p(c)} in node 10 is delayed to produce node 15 and failing the
+final computation path for {\em p(a)}.  At this stage the SCC
+$\{p(a),p(c)\}$ is {\em completely evaluated} meaning that there are
+no more operations applicable for goal literals (as opposed to delay
+literals).  Since {\em p(a)} is completely evaluated with no answers,
+conditional or otherwise, the evaluation determines it to be {\em
+  failed} and a {\sc Simplification} operation can be applied to the
+conditional answer of node 12, leading to the {\em unconditional}
+answer in node 17 and {\em success} of the literal {\em p(c)}.
+\end{example}
+
+\begin{figure*}[tbp] 
+\begin{center}
+%\fbox{\epsfig{file=Figures/del-simpl3.eps,width=\textwidth}}
+\epsfig{file=del-simpl3.eps,width=\textwidth}
+\end{center}
+\caption{A Normal Program and SLG Forest for Evaluation of the Query {\em p(c)}}
+\label{fig:neg}
+\end{figure*}
+
 
 As indicated previously, the forest log overview includes a total
 count of {\sc Delaying} and {\sc Simplification} operations, as well
