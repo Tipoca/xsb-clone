@@ -737,8 +737,11 @@ abolish1(Term) :-
 	 ; Type =:= T_PRED	    % normal compiled predicate
 	 ->	psc_ep(Psc,Ep),	    % get entry point
 		unload_seg(Ep),	    % free the space
+		psc_init_info(Psc)
+	 /**
 		psc_set_type(Psc, T_ORDI),
-		psc_set_ep(Psc, 0)
+		NewEP is Psc+4*8, %WORDSIZE,
+		psc_set_ep(Psc, NewEP) **/
 		/*,psc_set_env(Psc, T_UNLOADED)*/
 	 ;	Type =:= T_ORDI	 /* need to check imported !!!! */
 	).
