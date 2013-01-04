@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.396 2013-01-04 14:56:21 dwarren Exp $
+** $Id: builtin.c,v 1.397 2013-01-04 21:34:45 dwarren Exp $
 **
 */
 
@@ -151,6 +151,8 @@ extern int xsb_profiling_enabled;
 extern char *canonical_term(CTXTdeclc Cell, int);
 extern int prolog_call0(CTXTdeclc Cell);
 extern int prolog_code_call(CTXTdeclc Cell, int);
+
+extern void init_psc_ep_info(Psc psc);
 
 int is_cyclic(CTXTdeclc Cell);
 int ground_cyc(CTXTdeclc Cell, int);
@@ -1162,6 +1164,7 @@ void init_builtin_table(void)
   set_builtin_table(GET_DATE, "get_date");
   set_builtin_table(STAT_WALLTIME, "stat_walltime");
 
+  set_builtin_table(PSC_INIT_INFO, "psc_init_info");
   set_builtin_table(PSC_GET_SET_ENV_BYTE, "psc_get_set_env_byte");
   set_builtin_table(PSC_ENV, "psc_env");
   set_builtin_table(PSC_SPY, "psc_spy");
@@ -1490,11 +1493,14 @@ int builtin_call(CTXTdeclc byte number)
     return tmp;
   }
 
-  case TERM_PSC:		/* R1: +term; R2: -PSC */
+  case TERM_PSC: {		/* R1: +term; R2: -PSC */
     /* Assumes that `term' is a XSB_STRUCT-tagged Cell. */
     /*    ctop_addr(2, get_str_psc(ptoc_tag(CTXTc 1))); */
-    ctop_addr(2, term_psc((Cell)(ptoc_tag(CTXTc 1))));
+    Psc temp =  term_psc((Cell)(ptoc_tag(CTXTc 1)));
+    ctop_addr(2, temp);
+    //    ctop_addr(2, term_psc((Cell)(ptoc_tag(CTXTc 1))));
     break;
+  }
   case CONPSC:
     {int new;
       Cell term = ptoc_tag(CTXTc 1);
@@ -2237,6 +2243,12 @@ int builtin_call(CTXTdeclc byte number)
   }
   case GROUND:
     return ground((CPtr)ptoc_tag(CTXTc 1));
+
+  case PSC_INIT_INFO: {
+    Psc psc = (Psc)ptoc_addr(1);
+    init_psc_ep_info(psc);
+    break;
+  }
 
   case PSC_GET_SET_ENV_BYTE: { /* reg 1: +PSC, reg 2: +And-bits, reg 3: +Or-bits, reg 4: -Result */
     Psc psc = (Psc)ptoc_addr(1);

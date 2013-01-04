@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.115 2013-01-04 14:56:21 dwarren Exp $
+** $Id: builtin.h,v 1.116 2013-01-04 21:34:45 dwarren Exp $
 ** 
 */
 
@@ -126,6 +126,7 @@
 #define GET_DATE                 80
 #define STAT_WALLTIME            81
 
+#define PSC_INIT_INFO		 98
 #define PSC_GET_SET_ENV_BYTE	 99
 #define PSC_ENV		        100
 #define PSC_SPY		        101
