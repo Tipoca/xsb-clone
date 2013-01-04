@@ -1,4 +1,4 @@
 assert_length(800)
 intern_length(800)
-representation_error(less than MAX_ARITY,Arity of skel)
+representation_error(less than MAX_ARITY,Arity needed for return template)
 table_length(800)
