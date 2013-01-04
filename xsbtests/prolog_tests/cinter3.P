@@ -1,5 +1,11 @@
 /* test of high-level C interface */
-:- (windows_os -> shell('nmake /f MakefileCinter3') ; true).
+:- (windows_os
+    ->	   (xsb_configuration(word_size,'64')
+	    ->	   shell('bash -c "./make_cinter3_w64.bat"')
+	    ;	   shell('bash -c "./make_cinter3.bat"')
+	    )
+    ; true
+   ).
 
 :- [second_foreign].
 :- import paddints/3,paddfloats/3,pswapints/4,psort/2,plcsort/2
