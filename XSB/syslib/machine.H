@@ -198,5 +198,7 @@
 
 :- export breg_retskel/4.
 
+:- export intern_term/2.
+
 /* --------------------- end of file machine.H ------------------------ */
 

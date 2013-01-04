@@ -313,6 +313,8 @@ ground_cycle_internal(_Term,_Action):- '_$builtin'(GROUND_CYC).
 
 mark_term_cyclic(_Term):- '_$builtin'(MARK_TERM_CYCLIC).
 
+intern_term(_Term,_InternedTerm) :- '_$builtin'(INTERN_TERM).
+
 '$$set_scope_marker':- '$$set_scope_marker'.
 '$$unwind_stack':- '$$unwind_stack'.
 '$$clean_up_block'(_Breg):- '_$builtin'(CLEAN_UP_BLOCK).

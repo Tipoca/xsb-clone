@@ -120,15 +120,23 @@ assert0(Clause) :- assert(Clause,1,1).
 assert(Clause)  :-
 %	check_assert(Clause, 'assert/1'),
 	call_xsb_hook(xsb_assert_hook(_),Clause,all),
-	assert(Clause,1,1,'assert/1').
+	assert(Clause,1,1,'assert/1'),
+	fail.
+assert(_).			% reclaim heap space
+
 asserta(Clause) :-
 %	check_assert(Clause,'asserta/1'),
 	call_xsb_hook(xsb_assert_hook(_),Clause,all),
-	assert(Clause,0,1,'asserta/1').
+	assert(Clause,0,1,'asserta/1'),
+	fail.
+asserta(_).			% reclaim heap space
+
 assertz(Clause) :-
 %	check_assert(Clause,'assertz/1'),
 	call_xsb_hook(xsb_assert_hook(_),Clause,all),
-	assert(Clause,1,1,'assertz/1').
+	assert(Clause,1,1,'assertz/1'),
+	fail.
+assertz(_).
 
 
 /* Obsolete.
