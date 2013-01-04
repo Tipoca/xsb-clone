@@ -18,24 +18,30 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.102 2012-07-20 16:31:30 tswift Exp $
+** $Id: io_builtins_xsb.c,v 1.103 2013-01-04 14:56:22 dwarren Exp $
 ** 
 */
 
 #include "xsb_config.h"
 #include "xsb_debug.h"
 
+#ifdef WIN_NT
+#include <direct.h>
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
+
 #include <stdio.h>
-#include <signal.h>
+#include <ctype.h>
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
-#ifndef WIN_NT
-#include <unistd.h> 
-#endif
 #include <sys/stat.h>
+#include <signal.h>
 
 #include "setjmp_xsb.h"
+#include "wind2unix.h"
 #include "auxlry.h"
 #include "context.h"
 #include "cell_xsb.h"
@@ -53,11 +59,12 @@
 #include "choice.h"
 #include "tab_structs.h"
 #include "io_builtins_xsb.h"
-#include "wind2unix.h"
 #include "binding.h"
 #include "deref.h"
 #include "findall.h"
 #include "heap_defs_xsb.h"
+
+//extern FILE *logfile;
 
 stream_record open_files[MAX_OPEN_FILES]; /* open file table, protected by MUTEX IO */
 
@@ -337,7 +344,7 @@ xsbBool fmt_write(CTXTdecl)
       PRINT_ARG(float_arg);
     } else {
       sprintf(aux_msg,"format_string %%%c",current_fmt_spec->type);
-      xsb_domain_error(CTXTc aux_msg,Arg,"fmw_write/2",2);
+      xsb_domain_error(CTXTc aux_msg,Arg,"fmt_write/2",2);
     }
     next_format_substr(CTXTc Fmt, &fmt_state,current_fmt_spec,
 		       0 /* don't initialize */,
@@ -1588,8 +1595,14 @@ int xsb_intern_file(char *context,char *addr, int *ioport,char *strmode,int open
   else { /* try to intern new file */
     struct stat stat_buff;
     fptr = fopen(addr, strmode);
+    //    fprintf(logfile,"opening: %s (%s)\n",addr,strmode);
     if (!fptr) {*ioport = 0; return -1;}
-    else  if (!stat(addr, &stat_buff) && !S_ISDIR(stat_buff.st_mode)) {
+    if (flags[LOG_ALL_FILES_USED]) {
+      char current_dir[MAX_CMD_LEN];
+      getcwd(current_dir, MAX_CMD_LEN-1);
+      xsb_log("%s: %s\n",current_dir,addr);
+    }
+    if (!stat(addr, &stat_buff) && !S_ISDIR(stat_buff.st_mode)) {
 	/* file exists and isn't a dir */
       open_files[first_null].file_ptr = fptr;
       open_files[first_null].file_name = string_find(addr,1);
@@ -1750,9 +1763,12 @@ char *cvt_float_to_str(CTXTdeclc Float floatval) {
 }
 
 
-
+/* write_canonical_term_rec is now tail recursive, to try to avoid C runstack oflow.
+   It maintains a count of close parens to print on exit. */
 int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_flag)
 {
+  Integer close_paren_count = 0, cpi;
+ write_canonical_term_rec_begin:
   XSB_Deref(prologterm);
   switch (cell_tag(prologterm)) 
     {
@@ -1864,11 +1880,9 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
 	  }
 	  XSB_StrAppendC(wcan_string,',');
 	}
-	if (!write_canonical_term_rec(CTXTc cell(clref_val(prologterm)+i),letter_flag)) {
-	  XSB_StrAppend(wcan_string,"?ERROR?");
-	  return FALSE;
-	}
-	XSB_StrAppendC(wcan_string,')');
+	close_paren_count++; /* count parens so can do tail recursion */
+	prologterm = cell(clref_val(prologterm)+i);
+	goto write_canonical_term_rec_begin;
       }
       break;
     case XSB_LIST:
@@ -1902,6 +1916,7 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
     default:
       return FALSE;
     }
+  for (cpi=0; cpi<close_paren_count; cpi++) XSB_StrAppendC(wcan_string,')');
   return TRUE;
 }
 

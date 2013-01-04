@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.h,v 1.59 2012-02-24 17:37:21 tswift Exp $
+** $Id: error_xsb.h,v 1.60 2013-01-04 14:56:21 dwarren Exp $
 ** 
 */
 
@@ -85,9 +85,11 @@ extern "C" {
 #define THROWPAD 12
 #endif 
 
+#define MAX_CMD_LEN 8192
+
 DllExport extern void call_conv xsb_exit(char *, ...);
 DllExport extern void call_conv xsb_initialization_exit(char *, ...);
-DllExport extern void call_conv exit_xsb(char *);
+  DllExport extern void call_conv exit_xsb(char *);
 
 DllExport extern void call_conv xsb_abort(char *, ...);
 DllExport extern void call_conv abort_xsb(char *);
@@ -160,6 +162,8 @@ DllExport void call_conv xsb_throw(CTXTdeclc prolog_term);
 
 extern prolog_term build_xsb_backtrace(CTXTdecl);
 extern char abort_file_gl[];
+
+DllExport extern void  call_conv xsb_log(char *description, ...);
 
 #ifdef __cplusplus
 }

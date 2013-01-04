@@ -4888,41 +4888,52 @@ void xsb_compute_ans_depends_scc(SCCNode * nodes,int * dfn_stack,int node_from,
   }
 }
 
-int  get_residual_sccs(CTXTdeclc CPtr listptr) {
-    CPtr orig_listptr;     Cell node;
+int  get_residual_sccs(CTXTdeclc Cell listterm) {
+  Cell orig_listterm, node, intterm;
     long int node_num=0;
     int i = 0, dfn, component = 1;     int * dfn_stack; int dfn_top = 0, ret;
     SCCNode * nodes;
     struct hashtable* hasht; 
 
+    XSB_Deref(listterm);
+    orig_listterm = listterm;
     hasht = create_hashtable1(HASH_TABLE_SIZE, hashid, equalkeys);
-    orig_listptr = listptr;
     //    printf("listptr %p @%p\n",listptr,(CPtr) int_val(*listptr));
-    insert_some(hasht,(void *) int_val(*listptr),(void *) node_num);
+    intterm = cell(clref_val(listterm));
+    XSB_Deref(intterm);
+    insert_some(hasht,(void *) oint_val(intterm),(void *) node_num);
     node_num++; 
 
-    listptr = listptr + 1;
-    while (!isnil(*listptr)) {
-      listptr = listptr + 1;
-      node = int_val(*clref_val(listptr));
+    listterm = cell(clref_val(listterm)+1);
+    XSB_Deref(listterm);
+    while (!isnil(listterm)) {
+      intterm = cell(clref_val(listterm));
+      XSB_Deref(intterm);
+      node = oint_val(intterm);
       if (NULL == search_some(hasht, (void *)node)) {
 	insert_some(hasht,(void *)node,(void *)node_num);
 	node_num++;
       }
-      listptr = listptr + 1;
+      listterm = cell(clref_val(listterm)+1);
+      XSB_Deref(listterm);
     }
     nodes = (SCCNode *) mem_calloc(node_num, sizeof(SCCNode),OTHER_SPACE); 
     dfn_stack = (int *) mem_alloc(node_num*sizeof(int),OTHER_SPACE); 
-    listptr = orig_listptr;; 
+    listterm = orig_listterm;; 
     //    printf("listptr %p @%p\n",listptr,(void *)int_val(*(listptr)));
-    nodes[0].node = (CPtr) int_val(*(listptr));
-    listptr = listptr + 1;
+    intterm = cell(clref_val(listterm));
+    XSB_Deref(intterm);
+    nodes[0].node = (CPtr) oint_val(intterm);
+    listterm = cell(clref_val(listterm)+1);
+    XSB_Deref(listterm);
     i = 1;
-    while (!isnil(*listptr)) {
-      listptr = listptr + 1;
-      node = int_val(*clref_val(listptr));
+    while (!isnil(listterm)) {
+      intterm = cell(clref_val(listterm));
+      XSB_Deref(intterm);
+      node = oint_val(intterm);
       nodes[i].node = (CPtr) node;
-      listptr = listptr + 1;
+      listterm = cell(clref_val(listterm)+1);
+      XSB_Deref(listterm);
       i++;
     }
     //     struct hashtable_itr *itr = hashtable1_iterator(hasht);       
@@ -4931,15 +4942,15 @@ int  get_residual_sccs(CTXTdeclc CPtr listptr) {
          //     hashtable1_iterator_value(itr));
     //        } while (hashtable1_iterator_advance(itr));
 
-    listptr = orig_listptr;
+    listterm = orig_listterm;
     //       printf("2: k %p v %p\n",(void *) int_val(*listptr),
     //       search_some(hasht,(void *) int_val(*listptr)));
-    listptr = listptr + 1;
-        while (!isnil(*listptr)) {
-         listptr = listptr + 1;
-         node = int_val(*clref_val(listptr));
+        while (!isnil(listterm)) {
+	  intterm = cell(clref_val(listterm));
+	  node = oint_val(intterm);
 	 //         printf("2: k %p v %p\n",(CPtr) node,search_some(hasht,(void *) node));
-         listptr = listptr + 1;
+	  listterm = cell(clref_val(listterm)+1);
+	  XSB_Deref(listterm);
        }
     dfn = 1;
     for (i = 0; i < node_num; i++) {
@@ -5417,7 +5428,7 @@ case CALL_SUBS_SLG_NOT: {
   
   case GET_RESIDUAL_SCCS: {
 
-    return get_residual_sccs(CTXTc clref_val(ptoc_tag(CTXTc 2)));
+    return get_residual_sccs(CTXTc ptoc_tag(CTXTc 2));
   }
 
   } /* switch */

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.94 2012-10-12 16:42:57 tswift Exp $
+** $Id: loader_xsb.c,v 1.95 2013-01-04 14:56:22 dwarren Exp $
 ** 
 */
 
@@ -1110,6 +1110,7 @@ static byte *loader_foreign(char *filename, FILE *fd, int exp)
 /*									*/
 /************************************************************************/
 
+//extern FILE *logfile;
 static int warned_old_obj = 0;	/* warned the user about old object files ? */
 
 /* See description of magic numbers in foreign.P -- Is ...5 obsolete? */
@@ -1120,7 +1121,14 @@ byte *loader(CTXTdeclc char *file, int exp)
   byte *first_inst = NULL;
 
   fd = fopen(file, "rb"); /* "b" needed for DOS. -smd */
+  //  fprintf(logfile,"opening: %s (%s)\n",file,"rb");
   if (!fd) return NULL;
+  if (flags[LOG_ALL_FILES_USED]) {
+    char current_dir[MAX_CMD_LEN];
+    getcwd(current_dir, MAX_CMD_LEN-1);
+    xsb_log("%s: %s\n",current_dir,file);
+  }
+
   if (flags[HITRACE]) {
     if (file[0] == '.') {
       char dir[200]; char *res;

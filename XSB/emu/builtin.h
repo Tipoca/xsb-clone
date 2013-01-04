@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.h,v 1.114 2012-02-05 16:44:58 tswift Exp $
+** $Id: builtin.h,v 1.115 2013-01-04 14:56:21 dwarren Exp $
 ** 
 */
 
@@ -112,6 +112,7 @@
 #define ALMOST_SEARCH_MODULE     70
 #define EXISTING_FILE_EXTENSION  71
 #define DO_ONCE                  72
+#define INTERN_TERM		 73
 
 /* for efficiency, implemented these in C */
 #define CONGET_TERM	         75

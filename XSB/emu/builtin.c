@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.395 2012-11-21 14:20:58 tswift Exp $
+** $Id: builtin.c,v 1.396 2013-01-04 14:56:21 dwarren Exp $
 **
 */
 
@@ -91,6 +91,7 @@
 #include "table_status_defs.h"
 #include "rw_lock.h"
 #include "deadlock.h"
+#include "struct_intern.h"
 #ifdef ORACLE
 #include "oracle_xsb.h"
 #endif
@@ -493,6 +494,9 @@ DllExport prolog_float call_conv ptoc_number(CTXTdeclc int regnum)
 #ifndef MULTI_THREAD
 static VarString *LSBuff[MAXSBUFFS] = {NULL};
 #endif
+
+#define str_op1 (*tsgSBuff1)
+
 
 /* construct a long string from prolog... concatenates atoms,
 flattening lists and comma-lists, and treating small ints as ascii
@@ -1151,6 +1155,7 @@ void init_builtin_table(void)
   set_builtin_table(EXISTING_FILE_EXTENSION, "existing_file_extension");
 
   set_builtin_table(DO_ONCE, "do_once");
+  set_builtin_table(INTERN_TERM, "intern_term");
 
   set_builtin_table(INCR_EVAL_BUILTIN, "incr_eval"); /* incremental evaluation */
 
@@ -1527,7 +1532,7 @@ int builtin_call(CTXTdeclc byte number)
     int new, disp;
     Psc termpsc, modpsc, newtermpsc;
     Cell arg, term = ptoc_tag(CTXTc 2);
-    XSB_Deref(term);
+    /* XSB_Deref(term); not nec since ptoc_tag derefs */
     if (isref(term)) {
       xsb_instantiation_error(CTXTc "term_new_mod/3",2);
       break;
@@ -1585,7 +1590,7 @@ int builtin_call(CTXTdeclc byte number)
     CPtr arg_loc = clref_val(term)+disp;
     Cell new_val = cell(reg+3);
     int perm_flag = (int)ptoc_int(CTXTc 4);
-    if (disp < 1) xsb_domain_error(CTXTc "positive_integer",ptoc_tag(CTXTc 2),"setarg/3",2);
+    if (disp < 1) xsb_domain_error(CTXTc "positive_integer",ptoc_tag(CTXTc 2),"set_arg/3",2);
     if (perm_flag == 0) {
       pushtrail(arg_loc,new_val);
     } else if (perm_flag < 0) {
@@ -2954,7 +2959,7 @@ case WRITE_OUT_PROFILE:
       Cell addr = ptoc_tag(CTXTc 5);
       if (isref(addr)) {
 	result = ((Float)(EXTRACT_FLOAT_FROM_16_24_24((ptoc_int(CTXTc 2)), (ptoc_int(CTXTc 3)), (ptoc_int(CTXTc 4)))));
-	XSB_Deref(addr);
+	/* XSB_Deref(addr); unnec since ptoc_tag derefs */
 	bind_boxedfloat(((CPtr)addr), result);
       } else {
 	result = ptoc_float(CTXTc 5);
@@ -2984,8 +2989,26 @@ case WRITE_OUT_PROFILE:
   case PRIVATE_BUILTIN:
   {
     //    private_builtin();
+    XSB_StrSet(&str_op1,"");
+    print_pterm(CTXTc ptoc_tag(CTXTc 1),FALSE,&str_op1);
+    printf("%s\n",str_op1.string);
     return TRUE;
   }
+
+  case INTERN_TERM:
+  {
+    prolog_term term;
+    //printf("i\n");
+    term = intern_term(CTXTc ptoc_tag(CTXTc 1));
+    if (term) {
+      //printf("o %p\n",term);
+      return unify(CTXTc term, ptoc_tag(CTXTc 2));
+    } else {    
+      //printf("of\n");
+      return FALSE;
+    }
+  }
+
   case SEGFAULT_HANDLER: { /* Set the desired segfault handler:
 			      +Arg1:  none  - don't catch segfaults;
 				      warn  - warn and exit;
@@ -3465,12 +3488,18 @@ int print_xsb_backtrace(CTXTdecl) {
   return TRUE;
 }
 
+#define MAX_BACKTRACE_LEN 25
 prolog_term build_xsb_backtrace(CTXTdecl) {
   Psc tmp_psc, called_psc;
   byte *tmp_cpreg;
   byte instruction;
   CPtr tmp_ereg, tmp_breg, forward, backward, threg;
   prolog_term backtrace;
+  int backtrace_cnt = 0;
+
+  if (heap_local_overflow(MAX_BACKTRACE_LEN*2*sizeof(Cell))) {
+    return makenil;
+  }
 
   backtrace = makelist(hreg);
   forward = hreg++;
@@ -3484,7 +3513,9 @@ prolog_term build_xsb_backtrace(CTXTdecl) {
     tmp_ereg = ereg;
     tmp_cpreg = cpreg;
     instruction = *(tmp_cpreg-2*sizeof(Cell));
-    while (tmp_cpreg && (instruction == call || instruction == trymeorelse)
+    while (backtrace_cnt++ < MAX_BACKTRACE_LEN 
+	   && tmp_cpreg 
+	   && (instruction == call || instruction == trymeorelse)
 	   && (pb)top_of_localstk > (pb)top_of_heap + 96) {
       if (instruction == call) {
 	called_psc = *((Psc *)tmp_cpreg - 1);

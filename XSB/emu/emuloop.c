@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.233 2012-11-02 19:57:23 dwarren Exp $
+** $Id: emuloop.c,v 1.234 2013-01-04 14:56:21 dwarren Exp $
 ** 
 */
 
@@ -83,7 +83,6 @@
 #include "call_graph_xsb.h" /* incremental evaluation */
 #include "cinterf.h"
 
-// FILE *logfile;
 /*
  * Variable ans_var_pos_reg is a pointer to substitution factor of an
  * answer in the heap.  It is used and set in function
@@ -381,10 +380,6 @@ inline void bld_boxedfloat(CTXTdeclc CPtr addr, Float value) {
 	hbreg = cp_hreg(breg); \
       } 
 
-#define heap_local_overflow(Margin)					\
-  (((top_of_localstk)-hreg)<(Margin))
-  //  ((ereg<ebreg)?((ereg-hreg)<(Margin)):((ebreg-hreg)<(Margin)))
-
 /*----------------------------------------------------------------------*/
 
 extern int  builtin_call(CTXTdeclc byte), unifunc_call(CTXTdeclc int, CPtr);
@@ -520,7 +515,6 @@ char *xsb_segfault_message;
  *  instruction)
  */
 
-
 int emuloop(CTXTdeclc byte *startaddr)
 {
   register CPtr rreg;
@@ -649,6 +643,15 @@ contcase:     /* the main loop */
     Op2(get_xxxc);
     ADVANCE_PC(size_xxxX);
     nunify_with_con(op1,op2);
+  XSB_End_Instr()
+
+  XSB_Start_Instr(getinternstr,_getinternstr) /* PPR-C */
+    Def2ops
+    Op1(Register(get_xxr));
+    Op2(get_xxxc);
+    ADVANCE_PC(size_xxxX);
+    /*printf("called getinternstr\n");*/
+    nunify_with_internstr(op1,op2);
   XSB_End_Instr()
 
   XSB_Start_Instr(getnil,_getnil) /* PPR */
@@ -819,6 +822,21 @@ contcase:     /* the main loop */
       op1 = *(sreg++);
       nunify_with_con(op1,op2);
     }
+  XSB_End_Instr()
+
+  XSB_Start_Instr(uniinternstr,_uniinternstr) /* PPP-C */
+    Def2ops
+    Op2(get_xxxc);
+    ADVANCE_PC(size_xxxX);
+    if (flag) {	/* if (flag == WRITE) */
+      new_heap_node(hreg, (Cell)op2);
+    }
+    else {  
+      /* op2 already set */
+      op1 = *(sreg++);
+      nunify_with_internstr(op1,op2);
+    }
+    printf("called uniinternstr\n");
   XSB_End_Instr()
 
   XSB_Start_Instr(uninil,_uninil) /* PPP */
@@ -1081,6 +1099,14 @@ contcase:     /* the main loop */
     Op1(get_xxxc);
     ADVANCE_PC(size_xxxX);
     new_heap_string(hreg, (char *)op1);
+  XSB_End_Instr()
+
+  XSB_Start_Instr(bldinternstr,_bldinternstr) /* PPP-C */
+    Def1op
+    Op1(get_xxxc);
+    ADVANCE_PC(size_xxxX);
+    printf("called bldinternstr\n");
+    new_heap_node(hreg, (Cell)op1);
   XSB_End_Instr()
 
   XSB_Start_Instr(bldnil,_bldnil) /* PPP */
@@ -1613,7 +1639,7 @@ argument positions.
 	  break;
         }
 	j += j + (int)ihash(op1, (int)op3);
-      }
+	}
       }
     }
     if (j < 0) j = -j;

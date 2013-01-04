@@ -64,6 +64,7 @@
 #include "loader_xsb.h" /* for ZOOM_FACTOR, used in stack expansion */
 #include "tries.h"
 #include "tr_utils.h"
+#include "debug_xsb.h"
 
 #define INCR_DEBUG2
 
@@ -538,6 +539,9 @@ void invalidate_call(CTXTdeclc callnodeptr c){
     dfs_outedges(CTXTc c);
   }
 }
+
+/* to quiet compiler during MT compile, but not clear it will work right for MT... */
+extern void print_subgoal(FILE *, VariantSF);
 
 void print_call_list(calllistptr affected_ptr) {
 
@@ -1229,41 +1233,51 @@ extern void *hashtable1_iterator_key(struct hashtable_itr *);
 void xsb_compute_scc(SCCNode * ,int * ,int,int *,struct hashtable*,int *,int * );
 int return_scc_list(CTXTdeclc SCCNode *, int);
 
-int  get_incr_sccs(CTXTdeclc CPtr listptr) {
-    CPtr orig_listptr;     Cell node;
+int  get_incr_sccs(CTXTdeclc Cell listterm) {
+  Cell orig_listterm, intterm, node;
     long int node_num=0;
     int i = 0, dfn, component = 1;     int * dfn_stack; int dfn_top = 0, ret;
     SCCNode * nodes;
     struct hashtable_itr *itr;     struct hashtable* hasht; 
-
+    XSB_Deref(listterm);
     hasht = create_hashtable1(HASH_TABLE_SIZE, hashid, equalkeys);
-    orig_listptr = listptr;
+    orig_listterm = listterm;
+    intterm = cell(clref_val(listterm));
+    XSB_Deref(intterm);
     //    printf("listptr %p @%p\n",listptr,(CPtr) int_val(*listptr));
-    insert_some(hasht,(void *) int_val(*listptr),(void *) node_num);
+    insert_some(hasht,(void *) oint_val(intterm),(void *) node_num);
     node_num++; 
 
-    listptr = listptr + 1;
-    while (!isnil(*listptr)) {
-      listptr = listptr + 1;
-      node = int_val(*clref_val(listptr));
+    listterm = cell(clref_val(listterm)+1);
+    XSB_Deref(listterm);
+    while (!isnil(listterm)) {
+      intterm = cell(clref_val(listterm));
+      XSB_Deref(intterm);
+      node = oint_val(intterm);
       if (NULL == search_some(hasht, (void *)node)) {
 	insert_some(hasht,(void *)node,(void *)node_num);
 	node_num++;
       }
-      listptr = listptr + 1;
+      listterm = cell(clref_val(listterm)+1);
+      XSB_Deref(listterm);
     }
     nodes = (SCCNode *) mem_calloc(node_num, sizeof(SCCNode),OTHER_SPACE); 
     dfn_stack = (int *) mem_alloc(node_num*sizeof(int),OTHER_SPACE); 
-    listptr = orig_listptr;; 
+    listterm = orig_listterm;; 
     //printf("listptr %p @%p\n",listptr,(void *)int_val(*(listptr)));
-    nodes[0].node = (CPtr) int_val(*(listptr));
-    listptr = listptr + 1;
+    intterm = cell(clref_val(listterm));
+    XSB_Deref(intterm);
+    nodes[0].node = (CPtr) oint_val(intterm);
+    listterm = cell(clref_val(listterm)+1);
+    XSB_Deref(listterm);
     i = 1;
-    while (!isnil(*listptr)) {
-      listptr = listptr + 1;
-      node = int_val(*clref_val(listptr));
+    while (!isnil(listterm)) {
+      intterm = cell(clref_val(listterm));
+      XSB_Deref(intterm);
+      node = oint_val(intterm);
       nodes[i].node = (CPtr) node;
-      listptr = listptr + 1;
+      listterm = cell(clref_val(listterm)+1);
+      XSB_Deref(listterm);
       i++;
     }
     itr = hashtable1_iterator(hasht);       
@@ -1271,11 +1285,11 @@ int  get_incr_sccs(CTXTdeclc CPtr listptr) {
     //      printf("k %p val %p\n",hashtable1_iterator_key(itr),hashtable1_iterator_value(itr));
     //    } while (hashtable1_iterator_advance(itr));
 
-    listptr = orig_listptr;
+    listterm = orig_listterm;
     //    printf("2: k %p v %p\n",(void *) int_val(*listptr),
     //	   search_some(hasht,(void *) int_val(*listptr)));
-    listptr = listptr + 1;
-    //    while (!isnil(*listptr)) {
+
+    //    while (!isnil(*listptr)) {  now all wrong...
     //      listptr = listptr + 1;
     //      node = int_val(*clref_val(listptr));
     //      printf("2: k %p v %p\n",(CPtr) node,search_some(hasht,(void *) node));

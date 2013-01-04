@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: incr_xsb.c,v 1.27 2012-10-30 23:16:01 tswift Exp $
+** $Id: incr_xsb.c,v 1.28 2013-01-04 14:56:22 dwarren Exp $
 ** 
 */
 
@@ -294,7 +294,7 @@ xsbBool incr_eval_builtin(CTXTdecl)
 
   case GET_INCR_SCCS: {
 
-    return get_incr_sccs(CTXTc clref_val(ptoc_tag(CTXTc 2)));
+    return get_incr_sccs(CTXTc ptoc_tag(CTXTc 2));
   }
 
   case IMMED_DEPENDS_PTRLIST: {

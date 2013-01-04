@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.200 2012-10-12 16:42:57 tswift Exp $
+** $Id: biassert.c,v 1.201 2013-01-04 14:56:21 dwarren Exp $
 ** 
 */
 
@@ -228,6 +228,8 @@ static inline void dbgen_printinst(Opcode, Arg1, Arg2)
     xsb_dbgmsg((LOG_ASSERT,"getnumcon - - R%d %d\n", Arg1, Arg2)); break;
   case getfloat:
     xsb_dbgmsg((LOG_ASSERT,"getfloat - - R%d %f\n", Arg1, ofloat_val(Arg2))); break;
+  case getinternstr:
+    xsb_dbgmsg((LOG_ASSERT,"getinternstr - - R%d %p\n", Arg1, Arg2)); break;
   case putstr:
     xsb_dbgmsg((LOG_ASSERT,"putstr - - R%d %s/%d\n", Arg1, get_name((Psc)Arg2), get_arity((Psc)Arg2))); break;
   case getstr:
@@ -248,6 +250,8 @@ static inline void dbgen_printinst(Opcode, Arg1, Arg2)
     xsb_dbgmsg((LOG_ASSERT,"uninumcon - - - %d\n", Arg1)); break;
   case unifloat:
     xsb_dbgmsg((LOG_ASSERT,"unifloat - - - %f\n", ofloat_val(Arg1))); break;
+  case uniinternstr:
+    xsb_dbgmsg((LOG_ASSERT,"uniinternstr - - - %p\n", Arg1)); break;
   case xsb_execute:
     xsb_dbgmsg((LOG_ASSERT,"execute - - - 0x%x\n", Arg1)); break;
   case bldnil:
@@ -788,6 +792,9 @@ static void db_gentopinst(CTXTdeclc prolog_term T0, int Argno, RegStat Reg)
     dbgen_instB_ppvw(getnumcon, Argno, oint_val(T0)); /* getnumcon */
   } else if (isstring(T0)) {
     dbgen_instB_ppvw(getcon, Argno, (Cell)string_val(T0));  /* getcon */
+  } else if (isinternstr(T0)) {
+    //printf("gen getinternstr: %s/%d\n", get_name(get_str_psc(T0)),get_arity(get_str_psc(T0)));
+    dbgen_instB_ppvw(getinternstr, Argno, (Cell)T0);  /* getinternstr */
   } else if (isfloat(T0)) {
     dbgen_instB_ppvw(getfloat, Argno, T0); /* getfloat */
   } else if (isref(T0)) {
@@ -880,6 +887,9 @@ static void db_geninst(CTXTdeclc int unibld, prolog_term Sub, int isLast,
   } else if (isstring(Sub)) {
     if (unibld) {dbgen_instB_pppw(unicon, (Cell)p2c_string(Sub));}
     else {dbgen_instB_pppw(bldcon, (Cell)p2c_string(Sub));}
+    /*  } else if (isinternstr(Sub)) {
+    if (unibld) {dbgen_instB_pppw(uniinternstr, (Cell)Sub);}
+    else {dbgen_instB_pppw(bldinternstr, (Cell)Sub);} ***/
   } else if (isnil(Sub)) {
     if (unibld) {dbgen_instB_ppp(uninil);}
     else {dbgen_instB_ppp(bldnil);}

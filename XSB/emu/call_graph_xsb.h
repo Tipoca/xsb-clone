@@ -65,6 +65,6 @@ extern int  dfs_inedges(CTXTdeclc  callnodeptr, calllistptr *, int);
 extern int  get_outedges_num(CTXTdeclc  callnodeptr);
 extern int immediate_affects_ptrlist(CTXTdeclc callnodeptr);
 extern int immediate_depends_ptrlist(CTXTdeclc callnodeptr);
-extern int  get_incr_sccs(CTXTdeclc CPtr);
+extern int  get_incr_sccs(CTXTdeclc Cell);
 
 #endif

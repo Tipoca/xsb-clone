@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cell_xsb.h,v 1.46 2012-02-18 04:46:54 kifer Exp $
+** $Id: cell_xsb.h,v 1.47 2013-01-04 14:56:21 dwarren Exp $
 ** 
 */
 
@@ -215,6 +215,9 @@ extern unsigned long enc[], dec[];
 #define isfloat(dcell) (cell_tag(dcell)==XSB_FLOAT)	/* dcell -> xsbBool */
 #define isconstr(dcell) (cell_tag(dcell)==XSB_STRUCT)	/* dcell -> xsbBool */
 #define islist(dcell) (cell_tag(dcell)==XSB_LIST)	/* dcell -> xsbBool */
+#define isstr(dcell) (isconstr(dcell) || islist(dcell))
+#define isinternstr(dcell) (isstr(dcell) &&				\
+			    (clref_val(dcell)<(CPtr)glstack.low || clref_val(dcell)>(CPtr)glstack.high))
 #define isattv(dcell) (cell_tag(dcell)==XSB_ATTV)	/* dcell -> xsbBool */
 
 #define is_attv_or_ref(cell) (isref(cell) || isattv(cell))

@@ -20,7 +20,7 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **
-** $Id: flag_defs_xsb.h,v 1.50 2012-07-25 23:17:37 tswift Exp $
+** $Id: flag_defs_xsb.h,v 1.51 2013-01-04 14:56:21 dwarren Exp $
 **
 */
 
@@ -149,6 +149,7 @@ interrupt flag
 #define ABORT_PRE_ACTION          97
 #define LOG_UNINDEXED		  98  /* 0 no logging; 1 log first time only; 2 log every time; 
 					>2 is psc to print backtrace on unindexed access to that psc, every time. */ 
+#define LOG_ALL_FILES_USED	  99  /* log all files at open */
 #define MAX_FLAGS		 100
 
 #define MAXTOINDEX 20              /* maximum depth in term to go when using deep indexing; 
