@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.105 2013-01-04 14:56:21 dwarren Exp $
+** $Id: error_xsb.c,v 1.106 2013-01-09 16:08:52 dwarren Exp $
 ** 
 */
 
@@ -587,7 +587,6 @@ void call_conv xsb_resource_error(CTXTdeclc char *resource,
   char message[ERRMSGLEN];
   size_t ball_len = 10*sizeof(Cell);
 
-  printf("in new xsb_resource_error\n");
   if (heap_local_overflow(ball_len)) {
     xsb_exit("no heap space in xsb_resource_error");
   }
@@ -685,7 +684,6 @@ void call_conv xsb_syntax_error(CTXTdeclc char *message)
   int tid = xsb_thread_self();
 #endif
 
-  printf("in new xsb_syntax_error\n");
   if (heap_local_overflow(ball_len)) {
     xsb_exit("no heap space in xsb_syntax_error");
   }
@@ -790,7 +788,6 @@ void call_conv xsb_new_table_error(CTXTdeclc char *subtype, char *usr_msg,
   char message[ERRMSGLEN];
   size_t ball_len = 10*sizeof(Cell);
 
-  printf("in new xsb_new table_error\n");
   if (heap_local_overflow(ball_len)) {
     xsb_exit("++Unrecoverable Error[XSB/Runtime]: [Resource] Out of memory");
   }
@@ -831,7 +828,6 @@ void call_conv xsb_type_error(CTXTdeclc char *valid_type,Cell culprit,
   char message[ERRMSGLEN];
   size_t ball_len = 10*sizeof(Cell);
 
-  printf("in new xsb_type_error\n");
   if (heap_local_overflow(ball_len)) {
     xsb_exit("no heap space in xsb_type_error");
   }
@@ -871,7 +867,6 @@ void call_conv xsb_unrecoverable_error(CTXTdeclc char *message)
   int tid = xsb_thread_self();
 #endif
 
-  printf("in new xsb_unrecoverable_error\n");
   if (heap_local_overflow(ball_len)) {
     xsb_exit("no heap space in xsb_unrecoverable_error");
   }
