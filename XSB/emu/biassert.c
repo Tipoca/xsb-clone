@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.201 2013-01-04 14:56:21 dwarren Exp $
+** $Id: biassert.c,v 1.202 2013-01-09 20:15:33 dwarren Exp $
 ** 
 */
 
@@ -646,7 +646,7 @@ static int is_frozen_var(CTXTdeclc prolog_term T0, int regster, RegStat Reg, int
       p2c_arity(T0) == 2) {
     if (isref(p2p_arg(T0,1))) {  /* first occurrence */
       if ((*occs = (int)int_val(p2p_arg(T0, 2)) - 1)) {
-	cell(clref_val(T0)+2) = makeint(*occs);
+	get_str_arg(T0,2) = makeint(*occs);
 	*occs = FIRST_OCC_OF_MORE;
 	if (regster < 0) {
 	  regster = reg_get(CTXTc Reg, regster); /* <0->get tempreg else use regster */
@@ -659,7 +659,7 @@ static int is_frozen_var(CTXTdeclc prolog_term T0, int regster, RegStat Reg, int
       c2p_int(CTXTc regster, p2p_arg(T0,1));
     } else {
       if ((*occs = (int)int_val(p2p_arg(T0, 2)) - 1)) {
-	cell(clref_val(T0)+2) = makeint(*occs);
+	get_str_arg(T0,2) = makeint(*occs);
 	*occs = SUBSEQUENT_OCC;
       } else {
 	*occs = LAST_OCC;
@@ -1614,9 +1614,9 @@ static int hash_val(int Ind, prolog_term Head, int TabSize )
 	      if (isboxedinteger(term)) {
 		term = (Cell)boxedint_val(term);
 	      } else if (isboxedfloat(term)) {
-		term = int_val(cell(clref_val(term)+1)) ^
-		  int_val(cell(clref_val(term)+2)) ^
-		  int_val(cell(clref_val(term)+3));
+		term = int_val(get_str_arg(term,1)) ^
+		  int_val(get_str_arg(term,2)) ^
+		  int_val(get_str_arg(term,3));
 	      } else {
 		depth++;
 		argsleft[depth] = get_arity(get_str_psc(term));

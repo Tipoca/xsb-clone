@@ -727,14 +727,14 @@ int in_reg2_list(CTXTdeclc Psc psc) {
   XSB_Deref(list);
   if (isnil(list)) return TRUE; /* if filter is empty, return all */
   while (!isnil(list)) {
-    term = cell(clref_val(list));
+    term = get_list_head(list);
     XSB_Deref(term);
     if (isconstr(term)) {
       if (psc == get_str_psc(term)) return TRUE;
     } else if (isstring(term)) {
       if (get_name(psc) == string_val(term)) return TRUE;
     }
-    list = cell(clref_val(list)+1);
+    list = get_list_tail(list);
   }
   return FALSE;
 }
@@ -1242,41 +1242,41 @@ int  get_incr_sccs(CTXTdeclc Cell listterm) {
     XSB_Deref(listterm);
     hasht = create_hashtable1(HASH_TABLE_SIZE, hashid, equalkeys);
     orig_listterm = listterm;
-    intterm = cell(clref_val(listterm));
+    intterm = get_list_head(listterm);
     XSB_Deref(intterm);
     //    printf("listptr %p @%p\n",listptr,(CPtr) int_val(*listptr));
     insert_some(hasht,(void *) oint_val(intterm),(void *) node_num);
     node_num++; 
 
-    listterm = cell(clref_val(listterm)+1);
+    listterm = get_list_tail(listterm);
     XSB_Deref(listterm);
     while (!isnil(listterm)) {
-      intterm = cell(clref_val(listterm));
+      intterm = get_list_head(listterm);
       XSB_Deref(intterm);
       node = oint_val(intterm);
       if (NULL == search_some(hasht, (void *)node)) {
 	insert_some(hasht,(void *)node,(void *)node_num);
 	node_num++;
       }
-      listterm = cell(clref_val(listterm)+1);
+      listterm = get_list_tail(listterm);
       XSB_Deref(listterm);
     }
     nodes = (SCCNode *) mem_calloc(node_num, sizeof(SCCNode),OTHER_SPACE); 
     dfn_stack = (int *) mem_alloc(node_num*sizeof(int),OTHER_SPACE); 
     listterm = orig_listterm;; 
     //printf("listptr %p @%p\n",listptr,(void *)int_val(*(listptr)));
-    intterm = cell(clref_val(listterm));
+    intterm = get_list_head(listterm);
     XSB_Deref(intterm);
     nodes[0].node = (CPtr) oint_val(intterm);
-    listterm = cell(clref_val(listterm)+1);
+    listterm = get_list_tail(listterm);
     XSB_Deref(listterm);
     i = 1;
     while (!isnil(listterm)) {
-      intterm = cell(clref_val(listterm));
+      intterm = get_list_head(listterm);
       XSB_Deref(intterm);
       node = oint_val(intterm);
       nodes[i].node = (CPtr) node;
-      listterm = cell(clref_val(listterm)+1);
+      listterm = get_list_tail(listterm);
       XSB_Deref(listterm);
       i++;
     }

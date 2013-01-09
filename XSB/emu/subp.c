@@ -877,7 +877,7 @@ int key_compare(CTXTdeclc const void * t1, const void * t2)
 
   XSB_Deref(term1);		/* term1 is not in register! */
   XSB_Deref(term2);		/* term2 is not in register! */
-  return compare(CTXTc (void*)cell(clref_val(term1)+1), (void*)cell(clref_val(term2)+1));
+  return compare(CTXTc (void*)get_str_arg(term1,1), (void*)get_str_arg(term2,1));
 }
 
 /*======================================================================*/

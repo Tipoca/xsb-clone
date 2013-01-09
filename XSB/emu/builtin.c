@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.397 2013-01-04 21:34:45 dwarren Exp $
+** $Id: builtin.c,v 1.398 2013-01-09 20:15:33 dwarren Exp $
 **
 */
 
@@ -518,13 +518,13 @@ void constructString(CTXTdeclc Cell addr, int ivstr)
     xsb_abort("[PTOC_LONGSTRING] Argument %d of illegal type: %s",ivstr,canonical_term(CTXTc addr, 0));
   case XSB_STRUCT:
     if (get_str_psc(addr) == comma_psc) {
-      constructString(CTXTc cell(clref_val(addr)+1),ivstr);
-      addr = cell(clref_val(addr)+2);  /* tail recursion opt */
+      constructString(CTXTc get_str_arg(addr,1),ivstr);
+      addr = get_str_arg(addr,2);  /* tail recursion opt */
       goto constructStringBegin;
     } else xsb_abort("[PTOC_LONGSTRING] Argument %d of illegal type: %s",ivstr,canonical_term(CTXTc addr, 0));
   case XSB_LIST:
-    constructString(CTXTc cell(clref_val(addr)),ivstr);
-    addr = cell(clref_val(addr)+1);  /* tail recursion opt */
+    constructString(CTXTc get_list_head(addr),ivstr);
+    addr = get_list_tail(addr);  /* tail recursion opt */
     goto constructStringBegin;
   case XSB_INT:
     val = (int)int_val(addr);
@@ -686,9 +686,9 @@ Cell  val_to_hash(Cell term)
       //the float bits, and XOR them together
       else if (isboxedfloat(term))
       {
-          value = int_val(cell(clref_val(term)+1)) ^
-                    int_val(cell(clref_val(term)+2)) ^
-                    int_val(cell(clref_val(term)+3));
+	value = int_val(get_str_arg(term,1)) ^
+	  int_val(get_str_arg(term,2)) ^
+	  int_val(get_str_arg(term,3));
           break;
       }
       //but if this structure isn't any special boxed representation, then we use its PSC as
@@ -734,9 +734,9 @@ Cell  det_val_to_hash(Cell term)
       //the float bits, and XOR them together
       else if (isboxedfloat(term))
       {
-          value = int_val(cell(clref_val(term)+1)) ^
-                    int_val(cell(clref_val(term)+2)) ^
-                    int_val(cell(clref_val(term)+3));
+	value = int_val(get_str_arg(term,1)) ^
+	  int_val(get_str_arg(term,2)) ^
+	  int_val(get_str_arg(term,3));
           break;
       }
       //but if this structure isn't any special boxed representation, then we hash its name for
@@ -756,11 +756,11 @@ Cell  det_val_to_hash(Cell term)
 
 /* -------------------------------------------------------------------- */
 
-int ground(CPtr temp)
+int ground(Cell temp)
 {
  int j, arity;
  groundBegin:
-  XSB_CptrDeref(temp);
+  XSB_Deref(temp);
   switch(cell_tag(temp)) {
   case XSB_FREE:
   case XSB_REF1:
@@ -773,18 +773,18 @@ int ground(CPtr temp)
     return TRUE;
 
   case XSB_LIST:
-    if (!ground(clref_val(temp)))
+    if (!ground(get_list_head(temp)))
       return FALSE;
-    temp = clref_val(temp)+1;
+    temp = get_list_tail(temp);
     goto groundBegin;
 
   case XSB_STRUCT:
     arity = (int) get_arity(get_str_psc(temp));
     if (arity == 0) return TRUE;
     for (j=1; j < arity ; j++)
-      if (!ground(clref_val(temp)+j))
+      if (!ground(get_str_arg(temp,j)))
 	return FALSE;
-    temp = clref_val(temp)+arity;
+	  temp = get_str_arg(temp,arity);
     goto groundBegin;
 
   default:
@@ -803,7 +803,7 @@ int is_proper_list(Cell term)	/* for standard preds */
   addr = term;
   XSB_Deref(addr);
   while (islist(addr)) {
-    addr = cell(clref_val(addr)+1);
+    addr = get_list_tail(addr);
     XSB_Deref(addr);
   }
   return isnil(addr);
@@ -872,14 +872,14 @@ int is_most_general_term(Cell term)
 
       mini_trail.ltrail_top = mini_trail_base = ltrail_base(mini_trail);
       while (islist(term)) {
-	addr = cell(clref_val(term));
+	addr = get_list_head(term);
 	XSB_Deref(addr);
 	if (isnonvar(addr)) {
 	  undo_ltrail_bindings(&mini_trail,mini_trail_base);
 	  return FALSE;
 	} else {
 	  local_bind_var(addr,&mini_trail);
-	  term = cell(clref_val(term)+1);
+	  term = get_list_tail(term);
 	  XSB_Deref(term);
 	}
       }
@@ -905,14 +905,14 @@ int count_variable_occurrences(Cell term) {
     arity = (int) get_arity(get_str_psc(term));
     if (arity == 0) return count;
     for (i = 1; i < arity; i++) {
-      count += count_variable_occurrences(cell(clref_val(term)+i));
+      count += count_variable_occurrences(get_str_arg(term,i));
     }
-    term = cell(clref_val(term)+arity);
+    term = get_str_arg(term,arity);
   }
     goto begin_count_variable_occurrences;
   case XSB_LIST:
-    count += count_variable_occurrences(cell(clref_val(term)));
-    term = cell(clref_val(term)+1);
+    count += count_variable_occurrences(get_list_head(term));
+    term = get_list_tail(term);
     goto begin_count_variable_occurrences;
   case XSB_FLOAT:
   case XSB_STRING:
@@ -940,14 +940,14 @@ int make_ground(Cell term, struct ltrail *templ_trail) {
     int i, arity;
     arity = (int) get_arity(get_str_psc(term));
     for (i = 1; i < arity; i++) {
-      make_ground(cell(clref_val(term)+i), templ_trail);
+      make_ground(get_str_arg(term,i), templ_trail);
     }
-    term = cell(clref_val(term)+arity);
+    term = get_str_arg(term,arity);
   }
     goto begin_make_ground;
   case XSB_LIST:
-    make_ground(cell(clref_val(term)), templ_trail);
-    term = cell(clref_val(term)+1);
+    make_ground(get_list_head(term), templ_trail);
+    term = get_list_tail(term);
     goto begin_make_ground;
   case XSB_FLOAT:
   case XSB_STRING:
@@ -978,29 +978,29 @@ CPtr excess_vars(CTXTdeclc Cell term, CPtr varlist, struct ltrail *templ_trail, 
     if (psc == caret_psc) {
       CPtr *save_templ_base;
       save_templ_base = templ_trail->ltrail_top;
-      make_ground(cell(clref_val(term)+1), templ_trail);
-      varlist = excess_vars(CTXTc cell(clref_val(term)+2), varlist, templ_trail, var_trail);
+      make_ground(get_str_arg(term,1), templ_trail);
+      varlist = excess_vars(CTXTc get_str_arg(term,2), varlist, templ_trail, var_trail);
       undo_ltrail_bindings(templ_trail,save_templ_base);
       return varlist;
     }
     if (psc == setof_psc || psc == bagof_psc) {
       CPtr *save_templ_base;
       save_templ_base = templ_trail->ltrail_top;
-      make_ground(cell(clref_val(term)+1), templ_trail);
-      varlist = excess_vars(CTXTc cell(clref_val(term)+2),varlist,templ_trail,var_trail);
-      varlist = excess_vars(CTXTc cell(clref_val(term)+3),varlist,templ_trail,var_trail);
+      make_ground(get_str_arg(term,1), templ_trail);
+      varlist = excess_vars(CTXTc get_str_arg(term,2),varlist,templ_trail,var_trail);
+      varlist = excess_vars(CTXTc get_str_arg(term,3),varlist,templ_trail,var_trail);
       undo_ltrail_bindings(templ_trail,save_templ_base);
       return varlist;
     }
       for (i = 1; i < arity; i++) {
-	varlist = excess_vars(CTXTc cell(clref_val(term)+i), varlist, templ_trail, var_trail);
+	varlist = excess_vars(CTXTc get_str_arg(term,i), varlist, templ_trail, var_trail);
       }
-      term = cell(clref_val(term)+arity);
+      term = get_str_arg(term,arity);
   }
     goto begin_excess_vars;
   case XSB_LIST:
-    varlist = excess_vars(CTXTc cell(clref_val(term)), varlist, templ_trail, var_trail);
-    term = cell(clref_val(term)+1);
+    varlist = excess_vars(CTXTc get_list_head(term), varlist, templ_trail, var_trail);
+    term = get_list_tail(term);
     goto begin_excess_vars;
   case XSB_FLOAT:
   case XSB_STRING:
@@ -1547,7 +1547,7 @@ int builtin_call(CTXTdeclc byte number)
     modpsc = pair_psc(insert_module(0,ptoc_string(CTXTc 1)));
     /*    if (!colon_psc) colon_psc = pair_psc(insert(":",2,global_mod,&new));*/
     while (termpsc == colon_psc) {
-      term = cell(clref_val(term)+2);
+      term = get_str_arg(term,2);
       XSB_Deref(term);
       termpsc = term_psc(term);
     }
@@ -1559,7 +1559,7 @@ int builtin_call(CTXTdeclc byte number)
     ctop_constr(CTXTc 3, (Pair)hreg);
     new_heap_functor(hreg, newtermpsc);
     for (disp=1; disp <= get_arity(newtermpsc); disp++) {
-      arg = cell(clref_val(term)+disp);
+      arg = get_str_arg(term,disp);
       nbldval_safe(arg); /* but really isnt.  should change to nbldval and resolve issues. */
     }
   }
@@ -1579,7 +1579,7 @@ int builtin_call(CTXTdeclc byte number)
   case TERM_ARG: {	/* R1: +term; R2: index (+int); R3: arg (-term) */
     size_t  disp = ptoc_int(CTXTc 2);
     Cell term = ptoc_tag(CTXTc 1);
-    ctop_tag(CTXTc 3, cell(clref_val(term)+disp));
+    ctop_tag(CTXTc 3, get_str_arg(term,disp));
     break;
   }
 
@@ -1774,14 +1774,14 @@ int builtin_call(CTXTdeclc byte number)
       char *goalname;
       CPtr addr;
       if (psc == colon_psc) {
-	Cell modstring = cell(clref_val(goal)+1);
+	Cell modstring = get_str_arg(goal,1);
 	XSB_Deref(modstring);
 	if (!isstring(modstring)) {
 	  xsb_type_error(CTXTc "module",goal,"call/n",1);
 	  return FALSE;
 	}
 	modpsc = pair_psc(insert_module(0,string_val(modstring)));
-	goal = cell(clref_val(goal)+2);
+	goal = get_str_arg(goal,2);
 	XSB_Deref(goal);
 	if (!isstring(goal)) {
 	  psc = get_str_psc(goal);
@@ -2242,7 +2242,7 @@ int builtin_call(CTXTdeclc byte number)
     break;
   }
   case GROUND:
-    return ground((CPtr)ptoc_tag(CTXTc 1));
+    return ground(ptoc_tag(CTXTc 1));
 
   case PSC_INIT_INFO: {
     Psc psc = (Psc)ptoc_addr(1);
@@ -2470,7 +2470,7 @@ case WRITE_OUT_PROFILE:
     XSB_Deref(startvlist);
     while (!isnil(startvlist)) {
       if (islist(startvlist)) {
-	ovar = cell(clref_val(startvlist));
+	ovar = get_list_head(startvlist);
 	XSB_Deref(ovar);
 	if (isref(ovar) || isattv(ovar)) {
 	  if (isattv(ovar)) ovar = dec_addr(ovar);
@@ -2478,7 +2478,7 @@ case WRITE_OUT_PROFILE:
 	  bld_ref(hreg++,ovar);
 	  local_bind_var(ovar, &var_trail);
 	  tanslist = hreg++;
-	  startvlist = (Cell) cell(clref_val(startvlist)+1);
+	  startvlist = get_list_tail(startvlist);
 	  XSB_Deref(startvlist);
 	} else {xsb_error("Excess_vars: arg 3 must be a list of variables"); break;}
       } else {xsb_error("Excess_vars: arg 3 must be a list"); break;}

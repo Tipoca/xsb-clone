@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.234 2013-01-04 14:56:21 dwarren Exp $
+** $Id: emuloop.c,v 1.235 2013-01-09 20:15:34 dwarren Exp $
 ** 
 */
 
@@ -389,7 +389,7 @@ extern Pair build_call(CTXTdeclc Psc);
 extern int is_proper_list(Cell term);
 extern int is_most_general_term(Cell term);
 extern int is_number_atom(Cell term);
-extern int ground(CPtr term);
+extern int ground(Cell term);
 
 extern void log_prog_ctr(byte *);
 
@@ -457,8 +457,8 @@ static inline xsbBool occurs_in_list_or_struc(Cell Var, Cell Term) {
     return FALSE;
   case XSB_LIST: {
     if (Var == (Cell)clref_val(Term) || Var == (Cell)((CPtr)clref_val(Term)+1)) return TRUE;
-    if (occurs_in_list_or_struc(Var,(Cell)clref_val(Term))) return TRUE;
-    Term = (Cell)(clref_val(Term) + 1);
+    if (occurs_in_list_or_struc(Var,get_list_head(Term))) return TRUE;
+    Term = get_list_tail(Term);
     goto rec_occurs_in;
   }
   case XSB_STRUCT: {
@@ -467,9 +467,9 @@ static inline xsbBool occurs_in_list_or_struc(Cell Var, Cell Term) {
     if (arity == 0) return FALSE;
     if (Var > (Cell)clref_val(Term) && Var <= (Cell)((CPtr)clref_val(Term)+arity)) return TRUE;
     for (i = 1; i < arity; i++) {
-      if (occurs_in_list_or_struc(Var,(Cell) (clref_val(Term) +i))) return TRUE;
+      if (occurs_in_list_or_struc(Var,get_str_arg(Term,i))) return TRUE;
     }
-    Term = (Cell)(clref_val(Term)+arity);
+    Term = get_str_arg(Term,arity);
     goto rec_occurs_in;
   }
   }
@@ -1469,7 +1469,7 @@ contcase:     /* the main loop */
 #define struct_hash_value(op1) \
    (isboxedinteger(op1)?boxedint_val(op1): \
     (isboxedfloat(op1)?  \
-     int_val(cell(clref_val(op1)+1)) ^ int_val(cell(clref_val(op1)+2)) ^ int_val(cell(clref_val(op1)+3)): \
+     int_val(get_str_arg(op1,1)) ^ int_val(get_str_arg(op1,2)) ^ int_val(get_str_arg(op1,3)): \
      (Cell)get_str_psc(op1)))
 
   XSB_Start_Instr(switchonbound,_switchonbound) /* PPR-L-L */
@@ -1594,9 +1594,9 @@ argument positions.
 	    case XSB_STRUCT:
 	      if (isboxedinteger(op1)) op1 = (Cell)boxedint_val(op1);
 	      else if (isboxedfloat(op1)) 
-		op1 = int_val(cell(clref_val(op1)+1)) ^
-		  int_val(cell(clref_val(op1)+2)) ^
-		  int_val(cell(clref_val(op1)+3));
+		op1 = int_val(get_str_arg(op1,1)) ^
+		  int_val(get_str_arg(op1,2)) ^
+		  int_val(get_str_arg(op1,3));
 	      else {
 		depth++;
 		argsleft[depth] = get_arity(get_str_psc(op1));
@@ -2802,7 +2802,7 @@ argument positions.
       jump_cond_fail(is_number_atom(op2));
       break;
     case GROUND_TEST:
-      jump_cond_fail(ground((CPtr) op2));
+      jump_cond_fail(ground(op2));
       break;
     default: 
       xsb_error("Undefined jumpcof condition");

@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.c,v 1.103 2013-01-04 14:56:22 dwarren Exp $
+** $Id: io_builtins_xsb.c,v 1.104 2013-01-09 20:15:34 dwarren Exp $
 ** 
 */
 
@@ -872,7 +872,7 @@ Cell read_canonical_return_var(CTXTdeclc int code) {
   } else if (code == 2) { /* from odbc */
     Cell op1, op;
     op = ptoc_tag(CTXTc 4);
-    op1 = cell(clref_val(op)+1);
+    op1 = get_str_arg(op,1);
     XSB_Deref(op1);
     return op1;
   } else return (Cell)NULL;
@@ -1850,7 +1850,7 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
       }
       if (letter_flag && (get_str_psc(prologterm) == dollar_var_psc)) {
 	int ival, letter;
-	Cell tempi = cell(clref_val(prologterm)+1);
+	Cell tempi = get_str_arg(prologterm,1);
 	XSB_Deref(tempi);
 	if (!isointeger(tempi)) xsb_abort("[write_canonical]: illegal $VAR argument");
 	ival = (int)int_val(tempi);
@@ -1874,33 +1874,33 @@ int call_conv write_canonical_term_rec(CTXTdeclc Cell prologterm, int letter_fla
 	} else XSB_StrAppend(wcan_string,fnname);
 	XSB_StrAppendC(wcan_string,'(');
 	for (i = 1; i < get_arity(get_str_psc(prologterm)); i++) {
-	  if (!write_canonical_term_rec(CTXTc cell(clref_val(prologterm)+i),letter_flag)) {
+	  if (!write_canonical_term_rec(CTXTc get_str_arg(prologterm,i),letter_flag)) {
 	    XSB_StrAppend(wcan_string,"?ERROR?");
 	    return FALSE;
 	  }
 	  XSB_StrAppendC(wcan_string,',');
 	}
 	close_paren_count++; /* count parens so can do tail recursion */
-	prologterm = cell(clref_val(prologterm)+i);
+	prologterm = get_str_arg(prologterm,i);
 	goto write_canonical_term_rec_begin;
       }
       break;
     case XSB_LIST:
       {Cell tail;
       XSB_StrAppendC(wcan_string,'[');
-      if (!write_canonical_term_rec(CTXTc cell(clref_val(prologterm)),letter_flag)) {
+      if (!write_canonical_term_rec(CTXTc get_list_head(prologterm),letter_flag)) {
 	XSB_StrAppend(wcan_string,"?ERROR?");
 	return FALSE;
       }
-      tail = cell(clref_val(prologterm)+1);
+      tail = get_list_tail(prologterm);
       XSB_Deref(tail);
       while (islist(tail)) {
 	XSB_StrAppendC(wcan_string,',');
-	if (!write_canonical_term_rec(CTXTc cell(clref_val(tail)),letter_flag)) {
+	if (!write_canonical_term_rec(CTXTc get_list_head(tail),letter_flag)) {
 	  XSB_StrAppend(wcan_string,"?ERROR?");
 	  return FALSE;
 	}
-	tail = cell(clref_val(tail)+1);
+	tail = get_list_tail(tail);
 	XSB_Deref(tail);
       } 
       if (!isnil(tail)) {

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.177 2012-11-29 18:19:43 tswift Exp $
+** $Id: tries.c,v 1.178 2013-01-09 20:15:34 dwarren Exp $
 ** 
 */
 
@@ -776,15 +776,15 @@ BTNptr get_next_trie_solution(ALNptr *NextPtrPtr)
       break;								\
     case XSB_LIST:							\
       one_btn_chk_ins(flag, EncodeTrieList(xtemp1), TrieType);		\
-      pdlpush(cell(clref_val(xtemp1)+1));				\
-      pdlpush(cell(clref_val(xtemp1)));					\
+      pdlpush(get_list_tail(xtemp1));					\
+      pdlpush(get_list_head(xtemp1));					\
       break;								\
     case XSB_STRUCT:							\
-      psc = (Psc) follow(cs_val(xtemp1));				\
+      psc = get_str_psc(xtemp1);					\
       item = makecs(psc);						\
       one_btn_chk_ins(flag, item, TrieType);				\
       for (j = get_arity(psc); j>=1 ; j--) {				\
-	pdlpush(cell(clref_val(xtemp1)+j));				\
+	pdlpush(get_str_arg(xtemp1,j));					\
       }									\
       break;								\
     case XSB_ATTV:							\
@@ -904,12 +904,12 @@ static int *depth_stack;
 	sprintCyclicRegisters(CTXTc buffer,TIF_PSC(subg_tif_ptr(subgoal_ptr)));	\
 	xsb_warn("Exceeded max answer term depth of %d in call %s\n",	\
 		 (int)depth_limit,buffer);				\
-	psc = (Psc) follow(cs_val(xtemp1));				\
+	psc = get_str_psc(xtemp1);					\
 	depth_stack_push(get_arity(psc));				\
 	item = makecs(psc);						\
 	one_btn_chk_ins(found_flag, item, BASIC_ANSWER_TRIE_TT);	\
 	for (j = get_arity(psc); j>=1 ; j--) {				\
-	  pdlpush(cell(clref_val(xtemp1)+j));				\
+	  pdlpush(get_str_arg(xtemp1,j));				\
 	}								\
       }									\
       else if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_FAILURE) {		\
@@ -934,12 +934,12 @@ static int *depth_stack;
       }									\
     }									\
     else 	{							\
-      psc = (Psc) follow(cs_val(xtemp1));				\
+      psc = get_str_psc(xtemp1);					\
       depth_stack_push(get_arity(psc));					\
       item = makecs(psc);						\
       one_btn_chk_ins(found_flag, item, BASIC_ANSWER_TRIE_TT);		\
       for (j = get_arity(psc); j>=1 ; j--) {				\
-	pdlpush(cell(clref_val(xtemp1)+j));				\
+	pdlpush(get_str_arg(xtemp1,j));					\
       }									\
     }									\
   }
@@ -1009,8 +1009,8 @@ static int *depth_stack;
     case XSB_LIST:							\
       CHECK_ANSWER_LIST_DEPTH;						\
       one_btn_chk_ins(flag, EncodeTrieList(xtemp1), TrieType);		\
-      pdlpush(cell(clref_val(xtemp1)+1));				\
-      pdlpush(cell(clref_val(xtemp1)));					\
+      pdlpush(get_list_tail(xtemp1));					\
+      pdlpush(get_list_head(xtemp1));					\
       break;								\
     case XSB_STRUCT:							\
       CHECK_ANSWER_TERM_DEPTH;						\
@@ -1252,17 +1252,17 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
     case XSB_LIST:
       //      printf("VAS List \n");
       one_btn_chk_ins(found_flag, EncodeTrieList(xtemp1), BASIC_ANSWER_TRIE_TT);
-      pdlpush(cell(clref_val(xtemp1)+1));
-      pdlpush(cell(clref_val(xtemp1)));
+      pdlpush(get_list_tail(xtemp1));
+      pdlpush(get_list_head(xtemp1));
       recvariant_trie_ans_subsf(found_flag, BASIC_ANSWER_TRIE_TT);
       break;
     case XSB_STRUCT:
-      psc = (Psc)follow(cs_val(xtemp1));
+      psc = get_str_psc(xtemp1);
       item = makecs(psc);
       depth_stack_push(get_arity(psc));;
       one_btn_chk_ins(found_flag, item, BASIC_ANSWER_TRIE_TT);
       for (j = get_arity(psc); j >= 1 ; j--) {
-	pdlpush(cell(clref_val(xtemp1)+j));
+	pdlpush(get_str_arg(xtemp1,j));
       }
       recvariant_trie_ans_subsf(found_flag, BASIC_ANSWER_TRIE_TT);
       break;
@@ -1429,14 +1429,14 @@ BTNptr delay_chk_insert(CTXTdeclc int arity, CPtr cptr, CPtr *hook)
         break;
       case XSB_LIST:
         one_btn_chk_ins(flag, EncodeTrieList(xtemp1), DELAY_TRIE_TT);
-        pdlpush(cell(clref_val(xtemp1)+1));
-        pdlpush(cell(clref_val(xtemp1)));
+        pdlpush(get_list_tail(xtemp1));
+        pdlpush(get_list_head(xtemp1));
         recvariant_trie(flag,DELAY_TRIE_TT);
         break;
       case XSB_STRUCT:
         one_btn_chk_ins(flag, makecs(follow(cs_val(xtemp1))),DELAY_TRIE_TT);
-        for (j = get_arity((Psc)follow(cs_val(xtemp1))); j >= 1 ; j--) {
-          pdlpush(cell(clref_val(xtemp1)+j));
+        for (j = get_arity(get_str_psc(xtemp1)); j >= 1 ; j--) {
+          pdlpush(get_str_arg(xtemp1,j));
         }
         recvariant_trie(flag,DELAY_TRIE_TT);
         break;
@@ -1779,6 +1779,7 @@ int vcs_tnot_call = 0;
 		pdlpush( cell(clref_val(xtemp1)) );				*/ \
 	/*	printf("pushing L1 %p\n",clref_val(xtemp1)+1);		*/ \
 	/*	printf("pushing L2 %p\n",clref_val(xtemp1));			*/ \
+	/* note address of tail and head, not tail and head themselve! */ \
 	pdlpush( (Cell) (clref_val(xtemp1)+1) );			\
 	pdlpush( (Cell) clref_val(xtemp1) );				\
       } 								\
@@ -1954,14 +1955,13 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
       break;
     case XSB_LIST:
       one_btn_chk_ins(flag, EncodeTrieList(call_arg), CALL_TRIE_TT);
-      /*      pdlpush(cell(clref_val(call_arg)+1));
-	      pdlpush(cell(clref_val(call_arg)));*/
+      /* must use addrs of cells, since depth-abstraction need addrs! */
 	pdlpush( (Cell) (clref_val(call_arg)+1) );			
 	pdlpush( (Cell) clref_val(call_arg) );				
       recvariant_call(flag,CALL_TRIE_TT,call_arg);
       break;
     case XSB_STRUCT:
-      psc = (Psc)follow(cs_val(call_arg));
+      psc = get_str_psc(call_arg);
       item = makecs(psc);
       one_btn_chk_ins(flag, item, CALL_TRIE_TT);
       for (j=get_arity(psc); j>=1 ; j--) {
@@ -2146,16 +2146,16 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
     case XSB_LIST:							\
       CHECK_TRIE_INTERN_LIST_DEPTH;					\
       one_interned_node_chk_ins(flag, EncodeTrieList(xtemp1), TrieType); \
-      pdlpush(cell(clref_val(xtemp1)+1));				\
-      pdlpush(cell(clref_val(xtemp1)));					\
+      pdlpush(get_list_tail(xtemp1));					\
+      pdlpush(get_list_head(xtemp1));					\
       break;								\
     case XSB_STRUCT:							\
       CHECK_TRIE_INTERN_TERM_DEPTH;					\
-      psc = (Psc) follow(cs_val(xtemp1));				\
+      psc = get_str_psc(xtemp1);					\
       item = makecs(psc);						\
       one_interned_node_chk_ins(flag, item, TrieType);				\
       for (j = get_arity(psc); j>=1 ; j--) {				\
-	pdlpush(cell(clref_val(xtemp1)+j));				\
+	pdlpush(get_str_arg(xtemp1,j));					\
       }									\
       break;								\
     case XSB_ATTV:							\
@@ -2256,14 +2256,14 @@ BTNptr trie_intern_chk_ins(CTXTdeclc Cell term, BTNptr *hook, int *flagptr, int 
       break;
     case XSB_LIST:
       one_interned_node_chk_ins(flag, EncodeTrieList(xtemp1), INTERN_TRIE_TT);
-      pdlpush(cell(clref_val(xtemp1)+1));
-      pdlpush(cell(clref_val(xtemp1)));
+      pdlpush(get_list_tail(xtemp1));
+      pdlpush(get_list_head(xtemp1));
       recvariant_trie_intern(flag,INTERN_TRIE_TT);
       break;
     case XSB_STRUCT:
       one_interned_node_chk_ins(flag, makecs(follow(cs_val(xtemp1))),INTERN_TRIE_TT);
-      for (j = get_arity((Psc)follow(cs_val(xtemp1))); j >= 1 ; j--) {
-	pdlpush(cell(clref_val(xtemp1)+j));
+      for (j = get_arity(get_str_psc(xtemp1)); j >= 1 ; j--) {
+	pdlpush(get_str_arg(xtemp1,j));
       }
       recvariant_trie_intern(flag,INTERN_TRIE_TT);
       break;
@@ -2376,15 +2376,15 @@ BTNptr trie_assert_chk_ins(CTXTdeclc CPtr termptr, BTNptr root, int *flagptr)
       break;
     case XSB_LIST:
       one_btn_chk_ins(flag, EncodeTrieList(xtemp1), ASSERT_TRIE_TT);
-      pdlpush(cell(clref_val(xtemp1)+1));
-      pdlpush(cell(clref_val(xtemp1)));
+      pdlpush(get_list_tail(xtemp1));
+      pdlpush(get_list_head(xtemp1));
       recvariant_trie(flag,ASSERT_TRIE_TT);
       break;
     case XSB_STRUCT:
-      psc = (Psc) follow(cs_val(xtemp1));
+      psc = get_str_psc(xtemp1);
       one_btn_chk_ins(flag, makecs(psc),ASSERT_TRIE_TT);
       for (j = get_arity(psc); j >= 1 ; j--) {
-	pdlpush(cell(clref_val(xtemp1)+j));
+	pdlpush(get_str_arg(xtemp1,j));
       }
       recvariant_trie(flag,ASSERT_TRIE_TT);
       break;

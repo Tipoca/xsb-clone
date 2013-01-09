@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.112 2012-11-01 15:53:04 dwarren Exp $
+** $Id: cinterf.c,v 1.113 2013-01-09 20:15:34 dwarren Exp $
 **
 */
 
@@ -307,7 +307,7 @@ DllExport prolog_term call_conv p2p_arg(prolog_term term, int argno)
 {
     Cell t = (Cell)term;
     XSB_Deref(t);
-    t = cell(clref_val(t)+argno);
+    t = get_str_arg(t,argno);
     XSB_Deref(t);
     return (prolog_term)t;
 }
@@ -316,7 +316,7 @@ DllExport prolog_term call_conv p2p_car(prolog_term term)
 {
     Cell t = (Cell)term;
     XSB_Deref(t);
-    t = cell(clref_val(t));
+    t = get_list_head(t);
     XSB_Deref(t);
     return (prolog_term)t;
 }
@@ -325,7 +325,7 @@ DllExport prolog_term call_conv p2p_cdr(prolog_term term)
 {
     Cell t = (Cell)term;
     XSB_Deref(t);
-    t = cell(clref_val(t)+1);
+    t = get_list_tail(t);
     XSB_Deref(t);
     return (prolog_term)t;
 }

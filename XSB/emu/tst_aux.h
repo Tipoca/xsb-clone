@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_aux.h,v 1.20 2012-11-29 18:08:11 tswift Exp $
+** $Id: tst_aux.h,v 1.21 2013-01-09 20:15:34 dwarren Exp $
 ** 
 */
 
@@ -100,11 +100,11 @@ extern DynamicStack tstTermStack;
 
 #define TermStack_PushFunctorArgs(CS_Cell)                   \
    TermStack_PushLowToHighVector( clref_val(CS_Cell) + 1,    \
-				  get_arity((Psc)*clref_val(CS_Cell)) )
+				  get_arity(get_str_psc(CS_Cell)) )
 
 #define TermStack_PushAbstractFunctorArgs(CS_Cell)                   \
   TermStack_PushAbstractLowToHighVector( (clref_val(CS_Cell) + 1),      \
-					 get_arity((Psc)*clref_val(CS_Cell)) )
+					 get_arity(get_str_psc(CS_Cell)) )
 
 // Used for subsumptive answer trie      
 #define TermStack_PushListArgs(LIST_Cell) {	\
@@ -407,7 +407,7 @@ extern DynamicStack tstSymbolStack;
        Symbol = EncodeNewTrieAttv(StdVarNum);			\
        StdVarNum++;						\
        /*       fprintf(stddbg,"  Attv attribute %p",clref_val(subterm)+1);printterm(stddbg,*(clref_val(subterm)+1),25);fprintf(stddbg,"\n"); */ \
-       TermStack_Push(*(clref_val(subterm)+1));				\
+       TermStack_Push(cell(clref_val(subterm)+1));				\
      }								\
      else							\
        Symbol = EncodeTrieVar(IndexOfStdVar(subterm));		\

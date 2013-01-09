@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.80 2012-12-08 18:21:36 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.81 2013-01-09 20:15:34 dwarren Exp $
 **
 */
 
@@ -1756,7 +1756,7 @@ int GetColumn(CTXTdecl)
     new_heap_free(hreg);
     if (isconstr(op) && get_arity(get_str_psc(op)) == 1) 
       /* for "string" and "term"... */
-      return unify(CTXTc cell(clref_val(op)+1),nullterm);
+      return unify(CTXTc get_str_arg(op,1),nullterm);
     else return unify(CTXTc op,nullterm);
   }
 
@@ -1775,7 +1775,7 @@ int GetColumn(CTXTdecl)
       return unify(CTXTc op, makestring(string_find(cur->Data[ColCurNum],1)));
     if (isconstr(op) && get_arity(get_str_psc(op)) == 1) {
       if (!strcmp(get_name(get_str_psc(op)),"string")) {
-	return unify(CTXTc cell(clref_val(ptoc_tag(CTXTc 4))+1),  /* op might have moved! */
+	return unify(CTXTc get_str_arg(ptoc_tag(CTXTc 4),1),  /* op might have moved! */
 		     build_codes_list(CTXTc cur->Data[ColCurNum]));
       } else {
 	STRFILE strfile;
@@ -1803,7 +1803,7 @@ int GetColumn(CTXTdecl)
       return unify(CTXTc op, makestring(string_find(cur->Data[ColCurNum],1)));
     if (isconstr(op) && get_arity(get_str_psc(op)) == 1) {
       if (!strcmp(get_name(get_str_psc(op)),"string")) {
-	return unify(CTXTc cell(clref_val(ptoc_tag(CTXTc 4))+1),  /* op might have moved! */
+	return unify(CTXTc get_str_arg(ptoc_tag(CTXTc 4),1),  /* op might have moved! */
 		     build_codes_list(CTXTc cur->Data[ColCurNum]));
       } else {
 	STRFILE strfile;

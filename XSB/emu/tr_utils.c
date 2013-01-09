@@ -4899,40 +4899,40 @@ int  get_residual_sccs(CTXTdeclc Cell listterm) {
     orig_listterm = listterm;
     hasht = create_hashtable1(HASH_TABLE_SIZE, hashid, equalkeys);
     //    printf("listptr %p @%p\n",listptr,(CPtr) int_val(*listptr));
-    intterm = cell(clref_val(listterm));
+    intterm = get_list_head(listterm);
     XSB_Deref(intterm);
     insert_some(hasht,(void *) oint_val(intterm),(void *) node_num);
     node_num++; 
 
-    listterm = cell(clref_val(listterm)+1);
+    listterm = get_list_tail(listterm);
     XSB_Deref(listterm);
     while (!isnil(listterm)) {
-      intterm = cell(clref_val(listterm));
+      intterm = get_list_head(listterm);
       XSB_Deref(intterm);
       node = oint_val(intterm);
       if (NULL == search_some(hasht, (void *)node)) {
 	insert_some(hasht,(void *)node,(void *)node_num);
 	node_num++;
       }
-      listterm = cell(clref_val(listterm)+1);
+      listterm = get_list_tail(listterm);
       XSB_Deref(listterm);
     }
     nodes = (SCCNode *) mem_calloc(node_num, sizeof(SCCNode),OTHER_SPACE); 
     dfn_stack = (int *) mem_alloc(node_num*sizeof(int),OTHER_SPACE); 
     listterm = orig_listterm;; 
     //    printf("listptr %p @%p\n",listptr,(void *)int_val(*(listptr)));
-    intterm = cell(clref_val(listterm));
+    intterm = get_list_head(listterm);
     XSB_Deref(intterm);
     nodes[0].node = (CPtr) oint_val(intterm);
-    listterm = cell(clref_val(listterm)+1);
+    listterm = get_list_tail(listterm);
     XSB_Deref(listterm);
     i = 1;
     while (!isnil(listterm)) {
-      intterm = cell(clref_val(listterm));
+      intterm = get_list_head(listterm);
       XSB_Deref(intterm);
       node = oint_val(intterm);
       nodes[i].node = (CPtr) node;
-      listterm = cell(clref_val(listterm)+1);
+      listterm = get_list_tail(listterm);
       XSB_Deref(listterm);
       i++;
     }
@@ -4946,10 +4946,10 @@ int  get_residual_sccs(CTXTdeclc Cell listterm) {
     //       printf("2: k %p v %p\n",(void *) int_val(*listptr),
     //       search_some(hasht,(void *) int_val(*listptr)));
         while (!isnil(listterm)) {
-	  intterm = cell(clref_val(listterm));
+	  intterm = get_list_head(listterm);
 	  node = oint_val(intterm);
 	 //         printf("2: k %p v %p\n",(CPtr) node,search_some(hasht,(void *) node));
-	  listterm = cell(clref_val(listterm)+1);
+	  listterm = get_list_tail(listterm);
 	  XSB_Deref(listterm);
        }
     dfn = 1;

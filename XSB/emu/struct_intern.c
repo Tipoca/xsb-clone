@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: struct_intern.c,v 1.1 2013-01-04 14:53:19 dwarren Exp $
+** $Id: struct_intern.c,v 1.2 2013-01-09 20:15:34 dwarren Exp $
 ** 
 */
 
@@ -152,7 +152,7 @@ prolog_term intern_rec(CTXTdeclc prolog_term term) {
   if (isconstr(term)) {
     areaindex = get_arity(get_str_psc(term)); 
     reclen = areaindex + 1;
-    cell(dterm) = cell(clref_val(term));
+    cell(dterm) = (Cell)get_str_psc(term); // copy psc ptr
     j=1;
   } else if (islist(term)) {
     areaindex = LIST_INDEX; 
@@ -160,7 +160,7 @@ prolog_term intern_rec(CTXTdeclc prolog_term term) {
     j=0;
   } else return 0;
   for (i=j; i<reclen; i++) {
-    arg = cell(clref_val(term)+i);
+    arg = get_str_arg(term,i);  // works for lists and strs
     XSB_Deref(arg);
     if (isref(arg) || (isstr(arg) && !isinternstr(arg)) || isattv(arg)) {
       return 0;
@@ -218,31 +218,33 @@ prolog_term intern_term(CTXTdeclc prolog_term term) {
 	hreg = clref_val(newterm);
 	if (!ti) return interned_term;
 	ti--;
-	cell(clref_val(ts_array[ti].newterm) + ts_array[ti].subterm_index-1) = interned_term;
+	//cell(clref_val(ts_array[ti].newterm) + ts_array[ti].subterm_index-1) = interned_term;
+	get_str_arg(ts_array[ti].newterm,ts_array[ti].subterm_index-1) = interned_term;
       } else {
 	//printf("hreg = %p, ti=%d\n",hreg,ti);
 	if (!ti) return newterm;
 	ti--;
-	cell(clref_val(ts_array[ti].newterm) + ts_array[ti].subterm_index-1) = newterm;
+	//cell(clref_val(ts_array[ti].newterm) + ts_array[ti].subterm_index-1) = newterm;
+	get_str_arg(ts_array[ti].newterm,ts_array[ti].subterm_index-1) = newterm;
 	ts_array[ti].ground = 0;
       }
     } else {
-      arg = cell(clref_val(term) + (ts_array[ti].subterm_index)++);
+      arg = get_str_arg(term, (ts_array[ti].subterm_index)++);
       XSB_Deref(arg);
       switch (cell_tag(arg)) {
       case XSB_FREE:
       case XSB_REF1:
       case XSB_ATTV:
 	ts_array[ti].ground = 0;
-	cell(clref_val(newterm)+subterm_index) = arg;
+	get_str_arg(newterm,subterm_index) = arg;
 	break;
       case XSB_STRING:
       case XSB_INT:
       case XSB_FLOAT:
-	cell(clref_val(newterm)+subterm_index) = arg;
+	get_str_arg(newterm,subterm_index) = arg;
 	break;
       case XSB_LIST:
-	if (isinternstr(arg)) cell(clref_val(newterm)+subterm_index) = arg;
+	if (isinternstr(arg)) get_str_arg(newterm,subterm_index) = arg;
 	else {
 	  ti++;
 	  ts_array[ti].term = arg;
@@ -253,7 +255,7 @@ prolog_term intern_term(CTXTdeclc prolog_term term) {
 	}
 	break;
       case XSB_STRUCT:
-	if (isinternstr(arg)) cell(clref_val(newterm)+subterm_index) = arg;
+	if (isinternstr(arg)) get_str_arg(newterm,subterm_index) = arg;
 	else {
 	  ti++;
 	  ts_array[ti].term = arg;
