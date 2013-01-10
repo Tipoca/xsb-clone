@@ -1012,22 +1012,22 @@ ngr_tp(a).
 ngr_tp:- tnot(ngr_tp(_)).
 \end{verbatim}
 \version{} of XSB will flounder on the call to {\tt ngr\_tp}, but not
-on the call to {\tt ngr\_p/0}.  On the other hand if {\tt sk\_not/1}
+on the call to {\tt ngr\_p/0}.  On the other hand if {\tt not\_exists/1}
 is used
 \begin{verbatim}
-ngr_skp:- sk_not(ngr_tp(_)).
+ngr_skp:- not_exists(ngr_tp(_)).
 \end{verbatim}
 the non-ground semantics is allowed.  
 \end{exercise}
 
-{\tt sk\_not/1} works by
+{\tt not\_exists/1} works by
 asserting a new tabled subgoal, abstractly 
 \begin{verbatim}
 :- table '_$ngr_tp'
 '_$skolem_ngr_tp' :- ngr_tp(_).
 \end{verbatim}
 to avoid the problem with variables.  In addition, since {\tt
-  sk\_not/1} creates a new tabled predicate, it can be used to call
+  not\_exists/1} creates a new tabled predicate, it can be used to call
 non-tabled predicates as well, ensuring tabling.
 
 The description of {\tt tnot/1} in Section \ref{sec:control} describes
@@ -1899,7 +1899,7 @@ Before doing so, it is important to set the context for where issues
 of termination may arise.  Consider first a pure normal program in
 which every predicate is tabled.  This means a program where rules may
 only call other rules, possibly through negation ({\tt tnot/1} or {\tt
-  sk\_not/1} in XSB); but where there are no calls to builtins for
+  not\_exists/1} in XSB); but where there are no calls to builtins for
 arithmetic, all-solutions predicates, or other built-ins.  If such a
 fully-tabled pure normal program does not have function symbols, XSB
 will always terminate for any query.  For instance, XSB will terminate
@@ -1907,7 +1907,7 @@ for fully tabled pure datalog programs -- even if the head of a rule
 is ``unsafe'' in that it contains variables that do not occur in the
 body of that rule~\footnote{Evaluations that call non-ground negative
   literals will terminate through floundering, although this can be
-  avoided in most cases by using {\tt sk\_not/1}.}.
+  avoided in most cases by using {\tt not\_exists/1}.}.
 
 While datalog programs are useful for certain kinds of knowledge
 representation, they are not powerful enough for general programming
@@ -2007,7 +2007,7 @@ The implementation of subgoal abstraction in XSB is still in progress.
 and may be changed in future versions as we gain experience in how
 subgoal abstraction is best used in practice.  Abstraction is
 performed for goals called positively; but not for goals called
-negatively including {\tt tnot/1} and {\tt sk\_not/1}; rather, such
+negatively including {\tt tnot/1} and {\tt not\_exists/1}; rather, such
 goals will throw an exception if they surpass the specified depth.  In
 addition, subgoal abstraction is only implemented for call variance,
 {\em and applies equally all terms, whether they are lists or

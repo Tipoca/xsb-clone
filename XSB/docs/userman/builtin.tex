@@ -2731,17 +2731,17 @@ Section~\ref{meta_predicates}).
 
 %---------------------------------------------------------------------------------------
 \index{floundering}
-\ourstandarditem{sk\_not(+P)}{sk\_not/1}{Tabling} 
+\ourstandarditem{not\_exists(+P)}{not\_exists/1}{Tabling} 
 %% 
-If {\tt +P} is a tabled predicate, {\tt sk\_not/1} acts as {\tt
+If {\tt +P} is a tabled predicate, {\tt not\_exists/1} acts as {\tt
   tnot/1} but permits variables in its subgoal argument
 %~\footnote{{\tt
-%    sk\_not/1} replaces the {\tt 't not'/1} predicate of earlier XSB
+%    not\_exists/1} replaces the {\tt 't not'/1} predicate of earlier XSB
 %  versions whose implementation and semantics were dubious.}. 
 The semantics in the case of unbound variables is as follows:
 %% 
 \begin{quote} 
-\tt ... :- ...,~sk\_not(p(X)),~...  \end{quote} 
+\tt ... :- ...,~not\_exists(p(X)),~...  \end{quote} 
 %% 
 is equivalent to 
 %%
@@ -2752,12 +2752,13 @@ is equivalent to
 where {\tt pp} is a new proposition. Thus, the unbound variable $X$ is
 treated as $\tt tnot(\exists X (p(X)))$.
 
-If {\tt +P} is a non-tabled predicate {\tt sk\_not/1} ensures that
+If {\tt +P} is a non-tabled predicate {\tt not\_exists/1} ensures that
 {\tt +P} is ground and called via a tabled predicate so that {\tt
-  sk\_not/1} can be used with non-tabled predicates as well,
-regardless of whether {\tt +P} is ground or not.
+  not\_exists/1} can be used with non-tabled predicates as well,
+regardless of whether {\tt +P} is ground or not~\footnote{In previous
+  versions of XSB, {\tt not\_exists/1} was called {\tt sk\_not/1}.}.
 
-{\tt sk\_not/1} uses an auxiliary tabled predicate, {\tt tunnumcall/1}
+{\tt not\_exists/1} uses an auxiliary tabled predicate, {\tt tunnumcall/1}
 in its execution.  Therefore to reclaim space at the predicate or call
 level (e.g. using {\tt abolish\_table\_pred/1} or similar predicates),
 {\tt tunnumcall/1} must be explicitly abolished.
@@ -2780,7 +2781,7 @@ level (e.g. using {\tt abolish\_table\_pred/1} or similar predicates),
 %% 
 If {\tt P} is ground (or cyclic), {\tt u\_not(P)} is equivalent to
 {\tt tnot(P)}; but {\tt u\_not/1} provides a different semantics than
-{\tt tnot/1} or {\tt sk\_not/1} if {\tt P} is non-ground.  In this
+{\tt tnot/1} or {\tt not\_exists/1} if {\tt P} is non-ground.  In this
 latter case, {\tt u\_not(P)} applies SLG delay to the goal {\tt P},
 explicitly indicating that the default negation of {\tt P} is
 floundered.  This action is safe because any answer that relies on
@@ -2791,17 +2792,17 @@ the delayed literal ever becomes ground (see the example below).  {\tt
   u\_not/1} thus provides an informationally sound but incomplete
 semantics for floundering.
 
-Thus, the use of {\tt tnot/1}, {\tt sk\_not/1}, or {\tt u\_not/1}
-depends on two conditions.  {\tt sk\_not/1} is the only one of these
+Thus, the use of {\tt tnot/1}, {\tt not\_exists/1}, or {\tt u\_not/1}
+depends on two conditions.  {\tt not\_exists/1} is the only one of these
 predicates that allows {\tt P} to be a non-tabled predicate.  However
 as mentioned, their main difference is in handling non-ground negative
 subgoals.  If an error should be thrown for a non-ground negative
 subgoal, {\tt tnot/1} should be used; if it is semantically correct to
-skolemize if {\tt P} is not ground, {\tt sk\_not/1} should be used; if
+skolemize if {\tt P} is not ground, {\tt not\_exists/1} should be used; if
 it is semantically correct to treat the truth value of the negative
 subgoal as undefined, {\tt u\_not/1} should be used.  From the
 perspective of performance, {\tt tnot/1} is fastest followed by {\tt
-  u\_not/1} and then {\tt sk\_not/1}.
+  u\_not/1} and then {\tt not\_exists/1}.
 
 The following examples should clarify the behavior of {\tt u\_not/1}.
 For the program fragment:
