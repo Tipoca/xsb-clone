@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tst_utils.c,v 1.44 2012-06-07 19:37:42 tswift Exp $
+** $Id: tst_utils.c,v 1.45 2013-01-18 20:20:59 tswift Exp $
 ** 
 */
 
@@ -381,7 +381,8 @@ static int symstkSPrintNextTerm(CTXTdeclc char * buffer, xsbBool list_recursion)
 	  ctr = ctr + sprintf(buffer+ctr, "|%s]", string);
       }
       else
-	ctr = ctr + sprintf(buffer+ctr, "%s", string);
+	//	ctr = ctr + sprintf(buffer+ctr, "%s", string);
+	ctr = sprint_quotedname(buffer, ctr, string);
     }
     break;
   case XSB_TrieVar:
