@@ -282,7 +282,7 @@ u_not(Goal) :-
 	 ; check_cyclic(Goal,'u_not/1',1),
 	   floundered(Goal)).
 
-:- table floundered/1.
+:- table floundered/1 as variant, opaque.
 floundered(_Goal):- floundered_undefined(a).
 
 :- table tunnumcall/1.
@@ -296,6 +296,10 @@ floundered(_Goal):- floundered_undefined(a).
 %%	... :- tnot(pp),...
 %%	pp :- p(X).
 %% where pp is a new proposition.
+
+:- export not_exists(Goal).
+
+not_exists(Goal):- sk_not(Goal).
 
 sk_not(Goal) :-
 	check_cyclic(Goal,'sk_not/1',1),
@@ -1172,6 +1176,7 @@ get_residual_sccs(Call,Answer,Scc,Deps,Signs):-
 
 get_residual_sccs_1(AnsLeaf,Scc):-
 	abolish_table_pred(trans_ans_depends_ptr(_,_)),
+%	setof(P,(trans_ans_depends_ptr(AnsLeaf,P) ; P = AnsLeaf),Ptrs),
 	setof(P,trans_ans_depends_ptr(AnsLeaf,P),Ptrs),
 %	writeln(ptrs(Ptrs)),
 	table_inspection_function(GET_RESIDUAL_SCCS, Ptrs, Scc,_,_).
