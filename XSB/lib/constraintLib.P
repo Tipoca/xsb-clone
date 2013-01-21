@@ -208,7 +208,7 @@ portray_trigger(trigger_ground(V,Constraint)):- !,
 call_list([]) :- !.
 call_list([G|Gs]) :-
 	call(G),
-	!,
+%	!,
 	call_list(Gs).
 
 %
