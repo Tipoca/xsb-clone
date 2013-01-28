@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.113 2013-01-09 20:15:34 dwarren Exp $
+** $Id: cinterf.c,v 1.114 2013-01-28 21:53:33 kifer Exp $
 **
 */
 
@@ -484,7 +484,7 @@ DllExport void c_string_to_p_charlist(CTXTdeclc char *name, prolog_term list,
 
 DllExport xsbBool call_conv is_charlist(prolog_term term, int *size)
 {
-  int escape_mode=FALSE, head_char;
+  int escape_mode=FALSE, head_char, head_int;
   prolog_term list, head;
 
   list = term;
@@ -501,12 +501,13 @@ DllExport xsbBool call_conv is_charlist(prolog_term term, int *size)
     if (is_nil(list)) break;
 
     head = p2p_car(list);
-    if (!is_int(head))
-      return FALSE;
+    if (!is_int(head)) return FALSE;
 
     head_char = (char) int_val(head);
+    head_int = int_val(head);
+
     /* ' ' is the lowest printable ascii and '~' is the highest */
-    if (! PRINTABLE_OR_ESCAPED_CHAR(head_char) )
+    if (! PRINTABLE_OR_ESCAPED_CHAR(head_int) )
       return FALSE;
 
     if (escape_mode)
