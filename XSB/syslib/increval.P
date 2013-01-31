@@ -326,7 +326,7 @@ immed_depends_ptr(CallPtr,CallPtr2):-
 :- export get_incr_sccs/2.
 :- export get_incr_sccs_with_deps/2.
 :- export get_incr_sccs_with_deps/3.
-%:- import writeln/1 from standard.
+:- import writeln/1 from standard.
 get_incr_sccs(Scc):-
 	setof(Skel,
 	      (predicate_property(Skel,tabled),predicate_property(Skel,incremental)),
@@ -362,7 +362,6 @@ get_incr_sccs_1(PtrList,Scc):-
 	abolish_trans_connected_ptr_calls,
 	setof(P,P^(  member(P,PtrList)
                  ; trans_connected_ptr(PtrList,P) ),Ptrs),
-%	writeln(ptrs(Ptrs)),
 	incr_eval_builtin(GET_INCR_SCCS, Ptrs,Scc),!.
 get_incr_sccs_1(_PtrList,[]).
 
@@ -385,11 +384,19 @@ get_scc_dependency_structure(List,Depends):-
 	partition_list(List,PartList),
 	scc_depends(PartList,Depends,[]).
 
+:- import sort/2 from setof.
 %:- export partition_list/2.
 partition_list(List,PartList):- 
-	setof(ret(Index,Goal),member(ret(Goal,Index),List),Parts),
+%	setof(ret(Index,Goal),member(ret(Goal,Index),List),Parts),
+	reverse_partition(List,Parts_dup),
+	sort(Parts_dup,Parts),
+%	writeln(Parts),
 	partition_list_1(Parts,PartList),!.
 partition_list(_List,[]).
+
+reverse_partition([],[]).
+reverse_partition([ret(I,G)|T],[ret(G,I)|T1]):- 
+	reverse_partition(T,T1).
 
 partition_list_1([],[]).
 partition_list_1([ret(N,S)|IRest],[List|ORest]):-
@@ -410,8 +417,8 @@ scc_depends([SCC|Rest],In,Out):-
 scc_depends_1([],_Scc,In,In).
 scc_depends_1([Scc1|R],Scc2,In,Out):-
 	(scc_depends_2(Scc1,Scc2,Depends) -> In = [Depends|Mid1] ; In = Mid1),
-	(scc_depends_2(Scc2,Scc1,Depends1) -> Mid1 = [Depends1|Mid2] ; In = Mid2),
-%	writeln(scc_depends_1(R,Scc2,Mid2,Out)),
+%	(scc_depends_2(Scc2,Scc1,Depends1) -> Mid1 = [Depends1|Mid2] ; In = Mid2),
+	(scc_depends_2(Scc2,Scc1,Depends1) -> Mid1 = [Depends1|Mid2] ; Mid1 = Mid2),
 	scc_depends_1(R,Scc2,Mid2,Out).
 
 scc_depends_2(SCC1,SCC2,depends(Ind1,Ind2)):-
@@ -447,7 +454,6 @@ call_if_affected(C) :-
 	 ;	
 	 true
 	).
-:- import writeln/1 from standard.
 call_if_affected(C) :- call_if_affected_internal(C),fail.
 */
 

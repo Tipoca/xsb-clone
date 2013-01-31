@@ -1205,9 +1205,16 @@ get_scc_dependency_structure(List,Depends,Signs):-
 %	writeln(PartList),
 	scc_depends(PartList,Depends,[],Signs).
 
+:- import sort/2 from setof.
 partition_list(List,PartList):- 
-	setof(ret(Index,Ans),Subgoal^member(ret(Subgoal,Ans,Index),List),Parts),
+%	setof(ret(Index,Ans),Subgoal^member(ret(Subgoal,Ans,Index),List),Parts),
+	reverse_partition(List,Parts_dup),
+	sort(Parts_dup,Parts),
 	partition_list_1(Parts,PartList).
+
+reverse_partition([],[]).
+reverse_partition([ret(_S,A,I)|T],[ret(I,A)|T1]):- 
+	reverse_partition(T,T1).
 
 partition_list_1([],[]).
 partition_list_1([ret(N,S)|IRest],[List|ORest]):-
