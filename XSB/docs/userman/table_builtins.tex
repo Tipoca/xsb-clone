@@ -1362,10 +1362,11 @@ particular {\tt get\_residual/2} and {\tt variant\_get\_residual/2}.
 At times it can be useful to view the residual program as a directed
 graph, for instance in order to understand why a given answer might be
 undefined.  In a manner somewhat analogous to the incremental
-dependency graph (Section ~\ref{sec:incremental_tabling}) this graph
-is a directed graph whose nodes are atoms and whose edges are labelled
-with: 1) a sign indicating whether the edge is positive or negative;
-and 2) the label {\em depends on} or {\em affects}.  
+dependency graph (Section ~\ref{sec:incremental_tabling}) the {\em
+  residual dependency graph} is a directed graph whose nodes are
+subgoal/atom pairs and whose edges are labelled with: 1) a sign
+indicating whether the edge is positive or negative; and 2) the label
+{\em depends on} or {\em affects}.
 
 \begin{example} \rm
 Consider the program 
@@ -1403,15 +1404,15 @@ $A_2$ occurs in a literal in the delay list for $S_1/A_1$, and the
 original subgoal for $A_2$ was $S_2$ in the subcomputation for $S_1$.
 The edge also has a sign indicating whether $A_2$ occurs positively or
 negatively in the delay list for $A_1$.  In this example, the residual
-dependency graph can be represented as 
+dependency graph could be represented as 
 %
 \begin{verbatim}
-     edge(p(1,X),p(1,3),p(2,3),p(2,3),neg).
-     edge(p(1,3),p(1,3),p(2,3),p(2,3),neg).
-     edge(p(2,3),p(2,3),p(1,3),p(1,3),neg).
-     edge(p(2,3),p(2,3),r(a),r(a),pos).
-     edge(r(a),r(a),r(b),r(b),neg).
-     edge(r(b),r(b),r(a),r(a),neg).
+     depends_on(p(1,X),p(1,3),p(2,3),p(2,3),neg).
+     depends_on(p(1,3),p(1,3),p(2,3),p(2,3),neg).
+     depends_on(p(2,3),p(2,3),p(1,3),p(1,3),neg).
+     depends_on(p(2,3),p(2,3),r(a),r(a),pos).
+     depends_on(r(a),r(a),r(b),r(b),neg).
+     depends_on(r(b),r(b),r(a),r(a),neg).
 \end{verbatim}
 \end{example}
 
@@ -1426,19 +1427,29 @@ because of the use of bounded rationality
 (Section~\ref{sec:tabling-termination}) or because of floundering and
 the use of {\tt u\_not/1}.  
 
-The dependency graph connected to a given subgoal/answer pair can be
-obtained through {\tt get\_residual\_sccs/[3,5]}.  Each predicate
-returns the list of subgoal / answer pairs along with an SCC index in
-a term of the form
+The residual dependency graph can be constructed in a straightforward
+way from {\tt variant\_get\_residual/2}.  Another, slightly
+higher-level view can be obtained through {\tt
+  get\_residual\_sccs/[3,5]}.  Given a subgoal/answer pair as input,
+each of these predicates constructs SCC-based information about the
+residual dependency graph via structures of the form:
 %
 \begin{center}
 {\tt ret(Subgoal,Answer,SCCIndex)}.
 \end{center}
 %
-{\tt get\_residual\_sccs/5} also returns a list indicating the direct
-dependencies among the SCCs, along with a list indicating whether
-given SCCs contain a negative edge.  For the example above, the SCC
-information would have a form such as:
+where {\tt SCC} is a numerical index for the SCCs of Subgoal. Two
+subgoals are in the same SCC iff they have the same index, however no
+other dependency information can be otherwise directly inferred from
+the index~\footnote{The actual number for
+  each SCC index depends on how the residual dependency graph happens
+  to be traversed; as a result it is best to rely on the index only as
+  a ``generated'' name for each SCC.}.
+
+To obtain this information, {\tt get\_residual\_sccs/5} also returns a
+list indicating the direct dependencies among the SCCs, along with a
+list indicating whether given SCCs contain a negative edge.  For the
+example above, the SCC information would have a form such as:
 \begin{verbatim}
 [ ret(p(1,X),p(1,3),1), ret(p(1,3),p(1,3),2), ret(p(2,3),p(2,3),2),
   ret(r(a),r(a),3), ret(r(b),r(b),3) ]
@@ -1452,16 +1463,27 @@ while the sign list would have a form such as:
 \begin{verbatim}
 [ sign(1,no_neg), sign(2,neg), sign(3,neg) ]
 \end{verbatim}
+If it is necessary to know which subgoal(s) in {\tt SCC1} directly
+depends on which subgoal(s) in {\tt SCC2}, the information can be
+easily reconstructed using {\tt variant\_get\_residual/2}.  A similar
+approach can be used to determine the actual edges within a given SCC.
 
-These predicates implement Tarjan's algorithm~\cite{Tarj72} in C
-working directly on XSB's data structures.  The algorithm is $\cO(|V|
-+ |E|)$ where $|V|$ is the number of vertices and $|E|$ the number of
-edges in the dependency graph.  As a result, these predicates provide
-an efficient means to materialize the dependency graph, even if SCC
-information per se is not required~\footnote{The actual number for
-  each SCC index depends on how the residual dependency graph happens
-  to be traversed; as a result it is best to rely on the index only as
-  a ``generated'' name for each SCC.}.
+SCC detection is implemented using Tarjan's algorithm~\cite{Tarj72} in
+C working directly on XSB's data structures.  The algorithm is
+$\cO(|V| + |E|)$ where $|V|$ is the number of vertices and $|E|$ the
+number of edges in the dependency graph.  As a result, {\tt
+  get\_residual\_sccs/3} provides an efficient means to materialize
+the high-level topography of the dependency graph~\footnote{Currently,
+  the materialization of dependency information between SCCs is
+  implemented in a naive manner, so that {\tt get\_residual\_sccs/6}
+  is $\cO(|V|^2)$.}.
+
+%These predicates implement Tarjan's algorithm~\cite{Tarj72} in C
+%working directly on XSB's data structures.  The algorithm is $\cO(|V|
+%+ |E|)$ where $|V|$ is the number of vertices and $|E|$ the number of
+%edges in the dependency graph.  As a result, these predicates provide
+%an efficient means to materialize the dependency graph, even if SCC
+%information per se is not required
   
 \index{radial restraint}
 \index{termination!radial restraint}
@@ -1516,48 +1538,11 @@ q:- tnot r.                   r:- tnot q.
 s(f(X)):- s(X).               s(0).
 \end{verbatim}
 %
-where the bounded rationality depth has been set to 3, the query {\tt
-  explain\_u\_value(p,Reason,Type)} will bind {\tt Reason} to {\tt
-  negative\_loops} and {\tt Type} to {\tt direct} and also {\tt
-  Reason} to {\tt bounded\_rationality} and {\tt Type} to {\tt
-  indirect}.  Note that {\tt p} also indirectly depends on {\tt q}
-which is itself involved in a loop through negation.
+where the bounded rationality depth has been set to 3.  The query {\tt
+  explain\_u\_value(p,P,Reason)} will bind {\tt Reason} to {\tt
+  negative\_loops(cycle)}, to {\tt negative\_loops(dependent)}, and
+to {\tt bounded\_rationality} (this ordering is not guaranteed).
 \end{example}
-
-\comment{
-%
-{\tt explain\_u\_val/3} can be used to query why {\tt Answer} is
-undefined.  {\tt Reason} may be either {\tt bounded\_rationality} or
-{\tt negative\_loops}.  {\tt Type} may be either {\tt direct} or {\tt
-  indirect}.  {\tt bounded\_rationality} is considered direct if {\tt
-  Answer} itself has been abstracted; otherwise it is indirect.  {\tt
-  negative\_loops} is considered direct if {\tt Answer} is involved in
-a loop through negation based on delay dependencies; otherwise it is
-considered direct.  Thus, the predicate may succeed for more than one
-reason, but for each reason there is at most one type,
-
-\begin{example} \rm
-After executing the query {\tt m} to the program
-%
-\begin{verbatim}
-:- table m/0, p/0, q/0, r/0, s/1.
-m:- p.
-
-p:- q,tnot p.                 p:- s(f(f(f(f(0))))).
-
-q:- tnot r.                   r:- tnot q.
-
-s(f(X)):- s(X).               s(0).
-\end{verbatim}
-%
-where the bounded rationality depth has been set to 3.  the query {\tt
- explain\_u\_value(p,Reason,Type)} will bind {\tt Reason} to {\tt
- negative\_loops} and {\tt Type} to {\tt direct} and also {\tt Reason}
- to {\tt bounded\_rationality} and {\tt Type} to {\tt indirect}.  Note
- that {\tt p} also indirectly depends on {\tt q} which is itself
- involved in a loop through negation.
-\end{example}
-}
 
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

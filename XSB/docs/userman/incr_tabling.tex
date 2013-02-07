@@ -669,12 +669,12 @@ incrementally tabled subgoals that are currently table entries.
 accesses the dependency structures used by the incremental table
 maintenance subsystem to provide information about which incremental
 table calls depend on which others.  At least one of {\tt Goal$_1$}
-and {\tt Goal$_2$} must be bound.
+or {\tt Goal$_2$} must be bound.
 \begin{itemize}
 \item If {\tt Goal$_1$} is bound, then this predicate will return in
   {\tt Goal$_2$} through backtracking the goals for all incrementally
   maintained tables on which {\tt Goal$_1$} directly depends.
-\item If {\tt Goal$_2$} is bound, then it returns in {\tt Goal$_2$}
+\item If {\tt Goal$_2$} is bound, then it returns in {\tt Goal$_1$}
   through backtracking the goals for all incrementally maintained
   tables that {\tt Goal$_2$} directly affects -- in other words all
   goals that directly depend on {\tt Goal$_2$}.  \ei
@@ -717,7 +717,10 @@ elements are of the form
 {\tt SCC} is a numerical index for the SCCs of Subgoal. Two subgoals
 are in the same SCC iff they have the same index, however no other
 dependency information can be otherwise directly inferred from the
-index.  
+index~\footnote{The actual number for each SCC index depends on how
+  the incremental dependency graph happens to be traversed; as a
+  result it is best to rely on the index only as a ``generated'' name
+  for each SCC.}.
 
 If dependency information is also desired, {\tt
   get\_incr\_scc\_with\_dependencies/2} should be called.  In addition
@@ -728,7 +731,11 @@ of dependency terms of the form
 \end{center}
 for each pair {\tt SCC1} and {\tt SCC1} such that some subgoal with
 index {\tt SCC1} directly depends on some subgoal with index {\tt
-  SCC1}.
+  SCC1}.  If it is necessary to know which subgoal(s) in {\tt SCC1}
+directly depends on which subgoal(s) in {\tt SCC2}, the information can
+be easily reconstructed using {\tt incr\_depends/2} above.  Similarly,
+{\tt incr\_depends/2} can be used to determine the actual edges within
+a given SCC.
 
 Ordinarily a user will want to see the entire dependency graph and in
 such a case the predicates described above should be used.  However,
@@ -740,12 +747,15 @@ of subgoals connected to {\tt Subgoal} by any mixture of depends and
 affects relations, unions these sets together, and finds the SCCs of
 all subgoals in the unioned set.
 
-These predicates implement Tarjan's algorithm~\cite{Tarj72} in C
-working directly on XSB's data structures.  The algorithm is $\cO(|V|
-+ |E|)$ where $|V|$ is the number of vertices and $|E|$ the number of
-edges in the dependency graph.  As a result, these predicates provide
-an efficient means to materialize the dependency graph, even if SCC
-information per se is not required.
+SCC detection is implemented using Tarjan's algorithm~\cite{Tarj72} in
+C working directly on XSB's data structures.  The algorithm is
+$\cO(|V| + |E|)$ where $|V|$ is the number of vertices and $|E|$ the
+number of edges in the dependency graph.  As a result, {\tt
+  get\_incr\_sccs/[1,2]} provides an efficient means to materialize the
+  high-level topography of the dependency graph~\footnote{Currently,
+    the materialization of dependency information between SCCs is
+    implemented in a naive manner, so that {\tt
+      get\_incr\_sccs\_with\_deps/[2,3]} is $\cO(|V|^2)$.}.
 
 {\bf Error Cases}
 \bi
