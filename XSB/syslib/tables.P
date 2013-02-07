@@ -273,9 +273,6 @@ writeit(0).
 mywriteln(Term):- writeit(If),(If =:= 1 -> writeln(Term); true).
 */
 
-:- export u_not/1.
-:- import ground_and_acyclic/1 from machine.
-
 u_not(Goal) :-
 	(ground_and_acyclic(Goal) ->
 	   tnot(Goal)
@@ -910,7 +907,6 @@ forest_log_overview_1(CondLen):-
 three_valued_sccs(L):-
 	setof(Scc,B^S^S1^Ct^(unsimplified(B,S),cmp(S1,Scc,Ct),variant(S,S1)),L).
 
-:- import variant/2 from subsumes.
 unsimplified(_Binding,Subgoal):- 
 	del(Subgoald,_caller,_DelCtr),
 	nda([],Subgoal,_Delays,Ctr),
@@ -1201,11 +1197,11 @@ process_sccs([ret(Subgoal,Ptr,Comp)|T],[ret(Subgoal,Ans,Comp)|T1]):-
 %------
 
 get_scc_dependency_structure(List,Depends,Signs):- 
+%	writeln(list(List)),
 	partition_list(List,PartList),
-%	writeln(PartList),
+%	writeln(pl(PartList)),
 	scc_depends(PartList,Depends,[],Signs).
 
-:- import sort/2 from setof.
 partition_list(List,PartList):- 
 %	setof(ret(Index,Ans),Subgoal^member(ret(Subgoal,Ans,Index),List),Parts),
 	reverse_partition(List,Parts_dup),
@@ -1243,12 +1239,16 @@ scc_depends_1([Scc1|R],Scc2,In,Out,Sign):-
 
 scc_depends_2(SCC1,SCC2,depends(Comp1,Comp2)):-
 	member(ret(Comp1,AnsPtr),SCC1),
+%	writeln(ret(Comp1,AnsPtr)),
+	AnsPtr \== 0,  % TLS: fix
 	table_inspection_function(IMMED_ANS_DEPENDS_PTRLIST, AnsPtr, PtrList,_,_),
 	member(ret(AnsPtr1,_),PtrList),
 	member(ret(Comp2,AnsPtr1),SCC2).
 
 scc_self_depends(SCC,Comp,neg):- 
 	member(ret(Comp,AnsPtr),SCC),
+%	writeln(ret(Comp,AnsPtr)),
+	AnsPtr \== 0,  % TLS: fix
 	table_inspection_function(IMMED_ANS_DEPENDS_PTRLIST, AnsPtr, PtrList,_,_),
 	member(ret(AnsPtr1,IS_SUBGOAL_FRAME),PtrList),
 	member(ret(_Comp,AnsPtr1),SCC),
@@ -1293,6 +1293,32 @@ get_answer_leaf(Call,Answer,AnsLeaf):-
 
 %--------------------------
 
+:- export explain_u_val/3,explain_u_val/7.
+:- import brat_undefined/0 from xsbbrat.
+
+explain_u_val(Subgoal,Ans,Type):-
+	get_residual_sccs(Subgoal,Ans,Sccs,Deps,Signs),
+%	writeln(scc(Subgoal,Ans,Sccs,Deps,Signs)),
+	subgoal_scc_member(Subgoal,Sccs,Index),
+	explain_u_val(Subgoal,Ans,Sccs,Deps,Signs,Index,Type).
+
+explain_u_val(_Subgoal,_Ans,Sccs,_Deps,_Signs,_Index,unsafe_negation):-
+	memberchk(ret(floundered_undefined(_),_,_),Sccs).
+explain_u_val(_Subgoal,_Ans,Sccs,_Deps,_Signs,_Index,radial_restraint):-
+	memberchk(ret(brat_undefined,_,_),Sccs).
+explain_u_val(_Subgoal,_Ans,_Sccs,_Deps,Signs,Index,negative_loops(cycle)):-
+	memberchk(sign(Index,neg),Signs).
+explain_u_val(_Subgoal,_Ans,_Sccs,_Deps,Signs,Index,negative_loops(dependent)):-
+	memberchk(sign(I,neg),Signs),I \== Index.
+
+:- import variant/2 from subsumes.
+subgoal_scc_member(Subgoal,[ret(S,_,Index)|_],Index):- 
+	variant(S,Subgoal),!.
+subgoal_scc_member(Subgoal,[_|R],Index):- 
+	subgoal_scc_member(Subgoal,R,Index).
+
+end_of_file.
+
 :- export explain_u_val/4.
 :- import brat_undefined/0 from xsbbrat.
 explain_u_val(Call,Answer,Reason,Type):-
@@ -1312,8 +1338,6 @@ explain_u_val_1(SF,BratLeaf,_FlounderedLeaf,_AnswerLeaf,bounded_rationality,_Typ
 explain_u_val_1(SF,_BratLeaf,FlounderedLeaf,_AnswerLeaf,floundered,_Type):- 
 	get_returns(SF,ret(FlounderedLeaf),_AnsLeaf).
 %explain_u_val_1(SF,BratLeaf,FlounderedLeaf,AnswerLeaf,negative_loops,Type):- 
-
-end_of_file.
 
 /* ---------------------- end of file tables.P ------------------------ */
 /* 07/05/01  -- work area for functions under development */
