@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.34 2012-07-13 22:51:51 tswift Exp $
+** $Id: debug_xsb.h,v 1.35 2013-02-07 18:16:29 tswift Exp $
 ** 
 */
 
@@ -92,6 +92,7 @@ extern int sprint_delay_list(struct th_context *, char *, CPtr);
 void print_local_stack_nonintr(struct th_context *,char *);
 #endif
 
+extern int sprint_quotedname(char *, int,char *);
 extern int sprintTerm(char *, Cell);
 extern int ctrace_ctr;
 

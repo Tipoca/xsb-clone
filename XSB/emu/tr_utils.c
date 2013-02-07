@@ -4818,7 +4818,7 @@ int return_ans_depends_scc_list(CTXTdeclc SCCNode * nodes, int num_nodes){
     }
     else {
       follow(hreg-3) = makestring(get_name(psc));
-      follow(hreg-2) = makeint(0);
+      //      follow(hreg-2) = makeint(0);
     }
     follow(oldhreg) = makelist(hreg);        // cdr points to next car
     new_heap_free(hreg); new_heap_free(hreg);
