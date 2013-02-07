@@ -1415,7 +1415,8 @@ dependency graph can be represented as
 \end{verbatim}
 \end{example}
 
-\index{termination!bounded rationality} \index{\texttt{u\_not/1}} 
+\index{termination!radial restraint} 
+\index{\texttt{u\_not/1}} 
 %
 Using the residual dependency graph, a user may be able to determine
 why an answer $A$ to a subgoal $S$ was unexpectedly undefined either
@@ -1462,8 +1463,68 @@ information per se is not required~\footnote{The actual number for
   to be traversed; as a result it is best to rely on the index only as
   a ``generated'' name for each SCC.}.
   
+\index{radial restraint}
+\index{termination!radial restraint}
+\index{\texttt{u\_not/1}}
+\index{\texttt{get\_residual\_sccs/5}}
+\ourrepeatmoditem{explain\_u\_val(+Subgoal,+Answer,-Reason)}{explain\_u\_val/3}{tables}	
+\ourmoditem{explain\_u\_val(+Subgoal,+Answer,-Sccs,-Deps,-Signs,-Reason)}{explain\_u\_val/6}{tables}	
+%
+The XSB predicate
+%
+{\tt explain\_u\_val(+Subgoal,+Answer,?Reason)}
+\noindent
+can be used to query why {\tt Answer} is undefined when derived in an
+evaluation of {\tt Subgoal}.  {\tt Reason} may be
+\begin{itemize}
+\item {\tt negative\_loops(cycle)} if the derivation of {\tt Answer} involves a
+  loop through though negation that includes {\tt Answer} itself.
+%
+\item {\tt negative\_loops(dependent)} if the derivation of {\tt
+  Answer} depends on an atom that is involved in a loop through though
+  negation.
+%
+\item {\tt unsafe\_negation} if the derivation of {\tt Answer} depends
+  on a negative subgoal that is non-ground (XSB does not automatically
+  perform subgoal reordering).  The action of making a non-ground
+  subgoal undefined is performed by {\tt u\_not/1}.
+%
+\item {\tt bounded\_rationality} if the derivation of answer depends
+  on bounded rationality based on radial restraint~\cite{GroS13}.
+\end{itemize}
+%
+These reasons are not exclusive, and complex derivations may well
+involve several of the above reasons.
+
+{\tt explain\_u\_val/[3,6]} is based on the structures returned by
+{\tt get\_residual\_sccs/[3,5]}.  While {\tt
+  get\_residual\_sccs/[3,5]} is reasonably fast, it can take a
+peceptable time to analyze large residual programs containing many
+thousands of SCCs.  Accordingly, {\tt explain\_u\_val/6} can reuse
+dependency structures returned by {\tt get\_residual\_sccs/[3,5]},
+which can be useful for justification systems and other applciations.
+
+\begin{example} \rm
+After executing the query {\tt p} to the program
+%
+\begin{verbatim}
+:- table p/0, q/0, r/0, s/1.
+p:- q,tnot p.                 p:- s(f(f(f(f(0))))).
+
+q:- tnot r.                   r:- tnot q.
+
+s(f(X)):- s(X).               s(0).
+\end{verbatim}
+%
+where the bounded rationality depth has been set to 3, the query {\tt
+  explain\_u\_value(p,Reason,Type)} will bind {\tt Reason} to {\tt
+  negative\_loops} and {\tt Type} to {\tt direct} and also {\tt
+  Reason} to {\tt bounded\_rationality} and {\tt Type} to {\tt
+  indirect}.  Note that {\tt p} also indirectly depends on {\tt q}
+which is itself involved in a loop through negation.
+\end{example}
+
 \comment{
-\ourmoditem{explain\_u\_val(+Answer,?Reason,?Type)}{explain\_u\_value/3}{tables}
 %
 {\tt explain\_u\_val/3} can be used to query why {\tt Answer} is
 undefined.  {\tt Reason} may be either {\tt bounded\_rationality} or

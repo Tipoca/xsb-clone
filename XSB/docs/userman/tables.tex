@@ -1883,7 +1883,8 @@ effectively used in the construction of a justification or explanation
 system.
 
 \index{termination!subgoal abstraction}
-\index{termination!bounded rationality}
+\index{bounded rationality}
+\index{termination!radial restraint}
 \index{abstraction!subgoal}
 \index{abstraction!answer}
 \section{Tabling for Termination} \label{sec:tabling-termination}
@@ -1898,16 +1899,17 @@ properties can be strengthened through declarations and settings for
 Before doing so, it is important to set the context for where issues
 of termination may arise.  Consider first a pure normal program in
 which every predicate is tabled.  This means a program where rules may
-only call other rules, possibly through negation ({\tt tnot/1} or {\tt
-  not\_exists/1} in XSB); but where there are no calls to builtins for
-arithmetic, all-solutions predicates, or other built-ins.  If such a
-fully-tabled pure normal program does not have function symbols, XSB
-will always terminate for any query.  For instance, XSB will terminate
-for fully tabled pure datalog programs -- even if the head of a rule
-is ``unsafe'' in that it contains variables that do not occur in the
-body of that rule~\footnote{Evaluations that call non-ground negative
-  literals will terminate through floundering, although this can be
-  avoided in most cases by using {\tt not\_exists/1}.}.
+only call other rules, possibly through negation ({\tt tnot/1}, {\tt
+  not\_exists/1} or {\tt u\_not/1} in XSB); but where there are no
+calls to builtins for arithmetic, all-solutions predicates, or other
+built-ins.  If such a fully-tabled pure normal program does {\em not}
+have function symbols, XSB will always terminate for any query.  For
+instance, XSB will terminate for fully tabled pure datalog programs --
+even if the head of a rule is ``unsafe'' in that it contains variables
+that do not occur in the body of that rule~\footnote{Evaluations that
+  call non-ground negative literals will terminate through
+  floundering, although this can be avoided in most cases by using
+  {\tt not\_exists/1}.}.
 
 While datalog programs are useful for certain kinds of knowledge
 representation, they are not powerful enough for general programming
@@ -1940,8 +1942,8 @@ p(X) :- p(f(X)).
 The goal {\tt ?- p(1)} can create an infinite number of tabled
 subgoals: {\tt p(f(1))}, {\tt p(f(f(1)))}, {\tt p(f(f(f(1))))} and so
 on.  Note that since all of the subgoals are ground, none subsume one
-another, so that call subsumption will not help here, (although it
-would help if the goal were {\tt ?- p(X)}).
+another, so that call subsumption will not help here, (although call
+subsumption would help if the goal were {\tt ?- p(X)}).
 
 \paragraph*{Infinite Answers}
 %
@@ -1952,7 +1954,7 @@ infinite number of answers, as in the program fragment:
 p(f(X)) :- p(X).
 \end{verbatim}
 %
-when given the query {\tt p(X)}.  
+when given the query {\tt ?- p(X)}.  
 
 We consider each case in turn.
 
@@ -1976,9 +1978,9 @@ conceptual level.  A goal such as {\tt tnot(p(f(f(f(1))))} would
 execute as {\tt p(f(f(X)))} and then ensure that none of the answers
 to this goal have a binding for {\tt X} that allows it to unify with
 {\tt f(1)}.  Using this intuition, it can be shown that if a program
-has a two-valued well-founded model and a finite number of true
+has a well-founded model with a finite number of true or undefined
 answers it will terminate using tabling with subgoal
-abstraction~\cite{RigS11b}.
+abstraction~\cite{RigS11b,RigS13}.
 
 Despite its theoretical power, subgoal abstraction can also cause
 problems if used indiscriminately.  if the second argument of the
@@ -2003,15 +2005,17 @@ other program that performs recursion through a finite structure.
 
 \subsubsection{Declaring Subgoal Abstraction}
 %
-The implementation of subgoal abstraction in XSB is still in progress.
-and may be changed in future versions as we gain experience in how
-subgoal abstraction is best used in practice.  Abstraction is
-performed for goals called positively; but not for goals called
-negatively including {\tt tnot/1} and {\tt not\_exists/1}; rather, such
-goals will throw an exception if they surpass the specified depth.  In
-addition, subgoal abstraction is only implemented for call variance,
-{\em and applies equally all terms, whether they are lists or
-  non-lists}.
+% The implementation of subgoal abstraction in XSB is still in progress.
+% and may be changed in future versions as we gain experience in how
+% subgoal abstraction is best used in practice.  
+
+Subgoal abstraction in XSB is performed for goals called positively;
+but not for goals called negatively including {\tt tnot/1} and {\tt
+  not\_exists/1}; rather, such goals will throw an exception if they
+surpass the specified depth.  In addition, subgoal abstraction is only
+implemented for call variance, {\em and applies equally all terms,
+  whether they are lists or non-lists}.  However, despite these
+restrictions, a tabled evaluation can be guaranteed to terminate for queries to safe programs (cf.~\cite{RigS13}).
 
 \index{Prolog flags!{\tt max\_table\_subgoal\_action}} 
 \index{Prolog  flags!{\tt max\_table\_subgoal\_depth}} 
@@ -2047,17 +2051,16 @@ Unless otherwise specified, XSB starts up with {\tt
 under the compilation method for which XSB has been configured.  Under
 this default behavior, XSB will throw an error if a subgoal has depth
 greater than {\tt max\_table\_subgoal\_depth}.  As an alternative to
-setting flags, call abstraction can be set by calling XSB with the
+setting flags, subgoal abstraction can be set by calling XSB with the
 command-line arguments {\tt --max\_subgoal\_action a} and {\tt
   --max\_subgoal\_depth n} where {\tt n} is the size of the desired
 depth.
 
-\subsection{Bounded Rationality through Answer Abstraction}
+\subsection{Bounded Rationality through Radial Restraint}
 %
-In XSB, a programmer can use a form of answer abstraction called {\em
-  bounded-rationality} to ensure that only a finite number of answers
-are generated by a query~\footnote{Bounded rationality was designed by
-  Benjamin Grosof and Terrance Swift.}. For instance if the query {\tt
+In XSB, a programmer can use a form of bounded rationality called {\em
+  radial restraint} to ensure that only a finite number of answers are
+generated by a query~\cite{GroS13}. For instance if the query {\tt
   p(X)} to the program
 %
 \begin{verbatim}
@@ -2067,14 +2070,14 @@ p(0).
 %
 were evaluated using this approach with a depth limit of 3, the
 answers, {\tt p(0)}, {\tt p(f(0))}, {\tt p(f(f(0)))} and {\tt
-  p(f(f(f(X))))} would be generated, {\em however} {\tt p(f(f(f(X))))}
-would have the truth value of {\em undefined}.  Note that by doing
-things in this way, both of the goals {\tt p(f(f(f(0))))}, and {\tt
-  p(f(f(f(1))))} will unify with {\tt p(f(f(f(X))))} and so will
-succeed with a truth value of {\em undefined}.  Similarly {\tt
-  tnot(p(f(f(f(0)))))}, and {\tt tnot(p(f(f(f(1)))))} will both
-succeed with a value of {\em undefined} (perhaps better called {\em
-  unknown} in this context).
+  p(f(f(f(X))))} would be generated; {\em however}, {\tt
+  p(f(f(f(X))))} would have the truth value of {\em undefined}.  Note
+that by doing things in this way, both of the goals {\tt
+  p(f(f(f(0))))}, and {\tt p(f(f(f(1))))} will unify with {\tt
+  p(f(f(f(X))))} and so will succeed with a truth value of {\em
+  undefined}.  Similarly {\tt tnot(p(f(f(f(0)))))}, and {\tt
+  tnot(p(f(f(f(1)))))} will both succeed with a value of {\em
+  undefined} (perhaps better called {\em unknown} in this context).
 %
 Since all predicates and function symbols have a maximum arity (256 in
 XSB) bounding the depth of an answer ensures that only a finite number
@@ -2087,28 +2090,28 @@ of answers are returned
   general.}.
 
 
-Semantically XSB is computing an approximation to the three-valued
-well-founded model of a program, called a {\em bounded model}.  To see
-this, suppose the proof of a query $Q$ does not depend on negation.
-If $Q$ has a derivation that does not require any answers whose depth
-is greater than $n$, it is proven as usual.  Similarly, if $Q$ is
-false in the well-founded model of a program, and none of the subgoals
-explored in the derivation of $Q$ derive answers whose depth is
-greater than $n$, XSB will derive that $Q$ is false.  Thus, the
-approximation that XSB computes is {\em informationally sound} in the
-sense that no incorrect answer will be derived, although the truth
-value of some atoms won't be known that might have been if the depth
-bound had been set higher.  Due to the halting problem, there is no
-way to know in general what depth to set for answer abstraction, or
-whether any bound needs to be set at all.
+Semantically when radial restraint is used, XSB is computing an
+approximation to the three-valued well-founded model of a program,
+called a {\em restrained model}.  To see this, suppose the proof of a
+query $Q$ does not depend on negation.  If $Q$ has a derivation that
+does not require any answers whose depth is greater than $n$, it is
+proven as usual.  Similarly, if $Q$ is false in the well-founded model
+of a program, and none of the subgoals explored in the derivation of
+$Q$ derive answers whose depth is greater than $n$, XSB will derive
+that $Q$ is false.  Thus, the approximation that XSB computes is {\em
+  informationally sound} in the sense that no incorrect answer will be
+derived, although the truth value of some atoms won't be known that
+might have been if the depth bound had been set higher.  Due to the
+halting problem, there is no way to know in general what depth to set
+for answer abstraction, or whether any bound needs to be set at all.
 
-If a bounded model is derived, answers that are undefined in the
-well-founded model can be distinguished from answers that are
-undefined through bounded rationality.  If an answer $A$ was
-abstracted due to a depth check (and for no other reason), the query
-{\tt get\_residual(A,Delay)} would bind {\tt Delay} to {\tt
-  [brat\_undefined]}, where {\tt brat\_undefined/0} is simply a
-predicate defined as
+If a restrained model is derived, that are undefined through radial
+restraint can be desinguished from answers that are undefined in the
+well-founded model of a program, or for other reasons such as unsafe
+negation.  If an answer $A$ was abstracted due to a depth check, the
+query {\tt get\_residual(A,Delay)} would bind {\tt Delay} to a list
+containing the atom {\tt brat\_undefined}, where {\tt
+  brat\_undefined/0} is simply a predicate defined as
 
 {\tt brat\_undefined:- tnot(brat\_undefined)}
 
@@ -2116,53 +2119,27 @@ predicate defined as
 which in a delay list indicates that an answer was made undefined
 through bounded-rationality based answer abstraction.
 
-\comment{
-\index{\texttt{explain\_u\_value/3}}
-The XSB predicate
+More generally, information about when a derivation has uses bounded
+rationality can be obtained either thorugh the predicate {\tt
+  explain\_u\_val/3}, or {\tt get\_residual\_sccs/[3,5]}.  Both of
+these predicates traverse the residual dependency graph to provide
+information about why a literal is undefined.
 
-{\tt explain\_u\_val(+Answer,?Reason,?Type)}
+\index{residual dependency graph}
+\index{\texttt{explain\_u\_val/3}}
+\index{\texttt{get\_residual\_sccs/3}}
+\index{\texttt{get\_residual\_sccs/5}}
+\index{radial restraint}
 
-\noindent
-can be used to query why {\tt Answer} is undefined.  {\tt Reason} may
-be either {\tt bounded\_rationality} or {\tt negative\_loops}.  {\tt
-  Type} may be either {\tt direct} or {\tt indirect}.  {\tt
-  bounded\_rationality} is considered direct if {\tt Answer} itself
-has been abstracted; otherwise it is indirect.  {\tt negative\_loops}
-is considered direct if {\tt Answer} is involved in a loop through
-negation based on delay dependencies; otherwise it is considered
-indirect.  Thus, the predicate may succeed for more than one reason,
-but for each reason there is at most one type.
-
-\begin{example} \rm
-After executing the query {\tt p} to the program
+\subsubsection{Using Radial Restraint}
 %
-\begin{verbatim}
-:- table p/0, q/0, r/0, s/1.
-p:- q,tnot p.                 p:- s(f(f(f(f(0))))).
-
-q:- tnot r.                   r:- tnot q.
-
-s(f(X)):- s(X).               s(0).
-\end{verbatim}
+Radial restraint is currently implemented only for tabling with call
+variance, and lists are not currently included in the depth check.
 %
-where the bounded rationality depth has been set to 3, the query {\tt
-  explain\_u\_value(p,Reason,Type)} will bind {\tt Reason} to {\tt
-  negative\_loops} and {\tt Type} to {\tt direct} and also {\tt
-  Reason} to {\tt bounded\_rationality} and {\tt Type} to {\tt
-  indirect}.  Note that {\tt p} also indirectly depends on {\tt q}
-which is itself involved in a loop through negation.
-\end{example}
-}
-\subsubsection{Using Bounded Rationality}
-%
-Bounded rationality is currently implemented only for tabling with
-call variance, and lists are not currently included in the depth
-check.  
-%
-Similarly to the use of subgal abstraction, answer abstraction can be
-declared by setting a value for the maximum depth of an answer and for
-the action to take when an answer is encountered that reaches that
-depth.
+Similarly to the use of subgal abstraction, answer abstraction is the
+implementational basis of radial restraint.  It can be declared by
+setting a value for the maximum depth of an answer and for the action
+to take when an answer is encountered that reaches that depth.
 %
 \bi
 \item {\bf depth} The maximum depth can be set to {\tt n} for a set of
