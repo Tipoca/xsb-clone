@@ -140,6 +140,8 @@ EOF
 ../gentest.sh "$XEMU -l $options" test_flounder "test."
 #--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" test_answer_sccs "test."
+#--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_euv "test."
 
 #VALGRIND
 if test "$valgrind" = "true"; then
@@ -155,3 +157,18 @@ fi
 # gentest.sh doesn't quite work to test forest view.
 #bash ./test_forest_view.sh "$XEMU -l $options" 
 #--------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
