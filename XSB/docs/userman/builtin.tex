@@ -2394,12 +2394,28 @@ future release \footnote{We also note that the ISO Prolog evaluable
   in \version .}.
 
 \begin{description}
+\index{Prolog flags!{\tt exception\_action}}
 \isoitem{is(?Result,+Expression)}{is/2}
 {\tt is(Result,Expression)} is true iff the result of evaluating {\tt
 Expression} as a sequence of evaluable functors unifies with {\tt
 Result}.  As mentioned in Section~\ref{inline_predicates}, {\tt is/2}
 is an inline predicate, so calls to {\tt is/2} within compiled code
 will not be visible during a trace of program execution.
+
+{\bf Error Cases}
+    \begin{description}
+    \item[{\tt instantiation\_error}]
+	{\tt Expression} contains an uninstantiated value
+    \item[{\tt domain\_error($<function>,<value>$}] {\tt Expression}
+      contains a $function$ applied to $value$, but $value$ is not
+      part of the domain of $function$.
+    \end{description}
+
+For {\tt is/2} the action for the above error cases can be altered so
+that the {\tt is/2} literal is treated as having a truth value of {\em
+  undefined} in the well-founded semantics.  This is done via the
+Prolog flag {\tt exception\_action}.
+
 \end{description}
 
 \subsection{Evaluable Functors for Arithmetic Expressions} \label{sec:arith-eval}
@@ -2889,7 +2905,7 @@ than {\tt U} the predicate fails.
 
 {\bf Error Cases:}
 \bi
-\item 	{\tt L} (or {\tt U}) is a not a character
+\item 	{\tt L} (or {\tt U}) is a not an integer
 \bi
 \item 	{\tt type\_error(integer,L)}
 \ei

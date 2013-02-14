@@ -197,12 +197,16 @@ This flag is global for all threads (currently, string garbage
 collection will only be invoked if there is a single active thread.)
 
 %
-\item {\tt table\_gc\_action}  {\tt abolish\_tables\_transitively} if
-  predicates or subgoals that depend on a conditional answer of an
-  abolished table are to be abolished automatically, and {\tt
-    abolish\_tables\_singly} if not.  Default is {\tt
-    abolish\_tables\_transitively}.  This flag affects all threads in
-  the process. 
+\item {\tt table\_gc\_action} The setting {\tt
+  abolish\_tables\_transitively} causes predicates or subgoals that
+  depend on a conditional answer of an abolished table to be abolished
+  automatically; the setting {\tt abolish\_tables\_singly} not does
+  not cause this action.  The distinction is important, since if table
+  $T_1$ depends on table $T_2$, and $T_2$ is abolished but $T_1$ is
+  not, then predicates that introspect the dependencies of $T_1$ could
+  cause memory violations (e.g., {\tt get\_residual/2}).  Default is
+  {\tt abolish\_tables\_transitively}.  This flag affects all threads
+  in the process.
 %
 \item {\tt goal}  the goal passed to XSB on command line with the `-e'
 switch; `{\tt true.}' if nothing is passed.  This flag may be
@@ -361,14 +365,35 @@ l([a|X]):- l(X).          l([a]).
     unify\_with\_occurs\_check/2}: see Section~\ref{sec:cyclic} for
     further discussion.  The default for this flag is {\tt off}.
 %
+\index{\texttt{explain\_u\_val/3}}
+\index{\texttt{explain\_u\_val/6}}
+\index{\texttt{get\_residual\_sccs/3}}
+\index{\texttt{get\_residual\_sccs/5}}
+\index{Prolog flags!{\tt exception\_action}}
+\item {\tt exception\_action} If set to {\tt iso} then ISO-style
+  exceptions will be thrown whenever an error condition arises.
+  However, if {\tt exception\_action} is set to {\tt
+    undefined\_truth\_value} then certain goals will succeed with an
+  undefined truth value rather than throwing an error.  When this
+  occurs, a literal is added to the delay list of the current
+  evaluation.  Later, it can be determined if an undefined answer
+  depends on an exceptional condition through {\tt
+    explain\_u\_val/[3.6]}, {\tt get\_residual\_sccs/[3,5]} or via a
+  justification system that depends on these predicates.  The default
+  for this flag is {\tt iso}
+%
+\index{\texttt{get\_scc\_dumpfile/0}}
+\index{Prolog flags!{\tt exception\_pre\_action}}
 \item {\tt exception\_pre\_action} If set to {\tt
-  print\_incomplete\_tables}, the predicate {\tt
+  print\_incomplete\_tables}, then the predicate {\tt
   print\_incomplete\_tables/0} is called {\em before} throwing an
-  exception, and this information can be used to help understand the
-  context in which the exception arose.  Only exceptions that are
-  thrown over at least one incomplete table will cause the file to be
-  created.  (Figure out about file).  The default for this flag is
-  {\tt off}.
+  exception.  The execution of {\tt print\_incomplete\_tables/0}
+  causes the stack of incomplete tables to be printed to a temporary
+  file in {\tt \$XSBDIR/etc}.  The file can be obtained via the
+  predicate {\tt get\_scc\_dumpfile/1}; information in the file can be
+  used to help understand the context in which the exception arose.
+  The file will be created only if an exception is thrown over at
+  least one incomplete table.  The default for this flag is {\tt off}.
 %
 \index{Prolog flags!{\tt max\_tab\_usage}}
 \index{\texttt{statistics/1}}
@@ -544,6 +569,8 @@ user defined module, use:
     \> \>	| ?- current\_predicate(usermod:Predicate). \\
     }
 %
+
+\noindent
 {\bf Error Cases}
 \bi
 \item 	{\tt Predicate\_indicator} is neither a variable nor a predicate indicator
