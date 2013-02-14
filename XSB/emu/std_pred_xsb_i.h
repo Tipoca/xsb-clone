@@ -17,7 +17,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.87 2013-01-09 20:15:34 dwarren Exp $
+** $Id: std_pred_xsb_i.h,v 1.88 2013-02-14 23:10:00 tswift Exp $
 ** 
 */
 
@@ -359,7 +359,10 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	if (c < 0 || c > 255) {
 	  //	  err_handle(CTXTc RANGE, 2, call_name, 2, "ASCII code", heap_addr);
 	  mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
-	  xsb_representation_error(CTXTc "character code",heap_addr,call_name,2);
+	  //	  xsb_representation_error(CTXTc "character code",c,call_name,2);
+	  xsb_representation_error(CTXTc "character code",
+				   makestring(string_find("(Non-ASCII Character)",1)),
+				   call_name,2);
 	  return FALSE;	/* keep compiler happy */
 	}
 	if (atomname >= atomnamelast) {
@@ -483,7 +486,10 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
 	}
 
 	if (c < 0 || c > 255) {
-	  xsb_representation_error(CTXTc "character code",heap_addr,call_name,2);
+	  //	  xsb_representation_error(CTXTc "character code",heap_addr,call_name,2);
+	  xsb_representation_error(CTXTc "character code",
+				   makestring(string_find("(Non-ASCII Character)",1)),
+				   call_name,2);
 	}
 	if (StringLoc > 200) xsb_type_error(CTXTc "list",makestring("infinite list(?)"),call_name,2);
 	str[StringLoc++] = (char)c;
