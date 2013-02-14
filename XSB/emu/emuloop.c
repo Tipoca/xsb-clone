@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.235 2013-01-09 20:15:34 dwarren Exp $
+** $Id: emuloop.c,v 1.236 2013-02-14 22:03:53 tswift Exp $
 ** 
 */
 
@@ -530,6 +530,7 @@ int emuloop(CTXTdeclc byte *startaddr)
 #define GC_INFERENCES 66 /* make sure the garbage collection test is hard */
   static int infcounter = 0;
 #endif
+  jmp_buf xsb_eval_environment;
 
   wam_initialized = TRUE ;
 
@@ -1995,9 +1996,9 @@ argument positions.
 	}
       } else { arithmetic_abort(CTXTc op2, "compare-operator", op1); }
     }
-#ifdef NON_OPT_COMPILE
-    if (res == 2) xsb_abort("uninitialized use of res in cmpreg instruction");
-#endif
+    //#ifdef NON_OPT_COMPILE
+    //    if (res == 2) xsb_abort("uninitialized use of res in cmpreg instruction");
+    //#endif
     bld_oint(op3,res);
   XSB_End_Instr() 
 

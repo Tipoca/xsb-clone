@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.106 2013-01-09 16:08:52 dwarren Exp $
+** $Id: error_xsb.c,v 1.107 2013-02-14 22:03:53 tswift Exp $
 ** 
 */
 
@@ -54,6 +54,7 @@
 #include "emuloop.h"
 #include "orient_xsb.h"
 #include "wind2unix.h"
+#include "heap_xsb.h"
 
 extern void remove_incomplete_tries(CTXTdeclc CPtr);
 extern PrRef get_prref(CTXTdeclc Psc psc);
@@ -375,17 +376,29 @@ void call_conv xsb_basic_evaluation_error(char *message,int type)
   xsb_throw_internal(CTXTc ball_to_throw,ball_len);
 }
 
-DllExport void call_conv xsb_evaluation_error(int type,char *description, ...)
+DllExport void call_conv xsb_evaluation_error(CTXTdeclc int type,char *description, ...)
 {
   char message[MAXBUFSIZE];
   va_list args;
 
-  va_start(args, description);
-  strcpy(message, "++Error[XSB]: [Runtime/C] ");
-  vsnprintf(message+strlen(message), (MAXBUFSIZE-strlen(message)), description, args);
-  if (message[strlen(message)-1] == '\n') message[strlen(message)-1] = 0;
-  va_end(args);
-  xsb_basic_evaluation_error(message,type);
+  Pair undefPair;
+  struct Table_Info_Frame * Utip;		
+  int isNew;
+
+  if (flags[EXCEPTION_ACTION]) {
+    undefPair = insert("floundered_undefined",1,pair_psc(insert_module(0,"tables")),&isNew); 
+    //    printf("undefPair %p\n",undefPair);
+    Utip = get_tip(CTXTc pair_psc(undefPair));				
+    delay_negatively(TIF_Subgoals(Utip));					
+  }
+  else {
+    va_start(args, description);
+    strcpy(message, "++Error[XSB]: [Runtime/C] ");
+    vsnprintf(message+strlen(message), (MAXBUFSIZE-strlen(message)), description, args);
+    if (message[strlen(message)-1] == '\n') message[strlen(message)-1] = 0;
+    va_end(args);
+    xsb_basic_evaluation_error(message,type);
+  }
 }
 
 /*****************/
@@ -997,7 +1010,7 @@ void arithmetic_abort(CTXTdeclc Cell op1, char *OP, Cell op2)
   print_pterm(CTXTc op1, TRUE, &str_op1);
   print_pterm(CTXTc op2, TRUE, &str_op2);
   if (isref(op1) || isref(op2)) {
-    xsb_evaluation_error(EVALUATION_INSTANTIATION_ERROR,
+    xsb_evaluation_error(CTXTc EVALUATION_INSTANTIATION_ERROR,
 			 "Uninstantiated argument of evaluable function %s/2\n%s %s %s %s%s",
 			 OP, "   Goal:",
 			 (isref(op1)? "_Var": str_op1.string),
@@ -1009,7 +1022,7 @@ void arithmetic_abort(CTXTdeclc Cell op1, char *OP, Cell op2)
     //    xsb_abort("Wrong domain in evaluable function %s/2\n%s %s %s %s found",
     //	      OP, "         Arithmetic expression expected, but",
     //	      str_op1.string, OP, str_op2.string);
-    xsb_evaluation_error(EVALUATION_DOMAIN_ERROR,
+    xsb_evaluation_error(CTXTc EVALUATION_DOMAIN_ERROR,
 			 "Wrong domain in evaluable function %s/2\n%s %s %s %s found",
 			 OP, "         Arithmetic expression expected, but",
 			 str_op1.string, OP, str_op2.string);
@@ -1284,7 +1297,7 @@ void print_incomplete_tables_on_abort(CTXTdecl) {
   char etcdir[MAXPATHLEN];
   char * tempnamptr;
 
-  if (openreg < COMPLSTACKBOTTOM && flags[ABORT_PRE_ACTION]  ) {
+  if (openreg < COMPLSTACKBOTTOM && flags[EXCEPTION_PRE_ACTION]  ) {
     snprintf(etcdir,MAXPATHLEN,"%s%cetc",install_dir_gl,SLASH);
     tempnamptr = tempnam(etcdir,"scc_dump_");
     strncpy(abort_file_gl,tempnamptr,2*MAXPATHLEN);

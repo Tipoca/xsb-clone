@@ -20,7 +20,7 @@
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **
-** $Id: flag_defs_xsb.h,v 1.51 2013-01-04 14:56:21 dwarren Exp $
+** $Id: flag_defs_xsb.h,v 1.52 2013-02-14 22:03:54 tswift Exp $
 **
 */
 
@@ -146,11 +146,13 @@ interrupt flag
 #define MAX_MEMORY                94
 #define MEMORY_ERROR_FLAG         95
 #define WRITE_DEPTH               96
-#define ABORT_PRE_ACTION          97
+#define EXCEPTION_PRE_ACTION      97
 #define LOG_UNINDEXED		  98  /* 0 no logging; 1 log first time only; 2 log every time; 
 					>2 is psc to print backtrace on unindexed access to that psc, every time. */ 
 #define LOG_ALL_FILES_USED	  99  /* log all files at open */
-#define MAX_FLAGS		 100
+#define EXCEPTION_ACTION         100
+
+#define MAX_FLAGS		 120
 
 #define MAXTOINDEX 20              /* maximum depth in term to go when using deep indexing; 
 				      the actual depth is now specified by MAXTOINDEX_FLAG*/
@@ -160,6 +162,7 @@ interrupt flag
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #define PRINT_INCOMPLETE_ON_ABORT  1
+#define UNDEFINED_TRUTH_VALUE  1
 
 /* Banner control values recognized on the Prolog side.
    MUST BE PRIME NUMBERS */
