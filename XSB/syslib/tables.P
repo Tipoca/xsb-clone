@@ -319,6 +319,7 @@ floundered_undefined(a) :- tnot(floundered_undefined(a)).
 %:- table floundered_undefined/0.
 %floundered_undefined :- tnot(floundered_undefined).
 
+?- floundered_undefined(a).
 /*----------------------------------------------------------------------*/
 /* Predicates to retrieve information out of tables.                    */
 /*----------------------------------------------------------------------*/
@@ -1317,6 +1318,7 @@ subgoal_scc_member(Subgoal,[ret(S,_,Index)|_],Index):-
 subgoal_scc_member(Subgoal,[_|R],Index):- 
 	subgoal_scc_member(Subgoal,R,Index).
 
+%------------------------------------------------------------------------------
 end_of_file.
 
 :- export explain_u_val/4.
