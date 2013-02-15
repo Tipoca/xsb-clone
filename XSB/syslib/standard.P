@@ -1609,9 +1609,12 @@ listing(Head) :-
 	 ;	listing0(Head)
 	).
 
+%TLS: changed numbervars/1 to numbervars/4 so that attributed
+% variables are handled properly.
 listing0(Head) :-
 	clause(Head,Bod),
-	numbervars(clause(Head,Bod)),
+%	numbervars(clause(Head,Bod)),
+        numbervars(clause(Head,Bod), 0, _,[attvar(skip)]),
 	write(Head),
 	pp_clause(Bod),
 	fail.

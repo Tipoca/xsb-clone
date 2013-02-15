@@ -151,7 +151,9 @@
 :- import '$$set_scope_marker'/0, '$$unwind_stack'/0, 
 	  '$$clean_up_block'/1, xwam_state/2
      from machine. 
-:- import numbervars/1 from num_vars.
+
+%:- import numbervars/1 from num_vars.
+:- import numbervars/4 from num_vars.
 :- import calculate_singleton/3 from singlton.
 :- import concat_atom/2  from string.
 :- import file_read/2, file_read/3 from xsb_read.
