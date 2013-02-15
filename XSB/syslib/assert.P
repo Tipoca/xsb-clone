@@ -265,7 +265,8 @@ set_var_occurrences(Term) :-
 	 ->	true
 	 ; var(Term)
 	 ->	(is_attv(Term)
-		 ->	true
+		 ->	get_attributes(Term,Attributes),
+			set_var_occurrences(Attributes)
 		 ;	Term = '$assertVAR'(_,1)
 		)
 	 ; Term = '$assertVAR'(_,N)
@@ -384,7 +385,7 @@ dynamic_1(Preds) :-
 
 % At this point we know that preds are all ok.
 dynamic_2((P1,P2)) :- !, dynamic_2(P1), dynamic_2(P2).
-dynamic_2(Spec) :- 
+dynamic_2(Spec) :-
 	mpa_to_skel(Spec,Head), 
 	dynamic_code_function(CONVERT_TO_DYNA, Head,_Prref,'dynamic/1',1).
 

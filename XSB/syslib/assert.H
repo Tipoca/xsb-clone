@@ -68,6 +68,7 @@
 :- import psc_set_incr/2 from machine.
 :- import psc_get_incr/2 from machine.
 :- import buff_set_word/3, term_psc/2 from machine.
+:- import get_attributes/2 from machine.
 
 :- import obsolete/2 from obsolete.
 
