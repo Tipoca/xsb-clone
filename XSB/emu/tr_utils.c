@@ -4079,7 +4079,6 @@ void abolish_all_tables_cps_check(CTXTdecl)
   BTNptr trieNode;
 
   cp_bot1 = (CPtr)(tcpstack.high) - CP_SIZE;
-
   cp_top1 = breg ;				 
   while ( cp_top1 < cp_bot1 ) {
     cp_inst = *(byte *)*cp_top1;
@@ -4093,10 +4092,16 @@ void abolish_all_tables_cps_check(CTXTdecl)
       }
     }
     /* Now check delaylist */
-    if ( cp_pdreg(cp_top1) != (CPtr) NULL) 
-      xsb_abort("[abolish_all_tables/0] Illegal table operation"
-		"\n\t tables to be abolished are in delay list.");
-      cp_top1 = cp_prevtop(cp_top1);
+    if ( cp_pdreg(cp_top1) != (CPtr) NULL)  {
+      int ctr = 0;
+      char buffera[MAXTERMBUFSIZE]; 
+      memset(buffera,0,MAXTERMBUFSIZE);
+      ctr = sprintf(buffera,"[abolish_all_tables/0] Illegal table operation"
+		    "\n\t tables to be abolished are in delay list, e.g.: ");
+      sprint_delay_list(CTXTc buffera+ctr, cp_pdreg(cp_top1));
+      xsb_abort(buffera);
+    }
+    cp_top1 = cp_prevtop(cp_top1);
   }
 }
 
