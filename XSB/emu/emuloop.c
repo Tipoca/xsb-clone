@@ -2,7 +2,7 @@
 ** Author(s): Warren, Swift, Xu, Sagonas, Johnson
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
-** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
+** Copyright (C) The Research Foundation of SUNY, 1986, 1993-2013
 ** Copyright (C) ECRC, Germany, 1990
 ** 
 ** XSB is free software; you can redistribute it and/or modify it under the
@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.236 2013-02-14 22:03:53 tswift Exp $
+** $Id: emuloop.c,v 1.237 2013-02-22 05:51:27 kifer Exp $
 ** 
 */
 
