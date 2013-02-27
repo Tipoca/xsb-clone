@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.178 2013-01-09 20:15:34 dwarren Exp $
+** $Id: tries.c,v 1.179 2013-02-27 16:16:55 tswift Exp $
 ** 
 */
 
@@ -469,6 +469,7 @@ BTNptr newBasicTrie(CTXTdeclc Cell symbol, int trie_type) {
  *  that of the child pointer field of the node which contains the
  *  just-processed symbol.
  */
+extern int tracing_activated;
 
 #define one_btn_chk_ins(Found,item,TrieType) {				\
  									\
@@ -1872,7 +1873,7 @@ int vcs_tnot_call = 0;
  * function.  It actually points one Cell *before* the term vector!  Notice
  * the treatment of "cptr" as these terms are inspected.
  */
-
+extern int tracing_activated;
 #define ABSTRACTING_ATTVARS 1
 
 int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
@@ -2013,7 +2014,7 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
     }
   }
   resetpdl;
-    
+
   if (arity == 0) {
     one_btn_chk_ins(flag, ESCAPE_NODE_SYMBOL, CALL_TRIE_TT);
     Instr(Paren) = trie_proceed;
@@ -2177,11 +2178,14 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   if (--depth_ctr <= 0)	{						\
     if (flags[MAX_TABLE_ANSWER_ACTION] == XSB_FAILURE) {		\
       safe_delete_branch(Paren);					\
+      resetpdl;								\
       return(NULL);							\
     }									\
     else {								\
       char buffer[2*MAXTERMBUFSIZE];					\
+      resetpdl;								\
       sprintCyclicTerm(CTXTc buffer,term);				\
+      /*      printf("string length %d\n",strlen(buffer));	*/	\
       safe_delete_branch(Paren);					\
       if (is_cyclic(CTXTc term))					\
 	xsb_abort("Cyclic term in term to be trie-interned %s\n",buffer); \
