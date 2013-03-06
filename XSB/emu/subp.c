@@ -1123,7 +1123,9 @@ xsbBool startSleeperThread(int interval) {
     killrc = TerminateThread(executing_sleeper_thread,0);
     executing_sleeper_thread = NULL;
   }
-  sleeper_thread = (HANDLE)_beginthread(executeSleeperThread,0,NULL);
+    sleeper_thread = (HANDLE)_beginthread(executeSleeperThread,0,NULL);
+    // Miguel's change
+  //  sleeper_thread = (HANDLE)_beginthreadx(NULL,0,executeSleeperThread,NULL,0,NULL);
   executing_sleeper_thread = sleeper_thread;
   SetThreadPriority(sleeper_thread,THREAD_PRIORITY_HIGHEST/*_ABOVE_NORMAL*/);
   Sleep(1);  // race condition, need to get into sleeper, otw may never get control? (priority?)
