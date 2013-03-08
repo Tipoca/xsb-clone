@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.101 2012-11-28 17:33:47 tswift Exp $
+** $Id: debug_xsb.c,v 1.102 2013-03-08 20:45:01 tswift Exp $
 ** 
 */
 
@@ -79,7 +79,7 @@ static void print_term(FILE *fp, Cell term, byte car, long level)
 
   level--;
   if (level < 0) {
-    fprintf(fp, "...");
+    fprintf(fp, "'...'");
     return;
   }
   printderef(term);
@@ -89,7 +89,7 @@ static void print_term(FILE *fp, Cell term, byte car, long level)
     fprintf(fp, "_%p", vptr(term));
     return;
   case XSB_ATTV:
-    fprintf(fp, "_%p {...}", (CPtr)dec_addr(term));
+    fprintf(fp, "_%p {'...'}", (CPtr)dec_addr(term));
     return;
   case XSB_STRUCT:
       //NOTE: Below is a check for boxed numbers. If such is the case, then
@@ -389,8 +389,7 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
   if (size > MAXTERMBUFSIZE/2) return size;
   level--;
   if (level < 0) {
-    sprintf(buffer+size, "...");
-    return size+3;
+    return size + sprintf(buffer+size, "'...'");
   }
   printderef(term);
   switch (cell_tag(term)) {
@@ -399,7 +398,7 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
     return size+sprintf(buffer+size, "_v%p",vptr(term));
   case XSB_ATTV:
     if (flags[WRITE_ATTRIBUTES] == WA_DOTS) {
-      return size + sprintf(buffer+size, "_attv%p {...} ", (CPtr)dec_addr(term));
+      return size + sprintf(buffer+size, "_attv%p {'...'} ", (CPtr)dec_addr(term));
       //      return size+15+2*sizeof(CPtr);
     }
     else {
