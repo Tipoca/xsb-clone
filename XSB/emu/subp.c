@@ -123,13 +123,10 @@ void add_interrupt(CTXTdeclc Cell op1, Cell op2) {
   // This record is 4 words long and so INT_REC_SIZE=4
   bld_list(&temp,hreg);  // temp -> new cons pair 1
   bld_list(hreg,hreg+2); // 1.car -> 2nd new cons pair 2
-  hreg++;
-  bld_free(hreg);        // 1.cdr is free var
-  hreg++;
-  bld_copy(hreg,op1);    // 2.car is op1
-  hreg++;
-  bld_copy(hreg,op2);    // 2.cdr is op2
-  hreg++;
+  bld_free(hreg+1);        // 1.cdr is free var
+  bld_copy(hreg+2,op1);    // 2.car is op1
+  bld_copy(hreg+3,op2);    // 2.cdr is op2
+  hreg += 4;
 
   if (isnonvar(head)) { // nonempty
     CPtr addr_cdr;
@@ -1083,11 +1080,11 @@ pthread_t executing_sleeper_thread = NULL;
 #endif
 
 // TLS: For some embarassing reason, I don't seem to be able to pass a
-// parameter to the thread function executeSleeperTHread() (?!?) So
+// parameter to the thread function executeSleeperThread() (?!?) So
 // I'm using a global.
-void 
+void
 #ifdef WIN_NT
-_cdecl
+_cdecl  // since no parameters, does not matter it seems.
 #endif
 executeSleeperThread(void * interval) {
   //  long *i1;
@@ -1104,7 +1101,10 @@ executeSleeperThread(void * interval) {
   //  printf("slept for %p %d usecs\n",i,*i);
   //  printf("slept for %d usecs (%d)\n",i,TIMER_INTERRUPT);
   asynint_val |= TIMER_MARK;
-  executing_sleeper_thread = NULL;
+  if (executing_sleeper_thread) {
+    CloseHandle(executing_sleeper_thread);
+    executing_sleeper_thread = NULL;
+  }
 }
 
 // TLS, copied thread start for windows from startProfileThread()
@@ -1119,13 +1119,14 @@ xsbBool startSleeperThread(int interval) {
   int killrc;
   HANDLE sleeper_thread;
   sleep_interval = interval;
-  if (executing_sleeper_thread) { // previous sleeper, now obsolete, so kill it.
+  if (executing_sleeper_thread) { // previous sleeper still running, now obsolete, so kill it.
     killrc = TerminateThread(executing_sleeper_thread,0);
+    CloseHandle(executing_sleeper_thread);
     executing_sleeper_thread = NULL;
   }
-    sleeper_thread = (HANDLE)_beginthread(executeSleeperThread,0,NULL);
+  //    sleeper_thread = (HANDLE)_beginthread(executeSleeperThread,0,NULL);
     // Miguel's change
-  //  sleeper_thread = (HANDLE)_beginthreadx(NULL,0,executeSleeperThread,NULL,0,NULL);
+  sleeper_thread = (HANDLE)_beginthreadex(NULL,0,(unsigned (__cdecl *)(void *))executeSleeperThread,NULL,0,NULL);
   executing_sleeper_thread = sleeper_thread;
   SetThreadPriority(sleeper_thread,THREAD_PRIORITY_HIGHEST/*_ABOVE_NORMAL*/);
   Sleep(1);  // race condition, need to get into sleeper, otw may never get control? (priority?)
