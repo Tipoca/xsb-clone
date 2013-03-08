@@ -1084,7 +1084,7 @@ pthread_t executing_sleeper_thread = NULL;
 // I'm using a global.
 void
 #ifdef WIN_NT
-_cdecl  // since no parameters, does not matter it seems.
+_stdcall  // since no parameters, does not matter it seems.
 #endif
 executeSleeperThread(void * interval) {
   //  long *i1;
@@ -1126,7 +1126,7 @@ xsbBool startSleeperThread(int interval) {
   }
   //    sleeper_thread = (HANDLE)_beginthread(executeSleeperThread,0,NULL);
     // Miguel's change
-  sleeper_thread = (HANDLE)_beginthreadex(NULL,0,(unsigned (__cdecl *)(void *))executeSleeperThread,NULL,0,NULL);
+  sleeper_thread = (HANDLE)_beginthreadex(NULL,0,(unsigned (__stdcall *)(void *))executeSleeperThread,NULL,0,NULL);
   executing_sleeper_thread = sleeper_thread;
   SetThreadPriority(sleeper_thread,THREAD_PRIORITY_HIGHEST/*_ABOVE_NORMAL*/);
   Sleep(1);  // race condition, need to get into sleeper, otw may never get control? (priority?)
