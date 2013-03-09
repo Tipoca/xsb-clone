@@ -1102,7 +1102,9 @@ executeSleeperThread(void * interval) {
   //  printf("slept for %d usecs (%d)\n",i,TIMER_INTERRUPT);
   asynint_val |= TIMER_MARK;
   if (executing_sleeper_thread) {
+#ifdef WIN_NT
     CloseHandle(executing_sleeper_thread);
+#endif
     executing_sleeper_thread = NULL;
   }
 }
