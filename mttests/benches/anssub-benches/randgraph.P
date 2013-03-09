@@ -21,10 +21,12 @@
 :- dynamic edge/2.
 :- dynamic edge/3.
 
-%----------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Reading canonical atomic facts as a trie.
+
 :- import file_read_canonical/3 from machine.
 
-read_trie(File):-
+read_trie(File,Trie):-
 	trie_create(Trie,[]),
 	see(File),
 	current_input_port(S),
@@ -40,10 +42,8 @@ read_trie_1(S,Trie):-
 	   fail).
 
 :- import new_i_trie_intern/6 from intern.
-
 scary_trie_intern(Term,Root) :-
 	new_i_trie_intern(Root,Term,_Leaf,_Flag,NO_CPS_CHECK,EXPAND_HASHES).
-
 
 write_trie(File):-
 	tell(File),
@@ -53,8 +53,10 @@ write_trie(File):-
 	fail.
 write_trie(_):- told.
 
-%----------------------------------
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Generate triples of N rels
+% app(r<n1>,o<n2>,o<n3>)
+%
 genTrieTriplesH(NumEdges,NumNodes,NumRels):- 
 	trie_create(Trie,[]),
 	genTrieTriplesH_1(Trie,NumEdges,NumNodes,NumRels).
@@ -73,14 +75,19 @@ genTrieTripleH(Trie,NumNodes,NumRels):-
 	number_codes(To,ToList),atom_codes(Toa,[111|ToList]),
 	number_codes(From,FromList),atom_codes(Froma,[111|FromList]),
 	random(1,NumRels,Rel),
-	number_codes(Rel,RelList),atom_codes(Rela,[111|RelList]),
+	number_codes(Rel,RelList),atom_codes(Rela,[114|RelList]),
 	Triple = app(Rela,Froma,Toa),
 	\+ fast_trie_interned(Trie,Triple,_Leaf),
+%	writeln(Triple),
 	trie_intern(Triple,Trie),
 	!.
 
-%----------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% generates hilog (apply) + integers.
+% app(<n1>,<n2>,<n3>)
 
+:- import trie_intern_deterministic/4 from intern.
+ 
 genTrieTriplesHi(NumEdges,NumNodes,NumRels):- 
 	trie_create(Trie,[]),
 	genTrieTriplesHi_1(Trie,NumEdges,NumNodes,NumRels).
@@ -102,10 +109,13 @@ genTrieTripleHi(Trie,NumNodes,NumRels):-
 %	number_codes(Rel,RelList),atom_codes(Rela,[111|RelList]),
 	Triple = app(Rel,From,To),
 	\+ fast_trie_interned(Trie,Triple,_Leaf),
+%	trie_intern_deterministic(Triple,Trie,_,_),
 	trie_intern(Triple,Trie),
 	!.
 
-%----------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% generates hilog (apply) + integers.
+% o<n1>(o<n2>,o<n3>)
 
 genTrieTriples(NumEdges,NumNodes,NumRels):- 
 	trie_create(Trie,[]),
@@ -131,8 +141,7 @@ genTrieTriple(Trie,NumNodes,NumRels):-
 	trie_intern(Triple,Trie),
 	!.
 
-%----------------------------------
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Generate a random graph with NumNodes and NumEdges and write into
 % File.  Not every node will necessarily get an edge.
 
@@ -165,8 +174,7 @@ genEdge(NumNodes1,Str):-
 	asserta(edge(From,To)),
 	write(Str,edge(From,To)),writeln(Str,'.'),!.
 
-%----------------------------------
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Generate a random graph with NumNodes and NumEdges into File.  Edge
 % has a randomly generated weight in its 3rd argument.
 
@@ -199,7 +207,8 @@ genEdge3(NumNodes1,Str):-
 	asserta(edge(From,To,Weight)),
 	write(Str,edge(From,To,Weight)),writeln(Str,'.'),!.
 
-%-----------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Coherent subgroups (ASP) 
 
 csg_iterate(0,_Nodes,_Links):- !.
 csg_iterate(Number,Nodes,Links):- 
@@ -240,7 +249,9 @@ genNodes1(Edges):-
 	fail.
 genNodes1(_).
 
-%----------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% prestige (ASP) 
+
 :- import concat_atom/2 from string.
 
 prestige_iterate(0,_Nodes,_Links,_ProbImp):- !.
@@ -283,10 +294,10 @@ gen_prestige_nodes(N,Num,ProbImp,[node(N,Attr)|R]):-
 	N1 is N + 1,
 	gen_prestige_nodes(N1,Num,ProbImp,R).
 
-%----------------------------------
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % generates a regular graph of Nodes nodes (i.e. where each node has
 % Links links) 
+%
 genRegGraph(Nodes,Links,GraphS):- 
 	Links1 is Links + 1,
 	genRegGraph_1(0,Nodes,Links1,NestL),
@@ -306,10 +317,9 @@ genRegGraph_2(L,Links,N,Nodes,List,Out):-
 		genRegGraph_2(L,Links,N,Nodes,List,Out)
 	 ;      L1 is L + 1,
 		genRegGraph_2(L1,Links,N,Nodes,[edge(N,To)|List],Out) ).
-
-%-------------------
 		
-% Generates a graph with Glinks among nodes from 1..Nodes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Generates a graph with Glinks among nodes from 1..Nodes (obsolete?)
 genGraph(Nodes,Links,GraphS):- 
 	retractall('_$edges'(_,_)),
 	genGraph_1(Links,Nodes),
@@ -331,6 +341,50 @@ gen_edge(Nodes):-
 	\+ '_$edges'(F,T),
 	assert('_$edges'(F,T)),
 	!.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+:- dynamic u_edge/2.
+% Generates a double graph with Glinks among nodes from 1..Nodes
+genUGraph(Nodes,Links,ULinks):- 
+	retractall(edge(_,_)),
+	retractall(u_edge(_,_)),
+	genUGraph_e(Links,Nodes),
+	genUGraph_u(ULinks,Nodes).
+
+genUGraph_e(0,_Nodes):- !.
+genUGraph_e(N,Nodes):- 
+	gen_edge_e(Nodes),
+	N1 is N - 1,
+	genUGraph_e(N1,Nodes).
+
+gen_edge_e(Nodes):- 
+	repeat,
+	random(1,Nodes,F),
+	random(1,Nodes,T),
+	T \== F,
+	\+ edge(F,T),
+	assert(edge(F,T)),
+	!.
+
+genUGraph_u(0,_Nodes):- !.
+genUGraph_u(N,Nodes):- 
+	gen_Uedge(Nodes),
+	N1 is N - 1,
+	genUGraph_u(N1,Nodes).
+
+gen_Uedge(Nodes):- 
+	repeat,
+	random(1,Nodes,F),
+	random(1,Nodes,T),
+	T \== F,
+	\+ u_edge(F,T),
+	assert(u_edge(F,T)),
+	!.
+
+:- table utc/2.
+utc(From,To):- edge(From,To).
+utc(From,To):- u_edge(From,To),undefined.
+utc(From,To):- utc(From,Mid),utc(Mid,To).
 
 %-------------------
 
