@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.102 2013-03-08 20:45:01 tswift Exp $
+** $Id: debug_xsb.c,v 1.103 2013-03-11 23:49:55 tswift Exp $
 ** 
 */
 
@@ -191,7 +191,10 @@ int sprint_quotedname(char *buffer, int size,char *string)
 	sprintf(buffer+size+ dlength + 1,"\'");
 	return size + dlength + 2;
       }
-      else return size; 
+      else {
+	//	printf(" quoted name too long!\n");
+	return size; 
+      }
     }
   }
 }
@@ -389,7 +392,9 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
   if (size > MAXTERMBUFSIZE/2) return size;
   level--;
   if (level < 0) {
-    return size + sprintf(buffer+size, "'...'");
+    if (car == CAR) 
+      return size + sprintf(buffer+size, "'...'");
+    else       return size + sprintf(buffer+size, "'...']");
   }
   printderef(term);
   switch (cell_tag(term)) {
@@ -1335,7 +1340,6 @@ int sprint_delay_element(CTXTdeclc char * buffer, Cell del_elem) {
       ctr = ctr + sprint_subgoal(CTXTc buffer+ctr, (VariantSF) addr_val(tmp_cell)); 
       tmp_cell = cell(cptr + 2);
       ctr = ctr + sprintf(buffer+ctr, ",");
-      //      printTriePath(CTXTc stdout, (BTNptr)  addr_val(tmp_cell), NO);printf("\n");
       ctr = ctr + sprintTriePath(CTXTc buffer+ctr, (BTNptr) addr_val(tmp_cell)); 
       ctr = ctr + sprintf(buffer+ctr, ")");
 
@@ -1417,12 +1421,11 @@ int sprint_delay_list(CTXTdeclc char *buffer, CPtr dlist)
 	ctr = ctr + sprint_delay_element(CTXTc buffer+ctr, cell(cptr));
 	cptr = (CPtr)cell(cptr+1);
 	if (islist(cptr)) {
-	  sprintf(buffer, ", "); ctr = ctr + 2;
+	  ctr = ctr + sprintf(buffer+ctr, ", "); 
 	}
       }
       if (isnil(cptr)) {
-	sprintf(buffer+ctr, "]"); 
-	return ctr+1;
+	return ctr + sprintf(buffer+ctr, "]"); 
       } else {
 	xsb_abort("Delay list with unknown tail type in print_delay_list()");
       }
@@ -1430,7 +1433,7 @@ int sprint_delay_list(CTXTdeclc char *buffer, CPtr dlist)
       xsb_abort("Delay list with unknown type in print_delay_list()");
     }
   }
-      return 0; // quiet compiler.
+  return 0; // quiet compiler.
 }
 
 /*-------------------------------------------------------------------------*/
