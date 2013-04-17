@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.35 2013-02-07 18:16:29 tswift Exp $
+** $Id: debug_xsb.h,v 1.36 2013-04-17 22:02:35 tswift Exp $
 ** 
 */
 
@@ -63,37 +63,65 @@ typedef struct subgoal_frame *VariantSF;
 #define LOG_BD                 LOG_LOUD
 #define LOG_COMPLETION         LOG_LOUD
 
+typedef struct forest_log_buffer {
+  int fl_size;
+  char * fl_buffer;
+} forest_log_buffer_struct;
+typedef forest_log_buffer_struct *forestLogBuffer;
+
+#ifndef MULTI THREAD
+extern forest_log_buffer_struct fl_buffer_1;
+extern forest_log_buffer_struct fl_buffer_2;
+extern forest_log_buffer_struct fl_buffer_3;
+
+extern  forestLogBuffer forest_log_buffer_1;
+extern  forestLogBuffer forest_log_buffer_2;
+extern  forestLogBuffer forest_log_buffer_3;
+#endif
+
+#define maybe_realloc_buffers(BUFFER,SIZE) {				\
+    if (SIZE > (BUFFER->fl_size)/2) {					\
+      /*      printf("reallocing buffer to %d\n",(BUFFER->fl_size)*2);*/ \
+      BUFFER->fl_buffer							\
+	= (char *)mem_realloc((BUFFER->fl_buffer),(BUFFER->fl_size),	\
+			      2*(BUFFER->fl_size),BUFF_SPACE);		\
+      /*      printf("buffer so far: %s\n\n",BUFFER->fl_buffer);*/	\
+      gdb_dummy();							\
+      BUFFER->fl_size = (BUFFER->fl_size)*2;				\
+    }									\
+  }
+
 #ifndef MULTI_THREAD
 extern void print_delay_list(FILE *, CPtr);
 extern void print_delay_element(FILE *, Cell);
 extern void print_registers(FILE *,Psc,long);
-extern int sprint_subgoal(char *,  VariantSF );
-extern void sprintAnswerTemplate(char *, CPtr, int);
-extern void sprintNonCyclicRegisters(char *,Psc);
-extern void sprintCyclicRegisters(char *,Psc);
-extern void sprintCyclicTerm(char *, Cell);
+extern int  sprint_subgoal(forestLogBuffer, int, VariantSF );
+extern void sprintAnswerTemplate(forestLogBuffer, CPtr, int);
+extern void sprintNonCyclicRegisters(forestLogBuffer,Psc);
+extern void sprintCyclicRegisters(forestLogBuffer,Psc);
+extern void sprintCyclicTerm(forestLogBuffer, Cell);
 extern void print_completion_stack(FILE*);
 extern void printCyclicTerm(Cell);
 extern void mark_cyclic(Cell);
-extern int sprint_delay_list(char *, CPtr);
+extern int  sprint_delay_list(forestLogBuffer, CPtr);
 void print_local_stack_nonintr(char *);
 #else
 extern void print_delay_list(struct th_context * ,FILE *, CPtr);
 extern void print_registers(struct th_context * ,FILE *,Psc,long);
-extern int sprint_subgoal(struct th_context *, char *,  VariantSF );
-extern void sprintAnswerTemplate(struct th_context *, char *, CPtr, int);
-extern void sprintCyclicTerm(struct th_context *, char *, Cell);
-extern void sprintCyclicRegisters(struct th_context *,char *,Psc);
-extern void sprintNonCyclicRegisters(struct th_context *,char *,Psc);
+extern int sprint_subgoal(struct th_context *, forestLogBuffer,int,  VariantSF );
+extern void sprintAnswerTemplate(struct th_context *, forestLogBuffer, CPtr, int);
+extern void sprintCyclicTerm(struct th_context *, forestLogBuffer, Cell);
+extern void sprintCyclicRegisters(struct th_context *,forestLogBuffer,Psc);
+extern void sprintNonCyclicRegisters(struct th_context *,forestLogBuffer,Psc);
 extern void print_completion_stack(struct th_context *,FILE*);
 extern void printCyclicTerm(struct th_context *,Cell);
 extern void mark_cyclic(struct th_context *,Cell);
-extern int sprint_delay_list(struct th_context *, char *, CPtr);
+extern int sprint_delay_list(struct th_context *, forestLogBuffer, CPtr);
 void print_local_stack_nonintr(struct th_context *,char *);
 #endif
 
 extern int sprint_quotedname(char *, int,char *);
-extern int sprintTerm(char *, Cell);
+extern int sprintTerm(forestLogBuffer, Cell);
 extern int ctrace_ctr;
 
 /* dbg_* macros */

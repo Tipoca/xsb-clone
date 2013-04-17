@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: basicdefs.h,v 1.13 2012-10-12 16:42:57 tswift Exp $
+** $Id: basicdefs.h,v 1.14 2013-04-17 22:02:34 tswift Exp $
 ** 
 */
 
@@ -62,9 +62,7 @@
 
 #define K   1024  /* please make sure that K stays divisible by sizeof(Cell) */
 
-#define MAXTERMBUFSIZE   32*K  /* Terms may be big...*/
-
-
+#define MAXTERMBUFSIZE   64*K  /* Terms may be big...*/
 
 #define XSB_STYLE_DCG  0    /* use XSB style DCG grammars */
 #define STANDARD_DCG   1    /* use standard DCG grammars */

@@ -440,6 +440,117 @@ void deallocate_call_list(calllistptr cl)  {
     //    SM_DeallocateStruct(smCallList, cl);      
   }
 
+void dfs_outedges_check_non_completed(CTXTdeclc callnodeptr call1) {
+  char bufferb[MAXTERMBUFSIZE]; 
+
+  if(IsNonNULL(call1->goal) && !subg_is_completed((VariantSF)call1->goal)){
+  deallocate_call_list(affected_gl);
+  sprint_subgoal(CTXTc forest_log_buffer_1,0,(VariantSF)call1->goal);     
+  sprintf(bufferb,"Incremental tabling is trying to invalidate an incomplete table \n %s\n",
+	  forest_log_buffer_1->fl_buffer);
+  xsb_new_table_error(CTXTc "incremental_tabling",bufferb,
+		      get_name(TIF_PSC(subg_tif_ptr(call1->goal))),
+		      get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
+  }
+}
+
+typedef struct incr_callgraph_dfs_frame {
+  hashtable_itr_ptr itr;
+  callnodeptr cn;
+} IncrCallgraphDFSFrame;
+
+#define push_dfs_frame(CN,ITR)	{					\
+    /*    printf("pushing cn %p   ",CN);				\
+    if (CN -> goal) { printf("*** ");print_subgoal(stddbg,CN->goal);}  printf("\n"); */\
+    ctr ++;								\
+    if (++incr_callgraph_dfs_top == incr_callgraph_dfs_size) {		\
+      printf("reallocing to %d\n",incr_callgraph_dfs_size*2);		\
+      mem_realloc(incr_callgraph_dfs, incr_callgraph_dfs_size*sizeof(IncrCallgraphDFSFrame), \
+		  2*incr_callgraph_dfs_size*sizeof(IncrCallgraphDFSFrame), TABLE_SPACE); \
+      incr_callgraph_dfs_size =     2*incr_callgraph_dfs_size;		\
+    }									\
+    incr_callgraph_dfs[incr_callgraph_dfs_top].itr = ITR;		\
+    incr_callgraph_dfs[incr_callgraph_dfs_top].cn = CN;		\
+  }
+
+#define pop_dfs_frame {incr_callgraph_dfs_top--;}
+
+void dfs_outedges(CTXTdeclc callnodeptr call1){
+  callnodeptr cn;
+  struct hashtable *h;	
+  struct hashtable_itr *itr;
+  int ctr = 0;
+
+  int incr_callgraph_dfs_top = -1;
+  int incr_callgraph_dfs_size; 
+  IncrCallgraphDFSFrame   *incr_callgraph_dfs;
+
+  //  printf("calling dfs %p\n",call1);
+  //    if (call1 -> goal) { printf("*** ");print_subgoal(stddbg,call1->goal);  printf("\n");}
+
+  incr_callgraph_dfs =
+    (IncrCallgraphDFSFrame *)  mem_alloc(10000*sizeof(IncrCallgraphDFSFrame), 
+					 TABLE_SPACE);
+  incr_callgraph_dfs_size = 10000;
+  dfs_outedges_check_non_completed(CTXTc call1);
+  call1->deleted = 1;
+  h=call1->outedges->hasht;
+  if (hashtable1_count(h) > 0){
+    //    printf("1-call1: %p \n",call1);
+    push_dfs_frame(call1,0);
+  }
+  while (incr_callgraph_dfs_top > -1) {
+    itr = 0;
+    do {
+      if (incr_callgraph_dfs[incr_callgraph_dfs_top].itr) {
+	itr = incr_callgraph_dfs[incr_callgraph_dfs_top].itr;
+	//	printf("1-top %d itr %p\n",incr_callgraph_dfs_top,itr);
+	if (!hashtable1_iterator_advance(itr)) {
+	  itr = 0;
+	  cn = incr_callgraph_dfs[incr_callgraph_dfs_top].cn;
+	  add_callnode(&affected_gl,cn);		
+	  //	  printf("+ adding callnode %p\n",cn);
+	  pop_dfs_frame;
+	}
+      }
+      else {
+	h=incr_callgraph_dfs[incr_callgraph_dfs_top].cn->outedges->hasht;
+	if (hashtable1_count(h) > 0) {
+	  itr = hashtable1_iterator(h);       
+	  incr_callgraph_dfs[incr_callgraph_dfs_top].itr = itr;
+	}
+	else {
+	  cn = incr_callgraph_dfs[incr_callgraph_dfs_top].cn;
+	  add_callnode(&affected_gl,cn);		
+	  //	  printf("+ adding callnode %p\n",cn);
+	  pop_dfs_frame;
+	}
+	//	printf("2-h %p itr %p\n",h,itr);
+      }
+    } while (itr == 0 && incr_callgraph_dfs_top > -1);
+    if (incr_callgraph_dfs_top > -1) {
+      cn = hashtable1_iterator_value(itr);
+      //      printf("top %d cn: %p itr: %p\n",incr_callgraph_dfs_top,cn,itr);
+      //      if (cn -> goal) {
+      //      	printf("*** ");print_subgoal(stddbg,(VariantSF) cn->goal);  printf("\n");
+      //            }
+      cn->falsecount++;
+      if (cn->deleted==0) {
+	dfs_outedges_check_non_completed(CTXTc cn);
+	cn->deleted = 1;
+	//	h=cn->outedges->hasht;
+	//	if (hashtable1_count(h) > 0) {
+	  push_dfs_frame(cn,0);
+	  //	}
+      }
+    }
+  }
+  mem_dealloc(incr_callgraph_dfs, incr_callgraph_dfs_size*sizeof(IncrCallgraphDFSFrame), 
+	      TABLE_SPACE);
+  printf("dfsed %d calls\n",ctr);
+}
+
+/*  
 void dfs_outedges(CTXTdeclc callnodeptr call1){
   callnodeptr cn;
   struct hashtable *h;	
@@ -449,22 +560,13 @@ void dfs_outedges(CTXTdeclc callnodeptr call1){
   //      printf("dfs outedges "); print_subgoal(stddbg,call1->goal);printf("\n");
   //    }
   if(IsNonNULL(call1->goal) && !subg_is_completed((VariantSF)call1->goal)){
-    char buffera[MAXTERMBUFSIZE]; 
-    char bufferb[MAXTERMBUFSIZE]; 
-
-    deallocate_call_list(affected_gl);
-    sprint_subgoal(CTXTc buffera,(VariantSF)call1->goal);     
-    sprintf(bufferb,"Incremental tabling is trying to invalidate an incomplete table \n %s\n",
-	    buffera);
-    xsb_new_table_error(CTXTc "incremental_tabling",bufferb,
-			get_name(TIF_PSC(subg_tif_ptr(call1->goal))),
-			get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
+    dfs_outedges_new_table_error(CTXTc call1);
   }
   call1->deleted = 1;
   h=call1->outedges->hasht;
   
   itr = hashtable1_iterator(h);       
-  if (hashtable1_count(h) > 0){
+  if (hashtable1_count(h) > -1){
     do {
       cn = hashtable1_iterator_value(itr);
       cn->falsecount++;
@@ -474,6 +576,17 @@ void dfs_outedges(CTXTdeclc callnodeptr call1){
   }
   add_callnode(&affected_gl,call1);		
 }
+*/
+// TLS: factored out this warning because dfs_inedges is recursive and
+// this makes the stack frames too big. 
+void dfs_inedges_warning(CTXTdeclc callnodeptr call1,calllistptr *lazy_affected) {
+  deallocate_call_list(*lazy_affected);
+  sprint_subgoal(CTXTc forest_log_buffer_1,0,call1->goal);
+    xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update (dfs_inedges)\n",
+	     subg_visitors(call1->goal),forest_log_buffer_1->fl_buffer);
+  }
+
+
 
 /* If ret != 0 (= CANNOT_UPDATE) then we'll use the old table, and we
    wont lazily update at all. */
@@ -481,6 +594,8 @@ int dfs_inedges(CTXTdeclc callnodeptr call1, calllistptr * lazy_affected, int fl
   calllistptr inedge_list;
   VariantSF subgoal;
   int ret = 0;
+
+  printf("dfs_inedges\n");
 
   if(IsNonNULL(call1->goal)) {
     if (!subg_is_completed((VariantSF)call1->goal)){
@@ -491,11 +606,7 @@ int dfs_inedges(CTXTdeclc callnodeptr call1, calllistptr * lazy_affected, int fl
 			  get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
     }
     if (subg_visitors(call1->goal)) {
-      char buffer[2*MAXTERMBUFSIZE];		
-      deallocate_call_list(*lazy_affected);
-      sprint_subgoal(CTXTc buffer,call1->goal);
-      xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update (dfs_inedges)\n",
-	       subg_visitors(call1->goal),buffer);
+      dfs_inedges_warning(CTXTc call1,lazy_affected);
       return CANNOT_UPDATE;
     }
   }
@@ -580,14 +691,13 @@ int create_call_list(CTXTdecl){
     }
     //    fprintf(stddbg,"incrementally updating table for ");print_subgoal(stdout,subgoal);printf("\n");
     if (subg_visitors(subgoal)) {
-      char buffer[2*MAXTERMBUFSIZE];					\
-      sprint_subgoal(CTXTc buffer,subgoal);
+      sprint_subgoal(CTXTc forest_log_buffer_1,0,subgoal);
 #ifdef WARN_ON_UNSAFE_UPDATE
       xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create_call_list)\n",
-	       subg_visitors(subgoal),buffer);
+	       subg_visitors(subgoal),forest_log_buffer_1->fl_buffer);
 #else
       xsb_abort("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create call list)\n",
-	       subg_visitors(subgoal),buffer);
+	       subg_visitors(subgoal),forest_log_buffer_1->fl_buffer);
 #endif
       //      continue;
       break;
@@ -663,14 +773,13 @@ int create_lazy_call_list(CTXTdeclc  callnodeptr call1){
       continue;
     }
     if (subg_visitors(subgoal)) {
-      char buffer[2*MAXTERMBUFSIZE];					\
-      sprint_subgoal(CTXTc buffer,subgoal);
+      sprint_subgoal(CTXTc forest_log_buffer_1,0,subgoal);
 #ifdef WARN_ON_UNSAFE_UPDATE
       xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create_lazy_call_list)\n",
-	       subg_visitors(subgoal),buffer);
+	       subg_visitors(subgoal),forest_log_buffer_1->fl_buffer);
 #else
       xsb_abort("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create_lazy_call_list)\n",
-	       subg_visitors(subgoal),buffer);
+	       subg_visitors(subgoal),forest_log_buffer_1->fl_buffer);
 #endif
       continue;
     }

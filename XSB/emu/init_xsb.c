@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: init_xsb.c,v 1.189 2013-01-04 14:56:22 dwarren Exp $
+** $Id: init_xsb.c,v 1.190 2013-04-17 22:02:35 tswift Exp $
 ** 
 */
 
@@ -953,6 +953,19 @@ static size_t get_memarea_size( char *s )
   init_system_threads(th) ;
 #endif
 
+  //#ifndef MULTI_THREAD
+  forest_log_buffer_1 = &fl_buffer_1;
+  forest_log_buffer_2 = &fl_buffer_2;
+  forest_log_buffer_3 = &fl_buffer_3;
+
+  forest_log_buffer_1->fl_buffer = (char *) mem_alloc(MAXTERMBUFSIZE, BUFF_SPACE);
+  //  forest_log_buffer_1->fl_size = MAXTERMBUFSIZE;
+  forest_log_buffer_1->fl_size = MAXTERMBUFSIZE;
+  forest_log_buffer_2->fl_buffer = (char *) mem_alloc(MAXTERMBUFSIZE, BUFF_SPACE);
+  forest_log_buffer_2->fl_size = MAXTERMBUFSIZE;
+  forest_log_buffer_3->fl_buffer = (char *) mem_alloc(MAXTERMBUFSIZE, BUFF_SPACE);
+  forest_log_buffer_3->fl_size = MAXTERMBUFSIZE;
+  //#endif
   return ( (char *) flags[BOOT_MODULE] );
 
 } /* init_para() */
@@ -1246,6 +1259,17 @@ void cleanup_thread_structures(CTXTdecl)
   pthread_mutex_destroy(&private_smALN->sm_lock);
   mem_dealloc(private_smALN,sizeof(struct Structure_Manager),
 	      MT_PRIVATE_SPACE); 
+  forest_log_buffer_1 = &fl_buffer_1;
+  forest_log_buffer_2 = &fl_buffer_2;
+  forest_log_buffer_3 = &fl_buffer_3;
+
+  forest_log_buffer_1->fl_buffer = (char *) mem_alloc(MAXTERMBUFSIZE, BUFF_SPACE);
+  //  forest_log_buffer_1->fl_size = MAXTERMBUFSIZE;
+  forest_log_buffer_1->fl_size = MAXTERMBUFSIZE;
+  forest_log_buffer_2->fl_buffer = (char *) mem_alloc(MAXTERMBUFSIZE, BUFF_SPACE);
+  forest_log_buffer_2->fl_size = MAXTERMBUFSIZE;
+  forest_log_buffer_3->fl_buffer = (char *) mem_alloc(MAXTERMBUFSIZE, BUFF_SPACE);
+  forest_log_buffer_3->fl_size = MAXTERMBUFSIZE;
 }
 #endif /* MULTI_THREAD */
 

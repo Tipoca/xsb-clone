@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.103 2013-03-11 23:49:55 tswift Exp $
+** $Id: debug_xsb.c,v 1.104 2013-04-17 22:02:35 tswift Exp $
 ** 
 */
 
@@ -52,6 +52,7 @@
 #include "io_builtins_xsb.h"
 #include "thread_defs_xsb.h"
 #include "thread_xsb.h"
+#include "tr_utils.h"
 #include "tst_utils.h"
 
 #if (defined(DEBUG_VERBOSE) || defined(DEBUG_VM))
@@ -59,6 +60,7 @@
 #endif
 
 void print_subgoal(CTXTdeclc FILE *, VariantSF);
+#define virtual_buffer (fl_buf->fl_buffer)
 
 /*=============================================================================*/
 /*  The first section of predicates are used for tracing as well as by XSB     */
@@ -382,32 +384,35 @@ void mark_cyclic(CTXTdeclc Cell Term) {
   return;
   }
 
-static int sprint_term(char *buffer, int insize, Cell term, byte car, long level)
+static int sprint_term(forestLogBuffer fl_buf, int insize, Cell term, byte car, long level)
 {
   unsigned short i, arity;
   Psc psc;
   CPtr cptr;
   int size = insize;
+  
+  //  if (size > MAXTERMBUFSIZE) return size;
+  maybe_realloc_buffers(fl_buf,size);
+  //  char * buffer = fl_buf->fl_buffer;
 
-  if (size > MAXTERMBUFSIZE/2) return size;
   level--;
   if (level < 0) {
     if (car == CAR) 
-      return size + sprintf(buffer+size, "'...'");
-    else       return size + sprintf(buffer+size, "'...']");
+      return size + sprintf(virtual_buffer+size, "'...'");
+    else       return size + sprintf(virtual_buffer+size, "'...']");
   }
   printderef(term);
   switch (cell_tag(term)) {
   case XSB_FREE:
   case XSB_REF1:
-    return size+sprintf(buffer+size, "_v%p",vptr(term));
+    return size+sprintf(virtual_buffer+size, "_v%p",vptr(term));
   case XSB_ATTV:
     if (flags[WRITE_ATTRIBUTES] == WA_DOTS) {
-      return size + sprintf(buffer+size, "_attv%p {'...'} ", (CPtr)dec_addr(term));
+      return size + sprintf(virtual_buffer+size, "_attv%p {'...'} ", (CPtr)dec_addr(term));
       //      return size+15+2*sizeof(CPtr);
     }
     else {
-      return size + sprintf(buffer+size, "_attv%p ", (CPtr)dec_addr(term));
+      return size + sprintf(virtual_buffer+size, "_attv%p ", (CPtr)dec_addr(term));
       //      return size+9+2*sizeof(CPtr);
     }
   case XSB_STRUCT:
@@ -422,48 +427,48 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
     if (isboxedfloat(term)) {
       Float val = boxedfloat_val(term);
       //      int width = get_int_print_width((Integer)floor(val));
-      return size + sprintf(buffer+size, "%" Intfmt ".%4d",(Integer)floor(val),(int)((val-floor(val))*10000));
+      return size + sprintf(virtual_buffer+size, "%" Intfmt ".%4d",(Integer)floor(val),(int)((val-floor(val))*10000));
     }
     else if (isboxedinteger(term)) {
       Integer val = boxedint_val(term);
       int width = get_int_print_width(val);
-      return size + sprintf(buffer+size, "%*" Intfmt, width, (Integer)boxedint_val(term));
+      return size + sprintf(virtual_buffer+size, "%*" Intfmt, width, (Integer)boxedint_val(term));
       //      return size+width;
     }
     psc = get_str_psc(term);
-    size = sprint_quotedname(buffer, size, get_name(psc));
+    size = sprint_quotedname(virtual_buffer, size, get_name(psc));
     arity = get_arity(psc);
     if ( arity == 0 )   /* constant */
       return size;
     /* structure */
-    sprintf(buffer+size, "(");size++;
+    sprintf(virtual_buffer+size, "(");size++;
     cptr = clref_val(term);
     for ( i = 1; i <= arity; i++ ) {
-      size = sprint_term(buffer, size,cell(cptr+i), CAR, level);
+      size = sprint_term(fl_buf, size,cell(cptr+i), CAR, level);
       if ( i < arity ) {
-	sprintf(buffer+size, ",");size++;
+	sprintf(virtual_buffer+size, ",");size++;
       }
     }
-    sprintf(buffer+size, ")");size++;
+    sprintf(virtual_buffer+size, ")");size++;
     return size;
   case XSB_STRING:
-    return sprint_quotedname(buffer, size, string_val(term));
+    return sprint_quotedname(virtual_buffer, size, string_val(term));
   case XSB_INT: {
     //    int width = get_int_print_width((Integer)int_val(term));
-    //    return size + sprintf(buffer+size, "%*" Intfmt, width, (Integer)int_val(term));
-    return size + sprintf(buffer+size, "%" Intfmt, (Integer)int_val(term));
+    //    return size + sprintf(virtual_buffer+size, "%*" Intfmt, width, (Integer)int_val(term));
+    return size + sprintf(virtual_buffer+size, "%" Intfmt, (Integer)int_val(term));
   }
   case XSB_FLOAT:
     printf("here\n");
-    size = size + sprintf(buffer+size, "%f", float_val(term));
-    return size + sprintf(buffer+size, "%f", ofloat_val(term));
+    size = size + sprintf(virtual_buffer+size, "%f", float_val(term));
+    return size + sprintf(virtual_buffer+size, "%f", ofloat_val(term));
     //    return size+MAXFLOATLEN;
   case XSB_LIST:
     cptr = clref_val(term);
     if ( car ) {
-      sprintf(buffer+size, "[");size++;
+      sprintf(virtual_buffer+size, "[");size++;
     }
-    size = sprint_term(buffer, size,cell(cptr), CAR, level);
+    size = sprint_term(fl_buf, size,cell(cptr), CAR, level);
     term = cell(cptr+1);
     XSB_Deref(term);
     switch (cell_tag(term)) {
@@ -472,22 +477,22 @@ static int sprint_term(char *buffer, int insize, Cell term, byte car, long level
     case XSB_ATTV:
       goto vertbar;
     case XSB_LIST:
-      sprintf(buffer+size, ",");size++;
-      return sprint_term(buffer, size,term, CDR, level);
+      sprintf(virtual_buffer+size, ",");size++;
+      return sprint_term(fl_buf, size,term, CDR, level);
     case XSB_STRING:
       if (string_val(term) != nil_string)
 	goto vertbar;
       else {
-	sprintf(buffer+size, "]");size++;
+	sprintf(virtual_buffer+size, "]");size++;
 	return size;
       }
     case XSB_STRUCT:
     case XSB_INT:
     case XSB_FLOAT:
     vertbar:
-      sprintf(buffer+size, "|");size++;
-      size = sprint_term(buffer, size,term, CAR, level);
-      sprintf(buffer+size, "]");size++;
+      sprintf(virtual_buffer+size, "|");size++;
+      size = sprint_term(fl_buf, size,term, CAR, level);
+      sprintf(virtual_buffer+size, "]");size++;
       return size;
     }
   }
@@ -579,20 +584,19 @@ void printCyclicTerm(CTXTdeclc Cell term) {
   printterm(stddbg, term, (long)flags[WRITE_DEPTH]);	       
 }
 
-/* Assumes MAXTERMBUFSIZE */
-void sprintCyclicTerm(CTXTdeclc char *buffer, Cell Term) {
+void sprintCyclicTerm(CTXTdeclc forestLogBuffer fl_buf, Cell Term) {
   mark_cyclic(CTXTc Term);
-  sprint_term(buffer, 0, Term, CAR, (long)flags[WRITE_DEPTH]);
+  sprint_term(fl_buf, 0, Term, CAR, (long)flags[WRITE_DEPTH]);
   unwind_cycle_trail;
 }
 
-int sprintTerm(char *buffer, Cell Term) {
-  return sprint_term(buffer, 0, Term, CAR, (long)flags[WRITE_DEPTH]);
+int sprintTerm(forestLogBuffer fl_buf, Cell Term) {
+  return sprint_term(fl_buf, 0, Term, CAR, (long)flags[WRITE_DEPTH]);
 }
 
-static int sprint_cyclic_term_nonvoid(CTXTdeclc char *buffer, int size, Cell Term,long depth) {
+static int sprint_cyclic_term_nonvoid(CTXTdeclc forestLogBuffer fl_buf, int size, Cell Term,long depth) {
   mark_cyclic(CTXTc Term);
-  return sprint_term(buffer, size, Term, CAR, depth);
+  return sprint_term(fl_buf, size, Term, CAR, depth);
 }
 
 /*------------------------------------------------------------------*/
@@ -614,24 +618,25 @@ void sprint_callsize(CTXTdeclc Psc psc,int depth) {
 
 /* cf. tst_utils.c */
 /* uses MAXBUFSIZE */
-void sprint_answer_template(CTXTdeclc char * buffer, CPtr pAnsTmplt, int template_size,long depth) {
+void sprint_answer_template(CTXTdeclc forestLogBuffer fl_buf, CPtr pAnsTmplt, int template_size,long depth) {
 
   int i,size;
+  char * buffer = fl_buf->fl_buffer;
 
   sprintf(buffer,"["); size = 1;
   if (template_size > 0) {
     for (i = 1; i < template_size; i++) {
       //      sprint_term(fp, *pAnsTmplt--, CAR,depth);
-      size = sprint_term(buffer, size, *pAnsTmplt--, CAR,depth);
+      size = sprint_term(fl_buf, size, *pAnsTmplt--, CAR,depth);
       sprintf(buffer+size, ",");size++;
     }
-    size = sprint_term(buffer, size, *pAnsTmplt, CAR,depth);
+    size = sprint_term(fl_buf, size, *pAnsTmplt, CAR,depth);
   }
   sprintf(buffer+size,"]"); 
 }
 
-void sprintAnswerTemplate(CTXTdeclc char * buffer, CPtr pAnsTmplt, int template_size) {
-  sprint_answer_template(CTXTc  buffer, pAnsTmplt, template_size,(long)flags[WRITE_DEPTH]);
+void sprintAnswerTemplate(CTXTdeclc forestLogBuffer fl_buf, CPtr pAnsTmplt, int template_size) {
+  sprint_answer_template(CTXTc  fl_buf, pAnsTmplt, template_size,(long)flags[WRITE_DEPTH]);
 }
 
 //-----------
@@ -651,45 +656,46 @@ xsbBool cyclic_registers(CTXTdeclc Psc psc) {
 //-----------
 /* Should usually be set to MAXTERMBUFSIZE */
 
-static void sprint_registers(CTXTdeclc char * buffer,Psc psc,long depth) {
+static void sprint_registers(CTXTdeclc forestLogBuffer fl_buf,Psc psc,long depth) {
   int i, arity,size;
+  char * buffer = fl_buf->fl_buffer;
 
   arity = (int)get_arity(psc);
 
-   sprintf(buffer, "%s", get_name(psc));
-  size = (int)strlen(get_name(psc));
+  size = sprintf(buffer, "%s", get_name(psc));
   if (arity != 0) sprintf(buffer+size, "(");size++;
   for (i=1; i <= arity; i++) {
-    size = sprint_term(buffer, size, cell(reg+i), CAR, depth-1);
+    size = sprint_term(fl_buf, size, cell(reg+i), CAR, depth-1);
     if (i < arity) {sprintf(buffer+size, ",");size++;}
   }
   //  printf("grand return %d %s\n",size,buffer);
   if (arity != 0) sprintf(buffer+size, ")");
 }
 
-void sprintNonCyclicRegisters(CTXTdeclc char * buffer,Psc psc) {
-  sprint_registers(CTXTc buffer,psc,(long)flags[WRITE_DEPTH]);
+void sprintNonCyclicRegisters(CTXTdeclc forestLogBuffer fl_buf,Psc psc) {
+  sprint_registers(CTXTc fl_buf,psc,(long)flags[WRITE_DEPTH]);
 }
 
 
 /* Should usually be set to MAXTERMBUFSIZE */
-static void sprint_cyclic_registers(CTXTdeclc char * buffer,Psc psc,long depth) {
+static void sprint_cyclic_registers(CTXTdeclc forestLogBuffer fl_buf,Psc psc,long depth) {
   int i, arity,size;
+  char * buffer = fl_buf->fl_buffer;
   arity = (int)get_arity(psc);
 
-   sprintf(buffer, "%s", get_name(psc));
+  sprintf(buffer, "%s", get_name(psc));
   size = (int)strlen(get_name(psc));
   if (arity != 0) sprintf(buffer+size, "(");size++;
   for (i=1; i <= arity; i++) {
-    size = sprint_cyclic_term_nonvoid(CTXTc buffer, size,  cell(reg+i), depth-1);
+    size = sprint_cyclic_term_nonvoid(CTXTc fl_buf, size,  cell(reg+i), depth-1);
     if (i < arity) {sprintf(buffer+size, ",");size++;}
   }
   //  printf("grand return %d %s\n",size,buffer);
   if (arity != 0) sprintf(buffer+size, ")");
 }
 
-void sprintCyclicRegisters(CTXTdeclc char * buffer,Psc psc) {
-  sprint_cyclic_registers(CTXTc buffer,psc,(long) flags[WRITE_DEPTH]);
+void sprintCyclicRegisters(CTXTdeclc forestLogBuffer fl_buf,Psc psc) {
+  sprint_cyclic_registers(CTXTc fl_buf,psc,(long) flags[WRITE_DEPTH]);
 }
 
 void print_registers(CTXTdeclc FILE *fp, Psc psc,long depth) {
@@ -1114,46 +1120,50 @@ static void print_term_of_subgoal(CTXTdeclc FILE *fp, byte car, int *i)
   }
 }
 
-static int sprint_term_of_subgoal(CTXTdeclc char *buffer, int size,byte car, int *i)
+static int sprint_term_of_subgoal(CTXTdeclc forestLogBuffer fl_buf, int size,byte car, int *i)
 {
   Cell term;
   int  j, args;
 
-  if (size > MAXTERMBUFSIZE/2) return size;
+  //  printf("sprint_term %d\n",size);
+
+  maybe_realloc_buffers(fl_buf,size);
+  //  char * buffer = fl_buf->fl_buffer;
+
   term = cell_array[*i];
   switch (cell_tag(term)) {
   case XSB_TrieVar:
-    sprintf(buffer+size, "_v%d", ((int) int_val(term) & 0xffff));size=size+3;
+    sprintf(virtual_buffer+size, "_v%d", ((int) int_val(term) & 0xffff));size=size+3;
     break;
   case XSB_STRUCT:
     if (isboxedTrieSym(term) && ((int_val(cell_array[(*i)-1]) >> 16) == ID_BOXED_FLOAT)) {
       Float val = trie_boxedfloat_val(i);
       int width = get_int_print_width((Integer)floor(val));
-      sprintf(buffer+size, "%*d.%4d", width,(int)floor(val),(int)((val-floor(val))*10000));
+      sprintf(virtual_buffer+size, "%*d.%4d", width,(int)floor(val),(int)((val-floor(val))*10000));
       *i = (*i) -3;
       return size+width+5;   
     }
     else if (isboxedTrieSym(term) && ((int_val(cell_array[(*i)-1]) >> 16) == ID_BOXED_INT)) {
       Integer val = boxedint_val(term);
       int width = get_int_print_width(val);
-      sprintf(buffer+size, "%*" Intfmt, width, (Integer)trie_boxedint_val(i));
+      sprintf(virtual_buffer+size, "%*" Intfmt, width, (Integer)trie_boxedint_val(i));
       *i = (*i) -3;
       return size+width;
     }
     args = get_arity((Psc)cs_val(term));
-    size = sprint_quotedname(buffer, size, get_name((Psc)cs_val(term)));
-    if (args > 0) {sprintf(buffer+size, "(");size++;}
+    size = sprint_quotedname(virtual_buffer, size, get_name((Psc)cs_val(term)));
+    if (args > 0) {sprintf(virtual_buffer+size, "(");size++;}
     for (j = args; j > 0; j--) {
       (*i)--;
-      size = sprint_term_of_subgoal(CTXTc buffer,size, CAR, i);
-      if (j > 1) {sprintf(buffer+size, ",");size++;}
+      size = sprint_term_of_subgoal(CTXTc fl_buf,size, CAR, i);
+      if (j > 1) {sprintf(virtual_buffer+size, ",");size++;}
     }
-    if (args > 0) {sprintf(buffer+size, ")");size++;}
+    if (args > 0) {sprintf(virtual_buffer+size, ")");size++;}
     break;
   case XSB_LIST:
-    if ( car ) { sprintf(buffer+size, "["); size++;}
+    if ( car ) { sprintf(virtual_buffer+size, "["); size++;}
     (*i)--;
-    size = sprint_term_of_subgoal(CTXTc buffer,size, CAR, i);
+    size = sprint_term_of_subgoal(CTXTc fl_buf,size, CAR, i);
     (*i)--;
     term = cell_array[*i];
   switch (cell_tag(term)) {
@@ -1162,38 +1172,38 @@ static int sprint_term_of_subgoal(CTXTdeclc char *buffer, int size,byte car, int
     case XSB_ATTV:
       goto vertbar;
     case XSB_LIST:
-      sprintf(buffer+size, ",");size++;
-      size = sprint_term_of_subgoal(CTXTc buffer, size, CDR, i);
+      sprintf(virtual_buffer+size, ",");size++;
+      size = sprint_term_of_subgoal(CTXTc fl_buf, size, CDR, i);
       return size;
     case XSB_STRING:
       if (string_val(term) != nil_string)
 	goto vertbar;
       else {
-	sprintf(buffer+size, "]");
+	sprintf(virtual_buffer+size, "]");
 	return size+1;
       }
     case XSB_STRUCT:
     case XSB_INT:
     case XSB_FLOAT:
     vertbar:
-      sprintf(buffer+size, "|");size++;
-      size = sprint_term_of_subgoal(CTXTc buffer,size, CDR, i);
-      sprintf(buffer+size, "]");size++;
+      sprintf(virtual_buffer+size, "|");size++;
+      size = sprint_term_of_subgoal(CTXTc fl_buf,size, CDR, i);
+      sprintf(virtual_buffer+size, "]");size++;
     return size;
   }
   case XSB_STRING:
-    size = sprint_quotedname(buffer,size,string_val(term));
+    size = sprint_quotedname(virtual_buffer,size,string_val(term));
     break;
   case XSB_INT: {
     //    int length = get_int_print_width((Integer)int_val(term));
-    //    size = size + sprintf(buffer+size, "%*" Intfmt, length, (Integer)int_val(term));
+    //    size = size + sprintf(virtual_buffer+size, "%*" Intfmt, length, (Integer)int_val(term));
     //    return size+length;
-    size = size + sprintf(buffer+size, "%" Intfmt, (Integer)int_val(term));
+    size = size + sprintf(virtual_buffer+size, "%" Intfmt, (Integer)int_val(term));
     return size;
     break;
   }
   case XSB_FLOAT:
-    size = size + sprintf(buffer+size, "%10f", float_val(term));
+    size = size + sprintf(virtual_buffer+size, "%10f", float_val(term));
     break;
   default:
     xsb_error("Term with unknown tag (%d) in print_subgoal()",
@@ -1226,26 +1236,38 @@ void print_subgoal(CTXTdeclc FILE *fp, VariantSF subg)
   }
 }
 
-/* Assumes MAXTERMBUFSIZE */
-int sprint_subgoal(CTXTdeclc char *buffer,  VariantSF subg)
+
+int sprint_subgoal(CTXTdeclc forestLogBuffer fl_buf,  int ctr, VariantSF subg)
 {
   BTNptr leaf;
-  int  i = 0; int size = 0;
+  int  i = 0; 
+  int size = ctr;
 
   Psc  psc = TIF_PSC(subg_tif_ptr(subg));
 
-  for (leaf = subg_leaf_ptr(subg); leaf != NULL; leaf = Parent(leaf)) {
+  for (leaf = subg_leaf_ptr(subg); 
+       leaf != NULL && (int) i < MAXTERMBUFSIZE; 
+       leaf = Parent(leaf) ) {
     cell_array[i++] = BTN_Symbol(leaf);
   }
-  size = sprint_quotedname(buffer, size, get_name(psc));
-  if (get_arity(psc) > 0) {
-    sprintf(buffer+size, "(");size++;
-    for (i = i-2; i >= 0 ; i--) {
-      size = sprint_term_of_subgoal(CTXTc buffer, size, CAR,&i);
-      if (i > 0) {sprintf(buffer+size, ",");size++;}
-    }
-    sprintf(buffer+size,")");size++;
+
+  if (i >= MAXTERMBUFSIZE) {
+    //    printf("i %d\n",i);
+    size = sprintf(fl_buf->fl_buffer,"'!!! term too lorge'");
+    return size;
   }
+
+  size = sprint_quotedname(virtual_buffer, size, get_name(psc));
+  if (get_arity(psc) > 0) {
+    sprintf(virtual_buffer+size, "(");size++;
+    for (i = i-2; i >= 0 //&& size < MAXTERMBUFSIZE - 100
+	   ; i--) {
+      size = sprint_term_of_subgoal(CTXTc fl_buf, size, CAR,&i);
+      if (i > 0) {sprintf(virtual_buffer+size, ",");size++;}
+    }
+    sprintf(virtual_buffer+size,")");size++;
+  }
+  maybe_realloc_buffers(fl_buf,(size));
   return size;
 }
 
@@ -1318,37 +1340,40 @@ void print_delay_element(CTXTdeclc FILE *fp, Cell del_elem)
 
 /* This does a more thorough job of printing out delay elements than
    print_delay_element(), which I haven't updated */
-int sprint_delay_element(CTXTdeclc char * buffer, Cell del_elem) {
+int sprint_delay_element(CTXTdeclc forestLogBuffer fl_buf, int ctr ,Cell del_elem) {
   Psc  psc = 0;
   CPtr cptr;
   Cell tmp_cell;
-  int ctr = 0;
   //  int arity, i;  char *name;
+
+  //  print_delay_element(CTXTc stdout, del_elem);printf("\n");
 
   if ((psc = get_str_psc(del_elem)) == delay_psc) {
     cptr = (CPtr)cs_val(del_elem);
     /* If NDE, only worry about first cell (cf. delay_negatively) */
     if (cell(cptr + 3) == makeaddr(0)) {
-      ctr = ctr + sprintf(buffer+ctr,"tnot(");
+      ctr = ctr + sprintf(virtual_buffer+ctr,"tnot(");
       tmp_cell = cell(cptr + 1);
-      ctr = ctr + sprint_subgoal(CTXTc buffer+ctr, (VariantSF) addr_val(tmp_cell)); 
-      ctr = ctr + sprintf(buffer+ctr,")");
+      ctr = sprint_subgoal(CTXTc fl_buf,ctr, (VariantSF) addr_val(tmp_cell)); 
+      ctr = ctr + sprintf(virtual_buffer+ctr,")");
+      //      printf("2 %s | %s\n",buffer,fl_buf->fl_buffer);
     }
     else {     /* If PDE */
-      ctr =  ctr + sprintf(buffer+ctr,"de(");
+      ctr =  ctr + sprintf(virtual_buffer+ctr,"de(");
       tmp_cell = cell(cptr + 1);
-      ctr = ctr + sprint_subgoal(CTXTc buffer+ctr, (VariantSF) addr_val(tmp_cell)); 
+      ctr = sprint_subgoal(CTXTc fl_buf,ctr, (VariantSF) addr_val(tmp_cell)); 
       tmp_cell = cell(cptr + 2);
-      ctr = ctr + sprintf(buffer+ctr, ",");
-      ctr = ctr + sprintTriePath(CTXTc buffer+ctr, (BTNptr) addr_val(tmp_cell)); 
-      ctr = ctr + sprintf(buffer+ctr, ")");
+      ctr = ctr + sprintf(virtual_buffer+ctr, ",");
+      ctr = ctr + sprintTriePath(CTXTc virtual_buffer+ctr, (BTNptr) addr_val(tmp_cell)); 
+      //      ctr = sprintTriePath(CTXTc virtual_buffer+ctr, (BTNptr) addr_val(tmp_cell)); 
+      ctr = ctr + sprintf(virtual_buffer+ctr, ")");
 
-      //      ctr = ctr + sprintf(buffer+ctr, "%p", (BTNptr) addr_val(tmp_cell)); 
-      //      ctr = ctr + sprintf(buffer+ctr, ",");
+      //      ctr = ctr + sprintf(virtual_buffer+ctr, "%p", (BTNptr) addr_val(tmp_cell)); 
+      //      ctr = ctr + sprintf(virtual_buffer+ctr, ",");
       //      tmp_cell = cell(cptr + 3);
       //      printf("tmp_cell %x\n",tmp_cell);
       //      if (isointeger(tmp_cell)) {
-      //	ctr = ctr + sprintf(buffer+ctr, "NEG");
+      //	ctr = ctr + sprintf(virtual_buffer+ctr, "NEG");
       //      }
       //      else {
       //	if (isstring(tmp_cell)) {
@@ -1360,13 +1385,13 @@ int sprint_delay_element(CTXTdeclc char * buffer, Cell del_elem) {
       //  arity = get_arity(psc);
       //  name = get_name(psc);
       //} 
-      //ctr = ctr + sprintf(buffer+ctr, "%s", name);
+      //ctr = ctr + sprintf(virtual_buffer+ctr, "%s", name);
       //if (arity > 0) {
-      //  ctr = ctr + sprintf(buffer+ctr, "(");
+      //  ctr = ctr + sprintf(virtual_buffer+ctr, "(");
       //  cptr = (CPtr) cs_val(cell(cptr + 3));
       //  for (i = 0; i < arity; i++)
-      //    ctr = ctr + sprintTerm(buffer+ctr, cell(cptr + 1 + i));
-      //  ctr = ctr + sprintf(buffer+ctr, ")");
+      //    ctr = ctr + sprintTerm(virtual_buffer+ctr, cell(cptr + 1 + i));
+      //  ctr = ctr + sprintf(virtual_buffer+ctr, ")");
       //}
     }
     return ctr;
@@ -1405,27 +1430,27 @@ void print_delay_list(CTXTdeclc FILE *fp, CPtr dlist)
   }
 }
 
-int sprint_delay_list(CTXTdeclc char *buffer, CPtr dlist)
+int sprint_delay_list(CTXTdeclc forestLogBuffer fl_buf, CPtr dlist)
 {
   CPtr cptr;
   int ctr = 0;
 
   if (dlist == NULL) {
-    return sprintf(buffer, "[]"); 
+    return sprintf(virtual_buffer, "[]"); 
   } else {
     if (islist(dlist) || isnil(dlist)) {
-      ctr = ctr + sprintf(buffer, "["); 
+      ctr = ctr + sprintf(virtual_buffer, "["); 
       cptr = dlist;
       while (islist(cptr)) {
 	cptr = clref_val(cptr);
-	ctr = ctr + sprint_delay_element(CTXTc buffer+ctr, cell(cptr));
+	ctr = sprint_delay_element(CTXTc fl_buf, ctr, cell(cptr));
 	cptr = (CPtr)cell(cptr+1);
 	if (islist(cptr)) {
-	  ctr = ctr + sprintf(buffer+ctr, ", "); 
+	  ctr = ctr + sprintf(virtual_buffer+ctr, ", "); 
 	}
       }
       if (isnil(cptr)) {
-	return ctr + sprintf(buffer+ctr, "]"); 
+	return ctr + sprintf(virtual_buffer+ctr, "]"); 
       } else {
 	xsb_abort("Delay list with unknown tail type in print_delay_list()");
       }

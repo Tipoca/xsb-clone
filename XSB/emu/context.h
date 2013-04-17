@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.91 2012-11-17 18:05:00 tswift Exp $
+** $Id: context.h,v 1.92 2013-04-17 22:02:35 tswift Exp $
 **
 */
 
@@ -341,6 +341,14 @@ struct funstktype *_funstk;
 struct opstktype *_opstk;
 struct vartype *_rc_vars;
 
+  forestLogBuffer _forest_log_buffer_1;
+  forestLogBuffer _forest_log_buffer_2;
+  forestLogBuffer _forest_log_buffer_3;
+
+  forest_log_buffer_struct _fl_buffer_1;
+  forest_log_buffer_struct _fl_buffer_2;
+  forest_log_buffer_struct _fl_buffer_3;
+
   /********** Global variables for tokenizing **********/
 struct xsb_token_t *_token;
 int     _lastc; // = ' ';    /* previous character */
@@ -619,6 +627,14 @@ typedef struct th_context th_context ;
 #define cur_tr_chunk		(th->_cur_tr_chunk)
 #define cur_tr_top		(th->_cur_tr_top)
 #define cur_tr_limit		(th->_cur_tr_limit)
+
+#define fl_buffer_1             (th->_fl_buffer_1)
+#define fl_buffer_2             (th->_fl_buffer_2)
+#define fl_buffer_3             (th->_fl_buffer_3)
+
+#define forest_log_buffer_1     (th->_forest_log_buffer_1)
+#define forest_log_buffer_2     (th->_forest_log_buffer_2)
+#define forest_log_buffer_3     (th->_forest_log_buffer_3)
 
 #define LSBuff			(th->_LSBuff)
 

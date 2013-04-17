@@ -2994,9 +2994,9 @@ void abolish_table_call_single(CTXTdeclc VariantSF subgoal) {
     } else action = CANT_RECLAIM;
 
       if (flags[CTRACE_CALLS])  { 
-	char buffera[MAXTERMBUFSIZE];
-	sprint_subgoal(CTXTc buffera,(VariantSF)subgoal);     
-	fprintf(fview_ptr,"ta(subg(%s),%d).\n",buffera,ctrace_ctr++);
+	sprint_subgoal(CTXTc forest_log_buffer_1,0,(VariantSF)subgoal);     
+	fprintf(fview_ptr,"ta(subg(%s),%d).\n",forest_log_buffer_1->fl_buffer,
+		ctrace_ctr++);
       }
 
     SET_TRIE_ALLOCATION_TYPE_SF(subgoal); // set smBTN to private/shared
@@ -3055,9 +3055,9 @@ void abolish_table_call_transitive(CTXTdeclc VariantSF subgoal) {
       tif = subg_tif_ptr(subgoal);
 
       if (flags[CTRACE_CALLS])  { 
-	char buffera[MAXTERMBUFSIZE];
-	sprint_subgoal(CTXTc buffera,(VariantSF)subgoal);     
-	fprintf(fview_ptr,"ta(subg(%s),%d).\n",buffera,ctrace_ctr++);
+	sprint_subgoal(CTXTc forest_log_buffer_1,0,(VariantSF)subgoal);     
+	fprintf(fview_ptr,"ta(subg(%s),%d).\n",forest_log_buffer_1->fl_buffer,
+		ctrace_ctr++);
       }
 
       if (action == CAN_RECLAIM && !GC_MARKED_SUBGOAL(subgoal) ) {
@@ -4093,13 +4093,14 @@ void abolish_all_tables_cps_check(CTXTdecl)
     }
     /* Now check delaylist */
     if ( cp_pdreg(cp_top1) != (CPtr) NULL)  {
-      int ctr = 0;
-      char buffera[MAXTERMBUFSIZE]; 
-      memset(buffera,0,MAXTERMBUFSIZE);
-      ctr = sprintf(buffera,"[abolish_all_tables/0] Illegal table operation"
-		    "\n\t tables to be abolished are in delay list, e.g.: ");
-      sprint_delay_list(CTXTc buffera+ctr, cp_pdreg(cp_top1));
-      xsb_abort(buffera);
+      //      int ctr = 0;
+      memset(forest_log_buffer_2,0,MAXTERMBUFSIZE);
+      sprint_delay_list(CTXTc forest_log_buffer_1, cp_pdreg(cp_top1));
+      sprintf(forest_log_buffer_2->fl_buffer,
+	      "[abolish_all_tables/0] Illegal table operation"
+	      "\n\t tables to be abolished are in delay list, e.g.: %s",
+	      forest_log_buffer_1->fl_buffer);
+      xsb_abort(forest_log_buffer_2->fl_buffer);
     }
     cp_top1 = cp_prevtop(cp_top1);
   }
@@ -4977,9 +4978,20 @@ extern void ctop_tag(CTXTdeclc int, Cell);
  Cell goalTerm;
 
 FILE * fview_ptr;
+
 //----------------------------------------------------------------------
 extern CPtr trie_asserted_clref(CPtr);
 extern PrRef get_prref(CTXTdeclc Psc psc);
+
+#ifndef MULTI_THREAD
+forest_log_buffer_struct fl_buffer_1;
+forest_log_buffer_struct fl_buffer_2;
+forest_log_buffer_struct fl_buffer_3;
+
+forestLogBuffer forest_log_buffer_1;
+forestLogBuffer forest_log_buffer_2;
+forestLogBuffer forest_log_buffer_3;
+#endif
 
 int table_inspection_function( CTXTdecl ) {
   switch (ptoc_int(CTXTc 1)) {
@@ -5221,9 +5233,8 @@ case CALL_SUBS_SLG_NOT: {
     table_status(CTXTc goalTerm, &TSF);
 
     if (TableStatusFrame_pred_type(TSF) < 0) {
-      char buffer[2*MAXTERMBUFSIZE];						
-      sprintCyclicTerm(CTXTc buffer, ptoc_tag(CTXTc 2));
-      xsb_abort("Illegal (non-tabled?) subgoal in tnot/1: %s\n", buffer);		
+      sprintCyclicTerm(CTXTc forest_log_buffer_1, ptoc_tag(CTXTc 2));
+      xsb_abort("Illegal (non-tabled?) subgoal in tnot/1: %s\n", forest_log_buffer_1->fl_buffer);   
     }	
 
     if (TableStatusFrame_pred_type(TSF) == VARIANT_EVAL_METHOD 

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: builtin.c,v 1.398 2013-01-09 20:15:33 dwarren Exp $
+** $Id: builtin.c,v 1.399 2013-04-17 22:02:34 tswift Exp $
 **
 */
 
@@ -3092,9 +3092,9 @@ case WRITE_OUT_PROFILE:
 
     case CHECK_CYCLIC: {
       if (is_cyclic(CTXTc (Cell) ptoc_tag(CTXTc 1))) {
-	char buffer[MAXTERMBUFSIZE]; 
-	sprintCyclicTerm(CTXTc buffer, (Cell) ptoc_tag(CTXTc 1));
-	xsb_abort("Illegal cyclic term in arg %d of %s: %s\n",ptoc_int(CTXTc 3),ptoc_string(CTXTc 2),buffer);
+	sprintCyclicTerm(CTXTc forest_log_buffer_1, (Cell) ptoc_tag(CTXTc 1));
+	xsb_abort("Illegal cyclic term in arg %d of %s: %s\n",ptoc_int(CTXTc 3),ptoc_string(CTXTc 2),
+		  forest_log_buffer_1->fl_buffer);
       }
       return TRUE;
       break;
@@ -3225,11 +3225,11 @@ case WRITE_OUT_PROFILE:
   }
   case UNWIND_STACK: {
     if (flags[CTRACE_CALLS])  { 
-      char buffera[MAXTERMBUFSIZE];
       if (ptcpreg) 
-	sprint_subgoal(CTXTc buffera, (VariantSF)ptcpreg); 
-      else sprintf(buffera,"null");
-      fprintf(fview_ptr,"err(%s,%d).\n",buffera,ctrace_ctr++);
+	sprint_subgoal(CTXTc forest_log_buffer_1,0, (VariantSF)ptcpreg); 
+      else sprintf(forest_log_buffer_1->fl_buffer,"null");
+      fprintf(fview_ptr,"err(%s,%d).\n",forest_log_buffer_1->fl_buffer,
+	      ctrace_ctr++);
     }
 
     if (unwind_stack(CTXT)) return TRUE; else return FALSE;
@@ -3509,7 +3509,8 @@ prolog_term build_xsb_backtrace(CTXTdecl) {
   prolog_term backtrace;
   int backtrace_cnt = 0;
 
-  if (heap_local_overflow(MAX_BACKTRACE_LEN*2*sizeof(Cell))) {
+  if (heap_local_overflow(MAX_BACKTRACE_LEN*2*sizeof(Cell)) 
+      || !flags[BACKTRACE]) {
     return makenil;
   }
 

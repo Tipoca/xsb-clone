@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.237 2013-02-22 05:51:27 kifer Exp $
+** $Id: emuloop.c,v 1.238 2013-04-17 22:02:35 tswift Exp $
 ** 
 */
 
@@ -392,8 +392,6 @@ extern int is_number_atom(Cell term);
 extern int ground(Cell term);
 
 extern void log_prog_ctr(byte *);
-
-extern int sprint_subgoal(CTXTdeclc char *,  VariantSF );
 
 #ifndef MULTI_THREAD
 xsbBool neg_delay;
@@ -1542,7 +1540,8 @@ argument positions.
 
   XSB_Start_Instr(switchon3bound,_switchon3bound) /* RRR-L-L */
     Def3ops
-    int  i, j = 0;
+    int  i = 0;
+    Integer j = 0;
     int indexreg[3];
     Cell opa[3]; 
     int index_max;
