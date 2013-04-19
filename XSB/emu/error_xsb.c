@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.107 2013-02-14 22:03:53 tswift Exp $
+** $Id: error_xsb.c,v 1.108 2013-04-19 13:48:14 tswift Exp $
 ** 
 */
 
@@ -172,20 +172,20 @@ DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, size_t B
   size_t space_for_ball_assert_len = 3*sizeof(Cell);
 
   if (flags[CTRACE_CALLS])  {			
-    char buffera[MAXTERMBUFSIZE];		
-    char bufferb[MAXTERMBUFSIZE];		
-    sprintCyclicTerm(CTXTc buffera, Ball);
+    sprintCyclicTerm(CTXTc forest_log_buffer_1, Ball);
     if (ptcpreg) {						
-      sprint_subgoal(CTXTc bufferb,(VariantSF)ptcpreg);		
+      sprint_subgoal(CTXTc forest_log_buffer_2,0,(VariantSF)ptcpreg);		
     }								
-    else sprintf(bufferb,"null");					
-    fprintf(fview_ptr,"throw(%s,%s,%d).\n",buffera,bufferb,ctrace_ctr++); 
+    else sprintf(forest_log_buffer_2->fl_buffer,"null");		       
+    fprintf(fview_ptr,"throw(%s,%s,%d).\n",forest_log_buffer_1->fl_buffer,
+	    forest_log_buffer_2->fl_buffer,ctrace_ctr++); 
   }
 
   if (heap_local_overflow(space_for_ball_assert_len)) {
     xsb_exit("no heap space in xsb_throw_internal");
   }
-    
+
+  /*    
   if (flags[CTRACE_CALLS])  { 
     char buffera[MAXTERMBUFSIZE];
     if (ptcpreg) 
@@ -193,6 +193,7 @@ DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, size_t B
     else sprintf(buffera,"null");
     fprintf(fview_ptr,"err(%s,%d).\n",buffera,ctrace_ctr++);
   }
+  */
 
   exceptballpsc = pair_psc((Pair)insert("$$exception_ball", (byte)2, 
 					pair_psc(insert_module(0,"standard")), 
@@ -224,11 +225,11 @@ DllExport void call_conv xsb_throw_memory_error(int type)
 #endif
 
   if (flags[CTRACE_CALLS])  { 
-    char buffera[MAXTERMBUFSIZE];
     if (ptcpreg) 
-      sprint_subgoal(CTXTc buffera, (VariantSF)ptcpreg); 
-    else sprintf(buffera,"null");
-    fprintf(fview_ptr,"err(%s,%d).\n",buffera,ctrace_ctr++);
+      sprint_subgoal(CTXTc forest_log_buffer_1,0, (VariantSF)ptcpreg); 
+    else sprintf(forest_log_buffer_1->fl_buffer,"null");
+    fprintf(fview_ptr,"err(%s,%d).\n",forest_log_buffer_1->fl_buffer,
+	    ctrace_ctr++);
   }
 
   flags[MEMORY_ERROR_FLAG] = type;
@@ -255,11 +256,11 @@ DllExport void call_conv xsb_throw(CTXTdeclc prolog_term Ball)
   printf("in xsb_throw\n");
 
   if (flags[CTRACE_CALLS])  { 
-    char buffera[MAXTERMBUFSIZE];
     if (ptcpreg) 
-      sprint_subgoal(CTXTc buffera, (VariantSF)ptcpreg); 
-    else sprintf(buffera,"null");
-    fprintf(fview_ptr,"err(%s,%d).\n",buffera,ctrace_ctr++);
+      sprint_subgoal(CTXTc forest_log_buffer_1,0, (VariantSF)ptcpreg); 
+    else sprintf(forest_log_buffer_1->fl_buffer,"null");
+    fprintf(fview_ptr,"err(%s,%d).\n",forest_log_buffer_1->fl_buffer,
+	    ctrace_ctr++);
   }
 
   exceptballpsc = pair_psc((Pair)insert("$$exception_ball", (byte)2, 
