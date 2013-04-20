@@ -1369,7 +1369,7 @@ int dyn_simplify_neg_fails_stack_index = 0;
 int dyn_simplify_neg_fails_stack_size   = 0;
 
 #define push_neg_simpl(X) {\
-    if (dyn_simplify_neg_fails_stack_index == dyn_simplify_neg_fails_stack_size) {\
+    if (dyn_simplify_neg_fails_stack_index+1 >= dyn_simplify_neg_fails_stack_size) {\
       trie_expand_array(VariantSF, dyn_simplify_neg_fails_stack,	\
 			dyn_simplify_neg_fails_stack_size,0,"dyn_simplify_neg_fails_stack"); \
     }									\

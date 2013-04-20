@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.180 2013-04-17 22:02:35 tswift Exp $
+** $Id: tries.c,v 1.181 2013-04-20 19:33:51 tswift Exp $
 ** 
 */
 
@@ -98,8 +98,8 @@ char *trie_trie_type_table[] = {"call_trie_tt","basic_answer_trie_tt",
 /*----------------------------------------------------------------------*/
 /* Safe assignment -- can be generalized by type.
    CPtr can be abstracted out */
-#define safe_assign(ArrayNam,Index,Value,ArraySz) {\
-   if (Index >= ArraySz) {\
+#define safe_assign(ArrayNam,Index,Value,ArraySz) {		\
+    if (Index >= ArraySz-1) {					\
      trie_expand_array(CPtr,ArrayNam,ArraySz,Index,"var_addr");\
    }\
    ArrayNam[Index] = Value;\
