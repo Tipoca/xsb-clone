@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.36 2013-04-17 22:02:35 tswift Exp $
+** $Id: debug_xsb.h,v 1.37 2013-04-21 16:24:16 dwarren Exp $
 ** 
 */
 
@@ -69,7 +69,7 @@ typedef struct forest_log_buffer {
 } forest_log_buffer_struct;
 typedef forest_log_buffer_struct *forestLogBuffer;
 
-#ifndef MULTI THREAD
+#ifndef MULTI_THREAD
 extern forest_log_buffer_struct fl_buffer_1;
 extern forest_log_buffer_struct fl_buffer_2;
 extern forest_log_buffer_struct fl_buffer_3;
@@ -171,6 +171,8 @@ extern void print_subgoal(FILE *, VariantSF);
 #endif 
 
 #define xsb_dbgmsg(a)
+//#define xsb_dbgmsg(a) xsb_dbgmsg1 a
+
 #define dbg_print_subgoal(L,F,S)
 #define dbg_printterm(L,F,T,D)
 #define dbg_print_completion_stack(L)
