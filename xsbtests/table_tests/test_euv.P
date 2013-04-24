@@ -10,6 +10,8 @@
 :- import explain_u_val/3 from tables.
 
 test:- test(Ans,Reason),writeln(test(Ans,Reason)),fail.
+test:- abolish_all_tables,win(_),fail.
+test:- explain_u_val(win(_),win(1),A),writeln(test_win_1(A)),fail.
 test.
 
 test(_,_):- p1(_),fail.
@@ -17,6 +19,9 @@ test(X,A):-
 %	      get_residual_sccs(p1(Y),p1(X),Sccs,Deps,Signs),
 %	      writeln(scc(Sccs,Deps,Signs)),
               explain_u_val(p1(_),p1(X),A).
+
+
+
 
 :- table temp/0.
 temp:- temp1.
@@ -84,6 +89,15 @@ No answer lookup:
 Answer Lookup 
 1.53 for 100,000 (win cycle)
 */
+
+:- table win/1.
+win(X) :- move(X,Y), tnot(win(Y)).
+
+move(1,2).
+move(2,3).
+move(3,4).
+move(4,1).
+
 
 end_of_file.
 
