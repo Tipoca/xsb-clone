@@ -843,11 +843,13 @@ check_log_forest_options(Culprit,_File):-
 
 start_forest_view(File):-
 	table_inspection_function(START_FOREST_VIEW,File,_,_,_),
+	set_prolog_flag(backtrace_on_error,off),
 	set_prolog_flag(ctrace,on).
 
 stop_forest_view:-
 	table_inspection_function(STOP_FOREST_VIEW,_,_,_,_),
-	set_prolog_flag(ctrace,off).
+	set_prolog_flag(ctrace,off),
+	set_prolog_flag(backtrace_on_error,on).
 
 load_forest_log(File):- 
 	ensure_loaded(term_abstract),
@@ -1300,7 +1302,7 @@ get_answer_leaf(Call,Answer,AnsLeaf):-
 explain_u_val(Subgoal,Ans,Type):-
 	get_residual_sccs(Subgoal,Ans,Sccs,Deps,Signs),
 %	writeln(scc(Subgoal,Ans,Sccs,Deps,Signs)),
-	subgoal_scc_member(Subgoal,Sccs,Index),
+	subgoal_scc_member(Sccs,Subgoal,Index),
 	explain_u_val(Subgoal,Ans,Sccs,Deps,Signs,Index,Type).
 
 explain_u_val(_Subgoal,_Ans,Sccs,_Deps,_Signs,_Index,unsafe_negation):-
@@ -1313,10 +1315,11 @@ explain_u_val(_Subgoal,_Ans,_Sccs,_Deps,Signs,Index,negative_loops(dependent)):-
 	memberchk(sign(I,neg),Signs),I \== Index.
 
 :- import variant/2 from subsumes.
-subgoal_scc_member(Subgoal,[ret(S,_,Index)|_],Index):- 
+subgoal_scc_member([],_Subgoal,-1). % -- want to succeed with non-matching index.
+subgoal_scc_member([ret(S,_,Index)|_],Subgoal,Index):- 
 	variant(S,Subgoal),!.
-subgoal_scc_member(Subgoal,[_|R],Index):- 
-	subgoal_scc_member(Subgoal,R,Index).
+subgoal_scc_member([_|R],Subgoal,Index):- 
+	subgoal_scc_member(R,Subgoal,Index).
 
 %------------------------------------------------------------------------------
 end_of_file.
