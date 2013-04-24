@@ -4206,6 +4206,7 @@ static void remove_calls_and_returns(CTXTdeclc VariantSF CallStrPtr)
   FreeProducerSF(CallStrPtr);
 }
 
+int rit_count = 0;
 void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
 {
   xsbBool warned = FALSE;
@@ -4221,7 +4222,10 @@ void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
 	warned = TRUE;
       }
       //      printf("---- ");print_subgoal(CTXTc stdout, CallStrPtr) ; printf("\n");
-      if (IsVariantSF(CallStrPtr)) {
+      if(IsIncrSF(CallStrPtr)){
+      	abolish_incr_call(CTXTc subg_callnode_ptr(CallStrPtr));
+            }
+      else if (IsVariantSF(CallStrPtr)) {
 	SET_TRIE_ALLOCATION_TYPE_SF(CallStrPtr); // set smBTN to private/shared
 	tif = subg_tif_ptr(CallStrPtr);
 	delete_branch(CTXTc CallStrPtr->leaf_ptr, &tif->call_trie,VARIANT_EVAL_METHOD); /* delete call */
