@@ -547,7 +547,6 @@ void dfs_outedges(CTXTdeclc callnodeptr call1){
   }
   mem_dealloc(incr_callgraph_dfs, incr_callgraph_dfs_size*sizeof(IncrCallgraphDFSFrame), 
 	      TABLE_SPACE);
-  printf("dfsed %d calls\n",ctr);
 }
 
 /*  
@@ -594,8 +593,6 @@ int dfs_inedges(CTXTdeclc callnodeptr call1, calllistptr * lazy_affected, int fl
   calllistptr inedge_list;
   VariantSF subgoal;
   int ret = 0;
-
-  printf("dfs_inedges\n");
 
   if(IsNonNULL(call1->goal)) {
     if (!subg_is_completed((VariantSF)call1->goal)){
@@ -747,7 +744,7 @@ int create_call_list(CTXTdecl){
     printf(" %d %d\n",callq[i]->falsecount,callq[i]->deleted);
     }
     }
-  printf("-----------------------------\n");
+    printf("-----------------------------\n");
   */
 }
 

@@ -20,7 +20,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tries.c,v 1.181 2013-04-20 19:33:51 tswift Exp $
+** $Id: tries.c,v 1.182 2013-04-25 18:20:44 tswift Exp $
 ** 
 */
 
@@ -841,7 +841,7 @@ static int *depth_stack;
 #define depth_stack_pop {			\
     if (depth_ctr > 0) {					\
       depth_stack[depth_ctr]--;					\
-      while (depth_stack[depth_ctr] == 0 && depth_ctr > 0) {	\
+      while (depth_ctr > 0 && depth_stack[depth_ctr] == 0 ) {	\
 	depth_ctr--;					\
 	depth_stack[depth_ctr]--;			\
       }							\
@@ -1000,7 +1000,7 @@ static int *depth_stack;
     case XSB_STRING:							\
     case XSB_INT:							\
     case XSB_FLOAT:							\
-      depth_stack_pop;							\
+      depth_stack_pop;						\
       one_btn_chk_ins(flag, EncodeTrieConstant(xtemp1), TrieType);	\
       break;								\
     case XSB_LIST:							\
