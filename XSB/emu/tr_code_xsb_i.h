@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tr_code_xsb_i.h,v 1.36 2013-01-04 14:56:22 dwarren Exp $
+** $Id: tr_code_xsb_i.h,v 1.37 2013-04-26 21:49:34 tswift Exp $
 ** 
 */
 
@@ -244,7 +244,7 @@ int     delay_it;
     bind_int_tagged((CPtr)dec_addr(*trieinstr_unif_stkptr), opatom);          		\
   }									\
   else {								\
-    if (isinternstr(opatom)) printf("lookup internstr %p\n",opatom);	\
+    /*    if (isinternstr(opatom)) printf("lookup internstr %p\n",opatom);*/ \
     if (*trieinstr_unif_stkptr != opatom) {			       	\
       Fail1;								\
       XSB_Next_Instr();							\

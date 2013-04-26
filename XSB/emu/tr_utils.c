@@ -4206,7 +4206,6 @@ static void remove_calls_and_returns(CTXTdeclc VariantSF CallStrPtr)
   FreeProducerSF(CallStrPtr);
 }
 
-int rit_count = 0;
 void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
 {
   xsbBool warned = FALSE;
@@ -4221,14 +4220,14 @@ void remove_incomplete_tries(CTXTdeclc CPtr bottom_parameter)
 	//	check_table_cut = FALSE;  /* permit cuts over tables */
 	warned = TRUE;
       }
-      //      printf("---- ");print_subgoal(CTXTc stdout, CallStrPtr) ; printf("\n");
-      if(IsIncrSF(CallStrPtr)){
+      //     printf("---- ");print_subgoal(CTXTc stdout, CallStrPtr) ; printf("\n");
+     if(IsIncrSF(CallStrPtr)){
       	abolish_incr_call(CTXTc subg_callnode_ptr(CallStrPtr));
-            }
-      else if (IsVariantSF(CallStrPtr)) {
-	SET_TRIE_ALLOCATION_TYPE_SF(CallStrPtr); // set smBTN to private/shared
-	tif = subg_tif_ptr(CallStrPtr);
-	delete_branch(CTXTc CallStrPtr->leaf_ptr, &tif->call_trie,VARIANT_EVAL_METHOD); /* delete call */
+     }
+     else if (IsVariantSF(CallStrPtr)) {
+       SET_TRIE_ALLOCATION_TYPE_SF(CallStrPtr); // set smBTN to private/shared
+       tif = subg_tif_ptr(CallStrPtr);
+       delete_branch(CTXTc CallStrPtr->leaf_ptr, &tif->call_trie,VARIANT_EVAL_METHOD); /* delete call */
 	delete_variant_sf_and_answers(CTXTc CallStrPtr,FALSE); // delete answers + subgoal
       } else remove_calls_and_returns(CTXTc CallStrPtr);
     }
