@@ -126,9 +126,9 @@
     if (is_neg_call)							\
       fprintf(fview_ptr,"nc(%s,%s,%s,%d).\n",forest_log_buffer_1->fl_buffer, \
 	      forest_log_buffer_2->fl_buffer,state,ctrace_ctr++);	\
-    else								\
-      fprintf(fview_ptr,"tc(%s,%s,%s,%d).\n",forest_log_buffer_1->fl_buffer, \
-	      forest_log_buffer_2->fl_buffer,state,ctrace_ctr++);	\
+    else {								\
+      fprintf(fview_ptr,"tc(%s,%s,%s,%d).\n",forest_log_buffer_1->fl_buffer, 	\
+	      forest_log_buffer_2->fl_buffer,state,ctrace_ctr++); }	\
   }
 
 #define LOG_ANSWER_RETURN(answer,template_ptr)		\
@@ -483,6 +483,9 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
     SUBG_INCREMENT_CALLSTO_SUBGOAL(producer_sf);
   }
   else {
+
+    // Buglet -- tc instead of nc for subsumed calls.
+    LOG_TABLE_CALL("incmp");
     /* New Properly Subsumed Call
        -------------------------- */
     NewSubConsSF( consumer_sf, CallLUR_Leaf(lookupResults),
