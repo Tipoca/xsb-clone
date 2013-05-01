@@ -48,8 +48,8 @@
 
 
 #define WIN_NT 1
-#define RELEASE_DATE 2012-08-12
-#define XSB_VERSION "3.3.8 (Pignoletto)"
+#define RELEASE_DATE 2013-05-01
+#define XSB_VERSION "3.3.9 (Pignoletto)"
 
 /* this is used by many to check if config.h was included in proper order */
 #ifndef CONFIG_INCLUDED
@@ -75,9 +75,9 @@
 
 #define GC 1
 
-#define MULTI_THREAD 1
+/* #undef MULTI_THREAD */
 
-#define SHARED_COMPL_TABLES 1
+/* #undef SHARED_COMPL_TABLES */
 
 /* #undef CONC_COMPL */
 
@@ -103,4 +103,4 @@
 /* GC on SLG-WAM! ;) */
 #define SLG_GC 1
 
-/* #undef NON_OPT_COMPILE */
+#define NON_OPT_COMPILE 1

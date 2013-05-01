@@ -1,14 +1,14 @@
 #! /bin/sh
 
 # Do not touch xsb_patch_date! It is updated by CVS.
-xsb_patch_date='$Date: 2013-02-20 06:17:59 $'
+xsb_patch_date='$Date: 2013-05-01 18:19:32 $'
 
 xsb_build_date=`date`
 xsb_patch_date=`echo $xsb_patch_date | sed 's,.*D,Patch d,' | sed 's, *\\$,,'`
 
 xsb_major_version=3
 xsb_minor_version=3
-xsb_patch_version=8
+xsb_patch_version=9
 #xsb_beta_version=pre"
 #xsb_codename="Skol"        # for Version 2.1
 #xsb_codename="Tsingtao"    # for Version 2.2
@@ -29,7 +29,7 @@ xsb_codename="Pignoletto"    # Version 3.3 Italian Beer
 #xsb_release_date=2011-04-12
 #xsb_release_date=2011-05-11
 #xsb_release_date=2011-07-02
-xsb_release_date=2012-08-12
+xsb_release_date=2013-05-01
 
 
 
