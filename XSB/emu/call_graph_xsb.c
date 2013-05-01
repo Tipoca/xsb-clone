@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $$
+** 
 ** 
 */
  
@@ -454,7 +454,6 @@ void dfs_outedges_check_non_completed(CTXTdeclc callnodeptr call1) {
   }
 }
 
-#if 0
 typedef struct incr_callgraph_dfs_frame {
   hashtable_itr_ptr itr;
   callnodeptr cn;
@@ -549,9 +548,8 @@ void dfs_outedges(CTXTdeclc callnodeptr call1){
   mem_dealloc(incr_callgraph_dfs, incr_callgraph_dfs_size*sizeof(IncrCallgraphDFSFrame), 
 	      TABLE_SPACE);
 }
-#endif
 
-
+/*  
 void dfs_outedges(CTXTdeclc callnodeptr call1){
   callnodeptr cn;
   struct hashtable *h;	
@@ -560,10 +558,9 @@ void dfs_outedges(CTXTdeclc callnodeptr call1){
   //    if (call1->goal) {
   //      printf("dfs outedges "); print_subgoal(stddbg,call1->goal);printf("\n");
   //    }
-  dfs_outedges_check_non_completed(CTXTc call1);
-   //  if(IsNonNULL(call1->goal) && !subg_is_completed((VariantSF)call1->goal)){
-   //    dfs_outedges_new_table_error(CTXTc call1);
-   //  }
+  if(IsNonNULL(call1->goal) && !subg_is_completed((VariantSF)call1->goal)){
+    dfs_outedges_new_table_error(CTXTc call1);
+  }
   call1->deleted = 1;
   h=call1->outedges->hasht;
   
@@ -578,7 +575,7 @@ void dfs_outedges(CTXTdeclc callnodeptr call1){
   }
   add_callnode(&affected_gl,call1);		
 }
-
+*/
 // TLS: factored out this warning because dfs_inedges is recursive and
 // this makes the stack frames too big. 
 void dfs_inedges_warning(CTXTdeclc callnodeptr call1,calllistptr *lazy_affected) {
