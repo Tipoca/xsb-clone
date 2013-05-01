@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.h,v 1.38 2013-05-01 17:04:46 tswift Exp $
+** $Id: debug_xsb.h,v 1.39 2013-05-01 17:54:56 tswift Exp $
 ** 
 */
 
@@ -78,6 +78,18 @@ extern  forestLogBuffer forest_log_buffer_1;
 extern  forestLogBuffer forest_log_buffer_2;
 extern  forestLogBuffer forest_log_buffer_3;
 #endif
+
+#define maybe_realloc_buffers(BUFFER,SIZE) {				\
+    if (SIZE > (BUFFER->fl_size)/2) {					\
+      /*      printf("reallocing buffer to %d\n",(BUFFER->fl_size)*2);*/ \
+      BUFFER->fl_buffer							\
+	= (char *)mem_realloc((BUFFER->fl_buffer),(BUFFER->fl_size),	\
+			      2*(BUFFER->fl_size),BUFF_SPACE);		\
+      /*      printf("buffer so far: %s\n\n",BUFFER->fl_buffer);*/	\
+      gdb_dummy();							\
+      BUFFER->fl_size = (BUFFER->fl_size)*2;				\
+    }									\
+  }
 
 #ifndef MULTI_THREAD
 extern void print_delay_list(FILE *, CPtr);
