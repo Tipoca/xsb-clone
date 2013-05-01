@@ -33,19 +33,22 @@ making the truth value for these answers <i>undefined</i>, and can be
 declared on a per-predicate basis.  </li>
 <li>A new builtin, <tt>u_not/1</tt> assigns the
 truth-value <i>undefined</i> to non-ground negative subgoals, rather
-than throwing an exception.
+than throwing an exception.  In various other cases, such as with
+arithmetic computation errors, a goal can optionally be set
+to <i>undefined</i> rather than throwing an exception.
 </li>
 <li> New builtins support better inspection of the state of tables,
-even when these tables are being
-computed.
+even while these tables are being computed.
 <ul><li>  <tt>get_incr_sccs_with_deps/[2,3]</tt> produces a Prolog
 representation of the dependency graph of incrementally tabled
 subgoals, including strongly connected components information and
 dependencies among these components.  </li>
-<li>A similar
-predicate, <tt>get_incr_sccs_with_deps/[2,3]</tt> provides an
+<li>A similar predicate, <tt>get_residual_sccs/[3,5]</tt> provides an
 analogous view of atoms of the residual program whose truth value
-is <i>undefined</i> under the well-founded semantics.
+is <i>undefined</i> under the well-founded semantics.  In addition,
+the predicate <tt>explain_u_val/2</tt> can be used to explain why an
+atom is undefined: because of negative loops, radial restraint, or
+some other reason.
 </li></li></ul>
 <li>Subgoal abstraction is now supported on a per-predicate basis. </li>
 <li>Added ISO predicate <tt>halt/1</tt></li>
@@ -54,18 +57,34 @@ is <i>undefined</i> under the well-founded semantics.
 
 <li><b> Bug fixes </b></li>
 <ul>
-<li> Windows bug that prevented XSB from properly initializing when
-configured with a long path name was fixed.</li>
-<li> Various fixes for bugs that occurred when copying answers with a
-large number of variables into a table; when thorwing an "maximum
-subgoal depth exceeded" exception on very large subugoals; when
+<li> A bug was fixed that prevented XSB from properly initializing
+when configured with a long path name under Windows.  XSB also
+requires less space to start up under Windows than it did
+previously.</li>
+<li> Various fixes for bugs that occurred when copying into or out of
+a table either large answers, or answers with a large number of
+variables, or answers with large delay lists.</li>
+<li> Various bugs involving attributed variables were fixed: when
 delaying the evaluation of tabled predicates via the <i>when</i>
-library; when consult (<tt>[]/2</tt>) is called within XSB's tracing.
-In addition several small bugs were fixed for answer subsumption and
-forest logging.  Bugs were fixed in <tt>abolish/1</tt>
-in <tt>atom_chars/2</tt> and in <tt>load_dyn/[1,2]</tt>.  Finally,
-listing now prints out attributed variables correctlly.</li>
-</ul>
+library, and in certain cases where attributed variables occurred in
+dynamic code.  Finally, listing now prints out attributed variables
+correctlly. </li>
+<li> Various bugs were fixed that occurred in error handling during
+heavily tabled computations, such as when thorwing an "maximum subgoal
+depth exceeded" exception on very large subgoals, or when throwing
+over incomplete incrementally tabled subgoals. Also error handling was
+improved when a term to be interned exceeds a maximal user-defined
+depth.</li>
+<li> Various small bugs were fixed for forest logging. Forest logging
+now can print much larger terms than previously, and prints error
+terms more concisely. </li>
+<li> Several small bugs were fixed for answer subsumption.</li>
+<li> XSB's tracing now uses <tt>writeq/2</tt> for easier copy and paste while
+tracing; also, a bug was .  fixed when consult (<tt>[]/2</tt>) is
+called within XSB's tracing. </li>
+<li> Bugs were fixed in <tt>abolish/1</tt>
+in <tt>atom_chars/2</tt>, <tt>atom_codes/2</tt> and
+in <tt>load_dyn/[1,2]</tt> </li>
 </ul>
 
 
@@ -378,5 +397,5 @@ in other Prologs.
 
 <hr>
 <address>Email: <a href="mailto:xsb-users@lists.sourceforge.net" >xsb-users@lists.sourceforge.net</a></address>
-<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.11 2013-05-01 17:04:46 tswift Exp $ <!-- hhmts end -->
+<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.12 2013-05-01 22:12:31 tswift Exp $ <!-- hhmts end -->
 </body> </html>
