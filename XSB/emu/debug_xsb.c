@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.104 2013-04-17 22:02:35 tswift Exp $
+** $Id: debug_xsb.c,v 1.105 2013-05-01 17:04:46 tswift Exp $
 ** 
 */
 
@@ -60,7 +60,12 @@
 #endif
 
 void print_subgoal(CTXTdeclc FILE *, VariantSF);
-#define virtual_buffer (fl_buf->fl_buffer)
+//#define virtual_buffer (fl_buf->fl_buffer)
+//#define reset_virtual_buffer (fl_buf->fl_buffer)
+
+#define init_virtual_buffer char * buffer = fl_buf->fl_buffer
+#define virtual_buffer (buffer)
+#define reset_virtual_buffer (buffer = fl_buf->fl_buffer)
 
 /*=============================================================================*/
 /*  The first section of predicates are used for tracing as well as by XSB     */
@@ -72,6 +77,18 @@ void print_subgoal(CTXTdeclc FILE *, VariantSF);
 
 #define MAXFLOATLEN 24
 #define MAXINTLEN 21
+
+void maybe_realloc_buffers(forestLogBuffer BUFFER,int SIZE) {				
+    if (SIZE > (BUFFER->fl_size)/2) {					
+      gdb_dummy();							
+      BUFFER->fl_buffer							
+	= (char *)mem_realloc((BUFFER->fl_buffer),(BUFFER->fl_size),	
+			      2*(BUFFER->fl_size),BUFF_SPACE);		
+      /*      printf("buffer so far: %s\n\n",BUFFER->fl_buffer);*/	
+      //      printf("reallocing buffer to %d %p\n",(BUFFER->fl_size)*2,BUFFER->fl_buffer);	
+      BUFFER->fl_size = (BUFFER->fl_size)*2;				
+    }									
+  }
 
 static void print_term(FILE *fp, Cell term, byte car, long level)
 {
@@ -390,7 +407,8 @@ static int sprint_term(forestLogBuffer fl_buf, int insize, Cell term, byte car, 
   Psc psc;
   CPtr cptr;
   int size = insize;
-  
+  init_virtual_buffer;
+
   //  if (size > MAXTERMBUFSIZE) return size;
   maybe_realloc_buffers(fl_buf,size);
   //  char * buffer = fl_buf->fl_buffer;
@@ -1124,11 +1142,11 @@ static int sprint_term_of_subgoal(CTXTdeclc forestLogBuffer fl_buf, int size,byt
 {
   Cell term;
   int  j, args;
+  init_virtual_buffer;
 
-  //  printf("sprint_term %d\n",size);
-
+  //  printf("sprint_term %p\n",fl_buf->fl_buffer);
   maybe_realloc_buffers(fl_buf,size);
-  //  char * buffer = fl_buf->fl_buffer;
+  reset_virtual_buffer;
 
   term = cell_array[*i];
   switch (cell_tag(term)) {
@@ -1156,6 +1174,7 @@ static int sprint_term_of_subgoal(CTXTdeclc forestLogBuffer fl_buf, int size,byt
     for (j = args; j > 0; j--) {
       (*i)--;
       size = sprint_term_of_subgoal(CTXTc fl_buf,size, CAR, i);
+      reset_virtual_buffer;
       if (j > 1) {sprintf(virtual_buffer+size, ",");size++;}
     }
     if (args > 0) {sprintf(virtual_buffer+size, ")");size++;}
@@ -1164,6 +1183,7 @@ static int sprint_term_of_subgoal(CTXTdeclc forestLogBuffer fl_buf, int size,byt
     if ( car ) { sprintf(virtual_buffer+size, "["); size++;}
     (*i)--;
     size = sprint_term_of_subgoal(CTXTc fl_buf,size, CAR, i);
+    reset_virtual_buffer;
     (*i)--;
     term = cell_array[*i];
   switch (cell_tag(term)) {
@@ -1174,6 +1194,7 @@ static int sprint_term_of_subgoal(CTXTdeclc forestLogBuffer fl_buf, int size,byt
     case XSB_LIST:
       sprintf(virtual_buffer+size, ",");size++;
       size = sprint_term_of_subgoal(CTXTc fl_buf, size, CDR, i);
+      reset_virtual_buffer;
       return size;
     case XSB_STRING:
       if (string_val(term) != nil_string)
@@ -1188,6 +1209,7 @@ static int sprint_term_of_subgoal(CTXTdeclc forestLogBuffer fl_buf, int size,byt
     vertbar:
       sprintf(virtual_buffer+size, "|");size++;
       size = sprint_term_of_subgoal(CTXTc fl_buf,size, CDR, i);
+      reset_virtual_buffer;
       sprintf(virtual_buffer+size, "]");size++;
     return size;
   }
@@ -1242,7 +1264,8 @@ int sprint_subgoal(CTXTdeclc forestLogBuffer fl_buf,  int ctr, VariantSF subg)
   BTNptr leaf;
   int  i = 0; 
   int size = ctr;
-
+  init_virtual_buffer;
+  //  printf("sprint_subgoal %p\n",fl_buf);
   Psc  psc = TIF_PSC(subg_tif_ptr(subg));
 
   for (leaf = subg_leaf_ptr(subg); 
@@ -1262,7 +1285,9 @@ int sprint_subgoal(CTXTdeclc forestLogBuffer fl_buf,  int ctr, VariantSF subg)
     sprintf(virtual_buffer+size, "(");size++;
     for (i = i-2; i >= 0 //&& size < MAXTERMBUFSIZE - 100
 	   ; i--) {
+      //      printf("arg %d %p\n",i,fl_buf->fl_buffer);
       size = sprint_term_of_subgoal(CTXTc fl_buf, size, CAR,&i);
+      reset_virtual_buffer;
       if (i > 0) {sprintf(virtual_buffer+size, ",");size++;}
     }
     sprintf(virtual_buffer+size,")");size++;
@@ -1344,6 +1369,8 @@ int sprint_delay_element(CTXTdeclc forestLogBuffer fl_buf, int ctr ,Cell del_ele
   Psc  psc = 0;
   CPtr cptr;
   Cell tmp_cell;
+  init_virtual_buffer;
+
   //  int arity, i;  char *name;
 
   //  print_delay_element(CTXTc stdout, del_elem);printf("\n");
@@ -1434,6 +1461,7 @@ int sprint_delay_list(CTXTdeclc forestLogBuffer fl_buf, CPtr dlist)
 {
   CPtr cptr;
   int ctr = 0;
+  init_virtual_buffer;
 
   if (dlist == NULL) {
     return sprintf(virtual_buffer, "[]"); 

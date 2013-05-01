@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: parse.P,v 1.135 2012-10-10 22:29:01 tswift Exp $
+** $Id: parse.P,v 1.136 2013-05-01 17:04:45 tswift Exp $
 ** 
 */
 
@@ -553,6 +553,8 @@ get_p_mod(P, ModName, P_Mod) :-
 /* parse_clause(+Clause,						*/
 /*		#module(#SymTab,#DcList,#ClList,#QrList),ModName)	*/
 /*======================================================================*/
+:- import console_writeln/1 from standard.
+
 parse_clause([], _,_) :- !.
 parse_clause([Cl|Cls], Module,ModName) :- !,
 	parse_clause(Cl, Module,ModName),
@@ -648,6 +650,9 @@ parse_directive(elseif(_), _QrList,_SymTab,_ModName,_ModStruct):- !,
 parse_directive(else, QrList,SymTab,ModName,ModStruct):- !,
 	parse_directive(elseif(true), QrList,SymTab,ModName,ModStruct).
 parse_directive(endif, _QrList,_SymTab,_ModName,_ModStruct):- !.
+parse_directive(module(ModIn,X,_Dialect), _QrList,SymTab,ModName,_ModStruct) :- !, 	
+	console_writeln(module(ModIn,X,_Dialect)),
+	parse_directive(module(ModIn,X), _QrList,SymTab,ModName,_ModStruct).
 parse_directive(module(ModIn,X), _QrList,SymTab,ModName,_ModStruct) :- !, 	
 	(ModIn == ModName -> 
 	    parse_list(X, SymTab, [ex], (export))

@@ -75,9 +75,9 @@
 
 #define GC 1
 
-/* #undef MULTI_THREAD */
+#define MULTI_THREAD 1
 
-/* #undef SHARED_COMPL_TABLES */
+#define SHARED_COMPL_TABLES 1
 
 /* #undef CONC_COMPL */
 

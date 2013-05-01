@@ -20,6 +20,55 @@
 
 <h2> Version 3.3.X (Pignoletto)</h2> 
 
+<h3> Version 3.3.8</h3> 
+<ul>
+<li><b> Enhancements </b></li>
+<ul>
+<li> A new approach to bounded rationality within tabling,
+termed <i>radial restraint</i>, can be used to ensure sound (with
+respect to the well-founded semantics) termination of programs even
+when they contain function symbols and have infinite models.  Radial
+restraint works by abstracting answers that exceed a given depth and
+making the truth value for these answers <i>undefined</i>, and can be
+declared on a per-predicate basis.  </li>
+<li>A new builtin, <tt>u_not/1</tt> assigns the
+truth-value <i>undefined</i> to non-ground negative subgoals, rather
+than throwing an exception.
+</li>
+<li> New builtins support better inspection of the state of tables,
+even when these tables are being
+computed.
+<ul><li>  <tt>get_incr_sccs_with_deps/[2,3]</tt> produces a Prolog
+representation of the dependency graph of incrementally tabled
+subgoals, including strongly connected components information and
+dependencies among these components.  </li>
+<li>A similar
+predicate, <tt>get_incr_sccs_with_deps/[2,3]</tt> provides an
+analogous view of atoms of the residual program whose truth value
+is <i>undefined</i> under the well-founded semantics.
+</li></li></ul>
+<li>Subgoal abstraction is now supported on a per-predicate basis. </li>
+<li>Added ISO predicate <tt>halt/1</tt></li>
+<li>XSB's ODBC interface now has a predicate to return all available drivers.</li>
+</ul>
+
+<li><b> Bug fixes </b></li>
+<ul>
+<li> Windows bug that prevented XSB from properly initializing when
+configured with a long path name was fixed.</li>
+<li> Various fixes for bugs that occurred when copying answers with a
+large number of variables into a table; when thorwing an "maximum
+subgoal depth exceeded" exception on very large subugoals; when
+delaying the evaluation of tabled predicates via the <i>when</i>
+library; when consult (<tt>[]/2</tt>) is called within XSB's tracing.
+In addition several small bugs were fixed for answer subsumption and
+forest logging.  Bugs were fixed in <tt>abolish/1</tt>
+in <tt>atom_chars/2</tt> and in <tt>load_dyn/[1,2]</tt>.  Finally,
+listing now prints out attributed variables correctlly.</li>
+</ul>
+</ul>
+
+
 <h3> Version 3.3.7</h3> 
 <ul>
 <li><b> Enhancements </b></li>
@@ -329,5 +378,5 @@ in other Prologs.
 
 <hr>
 <address>Email: <a href="mailto:xsb-users@lists.sourceforge.net" >xsb-users@lists.sourceforge.net</a></address>
-<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.10 2012-08-12 15:10:11 tswift Exp $ <!-- hhmts end -->
+<!-- hhmts start -->Last modified: $Id: changelog.html,v 1.11 2013-05-01 17:04:46 tswift Exp $ <!-- hhmts end -->
 </body> </html>
