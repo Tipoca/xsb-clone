@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # Do not touch xsb_patch_date! It is updated by CVS.
-xsb_patch_date='$Date: 2013-05-02 17:39:32 $'
+xsb_patch_date='$Date: 2013-05-02 17:42:32 $'
 
 xsb_build_date=`date`
 xsb_patch_date=`echo $xsb_patch_date | sed 's,.*D,Patch d,' | sed 's, *\\$,,'`
@@ -21,7 +21,7 @@ xsb_patch_version=0
 #xsb_codename="Incognito"   # version 3.1 Portuguese Syrah intro'd to Terry by Antonio Porto
 #xsb_codename="Kopi Lewak"  # Version 3.2 Civit coffee
 #xsb_codename="Pignoletto"  # Version 3.3 Italian Beer (Fabrizio)
-xsb_codename="Soy milk"     # Version 3.4 (Benjamin)
+xsb_codename="Soy mILK"     # Version 3.4 (Benjamin)
 
 # Format: YYYY-MM-DD or YYYY.MM.DD or YYYY/MM/DD
 # With this, XSB should become Y2K compliant :-)
