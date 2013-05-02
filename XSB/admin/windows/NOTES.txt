@@ -5,7 +5,7 @@ installers for XSB using Inno Setup 5.2 (or a later version):
 
 In order to build the installer, perform the following steps:
 
-1. Install (or update if necesary) Inno Setup.
+1. Install (or update if necessary) Inno Setup.
 
 2. Compile XSB, if possible, in 32 bits and 64 bits, single-threaded and
 multi-threaded.
@@ -13,13 +13,13 @@ multi-threaded.
 2. Copy the "xsb.iss" file into your Desktop folder and open it (using
 Inno Setup).
 
-3. The "xsb.iss" file asuumes that XSB is compiled and available in the
+3. The "xsb.iss" file assumes that XSB is compiled and available in the
 "C:\XSB" folder. If that's not the case, edit the "xsb.iss" file and
 change the definition of the variable "MyBaseDir" (around line 13) to
 reflect the directory that you're using.
 
 4. Update the XSB release number in the "xsb.iss". There should be
-four occurences. Look for the strings "MyAppVerName" (around line 6),
+four occurrences. Look for the strings "MyAppVerName" (around line 6),
 "OutputBaseFilename" (around line 27), "VersionInfoVersion" (around
 line 32), and "BeveledLabel" (around line 60). Also check the XSB
 copyright information for possible updates.
