@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.238 2013-04-17 22:02:35 tswift Exp $
+** $Id: emuloop.c,v 1.239 2013-05-02 17:36:53 dwarren Exp $
 ** 
 */
 
@@ -528,7 +528,7 @@ int emuloop(CTXTdeclc byte *startaddr)
 #define GC_INFERENCES 66 /* make sure the garbage collection test is hard */
   static int infcounter = 0;
 #endif
-  jmp_buf xsb_eval_environment;
+  //  jmp_buf xsb_eval_environment; //unused
 
   wam_initialized = TRUE ;
 
