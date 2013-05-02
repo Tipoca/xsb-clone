@@ -1,3 +1,3 @@
-XSB Version 3.3.9 (Pignoletto) of May 1, 2013
-[x86-pc-windows; mode: debug; engine: slg-wam; scheduling: local]
-[Patch date: 2013/02/20 06:17:59]
+XSB Version 3.4.0 (Soy mILK) of May 1, 2013
+[x86-pc-windows; mode: optimal; engine: slg-wam; scheduling: local]
+[Patch date: 2013/05/02 17:42:32]

@@ -49,7 +49,7 @@
 
 #define WIN_NT 1
 #define RELEASE_DATE 2013-05-01
-#define XSB_VERSION "3.3.9 (Pignoletto)"
+#define XSB_VERSION "3.4.0 (Soy mILK)"
 
 /* this is used by many to check if config.h was included in proper order */
 #ifndef CONFIG_INCLUDED
@@ -103,4 +103,4 @@
 /* GC on SLG-WAM! ;) */
 #define SLG_GC 1
 
-#define NON_OPT_COMPILE 1
+/* #undef NON_OPT_COMPILE */
