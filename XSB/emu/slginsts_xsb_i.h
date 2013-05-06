@@ -671,7 +671,8 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
 	    new_heap_functor(hreg, get_ret_psc(num_heap_term_vars));
 	    if (var_addr == NULL) printf("var_addr NULL 3\n");
 	    for (i = 0; i < num_heap_term_vars; i++)
-	      cell(hreg++) = (Cell) var_addr[i];
+	      cell(hreg+i) = (Cell) var_addr[i];
+	    hreg += num_heap_term_vars;
 	    delay_positively(producer_sf, first_answer, makecs(temp_hreg));
 #else
 	    delay_positively(producer_sf, first_answer,
@@ -792,7 +793,7 @@ XSB_Start_Instr(answer_return,_answer_return)
   int abstr_size;
 #endif
 
-  /* Locate relevant answers
+  /* locate relevant answers
      ----------------------- */
   answer_continuation = ALN_Next(nlcp_trie_return(breg)); /* step to next answer */
   consumer_sf = (VariantSF)nlcp_subgoal_ptr(breg);
@@ -884,8 +885,9 @@ table_consume_answer(CTXTc next_answer,template_size,attv_num,answer_template,
 	new_heap_functor(hreg, get_ret_psc(num_heap_term_vars));
 	if (var_addr == NULL) printf("var_addr NULL 4\n");
 	for (i = 0; i < num_heap_term_vars; i++) {
-	  cell(hreg++) = (Cell) var_addr[i];
+	  cell(hreg+i) = (Cell) var_addr[i];
 	}
+	hreg += num_heap_term_vars;
 	delay_positively(consumer_sf, next_answer, makecs(temp_hreg));
 #else
 	delay_positively(consumer_sf, next_answer,
@@ -983,7 +985,6 @@ XSB_Start_Instr(new_answer_dealloc,_new_answer_dealloc)
   //  if ((subgoal_space_has_been_reclaimed(producer_sf,producer_csf)) ||
   if ((subg_is_completed(producer_sf)) ||
 	(IsNonNULL(delayreg) && answer_is_unsupported(CTXTc delayreg))) {
-    //    printf("completed\n");
     Fail1;
     XSB_Next_Instr();
   }

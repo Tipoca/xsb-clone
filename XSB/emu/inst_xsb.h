@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: inst_xsb.h,v 1.44 2013-01-04 14:56:22 dwarren Exp $
+** $Id: inst_xsb.h,v 1.45 2013-05-06 21:10:24 dwarren Exp $
 ** 
 */
 
@@ -54,6 +54,7 @@ extern void init_inst_table(void);
 #define B   18  /* tagged (boxed) integer number */
 #define PRR 19  /* = P + R + R; for fun_test_ne */
 #define D   20  /* double float number 8 bytes (32-bits) generalize.. */
+#define H   21  /* internstr cell */
 
 /************************************************************************/
 /*	Macros to fetch the instructions/operands.			*/

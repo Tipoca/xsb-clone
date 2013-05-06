@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: cinterf.c,v 1.115 2013-05-02 17:36:17 dwarren Exp $
+** $Id: cinterf.c,v 1.116 2013-05-06 21:10:24 dwarren Exp $
 **
 */
 
@@ -484,7 +484,8 @@ DllExport void c_string_to_p_charlist(CTXTdeclc char *name, prolog_term list,
 
 DllExport xsbBool call_conv is_charlist(prolog_term term, int *size)
 {
-  int escape_mode=FALSE, head_char, head_int;
+  int escape_mode=FALSE, head_char;
+  Integer head_int;
   prolog_term list, head;
 
   list = term;

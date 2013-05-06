@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: loader_xsb.c,v 1.95 2013-01-04 14:56:22 dwarren Exp $
+** $Id: loader_xsb.c,v 1.96 2013-05-06 21:10:24 dwarren Exp $
 ** 
 */
 
@@ -223,7 +223,7 @@ inline static void inserth(CPtr label, struct hrec *bucket)
 
 /*----------------------------------------------------------------------*/
 
-Integer float_val_to_hash(Float Flt) {
+UInteger float_val_to_hash(Float Flt) {
   //  Float Fltval = Flt;
 #ifndef FAST_FLOATS
   return ((ID_BOXED_FLOAT << BOX_ID_OFFSET ) | (FLOAT_HIGH_16_BITS(Flt))) ^
@@ -239,7 +239,7 @@ Integer float_val_to_hash(Float Flt) {
 
 static Integer get_index_tab(CTXTdeclc FILE *fd, int clause_no)
 {
-  Integer hashval, size, j;
+  UInteger hashval, size, j;
   Integer count = 0;
   byte  type ;
   CPtr label;
@@ -438,6 +438,7 @@ static int load_text(FILE *fd, int seg_num, size_t text_bytes, int *current_tab)
       case PPR:
       case PRR:
       case RRR:
+      case H:  // interned str, not used by compiler, only in assert at runtime
 	break;
       case S:                         // structure
 	get_obj_word_bb(inst_addr);
@@ -943,6 +944,7 @@ static byte *loader1(CTXTdeclc FILE *fd, char *filename, int exp)
   else {
     ptr = insert_module(T_MODU, name);
     cur_mod = ptr->psc_ptr;
+    set_ep(ptr->psc_ptr,(byte *)makestring(filename)); //!!!DSWDSW filename for module goes here?
   }
   get_obj_word_bb(&psc_count);
   if (!load_syms(fd, (int)psc_count, 0, cur_mod, exp)) 

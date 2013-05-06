@@ -624,6 +624,10 @@ error will be thrown.  {\tt Operations} can take one of two forms:
   supported 
 %
 \bi
+\item{\tt intern} which causes every clause for this predicate, before 
+being asserted, to force all its ground subterms to be interned into a 
+global table.
+%
 \item{\tt tabled} which causes the dynamic predicate to be tabled.
   The declaration/directive {\tt dynamic p/n as tabled} has the same
   effect as {\tt table p/n as dynamic}.
@@ -702,6 +706,8 @@ will be thrown.  {\tt Options} is inconsistent in the following cases:
 \item {\tt Options} contains both {\tt private} and {\tt shared}
 %
 \item {\tt Options} contains both {\tt incremental} and {\tt opaque}
+\item {\tt Options} contains {\tt intern} and ({\tt dynamic} or {\tt
+subsumptive} or {\tt incremental} or {\tt opaque})
 \ei
 
 {\bf Error Cases} 

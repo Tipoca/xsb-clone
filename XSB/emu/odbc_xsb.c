@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.81 2013-01-09 20:15:34 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.82 2013-05-06 21:10:24 dwarren Exp $
 **
 */
 
@@ -396,9 +396,10 @@ Cell PrintErrorMsg(CTXTdeclc struct ODBC_Cursor *cur)
 		  pfnativeerror, szerrormsg,cberrormsgmax,pcberrormsg);
   if ((rc == SQL_SUCCESS) || (rc == SQL_SUCCESS_WITH_INFO)) {
     term = makecs(hreg);
-    bld_functor(hreg++, pair_psc(insert("odbc_error",2,(Psc)flags[CURRENT_MODULE],&isnew)));
-    bld_string(hreg++,string_find(szsqlstate,1)); 
-    bld_string(hreg++,string_find(szerrormsg,1)); 
+    bld_functor(hreg, pair_psc(insert("odbc_error",2,(Psc)flags[CURRENT_MODULE],&isnew)));
+    bld_string(hreg+1,string_find(szsqlstate,1)); 
+    bld_string(hreg+2,string_find(szerrormsg,1)); 
+    hreg += 3;
   } else {
     term = makestring(string_find("Unknown ODBC Error",1));
   }
@@ -1709,17 +1710,17 @@ Cell build_codes_list(CTXTdeclc byte *charptr) {
   if (len == 0) {
     return makenil;
   } else {
-    CPtr this_term, prev_tail;
+    CPtr this_term;
     check_glstack_overflow(4,pcreg,2*sizeof(Cell)*len);
     this_term = hreg;
-    cell(hreg++) = makeint((int)*charptr); charptr++;
-    prev_tail = hreg++;
+    cell(hreg) = makeint((int)*charptr); charptr++;
+    hreg += 2;
     while (*charptr != 0) {
-      cell(prev_tail) = makelist(hreg);
-      cell(hreg++) = makeint((int)*charptr); charptr++;
-      prev_tail = hreg++;
+      cell(hreg-1) = makelist(hreg);
+      cell(hreg) = makeint((int)*charptr); charptr++;
+      hreg += 2;
     }
-    cell(prev_tail) = makenil;
+    cell(hreg-1) = makenil;
     return makelist(this_term);
   }
 }

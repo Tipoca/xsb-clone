@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: heap_xsb.c,v 1.89 2011-12-24 21:09:10 tswift Exp $
+** $Id: heap_xsb.c,v 1.90 2013-05-06 21:10:24 dwarren Exp $
 ** 
 */
 
@@ -164,6 +164,7 @@ unmarking marked strings.
 #include "loader_xsb.h" /* for ZOOM_FACTOR, used in stack expansion */
 #include "struct_manager.h"
 #include "hash_xsb.h"
+#include "struct_intern.h"
 /*=========================================================================*/
 
 /* this might belong somewhere else (or should be accessible to init.c),

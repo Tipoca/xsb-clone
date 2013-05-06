@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: biassert.c,v 1.202 2013-01-09 20:15:33 dwarren Exp $
+** $Id: biassert.c,v 1.203 2013-05-06 21:10:23 dwarren Exp $
 ** 
 */
 
@@ -57,10 +57,12 @@
 #include "thread_xsb.h"
 #include "debug_xsb.h"
 #include "biassert_defs.h"
+#include "struct_intern.h"
 
 /* --- routines used from other files ---------------------------------	*/
 
-extern Cell val_to_hash(Cell);
+extern Integer val_to_hash(Cell);
+extern void printterm(FILE *, Cell, int);
 
 extern int xsb_profiling_enabled;
 extern void add_prog_seg(Psc, byte *, size_t);
@@ -138,10 +140,11 @@ PrRef dynpredep_to_prref(CTXTdeclc void *pred_ep) {
   else return pred_ep;
 }
 
-/* To just print assert-generated code: 1. uncomment following define,
-   2. change def of xsb_dbgmsg in debug_xsb to call xsb_dbgmsg1, and
+/* To just print assert-generated code: 
+   1. uncomment following define of LOG_ASSERT
+   2. change def of xsb_dbgmsg in debug_xsb.h to call xsb_dbgmsg1, and
    3. include def of xsb_dbgmsg1 in error_xsb.c */
-/* #define LOG_ASSERT 0*/
+/*#define LOG_ASSERT 0*/
 
 /* #ifdef DEBUG */
 /* I hope we can trust any decent C compiler to compile away
@@ -654,7 +657,7 @@ static int is_frozen_var(CTXTdeclc prolog_term T0, int regster, RegStat Reg, int
 	}
       } else {
 	*occs = ONLY_OCC;
-	regster = -1;  /* dummy, non-0 */
+	regster = 255;  /* dummy, non-0 */
       }
       c2p_int(CTXTc regster, p2p_arg(T0,1));
     } else {
@@ -737,6 +740,7 @@ int assert_code_to_buff_p(CTXTdeclc prolog_term Clause)
     assertcmp_printerror(CTXTc Argno);
     return FALSE;
   }
+  XSB_Deref(Clause);
   if (isconstr(Clause) && get_str_psc(Clause)==if_psc) { 
     Head = p2p_arg(Clause, 1);
     Body = p2p_arg(Clause, 2);
@@ -788,13 +792,14 @@ static void db_gentopinst(CTXTdeclc prolog_term T0, int Argno, RegStat Reg)
   
   inst_queue_init(flatten_queue);
   
+  XSB_Deref(T0);
   if (isointeger(T0)) {
     dbgen_instB_ppvw(getnumcon, Argno, oint_val(T0)); /* getnumcon */
   } else if (isstring(T0)) {
     dbgen_instB_ppvw(getcon, Argno, (Cell)string_val(T0));  /* getcon */
   } else if (isinternstr(T0)) {
-    //printf("gen getinternstr: %s/%d\n", get_name(get_str_psc(T0)),get_arity(get_str_psc(T0)));
-    dbgen_instB_ppvw(getinternstr, Argno, (Cell)T0);  /* getinternstr */
+    //    printf("gen getinternstr: "); printterm(stdout,T0,20); printf("\n");
+    dbgen_instB_ppvw(getinternstr, Argno, (Cell)T0);
   } else if (isfloat(T0)) {
     dbgen_instB_ppvw(getfloat, Argno, T0); /* getfloat */
   } else if (isref(T0)) {
@@ -831,8 +836,8 @@ static void db_genterms(CTXTdeclc int unibld, struct instruction_q *flatten_queu
     inst_queue_pop(flatten_queue, &Argno, &T0, &T1);
     Reg->RegArrayInit[Argno] = 1;	/* Reg is initted */
     if (islist(T0)) {
-      T1 = p2p_car(T0);
-      T2 = p2p_cdr(T0);
+      T1 = p2p_car(T0); XSB_Deref(T1);
+      T2 = p2p_cdr(T0); XSB_Deref(T2);
       if (unibld && isref(T1) && isref(T2) && T1!=T2 /* not same var */) {
 	int Rt1, Rt2;
 	Rt1 = reg_get(CTXTc Reg, RVAR);
@@ -881,15 +886,20 @@ static void db_geninst(CTXTdeclc int unibld, prolog_term Sub, int isLast,
   int Rt, occs;
   
  begin_db_geninst:
+  XSB_Deref(Sub);
   if (isinteger(Sub)) /* NOT isointeger; boxed *must* be handled as structures here! */ {
     if (unibld) {dbgen_instB_pppw(uninumcon, int_val(Sub));}
     else {dbgen_instB_pppw(bldnumcon, int_val(Sub));}
   } else if (isstring(Sub)) {
     if (unibld) {dbgen_instB_pppw(unicon, (Cell)p2c_string(Sub));}
     else {dbgen_instB_pppw(bldcon, (Cell)p2c_string(Sub));}
-    /*  } else if (isinternstr(Sub)) {
-    if (unibld) {dbgen_instB_pppw(uniinternstr, (Cell)Sub);}
-    else {dbgen_instB_pppw(bldinternstr, (Cell)Sub);} ***/
+    } else if (isinternstr(Sub)) {
+    if (unibld) {
+      dbgen_instB_pppw(uniinternstr, (Cell)Sub);
+    }
+    else {
+      dbgen_instB_pppw(bldinternstr, (Cell)Sub);
+      }
   } else if (isnil(Sub)) {
     if (unibld) {dbgen_instB_ppp(uninil);}
     else {dbgen_instB_ppp(bldnil);}
@@ -964,6 +974,7 @@ static void db_genaput(CTXTdeclc prolog_term T0, int Argno,
   struct instruction_q flatten_queue_lc;
   struct instruction_q *flatten_queue = &flatten_queue_lc;
 
+  XSB_Deref(T0);
   if (isref(T0)) {
     Rt = reg_get(CTXTc Reg, RVAR);
     freeze_var(CTXTc T0,Rt,Reg);
@@ -1407,6 +1418,7 @@ xsbBool assert_buff_to_clref_p(CTXTdeclc prolog_term Head,
 
   xsb_dbgmsg((LOG_ASSERT,"Now add clref to chain:"));
 
+  XSB_Deref(Indexes);
   get_indexes( Indexes, Index, &NI ) ;
 
   MakeClRef( Clause,
@@ -1414,6 +1426,7 @@ xsbBool assert_buff_to_clref_p(CTXTdeclc prolog_term Head,
 	     //	     IC_CELLS(NI) + ((asrtBuff->Size+0xf)&~0x7)/sizeof(Cell) ) ;
 	     IC_CELLS(NI) + ((asrtBuff->Size+0x7)&~0x7)/sizeof(Cell) ) ;
 
+  XSB_Deref(Head);
   if (xsb_profiling_enabled)
     add_prog_seg(get_str_psc(Head),(byte *)Clause,ClRefSize(Clause));
 
@@ -1556,21 +1569,22 @@ static int hash_resize( PrRef Pred, SOBRef SOBrec, unsigned int OldTabSize )
    }
 }
 
-static int hash_val(int Ind, prolog_term Head, int TabSize )
+static Integer hash_val(int Ind, prolog_term Head, int TabSize )
 /* return -1 if cannot hash to this Ind (var) */
 {
-  int Hashval = 0 ;
+  Integer Hashval = 0 ;
   int i, j ;
   prolog_term Arg ;
   int index_max;
 
+  XSB_Deref(Head);
   if (Ind <= 0xff) {  /* handle usual case specially */
     Arg = p2p_arg(Head,Ind) ;
     /* The following line is a hack and should be taken out
      * when the compiler change for indexing []/0 is made. */
-    if (isnil(Arg)) Hashval = ihash(0, TabSize);
+    if (isnil(Arg)) {Hashval = ihash(0, TabSize);}
     else if (isref(Arg) || isattv(Arg)) Hashval = -1;
-    else Hashval = ihash(val_to_hash(Arg), TabSize);
+    else {Hashval = ihash(val_to_hash(Arg), TabSize);}
   } else {   /* handle joint indexes */
     for (i = 2; i >= 0; i--) {
       j = (Ind >> (i*8)) & 0xff;
@@ -1799,7 +1813,8 @@ static void find_usable_index(prolog_term Head, ClRef *s,
 /* pointer to the beginning of the clause		       */
 
 #define CheckSOBClause(H, Ind, sob, Level )			\
-{    int h, t ;							\
+{    int t ;							\
+     Integer h;							\
      ClRef cl ;				    			\
      if (ClRefSOBOpCode(sob) != fail) {				\
        t = (int)ClRefHashSize(sob);				\

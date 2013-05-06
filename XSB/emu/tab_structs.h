@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: tab_structs.h,v 1.28 2012-10-10 19:18:39 tswift Exp $
+** $Id: tab_structs.h,v 1.29 2013-05-06 21:10:25 dwarren Exp $
 ** 
 */
 
@@ -292,6 +292,7 @@ typedef struct Table_Info_Frame {
   byte method;	                /* eval pred using variant or subsumption? */
   byte mark;                    /* (bit) to indicate tif marked for gc */
   byte visited;                 /* (bit) to indicate tif visited during cascading deletes */
+  byte intern_strs;		/* (bit) to indicate if variant table interns ground terms */
   DelTFptr del_tf_ptr;          /* pointer to first deletion frame for pred */
   BTNptr call_trie;		/* pointer to the root of the call trie */
   VariantSF subgoals;		/* chain of predicate's subgoals */
@@ -311,6 +312,7 @@ typedef struct Table_Info_Frame {
 #define TIF_EvalMethod(pTIF)	   ( (pTIF)->method )
 #define TIF_Mark(pTIF)	           ( (pTIF)->mark )
 #define TIF_Visited(pTIF)          ( (pTIF)->visited )
+#define TIF_Interning(pTIF)         ( (pTIF)->intern_strs )
 #define TIF_CallTrie(pTIF)	   ( (pTIF)->call_trie )
 #define TIF_Subgoals(pTIF)	   ( (pTIF)->subgoals )
 #define TIF_NextTIF(pTIF)	   ( (pTIF)->next_tif )

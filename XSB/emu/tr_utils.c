@@ -192,6 +192,11 @@ VariantSF get_variant_sf(CTXTdeclc Cell callTerm, TIFptr pTIF, Cell *retTerm) {
   BTNptr root, leaf;
   Cell callVars[MAX_VAR_SIZE + 1];
 
+  if (TIF_Interning(pTIF)) {
+    xsb_abort("[get_variant_sf] not supported for tables with interned ground terms: %s/%d\n",
+	   get_name(TIF_PSC(pTIF)),get_arity(TIF_PSC(pTIF)));
+  }
+
   root = TIF_CallTrie(pTIF);
   if ( IsNULL(root) )
     return NULL;
@@ -5359,6 +5364,8 @@ case CALL_SUBS_SLG_NOT: {
 	TIF_SubgoalDepth(tip) = val;
       else if (property == ANSWER_DEPTH) 
 	TIF_AnswerDepth(tip) = val;
+      else if (property == INTERNING_GROUND)
+	TIF_Interning(tip) = val;
     }
     else  /* cant find tip */
       xsb_permission_error(CTXTc "set peroperty","tif",term,
@@ -5367,7 +5374,7 @@ case CALL_SUBS_SLG_NOT: {
   }
 
   case GET_TIF_PROPERTY: { 
-      /* reg 2=psc, reg 3 = property to set, reg 4 = val */
+      /* reg 2=psc, reg 3 = property to get, reg 4 = val */
     Psc psc;
     TIFptr tip;
 
@@ -5375,7 +5382,7 @@ case CALL_SUBS_SLG_NOT: {
     int property = (int)ptoc_int(CTXTc 3);
 
     if ( isref(term) ) {
-      xsb_instantiation_error(CTXTc "set_tif_property/3",1);
+      xsb_instantiation_error(CTXTc "get_tif_property/3",1);
       break;
     }
     psc = term_psc(term);
@@ -5388,6 +5395,8 @@ case CALL_SUBS_SLG_NOT: {
 	ctop_int(CTXTc 4,TIF_SubgoalDepth(tip));
       else if (property == ANSWER_DEPTH) 
 	ctop_int(CTXTc 4,TIF_AnswerDepth(tip));
+      else if (property == INTERNING_GROUND)
+	ctop_int(CTXTc 4,TIF_Interning(tip));
     }
     else  /* cant find tip */
       return FALSE;

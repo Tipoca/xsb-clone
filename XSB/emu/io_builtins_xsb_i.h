@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb_i.h,v 1.67 2013-01-04 14:56:22 dwarren Exp $
+** $Id: io_builtins_xsb_i.h,v 1.68 2013-05-06 21:10:24 dwarren Exp $
 ** 
 */
 
@@ -472,9 +472,10 @@ inline static xsbBool file_function(CTXTdecl)
     else {
       new_list = makelist(hreg);
       for (i = 0; i < line_buff_disp; i++) {
-	follow(hreg++) = makeint(*(unsigned char *)atomname);
+	follow(hreg) = makeint(*(unsigned char *)atomname);
 	atomname++;
-	top = hreg++;
+	top = hreg+1;
+	hreg += 2;
 	follow(top) = makelist(hreg);
       }
       follow(top) = makenil;

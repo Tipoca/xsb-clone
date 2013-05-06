@@ -34,26 +34,34 @@ profile_call(Goal) :-
 	(prof_cmd(1)		% start profiling
 	 ->	(catch(Goal,Ball,handle_profile_catch(Ball))
 		 ;
-		 prof_cmd(2),fail
+		 prof_cmd(2),
+		 print_profile(fail,T0,Goal),
+		 fail
 		),
 		prof_cmd(2),	% stop profiling
-		cputime(T1),
-		Time is T1-T0,
-		telling(OF),tell(userout),write('PROFILE FOR: '),write_term(Goal,[max_depth(3)]),
-		write('  Total cputime: '),write(Time),writeln(' seconds'),
-		dump_profile,
-		tell(OF)
+		print_profile(succeed,T0,Goal)
 	 ;	call(Goal),	% profiling not enabled (xsb -p)
 		cputime(T1),
 		Time is T1-T0,
 		telling(OF),tell(userout),write('PROFILE FOR: '),write_term(Goal,[max_depth(3)]),
-		write('  Total cputime: '),write(Time),writeln(' seconds')
+		write('  Total cputime: '),write(Time),writeln(' seconds'),
+		tell(OF)
 	).
 
 handle_profile_catch(Ball) :-
 	prof_cmd(2),
 	writeln('Throw out of profiling. Profiling turned off.'),
 	throw(Ball).
+
+print_profile(Fail,T0,Goal) :-
+	cputime(T1),
+	Time is T1-T0,
+	telling(OF),tell(userout),write('PROFILE FOR: '),write_term(Goal,[max_depth(3)]),
+	(Fail == fail -> write(' FAILED') ; true),
+	write('  Total cputime: '),write(Time),writeln(' seconds'),
+	dump_profile,
+	tell(OF).
+
 
 get_profile_tuple(Node,Tuple,NNode) :- prof_cmd(3,Node,Tuple,NNode).
 

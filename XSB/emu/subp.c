@@ -80,6 +80,7 @@
 #include "tr_utils.h"
 #include "system_defs_xsb.h"
 #include "builtin.h"
+#include "struct_intern.h"
 /*======================================================================*/
 extern xsbBool quotes_are_needed(char *string);
 

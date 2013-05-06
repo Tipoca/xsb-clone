@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: context.h,v 1.92 2013-04-17 22:02:35 tswift Exp $
+** $Id: context.h,v 1.93 2013-05-06 21:10:24 dwarren Exp $
 **
 */
 
@@ -235,6 +235,7 @@ struct th_context
 
   int  _term_stack_index;
   Cell *_term_stack;
+  byte *_term_mod_stack;
   size_t _term_stacksize;
 
   int *_depth_stack;
@@ -588,6 +589,7 @@ typedef struct th_context th_context ;
 
 #define term_stack_index		(th->_term_stack_index)
 #define term_stack		(th->_term_stack)
+#define term_mod_stack		(th->_term_mod_stack)
 #define term_stacksize		(th->_term_stacksize)
 
 #define depth_stack		(th->_depth_stack)

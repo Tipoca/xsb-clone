@@ -65,7 +65,8 @@ head_ce_to_formula(CE,_,_,_,_Cmpt):- !,
 	fail.
 	
 :- import proper_isa/2 from cdf_init_cdf.
-body_ce_to_formula(CE,Var,_Name,isa(Var,CE)) :- var(CE), !.  %but this doesn't work for eval, and is inefficient for tables.
+%body_ce_to_formula(CE,Var,_Name,isa(Var,CE)) :- var(CE), !.  %but this doesn't work for eval, and is inefficient for tables.
+body_ce_to_formula(CE,_Var,_Name,true) :- var(CE), !.  % replace prev.  Don't use isa
 body_ce_to_formula(','(CE1,CE2),Var,Name,Res):- !,
 	body_ce_to_formula(CE1,Var,Name,F1),
 	body_ce_to_formula(CE2,Var,Name,F2),
@@ -93,6 +94,7 @@ body_ce_to_formula(atLeast(N,R,CE),Var,Name,','(minAttr(Var,R,Var1,N),F1)):- !,
 body_ce_to_formula(atMost(N,R,CE),Var,Name,','(maxAttr(Var,R,Var1,N),F1)):- !,
 	body_ce_to_formula(CE,Var1,Name,F1).
 body_ce_to_formula(is(Targ,Expr),_Var,_Name,dlEval(Expr,Targ)) :- !.
+body_ce_to_formula(call(Goal),_Var,_Name,call(Goal)) :- !.
 body_ce_to_formula(Table,_Var,Name,DLTable) :-
 	functor(Table,dlTable,Arity), Arity < 11, % MAX dlTable
 	!,
@@ -100,7 +102,7 @@ body_ce_to_formula(Table,_Var,Name,DLTable) :-
 	DLTable =.. [dlTable,Name|Args].
 body_ce_to_formula(Cid,Var,_Name,Test):- 
 	cdf_id_fields(Cid,cid,_,_),!,
-	(proper_isa(_,Cid) -> Test = isa(Var,Cid) ; Var=Cid, Test = true). % optimization for indexing
+	(\+proper_isa(_,Cid) -> Var=Cid, Test = true ; Test = isa(Var,Cid)). % optimization for indexing (DO NOT BIND Cid!)
 body_ce_to_formula(trace,_,_,trace) :- !.
 body_ce_to_formula(CE,_,_,_):- 
 	cdf_warning(rule,('Dont know how to translate ',CE)),fail.

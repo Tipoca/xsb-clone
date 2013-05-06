@@ -19,9 +19,10 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: emuloop.c,v 1.239 2013-05-02 17:36:53 dwarren Exp $
+** $Id: emuloop.c,v 1.240 2013-05-06 21:10:24 dwarren Exp $
 ** 
 */
+//#define GC_TEST
 
 #include "xsb_config.h"
 #include "xsb_debug.h"
@@ -82,6 +83,7 @@
 #include "builtin.h"
 #include "call_graph_xsb.h" /* incremental evaluation */
 #include "cinterf.h"
+#include "struct_intern.h"
 
 /*
  * Variable ans_var_pos_reg is a pointer to substitution factor of an
@@ -93,6 +95,8 @@
 #ifndef MULTI_THREAD
 CPtr	ans_var_pos_reg;
 #endif
+
+extern void printterm(FILE *fp, Cell term, long level);
 
 //#define MULTI_THREAD_LOGGING
 #ifdef MULTI_THREAD_LOGGING
@@ -328,14 +332,14 @@ static void *instr_addr_table[256];
 inline void bld_boxedfloat(CTXTdeclc CPtr addr, Float value)
 {
     Float tempFloat = value;
-    new_heap_functor(hreg,box_psc);
-    bld_int(hreg,((ID_BOXED_FLOAT << BOX_ID_OFFSET ) | FLOAT_HIGH_16_BITS(tempFloat) ));
+    cell(addr) = makecs(hreg);
+    bld_functor(hreg,box_psc);
+    bld_int(hreg+1,((ID_BOXED_FLOAT << BOX_ID_OFFSET ) | FLOAT_HIGH_16_BITS(tempFloat) ));
     //    printf("high %x %x %x",FLOAT_HIGH_16_BITS(tempFloat),
     //	   FLOAT_MIDDLE_24_BITS(tempFloat),FLOAT_LOW_24_BITS(tempFloat));
-    hreg++;
-    bld_int(hreg,FLOAT_MIDDLE_24_BITS(tempFloat)); hreg++;
-    bld_int(hreg,FLOAT_LOW_24_BITS(tempFloat)); hreg++;
-    cell(addr) = makecs(hreg-4);
+    bld_int(hreg+2,FLOAT_MIDDLE_24_BITS(tempFloat));
+    bld_int(hreg+3,FLOAT_LOW_24_BITS(tempFloat));
+    hreg += 4;
 }
 
 #ifdef BITS64
@@ -571,6 +575,7 @@ contcase:     /* the main loop */
 	builtin_table[(int) *(lpcreg+3)][1] + 1;
   }
 #endif
+  //  printf("%x\n",*lpcreg);
   switch (*lpcreg) {
 #endif
     
@@ -649,7 +654,6 @@ contcase:     /* the main loop */
     Op1(Register(get_xxr));
     Op2(get_xxxc);
     ADVANCE_PC(size_xxxX);
-    /*printf("called getinternstr\n");*/
     nunify_with_internstr(op1,op2);
   XSB_End_Instr()
 
@@ -835,7 +839,6 @@ contcase:     /* the main loop */
       op1 = *(sreg++);
       nunify_with_internstr(op1,op2);
     }
-    printf("called uniinternstr\n");
   XSB_End_Instr()
 
   XSB_Start_Instr(uninil,_uninil) /* PPP */
@@ -1104,7 +1107,6 @@ contcase:     /* the main loop */
     Def1op
     Op1(get_xxxc);
     ADVANCE_PC(size_xxxX);
-    printf("called bldinternstr\n");
     new_heap_node(hreg, (Cell)op1);
   XSB_End_Instr()
 
@@ -1474,6 +1476,7 @@ contcase:     /* the main loop */
   XSB_Start_Instr(switchonbound,_switchonbound) /* PPR-L-L */
     Def3ops
     /* op1 is register, op2 is hash table offset, op3 is modulus */
+    Integer hash_temp;
     Op1(get_xxr);
     XSB_Deref(op1);
     switch (cell_tag(op1)) {
@@ -1512,8 +1515,11 @@ contcase:     /* the main loop */
     op2 = (Cell)(*(byte **)(lpcreg+sizeof(Cell)));
     op3 = *(CPtr *)(lpcreg+sizeof(Cell)*2);
     /* doc tls -- op2 + (op1%size)*4 */
-    lpcreg =
-      *(byte **)((byte *)op2 + ihash((Cell)op1, (Cell)op3) * sizeof(Cell));
+    hash_temp = ihash((Cell)op1, (Cell)op3);
+    if (hash_temp < 0) printf("Bad Hash6");
+    lpcreg = 
+      *(byte **)((byte *)op2 + hash_temp * sizeof(Cell));
+      //      *(byte **)((byte *)op2 + ihash((Cell)op1, (Cell)op3) * sizeof(Cell));
   XSB_End_Instr()
 
 /*******************************************************************

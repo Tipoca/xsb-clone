@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: auxlry.h,v 1.40 2013-05-01 17:04:46 tswift Exp $
+** $Id: auxlry.h,v 1.41 2013-05-06 21:10:23 dwarren Exp $
 ** 
 */
 
@@ -33,7 +33,7 @@ extern double real_time(void);
 extern void get_date(int *year, int *month, int *day,
 		    int *hour, int *minute, int *second);
 
-#define ihash(val, size) ((word)(val) % (size))
+#define ihash(val, size) ((UInteger)(val) % (size))
 
 #ifndef MULTI_THREAD
 extern int asynint_val;

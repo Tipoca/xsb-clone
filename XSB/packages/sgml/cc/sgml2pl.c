@@ -569,7 +569,7 @@ DllExport int call_conv pl_set_sgml_parser()
 	{
 	  temp_term = p2p_arg( options, 1);
 
-	  (p->location.line = p2c_int( temp_term));
+	  (p->location.line = (int)p2c_int( temp_term));
 	}
       /*Set the current character position to parse*/
       else if ( streq( funcname, "charpos"))
@@ -605,7 +605,7 @@ DllExport int call_conv pl_set_sgml_parser()
 
 	  temp_term =p2p_arg(options, 1);
 
-	  val=p2c_int( temp_term);
+	  val=(int)p2c_int( temp_term);
 
 	  if ( val )
 	    p->flags &= ~SGML_PARSER_NODEFS;
@@ -656,6 +656,9 @@ DllExport int call_conv pl_set_sgml_parser()
  * Allocate error term on C side
  * Input : Prolog variable
  * Output : none
+  This doesn't work with XSB garbage colleciton, since the location of
+  a variable might change!  Must statically allocate enough memory
+  with -m ???
  **/
 
 DllExport int call_conv pl_allocate_error_term()
@@ -710,7 +713,9 @@ DllExport int call_conv pl_sgml_parse()
   size_t content_length = 0;
 
   char *str, *source=NULL, fname[MAXSTRLEN], *tmpsource=NULL;
+
   check_thread_context
+
 
   parser = reg_term(CTXTc 1);
   options = reg_term(CTXTc 2);
@@ -791,7 +796,6 @@ DllExport int call_conv pl_sgml_parse()
 
 	  /*Source is a url*/
 	  if ( !strcmp("url", tmpstr)){
-
 	    temp_term2 = p2p_arg(temp_term1, 1);
 	    tmpsource = p2c_string(temp_term2);
 	    source = malloc( strlen(tmpsource));
@@ -1037,7 +1041,7 @@ DllExport int call_conv pl_sgml_parse()
       if (its_a_url == 0)
 	fclose(in);
       return TRUE;
-    }
+  }
 
   return TRUE;
 }
@@ -1815,6 +1819,7 @@ on_end(dtd_parser *p, dtd_element *e)
 
   /* Temp prolog terms used to delete the ununified parts of the output term */
   prolog_term tmp;
+
 
   tmp = p2p_new(CTXT);
   c2p_nil(CTXTc tmp);

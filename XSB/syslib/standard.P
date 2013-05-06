@@ -1086,10 +1086,13 @@ exec_table_option(private,Pred) :- !,
 	thread_private(Pred).
 exec_table_option(shared,Pred) :- !,
 	thread_shared(Pred).
+exec_table_option(intern,PredSpec) :- !,
+	( PredSpec = P/N -> functor(Term,P,N); Term = PredSpec ),
+	set_tif_property(Term,intern,1).
 exec_table_option(Option,_Pred) :- !,
 	domain_error(table_option,Option,(table)/1,1,
 	['must be one of ',
-	 'dynamic,dyn,subsumptive,variant,incremental,nonincremental,opaque,private,shared,approximate']).
+	 'dynamic,dyn,subsumptive,variant,incremental,nonincremental,opaque,private,shared,approximate,intern']).
 
 %--------
 :- import approximate/1 from usermod.
@@ -1235,10 +1238,46 @@ check_table_option(shared,Options,PredCList,_HasDyn) :- !,
 	           ' as tabled with options shared and opaque'))
 	 ;  true).
 check_table_option(answer_abstract(_),_Options,_PredCList,_HasDyn) :- !. % should work with anything.
+check_table_option(intern,Options,PredCList,_HasDyn) :- !,
+	(comma_member(subgoal_abstract(X),Options)
+	 ->	table_error(('Cannot declare ',PredCList,
+		     ' as tabled with options intern and ',subgoal_abstract(X)))
+	 ;	true
+	),
+	(comma_member(dynamic,Options)
+	 ->	table_error(('Cannot declare ',PredCList,
+		     ' as tabled with options intern and dynamic'))
+	 ;	true
+	),
+	(comma_member(subsumptive,Options)
+	 ->	table_error(('Cannot declare ',PredCList,
+		     ' as tabled with options intern and subsumptive'))
+	 ;	true
+	),
+	(comma_member(approximate(X1),Options)
+	 ->	table_error(('Cannot declare ',PredCList,
+		     ' as tabled with options intern and ',approximate(X1)))
+	 ;	true
+	),
+	(comma_member(incremental,Options)
+	 ->	table_error(('Cannot declare ',PredCList,
+		     ' as tabled with options intern and incremental'))
+	 ;	true
+	),
+	(comma_member(opaque,Options)
+	 ->	table_error(('Cannot declare ',PredCList,
+		     ' as tabled with options intern and opaque'))
+	 ;	true
+	),
+	(comma_member(answer_abstract(X2),Options)
+	 ->	table_error(('Cannot declare ',PredCList,
+		     ' as tabled with options intern and ',answer_abstract(X2)))
+	 ;	true
+	).
 check_table_option(Option,_Options,_PredCList,_HasDyn) :- !,
 	domain_error(table_option,Option,(table)/1,1,
 	['must be one of ',
-	'answer_abstract,subgoal_abstract,approximate,dyn,dynamic,subsumptive,variant,incremental,nonincremental,opaque,private,shared']).
+	'answer_abstract,subgoal_abstract,approximate,dyn,dynamic,subsumptive,variant,incremental,nonincremental,opaque,private,shared,intern']).
 
 use_incremental_tabling(PredList):-
 	abort(['use_incremental_dynamic/1 is now obsolete.  Use table ',

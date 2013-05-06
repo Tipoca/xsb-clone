@@ -17,7 +17,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: std_pred_xsb_i.h,v 1.88 2013-02-14 23:10:00 tswift Exp $
+** $Id: std_pred_xsb_i.h,v 1.89 2013-05-06 21:10:25 dwarren Exp $
 ** 
 */
 
@@ -164,7 +164,6 @@ inline static xsbBool univ_builtin(CTXTdecl)
   int  new_indicator;
   char *name;
   Cell list, new_list, term, chead, ctail, new_term;
-  CPtr top = 0;
   Pair sym;
 
   term = ptoc_tag(CTXTc 1);
@@ -173,25 +172,25 @@ inline static xsbBool univ_builtin(CTXTdecl)
     if (!isref(list) && !islist(list))
       xsb_type_error(CTXTc "list",list,"=../2",2);  /* f(a) =.. 3. */
     new_list = makelist(hreg);
-    if (isstring(term) || isointeger(term)) { follow(hreg++) = term; top = hreg++; }
+    if (isstring(term) || isointeger(term)) { follow(hreg) = term; hreg += 2; }
     else if (isconstr(term)) {
       arity = (get_arity(get_str_psc(term)));
-      follow(hreg++) = makestring(get_name(get_str_psc(term)));
-      top = hreg++;
+      follow(hreg) = makestring(get_name(get_str_psc(term)));
+      hreg += 2;
       for (i = 1 ; i <= arity ; i++) {
-	follow(top) = makelist(hreg); top = hreg++;
-	follow(top) = get_str_arg(term,i); top = hreg++;
+	follow(hreg-1) = makelist(hreg);
+	follow(hreg) = get_str_arg(term,i); 
+	hreg += 2;
       }
+    } else { /* term is list */
+      follow(hreg) = makestring(list_dot_string);
+      follow(hreg+1) = makelist(hreg+2);
+      follow(hreg+2) = get_list_head(term);
+      follow(hreg+3) = makelist(hreg+4);
+      follow(hreg+4) = get_list_tail(term);
+      hreg += 6;
     }
-    else { /* term is list */
-      follow(hreg++) = makestring(list_dot_string);
-      top = hreg++;
-      follow(top) = makelist(hreg); top = hreg++;
-      follow(top) = get_list_head(term); top = hreg++;
-      follow(top) = makelist(hreg); top = hreg++;
-      follow(top) = get_list_tail(term); top = hreg++;
-    }
-    follow(top) = makenil;
+    follow(hreg-1) = makenil;
     return unify(CTXTc list, new_list);
   } else { /* usage is construction; term is known to be a variable */
     if (islist(list)) {
@@ -218,19 +217,18 @@ inline static xsbBool univ_builtin(CTXTdecl)
 	  if (list_construction) { /* no errors can occur */
 	    new_term = makelist(hreg);
 	    list = ctail;
-	    bld_copy(hreg, get_list_head(list)); hreg++;
+	    bld_copy(hreg, get_list_head(list));
 	    list = get_list_tail(list);
 	    XSB_Deref(list);
-	    bld_copy(hreg, get_list_head(list)); hreg++;
+	    bld_copy(hreg+1, get_list_head(list)); 
+	    hreg += 2;
 	  } else { /* compound term construction */
-	    sreg = hreg;
-	    new_term = makecs(hreg);
-	    hreg = sreg; sreg++;
+	    new_term = makecs(hreg); /* leave psc to be filled in later */
 	    for (arity = 0, list = ctail; ;
 		 arity++, list = get_list_tail(list)) {
-	      XSB_Deref(list); /* necessary */
-	      if (!islist(list)) break; /* really ugly */
-	      bld_copy(sreg, get_list_head(list)); sreg++;
+	      XSB_Deref(list);
+	      if (!islist(list)) break;
+	      bld_copy(hreg+arity+1, get_list_head(list));
 	    }
 	    if (isnil(list) && arity <= MAX_ARITY) {
 	      /* '=..'/2 always creates a psc in the current * module */
@@ -238,9 +236,9 @@ inline static xsbBool univ_builtin(CTXTdecl)
 				 (Psc)flags[CURRENT_MODULE],
 				 &new_indicator);
 	      new_heap_functor(hreg, sym->psc_ptr);
-	      hreg = sreg+1;
+	      hreg += arity+1;
 	    } else {
-	      hreg = hreg-1;	/* restore hreg */
+	      /* leave hreg unchanged */
 	      if (arity > MAX_ARITY)
 		xsb_representation_error(CTXTc "less than MAX_ARITY",
 					 makestring(string_find("Length of list",1)),"=../2",2);
@@ -320,7 +318,6 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
   char tmpstr[2], *tmpstr_interned;
   Cell heap_addr, term, term2;
   Cell list, new_list;
-  CPtr top = 0;
   char *call_name = (call_type == ATOM_CODES ? "atom_codes/2" : "atom_chars/2");
   char *elt_type = (call_type == ATOM_CODES ? "character code" : "character");
 
@@ -408,18 +405,18 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	new_list = makelist(hreg);
 	for (i = 0; i < len; i++) {
  	  if (call_type==ATOM_CODES)
-	    follow(hreg++) = makeint(*(unsigned char *)atomname); /*bld_copy(hreg++, var) where var is the variable found , in loop where list is beng built*/
+	    follow(hreg) = makeint(*(unsigned char *)atomname);
 	  else {
 	    tmpstr[0]=*atomname;
 	    tmpstr[1]='\0';
 	    tmpstr_interned=string_find(tmpstr,1);
-	    follow(hreg++) = makestring(tmpstr_interned);
+	    follow(hreg) = makestring(tmpstr_interned);
 	  }
 	  atomname++;
-	  top = hreg++;
-	  follow(top) = makelist(hreg);
+	  hreg += 2;
+	  follow(hreg-1) = makelist(hreg);
 	}
-	follow(top) = makenil;
+	follow(hreg-1) = makenil;
 	return unify(CTXTc list, new_list);
       } 
     } else xsb_type_error(CTXTc "atom",term,call_name,1);  /* atom_codes(1,F) */
@@ -440,7 +437,6 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
   Cell list;
   CPtr new_list;
   char hack_char;	
-  CPtr top = 0;
   char *call_name =
     (call_type == NUMBER_CODES ?
      "number_codes/2" : (call_type == NUMBER_DIGITS?
@@ -538,26 +534,26 @@ inline static xsbBool number_to_list(CTXTdeclc int call_type)
     new_list = hreg;
     for (i=0; str[i] != '\0'; i++) {
       if (call_type==NUMBER_CODES)
-	follow(hreg++) = makeint((unsigned char)str[i]);
+	follow(hreg) = makeint((unsigned char)str[i]);
       else if (call_type==NUMBER_CHARS) {
 	tmpstr[0] = str[i];
 	tmpstr[1] = '\0';
 	tmpstr_interned=string_find(tmpstr,1);
-	follow(hreg++) = makestring(tmpstr_interned);
+	follow(hreg) = makestring(tmpstr_interned);
       } else { /* NUMBER_DIGITS */
 	tmpval = str[i] - '0';
 	if (0 <= tmpval && tmpval < 10)
-	  follow(hreg++) = makeint((unsigned char)str[i] - '0');
+	  follow(hreg) = makeint((unsigned char)str[i] - '0');
 	else {
 	  tmpstr[0] = str[i];
 	  tmpstr[1] = '\0';
 	  tmpstr_interned=string_find(tmpstr,1);
-	  follow(hreg++) = makestring(tmpstr_interned);
+	  follow(hreg) = makestring(tmpstr_interned);
 	}
       }
-      top = hreg++;
-      follow(top) = makelist(hreg);
-    } follow(top) = makenil;
+      hreg += 2;
+      follow(hreg-1) = makelist(hreg);
+    } follow(hreg-1) = makenil;
     if (isref(list)) {bind_list((CPtr)list,new_list);}
     else xsb_type_error(CTXTc "list",term,call_name,2);
   }
@@ -664,7 +660,6 @@ inline static xsbBool sort(CTXTdecl)
   Cell *cell_tbl;
   Cell heap_addr, term, term2;
   Cell list, new_list;
-  CPtr top = 0;
   Cell cell_tbl_array[SHORTLISTLEN];
 
   list = ptoc_tag(CTXTc 1);
@@ -699,15 +694,16 @@ inline static xsbBool sort(CTXTdecl)
     mt_qsort(CTXTc cell_tbl, len, sizeof(Cell), compare);
 #endif
     new_list = makelist(hreg);
-    follow(hreg++) = cell_tbl[0]; top = hreg++;
-    follow(top) = makelist(hreg);
+    follow(hreg) = cell_tbl[0];
+    hreg += 2;
+    follow(hreg-1) = makelist(hreg);
     for (i=1 ; i < len ; i++) {
       if (compare(CTXTc (void*)cell_tbl[i], (void*)cell_tbl[i-1])) {
-	follow(hreg++) = cell_tbl[i];
-	top = hreg++;
-	follow(top) = makelist(hreg);
+	follow(hreg) = cell_tbl[i];
+	hreg += 2;
+	follow(hreg-1) = makelist(hreg);
       }
-    } follow(top) = makenil;
+    } follow(hreg-1) = makenil;
     if (len > SHORTLISTLEN) mem_dealloc(cell_tbl,len * sizeof(Cell),LEAK_SPACE);
     term = ptoc_tag(CTXTc 2);
     return unify(CTXTc new_list, term);
@@ -724,7 +720,6 @@ inline static xsbBool keysort(CTXTdecl)
   Cell heap_addr, term, term2;
   Cell list, new_list;
   Cell *cell_tbl;
-  CPtr top = 0;
   Cell cell_tbl_array[SHORTLISTLEN];
 
   list = ptoc_tag(CTXTc 1);
@@ -769,10 +764,10 @@ inline static xsbBool keysort(CTXTdecl)
 #endif
     new_list = makelist(hreg);
     for (i=0 ; i < len ; i++) {
-      follow(hreg++) = cell_tbl[i];
-      top = hreg++;
-      follow(top) = makelist(hreg);
-    } follow(top) = makenil;
+      follow(hreg) = cell_tbl[i];
+      hreg += 2;
+      follow(hreg-1) = makelist(hreg);
+    } follow(hreg-1) = makenil;
     if (len > SHORTLISTLEN) mem_dealloc(cell_tbl,len * sizeof(Cell),LEAK_SPACE);
     return unify(CTXTc new_list, term);
   }
@@ -821,7 +816,6 @@ inline static xsbBool parsort(CTXTdecl)
   Cell heap_addr, term, term2, tmp_ind;
   Cell list, new_list;
   Cell *cell_tbl;
-  CPtr top = 0;
   char ermsg[50];
 
   elim_dupls = (int)ptoc_int(CTXTc 3);
@@ -904,23 +898,24 @@ inline static xsbBool parsort(CTXTdecl)
 #endif
     new_list = makelist(hreg);
     if (elim_dupls) {
-      follow(hreg++) = cell_tbl[0]; top = hreg++;
-      follow(top) = makelist(hreg);
+      follow(hreg) = cell_tbl[0];
+      hreg += 2;
+      follow(hreg-1) = makelist(hreg);
       for (i=1 ; i < len ; i++) {
 	if (compare(CTXTc (void*)cell_tbl[i], (void*)cell_tbl[i-1])) {
-	  follow(hreg++) = cell_tbl[i];
-	  top = hreg++;
-	  follow(top) = makelist(hreg);
+	  follow(hreg) = cell_tbl[i];
+	  hreg += 2;
+	  follow(hreg-1) = makelist(hreg);
 	}
       } 
     } else {
       for (i=0 ; i < len ; i++) {
-	follow(hreg++) = cell_tbl[i];
-	top = hreg++;
-	follow(top) = makelist(hreg);
+	follow(hreg) = cell_tbl[i];
+	hreg += 2;
+	follow(hreg-1) = makelist(hreg);
       } 
     }
-    follow(top) = makenil;
+    follow(hreg-1) = makenil;
     mem_dealloc(cell_tbl,len * sizeof(Cell),LEAK_SPACE);
     return unify(CTXTc new_list, term);
   }
@@ -1306,6 +1301,7 @@ int is_cyclic(CTXTdeclc Cell Term) {
 
   XSB_Deref(Term);
   if (cell_tag(Term) != XSB_LIST && cell_tag(Term) != XSB_STRUCT) return FALSE;
+  if (isinternstr(Term)) return FALSE;
 
   if (cycle_trail == (CTptr) 0){
     cycle_trail_size = TERM_TRAVERSAL_STACK_INIT;
@@ -1333,7 +1329,7 @@ int is_cyclic(CTXTdeclc Cell Term) {
       //      printf("Term1 before %x\n",Term);
       XSB_Deref(Term);
       //      printf("Term1 after %x\n",Term);
-      if (cell_tag(Term) == XSB_LIST || cell_tag(Term) == XSB_STRUCT) {	
+      if ((cell_tag(Term) == XSB_LIST || cell_tag(Term) == XSB_STRUCT) && !isinternstr(Term)) {	
 	if (get_list_head(Term) == visited_string) {
 	  unwind_cycle_trail;
 	  return TRUE;

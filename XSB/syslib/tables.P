@@ -800,6 +800,7 @@ set_tif_property(Term,Property,Value):-
 
 tif_translate(subgoal_depth,SUBGOAL_DEPTH).
 tif_translate(answer_depth,ANSWER_DEPTH).
+tif_translate(intern,INTERNING_GROUND).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Forest Logging

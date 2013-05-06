@@ -187,6 +187,9 @@ used.  The parameter {\tt Operations} can take one of three forms:
 \item {\tt variant} which causes the table evaluation method of the
   predicate(s) to use call variance.
 %
+\item {\tt intern} which causes all ground subterms of subgoals and 
+answers entered into the table for the predicate(s) to be interned.
+%
 \item {\tt incremental} which causes the table evaluation method of
   the predicate(s) to be incremental.
 %
@@ -253,6 +256,10 @@ cases:
 \item {\tt Options} contains {\tt subsumptive} and ({\tt variant} or
   {\tt shared} or {\tt subgoal\_abstract/1} or {\tt
     answer\_abstract/1})
+
+\item {\tt Options} contains {\tt intern} and ({\tt dynamic} or {\tt
+subsumptive} or {\tt approximate} or {\tt incremental} or {\tt opaque}
+or {\tt answer\_abstract} or {\tt subgoal\_abstract})
 %
 \item {\tt Options} contains both {\tt private} and {\tt shared}
 %

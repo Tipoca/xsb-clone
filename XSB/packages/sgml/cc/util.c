@@ -1,4 +1,4 @@
-/*  $Id: util.c,v 1.8 2012-09-27 02:25:58 kifer Exp $
+/*  $Id: util.c,v 1.9 2013-05-06 21:10:26 dwarren Exp $
 
     Part of SWI-Prolog
 
@@ -532,8 +532,9 @@ sgml_malloc(size_t size)
   if ( size == 0 )
     return NULL;
 
-  if ( (mem = malloc(size)) )
+  if ( (mem = malloc(size)) ) {
     return mem;
+  }
 
   sgml_nomem();
   return NULL;
@@ -545,11 +546,13 @@ sgml_realloc(void *old, size_t size)
 { void *mem;
 
   if ( old )
-  { if ( (mem = realloc(old, size)) )
+    { if ( (mem = realloc(old, size)) ) {
       return mem;
+      }
   } else
-  { if ( (mem = malloc(size)) )
+    { if ( (mem = malloc(size)) ) {
       return mem;
+      }
   }
 
   sgml_nomem();
@@ -561,8 +564,13 @@ void *
 sgml_calloc(size_t n, size_t size)
 { void *mem;
 
-  if ( (mem=calloc(n, size)) )
+  /*  if ( (mem=calloc(size, n)) ) {
     return mem;
+    } */
+  if (mem=malloc(size*n+1)) { // need +1 in window 7; otw crashes in free?
+    memset(mem,0,size*n);
+    return mem;
+  }
 
   sgml_nomem();
   return NULL;
@@ -571,6 +579,7 @@ sgml_calloc(size_t n, size_t size)
 
 void
 sgml_free(void *mem)
-{ if ( mem )
+{ if ( mem ) {
     free(mem);
+  }
 }

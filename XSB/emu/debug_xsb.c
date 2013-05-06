@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: debug_xsb.c,v 1.106 2013-05-01 17:56:36 tswift Exp $
+** $Id: debug_xsb.c,v 1.107 2013-05-06 21:10:24 dwarren Exp $
 ** 
 */
 
@@ -73,7 +73,7 @@ void print_subgoal(CTXTdeclc FILE *, VariantSF);
 #define MAXFLOATLEN 24
 #define MAXINTLEN 21
 
-static void print_term(FILE *fp, Cell term, byte car, long level)
+void print_term(FILE *fp, Cell term, byte car, long level)
 {
   unsigned short i, arity;
   Psc psc;

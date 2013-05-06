@@ -54,6 +54,7 @@
 // For xxx_tif_property
 #define SUBGOAL_DEPTH  0
 #define ANSWER_DEPTH   1
+#define INTERNING_GROUND 2
 
 #define IS_SUBGOAL_FRAME 0
 #define IS_ASI           1

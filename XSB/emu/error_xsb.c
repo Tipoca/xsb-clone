@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: error_xsb.c,v 1.108 2013-04-19 13:48:14 tswift Exp $
+** $Id: error_xsb.c,v 1.109 2013-05-06 21:10:24 dwarren Exp $
 ** 
 */
 
@@ -200,9 +200,9 @@ DllExport void call_conv xsb_throw_internal(CTXTdeclc prolog_term Ball, size_t B
 					&isnew));
   hreg_start = hreg;
   term_to_assert = makecs(hreg);
-  bld_functor(hreg, exceptballpsc); hreg++;
-  bld_int(hreg, xsb_thread_self()); hreg++;
-  cell(hreg) = Ball; hreg++;
+  bld_functor(hreg, exceptballpsc);
+  bld_int(hreg+1, xsb_thread_self());
+  cell(hreg+2) = Ball; hreg += 3;
 
   assert_code_to_buff_p(CTXTc term_to_assert);
   /* need arity of 3, for extra cut_to arg */
@@ -268,9 +268,9 @@ DllExport void call_conv xsb_throw(CTXTdeclc prolog_term Ball)
 					&isnew));
   hreg_start = hreg;
   term_to_assert = makecs(hreg);
-  bld_functor(hreg, exceptballpsc); hreg++;
-  bld_int(hreg, xsb_thread_self()); hreg++;
-  cell(hreg) = Ball; hreg++;
+  bld_functor(hreg, exceptballpsc);
+  bld_int(hreg+1, xsb_thread_self());
+  cell(hreg+2) = Ball; hreg += 3;
 
   assert_code_to_buff_p(CTXTc term_to_assert);
   /* need arity of 3, for extra cut_to arg */
@@ -318,12 +318,10 @@ void call_conv xsb_domain_error(CTXTdeclc char *valid_domain,Cell culprit,
   bld_cs(error_rec+1,(Cell)hreg);
   bld_functor(hreg, pair_psc(insert("domain_error",2,
 				    (Psc)flags[CURRENT_MODULE],&isnew)));
-  hreg++;
-  bld_string(hreg,string_find(valid_domain,1));
-  hreg++;
-  if (culprit == (Cell)NULL) bld_int(hreg,0); 
-  else bld_ref(hreg,culprit);
-  hreg++;
+  bld_string(hreg+1,string_find(valid_domain,1));
+  if (culprit == (Cell)NULL) bld_int(hreg+2,0); 
+  else bld_ref(hreg+2,culprit);
+  hreg += 3;
 
   xsb_throw_internal(CTXTc ball_to_throw,ball_len);
 
@@ -370,9 +368,8 @@ void call_conv xsb_basic_evaluation_error(char *message,int type)
     bld_copy(error_rec+3,build_xsb_backtrace(CTXT)); // updates hreg
     bld_cs(error_rec+1,(Cell) (hreg));
     bld_functor(hreg, pair_psc(insert("evaluation_error",1,(Psc)flags[CURRENT_MODULE],&isnew)));
-    hreg++;
-    bld_string(hreg,string_find("undefined",1));
-    hreg++;
+    bld_string(hreg+1,string_find("undefined",1));
+    hreg += 2;
   }
   xsb_throw_internal(CTXTc ball_to_throw,ball_len);
 }
@@ -429,12 +426,10 @@ void call_conv xsb_existence_error(CTXTdeclc char *object,Cell culprit,
   bld_cs(error_rec+1,(Cell) (hreg));
   bld_functor(hreg, pair_psc(insert("existence_error",2,
 				    (Psc)flags[CURRENT_MODULE],&isnew)));
-  hreg++;
-  bld_string(hreg,string_find(object,1));
-  hreg++;
-  if (culprit == (Cell)NULL) bld_int(hreg,0); 
-  else bld_ref(hreg,culprit);
-  hreg++;
+  bld_string(hreg+1,string_find(object,1));
+  if (culprit == (Cell)NULL) bld_int(hreg+2,0); 
+  else bld_ref(hreg+2,culprit);
+  hreg += 3;
 
   xsb_throw_internal(CTXTc ball_to_throw, ball_len);
 
@@ -531,15 +526,12 @@ void call_conv xsb_permission_error(CTXTdeclc
 
   bld_functor(hreg, pair_psc(insert("permission_error",3,
 				    (Psc)flags[CURRENT_MODULE],&isnew)));
-  hreg++;
-  bld_string(hreg,string_find(operation,1));
-  hreg++;
-  bld_string(hreg,string_find(object,1));
-  hreg++;
+  bld_string(hreg+1,string_find(operation,1));
+  bld_string(hreg+2,string_find(object,1));
   //  if (culprit == (Cell)NULL) bld_int(hreg,0); 
-  if (culprit == (Cell)NULL) bld_string(hreg,string_find("",1)); 
-  else bld_ref(hreg,culprit);
-  hreg++;
+  if (culprit == (Cell)NULL) bld_string(hreg+3,string_find("",1)); 
+  else bld_ref(hreg+3,culprit);
+  hreg += 4;
 
   xsb_throw_internal(CTXTc ball_to_throw,ball_len);
 
@@ -570,13 +562,10 @@ void call_conv xsb_representation_error(CTXTdeclc char *inmsg,Cell culprit,const
 
   bld_functor(hreg, pair_psc(insert("representation_error",2,
                                     (Psc)flags[CURRENT_MODULE],&isnew)));
-  hreg++;
-  bld_string(hreg,string_find(inmsg,1));
-  hreg++;
-  printf("culprit string: %s\n",string_val(culprit));
-  if (culprit == (Cell)NULL) bld_int(hreg,0); 
-  else bld_ref(hreg,culprit);
-  hreg++;
+  bld_string(hreg+1,string_find(inmsg,1));
+  if (culprit == (Cell)NULL) bld_int(hreg+2,0); 
+  else bld_ref(hreg+2,culprit);
+  hreg += 3;
 
   xsb_throw_internal(CTXTc ball_to_throw,ball_len);
 
@@ -619,9 +608,8 @@ void call_conv xsb_resource_error(CTXTdeclc char *resource,
 
   bld_functor(hreg, pair_psc(insert("resource_error",1,
 				    (Psc)flags[CURRENT_MODULE],&isnew)));
-  hreg++;
-  bld_string(hreg,FlagBuf.string);
-  hreg++;
+  bld_string(hreg+1,FlagBuf.string);
+  hreg += 2;
 
   xsb_throw_internal(CTXTc ball_to_throw, ball_len);
 
@@ -673,9 +661,8 @@ void call_conv xsb_resource_error_nopred(char *resource, char *description,...)
   bld_cs(error_rec+1,(Cell) (hreg));
 
   bld_functor(hreg, pair_psc(insert("resource_error",1,global_mod,&isnew)));
-  hreg++;
-  bld_string(hreg,FlagBuf.string);
-  hreg++;
+  bld_string(hreg+1,FlagBuf.string);
+  hreg += 2;
 
   xsb_throw_internal(CTXTc ball_to_throw, ball_len);
 
@@ -747,10 +734,9 @@ void call_conv xsb_syntax_error_non_compile(CTXTdeclc Cell culprit,
 
   bld_functor(hreg, pair_psc(insert("syntax_error_1",1,
 				    (Psc)flags[CURRENT_MODULE],&isnew)));
-  hreg++;
-  if (culprit == (Cell)NULL) bld_int(hreg,0); 
-  else bld_ref(hreg,culprit);
-  hreg++;
+  if (culprit == (Cell)NULL) bld_int(hreg+1,0); 
+  else bld_ref(hreg+1,culprit);
+  hreg += 2;
 
   xsb_throw_internal(CTXTc ball_to_throw, ball_len);
 
@@ -821,9 +807,8 @@ void call_conv xsb_new_table_error(CTXTdeclc char *subtype, char *usr_msg,
 
   bld_functor(hreg, pair_psc(insert("typed_table_error",1,
 				    (Psc)flags[CURRENT_MODULE],&isnew)));
-  hreg++;
-  bld_string(hreg,string_find(FlagBuf.string,1));
-  hreg++;
+  bld_string(hreg+1,string_find(FlagBuf.string,1));
+  hreg += 2;
 
   xsb_throw_internal(CTXTc ball_to_throw, ball_len);
 }
@@ -858,12 +843,10 @@ void call_conv xsb_type_error(CTXTdeclc char *valid_type,Cell culprit,
 
   bld_functor(hreg, pair_psc(insert("type_error",2,
 				    (Psc)flags[CURRENT_MODULE],&isnew)));
-  hreg++;
-  bld_string(hreg,string_find(valid_type,1));
-  hreg++;
-  if (culprit == (Cell)NULL) bld_int(hreg,0); 
-  else bld_ref(hreg,culprit);
-  hreg++;
+  bld_string(hreg+1,string_find(valid_type,1));
+  if (culprit == (Cell)NULL) bld_int(hreg+2,0); 
+  else bld_ref(hreg+2,culprit);
+  hreg += 3;
 
   xsb_throw_internal(CTXTc ball_to_throw, ball_len);
 }
@@ -1139,7 +1122,8 @@ DllExport void call_conv mesg_xsb(char *description)
   fprintf(stdmsg, "\n");
 }
 
-#ifdef DEBUG_VERBOSE
+/***
+//#ifdef DEBUG_VERBOSE
 DllExport void call_conv xsb_dbgmsg1(int log_level, char *description, ...)
 {
   va_list args;
@@ -1158,7 +1142,8 @@ DllExport void call_conv dbgmsg1_xsb(int log_level, char *description)
     fprintf(stddbg, description);
   }
 }
-#endif
+//#endif
+****/
 
 /*----------------------------------------------------------------------*/
 
@@ -1263,11 +1248,12 @@ inline void  CHECK_CALL_CLEANUP(CTXTdeclc CPtr CurBreg) {
     // bld_ref(reg+1, handler);
     //    printterm(stdout,reg+1,7);
     bld_list(&temp,hreg);
-    bld_string(hreg++,string_find("call_cleanup_mod",1));     
-    bld_list(hreg,hreg+1);
-    hreg++;
-    bld_ref(hreg++,handler);
-    bld_nil(hreg++);
+    bld_string(hreg,string_find("call_cleanup_mod",1));     
+    bld_list(hreg+1,hreg+2);
+    hreg += 2;
+    bld_ref(hreg,handler);
+    bld_nil(hreg+1);
+    hreg += 2;
     //    printterm(stdout,temp,7);
     add_interrupt(CTXTc temp,makenil);
     //    pcreg = get_ep(call_list_psc);
