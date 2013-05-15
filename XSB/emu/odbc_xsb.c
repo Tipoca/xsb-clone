@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: odbc_xsb.c,v 1.82 2013-05-06 21:10:24 dwarren Exp $
+** $Id: odbc_xsb.c,v 1.83 2013-05-15 22:03:08 dwarren Exp $
 **
 */
 
@@ -1821,7 +1821,9 @@ int GetColumn(CTXTdecl)
   case SQL_C_SLONG:
     {
       Cell h;
-      bld_oint(&h,*(Integer *)(cur->Data[ColCurNum]));
+      Integer intvalue;
+      intvalue = (Integer)(*(long *)(cur->Data[ColCurNum]));
+      bld_oint(&h,intvalue);
       return unify(CTXTc op, h);
     }
   case SQL_C_FLOAT:
