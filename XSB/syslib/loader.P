@@ -322,7 +322,7 @@ load_pred1(PSC) :-
 	        handle_undefined_pred(ModName,Name,Arity)
 	    )
 	;
-	    handle_undefined_pred('usermod(?)',Name,Arity)
+	    handle_undefined_pred('usermod',Name,Arity)
 	).
 
 handle_undefined_pred(ModName,Name,Arity) :-

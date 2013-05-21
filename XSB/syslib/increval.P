@@ -357,10 +357,11 @@ get_subgoal_frames([Call|CR],[Ptr|PR]):-
 	get_subgoal_frame(Call,Ptr),
 	get_subgoal_frames(CR,PR).
 
+:- import (';')/2 from standard.
 :- import abolish_table_call/1 from tables.
 get_incr_sccs_1(PtrList,Scc):-
 	abolish_trans_connected_ptr_calls,
-	setof(P,P^(  member(P,PtrList)
+	setof(P,(  member(P,PtrList)
                  ; trans_connected_ptr(PtrList,P) ),Ptrs),
 	incr_eval_builtin(GET_INCR_SCCS, Ptrs,Scc),!.
 get_incr_sccs_1(_PtrList,[]).
