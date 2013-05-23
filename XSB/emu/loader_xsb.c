@@ -255,7 +255,7 @@ static Integer get_index_tab(CTXTdeclc FILE *fd, int clause_no)
     indextab[j].l = 0;
     indextab[j].link = (CPtr)&(indextab[j].link);
   }
-  for (j = 0; j < clause_no; j++) {
+  for (j = 0; j < (unsigned)clause_no; j++) {
     dummy = get_obj_byte(&type);
     switch (type) {
     case 'i': get_obj_word_bbsig_notag(&ival);
