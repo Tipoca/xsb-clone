@@ -182,10 +182,12 @@ assert(Clause,AZL,Index1,ErrPred) :-
 			LBody =.. [LinkPred|GArgs],
 			assert0((NHead:-LBody),1,1,'assert/1')
 		),
-		assert0((LHead:-Body),AZL,Index1,ErrPred)
+		(Body == true -> NClause = LHead ; NClause = (LHead:-Body)),
+		assert0(NClause,AZL,Index1,ErrPred)
 	 ;	(Head = Mod:BHead
 		 ->	term_new_mod(Mod,BHead,NHead),
-			assert0((NHead:-Body),AZL,Index1,ErrPred)
+			(Body == true -> NClause = NHead ; NClause = (NHead:-Body)),
+			assert0(NClause,AZL,Index1,ErrPred)
 		 ;	assert0(Clause,AZL,Index1,ErrPred)
 		)
 	).
