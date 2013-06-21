@@ -827,13 +827,11 @@ the time XSB is configured using XSB's
 {\tt configure} script found in the XSB's {\tt build} directory.
 Normally, if {\tt libxml2} is installed by a Linux package manager, nothing
 special is required: the package will be configured by default.
-If the library is in a non-standard place, then the configure options
-\texttt{--with-xpath-libdir=}{\em directory-of-libxml2} and
-\texttt{--with-xpath-incdir=}\emph{libxml2-include-dir} must be given. The former
-option must specify the directory of {\tt libxml2.so}  library, while
-the later should specify the directory for the {\tt libxml2} include
-files. It is the directory that contains
-\texttt{include/libxml2}.
+If the library is in a non-standard place, then the configure option
+\texttt{--with-xpath-dir=}{\em directory-of-libxml2}
+must be given. It
+must specify the directory where {\tt lib/*/libxml2.so} (or libxml2.dylib
+in Mac) and \texttt{include/libxml2} can be found.
 
 Examples: If libxml2 is in a default location, then XSB can be configured
 simply like this:
@@ -845,11 +843,11 @@ simply like this:
 Otherwise, use
 %%
 \begin{verbatim}
-  ./configure --with-xpath-incdir=/usr/share --with-xpath-libdir=/usr/local
+  ./configure --with-xpath-dir=/usr/local
 \end{verbatim}
 %%
-if, for example, {\tt libxml2.so} is in {\tt /usr/local/lib/libxml2.so} and
-the included {\tt .h}  files are in {\tt /usr/share/include/libxml2}. 
+if, for example, {\tt libxml2.so} is in {\tt /usr/local/lib/i386-linux-gnu/libxml2.so} and
+the included {\tt .h}  files are in {\tt /usr/local/include/libxml2/*}. 
 
 On Windows and under Cygwin, the {\tt libxml2} library is already included
 in the XSB distribution and does not need to be downloaded. If you are
