@@ -9,7 +9,6 @@
 #define MyAppUrlName "XSB Web Site.url"
 
 #define XSB_DIR "{reg:HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment,XSB_DIR|{pf}\XSB}"
-;#define MyBaseDir "H:\XSB\XSB"
 #define MyBaseDir "C:\XSB"
 
 [Setup]
@@ -52,7 +51,7 @@ Name: "packages"; Description: "Packages"; Types: full custom; Flags: disablenou
 
 [Tasks]
 Name: website; Description: "&Visit {#MyAppName} web site"; Components: base
-Name: shortcut; Description: "&Create a desktop shortcut to run XSB"; Components: base
+Name: shortcut; Description: "&Create a desktop shortcut to the XSB folder"; Components: base
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -64,9 +63,6 @@ BeveledLabel=XSB 3.4 © The Research Foundation of SUNY, 1986, 1993-2002
 Name: "{userdocs}\XSB uninstaller"
 
 [Files]
-Source: "{#MyBaseDir}\README"; Excludes: ".*,CVS"; DestDir: "{app}\"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#MyBaseDir}\LICENSE"; Excludes: ".*,CVS"; DestDir: "{app}\"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-
 Source: "{#MyBaseDir}\bin\*"; Excludes: ".*,CVS"; DestDir: "{app}\bin"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#MyBaseDir}\config\*"; Excludes: ".*,CVS"; DestDir: "{app}\config"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#MyBaseDir}\pthreads\Pre-built\lib\pthreadVSE1.dll"; Excludes: ".*,CVS"; DestDir: "{app}\config\i686-pc-cygwin-mt\bin"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -86,7 +82,7 @@ Source: "{#MyBaseDir}\lib\*"; Excludes: ".*,CVS"; DestDir: "{app}\lib"; Componen
 Source: "{#MyBaseDir}\prolog-commons\*"; Excludes: ".*,CVS"; DestDir: "{app}\prolog-commons"; Components: base\sources; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#MyBaseDir}\prolog_includes\*"; Excludes: ".*,CVS"; DestDir: "{app}\prolog_includes"; Components: base\sources; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#MyBaseDir}\emu\*"; Excludes: ".*,CVS"; DestDir: "{app}\emu"; Components: base\sources; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#MyBaseDir}\etc\*"; Excludes: ".*,CVS"; DestDir: "{app}\etc"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#MyBaseDir}\etc\*"; Excludes: ".*,CVS"; DestDir: "{app}\etc"; Components: base\sources; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#MyBaseDir}\gpp\*"; Excludes: ".*,CVS"; DestDir: "{app}\gpp"; Components: base\sources; Flags: ignoreversion recursesubdirs createallsubdirs
 
 Source: "{#MyBaseDir}\docs\*"; Excludes: ".*,CVS"; DestDir: "{app}\docs"; Components: documentation; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -97,22 +93,18 @@ Source: "{#MyBaseDir}\packages\*"; Excludes: ".*,CVS"; DestDir: "{app}\packages"
 Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppURL}"; Components: base
 
 [Icons]
-Name: "{group}\XSB-Cygwin"; Filename: "{app}\config\i686-pc-cygwin\bin\xsb.exe"; Parameters: ""; Comment: "Runs XSB (GCC-compiled) within a command shell"; WorkingDir: "{userdocs}"; Components: base; Flags: createonlyiffileexists; IconFilename: "{app}\etc\images\xsb-logo.ico"
+Name: "{group}\XSB"; Filename: "{app}\config\i686-pc-cygwin\bin\xsb.exe"; Parameters: ""; Comment: "Runs XSB (GCC-compiled) within a command shell"; WorkingDir: "{userdocs}"; Components: base; Flags: createonlyiffileexists
 
-Name: "{group}\XSB-CygwinMT"; Filename: "{app}\config\i686-pc-cygwin-mt\bin\xsb.exe"; Parameters: ""; Comment: "Runs XSB (Multi-threaded; GCC-compiled) within a command shell"; WorkingDir: "{userdocs}"; Components: base; Flags: createonlyiffileexists; IconFilename: "{app}\etc\images\xsb-logo.ico"
+Name: "{group}\XSB-MT"; Filename: "{app}\config\i686-pc-cygwin-mt\bin\xsb.exe"; Parameters: ""; Comment: "Runs XSB (Multi-threaded; GCC-compiled) within a command shell"; WorkingDir: "{userdocs}"; Components: base; Flags: createonlyiffileexists
 
-Name: "{group}\XSB-Win32"; Filename: "{app}\config\x86-pc-windows\bin\xsb.exe"; Parameters: ""; Comment: "Runs XSB (MSVC-compiled) within a command shell"; WorkingDir: "{userdocs}"; Components: base; Flags: createonlyiffileexists; IconFilename: "{app}\etc\images\xsb-logo.ico"
-
-Name: "{userdesktop}\XSB-Win32"; Filename: "{app}\config\x86-pc-windows\bin\xsb.exe"; Parameters: ""; Comment: "Runs XSB (MSVC-compiled) within a command shell"; WorkingDir: "{userdocs}"; Components: base; Flags: createonlyiffileexists; Tasks: shortcut; IconFilename: "{app}\etc\images\xsb-logo.ico"
-
-Name: "{group}\XSB-Win64"; Filename: "{app}\config\x86-pc-windows\bin\xsb.exe"; Parameters: ""; Comment: "Runs XSB (MSVC-compiled) within a command shell"; WorkingDir: "{userdocs}"; Components: base; Flags: createonlyiffileexists; IconFilename: "{app}\etc\images\xsb-logo.ico"
-
-Name: "{userdesktop}\XSB-Win64"; Filename: "{app}\config\x86-pc-windows\bin\xsb.exe"; Parameters: ""; Comment: "Runs XSB (MSVC-compiled) within a command shell"; WorkingDir: "{userdocs}"; Components: base; Flags: createonlyiffileexists; Tasks: shortcut; IconFilename: "{app}\etc\images\xsb-logo.ico"
+Name: "{group}\XSB-MSVC"; Filename: "{app}\config\x86-pc-windows\bin\xsb.exe"; Parameters: ""; Comment: "Runs XSB (MSVC-compiled) within a command shell"; WorkingDir: "{userdocs}"; Components: base; Flags: createonlyiffileexists
 
 Name: "{group}\License"; Filename: "{app}\LICENSE"; Components: base
 Name: "{group}\Read Me"; Filename: "{app}\README"; Components: base
 
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Components: base
+
+Name: "{userdesktop}\XSB"; Filename: "{app}"; Components: base; Tasks: shortcut
 
 Name: "{group}\Web Site"; Filename: "{#MyAppUrl}"; Components: base
 
