@@ -40,7 +40,7 @@ int parse_url( const char * url, char * server, char *fname)
   size_t len = strlen(url);
   char temp[MAXSTRLEN];
   
-  int flag = 0, flag_file = 0;
+  int flag_file = 0;
   
   for(i = 0; i<MAXSTRLEN; i++)
     {
@@ -57,7 +57,6 @@ int parse_url( const char * url, char * server, char *fname)
       if( url[i] == ':')
 	{
 	  
-	  flag = 1;
 	  i++;
 	  /*If the protocol is not file:// or http:// its an error*/
 	  if(strcmp( temp , "http:") && strcmp( temp, "file:"))
@@ -83,8 +82,6 @@ int parse_url( const char * url, char * server, char *fname)
 	}
     }
   
-/*  if(!flag)
-    return FALSE; */
   
   if( flag_file == 2){
     strcpy( server, "file");

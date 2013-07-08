@@ -103,7 +103,7 @@
 	path_sysop(newerthan,ConfigSharedMod,ModuleSourceFile)
     %% module compiled and is current, so just load
     -> consult(Basename)
-    
+
     %% If Module isn't compiled or is old --- recompile
     ;
 	'_$_make_sgmlH'(CC, CC_opts),

@@ -251,11 +251,10 @@ DllExport int call_conv pl_new_sgml_parser()
 
 int unify_parser( prolog_term t, dtd_parser *p)
 {
-  prolog_term tmp, tmp1;
+  prolog_term tmp1;
 
   /*Temporary prolog terms to create the output terms*/
   tmp1 = p2p_new(CTXT);
-  tmp = p2p_new(CTXT);
 
   /*Create the prolog term*/
   c2p_functor(CTXTc "sgml_parser", 1, tmp1);
@@ -274,11 +273,10 @@ int unify_parser( prolog_term t, dtd_parser *p)
 int unify_dtd( prolog_term t, dtd * d)
 {
   /*Temporary prolog term to create the output term*/
-  prolog_term tmp, tmp1, tmp2;
+  prolog_term tmp, tmp1;
 
-  tmp1 = p2p_new(CTXT);
   tmp = p2p_new(CTXT);
-  tmp2 = p2p_new(CTXT);
+  tmp1 = p2p_new(CTXT);
 
   /*dtd_struct/2 if doctype is specified*/
 
@@ -861,15 +859,11 @@ DllExport int call_conv pl_sgml_parse()
       else if ( !strcmp(str,"content_length")) {
 	/*Temporary prolog term to parse the options list*/
 	prolog_term temp_term1, temp_term2;
-	char * tmp;
 
 	temp_term1 = p2p_arg( head, 1);
-	tmp = p2c_functor( temp_term1);
 	temp_term2 = p2p_arg( temp_term1, 1);
-	tmp = p2c_functor( temp_term2);
 	content_length = p2c_int( temp_term2);
 	has_content_length = TRUE;
-
       }
       /*Sets how much of the current input should be parsed*/
       else if( !strcmp(str,"parse")) {

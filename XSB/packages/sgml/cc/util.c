@@ -564,10 +564,7 @@ void *
 sgml_calloc(size_t n, size_t size)
 { void *mem;
 
-  /*  if ( (mem=calloc(size, n)) ) {
-    return mem;
-    } */
-  if (mem=malloc(size*n+1)) { // need +1 in window 7; otw crashes in free?
+  if ( (mem=malloc(size*n+1)) ) { // need +1 in window 7; otw crashes in free?
     memset(mem,0,size*n);
     return mem;
   }
