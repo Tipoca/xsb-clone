@@ -18,11 +18,9 @@ Inno Setup).
 change the definition of the variable "MyBaseDir" (around line 13) to
 reflect the directory that you're using.
 
-4. Update the XSB release number in the "xsb.iss". There should be
-four occurrences. Look for the strings "MyAppVerName" (around line 6),
-"OutputBaseFilename" (around line 27), "VersionInfoVersion" (around
-line 32), and "BeveledLabel" (around line 60). Also check the XSB
-copyright information for possible updates.
+4. Update the XSB release number in the "xsb.iss".
+   Look for the strings "XSBVersion".
+   Also check the XSB copyright information for possible updates.
 
 5. In the Inno Setup Compiler application, run the menu command
 "Build > Compile".

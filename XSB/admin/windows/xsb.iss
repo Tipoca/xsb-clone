@@ -3,14 +3,15 @@
 ; A compiled version of XSB must exist in the location pointed by the MyBaseDir variable below.
 
 #define MyAppName "XSB"
-#define MyAppVerName "XSB 3.4"
+#define XSBVersion "3.4"
+#define MyAppVerName "XSB "+XSBVersion
 #define MyAppPublisher "XSB"
 #define MyAppURL "http://xsb.sourceforge.net/"
 #define MyAppUrlName "XSB Web Site.url"
 
 #define XSB_DIR "{reg:HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment,XSB_DIR|{pf}\XSB}"
-;#define MyBaseDir "H:\XSB\XSB"
-#define MyBaseDir "C:\XSB"
+#define MyBaseDir "H:\XSB\XSB"
+;#define MyBaseDir "C:\XSB"
 
 [Setup]
 AppName={#MyAppName}
@@ -25,13 +26,13 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 LicenseFile={#MyBaseDir}\LICENSE
 InfoBeforeFile={#MyBaseDir}\README
-OutputBaseFilename=xsb-3.4
+OutputBaseFilename=xsb-{#XSBVersion}
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=none
 
-VersionInfoVersion=3.4
-VersionInfoCopyright=© The Research Foundation of SUNY, 1986, 1993-2002
+VersionInfoVersion={#XSBVersion}
+VersionInfoCopyright=© The Research Foundation of SUNY, 1986 - 2002
 
 AllowRootDirectory=yes
 UninstallFilesDir="{userdocs}\XSB uninstaller"
@@ -45,7 +46,7 @@ Name: "custom"; Description: "Custom XSB installation"; Flags: iscustom
 
 [Components]
 Name: "base"; Description: "Base system"; Types: full base custom; Flags: disablenouninstallwarning
-Name: "base\sources"; Description: "Base system plus Prolog source files"; Types: full base custom; Flags: disablenouninstallwarning
+Name: "base\sources"; Description: "Base system plus C and Prolog source files"; Types: full base custom; Flags: disablenouninstallwarning
 Name: "documentation"; Description: "Documentation"; Types: full custom; Flags: disablenouninstallwarning
 Name: "examples"; Description: "Examples"; Types: full custom; Flags: disablenouninstallwarning
 Name: "packages"; Description: "Packages"; Types: full custom; Flags: disablenouninstallwarning
@@ -58,7 +59,7 @@ Name: shortcut; Description: "&Create a desktop shortcut to run XSB"; Components
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Messages]
-BeveledLabel=XSB 3.4 © The Research Foundation of SUNY, 1986, 1993-2002
+BeveledLabel=XSB {#XSBVersion} © The Research Foundation of SUNY, 1986, 1993-2002
 
 [Dirs]
 Name: "{userdocs}\XSB uninstaller"
