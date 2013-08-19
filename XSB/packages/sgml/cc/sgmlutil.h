@@ -1,6 +1,6 @@
 /*  $Id: sgmlutil.h,v 1.5 2011-08-06 05:54:39 kifer Exp $
 
-    Part of SWI-Prolog
+    Modified from SWI-Prolog
 
     Author:        Jan Wielemaker
     E-mail:        jan@swi.psy.uva.nl
