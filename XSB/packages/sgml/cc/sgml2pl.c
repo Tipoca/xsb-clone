@@ -33,11 +33,11 @@
 #include "fetch_file.c"
 #include "parser.c"
 #include "charmap.c"
-#include "util.c"
+#include "sgmlutil.c"
 #include "xmlns.c"
 #include "model.c"
 #include "error_term.h"
-#include "util.h"
+#include "sgmlutil.h"
 #include "basic_defs.h"
 
 #ifndef WIN_NT

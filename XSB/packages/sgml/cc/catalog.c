@@ -23,7 +23,7 @@
 */
 
 #include "xsb_config.h"
-#include "util.h"
+#include "sgmlutil.h"
 #include "catalog.h"
 #include <stdio.h>
 #include <ctype.h>

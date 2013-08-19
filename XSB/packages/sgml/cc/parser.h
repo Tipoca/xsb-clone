@@ -24,7 +24,7 @@
 
 #ifndef SGML_PARSER_H_INCLUDED
 #define SGML_PARSER_H_INCLUDED
-#include "util.h"
+#include "sgmlutil.h"
 
 		 /*******************************
 		 *	      CALL-BACK		*

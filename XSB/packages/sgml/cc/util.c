@@ -1,4 +1,4 @@
-/*  $Id: util.c,v 1.9 2013-05-06 21:10:26 dwarren Exp $
+/*  $Id: sgmlutil.c,v 1.9 2013-05-06 21:10:26 dwarren Exp $
 
     Part of SWI-Prolog
 
@@ -25,7 +25,7 @@
 #include "deprecation.h"
 
 #define UTIL_H_IMPLEMENTATION
-#include "util.h"
+#include "sgmlutil.h"
 #include <ctype.h>
 #include <stdlib.h>
 #ifdef HAVE_MALLOC_H

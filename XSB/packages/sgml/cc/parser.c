@@ -23,7 +23,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
-#include "util.h"
+#include "sgmlutil.h"
 /*
   #include "socketcall.h"
 */
