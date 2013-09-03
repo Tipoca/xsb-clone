@@ -233,19 +233,24 @@ get_backtrace_list([],[]).
 get_backtrace_list([Psc|Pscs],[Mod:Name/Arity|Preds]) :-
 	(Psc =:= 0
 	 ->	Mod = (?), Name = (?), Arity = (?)
-	 ;	psc_data(Psc,ModPscOrFile),
-		(integer(ModPscOrFile)
-		 ->	(ModPscOrFile =:= 0
-			 ->	Mod = usermod % 0 also means usermod
-			 ;	psc_name(ModPscOrFile,Mod)
-			)
-		%% ;	Mod = usermod
-		 ;	Mod = ModPscOrFile
-		),
+	 ;	psc_modname_filename(Psc,Mod,_),
 		psc_name(Psc,Name),
 		psc_arity(Psc,Arity)
 	),
 	get_backtrace_list(Pscs,Preds).
+
+psc_modname_filename(Psc,ModName,FileName) :-
+	psc_data(Psc,ModPscOrFile),
+	(integer(ModPscOrFile)
+	 ->	(ModPscOrFile =:= 0
+		 ->	ModName = usermod, % 0 also means usermod
+			FileName = unknown
+		 ;	psc_name(ModPscOrFile,ModName),
+			psc_ep(ModPscOrFile,FileName)
+		)
+	 ;	ModName = usermod,
+		FileName = ModPscOrFile
+	).
 
 /* get backtrace as printable list of atoms */
 get_mod_pred_arity_list([], []).
@@ -253,17 +258,7 @@ get_mod_pred_arity_list([Psc|Pscs], [ModPred|ModPreds]) :-
 	(Psc =:= 0
 	 ->	ModPred = '... unknown/?',
 		FileName = unknown
-	 ;	psc_data(Psc,ModPscOrFile),
-		(integer(ModPscOrFile)
-		 ->	(ModPscOrFile =:= 0
-			 ->	ModName = usermod, % 0 also means usermod
-				FileName = unknown
-			 ;	psc_name(ModPscOrFile,ModName),
-				psc_ep(ModPscOrFile,FileName)
-			)
-		 ;	ModName = usermod,
-		 	FileName = ModPscOrFile
-		),
+	 ;	psc_modname_filename(Psc,ModName,FileName),
 		psc_name(Psc,Name),
 		psc_arity(Psc,Arity),
 		(ModName == usermod

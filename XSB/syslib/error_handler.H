@@ -49,6 +49,7 @@
 	      get_backtrace/2,
 	      get_backtrace_list/2.
 
+:- export psc_modname_filename/3.
 :- export flush_all_open_streams/1.
 
 :- import (dynamic)/1,asserta/1 from assert.
