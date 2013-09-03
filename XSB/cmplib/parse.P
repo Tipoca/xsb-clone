@@ -464,8 +464,11 @@ parse_clauses(ModName, Module) :-
 	my_read(Clause, VariableList),
 	singleton_check(Clause, VariableList),
 	check_compilable_clause(Clause),
-	expand_term(Clause, Expanded_Clause),
-%%	(Clause \== Expanded_Clause -> standard:write(userout,'     Clause: '),standard:writeq(userout,Clause),standard:nl(userout),standard:write(userout,'expanded to: '),standard:writeq(userout,Expanded_Clause),standard:nl(userout) ; true),
+	expand_term(Clause, Expanded_Clause0),
+	(Expanded_Clause0 = [_|_]
+	 ->	standardize_vars_apart(Expanded_Clause0,Expanded_Clause)
+	 ;	Expanded_Clause = Expanded_Clause0
+	),
 	(Clause == end_of_file
 	 ->	(Expanded_Clause \== end_of_file
 		 ->	parse_clause(Expanded_Clause,Module,ModName)
@@ -486,6 +489,11 @@ parse_clauses(ModName, Module) :-
 	).
 parse_clauses(M, _) :-	% Under normal conditions this clause is unreachable!
 	syntax_error(('Clauses of ', M, ' cannot be parsed.')).
+
+standardize_vars_apart([],[]).
+standardize_vars_apart([C|Cs],[NC|NCs]) :-
+	copy_term(C,NC),
+	standardize_vars_apart(Cs,NCs).
 
 my_read(Term, Vars) :-
 	stat_flag(CURRENT_INPUT, File),

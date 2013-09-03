@@ -239,12 +239,12 @@ compile0(_, _, _, _, _, _).
 /*	(*.A) file and/or an object file.				*/
 /*======================================================================*/
 
-compile_predicate(PredDef, GenAsm, AStr, OStr, TIFile, IsModule, SymTab) :-
+compile_predicate(PredDef, GenAsm, AStr, OStr, _TIFile, IsModule, SymTab) :-
 	PredDef = pred(Sym,_,_),
 	(compile_check_ok(Sym)
 	 ->	preprocess(PredDef, PredBlks, SymTab),
 		!,		% needed to cut unnecessary choice points... (bmd & kostis)
-%		ti_transform(PredBlks, TIPredBlks, TIFile, SymTab),
+%		ti_transform(PredBlks, TIPredBlks, _TIFile, SymTab),
 %		!,		% needed to cut unnecessary choice points... (bmd & kostis)
 %		compile_pred_block(TIPredBlks, PilCode-[], 0, NC),
 		compile_pred_block(PredBlks, PilCode-[], 0, NC),
@@ -274,6 +274,7 @@ compile_check_ok(Sym) :-
 	 ;	true
 	).
 
+/*** not used anymore, some bug?
 ti_transform(PredBlks, TIPredBlks, TIFile, SymTab) :-
 	ti_pred_block(PredBlks, TIPredBlks, SymTab),
 	( option(ti_dump) ->
@@ -281,7 +282,7 @@ ti_transform(PredBlks, TIPredBlks, TIFile, SymTab) :-
 		write_preds(TIStr,TIPredBlks),
 		close(TIStr)
 	; true
-	).
+	). ***/
 
 compile_pred_block([], PilCode-PilCode, NCin, NCin).
 compile_pred_block([PredDef|PRest], PilCode-PilCodeR, NCin, NCout) :-
@@ -365,8 +366,8 @@ hack_self_compile :-
 	force_asm_inst_loaded,
 	force_asm_pass2_loaded,
 	force_preprocess_loaded,
-	force_tp_geninline_loaded,
-	force_ti_mod_loaded.
+	force_tp_geninline_loaded.
+%%	force_ti_mod_loaded.
 
 end_of_file.
 

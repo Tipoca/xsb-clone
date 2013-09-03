@@ -53,7 +53,7 @@
 :- import force_listutil_loaded/0 from listutil.
 :- import supplementary_tabling/2 from suppltab.
 :- import force_asm_pass2_loaded/0 from asmpass2.
-:- import dump_module/2, write_preds/2 from sanity.
+:- import dump_module/2  /**, write_preds/2**/ from sanity.
 :- import force_tp_geninline_loaded/0 from tpinline.
 :- import sym_name/3, sym_type/2, sym_prop/2 from symtab.
 :- import sym_gen/2 from symtab.
@@ -70,7 +70,7 @@
 :- import prepare/0, gennum/1, conget/2, conset/2 from gensym.
 :- import sys_unlink/2 from shell.
 :- import member/2 from basics.
-:- import force_ti_mod_loaded/0, ti_pred_block/3 from ti_mod.
+%%:- import force_ti_mod_loaded/0, ti_pred_block/3 from ti_mod.
 
 :- import modeanalyze/3 from modeinf.
 :- import assert/1, retractall/1, (dynamic)/1  from assert.

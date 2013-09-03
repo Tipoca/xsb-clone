@@ -56,7 +56,7 @@
 	error/1, message/1, option/1, setoptions1/1, warning/1
    from auxlry.
 
-:- import append/3, memberchk/2, log_ith/3, member/2 from basics.
+:- import append/3, memberchk/2, log_ith/3, member/2, copy_term/2 from basics.
 
 :- import inline_predicate/2 from builtin.
 
