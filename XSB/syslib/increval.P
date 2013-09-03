@@ -326,7 +326,6 @@ immed_depends_ptr(CallPtr,CallPtr2):-
 :- export get_incr_sccs/2.
 :- export get_incr_sccs_with_deps/2.
 :- export get_incr_sccs_with_deps/3.
-:- import writeln/1 from standard.
 get_incr_sccs(Scc):-
 	setof(Skel,
 	      (predicate_property(Skel,tabled),predicate_property(Skel,incremental)),
@@ -369,7 +368,7 @@ get_incr_sccs_1(_PtrList,[]).
 abolish_trans_connected_ptr_calls:- 
 	get_calls(trans_connected_ptr(A,B)),	
 	abolish_table_call(trans_connected_ptr(A,B)),
-%	writeln(abolish_table_call(trans_connected_ptr(A,B))),
+%	standard:writeln(abolish_table_call(trans_connected_ptr(A,B))),
 	fail.
 abolish_trans_connected_ptr_calls.
 
@@ -391,7 +390,7 @@ partition_list(List,PartList):-
 %	setof(ret(Index,Goal),member(ret(Goal,Index),List),Parts),
 	reverse_partition(List,Parts_dup),
 	sort(Parts_dup,Parts),
-%	writeln(Parts),
+%	standard:writeln(Parts),
 	partition_list_1(Parts,PartList),!.
 partition_list(_List,[]).
 
