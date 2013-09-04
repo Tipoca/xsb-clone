@@ -3544,7 +3544,7 @@ prolog_term build_xsb_backtrace(CTXTdecl) {
   int backtrace_cnt = 0;
 
   if (heap_local_overflow(MAX_BACKTRACE_LEN*2*sizeof(Cell)) 
-      || !flags[BACKTRACE]) {
+      || !pflags[BACKTRACE]) {
     return makenil;
   }
 
