@@ -25,7 +25,7 @@
 directory and reads every XSB source file found (by the .P suffix).
 It creates a set of predicates that record all predicates defined and
 used in every XSB source file encountered.  It then writes this
-information out to a file named xsb_xref.P, whcih can be later
+information out to a file named xsb_xref.P, which can be later
 dynamically loaded to find where predicates are defined and used.
 ").
 
@@ -279,7 +279,7 @@ read_p_file_s(IStr,FSize,BFileName,Result) :-
 		file_read_canonical(IStr,Term0,_),
 		(Term0 == read_canonical_error
 		 ->	coninc('_$errorCnt',ErrCount),
-			(ErrCount > 25
+			(ErrCount > 5
 			 ->	writeln(userout,'Too many errors; rest of file ignored')
 			 ;	fail % ignore first 25 errors
 			)
@@ -300,6 +300,10 @@ read_p_file_s(IStr,FSize,BFileName,Result) :-
 	 ; Term = (:-Dir)
 	 ->	process_directive(Dir,BFileName),
 		functor('_$main',Main,0),
+		process_uses(Dir,BFileName,Main,0),
+		fail
+	 ; Term = (?-Dir)
+	 ->	functor('_$main',Main,0),
 		process_uses(Dir,BFileName,Main,0),
 		fail
 	 ;	(Term = (Head :- Body)
