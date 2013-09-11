@@ -572,12 +572,45 @@ cmp(reach( 3,\_v0),1,21)   & & \\ \hline
 \ourrepeatmoditem{log\_forest(+Call)}{log\_forest/2}{tables}
 \ourmoditem{log\_forest(+Call,+Options)}{log\_forest/2}{tables}
 %
-These predicates turn on forest logging, call {\tt Call} then turn
-logging off.  Currently, the only option is {\tt file(File)}, which
-directs the logging to the file {\tt File}.  If {\tt Options} is an
-empty list or if {\tt log\_forest/1} is called, the log will be sent
-to standard output~\footnote{Future options will be able to turn on
-  and off the logging of various types of facts.}.
+These predicates turn on forest logging, call {\tt Call}, then turn
+logging off when {\tt Call} is finished.  {\tt Options} is a list of
+possible options.
+%
+\bi
+\item If {\tt Options} contains the term {\tt file(File)} then direct
+  the logging to {\tt File}; otherwise the log will be sent to
+  standard output.
+\item If {\tt Options} contains the term {\tt level(Level)} where {\tt
+  Level} = {\tt full} or {\tt partial} then the level of forest
+  logging is set to the respective value.  The default level is {\tt
+    full}.  The level {\tt partial} does not output answer return
+  operations, and so can reduce the size of the log for certain
+  computations.  The actions of partial logging and full logging are
+  otherwise the same.  \ei
+%  Currently, the only option is
+%   {\tt file(File)}, which directs the logging to the file {\tt File}.
+%   If {\tt Options} is an empty list or if {\tt log\_forest/1} is
+%   called, the log will be sent to standard output~\footnote{Future
+%     options will be able to turn on and off the logging of various
+%     types of facts.}.
+
+{\bf Error Cases} 
+\bi
+\item {\tt Options} is a variable, or contains a variable as an element
+\bi
+\item {\tt instantiation\_error}
+\ei
+\item {\tt Options} is not a list
+\bi
+\item {\tt type\_error(list,Options)}
+\ei
+\item {\tt Options} contains an option {\tt O} that is not a forest
+  logging option.  
+\bi
+\item {\tt domain\_error(forest\_logging\_option,O)}
+\ei
+\ei
+
 
 \index{indexing}
 \ourmoditem{load\_forest\_log(+File)}{load\_forest\_log/1}{tables}
