@@ -132,7 +132,7 @@
   }
 
 #define LOG_ANSWER_RETURN(answer,template_ptr)		\
-  if (flags[CTRACE_CALLS])  {			\
+  if (flags[CTRACE_CALLS > 1])  {			\
     sprintAnswerTemplate(CTXTc forest_log_buffer_1,template_ptr, template_size); \
     sprint_subgoal(CTXTc forest_log_buffer_2,0,(VariantSF)consumer_sf);	\
     sprint_subgoal(CTXTc forest_log_buffer_3,0,(VariantSF)ptcpreg); \
