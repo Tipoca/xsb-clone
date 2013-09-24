@@ -1822,7 +1822,7 @@ int GetColumn(CTXTdecl)
     {
       Cell h;
       Integer intvalue;
-      intvalue = (Integer)(*(long *)(cur->Data[ColCurNum]));
+      intvalue = (Integer)(*(int *)(cur->Data[ColCurNum]));  // int is 32 bit in unix
       bld_oint(&h,intvalue);
       return unify(CTXTc op, h);
     }
