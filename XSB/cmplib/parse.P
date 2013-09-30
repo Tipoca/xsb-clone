@@ -54,7 +54,8 @@ parse(Modname, PFile, HFile, Module) :-
 	filestack_push(Str),
 	filename_push(PFile),
 	conset(needs_restart, 0),  % reset, if an error left it dirty
-	(Modname == user
+	(Modname == user,
+	 PFile == 'user.P'  % PM: ensure that we're not trying to load a real file
 	 ->	set_symbol_hash_table_size(1,Module0),
 		see(userin), parse_clauses(user, Module0)
 	 ; file_exists(PFile)
