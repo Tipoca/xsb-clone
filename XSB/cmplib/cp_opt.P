@@ -261,6 +261,7 @@ generate_agg_clauses(po(OpSpec),Sym,PredTerm,Var1,ExistVarList,Pred1Term,Var,ClL
 	parse_preddef_closed(PredTerm,Body,ClList2,SymTab),
 	globalize('/',2,SymTab),
 	globalize(var,0,SymTab),
+	ensure_imported(once/1,standard,SymTab),
 	ensure_imported(breg_retskel/4,machine,SymTab),
 	ensure_imported(excess_vars/4,setof,SymTab),
 	ensure_imported(findall/3,setof,SymTab),
