@@ -1227,6 +1227,14 @@ Exceptions:
         {\tt VarName} or {\tt VarVal} is not an atom or a list of atoms.
     \end{description}
 
+\ourmoditem{epoch\_seconds(-Seconds)}{machine} 
+\index{\texttt{epoch\_seconds/1}}
+%
+Returns the number of seconds since the beginning of the UNIX/POSIX
+epoch (January 1, 1970)~\footnote{Uses the Posix call {\tt time(0)},
+  so the number of seconds will be returned on non-Unix platforms,
+  such as Microsoft.}.  May cause overflow on 32-bit platforms.
+
 \end{description}
 
 %---------------------------------------------------------------------------------------
