@@ -4908,10 +4908,28 @@ manipulation of {\tt call/[2-10]} makes it somewhat slower than {\tt
 %
 Calls {\tt Goal} just as with {\tt call/1}, and if {\tt Goal} does not
 fail, instantiates {\tt TV} with either {\tt true} or {\tt undefined},
-depending on the value of {\tt Goal} in the well-founded semantics.
-{\tt Goal} need not be tabled itself.
+depending on the truth value of {\tt Goal} in the well-founded
+semantics.  {\tt Goal} need not be tabled itself.  Note that {\tt
+  Goal} might succeed with truth value {\tt undefined} before
+succeeding with truth value {\tt true}, so that to avoid confusion,
+{\tt call\_tv/2} should usually be invoked as a top-level goal.
 
-    Error cases are the same as {\tt call/1}.
+Since {\tt call\_tv/2} actually calls {\tt Goal}, if {\tt Goal} fails,
+{\tt call\_tv/2} will fail; if {\tt Goal} succeeds unconditionally (is
+true in the well-founded semantics), {\tt call\_tv/2} will succeed
+unconditionally; and if if {\tt Goal} succeeds conditionally (is
+neither true nor false int the well-founded semantics) {\tt
+  call\_tv/2} will itself succeed unconditionally.
+
+An alternative approach would be to call {\tt
+  get\_residual(Goal,DelayList)}: {\tt Goal} is true at a given state
+of an evaluation iff {\tt get\_residual(Goal,DelayList)} succeeds with
+{\tt DelayList = []}.  This appoach either fails or succeeds with
+truth value {\tt true}; however if {\tt Goal} is not completed,
+calling {\tt get\_residual(Goal,DelayList)} may lead to confusing
+results.
+
+Error cases are the same as {\tt call/1}.
 
 \ourrepeatstandarditem{timed\_call(\#Goal,+Interval,\#Handler,+Option)}{timed\_call/4}{}
 \ourstandarditem{timed\_call(\#Goal,+Interval,\#Handler)}{timed\_call/3}{}
