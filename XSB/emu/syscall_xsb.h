@@ -209,6 +209,8 @@
 #define SYS_fchroot	177
 #define SYS_vpixsys	178
 
+#define SYS_epoch_seconds 180
+
 /* XSB-specific numbers */
 
 #define SYS_cwd         300  /* current working directory */

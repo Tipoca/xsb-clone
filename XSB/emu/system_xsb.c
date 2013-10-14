@@ -33,6 +33,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <ctype.h>
+#include <time.h>
 
 #ifdef WIN_NT
 #include <windows.h>
@@ -193,6 +194,10 @@ int sys_syscall(CTXTdeclc int callno)
 
   case STATISTICS_2: {
     get_statistics(CTXT);
+    break;
+  }
+  case SYS_epoch_seconds: {
+    ctop_int(CTXTc 3,time(0));
     break;
   }
   default: xsb_abort("[SYS_SYSCALL] Unknown system call number, %d", callno);
