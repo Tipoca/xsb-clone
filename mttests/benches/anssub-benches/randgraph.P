@@ -175,6 +175,74 @@ genEdge(NumNodes1,Str):-
 	write(Str,edge(From,To)),writeln(Str,'.'),!.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Generate a random graph with NumNodes and NumEdges and write into
+% File.  Not every node will necessarily get an edge.
+
+:- import between/3 from basics.
+
+wrprop(NumNodes,NumProps,Functor,File):- 
+   open(File,write,Str),
+   genRandomProp(NumNodes,NumProps,Functor,Str),
+   close(Str).
+
+genRandomProp(NumNodes,NumProps,Functor,Str):- 
+	functor(Term,Functor,1),
+	dynamic(Term),
+	retractall(Term),
+	NumNodes1 is NumNodes+1,
+	genRandomProp_1(NumProps,NumNodes1,Term,Str),
+	retractall(Term).
+
+genRandomProp_1(NumProps,NumNodes1,Term,Str):- 
+	between(1,NumProps,_),
+	genProp(NumNodes1,Term,Str),
+	fail.
+genRandomProp_1(_NumProps,_NumNodes1,_Term,_Str).
+
+genProp(NumNodes1,Term,Str):- 
+        repeat,
+	random(1,NumNodes1,Node),
+	arg(1,Term,Node),
+	\+ Term,
+	asserta(Term),
+	write(Str,Term),writeln(Str,'.'),!.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Generate a random graph with NumNodes and NumEdges and write into 
+% File.  Not every node will necessarily get an edge.  Minimum node
+% number is MinNode
+
+typed_wrgp(NumFrom,Frommin,NumTo,Tomin,NumEdges,File):- 
+   open(File,write,Str),
+   genRandomGraphP(NumFrom,Frommin,NumTo,Tomin,NumEdges,Str),
+   close(Str).
+
+:- import between/3 from basics.
+
+genRandomGraphP(NumNodes,NumEdges,Minnode,Str):- 
+	retractall(edge(_,_)),
+	NumNodes1 is NumNodes+1,
+	genRandomGraphP_1(NumEdges,NumNodes1,Minnode,Str),
+	retractall(edge(_,_)).
+
+genRandomGraphP_1(NumEdges,NumNodes1,Minnode,Str):- 
+%	repeat(NumEdges),
+	between(1,NumEdges,_),
+	genEdge(NumNodes1,Minnode,Str),
+	fail.
+genRandomGraphP_1(_NumEdges,_NumNodes1,_Minnode,_Str).
+
+genEdge(NumNodes1,Minnode,Str):- 
+        repeat,
+	random(1,NumNodes1,From),
+	random(1,NumNodes1,To),
+	To1 is To + Minnode,
+	From \== To1,
+	\+ edge(From,To1),
+	asserta(edge(From,To1)),
+	write(Str,edge(From,To1)),writeln(Str,'.'),!.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Generate a random graph with NumNodes and NumEdges into File.  Edge
 % has a randomly generated weight in its 3rd argument.
 
