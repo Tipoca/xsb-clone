@@ -1088,7 +1088,7 @@ static int *depth_stack;
 #include "ptoc_tag_xsb_i.h"
 extern void abolish_release_all_dls(CTXTdeclc ASI);
 
-inline void handle_incrementally_rederived_answer(CTXTdeclc VariantSF subgoal_ptr,BTNptr Paren,
+static inline void handle_incrementally_rederived_answer(CTXTdeclc VariantSF subgoal_ptr,BTNptr Paren,
 						  int tag,
 						  xsbBool found_flag,xsbBool * uncond_or_hasASI) {
 

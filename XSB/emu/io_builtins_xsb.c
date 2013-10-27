@@ -880,7 +880,7 @@ Cell read_canonical_return_var(CTXTdeclc int code) {
 
 /* copied from emuloop.c and added param */
 #ifndef FAST_FLOATS
-inline void bld_boxedfloat_here(CTXTdeclc CPtr *h, CPtr addr, Float value)
+static inline void bld_boxedfloat_here(CTXTdeclc CPtr *h, CPtr addr, Float value)
 {
     Float tempFloat = value;
     new_heap_functor((*h),box_psc);
@@ -892,7 +892,7 @@ inline void bld_boxedfloat_here(CTXTdeclc CPtr *h, CPtr addr, Float value)
 }
 #else
 inline void bld_boxedfloat_here(CTXTdeclc CPtr *h, CPtr addr, Float value) {
-  bld_float(addr,value);
+static   bld_float(addr,value);
 }
 #endif
 

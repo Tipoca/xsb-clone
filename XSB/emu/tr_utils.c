@@ -2292,7 +2292,7 @@ BTNptr get_call_trie_from_subgoal_frame(CTXTdeclc VariantSF subgoal)
    for Deltfs for this predicate.  Depending on the value of
    *chain_begin this can be used for either private or shared
    predicates */
-DelTFptr inline New_DelTF_Pred(CTXTdeclc TIFptr pTIF, DelTFptr *chain_begin, xsbBool Warn) {		      
+static inline DelTFptr New_DelTF_Pred(CTXTdeclc TIFptr pTIF, DelTFptr *chain_begin, xsbBool Warn) {		      
   DelTFptr pDTF;
   
   pDTF = (DelTFptr)mem_alloc(sizeof(DeletedTableFrame),TABLE_SPACE);	
@@ -2314,7 +2314,7 @@ DelTFptr inline New_DelTF_Pred(CTXTdeclc TIFptr pTIF, DelTFptr *chain_begin, xsb
    return pDTF;
 }
 
-DelTFptr inline New_DelTF_Subgoal(CTXTdeclc TIFptr pTIF, VariantSF pSubgoal,
+static inline DelTFptr New_DelTF_Subgoal(CTXTdeclc TIFptr pTIF, VariantSF pSubgoal,
 			      DelTFptr *chain_begin, xsbBool Warn) { 
   DelTFptr pDTF;
 
@@ -2468,7 +2468,7 @@ void check_insert_private_deltf_subgoal(CTXTdeclc VariantSF subgoal,xsbBool Warn
 /* - - - - - - - - - - */
 
 /* used for transitive abolishes */
-void inline mark_delaylist_tabled_preds(CTXTdeclc CPtr dlist) {
+static inline void mark_delaylist_tabled_preds(CTXTdeclc CPtr dlist) {
   Cell tmp_cell;
   VariantSF subgoal;
 
@@ -2485,7 +2485,7 @@ void inline mark_delaylist_tabled_preds(CTXTdeclc CPtr dlist) {
     }
   }
 
-void inline unmark_delaylist_tabled_preds(CTXTdeclc CPtr dlist) {
+static inline void unmark_delaylist_tabled_preds(CTXTdeclc CPtr dlist) {
   Cell tmp_cell;
   VariantSF subgoal;
 
@@ -2595,7 +2595,7 @@ int abolish_table_call_cps_check(CTXTdeclc VariantSF subgoal) {
 }
 
 /* used for transitive abolishes */
-void inline mark_delaylist_tabled_subgoals(CTXTdeclc CPtr dlist) {
+static inline void mark_delaylist_tabled_subgoals(CTXTdeclc CPtr dlist) {
   Cell tmp_cell;
   VariantSF subgoal;
 
@@ -2612,7 +2612,7 @@ void inline mark_delaylist_tabled_subgoals(CTXTdeclc CPtr dlist) {
     }
   }
 
-void inline unmark_delaylist_tabled_subgoals(CTXTdeclc CPtr dlist) {
+static inline void unmark_delaylist_tabled_subgoals(CTXTdeclc CPtr dlist) {
   Cell tmp_cell;
   VariantSF subgoal;
 
@@ -2865,7 +2865,7 @@ int done_subgoal_stack_size = 0;
 
 #define done_subgoal_stack_increment 1000
 
-void inline push_done_subgoal_node(CTXTdeclc VariantSF Subgoal) {				
+static inline void push_done_subgoal_node(CTXTdeclc VariantSF Subgoal) {				
     if (done_subgoal_stack_top >= done_subgoal_stack_size) {		
       size_t old_done_subgoal_stack_size = done_subgoal_stack_size; 
       done_subgoal_stack_size = done_subgoal_stack_size + done_subgoal_stack_increment; 
@@ -3141,7 +3141,7 @@ void unvisit_done_tifs(CTXTdecl) {
   }
 }
 
-void inline push_done_tif_node(CTXTdeclc TIFptr node) {					\
+static inline void push_done_tif_node(CTXTdeclc TIFptr node) {					\
     if (done_tif_stack_top >= done_tif_stack_size) {			\
       size_t old_done_tif_stack_size = done_tif_stack_size;	\
       done_tif_stack_size = done_tif_stack_size + done_tif_stack_increment;	\
@@ -3300,7 +3300,8 @@ int abolish_table_pred_cps_check(CTXTdeclc Psc psc)
 
   Don't need a warning flag for this predicate -- it must always warn
 */
-inline void abolish_table_pred_single(CTXTdeclc TIFptr tif, int cps_check_flag) {
+static inline void abolish_table_pred_single(CTXTdeclc TIFptr tif, int cps_check_flag) {
+  //void abolish_table_pred_single(CTXTdeclc TIFptr tif, int cps_check_flag) {
   int action;
 
   if(get_incr(TIF_PSC(tif))) {  /* incremental */
@@ -3345,7 +3346,8 @@ inline void abolish_table_pred_single(CTXTdeclc TIFptr tif, int cps_check_flag) 
   }
 }  
 
-inline void abolish_table_pred_transitive(CTXTdeclc TIFptr tif, int cps_check_flag) {
+static inline void abolish_table_pred_transitive(CTXTdeclc TIFptr tif, int cps_check_flag) {
+  //void abolish_table_pred_transitive(CTXTdeclc TIFptr tif, int cps_check_flag) {
   int action;
 
   find_pred_backward_dependencies(CTXTc tif);
@@ -3448,7 +3450,7 @@ inline void abolish_table_predicate(CTXTdeclc Psc psc, int invocation_flag) {
   through a different table altogether, and we needn't mark.
 */
 
-void inline mark_deltfs(CTXTdeclc TIFptr tif, VariantSF subgoal) {
+static inline void mark_deltfs(CTXTdeclc TIFptr tif, VariantSF subgoal) {
   BTNptr call_trie;
   DelTFptr dtf;
 
@@ -3478,7 +3480,7 @@ void inline mark_deltfs(CTXTdeclc TIFptr tif, VariantSF subgoal) {
   }
 }
 
-void inline gc_mark_delaylist_tabled_preds(CTXTdeclc CPtr dlist) {
+static inline void gc_mark_delaylist_tabled_preds(CTXTdeclc CPtr dlist) {
   Cell tmp_cell;
   VariantSF subgoal;
 
@@ -4979,8 +4981,6 @@ int  get_residual_sccs(CTXTdeclc Cell listterm) {
     return ret;
 }
 
-extern void ctop_tag(CTXTdeclc int, Cell);
-
  int pred_type, goal_type, answer_set_status;
  VariantSF goalSF = NULL, subsumerSF;
  Cell goalTerm;
@@ -5038,7 +5038,7 @@ int table_inspection_function( CTXTdecl ) {
     bld_list(hreg,hreg+2);    hreg++;
     bld_int(hreg,4);  hreg++;              //          2
     new_heap_nil(hreg);
-    ctop_tag(CTXTc 3, temp);
+    //    ctop_tag(CTXTc 3, temp);
 
     break;
   }

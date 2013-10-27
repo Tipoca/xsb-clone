@@ -201,7 +201,7 @@ int sprint_quotedname(char *buffer, int size,char *string)
   }
 }
 
-inline int get_int_print_width(Integer num) {
+static inline int get_int_print_width(Integer num) {
   if (abs((int)num) < 100) return 2;
   else if (abs((int)num) < 10000) return 4;
   else return MAXINTLEN;

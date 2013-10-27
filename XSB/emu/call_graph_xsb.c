@@ -55,7 +55,7 @@
 #include "error_xsb.h"
 #include "tr_utils.h"
 #include "hash_xsb.h" 
-#include "call_xsb_i.h"
+//#include "call_xsb_i.h"
 #include "tst_aux.h"
 #include "tst_utils.h"
 #include "token_xsb.h"
@@ -67,6 +67,9 @@
 #include "debug_xsb.h"
 
 #define INCR_DEBUG2
+
+extern int prolog_call0(CTXTdeclc Cell);
+extern int prolog_code_call(CTXTdeclc Cell, int);
 
 /* 
 Terminology: outedge -- pointer to calls that depend on call

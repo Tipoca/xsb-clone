@@ -4023,7 +4023,11 @@ xsbBool dynamic_code_function( CTXTdecl )
 /* Trie Assert and Retract                                       */
 /*===============================================================*/
 
-inline CPtr trie_asserted_clref(CPtr prref)
+// Problems with clang
+#if !defined(DARWIN) 
+inline 
+#endif
+CPtr trie_asserted_clref(CPtr prref)
 {
   CPtr Clref;
 

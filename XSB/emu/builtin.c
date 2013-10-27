@@ -654,7 +654,8 @@ inline static void ctop_constr(CTXTdeclc int regnum, Pair psc_pair)
  *  Bind the variable pointed to by the "regnum"th argument register to the
  *  term at address "term".  Make an entry in the trail for this binding.
  */
-inline  void ctop_tag(CTXTdeclc int regnum, Cell term)
+// TLS: added static for clang
+static inline  void ctop_tag(CTXTdeclc int regnum, Cell term)
 {
   register Cell addr = cell(reg+regnum);
 
@@ -765,7 +766,8 @@ UInteger  det_val_to_hash(Cell term)
       value = 0;
       break;
   }
-  if ((UInteger)value < 0) printf("Bad Hash4");
+  // TLS: not sure what this was for, but it will never evaluate to true.
+  //  if ((UInteger)value < 0) printf("Bad Hash4");
   return value;
 }
 
@@ -2372,7 +2374,9 @@ int builtin_call(CTXTdeclc byte number)
   case NEXT_BUCKET: {     /* R1: +Index of Symbol Table Bucket. */
     /* R2: -Next Index (0 if end of Hash Table) */
     size_t value = ptoc_int(CTXTc 1);
-    if ( ((unsigned int)value >= (symbol_table.size - 1)) || (value < 0) )
+    // TLS: fixing clang errors:
+    //    if ( ((unsigned int)value >= (symbol_table.size - 1)) || (value < 0) )
+    if  ((unsigned int)value >= (symbol_table.size - 1))
       ctop_int(CTXTc 2, 0);
     else
       ctop_int(CTXTc 2, (value + 1));
