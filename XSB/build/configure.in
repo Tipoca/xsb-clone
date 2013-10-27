@@ -1371,8 +1371,15 @@ case "$canonical" in
                     LDFLAGS="${LDFLAGS} -lpthread"
                 fi
         ;;
-    *-rhapsody* | *-darwin* )
-                CFLAGS="-faltivec -fPIC ${CFLAGS} "
+#    *-rhapsody* | *-darwin* )
+#                CFLAGS="-faltivec -fPIC ${CFLAGS} "
+#                AC_DEFINE(DARWIN)
+#                AC_DEFINE(FOREIGN_ELF)
+#        	DYNMOD_LDFLAGS="-dynamiclib -single_module -nostartfiles"
+#        	DYNMOD_SHAREDLIB_EXTENSION=jnilib
+#        ;;
+    *-darwin* )
+                CFLAGS=" -fPIC ${CFLAGS} "
                 AC_DEFINE(DARWIN)
                 AC_DEFINE(FOREIGN_ELF)
         	DYNMOD_LDFLAGS="-dynamiclib -single_module -nostartfiles"
