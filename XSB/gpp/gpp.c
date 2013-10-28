@@ -194,7 +194,8 @@ short WarningLevel = 2;
 int NoStdInc        = 0;
 int NoCurIncFirst   = 0;
 int CurDirIncLast   = 0;
-int file_and_stdout = 0;
+/* this is for debugging: set to 1 to see dump on the screen */
+int file_and_stderr = 0;
 
 typedef struct OUTPUTCONTEXT {
   char *buf;
@@ -686,13 +687,13 @@ void outchar(char c)
   else {
     if (dosmode&&(c==10)) {
       fputc(13,C->out->f);
-      if (file_and_stdout)
-        fputc(13,stdout);
+      if (file_and_stderr)
+        fputc(13,stderr);
     }
     if (c!=13) {
       fputc(c,C->out->f);
-      if (file_and_stdout)
-        fputc(c,stdout);
+      if (file_and_stderr)
+        fputc(c,stderr);
     }
   }
 }
@@ -1205,7 +1206,7 @@ void initthings(int argc, char **argv)
 	add_comment(S,"sss",strdup("\""),strdup("\""),0,0);
 	break;
       case 'O':
-	file_and_stdout = 1;
+	file_and_stderr = 1;
       case 'o':
 	if (!(*(++arg)))
 	  usage();

@@ -69,6 +69,7 @@ Source: "{#MyBaseDir}\README"; Excludes: ".*,CVS"; DestDir: "{app}\"; Components
 Source: "{#MyBaseDir}\LICENSE"; Excludes: ".*,CVS"; DestDir: "{app}\"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
 
 Source: "{#MyBaseDir}\bin\*"; Excludes: ".*,CVS"; DestDir: "{app}\bin"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#MyBaseDir}\build\*"; Excludes: ".*,CVS,*.cache"; DestDir: "{app}\build"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#MyBaseDir}\config\*"; Excludes: ".*,CVS"; DestDir: "{app}\config"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#MyBaseDir}\pthreads\Pre-built\lib\pthreadVSE1.dll"; Excludes: ".*,CVS"; DestDir: "{app}\config\i686-pc-cygwin-mt\bin"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
 
