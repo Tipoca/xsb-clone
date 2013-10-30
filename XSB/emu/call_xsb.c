@@ -23,6 +23,7 @@
 ** 
 */
 
+#include "xsb_config.h"
 #include <stdio.h>
 
 #include "context.h"
