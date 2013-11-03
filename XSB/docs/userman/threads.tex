@@ -1193,12 +1193,12 @@ clear_thread_table.
 \ei
 \ei
 
-\standarditem{thread\_sleep(+MilliSeconds)}
+\standarditem{thread\_sleep(+Seconds)}
 {thread\_sleep/1}
 %
-Causes the calling thread to sleep approximately {\tt MilliSeconds}
+Causes the calling thread to sleep approximately {\tt Seconds}
 before resuming.  A thread may be cancelled while sleeping.  However,
-a sleeping thread that is signalled will execute the signalled goal
+a sleeping thread that is signaled will execute the signaled goal
 and resume execution {\em without} returning to sleep.
 
 {\bf Error Cases}
@@ -1207,9 +1207,9 @@ and resume execution {\em without} returning to sleep.
 \bi
 \item 	{\tt instantiation\_error}.
 \ei
-\item 	{\tt Seconds} is not an integer
+\item 	{\tt Seconds} is not a number
 \bi
-\item 	{\tt type\_error(integer, Seconds)}.
+\item 	{\tt type\_error(number, Seconds)}.
 \ei
 \ei
 
