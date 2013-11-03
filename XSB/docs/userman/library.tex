@@ -2367,14 +2367,15 @@ Clears the table that accumulates counts of calls in particular modes
 \begin{description}
 \ourmoditem{profile\_unindexed\_calls(+Par)}{xsb\_profiling}\index{profile\_unindexed\_calls/1}
 
-Sets the kind of unindexed profiling to perform.  If {\tt Par} is 0 no
-unindexed logging will be done.  (This is the default.)  If {\tt Par}
-is 1 each call to a dynamic predicate that cannot use any index (and
+Sets the kind of unindexed profiling to perform.  If {\tt Par} is
+\texttt{off},  no
+unindexed logging will be done.  This is the default.  If {\tt Par}
+is \texttt{once}  each call to a dynamic predicate that cannot use any index (and
 would backtrack through more than 20 clauses) will generate a log
 message to userout.  Each unindexed call to a predicate will be logged
 only once; after logging is done, the log instruction is changed to a
 branch, so it will never produce another log message for that dynamic
-code.  If {\tt Par} is 2, logging is done as for 1, except every
+code.  If {\tt Par} is \texttt{on}, logging is done as for \texttt{once}, except every
 unindexed call to any dynamic predicate will be logged; i.e. the
 logging instruction is not changed after logging.  If {\tt Par} is a
 predicate specification (of the form Pred/Arity, Module:Pred/Arity,

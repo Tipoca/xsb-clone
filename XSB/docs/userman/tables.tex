@@ -509,7 +509,7 @@ Because tabling uses program clause resolution, the two parameters of
 clause selection and literal selection also apply to tabling.  Tabling
 makes use of a dynamic literal selection strategy for certain
 non-stratified programs (via the delaying mechanism described in
-Section~\ref{negation!unstratified}), but uses the same left-to-right
+Section~\ref{sec-neg-unstratified}), but uses the same left-to-right
 literal selection strategy as Prolog for definite programs.  However,
 in tabling there is also a choice of when to return derived answers to
 subgoals that consume these answers.  While full discussion of
@@ -1040,6 +1040,7 @@ description of predicate {\tt tfindall/3} on
 page~\pageref{tfindall/3}).
 
 \subsection{Non-stratified Programs}
+\label{sec-neg-unstratified}
 \index{negation!unstratified}
 
 As discussed above, in stratified programs, facts are either true or
