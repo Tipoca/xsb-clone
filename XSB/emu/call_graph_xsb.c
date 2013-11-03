@@ -980,6 +980,7 @@ int get_outedges_num(CTXTdeclc callnodeptr call1) {
 
   h=call1->outedges->hasht;
   itr = hashtable1_iterator(h);       
+  itr = itr; /* to squash warnings */
   return hashtable1_count(h);
 }
 
@@ -1390,6 +1391,7 @@ int  get_incr_sccs(CTXTdeclc Cell listterm) {
       i++;
     }
     itr = hashtable1_iterator(hasht);       
+    itr = itr; /* to squash warnings */
     //    do {
     //      printf("k %p val %p\n",hashtable1_iterator_key(itr),hashtable1_iterator_value(itr));
     //    } while (hashtable1_iterator_advance(itr));

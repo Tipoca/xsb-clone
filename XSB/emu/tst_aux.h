@@ -348,6 +348,7 @@ extern DynamicStack tstSymbolStack;
 #define SymbolStack_PushPath(Leaf) {  		\
    BTNptr root;					\
    SymbolStack_PushPathRoot(Leaf,root);		\
+   root = root;  /* to squash warnings */       \
  }
 
 /*=========================================================================*/

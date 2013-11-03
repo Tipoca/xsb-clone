@@ -151,7 +151,7 @@ static byte *load_obj_dyn(char *pofilename, Psc cur_mod, char *ld_option)
   
 
   if (handle == 0) {
-    xsb_mesg("%s", dlerror());
+    xsb_error("%s", dlerror());
     return NULL;
   }
 

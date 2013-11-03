@@ -1110,10 +1110,12 @@ DllExport void call_conv xsb_mesg(char *description, ...)
 {
   va_list args;
 
-  va_start(args, description);
-  vfprintf(stdmsg, description, args);
-  va_end(args);
-  fprintf(stdmsg, "\n");
+  if (flags[BANNER_CTL] % QUIETLOAD != 0) {
+    va_start(args, description);
+    vfprintf(stdmsg, description, args);
+    va_end(args);
+    fprintf(stdmsg, "\n");
+  }
 }
 
 DllExport void call_conv mesg_xsb(char *description)

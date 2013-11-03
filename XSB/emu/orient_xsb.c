@@ -182,6 +182,8 @@ DllExport char *xsb_executable_full_path(char *myname)
     snprintf(executable_path_gl, MAXPATHLEN, "%s%c%s", current_dir_gl, SLASH, myname_augmented);
   }
 
+  dummy = dummy; /* to squash warnings */
+
   /* found executable by prepending cwd. Make sure we haven't found a directory named xsb */
   if ((!stat(executable_path_gl, &fileinfo)) && (S_ISREG(fileinfo.st_mode))) return executable_path_gl;
                                           //  or (!S_ISDIR(fileinfo.st_mode))

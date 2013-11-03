@@ -1571,6 +1571,8 @@ int private_trie_intern(CTXTdecl) {
   Leaf = trie_intern_chk_ins(CTXTc term,&(itrie_array[index].root),
 				 &flag,check_cps_flag,expand_flag);
   switch_from_trie_assert;
+
+  type = type; /* to squash warnings */
   //  printf("root %p\n",itrie_array[index].root);
   if (Leaf) {
     ctop_int(CTXTc 3,(Integer)Leaf);
@@ -1639,6 +1641,7 @@ int private_trie_interned(CTXTdecl) {
       }
     }
   }
+  type = type; /* to squash warnings */
   if ((*trie_root_addr != NULL) && (!((Integer) *trie_root_addr & 0x3))) {
     XSB_Deref(trie_term);
     XSB_Deref(Leafterm);
@@ -1727,6 +1730,7 @@ void private_trie_unintern(CTXTdecl)
       safe_delete_branch(Leaf);
     }
   }
+  type = type; /* to squash warnings */
   switch_from_trie_assert;
 }
 

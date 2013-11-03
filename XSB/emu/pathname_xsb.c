@@ -217,6 +217,7 @@ char *expand_filename(char *filename) {
 	    SLASH, filename);
     return rectify_pathname(aux_filename, absolute_filename);
   }
+  dummy = dummy; /* to squash warnings */
 }
 
 /* strip names from the back of path 

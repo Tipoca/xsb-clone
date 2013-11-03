@@ -187,7 +187,9 @@ static void display_file(char *infile_name)
   }
   if (flags[LOG_ALL_FILES_USED]) {
     char current_dir[MAX_CMD_LEN];
-    getcwd(current_dir, MAX_CMD_LEN-1);
+    char *dummy; /* to squash warnings */
+    dummy = getcwd(current_dir, MAX_CMD_LEN-1);
+    dummy = dummy; /* to squash warnings */
     xsb_log("%s: %s\n",current_dir,infile_name);
   }
   while (fgets(buffer, MAXBUFSIZE-1, infile) != NULL)

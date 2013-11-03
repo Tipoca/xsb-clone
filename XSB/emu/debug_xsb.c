@@ -1715,9 +1715,10 @@ void print_tables(CTXTdecl)
       if (subg != NULL)
 	fprintf(stddbg, EOSUBG);
       if (i == 10) {
-	int retcode;
+	int retcode; /* to squash warnings */
 	fprintf(stddbg, "more (y/n)?  ");
 	retcode = scanf("%c", &ans);
+	retcode = retcode; /* to squash warnings */
 	skip_to_nl();
 	i = 0;
       }

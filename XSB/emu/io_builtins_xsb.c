@@ -627,7 +627,7 @@ xsbBool fmt_read(CTXTdecl)
       cont = 1; /* don't leave the loop */
       break;
     case '.': /* last format substring (and has no conversion spec) */
-      curr_assignment = fscanf(fptr,  current_fmt_spec->fmt);
+      curr_assignment = fscanf(fptr,  current_fmt_spec->fmt, "");
       if (isref(Arg))
 	xsb_warn("[FMT_READ] More arguments than format specifiers");
       goto EXIT_READ;
@@ -705,7 +705,7 @@ xsbBool fmt_read(CTXTdecl)
      strings. The leftover format specifiers are ignored. */
   /* last format substr without conversion spec */
   if (current_fmt_spec->type == '.')
-    curr_assignment = fscanf(fptr, current_fmt_spec->fmt);
+    curr_assignment = fscanf(fptr, current_fmt_spec->fmt, "");
   /* last format substr with assignment suppression (spec size=0) */
   if (current_fmt_spec->size == 0)
     dummy = fscanf(fptr, aux_fmt.string, &curr_chars_consumed);
@@ -721,6 +721,8 @@ xsbBool fmt_read(CTXTdecl)
 
  EXIT_READ_FALSE:
   mem_dealloc(current_fmt_spec,sizeof(struct fmt_spec),LEAK_SPACE);
+
+  dummy = dummy; /* to squash warnings */
   return FALSE;
 }
 #undef FmtBuf
@@ -1599,7 +1601,9 @@ int xsb_intern_file(char *context,char *addr, int *ioport,char *strmode,int open
     if (!fptr) {*ioport = 0; return -1;}
     if (flags[LOG_ALL_FILES_USED]) {
       char current_dir[MAX_CMD_LEN];
-      getcwd(current_dir, MAX_CMD_LEN-1);
+      char *dummy; /* to squash warnings */
+      dummy = getcwd(current_dir, MAX_CMD_LEN-1);
+      dummy = dummy; /* to squash warnings */
       xsb_log("%s: %s\n",current_dir,addr);
     }
     if (!stat(addr, &stat_buff) && !S_ISDIR(stat_buff.st_mode)) {

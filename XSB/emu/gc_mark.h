@@ -148,7 +148,7 @@ inline static CPtr hp_pointer_from_cell(CTXTdeclc Cell cell, int *tag)
 
   // unlikely to be right....  don't know what to do here...
   if (isinternstr(cell)) {
-    if (!is_interned_rec(cell)) printf("GC: interned str not found %p\n",cell);
+    if (!is_interned_rec(cell)) printf("GC: interned str not found %p\n", (void *)cell);
     return NULL;
   }
   t = cell_tag(cell) ;
@@ -305,7 +305,7 @@ static int mark_cell(CTXTdeclc CPtr cell_ptr)
   if (tag == XSB_LIST || tag == XSB_ATTV) {
     if (isinternstr(cell_val)) {
       if (gc_strings && (flags[STRING_GARBAGE_COLLECT] == 1)) {
-	if (!is_interned_rec(cell_val)) printf("GC: interned str not found %p\n",cell_val);
+	if (!is_interned_rec(cell_val)) printf("GC: interned str not found %p\n", (void *)cell_val);
 	mark_interned_term(CTXTc cell_val);
       }
     } else {
@@ -320,7 +320,7 @@ static int mark_cell(CTXTdeclc CPtr cell_ptr)
   if (tag == XSB_STRUCT) {
     if (isinternstr(cell_val)) {
       if (gc_strings && (flags[STRING_GARBAGE_COLLECT] == 1)) {
-	if (!is_interned_rec(cell_val)) printf("GC: interned str not found %p\n",cell_val);
+	if (!is_interned_rec(cell_val)) printf("GC: interned str not found %p\n", (void *)cell_val);
 	mark_interned_term(CTXTc cell_val);
       }
     } else {
@@ -412,7 +412,7 @@ static int mark_root(CTXTdeclc Cell cell_val)
     case XSB_STRUCT : 
       if (isinternstr(cell_val)) {  // interned term ignore for now
 	if (gc_strings && (flags[STRING_GARBAGE_COLLECT] == 1)) {
-	  if (!is_interned_rec(cell_val)) printf("GC: interned str not found %p\n",cell_val);
+	  if (!is_interned_rec(cell_val)) printf("GC: interned str not found %p\n", (void *)cell_val);
 	  mark_interned_term(CTXTc cell_val);
 	}
 	return 0;
@@ -443,7 +443,7 @@ static int mark_root(CTXTdeclc Cell cell_val)
     case XSB_LIST: 
       if (isinternstr(cell_val)) {  // interned list ignore for now
 	if (gc_strings && (flags[STRING_GARBAGE_COLLECT] == 1)) {
-	  if (!is_interned_rec(cell_val)) printf("GC: interned str not found %p\n",cell_val);
+	  if (!is_interned_rec(cell_val)) printf("GC: interned str not found %p\n", (void *)cell_val);
 	  mark_interned_term(CTXTc cell_val);
 	}
 	return 0;

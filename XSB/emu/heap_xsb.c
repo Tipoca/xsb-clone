@@ -485,12 +485,12 @@ xsbBool glstack_realloc(CTXTdeclc size_t new_size, int arity)
 	    new_heap_bot = (CPtr)realloc(heap_bot, new_size_in_bytes);
 	}
 	if (new_heap_bot == NULL) {
-	  //	  xsb_mesg("Not enough core to resize the Heap/Local Stack! (current: %"Intfmt"; resize %"Intfmt")",
+	  //	  xsb_error("Not enough core to resize the Heap/Local Stack! (current: %"Intfmt"; resize %"Intfmt")",
 	  //   glstack.size*K,new_size_in_bytes);
 	  return 1; /* return an error output -- will be picked up later */
 	}
       } else {
-	xsb_mesg("Not enough core to resize the Heap and Local Stack! (%" Intfmt ")",new_size_in_bytes);
+	xsb_error("Not enough core to resize the Heap and Local Stack! (%" Intfmt ")",new_size_in_bytes);
 	return 1; /* return an error output -- will be picked up later */
       }
     }

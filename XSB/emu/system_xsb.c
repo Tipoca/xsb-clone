@@ -112,7 +112,7 @@ int sys_syscall(CTXTdeclc int callno)
   case SYS_exit: {
     int exit_code;
     exit_code = (int)ptoc_int(CTXTc 3);
-    xsb_mesg("\nXSB exited with exit code: %d", exit_code);
+    xsb_error("\nXSB exited with exit code: %d", exit_code);
     exit(exit_code); break;
   }
   case SYS_getpid :
@@ -1177,7 +1177,9 @@ static int file_copy(char *source, char *dest)
     }
     if (flags[LOG_ALL_FILES_USED]) {
       char current_dir[MAX_CMD_LEN];
-      getcwd(current_dir, MAX_CMD_LEN-1);
+      char *dummy; /*to squash warnings */
+      dummy = getcwd(current_dir, MAX_CMD_LEN-1);
+      dummy = dummy; /*to squash warnings */
       xsb_log("%s: %s\n",current_dir,source);
     }
     if (dest_exists) {
