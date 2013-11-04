@@ -102,11 +102,12 @@ DllExport void call_conv xsb_initialization_exit(char *description, ...)
   va_list args;
 
   if (xsb_mode != C_CALLING_XSB) {
+    fprintf(stderr, "\n++Error[XSB]: [Runtime/C] ");
     va_start(args, description);
     vfprintf(stderr, description, args);
     va_end(args);
 
-    fprintf(stdfdbk, "\nExiting XSB abnormally...\n");
+    xsb_error("Exiting XSB abnormally...");
     exit(1);
   }
   else {
@@ -126,11 +127,12 @@ DllExport void call_conv xsb_exit(char *description, ...)
   char message[MAXBUFSIZE];
 
   if (xsb_mode != C_CALLING_XSB) {
+    fprintf(stderr, "\n++Error[XSB]: [Runtime/C] ");
     va_start(args, description);
     vfprintf(stderr, description, args);
     va_end(args);
 
-    fprintf(stdfdbk, "\nExiting XSB abnormally...\n");
+    xsb_error("Exiting XSB abnormally...");
     exit(1);
   }
   else {
@@ -149,9 +151,10 @@ DllExport void call_conv xsb_exit(char *description, ...)
    and perhaps shouldn't even be used there.*/
 DllExport void call_conv exit_xsb(char *description)
 {
+  fprintf(stderr, "\n++Error[XSB]: [Runtime/C] ");
   fprintf(stderr,"%s", description);
 
-  fprintf(stdfdbk, "\nExiting XSB abnormally...\n");
+  xsb_error("Exiting XSB abnormally...\n");
   exit(1);
 }
 
