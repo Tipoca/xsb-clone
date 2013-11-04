@@ -1,5 +1,5 @@
 
-test:- test1(500),test2(1000), test4.
+test:- test1(0.5),test2(1), test4.
 
 test1(N):- 
 	thread_create(q1(N),F),
@@ -66,16 +66,16 @@ end_of_file.
 
 test1:- 
 	thread_create(q1,F),
-	%thread_sleep(500),
+	%thread_sleep(0.5),
 	thread_signal(F,writeln('test 1 thread signalled')).
 
 q1:- 
-	thread_sleep(2000),
+	thread_sleep(2),
 	writeln('test1 thread awakened').
 
 test1a:- 
 	thread_create(q1,F).
 
 q1:- 
-	thread_sleep(2000),
+	thread_sleep(2),
 	writeln('test1 thread awakened').
