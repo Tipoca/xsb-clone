@@ -22,6 +22,11 @@
 ** 
 */
 
+
+:- compiler_options([xpp_on,sysmod,optimize]).
+
+#include "flag_defs_xsb.h"
+
 /* This call can only be used if XSB has been compiled with
 XSB_PROFILING defined.  profile_call(Goal) will call Goal and then
 print out a profile of percentage of time spent in each predicate.  It
