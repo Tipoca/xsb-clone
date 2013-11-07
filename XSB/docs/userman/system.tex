@@ -34,7 +34,7 @@ command line.  As long as {\tt foo.P} contains a directive, e.g. {\tt
 \end{verbatim}
 will execute {\tt go} (and any other directives), loading the
 appropriate files as needed~\footnote{In XSB, all extensions except
-  '.pl' --- (default '.P', '.H', '.xwam', '.D' (output by mode
+  '.pl' and '.prolog' --- (default '.P', '.H', '.xwam', '.D' (output by mode
   inferencing), and '.A' (assembly dump) --- are defined in C and
   Prolog code using macros in {\tt \$XSB\_DIR/emu/extensions\_xsb.h}
   and can be changed by a user if desired.  Of course, such a step
@@ -138,7 +138,7 @@ XSB~\footnote{Other types of files may be associated with foreign code
 --- see Volume 2.}.
 \begin{itemize}
 \item A single {\it source} file, whose name is the {\em base file
-  name} plus an optional extension suffix {\tt .P} or {\tt .pl}.
+  name} plus an optional extension suffix {\tt .P}, {\tt .pl}, or {\tt .prolog}.
 \item An {\it object (byte-code)} file, whose name consists of the
   base file name plus the suffix {\tt .xwam}.
 \item An optional {\it header} file, whose name is the base file name
@@ -146,7 +146,7 @@ XSB~\footnote{Other types of files may be associated with foreign code
   contains file-level declarations and directives while the source
   file usually contains the actual definitions of the predicates
   defined in that module.  However, such information can be
-  equivalently put into the {\tt .P} (or {\tt .pl} file.
+  equivalently put into the {\tt .P} ({\tt .pl}, or {\tt .prolog}) file.
 \end{itemize}
 %
 Most of the XSB system predicates for compiling, consulting, and
@@ -175,7 +175,7 @@ As it searches through directory prefixes, different forms of the file
 name may be checked.  If the source file designator has no extension
 the loader first checks for a file in the directory with the {\tt .P}
 extension, (or {\tt .c} for foreign modules) before searching for a
-file without the extension, and finally for a file with a {\tt .pl}
+file without the extension, and finally for a file with a {\tt .pl} or {\tt .prolog}
 extension.  Note that since directories in the dynamic loader path are
 searched in a predetermined order (see Section~\ref{LibPath}), if the
 same file name appears in more than one of these directories, the
@@ -1379,7 +1379,7 @@ Section~\ref{sec:CompilerOptions}.
 
 For a given, {\tt File} to be compiled, the source file name
 corresponding to {\tt File} is obtained by concatenating a directory
-prefix and the extension {\tt .P}, {\tt .pl} or other filenames as
+prefix and the extension {\tt .P}, {\tt .pl}, {\tt .prolog}, or other filenames as
 discussed in Section~\ref{sec:filenames}.  The directory prefix must
 be in the dynamic loader path (see Section~\ref{LibPath}).  Note that
 these directories are searched in a predetermined order (see
@@ -1389,8 +1389,8 @@ the first one it encounters.  In such a case, the user can override
 the search order by providing an absolute path name.
 %
 If {\tt File} contains no extension, an attempt is made to compile the
-file {\tt File.P}, {\tt File.pl}, or other extensions before trying
-compiling the file with name {\tt File}.
+file {\tt File.P}, {\tt File.pl}, {\tt File.prolog}, or other extensions 
+before trying compiling the file with name {\tt File}.
 
 We recommend use of the extension {\tt .P} for Prolog source file to
 avoid ambiguity.  Optionally, users can also provide a header file for

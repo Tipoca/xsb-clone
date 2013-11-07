@@ -558,6 +558,9 @@ char *existing_file_extension(char *basename)
   strcpy(filename, basename); strcat(filename, ".pl");
   if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return "pl";
 
+  strcpy(filename, basename); strcat(filename, ".prolog");
+  if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return "prolog";
+
   strcpy(filename, basename);
   if (! stat(filename, &fileinfo) && not_a_dir(fileinfo)) return ""; /* no extension */
 
