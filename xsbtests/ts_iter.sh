@@ -10,7 +10,7 @@ XSBDIR=$1
  configure --enable-debug ; 
  makexsb --config-tag=dbg ;
  
- cd ../../tests
+ cd ../../xsbtests
  
  sh testsuite.sh -tag dbg  $XSBDIR
  
@@ -22,7 +22,7 @@ rm ../config/*-dflt/saved.o/*.o ;
 configure --with-config-tag=dflt > /tmp/config ; 
 makexsb --config-tag=dflt ;
 
-cd ../../tests
+cd ../../xsbtests
 
 sh testsuite.sh -tag "dflt"  $XSBDIR
 
@@ -34,7 +34,7 @@ sh testsuite.sh -tag "dflt"  $XSBDIR
  configure --enable-mt  > /tmp/config ; 
  makexsb --config-tag=mt ;
  
- cd ../../tests
+ cd ../../xsbtests
  
  sh testsuite.sh -tag mt -exclude "regmatch_tests incremental_tests" $XSBDIR
  
@@ -46,7 +46,7 @@ rm ../config/*-bits32/saved.o/*.o ;
 configure --with-bits32 > /tmp/config ; 
 makexsb --config-tag=bits32 ;
 
-cd ../../tests
+cd ../../xsbtests
 
 sh testsuite.sh -tag "bits32"  $XSBDIR
 
@@ -58,7 +58,7 @@ sh testsuite.sh -tag "bits32"  $XSBDIR
  configure --enable-mt --enable-debug > /tmp/config ; 
  makexsb --config-tag=dbg-mt ;
  
- cd ../../tests
+ cd ../../xsbtests
  
  sh testsuite.sh -tag dbg-mt -exclude "regmatch_tests incremental_tests"  $XSBDIR
  
@@ -70,7 +70,7 @@ sh testsuite.sh -tag "bits32"  $XSBDIR
  configure --enable-batched  > /tmp/config ; 
  makexsb --config-tag=btc ;
  
- cd ../../tests
+ cd ../../xsbtests
  
  sh testsuite.sh -tag btc -exclude "wfs_tests_subsumption delay_tests_subsumption" $XSBDIR
  
