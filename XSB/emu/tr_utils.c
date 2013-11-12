@@ -5372,7 +5372,7 @@ case CALL_SUBS_SLG_NOT: {
 	TIF_Interning(tip) = val;
     }
     else  /* cant find tip */
-      xsb_permission_error(CTXTc "set peroperty","tif",term,
+      xsb_permission_error(CTXTc "set property","tif",term,
 			   "set_tif_property",3);
     break;
   }
