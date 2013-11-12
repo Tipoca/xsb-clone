@@ -1344,7 +1344,7 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
       item = makecs(psc);
       depth_stack_push(get_arity(psc));;
       if (interning_terms) { 
-	XSB_Deref(*xtemp1);
+	XSB_Deref((Cell)xtemp1); /****DSW BUG?? was *stemp1 but then sometimes dumps; but types?**/
 	if (!isinternstr(xtemp1)) {
 	  termsize = intern_term_size(CTXTc (Cell)xtemp1);
 	  reg[1] = (Cell)xtemp1;
@@ -2010,14 +2010,14 @@ int variant_call_search(CTXTdeclc TabledCallInfo *call_info,
   if (interning_terms) { 
     for (i = 0; i < arity; i++) {
       XSB_Deref(cptr[i]);
-      if (!isinternstr(cptr[i])) {
+      if (!isinternstr(cptr[i]) && (islist(cptr[i]) || isconstr(cptr[i]))) {
 	termsize = intern_term_size(CTXTc cptr[i]);
 	//	printf("call ts size=%ld %p\n",termsize,cptr[i]);
 	check_glstack_overflow(arity,pcreg,termsize*sizeof(Cell));
 	cptr = CallInfo_Arguments(*call_info);
 	cptr[i] = intern_term(CTXTc cptr[i]);
-	//	if (isinternstr(cptr[i])) printf("call with intern (%d)\n",i);
-	//	else printf("call without intern (%d)\n",i);
+	//		if (isinternstr(cptr[i])) printf("call with intern (%d)\n",i);
+	//		else printf("call without intern (%d)\n",i);
 
       }
     }
@@ -2596,10 +2596,11 @@ byte *trie_get_return(CTXTdeclc VariantSF sf, Cell retTerm) {
   xsb_dbgmsg((LOG_DEBUG,">>>> trieinstr_vars_num = %d)", trieinstr_vars_num));
 #endif
 
-  if (TIF_Interning(subg_tif_ptr(sf))) 
-    xsb_abort("Error: Cannot use get_returns on table that is interning terms: %s/%d\n",
-	      get_name(TIF_PSC(subg_tif_ptr(sf))),
-	      get_arity(TIF_PSC(subg_tif_ptr(sf))));
+  // use at your own risk.  Should add tests for when incorrect...
+  //  if (TIF_Interning(subg_tif_ptr(sf))) 
+  //    xsb_abort("Error: Cannot use get_returns on table that is interning terms: %s/%d\n",
+  //	      get_name(TIF_PSC(subg_tif_ptr(sf))),
+  //	      get_arity(TIF_PSC(subg_tif_ptr(sf))));
 
   if ( IsProperlySubsumed(sf) )
     ans_root_ptr = subg_ans_root_ptr(conssf_producer(sf));
