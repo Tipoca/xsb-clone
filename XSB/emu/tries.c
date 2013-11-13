@@ -1344,7 +1344,8 @@ BTNptr variant_answer_search(CTXTdeclc int sf_size, int attv_num, CPtr cptr,
       item = makecs(psc);
       depth_stack_push(get_arity(psc));;
       if (interning_terms) { 
-	XSB_Deref((Cell)xtemp1); /****DSW BUG?? was *stemp1 but then sometimes dumps; but types?**/
+	//	XSB_Deref((Cell)xtemp1);
+	XSB_Deref(*xtemp1); /**** BUG, but above fix does not work for gcc */
 	if (!isinternstr(xtemp1)) {
 	  termsize = intern_term_size(CTXTc (Cell)xtemp1);
 	  reg[1] = (Cell)xtemp1;
