@@ -319,7 +319,7 @@ floundered_undefined(a) :- tnot(floundered_undefined(a)).
 %:- table floundered_undefined/0.
 %floundered_undefined :- tnot(floundered_undefined).
 
-?- floundered_undefined(a).
+?- floundered_undefined(a),fail. % fail for batched; otw cut over table
 /*----------------------------------------------------------------------*/
 /* Predicates to retrieve information out of tables.                    */
 /*----------------------------------------------------------------------*/
