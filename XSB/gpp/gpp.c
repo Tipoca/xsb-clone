@@ -54,9 +54,9 @@
 
 #define STACKDEPTH 50
 #define MAXARGS 100
-#define MAXINCL 14   /* max # of include dirs */
+#define MAXINCL 18   /* max # of include dirs */
 
-#define MAX_GPP_NUM_SIZE 15
+#define MAX_GPP_NUM_SIZE 18
 
 typedef struct MODE {
   char *mStart;		/* before macro name */
@@ -236,7 +236,7 @@ void delete_macro(int h,int i);
 
 /* various recent additions */
 static void getDirname(char *fname, char *dirname);
-static FILE *openInCurrentDir(char *incfile);
+static FILE *openInCurrentDir(char **incfile);
 char *ArithmEval(int pos1,int pos2);
 void replace_definition_with_blank_lines(char *start, char *end, int skip);
 void replace_directive_with_blank_line(FILE *file);
@@ -2238,7 +2238,7 @@ int ParsePossibleMeta()
 	f=fopen(incfile_name,"r");
       else /* search current dir, if this search isn't turned off */
 	if (!NoCurIncFirst) {
-	  f = openInCurrentDir(incfile_name);
+	  f = openInCurrentDir(&incfile_name);
 	}
 
       for (j=0;(f==NULL)&&(j<nincludedirs);j++) {
@@ -2258,7 +2258,7 @@ int ParsePossibleMeta()
         /* extract the orig include filename */
         memcpy(incfile_name, temp+pos1, pos2-pos1+1);
         incfile_name[pos2-pos1+1] = '\0';
-        f = openInCurrentDir(incfile_name);
+        f = openInCurrentDir(&incfile_name);
       }
 
       free(temp);
@@ -2696,13 +2696,21 @@ static void getDirname(char *fname, char *dirname)
   dirname[i+1] = '\0';
 }
 
-static FILE *openInCurrentDir(char *incfile)
+/* opens *incfile in the directory of the including file C->filename.
+   Prepends the directory of the including file to *incfile and expands the
+   space pointed to by *incfile. This is passed back to the caller so that the
+   included file will be recorded using its absolute file name.
+*/
+static FILE *openInCurrentDir(char **incfile)
 {
   char *absfile =
-    (char *)calloc(strlen(C->filename)+strlen(incfile)+1, sizeof(char));
+    (char *)calloc(strlen(C->filename)+strlen(*incfile)+1, sizeof(char));
   FILE *f;
   getDirname(C->filename,absfile);
-  strcat(absfile,incfile);
+  /* expand *incfile and prepend the current dir to the included file */
+  strcat(absfile,*incfile);
+  *incfile = realloc(*incfile, strlen(absfile)+1);
+  strcpy(*incfile,absfile);
   f=fopen(absfile,"r");
   free(absfile);
   return f;
@@ -2733,7 +2741,7 @@ void replace_directive_with_blank_line(FILE *f)
 }
 
 
-/* If lineno is > 15 digits - the number won't be printed correctly */
+/* If lineno > MAX_GPP_NUM_SIZE digits - lineno won't be printed correctly */
 void write_include_marker(FILE *f, int lineno, char *filename, char *marker)
 {
   static char lineno_buf[MAX_GPP_NUM_SIZE];
