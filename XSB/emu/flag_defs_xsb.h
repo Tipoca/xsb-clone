@@ -170,6 +170,8 @@ interrupt flag
 #define QUIETLOAD    	  3   /* don't display "module loaded" msgs */
 #define NOPROMPT    	  5   /* display no prompt--useful in spawned
 				 subprocesses */
+#define NOFEEDBACK    	  7   /* display no feedback--useful in spawned
+				 subprocesses */
 
 #define DEFAULT_PRIVATE   0
 #define DEFAULT_SHARING   1

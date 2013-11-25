@@ -388,6 +388,8 @@ static int process_long_option(char *option,int *ctr,char *argv[],int argc)
     flags[BANNER_CTL] *= QUIETLOAD;
   } else if (0==strcmp(option, "noprompt")) {
     flags[BANNER_CTL] *= NOPROMPT;
+  } else if (0==strcmp(option, "nofeedback")) {
+    flags[BANNER_CTL] *= NOFEEDBACK;
   } else if (0==strcmp(option, "shared_predicates")) {
     flags[PRIVSHAR_DEFAULT] = DEFAULT_SHARING;
   } else if (0==strcmp(option, "help")) {
