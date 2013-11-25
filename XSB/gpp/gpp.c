@@ -55,6 +55,7 @@
 #define STACKDEPTH 50
 #define MAXARGS 100
 #define MAXINCL 18   /* max # of include dirs */
+#define MAXINCLUDE_DEPTH 200 /* max depth of #include statements */
 
 #define MAX_GPP_NUM_SIZE 18
 
@@ -218,6 +219,7 @@ typedef struct INPUTCONTEXT {
   struct OUTPUTCONTEXT *out;
   int eof;
   int in_comment;
+  int include_depth;
   int ambience; /* FLAG_TEXT, FLAG_USER or FLAG_META */
   int may_have_args;
 } INPUTCONTEXT;
@@ -247,13 +249,13 @@ void escape_backslashes(char *instr, char **outstr);
 
 void bug(char *s)
 {
-  fprintf(stderr,"++Error[GPP]: %s:%d: %s.\n",C->filename,C->lineno,s);
+  fprintf(stderr,"\n++Error[GPP]: %s:%d: %s.\n\n",C->filename,C->lineno,s);
   exit(1);
 }
 
 void warning(char *s)
 {
-  fprintf(stderr,"++Warning[GPP]: %s:%d: %s.\n",C->filename,C->lineno,s);
+  fprintf(stderr,"\n++Warning[GPP]: %s:%d: %s.\n\n",C->filename,C->lineno,s);
 }
 
 int hash_str(char *s,int l)
@@ -1064,6 +1066,7 @@ void initthings(int argc, char **argv)
   C->eof=0;
   C->namedargs=NULL;
   C->in_comment=0;
+  C->include_depth=0;
   C->ambience=FLAG_TEXT;
   C->may_have_args=0;
   commented[0]=0;
@@ -1466,6 +1469,7 @@ char *ProcessText(char *buf,int l,int ambience)
   C->eof=0;
   C->namedargs=T->namedargs;
   C->in_comment=T->in_comment;
+  C->include_depth=0;
   C->ambience=ambience;
   C->may_have_args=T->may_have_args;
   
@@ -1511,6 +1515,7 @@ char *ProcessFastDefinition(char *buf,int l,char **argnames)
   C->eof=0;
   C->namedargs=argnames;
   C->in_comment=T->in_comment;
+  C->include_depth=0;
   C->ambience=FLAG_META;
   C->may_have_args=1;
   
@@ -2273,6 +2278,8 @@ int ParsePossibleMeta()
       }
 
       N=C;
+      if (C->include_depth > MAXINCLUDE_DEPTH)
+	bug("Cyclic #include statements detected or maximum depth of 200 #include's exceeded");
       C=(struct INPUTCONTEXT *)malloc(sizeof(struct INPUTCONTEXT));
       C->in=f;
       C->argc=0;
@@ -2286,6 +2293,7 @@ int ParsePossibleMeta()
       C->eof=0;
       C->namedargs=NULL;
       C->in_comment=0;
+      C->include_depth = N->include_depth+1;
       C->ambience=FLAG_TEXT;
       C->may_have_args=0;
       PushSpecs(S);
@@ -2305,6 +2313,7 @@ int ParsePossibleMeta()
       free(C);
       PopSpecs();
       C=N;
+      C->include_depth -= 1;
     } else
       replace_directive_with_blank_line(C->out->f);
     break;
@@ -2597,6 +2606,7 @@ int ParsePossibleUser(void)
   C->eof=0;
   C->namedargs=m->argnames;
   C->in_comment=m->defined_in_comment;
+  C->include_depth=0;
   C->ambience=FLAG_META; 
   if (m != NULL) 
     PushSpecs(m->define_specs);
