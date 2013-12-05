@@ -162,7 +162,7 @@ extern byte *current_inst;
 extern Cell answer_return_inst, check_complete_inst, hash_handle_inst,
 	    resume_compl_suspension_inst, fail_inst, dynfail_inst, 
   halt_inst, proceed_inst, trie_fail_inst,
-            resume_compl_suspension_inst2,
+  resume_compl_suspension_inst2,completed_trie_member_inst,
             reset_inst, trie_fail_unlock_inst;
 extern byte *check_interrupts_restore_insts_addr;
 

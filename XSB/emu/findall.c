@@ -46,6 +46,7 @@
 #include "cinterf.h"
 #include "findall.h"
 #include "thread_xsb.h"
+#include "tries.h"
 #include "debug_xsb.h"
 #include "flag_defs_xsb.h"
 #include "struct_intern.h"

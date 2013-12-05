@@ -46,6 +46,8 @@
 #define GET_TIF_PROPERTY                         22
 #define IMMED_ANS_DEPENDS_PTRLIST                23
 #define GET_RESIDUAL_SCCS                        24
+#define TEMP_FUNCTION                            25
+#define TEMP_FUNCTION_2                            26
 
 // For delete return
 #define ANSWER_SUBSUMPTION   0

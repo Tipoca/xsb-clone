@@ -117,13 +117,13 @@ extern char *expand_filename(char *filename);
 
 #define get_obj_word_bb(x)  \
   {Integer dummy; dummy = get_obj_word(x) ; fix_bb(x) ; \
-    dummy = dummy; /* to squash warnings */}
+    SQUASH_LINUX_COMPILER_WARN(dummy) ; }
 #define get_obj_word_bbsig(x) {get_obj_word(x) ; fix_bb4(x) ;\
 			       *(Cell *)(x) = makeint(*(int *)(x));}
 #define get_obj_word_bbsig_notag(x) \
   {Integer dummy; dummy = get_obj_word(x) ; fix_bb4(x) ;      \
     *(Integer *)(x) = *(int *)(x);					\
-    dummy = dummy; /* to squash warnings */ }
+    SQUASH_LINUX_COMPILER_WARN(dummy) ; }
                    
 
 /* === local declarations =============================================	*/
@@ -327,7 +327,7 @@ static Integer get_index_tab(CTXTdeclc FILE *fd, int clause_no)
     inserth(label, &indextab[hashval]);
   }
 
-  dummy = dummy; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(dummy) ; 
   return count;
 }
 
@@ -512,7 +512,7 @@ static int load_text(FILE *fd, int seg_num, size_t text_bytes, int *current_tab)
     } /* for */
   }
 
-  dummy = dummy; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(dummy) ; 
   if (inst_addr != end_addr) {
     xsb_dbgmsg((LOG_DEBUG, "inst_addr %p, end_addr %p", inst_addr, end_addr));
     return FALSE;
@@ -555,7 +555,7 @@ static void load_index(CTXTdeclc FILE *fd, size_t index_bytes, int table_num, Pa
 #endif
     count += 10 + t_len;
   }
-  dummy = dummy; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(dummy) ; 
 }
 
 /*== the load_seg function =============================================*/
@@ -698,7 +698,7 @@ inline static void get_obj_atom(FILE *fd, VarString *atom)
   atom->length = (int)len;
   XSB_StrNullTerminate(atom);
 
-  dummy = dummy; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(dummy) ; 
 }
 
 /*----------------------------------------------------------------------*/
@@ -813,7 +813,7 @@ static xsbBool load_one_sym(FILE *fd, Psc cur_mod, int count, int exp)
   if (!temp_pair) return FALSE;
   
   reloc_table[count] = (pw)temp_pair;
-  dummy = dummy; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(dummy) ; 
   return TRUE;
 }  /* load_one_sym */
 
@@ -1078,7 +1078,7 @@ static byte *loader1(CTXTdeclc FILE *fd, char *filename, int exp)
     get_name(cur_mod), first_inst));
   */
 
-  dummy = dummy; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(dummy) ; 
   return (pb)first_inst;
 } /* loader1 */
 
@@ -1114,7 +1114,7 @@ static byte *loader_foreign(char *filename, FILE *fd, int exp)
   if (!load_syms(fd, (int)psc_count, 0, cur_mod, exp)) return FALSE;
   instr = load_obj(filename, cur_mod, ldoption.string);
 
-  dummy = dummy; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(dummy) ; 
   return instr;
 } /* end of loader_foreign */
 #endif
@@ -1146,7 +1146,7 @@ byte *loader(CTXTdeclc char *file, int exp)
     char current_dir[MAX_CMD_LEN];
     dummy = getcwd(current_dir, MAX_CMD_LEN-1);
     xsb_log("%s: %s\n",current_dir,file);
-    dummy = dummy; /* to squash a warning */
+  SQUASH_LINUX_COMPILER_WARN(dummy) ; 
   }
 
   if (flags[HITRACE]) {
@@ -1154,7 +1154,7 @@ byte *loader(CTXTdeclc char *file, int exp)
       char dir[200];
       char *res; /* to squash a warning */
       res = getcwd(dir,199);
-      res = res; /* to squash a warning */
+      SQUASH_LINUX_COMPILER_WARN(res) ; 
       xsb_mesg("\n  ...... loading file %s%s", dir,file+1);
     } else xsb_mesg("\n  ...... loading file %s", file);
   }

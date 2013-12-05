@@ -299,7 +299,7 @@ Integer ts_array_len = 0;
     ts_array = mem_realloc(ts_array,ts_array_len*sizeof(*ts_array),	\
 			   ts_array_len*2*sizeof(*ts_array),OTHER_SPACE); \
     ts_array_len = ts_array_len*2;					\
-    printf("expanded ts_array: %p, %d\n",ts_array,ts_array_len);	\
+    /*    printf("expanded ts_array: %p, %d\n",ts_array,ts_array_len);*/ \
   }
 
 

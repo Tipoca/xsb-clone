@@ -162,6 +162,7 @@ Cell dynfail_inst;
 //Cell trie_fail_unlock_inst;
 Cell halt_inst;
 Cell proceed_inst;
+Cell completed_trie_member_inst;
 byte *check_interrupts_restore_insts_addr;
 
 extern void reset_stat_total(void); 
@@ -189,7 +190,7 @@ static void display_file(char *infile_name)
     char current_dir[MAX_CMD_LEN];
     char *dummy; /* to squash warnings */
     dummy = getcwd(current_dir, MAX_CMD_LEN-1);
-    dummy = dummy; /* to squash warnings */
+    SQUASH_LINUX_COMPILER_WARN(dummy) ; 
     xsb_log("%s: %s\n",current_dir,infile_name);
   }
   while (fgets(buffer, MAXBUFSIZE-1, infile) != NULL)
@@ -1503,6 +1504,7 @@ void init_symbols(CTXTdecl)
   cell_opcode(&check_complete_inst) = check_complete;
   cell_opcode(&hash_handle_inst) = hash_handle;
   cell_opcode(&trie_fail_inst) = trie_fail;
+  cell_opcode(&completed_trie_member_inst) = completed_trie_member;    
 
   check_interrupts_restore_insts_addr = calloc((3+1),sizeof(Integer));
   write_byte(check_interrupts_restore_insts_addr,&Loc,check_interrupt);

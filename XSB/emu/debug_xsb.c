@@ -1215,6 +1215,32 @@ static int sprint_term_of_subgoal(CTXTdeclc forestLogBuffer fl_buf, int size,byt
 
 /*----------------------------------------------------------------------*/
 
+void print_subgoal_callnode_leaf(CTXTdeclc FILE *fp, callnodeptr cn)
+{
+  BTNptr leaf;
+  int  i = 0;
+  Psc  psc = TIF_PSC((TIFptr) callnode_tif_ptr(cn));
+
+  for (leaf = callnode_leaf_ptr(cn); leaf != NULL; leaf = Parent(leaf)) {
+    cell_array[i++] = BTN_Symbol(leaf);
+  }
+  write_quotedname(fp,     get_name(psc));
+  /*  fprintf(fp, "%s", get_name(psc)); */
+  if (get_arity(psc) > 0) {
+    fprintf(fp, "(");
+    for (i = i-2; i >= 0 ; i--) {
+      print_term_of_subgoal(CTXTc fp, CAR, &i);
+      if (i > 0) fprintf(fp, ", ");
+    }
+    fprintf(fp, ")");
+  }
+}
+
+void print_callnode(CTXTdeclc FILE *fp, callnodeptr cn) {
+  if (cn -> goal)  print_subgoal(CTXTc stddbg,cn->goal);
+  else print_subgoal_callnode_leaf(CTXTc stddbg, cn); 
+}
+
 void print_subgoal(CTXTdeclc FILE *fp, VariantSF subg)
 {
   BTNptr leaf;
@@ -1718,7 +1744,7 @@ void print_tables(CTXTdecl)
 	int retcode; /* to squash warnings */
 	fprintf(stddbg, "more (y/n)?  ");
 	retcode = scanf("%c", &ans);
-	retcode = retcode; /* to squash warnings */
+	SQUASH_LINUX_COMPILER_WARN(retcode) ;
 	skip_to_nl();
 	i = 0;
       }

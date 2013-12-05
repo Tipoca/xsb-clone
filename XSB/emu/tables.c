@@ -246,8 +246,8 @@ int table_call_search(CTXTdeclc TabledCallInfo *call_info,
          is complete.  Otherwise, dfs_outedges would have aborted */
 
       if(IsNonNULL(c) && (c->falsecount!=0)){
-	//	  printf("   recomputing (bit = %d) ",c->recomputable);
-	//	  print_subgoal(stddbg,sf);printf("\n");
+	//	 	  printf("   recomputing (rcomputable = %d) ",c->recomputable);
+	//  print_subgoal(stddbg,sf);printf("\n");
 	if (c->recomputable == COMPUTE_DEPENDENCIES_FIRST) {
 	  lazy_affected = empty_calllist();
 	  if ( !dfs_inedges(CTXTc c,  &lazy_affected, CALL_LIST_EVAL) ) {
@@ -384,7 +384,8 @@ int table_call_search_incr(CTXTdeclc TabledCallInfo *call_info,
 		       CallLookupResults *results) {
 
   TIFptr tif;
-  BTNptr leaf;
+  BTNptr leaf; callnodeptr cn;
+
   tif = CallInfo_TableInfo(*call_info);
   if ( IsNULL(TIF_CallTrie(tif)) )
     TIF_CallTrie(tif) = newCallTrie(CTXTc TIF_PSC(tif));
@@ -397,7 +398,10 @@ int table_call_search_incr(CTXTdeclc TabledCallInfo *call_info,
     leaf=CallLUR_Leaf(*results);
     if (CallLUR_VariantFound(*results)==0){
       /* new call */      
-      BTN_Child(leaf) = (BTNptr)makecallnode(NULL); 
+      cn = makecallnode(NULL); 
+      BTN_Child(leaf) = (BTNptr)cn;
+      callnode_tif_ptr(cn) = tif;
+      callnode_leaf_ptr(cn) = leaf;
       initoutedges((callnodeptr)BTN_Child(leaf));
     }
   }

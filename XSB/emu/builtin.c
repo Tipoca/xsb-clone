@@ -650,23 +650,6 @@ inline static void ctop_constr(CTXTdeclc int regnum, Pair psc_pair)
   else xsb_abort("[CTOP_CONSTR] Argument %d of illegal type: %s",regnum,canonical_term(CTXTc addr, 0));
 }
 
-/*
- *  Bind the variable pointed to by the "regnum"th argument register to the
- *  term at address "term".  Make an entry in the trail for this binding.
- */
-// TLS: added static for clang
-static inline  void ctop_tag(CTXTdeclc int regnum, Cell term)
-{
-  register Cell addr = cell(reg+regnum);
-
-  XSB_Deref(addr);
-  if (isref(addr)) {
-    bind_copy(vptr(addr), term);
-  }
-  else
-    xsb_abort("[CTOP_TAG] Argument %d of illegal type: %s",regnum,canonical_term(CTXTc addr, 0));
-}
-
 
 /*
  *  For encoding object pointer, like PSC, PSC-PAIR and Subgoal frames.

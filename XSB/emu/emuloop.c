@@ -84,6 +84,7 @@
 #include "call_graph_xsb.h" /* incremental evaluation */
 #include "cinterf.h"
 #include "struct_intern.h"
+#include "ptoc_tag_xsb_i.h"
 
 /*
  * Variable ans_var_pos_reg is a pointer to substitution factor of an
@@ -95,8 +96,6 @@
 #ifndef MULTI_THREAD
 CPtr	ans_var_pos_reg;
 #endif
-
-extern void printterm(FILE *fp, Cell term, long level);
 
 //#define MULTI_THREAD_LOGGING
 #ifdef MULTI_THREAD_LOGGING
@@ -425,7 +424,6 @@ char *xsb_default_segfault_msg =
 
 extern int xsb_profiling_enabled;
 extern Psc psc_from_code_addr(byte *);
-extern void printterm(FILE *, Cell, long);
 
 Integer length_dyntry_chain(byte *codeptr) {
   Integer chainlen = 0;

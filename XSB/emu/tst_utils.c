@@ -45,8 +45,6 @@
 
 /* ======================================================================= */
 
-extern void printterm(FILE *, Cell, int);   /* prints to stddbg */
-
 #ifdef BITS64
 #ifdef WIN_NT
 #define IntegerFormatString	"%lld"

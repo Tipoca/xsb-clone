@@ -58,11 +58,13 @@
 #include "debug_xsb.h"
 #include "biassert_defs.h"
 #include "struct_intern.h"
+#include "term_psc_xsb_i.h"
+#include "ptoc_tag_xsb_i.h"
+
 
 /* --- routines used from other files ---------------------------------	*/
 
 extern Integer val_to_hash(Cell);
-extern void printterm(FILE *, Cell, int);
 
 extern int xsb_profiling_enabled;
 extern void add_prog_seg(Psc, byte *, size_t);
@@ -3866,9 +3868,6 @@ void init_call_cleanup(void) {
   //	  * (pb) (get_ep(psc) + 0x10),* (CPtr) (get_ep(psc) + 0x14));
   call_cleanup_gl = (CPtr) (get_ep(psc) +  ZOOM_FACTOR * 0x10);
 }
-
-#include "term_psc_xsb_i.h"
-#include "ptoc_tag_xsb_i.h"
 
 #ifdef MULTI_THREAD
 extern struct shared_interned_trie_t* shared_itrie_array;

@@ -449,22 +449,23 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
       for (i = 0; i < template_size; i++) {
 	push_trieinstr_unif_stk(cell(answer_template_heap-template_size+i));
       }
+      //      printf("unif stk size is %d\n",i);
       delay_it = 1;
       lpcreg = (byte *)subg_ans_root_ptr(producer_sf);
-#ifdef MULTI_THREAD_RWL
-/* save choice point for trie_unlock instruction */
-      save_find_locx(ereg);
-      tbreg = top_of_cpstack;
-#ifdef SLG_GC
-      old_cptop = tbreg;
-#endif
-      save_choicepoint(tbreg,ereg,(byte *)&trie_fail_unlock_inst,breg);
-#ifdef SLG_GC
-      cp_prevtop(tbreg) = old_cptop;
-#endif
-      breg = tbreg;
-      hbreg = hreg;
-#endif
+      //#ifdef MULTI_THREAD_RWL
+      ///* save choice point for trie_unlock instruction */
+      //      save_find_locx(ereg);
+      //      tbreg = top_of_cpstack;
+      //#ifdef SLG_GC
+      //      old_cptop = tbreg;
+      //#endif
+      //      save_choicepoint(tbreg,ereg,(byte *)&trie_fail_unlock_inst,breg);
+      //#Ifdef SLG_GC
+      //      cp_prevtop(tbreg) = old_cptop;
+      //#endif
+      //      breg = tbreg;
+      //      hbreg = hreg;
+      //#endif
       XSB_Next_Instr();
     }
     else {
@@ -705,7 +706,7 @@ XSB_Start_Instr(tabletrysinglenoanswers,_tabletrysinglenoanswers)
   CallLookupResults lookupResults;
   VariantSF  sf;
   TIFptr tip;
-  callnodeptr c;
+  callnodeptr cn;
 
     //#ifdef MULTI_THREAD
     //  xsb_abort("Incremental Maintenance of tables is not available for multithreaded engine.\n");
@@ -742,18 +743,21 @@ XSB_Start_Instr(tabletrysinglenoanswers,_tabletrysinglenoanswers)
     if(IsNonNULL(ptcpreg)) {
       sf=(VariantSF)ptcpreg;
       if(IsIncrSF(sf)){
-	c=(callnodeptr)BTN_Child(CallLUR_Leaf(lookupResults));
-	if(IsNonNULL(c)) {
-	  addcalledge(c,sf->callnode);  
+	cn=(callnodeptr)BTN_Child(CallLUR_Leaf(lookupResults));
+	if(IsNonNULL(cn)) {
+	  addcalledge(cn,sf->callnode);  
 	}
       }
     }
+    //    printf("creating cn for: "); print_callnode(stddbg, cn); printf("\n");
   }
 #ifdef NON_OPT_COMPILE
   else  /* not incremental */
-    if (!get_opaque(TIF_PSC(tip)))
+    if (!get_opaque(TIF_PSC(tip))) {
+      sf=(VariantSF)ptcpreg;
       xsb_abort("Parent predicate %s/%d not declared incr_table\n", 
 		get_name(TIF_PSC(subg_tif_ptr(sf))),get_arity(TIF_PSC(subg_tif_ptr(sf)))); 
+    }
 #endif
   ADVANCE_PC(size_xxx);
   lpcreg = *(pb *)lpcreg;

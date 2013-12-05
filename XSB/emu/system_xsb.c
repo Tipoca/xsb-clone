@@ -794,7 +794,7 @@ static void concat_array(CTXTdeclc char *array[], char *separator,
     space_left -= separator_size;
     idx++;
   }
-  if (space_left < 0) {
+  if (space_left <= 0) {           // TLS: changed < to <= to fix compiler error on Mac
     xsb_resource_error(CTXTc "spawn_process/shell buffer",
 		       "spawn_process/shell",5) ;
   }
@@ -1179,7 +1179,7 @@ static int file_copy(char *source, char *dest)
       char current_dir[MAX_CMD_LEN];
       char *dummy; /*to squash warnings */
       dummy = getcwd(current_dir, MAX_CMD_LEN-1);
-      dummy = dummy; /*to squash warnings */
+      SQUASH_LINUX_COMPILER_WARN(dummy) ; 
       xsb_log("%s: %s\n",current_dir,source);
     }
     if (dest_exists) {

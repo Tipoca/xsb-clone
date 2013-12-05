@@ -170,6 +170,11 @@ extern int table_status(CTXTdeclc Cell, TableStatusFrame*);
 	load_solution_trie(CTXTc arity, 0, &cell_array1[arity-1], subg_leaf_ptr(SUBG))
 
 
+#define is_trie_instruction(cp_inst) \
+ ((int) cp_inst >= 0x5c && (int) cp_inst < 0x80) \
+	   || ((int) cp_inst >= 0x90 && (int) cp_inst < 0x94) 
+
+
 #endif /* __TR_UTILS_H__ */
 
 

@@ -1469,7 +1469,7 @@ BTNptr delay_chk_insert(CTXTdeclc int arity, CPtr cptr, CPtr *hook)
     Cell item;
     CPtr xtemp1;
     int  i, j, tag = XSB_FREE, flag = 1;
-    int ctr, attv_ctr;
+    int ctr, attv_ctr=0;
     BTNptr Paren, *ChildPtrOfParen;
     byte interning_terms = 0;  /* never intern ground terms in delay lists */
  
@@ -1591,7 +1591,7 @@ BTNptr delay_chk_insert(CTXTdeclc int arity, CPtr cptr, CPtr *hook)
  * the vector `cptr') are to be unified -- has been pushed onto the
  * termstack.
  */
-static void load_solution_from_trie(CTXTdeclc int arity, CPtr cptr)
+static void load_solution_trie_1(CTXTdeclc int arity, CPtr cptr)
 {
    int i;
    CPtr xtemp1, Dummy_Addr;
@@ -1609,6 +1609,30 @@ static void load_solution_from_trie(CTXTdeclc int arity, CPtr cptr)
 	 dbind_ref((CPtr) dec_addr(xtemp1), returned_val);
        } else {			/* a regular variable or other?*/
 	 dbind_ref(xtemp1,returned_val);
+       }
+     }
+   }
+   resetpdl;
+}
+
+static void load_solution_trie_notrail_1(CTXTdeclc int arity, CPtr cptr)
+{
+   int i;
+   CPtr xtemp1, Dummy_Addr;
+   Cell returned_val, xtemp2;
+   byte xtemp2_mod;
+
+   for (i=0; i<arity; i++) {
+     xtemp1 = (CPtr) (cptr+i);    // <<<<<< different from above
+     XSB_CptrDeref(xtemp1);
+     macro_make_heap_term(xtemp1,returned_val,Dummy_Addr);
+     if (xtemp1 != (CPtr)returned_val) {  /* i.e. numcon, no heap term created */
+       if (isattv(xtemp1)) {	/* an XSB_ATTV */
+	 /* Bind the variable part of xtemp1 to returned_val */
+	 add_interrupt(CTXTc cell(((CPtr)dec_addr(xtemp1) + 1)), returned_val); 
+	 dbind_ref((CPtr) dec_addr(xtemp1), returned_val);
+       } else {			/* a regular variable or other?*/
+	 bld_ref(xtemp1,returned_val);  // <<<<<< different from above
        }
      }
    }
@@ -1722,10 +1746,8 @@ void handle_heap_overflow_trie(CTXTdeclc CPtr *cptr, int arity, int heap_needed)
  */
 //#define DELAYING_FUDGE_FACTOR 2400
 
-void load_solution_trie(CTXTdeclc int arity, int attv_num, CPtr cptr, BTNptr TriePtr)
-{
-  CPtr xtemp;
-  int heap_needed;
+void load_solution_trie(CTXTdeclc int arity, int attv_num, CPtr cptr, BTNptr TriePtr) {
+  CPtr xtemp;  int heap_needed;
   
   num_heap_term_vars = 0;
   if (arity > 0) {
@@ -1744,7 +1766,31 @@ void load_solution_trie(CTXTdeclc int arity, int attv_num, CPtr cptr, BTNptr Tri
       xsb_warn("stack overflow could cause problems for delay lists\n");
       handle_heap_overflow_trie(CTXTc &cptr,arity,heap_needed);
     }
-    load_solution_from_trie(CTXTc arity,cptr);
+    load_solution_trie_1(CTXTc arity,cptr);
+  }
+}
+
+void load_solution_trie_notrail(CTXTdeclc int arity, int attv_num, CPtr cptr, BTNptr TriePtr) { 
+CPtr xtemp; int heap_needed;
+  
+  num_heap_term_vars = 0;
+  if (arity > 0) {
+    /* Initialize var_addr[] as the attvs in the call. */
+    if (attv_num > 0) {
+      for (xtemp = cptr; xtemp > cptr - arity; xtemp--) {
+	if (isattv(cell(xtemp))) {
+	  //	  var_addr[num_heap_term_vars] = (CPtr) cell(xtemp);
+	  safe_assign(var_addr,num_heap_term_vars,(CPtr) cell(xtemp),var_addr_arraysz);
+	  num_heap_term_vars++;
+	}
+      }
+    }
+    heap_needed = follow_par_chain(CTXTc TriePtr); /* side-effect: fills termstack */
+    if (glstack_overflow(heap_needed*sizeof(Cell))) {
+      xsb_warn("stack overflow could cause problems for delay lists\n");
+      handle_heap_overflow_trie(CTXTc &cptr,arity,heap_needed);
+    }
+    load_solution_trie_notrail_1(CTXTc arity,cptr);        // <<<<<<< only difference from previous
   }
 }
 
@@ -1758,7 +1804,7 @@ void load_delay_trie(CTXTdeclc int arity, CPtr cptr, BTNptr TriePtr)
      heap_needed = follow_par_chain(CTXTc TriePtr);
      if (glstack_overflow(heap_needed*sizeof(Cell))) 
        handle_heap_overflow_trie(CTXTc &cptr,arity,heap_needed);
-     load_solution_from_trie(CTXTc arity,cptr);
+     load_solution_trie_1(CTXTc arity,cptr);
    }
 }
 

@@ -301,7 +301,7 @@ void print_detailed_tablespace_stats(CTXTdecl) {
     NodeStats_SizeAllocNodes(abtn) + HashStats_SizeAllocTotal(abtht);
   trieassert_used =
     NodeStats_SizeUsedNodes(abtn) + HashStats_SizeUsedTotal(abtht);
-  trieassert_used = trieassert_used; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(trieassert_used) ; 
 
   printf("\n"
 	 "Table Space Usage (excluding asserted and interned tries) \n");
@@ -515,7 +515,7 @@ void print_detailed_tablespace_stats(CTXTdecl) {
   abtht = hash_statistics(&smAssertBTHT);
   trieassert_alloc = NodeStats_SizeAllocNodes(abtn) + HashStats_SizeAllocTotal(abtht);
   trieassert_used = NodeStats_SizeUsedNodes(abtn) + HashStats_SizeUsedTotal(abtht);
-  trieassert_used = trieassert_used; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(trieassert_used) ; 
 
   printf("  Current Total Allocation:   %12"UIntfmt" bytes\n"
   	 "  Current Total Usage:        %12"UIntfmt" bytes\n",

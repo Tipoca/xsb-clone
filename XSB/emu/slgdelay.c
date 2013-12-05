@@ -364,7 +364,7 @@ void *simpl_var_trie_lookup(CTXTdeclc void *branchRoot, xsbBool *wasFound,
 
   parent = branchRoot;
   std_var_num = (int)Trail_NumBindings;
-  std_var_num = std_var_num; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(std_var_num) ; 
   while ( ! TermStack_IsEmpty ) {
 
     TermStack_Pop(symbol);

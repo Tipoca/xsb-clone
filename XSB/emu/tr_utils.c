@@ -79,8 +79,6 @@ counter abol_subg_ctr,abol_pred_ctr,abol_all_ctr; /* statistics */
 
 /*----------------------------------------------------------------------*/
 
-extern void print_subgoal(CTXTdeclc FILE *, VariantSF);
-
 #include "ptoc_tag_xsb_i.h"
 #include "term_psc_xsb_i.h"
 
@@ -103,7 +101,6 @@ double total_table_gc_time = 0;
 #define end_table_gc_time(MARK) 
 
 #endif
-
 
 /*----------------------------------------------------------------------*/
 /* various utility predicates and macros */
@@ -684,6 +681,51 @@ void delete_variant_sf_and_answers(CTXTdeclc VariantSF pSF, xsbBool should_warn)
   mem_dealloc(freeing_stack,freeing_stack_size*sizeof(BTNptr),TABLE_SPACE);
   //  printf("leaving delete_variant\n");
   }
+
+//---------------------------------------------------------------------------
+
+ALNptr traverse_variant_answer_trie(CTXTdeclc VariantSF subgoal, CPtr rootptr, CPtr leafptr) {
+  int node_stk_top = 0;
+  BTNptr rnod, *Bkp;   BTHTptr ht;
+  BTNptr *freeing_stack = NULL;  int freeing_stack_size = 0;
+  ALNptr lastALN = (ALNptr) NULL; ALNptr thisALN;
+  BTNptr tempstk[128]; int tempstk_top = 0;
+
+  while (leafptr != rootptr) {
+    tempstk[tempstk_top++] =  *(BTNptr *)leafptr;
+    printf("setting leafptr to %p  %lu\n",cp_prevbreg(leafptr),*cp_prevbreg(leafptr));
+    leafptr = (CPtr)  cp_prevbreg(leafptr);
+  }
+  while(tempstk_top > 0) {
+    push_node(tempstk[--tempstk_top]);
+  }
+
+  while (node_stk_top != 0) {
+      pop_node(rnod);
+      if ( IsHashHeader(rnod) ) {
+	ht = (BTHTptr) rnod;
+	for (Bkp = BTHT_BucketArray(ht); Bkp < BTHT_BucketArray(ht) + BTHT_NumBuckets(ht);  Bkp++) {
+	  if ( IsNonNULL(*Bkp) )
+	    push_node(*Bkp);
+	}
+      }
+      /* Non nulls from abolish-- but keeping for now */
+      else { 
+	if (BTN_Sibling(rnod) && IsNonNULL(BTN_Sibling(rnod)))
+	  { push_node(BTN_Sibling(rnod)); }
+	if ( !IsLeafNode(rnod) && IsNonNULL(BTN_Child(rnod))) {
+	  push_node(BTN_Child(rnod)) } 
+	else { /* leaf node */
+	  printf("Trie traversal Leaf Node %p\n",rnod);
+	  New_ALN(subgoal,thisALN, rnod, lastALN);
+	  lastALN = thisALN;
+	}
+      }
+  }
+  return lastALN;
+} 
+
+//---------------------------------------------------------------------------
 
 /* Code to abolish tables for a variant predicate */
 /* Incremental recomputation seems to be implemented only for
@@ -1572,7 +1614,7 @@ int private_trie_intern(CTXTdecl) {
 				 &flag,check_cps_flag,expand_flag);
   switch_from_trie_assert;
 
-  type = type; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(type);
   //  printf("root %p\n",itrie_array[index].root);
   if (Leaf) {
     ctop_int(CTXTc 3,(Integer)Leaf);
@@ -1641,7 +1683,7 @@ int private_trie_interned(CTXTdecl) {
       }
     }
   }
-  type = type; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(type);
   if ((*trie_root_addr != NULL) && (!((Integer) *trie_root_addr & 0x3))) {
     XSB_Deref(trie_term);
     XSB_Deref(Leafterm);
@@ -1730,7 +1772,7 @@ void private_trie_unintern(CTXTdecl)
       safe_delete_branch(Leaf);
     }
   }
-  type = type; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(type);
   switch_from_trie_assert;
 }
 
@@ -1762,10 +1804,6 @@ void shas_trie_unintern(CTXTdecl)
 
 #define CAN_RECLAIM 0
 #define CANT_RECLAIM 1
-
-#define is_trie_instruction(cp_inst) \
- ((int) cp_inst >= 0x5c && (int) cp_inst < 0x80) \
-	   || ((int) cp_inst >= 0x90 && (int) cp_inst < 0x94) 
 
 int interned_trie_cps_check(CTXTdeclc BTNptr root) 
 {
@@ -5005,6 +5043,40 @@ forestLogBuffer forest_log_buffer_2;
 forestLogBuffer forest_log_buffer_3;
 #endif
 
+Cell list_of_answers_from_answer_list(CTXTdeclc VariantSF sf,int as_length,ALNptr ALNlist) {
+  BTNptr leaf;
+  Cell listHead;   CPtr argvec1,oldhreg;
+  int i;
+  ALNptr ansPtr;
+
+  //  print_subgoal(stdout, sf); printf("\n"); 
+
+  leaf = subg_leaf_ptr(sf);
+  ansPtr = ALNlist;
+
+  listHead = makelist(hreg);
+  while (ansPtr != 0) {
+    new_heap_free(hreg);  new_heap_free(hreg);
+    oldhreg=hreg-2;                          // ptr to car
+	
+    new_heap_functor(hreg, get_ret_psc(as_length));
+    argvec1 = hreg;
+    for (i=0; i<as_length; i++)
+      bld_free(hreg+i);
+    hreg = hreg + as_length;
+    //    printf("ALN_answer %p\n",ALN_Answer(ansPtr));
+    load_solution_trie_notrail(CTXTc as_length, 0, argvec1, ALN_Answer(ansPtr));  // Need to handle attvs
+    follow(oldhreg) = makecs(oldhreg+2);
+    follow((oldhreg+1)) = makelist(hreg);
+
+    ansPtr = ALN_Next(ansPtr);
+  }
+
+  follow(oldhreg+1) = makenil;
+  printf("---listhead--- ");  printterm(stddbg,listHead,80);printf("\n");
+  return listHead;
+}
+
 int table_inspection_function( CTXTdecl ) {
   switch (ptoc_int(CTXTc 1)) {
 
@@ -5463,6 +5535,63 @@ case CALL_SUBS_SLG_NOT: {
     return get_residual_sccs(CTXTc ptoc_tag(CTXTc 2));
   }
 
+    //  case TEMP_FUNCTION: {
+    //    /* Input : Incall ; Output : Outcall */
+    //    VariantSF sf;
+    //    BTNptr leaf, root;
+    //    Cell callTermIn,ret, callTermOut; 
+    //    Psc psc; int i, arity;
+    //    CPtr argvec1;
+    //    ALNptr ansPtr;
+    //
+    //    callTermIn = ptoc_tag(CTXTc 2);
+    //    sf = get_call(CTXTc callTermIn, &ret); 
+    //    if ( IsNonNULL(sf) ) {
+    //      root = TIF_CallTrie(subg_tif_ptr(sf));
+    //      psc = term_psc(callTermIn);
+    //      arity = get_arity(psc);
+    //      callTermOut = makecs(hreg); 
+    //      bld_functor(hreg++, psc);
+    //      argvec1 = hreg;
+    //      for (i=0; i<arity; i++)
+    //	bld_free(hreg+i);
+    //      hreg = hreg + arity;
+    //
+    //      leaf = subg_leaf_ptr(sf);
+    //      load_subgoal_trie(arity, 0, argvec1, leaf);  // Need to handle attvs
+    //      ansPtr = ALN_Next(subg_ans_list_ptr(sf));
+    //      load_subgoal_trie(2, 0, (clref_val(ret) +1), ALN_Answer(ansPtr));  // Need to handle attvs
+    //
+    //      //      listHead = list_of_answers_from_answer_list(sf);
+    //
+      //      printterm(stddbg,(Cell) clref_val(listHead),8);printf("\n");	
+      //      ctop_tag(CTXTc 3, callTermOut);
+      //      ctop_tag(CTXTc 4, ret);
+      //      ctop_tag(CTXTc 3, listHead);
+      //      printf("lh %x clr %p *clr %x\n",listHead,clref_val(listHead),clref_val(*clref_val(listHead)));
+      //      printterm(stddbg,clref_val(listHead)+3,8);printf("\n");
+      //      for (i=1; i <= arity; i++) {
+	//	printf("lh %x clr %p *clr %x\n",listHead,clref_val(listHead),((CPtr) *clref_val(listHead)) +i);      
+      //	printterm(stddbg,(Cell) (clref_val(*clref_val(listHead))+i),8);printf("\n");
+      //	ctop_tag(CTXTc 3+i, clref_val(*clref_val(listHead))+i);
+      //      }
+    //  ]
+
+    //    return TRUE; 
+
+    //  }
+
+    //  case TEMP_FUNCTION_2: {
+    //    /* Input : Incall ; Output : Outcall */
+    //    VariantSF sf;
+    //    Cell callTermIn;
+    //
+    //    callTermIn = ptoc_tag(CTXTc 2);
+    //    sf = get_call(CTXTc callTermIn,NULL); 
+    //    if ( IsNonNULL(sf) ) {
+    //      find_the_visitors(sf);
+    //    }
+    //  }
   } /* switch */
   return TRUE;
 }

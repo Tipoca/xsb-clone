@@ -722,7 +722,7 @@ xsbBool fmt_read(CTXTdecl)
  EXIT_READ_FALSE:
   mem_dealloc(current_fmt_spec,sizeof(struct fmt_spec),LEAK_SPACE);
 
-  dummy = dummy; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(dummy) ; 
   return FALSE;
 }
 #undef FmtBuf
@@ -1603,7 +1603,7 @@ int xsb_intern_file(char *context,char *addr, int *ioport,char *strmode,int open
       char current_dir[MAX_CMD_LEN];
       char *dummy; /* to squash warnings */
       dummy = getcwd(current_dir, MAX_CMD_LEN-1);
-      dummy = dummy; /* to squash warnings */
+      SQUASH_LINUX_COMPILER_WARN(dummy) ; 
       xsb_log("%s: %s\n",current_dir,addr);
     }
     if (!stat(addr, &stat_buff) && !S_ISDIR(stat_buff.st_mode)) {

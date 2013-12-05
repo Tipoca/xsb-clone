@@ -41,6 +41,7 @@
 #include "context.h"
 #include "cell_xsb.h"
 #include "error_xsb.h"
+#include "tries.h"
 #include "debug_xsb.h"
 #include "flags_xsb.h"
 #include "memory_xsb.h"

@@ -289,6 +289,8 @@ extern Cell inst_table[BUILTIN_TBL_SZ][5];
 
 #define trie_fail       0x94
 
+#define completed_trie_member   0x99
+
 #define getfloat	0x80
 #define putfloat	0x81
 #define unifloat	0x82

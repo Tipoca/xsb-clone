@@ -857,7 +857,7 @@ xsbBool xsb_socket_request(CTXTdecl)
     SYS_MUTEX_UNLOCK(MUTEX_SOCKETS);
 
     if (tv) mem_dealloc((struct timeval *)tv,sizeof(struct timeval),LEAK_SPACE);
-    connectname_found = connectname_found; /* to squash warnings */
+    SQUASH_LINUX_COMPILER_WARN(connectname_found) ; 
     return set_error_code(CTXTc ecode, 7, "SOCKET_SELECT");
   }
 
@@ -1041,7 +1041,7 @@ static void select_destroy(CTXTdeclc char *connection_name)
     xsb_abort("[SOCKET_SELECT_DESTROY] connection `%s' doesn't exist", 
 	      connection_name);
   
-  connectname_found = connectname_found; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(connectname_found) ; 
 }
 
 /* utility function to check whether there is empty slot left to connect */

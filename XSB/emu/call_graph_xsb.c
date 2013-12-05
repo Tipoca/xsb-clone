@@ -63,7 +63,7 @@
 #include "thread_xsb.h"
 #include "loader_xsb.h" /* for ZOOM_FACTOR, used in stack expansion */
 #include "tries.h"
-#include "tr_utils.h"
+//#include "tr_utils.h"
 #include "debug_xsb.h"
 
 #define INCR_DEBUG2
@@ -488,15 +488,14 @@ void dfs_outedges(CTXTdeclc callnodeptr call1){
   int incr_callgraph_dfs_size; 
   IncrCallgraphDFSFrame   *incr_callgraph_dfs;
 
-  //  printf("calling dfs %p\n",call1);
-  //    if (call1 -> goal) { printf("*** ");print_subgoal(stddbg,call1->goal);  printf("\n");}
+  //  printf("1) calling dfs %p; subgoal ",call1);  print_callnode(stddbg,call1); printf("\n");
 
   incr_callgraph_dfs =
     (IncrCallgraphDFSFrame *)  mem_alloc(10000*sizeof(IncrCallgraphDFSFrame), 
 					 TABLE_SPACE);
   incr_callgraph_dfs_size = 10000;
   dfs_outedges_check_non_completed(CTXTc call1);
-  call1->deleted = 1;
+  if (!is_fact_in_callgraph(call1)) call1->deleted = 1;
   h=call1->outedges->hasht;
   if (hashtable1_count(h) > 0){
     //    printf("1-call1: %p \n",call1);
@@ -508,7 +507,7 @@ void dfs_outedges(CTXTdeclc callnodeptr call1){
       if (incr_callgraph_dfs[incr_callgraph_dfs_top].itr) {
 	itr = incr_callgraph_dfs[incr_callgraph_dfs_top].itr;
 	//	printf("1-top %d itr %p\n",incr_callgraph_dfs_top,itr);
-	if (!hashtable1_iterator_advance(itr)) {
+	if (!hashtable1_iterator_advance(itr)) {  // last element in the hash
 	  itr = 0;
 	  cn = incr_callgraph_dfs[incr_callgraph_dfs_top].cn;
 	  add_callnode(&affected_gl,cn);		
@@ -519,7 +518,7 @@ void dfs_outedges(CTXTdeclc callnodeptr call1){
       else {
 	h=incr_callgraph_dfs[incr_callgraph_dfs_top].cn->outedges->hasht;
 	if (hashtable1_count(h) > 0) {
-	  itr = hashtable1_iterator(h);       
+	  itr = hashtable1_iterator(h);          // initialize
 	  incr_callgraph_dfs[incr_callgraph_dfs_top].itr = itr;
 	}
 	else {
@@ -528,15 +527,14 @@ void dfs_outedges(CTXTdeclc callnodeptr call1){
 	  //	  printf("+ adding callnode %p\n",cn);
 	  pop_dfs_frame;
 	}
-	//	printf("2-h %p itr %p\n",h,itr);
       }
     } while (itr == 0 && incr_callgraph_dfs_top > -1);
     if (incr_callgraph_dfs_top > -1) {
       cn = hashtable1_iterator_value(itr);
+
       //      printf("top %d cn: %p itr: %p\n",incr_callgraph_dfs_top,cn,itr);
-      //      if (cn -> goal) {
-      //      	printf("*** ");print_subgoal(stddbg,(VariantSF) cn->goal);  printf("\n");
-      //            }
+      //      printf("2) recursive dfs %p; subgoal ",cn);  print_callnode(stddbg,cn); printf("\n");
+
       cn->falsecount++;
       if (cn->deleted==0) {
 	dfs_outedges_check_non_completed(CTXTc cn);
@@ -588,7 +586,67 @@ void dfs_inedges_warning(CTXTdeclc callnodeptr call1,calllistptr *lazy_affected)
 	     subg_visitors(call1->goal),forest_log_buffer_1->fl_buffer);
   }
 
+extern BTNptr TrieNodeFromCP(CPtr);
+extern VariantSF get_subgoal_frame_for_answer_trie_cp(CTXTdeclc BTNptr);
+extern ALNptr traverse_variant_answer_trie( VariantSF, CPtr, CPtr) ;
+extern Cell list_of_answers_from_answer_list(VariantSF,int,ALNptr);
 
+void find_the_visitors(CTXTdeclc VariantSF subgoal) {
+  CPtr cp_top1,cp_bot1 ; CPtr cp_root; CPtr cp_first;
+  byte cp_inst; Cell listHead;
+  int ans_subst_num, i;
+  BTNptr trieNode;
+  ALNptr ALNlist;
+
+  printf("find the visitors: subg %p trie root %p\n",subgoal,subg_ans_root_ptr(subgoal));
+  cp_top1 = breg ;				 
+  cp_bot1 = (CPtr)(tcpstack.high) - CP_SIZE;
+  while ( cp_top1 < cp_bot1 ) {
+    cp_inst = *(byte *)*cp_top1;
+    // Want trie insts, but need to distinguish from asserted and interned tries
+    //    printf("cp_inst %x\n",cp_inst);
+    if ( is_trie_instruction(cp_inst) ) {
+      //      printf("found trie instr\n");
+      // Below we want basic_answer_trie_tt, ts_answer_trie_tt
+      trieNode = TrieNodeFromCP(cp_top1);
+      if (IsInAnswerTrie(trieNode)) {
+	//	printf("in answer trie\n");
+	if (subgoal == get_subgoal_frame_for_answer_trie_cp(CTXTc trieNode))  {
+	  printf("found top of run %p \n",cp_top1);
+	  print_subgoal(CTXTc stdout, subgoal); printf("\n");
+	  cp_root = cp_top1; cp_first = cp_top1;
+	  while (*cp_pcreg(cp_root) != trie_fail) {
+	    cp_first = cp_root;
+	    cp_root = cp_prevbreg(cp_root);
+	    if (*cp_pcreg(cp_root) != trie_fail && subgoal != get_subgoal_frame_for_answer_trie_cp(CTXTc TrieNodeFromCP(cp_root)))
+	      printf(" couldn't find incr trie root -- whoa, whu? (%p\n",cp_root);
+	  }
+	  ALNlist = traverse_variant_answer_trie(subgoal, cp_root,cp_top1);
+	  ans_subst_num = int_val(cell(cp_root + CP_SIZE + 1)) ;  // account for sf ptr of trie root cp
+	  printf("found root %p first %p top %p ans_subst_num %d & %p\n",cp_root,cp_first,cp_top1,ans_subst_num,breg+CP_SIZE);
+	  listHead = list_of_answers_from_answer_list(subgoal,ans_subst_num,ALNlist);
+	  // Free ALNlist;
+	  cp_pcreg(cp_top1) = (byte *) &completed_trie_member_inst;
+       	  cp_ebreg(cp_top1) = cp_ebreg(cp_root);
+	  cp_hreg(cp_top1) = hreg;	  
+	  cp_trreg(cp_top1) = cp_trreg(cp_root);
+	  cp_prevbreg(cp_top1) = cp_prevbreg(cp_root);
+	  // cpreg, ereg, pdreg, ptcpreg should not need to be reset (prob not ebreg?)
+	  //	  printf("sf %p\n",* (cp_root + CP_SIZE + 2));
+	  * (cp_top1 + CP_SIZE) = makeint(ans_subst_num);
+	  for (i = 0;i < ans_subst_num ;i++) {
+	    * (cp_top1 + CP_SIZE + 1 + i) =  * (cp_root + CP_SIZE + 2 +i);  // account for sf ptr or root
+	  }
+	  * (cp_top1 + CP_SIZE + 1+ ans_subst_num) = listHead;
+	  printf("constructed listhead\n");
+	  cp_top1 = cp_root;  // next iteration
+	}
+      }
+    }
+    cp_top1 = cp_prevtop(cp_top1);
+  }
+  subg_visitors(subgoal) = 0;
+}
 
 /* If ret != 0 (= CANNOT_UPDATE) then we'll use the old table, and we
    wont lazily update at all. */
@@ -606,8 +664,12 @@ int dfs_inedges(CTXTdeclc callnodeptr call1, calllistptr * lazy_affected, int fl
 			  get_arity(TIF_PSC(subg_tif_ptr(call1->goal))));
     }
     if (subg_visitors(call1->goal)) {
+      #ifdef ISO_INCR_TABLING
+      find_the_visitors(call1->goal);
+      #else
       dfs_inedges_warning(CTXTc call1,lazy_affected);
       return CANNOT_UPDATE;
+      #endif
     }
   }
   // TLS: handles dags&cycles -- no need to traverse more than once.
@@ -639,28 +701,25 @@ int dfs_inedges(CTXTdeclc callnodeptr call1, calllistptr * lazy_affected, int fl
 }
 
  
-void invalidate_call(CTXTdeclc callnodeptr c){
+void invalidate_call(CTXTdeclc callnodeptr cn){
 
   //#ifdef MULTI_THREAD
   //  xsb_abort("Incremental Maintenance of tables in not available for multithreaded engine\n");
   //#endif
-
-  if(c->deleted==0){
-    c->falsecount++;
-    dfs_outedges(CTXTc c);
+  //  printf("invalidate call: ");print_callnode(stddbg,cn); printf(" deleted (%d)\n",cn->deleted);
+  if(cn->deleted==0){
+    cn->falsecount++;
+    dfs_outedges(CTXTc cn);
   }
 }
 
-/* to quiet compiler during MT compile, but not clear it will work right for MT... */
-extern void print_subgoal(FILE *, VariantSF);
-
-void print_call_list(calllistptr affected_ptr) {
+void print_call_list(CTXTdeclc calllistptr affected_ptr) {
 
   do {
     printf("item %p sf %p ",calllist_item(affected_ptr),callnode_sf(calllist_item(affected_ptr)));
     printf("next %p ",calllist_next(affected_ptr));  
     if (callnode_sf(calllist_item(affected_ptr)) != NULL) {
-      print_subgoal(stddbg, callnode_sf(calllist_item(affected_ptr)));
+      print_subgoal(CTXTc stddbg, callnode_sf(calllist_item(affected_ptr)));
       }
     printf("\n");
     affected_ptr = (calllistptr) calllist_next(affected_ptr);
@@ -691,18 +750,20 @@ int create_call_list(CTXTdecl){
     }
     //    fprintf(stddbg,"incrementally updating table for ");print_subgoal(stdout,subgoal);printf("\n");
     if (subg_visitors(subgoal)) {
-      sprint_subgoal(CTXTc forest_log_buffer_1,0,subgoal);
-#ifdef WARN_ON_UNSAFE_UPDATE
+      #ifdef ISO_INCR_TABLING
+      find_the_visitors(subgoal);
+      #else
+      //      sprint_subgoal(CTXTc forest_log_buffer_1,0,subgoal);
+      #ifdef WARN_ON_UNSAFE_UPDATE
       xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create_call_list)\n",
 	       subg_visitors(subgoal),forest_log_buffer_1->fl_buffer);
-#else
+      #else
       xsb_abort("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create call list)\n",
-	       subg_visitors(subgoal),forest_log_buffer_1->fl_buffer);
-#endif
-      //      continue;
+		subg_visitors(subgoal),forest_log_buffer_1->fl_buffer);
+      #endif
+      #endif
       break;
     }
-    //    fprintf(stddbg,"incrementally updating table for ");print_subgoal(stdout,subgoal);printf("\n");
 
     count++;
     tif = (TIFptr) subgoal->tif_ptr;
@@ -774,13 +835,17 @@ int create_lazy_call_list(CTXTdeclc  callnodeptr call1){
     }
     if (subg_visitors(subgoal)) {
       sprint_subgoal(CTXTc forest_log_buffer_1,0,subgoal);
-#ifdef WARN_ON_UNSAFE_UPDATE
-      xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create_lazy_call_list)\n",
-	       subg_visitors(subgoal),forest_log_buffer_1->fl_buffer);
-#else
-      xsb_abort("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create_lazy_call_list)\n",
-	       subg_visitors(subgoal),forest_log_buffer_1->fl_buffer);
-#endif
+      #ifdef ISO_INCR_TABLING
+      find_the_visitors(subgoal);
+      #else
+      #ifdef WARN_ON_UNSAFE_UPDATE
+            xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create_lazy_call_list)\n",
+      	       subg_visitors(subgoal),forest_log_buffer_1->fl_buffer);
+      #else
+            xsb_abort("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create_lazy_call_list)\n",
+      	       subg_visitors(subgoal),forest_log_buffer_1->fl_buffer);
+      #endif
+      #endif
       continue;
     }
     //    fprintf(stddbg,"adding dependency for ");print_subgoal(stdout,subgoal);printf("\n");
@@ -980,7 +1045,8 @@ int get_outedges_num(CTXTdeclc callnodeptr call1) {
 
   h=call1->outedges->hasht;
   itr = hashtable1_iterator(h);       
-  itr = itr; /* to squash warnings */
+  SQUASH_LINUX_COMPILER_WARN(itr) ;
+  
   return hashtable1_count(h);
 }
 
@@ -1391,7 +1457,7 @@ int  get_incr_sccs(CTXTdeclc Cell listterm) {
       i++;
     }
     itr = hashtable1_iterator(hasht);       
-    itr = itr; /* to squash warnings */
+    SQUASH_LINUX_COMPILER_WARN(VAR);
     //    do {
     //      printf("k %p val %p\n",hashtable1_iterator_key(itr),hashtable1_iterator_value(itr));
     //    } while (hashtable1_iterator_advance(itr));
