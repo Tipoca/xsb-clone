@@ -1457,7 +1457,7 @@ int  get_incr_sccs(CTXTdeclc Cell listterm) {
       i++;
     }
     itr = hashtable1_iterator(hasht);       
-    SQUASH_LINUX_COMPILER_WARN(VAR);
+    SQUASH_LINUX_COMPILER_WARN(itr);
     //    do {
     //      printf("k %p val %p\n",hashtable1_iterator_key(itr),hashtable1_iterator_value(itr));
     //    } while (hashtable1_iterator_advance(itr));
@@ -1489,7 +1489,9 @@ void xsb_compute_scc(SCCNode * nodes,int * dfn_stack,int node_from, int * dfn_to
 		     struct hashtable* hasht,int * dfn,int * component ) {
   struct hashtable_itr *itr;
   struct hashtable* edges_hash;
-  CPtr sf;     int node_to; int j;
+  CPtr sf;
+  Integer node_to;
+  int j;
 
   //  printf("xsb_compute_scc for %d %p %s/%d dfn %d dfn_top %d\n",
   //	 node_from,nodes[node_from].node,
@@ -1505,7 +1507,7 @@ void xsb_compute_scc(SCCNode * nodes,int * dfn_stack,int node_from, int * dfn_to
     //    printf("found %d edges\n",hashtable1_count(edges_hash));
     do {
       sf = ((callnodeptr) hashtable1_iterator_value(itr))-> goal;
-      node_to = (int) search_some(hasht, (void *)sf);
+      node_to = (Integer) search_some(hasht, (void *)sf);
       //      printf("edge from %p to %p (%d)\n",(void *)nodes[node_from].node,sf,node_to);
       if (nodes[node_to].dfn == 0) {
 	xsb_compute_scc(nodes,dfn_stack,node_to, dfn_top,hasht,dfn,component );
