@@ -29,6 +29,7 @@
 #define popen   _popen
 #define pclose  _pclose
 #define strdup  _strdup
+#define access  _access
 #define strcasecmp _stricmp
 #define SLASH '\\'
 #define DEFAULT_CRLF 1
@@ -51,6 +52,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
+#ifdef WIN_NT
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
+
+#ifndef R_OK
+#define R_OK_GPP 4
+#else
+#define R_OK_GPP R_OK
+#endif
+
 
 #define STACKDEPTH 50
 #define MAXARGS 100
@@ -239,6 +253,7 @@ void delete_macro(int h,int i);
 /* various recent additions */
 static void getDirname(char *fname, char *dirname);
 static FILE *openInCurrentDir(char **incfile);
+static int checkAbsOrCurrentDir(char *file);
 char *ArithmEval(int pos1,int pos2);
 void replace_definition_with_blank_lines(char *start, char *end, int skip);
 void replace_directive_with_blank_line(FILE *file);
@@ -1741,6 +1756,32 @@ int DoArithmEval(char *buf,int pos1,int pos2,int *result)
     *result=pos2-pos1-(int)strlen("length()");
     return 1;
   }
+
+  /* add if exists(file) */
+  if (strncmp(buf+pos1,"exists(",strlen("exists("))==0) {
+    char *file;
+    pos1 += (int)strlen("exists(");
+    if (pos1<=pos2 && buf[pos2]=='\0') pos2--;
+    while ((pos1<=pos2)&&iswhite(buf[pos1])) pos1++;
+    while ((pos1<=pos2)&&iswhite(buf[pos2])) pos2--;
+    if (buf[pos2] != ')')
+      bug("Wrong syntax in exists(\"file\")");
+    else pos2--;
+    if (buf[pos1]=='\"' || buf[pos1]=='<') pos1++;
+    if (buf[pos2]=='\"' || buf[pos2]=='>') pos2--;
+    if (pos1>pos2) bug("Missing file name in exists(\"file\")");
+    file=malloc(pos2-pos1+2);
+    memcpy(file, buf+pos1, pos2-pos1+1);
+    file[pos2-pos1+1] = '\0';
+    
+    /* search absolute or current dir */
+    /* result=0 means #if true */
+    if (checkAbsOrCurrentDir(file)==0)
+      *result = 0;
+    else
+      *result = 1;
+    return 1;
+  }
   
   if (buf[pos1]=='(') {
     if (buf[pos2-1]!=')') return 0;
@@ -2430,7 +2471,7 @@ int ParsePossibleMeta()
       char *s;
       if (nparam==2) p1end=p2end; /* we really want it all ! */
       s=ArithmEval(p1start,p1end);
-      commented[iflevel]=((s[0]=='0')&&(s[1]==0));
+      commented[iflevel]=((s[0]=='0')&&(s[1]=='\0'));
       free(s);
     }
     break;
@@ -2453,7 +2494,7 @@ int ParsePossibleMeta()
         commented[iflevel]=0;
         if (nparam==2) p1end=p2end; /* we really want it all ! */
         s=ArithmEval(p1start,p1end);
-        commented[iflevel]=((s[0]=='0')&&(s[1]==0));
+        commented[iflevel]=((s[0]=='0')&&(s[1]=='\0'));
         free(s);
       }
     }
@@ -2724,6 +2765,26 @@ static FILE *openInCurrentDir(char **incfile)
   f=fopen(absfile,"r");
   free(absfile);
   return f;
+}
+
+/* check if file exists in the current dir or is absolute, and is readable */
+static int checkAbsOrCurrentDir(char *file)
+{
+  char *absfile;
+  if (file[0]==SLASH
+#ifdef WIN_NT
+      || (isalpha(file[0]) && file[1]==':')
+#endif
+    )
+    absfile = file;
+  else {
+    absfile = (char *)calloc(strlen(C->filename)+strlen(file)+1, sizeof(char));
+    getDirname(C->filename,absfile);
+    strcat(absfile,file);
+  }
+
+  if (access(absfile,R_OK_GPP)==0) return 1;
+  else return 0;
 }
 
 /* skip = # of \n's already output by other mechanisms, to be skipped */
