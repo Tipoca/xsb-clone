@@ -101,7 +101,7 @@ XSB_End_Instr()
 
 /*----------------------------------------------------------------------*/
 
-XSB_Start_Instr(trie_no_cp_numcont,_trie_no_cp_numcon)
+XSB_Start_Instr(trie_no_cp_numcon,_trie_no_cp_numcon)
 	TRIE_R_LOCK();
        	trie_instr_print("trie_no_cp_numcon\n");
 	//	printf("stk %x\n",trieinstr_unif_stkptr-trieinstr_unif_stk);
@@ -971,7 +971,7 @@ XSB_Start_Instr(completed_trie_member,_completed_trie_member)
 Cell listHead; int i, ans_sf_length; CPtr this_ret; CPtr ans_sf; CPtr xtemp1;
 
   printf("in completed_trie_member\n");
-  ans_sf_length = int_val(cell(breg + CP_SIZE));
+  ans_sf_length = (int)int_val(cell(breg + CP_SIZE));
   //  printf("ans_sf_length %d & %p\n",ans_sf_length,breg+CP_SIZE);
   listHead = * (breg + CP_SIZE + ans_sf_length+1);
   this_ret = (CPtr) follow(clref_val(listHead));  // pointer to beginning of ret/n term

@@ -197,7 +197,7 @@ int sys_syscall(CTXTdeclc int callno)
     break;
   }
   case SYS_epoch_seconds: {
-    ctop_int(CTXTc 3,time(0));
+    ctop_int(CTXTc 3,(Integer)time(0));
     break;
   }
   default: xsb_abort("[SYS_SYSCALL] Unknown system call number, %d", callno);
