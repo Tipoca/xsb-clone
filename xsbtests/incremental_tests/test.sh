@@ -50,3 +50,13 @@ options=$2
 #--------------------------------------------------
 ../gentest.sh "$XEMU -l $options" incr_test_romero "test."
 #--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_iso_basic "test."
+#--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_iso_mult_visit "test."
+#--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_iso_hash "test."
+#--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_iso_undef "test."
+#--------------------------------------------------
+../gentest.sh "$XEMU -l $options" test_iso_attr "test."
+#--------------------------------------------------

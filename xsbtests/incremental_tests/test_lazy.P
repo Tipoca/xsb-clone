@@ -5,6 +5,7 @@
 :- import incr_assert_inval/1 from increval.
 :- import incr_retract_inval/1 from increval.
 :- import lazy_reeval/1 from increval.
+%:- ensure_loaded(xsbbrat).
 
 test:- abolish_all_tables,test_clcl_1,fail.
 test:- abolish_all_tables,test_clcl_2,fail.
