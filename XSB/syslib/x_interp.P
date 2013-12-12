@@ -36,6 +36,9 @@
 /*  This file contains the main program of the interpreter.		*/
 /*======================================================================*/
 
+:- import ensure_loaded/1 from consult.
+?- ensure_loaded(xsbbrat).
+
 :- interpreter.
 
 interpreter :-
