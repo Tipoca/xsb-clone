@@ -395,6 +395,7 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
   else if ( is_completed(producer_sf) ) {
 
     LOG_TABLE_CALL("cmp");
+    //    printf("completed table "); print_n_registers(stddbg, 6 , 8);printf("\n");
 
     /* Unify Call with Answer Trie
        --------------------------- */
@@ -431,7 +432,6 @@ if ((ret = table_call_search(CTXTc &callInfo,&lookupResults))) {
 	 the trie nodes have been set up to account for this in
 	 variant_answer_search() -- see the documentation there.  */
       if (attv_num > 0) {
-	//	printf("fiddling with attvs\n");
 	CPtr cptr;
 	for (cptr = answer_template_heap - 1;
 	     cptr >= answer_template_heap - template_size; cptr--) {

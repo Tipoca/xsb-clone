@@ -37,6 +37,9 @@
 #define new_heap_num(sh_reg, val) bld_int_tagged(sh_reg, val); sh_reg++
 /* make a new num node on the heap, with value val */
 
+#define new_heap_int(sh_reg, val) bld_int_tagged(sh_reg, makeint(val)); sh_reg++
+/* tag and make a new int on the heap, with int_val val */
+
 #define new_heap_float(sh_reg, val) bld_float_tagged(sh_reg, val); sh_reg++
 /* make a new float node on the heap, with value val in tagged format.*/
 

@@ -86,6 +86,13 @@
 #include "struct_intern.h"
 #include "ptoc_tag_xsb_i.h"
 
+#ifndef MULTI_THREAD
+BTNptr NodePtr, Last_Nod_Sav;
+Cell *trieinstr_unif_stk;
+CPtr trieinstr_unif_stkptr;
+Integer  trieinstr_unif_stk_size = DEFAULT_ARRAYSIZ;
+#endif
+
 /*
  * Variable ans_var_pos_reg is a pointer to substitution factor of an
  * answer in the heap.  It is used and set in function

@@ -738,7 +738,7 @@ XSB_Start_Instr(hash_handle,_hash_handle)
     Integer     hash_offset, hashed_hash_offset;
 
     trie_instr_print("hash_handle\n");
-    hash_offset = int_val(cell(breg+CP_SIZE));
+    hash_offset = int_val(cell(breg+CP_SIZE));   // This may be number of bucket. */
     hash_hdr = (BTHTptr) string_val(cell(breg+CP_SIZE+1));
     hash_base = (BTHTptr *) BTHT_BucketArray(hash_hdr);
 if ( int_val(cell(breg + CP_SIZE + 2)) == HASH_IS_NOT_FREE ) {
@@ -783,22 +783,22 @@ if ( int_val(cell(breg + CP_SIZE + 2)) == HASH_IS_NOT_FREE ) {
 		  hash_offset, hashed_hash_offset);
 	xsb_exit( "error_condition in hash_handle\n");
       }
-    }
-    else {  /* unification of trie with variable term */
-      find_next_nonempty_bucket(hash_hdr,hash_base,hash_offset);
-      if (hash_offset == NO_MORE_IN_HASH) {
-	breg = cp_prevbreg(breg);
-	lpcreg = (byte *) cp_pcreg(breg);
-      }
-      else {
-	if ( int_val(cell(breg+CP_SIZE)) != FIRST_HASH_NODE ) {
-	  tbreg = breg;
-	  restore_regs_and_vars(tbreg, CP_SIZE+3);
-	}
-	lpcreg = (byte *) *(hash_base + hash_offset);
-	cell(breg+CP_SIZE) = makeint(hash_offset);
-      }
-    }
+ }
+ else {  /* unification of trie with variable term */
+   find_next_nonempty_bucket(hash_hdr,hash_base,hash_offset);
+   if (hash_offset == NO_MORE_IN_HASH) {
+     breg = cp_prevbreg(breg);
+     lpcreg = (byte *) cp_pcreg(breg);
+   }
+   else {
+     if ( int_val(cell(breg+CP_SIZE)) != FIRST_HASH_NODE ) {
+       tbreg = breg;
+       restore_regs_and_vars(tbreg, CP_SIZE+3);
+     }
+     lpcreg = (byte *) *(hash_base + hash_offset);
+     cell(breg+CP_SIZE) = makeint(hash_offset);
+   }
+ }
 XSB_End_Instr()
 
 /*----------------------------------------------------------------------*/
@@ -832,7 +832,10 @@ XSB_Start_Instr(trie_root,_trie_root)
 #ifdef SLG_GC
    old_cptop = tbreg;	
 #endif
-   save_trie_registers(tbreg);
+   //   save_trie_registers(tbreg);         // the following macros are a slight change from save_trie_registers, 
+   save_trieinstr_vars(tbreg);              // to handle case of uninitialized trieinstr_unif_stk.
+   if (trieinstr_unif_stk) 
+     save_trieinstr_unif_stk(tbreg);
    //   *(--tbreg) = (Cell) makeint(NodePtr);
    *(--tbreg) = (Cell) NodePtr;
    save_choicepoint(tbreg,ereg,(byte *)&trie_fail_inst,breg);  
@@ -961,49 +964,72 @@ XSB_Start_Instr(trie_trust_attv,_trie_trust_attv)
   next_lpcreg;
 XSB_End_Instr()
 
-  /* A completed_trie_member instruction has, on top of the choice
-point 1) the ans_sf_length; 2) the ans_sf itself; 3) the pointer to
-the list of answer substitutions in the heap (listHead). */
+ /* A completed_trie_member instruction has, on top of the choice
+    point 1) the ans_sf_length; 2) the ans_sf itself; 3) the pointer to
+    the list of answer substitutions in the heap (listHead). 
 
-#define cp_listHead(b) (breg + CP_SIZE + ans_sf_length+1)
+    The list through which backtracking is performed contains elements of
+    the form: ret(ret(<ans_subst>),unconditional_flag) where
+    unconditional_flag is 1 if the answer is unconditional and contains a
+    pointer to the subgoal frame of brat_undefined otherwise. */
 
 XSB_Start_Instr(completed_trie_member,_completed_trie_member) 
-Cell listHead; int i, ans_sf_length; CPtr this_ret; CPtr ans_sf; CPtr xtemp1;
+  Cell listHead, unconditional_flag; int i, ans_sf_length; CPtr this_ret; CPtr ans_sf; CPtr xtemp1;
 
-  printf("in completed_trie_member\n");
+//  printf("in completed_trie_member ");  print_n_registers(stddbg, 6 , 8);printf("\n");
   ans_sf_length = (int)int_val(cell(breg + CP_SIZE));
-  //  printf("ans_sf_length %d & %p\n",ans_sf_length,breg+CP_SIZE);
   listHead = * (breg + CP_SIZE + ans_sf_length+1);
-  this_ret = (CPtr) follow(clref_val(listHead));  // pointer to beginning of ret/n term
-  printterm(stddbg,listHead,8);printf("\n");	
-  printterm(stddbg,(Cell) this_ret,8);printf("\n");
-
-  undo_bindings(breg);		       
+  this_ret = (CPtr) follow(clref_val(listHead));      // pointer to beginning of ret(ret/n,uncond_flag).
+  unconditional_flag = cell(clref_val(this_ret)+2);
+  this_ret = (CPtr) follow((clref_val(this_ret)+1));  // pointer to beginning of ret/n term
+  //  printterm(stddbg,listHead,8);printf("\n");	
+  //  printf("...");printterm(stddbg,(Cell) this_ret,8);printf("\n");
+  undo_bindings(breg);		                      // will not undo the list itself.
   delayreg = cp_pdreg(breg);                
   restore_some_wamregs(breg, ereg);	       
-  //  ans_sf = follow(breg + CP_SIZE + ans_sf_length);
-  //  ans_sf = breg + CP_SIZE + ans_sf_length;
-  //  ans_sf = breg + CP_SIZE;  // points just below index starting with 1.
-  ans_sf = breg + CP_SIZE + ans_sf_length + 1;  // points just below index starting with 1.
   //  printf("ans_sf:  ");printterm(stddbg,cell(ans_sf+1),8);printf(".\n");
+  //  printf("begin ");print_n_registers(stddbg, 1 , 8);printf("\n");
+  if (int_val(unconditional_flag) != (Integer) TRUE) {
+    //    printf("conditional %x\n",int_val(unconditional_flag)); 
+    delay_negatively(int_val(unconditional_flag));
+  }
+  ans_sf = breg + CP_SIZE + ans_sf_length + 1;  // points just below index starting with 1.
   for (i=1; i <= ans_sf_length; i++) {
     //      printf("lh %x clr %p *clr %x\n",listHead,clref_val(listHead),((CPtr) *clref_val(listHead)) +i);      
-    printf("   ");printterm(stddbg,(Cell) (clref_val(this_ret)+i),8);printf("\n");
+    //    printf("   ");printterm(stddbg,(Cell) (clref_val(this_ret)+i),8);printf("\n");
     xtemp1 = (ans_sf - i);
     XSB_CptrDeref(xtemp1);
-    dbind_ref(xtemp1, clref_val(this_ret)+i);
+    if (isattv(xtemp1)) {
+      //      printf(" found attv\n");
+      xtemp1 = (CPtr)dec_addr(xtemp1);
+      XSB_CptrDeref(xtemp1);
+      add_interrupt(CTXTc cell(((CPtr)dec_addr(xtemp1) + 1)),(Cell) (clref_val(this_ret)+i));	
+      dbind_ref(xtemp1,  (clref_val(this_ret)+i));			
+      //            unify((Cell) xtemp1,(Cell) (clref_val(this_ret)+i));
+      //      unify((Cell) (ans_sf-i),(Cell) (clref_val(this_ret)+i));
+      //      printf("......");printterm(stddbg,(Cell) (xtemp1),8);printf("\n");
+    }
+    else
+      dbind_ref(xtemp1, clref_val(this_ret)+i);
     //      ctop_tag(CTXTc 2+i, clref_val(*clref_val(listHead))+i);
   }
+  //  printf("hreg %x hfreg %x\n",hreg,hfreg);
   if (isnil(*(clref_val(listHead)+1))) {
     breg = cp_prevbreg(breg);	/* Remove this CP */
-    //    lpcreg = (byte *) &fail_inst;
   }
-  else {
+  else {  /* Point to CDR */
     * (breg + CP_SIZE + ans_sf_length +1) = *(clref_val(listHead) + 1);
-    printf("reset : ");    printterm(stddbg,(Cell) (clref_val(listHead) + 1),8); printf("\n");
+    //    printf("reset : ");    printterm(stddbg,(Cell) (clref_val(listHead) + 1),8); printf("\n");
+    flags[PIL_TRACE] = 1;
   }
+  //  printf("end ");print_n_registers(stddbg, 6 , 8);printf("\n");
   lpcreg = cpreg;			       
-  //  next_lpcreg;
+  if (attv_pending_interrupts) {					
+    int reserved_regs = *(lpcreg-2-PAD64);			// TLS: Fix -- find out the right number of registers
+    //    printf("pending interrupts %d %d\n",reserved_regs,arsize);
+    allocate_env_and_call_check_ints(7,100);	
+    //    printf("finished interrupts\n");
+  }								
 XSB_End_Instr()
 
 /*----------------------------------------------------------------------*/

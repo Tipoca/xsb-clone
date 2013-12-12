@@ -684,39 +684,61 @@ void delete_variant_sf_and_answers(CTXTdeclc VariantSF pSF, xsbBool should_warn)
 
 //---------------------------------------------------------------------------
 
+#include "tr_code_xsb_i.h"
+
 ALNptr traverse_variant_answer_trie(CTXTdeclc VariantSF subgoal, CPtr rootptr, CPtr leafptr) {
-  int node_stk_top = 0;
-  BTNptr rnod, *Bkp;   BTHTptr ht;
+  int node_stk_top = 0; Integer hash_offset;
+  BTNptr rnod, hash_bucket;   
+  BTHTptr hash_hdr, *hash_base;
   BTNptr *freeing_stack = NULL;  int freeing_stack_size = 0;
   ALNptr lastALN = (ALNptr) NULL; ALNptr thisALN;
-  BTNptr tempstk[128]; int tempstk_top = 0;
+  BTNptr tempstk[1280]; int tempstk_top = 0;
+
+  // printf("starting leafptr to %p  %x\n",leafptr,BTN_Instr((BTNptr) *leafptr));
 
   while (leafptr != rootptr) {
-    tempstk[tempstk_top++] =  *(BTNptr *)leafptr;
-    printf("setting leafptr to %p  %lu\n",cp_prevbreg(leafptr),*cp_prevbreg(leafptr));
+    if (BTN_Instr((BTNptr) *leafptr) == 0x7a) {
+      tempstk[tempstk_top++] = (BTNptr) string_val(cell(breg+CP_SIZE+1));
+      tempstk[tempstk_top++] = (BTNptr) int_val(cell(breg+CP_SIZE));   // Number of bucket / flag
+    }
+    else {
+      tempstk[tempstk_top++] =  *(BTNptr *)leafptr;
+    }
+    //    printf("   setting leafptr to %p  %x\n",cp_prevbreg(leafptr),BTN_Instr((BTNptr) *cp_prevbreg(leafptr)));
     leafptr = (CPtr)  cp_prevbreg(leafptr);
   }
+  if (tempstk_top >= 1280) 
+      xsb_abort("Ran out of reversal stack space while logging for incremental tabling update\n");
   while(tempstk_top > 0) {
     push_node(tempstk[--tempstk_top]);
   }
 
   while (node_stk_top != 0) {
       pop_node(rnod);
-      if ( IsHashHeader(rnod) ) {
-	ht = (BTHTptr) rnod;
-	for (Bkp = BTHT_BucketArray(ht); Bkp < BTHT_BucketArray(ht) + BTHT_NumBuckets(ht);  Bkp++) {
-	  if ( IsNonNULL(*Bkp) )
-	    push_node(*Bkp);
+      //      printf("rnod %p\n",rnod);
+      if ( IsHashHeader(rnod)) {
+	pop_node(hash_bucket);
+	hash_offset = (Integer) hash_bucket;
+	//	printf("hash header %p offset %d\n",rnod,hash_bucket);
+	hash_hdr = (BTHTptr) rnod;
+	hash_base = (BTHTptr *) BTHT_BucketArray(hash_hdr);
+	find_next_nonempty_bucket(hash_hdr,hash_base,hash_offset);
+	if (hash_offset != NO_MORE_IN_HASH) {
+	  push_node((BTNptr) hash_offset);
+	  push_node((BTNptr) hash_hdr);
+	  push_node(*(BTNptr *)(hash_base + hash_offset));
+	  //	  printf("pushed %p\n",hash_base + hash_offset);
 	}
       }
       /* Non nulls from abolish-- but keeping for now */
       else { 
+	//	printf("not hash header\n");
 	if (BTN_Sibling(rnod) && IsNonNULL(BTN_Sibling(rnod)))
 	  { push_node(BTN_Sibling(rnod)); }
 	if ( !IsLeafNode(rnod) && IsNonNULL(BTN_Child(rnod))) {
 	  push_node(BTN_Child(rnod)) } 
 	else { /* leaf node */
-	  printf("Trie traversal Leaf Node %p\n",rnod);
+	  //	  printf("Trie traversal Leaf Node %p\n",rnod);
 	  New_ALN(subgoal,thisALN, rnod, lastALN);
 	  lastALN = thisALN;
 	}
@@ -5043,37 +5065,54 @@ forestLogBuffer forest_log_buffer_2;
 forestLogBuffer forest_log_buffer_3;
 #endif
 
-Cell list_of_answers_from_answer_list(CTXTdeclc VariantSF sf,int as_length,ALNptr ALNlist) {
+Cell list_of_answers_from_answer_list(CTXTdeclc VariantSF sf,int as_length,int attv_length,ALNptr ALNlist) {
   BTNptr leaf;
   Cell listHead;   CPtr argvec1,oldhreg;
-  int i;
+  int i, isNew;   Psc ans_desig;
   ALNptr ansPtr;
+  VariantSF undef_sf;
+    Pair undefPair;				      
 
   //  print_subgoal(stdout, sf); printf("\n"); 
 
   leaf = subg_leaf_ptr(sf);
+  ans_desig = get_ret_psc(2);
   ansPtr = ALNlist;
+  undefPair = insert("brat_undefined", 0, pair_psc(insert_module(0,"xsbbrat")), &isNew); 
+  //  printf("tip %p\n",get_tip(CTXTc pair_psc(undefPair)));
+  undef_sf = TIF_Subgoals(get_tip(CTXTc pair_psc(undefPair)));
 
   listHead = makelist(hreg);
   while (ansPtr != 0) {
     new_heap_free(hreg);  new_heap_free(hreg);
     oldhreg=hreg-2;                          // ptr to car
-	
+    new_heap_functor(hreg,ans_desig); 
+    follow(oldhreg) = makecs(oldhreg+2);
+    follow(hreg) = makecs(hreg+2);
+    hreg++; 
+    //    new_heap_free(hreg);
+    if (is_unconditional_answer(ALN_Answer(ansPtr))) {
+      //      printf("is unconditional\n");
+      new_heap_int(hreg,TRUE);
+    }
+    else {
+      //      printf("conditional answer\n");
+      new_heap_int(hreg,undef_sf);
+    }
     new_heap_functor(hreg, get_ret_psc(as_length));
     argvec1 = hreg;
     for (i=0; i<as_length; i++)
       bld_free(hreg+i);
     hreg = hreg + as_length;
     //    printf("ALN_answer %p\n",ALN_Answer(ansPtr));
-    load_solution_trie_notrail(CTXTc as_length, 0, argvec1, ALN_Answer(ansPtr));  // Need to handle attvs
-    follow(oldhreg) = makecs(oldhreg+2);
+    load_solution_trie_notrail(CTXTc as_length, attv_length, argvec1, ALN_Answer(ansPtr));  // Need to handle attvs
     follow((oldhreg+1)) = makelist(hreg);
 
     ansPtr = ALN_Next(ansPtr);
   }
 
   follow(oldhreg+1) = makenil;
-  printf("---listhead--- ");  printterm(stddbg,listHead,80);printf("\n");
+  //  printf("---listhead--- ");  printterm(stddbg,listHead,80);printf("\n");
   return listHead;
 }
 

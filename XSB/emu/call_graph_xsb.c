@@ -76,6 +76,8 @@ Terminology: outedge -- pointer to calls that depend on call
              inedge  -- pointer to calls on which call depends
 */
 
+#define ISO_INCR_TABLING 1
+
 /********************** STATISTICS *****************************/
 
 //int cellarridx_gl;
@@ -589,18 +591,22 @@ void dfs_inedges_warning(CTXTdeclc callnodeptr call1,calllistptr *lazy_affected)
 extern BTNptr TrieNodeFromCP(CPtr);
 extern VariantSF get_subgoal_frame_for_answer_trie_cp(CTXTdeclc BTNptr);
 extern ALNptr traverse_variant_answer_trie( VariantSF, CPtr, CPtr) ;
-extern Cell list_of_answers_from_answer_list(VariantSF,int,ALNptr);
+extern Cell list_of_answers_from_answer_list(VariantSF,int,int,ALNptr);
 
 void find_the_visitors(CTXTdeclc VariantSF subgoal) {
   CPtr cp_top1,cp_bot1 ; CPtr cp_root; CPtr cp_first;
   byte cp_inst; Cell listHead;
-  int ans_subst_num, i;
+  int ans_subst_num, i, attv_num;
   BTNptr trieNode;
   ALNptr ALNlist;
 
-  printf("find the visitors: subg %p trie root %p\n",subgoal,subg_ans_root_ptr(subgoal));
+  //  printf("find the visitors: subg %p trie root %p\n",subgoal,subg_ans_root_ptr(subgoal));
   cp_top1 = breg ;				 
   cp_bot1 = (CPtr)(tcpstack.high) - CP_SIZE;
+  if (xwammode && hreg < hfreg) {
+    printf("uh-oh! hreg was less than hfreg in in find the visitors\n");
+    hreg = hfreg;
+  }
   while ( cp_top1 < cp_bot1 ) {
     cp_inst = *(byte *)*cp_top1;
     // Want trie insts, but need to distinguish from asserted and interned tries
@@ -612,8 +618,8 @@ void find_the_visitors(CTXTdeclc VariantSF subgoal) {
       if (IsInAnswerTrie(trieNode)) {
 	//	printf("in answer trie\n");
 	if (subgoal == get_subgoal_frame_for_answer_trie_cp(CTXTc trieNode))  {
-	  printf("found top of run %p \n",cp_top1);
-	  print_subgoal(CTXTc stdout, subgoal); printf("\n");
+	  //	  printf("found top of run %p \n",cp_top1);
+	  //	  print_subgoal(CTXTc stdout, subgoal); printf("\n");
 	  cp_root = cp_top1; cp_first = cp_top1;
 	  while (*cp_pcreg(cp_root) != trie_fail) {
 	    cp_first = cp_root;
@@ -623,28 +629,32 @@ void find_the_visitors(CTXTdeclc VariantSF subgoal) {
 	  }
 	  ALNlist = traverse_variant_answer_trie(subgoal, cp_root,cp_top1);
 	  ans_subst_num = int_val(cell(cp_root + CP_SIZE + 1)) ;  // account for sf ptr of trie root cp
-	  printf("found root %p first %p top %p ans_subst_num %d & %p\n",cp_root,cp_first,cp_top1,ans_subst_num,breg+CP_SIZE);
-	  listHead = list_of_answers_from_answer_list(subgoal,ans_subst_num,ALNlist);
+	  attv_num = int_val(cell(breg+CP_SIZE+1+ans_subst_num)) + 1;;
+	  // printf("found root %p first %p top %p ans_subst_num %d & %p attv_num %d\n",cp_root,cp_first,cp_top1,ans_subst_num,breg+CP_SIZE, attv_num); 
+	  listHead = list_of_answers_from_answer_list(subgoal,ans_subst_num,attv_num,ALNlist);
 	  // Free ALNlist;
 	  cp_pcreg(cp_top1) = (byte *) &completed_trie_member_inst;
        	  cp_ebreg(cp_top1) = cp_ebreg(cp_root);
 	  cp_hreg(cp_top1) = hreg;	  
+	  cp_ereg(cp_top1) = cp_ereg(cp_root);
 	  cp_trreg(cp_top1) = cp_trreg(cp_root);
 	  cp_prevbreg(cp_top1) = cp_prevbreg(cp_root);
 	  // cpreg, ereg, pdreg, ptcpreg should not need to be reset (prob not ebreg?)
 	  //	  printf("sf %p\n",* (cp_root + CP_SIZE + 2));
 	  * (cp_top1 + CP_SIZE) = makeint(ans_subst_num);
-	  for (i = 0;i < ans_subst_num ;i++) {
+	  for (i = 0;i < ans_subst_num ;i++) {                              // Use registers for root of trie, not leaf (top)
 	    * (cp_top1 + CP_SIZE + 1 + i) =  * (cp_root + CP_SIZE + 2 +i);  // account for sf ptr or root
 	  }
 	  * (cp_top1 + CP_SIZE + 1+ ans_subst_num) = listHead;
-	  printf("constructed listhead\n");
+	  //	  printf("constructed listhead hreg %x\n",hreg);
 	  cp_top1 = cp_root;  // next iteration
 	}
       }
     }
     cp_top1 = cp_prevtop(cp_top1);
   }
+  if (xwammode) hfreg = hreg;
+  //  printf("constructed listhead hreg %x hfreg %x\n",hreg,hfreg);
   subg_visitors(subgoal) = 0;
 }
 
@@ -665,7 +675,7 @@ int dfs_inedges(CTXTdeclc callnodeptr call1, calllistptr * lazy_affected, int fl
     }
     if (subg_visitors(call1->goal)) {
       #ifdef ISO_INCR_TABLING
-      find_the_visitors(call1->goal);
+      find_the_visitors(CTXTc call1->goal);
       #else
       dfs_inedges_warning(CTXTc call1,lazy_affected);
       return CANNOT_UPDATE;
@@ -751,7 +761,7 @@ int create_call_list(CTXTdecl){
     //    fprintf(stddbg,"incrementally updating table for ");print_subgoal(stdout,subgoal);printf("\n");
     if (subg_visitors(subgoal)) {
       #ifdef ISO_INCR_TABLING
-      find_the_visitors(subgoal);
+      find_the_visitors(CTXTc subgoal);
       #else
       //      sprint_subgoal(CTXTc forest_log_buffer_1,0,subgoal);
       #ifdef WARN_ON_UNSAFE_UPDATE
@@ -836,7 +846,7 @@ int create_lazy_call_list(CTXTdeclc  callnodeptr call1){
     if (subg_visitors(subgoal)) {
       sprint_subgoal(CTXTc forest_log_buffer_1,0,subgoal);
       #ifdef ISO_INCR_TABLING
-      find_the_visitors(subgoal);
+      find_the_visitors(CTXTc subgoal);
       #else
       #ifdef WARN_ON_UNSAFE_UPDATE
             xsb_warn("%d Choice point(s) exist to the table for %s -- cannot incrementally update (create_lazy_call_list)\n",

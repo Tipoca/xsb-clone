@@ -1777,7 +1777,7 @@ CPtr xtemp; int heap_needed;
   if (arity > 0) {
     /* Initialize var_addr[] as the attvs in the call. */
     if (attv_num > 0) {
-      for (xtemp = cptr; xtemp > cptr - arity; xtemp--) {
+      for (xtemp = cptr; xtemp < cptr + arity; xtemp++) {
 	if (isattv(cell(xtemp))) {
 	  //	  var_addr[num_heap_term_vars] = (CPtr) cell(xtemp);
 	  safe_assign(var_addr,num_heap_term_vars,(CPtr) cell(xtemp),var_addr_arraysz);
@@ -2894,3 +2894,70 @@ void copy_abstractions_to_AT(CTXTdeclc CPtr abstr_templ_ptr,int abstr_num) {
 
 #endif
 
+
+#ifndef MULTI_THREAD
+
+/*----------------------------------------------------------------------*/
+/* Global variables -- should really be made local ones...              */
+/*----------------------------------------------------------------------*/
+
+/* TLS: 08/05 documentation of trieinstr_unif_stk and trieinstr_vars.
+ * 
+ * trieinstr_unif_stk is a stack used for unificiation by trie
+ * instructions from a completed table and asserted tries.  In the
+ * former case, the trieinstr_unif_stk is init'd by tabletry; in the
+ * latter by trie_assert_inst.  After initialization, the values of
+ * trieinstr_unif_stk point to the dereferenced values of the
+ * answer_template (for tables) or of the registers of the call (for
+ * asserted tries).  These values are placed in trieinstr_unif_stk in
+ * reverse order, so that at the end of initialization the first
+ * argument of the call or answer template is at the top of the stack.
+ * Actions are then as follows:
+ * 
+ * 1) When a structure/list is encountered, and the symbol unifies
+ * with the top of trieinstr_unif_stk, additional cells are pushed
+ * onto trieinstr_unif_stk.  In the case where the trie is unifying
+ * with a variable, a WAM build-type operation is performed so that
+ * these new trieinstr_unif_stk cells point to new heap cells.  In the
+ * case where the trie is unifying with a structure on the heap, the
+ * new cells point to the arguments of the structure, in preparation
+ * for further unifications.
+ * 
+ * 2) When a constant/number is encountered, an attempt is made to
+ * unify this value with the referent of trieinstr_unif_stk.  If it
+ * unifies, the cell is popped off of trieinstr_unif_stk, and the
+ * algorithm continues.
+ * 
+ * 3) When a variable is encountered in the trie it is handled like a
+ * constant from the perspective of trieinstr_unif_stk, but now the
+ * trieinstr_vars array comes into play.
+ * 
+ * Variables in the path of a trie are numbered sequentially in the
+ * order of their occurrence in a LR traversal of the trie.  Trie
+ * instructions distinguish first occurrences (_vars) from subsequent
+ * occurrences (_vals).  When a _var numbered N is encountered while
+ * traversing a trie path, the Nth cell of trieinstr_vars is set to
+ * the value of the top of the trieinstr_unif_stk stack, and the
+ * unification (binding) performed.  If a _val N is later encountered,
+ * a unification is attempted between the top of the
+ * trieinstr_unif_stk stack, and the value of trieinstr_vars(N).
+ */
+
+/*
+Cell *trieinstr_unif_stk;
+CPtr trieinstr_unif_stkptr;
+Integer  trieinstr_unif_stk_size = DEFAULT_ARRAYSIZ;
+*/
+
+/*
+ * Variable delay_it decides whether we should delay an answer after we
+ * have gone though a branch of an answer trie and reached the answer
+ * leaf.  If delay_it == 1, then macro handle_conditional_answers() will
+ * be called (in proceed_lpcreg).
+ *
+ * In return_table_code, we need to set delay_it to 1. But in
+ * get_returns/2, we need to set it to 0.
+ */
+int     delay_it;
+
+#endif /* MULTI_THREAD */

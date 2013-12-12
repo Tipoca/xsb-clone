@@ -714,6 +714,20 @@ void print_registers(CTXTdeclc FILE *fp, Psc psc,long depth) {
   //  fflush(fp);
 }
 
+void print_n_registers(CTXTdeclc FILE *fp, int arity , long depth) {
+  int i;
+
+  if (arity != 0) fprintf(fp, "(");
+  for (i=1; i <= arity; i++) {
+    printterm(fp, cell(reg+i), depth);
+    //    fflush(fp);
+    if (i < arity) fprintf(fp, ",");
+  }
+  //  if (arity != 0) fprintf(fp, ")\n"); else fprintf(fp, "\n");
+  if (arity != 0) fprintf(fp, ")"); 
+  //  fflush(fp);
+}
+
 /*------------------------------------------------------------------*/
 /* These variables are global, so in principle, you could run the
    instruction debugger with multiple active threads.  It hasn't been
