@@ -5067,7 +5067,7 @@ forestLogBuffer forest_log_buffer_3;
 
 Cell list_of_answers_from_answer_list(CTXTdeclc VariantSF sf,int as_length,int attv_length,ALNptr ALNlist) {
   BTNptr leaf;
-  Cell listHead;   CPtr argvec1,oldhreg;
+  Cell listHead;   CPtr argvec1,oldhreg=NULL;
   int i, isNew;   Psc ans_desig;
   ALNptr ansPtr;
   VariantSF undef_sf;

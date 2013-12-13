@@ -628,8 +628,8 @@ void find_the_visitors(CTXTdeclc VariantSF subgoal) {
 	      printf(" couldn't find incr trie root -- whoa, whu? (%p\n",cp_root);
 	  }
 	  ALNlist = traverse_variant_answer_trie(subgoal, cp_root,cp_top1);
-	  ans_subst_num = int_val(cell(cp_root + CP_SIZE + 1)) ;  // account for sf ptr of trie root cp
-	  attv_num = int_val(cell(breg+CP_SIZE+1+ans_subst_num)) + 1;;
+	  ans_subst_num = (int)int_val(cell(cp_root + CP_SIZE + 1)) ;  // account for sf ptr of trie root cp
+	  attv_num = (int)int_val(cell(breg+CP_SIZE+1+ans_subst_num)) + 1;;
 	  // printf("found root %p first %p top %p ans_subst_num %d & %p attv_num %d\n",cp_root,cp_first,cp_top1,ans_subst_num,breg+CP_SIZE, attv_num); 
 	  listHead = list_of_answers_from_answer_list(subgoal,ans_subst_num,attv_num,ALNlist);
 	  // Free ALNlist;
@@ -1520,7 +1520,7 @@ void xsb_compute_scc(SCCNode * nodes,int * dfn_stack,int node_from, int * dfn_to
       node_to = (Integer) search_some(hasht, (void *)sf);
       //      printf("edge from %p to %p (%d)\n",(void *)nodes[node_from].node,sf,node_to);
       if (nodes[node_to].dfn == 0) {
-	xsb_compute_scc(nodes,dfn_stack,node_to, dfn_top,hasht,dfn,component );
+	xsb_compute_scc(nodes,dfn_stack,(int)node_to, dfn_top,hasht,dfn,component );
 	if (nodes[node_to].low < nodes[node_from].low) 
 	  nodes[node_from].low = nodes[node_to].low;
 	}	  

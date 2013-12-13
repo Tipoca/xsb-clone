@@ -1025,7 +1025,7 @@ XSB_Start_Instr(completed_trie_member,_completed_trie_member)
   //  printf("end ");print_n_registers(stddbg, 6 , 8);printf("\n");
   lpcreg = cpreg;			       
   if (attv_pending_interrupts) {					
-    int reserved_regs = *(lpcreg-2-PAD64);			// TLS: Fix -- find out the right number of registers
+    //int reserved_regs = *(lpcreg-2-PAD64);			// TLS: Fix -- find out the right number of registers
     //    printf("pending interrupts %d %d\n",reserved_regs,arsize);
     allocate_env_and_call_check_ints(7,100);	
     //    printf("finished interrupts\n");
