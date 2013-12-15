@@ -4,7 +4,7 @@
 xsb_patch_date='$Date$'
 
 xsb_build_date=`date`
-xsb_patch_date=`echo $xsb_patch_date | sed 's,.*D,Patch d,' | sed 's, *\\$,,'`
+xsb_patch_date=`echo $xsb_patch_date | sed 's,.*Da,Patch da,' | sed 's, *\\$,,'`
 
 
 xsb_major_version=3
