@@ -33,6 +33,3 @@ xsb_codename="Soy mILK"     # Version 3.4 (Benjamin)
 #xsb_release_date=2011-07-02
 xsb_release_date=2013-05-01
 
-
-
-
