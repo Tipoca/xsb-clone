@@ -1561,6 +1561,7 @@ The following options are currently recognized by the compiler:
     retractall(gpp\_include\_dir(\_))} after that or else subsequent Prolog
   compilations might not work correctly.
 
+\index{Compilation!conditional!gpp}
   XSB predefines the constant {\tt XSB\_PROLOG}, which can be used for
   conditional compilation. For instance, you can write portable program
   to run under XSB and and other prologs that support C-style
@@ -2071,6 +2072,50 @@ substitutions, but {\tt include/1} should be used if code portability
 is desired.
 
 \end{description}
+\index{Compilation!conditional!Prolog directives}
+
+\subsection{Conditional Compilation}
+%
+Section~\ref{sec:CompilerOptions} described a way of performing
+conditional compilation using XSB's interation with GPP.  Conditional
+compilation can also be done through XSB's compiler, using the
+directives {\tt \mif{} if(+Condition)}, {\tt \mif{}
+  elseif(+Condition)}, {\tt \mif{} else}, and {\tt \mif{} endif}.  For
+instance the fragment
+
+\begin{verbatim}
+:- if(current_prolog_flag(dialect,xsb)).
+:- include('file2.P').
+:- elseif(current_prolog_flag(dialect,swi)).
+:- include('file3.P').
+:- endif.
+\end{verbatim}
+
+allows different Prolog code to be included for XSB and for another
+Prolog.  This framework is very general: for instance, as long as {\tt
+  if...elseif...endif} blocks are not nested, any Prolog code can be
+used in the consequents of the (else)if.  The condition of {\tt if/1}
+or {\tt elseif/1} can be any Prolog goal, although care should be used
+in selecting {\tt Condition}.  For instance, the goal
+
+\begin{verbatim}
+:- if(file_exists('file1.P')).
+\end{verbatim}
+
+might be true during compilation, but if the object file produced by
+the compilation is moved, the condition might no longer be true.
+
+\begin{description}
+\repeatstandarditem{if(?Condition)}{if/1}
+\repeatstandarditem{elseif(?Condition)}{elseif/1}
+\repeatstandarditem{else}{else/0}
+\standarditem{endif}{endif/0}
+%
+Directives to invoke conditional compilation as described above.  If
+{\tt Condition} is a ``changeable'' goal such as {\tt file\_exists/1},
+a warning will be issued but no error will be raised.
+\end{description}
+
 
 %
 \subsubsection{Mode Declarations}\label{mode_declarations}
