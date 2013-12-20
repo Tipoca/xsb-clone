@@ -174,6 +174,10 @@ else
 	../gentest.sh "$XEMU $options" cregs_make "test."
 fi
 
+#------------------------------------------------------------------------
+rm test_cond_comp.xwam
+	../gentest.sh "$XEMU $options" test_cond_comp "test."
+
 
 if test "$valgrind" = "true"; then
 	echo "Skipping foreign compilation"
@@ -192,3 +196,4 @@ rm -f fibr.dylib fibr.so
 #------------------------------------------------------------------------
 ../gentest.sh "$XEMU $options" test_importas "test."
 fi
+
