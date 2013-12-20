@@ -50,6 +50,7 @@ compile(Modname,Basename,Extensions,Options,ExportList):-
 % Close current stream (i.e. the file we were compiling) if it is not
 % equal to whatever the current stream was before we started compiling.
 handle_compile_error(Basename,IStr,OStr):- 	      
+	conset(conditional_compile,0),					   
 	stat_flag(CURRENT_INPUT, CurStr),
 	(IStr \== CurStr -> close(CurStr) ; true),
 	str_cat(Basename,XSB_OBJ_EXTENSION_ATOM,OFile),

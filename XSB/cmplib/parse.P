@@ -573,6 +573,7 @@ parse_clause(Cl, module(SymTab,DcList,ClList,QrList),ModName) :-
 	 ->	parse_preddef_chk_dyn(H, B, ClList, QrList, ModName, SymTab)
 	 ; Cl = (':-'(Directive))
 	 ->	transform_directive(Directive,ModName,SymTab,PDirective),
+	        
 		parse_directive(PDirective,QrList,SymTab,ModName, 
 		                  module(SymTab,DcList,ClList,QrList))
 	 ; Cl = ('?-'(Q))
@@ -647,18 +648,24 @@ transform_slash_to_skel(Spec,ModName,SymTab,Skel) :-
 /*	inserting any symbols to the symbol table (non-backtrackable	*/
 /*	insert).							*/
 /*======================================================================*/
-parse_directive(if(Condition), _QrList,_SymTab,_ModName,_ModStruct) :- !, 	
+parse_directive(if(Condition), _QrList,_SymTab,ModName,ModStruct) :- !, 	
+        conset(conditional_compile,1),
         (cond_call(Condition) -> 
-          true
-	; skip_over_condition(1)).
+          conset(conditional_compile,2)
+	; skip_over_condition(1,Newclause),
+  	  parse_clause(Newclause, ModStruct, ModName) ).
 % if reading the elseif from normal parsing, we've already taken another branch.
 parse_directive(elif(Condition), QrList,SymTab,ModName,ModStruct):- !,
 	parse_directive(elseif(Condition), QrList,SymTab,ModName,ModStruct).
-parse_directive(elseif(_), _QrList,_SymTab,_ModName,_ModStruct):- !,
-	skip_over_condition(1).
+parse_directive(elseif(Condition), _QrList,_SymTab,_ModName,_ModStruct):- !,
+        conget(conditional_compile,X),
+	(X == 1 -> 
+           (cond_call(Condition) -> conset(conditional_compile,2) ; skip_over_condition(1,_))
+	  ; skip_over_condition(1,_)).
 parse_directive(else, QrList,SymTab,ModName,ModStruct):- !,
 	parse_directive(elseif(true), QrList,SymTab,ModName,ModStruct).
-parse_directive(endif, _QrList,_SymTab,_ModName,_ModStruct):- !.
+parse_directive(endif, _QrList,_SymTab,_ModName,_ModStruct):- !,
+	conset(conditional_compile,0).
 parse_directive(module(ModIn,X,_Dialect), _QrList,SymTab,ModName,_ModStruct) :- !, 	
 	console_writeln(module(ModIn,X,_Dialect)),
 	parse_directive(module(ModIn,X), _QrList,SymTab,ModName,_ModStruct).
@@ -717,7 +724,10 @@ parse_directive(include(FileIn), _QrList,_SymTab,ModName,ModStruct) :- !,
 		(search_module(File, _Dir, _Newame, Ext, Base, _Obj) ->
 		    concat_atom([Base,'.',Ext],PFile),
 		    parse1(ModName,PFile,ModStruct)
-		;   existence_error('file/module',File,compile/1,1))
+		;   
+% TLS: existence errors may not work here if we're inside an if / then / else.
+		    existence_error('file/module',File,compile/1,1))
+%		    warning(('Cannot find include file ',File,' ignoring ')))
 	).
 % for compiled-code indexing
 parse_directive(index(X), _QrList,SymTab,_ModName,_ModStruct) :- !,
@@ -851,18 +861,22 @@ parse_multifile(Skel,QrList,SymTab,ModName) :-
 
 %-----------
 % code for conditional compilation
+:- import console_writeln/1 from standard.
 
-skip_over_condition(N):- 
+skip_over_condition(N,Cl_fin):- 
 	my_read(Cl, _),
+%	console_writeln(soc(Cl)),
 	(	Cl = (':-'(endif)) ->
-		true
+		Cl = Cl_fin
 	;	Cl = (':-'(elseif(Condition))), cond_call(Condition) ->
-		true
+		Cl = Cl_fin
+	;	Cl = (':-'(else)) ->
+		Cl = Cl_fin
 	;	Cl = (':-'(elif(Condition))), cond_call(Condition) ->
-		true
+		Cl = Cl_fin
 	;	Cl = (':-'(if(_Call))) -> 
 		misc_error('XSB does not support nested conditional compilation.')
-	;	skip_over_condition(N)
+	;	skip_over_condition(N,Cl_fin)
 	).
 
 cond_call(Call):- 
