@@ -593,6 +593,9 @@ extern VariantSF get_subgoal_frame_for_answer_trie_cp(CTXTdeclc BTNptr);
 extern ALNptr traverse_variant_answer_trie( VariantSF, CPtr, CPtr) ;
 extern Cell list_of_answers_from_answer_list(VariantSF,int,int,ALNptr);
 
+//extern int instr_flag;
+extern CPtr hreg_pos;
+
 void find_the_visitors(CTXTdeclc VariantSF subgoal) {
   CPtr cp_top1,cp_bot1 ; CPtr cp_root; CPtr cp_first;
   byte cp_inst; Cell listHead;
@@ -646,6 +649,7 @@ void find_the_visitors(CTXTdeclc VariantSF subgoal) {
 	    * (cp_top1 + CP_SIZE + 1 + i) =  * (cp_root + CP_SIZE + 2 +i);  // account for sf ptr or root
 	  }
 	  * (cp_top1 + CP_SIZE + 1+ ans_subst_num) = listHead;
+	  * (cp_top1 + CP_SIZE + 2+ ans_subst_num) = hfreg;
 	  //	  printf("constructed listhead hreg %x\n",hreg);
 	  cp_top1 = cp_root;  // next iteration
 	}
@@ -656,6 +660,7 @@ void find_the_visitors(CTXTdeclc VariantSF subgoal) {
   if (xwammode) hfreg = hreg;
   //  printf("constructed listhead hreg %x hfreg %x\n",hreg,hfreg);
   subg_visitors(subgoal) = 0;
+  //  instr_flag = 1;  printf("setting instr_flag\n");  hreg_pos = hreg;
 }
 
 /* If ret != 0 (= CANNOT_UPDATE) then we'll use the old table, and we

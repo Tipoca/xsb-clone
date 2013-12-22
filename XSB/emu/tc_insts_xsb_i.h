@@ -976,8 +976,9 @@ XSB_End_Instr()
 XSB_Start_Instr(completed_trie_member,_completed_trie_member) 
   Cell listHead, unconditional_flag; int i, ans_sf_length; CPtr this_ret; CPtr ans_sf; CPtr xtemp1;
 
-//  printf("in completed_trie_member ");  print_n_registers(stddbg, 6 , 8);printf("\n");
+// printf("\nin completed_trie_member hreg %p hfreg %p\n",hreg,hfreg);  //print_n_registers(stddbg, 6 , 8);printf("\n");
   ans_sf_length = (int)int_val(cell(breg + CP_SIZE));
+  //  printf("ans_sf_length %d\n",ans_sf_length);
   listHead = * (breg + CP_SIZE + ans_sf_length+1);
   this_ret = (CPtr) follow(clref_val(listHead));      // pointer to beginning of ret(ret/n,uncond_flag).
   unconditional_flag = cell(clref_val(this_ret)+2);
@@ -987,7 +988,6 @@ XSB_Start_Instr(completed_trie_member,_completed_trie_member)
   undo_bindings(breg);		                      // will not undo the list itself.
   delayreg = cp_pdreg(breg);                
   restore_some_wamregs(breg, ereg);	       
-  //  printf("ans_sf:  ");printterm(stddbg,cell(ans_sf+1),8);printf(".\n");
   //  printf("begin ");print_n_registers(stddbg, 1 , 8);printf("\n");
   if (int_val(unconditional_flag) != (Integer) TRUE) {
     //    printf("conditional %x\n",int_val(unconditional_flag)); 
@@ -1000,7 +1000,7 @@ XSB_Start_Instr(completed_trie_member,_completed_trie_member)
     xtemp1 = (ans_sf - i);
     XSB_CptrDeref(xtemp1);
     if (isattv(xtemp1)) {
-      //      printf(" found attv\n");
+      printf(" found attv in ISO incremental tabling\n");
       xtemp1 = (CPtr)dec_addr(xtemp1);
       XSB_CptrDeref(xtemp1);
       add_interrupt(CTXTc cell(((CPtr)dec_addr(xtemp1) + 1)),(Cell) (clref_val(this_ret)+i));	
@@ -1015,6 +1015,7 @@ XSB_Start_Instr(completed_trie_member,_completed_trie_member)
   }
   //  printf("hreg %x hfreg %x\n",hreg,hfreg);
   if (isnil(*(clref_val(listHead)+1))) {
+    hfreg = (CPtr) * (breg + CP_SIZE + 2+ ans_sf_length);     // Need to reset, as find_the_visitors increased hfreg to protect list.
     breg = cp_prevbreg(breg);	/* Remove this CP */
   }
   else {  /* Point to CDR */
@@ -1025,8 +1026,7 @@ XSB_Start_Instr(completed_trie_member,_completed_trie_member)
   //  printf("end ");print_n_registers(stddbg, 6 , 8);printf("\n");
   lpcreg = cpreg;			       
   if (attv_pending_interrupts) {					
-    //int reserved_regs = *(lpcreg-2-PAD64);			// TLS: Fix -- find out the right number of registers
-    //    printf("pending interrupts %d %d\n",reserved_regs,arsize);
+    printf("pending interrupts  \n");        // TLS: Fix -- find out the right number of registers
     allocate_env_and_call_check_ints(7,100);	
     //    printf("finished interrupts\n");
   }								

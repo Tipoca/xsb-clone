@@ -104,6 +104,10 @@ Integer  trieinstr_unif_stk_size = DEFAULT_ARRAYSIZ;
 CPtr	ans_var_pos_reg;
 #endif
 
+
+//int instr_flag = 0;    // Used for switching on PIL_TRACE
+// CPtr hreg_pos; // for debugging iso incremental tables.  Can be removed once these are stable.
+
 //#define MULTI_THREAD_LOGGING
 #ifdef MULTI_THREAD_LOGGING
 /* To help debug multithreaded applications: 
@@ -164,11 +168,14 @@ void check_stack_invariants(CTXTdecl);
 #define debug_inst(t_pcreg, t_ereg) { \
   }
 
-#define XSB_Debug_Instr                                    \
-  if (flags[PIL_TRACE]) {                                 \
-    debug_inst(CTXTc lpcreg, ereg);                      \
-    xctr++; \
-  }
+#define XSB_Debug_Instr                                    
+/*  if (instr_flag) {							\
+    printf("%d: %s\n",++xctr,(char *)inst_table[(int) *(lpcreg)][0]);	\
+    debug_inst(CTXTc lpcreg, ereg);					\
+    if (hreg < hreg_pos || hfreg < hreg_pos) printf("!1 hreg %p hfreg %p\n",hreg,hfreg); \
+    if (hreg < hreg_pos) printf("!2 hreg %p %p\n",hreg,hfreg);		\
+    }
+*/
 
 #else
 

@@ -1090,10 +1090,26 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 #define Reset_Demand_Freeze_Registers 
 #endif
 
-#define reset_freeze_registers \
+
+/* Use this when backtracking out of the completed leader of an SCC.  
+   This doesn't automatically reset hfreg to the bottom of the stack to protect the list constructed during 
+   List creation in ISO incremental tabling */
+#define reset_freeze_registers_backtrack(tcp)		\
+  /*  printf("reset freeze registers\n");	*/	\
     bfreg = (CPtr)(tcpstack.high) - CP_SIZE; \
     trfreg = (CPtr *)(tcpstack.low); \
-    hfreg = (CPtr)(glstack.low); \
+    /* hfreg = (CPtr)(glstack.low);			*/	 \
+    if (hfreg > tcp_hfreg(tcp)) { hfreg = tcp_hfreg(tcp); }	 \
+    /*    if (hfreg != (CPtr)(glstack.low)) printf("... hfreg not fully reset\n");*/ \
+    efreg = (CPtr)(glstack.high) - 1; \
+    level_num = xwammode = 0; \
+    root_address = ptcpreg = NULL; \
+    Reset_Demand_Freeze_Registers
+
+#define reset_freeze_registers		\
+    bfreg = (CPtr)(tcpstack.high) - CP_SIZE; \
+    trfreg = (CPtr *)(tcpstack.low); \
+    hfreg = (CPtr)(glstack.low);      \
     efreg = (CPtr)(glstack.high) - 1; \
     level_num = xwammode = 0; \
     root_address = ptcpreg = NULL; \
@@ -1107,7 +1123,7 @@ void tstCreateTSIs(struct th_context *,TSTNptr);
 
 #define reclaim_stacks(tcp) \
   if (tcp == root_address) { \
-    reset_freeze_registers; \
+    reset_freeze_registers_backtrack(tcp);	     \
     /* xsb_dbgmsg("reset registers...."); */ \
   } \
   else { \
