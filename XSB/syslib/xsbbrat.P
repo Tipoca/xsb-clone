@@ -5,3 +5,4 @@
 brat_undefined :- tnot(brat_undefined).
 
 ?- brat_undefined.
+%?- writeln(brat_undefined).
