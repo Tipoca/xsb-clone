@@ -611,6 +611,7 @@ void find_the_visitors(CTXTdeclc VariantSF subgoal) {
     hreg = hfreg;
   }
   while ( cp_top1 < cp_bot1 ) {
+    //    printf("1 cp_top1 %p cp_bot1 %p prev %p\n",cp_top1,cp_bot1,cp_prevtop(cp_top1));
     cp_inst = *(byte *)*cp_top1;
     // Want trie insts, but need to distinguish from asserted and interned tries
     //    printf("cp_inst %x\n",cp_inst);
@@ -641,7 +642,7 @@ void find_the_visitors(CTXTdeclc VariantSF subgoal) {
 	  cp_hreg(cp_top1) = hreg;	  
 	  cp_ereg(cp_top1) = cp_ereg(cp_root);
 	  cp_trreg(cp_top1) = cp_trreg(cp_root);
-	  cp_prevbreg(cp_top1) = cp_prevbreg(cp_root);
+	  cp_prevbreg(cp_top1) = cp_prevbreg(cp_root);	  cp_prevtop(cp_top1) = cp_prevtop(cp_root);
 	  // cpreg, ereg, pdreg, ptcpreg should not need to be reset (prob not ebreg?)
 	  //	  printf("sf %p\n",* (cp_root + CP_SIZE + 2));
 	  * (cp_top1 + CP_SIZE) = makeint(ans_subst_num);
@@ -650,8 +651,10 @@ void find_the_visitors(CTXTdeclc VariantSF subgoal) {
 	  }
 	  * (cp_top1 + CP_SIZE + 1+ ans_subst_num) = listHead;
 	  * (cp_top1 + CP_SIZE + 2+ ans_subst_num) = hfreg;
+	  //	  printf("4 cp_root %p prev %p\n",cp_root,cp_prevtop(cp_root));
 	  //	  printf("constructed listhead hreg %x\n",hreg);
-	  cp_top1 = cp_root;  // next iteration
+	  //	  cp_top1 = cp_root;  // next iteration
+	  //	  printf("7 cp_top1 %p cp_bot1 %p prev %p\n",cp_top1,cp_bot1,cp_prevtop(cp_top1));
 	}
       }
     }
