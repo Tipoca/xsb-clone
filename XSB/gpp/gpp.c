@@ -262,6 +262,8 @@ void construct_include_directive_marker(char **include_directive_marker,
 					char *includemarker_input);
 void escape_backslashes(char *instr, char **outstr);
 
+static int is_slash(char ch);
+
 void bug(char *s)
 {
   fprintf(stderr,"\n++Error[GPP]: %s:%d: %s.\n\n",C->filename,C->lineno,s);
@@ -2276,7 +2278,7 @@ int ParsePossibleMeta()
       incfile_name[pos2-pos1+1] = 0;
 
       /* if absolute path name is specified */
-      if (incfile_name[0]==SLASH
+      if (is_slash(incfile_name[0])
 #ifdef WIN_NT
 	  || (isalpha(incfile_name[0]) && incfile_name[1]==':')
 #endif
@@ -2291,7 +2293,7 @@ int ParsePossibleMeta()
         incfile_name =
           realloc(incfile_name,pos2-pos1+strlen(includedir[j])+3);
         strcpy(incfile_name,includedir[j]);
-        incfile_name[strlen(includedir[j])]=SLASH;
+        incfile_name[strlen(includedir[j])] = SLASH;
         /* extract the orig include filename */
         memcpy(incfile_name+strlen(includedir[j])+1, temp+pos1, pos2-pos1+1);
         incfile_name[pos2-pos1+strlen(includedir[j])+2] = '\0';
@@ -2734,7 +2736,7 @@ static void getDirname(char *fname, char *dirname)
   int i;
 
   for (i = (int)strlen(fname)-1; i>=0; i--) {
-    if (fname[i] == SLASH)
+    if (is_slash(fname[i]))
       break;
   }
   if (i >= 0) {
@@ -2771,7 +2773,7 @@ static FILE *openInCurrentDir(char **incfile)
 static int checkAbsOrCurrentDir(char *file)
 {
   char *absfile;
-  if (file[0]==SLASH
+  if (is_slash(file[0])
 #ifdef WIN_NT
       || (isalpha(file[0]) && file[1]==':')
 #endif
@@ -2904,6 +2906,18 @@ void construct_include_directive_marker(char **include_directive_marker,
   *(*include_directive_marker+out_idx) = '\n';
   out_idx++;
   *(*include_directive_marker+out_idx) = '\0';
+}
+
+/* under windows, some XSB paths are specified using '/', so we take care of
+   this here */
+static int is_slash(char ch)
+{
+  return
+#ifdef WIN_NT
+    ch == '/' ||
+#endif
+    ch == SLASH;
+
 }
 
 
