@@ -279,6 +279,7 @@ u_not(Goal) :-
 	 ; check_cyclic(Goal,'u_not/1',1),
 	   floundered(Goal)).
 
+:- import floundered_undefined/1 from xsbbrat.
 :- table floundered/1 as variant, opaque.
 floundered(_Goal):- floundered_undefined(a).
 
@@ -313,13 +314,6 @@ tunnumcall(GGoal) :-
 :- table undefined/0.
 undefined:- tnot(undefined).
 
-:- table floundered_undefined/1.
-floundered_undefined(a) :- tnot(floundered_undefined(a)).
-
-%:- table floundered_undefined/0.
-%floundered_undefined :- tnot(floundered_undefined).
-
-?- floundered_undefined(a),fail. % fail for batched; otw cut over table
 /*----------------------------------------------------------------------*/
 /* Predicates to retrieve information out of tables.                    */
 /*----------------------------------------------------------------------*/
@@ -588,13 +582,11 @@ is_conditional_answer(Leaf,IsCond):-
 /* Predicates to remove information from tables.			*/
 /*----------------------------------------------------------------------*/
 
-:- import brat_undefined/0 from xsbbrat.
-:- import current_prolog_flag/2 from curr_sym.
+:- import reinitialize_undefineds/0 from xsbbrat.
+%:- import current_prolog_flag/2 from curr_sym.
 abolish_all_tables :- 
 	   abolish_table_info,
-	   (current_prolog_flag(max_table_answer_action,bounded_rationality) -> 
-   		   (brat_undefined,fail ; true)
-		    ; true).		   
+	   reinitialize_undefineds.
 
 abolish_table_pred(Spec,Options) :-
 	check_nonvar(Spec,abolish_table_pred/1,1),

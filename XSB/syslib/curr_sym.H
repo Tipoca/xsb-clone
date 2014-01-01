@@ -58,6 +58,7 @@
 :- import retractall/1, (dynamic)/1, asserta/1 from assert.
 :- import findall/3 from setof.
 :- import psc_get_incr/2 from machine.
-   :- import ensure_loaded/1 from consult.
+:- import reinitialize_undefineds/0 from xsbbrat.
+%:- import ensure_loaded/1 from consult.
 
 /* ----------------- end of file current_sym.H -------------------- */

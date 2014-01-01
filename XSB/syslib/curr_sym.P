@@ -1037,7 +1037,7 @@ set_xsb_flag_1(max_table_answer_action, Action) :-!,
 	    stat_set_flag(MAX_TABLE_ANSWER_ACTION, XSB_WARNING)
           ; (Action == bounded_rationality ->  
 	    stat_set_flag(MAX_TABLE_ANSWER_ACTION, XSB_BRAT),
-	    ensure_loaded(xsbbrat)
+	    reinitialize_undefineds
           ; (Action == failure ->  
 	    stat_set_flag(MAX_TABLE_ANSWER_ACTION, XSB_FAILURE)
             ; domain_error([error,', ',warning,', ',failure,', ',bounded_rationality],
@@ -1075,7 +1075,8 @@ set_xsb_flag_1(exception_pre_action, Mode) :- !,
 set_xsb_flag_1(exception_action, Mode) :- !,
          (Mode = undefined_truth_value-> 
 	  stat_set_flag(EXCEPTION_ACTION, UNDEFINED_TRUTH_VALUE),
-          ensure_loaded(tables)
+	  reinitialize_undefineds
+%	  ensure_loaded(tables)
 	; (Mode = iso ->
     	      stat_set_flag(EXCEPTION_ACTION, 0)
 	    ; domain_error([iso,undefined_truth_value],
