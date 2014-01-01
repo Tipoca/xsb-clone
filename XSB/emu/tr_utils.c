@@ -5521,7 +5521,7 @@ case CALL_SUBS_SLG_NOT: {
 
   case IMMED_ANS_DEPENDS_PTRLIST: {
     ASI asi;
-    DL current_dl;
+    DL current_dl = NULL;
     DE current_de;
     CPtr oldhreg = NULL;
     int  count = 0;
@@ -5529,7 +5529,7 @@ case CALL_SUBS_SLG_NOT: {
     reg[4] = makelist(hreg);
     new_heap_free(hreg);  new_heap_free(hreg);
     asi = (ASI) Child( (BTNptr) ptoc_int(CTXTc 2));
-    current_dl = asi_dl_list(asi);
+    if (asi) current_dl = asi_dl_list(asi);
     while (current_dl != NULL) {
       //      printf("DL: %p\n",current_dl);
       current_de = dl_de_list(current_dl);
