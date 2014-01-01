@@ -7,7 +7,7 @@ Test of basic ISO updating with multiple visitors (multiple old subgoals).
 :- import incr_assert_inval/1,incr_assert/1 from increval.
 :- import variant/2 from subsumes.
 :- import numbervars/1 from num_vars.
-:- ensure_loaded(xsbbrat).
+%:- ensure_loaded(xsbbrat).
 :- dynamic answer/1.
 
 test:- test_2_bt.
