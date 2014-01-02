@@ -650,7 +650,7 @@ void find_the_visitors(CTXTdeclc VariantSF subgoal) {
 	    * (cp_top1 + CP_SIZE + 1 + i) =  * (cp_root + CP_SIZE + 2 +i);  // account for sf ptr or root
 	  }
 	  * (cp_top1 + CP_SIZE + 1+ ans_subst_num) = listHead;
-	  * (cp_top1 + CP_SIZE + 2+ ans_subst_num) = hfreg;
+	  * (cp_top1 + CP_SIZE + 2+ ans_subst_num) = (Cell)hfreg;
 	  //	  printf("4 cp_root %p prev %p\n",cp_root,cp_prevtop(cp_root));
 	  //	  printf("constructed listhead hreg %x\n",hreg);
 	  //	  cp_top1 = cp_root;  // next iteration
