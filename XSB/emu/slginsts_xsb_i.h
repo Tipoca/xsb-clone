@@ -715,11 +715,23 @@ XSB_Start_Instr(tabletrysinglenoanswers,_tabletrysinglenoanswers)
   //  printf("tabletrysinglenoanswers\n");
 
   xwammode = 1;
-  CallInfo_Arguments(callInfo) = reg + 1;
+   
+
   CallInfo_CallArity(callInfo) = get_xxa; 
   LABEL = (CPtr)((byte *) get_xxxl);  
   Op1(get_xxxxl);
   tip =  (TIFptr) get_xxxxl;
+
+			       //  printf("Subgoal Depth %d\n",TIF_SubgoalDepth(tip));
+  if ( TIF_SubgoalDepth(tip) == 65535) {
+    int i;
+    //    new_heap_functor(hreg, TIF_PSC(tip)); /* set str psc ptr */
+    CallInfo_Arguments(callInfo) = hreg;
+    for (i=1; i <= (int)get_arity(TIF_PSC(tip)); i++) {
+      new_heap_free(hreg);		   
+    }
+  }
+  else CallInfo_Arguments(callInfo) = reg + 1;
 
   if (get_incr(TIF_PSC(tip))) {
   
