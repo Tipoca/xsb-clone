@@ -84,7 +84,7 @@
 
 :- import (table)/1 from standard.
 :- import '_$multifile'/1 from standard.
-:- import call_c/1 from standard.
+:- import call/1, call_c/1 from standard.
 :- import (=..)/2, functor/3, integer/1, callable/1, arg/3,
          goal_cut_trans/3, goal_cut_untrans/2, abort/1, check_arity_integer/3,
          is_most_general_term/1, atomic/1, warning/1

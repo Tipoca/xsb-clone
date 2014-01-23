@@ -348,7 +348,10 @@ cut_transform((Head:-Body),(Nhead:-Nbody)) :- !,
 	Head =.. Hlist,
 	append(Hlist,[Cutpoint],Nhlist),
 	Nhead =.. Nhlist,
-	goal_cut_trans(Body,Nbody,Cutpoint).
+	(var(Body) % goal_cut_trans does not check top-level var.
+	 ->	Nbody = call(Body)
+	 ;	goal_cut_trans(Body,Nbody,Cutpoint)
+	).
 cut_transform(Head,Head). /* leave unchanged, Arity is one less */
 
 /*======================================================================*/
