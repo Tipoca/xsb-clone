@@ -773,7 +773,10 @@ do_assert_and_fail(Term,Dir) :-
 		NArity is Arity+1
 	    ),
 	    (Term = (_ :- Body)
-	     ->	    goal_cut_trans(Body,Nbody,Cutpoint),
+	     ->	    (var(Body)
+		     ->	    Nbody = call(Body)
+		     ;	    goal_cut_trans(Body,Nbody,Cutpoint)
+		    ),
 		    (Body \== Nbody
 		     ->	    MHead =.. Hlist,
 			    append(Hlist,[Cutpoint],Nhlist),
