@@ -157,6 +157,8 @@ build_xref(Dir) :-
 	(retractall(xsb_defined(_,_,_)),
 	 retractall(xsb_used(_,_,_,_,_)),
 	 gen_p_files(Dir,FileName),
+	 file_size(FileName,FSize),
+	 (FSize > 10000000 -> write('Skipped huge file '), writeln(FileName), fail; true),
 	 read_in_prolog_file(FileName),
 	 fail
 	 ;
@@ -220,6 +222,7 @@ gen_p_files(Dir,FileName) :-
 :- dynamic ops(Op,Prec,Fix).
 
 read_in_prolog_file(PFileName) :-
+	conset('_$lineCnt',0),
 	atom_codes(PFileName,PFileNameCodes),
 	append(PFilePrefixCodes,".P",PFileNameCodes),  % must be .P file
 	atom_codes(PFilePrefix,PFilePrefixCodes),
@@ -229,7 +232,7 @@ read_in_prolog_file(PFileName) :-
 	catch((read_p_file(HFileName,PFilePrefix),read_p_file(PFileName,PFilePrefix)),_Ball,true), %ignore
 	reset_ops,
 	conget('_$lineCnt',NLines),
-	write(NLines),writeln(' lines.').
+	write(NLines),writeln(' terms.').
 
 reset_ops :-
 	ops(Op,OldPrec,Fix),
@@ -239,8 +242,7 @@ reset_ops :-
 	retractall(ops(_,_,_)).
 
 read_p_file(FileName,BFileName) :-
-	file_open(FileName,read,IStr),
-	(IStr >= 0
+	( (file_exists(FileName), open(FileName,read,IStr), IStr >= 0)
 	 ->	file_size(FileName,FSize),
 		read_p_file_s(IStr,FSize,BFileName,Result),
 		close(IStr),
@@ -360,8 +362,10 @@ process_directive(export(ExpList),BFileName) :- !,
 	process_specs_defined(ExpList,BFileName).
 process_directive(document_export(ExpList),BFileName) :- !,
 	process_specs_defined(ExpList,BFileName).
-process_directive(import(ExpList),BFileName) :- !,
-	process_specs_used(ExpList,BFileName).
+process_directive(import(From),BFileName) :- !,
+	From = from(ExpList,FromModule),
+	process_specs_used(ExpList,BFileName),
+	process_specs_defined(ExpList,FromModule). % Let us also assume the module defines it
 process_directive(document_import(ExpList),BFileName) :- !,
 	process_specs_used(ExpList,BFileName).
 process_directive(_,_).
@@ -384,7 +388,7 @@ process_specs_used(Spec,BFileName) :-
 	 ->	true
 	 ;	functor(Spec,Pred,Arity)
 	),
-	assert(xsb_used(Pred,Arity,BFileName,???,0)).
+	assert(xsb_used(Pred,Arity,BFileName,???,???)).
 
 
 llappend([X|L1],L2,[X|L3]) :- llappend(L1,L2,L3).
