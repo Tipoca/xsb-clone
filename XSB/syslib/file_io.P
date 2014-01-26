@@ -81,10 +81,21 @@ file_close(IOport) :-
 	file_function(FILE_CLOSE,IOport,NOFORCE_FILE_CLOSE).
 file_close(IOport,Force) :-
 	file_function(FILE_CLOSE,IOport,Force).
+% obsolete -- specify byte or code
 file_get(IOport,Char) :-
-	file_function(FILE_GET, IOport, Char).
+	file_function(FILE_GET_BYTE, IOport, Char).
+file_get_byte(IOport,Char) :-
+	file_function(FILE_GET_BYTE, IOport, Char).
+file_get_code(IOport,Char) :-
+	file_function(FILE_GET_CODE, IOport, Char).
+file_get_char(IOport,Char) :-
+	file_function(FILE_GET_CHAR, IOport, Char).
 file_put(IOport,Char) :-
 	file_function(FILE_PUT, IOport, Char).
+file_put_code(IOport,Char) :-
+	file_function(FILE_PUT_CODE, IOport, Char).
+file_put_char(IOport,Char) :-
+	file_function(FILE_PUT_CHAR, IOport, Char).
 file_clearerr(IOport) :-
 	file_function(FILE_CLEARERR, IOport, _).
 tmpfile_open(IOport) :-

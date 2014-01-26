@@ -115,7 +115,9 @@
 :- import predicate_property/2 from curr_sym.
 :- import dcg/2 from dcg.
 %%:- import eval/2 from eval.
-:- import file_open/3, file_open/4, file_close/2, file_get/2, file_put/2,
+:- import file_open/3, file_open/4, file_close/2, 
+	  file_get_code/2, file_get_byte/2, file_get_char/2, 
+	  file_put/2, file_put_code/2, file_put_char/2,
   check_stream_or_alias/4, check_open_stream_or_alias/5, add_aliases/4, remove_alias/3,
   fd2iostream/3      from file_io.
 :- import fmt_write/2 from file_io.

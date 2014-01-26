@@ -325,10 +325,11 @@ through when I get to the tokenizer.  */
 
 %ISO 
 get_char(S_or_A,Char):- 
-	get_code(S_or_A,Code),
-	(Code == -1 -> 
-	    Char = Code
-	  ; atom_codes(Char,[Code])).
+	check_open_stream_or_alias(S_or_A,get_char/2,1,input,Str),
+	file_get_char(Str,Char).
+%	(Code == -1 -> 
+%	    Char = Code
+%	  ; atom_codes(Char,[Code])).
 
 %ISO
 get_char(Char):- 
@@ -341,18 +342,37 @@ get_char(Char):-
 get_code(S_or_A,C) :- 
 	check_open_stream_or_alias(S_or_A,get_code/2,1,input,Str),
 	(var(C) -> 
-	    file_get(Str,C)
+	    file_get_code(Str,C)
 	 ; (integer(C) -> 
-	        file_get(Str,C)
+	        file_get_code(Str,C1),C1 = C
 	     ;  domain_error(integer_or_variable,C,get_code/2,2) ) ).
 
 %ISO
 get_code(C) :- 
-	(var(C) -> 
-	    get0(C)
+	 stat_flag(CURRENT_INPUT, Str), 
+	 (var(C) -> 
+	    file_get_code(Str,C)
 	 ; (integer(C) -> 
-	        get0(C)
+        	file_get_code(Str,C1),C1 = C
 	     ;  domain_error(integer_or_variable,C,get_code/1,1) ) ).
+
+%ISO
+get_byte(S_or_A,C) :- 
+	check_open_stream_or_alias(S_or_A,get_byte/2,1,input,Str),
+	(var(C) -> 
+	    file_get_byte(Str,C)
+	 ; (integer(C) -> 
+	        file_get_byte(Str,C1),C1 = C
+	     ;  domain_error(integer_or_variable,C,get_byte/2,2) ) ).
+
+%ISO
+get_byte(C) :- 
+	 stat_flag(CURRENT_INPUT, Str), 
+	 (var(C) -> 
+	    file_get_byte(Str,C)
+	 ; (integer(C) -> 
+        	file_get_byte(Str,C1),C1 = C
+	     ;  domain_error(integer_or_variable,C,get_byte/1,1) ) ).
 
 get(C) :- get0(C0), ( char_blank(C0), !, get(C) ; C = C0 ).
 
@@ -361,7 +381,7 @@ char_blank(Ch) :- Ch >= 0, Ch =< 9.
 char_blank(Ch) :- Ch >= 11, Ch =< 32.
 
 get0(C) :- stat_flag(CURRENT_INPUT, Str), 
-	   file_get(Str, C0), C = C0.
+	   file_get_byte(Str, C0), C = C0.
 
 % Not in manual.
 skip(C) :- get0(C0), (C0=C ; skip(C)).
@@ -369,31 +389,35 @@ skip(C) :- get0(C0), (C0=C ; skip(C)).
 %ISO
 put_char(S_or_A,C):- 
 	check_open_stream_or_alias(S_or_A,put_char/2,1,output,Str),
-	atom_codes(C,L),
-	(L = [L1] -> 
-	    true 
-	  ; domain_error(character_or_variable,C,put_char/2,2) ),
-	file_put(Str,L1).
+	file_put_char(Str,C).
+%	atom_codes(C,L),
+%	(L = [L1] -> 
+%	    true 
+%	  ; domain_error(character_or_variable,C,put_char/2,2) ),
+%	file_put(Str,L1).
 
 %ISO
 put_char(C):- 			
-	atom_codes(C,L),
-	(L = [L1] -> 
-	    true 
-	  ; domain_error(character_or_variable,C,put_char/1,1) ),
-	put(L1).
+        stat_flag(CURRENT_OUTPUT, Str), 
+	file_put_char(Str,C).
+%	atom_codes(C,L),
+%	(L = [L1] -> 
+%	    true 
+%	  ; domain_error(character_or_variable,C,put_char/1,1) ),
+%	put(L1).
 
 %ISO
 put_code(S_or_A,C):- 
 	check_open_stream_or_alias(S_or_A,put_code/2,1,output,Str),
 	(integer(C) -> 
-	        file_put(Str,C)
+	        file_put_code(Str,C)
 	 ;  domain_error(integer_or_variable,C,put_code/2,2) ).
 
 %ISO
 put_code(C):- 
+	 stat_flag(CURRENT_OUTPUT, Str), 
 	(integer(C) -> 
-	        put(C)
+	        file_put_code(Str,C)
 	 ;  domain_error(integer_or_variable,C,put_code/1,1) ).
 
 
@@ -416,12 +440,10 @@ file_exists(F) :-
 
 :- import peek_code/1, peek_code/2 from file_io.
 % Just for ISO compatability
-get_byte(C):- get_code(C).
-get_byte(S,C):- get_code(S,C).
 peek_byte(C):- peek_code(C).
 peek_byte(S,C):- peek_code(S,C).
-put_byte(C):- put_code(C).
-put_byte(S,C):- put_code(S,C).
+put_byte(C):- put(C).
+put_byte(S,C):- file_put(S,C).
 
 %---------------------%
 % Term I/O Predicates %

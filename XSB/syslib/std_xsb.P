@@ -240,6 +240,8 @@ standard_symbol(gc_tables, 1, standard).
 standard_symbol(get, 1, standard).
 standard_symbol(get0, 1, standard).
 standard_symbol(get_attr, 3, machine).		
+standard_symbol(get_byte, 1, standard).		% ISO
+standard_symbol(get_byte, 2, standard).		% ISO
 standard_symbol(get_char, 1, standard).		% ISO
 standard_symbol(get_char, 2, standard).		% ISO
 standard_symbol(get_code, 1, standard).		% ISO
