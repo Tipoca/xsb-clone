@@ -18,7 +18,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: io_builtins_xsb.h,v 1.23 2013-01-04 14:56:22 dwarren Exp $
+** $Id: io_builtins_xsb.h,v 1.23 2013/01/04 14:56:22 dwarren Exp $
 ** 
 */
 
@@ -92,4 +92,9 @@ extern void findall_copy_to_heap(CTXTdeclc Cell, CPtr, CPtr *);
 extern int findall_init_c(CTXTdecl);
 extern void findall_free(CTXTdeclc int);
 
+extern int utf8_char_to_codepoint(char **s_ptr);
+extern int utf8_nchars(char *s);
+
+
 int unset_fileptr(FILE *stream);
+

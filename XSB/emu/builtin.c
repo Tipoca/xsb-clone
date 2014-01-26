@@ -133,6 +133,7 @@
 #include "table_inspection_defs.h"
 
 #include "unify_xsb.h"
+#include "token_xsb.h"
 
 int mem_flag;
 
@@ -428,7 +429,6 @@ DllExport char* call_conv iso_ptoc_string(CTXTdeclc int regnum,char * PredString
 
   /* XSB_Deref and then check the type */
   XSB_Deref(addr);
-
   switch (cell_tag(addr)) {
   case XSB_FREE:
   case XSB_REF1:

@@ -19,7 +19,7 @@
 ** along with XSB; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: token_xsb.c,v 1.48 2013-01-04 14:56:22 dwarren Exp $
+** $Id: token_xsb.c,v 1.48 2013/01/04 14:56:22 dwarren Exp $
 ** 
 */
 
@@ -263,6 +263,204 @@ void unGetC(int d, FILE *card, STRFILE *instr)
   else ungetc(d, card);
 }
 
+/* nfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfz */
+/* convert a code point to char array s, which has n remaining slots */
+#define UTF8_CODEPOINT_TO_STR(code,s,n){	 \
+  if (code <= 127){				 \
+    n--;					 \
+    if (n < 0) {				 \
+      realloc_strbuff(CTXTc &strbuff, &s, &n);	 \
+    }						 \
+    *s++ = (char)code;				 \
+  } else {					 \
+    char *s1;					 \
+    if (n < 4){					 \
+      realloc_strbuff(CTXTc &strbuff, &s, &n);	 \
+    }						 \
+    s1 = utf8_codepoint_to_str(code,s);		 \
+    n -= (s1-s);				 \
+    s = s1;					 \
+  }						 \
+}
+
+char *utf8_codepoint_to_str(int code, char *s){
+  if (code<0x80){
+    *s++ = code;
+  } else if (code<0x800){
+    *s++ = 192+code/64;
+    *s++ = 128+code%64;
+  } else if (code<0x10000){
+    *s++ = 224+code/4096;
+    *s++ = 128+code/64%64;
+    *s++ = 128+code%64;
+  } else {
+    *s++ = 240+code/262144;
+    *s++ = 128+code/4096%64;
+    *s++ = 128+code/64%64;
+    *s++ = 128+code%64;
+  }
+  return s;
+}
+
+/* return the codepoint of the current utf-8 char, setting s_ptr to the beginning of the next char */
+int utf8_char_to_codepoint(char **s_ptr){
+  char *s;
+  int c, b2, b3, b4;
+  s = *s_ptr;
+  c = *s++;
+  
+  if (c & 0x80){                      /* leading byte of a utf8 char? */
+    if ((c & 0xe0) == 0xc0){          /* 110xxxxx */
+      b2 = *s++;
+      if ((b2 & 0xc0) == 0x80){       /* 110xxxxx 10xxxxxx */
+	c = (((c & 0x1f) << 6) | (b2 & 0x3f));
+      }  else {
+	s--;
+      }
+    } else if ((c & 0xf0) == 0xe0){    /* 1110xxxx */
+      b2 = *s++;
+      if ((b2 & 0xc0) == 0x80){        /* 1110xxxx 10xxxxxx */
+	b3 = *s++;
+	if ((b3 & 0xc0) == 0x80){      /* 1110xxxx 10xxxxxx 10xxxxxx */
+	  c = (((c & 0xf) << 12) | ((b2 & 0x3f) << 6) | (b3 & 0x3f));
+	} else {
+	  s--;
+	  s--;
+	}
+      } else {
+	s--;
+      }
+    } else if ((c & 0xf8) == 0xf0){    /* 11110xxx */
+      b2 = *s++;
+      if ((b2 & 0xc0) == 0x80){        /* 11110xxx 10xxxxxx */
+	b3 = *s++;
+	if ((b3 & 0xc0) == 0x80){      /* 11110xxx 10xxxxxx 10xxxxxx */
+	  b4 = *s++;
+	  if ((b4 & 0xc0) == 0x80){    /* 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx */
+	    c = (((c & 0xf) << 18) | ((b2 & 0x3f) << 12) | ((b3 & 0x3f) << 6) | (b4 & 0x3f));
+	  } else {
+	    s--;
+	    s--;
+	    s--;
+	  }
+	} else {
+	  s--;
+	  s--;
+	}
+      } else {
+	s--;
+      }
+    }
+  }
+  *s_ptr = s;
+  return c;
+}
+
+/* read a utf8 char whose leading byte is c */
+int utf8_getc(FILE *curr_in, int c){
+  int b2,b3,b4;
+
+  if ((c & 0xe0) == 0xc0){          /* 110xxxxx */
+    b2 = getc(curr_in);
+    if ((b2 & 0xc0) == 0x80){       /* 110xxxxx 10xxxxxx */
+      return (((c & 0x1f) << 6) | (b2 & 0x3f));
+    } else {                        /* not utf8 char */
+      if (b2>0) {ungetc((char)b2,curr_in);}/* don't unget EOF */
+    }
+  } else if ((c & 0xf0) == 0xe0){    /* 1110xxxx */
+    b2 = getc(curr_in);	
+    if ((b2 & 0xc0) == 0x80){        /* 1110xxxx 10xxxxxx */
+      b3 = getc(curr_in);	
+      if ((b3 & 0xc0) == 0x80){      /* 1110xxxx 10xxxxxx 10xxxxxx */
+	return (((c & 0xf) << 12) | ((b2 & 0x3f) << 6) | (b3 & 0x3f));
+      } else {
+	if (b3>0) {ungetc((char)b3,curr_in);}
+	ungetc((char)b2,curr_in);
+      }
+    } else {
+      if (b2>0) {ungetc((char)b2,curr_in);}
+    }
+  } else if ((c & 0xf8) == 0xf0){    /* 11110xxx */
+    b2 = getc(curr_in);	
+    if ((b2 & 0xc0) == 0x80){        /* 11110xxx 10xxxxxx */
+      b3 = getc(curr_in);	
+      if ((b3 & 0xc0) == 0x80){      /* 11110xxx 10xxxxxx 10xxxxxx */
+	b4 = getc(curr_in);	
+	if ((b4 & 0xc0) == 0x80){    /* 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx */
+	  return (((c & 0xf) << 18) | ((b2 & 0x3f) << 12) | ((b3 & 0x3f) << 6) | (b4 & 0x3f));
+	} else {
+	  if (b2>0) {ungetc((char)b4,curr_in);}
+	  ungetc((char)b3,curr_in);
+	  ungetc((char)b2,curr_in);
+	}
+      } else {
+	if (b3>0) {ungetc((char)b3,curr_in);}
+	ungetc((char)b2,curr_in);
+      }
+    } else {
+      if (b2>0) {ungetc((char)b2,curr_in);}
+    }
+  }
+  return c;                             /* an ASCII char or a char in a different encoding */
+}
+
+/* return the number of utf-8 chars in s. */
+int utf8_nchars(char *s){
+  unsigned int c;
+  int count = 0;
+  c = *s++;
+  while (c != '\0'){
+    count++;
+    if (c & 0x80){                      /* leading byte of a utf8 char? */
+      if ((c & 0xe0) == 0xc0){          /* 110xxxxx */
+	c = *s++;
+	if ((c & 0xc0) == 0x80){        /* 110xxxxx 10xxxxxx */
+	                                /* two bytes, but one char */
+	} else {
+	  s--;                          /* not utf8, couting bytes instead */
+	}
+      } else if ((c & 0xf0) == 0xe0){    /* 1110xxxx */
+	c = *s++;
+	if ((c & 0xc0) == 0x80){        /* 1110xxxx 10xxxxxx */
+	  c = *s++;
+	  if ((c & 0xc0) == 0x80){      /* 1110xxxx 10xxxxxx 10xxxxxx */
+	                                /* three bytes, but one char */
+	  } else {
+	    s--;
+	    s--;
+	  }
+	} else {
+	  s--;
+	}
+      } else if ((c & 0xf8) == 0xf0){    /* 11110xxx */
+	c = *s++;
+	if ((c & 0xc0) == 0x80){        /* 11110xxx 10xxxxxx */
+	  c = *s++;
+	  if ((c & 0xc0) == 0x80){      /* 11110xxx 10xxxxxx 10xxxxxx */
+	    c = *s++;
+	    if ((c & 0xc0) == 0x80){    /* 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx */
+	                                /* four bytes, but one char */
+	    } else {
+	      s--;
+	      s--;
+	      s--;
+	    }
+	  } else {
+	      s--;
+	      s--;
+	  }
+	} else {
+	  s--;
+	}
+      }
+    }
+    c = *s++;
+  }
+  return count;
+}
+
+/* nfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfz */
+
  
  
 /*  GetToken() reads a single token from the input stream and returns
@@ -386,7 +584,53 @@ READ_ERROR:
             return -1;
         } else
         if (c != intab.escape) {
-            return c;
+	  /* nfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfz */
+	  int b2,b3,b4;  
+	  if (c & 0x80){                      /* leading byte of a utf8 char? */
+	    if ((c & 0xe0) == 0xc0){          /* 110xxxxx */
+	      b2 = GetC(card,instr);
+	      if ((b2 & 0xc0) == 0x80){       /* 110xxxxx 10xxxxxx */
+		return (((c & 0x1f) << 6) | (b2 & 0x3f));
+	      } else {                        /* not utf8 char */
+		if (b2>0) {unGetC(b2,card,instr);}/* don't unget EOF */
+	      }
+	    } else if ((c & 0xf0) == 0xe0){    /* 1110xxxx */
+	      b2 = GetC(card,instr);
+	      if ((b2 & 0xc0) == 0x80){        /* 1110xxxx 10xxxxxx */
+		b3 = GetC(card,instr);
+		if ((b3 & 0xc0) == 0x80){      /* 1110xxxx 10xxxxxx 10xxxxxx */
+		  return (((c & 0xf) << 12) | ((b2 & 0x3f) << 6) | (b3 & 0x3f));
+		} else {
+		  if (b3>0) {unGetC(b3,card,instr);}
+		  unGetC(b2,card,instr);
+		}
+	      } else {
+		if (b2>0) {unGetC(b2,card,instr);}
+	      }
+	    } else if ((c & 0xf8) == 0xf0){    /* 11110xxx */
+	      b2 = GetC(card,instr);
+	      if ((b2 & 0xc0) == 0x80){        /* 11110xxx 10xxxxxx */
+		b3 = GetC(card,instr);
+		if ((b3 & 0xc0) == 0x80){      /* 11110xxx 10xxxxxx 10xxxxxx */
+		  b4 = GetC(card,instr);
+		  if ((b4 & 0xc0) == 0x80){    /* 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx */
+		    return (((c & 0xf) << 18) | ((b2 & 0x3f) << 12) | ((b3 & 0x3f) << 6) | (b4 & 0x3f));
+		  } else {
+		    if (b4>0) {unGetC(b4,card,instr);}
+		    unGetC(b3,card,instr);
+		    unGetC(b2,card,instr);
+		  }
+		} else {
+		  if (b3>0) {unGetC(b3,card,instr);}
+		  unGetC(b2,card,instr);
+		}
+	      } else {
+		if (b2>0) {unGetC(b2,card,instr);}
+	      }
+	    }
+	  }
+	  /* nfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfz */
+	  return c;                             /* an ASCII char or a char in a different encoding */
         }
         /*  If we get here, we have read the "\" of an escape sequence  */
         c = GetC(card,instr);
@@ -425,7 +669,38 @@ READ_ERROR:
                         }
                     return n & 255;
                 }
-            case '0': case '1': case '2': case '3':
+
+   	    /* nfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfz */
+	    case 'u':  case 'U':                     /* unicode escape */
+	      {int n,i;
+		  n = 0;
+		  for (i=1; i<=4; i++){                /* \uxxxx */ 
+		    c = GetC(card,instr);
+		    if (DigVal(c) <= 15 && c != '_'){
+		      n = (n<<4) + DigVal(c);
+		    } else {
+		      goto READ_ERROR;
+		    }
+		  }
+		  c = GetC(card,instr);
+		  if (DigVal(c) <= 15 && c != '_'){      /* \uxxxxxxxx */
+		    n = (n<<4) + DigVal(c);	
+		    for (i=1; i<=3; i++){
+		      c = GetC(card,instr);
+		      if (DigVal(c) <= 15 && c != '_'){
+			n = (n<<4) + DigVal(c);
+		      } else {
+			goto READ_ERROR;
+		      }
+		    }
+		  } else {
+		    if (c>0) {unGetC(c,card,instr);}	
+		  }
+		  return n;
+	      }
+   	    /* nfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfz */
+
+	case '0': case '1': case '2': case '3':
             case '4': case '5': case '6': case '7':
                 {   int i, n;
                     for (n = c-'0', i = 2; --i >= 0; n = (n<<3) + DigVal(c))
@@ -564,6 +839,7 @@ struct xsb_token_t *GetToken(CTXTdeclc FILE *card, STRFILE *instr, int prevch)
         Integer oldv = 0, newv = 0; 
         int n;
 
+	//	printf("==> GetTOken \n");
 	if (strbuff == NULL)
 	  {
 	    /* First call for GetToken, so allocate a buffer */
@@ -891,11 +1167,8 @@ ASTCOM:             if (com2plain(card, instr, d, intab.endcom)) {
  
             case ATMQT:
                 while ((d = read_character(CTXTc card, instr, c)) >= 0) {
-                    if (--n < 0) {
-		      realloc_strbuff(CTXTc &strbuff, &s, &n);
-		    }
-                    *s++ = d;
-                }
+		  UTF8_CODEPOINT_TO_STR(d,s,n); /* nfz */
+		}
                 *s = 0;
                 c = lastc;
                 goto SYMBOL;
@@ -917,10 +1190,7 @@ case deleted ****/
 
 	    case LISQT: 
                 while ((d = read_character(CTXTc card, instr, c)) >= 0) {
-                    if (--n < 0) {
-		      realloc_strbuff(CTXTc &strbuff, &s, &n);
-		    }
-                    *s++ = d;
+		  UTF8_CODEPOINT_TO_STR(d,s,n);  /* nfz */
 		}
 		*s = 0;
 		token->nextch = lastc;

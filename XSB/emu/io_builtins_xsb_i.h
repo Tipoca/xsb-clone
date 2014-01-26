@@ -329,7 +329,7 @@ inline static xsbBool file_function(CTXTdecl)
       }
       break;
     }
-  case FILE_GET:	/* file_function(6, +IOport, -IntVal) */
+  case FILE_GET_BYTE:	/* file_function(6, +IOport, -IntVal) */
     io_port = (int)ptoc_int(CTXTc 2);
     if ((io_port < 0) && (io_port >= -MAXIOSTRS)) {
       XSB_STREAM_LOCK(io_port);
@@ -348,6 +348,7 @@ inline static xsbBool file_function(CTXTdecl)
     SET_FILEPTR(fptr, io_port);
     /* ptoc_int(CTXTc 3) is char to write */
     value = ptoc_int(CTXTc 3);
+    //    printf("val %d value wc %d\n",value,sizeof(wchar_t));
     putc((int)value, fptr);
 #ifdef WIN_NT
     if (io_port==2 && value=='\n') fflush(fptr); /* hack for Java interface */
@@ -941,6 +942,94 @@ inline static xsbBool file_function(CTXTdecl)
     putc(CH_NEWLINE,fptr);
 #endif
     break;
+
+  case FILE_GET_CODE:	/* file_function(6, +IOport, -IntVal) */
+    io_port = (int)ptoc_int(CTXTc 2);
+    if ((io_port < 0) && (io_port >= -MAXIOSTRS)) {
+      XSB_STREAM_LOCK(io_port);
+      sfptr = strfileptr(io_port);
+      ctop_int(CTXTc 3, strgetc(sfptr));
+    } else {
+      SET_FILEPTR(fptr, io_port);
+      XSB_STREAM_LOCK(io_port);
+      ctop_int(CTXTc 3, utf8_getc(fptr,getc(fptr)));
+    }
+    XSB_STREAM_UNLOCK(io_port);
+    break;
+  case FILE_PUT_CODE:   /* file_function(7, +IOport, +IntVal) */
+    //    printf("fpc\n");
+    io_port = (int)ptoc_int(CTXTc 2);
+    XSB_STREAM_LOCK(io_port);
+    SET_FILEPTR(fptr, io_port);
+    /* ptoc_int(CTXTc 3) is char to write */
+    value = ptoc_int(CTXTc 3);
+    //    printf("val %d value wc %d\n",value,sizeof(wchar_t));
+    if (value <= 127){
+      putc(value,fptr);
+    } else { /* unicode, write in utf8 format */
+    char s[5],*ch_ptr,*ch_ptr0;
+    ch_ptr = utf8_codepoint_to_str(value, s);
+    ch_ptr0 = s;
+    while (ch_ptr0 < ch_ptr){
+      putc(*ch_ptr0++,fptr);
+    }
+  }
+#ifdef WIN_NT
+    if (io_port==2 && value=='\n') fflush(fptr); /* hack for Java interface */
+#endif
+    XSB_STREAM_UNLOCK(io_port);
+    break;
+  case FILE_GET_CHAR:	{
+    int read_char;
+    io_port = (int)ptoc_int(CTXTc 2);
+    if ((io_port < 0) && (io_port >= -MAXIOSTRS)) {
+      XSB_STREAM_LOCK(io_port);
+      sfptr = strfileptr(io_port);
+      ctop_int(CTXTc 3, strgetc(sfptr));
+    } else {
+      SET_FILEPTR(fptr, io_port);
+      XSB_STREAM_LOCK(io_port);
+      read_char = getc(fptr);
+      if (read_char == EOF) 
+	ctop_int(CTXTc 3, read_char);
+      else if (read_char & 0x80){                      /* leading byte of a utf8 char? */
+      char s[5],*ch_ptr;
+      read_char = utf8_getc(fptr,read_char);
+      ch_ptr = utf8_codepoint_to_str(read_char, s);
+      *ch_ptr = '\0';
+      ctop_string(CTXTc 3,s);
+    } else {
+      char s[2];
+      s[0] = (char)read_char; s[1] = '\0';
+      ctop_string(CTXTc 3,s);
+      }
+    XSB_STREAM_UNLOCK(io_port);
+    }
+    break;
+  }
+  case FILE_PUT_CHAR: {
+    int len;
+    char *ch_ptr;
+
+    io_port = (int)ptoc_int(CTXTc 2);
+    XSB_STREAM_LOCK(io_port);
+    SET_FILEPTR(fptr, io_port);
+    ch_ptr = iso_ptoc_string(CTXTc 3,"put_char/[1,2]");
+    len = strlen(ch_ptr);
+    if (len==1){
+      putc(*ch_ptr,fptr);
+    } else if ((len<=4) && (utf8_nchars(ch_ptr)==1)){
+      int c;
+      c = *ch_ptr++;
+      while (c != '\0'){
+	putc(c,fptr);
+	c = *ch_ptr++;
+      }
+    } else {
+      xsb_domain_error(CTXTc "character",reg[3],"put_char",2);
+    }
+    break; 
+  }
 
   default:
     xsb_abort("[FILE_FUNCTION]: Invalid file operation, %d\n", ptoc_int(CTXTc 1));

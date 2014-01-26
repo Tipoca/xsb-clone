@@ -32,7 +32,7 @@
 #define FILE_POS      	   3
 #define XSB_FILE_OPEN      	   4
 #define FILE_CLOSE     	   5
-#define FILE_GET     	   6
+#define FILE_GET_BYTE  	   6
 #define FILE_PUT     	   7
 #define FILE_GETBUF    	   8
 #define FILE_PUTBUF    	   9
@@ -53,6 +53,10 @@
 #define XSB_STREAM_LOCK_B 24
 #define XSB_STREAM_UNLOCK_B 25
 #define FILE_NL 26
+#define FILE_GET_CODE  	   27
+#define FILE_PUT_CODE  	   28
+#define FILE_GET_CHAR  	   29
+#define FILE_PUT_CHAR  	   30
 
 /* This sequence is for stream properties */
 #define STREAM_FILE_NAME              0
