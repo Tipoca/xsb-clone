@@ -1,0 +1,5 @@
+
+test:- 
+       ['unicode_facts'],
+       a(X,Y),writeln(a(X,Y)),fail.
+test.
