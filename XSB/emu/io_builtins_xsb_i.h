@@ -965,10 +965,10 @@ inline static xsbBool file_function(CTXTdecl)
     value = ptoc_int(CTXTc 3);
     //    printf("val %d value wc %d\n",value,sizeof(wchar_t));
     if (value <= 127){
-      putc(value,fptr);
+      putc((int)value,fptr);
     } else { /* unicode, write in utf8 format */
     char s[5],*ch_ptr,*ch_ptr0;
-    ch_ptr = utf8_codepoint_to_str(value, s);
+    ch_ptr = utf8_codepoint_to_str((int)value, s);
     ch_ptr0 = s;
     while (ch_ptr0 < ch_ptr){
       putc(*ch_ptr0++,fptr);
@@ -1008,7 +1008,7 @@ inline static xsbBool file_function(CTXTdecl)
     break;
   }
   case FILE_PUT_CHAR: {
-    int len;
+    size_t len;
     char *ch_ptr;
 
     io_port = (int)ptoc_int(CTXTc 2);

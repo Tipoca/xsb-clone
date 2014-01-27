@@ -278,7 +278,7 @@ void unGetC(int d, FILE *card, STRFILE *instr)
       realloc_strbuff(CTXTc &strbuff, &s, &n);	 \
     }						 \
     s1 = utf8_codepoint_to_str(code,s);		 \
-    n -= (s1-s);				 \
+    n -= (int)(s1-s);				 \
     s = s1;					 \
   }						 \
 }
