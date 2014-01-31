@@ -380,7 +380,7 @@ read_intensional_rules_1(Name):-
 	read_intensional_rules_2(T,Name),
 	!.
 
-read_intensional_rules_2(end_of_file,_Name).
+read_intensional_rules_2(end_of_file,_Name) :- !.
 read_intensional_rules_2('<='(Head,Body),Name):- !,
 	newDLRule(Head,Body,Name),
 	fail.
