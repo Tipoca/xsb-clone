@@ -170,12 +170,8 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
 
 
 /*======================================================================*/
-#define nunify_with_internstr(OP1,OP2)				\
-  if (!isinternstr(OP2)) {printf("ERROR: nunify_with_internstr\n");}	\
-  if (unify(CTXTc OP1,OP2)) {XSB_Next_Instr();}				\
-  else Fail1;							       
 
-/**#define nunify_with_internstr(OP1,OP2)				\
+#define nunify_with_internstr(OP1,OP2)					\
   XSB_Deref(OP1);      							\
   if (isref(OP1)) {							\
     if (islist(OP2)) {							\
@@ -189,7 +185,7 @@ unsigned long dec[8] = {_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL_ULONG_BITS,_FULL
     if (unify(CTXTc OP1,OP2)) {						\
       XSB_Next_Instr();							\
     } else Fail1;							\
-    } ***/
+  }
 
 /*======================================================================*/
 
