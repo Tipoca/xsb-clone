@@ -2884,7 +2884,7 @@ A--Z} are regarded as letters.
   regarded as special characters:
 
 \begin{verbatim}
-| { } [ ] " $ % & ' ( ) * + , - . / : ; < = > ? @ \ ^ _ ~ `
+| { } [ ] " % $ & ' ( ) * + , - . / : ; < = > ? @ \ ^ _ ~ `
 \end{verbatim}
 \end{itemize}
 
@@ -3043,6 +3043,14 @@ constraints in XSB's {\tt XASP} package is done via the hook
 %
 which outputs a weight constraint in a (non-Prolog) syntax that is 
 used by several ASP systems.
+
+\ourmoditem{module\_of\_term(+Term,?Module)}{machine}
+\index{\texttt{module\_of\_term/2}}
+%
+Given a term {\tt Term}, {\tt module\_of\_term/2} returns the module
+of its main functor symbol in {\tt Module}.  If the module cannot be
+determined wither {\tt unknown1} or {\tt unknown2} is returrned,
+depending on the reason the module name cannot be determined.
 
 \end{description}
 
