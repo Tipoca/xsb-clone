@@ -1778,7 +1778,7 @@ int GetColumn(CTXTdecl)
       if (!strcmp(get_name(get_str_psc(op)),"string")) {
 	return unify(CTXTc get_str_arg(ptoc_tag(CTXTc 4),1),  /* op might have moved! */
 		     build_codes_list(CTXTc cur->Data[ColCurNum]));
-      } else {
+      } else if (!strcmp(get_name(get_str_psc(op)),"term")) {
 	STRFILE strfile;
 	
 	strfile.strcnt = strlen(cur->Data[ColCurNum]);
@@ -1787,6 +1787,11 @@ int GetColumn(CTXTdecl)
 	strfile.strptr = strfile.strbase = cur->Data[ColCurNum];
 	read_canonical_term(CTXTc NULL,&strfile,2); /* terminating '.'? */
 	return TRUE;
+      } else if (!strcmp(get_name(get_str_psc(op)),"NULL")) {
+	return FALSE;
+      } else {
+	xsb_warn("unrecognized return argument type; return failed");
+	return FALSE;
       }
     }
     if (!isstring(op)) return FALSE;
