@@ -59,8 +59,13 @@ read_dsv(FileName,Options,Term) :-
 	 ->	true
 	 ;	Sep = ","
 	),
-	(member(delimiter=[Delim],Options)
-	 ->	true
+	(member(delimiter=Delimiter,Options)
+	 ->	(Delimiter = [Delim]
+		 ->	true
+		 ; Delimiter = none
+		 ->	Delim = none
+		 ;	throw(error('Illegal delimiter specification'))
+		)
 	 ;	Delim = 0'"' %"
 	),
 	functor(Term,Pred,Arity),
@@ -375,9 +380,12 @@ save_dsv(FileName,PSpec,Options) :-
 	 ->	true
 	 ;	Sep = ","
 	),
-	(member(delimiter=[Delim],Options)
-	 ->	true
-	 ;	Delim = 0'"'
+	(member(delimiter=Delimiter,Options)
+	 ->	(Delimiter = [Delim]
+		 ->	true
+		 ;	throw(error('Delimiter must be a single character string'))
+		)
+	 ;	Delim = 0'"'  %"
 	),
 	save_dsv(FileName,PSpec,Sep,Delim,Options).
 

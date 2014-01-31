@@ -36,7 +36,7 @@
 :- import append/3 from basics.
 :- import length/2 from basics.
 :- import member/2 from basics.
-:- import warning/1 from standard.
+:- import warning/1, throw/1 from standard.
 :- import conset/2, coninc/2, conget/2, coninc/1 from gensym.
 :- import file_read_line_list/2, file_put/2 from file_io.
 :- import writeln/1, nl/0, atom_codes/2, repeat/0, '=..'/2,
