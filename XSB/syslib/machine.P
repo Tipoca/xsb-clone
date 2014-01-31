@@ -537,4 +537,22 @@ install_constraint_portray_hook(Mod,Vars,Names,Handler) :-
 breg_retskel(_BregOffset,_Arity,_RetTerm,_SubgoalPtr) :- '_$builtin'(BREG_RETSKEL).
 
 
+% Stuff for modules
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+module_of_term(Term, Module) :-
+        term_psc(Term, TermPSC),
+        (TermPSC =:= 0
+	 ->	Module = unknown1
+	 ;	psc_data(TermPSC, ModulePSCorFile),
+		(integer(ModulePSCorFile)
+		 ->	(ModulePSCorFile =:= 0
+			 ->	Module = unknown2
+			 ;	psc_name(ModulePSCorFile, Module0),
+				Module = Module0
+			)
+		 ;	Module = usermod
+		)
+	).
+
 /* --------------------- end of file machine.P ------------------------ */
