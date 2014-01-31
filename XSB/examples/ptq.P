@@ -27,7 +27,7 @@
 
 :- import append/3, member/2 from basics.
 :- import abolish_table_info/0 from machine.
-:- import numbervars/3 from numbervars.
+:- import numbervars/3 from num_vars.
 :- import parse/2, lred/2, lwrite/1 from parser.
 :- import lex/3 from ptqlex.
 :- import ex/2 from ptq_examples.
