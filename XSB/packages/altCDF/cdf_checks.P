@@ -902,7 +902,8 @@ dl_type_table(exists_immed(R,C),check_ind_types(_,exists_immed(R,C),[[rid],[cid]
 dl_type_table(all(R,C),check_ind_types(_,all(R,C),[[rid],[cid]])).
 dl_type_table(atLeast(N,R,C),check_ind_types(_,atLeast(N,R,C),[posint,[rid],[cid]])).
 dl_type_table(atMost(N,R,C),check_ind_types(_,atMost(N,R,C),[posint,[rid],[cid]])).
-dl_type_table(component(Cmpt),isatom2(_,Cmpt)).
+dl_type_table(atMost(N,R,C),check_ind_types(_,atMost(N,R,C),[posint,[rid],[cid]])).
+dl_type_table(call(_),=(_,_)). % no checking
 dl_type_table(is(_,_),=(_,_)). % no checking for now
 dl_type_table(dlEval(_,_),=(_,_)). % no checking??
 dl_type_table(dlTable(_N,_),isatom2(_,_N)).
