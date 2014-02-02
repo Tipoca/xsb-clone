@@ -1,5 +1,28 @@
 
 
+peek_vs_get(1,1)
+peek_vs_get(10,10)
+peek_vs_get(122,122)
+peek_vs_get(12371,12371)
+peek_vs_get(12385,12385)
+peek_vs_get(12395,12395)
+peek_vs_get(12399,12399)
+peek_vs_get(12435,12435)
+peek_vs_get(13,13)
+peek_vs_get(20170,20170)
+peek_vs_get(20170,20170)
+peek_vs_get(30340,30340)
+peek_vs_get(49,49)
+peek_vs_get(97,97)
+peek_vs_get(a,a)
+peek_vs_get(こ,こ)
+peek_vs_get(ち,ち)
+peek_vs_get(に,に)
+peek_vs_get(は,は)
+peek_vs_get(ん,ん)
+peek_vs_get(今,今)
+peek_vs_get(今,今)
+peek_vs_get(的,的)
 put_char: 
 put_char: 
 put_char: 1

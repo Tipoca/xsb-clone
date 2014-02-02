@@ -2,4 +2,5 @@
 test:- 
        ['unicode_facts'],
        a(X,Y),writeln(a(X,Y)),fail.
+test:- write(uncode_escape('u306f','\u306f')),fail.
 test.
