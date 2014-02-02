@@ -745,7 +745,7 @@ hilog_arglist(X, [Y|Z], I, N) :- K is I - 1, J is N - K,
 %----------------------------%
 
 %atom_length(A, N) :- str_len(A, N).
-atom_length(A, N) :-  file_function(ATOM_LENGTH, A, N).
+atom_length(A, N) :-  file_function(ATOM_LENGTH, A, NN), NN=N.
 
 
 atom_chars(A, L) :- atom_chars(A, L).
