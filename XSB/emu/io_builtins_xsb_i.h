@@ -1,5 +1,5 @@
 /* File:      io_builtins_xsb_i.h
-** Author(s): davulcu, kifer
+** Author(s): davulcu, kifer, swift, zhou
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1999
@@ -342,7 +342,7 @@ inline static xsbBool file_function(CTXTdecl)
     }
     XSB_STREAM_UNLOCK(io_port);
     break;
-  case FILE_PUT:   /* file_function(7, +IOport, +IntVal) */
+  case FILE_PUT_BYTE:   /* file_function(7, +IOport, +IntVal) */
     io_port = (int)ptoc_int(CTXTc 2);
     XSB_STREAM_LOCK(io_port);
     SET_FILEPTR(fptr, io_port);
@@ -380,7 +380,7 @@ inline static xsbBool file_function(CTXTdecl)
     pterm = reg_term(CTXTc 4);
     if (islist(pterm))
       addr = 
-	p_charlist_to_c_string(CTXTc pterm,&VarBuf,"FILE_WRITE_LINE","input string");
+	p_charlist_to_c_string(CTXTc pterm,&VarBuf,"FILE_PUTBUF","input string");
     else if (isstring(pterm))
       addr = string_val(pterm);
     else {
@@ -894,7 +894,7 @@ inline static xsbBool file_function(CTXTdecl)
     }
   }
 
-  case FILE_PEEK: {
+  case FILE_PEEK_BYTE: {
     int bufchar;
 
     io_port = (int)ptoc_int(CTXTc 2);
@@ -965,10 +965,10 @@ inline static xsbBool file_function(CTXTdecl)
     value = ptoc_int(CTXTc 3);
     //    printf("val %d value wc %d\n",value,sizeof(wchar_t));
     if (value <= 127){
-      putc((int)value,fptr);
+      putc((int) value,fptr);
     } else { /* unicode, write in utf8 format */
     char s[5],*ch_ptr,*ch_ptr0;
-    ch_ptr = utf8_codepoint_to_str((int)value, s);
+    ch_ptr = utf8_codepoint_to_str((int) value, s);
     ch_ptr0 = s;
     while (ch_ptr0 < ch_ptr){
       putc(*ch_ptr0++,fptr);
@@ -991,7 +991,7 @@ inline static xsbBool file_function(CTXTdecl)
       XSB_STREAM_LOCK(io_port);
       read_char = getc(fptr);
       if (read_char == EOF) 
-	ctop_int(CTXTc 3, read_char);
+	ctop_string(CTXTc 3, "end_of_file");
       else if (read_char & 0x80){                      /* leading byte of a utf8 char? */
       char s[5],*ch_ptr;
       read_char = utf8_getc(fptr,read_char);
@@ -1029,6 +1029,77 @@ inline static xsbBool file_function(CTXTdecl)
       xsb_domain_error(CTXTc "character",reg[3],"put_char",2);
     }
     break; 
+  }
+
+  case FILE_PEEK_CODE: {
+    int bufcode;
+    io_port = (int)ptoc_int(CTXTc 2);
+    XSB_STREAM_LOCK(io_port);
+    if ((io_port < 0) && (io_port >= -MAXIOSTRS)) {
+      sfptr = strfileptr(io_port);
+      ctop_int(CTXTc 3, strpeekc(sfptr));
+    } 
+    else {
+      SET_FILEPTR(fptr, io_port);
+      bufcode = getc(fptr);
+      if (bufcode == EOF) 
+        bufcode = -1;
+      else {
+        if (bufcode & 0x80){                      /* leading byte of a utf8 char? */
+          char s[5],*ch_ptr;                                                                                                     
+          bufcode = utf8_getc(fptr,bufcode);
+          ch_ptr = utf8_codepoint_to_str(bufcode, s);
+          while (ch_ptr>s){
+            ch_ptr--;                                                                                                                
+            ungetc(*ch_ptr,fptr); 
+          }
+        }  
+        else {
+          ungetc((char)bufcode,fptr);
+        }
+      }
+    ctop_int(CTXTc 3, bufcode);
+    XSB_STREAM_UNLOCK(io_port);
+    break;
+    }
+  }
+  case FILE_PEEK_CHAR:	{
+    int read_char;
+    io_port = (int)ptoc_int(CTXTc 2);
+    if ((io_port < 0) && (io_port >= -MAXIOSTRS)) {
+      XSB_STREAM_LOCK(io_port);
+      sfptr = strfileptr(io_port);
+      ctop_int(CTXTc 3, strgetc(sfptr));
+    } else {
+      SET_FILEPTR(fptr, io_port);
+      XSB_STREAM_LOCK(io_port);
+      read_char = getc(fptr);
+      if (read_char == EOF) 
+	ctop_string(CTXTc 3, "end_of_file");
+      else if (read_char & 0x80){                      /* leading byte of a utf8 char? */
+      char s[5],*ch_ptr;
+      read_char = utf8_getc(fptr,read_char);
+      ch_ptr = utf8_codepoint_to_str(read_char, s);
+      *ch_ptr = '\0';
+      while (ch_ptr>s){
+	ch_ptr--;                                                                                                                
+	ungetc(*ch_ptr,fptr); 
+      }
+      ctop_string(CTXTc 3,s);
+    } else {
+      char s[2];
+      s[0] = (char)read_char; s[1] = '\0';
+      ungetc((char)read_char,fptr);
+      ctop_string(CTXTc 3,s);
+      }
+    XSB_STREAM_UNLOCK(io_port);
+    }
+    break;
+  }
+
+  case ATOM_LENGTH: {
+    ctop_int(CTXTc 3, utf8_nchars(string_val(ptoc_int(CTXTc 2))));
+    break;
   }
 
   default:

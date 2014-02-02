@@ -29,6 +29,10 @@
 #include "cut_xsb.h"
 /*----------------------------------------*/
 
+extern int utf8_char_to_codepoint(char **s_ptr);             /* nfz */
+extern char *utf8_codepoint_to_str(int c, char *atomname);   /* nfz */
+extern int utf8_nchars(char *s);                             /* nfz */
+
 static xsbBool atom_to_list(CTXTdeclc int call_type);
 static xsbBool number_to_list(CTXTdeclc int call_type);
 
@@ -315,9 +319,10 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
   char *atomname, *atomnamelast;
   char *atomnameaddr = NULL;
   int atomnamelen;
-  char tmpstr[2], *tmpstr_interned;
+  char tmpstr[5], *tmpstr_interned;  /* 2 -> 5, nfz */
   Cell heap_addr, term, term2;
   Cell list, new_list;
+  CPtr top = 0;
   char *call_name = (call_type == ATOM_CODES ? "atom_codes/2" : "atom_chars/2");
   char *elt_type = (call_type == ATOM_CODES ? "character code" : "character");
 
@@ -334,7 +339,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
     do {
       XSB_Deref(term2);
       if (isnil(term2)) {
-	*atomname++ = '\0';
+	*atomname = '\0';  /* remove ++ nfz */
 	break;
       }
       if (islist(term2)) {
@@ -350,10 +355,13 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	}
 	if (isointeger(heap_addr))
 	  c = (int)oint_val(heap_addr);
-	else /* ATOM CHARS */
-	  c = *string_val(heap_addr);
+	else { /* ATOM CHARS */
+	  char *chptr;                           /* nfz */
+	  chptr = string_val(heap_addr);         /* nfz */
+	  c = utf8_char_to_codepoint(&chptr);    /* nfz */
+	}
 
-	if (c < 0 || c > 255) {
+	if (c < 0) {   /*  || c > 255 nfz */
 	  //	  err_handle(CTXTc RANGE, 2, call_name, 2, "ASCII code", heap_addr);
 	  mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
 	  //	  xsb_representation_error(CTXTc "character code",c,call_name,2);
@@ -362,7 +370,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 				   call_name,2);
 	  return FALSE;	/* keep compiler happy */
 	}
-	if (atomname >= atomnamelast) {
+	if (atomname+3 >= atomnamelast) { /* nfz */
 	  if (is_cyclic(CTXTc term2)) {
 	    mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
 	    xsb_type_error(CTXTc "list",makestring("infinite list(?)"),call_name,2);
@@ -373,7 +381,8 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	  atomnamelast = atomnameaddr + (atomnamelen - 1);
 	  /*printf("Allocated namebuf: %p, %d\n",atomnameaddr,atomnamelen);*/
 	}
-	*atomname++ = (char)c;
+	//	*atomname++ = (char)c;  /* nfz */
+	atomname = utf8_codepoint_to_str(c, atomname);
 	term2 = get_list_tail(term2);
       } else {
 	mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
@@ -383,6 +392,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
       }
     } while (1);
     bind_string((CPtr)(term), (char *)string_find((char *)atomnameaddr, 1));
+		
     mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
     return TRUE;
   } else {	/* use is: ATOM --> CODES/CHARS */
@@ -403,26 +413,35 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	list = ptoc_tag(CTXTc 2);   /* in case it changed */
 
 	new_list = makelist(hreg);
-	for (i = 0; i < len; i++) {
- 	  if (call_type==ATOM_CODES)
-	    follow(hreg) = makeint(*(unsigned char *)atomname);
-	  else {
-	    tmpstr[0]=*atomname;
-	    tmpstr[1]='\0';
-	    tmpstr_interned=string_find(tmpstr,1);
-	    follow(hreg) = makestring(tmpstr_interned);
+	//	for (i = 0; i < len; i++) {              /* nfz */
+	while (*atomname != '\0'){                       /* nfz */
+ 	  if (call_type==ATOM_CODES){
+	    int code = utf8_char_to_codepoint(&atomname); /* nfz */
+	    follow(hreg++) = makeint(code);               /* nfz */ 
+	  } else {
+	    int k;
+	    char *atomname0 = atomname;                   /* nfz */ 
+	    utf8_char_to_codepoint(&atomname);            /* nfz */	    
+	    k = 0;               
+	    while (atomname0<atomname){
+	      tmpstr[k] = *atomname0++;
+	      k++;
+	    }
+	    tmpstr[k]='\0';
+	    tmpstr_interned=string_find(tmpstr,k);        /* nfz */	    
+	    follow(hreg++) = makestring(tmpstr_interned);
 	  }
-	  atomname++;
-	  hreg += 2;
-	  follow(hreg-1) = makelist(hreg);
+	  top = hreg++;
+	  follow(top) = makelist(hreg);
 	}
-	follow(hreg-1) = makenil;
+	follow(top) = makenil;
 	return unify(CTXTc list, new_list);
       } 
     } else xsb_type_error(CTXTc "atom",term,call_name,1);  /* atom_codes(1,F) */
   }
   return TRUE;
 }
+
 
 char *cvt_float_to_str(CTXTdeclc Float);
 
