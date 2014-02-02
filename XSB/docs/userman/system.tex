@@ -1306,14 +1306,14 @@ in files defining $P$ whether they are compiled and consulted, or
 dynamically loaded via {\tt load\_dyn/[1,2]} or {\tt
   load\_dync/[1,2]}.
 
-\section{The Compiler} \label{the_compiler} \index{Compiler}
+\section{The Compiler} \label{the_compiler} \index{compiler}
 %========================================================
 
 The XSB compiler translates XSB source files into
 byte-code object files.  It is written entirely in Prolog.
 Both the sources and the byte code\index{byte code!files!compiler}
 for the compiler can be found in the XSB system directory
-{\tt cmplib}\index{Compiler!\texttt{cmplib}}.
+{\tt cmplib}\index{compiler!\texttt{cmplib}}.
 %
 \index{GPP}
 \index{preprocessing}
@@ -1334,7 +1334,7 @@ in more detail.
 
 
 \subsection{Invoking the Compiler} \label{compiler_invoking}
-\index{invoking the Compiler}\index{Compiler!invoking}
+\index{invoking the Compiler}\index{compiler!invoking}
 %=====================================================
 
 In addition to invoking the compiler through {\tt consult/[1,2]}, the
@@ -1475,7 +1475,7 @@ In the cases below, {\tt File} refers to an element of {\tt Files} if
 \end{description}
 
 \subsection{Compiler Options}\label{sec:CompilerOptions}
-\index{Compiler!options}\index{options!compiler}
+\index{compiler!options}\index{options!compiler}
 %=================================================
 
 Compiler options can be set in three ways: from a global list of
@@ -1895,7 +1895,7 @@ module.  Also standard predicates are permitted to be defined.
 
 
 \subsection{Specialization}\label{specialization}
-\index{Compiler!specialization}\index{specialization!Compiler}
+\index{compiler!specialization}\index{specialization!Compiler}
 %=============================================================
 
 From Version 1.4.0 on, the XSB compiler automatically performs
@@ -2008,7 +2008,7 @@ created by the transformation do appear during tracing.
 
 
 \subsection{Compiler Directives}\label{compiler_directives}
-\index{Compiler!directives}\index{directives!Compiler}
+\index{compiler!directives}\index{directives!Compiler}
 %=====================================================
 
 Consider a directive
@@ -2072,7 +2072,7 @@ substitutions, but {\tt include/1} should be used if code portability
 is desired.
 
 \end{description}
-\index{Compilation!conditional!Prolog directives}
+\index{compilation!conditional!Prolog directives}
 
 \subsection{Conditional Compilation}
 %
@@ -2461,7 +2461,7 @@ Interface} in Volume 2 for its explanation.
 \end{description}
 
 \subsection{Inline Predicates}\label{inline_predicates}
-\index{Compiler!inlines}\index{inlines!Compiler}
+\index{compiler!inlines}\index{inlines!Compiler}
 %======================================================
 
 {\em Inline predicates} represent ``primitive'' operations in the
@@ -2507,29 +2507,30 @@ In \version, an effort has been made to ensure compatibility with the
 core Prolog ISO standard~\cite{ISO-Prolog}.  In this section, we
 summarize the differences with the ISO standard.  XSB implements
 almost all ISO built-ins and evaluable functions, although there are
-certain semantic differences between XSB's implementation and that of
-the ISO standard in certain cases.
+semantic differences between XSB's implementation and that of the ISO
+standard in certain cases.
 
-The main difference of XSB with the ISO standard is in terms of
-parsing.  \version{} of XSB does not support full ISO
-syntax~\footnote{XSB also does not support multiple character sets or
-  Unicode, which is perhaps a bigger limitation than the lack of full
-  ISO syntax.}.  In addition, XSB supports only the ASCII character
-set for atoms, predicates and functions, so that ISO predicates
-relating to different character sets, such as {\tt
-  char\_conversion/2}, {\tt current\_char\_conversion/2} and others
-are not supported.
+The main difference of XSB from the ISO semantics is that XSB does not
+support the logical update semantics for assert and retract, but
+instead supports an immediate semantics.  XSB does, however support an
+ISO-like semantics for incremental tables.
 
-Another difference is that XSB does not support the logical update
-semantics for assert and retract, but instead supports an immediate
-semantics.  Despite the patholical examples that can be devised using
-the immediate semantics, the logical semantics for assert is not often
-critical for single-threaded applications.  It is however, critical
-for multi-threaded applications, and XSB will support this in the
-future.
+%Despite the patholical examples that can be devised using
+%the immediate semantics, the logical semantics for assert is not often
+%critical for single-threaded applications.  It is however, critical
+%for multi-threaded applications, and XSB will support this in the
+%future.
+
+\version{} of XSB mostly supports the full ISO syntax for Prolog, and
+its I/O system is based on UTF-8 encoding, which includes ASCII as a
+subset of its characters.  Beyond XSB's support for Hilog, most
+differences between ISO syntax and XSB syntax are fairly minor.
+However, as XSB supports only UTF-8, ISO predicates relating to
+different character sets, such as {\tt char\_conversion/2}, {\tt
+  current\_char\_conversion/2} and others are not supported.
 
 A somewhat more minor difference involves XSB's implementation of ISO
-streams.  XSB can create streams from several Firstzd class objects,
+streams.  XSB can create streams from several First class objects,
 including pipes, atoms, and consoles in addition to files.  However by
 default, XSB opens streams in binary mode, rather than text mode in
 opposition to the ISO standard, which opens streams in text mode.

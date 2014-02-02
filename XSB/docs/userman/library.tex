@@ -644,7 +644,7 @@ The argument is an atom.  The atom is printed without quoting.
 
 \item \verb|~Nc|
 (Print character.)  The argument is a number that will be interpreted as an
-ASCII code. {\tt N} defaults to one and is interpreted as the number of
+UTF-8 code. {\tt N} defaults to one and is interpreted as the number of
 times to print the character.  
 
 \item \verb|~f|
@@ -756,7 +756,7 @@ Hello F world!
 %-------------------------------------------------------------------------
 
 \item \verb|~Ns|
-(Print string.) The argument is a list of ASCII codes.  Exactly {\tt
+(Print string.) The argument is a list of UTF-8 codes.  Exactly {\tt
 N} characters will be printed. {\tt N} defaults to the length of the
 string.  Example:
 
@@ -993,15 +993,15 @@ position movement to @var{N}, where @var{N} defaults to @key{SPC}.
     its previous psc value to zero, this predicate can be called with
     {\tt IOport} of -1000.
 
-\ourmoditem{fget\_line(+Str,-Inlist,-Next)}{scrptutl}
-\index{\texttt{fget\_line/3}}
-    {\tt fget\_line/3} reads one line from the input stream {\tt Str} and
-    unifies {\tt Inlist} to the list of ASCII integers representing the
-    characters in the line, and {\tt Next} to the line terminator, either
-    a newline ({\tt 10}) or EOF ({\tt-1}).
-    
-    This predicate is obsolete and
-    \verb|file_read_line_list| should be used instead.
+%\ourmoditem{fget\_line(+Str,-Inlist,-Next)}{scrptutl}
+%\index{\texttt{fget\_line/3}}
+%    {\tt fget\_line/3} reads one line from the input stream {\tt Str} and
+%    unifies {\tt Inlist} to the list of ASCII integers representing the
+%    characters in the line, and {\tt Next} to the line terminator, either
+%    a newline ({\tt 10}) or EOF ({\tt-1}).
+%    
+%    This predicate is obsolete and
+%    \verb|file_read_line_list| should be used instead.
 
 \end{description}
 
@@ -2808,7 +2808,7 @@ be ignored and not contribute a fact to the dynamic predicate.
 \section{Scanning in Prolog}
 
 Scanners, (sometimes called tokenizers) take an input string, usually
-in ASCII or similar format, and produce a scanned sequence of tokens.
+in UTF-8 or similar format, and produce a scanned sequence of tokens.
 The requirements that various applications have for scanning differ in
 small but important ways -- a character that is special to one
 application may be part of the token of another; or some applications

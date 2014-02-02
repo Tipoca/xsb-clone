@@ -1,10 +1,10 @@
 \chapter[Standard and General Predicates]{Standard Predicates and Predicates of General Use} \label{standard}
 %=============================================
 
-This chapter describes standard predicates, which are always available
-to the Prolog interpreter, and do not need to be imported or loaded
-explicitly as do other Prolog predicates.  By default, it is a
-compiler error to redefine standard predicates.  
+This chapter mainly describes {\em standard} predicates, which are
+always available to the Prolog interpreter, and do not need to be
+imported or loaded explicitly as do other Prolog predicates.  By
+default, it is a compiler error to redefine standard predicates.
 
 \comment{This behavior can be overridden by allowing explicit
   redefinition of standard predicates (see Section~\ref{}); or
@@ -127,8 +127,9 @@ warnings are written), the standard message stream, the standard
 debugging stream (to which debugging information is written), and the
 standard feedback stream (for interpreter prompts, yes/no answers,
 etc).  All of these streams are aliased by default to standard output,
-and can be redirected by the predicates the predicates {\tt
-  file\_reopen/4} and {\tt file\_clone/3}.
+and can be redirected by the predicates {\tt file\_reopen/4} and {\tt
+  file\_clone/3}.  Such redirection can be useful for logging, or
+other purposes.
 
 \index{aliases!streams}
 \index{aliases!streams!user\_input}
@@ -137,9 +138,9 @@ and can be redirected by the predicates the predicates {\tt
 \index{aliases!streams!user\_warning}
 \index{aliases!streams!user\_message}
 
-Streams may also be aliased: the default input and output streams can
-be denoted by {\tt user\_input} and {\tt user\_output} and they refer
-to the standard input and standard output streams of the
+Streams may also be aliased: the default input and output streams are
+denoted by {\tt user\_input} and {\tt user\_output} and they refer to
+the standard input and standard output streams of the
 process \footnote{For backwards compatibility, the default input
   stream can also be aliased by {\tt user} or {\tt userin}, and the
   default output stream by {\tt user} or {\tt userout}.}.  Similarly,
@@ -153,20 +154,20 @@ properties include whether a stream is positionable or not and whether
 a (file) stream is textual or binary.
 
 \bi
-\item {\tt Console} The default streams mentioned above are
+\item {\tt Console}: The default streams mentioned above are
 console streams, which are textual and not repositionable.
 %
-\item {\tt File}  A file stream corresponds to an operating system
+\item {\tt File}:  A file stream corresponds to an operating system
 file and is repositionable.  On Windows, binary files and textual
 files differ, while on UNIX they are the same.  
 %
-\item {\tt Atom} XSB can read from an atom, just as it can from a file.
+\item {\tt Atom}: XSB can read from an atom, just as it can from a file.
 Atoms are considered to be textual and repositionable.  Writing to
 atoms via streams is not currently available in XSB, although 
 the predicate {\tt term\_to\_atom/[2,3]} contains much of the
 functionality that such streams would provide.
 
-\item {\tt Pipe} XSB can also open pipes either directly, or as part
+\item {\tt Pipe}: XSB can also open pipes either directly, or as part
 of its ability to spawn processes.  When made into streams, pipes are
 textual and not repositionable.
 \ei
@@ -174,14 +175,14 @@ textual and not repositionable.
 %------------------------------------------------------------------------------------------------
 \subsection{I/O Stream Implementation} \label{sec:IO-streams}
 
-A user may note that XSB's I/O streams are small integers, but they
+A user may notice that XSB's I/O streams are small integers, but they
 should not be confused with the file descriptors used by the OS.  The
 OS file descriptors are objects returned by the C {\tt open} function;
 XSB I/O streams indices into the internal XSB table of open files and
 associated information. The OS does not know about XSB I/O streams,
 while XSB (obviously) does know about the OS file descriptors. An OS
 file descriptor may be returned by certain predicates (e.g.  {\tt
-pipe\_open/2} or user-defined I/O).  In the former case, a file
+  pipe\_open/2} or user-defined I/O).  In the former case, a file
 descriptor can be promoted to XSB stream by {\tt open/\{3,4\}} and in
 the latter by using the predicate {\tt fd2iostream/2}.
 
@@ -845,39 +846,25 @@ file).
 
 \end{description}
 
-
+\index{Unicode!UTF-8}
 \subsection{Character I/O}
+Beginning with \version{}, XSB supports Unicode in the form of UTF-8
+characters.  Due to this change, we recommend using ISO-compliant
+character I/O predicates, rather than older predicates such as {\tt
+  get/1}, {\tt get0/1}, {\tt put/1} and so on.  As the use of these
+older predicates may sometines give unexpected answers when used with
+non-ASCII characters, they are deprecated, athough they are still
+available for backward compatability.
+
 \begin{description}
-
-\isoitem{nl}{nl/0}
-A new line character is sent to the current output stream.
-
-\isoitem{nl(+Stream\_or\_alias)}{nl/1}
-A new line character is sent to the designated output stream.
-
-{\bf Error Cases}
-\bi
-\item 	{\tt Stream\_or\_alias} is a variable
-\bi
-\item {\tt instantiation\_error}
-\ei
-\item 	{\tt Stream\_or\_alias} is neither a variable nor a stream term nor an alias.
-\bi
-\item 	{\tt domain\_error(stream\_or\_alias,Stream\_or\_alias)}
-\ei
-\item 	{\tt Stream\_or\_alias} is not associated with an open stream
-\bi
-\item 	{\tt existence\_error(stream,Stream\_or\_alias)}
-\ei
-\ei
-
 %-----------------------------
 % Gets
 
-\isoitem{get\_char(+Stream\_or\_alias,?Char)}{get\_char/2}
-   Unifies {\tt Char} with the next ASCII character from {\tt
-   Stream\_or\_alias}, advancing the position of the stream.  {\tt
-   Char} is unified with -1 if an end of file condition is detected.
+\isoitem{get\_char(+Stream\_or\_alias,?Char)}{get\_char/2} Unifies
+        {\tt Char} with the next UTF-8 character from {\tt
+          Stream\_or\_alias}, advancing the position of the stream.
+        {\tt Char} is unified with the atom {\tt end\_of\_file} if an
+        end of file condition is detected.
 
 {\bf Error Cases}
 \bi
@@ -913,8 +900,10 @@ Behaves as {\tt get\_char/2}, but reads from the current input stream.
 
 \isoitem{get\_code(+Stream\_or\_alias,?Code)}{get\_code/2}
 %
-   {\tt Code} unifies with the ASCII code of the next character from
+   {\tt Code} unifies with the UTF-8 code of the next character from
    {\tt Stream\_or\_alias}.  The position of the stream is advanced.
+   {\tt Char} is unified with -1 if an end of file condition is
+   detected.
 
 {\bf Error Cases}
 \bi
@@ -938,7 +927,9 @@ Behaves as {\tt get\_char/2}, but reads from the current input stream.
 
 \isoitem{get\_code(?Code)}{get\_code/1}
 %
-Behaves as {\tt get\_code/2}, but reads from the current input stream.
+Behaves as {\tt get\_code/2}, but reads from the current input
+stream~\footnote{The obsolescent predicate {\tt get0/1} is defined as
+  {\tt get\_code/1}.}.
 
 {\bf Error Cases}
 \bi
@@ -948,28 +939,72 @@ Behaves as {\tt get\_code/2}, but reads from the current input stream.
 \ei
 \ei
 
-\standarditem{get0(?N)}{get0/1}
+\isoitem{get\_byte(+Stream\_or\_alias,?Byte)}{get\_byte/2}
 %
-{\tt N} is the ASCII code of the next character read from the current
-input stream (regarded as a text stream). If the current input stream
-reaches its end of file, a {\tt -1} is returned.  This predicate does
-not check for errors, so that it is faster (and potentially less safe)
-than, e.g. {\tt get\_code/1}.
+   {\tt Byte} unifies with the value of the the next byte from {\tt
+     Stream\_or\_alias}.  The position of the stream is advanced.
+   {\tt Char} is unified with -1 if an end of file condition is
+   detected.  If reading from ASCII text, {\tt get\_byte/2} will have
+   the same behavior as {\tt get\_code/2}, but in general {\tt
+     get\_code/2} may return multi-byte characters
 
-\standarditem{get(?N)}{get/1}
-    {\tt N} is the ASCII code of the next non-blank printable
-    character from the current input stream (regarded as a text
-    stream).  If the current input stream reaches its end of file, a
-    {\tt -1} is returned.
+{\bf Error Cases}
+\bi
+\item 	{\tt Stream\_or\_alias} is a variable
+\bi
+\item {\tt instantiation\_error}
+\ei
+\item 	{\tt Stream\_or\_alias} is neither a variable nor a stream term nor an alias.
+\bi
+\item 	{\tt domain\_error(stream\_or\_alias,Stream\_or\_alias)}
+\ei
+\item 	{\tt Stream\_or\_alias} is not associated with an open input stream
+\bi
+\item 	{\tt existence\_error(stream,Stream\_or\_alias)}
+\ei
+\item 	{\tt Code} is not a variable or character code
+\bi
+\item 	{\tt domain\_error(character\_code\_or\_variable,Code)}
+\ei
+\ei
+
+\isoitem{get\_byte/1}{get\_byte/1} Behaves as {\tt get\_byte/2}, but
+reads from the current input stream~\footnote{The obsolescent
+  predicate {\tt get0/1} is defined using {\tt get\_byte/1}, but
+  returns the next byte that does not match an ASCII whitespace
+  character.}.v
+
+{\bf Error Cases}
+\bi
+\item 	{\tt Code} is not a variable or {\tt Code} is not a proper value for a byte
+\bi
+\item 	{\tt domain\_error(byte\_code\_or\_variable,Code)}
+\ei
+\ei
+
+%\standarditem{get0(?N)}{get0/1}
+%
+%{\tt N} is the ASCII code of the next character read from the current
+%input stream (regarded as a text stream). If the current input stream
+%reaches its end of file, a {\tt -1} is returned.  This predicate does
+%not check for errors, so that it is faster (and potentially less safe)
+%than, e.g. {\tt get\_code/1}.
+
+%\standarditem{get(?N)}{get/1}
+%    {\tt N} is the ASCII code of the next non-blank printable
+%    character from the current input stream (regarded as a text
+%    stream).  If the current input stream reaches its end of file, a
+%    {\tt -1} is returned.
 
 %------------------------------------
 % Peeks
 
 \isoitem{peek\_char(+Stream\_or\_alias,?Char)}{peek\_char/2}
 %
-{\tt Char} is the next ASCII character from {\tt Stream\_or\_alias}.
-The position in {\tt Stream\_or\_alias} is unchanged.  {\tt Char} is
-unified with -1 if an end of file condition is detected.
+Unifies {\tt Char} with the next UTF-8 character from {\tt
+  Stream\_or\_alias}.  The position in {\tt Stream\_or\_alias} is
+unchanged.  {\tt Char} is unified with the atom {\tt end\_of\_file} if
+an end of file condition is detected.
 
 {\bf Error Cases}
 \bi
@@ -993,9 +1028,7 @@ unified with -1 if an end of file condition is detected.
 
 \isoitem{peek\_char(?Char)}{peek\_char/1}
 %
-{\tt Char} is the next ASCII character from the current input stream.
-The position in the current input stream is unchanged.  {\tt Char} is
-unified with -1 if an end of file condition is detected.
+Behaves as {\tt peek\_char/2}, but the current input stream is used.
 
 {\bf Error Cases}
 \bi
@@ -1007,7 +1040,7 @@ unified with -1 if an end of file condition is detected.
 
 \isoitem{peek\_code(+Stream\_or\_alias,?Code)}{peek\_code/2}
 %
-{\tt Code} is the next ASCII coder from {\tt Stream\_or\_alias}.
+Unifies {\tt Code} with the next UTF-8 code from {\tt Stream\_or\_alias}.
 The position in {\tt Stream\_or\_alias} is unchanged.  {\tt Code} is
 unified with -1 if an end of file condition is detected.
 
@@ -1033,7 +1066,7 @@ unified with -1 if an end of file condition is detected.
 
 \isoitem{peek\_code(?Code)}{peek\_code/1}
 %
-Behaves as {\tt peek\_code/1}, but the current input stream is used.
+Behaves as {\tt peek\_code/2}, but the current input stream is used.
 
 {\bf Error Cases}
 \bi
@@ -1043,13 +1076,50 @@ Behaves as {\tt peek\_code/1}, but the current input stream is used.
 \ei
 \ei
 
+\isoitem{peek\_byte(?Byte)}{peek\_byte/1} 
+%
+Unifies {\tt Byte} with the next byte from {\tt Stream\_or\_alias}.
+The position in {\tt Stream\_or\_alias} is unchanged.  {\tt Code} is
+unified with -1 if an end of file condition is detected.
+
+{\bf Error Cases}
+\bi
+\item 	{\tt Stream\_or\_alias} is a variable
+\bi
+\item {\tt instantiation\_error}
+\ei
+\item 	{\tt Stream\_or\_alias} is neither a variable nor a stream term nor an alias.
+\bi
+\item 	{\tt domain\_error(stream\_or\_alias,Stream\_or\_alias)}
+\ei
+\item 	{\tt Stream\_or\_alias} is not associated with an open input stream
+\bi
+\item 	{\tt existence\_error(stream,Stream\_or\_alias)}
+\ei
+\item 	{\tt Code} is not a variable or character.
+\bi
+\item 	{\tt domain\_error(byte\_code\_or\_variable,Code)}
+\ei
+\ei
+
+
+\isoitem{peek\_byte(?Byte)}{peek\_byte/1}
+Behaves as {\tt peek\_byte/2}, but the current input stream is used.
+
+{\bf Error Cases}
+\bi
+\item 	{\tt Char} is not a variable or character.
+\bi
+\item 	{\tt domain\_error(byte\_code\_or\_variable,Code)}
+\ei
+\ei
 %----------------------------------------------
 % Puts
 %----------------------------------------------
 
-\isoitem{put\_char(+Stream,+Char)}{put\_char/2}
+\isoitem{put\_char(+Stream\_or\_alias,+Char)}{put\_char/2}
 %
-Puts the ASCII character {\tt Char} to {\tt Stream\_or\_alias}.
+Writes a UTF-8 character {\tt Char} to {\tt Stream\_or\_alias}.
 
 {\bf Error Cases}
 \bi
@@ -1073,8 +1143,7 @@ Puts the ASCII character {\tt Char} to {\tt Stream\_or\_alias}.
 
 \isoitem{put\_char(+Char)}{put\_char/1}
 %
-Puts the ASCII code of the character {\tt Char} to the current output
-stream.
+Puts a UTF-8 character {\tt Char} to the current output stream.
 
 {\bf Error Cases}
 \bi
@@ -1086,8 +1155,8 @@ stream.
 
 \isoitem{put\_code(+Stream,+Code)}{put\_code/2}
 %
-Puts the ASCII code of the character {\tt Char} to {\tt
-Stream\_or\_alias}.
+Puts the character for the UTF-8 code {\tt Code} to {\tt
+  Stream\_or\_alias}.
 
 {\bf Error Cases}
 \bi
@@ -1112,23 +1181,47 @@ Stream\_or\_alias}.
 
 \isoitem{put\_code(+Code)}{put\_code/1}
 %
-Puts the ASCII code {\tt Code} to the current output stream.
-{\bf Error Cases}
-\bi
+Puts the character for the UTF-8 code {\tt Code} to the current output
+stream~\footnote{The obsolescent predicate {\tt put/1} is defined as
+  {\tt put\_code/1}.}.
+
+{\bf Error Cases} \bi
 \item 	{\tt Code} is a not a character code.
 \bi
 \item 	{\tt type\_error(character\_code,Code)}
 \ei
 \ei
 
-\standarditem{put(+Code)}{put/1}
-    Puts the ASCII character code {\tt N} to the current output stream.
+%\standarditem{put(+Code)}{put/1}
+%    Puts the ASCII character code {\tt N} to the current output stream.
+%
+%{\bf Error Cases}
+%\bi
+%\item 	{\tt Code} is a not a character code.
+%\bi
+%\item 	{\tt type\_error(character\_code,Code)}
+%\ei
+%\ei
+
+\isoitem{nl}{nl/0}
+A new line character is sent to the current output stream.
+
+\isoitem{nl(+Stream\_or\_alias)}{nl/1}
+A new line character is sent to the designated output stream.
 
 {\bf Error Cases}
 \bi
-\item 	{\tt Code} is a not a character code.
+\item 	{\tt Stream\_or\_alias} is a variable
 \bi
-\item 	{\tt type\_error(character\_code,Code)}
+\item {\tt instantiation\_error}
+\ei
+\item 	{\tt Stream\_or\_alias} is neither a variable nor a stream term nor an alias.
+\bi
+\item 	{\tt domain\_error(stream\_or\_alias,Stream\_or\_alias)}
+\ei
+\item 	{\tt Stream\_or\_alias} is not associated with an open stream
+\bi
+\item 	{\tt existence\_error(stream,Stream\_or\_alias)}
 \ei
 \ei
 
@@ -1143,37 +1236,39 @@ Puts the ASCII code {\tt Code} to the current output stream.
 \ei
 \ei
 
-\isorepeatitem{get\_byte/1}{get\_byte/1}
-\isorepeatitem{get\_byte/2}{get\_byte/2}
-\isorepeatitem{put\_byte/1}{peek\_byte/1}
-\isorepeatitem{put\_byte/2}{peek\_byte/2}
-\isorepeatitem{put\_byte/1}{put\_byte/1}
-\isoitem{put\_byte/2}{put\_byte/2}
-%
-In XSB, these predicates are simply aliases for the associated {\tt
-  xxx\_code} predicates and behave accordingly.  This is safe to do
-since the reader for \version{} of XSB supports only ASCII character
-codes, which are themselves single bytes.  
+%%\isorepeatitem{put\_byte/1}{peek\_byte/1}
+%\isorepeatitem{put\_byte/2}{peek\_byte/2}
+%\isorepeatitem{put\_byte/1}{put\_byte/1}
+%\isoitem{put\_byte/2}{put\_byte/2}
+%%
+%In XSB, these predicates are simply aliases for the associated {\tt
+%  xxx\_code} predicates and behave accordingly.  This is safe to do
+%since the reader for \version{} of XSB supports only ASCII character
+%codes, which are themselves single bytes.  
 %
 \end{description}
 
 %---------------------------------------------------------------------------------------------------------
+\index{Unicode!UTF-8}
 \subsection{Term I/O}
+Beginning with \version{}, XSB automatically supports Unicode in the
+form of UTF-8 characters for reading and writing.
+
 \begin{description}
-\isoitem{read(?Term)}{read/1}
-    A HiLog term is read from the current or designated input stream,
-    and unified with {\tt Term} according to the operator declarations
-    in force.  (See Section~\ref{TermSyntax} for the definition and
-    syntax of HiLog terms). The term must be delimited by a full stop
-    (i.e. a ``.'' followed by a carriage-return, space or tab).
-    Predicate {\tt read/1} does not return until a valid HiLog term is
-    successfully read; that is, in the presence of syntax errors {\tt
-    read/1} does not fail but continues reading terms until a term
-    with no syntax errors is encountered.  If a call to {\tt
-    read(Term)} causes the end of the current input stream to be
-    reached, variable {\tt Term} is unified with the term {\tt
-    end\_of\_file}.  In that case, further calls to {\tt read/1} for
-    the same input stream will cause an error failure.
+\isoitem{read(?Term)}{read/1} 
+HiLog term is read from the current or
+designated input stream, and unified with {\tt Term} according to the
+operator declarations in force.  (See Section~\ref{TermSyntax} for the
+definition and syntax of HiLog terms). The term must be delimited by a
+full stop (i.e. a ``.'' followed by a carriage-return, space or tab).
+Predicate {\tt read/1} does not return until a valid HiLog term is
+successfully read; that is, in the presence of syntax errors {\tt
+  read/1} does not fail but continues reading terms until a term with
+no syntax errors is encountered.  If a call to {\tt read(Term)} causes
+the end of the current input stream to be reached, variable {\tt Term}
+is unified with the term {\tt end\_of\_file}.  In that case, further
+calls to {\tt read/1} for the same input stream will cause an error
+failure.
 
 %TLS: This doesn't actually seem to be the behavior.  Exceptions:
 % \begin{description} 
@@ -1996,7 +2091,7 @@ Like {\tt file\_read\_line\_atom/1} but reads from {\tt Stream\_or\_alias}.
 %
 These predicates write {\tt String} beginning with character {\tt
   Offset} to the current output stream. {\tt String} can be an atom or
-a list of ASCII character codes. This does \emph{not} put the newline
+a list of UTF-8 character codes. This does \emph{not} put the newline
 character at the end of the string (unless {\tt String} already had
 this character). Note that escape sequences, like \verb|\n|, are
 recognized if {\tt String} is a character list, but are output as is
@@ -2079,7 +2174,7 @@ Write {\tt BytesRequested} bytes into file represented by I/O port
 {\tt Stream\_or\_alias} (which must already be open for writing) from
 variable {\tt String} at position {\tt Offset}. This is analogous to C
 {\tt fwrite}.  The value of {\tt String} can be an atom or a list of
-ASCII characters.
+UTF-8 characters.
 
 {\bf Error Cases} 
 \bi
@@ -3827,16 +3922,17 @@ predicates. Section 7 for wildcard matching, and Section 8 for an
 interfae to the PCRE library.
 
 \begin{description}
+\index{Unicode!UTF-8}
 
 \isoitem{atom\_codes(?Atom, ?CharCodeList)}{atom\_codes/2}
     The standard predicate {\tt atom\_codes/2} performs the conversion 
     between an atom and its character list representation. 
     If {\tt Atom} is supplied (and is an atom), {\tt CharList} 
-    is unified with a list of ASCII codes representing the {\em ``name''} 
+    is unified with a list of UTF-8 codes representing the {\em ``name''} 
     of that atom.  In that case, {\tt CharList} is exactly the list of 
-    ASCII character codes that appear in the printed representation of 
+    UTF-8 character codes that appear in the printed representation of 
     {\tt Atom}.  If on the other hand {\tt Atom} is a variable, 
-    then {\tt CharList} must be a proper list of ASCII character codes. 
+    then {\tt CharList} must be a proper list of UTF-8 character codes. 
     In that case, {\tt Atom} is instantiated to an atom containing
     exactly those characters, even if the characters look like the
     printed representation of a number.
@@ -3905,15 +4001,16 @@ variable nor a character code
 
 \isoitem{number\_codes(?Number, ?CharCodeList)}{number\_codes/2}
 %
-    The standard predicate {\tt number\_codes/2} performs the conversion 
-    between a number and its character list representation. 
+    The standard predicate {\tt number\_codes/2} performs the
+    conversion between a number and its character list representation.
     If {\tt Number} is supplied (and is a number), {\tt CharList} is
-    unified with a list of ASCII codes comprising the printed representation
-    of that {\tt Number}.  If on the other hand {\tt Number} is a variable, 
-    then {\tt CharList} must be a proper list of ASCII character codes that
-    corresponds to the correct syntax of a number (either integer or float)
-    In that case, {\tt Number} is instantiated to that number, otherwise
-    {\tt number\_codes/2} will simply fail.
+    unified with a list of UTF-8 ( = ASCII) codes comprising the
+    printed representation of that {\tt Number}.  If on the other hand
+    {\tt Number} is a variable, then {\tt CharList} must be a proper
+    list of UTF-8 (ASCII) character codes that corresponds to the
+    correct syntax of a number (either integer or float) In that case,
+    {\tt Number} is instantiated to that number, otherwise {\tt
+      number\_codes/2} will simply fail.
 
     Examples:
     {\footnotesize
@@ -3965,12 +4062,12 @@ variable nor a character code
 The standard predicate {\tt name/2} performs the conversion between a
 constant and its character list representation.  If {\tt Constant} is
 supplied (and is any atom or number), {\tt CharList} is unified with a
-list of ASCII codes representing the {\em ``name''} of the constant.
-In that case, {\tt CharList} is exactly the list of ASCII character
+list of UTF-8 codes representing the {\em ``name''} of the constant.
+In that case, {\tt CharList} is exactly the list of UTF-8 character
 codes that appear in the printed representation of {\tt Constant}\@.
 If on the other hand {\tt Constant} is a variable, then {\tt CharList}
-must be a proper list of ASCII character codes.  In that case, {\tt
-  name/2} will convert a list of ASCII characters that can represent a
+must be a proper list of UTF-8 character codes.  In that case, {\tt
+  name/2} will convert a list of UTF-8 characters that can represent a
 number to a number rather than to a character string.  As a
 consequence of this, there are some atoms (for example \verb|'18'|)
 which cannot be constructed by using {\tt name/2}\@.  If conversion to
@@ -4043,10 +4140,11 @@ accepts.
 \item {\tt representation\_error(character\_code, E)}
 \ei
 \end{itemize}
+\index{Unicode!UTF-8}
 
 \isoitem{atom\_chars(?Number, ?CharList)}{atom\_chars/2}
     Like \verb|atom_codes/2|, but the list returned (or input) is a list of
-    characters \emph{as atoms} rather than ASCII codes. For instance, 
+    characters \emph{as atoms} rather than UTF-8 codes. For instance, 
     \verb|atom_chars(abc,X)| binds {\tt X} to the list {\tt [a,b,c]}
     Instead of {\tt [97,98,99]}.
 
@@ -4080,10 +4178,10 @@ atom
 
 \isoitem{number\_chars(?Number, ?CharList)}{number\_chars/2}
 %
-    Like \verb|number_codes/2|, but the list returned (or input) is a list of
-    characters \emph{as atoms} rather than ASCII codes. For instance, 
-    \verb|number_chars(123,X)| binds {\tt X} to the list {\tt ['1','2','3']}
-    instead of {\tt [49,50,51]}.
+    Like \verb|number_codes/2|, but the list returned (or input) is a
+    list of characters \emph{as atoms} rather than codes. For
+    instance, \verb|number_chars(123,X)| binds {\tt X} to the list
+    {\tt ['1','2','3']} instead of {\tt [49,50,51]}.
 
 {\bf Error Cases}
 \begin{itemize}
@@ -4114,12 +4212,13 @@ atom
 \end{itemize}
 
 \standarditem{number\_digits(?Number, ?DigitList)}{number\_digits/2}
-    Like \verb|number_codes/2|, but the list returned (or input) is a list of
-    digits \emph{as numbers} rather than ASCII codes (for floats, the atom
-    '.', '+' or '-', and 'e' will also be present in the list). For instance, 
-    \verb|number_digits(123,X)| binds {\tt X} to the list {\tt [1,2,3]}
-    instead of {\tt ['1','2','3']}, and \verb|number_digits(123.45,X)|
-    binds {\tt X} to {\tt [1,.,2,3,4,5,0,0,e,+,0,2]}.
+Like \verb|number_codes/2|, but the list returned (or input) is a list
+of digits \emph{as numbers} rather than UTF-8 codes (for floats, the
+atom '.', '+' or '-', and 'e' will also be present in the list). For
+instance, \verb|number_digits(123,X)| binds {\tt X} to the list {\tt
+  [1,2,3]} instead of {\tt ['1','2','3']}, and
+\verb|number_digits(123.45,X)| binds {\tt X} to {\tt
+  [1,.,2,3,4,5,0,0,e,+,0,2]}.
 
 Error cases are the same as {\tt number\_chars/2}.
 
@@ -4494,19 +4593,20 @@ default options for {\tt term\_to\_atom/3}, e.g. {\tt
 ignore\_ops(canonical)}, {\tt quoted(false)}, and {\tt
 numbervars(false)}.
 
+\index{Unicode!UTF-8}
 \ourmoditem{term\_to\_codes(+Term,-CodeList,+OptionList)}{term\_to\_codes/3 }{string}
 %
 This predicate is used in the definition of {\tt term\_to\_atom/3} but
-only converts a term into a list of ASCII codes, and does not intern
+only converts a term into a list of UTF-8 codes, and does not intern
 the list as an atom.  Allowed values for {\tt OptionList} and error
 cases are the same as in {\tt term\_to\_atm/3}.
 
 \ourmoditem{term\_to\_codes(+Term,-CodeList)}{term\_to\_codes/2}{string}
 %
-This predicate converts a term to a list of ASCII codes.  It is
+This predicate converts a term to a list of UTF-8 codes.  It is
 defined using the default options for {\tt term\_to\_atom/3},
 e.g. {\tt ignore\_ops(canonical)}, {\tt quoted(false)}, and {\tt
-numbervars(false)}.
+  numbervars(false)}.
 
 \standarditem{gc\_atoms}{gc\_atoms/0}
 \index{garbage collection!atoms}
