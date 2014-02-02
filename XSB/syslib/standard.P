@@ -381,7 +381,7 @@ char_blank(Ch) :- Ch >= 0, Ch =< 9.
 char_blank(Ch) :- Ch >= 11, Ch =< 32.
 
 get0(C) :- stat_flag(CURRENT_INPUT, Str), 
-	   file_get_byte(Str, C0), C = C0.
+	   file_get_code(Str, C0), C = C0.
 
 % Not in manual.
 skip(C) :- get0(C0), (C0=C ; skip(C)).
@@ -424,7 +424,7 @@ put_code(C):-
 % TLS: changed definition of put so that stream-based version (w. mutexes) is used. 
 %put(C) :- put(C).
 
-put(C):- stat_flag(CURRENT_OUTPUT, Str), file_put(Str, C).
+put(C):- stat_flag(CURRENT_OUTPUT, Str), file_put_code(Str, C).
 
 
 tab(N) :- tab(N).
@@ -438,10 +438,6 @@ file_exists(F) :-
 	expand_filename(F, EF),
 	machine_file_exists(EF).
 
-:- import peek_code/1, peek_code/2 from file_io.
-% Just for ISO compatability
-peek_byte(C):- peek_code(C).
-peek_byte(S,C):- peek_code(S,C).
 put_byte(C):- put(C).
 put_byte(S,C):- file_put(S,C).
 
@@ -748,7 +744,9 @@ hilog_arglist(X, [Y|Z], I, N) :- K is I - 1, J is N - K,
 % Type conversion Predicates %
 %----------------------------%
 
-atom_length(A, N) :- str_len(A, N).
+%atom_length(A, N) :- str_len(A, N).
+atom_length(A, N) :-  file_function(ATOM_LENGTH, A, N).
+
 
 atom_chars(A, L) :- atom_chars(A, L).
 atom_codes(A, L) :- atom_codes(A, L).

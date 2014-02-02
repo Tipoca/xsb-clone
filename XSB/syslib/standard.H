@@ -49,7 +49,7 @@
 	gc_dynamic/1,   gc_tables/1,    gc_atoms/0,
 	get/1,		get0/1,		
 	get_char/1,	get_char/2,     get_code/1,	get_code/2,
-	get_byte/1,	get_byte/2,     peek_byte/1, peek_byte/2,	put_byte/1, put_byte/2,
+	get_byte/1,	get_byte/2,     put_byte/1, put_byte/2,
 	halt/0,	halt/1,	
 	(hilog)/1,	hilog_arg/3,	hilog_functor/3,
 	(index)/3,	(index)/2,      (table)/1,
@@ -144,7 +144,8 @@
 	  psc_arity/2, psc_import/3, psc_insert/4,
 	  psc_name/2, psc_type/2, psc_set_shared/2,
 	  stat_set_flag/2, stat_flag/2, term_compare/3,
-	  stat_sta/1, stat_cputime/1, stat_walltime/1,str_len/2,
+	  stat_sta/1, stat_cputime/1, stat_walltime/1,
+%str_len/2,
           term_psc/2, term_new/2, term_new_mod/3, term_type/2,
 	  verify_attribute_handler/4
 	  from machine.
