@@ -313,9 +313,9 @@ inline static xsbBool hilog_arg(CTXTdecl)
 inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 {
   /* r1: ?term; r2: ?character list	*/
-  size_t i;
+  //  size_t i; unused?
   size_t len;
-  Integer c;
+  int c;
   char *atomname, *atomnamelast;
   char *atomnameaddr = NULL;
   int atomnamelen;
