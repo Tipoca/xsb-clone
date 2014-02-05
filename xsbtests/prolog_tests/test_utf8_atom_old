@@ -1,5 +1,6 @@
 1 Helloははははworld!
 2 Hello new  1aこち!
+ascii_atom_length(577)
 atom_chars(1こんaにちは今今的,[1,こ,ん,a,に,ち,は,今,今,的])
 atom_codes('1こんaにちは今今的z',[49,12371,12435,97,12395,12385,12399,20170,20170,30340,122])
 atom_concat(1こんaにち,は今今的,1こんaにちは今今的)
@@ -14,3 +15,4 @@ sub_atom(1こんaにちは今今的z,6,5,0,は今今的z)
 sub_atom(abracadabra,6,5,0,dabra)
 term_to_atom(今(的))
 term_to_codes([20170,40,30340,41])
+utf_atom_length(661)
