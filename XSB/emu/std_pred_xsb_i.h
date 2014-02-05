@@ -370,16 +370,18 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 				   call_name,2);
 	  return FALSE;	/* keep compiler happy */
 	}
+	//	printf("atomname %p last %p diff %d\n",
+	//	       atomname,atomnamelast,atomnamelast-atomname);
 	if (atomname+3 >= atomnamelast) { /* nfz */
 	  if (is_cyclic(CTXTc term2)) {
 	    mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
 	    xsb_type_error(CTXTc "list",makestring("infinite list(?)"),call_name,2);
 	  }
 	  atomnameaddr = (char *)mem_realloc(atomnameaddr,atomnamelen,(atomnamelen << 1),LEAK_SPACE);
-	  atomname = atomnameaddr + (atomnamelen - 1);
+	  atomname = atomnameaddr + (atomnamelen - 4);
 	  atomnamelen = atomnamelen << 1;
 	  atomnamelast = atomnameaddr + (atomnamelen - 1);
-	  /*printf("Allocated namebuf: %p, %d\n",atomnameaddr,atomnamelen);*/
+	  //	  printf("Allocated namebuf: %p, %d\n",atomnameaddr,atomnamelen);
 	}
 	//	*atomname++ = (char)c;  /* nfz */
 	atomname = utf8_codepoint_to_str(c, atomname);
