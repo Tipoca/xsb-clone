@@ -58,6 +58,8 @@ extern struct xsb_token_t *GetToken(CTXTdeclc FILE *, STRFILE *, int);
 extern int intype(int);
 extern int utf8_getc(FILE *, int );
 extern char *utf8_codepoint_to_str(int, char *);
+extern int utf8_strgetc(STRFILE *, int );
+extern int strungetc(STRFILE *);
 
 #endif /* _TOKEN_XSB_H_ */
 

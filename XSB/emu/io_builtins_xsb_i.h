@@ -948,7 +948,9 @@ inline static xsbBool file_function(CTXTdecl)
     if ((io_port < 0) && (io_port >= -MAXIOSTRS)) {
       XSB_STREAM_LOCK(io_port);
       sfptr = strfileptr(io_port);
-      ctop_int(CTXTc 3, strgetc(sfptr));
+      //      printf("get start %d\n",sfptr->strcnt);
+      ctop_int(CTXTc 3, utf8_strgetc(sfptr,strgetc(sfptr)));
+      //      printf("get end %d\n",sfptr->strcnt);
     } else {
       SET_FILEPTR(fptr, io_port);
       XSB_STREAM_LOCK(io_port);
@@ -985,7 +987,20 @@ inline static xsbBool file_function(CTXTdecl)
     if ((io_port < 0) && (io_port >= -MAXIOSTRS)) {
       XSB_STREAM_LOCK(io_port);
       sfptr = strfileptr(io_port);
-      ctop_int(CTXTc 3, strgetc(sfptr));
+      read_char = strgetc(sfptr);
+      if (read_char == EOF) 
+	ctop_string(CTXTc 3, "end_of_file");
+      else if (read_char & 0x80){                      /* leading byte of a utf8 char? */
+	char s[5],*ch_ptr;
+	read_char = utf8_strgetc(sfptr,read_char);
+	ch_ptr = utf8_codepoint_to_str(read_char, s);
+	*ch_ptr = '\0';
+	ctop_string(CTXTc 3,s);
+      } else {
+	char s[2];
+	s[0] = (char)read_char; s[1] = '\0';
+	ctop_string(CTXTc 3,s);
+      }
     } else {
       SET_FILEPTR(fptr, io_port);
       XSB_STREAM_LOCK(io_port);
@@ -1037,8 +1052,26 @@ inline static xsbBool file_function(CTXTdecl)
     XSB_STREAM_LOCK(io_port);
     if ((io_port < 0) && (io_port >= -MAXIOSTRS)) {
       sfptr = strfileptr(io_port);
-      ctop_int(CTXTc 3, strpeekc(sfptr));
-    } 
+      //      printf("peek start %d   ",sfptr->strcnt);
+      bufcode = strgetc(sfptr);
+      if (bufcode == EOF) 
+	bufcode = -1;
+      else {
+        if (bufcode & 0x80){                      /* leading byte of a utf8 char? */
+          char s[5],*ch_ptr;                                                                                                     
+          bufcode = utf8_strgetc(sfptr,bufcode);
+          ch_ptr = utf8_codepoint_to_str(bufcode, s);
+          while (ch_ptr>s){
+            ch_ptr--;                                                                                   
+            strungetc(sfptr); 
+          }
+        }  
+        else {
+          strungetc(sfptr);
+        }
+      }
+      //      printf("peekend %d\n",sfptr->strcnt);
+    }
     else {
       SET_FILEPTR(fptr, io_port);
       bufcode = getc(fptr);
@@ -1050,7 +1083,7 @@ inline static xsbBool file_function(CTXTdecl)
           bufcode = utf8_getc(fptr,bufcode);
           ch_ptr = utf8_codepoint_to_str(bufcode, s);
           while (ch_ptr>s){
-            ch_ptr--;                                                                                                                
+            ch_ptr--;                                                                                      
             ungetc(*ch_ptr,fptr); 
           }
         }  
@@ -1058,21 +1091,38 @@ inline static xsbBool file_function(CTXTdecl)
           ungetc((char)bufcode,fptr);
         }
       }
+    }
     ctop_int(CTXTc 3, bufcode);
     XSB_STREAM_UNLOCK(io_port);
     break;
-    }
   }
   case FILE_PEEK_CHAR:	{
     int read_char;
     io_port = (int)ptoc_int(CTXTc 2);
+    XSB_STREAM_LOCK(io_port);
     if ((io_port < 0) && (io_port >= -MAXIOSTRS)) {
-      XSB_STREAM_LOCK(io_port);
       sfptr = strfileptr(io_port);
-      ctop_int(CTXTc 3, strgetc(sfptr));
+      read_char = strgetc(sfptr);
+      if (read_char == EOF) 
+	ctop_string(CTXTc 3, "end_of_file");
+      else if (read_char & 0x80){                      /* leading byte of a utf8 char? */
+      char s[5],*ch_ptr;
+      read_char = utf8_strgetc(sfptr,read_char);
+      ch_ptr = utf8_codepoint_to_str(read_char, s);
+      *ch_ptr = '\0';
+      while (ch_ptr>s){
+	ch_ptr--;                   
+	strungetc(sfptr); 
+      }
+      ctop_string(CTXTc 3,s);
+    } else {
+      char s[2];
+      s[0] = (char)read_char; s[1] = '\0';
+      strungetc(sfptr);
+      ctop_string(CTXTc 3,s);
+      }
     } else {
       SET_FILEPTR(fptr, io_port);
-      XSB_STREAM_LOCK(io_port);
       read_char = getc(fptr);
       if (read_char == EOF) 
 	ctop_string(CTXTc 3, "end_of_file");
@@ -1092,8 +1142,8 @@ inline static xsbBool file_function(CTXTdecl)
       ungetc((char)read_char,fptr);
       ctop_string(CTXTc 3,s);
       }
-    XSB_STREAM_UNLOCK(io_port);
     }
+    XSB_STREAM_UNLOCK(io_port);
     break;
   }
 

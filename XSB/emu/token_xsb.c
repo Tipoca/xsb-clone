@@ -404,6 +404,63 @@ int utf8_getc(FILE *curr_in, int c){
   return c;                             /* an ASCII char or a char in a different encoding */
 }
 
+//#define strungetc(p) (((p)->strptr>(p)->strbase)? ((int)*(p)->strptr--,(int)*(p)->strcnt++): -1)
+int strungetc(STRFILE * p) {
+  if (p -> strptr > p -> strbase) {
+    p -> strcnt++;
+    return (int)*(p) -> strptr--;
+  }
+  else return -1;
+}
+
+/* read a utf8 char whose leading byte is c */
+int utf8_strgetc(  STRFILE *sfptr, int c){
+  int b2,b3,b4;
+
+  if ((c & 0xe0) == 0xc0){          /* 110xxxxx */
+    b2 = strgetc(sfptr);
+    if ((b2 & 0xc0) == 0x80){       /* 110xxxxx 10xxxxxx */
+      return (((c & 0x1f) << 6) | (b2 & 0x3f));
+    } else {                        /* not utf8 char */
+      if (b2>0) {strungetc(sfptr);}/* don't unget EOF */
+    }
+  } else if ((c & 0xf0) == 0xe0){    /* 1110xxxx */
+    b2 = strgetc(sfptr);	
+    if ((b2 & 0xc0) == 0x80){        /* 1110xxxx 10xxxxxx */
+      b3 = strgetc(sfptr);	
+      if ((b3 & 0xc0) == 0x80){      /* 1110xxxx 10xxxxxx 10xxxxxx */
+	return (((c & 0xf) << 12) | ((b2 & 0x3f) << 6) | (b3 & 0x3f));
+      } else {
+	if (b3>0) {strungetc(sfptr);}
+	strungetc(sfptr);
+      }
+    } else {
+      if (b2>0) {strungetc(sfptr);}
+    }
+  } else if ((c & 0xf8) == 0xf0){    /* 11110xxx */
+    b2 = strgetc(sfptr);	
+    if ((b2 & 0xc0) == 0x80){        /* 11110xxx 10xxxxxx */
+      b3 = strgetc(sfptr);	
+      if ((b3 & 0xc0) == 0x80){      /* 11110xxx 10xxxxxx 10xxxxxx */
+	b4 = strgetc(sfptr);	
+	if ((b4 & 0xc0) == 0x80){    /* 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx */
+	  return (((c & 0xf) << 18) | ((b2 & 0x3f) << 12) | ((b3 & 0x3f) << 6) | (b4 & 0x3f));
+	} else {
+	  if (b2>0) {strungetc(sfptr);}
+	  strungetc(sfptr);
+	  strungetc(sfptr);
+	}
+      } else {
+	if (b3>0) {strungetc(sfptr);}
+	strungetc(sfptr);
+      }
+    } else {
+      if (b2>0) {strungetc(sfptr);}
+    }
+  }
+  return c;                             /* an ASCII char or a char in a different encoding */
+}
+
 /* return the number of utf-8 chars in s. */
 int utf8_nchars(char *s){
   unsigned int c;
