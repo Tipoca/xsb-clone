@@ -1196,11 +1196,14 @@ Integer read_canonical_term(CTXTdeclc FILE *filep, STRFILE *instr, int return_lo
 	  postopreq = TRUE;
 	  break;
 	} else {
+	  int code; /* utf-8 code nfz */
 	  CPtr this_term, prev_tail;
 	  char *charptr = token->value;
 	  ensure_term_space(h,2);
 	  this_term = h;
-	  cell(h) = makeint((int)*charptr); charptr++;
+	  code = utf8_char_to_codepoint(&charptr);  /* nfz */
+	  cell(h) = makeint(code);                  /* nfz */
+	  //	  cell(h) = makeint((int)*charptr); charptr++;
 	  h++;
 	  prev_tail = h;
 	  h++;
@@ -1208,7 +1211,9 @@ Integer read_canonical_term(CTXTdeclc FILE *filep, STRFILE *instr, int return_lo
 	  while (*charptr != 0) {
 	    ensure_term_space(h,2);
 	    cell(prev_tail) = makelist(h);
-	    cell(h) = makeint((int)*charptr); charptr++;
+	    code = utf8_char_to_codepoint(&charptr); /* nfz */
+	    cell(h) = makeint(code);                 /* nfz */
+	    //	    cell(h) = makeint((int)*charptr); charptr++;
 	    h++;
 	    prev_tail = h;
 	    h++;
