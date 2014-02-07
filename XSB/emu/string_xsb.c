@@ -173,7 +173,7 @@ xsbBool str_match(CTXTdecl)
 
 
 #define reposistion_by_chars(char_ptr_ptr,num_chars) \
-  { int i;					       \
+  { Integer i;					       \
     for(i = num_chars; i > 0; i--)		       \
       utf8_char_to_codepoint(char_ptr_ptr);	       \
   }
