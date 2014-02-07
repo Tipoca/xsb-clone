@@ -1010,28 +1010,37 @@ position movement to @var{N}, where @var{N} defaults to @key{SPC}.
 
 %%$ -- so that font-lock-mode works in Emacs
 
-\section{String Manipulation}
+\section{Low-level Atom Manipulation Predicates}
 \label{sec-strings}
 
-XSB has a number of powerful predicates that simplify the job of
-string manipulation. These predicates are especially powerful when
-they are combined with pattern-matching facilities provided by the
-{\tt pcre} package described in
-Chapter~\ref{chap-pcre}~\footnote{Not all string
-  manipulation predicates have been made thread-safe in \version{}.}.
+XSB has a number of low-level predicates that, despite their names,
+examine properties of atoms.  The functionality of these predicates is
+often a subset of the ISO predicate {\tt sub\_atom/5}, but these
+predicates are faster, as they are more specialized, and have been
+written in C.
+
+These predicates are especially powerful when they are combined with
+pattern-matching facilities provided by the {\tt pcre} package
+described in Chapter~\ref{chap-pcre}.
+
+It is important to note, that not all string manipulation predicates
+have been made thread-safe in \version{}.  In addition, as noted, the
+predicates may or may not properly handle (non-ASCII) UTF-8
+characters.
 
 \begin{description}
-\ourmoditem{str\_sub(+Sub, +Str, ?Pos)}{string}
-\index{\texttt{str\_sub/3}}
-\index{\texttt{str\_sub/2}}
+\ourrepeatmoditem{str\_sub(+Sub, +Str, ?Pos)}{str\_sub/3}{string}
+\altourmoditem{str\_sub(+Sub, +Str)}{str\_sub/3}{string}
 
-Succeeds if {\tt Sub} is a substring of {\tt Str}. In that case, {\tt Pos}
-unifies with the position where the match occurred. Positions start
-from 0. {\tt str\_sub/2} is also available, which is equivalent
-to having {\tt \_} in the third argument of {\tt str\_sub/3}.
+Succeeds if {\tt Sub} is a substring of {\tt Str}. In that case, {\tt
+  Pos} unifies with the position where the match occurred. Positions
+start from 0. {\tt str\_sub/2} is also available, which is equivalent
+to having {\tt \_} in the third argument of {\tt
+  str\_sub/3}~\footnote{Currently, {\tt str\_sub/2} works properly for
+  UTF-8 characters, but {\tt str\_sub/3} does not.}.
 
-\ourmoditem{str\_match(+Sub, +Str, +Direction, ?Beg, ?End)}{string}
-\index{\texttt{str\_match/5}}
+\altourmoditem{str\_match(+Sub, +Str, +Direction, ?Beg, ?End)}{str\_match/5}{string}
+%\index{\texttt{str\_match/5}}
 
 This is an enhanced version of the previous predicate.
 {\tt Direction} can be {\tt forward} or {\tt reverse} (or any abbreviation
@@ -1058,18 +1067,20 @@ next to the end of {\tt Str} and can be used to check where the end of {\tt
     ?- string_match(Sub,Str,forw,0,X).  
 \end{verbatim}
 %%
-the first checks if the \emph{first} match of {\tt Sub} from the beginning
-of {\tt Str} is a suffix of {\tt Str} (because {\tt End} represents the
-character next to the last character in {\tt Sub}, so {\tt End=-1} means
-that the last characters of {\tt Sub} and of {\tt Str} occupy the same
-position). If so, {\tt X} is bound to the offset (from the end of {\tt
-  Str}) of the first character of {\tt Sub}. The second example checks if
-the \emph{last} match of {\tt Sub} in {\tt Str} is a suffix of {\tt Str}
-and binds {\tt X} to the offset of the beginning of that match (counted
-from the beginning of {\tt Str}).  The last example checks if the first
-match of {\tt Sub} is a prefix of {\tt Str}. If so, {\tt X} is bound to the
-offset (from the beginning of {\tt Str}) of the last character of {\tt
-  Sub}.
+the first checks if the \emph{first} match of {\tt Sub} from the
+beginning of {\tt Str} is a suffix of {\tt Str} (because {\tt End}
+represents the character next to the last character in {\tt Sub}, so
+{\tt End=-1} means that the last characters of {\tt Sub} and of {\tt
+  Str} occupy the same position). If so, {\tt X} is bound to the
+offset (from the end of {\tt Str}) of the first character of {\tt
+  Sub}. The second example checks if the \emph{last} match of {\tt
+  Sub} in {\tt Str} is a suffix of {\tt Str} and binds {\tt X} to the
+offset of the beginning of that match (counted from the beginning of
+{\tt Str}).  The last example checks if the first match of {\tt Sub}
+is a prefix of {\tt Str}. If so, {\tt X} is bound to the offset (from
+the beginning of {\tt Str}) of the last character of {\tt
+  Sub}~\footnote{Currently, {\tt string\_match/5} does not work
+  properly for UTF-8 characters.}.
 
 %-----------------------------------------------------------------------
 
@@ -1113,7 +1124,9 @@ L = de
 L = [101,102]
 \end{verbatim}
 %%
-({\it i.e.}, L = ef represented using ASCII codes).
+({\it i.e.}, L = {\tt ef} represented using ASCII
+codes)~\footnote{Currently, {\tt substring/4} works properly for UTF-8
+  characters.}.
 
 \end{description}
 %%
