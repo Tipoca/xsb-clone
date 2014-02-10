@@ -150,6 +150,7 @@ dump_intensional_rules_1(Dir) :-
   	concat_atom([DirS,'cdf_intensional.P'],File),
 	tell(File),
 	write_component_intensional(_Comp),
+	write_intensional_dlTables,  % dlTables not by component, fix if nec.
 	told.
 
 write_component_intensional(Comp):-
@@ -162,10 +163,7 @@ write_component_intensional(Comp):-
 	compdlrule(Comp,DLHead,DLBody),
 	write_canonical('<='(DLHead,DLBody)), writeln('.'),
 	fail.
-write_component_intensional(_) :-
-	write_intensional_dlTables,
-	fail.
-write_component_intensional(_).
+write_component_intensional(_Comp).
 
 write_intensional_dlTables :-
 	for(Arity,2,11),  %%DSW MAX dlTable
