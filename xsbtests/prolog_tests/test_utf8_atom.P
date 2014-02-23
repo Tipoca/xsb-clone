@@ -2,6 +2,8 @@
 :- import term_to_atom/2, term_to_codes/2 from string.
 :- import format/2 from format.
 
+:- set_prolog_flag(character_set,utf_8).
+
 test:- read_line_code('utf8.txt',List),
        atom_codes(A,List),
        writeq(atom_codes(A,List)),nl,fail.
