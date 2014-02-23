@@ -36,6 +36,7 @@
 #include "extensions_xsb.h"
 #include "cinterf_defs.h"
 #include "incr_xsb_defs.h"
+#include "token_defs_xsb.h"
 
 /* ===== current_atom/1 ====================================== */
 
@@ -890,6 +891,11 @@ xsb_flag(ctrace,Mode):-
 	( Flag =:= 0 -> Mode = off
           ; (Flag =:= 1 -> Mode = partial
              ; Mode = full) ).
+xsb_flag(character_set,Mode):- 
+	stat_flag(CHARACTER_SET, Flag),
+	( Flag =:= ASCII -> Mode = ascii
+          ; Mode = utf_8).
+
 set_xsb_flag(Type,Val):- 
 	check_nonvar(Type,set_xsb_flag/2,1),
 	check_nonvar(Val,set_xsb_flag/2,2),
@@ -1085,9 +1091,14 @@ set_xsb_flag_1(max_tab_usage, OnOff) :-!,
 	(OnOff == on -> 
 	    stat_set_flag(MAX_USAGE, 1)
 	 ;  stat_set_flag(MAX_USAGE, 0)).
+set_xsb_flag_1(character_set,Mode):- !,
+(	Mode = ascii -> 
+	    stat_set_flag(CHARACTER_SET, ASCII)
+	 ;  stat_set_flag(CHARACTER_SET, UTF_8)).
 set_xsb_flag_1(Type, _) :-  
 	domain_error(prolog_flag,Type,set_prolog_flag/2,1).
 
+:- import writeln/1 from standard.
 /* ==================================================================== */
 
 garbage_collection(GC) :- var(GC), !,
