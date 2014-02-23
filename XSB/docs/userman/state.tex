@@ -365,6 +365,15 @@ l([a|X]):- l(X).          l([a]).
     unify\_with\_occurs\_check/2}: see Section~\ref{sec:cyclic} for
     further discussion.  The default for this flag is {\tt off}.
 %
+\index{Prolog flags!{\tt character\_set}}
+\index{Prolog flags!{\tt character\_set}}
+\index{character sets} 
+\item {\tt character\_set} If set to {\tt utf\_8}, interprets bytes as
+  input to UTF-8 codepoints; if set to {\tt ascii}, then performs no
+  transformations on input bytes.  Default for UNIX-style systems is
+  {\tt utf\_8} and for Windows-style systems is {\tt ascii}, but the
+  flag (and character sets) may be changed at any time.
+
 \index{\texttt{explain\_u\_val/3}}
 \index{\texttt{explain\_u\_val/6}}
 \index{\texttt{get\_residual\_sccs/3}}
