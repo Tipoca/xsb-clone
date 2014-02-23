@@ -101,6 +101,7 @@ differ from the ISO standard.
 \section{Input and Output}
 \index{streams}
 
+\subsection{I/O Streams in XSB}
 XSB's I/O is based on ISO-style streams, although it also supports
 older DEC-10 style file handling.  The use of streams provides a
 unified interface to a number of different classes of sources and
@@ -173,7 +174,7 @@ textual and not repositionable.
 \ei
 
 %------------------------------------------------------------------------------------------------
-\subsection{I/O Stream Implementation} \label{sec:IO-streams}
+\subsubsection{I/O Stream Implementation} \label{sec:IO-streams}
 
 A user may notice that XSB's I/O streams are small integers, but they
 should not be confused with the file descriptors used by the OS.  The
@@ -244,7 +245,31 @@ If this header is used, the various streams can be used as any other output stre
 interactive XSB session, so the above applies only to programs loaded from
 a file using {\tt consult} and such.)
 
-\subsection{ISO Streams}
+\subsection{Character Sets in XSB}
+%
+\index{Unicode!UTF-8}
+                       \index{character sets}
+Beginning in Version 3.5 of XSB, alternate character sets are supported.  
+%
+\begin{itemize}
+\item {\em UTF-8} which atomatically converts a sequence of bytes into
+  a UTF-8 character; and
+%
+\item {\em ASCII} which performs no transformation on byte sequences.
+\end{itemize}
+%
+Other character sets, in particular, UTF-16, may be supported in the
+future.
+
+In the current version of XSB, UTF-8 is the default character set when
+XSB is configured on UNIX-style systems such as Linux and Mac OSX.
+ASCII is the the default character set on Windows-style systems.  The
+character set may be changed at any time via the prolog flag {\tt
+  character\_set}.  Currently, XSB does not associate character sets
+with streams, so this is the only way that the working character set
+can be modified.
+
+\subsection{Predicates for ISO Streams}
 
 \begin{description}
 
