@@ -385,7 +385,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	  //	  printf("Allocated namebuf: %p, %d\n",atomnameaddr,atomnamelen);
 	}
 	//	if (CURRENT_CHARSET == UTF_8) 
-	  atomname = utf8_codepoint_to_str(c, atomname); /* nfz */
+	atomname = utf8_codepoint_to_str((int)c, atomname); /* nfz */
 	//	else *atomname++ = (char)c;  
 	term2 = get_list_tail(term2);
       } else {
