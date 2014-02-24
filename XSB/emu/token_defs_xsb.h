@@ -78,3 +78,7 @@
 #define ENDCL   EOLN            /* end of clause token */
 #define RREAL	16		/* radix number(real) - overflowed */
 #define RDIGIT	17		/* radix number(int) */
+
+#define ASCII      0
+#define UTF_8      1     
+#define UTF_16     2     // not yet implemented

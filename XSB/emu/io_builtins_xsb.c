@@ -1693,25 +1693,42 @@ xsbBool string_contains_quotes(char *string) {
 }
 
 // TLS: changed return val to int so I can use it w. sprintf.
+// int double_quotes(char *string, char *new_string)
+// {
+//   int ctr = 0, nctr = 0;
+// 
+//   while (string[ctr] != '\0') {
+//     if (string[ctr] == '\'') {
+//       new_string[nctr] = '\'';
+//       nctr++;
+//     } else if (string[ctr] == '\\') {
+//       char ch = string[ctr+1];
+//       if (ch == 'a' || ch == 'b' || ch == 'f' || ch == 'n' || 
+// 	  ch == 'r' || ch == 's' || ch == 't' || ch == 'v' || ch == 'x' || 
+// 	  ch == '0' || ch == '1' || ch == '2' || ch == '3' || 
+// 	  ch == '4' || ch == '5' || ch == '6' || ch == '7' || 
+// 	  ch == '\\' || ch == '"' || ch == '`') {
+//         new_string[nctr] = '\\';
+//         nctr++;
+//       }
+//     }
+//     new_string[nctr] = string[ctr];
+//     nctr++; ctr++;
+//   }
+//   new_string[nctr] = '\0';
+//   return nctr;
+// }
+
+// always double '\'
 int double_quotes(char *string, char *new_string)
 {
   int ctr = 0, nctr = 0;
 
   while (string[ctr] != '\0') {
-    if (string[ctr] == '\'') {
-      new_string[nctr] = '\'';
+    if (string[ctr] == '\'' || string[ctr] == '\\') {
+      new_string[nctr] = string[ctr];
       nctr++;
-    } else if (string[ctr] == '\\') {
-      char ch = string[ctr+1];
-      if (ch == 'a' || ch == 'b' || ch == 'f' || ch == 'n' || 
-	  ch == 'r' || ch == 's' || ch == 't' || ch == 'v' || ch == 'x' || 
-	  ch == '0' || ch == '1' || ch == '2' || ch == '3' || 
-	  ch == '4' || ch == '5' || ch == '6' || ch == '7' || 
-	  ch == '\\' || ch == '"' || ch == '`') {
-        new_string[nctr] = '\\';
-        nctr++;
-      }
-    }
+    } 
     new_string[nctr] = string[ctr];
     nctr++; ctr++;
   }

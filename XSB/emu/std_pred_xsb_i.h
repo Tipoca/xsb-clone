@@ -315,7 +315,7 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
   /* r1: ?term; r2: ?character list	*/
   //  size_t i; unused?
   size_t len;
-  int c;
+  Integer c;
   char *atomname, *atomnamelast;
   char *atomnameaddr = NULL;
   int atomnamelen;
@@ -361,7 +361,8 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	  c = utf8_char_to_codepoint(&chptr);    /* nfz */
 	}
 
-	if (c < 0) {   /*  || c > 255 nfz */
+	//	if (c < 0) {   /*  || c > 255 nfz */
+	if (c < 0 || (c > 255 && CURRENT_CHARSET == ASCII)) {
 	  //	  err_handle(CTXTc RANGE, 2, call_name, 2, "ASCII code", heap_addr);
 	  mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
 	  //	  xsb_representation_error(CTXTc "character code",c,call_name,2);
@@ -383,8 +384,9 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
 	  atomnamelast = atomnameaddr + (atomnamelen - 1);
 	  //	  printf("Allocated namebuf: %p, %d\n",atomnameaddr,atomnamelen);
 	}
-	//	*atomname++ = (char)c;  /* nfz */
-	atomname = utf8_codepoint_to_str(c, atomname);
+	//	if (CURRENT_CHARSET == UTF_8) 
+	  atomname = utf8_codepoint_to_str(c, atomname); /* nfz */
+	//	else *atomname++ = (char)c;  
 	term2 = get_list_tail(term2);
       } else {
 	mem_dealloc(atomnameaddr,atomnamelen,LEAK_SPACE);
@@ -420,7 +422,8 @@ inline static xsbBool atom_to_list(CTXTdeclc int call_type)
  	  if (call_type==ATOM_CODES){
 	    int code = utf8_char_to_codepoint(&atomname); /* nfz */
 	    follow(hreg++) = makeint(code);               /* nfz */ 
-	  } else {
+	  }
+	  else {
 	    int k;
 	    char *atomname0 = atomname;                   /* nfz */ 
 	    utf8_char_to_codepoint(&atomname);            /* nfz */	    

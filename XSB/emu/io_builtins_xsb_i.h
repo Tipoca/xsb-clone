@@ -959,14 +959,13 @@ inline static xsbBool file_function(CTXTdecl)
     XSB_STREAM_UNLOCK(io_port);
     break;
   case FILE_PUT_CODE:   /* file_function(7, +IOport, +IntVal) */
-    //    printf("fpc\n");
     io_port = (int)ptoc_int(CTXTc 2);
     XSB_STREAM_LOCK(io_port);
     SET_FILEPTR(fptr, io_port);
     /* ptoc_int(CTXTc 3) is char to write */
     value = ptoc_int(CTXTc 3);
-    //    printf("val %d value wc %d\n",value,sizeof(wchar_t));
-    if (value <= 127){
+    //    printf("val %d value cs %d\n",value,CURRENT_CHARSET);
+    if (value <= 127 || CURRENT_CHARSET == ASCII){
       putc((int) value,fptr);
     } else { /* unicode, write in utf8 format */
     char s[5],*ch_ptr,*ch_ptr0;
@@ -990,7 +989,7 @@ inline static xsbBool file_function(CTXTdecl)
       read_char = strgetc(sfptr);
       if (read_char == EOF) 
 	ctop_string(CTXTc 3, "end_of_file");
-      else if (read_char & 0x80){                      /* leading byte of a utf8 char? */
+      else if ((read_char & 0x80) && CURRENT_CHARSET == UTF_8){                      /* leading byte of a utf8 char? */
 	char s[5],*ch_ptr;
 	read_char = utf8_strgetc(sfptr,read_char);
 	ch_ptr = utf8_codepoint_to_str(read_char, s);
@@ -1007,7 +1006,7 @@ inline static xsbBool file_function(CTXTdecl)
       read_char = getc(fptr);
       if (read_char == EOF) 
 	ctop_string(CTXTc 3, "end_of_file");
-      else if (read_char & 0x80){                      /* leading byte of a utf8 char? */
+      else if ((read_char & 0x80) && CURRENT_CHARSET == UTF_8){                      /* leading byte of a utf8 char? */
       char s[5],*ch_ptr;
       read_char = utf8_getc(fptr,read_char);
       ch_ptr = utf8_codepoint_to_str(read_char, s);
@@ -1057,7 +1056,7 @@ inline static xsbBool file_function(CTXTdecl)
       if (bufcode == EOF) 
 	bufcode = -1;
       else {
-        if (bufcode & 0x80){                      /* leading byte of a utf8 char? */
+        if ((bufcode & 0x80) && CURRENT_CHARSET == UTF_8){                      /* leading byte of a utf8 char? */
           char s[5],*ch_ptr;                                                                                                     
           bufcode = utf8_strgetc(sfptr,bufcode);
           ch_ptr = utf8_codepoint_to_str(bufcode, s);
@@ -1078,7 +1077,7 @@ inline static xsbBool file_function(CTXTdecl)
       if (bufcode == EOF) 
         bufcode = -1;
       else {
-        if (bufcode & 0x80){                      /* leading byte of a utf8 char? */
+        if ((bufcode & 0x80) && CURRENT_CHARSET == UTF_8){                      /* leading byte of a utf8 char? */
           char s[5],*ch_ptr;                                                                                                     
           bufcode = utf8_getc(fptr,bufcode);
           ch_ptr = utf8_codepoint_to_str(bufcode, s);
@@ -1105,7 +1104,7 @@ inline static xsbBool file_function(CTXTdecl)
       read_char = strgetc(sfptr);
       if (read_char == EOF) 
 	ctop_string(CTXTc 3, "end_of_file");
-      else if (read_char & 0x80){                      /* leading byte of a utf8 char? */
+      else if (read_char & 0x80 && CURRENT_CHARSET == UTF_8){                      /* leading byte of a utf8 char? */
       char s[5],*ch_ptr;
       read_char = utf8_strgetc(sfptr,read_char);
       ch_ptr = utf8_codepoint_to_str(read_char, s);
@@ -1126,7 +1125,7 @@ inline static xsbBool file_function(CTXTdecl)
       read_char = getc(fptr);
       if (read_char == EOF) 
 	ctop_string(CTXTc 3, "end_of_file");
-      else if (read_char & 0x80){                      /* leading byte of a utf8 char? */
+      else if (read_char & 0x80 && CURRENT_CHARSET == UTF_8){                      /* leading byte of a utf8 char? */
       char s[5],*ch_ptr;
       read_char = utf8_getc(fptr,read_char);
       ch_ptr = utf8_codepoint_to_str(read_char, s);
@@ -1148,7 +1147,15 @@ inline static xsbBool file_function(CTXTdecl)
   }
 
   case ATOM_LENGTH: {
-    ctop_int(CTXTc 3, utf8_nchars(string_val(ptoc_int(CTXTc 2))));
+    Cell term = ptoc_tag(CTXTc 2);
+    if (isstring(term)) {
+	ctop_int(CTXTc 3, utf8_nchars(string_val(term)));
+    }
+    else if (isref(term)) {
+      xsb_instantiation_error(CTXTc "atom_length/2",1);
+    } else {
+      xsb_type_error(CTXTc "atom",term,"atom_length/2",1);
+    }
     break;
   }
 

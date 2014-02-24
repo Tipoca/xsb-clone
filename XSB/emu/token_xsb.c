@@ -1,6 +1,6 @@
 /* File:      token_xsb.c
 ** Author(s): Richard A. O'Keefe, Deeporn H. Beardsley, Baoqiu Cui,
-**    	      C.R. Ramakrishnan 
+**    	      C.R. Ramakrishnan, Neng-Fa Zhou, warren, swift
 ** Contact:   xsb-contact@cs.sunysb.edu
 ** 
 ** Copyright (C) The Research Foundation of SUNY, 1986, 1993-1998
@@ -266,7 +266,7 @@ void unGetC(int d, FILE *card, STRFILE *instr)
 /* nfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfz */
 /* convert a code point to char array s, which has n remaining slots */
 #define UTF8_CODEPOINT_TO_STR(code,s,n){	 \
-  if (code <= 127){				 \
+    if (code <= 127 || CURRENT_CHARSET == ASCII){	\
     n--;					 \
     if (n < 0) {				 \
       realloc_strbuff(CTXTc &strbuff, &s, &n);	 \
@@ -284,7 +284,7 @@ void unGetC(int d, FILE *card, STRFILE *instr)
 }
 
 char *utf8_codepoint_to_str(int code, char *s){
-  if (code<0x80){
+  if (code<0x80 || CURRENT_CHARSET == ASCII){
     *s++ = code;
   } else if (code<0x800){
     *s++ = 192+code/64;
@@ -309,7 +309,7 @@ int utf8_char_to_codepoint(char **s_ptr){
   s = *s_ptr;
   c = *s++;
   
-  if (c & 0x80){                      /* leading byte of a utf8 char? */
+  if (c & 0x80 && CURRENT_CHARSET == UTF_8){                      /* leading byte of a utf8 char? */
     if ((c & 0xe0) == 0xc0){          /* 110xxxxx */
       b2 = *s++;
       if ((b2 & 0xc0) == 0x80){       /* 110xxxxx 10xxxxxx */
@@ -359,15 +359,14 @@ int utf8_char_to_codepoint(char **s_ptr){
 /* read a utf8 char whose leading byte is c */
 int utf8_getc(FILE *curr_in, int c){
   int b2,b3,b4;
-
-  if ((c & 0xe0) == 0xc0){          /* 110xxxxx */
+  if ((c & 0xe0) == 0xc0 && CURRENT_CHARSET == UTF_8){          /* 110xxxxx */
     b2 = getc(curr_in);
     if ((b2 & 0xc0) == 0x80){       /* 110xxxxx 10xxxxxx */
       return (((c & 0x1f) << 6) | (b2 & 0x3f));
     } else {                        /* not utf8 char */
       if (b2>0) {ungetc((char)b2,curr_in);}/* don't unget EOF */
     }
-  } else if ((c & 0xf0) == 0xe0){    /* 1110xxxx */
+  } else if ((c & 0xf0) == 0xe0 && CURRENT_CHARSET == UTF_8){    /* 1110xxxx */
     b2 = getc(curr_in);	
     if ((b2 & 0xc0) == 0x80){        /* 1110xxxx 10xxxxxx */
       b3 = getc(curr_in);	
@@ -380,7 +379,7 @@ int utf8_getc(FILE *curr_in, int c){
     } else {
       if (b2>0) {ungetc((char)b2,curr_in);}
     }
-  } else if ((c & 0xf8) == 0xf0){    /* 11110xxx */
+  } else if ((c & 0xf8) == 0xf0 && CURRENT_CHARSET == UTF_8){    /* 11110xxx */
     b2 = getc(curr_in);	
     if ((b2 & 0xc0) == 0x80){        /* 11110xxx 10xxxxxx */
       b3 = getc(curr_in);	
@@ -417,14 +416,14 @@ int strungetc(STRFILE * p) {
 int utf8_strgetc(  STRFILE *sfptr, int c){
   int b2,b3,b4;
 
-  if ((c & 0xe0) == 0xc0){          /* 110xxxxx */
+  if ((c & 0xe0) == 0xc0 && CURRENT_CHARSET == UTF_8){          /* 110xxxxx */
     b2 = strgetc(sfptr);
     if ((b2 & 0xc0) == 0x80){       /* 110xxxxx 10xxxxxx */
       return (((c & 0x1f) << 6) | (b2 & 0x3f));
     } else {                        /* not utf8 char */
       if (b2>0) {strungetc(sfptr);}/* don't unget EOF */
     }
-  } else if ((c & 0xf0) == 0xe0){    /* 1110xxxx */
+  } else if ((c & 0xf0) == 0xe0 && CURRENT_CHARSET == UTF_8){    /* 1110xxxx */
     b2 = strgetc(sfptr);	
     if ((b2 & 0xc0) == 0x80){        /* 1110xxxx 10xxxxxx */
       b3 = strgetc(sfptr);	
@@ -437,7 +436,7 @@ int utf8_strgetc(  STRFILE *sfptr, int c){
     } else {
       if (b2>0) {strungetc(sfptr);}
     }
-  } else if ((c & 0xf8) == 0xf0){    /* 11110xxx */
+  } else if ((c & 0xf8) == 0xf0 && CURRENT_CHARSET == UTF_8){    /* 11110xxx */
     b2 = strgetc(sfptr);	
     if ((b2 & 0xc0) == 0x80){        /* 11110xxx 10xxxxxx */
       b3 = strgetc(sfptr);	
@@ -468,7 +467,7 @@ int utf8_nchars(char *s){
   c = *s++;
   while (c != '\0'){
     count++;
-    if (c & 0x80){                      /* leading byte of a utf8 char? */
+    if (c & 0x80 && CURRENT_CHARSET == UTF_8){                      /* leading byte of a utf8 char? */
       if ((c & 0xe0) == 0xc0){          /* 110xxxxx */
 	c = *s++;
 	if ((c & 0xc0) == 0x80){        /* 110xxxxx 10xxxxxx */
@@ -530,7 +529,7 @@ int utf8_nchars(char *s){
         TK_ATOM		-- an atom
         TK_VAR		-- a variable
         TK_PUNC		-- a single punctuation mark
-        TK_HPUNC	-- punctuation ) followed by a ( in HiLog terms
+      TK_HPUNC	-- punctuation ) followed by a ( in HiLog terms
         TK_LIST		-- a quoted list of character codes (in buffer)
         TK_STR		-- a quoted string
         TK_EOC		-- end of clause (normally '.\n').
@@ -643,7 +642,7 @@ READ_ERROR:
         if (c != intab.escape) {
 	  /* nfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfz */
 	  int b2,b3,b4;  
-	  if (c & 0x80){                      /* leading byte of a utf8 char? */
+	  if (c & 0x80 && CURRENT_CHARSET == UTF_8){                      /* leading byte of a utf8 char? */
 	    if ((c & 0xe0) == 0xc0){          /* 110xxxxx */
 	      b2 = GetC(card,instr);
 	      if ((b2 & 0xc0) == 0x80){       /* 110xxxxx 10xxxxxx */
@@ -730,6 +729,7 @@ READ_ERROR:
    	    /* nfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfz */
 	    case 'u':  case 'U':                     /* unicode escape */
 	      {int n,i;
+		  if (CURRENT_CHARSET == UTF_8) {
 		  n = 0;
 		  for (i=1; i<=4; i++){                /* \uxxxx */ 
 		    c = GetC(card,instr);
@@ -754,6 +754,11 @@ READ_ERROR:
 		    if (c>0) {unGetC(c,card,instr);}	
 		  }
 		  return n;
+		  }
+		  else {   // ASCII character set
+		    (void) unGetC(c, card, instr);
+		    return('\\');
+		  }
 	      }
    	    /* nfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfznfz */
 

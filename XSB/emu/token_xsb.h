@@ -27,6 +27,7 @@
 #define _TOKEN_XSB_H_
 
 #include "token_defs_xsb.h"
+#include "flags_xsb.h"
 
 #define strgetc(p) (--(p)->strcnt>=0? ((int)*(p)->strptr++): -1)
 #define strpeekc(p) ((p)->strcnt>=0? ((int)*(p)->strptr): -1)
@@ -48,6 +49,8 @@ extern STRFILE *iostrs[MAXIOSTRS];
 #define iostrdecode(j) (-1-j)
 #define strfileptr(desc) iostrs[iostrdecode(desc)]
 #define InitStrLen	10000
+
+#define CURRENT_CHARSET flags[CHARACTER_SET]
 
 #ifndef MULTI_THREAD
 extern struct xsb_token_t *token;

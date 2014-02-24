@@ -77,7 +77,9 @@
 #include "cinterf.h"
 #include "storage_xsb.h"
 #include "orient_xsb.h"
-/*-----------------------------------------------------------------------*/
+#include "token_defs_xsb.h"
+
+/*-----------------------------------------------------------------------*/   
 
 /* Sizes of the Data Regions in K-byte blocks
    ------------------------------------------ */
@@ -618,6 +620,12 @@ static size_t get_memarea_size( char *s )
 
   pflags[TABLING_METHOD] = VARIANT_EVAL_METHOD;
 
+#ifdef WIN_NT
+  flags[CHARACTER_SET] = ASCII;
+#else
+  flags[CHARACTER_SET] = UTF_8;
+#endif
+  
   /* Modify Parameters Using Command Line Options
      -------------------------------------------- */
   for (i=1; i<argc; i++) {
