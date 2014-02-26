@@ -1,28 +1,6 @@
 :- set_prolog_flag(character_set,ascii).
 
 test:- 
-       ['unicode_facts'],
-       a(X,Y),writeln(a(X,Y)),fail.
-test:- a(X,Y),writeq(a(X,Y)),nl,fail.
-test:- write(uncode_escape('u306f','\u306f')),nl,fail.
-test:- test_canonical,fail.
-test.
-
-test_canonical:- 
-       open('unicode_facts.P',read,S),
-       test_canonical_1(S),
-       close(S),
-       !.
-
-test_canonical_1(S):- 
-       repeat,
-       read_canonical(S,F),
-       (F = end_of_file -> 
-          true
-        ; 
-          write_canonical(rc_c(F)),nl,fail ).
-
-test_fmt:- 
-       open('unicode_facts.P',read,S),
-       fmt_read(S,"%s",A,_),
-       fmt_write("formatted read: %s !\n",A).
+       compile(test_ascii_readwrite_1),
+       ensure_loaded(test_ascii_readwrite_1),
+       test_sub.
