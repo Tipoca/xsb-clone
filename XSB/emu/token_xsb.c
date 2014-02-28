@@ -304,7 +304,7 @@ char *utf8_codepoint_to_str(int code, char *s){
 
 /* return the codepoint of the current utf-8 char, setting s_ptr to the beginning of the next char */
 int utf8_char_to_codepoint(char **s_ptr){
-  char *s;
+  unsigned char *s;
   int c, b2, b3, b4;
   s = *s_ptr;
   c = *s++;
