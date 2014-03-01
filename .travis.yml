@@ -1,2 +1,2 @@
-language: C
+language: objective-c
 script: cd XSB/build && ./configure && ./makexsb
