@@ -3,5 +3,6 @@ language:
   - C
 
 script: 
-  - cd XSB/build && ./configure --with-bits64 && ./makexsb --config-tag=bits64
-  - cd XSB/build && ./configure && ./makexsb
+  matrix:
+    - cd XSB/build && ./configure --with-bits64 && ./makexsb --config-tag=bits64
+    - cd XSB/build && ./configure && ./makexsb
