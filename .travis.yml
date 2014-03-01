@@ -1,0 +1,2 @@
+language: C
+script: cd XSB/build && ./configure && ./makexsb
