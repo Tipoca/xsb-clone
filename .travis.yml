@@ -1,2 +1,5 @@
 language: objective-c
+language: C
+
+script: cd XSB/build && ./configure --with-bits64 && ./makexsb --config-tag=bits64
 script: cd XSB/build && ./configure && ./makexsb
