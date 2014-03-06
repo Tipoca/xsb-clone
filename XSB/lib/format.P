@@ -34,7 +34,7 @@
 %:- import write/1, nl/0,writeln/1 from standard.
 
 :- import  put_code/2, nl/1, write/2, writeq/2, print/2,
-	write_canonical/2, current_output/1, 'C'/3,
+	write_canonical/2, current_output/1, %% 'C'/3,
 	atom_codes/2, xsb_configuration/2
 	from usermod.
 
