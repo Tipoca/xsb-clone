@@ -1,0 +1,10 @@
+matrix:
+  include:
+    - script: cd XSB/build && ./configure --with-bits64 && ./makexsb --config-tag=bits64
+      language: objective-c
+    - script: cd XSB/build && ./configure && ./makexsb
+      language: objective-c
+    - script: cd XSB/build && ./configure --with-bits64 && ./makexsb --config-tag=bits64
+      language: c
+    - script: cd XSB/build && ./configure && ./makexsb
+      language: c
