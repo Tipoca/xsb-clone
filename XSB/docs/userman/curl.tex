@@ -166,14 +166,13 @@ predicate.
 
 \begin{description}
   \index{\texttt{encode\_url/2}}
-\item[url\_properties({\it +Source, -Properties})]\mbox{}
+\item[encode\_url({\it +Source, -Result})]\mbox{}
   \\
-  (???? url\_properties for encoding??? Explain the difference with
-  url\_properties)
-
 {\it Source} has the form {\it url(url)} or an atom \emph{url}, where
 \emph{url} is an atom.   (check!!!)
-{\it Properties} is bound to a list of properties of the URL. They include {\it Directory Name}, {\it File Name} and, {\it File Suffix} of the URL.
+{\it Properties} is bound to a list of properties of the URL:
+the encoded {\it Directory Name}, the encoded {\it File Name}, and the {\it
+  Extension} of the URL.
 
 \end{description}
 

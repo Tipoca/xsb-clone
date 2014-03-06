@@ -501,23 +501,22 @@ FILE * input_read_stream = NULL;
 FILE * input_write_stream = NULL;
 
 int pipe_input_stream() {
-    /* create a pipe for the input. Pass XSB the read-end of this pipe, and
-       place the write-end into stream_input_write  */
-    int fileDescriptors[2] = {0,0};
+  /* create a pipe for the input. Pass XSB the read-end of this pipe, and
+     place the write-end into stream_input_write  */
+  int fileDescriptors[2] = {0,0};
 #ifdef WIN_NT
-    if (_pipe(fileDescriptors, 256, _O_TEXT) == 0) { 
-
+  if (_pipe(fileDescriptors, 256, _O_TEXT) == 0) { 
 #else
-    if (pipe(fileDescriptors) == 0) {
+  if (pipe(fileDescriptors) == 0) {
 #endif
-        fclose(stdin);
-        input_read_stream = fdopen(fileDescriptors[0], "r");
-        *stdin = *input_read_stream;
-
-        input_write_stream = fdopen(fileDescriptors[1], "w");
-        return 0;
-	}
-    return 1;
+    fclose(stdin);
+    input_read_stream = fdopen(fileDescriptors[0], "r");
+    *stdin = *input_read_stream;
+    
+    input_write_stream = fdopen(fileDescriptors[1], "w");
+    return 0;
+  }
+  return 1;
 }
 
 static size_t get_memarea_size( char *s )
@@ -532,8 +531,7 @@ static size_t get_memarea_size( char *s )
 
         /* note : the sizes of the memory areas of XSB are kept in KiloBytes */
 
-	switch( *endptr )
-	{
+	switch( *endptr ) {
 		case 0:
 		case 'k':
 		case 'K':
@@ -552,10 +550,10 @@ static size_t get_memarea_size( char *s )
 
 /*==========================================================================*/
 /* Initialize System Parameters: This is done only on process start
- * up, not on thread startup.   */
-
-    char *init_para(CTXTdeclc int flag, int argc, char *argv[])
-{
+** up, not on thread startup. 
+*/
+ 
+char *init_para(CTXTdeclc int flag, int argc, char *argv[]) {
   int i;
   char warning[80];
   /* Boot module is usually the loader that loads the Prolog code of XSB.
@@ -842,7 +840,12 @@ static size_t get_memarea_size( char *s )
     case 'v':
       version_message();
       break;
-    case '-': /* this was a long option of the form --optionname */
+    case '-':
+      if (0==strcmp(argv[i]+2, "ignore")) {
+	/* long options of the form --ignore */
+	i = argc;
+      } else
+	/* long options of the form --optionname */
       process_long_option(argv[i]+2,&i,argv,argc);
       break;
     case 'p':

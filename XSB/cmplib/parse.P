@@ -53,23 +53,23 @@ parse(Modname, PFile, HFile, Module) :-
 	stat_flag(CURRENT_INPUT,Str),
 	filestack_push(Str),
 	filename_push(PFile),
-	conset(needs_restart, 0),  % reset, if an error left it dirty
+	conset(needs_restart, 0),          %% reset, if an error left it dirty
 	(Modname == user,
 	 PFile == 'user.P'  % PM: ensure that we're not trying to load a real file
-	 ->	set_symbol_hash_table_size(1,Module0),
+	->	set_symbol_hash_table_size(1,Module0),
 		see(userin), parse_clauses(user, Module0)
-	 ; file_exists(PFile)
-	 ->	file_size(PFile,FileSize),
+	; file_exists(PFile)
+	->	file_size(PFile,FileSize),
 		set_symbol_hash_table_size(FileSize,Module0),
 		(file_exists(HFile)
-		 ->	parse1(Modname,HFile,Module0)
-		 ;	Module0 = Module0	% init (lamp variable)
+		->	parse1(Modname,HFile,Module0)
+		;	Module0 = Module0 % init (lamp variable)
 		),
 %%%	        standard:writeln(parsing_pfile),
 		parse1(Modname,PFile,Module0)
 %%%             standard:writeln(parse(Module0))
-	    ;   existence_error('file/module',PFile,compile/1,1)
-%%%	 ;	error(('Cannot find the file ', PFile)), fail, Module0=Module0
+	;   existence_error('file/module',PFile,compile/1,1)
+%%%	; 	error(('Cannot find the file ', PFile)), fail, Module0=Module0
 	),
 	conset(needs_restart, 0),  % clean up this var
 	module_close(Module0,Module), 
@@ -135,8 +135,9 @@ parse1(Modname, File, Module) :-
 %% Otherwise, pass it through the C preprocessor
 open_or_xpp_file(File) :- open_or_xpp_file(File,_).
 open_or_xpp_file(File,XPP_process) :-
+	unset_preprocessing_done,
 	%% sometimes need to clear out xpp_on, esp. when compiling external
-	(\+xpp_is_on, \+xpp_is_off -> set_xpp_off; true), %% clear out xpp
+	(\+xpp_is_on, \+xpp_is_off -> set_xpp_off ; true), %% clear out xpp
 	(xpp_is_off -> 
 	    open(File,read,Istr),
 	    filestack_push(Istr),
@@ -197,7 +198,9 @@ xpp_process_file(FileName,XPP_process,IOportFromProc,Make_XPP_Command) :-
 	; true
 	),
 #ifdef DEBUG_GPP
-	fmt_write_string(XPP_command_msg, '[%s]', FullXPP_command),
+	fmt_write_string(XPP_command_msg,
+			 '[%s: Preprocessing with %s]',
+			 args(XPP_Name,FullXPP_command)),
 #else
         ((integer(FileName) ; var(FileName))
 	-> XPP_command_msg = ('[',XPP_Name,': Preprocessing input stream]')
@@ -240,7 +243,9 @@ gpp_process_file(FileName, XPP_process, IOportFromProc) :-
 
 apply_preprocessors(File,OutPort,XPP_process) :-
 	InPort = File,
-	pipeline_preprocessors_in_queue(File,InPort,OutPort,XPP_process).
+	unset_preprocessing_done,
+	pipeline_preprocessors_in_queue(File,InPort,OutPort,XPP_process),
+	set_preprocessing_done.
 
 %% InPort - input port to processor's process, can be a file
 %% OutPort - input port from processor's process
@@ -424,6 +429,14 @@ preprocessor_name(XPP_Call,_) :-
 
 %% maintain preprocessor queue
 %% If preprocessor is on the queue, ignore.
+enqueue_preprocessor(_Preprocessor) :-
+	%% If immediately after preprocessing, don't enqueue. A what may happen
+	%% is that we may encounter compiler_options([xpp_on(foobar)]) after
+	%% preprocessing, and this would enque 'foobar' again (in the
+	%% post-processed program). But this then will be applied to the next
+	%% file, which may not have had the 'foobar' preprocessor specified.
+	preprocessing_is_done,
+	!.
 enqueue_preprocessor(Preprocessor) :-
 	preprocessor_queue(Preprocessor,_),
 	!.
@@ -446,7 +459,7 @@ dequeue_preprocessor(Name,Options) :-
 		 Name, '(', Options, ')'))
 	),
 	!,
-	retract(preprocessor_queue(Name,Options)).
+	retractall(preprocessor_queue(Name,Options)).
 
 get_xpp_call_file(XPP_call,File) :- arg(1,XPP_call,File).
 get_xpp_call_preprocessor(XPP_call,Preproc_name) :- arg(2,XPP_call,Preproc_name).
@@ -457,6 +470,10 @@ xpp_is_off :- conget(xpp_on,0).
 xpp_is_on :- conget(xpp_on,1).
 xppdump_is_on :- conget(xpp_dump,1).
 set_xpp_off :- conset(xpp_on,0), conset(xpp_dump,0).
+
+set_preprocessing_done   :- conset(xpp_preprocessing_done,1).
+unset_preprocessing_done :- conset(xpp_preprocessing_done,0).
+preprocessing_is_done    :- conget(xpp_preprocessing_done,1).
 
 /*======================================================================*/
 /* parse_clauses(+ModName, #module(#SymTab,#DcList,#ClList,#QrList))	*/
@@ -479,7 +496,7 @@ parse_clauses(ModName, Module) :-
 		parse_clause(Expanded_Clause, Module,ModName),
 		%% stop parsing clauses, if needs_restart parsing
 		(conget(needs_restart, 1) 
-		 ->	(ModName = user
+		 ->	(ModName == user
 			 ->	warning('Module "user" cannot be preprocessed')
 			 ;	ModName = xsb_configuration
 			 ->	warning('Module "xsb_configuration" cannot be preprocessed')
@@ -788,7 +805,10 @@ parse_directive(compiler_options(Options),_QrList,_SymTab,_ModName,_ModStruct) :
 	%% compiler options turns xpp_on on. So, we indicate 
 	%% interest in restarting. It might turn into a restart 
 	%% request if xpp_on is subsequently set.
-	(xpp_is_off ->  conset(migh_need_restart,1) ;   true),
+	(xpp_is_off
+	->  conset(migh_need_restart,1)
+	;   true
+	),
 	check_file_compiler_options(Options),
 	setoptions1(Options).
 parse_directive(comment(_,_),_QrList,_SymTab,_ModName,_ModStruct) :- !.
@@ -881,8 +901,12 @@ skip_over_condition(N,Cl_fin):-
 
 cond_call(Call):- 
 	check_cond_call(Call),
-	call(Call).
+	(Call = 'NOWARN'(Call2) -> true
+	; Call2 = Call
+	),
+	call(Call2).
 
+check_cond_call('NOWARN'(_)):- !.
 check_cond_call(\+(Goal)):- !,check_cond_call(Goal).
 check_cond_call(current_prolog_flag(Type,_Val)):- !,
 	\+ xsb_flag(Type,_).     % XSB flags are fluent as opp. to ISO.

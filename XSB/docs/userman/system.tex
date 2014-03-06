@@ -711,7 +711,7 @@ follow:
   following content:
     %%
     \begin{verbatim}
-           :- bootstrap_userpackage('~/my_lib', 'foobar', foobar), [foo].
+   :- bootstrap_userpackage('~/my_lib', 'foobar', foobar), [foo].
     \end{verbatim}
     %%
   The interface program and the package directory do not need to have the
@@ -728,7 +728,7 @@ follow:
 \end{enumerate}
 %%
 In addition to adding the appropriate directory to the library search
-path, the \verb|bootstrap_userpackage/3| predicate also adds
+path, the predicate \verb|bootstrap_userpackage/3| also adds
 information to the predicate \verb|package_configuration/3|, so that
 other applications could query the information about loaded packages.
 
@@ -951,16 +951,19 @@ xsb --quietload --nobanner -e "writeln('hello world'),halt."
 | ?- hello world
 \end{verbatim}
 %
-  \item[{\tt --noprompt}] Do not show the XSB prompt. This is useful only in batch
+  \item[{\tt --noprompt}] Do not show the XSB prompt.
+%
+\item[{\tt --nofeedback}] Do not print the feedback messages such as
+  ``yes'' and ``no'' after queries.
+    This and the \texttt{--noprompt} options are useful only in batch
     mode and in interprocess communication when you do not want the prompt
     to clutter the picture.  Putting all this together, we finally get: 
 \begin{verbatim}
-xsb --noprompt --quietload --nobanner -e "writeln('hello world'),halt."
+xsb --noprompt --quietload --nobanner --nofeedback -e "writeln(hello),halt."
 
 hello world
 \end{verbatim}
 So that XSB can be used to write reasonable scripts.
-%
 \item[{\tt --max\_threads N}] Allows XSB to maintain information for
   up to {\tt N} threads.  This means that XSB can currently run {\tt
     N} threads that are active, or that are inactive, non-detached,
@@ -1535,7 +1538,7 @@ The following options are currently recognized by the compiler:
   the source file. See Appendix~\ref{gpp-man} for more details on GPP.
 
   When an \verb|#include "file"| statement is encountered, XSB directs
-  the GPP preprocessor to search for the files to include in the
+  GPP to search for the files to include in the
   directories \verb|$XSB_DIR/emu| and
   \verb|$XSB_DIR/prolog_includes|. \index{GPP!\texttt{gpp\_include\_dir}}
   However, additional directories can be added to this search path by
@@ -1557,9 +1560,9 @@ The following options are currently recognized by the compiler:
   If you want Gpp to search directories in a different order,
   {\tt gpp\_options/1} can be used (see below).
 
-   Note: if you assert something into this predicate then you must also {\tt
-    retractall(gpp\_include\_dir(\_))} after that or else subsequent Prolog
-  compilations might not work correctly.
+  Note: if you assert something into \texttt{gpp\_include\_dir/1} then you
+  must also execute {\tt retractall(gpp\_include\_dir(\_))} later on or
+  else subsequent Prolog compilations might not work correctly.
 
 \index{compilation!conditional!gpp}
   XSB predefines the constant {\tt XSB\_PROLOG}, which can be used for
@@ -1595,9 +1598,10 @@ The following options are currently recognized by the compiler:
   must be searched, then this can be accomplished by executing 
   {\tt assert(gpp\_options('-P -m -nostdinc'))}.
   
-  Note: if you assert something into this predicate then you must also {\tt
-    retractall(gpp\_options(\_))} after that or else subsequent Prolog
-  compilations might not work correctly.
+  Note: if you assert options into \texttt{gpp\_options/1} then do not
+  forget to
+  also execute \texttt{retractall(gpp\_options(\_))} after that or else
+  subsequent Prolog compilations might not work correctly.
   
 \item[{\tt xpp\_dump}] \index{GPP!\texttt{xpp\_dump}}
   %%
@@ -1620,9 +1624,9 @@ The following options are currently recognized by the compiler:
   \index{GPP!\texttt{xpp\_dump/N}}
   %%
   ~\\
-  XSB also allows one to filter program files through a series of external
+  XSB also allows one to filter program files through a pipeline of external
   preprocessors in addition to or instead of GPP.
-  This can be specified with the unary versions of {\tt xpp\_on} and {\tt
+  This can be specified with the N-ary versions of {\tt xpp\_on} and {\tt
     xpp\_dump}:
 %% 
 \begin{verbatim}
@@ -1632,6 +1636,9 @@ The following options are currently recognized by the compiler:
 %%
   Each {\tt spec1}, ..., {\tt specN} is a preprocessor specification of
   the form {\tt preprocessor\_name} or {\tt preprocessor\_name(options)}.
+  Each preprocessor is applied in a pipeline passing its output to the next
+  preprocessor. The first preprocessor is applied to the file being
+  compiled.
   The preprocessor name is an atom or a function symbol and {\tt options}
   must be an atom. If {\tt preprocessor\_name} is {\tt gpp}, then the GPP
   preprocessor will be invoked. Note that {\tt gpp} can appear anywhere in
@@ -1645,16 +1652,19 @@ The following options are currently recognized by the compiler:
   %% 
   \begin{itemize}
   \item A 4-ary Prolog predicate must be provided, which takes three input
-    arguments and produces a syntactically correct shell (Unix or Windows)
-    command for invoking the preprocessor in its fourth argument. The
-    preprocessor must be taking its input either from the standard input
-    or from a file and send the post-processed result to the standard
-    output. The arguments to the shell-command-producing predicate are as
-    follows:
+    arguments and produces in its 4th argument
+    a syntactically correct shell (Unix or Windows)
+    command for invoking the preprocessor. The first preprocessor in the
+    pipeline 
+    must be taking its input 
+    from a file, but the subsequent preprocessors must expect their input from
+    the standard input. All preprocessors must
+    send their results to the standard
+    output. The arguments to the 4-ary predicate in question are:
     %% 
     \begin{itemize}
     \item   File: this is the XSB input file to be processed. Usually this
-      argument is left unused, but might be useful for producing error
+      argument is left unused (unbound), but might be useful for producing error
       messages or debugging.
     \item   Preprocessor name: this is the name under which the
       preprocessor is \emph{registered} (see below). It is the same as
@@ -1673,18 +1683,79 @@ The following options are currently recognized by the compiler:
       The shell command must \emph{not} include the file name to be
       processed---that name is added automatically as the last option
       to the shell command.
+
+      \paragraph{\it Special considerations for using XSB as a preprocessor.}
+      XSB can be used as a preprocessor for XSB programs by constructing a
+      shell command that invokes XSB. However, several conventions need to
+      be observed. First, the file to be preprocessed is automatically
+      attached as the last argument of the aforesaid shell command, but XSB
+      does not accept file names in that place as a command-line option
+      (except with special flags used by XSB developers only and for other
+      purposes). Therefore, the file name to be read and preprocessed by
+      XSB must be passed to XSB by some other means (e.g., using the
+      \texttt{-e "\emph{command}"} option). In addition, the last command line
+      option for that XSB-based command must be \texttt{--ignore}, which
+      will cause XSB to ignore the remaining options, including the
+      aforesaid file name.
+
+      Also, if a preprocessor appears in the pipeline as
+      the second preprocessor or later (i.e., after the first argument in
+      \texttt{xpp\_dump}), that preprocessor's shell command line must
+      expect to receive the output of the preceding preprocessor \emph{on
+        the standard input}.
+      Therefore, in order to serve as the second
+      or later preprocessor in the pipeline, XSB must be invoked with the
+      \texttt{-e "see(userin)."} option followed by a call to the
+      predicate that would actually do the preprocessing.
+
+      Here are a few examples. To invoke XSB as the first preprocessor in
+      the pipeline, one could construct the following shell command (shown
+      below as an atom of the kind that one needs to construct in the
+      ``Shell command'' argument being discussed):
+      %% 
+\begin{alltt}
+'.../xsb \textnormal{\emph{options}} -e "preprocessPred(''\textnormal{\emph{MyFile}}''),halt." --ignore'      
+\end{alltt}
+      %% 
+Note that here the file to be preprocessed, \emph{MyFile}, needs to be
+passed to the preprocessing predicate as an argument. To use XSB as the second and later
+preprocessor in the pipeline, the appropriate command could be
+      %% 
+\begin{alltt}
+'.../xsb \textnormal{\emph{options}} -e "see(userin),preprocessPred,halt."'
+\end{alltt}
+      %% 
+      Here the file to be preprocessed will come on the standard input of
+      XSB. No need for the \texttt{--ignore}
+      option here because no file names would be attached at the end of
+      this command (since the file is piped through the standard input).
+
+      In both cases, the file passed to \texttt{preprocessPred/1} or
+      \texttt{preprocessPred/0}
+      could be processed using \texttt{read/1} and
+      \texttt{write\_canonical/1}.
+      The typical options that one would want to pass in both cases (to
+      replace \emph{options})   are
+      %% 
+\begin{verbatim}
+     --noprompt --quietload --nobanner --nofeedback      
+\end{verbatim}
+      %% 
+      Note that other commands might need to be executed under the
+      \texttt{-e} option in order to bootstrap the preprocessor (e.g.,
+      additional XSB files might need to be loaded). 
     \end{itemize}
     %%
   \item The preprocessor must be \emph{registered} using the following query:
 %% 
 \begin{verbatim}
-     :- import register_xsb_preprocessor/2 from parse.
-     ?- register_xsb_preprocessor(preproc_name,preproc_predicate(_,_,_,_)).
+:- import register_xsb_preprocessor/2 from parse.
+?- register_xsb_preprocessor(preproc_name,preproc_predicate(_,_,_,_)).
 \end{verbatim}
 %% 
-    Here {\tt preproc\_name} is the user-given name for the preprocessor and
-    {\tt preproc\_predicate} is the 4-ary shell-command-producing
-    predicate described earlier.
+    Here the argument \texttt{preproc\_name} is the user-given name for the
+    preprocessor, while \texttt{preproc\_predicate} is the 4-ary
+    shell-command-producing predicate described earlier.
 
     The registration query must be executed \emph{before} the start of the
     preprocessing of the input XSB file. Clearly, this implies that the
@@ -1694,7 +1765,8 @@ The following options are currently recognized by the compiler:
     Note: one \emph{cannot} register the same preprocessor twice. The
     second time the same name is used, it is ignored. However, it \emph{is}
     possible to register the same shell-command-producing predicate twice,
-    if the user registers them under different preprocessor names.
+    if the user registers the these shell-command-producing predicates
+    under different preprocessor names.
   \end{itemize}
   %% 
 
@@ -1710,31 +1782,32 @@ The following options are currently recognized by the compiler:
   the following predicate
 %% 
 \begin{verbatim}
-    make_append_cmd(_File,_Name,Options,ResultingCmd) :-
-           fmt_write_string(ResultingCmd, '"/bin/cat" "%s"', arg(Options)).
+make_append_cmd(_File,_Name,Options,ResultingCmd) :-
+       fmt_write_string(ResultingCmd, '"/bin/cat" "%s"', arg(Options)).
 \end{verbatim}
 %% 
   and also has the following registration query:
 %% 
 \begin{verbatim}
-    ?- parse:register_xsb_preprocessor(appendfile,make_append_cmd(_,_,_,_)).  
+?- parse:register_xsb_preprocessor(appendfile,make_append_cmd(_,_,_,_)).  
 \end{verbatim}
 %% 
   Suppose that the file {\tt abc.P} includes the following compiler directive:
   %% 
 \begin{verbatim}
-    :- compiler_options([xpp_on(appendfile('data.P'),gpp)]).  
+:- compiler_options([xpp_on(appendfile('data.P'),gpp)]).  
 \end{verbatim}
   %% 
   If the file {\tt foobar.P} is loaded before compiling {\tt abc.P} then  
-  the file {\tt data.P} will be first appended to {\tt foobar.P} and then
+  the file {\tt data.P} will be first appended to {\tt abc.P} and then
   the result will be processed by GPP. The final result will be parsed and
   compiled by XSB.
 
   Note that although the parameters {\tt \_File} and {\tt \_Name} are not
   used by {\tt make\_append\_cmd/4} in our example, when this predicate is
   called they will be bound to {\tt foobar.P} and {\tt appendfile},
-  respectively, and could be used for various purposes.
+  respectively, and could be used by the shell-command-producing predicates
+  for various purposes.
 
 
 

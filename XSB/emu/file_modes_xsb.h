@@ -29,3 +29,9 @@
 #define OSTRINGR     3	  /* open as a string (for reading) */
 #define OSTRINGW     4	  /* open as a string (for writing) */
 
+/* TLS: these are ports, rather than file descriptors, therefore using
+   the Prolog defines.
+*/
+
+#define STDIN 0
+#define STDOUT 1

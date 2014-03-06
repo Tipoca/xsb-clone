@@ -27,7 +27,6 @@
    in-lined file_function (to speed up file_get/put). */
 
 
-#include "file_modes_xsb.h"
 
 #if (defined(CYGWIN))
 #include <fcntl.h>
@@ -36,6 +35,8 @@
 #ifdef WIN_NT
 #include <io.h>
 #endif
+
+#include "file_modes_xsb.h"
 
 /* protected by MUTEX IO */
 STRFILE *iostrs[MAXIOSTRS] = {NULL,NULL,NULL,NULL,NULL};
@@ -88,12 +89,6 @@ int unset_fileptr(FILE *stream) {
   return(-1);
 }
 
-/* TLS: these are ports, rather than file descriptors, therefore using
-   the Prolog defines.  Should they be moved into a different .h file? 
-*/
-
-#define STDIN 0
-#define STDOUT 1
 
 /* file_flush, file_pos, file_truncate, file_seek */
 
