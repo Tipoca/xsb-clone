@@ -152,6 +152,7 @@ interrupt flag
 #define LOG_ALL_FILES_USED	  99  /* log all files at open */
 #define EXCEPTION_ACTION         100
 #define CHARACTER_SET            101
+#define ERRORS_WITH_POSITION     102
 
 #define MAX_FLAGS		 120
 
