@@ -1664,7 +1664,7 @@ form:
 			 \langle arg_n \rangle) \]
 %
 Unlike {\tt writeq/1}, {\tt write\_canonical/1} does not treat terms
-of the form \verb|'$VAR'(N)| specially. It writes square bracket lists
+of the form \verb|'$VAR'(N)| specially. It writes square bracket lists  % $
 using {\tt '.'/2} and {\tt []} (that is, {\tt [foo, bar]} is written
 as \verb|'.'(foo,'.'(bar,[]))|).
 
@@ -4609,6 +4609,7 @@ F = f(a,1,_h0,'.'('3cpio','.'(d(3),'.'(Foo,[]))))
 
 yes
 \end{verbatim}}
+% $
 
 \ourmoditem{term\_to\_atom(+Term,-Atom)}{term\_to\_atom/2}{string}
 %
